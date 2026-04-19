@@ -19,6 +19,7 @@ import {
   CL_InitInput,
   CL_InitLocal,
   CL_PredictMovement,
+  SCR_BuildScreenState,
   CL_SetInputFrameTime,
   CL_UpdateLerpFraction,
   connstate_t,
@@ -27,15 +28,33 @@ import {
   createClientRuntime,
   type ClientRefreshFrame,
   type ClientInputContext,
+  type ClientScreenHudState,
   type ClientRuntime
 } from "../../../packages/client/src/index.js";
 import {
   AngleVectors,
   CM_BoxTrace,
   CM_PointContents,
+  CS_IMAGES,
+  CS_ITEMS,
+  CS_STATUSBAR,
   CS_AIRACCEL,
   MASK_PLAYERSOLID,
   PITCH,
+  STAT_AMMO,
+  STAT_AMMO_ICON,
+  STAT_ARMOR,
+  STAT_ARMOR_ICON,
+  STAT_FRAGS,
+  STAT_HEALTH,
+  STAT_HEALTH_ICON,
+  STAT_LAYOUTS,
+  STAT_PICKUP_ICON,
+  STAT_PICKUP_STRING,
+  STAT_SELECTED_ICON,
+  STAT_SELECTED_ITEM,
+  STAT_TIMER,
+  STAT_TIMER_ICON,
   Pmove,
   YAW,
   createCollisionPointContents,
@@ -53,6 +72,51 @@ const CAMERA_MOUSE_SENSITIVITY = 0.0022;
 const DEFAULT_VIEWHEIGHT = 22;
 const DEFAULT_SPAWN_LIFT = 24;
 const PLAYER_ORIGIN_TO_FLOOR = 24;
+const LOCAL_SINGLE_STATUSBAR =
+  "yb -24 "
+  + "xv 0 "
+  + "hnum "
+  + "xv 50 "
+  + "pic 0 "
+  + "if 2 "
+  + " xv 100 "
+  + " anum "
+  + " xv 150 "
+  + " pic 2 "
+  + "endif "
+  + "if 4 "
+  + " xv 200 "
+  + " rnum "
+  + " xv 250 "
+  + " pic 4 "
+  + "endif "
+  + "if 6 "
+  + " xv 296 "
+  + " pic 6 "
+  + "endif "
+  + "yb -50 "
+  + "if 7 "
+  + " xv 0 "
+  + " pic 7 "
+  + " xv 26 "
+  + " yb -42 "
+  + " stat_string 8 "
+  + " yb -50 "
+  + "endif "
+  + "if 9 "
+  + " xv 262 "
+  + " num 2 10 "
+  + " xv 296 "
+  + " pic 9 "
+  + "endif "
+  + "if 11 "
+  + " xv 148 "
+  + " pic 11 "
+  + "endif ";
+const LOCAL_SCOREBOARD_LAYOUT =
+  "xv 0 yv 32 picn inventory "
+  + "client 0 32 0 7 32 5 "
+  + "client 0 64 1 3 48 3 ";
 
 type MovementKey = "forward" | "backward" | "left" | "right" | "up" | "down";
 
@@ -66,6 +130,7 @@ type MovementKey = "forward" | "backward" | "left" | "right" | "up" | "down";
 export interface LocalClientController {
   runtime: ClientRuntime;
   refreshFrame: ClientRefreshFrame | null;
+  screenState: ClientScreenHudState;
   update: (deltaSeconds: number) => void;
 }
 
@@ -120,6 +185,7 @@ export function createLocalClientController(
   runtime.cl.configstrings[CS_AIRACCEL] = "0";
 
   initializeSpawnPrediction(runtime, collision, spawnOrigin);
+  initializeLocalHudState(runtime);
 
   const pressedKeys: Record<MovementKey, boolean> = {
     forward: false,
@@ -169,6 +235,18 @@ export function createLocalClientController(
   });
 
   window.addEventListener("keydown", (event) => {
+    if (event.code === "Tab") {
+      setLayoutBit(runtime, 1, true);
+      event.preventDefault();
+      return;
+    }
+
+    if (event.key.toLowerCase() === "i") {
+      toggleLayoutBit(runtime, 2);
+      event.preventDefault();
+      return;
+    }
+
     const binding = codeBindings[event.code] ?? keyBindings[event.key.toLowerCase()];
     if (!binding) {
       return;
@@ -179,6 +257,12 @@ export function createLocalClientController(
   });
 
   window.addEventListener("keyup", (event) => {
+    if (event.code === "Tab") {
+      setLayoutBit(runtime, 1, false);
+      event.preventDefault();
+      return;
+    }
+
     const binding = codeBindings[event.code] ?? keyBindings[event.key.toLowerCase()];
     if (!binding) {
       return;
@@ -204,6 +288,14 @@ export function createLocalClientController(
     runtime,
     get refreshFrame() {
       return refreshFrame;
+    },
+    get screenState() {
+      return SCR_BuildScreenState(runtime, {
+        paused: false,
+        outgoingSequence: nextCommandSequence,
+        incomingAcknowledged: nextCommandSequence - 1,
+        commandBackup: 64
+      });
     },
     update: (deltaSeconds) => {
       realtimeMs += deltaSeconds * 1000;
@@ -320,6 +412,50 @@ function initializeSpawnPrediction(
 
 /**
  * Category: New
+ * Purpose: Seed the browser-local client with minimal HUD stats so the web overlay can reflect the real screen snapshot path.
+ *
+ * Constraints:
+ * - Must only touch current local bootstrap values until authoritative server stats exist.
+ */
+function initializeLocalHudState(runtime: ClientRuntime): void {
+  runtime.cl.configstrings[CS_STATUSBAR] = LOCAL_SINGLE_STATUSBAR;
+  runtime.cl.configstrings[CS_IMAGES + 1] = "i_health";
+  runtime.cl.configstrings[CS_IMAGES + 2] = "a_shells";
+  runtime.cl.configstrings[CS_IMAGES + 3] = "i_combatarmor";
+  runtime.cl.configstrings[CS_IMAGES + 4] = "w_blaster";
+  runtime.cl.configstrings[CS_ITEMS + 1] = "Blaster";
+  runtime.cl.configstrings[CS_ITEMS + 2] = "Shotgun";
+  runtime.cl.configstrings[CS_ITEMS + 3] = "Shells";
+  runtime.cl.layout = LOCAL_SCOREBOARD_LAYOUT;
+  runtime.cl.inventory[1] = 1;
+  runtime.cl.inventory[2] = 1;
+  runtime.cl.inventory[3] = 50;
+  runtime.cl.playernum = 0;
+  runtime.cl.clientinfo[0].name = "Player";
+  runtime.cl.clientinfo[0].iconname = "players/male/grunt_i.pcx";
+  runtime.cl.clientinfo[1].name = "Bitterman";
+  runtime.cl.clientinfo[1].iconname = "players/male/major_i.pcx";
+  runtime.cl.baseclientinfo.name = "Player";
+  runtime.cl.baseclientinfo.iconname = "players/male/grunt_i.pcx";
+
+  runtime.cl.frame.playerstate.stats[STAT_HEALTH_ICON] = 1;
+  runtime.cl.frame.playerstate.stats[STAT_HEALTH] = 100;
+  runtime.cl.frame.playerstate.stats[STAT_AMMO_ICON] = 2;
+  runtime.cl.frame.playerstate.stats[STAT_AMMO] = 50;
+  runtime.cl.frame.playerstate.stats[STAT_ARMOR_ICON] = 3;
+  runtime.cl.frame.playerstate.stats[STAT_ARMOR] = 50;
+  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ICON] = 4;
+  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = 1;
+  runtime.cl.frame.playerstate.stats[STAT_PICKUP_ICON] = 0;
+  runtime.cl.frame.playerstate.stats[STAT_PICKUP_STRING] = 0;
+  runtime.cl.frame.playerstate.stats[STAT_TIMER_ICON] = 0;
+  runtime.cl.frame.playerstate.stats[STAT_TIMER] = 0;
+  runtime.cl.frame.playerstate.stats[STAT_FRAGS] = 0;
+  runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] = 0;
+}
+
+/**
+ * Category: New
  * Purpose: Build the local collision adapter that combines worldspawn and static BSP inline models for browser-side prediction.
  *
  * Constraints:
@@ -408,6 +544,24 @@ function promotePredictedState(runtime: ClientRuntime, realtimeMs: number): void
   };
   runtime.cl.frame.playerstate.viewangles = [...runtime.cl.predicted_angles];
   runtime.cl.frame.playerstate.viewoffset = [0, 0, DEFAULT_VIEWHEIGHT];
+}
+
+/**
+ * Category: New
+ * Purpose: Set or clear one `STAT_LAYOUTS` bit inside the local bootstrap player-state stats.
+ */
+function setLayoutBit(runtime: ClientRuntime, bitMask: number, enabled: boolean): void {
+  const current = runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] ?? 0;
+  runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] = enabled ? (current | bitMask) : (current & ~bitMask);
+}
+
+/**
+ * Category: New
+ * Purpose: Toggle one `STAT_LAYOUTS` bit for the browser-local HUD demo controls.
+ */
+function toggleLayoutBit(runtime: ClientRuntime, bitMask: number): void {
+  const current = runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] ?? 0;
+  runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] = current ^ bitMask;
 }
 
 /**

@@ -165,6 +165,47 @@ export function CL_ClearTEnts(runtime: ClientRuntime): void {
   runtime.cl.tents.sustains = Array.from({ length: runtime.cl.tents.sustains.length }, () => createClientSustain());
   runtime.cl.tents.tempLights = Array.from({ length: runtime.cl.tents.tempLights.length }, () => createClientTempLight());
   runtime.cl.tents.forceWalls = Array.from({ length: runtime.cl.tents.forceWalls.length }, () => createClientForceWall());
+  runtime.cl.tents.registeredSounds = [];
+}
+
+/**
+ * Original name: CL_RegisterTEntSounds
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the shared temporary-entity sound set used by impacts, footsteps and explosions.
+ *
+ * Porting notes:
+ * - Stores normalized sound-path strings instead of backend sound handles.
+ */
+export function CL_RegisterTEntSounds(runtime: ClientRuntime): string[] {
+  const registeredSounds = [
+    "world/ric1.wav",
+    "world/ric2.wav",
+    "world/ric3.wav",
+    "weapons/lashit.wav",
+    "world/spark5.wav",
+    "world/spark6.wav",
+    "world/spark7.wav",
+    "weapons/railgf1a.wav",
+    "weapons/rocklx1a.wav",
+    "weapons/grenlx1a.wav",
+    "weapons/xpld_wat.wav",
+    "player/land1.wav",
+    "player/fall2.wav",
+    "player/fall1.wav",
+    "player/step1.wav",
+    "player/step2.wav",
+    "player/step3.wav",
+    "player/step4.wav",
+    "weapons/tesla.wav",
+    "weapons/disrupthit.wav"
+  ];
+
+  runtime.cl.tents.registeredSounds = [...registeredSounds];
+  return registeredSounds;
 }
 
 /**

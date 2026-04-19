@@ -33,13 +33,48 @@ export {
   CL_DownloadFileName
 } from "./download.js";
 export {
+  CL_Precache_f,
+  CL_RequestNextDownload
+} from "./precache.js";
+export {
+  CL_RegisterSounds
+} from "./sound.js";
+export {
+  DrawHUDString,
+  Inv_DrawString,
+  CL_DrawInventory,
+  SCR_BuildHudDrawCommands,
+  SCR_ExecuteLayoutString,
+  SCR_DrawField,
+  SCR_DrawLayout,
+  SCR_DrawStats,
+  SCR_TouchPics,
+  SetStringHighBit,
+  SizeHUDString,
+  SCR_BeginLoadingPlaque,
+  SCR_BuildScreenState,
+  SCR_CenterPrint,
+  SCR_CheckDrawCenterString,
+  SCR_EndLoadingPlaque
+} from "./screen.js";
+export {
+  Cmd_ForwardToServer,
+  CL_Changing_f,
+  CL_Connect_f,
   CL_Disconnect,
   CL_Disconnect_f,
   CL_ForwardToServer_f,
   CL_InitLocal,
+  CL_Pause_f,
+  CL_PingServers_f,
   CL_Quit_f,
+  CL_Rcon_f,
+  CL_Reconnect_f,
+  CL_Setenv_f,
+  CL_Snd_Restart_f,
   CL_Skins_f,
   CL_TogglePause,
+  CL_Userinfo_f,
   createClientMainContext
 } from "./main.js";
 export {
@@ -74,7 +109,8 @@ export {
 export {
   CL_AddTEntPacket,
   CL_BuildTEntRefresh,
-  CL_ClearTEnts
+  CL_ClearTEnts,
+  CL_RegisterTEntSounds
 } from "./tent.js";
 export {
   CL_BuildActionEffects,
@@ -97,6 +133,7 @@ export {
   createClientBeam,
   createCentity,
   createClientExplosion,
+  createClientPrecacheState,
   createClientForceWall,
   createClientinfo,
   createKbutton,
@@ -115,6 +152,7 @@ export type {
   client_beam_t,
   client_explosion_t,
   client_force_wall_t,
+  client_precache_state_t,
   client_state_t,
   client_static_t,
   clientinfo_t,
@@ -141,5 +179,34 @@ export type {
 } from "./parse.js";
 export type { ClientMainContext, ClientMainHooks } from "./main.js";
 export type { ClientDownloadHooks } from "./download.js";
+export type { ClientPrecacheHooks } from "./precache.js";
+export type { ClientSoundRegistrationHooks } from "./sound.js";
+export type {
+  ClientCenterPrintState,
+  ClientHudBounds,
+  ClientHudDrawCommand,
+  ClientHudFillCommand,
+  ClientInventoryBindingMap,
+  ClientHudLayoutContext,
+  ClientHudNumberCommand,
+  ClientHudPictureCommand,
+  ClientHudStringMeasure,
+  ClientHudTextCommand,
+  ClientLoadingOverlayState,
+  ClientNetOverlayState,
+  ClientPauseOverlayState,
+  ClientScreenBuildOptions,
+  ClientScreenHudState
+} from "./screen.js";
 export type { ClientInputContext, ClientInputFrameOptions } from "./input.js";
 export type { ClientViewOptions, ClientViewValues } from "./view.js";
+
+export type {
+  HudBounds,
+  HudDrawCommand,
+  HudFillCommand,
+  HudNumberCommand,
+  HudPictureCommand,
+  HudPictureResourceResolver,
+  HudTextCommand
+} from "../../renderer-common/src/index.js";

@@ -94,8 +94,10 @@ import {
 import { type ClientRuntime, type frame_t } from "./types.js";
 import { MAX_PARSE_ENTITIES, connstate_t, createFrame } from "./types.js";
 import { CL_FireEntityEvents, type ClientEntityEvent } from "./entities.js";
+import { SCR_CenterPrint } from "./screen.js";
 import { CL_AddTEntPacket, CL_ClearTEnts } from "./tent.js";
 import { CL_CheckPredictionError } from "./view.js";
+import { createClientScreenState } from "./types.js";
 
 /**
  * Category: New
@@ -1283,8 +1285,12 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
         break;
       }
       case svc_ops_e.svc_centerprint:
-        hooks.onCenterPrint?.(MSG_ReadString(runtime.net_message));
+      {
+        const text = MSG_ReadString(runtime.net_message);
+        SCR_CenterPrint(runtime, text);
+        hooks.onCenterPrint?.(text);
         break;
+      }
       case svc_ops_e.svc_stufftext: {
         const text = MSG_ReadString(runtime.net_message);
         hooks.onStufftext?.(text);
@@ -1560,7 +1566,8 @@ function createFrameClearedClientState(runtime: ClientRuntime): Omit<ClientRunti
     num_cl_weaponmodels: runtime.cl.num_cl_weaponmodels,
     clientinfo: runtime.cl.clientinfo,
     baseclientinfo: runtime.cl.baseclientinfo,
-    tents: runtime.cl.tents
+    tents: runtime.cl.tents,
+    screen: createClientScreenState()
   };
 }
 

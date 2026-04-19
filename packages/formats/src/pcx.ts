@@ -96,7 +96,7 @@ export function parsePcx(bytes: Uint8Array, path?: string): PcxImage {
   const decoded = decodePcxRle(bytes.subarray(PCX_HEADER_SIZE, bytes.byteLength - (1 + PCX_PALETTE_SIZE)), expectedRowBytes, height, path);
   const indices = extractIndexedPixels(decoded, width, height, header.bytes_per_line);
   const paletteRgb = readPcxPalette(bytes, path);
-  const rgba = expandPaletteIndices(indices, paletteRgb);
+  const rgba = expandPaletteIndices(indices, paletteRgb, width);
 
   return {
     header,
@@ -248,19 +248,53 @@ function readPcxPalette(bytes: Uint8Array, path?: string): Uint8Array {
  *
  * Constraints:
  * - Must preserve palette colors exactly.
- * - Must set alpha to 255 for every pixel.
+ * - Must preserve Quake II transparency semantics where palette index 255 is transparent.
  */
-function expandPaletteIndices(indices: Uint8Array, paletteRgb: Uint8Array): Uint8Array {
+function expandPaletteIndices(indices: Uint8Array, paletteRgb: Uint8Array, width: number): Uint8Array {
   const rgba = new Uint8Array(indices.length * 4);
 
   for (let index = 0; index < indices.length; index += 1) {
-    const paletteIndex = indices[index] * 3;
+    const pixel = indices[index];
+    const paletteIndex = pixel * 3;
     const rgbaIndex = index * 4;
-    rgba[rgbaIndex] = paletteRgb[paletteIndex];
-    rgba[rgbaIndex + 1] = paletteRgb[paletteIndex + 1];
-    rgba[rgbaIndex + 2] = paletteRgb[paletteIndex + 2];
-    rgba[rgbaIndex + 3] = 255;
+    const rgbIndex = pixel === 255 ? resolveTransparentNeighborIndex(indices, width, index) * 3 : paletteIndex;
+    rgba[rgbaIndex] = paletteRgb[rgbIndex];
+    rgba[rgbaIndex + 1] = paletteRgb[rgbIndex + 1];
+    rgba[rgbaIndex + 2] = paletteRgb[rgbIndex + 2];
+    rgba[rgbaIndex + 3] = pixel === 255 ? 0 : 255;
   }
 
   return rgba;
+}
+
+/**
+ * Category: New
+ * Purpose: Reproduce Quake II's transparent-pixel neighbor color selection to avoid alpha fringes.
+ *
+ * Constraints:
+ * - Must treat palette index 255 as transparent.
+ * - Must search adjacent pixels using the same priority as the original GL upload path.
+ */
+function resolveTransparentNeighborIndex(indices: Uint8Array, width: number, index: number): number {
+  const previousRow = index - width;
+  if (previousRow >= 0 && indices[previousRow] !== 255) {
+    return indices[previousRow];
+  }
+
+  const nextRow = index + width;
+  if (nextRow < indices.length && indices[nextRow] !== 255) {
+    return indices[nextRow];
+  }
+
+  const previousColumn = index - 1;
+  if (previousColumn >= 0 && indices[previousColumn] !== 255) {
+    return indices[previousColumn];
+  }
+
+  const nextColumn = index + 1;
+  if (nextColumn < indices.length && indices[nextColumn] !== 255) {
+    return indices[nextColumn];
+  }
+
+  return 0;
 }

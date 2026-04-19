@@ -34,16 +34,16 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | client\cl_ents.c | cl_ents.c | Entity delta parsing, packet entity reconstruction, frame interpolation inputs and render-side entity staging. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/entities.ts, packages/client/src/refresh.ts |
 | client\cl_fx.c | cl_fx.c | Client-side muzzle flashes, dynamic lights and weapon effect parsing before renderer/audio side effects. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/effects.ts |
 | client\cl_input.c | cl_input.c | Client key button tracking, angle adjustment and user command construction before transmission. | 🟠 | 🟠 | packages/client/src/input.ts, packages/client/src/types.ts |
-| client\cl_inv.c | cl_inv.c | Client inventory parsing and inventory-screen state feeding. | 🟠 | 🟠 | packages/client/src/parse.ts |
-| client\cl_main.c | cl_main.c | Client main loop bootstrap, client-local cvars, console commands, disconnect flow, skin refresh and early precache/download orchestration. | 🟠 | 🟠 | packages/client/src/main.ts, packages/client/src/download.ts, packages/client/src/parse.ts, packages/client/src/types.ts |
+| client\cl_inv.c | cl_inv.c | Client inventory parsing plus first inventory-screen text primitives, item list composition and selected-item driven HUD state feeding. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/screen.ts |
+| client\cl_main.c | cl_main.c | Client main loop bootstrap, command forwarding, pause/env wrappers, connect/reconnect transitions, first `rcon` path, first network discovery path, userinfo/sound utility commands, disconnect flow, skin refresh and early precache/download orchestration. | 🟠 | 🟠 | packages/client/src/main.ts, packages/client/src/sound.ts, packages/client/src/precache.ts, packages/client/src/download.ts, packages/client/src/parse.ts, packages/client/src/types.ts |
 | client\cl_newfx.c | cl_newfx.c | Extended client-side visual effects helpers including flashlight, force-wall and sustain-style temp effects. | 🟠 | 🟠 | packages/client/src/tent.ts, packages/client/src/refresh.ts |
-| client\cl_parse.c | cl_parse.c | Server message parsing, serverdata, configstrings, downloads, explicit download requests and early client bootstrap packets. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/download.ts |
+| client\cl_parse.c | cl_parse.c | Server message parsing, serverdata, configstrings, downloads, explicit download requests, sound registration, center-print routing and early client bootstrap packets. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/download.ts, packages/client/src/sound.ts, packages/client/src/screen.ts |
 | client\cl_pred.c | cl_pred.c | Client-side prediction checks, movement prediction integration and predicted view/origin smoothing. | 🟠 | 🟠 | packages/client/src/view.ts |
-| client\cl_scrn.c | cl_scrn.c |  |  |  |  |
-| client\cl_tent.c | cl_tent.c | Client-side temporary entity parsing for impacts, explosions, beams, player-locked heatbeams, sustains and effect events. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/effects.ts, packages/client/src/tent.ts, packages/client/src/refresh.ts |
-| client\cl_view.c | cl_view.c | First-person weapon view setup and client refresh-facing view composition around the current player state. | 🟠 | 🟠 | packages/client/src/view.ts, packages/client/src/refresh.ts |
+| client\cl_scrn.c | cl_scrn.c | Client screen/HUD state management, center prints, loading/pause/net overlays, `STAT_LAYOUTS` decoding, statusbar snapshotting, HUD text/number/pic primitives, a complete priority-pass `SCR_ExecuteLayoutString` interpreter including `client` and `ctf`, draw-command composition matching `SCR_UpdateScreen` order, shared HUD/resource contracts, and a Three.js HUD execution path over the browser scene. | ✅ | ✅ | packages/client/src/screen.ts, packages/client/src/main.ts, packages/client/src/types.ts, packages/client/src/index.ts, packages/renderer-common/src/hud-draw.ts, packages/renderer-common/src/hud-resources.ts, packages/renderer-three/src/hud-renderer.ts, packages/renderer-three/src/hud-resource-resolver.ts, apps/web/src/main.ts, apps/web/src/local-client-controller.ts |
+| client\cl_tent.c | cl_tent.c | Client-side temporary entity parsing for impacts, explosions, beams, player-locked heatbeams, sustains, effect events and the shared temp-entity sound registration set. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/effects.ts, packages/client/src/tent.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts |
+| client\cl_view.c | cl_view.c | First-person weapon view setup and client refresh-facing view composition around the current player state, including original crosshair picture usage feeding the shared HUD resource catalog. | 🟠 | 🟠 | packages/client/src/view.ts, packages/client/src/refresh.ts, packages/renderer-common/src/hud-resources.ts |
 | client\client.h | client.h | Core client runtime declarations, persistent/static state, frame structures, centities and parser entry points. | 🟠 | 🟠 | packages/client/src/types.ts, packages/client/src/parse.ts |
-| client\console.c | console.c |  |  |  |  |
+| client\console.c | console.c | Console drawing helpers including low-level character and string primitives reused by the original HUD path, now partially mirrored by HUD text commands. | 🟠 | 🟠 | packages/client/src/screen.ts |
 | client\console.h | console.h |  |  |  |  |
 | client\input.h | input.h |  |  |  |  |
 | client\keys.c | keys.c |  |  |  |  |
@@ -52,7 +52,7 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | client\qmenu.c | qmenu.c |  |  |  |  |
 | client\qmenu.h | qmenu.h |  |  |  |  |
 | client\ref.h | ref.h |  |  |  |  |
-| client\screen.h | screen.h |  |  |  |  |
+| client\screen.h | screen.h | Screen/HUD public declarations for center prints, loading plaque, update ordering and screen-side helpers. | 🟠 | 🟠 | packages/client/src/screen.ts, packages/client/src/index.ts |
 | client\snd_dma.c | snd_dma.c |  |  |  |  |
 | client\snd_loc.h | snd_loc.h |  |  |  |  |
 | client\snd_mem.c | snd_mem.c |  |  |  |  |

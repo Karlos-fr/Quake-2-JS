@@ -254,6 +254,37 @@ export interface client_tent_state_t {
   sustains: client_sustain_t[];
   tempLights: client_temp_light_t[];
   forceWalls: client_force_wall_t[];
+  registeredSounds: string[];
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the client-side screen and HUD transient state used by `cl_scrn.c`.
+ *
+ * Constraints:
+ * - Must keep center-print and loading-plaque state explicit for later UI adapters.
+ */
+export interface client_screen_state_t {
+  scr_centerstring: string;
+  scr_centertime_start: number;
+  scr_centertime_off: number;
+  scr_center_lines: number;
+  scr_erase_center: number;
+  scr_draw_loading: number;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the client-side precache traversal state used by `CL_RequestNextDownload`.
+ *
+ * Constraints:
+ * - Must keep the original counters explicit so the precache loop can resume after each download.
+ */
+export interface client_precache_state_t {
+  precache_check: number;
+  precache_spawncount: number;
+  precache_tex: number;
+  precache_model_skin: number;
 }
 
 /**
@@ -308,6 +339,7 @@ export interface client_state_t {
   clientinfo: clientinfo_t[];
   baseclientinfo: clientinfo_t;
   tents: client_tent_state_t;
+  screen: client_screen_state_t;
 }
 
 /**
@@ -353,6 +385,7 @@ export interface client_static_t {
   downloadpercent: number;
   demorecording: boolean;
   demowaiting: boolean;
+  precache: client_precache_state_t;
 }
 
 /**
@@ -569,7 +602,26 @@ export function createClientTentState(): client_tent_state_t {
     lasers: Array.from({ length: MAX_LASERS }, () => createClientLaser()),
     sustains: Array.from({ length: MAX_SUSTAINS }, () => createClientSustain()),
     tempLights: Array.from({ length: MAX_EXPLOSIONS }, () => createClientTempLight()),
-    forceWalls: Array.from({ length: MAX_EXPLOSIONS }, () => createClientForceWall())
+    forceWalls: Array.from({ length: MAX_EXPLOSIONS }, () => createClientForceWall()),
+    registeredSounds: []
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create a zero-initialized client screen state compatible with early `cl_scrn.c` ports.
+ *
+ * Constraints:
+ * - Must preserve the original empty center-print and loading defaults.
+ */
+export function createClientScreenState(): client_screen_state_t {
+  return {
+    scr_centerstring: "",
+    scr_centertime_start: 0,
+    scr_centertime_off: 0,
+    scr_center_lines: 0,
+    scr_erase_center: 0,
+    scr_draw_loading: 0
   };
 }
 
@@ -620,7 +672,8 @@ export function createClientState(): client_state_t {
     num_cl_weaponmodels: 1,
     clientinfo: Array.from({ length: MAX_CLIENTS }, () => createClientinfo()),
     baseclientinfo: createClientinfo(),
-    tents: createClientTentState()
+    tents: createClientTentState(),
+    screen: createClientScreenState()
   };
 }
 
@@ -647,7 +700,24 @@ export function createClientStatic(): client_static_t {
     downloadnumber: 0,
     downloadpercent: 0,
     demorecording: false,
-    demowaiting: false
+    demowaiting: false,
+    precache: createClientPrecacheState()
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create a zero-initialized client precache traversal state.
+ *
+ * Constraints:
+ * - Must preserve C-style zero defaults for the resumable precache loop.
+ */
+export function createClientPrecacheState(): client_precache_state_t {
+  return {
+    precache_check: 0,
+    precache_spawncount: 0,
+    precache_tex: 0,
+    precache_model_skin: 0
   };
 }
 

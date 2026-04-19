@@ -30,13 +30,16 @@ import {
   WebGLRenderer
 } from "three";
 import { WebGPURenderer } from "three/webgpu";
+import { SCR_BuildHudDrawCommands } from "../../../packages/client/src/index.js";
 import { buildBspSurfaces } from "../../../packages/renderer-common/src/index.js";
 import {
   applyMd2Frame,
   buildEntityPreviewGroup,
   buildMd2Mesh,
   buildThreeBspGroup,
+  createQuakeHudResourceResolver,
   createQuakeTextureResolver,
+  createThreeHudLayer,
   loadMd2Model,
   updateEntityPreviewGroup
 } from "../../../packages/renderer-three/src/index.js";
@@ -94,6 +97,8 @@ async function bootstrap(): Promise<void> {
     const spawn = findPrimarySpawnPoint(map);
     const surfaces = buildBspSurfaces(map);
     const textureResolver = createQuakeTextureResolver(filesystem);
+    const hudResourceResolver = createQuakeHudResourceResolver(filesystem);
+    const hudLayer = createThreeHudLayer(hudResourceResolver);
     const group = buildThreeBspGroup(surfaces, {
       resolveTexture: textureResolver.resolveTexture
     });
@@ -126,6 +131,7 @@ async function bootstrap(): Promise<void> {
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       rendererBundle.renderer.setSize(width, height);
+      hudLayer.setViewport(width, height);
     };
 
     resize();
@@ -143,12 +149,33 @@ async function bootstrap(): Promise<void> {
       ui.setRuntimeInfo(cameraController.refreshFrame);
       updateEntityPreviewGroup(entityPreview, elapsedSeconds);
 
+      const hudCommands = SCR_BuildHudDrawCommands(
+        cameraController.runtime,
+        {
+          viewportWidth: ui.viewport.clientWidth,
+          viewportHeight: ui.viewport.clientHeight,
+          active: true,
+          refreshPrepped: true
+        },
+        {
+          screenState: cameraController.screenState,
+          bindings: {
+            Blaster: "1"
+          }
+        }
+      );
+      hudLayer.render(hudCommands);
+
       if (modelInstance && modelInstance.model.frames.length > 1) {
         const frameIndex = Math.floor(elapsedSeconds * 6) % modelInstance.model.frames.length;
         applyMd2Frame(modelInstance, frameIndex);
       }
 
+      rendererBundle.renderer.autoClear = false;
+      rendererBundle.renderer.clear();
       rendererBundle.renderer.render(scene, camera);
+      rendererBundle.renderer.clearDepth();
+      rendererBundle.renderer.render(hudLayer.scene, hudLayer.camera);
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : `${error}`;
@@ -340,7 +367,8 @@ function createShell(app: HTMLDivElement): {
   overlay.style.fontSize = "12px";
   overlay.style.lineHeight = "1.5";
   overlay.style.whiteSpace = "pre-line";
-  overlay.style.maxWidth = "420px";
+  overlay.style.maxWidth = "340px";
+  overlay.style.pointerEvents = "none";
 
   const rendererLine = document.createElement("div");
   const statusLine = document.createElement("div");

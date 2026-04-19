@@ -1,0 +1,73 @@
+/**
+ * File: sound.ts
+ * Source: Quake II original / client/cl_parse.c and client/cl_tent.c
+ * Purpose: Port the first client-side sound registration path used during refresh preparation and sound restarts.
+ *
+ * Porting policy:
+ * - Preserve original behavior first.
+ * - Preserve original names whenever possible.
+ * - Avoid structural refactors unless documented.
+ *
+ * Deviations:
+ * - Stores registered sound identifiers as path strings instead of backend sound handles.
+ * - Defers actual audio backend registration calls to optional hooks.
+ *
+ * Notes:
+ * - This file is intended to stay conceptually close to the original client sound precache flow.
+ */
+
+import { CS_SOUNDS, MAX_SOUNDS } from "../../qcommon/src/index.js";
+import { CL_RegisterTEntSounds } from "./tent.js";
+import type { ClientRuntime } from "./types.js";
+
+/**
+ * Category: New
+ * Purpose: Describe host-side callbacks used by the first client sound registration port.
+ *
+ * Constraints:
+ * - Must keep backend sound registration optional while preserving registration order.
+ */
+export interface ClientSoundRegistrationHooks {
+  onBeginRegistration?: () => void;
+  onRegisterSound?: (path: string, category: "tent" | "precache") => unknown;
+  onEndRegistration?: () => void;
+  onPumpEvents?: () => void;
+}
+
+/**
+ * Original name: CL_RegisterSounds
+ * Source: client/cl_parse.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers temp-entity sounds first, then all configstring sound assets.
+ *
+ * Porting notes:
+ * - Uses sound path strings as the stored precache value until a concrete sound backend is wired.
+ */
+export function CL_RegisterSounds(runtime: ClientRuntime, hooks: ClientSoundRegistrationHooks = {}): string[] {
+  const registered: string[] = [];
+
+  hooks.onBeginRegistration?.();
+
+  for (const path of CL_RegisterTEntSounds(runtime)) {
+    hooks.onRegisterSound?.(path, "tent");
+    registered.push(path);
+  }
+
+  for (let index = 1; index < MAX_SOUNDS; index += 1) {
+    const path = runtime.cl.configstrings[CS_SOUNDS + index];
+    if (path.length === 0) {
+      break;
+    }
+
+    runtime.cl.sound_precache[index] = path;
+    hooks.onRegisterSound?.(path, "precache");
+    hooks.onPumpEvents?.();
+    registered.push(path);
+  }
+
+  hooks.onEndRegistration?.();
+  return registered;
+}
