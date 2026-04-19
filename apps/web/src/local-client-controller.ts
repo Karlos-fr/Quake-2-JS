@@ -33,10 +33,11 @@ import {
 } from "../../../packages/client/src/index.js";
 import {
   createGameRuntimeFromBspMap,
+  FRAMETIME,
+  G_RunFrame,
   initializeDoorPlanEntities,
   linkGameEntity,
   refreshEntitySpatialState,
-  runGameFrames,
   spawnGameEntity,
   touchTriggerEntities,
   type GameEntity,
@@ -49,6 +50,7 @@ import {
   CS_ITEMS,
   CS_STATUSBAR,
   CS_AIRACCEL,
+  LerpAngle,
   MASK_PLAYERSOLID,
   PITCH,
   pmtype_t,
@@ -150,6 +152,21 @@ export interface LocalClientController {
 
 /**
  * Category: New
+ * Purpose: Preserve the previous and current brush-model poses required to interpolate moving BSP submodels like the original client.
+ *
+ * Constraints:
+ * - Must keep timestamps aligned with fixed Quake II server frames.
+ * - Must preserve per-model pairing through the original `*N` model name.
+ */
+interface BrushModelInterpolationState {
+  previousSnapshots: BrushModelSnapshot[];
+  currentSnapshots: BrushModelSnapshot[];
+  previousTime: number;
+  currentTime: number;
+}
+
+/**
+ * Category: New
  * Purpose: Create a local client controller that drives the browser camera from the ported Quake II client prediction path.
  *
  * Constraints:
@@ -174,6 +191,7 @@ export function createLocalClientController(
   initializeDoorPlanEntities(gameplayRuntime);
   const gameplayPlayer = createLocalGameplayPlayer(gameplayRuntime);
   const collision = createLocalCollisionAdapter(gameplayRuntime, gameplayPlayer);
+  const brushModelInterpolation = createBrushModelInterpolationState(gameplayRuntime);
 
   const spawnOrigin: vec3_t = spawn
     ? [spawn.origin[0], spawn.origin[1], spawn.origin[2] + DEFAULT_SPAWN_LIFT]
@@ -318,7 +336,7 @@ export function createLocalClientController(
         commandBackup: 64
       });
     },
-    getBrushModelSnapshots: () => buildBrushModelSnapshots(gameplayRuntime),
+    getBrushModelSnapshots: () => buildInterpolatedBrushModelSnapshots(brushModelInterpolation, realtimeMs / 1000),
     setGhostMode: (enabled) => {
       ghostMode = enabled;
       applyMovementMode(runtime, ghostMode);
@@ -329,7 +347,7 @@ export function createLocalClientController(
       runtime.cls.frametime = deltaSeconds;
       runtime.cl.time = realtimeMs;
       applyMovementMode(runtime, ghostMode);
-      advanceGameplayRuntime(gameplayRuntime, realtimeMs);
+      advanceGameplayRuntime(gameplayRuntime, realtimeMs, brushModelInterpolation);
 
       CL_SetInputFrameTime(inputContext, realtimeMs);
       syncMovementButtons(inputContext, pressedKeys, realtimeMs);
@@ -393,10 +411,18 @@ function createLocalGameplayPlayer(runtime: GameRuntime): GameEntity {
  */
 function advanceGameplayRuntime(
   gameplayRuntime: GameRuntime,
-  realtimeMs: number
+  realtimeMs: number,
+  interpolationState: BrushModelInterpolationState
 ): void {
   const timeSeconds = realtimeMs / 1000;
-  runGameFrames(gameplayRuntime, timeSeconds);
+
+  while ((gameplayRuntime.time + FRAMETIME) <= (timeSeconds + 0.0001)) {
+    interpolationState.previousSnapshots = cloneBrushModelSnapshots(interpolationState.currentSnapshots);
+    interpolationState.previousTime = interpolationState.currentTime;
+    G_RunFrame(gameplayRuntime);
+    interpolationState.currentSnapshots = buildBrushModelSnapshots(gameplayRuntime);
+    interpolationState.currentTime = gameplayRuntime.time;
+  }
 }
 
 /**
@@ -773,4 +799,110 @@ function buildBrushModelSnapshots(runtime: GameRuntime): BrushModelSnapshot[] {
   }
 
   return snapshots;
+}
+
+/**
+ * Category: New
+ * Purpose: Create the initial brush-model interpolation state from the current gameplay runtime pose.
+ *
+ * Constraints:
+ * - Must start with identical previous and current poses to avoid bootstrap pops.
+ */
+function createBrushModelInterpolationState(runtime: GameRuntime): BrushModelInterpolationState {
+  const snapshots = buildBrushModelSnapshots(runtime);
+
+  return {
+    previousSnapshots: cloneBrushModelSnapshots(snapshots),
+    currentSnapshots: cloneBrushModelSnapshots(snapshots),
+    previousTime: runtime.time,
+    currentTime: runtime.time
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Interpolate the current brush-model render pose from the last two gameplay snapshots like the original Quake II client entity path.
+ *
+ * Constraints:
+ * - Must linearly interpolate origins.
+ * - Must use `LerpAngle` for angular interpolation.
+ * - Must match the original client rule where interpolation progresses during the current server-frame window.
+ */
+function buildInterpolatedBrushModelSnapshots(
+  interpolationState: BrushModelInterpolationState,
+  renderTimeSeconds: number
+): BrushModelSnapshot[] {
+  const currentSnapshots = interpolationState.currentSnapshots;
+  const previousByModel = new Map<string, BrushModelSnapshot>();
+
+  for (const snapshot of interpolationState.previousSnapshots) {
+    if (snapshot.model) {
+      previousByModel.set(snapshot.model, snapshot);
+    }
+  }
+
+  const lerpFraction = interpolationState.currentTime > interpolationState.previousTime
+    ? clamp01((renderTimeSeconds - interpolationState.currentTime) / (interpolationState.currentTime - interpolationState.previousTime))
+    : 1;
+
+  return currentSnapshots.map((currentSnapshot) => {
+    if (!currentSnapshot.model) {
+      return cloneBrushModelSnapshot(currentSnapshot);
+    }
+
+    const previousSnapshot = previousByModel.get(currentSnapshot.model);
+    if (!previousSnapshot) {
+      return cloneBrushModelSnapshot(currentSnapshot);
+    }
+
+    return {
+      model: currentSnapshot.model,
+      origin: [
+        lerpValue(previousSnapshot.origin[0], currentSnapshot.origin[0], lerpFraction),
+        lerpValue(previousSnapshot.origin[1], currentSnapshot.origin[1], lerpFraction),
+        lerpValue(previousSnapshot.origin[2], currentSnapshot.origin[2], lerpFraction)
+      ],
+      angles: [
+        LerpAngle(previousSnapshot.angles[0], currentSnapshot.angles[0], lerpFraction),
+        LerpAngle(previousSnapshot.angles[1], currentSnapshot.angles[1], lerpFraction),
+        LerpAngle(previousSnapshot.angles[2], currentSnapshot.angles[2], lerpFraction)
+      ]
+    };
+  });
+}
+
+/**
+ * Category: New
+ * Purpose: Clone one list of brush-model snapshots so interpolation state keeps value semantics across fixed frames.
+ */
+function cloneBrushModelSnapshots(snapshots: BrushModelSnapshot[]): BrushModelSnapshot[] {
+  return snapshots.map(cloneBrushModelSnapshot);
+}
+
+/**
+ * Category: New
+ * Purpose: Clone one brush-model snapshot without sharing mutable tuple references.
+ */
+function cloneBrushModelSnapshot(snapshot: BrushModelSnapshot): BrushModelSnapshot {
+  return {
+    model: snapshot.model,
+    origin: [...snapshot.origin],
+    angles: [...snapshot.angles]
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Interpolate one scalar with a clamped fraction.
+ */
+function lerpValue(previous: number, current: number, fraction: number): number {
+  return previous + (current - previous) * fraction;
+}
+
+/**
+ * Category: New
+ * Purpose: Clamp one interpolation fraction to the inclusive `[0, 1]` interval.
+ */
+function clamp01(value: number): number {
+  return Math.min(1, Math.max(0, value));
 }
