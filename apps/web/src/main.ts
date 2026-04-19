@@ -420,7 +420,7 @@ function createShell(app: HTMLDivElement): {
   overlay.style.left = "16px";
   overlay.style.bottom = "16px";
   overlay.style.padding = "10px 12px";
-  overlay.style.background = "rgba(14, 10, 8, 0.78)";
+  overlay.style.background = "rgba(14, 10, 8, 0.20)";
   overlay.style.border = "1px solid rgba(210, 196, 177, 0.16)";
   overlay.style.color = "#d4c4b1";
   overlay.style.fontFamily = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
