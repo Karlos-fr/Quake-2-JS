@@ -38,7 +38,7 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | client\cl_main.c | cl_main.c | Client main loop bootstrap, command forwarding, pause/env wrappers, connect/reconnect transitions, first `rcon` path, first network discovery path, userinfo/sound utility commands, disconnect flow, skin refresh and early precache/download orchestration. | 🟠 | 🟠 | packages/client/src/main.ts, packages/client/src/sound.ts, packages/client/src/precache.ts, packages/client/src/download.ts, packages/client/src/parse.ts, packages/client/src/types.ts |
 | client\cl_newfx.c | cl_newfx.c | Extended client-side visual effects helpers including flashlight, force-wall and sustain-style temp effects. | 🟠 | 🟠 | packages/client/src/tent.ts, packages/client/src/refresh.ts |
 | client\cl_parse.c | cl_parse.c | Server message parsing, serverdata, configstrings, downloads, explicit download requests, sound registration, center-print routing and early client bootstrap packets. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/download.ts, packages/client/src/sound.ts, packages/client/src/screen.ts |
-| client\cl_pred.c | cl_pred.c | Client-side prediction checks, movement prediction integration and predicted view/origin smoothing. | 🟠 | 🟠 | packages/client/src/view.ts |
+| client\cl_pred.c | cl_pred.c | Client-side prediction checks, movement prediction integration and predicted view/origin smoothing, now consumed in the web demo through the gameplay-backed collision adapter for moving brush models. | 🟠 | 🟠 | packages/client/src/view.ts, apps/web/src/local-client-controller.ts, scripts/verify/quake2-collision-phase8.ts |
 | client\cl_scrn.c | cl_scrn.c | Client screen/HUD state management, center prints, loading/pause/net overlays, `STAT_LAYOUTS` decoding, statusbar snapshotting, HUD text/number/pic primitives, a complete priority-pass `SCR_ExecuteLayoutString` interpreter including `client` and `ctf`, draw-command composition matching `SCR_UpdateScreen` order, shared HUD/resource contracts, and a Three.js HUD execution path over the browser scene. | ✅ | ✅ | packages/client/src/screen.ts, packages/client/src/main.ts, packages/client/src/types.ts, packages/client/src/index.ts, packages/renderer-common/src/hud-draw.ts, packages/renderer-common/src/hud-resources.ts, packages/renderer-three/src/hud-renderer.ts, packages/renderer-three/src/hud-resource-resolver.ts, apps/web/src/main.ts, apps/web/src/local-client-controller.ts |
 | client\cl_tent.c | cl_tent.c | Client-side temporary entity parsing for impacts, explosions, beams, player-locked heatbeams, sustains, effect events and the shared temp-entity sound registration set. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/effects.ts, packages/client/src/tent.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts |
 | client\cl_view.c | cl_view.c | First-person weapon view setup and client refresh-facing view composition around the current player state, including original crosshair picture usage feeding the shared HUD resource catalog. | 🟠 | 🟠 | packages/client/src/view.ts, packages/client/src/refresh.ts, packages/renderer-common/src/hud-resources.ts |
@@ -118,25 +118,25 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | game\g_chase.c | g_chase.c |  |  |  | |
 | game\g_cmds.c | g_cmds.c |  |  |  | |
 | game\g_combat.c | g_combat.c |  |  |  | |
-| game\g_func.c | g_func.c | First brush-entity lifecycle port for `func_door`, `func_door_rotating` and `func_plat`, including `Move_*`, `AngleMove_*`, accelerated platform motion, top/bottom transitions and helper trigger spawning. | 🟠 | 🟠 | packages/game/src/g_func.ts, packages/game/src/g_spawn.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-door-phase4.ts, scripts/verify/quake2-door-phase5.ts |
+| game\g_func.c | g_func.c | Brush-entity lifecycle port for `func_door`, `func_door_rotating` and `func_plat`, including `Move_*`, `AngleMove_*`, accelerated platform motion, top/bottom transitions, helper trigger spawning and real `blocked` callbacks now validated on map-backed scenarios. | 🟠 | 🟠 | packages/game/src/g_func.ts, packages/game/src/g_spawn.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-door-phase4.ts, scripts/verify/quake2-door-phase5.ts, scripts/verify/quake2-door-phase6.ts |
 | game\g_items.c | g_items.c |  |  |  | |
 | game\g_local.h | g_local.h | Shared gameplay declarations, enums, structs and function prototypes for the base game module. | 🟡 | ⬜ | generated/ts-stubs/game/g_local.ts |
 | game\g_main.c | g_main.c |  |  |  | |
 | game\g_misc.c | g_misc.c |  |  |  | |
 | game\g_monster.c | g_monster.c |  |  |  | |
-| game\g_phys.c | g_phys.c | First gameplay physics frame port for `SV_RunThink`, `SV_Push`, `SV_Physics_Pusher` and `G_RunEntity`, sufficient to advance moving brush models frame by frame in the local runtime. | 🟠 | 🟠 | packages/game/src/g_phys.ts, packages/game/src/index.ts, apps/web/src/local-client-controller.ts, scripts/verify/quake2-door-phase3.ts, scripts/verify/quake2-door-phase5.ts |
+| game\g_phys.c | g_phys.c | Gameplay physics frame port for `SV_RunThink`, `SV_TestEntityPosition`, `SV_Impact`, `SV_PushEntity`, `SV_Push`, `SV_Physics_Pusher` and `G_RunEntity`, now backed by a gameplay collision bridge over world BSP, transformed inline models and linked dynamic boxes, with pushed-state rollback, rider transport, angular compensation and obstacle dispatch. | 🟠 | 🟠 | packages/game/src/g_phys.ts, packages/game/src/runtime.ts, packages/game/src/touch.ts, packages/game/src/index.ts, apps/web/src/local-client-controller.ts, scripts/verify/quake2-door-phase3.ts, scripts/verify/quake2-door-phase5.ts, scripts/verify/quake2-collision-phase3.ts, scripts/verify/quake2-collision-phase4.ts, scripts/verify/quake2-collision-phase5.ts, scripts/verify/quake2-collision-phase8.ts |
 | game\g_save.c | g_save.c |  |  |  | |
 | game\g_spawn.c | g_spawn.c | First spawn registry port for the currently supported brush/trigger subset, including `ED_CallSpawn`, `G_FindTeams` and BSP-order team linking for grouped doors. | 🟠 | 🟠 | packages/game/src/g_spawn.ts, packages/game/src/index.ts, scripts/verify/quake2-door-phase6.ts |
 | game\g_svcmds.c | g_svcmds.c |  |  |  | |
 | game\g_target.c | g_target.c |  |  |  | |
-| game\g_trigger.c | g_trigger.c | First trigger port for `trigger_once`, `trigger_multiple`, `trigger_relay` and their activation flow (`Touch_Multi`, `Use_Multi`, `multi_trigger`). | 🟠 | 🟠 | packages/game/src/g_trigger.ts, packages/game/src/g_spawn.ts, scripts/verify/quake2-door-phase1.ts |
+| game\g_trigger.c | g_trigger.c | Trigger port for `trigger_once`, `trigger_multiple`, `trigger_relay` and their activation flow (`Touch_Multi`, `Use_Multi`, `multi_trigger`), including dynamic `trigger_enable` re-link behavior validated against the stricter trigger-touch helpers. | 🟠 | 🟠 | packages/game/src/g_trigger.ts, packages/game/src/g_spawn.ts, packages/game/src/touch.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-collision-phase7.ts |
 | game\g_turret.c | g_turret.c |  |  |  | |
-| game\g_utils.c | g_utils.c | First gameplay utility port for entity lookup and `G_UseTargets`, including delay and `killtarget` resolution over BSP-spawned runtime entities. | 🟠 | 🟠 | packages/game/src/g_utils.ts, packages/game/src/runtime.ts, scripts/verify/quake2-door-phase1.ts |
+| game\g_utils.c | g_utils.c | Gameplay utility port for entity lookup and `G_UseTargets`, now complemented by `G_TouchTriggers` / `G_TouchSolids` over the runtime spatial query layer used by trigger-touch flow and collision plumbing. | 🟠 | 🟠 | packages/game/src/g_utils.ts, packages/game/src/runtime.ts, packages/game/src/touch.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-collision-phase3.ts, scripts/verify/quake2-collision-phase7.ts |
 | game\g_weapon.c | g_weapon.c |  |  |  | |
 | game\game.001 | game.001 |  |  |  | |
 | game\game.def | game.def |  |  |  | |
 | game\game.dsp | game.dsp |  |  |  | |
-| game\game.h | game.h |  |  |  | |
+| game\game.h | game.h | Core gameplay entity declarations including `edict_t` spatial fields such as `mins`, `maxs`, `absmin`, `absmax`, `solid`, `clipmask`, `owner`, area linkage and engine query contracts like `linkentity` and `BoxEdicts`. | 🟠 | 🟠 | packages/game/src/runtime.ts, packages/game/src/index.ts, scripts/verify/quake2-collision-phase2.ts, scripts/verify/quake2-collision-phase3.ts |
 | game\game.plg | game.plg |  |  |  | |
 | game\m_actor.c | m_actor.c |  |  |  | |
 | game\m_actor.h | m_actor.h |  |  |  | |
@@ -249,7 +249,7 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | null\sys_null.c | sys_null.c |  |  |  | |
 | null\vid_null.c | vid_null.c |  |  |  | |
 | qcommon\cmd.c | cmd.c | Command buffer, tokenization, aliases and command registry. | 🟠 | 🟠 | packages/qcommon/src/cmd.ts |
-| qcommon\cmodel.c | cmodel.c | BSP collision loading, point contents, box traces and inline collision models used by shared movement and client prediction. | 🟠 | 🟠 | packages/qcommon/src/collision.ts |
+| qcommon\cmodel.c | cmodel.c | BSP collision loading, point contents, transformed point contents, box traces, transformed box traces and inline collision models used by shared movement and client prediction. | 🟠 | 🟠 | packages/qcommon/src/collision.ts, packages/qcommon/src/index.ts, scripts/verify/quake2-collision-phase1.ts |
 | qcommon\common.c | common.c | Message IO functions, size buffers, common runtime helpers. | 🟠 | 🟠 | packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/messages.ts, packages/qcommon/src/common.ts, packages/qcommon/src/runtime.ts |
 | qcommon\crc.c | crc.c |  |  |  | |
 | qcommon\crc.h | crc.h |  |  |  | |
@@ -257,7 +257,7 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | qcommon\files.c | files.c | Filesystem search paths, pack loading, file opening and asset reads. | 🟠 | 🟠 | packages/formats/src/pak.ts, packages/filesystem/src/virtual-filesystem.ts, packages/filesystem/src/index.ts |
 | qcommon\md4.c | md4.c |  |  |  | |
 | qcommon\net_chan.c | net_chan.c |  |  |  | |
-| qcommon\pmove.c | pmove.c | Shared player movement core used by client prediction and server-authoritative simulation. | 🟠 | 🟠 | packages/qcommon/src/pmove.ts |
+| qcommon\pmove.c | pmove.c | Shared player movement core used by client prediction and server-authoritative simulation, now exercised in the browser through a collision adapter wired to transformed moving brush models. | 🟠 | 🟠 | packages/qcommon/src/pmove.ts, apps/web/src/local-client-controller.ts, scripts/verify/quake2-collision-phase8.ts |
 | qcommon\qcommon.h | qcommon.h | Shared declarations for sizebuf_t, MSG_*, protocol and runtime contracts. Stub TypeScript generated. | 🟠 | 🟠 | packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/messages.ts, generated/ts-stubs/qcommon/qcommon.ts |
 | qcommon\qfiles.h | qfiles.h | Binary file format declarations including PAK, PCX, WAL, MD2, sprite and BSP layouts. | 🟠 | 🟠 | packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/bsp.ts |
 | quake2.001 | quake2.001 |  |  |  | |

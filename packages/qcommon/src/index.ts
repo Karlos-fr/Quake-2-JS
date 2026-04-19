@@ -143,6 +143,8 @@ export {
   CM_BoxTrace,
   CM_InlineModel,
   CM_PointContents,
+  CM_TransformedBoxTrace,
+  CM_TransformedPointContents,
   createCollisionPointContents,
   createCollisionTrace,
   createCollisionWorld

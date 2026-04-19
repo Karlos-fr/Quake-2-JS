@@ -11,6 +11,17 @@
  */
 
 import type { BspEntity, BspMap } from "../../formats/src/bsp.js";
+import {
+  CM_BoxTrace,
+  CM_PointContents,
+  CM_TransformedBoxTrace,
+  CM_TransformedPointContents,
+  MASK_SOLID,
+  createCollisionWorld,
+  type CollisionWorld,
+  type trace_t,
+  type vec3_t
+} from "../../qcommon/src/index.js";
 import { G_UseTargets } from "./g_utils.js";
 
 /**
@@ -27,6 +38,19 @@ export type GameEntityFieldName =
   | "killtarget"
   | "message"
   | "model";
+
+/**
+ * Category: New
+ * Purpose: Classify gameplay entities by the collision/runtime role they currently occupy.
+ *
+ * Constraints:
+ * - Must distinguish BSP inline models, runtime triggers and dynamic box entities explicitly.
+ */
+export type GameEntityKind =
+  | "other"
+  | "inline_bsp"
+  | "runtime_trigger"
+  | "dynamic_box";
 
 /**
  * Category: New
@@ -139,6 +163,12 @@ export interface GameEntity {
   movetype: number;
   svflags: number;
   linkcount: number;
+  linked: boolean;
+  entityKind: GameEntityKind;
+  areanum: number;
+  areanum2: number;
+  clipmask: number;
+  headnode: number;
   health: number;
   max_health: number;
   dmg: number;
@@ -160,8 +190,33 @@ export interface GameEntity {
   pos2: [number, number, number];
   mins: [number, number, number];
   maxs: [number, number, number];
+  absmin: [number, number, number];
+  absmax: [number, number, number];
   size: [number, number, number];
+  groundentity: GameEntity | null;
+  groundentity_linkcount: number;
   moveinfo: GameMoveInfo;
+}
+
+/**
+ * Category: New
+ * Purpose: Expose the collision queries consumed by the gameplay runtime ports in `g_phys`.
+ *
+ * Constraints:
+ * - Must preserve Quake II style `trace(start, mins, maxs, end, passent, mask)` usage.
+ * - Must resolve worldspawn, inline BSP models and linked dynamic boxes together.
+ */
+export interface GameCollisionBridge {
+  world: CollisionWorld;
+  trace: (
+    start: vec3_t,
+    mins: vec3_t,
+    maxs: vec3_t,
+    end: vec3_t,
+    passent: GameEntity | null,
+    contentmask: number
+  ) => trace_t;
+  pointcontents: (point: vec3_t, passent?: GameEntity | null) => number;
 }
 
 /**
@@ -202,6 +257,12 @@ export interface GameRuntime {
   time: number;
   current_entity: GameEntity | null;
   logEntries: GameRuntimeLogEntry[];
+  collision: GameCollisionBridge | null;
+  linkedSolidEntities: GameEntity[];
+  linkedTriggerEntities: GameEntity[];
+  linkedInlineBspEntities: GameEntity[];
+  linkedRuntimeTriggerEntities: GameEntity[];
+  linkedDynamicBoxEntities: GameEntity[];
   log: (entry: Omit<GameRuntimeLogEntry, "time">) => void;
 }
 
@@ -215,6 +276,8 @@ export interface GameRuntime {
 export const SOLID_NOT = 0;
 export const SOLID_TRIGGER = 1;
 export const SOLID_BSP = 2;
+export const AREA_SOLID = 1;
+export const AREA_TRIGGERS = 2;
 export const MOVETYPE_NONE = 0;
 export const MOVETYPE_PUSH = 1;
 export const FL_TEAMSLAVE = 0x00000400;
@@ -274,6 +337,12 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     movetype: MOVETYPE_NONE,
     svflags: 0,
     linkcount: 0,
+    linked: false,
+    entityKind: "other",
+    areanum: 0,
+    areanum2: 0,
+    clipmask: 0,
+    headnode: 0,
     health: parseEntityInteger(properties.health),
     max_health: 0,
     dmg: parseEntityInteger(properties.dmg),
@@ -295,7 +364,11 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     pos2: [...origin],
     mins: [0, 0, 0],
     maxs: [0, 0, 0],
+    absmin: [0, 0, 0],
+    absmax: [0, 0, 0],
     size: [0, 0, 0],
+    groundentity: null,
+    groundentity_linkcount: 0,
     moveinfo: createMoveInfo()
   };
 }
@@ -313,6 +386,12 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     time: 0,
     current_entity: null,
     logEntries: [],
+    collision: null,
+    linkedSolidEntities: [],
+    linkedTriggerEntities: [],
+    linkedInlineBspEntities: [],
+    linkedRuntimeTriggerEntities: [],
+    linkedDynamicBoxEntities: [],
     log: (entry) => {
       runtime.logEntries.push({
         ...entry,
@@ -333,9 +412,11 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
  */
 export function createGameRuntimeFromBspMap(map: BspMap): GameRuntime {
   const runtime = createGameRuntimeFromBspEntities(map.parsedEntities);
+  runtime.collision = createGameCollisionBridge(map, runtime);
 
   for (const entity of runtime.entities) {
     applyInlineModelBounds(entity, map);
+    linkGameEntity(runtime, entity);
   }
 
   return runtime;
@@ -477,6 +558,12 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     movetype: MOVETYPE_NONE,
     svflags: 0,
     linkcount: 0,
+    linked: false,
+    entityKind: "other",
+    areanum: 0,
+    areanum2: 0,
+    clipmask: 0,
+    headnode: 0,
     health: 0,
     max_health: 0,
     dmg: 0,
@@ -498,10 +585,15 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     pos2: [0, 0, 0],
     mins: [0, 0, 0],
     maxs: [0, 0, 0],
+    absmin: [0, 0, 0],
+    absmax: [0, 0, 0],
     size: [0, 0, 0],
+    groundentity: null,
+    groundentity_linkcount: 0,
     moveinfo: createMoveInfo()
   };
 
+  refreshEntitySpatialState(entity);
   runtime.entities.push(entity);
   return entity;
 }
@@ -515,6 +607,7 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
  */
 export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   const freedIndex = entity.index;
+  unlinkGameEntity(runtime, entity);
   entity.inuse = false;
   entity.freetime = runtime.time;
   entity.nextthink = 0;
@@ -547,6 +640,12 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.movetype = MOVETYPE_NONE;
   entity.svflags = 0;
   entity.linkcount = 0;
+  entity.linked = false;
+  entity.entityKind = "other";
+  entity.areanum = 0;
+  entity.areanum2 = 0;
+  entity.clipmask = 0;
+  entity.headnode = 0;
   entity.health = 0;
   entity.max_health = 0;
   entity.dmg = 0;
@@ -563,7 +662,11 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.pos2 = [0, 0, 0];
   entity.mins = [0, 0, 0];
   entity.maxs = [0, 0, 0];
+  entity.absmin = [0, 0, 0];
+  entity.absmax = [0, 0, 0];
   entity.size = [0, 0, 0];
+  entity.groundentity = null;
+  entity.groundentity_linkcount = 0;
   entity.moveinfo = createMoveInfo();
 
   runtime.log({
@@ -713,6 +816,7 @@ function applyInlineModelBounds(entity: GameEntity, map: BspMap): void {
   }
 
   const inlineModel = map.models[modelIndex];
+  entity.headnode = inlineModel.headnode;
   entity.mins = [...inlineModel.mins];
   entity.maxs = [...inlineModel.maxs];
   entity.size = [
@@ -720,4 +824,459 @@ function applyInlineModelBounds(entity: GameEntity, map: BspMap): void {
     inlineModel.maxs[1] - inlineModel.mins[1],
     inlineModel.maxs[2] - inlineModel.mins[2]
   ];
+}
+
+/**
+ * Category: New
+ * Purpose: Recompute the canonical spatial bounds fields used by later Quake II collision and linking ports.
+ *
+ * Constraints:
+ * - Inline BSP models keep their BSP mins/maxs in world space.
+ * - Box entities derive absolute bounds from `origin + mins/maxs`.
+ */
+export function refreshEntitySpatialState(entity: GameEntity): void {
+  updateEntitySize(entity);
+  updateEntityAbsoluteBounds(entity);
+}
+
+/**
+ * Category: New
+ * Purpose: Link one gameplay entity into the runtime spatial query lists.
+ *
+ * Constraints:
+ * - Must refresh absolute bounds before exposure to queries.
+ * - Must preserve Quake II style `linkcount` updates on each relink.
+ */
+export function linkGameEntity(runtime: GameRuntime, entity: GameEntity): void {
+  unlinkGameEntity(runtime, entity);
+  refreshEntitySpatialState(entity);
+  entity.entityKind = classifyGameEntity(entity);
+  entity.linked = true;
+  entity.linkcount += 1;
+
+  if (entity.solid === SOLID_TRIGGER) {
+    runtime.linkedTriggerEntities.push(entity);
+    runtime.linkedRuntimeTriggerEntities.push(entity);
+    return;
+  }
+
+  if (entity.solid !== SOLID_NOT) {
+    runtime.linkedSolidEntities.push(entity);
+    if (entity.entityKind === "inline_bsp") {
+      runtime.linkedInlineBspEntities.push(entity);
+      return;
+    }
+    if (entity.entityKind === "dynamic_box") {
+      runtime.linkedDynamicBoxEntities.push(entity);
+    }
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Unlink one gameplay entity from the runtime spatial query lists.
+ *
+ * Constraints:
+ * - Must tolerate repeated unlinks.
+ */
+export function unlinkGameEntity(runtime: GameRuntime, entity: GameEntity): void {
+  removeLinkedEntity(runtime.linkedSolidEntities, entity);
+  removeLinkedEntity(runtime.linkedTriggerEntities, entity);
+  removeLinkedEntity(runtime.linkedInlineBspEntities, entity);
+  removeLinkedEntity(runtime.linkedRuntimeTriggerEntities, entity);
+  removeLinkedEntity(runtime.linkedDynamicBoxEntities, entity);
+  entity.linked = false;
+}
+
+/**
+ * Category: New
+ * Purpose: Return the currently linked entities overlapping one world-space bounds box.
+ *
+ * Constraints:
+ * - Must preserve runtime link order.
+ * - Must support trigger and solid queries with the original area type split.
+ */
+export function BoxEdicts(
+  runtime: GameRuntime,
+  mins: [number, number, number],
+  maxs: [number, number, number],
+  areaType: number
+): GameEntity[] {
+  const source = areaType === AREA_TRIGGERS ? runtime.linkedTriggerEntities : runtime.linkedSolidEntities;
+  const matches: GameEntity[] = [];
+
+  for (const entity of source) {
+    if (!entity.inuse || !entity.linked) {
+      continue;
+    }
+
+    if (!boundsOverlap(mins, maxs, entity.absmin, entity.absmax)) {
+      continue;
+    }
+
+    matches.push(entity);
+  }
+
+  return matches;
+}
+
+/**
+ * Category: New
+ * Purpose: Classify one gameplay entity into the runtime collision buckets used by spatial linking.
+ */
+export function classifyGameEntity(entity: GameEntity): GameEntityKind {
+  if (isRuntimeTriggerEntity(entity)) {
+    return "runtime_trigger";
+  }
+
+  if (isInlineBspEntity(entity)) {
+    return "inline_bsp";
+  }
+
+  if (isDynamicBoxEntity(entity)) {
+    return "dynamic_box";
+  }
+
+  return "other";
+}
+
+/**
+ * Category: New
+ * Purpose: Identify one BSP inline model entity from the current runtime shape.
+ */
+export function isInlineBspEntity(entity: GameEntity): boolean {
+  return Boolean(entity.model?.startsWith("*"));
+}
+
+/**
+ * Category: New
+ * Purpose: Identify one runtime trigger entity.
+ */
+export function isRuntimeTriggerEntity(entity: GameEntity): boolean {
+  return entity.solid === SOLID_TRIGGER;
+}
+
+/**
+ * Category: New
+ * Purpose: Identify one dynamic box-style entity distinct from BSP brush models and triggers.
+ */
+export function isDynamicBoxEntity(entity: GameEntity): boolean {
+  return entity.solid !== SOLID_NOT && entity.solid !== SOLID_TRIGGER && !isInlineBspEntity(entity);
+}
+
+/**
+ * Category: New
+ * Purpose: Recompute one entity `size` from its current mins and maxs.
+ */
+function updateEntitySize(entity: GameEntity): void {
+  entity.size = [
+    entity.maxs[0] - entity.mins[0],
+    entity.maxs[1] - entity.mins[1],
+    entity.maxs[2] - entity.mins[2]
+  ];
+}
+
+/**
+ * Category: New
+ * Purpose: Recompute one entity absolute world bounds from its current runtime shape.
+ */
+function updateEntityAbsoluteBounds(entity: GameEntity): void {
+  entity.absmin = [
+    entity.origin[0] + entity.mins[0],
+    entity.origin[1] + entity.mins[1],
+    entity.origin[2] + entity.mins[2]
+  ];
+  entity.absmax = [
+    entity.origin[0] + entity.maxs[0],
+    entity.origin[1] + entity.maxs[1],
+    entity.origin[2] + entity.maxs[2]
+  ];
+}
+
+/**
+ * Category: New
+ * Purpose: Remove one entity reference from a linked runtime list.
+ */
+function removeLinkedEntity(list: GameEntity[], entity: GameEntity): void {
+  const index = list.indexOf(entity);
+  if (index >= 0) {
+    list.splice(index, 1);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Test whether two axis-aligned bounds boxes overlap.
+ */
+function boundsOverlap(
+  leftMins: [number, number, number],
+  leftMaxs: [number, number, number],
+  rightMins: [number, number, number],
+  rightMaxs: [number, number, number]
+): boolean {
+  return !(
+    leftMaxs[0] <= rightMins[0] ||
+    leftMins[0] >= rightMaxs[0] ||
+    leftMaxs[1] <= rightMins[1] ||
+    leftMins[1] >= rightMaxs[1] ||
+    leftMaxs[2] <= rightMins[2] ||
+    leftMins[2] >= rightMaxs[2]
+  );
+}
+
+/**
+ * Category: New
+ * Purpose: Build the gameplay collision bridge consumed by the `g_phys` ports.
+ *
+ * Constraints:
+ * - Must use shared qcommon collision for worldspawn and inline BSP models.
+ * - Must supplement it with linked runtime dynamic-box testing.
+ */
+function createGameCollisionBridge(map: BspMap, runtime: GameRuntime): GameCollisionBridge {
+  const world = createCollisionWorld(map);
+
+  return {
+    world,
+    trace: (start, mins, maxs, end, passent, contentmask) => traceAgainstGameWorld(runtime, world, start, mins, maxs, end, passent, contentmask),
+    pointcontents: (point, passent) => pointContentsAgainstGameWorld(runtime, world, point, passent ?? null)
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve one gameplay trace against the world, transformed inline BSP entities and linked dynamic boxes.
+ */
+function traceAgainstGameWorld(
+  runtime: GameRuntime,
+  world: CollisionWorld,
+  start: vec3_t,
+  mins: vec3_t,
+  maxs: vec3_t,
+  end: vec3_t,
+  passent: GameEntity | null,
+  contentmask: number
+): trace_t {
+  const worldspawn = runtime.entities[0] ?? null;
+  let bestTrace = CM_BoxTrace(world, start, end, mins, maxs, 0, contentmask);
+
+  if (bestTrace.allsolid || bestTrace.startsolid || bestTrace.fraction < 1) {
+    bestTrace.ent = worldspawn;
+  } else {
+    bestTrace.ent = null;
+  }
+
+  for (const entity of runtime.linkedInlineBspEntities) {
+    if (!entity.inuse || entity === passent) {
+      continue;
+    }
+
+    const trace = CM_TransformedBoxTrace(
+      world,
+      start,
+      end,
+      mins,
+      maxs,
+      entity.headnode,
+      contentmask,
+      entity.origin,
+      entity.angles
+    );
+    trace.ent = entity;
+    bestTrace = mergeGameplayTrace(bestTrace, trace);
+  }
+
+  for (const entity of runtime.linkedDynamicBoxEntities) {
+    if (!entity.inuse || entity === passent) {
+      continue;
+    }
+
+    const trace = traceAgainstDynamicBox(start, end, mins, maxs, entity);
+    if (!trace) {
+      continue;
+    }
+
+    trace.ent = entity;
+    bestTrace = mergeGameplayTrace(bestTrace, trace);
+  }
+
+  return bestTrace;
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve point contents across the gameplay world and linked transformed inline BSP entities.
+ */
+function pointContentsAgainstGameWorld(
+  runtime: GameRuntime,
+  world: CollisionWorld,
+  point: vec3_t,
+  passent: GameEntity | null
+): number {
+  let contents = CM_PointContents(world, point, 0);
+
+  for (const entity of runtime.linkedInlineBspEntities) {
+    if (!entity.inuse || entity === passent) {
+      continue;
+    }
+
+    contents |= CM_TransformedPointContents(world, point, entity.headnode, entity.origin, entity.angles);
+  }
+
+  for (const entity of runtime.linkedDynamicBoxEntities) {
+    if (!entity.inuse || entity === passent) {
+      continue;
+    }
+
+    if (pointInsideBounds(point, entity.absmin, entity.absmax)) {
+      contents |= MASK_SOLID;
+    }
+  }
+
+  return contents;
+}
+
+/**
+ * Category: New
+ * Purpose: Choose the earliest blocking trace while preserving Quake II startsolid propagation.
+ */
+function mergeGameplayTrace(bestTrace: trace_t, candidate: trace_t): trace_t {
+  if (candidate.allsolid || candidate.startsolid || candidate.fraction < bestTrace.fraction) {
+    if (bestTrace.startsolid) {
+      candidate.startsolid = true;
+    }
+    return candidate;
+  }
+
+  if (candidate.startsolid) {
+    bestTrace.startsolid = true;
+  }
+
+  return bestTrace;
+}
+
+/**
+ * Category: New
+ * Purpose: Trace one moving AABB against one linked dynamic-box entity using the swept AABB equivalent used by the runtime bridge.
+ */
+function traceAgainstDynamicBox(
+  start: vec3_t,
+  end: vec3_t,
+  mins: vec3_t,
+  maxs: vec3_t,
+  entity: GameEntity
+): trace_t | null {
+  const expandedMins: vec3_t = [
+    entity.absmin[0] - maxs[0],
+    entity.absmin[1] - maxs[1],
+    entity.absmin[2] - maxs[2]
+  ];
+  const expandedMaxs: vec3_t = [
+    entity.absmax[0] - mins[0],
+    entity.absmax[1] - mins[1],
+    entity.absmax[2] - mins[2]
+  ];
+
+  if (pointInsideBounds(start, expandedMins, expandedMaxs)) {
+    return {
+      allsolid: true,
+      startsolid: true,
+      fraction: 0,
+      endpos: [...start],
+      plane: createDefaultTracePlane(),
+      surface: null,
+      contents: MASK_SOLID,
+      ent: entity
+    };
+  }
+
+  const delta: vec3_t = [end[0] - start[0], end[1] - start[1], end[2] - start[2]];
+  let enterFraction = 0;
+  let leaveFraction = 1;
+  let hitAxis = -1;
+  let hitNormalSign = 0;
+
+  for (let axis = 0; axis < 3; axis += 1) {
+    const startValue = start[axis];
+    const endValue = end[axis];
+    const minValue = expandedMins[axis];
+    const maxValue = expandedMaxs[axis];
+
+    if (delta[axis] === 0) {
+      if (startValue < minValue || startValue > maxValue) {
+        return null;
+      }
+      continue;
+    }
+
+    const inverseDelta = 1 / delta[axis];
+    let near = (minValue - startValue) * inverseDelta;
+    let far = (maxValue - startValue) * inverseDelta;
+    let nearNormalSign = -1;
+
+    if (near > far) {
+      const swap = near;
+      near = far;
+      far = swap;
+      nearNormalSign = 1;
+    }
+
+    if (near > enterFraction) {
+      enterFraction = near;
+      hitAxis = axis;
+      hitNormalSign = nearNormalSign;
+    }
+    leaveFraction = Math.min(leaveFraction, far);
+
+    if (enterFraction > leaveFraction) {
+      return null;
+    }
+  }
+
+  if (hitAxis < 0 || enterFraction < 0 || enterFraction > 1) {
+    return null;
+  }
+
+  const tracePlane = createDefaultTracePlane();
+  tracePlane.normal[hitAxis] = hitNormalSign;
+
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: enterFraction,
+    endpos: [
+      start[0] + delta[0] * enterFraction,
+      start[1] + delta[1] * enterFraction,
+      start[2] + delta[2] * enterFraction
+    ],
+    plane: tracePlane,
+    surface: null,
+    contents: MASK_SOLID,
+    ent: entity
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Test whether one point lies inside one inclusive axis-aligned bounds box.
+ */
+function pointInsideBounds(point: vec3_t, mins: vec3_t, maxs: vec3_t): boolean {
+  return (
+    point[0] >= mins[0] && point[0] <= maxs[0] &&
+    point[1] >= mins[1] && point[1] <= maxs[1] &&
+    point[2] >= mins[2] && point[2] <= maxs[2]
+  );
+}
+
+/**
+ * Category: New
+ * Purpose: Build the neutral miss plane used by synthetic dynamic-box traces.
+ */
+function createDefaultTracePlane(): trace_t["plane"] {
+  return {
+    normal: [0, 0, 0],
+    dist: 0,
+    type: 0,
+    signbits: 0,
+    pad: [0, 0]
+  };
 }

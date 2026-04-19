@@ -11,6 +11,10 @@
  */
 
 export {
+  AREA_SOLID,
+  AREA_TRIGGERS,
+  BoxEdicts,
+  classifyGameEntity,
   DOOR_CRUSHER,
   DOOR_NOMONSTER,
   DOOR_REVERSE,
@@ -37,8 +41,14 @@ export {
   createRuntimeEntity,
   findRuntimeEntitiesByTargetname,
   getRuntimeEntityLabel,
+  isDynamicBoxEntity,
+  isInlineBspEntity,
+  isRuntimeTriggerEntity,
+  linkGameEntity,
+  refreshEntitySpatialState,
   runPendingThinks,
   spawnGameEntity,
+  unlinkGameEntity,
   useGameEntity
 } from "./runtime.js";
 
@@ -56,10 +66,13 @@ export {
 export {
   G_RunEntity,
   G_RunFrame,
+  SV_Impact,
   SV_Physics_None,
   SV_Physics_Pusher,
   SV_Push,
+  SV_PushEntity,
   SV_RunThink,
+  SV_TestEntityPosition,
   runGameFrames
 } from "./g_phys.js";
 
@@ -105,10 +118,13 @@ export {
   Touch_Multi,
   Use_Multi,
   multi_trigger,
+  trigger_enable,
   trigger_relay_use
 } from "./g_trigger.js";
 
 export {
+  G_TouchSolids,
+  G_TouchTriggers,
   touchTriggerEntities
 } from "./touch.js";
 
@@ -116,8 +132,10 @@ export type {
   GameEntity,
   GameEntityBlocked,
   GameEntityFieldName,
+  GameEntityKind,
   GameEntityDie,
   GameEntityThink,
+  GameCollisionBridge,
   GameMoveInfo,
   GameEntityTouch,
   GameEntityUse,

@@ -22,7 +22,16 @@
     "verify:doors:phase4": "npx tsx ./scripts/verify/quake2-door-phase4.ts",
     "verify:doors:phase5": "npx tsx ./scripts/verify/quake2-door-phase5.ts",
     "verify:doors:phase6": "npx tsx ./scripts/verify/quake2-door-phase6.ts",
-    "verify:doors:phase7": "npx tsx ./scripts/verify/quake2-door-phase7.ts"
+    "verify:doors:phase7": "npx tsx ./scripts/verify/quake2-door-phase7.ts",
+    "verify:collision:phase1": "npx tsx ./scripts/verify/quake2-collision-phase1.ts",
+    "verify:collision:phase2": "npx tsx ./scripts/verify/quake2-collision-phase2.ts",
+    "verify:collision:phase3": "npx tsx ./scripts/verify/quake2-collision-phase3.ts",
+    "verify:collision:phase4": "npx tsx ./scripts/verify/quake2-collision-phase4.ts",
+    "verify:collision:phase5": "npx tsx ./scripts/verify/quake2-collision-phase5.ts",
+    "verify:collision:phase6": "npx tsx ./scripts/verify/quake2-collision-phase6.ts",
+    "verify:collision:phase7": "npx tsx ./scripts/verify/quake2-collision-phase7.ts",
+    "verify:collision:phase8": "npx tsx ./scripts/verify/quake2-collision-phase8.ts",
+    "verify:collision:phase9": "npx tsx ./scripts/verify/quake2-collision-phase9.ts"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",

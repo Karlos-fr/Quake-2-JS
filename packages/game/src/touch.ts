@@ -1,41 +1,54 @@
 /**
  * File: touch.ts
- * Purpose: Dispatch Quake II style trigger touch callbacks against the current gameplay runtime.
+ * Source: Quake II original / game/g_utils.c
+ * Purpose: Port the trigger-touch helper routines used by gameplay physics and trigger entities.
  *
- * This file is not a direct source port.
- * It is a small runtime helper that bridges entity bounds to the ported `touch` callbacks.
+ * Porting policy:
+ * - Preserve original behavior first.
+ * - Preserve original names whenever possible.
+ * - Avoid structural refactors unless documented.
  *
- * Dependencies:
- * - packages/game/src/runtime.ts
+ * Deviations:
+ * - Uses the current runtime `BoxEdicts` layer instead of the original engine import table.
+ * - Keeps the reduced TypeScript `touch` signature without plane/surface arguments.
+ *
+ * Notes:
+ * - This file is intended to stay close to the original `G_TouchTriggers` / `G_TouchSolids` behavior.
  */
 
+import { AREA_SOLID, AREA_TRIGGERS, BoxEdicts, SVF_MONSTER } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
 /**
- * Category: New
- * Purpose: Invoke every trigger `touch` callback whose bounds overlap the provided actor.
+ * Original name: G_TouchTriggers
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Invokes trigger touches for every trigger volume overlapping one entity's absolute bounds.
  *
  * Constraints:
- * - Must stay conservative and only touch entities that expose a `touch` callback.
- * - Must preserve runtime entity order.
+ * - Dead clients and monsters must not activate triggers.
+ * - Must preserve runtime query order.
  */
-export function touchTriggerEntities(runtime: GameRuntime, actor: GameEntity): void {
+export function G_TouchTriggers(runtime: GameRuntime, actor: GameEntity): void {
+  if ((actor.client || (actor.svflags & SVF_MONSTER) !== 0) && actor.health <= 0) {
+    return;
+  }
+
   const actorBounds = getActorBounds(actor);
   if (!actorBounds) {
     return;
   }
 
-  for (const entity of runtime.entities) {
-    if (!entity.inuse || !entity.touch) {
+  const touch = BoxEdicts(runtime, actorBounds.mins, actorBounds.maxs, AREA_TRIGGERS);
+  for (const entity of touch) {
+    if (!entity.inuse) {
       continue;
     }
 
-    const triggerBounds = getTriggerBounds(entity);
-    if (!triggerBounds) {
-      continue;
-    }
-
-    if (!boundsOverlap(actorBounds.mins, actorBounds.maxs, triggerBounds.mins, triggerBounds.maxs)) {
+    if (!entity.touch) {
       continue;
     }
 
@@ -44,80 +57,55 @@ export function touchTriggerEntities(runtime: GameRuntime, actor: GameEntity): v
 }
 
 /**
- * Category: New
- * Purpose: Convert one actor entity into absolute world bounds using Quake-style relative mins/maxs.
- */
-function getActorBounds(actor: GameEntity): { mins: [number, number, number]; maxs: [number, number, number] } | null {
-  if (!hasNonZeroExtents(actor.mins, actor.maxs)) {
-    return null;
-  }
-
-  return {
-    mins: [
-      actor.origin[0] + actor.mins[0],
-      actor.origin[1] + actor.mins[1],
-      actor.origin[2] + actor.mins[2]
-    ],
-    maxs: [
-      actor.origin[0] + actor.maxs[0],
-      actor.origin[1] + actor.maxs[1],
-      actor.origin[2] + actor.maxs[2]
-    ]
-  };
-}
-
-/**
- * Category: New
- * Purpose: Resolve one trigger entity to absolute bounds.
+ * Original name: G_TouchSolids
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Invokes one trigger's touch callback against every solid overlapping it after the trigger is linked.
  *
  * Constraints:
- * - BSP inline trigger models already expose absolute world mins/maxs.
- * - Runtime-only helper triggers without bounds are ignored.
+ * - Must preserve runtime query order.
+ * - Must only call the provided trigger's `touch`.
  */
-function getTriggerBounds(entity: GameEntity): { mins: [number, number, number]; maxs: [number, number, number] } | null {
-  if (!hasNonZeroExtents(entity.mins, entity.maxs)) {
-    return null;
+export function G_TouchSolids(runtime: GameRuntime, trigger: GameEntity): void {
+  const triggerBounds = getActorBounds(trigger);
+  if (!triggerBounds || !trigger.touch) {
+    return;
   }
 
-  if (entity.model?.startsWith("*")) {
-    return {
-      mins: [...entity.mins],
-      maxs: [...entity.maxs]
-    };
-  }
+  const touch = BoxEdicts(runtime, triggerBounds.mins, triggerBounds.maxs, AREA_SOLID);
+  for (const entity of touch) {
+    if (!entity.inuse) {
+      continue;
+    }
 
-  return {
-    mins: [
-      entity.origin[0] + entity.mins[0],
-      entity.origin[1] + entity.mins[1],
-      entity.origin[2] + entity.mins[2]
-    ],
-    maxs: [
-      entity.origin[0] + entity.maxs[0],
-      entity.origin[1] + entity.maxs[1],
-      entity.origin[2] + entity.maxs[2]
-    ]
-  };
+    trigger.touch(trigger, entity, runtime);
+  }
 }
 
 /**
  * Category: New
- * Purpose: Test whether two axis-aligned world bounds overlap.
+ * Purpose: Preserve the existing helper name while routing through the strict `G_TouchTriggers` port.
  */
-function boundsOverlap(
-  leftMins: [number, number, number],
-  leftMaxs: [number, number, number],
-  rightMins: [number, number, number],
-  rightMaxs: [number, number, number]
-): boolean {
-  return !(
-    leftMaxs[0] <= rightMins[0] ||
-    leftMins[0] >= rightMaxs[0] ||
-    leftMaxs[1] <= rightMins[1] ||
-    leftMins[1] >= rightMaxs[1] ||
-    leftMaxs[2] <= rightMins[2] ||
-    leftMins[2] >= rightMaxs[2]
-  );
+export function touchTriggerEntities(runtime: GameRuntime, actor: GameEntity): void {
+  G_TouchTriggers(runtime, actor);
+}
+
+/**
+ * Category: New
+ * Purpose: Convert one actor entity into absolute world bounds using the runtime spatial fields.
+ */
+function getActorBounds(actor: GameEntity): { mins: [number, number, number]; maxs: [number, number, number] } | null {
+  if (!hasNonZeroExtents(actor.absmin, actor.absmax)) {
+    return null;
+  }
+
+  return {
+    mins: [...actor.absmin],
+    maxs: [...actor.absmax]
+  };
 }
 
 /**

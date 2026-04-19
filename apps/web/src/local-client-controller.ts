@@ -34,6 +34,8 @@ import {
 import {
   createGameRuntimeFromBspMap,
   initializeDoorPlanEntities,
+  linkGameEntity,
+  refreshEntitySpatialState,
   runGameFrames,
   spawnGameEntity,
   touchTriggerEntities,
@@ -43,8 +45,6 @@ import {
 import type { BrushModelSnapshot } from "../../../packages/renderer-three/src/index.js";
 import {
   AngleVectors,
-  CM_BoxTrace,
-  CM_PointContents,
   CS_IMAGES,
   CS_ITEMS,
   CS_STATUSBAR,
@@ -68,12 +68,10 @@ import {
   STAT_TIMER_ICON,
   Pmove,
   YAW,
-  createCollisionPointContents,
-  createCollisionTrace,
-  createCollisionWorld,
   createCommandRuntime,
   createPmoveContext,
   createCvarRuntime,
+  type trace_t,
   type pmove_t,
   type vec3_t
 } from "../../../packages/qcommon/src/index.js";
@@ -172,11 +170,10 @@ export function createLocalClientController(
   const inputContext = createClientInputContext(runtime, cmdRuntime, cvarRuntime);
   CL_InitInput(inputContext);
 
-  const collisionWorld = createCollisionWorld(map);
-  const collision = createLocalCollisionAdapter(collisionWorld, map);
   const gameplayRuntime = createGameRuntimeFromBspMap(map);
   initializeDoorPlanEntities(gameplayRuntime);
   const gameplayPlayer = createLocalGameplayPlayer(gameplayRuntime);
+  const collision = createLocalCollisionAdapter(gameplayRuntime, gameplayPlayer);
 
   const spawnOrigin: vec3_t = spawn
     ? [spawn.origin[0], spawn.origin[1], spawn.origin[2] + DEFAULT_SPAWN_LIFT]
@@ -332,6 +329,7 @@ export function createLocalClientController(
       runtime.cls.frametime = deltaSeconds;
       runtime.cl.time = realtimeMs;
       applyMovementMode(runtime, ghostMode);
+      advanceGameplayRuntime(gameplayRuntime, realtimeMs);
 
       CL_SetInputFrameTime(inputContext, realtimeMs);
       syncMovementButtons(inputContext, pressedKeys, realtimeMs);
@@ -356,7 +354,7 @@ export function createLocalClientController(
       });
 
       promotePredictedState(runtime, realtimeMs);
-      updateGameplayRuntime(gameplayRuntime, gameplayPlayer, runtime, realtimeMs);
+      updateGameplayRuntimePlayer(gameplayRuntime, gameplayPlayer, runtime);
       applyPredictedCamera(camera, runtime);
       refreshFrame = CL_BuildRefreshFrame(runtime, {
         predictMovement: true
@@ -380,11 +378,8 @@ function createLocalGameplayPlayer(runtime: GameRuntime): GameEntity {
   player.health = 100;
   player.mins = [...PLAYER_TRIGGER_MINS];
   player.maxs = [...PLAYER_TRIGGER_MAXS];
-  player.size = [
-    player.maxs[0] - player.mins[0],
-    player.maxs[1] - player.mins[1],
-    player.maxs[2] - player.mins[2]
-  ];
+  refreshEntitySpatialState(player);
+  linkGameEntity(runtime, player);
   return player;
 }
 
@@ -396,17 +391,30 @@ function createLocalGameplayPlayer(runtime: GameRuntime): GameEntity {
  * - Must run scheduled `think` callbacks before and after touch dispatch.
  * - Must keep the local player origin aligned with predicted movement.
  */
-function updateGameplayRuntime(
+function advanceGameplayRuntime(
   gameplayRuntime: GameRuntime,
-  gameplayPlayer: GameEntity,
-  runtime: ClientRuntime,
   realtimeMs: number
 ): void {
   const timeSeconds = realtimeMs / 1000;
-  runGameFrames(gameplayRuntime, timeSeconds, () => {
-    gameplayPlayer.origin = [...runtime.cl.predicted_origin];
-    touchTriggerEntities(gameplayRuntime, gameplayPlayer);
-  });
+  runGameFrames(gameplayRuntime, timeSeconds);
+}
+
+/**
+ * Category: New
+ * Purpose: Keep the local gameplay player entity aligned with predicted movement after browser-side prediction.
+ *
+ * Constraints:
+ * - Must update trigger touches after the authoritative pusher frame advance already happened.
+ */
+function updateGameplayRuntimePlayer(
+  gameplayRuntime: GameRuntime,
+  gameplayPlayer: GameEntity,
+  runtime: ClientRuntime
+): void {
+  gameplayPlayer.origin = [...runtime.cl.predicted_origin];
+  refreshEntitySpatialState(gameplayPlayer);
+  linkGameEntity(gameplayRuntime, gameplayPlayer);
+  touchTriggerEntities(gameplayRuntime, gameplayPlayer);
 }
 
 /**
@@ -419,7 +427,7 @@ function updateGameplayRuntime(
 function initializeSpawnPrediction(
   runtime: ClientRuntime,
   collision: {
-    trace: (start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t) => ReturnType<ReturnType<typeof createCollisionTrace>>;
+    trace: (start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t) => trace_t;
     pointcontents: (point: vec3_t) => number;
   },
   spawnOrigin: vec3_t
@@ -544,68 +552,33 @@ function applyMovementMode(runtime: ClientRuntime, ghostMode: boolean): void {
 
 /**
  * Category: New
- * Purpose: Build the local collision adapter that combines worldspawn and static BSP inline models for browser-side prediction.
+ * Purpose: Build the local collision adapter that reuses the gameplay collision bridge for browser-side prediction.
  *
  * Constraints:
  * - Must stay close to Quake II `CL_PMTrace` / `CL_PMpointcontents` behavior.
- * - Current phase assumes BSP inline models stay at their compiled world transforms.
+ * - Must consume the current transformed inline-model poses from the gameplay runtime.
  */
-function createLocalCollisionAdapter(
-  world: ReturnType<typeof createCollisionWorld>,
-  map: BspMap
+export function createLocalCollisionAdapter(
+  gameplayRuntime: GameRuntime,
+  gameplayPlayer: GameEntity | null
 ): {
-  trace: (start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t) => ReturnType<ReturnType<typeof createCollisionTrace>>;
+  trace: (start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t) => trace_t;
   pointcontents: (point: vec3_t) => number;
 } {
-  const worldTrace = createCollisionTrace(world, 0, MASK_PLAYERSOLID);
-  const worldPointContents = createCollisionPointContents(world, 0);
-  const inlineModels = map.parsedEntities
-    .map((entity) => {
-      const modelText = entity.properties.model;
-      if (!modelText || !modelText.startsWith("*")) {
-        return null;
-      }
-
-      const modelIndex = Number.parseInt(modelText.slice(1), 10);
-      if (!Number.isFinite(modelIndex) || modelIndex <= 0 || modelIndex >= map.models.length) {
-        return null;
-      }
-
-      return {
-        entity,
-        modelIndex,
-        headnode: map.models[modelIndex].headnode
-      };
-    })
-    .filter((value): value is { entity: BspMap["parsedEntities"][number]; modelIndex: number; headnode: number } => value !== null);
-
   return {
     trace: (start, mins, maxs, end) => {
-      let bestTrace = worldTrace(start, mins, maxs, end);
-
-      for (const inlineModel of inlineModels) {
-        const trace = CM_BoxTrace(world, start, end, mins, maxs, inlineModel.headnode, MASK_PLAYERSOLID);
-        if (trace.allsolid || trace.startsolid || trace.fraction < bestTrace.fraction) {
-          trace.ent = inlineModel.entity;
-          if (bestTrace.startsolid) {
-            trace.startsolid = true;
-          }
-          bestTrace = trace;
-        } else if (trace.startsolid) {
-          bestTrace.startsolid = true;
-        }
+      if (!gameplayRuntime.collision) {
+        throw new Error("createLocalCollisionAdapter requires gameplay collision bridge");
       }
 
-      return bestTrace;
+      return gameplayRuntime.collision.trace(start, mins, maxs, end, gameplayPlayer, MASK_PLAYERSOLID);
     },
     pointcontents: (point) => {
-      let contents = worldPointContents(point);
-
-      for (const inlineModel of inlineModels) {
-        contents |= CM_PointContents(world, point, inlineModel.headnode);
+      if (!gameplayRuntime.collision) {
+        throw new Error("createLocalCollisionAdapter requires gameplay collision bridge");
       }
 
-      return contents;
+      return gameplayRuntime.collision.pointcontents(point, gameplayPlayer);
     }
   };
 }

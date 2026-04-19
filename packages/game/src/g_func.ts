@@ -39,6 +39,8 @@ import {
   SVF_MONSTER,
   freeGameEntity,
   getRuntimeEntityLabel,
+  linkGameEntity,
+  refreshEntitySpatialState,
   spawnGameEntity
 } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
@@ -606,11 +608,8 @@ export function Think_SpawnDoorTrigger(ent: GameEntity, runtime: GameRuntime): v
   other.origin = [0, 0, 0];
   other.mins = [...triggerBounds.mins];
   other.maxs = [...triggerBounds.maxs];
-  other.size = [
-    other.maxs[0] - other.mins[0],
-    other.maxs[1] - other.mins[1],
-    other.maxs[2] - other.mins[2]
-  ];
+  refreshEntitySpatialState(other);
+  linkGameEntity(runtime, other);
 
   runtime.log({
     kind: "think",
@@ -730,6 +729,7 @@ export function door_touch(self: GameEntity, other: GameEntity, runtime: GameRun
 export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
   ent.movetype = MOVETYPE_PUSH;
   ent.solid = SOLID_BSP;
+  ent.blocked = door_blocked;
   ent.use = door_use;
 
   if (!ent.speed) {
@@ -755,12 +755,15 @@ export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
     ent.origin[1] + ent.movedir[1] * ent.moveinfo.distance,
     ent.origin[2] + ent.movedir[2] * ent.moveinfo.distance
   ];
+  ent.angles = [0, 0, 0];
 
   if ((ent.spawnflags & DOOR_START_OPEN) !== 0) {
     ent.origin = [...ent.pos2];
     ent.pos2 = [...ent.pos1];
     ent.pos1 = [...ent.origin];
   }
+  refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
 
   ent.moveinfo.state = STATE_BOTTOM;
 
@@ -803,6 +806,7 @@ export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
 export function SP_func_door_rotating(ent: GameEntity, runtime: GameRuntime): void {
   ent.movetype = MOVETYPE_PUSH;
   ent.solid = SOLID_BSP;
+  ent.blocked = door_blocked;
   ent.use = door_use;
 
   if (!ent.speed) {
@@ -849,6 +853,8 @@ export function SP_func_door_rotating(ent: GameEntity, runtime: GameRuntime): vo
     ent.pos1 = [...ent.angles];
     ent.movedir = [-ent.movedir[0], -ent.movedir[1], -ent.movedir[2]];
   }
+  refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
 
   if (ent.health > 0) {
     ent.die = door_killed;
@@ -1079,11 +1085,8 @@ export function plat_spawn_inside_trigger(ent: GameEntity, runtime: GameRuntime)
 
   trigger.mins = mins;
   trigger.maxs = maxs;
-  trigger.size = [
-    trigger.maxs[0] - trigger.mins[0],
-    trigger.maxs[1] - trigger.mins[1],
-    trigger.maxs[2] - trigger.mins[2]
-  ];
+  refreshEntitySpatialState(trigger);
+  linkGameEntity(runtime, trigger);
 
   runtime.log({
     kind: "think",
@@ -1155,6 +1158,8 @@ export function SP_func_plat(ent: GameEntity, runtime: GameRuntime): void {
     ent.origin = [...ent.pos2];
     ent.moveinfo.state = STATE_BOTTOM;
   }
+  refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
 
   ent.moveinfo.speed = ent.speed;
   ent.moveinfo.accel = ent.accel;

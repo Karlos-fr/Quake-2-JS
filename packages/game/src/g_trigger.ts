@@ -27,6 +27,7 @@ import {
   freeGameEntity,
   getRuntimeEntityLabel
 } from "./runtime.js";
+import { G_TouchSolids } from "./touch.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
 /**
@@ -124,6 +125,7 @@ export function Touch_Multi(self: GameEntity, other: GameEntity, runtime: GameRu
 export function trigger_enable(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   self.solid = SOLID_TRIGGER;
   self.use = Use_Multi;
+  G_TouchSolids(runtime, self);
   runtime.log({
     kind: "use",
     message: `${getRuntimeEntityLabel(self)} enabled`,

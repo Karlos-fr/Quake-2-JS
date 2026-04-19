@@ -17,6 +17,7 @@
  */
 
 import {
+  AngleVectors,
   CONTENTS_SOLID,
   SURF_LIGHT,
   type cmodel_t,
@@ -164,6 +165,32 @@ export function CM_PointContents(world: CollisionWorld, point: vec3_t, headnode 
 }
 
 /**
+ * Original name: CM_TransformedPointContents
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns point contents for one translated or rotated BSP submodel.
+ */
+export function CM_TransformedPointContents(
+  world: CollisionWorld,
+  point: vec3_t,
+  headnode: number,
+  origin: vec3_t,
+  angles: vec3_t
+): number {
+  const localPoint = subtractVec3(point, origin);
+
+  if (headnode !== getBoxHeadnode(world) && hasRotation(angles)) {
+    rotateIntoModelFrame(localPoint, angles, localPoint);
+  }
+
+  const leafnum = CM_PointLeafnum_r(world, localPoint, headnode);
+  return world.map_leafs[leafnum]?.contents ?? CONTENTS_SOLID;
+}
+
+/**
  * Original name: CM_BoxTrace
  * Source: qcommon/cmodel.c
  * Category: Ported
@@ -237,6 +264,51 @@ export function CM_BoxTrace(
   }
 
   return work.trace;
+}
+
+/**
+ * Original name: CM_TransformedBoxTrace
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Sweeps an AABB against one translated or rotated BSP submodel.
+ */
+export function CM_TransformedBoxTrace(
+  world: CollisionWorld,
+  start: vec3_t,
+  end: vec3_t,
+  mins: vec3_t,
+  maxs: vec3_t,
+  headnode: number,
+  brushmask: number,
+  origin: vec3_t,
+  angles: vec3_t
+): trace_t {
+  const startLocal = subtractVec3(start, origin);
+  const endLocal = subtractVec3(end, origin);
+  const rotated = headnode !== getBoxHeadnode(world) && hasRotation(angles);
+
+  if (rotated) {
+    rotateIntoModelFrame(startLocal, angles, startLocal);
+    rotateIntoModelFrame(endLocal, angles, endLocal);
+  }
+
+  const trace = CM_BoxTrace(world, startLocal, endLocal, mins, maxs, headnode, brushmask);
+
+  if (rotated && trace.fraction !== 1.0) {
+    const inverseAngles = negateVec3(angles);
+    rotateOutOfModelFrame(trace.plane.normal, inverseAngles, trace.plane.normal);
+  }
+
+  trace.endpos = [
+    start[0] + trace.fraction * (end[0] - start[0]),
+    start[1] + trace.fraction * (end[1] - start[1]),
+    start[2] + trace.fraction * (end[2] - start[2])
+  ];
+
+  return trace;
 }
 
 /**
@@ -755,4 +827,67 @@ function distToPlaneCorner(mins: vec3_t, maxs: vec3_t, normal: vec3_t, dist: num
   }
 
   return DotProduct(corner, normal) - dist;
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve whether one model-space collision query must account for entity rotation.
+ */
+function hasRotation(angles: vec3_t): boolean {
+  return angles[0] !== 0 || angles[1] !== 0 || angles[2] !== 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the synthetic box-model headnode used by the original transformed trace fast path.
+ *
+ * Constraints:
+ * - Falls back to `-1` when the world does not expose a dedicated temporary box hull.
+ */
+function getBoxHeadnode(world: CollisionWorld): number {
+  return world.map_cmodels.length > 0 ? world.map_cmodels[0].headnode : -1;
+}
+
+/**
+ * Category: New
+ * Purpose: Rotate one point from world space into the local frame of a rotated BSP submodel.
+ */
+function rotateIntoModelFrame(input: vec3_t, angles: vec3_t, output: vec3_t): void {
+  const basis = AngleVectors(angles);
+  const temp: vec3_t = [input[0], input[1], input[2]];
+  output[0] = DotProduct(temp, basis.forward);
+  output[1] = -DotProduct(temp, basis.right);
+  output[2] = DotProduct(temp, basis.up);
+}
+
+/**
+ * Category: New
+ * Purpose: Rotate one plane normal back out of a BSP submodel local frame.
+ */
+function rotateOutOfModelFrame(input: vec3_t, inverseAngles: vec3_t, output: vec3_t): void {
+  const basis = AngleVectors(inverseAngles);
+  const temp: vec3_t = [input[0], input[1], input[2]];
+  output[0] = DotProduct(temp, basis.forward);
+  output[1] = -DotProduct(temp, basis.right);
+  output[2] = DotProduct(temp, basis.up);
+}
+
+/**
+ * Category: New
+ * Purpose: Subtract one vector from another without mutating the inputs.
+ */
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [
+    left[0] - right[0],
+    left[1] - right[1],
+    left[2] - right[2]
+  ];
+}
+
+/**
+ * Category: New
+ * Purpose: Negate one vector without mutating the source.
+ */
+function negateVec3(vector: vec3_t): vec3_t {
+  return [-vector[0], -vector[1], -vector[2]];
 }
