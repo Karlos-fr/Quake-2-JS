@@ -84,6 +84,7 @@ const CAMERA_MOUSE_SENSITIVITY = 0.0022;
 const DEFAULT_VIEWHEIGHT = 22;
 const DUCKED_VIEWHEIGHT = -2;
 const DEFAULT_SPAWN_LIFT = 24;
+const DEBUG_REFRESH_INTERVAL_MS = 100;
 const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
 const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
 const PLAYER_DUCKED_MAXS: vec3_t = [16, 16, 4];
@@ -238,6 +239,7 @@ export function createLocalClientController(
   let pointerLocked = false;
   let realtimeMs = 0;
   let nextCommandSequence = 1;
+  let nextDebugRefreshAtMs = 0;
   let ghostMode = true;
 
   const codeBindings: Record<string, MovementKey> = {
@@ -322,7 +324,9 @@ export function createLocalClientController(
     }
   });
 
-  let refreshFrame: ClientRefreshFrame | null = null;
+  let refreshFrame: ClientRefreshFrame | null = CL_BuildRefreshFrame(runtime, {
+    predictMovement: true
+  });
 
   return {
     runtime,
@@ -379,9 +383,14 @@ export function createLocalClientController(
       promotePredictedState(runtime, realtimeMs);
       updateGameplayRuntimePlayer(gameplayRuntime, gameplayPlayer, runtime);
       applyPredictedCamera(camera, runtime);
-      refreshFrame = CL_BuildRefreshFrame(runtime, {
-        predictMovement: true
-      });
+
+      if (realtimeMs >= nextDebugRefreshAtMs) {
+        refreshFrame = CL_BuildRefreshFrame(runtime, {
+          predictMovement: true
+        });
+        nextDebugRefreshAtMs = realtimeMs + DEBUG_REFRESH_INTERVAL_MS;
+      }
+
       nextCommandSequence += 1;
     }
   };

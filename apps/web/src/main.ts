@@ -496,6 +496,7 @@ function createShell(app: HTMLDivElement): {
   const runtimeLine = document.createElement("div");
   const errorLine = document.createElement("div");
   errorLine.style.color = "#f0b8a0";
+  let lastRuntimeText = "";
 
   fpsPanel.append(fpsTitle, fpsCanvas);
 
@@ -575,7 +576,7 @@ function createShell(app: HTMLDivElement): {
       ].join("\n");
     },
     setRuntimeInfo: (value) => {
-      runtimeLine.textContent = value
+      const nextRuntimeText = value
         ? [
             `Refresh: entites ${value.entities.length}`,
             `Beams: ${value.beams.length}`,
@@ -585,6 +586,13 @@ function createShell(app: HTMLDivElement): {
             `Lights: ${value.lights.length}`
           ].join("\n")
         : "Refresh: en attente";
+
+      if (nextRuntimeText === lastRuntimeText) {
+        return;
+      }
+
+      lastRuntimeText = nextRuntimeText;
+      runtimeLine.textContent = nextRuntimeText;
     }
   };
 }
