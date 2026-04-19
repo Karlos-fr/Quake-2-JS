@@ -1,0 +1,10 @@
+Quake 2
+Quake-2-master
+node_modules
+Quake 2.7z
+**/node_modules/
+**/.vite/
+.artifacts/
+**/.artifacts/
+dist/
+**/dist/

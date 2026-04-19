@@ -1,0 +1,47 @@
+{
+  "kind": "pak-summary",
+  "sourcePath": "Quake 2/baseq2/pak0.pak",
+  "entryCount": 3307,
+  "firstEntries": [
+    "amnet.cfg",
+    "bear.cfg",
+    "biggun.cfg",
+    "boss.cfg",
+    "bwh.cfg",
+    "city.cfg",
+    "default.cfg",
+    "demos/demo1.dm2",
+    "demos/demo2.dm2",
+    "env/space1bk.pcx",
+    "env/space1bk.tga",
+    "env/space1dn.pcx",
+    "env/space1dn.tga",
+    "env/space1ft.pcx",
+    "env/space1ft.tga",
+    "env/space1lf.pcx"
+  ],
+  "lastEntries": [
+    "textures/test/num_2.wal",
+    "textures/test/num_3.wal",
+    "textures/test/num_4.wal",
+    "textures/test/num_5.wal",
+    "textures/test/num_6.wal",
+    "textures/test/num_7.wal",
+    "textures/test/num_8.wal",
+    "textures/test/num_9.wal",
+    "textures/test/num_colon.wal",
+    "textures/test/num_minus.wal",
+    "textures/test/num_space.wal",
+    "thresh.cfg",
+    "tim.cfg",
+    "todd.cfg",
+    "warehouse.cfg",
+    "xian.cfg"
+  ],
+  "sentinelEntries": {
+    "pics/colormap.pcx": 96927,
+    "maps/e1m1.bsp": -1,
+    "models/players/male/tris.md2": -1,
+    "sound/player/jump1.wav": 15288
+  }
+}
