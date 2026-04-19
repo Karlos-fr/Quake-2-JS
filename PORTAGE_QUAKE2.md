@@ -118,20 +118,20 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | game\g_chase.c | g_chase.c |  |  |  | |
 | game\g_cmds.c | g_cmds.c |  |  |  | |
 | game\g_combat.c | g_combat.c |  |  |  | |
-| game\g_func.c | g_func.c |  |  |  | |
+| game\g_func.c | g_func.c | First brush-entity lifecycle port for `func_door`, `func_door_rotating` and `func_plat`, including `Move_*`, `AngleMove_*`, accelerated platform motion, top/bottom transitions and helper trigger spawning. | 🟠 | 🟠 | packages/game/src/g_func.ts, packages/game/src/g_spawn.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-door-phase4.ts, scripts/verify/quake2-door-phase5.ts |
 | game\g_items.c | g_items.c |  |  |  | |
 | game\g_local.h | g_local.h | Shared gameplay declarations, enums, structs and function prototypes for the base game module. | 🟡 | ⬜ | generated/ts-stubs/game/g_local.ts |
 | game\g_main.c | g_main.c |  |  |  | |
 | game\g_misc.c | g_misc.c |  |  |  | |
 | game\g_monster.c | g_monster.c |  |  |  | |
-| game\g_phys.c | g_phys.c |  |  |  | |
+| game\g_phys.c | g_phys.c | First gameplay physics frame port for `SV_RunThink`, `SV_Push`, `SV_Physics_Pusher` and `G_RunEntity`, sufficient to advance moving brush models frame by frame in the local runtime. | 🟠 | 🟠 | packages/game/src/g_phys.ts, packages/game/src/index.ts, apps/web/src/local-client-controller.ts, scripts/verify/quake2-door-phase3.ts, scripts/verify/quake2-door-phase5.ts |
 | game\g_save.c | g_save.c |  |  |  | |
-| game\g_spawn.c | g_spawn.c |  |  |  | |
+| game\g_spawn.c | g_spawn.c | First spawn registry port for the currently supported brush/trigger subset, including `ED_CallSpawn`, `G_FindTeams` and BSP-order team linking for grouped doors. | 🟠 | 🟠 | packages/game/src/g_spawn.ts, packages/game/src/index.ts, scripts/verify/quake2-door-phase6.ts |
 | game\g_svcmds.c | g_svcmds.c |  |  |  | |
 | game\g_target.c | g_target.c |  |  |  | |
-| game\g_trigger.c | g_trigger.c |  |  |  | |
+| game\g_trigger.c | g_trigger.c | First trigger port for `trigger_once`, `trigger_multiple`, `trigger_relay` and their activation flow (`Touch_Multi`, `Use_Multi`, `multi_trigger`). | 🟠 | 🟠 | packages/game/src/g_trigger.ts, packages/game/src/g_spawn.ts, scripts/verify/quake2-door-phase1.ts |
 | game\g_turret.c | g_turret.c |  |  |  | |
-| game\g_utils.c | g_utils.c |  |  |  | |
+| game\g_utils.c | g_utils.c | First gameplay utility port for entity lookup and `G_UseTargets`, including delay and `killtarget` resolution over BSP-spawned runtime entities. | 🟠 | 🟠 | packages/game/src/g_utils.ts, packages/game/src/runtime.ts, scripts/verify/quake2-door-phase1.ts |
 | game\g_weapon.c | g_weapon.c |  |  |  | |
 | game\game.001 | game.001 |  |  |  | |
 | game\game.def | game.def |  |  |  | |

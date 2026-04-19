@@ -37,6 +37,7 @@ import {
   buildEntityPreviewGroup,
   buildMd2Mesh,
   buildThreeBspGroup,
+  createThreeBrushModelSync,
   createQuakeHudResourceResolver,
   createQuakeTextureResolver,
   createThreeHudLayer,
@@ -100,8 +101,10 @@ async function bootstrap(): Promise<void> {
     const hudResourceResolver = createQuakeHudResourceResolver(filesystem);
     const hudLayer = createThreeHudLayer(hudResourceResolver);
     const group = buildThreeBspGroup(surfaces, {
-      resolveTexture: textureResolver.resolveTexture
+      resolveTexture: textureResolver.resolveTexture,
+      resolveModelOrigin: (modelIndex) => getInlineModelRenderOrigin(map, modelIndex)
     });
+    const brushModelSync = createThreeBrushModelSync(group);
     const entityPreview = buildEntityPreviewGroup(filesystem, map.parsedEntities);
     group.add(entityPreview.group);
 
@@ -145,6 +148,7 @@ async function bootstrap(): Promise<void> {
       previousFrameAt = now;
 
       cameraController.update(deltaSeconds);
+      brushModelSync.apply(cameraController.getBrushModelSnapshots());
       refreshDebug.update(cameraController.refreshFrame);
       ui.setRuntimeInfo(cameraController.refreshFrame);
       updateEntityPreviewGroup(entityPreview, elapsedSeconds);
@@ -300,6 +304,45 @@ function createCamera(): PerspectiveCamera {
   const camera = new PerspectiveCamera(75, 1, 4, 20000);
   camera.up.set(0, 0, 1);
   return camera;
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the compiled render origin used for one BSP inline model group.
+ *
+ * Constraints:
+ * - Must match the entity `origin` field when present.
+ * - Must fall back to the BSP model origin for safety.
+ */
+function getInlineModelRenderOrigin(map: ReturnType<typeof parseBsp>, modelIndex: number): [number, number, number] {
+  if (modelIndex <= 0) {
+    return [0, 0, 0];
+  }
+
+  const modelName = `*${modelIndex}`;
+  const entity = map.parsedEntities.find((candidate) => candidate.properties.model === modelName);
+  if (entity?.properties.origin) {
+    const origin = parseEntityOrigin(entity.properties.origin);
+    if (origin) {
+      return origin;
+    }
+  }
+
+  const model = map.models[modelIndex];
+  return model ? [...model.origin] : [0, 0, 0];
+}
+
+/**
+ * Category: New
+ * Purpose: Parse one Quake-style entity origin string into a numeric tuple.
+ */
+function parseEntityOrigin(value: string): [number, number, number] | null {
+  const parts = value.trim().split(/\s+/).map((part) => Number.parseFloat(part));
+  if (parts.length !== 3 || parts.some((part) => !Number.isFinite(part))) {
+    return null;
+  }
+
+  return [parts[0], parts[1], parts[2]];
 }
 
 /**

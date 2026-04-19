@@ -10,13 +10,15 @@
  */
 
 export { buildThreeBspGroup } from "./bsp-group-builder.js";
+export { createThreeBrushModelSync } from "./brush-model-sync.js";
 export { createQuakeTextureResolver } from "./quake-texture-resolver.js";
 export { applyMd2Frame, buildMd2Mesh, loadMd2Model } from "./md2-mesh-builder.js";
 export { buildEntityPreviewGroup, updateEntityPreviewGroup } from "./entity-preview-builder.js";
 export { createThreeHudLayer } from "./hud-renderer.js";
 export { createQuakeHudResourceResolver } from "./hud-resource-resolver.js";
 
-export type { BspTextureResolver, ThreeBspBuildOptions } from "./bsp-group-builder.js";
+export type { BrushModelSnapshot, ThreeBrushModelSync } from "./brush-model-sync.js";
+export type { BspModelOriginResolver, BspTextureResolver, ThreeBspBuildOptions } from "./bsp-group-builder.js";
 export type { EntityPreviewGroup } from "./entity-preview-builder.js";
 export type { ThreeHudLayer } from "./hud-renderer.js";
 export type { HudTextTexture, QuakeHudResourceResolver } from "./hud-resource-resolver.js";

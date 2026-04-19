@@ -32,6 +32,16 @@ import {
   type ClientRuntime
 } from "../../../packages/client/src/index.js";
 import {
+  createGameRuntimeFromBspMap,
+  initializeDoorPlanEntities,
+  runGameFrames,
+  spawnGameEntity,
+  touchTriggerEntities,
+  type GameEntity,
+  type GameRuntime
+} from "../../../packages/game/src/index.js";
+import type { BrushModelSnapshot } from "../../../packages/renderer-three/src/index.js";
+import {
   AngleVectors,
   CM_BoxTrace,
   CM_PointContents,
@@ -71,7 +81,8 @@ import type { BspSpawnPoint, BspMap } from "../../../packages/formats/src/index.
 const CAMERA_MOUSE_SENSITIVITY = 0.0022;
 const DEFAULT_VIEWHEIGHT = 22;
 const DEFAULT_SPAWN_LIFT = 24;
-const PLAYER_ORIGIN_TO_FLOOR = 24;
+const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
+const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
 const LOCAL_SINGLE_STATUSBAR =
   "yb -24 "
   + "xv 0 "
@@ -129,8 +140,10 @@ type MovementKey = "forward" | "backward" | "left" | "right" | "up" | "down";
  */
 export interface LocalClientController {
   runtime: ClientRuntime;
+  gameplayRuntime: GameRuntime;
   refreshFrame: ClientRefreshFrame | null;
   screenState: ClientScreenHudState;
+  getBrushModelSnapshots: () => BrushModelSnapshot[];
   update: (deltaSeconds: number) => void;
 }
 
@@ -158,6 +171,9 @@ export function createLocalClientController(
 
   const collisionWorld = createCollisionWorld(map);
   const collision = createLocalCollisionAdapter(collisionWorld, map);
+  const gameplayRuntime = createGameRuntimeFromBspMap(map);
+  initializeDoorPlanEntities(gameplayRuntime);
+  const gameplayPlayer = createLocalGameplayPlayer(gameplayRuntime);
 
   const spawnOrigin: vec3_t = spawn
     ? [spawn.origin[0], spawn.origin[1], spawn.origin[2] + DEFAULT_SPAWN_LIFT]
@@ -286,6 +302,7 @@ export function createLocalClientController(
 
   return {
     runtime,
+    gameplayRuntime,
     get refreshFrame() {
       return refreshFrame;
     },
@@ -297,6 +314,7 @@ export function createLocalClientController(
         commandBackup: 64
       });
     },
+    getBrushModelSnapshots: () => buildBrushModelSnapshots(gameplayRuntime),
     update: (deltaSeconds) => {
       realtimeMs += deltaSeconds * 1000;
       runtime.cls.realtime = realtimeMs;
@@ -326,6 +344,7 @@ export function createLocalClientController(
       });
 
       promotePredictedState(runtime, realtimeMs);
+      updateGameplayRuntime(gameplayRuntime, gameplayPlayer, runtime, realtimeMs);
       applyPredictedCamera(camera, runtime);
       refreshFrame = CL_BuildRefreshFrame(runtime, {
         predictMovement: true
@@ -333,6 +352,49 @@ export function createLocalClientController(
       nextCommandSequence += 1;
     }
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Create the local gameplay actor used to touch Quake II trigger volumes during the browser demo.
+ *
+ * Constraints:
+ * - Must preserve the original player trigger hull dimensions.
+ */
+function createLocalGameplayPlayer(runtime: GameRuntime): GameEntity {
+  const player = spawnGameEntity(runtime);
+  player.classname = "player";
+  player.client = true;
+  player.health = 100;
+  player.mins = [...PLAYER_TRIGGER_MINS];
+  player.maxs = [...PLAYER_TRIGGER_MAXS];
+  player.size = [
+    player.maxs[0] - player.mins[0],
+    player.maxs[1] - player.mins[1],
+    player.maxs[2] - player.mins[2]
+  ];
+  return player;
+}
+
+/**
+ * Category: New
+ * Purpose: Advance the local gameplay trigger runtime so presence-based map triggers can fire in the web demo.
+ *
+ * Constraints:
+ * - Must run scheduled `think` callbacks before and after touch dispatch.
+ * - Must keep the local player origin aligned with predicted movement.
+ */
+function updateGameplayRuntime(
+  gameplayRuntime: GameRuntime,
+  gameplayPlayer: GameEntity,
+  runtime: ClientRuntime,
+  realtimeMs: number
+): void {
+  const timeSeconds = realtimeMs / 1000;
+  runGameFrames(gameplayRuntime, timeSeconds, () => {
+    gameplayPlayer.origin = [...runtime.cl.predicted_origin];
+    touchTriggerEntities(gameplayRuntime, gameplayPlayer);
+  });
 }
 
 /**
@@ -570,6 +632,7 @@ function toggleLayoutBit(runtime: ClientRuntime, bitMask: number): void {
  *
  * Constraints:
  * - Must preserve the shared Z-up world convention.
+ * - Must use the eye origin already produced by `CL_CalcViewValues`.
  */
 function applyPredictedCamera(camera: PerspectiveCamera, runtime: ClientRuntime): void {
   CL_UpdateLerpFraction(runtime, { timedemo: false });
@@ -577,7 +640,7 @@ function applyPredictedCamera(camera: PerspectiveCamera, runtime: ClientRuntime)
   const eye = new Vector3(
     view.vieworg[0],
     view.vieworg[1],
-    view.vieworg[2] + PLAYER_ORIGIN_TO_FLOOR
+    view.vieworg[2]
   );
   const vectors = AngleVectors(view.viewangles);
   const forward = new Vector3(vectors.forward[0], vectors.forward[1], vectors.forward[2]);
@@ -686,4 +749,29 @@ function cloneUsercmd(cmd: ClientRuntime["cl"]["cmd"]): ClientRuntime["cl"]["cmd
     impulse: cmd.impulse,
     lightlevel: cmd.lightlevel
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Extract the current inline brush model transforms from the local gameplay runtime.
+ *
+ * Constraints:
+ * - Must only include active entities backed by BSP inline models.
+ */
+function buildBrushModelSnapshots(runtime: GameRuntime): BrushModelSnapshot[] {
+  const snapshots: BrushModelSnapshot[] = [];
+
+  for (const entity of runtime.entities) {
+    if (!entity.inuse || !entity.model?.startsWith("*")) {
+      continue;
+    }
+
+    snapshots.push({
+      model: entity.model,
+      origin: [...entity.origin],
+      angles: [...entity.angles]
+    });
+  }
+
+  return snapshots;
 }

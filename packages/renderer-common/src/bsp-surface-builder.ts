@@ -23,6 +23,7 @@ import { SURF_NODRAW, SURF_SKY } from "../../qcommon/src/q-shared.js";
  */
 export interface BspSurface {
   faceIndex: number;
+  modelIndex: number;
   textureName: string;
   texinfoIndex: number;
   flags: number;
@@ -53,6 +54,7 @@ export interface BspSurfaceBuildOptions {
  */
 export function buildBspSurfaces(map: BspMap, options: BspSurfaceBuildOptions = {}): BspSurface[] {
   const surfaces: BspSurface[] = [];
+  const faceModelIndices = buildFaceModelIndices(map);
 
   for (let faceIndex = 0; faceIndex < map.faces.length; faceIndex += 1) {
     const face = map.faces[faceIndex];
@@ -70,7 +72,7 @@ export function buildBspSurfaces(map: BspMap, options: BspSurfaceBuildOptions = 
       continue;
     }
 
-    surfaces.push(createSurface(faceIndex, face, texinfo, polygon));
+    surfaces.push(createSurface(faceIndex, faceModelIndices[faceIndex] ?? 0, face, texinfo, polygon));
   }
 
   return surfaces;
@@ -133,6 +135,7 @@ function buildFacePolygon(map: BspMap, face: dface_t): Array<[number, number, nu
  */
 function createSurface(
   faceIndex: number,
+  modelIndex: number,
   face: dface_t,
   texinfo: texinfo_t,
   polygon: Array<[number, number, number]>
@@ -165,6 +168,7 @@ function createSurface(
 
   return {
     faceIndex,
+    modelIndex,
     textureName: texinfo.texture,
     texinfoIndex: face.texinfo,
     flags: texinfo.flags,
@@ -172,6 +176,28 @@ function createSurface(
     texcoords,
     indices
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve each BSP face to the model index that owns it.
+ *
+ * Constraints:
+ * - Must preserve Quake II `dmodel_t.firstface/numfaces` ownership.
+ */
+function buildFaceModelIndices(map: BspMap): number[] {
+  const faceModelIndices = new Array<number>(map.faces.length).fill(0);
+
+  for (let modelIndex = 0; modelIndex < map.models.length; modelIndex += 1) {
+    const model = map.models[modelIndex];
+    const endFace = model.firstface + model.numfaces;
+
+    for (let faceIndex = model.firstface; faceIndex < endFace && faceIndex < faceModelIndices.length; faceIndex += 1) {
+      faceModelIndices[faceIndex] = modelIndex;
+    }
+  }
+
+  return faceModelIndices;
 }
 
 /**

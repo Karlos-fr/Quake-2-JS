@@ -43,70 +43,70 @@ Le systeme proche du spawn / ascenseur repose sur une combinaison de :
 
 But : permettre aux entites de retrouver et activer leurs cibles comme dans le code original.
 
-- Porter `G_Find` depuis `game/g_utils.c`.
-- Porter `G_UseTargets` depuis `game/g_utils.c`.
-- Porter la gestion du `delay`, `killtarget`, `target`, `targetname`.
-- Verifier que les entites de `base1` resolvent correctement des chaines comme `t4`, `t37`, `t70`, `t75`.
-- Ajouter un harnais de verification qui journalise les activations sans rendu.
+- [x] Porter `G_Find` depuis `game/g_utils.c`.
+- [x] Porter `G_UseTargets` depuis `game/g_utils.c`.
+- [x] Porter la gestion du `delay`, `killtarget`, `target`, `targetname`.
+- [x] Verifier que les entites de `base1` resolvent correctement des chaines comme `t4`, `t37`, `t70`, `t75`.
+- [x] Ajouter un harnais de verification qui journalise les activations sans rendu.
 
 ## Phase 2 - Triggers
 
 But : permettre l'activation correcte des actions map par contact et relai.
 
-- Porter `SP_trigger_multiple`.
-- Porter `SP_trigger_once`.
-- Porter `SP_trigger_relay`.
-- Porter `Touch_Multi`, `Use_Multi`, `multi_trigger`.
-- Porter `trigger_relay_use`.
-- Rebrancher ces spawners dans le registre d'entites porte.
-- Verifier qu'un joueur local peut declencher un trigger volume par presence.
+- [x] Porter `SP_trigger_multiple`.
+- [x] Porter `SP_trigger_once`.
+- [x] Porter `SP_trigger_relay`.
+- [x] Porter `Touch_Multi`, `Use_Multi`, `multi_trigger`.
+- [x] Porter `trigger_relay_use`.
+- [x] Rebrancher ces spawners dans le registre d'entites porte.
+- [x] Verifier qu'un joueur local peut declencher un trigger volume par presence.
 
 ## Phase 3 - Portes
 
 But : reproduire le cycle de vie complet d'une porte Quake II.
 
-- Porter `SP_func_door`.
-- Porter `SP_func_door_rotating`.
-- Porter `door_use`.
-- Porter `door_go_up`.
-- Porter `door_hit_top`.
-- Porter `door_go_down`.
-- Porter `door_hit_bottom`.
-- Porter `Touch_DoorTrigger`.
-- Porter `Think_SpawnDoorTrigger`.
-- Porter `Think_CalcMoveSpeed`.
-- Porter `door_blocked`.
-- Porter `door_killed` si necessaire pour fidelite gameplay.
-- Porter `door_touch` pour les messages de porte verrouillee / ciblee.
+- [x] Porter `SP_func_door`.
+- [x] Porter `SP_func_door_rotating`.
+- [x] Porter `door_use`.
+- [x] Porter `door_go_up`.
+- [x] Porter `door_hit_top`.
+- [x] Porter `door_go_down`.
+- [x] Porter `door_hit_bottom`.
+- [x] Porter `Touch_DoorTrigger`.
+- [x] Porter `Think_SpawnDoorTrigger`.
+- [x] Porter `Think_CalcMoveSpeed`.
+- [x] Porter `door_blocked`.
+- [x] Porter `door_killed` si necessaire pour fidelite gameplay.
+- [x] Porter `door_touch` pour les messages de porte verrouillee / ciblee.
 
 ## Phase 4 - Plateformes et ascenseurs
 
 But : supporter les plateformes type ascenseur, y compris celles activees par presence.
 
-- Porter `SP_func_plat`.
-- Porter `Use_Plat`.
-- Porter `Touch_Plat_Center`.
-- Porter `plat_spawn_inside_trigger`.
-- Porter `plat_go_up`.
-- Porter `plat_go_down`.
-- Porter `plat_hit_top`.
-- Porter `plat_hit_bottom`.
-- Porter `plat_blocked`.
+- [x] Porter `SP_func_plat`.
+- [x] Porter `Use_Plat`.
+- [x] Porter `Touch_Plat_Center`.
+- [x] Porter `plat_spawn_inside_trigger`.
+- [x] Porter `plat_go_up`.
+- [x] Porter `plat_go_down`.
+- [x] Porter `plat_hit_top`.
+- [x] Porter `plat_hit_bottom`.
+- [x] Porter `plat_blocked`.
 
 ## Phase 5 - Mouvement des brush models
 
 But : rendre effectifs les mouvements des portes et plateformes au runtime.
 
-- Porter `Move_Calc`.
-- Porter `Move_Begin`.
-- Porter `Move_Final`.
-- Porter `Move_Done`.
-- Porter `Think_AccelMove`.
-- Porter `SV_RunThink`.
-- Porter `SV_Push`.
-- Porter `SV_Physics_Pusher`.
-- Porter `G_RunEntity`.
-- Rebrancher ce pipeline dans la boucle de frame.
+- [x] Porter `Move_Calc`.
+- [x] Porter `Move_Begin`.
+- [x] Porter `Move_Final`.
+- [x] Porter `Move_Done`.
+- [x] Porter `Think_AccelMove`.
+- [x] Porter `SV_RunThink`.
+- [x] Porter `SV_Push`.
+- [x] Porter `SV_Physics_Pusher`.
+- [x] Porter `G_RunEntity`.
+- [x] Rebrancher ce pipeline dans la boucle de frame.
 
 Sans cette phase, une porte peut etre correctement activee mais ne jamais bouger.
 
@@ -114,20 +114,20 @@ Sans cette phase, une porte peut etre correctement activee mais ne jamais bouger
 
 But : garantir que les entites map sont instanciees avec les bonnes liaisons.
 
-- Verifier le mapping des classnames dans `g_spawn.c`.
-- Porter ou completer `G_FindTeams`.
-- Supporter les groupes `team` pour les portes doubles ou synchronisees.
-- Verifier le spawn des brush entities `model "*N"` de `base1`.
+- [x] Verifier le mapping des classnames dans `g_spawn.c`.
+- [x] Porter ou completer `G_FindTeams`.
+- [x] Supporter les groupes `team` pour les portes doubles ou synchronisees.
+- [x] Verifier le spawn des brush entities `model "*N"` de `base1`.
 
 ## Phase 7 - Integration locale web
 
 But : brancher ces comportements a la boucle locale actuelle sans attendre tout le serveur reseau.
 
-- Ajouter une boucle gameplay locale minimale appelee a chaque frame.
-- Y injecter le joueur local comme activator pour les triggers tactiles.
-- Recalculer les brush entities mobiles apres mouvement.
-- Synchroniser les transformations mobiles avec le rendu BSP / scene.
-- Garder cette couche comme `Adapter` clairement separee du port gameplay.
+- [x] Ajouter une boucle gameplay locale minimale appelee a chaque frame.
+- [x] Y injecter le joueur local comme activator pour les triggers tactiles.
+- [x] Recalculer les brush entities mobiles apres mouvement.
+- [x] Synchroniser les transformations mobiles avec le rendu BSP / scene.
+- [x] Garder cette couche comme `Adapter` clairement separee du port gameplay.
 
 ## Phase 8 - Verification ciblee
 

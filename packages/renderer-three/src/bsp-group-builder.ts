@@ -21,6 +21,8 @@ import {
 } from "three";
 import type { BspSurface } from "../../renderer-common/src/index.js";
 
+export type BspModelOriginResolver = (modelIndex: number) => [number, number, number];
+
 /**
  * Category: New
  * Purpose: Resolve a Quake II texture name into a Three.js texture.
@@ -39,6 +41,7 @@ export type BspTextureResolver = (textureName: string) => Texture | null;
  */
 export interface ThreeBspBuildOptions {
   resolveTexture?: BspTextureResolver;
+  resolveModelOrigin?: BspModelOriginResolver;
 }
 
 /**
@@ -51,17 +54,51 @@ export interface ThreeBspBuildOptions {
  */
 export function buildThreeBspGroup(surfaces: BspSurface[], options: ThreeBspBuildOptions = {}): Group {
   const group = new Group();
-  const grouped = groupSurfacesByTexture(surfaces);
+  const groupedByModel = groupSurfacesByModel(surfaces);
 
-  for (const [textureName, textureSurfaces] of grouped) {
-    const geometry = buildMergedSurfaceGeometry(textureSurfaces);
-    const material = createSurfaceMaterial(textureName, options.resolveTexture);
-    const mesh = new Mesh(geometry, material);
-    mesh.name = `bsp:${textureName}`;
-    group.add(mesh);
+  for (const [modelIndex, modelSurfaces] of groupedByModel) {
+    const modelGroup = new Group();
+    const modelOrigin = options.resolveModelOrigin?.(modelIndex) ?? [0, 0, 0];
+    modelGroup.name = `bsp-model:${modelIndex}`;
+    modelGroup.userData.modelIndex = modelIndex;
+    modelGroup.position.set(modelOrigin[0], modelOrigin[1], modelOrigin[2]);
+
+    const groupedByTexture = groupSurfacesByTexture(modelSurfaces);
+    for (const [textureName, textureSurfaces] of groupedByTexture) {
+      const geometry = buildMergedSurfaceGeometry(textureSurfaces, modelOrigin);
+      const material = createSurfaceMaterial(textureName, options.resolveTexture);
+      const mesh = new Mesh(geometry, material);
+      mesh.name = `bsp:${modelIndex}:${textureName}`;
+      modelGroup.add(mesh);
+    }
+
+    group.add(modelGroup);
   }
 
   return group;
+}
+
+/**
+ * Category: New
+ * Purpose: Group BSP surfaces by the model index that owns each face.
+ *
+ * Constraints:
+ * - Must preserve source order inside each model bucket.
+ */
+function groupSurfacesByModel(surfaces: BspSurface[]): Map<number, BspSurface[]> {
+  const grouped = new Map<number, BspSurface[]>();
+
+  for (const surface of surfaces) {
+    const bucket = grouped.get(surface.modelIndex);
+    if (bucket) {
+      bucket.push(surface);
+      continue;
+    }
+
+    grouped.set(surface.modelIndex, [surface]);
+  }
+
+  return grouped;
 }
 
 /**
@@ -94,7 +131,7 @@ function groupSurfacesByTexture(surfaces: BspSurface[]): Map<string, BspSurface[
  * Constraints:
  * - Must preserve triangle winding from renderer-common indices.
  */
-function buildMergedSurfaceGeometry(surfaces: BspSurface[]): BufferGeometry {
+function buildMergedSurfaceGeometry(surfaces: BspSurface[], modelOrigin: [number, number, number]): BufferGeometry {
   let totalVertexCount = 0;
   let totalIndexCount = 0;
 
@@ -113,7 +150,7 @@ function buildMergedSurfaceGeometry(surfaces: BspSurface[]): BufferGeometry {
   let baseVertex = 0;
 
   for (const surface of surfaces) {
-    positions.set(surface.positions, vertexOffset);
+    copySurfacePositionsRelativeToModel(positions, vertexOffset, surface.positions, modelOrigin);
     uvs.set(surface.texcoords, uvOffset);
 
     for (let localIndex = 0; localIndex < surface.indices.length; localIndex += 1) {
@@ -132,6 +169,23 @@ function buildMergedSurfaceGeometry(surfaces: BspSurface[]): BufferGeometry {
   geometry.setIndex(new BufferAttribute(indices, 1));
   geometry.computeVertexNormals();
   return geometry;
+}
+
+/**
+ * Category: New
+ * Purpose: Copy BSP surface positions into one merged buffer relative to the owning model origin.
+ */
+function copySurfacePositionsRelativeToModel(
+  target: Float32Array,
+  targetOffset: number,
+  source: Float32Array,
+  modelOrigin: [number, number, number]
+): void {
+  for (let sourceOffset = 0; sourceOffset < source.length; sourceOffset += 3) {
+    target[targetOffset + sourceOffset] = source[sourceOffset] - modelOrigin[0];
+    target[targetOffset + sourceOffset + 1] = source[sourceOffset + 1] - modelOrigin[1];
+    target[targetOffset + sourceOffset + 2] = source[sourceOffset + 2] - modelOrigin[2];
+  }
 }
 
 /**

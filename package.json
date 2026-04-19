@@ -15,7 +15,14 @@
     "generate:ts-stubs": "node ./tools/stub-generator/generate-ts-stubs.mjs",
     "map:c-to-ts": "node ./tools/c-analyzer/build-source-module-map.mjs",
     "golden:pak0:write": "npx tsx ./scripts/verify/golden-pak-summary.mjs --write",
-    "golden:pak0": "npx tsx ./scripts/verify/golden-pak-summary.mjs"
+    "golden:pak0": "npx tsx ./scripts/verify/golden-pak-summary.mjs",
+    "verify:doors:phase1": "npx tsx ./scripts/verify/quake2-door-phase1.ts",
+    "verify:doors:phase2": "npx tsx ./scripts/verify/quake2-door-phase2.ts",
+    "verify:doors:phase3": "npx tsx ./scripts/verify/quake2-door-phase3.ts",
+    "verify:doors:phase4": "npx tsx ./scripts/verify/quake2-door-phase4.ts",
+    "verify:doors:phase5": "npx tsx ./scripts/verify/quake2-door-phase5.ts",
+    "verify:doors:phase6": "npx tsx ./scripts/verify/quake2-door-phase6.ts",
+    "verify:doors:phase7": "npx tsx ./scripts/verify/quake2-door-phase7.ts"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
