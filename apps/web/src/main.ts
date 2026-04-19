@@ -162,6 +162,7 @@ async function bootstrap(): Promise<void> {
       const deltaSeconds = Math.min(0.05, (now - previousFrameAt) / 1000);
       previousFrameAt = now;
 
+      ui.setPerformance(now);
       cameraController.update(deltaSeconds);
       brushModelSync.apply(cameraController.getBrushModelSnapshots());
       refreshDebug.update(cameraController.refreshFrame);
@@ -388,6 +389,7 @@ function createShell(app: HTMLDivElement): {
   attachViewport: (canvas: HTMLCanvasElement) => void;
   bindGhostToggle: (options: { initialValue: boolean; onToggle: (enabled: boolean) => void }) => void;
   bindMapSelector: (options: { maps: string[]; currentValue: string; onChange: (value: string) => void }) => void;
+  setPerformance: (frameAtMilliseconds: number) => void;
   setRenderer: (value: string) => void;
   setStatus: (value: string) => void;
   setError: (value: string) => void;
@@ -463,6 +465,31 @@ function createShell(app: HTMLDivElement): {
   mapSelect.style.userSelect = "none";
   mapSelect.style.maxWidth = "180px";
 
+  const fpsPanel = document.createElement("div");
+  fpsPanel.style.position = "absolute";
+  fpsPanel.style.right = "16px";
+  fpsPanel.style.bottom = "16px";
+  fpsPanel.style.width = "232px";
+  fpsPanel.style.padding = "8px 10px 10px";
+  fpsPanel.style.background = "rgba(14, 10, 8, 0.20)";
+  fpsPanel.style.border = "1px solid rgba(210, 196, 177, 0.16)";
+  fpsPanel.style.color = "#d4c4b1";
+  fpsPanel.style.fontFamily = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
+  fpsPanel.style.fontSize = "11px";
+  fpsPanel.style.lineHeight = "1.35";
+  fpsPanel.style.pointerEvents = "none";
+
+  const fpsTitle = document.createElement("div");
+  fpsTitle.style.marginBottom = "6px";
+  fpsTitle.textContent = "FPS";
+
+  const fpsCanvas = document.createElement("canvas");
+  fpsCanvas.width = 212;
+  fpsCanvas.height = 64;
+  fpsCanvas.style.display = "block";
+  fpsCanvas.style.width = "212px";
+  fpsCanvas.style.height = "64px";
+
   const rendererLine = document.createElement("div");
   const statusLine = document.createElement("div");
   const infoLine = document.createElement("div");
@@ -470,11 +497,15 @@ function createShell(app: HTMLDivElement): {
   const errorLine = document.createElement("div");
   errorLine.style.color = "#f0b8a0";
 
+  fpsPanel.append(fpsTitle, fpsCanvas);
+
   overlay.append(rendererLine, statusLine, infoLine, runtimeLine, errorLine);
-  viewport.append(overlay, mapSelect, ghostButton);
+  viewport.append(overlay, fpsPanel, mapSelect, ghostButton);
 
   root.append(viewport);
   app.append(root);
+
+  const fpsTracker = createFpsTracker(fpsCanvas, fpsTitle);
 
   return {
     viewport,
@@ -521,6 +552,9 @@ function createShell(app: HTMLDivElement): {
         onChange(mapSelect.value);
       });
     },
+    setPerformance: (frameAtMilliseconds) => {
+      fpsTracker.pushFrame(frameAtMilliseconds);
+    },
     setRenderer: (value) => {
       rendererLine.textContent = `Renderer: ${value}`;
     },
@@ -551,6 +585,106 @@ function createShell(app: HTMLDivElement): {
             `Lights: ${value.lights.length}`
           ].join("\n")
         : "Refresh: en attente";
+    }
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Track frame times and render a 60-second sliding FPS history in a compact canvas panel.
+ *
+ * Constraints:
+ * - Must keep only the last 60 seconds of samples.
+ * - Must stay lightweight enough to update every rendered frame.
+ */
+function createFpsTracker(
+  canvas: HTMLCanvasElement,
+  title: HTMLDivElement
+): {
+  pushFrame: (frameAtMilliseconds: number) => void;
+} {
+  const context = canvas.getContext("2d");
+  if (!context) {
+    return {
+      pushFrame: () => {
+        title.textContent = "FPS indisponible";
+      }
+    };
+  }
+
+  const windowMilliseconds = 60_000;
+  const samples: Array<{ time: number; fps: number }> = [];
+  let previousFrameAtMilliseconds = 0;
+
+  /**
+   * Category: New
+   * Purpose: Paint the current FPS history as a green line over the trailing 60-second window.
+   *
+   * Constraints:
+   * - Must tolerate sparse samples during startup.
+   */
+  const draw = (): void => {
+    const width = canvas.width;
+    const height = canvas.height;
+    context.clearRect(0, 0, width, height);
+
+    context.fillStyle = "rgba(0, 0, 0, 0)";
+    context.fillRect(0, 0, width, height);
+
+    context.strokeStyle = "rgba(210, 196, 177, 0.10)";
+    context.lineWidth = 1;
+    context.beginPath();
+    context.moveTo(0, height - 0.5);
+    context.lineTo(width, height - 0.5);
+    context.moveTo(0, Math.round(height * 0.5) + 0.5);
+    context.lineTo(width, Math.round(height * 0.5) + 0.5);
+    context.stroke();
+
+    if (samples.length === 0) {
+      title.textContent = "FPS --";
+      return;
+    }
+
+    const currentSample = samples[samples.length - 1];
+    const maxFps = Math.max(60, ...samples.map((sample) => sample.fps));
+    title.textContent = `FPS ${Math.round(currentSample.fps)}`;
+
+    context.strokeStyle = "#5fd46f";
+    context.lineWidth = 1.5;
+    context.beginPath();
+
+    for (let index = 0; index < samples.length; index += 1) {
+      const sample = samples[index];
+      const ageMilliseconds = currentSample.time - sample.time;
+      const x = width - (ageMilliseconds / windowMilliseconds) * width;
+      const normalized = Math.min(sample.fps / maxFps, 1);
+      const y = height - normalized * (height - 6) - 3;
+
+      if (index === 0) {
+        context.moveTo(x, y);
+      } else {
+        context.lineTo(x, y);
+      }
+    }
+
+    context.stroke();
+  };
+
+  return {
+    pushFrame: (frameAtMilliseconds) => {
+      if (previousFrameAtMilliseconds > 0) {
+        const frameDeltaMilliseconds = Math.max(1, frameAtMilliseconds - previousFrameAtMilliseconds);
+        const fps = 1000 / frameDeltaMilliseconds;
+        samples.push({ time: frameAtMilliseconds, fps });
+      }
+
+      previousFrameAtMilliseconds = frameAtMilliseconds;
+
+      while (samples.length > 0 && frameAtMilliseconds - samples[0].time > windowMilliseconds) {
+        samples.shift();
+      }
+
+      draw();
     }
   };
 }
