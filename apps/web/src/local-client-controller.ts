@@ -52,6 +52,7 @@ import {
   CS_AIRACCEL,
   LerpAngle,
   MASK_PLAYERSOLID,
+  PMF_DUCKED,
   PITCH,
   pmtype_t,
   STAT_AMMO,
@@ -81,9 +82,13 @@ import type { BspSpawnPoint, BspMap } from "../../../packages/formats/src/index.
 
 const CAMERA_MOUSE_SENSITIVITY = 0.0022;
 const DEFAULT_VIEWHEIGHT = 22;
+const DUCKED_VIEWHEIGHT = -2;
 const DEFAULT_SPAWN_LIFT = 24;
 const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
 const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
+const PLAYER_DUCKED_MAXS: vec3_t = [16, 16, 4];
+const PLAYER_GIB_MINS: vec3_t = [-16, -16, 0];
+const PLAYER_GIB_MAXS: vec3_t = [16, 16, 16];
 const LOCAL_SINGLE_STATUSBAR =
   "yb -24 "
   + "xv 0 "
@@ -438,6 +443,7 @@ function updateGameplayRuntimePlayer(
   runtime: ClientRuntime
 ): void {
   gameplayPlayer.origin = [...runtime.cl.predicted_origin];
+  applyPredictedGameplayHull(gameplayPlayer, runtime.cl.predicted_pmove);
   refreshEntitySpatialState(gameplayPlayer);
   linkGameEntity(gameplayRuntime, gameplayPlayer);
   touchTriggerEntities(gameplayRuntime, gameplayPlayer);
@@ -505,6 +511,7 @@ function initializeSpawnPrediction(
     gravity: context.pm.s.gravity,
     delta_angles: [...context.pm.s.delta_angles]
   };
+  runtime.cl.frame.playerstate.viewoffset = [0, 0, context.pm.viewheight];
   runtime.cl.predicted_pmove = {
     ...runtime.cl.frame.playerstate.pmove,
     origin: [...runtime.cl.frame.playerstate.pmove.origin],
@@ -630,7 +637,7 @@ function promotePredictedState(runtime: ClientRuntime, realtimeMs: number): void
     delta_angles: [...runtime.cl.predicted_pmove.delta_angles]
   };
   runtime.cl.frame.playerstate.viewangles = [...runtime.cl.predicted_angles];
-  runtime.cl.frame.playerstate.viewoffset = [0, 0, DEFAULT_VIEWHEIGHT];
+  runtime.cl.frame.playerstate.viewoffset = [0, 0, getPredictedViewheight(runtime.cl.predicted_pmove)];
 }
 
 /**
@@ -799,6 +806,40 @@ function buildBrushModelSnapshots(runtime: GameRuntime): BrushModelSnapshot[] {
   }
 
   return snapshots;
+}
+
+/**
+ * Category: New
+ * Purpose: Derive the predicted Quake II eye height from the current packed pmove state using the existing `PM_CheckDuck` rules.
+ *
+ * Constraints:
+ * - Must preserve the standing and ducked viewheight values already ported in `pmove.ts`.
+ */
+function getPredictedViewheight(pmove: ClientRuntime["cl"]["predicted_pmove"]): number {
+  return (pmove.pm_flags & PMF_DUCKED) !== 0 ? DUCKED_VIEWHEIGHT : DEFAULT_VIEWHEIGHT;
+}
+
+/**
+ * Category: New
+ * Purpose: Apply the predicted Quake II player hull to the local gameplay proxy so runtime collision and triggers use the same crouch state as prediction.
+ *
+ * Constraints:
+ * - Must match the normal, ducked and gib bounds selected by `PM_CheckDuck`.
+ */
+function applyPredictedGameplayHull(
+  gameplayPlayer: GameEntity,
+  pmove: ClientRuntime["cl"]["predicted_pmove"]
+): void {
+  if (pmove.pm_type === pmtype_t.PM_GIB) {
+    gameplayPlayer.mins = [...PLAYER_GIB_MINS];
+    gameplayPlayer.maxs = [...PLAYER_GIB_MAXS];
+    return;
+  }
+
+  gameplayPlayer.mins = [...PLAYER_TRIGGER_MINS];
+  gameplayPlayer.maxs = (pmove.pm_flags & PMF_DUCKED) !== 0
+    ? [...PLAYER_DUCKED_MAXS]
+    : [...PLAYER_TRIGGER_MAXS];
 }
 
 /**
