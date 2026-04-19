@@ -51,6 +51,7 @@ import {
   CS_AIRACCEL,
   MASK_PLAYERSOLID,
   PITCH,
+  pmtype_t,
   STAT_AMMO,
   STAT_AMMO_ICON,
   STAT_ARMOR,
@@ -143,7 +144,9 @@ export interface LocalClientController {
   gameplayRuntime: GameRuntime;
   refreshFrame: ClientRefreshFrame | null;
   screenState: ClientScreenHudState;
+  ghostMode: boolean;
   getBrushModelSnapshots: () => BrushModelSnapshot[];
+  setGhostMode: (enabled: boolean) => void;
   update: (deltaSeconds: number) => void;
 }
 
@@ -215,6 +218,7 @@ export function createLocalClientController(
   let pointerLocked = false;
   let realtimeMs = 0;
   let nextCommandSequence = 1;
+  let ghostMode = true;
 
   const codeBindings: Record<string, MovementKey> = {
     Space: "up",
@@ -306,6 +310,9 @@ export function createLocalClientController(
     get refreshFrame() {
       return refreshFrame;
     },
+    get ghostMode() {
+      return ghostMode;
+    },
     get screenState() {
       return SCR_BuildScreenState(runtime, {
         paused: false,
@@ -315,11 +322,16 @@ export function createLocalClientController(
       });
     },
     getBrushModelSnapshots: () => buildBrushModelSnapshots(gameplayRuntime),
+    setGhostMode: (enabled) => {
+      ghostMode = enabled;
+      applyMovementMode(runtime, ghostMode);
+    },
     update: (deltaSeconds) => {
       realtimeMs += deltaSeconds * 1000;
       runtime.cls.realtime = realtimeMs;
       runtime.cls.frametime = deltaSeconds;
       runtime.cl.time = realtimeMs;
+      applyMovementMode(runtime, ghostMode);
 
       CL_SetInputFrameTime(inputContext, realtimeMs);
       syncMovementButtons(inputContext, pressedKeys, realtimeMs);
@@ -514,6 +526,20 @@ function initializeLocalHudState(runtime: ClientRuntime): void {
   runtime.cl.frame.playerstate.stats[STAT_TIMER] = 0;
   runtime.cl.frame.playerstate.stats[STAT_FRAGS] = 0;
   runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] = 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Apply the current browser movement mode onto the predicted Quake II pmove state.
+ *
+ * Constraints:
+ * - Must switch cleanly between `PM_NORMAL` and `PM_SPECTATOR`.
+ * - Must keep the local frame and predicted state aligned before prediction runs.
+ */
+function applyMovementMode(runtime: ClientRuntime, ghostMode: boolean): void {
+  const pmType = ghostMode ? pmtype_t.PM_SPECTATOR : pmtype_t.PM_NORMAL;
+  runtime.cl.frame.playerstate.pmove.pm_type = pmType;
+  runtime.cl.predicted_pmove.pm_type = pmType;
 }
 
 /**

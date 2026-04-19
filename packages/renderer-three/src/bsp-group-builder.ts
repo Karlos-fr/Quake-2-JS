@@ -11,6 +11,7 @@
  */
 
 import {
+  BackSide,
   BufferAttribute,
   BufferGeometry,
   Group,
@@ -194,6 +195,7 @@ function copySurfacePositionsRelativeToModel(
  *
  * Constraints:
  * - Must remain usable even when no texture data is available yet.
+ * - Must preserve the visible face convention used by the original Quake II GL renderer.
  */
 function createSurfaceMaterial(textureName: string, resolveTexture: BspTextureResolver | undefined): Material {
   const texture = resolveTexture?.(textureName) ?? null;
@@ -203,11 +205,15 @@ function createSurfaceMaterial(textureName: string, resolveTexture: BspTextureRe
       texture.repeat.set(1 / quakeTexture.width, 1 / quakeTexture.height);
     }
 
-    return new MeshBasicMaterial({ map: texture });
+    return new MeshBasicMaterial({
+      map: texture,
+      side: BackSide
+    });
   }
 
   return new MeshBasicMaterial({
-    color: hashTextureColor(textureName)
+    color: hashTextureColor(textureName),
+    side: BackSide
   });
 }
 

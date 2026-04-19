@@ -76,6 +76,7 @@ void bootstrap();
 async function bootstrap(): Promise<void> {
   const app = requireApp();
   const ui = createShell(app);
+  const selectedMapPath = getRequestedMapPath();
 
   try {
     ui.setStatus("Chargement de pak0.pak...");
@@ -83,15 +84,23 @@ async function bootstrap(): Promise<void> {
     const rendererBundle = await createRenderer();
     ui.attachViewport(rendererBundle.renderer.domElement);
     ui.setRenderer(rendererBundle.label);
-    ui.setStatus("Analyse de la map base1...");
+    ui.setStatus(`Analyse de la map ${getDisplayMapName(selectedMapPath)}...`);
 
     const pakBytes = await loadFirstAvailablePak(BASEQ2_PAK_CANDIDATES);
     const filesystem = createVirtualFilesystem();
-    mountPak(filesystem, pakBytes, "pak0.pak");
+    const mountedPak = mountPak(filesystem, pakBytes, "pak0.pak");
+    const availableMaps = listPakMapPaths(mountedPak);
+    ui.bindMapSelector({
+      maps: availableMaps,
+      currentValue: selectedMapPath,
+      onChange: (mapPath) => {
+        setRequestedMapPath(mapPath);
+      }
+    });
 
-    const bspFile = readMountedFile(filesystem, DEFAULT_MAP_PATH);
+    const bspFile = readMountedFile(filesystem, selectedMapPath);
     if (!bspFile) {
-      throw new Error(`La map ${DEFAULT_MAP_PATH} est introuvable dans pak0.pak.`);
+      throw new Error(`La map ${selectedMapPath} est introuvable dans pak0.pak.`);
     }
 
     const map = parseBsp(bspFile.bytes, bspFile.path);
@@ -116,6 +125,12 @@ async function bootstrap(): Promise<void> {
     const scene = createScene(group);
     const camera = createCamera();
     const cameraController = createLocalClientController(ui.viewport, camera, map, spawn);
+    ui.bindGhostToggle({
+      initialValue: cameraController.ghostMode,
+      onToggle: (enabled) => {
+        cameraController.setGhostMode(enabled);
+      }
+    });
     const refreshDebug = createRefreshDebugGroup();
     scene.add(refreshDebug.root);
 
@@ -371,6 +386,8 @@ function requireApp(): HTMLDivElement {
 function createShell(app: HTMLDivElement): {
   viewport: HTMLDivElement;
   attachViewport: (canvas: HTMLCanvasElement) => void;
+  bindGhostToggle: (options: { initialValue: boolean; onToggle: (enabled: boolean) => void }) => void;
+  bindMapSelector: (options: { maps: string[]; currentValue: string; onChange: (value: string) => void }) => void;
   setRenderer: (value: string) => void;
   setStatus: (value: string) => void;
   setError: (value: string) => void;
@@ -413,6 +430,39 @@ function createShell(app: HTMLDivElement): {
   overlay.style.maxWidth = "340px";
   overlay.style.pointerEvents = "none";
 
+  const ghostButton = document.createElement("button");
+  ghostButton.type = "button";
+  ghostButton.style.position = "absolute";
+  ghostButton.style.top = "12px";
+  ghostButton.style.right = "12px";
+  ghostButton.style.padding = "3px 7px";
+  ghostButton.style.border = "1px solid rgba(212, 196, 177, 0.18)";
+  ghostButton.style.background = "rgba(24, 18, 14, 0.7)";
+  ghostButton.style.color = "#9ca19e";
+  ghostButton.style.fontFamily = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
+  ghostButton.style.fontSize = "11px";
+  ghostButton.style.lineHeight = "1";
+  ghostButton.style.cursor = "pointer";
+  ghostButton.style.pointerEvents = "auto";
+  ghostButton.style.userSelect = "none";
+
+  const mapSelect = document.createElement("select");
+  mapSelect.style.position = "absolute";
+  mapSelect.style.top = "12px";
+  mapSelect.style.right = "86px";
+  mapSelect.style.height = "23px";
+  mapSelect.style.padding = "1px 6px";
+  mapSelect.style.border = "1px solid rgba(212, 196, 177, 0.18)";
+  mapSelect.style.background = "rgba(24, 18, 14, 0.7)";
+  mapSelect.style.color = "#b7bbb8";
+  mapSelect.style.fontFamily = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
+  mapSelect.style.fontSize = "11px";
+  mapSelect.style.lineHeight = "1";
+  mapSelect.style.cursor = "pointer";
+  mapSelect.style.pointerEvents = "auto";
+  mapSelect.style.userSelect = "none";
+  mapSelect.style.maxWidth = "180px";
+
   const rendererLine = document.createElement("div");
   const statusLine = document.createElement("div");
   const infoLine = document.createElement("div");
@@ -421,7 +471,7 @@ function createShell(app: HTMLDivElement): {
   errorLine.style.color = "#f0b8a0";
 
   overlay.append(rendererLine, statusLine, infoLine, runtimeLine, errorLine);
-  viewport.append(overlay);
+  viewport.append(overlay, mapSelect, ghostButton);
 
   root.append(viewport);
   app.append(root);
@@ -433,6 +483,43 @@ function createShell(app: HTMLDivElement): {
       canvas.style.width = "100%";
       canvas.style.height = "100%";
       viewport.prepend(canvas);
+    },
+    bindGhostToggle: ({ initialValue, onToggle }) => {
+      let enabled = initialValue;
+
+      const refreshGhostButton = (): void => {
+        ghostButton.textContent = enabled ? "Ghost On" : "Ghost";
+        ghostButton.style.color = enabled ? "#d8ddd8" : "#9ca19e";
+        ghostButton.style.borderColor = enabled ? "rgba(216, 221, 216, 0.28)" : "rgba(212, 196, 177, 0.18)";
+      };
+
+      ghostButton.addEventListener("click", () => {
+        enabled = !enabled;
+        onToggle(enabled);
+        refreshGhostButton();
+      });
+
+      refreshGhostButton();
+    },
+    bindMapSelector: ({ maps, currentValue, onChange }) => {
+      mapSelect.innerHTML = "";
+
+      for (const mapPath of maps) {
+        const option = document.createElement("option");
+        option.value = mapPath;
+        option.textContent = getDisplayMapName(mapPath);
+        option.selected = mapPath === currentValue;
+        mapSelect.append(option);
+      }
+
+      mapSelect.value = maps.includes(currentValue) ? currentValue : (maps[0] ?? "");
+      mapSelect.addEventListener("change", () => {
+        if (!mapSelect.value) {
+          return;
+        }
+
+        onChange(mapSelect.value);
+      });
     },
     setRenderer: (value) => {
       rendererLine.textContent = `Renderer: ${value}`;
@@ -578,4 +665,54 @@ function disposeObject(object: Object3D): void {
     const geometry = (object as { geometry?: BufferGeometry | SphereGeometry }).geometry;
     geometry?.dispose();
   }
+}
+
+/**
+ * Category: New
+ * Purpose: Read the requested BSP map path from the browser URL.
+ *
+ * Constraints:
+ * - Must fall back to the default map when the query string is absent.
+ */
+function getRequestedMapPath(): string {
+  const params = new URLSearchParams(window.location.search);
+  const map = params.get("map");
+  return map && map.length > 0 ? map : DEFAULT_MAP_PATH;
+}
+
+/**
+ * Category: New
+ * Purpose: Persist one selected BSP path in the URL and reload the demo on that level.
+ *
+ * Constraints:
+ * - Must preserve the current page path.
+ */
+function setRequestedMapPath(mapPath: string): void {
+  const url = new URL(window.location.href);
+  url.searchParams.set("map", mapPath);
+  window.location.href = url.toString();
+}
+
+/**
+ * Category: New
+ * Purpose: Extract the BSP level list exposed by the currently mounted Quake II PAK archive.
+ *
+ * Constraints:
+ * - Must only return `maps/*.bsp` entries.
+ * - Must preserve lexical order for a stable UI.
+ */
+function listPakMapPaths(mountedPak: ReturnType<typeof mountPak>): string[] {
+  return mountedPak.archive.entries
+    .map((entry) => entry.name)
+    .filter((entryName) => entryName.startsWith("maps/") && entryName.endsWith(".bsp"))
+    .sort((left, right) => left.localeCompare(right));
+}
+
+/**
+ * Category: New
+ * Purpose: Format one BSP path into a compact UI label for the top-right map selector.
+ */
+function getDisplayMapName(mapPath: string): string {
+  const slashIndex = mapPath.lastIndexOf("/");
+  return slashIndex >= 0 ? mapPath.slice(slashIndex + 1) : mapPath;
 }
