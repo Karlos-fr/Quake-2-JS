@@ -13,7 +13,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-const PORTAGE_FILE = path.resolve("Quake-2-master", "PORTAGE_QUAKE2.md");
+const PORTAGE_FILE = path.resolve("PORTAGE_QUAKE2.md");
 const OUTPUT_ROOT = path.resolve("tools", "c-analyzer", "out");
 const OUTPUT_FILE = path.join(OUTPUT_ROOT, "source-to-ts-map.json");
 const GENERATED_STUB_ROOT = path.resolve("generated", "ts-stubs");

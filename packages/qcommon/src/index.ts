@@ -67,6 +67,65 @@ export {
 } from "./cvar.js";
 
 export { createQcommonRuntime } from "./runtime.js";
+export { BYTE_DIRS, DirFromByte } from "./anorms.js";
+export {
+  BASEDIRNAME,
+  clc_ops_e,
+  DEFAULT_SOUND_PACKET_ATTENUATION,
+  DEFAULT_SOUND_PACKET_VOLUME,
+  PROTOCOL_VERSION,
+  PS_BLEND,
+  PS_FOV,
+  PS_KICKANGLES,
+  PS_M_DELTA_ANGLES,
+  PS_M_FLAGS,
+  PS_M_GRAVITY,
+  PS_M_ORIGIN,
+  PS_M_TIME,
+  PS_M_TYPE,
+  PS_M_VELOCITY,
+  PS_RDFLAGS,
+  PS_VIEWANGLES,
+  PS_VIEWOFFSET,
+  PS_WEAPONFRAME,
+  PS_WEAPONINDEX,
+  SND_ATTENUATION,
+  SND_ENT,
+  SND_OFFSET,
+  SND_POS,
+  SND_VOLUME,
+  svc_ops_e,
+  svc_strings,
+  U_ANGLE1,
+  U_ANGLE2,
+  U_ANGLE3,
+  U_EFFECTS8,
+  U_EFFECTS16,
+  U_EVENT,
+  U_FRAME8,
+  U_FRAME16,
+  U_MODEL,
+  U_MODEL2,
+  U_MODEL3,
+  U_MODEL4,
+  U_MOREBITS1,
+  U_MOREBITS2,
+  U_MOREBITS3,
+  U_NUMBER16,
+  U_OLDORIGIN,
+  U_ORIGIN1,
+  U_ORIGIN2,
+  U_ORIGIN3,
+  U_REMOVE,
+  U_RENDERFX8,
+  U_RENDERFX16,
+  U_SKIN8,
+  U_SKIN16,
+  U_SOLID,
+  U_SOUND,
+  UPDATE_BACKUP,
+  UPDATE_MASK
+} from "./protocol.js";
 export {
   COM_AddParm,
   COM_Argc,
@@ -80,6 +139,46 @@ export {
   createCommonRuntime,
   Info_Print
 } from "./common.js";
+export {
+  CM_BoxTrace,
+  CM_InlineModel,
+  CM_PointContents,
+  createCollisionPointContents,
+  createCollisionTrace,
+  createCollisionWorld
+} from "./collision.js";
+export {
+  MAX_CLIP_PLANES,
+  MIN_STEP_NORMAL,
+  PM_Accelerate,
+  PM_AddCurrents,
+  PM_AirAccelerate,
+  PM_AirMove,
+  PM_CatagorizePosition,
+  PM_CheckDuck,
+  PM_CheckJump,
+  PM_CheckSpecialMovement,
+  PM_ClampAngles,
+  PM_ClearResults,
+  PM_ClipVelocity,
+  PM_DeadMove,
+  PM_FlyMove,
+  PM_Friction,
+  PM_GoodPosition,
+  PM_InitialSnapPosition,
+  PM_InitLocalState,
+  PM_SnapPosition,
+  PM_StepSlideMove,
+  PM_StepSlideMove_,
+  PM_SyncToState,
+  PM_WaterMove,
+  Pmove,
+  STEPSIZE,
+  STOP_EPSILON,
+  createCplane,
+  createPmlState,
+  createPmoveContext
+} from "./pmove.js";
 
 export {
   ANGLE2SHORT,
@@ -89,6 +188,7 @@ export {
   ATTN_NONE,
   ATTN_NORM,
   ATTN_STATIC,
+  AngleVectors,
   BUTTON_ANY,
   BUTTON_ATTACK,
   BUTTON_USE,
@@ -163,6 +263,7 @@ export {
   MAX_INFO_VALUE,
   MAX_ITEMS,
   MAX_LIGHTSTYLES,
+  MAX_MAP_AREAS,
   MAX_MODELS,
   MAX_OSPATH,
   MAX_QPATH,
@@ -179,6 +280,7 @@ export {
   PMF_TIME_LAND,
   PMF_TIME_TELEPORT,
   PMF_TIME_WATERJUMP,
+  PITCH,
   PRINT_ALERT,
   PRINT_ALL,
   PRINT_CHAT,
@@ -207,7 +309,10 @@ export {
   RDF_NOWORLDMODEL,
   RDF_UNDERWATER,
   RDF_UVGOGGLES,
+  ROLL,
   SHORT2ANGLE,
+  LerpAngle,
+  YAW,
   STAT_AMMO,
   STAT_AMMO_ICON,
   STAT_ARMOR,
@@ -279,6 +384,8 @@ export type {
 
 export type { QcommonRuntime, QcommonRuntimeOptions } from "./runtime.js";
 export type { CommonRuntime } from "./common.js";
+export type { CollisionWorld } from "./collision.js";
+export type { PmoveContext, PmoveOptions, pml_t } from "./pmove.js";
 
 export type {
   byte,

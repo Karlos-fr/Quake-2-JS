@@ -1,0 +1,368 @@
+/**
+ * File: refresh.ts
+ * Source: Quake II original / client/cl_ents.c
+ * Purpose: Port the first refresh-facing client composition helpers that transform parsed frames into structured render entities and dynamic lights.
+ *
+ * Porting policy:
+ * - Preserve original behavior first.
+ * - Preserve original names whenever possible.
+ * - Avoid structural refactors unless documented.
+ *
+ * Deviations:
+ * - Emits structured refresh data instead of calling renderer entry points directly.
+ * - Leaves temp entities, particles and backend resource registration to later adapter layers.
+ *
+ * Notes:
+ * - This file is intended to stay conceptually close to the original C source.
+ */
+
+import {
+  EF_BFG,
+  EF_FLAG1,
+  EF_FLAG2,
+  EF_POWERSCREEN,
+  EF_PLASMA,
+  EF_TAGTRAIL,
+  EF_TRACKER,
+  EF_TRACKERTRAIL,
+  LerpAngle,
+  RF_DEPTHHACK,
+  RF_MINLIGHT,
+  RF_SHELL_GREEN,
+  RF_TRANSLUCENT,
+  RF_WEAPONMODEL,
+  type vec3_t
+} from "../../qcommon/src/index.js";
+import { CL_BuildPacketEntitySnapshots, type ClientInterpolatedEntity } from "./entities.js";
+import { CL_BuildTEntRefresh, type ClientBeamRender, type ClientExplosionRender, type ClientForceWallRender } from "./tent.js";
+import type { ClientSustainRender } from "./tent.js";
+import { CL_CalcViewValues, CL_UpdateLerpFraction, type ClientViewOptions, type ClientViewValues } from "./view.js";
+import { type ClientRuntime } from "./types.js";
+
+/**
+ * Category: New
+ * Purpose: Describe one render-facing entity emitted by the first client refresh bridge.
+ *
+ * Constraints:
+ * - Must preserve enough source metadata to resolve models, skins and linked entities later in renderer adapters.
+ */
+export interface ClientRenderEntity {
+  entityNumber: number;
+  modelindex: number;
+  frame: number;
+  oldframe: number;
+  backlerp: number;
+  origin: vec3_t;
+  oldorigin: vec3_t;
+  angles: vec3_t;
+  skinnum: number;
+  alpha: number;
+  flags: number;
+  customPlayerSkin: boolean;
+  customWeaponModel: boolean;
+  linkedModelSlot: 0 | 2 | 3 | 4 | 5;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe one dynamic light emitted by the first client refresh bridge.
+ *
+ * Constraints:
+ * - Must preserve Quake-style signed color values for later backend-specific handling.
+ */
+export interface ClientDynamicLight {
+  origin: vec3_t;
+  intensity: number;
+  color: [number, number, number];
+  sourceEntity: number;
+  kind: string;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe one structured refresh frame that mirrors the usable output of `CL_AddEntities`.
+ *
+ * Constraints:
+ * - Must carry the logical view plus entity/light lists without mutating renderer backends.
+ */
+export interface ClientRefreshFrame {
+  view: ClientViewValues;
+  entities: ClientRenderEntity[];
+  lights: ClientDynamicLight[];
+  beams: ClientBeamRender[];
+  explosions: ClientExplosionRender[];
+  forceWalls: ClientForceWallRender[];
+  sustains: ClientSustainRender[];
+}
+
+/**
+ * Original name: CL_AddEntities
+ * Source: client/cl_ents.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Computes the current lerp fraction, logical view and refresh-facing packet entity list.
+ *
+ * Porting notes:
+ * - Emits structured entities and lights instead of calling `V_AddEntity` / `V_AddLight`.
+ * - Temp entities and particles remain for later phases.
+ */
+export function CL_BuildRefreshFrame(
+  runtime: ClientRuntime,
+  options: ClientViewOptions = {}
+): ClientRefreshFrame {
+  CL_UpdateLerpFraction(runtime, options);
+
+  const view = CL_CalcViewValues(runtime, options);
+  const packetEntities = CL_BuildPacketEntitySnapshots(runtime);
+  const tempRefresh = CL_BuildTEntRefresh(runtime);
+  const entities: ClientRenderEntity[] = [];
+  const lights: ClientDynamicLight[] = [...tempRefresh.lights];
+
+  appendViewWeapon(runtime, view, entities);
+
+  for (const snapshot of packetEntities) {
+    if (snapshot.viewerEntity) {
+      appendViewerLights(snapshot, lights);
+      updateEntityLerpOrigin(runtime, snapshot);
+      continue;
+    }
+
+    if (snapshot.modelindex !== 0) {
+      entities.push(createRenderEntity(snapshot, snapshot.modelindex, 0));
+
+      if ((snapshot.effects & EF_POWERSCREEN) !== 0) {
+        entities.push({
+          ...createRenderEntity(snapshot, 0, 5),
+          alpha: 0.3,
+          flags: snapshot.flags | RF_TRANSLUCENT | RF_SHELL_GREEN
+        });
+      }
+
+      appendLinkedModels(snapshot, entities);
+    }
+
+    appendEntityLights(snapshot, lights);
+    updateEntityLerpOrigin(runtime, snapshot);
+  }
+
+  return {
+    view,
+    entities,
+    lights,
+    beams: tempRefresh.beams,
+    explosions: tempRefresh.explosions,
+    forceWalls: tempRefresh.forceWalls,
+    sustains: tempRefresh.sustains
+  };
+}
+
+/**
+ * Original name: CL_GetEntitySoundOrigin
+ * Source: client/cl_ents.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the spatialized sound origin for one entity from the current lerped client state.
+ *
+ * Porting notes:
+ * - Returns a cloned vector instead of mutating an output pointer.
+ */
+export function CL_GetEntitySoundOrigin(runtime: ClientRuntime, ent: number): vec3_t {
+  if (ent < 0 || ent >= runtime.cl_entities.length) {
+    throw new Error("CL_GetEntitySoundOrigin: bad ent");
+  }
+
+  return [...runtime.cl_entities[ent].lerp_origin];
+}
+
+/**
+ * Original name: CL_AddViewWeapon
+ * Source: client/cl_ents.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Builds the first-person weapon model entity from the current and previous player states.
+ *
+ * Porting notes:
+ * - Emits a structured entity when the current game state would draw the weapon.
+ */
+function appendViewWeapon(
+  runtime: ClientRuntime,
+  view: ClientViewValues,
+  entities: ClientRenderEntity[]
+): void {
+  const ps = runtime.cl.frame.playerstate;
+  let oldframe = runtime.cl.frames[(runtime.cl.frame.serverframe - 1) & (runtime.cl.frames.length - 1)];
+  if (oldframe.serverframe !== runtime.cl.frame.serverframe - 1 || !oldframe.valid) {
+    oldframe = runtime.cl.frame;
+  }
+
+  const ops = oldframe.playerstate;
+  if (ps.fov > 90 || ps.gunindex === 0) {
+    return;
+  }
+
+  const origin: vec3_t = [0, 0, 0];
+  const angles: vec3_t = [0, 0, 0];
+
+  for (let index = 0; index < 3; index += 1) {
+    origin[index] =
+      view.vieworg[index] +
+      ops.gunoffset[index] +
+      runtime.cl.lerpfrac * (ps.gunoffset[index] - ops.gunoffset[index]);
+    angles[index] =
+      view.viewangles[index] +
+      LerpAngle(ops.gunangles[index], ps.gunangles[index], runtime.cl.lerpfrac);
+  }
+
+  entities.push({
+    entityNumber: runtime.cl.playernum + 1,
+    modelindex: ps.gunindex,
+    frame: ps.gunframe,
+    oldframe: ps.gunframe === 0 ? 0 : ops.gunframe,
+    backlerp: 1 - runtime.cl.lerpfrac,
+    origin,
+    oldorigin: [...origin],
+    angles,
+    skinnum: 0,
+    alpha: 1,
+    flags: RF_MINLIGHT | RF_DEPTHHACK | RF_WEAPONMODEL,
+    customPlayerSkin: false,
+    customWeaponModel: false,
+    linkedModelSlot: 0
+  });
+}
+
+/**
+ * Category: New
+ * Purpose: Convert one interpolated packet entity snapshot into a renderer-facing entity record.
+ */
+function createRenderEntity(
+  snapshot: ClientInterpolatedEntity,
+  modelindex: number,
+  linkedModelSlot: 0 | 2 | 3 | 4 | 5
+): ClientRenderEntity {
+  return {
+    entityNumber: snapshot.number,
+    modelindex,
+    frame: snapshot.frame,
+    oldframe: snapshot.oldframe,
+    backlerp: snapshot.backlerp,
+    origin: [...snapshot.origin],
+    oldorigin: [...snapshot.oldorigin],
+    angles: [...snapshot.angles],
+    skinnum: snapshot.skinnum,
+    alpha: snapshot.alpha,
+    flags: snapshot.flags,
+    customPlayerSkin: snapshot.customPlayerSkin && linkedModelSlot === 0,
+    customWeaponModel: snapshot.customWeaponModel && linkedModelSlot === 2,
+    linkedModelSlot
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Emit the linked auxiliary models attached to one packet entity snapshot.
+ */
+function appendLinkedModels(snapshot: ClientInterpolatedEntity, entities: ClientRenderEntity[]): void {
+  if (snapshot.modelindex2 !== 0) {
+    const isTranslucentLinkedModel = (snapshot.modelindex2 & 0x80) !== 0;
+    entities.push({
+      ...createRenderEntity(snapshot, isTranslucentLinkedModel ? snapshot.modelindex2 & 0x7f : snapshot.modelindex2, 2),
+      alpha: isTranslucentLinkedModel ? 0.32 : 1,
+      flags: isTranslucentLinkedModel ? RF_TRANSLUCENT : 0
+    });
+  }
+
+  if (snapshot.modelindex3 !== 0) {
+    entities.push(createRenderEntity(snapshot, snapshot.modelindex3, 3));
+  }
+
+  if (snapshot.modelindex4 !== 0) {
+    entities.push(createRenderEntity(snapshot, snapshot.modelindex4, 4));
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Emit the player-owned flag/tracker lights that the original client handles before skipping the viewer model.
+ */
+function appendViewerLights(snapshot: ClientInterpolatedEntity, lights: ClientDynamicLight[]): void {
+  if ((snapshot.effects & EF_FLAG1) !== 0) {
+    lights.push(createLight(snapshot.origin, 225, [1, 0.1, 0.1], snapshot.number, "flag1"));
+  } else if ((snapshot.effects & EF_FLAG2) !== 0) {
+    lights.push(createLight(snapshot.origin, 225, [0.1, 0.1, 1], snapshot.number, "flag2"));
+  } else if ((snapshot.effects & EF_TAGTRAIL) !== 0) {
+    lights.push(createLight(snapshot.origin, 225, [1, 1, 0], snapshot.number, "tagtrail"));
+  } else if ((snapshot.effects & EF_TRACKERTRAIL) !== 0) {
+    lights.push(createLight(snapshot.origin, 225, [-1, -1, -1], snapshot.number, "trackertrail"));
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Emit the first packet-entity-derived dynamic lights mirrored from `CL_AddPacketEntities`.
+ */
+function appendEntityLights(snapshot: ClientInterpolatedEntity, lights: ClientDynamicLight[]): void {
+  if ((snapshot.effects & EF_BFG) !== 0) {
+    const ramp = [300, 400, 600, 300, 150, 75];
+    const intensity = snapshot.frame >= 0 && snapshot.frame < ramp.length ? ramp[snapshot.frame] : 200;
+    lights.push(createLight(snapshot.origin, intensity, [0, 1, 0], snapshot.number, "bfg"));
+  }
+
+  if ((snapshot.effects & EF_PLASMA) !== 0) {
+    lights.push(createLight(snapshot.origin, 130, [1, 0.5, 0.5], snapshot.number, "plasma"));
+  }
+
+  if ((snapshot.effects & EF_FLAG1) !== 0) {
+    lights.push(createLight(snapshot.origin, 225, [1, 0.1, 0.1], snapshot.number, "flag1"));
+  }
+
+  if ((snapshot.effects & EF_FLAG2) !== 0) {
+    lights.push(createLight(snapshot.origin, 225, [0.1, 0.1, 1], snapshot.number, "flag2"));
+  }
+
+  if ((snapshot.effects & EF_TAGTRAIL) !== 0) {
+    lights.push(createLight(snapshot.origin, 225, [1, 1, 0], snapshot.number, "tagtrail"));
+  }
+
+  if ((snapshot.effects & EF_TRACKERTRAIL) !== 0 && (snapshot.effects & EF_TRACKER) === 0) {
+    lights.push(createLight(snapshot.origin, 155, [-1, -1, -1], snapshot.number, "tracker-shell"));
+  }
+
+  if ((snapshot.effects & EF_TRACKER) !== 0) {
+    lights.push(createLight(snapshot.origin, 200, [-1, -1, -1], snapshot.number, "tracker"));
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Keep each client entity `lerp_origin` aligned with the latest refresh-facing interpolated origin.
+ */
+function updateEntityLerpOrigin(runtime: ClientRuntime, snapshot: ClientInterpolatedEntity): void {
+  runtime.cl_entities[snapshot.number].lerp_origin = [...snapshot.origin];
+}
+
+/**
+ * Category: New
+ * Purpose: Build one dynamic light value with cloned vector/color semantics.
+ */
+function createLight(
+  origin: vec3_t,
+  intensity: number,
+  color: [number, number, number],
+  sourceEntity: number,
+  kind: string
+): ClientDynamicLight {
+  return {
+    origin: [...origin],
+    intensity,
+    color: [...color],
+    sourceEntity,
+    kind
+  };
+}

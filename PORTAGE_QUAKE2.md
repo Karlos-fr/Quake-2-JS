@@ -1,0 +1,389 @@
+﻿# Suivi des fichiers du depot Quake 2
+
+Fichier genere automatiquement a partir du depot source : C:\a\Projets\Quake-2\Quake-2-master
+
+Le suivi doit etre mis a jour au fur et a mesure du portage.
+
+Convention recommandee pour les colonnes `A porter` et `Porte` :
+
+- `⬜` : pas traite
+- `🟡` : a analyser / a cadrer
+- `🟠` : en cours
+- `✅` : porte
+- `⛔` : non porte volontairement
+
+Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a completer manuellement au fil du projet.
+
+| Path | Nom | Description / role | A porter | Porte | Cible |
+|---|---|---|---|---|---|
+| 3.15_Changes.txt | 3.15_Changes.txt |  | ⛔ |  |  |
+| 3.16_Changes.txt | 3.16_Changes.txt |  | ⛔ |  |  |
+| 3.17_Changes.txt | 3.17_Changes.txt |  | ⛔ |  |  |
+| 3.18_changes.txt | 3.18_changes.txt |  | ⛔ |  |  |
+| baseq2\config.cfg | config.cfg |  |  |  |  |
+| baseq2\save\save0\game.ssv | game.ssv |  |  |  |  |
+| baseq2\save\save0\server.ssv | server.ssv |  |  |  |  |
+| changes.txt | changes.txt |  | ⛔ |  |  |
+| client\adivtab.h | adivtab.h |  |  |  |  |
+| client\anorms.h | anorms.h | Canonical 162-entry Quake II byte-direction lookup table used by temp entities and encoded normals. | 🟠 | 🟠 | packages/qcommon/src/anorms.ts, packages/client/src/tent.ts |
+| client\asm_i386.h | asm_i386.h |  |  |  |  |
+| client\block16.h | block16.h |  |  |  |  |
+| client\block8.h | block8.h |  |  |  |  |
+| client\cdaudio.h | cdaudio.h |  |  |  |  |
+| client\cl_cin.c | cl_cin.c |  |  |  |  |
+| client\cl_ents.c | cl_ents.c | Entity delta parsing, packet entity reconstruction, frame interpolation inputs and render-side entity staging. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/entities.ts, packages/client/src/refresh.ts |
+| client\cl_fx.c | cl_fx.c | Client-side muzzle flashes, dynamic lights and weapon effect parsing before renderer/audio side effects. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/effects.ts |
+| client\cl_input.c | cl_input.c | Client key button tracking, angle adjustment and user command construction before transmission. | 🟠 | 🟠 | packages/client/src/input.ts, packages/client/src/types.ts |
+| client\cl_inv.c | cl_inv.c | Client inventory parsing and inventory-screen state feeding. | 🟠 | 🟠 | packages/client/src/parse.ts |
+| client\cl_main.c | cl_main.c | Client main loop bootstrap, client-local cvars, console commands, disconnect flow, skin refresh and early precache/download orchestration. | 🟠 | 🟠 | packages/client/src/main.ts, packages/client/src/download.ts, packages/client/src/parse.ts, packages/client/src/types.ts |
+| client\cl_newfx.c | cl_newfx.c | Extended client-side visual effects helpers including flashlight, force-wall and sustain-style temp effects. | 🟠 | 🟠 | packages/client/src/tent.ts, packages/client/src/refresh.ts |
+| client\cl_parse.c | cl_parse.c | Server message parsing, serverdata, configstrings, downloads, explicit download requests and early client bootstrap packets. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/download.ts |
+| client\cl_pred.c | cl_pred.c | Client-side prediction checks, movement prediction integration and predicted view/origin smoothing. | 🟠 | 🟠 | packages/client/src/view.ts |
+| client\cl_scrn.c | cl_scrn.c |  |  |  |  |
+| client\cl_tent.c | cl_tent.c | Client-side temporary entity parsing for impacts, explosions, beams, player-locked heatbeams, sustains and effect events. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/effects.ts, packages/client/src/tent.ts, packages/client/src/refresh.ts |
+| client\cl_view.c | cl_view.c | First-person weapon view setup and client refresh-facing view composition around the current player state. | 🟠 | 🟠 | packages/client/src/view.ts, packages/client/src/refresh.ts |
+| client\client.h | client.h | Core client runtime declarations, persistent/static state, frame structures, centities and parser entry points. | 🟠 | 🟠 | packages/client/src/types.ts, packages/client/src/parse.ts |
+| client\console.c | console.c |  |  |  |  |
+| client\console.h | console.h |  |  |  |  |
+| client\input.h | input.h |  |  |  |  |
+| client\keys.c | keys.c |  |  |  |  |
+| client\keys.h | keys.h |  |  |  |  |
+| client\menu.c | menu.c |  |  |  |  |
+| client\qmenu.c | qmenu.c |  |  |  |  |
+| client\qmenu.h | qmenu.h |  |  |  |  |
+| client\ref.h | ref.h |  |  |  |  |
+| client\screen.h | screen.h |  |  |  |  |
+| client\snd_dma.c | snd_dma.c |  |  |  |  |
+| client\snd_loc.h | snd_loc.h |  |  |  |  |
+| client\snd_mem.c | snd_mem.c |  |  |  |  |
+| client\snd_mix.c | snd_mix.c |  |  |  |  |
+| client\sound.h | sound.h |  |  |  |  |
+| client\vid.h | vid.h |  |  |  |  |
+| client\x86.c | x86.c |  |  |  |  |
+| ctf\2do.txt | 2do.txt |  |  |  | |
+| ctf\ctf.001 | ctf.001 |  |  |  | |
+| ctf\ctf.def | ctf.def |  |  |  | |
+| ctf\ctf.dsp | ctf.dsp |  |  |  | |
+| ctf\ctf.plg | ctf.plg |  |  |  | |
+| ctf\docs\admin.gif | admin.gif |  |  |  | |
+| ctf\docs\adminset.gif | adminset.gif |  |  |  | |
+| ctf\docs\automac.gif | automac.gif |  |  |  | |
+| ctf\docs\ghost.jpg | ghost.jpg |  |  |  | |
+| ctf\docs\grapple.jpg | grapple.jpg |  |  |  | |
+| ctf\docs\layout.jpg | layout.jpg |  |  |  | |
+| ctf\docs\mainctf_back.jpg | mainctf_back.jpg |  |  |  | |
+| ctf\docs\menu.gif | menu.gif |  |  |  | |
+| ctf\docs\q2ctf.html | q2ctf.html |  |  |  | |
+| ctf\docs\say_team.gif | say_team.gif |  |  |  | |
+| ctf\docs\stats.jpg | stats.jpg |  |  |  | |
+| ctf\docs\tech1.gif | tech1.gif |  |  |  | |
+| ctf\docs\tech2.gif | tech2.gif |  |  |  | |
+| ctf\docs\tech3.gif | tech3.gif |  |  |  | |
+| ctf\docs\tech4.gif | tech4.gif |  |  |  | |
+| ctf\g_ai.c | g_ai.c |  |  |  | |
+| ctf\g_chase.c | g_chase.c |  |  |  | |
+| ctf\g_cmds.c | g_cmds.c |  |  |  | |
+| ctf\g_combat.c | g_combat.c |  |  |  | |
+| ctf\g_ctf.c | g_ctf.c |  |  |  | |
+| ctf\g_ctf.h | g_ctf.h |  |  |  | |
+| ctf\g_func.c | g_func.c |  |  |  | |
+| ctf\g_items.c | g_items.c |  |  |  | |
+| ctf\g_local.h | g_local.h |  |  |  | |
+| ctf\g_main.c | g_main.c |  |  |  | |
+| ctf\g_misc.c | g_misc.c |  |  |  | |
+| ctf\g_monster.c | g_monster.c |  |  |  | |
+| ctf\g_phys.c | g_phys.c |  |  |  | |
+| ctf\g_save.c | g_save.c |  |  |  | |
+| ctf\g_spawn.c | g_spawn.c |  |  |  | |
+| ctf\g_svcmds.c | g_svcmds.c |  |  |  | |
+| ctf\g_target.c | g_target.c |  |  |  | |
+| ctf\g_trigger.c | g_trigger.c |  |  |  | |
+| ctf\g_utils.c | g_utils.c |  |  |  | |
+| ctf\g_weapon.c | g_weapon.c |  |  |  | |
+| ctf\game.h | game.h |  |  |  | |
+| ctf\layout.txt | layout.txt |  |  |  | |
+| ctf\m_move.c | m_move.c |  |  |  | |
+| ctf\m_player.h | m_player.h |  |  |  | |
+| ctf\Makefile.Linux.i386 | Makefile.Linux.i386 |  |  |  | |
+| ctf\p_client.c | p_client.c |  |  |  | |
+| ctf\p_hud.c | p_hud.c |  |  |  | |
+| ctf\p_menu.c | p_menu.c |  |  |  | |
+| ctf\p_menu.h | p_menu.h |  |  |  | |
+| ctf\p_trail.c | p_trail.c |  |  |  | |
+| ctf\p_view.c | p_view.c |  |  |  | |
+| ctf\p_weapon.c | p_weapon.c |  |  |  | |
+| ctf\q_shared.c | q_shared.c |  |  |  | |
+| ctf\q_shared.h | q_shared.h |  |  |  | |
+| game\g_ai.c | g_ai.c |  |  |  | |
+| game\g_chase.c | g_chase.c |  |  |  | |
+| game\g_cmds.c | g_cmds.c |  |  |  | |
+| game\g_combat.c | g_combat.c |  |  |  | |
+| game\g_func.c | g_func.c |  |  |  | |
+| game\g_items.c | g_items.c |  |  |  | |
+| game\g_local.h | g_local.h | Shared gameplay declarations, enums, structs and function prototypes for the base game module. | 🟡 | ⬜ | generated/ts-stubs/game/g_local.ts |
+| game\g_main.c | g_main.c |  |  |  | |
+| game\g_misc.c | g_misc.c |  |  |  | |
+| game\g_monster.c | g_monster.c |  |  |  | |
+| game\g_phys.c | g_phys.c |  |  |  | |
+| game\g_save.c | g_save.c |  |  |  | |
+| game\g_spawn.c | g_spawn.c |  |  |  | |
+| game\g_svcmds.c | g_svcmds.c |  |  |  | |
+| game\g_target.c | g_target.c |  |  |  | |
+| game\g_trigger.c | g_trigger.c |  |  |  | |
+| game\g_turret.c | g_turret.c |  |  |  | |
+| game\g_utils.c | g_utils.c |  |  |  | |
+| game\g_weapon.c | g_weapon.c |  |  |  | |
+| game\game.001 | game.001 |  |  |  | |
+| game\game.def | game.def |  |  |  | |
+| game\game.dsp | game.dsp |  |  |  | |
+| game\game.h | game.h |  |  |  | |
+| game\game.plg | game.plg |  |  |  | |
+| game\m_actor.c | m_actor.c |  |  |  | |
+| game\m_actor.h | m_actor.h |  |  |  | |
+| game\m_berserk.c | m_berserk.c |  |  |  | |
+| game\m_berserk.h | m_berserk.h |  |  |  | |
+| game\m_boss2.c | m_boss2.c |  |  |  | |
+| game\m_boss2.h | m_boss2.h |  |  |  | |
+| game\m_boss3.c | m_boss3.c |  |  |  | |
+| game\m_boss31.c | m_boss31.c |  |  |  | |
+| game\m_boss31.h | m_boss31.h |  |  |  | |
+| game\m_boss32.c | m_boss32.c |  |  |  | |
+| game\m_boss32.h | m_boss32.h |  |  |  | |
+| game\m_brain.c | m_brain.c |  |  |  | |
+| game\m_brain.h | m_brain.h |  |  |  | |
+| game\m_chick.c | m_chick.c |  |  |  | |
+| game\m_chick.h | m_chick.h |  |  |  | |
+| game\m_flash.c | m_flash.c |  |  |  | |
+| game\m_flipper.c | m_flipper.c |  |  |  | |
+| game\m_flipper.h | m_flipper.h |  |  |  | |
+| game\m_float.c | m_float.c |  |  |  | |
+| game\m_float.h | m_float.h |  |  |  | |
+| game\m_flyer.c | m_flyer.c |  |  |  | |
+| game\m_flyer.h | m_flyer.h |  |  |  | |
+| game\m_gladiator.c | m_gladiator.c |  |  |  | |
+| game\m_gladiator.h | m_gladiator.h |  |  |  | |
+| game\m_gunner.c | m_gunner.c |  |  |  | |
+| game\m_gunner.h | m_gunner.h |  |  |  | |
+| game\m_hover.c | m_hover.c |  |  |  | |
+| game\m_hover.h | m_hover.h |  |  |  | |
+| game\m_infantry.c | m_infantry.c |  |  |  | |
+| game\m_infantry.h | m_infantry.h |  |  |  | |
+| game\m_insane.c | m_insane.c |  |  |  | |
+| game\m_insane.h | m_insane.h |  |  |  | |
+| game\m_medic.c | m_medic.c |  |  |  | |
+| game\m_medic.h | m_medic.h |  |  |  | |
+| game\m_move.c | m_move.c |  |  |  | |
+| game\m_mutant.c | m_mutant.c |  |  |  | |
+| game\m_mutant.h | m_mutant.h |  |  |  | |
+| game\m_parasite.c | m_parasite.c |  |  |  | |
+| game\m_parasite.h | m_parasite.h |  |  |  | |
+| game\m_player.h | m_player.h |  |  |  | |
+| game\m_rider.h | m_rider.h |  |  |  | |
+| game\m_soldier.c | m_soldier.c |  |  |  | |
+| game\m_soldier.h | m_soldier.h |  |  |  | |
+| game\m_supertank.c | m_supertank.c |  |  |  | |
+| game\m_supertank.h | m_supertank.h |  |  |  | |
+| game\m_tank.c | m_tank.c |  |  |  | |
+| game\m_tank.h | m_tank.h |  |  |  | |
+| game\p_client.c | p_client.c |  |  |  | |
+| game\p_hud.c | p_hud.c |  |  |  | |
+| game\p_trail.c | p_trail.c |  |  |  | |
+| game\p_view.c | p_view.c |  |  |  | |
+| game\p_weapon.c | p_weapon.c |  |  |  | |
+| game\q_shared.c | q_shared.c |  |  |  | |
+| game\q_shared.h | q_shared.h | Shared core declarations, constants, math-adjacent structs, pmove, entity and player state types. | 🟠 | 🟠 | packages/qcommon/src/q-shared.ts |
+| gnu.txt | gnu.txt |  |  |  | |
+| irix\cd_irix.c | cd_irix.c |  |  |  | |
+| irix\glw_imp.c | glw_imp.c |  |  |  | |
+| irix\q_shirix.c | q_shirix.c |  |  |  | |
+| irix\qgl_irix.c | qgl_irix.c |  |  |  | |
+| irix\snd_irix.c | snd_irix.c |  |  |  | |
+| irix\sys_irix.c | sys_irix.c |  |  |  | |
+| irix\vid_menu.c | vid_menu.c |  |  |  | |
+| irix\vid_so.c | vid_so.c |  |  |  | |
+| joystick.txt | joystick.txt |  |  |  | |
+| linux\block16.h | block16.h |  |  |  | |
+| linux\block8.h | block8.h |  |  |  | |
+| linux\cd_linux.c | cd_linux.c |  |  |  | |
+| linux\d_copy.s | d_copy.s |  |  |  | |
+| linux\d_ifacea.h | d_ifacea.h |  |  |  | |
+| linux\d_polysa.s | d_polysa.s |  |  |  | |
+| linux\gl_fxmesa.c | gl_fxmesa.c |  |  |  | |
+| linux\glob.c | glob.c |  |  |  | |
+| linux\glob.h | glob.h |  |  |  | |
+| linux\in_linux.c | in_linux.c |  |  |  | |
+| linux\Makefile.AXP | Makefile.AXP |  |  |  | |
+| linux\Makefile.i386 | Makefile.i386 |  |  |  | |
+| linux\math.s | math.s |  |  |  | |
+| linux\net_udp.c | net_udp.c |  |  |  | |
+| linux\q_shlinux.c | q_shlinux.c |  |  |  | |
+| linux\qasm.h | qasm.h |  |  |  | |
+| linux\qgl_linux.c | qgl_linux.c |  |  |  | |
+| linux\r_aclipa.s | r_aclipa.s |  |  |  | |
+| linux\r_draw16.s | r_draw16.s |  |  |  | |
+| linux\r_drawa.s | r_drawa.s |  |  |  | |
+| linux\r_edgea.s | r_edgea.s |  |  |  | |
+| linux\r_scana.s | r_scana.s |  |  |  | |
+| linux\r_spr8.s | r_spr8.s |  |  |  | |
+| linux\r_surf8.s | r_surf8.s |  |  |  | |
+| linux\r_varsa.s | r_varsa.s |  |  |  | |
+| linux\rw_in_svgalib.c | rw_in_svgalib.c |  |  |  | |
+| linux\rw_linux.h | rw_linux.h |  |  |  | |
+| linux\rw_svgalib.c | rw_svgalib.c |  |  |  | |
+| linux\rw_x11.c | rw_x11.c |  |  |  | |
+| linux\snd_linux.c | snd_linux.c |  |  |  | |
+| linux\snd_mixa.s | snd_mixa.s |  |  |  | |
+| linux\sys_dosa.s | sys_dosa.s |  |  |  | |
+| linux\sys_linux.c | sys_linux.c |  |  |  | |
+| linux\vid_menu.c | vid_menu.c |  |  |  | |
+| linux\vid_so.c | vid_so.c |  |  |  | |
+| makefile | makefile |  |  |  | |
+| makezip | makezip |  |  |  | |
+| makezip.bat | makezip.bat |  |  |  | |
+| null\cd_null.c | cd_null.c |  |  |  | |
+| null\cl_null.c | cl_null.c |  |  |  | |
+| null\glimp_null.c | glimp_null.c |  |  |  | |
+| null\in_null.c | in_null.c |  |  |  | |
+| null\snddma_null.c | snddma_null.c |  |  |  | |
+| null\swimp_null.c | swimp_null.c |  |  |  | |
+| null\sys_null.c | sys_null.c |  |  |  | |
+| null\vid_null.c | vid_null.c |  |  |  | |
+| qcommon\cmd.c | cmd.c | Command buffer, tokenization, aliases and command registry. | 🟠 | 🟠 | packages/qcommon/src/cmd.ts |
+| qcommon\cmodel.c | cmodel.c | BSP collision loading, point contents, box traces and inline collision models used by shared movement and client prediction. | 🟠 | 🟠 | packages/qcommon/src/collision.ts |
+| qcommon\common.c | common.c | Message IO functions, size buffers, common runtime helpers. | 🟠 | 🟠 | packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/messages.ts, packages/qcommon/src/common.ts, packages/qcommon/src/runtime.ts |
+| qcommon\crc.c | crc.c |  |  |  | |
+| qcommon\crc.h | crc.h |  |  |  | |
+| qcommon\cvar.c | cvar.c | Dynamic console variables, flags, latched values, info strings and command-facing setters. | 🟠 | 🟠 | packages/qcommon/src/cvar.ts |
+| qcommon\files.c | files.c | Filesystem search paths, pack loading, file opening and asset reads. | 🟠 | 🟠 | packages/formats/src/pak.ts, packages/filesystem/src/virtual-filesystem.ts, packages/filesystem/src/index.ts |
+| qcommon\md4.c | md4.c |  |  |  | |
+| qcommon\net_chan.c | net_chan.c |  |  |  | |
+| qcommon\pmove.c | pmove.c | Shared player movement core used by client prediction and server-authoritative simulation. | 🟠 | 🟠 | packages/qcommon/src/pmove.ts |
+| qcommon\qcommon.h | qcommon.h | Shared declarations for sizebuf_t, MSG_*, protocol and runtime contracts. Stub TypeScript generated. | 🟠 | 🟠 | packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/messages.ts, generated/ts-stubs/qcommon/qcommon.ts |
+| qcommon\qfiles.h | qfiles.h | Binary file format declarations including PAK, PCX, WAL, MD2, sprite and BSP layouts. | 🟠 | 🟠 | packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/bsp.ts |
+| quake2.001 | quake2.001 |  |  |  | |
+| quake2.bce | quake2.bce |  |  |  | |
+| quake2.bcp | quake2.bcp |  |  |  | |
+| quake2.dsp | quake2.dsp |  |  |  | |
+| quake2.dsw | quake2.dsw |  |  |  | |
+| quake2.mak | quake2.mak |  |  |  | |
+| quake2.opt | quake2.opt |  |  |  | |
+| quake2.plg | quake2.plg |  |  |  | |
+| readme.txt | readme.txt |  |  |  | |
+| ref_gl\anorms.h | anorms.h |  |  |  | |
+| ref_gl\anormtab.h | anormtab.h |  |  |  | |
+| ref_gl\gl_draw.c | gl_draw.c |  |  |  | |
+| ref_gl\gl_image.c | gl_image.c |  |  |  | |
+| ref_gl\gl_light.c | gl_light.c |  |  |  | |
+| ref_gl\gl_local.h | gl_local.h |  |  |  | |
+| ref_gl\gl_mesh.c | gl_mesh.c |  |  |  | |
+| ref_gl\gl_model.c | gl_model.c |  |  |  | |
+| ref_gl\gl_model.h | gl_model.h |  |  |  | |
+| ref_gl\gl_rmain.c | gl_rmain.c |  |  |  | |
+| ref_gl\gl_rmisc.c | gl_rmisc.c |  |  |  | |
+| ref_gl\gl_rsurf.c | gl_rsurf.c |  |  |  | |
+| ref_gl\gl_warp.c | gl_warp.c |  |  |  | |
+| ref_gl\qgl.h | qgl.h |  |  |  | |
+| ref_gl\ref_gl.001 | ref_gl.001 |  |  |  | |
+| ref_gl\ref_gl.def | ref_gl.def |  |  |  | |
+| ref_gl\ref_gl.dsp | ref_gl.dsp |  |  |  | |
+| ref_gl\ref_gl.plg | ref_gl.plg |  |  |  | |
+| ref_gl\warpsin.h | warpsin.h |  |  |  | |
+| ref_soft\adivtab.h | adivtab.h |  |  |  | |
+| ref_soft\anorms.h | anorms.h |  |  |  | |
+| ref_soft\asm_draw.h | asm_draw.h |  |  |  | |
+| ref_soft\block16.inc | block16.inc |  |  |  | |
+| ref_soft\block8.inc | block8.inc |  |  |  | |
+| ref_soft\d_if.inc | d_if.inc |  |  |  | |
+| ref_soft\d_ifacea.h | d_ifacea.h |  |  |  | |
+| ref_soft\qasm.inc | qasm.inc |  |  |  | |
+| ref_soft\r_aclip.c | r_aclip.c |  |  |  | |
+| ref_soft\r_aclipa.asm | r_aclipa.asm |  |  |  | |
+| ref_soft\r_alias.c | r_alias.c |  |  |  | |
+| ref_soft\r_bsp.c | r_bsp.c |  |  |  | |
+| ref_soft\r_draw.c | r_draw.c |  |  |  | |
+| ref_soft\r_draw16.asm | r_draw16.asm |  |  |  | |
+| ref_soft\r_drawa.asm | r_drawa.asm |  |  |  | |
+| ref_soft\r_edge.c | r_edge.c |  |  |  | |
+| ref_soft\r_edgea.asm | r_edgea.asm |  |  |  | |
+| ref_soft\r_image.c | r_image.c |  |  |  | |
+| ref_soft\r_light.c | r_light.c |  |  |  | |
+| ref_soft\r_local.h | r_local.h |  |  |  | |
+| ref_soft\r_main.c | r_main.c |  |  |  | |
+| ref_soft\r_misc.c | r_misc.c |  |  |  | |
+| ref_soft\r_model.c | r_model.c |  |  |  | |
+| ref_soft\r_model.h | r_model.h |  |  |  | |
+| ref_soft\r_part.c | r_part.c |  |  |  | |
+| ref_soft\r_poly.c | r_poly.c |  |  |  | |
+| ref_soft\r_polysa.asm | r_polysa.asm |  |  |  | |
+| ref_soft\r_polyse.c | r_polyse.c |  |  |  | |
+| ref_soft\r_rast.c | r_rast.c |  |  |  | |
+| ref_soft\r_scan.c | r_scan.c |  |  |  | |
+| ref_soft\r_scana.asm | r_scana.asm |  |  |  | |
+| ref_soft\r_spr8.asm | r_spr8.asm |  |  |  | |
+| ref_soft\r_sprite.c | r_sprite.c |  |  |  | |
+| ref_soft\r_surf.c | r_surf.c |  |  |  | |
+| ref_soft\r_surf8.asm | r_surf8.asm |  |  |  | |
+| ref_soft\r_varsa.asm | r_varsa.asm |  |  |  | |
+| ref_soft\rand1k.h | rand1k.h |  |  |  | |
+| ref_soft\ref_soft.001 | ref_soft.001 |  |  |  | |
+| ref_soft\ref_soft.def | ref_soft.def |  |  |  | |
+| ref_soft\ref_soft.dsp | ref_soft.dsp |  |  |  | |
+| ref_soft\ref_soft.plg | ref_soft.plg |  |  |  | |
+| rhapsody\in_next.m | in_next.m |  |  |  | |
+| rhapsody\makefile.bak | makefile.bak |  |  |  | |
+| rhapsody\notes.txt | notes.txt |  |  |  | |
+| rhapsody\pb.project | pb.project |  |  |  | |
+| rhapsody\quake2.iconheader | quake2.iconheader |  |  |  | |
+| rhapsody\quake2.tiff | quake2.tiff |  |  |  | |
+| rhapsody\r_next.m | r_next.m |  |  |  | |
+| rhapsody\rhapqw.txt | rhapqw.txt |  |  |  | |
+| rhapsody\snd_next.m | snd_next.m |  |  |  | |
+| rhapsody\swimp_rhap.m | swimp_rhap.m |  |  |  | |
+| rhapsody\sys_rhap.m | sys_rhap.m |  |  |  | |
+| rhapsody\vid_next.m | vid_next.m |  |  |  | |
+| server\server.h | server.h |  |  |  | |
+| server\sv_ccmds.c | sv_ccmds.c |  |  |  | |
+| server\sv_ents.c | sv_ents.c |  |  |  | |
+| server\sv_game.c | sv_game.c |  |  |  | |
+| server\sv_init.c | sv_init.c |  |  |  | |
+| server\sv_main.c | sv_main.c |  |  |  | |
+| server\sv_null.c | sv_null.c |  |  |  | |
+| server\sv_send.c | sv_send.c |  |  |  | |
+| server\sv_user.c | sv_user.c |  |  |  | |
+| server\sv_world.c | sv_world.c |  |  |  | |
+| solaris\g_so.c | g_so.c |  |  |  | |
+| solaris\glob.c | glob.c |  |  |  | |
+| solaris\glob.h | glob.h |  |  |  | |
+| solaris\Makefile.OLD | Makefile.OLD |  |  |  | |
+| solaris\Makefile.Solaris | Makefile.Solaris |  |  |  | |
+| solaris\net_udp.c | net_udp.c |  |  |  | |
+| solaris\q_shsolaris.c | q_shsolaris.c |  |  |  | |
+| solaris\sys_solaris.c | sys_solaris.c |  |  |  | |
+| unix\makefile | makefile |  |  |  | |
+| unix\makefile_old | makefile_old |  |  |  | |
+| unix\next\sv_ccmds.o | sv_ccmds.o |  |  |  | |
+| win32\cd_win.c | cd_win.c |  |  |  | |
+| win32\conproc.c | conproc.c |  |  |  | |
+| win32\conproc.h | conproc.h |  |  |  | |
+| win32\glw_imp.c | glw_imp.c |  |  |  | |
+| win32\glw_win.h | glw_win.h |  |  |  | |
+| win32\in_win.c | in_win.c |  |  |  | |
+| win32\net_wins.c | net_wins.c |  |  |  | |
+| win32\q_shwin.c | q_shwin.c |  |  |  | |
+| win32\q2.aps | q2.aps |  |  |  | |
+| win32\q2.ico | q2.ico |  |  |  | |
+| win32\q2.rc | q2.rc |  |  |  | |
+| win32\qe3.ico | qe3.ico |  |  |  | |
+| win32\qgl_win.c | qgl_win.c |  |  |  | |
+| win32\resource.h | resource.h |  |  |  | |
+| win32\rw_ddraw.c | rw_ddraw.c |  |  |  | |
+| win32\rw_dib.c | rw_dib.c |  |  |  | |
+| win32\rw_imp.c | rw_imp.c |  |  |  | |
+| win32\rw_win.h | rw_win.h |  |  |  | |
+| win32\snd_win.c | snd_win.c |  |  |  | |
+| win32\sys_win.c | sys_win.c |  |  |  | |
+| win32\vid_dll.c | vid_dll.c |  |  |  | |
+| win32\vid_menu.c | vid_menu.c |  |  |  | |
+| win32\winquake.aps | winquake.aps |  |  |  | |
+| win32\winquake.h | winquake.h |  |  |  | |
+| win32\winquake.rc | winquake.rc |  |  |  | |

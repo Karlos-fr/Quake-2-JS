@@ -14,11 +14,18 @@
 
 import {
   AmbientLight,
+  BufferGeometry,
   Color,
   DirectionalLight,
   Group,
+  Line,
+  LineBasicMaterial,
+  Mesh,
+  MeshBasicMaterial,
+  Object3D,
   PerspectiveCamera,
   Scene,
+  SphereGeometry,
   Vector3,
   WebGLRenderer
 } from "three";
@@ -35,6 +42,7 @@ import {
 } from "../../../packages/renderer-three/src/index.js";
 import { findPrimarySpawnPoint, parseBsp } from "../../../packages/formats/src/index.js";
 import { createVirtualFilesystem, mountPak, readMountedFile } from "../../../packages/filesystem/src/index.js";
+import { createLocalClientController } from "./local-client-controller.js";
 
 const BASEQ2_PAK_CANDIDATES = [
   "/@fs/C:/a/Projets/Quake-2/Quake 2/baseq2/pak0.pak",
@@ -42,24 +50,8 @@ const BASEQ2_PAK_CANDIDATES = [
 ];
 const DEFAULT_MAP_PATH = "maps/base1.bsp";
 const DEFAULT_MODEL_PATH = "models/items/armor/shard/tris.md2";
-const CAMERA_MOVE_SPEED = 320;
-const CAMERA_VERTICAL_SPEED = 220;
-const CAMERA_MOUSE_SENSITIVITY = 0.0022;
-const CAMERA_EYE_HEIGHT = 24;
 
 type ActiveRenderer = WebGPURenderer | WebGLRenderer;
-type MovementKey = "forward" | "backward" | "left" | "right" | "up" | "down";
-
-interface CameraController {
-  state: {
-    position: Vector3;
-    yaw: number;
-    pitch: number;
-    pressedKeys: Record<MovementKey, boolean>;
-    pointerLocked: boolean;
-  };
-  update: (deltaSeconds: number) => void;
-}
 
 /**
  * Category: New
@@ -115,7 +107,9 @@ async function bootstrap(): Promise<void> {
 
     const scene = createScene(group);
     const camera = createCamera();
-    const cameraController = createCameraController(ui.viewport, camera, spawn);
+    const cameraController = createLocalClientController(ui.viewport, camera, map, spawn);
+    const refreshDebug = createRefreshDebugGroup();
+    scene.add(refreshDebug.root);
 
     ui.setMapInfo({
       mapName: bspFile.path,
@@ -145,6 +139,8 @@ async function bootstrap(): Promise<void> {
       previousFrameAt = now;
 
       cameraController.update(deltaSeconds);
+      refreshDebug.update(cameraController.refreshFrame);
+      ui.setRuntimeInfo(cameraController.refreshFrame);
       updateEntityPreviewGroup(entityPreview, elapsedSeconds);
 
       if (modelInstance && modelInstance.model.frames.length > 1) {
@@ -281,152 +277,6 @@ function createCamera(): PerspectiveCamera {
 
 /**
  * Category: New
- * Purpose: Create a lightweight browser FPS camera controller for map exploration.
- *
- * Constraints:
- * - Must support pointer lock mouse look and keyboard movement without external dependencies.
- */
-function createCameraController(
-  viewport: HTMLDivElement,
-  camera: PerspectiveCamera,
-  spawn: ReturnType<typeof findPrimarySpawnPoint>
-): CameraController {
-  const initialPosition = spawn
-    ? new Vector3(spawn.origin[0], spawn.origin[1], spawn.origin[2] + CAMERA_EYE_HEIGHT)
-    : new Vector3(0, -512, 192);
-  const initialYaw = spawn ? (spawn.angle * Math.PI) / 180 : 0;
-
-  const state: CameraController["state"] = {
-    position: initialPosition,
-    yaw: initialYaw,
-    pitch: 0,
-    pressedKeys: {
-      forward: false,
-      backward: false,
-      left: false,
-      right: false,
-      up: false,
-      down: false
-    },
-    pointerLocked: false
-  };
-
-  applyCameraTransform(camera, state.position, state.yaw, state.pitch);
-
-  const codeBindings: Record<string, MovementKey> = {
-    Space: "up",
-    ControlLeft: "down",
-    ControlRight: "down"
-  };
-
-  const keyBindings: Record<string, MovementKey> = {
-    z: "forward",
-    s: "backward",
-    q: "left",
-    d: "right",
-    c: "down"
-  };
-
-  viewport.addEventListener("click", () => {
-    void viewport.requestPointerLock();
-  });
-
-  document.addEventListener("pointerlockchange", () => {
-    state.pointerLocked = document.pointerLockElement === viewport;
-  });
-
-  document.addEventListener("mousemove", (event) => {
-    if (!state.pointerLocked) {
-      return;
-    }
-
-    state.yaw -= event.movementX * CAMERA_MOUSE_SENSITIVITY;
-    state.pitch -= event.movementY * CAMERA_MOUSE_SENSITIVITY;
-    state.pitch = Math.max(-Math.PI / 2 + 0.01, Math.min(Math.PI / 2 - 0.01, state.pitch));
-  });
-
-  window.addEventListener("keydown", (event) => {
-    const binding = codeBindings[event.code] ?? keyBindings[event.key.toLowerCase()];
-    if (!binding) {
-      return;
-    }
-
-    state.pressedKeys[binding] = true;
-    event.preventDefault();
-  });
-
-  window.addEventListener("keyup", (event) => {
-    const binding = codeBindings[event.code] ?? keyBindings[event.key.toLowerCase()];
-    if (!binding) {
-      return;
-    }
-
-    state.pressedKeys[binding] = false;
-    event.preventDefault();
-  });
-
-  return {
-    state,
-    update: (deltaSeconds) => {
-      const forward = new Vector3();
-      camera.getWorldDirection(forward);
-      forward.z = 0;
-      if (forward.lengthSq() > 0) {
-        forward.normalize();
-      }
-
-      const right = new Vector3().crossVectors(forward, camera.up).normalize();
-      const movement = new Vector3();
-
-      if (state.pressedKeys.forward) {
-        movement.add(forward);
-      }
-      if (state.pressedKeys.backward) {
-        movement.sub(forward);
-      }
-      if (state.pressedKeys.left) {
-        movement.sub(right);
-      }
-      if (state.pressedKeys.right) {
-        movement.add(right);
-      }
-
-      if (movement.lengthSq() > 0) {
-        movement.normalize().multiplyScalar(CAMERA_MOVE_SPEED * deltaSeconds);
-        state.position.add(movement);
-      }
-
-      if (state.pressedKeys.up) {
-        state.position.z += CAMERA_VERTICAL_SPEED * deltaSeconds;
-      }
-      if (state.pressedKeys.down) {
-        state.position.z -= CAMERA_VERTICAL_SPEED * deltaSeconds;
-      }
-
-      applyCameraTransform(camera, state.position, state.yaw, state.pitch);
-    }
-  };
-}
-
-/**
- * Category: New
- * Purpose: Apply yaw/pitch first-person orientation to the active camera.
- *
- * Constraints:
- * - Must preserve Z-up world coordinates.
- */
-function applyCameraTransform(camera: PerspectiveCamera, position: Vector3, yaw: number, pitch: number): void {
-  camera.position.copy(position);
-  camera.rotation.order = "ZYX";
-  camera.rotation.x = Math.PI / 2;
-  camera.rotation.y = 0;
-  camera.rotation.z = 0;
-  camera.rotateOnWorldAxis(new Vector3(0, 0, 1), yaw);
-  camera.rotateX(-pitch);
-}
-
-/**
- * Category: New
  * Purpose: Require the root application mount point.
  *
  * Constraints:
@@ -455,18 +305,28 @@ function createShell(app: HTMLDivElement): {
   setStatus: (value: string) => void;
   setError: (value: string) => void;
   setMapInfo: (value: { mapName: string; faceCount: number; surfaceCount: number; entityCount: number; spawnText: string }) => void;
+  setRuntimeInfo: (value: ReturnType<typeof createLocalClientController>["refreshFrame"]) => void;
 } {
   app.innerHTML = "";
+  document.documentElement.style.height = "100%";
+  document.documentElement.style.overflow = "hidden";
+  document.body.style.margin = "0";
+  document.body.style.height = "100%";
+  document.body.style.overflow = "hidden";
+  app.style.height = "100%";
+  app.style.overflow = "hidden";
 
   const root = document.createElement("main");
   root.style.display = "grid";
-  root.style.gridTemplateRows = "1fr auto";
   root.style.height = "100vh";
+  root.style.overflow = "hidden";
   root.style.background = "#0d0906";
 
   const viewport = document.createElement("div");
   viewport.style.position = "relative";
   viewport.style.minHeight = "0";
+  viewport.style.height = "100%";
+  viewport.style.overflow = "hidden";
 
   const overlay = document.createElement("div");
   overlay.style.position = "absolute";
@@ -485,10 +345,11 @@ function createShell(app: HTMLDivElement): {
   const rendererLine = document.createElement("div");
   const statusLine = document.createElement("div");
   const infoLine = document.createElement("div");
+  const runtimeLine = document.createElement("div");
   const errorLine = document.createElement("div");
   errorLine.style.color = "#f0b8a0";
 
-  overlay.append(rendererLine, statusLine, infoLine, errorLine);
+  overlay.append(rendererLine, statusLine, infoLine, runtimeLine, errorLine);
   viewport.append(overlay);
 
   root.append(viewport);
@@ -520,6 +381,130 @@ function createShell(app: HTMLDivElement): {
         `Spawn: ${spawnText}`,
         `Controles: clic pour souris, ZQSD, Espace, Ctrl/C`
       ].join("\n");
+    },
+    setRuntimeInfo: (value) => {
+      runtimeLine.textContent = value
+        ? [
+            `Refresh: entites ${value.entities.length}`,
+            `Beams: ${value.beams.length}`,
+            `Explosions: ${value.explosions.length}`,
+            `ForceWalls: ${value.forceWalls.length}`,
+            `Sustains: ${value.sustains.length}`,
+            `Lights: ${value.lights.length}`
+          ].join("\n")
+        : "Refresh: en attente";
     }
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Build a lightweight scene debug layer for client refresh beams and force walls.
+ *
+ * Constraints:
+ * - Must stay cheap enough to rebuild every frame during the current prototype stage.
+ */
+function createRefreshDebugGroup(): {
+  root: Group;
+  update: (frame: ReturnType<typeof createLocalClientController>["refreshFrame"]) => void;
+} {
+  const root = new Group();
+  const beams = new Group();
+  const forceWalls = new Group();
+  const sustains = new Group();
+  root.add(beams);
+  root.add(forceWalls);
+  root.add(sustains);
+
+  const beamMaterial = new LineBasicMaterial({ color: new Color("#74c9ff"), transparent: true, opacity: 0.72 });
+  const forceWallMaterial = new LineBasicMaterial({ color: new Color("#e0a85f"), transparent: true, opacity: 0.9 });
+  const steamMaterial = new LineBasicMaterial({ color: new Color("#c6d5d9"), transparent: true, opacity: 0.75 });
+  const widowMaterial = new MeshBasicMaterial({ color: new Color("#8dd6ff"), wireframe: true, transparent: true, opacity: 0.4 });
+  const nukeMaterial = new MeshBasicMaterial({ color: new Color("#ffb347"), wireframe: true, transparent: true, opacity: 0.35 });
+
+  return {
+    root,
+    update: (frame) => {
+      clearGroup(beams);
+      clearGroup(forceWalls);
+      clearGroup(sustains);
+
+      if (!frame) {
+        return;
+      }
+
+      for (const beam of frame.beams) {
+        beams.add(createLineObject(beam.start, beam.end, beamMaterial));
+      }
+
+      for (const wall of frame.forceWalls) {
+        forceWalls.add(createLineObject(wall.start, wall.end, forceWallMaterial));
+      }
+
+      for (const sustain of frame.sustains) {
+        sustains.add(createSustainObject(sustain, steamMaterial, widowMaterial, nukeMaterial));
+      }
+    }
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create one simple Three.js line object between two Quake-space points.
+ */
+function createLineObject(start: [number, number, number], end: [number, number, number], material: LineBasicMaterial): Line {
+  const geometry = new BufferGeometry().setFromPoints([
+    new Vector3(start[0], start[1], start[2]),
+    new Vector3(end[0], end[1], end[2])
+  ]);
+  return new Line(geometry, material);
+}
+
+/**
+ * Category: New
+ * Purpose: Create one minimal debug object representing a client sustain effect.
+ */
+function createSustainObject(
+  sustain: NonNullable<ReturnType<typeof createLocalClientController>["refreshFrame"]>["sustains"][number],
+  steamMaterial: LineBasicMaterial,
+  widowMaterial: MeshBasicMaterial,
+  nukeMaterial: MeshBasicMaterial
+): Object3D {
+  if (sustain.kind === "steam") {
+    const end: [number, number, number] = [
+      sustain.origin[0] + sustain.direction[0] * sustain.radius,
+      sustain.origin[1] + sustain.direction[1] * sustain.radius,
+      sustain.origin[2] + sustain.direction[2] * sustain.radius
+    ];
+    return createLineObject(sustain.origin, end, steamMaterial);
+  }
+
+  const geometry = new SphereGeometry(Math.max(8, sustain.radius), 10, 8);
+  const material = sustain.kind === "widow" ? widowMaterial : nukeMaterial;
+  const mesh = new Mesh(geometry, material);
+  mesh.position.set(sustain.origin[0], sustain.origin[1], sustain.origin[2]);
+  return mesh;
+}
+
+/**
+ * Category: New
+ * Purpose: Remove and dispose all transient debug objects from one Three.js group.
+ */
+function clearGroup(group: Group): void {
+  const children = [...group.children];
+  for (const child of children) {
+    group.remove(child);
+    disposeObject(child);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Dispose transient line geometries created by the current debug refresh layer.
+ */
+function disposeObject(object: Object3D): void {
+  if ("geometry" in object) {
+    const geometry = (object as { geometry?: BufferGeometry | SphereGeometry }).geometry;
+    geometry?.dispose();
+  }
 }

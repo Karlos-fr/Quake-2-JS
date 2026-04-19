@@ -8,7 +8,7 @@ Le projet repart volontairement de zero pour privilegier un portage fidele, indu
 
 - Source C originale : [Quake-2-master](C:\a\Projets\Quake-2\Quake-2-master)
 - Installation originale avec assets : [Quake 2](<C:\a\Projets\Quake-2\Quake 2>)
-- Suivi fichier par fichier du depot source : [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\Quake-2-master\PORTAGE_QUAKE2.md)
+- Suivi fichier par fichier du depot source : [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md)
 - Plan de portage du depot courant : [PLAN_QUAKE2JS.md](C:\a\Projets\Quake-2\PLAN_QUAKE2JS.md)
 
 ## Objectif
@@ -254,7 +254,7 @@ Dans un second temps :
 
 ## Regles de suivi
 
-- Maintenir [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\Quake-2-master\PORTAGE_QUAKE2.md) au fur et a mesure.
+- Maintenir [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md) au fur et a mesure.
 - Les colonnes `A porter` et `Porte` doivent utiliser des emojis.
 - Convention recommandee :
   - `⬜` : pas traite

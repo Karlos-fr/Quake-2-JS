@@ -39,6 +39,7 @@ export const MAX_SOUNDS = 256;
 export const MAX_IMAGES = 256;
 export const MAX_ITEMS = 256;
 export const MAX_GENERAL = MAX_CLIENTS * 2;
+export const MAX_MAP_AREAS = 256;
 
 export const PRINT_LOW = 0;
 export const PRINT_MEDIUM = 1;
@@ -444,6 +445,69 @@ export function ANGLE2SHORT(value: number): number {
  */
 export function SHORT2ANGLE(value: number): number {
   return value * SHORT2ANGLE_SCALE;
+}
+
+/**
+ * Original name: LerpAngle
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Interpolates between two angles while preserving wrap-around across the 180/-180 seam.
+ *
+ * Porting notes:
+ * - Preserves the original parameter ordering and wrap correction logic.
+ */
+export function LerpAngle(a2: number, a1: number, frac: number): number {
+  let adjustedA1 = a1;
+  if (adjustedA1 - a2 > 180) {
+    adjustedA1 -= 360;
+  }
+  if (adjustedA1 - a2 < -180) {
+    adjustedA1 += 360;
+  }
+
+  return a2 + frac * (adjustedA1 - a2);
+}
+
+/**
+ * Original name: AngleVectors
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Builds forward, right and up vectors from Quake II pitch/yaw/roll angles in degrees.
+ *
+ * Porting notes:
+ * - Returns vectors in one object instead of mutating nullable output pointers.
+ */
+export function AngleVectors(angles: vec3_t): { forward: vec3_t; right: vec3_t; up: vec3_t } {
+  const yaw = angles[YAW] * (Math.PI * 2 / 360);
+  const pitch = angles[PITCH] * (Math.PI * 2 / 360);
+  const roll = angles[ROLL] * (Math.PI * 2 / 360);
+
+  const sy = Math.sin(yaw);
+  const cy = Math.cos(yaw);
+  const sp = Math.sin(pitch);
+  const cp = Math.cos(pitch);
+  const sr = Math.sin(roll);
+  const cr = Math.cos(roll);
+
+  return {
+    forward: [cp * cy, cp * sy, -sp],
+    right: [
+      (-sr * sp * cy) + (-cr * -sy),
+      (-sr * sp * sy) + (-cr * cy),
+      -sr * cp
+    ],
+    up: [
+      (cr * sp * cy) + (-sr * -sy),
+      (cr * sp * sy) + (-sr * cy),
+      cr * cp
+    ]
+  };
 }
 
 /**

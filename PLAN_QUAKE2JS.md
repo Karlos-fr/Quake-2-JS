@@ -15,7 +15,7 @@ Construire un portage fidele de Quake II original en TypeScript / JavaScript, av
 
 - Source originale a porter : [Quake-2-master](C:\a\Projets\Quake-2\Quake-2-master)
 - Installation originale et assets : [Quake 2](<C:\a\Projets\Quake-2\Quake 2>)
-- Suivi fichier par fichier : [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\Quake-2-master\PORTAGE_QUAKE2.md)
+- Suivi fichier par fichier : [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md)
 - Regles de projet : [README.md](C:\a\Projets\Quake-2\README.md)
 
 ## 3. Axes de travail
@@ -76,6 +76,7 @@ Construire un portage fidele de Quake II original en TypeScript / JavaScript, av
 - ✅ preparer des golden tests et traces de comparaison
 
 ### Phase 3 - Qcommon et formats
+- ðŸŸ  amorcer `cmodel.c` avec un premier backend BSP pour `CM_PointContents`, `CM_BoxTrace`, world models et hooks `pmove`
 
 - ✅ premier port de `q_shared.h` et des types communs
 - ✅ premier port des messages et buffers reseau internes
@@ -86,11 +87,18 @@ Construire un portage fidele de Quake II original en TypeScript / JavaScript, av
 - ⬜ remettre un chargement valide des assets depuis les `.pak`
 
 ### Phase 4 - Client minimal fidele
+- ðŸŸ  amorcer `pmove.c` avec `PM_ClipVelocity`, `PM_Friction`, `PM_Accelerate`, `PM_AirAccelerate`, `PM_AddCurrents`, `PM_StepSlideMove` et le contexte `pml_t`
+- ðŸŸ  brancher une premiere prediction client sur `Pmove` avec buffers `cmds`, origines predites et hooks `trace` / `pointcontents`
+- ðŸŸ  etendre `pmove.c` avec `PM_CatagorizePosition`, `PM_CheckJump`, `PM_CheckSpecialMovement` et `PM_WaterMove`
+- ðŸŸ  etendre `pmove.c` avec `PM_FlyMove` et `PM_DeadMove`, puis les brancher dans `Pmove`
+- ðŸŸ  porter `PM_GoodPosition`, `PM_InitialSnapPosition` et `PM_SnapPosition`, puis finaliser leur usage dans `Pmove`
+- ðŸŸ  brancher un premier client local web sur `CL_CreateCmd` + `CL_PredictMovement` avec collision BSP reelle
 
-- ⬜ restaurer la chaine de parsing client originale
-- ⬜ remettre les structures d'etat client
-- ⬜ remettre les entites, configstrings, baselines et frames
-- ⬜ remettre prediction, camera logique et point de spawn
+- 🟠 restaurer la chaine de parsing client originale avec un premier parser `serverdata`, `configstring`, `baseline`, `frame` et un premier noyau `cl_main`
+- 🟠 remettre les structures d'etat client avec un premier port de `frame_t`, `centity_t`, `client_state_t`, `client_static_t` et de l'init locale client
+- 🟠 remettre les entites, configstrings, baselines et frames avec un premier port de `CL_ParseEntityBits`, `CL_ParseDelta`, `CL_ParsePlayerstate`, `CL_ParseFrame`, `CL_LoadClientinfo`, `CL_ParseClientinfo`, `CL_ParseLayout` et `CL_ParseInventory`
+- 🟠 remettre prediction, camera logique et point de spawn avec un premier port de `CL_CheckPredictionError`, `CL_UpdateLerpFraction`, `CL_PredictMovement` et `CL_CalcViewValues`
+- 🟠 remettre la construction des `usercmd_t` avec un premier port de `kbutton_t`, `KeyDown`, `KeyUp`, `CL_KeyState`, `CL_BaseMove`, `CL_FinishMove`, `CL_CreateCmd` et `CL_InitInput`
 - ⬜ remettre HUD et son cote client
 
 ### Phase 5 - Serveur et gameplay
@@ -109,18 +117,24 @@ Construire un portage fidele de Quake II original en TypeScript / JavaScript, av
 - ⬜ stabiliser `WebGPU` puis fallback `WebGL`
 
 ## 5. Reste a porter
+- ðŸŸ  La collision BSP partagee avec un premier noyau `cmodel` pour `CM_PointContents`, `CM_BoxTrace` et les hooks `trace` / `pointcontents` deja amorces
 
 - ⬜ Le runtime bas niveau complet
 - 🟠 Le systeme de fichiers Quake II complet avec montage `.pak`, search paths, gamedir, links, listing et lecture texte deja amorces
 - 🟠 Les parseurs de formats definitifs avec `PAK`, `PCX`, `WAL`, `MD2` et `BSP` deja amorces
 - 🟠 Le socle `qcommon` avec `cmd`, `cvar`, `messages`, `q_shared`, `common` et un runtime d'integration deja amorces
-- ⬜ Le vrai pipeline client Quake II
+- 🟠 Le vrai pipeline client Quake II avec un premier parser d'etat, de baselines, de frames, de son/download et de vue logique deja amorce
 - ⬜ Le monde serveur et les snapshots
 - ⬜ Le gameplay `game/`
 - 🟠 Le bridge moteur -> rendu avec extraction d'entites BSP, spawn, surfaces et groupe Three.js deja amorces
 - 🟠 Le rendu BSP / MD2 / HUD / audio avec un premier affichage BSP web texture, un premier MD2 et un premier peuplement d'entites deja amorces
 - ⬜ Les outils de generation et de verification
 - ⬜ Le remplissage progressif de `PORTAGE_QUAKE2.md`
+
+### Mise a jour recente
+
+- ✅ premier bloc de telechargement client porte avec `CL_DownloadFileName`, `CL_CheckOrDownloadFile` et `CL_Download_f`
+- ðŸŸ  le pipeline de precache / autodownload client reste a etendre autour de `CL_RequestNextDownload`, `CL_Precache_f` et de l'enumeration complete des assets manquants
 
 ## 6. Ordre de reprise recommande
 
