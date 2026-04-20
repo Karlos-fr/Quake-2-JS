@@ -34,17 +34,17 @@ import { SCR_BuildHudDrawCommands } from "../../../packages/client/src/index.js"
 import { buildBspSurfaces } from "../../../packages/renderer-common/src/index.js";
 import {
   applyMd2Frame,
-  buildEntityPreviewGroup,
   buildMd2Mesh,
   buildThreeBspGroup,
   createQuakeSkyResolver,
   createThreeBrushModelSync,
   createQuakeHudResourceResolver,
+  createThreeRefreshEntitySync,
   createQuakeTextureResolver,
   createThreeSkySceneAdapter,
   createThreeHudLayer,
   loadMd2Model,
-  updateEntityPreviewGroup
+  type RefreshEntitySyncStats
 } from "../../../packages/renderer-three/src/index.js";
 import { findPrimarySpawnPoint, parseBsp } from "../../../packages/formats/src/index.js";
 import { createVirtualFilesystem, mountPak, readMountedFile } from "../../../packages/filesystem/src/index.js";
@@ -55,8 +55,6 @@ const BASEQ2_PAK_CANDIDATES = [
   "/baseq2/pak0.pak"
 ];
 const DEFAULT_MAP_PATH = "maps/base1.bsp";
-const DEFAULT_MODEL_PATH = "models/items/armor/shard/tris.md2";
-
 type ActiveRenderer = WebGPURenderer | WebGLRenderer;
 
 /**
@@ -118,16 +116,11 @@ async function bootstrap(): Promise<void> {
     });
     const skyAdapter = createThreeSkySceneAdapter(skyResolver);
     const brushModelSync = createThreeBrushModelSync(group);
-    const entityPreview = buildEntityPreviewGroup(filesystem, map.parsedEntities);
-    group.add(entityPreview.group);
-
-    const modelInstance = loadPreviewModel(filesystem, spawn);
-    if (modelInstance) {
-      group.add(modelInstance.mesh);
-    }
+    const refreshEntitySync = createThreeRefreshEntitySync(filesystem);
 
     const scene = createScene(group);
     scene.add(skyAdapter.root);
+    scene.add(refreshEntitySync.root);
     const camera = createCamera();
     const cameraController = createLocalClientController(ui.viewport, camera, map, spawn);
     ui.bindGhostToggle({
@@ -143,7 +136,7 @@ async function bootstrap(): Promise<void> {
       mapName: bspFile.path,
       faceCount: map.faces.length,
       surfaceCount: surfaces.length,
-      entityCount: entityPreview.supportedEntityCount,
+      entityCount: cameraController.refreshFrame?.entities.length ?? 0,
       spawnText: spawn ? `${spawn.origin.join(", ")} | angle ${spawn.angle}` : "introuvable",
       skyText: formatSkySnapshot(cameraController.skySnapshot)
     });
@@ -173,9 +166,9 @@ async function bootstrap(): Promise<void> {
       skyAdapter.update(cameraController.skySnapshot, camera, elapsedSeconds);
       ui.setSkyText(formatSkySnapshot(cameraController.skySnapshot));
       brushModelSync.apply(cameraController.getBrushModelSnapshots());
+      const refreshEntityStats = refreshEntitySync.apply(cameraController.runtime, cameraController.refreshFrame);
       refreshDebug.update(cameraController.refreshFrame);
-      ui.setRuntimeInfo(cameraController.refreshFrame);
-      updateEntityPreviewGroup(entityPreview, elapsedSeconds);
+      ui.setRuntimeInfo(cameraController.refreshFrame, refreshEntityStats);
 
       const hudCommands = SCR_BuildHudDrawCommands(
         cameraController.runtime,
@@ -193,11 +186,6 @@ async function bootstrap(): Promise<void> {
         }
       );
       hudLayer.render(hudCommands);
-
-      if (modelInstance && modelInstance.model.frames.length > 1) {
-        const frameIndex = Math.floor(elapsedSeconds * 6) % modelInstance.model.frames.length;
-        applyMd2Frame(modelInstance, frameIndex);
-      }
 
       rendererBundle.renderer.autoClear = false;
       rendererBundle.renderer.clear();
@@ -295,30 +283,6 @@ function createScene(group: Group): Scene {
 
 /**
  * Category: New
- * Purpose: Load one preview MD2 model and place it near the parsed BSP spawn point.
- *
- * Constraints:
- * - Must return null when the preview asset is unavailable.
- */
-function loadPreviewModel(
-  filesystem: ReturnType<typeof createVirtualFilesystem>,
-  spawn: ReturnType<typeof findPrimarySpawnPoint>
-): ReturnType<typeof buildMd2Mesh> | null {
-  const model = loadMd2Model(filesystem, DEFAULT_MODEL_PATH);
-  if (!model) {
-    return null;
-  }
-
-  const meshInstance = buildMd2Mesh(filesystem, model);
-  const origin = spawn?.origin ?? [0, 0, 0];
-  meshInstance.mesh.position.set(origin[0] + 96, origin[1], origin[2] + 32);
-  meshInstance.mesh.rotation.x = Math.PI / 2;
-  meshInstance.mesh.scale.setScalar(1.5);
-  return meshInstance;
-}
-
-/**
- * Category: New
  * Purpose: Create the main perspective camera used for the map preview.
  *
  * Constraints:
@@ -410,7 +374,10 @@ function createShell(app: HTMLDivElement): {
     spawnText: string;
     skyText: string;
   }) => void;
-  setRuntimeInfo: (value: ReturnType<typeof createLocalClientController>["refreshFrame"]) => void;
+  setRuntimeInfo: (
+    value: ReturnType<typeof createLocalClientController>["refreshFrame"],
+    refreshStats: RefreshEntitySyncStats | null
+  ) => void;
 } {
   app.innerHTML = "";
   document.documentElement.style.height = "100%";
@@ -602,10 +569,14 @@ function createShell(app: HTMLDivElement): {
       ];
       infoLine.textContent = mapInfoLines.join("\n");
     },
-    setRuntimeInfo: (value) => {
+    setRuntimeInfo: (value, refreshStats) => {
       const nextRuntimeText = value
         ? [
             `Refresh: entites ${value.entities.length}`,
+            refreshStats ? `Refresh MD2: ${refreshStats.renderedEntities}/${refreshStats.visibleEntities}` : "Refresh MD2: en attente",
+            refreshStats
+              ? `Skip refresh: no-model ${refreshStats.skippedNoModelIndex}, cfg ${refreshStats.skippedMissingConfigstring}, brush ${refreshStats.skippedInlineOrBrushModel}, non-md2 ${refreshStats.skippedNonMd2Model}, asset ${refreshStats.missingMd2AssetCount}`
+              : "Skip refresh: en attente",
             `Beams: ${value.beams.length}`,
             `Explosions: ${value.explosions.length}`,
             `ForceWalls: ${value.forceWalls.length}`,

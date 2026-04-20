@@ -42,6 +42,7 @@ import {
   refreshEntitySpatialState,
   spawnGameEntity,
   touchTriggerEntities,
+  SVF_NOCLIENT,
   type GameEntity,
   type GameRuntime
 } from "../../../packages/game/src/index.js";
@@ -50,6 +51,8 @@ import {
   AngleVectors,
   CS_IMAGES,
   CS_ITEMS,
+  CS_MODELS,
+  CS_SOUNDS,
   CS_STATUSBAR,
   CS_AIRACCEL,
   CS_SKY,
@@ -76,9 +79,11 @@ import {
   STAT_TIMER_ICON,
   Pmove,
   YAW,
+  createEntityState,
   createCommandRuntime,
   createPmoveContext,
   createCvarRuntime,
+  type entity_state_t,
   type trace_t,
   type pmove_t,
   type vec3_t
@@ -233,6 +238,7 @@ export function createLocalClientController(
   initializeSpawnPrediction(runtime, collision, spawnOrigin);
   initializeLocalHudState(runtime);
   initializeLocalSkyState(runtime, map);
+  syncLocalGameplayFrame(runtime, gameplayRuntime);
 
   const pressedKeys: Record<MovementKey, boolean> = {
     forward: false,
@@ -392,6 +398,7 @@ export function createLocalClientController(
 
       promotePredictedState(runtime, realtimeMs);
       updateGameplayRuntimePlayer(gameplayRuntime, gameplayPlayer, runtime);
+      syncLocalGameplayFrame(runtime, gameplayRuntime);
       applyPredictedCamera(camera, runtime);
 
       if (realtimeMs >= nextDebugRefreshAtMs) {
@@ -586,6 +593,157 @@ function initializeLocalHudState(runtime: ClientRuntime): void {
   runtime.cl.frame.playerstate.stats[STAT_TIMER] = 0;
   runtime.cl.frame.playerstate.stats[STAT_FRAGS] = 0;
   runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] = 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Serialize the current local gameplay visual state into the client frame buffers used by the Quake II refresh path.
+ *
+ * Constraints:
+ * - Must preserve stable entity numbering from the gameplay runtime.
+ * - Must keep the client parse-entity ring coherent with the current frame metadata.
+ * - Must only expose entities that are currently client-visible.
+ */
+function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  syncLocalGameplayAssetConfigstrings(runtime, gameplayRuntime);
+
+  const currentFrameServerframe = runtime.cl.frame.serverframe;
+  const previousFrameServerframe = currentFrameServerframe - 1;
+  const parseEntityMask = runtime.cl_parse_entities.length - 1;
+  const visibleStates = collectVisibleGameplayEntityStates(gameplayRuntime);
+
+  runtime.cl.frame.parse_entities = runtime.cl.parse_entities;
+  runtime.cl.frame.num_entities = 0;
+
+  for (const state of visibleStates) {
+    const entity = runtime.cl_entities[state.number];
+    const storedState = runtime.cl_parse_entities[runtime.cl.parse_entities & parseEntityMask];
+    runtime.cl.parse_entities += 1;
+    runtime.cl.frame.num_entities += 1;
+
+    const needsNoLerpReset =
+      state.modelindex !== entity.current.modelindex ||
+      state.modelindex2 !== entity.current.modelindex2 ||
+      state.modelindex3 !== entity.current.modelindex3 ||
+      state.modelindex4 !== entity.current.modelindex4 ||
+      Math.abs(state.origin[0] - entity.current.origin[0]) > 512 ||
+      Math.abs(state.origin[1] - entity.current.origin[1]) > 512 ||
+      Math.abs(state.origin[2] - entity.current.origin[2]) > 512;
+
+    copyEntityState(state, storedState);
+
+    if (needsNoLerpReset) {
+      entity.serverframe = -99;
+    }
+
+    if (entity.serverframe !== previousFrameServerframe) {
+      entity.trailcount = 1024;
+      copyEntityState(storedState, entity.prev);
+      entity.prev.origin = [...storedState.old_origin];
+      entity.lerp_origin = [...storedState.old_origin];
+    } else {
+      copyEntityState(entity.current, entity.prev);
+    }
+
+    entity.serverframe = currentFrameServerframe;
+    copyEntityState(storedState, entity.current);
+    entity.current.event = 0;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Mirror the local gameplay asset registries into the client configstring slots consumed by refresh-side model resolution.
+ *
+ * Constraints:
+ * - Must preserve Quake-style stable 1-based asset indices.
+ * - Must clear stale configstrings when one local map/runtime registers fewer assets than the previous one.
+ */
+function syncLocalGameplayAssetConfigstrings(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  for (let index = 1; index < runtime.cl.model_draw.length; index += 1) {
+    runtime.cl.configstrings[CS_MODELS + index] = gameplayRuntime.assets.modelPaths[index - 1] ?? "";
+    runtime.cl.model_draw[index] = runtime.cl.configstrings[CS_MODELS + index] || null;
+  }
+
+  for (let index = 1; index < runtime.cl.sound_precache.length; index += 1) {
+    runtime.cl.configstrings[CS_SOUNDS + index] = gameplayRuntime.assets.soundPaths[index - 1] ?? "";
+    runtime.cl.sound_precache[index] = runtime.cl.configstrings[CS_SOUNDS + index] || null;
+  }
+
+  for (let index = 1; index < runtime.cl.image_precache.length; index += 1) {
+    runtime.cl.configstrings[CS_IMAGES + index] = gameplayRuntime.assets.imagePaths[index - 1] ?? runtime.cl.configstrings[CS_IMAGES + index] ?? "";
+    runtime.cl.image_precache[index] = runtime.cl.configstrings[CS_IMAGES + index] || null;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Collect the current gameplay entities that should surface through the client entity snapshot path.
+ *
+ * Constraints:
+ * - Must skip non-client and free entities.
+ * - Must clone states so the client ring keeps value semantics.
+ */
+function collectVisibleGameplayEntityStates(gameplayRuntime: GameRuntime): entity_state_t[] {
+  const states: entity_state_t[] = [];
+
+  for (const entity of gameplayRuntime.entities) {
+    if (!entity.inuse || (entity.svflags & SVF_NOCLIENT) !== 0) {
+      continue;
+    }
+
+    const state = entity.s;
+    const hasVisualState =
+      state.modelindex !== 0 ||
+      state.modelindex2 !== 0 ||
+      state.modelindex3 !== 0 ||
+      state.modelindex4 !== 0 ||
+      state.effects !== 0 ||
+      state.renderfx !== 0 ||
+      state.sound !== 0 ||
+      state.event !== 0;
+
+    if (!hasVisualState) {
+      continue;
+    }
+
+    states.push(cloneEntityState(state));
+  }
+
+  states.sort((left, right) => left.number - right.number);
+  return states;
+}
+
+/**
+ * Category: New
+ * Purpose: Clone one entity state while preserving the exact field set used by Quake II packet entities.
+ */
+function cloneEntityState(state: entity_state_t): entity_state_t {
+  const clone = createEntityState();
+  copyEntityState(state, clone);
+  return clone;
+}
+
+/**
+ * Category: New
+ * Purpose: Copy one entity-state payload field-by-field without sharing tuple references.
+ */
+function copyEntityState(source: entity_state_t, target: entity_state_t): void {
+  target.number = source.number;
+  target.origin = [...source.origin];
+  target.angles = [...source.angles];
+  target.old_origin = [...source.old_origin];
+  target.modelindex = source.modelindex;
+  target.modelindex2 = source.modelindex2;
+  target.modelindex3 = source.modelindex3;
+  target.modelindex4 = source.modelindex4;
+  target.frame = source.frame;
+  target.skinnum = source.skinnum;
+  target.effects = source.effects;
+  target.renderfx = source.renderfx;
+  target.solid = source.solid;
+  target.sound = source.sound;
+  target.event = source.event;
 }
 
 /**

@@ -26,6 +26,7 @@ export {
   FRAMETIME,
   MOVETYPE_NONE,
   MOVETYPE_PUSH,
+  MOVETYPE_TOSS,
   PLAT_LOW_TRIGGER,
   SOLID_NOT,
   SOLID_BSP,
@@ -45,6 +46,9 @@ export {
   isInlineBspEntity,
   isRuntimeTriggerEntity,
   linkGameEntity,
+  registerGameImage,
+  registerGameModel,
+  registerGameSound,
   refreshEntitySpatialState,
   runPendingThinks,
   spawnGameEntity,
@@ -62,6 +66,56 @@ export {
   G_FindTeams,
   initializeDoorPlanEntities
 } from "./g_spawn.js";
+
+export {
+  FindItem,
+  FindItemByClassname,
+  GetItemByIndex,
+  InitItems,
+  PrecacheItem,
+  SP_item_health,
+  SP_item_health_large,
+  SP_item_health_mega,
+  SP_item_health_small,
+  SetItemNames,
+  SpawnItem,
+  droptofloor
+} from "./g_items.js";
+
+export {
+  SP_light_mine1,
+  SP_light_mine2,
+  SP_misc_banner,
+  SP_misc_blackhole,
+  SP_misc_bigviper,
+  SP_misc_deadsoldier,
+  SP_misc_easterchick,
+  SP_misc_easterchick2,
+  SP_misc_eastertank,
+  SP_misc_gib_arm,
+  SP_misc_gib_head,
+  SP_misc_gib_leg,
+  SP_misc_satellite_dish,
+  SP_misc_strogg_ship,
+  SP_misc_teleporter,
+  SP_misc_teleporter_dest,
+  SP_misc_viper,
+  SP_misc_viper_bomb,
+  SP_monster_commander_body,
+  commander_body_drop,
+  commander_body_think,
+  commander_body_use,
+  misc_banner_think,
+  misc_blackhole_think,
+  misc_blackhole_use,
+  misc_easterchick2_think,
+  misc_easterchick_think,
+  misc_eastertank_think,
+  misc_satellite_dish_think,
+  misc_satellite_dish_use,
+  misc_strogg_ship_use,
+  misc_viper_use
+} from "./g_misc.js";
 
 export {
   G_RunEntity,
@@ -129,12 +183,21 @@ export {
 } from "./touch.js";
 
 export type {
+  GameItemDefinition,
+  GameItemDropKind,
+  GameItemPickupKind,
+  GameItemUseKind,
+  GameItemWeaponThinkKind
+} from "./g_items.js";
+
+export type {
   GameEntity,
   GameEntityBlocked,
   GameEntityFieldName,
   GameEntityKind,
   GameEntityDie,
   GameEntityThink,
+  GameAssetRegistry,
   GameCollisionBridge,
   GameMoveInfo,
   GameEntityTouch,

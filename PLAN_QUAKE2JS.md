@@ -149,6 +149,8 @@ Construire un portage fidele de Quake II original en TypeScript / JavaScript, av
 - ✅ premier backend HUD Three.js branche dans `apps/web` avec `SCR_BuildHudDrawCommands`, status bar Quake II bootstrappee via `CS_STATUSBAR`, overlays `center print` / `net` / `pause` / `loading` et superposition 2D sur la scene 3D
 - ✅ integration web finale du HUD nettoyee avec suppression du DOM legacy et panneau debug conserve a part
 - ✅ premier pipeline de ciel Quake II porte avec etat client `CS_SKY` / `CS_SKYROTATE` / `CS_SKYAXIS`, chargement des assets `env/*`, skybox dediee `renderer-three` et integration dans `apps/web`
+- ✅ pipeline des objets monde visibles bascule sur la source client `ClientRefreshFrame.entities` avec adaptateur Three.js MD2 dedie, suppression du preview heuristique legacy, diagnostics de couverture et verifications map-driven sur `base1`, `base2`, `base3`
+- ✅ verification de fidelite des objets monde visibles consolidee par [PLAN_ENTITES_VISUELLES_QUAKE2.md](C:\a\Projets\Quake-2\PLAN_ENTITES_VISUELLES_QUAKE2.md) et [RAPPORT_PHASE11_ENTITES.md](C:\a\Projets\Quake-2\RAPPORT_PHASE11_ENTITES.md), actuellement au vert sur presence, orientation, hauteur, animation, rotation, modeles secondaires et effets visuels pour le perimetre porte
 
 ## 6. Ordre de reprise recommande
 

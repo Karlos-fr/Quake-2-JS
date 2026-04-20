@@ -1,7 +1,7 @@
 /**
  * File: g_spawn.ts
  * Source: Quake II original / game/g_spawn.c
- * Purpose: Port the first spawn registry and team-linking routines required by brush entity gameplay.
+ * Purpose: Port the first spawn registry and team-linking routines required by brush gameplay plus visible world entities.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -17,6 +17,28 @@
  */
 
 import { SP_func_door, SP_func_door_rotating, SP_func_plat } from "./g_func.js";
+import { FindItemByClassname, SP_item_health, SP_item_health_large, SP_item_health_mega, SP_item_health_small, SpawnItem } from "./g_items.js";
+import {
+  SP_light_mine1,
+  SP_light_mine2,
+  SP_misc_banner,
+  SP_misc_blackhole,
+  SP_misc_bigviper,
+  SP_misc_deadsoldier,
+  SP_misc_easterchick,
+  SP_misc_easterchick2,
+  SP_misc_eastertank,
+  SP_misc_gib_arm,
+  SP_misc_gib_head,
+  SP_misc_gib_leg,
+  SP_misc_satellite_dish,
+  SP_misc_strogg_ship,
+  SP_misc_teleporter,
+  SP_misc_teleporter_dest,
+  SP_misc_viper,
+  SP_misc_viper_bomb,
+  SP_monster_commander_body
+} from "./g_misc.js";
 import { SP_trigger_multiple, SP_trigger_once, SP_trigger_relay } from "./g_trigger.js";
 import { FL_TEAMSLAVE } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
@@ -29,12 +51,35 @@ interface SpawnEntry {
 }
 
 const spawns: SpawnEntry[] = [
+  { name: "item_health", spawn: SP_item_health },
+  { name: "item_health_small", spawn: SP_item_health_small },
+  { name: "item_health_large", spawn: SP_item_health_large },
+  { name: "item_health_mega", spawn: SP_item_health_mega },
   { name: "func_plat", spawn: SP_func_plat },
   { name: "func_door", spawn: SP_func_door },
   { name: "func_door_rotating", spawn: SP_func_door_rotating },
   { name: "trigger_once", spawn: SP_trigger_once },
   { name: "trigger_multiple", spawn: SP_trigger_multiple },
-  { name: "trigger_relay", spawn: SP_trigger_relay }
+  { name: "trigger_relay", spawn: SP_trigger_relay },
+  { name: "misc_banner", spawn: SP_misc_banner },
+  { name: "misc_blackhole", spawn: SP_misc_blackhole },
+  { name: "misc_eastertank", spawn: SP_misc_eastertank },
+  { name: "misc_easterchick", spawn: SP_misc_easterchick },
+  { name: "misc_easterchick2", spawn: SP_misc_easterchick2 },
+  { name: "monster_commander_body", spawn: SP_monster_commander_body },
+  { name: "misc_deadsoldier", spawn: SP_misc_deadsoldier },
+  { name: "misc_satellite_dish", spawn: SP_misc_satellite_dish },
+  { name: "misc_teleporter", spawn: SP_misc_teleporter },
+  { name: "misc_teleporter_dest", spawn: SP_misc_teleporter_dest },
+  { name: "misc_bigviper", spawn: SP_misc_bigviper },
+  { name: "misc_viper", spawn: SP_misc_viper },
+  { name: "misc_viper_bomb", spawn: SP_misc_viper_bomb },
+  { name: "misc_strogg_ship", spawn: SP_misc_strogg_ship },
+  { name: "misc_gib_arm", spawn: SP_misc_gib_arm },
+  { name: "misc_gib_leg", spawn: SP_misc_gib_leg },
+  { name: "misc_gib_head", spawn: SP_misc_gib_head },
+  { name: "light_mine1", spawn: SP_light_mine1 },
+  { name: "light_mine2", spawn: SP_light_mine2 }
 ];
 
 /**
@@ -51,6 +96,12 @@ const spawns: SpawnEntry[] = [
  */
 export function ED_CallSpawn(ent: GameEntity, runtime: GameRuntime): void {
   if (!ent.classname) {
+    return;
+  }
+
+  const item = FindItemByClassname(ent.classname);
+  if (item) {
+    SpawnItem(ent, item, runtime);
     return;
   }
 

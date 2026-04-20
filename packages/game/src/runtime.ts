@@ -17,8 +17,10 @@ import {
   CM_TransformedBoxTrace,
   CM_TransformedPointContents,
   MASK_SOLID,
+  createEntityState,
   createCollisionWorld,
   type CollisionWorld,
+  type entity_state_t,
   type trace_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
@@ -120,6 +122,23 @@ export interface GameMoveInfo {
 
 /**
  * Category: New
+ * Purpose: Hold the local asset registration tables used to emulate the original index-based game import API.
+ *
+ * Constraints:
+ * - Index zero must remain the implicit "not set" value.
+ * - Indices must stay stable for the lifetime of one runtime.
+ */
+export interface GameAssetRegistry {
+  modelPaths: string[];
+  modelIndexByPath: Map<string, number>;
+  soundPaths: string[];
+  soundIndexByPath: Map<string, number>;
+  imagePaths: string[];
+  imageIndexByPath: Map<string, number>;
+}
+
+/**
+ * Category: New
  * Purpose: Preserve the `think` callback shape used by delayed gameplay entities.
  *
  * Constraints:
@@ -196,6 +215,14 @@ export interface GameEntity {
   groundentity: GameEntity | null;
   groundentity_linkcount: number;
   moveinfo: GameMoveInfo;
+  s: entity_state_t;
+  count: number;
+  style: number;
+  itemIndex: number;
+  itemClassname: string | undefined;
+  itemPickupName: string | undefined;
+  itemWorldModel: string | undefined;
+  itemWorldModelFlags: number;
 }
 
 /**
@@ -258,6 +285,7 @@ export interface GameRuntime {
   current_entity: GameEntity | null;
   logEntries: GameRuntimeLogEntry[];
   collision: GameCollisionBridge | null;
+  assets: GameAssetRegistry;
   linkedSolidEntities: GameEntity[];
   linkedTriggerEntities: GameEntity[];
   linkedInlineBspEntities: GameEntity[];
@@ -280,6 +308,7 @@ export const AREA_SOLID = 1;
 export const AREA_TRIGGERS = 2;
 export const MOVETYPE_NONE = 0;
 export const MOVETYPE_PUSH = 1;
+export const MOVETYPE_TOSS = 2;
 export const FL_TEAMSLAVE = 0x00000400;
 export const SVF_NOCLIENT = 1 << 0;
 export const SVF_MONSTER = 1 << 1;
@@ -307,6 +336,11 @@ export const PLAT_LOW_TRIGGER = 1;
 export function createRuntimeEntity(properties: Record<string, string>, index: number): GameEntity {
   const origin = parseEntityVector(properties.origin);
   const angles = parseEntityAngles(properties);
+  const state = createEntityState();
+  state.number = index;
+  state.origin = [...origin];
+  state.old_origin = [...origin];
+  state.angles = [...angles];
 
   return {
     index,
@@ -369,7 +403,15 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     size: [0, 0, 0],
     groundentity: null,
     groundentity_linkcount: 0,
-    moveinfo: createMoveInfo()
+    moveinfo: createMoveInfo(),
+    s: state,
+    count: 0,
+    style: parseEntityInteger(properties.style),
+    itemIndex: 0,
+    itemClassname: undefined,
+    itemPickupName: undefined,
+    itemWorldModel: undefined,
+    itemWorldModelFlags: 0
   };
 }
 
@@ -387,6 +429,7 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     current_entity: null,
     logEntries: [],
     collision: null,
+    assets: createAssetRegistry(),
     linkedSolidEntities: [],
     linkedTriggerEntities: [],
     linkedInlineBspEntities: [],
@@ -529,6 +572,8 @@ export function Think_Delay(ent: GameEntity, runtime: GameRuntime): void {
  * - Must preserve stable indices for already existing entities.
  */
 export function spawnGameEntity(runtime: GameRuntime): GameEntity {
+  const state = createEntityState();
+  state.number = runtime.entities.length;
   const entity: GameEntity = {
     index: runtime.entities.length,
     inuse: true,
@@ -590,7 +635,15 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     size: [0, 0, 0],
     groundentity: null,
     groundentity_linkcount: 0,
-    moveinfo: createMoveInfo()
+    moveinfo: createMoveInfo(),
+    s: state,
+    count: 0,
+    style: 0,
+    itemIndex: 0,
+    itemClassname: undefined,
+    itemPickupName: undefined,
+    itemWorldModel: undefined,
+    itemWorldModelFlags: 0
   };
 
   refreshEntitySpatialState(entity);
@@ -668,6 +721,15 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.groundentity = null;
   entity.groundentity_linkcount = 0;
   entity.moveinfo = createMoveInfo();
+  entity.s = createEntityState();
+  entity.s.number = freedIndex;
+  entity.count = 0;
+  entity.style = 0;
+  entity.itemIndex = 0;
+  entity.itemClassname = undefined;
+  entity.itemPickupName = undefined;
+  entity.itemWorldModel = undefined;
+  entity.itemWorldModelFlags = 0;
 
   runtime.log({
     kind: "entity-freed",
@@ -757,6 +819,21 @@ function createMoveInfo(): GameMoveInfo {
 
 /**
  * Category: New
+ * Purpose: Create the local asset registry used by the early gameplay runtime ports.
+ */
+function createAssetRegistry(): GameAssetRegistry {
+  return {
+    modelPaths: [],
+    modelIndexByPath: new Map<string, number>(),
+    soundPaths: [],
+    soundIndexByPath: new Map<string, number>(),
+    imagePaths: [],
+    imageIndexByPath: new Map<string, number>()
+  };
+}
+
+/**
+ * Category: New
  * Purpose: Parse one Quake-style origin vector into a numeric tuple with a safe zero fallback.
  */
 function parseEntityVector(value: string | undefined): [number, number, number] {
@@ -828,6 +905,18 @@ function applyInlineModelBounds(entity: GameEntity, map: BspMap): void {
 
 /**
  * Category: New
+ * Purpose: Keep the exported `entity_state_t` fields aligned with the gameplay entity pose and solidity.
+ */
+function syncEntityStateFromRuntimeEntity(entity: GameEntity): void {
+  entity.s.number = entity.index;
+  entity.s.old_origin = [...entity.s.origin];
+  entity.s.origin = [...entity.origin];
+  entity.s.angles = [...entity.angles];
+  entity.s.solid = entity.solid;
+}
+
+/**
+ * Category: New
  * Purpose: Recompute the canonical spatial bounds fields used by later Quake II collision and linking ports.
  *
  * Constraints:
@@ -837,6 +926,31 @@ function applyInlineModelBounds(entity: GameEntity, map: BspMap): void {
 export function refreshEntitySpatialState(entity: GameEntity): void {
   updateEntitySize(entity);
   updateEntityAbsoluteBounds(entity);
+  syncEntityStateFromRuntimeEntity(entity);
+}
+
+/**
+ * Category: New
+ * Purpose: Register one model path in the local gameplay runtime and return its stable Quake-style index.
+ */
+export function registerGameModel(runtime: GameRuntime, path: string): number {
+  return registerAssetPath(runtime.assets.modelPaths, runtime.assets.modelIndexByPath, path);
+}
+
+/**
+ * Category: New
+ * Purpose: Register one sound path in the local gameplay runtime and return its stable Quake-style index.
+ */
+export function registerGameSound(runtime: GameRuntime, path: string): number {
+  return registerAssetPath(runtime.assets.soundPaths, runtime.assets.soundIndexByPath, path);
+}
+
+/**
+ * Category: New
+ * Purpose: Register one image path in the local gameplay runtime and return its stable Quake-style index.
+ */
+export function registerGameImage(runtime: GameRuntime, path: string): number {
+  return registerAssetPath(runtime.assets.imagePaths, runtime.assets.imageIndexByPath, path);
 }
 
 /**
@@ -991,6 +1105,22 @@ function updateEntityAbsoluteBounds(entity: GameEntity): void {
     entity.origin[1] + entity.maxs[1],
     entity.origin[2] + entity.maxs[2]
   ];
+}
+
+/**
+ * Category: New
+ * Purpose: Register one path in a local Quake-style asset table while preserving stable 1-based indices.
+ */
+function registerAssetPath(paths: string[], indices: Map<string, number>, path: string): number {
+  const existing = indices.get(path);
+  if (existing !== undefined) {
+    return existing;
+  }
+
+  const index = paths.length + 1;
+  paths.push(path);
+  indices.set(path, index);
+  return index;
 }
 
 /**

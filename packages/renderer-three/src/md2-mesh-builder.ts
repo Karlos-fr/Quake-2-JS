@@ -14,6 +14,7 @@
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
 import { parseMd2, parsePcx, type Md2Model } from "../../formats/src/index.js";
 import {
+  BackSide,
   BufferAttribute,
   BufferGeometry,
   DataTexture,
@@ -38,6 +39,7 @@ export interface Md2MeshInstance {
   mesh: Mesh<BufferGeometry, MeshBasicMaterial>;
   model: Md2Model;
   skinTexture: Texture | null;
+  vertexIndices: Uint32Array;
 }
 
 /**
@@ -64,19 +66,25 @@ export function buildMd2Mesh(
   model: Md2Model,
   options: Md2MeshBuildOptions = {}
 ): Md2MeshInstance {
-  const geometry = createMd2Geometry(model);
+  const md2Geometry = createMd2Geometry(model);
   const skinPath = options.skinPath ?? model.skins[0] ?? null;
   const skinTexture = skinPath ? loadMd2SkinTexture(filesystem, skinPath) : null;
   const material = skinTexture
-    ? new MeshBasicMaterial({ map: skinTexture, transparent: true })
+    ? new MeshBasicMaterial({
+        map: skinTexture,
+        alphaTest: 0.5,
+        transparent: false,
+        side: BackSide
+      })
     : new MeshBasicMaterial({ color: 0xc9b48c });
-  const mesh = new Mesh(geometry, material);
+  const mesh = new Mesh(md2Geometry.geometry, material);
   mesh.name = `md2:${skinPath ?? "unskinned"}`;
 
   return {
     mesh,
     model,
-    skinTexture
+    skinTexture,
+    vertexIndices: md2Geometry.vertexIndices
   };
 }
 
@@ -117,14 +125,64 @@ export function applyMd2Frame(meshInstance: Md2MeshInstance, frameIndex: number)
   const array = positionAttribute.array as Float32Array;
   let writeIndex = 0;
 
-  for (const triangle of meshInstance.model.triangles) {
-    for (let vertexOffset = 0; vertexOffset < 3; vertexOffset += 1) {
-      const vertexIndex = triangle.index_xyz[vertexOffset] * 3;
-      array[writeIndex] = frame.positions[vertexIndex];
-      array[writeIndex + 1] = frame.positions[vertexIndex + 1];
-      array[writeIndex + 2] = frame.positions[vertexIndex + 2];
-      writeIndex += 3;
-    }
+  for (const sourceVertexIndex of meshInstance.vertexIndices) {
+    const vertexIndex = sourceVertexIndex * 3;
+    array[writeIndex] = frame.positions[vertexIndex];
+    array[writeIndex + 1] = frame.positions[vertexIndex + 1];
+    array[writeIndex + 2] = frame.positions[vertexIndex + 2];
+    writeIndex += 3;
+  }
+
+  positionAttribute.needsUpdate = true;
+  meshInstance.mesh.geometry.computeVertexNormals();
+}
+
+/**
+ * Category: New
+ * Purpose: Apply one interpolated MD2 pose between two source frames using the Quake-style backlerp fraction.
+ *
+ * Constraints:
+ * - Must fall back to a single frame when one source frame is unavailable.
+ * - Must preserve the original triangle indexing and only mutate the position buffer.
+ */
+export function applyMd2LerpedFrame(
+  meshInstance: Md2MeshInstance,
+  currentFrameIndex: number,
+  previousFrameIndex: number,
+  backlerp: number
+): void {
+  const currentFrame = meshInstance.model.frames[currentFrameIndex];
+  const previousFrame = meshInstance.model.frames[previousFrameIndex];
+  if (!currentFrame) {
+    return;
+  }
+
+  if (!previousFrame || currentFrameIndex === previousFrameIndex || backlerp <= 0) {
+    applyMd2Frame(meshInstance, currentFrameIndex);
+    return;
+  }
+
+  const frontlerp = 1 - backlerp;
+  const positionAttribute = meshInstance.mesh.geometry.getAttribute("position") as BufferAttribute | undefined;
+  if (!positionAttribute) {
+    return;
+  }
+
+  const array = positionAttribute.array as Float32Array;
+  let writeIndex = 0;
+
+  for (const sourceVertexIndex of meshInstance.vertexIndices) {
+    const vertexIndex = sourceVertexIndex * 3;
+    array[writeIndex] =
+      (previousFrame.positions[vertexIndex] * backlerp) +
+      (currentFrame.positions[vertexIndex] * frontlerp);
+    array[writeIndex + 1] =
+      (previousFrame.positions[vertexIndex + 1] * backlerp) +
+      (currentFrame.positions[vertexIndex + 1] * frontlerp);
+    array[writeIndex + 2] =
+      (previousFrame.positions[vertexIndex + 2] * backlerp) +
+      (currentFrame.positions[vertexIndex + 2] * frontlerp);
+    writeIndex += 3;
   }
 
   positionAttribute.needsUpdate = true;
@@ -138,34 +196,130 @@ export function applyMd2Frame(meshInstance: Md2MeshInstance, frameIndex: number)
  * Constraints:
  * - Must duplicate triangle vertices so UV seams are preserved.
  */
-function createMd2Geometry(model: Md2Model): BufferGeometry {
+function createMd2Geometry(model: Md2Model): { geometry: BufferGeometry; vertexIndices: Uint32Array } {
+  const glCommandVertices = buildMd2GlCommandVertices(model);
   const frame = model.frames[0];
-  const positions = new Float32Array(model.triangles.length * 9);
-  const uvs = new Float32Array(model.triangles.length * 6);
+  const positions = new Float32Array(glCommandVertices.length * 3);
+  const uvs = new Float32Array(glCommandVertices.length * 2);
+  const vertexIndices = new Uint32Array(glCommandVertices.length);
 
   let positionOffset = 0;
   let uvOffset = 0;
 
-  for (const triangle of model.triangles) {
-    for (let vertexOffset = 0; vertexOffset < 3; vertexOffset += 1) {
-      const positionIndex = triangle.index_xyz[vertexOffset] * 3;
-      positions[positionOffset] = frame.positions[positionIndex];
-      positions[positionOffset + 1] = frame.positions[positionIndex + 1];
-      positions[positionOffset + 2] = frame.positions[positionIndex + 2];
-      positionOffset += 3;
+  for (let index = 0; index < glCommandVertices.length; index += 1) {
+    const commandVertex = glCommandVertices[index];
+    const positionIndex = commandVertex.vertexIndex * 3;
+    positions[positionOffset] = frame.positions[positionIndex];
+    positions[positionOffset + 1] = frame.positions[positionIndex + 1];
+    positions[positionOffset + 2] = frame.positions[positionIndex + 2];
+    positionOffset += 3;
 
-      const st = model.st[triangle.index_st[vertexOffset]];
-      uvs[uvOffset] = st.s / model.header.skinwidth;
-      uvs[uvOffset + 1] = 1 - st.t / model.header.skinheight;
-      uvOffset += 2;
-    }
+    uvs[uvOffset] = commandVertex.s;
+    uvs[uvOffset + 1] = 1 - commandVertex.t;
+    uvOffset += 2;
+
+    vertexIndices[index] = commandVertex.vertexIndex;
   }
 
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new BufferAttribute(positions, 3));
   geometry.setAttribute("uv", new BufferAttribute(uvs, 2));
   geometry.computeVertexNormals();
-  return geometry;
+  return { geometry, vertexIndices };
+}
+
+/**
+ * Category: New
+ * Purpose: Rebuild the original MD2 OpenGL command stream into a flat triangle list that preserves Quake II strip and fan winding.
+ *
+ * Constraints:
+ * - Must follow `dmdl_t.ofs_glcmds` semantics from `ref_gl/gl_mesh.c`.
+ * - Must preserve the original per-command texture coordinates and vertex ordering.
+ */
+function buildMd2GlCommandVertices(model: Md2Model): Array<{ s: number; t: number; vertexIndex: number }> {
+  const vertices: Array<{ s: number; t: number; vertexIndex: number }> = [];
+  let commandOffset = 0;
+
+  while (commandOffset < model.glcmds.length) {
+    const count = model.glcmds[commandOffset];
+    commandOffset += 1;
+
+    if (count === 0) {
+      break;
+    }
+
+    const primitiveVertexCount = Math.abs(count);
+    const primitiveVertices: Array<{ s: number; t: number; vertexIndex: number }> = [];
+
+    for (let index = 0; index < primitiveVertexCount; index += 1) {
+      primitiveVertices.push({
+        s: decodeMd2GlFloat(model.glcmds[commandOffset]),
+        t: decodeMd2GlFloat(model.glcmds[commandOffset + 1]),
+        vertexIndex: model.glcmds[commandOffset + 2]
+      });
+      commandOffset += 3;
+    }
+
+    if (count < 0) {
+      appendMd2TriangleFan(vertices, primitiveVertices);
+      continue;
+    }
+
+    appendMd2TriangleStrip(vertices, primitiveVertices);
+  }
+
+  return vertices;
+}
+
+/**
+ * Category: New
+ * Purpose: Append one MD2 triangle-fan command to the flattened triangle list.
+ *
+ * Constraints:
+ * - Must preserve the original fan center and winding as emitted by Quake II.
+ */
+function appendMd2TriangleFan(
+  target: Array<{ s: number; t: number; vertexIndex: number }>,
+  source: Array<{ s: number; t: number; vertexIndex: number }>
+): void {
+  for (let index = 2; index < source.length; index += 1) {
+    target.push(source[0], source[index - 1], source[index]);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Append one MD2 triangle-strip command to the flattened triangle list.
+ *
+ * Constraints:
+ * - Must alternate winding exactly like OpenGL triangle strips.
+ */
+function appendMd2TriangleStrip(
+  target: Array<{ s: number; t: number; vertexIndex: number }>,
+  source: Array<{ s: number; t: number; vertexIndex: number }>
+): void {
+  for (let index = 2; index < source.length; index += 1) {
+    if ((index & 1) === 0) {
+      target.push(source[index - 2], source[index - 1], source[index]);
+      continue;
+    }
+
+    target.push(source[index - 1], source[index - 2], source[index]);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Decode one packed MD2 OpenGL command float stored in the raw dword stream.
+ *
+ * Constraints:
+ * - Must preserve IEEE-754 bit layout exactly.
+ */
+function decodeMd2GlFloat(value: number): number {
+  const buffer = new ArrayBuffer(4);
+  const view = new DataView(buffer);
+  view.setInt32(0, value, true);
+  return view.getFloat32(0, true);
 }
 
 /**

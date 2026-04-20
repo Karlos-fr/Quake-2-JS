@@ -36,7 +36,19 @@
     "verify:collision:phase6": "npx tsx ./scripts/verify/quake2-collision-phase6.ts",
     "verify:collision:phase7": "npx tsx ./scripts/verify/quake2-collision-phase7.ts",
     "verify:collision:phase8": "npx tsx ./scripts/verify/quake2-collision-phase8.ts",
-    "verify:collision:phase9": "npx tsx ./scripts/verify/quake2-collision-phase9.ts"
+    "verify:collision:phase9": "npx tsx ./scripts/verify/quake2-collision-phase9.ts",
+    "verify:entities:phase4": "npx tsx ./scripts/verify/quake2-entities-phase4.ts",
+    "verify:entities:phase5": "npx tsx ./scripts/verify/quake2-entities-phase5.ts",
+    "verify:entities:phase5:map-flags": "npx tsx ./scripts/verify/quake2-entities-phase5-map-flags.ts",
+    "verify:entities:phase6:orientation": "npx tsx ./scripts/verify/quake2-alias-orientation-phase6.ts",
+    "verify:entities:phase6:skinnum": "npx tsx ./scripts/verify/quake2-entities-phase6-skinnum.ts",
+    "verify:entities:phase7:origin-audit": "npx tsx ./scripts/verify/quake2-entities-phase7-origin-audit.ts",
+    "verify:entities:phase8": "npx tsx ./scripts/verify/quake2-entities-phase8.ts",
+    "verify:entities:phase8:scene": "npx tsx ./scripts/verify/quake2-entities-phase8-scene.ts",
+    "verify:entities:phase9": "npx tsx ./scripts/verify/quake2-entities-phase9.ts",
+    "verify:entities:phase10": "npx tsx ./scripts/verify/quake2-entities-phase10.ts",
+    "verify:entities:phase10:maps": "npx tsx ./scripts/verify/quake2-entities-phase10-maps.ts",
+    "verify:entities:phase11": "npx tsx ./scripts/verify/quake2-entities-phase11.ts"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
