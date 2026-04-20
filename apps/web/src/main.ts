@@ -37,9 +37,11 @@ import {
   buildEntityPreviewGroup,
   buildMd2Mesh,
   buildThreeBspGroup,
+  createQuakeSkyResolver,
   createThreeBrushModelSync,
   createQuakeHudResourceResolver,
   createQuakeTextureResolver,
+  createThreeSkySceneAdapter,
   createThreeHudLayer,
   loadMd2Model,
   updateEntityPreviewGroup
@@ -107,12 +109,14 @@ async function bootstrap(): Promise<void> {
     const spawn = findPrimarySpawnPoint(map);
     const surfaces = buildBspSurfaces(map);
     const textureResolver = createQuakeTextureResolver(filesystem);
+    const skyResolver = createQuakeSkyResolver(filesystem);
     const hudResourceResolver = createQuakeHudResourceResolver(filesystem);
     const hudLayer = createThreeHudLayer(hudResourceResolver);
     const group = buildThreeBspGroup(surfaces, {
       resolveTexture: textureResolver.resolveTexture,
       resolveModelOrigin: (modelIndex) => getInlineModelRenderOrigin(map, modelIndex)
     });
+    const skyAdapter = createThreeSkySceneAdapter(skyResolver);
     const brushModelSync = createThreeBrushModelSync(group);
     const entityPreview = buildEntityPreviewGroup(filesystem, map.parsedEntities);
     group.add(entityPreview.group);
@@ -123,6 +127,7 @@ async function bootstrap(): Promise<void> {
     }
 
     const scene = createScene(group);
+    scene.add(skyAdapter.root);
     const camera = createCamera();
     const cameraController = createLocalClientController(ui.viewport, camera, map, spawn);
     ui.bindGhostToggle({
@@ -139,7 +144,8 @@ async function bootstrap(): Promise<void> {
       faceCount: map.faces.length,
       surfaceCount: surfaces.length,
       entityCount: entityPreview.supportedEntityCount,
-      spawnText: spawn ? `${spawn.origin.join(", ")} | angle ${spawn.angle}` : "introuvable"
+      spawnText: spawn ? `${spawn.origin.join(", ")} | angle ${spawn.angle}` : "introuvable",
+      skyText: formatSkySnapshot(cameraController.skySnapshot)
     });
     ui.setStatus("Map chargee.");
 
@@ -164,6 +170,8 @@ async function bootstrap(): Promise<void> {
 
       ui.setPerformance(now);
       cameraController.update(deltaSeconds);
+      skyAdapter.update(cameraController.skySnapshot, camera, elapsedSeconds);
+      ui.setSkyText(formatSkySnapshot(cameraController.skySnapshot));
       brushModelSync.apply(cameraController.getBrushModelSnapshots());
       refreshDebug.update(cameraController.refreshFrame);
       ui.setRuntimeInfo(cameraController.refreshFrame);
@@ -393,7 +401,15 @@ function createShell(app: HTMLDivElement): {
   setRenderer: (value: string) => void;
   setStatus: (value: string) => void;
   setError: (value: string) => void;
-  setMapInfo: (value: { mapName: string; faceCount: number; surfaceCount: number; entityCount: number; spawnText: string }) => void;
+  setSkyText: (value: string) => void;
+  setMapInfo: (value: {
+    mapName: string;
+    faceCount: number;
+    surfaceCount: number;
+    entityCount: number;
+    spawnText: string;
+    skyText: string;
+  }) => void;
   setRuntimeInfo: (value: ReturnType<typeof createLocalClientController>["refreshFrame"]) => void;
 } {
   app.innerHTML = "";
@@ -497,6 +513,7 @@ function createShell(app: HTMLDivElement): {
   const errorLine = document.createElement("div");
   errorLine.style.color = "#f0b8a0";
   let lastRuntimeText = "";
+  let mapInfoLines: string[] = [];
 
   fpsPanel.append(fpsTitle, fpsCanvas);
 
@@ -565,15 +582,25 @@ function createShell(app: HTMLDivElement): {
     setError: (value) => {
       errorLine.textContent = value;
     },
-    setMapInfo: ({ mapName, faceCount, surfaceCount, entityCount, spawnText }) => {
-      infoLine.textContent = [
+    setSkyText: (value) => {
+      if (mapInfoLines.length === 0) {
+        return;
+      }
+
+      mapInfoLines[5] = `Sky: ${value}`;
+      infoLine.textContent = mapInfoLines.join("\n");
+    },
+    setMapInfo: ({ mapName, faceCount, surfaceCount, entityCount, spawnText, skyText }) => {
+      mapInfoLines = [
         `Map: ${mapName}`,
         `Faces BSP: ${faceCount}`,
         `Surfaces visibles: ${surfaceCount}`,
         `Entites visibles: ${entityCount}`,
         `Spawn: ${spawnText}`,
+        `Sky: ${skyText}`,
         `Controles: clic pour souris, ZQSD, Espace, Ctrl/C`
-      ].join("\n");
+      ];
+      infoLine.textContent = mapInfoLines.join("\n");
     },
     setRuntimeInfo: (value) => {
       const nextRuntimeText = value
@@ -848,6 +875,21 @@ function listPakMapPaths(mountedPak: ReturnType<typeof mountPak>): string[] {
     .map((entry) => entry.name)
     .filter((entryName) => entryName.startsWith("maps/") && entryName.endsWith(".bsp"))
     .sort((left, right) => left.localeCompare(right));
+}
+
+/**
+ * Category: New
+ * Purpose: Format one optional Quake II sky snapshot for the lightweight web debug overlay.
+ *
+ * Constraints:
+ * - Must stay readable without assuming the renderer sky implementation already exists.
+ */
+function formatSkySnapshot(skySnapshot: ReturnType<typeof createLocalClientController>["skySnapshot"]): string {
+  if (!skySnapshot) {
+    return "aucun";
+  }
+
+  return `${skySnapshot.name} | rot ${skySnapshot.rotate} | axis ${skySnapshot.axis.join(", ")}`;
 }
 
 /**

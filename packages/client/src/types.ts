@@ -275,6 +275,20 @@ export interface client_screen_state_t {
 
 /**
  * Category: New
+ * Purpose: Store the active Quake II sky configstrings in a structured client state block.
+ *
+ * Constraints:
+ * - Must stay directly derivable from `CS_SKY`, `CS_SKYROTATE` and `CS_SKYAXIS`.
+ * - Must preserve level-scoped reset behavior.
+ */
+export interface client_sky_t {
+  name: string;
+  rotate: number;
+  axis: vec3_t;
+}
+
+/**
+ * Category: New
  * Purpose: Preserve the client-side precache traversal state used by `CL_RequestNextDownload`.
  *
  * Constraints:
@@ -330,6 +344,7 @@ export interface client_state_t {
   gamedir: string;
   playernum: number;
   configstrings: string[];
+  sky: client_sky_t;
   model_draw: unknown[];
   model_clip: unknown[];
   sound_precache: unknown[];
@@ -627,6 +642,21 @@ export function createClientScreenState(): client_screen_state_t {
 
 /**
  * Category: New
+ * Purpose: Create a zero-initialized structured client sky state.
+ *
+ * Constraints:
+ * - Must reflect the empty configstring defaults used before a level is prepared.
+ */
+export function createClientSkyState(): client_sky_t {
+  return {
+    name: "",
+    rotate: 0,
+    axis: [0, 0, 0]
+  };
+}
+
+/**
+ * Category: New
  * Purpose: Create a zero-initialized client level state compatible with early parser ports.
  *
  * Constraints:
@@ -664,6 +694,7 @@ export function createClientState(): client_state_t {
     gamedir: "",
     playernum: 0,
     configstrings: new Array<string>(MAX_CONFIGSTRINGS).fill(""),
+    sky: createClientSkyState(),
     model_draw: new Array<unknown>(MAX_MODELS).fill(null),
     model_clip: new Array<unknown>(MAX_MODELS).fill(null),
     sound_precache: new Array<unknown>(MAX_SOUNDS).fill(null),

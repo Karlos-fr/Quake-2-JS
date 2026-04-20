@@ -34,6 +34,9 @@ import {
   entity_event_t,
   pmtype_t,
   temp_event_t,
+  CS_SKY,
+  CS_SKYAXIS,
+  CS_SKYROTATE,
   CS_PLAYERSKINS,
   MAX_CONFIGSTRINGS,
   MAX_CLIENTS,
@@ -97,7 +100,7 @@ import { CL_FireEntityEvents, type ClientEntityEvent } from "./entities.js";
 import { SCR_CenterPrint } from "./screen.js";
 import { CL_AddTEntPacket, CL_ClearTEnts } from "./tent.js";
 import { CL_CheckPredictionError } from "./view.js";
-import { createClientScreenState } from "./types.js";
+import { createClientScreenState, createClientSkyState } from "./types.js";
 
 /**
  * Category: New
@@ -223,6 +226,7 @@ export function CL_ClearState(runtime: ClientRuntime): void {
     ...runtime.cl,
     ...createFrameClearedClientState(runtime)
   };
+  syncClientSkyFromConfigstrings(runtime);
 
   for (const entity of runtime.cl_entities) {
     entity.baseline = createEntityState();
@@ -1118,6 +1122,10 @@ export function CL_ParseConfigString(runtime: ClientRuntime, hooks: ClientParseH
 
   const value = MSG_ReadString(runtime.net_message);
   runtime.cl.configstrings[index] = value;
+  if (index === CS_SKY || index === CS_SKYROTATE || index === CS_SKYAXIS) {
+    syncClientSkyFromConfigstrings(runtime);
+  }
+
   if (index >= CS_PLAYERSKINS && index < CS_PLAYERSKINS + MAX_CLIENTS) {
     CL_ParseClientinfo(runtime, index - CS_PLAYERSKINS, hooks);
   }
@@ -1558,6 +1566,7 @@ function createFrameClearedClientState(runtime: ClientRuntime): Omit<ClientRunti
     gamedir: BASEDIRNAME,
     playernum: 0,
     configstrings: new Array<string>(MAX_CONFIGSTRINGS).fill(""),
+    sky: createClientSkyState(),
     model_draw: new Array<unknown>(runtime.cl.model_draw.length).fill(null),
     model_clip: new Array<unknown>(runtime.cl.model_clip.length).fill(null),
     sound_precache: new Array<unknown>(runtime.cl.sound_precache.length).fill(null),
@@ -1569,6 +1578,54 @@ function createFrameClearedClientState(runtime: ClientRuntime): Omit<ClientRunti
     tents: runtime.cl.tents,
     screen: createClientScreenState()
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Synchronize the structured client sky state from the raw Quake II configstring slots.
+ *
+ * Constraints:
+ * - Must derive values only from `CS_SKY`, `CS_SKYROTATE` and `CS_SKYAXIS`.
+ * - Must reset missing or invalid values to stable zero defaults.
+ */
+function syncClientSkyFromConfigstrings(runtime: ClientRuntime): void {
+  runtime.cl.sky.name = runtime.cl.configstrings[CS_SKY] ?? "";
+  runtime.cl.sky.rotate = parseSkyRotate(runtime.cl.configstrings[CS_SKYROTATE] ?? "");
+  runtime.cl.sky.axis = parseSkyAxis(runtime.cl.configstrings[CS_SKYAXIS] ?? "");
+}
+
+/**
+ * Category: New
+ * Purpose: Parse the Quake II sky rotation configstring into a numeric value.
+ *
+ * Constraints:
+ * - Must fall back to `0` when the configstring is absent or invalid.
+ */
+function parseSkyRotate(value: string): number {
+  const parsed = Number.parseFloat(value.trim());
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Parse the Quake II sky axis configstring into a three-component vector.
+ *
+ * Constraints:
+ * - Must require exactly three finite numeric components.
+ * - Must fall back to `[0, 0, 0]` when the configstring is absent or invalid.
+ */
+function parseSkyAxis(value: string): [number, number, number] {
+  const parts = value
+    .trim()
+    .split(/\s+/)
+    .filter((part) => part.length > 0)
+    .map((part) => Number.parseFloat(part));
+
+  if (parts.length !== 3 || parts.some((part) => !Number.isFinite(part))) {
+    return [0, 0, 0];
+  }
+
+  return [parts[0], parts[1], parts[2]];
 }
 
 /**

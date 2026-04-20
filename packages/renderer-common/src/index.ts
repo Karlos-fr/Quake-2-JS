@@ -17,6 +17,8 @@ export {
 } from "./hud-resources.js";
 
 export type { BspSurface, BspSurfaceBuildOptions } from "./bsp-surface-builder.js";
+export { QUAKE_SKY_FACE_SUFFIXES } from "./sky.js";
+export type { QuakeSkyAssetSet, QuakeSkyFaceName, QuakeSkySnapshot } from "./sky.js";
 export type {
   HudBounds,
   HudDrawCommand,

@@ -49,6 +49,7 @@ export {
 } from "./pak.js";
 
 export { parsePcx } from "./pcx.js";
+export { parseTga } from "./tga.js";
 export { ALIAS_VERSION, IDALIASHEADER, parseMd2 } from "./md2.js";
 export { parseWal } from "./wal.js";
 
@@ -74,4 +75,5 @@ export type {
 export type { PakArchive, PakEntry } from "./pak.js";
 export type { daliasframe_t, dmdl_t, dstvert_t, dtriangle_t, dtrivertx_t, Md2Model } from "./md2.js";
 export type { PcxImage, pcx_t } from "./pcx.js";
+export type { TargaHeader, TgaImage } from "./tga.js";
 export type { miptex_t, WalTexture } from "./wal.js";

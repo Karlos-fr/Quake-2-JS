@@ -12,6 +12,8 @@
 export { buildThreeBspGroup } from "./bsp-group-builder.js";
 export { createThreeBrushModelSync } from "./brush-model-sync.js";
 export { createQuakeTextureResolver } from "./quake-texture-resolver.js";
+export { createQuakeSkyResolver } from "./quake-sky-resolver.js";
+export { createThreeSkySceneAdapter } from "./sky-scene-adapter.js";
 export { applyMd2Frame, buildMd2Mesh, loadMd2Model } from "./md2-mesh-builder.js";
 export { buildEntityPreviewGroup, updateEntityPreviewGroup } from "./entity-preview-builder.js";
 export { createThreeHudLayer } from "./hud-renderer.js";
@@ -24,3 +26,5 @@ export type { ThreeHudLayer } from "./hud-renderer.js";
 export type { HudTextTexture, QuakeHudResourceResolver } from "./hud-resource-resolver.js";
 export type { Md2MeshBuildOptions, Md2MeshInstance } from "./md2-mesh-builder.js";
 export type { QuakeTextureResolver } from "./quake-texture-resolver.js";
+export type { LoadedQuakeSkyTextureSet, QuakeSkyResolver } from "./quake-sky-resolver.js";
+export type { ThreeSkySceneAdapter } from "./sky-scene-adapter.js";

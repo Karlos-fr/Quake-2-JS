@@ -113,7 +113,7 @@ Construire un portage fidele de Quake II original en TypeScript / JavaScript, av
 
 - 🟠 definir les contrats `renderer-common`
 - 🟠 construire le bridge runtime -> scene
-- 🟠 rendre BSP, textures, lightmaps et entites avec un premier BSP texture via `WAL`, un premier peuplement d'entites et des comportements visuels simples
+- 🟠 rendre BSP, textures, lightmaps, ciel et entites avec un premier BSP texture via `WAL`, un premier pipeline de ciel Quake II via `CS_SKY` / `env/*`, un premier peuplement d'entites et des comportements visuels simples
 - 🟠 brancher MD2, sprites et effets visuels avec un premier MD2 web visible
 - ⬜ stabiliser `WebGPU` puis fallback `WebGL`
 
@@ -129,7 +129,7 @@ Construire un portage fidele de Quake II original en TypeScript / JavaScript, av
 - ⬜ Le monde serveur et les snapshots
 - ⬜ Le gameplay `game/`
 - 🟠 Le bridge moteur -> rendu avec extraction d'entites BSP, spawn, surfaces et groupe Three.js deja amorces
-- 🟠 Le rendu BSP / MD2 / HUD / audio avec un premier affichage BSP web texture, un premier MD2 et un premier peuplement d'entites deja amorces
+- 🟠 Le rendu BSP / ciel / MD2 / HUD / audio avec un premier affichage BSP web texture, un premier pipeline de ciel Quake II, un premier MD2 et un premier peuplement d'entites deja amorces
 - ⬜ Les outils de generation et de verification
 - ⬜ Le remplissage progressif de `PORTAGE_QUAKE2.md`
 
@@ -148,6 +148,7 @@ Construire un portage fidele de Quake II original en TypeScript / JavaScript, av
 - ✅ lecture de `STAT_LAYOUTS` branchee dans `apps/web` avec un overlay HUD minimal, panneaux scores/inventaire et status bar texte
 - ✅ premier backend HUD Three.js branche dans `apps/web` avec `SCR_BuildHudDrawCommands`, status bar Quake II bootstrappee via `CS_STATUSBAR`, overlays `center print` / `net` / `pause` / `loading` et superposition 2D sur la scene 3D
 - ✅ integration web finale du HUD nettoyee avec suppression du DOM legacy et panneau debug conserve a part
+- ✅ premier pipeline de ciel Quake II porte avec etat client `CS_SKY` / `CS_SKYROTATE` / `CS_SKYAXIS`, chargement des assets `env/*`, skybox dediee `renderer-three` et integration dans `apps/web`
 
 ## 6. Ordre de reprise recommande
 

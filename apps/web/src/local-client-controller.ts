@@ -14,6 +14,7 @@
 import { PerspectiveCamera, Vector3 } from "three";
 import {
   CL_BuildRefreshFrame,
+  CL_BuildSkySnapshot,
   CL_CalcViewValues,
   CL_CreateCmd,
   CL_InitInput,
@@ -29,7 +30,8 @@ import {
   type ClientRefreshFrame,
   type ClientInputContext,
   type ClientScreenHudState,
-  type ClientRuntime
+  type ClientRuntime,
+  type QuakeSkySnapshot
 } from "../../../packages/client/src/index.js";
 import {
   createGameRuntimeFromBspMap,
@@ -50,6 +52,9 @@ import {
   CS_ITEMS,
   CS_STATUSBAR,
   CS_AIRACCEL,
+  CS_SKY,
+  CS_SKYAXIS,
+  CS_SKYROTATE,
   LerpAngle,
   MASK_PLAYERSOLID,
   PMF_DUCKED,
@@ -150,6 +155,7 @@ export interface LocalClientController {
   gameplayRuntime: GameRuntime;
   refreshFrame: ClientRefreshFrame | null;
   screenState: ClientScreenHudState;
+  skySnapshot: QuakeSkySnapshot | null;
   ghostMode: boolean;
   getBrushModelSnapshots: () => BrushModelSnapshot[];
   setGhostMode: (enabled: boolean) => void;
@@ -226,6 +232,7 @@ export function createLocalClientController(
 
   initializeSpawnPrediction(runtime, collision, spawnOrigin);
   initializeLocalHudState(runtime);
+  initializeLocalSkyState(runtime, map);
 
   const pressedKeys: Record<MovementKey, boolean> = {
     forward: false,
@@ -344,6 +351,9 @@ export function createLocalClientController(
         incomingAcknowledged: nextCommandSequence - 1,
         commandBackup: 64
       });
+    },
+    get skySnapshot() {
+      return CL_BuildSkySnapshot(runtime);
     },
     getBrushModelSnapshots: () => buildInterpolatedBrushModelSnapshots(brushModelInterpolation, realtimeMs / 1000),
     setGhostMode: (enabled) => {
@@ -576,6 +586,28 @@ function initializeLocalHudState(runtime: ClientRuntime): void {
   runtime.cl.frame.playerstate.stats[STAT_TIMER] = 0;
   runtime.cl.frame.playerstate.stats[STAT_FRAGS] = 0;
   runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] = 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Seed the browser-local client sky configstrings from the loaded BSP worldspawn metadata.
+ *
+ * Constraints:
+ * - Must keep the structured client sky state aligned with the raw configstring slots.
+ * - Must tolerate maps that omit sky rotation or axis fields.
+ */
+function initializeLocalSkyState(runtime: ClientRuntime, map: BspMap): void {
+  const worldspawn = map.parsedEntities[0]?.properties ?? {};
+  const skyName = worldspawn.sky ?? "";
+  const skyRotate = worldspawn.skyrotate ?? "";
+  const skyAxis = worldspawn.skyaxis ?? "";
+
+  runtime.cl.configstrings[CS_SKY] = skyName;
+  runtime.cl.configstrings[CS_SKYROTATE] = skyRotate;
+  runtime.cl.configstrings[CS_SKYAXIS] = skyAxis;
+  runtime.cl.sky.name = skyName;
+  runtime.cl.sky.rotate = parseLocalSkyRotate(skyRotate);
+  runtime.cl.sky.axis = parseLocalSkyAxis(skyAxis);
 }
 
 /**
@@ -955,4 +987,37 @@ function lerpValue(previous: number, current: number, fraction: number): number 
  */
 function clamp01(value: number): number {
   return Math.min(1, Math.max(0, value));
+}
+
+/**
+ * Category: New
+ * Purpose: Parse one local BSP worldspawn `skyrotate` property into the browser-local client bootstrap state.
+ *
+ * Constraints:
+ * - Must fall back to `0` when the property is absent or invalid.
+ */
+function parseLocalSkyRotate(value: string): number {
+  const parsed = Number.parseFloat(value.trim());
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Parse one local BSP worldspawn `skyaxis` property into a three-component axis tuple.
+ *
+ * Constraints:
+ * - Must fall back to `[0, 0, 0]` when the property is absent or invalid.
+ */
+function parseLocalSkyAxis(value: string): [number, number, number] {
+  const parts = value
+    .trim()
+    .split(/\s+/)
+    .filter((part) => part.length > 0)
+    .map((part) => Number.parseFloat(part));
+
+  if (parts.length !== 3 || parts.some((part) => !Number.isFinite(part))) {
+    return [0, 0, 0];
+  }
+
+  return [parts[0], parts[1], parts[2]];
 }

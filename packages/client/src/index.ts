@@ -113,6 +113,9 @@ export {
   CL_RegisterTEntSounds
 } from "./tent.js";
 export {
+  CL_BuildSkySnapshot
+} from "./sky.js";
+export {
   CL_BuildActionEffects,
   CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
@@ -136,6 +139,7 @@ export {
   createClientPrecacheState,
   createClientForceWall,
   createClientinfo,
+  createClientSkyState,
   createKbutton,
   createClientLaser,
   createClientTempLight,
@@ -153,6 +157,7 @@ export type {
   client_explosion_t,
   client_force_wall_t,
   client_precache_state_t,
+  client_sky_t,
   client_state_t,
   client_static_t,
   clientinfo_t,
@@ -200,6 +205,7 @@ export type {
 } from "./screen.js";
 export type { ClientInputContext, ClientInputFrameOptions } from "./input.js";
 export type { ClientViewOptions, ClientViewValues } from "./view.js";
+export type { QuakeSkySnapshot } from "../../renderer-common/src/index.js";
 
 export type {
   HudBounds,

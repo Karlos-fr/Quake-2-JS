@@ -37,13 +37,19 @@ Assets et installation locale :
 - le builder de surfaces saute deja ces faces par defaut ;
 - le client connait deja une partie des configstrings, y compris la famille `CS_SKY`.
 
-## Manques actuels
+## Etat apres portage
 
-- le nom du ciel actif n'est pas encore propage proprement jusqu'au runtime de rendu web ;
-- `CS_SKYROTATE` et `CS_SKYAXIS` ne sont pas encore exploites cote renderer ;
-- aucun renderer de ciel dedie n'est branche dans `renderer-three` ;
-- aucun chargement des textures de skybox Quake II n'est finalise ;
-- le mode web ne distingue pas encore clairement decor BSP et environnement de ciel.
+- l'etat client du ciel est porte depuis `CS_SKY`, `CS_SKYROTATE` et `CS_SKYAXIS` ;
+- un snapshot de ciel explicite traverse maintenant le bridge runtime -> renderer ;
+- les ressources `env/` sont resolues et decodees depuis les assets Quake II ;
+- un renderer de ciel dedie est branche dans `renderer-three` et dans `apps/web`.
+
+## Ecarts encore assumes
+
+- le renderer web affiche actuellement une skybox complete quand un ciel est actif, alors que le renderer original calcule d'abord les portions visibles via les surfaces `SURF_SKY` et `R_DrawSkyBox` ;
+- l'ordre de preference des assets est fixe a `TGA` puis `PCX` dans le backend web, alors que le renderer original choisit `PCX` ou `TGA` selon les capacites renderer (`qglColorTableEXT`, `gl_ext_palettedtexture`) ;
+- les details historiques de `gl_skymip`, `sky_min`, `sky_max` et du clipping fin par face ne sont pas reproduits a l'identique ;
+- la verification finale reste pour l'instant couverte par harnais et integration web locale, pas par comparaison pixel-perfect avec le renderer OpenGL original.
 
 ## 4. Resultat cible
 
@@ -65,15 +71,15 @@ S'assurer que les configstrings de ciel sont bien lues, stockees et exposees de 
 
 ### A faire
 
-- [ ] verifier le port de `CS_SKY`
-- [ ] verifier le port de `CS_SKYROTATE`
-- [ ] verifier le port de `CS_SKYAXIS`
-- [ ] completer les structures client si un champ manque pour stocker l'etat du ciel
-- [ ] verifier la mise a jour de cet etat lors d'un changement de map
+- [x] verifier le port de `CS_SKY`
+- [x] verifier le port de `CS_SKYROTATE`
+- [x] verifier le port de `CS_SKYAXIS`
+- [x] completer les structures client si un champ manque pour stocker l'etat du ciel
+- [x] verifier la mise a jour de cet etat lors d'un changement de map
 
 ### Verification attendue
 
-- [ ] test ou harnais qui charge une map et confirme les valeurs de ciel lues depuis les configstrings
+- [x] test ou harnais qui charge une map et confirme les valeurs de ciel lues depuis les configstrings
 
 ## Phase 2 - Poser le contrat de bridge du ciel
 
@@ -83,18 +89,18 @@ Introduire un contrat explicite entre runtime client et backend de rendu.
 
 ### A faire
 
-- [ ] definir un type partage pour decrire le ciel actif
-- [ ] exposer depuis le client un snapshot de ciel :
+- [x] definir un type partage pour decrire le ciel actif
+- [x] exposer depuis le client un snapshot de ciel :
   - nom
   - rotation
   - axe
-- [ ] brancher ce snapshot dans `renderer-common`
-- [ ] rendre le contrat optionnel quand aucune map ou aucun ciel n'est charge
+- [x] brancher ce snapshot dans `renderer-common`
+- [x] rendre le contrat optionnel quand aucune map ou aucun ciel n'est charge
 
 ### Verification attendue
 
-- [ ] test unitaire du snapshot de ciel
-- [ ] verification de non-regression sur le snapshot global rendu au web app
+- [x] test unitaire du snapshot de ciel
+- [x] verification de non-regression sur le snapshot global rendu au web app
 
 ## Phase 3 - Identifier et charger les ressources de ciel
 
@@ -104,15 +110,15 @@ Retrouver le mode de resolution des textures de ciel a partir des assets Quake I
 
 ### A faire
 
-- [ ] identifier dans l'installation originale l'emplacement exact des textures de ciel
-- [ ] verifier la convention de nommage des 6 faces du ciel
-- [ ] porter ou completer le chargeur de ressources necessaire
-- [ ] definir une representation canonique des 6 faces cote runtime
-- [ ] prevoir le cas d'absence ou d'echec de chargement sans casser le rendu
+- [x] identifier dans l'installation originale l'emplacement exact des textures de ciel
+- [x] verifier la convention de nommage des 6 faces du ciel
+- [x] porter ou completer le chargeur de ressources necessaire
+- [x] definir une representation canonique des 6 faces cote runtime
+- [x] prevoir le cas d'absence ou d'echec de chargement sans casser le rendu
 
 ### Verification attendue
 
-- [ ] harnais de chargement d'un set de ciel depuis les assets locaux
+- [x] harnais de chargement d'un set de ciel depuis les assets locaux
 
 ## Phase 4 - Implementer le renderer de ciel dans `renderer-three`
 
@@ -122,16 +128,16 @@ Rendre le ciel dans le backend Three.js, de maniere separee du BSP standard.
 
 ### A faire
 
-- [ ] creer un adaptateur de scene pour le ciel
-- [ ] instancier un skybox ou equivalent adapte au pipeline `Three.js`
-- [ ] brancher les 6 textures du ciel sur cette geometrie dediee
-- [ ] appliquer rotation et axe du ciel selon les donnees client
-- [ ] garantir la compatibilite `WebGPU` et fallback `WebGL`
+- [x] creer un adaptateur de scene pour le ciel
+- [x] instancier un skybox ou equivalent adapte au pipeline `Three.js`
+- [x] brancher les 6 textures du ciel sur cette geometrie dediee
+- [x] appliquer rotation et axe du ciel selon les donnees client
+- [x] garantir la compatibilite `WebGPU` et fallback `WebGL`
 
 ### Verification attendue
 
-- [ ] affichage correct d'un ciel sur une map Quake II disposant d'un sky set
-- [ ] verification visuelle que le ciel reste independant de la geometrie BSP
+- [x] affichage correct d'un ciel sur une map Quake II disposant d'un sky set
+- [x] verification visuelle que le ciel reste independant de la geometrie BSP
 
 ## Phase 5 - Integrer le ciel dans l'application web
 
@@ -141,15 +147,15 @@ Brancher le tout dans `apps/web` sans casser le reste du pipeline courant.
 
 ### A faire
 
-- [ ] injecter le snapshot de ciel dans le cycle de refresh du renderer
-- [ ] gerer le changement de map et le remplacement du ciel courant
-- [ ] verifier que le ciel coexiste correctement avec le mode ghost, le changement instantane de niveau et le debug overlay
-- [ ] verifier que l'absence de ciel ne casse pas la scene
+- [x] injecter le snapshot de ciel dans le cycle de refresh du renderer
+- [x] gerer le changement de map et le remplacement du ciel courant
+- [x] verifier que le ciel coexiste correctement avec le mode ghost, le changement instantane de niveau et le debug overlay
+- [x] verifier que l'absence de ciel ne casse pas la scene
 
 ### Verification attendue
 
-- [ ] test manuel sur plusieurs maps
-- [ ] verification de non-regression du chargement de scene
+- [x] test manuel sur plusieurs maps
+- [x] verification de non-regression du chargement de scene
 
 ## Phase 6 - Fidelite et nettoyage
 
@@ -159,10 +165,10 @@ Verifier l'alignement avec le comportement original et documenter les ecarts res
 
 ### A faire
 
-- [ ] comparer le comportement obtenu avec le code original de reference
-- [ ] documenter les ecarts assumes s'il en reste
-- [ ] mettre a jour `PLAN_QUAKE2JS.md`
-- [ ] mettre a jour `PORTAGE_QUAKE2.md` pour les fichiers effectivement portes ou enrichis
+- [x] comparer le comportement obtenu avec le code original de reference
+- [x] documenter les ecarts assumes s'il en reste
+- [x] mettre a jour `PLAN_QUAKE2JS.md`
+- [x] mettre a jour `PORTAGE_QUAKE2.md` pour les fichiers effectivement portes ou enrichis
 
 ## 6. Risques et points d'attention
 
