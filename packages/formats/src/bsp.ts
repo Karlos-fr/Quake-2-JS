@@ -21,6 +21,28 @@ import { getLittleFloat, getLittleLong, getLittleShort, getUnsignedByte } from "
 export const IDBSPHEADER = (("P".charCodeAt(0) << 24) + ("S".charCodeAt(0) << 16) + ("B".charCodeAt(0) << 8) + "I".charCodeAt(0)) | 0;
 export const BSPVERSION = 38;
 export const HEADER_LUMPS = 19;
+export const MAX_MAP_MODELS = 1024;
+export const MAX_MAP_BRUSHES = 8192;
+export const MAX_MAP_ENTITIES = 2048;
+export const MAX_MAP_ENTSTRING = 0x40000;
+export const MAX_MAP_TEXINFO = 8192;
+export const MAX_MAP_AREAS = 256;
+export const MAX_MAP_AREAPORTALS = 1024;
+export const MAX_MAP_PLANES = 65536;
+export const MAX_MAP_NODES = 65536;
+export const MAX_MAP_BRUSHSIDES = 65536;
+export const MAX_MAP_LEAFS = 65536;
+export const MAX_MAP_VERTS = 65536;
+export const MAX_MAP_FACES = 65536;
+export const MAX_MAP_LEAFFACES = 65536;
+export const MAX_MAP_LEAFBRUSHES = 65536;
+export const MAX_MAP_PORTALS = 65536;
+export const MAX_MAP_EDGES = 128000;
+export const MAX_MAP_SURFEDGES = 256000;
+export const MAX_MAP_LIGHTING = 0x200000;
+export const MAX_MAP_VISIBILITY = 0x100000;
+export const MAX_KEY = 32;
+export const MAX_VALUE = 1024;
 export const LUMP_ENTITIES = 0;
 export const LUMP_PLANES = 1;
 export const LUMP_VERTEXES = 2;
@@ -40,6 +62,48 @@ export const LUMP_BRUSHSIDES = 15;
 export const LUMP_POP = 16;
 export const LUMP_AREAS = 17;
 export const LUMP_AREAPORTALS = 18;
+export const PLANE_X = 0;
+export const PLANE_Y = 1;
+export const PLANE_Z = 2;
+export const PLANE_ANYX = 3;
+export const PLANE_ANYY = 4;
+export const PLANE_ANYZ = 5;
+export const CONTENTS_SOLID = 1;
+export const CONTENTS_WINDOW = 2;
+export const CONTENTS_AUX = 4;
+export const CONTENTS_LAVA = 8;
+export const CONTENTS_SLIME = 16;
+export const CONTENTS_WATER = 32;
+export const CONTENTS_MIST = 64;
+export const LAST_VISIBLE_CONTENTS = 64;
+export const CONTENTS_AREAPORTAL = 0x8000;
+export const CONTENTS_PLAYERCLIP = 0x10000;
+export const CONTENTS_MONSTERCLIP = 0x20000;
+export const CONTENTS_CURRENT_0 = 0x40000;
+export const CONTENTS_CURRENT_90 = 0x80000;
+export const CONTENTS_CURRENT_180 = 0x100000;
+export const CONTENTS_CURRENT_270 = 0x200000;
+export const CONTENTS_CURRENT_UP = 0x400000;
+export const CONTENTS_CURRENT_DOWN = 0x800000;
+export const CONTENTS_ORIGIN = 0x1000000;
+export const CONTENTS_MONSTER = 0x2000000;
+export const CONTENTS_DEADMONSTER = 0x4000000;
+export const CONTENTS_DETAIL = 0x8000000;
+export const CONTENTS_TRANSLUCENT = 0x10000000;
+export const CONTENTS_LADDER = 0x20000000;
+export const SURF_LIGHT = 0x1;
+export const SURF_SLICK = 0x2;
+export const SURF_SKY = 0x4;
+export const SURF_WARP = 0x8;
+export const SURF_TRANS33 = 0x10;
+export const SURF_TRANS66 = 0x20;
+export const SURF_FLOWING = 0x40;
+export const SURF_NODRAW = 0x80;
+export const MAXLIGHTMAPS = 4;
+export const ANGLE_UP = -1;
+export const ANGLE_DOWN = -2;
+export const DVIS_PVS = 0;
+export const DVIS_PHS = 1;
 
 const LUMP_T_SIZE = 8;
 const DHEADER_SIZE = 8 + HEADER_LUMPS * LUMP_T_SIZE;
@@ -232,6 +296,23 @@ export interface dareaportal_t {
 export interface darea_t {
   numareaportals: number;
   firstareaportal: number;
+}
+
+/**
+ * Original name: dvis_t
+ * Source: qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Represents the visibility lump header storing per-cluster PVS/PHS offsets.
+ *
+ * Porting notes:
+ * - Keeps the offset pairs in nested arrays instead of a fixed C matrix.
+ */
+export interface dvis_t {
+  numclusters: number;
+  bitofs: Array<[number, number]>;
 }
 
 /**

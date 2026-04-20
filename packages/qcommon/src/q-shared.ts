@@ -174,6 +174,8 @@ export interface pmove_state_t {
 export const BUTTON_ATTACK = 1;
 export const BUTTON_USE = 2;
 export const BUTTON_ANY = 128;
+export const DF_WEAPONS_STAY = 0x00000004;
+export const DF_INFINITE_AMMO = 0x00002000;
 
 export interface usercmd_t {
   msec: byte;
@@ -257,6 +259,49 @@ export const RDF_UNDERWATER = 1;
 export const RDF_NOWORLDMODEL = 2;
 export const RDF_IRGOGGLES = 4;
 export const RDF_UVGOGGLES = 8;
+
+/**
+ * Original name: MZ_*
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the player muzzle-flash ids carried by `svc_muzzleflash`.
+ *
+ * Porting notes:
+ * - Preserves the original numeric values, including reserved gaps and `MZ_SILENCED` bit usage.
+ */
+export const MZ_BLASTER = 0;
+export const MZ_MACHINEGUN = 1;
+export const MZ_SHOTGUN = 2;
+export const MZ_CHAINGUN1 = 3;
+export const MZ_CHAINGUN2 = 4;
+export const MZ_CHAINGUN3 = 5;
+export const MZ_RAILGUN = 6;
+export const MZ_ROCKET = 7;
+export const MZ_GRENADE = 8;
+export const MZ_LOGIN = 9;
+export const MZ_LOGOUT = 10;
+export const MZ_RESPAWN = 11;
+export const MZ_BFG = 12;
+export const MZ_SSHOTGUN = 13;
+export const MZ_HYPERBLASTER = 14;
+export const MZ_ITEMRESPAWN = 15;
+export const MZ_IONRIPPER = 16;
+export const MZ_BLUEHYPERBLASTER = 17;
+export const MZ_PHALANX = 18;
+export const MZ_ETF_RIFLE = 30;
+export const MZ_UNUSED = 31;
+export const MZ_SHOTGUN2 = 32;
+export const MZ_HEATBEAM = 33;
+export const MZ_BLASTER2 = 34;
+export const MZ_TRACKER = 35;
+export const MZ_NUKE1 = 36;
+export const MZ_NUKE2 = 37;
+export const MZ_NUKE4 = 38;
+export const MZ_NUKE8 = 39;
+export const MZ_SILENCED = 128;
 
 export enum temp_event_t {
   TE_GUNSHOT,

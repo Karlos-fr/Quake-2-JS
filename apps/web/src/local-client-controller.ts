@@ -24,6 +24,7 @@ import {
   CL_SetInputFrameTime,
   CL_UpdateLerpFraction,
   connstate_t,
+  createFrame,
   createClientInputContext,
   createClientMainContext,
   createClientRuntime,
@@ -34,7 +35,33 @@ import {
   type QuakeSkySnapshot
 } from "../../../packages/client/src/index.js";
 import {
+  attachGameClient,
+  ChangeWeapon,
+  FindItem,
+  GetAmmoItemForWeapon,
+  Think_Weapon,
+  Use_Weapon,
+  Weapon_BFG,
+  Weapon_Blaster,
+  Weapon_Chaingun,
+  Weapon_Grenade,
+  Weapon_GrenadeLauncher,
+  Weapon_HyperBlaster,
+  Weapon_Machinegun,
+  Weapon_Railgun,
+  Weapon_RocketLauncher,
+  Weapon_Shotgun,
+  Weapon_SuperShotgun,
   createGameRuntimeFromBspMap,
+  fire_bfg,
+  fire_blaster,
+  fire_bullet,
+  fire_grenade,
+  fire_grenade2,
+  fire_rail,
+  fire_rocket,
+  fire_shotgun,
+  DAMAGE_TIME,
   FRAMETIME,
   G_RunFrame,
   initializeDoorPlanEntities,
@@ -44,11 +71,13 @@ import {
   touchTriggerEntities,
   SVF_NOCLIENT,
   type GameEntity,
+  type GameWeaponHooks,
   type GameRuntime
 } from "../../../packages/game/src/index.js";
 import type { BrushModelSnapshot } from "../../../packages/renderer-three/src/index.js";
 import {
   AngleVectors,
+  BUTTON_ATTACK,
   CS_IMAGES,
   CS_ITEMS,
   CS_MODELS,
@@ -61,6 +90,7 @@ import {
   LerpAngle,
   MASK_PLAYERSOLID,
   PMF_DUCKED,
+  PMF_ON_GROUND,
   PITCH,
   pmtype_t,
   STAT_AMMO,
@@ -94,7 +124,6 @@ const CAMERA_MOUSE_SENSITIVITY = 0.0022;
 const DEFAULT_VIEWHEIGHT = 22;
 const DUCKED_VIEWHEIGHT = -2;
 const DEFAULT_SPAWN_LIFT = 24;
-const DEBUG_REFRESH_INTERVAL_MS = 100;
 const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
 const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
 const PLAYER_DUCKED_MAXS: vec3_t = [16, 16, 4];
@@ -147,6 +176,63 @@ const LOCAL_SCOREBOARD_LAYOUT =
   + "client 0 64 1 3 48 3 ";
 
 type MovementKey = "forward" | "backward" | "left" | "right" | "up" | "down";
+type WeaponSlotKey =
+  | "Backquote"
+  | "Digit1"
+  | "Digit2"
+  | "Digit3"
+  | "Digit4"
+  | "Digit5"
+  | "Digit6"
+  | "Digit7"
+  | "Digit8"
+  | "Digit9"
+  | "Digit0";
+
+const LOCAL_WEAPON_SLOTS: Record<WeaponSlotKey, string> = {
+  Backquote: "Blaster",
+  Digit1: "Shotgun",
+  Digit2: "Super Shotgun",
+  Digit3: "Machinegun",
+  Digit4: "Chaingun",
+  Digit5: "Grenades",
+  Digit6: "Grenade Launcher",
+  Digit7: "Rocket Launcher",
+  Digit8: "HyperBlaster",
+  Digit9: "Railgun",
+  Digit0: "BFG10K"
+};
+
+/**
+ * Category: New
+ * Purpose: Reuse the currently ported `p_weapon.c` and `g_weapon.c` functions as the local browser gameplay weapon hook table.
+ *
+ * Constraints:
+ * - Must stay explicit so missing gameplay dependencies remain visible.
+ */
+const LOCAL_GAME_WEAPON_HOOKS: GameWeaponHooks = {
+  fire_bfg,
+  fire_blaster,
+  fire_bullet,
+  fire_grenade,
+  fire_grenade2,
+  fire_rail,
+  fire_rocket,
+  fire_shotgun,
+  weaponThink: {
+    Weapon_Blaster,
+    Weapon_Shotgun,
+    Weapon_SuperShotgun,
+    Weapon_Machinegun,
+    Weapon_Chaingun,
+    Weapon_Grenade,
+    Weapon_GrenadeLauncher,
+    Weapon_RocketLauncher,
+    Weapon_HyperBlaster,
+    Weapon_Railgun,
+    Weapon_BFG
+  }
+};
 
 /**
  * Category: New
@@ -180,6 +266,18 @@ interface BrushModelInterpolationState {
   currentSnapshots: BrushModelSnapshot[];
   previousTime: number;
   currentTime: number;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the minimal local view-motion state required to feed the first-person weapon bob and delta-angle formulas from `p_view.c`.
+ *
+ * Constraints:
+ * - Must remain local to the browser adapter until `p_view.c` itself is ported.
+ */
+interface LocalViewMotionState {
+  bobtime: number;
+  oldviewangles: vec3_t;
 }
 
 /**
@@ -248,12 +346,16 @@ export function createLocalClientController(
     up: false,
     down: false
   };
+  let attackPressed = false;
 
   let pointerLocked = false;
   let realtimeMs = 0;
   let nextCommandSequence = 1;
-  let nextDebugRefreshAtMs = 0;
   let ghostMode = true;
+  const localViewMotion: LocalViewMotionState = {
+    bobtime: 0,
+    oldviewangles: [0, spawnYaw, 0]
+  };
 
   const codeBindings: Record<string, MovementKey> = {
     Space: "up",
@@ -302,6 +404,12 @@ export function createLocalClientController(
       return;
     }
 
+    if (event.code in LOCAL_WEAPON_SLOTS) {
+      selectLocalWeapon(gameplayPlayer, LOCAL_WEAPON_SLOTS[event.code as WeaponSlotKey], gameplayRuntime, runtime);
+      event.preventDefault();
+      return;
+    }
+
     const binding = codeBindings[event.code] ?? keyBindings[event.key.toLowerCase()];
     if (!binding) {
       return;
@@ -327,13 +435,33 @@ export function createLocalClientController(
     event.preventDefault();
   });
 
+  window.addEventListener("mousedown", (event) => {
+    if (event.button !== 0) {
+      return;
+    }
+
+    attackPressed = true;
+    event.preventDefault();
+  });
+
+  window.addEventListener("mouseup", (event) => {
+    if (event.button !== 0) {
+      return;
+    }
+
+    attackPressed = false;
+    event.preventDefault();
+  });
+
   window.addEventListener("blur", () => {
     clearMovementState(inputContext, pressedKeys);
+    attackPressed = false;
   });
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState !== "visible") {
       clearMovementState(inputContext, pressedKeys);
+      attackPressed = false;
     }
   });
 
@@ -376,6 +504,7 @@ export function createLocalClientController(
 
       CL_SetInputFrameTime(inputContext, realtimeMs);
       syncMovementButtons(inputContext, pressedKeys, realtimeMs);
+      setButtonHeld(inputContext.in_attack, attackPressed, realtimeMs);
 
       const cmd = CL_CreateCmd(inputContext, {
         anykeydown: Object.values(pressedKeys).some(Boolean),
@@ -397,16 +526,13 @@ export function createLocalClientController(
       });
 
       promotePredictedState(runtime, realtimeMs);
-      updateGameplayRuntimePlayer(gameplayRuntime, gameplayPlayer, runtime);
+      updateGameplayRuntimePlayer(gameplayRuntime, gameplayPlayer, runtime, localViewMotion);
       syncLocalGameplayFrame(runtime, gameplayRuntime);
       applyPredictedCamera(camera, runtime);
 
-      if (realtimeMs >= nextDebugRefreshAtMs) {
-        refreshFrame = CL_BuildRefreshFrame(runtime, {
-          predictMovement: true
-        });
-        nextDebugRefreshAtMs = realtimeMs + DEBUG_REFRESH_INTERVAL_MS;
-      }
+      refreshFrame = CL_BuildRefreshFrame(runtime, {
+        predictMovement: true
+      });
 
       nextCommandSequence += 1;
     }
@@ -423,13 +549,291 @@ export function createLocalClientController(
 function createLocalGameplayPlayer(runtime: GameRuntime): GameEntity {
   const player = spawnGameEntity(runtime);
   player.classname = "player";
-  player.client = true;
+  const client = attachGameClient(player);
   player.health = 100;
+  player.viewheight = DEFAULT_VIEWHEIGHT;
   player.mins = [...PLAYER_TRIGGER_MINS];
   player.maxs = [...PLAYER_TRIGGER_MAXS];
+  seedLocalWeaponInventory(player, client, runtime);
   refreshEntitySpatialState(player);
   linkGameEntity(runtime, player);
   return player;
+}
+
+/**
+ * Category: New
+ * Purpose: Seed the browser-local gameplay player with a minimal inventory and active weapon so the first-person weapon path can run immediately.
+ *
+ * Constraints:
+ * - Must rely on the already ported `g_items.c` metadata and `ChangeWeapon`.
+ */
+function seedLocalWeaponInventory(player: GameEntity, client: NonNullable<GameEntity["client"]>, runtime: GameRuntime): void {
+  const weaponNames = Object.values(LOCAL_WEAPON_SLOTS);
+  for (const weaponName of weaponNames) {
+    const weapon = FindItem(weaponName);
+    if (weapon) {
+      client.pers.inventory[weapon.index] = 1;
+    }
+  }
+
+  const ammoGrants: Array<[string, number]> = [
+    ["Shells", 50],
+    ["Bullets", 200],
+    ["Grenades", 25],
+    ["Rockets", 50],
+    ["Cells", 200],
+    ["Slugs", 50]
+  ];
+
+  for (const [ammoName, amount] of ammoGrants) {
+    const ammo = FindItem(ammoName);
+    if (ammo) {
+      client.pers.inventory[ammo.index] = amount;
+    }
+  }
+
+  const initialWeapon = FindItem("Shotgun") ?? FindItem("Machinegun") ?? FindItem("Grenades");
+  if (initialWeapon) {
+    client.newweapon = initialWeapon;
+    ChangeWeapon(player, runtime, LOCAL_GAME_WEAPON_HOOKS);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Request one local weapon switch from the browser demo controls using the original `Use_Weapon` path.
+ *
+ * Constraints:
+ * - Must ignore unknown or unavailable weapons cleanly.
+ */
+function selectLocalWeapon(player: GameEntity, weaponName: string, gameplayRuntime: GameRuntime, runtime: ClientRuntime): void {
+  const weapon = FindItem(weaponName);
+  const client = player.client;
+  if (!weapon || !client || client.pers.inventory[weapon.index] <= 0) {
+    return;
+  }
+
+  Use_Weapon(player, weapon, gameplayRuntime);
+  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = weapon.index;
+}
+
+/**
+ * Category: New
+ * Purpose: Mirror the local gameplay player's weapon-facing `player_state_t` subset into the browser client frame.
+ *
+ * Constraints:
+ * - Must preserve the already ported `cl_ents.c` / `CL_AddViewWeapon` inputs.
+ */
+function syncLocalWeaponPlayerState(runtime: ClientRuntime, gameplayPlayer: GameEntity): void {
+  const gameplayClient = gameplayPlayer.client;
+  if (!gameplayClient) {
+    return;
+  }
+
+  runtime.cl.frame.playerstate.gunindex = gameplayClient.ps.gunindex;
+  runtime.cl.frame.playerstate.gunframe = gameplayClient.ps.gunframe;
+  runtime.cl.frame.playerstate.gunoffset = [...gameplayClient.ps.gunoffset];
+  runtime.cl.frame.playerstate.gunangles = [...gameplayClient.ps.gunangles];
+  runtime.cl.frame.playerstate.kick_angles = [...gameplayClient.ps.kick_angles];
+  runtime.cl.frame.playerstate.viewoffset = [...gameplayClient.ps.viewoffset];
+
+  const selectedWeapon = gameplayClient.pers.weapon;
+  const selectedAmmo = GetAmmoItemForWeapon(selectedWeapon);
+  runtime.cl.inventory = [...gameplayClient.pers.inventory];
+  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = selectedWeapon?.index ?? 0;
+  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ICON] = selectedWeapon?.icon ? findClientImageIndex(runtime, selectedWeapon.icon) : 0;
+  runtime.cl.frame.playerstate.stats[STAT_AMMO] = selectedAmmo ? gameplayClient.pers.inventory[selectedAmmo.index] ?? 0 : 0;
+  runtime.cl.frame.playerstate.stats[STAT_AMMO_ICON] = selectedAmmo?.icon ? findClientImageIndex(runtime, selectedAmmo.icon) : 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Reproduce the first-person weapon bob, delta-angle sway and kick transfer that the original server writes into `player_state_t`.
+ *
+ * Constraints:
+ * - Must stay close to `SV_CalcGunOffset` and the relevant `SV_CalcViewOffset` kick subset from `p_view.c`.
+ * - Must keep the adaptation local until `game/p_view.c` is ported as a dedicated module.
+ */
+function updateLocalViewWeaponMotion(
+  gameplayRuntime: GameRuntime,
+  gameplayPlayer: GameEntity,
+  gameplayClient: NonNullable<GameEntity["client"]>,
+  runtime: ClientRuntime,
+  localViewMotion: LocalViewMotionState
+): void {
+  const xyspeed = Math.hypot(
+    runtime.cl.predicted_pmove.velocity[0] * 0.125,
+    runtime.cl.predicted_pmove.velocity[1] * 0.125
+  );
+
+  let bobmove = 0;
+  if (xyspeed < 5) {
+    localViewMotion.bobtime = 0;
+  } else if ((runtime.cl.predicted_pmove.pm_flags & PMF_ON_GROUND) !== 0) {
+    if (xyspeed > 210) {
+      bobmove = 0.25;
+    } else if (xyspeed > 100) {
+      bobmove = 0.125;
+    } else {
+      bobmove = 0.0625;
+    }
+  }
+
+  localViewMotion.bobtime += bobmove;
+  let bobtime = localViewMotion.bobtime;
+  if ((runtime.cl.predicted_pmove.pm_flags & PMF_DUCKED) !== 0) {
+    bobtime *= 4;
+  }
+
+  const bobcycle = Math.trunc(bobtime);
+  const bobfracsin = Math.abs(Math.sin(bobtime * Math.PI));
+
+  const kickAngles: vec3_t = [...gameplayClient.kick_angles];
+  const damageRatio = (gameplayClient.v_dmg_time - gameplayRuntime.time) / DAMAGE_TIME;
+  if (damageRatio > 0) {
+    kickAngles[PITCH] += damageRatio * gameplayClient.v_dmg_pitch;
+    kickAngles[2] += damageRatio * gameplayClient.v_dmg_roll;
+  }
+  gameplayClient.ps.kick_angles = kickAngles;
+
+  const viewoffset: vec3_t = [0, 0, gameplayPlayer.viewheight];
+  viewoffset[0] += gameplayClient.kick_origin[0];
+  viewoffset[1] += gameplayClient.kick_origin[1];
+  viewoffset[2] += gameplayClient.kick_origin[2];
+  gameplayClient.ps.viewoffset = [
+    clamp(viewoffset[0], -14, 14),
+    clamp(viewoffset[1], -14, 14),
+    clamp(viewoffset[2], -22, 30)
+  ];
+
+  const gunangles: vec3_t = [
+    xyspeed * bobfracsin * 0.005,
+    xyspeed * bobfracsin * 0.01,
+    xyspeed * bobfracsin * 0.005
+  ];
+  if ((bobcycle & 1) !== 0) {
+    gunangles[2] = -gunangles[2];
+    gunangles[YAW] = -gunangles[YAW];
+  }
+
+  for (let index = 0; index < 3; index += 1) {
+    let delta = localViewMotion.oldviewangles[index] - runtime.cl.predicted_angles[index];
+    if (delta > 180) {
+      delta -= 360;
+    }
+    if (delta < -180) {
+      delta += 360;
+    }
+    delta = clamp(delta, -45, 45);
+    if (index === YAW) {
+      gunangles[2] += 0.1 * delta;
+    }
+    gunangles[index] += 0.2 * delta;
+  }
+
+  gameplayClient.ps.gunangles = gunangles;
+  gameplayClient.ps.gunoffset = [0, 0, 0];
+  localViewMotion.oldviewangles = [...runtime.cl.predicted_angles];
+
+  gameplayClient.kick_origin = [0, 0, 0];
+  gameplayClient.kick_angles = [0, 0, 0];
+}
+
+/**
+ * Category: New
+ * Purpose: Find one local client image index from the current configstring table without creating a duplicate registration path.
+ */
+function findClientImageIndex(runtime: ClientRuntime, imageName: string): number {
+  for (let index = 1; index < 256; index += 1) {
+    if (runtime.cl.configstrings[CS_IMAGES + index] === imageName) {
+      return index;
+    }
+  }
+
+  return 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Build the local HUD image list needed to render the core weapon and ammo icons used by the browser weapon test loop.
+ *
+ * Constraints:
+ * - Must keep `CS_IMAGES + 1` on `i_health` for the current local status bar bootstrap.
+ */
+function collectLocalHudImageNames(selectedWeaponIcon: string | null, selectedAmmoIcon: string | null): string[] {
+  const names = new Set<string>([
+    "i_health",
+    selectedAmmoIcon ?? "a_shells",
+    "i_combatarmor",
+    selectedWeaponIcon ?? "w_shotgun"
+  ]);
+
+  for (const weaponName of Object.values(LOCAL_WEAPON_SLOTS)) {
+    const weapon = FindItem(weaponName);
+    if (weapon?.icon) {
+      names.add(weapon.icon);
+    }
+
+    const ammo = GetAmmoItemForWeapon(weapon);
+    if (ammo?.icon) {
+      names.add(ammo.icon);
+    }
+  }
+
+  return [...names];
+}
+
+/**
+ * Category: New
+ * Purpose: Populate the local client inventory mirror with the same bootstrap weapons and ammo used by the gameplay-side player proxy.
+ *
+ * Constraints:
+ * - Must stay aligned with `seedLocalWeaponInventory`.
+ */
+function seedLocalClientInventory(runtime: ClientRuntime): void {
+  for (const weaponName of Object.values(LOCAL_WEAPON_SLOTS)) {
+    const weapon = FindItem(weaponName);
+    if (weapon) {
+      runtime.cl.inventory[weapon.index] = 1;
+    }
+  }
+
+  const ammoGrants: Array<[string, number]> = [
+    ["Shells", 50],
+    ["Bullets", 200],
+    ["Grenades", 25],
+    ["Rockets", 50],
+    ["Cells", 200],
+    ["Slugs", 50]
+  ];
+
+  for (const [ammoName, amount] of ammoGrants) {
+    const ammo = FindItem(ammoName);
+    if (ammo) {
+      runtime.cl.inventory[ammo.index] = amount;
+    }
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Populate the local `CS_ITEMS` strings required by the HUD and item-name lookups for the current weapon test inventory.
+ *
+ * Constraints:
+ * - Must cover both seeded weapons and their ammo items.
+ */
+function populateLocalHudItemConfigstrings(runtime: ClientRuntime): void {
+  for (const weaponName of Object.values(LOCAL_WEAPON_SLOTS)) {
+    const weapon = FindItem(weaponName);
+    if (weapon) {
+      runtime.cl.configstrings[CS_ITEMS + weapon.index] = weapon.pickupName;
+    }
+
+    const ammo = GetAmmoItemForWeapon(weapon);
+    if (ammo) {
+      runtime.cl.configstrings[CS_ITEMS + ammo.index] = ammo.pickupName;
+    }
+  }
 }
 
 /**
@@ -466,13 +870,39 @@ function advanceGameplayRuntime(
 function updateGameplayRuntimePlayer(
   gameplayRuntime: GameRuntime,
   gameplayPlayer: GameEntity,
-  runtime: ClientRuntime
+  runtime: ClientRuntime,
+  localViewMotion: LocalViewMotionState
 ): void {
   gameplayPlayer.origin = [...runtime.cl.predicted_origin];
+  gameplayPlayer.s.origin = [...runtime.cl.predicted_origin];
+  gameplayPlayer.s.old_origin = [...runtime.cl.predicted_origin];
+  gameplayPlayer.viewheight = getPredictedViewheight(runtime.cl.predicted_pmove);
   applyPredictedGameplayHull(gameplayPlayer, runtime.cl.predicted_pmove);
   refreshEntitySpatialState(gameplayPlayer);
   linkGameEntity(gameplayRuntime, gameplayPlayer);
+
+  const gameplayClient = gameplayPlayer.client;
+  if (gameplayClient) {
+    gameplayClient.oldbuttons = gameplayClient.buttons;
+    gameplayClient.buttons = runtime.cl.cmd.buttons;
+    gameplayClient.latched_buttons |= gameplayClient.buttons & ~gameplayClient.oldbuttons;
+    gameplayClient.v_angle = [...runtime.cl.predicted_angles];
+    gameplayClient.ps.viewoffset = [0, 0, gameplayPlayer.viewheight];
+    gameplayClient.ps.pmove = {
+      ...gameplayClient.ps.pmove,
+      pm_type: runtime.cl.predicted_pmove.pm_type,
+      origin: [...runtime.cl.predicted_pmove.origin],
+      velocity: [...runtime.cl.predicted_pmove.velocity],
+      pm_flags: runtime.cl.predicted_pmove.pm_flags,
+      pm_time: runtime.cl.predicted_pmove.pm_time,
+      gravity: runtime.cl.predicted_pmove.gravity,
+      delta_angles: [...runtime.cl.predicted_pmove.delta_angles]
+    };
+    Think_Weapon(gameplayPlayer, gameplayRuntime, LOCAL_GAME_WEAPON_HOOKS);
+    updateLocalViewWeaponMotion(gameplayRuntime, gameplayPlayer, gameplayClient, runtime, localViewMotion);
+  }
   touchTriggerEntities(gameplayRuntime, gameplayPlayer);
+  syncLocalWeaponPlayerState(runtime, gameplayPlayer);
 }
 
 /**
@@ -559,18 +989,17 @@ function initializeSpawnPrediction(
  * - Must only touch current local bootstrap values until authoritative server stats exist.
  */
 function initializeLocalHudState(runtime: ClientRuntime): void {
+  const selectedWeapon = FindItem("Shotgun");
+  const selectedAmmo = GetAmmoItemForWeapon(selectedWeapon);
+
   runtime.cl.configstrings[CS_STATUSBAR] = LOCAL_SINGLE_STATUSBAR;
-  runtime.cl.configstrings[CS_IMAGES + 1] = "i_health";
-  runtime.cl.configstrings[CS_IMAGES + 2] = "a_shells";
-  runtime.cl.configstrings[CS_IMAGES + 3] = "i_combatarmor";
-  runtime.cl.configstrings[CS_IMAGES + 4] = "w_blaster";
-  runtime.cl.configstrings[CS_ITEMS + 1] = "Blaster";
-  runtime.cl.configstrings[CS_ITEMS + 2] = "Shotgun";
-  runtime.cl.configstrings[CS_ITEMS + 3] = "Shells";
+  const imageNames = collectLocalHudImageNames(selectedWeapon?.icon ?? null, selectedAmmo?.icon ?? null);
+  imageNames.forEach((imageName, offset) => {
+    runtime.cl.configstrings[CS_IMAGES + offset + 1] = imageName;
+  });
+  populateLocalHudItemConfigstrings(runtime);
   runtime.cl.layout = LOCAL_SCOREBOARD_LAYOUT;
-  runtime.cl.inventory[1] = 1;
-  runtime.cl.inventory[2] = 1;
-  runtime.cl.inventory[3] = 50;
+  seedLocalClientInventory(runtime);
   runtime.cl.playernum = 0;
   runtime.cl.clientinfo[0].name = "Player";
   runtime.cl.clientinfo[0].iconname = "players/male/grunt_i.pcx";
@@ -581,12 +1010,12 @@ function initializeLocalHudState(runtime: ClientRuntime): void {
 
   runtime.cl.frame.playerstate.stats[STAT_HEALTH_ICON] = 1;
   runtime.cl.frame.playerstate.stats[STAT_HEALTH] = 100;
-  runtime.cl.frame.playerstate.stats[STAT_AMMO_ICON] = 2;
-  runtime.cl.frame.playerstate.stats[STAT_AMMO] = 50;
-  runtime.cl.frame.playerstate.stats[STAT_ARMOR_ICON] = 3;
+  runtime.cl.frame.playerstate.stats[STAT_AMMO_ICON] = findClientImageIndex(runtime, selectedAmmo?.icon ?? "a_shells");
+  runtime.cl.frame.playerstate.stats[STAT_AMMO] = selectedAmmo ? runtime.cl.inventory[selectedAmmo.index] ?? 0 : 0;
+  runtime.cl.frame.playerstate.stats[STAT_ARMOR_ICON] = findClientImageIndex(runtime, "i_combatarmor");
   runtime.cl.frame.playerstate.stats[STAT_ARMOR] = 50;
-  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ICON] = 4;
-  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = 1;
+  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ICON] = findClientImageIndex(runtime, selectedWeapon?.icon ?? "w_shotgun");
+  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = selectedWeapon?.index ?? 0;
   runtime.cl.frame.playerstate.stats[STAT_PICKUP_ICON] = 0;
   runtime.cl.frame.playerstate.stats[STAT_PICKUP_STRING] = 0;
   runtime.cl.frame.playerstate.stats[STAT_TIMER_ICON] = 0;
@@ -837,6 +1266,45 @@ function promotePredictedState(runtime: ClientRuntime, realtimeMs: number): void
   };
   runtime.cl.frame.playerstate.viewangles = [...runtime.cl.predicted_angles];
   runtime.cl.frame.playerstate.viewoffset = [0, 0, getPredictedViewheight(runtime.cl.predicted_pmove)];
+  storeLocalClientFrame(runtime);
+}
+
+/**
+ * Category: New
+ * Purpose: Store the current local client frame into the Quake II frame history ring so view-weapon interpolation can use a real previous frame.
+ *
+ * Constraints:
+ * - Must preserve the `frame_t` value semantics expected by the client refresh code.
+ */
+function storeLocalClientFrame(runtime: ClientRuntime): void {
+  const frameIndex = runtime.cl.frame.serverframe & (runtime.cl.frames.length - 1);
+  const stored = createFrame();
+
+  stored.valid = runtime.cl.frame.valid;
+  stored.serverframe = runtime.cl.frame.serverframe;
+  stored.servertime = runtime.cl.frame.servertime;
+  stored.deltaframe = runtime.cl.frame.deltaframe;
+  stored.areabits = new Uint8Array(runtime.cl.frame.areabits);
+  stored.playerstate = {
+    ...runtime.cl.frame.playerstate,
+    pmove: {
+      ...runtime.cl.frame.playerstate.pmove,
+      origin: [...runtime.cl.frame.playerstate.pmove.origin],
+      velocity: [...runtime.cl.frame.playerstate.pmove.velocity],
+      delta_angles: [...runtime.cl.frame.playerstate.pmove.delta_angles]
+    },
+    viewangles: [...runtime.cl.frame.playerstate.viewangles],
+    viewoffset: [...runtime.cl.frame.playerstate.viewoffset],
+    kick_angles: [...runtime.cl.frame.playerstate.kick_angles],
+    gunangles: [...runtime.cl.frame.playerstate.gunangles],
+    gunoffset: [...runtime.cl.frame.playerstate.gunoffset],
+    blend: [...runtime.cl.frame.playerstate.blend],
+    stats: [...runtime.cl.frame.playerstate.stats]
+  };
+  stored.num_entities = runtime.cl.frame.num_entities;
+  stored.parse_entities = runtime.cl.frame.parse_entities;
+
+  runtime.cl.frames[frameIndex] = stored;
 }
 
 /**
@@ -980,6 +1448,14 @@ function cloneUsercmd(cmd: ClientRuntime["cl"]["cmd"]): ClientRuntime["cl"]["cmd
     impulse: cmd.impulse,
     lightlevel: cmd.lightlevel
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Clamp one numeric value into one closed interval for the local `p_view.c`-style view offset adaptation.
+ */
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
 }
 
 /**

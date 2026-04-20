@@ -12,9 +12,9 @@
  * - three
  */
 
-import { Group, MathUtils, type Object3D } from "three";
+import { Group, MathUtils, type Camera, type Object3D } from "three";
 import type { ClientRefreshFrame, ClientRenderEntity, ClientRuntime } from "../../client/src/index.js";
-import { CS_MODELS, RF_FRAMELERP, RF_GLOW, RF_TRANSLUCENT } from "../../qcommon/src/index.js";
+import { CS_MODELS, RF_DEPTHHACK, RF_FRAMELERP, RF_GLOW, RF_TRANSLUCENT, RF_WEAPONMODEL } from "../../qcommon/src/index.js";
 import type { VirtualFilesystem } from "../../filesystem/src/index.js";
 import { applyMd2Frame, applyMd2LerpedFrame, buildMd2Mesh, loadMd2Model, type Md2MeshInstance } from "./md2-mesh-builder.js";
 
@@ -61,6 +61,8 @@ export interface RefreshEntitySyncStats {
  */
 export interface ThreeRefreshEntitySync {
   root: Group;
+  viewWeaponRoot: Group;
+  attachToCamera: (camera: Camera) => void;
   apply: (runtime: ClientRuntime, refreshFrame: ClientRefreshFrame | null) => RefreshEntitySyncStats;
 }
 
@@ -76,12 +78,21 @@ export interface ThreeRefreshEntitySync {
 export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): ThreeRefreshEntitySync {
   const root = new Group();
   root.name = "refresh-entities";
+  const viewWeaponRoot = new Group();
+  viewWeaponRoot.name = "refresh-view-weapon";
 
   const modelCache = new Map<string, ReturnType<typeof loadMd2Model>>();
   const instances = new Map<string, RefreshEntityInstance>();
 
   return {
     root,
+    viewWeaponRoot,
+    attachToCamera: (camera) => {
+      if (viewWeaponRoot.parent !== camera) {
+        viewWeaponRoot.removeFromParent();
+        camera.add(viewWeaponRoot);
+      }
+    },
     apply: (runtime, refreshFrame) => {
       const activeKeys = new Set<string>();
       let visibleEntities = 0;
@@ -123,7 +134,7 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
 
         let instance = instances.get(key) ?? null;
         if (instance && (instance.modelPath !== modelPath || instance.skinnum !== entity.skinnum)) {
-          removeRefreshEntityInstance(root, instances, key);
+          removeRefreshEntityInstance(instances, key);
           instance = null;
         }
 
@@ -135,16 +146,16 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
           }
 
           instances.set(key, instance);
-          root.add(instance.root);
+          getRefreshEntityParent(entity, root, viewWeaponRoot).add(instance.root);
         }
 
-        updateRefreshEntityInstance(runtime, instance, entity);
+        updateRefreshEntityInstance(runtime, refreshFrame, instance, entity);
         renderedEntities += 1;
       }
 
       for (const [key] of instances) {
         if (!activeKeys.has(key)) {
-          removeRefreshEntityInstance(root, instances, key);
+          removeRefreshEntityInstance(instances, key);
         }
       }
 
@@ -260,9 +271,32 @@ function createRefreshEntityInstance(
  * Category: New
  * Purpose: Apply the current refresh-entity transform and frame state onto one existing MD2 scene instance.
  */
-function updateRefreshEntityInstance(runtime: ClientRuntime, instance: RefreshEntityInstance, entity: ClientRenderEntity): void {
-  instance.root.position.set(entity.origin[0], entity.origin[1], entity.origin[2]);
-  applyAliasEntityRotation(instance.root, entity);
+function updateRefreshEntityInstance(
+  runtime: ClientRuntime,
+  refreshFrame: ClientRefreshFrame | null,
+  instance: RefreshEntityInstance,
+  entity: ClientRenderEntity
+): void {
+  if ((entity.flags & RF_WEAPONMODEL) !== 0) {
+    const vieworg = refreshFrame?.view.vieworg ?? [0, 0, 0];
+    const viewangles = refreshFrame?.view.viewangles ?? [0, 0, 0];
+    instance.root.position.set(
+      entity.origin[0] - vieworg[0],
+      entity.origin[1] - vieworg[1],
+      entity.origin[2] - vieworg[2]
+    );
+    applyAliasEntityRotation(instance.root, {
+      ...entity,
+      angles: [
+        entity.angles[0] - viewangles[0],
+        entity.angles[1] - viewangles[1],
+        entity.angles[2] - viewangles[2]
+      ]
+    });
+  } else {
+    instance.root.position.set(entity.origin[0], entity.origin[1], entity.origin[2]);
+    applyAliasEntityRotation(instance.root, entity);
+  }
   instance.root.visible = true;
 
   if ((entity.flags & RF_FRAMELERP) !== 0) {
@@ -273,7 +307,21 @@ function updateRefreshEntityInstance(runtime: ClientRuntime, instance: RefreshEn
 
   instance.md2.mesh.material.transparent = entity.alpha < 1 || (entity.flags & RF_TRANSLUCENT) !== 0;
   instance.md2.mesh.material.opacity = entity.alpha;
+  instance.md2.mesh.material.depthTest = (entity.flags & RF_DEPTHHACK) === 0;
+  instance.md2.mesh.material.depthWrite = (entity.flags & RF_DEPTHHACK) === 0;
+  instance.md2.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
   applyRefreshEntityGlow(runtime, instance, entity);
+}
+
+/**
+ * Category: New
+ * Purpose: Route refresh entities either to the world root or to the camera-bound first-person weapon root.
+ *
+ * Constraints:
+ * - Must keep `RF_WEAPONMODEL` entities out of the world scene hierarchy.
+ */
+function getRefreshEntityParent(entity: ClientRenderEntity, worldRoot: Group, viewWeaponRoot: Group): Group {
+  return (entity.flags & RF_WEAPONMODEL) !== 0 ? viewWeaponRoot : worldRoot;
 }
 
 /**
@@ -330,17 +378,13 @@ function resolveMd2SkinPath(
  * Category: New
  * Purpose: Remove one scene instance that is no longer referenced by the current refresh frame.
  */
-function removeRefreshEntityInstance(
-  root: Group,
-  instances: Map<string, RefreshEntityInstance>,
-  key: string
-): void {
+function removeRefreshEntityInstance(instances: Map<string, RefreshEntityInstance>, key: string): void {
   const instance = instances.get(key);
   if (!instance) {
     return;
   }
 
-  root.remove(instance.root);
+  instance.root.removeFromParent();
   disposeObject3D(instance.root);
   instances.delete(key);
 }

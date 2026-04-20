@@ -17,6 +17,8 @@
  */
 
 import {
+  CS_LIGHTS,
+  DirFromByte,
   MSG_ReadAngle,
   MSG_ReadAngle16,
   MSG_ReadByte,
@@ -97,6 +99,7 @@ import {
 import { type ClientRuntime, type frame_t } from "./types.js";
 import { MAX_PARSE_ENTITIES, connstate_t, createFrame } from "./types.js";
 import { CL_FireEntityEvents, type ClientEntityEvent } from "./entities.js";
+import { CL_ClearEffects, CL_ParticleEffect, CL_SetLightstyle } from "./effects.js";
 import { SCR_CenterPrint } from "./screen.js";
 import { CL_AddTEntPacket, CL_ClearTEnts } from "./tent.js";
 import { CL_CheckPredictionError } from "./view.js";
@@ -122,6 +125,7 @@ export interface ClientParseHooks {
   onSoundPacket?: (packet: ClientSoundPacket) => void;
   onMuzzleFlash?: (packet: ClientMuzzleFlashPacket) => void;
   onMuzzleFlash2?: (packet: ClientMuzzleFlash2Packet) => void;
+  onParticleEffect?: (packet: ClientParticleEffectPacket) => void;
   onTempEntity?: (packet: ClientTempEntityPacket) => void;
   onDownloadBlock?: (block: ClientDownloadBlock) => void;
   onEntityEvent?: (event: ClientEntityEvent) => void;
@@ -187,6 +191,26 @@ export interface ClientMuzzleFlash2Packet {
 }
 
 /**
+ * Original name: CL_ParseParticles
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Describes one auxiliary particle-effect payload read outside of `CL_ParseTEnt`.
+ *
+ * Porting notes:
+ * - Preserves the original `pos`, `dir`, `color`, `count` field set exactly.
+ */
+export interface ClientParticleEffectPacket {
+  kind: "particle-effect";
+  position: [number, number, number];
+  directionByte: number;
+  color: number;
+  count: number;
+}
+
+/**
  * Category: New
  * Purpose: Describe one parsed `svc_temp_entity` payload in a renderer/audio-backend-friendly structure.
  *
@@ -197,6 +221,7 @@ export interface ClientTempEntityPacket {
   type: number;
   count?: number;
   color?: number;
+  direction?: [number, number, number];
   entity?: number;
   entity2?: number;
   id?: number;
@@ -243,6 +268,7 @@ export function CL_ClearState(runtime: ClientRuntime): void {
   }
 
   CL_ClearTEnts(runtime);
+  CL_ClearEffects(runtime);
 }
 
 /**
@@ -631,6 +657,32 @@ export function CL_ParseMuzzleFlash2(runtime: ClientRuntime, hooks: ClientParseH
 }
 
 /**
+ * Original name: CL_ParseParticles
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Parses the auxiliary wall-puff particle packet and forwards its exact payload.
+ *
+ * Porting notes:
+ * - Keeps the original `pos`, `dir`, `color`, `count` read order.
+ */
+export function CL_ParseParticles(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientParticleEffectPacket {
+  const packet: ClientParticleEffectPacket = {
+    kind: "particle-effect",
+    position: MSG_ReadPos(runtime.net_message),
+    directionByte: MSG_ReadByte(runtime.net_message),
+    color: MSG_ReadByte(runtime.net_message),
+    count: MSG_ReadByte(runtime.net_message)
+  };
+
+  CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), packet.color, packet.count);
+  hooks.onParticleEffect?.(packet);
+  return packet;
+}
+
+/**
  * Original name: CL_ParseTEnt
  * Source: client/cl_tent.c
  * Category: Ported
@@ -663,15 +715,19 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
       packet.directionByte = MSG_ReadByte(runtime.net_message);
       break;
     }
-    case temp_event_t.TE_RAILTRAIL:
-    case temp_event_t.TE_BLUEHYPERBLASTER:
-    case temp_event_t.TE_EXPLOSION1_BIG: {
+    case temp_event_t.TE_RAILTRAIL: {
       packet.position = MSG_ReadPos(runtime.net_message);
       packet.position2 = MSG_ReadPos(runtime.net_message);
       break;
     }
+    case temp_event_t.TE_BLUEHYPERBLASTER: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.direction = MSG_ReadPos(runtime.net_message);
+      break;
+    }
     case temp_event_t.TE_GRENADE_EXPLOSION:
     case temp_event_t.TE_EXPLOSION1:
+    case temp_event_t.TE_EXPLOSION1_BIG:
     case temp_event_t.TE_EXPLOSION2:
     case temp_event_t.TE_ROCKET_EXPLOSION:
     case temp_event_t.TE_ROCKET_EXPLOSION_WATER:
@@ -687,8 +743,7 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
     case temp_event_t.TE_TELEPORT_EFFECT:
     case temp_event_t.TE_DBALL_GOAL:
     case temp_event_t.TE_WIDOWSPLASH:
-    case temp_event_t.TE_EXPLOSION1_NP:
-    case temp_event_t.TE_FLECHETTE: {
+    case temp_event_t.TE_EXPLOSION1_NP: {
       packet.position = MSG_ReadPos(runtime.net_message);
       break;
     }
@@ -703,7 +758,8 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
       break;
     }
     case temp_event_t.TE_BLASTER:
-    case temp_event_t.TE_BLASTER2: {
+    case temp_event_t.TE_BLASTER2:
+    case temp_event_t.TE_FLECHETTE: {
       packet.position = MSG_ReadPos(runtime.net_message);
       packet.directionByte = MSG_ReadByte(runtime.net_message);
       break;
@@ -718,9 +774,13 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
       packet.entity = MSG_ReadShort(runtime.net_message);
       break;
     }
-    case temp_event_t.TE_BFG_LASER:
-    case temp_event_t.TE_BUBBLETRAIL: {
+    case temp_event_t.TE_BFG_LASER: {
       assignBeamPacket(packet, "laser", parseLaserPacket(runtime));
+      break;
+    }
+    case temp_event_t.TE_BUBBLETRAIL: {
+      packet.position = MSG_ReadPos(runtime.net_message);
+      packet.position2 = MSG_ReadPos(runtime.net_message);
       break;
     }
     case temp_event_t.TE_GRAPPLE_CABLE: {
@@ -734,11 +794,6 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
     }
     case temp_event_t.TE_STEAM: {
       assignBeamPacket(packet, "steam", parseSteamPacket(runtime));
-      break;
-    }
-    case temp_event_t.TE_FLASHLIGHT: {
-      packet.position = MSG_ReadPos(runtime.net_message);
-      packet.entity = MSG_ReadShort(runtime.net_message);
       break;
     }
     case temp_event_t.TE_FORCEWALL:
@@ -817,7 +872,7 @@ function parsePlayerBeamPacket(runtime: ClientRuntime, type: number): Partial<Cl
   const position2 = MSG_ReadPos(runtime.net_message);
 
   let offset: [number, number, number];
-  if (type === 37) {
+  if (type === temp_event_t.TE_HEATBEAM) {
     offset = [2, 7, -3];
   } else {
     offset = [0, 0, 0];
@@ -827,8 +882,7 @@ function parsePlayerBeamPacket(runtime: ClientRuntime, type: number): Partial<Cl
     entity,
     position,
     position2,
-    offset,
-    durationMs: type === 37 ? 100 : 200
+    offset
   };
 }
 
@@ -1124,6 +1178,9 @@ export function CL_ParseConfigString(runtime: ClientRuntime, hooks: ClientParseH
   runtime.cl.configstrings[index] = value;
   if (index === CS_SKY || index === CS_SKYROTATE || index === CS_SKYAXIS) {
     syncClientSkyFromConfigstrings(runtime);
+  }
+  if (index >= CS_LIGHTS && index < CS_LIGHTS + runtime.cl.lightstyles.length) {
+    CL_SetLightstyle(runtime, index - CS_LIGHTS);
   }
 
   if (index >= CS_PLAYERSKINS && index < CS_PLAYERSKINS + MAX_CLIENTS) {
@@ -1559,6 +1616,8 @@ function createFrameClearedClientState(runtime: ClientRuntime): Omit<ClientRunti
     viewangles: [0, 0, 0],
     time: 0,
     lerpfrac: 0,
+    cl_footsteps: runtime.cl.cl_footsteps,
+    hand: runtime.cl.hand,
     layout: "",
     inventory: new Array<number>(MAX_ITEMS).fill(0),
     attractloop: false,
@@ -1571,6 +1630,38 @@ function createFrameClearedClientState(runtime: ClientRuntime): Omit<ClientRunti
     model_clip: new Array<unknown>(runtime.cl.model_clip.length).fill(null),
     sound_precache: new Array<unknown>(runtime.cl.sound_precache.length).fill(null),
     image_precache: new Array<unknown>(runtime.cl.image_precache.length).fill(null),
+    lightstyles: runtime.cl.lightstyles.map((lightstyle) => ({
+      length: lightstyle.length,
+      value: [...lightstyle.value],
+      map: [...lightstyle.map]
+    })),
+    last_lightstyle_ofs: -1,
+    dlights: runtime.cl.dlights.map((dlight) => ({
+      key: dlight.key,
+      color: [...dlight.color],
+      origin: [...dlight.origin],
+      radius: dlight.radius,
+      die: dlight.die,
+      decay: dlight.decay,
+      minlight: dlight.minlight
+    })),
+    particles: Array.from({ length: runtime.cl.cl_numparticles }, (_, index) => {
+      const particle = runtime.cl.particles[index];
+      return {
+        time: particle.time,
+        org: [...particle.org],
+        vel: [...particle.vel],
+        accel: [...particle.accel],
+        color: particle.color,
+        colorvel: particle.colorvel,
+        alpha: particle.alpha,
+        alphavel: particle.alphavel,
+        next: index + 1 < runtime.cl.cl_numparticles ? index + 1 : -1
+      };
+    }),
+    active_particles: -1,
+    free_particles: runtime.cl.cl_numparticles > 0 ? 0 : -1,
+    cl_numparticles: runtime.cl.cl_numparticles,
     cl_weaponmodels: [...runtime.cl.cl_weaponmodels],
     num_cl_weaponmodels: runtime.cl.num_cl_weaponmodels,
     clientinfo: runtime.cl.clientinfo,

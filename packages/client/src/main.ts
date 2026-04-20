@@ -28,6 +28,7 @@ import {
   Cvar_SetValue,
   CVAR_NOSET,
   CVAR_ARCHIVE,
+  CVAR_USERINFO,
   Info_Print,
   PROTOCOL_VERSION,
   type CommandRuntime,
@@ -56,6 +57,8 @@ export interface ClientMainContext {
   cl_predict: cvar_t | null;
   cl_showmiss: cvar_t | null;
   cl_showclamp: cvar_t | null;
+  cl_footsteps: cvar_t | null;
+  hand: cvar_t | null;
   cl_paused: cvar_t | null;
   cl_timedemo: cvar_t | null;
   cl_vwep: cvar_t | null;
@@ -120,6 +123,8 @@ export function createClientMainContext(client: ClientRuntime, cmd: CommandRunti
     cl_predict: null,
     cl_showmiss: null,
     cl_showclamp: null,
+    cl_footsteps: null,
+    hand: null,
     cl_paused: null,
     cl_timedemo: null,
     cl_vwep: null,
@@ -505,11 +510,15 @@ export function CL_InitLocal(context: ClientMainContext, hooks: ClientMainHooks 
   context.cl_predict = Cvar_Get(context.cvar, "cl_predict", "1", 0);
   context.cl_showmiss = Cvar_Get(context.cvar, "cl_showmiss", "0", 0);
   context.cl_showclamp = Cvar_Get(context.cvar, "cl_showclamp", "0", 0);
+  context.cl_footsteps = Cvar_Get(context.cvar, "cl_footsteps", "1", 0);
+  context.hand = Cvar_Get(context.cvar, "hand", "0", CVAR_USERINFO | CVAR_ARCHIVE);
   context.cl_paused = Cvar_Get(context.cvar, "paused", "0", 0);
   context.cl_timedemo = Cvar_Get(context.cvar, "timedemo", "0", 0);
   context.cl_vwep = Cvar_Get(context.cvar, "cl_vwep", "1", CVAR_ARCHIVE);
   context.rcon_client_password = Cvar_Get(context.cvar, "rcon_password", "", 0);
   context.rcon_address = Cvar_Get(context.cvar, "rcon_address", "", CVAR_NOSET);
+  context.client.cl.cl_footsteps = ((context.cl_footsteps?.value) ?? 1) !== 0;
+  context.client.cl.hand = context.hand?.value ?? 0;
 
   Cmd_AddCommand(context.cmd, "skins", () => {
     CL_Skins_f(context, hooks);

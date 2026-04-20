@@ -15,6 +15,7 @@ export {
   AREA_TRIGGERS,
   BoxEdicts,
   classifyGameEntity,
+  attachGameClient,
   DOOR_CRUSHER,
   DOOR_NOMONSTER,
   DOOR_REVERSE,
@@ -22,12 +23,67 @@ export {
   DOOR_TOGGLE,
   DOOR_X_AXIS,
   DOOR_Y_AXIS,
+  DEFAULT_DEATHMATCH_SHOTGUN_COUNT,
+  DEFAULT_BULLET_HSPREAD,
+  DEFAULT_BULLET_VSPREAD,
+  DEFAULT_SHOTGUN_COUNT,
+  DEFAULT_SHOTGUN_HSPREAD,
+  DEFAULT_SHOTGUN_VSPREAD,
+  DEFAULT_SSHOTGUN_COUNT,
+  DAMAGE_BULLET,
+  DAMAGE_ENERGY,
+  DAMAGE_NO_KNOCKBACK,
+  DAMAGE_RADIUS,
+  DAMAGE_TIME,
+  DEAD_DEAD,
+  DEAD_DYING,
+  DEAD_NO,
+  DEAD_RESPAWNABLE,
+  FL_IMMUNE_LASER,
   FL_TEAMSLAVE,
   FRAMETIME,
+  MOVETYPE_BOUNCE,
+  MOVETYPE_FLYMISSILE,
+  MOD_BLASTER,
+  MOD_BFG_BLAST,
+  MOD_BFG_EFFECT,
+  MOD_BFG_LASER,
+  MOD_CHAINGUN,
+  MOD_G_SPLASH,
+  MOD_GRENADE,
+  MOD_HANDGRENADE,
+  MOD_HELD_GRENADE,
+  MOD_HG_SPLASH,
+  MOD_HIT,
+  MOD_HYPERBLASTER,
+  MOD_MACHINEGUN,
+  MOD_RAILGUN,
+  MOD_ROCKET,
+  MOD_R_SPLASH,
+  SOLID_BBOX,
+  MOD_SHOTGUN,
+  MOD_SSHOTGUN,
   MOVETYPE_NONE,
   MOVETYPE_PUSH,
   MOVETYPE_TOSS,
+  WEAP_BFG,
+  WEAP_BLASTER,
+  WEAP_CHAINGUN,
+  WEAP_GRENADELAUNCHER,
+  WEAP_GRENADES,
+  WEAP_HYPERBLASTER,
+  WEAP_MACHINEGUN,
+  WEAP_RAILGUN,
+  WEAP_ROCKETLAUNCHER,
+  WEAP_SHOTGUN,
+  WEAP_SUPERSHOTGUN,
   PLAT_LOW_TRIGGER,
+  SPLASH_BLUE_WATER,
+  SPLASH_BROWN_WATER,
+  SPLASH_LAVA,
+  SPLASH_SLIME,
+  SPLASH_SPARKS,
+  SPLASH_UNKNOWN,
   SOLID_NOT,
   SOLID_BSP,
   SOLID_TRIGGER,
@@ -35,11 +91,15 @@ export {
   STATE_DOWN,
   STATE_TOP,
   STATE_UP,
+  SVF_DEADMONSTER,
   SVF_MONSTER,
   SVF_NOCLIENT,
+  ammo_t,
   createGameRuntimeFromBspMap,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
+  drainGameSoundEvents,
+  emitGameSound,
   findRuntimeEntitiesByTargetname,
   getRuntimeEntityLabel,
   isDynamicBoxEntity,
@@ -53,12 +113,23 @@ export {
   runPendingThinks,
   spawnGameEntity,
   unlinkGameEntity,
-  useGameEntity
+  useGameEntity,
+  weaponstate_t
 } from "./runtime.js";
 
 export {
+  CanDamage,
+  CheckPowerArmor,
+  Killed,
+  SpawnDamage,
+  T_Damage,
+  T_RadiusDamage
+} from "./g_combat.js";
+
+export {
   G_Find,
-  G_UseTargets
+  G_UseTargets,
+  findradius
 } from "./g_utils.js";
 
 export {
@@ -68,10 +139,16 @@ export {
 } from "./g_spawn.js";
 
 export {
+  ArmorIndex,
+  FindWeaponItemByThink,
   FindItem,
   FindItemByClassname,
+  GetArmorInfoByItem,
+  GetAmmoItemForWeapon,
+  GetGameItems,
   GetItemByIndex,
   InitItems,
+  PowerArmorType,
   PrecacheItem,
   SP_item_health,
   SP_item_health_large,
@@ -177,12 +254,68 @@ export {
 } from "./g_trigger.js";
 
 export {
+  Grenade_Explode,
+  Grenade_Touch,
+  bfg_explode,
+  bfg_think,
+  bfg_touch,
+  blaster_touch,
+  fire_bfg,
+  fire_blaster,
+  fire_bullet,
+  fire_grenade,
+  fire_grenade2,
+  fire_rail,
+  fire_rocket,
+  fire_shotgun,
+  rocket_touch
+} from "./g_weapon.js";
+
+export type { GameWeaponWorldHooks } from "./g_weapon.js";
+
+export {
   G_TouchSolids,
   G_TouchTriggers,
   touchTriggerEntities
 } from "./touch.js";
 
+export {
+  Blaster_Fire,
+  Chaingun_Fire,
+  ChangeWeapon,
+  Drop_Weapon,
+  Machinegun_Fire,
+  NoAmmoWeaponChange,
+  P_ProjectSource,
+  Pickup_Weapon,
+  PlayerNoise,
+  Think_Weapon,
+  Use_Weapon,
+  Weapon_BFG,
+  Weapon_Blaster,
+  Weapon_Blaster_Fire,
+  Weapon_Chaingun,
+  Weapon_Generic,
+  Weapon_Grenade,
+  Weapon_GrenadeLauncher,
+  Weapon_HyperBlaster,
+  Weapon_HyperBlaster_Fire,
+  Weapon_Machinegun,
+  Weapon_Railgun,
+  Weapon_RocketLauncher,
+  Weapon_Shotgun,
+  Weapon_SuperShotgun,
+  Weapon_RocketLauncher_Fire,
+  weapon_bfg_fire,
+  weapon_grenade_fire,
+  weapon_grenadelauncher_fire,
+  weapon_railgun_fire,
+  weapon_shotgun_fire,
+  weapon_supershotgun_fire
+} from "./p_weapon.js";
+
 export type {
+  GameItemArmorInfo,
   GameItemDefinition,
   GameItemDropKind,
   GameItemPickupKind,
@@ -199,9 +332,12 @@ export type {
   GameEntityThink,
   GameAssetRegistry,
   GameCollisionBridge,
+  GameSoundEvent,
   GameMoveInfo,
   GameEntityTouch,
   GameEntityUse,
   GameRuntime,
   GameRuntimeLogEntry
 } from "./runtime.js";
+
+export type { GameWeaponHooks } from "./p_weapon.js";

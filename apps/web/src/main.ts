@@ -122,6 +122,7 @@ async function bootstrap(): Promise<void> {
     scene.add(skyAdapter.root);
     scene.add(refreshEntitySync.root);
     const camera = createCamera();
+    refreshEntitySync.attachToCamera(camera);
     const cameraController = createLocalClientController(ui.viewport, camera, map, spawn);
     ui.bindGhostToggle({
       initialValue: cameraController.ghostMode,
@@ -181,7 +182,17 @@ async function bootstrap(): Promise<void> {
         {
           screenState: cameraController.screenState,
           bindings: {
-            Blaster: "1"
+            Blaster: "`",
+            Shotgun: "1",
+            "Super Shotgun": "2",
+            Machinegun: "3",
+            Chaingun: "4",
+            Grenades: "5",
+            "Grenade Launcher": "6",
+            "Rocket Launcher": "7",
+            HyperBlaster: "8",
+            Railgun: "9",
+            BFG10K: "0"
           }
         }
       );

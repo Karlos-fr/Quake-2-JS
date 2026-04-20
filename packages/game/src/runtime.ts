@@ -17,14 +17,193 @@ import {
   CM_TransformedBoxTrace,
   CM_TransformedPointContents,
   MASK_SOLID,
+  MAX_ITEMS,
   createEntityState,
+  createPlayerState,
   createCollisionWorld,
   type CollisionWorld,
   type entity_state_t,
+  type player_state_t,
+  type pmove_state_t,
   type trace_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
 import { G_UseTargets } from "./g_utils.js";
+import type { GameItemDefinition } from "./g_items.js";
+
+/**
+ * Original name: weaponstate_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the player weapon-state enum used by `p_weapon.c`.
+ */
+export enum weaponstate_t {
+  WEAPON_READY,
+  WEAPON_ACTIVATING,
+  WEAPON_DROPPING,
+  WEAPON_FIRING
+}
+
+/**
+ * Original name: ammo_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the canonical ammo tags stored on weapon and ammo items.
+ */
+export enum ammo_t {
+  AMMO_BULLETS,
+  AMMO_SHELLS,
+  AMMO_ROCKETS,
+  AMMO_GRENADES,
+  AMMO_CELLS,
+  AMMO_SLUGS
+}
+
+/**
+ * Original name: WEAP_*
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the weapon-model ids referenced by `gitem_t->weapmodel`.
+ */
+export const WEAP_BLASTER = 1;
+export const WEAP_SHOTGUN = 2;
+export const WEAP_SUPERSHOTGUN = 3;
+export const WEAP_MACHINEGUN = 4;
+export const WEAP_CHAINGUN = 5;
+export const WEAP_GRENADES = 6;
+export const WEAP_GRENADELAUNCHER = 7;
+export const WEAP_ROCKETLAUNCHER = 8;
+export const WEAP_HYPERBLASTER = 9;
+export const WEAP_RAILGUN = 10;
+export const WEAP_BFG = 11;
+export const RIGHT_HANDED = 0;
+export const LEFT_HANDED = 1;
+export const CENTER_HANDED = 2;
+export const MOD_SHOTGUN = 2;
+export const MOD_SSHOTGUN = 3;
+export const MOD_MACHINEGUN = 4;
+export const MOD_CHAINGUN = 5;
+export const MOD_BLASTER = 1;
+export const MOD_HYPERBLASTER = 10;
+export const MOD_RAILGUN = 11;
+export const MOD_HIT = 32;
+export const MOD_GRENADE = 6;
+export const MOD_G_SPLASH = 7;
+export const MOD_ROCKET = 8;
+export const MOD_R_SPLASH = 9;
+export const MOD_BFG_LASER = 12;
+export const MOD_BFG_BLAST = 13;
+export const MOD_BFG_EFFECT = 14;
+export const MOD_HANDGRENADE = 15;
+export const MOD_HG_SPLASH = 16;
+export const MOD_HELD_GRENADE = 24;
+export const MOD_FRIENDLY_FIRE = 0x8000000;
+export const DAMAGE_RADIUS = 0x00000001;
+export const DAMAGE_NO_ARMOR = 0x00000002;
+export const DAMAGE_ENERGY = 0x00000004;
+export const DAMAGE_NO_KNOCKBACK = 0x00000008;
+export const DAMAGE_BULLET = 0x00000010;
+export const DAMAGE_NO_PROTECTION = 0x00000020;
+export const DEFAULT_BULLET_HSPREAD = 300;
+export const DEFAULT_BULLET_VSPREAD = 500;
+export const DEFAULT_SHOTGUN_HSPREAD = 1000;
+export const DEFAULT_SHOTGUN_VSPREAD = 500;
+export const DEFAULT_DEATHMATCH_SHOTGUN_COUNT = 12;
+export const DEFAULT_SHOTGUN_COUNT = 12;
+export const DEFAULT_SSHOTGUN_COUNT = 20;
+export const DAMAGE_TIME = 0.5;
+export const SPLASH_UNKNOWN = 0;
+export const SPLASH_SPARKS = 1;
+export const SPLASH_BLUE_WATER = 2;
+export const SPLASH_BROWN_WATER = 3;
+export const SPLASH_SLIME = 4;
+export const SPLASH_LAVA = 5;
+export const ANIM_BASIC = 0;
+export const ANIM_WAVE = 1;
+export const ANIM_JUMP = 2;
+export const ANIM_PAIN = 3;
+export const ANIM_ATTACK = 4;
+export const ANIM_DEATH = 5;
+export const ANIM_REVERSE = 6;
+export const DEAD_NO = 0;
+export const DEAD_DYING = 1;
+export const DEAD_DEAD = 2;
+export const DEAD_RESPAWNABLE = 3;
+
+/**
+ * Category: New
+ * Purpose: Preserve the minimal persistent client state required by the first `p_weapon.c` port.
+ *
+ * Constraints:
+ * - Must keep original field names so the weapon code can stay close to the C source.
+ */
+export interface GameClientPersistant {
+  hand: number;
+  inventory: number[];
+  weapon: GameItemDefinition | null;
+  lastweapon: GameItemDefinition | null;
+  selected_item: number;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the minimal respawn client state needed before the full `gclient_t` port exists.
+ */
+export interface GameClientRespawn {
+  spectator: boolean;
+  score: number;
+  enterframe: number;
+  cmd_angles: vec3_t;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the first weapon-related subset of `gclient_t` required by `p_weapon.c`.
+ *
+ * Constraints:
+ * - Must retain original names for inventory, weapon switching and gun animation flow.
+ */
+export interface GameClient {
+  ps: player_state_t;
+  pers: GameClientPersistant;
+  resp: GameClientRespawn;
+  old_pmove: pmove_state_t;
+  kick_angles: vec3_t;
+  kick_origin: vec3_t;
+  v_angle: vec3_t;
+  v_dmg_roll: number;
+  v_dmg_pitch: number;
+  v_dmg_time: number;
+  ammo_index: number;
+  buttons: number;
+  oldbuttons: number;
+  latched_buttons: number;
+  newweapon: GameItemDefinition | null;
+  weaponstate: weaponstate_t;
+  machinegun_shots: number;
+  anim_end: number;
+  anim_priority: number;
+  grenade_blew_up: boolean;
+  grenade_time: number;
+  silencer_shots: number;
+  invincible_framenum: number;
+  damage_parmor: number;
+  damage_armor: number;
+  damage_blood: number;
+  damage_knockback: number;
+  damage_from: vec3_t;
+  weapon_sound: number;
+  quad_framenum: number;
+}
 
 /**
  * Category: New
@@ -89,6 +268,15 @@ export type GameEntityBlocked = (self: GameEntity, other: GameEntity, runtime: G
  * - Must preserve the Quake-style `(self, inflictor, attacker, damage)` flow while receiving the runtime explicitly.
  */
 export type GameEntityDie = (self: GameEntity, inflictor: GameEntity | null, attacker: GameEntity | null, damage: number, runtime: GameRuntime) => void;
+
+/**
+ * Category: New
+ * Purpose: Preserve the `pain` callback shape used by damageable gameplay entities.
+ *
+ * Constraints:
+ * - Must preserve the Quake-style `(self, attacker, knockback, damage)` flow while receiving the runtime explicitly.
+ */
+export type GameEntityPain = (self: GameEntity, attacker: GameEntity | null, knockback: number, damage: number, runtime: GameRuntime) => void;
 
 /**
  * Category: New
@@ -159,7 +347,7 @@ export interface GameEntity {
   freetime: number;
   properties: Record<string, string>;
   classname: string;
-  client: boolean;
+  client: GameClient | null;
   owner: GameEntity | null;
   enemy: GameEntity | null;
   team: string | undefined;
@@ -189,9 +377,16 @@ export interface GameEntity {
   clipmask: number;
   headnode: number;
   health: number;
+  takedamage: number;
   max_health: number;
+  mass: number;
+  deadflag: number;
   dmg: number;
+  radius_dmg: number;
+  dmg_radius: number;
+  pain_debounce_time: number;
   touch_debounce_time: number;
+  powerarmor_time: number;
   delay: number;
   nextthink: number;
   activator: GameEntity | null;
@@ -200,6 +395,7 @@ export interface GameEntity {
   touch: GameEntityTouch | undefined;
   blocked: GameEntityBlocked | undefined;
   die: GameEntityDie | undefined;
+  pain: GameEntityPain | undefined;
   movedir: [number, number, number];
   velocity: [number, number, number];
   avelocity: [number, number, number];
@@ -218,11 +414,18 @@ export interface GameEntity {
   s: entity_state_t;
   count: number;
   style: number;
+  viewheight: number;
+  waterlevel: number;
+  power_armor_type: number;
+  power_armor_power: number;
   itemIndex: number;
   itemClassname: string | undefined;
   itemPickupName: string | undefined;
   itemWorldModel: string | undefined;
   itemWorldModelFlags: number;
+  mynoise: GameEntity | null;
+  mynoise2: GameEntity | null;
+  teleport_time: number;
 }
 
 /**
@@ -274,6 +477,21 @@ export interface GameRuntimeLogEntry {
 
 /**
  * Category: New
+ * Purpose: Describe one gameplay-side one-shot sound request emitted by the ported game code before a real audio backend is attached.
+ *
+ * Constraints:
+ * - Must preserve the original sound path reference through the stable Quake-style sound index table.
+ * - Must keep source entity and frame information explicit for later client/audio bridging.
+ */
+export interface GameSoundEvent {
+  frame: number;
+  entityIndex: number | null;
+  soundIndex: number;
+  soundPath: string;
+}
+
+/**
+ * Category: New
  * Purpose: Hold the mutable gameplay entity list plus minimal timing and log state.
  *
  * Constraints:
@@ -282,10 +500,21 @@ export interface GameRuntimeLogEntry {
 export interface GameRuntime {
   entities: GameEntity[];
   time: number;
+  framenum: number;
+  deathmatch: boolean;
+  coop: boolean;
+  dmflags: number;
+  skill: number;
+  g_select_empty: boolean;
   current_entity: GameEntity | null;
   logEntries: GameRuntimeLogEntry[];
   collision: GameCollisionBridge | null;
   assets: GameAssetRegistry;
+  sound_entity: GameEntity | null;
+  sound_entity_framenum: number;
+  sound2_entity: GameEntity | null;
+  sound2_entity_framenum: number;
+  soundEvents: GameSoundEvent[];
   linkedSolidEntities: GameEntity[];
   linkedTriggerEntities: GameEntity[];
   linkedInlineBspEntities: GameEntity[];
@@ -303,16 +532,39 @@ export interface GameRuntime {
  */
 export const SOLID_NOT = 0;
 export const SOLID_TRIGGER = 1;
-export const SOLID_BSP = 2;
+export const SOLID_BBOX = 2;
+export const SOLID_BSP = 3;
 export const AREA_SOLID = 1;
 export const AREA_TRIGGERS = 2;
 export const MOVETYPE_NONE = 0;
-export const MOVETYPE_PUSH = 1;
-export const MOVETYPE_TOSS = 2;
+export const MOVETYPE_NOCLIP = 1;
+export const MOVETYPE_PUSH = 2;
+export const MOVETYPE_STOP = 3;
+export const MOVETYPE_WALK = 4;
+export const MOVETYPE_STEP = 5;
+export const MOVETYPE_FLY = 6;
+export const MOVETYPE_TOSS = 7;
+export const MOVETYPE_FLYMISSILE = 8;
+export const MOVETYPE_BOUNCE = 9;
+export const FL_NOTARGET = 0x00000020;
+export const FL_IMMUNE_LASER = 0x00000004;
+export const FL_GODMODE = 0x00000010;
+export const FL_NO_KNOCKBACK = 0x00000800;
+export const FL_POWER_ARMOR = 0x00001000;
+export const FL_RESPAWN = 0x80000000;
 export const FL_TEAMSLAVE = 0x00000400;
+export const DF_SKINTEAMS = 0x00000040;
+export const DF_MODELTEAMS = 0x00000080;
+export const DF_NO_FRIENDLY_FIRE = 0x00000100;
+export const POWER_ARMOR_NONE = 0;
+export const POWER_ARMOR_SCREEN = 1;
+export const POWER_ARMOR_SHIELD = 2;
 export const SVF_NOCLIENT = 1 << 0;
-export const SVF_MONSTER = 1 << 1;
+export const SVF_DEADMONSTER = 1 << 1;
+export const SVF_MONSTER = 1 << 2;
 export const FRAMETIME = 0.1;
+export const DROPPED_ITEM = 0x00010000;
+export const DROPPED_PLAYER_ITEM = 0x00020000;
 export const STATE_TOP = 0;
 export const STATE_BOTTOM = 1;
 export const STATE_UP = 2;
@@ -325,6 +577,72 @@ export const DOOR_TOGGLE = 32;
 export const DOOR_X_AXIS = 64;
 export const DOOR_Y_AXIS = 128;
 export const PLAT_LOW_TRIGGER = 1;
+
+/**
+ * Category: New
+ * Purpose: Create the minimal persistent client state required by the first weapon-system port.
+ */
+export function createGameClientPersistant(): GameClientPersistant {
+  return {
+    hand: RIGHT_HANDED,
+    inventory: new Array<number>(MAX_ITEMS).fill(0),
+    weapon: null,
+    lastweapon: null,
+    selected_item: -1
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create the minimal respawn client state required by the first weapon-system port.
+ */
+export function createGameClientRespawn(): GameClientRespawn {
+  return {
+    spectator: false,
+    score: 0,
+    enterframe: 0,
+    cmd_angles: [0, 0, 0]
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create the minimal `gclient_t` subset required by the first `p_weapon.c` port.
+ */
+export function createGameClient(): GameClient {
+  return {
+    ps: createPlayerState(),
+    pers: createGameClientPersistant(),
+    resp: createGameClientRespawn(),
+    old_pmove: createPlayerState().pmove,
+    kick_angles: [0, 0, 0],
+    kick_origin: [0, 0, 0],
+    v_angle: [0, 0, 0],
+    v_dmg_roll: 0,
+    v_dmg_pitch: 0,
+    v_dmg_time: 0,
+    ammo_index: 0,
+    buttons: 0,
+    oldbuttons: 0,
+    latched_buttons: 0,
+    newweapon: null,
+    weaponstate: weaponstate_t.WEAPON_READY,
+    machinegun_shots: 0,
+    anim_end: 0,
+    anim_priority: ANIM_BASIC,
+    grenade_blew_up: false,
+    grenade_time: 0,
+    silencer_shots: 0,
+    invincible_framenum: 0,
+    damage_parmor: 0,
+    damage_armor: 0,
+    damage_blood: 0,
+    damage_knockback: 0,
+    damage_from: [0, 0, 0],
+    weapon_sound: 0,
+    quad_framenum: 0
+  };
+}
 
 /**
  * Category: New
@@ -348,7 +666,7 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     freetime: -1,
     properties: { ...properties },
     classname: properties.classname ?? "noclass",
-    client: false,
+    client: null,
     owner: null,
     enemy: null,
     team: properties.team,
@@ -378,9 +696,16 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     clipmask: 0,
     headnode: 0,
     health: parseEntityInteger(properties.health),
+    takedamage: 0,
     max_health: 0,
+    mass: 0,
+    deadflag: DEAD_NO,
     dmg: parseEntityInteger(properties.dmg),
+    radius_dmg: 0,
+    dmg_radius: 0,
+    pain_debounce_time: 0,
     touch_debounce_time: 0,
+    powerarmor_time: 0,
     delay: parseEntityFloat(properties.delay),
     nextthink: 0,
     activator: null,
@@ -389,6 +714,7 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     touch: undefined,
     blocked: undefined,
     die: undefined,
+    pain: undefined,
     movedir: [0, 0, 0],
     velocity: [0, 0, 0],
     avelocity: [0, 0, 0],
@@ -407,11 +733,18 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     s: state,
     count: 0,
     style: parseEntityInteger(properties.style),
+    viewheight: 0,
+    waterlevel: 0,
+    power_armor_type: POWER_ARMOR_NONE,
+    power_armor_power: 0,
     itemIndex: 0,
     itemClassname: undefined,
     itemPickupName: undefined,
     itemWorldModel: undefined,
-    itemWorldModelFlags: 0
+    itemWorldModelFlags: 0,
+    mynoise: null,
+    mynoise2: null,
+    teleport_time: 0
   };
 }
 
@@ -426,10 +759,21 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
   const runtime: GameRuntime = {
     entities: entities.map((entity, index) => createRuntimeEntity(entity.properties, index)),
     time: 0,
+    framenum: 0,
+    deathmatch: false,
+    coop: false,
+    dmflags: 0,
+    skill: 1,
+    g_select_empty: false,
     current_entity: null,
     logEntries: [],
     collision: null,
     assets: createAssetRegistry(),
+    sound_entity: null,
+    sound_entity_framenum: 0,
+    sound2_entity: null,
+    sound2_entity_framenum: 0,
+    soundEvents: [],
     linkedSolidEntities: [],
     linkedTriggerEntities: [],
     linkedInlineBspEntities: [],
@@ -463,6 +807,20 @@ export function createGameRuntimeFromBspMap(map: BspMap): GameRuntime {
   }
 
   return runtime;
+}
+
+/**
+ * Category: New
+ * Purpose: Attach the minimal gameplay client state to one runtime entity.
+ *
+ * Constraints:
+ * - Must preserve existing entity identity and only populate the `client` payload.
+ */
+export function attachGameClient(entity: GameEntity): GameClient {
+  const client = createGameClient();
+  entity.client = client;
+  entity.s.modelindex = 255;
+  return client;
 }
 
 /**
@@ -580,7 +938,7 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     freetime: -1,
     properties: {},
     classname: "noclass",
-    client: false,
+    client: null,
     owner: null,
     enemy: null,
     team: undefined,
@@ -610,9 +968,16 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     clipmask: 0,
     headnode: 0,
     health: 0,
+    takedamage: 0,
     max_health: 0,
+    mass: 0,
+    deadflag: DEAD_NO,
     dmg: 0,
+    radius_dmg: 0,
+    dmg_radius: 0,
+    pain_debounce_time: 0,
     touch_debounce_time: 0,
+    powerarmor_time: 0,
     delay: 0,
     nextthink: 0,
     activator: null,
@@ -621,6 +986,7 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     touch: undefined,
     blocked: undefined,
     die: undefined,
+    pain: undefined,
     movedir: [0, 0, 0],
     velocity: [0, 0, 0],
     avelocity: [0, 0, 0],
@@ -639,11 +1005,18 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     s: state,
     count: 0,
     style: 0,
+    viewheight: 0,
+    waterlevel: 0,
+    power_armor_type: POWER_ARMOR_NONE,
+    power_armor_power: 0,
     itemIndex: 0,
     itemClassname: undefined,
     itemPickupName: undefined,
     itemWorldModel: undefined,
-    itemWorldModelFlags: 0
+    itemWorldModelFlags: 0,
+    mynoise: null,
+    mynoise2: null,
+    teleport_time: 0
   };
 
   refreshEntitySpatialState(entity);
@@ -670,7 +1043,7 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.blocked = undefined;
   entity.properties = {};
   entity.classname = "freed";
-  entity.client = false;
+  entity.client = null;
   entity.owner = null;
   entity.enemy = null;
   entity.team = undefined;
@@ -700,12 +1073,20 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.clipmask = 0;
   entity.headnode = 0;
   entity.health = 0;
+  entity.takedamage = 0;
   entity.max_health = 0;
+  entity.mass = 0;
+  entity.deadflag = DEAD_NO;
   entity.dmg = 0;
+  entity.radius_dmg = 0;
+  entity.dmg_radius = 0;
+  entity.pain_debounce_time = 0;
   entity.touch_debounce_time = 0;
+  entity.powerarmor_time = 0;
   entity.delay = 0;
   entity.touch = undefined;
   entity.die = undefined;
+  entity.pain = undefined;
   entity.movedir = [0, 0, 0];
   entity.velocity = [0, 0, 0];
   entity.avelocity = [0, 0, 0];
@@ -725,11 +1106,18 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.s.number = freedIndex;
   entity.count = 0;
   entity.style = 0;
+  entity.viewheight = 0;
+  entity.waterlevel = 0;
+  entity.power_armor_type = POWER_ARMOR_NONE;
+  entity.power_armor_power = 0;
   entity.itemIndex = 0;
   entity.itemClassname = undefined;
   entity.itemPickupName = undefined;
   entity.itemWorldModel = undefined;
   entity.itemWorldModelFlags = 0;
+  entity.mynoise = null;
+  entity.mynoise2 = null;
+  entity.teleport_time = 0;
 
   runtime.log({
     kind: "entity-freed",
@@ -943,6 +1331,37 @@ export function registerGameModel(runtime: GameRuntime, path: string): number {
  */
 export function registerGameSound(runtime: GameRuntime, path: string): number {
   return registerAssetPath(runtime.assets.soundPaths, runtime.assets.soundIndexByPath, path);
+}
+
+/**
+ * Category: New
+ * Purpose: Queue one gameplay-side one-shot sound event while registering its Quake-style sound index.
+ *
+ * Constraints:
+ * - Must preserve emission order within one frame.
+ */
+export function emitGameSound(runtime: GameRuntime, entity: GameEntity | null, path: string): number {
+  const soundIndex = registerGameSound(runtime, path);
+  runtime.soundEvents.push({
+    frame: runtime.framenum,
+    entityIndex: entity?.index ?? null,
+    soundIndex,
+    soundPath: path
+  });
+  return soundIndex;
+}
+
+/**
+ * Category: New
+ * Purpose: Drain the queued gameplay one-shot sound events accumulated since the previous consumer pass.
+ *
+ * Constraints:
+ * - Must preserve FIFO ordering.
+ */
+export function drainGameSoundEvents(runtime: GameRuntime): GameSoundEvent[] {
+  const events = runtime.soundEvents.slice();
+  runtime.soundEvents.length = 0;
+  return events;
 }
 
 /**

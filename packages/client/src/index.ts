@@ -20,6 +20,7 @@ export {
   CL_ParseFrame,
   CL_ParseMuzzleFlash,
   CL_ParseMuzzleFlash2,
+  CL_ParseParticles,
   CL_ParsePlayerstate,
   CL_ParseServerData,
   CL_ParseServerMessage,
@@ -99,6 +100,7 @@ export {
 } from "./view.js";
 export {
   CL_BuildPacketEntitySnapshots,
+  CL_BuildFrameEntityEventEffects,
   CL_FireEntityEvents,
   CL_GetFrameEntityStates
 } from "./entities.js";
@@ -110,6 +112,7 @@ export {
   CL_AddTEntPacket,
   CL_BuildTEntRefresh,
   CL_ClearTEnts,
+  CL_RegisterTEntModels,
   CL_RegisterTEntSounds
 } from "./tent.js";
 export {
@@ -117,9 +120,35 @@ export {
 } from "./sky.js";
 export {
   CL_BuildActionEffects,
+  CL_BuildParticleEffects,
+  CL_BuildEntityEventEffects,
   CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
-  CL_BuildTempEntityEffects
+  CL_BuildTempEntityEffects,
+  CL_BlasterParticles,
+  CL_BlasterParticles2,
+  CL_BlueBlasterParticles,
+  CL_BubbleTrail,
+  CL_BubbleTrail2,
+  CL_BFGExplosionParticles,
+  CL_ClearEffects,
+  CL_ClearParticles,
+  CL_ColorExplosionParticles,
+  CL_ColorFlash,
+  CL_DebugTrail,
+  CL_ExplosionParticles,
+  CL_Heatbeam,
+  CL_ParticleSmokeEffect,
+  CL_ParticleSteamEffect,
+  CL_ParticleSteamEffect2,
+  CL_MonsterPlasma_Shell,
+  CL_ParticleEffect,
+  CL_ParticleEffect2,
+  CL_ParticleEffect3,
+  CL_RailTrail,
+  CL_TeleportParticles,
+  CL_WidowSplash,
+  CL_BigTeleportParticles
 } from "./effects.js";
 
 export { svc_strings } from "../../qcommon/src/index.js";
@@ -130,8 +159,10 @@ export {
   MAX_EXPLOSIONS,
   MAX_LASERS,
   MAX_SUSTAINS,
+  MAX_PARTICLES,
   MAX_CLIENTWEAPONMODELS,
   MAX_PARSE_ENTITIES,
+  INSTANT_PARTICLE,
   connstate_t,
   createClientBeam,
   createCentity,
@@ -143,6 +174,7 @@ export {
   createKbutton,
   createClientLaser,
   createClientTempLight,
+  createCparticle,
   createClientRuntime,
   createClientSustain,
   createClientState,
@@ -172,12 +204,13 @@ export type {
 
 export type { ClientEntityEvent, ClientInterpolatedEntity } from "./entities.js";
 export type { ClientActionEffect } from "./effects.js";
-export type { ClientDynamicLight, ClientRefreshFrame, ClientRenderEntity } from "./refresh.js";
+export type { ClientDynamicLight, ClientRefreshFrame, ClientRenderEntity, ClientRenderParticle } from "./refresh.js";
 export type { ClientBeamRender, ClientExplosionRender, ClientForceWallRender, ClientSustainRender, ClientTEntRefresh } from "./tent.js";
 export type {
   ClientDownloadBlock,
   ClientMuzzleFlash2Packet,
   ClientMuzzleFlashPacket,
+  ClientParticleEffectPacket,
   ClientParseHooks,
   ClientSoundPacket,
   ClientTempEntityPacket

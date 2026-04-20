@@ -18,10 +18,26 @@
 
 import { EF_GIB, EF_ROTATE, MASK_SOLID, RF_GLOW } from "../../qcommon/src/index.js";
 import {
+  WEAP_BLASTER,
+  WEAP_BFG,
+  WEAP_CHAINGUN,
+  WEAP_GRENADELAUNCHER,
+  WEAP_GRENADES,
+  WEAP_HYPERBLASTER,
+  WEAP_MACHINEGUN,
+  WEAP_RAILGUN,
+  WEAP_ROCKETLAUNCHER,
+  WEAP_SHOTGUN,
+  WEAP_SUPERSHOTGUN,
+  ammo_t,
   FRAMETIME,
   MOVETYPE_TOSS,
   SOLID_NOT,
   SOLID_TRIGGER,
+  FL_POWER_ARMOR,
+  POWER_ARMOR_NONE,
+  POWER_ARMOR_SCREEN,
+  POWER_ARMOR_SHIELD,
   SVF_NOCLIENT,
   freeGameEntity,
   linkGameEntity,
@@ -47,22 +63,12 @@ const ARMOR_JACKET = 1;
 const ARMOR_COMBAT = 2;
 const ARMOR_BODY = 3;
 const ARMOR_SHARD = 4;
-const WEAP_SHOTGUN = 2;
-const WEAP_SUPERSHOTGUN = 3;
-const WEAP_MACHINEGUN = 4;
-const WEAP_CHAINGUN = 5;
-const WEAP_GRENADES = 6;
-const WEAP_GRENADELAUNCHER = 7;
-const WEAP_ROCKETLAUNCHER = 8;
-const WEAP_HYPERBLASTER = 9;
-const WEAP_RAILGUN = 10;
-const WEAP_BFG = 11;
-const AMMO_SHELLS = 1;
-const AMMO_BULLETS = 2;
-const AMMO_CELLS = 3;
-const AMMO_ROCKETS = 4;
-const AMMO_SLUGS = 5;
-const AMMO_GRENADES = 6;
+const AMMO_SHELLS = ammo_t.AMMO_SHELLS;
+const AMMO_BULLETS = ammo_t.AMMO_BULLETS;
+const AMMO_CELLS = ammo_t.AMMO_CELLS;
+const AMMO_ROCKETS = ammo_t.AMMO_ROCKETS;
+const AMMO_SLUGS = ammo_t.AMMO_SLUGS;
+const AMMO_GRENADES = ammo_t.AMMO_GRENADES;
 
 export type GameItemPickupKind =
   | "Pickup_Armor"
@@ -134,6 +140,23 @@ export interface GameItemDefinition {
   precaches: string;
 }
 
+/**
+ * Original name: gitem_armor_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Describes one Quake II armor family with its base count, cap and protection ratios.
+ */
+export interface GameItemArmorInfo {
+  base_count: number;
+  max_count: number;
+  normal_protection: number;
+  energy_protection: number;
+  armor: number;
+}
+
 interface RawGameItemDefinition extends Omit<GameItemDefinition, "index"> {}
 
 const rawItemlist: readonly RawGameItemDefinition[] = [
@@ -143,6 +166,7 @@ const rawItemlist: readonly RawGameItemDefinition[] = [
   { classname: "item_armor_shard", pickup: "Pickup_Armor", use: null, drop: null, weaponThink: null, pickupName: "Armor Shard", pickupSound: "misc/ar2_pkup.wav", worldModel: "models/items/armor/shard/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "i_jacketarmor", countWidth: 3, quantity: 0, ammo: null, flags: IT_ARMOR, weapmodel: 0, tag: ARMOR_SHARD, precaches: "" },
   { classname: "item_power_screen", pickup: "Pickup_PowerArmor", use: "Use_PowerArmor", drop: "Drop_PowerArmor", weaponThink: null, pickupName: "Power Screen", pickupSound: "misc/ar3_pkup.wav", worldModel: "models/items/armor/screen/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "i_powerscreen", countWidth: 0, quantity: 60, ammo: null, flags: IT_ARMOR, weapmodel: 0, tag: 0, precaches: "" },
   { classname: "item_power_shield", pickup: "Pickup_PowerArmor", use: "Use_PowerArmor", drop: "Drop_PowerArmor", weaponThink: null, pickupName: "Power Shield", pickupSound: "misc/ar3_pkup.wav", worldModel: "models/items/armor/shield/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "i_powershield", countWidth: 0, quantity: 60, ammo: null, flags: IT_ARMOR, weapmodel: 0, tag: 0, precaches: "misc/power2.wav misc/power1.wav" },
+  { classname: "weapon_blaster", pickup: null, use: "Use_Weapon", drop: null, weaponThink: "Weapon_Blaster", pickupName: "Blaster", pickupSound: "misc/w_pkup.wav", worldModel: "", worldModelFlags: 0, viewModel: "models/weapons/v_blast/tris.md2", icon: "w_blaster", countWidth: 0, quantity: 0, ammo: null, flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_BLASTER, tag: 0, precaches: "weapons/blastf1a.wav misc/lasfly.wav" },
   { classname: "weapon_shotgun", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_Shotgun", pickupName: "Shotgun", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_shotg/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_shotg/tris.md2", icon: "w_shotgun", countWidth: 0, quantity: 1, ammo: "Shells", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_SHOTGUN, tag: 0, precaches: "weapons/shotgf1b.wav weapons/shotgr1b.wav" },
   { classname: "weapon_supershotgun", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_SuperShotgun", pickupName: "Super Shotgun", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_shotg2/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_shotg2/tris.md2", icon: "w_sshotgun", countWidth: 0, quantity: 2, ammo: "Shells", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_SUPERSHOTGUN, tag: 0, precaches: "weapons/sshotf1b.wav" },
   { classname: "weapon_machinegun", pickup: "Pickup_Weapon", use: "Use_Weapon", drop: "Drop_Weapon", weaponThink: "Weapon_Machinegun", pickupName: "Machinegun", pickupSound: "misc/w_pkup.wav", worldModel: "models/weapons/g_machn/tris.md2", worldModelFlags: EF_ROTATE, viewModel: "models/weapons/v_machn/tris.md2", icon: "w_machinegun", countWidth: 0, quantity: 1, ammo: "Bullets", flags: IT_WEAPON | IT_STAY_COOP, weapmodel: WEAP_MACHINEGUN, tag: 0, precaches: "weapons/machgf1b.wav weapons/machgf2b.wav weapons/machgf3b.wav weapons/machgf4b.wav weapons/machgf5b.wav" },
@@ -186,6 +210,10 @@ const itemlist: readonly GameItemDefinition[] = rawItemlist.map((item, index) =>
   index: index + 1,
   ...item
 }));
+
+const jacketarmor_info: GameItemArmorInfo = { base_count: 25, max_count: 50, normal_protection: 0.30, energy_protection: 0.00, armor: ARMOR_JACKET };
+const combatarmor_info: GameItemArmorInfo = { base_count: 50, max_count: 100, normal_protection: 0.60, energy_protection: 0.30, armor: ARMOR_COMBAT };
+const bodyarmor_info: GameItemArmorInfo = { base_count: 100, max_count: 200, normal_protection: 0.80, energy_protection: 0.60, armor: ARMOR_BODY };
 
 /**
  * Original name: FindItemByClassname
@@ -242,8 +270,137 @@ export function GetItemByIndex(index: number): GameItemDefinition | null {
  * - Finds one item definition by its pickup name.
  */
 export function FindItem(pickupName: string): GameItemDefinition | null {
+  const normalizedPickupName = pickupName.toLowerCase();
   for (const item of itemlist) {
-    if (item.pickupName === pickupName) {
+    if (item.pickupName.toLowerCase() === normalizedPickupName) {
+      return item;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Category: New
+ * Purpose: Expose the stable Quake II itemlist to later integration helpers without duplicating item metadata.
+ *
+ * Constraints:
+ * - Must preserve the original item ordering and index values.
+ */
+export function GetGameItems(): readonly GameItemDefinition[] {
+  return itemlist;
+}
+
+/**
+ * Original name: ArmorIndex
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the currently active armor item index from the client inventory using the original priority order.
+ */
+export function ArmorIndex(ent: GameEntity): number {
+  if (!ent.client) {
+    return 0;
+  }
+
+  const jacketArmor = FindItem("Jacket Armor");
+  if (jacketArmor && ent.client.pers.inventory[jacketArmor.index] > 0) {
+    return jacketArmor.index;
+  }
+
+  const combatArmor = FindItem("Combat Armor");
+  if (combatArmor && ent.client.pers.inventory[combatArmor.index] > 0) {
+    return combatArmor.index;
+  }
+
+  const bodyArmor = FindItem("Body Armor");
+  if (bodyArmor && ent.client.pers.inventory[bodyArmor.index] > 0) {
+    return bodyArmor.index;
+  }
+
+  return 0;
+}
+
+/**
+ * Original name: PowerArmorType
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the active power-armor type for one client entity using the original flag and inventory checks.
+ */
+export function PowerArmorType(ent: GameEntity): number {
+  const client = ent.client;
+  if (!client) {
+    return POWER_ARMOR_NONE;
+  }
+
+  if ((ent.flags & FL_POWER_ARMOR) === 0) {
+    return POWER_ARMOR_NONE;
+  }
+
+  const powerShield = FindItem("Power Shield");
+  if (powerShield && client.pers.inventory[powerShield.index] > 0) {
+    return POWER_ARMOR_SHIELD;
+  }
+
+  const powerScreen = FindItem("Power Screen");
+  if (powerScreen && client.pers.inventory[powerScreen.index] > 0) {
+    return POWER_ARMOR_SCREEN;
+  }
+
+  return POWER_ARMOR_NONE;
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the strict armor-info record associated with one base-game armor item.
+ */
+export function GetArmorInfoByItem(item: GameItemDefinition | null): GameItemArmorInfo | null {
+  if (!item) {
+    return null;
+  }
+
+  switch (item.classname) {
+    case "item_armor_jacket":
+      return jacketarmor_info;
+    case "item_armor_combat":
+      return combatarmor_info;
+    case "item_armor_body":
+      return bodyarmor_info;
+    default:
+      return null;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the ammo item definition referenced by one weapon item definition.
+ *
+ * Constraints:
+ * - Must return `null` when the weapon has no ammo item in the original definitions.
+ */
+export function GetAmmoItemForWeapon(item: GameItemDefinition | null): GameItemDefinition | null {
+  if (!item?.ammo) {
+    return null;
+  }
+
+  return FindItem(item.ammo);
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve one weapon item definition by its `weaponThink` identifier.
+ *
+ * Constraints:
+ * - Must only search within the original base-game itemlist.
+ */
+export function FindWeaponItemByThink(kind: GameItemWeaponThinkKind): GameItemDefinition | null {
+  for (const item of itemlist) {
+    if (item.weaponThink === kind) {
       return item;
     }
   }

@@ -41,9 +41,11 @@ import {
   RF_TRANSLUCENT,
   RF_VIEWERMODEL,
   type entity_state_t,
+  entity_event_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
 import { MAX_PARSE_ENTITIES, type ClientRuntime, type frame_t } from "./types.js";
+import { CL_BuildEntityEventEffects, type ClientActionEffect } from "./effects.js";
 
 /**
  * Category: New
@@ -137,6 +139,41 @@ export function CL_FireEntityEvents(
   }
 
   return events;
+}
+
+/**
+ * Original name: CL_FireEntityEvents / CL_EntityEvent
+ * Source: client/cl_ents.c and client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Builds the client-side Quake II effects implied by the current frame entity events.
+ *
+ * Porting notes:
+ * - Keeps the existing event extraction path and then applies the `CL_EntityEvent` translation helper.
+ */
+export function CL_BuildFrameEntityEventEffects(
+  runtime: ClientRuntime,
+  frame: frame_t = runtime.cl.frame,
+  options: {
+    clFootsteps?: boolean;
+  } = {}
+): ClientActionEffect[] {
+  const events = CL_FireEntityEvents(runtime, frame);
+  const effects: ClientActionEffect[] = [];
+
+  for (const event of events) {
+    if (event.event === 0 && (event.effects & EF_TELEPORTER) !== 0) {
+      continue;
+    }
+
+    effects.push(...CL_BuildEntityEventEffects(event, {
+      clFootsteps: options.clFootsteps ?? runtime.cl.cl_footsteps
+    }));
+  }
+
+  return effects;
 }
 
 /**

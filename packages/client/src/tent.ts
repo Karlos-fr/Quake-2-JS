@@ -29,6 +29,7 @@ import {
 import type { ClientTempEntityPacket } from "./parse.js";
 import type { ClientDynamicLight } from "./refresh.js";
 import type { ClientViewValues } from "./view.js";
+import { CL_Heatbeam, CL_MonsterPlasma_Shell, CL_ParticleSteamEffect2 } from "./effects.js";
 import {
   createClientBeam,
   createClientExplosion,
@@ -45,11 +46,27 @@ const MODEL_PARASITE_SEGMENT = "models/monsters/parasite/segment/tris.md2";
 const MODEL_GRAPPLE_CABLE = "models/ctf/segment/tris.md2";
 const MODEL_LIGHTNING = "models/proj/lightning/tris.md2";
 const MODEL_HEATBEAM = "models/proj/beam/tris.md2";
+const MODEL_MONSTER_HEATBEAM = "models/proj/widowbeam/tris.md2";
 const MODEL_EXPLODE = "models/objects/explode/tris.md2";
+const MODEL_SMOKE = "models/objects/smoke/tris.md2";
 const MODEL_FLASH = "models/objects/flash/tris.md2";
 const MODEL_EXPLO4 = "models/objects/r_explode/tris.md2";
 const MODEL_EXPLO4_BIG = "models/objects/r_explode2/tris.md2";
 const MODEL_BFG_EXPLO = "sprites/s_bfg2.sp2";
+const MODEL_PARASITE_TIP = "models/monsters/parasite/tip/tris.md2";
+const MODEL_POWERSCREEN = "models/items/armor/effect/tris.md2";
+const MODEL_LASER = "models/objects/laser/tris.md2";
+const MODEL_GRENADE2 = "models/objects/grenade2/tris.md2";
+const MODEL_V_MACHN = "models/weapons/v_machn/tris.md2";
+const MODEL_V_HANDGR = "models/weapons/v_handgr/tris.md2";
+const MODEL_V_SHOTG2 = "models/weapons/v_shotg2/tris.md2";
+const MODEL_GIB_BONE = "models/objects/gibs/bone/tris.md2";
+const MODEL_GIB_SM_MEAT = "models/objects/gibs/sm_meat/tris.md2";
+const MODEL_GIB_BONE2 = "models/objects/gibs/bone2/tris.md2";
+const PIC_W_MACHINEGUN = "w_machinegun";
+const PIC_A_BULLETS = "a_bullets";
+const PIC_I_HEALTH = "i_health";
+const PIC_A_GRENADES = "a_grenades";
 
 /**
  * Category: New
@@ -75,6 +92,8 @@ export interface ClientBeamRender {
   frame: number;
   segmentLength: number;
   pathLength: number;
+  roll: number;
+  specialLightningShort: boolean;
 }
 
 /**
@@ -165,6 +184,8 @@ export function CL_ClearTEnts(runtime: ClientRuntime): void {
   runtime.cl.tents.sustains = Array.from({ length: runtime.cl.tents.sustains.length }, () => createClientSustain());
   runtime.cl.tents.tempLights = Array.from({ length: runtime.cl.tents.tempLights.length }, () => createClientTempLight());
   runtime.cl.tents.forceWalls = Array.from({ length: runtime.cl.tents.forceWalls.length }, () => createClientForceWall());
+  runtime.cl.tents.registeredModels = [];
+  runtime.cl.tents.registeredPics = [];
   runtime.cl.tents.registeredSounds = [];
 }
 
@@ -209,6 +230,58 @@ export function CL_RegisterTEntSounds(runtime: ClientRuntime): string[] {
 }
 
 /**
+ * Original name: CL_RegisterTEntModels
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the shared temporary-entity models and pictures used by impacts, explosions and weapon effects.
+ *
+ * Porting notes:
+ * - Stores normalized asset-path strings and pic names instead of renderer handles.
+ * - Preserves the original registration set and ordering from `cl_tent.c`.
+ */
+export function CL_RegisterTEntModels(runtime: ClientRuntime): { models: string[]; pics: string[] } {
+  const registeredModels = [
+    MODEL_EXPLODE,
+    MODEL_SMOKE,
+    MODEL_FLASH,
+    MODEL_PARASITE_SEGMENT,
+    MODEL_GRAPPLE_CABLE,
+    MODEL_PARASITE_TIP,
+    MODEL_EXPLO4,
+    MODEL_BFG_EXPLO,
+    MODEL_POWERSCREEN,
+    MODEL_LASER,
+    MODEL_GRENADE2,
+    MODEL_V_MACHN,
+    MODEL_V_HANDGR,
+    MODEL_V_SHOTG2,
+    MODEL_GIB_BONE,
+    MODEL_GIB_SM_MEAT,
+    MODEL_GIB_BONE2,
+    MODEL_EXPLO4_BIG,
+    MODEL_LIGHTNING,
+    MODEL_HEATBEAM,
+    MODEL_MONSTER_HEATBEAM
+  ];
+  const registeredPics = [
+    PIC_W_MACHINEGUN,
+    PIC_A_BULLETS,
+    PIC_I_HEALTH,
+    PIC_A_GRENADES
+  ];
+
+  runtime.cl.tents.registeredModels = [...registeredModels];
+  runtime.cl.tents.registeredPics = [...registeredPics];
+  return {
+    models: registeredModels,
+    pics: registeredPics
+  };
+}
+
+/**
  * Original name: CL_ParseTEnt
  * Source: client/cl_tent.c
  * Category: Ported
@@ -223,21 +296,26 @@ export function CL_RegisterTEntSounds(runtime: ClientRuntime): string[] {
  */
 export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntityPacket): void {
   switch (packet.type) {
+    case temp_event_t.TE_GUNSHOT:
+    case temp_event_t.TE_BULLET_SPARKS:
+    case temp_event_t.TE_SHOTGUN:
+      CL_SmokeAndFlash(runtime, packet.position ?? [0, 0, 0]);
+      break;
     case temp_event_t.TE_PARASITE_ATTACK:
     case temp_event_t.TE_MEDIC_CABLE_ATTACK:
-      assignBeam(runtime.cl.tents.beams, packet, MODEL_PARASITE_SEGMENT, runtime.cl.time + 200);
+      assignBeam(runtime, runtime.cl.tents.beams, packet, MODEL_PARASITE_SEGMENT, runtime.cl.time + 200);
       break;
     case temp_event_t.TE_GRAPPLE_CABLE:
-      assignBeam(runtime.cl.tents.beams, packet, MODEL_GRAPPLE_CABLE, runtime.cl.time + 200);
+      assignBeam(runtime, runtime.cl.tents.beams, packet, MODEL_GRAPPLE_CABLE, runtime.cl.time + 200);
       break;
     case temp_event_t.TE_LIGHTNING:
-      assignBeam(runtime.cl.tents.beams, packet, MODEL_LIGHTNING, runtime.cl.time + 200);
+      assignBeam(runtime, runtime.cl.tents.beams, packet, MODEL_LIGHTNING, runtime.cl.time + 200, true);
       break;
     case temp_event_t.TE_HEATBEAM:
-      assignPlayerBeam(runtime, packet, MODEL_HEATBEAM, [2, 7, -3], runtime.cl.time + 100);
+      assignPlayerBeam(runtime, packet, MODEL_HEATBEAM, [2, 7, -3]);
       break;
     case temp_event_t.TE_MONSTER_HEATBEAM:
-      assignPlayerBeam(runtime, packet, MODEL_HEATBEAM, [0, 0, 0], runtime.cl.time + 100);
+      assignPlayerBeam(runtime, packet, MODEL_HEATBEAM, [0, 0, 0]);
       break;
     case temp_event_t.TE_BFG_LASER:
       assignLaser(runtime, packet, 0xd0d1d2d3);
@@ -260,6 +338,7 @@ export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntit
     case temp_event_t.TE_EXPLOSION1:
     case temp_event_t.TE_ROCKET_EXPLOSION:
     case temp_event_t.TE_ROCKET_EXPLOSION_WATER:
+    case temp_event_t.TE_EXPLOSION2:
     case temp_event_t.TE_GRENADE_EXPLOSION:
     case temp_event_t.TE_GRENADE_EXPLOSION_WATER:
     case temp_event_t.TE_EXPLOSION1_BIG:
@@ -267,49 +346,77 @@ export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntit
     case temp_event_t.TE_PLAIN_EXPLOSION:
       allocateExplosion(runtime, {
         type: "poly",
-        model: packet.type === temp_event_t.TE_EXPLOSION1_BIG ? MODEL_EXPLO4_BIG : MODEL_EXPLO4,
-        frames: 15,
+        ent: {
+          model: packet.type === temp_event_t.TE_EXPLOSION1_BIG ? MODEL_EXPLO4_BIG : MODEL_EXPLO4,
+          origin: [...(packet.position ?? [0, 0, 0])],
+          oldorigin: [0, 0, 0],
+          angles: [0, randomAngleDegrees(), 0],
+          frame: 0,
+          oldframe: 0,
+          backlerp: 0,
+          flags: RF_FULLBRIGHT,
+          alpha: 1,
+          skinnum: 0
+        },
+        frames:
+          packet.type === temp_event_t.TE_EXPLOSION2 ||
+          packet.type === temp_event_t.TE_GRENADE_EXPLOSION ||
+          packet.type === temp_event_t.TE_GRENADE_EXPLOSION_WATER
+            ? 19
+            : 15,
         light: 350,
         lightcolor: [1, 0.5, 0.5],
         start: runtime.cl.frame.servertime - 100,
-        baseframe: 0,
-        origin: [...(packet.position ?? [0, 0, 0])],
-        angles: [0, 0, 0],
-        flags: RF_FULLBRIGHT,
-        alpha: 1,
-        skinnum: 0
+        baseframe:
+          packet.type === temp_event_t.TE_EXPLOSION2 ||
+          packet.type === temp_event_t.TE_GRENADE_EXPLOSION ||
+          packet.type === temp_event_t.TE_GRENADE_EXPLOSION_WATER
+            ? 30
+            : randomExplosionBaseframe(packet.type),
       });
       break;
     case temp_event_t.TE_BFG_EXPLOSION:
       allocateExplosion(runtime, {
         type: "poly",
-        model: MODEL_BFG_EXPLO,
+        ent: {
+          model: MODEL_BFG_EXPLO,
+          origin: [...(packet.position ?? [0, 0, 0])],
+          oldorigin: [0, 0, 0],
+          angles: [0, 0, 0],
+          frame: 0,
+          oldframe: 0,
+          backlerp: 0,
+          flags: RF_FULLBRIGHT | RF_TRANSLUCENT,
+          alpha: 0.3,
+          skinnum: 0
+        },
         frames: 4,
         light: 350,
         lightcolor: [0, 1, 0],
         start: runtime.cl.frame.servertime - 100,
-        baseframe: 0,
-        origin: [...(packet.position ?? [0, 0, 0])],
-        angles: [0, 0, 0],
-        flags: RF_FULLBRIGHT | RF_TRANSLUCENT,
-        alpha: 0.3,
-        skinnum: 0
+        baseframe: 0
       });
       break;
     case temp_event_t.TE_WELDING_SPARKS:
       allocateExplosion(runtime, {
         type: "flash",
-        model: MODEL_FLASH,
+        ent: {
+          model: MODEL_FLASH,
+          origin: [...(packet.position ?? [0, 0, 0])],
+          oldorigin: [0, 0, 0],
+          angles: [0, 0, 0],
+          frame: 0,
+          oldframe: 0,
+          backlerp: 0,
+          flags: RF_BEAM,
+          alpha: 1,
+          skinnum: 0
+        },
         frames: 2,
-        light: 120,
+        light: 100 + Math.floor(Math.random() * 75),
         lightcolor: [1, 1, 0.3],
         start: runtime.cl.frame.servertime,
-        baseframe: 0,
-        origin: [...(packet.position ?? [0, 0, 0])],
-        angles: [0, 0, 0],
-        flags: RF_BEAM,
-        alpha: 1,
-        skinnum: 0
+        baseframe: 0
       });
       break;
     case temp_event_t.TE_STEAM:
@@ -341,7 +448,7 @@ export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntit
  */
 export function CL_BuildTEntRefresh(runtime: ClientRuntime): ClientTEntRefresh {
   const beams = [
-    ...buildBeams(runtime.cl.tents.beams, runtime.cl.time, "beam"),
+    ...buildBeams(runtime, runtime.cl.tents.beams, runtime.cl.time, "beam"),
     ...buildPlayerBeams(runtime),
     ...buildLasers(runtime)
   ];
@@ -364,13 +471,14 @@ export function CL_BuildTEntRefresh(runtime: ClientRuntime): ClientTEntRefresh {
  * Purpose: Convert one active beam-family slot array into refresh-facing beam records.
  */
 function buildBeams(
+  runtime: ClientRuntime,
   slots: client_beam_t[],
   now: number,
   kind: "beam" | "player-beam"
 ): ClientBeamRender[] {
   return slots
     .filter((slot) => slot.model !== null && slot.endtime >= now)
-    .map((slot) => createBeamRender(slot, kind));
+    .map((slot) => createBeamRender(runtime, slot, kind));
 }
 
 /**
@@ -384,11 +492,12 @@ function buildBeams(
  *
  * Porting notes:
  * - Captures the locked beam origin/orientation and segment sizing for later renderer adapters.
- * - Uses the common right-hand view path for now, matching the current port stage that does not yet expose `hand`.
+ * - Uses the original `hand->value` multiplier semantics exposed in the client runtime.
  */
 function buildPlayerBeams(runtime: ClientRuntime): ClientBeamRender[] {
   const results: ClientBeamRender[] = [];
   const view = buildCurrentView(runtime);
+  const handMultiplier = getHandMultiplier(runtime);
 
   for (const slot of runtime.cl.tents.playerbeams) {
     if (slot.model === null || slot.endtime < runtime.cl.time) {
@@ -396,11 +505,11 @@ function buildPlayerBeams(runtime: ClientRuntime): ClientBeamRender[] {
     }
 
     if (slot.model === MODEL_HEATBEAM) {
-      results.push(createHeatbeamRender(runtime, slot, view));
+      results.push(createHeatbeamRender(runtime, slot, view, handMultiplier));
       continue;
     }
 
-    results.push(createBeamRender(slot, "player-beam"));
+    results.push(createBeamRender(runtime, slot, "player-beam"));
   }
 
   return results;
@@ -429,7 +538,9 @@ function buildLasers(runtime: ClientRuntime): ClientBeamRender[] {
       skinnum: slot.skinnum,
       frame: slot.frame,
       segmentLength: 30,
-      pathLength: vectorLength(subtractVec3(slot.end, slot.start))
+      pathLength: vectorLength(subtractVec3(slot.end, slot.start)),
+      roll: 0,
+      specialLightningShort: false
     }));
 }
 
@@ -447,15 +558,15 @@ function buildExplosions(runtime: ClientRuntime): { explosions: ClientExplosionR
   const lights: ClientDynamicLight[] = [];
 
   for (const slot of runtime.cl.tents.explosions) {
-    if (slot.type === "free" || slot.model === null) {
+    if (slot.type === "free" || slot.ent.model === null) {
       continue;
     }
 
     const frac = (runtime.cl.time - slot.start) / 100;
     let frameIndex = Math.floor(frac);
-    let alpha = slot.alpha;
-    let flags = slot.flags;
-    let skinnum = slot.skinnum;
+    let alpha = slot.ent.alpha;
+    let flags = slot.ent.flags;
+    let skinnum = slot.ent.skinnum;
 
     if (!updateExplosionForFrame(slot, frameIndex)) {
       resetExplosion(slot);
@@ -463,6 +574,8 @@ function buildExplosions(runtime: ClientRuntime): { explosions: ClientExplosionR
     }
 
     switch (slot.type) {
+      case "mflash":
+        break;
       case "misc":
         alpha = 1 - frac / Math.max(1, slot.frames - 1);
         break;
@@ -489,7 +602,7 @@ function buildExplosions(runtime: ClientRuntime): { explosions: ClientExplosionR
 
     if (slot.light !== 0) {
       lights.push({
-        origin: [...slot.origin],
+        origin: [...slot.ent.origin],
         intensity: slot.light * alpha,
         color: [...slot.lightcolor],
         sourceEntity: 0,
@@ -502,9 +615,9 @@ function buildExplosions(runtime: ClientRuntime): { explosions: ClientExplosionR
     }
 
     explosions.push({
-      model: slot.model,
-      origin: [...slot.origin],
-      angles: [...slot.angles],
+      model: slot.ent.model,
+      origin: [...slot.ent.origin],
+      angles: [...slot.ent.angles],
       frame: slot.baseframe + frameIndex + 1,
       oldframe: slot.baseframe + frameIndex,
       backlerp: 1 - runtime.cl.lerpfrac,
@@ -552,28 +665,53 @@ function buildForceWalls(runtime: ClientRuntime): ClientForceWallRender[] {
  * Category: New
  * Purpose: Build a generic beam render record from one active beam slot.
  */
-function createBeamRender(slot: client_beam_t, kind: "beam" | "player-beam"): ClientBeamRender {
-  const origin = [...slot.start] as vec3_t;
+function createBeamRender(runtime: ClientRuntime, slot: client_beam_t, kind: "beam" | "player-beam"): ClientBeamRender {
+  const start = [...slot.start] as vec3_t;
+  if (kind === "beam" && slot.entity === runtime.cl.playernum + 1) {
+    const view = buildCurrentView(runtime);
+    start[0] = view.vieworg[0];
+    start[1] = view.vieworg[1];
+    start[2] = view.vieworg[2] - 22;
+  }
+
+  const origin = addVec3(start, slot.offset);
   const dist = subtractVec3(slot.end, origin);
-  const pathLength = vectorLength(dist);
+  let pathLength = vectorLength(dist);
+  let angles = calculateBeamAngles(dist, slot.model === MODEL_LIGHTNING);
+  let specialLightningShort = false;
+
+  if (slot.model === MODEL_LIGHTNING) {
+    pathLength -= 20;
+    if (pathLength <= 35) {
+      specialLightningShort = true;
+      angles = calculateBeamAngles(dist, false);
+    }
+  }
 
   return {
     kind,
     model: slot.model,
-    start: [...slot.start],
+    start,
     end: [...slot.end],
     origin,
-    angles: calculateBeamAngles(dist, slot.model === MODEL_LIGHTNING),
+    angles,
     offset: [...slot.offset],
     endtime: slot.endtime,
     entity: slot.entity,
     entity2: slot.dest_entity,
-    flags: kind === "player-beam" ? RF_FULLBRIGHT : 0,
+    flags:
+      slot.model === MODEL_LIGHTNING
+        ? RF_FULLBRIGHT
+        : kind === "player-beam" && slot.model === MODEL_HEATBEAM
+          ? RF_FULLBRIGHT
+          : 0,
     alpha: 1,
     skinnum: 0,
-    frame: kind === "player-beam" ? 1 : 0,
+    frame: 0,
     segmentLength: slot.model === MODEL_LIGHTNING ? 35 : 30,
-    pathLength
+    pathLength,
+    roll: randomAngleDegrees(),
+    specialLightningShort
   };
 }
 
@@ -584,24 +722,56 @@ function createBeamRender(slot: client_beam_t, kind: "beam" | "player-beam"): Cl
 function createHeatbeamRender(
   runtime: ClientRuntime,
   slot: client_beam_t,
-  view: ClientViewValues
+  view: ClientViewValues,
+  handMultiplier: number
 ): ClientBeamRender {
-  const slotStart = [...slot.start] as vec3_t;
-  const start = slot.entity === runtime.cl.playernum + 1
-    ? computePlayerBeamOrigin(runtime, view, slot.offset)
-    : slotStart;
-  const end = [...slot.end] as vec3_t;
-  const direction = slot.entity === runtime.cl.playernum + 1
-    ? computePlayerHeatbeamDirection(view, slot.offset, end, start)
-    : subtractVec3(end, start);
+  let start = [...slot.start] as vec3_t;
+  let origin = [...slot.start] as vec3_t;
+  let direction = subtractVec3(slot.end, origin);
+  let framenum = 1;
+
+  if (slot.entity === runtime.cl.playernum + 1) {
+    start = computePlayerBeamGunStart(runtime, view);
+    origin = addScaledVec3(start, view.right, handMultiplier * slot.offset[0]);
+    origin = addScaledVec3(origin, view.forward, slot.offset[1]);
+    origin = addScaledVec3(origin, view.up, slot.offset[2]);
+    if (runtime.cl.hand === 2) {
+      origin = addScaledVec3(origin, view.up, -1);
+    }
+
+    const dist = subtractVec3(slot.end, origin);
+    const length = vectorLength(dist);
+    direction = scaleVec3(view.forward, length);
+    direction = addScaledVec3(direction, view.right, handMultiplier * slot.offset[0]);
+    direction = addScaledVec3(direction, view.forward, slot.offset[1]);
+    direction = addScaledVec3(direction, view.up, slot.offset[2]);
+    if (runtime.cl.hand === 2) {
+      origin = addScaledVec3(origin, view.up, -1);
+    }
+
+    CL_Heatbeam(runtime, origin, direction, view.right, view.up);
+  } else {
+    framenum = 2;
+    const baseAngles = calculateBeamAngles(direction, true);
+    const vectors = AngleVectors([baseAngles[0], baseAngles[1], 0]);
+
+    if (!isZeroVec3(slot.offset)) {
+      origin = addScaledVec3(origin, vectors.right, -slot.offset[0] + 1);
+      origin = addScaledVec3(origin, vectors.forward, -slot.offset[1]);
+      origin = addScaledVec3(origin, vectors.up, -slot.offset[2] - 10);
+    } else {
+      CL_MonsterPlasma_Shell(runtime, slot.start);
+    }
+  }
+
   const pathLength = vectorLength(direction);
 
   return {
     kind: "player-beam",
     model: slot.model,
     start,
-    end,
-    origin: [...start],
+    end: [...slot.end],
+    origin,
     angles: calculateBeamAngles(direction, true),
     offset: [...slot.offset],
     endtime: slot.endtime,
@@ -610,9 +780,11 @@ function createHeatbeamRender(
     flags: RF_FULLBRIGHT,
     alpha: 1,
     skinnum: 0,
-    frame: slot.entity === runtime.cl.playernum + 1 ? 1 : 2,
+    frame: framenum,
     segmentLength: 32,
-    pathLength
+    pathLength,
+    roll: slot.entity === runtime.cl.playernum + 1 ? runtime.cl.time % 360 : 0,
+    specialLightningShort: false
   };
 }
 
@@ -652,9 +824,9 @@ function buildCurrentView(runtime: ClientRuntime): ClientViewValues {
 
 /**
  * Category: New
- * Purpose: Rebuild the player beam origin from view origin, gun offset and heatbeam offset.
+ * Purpose: Rebuild the player beam gun start from the current and previous player gun offsets.
  */
-function computePlayerBeamOrigin(runtime: ClientRuntime, view: ClientViewValues, offset: vec3_t): vec3_t {
+function computePlayerBeamGunStart(runtime: ClientRuntime, view: ClientViewValues): vec3_t {
   const ps = runtime.cl.frame.playerstate;
   let oldframe = runtime.cl.frames[(runtime.cl.frame.serverframe - 1) & UPDATE_MASK];
   if (oldframe.serverframe !== runtime.cl.frame.serverframe - 1 || !oldframe.valid) {
@@ -670,29 +842,21 @@ function computePlayerBeamOrigin(runtime: ClientRuntime, view: ClientViewValues,
       runtime.cl.lerpfrac * (ps.gunoffset[index] - ops.gunoffset[index]);
   }
 
-  const origin = addScaledVec3(gunStart, view.right, offset[0]);
-  const origin2 = addScaledVec3(origin, view.forward, offset[1]);
-  return addScaledVec3(origin2, view.up, offset[2]);
+  return gunStart;
 }
 
 /**
  * Category: New
- * Purpose: Rebuild the heatbeam direction locked to the player's forward vector like `CL_AddPlayerBeams`.
+ * Purpose: Convert the `hand` cvar value into the original beam-side multiplier.
  */
-function computePlayerHeatbeamDirection(
-  view: ClientViewValues,
-  offset: vec3_t,
-  end: vec3_t,
-  start: vec3_t
-): vec3_t {
-  const dist = subtractVec3(end, start);
-  const length = vectorLength(dist);
-
-  let result = scaleVec3(view.forward, length);
-  result = addScaledVec3(result, view.right, offset[0]);
-  result = addScaledVec3(result, view.forward, offset[1]);
-  result = addScaledVec3(result, view.up, offset[2]);
-  return result;
+function getHandMultiplier(runtime: ClientRuntime): number {
+  if (runtime.cl.hand === 2) {
+    return 0;
+  }
+  if (runtime.cl.hand === 1) {
+    return -1;
+  }
+  return 1;
 }
 
 /**
@@ -735,6 +899,22 @@ function calculateBeamAngles(dist: vec3_t, lightningStyle: boolean): vec3_t {
  */
 function subtractVec3(a: vec3_t, b: vec3_t): vec3_t {
   return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+}
+
+/**
+ * Category: New
+ * Purpose: Add two vectors by value.
+ */
+function addVec3(a: vec3_t, b: vec3_t): vec3_t {
+  return [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+}
+
+/**
+ * Category: New
+ * Purpose: Test whether a vector matches the zero vector exactly.
+ */
+function isZeroVec3(vector: vec3_t): boolean {
+  return vector[0] === 0 && vector[1] === 0 && vector[2] === 0;
 }
 
 /**
@@ -795,12 +975,10 @@ function buildSustains(runtime: ClientRuntime): ClientSustainRender[] {
       continue;
     }
 
-    const render = buildSustainRender(runtime, sustain);
+    const render = runSustainThinker(runtime, sustain);
     if (render) {
       results.push(render);
     }
-
-    sustain.nextthink += sustain.thinkinterval;
   }
 
   return results;
@@ -808,7 +986,31 @@ function buildSustains(runtime: ClientRuntime): ClientSustainRender[] {
 
 /**
  * Category: New
- * Purpose: Convert one active sustain slot into a renderer-facing descriptor.
+ * Purpose: Execute the renderer-side equivalent of the active sustain thinker for the current frame.
+ *
+ * Constraints:
+ * - Must preserve the original `nextthink` mutation rules per thinker.
+ */
+function runSustainThinker(
+  runtime: ClientRuntime,
+  sustain: ClientRuntime["cl"]["tents"]["sustains"][number]
+): ClientSustainRender | null {
+  switch (sustain.thinker) {
+    case "CL_ParticleSteamEffect2":
+      CL_ParticleSteamEffect2(sustain);
+      return buildSustainRender(runtime, sustain);
+    case "CL_Widowbeamout":
+      return buildSustainRender(runtime, sustain);
+    case "CL_Nukeblast":
+      return buildSustainRender(runtime, sustain);
+    default:
+      return null;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Convert one active sustain slot into a renderer-facing descriptor after thinker execution.
  */
 function buildSustainRender(runtime: ClientRuntime, sustain: ClientRuntime["cl"]["tents"]["sustains"][number]): ClientSustainRender | null {
   switch (sustain.type) {
@@ -871,18 +1073,80 @@ function createImpactExplosion(
 ): client_explosion_t {
   return {
     type: "misc",
-    model: MODEL_EXPLODE,
+    ent: {
+      model: MODEL_EXPLODE,
+      origin: [...(packet.position ?? [0, 0, 0])],
+      oldorigin: [0, 0, 0],
+      angles: directionByteToImpactAngles(packet.directionByte),
+      frame: 0,
+      oldframe: 0,
+      backlerp: 0,
+      flags: RF_FULLBRIGHT | RF_TRANSLUCENT,
+      alpha: 1,
+      skinnum
+    },
     frames: 4,
     light: 150,
     lightcolor,
     start: 0,
-    baseframe: 0,
-    origin: [...(packet.position ?? [0, 0, 0])],
-    angles: directionByteToImpactAngles(packet.directionByte),
-    flags: RF_FULLBRIGHT | RF_TRANSLUCENT,
-    alpha: 1,
-    skinnum
+    baseframe: 0
   };
+}
+
+/**
+ * Original name: CL_SmokeAndFlash
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns the paired smoke and flash temp explosions used by bullet impact temp entities.
+ *
+ * Porting notes:
+ * - Reuses the persistent explosion slot pool instead of immediate renderer entities.
+ */
+function CL_SmokeAndFlash(runtime: ClientRuntime, origin: vec3_t): void {
+  allocateExplosion(runtime, {
+    type: "misc",
+    ent: {
+      model: MODEL_SMOKE,
+      origin: [...origin],
+      oldorigin: [0, 0, 0],
+      angles: [0, 0, 0],
+      frame: 0,
+      oldframe: 0,
+      backlerp: 0,
+      flags: RF_TRANSLUCENT,
+      alpha: 0,
+      skinnum: 0
+    },
+    frames: 4,
+    light: 0,
+    lightcolor: [0, 0, 0],
+    start: runtime.cl.frame.servertime - 100,
+    baseframe: 0
+  });
+
+  allocateExplosion(runtime, {
+    type: "flash",
+    ent: {
+      model: MODEL_FLASH,
+      origin: [...origin],
+      oldorigin: [0, 0, 0],
+      angles: [0, 0, 0],
+      frame: 0,
+      oldframe: 0,
+      backlerp: 0,
+      flags: RF_FULLBRIGHT,
+      alpha: 0,
+      skinnum: 0
+    },
+    frames: 2,
+    light: 0,
+    lightcolor: [0, 0, 0],
+    start: runtime.cl.frame.servertime - 100,
+    baseframe: 0
+  });
 }
 
 /**
@@ -890,17 +1154,23 @@ function createImpactExplosion(
  * Purpose: Assign one parsed beam packet into the chosen fixed-size slot array.
  */
 function assignBeam(
+  runtime: ClientRuntime,
   slots: client_beam_t[],
   packet: ClientTempEntityPacket,
   model: string,
-  endtime: number
+  endtime: number,
+  matchByDestination = false
 ): void {
   const entity = packet.entity ?? 0;
   const entity2 = packet.entity2 ?? 0;
 
-  let slot = slots.find((candidate) => candidate.entity === entity && candidate.dest_entity === entity2);
+  let slot = slots.find((candidate) =>
+    matchByDestination
+      ? candidate.entity === entity && candidate.dest_entity === entity2
+      : candidate.entity === entity
+  );
   if (!slot) {
-    slot = slots.find((candidate) => candidate.model === null || candidate.endtime < endtime - 200) ?? slots[0];
+    slot = slots.find((candidate) => candidate.model === null || candidate.endtime < runtime.cl.time) ?? slots[0];
   }
 
   slot.entity = entity;
@@ -920,17 +1190,20 @@ function assignPlayerBeam(
   runtime: ClientRuntime,
   packet: ClientTempEntityPacket,
   model: string,
-  defaultOffset: vec3_t,
-  endtime: number
+  defaultOffset: vec3_t
 ): void {
+  const entity = packet.entity ?? 0;
+  const existing = runtime.cl.tents.playerbeams.find((candidate) => candidate.entity === entity);
+
   assignBeam(
+    runtime,
     runtime.cl.tents.playerbeams,
     {
       ...packet,
       offset: packet.offset ?? defaultOffset
     },
     model,
-    endtime
+    existing ? runtime.cl.time + 200 : runtime.cl.time + 100
   );
 }
 
@@ -938,7 +1211,7 @@ function assignPlayerBeam(
  * Category: New
  * Purpose: Assign one parsed laser packet into the fixed-size laser array.
  */
-function assignLaser(runtime: ClientRuntime, packet: ClientTempEntityPacket, skinnum: number): void {
+function assignLaser(runtime: ClientRuntime, packet: ClientTempEntityPacket, colors: number): void {
   const slot =
     runtime.cl.tents.lasers.find((candidate) => candidate.endtime < runtime.cl.time) ??
     runtime.cl.tents.lasers[0];
@@ -948,7 +1221,7 @@ function assignLaser(runtime: ClientRuntime, packet: ClientTempEntityPacket, ski
   slot.endtime = runtime.cl.time + 100;
   slot.flags = RF_TRANSLUCENT | RF_BEAM;
   slot.alpha = 0.3;
-  slot.skinnum = skinnum;
+  slot.skinnum = (colors >> ((Math.floor(Math.random() * 0x7fffffff) % 4) * 8)) & 0xff;
   slot.frame = 4;
 }
 
@@ -999,6 +1272,7 @@ function assignSteamSustain(runtime: ClientRuntime, packet: ClientTempEntityPack
   const slot = runtime.cl.tents.sustains.find((candidate) => candidate.id === 0) ?? runtime.cl.tents.sustains[0];
   slot.id = packet.id;
   slot.type = "steam";
+  slot.thinker = "CL_ParticleSteamEffect2";
   slot.endtime = runtime.cl.time + (packet.durationMs ?? 0);
   slot.nextthink = runtime.cl.time;
   slot.thinkinterval = 100;
@@ -1024,6 +1298,7 @@ function assignTimedSustain(
   const slot = runtime.cl.tents.sustains.find((candidate) => candidate.id === 0) ?? runtime.cl.tents.sustains[0];
   slot.id = id;
   slot.type = type;
+  slot.thinker = type === "widow" ? "CL_Widowbeamout" : "CL_Nukeblast";
   slot.endtime = runtime.cl.time + durationMs;
   slot.nextthink = runtime.cl.time;
   slot.thinkinterval = thinkinterval;
@@ -1035,24 +1310,57 @@ function assignTimedSustain(
  * Purpose: Allocate or recycle one explosion slot and fill it with normalized explosion data.
  */
 function allocateExplosion(runtime: ClientRuntime, value: client_explosion_t): void {
-  const slot =
-    runtime.cl.tents.explosions.find((candidate) => candidate.type === "free") ??
-    runtime.cl.tents.explosions.reduce((oldest, candidate) =>
-      candidate.start < oldest.start ? candidate : oldest
-    );
+  const slot = CL_AllocExplosion(runtime);
 
   slot.type = value.type;
-  slot.model = value.model;
+  slot.ent.model = value.ent.model;
+  slot.ent.origin = [...value.ent.origin];
+  slot.ent.oldorigin = [...value.ent.oldorigin];
+  slot.ent.angles = [...value.ent.angles];
+  slot.ent.frame = value.ent.frame;
+  slot.ent.oldframe = value.ent.oldframe;
+  slot.ent.backlerp = value.ent.backlerp;
+  slot.ent.flags = value.ent.flags;
+  slot.ent.alpha = value.ent.alpha;
+  slot.ent.skinnum = value.ent.skinnum;
   slot.frames = value.frames;
   slot.light = value.light;
   slot.lightcolor = [...value.lightcolor];
-  slot.start = value.start === 0 ? runtime.cl.frame.servertime - 100 : value.start;
+  slot.start = value.start;
   slot.baseframe = value.baseframe;
-  slot.origin = [...value.origin];
-  slot.angles = [...value.angles];
-  slot.flags = value.flags;
-  slot.alpha = value.alpha;
-  slot.skinnum = value.skinnum;
+}
+
+/**
+ * Original name: CL_AllocExplosion
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns a free explosion slot or recycles the oldest one by `start`.
+ *
+ * Porting notes:
+ * - Preserves the original two-pass search and zero-reset semantics.
+ */
+function CL_AllocExplosion(runtime: ClientRuntime): client_explosion_t {
+  for (const explosion of runtime.cl.tents.explosions) {
+    if (explosion.type === "free") {
+      resetExplosion(explosion);
+      return explosion;
+    }
+  }
+
+  let time = runtime.cl.time;
+  let oldest = runtime.cl.tents.explosions[0];
+  for (const explosion of runtime.cl.tents.explosions) {
+    if (explosion.start < time) {
+      time = explosion.start;
+      oldest = explosion;
+    }
+  }
+
+  resetExplosion(oldest);
+  return oldest;
 }
 
 /**
@@ -1061,6 +1369,8 @@ function allocateExplosion(runtime: ClientRuntime, value: client_explosion_t): v
  */
 function updateExplosionForFrame(slot: client_explosion_t, frameIndex: number): boolean {
   switch (slot.type) {
+    case "mflash":
+      return frameIndex < slot.frames - 1;
     case "flash":
       return frameIndex < 1;
     case "misc":
@@ -1078,17 +1388,21 @@ function updateExplosionForFrame(slot: client_explosion_t, frameIndex: number): 
  */
 function resetExplosion(slot: client_explosion_t): void {
   slot.type = "free";
-  slot.model = null;
+  slot.ent.model = null;
+  slot.ent.origin = [0, 0, 0];
+  slot.ent.oldorigin = [0, 0, 0];
+  slot.ent.angles = [0, 0, 0];
+  slot.ent.frame = 0;
+  slot.ent.oldframe = 0;
+  slot.ent.backlerp = 0;
+  slot.ent.flags = 0;
+  slot.ent.alpha = 0;
+  slot.ent.skinnum = 0;
   slot.frames = 0;
   slot.light = 0;
   slot.lightcolor = [0, 0, 0];
   slot.start = 0;
   slot.baseframe = 0;
-  slot.origin = [0, 0, 0];
-  slot.angles = [0, 0, 0];
-  slot.flags = 0;
-  slot.alpha = 0;
-  slot.skinnum = 0;
 }
 
 /**
@@ -1098,6 +1412,7 @@ function resetExplosion(slot: client_explosion_t): void {
 function resetSustain(slot: ClientRuntime["cl"]["tents"]["sustains"][number]): void {
   slot.id = 0;
   slot.type = "none";
+  slot.thinker = "none";
   slot.endtime = 0;
   slot.nextthink = 0;
   slot.thinkinterval = 0;
@@ -1125,4 +1440,31 @@ function directionByteToImpactAngles(directionByte: number | undefined): vec3_t 
   const pitch = Math.acos(Math.max(-1, Math.min(1, dir[2]))) * 180 / Math.PI;
   const yaw = Math.atan2(dir[1], dir[0]) * 180 / Math.PI;
   return [pitch, yaw < 0 ? yaw + 360 : yaw, 0];
+}
+
+/**
+ * Category: New
+ * Purpose: Reproduce the original random yaw seeding used by several temp explosion entities.
+ */
+function randomAngleDegrees(): number {
+  return Math.floor(Math.random() * 360);
+}
+
+/**
+ * Category: New
+ * Purpose: Reproduce the `frand() < 0.5 ? 15 : 0` baseframe choice used by the original explosion variants.
+ */
+function randomExplosionBaseframe(type: number): number {
+  if (
+    type === temp_event_t.TE_EXPLOSION1_BIG ||
+    type === temp_event_t.TE_EXPLOSION1_NP ||
+    type === temp_event_t.TE_PLAIN_EXPLOSION ||
+    type === temp_event_t.TE_ROCKET_EXPLOSION ||
+    type === temp_event_t.TE_ROCKET_EXPLOSION_WATER ||
+    type === temp_event_t.TE_EXPLOSION1
+  ) {
+    return Math.random() < 0.5 ? 15 : 0;
+  }
+
+  return 0;
 }

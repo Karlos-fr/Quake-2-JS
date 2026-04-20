@@ -17,6 +17,14 @@
  */
 
 import {
+  CL_AddDLights,
+  CL_AddLightStyles,
+  CL_AddParticles,
+  CL_RunDLights,
+  CL_RunLightStyles,
+  type ClientLightStyle
+} from "./effects.js";
+import {
   EF_BFG,
   EF_FLAG1,
   EF_FLAG2,
@@ -74,8 +82,22 @@ export interface ClientDynamicLight {
   origin: vec3_t;
   intensity: number;
   color: [number, number, number];
+  minlight?: number;
   sourceEntity: number;
   kind: string;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe one renderer-facing particle emitted by the client particle integration pass.
+ *
+ * Constraints:
+ * - Must preserve the same payload shape as the original `V_AddParticle` call site.
+ */
+export interface ClientRenderParticle {
+  origin: vec3_t;
+  color: number;
+  alpha: number;
 }
 
 /**
@@ -89,6 +111,8 @@ export interface ClientRefreshFrame {
   view: ClientViewValues;
   entities: ClientRenderEntity[];
   lights: ClientDynamicLight[];
+  particles: ClientRenderParticle[];
+  lightStyles: ClientLightStyle[];
   beams: ClientBeamRender[];
   explosions: ClientExplosionRender[];
   forceWalls: ClientForceWallRender[];
@@ -115,10 +139,14 @@ export function CL_BuildRefreshFrame(
   CL_UpdateLerpFraction(runtime, options);
 
   const view = CL_CalcViewValues(runtime, options);
+  CL_RunDLights(runtime);
+  CL_RunLightStyles(runtime);
   const packetEntities = CL_BuildPacketEntitySnapshots(runtime);
   const tempRefresh = CL_BuildTEntRefresh(runtime);
   const entities: ClientRenderEntity[] = [];
-  const lights: ClientDynamicLight[] = [...tempRefresh.lights];
+  const lights: ClientDynamicLight[] = [...CL_AddDLights(runtime), ...tempRefresh.lights];
+  const particles = CL_AddParticles(runtime);
+  const lightStyles = CL_AddLightStyles(runtime);
 
   appendViewWeapon(runtime, view, entities);
 
@@ -151,6 +179,8 @@ export function CL_BuildRefreshFrame(
     view,
     entities,
     lights,
+    particles,
+    lightStyles,
     beams: tempRefresh.beams,
     explosions: tempRefresh.explosions,
     forceWalls: tempRefresh.forceWalls,

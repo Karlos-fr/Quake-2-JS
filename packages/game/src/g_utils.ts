@@ -191,6 +191,58 @@ export function G_UseTargets(runtime: GameRuntime, ent: GameEntity, activator: G
   }
 }
 
+/**
+ * Original name: findradius
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns successive active solid entities whose origins lie within the requested spherical radius.
+ *
+ * Porting notes:
+ * - Preserves the original `from` restart semantics instead of returning a prebuilt list.
+ */
+export function findradius(
+  runtime: GameRuntime,
+  from: GameEntity | null,
+  origin: [number, number, number],
+  radius: number
+): GameEntity | null {
+  let index = from ? from.index + 1 : 0;
+
+  for (; index < runtime.entities.length; index += 1) {
+    const entity = runtime.entities[index];
+    if (!entity.inuse) {
+      continue;
+    }
+    if (entity.solid === 0) {
+      continue;
+    }
+
+    const eorg: [number, number, number] = [
+      origin[0] - (entity.s.origin[0] + (entity.mins[0] + entity.maxs[0]) * 0.5),
+      origin[1] - (entity.s.origin[1] + (entity.mins[1] + entity.maxs[1]) * 0.5),
+      origin[2] - (entity.s.origin[2] + (entity.mins[2] + entity.maxs[2]) * 0.5)
+    ];
+    if (vectorLength(eorg) > radius) {
+      continue;
+    }
+
+    return entity;
+  }
+
+  return null;
+}
+
 function equalsIgnoreCase(left: string, right: string): boolean {
   return left.localeCompare(right, undefined, { sensitivity: "accent", usage: "search" }) === 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Compute one vector length for the strict `findradius` port.
+ */
+function vectorLength(vector: [number, number, number]): number {
+  return Math.hypot(vector[0], vector[1], vector[2]);
 }

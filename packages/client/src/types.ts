@@ -44,6 +44,73 @@ export const MAX_EXPLOSIONS = 32;
 export const MAX_BEAMS = 32;
 export const MAX_LASERS = 32;
 export const MAX_SUSTAINS = 32;
+export const MAX_DLIGHTS = 32;
+export const MAX_PARTICLES = 4096;
+export const INSTANT_PARTICLE = -10000.0;
+
+/**
+ * Original name: clightstyle_t
+ * Source: client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Stores one animated Quake II lightstyle string plus its current RGB value.
+ *
+ * Porting notes:
+ * - Uses a number array for `map` instead of a fixed C buffer.
+ */
+export interface client_lightstyle_t {
+  length: number;
+  value: [number, number, number];
+  map: number[];
+}
+
+/**
+ * Original name: cdlight_t
+ * Source: client/client.h and client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Stores one client-side dynamic light entry keyed by entity or temporary effect id.
+ *
+ * Porting notes:
+ * - Preserves the original timing, decay and contribution fields.
+ */
+export interface client_dlight_t {
+  key: number;
+  color: vec3_t;
+  origin: vec3_t;
+  radius: number;
+  die: number;
+  decay: number;
+  minlight: number;
+}
+
+/**
+ * Original name: cparticle_t
+ * Source: client/client.h and client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Stores one client particle entry linked through the active/free particle lists.
+ *
+ * Porting notes:
+ * - Uses an integer `next` index instead of a raw pointer.
+ */
+export interface cparticle_t {
+  time: number;
+  org: vec3_t;
+  vel: vec3_t;
+  accel: vec3_t;
+  color: number;
+  colorvel: number;
+  alpha: number;
+  alphavel: number;
+  next: number;
+}
 
 /**
  * Original name: kbutton_t
@@ -151,6 +218,26 @@ export interface client_beam_t {
 
 /**
  * Category: New
+ * Purpose: Preserve the render-facing `entity_t` subset embedded inside `explosion_t` and `laser_t`.
+ *
+ * Constraints:
+ * - Must retain the original `entity_t` field grouping used by `cl_tent.c`.
+ */
+export interface client_tent_entity_t {
+  model: string | null;
+  origin: vec3_t;
+  oldorigin: vec3_t;
+  angles: vec3_t;
+  frame: number;
+  oldframe: number;
+  backlerp: number;
+  flags: number;
+  alpha: number;
+  skinnum: number;
+}
+
+/**
+ * Category: New
  * Purpose: Preserve one client-side temporary explosion slot modeled after `explosion_t`.
  *
  * Constraints:
@@ -158,17 +245,12 @@ export interface client_beam_t {
  */
 export interface client_explosion_t {
   type: "free" | "explosion" | "misc" | "flash" | "mflash" | "poly" | "poly2";
-  model: string | null;
+  ent: client_tent_entity_t;
   frames: number;
   light: number;
   lightcolor: [number, number, number];
   start: number;
   baseframe: number;
-  origin: vec3_t;
-  angles: vec3_t;
-  flags: number;
-  alpha: number;
-  skinnum: number;
 }
 
 /**
@@ -193,11 +275,12 @@ export interface client_laser_t {
  * Purpose: Preserve one client-side sustain slot modeled after `cl_sustain_t`.
  *
  * Constraints:
- * - Must retain timer and payload values until the matching thinker port exists.
+ * - Must retain timer, thinker identity and payload values for exact `CL_ProcessSustain` reconstruction.
  */
 export interface client_sustain_t {
   id: number;
   type: "none" | "steam" | "widow" | "nuke";
+  thinker: "none" | "CL_ParticleSteamEffect2" | "CL_Widowbeamout" | "CL_Nukeblast";
   endtime: number;
   nextthink: number;
   thinkinterval: number;
@@ -254,6 +337,8 @@ export interface client_tent_state_t {
   sustains: client_sustain_t[];
   tempLights: client_temp_light_t[];
   forceWalls: client_force_wall_t[];
+  registeredModels: string[];
+  registeredPics: string[];
   registeredSounds: string[];
 }
 
@@ -337,6 +422,8 @@ export interface client_state_t {
   viewangles: vec3_t;
   time: number;
   lerpfrac: number;
+  cl_footsteps: boolean;
+  hand: number;
   layout: string;
   inventory: number[];
   attractloop: boolean;
@@ -349,6 +436,13 @@ export interface client_state_t {
   model_clip: unknown[];
   sound_precache: unknown[];
   image_precache: unknown[];
+  lightstyles: client_lightstyle_t[];
+  last_lightstyle_ofs: number;
+  dlights: client_dlight_t[];
+  particles: cparticle_t[];
+  active_particles: number;
+  free_particles: number;
+  cl_numparticles: number;
   cl_weaponmodels: string[];
   num_cl_weaponmodels: number;
   clientinfo: clientinfo_t[];
@@ -485,6 +579,61 @@ export function createClientinfo(): clientinfo_t {
 
 /**
  * Category: New
+ * Purpose: Create one zero-initialized client lightstyle slot.
+ *
+ * Constraints:
+ * - Must preserve the original empty-slot semantics from `CL_ClearLightStyles`.
+ */
+export function createClientLightstyle(): client_lightstyle_t {
+  return {
+    length: 0,
+    value: [0, 0, 0],
+    map: new Array<number>(MAX_QPATH).fill(0)
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create one zero-initialized client dynamic light slot.
+ *
+ * Constraints:
+ * - Must preserve the original free-slot semantics based on `radius` and `die`.
+ */
+export function createClientDlight(): client_dlight_t {
+  return {
+    key: 0,
+    color: [0, 0, 0],
+    origin: [0, 0, 0],
+    radius: 0,
+    die: 0,
+    decay: 0,
+    minlight: 0
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create one zero-initialized client particle slot.
+ *
+ * Constraints:
+ * - Must preserve the original free-list startup semantics.
+ */
+export function createCparticle(): cparticle_t {
+  return {
+    time: 0,
+    org: [0, 0, 0],
+    vel: [0, 0, 0],
+    accel: [0, 0, 0],
+    color: 0,
+    colorvel: 0,
+    alpha: 0,
+    alphavel: 0,
+    next: -1
+  };
+}
+
+/**
+ * Category: New
  * Purpose: Create one zero-initialized temp beam slot.
  *
  * Constraints:
@@ -512,14 +661,31 @@ export function createClientBeam(): client_beam_t {
 export function createClientExplosion(): client_explosion_t {
   return {
     type: "free",
-    model: null,
+    ent: createClientTentEntity(),
     frames: 0,
     light: 0,
     lightcolor: [0, 0, 0],
     start: 0,
-    baseframe: 0,
+    baseframe: 0
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create one zero-initialized temp-entity render sub-structure.
+ *
+ * Constraints:
+ * - Must preserve the C-style zeroed `entity_t` startup state used by `cl_tent.c`.
+ */
+export function createClientTentEntity(): client_tent_entity_t {
+  return {
+    model: null,
     origin: [0, 0, 0],
+    oldorigin: [0, 0, 0],
     angles: [0, 0, 0],
+    frame: 0,
+    oldframe: 0,
+    backlerp: 0,
     flags: 0,
     alpha: 0,
     skinnum: 0
@@ -556,6 +722,7 @@ export function createClientSustain(): client_sustain_t {
   return {
     id: 0,
     type: "none",
+    thinker: "none",
     endtime: 0,
     nextthink: 0,
     thinkinterval: 0,
@@ -618,6 +785,8 @@ export function createClientTentState(): client_tent_state_t {
     sustains: Array.from({ length: MAX_SUSTAINS }, () => createClientSustain()),
     tempLights: Array.from({ length: MAX_EXPLOSIONS }, () => createClientTempLight()),
     forceWalls: Array.from({ length: MAX_EXPLOSIONS }, () => createClientForceWall()),
+    registeredModels: [],
+    registeredPics: [],
     registeredSounds: []
   };
 }
@@ -663,6 +832,11 @@ export function createClientSkyState(): client_sky_t {
  * - Must keep fixed-length arrays aligned with original capacities.
  */
 export function createClientState(): client_state_t {
+  const particles = Array.from({ length: MAX_PARTICLES }, (_, index) => {
+    const particle = createCparticle();
+    particle.next = index + 1 < MAX_PARTICLES ? index + 1 : -1;
+    return particle;
+  });
   return {
     timeoutcount: 0,
     timedemo_frames: 0,
@@ -687,6 +861,8 @@ export function createClientState(): client_state_t {
     viewangles: [0, 0, 0],
     time: 0,
     lerpfrac: 0,
+    cl_footsteps: true,
+    hand: 0,
     layout: "",
     inventory: new Array<number>(MAX_ITEMS).fill(0),
     attractloop: false,
@@ -699,6 +875,13 @@ export function createClientState(): client_state_t {
     model_clip: new Array<unknown>(MAX_MODELS).fill(null),
     sound_precache: new Array<unknown>(MAX_SOUNDS).fill(null),
     image_precache: new Array<unknown>(MAX_IMAGES).fill(null),
+    lightstyles: Array.from({ length: MAX_LIGHTSTYLES }, () => createClientLightstyle()),
+    last_lightstyle_ofs: -1,
+    dlights: Array.from({ length: MAX_DLIGHTS }, () => createClientDlight()),
+    particles,
+    active_particles: -1,
+    free_particles: 0,
+    cl_numparticles: MAX_PARTICLES,
     cl_weaponmodels: ["weapon.md2"],
     num_cl_weaponmodels: 1,
     clientinfo: Array.from({ length: MAX_CLIENTS }, () => createClientinfo()),
