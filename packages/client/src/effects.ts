@@ -1,7 +1,7 @@
 /**
  * File: effects.ts
- * Source: Quake II original / client/cl_fx.c and client/cl_tent.c
- * Purpose: Normalize parsed client action packets into renderer/audio-friendly effect events.
+ * Source: Quake II original / client/cl_fx.c
+ * Purpose: Port the main client-side effect, muzzle flash, dlight, lightstyle and particle routines into runtime-side structured outputs.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - Emits structured effect descriptions instead of spawning lights, particles or sounds directly.
- * - Groups several original visual/audio side effects under one normalized action event.
+ * - Some helper outputs are also reused by `client/cl_tent.c`, but this file stays the primary port target for `cl_fx.c`.
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original client effect pipeline.

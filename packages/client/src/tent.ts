@@ -11,9 +11,13 @@
  * Deviations:
  * - Stores model references as asset-path strings instead of renderer handles.
  * - Emits structured refresh-facing beam and explosion data instead of calling renderer entry points directly.
+ * - Reuses parsed temp-entity packets produced by `parse.ts` instead of reading network bytes here.
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original temp-entity pipeline.
+ * - `tent.ts` is the principal port target for `client/cl_tent.c`.
+ * - `effects.ts` only provides shared effect helpers reused by the temp-entity pipeline.
+ * - `refresh.ts` only consumes the structured refresh output built here.
  */
 
 import {

@@ -46,7 +46,7 @@ import type {
   HudNumberCommand,
   HudPictureCommand,
   HudTextCommand
-} from "../../renderer-common/src/index.js";
+} from "./render-contracts.js";
 import type { ClientRuntime } from "./types.js";
 
 const STAT_MINUS = 10;

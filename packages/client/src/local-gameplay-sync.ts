@@ -1,0 +1,525 @@
+/**
+ * File: local-gameplay-sync.ts
+ * Purpose: Hold the standalone synchronization helpers that bridge the local gameplay runtime into the client runtime without living in a web adapter.
+ *
+ * This file is not a direct source port.
+ * It is a runtime-side bridge for the current local standalone loop.
+ *
+ * Dependencies:
+ * - packages/client/src/types.ts
+ * - packages/game
+ * - packages/qcommon
+ */
+
+import {
+  CS_IMAGES,
+  CS_MODELS,
+  CS_SOUNDS,
+  CS_SKY,
+  CS_SKYAXIS,
+  CS_SKYROTATE,
+  PMF_DUCKED,
+  PMF_ON_GROUND,
+  PITCH,
+  STAT_AMMO,
+  STAT_AMMO_ICON,
+  STAT_SELECTED_ICON,
+  STAT_SELECTED_ITEM,
+  YAW,
+  createEntityState,
+  pmtype_t,
+  type entity_state_t,
+  type vec3_t
+} from "../../qcommon/src/index.js";
+import {
+  DAMAGE_TIME,
+  FRAMETIME,
+  GetAmmoItemForWeapon,
+  G_RunFrame,
+  linkGameEntity,
+  refreshEntitySpatialState,
+  thinkLocalWeapon,
+  touchTriggerEntities,
+  SVF_NOCLIENT,
+  type GameEntity,
+  type GameRuntime
+} from "../../game/src/index.js";
+import type { BspMap } from "../../formats/src/index.js";
+import { findClientImageIndex, type LocalClientHudBootstrapData } from "./local-client-bootstrap.js";
+import { getPredictedViewheight } from "./local-loop.js";
+import type { ClientRuntime } from "./types.js";
+
+const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
+const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
+const PLAYER_DUCKED_MAXS: vec3_t = [16, 16, 4];
+const PLAYER_GIB_MINS: vec3_t = [-16, -16, 0];
+const PLAYER_GIB_MAXS: vec3_t = [16, 16, 16];
+
+/**
+ * Category: New
+ * Purpose: Preserve the minimal local view-motion state required to feed the current first-person weapon bob and delta-angle formulas.
+ *
+ * Constraints:
+ * - Must remain data-only so adapters can store it without owning the behavior.
+ */
+export interface LocalViewMotionState {
+  bobtime: number;
+  oldviewangles: vec3_t;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the previous and current brush-model poses required to interpolate moving BSP submodels across fixed local gameplay frames.
+ *
+ * Constraints:
+ * - Must keep timestamps aligned with fixed Quake II server frames.
+ */
+export interface BrushModelInterpolationState<TSnapshot> {
+  previousSnapshots: TSnapshot[];
+  currentSnapshots: TSnapshot[];
+  previousTime: number;
+  currentTime: number;
+}
+
+/**
+ * Category: New
+ * Purpose: Create the initial local view-motion state for the standalone prediction/gameplay bridge.
+ */
+export function createLocalViewMotionState(spawnYaw: number): LocalViewMotionState {
+  return {
+    bobtime: 0,
+    oldviewangles: [0, spawnYaw, 0]
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Advance the local gameplay runtime on fixed Quake II frame boundaries while preserving interpolation snapshots.
+ *
+ * Constraints:
+ * - Must run `G_RunFrame` using the original `FRAMETIME`.
+ */
+export function advanceLocalGameplayRuntime<TSnapshot>(
+  gameplayRuntime: GameRuntime,
+  realtimeMs: number,
+  interpolationState: BrushModelInterpolationState<TSnapshot>,
+  buildSnapshots: (runtime: GameRuntime) => TSnapshot[],
+  cloneSnapshots: (snapshots: TSnapshot[]) => TSnapshot[]
+): void {
+  const timeSeconds = realtimeMs / 1000;
+
+  while ((gameplayRuntime.time + FRAMETIME) <= (timeSeconds + 0.0001)) {
+    interpolationState.previousSnapshots = cloneSnapshots(interpolationState.currentSnapshots);
+    interpolationState.previousTime = interpolationState.currentTime;
+    G_RunFrame(gameplayRuntime);
+    interpolationState.currentSnapshots = buildSnapshots(gameplayRuntime);
+    interpolationState.currentTime = gameplayRuntime.time;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Keep the local gameplay player entity aligned with predicted movement and mirror the resulting weapon-facing state back into the client runtime.
+ *
+ * Constraints:
+ * - Must update trigger touches after the authoritative pusher frame advance already happened.
+ * - Must preserve the existing standalone weapon-motion adaptation until `p_view.c` is ported.
+ */
+export function updateLocalGameplayPlayer(
+  gameplayRuntime: GameRuntime,
+  gameplayPlayer: GameEntity,
+  runtime: ClientRuntime,
+  localViewMotion: LocalViewMotionState
+): void {
+  gameplayPlayer.origin = [...runtime.cl.predicted_origin];
+  gameplayPlayer.s.origin = [...runtime.cl.predicted_origin];
+  gameplayPlayer.s.old_origin = [...runtime.cl.predicted_origin];
+  gameplayPlayer.viewheight = getPredictedViewheight(runtime);
+  applyPredictedGameplayHull(gameplayPlayer, runtime);
+  refreshEntitySpatialState(gameplayPlayer);
+  linkGameEntity(gameplayRuntime, gameplayPlayer);
+
+  const gameplayClient = gameplayPlayer.client;
+  if (gameplayClient) {
+    gameplayClient.oldbuttons = gameplayClient.buttons;
+    gameplayClient.buttons = runtime.cl.cmd.buttons;
+    gameplayClient.latched_buttons |= gameplayClient.buttons & ~gameplayClient.oldbuttons;
+    gameplayClient.v_angle = [...runtime.cl.predicted_angles];
+    gameplayClient.ps.viewoffset = [0, 0, gameplayPlayer.viewheight];
+    gameplayClient.ps.pmove = {
+      ...gameplayClient.ps.pmove,
+      pm_type: runtime.cl.predicted_pmove.pm_type,
+      origin: [...runtime.cl.predicted_pmove.origin],
+      velocity: [...runtime.cl.predicted_pmove.velocity],
+      pm_flags: runtime.cl.predicted_pmove.pm_flags,
+      pm_time: runtime.cl.predicted_pmove.pm_time,
+      gravity: runtime.cl.predicted_pmove.gravity,
+      delta_angles: [...runtime.cl.predicted_pmove.delta_angles]
+    };
+    thinkLocalWeapon(gameplayPlayer, gameplayRuntime);
+    updateLocalViewWeaponMotion(gameplayRuntime, gameplayPlayer, gameplayClient, runtime, localViewMotion);
+  }
+
+  touchTriggerEntities(gameplayRuntime, gameplayPlayer);
+  syncLocalWeaponPlayerState(runtime, gameplayPlayer);
+}
+
+/**
+ * Category: New
+ * Purpose: Serialize the current local gameplay visual state into the client frame buffers consumed by the Quake II refresh path.
+ *
+ * Constraints:
+ * - Must preserve stable entity numbering from the gameplay runtime.
+ * - Must only expose entities that are currently client-visible.
+ */
+export function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  syncLocalGameplayAssetConfigstrings(runtime, gameplayRuntime);
+
+  const currentFrameServerframe = runtime.cl.frame.serverframe;
+  const previousFrameServerframe = currentFrameServerframe - 1;
+  const parseEntityMask = runtime.cl_parse_entities.length - 1;
+  const visibleStates = collectVisibleGameplayEntityStates(gameplayRuntime);
+
+  runtime.cl.frame.parse_entities = runtime.cl.parse_entities;
+  runtime.cl.frame.num_entities = 0;
+
+  for (const state of visibleStates) {
+    const entity = runtime.cl_entities[state.number];
+    const storedState = runtime.cl_parse_entities[runtime.cl.parse_entities & parseEntityMask];
+    runtime.cl.parse_entities += 1;
+    runtime.cl.frame.num_entities += 1;
+
+    const needsNoLerpReset =
+      state.modelindex !== entity.current.modelindex ||
+      state.modelindex2 !== entity.current.modelindex2 ||
+      state.modelindex3 !== entity.current.modelindex3 ||
+      state.modelindex4 !== entity.current.modelindex4 ||
+      Math.abs(state.origin[0] - entity.current.origin[0]) > 512 ||
+      Math.abs(state.origin[1] - entity.current.origin[1]) > 512 ||
+      Math.abs(state.origin[2] - entity.current.origin[2]) > 512;
+
+    copyEntityState(state, storedState);
+
+    if (needsNoLerpReset) {
+      entity.serverframe = -99;
+    }
+
+    if (entity.serverframe !== previousFrameServerframe) {
+      entity.trailcount = 1024;
+      copyEntityState(storedState, entity.prev);
+      entity.prev.origin = [...storedState.old_origin];
+      entity.lerp_origin = [...storedState.old_origin];
+    } else {
+      copyEntityState(entity.current, entity.prev);
+    }
+
+    entity.serverframe = currentFrameServerframe;
+    copyEntityState(storedState, entity.current);
+    entity.current.event = 0;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Seed the local client sky configstrings from BSP worldspawn metadata.
+ *
+ * Constraints:
+ * - Must keep the structured client sky state aligned with the raw configstring slots.
+ * - Must tolerate maps that omit sky rotation or axis fields.
+ */
+export function initializeLocalSkyState(runtime: ClientRuntime, map: BspMap): void {
+  const worldspawn = map.parsedEntities[0]?.properties ?? {};
+  const skyName = worldspawn.sky ?? "";
+  const skyRotate = worldspawn.skyrotate ?? "";
+  const skyAxis = worldspawn.skyaxis ?? "";
+
+  runtime.cl.configstrings[CS_SKY] = skyName;
+  runtime.cl.configstrings[CS_SKYROTATE] = skyRotate;
+  runtime.cl.configstrings[CS_SKYAXIS] = skyAxis;
+  runtime.cl.sky.name = skyName;
+  runtime.cl.sky.rotate = parseLocalSkyRotate(skyRotate);
+  runtime.cl.sky.axis = parseLocalSkyAxis(skyAxis);
+}
+
+/**
+ * Category: New
+ * Purpose: Convert the gameplay-side weapon bootstrap payload into the runtime-only client HUD bootstrap contract.
+ *
+ * Constraints:
+ * - Must preserve image, inventory and item-string ordering/value semantics.
+ */
+export function toLocalClientHudBootstrap(bootstrap: {
+  imageNames: string[];
+  itemStrings: LocalClientHudBootstrapData["itemStrings"];
+  inventory: LocalClientHudBootstrapData["inventory"];
+  selectedWeaponIndex: number;
+  selectedWeaponIcon: string | null;
+  selectedAmmoIndex: number;
+  selectedAmmoIcon: string | null;
+  selectedAmmoCount: number;
+}): LocalClientHudBootstrapData {
+  return {
+    imageNames: bootstrap.imageNames,
+    itemStrings: bootstrap.itemStrings,
+    inventory: bootstrap.inventory,
+    selectedWeaponIndex: bootstrap.selectedWeaponIndex,
+    selectedWeaponIcon: bootstrap.selectedWeaponIcon,
+    selectedAmmoIndex: bootstrap.selectedAmmoIndex,
+    selectedAmmoIcon: bootstrap.selectedAmmoIcon,
+    selectedAmmoCount: bootstrap.selectedAmmoCount
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Mirror the local gameplay player's weapon-facing `player_state_t` subset into the client frame.
+ */
+function syncLocalWeaponPlayerState(runtime: ClientRuntime, gameplayPlayer: GameEntity): void {
+  const gameplayClient = gameplayPlayer.client;
+  if (!gameplayClient) {
+    return;
+  }
+
+  runtime.cl.frame.playerstate.gunindex = gameplayClient.ps.gunindex;
+  runtime.cl.frame.playerstate.gunframe = gameplayClient.ps.gunframe;
+  runtime.cl.frame.playerstate.gunoffset = [...gameplayClient.ps.gunoffset];
+  runtime.cl.frame.playerstate.gunangles = [...gameplayClient.ps.gunangles];
+  runtime.cl.frame.playerstate.kick_angles = [...gameplayClient.ps.kick_angles];
+  runtime.cl.frame.playerstate.viewoffset = [...gameplayClient.ps.viewoffset];
+
+  const selectedWeapon = gameplayClient.pers.weapon;
+  const selectedAmmo = GetAmmoItemForWeapon(selectedWeapon);
+  runtime.cl.inventory = [...gameplayClient.pers.inventory];
+  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = selectedWeapon?.index ?? 0;
+  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ICON] = selectedWeapon?.icon ? findClientImageIndex(runtime, selectedWeapon.icon) : 0;
+  runtime.cl.frame.playerstate.stats[STAT_AMMO] = selectedAmmo ? gameplayClient.pers.inventory[selectedAmmo.index] ?? 0 : 0;
+  runtime.cl.frame.playerstate.stats[STAT_AMMO_ICON] = selectedAmmo?.icon ? findClientImageIndex(runtime, selectedAmmo.icon) : 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Reproduce the current standalone first-person weapon bob, sway and kick transfer written into `player_state_t`.
+ */
+function updateLocalViewWeaponMotion(
+  gameplayRuntime: GameRuntime,
+  gameplayPlayer: GameEntity,
+  gameplayClient: NonNullable<GameEntity["client"]>,
+  runtime: ClientRuntime,
+  localViewMotion: LocalViewMotionState
+): void {
+  const xyspeed = Math.hypot(
+    runtime.cl.predicted_pmove.velocity[0] * 0.125,
+    runtime.cl.predicted_pmove.velocity[1] * 0.125
+  );
+
+  let bobmove = 0;
+  if (xyspeed < 5) {
+    localViewMotion.bobtime = 0;
+  } else if ((runtime.cl.predicted_pmove.pm_flags & PMF_ON_GROUND) !== 0) {
+    if (xyspeed > 210) {
+      bobmove = 0.25;
+    } else if (xyspeed > 100) {
+      bobmove = 0.125;
+    } else {
+      bobmove = 0.0625;
+    }
+  }
+
+  localViewMotion.bobtime += bobmove;
+  let bobtime = localViewMotion.bobtime;
+  if ((runtime.cl.predicted_pmove.pm_flags & PMF_DUCKED) !== 0) {
+    bobtime *= 4;
+  }
+
+  const bobcycle = Math.trunc(bobtime);
+  const bobfracsin = Math.abs(Math.sin(bobtime * Math.PI));
+
+  const kickAngles: vec3_t = [...gameplayClient.kick_angles];
+  const damageRatio = (gameplayClient.v_dmg_time - gameplayRuntime.time) / DAMAGE_TIME;
+  if (damageRatio > 0) {
+    kickAngles[PITCH] += damageRatio * gameplayClient.v_dmg_pitch;
+    kickAngles[2] += damageRatio * gameplayClient.v_dmg_roll;
+  }
+  gameplayClient.ps.kick_angles = kickAngles;
+
+  const viewoffset: vec3_t = [0, 0, gameplayPlayer.viewheight];
+  viewoffset[0] += gameplayClient.kick_origin[0];
+  viewoffset[1] += gameplayClient.kick_origin[1];
+  viewoffset[2] += gameplayClient.kick_origin[2];
+  gameplayClient.ps.viewoffset = [
+    clamp(viewoffset[0], -14, 14),
+    clamp(viewoffset[1], -14, 14),
+    clamp(viewoffset[2], -22, 30)
+  ];
+
+  const gunangles: vec3_t = [
+    xyspeed * bobfracsin * 0.005,
+    xyspeed * bobfracsin * 0.01,
+    xyspeed * bobfracsin * 0.005
+  ];
+  if ((bobcycle & 1) !== 0) {
+    gunangles[2] = -gunangles[2];
+    gunangles[YAW] = -gunangles[YAW];
+  }
+
+  for (let index = 0; index < 3; index += 1) {
+    let delta = localViewMotion.oldviewangles[index] - runtime.cl.predicted_angles[index];
+    if (delta > 180) {
+      delta -= 360;
+    }
+    if (delta < -180) {
+      delta += 360;
+    }
+    delta = clamp(delta, -45, 45);
+    if (index === YAW) {
+      gunangles[2] += 0.1 * delta;
+    }
+    gunangles[index] += 0.2 * delta;
+  }
+
+  gameplayClient.ps.gunangles = gunangles;
+  gameplayClient.ps.gunoffset = [0, 0, 0];
+  localViewMotion.oldviewangles = [...runtime.cl.predicted_angles];
+  gameplayClient.kick_origin = [0, 0, 0];
+  gameplayClient.kick_angles = [0, 0, 0];
+}
+
+/**
+ * Category: New
+ * Purpose: Mirror the local gameplay asset registries into the client configstring slots consumed by refresh-side model resolution.
+ */
+function syncLocalGameplayAssetConfigstrings(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  for (let index = 1; index < runtime.cl.model_draw.length; index += 1) {
+    runtime.cl.configstrings[CS_MODELS + index] = gameplayRuntime.assets.modelPaths[index - 1] ?? "";
+    runtime.cl.model_draw[index] = runtime.cl.configstrings[CS_MODELS + index] || null;
+  }
+
+  for (let index = 1; index < runtime.cl.sound_precache.length; index += 1) {
+    runtime.cl.configstrings[CS_SOUNDS + index] = gameplayRuntime.assets.soundPaths[index - 1] ?? "";
+    runtime.cl.sound_precache[index] = runtime.cl.configstrings[CS_SOUNDS + index] || null;
+  }
+
+  for (let index = 1; index < runtime.cl.image_precache.length; index += 1) {
+    runtime.cl.configstrings[CS_IMAGES + index] = gameplayRuntime.assets.imagePaths[index - 1] ?? runtime.cl.configstrings[CS_IMAGES + index] ?? "";
+    runtime.cl.image_precache[index] = runtime.cl.configstrings[CS_IMAGES + index] || null;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Collect the current gameplay entities that should surface through the client entity snapshot path.
+ */
+function collectVisibleGameplayEntityStates(gameplayRuntime: GameRuntime): entity_state_t[] {
+  const states: entity_state_t[] = [];
+
+  for (const entity of gameplayRuntime.entities) {
+    if (!entity.inuse || (entity.svflags & SVF_NOCLIENT) !== 0) {
+      continue;
+    }
+
+    const state = entity.s;
+    const hasVisualState =
+      state.modelindex !== 0 ||
+      state.modelindex2 !== 0 ||
+      state.modelindex3 !== 0 ||
+      state.modelindex4 !== 0 ||
+      state.effects !== 0 ||
+      state.renderfx !== 0 ||
+      state.sound !== 0 ||
+      state.event !== 0;
+
+    if (!hasVisualState) {
+      continue;
+    }
+
+    states.push(cloneEntityState(state));
+  }
+
+  states.sort((left, right) => left.number - right.number);
+  return states;
+}
+
+/**
+ * Category: New
+ * Purpose: Clone one entity state while preserving the exact field set used by Quake II packet entities.
+ */
+function cloneEntityState(state: entity_state_t): entity_state_t {
+  const clone = createEntityState();
+  copyEntityState(state, clone);
+  return clone;
+}
+
+/**
+ * Category: New
+ * Purpose: Copy one entity-state payload field-by-field without sharing tuple references.
+ */
+function copyEntityState(source: entity_state_t, target: entity_state_t): void {
+  target.number = source.number;
+  target.origin = [...source.origin];
+  target.angles = [...source.angles];
+  target.old_origin = [...source.old_origin];
+  target.modelindex = source.modelindex;
+  target.modelindex2 = source.modelindex2;
+  target.modelindex3 = source.modelindex3;
+  target.modelindex4 = source.modelindex4;
+  target.frame = source.frame;
+  target.skinnum = source.skinnum;
+  target.effects = source.effects;
+  target.renderfx = source.renderfx;
+  target.solid = source.solid;
+  target.sound = source.sound;
+  target.event = source.event;
+}
+
+/**
+ * Category: New
+ * Purpose: Apply the predicted Quake II player hull to the local gameplay proxy so runtime collision and triggers use the same crouch state as prediction.
+ */
+function applyPredictedGameplayHull(gameplayPlayer: GameEntity, runtime: ClientRuntime): void {
+  const pmove = runtime.cl.predicted_pmove;
+  if (pmove.pm_type === pmtype_t.PM_GIB) {
+    gameplayPlayer.mins = [...PLAYER_GIB_MINS];
+    gameplayPlayer.maxs = [...PLAYER_GIB_MAXS];
+    return;
+  }
+
+  gameplayPlayer.mins = [...PLAYER_TRIGGER_MINS];
+  gameplayPlayer.maxs = (pmove.pm_flags & PMF_DUCKED) !== 0
+    ? [...PLAYER_DUCKED_MAXS]
+    : [...PLAYER_TRIGGER_MAXS];
+}
+
+/**
+ * Category: New
+ * Purpose: Clamp one numeric value into one closed interval for the current local weapon-motion adaptation.
+ */
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+/**
+ * Category: New
+ * Purpose: Parse one local BSP worldspawn `skyrotate` property into the standalone client bootstrap state.
+ */
+function parseLocalSkyRotate(value: string): number {
+  const parsed = Number.parseFloat(value.trim());
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Parse one local BSP worldspawn `skyaxis` property into a three-component axis tuple.
+ */
+function parseLocalSkyAxis(value: string): [number, number, number] {
+  const parts = value
+    .trim()
+    .split(/\s+/)
+    .filter((part) => part.length > 0)
+    .map((part) => Number.parseFloat(part));
+
+  if (parts.length !== 3 || parts.some((part) => !Number.isFinite(part))) {
+    return [0, 0, 0];
+  }
+
+  return [parts[0], parts[1], parts[2]];
+}

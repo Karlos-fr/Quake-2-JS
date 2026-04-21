@@ -280,6 +280,16 @@ export {
 } from "./touch.js";
 
 export {
+  createLocalGameplayPlayer,
+  LOCAL_GAME_WEAPON_HOOKS,
+  LOCAL_WEAPON_SLOTS,
+  buildLocalWeaponBootstrapData,
+  seedLocalWeaponInventory,
+  selectLocalWeapon,
+  thinkLocalWeapon
+} from "./local-game-bootstrap.js";
+
+export {
   Blaster_Fire,
   Chaingun_Fire,
   ChangeWeapon,
@@ -341,3 +351,9 @@ export type {
 } from "./runtime.js";
 
 export type { GameWeaponHooks } from "./p_weapon.js";
+export type {
+  LocalInventoryGrant,
+  LocalItemStringEntry,
+  LocalWeaponBootstrapData,
+  LocalWeaponSlotKey
+} from "./local-game-bootstrap.js";

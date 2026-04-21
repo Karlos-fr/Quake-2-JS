@@ -10,6 +10,8 @@
     "dev": "npm run dev --workspace @quake2js/web",
     "build": "npm run build --workspace @quake2js/web",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "c-deps:generate": "node ./c-dependency-tools/analyzer/generate-dependency-graph.mjs",
+    "c-deps:view": "node ./c-dependency-tools/viewer/server.mjs",
     "index:c-sources": "node ./tools/c-analyzer/index-source-tree.mjs",
     "extract:c-signatures": "node ./tools/c-analyzer/extract-signatures.mjs",
     "generate:ts-stubs": "node ./tools/stub-generator/generate-ts-stubs.mjs",

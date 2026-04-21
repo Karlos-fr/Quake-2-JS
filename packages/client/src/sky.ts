@@ -15,7 +15,7 @@
  * - This file stays close to the client configstring ownership model while preparing bridge-friendly output.
  */
 
-import type { QuakeSkySnapshot } from "../../renderer-common/src/index.js";
+import type { QuakeSkySnapshot } from "./render-contracts.js";
 import type { ClientRuntime } from "./types.js";
 
 /**

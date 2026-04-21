@@ -16,38 +16,38 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 
 | Path | Nom | Description / role | A porter | Porte | Cible |
 |---|---|---|---|---|---|
-| 3.15_Changes.txt | 3.15_Changes.txt |  | ⛔ |  |  |
-| 3.16_Changes.txt | 3.16_Changes.txt |  | ⛔ |  |  |
-| 3.17_Changes.txt | 3.17_Changes.txt |  | ⛔ |  |  |
-| 3.18_changes.txt | 3.18_changes.txt |  | ⛔ |  |  |
-| baseq2\config.cfg | config.cfg |  |  |  |  |
-| baseq2\save\save0\game.ssv | game.ssv |  |  |  |  |
-| baseq2\save\save0\server.ssv | server.ssv |  |  |  |  |
-| changes.txt | changes.txt |  | ⛔ |  |  |
+| 3.15_Changes.txt | 3.15_Changes.txt | Documentation historique de release Quake II, hors perimetre du runtime et du portage source JS. | ⛔ |  |  |
+| 3.16_Changes.txt | 3.16_Changes.txt | Documentation historique de release Quake II, hors perimetre du runtime et du portage source JS. | ⛔ |  |  |
+| 3.17_Changes.txt | 3.17_Changes.txt | Documentation historique de release Quake II, hors perimetre du runtime et du portage source JS. | ⛔ |  |  |
+| 3.18_changes.txt | 3.18_changes.txt | Documentation historique de release Quake II, hors perimetre du runtime et du portage source JS. | ⛔ |  |  |
+| baseq2\config.cfg | config.cfg | Fichier de configuration utilisateur/installation, hors perimetre du portage source moteur vers JS. | ⛔ |  |  |
+| baseq2\save\save0\game.ssv | game.ssv | Donnee de sauvegarde runtime, non concernee par le portage source fichier par fichier. | ⛔ |  |  |
+| baseq2\save\save0\server.ssv | server.ssv | Donnee de sauvegarde runtime, non concernee par le portage source fichier par fichier. | ⛔ |  |  |
+| changes.txt | changes.txt | Documentation historique de release Quake II, hors perimetre du runtime et du portage source JS. | ⛔ |  |  |
 | client\adivtab.h | adivtab.h |  |  |  |  |
-| client\anorms.h | anorms.h | Canonical 162-entry Quake II byte-direction lookup table used by temp entities and encoded normals, now mirrored strictly as `BYTE_DIRS` / `DirFromByte` and shared explicitly with the temp-entity and encoded-normal consumers. | ✅ | ✅ | packages/qcommon/src/anorms.ts, packages/client/src/tent.ts |
+| client\anorms.h | anorms.h | Header declaratif ferme, rattache principalement a `packages/qcommon/src/anorms.ts` pour la table canonique des 162 directions encodees Quake II (`BYTE_DIRS` / `DirFromByte`) reutilisee telle quelle par les consommateurs de normales encodees et de temporary entities ; `packages/client/src/tent.ts` n'est ici qu'un consommateur. | ✅ | ✅ | packages/qcommon/src/anorms.ts, packages/client/src/tent.ts |
 | client\asm_i386.h | asm_i386.h |  |  |  |  |
 | client\block16.h | block16.h |  |  |  |  |
 | client\block8.h | block8.h |  |  |  |  |
 | client\cdaudio.h | cdaudio.h |  |  |  |  |
 | client\cl_cin.c | cl_cin.c |  |  |  |  |
-| client\cl_ents.c | cl_ents.c | Entity delta parsing, packet entity reconstruction, frame interpolation inputs and render-side entity staging, now also exercised through a local gameplay-to-client snapshot feed that populates `cl_parse_entities` and `centity_t` for visible world objects, plus a Three.js sync layer consuming `ClientRefreshFrame.entities` as the primary and now exclusive world-object source in the web app for the current scope, with dedicated harnesses covering `EF_ANIM*`, `EF_ROTATE`, `EF_SPINNINGLIGHTS`, `RF_FRAMELERP`, `RF_TRANSLUCENT`, `RF_GLOW`, `EF_POWERSCREEN`, linked `modelindex*` composition, `skinnum`-driven MD2 skin selection, map-driven visible flags, composed-entity slot audits, phase-10 map validation, phase-11 fidelity reporting and origin preservation through the active world-entity pipeline. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/entities.ts, packages/client/src/refresh.ts, apps/web/src/local-client-controller.ts, packages/renderer-three/src/refresh-entity-sync.ts, packages/renderer-three/src/md2-mesh-builder.ts, apps/web/src/main.ts, scripts/verify/quake2-entities-phase4.ts, scripts/verify/quake2-entities-phase5.ts, scripts/verify/quake2-entities-phase5-map-flags.ts, scripts/verify/quake2-alias-orientation-phase6.ts, scripts/verify/quake2-entities-phase6-skinnum.ts, scripts/verify/quake2-entities-phase7-origin-audit.ts, scripts/verify/quake2-entities-phase8-scene.ts, scripts/verify/quake2-entities-phase9.ts, scripts/verify/quake2-entities-phase10.ts, scripts/verify/quake2-entities-phase10-maps.ts, scripts/verify/quake2-entities-phase11.ts, RAPPORT_PHASE11_ENTITES.md |
-| client\cl_fx.c | cl_fx.c | Client-side muzzle flashes, dynamic lights, light-style animation and weapon effect parsing before renderer/audio side effects, with phase-1 `CL_ClearLightStyles` / `CL_RunLightStyles` / `CL_SetLightstyle` / `CL_AddLightStyles` now wired from `CS_LIGHTS`, phase-2 `cdlight_t` / `CL_ClearDlights` / `CL_AllocDlight` / `CL_NewDlight` / `CL_RunDLights` exposed through the refresh snapshot, phase-3 player muzzle-flash light origins, random radii, `minlight`, exact `die` durations, special `MZ_*` cases and `CL_LogoutEffect` metadata, phase-4 `CL_ParseMuzzleFlash2` monster flash origins through `monster_flash_offset`, grouped `MZ2_*` sound/color handling, attenuation variants and secondary particle/smoke markers, phase-5 particle/trail families now backed by a real `cparticle_t` pool plus `CL_ClearParticles` / `CL_AddParticles` integration into the refresh snapshot, phase-6 `CL_EntityEvent` coverage for respawn, teleport, footsteps and fall sounds with `cl_footsteps` wiring, and phase-7 `CL_ClearEffects` now grouped and called through the client clear-state path. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/effects.ts, packages/client/src/entities.ts, packages/client/src/main.ts, packages/client/src/types.ts, packages/client/src/refresh.ts, packages/client/src/monster-flash.ts |
-| client\cl_input.c | cl_input.c | Client key button tracking, angle adjustment and user command construction before transmission. | 🟠 | 🟠 | packages/client/src/input.ts, packages/client/src/types.ts |
-| client\cl_inv.c | cl_inv.c | Client inventory parsing plus first inventory-screen text primitives, item list composition and selected-item driven HUD state feeding. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/screen.ts |
-| client\cl_main.c | cl_main.c | Client main loop bootstrap, command forwarding, pause/env wrappers, connect/reconnect transitions, first `rcon` path, first network discovery path, userinfo/sound utility commands, disconnect flow, skin refresh and early precache/download orchestration, including sky environment precache traversal. | 🟠 | 🟠 | packages/client/src/main.ts, packages/client/src/sound.ts, packages/client/src/precache.ts, packages/client/src/download.ts, packages/client/src/parse.ts, packages/client/src/types.ts, packages/client/src/sky.ts |
-| ref_gl\gl_image.c | gl_image.c | OpenGL image loading for PCX and TGA assets, including the TGA subset used by Quake II sky environment resources and the PCX-backed MD2 skin path consumed by the Three.js alias-model adapters. | 🟠 | 🟠 | packages/formats/src/pcx.ts, packages/formats/src/tga.ts, packages/renderer-three/src/quake-sky-resolver.ts, packages/renderer-three/src/md2-mesh-builder.ts |
-| ref_gl\gl_mesh.c | gl_mesh.c | Alias-model frame lerp, OpenGL strip/fan command rendering, shell handling, `RF_GLOW` pulse lighting and renderer-side pose setup, now partially mirrored by MD2 frame interpolation, `glcmds`-driven mesh reconstruction, opaque/translucent material state and the alias rotation convention applied in the Three.js refresh-entity sync. | 🟠 | 🟠 | packages/renderer-three/src/md2-mesh-builder.ts, packages/renderer-three/src/refresh-entity-sync.ts, scripts/verify/quake2-alias-orientation-phase6.ts, scripts/verify/quake2-entities-phase5.ts |
-| ref_gl\gl_rmain.c | gl_rmain.c | Core renderer entity transforms including `R_RotateForEntity`, now referenced directly for the canonical Quake II alias-model axis/sign convention used by the Three.js world-entity adapter. | 🟠 | 🟠 | packages/renderer-three/src/refresh-entity-sync.ts, scripts/verify/quake2-alias-orientation-phase6.ts |
-| ref_gl\gl_warp.c | gl_warp.c | Sky setup logic, canonical six-face suffix ordering, environment resource naming and dedicated sky rendering state used by Quake II skyboxes. | 🟠 | 🟠 | packages/renderer-common/src/sky.ts, packages/renderer-three/src/quake-sky-resolver.ts, packages/renderer-three/src/sky-scene-adapter.ts, apps/web/src/main.ts, scripts/verify/quake2-sky-phase3.ts, scripts/verify/quake2-sky-phase4.ts, scripts/verify/quake2-sky-phase5.ts |
-| client\cl_newfx.c | cl_newfx.c | Extended client-side visual effects helpers including flashlight, force-wall and sustain-style temp effects. | 🟠 | 🟠 | packages/client/src/tent.ts, packages/client/src/refresh.ts |
-| client\cl_parse.c | cl_parse.c | Server message parsing, serverdata, configstrings, downloads, explicit download requests, sound registration, center-print routing, client sky configstring state, sky snapshot bridge and early client bootstrap packets, with the visual delta-field subset (`U_MODEL*`, `U_FRAME*`, `U_EFFECTS*`, `U_RENDERFX*`, `U_OLDORIGIN`, `U_SOUND`, `U_EVENT`, `U_SOLID`) now explicitly validated against local visible-entity snapshots. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/download.ts, packages/client/src/sound.ts, packages/client/src/screen.ts, packages/client/src/sky.ts, scripts/verify/quake2-sky-phase1.ts, scripts/verify/quake2-sky-phase2.ts, scripts/verify/quake2-entities-phase4.ts |
-| client\cl_pred.c | cl_pred.c | Client-side prediction checks, movement prediction integration and predicted view/origin smoothing, now consumed in the web demo through the gameplay-backed collision adapter for moving brush models and the local sky snapshot bridge. | 🟠 | 🟠 | packages/client/src/view.ts, apps/web/src/local-client-controller.ts, scripts/verify/quake2-collision-phase8.ts |
-| client\cl_scrn.c | cl_scrn.c | Client screen/HUD state management, center prints, loading/pause/net overlays, `STAT_LAYOUTS` decoding, statusbar snapshotting, HUD text/number/pic primitives, a complete priority-pass `SCR_ExecuteLayoutString` interpreter including `client` and `ctf`, draw-command composition matching `SCR_UpdateScreen` order, shared HUD/resource contracts, and a Three.js HUD execution path over the browser scene. | ✅ | ✅ | packages/client/src/screen.ts, packages/client/src/main.ts, packages/client/src/types.ts, packages/client/src/index.ts, packages/renderer-common/src/hud-draw.ts, packages/renderer-common/src/hud-resources.ts, packages/renderer-three/src/hud-renderer.ts, packages/renderer-three/src/hud-resource-resolver.ts, apps/web/src/main.ts, apps/web/src/local-client-controller.ts |
-| client\cl_tent.c | cl_tent.c | Client-side temporary entity parsing for impacts, explosions, beams, player-locked heatbeams, sustains, effect events and the shared temp-entity registration sets, now also covering strict `CL_AllocExplosion` recycling semantics, the full embedded `explosion_t.ent` render state, explicit `ex_mflash` refresh behavior, the auxiliary `CL_ParseParticles`, instant-vs-persistent particle split for `TE_STEAM`, closer beam/lightning slot reconstruction including same-entity override rules, random roll metadata and the short-lightning special case, `CL_AddPlayerBeams` hand handling, third-person heatbeam origin adjustment and the per-frame `CL_Heatbeam` / `CL_MonsterPlasma_Shell` particle side effects, plus exhaustive `CL_ParseTEnt` switch coverage with corrected packet layouts and multi-effect reconstruction for cases such as `TE_GUNSHOT`, `TE_BULLET_SPARKS`, `TE_SHOTGUN`, `TE_BLASTER`, `TE_BLASTER2`, `TE_FLECHETTE`, `TE_EXPLOSION1*`, `TE_BFG_BIGEXPLOSION`, `TE_BLUEHYPERBLASTER`, `TE_BUBBLETRAIL`, `TE_WIDOWBEAMOUT` and `TE_NUKEBLAST`, with the phase-5 helper layer now named explicitly around `CL_ParticleSteamEffect*`, `CL_ParticleSmokeEffect`, `CL_BlasterParticles2`, `CL_BubbleTrail2`, `CL_DebugTrail`, `CL_ColorFlash`, `CL_ColorExplosionParticles` and `CL_WidowSplash`, the refresh-side pass aligned on `CL_AddBeams` / `CL_AddPlayerBeams` / `CL_AddExplosions` / `CL_AddLasers` / `CL_ProcessSustain` including exact sustain-thinker timing semantics, and the temp-entity audio path now matching the original `ric1/2/3`, `spark5/6/7`, `lashit`, `railg`, `rockexp`, `grenexp`, `watrexp`, `lightning` and `disrexp` cases with their proper source semantics. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/effects.ts, packages/client/src/tent.ts, packages/client/src/types.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts, scripts/verify/quake2-entities-phase8-scene.ts |
-| client\cl_view.c | cl_view.c | First-person weapon view setup and client refresh-facing view composition around the current player state, including original crosshair picture usage feeding the shared HUD resource catalog, with `CL_AddViewWeapon` now mirrored through the refresh frame, a camera-bound Three.js view-model sync honoring `gunindex`, `gunframe`, `gunoffset`, `gunangles`, `RF_WEAPONMODEL` and `RF_DEPTHHACK`, plus a first local gameplay loop that drives `Think_Weapon`, attack input and multi-slot weapon switching through the already ported `p_weapon.c` path, and a first local adaptation of the `p_view.c` weapon-motion formulas for bob, delta-angle sway, kick transfer and viewoffset clamping; base-game view-model assets and `skin.pcx` resources have also been verified present in `pak0.pak` for the currently exposed weapon set. | 🟠 | 🟠 | packages/client/src/view.ts, packages/client/src/refresh.ts, packages/renderer-three/src/refresh-entity-sync.ts, apps/web/src/local-client-controller.ts, apps/web/src/main.ts, packages/renderer-common/src/hud-resources.ts |
-| client\client.h | client.h | Core client runtime declarations, persistent/static state, frame structures, centities, structured sky state and parser entry points. | 🟠 | 🟠 | packages/client/src/types.ts, packages/client/src/parse.ts |
-| client\console.c | console.c | Console drawing helpers including low-level character and string primitives reused by the original HUD path, now partially mirrored by HUD text commands. | 🟠 | 🟠 | packages/client/src/screen.ts |
+| client\cl_ents.c | cl_ents.c | Portage principal rattache a `packages/client/src/entities.ts` pour les entity events, entity states de frame et packet entity snapshots interpoles ; `packages/client/src/parse.ts` reste le fournisseur de paquets/frame data (`CL_ParseEntityBits`, `CL_ParseDelta`, `CL_ParsePlayerstate`, `CL_ParseFrame`, `CL_ParsePacketEntities`) et `packages/client/src/refresh.ts` la projection refresh structuree du resultat ; `renderer-three` n'est plus qu'un consommateur de ces sorties. | 🟠 | 🟠 | packages/client/src/entities.ts, packages/client/src/parse.ts, packages/client/src/refresh.ts, packages/renderer-three/src/refresh-entity-sync.ts, packages/renderer-three/src/md2-mesh-builder.ts, scripts/verify/quake2-entities-phase4.ts, scripts/verify/quake2-entities-phase5.ts, scripts/verify/quake2-entities-phase5-map-flags.ts, scripts/verify/quake2-alias-orientation-phase6.ts, scripts/verify/quake2-entities-phase6-skinnum.ts, scripts/verify/quake2-entities-phase7-origin-audit.ts, scripts/verify/quake2-entities-phase8-scene.ts, scripts/verify/quake2-entities-phase9.ts, scripts/verify/quake2-entities-phase10.ts, scripts/verify/quake2-entities-phase10-maps.ts, scripts/verify/quake2-entities-phase11.ts, RAPPORT_PHASE11_ENTITES.md |
+| client\cl_fx.c | cl_fx.c | Portage principal rattache a `packages/client/src/effects.ts` pour les muzzle flashes, dynamic lights, light styles, particules runtime et traductions d'entity events ; `packages/client/src/parse.ts` reste borne a la lecture des paquets source (`CL_ParseMuzzleFlash`, `CL_ParseMuzzleFlash2`), `packages/client/src/refresh.ts` a la projection refresh/audio-ready (`CL_RunDLights`, `CL_AddDLights`, `CL_RunLightStyles`, `CL_AddLightStyles`, `CL_AddParticles`) et `packages/client/src/monster-flash.ts` au sous-module de table `monster_flash_offset` uniquement. | 🟠 | 🟠 | packages/client/src/effects.ts, packages/client/src/parse.ts, packages/client/src/refresh.ts, packages/client/src/monster-flash.ts, packages/client/src/entities.ts, packages/client/src/main.ts, packages/client/src/types.ts |
+| client\cl_input.c | cl_input.c | Portage principal actuellement rattache a `packages/client/src/input.ts` pour le suivi des touches, l'ajustement des angles et la construction des usercmds, avec `types.ts` comme support de declarations runtime. | 🟠 | 🟠 | packages/client/src/input.ts, packages/client/src/types.ts |
+| client\cl_inv.c | cl_inv.c | Portage principal actuellement rattache a `packages/client/src/parse.ts` pour le parsing de l'inventaire et a `screen.ts` pour la projection HUD associee ; la frontiere exacte entre parsing et presentation reste encore a expliciter. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/screen.ts |
+| client\cl_main.c | cl_main.c | Portage principal actuellement rattache a `packages/client/src/main.ts` pour le bootstrap client, les commandes, les transitions de connexion et l'orchestration generale, avec `download.ts`, `precache.ts`, `sound.ts`, `parse.ts` et `sky.ts` comme sous-blocs extraits encore en cours de clarification. | 🟠 | 🟠 | packages/client/src/main.ts, packages/client/src/download.ts, packages/client/src/precache.ts, packages/client/src/sound.ts, packages/client/src/parse.ts, packages/client/src/sky.ts, packages/client/src/types.ts |
+| ref_gl\gl_image.c | gl_image.c | Portage renderer actuellement rattache principalement a `packages/renderer-three/src/quake-sky-resolver.ts` pour le chargement des ressources image du renderer Quake II dans le pipeline navigateur, avec `packages/formats/src/pcx.ts` et `tga.ts` comme parseurs binaires de support et `md2-mesh-builder.ts` comme consommateur pour les skins alias models. | 🟠 | 🟠 | packages/renderer-three/src/quake-sky-resolver.ts, packages/formats/src/pcx.ts, packages/formats/src/tga.ts, packages/renderer-three/src/md2-mesh-builder.ts |
+| ref_gl\gl_mesh.c | gl_mesh.c | Portage renderer actuellement rattache principalement a `packages/renderer-three/src/md2-mesh-builder.ts` pour la reconstruction des alias models, le frame lerp et les glcmds, avec `refresh-entity-sync.ts` comme consommateur de scene et des harnais dedies pour l'orientation et les linked models. | 🟠 | 🟠 | packages/renderer-three/src/md2-mesh-builder.ts, packages/renderer-three/src/refresh-entity-sync.ts, scripts/verify/quake2-alias-orientation-phase6.ts, scripts/verify/quake2-entities-phase5.ts |
+| ref_gl\gl_rmain.c | gl_rmain.c | Portage renderer actuellement rattache principalement a `packages/renderer-three/src/refresh-entity-sync.ts` pour les conventions de transformation d'entites et d'orientation alias model reprises du renderer original. | 🟠 | 🟠 | packages/renderer-three/src/refresh-entity-sync.ts, scripts/verify/quake2-alias-orientation-phase6.ts |
+| ref_gl\gl_warp.c | gl_warp.c | Portage renderer actuellement rattache principalement a `packages/renderer-three/src/sky-scene-adapter.ts` pour le rendu du ciel Quake II, avec `packages/renderer-common/src/sky.ts` comme contrat partage et `quake-sky-resolver.ts` comme chargement des ressources ; `apps/web` n'est qu'un consommateur du resultat. | 🟠 | 🟠 | packages/renderer-three/src/sky-scene-adapter.ts, packages/renderer-common/src/sky.ts, packages/renderer-three/src/quake-sky-resolver.ts, scripts/verify/quake2-sky-phase3.ts, scripts/verify/quake2-sky-phase4.ts, scripts/verify/quake2-sky-phase5.ts |
+| client\cl_newfx.c | cl_newfx.c | Portage principal actuellement rattache a `packages/client/src/tent.ts` pour les helpers d'effets et temporary entities etendues, avec `effects.ts` comme support de calculs partages et `refresh.ts` comme consommateur du resultat renderer-ready. | 🟠 | 🟠 | packages/client/src/tent.ts, packages/client/src/effects.ts, packages/client/src/refresh.ts |
+| client\cl_parse.c | cl_parse.c | Portage principal actuellement rattache a `packages/client/src/parse.ts` pour le parsing des server messages, configstrings, downloads, sounds et bootstrap client, avec `download.ts`, `sound.ts`, `screen.ts` et `sky.ts` comme sous-blocs extraits ou consommateurs specialises ; les frontieres avec `cl_ents.c` et `cl_main.c` restent encore a resserrer. | 🟠 | 🟠 | packages/client/src/parse.ts, packages/client/src/download.ts, packages/client/src/sound.ts, packages/client/src/screen.ts, packages/client/src/sky.ts, scripts/verify/quake2-sky-phase1.ts, scripts/verify/quake2-sky-phase2.ts, scripts/verify/quake2-entities-phase4.ts |
+| client\cl_pred.c | cl_pred.c | Portage principal actuellement rattache a `packages/client/src/view.ts` pour la prediction, les prediction errors et le smoothing de la vue, avec un reste de pilotage encore present cote `apps/web` a rapatrier hors de l'adapter. | 🟠 | 🟠 | packages/client/src/view.ts, scripts/verify/quake2-collision-phase8.ts |
+| client\cl_scrn.c | cl_scrn.c | Portage principal actuellement rattache a `packages/client/src/screen.ts` pour les centerprints, overlays, layouts et draw commands HUD, avec `main.ts` et `types.ts` comme supports runtime ; la ligne est retrogradee en `🟠` car des contrats HUD restent encore relies a `renderer-common` et parce que le referentiel melange encore portage principal et consommateurs renderer. | 🟠 | 🟠 | packages/client/src/screen.ts, packages/client/src/main.ts, packages/client/src/types.ts, packages/renderer-common/src/hud-draw.ts, packages/renderer-common/src/hud-resources.ts, packages/renderer-three/src/hud-renderer.ts, packages/renderer-three/src/hud-resource-resolver.ts |
+| client\cl_tent.c | cl_tent.c | Portage principal rattache a `packages/client/src/tent.ts` pour l'etat persistant des temporary entities, beams, explosions, force walls, sustains et la sortie refresh associee ; `packages/client/src/parse.ts` reste borne a la lecture des paquets (`CL_ParseTEnt`, `CL_ParseParticles`), `packages/client/src/effects.ts` aux helpers d'effets partages reutilises par `tent.ts`, `packages/client/src/refresh.ts` a la projection de `CL_BuildTEntRefresh` et `sound.ts` a la consommation audio des evenements reconstruits. | 🟠 | 🟠 | packages/client/src/tent.ts, packages/client/src/parse.ts, packages/client/src/effects.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts, packages/client/src/types.ts, scripts/verify/quake2-entities-phase8-scene.ts |
+| client\cl_view.c | cl_view.c | Portage principal rattache a `packages/client/src/view.ts` pour la composition de vue logique, les valeurs de camera et les helpers de prediction utilises pour la vue ; `packages/client/src/refresh.ts` reste consommateur de `CL_CalcViewValues` dans `CL_BuildRefreshFrame`, `apps/web/src/local-client-controller.ts` n'est plus qu'un adapter qui applique l'etat de vue a `PerspectiveCamera`, et `packages/renderer-three/src/refresh-entity-sync.ts` ne fait que consommer les entites refresh deja composees. | 🟠 | 🟠 | packages/client/src/view.ts, packages/client/src/refresh.ts, apps/web/src/local-client-controller.ts, packages/renderer-three/src/refresh-entity-sync.ts |
+| client\client.h | client.h | Header mixte client actuellement rattache principalement a `packages/client/src/types.ts` pour les declarations runtime, et secondairement a `parse.ts` pour quelques points d'entree encore disperses ; le point principal de rattachement est maintenant `types.ts`, mais la fermeture du header reste incomplete. | 🟠 | 🟠 | packages/client/src/types.ts, packages/client/src/parse.ts |
+| client\console.c | console.c | Portage partiel actuellement rattache a `packages/client/src/screen.ts` pour les primitives texte et dessin 2D basse couche reutilisees par le HUD ; les autres responsabilites de console interactive restent encore hors perimetre ou non portees. | 🟠 | 🟠 | packages/client/src/screen.ts |
 | client\console.h | console.h |  |  |  |  |
 | client\input.h | input.h |  |  |  |  |
 | client\keys.c | keys.c |  |  |  |  |
@@ -55,8 +55,8 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | client\menu.c | menu.c |  |  |  |  |
 | client\qmenu.c | qmenu.c |  |  |  |  |
 | client\qmenu.h | qmenu.h |  |  |  |  |
-| client\ref.h | ref.h |  |  |  |  |
-| client\screen.h | screen.h | Screen/HUD public declarations for center prints, loading plaque, update ordering and screen-side helpers, now partially mirrored through the exported `screen.ts` HUD API (`SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_TouchPics`, `SCR_DrawStats`, `SCR_DrawLayout`, `SCR_ExecuteLayoutString`, `SCR_BuildHudDrawCommands`, inventory helpers and screen snapshot contracts), while the remaining screen-loop and cinematic declarations are still to close explicitly. | 🟠 | 🟠 | packages/client/src/screen.ts, packages/client/src/index.ts, packages/client/src/types.ts |
+| client\ref.h | ref.h | Header mixte renderer cote client encore incomplet ; aucun fichier TS principal n'est encore etabli de facon suffisamment explicite pour le referentiel, et la fermeture devra distinguer clairement les declarations renderer source des simples consommateurs/adapters Three.js. | 🟠 |  |  |
+| client\screen.h | screen.h | Header mixte screen/HUD actuellement rattache principalement a `packages/client/src/screen.ts` pour les declarations de center print, loading plaque, layouts et snapshots, avec quelques declarations restantes de screen loop et cinematic encore a fermer explicitement. | 🟠 | 🟠 | packages/client/src/screen.ts, packages/client/src/types.ts |
 | client\snd_dma.c | snd_dma.c |  |  |  |  |
 | client\snd_loc.h | snd_loc.h |  |  |  |  |
 | client\snd_mem.c | snd_mem.c |  |  |  |  |
@@ -64,26 +64,26 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | client\sound.h | sound.h |  |  |  |  |
 | client\vid.h | vid.h |  |  |  |  |
 | client\x86.c | x86.c |  |  |  |  |
-| ctf\2do.txt | 2do.txt |  |  |  | |
-| ctf\ctf.001 | ctf.001 |  |  |  | |
-| ctf\ctf.def | ctf.def |  |  |  | |
-| ctf\ctf.dsp | ctf.dsp |  |  |  | |
-| ctf\ctf.plg | ctf.plg |  |  |  | |
-| ctf\docs\admin.gif | admin.gif |  |  |  | |
-| ctf\docs\adminset.gif | adminset.gif |  |  |  | |
-| ctf\docs\automac.gif | automac.gif |  |  |  | |
-| ctf\docs\ghost.jpg | ghost.jpg |  |  |  | |
-| ctf\docs\grapple.jpg | grapple.jpg |  |  |  | |
-| ctf\docs\layout.jpg | layout.jpg |  |  |  | |
-| ctf\docs\mainctf_back.jpg | mainctf_back.jpg |  |  |  | |
-| ctf\docs\menu.gif | menu.gif |  |  |  | |
-| ctf\docs\q2ctf.html | q2ctf.html |  |  |  | |
-| ctf\docs\say_team.gif | say_team.gif |  |  |  | |
-| ctf\docs\stats.jpg | stats.jpg |  |  |  | |
-| ctf\docs\tech1.gif | tech1.gif |  |  |  | |
-| ctf\docs\tech2.gif | tech2.gif |  |  |  | |
-| ctf\docs\tech3.gif | tech3.gif |  |  |  | |
-| ctf\docs\tech4.gif | tech4.gif |  |  |  | |
+| ctf\2do.txt | 2do.txt | Note de travail/documentation CTF, hors perimetre du runtime Quake II de base porte en JS. | ⛔ |  | |
+| ctf\ctf.001 | ctf.001 | Fichier de build/projet CTF d'origine, hors perimetre du portage runtime JS. | ⛔ |  | |
+| ctf\ctf.def | ctf.def | Fichier de build/export CTF d'origine, hors perimetre du portage runtime JS. | ⛔ |  | |
+| ctf\ctf.dsp | ctf.dsp | Projet IDE Visual Studio historique pour CTF, hors perimetre du portage JS. | ⛔ |  | |
+| ctf\ctf.plg | ctf.plg | Artefact de build/projet IDE historique pour CTF, hors perimetre du portage JS. | ⛔ |  | |
+| ctf\docs\admin.gif | admin.gif | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\adminset.gif | adminset.gif | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\automac.gif | automac.gif | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\ghost.jpg | ghost.jpg | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\grapple.jpg | grapple.jpg | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\layout.jpg | layout.jpg | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\mainctf_back.jpg | mainctf_back.jpg | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\menu.gif | menu.gif | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\q2ctf.html | q2ctf.html | Documentation HTML CTF, hors perimetre du runtime Quake II de base porte en JS. | ⛔ |  | |
+| ctf\docs\say_team.gif | say_team.gif | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\stats.jpg | stats.jpg | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\tech1.gif | tech1.gif | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\tech2.gif | tech2.gif | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\tech3.gif | tech3.gif | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
+| ctf\docs\tech4.gif | tech4.gif | Ressource de documentation CTF, hors perimetre du portage source runtime. | ⛔ |  | |
 | ctf\g_ai.c | g_ai.c |  |  |  | |
 | ctf\g_chase.c | g_chase.c |  |  |  | |
 | ctf\g_cmds.c | g_cmds.c |  |  |  | |
@@ -105,10 +105,10 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | ctf\g_utils.c | g_utils.c |  |  |  | |
 | ctf\g_weapon.c | g_weapon.c |  |  |  | |
 | ctf\game.h | game.h |  |  |  | |
-| ctf\layout.txt | layout.txt |  |  |  | |
+| ctf\layout.txt | layout.txt | Ressource/layout specifique CTF, hors perimetre du runtime Quake II de base tant que le module CTF n'est pas porte. | ⛔ |  | |
 | ctf\m_move.c | m_move.c |  |  |  | |
 | ctf\m_player.h | m_player.h |  |  |  | |
-| ctf\Makefile.Linux.i386 | Makefile.Linux.i386 |  |  |  | |
+| ctf\Makefile.Linux.i386 | Makefile.Linux.i386 | Fichier de build historique CTF sous Linux, hors perimetre du portage JS. | ⛔ |  | |
 | ctf\p_client.c | p_client.c |  |  |  | |
 | ctf\p_hud.c | p_hud.c |  |  |  | |
 | ctf\p_menu.c | p_menu.c |  |  |  | |
@@ -121,27 +121,27 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | game\g_ai.c | g_ai.c |  |  |  | |
 | game\g_chase.c | g_chase.c |  |  |  | |
 | game\g_cmds.c | g_cmds.c |  |  |  | |
-| game\g_combat.c | g_combat.c | Premier port du sous-bloc combat requis par `g_weapon.c`, avec `CanDamage`, `SpawnDamage`, `Killed`, `CheckArmor`, `CheckPowerArmor`, `T_RadiusDamage` et un `T_Damage` partiel deja portes dans l'ordre source pour les cas armes (knockback, godmode, invincibilite, blood/sparks, armure standard, power armor, accumulation des damage feedbacks client, sortie de vie vers `die`), tandis que `M_ReactToDamage` et le reste de la resolution complete restent encore explicites ou a porter. | 🟠 | 🟠 | packages/game/src/g_combat.ts, packages/game/src/g_utils.ts, packages/game/src/g_items.ts, packages/game/src/runtime.ts, packages/game/src/index.ts, packages/game/src/g_weapon.ts |
-| game\g_func.c | g_func.c | Brush-entity lifecycle port for `func_door`, `func_door_rotating` and `func_plat`, including `Move_*`, `AngleMove_*`, accelerated platform motion, top/bottom transitions, helper trigger spawning and real `blocked` callbacks now validated on map-backed scenarios. | 🟠 | 🟠 | packages/game/src/g_func.ts, packages/game/src/g_spawn.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-door-phase4.ts, scripts/verify/quake2-door-phase5.ts, scripts/verify/quake2-door-phase6.ts |
-| game\g_items.c | g_items.c | Item-definition and spawn-side visual port covering all visible world item classnames with world models, delayed `droptofloor`, `PrecacheItem`, `SpawnItem`, `FindItem*`, `GetItemByIndex`, `InitItems`, `SetItemNames` and the dedicated `SP_item_health*` path, with a `gitem_t` shape now widened toward the original render-relevant fields and first integration helpers for weapon/ammo metadata (`GetAmmoItemForWeapon`, `FindWeaponItemByThink`, `GetGameItems`), plus the strict armor metadata and selection helpers `gitem_armor_t`-style (`GameItemArmorInfo`, `ArmorIndex`, `GetArmorInfoByItem`, `PowerArmorType`) now consumed by the first `g_combat.c` slice, and the source-only `weapon_blaster` item definition now present so `p_weapon.c` fallback/switch paths remain source-faithful. | 🟠 | 🟠 | packages/game/src/g_items.ts, packages/game/src/g_combat.ts, packages/game/src/g_spawn.ts, packages/game/src/index.ts, apps/web/src/local-client-controller.ts |
-| game\g_local.h | g_local.h | Shared gameplay declarations, enums, structs and function prototypes for the base game module, now partially mirrored for item spawn flags, early entity runtime shape, and the first weapon/combat-facing enums/constants from the original header such as `weaponstate_t`, `ammo_t`, `WEAP_*`, damage flags, team/deathmatch flags and the initial `gclient_t` / `edict_t` fields needed by `p_weapon.c`, `g_weapon.c` and the first `g_combat.c` slice (`kick_*`, `v_angle`, `grenade_blew_up`, `invincible_framenum`, `damage_*`, `viewheight`, `waterlevel`, `takedamage`, `mass`, `pain`, `mynoise*`, `teleport_time`, `FL_IMMUNE_LASER`, `FL_GODMODE`, `FL_NO_KNOCKBACK`, `FL_POWER_ARMOR`, `POWER_ARMOR_*`, `powerarmor_time`, `power_armor_type`, `power_armor_power`). | 🟠 | 🟠 | generated/ts-stubs/game/g_local.ts, packages/game/src/runtime.ts, packages/game/src/g_items.ts, packages/game/src/index.ts |
+| game\g_combat.c | g_combat.c | Portage principal actuellement rattache a `packages/game/src/g_combat.ts` pour le noyau de resolution des degats, avec `g_weapon.ts`, `g_utils.ts` et `g_items.ts` comme consommateurs ou dependances gameplay ; le fichier reste partiel et doit encore expliciter les branches non portees. | 🟠 | 🟠 | packages/game/src/g_combat.ts, packages/game/src/g_weapon.ts, packages/game/src/g_utils.ts, packages/game/src/g_items.ts, packages/game/src/runtime.ts |
+| game\g_func.c | g_func.c | Portage principal actuellement rattache a `packages/game/src/g_func.ts` pour le cycle de vie des brush entities `func_door`, `func_door_rotating` et `func_plat`, y compris `Move_*`, `AngleMove_*`, les transitions haut/bas, les vitesses accelerees, les helper triggers et les callbacks `blocked`, avec `g_spawn.ts` comme support de branchement gameplay et des harnais dedies pour la verification sur cartes chargees. | 🟠 | 🟠 | packages/game/src/g_func.ts, packages/game/src/g_spawn.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-door-phase4.ts, scripts/verify/quake2-door-phase5.ts, scripts/verify/quake2-door-phase6.ts |
+| game\g_items.c | g_items.c | Portage principal actuellement rattache a `packages/game/src/g_items.ts` pour les definitions d'items, le spawn et les helpers associes, avec `g_spawn.ts` et `g_combat.ts` comme consommateurs gameplay ; la mention de `apps/web` est retiree du referentiel car l'adapter ne doit pas etre lu comme cible de portage principale. | 🟠 | 🟠 | packages/game/src/g_items.ts, packages/game/src/g_spawn.ts, packages/game/src/g_combat.ts, packages/game/src/index.ts |
+| game\g_local.h | g_local.h | Header mixte gameplay encore incomplet, actuellement rattache principalement a `packages/game/src/runtime.ts` pour les declarations gameplay deja portees, avec `g_items.ts` comme cible secondaire ; le stub genere n'est plus considere comme cible architecturale. | 🟠 | 🟠 | packages/game/src/runtime.ts, packages/game/src/g_items.ts, packages/game/src/index.ts |
 | game\g_main.c | g_main.c |  |  |  | |
-| game\g_misc.c | g_misc.c | Decorative/world-object spawn port now covering banner, blackhole, easter tank/chicks, commander body, dead soldier, teleporter pads, mine lights, ships, viper bomb and gib world entities with their visual `edict_t->s` state plus the corresponding animation thinks. | 🟠 | 🟠 | packages/game/src/g_misc.ts, packages/game/src/g_spawn.ts, packages/game/src/index.ts |
+| game\g_misc.c | g_misc.c | Portage principal actuellement rattache a `packages/game/src/g_misc.ts` pour le spawn des objets decoratifs et entites monde, notamment `misc_banner`, `misc_blackhole`, les easter entities, `misc_deadsoldier`, les teleporters, les mine lights, les ships, `misc_viper_bomb` et les gibs, avec preservation de l'etat visuel `edict_t->s` et des `think` d'animation, et `g_spawn.ts` comme support de branchement gameplay. | 🟠 | 🟠 | packages/game/src/g_misc.ts, packages/game/src/g_spawn.ts, packages/game/src/index.ts |
 | game\g_monster.c | g_monster.c |  |  |  | |
-| game\g_phys.c | g_phys.c | Gameplay physics frame port for `SV_RunThink`, `SV_TestEntityPosition`, `SV_Impact`, `SV_PushEntity`, `SV_Push`, `SV_Physics_Pusher` and `G_RunEntity`, now backed by a gameplay collision bridge over world BSP, transformed inline models and linked dynamic boxes, with pushed-state rollback, rider transport, angular compensation and obstacle dispatch. | 🟠 | 🟠 | packages/game/src/g_phys.ts, packages/game/src/runtime.ts, packages/game/src/touch.ts, packages/game/src/index.ts, apps/web/src/local-client-controller.ts, scripts/verify/quake2-door-phase3.ts, scripts/verify/quake2-door-phase5.ts, scripts/verify/quake2-collision-phase3.ts, scripts/verify/quake2-collision-phase4.ts, scripts/verify/quake2-collision-phase5.ts, scripts/verify/quake2-collision-phase8.ts |
+| game\g_phys.c | g_phys.c | Portage principal actuellement rattache a `packages/game/src/g_phys.ts` pour la physique gameplay, les pushers et l'integration des collisions de jeu, avec `runtime.ts` et `touch.ts` comme supports runtime ; l'adapter web n'est plus une cible du referentiel, seulement un consommateur du resultat. | 🟠 | 🟠 | packages/game/src/g_phys.ts, packages/game/src/runtime.ts, packages/game/src/touch.ts, scripts/verify/quake2-door-phase3.ts, scripts/verify/quake2-door-phase5.ts, scripts/verify/quake2-collision-phase3.ts, scripts/verify/quake2-collision-phase4.ts, scripts/verify/quake2-collision-phase5.ts, scripts/verify/quake2-collision-phase8.ts |
 | game\g_save.c | g_save.c |  |  |  | |
-| game\g_spawn.c | g_spawn.c | Spawn registry port now covering the brush/trigger subset plus first visible item and decorative entity dispatch, including `ED_CallSpawn`, item lookup, `G_FindTeams` and BSP-order team linking. | 🟠 | 🟠 | packages/game/src/g_spawn.ts, packages/game/src/g_items.ts, packages/game/src/g_misc.ts, packages/game/src/index.ts, scripts/verify/quake2-door-phase6.ts |
+| game\g_spawn.c | g_spawn.c | Portage principal actuellement rattache a `packages/game/src/g_spawn.ts` pour le registre de spawn, `ED_CallSpawn`, `G_FindTeams` et le dispatch des entites visibles deja supportees, avec `g_items.ts` et `g_misc.ts` comme consommateurs gameplay. | 🟠 | 🟠 | packages/game/src/g_spawn.ts, packages/game/src/g_items.ts, packages/game/src/g_misc.ts, scripts/verify/quake2-door-phase6.ts |
 | game\g_svcmds.c | g_svcmds.c |  |  |  | |
 | game\g_target.c | g_target.c |  |  |  | |
-| game\g_trigger.c | g_trigger.c | Trigger port for `trigger_once`, `trigger_multiple`, `trigger_relay` and their activation flow (`Touch_Multi`, `Use_Multi`, `multi_trigger`), including dynamic `trigger_enable` re-link behavior validated against the stricter trigger-touch helpers. | 🟠 | 🟠 | packages/game/src/g_trigger.ts, packages/game/src/g_spawn.ts, packages/game/src/touch.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-collision-phase7.ts |
+| game\g_trigger.c | g_trigger.c | Portage principal actuellement rattache a `packages/game/src/g_trigger.ts` pour les triggers et leur flux d'activation, avec `g_spawn.ts` et `touch.ts` comme supports gameplay et des harnais dedies pour les cas de portes et de collisions. | 🟠 | 🟠 | packages/game/src/g_trigger.ts, packages/game/src/g_spawn.ts, packages/game/src/touch.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-collision-phase7.ts |
 | game\g_turret.c | g_turret.c |  |  |  | |
-| game\g_utils.c | g_utils.c | Gameplay utility port for entity lookup and `G_UseTargets`, now complemented by strict `findradius` iteration plus `G_TouchTriggers` / `G_TouchSolids` over the runtime spatial query layer used by trigger-touch flow, collision plumbing and the BFG/grenade combat paths. | 🟠 | 🟠 | packages/game/src/g_utils.ts, packages/game/src/runtime.ts, packages/game/src/touch.ts, packages/game/src/g_weapon.ts, packages/game/src/index.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-collision-phase3.ts, scripts/verify/quake2-collision-phase7.ts |
-| game\g_weapon.c | g_weapon.c | Logique monde des armes et projectiles avec le port du socle de spawn des projectiles (`fire_blaster`, `fire_grenade`, `fire_grenade2`, `fire_rocket`, `fire_bfg`), des armes hitscan (`fire_bullet`, `fire_shotgun`, `fire_rail`), des callbacks d'impact (`blaster_touch`, `Grenade_Touch`, `rocket_touch`, `bfg_touch`) et des pensees/explosions principales (`Grenade_Explode`, `bfg_explode`, `bfg_think`), maintenant rebranchees sur les premiers ports stricts de `findradius`, `CanDamage`, `SpawnDamage`, `Killed`, `CheckArmor`, `CheckPowerArmor`, `T_RadiusDamage` et un `T_Damage` partiel pour les cas armes courants, avec en plus les chemins par defaut de liberation de projectiles, l'explosion immediate des grenades tenues, le son de lancer `hgrent1a`, la variante `TE_ROCKET_EXPLOSION_WATER` et un premier chemin runtime de sons gameplay one-shot via une file `GameSoundEvent`, tandis que les reactions monsters et le branchement final vers un backend audio/client restent encore en attente. | 🟠 | 🟠 | packages/game/src/g_weapon.ts, packages/game/src/g_combat.ts, packages/game/src/g_utils.ts, packages/game/src/g_items.ts, packages/game/src/runtime.ts, packages/game/src/index.ts |
-| game\game.001 | game.001 |  |  |  | |
-| game\game.def | game.def |  |  |  | |
-| game\game.dsp | game.dsp |  |  |  | |
-| game\game.h | game.h | Core gameplay entity declarations including `edict_t` spatial fields such as `mins`, `maxs`, `absmin`, `absmax`, `solid`, `clipmask`, `owner`, area linkage and engine query contracts like `linkentity` and `BoxEdicts`, plus tighter runtime-to-`entity_state_t` synchronization for `origin`, `angles`, `solid` and `old_origin`. | 🟠 | 🟠 | packages/game/src/runtime.ts, packages/game/src/index.ts, scripts/verify/quake2-collision-phase2.ts, scripts/verify/quake2-collision-phase3.ts, scripts/verify/quake2-entities-phase4.ts |
-| game\game.plg | game.plg |  |  |  | |
+| game\g_utils.c | g_utils.c | Portage principal actuellement rattache a `packages/game/src/g_utils.ts` pour les utilitaires gameplay, les recherches d'entites et `G_UseTargets`, avec `runtime.ts` et `touch.ts` comme sous-blocs de support et `g_weapon.ts` comme consommateur gameplay. | 🟠 | 🟠 | packages/game/src/g_utils.ts, packages/game/src/runtime.ts, packages/game/src/touch.ts, packages/game/src/g_weapon.ts, scripts/verify/quake2-door-phase1.ts, scripts/verify/quake2-collision-phase3.ts, scripts/verify/quake2-collision-phase7.ts |
+| game\g_weapon.c | g_weapon.c | Portage principal actuellement rattache a `packages/game/src/g_weapon.ts` pour les armes monde, projectiles, impacts et explosions principales, avec `g_combat.ts`, `g_utils.ts`, `g_items.ts` et `runtime.ts` comme dependances gameplay explicites ; le branchement final audio/client et certaines reactions monsters restent encore a fermer. | 🟠 | 🟠 | packages/game/src/g_weapon.ts, packages/game/src/g_combat.ts, packages/game/src/g_utils.ts, packages/game/src/g_items.ts, packages/game/src/runtime.ts |
+| game\game.001 | game.001 | Fichier de build/projet du module gameplay original, hors perimetre du portage runtime JS. | ⛔ |  | |
+| game\game.def | game.def | Fichier de build/export du module gameplay original, hors perimetre du portage runtime JS. | ⛔ |  | |
+| game\game.dsp | game.dsp | Projet IDE Visual Studio historique du module gameplay, hors perimetre du portage JS. | ⛔ |  | |
+| game\game.h | game.h | Header declarations gameplay/engine actuellement rattachees principalement a `packages/game/src/runtime.ts` pour `edict_t`, le linkage spatial et les contrats moteurs deja portes ; la frontiere avec `g_local.h` reste encore a stabiliser. | 🟠 | 🟠 | packages/game/src/runtime.ts, scripts/verify/quake2-collision-phase2.ts, scripts/verify/quake2-collision-phase3.ts, scripts/verify/quake2-entities-phase4.ts |
+| game\game.plg | game.plg | Artefact de build/projet IDE historique du module gameplay, hors perimetre du portage JS. | ⛔ |  | |
 | game\m_actor.c | m_actor.c |  |  |  | |
 | game\m_actor.h | m_actor.h |  |  |  | |
 | game\m_berserk.c | m_berserk.c |  |  |  | |
@@ -157,7 +157,7 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | game\m_brain.h | m_brain.h |  |  |  | |
 | game\m_chick.c | m_chick.c |  |  |  | |
 | game\m_chick.h | m_chick.h |  |  |  | |
-| game\m_flash.c | m_flash.c | Port of `monster_flash_offset` for exact monster and turret muzzle-flash origins consumed by the client-side `CL_ParseMuzzleFlash2` path, now closed as a strict shared table plus `getMonsterFlashOffset` accessor preserving the original zero-slot fallback. | ✅ | ✅ | packages/client/src/monster-flash.ts, packages/client/src/effects.ts |
+| game\m_flash.c | m_flash.c | Portage principal ferme, rattache a `packages/client/src/monster-flash.ts` pour la table `monster_flash_offset` et l'accesseur `getMonsterFlashOffset`, avec preservation du fallback d'index nul du code source ; `packages/client/src/effects.ts` n'est qu'un consommateur du resultat pour `CL_ParseMuzzleFlash2`. | ✅ | ✅ | packages/client/src/monster-flash.ts, packages/client/src/effects.ts |
 | game\m_flipper.c | m_flipper.c |  |  |  | |
 | game\m_flipper.h | m_flipper.h |  |  |  | |
 | game\m_float.c | m_float.c |  |  |  | |
@@ -193,87 +193,87 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | game\p_hud.c | p_hud.c |  |  |  | |
 | game\p_trail.c | p_trail.c |  |  |  | |
 | game\p_view.c | p_view.c |  |  |  | |
-| game\p_weapon.c | p_weapon.c | Logique joueur complete des armes, incluant projection du muzzle source, `PlayerNoise`, `Pickup_Weapon`, changement d'arme, fallback no-ammo, selection / drop / use, automate generique `Weapon_Generic` et l'ensemble des armes joueur du fichier original (`Grenade`, `GrenadeLauncher`, `RocketLauncher`, `Blaster`, `HyperBlaster`, `Machinegun`, `Chaingun`, `Shotgun`, `SuperShotgun`, `Railgun`, `BFG`), avec sorties monde / projectiles / muzzle flashes encore raccordees via des hooks explicites en attente du port de `g_weapon.c`. | ✅ | ✅ | packages/game/src/p_weapon.ts, packages/game/src/runtime.ts, packages/game/src/index.ts |
+| game\p_weapon.c | p_weapon.c | Portage principal actuellement rattache a `packages/game/src/p_weapon.ts` pour la logique joueur des armes, y compris `PlayerNoise`, `Pickup_Weapon`, `ChangeWeapon`, `NoAmmoWeaponChange`, `Weapon_Generic` et l'ensemble des armes joueur du fichier original (`Grenade`, `GrenadeLauncher`, `RocketLauncher`, `Blaster`, `HyperBlaster`, `Machinegun`, `Chaingun`, `Shotgun`, `SuperShotgun`, `Railgun`, `BFG`), avec `runtime.ts` comme support gameplay ; la ligne reste `🟠` tant que certains chemins de tir, projectiles, drop et muzzle flashes dependent encore de hooks explicites vers les blocs gameplay monde non entierement refermes. | 🟠 | 🟠 | packages/game/src/p_weapon.ts, packages/game/src/runtime.ts, packages/game/src/index.ts |
 | game\q_shared.c | q_shared.c |  |  |  | |
-| game\q_shared.h | q_shared.h | Shared core declarations, constants, math-adjacent structs, pmove, entity and player state types, now also exporting the original player weapon muzzle-flash ids `MZ_*` for the shared weapon/client effect path. | 🟠 | 🟠 | packages/qcommon/src/q-shared.ts, packages/qcommon/src/index.ts |
-| gnu.txt | gnu.txt |  |  |  | |
-| irix\cd_irix.c | cd_irix.c |  |  |  | |
-| irix\glw_imp.c | glw_imp.c |  |  |  | |
-| irix\q_shirix.c | q_shirix.c |  |  |  | |
-| irix\qgl_irix.c | qgl_irix.c |  |  |  | |
-| irix\snd_irix.c | snd_irix.c |  |  |  | |
-| irix\sys_irix.c | sys_irix.c |  |  |  | |
-| irix\vid_menu.c | vid_menu.c |  |  |  | |
-| irix\vid_so.c | vid_so.c |  |  |  | |
-| joystick.txt | joystick.txt |  |  |  | |
-| linux\block16.h | block16.h |  |  |  | |
-| linux\block8.h | block8.h |  |  |  | |
-| linux\cd_linux.c | cd_linux.c |  |  |  | |
-| linux\d_copy.s | d_copy.s |  |  |  | |
-| linux\d_ifacea.h | d_ifacea.h |  |  |  | |
-| linux\d_polysa.s | d_polysa.s |  |  |  | |
-| linux\gl_fxmesa.c | gl_fxmesa.c |  |  |  | |
-| linux\glob.c | glob.c |  |  |  | |
-| linux\glob.h | glob.h |  |  |  | |
-| linux\in_linux.c | in_linux.c |  |  |  | |
-| linux\Makefile.AXP | Makefile.AXP |  |  |  | |
-| linux\Makefile.i386 | Makefile.i386 |  |  |  | |
-| linux\math.s | math.s |  |  |  | |
-| linux\net_udp.c | net_udp.c |  |  |  | |
-| linux\q_shlinux.c | q_shlinux.c |  |  |  | |
-| linux\qasm.h | qasm.h |  |  |  | |
-| linux\qgl_linux.c | qgl_linux.c |  |  |  | |
-| linux\r_aclipa.s | r_aclipa.s |  |  |  | |
-| linux\r_draw16.s | r_draw16.s |  |  |  | |
-| linux\r_drawa.s | r_drawa.s |  |  |  | |
-| linux\r_edgea.s | r_edgea.s |  |  |  | |
-| linux\r_scana.s | r_scana.s |  |  |  | |
-| linux\r_spr8.s | r_spr8.s |  |  |  | |
-| linux\r_surf8.s | r_surf8.s |  |  |  | |
-| linux\r_varsa.s | r_varsa.s |  |  |  | |
-| linux\rw_in_svgalib.c | rw_in_svgalib.c |  |  |  | |
-| linux\rw_linux.h | rw_linux.h |  |  |  | |
-| linux\rw_svgalib.c | rw_svgalib.c |  |  |  | |
-| linux\rw_x11.c | rw_x11.c |  |  |  | |
-| linux\snd_linux.c | snd_linux.c |  |  |  | |
-| linux\snd_mixa.s | snd_mixa.s |  |  |  | |
-| linux\sys_dosa.s | sys_dosa.s |  |  |  | |
-| linux\sys_linux.c | sys_linux.c |  |  |  | |
-| linux\vid_menu.c | vid_menu.c |  |  |  | |
-| linux\vid_so.c | vid_so.c |  |  |  | |
-| makefile | makefile |  |  |  | |
-| makezip | makezip |  |  |  | |
-| makezip.bat | makezip.bat |  |  |  | |
-| null\cd_null.c | cd_null.c |  |  |  | |
-| null\cl_null.c | cl_null.c |  |  |  | |
-| null\glimp_null.c | glimp_null.c |  |  |  | |
-| null\in_null.c | in_null.c |  |  |  | |
-| null\snddma_null.c | snddma_null.c |  |  |  | |
-| null\swimp_null.c | swimp_null.c |  |  |  | |
-| null\sys_null.c | sys_null.c |  |  |  | |
-| null\vid_null.c | vid_null.c |  |  |  | |
-| qcommon\cmd.c | cmd.c | Command buffer, tokenization, aliases and command registry. | 🟠 | 🟠 | packages/qcommon/src/cmd.ts |
-| qcommon\cmodel.c | cmodel.c | BSP collision loading, point contents, transformed point contents, box traces, transformed box traces and inline collision models used by shared movement and client prediction. | 🟠 | 🟠 | packages/qcommon/src/collision.ts, packages/qcommon/src/index.ts, scripts/verify/quake2-collision-phase1.ts |
-| qcommon\common.c | common.c | Message IO functions, size buffers, common runtime helpers. | 🟠 | 🟠 | packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/messages.ts, packages/qcommon/src/common.ts, packages/qcommon/src/runtime.ts |
+| game\q_shared.h | q_shared.h | Header partage actuellement rattache principalement a `packages/qcommon/src/q-shared.ts` pour les constantes coeur, les structures communes, les types `entity_state_t` et `player_state_t`, ainsi que les identifiants de muzzle flashes `MZ_*` reutilises par le chemin partage armes/client ; `index.ts` n'est ici qu'un point d'export et non la cible principale du portage. | 🟠 | 🟠 | packages/qcommon/src/q-shared.ts, packages/qcommon/src/index.ts |
+| gnu.txt | gnu.txt | Documentation licence/distribution, hors perimetre du runtime et du portage source JS. | ⛔ |  | |
+| irix\cd_irix.c | cd_irix.c | Backend CD audio IRIX natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| irix\glw_imp.c | glw_imp.c | Couche GL/windowing IRIX native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| irix\q_shirix.c | q_shirix.c | Glue systeme IRIX native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| irix\qgl_irix.c | qgl_irix.c | Chargement GL IRIX natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| irix\snd_irix.c | snd_irix.c | Backend son IRIX natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| irix\sys_irix.c | sys_irix.c | Couche systeme IRIX native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| irix\vid_menu.c | vid_menu.c | Menu video IRIX natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| irix\vid_so.c | vid_so.c | Chargement video/renderer IRIX natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| joystick.txt | joystick.txt | Documentation utilisateur/historique, hors perimetre du runtime et du portage source JS. | ⛔ |  | |
+| linux\block16.h | block16.h | Header d'optimisation/renderer natif Linux, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\block8.h | block8.h | Header d'optimisation/renderer natif Linux, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\cd_linux.c | cd_linux.c | Backend CD audio Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\d_copy.s | d_copy.s | Routine assembleur Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\d_ifacea.h | d_ifacea.h | Header renderer/asm Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\d_polysa.s | d_polysa.s | Routine assembleur Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\gl_fxmesa.c | gl_fxmesa.c | Backend OpenGL Linux specifique FX/Mesa, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\glob.c | glob.c | Helper systeme Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\glob.h | glob.h | Header systeme Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\in_linux.c | in_linux.c | Backend input Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\Makefile.AXP | Makefile.AXP | Fichier de build Linux historique, hors perimetre du portage JS. | ⛔ |  | |
+| linux\Makefile.i386 | Makefile.i386 | Fichier de build Linux historique, hors perimetre du portage JS. | ⛔ |  | |
+| linux\math.s | math.s | Routine assembleur Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\net_udp.c | net_udp.c | Backend reseau UDP Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\q_shlinux.c | q_shlinux.c | Glue systeme Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\qasm.h | qasm.h | Header assembleur Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\qgl_linux.c | qgl_linux.c | Chargement GL Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\r_aclipa.s | r_aclipa.s | Routine assembleur renderer Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\r_draw16.s | r_draw16.s | Routine assembleur renderer Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\r_drawa.s | r_drawa.s | Routine assembleur renderer Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\r_edgea.s | r_edgea.s | Routine assembleur renderer Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\r_scana.s | r_scana.s | Routine assembleur renderer Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\r_spr8.s | r_spr8.s | Routine assembleur renderer Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\r_surf8.s | r_surf8.s | Routine assembleur renderer Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\r_varsa.s | r_varsa.s | Routine assembleur renderer Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\rw_in_svgalib.c | rw_in_svgalib.c | Backend input/rendu Linux SVGALib natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\rw_linux.h | rw_linux.h | Header rendu Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\rw_svgalib.c | rw_svgalib.c | Backend rendu Linux SVGALib natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\rw_x11.c | rw_x11.c | Backend rendu Linux X11 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\snd_linux.c | snd_linux.c | Backend son Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\snd_mixa.s | snd_mixa.s | Routine assembleur son Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\sys_dosa.s | sys_dosa.s | Routine assembleur systeme Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\sys_linux.c | sys_linux.c | Couche systeme Linux native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\vid_menu.c | vid_menu.c | Menu video Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| linux\vid_so.c | vid_so.c | Chargement video/renderer Linux natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| makefile | makefile | Script de build historique du depot natif, hors perimetre du portage runtime JS/TS. | ⛔ |  | |
+| makezip | makezip | Script d'empaquetage historique du depot natif, hors perimetre du portage runtime JS/TS. | ⛔ |  | |
+| makezip.bat | makezip.bat | Script d'empaquetage historique du depot natif, hors perimetre du portage runtime JS/TS. | ⛔ |  | |
+| null\cd_null.c | cd_null.c | Stub backend CD audio nul historique, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| null\cl_null.c | cl_null.c | Stub client nul historique, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| null\glimp_null.c | glimp_null.c | Stub GL/platform nul historique, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| null\in_null.c | in_null.c | Stub input nul historique, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| null\snddma_null.c | snddma_null.c | Stub backend son nul historique, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| null\swimp_null.c | swimp_null.c | Stub software renderer platform nul historique, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| null\sys_null.c | sys_null.c | Stub systeme nul historique, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| null\vid_null.c | vid_null.c | Stub video nul historique, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| qcommon\cmd.c | cmd.c | Portage principal actuellement rattache a `packages/qcommon/src/cmd.ts` pour le command buffer, la tokenization, les aliases et le registre de commandes ; un harnais cible reste encore a ajouter pour fermer proprement la verification. | 🟠 | 🟠 | packages/qcommon/src/cmd.ts |
+| qcommon\cmodel.c | cmodel.c | Portage principal actuellement rattache a `packages/qcommon/src/collision.ts` pour le chargement collision BSP, les traces et les inline models, avec des harnais dedies de collision pour la verification. | 🟠 | 🟠 | packages/qcommon/src/collision.ts, scripts/verify/quake2-collision-phase1.ts |
+| qcommon\common.c | common.c | Portage principal actuellement rattache a `packages/qcommon/src/common.ts` pour les helpers communs, avec `packages/memory/src/sizebuf.ts` et `binary-io.ts` comme sous-blocs de support de buffer/message et `packages/qcommon/src/runtime.ts` comme couche d'integration. | 🟠 | 🟠 | packages/qcommon/src/common.ts, packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/messages.ts, packages/qcommon/src/runtime.ts |
 | qcommon\crc.c | crc.c |  |  |  | |
 | qcommon\crc.h | crc.h |  |  |  | |
-| qcommon\cvar.c | cvar.c | Dynamic console variables, flags, latched values, info strings and command-facing setters. | 🟠 | 🟠 | packages/qcommon/src/cvar.ts |
-| qcommon\files.c | files.c | Filesystem search paths, pack loading, file opening and asset reads. | 🟠 | 🟠 | packages/formats/src/pak.ts, packages/filesystem/src/virtual-filesystem.ts, packages/filesystem/src/index.ts |
+| qcommon\cvar.c | cvar.c | Portage principal actuellement rattache a `packages/qcommon/src/cvar.ts` pour les cvars, leurs flags, valeurs latched et setters relies aux commandes ; un harnais cible reste encore a ajouter pour la verification. | 🟠 | 🟠 | packages/qcommon/src/cvar.ts |
+| qcommon\files.c | files.c | Portage principal actuellement rattache a `packages/filesystem/src/virtual-filesystem.ts` pour les search paths, le montage et la lecture des fichiers, avec `packages/formats/src/pak.ts` comme parseur de support et `packages/filesystem/src/index.ts` comme point d'export. | 🟠 | 🟠 | packages/filesystem/src/virtual-filesystem.ts, packages/formats/src/pak.ts, packages/filesystem/src/index.ts |
 | qcommon\md4.c | md4.c |  |  |  | |
 | qcommon\net_chan.c | net_chan.c |  |  |  | |
-| qcommon\pmove.c | pmove.c | Shared player movement core used by client prediction and server-authoritative simulation, now exercised in the browser through a collision adapter wired to transformed moving brush models. | 🟠 | 🟠 | packages/qcommon/src/pmove.ts, apps/web/src/local-client-controller.ts, scripts/verify/quake2-collision-phase8.ts |
-| qcommon\qcommon.h | qcommon.h | Shared declarations for sizebuf_t, MSG_*, protocol and runtime contracts. Stub TypeScript generated. | 🟠 | 🟠 | packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/messages.ts, generated/ts-stubs/qcommon/qcommon.ts |
-| qcommon\qfiles.h | qfiles.h | Binary file format declarations including PAK, PCX, WAL, MD2, SP2 sprite and BSP layouts, now mirrored by dedicated format modules with the remaining declarative BSP constants (`MAX_MAP_*`, `CONTENTS_*`, `SURF_*`, plane tags, `ANGLE_*`, `DVIS_*`) exported alongside the parsed structs and sprite metadata. | ✅ | ✅ | packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/bsp.ts, packages/formats/src/index.ts |
-| quake2.001 | quake2.001 |  |  |  | |
-| quake2.bce | quake2.bce |  |  |  | |
-| quake2.bcp | quake2.bcp |  |  |  | |
-| quake2.dsp | quake2.dsp |  |  |  | |
-| quake2.dsw | quake2.dsw |  |  |  | |
-| quake2.mak | quake2.mak |  |  |  | |
-| quake2.opt | quake2.opt |  |  |  | |
-| quake2.plg | quake2.plg |  |  |  | |
-| readme.txt | readme.txt |  |  |  | |
-| ref_gl\anorms.h | anorms.h | Renderer-side copy of the canonical 162-entry Quake II byte-direction lookup table, explicitly verified to match `client/anorms.h` and therefore closed through the shared `BYTE_DIRS` / `DirFromByte` port. | ✅ | ✅ | packages/qcommon/src/anorms.ts |
+| qcommon\pmove.c | pmove.c | Portage principal actuellement rattache a `packages/qcommon/src/pmove.ts` pour le mouvement partage, avec des harnais de collision dedies ; l'adapter web n'est plus une cible du referentiel, seulement un consommateur du resultat. | 🟠 | 🟠 | packages/qcommon/src/pmove.ts, scripts/verify/quake2-collision-phase8.ts |
+| qcommon\qcommon.h | qcommon.h | Header mixte qcommon actuellement rattache principalement a `packages/qcommon/src/messages.ts` pour les declarations `MSG_*` et contrats immediats, avec `packages/memory/src/sizebuf.ts` et `binary-io.ts` comme sous-blocs ; le stub genere n'est plus considere comme cible architecturale. | 🟠 | 🟠 | packages/qcommon/src/messages.ts, packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/protocol.ts |
+| qcommon\qfiles.h | qfiles.h | Header declaratif ferme, rattache a la famille de modules `packages/formats/src/*` avec `bsp.ts`, `pak.ts`, `pcx.ts`, `wal.ts`, `md2.ts` et `sp2.ts` comme sous-blocs specialises ; `index.ts` n'est qu'un point d'export et non une cible principale concurrente. | ✅ | ✅ | packages/formats/src/bsp.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/index.ts |
+| quake2.001 | quake2.001 | Fichier de build/projet historique du depot natif, hors perimetre du portage runtime JS. | ⛔ |  | |
+| quake2.bce | quake2.bce | Artefact/projet historique du depot natif, hors perimetre du portage runtime JS. | ⛔ |  | |
+| quake2.bcp | quake2.bcp | Artefact/projet historique du depot natif, hors perimetre du portage runtime JS. | ⛔ |  | |
+| quake2.dsp | quake2.dsp | Projet IDE Visual Studio historique du depot natif, hors perimetre du portage JS. | ⛔ |  | |
+| quake2.dsw | quake2.dsw | Workspace IDE Visual Studio historique du depot natif, hors perimetre du portage JS. | ⛔ |  | |
+| quake2.mak | quake2.mak | Script/projet de build historique du depot natif, hors perimetre du portage runtime JS. | ⛔ |  | |
+| quake2.opt | quake2.opt | Configuration IDE historique du depot natif, hors perimetre du portage JS. | ⛔ |  | |
+| quake2.plg | quake2.plg | Artefact de build/projet IDE historique du depot natif, hors perimetre du portage JS. | ⛔ |  | |
+| readme.txt | readme.txt | Documentation historique du depot source original, hors perimetre du runtime et du portage source JS. | ⛔ |  | |
+| ref_gl\anorms.h | anorms.h | Header declaratif ferme, referme par le meme port partage que `client/anorms.h`, a savoir `packages/qcommon/src/anorms.ts`, apres verification explicite que la copie renderer correspond bien a la table canonique des 162 directions encodees. | ✅ | ✅ | packages/qcommon/src/anorms.ts |
 | ref_gl\anormtab.h | anormtab.h |  |  |  | |
 | ref_gl\gl_draw.c | gl_draw.c |  |  |  | |
 | ref_gl\gl_image.c | gl_image.c |  |  |  | |
@@ -333,18 +333,18 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | ref_soft\ref_soft.def | ref_soft.def |  |  |  | |
 | ref_soft\ref_soft.dsp | ref_soft.dsp |  |  |  | |
 | ref_soft\ref_soft.plg | ref_soft.plg |  |  |  | |
-| rhapsody\in_next.m | in_next.m |  |  |  | |
-| rhapsody\makefile.bak | makefile.bak |  |  |  | |
-| rhapsody\notes.txt | notes.txt |  |  |  | |
-| rhapsody\pb.project | pb.project |  |  |  | |
-| rhapsody\quake2.iconheader | quake2.iconheader |  |  |  | |
-| rhapsody\quake2.tiff | quake2.tiff |  |  |  | |
-| rhapsody\r_next.m | r_next.m |  |  |  | |
-| rhapsody\rhapqw.txt | rhapqw.txt |  |  |  | |
-| rhapsody\snd_next.m | snd_next.m |  |  |  | |
-| rhapsody\swimp_rhap.m | swimp_rhap.m |  |  |  | |
-| rhapsody\sys_rhap.m | sys_rhap.m |  |  |  | |
-| rhapsody\vid_next.m | vid_next.m |  |  |  | |
+| rhapsody\in_next.m | in_next.m | Backend input Rhapsody/NeXT natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| rhapsody\makefile.bak | makefile.bak | Fichier de build historique Rhapsody, hors perimetre du portage JS. | ⛔ |  | |
+| rhapsody\notes.txt | notes.txt | Documentation technique Rhapsody historique, hors perimetre du runtime JS. | ⛔ |  | |
+| rhapsody\pb.project | pb.project | Projet IDE/Build Rhapsody historique, hors perimetre du portage JS. | ⛔ |  | |
+| rhapsody\quake2.iconheader | quake2.iconheader | Ressource application Rhapsody historique, hors perimetre du portage JS. | ⛔ |  | |
+| rhapsody\quake2.tiff | quake2.tiff | Ressource application Rhapsody historique, hors perimetre du portage JS. | ⛔ |  | |
+| rhapsody\r_next.m | r_next.m | Backend renderer Rhapsody/NeXT natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| rhapsody\rhapqw.txt | rhapqw.txt | Documentation historique Rhapsody, hors perimetre du runtime JS. | ⛔ |  | |
+| rhapsody\snd_next.m | snd_next.m | Backend son Rhapsody/NeXT natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| rhapsody\swimp_rhap.m | swimp_rhap.m | Backend software renderer Rhapsody/NeXT natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| rhapsody\sys_rhap.m | sys_rhap.m | Couche systeme Rhapsody/NeXT native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| rhapsody\vid_next.m | vid_next.m | Backend video Rhapsody/NeXT natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
 | server\server.h | server.h |  |  |  | |
 | server\sv_ccmds.c | sv_ccmds.c |  |  |  | |
 | server\sv_ents.c | sv_ents.c |  |  |  | |
@@ -355,39 +355,39 @@ Les colonnes `Description / role`, `A porter`, `Porte` et `Cible` sont a complet
 | server\sv_send.c | sv_send.c |  |  |  | |
 | server\sv_user.c | sv_user.c |  |  |  | |
 | server\sv_world.c | sv_world.c |  |  |  | |
-| solaris\g_so.c | g_so.c |  |  |  | |
-| solaris\glob.c | glob.c |  |  |  | |
-| solaris\glob.h | glob.h |  |  |  | |
-| solaris\Makefile.OLD | Makefile.OLD |  |  |  | |
-| solaris\Makefile.Solaris | Makefile.Solaris |  |  |  | |
-| solaris\net_udp.c | net_udp.c |  |  |  | |
-| solaris\q_shsolaris.c | q_shsolaris.c |  |  |  | |
-| solaris\sys_solaris.c | sys_solaris.c |  |  |  | |
-| unix\makefile | makefile |  |  |  | |
-| unix\makefile_old | makefile_old |  |  |  | |
-| unix\next\sv_ccmds.o | sv_ccmds.o |  |  |  | |
-| win32\cd_win.c | cd_win.c |  |  |  | |
-| win32\conproc.c | conproc.c |  |  |  | |
-| win32\conproc.h | conproc.h |  |  |  | |
-| win32\glw_imp.c | glw_imp.c |  |  |  | |
-| win32\glw_win.h | glw_win.h |  |  |  | |
-| win32\in_win.c | in_win.c |  |  |  | |
-| win32\net_wins.c | net_wins.c |  |  |  | |
-| win32\q_shwin.c | q_shwin.c |  |  |  | |
-| win32\q2.aps | q2.aps |  |  |  | |
-| win32\q2.ico | q2.ico |  |  |  | |
-| win32\q2.rc | q2.rc |  |  |  | |
-| win32\qe3.ico | qe3.ico |  |  |  | |
-| win32\qgl_win.c | qgl_win.c |  |  |  | |
-| win32\resource.h | resource.h |  |  |  | |
-| win32\rw_ddraw.c | rw_ddraw.c |  |  |  | |
-| win32\rw_dib.c | rw_dib.c |  |  |  | |
-| win32\rw_imp.c | rw_imp.c |  |  |  | |
-| win32\rw_win.h | rw_win.h |  |  |  | |
-| win32\snd_win.c | snd_win.c |  |  |  | |
-| win32\sys_win.c | sys_win.c |  |  |  | |
-| win32\vid_dll.c | vid_dll.c |  |  |  | |
-| win32\vid_menu.c | vid_menu.c |  |  |  | |
-| win32\winquake.aps | winquake.aps |  |  |  | |
-| win32\winquake.h | winquake.h |  |  |  | |
-| win32\winquake.rc | winquake.rc |  |  |  | |
+| solaris\g_so.c | g_so.c | Glue module gameplay partage Solaris native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| solaris\glob.c | glob.c | Helper systeme Solaris natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| solaris\glob.h | glob.h | Header systeme Solaris natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| solaris\Makefile.OLD | Makefile.OLD | Fichier de build Solaris historique, hors perimetre du portage JS. | ⛔ |  | |
+| solaris\Makefile.Solaris | Makefile.Solaris | Fichier de build Solaris historique, hors perimetre du portage JS. | ⛔ |  | |
+| solaris\net_udp.c | net_udp.c | Backend reseau UDP Solaris natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| solaris\q_shsolaris.c | q_shsolaris.c | Glue systeme Solaris native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| solaris\sys_solaris.c | sys_solaris.c | Couche systeme Solaris native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| unix\makefile | makefile | Fichier de build Unix historique, hors perimetre du portage JS. | ⛔ |  | |
+| unix\makefile_old | makefile_old | Fichier de build Unix historique, hors perimetre du portage JS. | ⛔ |  | |
+| unix\next\sv_ccmds.o | sv_ccmds.o | Artefact objet binaire Unix historique, hors perimetre du portage source JS. | ⛔ |  | |
+| win32\cd_win.c | cd_win.c | Backend CD audio Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\conproc.c | conproc.c | Console glue Win32 native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\conproc.h | conproc.h | Header console Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\glw_imp.c | glw_imp.c | Couche GL/windowing Win32 native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\glw_win.h | glw_win.h | Header GL/windowing Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\in_win.c | in_win.c | Backend input Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\net_wins.c | net_wins.c | Backend reseau WinSock natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\q_shwin.c | q_shwin.c | Glue systeme Win32 native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\q2.aps | q2.aps | Ressource/projet Win32 historique, hors perimetre du portage JS. | ⛔ |  | |
+| win32\q2.ico | q2.ico | Ressource application Win32 historique, hors perimetre du portage JS. | ⛔ |  | |
+| win32\q2.rc | q2.rc | Ressource/build Win32 historique, hors perimetre du portage JS. | ⛔ |  | |
+| win32\qe3.ico | qe3.ico | Ressource application Win32 historique, hors perimetre du portage JS. | ⛔ |  | |
+| win32\qgl_win.c | qgl_win.c | Chargement GL Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\resource.h | resource.h | Header ressources Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\rw_ddraw.c | rw_ddraw.c | Backend rendu Win32 DirectDraw natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\rw_dib.c | rw_dib.c | Backend rendu Win32 DIB natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\rw_imp.c | rw_imp.c | Glue rendu Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\rw_win.h | rw_win.h | Header rendu Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\snd_win.c | snd_win.c | Backend son Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\sys_win.c | sys_win.c | Couche systeme Win32 native, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\vid_dll.c | vid_dll.c | Chargement video/renderer Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\vid_menu.c | vid_menu.c | Menu video Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\winquake.aps | winquake.aps | Ressource/projet Win32 historique, hors perimetre du portage JS. | ⛔ |  | |
+| win32\winquake.h | winquake.h | Header application Win32 natif, hors perimetre du portage navigateur/JS. | ⛔ |  | |
+| win32\winquake.rc | winquake.rc | Ressource/build Win32 historique, hors perimetre du portage JS. | ⛔ |  | |

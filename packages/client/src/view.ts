@@ -1,7 +1,7 @@
 /**
  * File: view.ts
- * Source: Quake II original / client/cl_pred.c and client/cl_ents.c
- * Purpose: Port the first client-side prediction error and logical view interpolation helpers.
+ * Source: Quake II original / client/cl_view.c and client/cl_pred.c
+ * Purpose: Port the client-side logical view composition and the first prediction helpers used to build camera-ready values.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -14,6 +14,9 @@
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original C source.
+ * - `view.ts` is the principal port target for logical view composition from `client/cl_view.c`.
+ * - `apps/web` only applies the already computed view state to `PerspectiveCamera`.
+ * - Renderer adapters only consume refresh-facing entities and view values built by the client runtime.
  */
 
 import {

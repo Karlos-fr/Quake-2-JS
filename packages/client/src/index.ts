@@ -59,6 +59,12 @@ export {
   SCR_EndLoadingPlaque
 } from "./screen.js";
 export {
+  findClientImageIndex as findLocalClientImageIndex,
+  initializeLocalHudState as initializeLocalClientHudState,
+  setLocalLayoutBit,
+  toggleLocalLayoutBit
+} from "./local-client-bootstrap.js";
+export {
   Cmd_ForwardToServer,
   CL_Changing_f,
   CL_Connect_f,
@@ -92,6 +98,38 @@ export {
   KeyUp,
   createClientInputContext
 } from "./input.js";
+export {
+  applyLocalMovementMode,
+  buildLocalPredictedViewState,
+  cloneLocalUsercmd,
+  getPredictedViewheight,
+  initializeLocalSpawnPrediction,
+  promoteLocalPredictedState
+} from "./local-loop.js";
+export {
+  clearLocalMovementState,
+  resetLocalButtonState,
+  setLocalButtonHeld,
+  syncLocalMovementButtons
+} from "./local-input.js";
+export {
+  initializeLocalClientSession,
+  stepLocalClientSession
+} from "./local-session.js";
+export {
+  advanceLocalGameplayRuntime,
+  createLocalViewMotionState,
+  initializeLocalSkyState,
+  syncLocalGameplayFrame,
+  toLocalClientHudBootstrap,
+  updateLocalGameplayPlayer
+} from "./local-gameplay-sync.js";
+export {
+  buildBrushModelSnapshots,
+  buildInterpolatedBrushModelSnapshots,
+  cloneBrushModelSnapshots,
+  createBrushModelInterpolationState
+} from "./local-brush-models.js";
 export {
   CL_CalcViewValues,
   CL_CheckPredictionError,
@@ -237,15 +275,28 @@ export type {
   ClientScreenHudState
 } from "./screen.js";
 export type { ClientInputContext, ClientInputFrameOptions } from "./input.js";
+export type { LocalClientCollisionAdapter } from "./local-loop.js";
+export type {
+  BrushModelInterpolationState,
+  LocalViewMotionState
+} from "./local-gameplay-sync.js";
+export type {
+  LocalClientSessionInputState,
+  LocalClientSessionSnapshotHooks,
+  LocalClientSessionState
+} from "./local-session.js";
 export type { ClientViewOptions, ClientViewValues } from "./view.js";
-export type { QuakeSkySnapshot } from "../../renderer-common/src/index.js";
-
 export type {
   HudBounds,
   HudDrawCommand,
   HudFillCommand,
   HudNumberCommand,
   HudPictureCommand,
-  HudPictureResourceResolver,
-  HudTextCommand
-} from "../../renderer-common/src/index.js";
+  HudTextCommand,
+  QuakeSkySnapshot
+} from "./render-contracts.js";
+export type {
+  LocalClientHudBootstrapData,
+  LocalClientInventoryEntry,
+  LocalClientItemStringEntry
+} from "./local-client-bootstrap.js";

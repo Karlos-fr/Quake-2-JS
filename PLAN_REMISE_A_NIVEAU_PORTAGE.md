@@ -335,51 +335,84 @@ Priorite forte mais apres stabilisation architecturale :
 
 ## Phase 0 - Geler l'interpretation operative des regles
 
-- [ ] confirmer que la definition actuelle de `✅` du `README` est la definition de reference pour le depot
-- [ ] confirmer qu'un adapter web ou plateforme ne peut pas etre la cible principale d'un fichier source original
-- [ ] confirmer que `renderer-common` et `renderer-three` peuvent etre des cibles principales legitimes pour `ref_gl/*`
-- [ ] confirmer que `index.ts` ne compte pas comme cible principale de portage sauf cas explicitement documente
-- [ ] confirmer qu'un stub genere ne doit plus apparaitre comme cible architecturale dans [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md)
+- [x] confirmer que la definition actuelle de `✅` du `README` est la definition de reference pour le depot
+- [x] confirmer qu'un adapter web ou plateforme ne peut pas etre la cible principale d'un fichier source original
+- [x] confirmer que `renderer-common` et `renderer-three` peuvent etre des cibles principales legitimes pour `ref_gl/*`
+- [x] confirmer que `index.ts` ne compte pas comme cible principale de portage sauf cas explicitement documente
+- [x] confirmer qu'un stub genere ne doit plus apparaitre comme cible architecturale dans [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md)
 
 Sortie attendue :
 
 - plus aucun doute de cadrage avant de toucher au referentiel ou au code.
 
+Statut :
+
+- Phase 0 consideree comme realisee sur la base des clarifications integrees dans [README.md](C:\a\Projets\Quake-2\README.md).
+- Les confirmations de cadrage sont maintenant suffisamment stables pour demarrer directement la phase 1 sur le referentiel [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md).
+
 ## Phase 1 - Reparer le referentiel [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md)
 
 - [ ] reclasser chaque ligne actuellement `🟠` ou `✅` selon :
-  - [ ] conforme
-  - [ ] conforme mais a clarifier
-  - [ ] non conforme au `README`
-- [ ] supprimer des colonnes `Cible` les stubs generes comme cibles architecturales
-- [ ] faire commencer chaque `Cible` par le vrai fichier principal de rattachement
-- [ ] separer dans les descriptions :
-  - [ ] portage principal
-  - [ ] sous-fichiers extraits
-  - [ ] adapters consommateurs
-  - [ ] harnais de verification
-- [ ] reevaluer toutes les lignes `✅` a la lumiere de la nouvelle definition
+  - [x] conforme
+  - [x] conforme mais a clarifier
+  - [x] non conforme au `README`
+- [x] supprimer des colonnes `Cible` les stubs generes comme cibles architecturales
+- [x] faire commencer chaque `Cible` par le vrai fichier principal de rattachement
+- [x] separer dans les descriptions :
+  - [x] portage principal
+  - [x] sous-fichiers extraits
+  - [x] adapters consommateurs
+  - [x] harnais de verification
+- [x] reevaluer toutes les lignes `✅` a la lumiere de la nouvelle definition
 - [ ] traiter en priorite :
-  - [ ] `client/cl_scrn.c`
-  - [ ] `client/cl_view.c`
-  - [ ] `client/cl_pred.c`
-  - [ ] `client/cl_ents.c`
-  - [ ] `client/cl_fx.c`
-  - [ ] `client/cl_tent.c`
-  - [ ] `client/client.h`
-  - [ ] `client/screen.h`
-  - [ ] `client/ref.h`
-  - [ ] `game/g_local.h`
-  - [ ] `game/game.h`
-  - [ ] `qcommon/qcommon.h`
+  - [x] `client/cl_scrn.c`
+  - [x] `client/cl_view.c`
+  - [x] `client/cl_pred.c`
+  - [x] `client/cl_ents.c`
+  - [x] `client/cl_fx.c`
+  - [x] `client/cl_tent.c`
+  - [x] `client/client.h`
+  - [x] `client/screen.h`
+  - [x] `client/ref.h`
+  - [x] `game/g_local.h`
+  - [x] `game/game.h`
+  - [x] `qcommon/qcommon.h`
+
+Statut :
+
+- Les premieres lignes prioritaires du referentiel ont ete requalifiees pour rendre explicites :
+  - la cible principale ;
+  - les sous-fichiers extraits ;
+  - le fait que les adapters web ne sont plus listés comme cibles principales ;
+  - le retrait des stubs generes comme cibles architecturales.
+- Les lignes `🟠` deja renseignees dans le tableau ont maintenant ete nettoyees au meme format editorial :
+  - rattachement principal explicite quand il est etabli ;
+  - distinction entre portage principal, supports, consommateurs et harnais ;
+  - absence de cible artificielle quand le rattachement principal n'est pas encore prouve.
+- La relecture des lignes `✅` a deja conduit a une nouvelle retrogradation explicite :
+  - `game/p_weapon.c` est revenu en `🟠` car son port reste encore branche sur des hooks gameplay/monde non totalement refermes.
+- Les lignes encore en `✅` ont ete relues et normalisees au meme format editorial que le reste du referentiel.
+- Une premiere vague de lignes vides a aussi ete classee explicitement hors perimetre :
+  - documentation et fichiers historiques de release ;
+  - sauvegardes/configuration locale ;
+  - projets IDE / fichiers de build historiques ;
+  - couches plateformes natives `irix`, `linux`, `null`, `rhapsody`, `solaris`, `win32`, `unix`.
+- La phase 1 reste ouverte tant que le reste des lignes `🟠` et `✅` n'a pas recu le meme niveau de nettoyage editorial.
 
 ## Phase 2 - Supprimer les dependances runtime -> adapter
 
-- [ ] sortir de `packages/client/src/screen.ts` tous les types venant de `renderer-common`
-- [ ] sortir de `packages/client/src/sky.ts` le type `QuakeSkySnapshot` venant de `renderer-common`
-- [ ] cesser de re-exporter depuis `packages/client/src/index.ts` des types provenant de `renderer-common`
-- [ ] recreer cote runtime client les contrats de HUD et de sky necessaires
-- [ ] laisser `renderer-common` consommer ces contrats runtime au lieu de les definir pour le client
+- [x] sortir de `packages/client/src/screen.ts` tous les types venant de `renderer-common`
+- [x] sortir de `packages/client/src/sky.ts` le type `QuakeSkySnapshot` venant de `renderer-common`
+- [x] cesser de re-exporter depuis `packages/client/src/index.ts` des types provenant de `renderer-common`
+- [x] recreer cote runtime client les contrats de HUD et de sky necessaires
+- [x] laisser `renderer-common` consommer ces contrats runtime au lieu de les definir pour le client
+
+Statut :
+
+- Les contrats HUD et sky ont ete recrees dans `packages/client/src/render-contracts.ts`.
+- `screen.ts`, `sky.ts` et `index.ts` ne dependent plus de `renderer-common`.
+- `renderer-common` consomme maintenant ces types runtime au lieu de les definir pour le client.
+- `npm run typecheck` passe apres la bascule.
 
 Definition de termine :
 
@@ -389,55 +422,177 @@ Definition de termine :
 
 ### 3.1 `apps/web/src/local-client-controller.ts`
 
-- [ ] classer le contenu en quatre groupes :
-  - [ ] vrai adapter web
-  - [ ] logique client source a rapatrier
-  - [ ] logique gameplay source a rapatrier
-  - [ ] glue temporaire a eliminer
-- [ ] sortir :
-  - [ ] orchestration prediction source
-  - [ ] orchestration vue source
-  - [ ] hooks d'armes localement declares
-  - [ ] layouts locaux qui dupliquent du source
-  - [ ] morceaux de bootstrap gameplay non web-specifiques
+- [x] classer le contenu en quatre groupes :
+  - [x] vrai adapter web
+  - [x] logique client source a rapatrier
+  - [x] logique gameplay source a rapatrier
+  - [x] glue temporaire a eliminer
+- [x] sortir :
+  - [x] orchestration prediction source
+  - [x] orchestration vue source
+  - [x] hooks d'armes localement declares
+  - [x] layouts locaux qui dupliquent du source
+  - [x] morceaux de bootstrap gameplay non web-specifiques
+
+Statut :
+
+- Les hooks d'armes locaux, slots, inventaire bootstrap et selection d'arme ont ete extraits vers `packages/game/src/local-game-bootstrap.ts`.
+- Les layouts/status bar locaux et le bootstrap HUD client ont ete extraits vers `packages/client/src/local-client-bootstrap.ts`.
+- Le noyau de prediction/vue locale a commence a etre extrait vers `packages/client/src/local-loop.ts` :
+  - mode de mouvement local ;
+  - bootstrap de prediction au spawn ;
+  - promotion de l'etat predit ;
+  - clonage de `usercmd` ;
+  - calcul de vue predit pour l'adapter camera.
+- Une partie importante du pont gameplay local -> client runtime a aussi ete extraite vers `packages/client/src/local-gameplay-sync.ts` :
+  - avance du runtime local sur `FRAMETIME` ;
+  - synchronisation gameplay -> frame client ;
+  - bootstrap sky local ;
+  - conversion du bootstrap gameplay vers le bootstrap HUD client ;
+  - mise a jour du joueur gameplay a partir de la prediction client.
+- Le bootstrap du joueur gameplay local a ete recentralise dans `packages/game/src/local-game-bootstrap.ts`.
+- Les helpers de bascule `STAT_LAYOUTS` ont ete centralises dans `packages/client/src/local-client-bootstrap.ts`.
+- Les helpers de saisie locale et de mirroring des `kbutton_t` ont ete extraits vers `packages/client/src/local-input.ts`.
+- Les helpers d'instantanes et d'interpolation des brush models mobiles ont ete extraits vers `packages/client/src/local-brush-models.ts`.
+- Le bootstrap et le tick d'orchestration locale prediction/gameplay ont ete recentralises dans `packages/client/src/local-session.ts`.
+- `apps/web/src/local-client-controller.ts` conserve encore :
+  - le branchement de la session locale avec l'input navigateur et la camera ;
+  - les handlers DOM / pointer lock et le mapping clavier navigateur ;
+  - l'adaptateur camera `PerspectiveCamera` ;
+  - l'adaptateur collision local vers le runtime gameplay.
+- La phase 3.1 est consideree comme close :
+  - le calcul de vue reste cote runtime ;
+  - l'application a `PerspectiveCamera` reste volontairement cote adapter web.
 
 ### 3.2 `apps/web/src/main.ts`
 
-- [ ] laisser seulement :
-  - [ ] bootstrap navigateur
-  - [ ] choix de map
-  - [ ] wire renderer
-  - [ ] wire input DOM
-  - [ ] wire HUD renderer
-- [ ] deplacer tout ce qui releve encore d'un comportement source ou d'une decision runtime stable
+- [x] laisser seulement :
+  - [x] bootstrap navigateur
+  - [x] choix de map
+  - [x] wire renderer
+  - [x] wire input DOM
+  - [x] wire HUD renderer
+- [x] deplacer tout ce qui releve encore d'un comportement source ou d'une decision runtime stable
+
+Statut :
+
+- La coquille DOM, les widgets HUD/FPS et le panneau d'etat ont ete extraits vers `apps/web/src/web-shell.ts`.
+- La couche de debug refresh Three.js a ete extraite vers `apps/web/src/refresh-debug-layer.ts`.
+- Les helpers de chargement PAK/URL/map selector ont ete extraits vers `apps/web/src/web-map-bootstrap.ts`.
+- Les helpers de renderer/scene/camera/sky formatting ont ete extraits vers `apps/web/src/web-render-bootstrap.ts`.
+- La boucle d'animation, le resize renderer/HUD et les bindings HUD de demo ont ete extraits vers `apps/web/src/web-demo-loop.ts`.
+- `apps/web/src/main.ts` agit maintenant davantage comme point de bootstrap :
+  - chargement du PAK ;
+  - selection de map ;
+  - creation renderer/scene/camera ;
+  - branchement du controleur local, du ciel, du HUD et du refresh.
+- La phase 3.2 est consideree comme close :
+  - `main.ts` est maintenant limite au bootstrap navigateur et au wiring des adapters web ;
+  - le reliquat extrait reste explicitement borne au perimetre web/Three.js.
 
 ## Phase 4 - Recentraliser les gros ports client
 
 ### 4.1 `client/cl_ents.c`
 
-- [ ] designer clairement `packages/client/src/entities.ts` comme cible principale
-- [ ] faire de `parse.ts` un fournisseur de paquets seulement
-- [ ] laisser `refresh.ts` comme projection du resultat
-- [ ] retirer `apps/web` et `renderer-three` du role de cibles de portage principal
+- [x] designer clairement `packages/client/src/entities.ts` comme cible principale
+- [x] faire de `parse.ts` un fournisseur de paquets seulement
+- [x] laisser `refresh.ts` comme projection du resultat
+- [x] retirer `apps/web` et `renderer-three` du role de cibles de portage principal
+
+Statut :
+
+- `packages/client/src/entities.ts` porte bien le noyau principal issu de `cl_ents.c` pour :
+  - les entity events ;
+  - la collecte des entity states de frame ;
+  - la reconstruction des packet entity snapshots interpoles.
+- `packages/client/src/parse.ts` reste le lieu de lecture des messages reseau et des deltas de frame :
+  - `CL_ParseEntityBits` ;
+  - `CL_ParseDelta` ;
+  - `CL_ParsePlayerstate` ;
+  - `CL_ParseFrame` ;
+  - `CL_ParsePacketEntities` ;
+  - ce rattachement est coherent avec le role de fournisseur de paquets/frame data plutot qu'avec une cible de projection refresh.
+- `packages/client/src/refresh.ts` joue bien le role de projection du resultat :
+  - composition de `ClientRefreshFrame` ;
+  - emission des render entities, lights, particles et temp refresh ;
+  - sans devenir la cible principale du port source.
+- Les adapters renderer restent consommateurs :
+  - `packages/renderer-three/src/refresh-entity-sync.ts` ;
+  - `packages/renderer-three/src/md2-mesh-builder.ts` ;
+  - aucun fichier de `apps/web` n'est plus a traiter comme cible principale pour `cl_ents.c`.
 
 ### 4.2 `client/cl_fx.c`
 
-- [ ] designer clairement `packages/client/src/effects.ts` comme cible principale
-- [ ] laisser dans `parse.ts` seulement la lecture de paquets
-- [ ] laisser dans `refresh.ts` seulement la projection renderer/audio-ready
-- [ ] garder `monster-flash.ts` comme sous-module justifie, non comme cible concurrente
+- [x] designer clairement `packages/client/src/effects.ts` comme cible principale
+- [x] laisser dans `parse.ts` seulement la lecture de paquets
+- [x] laisser dans `refresh.ts` seulement la projection renderer/audio-ready
+- [x] garder `monster-flash.ts` comme sous-module justifie, non comme cible concurrente
+
+Statut :
+
+- `packages/client/src/effects.ts` porte bien le noyau principal issu de `cl_fx.c` pour :
+  - les muzzle flashes joueur et monstre ;
+  - les dynamic lights ;
+  - les light styles ;
+  - les particules runtime ;
+  - la traduction des entity events vers sorties structurees.
+- `packages/client/src/parse.ts` reste borne a la lecture des paquets source lies a `cl_fx.c` :
+  - `CL_ParseMuzzleFlash` ;
+  - `CL_ParseMuzzleFlash2` ;
+  - ainsi que les paquets auxiliaires rediriges ensuite vers `effects.ts`.
+- `packages/client/src/refresh.ts` reste du cote projection/composition :
+  - `CL_RunDLights` / `CL_AddDLights` ;
+  - `CL_RunLightStyles` / `CL_AddLightStyles` ;
+  - `CL_AddParticles` ;
+  - integration dans `ClientRefreshFrame`.
+- `packages/client/src/monster-flash.ts` reste un sous-module justifie :
+  - table `monster_flash_offset` ;
+  - acces `getMonsterFlashOffset` ;
+  - sans concurrencer `effects.ts` comme cible principale de `cl_fx.c`.
 
 ### 4.3 `client/cl_tent.c`
 
-- [ ] designer `packages/client/src/tent.ts` comme cible principale
-- [ ] clarifier la frontiere avec `effects.ts`
-- [ ] sortir du referentiel les cibles qui ne sont que consommatrices
+- [x] designer `packages/client/src/tent.ts` comme cible principale
+- [x] clarifier la frontiere avec `effects.ts`
+- [x] sortir du referentiel les cibles qui ne sont que consommatrices
+
+Statut :
+
+- `packages/client/src/tent.ts` porte bien le noyau principal issu de `cl_tent.c` pour :
+  - l'etat persistant des beams, player beams, lasers, explosions, force walls et sustains ;
+  - `CL_ClearTEnts`, `CL_RegisterTEntSounds`, `CL_RegisterTEntModels`, `CL_AddTEntPacket` et `CL_BuildTEntRefresh`.
+- `packages/client/src/parse.ts` reste borne a la lecture des paquets temp entities :
+  - `CL_ParseTEnt` ;
+  - `CL_ParseParticles` ;
+  - construction des `ClientTempEntityPacket` consommes ensuite par `tent.ts`.
+- `packages/client/src/effects.ts` reste un module de support partage :
+  - helpers reutilises par `tent.ts` ;
+  - sans concurrencer `tent.ts` comme cible principale de `cl_tent.c`.
+- `packages/client/src/refresh.ts` reste un consommateur de projection :
+  - integration de `CL_BuildTEntRefresh` dans `ClientRefreshFrame` ;
+  - sans devenir une cible principale de portage source.
 
 ### 4.4 `client/cl_view.c`
 
-- [ ] designer `packages/client/src/view.ts` comme cible principale
-- [ ] retirer le pilotage principal de la vue depuis `apps/web`
-- [ ] retirer les decisions source de `renderer-three`
+- [x] designer `packages/client/src/view.ts` comme cible principale
+- [x] retirer le pilotage principal de la vue depuis `apps/web`
+- [x] retirer les decisions source de `renderer-three`
+
+Statut :
+
+- `packages/client/src/view.ts` porte bien le noyau principal actuellement disponible pour `cl_view.c` :
+  - `CL_CalcViewValues` ;
+  - `CL_UpdateLerpFraction` ;
+  - l'etat de vue logique consomme ensuite par le reste du client.
+- `apps/web/src/local-client-controller.ts` ne pilote plus la vue au sens source :
+  - il se contente d'appeler `buildLocalPredictedViewState` ;
+  - puis d'appliquer le resultat a `PerspectiveCamera`.
+- `packages/client/src/refresh.ts` reste consommateur de la vue logique :
+  - `CL_BuildRefreshFrame` compose `view` a partir de `CL_CalcViewValues` ;
+  - le view weapon qu'il ajoute reste rattache au flux refresh issu de `cl_ents.c`, pas a la cible principale de `cl_view.c`.
+- `packages/renderer-three/src/refresh-entity-sync.ts` reste un adapter pur :
+  - il consomme `ClientRefreshFrame` et `RF_WEAPONMODEL` ;
+  - il ne decide ni le calcul de camera, ni les valeurs source de vue.
 
 ### 4.5 `client/cl_pred.c`
 

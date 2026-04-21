@@ -9,19 +9,7 @@
  * - none
  */
 
-/**
- * Category: New
- * Purpose: Describe one active Quake II sky state ready to cross the runtime-to-renderer bridge.
- *
- * Constraints:
- * - Must remain directly mappable from `CS_SKY`, `CS_SKYROTATE` and `CS_SKYAXIS`.
- * - Must use value semantics for the axis tuple.
- */
-export interface QuakeSkySnapshot {
-  name: string;
-  rotate: number;
-  axis: [number, number, number];
-}
+export type { QuakeSkySnapshot } from "../../client/src/render-contracts.js";
 
 /**
  * Category: New

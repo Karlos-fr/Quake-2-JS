@@ -13,226 +13,53 @@
 
 import { PerspectiveCamera, Vector3 } from "three";
 import {
+  applyLocalMovementMode,
+  buildBrushModelSnapshots,
+  buildInterpolatedBrushModelSnapshots,
+  buildLocalPredictedViewState,
   CL_BuildRefreshFrame,
   CL_BuildSkySnapshot,
-  CL_CalcViewValues,
   CL_CreateCmd,
   CL_InitInput,
   CL_InitLocal,
   CL_PredictMovement,
   SCR_BuildScreenState,
   CL_SetInputFrameTime,
-  CL_UpdateLerpFraction,
-  connstate_t,
-  createFrame,
+  clearLocalMovementState,
+  cloneBrushModelSnapshots,
   createClientInputContext,
   createClientMainContext,
   createClientRuntime,
+  initializeLocalClientSession,
+  setLocalLayoutBit,
+  type LocalClientCollisionAdapter,
+  stepLocalClientSession,
+  toggleLocalLayoutBit,
   type ClientRefreshFrame,
-  type ClientInputContext,
+  type LocalClientSessionInputState,
   type ClientScreenHudState,
   type ClientRuntime,
   type QuakeSkySnapshot
 } from "../../../packages/client/src/index.js";
 import {
-  attachGameClient,
-  ChangeWeapon,
-  FindItem,
-  GetAmmoItemForWeapon,
-  Think_Weapon,
-  Use_Weapon,
-  Weapon_BFG,
-  Weapon_Blaster,
-  Weapon_Chaingun,
-  Weapon_Grenade,
-  Weapon_GrenadeLauncher,
-  Weapon_HyperBlaster,
-  Weapon_Machinegun,
-  Weapon_Railgun,
-  Weapon_RocketLauncher,
-  Weapon_Shotgun,
-  Weapon_SuperShotgun,
-  createGameRuntimeFromBspMap,
-  fire_bfg,
-  fire_blaster,
-  fire_bullet,
-  fire_grenade,
-  fire_grenade2,
-  fire_rail,
-  fire_rocket,
-  fire_shotgun,
-  DAMAGE_TIME,
-  FRAMETIME,
-  G_RunFrame,
-  initializeDoorPlanEntities,
-  linkGameEntity,
-  refreshEntitySpatialState,
-  spawnGameEntity,
-  touchTriggerEntities,
-  SVF_NOCLIENT,
+  LOCAL_WEAPON_SLOTS,
+  selectLocalWeapon,
   type GameEntity,
-  type GameWeaponHooks,
   type GameRuntime
 } from "../../../packages/game/src/index.js";
 import type { BrushModelSnapshot } from "../../../packages/renderer-three/src/index.js";
 import {
   AngleVectors,
-  BUTTON_ATTACK,
-  CS_IMAGES,
-  CS_ITEMS,
-  CS_MODELS,
-  CS_SOUNDS,
-  CS_STATUSBAR,
-  CS_AIRACCEL,
-  CS_SKY,
-  CS_SKYAXIS,
-  CS_SKYROTATE,
-  LerpAngle,
   MASK_PLAYERSOLID,
-  PMF_DUCKED,
-  PMF_ON_GROUND,
   PITCH,
-  pmtype_t,
-  STAT_AMMO,
-  STAT_AMMO_ICON,
-  STAT_ARMOR,
-  STAT_ARMOR_ICON,
-  STAT_FRAGS,
-  STAT_HEALTH,
-  STAT_HEALTH_ICON,
-  STAT_LAYOUTS,
-  STAT_PICKUP_ICON,
-  STAT_PICKUP_STRING,
-  STAT_SELECTED_ICON,
   STAT_SELECTED_ITEM,
-  STAT_TIMER,
-  STAT_TIMER_ICON,
-  Pmove,
   YAW,
-  createEntityState,
   createCommandRuntime,
-  createPmoveContext,
   createCvarRuntime,
-  type entity_state_t,
-  type trace_t,
-  type pmove_t,
-  type vec3_t
 } from "../../../packages/qcommon/src/index.js";
 import type { BspSpawnPoint, BspMap } from "../../../packages/formats/src/index.js";
-
 const CAMERA_MOUSE_SENSITIVITY = 0.0022;
-const DEFAULT_VIEWHEIGHT = 22;
-const DUCKED_VIEWHEIGHT = -2;
-const DEFAULT_SPAWN_LIFT = 24;
-const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
-const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
-const PLAYER_DUCKED_MAXS: vec3_t = [16, 16, 4];
-const PLAYER_GIB_MINS: vec3_t = [-16, -16, 0];
-const PLAYER_GIB_MAXS: vec3_t = [16, 16, 16];
-const LOCAL_SINGLE_STATUSBAR =
-  "yb -24 "
-  + "xv 0 "
-  + "hnum "
-  + "xv 50 "
-  + "pic 0 "
-  + "if 2 "
-  + " xv 100 "
-  + " anum "
-  + " xv 150 "
-  + " pic 2 "
-  + "endif "
-  + "if 4 "
-  + " xv 200 "
-  + " rnum "
-  + " xv 250 "
-  + " pic 4 "
-  + "endif "
-  + "if 6 "
-  + " xv 296 "
-  + " pic 6 "
-  + "endif "
-  + "yb -50 "
-  + "if 7 "
-  + " xv 0 "
-  + " pic 7 "
-  + " xv 26 "
-  + " yb -42 "
-  + " stat_string 8 "
-  + " yb -50 "
-  + "endif "
-  + "if 9 "
-  + " xv 262 "
-  + " num 2 10 "
-  + " xv 296 "
-  + " pic 9 "
-  + "endif "
-  + "if 11 "
-  + " xv 148 "
-  + " pic 11 "
-  + "endif ";
-const LOCAL_SCOREBOARD_LAYOUT =
-  "xv 0 yv 32 picn inventory "
-  + "client 0 32 0 7 32 5 "
-  + "client 0 64 1 3 48 3 ";
-
 type MovementKey = "forward" | "backward" | "left" | "right" | "up" | "down";
-type WeaponSlotKey =
-  | "Backquote"
-  | "Digit1"
-  | "Digit2"
-  | "Digit3"
-  | "Digit4"
-  | "Digit5"
-  | "Digit6"
-  | "Digit7"
-  | "Digit8"
-  | "Digit9"
-  | "Digit0";
-
-const LOCAL_WEAPON_SLOTS: Record<WeaponSlotKey, string> = {
-  Backquote: "Blaster",
-  Digit1: "Shotgun",
-  Digit2: "Super Shotgun",
-  Digit3: "Machinegun",
-  Digit4: "Chaingun",
-  Digit5: "Grenades",
-  Digit6: "Grenade Launcher",
-  Digit7: "Rocket Launcher",
-  Digit8: "HyperBlaster",
-  Digit9: "Railgun",
-  Digit0: "BFG10K"
-};
-
-/**
- * Category: New
- * Purpose: Reuse the currently ported `p_weapon.c` and `g_weapon.c` functions as the local browser gameplay weapon hook table.
- *
- * Constraints:
- * - Must stay explicit so missing gameplay dependencies remain visible.
- */
-const LOCAL_GAME_WEAPON_HOOKS: GameWeaponHooks = {
-  fire_bfg,
-  fire_blaster,
-  fire_bullet,
-  fire_grenade,
-  fire_grenade2,
-  fire_rail,
-  fire_rocket,
-  fire_shotgun,
-  weaponThink: {
-    Weapon_Blaster,
-    Weapon_Shotgun,
-    Weapon_SuperShotgun,
-    Weapon_Machinegun,
-    Weapon_Chaingun,
-    Weapon_Grenade,
-    Weapon_GrenadeLauncher,
-    Weapon_RocketLauncher,
-    Weapon_HyperBlaster,
-    Weapon_Railgun,
-    Weapon_BFG
-  }
-};
 
 /**
  * Category: New
@@ -261,25 +88,6 @@ export interface LocalClientController {
  * - Must keep timestamps aligned with fixed Quake II server frames.
  * - Must preserve per-model pairing through the original `*N` model name.
  */
-interface BrushModelInterpolationState {
-  previousSnapshots: BrushModelSnapshot[];
-  currentSnapshots: BrushModelSnapshot[];
-  previousTime: number;
-  currentTime: number;
-}
-
-/**
- * Category: New
- * Purpose: Preserve the minimal local view-motion state required to feed the first-person weapon bob and delta-angle formulas from `p_view.c`.
- *
- * Constraints:
- * - Must remain local to the browser adapter until `p_view.c` itself is ported.
- */
-interface LocalViewMotionState {
-  bobtime: number;
-  oldviewangles: vec3_t;
-}
-
 /**
  * Category: New
  * Purpose: Create a local client controller that drives the browser camera from the ported Quake II client prediction path.
@@ -302,60 +110,24 @@ export function createLocalClientController(
   const inputContext = createClientInputContext(runtime, cmdRuntime, cvarRuntime);
   CL_InitInput(inputContext);
 
-  const gameplayRuntime = createGameRuntimeFromBspMap(map);
-  initializeDoorPlanEntities(gameplayRuntime);
-  const gameplayPlayer = createLocalGameplayPlayer(gameplayRuntime);
-  const collision = createLocalCollisionAdapter(gameplayRuntime, gameplayPlayer);
-  const brushModelInterpolation = createBrushModelInterpolationState(gameplayRuntime);
-
-  const spawnOrigin: vec3_t = spawn
-    ? [spawn.origin[0], spawn.origin[1], spawn.origin[2] + DEFAULT_SPAWN_LIFT]
-    : [0, 0, DEFAULT_SPAWN_LIFT];
-  const spawnYaw = spawn?.angle ?? 0;
-
-  runtime.cls.state = connstate_t.ca_active;
-  runtime.cl.frame.valid = true;
-  runtime.cl.frame.serverframe = 0;
-  runtime.cl.frame.servertime = 0;
-  runtime.cl.frame.playerstate.pmove.pm_type = 0;
-  runtime.cl.frame.playerstate.pmove.origin = [
-    Math.trunc(spawnOrigin[0] * 8),
-    Math.trunc(spawnOrigin[1] * 8),
-    Math.trunc(spawnOrigin[2] * 8)
-  ];
-  runtime.cl.frame.playerstate.pmove.velocity = [0, 0, 0];
-  runtime.cl.frame.playerstate.pmove.gravity = 800;
-  runtime.cl.frame.playerstate.pmove.delta_angles = [0, 0, 0];
-  runtime.cl.frame.playerstate.viewoffset = [0, 0, DEFAULT_VIEWHEIGHT];
-  runtime.cl.frame.playerstate.viewangles = [0, spawnYaw, 0];
-  runtime.cl.viewangles = [0, spawnYaw, 0];
-  runtime.cl.predicted_origin = [...spawnOrigin];
-  runtime.cl.predicted_angles = [0, spawnYaw, 0];
-  runtime.cl.configstrings[CS_AIRACCEL] = "0";
-
-  initializeSpawnPrediction(runtime, collision, spawnOrigin);
-  initializeLocalHudState(runtime);
-  initializeLocalSkyState(runtime, map);
-  syncLocalGameplayFrame(runtime, gameplayRuntime);
-
-  const pressedKeys: Record<MovementKey, boolean> = {
-    forward: false,
-    backward: false,
-    left: false,
-    right: false,
-    up: false,
-    down: false
+  const inputState: LocalClientSessionInputState = {
+    pressedKeys: {
+      forward: false,
+      backward: false,
+      left: false,
+      right: false,
+      up: false,
+      down: false
+    },
+    attackPressed: false
   };
-  let attackPressed = false;
-
   let pointerLocked = false;
-  let realtimeMs = 0;
-  let nextCommandSequence = 1;
-  let ghostMode = true;
-  const localViewMotion: LocalViewMotionState = {
-    bobtime: 0,
-    oldviewangles: [0, spawnYaw, 0]
-  };
+  const session = initializeLocalClientSession(runtime, map, spawn, createLocalCollisionAdapter, {
+    buildSnapshots: buildBrushModelSnapshots,
+    cloneSnapshots: cloneBrushModelSnapshots
+  });
+  const { gameplayRuntime, gameplayPlayer, brushModelInterpolation } = session;
+  const collision = createLocalCollisionAdapter(gameplayRuntime, gameplayPlayer);
 
   const codeBindings: Record<string, MovementKey> = {
     Space: "up",
@@ -377,7 +149,7 @@ export function createLocalClientController(
   document.addEventListener("pointerlockchange", () => {
     pointerLocked = document.pointerLockElement === viewport;
     if (!pointerLocked) {
-      clearMovementState(inputContext, pressedKeys);
+      clearLocalMovementState(inputContext, inputState.pressedKeys);
     }
   });
 
@@ -393,19 +165,26 @@ export function createLocalClientController(
 
   window.addEventListener("keydown", (event) => {
     if (event.code === "Tab") {
-      setLayoutBit(runtime, 1, true);
+      setLocalLayoutBit(runtime, 1, true);
       event.preventDefault();
       return;
     }
 
     if (event.key.toLowerCase() === "i") {
-      toggleLayoutBit(runtime, 2);
+      toggleLocalLayoutBit(runtime, 2);
       event.preventDefault();
       return;
     }
 
     if (event.code in LOCAL_WEAPON_SLOTS) {
-      selectLocalWeapon(gameplayPlayer, LOCAL_WEAPON_SLOTS[event.code as WeaponSlotKey], gameplayRuntime, runtime);
+      const selectedIndex = selectLocalWeapon(
+        gameplayPlayer,
+        LOCAL_WEAPON_SLOTS[event.code as keyof typeof LOCAL_WEAPON_SLOTS],
+        gameplayRuntime
+      );
+      if (selectedIndex !== null) {
+        runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = selectedIndex;
+      }
       event.preventDefault();
       return;
     }
@@ -415,13 +194,13 @@ export function createLocalClientController(
       return;
     }
 
-    pressedKeys[binding] = true;
+    inputState.pressedKeys[binding] = true;
     event.preventDefault();
   });
 
   window.addEventListener("keyup", (event) => {
     if (event.code === "Tab") {
-      setLayoutBit(runtime, 1, false);
+      setLocalLayoutBit(runtime, 1, false);
       event.preventDefault();
       return;
     }
@@ -431,7 +210,7 @@ export function createLocalClientController(
       return;
     }
 
-    pressedKeys[binding] = false;
+    inputState.pressedKeys[binding] = false;
     event.preventDefault();
   });
 
@@ -440,7 +219,7 @@ export function createLocalClientController(
       return;
     }
 
-    attackPressed = true;
+    inputState.attackPressed = true;
     event.preventDefault();
   });
 
@@ -449,19 +228,19 @@ export function createLocalClientController(
       return;
     }
 
-    attackPressed = false;
+    inputState.attackPressed = false;
     event.preventDefault();
   });
 
   window.addEventListener("blur", () => {
-    clearMovementState(inputContext, pressedKeys);
-    attackPressed = false;
+    clearLocalMovementState(inputContext, inputState.pressedKeys);
+    inputState.attackPressed = false;
   });
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState !== "visible") {
-      clearMovementState(inputContext, pressedKeys);
-      attackPressed = false;
+      clearLocalMovementState(inputContext, inputState.pressedKeys);
+      inputState.attackPressed = false;
     }
   });
 
@@ -476,739 +255,50 @@ export function createLocalClientController(
       return refreshFrame;
     },
     get ghostMode() {
-      return ghostMode;
+      return session.ghostMode;
     },
     get screenState() {
       return SCR_BuildScreenState(runtime, {
         paused: false,
-        outgoingSequence: nextCommandSequence,
-        incomingAcknowledged: nextCommandSequence - 1,
+        outgoingSequence: session.nextCommandSequence,
+        incomingAcknowledged: session.nextCommandSequence - 1,
         commandBackup: 64
       });
     },
     get skySnapshot() {
       return CL_BuildSkySnapshot(runtime);
     },
-    getBrushModelSnapshots: () => buildInterpolatedBrushModelSnapshots(brushModelInterpolation, realtimeMs / 1000),
+    getBrushModelSnapshots: () => buildInterpolatedBrushModelSnapshots(brushModelInterpolation, session.realtimeMs / 1000),
     setGhostMode: (enabled) => {
-      ghostMode = enabled;
-      applyMovementMode(runtime, ghostMode);
+      session.ghostMode = enabled;
+      applyLocalMovementMode(runtime, session.ghostMode);
     },
     update: (deltaSeconds) => {
-      realtimeMs += deltaSeconds * 1000;
-      runtime.cls.realtime = realtimeMs;
       runtime.cls.frametime = deltaSeconds;
-      runtime.cl.time = realtimeMs;
-      applyMovementMode(runtime, ghostMode);
-      advanceGameplayRuntime(gameplayRuntime, realtimeMs, brushModelInterpolation);
-
-      CL_SetInputFrameTime(inputContext, realtimeMs);
-      syncMovementButtons(inputContext, pressedKeys, realtimeMs);
-      setButtonHeld(inputContext.in_attack, attackPressed, realtimeMs);
-
-      const cmd = CL_CreateCmd(inputContext, {
-        anykeydown: Object.values(pressedKeys).some(Boolean),
-        key_game_active: true
-      });
-
-      const frameIndex = nextCommandSequence & 63;
-      runtime.cl.cmd = cmd;
-      runtime.cl.cmds[frameIndex] = cloneUsercmd(cmd);
-      runtime.cl.cmd_time[frameIndex] = realtimeMs;
-
-      CL_PredictMovement(runtime, {
-        predictMovement: true,
-        paused: false,
-        incomingAcknowledged: nextCommandSequence - 1,
-        outgoingSequence: nextCommandSequence + 1,
-        trace: collision.trace,
-        pointcontents: collision.pointcontents
-      });
-
-      promotePredictedState(runtime, realtimeMs);
-      updateGameplayRuntimePlayer(gameplayRuntime, gameplayPlayer, runtime, localViewMotion);
-      syncLocalGameplayFrame(runtime, gameplayRuntime);
+      stepLocalClientSession(
+        runtime,
+        inputContext,
+        session,
+        inputState,
+        collision,
+        (context, options) => {
+          runtime.cls.realtime = session.realtimeMs;
+          CL_SetInputFrameTime(context, session.realtimeMs);
+          return CL_CreateCmd(context, options);
+        },
+        CL_PredictMovement,
+        {
+          buildSnapshots: buildBrushModelSnapshots,
+          cloneSnapshots: cloneBrushModelSnapshots
+        }
+      );
       applyPredictedCamera(camera, runtime);
 
       refreshFrame = CL_BuildRefreshFrame(runtime, {
         predictMovement: true
       });
-
-      nextCommandSequence += 1;
     }
   };
-}
-
-/**
- * Category: New
- * Purpose: Create the local gameplay actor used to touch Quake II trigger volumes during the browser demo.
- *
- * Constraints:
- * - Must preserve the original player trigger hull dimensions.
- */
-function createLocalGameplayPlayer(runtime: GameRuntime): GameEntity {
-  const player = spawnGameEntity(runtime);
-  player.classname = "player";
-  const client = attachGameClient(player);
-  player.health = 100;
-  player.viewheight = DEFAULT_VIEWHEIGHT;
-  player.mins = [...PLAYER_TRIGGER_MINS];
-  player.maxs = [...PLAYER_TRIGGER_MAXS];
-  seedLocalWeaponInventory(player, client, runtime);
-  refreshEntitySpatialState(player);
-  linkGameEntity(runtime, player);
-  return player;
-}
-
-/**
- * Category: New
- * Purpose: Seed the browser-local gameplay player with a minimal inventory and active weapon so the first-person weapon path can run immediately.
- *
- * Constraints:
- * - Must rely on the already ported `g_items.c` metadata and `ChangeWeapon`.
- */
-function seedLocalWeaponInventory(player: GameEntity, client: NonNullable<GameEntity["client"]>, runtime: GameRuntime): void {
-  const weaponNames = Object.values(LOCAL_WEAPON_SLOTS);
-  for (const weaponName of weaponNames) {
-    const weapon = FindItem(weaponName);
-    if (weapon) {
-      client.pers.inventory[weapon.index] = 1;
-    }
-  }
-
-  const ammoGrants: Array<[string, number]> = [
-    ["Shells", 50],
-    ["Bullets", 200],
-    ["Grenades", 25],
-    ["Rockets", 50],
-    ["Cells", 200],
-    ["Slugs", 50]
-  ];
-
-  for (const [ammoName, amount] of ammoGrants) {
-    const ammo = FindItem(ammoName);
-    if (ammo) {
-      client.pers.inventory[ammo.index] = amount;
-    }
-  }
-
-  const initialWeapon = FindItem("Shotgun") ?? FindItem("Machinegun") ?? FindItem("Grenades");
-  if (initialWeapon) {
-    client.newweapon = initialWeapon;
-    ChangeWeapon(player, runtime, LOCAL_GAME_WEAPON_HOOKS);
-  }
-}
-
-/**
- * Category: New
- * Purpose: Request one local weapon switch from the browser demo controls using the original `Use_Weapon` path.
- *
- * Constraints:
- * - Must ignore unknown or unavailable weapons cleanly.
- */
-function selectLocalWeapon(player: GameEntity, weaponName: string, gameplayRuntime: GameRuntime, runtime: ClientRuntime): void {
-  const weapon = FindItem(weaponName);
-  const client = player.client;
-  if (!weapon || !client || client.pers.inventory[weapon.index] <= 0) {
-    return;
-  }
-
-  Use_Weapon(player, weapon, gameplayRuntime);
-  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = weapon.index;
-}
-
-/**
- * Category: New
- * Purpose: Mirror the local gameplay player's weapon-facing `player_state_t` subset into the browser client frame.
- *
- * Constraints:
- * - Must preserve the already ported `cl_ents.c` / `CL_AddViewWeapon` inputs.
- */
-function syncLocalWeaponPlayerState(runtime: ClientRuntime, gameplayPlayer: GameEntity): void {
-  const gameplayClient = gameplayPlayer.client;
-  if (!gameplayClient) {
-    return;
-  }
-
-  runtime.cl.frame.playerstate.gunindex = gameplayClient.ps.gunindex;
-  runtime.cl.frame.playerstate.gunframe = gameplayClient.ps.gunframe;
-  runtime.cl.frame.playerstate.gunoffset = [...gameplayClient.ps.gunoffset];
-  runtime.cl.frame.playerstate.gunangles = [...gameplayClient.ps.gunangles];
-  runtime.cl.frame.playerstate.kick_angles = [...gameplayClient.ps.kick_angles];
-  runtime.cl.frame.playerstate.viewoffset = [...gameplayClient.ps.viewoffset];
-
-  const selectedWeapon = gameplayClient.pers.weapon;
-  const selectedAmmo = GetAmmoItemForWeapon(selectedWeapon);
-  runtime.cl.inventory = [...gameplayClient.pers.inventory];
-  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = selectedWeapon?.index ?? 0;
-  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ICON] = selectedWeapon?.icon ? findClientImageIndex(runtime, selectedWeapon.icon) : 0;
-  runtime.cl.frame.playerstate.stats[STAT_AMMO] = selectedAmmo ? gameplayClient.pers.inventory[selectedAmmo.index] ?? 0 : 0;
-  runtime.cl.frame.playerstate.stats[STAT_AMMO_ICON] = selectedAmmo?.icon ? findClientImageIndex(runtime, selectedAmmo.icon) : 0;
-}
-
-/**
- * Category: New
- * Purpose: Reproduce the first-person weapon bob, delta-angle sway and kick transfer that the original server writes into `player_state_t`.
- *
- * Constraints:
- * - Must stay close to `SV_CalcGunOffset` and the relevant `SV_CalcViewOffset` kick subset from `p_view.c`.
- * - Must keep the adaptation local until `game/p_view.c` is ported as a dedicated module.
- */
-function updateLocalViewWeaponMotion(
-  gameplayRuntime: GameRuntime,
-  gameplayPlayer: GameEntity,
-  gameplayClient: NonNullable<GameEntity["client"]>,
-  runtime: ClientRuntime,
-  localViewMotion: LocalViewMotionState
-): void {
-  const xyspeed = Math.hypot(
-    runtime.cl.predicted_pmove.velocity[0] * 0.125,
-    runtime.cl.predicted_pmove.velocity[1] * 0.125
-  );
-
-  let bobmove = 0;
-  if (xyspeed < 5) {
-    localViewMotion.bobtime = 0;
-  } else if ((runtime.cl.predicted_pmove.pm_flags & PMF_ON_GROUND) !== 0) {
-    if (xyspeed > 210) {
-      bobmove = 0.25;
-    } else if (xyspeed > 100) {
-      bobmove = 0.125;
-    } else {
-      bobmove = 0.0625;
-    }
-  }
-
-  localViewMotion.bobtime += bobmove;
-  let bobtime = localViewMotion.bobtime;
-  if ((runtime.cl.predicted_pmove.pm_flags & PMF_DUCKED) !== 0) {
-    bobtime *= 4;
-  }
-
-  const bobcycle = Math.trunc(bobtime);
-  const bobfracsin = Math.abs(Math.sin(bobtime * Math.PI));
-
-  const kickAngles: vec3_t = [...gameplayClient.kick_angles];
-  const damageRatio = (gameplayClient.v_dmg_time - gameplayRuntime.time) / DAMAGE_TIME;
-  if (damageRatio > 0) {
-    kickAngles[PITCH] += damageRatio * gameplayClient.v_dmg_pitch;
-    kickAngles[2] += damageRatio * gameplayClient.v_dmg_roll;
-  }
-  gameplayClient.ps.kick_angles = kickAngles;
-
-  const viewoffset: vec3_t = [0, 0, gameplayPlayer.viewheight];
-  viewoffset[0] += gameplayClient.kick_origin[0];
-  viewoffset[1] += gameplayClient.kick_origin[1];
-  viewoffset[2] += gameplayClient.kick_origin[2];
-  gameplayClient.ps.viewoffset = [
-    clamp(viewoffset[0], -14, 14),
-    clamp(viewoffset[1], -14, 14),
-    clamp(viewoffset[2], -22, 30)
-  ];
-
-  const gunangles: vec3_t = [
-    xyspeed * bobfracsin * 0.005,
-    xyspeed * bobfracsin * 0.01,
-    xyspeed * bobfracsin * 0.005
-  ];
-  if ((bobcycle & 1) !== 0) {
-    gunangles[2] = -gunangles[2];
-    gunangles[YAW] = -gunangles[YAW];
-  }
-
-  for (let index = 0; index < 3; index += 1) {
-    let delta = localViewMotion.oldviewangles[index] - runtime.cl.predicted_angles[index];
-    if (delta > 180) {
-      delta -= 360;
-    }
-    if (delta < -180) {
-      delta += 360;
-    }
-    delta = clamp(delta, -45, 45);
-    if (index === YAW) {
-      gunangles[2] += 0.1 * delta;
-    }
-    gunangles[index] += 0.2 * delta;
-  }
-
-  gameplayClient.ps.gunangles = gunangles;
-  gameplayClient.ps.gunoffset = [0, 0, 0];
-  localViewMotion.oldviewangles = [...runtime.cl.predicted_angles];
-
-  gameplayClient.kick_origin = [0, 0, 0];
-  gameplayClient.kick_angles = [0, 0, 0];
-}
-
-/**
- * Category: New
- * Purpose: Find one local client image index from the current configstring table without creating a duplicate registration path.
- */
-function findClientImageIndex(runtime: ClientRuntime, imageName: string): number {
-  for (let index = 1; index < 256; index += 1) {
-    if (runtime.cl.configstrings[CS_IMAGES + index] === imageName) {
-      return index;
-    }
-  }
-
-  return 0;
-}
-
-/**
- * Category: New
- * Purpose: Build the local HUD image list needed to render the core weapon and ammo icons used by the browser weapon test loop.
- *
- * Constraints:
- * - Must keep `CS_IMAGES + 1` on `i_health` for the current local status bar bootstrap.
- */
-function collectLocalHudImageNames(selectedWeaponIcon: string | null, selectedAmmoIcon: string | null): string[] {
-  const names = new Set<string>([
-    "i_health",
-    selectedAmmoIcon ?? "a_shells",
-    "i_combatarmor",
-    selectedWeaponIcon ?? "w_shotgun"
-  ]);
-
-  for (const weaponName of Object.values(LOCAL_WEAPON_SLOTS)) {
-    const weapon = FindItem(weaponName);
-    if (weapon?.icon) {
-      names.add(weapon.icon);
-    }
-
-    const ammo = GetAmmoItemForWeapon(weapon);
-    if (ammo?.icon) {
-      names.add(ammo.icon);
-    }
-  }
-
-  return [...names];
-}
-
-/**
- * Category: New
- * Purpose: Populate the local client inventory mirror with the same bootstrap weapons and ammo used by the gameplay-side player proxy.
- *
- * Constraints:
- * - Must stay aligned with `seedLocalWeaponInventory`.
- */
-function seedLocalClientInventory(runtime: ClientRuntime): void {
-  for (const weaponName of Object.values(LOCAL_WEAPON_SLOTS)) {
-    const weapon = FindItem(weaponName);
-    if (weapon) {
-      runtime.cl.inventory[weapon.index] = 1;
-    }
-  }
-
-  const ammoGrants: Array<[string, number]> = [
-    ["Shells", 50],
-    ["Bullets", 200],
-    ["Grenades", 25],
-    ["Rockets", 50],
-    ["Cells", 200],
-    ["Slugs", 50]
-  ];
-
-  for (const [ammoName, amount] of ammoGrants) {
-    const ammo = FindItem(ammoName);
-    if (ammo) {
-      runtime.cl.inventory[ammo.index] = amount;
-    }
-  }
-}
-
-/**
- * Category: New
- * Purpose: Populate the local `CS_ITEMS` strings required by the HUD and item-name lookups for the current weapon test inventory.
- *
- * Constraints:
- * - Must cover both seeded weapons and their ammo items.
- */
-function populateLocalHudItemConfigstrings(runtime: ClientRuntime): void {
-  for (const weaponName of Object.values(LOCAL_WEAPON_SLOTS)) {
-    const weapon = FindItem(weaponName);
-    if (weapon) {
-      runtime.cl.configstrings[CS_ITEMS + weapon.index] = weapon.pickupName;
-    }
-
-    const ammo = GetAmmoItemForWeapon(weapon);
-    if (ammo) {
-      runtime.cl.configstrings[CS_ITEMS + ammo.index] = ammo.pickupName;
-    }
-  }
-}
-
-/**
- * Category: New
- * Purpose: Advance the local gameplay trigger runtime so presence-based map triggers can fire in the web demo.
- *
- * Constraints:
- * - Must run scheduled `think` callbacks before and after touch dispatch.
- * - Must keep the local player origin aligned with predicted movement.
- */
-function advanceGameplayRuntime(
-  gameplayRuntime: GameRuntime,
-  realtimeMs: number,
-  interpolationState: BrushModelInterpolationState
-): void {
-  const timeSeconds = realtimeMs / 1000;
-
-  while ((gameplayRuntime.time + FRAMETIME) <= (timeSeconds + 0.0001)) {
-    interpolationState.previousSnapshots = cloneBrushModelSnapshots(interpolationState.currentSnapshots);
-    interpolationState.previousTime = interpolationState.currentTime;
-    G_RunFrame(gameplayRuntime);
-    interpolationState.currentSnapshots = buildBrushModelSnapshots(gameplayRuntime);
-    interpolationState.currentTime = gameplayRuntime.time;
-  }
-}
-
-/**
- * Category: New
- * Purpose: Keep the local gameplay player entity aligned with predicted movement after browser-side prediction.
- *
- * Constraints:
- * - Must update trigger touches after the authoritative pusher frame advance already happened.
- */
-function updateGameplayRuntimePlayer(
-  gameplayRuntime: GameRuntime,
-  gameplayPlayer: GameEntity,
-  runtime: ClientRuntime,
-  localViewMotion: LocalViewMotionState
-): void {
-  gameplayPlayer.origin = [...runtime.cl.predicted_origin];
-  gameplayPlayer.s.origin = [...runtime.cl.predicted_origin];
-  gameplayPlayer.s.old_origin = [...runtime.cl.predicted_origin];
-  gameplayPlayer.viewheight = getPredictedViewheight(runtime.cl.predicted_pmove);
-  applyPredictedGameplayHull(gameplayPlayer, runtime.cl.predicted_pmove);
-  refreshEntitySpatialState(gameplayPlayer);
-  linkGameEntity(gameplayRuntime, gameplayPlayer);
-
-  const gameplayClient = gameplayPlayer.client;
-  if (gameplayClient) {
-    gameplayClient.oldbuttons = gameplayClient.buttons;
-    gameplayClient.buttons = runtime.cl.cmd.buttons;
-    gameplayClient.latched_buttons |= gameplayClient.buttons & ~gameplayClient.oldbuttons;
-    gameplayClient.v_angle = [...runtime.cl.predicted_angles];
-    gameplayClient.ps.viewoffset = [0, 0, gameplayPlayer.viewheight];
-    gameplayClient.ps.pmove = {
-      ...gameplayClient.ps.pmove,
-      pm_type: runtime.cl.predicted_pmove.pm_type,
-      origin: [...runtime.cl.predicted_pmove.origin],
-      velocity: [...runtime.cl.predicted_pmove.velocity],
-      pm_flags: runtime.cl.predicted_pmove.pm_flags,
-      pm_time: runtime.cl.predicted_pmove.pm_time,
-      gravity: runtime.cl.predicted_pmove.gravity,
-      delta_angles: [...runtime.cl.predicted_pmove.delta_angles]
-    };
-    Think_Weapon(gameplayPlayer, gameplayRuntime, LOCAL_GAME_WEAPON_HOOKS);
-    updateLocalViewWeaponMotion(gameplayRuntime, gameplayPlayer, gameplayClient, runtime, localViewMotion);
-  }
-  touchTriggerEntities(gameplayRuntime, gameplayPlayer);
-  syncLocalWeaponPlayerState(runtime, gameplayPlayer);
-}
-
-/**
- * Category: New
- * Purpose: Snap the initial local player state onto a valid BSP position before the interactive loop starts.
- *
- * Constraints:
- * - Must use the same `pmove` collision callbacks as runtime prediction.
- */
-function initializeSpawnPrediction(
-  runtime: ClientRuntime,
-  collision: {
-    trace: (start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t) => trace_t;
-    pointcontents: (point: vec3_t) => number;
-  },
-  spawnOrigin: vec3_t
-): void {
-  const pm: pmove_t = {
-    s: {
-      ...runtime.cl.frame.playerstate.pmove,
-      origin: [
-        Math.trunc(spawnOrigin[0] * 8),
-        Math.trunc(spawnOrigin[1] * 8),
-        Math.trunc(spawnOrigin[2] * 8)
-      ],
-      velocity: [0, 0, 0],
-      delta_angles: [...runtime.cl.frame.playerstate.pmove.delta_angles]
-    },
-    cmd: {
-      msec: 16,
-      buttons: 0,
-      angles: [0, 0, 0],
-      forwardmove: 0,
-      sidemove: 0,
-      upmove: 0,
-      impulse: 0,
-      lightlevel: 0
-    },
-    snapinitial: true,
-    numtouch: 0,
-    touchents: [],
-    viewangles: [0, 0, 0],
-    viewheight: 0,
-    mins: [0, 0, 0],
-    maxs: [0, 0, 0],
-    groundentity: null,
-    watertype: 0,
-    waterlevel: 0,
-    trace: collision.trace,
-    pointcontents: collision.pointcontents
-  };
-
-  const context = createPmoveContext(pm);
-  Pmove(context);
-
-  runtime.cl.frame.playerstate.pmove = {
-    pm_type: context.pm.s.pm_type,
-    origin: [...context.pm.s.origin],
-    velocity: [...context.pm.s.velocity],
-    pm_flags: context.pm.s.pm_flags,
-    pm_time: context.pm.s.pm_time,
-    gravity: context.pm.s.gravity,
-    delta_angles: [...context.pm.s.delta_angles]
-  };
-  runtime.cl.frame.playerstate.viewoffset = [0, 0, context.pm.viewheight];
-  runtime.cl.predicted_pmove = {
-    ...runtime.cl.frame.playerstate.pmove,
-    origin: [...runtime.cl.frame.playerstate.pmove.origin],
-    velocity: [...runtime.cl.frame.playerstate.pmove.velocity],
-    delta_angles: [...runtime.cl.frame.playerstate.pmove.delta_angles]
-  };
-  runtime.cl.predicted_origin = [
-    runtime.cl.frame.playerstate.pmove.origin[0] * 0.125,
-    runtime.cl.frame.playerstate.pmove.origin[1] * 0.125,
-    runtime.cl.frame.playerstate.pmove.origin[2] * 0.125
-  ];
-}
-
-/**
- * Category: New
- * Purpose: Seed the browser-local client with minimal HUD stats so the web overlay can reflect the real screen snapshot path.
- *
- * Constraints:
- * - Must only touch current local bootstrap values until authoritative server stats exist.
- */
-function initializeLocalHudState(runtime: ClientRuntime): void {
-  const selectedWeapon = FindItem("Shotgun");
-  const selectedAmmo = GetAmmoItemForWeapon(selectedWeapon);
-
-  runtime.cl.configstrings[CS_STATUSBAR] = LOCAL_SINGLE_STATUSBAR;
-  const imageNames = collectLocalHudImageNames(selectedWeapon?.icon ?? null, selectedAmmo?.icon ?? null);
-  imageNames.forEach((imageName, offset) => {
-    runtime.cl.configstrings[CS_IMAGES + offset + 1] = imageName;
-  });
-  populateLocalHudItemConfigstrings(runtime);
-  runtime.cl.layout = LOCAL_SCOREBOARD_LAYOUT;
-  seedLocalClientInventory(runtime);
-  runtime.cl.playernum = 0;
-  runtime.cl.clientinfo[0].name = "Player";
-  runtime.cl.clientinfo[0].iconname = "players/male/grunt_i.pcx";
-  runtime.cl.clientinfo[1].name = "Bitterman";
-  runtime.cl.clientinfo[1].iconname = "players/male/major_i.pcx";
-  runtime.cl.baseclientinfo.name = "Player";
-  runtime.cl.baseclientinfo.iconname = "players/male/grunt_i.pcx";
-
-  runtime.cl.frame.playerstate.stats[STAT_HEALTH_ICON] = 1;
-  runtime.cl.frame.playerstate.stats[STAT_HEALTH] = 100;
-  runtime.cl.frame.playerstate.stats[STAT_AMMO_ICON] = findClientImageIndex(runtime, selectedAmmo?.icon ?? "a_shells");
-  runtime.cl.frame.playerstate.stats[STAT_AMMO] = selectedAmmo ? runtime.cl.inventory[selectedAmmo.index] ?? 0 : 0;
-  runtime.cl.frame.playerstate.stats[STAT_ARMOR_ICON] = findClientImageIndex(runtime, "i_combatarmor");
-  runtime.cl.frame.playerstate.stats[STAT_ARMOR] = 50;
-  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ICON] = findClientImageIndex(runtime, selectedWeapon?.icon ?? "w_shotgun");
-  runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = selectedWeapon?.index ?? 0;
-  runtime.cl.frame.playerstate.stats[STAT_PICKUP_ICON] = 0;
-  runtime.cl.frame.playerstate.stats[STAT_PICKUP_STRING] = 0;
-  runtime.cl.frame.playerstate.stats[STAT_TIMER_ICON] = 0;
-  runtime.cl.frame.playerstate.stats[STAT_TIMER] = 0;
-  runtime.cl.frame.playerstate.stats[STAT_FRAGS] = 0;
-  runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] = 0;
-}
-
-/**
- * Category: New
- * Purpose: Serialize the current local gameplay visual state into the client frame buffers used by the Quake II refresh path.
- *
- * Constraints:
- * - Must preserve stable entity numbering from the gameplay runtime.
- * - Must keep the client parse-entity ring coherent with the current frame metadata.
- * - Must only expose entities that are currently client-visible.
- */
-function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
-  syncLocalGameplayAssetConfigstrings(runtime, gameplayRuntime);
-
-  const currentFrameServerframe = runtime.cl.frame.serverframe;
-  const previousFrameServerframe = currentFrameServerframe - 1;
-  const parseEntityMask = runtime.cl_parse_entities.length - 1;
-  const visibleStates = collectVisibleGameplayEntityStates(gameplayRuntime);
-
-  runtime.cl.frame.parse_entities = runtime.cl.parse_entities;
-  runtime.cl.frame.num_entities = 0;
-
-  for (const state of visibleStates) {
-    const entity = runtime.cl_entities[state.number];
-    const storedState = runtime.cl_parse_entities[runtime.cl.parse_entities & parseEntityMask];
-    runtime.cl.parse_entities += 1;
-    runtime.cl.frame.num_entities += 1;
-
-    const needsNoLerpReset =
-      state.modelindex !== entity.current.modelindex ||
-      state.modelindex2 !== entity.current.modelindex2 ||
-      state.modelindex3 !== entity.current.modelindex3 ||
-      state.modelindex4 !== entity.current.modelindex4 ||
-      Math.abs(state.origin[0] - entity.current.origin[0]) > 512 ||
-      Math.abs(state.origin[1] - entity.current.origin[1]) > 512 ||
-      Math.abs(state.origin[2] - entity.current.origin[2]) > 512;
-
-    copyEntityState(state, storedState);
-
-    if (needsNoLerpReset) {
-      entity.serverframe = -99;
-    }
-
-    if (entity.serverframe !== previousFrameServerframe) {
-      entity.trailcount = 1024;
-      copyEntityState(storedState, entity.prev);
-      entity.prev.origin = [...storedState.old_origin];
-      entity.lerp_origin = [...storedState.old_origin];
-    } else {
-      copyEntityState(entity.current, entity.prev);
-    }
-
-    entity.serverframe = currentFrameServerframe;
-    copyEntityState(storedState, entity.current);
-    entity.current.event = 0;
-  }
-}
-
-/**
- * Category: New
- * Purpose: Mirror the local gameplay asset registries into the client configstring slots consumed by refresh-side model resolution.
- *
- * Constraints:
- * - Must preserve Quake-style stable 1-based asset indices.
- * - Must clear stale configstrings when one local map/runtime registers fewer assets than the previous one.
- */
-function syncLocalGameplayAssetConfigstrings(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
-  for (let index = 1; index < runtime.cl.model_draw.length; index += 1) {
-    runtime.cl.configstrings[CS_MODELS + index] = gameplayRuntime.assets.modelPaths[index - 1] ?? "";
-    runtime.cl.model_draw[index] = runtime.cl.configstrings[CS_MODELS + index] || null;
-  }
-
-  for (let index = 1; index < runtime.cl.sound_precache.length; index += 1) {
-    runtime.cl.configstrings[CS_SOUNDS + index] = gameplayRuntime.assets.soundPaths[index - 1] ?? "";
-    runtime.cl.sound_precache[index] = runtime.cl.configstrings[CS_SOUNDS + index] || null;
-  }
-
-  for (let index = 1; index < runtime.cl.image_precache.length; index += 1) {
-    runtime.cl.configstrings[CS_IMAGES + index] = gameplayRuntime.assets.imagePaths[index - 1] ?? runtime.cl.configstrings[CS_IMAGES + index] ?? "";
-    runtime.cl.image_precache[index] = runtime.cl.configstrings[CS_IMAGES + index] || null;
-  }
-}
-
-/**
- * Category: New
- * Purpose: Collect the current gameplay entities that should surface through the client entity snapshot path.
- *
- * Constraints:
- * - Must skip non-client and free entities.
- * - Must clone states so the client ring keeps value semantics.
- */
-function collectVisibleGameplayEntityStates(gameplayRuntime: GameRuntime): entity_state_t[] {
-  const states: entity_state_t[] = [];
-
-  for (const entity of gameplayRuntime.entities) {
-    if (!entity.inuse || (entity.svflags & SVF_NOCLIENT) !== 0) {
-      continue;
-    }
-
-    const state = entity.s;
-    const hasVisualState =
-      state.modelindex !== 0 ||
-      state.modelindex2 !== 0 ||
-      state.modelindex3 !== 0 ||
-      state.modelindex4 !== 0 ||
-      state.effects !== 0 ||
-      state.renderfx !== 0 ||
-      state.sound !== 0 ||
-      state.event !== 0;
-
-    if (!hasVisualState) {
-      continue;
-    }
-
-    states.push(cloneEntityState(state));
-  }
-
-  states.sort((left, right) => left.number - right.number);
-  return states;
-}
-
-/**
- * Category: New
- * Purpose: Clone one entity state while preserving the exact field set used by Quake II packet entities.
- */
-function cloneEntityState(state: entity_state_t): entity_state_t {
-  const clone = createEntityState();
-  copyEntityState(state, clone);
-  return clone;
-}
-
-/**
- * Category: New
- * Purpose: Copy one entity-state payload field-by-field without sharing tuple references.
- */
-function copyEntityState(source: entity_state_t, target: entity_state_t): void {
-  target.number = source.number;
-  target.origin = [...source.origin];
-  target.angles = [...source.angles];
-  target.old_origin = [...source.old_origin];
-  target.modelindex = source.modelindex;
-  target.modelindex2 = source.modelindex2;
-  target.modelindex3 = source.modelindex3;
-  target.modelindex4 = source.modelindex4;
-  target.frame = source.frame;
-  target.skinnum = source.skinnum;
-  target.effects = source.effects;
-  target.renderfx = source.renderfx;
-  target.solid = source.solid;
-  target.sound = source.sound;
-  target.event = source.event;
-}
-
-/**
- * Category: New
- * Purpose: Seed the browser-local client sky configstrings from the loaded BSP worldspawn metadata.
- *
- * Constraints:
- * - Must keep the structured client sky state aligned with the raw configstring slots.
- * - Must tolerate maps that omit sky rotation or axis fields.
- */
-function initializeLocalSkyState(runtime: ClientRuntime, map: BspMap): void {
-  const worldspawn = map.parsedEntities[0]?.properties ?? {};
-  const skyName = worldspawn.sky ?? "";
-  const skyRotate = worldspawn.skyrotate ?? "";
-  const skyAxis = worldspawn.skyaxis ?? "";
-
-  runtime.cl.configstrings[CS_SKY] = skyName;
-  runtime.cl.configstrings[CS_SKYROTATE] = skyRotate;
-  runtime.cl.configstrings[CS_SKYAXIS] = skyAxis;
-  runtime.cl.sky.name = skyName;
-  runtime.cl.sky.rotate = parseLocalSkyRotate(skyRotate);
-  runtime.cl.sky.axis = parseLocalSkyAxis(skyAxis);
-}
-
-/**
- * Category: New
- * Purpose: Apply the current browser movement mode onto the predicted Quake II pmove state.
- *
- * Constraints:
- * - Must switch cleanly between `PM_NORMAL` and `PM_SPECTATOR`.
- * - Must keep the local frame and predicted state aligned before prediction runs.
- */
-function applyMovementMode(runtime: ClientRuntime, ghostMode: boolean): void {
-  const pmType = ghostMode ? pmtype_t.PM_SPECTATOR : pmtype_t.PM_NORMAL;
-  runtime.cl.frame.playerstate.pmove.pm_type = pmType;
-  runtime.cl.predicted_pmove.pm_type = pmType;
 }
 
 /**
@@ -1222,10 +312,7 @@ function applyMovementMode(runtime: ClientRuntime, ghostMode: boolean): void {
 export function createLocalCollisionAdapter(
   gameplayRuntime: GameRuntime,
   gameplayPlayer: GameEntity | null
-): {
-  trace: (start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t) => trace_t;
-  pointcontents: (point: vec3_t) => number;
-} {
+): LocalClientCollisionAdapter {
   return {
     trace: (start, mins, maxs, end) => {
       if (!gameplayRuntime.collision) {
@@ -1244,86 +331,6 @@ export function createLocalCollisionAdapter(
   };
 }
 
-/**
- * Category: New
- * Purpose: Copy the newest predicted state back into the local frame so the browser demo can behave like a minimal standalone client.
- *
- * Constraints:
- * - Must keep the frame authoritative enough for the next local prediction step.
- */
-function promotePredictedState(runtime: ClientRuntime, realtimeMs: number): void {
-  runtime.cl.frame.valid = true;
-  runtime.cl.frame.serverframe += 1;
-  runtime.cl.frame.servertime = realtimeMs;
-  runtime.cl.frame.playerstate.pmove = {
-    pm_type: runtime.cl.predicted_pmove.pm_type,
-    origin: [...runtime.cl.predicted_pmove.origin],
-    velocity: [...runtime.cl.predicted_pmove.velocity],
-    pm_flags: runtime.cl.predicted_pmove.pm_flags,
-    pm_time: runtime.cl.predicted_pmove.pm_time,
-    gravity: runtime.cl.predicted_pmove.gravity,
-    delta_angles: [...runtime.cl.predicted_pmove.delta_angles]
-  };
-  runtime.cl.frame.playerstate.viewangles = [...runtime.cl.predicted_angles];
-  runtime.cl.frame.playerstate.viewoffset = [0, 0, getPredictedViewheight(runtime.cl.predicted_pmove)];
-  storeLocalClientFrame(runtime);
-}
-
-/**
- * Category: New
- * Purpose: Store the current local client frame into the Quake II frame history ring so view-weapon interpolation can use a real previous frame.
- *
- * Constraints:
- * - Must preserve the `frame_t` value semantics expected by the client refresh code.
- */
-function storeLocalClientFrame(runtime: ClientRuntime): void {
-  const frameIndex = runtime.cl.frame.serverframe & (runtime.cl.frames.length - 1);
-  const stored = createFrame();
-
-  stored.valid = runtime.cl.frame.valid;
-  stored.serverframe = runtime.cl.frame.serverframe;
-  stored.servertime = runtime.cl.frame.servertime;
-  stored.deltaframe = runtime.cl.frame.deltaframe;
-  stored.areabits = new Uint8Array(runtime.cl.frame.areabits);
-  stored.playerstate = {
-    ...runtime.cl.frame.playerstate,
-    pmove: {
-      ...runtime.cl.frame.playerstate.pmove,
-      origin: [...runtime.cl.frame.playerstate.pmove.origin],
-      velocity: [...runtime.cl.frame.playerstate.pmove.velocity],
-      delta_angles: [...runtime.cl.frame.playerstate.pmove.delta_angles]
-    },
-    viewangles: [...runtime.cl.frame.playerstate.viewangles],
-    viewoffset: [...runtime.cl.frame.playerstate.viewoffset],
-    kick_angles: [...runtime.cl.frame.playerstate.kick_angles],
-    gunangles: [...runtime.cl.frame.playerstate.gunangles],
-    gunoffset: [...runtime.cl.frame.playerstate.gunoffset],
-    blend: [...runtime.cl.frame.playerstate.blend],
-    stats: [...runtime.cl.frame.playerstate.stats]
-  };
-  stored.num_entities = runtime.cl.frame.num_entities;
-  stored.parse_entities = runtime.cl.frame.parse_entities;
-
-  runtime.cl.frames[frameIndex] = stored;
-}
-
-/**
- * Category: New
- * Purpose: Set or clear one `STAT_LAYOUTS` bit inside the local bootstrap player-state stats.
- */
-function setLayoutBit(runtime: ClientRuntime, bitMask: number, enabled: boolean): void {
-  const current = runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] ?? 0;
-  runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] = enabled ? (current | bitMask) : (current & ~bitMask);
-}
-
-/**
- * Category: New
- * Purpose: Toggle one `STAT_LAYOUTS` bit for the browser-local HUD demo controls.
- */
-function toggleLayoutBit(runtime: ClientRuntime, bitMask: number): void {
-  const current = runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] ?? 0;
-  runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] = current ^ bitMask;
-}
 
 /**
  * Category: New
@@ -1334,8 +341,7 @@ function toggleLayoutBit(runtime: ClientRuntime, bitMask: number): void {
  * - Must use the eye origin already produced by `CL_CalcViewValues`.
  */
 function applyPredictedCamera(camera: PerspectiveCamera, runtime: ClientRuntime): void {
-  CL_UpdateLerpFraction(runtime, { timedemo: false });
-  const view = CL_CalcViewValues(runtime, { predictMovement: true });
+  const view = buildLocalPredictedViewState(runtime);
   const eye = new Vector3(
     view.vieworg[0],
     view.vieworg[1],
@@ -1348,310 +354,4 @@ function applyPredictedCamera(camera: PerspectiveCamera, runtime: ClientRuntime)
   camera.position.copy(eye);
   camera.up.copy(up);
   camera.lookAt(eye.clone().add(forward));
-}
-
-/**
- * Category: New
- * Purpose: Mirror browser key states into the ported Quake II button structures consumed by `CL_CreateCmd`.
- *
- * Constraints:
- * - Must preserve the held/released timing semantics closely enough for local prediction.
- */
-function syncMovementButtons(
-  context: ClientInputContext,
-  pressedKeys: Record<MovementKey, boolean>,
-  realtimeMs: number
-): void {
-  setButtonHeld(context.in_forward, pressedKeys.forward, realtimeMs);
-  setButtonHeld(context.in_back, pressedKeys.backward, realtimeMs);
-  setButtonHeld(context.in_moveleft, pressedKeys.left, realtimeMs);
-  setButtonHeld(context.in_moveright, pressedKeys.right, realtimeMs);
-  setButtonHeld(context.in_up, pressedKeys.up, realtimeMs);
-  setButtonHeld(context.in_down, pressedKeys.down, realtimeMs);
-}
-
-/**
- * Category: New
- * Purpose: Apply one held/not-held boolean to a ported Quake II key button structure.
- *
- * Constraints:
- * - Must only emit transitions when the held state changes.
- */
-function setButtonHeld(button: ClientInputContext["in_forward"], held: boolean, realtimeMs: number): void {
-  const isDown = (button.state & 1) !== 0;
-  if (held === isDown) {
-    return;
-  }
-
-  if (held) {
-    button.down[0] = 1;
-    button.downtime = realtimeMs - 1;
-    button.state |= 1 + 2;
-    return;
-  }
-
-  button.down = [0, 0];
-  button.msec += Math.max(1, realtimeMs - button.downtime);
-  button.state &= ~1;
-  button.state |= 4;
-}
-
-/**
- * Category: New
- * Purpose: Clear all browser movement states and their mirrored Quake button states after focus loss.
- *
- * Constraints:
- * - Must prevent sticky movement when the browser misses one keyup event.
- */
-function clearMovementState(
-  context: ClientInputContext,
-  pressedKeys: Record<MovementKey, boolean>
-): void {
-  for (const key of Object.keys(pressedKeys) as MovementKey[]) {
-    pressedKeys[key] = false;
-  }
-
-  resetButtonState(context.in_forward);
-  resetButtonState(context.in_back);
-  resetButtonState(context.in_moveleft);
-  resetButtonState(context.in_moveright);
-  resetButtonState(context.in_up);
-  resetButtonState(context.in_down);
-}
-
-/**
- * Category: New
- * Purpose: Fully reset one mirrored Quake key button after an external focus interruption.
- *
- * Constraints:
- * - Must clear held and impulse bits together to avoid residual movement next frame.
- */
-function resetButtonState(button: ClientInputContext["in_forward"]): void {
-  button.down = [0, 0];
-  button.downtime = 0;
-  button.msec = 0;
-  button.state = 0;
-}
-
-/**
- * Category: New
- * Purpose: Clone one command before storing it in the circular client command buffer.
- */
-function cloneUsercmd(cmd: ClientRuntime["cl"]["cmd"]): ClientRuntime["cl"]["cmd"] {
-  return {
-    msec: cmd.msec,
-    buttons: cmd.buttons,
-    angles: [...cmd.angles],
-    forwardmove: cmd.forwardmove,
-    sidemove: cmd.sidemove,
-    upmove: cmd.upmove,
-    impulse: cmd.impulse,
-    lightlevel: cmd.lightlevel
-  };
-}
-
-/**
- * Category: New
- * Purpose: Clamp one numeric value into one closed interval for the local `p_view.c`-style view offset adaptation.
- */
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value));
-}
-
-/**
- * Category: New
- * Purpose: Extract the current inline brush model transforms from the local gameplay runtime.
- *
- * Constraints:
- * - Must only include active entities backed by BSP inline models.
- */
-function buildBrushModelSnapshots(runtime: GameRuntime): BrushModelSnapshot[] {
-  const snapshots: BrushModelSnapshot[] = [];
-
-  for (const entity of runtime.entities) {
-    if (!entity.inuse || !entity.model?.startsWith("*")) {
-      continue;
-    }
-
-    snapshots.push({
-      model: entity.model,
-      origin: [...entity.origin],
-      angles: [...entity.angles]
-    });
-  }
-
-  return snapshots;
-}
-
-/**
- * Category: New
- * Purpose: Derive the predicted Quake II eye height from the current packed pmove state using the existing `PM_CheckDuck` rules.
- *
- * Constraints:
- * - Must preserve the standing and ducked viewheight values already ported in `pmove.ts`.
- */
-function getPredictedViewheight(pmove: ClientRuntime["cl"]["predicted_pmove"]): number {
-  return (pmove.pm_flags & PMF_DUCKED) !== 0 ? DUCKED_VIEWHEIGHT : DEFAULT_VIEWHEIGHT;
-}
-
-/**
- * Category: New
- * Purpose: Apply the predicted Quake II player hull to the local gameplay proxy so runtime collision and triggers use the same crouch state as prediction.
- *
- * Constraints:
- * - Must match the normal, ducked and gib bounds selected by `PM_CheckDuck`.
- */
-function applyPredictedGameplayHull(
-  gameplayPlayer: GameEntity,
-  pmove: ClientRuntime["cl"]["predicted_pmove"]
-): void {
-  if (pmove.pm_type === pmtype_t.PM_GIB) {
-    gameplayPlayer.mins = [...PLAYER_GIB_MINS];
-    gameplayPlayer.maxs = [...PLAYER_GIB_MAXS];
-    return;
-  }
-
-  gameplayPlayer.mins = [...PLAYER_TRIGGER_MINS];
-  gameplayPlayer.maxs = (pmove.pm_flags & PMF_DUCKED) !== 0
-    ? [...PLAYER_DUCKED_MAXS]
-    : [...PLAYER_TRIGGER_MAXS];
-}
-
-/**
- * Category: New
- * Purpose: Create the initial brush-model interpolation state from the current gameplay runtime pose.
- *
- * Constraints:
- * - Must start with identical previous and current poses to avoid bootstrap pops.
- */
-function createBrushModelInterpolationState(runtime: GameRuntime): BrushModelInterpolationState {
-  const snapshots = buildBrushModelSnapshots(runtime);
-
-  return {
-    previousSnapshots: cloneBrushModelSnapshots(snapshots),
-    currentSnapshots: cloneBrushModelSnapshots(snapshots),
-    previousTime: runtime.time,
-    currentTime: runtime.time
-  };
-}
-
-/**
- * Category: New
- * Purpose: Interpolate the current brush-model render pose from the last two gameplay snapshots like the original Quake II client entity path.
- *
- * Constraints:
- * - Must linearly interpolate origins.
- * - Must use `LerpAngle` for angular interpolation.
- * - Must match the original client rule where interpolation progresses during the current server-frame window.
- */
-function buildInterpolatedBrushModelSnapshots(
-  interpolationState: BrushModelInterpolationState,
-  renderTimeSeconds: number
-): BrushModelSnapshot[] {
-  const currentSnapshots = interpolationState.currentSnapshots;
-  const previousByModel = new Map<string, BrushModelSnapshot>();
-
-  for (const snapshot of interpolationState.previousSnapshots) {
-    if (snapshot.model) {
-      previousByModel.set(snapshot.model, snapshot);
-    }
-  }
-
-  const lerpFraction = interpolationState.currentTime > interpolationState.previousTime
-    ? clamp01((renderTimeSeconds - interpolationState.currentTime) / (interpolationState.currentTime - interpolationState.previousTime))
-    : 1;
-
-  return currentSnapshots.map((currentSnapshot) => {
-    if (!currentSnapshot.model) {
-      return cloneBrushModelSnapshot(currentSnapshot);
-    }
-
-    const previousSnapshot = previousByModel.get(currentSnapshot.model);
-    if (!previousSnapshot) {
-      return cloneBrushModelSnapshot(currentSnapshot);
-    }
-
-    return {
-      model: currentSnapshot.model,
-      origin: [
-        lerpValue(previousSnapshot.origin[0], currentSnapshot.origin[0], lerpFraction),
-        lerpValue(previousSnapshot.origin[1], currentSnapshot.origin[1], lerpFraction),
-        lerpValue(previousSnapshot.origin[2], currentSnapshot.origin[2], lerpFraction)
-      ],
-      angles: [
-        LerpAngle(previousSnapshot.angles[0], currentSnapshot.angles[0], lerpFraction),
-        LerpAngle(previousSnapshot.angles[1], currentSnapshot.angles[1], lerpFraction),
-        LerpAngle(previousSnapshot.angles[2], currentSnapshot.angles[2], lerpFraction)
-      ]
-    };
-  });
-}
-
-/**
- * Category: New
- * Purpose: Clone one list of brush-model snapshots so interpolation state keeps value semantics across fixed frames.
- */
-function cloneBrushModelSnapshots(snapshots: BrushModelSnapshot[]): BrushModelSnapshot[] {
-  return snapshots.map(cloneBrushModelSnapshot);
-}
-
-/**
- * Category: New
- * Purpose: Clone one brush-model snapshot without sharing mutable tuple references.
- */
-function cloneBrushModelSnapshot(snapshot: BrushModelSnapshot): BrushModelSnapshot {
-  return {
-    model: snapshot.model,
-    origin: [...snapshot.origin],
-    angles: [...snapshot.angles]
-  };
-}
-
-/**
- * Category: New
- * Purpose: Interpolate one scalar with a clamped fraction.
- */
-function lerpValue(previous: number, current: number, fraction: number): number {
-  return previous + (current - previous) * fraction;
-}
-
-/**
- * Category: New
- * Purpose: Clamp one interpolation fraction to the inclusive `[0, 1]` interval.
- */
-function clamp01(value: number): number {
-  return Math.min(1, Math.max(0, value));
-}
-
-/**
- * Category: New
- * Purpose: Parse one local BSP worldspawn `skyrotate` property into the browser-local client bootstrap state.
- *
- * Constraints:
- * - Must fall back to `0` when the property is absent or invalid.
- */
-function parseLocalSkyRotate(value: string): number {
-  const parsed = Number.parseFloat(value.trim());
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-/**
- * Category: New
- * Purpose: Parse one local BSP worldspawn `skyaxis` property into a three-component axis tuple.
- *
- * Constraints:
- * - Must fall back to `[0, 0, 0]` when the property is absent or invalid.
- */
-function parseLocalSkyAxis(value: string): [number, number, number] {
-  const parts = value
-    .trim()
-    .split(/\s+/)
-    .filter((part) => part.length > 0)
-    .map((part) => Number.parseFloat(part));
-
-  if (parts.length !== 3 || parts.some((part) => !Number.isFinite(part))) {
-    return [0, 0, 0];
-  }
-
-  return [parts[0], parts[1], parts[2]];
 }
