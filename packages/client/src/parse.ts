@@ -103,7 +103,7 @@ import { CL_ClearEffects, CL_ParticleEffect, CL_SetLightstyle } from "./effects.
 import { SCR_CenterPrint } from "./screen.js";
 import { CL_AddTEntPacket, CL_ClearTEnts } from "./tent.js";
 import { CL_CheckPredictionError } from "./view.js";
-import { createClientScreenState, createClientSkyState } from "./types.js";
+import { createClientCinematicState, createClientScreenState, createClientSkyState } from "./types.js";
 
 /**
  * Category: New
@@ -1605,6 +1605,7 @@ function createFrameClearedClientState(runtime: ClientRuntime): Omit<ClientRunti
     cmd_time: runtime.cl.cmd_time,
     predicted_origins: runtime.cl.predicted_origins,
     predicted_pmove: runtime.cl.predicted_pmove,
+    predicted_viewheight: 0,
     predicted_step: 0,
     predicted_step_time: 0,
     predicted_origin: [0, 0, 0],
@@ -1667,7 +1668,8 @@ function createFrameClearedClientState(runtime: ClientRuntime): Omit<ClientRunti
     clientinfo: runtime.cl.clientinfo,
     baseclientinfo: runtime.cl.baseclientinfo,
     tents: runtime.cl.tents,
-    screen: createClientScreenState()
+    screen: createClientScreenState(),
+    cinematic: createClientCinematicState()
   };
 }
 

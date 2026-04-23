@@ -147,11 +147,28 @@ export const DEAD_RESPAWNABLE = 3;
  * - Must keep original field names so the weapon code can stay close to the C source.
  */
 export interface GameClientPersistant {
+  userinfo: string;
+  netname: string;
   hand: number;
+  connected: boolean;
+  health: number;
+  max_health: number;
+  savedFlags: number;
   inventory: number[];
   weapon: GameItemDefinition | null;
   lastweapon: GameItemDefinition | null;
   selected_item: number;
+  max_bullets: number;
+  max_shells: number;
+  max_rockets: number;
+  max_grenades: number;
+  max_cells: number;
+  max_slugs: number;
+  power_cubes: number;
+  score: number;
+  game_helpchanged: number;
+  helpchanged: number;
+  spectator: boolean;
 }
 
 /**
@@ -163,6 +180,7 @@ export interface GameClientRespawn {
   score: number;
   enterframe: number;
   cmd_angles: vec3_t;
+  coop_respawn: GameClientPersistant;
 }
 
 /**
@@ -174,9 +192,14 @@ export interface GameClientRespawn {
  */
 export interface GameClient {
   ps: player_state_t;
+  ping: number;
   pers: GameClientPersistant;
   resp: GameClientRespawn;
   old_pmove: pmove_state_t;
+  showscores: boolean;
+  showinventory: boolean;
+  showhelp: boolean;
+  showhelpicon: boolean;
   kick_angles: vec3_t;
   kick_origin: vec3_t;
   v_angle: vec3_t;
@@ -187,14 +210,31 @@ export interface GameClient {
   buttons: number;
   oldbuttons: number;
   latched_buttons: number;
+  weapon_thunk: boolean;
   newweapon: GameItemDefinition | null;
+  killer_yaw: number;
   weaponstate: weaponstate_t;
   machinegun_shots: number;
+  fall_time: number;
+  fall_value: number;
+  damage_alpha: number;
+  bonus_alpha: number;
+  damage_blend: vec3_t;
+  bobtime: number;
+  oldviewangles: vec3_t;
+  oldvelocity: vec3_t;
+  next_drown_time: number;
+  old_waterlevel: number;
+  breather_sound: number;
   anim_end: number;
   anim_priority: number;
+  anim_duck: boolean;
+  anim_run: boolean;
   grenade_blew_up: boolean;
   grenade_time: number;
   silencer_shots: number;
+  breather_framenum: number;
+  enviro_framenum: number;
   invincible_framenum: number;
   damage_parmor: number;
   damage_armor: number;
@@ -203,6 +243,13 @@ export interface GameClient {
   damage_from: vec3_t;
   weapon_sound: number;
   quad_framenum: number;
+  pickup_msg_time: number;
+  flood_locktill: number;
+  flood_when: number[];
+  flood_whenhead: number;
+  respawn_time: number;
+  chase_target: GameEntity | null;
+  update_chase: boolean;
 }
 
 /**
@@ -310,6 +357,69 @@ export interface GameMoveInfo {
 
 /**
  * Category: New
+ * Purpose: Preserve the `mframe_t` callback record used by monster move sequences.
+ *
+ * Constraints:
+ * - Must keep the original `aifunc`, `dist` and `thinkfunc` field names.
+ */
+export interface GameMonsterFrame {
+  aifunc: ((self: GameEntity, dist: number, runtime: GameRuntime) => void) | undefined;
+  dist: number;
+  thinkfunc: GameEntityThink | undefined;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the `mmove_t` frame-range descriptor used by Quake II monster logic.
+ *
+ * Constraints:
+ * - Must keep the original frame bounds and endfunc names for direct source mapping.
+ */
+export interface GameMonsterMove {
+  firstframe: number;
+  lastframe: number;
+  frame: GameMonsterFrame[];
+  endfunc: GameEntityThink | undefined;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the `monsterinfo_t` state block embedded in gameplay entities.
+ *
+ * Constraints:
+ * - Must keep the original field names so later monster ports can map directly onto it.
+ */
+export interface GameMonsterInfo {
+  currentmove: GameMonsterMove | null;
+  aiflags: number;
+  nextframe: number;
+  scale: number;
+  stand: GameEntityThink | undefined;
+  idle: GameEntityThink | undefined;
+  search: GameEntityThink | undefined;
+  walk: GameEntityThink | undefined;
+  run: GameEntityThink | undefined;
+  dodge: ((self: GameEntity, other: GameEntity | null, eta: number, runtime: GameRuntime) => void) | undefined;
+  attack: GameEntityThink | undefined;
+  melee: GameEntityThink | undefined;
+  sight: ((self: GameEntity, other: GameEntity | null, runtime: GameRuntime) => void) | undefined;
+  checkattack: ((self: GameEntity, runtime: GameRuntime) => boolean) | undefined;
+  pausetime: number;
+  attack_finished: number;
+  saved_goal: vec3_t;
+  search_time: number;
+  trail_time: number;
+  last_sighting: vec3_t;
+  attack_state: number;
+  lefty: number;
+  idle_time: number;
+  linkcount: number;
+  power_armor_type: number;
+  power_armor_power: number;
+}
+
+/**
+ * Category: New
  * Purpose: Hold the local asset registration tables used to emulate the original index-based game import API.
  *
  * Constraints:
@@ -350,26 +460,37 @@ export interface GameEntity {
   client: GameClient | null;
   owner: GameEntity | null;
   enemy: GameEntity | null;
+  oldenemy: GameEntity | null;
   team: string | undefined;
   teammaster: GameEntity | null;
   teamchain: GameEntity | null;
   target: string | undefined;
   targetname: string | undefined;
   killtarget: string | undefined;
+  pathtarget: string | undefined;
+  deathtarget: string | undefined;
+  combattarget: string | undefined;
+  target_ent: GameEntity | null;
   message: string | undefined;
   model: string | undefined;
   spawnflags: number;
   flags: number;
+  timestamp: number;
+  angle: number;
   wait: number;
   speed: number;
   accel: number;
   decel: number;
   sounds: number;
   noise_index: number;
+  noise_index2: number;
   solid: number;
   movetype: number;
   svflags: number;
   linkcount: number;
+  area: GameAreaLink;
+  num_clusters: number;
+  clusternums: Int32Array;
   linked: boolean;
   entityKind: GameEntityKind;
   areanum: number;
@@ -380,17 +501,31 @@ export interface GameEntity {
   takedamage: number;
   max_health: number;
   mass: number;
+  air_finished: number;
+  gravity: number;
   deadflag: number;
+  gib_health: number;
+  show_hostile: number;
   dmg: number;
   radius_dmg: number;
   dmg_radius: number;
   pain_debounce_time: number;
   touch_debounce_time: number;
+  damage_debounce_time: number;
+  fly_sound_debounce_time: number;
+  last_move_time: number;
   powerarmor_time: number;
   delay: number;
+  random: number;
   nextthink: number;
   activator: GameEntity | null;
+  chain: GameEntity | null;
+  goalentity: GameEntity | null;
+  movetarget: GameEntity | null;
+  yaw_speed: number;
+  ideal_yaw: number;
   use: GameEntityUse | undefined;
+  prethink: GameEntityThink | undefined;
   think: GameEntityThink | undefined;
   touch: GameEntityTouch | undefined;
   blocked: GameEntityBlocked | undefined;
@@ -415,10 +550,18 @@ export interface GameEntity {
   count: number;
   style: number;
   viewheight: number;
+  map: string | undefined;
   waterlevel: number;
+  watertype: number;
+  volume: number;
+  attenuation: number;
+  light_level: number;
+  move_origin: vec3_t;
+  move_angles: vec3_t;
   power_armor_type: number;
   power_armor_power: number;
   itemIndex: number;
+  item: GameItemDefinition | null;
   itemClassname: string | undefined;
   itemPickupName: string | undefined;
   itemWorldModel: string | undefined;
@@ -426,6 +569,7 @@ export interface GameEntity {
   mynoise: GameEntity | null;
   mynoise2: GameEntity | null;
   teleport_time: number;
+  monsterinfo: GameMonsterInfo;
 }
 
 /**
@@ -492,6 +636,19 @@ export interface GameSoundEvent {
 
 /**
  * Category: New
+ * Purpose: Hold the circular player-trail state used by pursuit helpers from `p_trail.c`.
+ *
+ * Constraints:
+ * - Must preserve the fixed trail length and active/head state explicitly on the gameplay runtime.
+ */
+export interface GamePlayerTrailState {
+  trail: GameEntity[];
+  trail_head: number;
+  trail_active: boolean;
+}
+
+/**
+ * Category: New
  * Purpose: Hold the mutable gameplay entity list plus minimal timing and log state.
  *
  * Constraints:
@@ -501,6 +658,19 @@ export interface GameRuntime {
   entities: GameEntity[];
   time: number;
   framenum: number;
+  helpchanged: number;
+  gravity: number;
+  mapname: string;
+  spawnpoint: string;
+  maxclients: number;
+  maxentities: number;
+  body_que: number;
+  meansOfDeath: number;
+  intermissiontime: number;
+  exitintermission: number;
+  intermission_origin: vec3_t;
+  intermission_angle: vec3_t;
+  changemap: string | null;
   deathmatch: boolean;
   coop: boolean;
   dmflags: number;
@@ -510,6 +680,9 @@ export interface GameRuntime {
   logEntries: GameRuntimeLogEntry[];
   collision: GameCollisionBridge | null;
   assets: GameAssetRegistry;
+  sight_client: GameEntity | null;
+  sight_entity: GameEntity | null;
+  sight_entity_framenum: number;
   sound_entity: GameEntity | null;
   sound_entity_framenum: number;
   sound2_entity: GameEntity | null;
@@ -520,7 +693,20 @@ export interface GameRuntime {
   linkedInlineBspEntities: GameEntity[];
   linkedRuntimeTriggerEntities: GameEntity[];
   linkedDynamicBoxEntities: GameEntity[];
+  playerTrail: GamePlayerTrailState;
   log: (entry: Omit<GameRuntimeLogEntry, "time">) => void;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the minimal `link_t` area-link node shape shared by `game.h` and `g_local.h`.
+ *
+ * Constraints:
+ * - Must remain self-referential to mirror the original double-linked list node.
+ */
+export interface GameAreaLink {
+  prev: GameAreaLink | null;
+  next: GameAreaLink | null;
 }
 
 /**
@@ -584,11 +770,28 @@ export const PLAT_LOW_TRIGGER = 1;
  */
 export function createGameClientPersistant(): GameClientPersistant {
   return {
+    userinfo: "",
+    netname: "",
     hand: RIGHT_HANDED,
+    connected: false,
+    health: 0,
+    max_health: 0,
+    savedFlags: 0,
     inventory: new Array<number>(MAX_ITEMS).fill(0),
     weapon: null,
     lastweapon: null,
-    selected_item: -1
+    selected_item: -1,
+    max_bullets: 0,
+    max_shells: 0,
+    max_rockets: 0,
+    max_grenades: 0,
+    max_cells: 0,
+    max_slugs: 0,
+    power_cubes: 0,
+    score: 0,
+    game_helpchanged: 0,
+    helpchanged: 0,
+    spectator: false
   };
 }
 
@@ -601,7 +804,39 @@ export function createGameClientRespawn(): GameClientRespawn {
     spectator: false,
     score: 0,
     enterframe: 0,
-    cmd_angles: [0, 0, 0]
+    cmd_angles: [0, 0, 0],
+    coop_respawn: createGameClientPersistant()
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Clone one persistent client state block while preserving Quake-style field names and inventory layout.
+ */
+export function cloneGameClientPersistant(source: GameClientPersistant): GameClientPersistant {
+  return {
+    userinfo: source.userinfo,
+    netname: source.netname,
+    hand: source.hand,
+    connected: source.connected,
+    health: source.health,
+    max_health: source.max_health,
+    savedFlags: source.savedFlags,
+    inventory: source.inventory.slice(),
+    weapon: source.weapon,
+    lastweapon: source.lastweapon,
+    selected_item: source.selected_item,
+    max_bullets: source.max_bullets,
+    max_shells: source.max_shells,
+    max_rockets: source.max_rockets,
+    max_grenades: source.max_grenades,
+    max_cells: source.max_cells,
+    max_slugs: source.max_slugs,
+    power_cubes: source.power_cubes,
+    score: source.score,
+    game_helpchanged: source.game_helpchanged,
+    helpchanged: source.helpchanged,
+    spectator: source.spectator
   };
 }
 
@@ -612,9 +847,14 @@ export function createGameClientRespawn(): GameClientRespawn {
 export function createGameClient(): GameClient {
   return {
     ps: createPlayerState(),
+    ping: 0,
     pers: createGameClientPersistant(),
     resp: createGameClientRespawn(),
     old_pmove: createPlayerState().pmove,
+    showscores: false,
+    showinventory: false,
+    showhelp: false,
+    showhelpicon: false,
     kick_angles: [0, 0, 0],
     kick_origin: [0, 0, 0],
     v_angle: [0, 0, 0],
@@ -625,14 +865,31 @@ export function createGameClient(): GameClient {
     buttons: 0,
     oldbuttons: 0,
     latched_buttons: 0,
+    weapon_thunk: false,
     newweapon: null,
+    killer_yaw: 0,
     weaponstate: weaponstate_t.WEAPON_READY,
     machinegun_shots: 0,
+    fall_time: 0,
+    fall_value: 0,
+    damage_alpha: 0,
+    bonus_alpha: 0,
+    damage_blend: [0, 0, 0],
+    bobtime: 0,
+    oldviewangles: [0, 0, 0],
+    oldvelocity: [0, 0, 0],
+    next_drown_time: 0,
+    old_waterlevel: 0,
+    breather_sound: 0,
     anim_end: 0,
     anim_priority: ANIM_BASIC,
+    anim_duck: false,
+    anim_run: false,
     grenade_blew_up: false,
     grenade_time: 0,
     silencer_shots: 0,
+    breather_framenum: 0,
+    enviro_framenum: 0,
     invincible_framenum: 0,
     damage_parmor: 0,
     damage_armor: 0,
@@ -640,7 +897,49 @@ export function createGameClient(): GameClient {
     damage_knockback: 0,
     damage_from: [0, 0, 0],
     weapon_sound: 0,
-    quad_framenum: 0
+    quad_framenum: 0,
+    pickup_msg_time: 0,
+    flood_locktill: 0,
+    flood_when: new Array<number>(10).fill(0),
+    flood_whenhead: 0,
+    respawn_time: 0,
+    chase_target: null,
+    update_chase: false
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create the zero-initialized `monsterinfo_t` block embedded in gameplay entities.
+ */
+export function createMonsterInfo(): GameMonsterInfo {
+  return {
+    currentmove: null,
+    aiflags: 0,
+    nextframe: 0,
+    scale: 0,
+    stand: undefined,
+    idle: undefined,
+    search: undefined,
+    walk: undefined,
+    run: undefined,
+    dodge: undefined,
+    attack: undefined,
+    melee: undefined,
+    sight: undefined,
+    checkattack: undefined,
+    pausetime: 0,
+    attack_finished: 0,
+    saved_goal: [0, 0, 0],
+    search_time: 0,
+    trail_time: 0,
+    last_sighting: [0, 0, 0],
+    attack_state: 0,
+    lefty: 0,
+    idle_time: 0,
+    linkcount: 0,
+    power_armor_type: 0,
+    power_armor_power: 0
   };
 }
 
@@ -669,26 +968,37 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     client: null,
     owner: null,
     enemy: null,
+    oldenemy: null,
     team: properties.team,
     teammaster: null,
     teamchain: null,
     target: properties.target,
     targetname: properties.targetname,
     killtarget: properties.killtarget,
+    pathtarget: properties.pathtarget,
+    deathtarget: properties.deathtarget,
+    combattarget: properties.combattarget,
+    target_ent: null,
     message: properties.message,
     model: properties.model,
     spawnflags: parseEntityInteger(properties.spawnflags),
     flags: 0,
+    timestamp: 0,
+    angle: parseEntityFloat(properties.angle),
     wait: parseEntityFloat(properties.wait),
     speed: parseEntityFloat(properties.speed),
     accel: parseEntityFloat(properties.accel),
     decel: parseEntityFloat(properties.decel),
     sounds: parseEntityInteger(properties.sounds),
     noise_index: 0,
+    noise_index2: 0,
     solid: SOLID_NOT,
     movetype: MOVETYPE_NONE,
     svflags: 0,
     linkcount: 0,
+    area: createAreaLink(),
+    num_clusters: 0,
+    clusternums: new Int32Array(16),
     linked: false,
     entityKind: "other",
     areanum: 0,
@@ -699,17 +1009,31 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     takedamage: 0,
     max_health: 0,
     mass: 0,
+    air_finished: 0,
+    gravity: properties.gravity ? parseEntityFloat(properties.gravity) : 1,
     deadflag: DEAD_NO,
+    gib_health: 0,
+    show_hostile: 0,
     dmg: parseEntityInteger(properties.dmg),
     radius_dmg: 0,
     dmg_radius: 0,
     pain_debounce_time: 0,
     touch_debounce_time: 0,
+    damage_debounce_time: 0,
+    fly_sound_debounce_time: 0,
+    last_move_time: 0,
     powerarmor_time: 0,
     delay: parseEntityFloat(properties.delay),
+    random: parseEntityFloat(properties.random),
     nextthink: 0,
     activator: null,
+    chain: null,
+    goalentity: null,
+    movetarget: null,
+    yaw_speed: 0,
+    ideal_yaw: 0,
     use: undefined,
+    prethink: undefined,
     think: undefined,
     touch: undefined,
     blocked: undefined,
@@ -734,17 +1058,26 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     count: 0,
     style: parseEntityInteger(properties.style),
     viewheight: 0,
+    map: properties.map,
     waterlevel: 0,
+    watertype: 0,
+    volume: 0,
+    attenuation: 0,
+    light_level: 0,
+    move_origin: [0, 0, 0],
+    move_angles: [0, 0, 0],
     power_armor_type: POWER_ARMOR_NONE,
     power_armor_power: 0,
     itemIndex: 0,
+    item: null,
     itemClassname: undefined,
     itemPickupName: undefined,
     itemWorldModel: undefined,
     itemWorldModelFlags: 0,
     mynoise: null,
     mynoise2: null,
-    teleport_time: 0
+    teleport_time: 0,
+    monsterinfo: createMonsterInfo()
   };
 }
 
@@ -760,6 +1093,19 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     entities: entities.map((entity, index) => createRuntimeEntity(entity.properties, index)),
     time: 0,
     framenum: 0,
+    helpchanged: 0,
+    gravity: 800,
+    mapname: "",
+    spawnpoint: "",
+    maxclients: 0,
+    maxentities: Number.MAX_SAFE_INTEGER,
+    body_que: 0,
+    meansOfDeath: 0,
+    intermissiontime: 0,
+    exitintermission: 0,
+    intermission_origin: [0, 0, 0],
+    intermission_angle: [0, 0, 0],
+    changemap: null,
     deathmatch: false,
     coop: false,
     dmflags: 0,
@@ -769,6 +1115,9 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     logEntries: [],
     collision: null,
     assets: createAssetRegistry(),
+    sight_client: null,
+    sight_entity: null,
+    sight_entity_framenum: 0,
     sound_entity: null,
     sound_entity_framenum: 0,
     sound2_entity: null,
@@ -779,6 +1128,7 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     linkedInlineBspEntities: [],
     linkedRuntimeTriggerEntities: [],
     linkedDynamicBoxEntities: [],
+    playerTrail: createPlayerTrailState(),
     log: (entry) => {
       runtime.logEntries.push({
         ...entry,
@@ -799,10 +1149,15 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
  */
 export function createGameRuntimeFromBspMap(map: BspMap): GameRuntime {
   const runtime = createGameRuntimeFromBspEntities(map.parsedEntities);
+  const worldspawn = runtime.entities[0] ?? null;
+  runtime.mapname = worldspawn?.properties.map ?? "";
   runtime.collision = createGameCollisionBridge(map, runtime);
 
   for (const entity of runtime.entities) {
     applyInlineModelBounds(entity, map);
+    if (entity.model?.startsWith("*")) {
+      entity.s.modelindex = registerGameModel(runtime, entity.model);
+    }
     linkGameEntity(runtime, entity);
   }
 
@@ -941,26 +1296,37 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     client: null,
     owner: null,
     enemy: null,
+    oldenemy: null,
     team: undefined,
     teammaster: null,
     teamchain: null,
     target: undefined,
     targetname: undefined,
     killtarget: undefined,
+    pathtarget: undefined,
+    deathtarget: undefined,
+    combattarget: undefined,
+    target_ent: null,
     message: undefined,
     model: undefined,
     spawnflags: 0,
     flags: 0,
+    timestamp: 0,
+    angle: 0,
     wait: 0,
     speed: 0,
     accel: 0,
     decel: 0,
     sounds: 0,
     noise_index: 0,
+    noise_index2: 0,
     solid: SOLID_NOT,
     movetype: MOVETYPE_NONE,
     svflags: 0,
     linkcount: 0,
+    area: createAreaLink(),
+    num_clusters: 0,
+    clusternums: new Int32Array(16),
     linked: false,
     entityKind: "other",
     areanum: 0,
@@ -971,17 +1337,31 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     takedamage: 0,
     max_health: 0,
     mass: 0,
+    air_finished: 0,
+    gravity: 1,
     deadflag: DEAD_NO,
+    gib_health: 0,
+    show_hostile: 0,
     dmg: 0,
     radius_dmg: 0,
     dmg_radius: 0,
     pain_debounce_time: 0,
     touch_debounce_time: 0,
+    damage_debounce_time: 0,
+    fly_sound_debounce_time: 0,
+    last_move_time: 0,
     powerarmor_time: 0,
     delay: 0,
+    random: 0,
     nextthink: 0,
     activator: null,
+    chain: null,
+    goalentity: null,
+    movetarget: null,
+    yaw_speed: 0,
+    ideal_yaw: 0,
     use: undefined,
+    prethink: undefined,
     think: undefined,
     touch: undefined,
     blocked: undefined,
@@ -1006,17 +1386,26 @@ export function spawnGameEntity(runtime: GameRuntime): GameEntity {
     count: 0,
     style: 0,
     viewheight: 0,
+    map: undefined,
     waterlevel: 0,
+    watertype: 0,
+    volume: 0,
+    attenuation: 0,
+    light_level: 0,
+    move_origin: [0, 0, 0],
+    move_angles: [0, 0, 0],
     power_armor_type: POWER_ARMOR_NONE,
     power_armor_power: 0,
     itemIndex: 0,
+    item: null,
     itemClassname: undefined,
     itemPickupName: undefined,
     itemWorldModel: undefined,
     itemWorldModelFlags: 0,
     mynoise: null,
     mynoise2: null,
-    teleport_time: 0
+    teleport_time: 0,
+    monsterinfo: createMonsterInfo()
   };
 
   refreshEntitySpatialState(entity);
@@ -1046,26 +1435,37 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.client = null;
   entity.owner = null;
   entity.enemy = null;
+  entity.oldenemy = null;
   entity.team = undefined;
   entity.teammaster = null;
   entity.teamchain = null;
   entity.target = undefined;
   entity.targetname = undefined;
   entity.killtarget = undefined;
+  entity.pathtarget = undefined;
+  entity.deathtarget = undefined;
+  entity.combattarget = undefined;
+  entity.target_ent = null;
   entity.message = undefined;
   entity.model = undefined;
   entity.spawnflags = 0;
   entity.flags = 0;
+  entity.timestamp = 0;
+  entity.angle = 0;
   entity.wait = 0;
   entity.speed = 0;
   entity.accel = 0;
   entity.decel = 0;
   entity.sounds = 0;
   entity.noise_index = 0;
+  entity.noise_index2 = 0;
   entity.solid = SOLID_NOT;
   entity.movetype = MOVETYPE_NONE;
   entity.svflags = 0;
   entity.linkcount = 0;
+  entity.area = createAreaLink();
+  entity.num_clusters = 0;
+  entity.clusternums = new Int32Array(16);
   entity.linked = false;
   entity.entityKind = "other";
   entity.areanum = 0;
@@ -1076,17 +1476,31 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.takedamage = 0;
   entity.max_health = 0;
   entity.mass = 0;
+  entity.air_finished = 0;
+  entity.gravity = 1;
   entity.deadflag = DEAD_NO;
+  entity.gib_health = 0;
+  entity.show_hostile = 0;
   entity.dmg = 0;
   entity.radius_dmg = 0;
   entity.dmg_radius = 0;
   entity.pain_debounce_time = 0;
   entity.touch_debounce_time = 0;
+  entity.damage_debounce_time = 0;
+  entity.fly_sound_debounce_time = 0;
+  entity.last_move_time = 0;
   entity.powerarmor_time = 0;
   entity.delay = 0;
+  entity.random = 0;
   entity.touch = undefined;
+  entity.prethink = undefined;
   entity.die = undefined;
   entity.pain = undefined;
+  entity.chain = null;
+  entity.goalentity = null;
+  entity.movetarget = null;
+  entity.yaw_speed = 0;
+  entity.ideal_yaw = 0;
   entity.movedir = [0, 0, 0];
   entity.velocity = [0, 0, 0];
   entity.avelocity = [0, 0, 0];
@@ -1107,10 +1521,18 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.count = 0;
   entity.style = 0;
   entity.viewheight = 0;
+  entity.map = undefined;
   entity.waterlevel = 0;
+  entity.watertype = 0;
+  entity.volume = 0;
+  entity.attenuation = 0;
+  entity.light_level = 0;
+  entity.move_origin = [0, 0, 0];
+  entity.move_angles = [0, 0, 0];
   entity.power_armor_type = POWER_ARMOR_NONE;
   entity.power_armor_power = 0;
   entity.itemIndex = 0;
+  entity.item = null;
   entity.itemClassname = undefined;
   entity.itemPickupName = undefined;
   entity.itemWorldModel = undefined;
@@ -1118,6 +1540,7 @@ export function freeGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   entity.mynoise = null;
   entity.mynoise2 = null;
   entity.teleport_time = 0;
+  entity.monsterinfo = createMonsterInfo();
 
   runtime.log({
     kind: "entity-freed",
@@ -1207,6 +1630,17 @@ function createMoveInfo(): GameMoveInfo {
 
 /**
  * Category: New
+ * Purpose: Create one detached area-link node mirroring the `link_t` storage embedded in `edict_t`.
+ */
+function createAreaLink(): GameAreaLink {
+  return {
+    prev: null,
+    next: null
+  };
+}
+
+/**
+ * Category: New
  * Purpose: Create the local asset registry used by the early gameplay runtime ports.
  */
 function createAssetRegistry(): GameAssetRegistry {
@@ -1217,6 +1651,18 @@ function createAssetRegistry(): GameAssetRegistry {
     soundIndexByPath: new Map<string, number>(),
     imagePaths: [],
     imageIndexByPath: new Map<string, number>()
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create the zero-initialized player-trail state embedded in the gameplay runtime.
+ */
+function createPlayerTrailState(): GamePlayerTrailState {
+  return {
+    trail: [],
+    trail_head: 0,
+    trail_active: false
   };
 }
 
@@ -1300,7 +1746,7 @@ function syncEntityStateFromRuntimeEntity(entity: GameEntity): void {
   entity.s.old_origin = [...entity.s.origin];
   entity.s.origin = [...entity.origin];
   entity.s.angles = [...entity.angles];
-  entity.s.solid = entity.solid;
+  entity.s.solid = entity.model?.startsWith("*") ? 31 : entity.solid;
 }
 
 /**

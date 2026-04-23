@@ -1,0 +1,46 @@
+/**
+ * File: quake2-game-header.ts
+ * Purpose: Verify that the TypeScript target for `game/game.h` preserves the key server-visible declarations.
+ *
+ * This file is not a direct source port.
+ * It is a targeted verification harness for a strict header port.
+ *
+ * Dependencies:
+ * - packages/game/src/game.ts
+ * - packages/game/src/runtime.ts
+ */
+
+import { strict as assert } from "node:assert";
+
+import {
+  GAME_API_VERSION,
+  MAX_ENT_CLUSTERS,
+  SVF_DEADMONSTER,
+  SVF_MONSTER,
+  SVF_NOCLIENT,
+  solid_t
+} from "../../packages/game/src/game.js";
+import { createGameClient, createRuntimeEntity } from "../../packages/game/src/runtime.js";
+
+const client = createGameClient();
+const entity = createRuntimeEntity({}, 1);
+
+assert.equal(GAME_API_VERSION, 3, "GAME_API_VERSION must stay aligned with game/game.h");
+assert.equal(MAX_ENT_CLUSTERS, 16, "MAX_ENT_CLUSTERS must stay aligned with game/game.h");
+
+assert.equal(solid_t.SOLID_NOT, 0, "solid_t.SOLID_NOT mismatch");
+assert.equal(solid_t.SOLID_TRIGGER, 1, "solid_t.SOLID_TRIGGER mismatch");
+assert.equal(solid_t.SOLID_BBOX, 2, "solid_t.SOLID_BBOX mismatch");
+assert.equal(solid_t.SOLID_BSP, 3, "solid_t.SOLID_BSP mismatch");
+
+assert.equal(SVF_NOCLIENT, 0x00000001, "SVF_NOCLIENT mismatch");
+assert.equal(SVF_DEADMONSTER, 0x00000002, "SVF_DEADMONSTER mismatch");
+assert.equal(SVF_MONSTER, 0x00000004, "SVF_MONSTER mismatch");
+
+assert.equal(client.ping, 0, "gclient_t server-visible ping field must be present");
+assert.equal(entity.num_clusters, 0, "edict_t num_clusters must be initialized");
+assert.equal(entity.clusternums.length, MAX_ENT_CLUSTERS, "edict_t clusternums must keep fixed inline capacity");
+assert.equal(entity.area.prev, null, "edict_t area link must start detached");
+assert.equal(entity.area.next, null, "edict_t area link must start detached");
+
+console.log("quake2-game-header: ok");

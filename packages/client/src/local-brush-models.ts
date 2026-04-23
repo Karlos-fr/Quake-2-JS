@@ -12,7 +12,7 @@
  */
 
 import { LerpAngle } from "../../qcommon/src/index.js";
-import type { GameRuntime } from "../../game/src/index.js";
+import { SOLID_TRIGGER, SVF_NOCLIENT, type GameRuntime } from "../../game/src/index.js";
 import type { BrushModelSnapshot } from "../../renderer-three/src/index.js";
 import type { BrushModelInterpolationState } from "./local-gameplay-sync.js";
 
@@ -28,6 +28,14 @@ export function buildBrushModelSnapshots(runtime: GameRuntime): BrushModelSnapsh
 
   for (const entity of runtime.entities) {
     if (!entity.inuse || !entity.model?.startsWith("*")) {
+      continue;
+    }
+
+    if ((entity.svflags & SVF_NOCLIENT) !== 0) {
+      continue;
+    }
+
+    if (entity.solid === SOLID_TRIGGER) {
       continue;
     }
 

@@ -126,7 +126,7 @@ function createWalDataTexture(width: number, height: number, indices: Uint8Array
   texture.magFilter = NearestFilter;
   texture.minFilter = LinearMipmapLinearFilter;
   texture.generateMipmaps = true;
-  texture.flipY = true;
+  texture.flipY = false;
   texture.colorSpace = SRGBColorSpace;
   texture.needsUpdate = true;
   texture.userData.quake = {

@@ -1,6 +1,6 @@
 /**
  * File: refresh-entity-sync.ts
- * Purpose: Synchronize Quake II client refresh entities into Three.js MD2 scene objects.
+ * Purpose: Synchronize Quake II client refresh entities into Three.js scene objects using the ported alias and sprite renderer conventions.
  *
  * This file is not a direct source port.
  * It is an adapter layer between the client refresh frame and the Three.js backend.
@@ -12,13 +12,36 @@
  * - three
  */
 
-import { Group, MathUtils, type Camera, type Object3D } from "three";
+import {
+  BufferAttribute,
+  BufferGeometry,
+  DataTexture,
+  Group,
+  MathUtils,
+  Mesh,
+  MeshBasicMaterial,
+  RGBAFormat,
+  SRGBColorSpace,
+  UnsignedByteType,
+  type Camera,
+  type Object3D,
+  type Texture
+} from "three";
 import type { ClientRefreshFrame, ClientRenderEntity, ClientRuntime } from "../../client/src/index.js";
-import { CS_MODELS, RF_DEPTHHACK, RF_FRAMELERP, RF_GLOW, RF_TRANSLUCENT, RF_WEAPONMODEL } from "../../qcommon/src/index.js";
-import type { VirtualFilesystem } from "../../filesystem/src/index.js";
+import { CS_MODELS, RF_DEPTHHACK, RF_FRAMELERP, RF_GLOW, RF_TRANSLUCENT, RF_WEAPONMODEL, AngleVectors } from "../../qcommon/src/index.js";
+import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
+import { parsePcx, parseSp2, type dsprite_t } from "../../formats/src/index.js";
 import { applyMd2Frame, applyMd2LerpedFrame, buildMd2Mesh, loadMd2Model, type Md2MeshInstance } from "./md2-mesh-builder.js";
+import {
+  R_DrawSpriteModel,
+  createGlRmainRuntime,
+  type GlRmainRuntime,
+  type GlRmainSpriteVertex
+} from "./gl-rmain.js";
+import { createModel, modtype_t, type image_t, type model_t } from "./gl-model.js";
 
 const MD2_MODEL_EXTENSION = ".md2";
+const SPRITE_MODEL_EXTENSION = ".sp2";
 const RF_GLOW_SCALE = 0.1;
 const RF_GLOW_RATE = 7;
 const RF_GLOW_MIN_FACTOR = 0.8;
@@ -30,7 +53,8 @@ const RF_GLOW_MIN_FACTOR = 0.8;
  * Constraints:
  * - Must preserve the current model path so runtime model swaps can rebuild the instance cleanly.
  */
-interface RefreshEntityInstance {
+interface RefreshEntityMd2Instance {
+  kind: "md2";
   key: string;
   modelPath: string;
   skinnum: number;
@@ -38,12 +62,29 @@ interface RefreshEntityInstance {
   md2: Md2MeshInstance;
 }
 
+interface RefreshEntitySpriteInstance {
+  kind: "sprite";
+  key: string;
+  modelPath: string;
+  skinnum: number;
+  root: Group;
+  mesh: Mesh<BufferGeometry, MeshBasicMaterial>;
+  model: model_t;
+  spriteRuntime: GlRmainRuntime;
+}
+
+type RefreshEntityInstance = RefreshEntityMd2Instance | RefreshEntitySpriteInstance;
+
+interface ThreeSpriteImageHandle {
+  texture: Texture;
+}
+
 /**
  * Category: New
  * Purpose: Report the visible and rendered entity counts produced by the sync step.
  *
  * Constraints:
- * - Must describe only the entities processed through this MD2 adapter.
+ * - Must describe only the entities processed through this entity adapter.
  */
 export interface RefreshEntitySyncStats {
   visibleEntities: number;
@@ -68,11 +109,11 @@ export interface ThreeRefreshEntitySync {
 
 /**
  * Category: New
- * Purpose: Build one Three.js adapter that renders client refresh entities backed by MD2 models.
+ * Purpose: Build one Three.js adapter that renders client refresh entities backed by MD2 alias models and SP2 sprites.
  *
  * Constraints:
  * - Must resolve model paths through client configstrings.
- * - Must skip non-MD2 models such as brush models or sprites.
+ * - Must skip unsupported model families such as inline brush models.
  * - Must keep one stable scene node per `entityNumber` and linked-model slot.
  */
 export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): ThreeRefreshEntitySync {
@@ -82,6 +123,8 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
   viewWeaponRoot.name = "refresh-view-weapon";
 
   const modelCache = new Map<string, ReturnType<typeof loadMd2Model>>();
+  const spriteCache = new Map<string, model_t | null>();
+  const spriteTextureCache = new Map<string, Texture | null>();
   const instances = new Map<string, RefreshEntityInstance>();
 
   return {
@@ -139,7 +182,7 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
         }
 
         if (!instance) {
-          instance = createRefreshEntityInstance(filesystem, modelCache, key, modelPath, entity.skinnum);
+          instance = createRefreshEntityInstance(filesystem, modelCache, spriteCache, spriteTextureCache, key, modelPath, entity.skinnum);
           if (!instance) {
             missingMd2AssetCount += 1;
             continue;
@@ -182,7 +225,11 @@ function resolveRefreshModelPath(runtime: ClientRuntime, entity: ClientRenderEnt
   }
 
   const modelPath = runtime.cl.configstrings[CS_MODELS + entity.modelindex] ?? "";
-  if (!modelPath || !modelPath.endsWith(MD2_MODEL_EXTENSION) || modelPath.startsWith("*")) {
+  if (!modelPath || modelPath.startsWith("*")) {
+    return null;
+  }
+
+  if (!modelPath.endsWith(MD2_MODEL_EXTENSION) && !modelPath.endsWith(SPRITE_MODEL_EXTENSION)) {
     return null;
   }
 
@@ -213,7 +260,7 @@ function classifyRefreshModelSkipReason(
     return "inline-or-brush";
   }
 
-  if (!modelPath.endsWith(MD2_MODEL_EXTENSION)) {
+  if (!modelPath.endsWith(MD2_MODEL_EXTENSION) && !modelPath.endsWith(SPRITE_MODEL_EXTENSION)) {
     return "non-md2";
   }
 
@@ -235,10 +282,16 @@ function buildRefreshEntityKey(entity: ClientRenderEntity): string {
 function createRefreshEntityInstance(
   filesystem: VirtualFilesystem,
   modelCache: Map<string, ReturnType<typeof loadMd2Model>>,
+  spriteCache: Map<string, model_t | null>,
+  spriteTextureCache: Map<string, Texture | null>,
   key: string,
   modelPath: string,
   skinnum: number
 ): RefreshEntityInstance | null {
+  if (modelPath.endsWith(SPRITE_MODEL_EXTENSION)) {
+    return createRefreshSpriteInstance(filesystem, spriteCache, spriteTextureCache, key, modelPath, skinnum);
+  }
+
   let model = modelCache.get(modelPath);
   if (model === undefined) {
     model = loadMd2Model(filesystem, modelPath);
@@ -259,6 +312,7 @@ function createRefreshEntityInstance(
   root.add(md2.mesh);
 
   return {
+    kind: "md2",
     key,
     modelPath,
     skinnum,
@@ -277,6 +331,11 @@ function updateRefreshEntityInstance(
   instance: RefreshEntityInstance,
   entity: ClientRenderEntity
 ): void {
+  if (instance.kind === "sprite") {
+    updateRefreshSpriteInstance(refreshFrame, instance, entity);
+    return;
+  }
+
   if ((entity.flags & RF_WEAPONMODEL) !== 0) {
     const vieworg = refreshFrame?.view.vieworg ?? [0, 0, 0];
     const viewangles = refreshFrame?.view.viewangles ?? [0, 0, 0];
@@ -357,7 +416,12 @@ function applyRefreshEntityGlow(runtime: ClientRuntime, instance: RefreshEntityI
     colorScale = Math.max(1 + pulse, RF_GLOW_MIN_FACTOR);
   }
 
-  instance.md2.mesh.material.color.setRGB(colorScale, colorScale, colorScale);
+  if (instance.kind === "md2") {
+    instance.md2.mesh.material.color.setRGB(colorScale, colorScale, colorScale);
+    return;
+  }
+
+  instance.mesh.material.color.setRGB(colorScale, colorScale, colorScale);
 }
 
 /**
@@ -387,6 +451,182 @@ function removeRefreshEntityInstance(instances: Map<string, RefreshEntityInstanc
   instance.root.removeFromParent();
   disposeObject3D(instance.root);
   instances.delete(key);
+}
+
+function createRefreshSpriteInstance(
+  filesystem: VirtualFilesystem,
+  spriteCache: Map<string, model_t | null>,
+  spriteTextureCache: Map<string, Texture | null>,
+  key: string,
+  modelPath: string,
+  skinnum: number
+): RefreshEntitySpriteInstance | null {
+  let model = spriteCache.get(modelPath);
+  if (model === undefined) {
+    model = loadSpriteModel(filesystem, modelPath, spriteTextureCache);
+    spriteCache.set(modelPath, model);
+  }
+
+  if (!model) {
+    return null;
+  }
+
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new BufferAttribute(new Float32Array(12), 3));
+  geometry.setAttribute("uv", new BufferAttribute(new Float32Array(8), 2));
+  geometry.setIndex([0, 1, 2, 0, 2, 3]);
+
+  const material = new MeshBasicMaterial({
+    transparent: true,
+    depthWrite: true,
+    color: 0xffffff
+  });
+  const mesh = new Mesh(geometry, material);
+  mesh.frustumCulled = false;
+
+  const root = new Group();
+  root.name = `refresh-entity:${key}`;
+  root.add(mesh);
+
+  const spriteRuntime = createGlRmainRuntime({
+    onDrawSpriteModel: (_entity, texture, alpha, vertices) => {
+      applySpriteQuad(mesh, texture, alpha, vertices);
+    }
+  });
+
+  return {
+    kind: "sprite",
+    key,
+    modelPath,
+    skinnum,
+    root,
+    mesh,
+    model,
+    spriteRuntime
+  };
+}
+
+function updateRefreshSpriteInstance(
+  refreshFrame: ClientRefreshFrame | null,
+  instance: RefreshEntitySpriteInstance,
+  entity: ClientRenderEntity
+): void {
+  const viewangles = refreshFrame?.view.viewangles ?? [0, 0, 0];
+  const vieworg = refreshFrame?.view.vieworg ?? [0, 0, 0];
+  const vectors = AngleVectors(viewangles);
+
+  const runtime = instance.spriteRuntime;
+  runtime.currentmodel = instance.model;
+  runtime.vup = [...vectors.up];
+  runtime.vright = [...vectors.right];
+  runtime.vpn = [...vectors.forward];
+
+  const drawEntity: ClientRenderEntity = (entity.flags & RF_WEAPONMODEL) !== 0
+    ? {
+        ...entity,
+        origin: [
+          entity.origin[0] - vieworg[0],
+          entity.origin[1] - vieworg[1],
+          entity.origin[2] - vieworg[2]
+        ]
+      }
+    : entity;
+
+  R_DrawSpriteModel(runtime, drawEntity as never);
+  instance.root.position.set(0, 0, 0);
+  instance.root.rotation.set(0, 0, 0);
+  instance.root.visible = true;
+  instance.mesh.material.depthTest = (entity.flags & RF_DEPTHHACK) === 0;
+  instance.mesh.material.depthWrite = (entity.flags & RF_DEPTHHACK) === 0;
+  instance.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
+}
+
+function applySpriteQuad(
+  mesh: Mesh<BufferGeometry, MeshBasicMaterial>,
+  texture: image_t | null,
+  alpha: number,
+  vertices: GlRmainSpriteVertex[]
+): void {
+  const position = mesh.geometry.getAttribute("position") as BufferAttribute;
+  const uv = mesh.geometry.getAttribute("uv") as BufferAttribute;
+  for (let index = 0; index < 4; index += 1) {
+    const vertex = vertices[index];
+    position.setXYZ(index, vertex.position[0], vertex.position[1], vertex.position[2]);
+    uv.setXY(index, vertex.uv[0], vertex.uv[1]);
+  }
+  position.needsUpdate = true;
+  uv.needsUpdate = true;
+  mesh.geometry.computeBoundingSphere();
+
+  mesh.material.map = asSpriteTexture(texture);
+  mesh.material.opacity = alpha;
+  mesh.material.transparent = alpha < 1;
+  mesh.material.needsUpdate = true;
+}
+
+function loadSpriteModel(
+  filesystem: VirtualFilesystem,
+  modelPath: string,
+  spriteTextureCache: Map<string, Texture | null>
+): model_t | null {
+  const file = readMountedFile(filesystem, modelPath);
+  if (!file) {
+    return null;
+  }
+
+  try {
+    const sprite = parseSp2(file.bytes, file.path);
+    const model = createModel();
+    model.name = modelPath;
+    model.type = modtype_t.mod_sprite;
+    model.extradata = sprite;
+    model.skins = sprite.frames.map((frame) => {
+      const texture = loadSpriteTexture(filesystem, frame.name, spriteTextureCache);
+      return texture ? ({ texture } as ThreeSpriteImageHandle as image_t) : null;
+    });
+    return model;
+  } catch {
+    return null;
+  }
+}
+
+function loadSpriteTexture(
+  filesystem: VirtualFilesystem,
+  path: string,
+  spriteTextureCache: Map<string, Texture | null>
+): Texture | null {
+  const cached = spriteTextureCache.get(path);
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  const file = readMountedFile(filesystem, path);
+  if (!file) {
+    spriteTextureCache.set(path, null);
+    return null;
+  }
+
+  try {
+    const image = parsePcx(file.bytes, file.path);
+    const texture = new DataTexture(image.rgba, image.width, image.height, RGBAFormat, UnsignedByteType);
+    texture.flipY = false;
+    texture.colorSpace = SRGBColorSpace;
+    texture.needsUpdate = true;
+    spriteTextureCache.set(path, texture);
+    return texture;
+  } catch {
+    spriteTextureCache.set(path, null);
+    return null;
+  }
+}
+
+function asSpriteTexture(image: image_t | null): Texture | null {
+  if (!image || typeof image !== "object") {
+    return null;
+  }
+
+  const candidate = image as Partial<ThreeSpriteImageHandle>;
+  return candidate.texture ?? null;
 }
 
 /**

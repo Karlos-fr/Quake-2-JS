@@ -21,6 +21,11 @@ export type qboolean = boolean;
 export type vec_t = number;
 export type vec3_t = [number, number, number];
 export type vec5_t = [number, number, number, number, number];
+export type fixed4_t = number;
+export type fixed8_t = number;
+export type fixed16_t = number;
+
+export const M_PI = 3.14159265358979323846;
 
 export const PITCH = 0;
 export const YAW = 1;
@@ -69,6 +74,7 @@ export const CONTENTS_LAVA = 8;
 export const CONTENTS_SLIME = 16;
 export const CONTENTS_WATER = 32;
 export const CONTENTS_MIST = 64;
+export const LAST_VISIBLE_CONTENTS = 64;
 export const CONTENTS_AREAPORTAL = 0x8000;
 export const CONTENTS_PLAYERCLIP = 0x10000;
 export const CONTENTS_MONSTERCLIP = 0x20000;
@@ -121,6 +127,15 @@ export interface cplane_t {
   pad: [byte, byte];
 }
 
+export const CPLANE_NORMAL_X = 0;
+export const CPLANE_NORMAL_Y = 4;
+export const CPLANE_NORMAL_Z = 8;
+export const CPLANE_DIST = 12;
+export const CPLANE_TYPE = 16;
+export const CPLANE_SIGNBITS = 17;
+export const CPLANE_PAD0 = 18;
+export const CPLANE_PAD1 = 19;
+
 export interface cmodel_t {
   mins: vec3_t;
   maxs: vec3_t;
@@ -132,6 +147,11 @@ export interface csurface_t {
   name: string;
   flags: number;
   value: number;
+}
+
+export interface mapsurface_t {
+  c: csurface_t;
+  rname: string;
 }
 
 export interface trace_t {
@@ -174,8 +194,6 @@ export interface pmove_state_t {
 export const BUTTON_ATTACK = 1;
 export const BUTTON_USE = 2;
 export const BUTTON_ANY = 128;
-export const DF_WEAPONS_STAY = 0x00000004;
-export const DF_INFINITE_AMMO = 0x00002000;
 
 export interface usercmd_t {
   msec: byte;
@@ -231,7 +249,9 @@ export const EF_GREENGIB = 0x00200000;
 export const EF_BLUEHYPERBLASTER = 0x00400000;
 export const EF_SPINNINGLIGHTS = 0x00800000;
 export const EF_PLASMA = 0x01000000;
+export const EF_TRAP = 0x02000000;
 export const EF_TRACKER = 0x04000000;
+export const EF_DOUBLE = 0x08000000;
 export const EF_SPHERETRANS = 0x10000000;
 export const EF_TAGTRAIL = 0x20000000;
 export const EF_HALF_DAMAGE = 0x40000000;
@@ -375,6 +395,14 @@ export const ATTN_NORM = 1;
 export const ATTN_IDLE = 2;
 export const ATTN_STATIC = 3;
 
+export const SPLASH_UNKNOWN = 0;
+export const SPLASH_SPARKS = 1;
+export const SPLASH_BLUE_WATER = 2;
+export const SPLASH_BROWN_WATER = 3;
+export const SPLASH_SLIME = 4;
+export const SPLASH_LAVA = 5;
+export const SPLASH_BLOOD = 6;
+
 export const STAT_HEALTH_ICON = 0;
 export const STAT_HEALTH = 1;
 export const STAT_AMMO_ICON = 2;
@@ -394,6 +422,31 @@ export const STAT_FLASHES = 15;
 export const STAT_CHASE = 16;
 export const STAT_SPECTATOR = 17;
 export const MAX_STATS = 32;
+
+export const DF_NO_HEALTH = 0x00000001;
+export const DF_NO_ITEMS = 0x00000002;
+export const DF_WEAPONS_STAY = 0x00000004;
+export const DF_NO_FALLING = 0x00000008;
+export const DF_INSTANT_ITEMS = 0x00000010;
+export const DF_SAME_LEVEL = 0x00000020;
+export const DF_SKINTEAMS = 0x00000040;
+export const DF_MODELTEAMS = 0x00000080;
+export const DF_NO_FRIENDLY_FIRE = 0x00000100;
+export const DF_SPAWN_FARTHEST = 0x00000200;
+export const DF_FORCE_RESPAWN = 0x00000400;
+export const DF_NO_ARMOR = 0x00000800;
+export const DF_ALLOW_EXIT = 0x00001000;
+export const DF_INFINITE_AMMO = 0x00002000;
+export const DF_QUAD_DROP = 0x00004000;
+export const DF_FIXED_FOV = 0x00008000;
+export const DF_QUADFIRE_DROP = 0x00010000;
+export const DF_NO_MINES = 0x00020000;
+export const DF_NO_STACK_DOUBLE = 0x00040000;
+export const DF_NO_NUKES = 0x00080000;
+export const DF_NO_SPHERES = 0x00100000;
+
+export const ROGUE_VERSION_ID = 1278;
+export const ROGUE_VERSION_STRING = "08/21/1998 Beta 2 for Ensemble";
 
 export const ANGLE2SHORT_SCALE = 65536 / 360;
 export const SHORT2ANGLE_SCALE = 360 / 65536;
@@ -415,6 +468,10 @@ export const CS_ITEMS = CS_LIGHTS + MAX_LIGHTSTYLES;
 export const CS_PLAYERSKINS = CS_ITEMS + MAX_ITEMS;
 export const CS_GENERAL = CS_PLAYERSKINS + MAX_CLIENTS;
 export const MAX_CONFIGSTRINGS = CS_GENERAL + MAX_GENERAL;
+
+export const VIDREF_GL = 1;
+export const VIDREF_SOFT = 2;
+export const VIDREF_OTHER = 3;
 
 export enum entity_event_t {
   EV_NONE,

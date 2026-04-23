@@ -19,7 +19,9 @@ import type { PerspectiveCamera, Scene } from "three";
 import { SCR_BuildHudDrawCommands } from "../../../packages/client/src/index.js";
 import {
   createThreeBrushModelSync,
+  createThreeGlWorldSceneAdapter,
   createThreeHudLayer,
+  createThreeParticleSync,
   createThreeRefreshEntitySync,
   createThreeSkySceneAdapter
 } from "../../../packages/renderer-three/src/index.js";
@@ -58,7 +60,9 @@ export interface WebDemoLoopOptions {
   hudLayer: ReturnType<typeof createThreeHudLayer>;
   skyAdapter: ReturnType<typeof createThreeSkySceneAdapter>;
   brushModelSync: ReturnType<typeof createThreeBrushModelSync>;
+  glWorldAdapter?: ReturnType<typeof createThreeGlWorldSceneAdapter>;
   refreshEntitySync: ReturnType<typeof createThreeRefreshEntitySync>;
+  particleSync: ReturnType<typeof createThreeParticleSync>;
   refreshDebug: ReturnType<typeof createRefreshDebugLayer>;
 }
 
@@ -79,7 +83,9 @@ export function startWebDemoLoop(options: WebDemoLoopOptions): void {
     hudLayer,
     skyAdapter,
     brushModelSync,
+    glWorldAdapter,
     refreshEntitySync,
+    particleSync,
     refreshDebug
   } = options;
 
@@ -107,9 +113,18 @@ export function startWebDemoLoop(options: WebDemoLoopOptions): void {
     ui.setPerformance(now);
     cameraController.update(deltaSeconds);
     skyAdapter.update(cameraController.skySnapshot, camera, elapsedSeconds);
+    const brushModelSnapshots = cameraController.getBrushModelSnapshots();
+    glWorldAdapter?.update(elapsedSeconds, [
+      camera.position.x,
+      camera.position.y,
+      camera.position.z
+    ], brushModelSnapshots);
     ui.setSkyText(formatSkySnapshot(cameraController.skySnapshot));
-    brushModelSync.apply(cameraController.getBrushModelSnapshots());
+    if (!glWorldAdapter) {
+      brushModelSync.apply(brushModelSnapshots);
+    }
     const refreshEntityStats = refreshEntitySync.apply(cameraController.runtime, cameraController.refreshFrame);
+    particleSync.apply(cameraController.refreshFrame);
     refreshDebug.update(cameraController.refreshFrame);
     ui.setRuntimeInfo(cameraController.refreshFrame, refreshEntityStats);
 

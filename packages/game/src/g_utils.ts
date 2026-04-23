@@ -16,10 +16,13 @@
  * - This file is intended to stay close to the original C source.
  */
 
+import { AngleVectors, MASK_PLAYERSOLID, VectorCompare, vec3_origin, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
 import {
   Think_Delay,
+  createMonsterInfo,
   freeGameEntity,
   getRuntimeEntityLabel,
+  refreshEntitySpatialState,
   spawnGameEntity
 } from "./runtime.js";
 import type {
@@ -27,6 +30,39 @@ import type {
   GameEntityFieldName,
   GameRuntime
 } from "./runtime.js";
+
+const TV_POOL_SIZE = 8;
+const tvPool: vec3_t[] = Array.from({ length: TV_POOL_SIZE }, () => [0, 0, 0]);
+let tvIndex = 0;
+
+const VTOS_POOL_SIZE = 8;
+const vtosPool: string[] = new Array<string>(VTOS_POOL_SIZE).fill("(0 0 0)");
+let vtosIndex = 0;
+
+const BODY_QUEUE_SIZE = 8;
+const TAG_LEVEL = 766;
+const MOD_TELEFRAG = 21;
+const VEC_UP: vec3_t = [0, -1, 0];
+const MOVEDIR_UP: vec3_t = [0, 0, 1];
+const VEC_DOWN: vec3_t = [0, -2, 0];
+const MOVEDIR_DOWN: vec3_t = [0, 0, -1];
+
+/**
+ * Original name: G_ProjectSource
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Projects a local weapon/effect offset onto world space using forward/right basis vectors.
+ */
+export function G_ProjectSource(point: vec3_t, distance: vec3_t, forward: vec3_t, right: vec3_t): vec3_t {
+  return [
+    point[0] + forward[0] * distance[0] + right[0] * distance[1],
+    point[1] + forward[1] * distance[0] + right[1] * distance[1],
+    point[2] + forward[2] * distance[0] + right[2] * distance[1] + distance[2]
+  ];
+}
 
 /**
  * Original name: G_Find
@@ -50,6 +86,9 @@ export function G_Find(
 
   for (; index < runtime.entities.length; index += 1) {
     const candidate = runtime.entities[index];
+    if (!candidate) {
+      continue;
+    }
     if (!candidate.inuse) {
       continue;
     }
@@ -65,6 +104,45 @@ export function G_Find(
   }
 
   return null;
+}
+
+/**
+ * Original name: G_PickTarget
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Chooses one matching target entity by `targetname`, limited to the original maximum choice buffer size.
+ */
+export function G_PickTarget(runtime: GameRuntime, targetname: string | undefined | null): GameEntity | null {
+  if (!targetname) {
+    runtime.log({
+      kind: "warning",
+      message: "G_PickTarget called with NULL targetname"
+    });
+    return null;
+  }
+
+  const choices: GameEntity[] = [];
+  let ent: GameEntity | null = null;
+
+  while ((ent = G_Find(runtime, ent, "targetname", targetname)) !== null) {
+    choices.push(ent);
+    if (choices.length === 8) {
+      break;
+    }
+  }
+
+  if (choices.length === 0) {
+    runtime.log({
+      kind: "warning",
+      message: `G_PickTarget: target ${targetname} not found`
+    });
+    return null;
+  }
+
+  return choices[Math.floor(Math.random() * choices.length)] ?? null;
 }
 
 /**
@@ -213,6 +291,9 @@ export function findradius(
 
   for (; index < runtime.entities.length; index += 1) {
     const entity = runtime.entities[index];
+    if (!entity) {
+      continue;
+    }
     if (!entity.inuse) {
       continue;
     }
@@ -235,6 +316,261 @@ export function findradius(
   return null;
 }
 
+/**
+ * Original name: tv
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Returns one temporary vector from the original rotating static pool.
+ */
+export function tv(x: number, y: number, z: number): vec3_t {
+  const value = tvPool[tvIndex];
+  tvIndex = (tvIndex + 1) & (TV_POOL_SIZE - 1);
+  value[0] = x;
+  value[1] = y;
+  value[2] = z;
+  return value;
+}
+
+/**
+ * Original name: vtos
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Returns one temporary formatted string from the original rotating static pool.
+ */
+export function vtos(v: vec3_t): string {
+  const value = `(${Math.trunc(v[0])} ${Math.trunc(v[1])} ${Math.trunc(v[2])})`;
+  vtosPool[vtosIndex] = value;
+  const result = vtosPool[vtosIndex];
+  vtosIndex = (vtosIndex + 1) & (VTOS_POOL_SIZE - 1);
+  return result;
+}
+
+/**
+ * Original name: G_SetMovedir
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts editor move-angle sentinels into one normalized movement direction and clears the source angles.
+ */
+export function G_SetMovedir(angles: vec3_t, movedir: vec3_t): void {
+  if (VectorCompare(angles, VEC_UP)) {
+    movedir[0] = MOVEDIR_UP[0];
+    movedir[1] = MOVEDIR_UP[1];
+    movedir[2] = MOVEDIR_UP[2];
+  } else if (VectorCompare(angles, VEC_DOWN)) {
+    movedir[0] = MOVEDIR_DOWN[0];
+    movedir[1] = MOVEDIR_DOWN[1];
+    movedir[2] = MOVEDIR_DOWN[2];
+  } else {
+    const vectors = AngleVectors(angles);
+    movedir[0] = vectors.forward[0];
+    movedir[1] = vectors.forward[1];
+    movedir[2] = vectors.forward[2];
+  }
+
+  angles[0] = 0;
+  angles[1] = 0;
+  angles[2] = 0;
+}
+
+/**
+ * Original name: vectoyaw
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts one direction vector into the original Quake II yaw-only angle.
+ */
+export function vectoyaw(vec: vec3_t): number {
+  let yaw: number;
+
+  if (vec[0] === 0) {
+    yaw = 0;
+    if (vec[1] > 0) {
+      yaw = 90;
+    } else if (vec[1] < 0) {
+      yaw = -90;
+    }
+  } else {
+    yaw = Math.trunc(Math.atan2(vec[1], vec[0]) * 180 / Math.PI);
+    if (yaw < 0) {
+      yaw += 360;
+    }
+  }
+
+  return yaw;
+}
+
+/**
+ * Original name: vectoangles
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts one direction vector into Quake II pitch/yaw/roll angles.
+ */
+export function vectoangles(value1: vec3_t): vec3_t {
+  let forward: number;
+  let yaw: number;
+  let pitch: number;
+
+  if (value1[1] === 0 && value1[0] === 0) {
+    yaw = 0;
+    pitch = value1[2] > 0 ? 90 : 270;
+  } else {
+    if (value1[0] !== 0) {
+      yaw = Math.trunc(Math.atan2(value1[1], value1[0]) * 180 / Math.PI);
+    } else if (value1[1] > 0) {
+      yaw = 90;
+    } else {
+      yaw = -90;
+    }
+    if (yaw < 0) {
+      yaw += 360;
+    }
+
+    forward = Math.sqrt(value1[0] * value1[0] + value1[1] * value1[1]);
+    pitch = Math.trunc(Math.atan2(value1[2], forward) * 180 / Math.PI);
+    if (pitch < 0) {
+      pitch += 360;
+    }
+  }
+
+  return [-pitch, yaw, 0];
+}
+
+/**
+ * Original name: G_CopyString
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Returns one level-tagged copy of the provided string.
+ *
+ * Porting notes:
+ * - Strings are immutable in JS, so the copy is modeled as a new equivalent string value.
+ */
+export function G_CopyString(inValue: string): string {
+  void TAG_LEVEL;
+  return (` ${inValue}`).slice(1);
+}
+
+/**
+ * Original name: G_InitEdict
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reinitializes one edict slot to the gameplay defaults expected by later allocation paths.
+ */
+export function G_InitEdict(entity: GameEntity): void {
+  entity.inuse = true;
+  entity.classname = "noclass";
+  entity.gravity = 1.0;
+  entity.s.number = entity.index;
+  entity.freetime = -1;
+  entity.monsterinfo = createMonsterInfo();
+}
+
+/**
+ * Original name: G_Spawn
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reuses one eligible freed edict when possible, otherwise allocates a new runtime entity.
+ */
+export function G_Spawn(runtime: GameRuntime): GameEntity {
+  const startIndex = runtime.maxclients + 1;
+
+  for (let index = startIndex; index < runtime.entities.length; index += 1) {
+    const entity = runtime.entities[index];
+    if (!entity) {
+      continue;
+    }
+    if (entity.inuse) {
+      continue;
+    }
+    if (!(entity.freetime < 2 || (runtime.time - entity.freetime) > 0.5)) {
+      continue;
+    }
+
+    G_InitEdict(entity);
+    return entity;
+  }
+
+  if (runtime.entities.length >= runtime.maxentities) {
+    throw new Error("ED_Alloc: no free edicts");
+  }
+
+  const entity = spawnGameEntity(runtime);
+  G_InitEdict(entity);
+  return entity;
+}
+
+/**
+ * Original name: G_FreeEdict
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Frees one gameplay edict unless it is part of the protected special-edict prefix.
+ */
+export function G_FreeEdict(runtime: GameRuntime, entity: GameEntity): void {
+  if (entity.index <= (runtime.maxclients + BODY_QUEUE_SIZE)) {
+    return;
+  }
+
+  freeGameEntity(runtime, entity);
+}
+
+/**
+ * Original name: KillBox
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Repeatedly telefrags blocking entities at the proposed destination until the space is clear or one blocker survives.
+ *
+ * Porting notes:
+ * - Applies the telefrag damage path locally to avoid a runtime import cycle with the wider combat module.
+ */
+export function KillBox(runtime: GameRuntime, ent: GameEntity): boolean {
+  if (!runtime.collision) {
+    return true;
+  }
+
+  while (true) {
+    const tr: trace_t = runtime.collision.trace(ent.s.origin, ent.mins, ent.maxs, ent.s.origin, null, MASK_PLAYERSOLID);
+    if (!tr.ent) {
+      break;
+    }
+
+    applyTelefragDamage(tr.ent as GameEntity, ent, runtime);
+
+    if ((tr.ent as GameEntity).solid) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function equalsIgnoreCase(left: string, right: string): boolean {
   return left.localeCompare(right, undefined, { sensitivity: "accent", usage: "search" }) === 0;
 }
@@ -245,4 +581,29 @@ function equalsIgnoreCase(left: string, right: string): boolean {
  */
 function vectorLength(vector: [number, number, number]): number {
   return Math.hypot(vector[0], vector[1], vector[2]);
+}
+
+/**
+ * Category: New
+ * Purpose: Apply the local telefrag damage effect used by the `KillBox` port without pulling in the full combat module at runtime.
+ *
+ * Constraints:
+ * - Must preserve the practical `KillBox` contract: blockers that survive keep `solid`, blockers that die clear it.
+ */
+function applyTelefragDamage(target: GameEntity, attacker: GameEntity, runtime: GameRuntime): void {
+  target.pain?.(target, attacker, 0, 100000, runtime);
+
+  if (target.health > 0) {
+    target.health -= 100000;
+  }
+
+  if (target.health <= 0) {
+    target.solid = 0;
+    target.deadflag = 2;
+    target.die?.(target, attacker, attacker, 100000, runtime);
+    return;
+  }
+
+  void vec3_origin;
+  void MOD_TELEFRAG;
 }

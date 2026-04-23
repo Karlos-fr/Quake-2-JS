@@ -10,12 +10,16 @@
  */
 
 export {
+  Developer_searchpath,
   createVirtualFilesystem,
   FS_Dir_f,
+  FS_ExecAutoexec,
+  FS_FreeFile,
   FS_Gamedir,
   FS_Link,
   FS_ListFiles,
   FS_LoadFile,
+  FS_LoadPackFile,
   FS_NextPath,
   FS_Path_f,
   FS_SetGamedir,

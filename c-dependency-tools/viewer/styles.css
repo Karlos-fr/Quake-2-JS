@@ -212,6 +212,19 @@ dd {
   min-height: 220px;
 }
 
+.details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.details-back-button {
+  padding: 6px 10px;
+  font-size: 0.76rem;
+}
+
 .details p,
 .details ul {
   margin: 0;
@@ -234,6 +247,31 @@ dd {
   margin: 0;
   max-height: 170px;
   overflow: auto;
+}
+
+.dependency-link {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  color: inherit;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  text-decoration: underline;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dependency-link:hover {
+  color: inherit;
+  filter: none;
+}
+
+.dependency-status-prefix {
+  font-weight: 600;
 }
 
 .canvas-wrap {
@@ -361,6 +399,10 @@ dd {
   stroke-width: 1.2px;
 }
 
+.node-main-circle {
+  transition: fill 160ms ease, stroke 160ms ease;
+}
+
 .node text {
   font-size: 11px;
   fill: var(--text);
@@ -368,6 +410,10 @@ dd {
   stroke: rgba(255, 250, 242, 0.88);
   stroke-width: 3px;
   stroke-linejoin: round;
+}
+
+.node-label {
+  pointer-events: none;
 }
 
 .node.secondary text {
@@ -389,6 +435,20 @@ dd {
 .node.active circle {
   stroke: #111;
   stroke-width: 2px;
+}
+
+.node-status-dot {
+  stroke: rgba(34, 22, 12, 0.34);
+  stroke-width: 1px;
+}
+
+.node-status-glyph {
+  font-size: 9px;
+  fill: #fffaf2;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  stroke: none;
 }
 
 .table-panel {
@@ -499,6 +559,11 @@ th {
   display: grid;
   gap: 3px;
   min-width: 62px;
+}
+
+.graph-status-filter {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 10px;
 }
 
 .checkbox-filter label {

@@ -81,6 +81,7 @@ export function createQcommonRuntime(options: QcommonRuntimeOptions = {}): Qcomm
 
   const cmd = createCommandRuntime({
     expandMacroToken: (token) => Cvar_VariableString(cvar, token),
+    isKnownVariable: (name) => Cvar_VariableString(cvar, name).length > 0,
     executeUnknownCommand: () => {
       const result = Cvar_Command(cvar, cmd);
       if (result.handled) {

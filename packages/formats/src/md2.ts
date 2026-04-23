@@ -20,6 +20,7 @@ import { getLittleFloat, getLittleLong, getLittleShort, getUnsignedByte } from "
 
 export const IDALIASHEADER = (("2".charCodeAt(0) << 24) + ("P".charCodeAt(0) << 16) + ("D".charCodeAt(0) << 8) + "I".charCodeAt(0)) | 0;
 export const ALIAS_VERSION = 8;
+export const MAX_MD2SKINS = 32;
 const MAX_SKINNAME = 64;
 const DTRIVERTX_SIZE = 4;
 const DSTVERT_SIZE = 4;

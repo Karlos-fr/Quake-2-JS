@@ -40,6 +40,12 @@ import {
   SP_monster_commander_body
 } from "./g_misc.js";
 import { SP_trigger_multiple, SP_trigger_once, SP_trigger_relay } from "./g_trigger.js";
+import {
+  SP_info_player_coop,
+  SP_info_player_deathmatch,
+  SP_info_player_intermission,
+  SP_info_player_start
+} from "./p_client.js";
 import { FL_TEAMSLAVE } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
@@ -51,6 +57,10 @@ interface SpawnEntry {
 }
 
 const spawns: SpawnEntry[] = [
+  { name: "info_player_start", spawn: SP_info_player_start },
+  { name: "info_player_deathmatch", spawn: SP_info_player_deathmatch },
+  { name: "info_player_coop", spawn: SP_info_player_coop },
+  { name: "info_player_intermission", spawn: SP_info_player_intermission },
   { name: "item_health", spawn: SP_item_health },
   { name: "item_health_small", spawn: SP_item_health_small },
   { name: "item_health_large", spawn: SP_item_health_large },

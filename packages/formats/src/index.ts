@@ -113,7 +113,7 @@ export {
 
 export { parsePcx } from "./pcx.js";
 export { parseTga } from "./tga.js";
-export { ALIAS_VERSION, IDALIASHEADER, parseMd2 } from "./md2.js";
+export { ALIAS_VERSION, IDALIASHEADER, MAX_MD2SKINS, parseMd2 } from "./md2.js";
 export { IDSPRITEHEADER, SPRITE_VERSION, parseSp2 } from "./sp2.js";
 export { parseWal } from "./wal.js";
 

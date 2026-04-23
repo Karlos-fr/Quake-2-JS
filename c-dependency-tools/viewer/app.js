@@ -10,6 +10,7 @@ const resetButton = document.querySelector("#reset-view");
 const statsRoot = document.querySelector("#stats");
 const detailsEmpty = document.querySelector("#details-empty");
 const detailsContent = document.querySelector("#details-content");
+const detailsBackButton = document.querySelector("#details-back-button");
 const tableBody = document.querySelector("#dependency-table-body");
 const tableSummary = document.querySelector("#table-summary");
 const dependencyTable = document.querySelector("#dependency-table");
@@ -17,6 +18,7 @@ const tableWrap = document.querySelector(".table-wrap");
 const tableColumns = Array.from(document.querySelectorAll("#dependency-table col[data-col-key]"));
 const columnFilters = Array.from(document.querySelectorAll(".column-filter"));
 const statusFilters = Array.from(document.querySelectorAll(".status-filter"));
+const graphStatusFilters = Array.from(document.querySelectorAll(".graph-status-filter-input"));
 const sortButtons = Array.from(document.querySelectorAll(".sort-button"));
 const tabButtons = Array.from(document.querySelectorAll(".tab-button"));
 const viewPanels = Array.from(document.querySelectorAll(".view-panel"));
@@ -64,9 +66,13 @@ const state = {
   positions: new Map(),
   visibleNodes: [],
   visibleLinks: [],
+  detailsHistory: [],
   activeTab: "graph",
   sidebarCollapsed: false,
   columnWidths: loadColumnWidths(),
+  graphFilters: {
+    aPorter: []
+  },
   tableFilters: {
     portingPriority: "",
     path: "",
@@ -118,6 +124,8 @@ svg.on("click", (event) => {
 resetButton.addEventListener("click", () => {
   svg.transition().duration(500).call(zoom.transform, defaultTransform());
 });
+detailsBackButton.addEventListener("click", navigateDetailsBack);
+detailsContent.addEventListener("click", handleDetailsContentClick);
 
 searchInput.addEventListener("input", render);
 relationFilter.addEventListener("change", render);
@@ -191,6 +199,10 @@ for (const filterInput of statusFilters) {
   filterInput.addEventListener("change", handleStatusFilterChange);
 }
 
+for (const filterInput of graphStatusFilters) {
+  filterInput.addEventListener("change", handleGraphStatusFilterChange);
+}
+
 resetTableFiltersButton.addEventListener("click", resetTableFilters);
 refreshPortageDataButton.addEventListener("click", refreshPortageMetadata);
 
@@ -218,6 +230,7 @@ function render() {
   const relationMode = relationFilter.value;
   const minWeight = Number(weightFilter.value);
   const query = searchInput.value.trim().toLowerCase();
+  const aPorterFilter = state.graphFilters.aPorter;
 
   svg.attr("viewBox", `${-width() / 2} ${-height() / 2} ${width()} ${height()}`);
 
@@ -246,6 +259,10 @@ function render() {
   const filteredNodes = state.graphData.graph.nodes.filter((node) => {
     const matchesQuery = !query || node.path.toLowerCase().includes(query) || node.label.toLowerCase().includes(query);
     if (!matchesQuery) {
+      return false;
+    }
+
+    if (!matchesGraphAporterFilter(node, aPorterFilter)) {
       return false;
     }
 
@@ -342,26 +359,53 @@ function drawGraph(nodes, links) {
     .call(drag(state.simulation))
     .on("click", (event, node) => {
       event.stopPropagation();
-      state.selectedNode = node;
-      state.selectedLink = null;
-      renderDetailsForNode(node);
-      highlight(node);
+      selectNodeById(node.id, { pushHistory: true });
     });
 
   nodeEnter
     .append("circle")
+    .attr("class", "node-main-circle")
     .attr("r", (node) => nodeRadius(node))
-    .attr("fill", (node) => colorForModule(node.module));
+    .attr("fill", (node) => portageStatusAppearance(node.id).fill);
+
+  nodeEnter
+    .append("circle")
+    .attr("class", "node-status-dot")
+    .attr("r", 7)
+    .attr("cx", (node) => nodeRadius(node) - 1)
+    .attr("cy", (node) => -nodeRadius(node) + 1)
+    .attr("fill", (node) => portageStatusAppearance(node.id).fill);
 
   nodeEnter
     .append("text")
+    .attr("class", "node-status-glyph")
+    .attr("x", (node) => nodeRadius(node) - 1)
+    .attr("y", (node) => -nodeRadius(node) + 1)
+    .text((node) => portageStatusAppearance(node.id).glyph);
+
+  nodeEnter
+    .append("text")
+    .attr("class", "node-label")
     .attr("x", (node) => nodeRadius(node) + 8)
     .attr("y", 4)
     .text((node) => node.label);
 
   const nodesMerged = nodeEnter.merge(nodeSelection).attr("class", (node) => buildNodeClass(node));
-  nodesMerged.select("circle").attr("r", (node) => nodeRadius(node)).attr("fill", (node) => colorForModule(node.module));
-  nodesMerged.select("text").attr("x", (node) => nodeRadius(node) + 8).text((node) => node.label);
+  nodesMerged
+    .select(".node-main-circle")
+    .attr("r", (node) => nodeRadius(node))
+    .attr("fill", (node) => portageStatusAppearance(node.id).fill);
+  nodesMerged
+    .select(".node-status-dot")
+    .attr("cx", (node) => nodeRadius(node) - 1)
+    .attr("cy", (node) => -nodeRadius(node) + 1)
+    .attr("fill", (node) => portageStatusAppearance(node.id).fill);
+  nodesMerged
+    .select(".node-status-glyph")
+    .attr("x", (node) => nodeRadius(node) - 1)
+    .attr("y", (node) => -nodeRadius(node) + 1)
+    .text((node) => portageStatusAppearance(node.id).glyph);
+  nodesMerged.select(".node-label").attr("x", (node) => nodeRadius(node) + 8).text((node) => node.label);
 
   state.simulation.on("tick", () => {
     linksMerged
@@ -424,12 +468,17 @@ function renderDetailsForNode(node) {
 
   const incomingDependencies = collectIncomingDependencies(file.path, state.visibleLinks);
   const outgoingDependencies = collectOutgoingDependencies(file.path, state.visibleLinks);
+  const portage = state.portageMetadata.get(normalizePath(file.path)) ?? null;
 
   detailsEmpty.hidden = true;
   detailsContent.hidden = false;
   detailsContent.innerHTML = `
     <p><strong>${escapeHtml(file.path)}</strong></p>
     <p>Module: ${escapeHtml(file.module)}</p>
+    <p>Description / role: ${escapeHtml(portage?.description ?? "-")}</p>
+    <p>A porter: ${escapeHtml(portage?.aPorter ?? "-")}</p>
+    <p>Porte: ${escapeHtml(portage?.porte ?? "-")}</p>
+    <p>Cible: ${escapeHtml(portage?.cible ?? "-")}</p>
     <p>Fonctions definies: ${file.functionsDefined.length}</p>
     <p>Includes internes: ${file.includes.length}</p>
     <p>Includes externes: ${file.externalIncludes.length}</p>
@@ -437,17 +486,18 @@ function renderDetailsForNode(node) {
     <p>Dependances sortantes visibles: ${countOutgoingLinks(file.path, state.visibleLinks)}</p>
     <div class="details-block">
       <h3>Dependances entrantes</h3>
-      <ul>${incomingDependencies.map((item) => `<li>${escapeHtml(item)}</li>`).join("") || "<li>Aucune</li>"}</ul>
+      <ul>${incomingDependencies.map((item) => renderDependencyItem(item)).join("") || "<li>Aucune</li>"}</ul>
     </div>
     <div class="details-block">
       <h3>Dependances sortantes</h3>
-      <ul>${outgoingDependencies.map((item) => `<li>${escapeHtml(item)}</li>`).join("") || "<li>Aucune</li>"}</ul>
+      <ul>${outgoingDependencies.map((item) => renderDependencyItem(item)).join("") || "<li>Aucune</li>"}</ul>
     </div>
     <div class="details-block">
       <h3>Fonctions principales</h3>
       <ul>${file.functionsDefined.slice(0, 12).map((fn) => `<li>${escapeHtml(fn.name)}</li>`).join("") || "<li>Aucune</li>"}</ul>
     </div>
   `;
+  updateDetailsBackButton();
 }
 
 function renderDetailsForLink(link) {
@@ -461,6 +511,7 @@ function renderDetailsForLink(link) {
     <p>Fonctions reliees:</p>
     <ul>${link.functions.slice(0, 16).map((fn) => `<li>${escapeHtml(fn)}</li>`).join("") || "<li>Aucune</li>"}</ul>
   `;
+  updateDetailsBackButton();
 }
 
 function highlight(subject) {
@@ -502,6 +553,7 @@ function clearHighlight() {
   detailsEmpty.hidden = false;
   detailsContent.hidden = true;
   detailsContent.innerHTML = "";
+  updateDetailsBackButton();
   renderTable(state.visibleNodes, state.visibleLinks);
 }
 
@@ -537,10 +589,7 @@ function renderTable(nodes, links) {
         return;
       }
 
-      state.selectedNode = node;
-      state.selectedLink = null;
-      renderDetailsForNode(node);
-      highlight(node);
+      selectNodeById(node.id, { pushHistory: true });
     });
   }
 
@@ -785,20 +834,23 @@ function collectIncomingDependencies(nodeId, links) {
   return links
     .filter((link) => displayNodeId(link.target) === nodeId)
     .map((link) => formatDependencyLabel(link, "incoming"))
-    .sort((left, right) => left.localeCompare(right));
+    .sort((left, right) => left.file.localeCompare(right.file));
 }
 
 function collectOutgoingDependencies(nodeId, links) {
   return links
     .filter((link) => displayNodeId(link.source) === nodeId)
     .map((link) => formatDependencyLabel(link, "outgoing"))
-    .sort((left, right) => left.localeCompare(right));
+    .sort((left, right) => left.file.localeCompare(right.file));
 }
 
 function formatDependencyLabel(link, direction) {
   const relatedFile = direction === "incoming" ? displayNodeId(link.source) : displayNodeId(link.target);
   const relation = link.relationTypes.join("+");
-  return `${relatedFile} (${relation}, poids ${link.weight})`;
+  return {
+    file: relatedFile,
+    label: `${relatedFile} (${relation}, poids ${link.weight})`
+  };
 }
 
 function deselectAll() {
@@ -901,6 +953,7 @@ function parsePortageMetadata(markdownText) {
 
     const pathKey = normalizePath(cells[0]);
     metadata.set(pathKey, {
+      description: cells[2].trim(),
       aPorter: cells[3].trim(),
       porte: cells[4].trim(),
       cible: cells[5].trim()
@@ -935,7 +988,7 @@ async function refreshPortageMetadata() {
   try {
     const portageText = await fetchPortageMarkdown();
     state.portageMetadata = parsePortageMetadata(portageText);
-    renderTable(state.visibleNodes, state.visibleLinks);
+    render();
   } catch (error) {
     console.error("Unable to refresh markdown metadata", error);
   } finally {
@@ -965,6 +1018,11 @@ function handleStatusFilterChange(event) {
     .filter((input) => input.dataset.filterKey === key && input.checked)
     .map((input) => input.value.trim());
   renderTable(state.visibleNodes, state.visibleLinks);
+}
+
+function handleGraphStatusFilterChange() {
+  state.graphFilters.aPorter = graphStatusFilters.filter((input) => input.checked).map((input) => input.value.trim());
+  render();
 }
 
 function filterTableRows(rows) {
@@ -1034,6 +1092,115 @@ function resetTableFilters() {
   }
 
   renderTable(state.visibleNodes, state.visibleLinks);
+}
+
+function renderDependencyItem(item) {
+  const metadata = state.portageMetadata.get(normalizePath(item.file));
+  const statusPrefix = formatDependencyStatusPrefix(metadata);
+
+  return `
+    <li>
+      <button type="button" class="dependency-link" data-node-id="${escapeHtml(item.file)}">
+        <span class="dependency-status-prefix">${escapeHtml(statusPrefix)}</span>${escapeHtml(item.label)}
+      </button>
+    </li>
+  `;
+}
+
+function handleDetailsContentClick(event) {
+  const target = event.target.closest(".dependency-link");
+  if (!target) {
+    return;
+  }
+
+  event.preventDefault();
+  selectNodeById(target.dataset.nodeId, { pushHistory: true });
+}
+
+function selectNodeById(nodeId, options = {}) {
+  const { pushHistory = false } = options;
+  const targetNode = state.graphData?.graph?.nodes.find((node) => node.id === nodeId);
+  if (!targetNode) {
+    return;
+  }
+
+  if (pushHistory && state.selectedNode?.id && state.selectedNode.id !== nodeId) {
+    state.detailsHistory.push({ kind: "node", id: state.selectedNode.id });
+  }
+
+  state.selectedNode = targetNode;
+  state.selectedLink = null;
+  renderDetailsForNode(targetNode);
+  highlight(targetNode);
+}
+
+function navigateDetailsBack() {
+  const previous = state.detailsHistory.pop();
+  if (!previous) {
+    return;
+  }
+
+  if (previous.kind === "node") {
+    selectNodeById(previous.id, { pushHistory: false });
+  }
+
+  updateDetailsBackButton();
+}
+
+function updateDetailsBackButton() {
+  detailsBackButton.disabled = state.detailsHistory.length === 0;
+}
+
+function portageStatusAppearance(nodeId) {
+  const metadata = state.portageMetadata.get(normalizePath(nodeId));
+  const porte = metadata?.porte ?? "";
+  const aPorter = metadata?.aPorter ?? "";
+
+  if (porte.includes("\u2705")) {
+    return { fill: "#6aa87a", glyph: "\u2713" };
+  }
+
+  if (porte.includes("\u{1F7E0}") || aPorter.includes("\u{1F7E0}")) {
+    return { fill: "#d88c33", glyph: "\u2026" };
+  }
+
+  if (aPorter.includes("\u26D4")) {
+    return { fill: "#a9564d", glyph: "\u00D7" };
+  }
+
+  if (aPorter.includes("\u2705")) {
+    return { fill: "#6aa87a", glyph: "\u2713" };
+  }
+
+  return { fill: "#b9afa4", glyph: "\u2022" };
+}
+
+function matchesGraphAporterFilter(node, filters) {
+  if (filters.length === 0) {
+    return true;
+  }
+
+  const metadata = state.portageMetadata.get(normalizePath(node.id));
+  const value = (metadata?.aPorter ?? "").trim();
+  return filters.includes(value || "__empty__");
+}
+
+function formatDependencyStatusPrefix(metadata) {
+  return `${portageStatusEmoji(metadata)} `;
+}
+
+function portageStatusEmoji(metadata) {
+  const porte = metadata?.porte?.trim() ?? "";
+
+  if (porte.includes("\u2705")) {
+    return "\u2705";
+  }
+
+  if (porte.includes("\u{1F7E0}")) {
+    return "\u{1F7E0}";
+  }
+
+  return "\u26AA";
 }
 
 function loadColumnWidths() {

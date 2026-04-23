@@ -30,21 +30,7 @@ import {
 } from "three";
 import { QUAKE_SKY_FACE_SUFFIXES, type QuakeSkySnapshot } from "../../renderer-common/src/index.js";
 import type { LoadedQuakeSkyTextureSet, QuakeSkyResolver } from "./quake-sky-resolver.js";
-
-const SKY_BOX_DISTANCE = 2300;
-const ROTATING_SKY_TEX_MIN = 1 / 256;
-const ROTATING_SKY_TEX_MAX = 255 / 256;
-const STATIC_SKY_TEX_MIN = 1 / 512;
-const STATIC_SKY_TEX_MAX = 511 / 512;
-const SKYTEXORDER = [0, 2, 1, 3, 4, 5] as const;
-const ST_TO_VEC = [
-  [3, -1, 2],
-  [-3, 1, 2],
-  [1, 3, 2],
-  [-1, -3, 2],
-  [-2, -1, 3],
-  [2, -1, -3]
-] as const;
+import { MakeSkyVec, SKY_TEX_ORDER, createGlWarpRuntime, getSkyTexClampBounds } from "./gl-warp.js";
 
 /**
  * Category: New
@@ -162,8 +148,10 @@ function createSkyMesh(textureSet: LoadedQuakeSkyTextureSet, rotate: number): Me
  * - Must use the original texture clamp interval for rotating vs non-rotating skies.
  */
 function buildSkyGeometry(rotate: number): BufferGeometry {
-  const skyMin = rotate !== 0 ? ROTATING_SKY_TEX_MIN : STATIC_SKY_TEX_MIN;
-  const skyMax = rotate !== 0 ? ROTATING_SKY_TEX_MAX : STATIC_SKY_TEX_MAX;
+  const { skyMin, skyMax } = getSkyTexClampBounds(rotate);
+  const warpRuntime = createGlWarpRuntime();
+  warpRuntime.sky_min = skyMin;
+  warpRuntime.sky_max = skyMax;
 
   const positions = new Float32Array(6 * 4 * 3);
   const uvs = new Float32Array(6 * 4 * 2);
@@ -183,7 +171,7 @@ function buildSkyGeometry(rotate: number): BufferGeometry {
 
     for (let cornerIndex = 0; cornerIndex < corners.length; cornerIndex += 1) {
       const [s, t] = corners[cornerIndex];
-      const vertex = makeSkyVertex(s, t, axis, skyMin, skyMax);
+      const vertex = MakeSkyVec(warpRuntime, s, t, axis);
 
       positions[vertexOffset] = vertex.position[0];
       positions[vertexOffset + 1] = vertex.position[1];
@@ -219,63 +207,6 @@ function buildSkyGeometry(rotate: number): BufferGeometry {
 }
 
 /**
- * Original name: MakeSkyVec
- * Source: ref_gl/gl_warp.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Builds one skybox vertex position and its corresponding UV from Quake II sky-space `s`/`t`.
- *
- * Porting notes:
- * - Returns structured position and UV data instead of issuing OpenGL commands directly.
- */
-function makeSkyVertex(
-  s: number,
-  t: number,
-  axis: number,
-  skyMin: number,
-  skyMax: number
-): {
-  position: [number, number, number];
-  uv: [number, number];
-} {
-  const b: [number, number, number] = [
-    s * SKY_BOX_DISTANCE,
-    t * SKY_BOX_DISTANCE,
-    SKY_BOX_DISTANCE
-  ];
-  const position: [number, number, number] = [0, 0, 0];
-
-  for (let componentIndex = 0; componentIndex < 3; componentIndex += 1) {
-    const mapping = ST_TO_VEC[axis][componentIndex];
-    position[componentIndex] = mapping < 0 ? -b[-mapping - 1] : b[mapping - 1];
-  }
-
-  let skyS = (s + 1) * 0.5;
-  let skyT = (t + 1) * 0.5;
-
-  if (skyS < skyMin) {
-    skyS = skyMin;
-  } else if (skyS > skyMax) {
-    skyS = skyMax;
-  }
-
-  if (skyT < skyMin) {
-    skyT = skyMin;
-  } else if (skyT > skyMax) {
-    skyT = skyMax;
-  }
-
-  skyT = 1 - skyT;
-
-  return {
-    position,
-    uv: [skyS, skyT]
-  };
-}
-
-/**
  * Category: New
  * Purpose: Build the six sky materials in the same effective face order used by the original renderer.
  *
@@ -283,7 +214,7 @@ function makeSkyVertex(
  * - Must preserve `skytexorder`.
  */
 function buildSkyMaterials(textureSet: LoadedQuakeSkyTextureSet): MeshBasicMaterial[] {
-  return SKYTEXORDER.map((textureIndex) => {
+  return SKY_TEX_ORDER.map((textureIndex) => {
     const faceName = QUAKE_SKY_FACE_SUFFIXES[textureIndex];
     return new MeshBasicMaterial({
       map: textureSet.textures[faceName],

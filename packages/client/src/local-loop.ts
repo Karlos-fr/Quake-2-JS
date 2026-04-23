@@ -117,6 +117,7 @@ export function initializeLocalSpawnPrediction(
     velocity: [...runtime.cl.frame.playerstate.pmove.velocity],
     delta_angles: [...runtime.cl.frame.playerstate.pmove.delta_angles]
   };
+  runtime.cl.predicted_viewheight = context.pm.viewheight;
   runtime.cl.predicted_origin = [
     runtime.cl.frame.playerstate.pmove.origin[0] * 0.125,
     runtime.cl.frame.playerstate.pmove.origin[1] * 0.125,
@@ -189,7 +190,7 @@ export function cloneLocalUsercmd(cmd: ClientRuntime["cl"]["cmd"]): ClientRuntim
  * - Must preserve the standing and ducked viewheight values already used by the standalone loop.
  */
 export function getPredictedViewheight(runtime: ClientRuntime): number {
-  return (runtime.cl.predicted_pmove.pm_flags & PMF_DUCKED) !== 0 ? -2 : 22;
+  return runtime.cl.predicted_viewheight;
 }
 
 /**

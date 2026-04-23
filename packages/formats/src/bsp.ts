@@ -486,12 +486,17 @@ export function findEntitiesByClassname(map: BspMap, classname: string): BspEnti
 
 /**
  * Category: New
- * Purpose: Extract the first `info_player_start` spawn point from a BSP map.
+ * Purpose: Extract the primary single-player spawn point from a BSP map.
  *
  * Constraints:
  * - Must return null when the map has no valid spawn origin.
+ * - Must mirror the original Quake II single-player fallback order:
+ *   prefer an untargeted `info_player_start` when no explicit spawnpoint is requested,
+ *   otherwise match the requested targetname, then fall back to any valid start.
  */
-export function findPrimarySpawnPoint(map: BspMap): BspSpawnPoint | null {
+export function findPrimarySpawnPoint(map: BspMap, spawnpoint = ""): BspSpawnPoint | null {
+  let fallback: BspSpawnPoint | null = null;
+
   for (const entity of map.parsedEntities) {
     if (entity.properties.classname !== "info_player_start") {
       continue;
@@ -502,13 +507,29 @@ export function findPrimarySpawnPoint(map: BspMap): BspSpawnPoint | null {
       continue;
     }
 
-    return {
+    const candidate: BspSpawnPoint = {
       origin,
       angle: parseEntityAngle(entity.properties.angle)
     };
+
+    if (fallback === null) {
+      fallback = candidate;
+    }
+
+    const targetname = entity.properties.targetname ?? "";
+    if (!spawnpoint) {
+      if (!targetname) {
+        return candidate;
+      }
+      continue;
+    }
+
+    if (targetname.localeCompare(spawnpoint, undefined, { sensitivity: "accent" }) === 0) {
+      return candidate;
+    }
   }
 
-  return null;
+  return fallback;
 }
 
 /**

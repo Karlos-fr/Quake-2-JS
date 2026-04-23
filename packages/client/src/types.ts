@@ -18,6 +18,7 @@
 
 import { createSizeBuffer, type sizebuf_t } from "../../memory/src/index.js";
 import {
+  createNetchan,
   createEntityState,
   createPlayerState,
   MAX_CLIENTS,
@@ -30,7 +31,9 @@ import {
   MAX_MODELS,
   MAX_QPATH,
   MAX_SOUNDS,
+  netsrc_t,
   type entity_state_t,
+  type netchan_t,
   type player_state_t,
   type usercmd_t,
   type vec3_t
@@ -350,12 +353,23 @@ export interface client_tent_state_t {
  * - Must keep center-print and loading-plaque state explicit for later UI adapters.
  */
 export interface client_screen_state_t {
+  scr_con_current: number;
+  scr_conlines: number;
   scr_centerstring: string;
   scr_centertime_start: number;
   scr_centertime_off: number;
   scr_center_lines: number;
   scr_erase_center: number;
   scr_draw_loading: number;
+  sb_lines: number;
+  scr_vrect: { x: number; y: number; width: number; height: number };
+  scr_dirty: { x1: number; y1: number; x2: number; y2: number };
+  scr_old_dirty: Array<{ x1: number; y1: number; x2: number; y2: number }>;
+  crosshair_pic: string;
+  crosshair_width: number;
+  crosshair_height: number;
+  graph_current: number;
+  graph_values: Array<{ value: number; color: number }>;
 }
 
 /**
@@ -370,6 +384,34 @@ export interface client_sky_t {
   name: string;
   rotate: number;
   axis: vec3_t;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the client-side cinematic state visible from `cl_cin.c` and `cl_scrn.c`.
+ *
+ * Constraints:
+ * - Must keep static-image and future streamed-cinematic states explicit.
+ */
+export interface client_cinematic_t {
+  cinematictime: number;
+  cinematicframe: number;
+  restart_sound: boolean;
+  cinematicpalette_active: boolean;
+  cinematicpalette: Uint8Array;
+  width: number;
+  height: number;
+  pic: Uint8Array | null;
+  pic_pending: Uint8Array | null;
+  kind: "none" | "pcx-static" | "cinematic";
+  name: string;
+  file: Uint8Array | null;
+  file_position: number;
+  s_rate: number;
+  s_width: number;
+  s_channels: number;
+  hnodes1: Int32Array | null;
+  numhnodes1: Int32Array;
 }
 
 /**
@@ -411,6 +453,7 @@ export interface client_state_t {
   cmd_time: number[];
   predicted_origins: number[][];
   predicted_pmove: player_state_t["pmove"];
+  predicted_viewheight: number;
   predicted_step: number;
   predicted_step_time: number;
   predicted_origin: vec3_t;
@@ -432,6 +475,7 @@ export interface client_state_t {
   playernum: number;
   configstrings: string[];
   sky: client_sky_t;
+  cinematic: client_cinematic_t;
   model_draw: unknown[];
   model_clip: unknown[];
   sound_precache: unknown[];
@@ -494,6 +538,7 @@ export interface client_static_t {
   downloadpercent: number;
   demorecording: boolean;
   demowaiting: boolean;
+  netchan: netchan_t;
   precache: client_precache_state_t;
 }
 
@@ -800,12 +845,36 @@ export function createClientTentState(): client_tent_state_t {
  */
 export function createClientScreenState(): client_screen_state_t {
   return {
+    scr_con_current: 0,
+    scr_conlines: 0,
     scr_centerstring: "",
     scr_centertime_start: 0,
     scr_centertime_off: 0,
     scr_center_lines: 0,
     scr_erase_center: 0,
-    scr_draw_loading: 0
+    scr_draw_loading: 0,
+    sb_lines: 0,
+    scr_vrect: {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0
+    },
+    scr_dirty: {
+      x1: 9999,
+      y1: 9999,
+      x2: -9999,
+      y2: -9999
+    },
+    scr_old_dirty: [
+      { x1: 9999, y1: 9999, x2: -9999, y2: -9999 },
+      { x1: 9999, y1: 9999, x2: -9999, y2: -9999 }
+    ],
+    crosshair_pic: "",
+    crosshair_width: 0,
+    crosshair_height: 0,
+    graph_current: 0,
+    graph_values: Array.from({ length: 1024 }, () => ({ value: 0, color: 0 }))
   };
 }
 
@@ -821,6 +890,36 @@ export function createClientSkyState(): client_sky_t {
     name: "",
     rotate: 0,
     axis: [0, 0, 0]
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create a zero-initialized client cinematic state.
+ *
+ * Constraints:
+ * - Must preserve the original inactive defaults used before a cinematic starts.
+ */
+export function createClientCinematicState(): client_cinematic_t {
+  return {
+    cinematictime: 0,
+    cinematicframe: 0,
+    restart_sound: false,
+    cinematicpalette_active: false,
+    cinematicpalette: new Uint8Array(768),
+    width: 0,
+    height: 0,
+    pic: null,
+    pic_pending: null,
+    kind: "none",
+    name: "",
+    file: null,
+    file_position: 0,
+    s_rate: 0,
+    s_width: 0,
+    s_channels: 0,
+    hnodes1: null,
+    numhnodes1: new Int32Array(256)
   };
 }
 
@@ -850,6 +949,7 @@ export function createClientState(): client_state_t {
     cmd_time: new Array<number>(CMD_BACKUP).fill(0),
     predicted_origins: Array.from({ length: CMD_BACKUP }, () => [0, 0, 0]),
     predicted_pmove: createPlayerState().pmove,
+    predicted_viewheight: 0,
     predicted_step: 0,
     predicted_step_time: 0,
     predicted_origin: [0, 0, 0],
@@ -871,6 +971,7 @@ export function createClientState(): client_state_t {
     playernum: 0,
     configstrings: new Array<string>(MAX_CONFIGSTRINGS).fill(""),
     sky: createClientSkyState(),
+    cinematic: createClientCinematicState(),
     model_draw: new Array<unknown>(MAX_MODELS).fill(null),
     model_clip: new Array<unknown>(MAX_MODELS).fill(null),
     sound_precache: new Array<unknown>(MAX_SOUNDS).fill(null),
@@ -915,6 +1016,7 @@ export function createClientStatic(): client_static_t {
     downloadpercent: 0,
     demorecording: false,
     demowaiting: false,
+    netchan: createNetchan(netsrc_t.NS_CLIENT),
     precache: createClientPrecacheState()
   };
 }

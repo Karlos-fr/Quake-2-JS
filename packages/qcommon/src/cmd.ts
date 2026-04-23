@@ -18,6 +18,7 @@
 
 import { createSizeBuffer, SZ_Clear, SZ_Write, type sizebuf_t } from "../../memory/src/index.js";
 import { MAX_STRING_CHARS, MAX_STRING_TOKENS } from "./q-shared.js";
+import { COM_Argc, COM_Argv, COM_ClearArgv, type CommonRuntime } from "./common.js";
 
 export const EXEC_NOW = 0;
 export const EXEC_INSERT = 1;
@@ -40,7 +41,9 @@ export interface CommandAlias {
 export interface CommandHooks {
   executeUnknownCommand?: (name: string, text: string) => boolean;
   expandMacroToken?: (token: string) => string;
+  isKnownVariable?: (name: string) => boolean;
   loadTextFile?: (path: string) => string | null;
+  forwardToServer?: (text: string) => void;
   onPrint?: (line: string) => void;
 }
 
@@ -235,6 +238,85 @@ export function Cbuf_Execute(runtime: CommandRuntime): void {
 }
 
 /**
+ * Original name: Cbuf_AddEarlyCommands
+ * Source: qcommon/cmd.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Scans startup argv for `+set name value` triplets and injects them early into the command buffer.
+ */
+export function Cbuf_AddEarlyCommands(
+  runtime: CommandRuntime,
+  common: CommonRuntime,
+  clear: boolean
+): void {
+  for (let index = 0; index < COM_Argc(common); index += 1) {
+    const token = COM_Argv(common, index);
+    if (token !== "+set") {
+      continue;
+    }
+
+    Cbuf_AddText(runtime, `set ${COM_Argv(common, index + 1)} ${COM_Argv(common, index + 2)}\n`);
+    if (clear) {
+      COM_ClearArgv(common, index);
+      COM_ClearArgv(common, index + 1);
+      COM_ClearArgv(common, index + 2);
+    }
+
+    index += 2;
+  }
+}
+
+/**
+ * Original name: Cbuf_AddLateCommands
+ * Source: qcommon/cmd.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Scans startup argv for `+command ...` segments and appends them after initialization.
+ */
+export function Cbuf_AddLateCommands(runtime: CommandRuntime, common: CommonRuntime): boolean {
+  let text = "";
+  const argc = COM_Argc(common);
+
+  for (let index = 1; index < argc; index += 1) {
+    text += COM_Argv(common, index);
+    if (index !== argc - 1) {
+      text += " ";
+    }
+  }
+
+  if (text.length === 0) {
+    return false;
+  }
+
+  let build = "";
+  for (let index = 0; index < text.length; index += 1) {
+    if (text[index] !== "+") {
+      continue;
+    }
+
+    index += 1;
+    let end = index;
+    while (end < text.length && text[end] !== "+" && text[end] !== "-") {
+      end += 1;
+    }
+
+    build += `${text.slice(index, end)}\n`;
+    index = end - 1;
+  }
+
+  const hasLateCommands = build.length !== 0;
+  if (hasLateCommands) {
+    Cbuf_AddText(runtime, build);
+  }
+
+  return hasLateCommands;
+}
+
+/**
  * Original name: Cmd_Argc
  * Source: qcommon/cmd.c
  * Category: Ported
@@ -350,6 +432,10 @@ export function Cmd_TokenizeString(runtime: CommandRuntime, text: string, macroE
  * - Throws on duplicate commands instead of printing and returning.
  */
 export function Cmd_AddCommand(runtime: CommandRuntime, cmd_name: string, fn: xcommand_t | null): void {
+  if (runtime.hooks.isKnownVariable?.(cmd_name) === true) {
+    throw new Error(`Cmd_AddCommand: ${cmd_name} already defined as a var`);
+  }
+
   if (runtime.cmd_functions.some((cmd) => cmd.name === cmd_name)) {
     throw new Error(`Cmd_AddCommand: ${cmd_name} already defined`);
   }
@@ -461,7 +547,7 @@ export function Cmd_ExecuteString(runtime: CommandRuntime, text: string): void {
   for (const cmd of runtime.cmd_functions) {
     if (equalsIgnoreCase(commandName, cmd.name)) {
       if (cmd.fn === null) {
-        runtime.hooks.executeUnknownCommand?.(commandName, `cmd ${text}`);
+        Cmd_ExecuteString(runtime, `cmd ${text}`);
       } else {
         cmd.fn();
       }
@@ -481,7 +567,24 @@ export function Cmd_ExecuteString(runtime: CommandRuntime, text: string): void {
     }
   }
 
-  runtime.hooks.executeUnknownCommand?.(commandName, text);
+  const handled = runtime.hooks.executeUnknownCommand?.(commandName, text) ?? false;
+  if (!handled) {
+    Cmd_ForwardToServer(runtime);
+  }
+}
+
+/**
+ * Original name: Cmd_ForwardToServer
+ * Source: qcommon/cmd.c / qcommon.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Forwards the current tokenized command line to the client/server transport hook.
+ */
+export function Cmd_ForwardToServer(runtime: CommandRuntime): void {
+  const text = runtime.cmd_argc > 1 ? `${runtime.cmd_argv.join(" ")}` : Cmd_Argv(runtime, 0);
+  runtime.hooks.forwardToServer?.(text);
 }
 
 /**
@@ -632,39 +735,22 @@ function Cmd_MacroExpandString(runtime: CommandRuntime, text: string): string | 
     return text;
   }
 
-  let expanded = "";
-  let inQuote = false;
+  let scan = text;
 
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-    if (char === "\"") {
-      inQuote = !inQuote;
-      expanded += char;
-      continue;
-    }
-
-    if (!inQuote && char === "$") {
-      const parsed = parseCommandToken(text, index + 1);
-      if (parsed.token.length === 0) {
-        expanded += char;
-        continue;
-      }
-
-      expanded += runtime.hooks.expandMacroToken(parsed.token);
-      index = parsed.nextIndex - 1;
-      if (expanded.length >= MAX_STRING_CHARS) {
-        return null;
-      }
-      continue;
-    }
-
-    expanded += char;
-    if (expanded.length >= MAX_STRING_CHARS) {
+  for (let expansionCount = 0; expansionCount < 100; expansionCount += 1) {
+    const pass = expandMacroPass(runtime, scan);
+    if (pass === null) {
       return null;
     }
+
+    if (!pass.changed) {
+      return scan;
+    }
+
+    scan = pass.text;
   }
 
-  return inQuote ? null : expanded;
+  return null;
 }
 
 /**
@@ -797,4 +883,57 @@ function emitCommandOutput(runtime: CommandRuntime, output: string | string[] | 
   }
 
   runtime.hooks.onPrint?.(output);
+}
+
+/**
+ * Category: New
+ * Purpose: Perform one macro-expansion pass while respecting quoted regions and command-line size limits.
+ *
+ * Constraints:
+ * - Must preserve the original "do not expand inside quotes" behavior.
+ * - Must return the input unchanged when no macro expansion occurs during the pass.
+ */
+function expandMacroPass(runtime: CommandRuntime, text: string): { text: string; changed: boolean } | null {
+  let expanded = "";
+  let inQuote = false;
+  let changed = false;
+
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    if (char === "\"") {
+      inQuote = !inQuote;
+      expanded += char;
+      continue;
+    }
+
+    if (!inQuote && char === "$") {
+      const parsed = parseCommandToken(text, index + 1);
+      if (parsed.token.length === 0) {
+        expanded += char;
+        continue;
+      }
+
+      expanded += runtime.hooks.expandMacroToken?.(parsed.token) ?? "";
+      changed = true;
+      index = parsed.nextIndex - 1;
+      if (expanded.length >= MAX_STRING_CHARS) {
+        return null;
+      }
+      continue;
+    }
+
+    expanded += char;
+    if (expanded.length >= MAX_STRING_CHARS) {
+      return null;
+    }
+  }
+
+  if (inQuote) {
+    return null;
+  }
+
+  return {
+    text: changed ? expanded : text,
+    changed
+  };
 }

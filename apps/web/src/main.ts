@@ -12,14 +12,13 @@
  * - three
  */
 
-import { buildBspSurfaces } from "../../../packages/renderer-common/src/index.js";
 import {
-  buildThreeBspGroup,
   createQuakeSkyResolver,
   createThreeBrushModelSync,
+  createThreeGlWorldSceneAdapter,
   createQuakeHudResourceResolver,
+  createThreeParticleSync,
   createThreeRefreshEntitySync,
-  createQuakeTextureResolver,
   createThreeSkySceneAdapter,
   createThreeHudLayer
 } from "../../../packages/renderer-three/src/index.js";
@@ -40,8 +39,7 @@ import {
   createCamera,
   createRenderer,
   createScene,
-  formatSkySnapshot,
-  getInlineModelRenderOrigin
+  formatSkySnapshot
 } from "./web-render-bootstrap.js";
 
 const BASEQ2_PAK_CANDIDATES = [
@@ -98,22 +96,20 @@ async function bootstrap(): Promise<void> {
 
     const map = parseBsp(bspFile.bytes, bspFile.path);
     const spawn = findPrimarySpawnPoint(map);
-    const surfaces = buildBspSurfaces(map);
-    const textureResolver = createQuakeTextureResolver(filesystem);
+    const glWorldAdapter = createThreeGlWorldSceneAdapter(filesystem, selectedMapPath);
     const skyResolver = createQuakeSkyResolver(filesystem);
     const hudResourceResolver = createQuakeHudResourceResolver(filesystem);
     const hudLayer = createThreeHudLayer(hudResourceResolver);
-    const group = buildThreeBspGroup(surfaces, {
-      resolveTexture: textureResolver.resolveTexture,
-      resolveModelOrigin: (modelIndex) => getInlineModelRenderOrigin(map, modelIndex)
-    });
+    const group = glWorldAdapter.root;
     const skyAdapter = createThreeSkySceneAdapter(skyResolver);
     const brushModelSync = createThreeBrushModelSync(group);
     const refreshEntitySync = createThreeRefreshEntitySync(filesystem);
+    const particleSync = createThreeParticleSync(filesystem);
 
     const scene = createScene(group);
     scene.add(skyAdapter.root);
     scene.add(refreshEntitySync.root);
+    scene.add(particleSync.root);
     const camera = createCamera();
     refreshEntitySync.attachToCamera(camera);
     const cameraController = createLocalClientController(ui.viewport, camera, map, spawn);
@@ -129,7 +125,7 @@ async function bootstrap(): Promise<void> {
     ui.setMapInfo({
       mapName: bspFile.path,
       faceCount: map.faces.length,
-      surfaceCount: surfaces.length,
+      surfaceCount: glWorldAdapter.worldmodel.numsurfaces,
       entityCount: cameraController.refreshFrame?.entities.length ?? 0,
       spawnText: spawn ? `${spawn.origin.join(", ")} | angle ${spawn.angle}` : "introuvable",
       skyText: formatSkySnapshot(cameraController.skySnapshot)
@@ -145,7 +141,9 @@ async function bootstrap(): Promise<void> {
       hudLayer,
       skyAdapter,
       brushModelSync,
+      glWorldAdapter,
       refreshEntitySync,
+      particleSync,
       refreshDebug
     });
   } catch (error) {

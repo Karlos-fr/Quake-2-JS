@@ -9,8 +9,8 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - Defers external device accumulation and packet transmission to later phases.
  * - Uses explicit context objects instead of file-static globals.
+ * - Uses hooks only for `CL_FixUpGender`, which belongs to `cl_main.c` and is not part of this source file.
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original C source.
@@ -21,19 +21,31 @@ import {
   BUTTON_ANY,
   BUTTON_ATTACK,
   BUTTON_USE,
+  COM_BlockSequenceCRCByte,
+  Cvar_Userinfo,
   Cvar_Get,
   CVAR_ARCHIVE,
   Cmd_AddCommand,
   Cmd_Argv,
+  MSG_WriteByte,
+  MSG_WriteDeltaUsercmd,
+  MSG_WriteLong,
+  MSG_WriteString,
+  Netchan_Transmit,
   PITCH,
   SHORT2ANGLE,
   YAW,
+  clc_ops_e,
   type CommandRuntime,
   type CvarRuntime,
+  type QcommonNetRuntime,
   type cvar_t,
   type usercmd_t
 } from "../../qcommon/src/index.js";
-import { type ClientRuntime, createKbutton, type kbutton_t } from "./types.js";
+import { createSizeBuffer } from "../../memory/src/index.js";
+import { IN_Move, type ClientInputDeviceContext } from "./input-device.js";
+import { SCR_FinishCinematic } from "./screen.js";
+import { CMD_BACKUP, connstate_t, type ClientRuntime, createKbutton, type kbutton_t } from "./types.js";
 
 /**
  * Category: New
@@ -46,6 +58,9 @@ export interface ClientInputContext {
   client: ClientRuntime;
   cmd: CommandRuntime;
   cvar: CvarRuntime;
+  qnet: QcommonNetRuntime | null;
+  inputDevice: ClientInputDeviceContext | null;
+  hooks: ClientInputHooks;
   sys_frame_time: number;
   frame_msec: number;
   old_sys_frame_time: number;
@@ -78,6 +93,17 @@ export interface ClientInputContext {
 
 /**
  * Category: New
+ * Purpose: Describe cross-file callbacks needed by the `cl_input.c` packet path.
+ *
+ * Constraints:
+ * - Must not hide behavior owned by this source file; hooks are only for routines attached to other source files.
+ */
+export interface ClientInputHooks {
+  onFixUpGender?: () => void;
+}
+
+/**
+ * Category: New
  * Purpose: Describe the host-side frame and key-state values needed by `CL_FinishMove`.
  *
  * Constraints:
@@ -95,11 +121,23 @@ export interface ClientInputFrameOptions {
  * Constraints:
  * - Must start with zeroed button state and unresolved cvar references.
  */
-export function createClientInputContext(client: ClientRuntime, cmd: CommandRuntime, cvar: CvarRuntime): ClientInputContext {
+export function createClientInputContext(
+  client: ClientRuntime,
+  cmd: CommandRuntime,
+  cvar: CvarRuntime,
+  options: {
+    qnet?: QcommonNetRuntime | null;
+    inputDevice?: ClientInputDeviceContext | null;
+    hooks?: ClientInputHooks;
+  } = {}
+): ClientInputContext {
   return {
     client,
     cmd,
     cvar,
+    qnet: options.qnet ?? null,
+    inputDevice: options.inputDevice ?? null,
+    hooks: options.hooks ?? {},
     sys_frame_time: 0,
     frame_msec: 1,
     old_sys_frame_time: 0,
@@ -422,7 +460,7 @@ export function CL_FinishMove(context: ClientInputContext, cmd: usercmd_t, optio
  * - Builds one complete usercmd from the current frame input state.
  *
  * Porting notes:
- * - Leaves `IN_Move` integration for later external device/input ports.
+ * - Calls the explicit `inputDevice` context as the replacement for the original `IN_Move` backend hook.
  */
 export function CL_CreateCmd(context: ClientInputContext, options: ClientInputFrameOptions = {}): usercmd_t {
   context.frame_msec = context.sys_frame_time - context.old_sys_frame_time;
@@ -445,9 +483,130 @@ export function CL_CreateCmd(context: ClientInputContext, options: ClientInputFr
   };
 
   CL_BaseMove(context, cmd);
+  if (context.inputDevice) {
+    IN_Move(context.inputDevice, cmd);
+  }
   CL_FinishMove(context, cmd, options);
   context.old_sys_frame_time = context.sys_frame_time;
   return cmd;
+}
+
+function cloneUsercmd(cmd: usercmd_t): usercmd_t {
+  return {
+    msec: cmd.msec,
+    buttons: cmd.buttons,
+    angles: [cmd.angles[0], cmd.angles[1], cmd.angles[2]],
+    forwardmove: cmd.forwardmove,
+    sidemove: cmd.sidemove,
+    upmove: cmd.upmove,
+    impulse: cmd.impulse,
+    lightlevel: cmd.lightlevel
+  };
+}
+
+function createNullUsercmd(): usercmd_t {
+  return {
+    msec: 0,
+    buttons: 0,
+    angles: [0, 0, 0],
+    forwardmove: 0,
+    sidemove: 0,
+    upmove: 0,
+    impulse: 0,
+    lightlevel: 0
+  };
+}
+
+/**
+ * Original name: CL_SendCmd
+ * Source: client/cl_input.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Builds the current `usercmd_t`, stores it for prediction and sends the Quake II `clc_move` packet when connected.
+ *
+ * Porting notes:
+ * - Uses `context.qnet` as the explicit replacement for qcommon net globals required by `Netchan_Transmit`.
+ * - Uses `onFixUpGender` for the cross-file `CL_FixUpGender` call, while preserving the userinfo write sequence here.
+ */
+export function CL_SendCmd(context: ClientInputContext, options: ClientInputFrameOptions = {}): void {
+  const qnet = context.qnet;
+  const cls = context.client.cls;
+  const cl = context.client.cl;
+
+  let index = cls.netchan.outgoing_sequence & (CMD_BACKUP - 1);
+  const created = CL_CreateCmd(context, options);
+  cl.cmds[index] = cloneUsercmd(created);
+  cl.cmd_time[index] = cls.realtime;
+  cl.cmd = cloneUsercmd(created);
+
+  if (cls.state === connstate_t.ca_disconnected || cls.state === connstate_t.ca_connecting) {
+    return;
+  }
+
+  if (!qnet) {
+    return;
+  }
+
+  if (cls.state === connstate_t.ca_connected) {
+    if (cls.netchan.message.cursize !== 0 || cls.realtime - cls.netchan.last_sent > 1000) {
+      Netchan_Transmit(qnet, cls.netchan, 0, new Uint8Array(0));
+    }
+    return;
+  }
+
+  if (context.cvar.userinfo_modified) {
+    context.hooks.onFixUpGender?.();
+    context.cvar.userinfo_modified = false;
+    MSG_WriteByte(cls.netchan.message, clc_ops_e.clc_userinfo);
+    MSG_WriteString(cls.netchan.message, Cvar_Userinfo(context.cvar));
+  }
+
+  const buf = createSizeBuffer(new Uint8Array(128));
+
+  if (
+    created.buttons !== 0 &&
+    cl.cinematic.cinematictime > 0 &&
+    !cl.attractloop &&
+    cls.realtime - cl.cinematic.cinematictime > 1000
+  ) {
+    SCR_FinishCinematic(context.client);
+  }
+
+  MSG_WriteByte(buf, clc_ops_e.clc_move);
+
+  const checksumIndex = buf.cursize;
+  MSG_WriteByte(buf, 0);
+
+  if ((context.cl_nodelta?.value ?? 0) !== 0 || !cl.frame.valid || cls.demowaiting) {
+    MSG_WriteLong(buf, -1);
+  } else {
+    MSG_WriteLong(buf, cl.frame.serverframe);
+  }
+
+  index = (cls.netchan.outgoing_sequence - 2) & (CMD_BACKUP - 1);
+  let cmd = cl.cmds[index];
+  const nullcmd = createNullUsercmd();
+  MSG_WriteDeltaUsercmd(buf, nullcmd, cmd);
+  let oldcmd = cmd;
+
+  index = (cls.netchan.outgoing_sequence - 1) & (CMD_BACKUP - 1);
+  cmd = cl.cmds[index];
+  MSG_WriteDeltaUsercmd(buf, oldcmd, cmd);
+  oldcmd = cmd;
+
+  index = cls.netchan.outgoing_sequence & (CMD_BACKUP - 1);
+  cmd = cl.cmds[index];
+  MSG_WriteDeltaUsercmd(buf, oldcmd, cmd);
+
+  buf.data[checksumIndex] = COM_BlockSequenceCRCByte(
+    buf.data.subarray(checksumIndex + 1),
+    buf.cursize - checksumIndex - 1,
+    cls.netchan.outgoing_sequence
+  );
+
+  Netchan_Transmit(qnet, cls.netchan, buf.cursize, buf.data);
 }
 
 /**

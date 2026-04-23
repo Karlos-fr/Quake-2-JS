@@ -9,8 +9,8 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - Builds collision state from the already parsed TypeScript BSP representation instead of raw lump memory.
- * - Focuses on world/submodel tracing and point contents, leaving PVS/area flooding for later.
+ * - Keeps the original map cache and globals inside an explicit runtime object instead of file-static C globals.
+ * - Uses the TypeScript BSP parser and an injected file loader instead of direct raw lump pointer access.
  *
  * Notes:
  * - This file is intended to stay close to the original collision model logic.
@@ -18,22 +18,26 @@
 
 import {
   AngleVectors,
+  CONTENTS_MONSTER,
   CONTENTS_SOLID,
-  SURF_LIGHT,
   type cmodel_t,
   type cplane_t,
   type csurface_t,
   type trace_t,
   type vec3_t
 } from "./q-shared.js";
+import { Com_BlockChecksum } from "./md4.js";
+import { DVIS_PHS, DVIS_PVS, MAX_MAP_AREAPORTALS } from "../../formats/src/index.js";
+import { parseBsp, type BspMap, type darea_t, type dareaportal_t, type dplane_t, type dvis_t, type texinfo_t } from "../../formats/src/bsp.js";
 import {
   DotProduct,
   VectorAdd,
+  VectorClear,
   VectorCopy
 } from "../../math/src/index.js";
-import type { BspMap, dplane_t, texinfo_t } from "../../formats/src/index.js";
 
 const DIST_EPSILON = 0.03125;
+const PORTAL_STATE_BYTES = MAX_MAP_AREAPORTALS * 4;
 
 interface CollisionBrushSide {
   plane: cplane_t;
@@ -59,6 +63,13 @@ interface CollisionNode {
   children: [number, number];
 }
 
+interface CollisionArea {
+  numareaportals: number;
+  firstareaportal: number;
+  floodnum: number;
+  floodvalid: number;
+}
+
 /**
  * Category: New
  * Purpose: Hold the BSP-derived collision structures needed by point contents and trace queries.
@@ -75,8 +86,61 @@ export interface CollisionWorld {
   map_leafbrushes: number[];
   map_brushes: CollisionBrush[];
   map_brushsides: CollisionBrushSide[];
+  map_areas: CollisionArea[];
+  map_areaportals: dareaportal_t[];
+  map_visibility: Uint8Array;
+  map_vis: dvis_t | null;
+  map_entitystring: string;
   nullsurface: csurface_t;
+  numclusters: number;
+  numareas: number;
+  emptyleaf: number;
+  solidleaf: number;
+  box_headnode: number;
+  box_brush: number;
+  box_leaf: number;
+  floodvalid: number;
+  portalopen: Uint8Array;
+  map_noareas: boolean;
 }
+
+/**
+ * Category: New
+ * Purpose: Preserve the `cmodel.c` map cache and the cvar-like knobs needed by `CM_LoadMap`.
+ *
+ * Constraints:
+ * - Must keep the last loaded map name and checksum so repeated `CM_LoadMap` calls can reuse the cached world.
+ */
+export interface CollisionModelRuntime {
+  map_name: string;
+  map_noareas: boolean;
+  flushmap: boolean;
+  last_checksum: number;
+  world: CollisionWorld | null;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe the source-faithful result of `CM_LoadMap`.
+ *
+ * Constraints:
+ * - Must always expose the checksum produced for the selected map path, even when the cached world is reused.
+ */
+export interface CollisionLoadResult {
+  world: CollisionWorld | null;
+  cmodel: cmodel_t;
+  checksum: number;
+  reused: boolean;
+}
+
+/**
+ * Category: New
+ * Purpose: Provide the file-loading callback needed by the TypeScript `CM_LoadMap` path.
+ *
+ * Constraints:
+ * - Must return the raw BSP bytes for `name`, or `undefined` when the file cannot be resolved.
+ */
+export type CollisionMapLoader = (name: string) => Uint8Array | undefined;
 
 interface TraceWork {
   start: vec3_t;
@@ -92,6 +156,23 @@ interface TraceWork {
 
 /**
  * Category: New
+ * Purpose: Create the explicit runtime state that replaces the original `cmodel.c` file-static globals.
+ *
+ * Constraints:
+ * - Must start with no loaded map and a zero checksum.
+ */
+export function createCollisionModelRuntime(map_noareas = false): CollisionModelRuntime {
+  return {
+    map_name: "",
+    map_noareas,
+    flushmap: false,
+    last_checksum: 0,
+    world: null
+  };
+}
+
+/**
+ * Category: New
  * Purpose: Build the first collision runtime from a parsed BSP map.
  *
  * Constraints:
@@ -100,7 +181,7 @@ interface TraceWork {
 export function createCollisionWorld(map: BspMap): CollisionWorld {
   const map_planes = map.planes.map((plane) => createPlane(plane));
   const surfaces = map.texinfo.map((texinfo) => createSurface(texinfo));
-  const nullsurface: csurface_t = { name: "", flags: SURF_LIGHT, value: 0 };
+  const nullsurface: csurface_t = { name: "", flags: 0, value: 0 };
 
   const map_brushsides = map.brushsides.map((side) => ({
     plane: map_planes[side.planenum],
@@ -133,7 +214,28 @@ export function createCollisionWorld(map: BspMap): CollisionWorld {
     headnode: model.headnode
   }));
 
-  return {
+  const map_areas = map.areas.map((area) => createArea(area));
+  const map_areaportals = map.areaportals.map((portal) => ({
+    portalnum: portal.portalnum,
+    otherarea: portal.otherarea
+  }));
+
+  let numclusters = 0;
+  for (const leaf of map_leafs) {
+    if (leaf.cluster >= numclusters) {
+      numclusters = leaf.cluster + 1;
+    }
+  }
+
+  let emptyleaf = -1;
+  for (let index = 1; index < map_leafs.length; index += 1) {
+    if (map_leafs[index].contents === 0) {
+      emptyleaf = index;
+      break;
+    }
+  }
+
+  const world: CollisionWorld = {
     map,
     map_cmodels,
     map_planes,
@@ -142,7 +244,99 @@ export function createCollisionWorld(map: BspMap): CollisionWorld {
     map_leafbrushes: Array.from(map.leafbrushes, (value) => value),
     map_brushes,
     map_brushsides,
-    nullsurface
+    map_areas,
+    map_areaportals,
+    map_visibility: map.visibility.slice(),
+    map_vis: parseVisibilityLump(map.visibility),
+    map_entitystring: map.entities,
+    nullsurface,
+    numclusters,
+    numareas: Math.max(1, map_areas.length),
+    emptyleaf,
+    solidleaf: 0,
+    box_headnode: -1,
+    box_brush: -1,
+    box_leaf: -1,
+    floodvalid: 0,
+    portalopen: new Uint8Array(MAX_MAP_AREAPORTALS),
+    map_noareas: false
+  };
+
+  CM_InitBoxHull(world);
+  FloodAreaConnections(world);
+
+  return world;
+}
+
+/**
+ * Original name: CM_LoadMap
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Loads one BSP map through the injected file loader, caches it, computes its checksum and returns model `0`.
+ *
+ * Porting notes:
+ * - Replaces the original filesystem globals and `Cvar_VariableValue("flushmap")` reads with an explicit runtime object.
+ */
+export function CM_LoadMap(
+  runtime: CollisionModelRuntime,
+  name: string,
+  clientload: boolean,
+  loadFile: CollisionMapLoader
+): CollisionLoadResult {
+  if (name.length > 0 && runtime.world && runtime.map_name === name && (clientload || !runtime.flushmap)) {
+    runtime.world.map_noareas = runtime.map_noareas;
+
+    if (!clientload) {
+      resetPortalState(runtime.world);
+    }
+
+    return {
+      world: runtime.world,
+      cmodel: runtime.world.map_cmodels[0] ?? createEmptyCmodel(),
+      checksum: runtime.last_checksum,
+      reused: true
+    };
+  }
+
+  runtime.world = null;
+  runtime.map_name = "";
+  runtime.last_checksum = 0;
+
+  if (name.length === 0) {
+    return {
+      world: null,
+      cmodel: createEmptyCmodel(),
+      checksum: 0,
+      reused: false
+    };
+  }
+
+  const bytes = loadFile(name);
+  if (!bytes) {
+    throw new Error(`Couldn't load ${name}`);
+  }
+
+  const checksum = Com_BlockChecksum(bytes, bytes.length);
+  const map = parseBsp(bytes, name);
+  const world = createCollisionWorld(map);
+  world.map_noareas = runtime.map_noareas;
+
+  runtime.world = world;
+  runtime.map_name = name;
+  runtime.last_checksum = checksum;
+
+  if (!clientload) {
+    resetPortalState(world);
+  }
+
+  return {
+    world,
+    cmodel: world.map_cmodels[0] ?? createEmptyCmodel(),
+    checksum,
+    reused: false
   };
 }
 
@@ -156,7 +350,7 @@ export function createCollisionWorld(map: BspMap): CollisionWorld {
  * - Returns the BSP leaf contents for one point under a given headnode.
  */
 export function CM_PointContents(world: CollisionWorld, point: vec3_t, headnode = 0): number {
-  if (world.map_nodes.length === 0) {
+  if (world.map_planes.length === 0) {
     return 0;
   }
 
@@ -182,7 +376,7 @@ export function CM_TransformedPointContents(
 ): number {
   const localPoint = subtractVec3(point, origin);
 
-  if (headnode !== getBoxHeadnode(world) && hasRotation(angles)) {
+  if (headnode !== world.box_headnode && hasRotation(angles)) {
     rotateIntoModelFrame(localPoint, angles, localPoint);
   }
 
@@ -355,8 +549,412 @@ export function createCollisionPointContents(world: CollisionWorld, headnode = 0
  * Constraints:
  * - Must return null for out-of-range model indexes.
  */
-export function CM_InlineModel(world: CollisionWorld, index: number): cmodel_t | null {
-  return world.map_cmodels[index] ?? null;
+export function CM_InlineModel(world: CollisionWorld, nameOrIndex: number | string): cmodel_t | null {
+  if (typeof nameOrIndex === "number") {
+    return world.map_cmodels[nameOrIndex] ?? null;
+  }
+
+  if (nameOrIndex.length === 0 || nameOrIndex[0] !== "*") {
+    throw new Error("CM_InlineModel: bad name");
+  }
+
+  const index = Number.parseInt(nameOrIndex.slice(1), 10);
+  if (!Number.isFinite(index) || index < 1 || index >= world.map_cmodels.length) {
+    throw new Error("CM_InlineModel: bad number");
+  }
+
+  return world.map_cmodels[index];
+}
+
+/**
+ * Original name: CM_NumClusters
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the number of BSP visibility clusters in the loaded collision map.
+ */
+export function CM_NumClusters(world: CollisionWorld): number {
+  return world.numclusters;
+}
+
+/**
+ * Original name: CM_NumInlineModels
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the number of inline models exposed by the loaded BSP collision map.
+ */
+export function CM_NumInlineModels(world: CollisionWorld): number {
+  return world.map_cmodels.length;
+}
+
+/**
+ * Original name: CM_EntityString
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the raw BSP entity string associated with the loaded collision map.
+ */
+export function CM_EntityString(world: CollisionWorld): string {
+  return world.map_entitystring;
+}
+
+/**
+ * Original name: CM_LeafContents
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the contents bitmask of one BSP leaf.
+ */
+export function CM_LeafContents(world: CollisionWorld, leafnum: number): number {
+  const leaf = world.map_leafs[leafnum];
+  if (!leaf) {
+    throw new Error(`CM_LeafContents: bad number ${leafnum}`);
+  }
+  return leaf.contents;
+}
+
+/**
+ * Original name: CM_LeafCluster
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the visibility cluster id of one BSP leaf.
+ */
+export function CM_LeafCluster(world: CollisionWorld, leafnum: number): number {
+  const leaf = world.map_leafs[leafnum];
+  if (!leaf) {
+    throw new Error(`CM_LeafCluster: bad number ${leafnum}`);
+  }
+  return leaf.cluster;
+}
+
+/**
+ * Original name: CM_LeafArea
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the area id of one BSP leaf.
+ */
+export function CM_LeafArea(world: CollisionWorld, leafnum: number): number {
+  const leaf = world.map_leafs[leafnum];
+  if (!leaf) {
+    throw new Error(`CM_LeafArea: bad number ${leafnum}`);
+  }
+  return leaf.area;
+}
+
+/**
+ * Original name: CM_PointLeafnum
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the BSP leaf number containing one point in the world headnode.
+ */
+export function CM_PointLeafnum(world: CollisionWorld, point: vec3_t): number {
+  if (world.map_planes.length === 0) {
+    return 0;
+  }
+  return CM_PointLeafnum_r(world, point, 0);
+}
+
+/**
+ * Original name: CM_HeadnodeForBox
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Updates the synthetic box hull planes from the supplied mins/maxs and returns the box headnode.
+ */
+export function CM_HeadnodeForBox(world: CollisionWorld, mins: vec3_t, maxs: vec3_t): number {
+  const planeOffset = world.map_planes.length - 12;
+  world.map_planes[planeOffset + 0].dist = maxs[0];
+  world.map_planes[planeOffset + 1].dist = -maxs[0];
+  world.map_planes[planeOffset + 2].dist = mins[0];
+  world.map_planes[planeOffset + 3].dist = -mins[0];
+  world.map_planes[planeOffset + 4].dist = maxs[1];
+  world.map_planes[planeOffset + 5].dist = -maxs[1];
+  world.map_planes[planeOffset + 6].dist = mins[1];
+  world.map_planes[planeOffset + 7].dist = -mins[1];
+  world.map_planes[planeOffset + 8].dist = maxs[2];
+  world.map_planes[planeOffset + 9].dist = -maxs[2];
+  world.map_planes[planeOffset + 10].dist = mins[2];
+  world.map_planes[planeOffset + 11].dist = -mins[2];
+
+  return world.box_headnode;
+}
+
+/**
+ * Original name: CM_BoxLeafnums_headnode
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Collects leaf numbers touched by one bounds box under the requested BSP headnode.
+ */
+export function CM_BoxLeafnums_headnode(
+  world: CollisionWorld,
+  mins: vec3_t,
+  maxs: vec3_t,
+  list: number[],
+  listsize: number,
+  headnode: number
+): { count: number; topnode: number } {
+  const output: number[] = [];
+  const state = { topnode: -1 };
+  CM_BoxLeafnums_r(world, headnode, mins, maxs, output, listsize, state);
+
+  const count = Math.min(output.length, listsize);
+  list.length = 0;
+  for (let index = 0; index < count; index += 1) {
+    list.push(output[index]);
+  }
+
+  return {
+    count,
+    topnode: state.topnode
+  };
+}
+
+/**
+ * Original name: CM_BoxLeafnums
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Collects leaf numbers touched by one bounds box under the world headnode.
+ */
+export function CM_BoxLeafnums(
+  world: CollisionWorld,
+  mins: vec3_t,
+  maxs: vec3_t,
+  list: number[],
+  listsize: number
+): { count: number; topnode: number } {
+  const headnode = world.map_cmodels[0]?.headnode ?? 0;
+  return CM_BoxLeafnums_headnode(world, mins, maxs, list, listsize, headnode);
+}
+
+/**
+ * Original name: CM_DecompressVis
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Decompresses one Quake II RLE visibility row into the caller-supplied output buffer.
+ */
+export function CM_DecompressVis(world: CollisionWorld, input: Uint8Array | null, output: Uint8Array): void {
+  const row = (world.numclusters + 7) >> 3;
+  output.fill(0);
+
+  if (!input || world.map_visibility.length === 0 || !world.map_vis) {
+    output.fill(0xff, 0, row);
+    return;
+  }
+
+  let inIndex = 0;
+  let outIndex = 0;
+  while (outIndex < row && inIndex < input.length) {
+    const value = input[inIndex];
+    if (value !== 0) {
+      output[outIndex] = value;
+      outIndex += 1;
+      inIndex += 1;
+      continue;
+    }
+
+    if (inIndex + 1 >= input.length) {
+      break;
+    }
+
+    let count = input[inIndex + 1];
+    inIndex += 2;
+    if (outIndex + count > row) {
+      count = row - outIndex;
+    }
+
+    while (count > 0 && outIndex < row) {
+      output[outIndex] = 0;
+      outIndex += 1;
+      count -= 1;
+    }
+  }
+}
+
+/**
+ * Original name: CM_ClusterPVS
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Returns the decompressed PVS row for one cluster.
+ */
+export function CM_ClusterPVS(world: CollisionWorld, cluster: number): Uint8Array {
+  return getClusterVis(world, cluster, DVIS_PVS);
+}
+
+/**
+ * Original name: CM_ClusterPHS
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Returns the decompressed PHS row for one cluster.
+ */
+export function CM_ClusterPHS(world: CollisionWorld, cluster: number): Uint8Array {
+  return getClusterVis(world, cluster, DVIS_PHS);
+}
+
+/**
+ * Original name: CM_SetAreaPortalState
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Opens or closes one areaportal and recomputes flood connectivity.
+ */
+export function CM_SetAreaPortalState(world: CollisionWorld, portalnum: number, open: boolean): void {
+  if (portalnum > world.map_areaportals.length) {
+    throw new Error("areaportal > numareaportals");
+  }
+
+  world.portalopen[portalnum] = open ? 1 : 0;
+  FloodAreaConnections(world);
+}
+
+/**
+ * Original name: CM_AreasConnected
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns whether two BSP areas are connected through currently open areaportals.
+ */
+export function CM_AreasConnected(world: CollisionWorld, area1: number, area2: number): boolean {
+  if (world.map_noareas) {
+    return true;
+  }
+
+  if (area1 >= world.numareas || area2 >= world.numareas) {
+    throw new Error("area > numareas");
+  }
+
+  return world.map_areas[area1].floodnum === world.map_areas[area2].floodnum;
+}
+
+/**
+ * Original name: CM_WriteAreaBits
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Writes the area connectivity bitset for the supplied source area into the caller buffer.
+ */
+export function CM_WriteAreaBits(world: CollisionWorld, buffer: Uint8Array, area: number): number {
+  const bytes = (world.numareas + 7) >> 3;
+  buffer.fill(0, 0, bytes);
+
+  if (world.map_noareas) {
+    buffer.fill(0xff, 0, bytes);
+    return bytes;
+  }
+
+  const floodnum = world.map_areas[area]?.floodnum ?? 0;
+  for (let index = 0; index < world.numareas; index += 1) {
+    if (world.map_areas[index].floodnum === floodnum || area === 0) {
+      buffer[index >> 3] |= 1 << (index & 7);
+    }
+  }
+
+  return bytes;
+}
+
+/**
+ * Original name: CM_WritePortalState
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Serializes the areaportal open-state array using Quake II `qboolean`-sized little-endian integers.
+ */
+export function CM_WritePortalState(world: CollisionWorld): Uint8Array {
+  const bytes = new Uint8Array(PORTAL_STATE_BYTES);
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+
+  for (let index = 0; index < MAX_MAP_AREAPORTALS; index += 1) {
+    view.setInt32(index * 4, world.portalopen[index] !== 0 ? 1 : 0, true);
+  }
+
+  return bytes;
+}
+
+/**
+ * Original name: CM_ReadPortalState
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Restores the areaportal open-state array from Quake II savegame bytes and rebuilds flood connectivity.
+ */
+export function CM_ReadPortalState(world: CollisionWorld, bytes: Uint8Array): void {
+  if (bytes.byteLength < PORTAL_STATE_BYTES) {
+    throw new Error("CM_ReadPortalState: bad portal state size");
+  }
+
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  for (let index = 0; index < MAX_MAP_AREAPORTALS; index += 1) {
+    world.portalopen[index] = view.getInt32(index * 4, true) !== 0 ? 1 : 0;
+  }
+
+  FloodAreaConnections(world);
+}
+
+/**
+ * Original name: CM_HeadnodeVisible
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns whether any leaf under the supplied headnode is visible in the given cluster bitset.
+ */
+export function CM_HeadnodeVisible(world: CollisionWorld, nodenum: number, visbits: Uint8Array): boolean {
+  if (nodenum < 0) {
+    const leafnum = -1 - nodenum;
+    const cluster = world.map_leafs[leafnum]?.cluster ?? -1;
+    if (cluster === -1) {
+      return false;
+    }
+    return (visbits[cluster >> 3] & (1 << (cluster & 7))) !== 0;
+  }
+
+  const node = world.map_nodes[nodenum];
+  return CM_HeadnodeVisible(world, node.children[0], visbits) || CM_HeadnodeVisible(world, node.children[1], visbits);
 }
 
 /**
@@ -577,7 +1175,7 @@ function CM_TestInLeafs(world: CollisionWorld, headnode: number, start: vec3_t, 
   }
 
   const leafs: number[] = [];
-  CM_BoxLeafnums_r(world, headnode, c1, c2, leafs);
+  CM_BoxLeafnums_r(world, headnode, c1, c2, leafs, Number.MAX_SAFE_INTEGER, { topnode: -1 });
   for (const leafnum of leafs) {
     const leaf = world.map_leafs[leafnum];
     if ((leaf.contents & work.contents) === 0) {
@@ -611,9 +1209,19 @@ function CM_TestInLeafs(world: CollisionWorld, headnode: number, start: vec3_t, 
  * Constraints:
  * - Must preserve BSP child numbering where negative child ids reference leafs.
  */
-function CM_BoxLeafnums_r(world: CollisionWorld, nodenum: number, mins: vec3_t, maxs: vec3_t, output: number[]): void {
+function CM_BoxLeafnums_r(
+  world: CollisionWorld,
+  nodenum: number,
+  mins: vec3_t,
+  maxs: vec3_t,
+  output: number[],
+  maxcount: number,
+  state: { topnode: number }
+): void {
   if (nodenum < 0) {
-    output.push(-1 - nodenum);
+    if (output.length < maxcount) {
+      output.push(-1 - nodenum);
+    }
     return;
   }
 
@@ -631,16 +1239,20 @@ function CM_BoxLeafnums_r(world: CollisionWorld, nodenum: number, mins: vec3_t, 
   }
 
   if (dist1 >= 0 && dist2 >= 0) {
-    CM_BoxLeafnums_r(world, node.children[0], mins, maxs, output);
+    CM_BoxLeafnums_r(world, node.children[0], mins, maxs, output, maxcount, state);
     return;
   }
   if (dist1 < 0 && dist2 < 0) {
-    CM_BoxLeafnums_r(world, node.children[1], mins, maxs, output);
+    CM_BoxLeafnums_r(world, node.children[1], mins, maxs, output, maxcount, state);
     return;
   }
 
-  CM_BoxLeafnums_r(world, node.children[0], mins, maxs, output);
-  CM_BoxLeafnums_r(world, node.children[1], mins, maxs, output);
+  if (state.topnode === -1) {
+    state.topnode = nodenum;
+  }
+
+  CM_BoxLeafnums_r(world, node.children[0], mins, maxs, output, maxcount, state);
+  CM_BoxLeafnums_r(world, node.children[1], mins, maxs, output, maxcount, state);
 }
 
 /**
@@ -842,10 +1454,10 @@ function hasRotation(angles: vec3_t): boolean {
  * Purpose: Resolve the synthetic box-model headnode used by the original transformed trace fast path.
  *
  * Constraints:
- * - Falls back to `-1` when the world does not expose a dedicated temporary box hull.
+ * - Returns the dedicated temporary box hull headnode created during collision-world initialization.
  */
 function getBoxHeadnode(world: CollisionWorld): number {
-  return world.map_cmodels.length > 0 ? world.map_cmodels[0].headnode : -1;
+  return world.box_headnode;
 }
 
 /**
@@ -890,4 +1502,207 @@ function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
  */
 function negateVec3(vector: vec3_t): vec3_t {
   return [-vector[0], -vector[1], -vector[2]];
+}
+
+/**
+ * Category: New
+ * Purpose: Build one mutable collision area record from the parsed BSP area lump.
+ */
+function createArea(area: darea_t): CollisionArea {
+  return {
+    numareaportals: area.numareaportals,
+    firstareaportal: area.firstareaportal,
+    floodnum: 0,
+    floodvalid: 0
+  };
+}
+
+/**
+ * Original name: CM_InitBoxHull
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Appends the synthetic BSP data used to represent temporary AABB hulls as a regular headnode.
+ */
+function CM_InitBoxHull(world: CollisionWorld): void {
+  world.box_headnode = world.map_nodes.length;
+
+  world.box_brush = world.map_brushes.length;
+  world.map_brushes.push({
+    contents: CONTENTS_MONSTER,
+    numsides: 6,
+    firstbrushside: world.map_brushsides.length
+  });
+
+  world.box_leaf = world.map_leafs.length;
+  world.map_leafs.push({
+    contents: CONTENTS_MONSTER,
+    cluster: -1,
+    area: 0,
+    firstleafbrush: world.map_leafbrushes.length,
+    numleafbrushes: 1
+  });
+  world.map_leafbrushes.push(world.box_brush);
+
+  const planeOffset = world.map_planes.length;
+  for (let index = 0; index < 12; index += 1) {
+    world.map_planes.push(createDefaultPlane());
+  }
+
+  for (let index = 0; index < 6; index += 1) {
+    const side = index & 1;
+
+    world.map_brushsides.push({
+      plane: world.map_planes[planeOffset + index * 2 + side],
+      surface: world.nullsurface
+    });
+
+    world.map_nodes.push({
+      plane: world.map_planes[planeOffset + index * 2],
+      children: [
+        side === 0 ? -1 - world.emptyleaf : (index !== 5 ? world.box_headnode + index + 1 : -1 - world.box_leaf),
+        side === 1 ? -1 - world.emptyleaf : (index !== 5 ? world.box_headnode + index + 1 : -1 - world.box_leaf)
+      ]
+    });
+
+    const positivePlane = world.map_planes[planeOffset + index * 2];
+    positivePlane.type = Math.trunc(index / 2);
+    positivePlane.signbits = 0;
+    VectorClear(positivePlane.normal);
+    positivePlane.normal[Math.trunc(index / 2)] = 1;
+
+    const negativePlane = world.map_planes[planeOffset + index * 2 + 1];
+    negativePlane.type = 3 + Math.trunc(index / 2);
+    negativePlane.signbits = 0;
+    VectorClear(negativePlane.normal);
+    negativePlane.normal[Math.trunc(index / 2)] = -1;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Decode the BSP visibility lump header into a structured offset table.
+ */
+function parseVisibilityLump(bytes: Uint8Array): dvis_t | null {
+  if (bytes.length < 4) {
+    return null;
+  }
+
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const numclusters = view.getInt32(0, true);
+  if (numclusters < 0 || bytes.length < 4 + numclusters * 8) {
+    return null;
+  }
+
+  const bitofs: Array<[number, number]> = [];
+  for (let index = 0; index < numclusters; index += 1) {
+    const offset = 4 + index * 8;
+    bitofs.push([view.getInt32(offset, true), view.getInt32(offset + 4, true)]);
+  }
+
+  return { numclusters, bitofs };
+}
+
+/**
+ * Category: New
+ * Purpose: Return one decompressed PVS/PHS row for the selected cluster and visibility kind.
+ */
+function getClusterVis(world: CollisionWorld, cluster: number, kind: 0 | 1): Uint8Array {
+  const row = (world.numclusters + 7) >> 3;
+  const output = new Uint8Array(row);
+
+  if (cluster === -1 || !world.map_vis) {
+    return output;
+  }
+
+  const offset = world.map_vis.bitofs[cluster]?.[kind] ?? -1;
+  if (offset < 0 || offset >= world.map_visibility.length) {
+    return output;
+  }
+
+  CM_DecompressVis(world, world.map_visibility.subarray(offset), output);
+  return output;
+}
+
+/**
+ * Category: New
+ * Purpose: Reinitialize the portal-open state exactly like the original cached-map fast path.
+ */
+function resetPortalState(world: CollisionWorld): void {
+  world.portalopen.fill(0);
+  FloodAreaConnections(world);
+}
+
+/**
+ * Category: New
+ * Purpose: Provide the zeroed `map_cmodels[0]` shape used when no map is currently loaded.
+ */
+function createEmptyCmodel(): cmodel_t {
+  return {
+    mins: [0, 0, 0],
+    maxs: [0, 0, 0],
+    origin: [0, 0, 0],
+    headnode: 0
+  };
+}
+
+/**
+ * Original name: FloodArea_r
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Flood-fills one area through all currently open areaportals with the supplied flood number.
+ */
+function FloodArea_r(world: CollisionWorld, areaIndex: number, floodnum: number): void {
+  const area = world.map_areas[areaIndex];
+  if (!area) {
+    return;
+  }
+
+  if (area.floodvalid === world.floodvalid) {
+    if (area.floodnum === floodnum) {
+      return;
+    }
+    throw new Error("FloodArea_r: reflooded");
+  }
+
+  area.floodnum = floodnum;
+  area.floodvalid = world.floodvalid;
+
+  for (let index = 0; index < area.numareaportals; index += 1) {
+    const portal = world.map_areaportals[area.firstareaportal + index];
+    if (!portal) {
+      continue;
+    }
+    if (world.portalopen[portal.portalnum] !== 0) {
+      FloodArea_r(world, portal.otherarea, floodnum);
+    }
+  }
+}
+
+/**
+ * Original name: FloodAreaConnections
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Rebuilds area flood connectivity for the currently loaded set of areaportals.
+ */
+function FloodAreaConnections(world: CollisionWorld): void {
+  world.floodvalid += 1;
+  let floodnum = 0;
+
+  for (let index = 1; index < world.numareas; index += 1) {
+    const area = world.map_areas[index];
+    if (!area || area.floodvalid === world.floodvalid) {
+      continue;
+    }
+    floodnum += 1;
+    FloodArea_r(world, index, floodnum);
+  }
 }

@@ -48,6 +48,16 @@
             <input id="isolate-filter" type="checkbox" />
             <span>Masquer les fichiers sans lien visible</span>
           </label>
+
+          <div class="field">
+            <span>A porter</span>
+            <div class="checkbox-filter graph-status-filter" id="graph-a-porter-filter">
+              <label><input type="checkbox" class="graph-status-filter-input" value="&#x2705;" />&#x2705;</label>
+              <label><input type="checkbox" class="graph-status-filter-input" value="&#x1F7E0;" />&#x1F7E0;</label>
+              <label><input type="checkbox" class="graph-status-filter-input" value="&#x26D4;" />&#x26D4;</label>
+              <label><input type="checkbox" class="graph-status-filter-input" value="__empty__" />(vide)</label>
+            </div>
+          </div>
         </section>
 
         <section class="panel">
@@ -56,7 +66,10 @@
         </section>
 
         <section class="panel details">
-          <h2>Selection</h2>
+          <div class="details-header">
+            <h2>Selection</h2>
+            <button id="details-back-button" type="button" class="secondary-button details-back-button" disabled>Retour</button>
+          </div>
           <div id="details-empty">Cliquez un fichier, un lien ou une ligne du tableau pour afficher ses details.</div>
           <div id="details-content" hidden></div>
         </section>
@@ -135,20 +148,15 @@
                     <th><input id="filter-module" class="column-filter" data-filter-key="module" type="text" placeholder="Filtrer" /></th>
                     <th>
                       <div class="checkbox-filter">
-                        <label><input type="checkbox" class="status-filter" data-filter-key="aPorter" value="⬜" />⬜</label>
-                        <label><input type="checkbox" class="status-filter" data-filter-key="aPorter" value="🟡" />🟡</label>
-                        <label><input type="checkbox" class="status-filter" data-filter-key="aPorter" value="🟠" />🟠</label>
-                        <label><input type="checkbox" class="status-filter" data-filter-key="aPorter" value="✅" />✅</label>
-                        <label><input type="checkbox" class="status-filter" data-filter-key="aPorter" value="⛔" />⛔</label>
+                        <label><input type="checkbox" class="status-filter" data-filter-key="aPorter" value="&#x2705;" />&#x2705;</label>
+                        <label><input type="checkbox" class="status-filter" data-filter-key="aPorter" value="&#x1F7E0;" />&#x1F7E0;</label>
+                        <label><input type="checkbox" class="status-filter" data-filter-key="aPorter" value="&#x26D4;" />&#x26D4;</label>
                       </div>
                     </th>
                     <th>
                       <div class="checkbox-filter">
-                        <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="⬜" />⬜</label>
-                        <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="🟡" />🟡</label>
-                        <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="🟠" />🟠</label>
-                        <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="✅" />✅</label>
-                        <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="⛔" />⛔</label>
+                        <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="&#x2705;" />&#x2705;</label>
+                        <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="&#x1F7E0;" />&#x1F7E0;</label>
                       </div>
                     </th>
                     <th><input id="filter-cible" class="column-filter" data-filter-key="cible" type="text" placeholder="Filtrer" /></th>

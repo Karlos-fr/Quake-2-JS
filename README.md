@@ -212,6 +212,8 @@ Exemples :
 - Les adaptations web doivent etre clairement identifiees comme `Adapter` ou `NewTooling`.
 - Les comportements critiques de `qcommon`, `server`, `game`, `client` et des parseurs binaires doivent viser une fidelite `Strict` ou `Close`.
 - Chaque ecart volontaire au code original doit etre explicite dans le commentaire du fichier ou de la fonction concernee.
+- Si un fichier deja porte, entierement ou partiellement, est identifie comme ne respectant pas ces regles, il doit etre rectifie avant d'etre considere comme base stable pour la suite du portage.
+- Cette rectification s'applique en particulier a la tracabilite source -> cible, au niveau de fidelite annonce, a la separation runtime / adapter et au decoupage des fichiers quand un fichier porte est devenu un melange de responsabilites non conforme.
 
 ### Regles de dependance entre portage et adapters
 
@@ -242,6 +244,7 @@ Exemples :
 - Pour les fichiers `.c`, viser autant que possible `1 fichier .c -> 1 fichier .ts`.
 - Si un fichier `.c` est trop gros, un decoupage en sous-fichiers est autorise pour la maintenabilite.
 - En cas de decoupage d'un fichier `.c`, conserver un fichier TS principal qui porte le nom ou le role principal du fichier source et sert de point de rattachement.
+- Si un portage existant ne respecte plus suffisamment cette regle, il doit etre redecoupe ou rerattache explicitement plutot que laisse en l'etat par inertie.
 - Pour les fichiers `.h` purement declaratifs, viser autant que possible `1 fichier .h -> 1 fichier .ts`.
 - Si un fichier `.h` est trop gros, un decoupage en sous-fichiers est autorise pour la maintenabilite.
 - En cas de decoupage d'un fichier `.h`, conserver un fichier TS principal ou un point de rattachement explicite permettant d'identifier clairement la cible principale du header source.
@@ -271,18 +274,22 @@ Exemples :
 - Il ne peut passer en `✅` que si ses ecarts residuels sont documentes.
 - Il ne peut passer en `✅` que s'il n'est pas porte a titre principal dans un adapter.
 - Il ne peut passer en `✅` que si `PORTAGE_QUAKE2.md` reflete correctement son rattachement.
+- Il ne peut pas passer en `✅` s'il depend encore d'un hook, d'un stub ou d'une injection temporaire pour reproduire un comportement source non encore porte.
 
 ### Statut des fichiers partiellement portes
 
 - Un fichier `🟠` doit expliciter ce qui manque encore au minimum dans le plan courant, dans `PORTAGE_QUAKE2.md` ou dans le header du fichier principal.
 - Un fichier partiellement porte ne doit pas etre laisse dans un etat ambigu ou il semble complet sans que les branches manquantes soient identifiees.
 - Les stubs temporaires sont autorises pour debloquer une chaine de portage, mais ils doivent etre identifies explicitement comme temporaires et references dans le suivi.
+- Un fichier qui garde un hook, un stub ou une injection temporaire a la place d'un comportement source reel doit rester en `🟠` tant que cette dependance n'est pas refermee.
 
 ## Decoupage en fichiers
 
 ### Regle generale
 
 Un fichier doit contenir une responsabilite principale.
+
+Si un fichier deja present a derive vers plusieurs responsabilites incompatibles avec sa cible source principale, il faut le corriger des que cette derive est constatee, meme si cela implique de revisiter un portage deja commence.
 
 ### Accepte
 

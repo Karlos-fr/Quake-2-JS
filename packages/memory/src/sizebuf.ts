@@ -174,8 +174,8 @@ export function SZ_Write(buf: sizebuf_t, data: Uint8Array): void {
 export function SZ_Print(buf: sizebuf_t, data: string): void {
   const encoded = encodeCString(data);
   if (buf.cursize !== 0 && buf.data[buf.cursize - 1] === 0) {
-    const target = SZ_GetSpace(buf, encoded.length - 1);
-    target.set(encoded.subarray(1));
+    buf.cursize -= 1;
+    SZ_Write(buf, encoded);
     return;
   }
 

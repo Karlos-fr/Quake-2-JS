@@ -12,6 +12,7 @@
  */
 
 import {
+  CM_InlineModel,
   CS_IMAGES,
   CS_MODELS,
   CS_SOUNDS,
@@ -34,11 +35,13 @@ import {
 import {
   DAMAGE_TIME,
   FRAMETIME,
+  ClientBeginServerFrame,
+  ClientThink,
   GetAmmoItemForWeapon,
   G_RunFrame,
+  LOCAL_GAME_WEAPON_HOOKS,
   linkGameEntity,
   refreshEntitySpatialState,
-  thinkLocalWeapon,
   touchTriggerEntities,
   SVF_NOCLIENT,
   type GameEntity,
@@ -104,13 +107,15 @@ export function advanceLocalGameplayRuntime<TSnapshot>(
   realtimeMs: number,
   interpolationState: BrushModelInterpolationState<TSnapshot>,
   buildSnapshots: (runtime: GameRuntime) => TSnapshot[],
-  cloneSnapshots: (snapshots: TSnapshot[]) => TSnapshot[]
+  cloneSnapshots: (snapshots: TSnapshot[]) => TSnapshot[],
+  beforeFrame?: (runtime: GameRuntime) => void
 ): void {
   const timeSeconds = realtimeMs / 1000;
 
   while ((gameplayRuntime.time + FRAMETIME) <= (timeSeconds + 0.0001)) {
     interpolationState.previousSnapshots = cloneSnapshots(interpolationState.currentSnapshots);
     interpolationState.previousTime = interpolationState.currentTime;
+    beforeFrame?.(gameplayRuntime);
     G_RunFrame(gameplayRuntime);
     interpolationState.currentSnapshots = buildSnapshots(gameplayRuntime);
     interpolationState.currentTime = gameplayRuntime.time;
@@ -141,9 +146,6 @@ export function updateLocalGameplayPlayer(
 
   const gameplayClient = gameplayPlayer.client;
   if (gameplayClient) {
-    gameplayClient.oldbuttons = gameplayClient.buttons;
-    gameplayClient.buttons = runtime.cl.cmd.buttons;
-    gameplayClient.latched_buttons |= gameplayClient.buttons & ~gameplayClient.oldbuttons;
     gameplayClient.v_angle = [...runtime.cl.predicted_angles];
     gameplayClient.ps.viewoffset = [0, 0, gameplayPlayer.viewheight];
     gameplayClient.ps.pmove = {
@@ -156,7 +158,7 @@ export function updateLocalGameplayPlayer(
       gravity: runtime.cl.predicted_pmove.gravity,
       delta_angles: [...runtime.cl.predicted_pmove.delta_angles]
     };
-    thinkLocalWeapon(gameplayPlayer, gameplayRuntime);
+    ClientThink(gameplayPlayer, runtime.cl.cmd, gameplayRuntime, LOCAL_GAME_WEAPON_HOOKS);
     updateLocalViewWeaponMotion(gameplayRuntime, gameplayPlayer, gameplayClient, runtime, localViewMotion);
   }
 
@@ -174,6 +176,7 @@ export function updateLocalGameplayPlayer(
  */
 export function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
   syncLocalGameplayAssetConfigstrings(runtime, gameplayRuntime);
+  syncLocalGameplayModelClip(runtime, gameplayRuntime);
 
   const currentFrameServerframe = runtime.cl.frame.serverframe;
   const previousFrameServerframe = currentFrameServerframe - 1;
@@ -402,6 +405,28 @@ function syncLocalGameplayAssetConfigstrings(runtime: ClientRuntime, gameplayRun
   for (let index = 1; index < runtime.cl.image_precache.length; index += 1) {
     runtime.cl.configstrings[CS_IMAGES + index] = gameplayRuntime.assets.imagePaths[index - 1] ?? runtime.cl.configstrings[CS_IMAGES + index] ?? "";
     runtime.cl.image_precache[index] = runtime.cl.configstrings[CS_IMAGES + index] || null;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Mirror the current inline BSP model clip registry into the client-side `model_clip` slots used by `cl_pred.c`.
+ *
+ * Constraints:
+ * - Must only resolve Quake-style inline model names such as `*1`.
+ * - Must clear stale clip entries when a configstring no longer references an inline model.
+ */
+function syncLocalGameplayModelClip(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  const world = gameplayRuntime.collision?.world ?? null;
+
+  for (let index = 0; index < runtime.cl.model_clip.length; index += 1) {
+    const modelPath = runtime.cl.configstrings[CS_MODELS + index] ?? "";
+    if (!world || !modelPath.startsWith("*")) {
+      runtime.cl.model_clip[index] = null;
+      continue;
+    }
+
+    runtime.cl.model_clip[index] = CM_InlineModel(world, modelPath);
   }
 }
 

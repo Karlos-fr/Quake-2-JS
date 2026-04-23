@@ -18,8 +18,10 @@ import type { BspMap, BspSpawnPoint } from "../../formats/src/index.js";
 import {
   initializeDoorPlanEntities,
   buildLocalWeaponBootstrapData,
+  ClientBeginServerFrame,
   createLocalGameplayPlayer,
   createGameRuntimeFromBspMap,
+  LOCAL_GAME_WEAPON_HOOKS,
   type GameEntity,
   type GameRuntime
 } from "../../game/src/index.js";
@@ -45,6 +47,7 @@ import {
   promoteLocalPredictedState,
   type LocalClientCollisionAdapter
 } from "./local-loop.js";
+import { createClientPredictionCollisionSource } from "./view.js";
 import {
   initializeLocalHudState,
 } from "./local-client-bootstrap.js";
@@ -140,6 +143,7 @@ export function initializeLocalClientSession<TSnapshot>(
   runtime.cl.frame.playerstate.viewoffset = [0, 0, DEFAULT_VIEWHEIGHT];
   runtime.cl.frame.playerstate.viewangles = [0, spawnYaw, 0];
   runtime.cl.viewangles = [0, spawnYaw, 0];
+  runtime.cl.predicted_viewheight = DEFAULT_VIEWHEIGHT;
   runtime.cl.predicted_origin = [...spawnOrigin];
   runtime.cl.predicted_angles = [0, spawnYaw, 0];
   runtime.cl.configstrings[CS_AIRACCEL] = "0";
@@ -189,8 +193,9 @@ export function stepLocalClientSession<TSnapshot>(
       paused: boolean;
       incomingAcknowledged: number;
       outgoingSequence: number;
-      trace: LocalClientCollisionAdapter["trace"];
-      pointcontents: LocalClientCollisionAdapter["pointcontents"];
+      predictionCollision?: ReturnType<typeof createClientPredictionCollisionSource>;
+      trace?: LocalClientCollisionAdapter["trace"];
+      pointcontents?: LocalClientCollisionAdapter["pointcontents"];
     }
   ) => void,
   snapshotHooks: LocalClientSessionSnapshotHooks<TSnapshot>
@@ -205,7 +210,10 @@ export function stepLocalClientSession<TSnapshot>(
     session.realtimeMs,
     session.brushModelInterpolation,
     snapshotHooks.buildSnapshots,
-    snapshotHooks.cloneSnapshots
+    snapshotHooks.cloneSnapshots,
+    (gameplayRuntime) => {
+      ClientBeginServerFrame(session.gameplayPlayer, gameplayRuntime, LOCAL_GAME_WEAPON_HOOKS);
+    }
   );
 
   syncLocalMovementButtons(inputContext, inputState.pressedKeys, session.realtimeMs);
@@ -221,13 +229,26 @@ export function stepLocalClientSession<TSnapshot>(
   runtime.cl.cmds[frameIndex] = cloneStandaloneUsercmd(cmd);
   runtime.cl.cmd_time[frameIndex] = session.realtimeMs;
 
+  // Keep the parsed client-side entity snapshot aligned with the latest gameplay
+  // frame before building the `cl_pred.c`-style collision source.
+  syncLocalGameplayFrame(runtime, session.gameplayRuntime);
+
+  const predictionCollision =
+    session.gameplayRuntime.collision
+      ? createClientPredictionCollisionSource(runtime, session.gameplayRuntime.collision.world)
+      : undefined;
+
   predictMovement(runtime, {
     predictMovement: true,
     paused: false,
     incomingAcknowledged: session.nextCommandSequence - 1,
     outgoingSequence: session.nextCommandSequence + 1,
-    trace: collision.trace,
-    pointcontents: collision.pointcontents
+    ...(predictionCollision
+      ? { predictionCollision }
+      : {
+          trace: collision.trace,
+          pointcontents: collision.pointcontents
+        })
   });
 
   promoteLocalPredictedState(runtime, session.realtimeMs);

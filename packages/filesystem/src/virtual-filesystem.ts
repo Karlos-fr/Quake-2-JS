@@ -192,6 +192,22 @@ export function mountPak(filesystem: VirtualFilesystem, bytes: Uint8Array, path?
 }
 
 /**
+ * Original name: FS_LoadPackFile
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Loads and mounts one Quake II PAK archive into the virtual search path.
+ *
+ * Porting notes:
+ * - Reuses the already parsed in-memory PAK path instead of reopening a host file.
+ */
+export function FS_LoadPackFile(filesystem: VirtualFilesystem, bytes: Uint8Array, path?: string): MountedPak {
+  return mountPak(filesystem, bytes, path);
+}
+
+/**
  * Original name: FS_Link_f
  * Source: qcommon/files.c
  * Category: Ported
@@ -242,7 +258,14 @@ export function FS_SetGamedir(filesystem: VirtualFilesystem, dir: string): boole
     return false;
   }
 
-  filesystem.fs_gamedir = normalizeDirectoryPath(dir);
+  if (filesystem.fs_base_searchpaths.length > 0) {
+    filesystem.searchPaths = [...filesystem.fs_base_searchpaths];
+    filesystem.packs = filesystem.searchPaths
+      .filter((search): search is SearchPath & { pack: MountedPak } => search.pack !== undefined)
+      .map((search) => search.pack);
+  }
+
+  filesystem.fs_gamedir = normalizeDirectoryPath(dir.length === 0 ? "baseq2" : dir);
   return true;
 }
 
@@ -345,6 +368,65 @@ export function readMountedFile(filesystem: VirtualFilesystem, filename: string)
  */
 export function FS_LoadFile(filesystem: VirtualFilesystem, path: string): Uint8Array | undefined {
   return readMountedFile(filesystem, path)?.bytes;
+}
+
+/**
+ * Original name: FS_FreeFile
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Releases one loaded file buffer.
+ *
+ * Porting notes:
+ * - Becomes a no-op because mounted file bytes are owned by the virtual filesystem.
+ */
+export function FS_FreeFile(_buffer: Uint8Array): void {
+  // The in-memory virtual filesystem owns mounted file buffers for the full
+  // lifetime of the filesystem, so freeing a loaded view is a no-op.
+}
+
+/**
+ * Original name: FS_ExecAutoexec
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Returns whether `autoexec.cfg` is available through the current search path.
+ *
+ * Porting notes:
+ * - Reports availability instead of injecting command text directly.
+ */
+export function FS_ExecAutoexec(filesystem: VirtualFilesystem): boolean {
+  return readMountedFile(filesystem, "autoexec.cfg") !== undefined;
+}
+
+/**
+ * Original name: Developer_searchpath
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Detects whether the current search path contains one mission-pack directory.
+ *
+ * Porting notes:
+ * - Preserves the original return values: `1` for Xatrix, `2` for Rogue, `0` otherwise.
+ */
+export function Developer_searchpath(filesystem: VirtualFilesystem): number {
+  for (const search of filesystem.searchPaths) {
+    if (search.filename.includes("xatrix")) {
+      return 1;
+    }
+
+    if (search.filename.includes("rogue")) {
+      return 2;
+    }
+  }
+
+  return 0;
 }
 
 /**

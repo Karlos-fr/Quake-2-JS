@@ -10,10 +10,11 @@
  *
  * Deviations:
  * - Exposes the original file-scope globals through an explicit context object.
- * - Ports the first strict subset needed by prediction before the full `Pmove` entry point.
+ * - Keeps a small options surface for harnesses and staged integrations, while preserving original behavior by default.
  *
  * Notes:
  * - This file is intended to stay close to the original C source.
+ * - The default `Pmove` execution path mirrors the original `qcommon/pmove.c` flow.
  */
 
 import {
@@ -71,7 +72,7 @@ export const MAX_CLIP_PLANES = 5;
  * Purpose: Hold the mutable locals that `pmove.c` stores in the original `pml_t` file-scope struct.
  *
  * Constraints:
- * - Must preserve float-precision origin and velocity values across a single pmove execution.
+ * - Must preserve the original mix of float local state and packed-origin fallback data across one pmove execution.
  */
 export interface pml_t {
   origin: vec3_t;
@@ -194,7 +195,7 @@ export function PM_InitLocalState(context: PmoveContext, frametime: number): voi
   for (let index = 0; index < 3; index += 1) {
     context.pml.origin[index] = context.pm.s.origin[index] * 0.125;
     context.pml.velocity[index] = context.pm.s.velocity[index] * 0.125;
-    context.pml.previous_origin[index] = context.pml.origin[index];
+    context.pml.previous_origin[index] = context.pm.s.origin[index];
   }
 }
 
@@ -1246,17 +1247,44 @@ export function PM_InitialSnapPosition(context: PmoveContext): void {
 }
 
 /**
+ * Original name: timer drop block inside `Pmove`
+ * Source: qcommon/pmove.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Decrements the packed pmove timing counter in the same eighth-msec quanta as the original.
+ */
+export function PM_DropTimers(context: PmoveContext): void {
+  if (!context.pm.s.pm_time) {
+    return;
+  }
+
+  let msec = context.pm.cmd.msec >> 3;
+  if (!msec) {
+    msec = 1;
+  }
+
+  if (msec >= context.pm.s.pm_time) {
+    context.pm.s.pm_flags &= ~(PMF_TIME_WATERJUMP | PMF_TIME_LAND | PMF_TIME_TELEPORT);
+    context.pm.s.pm_time = 0;
+    return;
+  }
+
+  context.pm.s.pm_time -= msec;
+}
+
+/**
  * Original name: Pmove
  * Source: qcommon/pmove.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Executes the first orchestrated player-move path for normal movement using the ported Quake II helpers.
+ * - Executes the shared Quake II player-move routine used by both prediction and authoritative simulation.
  *
  * Porting notes:
- * - Still omits only diagnostics around failed initial snap and any behavior outside the already-ported helper set.
- * - Synchronizes float movement back to packed state with truncation, but without the original final snap search yet.
+ * - Default behavior follows the original source path; optional gates exist only for staged integration and verification harnesses.
  */
 export function Pmove(context: PmoveContext, options: PmoveOptions = {}): void {
   PM_ClearResults(context);
@@ -1271,7 +1299,11 @@ export function Pmove(context: PmoveContext, options: PmoveOptions = {}): void {
     }
 
     PM_FlyMove(context, options.spectatorDoClip ?? false);
-    PM_SyncToState(context);
+    if (options.allowSnapPosition === false) {
+      PM_SyncToState(context);
+    } else {
+      PM_SnapPosition(context);
+    }
     return;
   }
 
@@ -1298,14 +1330,15 @@ export function Pmove(context: PmoveContext, options: PmoveOptions = {}): void {
     PM_DeadMove(context);
   }
 
-  PM_CheckSpecialMovement(context);
+  if (options.allowSpecialMovement !== false) {
+    PM_CheckSpecialMovement(context);
+  }
+  PM_DropTimers(context);
 
   if ((context.pm.s.pm_flags & PMF_TIME_TELEPORT) !== 0) {
-    PM_SyncToState(context);
-    return;
-  }
-
-  if ((context.pm.s.pm_flags & PMF_TIME_WATERJUMP) !== 0) {
+    // Teleport pause stays exactly in place, but the original still
+    // runs the final categorization and snap logic below.
+  } else if ((context.pm.s.pm_flags & PMF_TIME_WATERJUMP) !== 0) {
     context.pml.velocity[2] -= context.pm.s.gravity * context.pml.frametime;
     if (context.pml.velocity[2] < 0) {
       context.pm.s.pm_flags &= ~(PMF_TIME_WATERJUMP | PMF_TIME_LAND | PMF_TIME_TELEPORT);
@@ -1313,34 +1346,28 @@ export function Pmove(context: PmoveContext, options: PmoveOptions = {}): void {
     }
 
     PM_StepSlideMove(context);
-    PM_CatagorizePosition(context);
-    if (options.allowSnapPosition === false) {
-      PM_SyncToState(context);
-    } else {
-      PM_SnapPosition(context);
-    }
-    return;
-  }
-
-  PM_CheckJump(context);
-  PM_Friction(context);
-
-  const angles: vec3_t = [context.pm.viewangles[0], context.pm.viewangles[1], context.pm.viewangles[2]];
-  if (angles[PITCH] > 180) {
-    angles[PITCH] -= 360;
-  }
-  angles[PITCH] /= 3;
-
-  const vectors = AngleVectors(angles);
-  VectorCopy(vectors.forward, context.pml.forward);
-  VectorCopy(vectors.right, context.pml.right);
-  VectorCopy(vectors.up, context.pml.up);
-
-  if (context.pm.waterlevel >= 2 && options.allowWaterMove !== false) {
-    PM_WaterMove(context);
   } else {
-    PM_AirMove(context);
+    PM_CheckJump(context);
+    PM_Friction(context);
+
+    const angles: vec3_t = [context.pm.viewangles[0], context.pm.viewangles[1], context.pm.viewangles[2]];
+    if (angles[PITCH] > 180) {
+      angles[PITCH] -= 360;
+    }
+    angles[PITCH] /= 3;
+
+    const vectors = AngleVectors(angles);
+    VectorCopy(vectors.forward, context.pml.forward);
+    VectorCopy(vectors.right, context.pml.right);
+    VectorCopy(vectors.up, context.pml.up);
+
+    if (context.pm.waterlevel >= 2 && options.allowWaterMove !== false) {
+      PM_WaterMove(context);
+    } else {
+      PM_AirMove(context);
+    }
   }
+
   PM_CatagorizePosition(context);
   if (options.allowSnapPosition === false) {
     PM_SyncToState(context);

@@ -18,8 +18,10 @@
 
 import { type CommandRuntime, Cmd_AddCommand, Cmd_Argc, Cmd_Argv } from "./cmd.js";
 import {
-  MAX_INFO_STRING
-} from "./q-shared.js";
+  Info_RemoveKey,
+  Info_SetValueForKey,
+  Info_ValueForKey
+} from "./common.js";
 
 export const CVAR_ARCHIVE = 1;
 export const CVAR_USERINFO = 2;
@@ -41,6 +43,7 @@ export interface CvarHooks {
   onWriteProtected?: (name: string) => void;
   onLatchedChange?: (name: string) => void;
   onGameDirChange?: (value: string) => void;
+  onExecAutoexec?: () => void;
   onPrint?: (line: string) => void;
 }
 
@@ -267,7 +270,7 @@ export function Cvar_SetValue(runtime: CvarRuntime, var_name: string, value: num
  * - Applies all latched values to their active cvars.
  *
  * Porting notes:
- * - Triggers the optional game-dir hook when `game` changes.
+ * - Triggers the optional game-dir and autoexec hooks when `game` changes.
  */
 export function Cvar_GetLatchedVars(runtime: CvarRuntime): void {
   for (const variable of runtime.cvar_vars) {
@@ -281,6 +284,7 @@ export function Cvar_GetLatchedVars(runtime: CvarRuntime): void {
 
     if (variable.name === "game") {
       runtime.hooks.onGameDirChange?.(variable.string);
+      runtime.hooks.onExecAutoexec?.();
     }
   }
 }
@@ -562,6 +566,7 @@ export function Cvar_Set2(runtime: CvarRuntime, var_name: string, value: string,
         variable.value = parseCvarFloat(variable.string);
         if (variable.name === "game") {
           runtime.hooks.onGameDirChange?.(variable.string);
+          runtime.hooks.onExecAutoexec?.();
         }
       }
 
@@ -583,54 +588,6 @@ export function Cvar_Set2(runtime: CvarRuntime, var_name: string, value: string,
   variable.string = value;
   variable.value = parseCvarFloat(variable.string);
   return variable;
-}
-
-/**
- * Category: New
- * Purpose: Set one key/value pair inside a Quake-style info string.
- *
- * Constraints:
- * - Must preserve the traditional `\\key\\value` encoding.
- * - Must cap the final string to the Quake II info-string limit.
- */
-function Info_SetValueForKey(info: string, key: string, value: string): string {
-  let next = Info_RemoveKey(info, key);
-  const pair = `\\${key}\\${value}`;
-  if (next.length + pair.length >= MAX_INFO_STRING) {
-    return next;
-  }
-  next += pair;
-  return next;
-}
-
-/**
- * Category: New
- * Purpose: Remove one key from a Quake-style info string.
- *
- * Constraints:
- * - Must preserve the order of remaining pairs.
- */
-function Info_RemoveKey(info: string, key: string): string {
-  const parsed = parseInfoString(info).filter((entry) => entry.key !== key);
-  return parsed.map((entry) => `\\${entry.key}\\${entry.value}`).join("");
-}
-
-/**
- * Category: New
- * Purpose: Parse a Quake-style info string into ordered key/value pairs.
- *
- * Constraints:
- * - Must tolerate empty strings and malformed tails without throwing.
- */
-function parseInfoString(info: string): Array<{ key: string; value: string }> {
-  const pairs: Array<{ key: string; value: string }> = [];
-  const tokens = info.split("\\").filter((token) => token.length > 0);
-
-  for (let index = 0; index + 1 < tokens.length; index += 2) {
-    pairs.push({ key: tokens[index], value: tokens[index + 1] });
-  }
-
-  return pairs;
 }
 
 /**

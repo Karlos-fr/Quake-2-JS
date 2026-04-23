@@ -17,9 +17,13 @@
  */
 
 import {
+  Cmd_AddCommand,
   CS_ITEMS,
   CS_IMAGES,
   CS_STATUSBAR,
+  CVAR_ARCHIVE,
+  Cvar_Get,
+  Cvar_SetValue,
   MAX_CONFIGSTRINGS,
   MAX_IMAGES,
   STAT_AMMO,
@@ -37,7 +41,10 @@ import {
   STAT_SELECTED_ITEM,
   STAT_SPECTATOR,
   STAT_TIMER,
-  STAT_TIMER_ICON
+  STAT_TIMER_ICON,
+  type CommandRuntime,
+  type CvarRuntime,
+  type cvar_t
 } from "../../qcommon/src/index.js";
 import type {
   HudBounds,
@@ -47,7 +54,35 @@ import type {
   HudPictureCommand,
   HudTextCommand
 } from "./render-contracts.js";
-import type { ClientRuntime } from "./types.js";
+import {
+  SCR_DrawCinematic as SCR_DrawCinematic_Impl,
+  SCR_FinishCinematic as SCR_FinishCinematic_Impl,
+  SCR_PlayCinematic as SCR_PlayCinematic_Impl,
+  SCR_RunCinematic as SCR_RunCinematic_Impl,
+  SCR_StopCinematic as SCR_StopCinematic_Impl,
+  type ClientCinematicSnapshot,
+  type ClientScreenHooks
+} from "./cinematic.js";
+import {
+  CL_DrawInventory,
+  Inv_DrawString,
+  SetStringHighBit,
+  type ClientInventoryBindingMap
+} from "./inventory.js";
+import { connstate_t, type ClientRuntime } from "./types.js";
+
+export type {
+  ClientCinematicSnapshot,
+  ClientScreenHooks
+} from "./cinematic.js";
+export {
+  CL_DrawInventory,
+  Inv_DrawString,
+  SetStringHighBit
+} from "./inventory.js";
+export type {
+  ClientInventoryBindingMap
+} from "./inventory.js";
 
 const STAT_MINUS = 10;
 const CHAR_WIDTH = 16;
@@ -198,19 +233,66 @@ export interface ClientScreenBuildOptions {
   outgoingSequence?: number;
   incomingAcknowledged?: number;
   commandBackup?: number;
+  viewportWidth?: number;
+  viewportHeight?: number;
+  keyDest?: "game" | "console" | "message" | "menu";
+  disableScreenMs?: number;
+  currentTimeMs?: number;
+}
+
+/**
+ * Original name: vrect_t
+ * Source: client/vid.h and client/screen.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores the screen-space rectangle used by the Quake II refresh view.
+ */
+export interface vrect_t {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 /**
  * Category: New
- * Purpose: Carry the optional key binding metadata needed by the inventory screen port.
+ * Purpose: Group the client runtime with the command and cvar runtimes needed by the `cl_scrn.c` header-visible paths.
  *
  * Constraints:
- * - Must stay decoupled from the browser input layer and only expose resolved strings.
+ * - Must keep screen-related cvar references explicit.
  */
-export interface ClientInventoryBindingMap {
-  [itemName: string]: string | undefined;
+export interface ClientScreenContext {
+  client: ClientRuntime;
+  cmd: CommandRuntime;
+  cvar: CvarRuntime;
+  scr_viewsize: cvar_t | null;
+  scr_conspeed: cvar_t | null;
+  scr_showpause: cvar_t | null;
+  scr_centertime: cvar_t | null;
+  scr_drawall: cvar_t | null;
+  scr_timegraph: cvar_t | null;
+  scr_debuggraph: cvar_t | null;
+  scr_graphheight: cvar_t | null;
+  scr_graphscale: cvar_t | null;
+  scr_graphshift: cvar_t | null;
+  crosshair: cvar_t | null;
 }
 
+/**
+ * Category: New
+ * Purpose: Describe the output of the current partial `SCR_UpdateScreen` port without binding it to one renderer backend.
+ *
+ * Constraints:
+ * - Must keep the refresh rectangle and ordered HUD commands explicit.
+ */
+export interface ClientScreenFrame {
+  vrect: vrect_t;
+  commands: ClientHudDrawCommand[];
+  screenState: ClientScreenHudState;
+  cinematic: ClientCinematicSnapshot | null;
+}
 /**
  * Category: New
  * Purpose: Describe the first HUD-facing snapshot extracted from client screen state.
@@ -248,7 +330,31 @@ export interface ClientScreenHudState {
   spectator: boolean;
 }
 
-const DISPLAY_ITEMS = 17;
+/**
+ * Category: New
+ * Purpose: Create the composite context used by the current `screen.h` / `cl_scrn.c` port stage.
+ *
+ * Constraints:
+ * - Must start with unresolved screen cvars before `SCR_Init`.
+ */
+export function createClientScreenContext(client: ClientRuntime, cmd: CommandRuntime, cvar: CvarRuntime): ClientScreenContext {
+  return {
+    client,
+    cmd,
+    cvar,
+    scr_viewsize: null,
+    scr_conspeed: null,
+    scr_showpause: null,
+    scr_centertime: null,
+    scr_drawall: null,
+    scr_timegraph: null,
+    scr_debuggraph: null,
+    scr_graphheight: null,
+    scr_graphscale: null,
+    scr_graphshift: null,
+    crosshair: null
+  };
+}
 
 /**
  * Original name: SizeHUDString
@@ -377,7 +483,13 @@ export function SCR_DrawField(x: number, y: number, color: number, width: number
  * Porting notes:
  * - Current stage focuses on status bar digits and optional crosshair pic naming.
  */
-export function SCR_TouchPics(crosshairValue = 0): string[] {
+export function SCR_TouchPics(
+  crosshairValue = 0,
+  options: {
+    runtime?: ClientRuntime;
+    getPicSize?: (pic: string) => { width: number; height: number };
+  } = {}
+): string[] {
   const pics = new Set<string>();
 
   for (const bank of sb_nums) {
@@ -388,54 +500,81 @@ export function SCR_TouchPics(crosshairValue = 0): string[] {
 
   if (crosshairValue !== 0) {
     const clampedCrosshair = Math.max(0, Math.min(3, Math.trunc(crosshairValue)));
-    pics.add(`ch${clampedCrosshair}`);
+    const crosshairPic = `ch${clampedCrosshair}`;
+    pics.add(crosshairPic);
+
+    if (options.runtime) {
+      const size = options.getPicSize?.(crosshairPic) ?? { width: 0, height: 0 };
+      options.runtime.cl.screen.crosshair_pic = size.width === 0 ? "" : crosshairPic;
+      options.runtime.cl.screen.crosshair_width = size.width;
+      options.runtime.cl.screen.crosshair_height = size.height;
+    }
+  } else if (options.runtime) {
+    options.runtime.cl.screen.crosshair_pic = "";
+    options.runtime.cl.screen.crosshair_width = 0;
+    options.runtime.cl.screen.crosshair_height = 0;
   }
 
   return [...pics];
 }
 
 /**
- * Original name: Inv_DrawString
- * Source: client/cl_inv.c
+ * Original name: SCR_Init
+ * Source: client/cl_scrn.c
  * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits one left-aligned inventory text draw command.
+ * - Registers the screen-facing cvars and console commands needed by the current screen port.
+ *
+ * Porting notes:
+ * - Limits command bindings to the header-visible subset already ported in this module.
  */
-export function Inv_DrawString(x: number, y: number, text: string): ClientHudTextCommand {
-  return {
-    type: "text",
-    x,
-    y,
-    text,
-    xorMask: 0,
-    centerWidth: 0,
-    variant: "normal",
-    bounds: {
-      x,
-      y,
-      width: text.length * 8,
-      height: 8
-    }
-  };
+export function SCR_Init(context: ClientScreenContext): void {
+  context.scr_viewsize = Cvar_Get(context.cvar, "viewsize", "100", CVAR_ARCHIVE);
+  context.scr_conspeed = Cvar_Get(context.cvar, "scr_conspeed", "3", 0);
+  context.scr_showpause = Cvar_Get(context.cvar, "scr_showpause", "1", 0);
+  context.scr_centertime = Cvar_Get(context.cvar, "scr_centertime", "2.5", 0);
+  context.scr_drawall = Cvar_Get(context.cvar, "scr_drawall", "0", 0);
+  context.scr_timegraph = Cvar_Get(context.cvar, "timegraph", "0", 0);
+  context.scr_debuggraph = Cvar_Get(context.cvar, "debuggraph", "0", 0);
+  context.scr_graphheight = Cvar_Get(context.cvar, "graphheight", "32", 0);
+  context.scr_graphscale = Cvar_Get(context.cvar, "graphscale", "1", 0);
+  context.scr_graphshift = Cvar_Get(context.cvar, "graphshift", "0", 0);
+  context.crosshair = Cvar_Get(context.cvar, "crosshair", "0", CVAR_ARCHIVE);
+
+  Cmd_AddCommand(context.cmd, "sizeup", () => {
+    SCR_SizeUp(context);
+  });
+  Cmd_AddCommand(context.cmd, "sizedown", () => {
+    SCR_SizeDown(context);
+  });
 }
 
 /**
- * Original name: SetStringHighBit
- * Source: client/cl_inv.c
+ * Original name: SCR_SizeUp_f
+ * Source: client/cl_scrn.c
  * Category: Ported
  * Fidelity level: Strict
  *
  * Behavior:
- * - Sets the high bit on every character of the string.
+ * - Increments the viewsize cvar by ten.
  */
-export function SetStringHighBit(text: string): string {
-  let result = "";
-  for (const char of text) {
-    result += String.fromCharCode(char.charCodeAt(0) | 128);
-  }
-  return result;
+export function SCR_SizeUp(context: ClientScreenContext): void {
+  Cvar_SetValue(context.cvar, "viewsize", (context.scr_viewsize?.value ?? 100) + 10);
+}
+
+/**
+ * Original name: SCR_SizeDown_f
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Decrements the viewsize cvar by ten.
+ */
+export function SCR_SizeDown(context: ClientScreenContext): void {
+  Cvar_SetValue(context.cvar, "viewsize", (context.scr_viewsize?.value ?? 100) - 10);
 }
 
 /**
@@ -651,76 +790,6 @@ export function SCR_DrawLayout(runtime: ClientRuntime, context: ClientHudLayoutC
 }
 
 /**
- * Original name: CL_DrawInventory
- * Source: client/cl_inv.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Builds the Quake II inventory overlay draw commands.
- *
- * Porting notes:
- * - Uses an optional resolved binding map instead of scanning engine-global keybinding tables.
- */
-export function CL_DrawInventory(
-  runtime: ClientRuntime,
-  context: ClientHudLayoutContext,
-  bindings: ClientInventoryBindingMap = {}
-): ClientHudDrawCommand[] {
-  const commands: ClientHudDrawCommand[] = [];
-  const selected = runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] ?? 0;
-  const itemIndexes: number[] = [];
-  let selectedNum = 0;
-
-  for (let i = 0; i < runtime.cl.inventory.length; i += 1) {
-    if (i === selected) {
-      selectedNum = itemIndexes.length;
-    }
-
-    if ((runtime.cl.inventory[i] ?? 0) !== 0) {
-      itemIndexes.push(i);
-    }
-  }
-
-  let top = selectedNum - Math.trunc(DISPLAY_ITEMS / 2);
-  if (itemIndexes.length - top < DISPLAY_ITEMS) {
-    top = itemIndexes.length - DISPLAY_ITEMS;
-  }
-  if (top < 0) {
-    top = 0;
-  }
-
-  let x = (context.viewportWidth - 256) / 2;
-  let y = (context.viewportHeight - 240) / 2;
-
-  commands.push(createPictureCommand(x, y + 8, "inventory"));
-
-  y += 24;
-  x += 24;
-  commands.push(Inv_DrawString(x, y, "hotkey ### item"));
-  commands.push(Inv_DrawString(x, y + 8, "------ --- ----"));
-  y += 16;
-
-  for (let i = top; i < itemIndexes.length && i < top + DISPLAY_ITEMS; i += 1) {
-    const item = itemIndexes[i];
-    const itemName = runtime.cl.configstrings[CS_ITEMS + item] ?? "";
-    const bind = bindings[itemName] ?? "";
-    let line = `${bind.padStart(6, " ")} ${`${runtime.cl.inventory[item] ?? 0}`.padStart(3, " ")} ${itemName}`;
-
-    if (item !== selected) {
-      line = SetStringHighBit(line);
-    } else if ((Math.trunc(runtime.cls.realtime * 10) & 1) !== 0) {
-      commands.push(createTextCommand(x - 8, y, String.fromCharCode(15), "normal"));
-    }
-
-    commands.push(Inv_DrawString(x, y, line));
-    y += 8;
-  }
-
-  return commands;
-}
-
-/**
  * Category: New
  * Purpose: Compose the current Quake II HUD overlays in the same high-level order as `SCR_UpdateScreen`.
  *
@@ -762,6 +831,98 @@ export function SCR_BuildHudDrawCommands(
 
   if (screenState.loading.visible) {
     commands.push(createAutosizedPictureCommand(-1, -1, "loading"));
+  }
+
+  return commands;
+}
+
+/**
+ * Original name: SCR_DebugGraph
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores one scrolling debug-graph sample in the ring buffer used by the screen module.
+ */
+export function SCR_DebugGraph(runtime: ClientRuntime, value: number, color: number): void {
+  runtime.cl.screen.graph_values[runtime.cl.screen.graph_current & 1023] = {
+    value,
+    color
+  };
+  runtime.cl.screen.graph_current += 1;
+}
+
+/**
+ * Original name: SCR_DrawDebugGraph
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Expands the stored debug-graph ring buffer into fill commands in screen pixel space.
+ *
+ * Porting notes:
+ * - Emits renderer-agnostic fill commands instead of immediate `DrawFill` calls.
+ */
+export function SCR_DrawDebugGraph(
+  runtime: ClientRuntime,
+  options: {
+    graphheight: number;
+    graphscale: number;
+    graphshift: number;
+  }
+): ClientHudDrawCommand[] {
+  const commands: ClientHudDrawCommand[] = [];
+  const w = runtime.cl.screen.scr_vrect.width;
+  const x = runtime.cl.screen.scr_vrect.x;
+  const y = runtime.cl.screen.scr_vrect.y + runtime.cl.screen.scr_vrect.height;
+  const graphHeight = Math.max(1, Math.trunc(options.graphheight));
+
+  commands.push({
+    type: "fill",
+    x,
+    y: y - graphHeight,
+    width: w,
+    height: graphHeight,
+    color: 8,
+    bounds: {
+      x,
+      y: y - graphHeight,
+      width: w,
+      height: graphHeight
+    }
+  });
+
+  for (let a = 0; a < w; a += 1) {
+    const i = (runtime.cl.screen.graph_current - 1 - a + 1024) & 1023;
+    const sample = runtime.cl.screen.graph_values[i];
+    let v = sample.value;
+    v = v * options.graphscale + options.graphshift;
+
+    if (v < 0) {
+      v += graphHeight * (1 + Math.trunc(-v / graphHeight));
+    }
+
+    const h = Math.trunc(v) % graphHeight;
+    if (h <= 0) {
+      continue;
+    }
+
+    commands.push({
+      type: "fill",
+      x: x + w - 1 - a,
+      y: y - h,
+      width: 1,
+      height: h,
+      color: sample.color,
+      bounds: {
+        x: x + w - 1 - a,
+        y: y - h,
+        width: 1,
+        height: h
+      }
+    });
   }
 
   return commands;
@@ -846,6 +1007,81 @@ export function SCR_EndLoadingPlaque(runtime: ClientRuntime): void {
 }
 
 /**
+ * Original name: SCR_RunConsole
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Advances the animated console height toward the current target exposure.
+ *
+ * Porting notes:
+ * - Receives the key destination explicitly instead of reading global client input state.
+ */
+export function SCR_RunConsole(
+  runtime: ClientRuntime,
+  options: {
+    keyDest?: "game" | "console" | "message" | "menu";
+    scr_conspeed?: number;
+  } = {}
+): number {
+  runtime.cl.screen.scr_conlines = options.keyDest === "console" ? 0.5 : 0;
+
+  const scrConspeed = options.scr_conspeed ?? 3;
+  if (runtime.cl.screen.scr_conlines < runtime.cl.screen.scr_con_current) {
+    runtime.cl.screen.scr_con_current -= scrConspeed * runtime.cls.frametime;
+    if (runtime.cl.screen.scr_conlines > runtime.cl.screen.scr_con_current) {
+      runtime.cl.screen.scr_con_current = runtime.cl.screen.scr_conlines;
+    }
+  } else if (runtime.cl.screen.scr_conlines > runtime.cl.screen.scr_con_current) {
+    runtime.cl.screen.scr_con_current += scrConspeed * runtime.cls.frametime;
+    if (runtime.cl.screen.scr_conlines < runtime.cl.screen.scr_con_current) {
+      runtime.cl.screen.scr_con_current = runtime.cl.screen.scr_conlines;
+    }
+  }
+
+  return runtime.cl.screen.scr_con_current;
+}
+
+/**
+ * Original name: SCR_AddDirtyPoint
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Expands the current dirty rectangle so tile-clearing logic can track disturbed pixels.
+ */
+export function SCR_AddDirtyPoint(runtime: ClientRuntime, x: number, y: number): void {
+  if (x < runtime.cl.screen.scr_dirty.x1) {
+    runtime.cl.screen.scr_dirty.x1 = x;
+  }
+  if (x > runtime.cl.screen.scr_dirty.x2) {
+    runtime.cl.screen.scr_dirty.x2 = x;
+  }
+  if (y < runtime.cl.screen.scr_dirty.y1) {
+    runtime.cl.screen.scr_dirty.y1 = y;
+  }
+  if (y > runtime.cl.screen.scr_dirty.y2) {
+    runtime.cl.screen.scr_dirty.y2 = y;
+  }
+}
+
+/**
+ * Original name: SCR_DirtyScreen
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Marks the full screen as dirty using the current viewport dimensions.
+ */
+export function SCR_DirtyScreen(runtime: ClientRuntime, viewportWidth: number, viewportHeight: number): void {
+  SCR_AddDirtyPoint(runtime, 0, 0);
+  SCR_AddDirtyPoint(runtime, viewportWidth - 1, viewportHeight - 1);
+}
+
+/**
  * Category: New
  * Purpose: Build the first renderer-agnostic client HUD/screen snapshot.
  *
@@ -888,6 +1124,217 @@ export function SCR_BuildScreenState(runtime: ClientRuntime, options: ClientScre
 }
 
 /**
+ * Original name: SCR_UpdateScreen
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Builds the current screen snapshot in the same high-level order as the original screen loop.
+ *
+ * Porting notes:
+ * - Keeps renderer begin/end frame plumbing outside this runtime-facing snapshot builder.
+ * - Returns `null` while the loading plaque disable timer is active, mirroring the original early return.
+ */
+export function SCR_UpdateScreen(
+  context: ClientScreenContext,
+  options: ClientScreenBuildOptions = {},
+  hooks: ClientScreenHooks = {}
+): ClientScreenFrame | null {
+  const viewportWidth = options.viewportWidth ?? 320;
+  const viewportHeight = options.viewportHeight ?? 240;
+  const currentTimeMs = options.currentTimeMs ?? 0;
+
+  if (context.client.cls.disable_screen !== 0) {
+    if ((currentTimeMs - context.client.cls.disable_screen) > 120000) {
+      context.client.cls.disable_screen = 0;
+    } else {
+      return null;
+    }
+  }
+
+  if (context.client.cl.cinematic.cinematictime > 0) {
+    return buildActiveCinematicScreenFrame(context.client, options, viewportWidth, viewportHeight);
+  }
+
+  const vrect = SCR_CalcVrect(context.client, viewportWidth, viewportHeight, context.scr_viewsize?.value ?? 100);
+  const consoleOptions: {
+    keyDest?: "game" | "console" | "message" | "menu";
+    scr_conspeed?: number;
+  } = {
+    scr_conspeed: context.scr_conspeed?.value ?? 3
+  };
+  if (options.keyDest !== undefined) {
+    consoleOptions.keyDest = options.keyDest;
+  }
+  SCR_RunConsole(context.client, consoleOptions);
+
+  const screenState = SCR_BuildScreenState(context.client, {
+    ...options,
+    viewportWidth,
+    viewportHeight
+  });
+  const commands = SCR_BuildHudDrawCommands(context.client, {
+    viewportWidth,
+    viewportHeight,
+    active: context.client.cls.state === connstate_t.ca_active,
+    refreshPrepped: context.client.cl.refresh_prepped
+  }, {
+    screenState
+  });
+
+  if ((context.scr_timegraph?.value ?? 0) !== 0) {
+    SCR_DebugGraph(context.client, context.client.cls.frametime * 300, 0);
+  }
+
+  if ((context.scr_debuggraph?.value ?? 0) !== 0 || (context.scr_timegraph?.value ?? 0) !== 0) {
+    commands.push(...SCR_DrawDebugGraph(context.client, {
+      graphheight: context.scr_graphheight?.value ?? 32,
+      graphscale: context.scr_graphscale?.value ?? 1,
+      graphshift: context.scr_graphshift?.value ?? 0
+    }));
+  }
+
+  return {
+    vrect,
+    commands,
+    screenState,
+    cinematic: null
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Build the screen-frame snapshot for the dedicated cinematic path of `SCR_UpdateScreen`.
+ *
+ * Constraints:
+ * - Must preserve the original early cinematic short-circuit before normal HUD/view drawing.
+ */
+function buildActiveCinematicScreenFrame(
+  runtime: ClientRuntime,
+  options: ClientScreenBuildOptions,
+  viewportWidth: number,
+  viewportHeight: number
+): ClientScreenFrame {
+  const cinematicOptions: {
+    viewportWidth: number;
+    viewportHeight: number;
+    keyDest?: "game" | "console" | "message" | "menu";
+  } = {
+    viewportWidth,
+    viewportHeight
+  };
+
+  if (options.keyDest !== undefined) {
+    cinematicOptions.keyDest = options.keyDest;
+  }
+
+  const cinematicCommands = SCR_DrawCinematic(runtime, cinematicOptions);
+
+  return {
+    vrect: runtime.cl.screen.scr_vrect,
+    commands: cinematicCommands.commands,
+    screenState: SCR_BuildScreenState(runtime, {
+      ...options,
+      viewportWidth,
+      viewportHeight
+    }),
+    cinematic: cinematicCommands.cinematic
+  };
+}
+
+/**
+ * Original name: SCR_StopCinematic
+ * Source: client/cl_cin.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Clears the active cinematic state and returns the client to non-cinematic drawing.
+ *
+ * Porting notes:
+ * - Defers sound backend restart side effects to host hooks.
+ */
+export function SCR_StopCinematic(runtime: ClientRuntime, hooks: ClientScreenHooks = {}): void {
+  SCR_StopCinematic_Impl(runtime, hooks);
+}
+
+/**
+ * Original name: SCR_FinishCinematic
+ * Source: client/cl_cin.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Queues the original `nextserver` string command so the server can advance after a cinematic.
+ */
+export function SCR_FinishCinematic(runtime: ClientRuntime): void {
+  SCR_FinishCinematic_Impl(runtime);
+}
+
+/**
+ * Original name: SCR_RunCinematic
+ * Source: client/cl_cin.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Advances the active cinematic timeline for static `.pcx` and streamed `.cin` cinematics.
+ *
+ * Porting notes:
+ * - Static PCX cinematics intentionally remain on screen until replaced or stopped, matching `cinematicframe == -1`.
+ */
+export function SCR_RunCinematic(
+  runtime: ClientRuntime,
+  options: {
+    keyDest?: "game" | "console" | "message" | "menu";
+    currentTimeMs?: number;
+  } = {},
+  hooks: ClientScreenHooks = {}
+): void {
+  SCR_RunCinematic_Impl(runtime, { SCR_BeginLoadingPlaque, SCR_EndLoadingPlaque }, options, hooks);
+}
+
+/**
+ * Original name: SCR_DrawCinematic
+ * Source: client/cl_cin.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reports whether a cinematic is active and emits the current full-screen image draw command when available.
+ *
+ * Porting notes:
+ * - Returns indexed-pixel snapshots so renderer adapters can upload static and streamed cinematic frames.
+ */
+export function SCR_DrawCinematic(
+  runtime: ClientRuntime,
+  options: {
+    viewportWidth: number;
+    viewportHeight: number;
+    keyDest?: "game" | "console" | "message" | "menu";
+  }
+): { active: boolean; commands: ClientHudDrawCommand[]; cinematic: ClientCinematicSnapshot | null } {
+  return SCR_DrawCinematic_Impl(runtime, options);
+}
+
+/**
+ * Original name: SCR_PlayCinematic
+ * Source: client/cl_cin.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Starts one cinematic through the dedicated `cinematic.ts` port while preserving the `screen.h`-facing API.
+ *
+ * Porting notes:
+ * - `screen.ts` stays a facade so the public screen module remains stable while `cl_cin.c` logic lives in its own file.
+ */
+export function SCR_PlayCinematic(runtime: ClientRuntime, arg: string, hooks: ClientScreenHooks = {}): boolean {
+  return SCR_PlayCinematic_Impl(runtime, { SCR_BeginLoadingPlaque, SCR_EndLoadingPlaque }, arg, hooks);
+}
+
+/**
  * Category: New
  * Purpose: Build the currently visible center-print snapshot without mutating timer state.
  */
@@ -924,6 +1371,36 @@ function buildPauseSnapshot(options: ClientScreenBuildOptions): ClientPauseOverl
   return {
     visible: options.paused === true
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Compute the Quake II refresh rectangle from the current viewsize and viewport dimensions.
+ *
+ * Constraints:
+ * - Must preserve the original clamping and alignment rules.
+ */
+function SCR_CalcVrect(runtime: ClientRuntime, viewportWidth: number, viewportHeight: number, viewsize: number): vrect_t {
+  let size = viewsize;
+  if (size < 40) {
+    size = 40;
+  }
+  if (size > 100) {
+    size = 100;
+  }
+
+  const width = (Math.trunc(viewportWidth * size / 100)) & ~7;
+  const height = (Math.trunc(viewportHeight * size / 100)) & ~1;
+  const vrect = {
+    width,
+    height,
+    x: Math.trunc((viewportWidth - width) / 2),
+    y: Math.trunc((viewportHeight - height) / 2)
+  };
+
+  runtime.cl.screen.scr_vrect = vrect;
+  runtime.cl.screen.sb_lines = size === 100 ? 0 : 24;
+  return vrect;
 }
 
 /**

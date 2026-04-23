@@ -22,15 +22,56 @@ import {
   SZ_Write,
   type sizebuf_t
 } from "../../memory/src/index.js";
+import { DotProduct } from "../../math/src/index.js";
+import { BYTE_DIRS } from "./anorms.js";
+import {
+  U_ANGLE1,
+  U_ANGLE2,
+  U_ANGLE3,
+  U_EFFECTS16,
+  U_EFFECTS8,
+  U_EVENT,
+  U_FRAME16,
+  U_FRAME8,
+  U_MODEL,
+  U_MODEL2,
+  U_MODEL3,
+  U_MODEL4,
+  U_MOREBITS1,
+  U_MOREBITS2,
+  U_MOREBITS3,
+  U_NUMBER16,
+  U_OLDORIGIN,
+  U_ORIGIN1,
+  U_ORIGIN2,
+  U_ORIGIN3,
+  U_RENDERFX16,
+  U_RENDERFX8,
+  U_SKIN16,
+  U_SKIN8,
+  U_SOLID,
+  U_SOUND
+} from "./protocol.js";
 import {
   ANGLE2SHORT,
+  RF_BEAM,
   SHORT2ANGLE,
+  type entity_state_t,
+  type usercmd_t,
   type vec3_t
 } from "./q-shared.js";
 
 const READ_STRING_LIMIT = 2048;
 const COORD_SCALE = 8;
 const BYTE_ANGLE_SCALE = 256 / 360;
+const CM_ANGLE1 = 1 << 0;
+const CM_ANGLE2 = 1 << 1;
+const CM_ANGLE3 = 1 << 2;
+const CM_FORWARD = 1 << 3;
+const CM_SIDE = 1 << 4;
+const CM_UP = 1 << 5;
+const CM_BUTTONS = 1 << 6;
+const CM_IMPULSE = 1 << 7;
 
 /**
  * Original name: MSG_WriteChar
@@ -210,6 +251,333 @@ export function MSG_WriteAngle(sb: sizebuf_t, f: number): void {
  */
 export function MSG_WriteAngle16(sb: sizebuf_t, f: number): void {
   MSG_WriteShort(sb, ANGLE2SHORT(f));
+}
+
+/**
+ * Original name: MSG_WriteDeltaUsercmd
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Delta-encodes one user command against a previous command.
+ *
+ * Porting notes:
+ * - Preserves the original bit layout and unconditional trailing `msec` / `lightlevel` bytes.
+ */
+export function MSG_WriteDeltaUsercmd(buf: sizebuf_t, from: usercmd_t, cmd: usercmd_t): void {
+  let bits = 0;
+
+  if (cmd.angles[0] !== from.angles[0]) {
+    bits |= CM_ANGLE1;
+  }
+  if (cmd.angles[1] !== from.angles[1]) {
+    bits |= CM_ANGLE2;
+  }
+  if (cmd.angles[2] !== from.angles[2]) {
+    bits |= CM_ANGLE3;
+  }
+  if (cmd.forwardmove !== from.forwardmove) {
+    bits |= CM_FORWARD;
+  }
+  if (cmd.sidemove !== from.sidemove) {
+    bits |= CM_SIDE;
+  }
+  if (cmd.upmove !== from.upmove) {
+    bits |= CM_UP;
+  }
+  if (cmd.buttons !== from.buttons) {
+    bits |= CM_BUTTONS;
+  }
+  if (cmd.impulse !== from.impulse) {
+    bits |= CM_IMPULSE;
+  }
+
+  MSG_WriteByte(buf, bits);
+
+  if ((bits & CM_ANGLE1) !== 0) {
+    MSG_WriteShort(buf, cmd.angles[0]);
+  }
+  if ((bits & CM_ANGLE2) !== 0) {
+    MSG_WriteShort(buf, cmd.angles[1]);
+  }
+  if ((bits & CM_ANGLE3) !== 0) {
+    MSG_WriteShort(buf, cmd.angles[2]);
+  }
+  if ((bits & CM_FORWARD) !== 0) {
+    MSG_WriteShort(buf, cmd.forwardmove);
+  }
+  if ((bits & CM_SIDE) !== 0) {
+    MSG_WriteShort(buf, cmd.sidemove);
+  }
+  if ((bits & CM_UP) !== 0) {
+    MSG_WriteShort(buf, cmd.upmove);
+  }
+  if ((bits & CM_BUTTONS) !== 0) {
+    MSG_WriteByte(buf, cmd.buttons);
+  }
+  if ((bits & CM_IMPULSE) !== 0) {
+    MSG_WriteByte(buf, cmd.impulse);
+  }
+
+  MSG_WriteByte(buf, cmd.msec);
+  MSG_WriteByte(buf, cmd.lightlevel);
+}
+
+/**
+ * Original name: MSG_WriteDir
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Quantizes one direction vector to the closest Quake byte-dir entry.
+ *
+ * Porting notes:
+ * - Nullish inputs preserve the original zero-byte fallback.
+ */
+export function MSG_WriteDir(sb: sizebuf_t, dir: vec3_t | null | undefined): void {
+  if (!dir) {
+    MSG_WriteByte(sb, 0);
+    return;
+  }
+
+  let bestd = 0;
+  let best = 0;
+
+  for (let index = 0; index < BYTE_DIRS.length; index += 1) {
+    const d = DotProduct(dir, BYTE_DIRS[index]!);
+    if (d > bestd) {
+      bestd = d;
+      best = index;
+    }
+  }
+
+  MSG_WriteByte(sb, best);
+}
+
+/**
+ * Original name: MSG_WriteDeltaEntity
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Writes the delta-compressed network representation of one entity state.
+ *
+ * Porting notes:
+ * - Throws on invalid entity numbers where the original called `Com_Error`.
+ */
+export function MSG_WriteDeltaEntity(
+  from: entity_state_t,
+  to: entity_state_t,
+  msg: sizebuf_t,
+  force: boolean,
+  newentity: boolean
+): void {
+  if (!to.number) {
+    throw new Error("MSG_WriteDeltaEntity: unset entity number");
+  }
+
+  let bits = 0;
+
+  if (to.number >= 256) {
+    bits |= U_NUMBER16;
+  }
+
+  if (to.origin[0] !== from.origin[0]) {
+    bits |= U_ORIGIN1;
+  }
+  if (to.origin[1] !== from.origin[1]) {
+    bits |= U_ORIGIN2;
+  }
+  if (to.origin[2] !== from.origin[2]) {
+    bits |= U_ORIGIN3;
+  }
+
+  if (to.angles[0] !== from.angles[0]) {
+    bits |= U_ANGLE1;
+  }
+  if (to.angles[1] !== from.angles[1]) {
+    bits |= U_ANGLE2;
+  }
+  if (to.angles[2] !== from.angles[2]) {
+    bits |= U_ANGLE3;
+  }
+
+  if (to.skinnum !== from.skinnum) {
+    if ((to.skinnum >>> 0) < 256) {
+      bits |= U_SKIN8;
+    } else if ((to.skinnum >>> 0) < 0x10000) {
+      bits |= U_SKIN16;
+    } else {
+      bits |= U_SKIN8 | U_SKIN16;
+    }
+  }
+
+  if (to.frame !== from.frame) {
+    bits |= to.frame < 256 ? U_FRAME8 : U_FRAME16;
+  }
+
+  if (to.effects !== from.effects) {
+    if (to.effects < 256) {
+      bits |= U_EFFECTS8;
+    } else if (to.effects < 0x8000) {
+      bits |= U_EFFECTS16;
+    } else {
+      bits |= U_EFFECTS8 | U_EFFECTS16;
+    }
+  }
+
+  if (to.renderfx !== from.renderfx) {
+    if (to.renderfx < 256) {
+      bits |= U_RENDERFX8;
+    } else if (to.renderfx < 0x8000) {
+      bits |= U_RENDERFX16;
+    } else {
+      bits |= U_RENDERFX8 | U_RENDERFX16;
+    }
+  }
+
+  if (to.solid !== from.solid) {
+    bits |= U_SOLID;
+  }
+
+  if (to.event) {
+    bits |= U_EVENT;
+  }
+
+  if (to.modelindex !== from.modelindex) {
+    bits |= U_MODEL;
+  }
+  if (to.modelindex2 !== from.modelindex2) {
+    bits |= U_MODEL2;
+  }
+  if (to.modelindex3 !== from.modelindex3) {
+    bits |= U_MODEL3;
+  }
+  if (to.modelindex4 !== from.modelindex4) {
+    bits |= U_MODEL4;
+  }
+
+  if (to.sound !== from.sound) {
+    bits |= U_SOUND;
+  }
+
+  if (newentity || (to.renderfx & RF_BEAM) !== 0) {
+    bits |= U_OLDORIGIN;
+  }
+
+  if (!bits && !force) {
+    return;
+  }
+
+  if ((bits & 0xff000000) !== 0) {
+    bits |= U_MOREBITS3 | U_MOREBITS2 | U_MOREBITS1;
+  } else if ((bits & 0x00ff0000) !== 0) {
+    bits |= U_MOREBITS2 | U_MOREBITS1;
+  } else if ((bits & 0x0000ff00) !== 0) {
+    bits |= U_MOREBITS1;
+  }
+
+  MSG_WriteByte(msg, bits & 255);
+
+  if ((bits & 0xff000000) !== 0) {
+    MSG_WriteByte(msg, (bits >> 8) & 255);
+    MSG_WriteByte(msg, (bits >> 16) & 255);
+    MSG_WriteByte(msg, (bits >> 24) & 255);
+  } else if ((bits & 0x00ff0000) !== 0) {
+    MSG_WriteByte(msg, (bits >> 8) & 255);
+    MSG_WriteByte(msg, (bits >> 16) & 255);
+  } else if ((bits & 0x0000ff00) !== 0) {
+    MSG_WriteByte(msg, (bits >> 8) & 255);
+  }
+
+  if ((bits & U_NUMBER16) !== 0) {
+    MSG_WriteShort(msg, to.number);
+  } else {
+    MSG_WriteByte(msg, to.number);
+  }
+
+  if ((bits & U_MODEL) !== 0) {
+    MSG_WriteByte(msg, to.modelindex);
+  }
+  if ((bits & U_MODEL2) !== 0) {
+    MSG_WriteByte(msg, to.modelindex2);
+  }
+  if ((bits & U_MODEL3) !== 0) {
+    MSG_WriteByte(msg, to.modelindex3);
+  }
+  if ((bits & U_MODEL4) !== 0) {
+    MSG_WriteByte(msg, to.modelindex4);
+  }
+
+  if ((bits & U_FRAME8) !== 0) {
+    MSG_WriteByte(msg, to.frame);
+  }
+  if ((bits & U_FRAME16) !== 0) {
+    MSG_WriteShort(msg, to.frame);
+  }
+
+  if ((bits & (U_SKIN8 | U_SKIN16)) === (U_SKIN8 | U_SKIN16)) {
+    MSG_WriteLong(msg, to.skinnum);
+  } else if ((bits & U_SKIN8) !== 0) {
+    MSG_WriteByte(msg, to.skinnum);
+  } else if ((bits & U_SKIN16) !== 0) {
+    MSG_WriteShort(msg, to.skinnum);
+  }
+
+  if ((bits & (U_EFFECTS8 | U_EFFECTS16)) === (U_EFFECTS8 | U_EFFECTS16)) {
+    MSG_WriteLong(msg, to.effects);
+  } else if ((bits & U_EFFECTS8) !== 0) {
+    MSG_WriteByte(msg, to.effects);
+  } else if ((bits & U_EFFECTS16) !== 0) {
+    MSG_WriteShort(msg, to.effects);
+  }
+
+  if ((bits & (U_RENDERFX8 | U_RENDERFX16)) === (U_RENDERFX8 | U_RENDERFX16)) {
+    MSG_WriteLong(msg, to.renderfx);
+  } else if ((bits & U_RENDERFX8) !== 0) {
+    MSG_WriteByte(msg, to.renderfx);
+  } else if ((bits & U_RENDERFX16) !== 0) {
+    MSG_WriteShort(msg, to.renderfx);
+  }
+
+  if ((bits & U_ORIGIN1) !== 0) {
+    MSG_WriteCoord(msg, to.origin[0]);
+  }
+  if ((bits & U_ORIGIN2) !== 0) {
+    MSG_WriteCoord(msg, to.origin[1]);
+  }
+  if ((bits & U_ORIGIN3) !== 0) {
+    MSG_WriteCoord(msg, to.origin[2]);
+  }
+
+  if ((bits & U_ANGLE1) !== 0) {
+    MSG_WriteAngle(msg, to.angles[0]);
+  }
+  if ((bits & U_ANGLE2) !== 0) {
+    MSG_WriteAngle(msg, to.angles[1]);
+  }
+  if ((bits & U_ANGLE3) !== 0) {
+    MSG_WriteAngle(msg, to.angles[2]);
+  }
+
+  if ((bits & U_OLDORIGIN) !== 0) {
+    MSG_WriteCoord(msg, to.old_origin[0]);
+    MSG_WriteCoord(msg, to.old_origin[1]);
+    MSG_WriteCoord(msg, to.old_origin[2]);
+  }
+
+  if ((bits & U_SOUND) !== 0) {
+    MSG_WriteByte(msg, to.sound);
+  }
+  if ((bits & U_EVENT) !== 0) {
+    MSG_WriteByte(msg, to.event);
+  }
+  if ((bits & U_SOLID) !== 0) {
+    MSG_WriteShort(msg, to.solid);
+  }
 }
 
 /**
@@ -426,6 +794,55 @@ export function MSG_ReadAngle16(msg_read: sizebuf_t): number {
 }
 
 /**
+ * Original name: MSG_ReadDeltaUsercmd
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Reconstructs one user command from a delta-compressed message.
+ *
+ * Porting notes:
+ * - Returns a copied command struct instead of mutating an output pointer.
+ */
+export function MSG_ReadDeltaUsercmd(msg_read: sizebuf_t, from: usercmd_t): usercmd_t {
+  const move = cloneUsercmd(from);
+  const bits = MSG_ReadByte(msg_read);
+
+  if ((bits & CM_ANGLE1) !== 0) {
+    move.angles[0] = MSG_ReadShort(msg_read);
+  }
+  if ((bits & CM_ANGLE2) !== 0) {
+    move.angles[1] = MSG_ReadShort(msg_read);
+  }
+  if ((bits & CM_ANGLE3) !== 0) {
+    move.angles[2] = MSG_ReadShort(msg_read);
+  }
+
+  if ((bits & CM_FORWARD) !== 0) {
+    move.forwardmove = MSG_ReadShort(msg_read);
+  }
+  if ((bits & CM_SIDE) !== 0) {
+    move.sidemove = MSG_ReadShort(msg_read);
+  }
+  if ((bits & CM_UP) !== 0) {
+    move.upmove = MSG_ReadShort(msg_read);
+  }
+
+  if ((bits & CM_BUTTONS) !== 0) {
+    move.buttons = MSG_ReadByte(msg_read);
+  }
+  if ((bits & CM_IMPULSE) !== 0) {
+    move.impulse = MSG_ReadByte(msg_read);
+  }
+
+  move.msec = MSG_ReadByte(msg_read);
+  move.lightlevel = MSG_ReadByte(msg_read);
+
+  return move;
+}
+
+/**
  * Original name: MSG_ReadData
  * Source: qcommon/common.c
  * Category: Ported
@@ -443,6 +860,28 @@ export function MSG_ReadData(msg_read: sizebuf_t, len: number): Uint8Array {
     data[index] = MSG_ReadByte(msg_read) & 0xff;
   }
   return data;
+}
+
+/**
+ * Original name: MSG_ReadDir
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Expands one encoded byte-dir index back to its canonical direction vector.
+ *
+ * Porting notes:
+ * - Throws on invalid indices where the original routed through `Com_Error(ERR_DROP)`.
+ */
+export function MSG_ReadDir(msg_read: sizebuf_t): vec3_t {
+  const index = MSG_ReadByte(msg_read);
+  if (index < 0 || index >= BYTE_DIRS.length) {
+    throw new Error("MSG_ReadDir: out of range");
+  }
+
+  const dir = BYTE_DIRS[index]!;
+  return [dir[0], dir[1], dir[2]];
 }
 
 export { MSG_BeginReading };
@@ -467,4 +906,24 @@ function readStringInternal(msg_read: sizebuf_t, stopOnNewline: boolean): string
   }
 
   return result;
+}
+
+/**
+ * Category: New
+ * Purpose: Copy one `usercmd_t` while preserving the original fixed field layout.
+ *
+ * Constraints:
+ * - Must duplicate the angle triplet instead of aliasing it.
+ */
+function cloneUsercmd(cmd: usercmd_t): usercmd_t {
+  return {
+    msec: cmd.msec,
+    buttons: cmd.buttons,
+    angles: [cmd.angles[0], cmd.angles[1], cmd.angles[2]],
+    forwardmove: cmd.forwardmove,
+    sidemove: cmd.sidemove,
+    upmove: cmd.upmove,
+    impulse: cmd.impulse,
+    lightlevel: cmd.lightlevel
+  };
 }

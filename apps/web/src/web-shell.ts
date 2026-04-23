@@ -94,15 +94,14 @@ export function createWebShell(app: HTMLDivElement): WebShell {
   overlay.style.left = "16px";
   overlay.style.bottom = "16px";
   overlay.style.padding = "10px 12px";
-  overlay.style.background = "rgba(14, 10, 8, 0.20)";
-  overlay.style.border = "1px solid rgba(210, 196, 177, 0.16)";
   overlay.style.color = "#d4c4b1";
   overlay.style.fontFamily = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
   overlay.style.fontSize = "12px";
   overlay.style.lineHeight = "1.5";
-  overlay.style.whiteSpace = "pre-line";
   overlay.style.maxWidth = "340px";
   overlay.style.pointerEvents = "none";
+  const overlayContent = applyLiquidGlassPanel(overlay);
+  overlayContent.style.whiteSpace = "pre-line";
 
   const ghostButton = document.createElement("button");
   ghostButton.type = "button";
@@ -143,13 +142,12 @@ export function createWebShell(app: HTMLDivElement): WebShell {
   fpsPanel.style.bottom = "16px";
   fpsPanel.style.width = "232px";
   fpsPanel.style.padding = "8px 10px 10px";
-  fpsPanel.style.background = "rgba(14, 10, 8, 0.20)";
-  fpsPanel.style.border = "1px solid rgba(210, 196, 177, 0.16)";
   fpsPanel.style.color = "#d4c4b1";
   fpsPanel.style.fontFamily = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
   fpsPanel.style.fontSize = "11px";
   fpsPanel.style.lineHeight = "1.35";
   fpsPanel.style.pointerEvents = "none";
+  const fpsContent = applyLiquidGlassPanel(fpsPanel);
 
   const fpsTitle = document.createElement("div");
   fpsTitle.style.marginBottom = "6px";
@@ -162,17 +160,26 @@ export function createWebShell(app: HTMLDivElement): WebShell {
   fpsCanvas.style.width = "212px";
   fpsCanvas.style.height = "64px";
 
-  const rendererLine = document.createElement("div");
-  const statusLine = document.createElement("div");
-  const infoLine = document.createElement("div");
-  const runtimeLine = document.createElement("div");
-  const errorLine = document.createElement("div");
-  errorLine.style.color = "#f0b8a0";
   let lastRuntimeText = "";
+  let rendererText = "";
+  let statusText = "";
+  let errorText = "";
   let mapInfoLines: string[] = [];
 
-  fpsPanel.append(fpsTitle, fpsCanvas);
-  overlay.append(rendererLine, statusLine, infoLine, runtimeLine, errorLine);
+  /**
+   * Category: New
+   * Purpose: Keep the debug overlay compact by exposing only the first 12 non-empty information lines.
+   */
+  const refreshDebugOverlay = (): void => {
+    const combinedLines = [rendererText, statusText, ...mapInfoLines, ...lastRuntimeText.split("\n"), errorText]
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0)
+      .slice(0, 12);
+
+    overlayContent.textContent = combinedLines.join("\n");
+  };
+
+  fpsContent.append(fpsTitle, fpsCanvas);
   viewport.append(overlay, fpsPanel, mapSelect, ghostButton);
   root.append(viewport);
   app.append(root);
@@ -228,13 +235,16 @@ export function createWebShell(app: HTMLDivElement): WebShell {
       fpsTracker.pushFrame(frameAtMilliseconds);
     },
     setRenderer: (value) => {
-      rendererLine.textContent = `Renderer: ${value}`;
+      rendererText = `Renderer: ${value}`;
+      refreshDebugOverlay();
     },
     setStatus: (value) => {
-      statusLine.textContent = `Statut: ${value}`;
+      statusText = `Statut: ${value}`;
+      refreshDebugOverlay();
     },
     setError: (value) => {
-      errorLine.textContent = value;
+      errorText = value;
+      refreshDebugOverlay();
     },
     setSkyText: (value) => {
       if (mapInfoLines.length === 0) {
@@ -242,7 +252,7 @@ export function createWebShell(app: HTMLDivElement): WebShell {
       }
 
       mapInfoLines[5] = `Sky: ${value}`;
-      infoLine.textContent = mapInfoLines.join("\n");
+      refreshDebugOverlay();
     },
     setMapInfo: ({ mapName, faceCount, surfaceCount, entityCount, spawnText, skyText }) => {
       mapInfoLines = [
@@ -254,7 +264,7 @@ export function createWebShell(app: HTMLDivElement): WebShell {
         `Sky: ${skyText}`,
         "Controles: clic pour souris, ZQSD, Espace, Ctrl/C"
       ];
-      infoLine.textContent = mapInfoLines.join("\n");
+      refreshDebugOverlay();
     },
     setRuntimeInfo: (value, refreshStats) => {
       const nextRuntimeText = value
@@ -277,7 +287,7 @@ export function createWebShell(app: HTMLDivElement): WebShell {
       }
 
       lastRuntimeText = nextRuntimeText;
-      runtimeLine.textContent = nextRuntimeText;
+      refreshDebugOverlay();
     }
   };
 }
@@ -293,11 +303,95 @@ function getDisplayMapName(mapPath: string): string {
 
 /**
  * Category: New
+ * Purpose: Apply one rounded liquid-glass treatment to lightweight browser UI panels.
+ */
+function applyLiquidGlassPanel(element: HTMLDivElement): HTMLDivElement {
+  element.style.position = element.style.position || "relative";
+  element.style.overflow = "hidden";
+  element.style.borderRadius = "18px";
+  element.style.background =
+    [
+      "radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.018) 34%, rgba(255, 255, 255, 0) 72%)",
+      "linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.025) 18%, rgba(255, 255, 255, 0.008) 100%)",
+      "radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.025) 18%, rgba(255, 255, 255, 0) 42%)",
+      "linear-gradient(180deg, rgba(18, 15, 13, 0.11) 0%, rgba(10, 9, 8, 0.05) 100%)",
+      "linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0) 10%, rgba(255, 255, 255, 0) 90%, rgba(255, 255, 255, 0.025) 100%)"
+    ].join(", ");
+  element.style.border = "1px solid rgba(255, 255, 255, 0.10)";
+  element.style.boxShadow =
+    [
+      "0 10px 24px rgba(0, 0, 0, 0.12)",
+      "0 1px 8px rgba(0, 0, 0, 0.06)",
+      "inset 0 1px 0 rgba(255, 255, 255, 0.16)",
+      "inset 0 -1px 0 rgba(255, 255, 255, 0.03)",
+      "inset 0 0 0 1px rgba(255, 255, 255, 0.025)"
+    ].join(", ");
+  element.style.backdropFilter = "blur(24px) saturate(128%) contrast(106%) brightness(1.02)";
+  element.style.setProperty("-webkit-backdrop-filter", "blur(24px) saturate(128%) contrast(106%) brightness(1.02)");
+
+  const sheen = document.createElement("div");
+  sheen.style.position = "absolute";
+  sheen.style.inset = "0";
+  sheen.style.borderRadius = "inherit";
+  sheen.style.pointerEvents = "none";
+  sheen.style.background =
+    [
+      "linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.045) 10%, rgba(255, 255, 255, 0.01) 24%, rgba(255, 255, 255, 0) 44%)",
+      "linear-gradient(105deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0.045) 34%, rgba(255, 255, 255, 0.01) 46%, rgba(255, 255, 255, 0) 62%)",
+      "radial-gradient(circle at 50% -14%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 28%, rgba(255, 255, 255, 0) 54%)"
+    ].join(", ");
+  sheen.style.opacity = "0.58";
+
+  const caustic = document.createElement("div");
+  caustic.style.position = "absolute";
+  caustic.style.inset = "0";
+  caustic.style.borderRadius = "inherit";
+  caustic.style.pointerEvents = "none";
+  caustic.style.background =
+    [
+      "radial-gradient(circle at 14% 0%, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.025) 14%, rgba(255, 255, 255, 0) 34%)",
+      "radial-gradient(circle at 100% 10%, rgba(255, 255, 255, 0.055) 0%, rgba(255, 255, 255, 0.02) 12%, rgba(255, 255, 255, 0) 30%)",
+      "radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 38%)"
+    ].join(", ");
+  caustic.style.mixBlendMode = "screen";
+  caustic.style.opacity = "0.42";
+
+  const edgeDensity = document.createElement("div");
+  edgeDensity.style.position = "absolute";
+  edgeDensity.style.inset = "0";
+  edgeDensity.style.borderRadius = "inherit";
+  edgeDensity.style.pointerEvents = "none";
+  edgeDensity.style.background =
+    [
+      "radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0) 58%, rgba(255, 255, 255, 0.012) 78%, rgba(255, 255, 255, 0.028) 100%)",
+      "linear-gradient(180deg, rgba(0, 0, 0, 0.012) 0%, rgba(0, 0, 0, 0) 18%, rgba(0, 0, 0, 0) 82%, rgba(0, 0, 0, 0.018) 100%)"
+    ].join(", ");
+  edgeDensity.style.mixBlendMode = "multiply";
+  edgeDensity.style.opacity = "0.85";
+
+  const rimLight = document.createElement("div");
+  rimLight.style.position = "absolute";
+  rimLight.style.inset = "0";
+  rimLight.style.borderRadius = "inherit";
+  rimLight.style.pointerEvents = "none";
+  rimLight.style.boxShadow =
+    "inset 0 1px 0 rgba(255, 255, 255, 0.10), inset 1px 0 0 rgba(255, 255, 255, 0.045), inset -1px 0 0 rgba(255, 255, 255, 0.035)";
+
+  const content = document.createElement("div");
+  content.style.position = "relative";
+  content.style.zIndex = "1";
+
+  element.append(sheen, caustic, edgeDensity, rimLight, content);
+  return content;
+}
+
+/**
+ * Category: New
  * Purpose: Track frame times and render a 60-second sliding FPS history in a compact canvas panel.
  *
  * Constraints:
  * - Must keep only the last 60 seconds of samples.
- * - Must stay lightweight enough to update every rendered frame.
+ * - Must stay lightweight enough to avoid redrawing the graph every rendered frame.
  */
 function createFpsTracker(
   canvas: HTMLCanvasElement,
@@ -315,8 +409,11 @@ function createFpsTracker(
   }
 
   const windowMilliseconds = 60_000;
+  const sampleIntervalMilliseconds = 250;
   const samples: Array<{ time: number; fps: number }> = [];
   let previousFrameAtMilliseconds = 0;
+  let accumulatedFrameCount = 0;
+  let accumulatedFrameMilliseconds = 0;
 
   /**
    * Category: New
@@ -376,8 +473,15 @@ function createFpsTracker(
     pushFrame: (frameAtMilliseconds) => {
       if (previousFrameAtMilliseconds > 0) {
         const frameDeltaMilliseconds = Math.max(1, frameAtMilliseconds - previousFrameAtMilliseconds);
-        const fps = 1000 / frameDeltaMilliseconds;
-        samples.push({ time: frameAtMilliseconds, fps });
+        accumulatedFrameCount += 1;
+        accumulatedFrameMilliseconds += frameDeltaMilliseconds;
+
+        if (accumulatedFrameMilliseconds >= sampleIntervalMilliseconds) {
+          const fps = accumulatedFrameCount * 1000 / accumulatedFrameMilliseconds;
+          samples.push({ time: frameAtMilliseconds, fps });
+          accumulatedFrameCount = 0;
+          accumulatedFrameMilliseconds = 0;
+        }
       }
 
       previousFrameAtMilliseconds = frameAtMilliseconds;
@@ -386,7 +490,11 @@ function createFpsTracker(
         samples.shift();
       }
 
-      draw();
+      if (samples.length > 0 && samples[samples.length - 1]?.time === frameAtMilliseconds) {
+        draw();
+      } else if (samples.length === 0) {
+        draw();
+      }
     }
   };
 }

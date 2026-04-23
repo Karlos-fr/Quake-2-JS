@@ -159,7 +159,7 @@ export function createLocalClientController(
     }
 
     runtime.cl.viewangles[YAW] -= event.movementX * CAMERA_MOUSE_SENSITIVITY * 180 / Math.PI;
-    runtime.cl.viewangles[PITCH] -= event.movementY * CAMERA_MOUSE_SENSITIVITY * 180 / Math.PI;
+    runtime.cl.viewangles[PITCH] += event.movementY * CAMERA_MOUSE_SENSITIVITY * 180 / Math.PI;
     runtime.cl.viewangles[PITCH] = Math.max(-89, Math.min(89, runtime.cl.viewangles[PITCH]));
   });
 

@@ -17,6 +17,7 @@
  */
 
 import {
+  anglemod,
   EF_ANIM01,
   EF_ANIM23,
   EF_ANIM_ALL,
@@ -332,14 +333,6 @@ export function CL_BuildPacketEntitySnapshots(
   }
 
   return snapshots;
-}
-
-/**
- * Category: New
- * Purpose: Wrap one angle in degrees to the classic Quake `[0, 360)` range.
- */
-function anglemod(value: number): number {
-  return ((value % 360) + 360) % 360;
 }
 
 /**
