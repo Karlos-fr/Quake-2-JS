@@ -42,6 +42,7 @@ import {
   MTYPE_SPINCONTROL,
   QMF_LEFT_JUSTIFY
 } from "./qmenu.js";
+import { CalcFov } from "./view.js";
 
 const MAX_DISPLAYNAME = 16;
 const MAX_PLAYERMODELS = 1024;
@@ -335,12 +336,6 @@ export function PlayerConfig_MenuInit(context: ClientMenuContext): boolean {
   Menu_AddItem(context.qmenu, menu, download);
 
   return true;
-}
-
-function CalcFov(fov_x: number, width: number, height: number): number {
-  const x = width / Math.tan(fov_x / 360 * Math.PI);
-  const a = Math.atan(height / x);
-  return a * 360 / Math.PI;
 }
 
 function PlayerConfig_MenuDraw(context: ClientMenuContext): void {

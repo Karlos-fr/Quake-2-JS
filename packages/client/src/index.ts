@@ -252,17 +252,25 @@ export {
   CL_ParseBaseline,
   CL_ParseConfigString,
   CL_ParseDownload,
+  CL_ParseBeam,
+  CL_ParseBeam2,
   CL_ParseDelta,
   CL_ParseEntityBits,
   CL_ParseFrame,
+  CL_ParseLaser,
+  CL_ParseLightning,
   CL_ParseMuzzleFlash,
   CL_ParseMuzzleFlash2,
+  CL_ParseNuke,
   CL_ParseParticles,
+  CL_ParsePlayerBeam,
   CL_ParsePlayerstate,
   CL_ParseServerData,
   CL_ParseServerMessage,
+  CL_ParseSteam,
   CL_ParseStartSoundPacket,
   CL_ParseTEnt,
+  CL_ParseWidow,
   CL_WriteStringCmd
 } from "./parse.js";
 export {
@@ -524,6 +532,7 @@ export {
   createBrushModelInterpolationState
 } from "./local-brush-models.js";
 export {
+  CalcFov,
   CL_CalcViewValues,
   CL_CheckPredictionError,
   CL_ClipMoveToEntities,
@@ -531,7 +540,25 @@ export {
   CL_PMTrace,
   CL_PredictMovement,
   CL_UpdateLerpFraction,
-  createClientPredictionCollisionSource
+  SCR_DrawCrosshair,
+  V_AddEntity,
+  V_AddLight,
+  V_AddLightStyle,
+  V_AddParticle,
+  V_ClearScene,
+  V_Gun_Model_f,
+  V_Gun_Next_f,
+  V_Gun_Prev_f,
+  V_RenderView,
+  V_TestEntities,
+  V_TestLights,
+  V_TestParticles,
+  V_Init,
+  V_Viewpos_f,
+  createClientPredictionCollisionSource,
+  createClientViewContext,
+  createClientViewDebugState,
+  createClientViewScene
 } from "./view.js";
 export {
   CL_BuildPacketEntitySnapshots,
@@ -545,8 +572,14 @@ export {
 } from "./refresh.js";
 export {
   CL_AddTEntPacket,
+  CL_AddBeams,
+  CL_AddExplosions,
+  CL_AddLasers,
+  CL_AddPlayerBeams,
+  CL_AddTEnts,
   CL_BuildTEntRefresh,
   CL_ClearTEnts,
+  CL_ProcessSustain,
   CL_RegisterTEntModels,
   CL_RegisterTEntSounds
 } from "./tent.js";
@@ -560,31 +593,48 @@ export {
   CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
   CL_BuildTempEntityEffects,
+  CL_ExecuteTempEntityEffects,
   CL_BlasterParticles,
-  CL_BlasterParticles2,
   CL_BlueBlasterParticles,
   CL_BubbleTrail,
-  CL_BubbleTrail2,
   CL_BFGExplosionParticles,
   CL_ClearEffects,
   CL_ClearParticles,
-  CL_ColorExplosionParticles,
-  CL_ColorFlash,
-  CL_DebugTrail,
   CL_ExplosionParticles,
-  CL_Heatbeam,
-  CL_ParticleSmokeEffect,
-  CL_ParticleSteamEffect,
-  CL_ParticleSteamEffect2,
-  CL_MonsterPlasma_Shell,
+  CL_LogoutEffect,
   CL_ParticleEffect,
   CL_ParticleEffect2,
   CL_ParticleEffect3,
   CL_RailTrail,
+  CL_TeleporterParticles,
   CL_TeleportParticles,
-  CL_WidowSplash,
   CL_BigTeleportParticles
 } from "./effects.js";
+export {
+  CL_Flashlight,
+  CL_FlameEffects,
+  CL_ForceWall,
+  CL_GenericParticleEffect,
+  CL_BlasterParticles2,
+  CL_BlasterTrail2,
+  CL_BubbleTrail2,
+  CL_ColorExplosionParticles,
+  CL_ColorFlash,
+  CL_DebugTrail,
+  CL_Heatbeam,
+  CL_Nukeblast,
+  CL_MonsterPlasma_Shell,
+  CL_ParticleSmokeEffect,
+  CL_ParticleSteamEffect,
+  CL_ParticleSteamEffect2,
+  CL_SmokeTrail,
+  CL_TagTrail,
+  CL_Tracker_Explode,
+  CL_Tracker_Shell,
+  CL_TrackerTrail,
+  CL_Widowbeamout,
+  CL_WidowSplash
+} from "./newfx.js";
 
 export { svc_strings } from "../../qcommon/src/index.js";
 

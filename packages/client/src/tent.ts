@@ -16,7 +16,8 @@
  * Notes:
  * - This file is intended to stay conceptually close to the original temp-entity pipeline.
  * - `tent.ts` is the principal port target for `client/cl_tent.c`.
- * - `effects.ts` only provides shared effect helpers reused by the temp-entity pipeline.
+ * - `newfx.ts` provides the helpers ported from `client/cl_newfx.c` reused by the temp-entity pipeline.
+ * - `effects.ts` stays focused on the routines ported from `client/cl_fx.c`.
  * - `refresh.ts` only consumes the structured refresh output built here.
  */
 
@@ -33,7 +34,7 @@ import {
 import type { ClientTempEntityPacket } from "./parse.js";
 import type { ClientDynamicLight } from "./refresh.js";
 import type { ClientViewValues } from "./view.js";
-import { CL_Heatbeam, CL_MonsterPlasma_Shell, CL_ParticleSteamEffect2 } from "./effects.js";
+import { CL_Heatbeam, CL_MonsterPlasma_Shell, CL_Nukeblast, CL_ParticleSteamEffect2, CL_Widowbeamout } from "./newfx.js";
 import {
   createClientBeam,
   createClientExplosion,
@@ -324,9 +325,6 @@ export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntit
     case temp_event_t.TE_BFG_LASER:
       assignLaser(runtime, packet, 0xd0d1d2d3);
       break;
-    case temp_event_t.TE_FLASHLIGHT:
-      assignFlashlight(runtime, packet);
-      break;
     case temp_event_t.TE_FORCEWALL:
       assignForceWall(runtime, packet);
       break;
@@ -452,14 +450,14 @@ export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntit
  */
 export function CL_BuildTEntRefresh(runtime: ClientRuntime): ClientTEntRefresh {
   const beams = [
-    ...buildBeams(runtime, runtime.cl.tents.beams, runtime.cl.time, "beam"),
-    ...buildPlayerBeams(runtime),
-    ...buildLasers(runtime)
+    ...CL_AddBeams(runtime),
+    ...CL_AddPlayerBeams(runtime),
+    ...CL_AddLasers(runtime)
   ];
-  const { explosions, lights } = buildExplosions(runtime);
+  const { explosions, lights } = CL_AddExplosions(runtime);
   const tempLights = buildTempLights(runtime);
   const forceWalls = buildForceWalls(runtime);
-  const sustains = buildSustains(runtime);
+  const sustains = CL_ProcessSustain(runtime);
 
   return {
     beams,
@@ -468,6 +466,19 @@ export function CL_BuildTEntRefresh(runtime: ClientRuntime): ClientTEntRefresh {
     forceWalls,
     sustains
   };
+}
+
+/**
+ * Original name: CL_AddTEnts
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rebuilds the current refresh-facing temp-entity output from persistent temp state.
+ */
+export function CL_AddTEnts(runtime: ClientRuntime): ClientTEntRefresh {
+  return CL_BuildTEntRefresh(runtime);
 }
 
 /**
@@ -483,6 +494,19 @@ function buildBeams(
   return slots
     .filter((slot) => slot.model !== null && slot.endtime >= now)
     .map((slot) => createBeamRender(runtime, slot, kind));
+}
+
+/**
+ * Original name: CL_AddBeams
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rebuilds active beam slots into refresh-facing beam render records.
+ */
+export function CL_AddBeams(runtime: ClientRuntime): ClientBeamRender[] {
+  return buildBeams(runtime, runtime.cl.tents.beams, runtime.cl.time, "beam");
 }
 
 /**
@@ -520,6 +544,19 @@ function buildPlayerBeams(runtime: ClientRuntime): ClientBeamRender[] {
 }
 
 /**
+ * Original name: CL_AddPlayerBeams
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rebuilds player-linked beams, including heatbeam-specific particle side effects.
+ */
+export function CL_AddPlayerBeams(runtime: ClientRuntime): ClientBeamRender[] {
+  return buildPlayerBeams(runtime);
+}
+
+/**
  * Category: New
  * Purpose: Convert active laser slots into refresh-facing beam records.
  */
@@ -546,6 +583,19 @@ function buildLasers(runtime: ClientRuntime): ClientBeamRender[] {
       roll: 0,
       specialLightningShort: false
     }));
+}
+
+/**
+ * Original name: CL_AddLasers
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rebuilds active transient laser slots into refresh-facing beam records.
+ */
+export function CL_AddLasers(runtime: ClientRuntime): ClientBeamRender[] {
+  return buildLasers(runtime);
 }
 
 /**
@@ -632,6 +682,22 @@ function buildExplosions(runtime: ClientRuntime): { explosions: ClientExplosionR
   }
 
   return { explosions, lights };
+}
+
+/**
+ * Original name: CL_AddExplosions
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Advances active explosion slots and rebuilds their current render/light output.
+ */
+export function CL_AddExplosions(runtime: ClientRuntime): {
+  explosions: ClientExplosionRender[];
+  lights: ClientDynamicLight[];
+} {
+  return buildExplosions(runtime);
 }
 
 /**
@@ -989,6 +1055,19 @@ function buildSustains(runtime: ClientRuntime): ClientSustainRender[] {
 }
 
 /**
+ * Original name: CL_ProcessSustain
+ * Source: client/cl_tent.c and client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Advances active sustain timers and returns the renderer-facing sustains produced this frame.
+ */
+export function CL_ProcessSustain(runtime: ClientRuntime): ClientSustainRender[] {
+  return buildSustains(runtime);
+}
+
+/**
  * Category: New
  * Purpose: Execute the renderer-side equivalent of the active sustain thinker for the current frame.
  *
@@ -1001,11 +1080,13 @@ function runSustainThinker(
 ): ClientSustainRender | null {
   switch (sustain.thinker) {
     case "CL_ParticleSteamEffect2":
-      CL_ParticleSteamEffect2(sustain);
+      CL_ParticleSteamEffect2(runtime, sustain);
       return buildSustainRender(runtime, sustain);
     case "CL_Widowbeamout":
+      CL_Widowbeamout(runtime, sustain);
       return buildSustainRender(runtime, sustain);
     case "CL_Nukeblast":
+      CL_Nukeblast(runtime, sustain);
       return buildSustainRender(runtime, sustain);
     default:
       return null;
@@ -1227,26 +1308,6 @@ function assignLaser(runtime: ClientRuntime, packet: ClientTempEntityPacket, col
   slot.alpha = 0.3;
   slot.skinnum = (colors >> ((Math.floor(Math.random() * 0x7fffffff) % 4) * 8)) & 0xff;
   slot.frame = 4;
-}
-
-/**
- * Category: New
- * Purpose: Recreate `CL_Flashlight` as a transient dynamic-light record.
- */
-function assignFlashlight(runtime: ClientRuntime, packet: ClientTempEntityPacket): void {
-  const entity = packet.entity ?? 0;
-  const slot =
-    runtime.cl.tents.tempLights.find((candidate) => candidate.entity === entity) ??
-    runtime.cl.tents.tempLights.find((candidate) => candidate.endtime < runtime.cl.time) ??
-    runtime.cl.tents.tempLights[0];
-
-  slot.origin = [...(packet.position ?? [0, 0, 0])];
-  slot.color = [1, 1, 1];
-  slot.intensity = 400;
-  slot.minlight = 250;
-  slot.endtime = runtime.cl.time + 100;
-  slot.entity = entity;
-  slot.kind = "flashlight";
 }
 
 /**

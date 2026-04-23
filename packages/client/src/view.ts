@@ -34,10 +34,19 @@ import {
   Pmove,
   SHORT2ANGLE,
   createPmoveContext,
+  MAX_LIGHTSTYLES,
+  CVAR_ARCHIVE,
+  Cmd_Argc,
+  Cmd_AddCommand,
+  Cmd_Argv,
+  Cvar_Get,
   pmtype_t,
   vec3_origin,
   type CollisionWorld,
+  type CommandRuntime,
+  type CvarRuntime,
   type cmodel_t,
+  type cvar_t,
   type cplane_t,
   type PmoveContext,
   type csurface_t,
@@ -50,6 +59,24 @@ import {
 } from "../../qcommon/src/index.js";
 import { CMD_BACKUP, type ClientRuntime, connstate_t } from "./types.js";
 import { UPDATE_MASK } from "../../qcommon/src/index.js";
+import {
+  MAX_DLIGHTS,
+  MAX_ENTITIES,
+  MAX_PARTICLES,
+  createRefDef,
+  createDlight,
+  createEntity,
+  createLightstyle,
+  createParticle,
+  type dlight_t,
+  type entity_t,
+  type refdef_t,
+  type lightstyle_t,
+  type particle_t
+} from "./ref.js";
+import { SCR_AddDirtyPoint } from "./screen.js";
+import type { vrect_t } from "./screen.js";
+import type { ClientDynamicLight, ClientRefreshFrame, ClientRenderEntity, ClientRenderParticle } from "./refresh.js";
 
 /**
  * Category: New
@@ -99,6 +126,541 @@ export interface ClientPredictionCollisionSource {
   entities: entity_state_t[];
   modelClip: Array<cmodel_t | null>;
   playernum: number;
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the temporary renderer-facing scene buffers that `cl_view.c` fills through `V_*`.
+ *
+ * Constraints:
+ * - Must keep explicit counts plus backing arrays, just like the original client-side staging buffers.
+ */
+export interface ClientViewScene {
+  r_numdlights: number;
+  r_dlights: dlight_t[];
+  r_numentities: number;
+  r_entities: entity_t[];
+  r_numparticles: number;
+  r_particles: particle_t[];
+  r_lightstyles: lightstyle_t[];
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the tiny gun-debug state owned by `cl_view.c`.
+ */
+export interface ClientViewDebugState {
+  gun_frame: number;
+  gun_model: string | null;
+}
+
+/**
+ * Category: New
+ * Purpose: Group the command/cvar references owned by `V_Init`.
+ */
+export interface ClientViewContext {
+  client: ClientRuntime;
+  cmd: CommandRuntime;
+  cvar: CvarRuntime;
+  debug: ClientViewDebugState;
+  scene: ClientViewScene;
+  refdef: refdef_t;
+  crosshair: cvar_t | null;
+  cl_testblend: cvar_t | null;
+  cl_testparticles: cvar_t | null;
+  cl_testentities: cvar_t | null;
+  cl_testlights: cvar_t | null;
+  cl_stats: cvar_t | null;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe one renderer-neutral crosshair draw command rebuilt from `SCR_DrawCrosshair`.
+ */
+export interface ClientCrosshairDraw {
+  x: number;
+  y: number;
+  pic: string;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe the renderer-neutral output rebuilt by `V_RenderView`.
+ */
+export interface ClientRenderedView {
+  refdef: refdef_t;
+  crosshair: ClientCrosshairDraw | null;
+  statsLine: string | null;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe the host services and toggles needed by the `V_RenderView` port.
+ */
+export interface ClientRenderViewOptions extends ClientViewOptions {
+  stereoSeparation?: number;
+  addEntities?: boolean;
+  addParticles?: boolean;
+  addLights?: boolean;
+  addBlend?: boolean;
+  currentTimeMs?: number;
+  buildRefreshFrame: (runtime: ClientRuntime, options?: ClientViewOptions) => ClientRefreshFrame;
+  resolveEntityModel?: (entity: ClientRenderEntity) => entity_t["model"];
+  resolveEntitySkin?: (entity: ClientRenderEntity) => entity_t["skin"];
+  renderFrame?: (refdef: refdef_t) => void;
+}
+
+/**
+ * Category: New
+ * Purpose: Create zero-initialized `cl_view.c` scene staging buffers.
+ */
+export function createClientViewScene(): ClientViewScene {
+  return {
+    r_numdlights: 0,
+    r_dlights: Array.from({ length: MAX_DLIGHTS }, () => createDlight()),
+    r_numentities: 0,
+    r_entities: Array.from({ length: MAX_ENTITIES }, () => createEntity()),
+    r_numparticles: 0,
+    r_particles: Array.from({ length: MAX_PARTICLES }, () => createParticle()),
+    r_lightstyles: Array.from({ length: MAX_LIGHTSTYLES }, () => createLightstyle())
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create zero-initialized gun-debug state matching the globals in `cl_view.c`.
+ */
+export function createClientViewDebugState(): ClientViewDebugState {
+  return {
+    gun_frame: 0,
+    gun_model: null
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Create zero-initialized state for the `cl_view.c` init/debug cvars and commands.
+ */
+export function createClientViewContext(client: ClientRuntime, cmd: CommandRuntime, cvar: CvarRuntime): ClientViewContext {
+  return {
+    client,
+    cmd,
+    cvar,
+    debug: createClientViewDebugState(),
+    scene: createClientViewScene(),
+    refdef: createRefDef(),
+    crosshair: null,
+    cl_testblend: null,
+    cl_testparticles: null,
+    cl_testentities: null,
+    cl_testlights: null,
+    cl_stats: null
+  };
+}
+
+/**
+ * Original name: V_ClearScene
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Clears the temporary renderer-facing scene counters before a new view build.
+ */
+export function V_ClearScene(scene: ClientViewScene): void {
+  scene.r_numdlights = 0;
+  scene.r_numentities = 0;
+  scene.r_numparticles = 0;
+}
+
+/**
+ * Original name: V_AddEntity
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Appends one renderer-facing entity to the current temporary scene if capacity permits.
+ */
+export function V_AddEntity(scene: ClientViewScene, ent: entity_t): void {
+  if (scene.r_numentities >= MAX_ENTITIES) {
+    return;
+  }
+
+  scene.r_entities[scene.r_numentities] = {
+    ...ent,
+    angles: [...ent.angles],
+    origin: [...ent.origin],
+    oldorigin: [...ent.oldorigin]
+  };
+  scene.r_numentities += 1;
+}
+
+/**
+ * Original name: V_AddParticle
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Appends one particle to the current temporary scene if capacity permits.
+ */
+export function V_AddParticle(scene: ClientViewScene, org: vec3_t, color: number, alpha: number): void {
+  if (scene.r_numparticles >= MAX_PARTICLES) {
+    return;
+  }
+
+  const particle = scene.r_particles[scene.r_numparticles];
+  particle.origin = [...org];
+  particle.color = color;
+  particle.alpha = alpha;
+  scene.r_numparticles += 1;
+}
+
+/**
+ * Original name: V_AddLight
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Appends one dynamic light to the current temporary scene if capacity permits.
+ */
+export function V_AddLight(scene: ClientViewScene, org: vec3_t, intensity: number, r: number, g: number, b: number): void {
+  if (scene.r_numdlights >= MAX_DLIGHTS) {
+    return;
+  }
+
+  const dlight = scene.r_dlights[scene.r_numdlights];
+  dlight.origin = [...org];
+  dlight.color = [r, g, b];
+  dlight.intensity = intensity;
+  scene.r_numdlights += 1;
+}
+
+/**
+ * Original name: V_AddLightStyle
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Updates one staged lightstyle slot for the current scene.
+ */
+export function V_AddLightStyle(scene: ClientViewScene, style: number, r: number, g: number, b: number): void {
+  if (style < 0 || style >= MAX_LIGHTSTYLES) {
+    throw new Error(`Bad light style ${style}`);
+  }
+
+  const lightstyle = scene.r_lightstyles[style];
+  lightstyle.white = r + g + b;
+  lightstyle.rgb = [r, g, b];
+}
+
+/**
+ * Original name: V_TestParticles
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fills the temporary scene with the original test particle grid projected from the current view.
+ */
+export function V_TestParticles(scene: ClientViewScene, view: ClientViewValues, alpha: number): void {
+  scene.r_numparticles = MAX_PARTICLES;
+
+  for (let index = 0; index < scene.r_numparticles; index += 1) {
+    const d = index * 0.25;
+    const r = 4 * ((index & 7) - 3.5);
+    const u = 4 * (((index >> 3) & 7) - 3.5);
+    const particle = scene.r_particles[index];
+
+    for (let component = 0; component < 3; component += 1) {
+      particle.origin[component] =
+        view.vieworg[component] +
+        view.forward[component] * d +
+        view.right[component] * r +
+        view.up[component] * u;
+    }
+
+    particle.color = 8;
+    particle.alpha = alpha;
+  }
+}
+
+/**
+ * Original name: V_TestEntities
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Fills the temporary scene with the original 32-entity debug model grid.
+ */
+export function V_TestEntities(scene: ClientViewScene, runtime: ClientRuntime, view: ClientViewValues): void {
+  scene.r_numentities = 32;
+
+  for (let index = 0; index < scene.r_numentities; index += 1) {
+    const ent = scene.r_entities[index];
+    const r = 64 * ((index % 4) - 1.5);
+    const f = 64 * Math.floor(index / 4) + 128;
+
+    for (let component = 0; component < 3; component += 1) {
+      ent.origin[component] =
+        view.vieworg[component] +
+        view.forward[component] * f +
+        view.right[component] * r;
+    }
+
+    ent.model = runtime.cl.baseclientinfo.model ?? null;
+    ent.skin = runtime.cl.baseclientinfo.skin ?? null;
+  }
+}
+
+/**
+ * Original name: V_TestLights
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fills the temporary scene with the original 32-light debug grid.
+ */
+export function V_TestLights(scene: ClientViewScene, view: ClientViewValues): void {
+  scene.r_numdlights = 32;
+
+  for (let index = 0; index < scene.r_numdlights; index += 1) {
+    const dlight = scene.r_dlights[index];
+    const r = 64 * ((index % 4) - 1.5);
+    const f = 64 * Math.floor(index / 4) + 128;
+
+    for (let component = 0; component < 3; component += 1) {
+      dlight.origin[component] =
+        view.vieworg[component] +
+        view.forward[component] * f +
+        view.right[component] * r;
+    }
+
+    dlight.color[0] = (((index % 6) + 1) & 1);
+    dlight.color[1] = ((((index % 6) + 1) & 2) >> 1);
+    dlight.color[2] = ((((index % 6) + 1) & 4) >> 2);
+    dlight.intensity = 200;
+  }
+}
+
+/**
+ * Original name: CalcFov
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts horizontal field-of-view into vertical field-of-view for the current viewport.
+ */
+export function CalcFov(fov_x: number, width: number, height: number): number {
+  if (fov_x < 1 || fov_x > 179) {
+    throw new Error(`Bad fov: ${fov_x}`);
+  }
+
+  const x = width / Math.tan(fov_x / 360 * Math.PI);
+  const a = Math.atan(height / x);
+  return a * 360 / Math.PI;
+}
+
+/**
+ * Original name: V_Gun_Next_f
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function V_Gun_Next_f(state: ClientViewDebugState): string {
+  state.gun_frame += 1;
+  return `frame ${state.gun_frame}`;
+}
+
+/**
+ * Original name: V_Gun_Prev_f
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function V_Gun_Prev_f(state: ClientViewDebugState): string {
+  state.gun_frame -= 1;
+  if (state.gun_frame < 0) {
+    state.gun_frame = 0;
+  }
+  return `frame ${state.gun_frame}`;
+}
+
+/**
+ * Original name: V_Gun_Model_f
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function V_Gun_Model_f(state: ClientViewDebugState, modelName: string | null): string | null {
+  if (!modelName) {
+    state.gun_model = null;
+    return state.gun_model;
+  }
+
+  state.gun_model = `models/${modelName}/tris.md2`;
+  return state.gun_model;
+}
+
+/**
+ * Original name: V_Viewpos_f
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function V_Viewpos_f(view: Pick<ClientViewValues, "vieworg" | "viewangles">): string {
+  return `(${Math.trunc(view.vieworg[0])} ${Math.trunc(view.vieworg[1])} ${Math.trunc(view.vieworg[2])}) : ${Math.trunc(view.viewangles[1])}`;
+}
+
+/**
+ * Original name: SCR_DrawCrosshair
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rebuilds the centered crosshair draw command from the already prepared screen state.
+ */
+export function SCR_DrawCrosshair(
+  runtime: ClientRuntime,
+  viewport: vrect_t,
+  crosshair: cvar_t | null,
+  options: {
+    onTouchPics?: () => void;
+  } = {}
+): ClientCrosshairDraw | null {
+  if (!crosshair || crosshair.value === 0) {
+    return null;
+  }
+
+  if (crosshair.modified) {
+    crosshair.modified = false;
+    options.onTouchPics?.();
+  }
+
+  if (!runtime.cl.screen.crosshair_pic) {
+    return null;
+  }
+
+  return {
+    x: viewport.x + ((viewport.width - runtime.cl.screen.crosshair_width) >> 1),
+    y: viewport.y + ((viewport.height - runtime.cl.screen.crosshair_height) >> 1),
+    pic: runtime.cl.screen.crosshair_pic
+  };
+}
+
+/**
+ * Original name: V_Init
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the `cl_view.c` console commands and cvars needed by the current view/debug paths.
+ */
+export function V_Init(context: ClientViewContext): void {
+  Cmd_AddCommand(context.cmd, "gun_next", () => {
+    context.client.output.push(V_Gun_Next_f(context.debug));
+  });
+  Cmd_AddCommand(context.cmd, "gun_prev", () => {
+    context.client.output.push(V_Gun_Prev_f(context.debug));
+  });
+  Cmd_AddCommand(context.cmd, "gun_model", () => {
+    V_Gun_Model_f(context.debug, Cmd_Argc(context.cmd) === 2 ? Cmd_Argv(context.cmd, 1) : null);
+  });
+  Cmd_AddCommand(context.cmd, "viewpos", () => {
+    const view = CL_CalcViewValues(context.client);
+    context.client.output.push(V_Viewpos_f(view));
+  });
+
+  context.crosshair = Cvar_Get(context.cvar, "crosshair", "0", CVAR_ARCHIVE);
+  context.cl_testblend = Cvar_Get(context.cvar, "cl_testblend", "0", 0);
+  context.cl_testparticles = Cvar_Get(context.cvar, "cl_testparticles", "0", 0);
+  context.cl_testentities = Cvar_Get(context.cvar, "cl_testentities", "0", 0);
+  context.cl_testlights = Cvar_Get(context.cvar, "cl_testlights", "0", 0);
+  context.cl_stats = Cvar_Get(context.cvar, "cl_stats", "0", 0);
+}
+
+/**
+ * Original name: V_RenderView
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rebuilds the current renderer-neutral `refdef_t` from the active client frame and optional debug toggles.
+ */
+export function V_RenderView(
+  context: ClientViewContext,
+  options: ClientRenderViewOptions
+): ClientRenderedView | null {
+  const runtime = context.client;
+  const stereoSeparation = options.stereoSeparation ?? 0;
+
+  if (runtime.cls.state !== connstate_t.ca_active) {
+    return null;
+  }
+
+  if (!runtime.cl.refresh_prepped) {
+    return null;
+  }
+
+  if (options.timedemo) {
+    if (!runtime.cl.timedemo_start) {
+      runtime.cl.timedemo_start = options.currentTimeMs ?? runtime.cls.realtime;
+    }
+    runtime.cl.timedemo_frames += 1;
+  }
+
+  if (runtime.cl.frame.valid && (runtime.cl.force_refdef || !options.paused)) {
+    runtime.cl.force_refdef = false;
+
+    const refreshFrame = options.buildRefreshFrame(runtime, options);
+    fillSceneFromRefreshFrame(context.scene, refreshFrame, options);
+
+    if ((context.cl_testparticles?.value ?? 0) !== 0) {
+      V_TestParticles(context.scene, refreshFrame.view, context.cl_testparticles?.value ?? 0);
+    }
+    if ((context.cl_testentities?.value ?? 0) !== 0) {
+      V_TestEntities(context.scene, runtime, refreshFrame.view);
+    }
+    if ((context.cl_testlights?.value ?? 0) !== 0) {
+      V_TestLights(context.scene, refreshFrame.view);
+    }
+
+    context.refdef = buildRefdefFromScene(
+      context.scene,
+      runtime,
+      refreshFrame,
+      stereoSeparation,
+      options,
+      (context.cl_testblend?.value ?? 0) !== 0
+    );
+  }
+
+  options.renderFrame?.(context.refdef);
+
+  const vrect = runtime.cl.screen.scr_vrect;
+  SCR_AddDirtyPoint(runtime, vrect.x, vrect.y);
+  SCR_AddDirtyPoint(runtime, vrect.x + vrect.width - 1, vrect.y + vrect.height - 1);
+
+  const crosshair = SCR_DrawCrosshair(runtime, vrect, context.crosshair);
+  const statsLine =
+    (context.cl_stats?.value ?? 0) !== 0
+      ? `ent:${context.scene.r_numentities}  lt:${context.scene.r_numdlights}  part:${context.scene.r_numparticles}`
+      : null;
+
+  return {
+    refdef: context.refdef,
+    crosshair,
+    statsLine
+  };
 }
 
 /**
@@ -519,6 +1081,128 @@ function createPredictedPmove(runtime: ClientRuntime, options: ClientViewOptions
   const context = createPmoveContext(pm);
   context.pm_airaccelerate = Number.isFinite(airaccelerate) ? airaccelerate : 0;
   return context;
+}
+
+function fillSceneFromRefreshFrame(
+  scene: ClientViewScene,
+  refreshFrame: ClientRefreshFrame,
+  options: ClientRenderViewOptions
+): void {
+  scene.r_numentities = 0;
+  scene.r_numdlights = 0;
+  scene.r_numparticles = 0;
+
+  for (let index = 0; index < MAX_LIGHTSTYLES; index += 1) {
+    scene.r_lightstyles[index].rgb = [0, 0, 0];
+    scene.r_lightstyles[index].white = 0;
+  }
+
+  for (const style of refreshFrame.lightStyles) {
+    V_AddLightStyle(scene, style.style, style.rgb[0], style.rgb[1], style.rgb[2]);
+  }
+
+  const sortedEntities = [...refreshFrame.entities].sort(compareRenderEntities);
+  for (const renderEntity of sortedEntities) {
+    V_AddEntity(scene, {
+      model: options.resolveEntityModel?.(renderEntity) ?? null,
+      angles: [...renderEntity.angles],
+      origin: [...renderEntity.origin],
+      frame: renderEntity.frame,
+      oldorigin: [...renderEntity.oldorigin],
+      oldframe: renderEntity.oldframe,
+      backlerp: renderEntity.backlerp,
+      skinnum: renderEntity.skinnum,
+      lightstyle: 0,
+      alpha: renderEntity.alpha,
+      skin: options.resolveEntitySkin?.(renderEntity) ?? null,
+      flags: renderEntity.flags
+    });
+  }
+
+  for (const light of refreshFrame.lights) {
+    V_AddLight(scene, light.origin, light.intensity, light.color[0], light.color[1], light.color[2]);
+  }
+
+  for (const particle of refreshFrame.particles) {
+    V_AddParticle(scene, particle.origin, particle.color, particle.alpha);
+  }
+}
+
+function buildRefdefFromScene(
+  scene: ClientViewScene,
+  runtime: ClientRuntime,
+  refreshFrame: ClientRefreshFrame,
+  stereoSeparation: number,
+  options: ClientRenderViewOptions,
+  applyTestBlend: boolean
+): refdef_t {
+  const refdef = createRefDef();
+  refdef.vieworg = [...refreshFrame.view.vieworg];
+  refdef.viewangles = [...refreshFrame.view.viewangles];
+  refdef.blend = [...refreshFrame.view.blend];
+
+  if ((options.addBlend ?? true) === false) {
+    refdef.blend = [0, 0, 0, 0];
+  } else if (applyTestBlend) {
+    refdef.blend = [1, 0.5, 0.25, 0.5];
+  }
+
+  if (stereoSeparation !== 0) {
+    refdef.vieworg[0] += refreshFrame.view.right[0] * stereoSeparation;
+    refdef.vieworg[1] += refreshFrame.view.right[1] * stereoSeparation;
+    refdef.vieworg[2] += refreshFrame.view.right[2] * stereoSeparation;
+  }
+
+  refdef.vieworg[0] += 1.0 / 16;
+  refdef.vieworg[1] += 1.0 / 16;
+  refdef.vieworg[2] += 1.0 / 16;
+
+  const vrect = runtime.cl.screen.scr_vrect;
+  refdef.x = vrect.x;
+  refdef.y = vrect.y;
+  refdef.width = vrect.width;
+  refdef.height = vrect.height;
+  refdef.fov_x = refreshFrame.view.fov_x;
+  refdef.fov_y = CalcFov(refdef.fov_x, refdef.width, refdef.height);
+  refdef.time = runtime.cl.time * 0.001;
+  refdef.areabits = runtime.cl.frame.areabits;
+  refdef.rdflags = runtime.cl.frame.playerstate.rdflags;
+  refdef.lightstyles = scene.r_lightstyles.map((style) => ({
+    rgb: [...style.rgb],
+    white: style.white
+  }));
+
+  refdef.num_entities = options.addEntities ?? true ? scene.r_numentities : 0;
+  refdef.entities = scene.r_entities.slice(0, refdef.num_entities).map((entity) => ({
+    ...entity,
+    angles: [...entity.angles],
+    origin: [...entity.origin],
+    oldorigin: [...entity.oldorigin]
+  }));
+
+  refdef.num_particles = options.addParticles ?? true ? scene.r_numparticles : 0;
+  refdef.particles = scene.r_particles.slice(0, refdef.num_particles).map((particle) => ({
+    origin: [...particle.origin],
+    color: particle.color,
+    alpha: particle.alpha
+  }));
+
+  refdef.num_dlights = options.addLights ?? true ? scene.r_numdlights : 0;
+  refdef.dlights = scene.r_dlights.slice(0, refdef.num_dlights).map((dlight) => ({
+    origin: [...dlight.origin],
+    color: [...dlight.color],
+    intensity: dlight.intensity
+  }));
+
+  return refdef;
+}
+
+function compareRenderEntities(a: ClientRenderEntity, b: ClientRenderEntity): number {
+  if (a.modelindex === b.modelindex) {
+    return a.skinnum - b.skinnum;
+  }
+
+  return a.modelindex - b.modelindex;
 }
 
 /**

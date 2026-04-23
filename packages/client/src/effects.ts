@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - Emits structured effect descriptions instead of spawning lights, particles or sounds directly.
- * - Some helper outputs are also reused by `client/cl_tent.c`, but this file stays the primary port target for `cl_fx.c`.
+ * - The routines sourced from `client/cl_newfx.c` now live in `newfx.ts` so this file can remain the principal port target for `cl_fx.c`.
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original client effect pipeline.
@@ -62,6 +62,7 @@ import {
   CHAN_AUTO,
   CHAN_BODY,
   CHAN_WEAPON,
+  type entity_state_t,
   entity_event_t,
   temp_event_t,
   type vec3_t
@@ -74,7 +75,19 @@ import type {
   ClientTempEntityPacket
 } from "./parse.js";
 import { getMonsterFlashOffset } from "./monster-flash.js";
-import { INSTANT_PARTICLE, MAX_DLIGHTS, type ClientRuntime, type centity_t, type cparticle_t, type client_sustain_t } from "./types.js";
+import {
+  CL_BlasterParticles2,
+  CL_BubbleTrail2,
+  CL_ColorExplosionParticles,
+  CL_ColorFlash,
+  CL_DebugTrail,
+  CL_Flashlight,
+  CL_ForceWall,
+  CL_ParticleSmokeEffect,
+  CL_ParticleSteamEffect,
+  CL_WidowSplash
+} from "./newfx.js";
+import { INSTANT_PARTICLE, MAX_DLIGHTS, type ClientRuntime, type centity_t, type cparticle_t } from "./types.js";
 import type { ClientDynamicLight, ClientRenderParticle } from "./refresh.js";
 
 const PARTICLE_GRAVITY = 40;
@@ -237,92 +250,6 @@ export function CL_ParticleEffect3(runtime: ClientRuntime, org: vec3_t, dir: vec
 }
 
 /**
- * Original name: CL_ParticleSteamEffect
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Describes the original steam puff family emitted along one direction with side jitter.
- *
- * Porting notes:
- * - Keeps the original `(color,count,magnitude)` payload together for later backend interpretation.
- */
-export function CL_ParticleSteamEffect(
-  org: vec3_t,
-  dir: vec3_t,
-  color: number,
-  count: number,
-  magnitude: number
-): ClientActionEffect[] {
-  return [{
-    category: "particle",
-    kind: "particle-steam-effect",
-    position: [...org],
-    direction: [...dir],
-    color,
-    count,
-    magnitude
-  }];
-}
-
-/**
- * Original name: CL_ParticleSteamEffect2
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Rebuilds the same steam effect payload from one active sustain slot.
- *
- * Porting notes:
- * - Mirrors the original helper which simply reads `self->{org,dir,color,count,magnitude}`.
- */
-export function CL_ParticleSteamEffect2(self: client_sustain_t): ClientActionEffect[] {
-  return CL_ParticleSteamEffect(self.org, self.dir, self.color, self.count, self.magnitude);
-}
-
-/**
- * Original name: CL_ParticleSmokeEffect
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Describes the smoke variant of the steam helper, without gravity in the original particle integrator.
- */
-export function CL_ParticleSmokeEffect(
-  org: vec3_t,
-  dir: vec3_t,
-  color: number,
-  count: number,
-  magnitude: number
-): ClientActionEffect[] {
-  return [{
-    category: "particle",
-    kind: "particle-smoke-effect",
-    position: [...org],
-    direction: [...dir],
-    color,
-    count,
-    magnitude
-  }];
-}
-
-/**
- * Original name: CL_BlasterParticles2
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Describes the colored wall-impact puff family used by green blaster and flechette impacts.
- */
-export function CL_BlasterParticles2(org: vec3_t, dir: vec3_t, color: number): ClientActionEffect[] {
-  return [createParticleEffectMarker("blaster-particles2", org, dir, color, 40)];
-}
-
-/**
  * Original name: CL_BlueBlasterParticles
  * Source: client/cl_tent.c
  * Category: Ported
@@ -334,230 +261,18 @@ export function CL_BlasterParticles2(org: vec3_t, dir: vec3_t, color: number): C
  * Porting notes:
  * - The shipped `cl_tent.c` switch calls `CL_BlasterParticles` directly for this case.
  */
-export function CL_BlueBlasterParticles(org: vec3_t, dir: vec3_t): ClientActionEffect[] {
-  return CL_BlasterParticles(org, dir);
-}
-
-/**
- * Original name: CL_DebugTrail
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Describes the low-rate debug trail with the original `dec = 3` stepping and `0x74` color family.
- */
-export function CL_DebugTrail(start: vec3_t, end: vec3_t): ClientActionEffect[] {
-  return [createTrailEffect("debug-trail", start, end, 0x74, 3)];
-}
-
-/**
- * Original name: CL_BubbleTrail2
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Describes the adjustable-density bubble trail using the original `dist` spacing argument.
- */
-export function CL_BubbleTrail2(start: vec3_t, end: vec3_t, dist: number): ClientActionEffect[] {
-  return [createTrailEffect("bubble-trail2", start, end, 4, dist)];
-}
-
-/**
- * Original name: CL_ColorFlash
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Describes the short-lived colored dynamic light emitted by tracker-family temp effects.
- *
- * Porting notes:
- * - Keeps the original `minlight = 250` and `die = cl.time + 100` semantics as light metadata.
- */
-export function CL_ColorFlash(
-  pos: vec3_t,
-  ent: number,
-  intensity: number,
-  r: number,
-  g: number,
-  b: number
-): ClientActionEffect[] {
-  return [{
-    category: "temp-entity",
-    kind: "color-flash",
-    entity: ent,
-    position: [...pos],
-    light: {
-      radius: intensity,
-      color: [r, g, b],
-      durationMs: 100,
-      minlight: 250
-    }
-  }];
-}
-
-/**
- * Original name: CL_WidowSplash
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Describes the 256-particle widow splash burst around one origin.
- */
-export function CL_WidowSplash(org: vec3_t): ClientActionEffect[] {
-  return [{
-    category: "particle",
-    kind: "widow-splash",
-    position: [...org],
-    count: 256,
-    magnitude: 45
-  }];
-}
-
-/**
- * Original name: CL_ColorExplosionParticles
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Describes the colored 128-particle tracker explosion burst using the original `(color, run)` palette range.
- */
-export function CL_ColorExplosionParticles(org: vec3_t, color: number, run: number): ClientActionEffect[] {
-  return [{
-    category: "particle",
-    kind: "color-explosion-particles",
-    position: [...org],
-    color,
-    count: 128,
-    magnitude: run,
-    spacing: 16,
-    durationMs: 400
-  }];
-}
-
-/**
- * Original name: CL_Heatbeam
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Allocates the ring-based heatbeam particles around the current beam origin/direction.
- *
- * Porting notes:
- * - Ports the active `RINGS` implementation used by this Quake II source branch.
- * - Receives `right` and `up` explicitly instead of reading `cl.v_right` / `cl.v_up` globals.
- */
-export function CL_Heatbeam(
-  runtime: ClientRuntime,
-  start: vec3_t,
-  forward: vec3_t,
-  right: vec3_t,
-  up: vec3_t
-): void {
-  const move = [...start] as vec3_t;
-  const end = addScaledVector(start, forward, 4096);
-  const vec = subtractVec3(end, start);
-  const len = normalizeVectorCopy(vec);
-
-  move[0] -= right[0] * 0.5;
-  move[1] -= right[1] * 0.5;
-  move[2] -= right[2] * 0.5;
-  move[0] -= up[0] * 0.5;
-  move[1] -= up[1] * 0.5;
-  move[2] -= up[2] * 0.5;
-
-  const ltime = runtime.cl.time / 1000.0;
-  const step = 32.0;
-  const startPt = floatMod(ltime * 96.0, step);
-  move[0] += vec[0] * startPt;
-  move[1] += vec[1] * startPt;
-  move[2] += vec[2] * startPt;
-
-  vec[0] *= step;
-  vec[1] *= step;
-  vec[2] *= step;
-
-  const rstep = Math.PI / 10.0;
-  for (let distance = startPt; distance < len; distance += step) {
-    if (distance > step * 5) {
-      break;
-    }
-
-    for (let rot = 0; rot < Math.PI * 2; rot += rstep) {
-      const particle = allocParticle(runtime);
-      if (!particle) {
-        return;
-      }
-
-      particle.time = runtime.cl.time;
-      particle.accel = [0, 0, 0];
-
-      const variance = 0.5;
-      const c = Math.cos(rot) * variance;
-      const s = Math.sin(rot) * variance;
-      let dir: vec3_t = [right[0] * c, right[1] * c, right[2] * c];
-      dir = addScaledVector(dir, up, s);
-
-      if (distance < 10) {
-        const factor = distance / 10.0;
-        dir = [dir[0] * factor, dir[1] * factor, dir[2] * factor];
-      }
-
-      particle.alpha = 0.5;
-      particle.alphavel = -1000.0;
-      particle.color = 223 - (Math.floor(Math.random() * 0x7fffffff) & 7);
-      particle.org = [
-        move[0] + dir[0] * 3,
-        move[1] + dir[1] * 3,
-        move[2] + dir[2] * 3
-      ];
-      particle.vel = [0, 0, 0];
-    }
-
-    move[0] += vec[0];
-    move[1] += vec[1];
-    move[2] += vec[2];
+export function CL_BlueBlasterParticles(org: vec3_t, dir: vec3_t): ClientActionEffect[];
+export function CL_BlueBlasterParticles(runtime: ClientRuntime, org: vec3_t, dir: vec3_t): void;
+export function CL_BlueBlasterParticles(
+  runtimeOrOrg: ClientRuntime | vec3_t,
+  orgOrDir: vec3_t,
+  maybeDir?: vec3_t
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrOrg)) {
+    return CL_BlasterParticles(runtimeOrOrg, orgOrDir);
   }
-}
 
-/**
- * Original name: CL_MonsterPlasma_Shell
- * Source: client/cl_newfx.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Allocates the instant shell particles used by monster-origin heatbeam effects.
- *
- * Porting notes:
- * - Preserves the original particle count, color and radius.
- */
-export function CL_MonsterPlasma_Shell(runtime: ClientRuntime, origin: vec3_t): void {
-  for (let index = 0; index < 40; index += 1) {
-    const particle = allocParticle(runtime);
-    if (!particle) {
-      return;
-    }
-
-    particle.accel = [0, 0, 0];
-    particle.time = runtime.cl.time;
-    particle.alpha = 1.0;
-    particle.alphavel = INSTANT_PARTICLE;
-    particle.color = 0xe0;
-
-    const dir = normalizeRandomDirection();
-    particle.org = [
-      origin[0] + dir[0] * 10,
-      origin[1] + dir[1] * 10,
-      origin[2] + dir[2] * 10
-    ];
-    particle.vel = [0, 0, 0];
-  }
+  return CL_BlasterParticles(runtimeOrOrg, orgOrDir, maybeDir as vec3_t);
 }
 
 /**
@@ -1313,6 +1028,24 @@ export function CL_BuildTempEntityEffects(packet: ClientTempEntityPacket): Clien
         })));
       }
       break;
+    case temp_event_t.TE_FLASHLIGHT:
+      effect.category = "temp-entity";
+      if (packet.position) {
+        effects.push(...CL_Flashlight(packet.position, packet.entity ?? 0).map((entry) => ({
+          ...entry,
+          packet
+        })));
+      }
+      break;
+    case temp_event_t.TE_FORCEWALL:
+      effect.category = "particle";
+      if (packet.position && packet.position2) {
+        effects.push(...CL_ForceWall(packet.position, packet.position2, packet.color ?? 0).map((entry) => ({
+          ...entry,
+          packet
+        })));
+      }
+      break;
     case temp_event_t.TE_TRACKER_EXPLOSION:
       effect.category = "particle";
       if (packet.position) {
@@ -1363,6 +1096,204 @@ export function CL_BuildTempEntityEffects(packet: ClientTempEntityPacket): Clien
 }
 
 /**
+ * Original name: CL_ParseTEnt
+ * Source: client/cl_tent.c and client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies the immediate runtime-side particle and dlight effects implied by one parsed temp-entity packet.
+ *
+ * Porting notes:
+ * - Leaves persistent temp-entity families to `CL_AddTEntPacket`.
+ * - Focuses on the immediate `cl_fx.c` / `cl_newfx.c` side effects that mutate the client particle and dlight pools.
+ */
+export function CL_ExecuteTempEntityEffects(runtime: ClientRuntime, packet: ClientTempEntityPacket): void {
+  switch (packet.type) {
+    case temp_event_t.TE_BLOOD:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), 0xe8, 60);
+      }
+      break;
+    case temp_event_t.TE_GUNSHOT:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), 0, 40);
+      }
+      break;
+    case temp_event_t.TE_SPARKS:
+    case temp_event_t.TE_BULLET_SPARKS:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), 0xe0, 6);
+      }
+      break;
+    case temp_event_t.TE_SCREEN_SPARKS:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), 0xd0, 40);
+      }
+      break;
+    case temp_event_t.TE_SHIELD_SPARKS:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), 0xb0, 40);
+      }
+      break;
+    case temp_event_t.TE_SHOTGUN:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), 0, 20);
+      }
+      break;
+    case temp_event_t.TE_SPLASH:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), mapSplashColor(packet.color ?? 0), packet.count ?? 0);
+      }
+      break;
+    case temp_event_t.TE_LASER_SPARKS:
+    case temp_event_t.TE_WELDING_SPARKS:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect2(runtime, packet.position, DirFromByte(packet.directionByte), packet.color ?? 0, packet.count ?? 0);
+      }
+      break;
+    case temp_event_t.TE_GREENBLOOD:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect2(runtime, packet.position, DirFromByte(packet.directionByte), 0xdf, 30);
+      }
+      break;
+    case temp_event_t.TE_TUNNEL_SPARKS:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect3(runtime, packet.position, DirFromByte(packet.directionByte), packet.color ?? 0, packet.count ?? 0);
+      }
+      break;
+    case temp_event_t.TE_ELECTRIC_SPARKS:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), 0x75, 40);
+      }
+      break;
+    case temp_event_t.TE_MOREBLOOD:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_ParticleEffect(runtime, packet.position, DirFromByte(packet.directionByte), 0xe8, 250);
+      }
+      break;
+    case temp_event_t.TE_BLASTER:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_BlasterParticles(runtime, packet.position, DirFromByte(packet.directionByte));
+        const dlight = CL_AllocDlight(runtime, 0);
+        dlight.origin = [...packet.position];
+        dlight.radius = 150;
+        dlight.minlight = 0;
+        dlight.die = runtime.cl.time + 100;
+        dlight.color = [1, 1, 0];
+      }
+      break;
+    case temp_event_t.TE_BLASTER2:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_BlasterParticles2(runtime, packet.position, DirFromByte(packet.directionByte), 0xd0);
+      }
+      break;
+    case temp_event_t.TE_BLUEHYPERBLASTER:
+      if (packet.position && packet.direction) {
+        CL_BlueBlasterParticles(runtime, packet.position, packet.direction);
+      }
+      break;
+    case temp_event_t.TE_FLECHETTE:
+      if (packet.position && packet.directionByte !== undefined) {
+        CL_BlasterParticles2(runtime, packet.position, DirFromByte(packet.directionByte), 0x6f);
+      }
+      break;
+    case temp_event_t.TE_DEBUGTRAIL:
+      if (packet.position && packet.position2) {
+        CL_DebugTrail(runtime, packet.position, packet.position2);
+      }
+      break;
+    case temp_event_t.TE_HEATBEAM_SPARKS:
+      if (packet.position && packet.direction) {
+        CL_ParticleSteamEffect(runtime, packet.position, packet.direction, 8, 50, 60);
+      }
+      break;
+    case temp_event_t.TE_HEATBEAM_STEAM:
+      if (packet.position && packet.direction) {
+        CL_ParticleSteamEffect(runtime, packet.position, packet.direction, 0xe0, 20, 60);
+      }
+      break;
+    case temp_event_t.TE_STEAM:
+      if (packet.id === -1 && packet.position && packet.directionByte !== undefined) {
+        CL_ParticleSteamEffect(
+          runtime,
+          packet.position,
+          DirFromByte(packet.directionByte),
+          packet.color ?? 0,
+          packet.count ?? 0,
+          packet.magnitude ?? 0
+        );
+      }
+      break;
+    case temp_event_t.TE_BUBBLETRAIL2:
+      if (packet.position && packet.position2) {
+        CL_BubbleTrail2(runtime, packet.position, packet.position2, 8);
+      }
+      break;
+    case temp_event_t.TE_BUBBLETRAIL:
+      if (packet.position && packet.position2) {
+        CL_BubbleTrail(runtime, packet.position, packet.position2);
+      }
+      break;
+    case temp_event_t.TE_CHAINFIST_SMOKE:
+      if (packet.position) {
+        CL_ParticleSmokeEffect(runtime, packet.position, [0, 0, 1], 0, 20, 20);
+      }
+      break;
+    case temp_event_t.TE_FLASHLIGHT:
+      if (packet.position) {
+        CL_Flashlight(runtime, packet.position, packet.entity ?? 0);
+      }
+      break;
+    case temp_event_t.TE_FORCEWALL:
+      if (packet.position && packet.position2) {
+        CL_ForceWall(runtime, packet.position, packet.position2, packet.color ?? 0);
+      }
+      break;
+    case temp_event_t.TE_TRACKER_EXPLOSION:
+      if (packet.position) {
+        CL_ColorFlash(runtime, packet.position, 0, 150, -1, -1, -1);
+        CL_ColorExplosionParticles(runtime, packet.position, 0, 1);
+      }
+      break;
+    case temp_event_t.TE_EXPLOSION1:
+    case temp_event_t.TE_ROCKET_EXPLOSION:
+    case temp_event_t.TE_ROCKET_EXPLOSION_WATER:
+    case temp_event_t.TE_EXPLOSION2:
+    case temp_event_t.TE_GRENADE_EXPLOSION:
+    case temp_event_t.TE_GRENADE_EXPLOSION_WATER:
+    case temp_event_t.TE_PLASMA_EXPLOSION:
+      if (packet.position) {
+        CL_ExplosionParticles(runtime, packet.position);
+      }
+      break;
+    case temp_event_t.TE_BFG_BIGEXPLOSION:
+      if (packet.position) {
+        CL_BFGExplosionParticles(runtime, packet.position);
+      }
+      break;
+    case temp_event_t.TE_TELEPORT_EFFECT:
+    case temp_event_t.TE_DBALL_GOAL:
+      if (packet.position) {
+        CL_TeleportParticles(runtime, packet.position);
+      }
+      break;
+    case temp_event_t.TE_BOSSTPORT:
+      if (packet.position) {
+        CL_BigTeleportParticles(runtime, packet.position);
+      }
+      break;
+    case temp_event_t.TE_WIDOWSPLASH:
+      if (packet.position) {
+        CL_WidowSplash(runtime, packet.position);
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+/**
  * Original name: CL_ParseParticles
  * Source: client/cl_tent.c
  * Category: Ported
@@ -1386,6 +1317,124 @@ export function CL_BuildParticleEffects(packet: ClientParticleEffectPacket): Cli
 }
 
 /**
+ * Original name: CL_TeleporterParticles
+ * Source: client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the short upward teleporter puff attached to one entity state origin.
+ */
+export function CL_TeleporterParticles(ent: entity_state_t): ClientActionEffect[];
+export function CL_TeleporterParticles(runtime: ClientRuntime, ent: entity_state_t): void;
+export function CL_TeleporterParticles(
+  runtimeOrEnt: ClientRuntime | entity_state_t,
+  maybeEnt?: entity_state_t
+): ClientActionEffect[] | void {
+  if ("origin" in runtimeOrEnt) {
+    return [{
+      category: "particle",
+      kind: "teleporter-particles",
+      position: [...runtimeOrEnt.origin],
+      color: 0xdb,
+      count: 8,
+      magnitude: 16,
+      durationMs: 200
+    }];
+  }
+
+  const runtime = runtimeOrEnt;
+  const ent = maybeEnt as entity_state_t;
+  for (let index = 0; index < 8; index += 1) {
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    particle.color = 0xdb;
+    particle.org[0] = ent.origin[0] - 16 + (Math.floor(Math.random() * 32));
+    particle.org[1] = ent.origin[1] - 16 + (Math.floor(Math.random() * 32));
+    particle.org[2] = ent.origin[2] - 8 + (Math.floor(Math.random() * 8));
+    particle.vel[0] = crand() * 14;
+    particle.vel[1] = crand() * 14;
+    particle.vel[2] = 80 + (Math.floor(Math.random() * 8));
+    particle.accel[0] = 0;
+    particle.accel[1] = 0;
+    particle.accel[2] = -PARTICLE_GRAVITY;
+    particle.alpha = 1.0;
+    particle.alphavel = -0.5;
+  }
+}
+
+/**
+ * Original name: CL_LogoutEffect
+ * Source: client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the login/logout/respawn particle burst with the original palette family.
+ */
+export function CL_LogoutEffect(org: vec3_t, type: number): ClientActionEffect[];
+export function CL_LogoutEffect(runtime: ClientRuntime, org: vec3_t, type: number): void;
+export function CL_LogoutEffect(
+  runtimeOrOrg: ClientRuntime | vec3_t,
+  orgOrType: vec3_t | number,
+  maybeType?: number
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrOrg)) {
+    let color = 0xe0;
+    if (orgOrType === MZ_LOGIN) {
+      color = 0xd0;
+    } else if (orgOrType === MZ_LOGOUT) {
+      color = 0x40;
+    }
+
+    return [{
+      category: "particle",
+      kind: "logout-effect",
+      position: [...runtimeOrOrg],
+      color,
+      count: 500,
+      magnitude: 20,
+      durationMs: 1000
+    }];
+  }
+
+  const runtime = runtimeOrOrg;
+  const org = orgOrType as vec3_t;
+  const type = maybeType as number;
+  for (let index = 0; index < 500; index += 1) {
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    if (type === MZ_LOGIN) {
+      particle.color = 0xd0 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+    } else if (type === MZ_LOGOUT) {
+      particle.color = 0x40 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+    } else {
+      particle.color = 0xe0 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+    }
+
+    particle.org[0] = org[0] - 16 + Math.random() * 32;
+    particle.org[1] = org[1] - 16 + Math.random() * 32;
+    particle.org[2] = org[2] - 24 + Math.random() * 56;
+    particle.vel[0] = crand() * 20;
+    particle.vel[1] = crand() * 20;
+    particle.vel[2] = crand() * 20;
+    particle.accel[0] = 0;
+    particle.accel[1] = 0;
+    particle.accel[2] = -PARTICLE_GRAVITY;
+    particle.alpha = 1.0;
+    particle.alphavel = -1.0 / (1.0 + Math.random() * 0.3);
+  }
+}
+
+/**
  * Original name: CL_ItemRespawnParticles
  * Source: client/cl_fx.c
  * Category: Ported
@@ -1397,8 +1446,31 @@ export function CL_BuildParticleEffects(packet: ClientParticleEffectPacket): Cli
  * Porting notes:
  * - Preserves the original color family, count and gravity profile as structured data.
  */
-export function CL_ItemRespawnParticles(org: vec3_t): ClientActionEffect[] {
-  return [createParticleBurst("item-respawn-particles", org, 0xd4, 64, 8, 8, 0.2)];
+export function CL_ItemRespawnParticles(org: vec3_t): ClientActionEffect[];
+export function CL_ItemRespawnParticles(runtime: ClientRuntime, org: vec3_t): void;
+export function CL_ItemRespawnParticles(runtimeOrOrg: ClientRuntime | vec3_t, maybeOrg?: vec3_t): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrOrg)) {
+    return [createParticleBurst("item-respawn-particles", runtimeOrOrg, 0xd4, 64, 8, 8, 0.2)];
+  }
+
+  const runtime = runtimeOrOrg;
+  const org = maybeOrg as vec3_t;
+  for (let index = 0; index < 64; index += 1) {
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    particle.color = 0xd4 + (Math.floor(Math.random() * 0x7fffffff) & 3);
+    particle.org = [org[0] + crand() * 8, org[1] + crand() * 8, org[2] + crand() * 8];
+    particle.vel = [crand() * 8, crand() * 8, crand() * 8];
+    particle.accel[0] = 0;
+    particle.accel[1] = 0;
+    particle.accel[2] = -PARTICLE_GRAVITY * 0.2;
+    particle.alpha = 1.0;
+    particle.alphavel = -1.0 / (1.0 + Math.random() * 0.3);
+  }
 }
 
 /**
@@ -1410,8 +1482,33 @@ export function CL_ItemRespawnParticles(org: vec3_t): ClientActionEffect[] {
  * Behavior:
  * - Emits the logical explosion particle burst metadata.
  */
-export function CL_ExplosionParticles(org: vec3_t): ClientActionEffect[] {
-  return [createParticleBurst("explosion-particles", org, 0xe0, 256, 16, 192, 1)];
+export function CL_ExplosionParticles(org: vec3_t): ClientActionEffect[];
+export function CL_ExplosionParticles(runtime: ClientRuntime, org: vec3_t): void;
+export function CL_ExplosionParticles(runtimeOrOrg: ClientRuntime | vec3_t, maybeOrg?: vec3_t): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrOrg)) {
+    return [createParticleBurst("explosion-particles", runtimeOrOrg, 0xe0, 256, 16, 192, 1)];
+  }
+
+  const runtime = runtimeOrOrg;
+  const org = maybeOrg as vec3_t;
+  for (let index = 0; index < 256; index += 1) {
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    particle.color = 0xe0 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+    for (let component = 0; component < 3; component += 1) {
+      particle.org[component] = org[component] + (Math.floor(Math.random() * 32) - 16);
+      particle.vel[component] = Math.floor(Math.random() * 384) - 192;
+    }
+    particle.accel[0] = 0;
+    particle.accel[1] = 0;
+    particle.accel[2] = -PARTICLE_GRAVITY;
+    particle.alpha = 1.0;
+    particle.alphavel = -0.8 / (0.5 + Math.random() * 0.3);
+  }
 }
 
 /**
@@ -1423,13 +1520,47 @@ export function CL_ExplosionParticles(org: vec3_t): ClientActionEffect[] {
  * Behavior:
  * - Emits the original big-teleport spiral cloud metadata.
  */
-export function CL_BigTeleportParticles(org: vec3_t): ClientActionEffect[] {
-  return [{
-    category: "particle",
-    kind: "big-teleport-particles",
-    position: [...org],
-    count: 4096
-  }];
+export function CL_BigTeleportParticles(org: vec3_t): ClientActionEffect[];
+export function CL_BigTeleportParticles(runtime: ClientRuntime, org: vec3_t): void;
+export function CL_BigTeleportParticles(runtimeOrOrg: ClientRuntime | vec3_t, maybeOrg?: vec3_t): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrOrg)) {
+    return [{
+      category: "particle",
+      kind: "big-teleport-particles",
+      position: [...runtimeOrOrg],
+      count: 4096
+    }];
+  }
+
+  const runtime = runtimeOrOrg;
+  const org = maybeOrg as vec3_t;
+  const colortable = [2 * 8, 13 * 8, 21 * 8, 18 * 8];
+  for (let index = 0; index < 4096; index += 1) {
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    particle.color = colortable[Math.floor(Math.random() * 0x7fffffff) & 3];
+
+    const angle = Math.PI * 2 * ((Math.floor(Math.random() * 0x7fffffff) & 1023) / 1023.0);
+    const dist = Math.floor(Math.random() * 0x7fffffff) & 31;
+    const cosAngle = Math.cos(angle);
+    const sinAngle = Math.sin(angle);
+
+    particle.org[0] = org[0] + cosAngle * dist;
+    particle.vel[0] = cosAngle * (70 + (Math.floor(Math.random() * 0x7fffffff) & 63));
+    particle.accel[0] = -cosAngle * 100;
+    particle.org[1] = org[1] + sinAngle * dist;
+    particle.vel[1] = sinAngle * (70 + (Math.floor(Math.random() * 0x7fffffff) & 63));
+    particle.accel[1] = -sinAngle * 100;
+    particle.org[2] = org[2] + 8 + (Math.floor(Math.random() * 90));
+    particle.vel[2] = -100 + (Math.floor(Math.random() * 0x7fffffff) & 31);
+    particle.accel[2] = PARTICLE_GRAVITY * 4;
+    particle.alpha = 1.0;
+    particle.alphavel = -0.3 / (0.5 + Math.random() * 0.3);
+  }
 }
 
 /**
@@ -1441,15 +1572,46 @@ export function CL_BigTeleportParticles(org: vec3_t): ClientActionEffect[] {
  * Behavior:
  * - Emits the wall-impact blaster puff metadata.
  */
-export function CL_BlasterParticles(org: vec3_t, dir: vec3_t): ClientActionEffect[] {
-  return [{
-    category: "particle",
-    kind: "blaster-particles",
-    position: [...org],
-    direction: [...dir],
-    color: 0xe0,
-    count: 40
-  }];
+export function CL_BlasterParticles(org: vec3_t, dir: vec3_t): ClientActionEffect[];
+export function CL_BlasterParticles(runtime: ClientRuntime, org: vec3_t, dir: vec3_t): void;
+export function CL_BlasterParticles(
+  runtimeOrOrg: ClientRuntime | vec3_t,
+  orgOrDir: vec3_t,
+  maybeDir?: vec3_t
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrOrg)) {
+    return [{
+      category: "particle",
+      kind: "blaster-particles",
+      position: [...runtimeOrOrg],
+      direction: [...orgOrDir],
+      color: 0xe0,
+      count: 40
+    }];
+  }
+
+  const runtime = runtimeOrOrg;
+  const org = orgOrDir;
+  const dir = maybeDir as vec3_t;
+  for (let index = 0; index < 40; index += 1) {
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    particle.color = 0xe0 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+    const d = Math.floor(Math.random() * 0x7fffffff) & 15;
+    for (let component = 0; component < 3; component += 1) {
+      particle.org[component] = org[component] + ((Math.floor(Math.random() * 0x7fffffff) & 7) - 4) + (d * dir[component]);
+      particle.vel[component] = (dir[component] * 30) + (crand() * 40);
+    }
+    particle.accel[0] = 0;
+    particle.accel[1] = 0;
+    particle.accel[2] = -PARTICLE_GRAVITY;
+    particle.alpha = 1.0;
+    particle.alphavel = -1.0 / (0.5 + Math.random() * 0.3);
+  }
 }
 
 /**
@@ -1590,8 +1752,50 @@ export function CL_IonripperTrail(start: vec3_t, end: vec3_t): ClientActionEffec
  * Behavior:
  * - Emits the underwater bubble trail metadata.
  */
-export function CL_BubbleTrail(start: vec3_t, end: vec3_t): ClientActionEffect[] {
-  return [createTrailEffect("bubble-trail", start, end, 4, 32)];
+export function CL_BubbleTrail(start: vec3_t, end: vec3_t): ClientActionEffect[];
+export function CL_BubbleTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;
+export function CL_BubbleTrail(
+  runtimeOrStart: ClientRuntime | vec3_t,
+  startOrEnd: vec3_t,
+  maybeEnd?: vec3_t
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrStart)) {
+    return [createTrailEffect("bubble-trail", runtimeOrStart, startOrEnd, 4, 32)];
+  }
+
+  const runtime = runtimeOrStart;
+  const start = startOrEnd;
+  const end = maybeEnd as vec3_t;
+  const move = [...start] as vec3_t;
+  const vec = subtractVec3(end, start);
+  const len = normalizeVectorCopy(vec);
+  const dec = 32;
+
+  vec[0] *= dec;
+  vec[1] *= dec;
+  vec[2] *= dec;
+
+  for (let index = 0; index < len; index += dec) {
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.accel = [0, 0, 0];
+    particle.time = runtime.cl.time;
+    particle.alpha = 1.0;
+    particle.alphavel = -1.0 / (1 + Math.random() * 0.2);
+    particle.color = 4 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+    for (let component = 0; component < 3; component += 1) {
+      particle.org[component] = move[component] + crand() * 2;
+      particle.vel[component] = crand() * 5;
+    }
+    particle.vel[2] += 6;
+
+    move[0] += vec[0];
+    move[1] += vec[1];
+    move[2] += vec[2];
+  }
 }
 
 /**
@@ -1691,8 +1895,33 @@ export function CL_TrapParticles(origin: vec3_t): ClientActionEffect[] {
  * Behavior:
  * - Emits the BFG explosion particle burst metadata.
  */
-export function CL_BFGExplosionParticles(org: vec3_t): ClientActionEffect[] {
-  return [createParticleBurst("bfg-explosion-particles", org, 0xd0, 256, 16, 192, 1)];
+export function CL_BFGExplosionParticles(org: vec3_t): ClientActionEffect[];
+export function CL_BFGExplosionParticles(runtime: ClientRuntime, org: vec3_t): void;
+export function CL_BFGExplosionParticles(runtimeOrOrg: ClientRuntime | vec3_t, maybeOrg?: vec3_t): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrOrg)) {
+    return [createParticleBurst("bfg-explosion-particles", runtimeOrOrg, 0xd0, 256, 16, 192, 1)];
+  }
+
+  const runtime = runtimeOrOrg;
+  const org = maybeOrg as vec3_t;
+  for (let index = 0; index < 256; index += 1) {
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    particle.color = 0xd0 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+    for (let component = 0; component < 3; component += 1) {
+      particle.org[component] = org[component] + (Math.floor(Math.random() * 32) - 16);
+      particle.vel[component] = Math.floor(Math.random() * 384) - 192;
+    }
+    particle.accel[0] = 0;
+    particle.accel[1] = 0;
+    particle.accel[2] = -PARTICLE_GRAVITY;
+    particle.alpha = 1.0;
+    particle.alphavel = -0.8 / (0.5 + Math.random() * 0.3);
+  }
 }
 
 /**
@@ -1704,14 +1933,47 @@ export function CL_BFGExplosionParticles(org: vec3_t): ClientActionEffect[] {
  * Behavior:
  * - Emits the teleport particle lattice metadata.
  */
-export function CL_TeleportParticles(org: vec3_t): ClientActionEffect[] {
-  return [{
-    category: "particle",
-    kind: "teleport-particles",
-    position: [...org],
-    color: 7,
-    count: 409
-  }];
+export function CL_TeleportParticles(org: vec3_t): ClientActionEffect[];
+export function CL_TeleportParticles(runtime: ClientRuntime, org: vec3_t): void;
+export function CL_TeleportParticles(runtimeOrOrg: ClientRuntime | vec3_t, maybeOrg?: vec3_t): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrOrg)) {
+    return [{
+      category: "particle",
+      kind: "teleport-particles",
+      position: [...runtimeOrOrg],
+      color: 7,
+      count: 409
+    }];
+  }
+
+  const runtime = runtimeOrOrg;
+  const org = maybeOrg as vec3_t;
+  for (let i = -16; i <= 16; i += 4) {
+    for (let j = -16; j <= 16; j += 4) {
+      for (let k = -16; k <= 32; k += 4) {
+        const particle = allocParticle(runtime);
+        if (!particle) {
+          return;
+        }
+
+        particle.time = runtime.cl.time;
+        particle.color = 7 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+        particle.alpha = 1.0;
+        particle.alphavel = -1.0 / (0.3 + (Math.floor(Math.random() * 0x7fffffff) & 7) * 0.02);
+        particle.org[0] = org[0] + i + (Math.floor(Math.random() * 0x7fffffff) & 3);
+        particle.org[1] = org[1] + j + (Math.floor(Math.random() * 0x7fffffff) & 3);
+        particle.org[2] = org[2] + k + (Math.floor(Math.random() * 0x7fffffff) & 3);
+
+        const dir: vec3_t = [j * 8, i * 8, k * 8];
+        normalizeVector(dir);
+        const vel = 50 + (Math.floor(Math.random() * 0x7fffffff) & 63);
+        particle.vel = [dir[0] * vel, dir[1] * vel, dir[2] * vel];
+        particle.accel[0] = 0;
+        particle.accel[1] = 0;
+        particle.accel[2] = -PARTICLE_GRAVITY;
+      }
+    }
+  }
 }
 
 /**
@@ -1721,10 +1983,10 @@ export function CL_TeleportParticles(org: vec3_t): ClientActionEffect[] {
  * Fidelity level: Close
  *
  * Behavior:
- * - Placeholder for the particle integration pass that advances active particles and emits renderable sprites.
+ * - Advances active client particles and emits the current render-facing sprite list.
  *
  * Porting notes:
- * - The logical particle families are ported, but the active particle pool and per-frame integration loop remain pending.
+ * - Preserves the linked-list walk, alpha expiry and `INSTANT_PARTICLE` reset semantics from the original client.
  */
 export function CL_AddParticles(runtime: ClientRuntime): ClientRenderParticle[] {
   const particles: ClientRenderParticle[] = [];
@@ -2294,24 +2556,12 @@ function appendLogoutEffect(
     return;
   }
 
-  let color = 0xe0;
-  if (weaponId === MZ_LOGIN) {
-    color = 0xd0;
-  } else if (weaponId === MZ_LOGOUT) {
-    color = 0x40;
-  }
-
-  effects.push({
-    category: "muzzleflash",
-    kind: "logout-effect",
+  effects.push(...CL_LogoutEffect(effectPosition, weaponId).map((effect) => ({
+    ...effect,
+    category: "muzzleflash" as const,
     entity: packet.entity,
-    position: effectPosition,
-    color,
-    count: 500,
-    magnitude: 20,
-    durationMs: 1000,
     packet
-  });
+  })));
 }
 
 /**

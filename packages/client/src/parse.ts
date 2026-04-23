@@ -99,7 +99,7 @@ import {
 import { type ClientRuntime, type frame_t } from "./types.js";
 import { MAX_PARSE_ENTITIES, connstate_t, createFrame } from "./types.js";
 import { CL_FireEntityEvents, type ClientEntityEvent } from "./entities.js";
-import { CL_ClearEffects, CL_ParticleEffect, CL_SetLightstyle } from "./effects.js";
+import { CL_ClearEffects, CL_ExecuteTempEntityEffects, CL_ParticleEffect, CL_SetLightstyle } from "./effects.js";
 import { SCR_CenterPrint } from "./screen.js";
 import { CL_AddTEntPacket, CL_ClearTEnts } from "./tent.js";
 import { CL_CheckPredictionError } from "./view.js";
@@ -766,7 +766,7 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
     }
     case temp_event_t.TE_PARASITE_ATTACK:
     case temp_event_t.TE_MEDIC_CABLE_ATTACK: {
-      assignBeamPacket(packet, "beam", parseBeamPacket(runtime));
+      assignBeamPacket(packet, "beam", CL_ParseBeam(runtime));
       break;
     }
     case temp_event_t.TE_FLASHLIGHT: {
@@ -775,7 +775,7 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
       break;
     }
     case temp_event_t.TE_BFG_LASER: {
-      assignBeamPacket(packet, "laser", parseLaserPacket(runtime));
+      assignBeamPacket(packet, "laser", CL_ParseLaser(runtime));
       break;
     }
     case temp_event_t.TE_BUBBLETRAIL: {
@@ -784,16 +784,16 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
       break;
     }
     case temp_event_t.TE_GRAPPLE_CABLE: {
-      assignBeamPacket(packet, "beam2", parseBeam2Packet(runtime));
+      assignBeamPacket(packet, "beam2", CL_ParseBeam2(runtime));
       break;
     }
     case temp_event_t.TE_HEATBEAM:
     case temp_event_t.TE_MONSTER_HEATBEAM: {
-      assignBeamPacket(packet, "player-beam", parsePlayerBeamPacket(runtime, type));
+      assignBeamPacket(packet, "player-beam", CL_ParsePlayerBeam(runtime, type));
       break;
     }
     case temp_event_t.TE_STEAM: {
-      assignBeamPacket(packet, "steam", parseSteamPacket(runtime));
+      assignBeamPacket(packet, "steam", CL_ParseSteam(runtime));
       break;
     }
     case temp_event_t.TE_FORCEWALL:
@@ -807,15 +807,15 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
       break;
     }
     case temp_event_t.TE_LIGHTNING: {
-      assignBeamPacket(packet, "lightning", parseLightningPacket(runtime));
+      assignBeamPacket(packet, "lightning", CL_ParseLightning(runtime));
       break;
     }
     case temp_event_t.TE_WIDOWBEAMOUT: {
-      assignBeamPacket(packet, "widow", parseWidowPacket(runtime));
+      assignBeamPacket(packet, "widow", CL_ParseWidow(runtime));
       break;
     }
     case temp_event_t.TE_NUKEBLAST: {
-      assignBeamPacket(packet, "nuke", parseNukePacket(runtime));
+      assignBeamPacket(packet, "nuke", CL_ParseNuke(runtime));
       break;
     }
     default:
@@ -823,18 +823,21 @@ export function CL_ParseTEnt(runtime: ClientRuntime, hooks: ClientParseHooks = {
   }
 
   CL_AddTEntPacket(runtime, packet);
+  CL_ExecuteTempEntityEffects(runtime, packet);
   hooks.onTempEntity?.(packet);
   return packet;
 }
 
 /**
- * Category: New
- * Purpose: Parse the payload layout used by `CL_ParseBeam`.
+ * Original name: CL_ParseBeam
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must consume the exact wire format used by parasite/medic/grapple-like beam temp entities.
+ * Behavior:
+ * - Parses the parasite/medic-style beam payload and returns the exact packet fields it carries.
  */
-function parseBeamPacket(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+export function CL_ParseBeam(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
   return {
     entity: MSG_ReadShort(runtime.net_message),
     position: MSG_ReadPos(runtime.net_message),
@@ -844,13 +847,15 @@ function parseBeamPacket(runtime: ClientRuntime): Partial<ClientTempEntityPacket
 }
 
 /**
- * Category: New
- * Purpose: Parse the payload layout used by `CL_ParseBeam2`.
+ * Original name: CL_ParseBeam2
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must preserve the explicit beam offset supplied by the server message.
+ * Behavior:
+ * - Parses the grapple-style beam payload, including its explicit offset.
  */
-function parseBeam2Packet(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+export function CL_ParseBeam2(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
   return {
     entity: MSG_ReadShort(runtime.net_message),
     position: MSG_ReadPos(runtime.net_message),
@@ -860,13 +865,15 @@ function parseBeam2Packet(runtime: ClientRuntime): Partial<ClientTempEntityPacke
 }
 
 /**
- * Category: New
- * Purpose: Parse the player-linked beam payload used by heatbeam-style temp entities.
+ * Original name: CL_ParsePlayerBeam
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must preserve the special optimized offset rules from `CL_ParsePlayerBeam`.
+ * Behavior:
+ * - Parses the player-linked beam payload used by heatbeam-style temp entities.
  */
-function parsePlayerBeamPacket(runtime: ClientRuntime, type: number): Partial<ClientTempEntityPacket> {
+export function CL_ParsePlayerBeam(runtime: ClientRuntime, type: number): Partial<ClientTempEntityPacket> {
   const entity = MSG_ReadShort(runtime.net_message);
   const position = MSG_ReadPos(runtime.net_message);
   const position2 = MSG_ReadPos(runtime.net_message);
@@ -887,13 +894,15 @@ function parsePlayerBeamPacket(runtime: ClientRuntime, type: number): Partial<Cl
 }
 
 /**
- * Category: New
- * Purpose: Parse the dual-entity lightning beam payload.
+ * Original name: CL_ParseLightning
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must preserve both source and destination entity numbers.
+ * Behavior:
+ * - Parses the dual-entity lightning beam payload.
  */
-function parseLightningPacket(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+export function CL_ParseLightning(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
   return {
     entity: MSG_ReadShort(runtime.net_message),
     entity2: MSG_ReadShort(runtime.net_message),
@@ -904,13 +913,15 @@ function parseLightningPacket(runtime: ClientRuntime): Partial<ClientTempEntityP
 }
 
 /**
- * Category: New
- * Purpose: Parse the laser temp entity payload consumed by `CL_ParseLaser`.
+ * Original name: CL_ParseLaser
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must preserve the start and end positions only.
+ * Behavior:
+ * - Parses the laser temp entity payload and preserves only its endpoints.
  */
-function parseLaserPacket(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+export function CL_ParseLaser(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
   return {
     position: MSG_ReadPos(runtime.net_message),
     position2: MSG_ReadPos(runtime.net_message)
@@ -918,13 +929,15 @@ function parseLaserPacket(runtime: ClientRuntime): Partial<ClientTempEntityPacke
 }
 
 /**
- * Category: New
- * Purpose: Parse the rogue `CL_ParseSteam` payload in both instant and sustain forms.
+ * Original name: CL_ParseSteam
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must consume the exact bytes for both id `-1` instant effects and sustained effects.
+ * Behavior:
+ * - Parses the rogue steam payload in both instant and sustain forms.
  */
-function parseSteamPacket(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+export function CL_ParseSteam(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
   const id = MSG_ReadShort(runtime.net_message);
   if (id === -1) {
     return {
@@ -949,13 +962,15 @@ function parseSteamPacket(runtime: ClientRuntime): Partial<ClientTempEntityPacke
 }
 
 /**
- * Category: New
- * Purpose: Parse the widow sustain-effect payload.
+ * Original name: CL_ParseWidow
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must preserve the sustain id and origin.
+ * Behavior:
+ * - Parses the widow sustain-effect payload.
  */
-function parseWidowPacket(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+export function CL_ParseWidow(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
   return {
     id: MSG_ReadShort(runtime.net_message),
     position: MSG_ReadPos(runtime.net_message),
@@ -964,13 +979,15 @@ function parseWidowPacket(runtime: ClientRuntime): Partial<ClientTempEntityPacke
 }
 
 /**
- * Category: New
- * Purpose: Parse the nuke sustain-effect payload.
+ * Original name: CL_ParseNuke
+ * Source: client/cl_tent.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must preserve the origin and implied sustain duration.
+ * Behavior:
+ * - Parses the nuke sustain-effect payload.
  */
-function parseNukePacket(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
+export function CL_ParseNuke(runtime: ClientRuntime): Partial<ClientTempEntityPacket> {
   return {
     id: 21000,
     position: MSG_ReadPos(runtime.net_message),
