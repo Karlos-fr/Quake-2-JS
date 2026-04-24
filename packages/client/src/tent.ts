@@ -34,7 +34,7 @@ import {
 import type { ClientTempEntityPacket } from "./parse.js";
 import type { ClientDynamicLight } from "./refresh.js";
 import type { ClientViewValues } from "./view.js";
-import { CL_Heatbeam, CL_MonsterPlasma_Shell, CL_Nukeblast, CL_ParticleSteamEffect2, CL_Widowbeamout } from "./newfx.js";
+import { CL_Flashlight, CL_Heatbeam, CL_MonsterPlasma_Shell, CL_Nukeblast, CL_ParticleSteamEffect2, CL_Widowbeamout } from "./newfx.js";
 import {
   createClientBeam,
   createClientExplosion,
@@ -301,6 +301,9 @@ export function CL_RegisterTEntModels(runtime: ClientRuntime): { models: string[
  */
 export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntityPacket): void {
   switch (packet.type) {
+    case temp_event_t.TE_FLASHLIGHT:
+      CL_Flashlight(runtime, packet.position ?? [0, 0, 0], packet.entity ?? 0);
+      break;
     case temp_event_t.TE_GUNSHOT:
     case temp_event_t.TE_BULLET_SPARKS:
     case temp_event_t.TE_SHOTGUN:

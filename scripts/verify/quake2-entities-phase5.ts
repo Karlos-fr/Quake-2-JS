@@ -21,10 +21,13 @@ import {
   EF_ANIM23,
   EF_ANIM_ALL,
   EF_ANIM_ALLFAST,
+  EF_DOUBLE,
   EF_ROTATE,
   EF_SPINNINGLIGHTS,
   RF_FRAMELERP,
+  RF_SHELL_DOUBLE,
   RF_TRANSLUCENT,
+  anglemod,
   createEntityState,
   type entity_state_t
 } from "../../packages/qcommon/src/index.js";
@@ -40,6 +43,7 @@ function main(): void {
   verifyRotationEffects();
   verifyLinkedModels();
   verifyRenderFlags();
+  verifyShellPromotionEffects();
 
   console.log("Verification phase 5 - cl_ents entity composition OK");
 }
@@ -93,7 +97,7 @@ function verifyRotationEffects(): void {
   });
   const spinningSnapshot = CL_BuildPacketEntitySnapshots(spinningRuntime)[0];
   assertNumber(spinningSnapshot?.angles[2] ?? -1, 180, "EF_SPINNINGLIGHTS roll");
-  assertNumber(spinningSnapshot?.angles[1] ?? -1, 295, "EF_SPINNINGLIGHTS yaw");
+  assertClose(spinningSnapshot?.angles[1] ?? -1, anglemod(2000 / 2) + 15, 0.0001, "EF_SPINNINGLIGHTS yaw");
 }
 
 /**
@@ -142,6 +146,23 @@ function verifyRenderFlags(): void {
   assertBoolean(((renderEntity?.flags ?? 0) & RF_FRAMELERP) !== 0, true, "RF_FRAMELERP kept in refresh entity flags");
   assertBoolean(((renderEntity?.flags ?? 0) & RF_TRANSLUCENT) !== 0, true, "RF_TRANSLUCENT kept in refresh entity flags");
   assertBoolean(Math.abs((renderEntity?.alpha ?? -1) - 1) < 0.0001, true, "RF_TRANSLUCENT keeps default alpha in render entity");
+}
+
+/**
+ * Category: New
+ * Purpose: Verify that the Rogue `EF_DOUBLE` shell promotion still maps onto the original renderfx bit.
+ */
+function verifyShellPromotionEffects(): void {
+  const runtime = createSeededRuntime();
+  setSingleEntity(runtime, {
+    modelindex: 1,
+    effects: EF_DOUBLE
+  });
+
+  const snapshot = CL_BuildPacketEntitySnapshots(runtime)[0];
+  assertBoolean(((snapshot?.effects ?? 0) & EF_DOUBLE) === 0, true, "EF_DOUBLE cleared after shell promotion");
+  assertBoolean(((snapshot?.renderfx ?? 0) & RF_SHELL_DOUBLE) !== 0, true, "EF_DOUBLE promotes RF_SHELL_DOUBLE");
+  assertNumber(snapshot?.flags ?? -1, 0, "color shell keeps primary entity flags clear");
 }
 
 /**
@@ -249,5 +270,15 @@ function assertNumber(actual: number, expected: number, label: string): void {
 function assertBoolean(actual: boolean, expected: boolean, label: string): void {
   if (actual !== expected) {
     throw new Error(`${label}: ${actual} != ${expected}`);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Assert one floating-point value within a fixed tolerance.
+ */
+function assertClose(actual: number, expected: number, tolerance: number, label: string): void {
+  if (Math.abs(actual - expected) > tolerance) {
+    throw new Error(`${label}: ${actual} != ${expected} (tol ${tolerance})`);
   }
 }

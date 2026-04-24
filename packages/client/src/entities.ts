@@ -24,6 +24,7 @@ import {
   EF_ANIM_ALLFAST,
   EF_BFG,
   EF_COLOR_SHELL,
+  EF_DOUBLE,
   EF_HALF_DAMAGE,
   EF_PENT,
   EF_PLASMA,
@@ -37,6 +38,7 @@ import {
   RF_BEAM,
   RF_FRAMELERP,
   RF_SHELL_BLUE,
+  RF_SHELL_DOUBLE,
   RF_SHELL_HALF_DAM,
   RF_SHELL_RED,
   RF_TRANSLUCENT,
@@ -240,6 +242,12 @@ export function CL_BuildPacketEntitySnapshots(
       effects &= ~EF_QUAD;
       effects |= EF_COLOR_SHELL;
       renderfx |= RF_SHELL_BLUE;
+    }
+
+    if ((effects & EF_DOUBLE) !== 0) {
+      effects &= ~EF_DOUBLE;
+      effects |= EF_COLOR_SHELL;
+      renderfx |= RF_SHELL_DOUBLE;
     }
 
     if ((effects & EF_HALF_DAMAGE) !== 0) {
