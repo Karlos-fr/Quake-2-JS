@@ -299,6 +299,24 @@ export function COM_StripExtension(input: string): string {
 }
 
 /**
+ * Original name: COM_FileExtension
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns up to seven characters after the first `.` in a path, or an empty string when none exists.
+ */
+export function COM_FileExtension(input: string): string {
+  const dot = input.indexOf(".");
+  if (dot < 0) {
+    return "";
+  }
+
+  return input.slice(dot + 1, dot + 8);
+}
+
+/**
  * Original name: COM_FileBase
  * Source: game/q_shared.c
  * Category: Ported
@@ -583,6 +601,67 @@ export function Swap_Init(): { bigendien: boolean } {
 }
 
 /**
+ * Original name: Q_strncasecmp
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Compares at most `count` characters with Quake II's ASCII-only case folding.
+ */
+export function Q_strncasecmp(left: string, right: string, count: number): number {
+  let index = 0;
+
+  while (true) {
+    const c1 = index < left.length ? left.charCodeAt(index) : 0;
+    const c2 = index < right.length ? right.charCodeAt(index) : 0;
+    index += 1;
+
+    if (count-- <= 0) {
+      return 0;
+    }
+
+    if (c1 !== c2) {
+      const folded1 = foldAsciiUpper(c1);
+      const folded2 = foldAsciiUpper(c2);
+      if (folded1 !== folded2) {
+        return -1;
+      }
+    }
+
+    if (c1 === 0) {
+      return 0;
+    }
+  }
+}
+
+/**
+ * Original name: Q_strcasecmp
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Compares two strings case-insensitively using the original large bound.
+ */
+export function Q_strcasecmp(left: string, right: string): number {
+  return Q_strncasecmp(left, right, 99999);
+}
+
+/**
+ * Original name: Q_stricmp
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Compatibility alias for the portable case-insensitive compare.
+ */
+export function Q_stricmp(left: string, right: string): number {
+  return Q_strcasecmp(left, right);
+}
+
+/**
  * Original name: Info_ValueForKey
  * Source: game/q_shared.c
  * Category: Ported
@@ -744,4 +823,8 @@ function isLittleEndianHost(): boolean {
   const view = new DataView(buffer);
   view.setUint16(0, 1, true);
   return view.getUint16(0, true) === 1;
+}
+
+function foldAsciiUpper(code: number): number {
+  return code >= 97 && code <= 122 ? code - 32 : code;
 }

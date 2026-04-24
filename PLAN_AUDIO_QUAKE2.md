@@ -307,17 +307,23 @@ Validation Phase 7 :
 
 ### Phase 8 - Musique de map
 
-- [ ] porter l'interface `CDAudio_*` au niveau logique
+- [x] porter l'interface `CDAudio_*` au niveau logique
 - [x] porter la reaction client a `CS_CDTRACK`
-- [ ] definir un mapping web `track -> asset musical`
+- [x] definir un mapping web `track -> asset musical`
 - [ ] implementer :
-  - `play(track, looping)`
-  - `stop()`
-  - `pause()`
-  - `resume()`
-  - `update()`
-- [ ] gerer le cas ou aucune musique web n'est disponible sans casser le runtime
-- [ ] respecter l'arret de la musique lors des cinematics et changements de map
+  - [x] `play(track, looping)`
+  - [x] `stop()`
+  - [x] `pause()`
+  - [x] `resume()`
+  - [x] `update()`
+- [x] gerer le cas ou aucune musique web n'est disponible sans casser le runtime
+- [x] respecter l'arret de la musique lors des cinematics et changements de map
+
+Validation Phase 8 :
+
+- [x] `npx tsx ./scripts/verify/quake2-cdaudio.ts`
+- [x] `npm run typecheck`
+- [x] `npm run build --workspace @quake2js/web`
 
 ### Phase 9 - Audio des cinematics
 
@@ -325,33 +331,61 @@ Validation Phase 7 :
 - [x] porter la file / buffer logique des raw samples
 - [x] brancher `cl_cin.c` sur le runtime audio porte
 - [x] gerer le flux PCM brut dans le backend web
-- [~] verifier la synchronisation image / son des cinematics
+- [x] verifier la synchronisation image / son des cinematics
+
+Validation Phase 9 :
+
+- [x] `npx tsx ./scripts/verify/quake2-cinematic-audio-sync.ts`
+- [x] `npx tsx ./scripts/verify/quake2-screen-header.ts`
+- [x] `npx tsx ./scripts/verify/quake2-web-audio-adapter.ts`
+- [x] `npm run typecheck`
 
 ### Phase 10 - Integration web
 
-- [~] brancher le runtime audio dans `apps/web`
-- [ ] connecter le listener a la camera / vue client
-- [~] connecter les snapshots / events du client local
-- [ ] connecter les loops des entites visibles
-- [ ] connecter l'etat pause / focus navigateur
-- [ ] connecter les reglages utilisateur :
-  - volume global
-  - musique
-  - SFX
+- [x] brancher le runtime audio dans `apps/web`
+- [x] connecter le listener a la camera / vue client
+- [x] connecter les snapshots / events du client local
+- [x] connecter les loops des entites visibles
+- [x] connecter l'etat pause / focus navigateur
+- [x] connecter les reglages utilisateur :
+  - [x] volume global
+  - [x] musique
+  - [x] SFX
 - [x] respecter les contraintes de gesture utilisateur avant demarrage audio
+
+Validation Phase 10 :
+
+- [x] `npx tsx ./scripts/verify/quake2-web-audio-adapter.ts`
+- [x] `npm run typecheck`
+- [x] `npm run build --workspace @quake2js/web`
 
 ### Phase 11 - Verification de fidelite
 
 - [x] creer des harnais de verification audio cibles
-- [~] verifier la stabilite des indices `soundindex`
-- [~] verifier l'encodage / decodage de `svc_sound`
+- [x] verifier la stabilite des indices `soundindex`
+- [x] verifier l'encodage / decodage de `svc_sound`
 - [x] verifier les overrides de canaux
-- [~] verifier les loops `ent->s.sound`
+- [x] verifier les loops `ent->s.sound`
 - [x] verifier les sons sexed
 - [~] verifier les sons de portes / triggers / pickups / armes / monstres
-- [~] verifier `CS_CDTRACK`
+- [x] verifier `CS_CDTRACK`
 - [x] verifier `S_RawSamples`
-- [ ] documenter les ecarts inevitables lies au web
+- [x] documenter les ecarts inevitables lies au web
+
+Validation Phase 11 :
+
+- [x] `npm run verify:audio:phase11`
+- [x] `npm run verify:snd-dma`
+- [x] `npm run verify:cl-parse`
+- [x] `npm run verify:server:send`
+- [x] `npm run verify:g-target`
+- [x] `npx tsx ./scripts/verify/quake2-cdaudio.ts`
+- [x] `npx tsx ./scripts/verify/quake2-cinematic-audio-sync.ts`
+- [x] `npm run typecheck`
+
+Documentation Phase 11 :
+
+- [x] `docs/audio-web-deviations.md`
 
 ## 6. Ordre de reprise recommande
 

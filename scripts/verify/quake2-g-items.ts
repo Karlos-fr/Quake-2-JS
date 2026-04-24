@@ -25,7 +25,7 @@ import {
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
-import { entity_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_ITEMS, STAT_PICKUP_ICON, STAT_PICKUP_STRING, entity_event_t } from "../../packages/qcommon/src/index.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 
 main();
@@ -34,6 +34,8 @@ function main(): void {
   verifyAddAmmoCapsToMax();
   verifySetRespawnRoundTrip();
   verifyTouchHealthPickup();
+  verifyTouchHealthPickupUsesItemPath();
+  verifyTouchAmmoPickupUsesItemPath();
   verifyTouchWeaponPickupUsesWeaponPath();
   verifyUsePowerArmorRequiresCells();
   verifyCoopPowerCubeSpawnFlags();
@@ -86,6 +88,49 @@ function verifyTouchHealthPickup(): void {
   const taken = Pickup_Health(itemEntity, player, runtime);
   assertBoolean(taken, true, "Pickup_Health accepts missing health");
   assertNumber(player.health, 85, "Pickup_Health adds count");
+}
+
+function verifyTouchHealthPickupUsesItemPath(): void {
+  const runtime = createHarnessRuntime();
+  const itemEntity = spawnGameEntity(runtime);
+  const player = createPlayer(runtime);
+  const health = requireItem("Health");
+
+  player.health = 40;
+  itemEntity.item = health;
+  itemEntity.count = 25;
+  itemEntity.spawnflags = 0;
+  itemEntity.touch = Touch_Item;
+  itemEntity.solid = 1;
+  linkGameEntity(runtime, itemEntity);
+
+  Touch_Item(itemEntity, player, runtime);
+
+  assertNumber(player.health, 65, "Touch_Item routes health pickups to Pickup_Health");
+  assertNumber(itemEntity.solid, 0, "Touch_Item hides a taken health pickup");
+  assertNumber(player.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + health.index, "Touch_Item writes the health pickup string stat");
+}
+
+function verifyTouchAmmoPickupUsesItemPath(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const ammoEntity = spawnGameEntity(runtime);
+  const shells = requireItem("Shells");
+
+  player.client!.pers.inventory[shells.index] = 5;
+  ammoEntity.item = shells;
+  ammoEntity.spawnflags = 0;
+  ammoEntity.classname = shells.classname;
+  ammoEntity.touch = Touch_Item;
+  ammoEntity.solid = 1;
+  linkGameEntity(runtime, ammoEntity);
+
+  Touch_Item(ammoEntity, player, runtime);
+
+  assertNumber(player.client!.pers.inventory[shells.index], 15, "Touch_Item routes ammo pickups to Pickup_Ammo");
+  assertNumber(ammoEntity.solid, 0, "Touch_Item hides a taken ammo pickup");
+  assertNumber(player.client!.ps.stats[STAT_PICKUP_ICON] > 0 ? 1 : 0, 1, "Touch_Item writes the ammo pickup icon stat");
+  assertNumber(player.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + shells.index, "Touch_Item writes the ammo pickup string stat");
 }
 
 function verifyTouchWeaponPickupUsesWeaponPath(): void {

@@ -42,7 +42,7 @@ import { CENTER_HANDED, FL_POWER_ARMOR, ITEM_INDEX, IT_KEY, SOLID_NOT } from "./
 import { FindItem, GetItemByIndex, ArmorIndex, PowerArmorType } from "./g_items.js";
 import { G_Find } from "./g_utils.js";
 import { respawn } from "./p_client.js";
-import { registerGameImage } from "./runtime.js";
+import { emitGameSound, registerGameImage } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
 /**
@@ -135,6 +135,8 @@ export function BeginIntermission(targ: GameEntity, runtime: GameRuntime, hooks:
     return;
   }
 
+  runtime.autosaved = false;
+
   for (let i = 1; i <= runtime.maxclients; i += 1) {
     const clientEnt = runtime.entities[i] ?? null;
     if (!clientEnt?.inuse) {
@@ -176,7 +178,7 @@ export function BeginIntermission(targ: GameEntity, runtime: GameRuntime, hooks:
     spot = G_Find(runtime, null, "classname", "info_player_start")
       ?? G_Find(runtime, null, "classname", "info_player_deathmatch");
   } else {
-    let count = runtime.framenum & 3;
+    let count = (Math.trunc(Math.random() * 0x7fffffff) & 3);
     while (count > 0) {
       spot = G_Find(runtime, spot, "classname", "info_player_intermission")
         ?? G_Find(runtime, null, "classname", "info_player_intermission")
@@ -389,7 +391,7 @@ export function G_SetStats(ent: GameEntity, runtime: GameRuntime): void {
     return;
   }
 
-  client.ps.stats[STAT_HEALTH_ICON] = imageIndex(runtime, "i_health");
+  client.ps.stats[STAT_HEALTH_ICON] = runtime.pic_health || imageIndex(runtime, "i_health");
   client.ps.stats[STAT_HEALTH] = ent.health;
 
   if (!client.ammo_index) {
@@ -408,6 +410,7 @@ export function G_SetStats(ent: GameEntity, runtime: GameRuntime): void {
     cells = cellsItem ? client.pers.inventory[ITEM_INDEX(cellsItem)] ?? 0 : 0;
     if (cells === 0) {
       ent.flags &= ~FL_POWER_ARMOR;
+      emitGameSound(runtime, ent, "misc/power2.wav");
       powerArmorType = 0;
     }
   }

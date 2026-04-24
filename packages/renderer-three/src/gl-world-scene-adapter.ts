@@ -15,7 +15,8 @@
 
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
 import { parsePcx, parseWal, SURF_FLOWING, SURF_TRANS33, SURF_TRANS66 } from "../../formats/src/index.js";
-import { createRefDef } from "../../client/src/ref.js";
+import { MAX_DLIGHTS, createRefDef } from "../../client/src/ref.js";
+import type { ClientRefreshFrame } from "../../client/src/refresh.js";
 import {
   BackSide,
   BufferAttribute,
@@ -38,8 +39,10 @@ import type { GlModelRuntime } from "./gl-model-loader.js";
 import { Mod_ForName, Mod_Init, Mod_PointInLeaf, createGlModelRuntime } from "./gl-model-loader.js";
 import type { GlRsurfRuntime } from "./gl-rsurf.js";
 import {
+  R_PushDlights,
   createGlLightRsurfHooks,
   createGlLightRuntime,
+  setGlLightFrameCount,
   setGlLightRefdef,
   setGlLightWorldModel,
   setGlModulate,
@@ -55,7 +58,9 @@ import {
   createGlRsurfRuntime,
   setCurrentModel,
   setCurrentTime,
+  setDynamicLightmapsEnabled,
   setFrameCount,
+  setLightstyles,
   setMultitextureEnabled,
   setRefdefState,
   setViewClusters,
@@ -98,9 +103,12 @@ interface SurfaceMeshBinding {
   baseOpacity: number;
   surface: msurface_t;
   uvAttribute: BufferAttribute;
+  lightmapUvAttribute: BufferAttribute;
   warp: boolean;
   flowing: boolean;
   currentMapSource: Texture | null;
+  currentLightmapSource: Texture | null;
+  currentLightmapOffset: [number, number];
 }
 
 interface InlineModelBinding {
@@ -126,7 +134,8 @@ export interface ThreeGlWorldSceneAdapter {
   update: (
     timeSeconds: number,
     vieworg?: readonly [number, number, number],
-    brushModels?: readonly BrushModelSnapshot[]
+    brushModels?: readonly BrushModelSnapshot[],
+    refreshFrame?: ClientRefreshFrame | null
   ) => void;
 }
 
@@ -172,14 +181,10 @@ export function createThreeGlWorldSceneAdapter(
   const glRsurfRuntime = createGlRsurfRuntime({
     ...createGlLightRsurfHooks(glLightRuntime),
     uploadLightmapBlock: (dynamic, textureIndex, buffer) => {
-      if (dynamic) {
-        return;
-      }
-
       const texture = ensureLightmapTexture(lightmapTextures, textureIndex);
       const textureData = texture.image.data;
       if (!(textureData instanceof Uint8Array)) {
-        throw new Error("Lightmap texture data is not writable");
+        throw new Error(`${dynamic ? "Dynamic" : "Static"} lightmap texture data is not writable`);
       }
       textureData.set(buffer);
       texture.needsUpdate = true;
@@ -222,8 +227,13 @@ export function createThreeGlWorldSceneAdapter(
     renderLightmappedPolyChain: (surface) => {
       surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface);
     },
-    renderLightmapChainSurface: (surface) => {
-      surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface);
+    renderLightmapChainSurface: (surface, lightmapTextureIndex, sOffset, tOffset) => {
+      surfaceMeshes.get(surface)?.mesh
+        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, undefined, {
+          textureIndex: lightmapTextureIndex,
+          sOffset,
+          tOffset
+        });
     },
     resetTextureBindings: () => {
       // Three.js materials are stateful objects, so there is no direct texture binding cache to clear here.
@@ -315,6 +325,7 @@ export function createThreeGlWorldSceneAdapter(
   setWorldModel(glRsurfRuntime, worldmodel);
   setGlLightWorldModel(glLightRuntime, worldmodel);
   setMultitextureEnabled(glRsurfRuntime, true);
+  setDynamicLightmapsEnabled(glRsurfRuntime, true);
   setWorldDrawFlags(glRsurfRuntime, { drawworld: true, novis: false, lockpvs: false });
   setRefdefState(glRsurfRuntime, null, 0);
 
@@ -339,7 +350,7 @@ export function createThreeGlWorldSceneAdapter(
     get skyFaces() {
       return skyState.faces;
     },
-    update: (timeSeconds, vieworg, brushModels) => {
+    update: (timeSeconds, vieworg, brushModels, refreshFrame) => {
       const scroll = computeFlowingScroll(timeSeconds);
       for (const binding of flowingMaterials) {
         binding.texture.offset.x = scroll;
@@ -353,7 +364,12 @@ export function createThreeGlWorldSceneAdapter(
         setCurrentTime(glRsurfRuntime, timeSeconds);
         setViewOrigin(glRsurfRuntime, [vieworg[0], vieworg[1], vieworg[2]]);
         setWarpViewOrigin(glWarpRuntime, [vieworg[0], vieworg[1], vieworg[2]]);
-        setFrameCount(glRsurfRuntime, glRsurfRuntime.r_framecount + 1);
+        syncCurrentRefdef(bootstrapRefdef, refreshFrame, timeSeconds, vieworg);
+        setLightstyles(glRsurfRuntime, bootstrapRefdef.lightstyles.map((lightstyle) => ({ white: lightstyle.white })));
+        const nextFrameCount = glRsurfRuntime.r_framecount + 1;
+        setFrameCount(glRsurfRuntime, nextFrameCount);
+        setGlLightFrameCount(glLightRuntime, nextFrameCount - 1);
+        R_PushDlights(glLightRuntime);
 
         const leaf = Mod_PointInLeaf([vieworg[0], vieworg[1], vieworg[2]], worldmodel);
         setViewClusters(glRsurfRuntime, leaf.cluster, leaf.cluster);
@@ -366,6 +382,44 @@ export function createThreeGlWorldSceneAdapter(
       }
     }
   };
+}
+
+function syncCurrentRefdef(
+  refdef: ReturnType<typeof createRefDef>,
+  frame: ClientRefreshFrame | null | undefined,
+  timeSeconds: number,
+  vieworg: readonly [number, number, number]
+): void {
+  refdef.time = timeSeconds;
+  refdef.vieworg = frame ? [...frame.view.vieworg] : [vieworg[0], vieworg[1], vieworg[2]];
+  refdef.viewangles = frame ? [...frame.view.viewangles] : [0, 0, 0];
+  refdef.fov_x = frame?.view.fov_x ?? refdef.fov_x;
+  refdef.blend = frame ? [...frame.view.blend] : [0, 0, 0, 0];
+
+  for (const lightstyle of refdef.lightstyles) {
+    lightstyle.rgb = [1, 1, 1];
+    lightstyle.white = 3;
+  }
+
+  if (frame) {
+    for (const source of frame.lightStyles) {
+      const lightstyle = refdef.lightstyles[source.style];
+      if (!lightstyle) {
+        continue;
+      }
+
+      lightstyle.rgb = [source.rgb[0], source.rgb[1], source.rgb[2]];
+      lightstyle.white = source.rgb[0] + source.rgb[1] + source.rgb[2];
+    }
+  }
+
+  const lights = frame?.lights ?? [];
+  refdef.num_dlights = Math.min(lights.length, MAX_DLIGHTS);
+  refdef.dlights = lights.slice(0, refdef.num_dlights).map((light) => ({
+    origin: [light.origin[0], light.origin[1], light.origin[2]],
+    color: [light.color[0], light.color[1], light.color[2]],
+    intensity: light.intensity
+  }));
 }
 
 function buildWorldGroup(
@@ -412,9 +466,12 @@ function buildWorldGroup(
           baseOpacity: alphaForSurface(surface),
           surface,
           uvAttribute: mesh.geometry.getAttribute("uv") as BufferAttribute,
+          lightmapUvAttribute: mesh.geometry.getAttribute("uv2") as BufferAttribute,
           warp: (surface.flags & SURF_DRAWTURB) !== 0,
           flowing: ((surface.texinfo?.flags ?? 0) & SURF_FLOWING) !== 0,
-          currentMapSource: null
+          currentMapSource: null,
+          currentLightmapSource: null,
+          currentLightmapOffset: [0, 0]
         });
         modelGroup.add(mesh);
       }
@@ -505,6 +562,7 @@ function buildSurfaceMesh(
 
   const mesh = new Mesh(geometry, material);
   mesh.name = `gl-surface:${surface.lightmaptexturenum}`;
+  mesh.userData.lightmapTextures = lightmapTextures;
   mesh.renderOrder = alpha < 1 ? 1 : 0;
   return mesh;
 }
@@ -849,7 +907,8 @@ function markSurfaceVisible(
   runtime: GlRsurfRuntime,
   surfaceMeshes: Map<msurface_t, SurfaceMeshBinding>,
   surface: msurface_t,
-  renderOrder?: number
+  renderOrder?: number,
+  lightmapOverride?: { textureIndex: number; sOffset: number; tOffset: number }
 ): void {
   const binding = surfaceMeshes.get(surface);
   if (!binding) {
@@ -857,6 +916,9 @@ function markSurfaceVisible(
   }
 
   syncSurfaceTexture(runtime, binding);
+  if (lightmapOverride) {
+    syncSurfaceLightmap(binding, lightmapOverride);
+  }
   const entityAlpha = binding.modelIndex > 0 ? runtime.currentEntityAlpha : null;
   const opacity = entityAlpha ?? binding.baseOpacity;
   binding.mesh.material.transparent = opacity < 1;
@@ -864,6 +926,51 @@ function markSurfaceVisible(
   binding.mesh.material.depthWrite = opacity >= 1;
   binding.mesh.renderOrder = renderOrder ?? (opacity < 1 ? 1 : 0);
   binding.mesh.visible = true;
+}
+
+function syncSurfaceLightmap(
+  binding: SurfaceMeshBinding,
+  lightmap: { textureIndex: number; sOffset: number; tOffset: number }
+): void {
+  const material = binding.mesh.material;
+  if (!("lightMap" in material)) {
+    return;
+  }
+
+  const source = binding.mesh.userData.lightmapTextures as Map<number, DataTexture> | undefined;
+  const texture = source?.get(lightmap.textureIndex) ?? null;
+  if (!texture) {
+    return;
+  }
+
+  if (binding.currentLightmapSource !== texture) {
+    material.lightMap = texture;
+    binding.currentLightmapSource = texture;
+    material.needsUpdate = true;
+  }
+
+  if (
+    binding.currentLightmapOffset[0] !== lightmap.sOffset ||
+    binding.currentLightmapOffset[1] !== lightmap.tOffset
+  ) {
+    updateLightmapUvs(binding, lightmap.sOffset, lightmap.tOffset);
+    binding.currentLightmapOffset = [lightmap.sOffset, lightmap.tOffset];
+  }
+}
+
+function updateLightmapUvs(binding: SurfaceMeshBinding, sOffset: number, tOffset: number): void {
+  const polygons = collectPolygons(binding.surface.polys);
+  let uvOffset = 0;
+  for (const poly of polygons) {
+    for (const vertex of poly.verts) {
+      if (uvOffset >= binding.lightmapUvAttribute.count) {
+        break;
+      }
+      binding.lightmapUvAttribute.setXY(uvOffset, vertex[5] + sOffset, vertex[6] + tOffset);
+      uvOffset += 1;
+    }
+  }
+  binding.lightmapUvAttribute.needsUpdate = true;
 }
 
 function syncSurfaceTexture(runtime: GlRsurfRuntime, binding: SurfaceMeshBinding): void {

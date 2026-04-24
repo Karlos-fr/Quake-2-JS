@@ -488,7 +488,7 @@ function updateRefreshEntityInstance(
     flags: entity.flags,
     rdflags: runtime.cl.frame.playerstate.rdflags,
     timeSeconds: runtime.cl.time / 1000,
-    baseShadeLight: [1, 1, 1]
+    baseShadeLight: computeRefreshAliasLight(refreshFrame, entity.origin)
   });
   if (shell) {
     instance.md2.mesh.material.vertexColors = false;
@@ -505,6 +505,32 @@ function updateRefreshEntityInstance(
   instance.md2.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
   instance.md2.mesh.material.needsUpdate = true;
   updateRefreshAliasShadow(instance, entity, aliasShadowsEnabled, shadowReceiverRoot, shadowRaycaster);
+}
+
+function computeRefreshAliasLight(
+  refreshFrame: ClientRefreshFrame | null,
+  origin: readonly [number, number, number]
+): [number, number, number] {
+  const shadelight: [number, number, number] = [1, 1, 1];
+  if (!refreshFrame) {
+    return shadelight;
+  }
+
+  for (const light of refreshFrame.lights) {
+    const dx = origin[0] - light.origin[0];
+    const dy = origin[1] - light.origin[1];
+    const dz = origin[2] - light.origin[2];
+    const add = (light.intensity - Math.sqrt(dx * dx + dy * dy + dz * dz)) * (1 / 256);
+    if (add <= 0) {
+      continue;
+    }
+
+    shadelight[0] += add * light.color[0];
+    shadelight[1] += add * light.color[1];
+    shadelight[2] += add * light.color[2];
+  }
+
+  return shadelight;
 }
 
 function applyAliasVertexColorAttribute(

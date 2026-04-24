@@ -9,7 +9,7 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - Temp-entity multicast/configstring side effects are journaled through runtime state, logs and queued sounds instead of a live server import table.
+ * - Temp-entity multicast/configstring side effects are queued through runtime state instead of a live server import table.
  * - Movement-driven specialty spawns (`misc_viper`, `misc_strogg_ship`) delegate train setup/use to the `g_func` port.
  *
  * Notes:
@@ -17,7 +17,7 @@
  */
 
 import {
-  AngleVectors,
+  ATTN_NORM,
   CHAN_BODY,
   CHAN_VOICE,
   CS_LIGHTS,
@@ -32,6 +32,9 @@ import {
   RF_FRAMELERP,
   RF_TRANSLUCENT,
   entity_event_t,
+  multicast_t,
+  temp_event_t,
+  type cplane_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
 import {
@@ -53,7 +56,6 @@ import {
   MOVETYPE_STEP,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  TAG_LEVEL,
   damage_t
 } from "./g-local.js";
 import {
@@ -61,8 +63,6 @@ import {
   MOVETYPE_NONE,
   MOVETYPE_PUSH,
   MOVETYPE_TOSS,
-  emitGameSound,
-  freeGameEntity,
   SOLID_BSP,
   SOLID_NOT,
   SOLID_TRIGGER,
@@ -74,12 +74,16 @@ import {
   registerGameModel,
   registerGameSound,
   spawnGameEntity,
+  emitGameTempEntity,
+  emitRegisteredGameSound,
+  setGameConfigstring,
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
 import { T_Damage, T_RadiusDamage } from "./g_combat.js";
-import { SP_func_door, door_use, func_train_find, train_use } from "./g_func.js";
+import { func_train_find, train_use } from "./g_func.js";
 import { M_droptofloor } from "./g_monster.js";
+import { M_walkmove } from "./m_move.js";
 import { G_Find, G_FreeEdict, G_PickTarget, G_Spawn, G_UseTargets, KillBox, vectoyaw, vectoangles } from "./g_utils.js";
 
 const START_OFF = 1;
@@ -230,8 +234,12 @@ export function gib_touch(self: GameEntity, _other: GameEntity, runtime: GameRun
   }
 
   self.touch = undefined;
-  emitGameSound(runtime, self, "misc/fhit3.wav");
-  if (self.s.frame === 0) {
+  emitRegisteredGameSound(runtime, self, registerGameSound(runtime, "misc/fhit3.wav"), "misc/fhit3.wav", {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM
+  });
+  if (runtime.assets.modelPaths[self.s.modelindex - 1] === "models/objects/gibs/sm_meat/tris.md2") {
     self.s.frame += 1;
     self.think = gib_think;
     self.nextthink = runtime.time + FRAMETIME;
@@ -278,7 +286,11 @@ export function misc_deadsoldier_die(
     return;
   }
 
-  emitGameSound(runtime, self, "misc/udeath.wav");
+  emitRegisteredGameSound(runtime, self, registerGameSound(runtime, "misc/udeath.wav"), "misc/udeath.wav", {
+    channel: CHAN_BODY,
+    volume: 1,
+    attenuation: ATTN_NORM
+  });
   for (let index = 0; index < 4; index += 1) {
     ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
   }
@@ -427,6 +439,7 @@ export function light_use(
 ): void {
   const on = (self.spawnflags & START_OFF) !== 0;
   self.spawnflags = on ? (self.spawnflags & ~START_OFF) : (self.spawnflags | START_OFF);
+  setGameConfigstring(runtime, CS_LIGHTS + self.style, on ? "m" : "a");
   runtime.log({
     kind: "use",
     message: `${self.classname} lightstyle ${CS_LIGHTS + self.style}=${on ? "m" : "a"}`,
@@ -443,6 +456,7 @@ export function SP_light(self: GameEntity, runtime: GameRuntime): void {
 
   if (self.style >= 32) {
     self.use = light_use;
+    setGameConfigstring(runtime, CS_LIGHTS + self.style, (self.spawnflags & START_OFF) !== 0 ? "a" : "m");
   }
 }
 
@@ -507,7 +521,11 @@ export function SP_func_wall(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
-export function func_object_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
+export function func_object_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime, plane?: cplane_t | null): void {
+  if (!plane || plane.normal[2] < 1.0) {
+    return;
+  }
+
   if (other.takedamage === damage_t.DAMAGE_NO) {
     return;
   }
@@ -572,6 +590,7 @@ export function SP_func_object(self: GameEntity, runtime: GameRuntime): void {
 }
 
 export function BecomeExplosion1(self: GameEntity, runtime: GameRuntime): void {
+  emitGameTempEntity(runtime, temp_event_t.TE_EXPLOSION1, self.s.origin, multicast_t.MULTICAST_PVS);
   runtime.log({
     kind: "think",
     message: `${self.classname} TE_EXPLOSION1`,
@@ -582,6 +601,7 @@ export function BecomeExplosion1(self: GameEntity, runtime: GameRuntime): void {
 }
 
 export function BecomeExplosion2(self: GameEntity, runtime: GameRuntime): void {
+  emitGameTempEntity(runtime, temp_event_t.TE_EXPLOSION2, self.s.origin, multicast_t.MULTICAST_PVS);
   runtime.log({
     kind: "think",
     message: `${self.classname} TE_EXPLOSION2`,
@@ -619,6 +639,295 @@ export function ThrowDebris(self: GameEntity, modelname: string, speed: number, 
   chunk.die = debris_die;
   refreshEntitySpatialState(chunk);
   linkGameEntity(runtime, chunk);
+}
+
+/**
+ * Original name: func_explosive_explode
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Breaks a shootable/triggered brush model into debris, fires targets and optionally emits an explosion temp entity.
+ */
+export function func_explosive_explode(
+  self: GameEntity,
+  inflictor: GameEntity | null,
+  attacker: GameEntity | null,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  const size = scaleVec3(self.size, 0.5);
+  const origin = addVec3(self.absmin, size);
+  setEntityOrigin(self, origin);
+
+  self.takedamage = damage_t.DAMAGE_NO;
+
+  if (self.dmg) {
+    T_RadiusDamage(self, attacker ?? self, self.dmg, null, self.dmg + 40, MOD_EXPLOSIVE, runtime);
+  }
+
+  const sourceOrigin = inflictor?.s.origin ?? self.s.origin;
+  self.velocity = scaleVec3(normalizeVec3(subVec3(self.s.origin, sourceOrigin)), 150);
+
+  const chunkRange = scaleVec3(size, 0.5);
+  const mass = self.mass || 75;
+
+  let count = mass >= 100 ? Math.min(Math.trunc(mass / 100), 8) : 0;
+  while (count > 0) {
+    count -= 1;
+    ThrowDebris(self, "models/objects/debris1/tris.md2", 1, [
+      origin[0] + crandom() * chunkRange[0],
+      origin[1] + crandom() * chunkRange[1],
+      origin[2] + crandom() * chunkRange[2]
+    ], runtime);
+  }
+
+  count = Math.min(Math.trunc(mass / 25), 16);
+  while (count > 0) {
+    count -= 1;
+    ThrowDebris(self, "models/objects/debris2/tris.md2", 2, [
+      origin[0] + crandom() * chunkRange[0],
+      origin[1] + crandom() * chunkRange[1],
+      origin[2] + crandom() * chunkRange[2]
+    ], runtime);
+  }
+
+  G_UseTargets(runtime, self, attacker);
+
+  if (self.dmg) {
+    BecomeExplosion1(self, runtime);
+  } else {
+    G_FreeEdict(runtime, self);
+  }
+}
+
+/**
+ * Original name: func_explosive_use
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function func_explosive_use(
+  self: GameEntity,
+  other: GameEntity | null,
+  _activator: GameEntity | null,
+  runtime: GameRuntime
+): void {
+  func_explosive_explode(self, self, other, self.health, runtime);
+}
+
+/**
+ * Original name: func_explosive_spawn
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function func_explosive_spawn(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _activator: GameEntity | null,
+  runtime: GameRuntime
+): void {
+  self.solid = SOLID_BSP;
+  self.svflags &= ~SVF_NOCLIENT;
+  self.use = undefined;
+  KillBox(runtime, self);
+  refreshEntitySpatialState(self);
+  linkGameEntity(runtime, self);
+}
+
+/**
+ * Original name: SP_func_explosive
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns an explosive brush model with trigger-spawn, shootable and animated variants.
+ */
+export function SP_func_explosive(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  self.movetype = MOVETYPE_PUSH;
+  registerGameModel(runtime, "models/objects/debris1/tris.md2");
+  registerGameModel(runtime, "models/objects/debris2/tris.md2");
+  if (self.model && !self.model.startsWith("*")) {
+    self.s.modelindex = registerGameModel(runtime, self.model);
+  }
+
+  if ((self.spawnflags & 1) !== 0) {
+    self.svflags |= SVF_NOCLIENT;
+    self.solid = SOLID_NOT;
+    self.use = func_explosive_spawn;
+  } else {
+    self.solid = SOLID_BSP;
+    if (self.targetname) {
+      self.use = func_explosive_use;
+    }
+  }
+
+  if ((self.spawnflags & 2) !== 0) {
+    self.s.effects |= EF_ANIM_ALL;
+  }
+  if ((self.spawnflags & 4) !== 0) {
+    self.s.effects |= EF_ANIM_ALLFAST;
+  }
+
+  if (self.use !== func_explosive_use) {
+    if (!self.health) {
+      self.health = 100;
+    }
+    self.die = func_explosive_explode;
+    self.takedamage = damage_t.DAMAGE_YES;
+  }
+
+  refreshEntitySpatialState(self);
+  linkGameEntity(runtime, self);
+}
+
+/**
+ * Original name: barrel_touch
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Lets grounded actors push an explosive barrel sideways.
+ */
+export function barrel_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
+  if (!other.groundentity || other.groundentity === self || self.mass === 0) {
+    return;
+  }
+
+  const ratio = other.mass / self.mass;
+  const v = subVec3(self.s.origin, other.s.origin);
+  M_walkmove(self, vectoyaw(v), 20 * ratio * FRAMETIME, runtime);
+}
+
+/**
+ * Original name: barrel_explode
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies barrel radius damage, throws debris chunks and turns the entity into a temporary explosion.
+ */
+export function barrel_explode(self: GameEntity, runtime: GameRuntime): void {
+  T_RadiusDamage(self, self.activator ?? self, self.dmg, null, self.dmg + 40, MOD_BARREL, runtime);
+
+  const save: vec3_t = [...self.s.origin];
+  const center: vec3_t = [
+    self.absmin[0] + 0.5 * self.size[0],
+    self.absmin[1] + 0.5 * self.size[1],
+    self.absmin[2] + 0.5 * self.size[2]
+  ];
+  setEntityOrigin(self, center);
+
+  const throwRandomDebris = (modelname: string, speed: number): void => {
+    ThrowDebris(self, modelname, speed, [
+      self.s.origin[0] + crandom() * self.size[0],
+      self.s.origin[1] + crandom() * self.size[1],
+      self.s.origin[2] + crandom() * self.size[2]
+    ], runtime);
+  };
+
+  let spd = 1.5 * self.dmg / 200.0;
+  throwRandomDebris("models/objects/debris1/tris.md2", spd);
+  throwRandomDebris("models/objects/debris1/tris.md2", spd);
+
+  spd = 1.75 * self.dmg / 200.0;
+  ThrowDebris(self, "models/objects/debris3/tris.md2", spd, [...self.absmin], runtime);
+  ThrowDebris(self, "models/objects/debris3/tris.md2", spd, [self.absmin[0] + self.size[0], self.absmin[1], self.absmin[2]], runtime);
+  ThrowDebris(self, "models/objects/debris3/tris.md2", spd, [self.absmin[0], self.absmin[1] + self.size[1], self.absmin[2]], runtime);
+  ThrowDebris(self, "models/objects/debris3/tris.md2", spd, [self.absmin[0] + self.size[0], self.absmin[1] + self.size[1], self.absmin[2]], runtime);
+
+  spd = 2 * self.dmg / 200.0;
+  for (let index = 0; index < 8; index += 1) {
+    throwRandomDebris("models/objects/debris2/tris.md2", spd);
+  }
+
+  setEntityOrigin(self, save);
+  if (self.groundentity) {
+    BecomeExplosion2(self, runtime);
+  } else {
+    BecomeExplosion1(self, runtime);
+  }
+}
+
+/**
+ * Original name: barrel_delay
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Delays barrel explosion by two server frames after lethal damage.
+ */
+export function barrel_delay(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  attacker: GameEntity | null,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  self.takedamage = damage_t.DAMAGE_NO;
+  self.nextthink = runtime.time + 2 * FRAMETIME;
+  self.think = barrel_explode;
+  self.activator = attacker;
+}
+
+/**
+ * Original name: SP_misc_explobox
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns the large exploding barrel/box model with shootable damage state.
+ *
+ * Porting notes:
+ * - Uses the local gameplay asset registry in place of `gi.modelindex`.
+ */
+export function SP_misc_explobox(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  registerGameModel(runtime, "models/objects/debris1/tris.md2");
+  registerGameModel(runtime, "models/objects/debris2/tris.md2");
+  registerGameModel(runtime, "models/objects/debris3/tris.md2");
+
+  self.solid = SOLID_BBOX;
+  self.movetype = MOVETYPE_STEP;
+  self.model = "models/objects/barrels/tris.md2";
+  self.s.modelindex = registerGameModel(runtime, self.model);
+  self.mins = [-16, -16, 0];
+  self.maxs = [16, 16, 40];
+
+  if (!self.mass) {
+    self.mass = 400;
+  }
+  if (!self.health) {
+    self.health = 10;
+  }
+  if (!self.dmg) {
+    self.dmg = 150;
+  }
+
+  self.die = barrel_delay;
+  self.takedamage = damage_t.DAMAGE_YES;
+  self.monsterinfo.aiflags = AI_NOSTEP;
+  self.touch = barrel_touch;
+  self.think = M_droptofloor;
+  self.nextthink = runtime.time + 2 * FRAMETIME;
+  refreshEntitySpatialState(self);
+  linkGameEntity(runtime, self);
 }
 
 /**
@@ -785,9 +1094,9 @@ export function misc_blackhole_use(
   ent: GameEntity,
   _other: GameEntity | null,
   _activator: GameEntity | null,
-  _runtime: GameRuntime
+  runtime: GameRuntime
 ): void {
-  ent.inuse = false;
+  G_FreeEdict(runtime, ent);
 }
 
 /**
@@ -973,11 +1282,15 @@ export function SP_misc_easterchick2(ent: GameEntity, runtime: GameRuntime): voi
  * - Plays the commander's decapitated body animation until frame 23.
  *
  * Porting notes:
- * - Sound playback side effects are precached elsewhere but not emitted yet by the local gameplay runtime.
+ * - Sound playback is queued through the local gameplay sound-event bridge.
  */
 export function commander_body_think(self: GameEntity, runtime: GameRuntime): void {
   if (self.s.frame === 21) {
-    emitGameSound(runtime, self, "tank/thud.wav");
+    emitRegisteredGameSound(runtime, self, registerGameSound(runtime, "tank/thud.wav"), "tank/thud.wav", {
+      channel: CHAN_BODY,
+      volume: 1,
+      attenuation: ATTN_NORM
+    });
   }
   if (++self.s.frame < 24) {
     self.think = commander_body_think;
@@ -1006,7 +1319,11 @@ export function commander_body_use(
 ): void {
   self.think = commander_body_think;
   self.nextthink = runtime.time + FRAMETIME;
-  emitGameSound(runtime, self, "tank/pain.wav");
+  emitRegisteredGameSound(runtime, self, registerGameSound(runtime, "tank/pain.wav"), "tank/pain.wav", {
+    channel: CHAN_BODY,
+    volume: 1,
+    attenuation: ATTN_NORM
+  });
 }
 
 /**
@@ -1277,7 +1594,7 @@ export function SP_misc_strogg_ship(ent: GameEntity, runtime: GameRuntime): void
  * - Spawns the teleporter pad and its local trigger helper volume.
  *
  * Porting notes:
- * - The touch callback is intentionally left for a later gameplay phase.
+ * - The trigger helper is represented as a runtime entity spawned beside the teleporter pad.
  */
 export function SP_misc_teleporter(ent: GameEntity, runtime: GameRuntime): void {
   if (!ent.target) {
@@ -1339,7 +1656,7 @@ export function SP_misc_teleporter_dest(ent: GameEntity, runtime: GameRuntime): 
  * - Spawns one dead marine body pose selected from the spawnflags.
  *
  * Porting notes:
- * - Deathmatch auto-removal and gibbing death behavior are deferred until the broader combat/runtime phase.
+ * - Gib and sound side effects are routed through the local gameplay runtime.
  */
 export function SP_misc_deadsoldier(ent: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
@@ -1410,7 +1727,7 @@ function initialize_misc_gib(ent: GameEntity, runtime: GameRuntime, modelPath: s
  * - Spawns the flying arm gib decorative entity.
  *
  * Porting notes:
- * - Gib death cleanup is deferred until the broader combat/gib phase.
+ * - Shared gib initialization is factored into a local helper to preserve the three identical source spawns.
  */
 export function SP_misc_gib_arm(ent: GameEntity, runtime: GameRuntime): void {
   initialize_misc_gib(ent, runtime, "models/objects/gibs/arm/tris.md2");
@@ -1426,7 +1743,7 @@ export function SP_misc_gib_arm(ent: GameEntity, runtime: GameRuntime): void {
  * - Spawns the flying leg gib decorative entity.
  *
  * Porting notes:
- * - Gib death cleanup is deferred until the broader combat/gib phase.
+ * - Shared gib initialization is factored into a local helper to preserve the three identical source spawns.
  */
 export function SP_misc_gib_leg(ent: GameEntity, runtime: GameRuntime): void {
   initialize_misc_gib(ent, runtime, "models/objects/gibs/leg/tris.md2");
@@ -1442,7 +1759,7 @@ export function SP_misc_gib_leg(ent: GameEntity, runtime: GameRuntime): void {
  * - Spawns the flying head gib decorative entity.
  *
  * Porting notes:
- * - Gib death cleanup is deferred until the broader combat/gib phase.
+ * - Shared gib initialization is factored into a local helper to preserve the three identical source spawns.
  */
 export function SP_misc_gib_head(ent: GameEntity, runtime: GameRuntime): void {
   initialize_misc_gib(ent, runtime, "models/objects/gibs/head/tris.md2");
@@ -1625,7 +1942,7 @@ export function SP_func_clock(self: GameEntity, runtime: GameRuntime): void {
  * - Spawns the hidden viper bomb entity with its world model and default damage.
  *
  * Porting notes:
- * - Activation, flight prethink and explosion touch are deferred until the train/bomb gameplay phase.
+ * - Activation, flight prethink and explosion touch are handled in this port; train motion still comes from `g_func`.
  */
 export function SP_misc_viper_bomb(self: GameEntity, runtime: GameRuntime): void {
   self.movetype = MOVETYPE_NONE;

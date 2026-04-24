@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - Uses the current runtime `BoxEdicts` layer instead of the original engine import table.
- * - Keeps the reduced TypeScript `touch` signature without plane/surface arguments.
+ * - Runtime overlap helpers call touches without plane/surface when no collision trace produced them.
  *
  * Notes:
  * - This file is intended to stay close to the original `G_TouchTriggers` / `G_TouchSolids` behavior.

@@ -22,9 +22,11 @@ import {
   AddPointToBounds,
   anglemod,
   BoxOnPlaneSide,
+  BoxOnPlaneSide2,
   ClearBounds,
   PerpendicularVector,
   ProjectPointOnPlane,
+  Q_fabs,
   Q_log2,
   R_ConcatRotations,
   R_ConcatTransforms,
@@ -41,6 +43,7 @@ import {
   BigShort,
   COM_DefaultExtension,
   COM_FileBase,
+  COM_FileExtension,
   COM_FilePath,
   COM_Parse,
   COM_SkipPath,
@@ -52,6 +55,9 @@ import {
   LittleFloat,
   LittleLong,
   LittleShort,
+  Q_strcasecmp,
+  Q_stricmp,
+  Q_strncasecmp,
   Swap_Init,
   va
 } from "../../packages/qcommon/src/common.js";
@@ -108,6 +114,7 @@ import {
   VIDREF_GL,
   VIDREF_OTHER,
   VIDREF_SOFT,
+  AngleVectors,
   createEntityState,
   createPlayerState
 } from "../../packages/qcommon/src/q-shared.js";
@@ -150,6 +157,8 @@ assert.deepEqual(vec3_origin, [0, 0, 0], "vec3_origin mismatch");
 assert.ok(monster_flash_offset.length > 200, "monster_flash_offset table must preserve MZ2 coverage");
 assert.equal(COM_SkipPath("textures/e1u1/wall.wal"), "wall.wal", "COM_SkipPath mismatch");
 assert.equal(COM_StripExtension("maps/base1.bsp"), "maps/base1", "COM_StripExtension mismatch");
+assert.equal(COM_FileExtension("maps/base1.bsp"), "bsp", "COM_FileExtension mismatch");
+assert.equal(COM_FileExtension("archive.tar.longext"), "tar.lon", "COM_FileExtension static buffer width mismatch");
 assert.equal(COM_FileBase("maps/base1.bsp"), "base1", "COM_FileBase mismatch");
 assert.equal(COM_FilePath("maps/base1.bsp"), "maps", "COM_FilePath mismatch");
 assert.equal(COM_DefaultExtension("maps/base1", ".bsp"), "maps/base1.bsp", "COM_DefaultExtension mismatch");
@@ -176,6 +185,10 @@ assert.ok(Math.abs(BigFloat(1.0) - 4.600602988224807e-41) < 1e-45, "BigFloat mis
 assert.equal(LittleFloat(1.0), 1.0, "LittleFloat mismatch");
 assert.equal(Swap_Init().bigendien, false, "Swap_Init host-endian detection mismatch");
 assert.equal(va("a", 1, "b"), "a1b", "va mismatch");
+assert.equal(Q_stricmp("Blaster", "blaster"), 0, "Q_stricmp mismatch");
+assert.equal(Q_strcasecmp("Rocket", "rocket"), 0, "Q_strcasecmp mismatch");
+assert.equal(Q_strncasecmp("Machinegun", "machine", 7), 0, "Q_strncasecmp prefix mismatch");
+assert.equal(Q_strncasecmp("Rocket", "Rail", 3), -1, "Q_strncasecmp mismatch");
 
 const systemCalls: string[] = [];
 const systemRuntime = createSystemRuntime({
@@ -223,6 +236,8 @@ assert.deepEqual(mins, [4, -2, 8], "AddPointToBounds mins mismatch");
 assert.deepEqual(maxs, [4, -2, 8], "AddPointToBounds maxs mismatch");
 assert.equal(VectorCompare([1, 2, 3], [1, 2, 3]), 1, "VectorCompare equal mismatch");
 assert.equal(VectorCompare([1, 2, 3], [1, 2, 4]), 0, "VectorCompare mismatch");
+assert.equal(Q_fabs(-3.5), 3.5, "Q_fabs negative mismatch");
+assert.equal(Q_fabs(3.5), 3.5, "Q_fabs positive mismatch");
 
 const normalizedOut: [number, number, number] = [0, 0, 0];
 assert.equal(VectorNormalize2([0, 3, 4], normalizedOut), 5, "VectorNormalize2 length mismatch");
@@ -306,6 +321,21 @@ assert.equal(BoxOnPlaneSide([-1, -1, -1], [1, 1, 1], {
   type: 0,
   signbits: 0
 }), 3, "BoxOnPlaneSide mismatch");
+assert.equal(BoxOnPlaneSide2([-1, -1, -1], [1, 1, 1], {
+  normal: [1, 0, 0],
+  dist: 0,
+  type: 0,
+  signbits: 0
+}), 3, "BoxOnPlaneSide2 mismatch");
+
+const forwardOut: [number, number, number] = [0, 0, 0];
+const rightOut: [number, number, number] = [0, 0, 0];
+const upOut: [number, number, number] = [0, 0, 0];
+const angleVectors = AngleVectors([0, 90, 0], forwardOut, rightOut, upOut);
+assert.ok(Math.abs(forwardOut[0]) < 1e-6 && Math.abs(forwardOut[1] - 1) < 1e-6, "AngleVectors forward out mismatch");
+assert.deepEqual(forwardOut, angleVectors.forward, "AngleVectors return/out forward mismatch");
+assert.deepEqual(rightOut, angleVectors.right, "AngleVectors return/out right mismatch");
+assert.deepEqual(upOut, angleVectors.up, "AngleVectors return/out up mismatch");
 
 const entityState = createEntityState();
 assert.equal(entityState.number, 0, "createEntityState default number mismatch");

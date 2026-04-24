@@ -10,17 +10,28 @@
  */
 
 import { strict as assert } from "node:assert";
-import { entity_event_t, PMF_TIME_TELEPORT } from "../../packages/qcommon/src/index.js";
+import { CS_LIGHTS, entity_event_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
 
 import {
+  SP_func_explosive,
   SP_func_clock,
+  SP_light,
+  SOLID_BSP,
+  SP_misc_explobox,
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
   SP_path_corner,
   SP_target_character,
   SP_target_string,
   attachGameClient,
+  barrel_delay,
   createGameRuntimeFromBspEntities,
+  damage_t,
+  drainGameConfigstringUpdates,
+  drainGameTempEntityEvents,
+  func_explosive_explode,
+  func_explosive_spawn,
+  func_explosive_use,
   linkGameEntity,
   path_corner_touch,
   runPendingThinks,
@@ -36,6 +47,9 @@ function main(): void {
   verifyPathCornerAdvancesMonsterGoal();
   verifyTargetStringMapsFrames();
   verifyFuncClockBootstrapsTargetStringMessage();
+  verifyMiscExploboxSpawnsShootableBarrel();
+  verifyLightWritesSourceConfigstrings();
+  verifyFuncExplosiveSpawnsAndExplodesBrushModel();
 
   console.log("quake2-g-misc: ok");
 }
@@ -158,6 +172,89 @@ function verifyFuncClockBootstrapsTargetStringMessage(): void {
   runPendingThinks(runtime, runtime.time + 1);
 
   assert.ok(stringTarget.message && stringTarget.message.length >= 4, "func_clock must write a formatted target_string message");
+}
+
+function verifyMiscExploboxSpawnsShootableBarrel(): void {
+  const runtime = createHarnessRuntime();
+
+  const barrel = spawnGameEntity(runtime);
+  barrel.classname = "misc_explobox";
+  barrel.origin = [64, 32, 16];
+  barrel.s.origin = [64, 32, 16];
+  SP_misc_explobox(barrel, runtime);
+
+  assert.equal(barrel.model, "models/objects/barrels/tris.md2", "misc_explobox must use the barrel MD2 model");
+  assert.equal(runtime.assets.modelPaths[barrel.s.modelindex - 1], "models/objects/barrels/tris.md2", "misc_explobox modelindex must resolve to barrels/tris.md2");
+  assert.deepEqual(barrel.mins, [-16, -16, 0], "misc_explobox mins mismatch");
+  assert.deepEqual(barrel.maxs, [16, 16, 40], "misc_explobox maxs mismatch");
+  assert.equal(barrel.mass, 400, "misc_explobox default mass mismatch");
+  assert.equal(barrel.health, 10, "misc_explobox default health mismatch");
+  assert.equal(barrel.dmg, 150, "misc_explobox default damage mismatch");
+  assert.equal(barrel.takedamage, damage_t.DAMAGE_YES, "misc_explobox must be shootable");
+  assert.equal(barrel.die, barrel_delay, "misc_explobox must use barrel_delay as die callback");
+  assert.ok(barrel.touch, "misc_explobox must expose barrel_touch");
+  assert.ok(barrel.think, "misc_explobox must schedule M_droptofloor");
+}
+
+function verifyLightWritesSourceConfigstrings(): void {
+  const runtime = createHarnessRuntime();
+
+  const light = spawnGameEntity(runtime);
+  light.classname = "light";
+  light.targetname = "toggle_light";
+  light.style = 33;
+  light.spawnflags = 1;
+  SP_light(light, runtime);
+
+  assert.deepEqual(drainGameConfigstringUpdates(runtime), [{ index: CS_LIGHTS + 33, value: "a" }], "SP_light must initialize the source lightstyle configstring");
+
+  useGameEntity(runtime, light, null, light);
+  assert.deepEqual(drainGameConfigstringUpdates(runtime), [{ index: CS_LIGHTS + 33, value: "m" }], "light_use must toggle the lightstyle configstring on");
+}
+
+function verifyFuncExplosiveSpawnsAndExplodesBrushModel(): void {
+  const runtime = createHarnessRuntime();
+
+  const explosive = spawnGameEntity(runtime);
+  explosive.classname = "func_explosive";
+  explosive.model = "*1";
+  explosive.mins = [-16, -16, 0];
+  explosive.maxs = [16, 16, 32];
+  explosive.mass = 100;
+  explosive.dmg = 120;
+  SP_func_explosive(explosive, runtime);
+
+  assert.equal(explosive.solid, SOLID_BSP, "func_explosive must spawn solid when not trigger-spawned");
+  assert.equal(explosive.takedamage, damage_t.DAMAGE_YES, "untargeted func_explosive must be shootable");
+  assert.equal(explosive.die, func_explosive_explode, "untargeted func_explosive must use func_explosive_explode");
+
+  const attacker = spawnGameEntity(runtime);
+  attacker.classname = "attacker";
+  attacker.s.origin = [128, 0, 0];
+  attacker.origin = [128, 0, 0];
+  func_explosive_explode(explosive, attacker, attacker, explosive.health, runtime);
+
+  assert.equal(runtime.entities.filter((entity) => entity.classname === "debris").length, 5, "mass 100 func_explosive must throw one large and four small debris chunks");
+  assert.equal(drainGameTempEntityEvents(runtime).at(-1)?.type, temp_event_t.TE_EXPLOSION1, "func_explosive with damage must emit TE_EXPLOSION1");
+
+  const triggerSpawned = spawnGameEntity(runtime);
+  triggerSpawned.classname = "func_explosive";
+  triggerSpawned.model = "*2";
+  triggerSpawned.spawnflags = 1;
+  SP_func_explosive(triggerSpawned, runtime);
+
+  assert.equal(triggerSpawned.use, func_explosive_spawn, "trigger-spawned func_explosive must first expose func_explosive_spawn");
+  useGameEntity(runtime, triggerSpawned, null, triggerSpawned);
+  assert.equal(triggerSpawned.solid, SOLID_BSP, "func_explosive_spawn must make the brush solid");
+
+  const targeted = spawnGameEntity(runtime);
+  targeted.classname = "func_explosive";
+  targeted.model = "*3";
+  targeted.targetname = "boom";
+  SP_func_explosive(targeted, runtime);
+
+  assert.equal(targeted.use, func_explosive_use, "targeted func_explosive must be trigger-usable instead of shootable");
+  assert.equal(targeted.takedamage, damage_t.DAMAGE_NO, "targeted func_explosive must not be shootable");
 }
 
 function createHarnessRuntime() {

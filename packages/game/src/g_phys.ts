@@ -171,11 +171,11 @@ export function SV_Impact(e1: GameEntity, trace: trace_t, runtime: GameRuntime):
   }
 
   if (e1.touch && e1.solid !== SOLID_NOT) {
-    e1.touch(e1, e2, runtime);
+    e1.touch(e1, e2, runtime, trace.plane, trace.surface);
   }
 
   if (e2.touch && e2.solid !== SOLID_NOT) {
-    e2.touch(e2, e1, runtime);
+    e2.touch(e2, e1, runtime, null, null);
   }
 }
 

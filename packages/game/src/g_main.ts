@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - The original file-scope globals are grouped into an explicit `GameMainContext`.
- * - Unported persistence entry points (`WriteGame`, `ReadGame`, `WriteLevel`, `ReadLevel`) currently emit diagnostics instead of touching save files.
+ * - Persistence entry points are delegated to the `game/g_save.c` port in `g_save.ts`.
  * - `SpawnEntities` uses the existing entity-lump parser and an explicit runtime rebuild step.
  *
  * Notes:
@@ -34,6 +34,7 @@ import {
   CS_STATUSBAR,
   DF_SAME_LEVEL,
   PRINT_HIGH,
+  temp_event_t,
   type cvar_t,
   type qboolean,
   type usercmd_t
@@ -45,6 +46,7 @@ import {
   FRAMETIME,
   GAMEVERSION,
   SVF_MONSTER,
+  svc_temp_entity,
   TAG_GAME,
   TAG_LEVEL,
   createGameLocals,
@@ -70,11 +72,15 @@ import {
 } from "./p_client.js";
 import { PlayerTrail_Init } from "./p_trail.js";
 import { ClientEndServerFrame } from "./p_view.js";
+import { ClientCommand as ClientCommand_Cmds } from "./g_cmds.js";
 import { ED_CallSpawn, G_FindTeams } from "./g_spawn.js";
 import { G_Find, G_Spawn } from "./g_utils.js";
 import {
   attachGameClient,
   createGameRuntimeFromBspEntities,
+  drainGameConfigstringUpdates,
+  drainGameSoundEvents,
+  drainGameTempEntityEvents,
   linkGameEntity,
   registerGameSound,
   type GameEntity,
@@ -85,6 +91,12 @@ import {
   createGameServerCommandState,
   type GameServerCommandState
 } from "./g_svcmds.js";
+import {
+  ReadGame as ReadGame_Save,
+  ReadLevel as ReadLevel_Save,
+  WriteGame as WriteGame_Save,
+  WriteLevel as WriteLevel_Save
+} from "./g_save.js";
 
 /**
  * Category: New
@@ -104,6 +116,10 @@ export interface GameMainCvars {
   maxentities: cvar_t | null;
   g_select_empty: cvar_t | null;
   dedicated: cvar_t | null;
+  sv_cheats: cvar_t | null;
+  flood_msgs: cvar_t | null;
+  flood_persecond: cvar_t | null;
+  flood_waitdelay: cvar_t | null;
   filterban: cvar_t | null;
   sv_gravity: cvar_t | null;
   sv_maxvelocity: cvar_t | null;
@@ -129,6 +145,7 @@ export interface GameMainContext {
  * Purpose: Group the still-external callbacks used by the first `g_main.c` port.
  */
 export interface GameMainHooks extends GamePlayerClientHooks, GameHudHooks {
+  readFile?: (path: string) => string | Uint8Array | null | undefined;
   writeFile?: (path: string, contents: string) => boolean;
   onClientCommand?: (ent: GameEntity, runtime: GameRuntime) => void;
 }
@@ -207,6 +224,10 @@ export function InitGame(context: GameMainContext): void {
   context.cvars.maxentities = context.gi.cvar("maxentities", "1024", CVAR_LATCH);
   context.cvars.g_select_empty = context.gi.cvar("g_select_empty", "0", CVAR_ARCHIVE);
   context.cvars.dedicated = context.gi.cvar("dedicated", "0", CVAR_NOSET);
+  context.cvars.sv_cheats = context.gi.cvar("cheats", "0", CVAR_SERVERINFO | CVAR_LATCH);
+  context.cvars.flood_msgs = context.gi.cvar("flood_msgs", "4", 0);
+  context.cvars.flood_persecond = context.gi.cvar("flood_persecond", "4", 0);
+  context.cvars.flood_waitdelay = context.gi.cvar("flood_waitdelay", "10", 0);
   context.cvars.filterban = context.gi.cvar("filterban", "1", 0);
   context.cvars.sv_gravity = context.gi.cvar("sv_gravity", "800", 0);
   context.cvars.sv_maxvelocity = context.gi.cvar("sv_maxvelocity", "2000", 0);
@@ -326,6 +347,7 @@ export function G_RunFrame(context: GameMainContext): void {
   syncLevelFromRuntime(context);
   CheckDMRules(context);
   ClientEndServerFrames(context);
+  flushRuntimeEngineEvents(context);
 }
 
 /**
@@ -547,60 +569,88 @@ export function createGameMainContext(imports: game_import_t, options: GameMainC
  * - Preserves the export slot and keeps the still-unported client command dispatch explicit.
  */
 export function ClientCommand(context: GameMainContext, ent: edict_t): void {
-  context.hooks.onClientCommand?.(ent, context.runtime);
+  if (context.hooks.onClientCommand) {
+    context.hooks.onClientCommand(ent, context.runtime);
+    return;
+  }
+
+  ClientCommand_Cmds({
+    gi: context.gi,
+    runtime: context.runtime,
+    cvars: {
+      sv_cheats: context.cvars.sv_cheats,
+      dedicated: context.cvars.dedicated,
+      flood_msgs: context.cvars.flood_msgs,
+      flood_persecond: context.cvars.flood_persecond,
+      flood_waitdelay: context.cvars.flood_waitdelay,
+      skill: context.cvars.skill
+    },
+    hooks: context.hooks,
+    helpData: {
+      skill: context.cvars.skill?.value ?? context.runtime.skill,
+      level_name: context.level.level_name,
+      helpmessage1: context.game.helpmessage1,
+      helpmessage2: context.game.helpmessage2,
+      killed_monsters: context.level.killed_monsters,
+      total_monsters: context.level.total_monsters,
+      found_goals: context.level.found_goals,
+      total_goals: context.level.total_goals,
+      found_secrets: context.level.found_secrets,
+      total_secrets: context.level.total_secrets
+    }
+  }, ent);
 }
 
 /**
  * Original name: WriteGame
- * Source: game/g_main.c
+ * Source: game/g_save.c
  * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
- * - Keeps the savegame export slot explicit until `g_save.c` is ported.
+ * - Delegates the savegame export slot to the `g_save.c` TypeScript attachment point.
  */
 export function WriteGame(context: GameMainContext, filename: string, autosave: qboolean): void {
-  void autosave;
-  context.gi.dprintf(`WriteGame not implemented yet: ${filename}\n`);
+  WriteGame_Save(context, filename, autosave);
 }
 
 /**
  * Original name: ReadGame
- * Source: game/g_main.c
+ * Source: game/g_save.c
  * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
- * - Keeps the savegame import slot explicit until `g_save.c` is ported.
+ * - Delegates the savegame import slot to the `g_save.c` TypeScript attachment point.
  */
 export function ReadGame(context: GameMainContext, filename: string): void {
-  context.gi.dprintf(`ReadGame not implemented yet: ${filename}\n`);
+  ReadGame_Save(context, filename);
 }
 
 /**
  * Original name: WriteLevel
- * Source: game/g_main.c
+ * Source: game/g_save.c
  * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
- * - Keeps the level-save export slot explicit until `g_save.c` is ported.
+ * - Delegates the level-save export slot to the `g_save.c` TypeScript attachment point.
  */
 export function WriteLevel(context: GameMainContext, filename: string): void {
-  context.gi.dprintf(`WriteLevel not implemented yet: ${filename}\n`);
+  WriteLevel_Save(context, filename);
 }
 
 /**
  * Original name: ReadLevel
- * Source: game/g_main.c
+ * Source: game/g_save.c
  * Category: Ported
  * Fidelity level: Close
  *
  * Behavior:
- * - Keeps the level-save import slot explicit until `g_save.c` is ported.
+ * - Delegates the level-save import slot to the `g_save.c` TypeScript attachment point.
  */
 export function ReadLevel(context: GameMainContext, filename: string): void {
-  context.gi.dprintf(`ReadLevel not implemented yet: ${filename}\n`);
+  ReadLevel_Save(context, filename);
 }
 
 function createGameMainCvars(): GameMainCvars {
@@ -618,6 +668,10 @@ function createGameMainCvars(): GameMainCvars {
     maxentities: null,
     g_select_empty: null,
     dedicated: null,
+    sv_cheats: null,
+    flood_msgs: null,
+    flood_persecond: null,
+    flood_waitdelay: null,
     filterban: null,
     sv_gravity: null,
     sv_maxvelocity: null,
@@ -654,6 +708,7 @@ function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, m
 
   context.gi.imageindex("i_help");
   context.level.pic_health = context.gi.imageindex("i_health");
+  context.runtime.pic_health = context.level.pic_health;
   context.gi.imageindex("help");
   context.gi.imageindex("field_3");
 
@@ -713,6 +768,76 @@ function precacheGameSound(context: GameMainContext, path: string): void {
   context.gi.soundindex(path);
 }
 
+/**
+ * Category: New
+ * Purpose: Flush gameplay-runtime engine side effects through the original game import surface.
+ *
+ * Constraints:
+ * - Keeps target/entity ports independent from the server package.
+ * - Emits temp entities using the same `gi.Write*` then `gi.multicast` call order as the C source.
+ */
+function flushRuntimeEngineEvents(context: GameMainContext): void {
+  for (const update of drainGameConfigstringUpdates(context.runtime)) {
+    context.gi.configstring(update.index, update.value);
+  }
+
+  for (const sound of drainGameSoundEvents(context.runtime)) {
+    const entity = sound.entity ?? (sound.entityIndex !== null ? context.runtime.entities[sound.entityIndex] ?? null : null);
+    if (!entity) {
+      continue;
+    }
+
+    const channel = sound.channel ?? 0;
+    const volume = sound.volume ?? 1;
+    const attenuation = sound.attenuation ?? 1;
+    const timeofs = sound.timeofs ?? 0;
+    if (sound.origin) {
+      context.gi.positioned_sound(sound.origin, entity, channel, sound.soundIndex, volume, attenuation, timeofs);
+    } else {
+      context.gi.sound(entity, channel, sound.soundIndex, volume, attenuation, timeofs);
+    }
+  }
+
+  for (const event of drainGameTempEntityEvents(context.runtime)) {
+    context.gi.WriteByte(svc_temp_entity);
+    context.gi.WriteByte(event.type);
+
+    if (event.type === temp_event_t.TE_SPLASH) {
+      context.gi.WriteByte(numberPayload(event.payload, "count"));
+      context.gi.WritePosition(event.origin);
+      context.gi.WriteDir(vectorPayload(event.payload, "dir"));
+      context.gi.WriteByte(numberPayload(event.payload, "sounds"));
+    } else if (event.type === temp_event_t.TE_LASER_SPARKS) {
+      context.gi.WriteByte(numberPayload(event.payload, "count"));
+      context.gi.WritePosition(event.origin);
+      context.gi.WriteDir(vectorPayload(event.payload, "dir"));
+      context.gi.WriteByte(numberPayload(event.payload, "color"));
+    } else {
+      context.gi.WritePosition(event.origin);
+    }
+
+    context.gi.multicast(event.origin, event.multicast);
+  }
+}
+
+function numberPayload(payload: Record<string, unknown>, key: string): number {
+  const value = payload[key];
+  return Number.isFinite(value) ? Number(value) : 0;
+}
+
+function vectorPayload(payload: Record<string, unknown>, key: string): [number, number, number] {
+  const value = payload[key];
+  if (Array.isArray(value) && value.length === 3) {
+    return [
+      Number(value[0]) || 0,
+      Number(value[1]) || 0,
+      Number(value[2]) || 0
+    ];
+  }
+
+  return [0, 0, 0];
+}
+
 const WORLDSPAWN_SOUND_PRECACHE = [
   "player/lava1.wav",
   "player/lava2.wav",
@@ -762,6 +887,7 @@ function syncLevelFromRuntime(context: GameMainContext): void {
   context.level.intermission_origin = [...context.runtime.intermission_origin];
   context.level.intermission_angle = [...context.runtime.intermission_angle];
   context.level.changemap = context.runtime.changemap;
+  context.level.pic_health = context.runtime.pic_health;
   context.level.sight_client = context.runtime.sight_client;
   context.level.sight_entity = context.runtime.sight_entity;
   context.level.sight_entity_framenum = context.runtime.sight_entity_framenum;

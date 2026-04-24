@@ -13,18 +13,27 @@
 
 import {
   CM_InlineModel,
+  CS_CDTRACK,
+  CS_ITEMS,
   CS_IMAGES,
   CS_MODELS,
   CS_SOUNDS,
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE,
+  BYTE_DIRS,
+  DotProduct,
+  MAX_EDICTS,
   MZ_SILENCED,
   PMF_DUCKED,
   PMF_ON_GROUND,
   PITCH,
   STAT_AMMO,
   STAT_AMMO_ICON,
+  STAT_HEALTH,
+  STAT_HEALTH_ICON,
+  STAT_PICKUP_ICON,
+  STAT_PICKUP_STRING,
   STAT_SELECTED_ICON,
   STAT_SELECTED_ITEM,
   YAW,
@@ -39,20 +48,27 @@ import {
   ClientBeginServerFrame,
   ClientThink,
   drainPlayerMuzzleFlashEvents,
+  drainGameTempEntityEvents,
   GetAmmoItemForWeapon,
+  GetGameItems,
   G_RunFrame,
   LOCAL_GAME_WEAPON_HOOKS,
   linkGameEntity,
   refreshEntitySpatialState,
   touchTriggerEntities,
   SVF_NOCLIENT,
+  emitRegisteredGameSound,
+  registerGameSound,
   type GameEntity,
   type GameRuntime
 } from "../../game/src/index.js";
 import type { BspMap } from "../../formats/src/index.js";
 import { findClientImageIndex, type LocalClientHudBootstrapData } from "./local-client-bootstrap.js";
-import { CL_AllocDlight, CL_BuildMuzzleFlashEffects, CL_LogoutEffect, type ClientActionEffect } from "./effects.js";
+import { CL_AllocDlight, CL_BuildMuzzleFlashEffects, CL_BuildTempEntityEffects, CL_LogoutEffect, type ClientActionEffect } from "./effects.js";
+import { CL_ExecuteTempEntityEffects } from "./effects.js";
+import { CL_AddTEntPacket } from "./tent.js";
 import { getPredictedViewheight } from "./local-loop.js";
+import type { ClientTempEntityPacket } from "./parse.js";
 import type { ClientRuntime } from "./types.js";
 
 const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
@@ -60,6 +76,8 @@ const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
 const PLAYER_DUCKED_MAXS: vec3_t = [16, 16, 4];
 const PLAYER_GIB_MINS: vec3_t = [-16, -16, 0];
 const PLAYER_GIB_MAXS: vec3_t = [16, 16, 16];
+const PLAYER_STAND_VIEWHEIGHT = 22;
+const LOCAL_VIEWHEIGHT_SMOOTH_SPEED = 120;
 
 /**
  * Category: New
@@ -71,6 +89,7 @@ const PLAYER_GIB_MAXS: vec3_t = [16, 16, 16];
 export interface LocalViewMotionState {
   bobtime: number;
   oldviewangles: vec3_t;
+  viewheight: number;
 }
 
 /**
@@ -94,7 +113,8 @@ export interface BrushModelInterpolationState<TSnapshot> {
 export function createLocalViewMotionState(spawnYaw: number): LocalViewMotionState {
   return {
     bobtime: 0,
-    oldviewangles: [0, spawnYaw, 0]
+    oldviewangles: [0, spawnYaw, 0],
+    viewheight: PLAYER_STAND_VIEWHEIGHT
   };
 }
 
@@ -240,10 +260,12 @@ export function initializeLocalSkyState(runtime: ClientRuntime, map: BspMap): vo
   const skyName = worldspawn.sky ?? "";
   const skyRotate = worldspawn.skyrotate ?? "";
   const skyAxis = worldspawn.skyaxis ?? "";
+  const cdTrack = worldspawn.sounds ?? "0";
 
   runtime.cl.configstrings[CS_SKY] = skyName;
   runtime.cl.configstrings[CS_SKYROTATE] = skyRotate;
   runtime.cl.configstrings[CS_SKYAXIS] = skyAxis;
+  runtime.cl.configstrings[CS_CDTRACK] = cdTrack;
   runtime.cl.sky.name = skyName;
   runtime.cl.sky.rotate = parseLocalSkyRotate(skyRotate);
   runtime.cl.sky.axis = parseLocalSkyAxis(skyAxis);
@@ -298,10 +320,14 @@ function syncLocalWeaponPlayerState(runtime: ClientRuntime, gameplayPlayer: Game
   const selectedWeapon = gameplayClient.pers.weapon;
   const selectedAmmo = GetAmmoItemForWeapon(selectedWeapon);
   runtime.cl.inventory = [...gameplayClient.pers.inventory];
+  runtime.cl.frame.playerstate.stats[STAT_HEALTH_ICON] = findClientImageIndex(runtime, "i_health");
+  runtime.cl.frame.playerstate.stats[STAT_HEALTH] = gameplayPlayer.health;
   runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] = selectedWeapon?.index ?? 0;
   runtime.cl.frame.playerstate.stats[STAT_SELECTED_ICON] = selectedWeapon?.icon ? findClientImageIndex(runtime, selectedWeapon.icon) : 0;
   runtime.cl.frame.playerstate.stats[STAT_AMMO] = selectedAmmo ? gameplayClient.pers.inventory[selectedAmmo.index] ?? 0 : 0;
   runtime.cl.frame.playerstate.stats[STAT_AMMO_ICON] = selectedAmmo?.icon ? findClientImageIndex(runtime, selectedAmmo.icon) : 0;
+  runtime.cl.frame.playerstate.stats[STAT_PICKUP_ICON] = gameplayClient.ps.stats[STAT_PICKUP_ICON] ?? 0;
+  runtime.cl.frame.playerstate.stats[STAT_PICKUP_STRING] = gameplayClient.ps.stats[STAT_PICKUP_STRING] ?? 0;
 }
 
 /**
@@ -350,7 +376,14 @@ function updateLocalViewWeaponMotion(
   }
   gameplayClient.ps.kick_angles = kickAngles;
 
-  const viewoffset: vec3_t = [0, 0, gameplayPlayer.viewheight];
+  const visualViewheight = approachValue(
+    localViewMotion.viewheight,
+    gameplayPlayer.viewheight,
+    Math.max(0, runtime.cls.frametime) * LOCAL_VIEWHEIGHT_SMOOTH_SPEED
+  );
+  localViewMotion.viewheight = visualViewheight;
+
+  const viewoffset: vec3_t = [0, 0, visualViewheight];
   viewoffset[0] += gameplayClient.kick_origin[0];
   viewoffset[1] += gameplayClient.kick_origin[1];
   viewoffset[2] += gameplayClient.kick_origin[2];
@@ -411,6 +444,10 @@ function syncLocalGameplayAssetConfigstrings(runtime: ClientRuntime, gameplayRun
     runtime.cl.configstrings[CS_IMAGES + index] = gameplayRuntime.assets.imagePaths[index - 1] ?? runtime.cl.configstrings[CS_IMAGES + index] ?? "";
     runtime.cl.image_precache[index] = runtime.cl.configstrings[CS_IMAGES + index] || null;
   }
+
+  for (const item of GetGameItems()) {
+    runtime.cl.configstrings[CS_ITEMS + item.index] = item.pickupName;
+  }
 }
 
 /**
@@ -444,6 +481,13 @@ function syncLocalGameplayModelClip(runtime: ClientRuntime, gameplayRuntime: Gam
  * - Must preserve the original `CL_ParseMuzzleFlash` visual path for locally generated player weapon events.
  */
 function syncLocalGameplayTransientEffects(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  for (const event of drainGameTempEntityEvents(gameplayRuntime)) {
+    const packet = buildLocalTempEntityPacket(event);
+    CL_AddTEntPacket(runtime, packet);
+    CL_ExecuteTempEntityEffects(runtime, packet);
+    queueLocalGameplayActionSounds(gameplayRuntime, CL_BuildTempEntityEffects(packet));
+  }
+
   for (const event of drainPlayerMuzzleFlashEvents(gameplayRuntime)) {
     const effects = CL_BuildMuzzleFlashEffects({
       entity: event.entityIndex,
@@ -452,7 +496,70 @@ function syncLocalGameplayTransientEffects(runtime: ClientRuntime, gameplayRunti
     }, runtime);
 
     applyLocalGameplayActionEffects(runtime, effects);
+    queueLocalGameplayActionSounds(gameplayRuntime, effects);
   }
+}
+
+function buildLocalTempEntityPacket(event: ReturnType<typeof drainGameTempEntityEvents>[number]): ClientTempEntityPacket {
+  const payload = event.payload;
+  const origin = readPayloadVec3(payload, "origin") ?? [...event.origin] as vec3_t;
+  const start = readPayloadVec3(payload, "start");
+  const end = readPayloadVec3(payload, "end");
+  const dir = readPayloadVec3(payload, "dir");
+
+  const packet: ClientTempEntityPacket = {
+    type: event.type,
+    position: start ?? origin
+  };
+
+  if (end) {
+    packet.position2 = end;
+  }
+  if (dir) {
+    packet.direction = dir;
+    packet.directionByte = directionToByte(dir);
+  }
+
+  const count = readPayloadNumber(payload, "count");
+  if (count !== null) {
+    packet.count = count;
+  }
+
+  const color = readPayloadNumber(payload, "color");
+  if (color !== null) {
+    packet.color = color;
+  }
+
+  return packet;
+}
+
+function readPayloadVec3(payload: Record<string, unknown>, key: string): vec3_t | null {
+  const value = payload[key];
+  if (!Array.isArray(value) || value.length !== 3) {
+    return null;
+  }
+  if (!value.every((component) => typeof component === "number" && Number.isFinite(component))) {
+    return null;
+  }
+  return [value[0], value[1], value[2]];
+}
+
+function readPayloadNumber(payload: Record<string, unknown>, key: string): number | null {
+  const value = payload[key];
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+function directionToByte(dir: vec3_t): number {
+  let bestd = 0;
+  let best = 0;
+  for (let index = 0; index < BYTE_DIRS.length; index += 1) {
+    const d = DotProduct(dir, BYTE_DIRS[index]!);
+    if (d > bestd) {
+      bestd = d;
+      best = index;
+    }
+  }
+  return best;
 }
 
 function applyLocalGameplayActionEffects(runtime: ClientRuntime, effects: ClientActionEffect[]): void {
@@ -478,6 +585,30 @@ function applyLocalGameplayActionEffects(runtime: ClientRuntime, effects: Client
   }
 }
 
+function queueLocalGameplayActionSounds(gameplayRuntime: GameRuntime, effects: ClientActionEffect[]): void {
+  for (const effect of effects) {
+    if (!effect.sound) {
+      continue;
+    }
+
+    const soundIndex = registerGameSound(gameplayRuntime, effect.sound.name);
+    const entity = effect.entity !== undefined ? gameplayRuntime.entities[effect.entity] ?? null : null;
+    const options: Parameters<typeof emitRegisteredGameSound>[4] = {
+      origin: effect.position ?? null,
+      channel: effect.sound.channel,
+      attenuation: effect.sound.attenuation
+    };
+    if (effect.sound.volume !== undefined) {
+      options.volume = effect.sound.volume;
+    }
+    if (effect.sound.delayMs !== undefined) {
+      options.timeofs = effect.sound.delayMs / 1000;
+    }
+
+    emitRegisteredGameSound(gameplayRuntime, entity, soundIndex, effect.sound.name, options);
+  }
+}
+
 /**
  * Category: New
  * Purpose: Collect the current gameplay entities that should surface through the client entity snapshot path.
@@ -486,7 +617,7 @@ function collectVisibleGameplayEntityStates(gameplayRuntime: GameRuntime): entit
   const states: entity_state_t[] = [];
 
   for (const entity of gameplayRuntime.entities) {
-    if (!entity.inuse || (entity.svflags & SVF_NOCLIENT) !== 0) {
+    if (!entity.inuse || entity.index >= MAX_EDICTS || (entity.svflags & SVF_NOCLIENT) !== 0) {
       continue;
     }
 
@@ -568,6 +699,18 @@ function applyPredictedGameplayHull(gameplayPlayer: GameEntity, runtime: ClientR
  */
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
+}
+
+function approachValue(current: number, target: number, step: number): number {
+  if (current < target) {
+    return Math.min(current + step, target);
+  }
+
+  if (current > target) {
+    return Math.max(current - step, target);
+  }
+
+  return target;
 }
 
 /**

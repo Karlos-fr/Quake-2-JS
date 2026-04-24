@@ -19,6 +19,7 @@
 
 import {
   AngleVectors,
+  CS_ITEMS,
   DF_INFINITE_AMMO,
   DF_INSTANT_ITEMS,
   DF_NO_HEALTH,
@@ -27,7 +28,9 @@ import {
   EF_ROTATE,
   MASK_SOLID,
   PRINT_HIGH,
-  RF_GLOW
+  RF_GLOW,
+  STAT_PICKUP_ICON,
+  STAT_PICKUP_STRING
 } from "../../qcommon/src/index.js";
 import { entity_event_t } from "../../qcommon/src/q-shared.js";
 import {
@@ -1194,7 +1197,8 @@ export function Touch_Item(ent: GameEntity, other: GameEntity, runtime: GameRunt
   }
 
   other.client.bonus_alpha = 0.25;
-  other.client.ps.stats[0] = ent.item.icon ? registerGameImage(runtime, ent.item.icon) : 0;
+  other.client.ps.stats[STAT_PICKUP_ICON] = ent.item.icon ? registerGameImage(runtime, ent.item.icon) : 0;
+  other.client.ps.stats[STAT_PICKUP_STRING] = CS_ITEMS + ITEM_INDEX(ent.item);
   other.client.pers.selected_item = ITEM_INDEX(ent.item);
   other.client.pickup_msg_time = runtime.time + 3.0;
 

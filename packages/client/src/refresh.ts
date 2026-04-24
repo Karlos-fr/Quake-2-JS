@@ -20,16 +20,21 @@ import {
   CL_AddDLights,
   CL_AddLightStyles,
   CL_AddParticles,
+  CL_ExecutePacketEntityEffects,
   CL_RunDLights,
   CL_RunLightStyles,
   type ClientLightStyle
 } from "./effects.js";
 import {
   EF_BFG,
+  EF_BLASTER,
+  EF_BLUEHYPERBLASTER,
   EF_FLAG1,
   EF_FLAG2,
+  EF_HYPERBLASTER,
   EF_POWERSCREEN,
   EF_PLASMA,
+  EF_ROCKET,
   EF_TAGTRAIL,
   EF_TRACKER,
   EF_TRACKERTRAIL,
@@ -67,6 +72,7 @@ export interface ClientRenderEntity {
   skinnum: number;
   alpha: number;
   flags: number;
+  effects: number;
   customPlayerSkin: boolean;
   customWeaponModel: boolean;
   linkedModelSlot: 0 | 2 | 3 | 4 | 5;
@@ -143,6 +149,7 @@ export function CL_BuildRefreshFrame(
   CL_RunDLights(runtime);
   CL_RunLightStyles(runtime);
   const packetEntities = CL_BuildPacketEntitySnapshots(runtime);
+  CL_ExecutePacketEntityEffects(runtime, packetEntities);
   const tempRefresh = CL_BuildTEntRefresh(runtime);
   const entities: ClientRenderEntity[] = [];
   const lights: ClientDynamicLight[] = [...CL_AddDLights(runtime), ...tempRefresh.lights];
@@ -176,6 +183,8 @@ export function CL_BuildRefreshFrame(
     updateEntityLerpOrigin(runtime, snapshot);
   }
 
+  appendTempExplosions(tempRefresh.explosions, entities);
+
   return {
     view,
     entities,
@@ -187,6 +196,43 @@ export function CL_BuildRefreshFrame(
     forceWalls: tempRefresh.forceWalls,
     sustains: tempRefresh.sustains
   };
+}
+
+/**
+ * Original name: CL_AddExplosions -> V_AddEntity
+ * Source: client/cl_tent.c
+ * Category: Ported integration
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Converts persistent temp explosions, including `TE_BLASTER` impact flashes,
+ *   into regular refresh entities so renderer adapters draw their MD2/SP2 models.
+ */
+function appendTempExplosions(
+  explosions: readonly ClientExplosionRender[],
+  entities: ClientRenderEntity[]
+): void {
+  for (let index = 0; index < explosions.length; index += 1) {
+    const explosion = explosions[index];
+    entities.push({
+      entityNumber: -1000 - index,
+      modelindex: 0,
+      resolvedModelPath: explosion.model,
+      frame: explosion.frame,
+      oldframe: explosion.oldframe,
+      backlerp: explosion.backlerp,
+      origin: [...explosion.origin],
+      oldorigin: [...explosion.origin],
+      angles: [...explosion.angles],
+      skinnum: explosion.skinnum,
+      alpha: explosion.alpha,
+      flags: explosion.flags,
+      effects: 0,
+      customPlayerSkin: false,
+      customWeaponModel: false,
+      linkedModelSlot: 0
+    });
+  }
 }
 
 /**
@@ -276,6 +322,7 @@ function appendViewWeapon(
     skinnum: 0,
     alpha: 1,
     flags: RF_MINLIGHT | RF_DEPTHHACK | RF_WEAPONMODEL,
+    effects: 0,
     customPlayerSkin: false,
     customWeaponModel: false,
     linkedModelSlot: 0
@@ -303,6 +350,7 @@ function createRenderEntity(
     skinnum: snapshot.skinnum,
     alpha: snapshot.alpha,
     flags: snapshot.flags,
+    effects: snapshot.effects,
     customPlayerSkin: snapshot.customPlayerSkin && linkedModelSlot === 0,
     customWeaponModel: snapshot.customWeaponModel && linkedModelSlot === 2,
     linkedModelSlot
@@ -353,6 +401,28 @@ function appendViewerLights(snapshot: ClientInterpolatedEntity, lights: ClientDy
  * Purpose: Emit the first packet-entity-derived dynamic lights mirrored from `CL_AddPacketEntities`.
  */
 function appendEntityLights(snapshot: ClientInterpolatedEntity, lights: ClientDynamicLight[]): void {
+  if ((snapshot.effects & EF_ROCKET) !== 0) {
+    lights.push(createLight(snapshot.origin, 200, [1, 1, 0], snapshot.number, "rocket"));
+  } else if ((snapshot.effects & EF_BLASTER) !== 0) {
+    lights.push(createLight(
+      snapshot.origin,
+      200,
+      (snapshot.effects & EF_TRACKER) !== 0 ? [0, 1, 0] : [1, 1, 0],
+      snapshot.number,
+      (snapshot.effects & EF_TRACKER) !== 0 ? "blaster2" : "blaster"
+    ));
+  } else if ((snapshot.effects & EF_HYPERBLASTER) !== 0) {
+    lights.push(createLight(
+      snapshot.origin,
+      200,
+      (snapshot.effects & EF_TRACKER) !== 0 ? [0, 1, 0] : [1, 1, 0],
+      snapshot.number,
+      (snapshot.effects & EF_TRACKER) !== 0 ? "hyperblaster2" : "hyperblaster"
+    ));
+  } else if ((snapshot.effects & EF_BLUEHYPERBLASTER) !== 0) {
+    lights.push(createLight(snapshot.origin, 200, [0, 0, 1], snapshot.number, "bluehyperblaster"));
+  }
+
   if ((snapshot.effects & EF_BFG) !== 0) {
     const ramp = [300, 400, 600, 300, 150, 75];
     const intensity = snapshot.frame >= 0 && snapshot.frame < ramp.length ? ramp[snapshot.frame] : 200;

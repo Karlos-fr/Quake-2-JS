@@ -11,8 +11,18 @@
 
 import { strict as assert } from "node:assert";
 
-import { CS_PLAYERSKINS, pmtype_t, RDF_UNDERWATER, STAT_CHASE, STAT_LAYOUTS, STAT_SPECTATOR } from "../../packages/qcommon/src/index.js";
+import {
+  CS_PLAYERSKINS,
+  pmtype_t,
+  RDF_UNDERWATER,
+  STAT_CHASE,
+  STAT_HEALTH,
+  STAT_HEALTH_ICON,
+  STAT_LAYOUTS,
+  STAT_SPECTATOR
+} from "../../packages/qcommon/src/index.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
+import { FL_POWER_ARMOR, ITEM_INDEX } from "../../packages/game/src/g-local.js";
 import {
   BeginIntermission,
   Cmd_Help_f,
@@ -38,6 +48,7 @@ runtime.intermission_origin = [128, 64, 32];
 runtime.intermission_angle = [0, 90, 0];
 runtime.framenum = 1200;
 runtime.time = 42;
+runtime.pic_health = 77;
 
 while (runtime.entities.length <= runtime.maxclients) {
   runtime.entities.push({
@@ -82,6 +93,19 @@ runtime.entities[1]!.client!.quad_framenum = 1300;
 runtime.entities[1]!.client!.pers.selected_item = -1;
 G_SetStats(runtime.entities[1]!, runtime);
 assert.ok(runtime.entities[1]!.client!.ps.stats[STAT_LAYOUTS] >= 0, "G_SetStats layouts mismatch");
+assert.equal(runtime.entities[1]!.client!.ps.stats[STAT_HEALTH], 100, "G_SetStats health value mismatch");
+assert.equal(runtime.entities[1]!.client!.ps.stats[STAT_HEALTH_ICON], 77, "G_SetStats level health icon mismatch");
+
+const powerShield = FindItem("Power Shield");
+const cells = FindItem("Cells");
+if (powerShield && cells) {
+  runtime.entities[1]!.flags |= FL_POWER_ARMOR;
+  runtime.entities[1]!.client!.pers.inventory[ITEM_INDEX(powerShield)] = 1;
+  runtime.entities[1]!.client!.pers.inventory[ITEM_INDEX(cells)] = 0;
+  G_SetStats(runtime.entities[1]!, runtime);
+  assert.equal((runtime.entities[1]!.flags & FL_POWER_ARMOR), 0, "G_SetStats power armor flag clear mismatch");
+  assert.ok(runtime.soundEvents.some((event) => event.soundPath === "misc/power2.wav"), "G_SetStats power armor shutdown sound mismatch");
+}
 
 runtime.entities[2]!.client!.chase_target = runtime.entities[1]!;
 runtime.entities[2]!.client!.showscores = true;
@@ -141,6 +165,7 @@ if (keyItem) {
 runtime.coop = true;
 runtime.deathmatch = false;
 runtime.intermissiontime = 0;
+runtime.autosaved = true;
 BeginIntermission(
   {
     ...runtime.entities[0]!,
@@ -150,6 +175,7 @@ BeginIntermission(
   hooks
 );
 assert.ok(runtime.intermissiontime > 0, "BeginIntermission time mismatch");
+assert.equal(runtime.autosaved, false, "BeginIntermission autosaved clear mismatch");
 if (keyItem) {
   assert.equal(runtime.entities[1]!.client!.pers.inventory[keyItem.index], 0, "BeginIntermission coop key strip mismatch");
 }

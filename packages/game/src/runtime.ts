@@ -21,6 +21,8 @@ import {
   createEntityState,
   createPlayerState,
   createCollisionWorld,
+  multicast_t,
+  temp_event_t,
   type CollisionWorld,
   type entity_state_t,
   type player_state_t,
@@ -294,9 +296,9 @@ export type GameEntityUse = (self: GameEntity, other: GameEntity | null, activat
  * Purpose: Preserve the `touch` callback shape used by trigger entities.
  *
  * Constraints:
- * - Must stay close to the Quake II touch calling convention while omitting plane/surface for now.
+ * - Must stay close to the Quake II touch calling convention while allowing plane/surface data when physics has it.
  */
-export type GameEntityTouch = (self: GameEntity, other: GameEntity, runtime: GameRuntime) => void;
+export type GameEntityTouch = (self: GameEntity, other: GameEntity, runtime: GameRuntime, plane?: trace_t["plane"] | null, surface?: trace_t["surface"] | null) => void;
 
 /**
  * Category: New
@@ -629,9 +631,39 @@ export interface GameRuntimeLogEntry {
  */
 export interface GameSoundEvent {
   frame: number;
+  entity?: GameEntity | null;
   entityIndex: number | null;
   soundIndex: number;
   soundPath: string;
+  origin?: vec3_t | null;
+  channel?: number;
+  volume?: number;
+  attenuation?: number;
+  timeofs?: number;
+}
+
+/**
+ * Category: New
+ * Purpose: Queue one gameplay-side temporary entity event emitted by source ports before server multicast serialization is attached.
+ *
+ * Constraints:
+ * - Must preserve the original temp-event id, payload and multicast visibility class.
+ */
+export interface GameTempEntityEvent {
+  frame: number;
+  type: temp_event_t;
+  origin: vec3_t;
+  multicast: multicast_t;
+  payload: Record<string, unknown>;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe one gameplay-originated configstring update before it is serialized by the server bridge.
+ */
+export interface GameConfigstringUpdate {
+  index: number;
+  value: string;
 }
 
 /**
@@ -680,11 +712,16 @@ export interface GameRuntime {
   body_que: number;
   power_cubes: number;
   meansOfDeath: number;
+  autosaved: boolean;
   intermissiontime: number;
   exitintermission: number;
   intermission_origin: vec3_t;
   intermission_angle: vec3_t;
   changemap: string | null;
+  pic_health: number;
+  serverflags: number;
+  helpmessage1: string;
+  helpmessage2: string;
   total_secrets: number;
   found_secrets: number;
   total_goals: number;
@@ -708,6 +745,8 @@ export interface GameRuntime {
   sound2_entity: GameEntity | null;
   sound2_entity_framenum: number;
   soundEvents: GameSoundEvent[];
+  tempEntityEvents: GameTempEntityEvent[];
+  configstrings: Map<number, string>;
   playerMuzzleFlashEvents: GamePlayerMuzzleFlashEvent[];
   linkedSolidEntities: GameEntity[];
   linkedTriggerEntities: GameEntity[];
@@ -1076,14 +1115,14 @@ export function createRuntimeEntity(properties: Record<string, string>, index: n
     groundentity_linkcount: 0,
     moveinfo: createMoveInfo(),
     s: state,
-    count: 0,
+    count: parseEntityInteger(properties.count),
     style: parseEntityInteger(properties.style),
     viewheight: 0,
     map: properties.map,
     waterlevel: 0,
     watertype: 0,
-    volume: 0,
-    attenuation: 0,
+    volume: parseEntityFloat(properties.volume),
+    attenuation: parseEntityFloat(properties.attenuation),
     light_level: 0,
     move_origin: [0, 0, 0],
     move_angles: [0, 0, 0],
@@ -1123,11 +1162,16 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     body_que: 0,
     power_cubes: 0,
     meansOfDeath: 0,
+    autosaved: false,
     intermissiontime: 0,
     exitintermission: 0,
     intermission_origin: [0, 0, 0],
     intermission_angle: [0, 0, 0],
     changemap: null,
+    pic_health: 0,
+    serverflags: 0,
+    helpmessage1: "",
+    helpmessage2: "",
     total_secrets: 0,
     found_secrets: 0,
     total_goals: 0,
@@ -1151,6 +1195,8 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     sound2_entity: null,
     sound2_entity_framenum: 0,
     soundEvents: [],
+    tempEntityEvents: [],
+    configstrings: new Map<number, string>(),
     playerMuzzleFlashEvents: [],
     linkedSolidEntities: [],
     linkedTriggerEntities: [],
@@ -1819,11 +1865,104 @@ export function emitGameSound(runtime: GameRuntime, entity: GameEntity | null, p
   const soundIndex = registerGameSound(runtime, path);
   runtime.soundEvents.push({
     frame: runtime.framenum,
+    entity,
     entityIndex: entity?.index ?? null,
     soundIndex,
     soundPath: path
   });
   return soundIndex;
+}
+
+/**
+ * Category: New
+ * Purpose: Queue one sound event that already has a stable Quake-style sound index and optional server playback metadata.
+ */
+export function emitRegisteredGameSound(
+  runtime: GameRuntime,
+  entity: GameEntity | null,
+  soundIndex: number,
+  soundPath: string,
+  options: {
+    origin?: vec3_t | null;
+    channel?: number;
+    volume?: number;
+    attenuation?: number;
+    timeofs?: number;
+  } = {}
+): void {
+  const event: GameSoundEvent = {
+    frame: runtime.framenum,
+    entity,
+    entityIndex: entity?.index ?? null,
+    soundIndex,
+    soundPath
+  };
+
+  if (options.origin !== undefined) {
+    event.origin = options.origin ? [...options.origin] : null;
+  }
+  if (options.channel !== undefined) {
+    event.channel = options.channel;
+  }
+  if (options.volume !== undefined) {
+    event.volume = options.volume;
+  }
+  if (options.attenuation !== undefined) {
+    event.attenuation = options.attenuation;
+  }
+  if (options.timeofs !== undefined) {
+    event.timeofs = options.timeofs;
+  }
+
+  runtime.soundEvents.push(event);
+}
+
+/**
+ * Category: New
+ * Purpose: Queue one temp-entity event from gameplay code while preserving multicast metadata for the server bridge.
+ */
+export function emitGameTempEntity(
+  runtime: GameRuntime,
+  type: temp_event_t,
+  origin: vec3_t,
+  multicast: multicast_t,
+  payload: Record<string, unknown> = {}
+): void {
+  runtime.tempEntityEvents.push({
+    frame: runtime.framenum,
+    type,
+    origin: [...origin],
+    multicast,
+    payload
+  });
+}
+
+/**
+ * Category: New
+ * Purpose: Store one gameplay-originated configstring update until a server/client bridge consumes it.
+ */
+export function setGameConfigstring(runtime: GameRuntime, index: number, value: string): void {
+  runtime.configstrings.set(index, value);
+}
+
+/**
+ * Category: New
+ * Purpose: Drain queued gameplay temp-entity events in FIFO order for a server/client bridge.
+ */
+export function drainGameTempEntityEvents(runtime: GameRuntime): GameTempEntityEvent[] {
+  const events = runtime.tempEntityEvents.slice();
+  runtime.tempEntityEvents.length = 0;
+  return events;
+}
+
+/**
+ * Category: New
+ * Purpose: Drain gameplay configstring updates while preserving the latest value per index.
+ */
+export function drainGameConfigstringUpdates(runtime: GameRuntime): GameConfigstringUpdate[] {
+  const updates = Array.from(runtime.configstrings, ([index, value]) => ({ index, value }));
+  runtime.configstrings.clear();
+  return updates;
 }
 
 /**

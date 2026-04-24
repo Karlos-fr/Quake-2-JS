@@ -23,6 +23,16 @@ import type { LocalClientController } from "./local-client-controller.js";
 export interface WebShell {
   viewport: HTMLDivElement;
   attachViewport: (canvas: HTMLCanvasElement) => void;
+  bindAudioControls: (options: {
+    masterVolume: number;
+    sfxVolume: number;
+    musicVolume: number;
+    muted: boolean;
+    onMasterVolume: (value: number) => void;
+    onSfxVolume: (value: number) => void;
+    onMusicVolume: (value: number) => void;
+    onMuted: (value: boolean) => void;
+  }) => void;
   bindGhostToggle: (options: { initialValue: boolean; onToggle: (enabled: boolean) => void }) => void;
   bindMapSelector: (options: { maps: string[]; currentValue: string; onChange: (value: string) => void }) => void;
   setPerformance: (frameAtMilliseconds: number) => void;
@@ -118,6 +128,7 @@ export function createWebShell(app: HTMLDivElement): WebShell {
   ghostButton.style.cursor = "pointer";
   ghostButton.style.pointerEvents = "auto";
   ghostButton.style.userSelect = "none";
+  ghostButton.style.zIndex = "3";
 
   const mapSelect = document.createElement("select");
   mapSelect.style.position = "absolute";
@@ -135,6 +146,40 @@ export function createWebShell(app: HTMLDivElement): WebShell {
   mapSelect.style.pointerEvents = "auto";
   mapSelect.style.userSelect = "none";
   mapSelect.style.maxWidth = "180px";
+  mapSelect.style.zIndex = "3";
+  stopViewportInputPropagation(mapSelect);
+  stopViewportInputPropagation(ghostButton);
+
+  const audioPanel = document.createElement("div");
+  audioPanel.style.position = "absolute";
+  audioPanel.style.top = "12px";
+  audioPanel.style.left = "16px";
+  audioPanel.style.display = "grid";
+  audioPanel.style.gridTemplateColumns = "auto 86px";
+  audioPanel.style.gap = "4px 8px";
+  audioPanel.style.alignItems = "center";
+  audioPanel.style.padding = "7px 8px";
+  audioPanel.style.color = "#b7bbb8";
+  audioPanel.style.fontFamily = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
+  audioPanel.style.fontSize = "11px";
+  audioPanel.style.lineHeight = "1";
+  audioPanel.style.pointerEvents = "auto";
+  audioPanel.style.userSelect = "none";
+  audioPanel.style.zIndex = "3";
+  stopViewportInputPropagation(audioPanel);
+  applyLiquidGlassPanel(audioPanel);
+
+  const masterSlider = createVolumeSlider();
+  const sfxSlider = createVolumeSlider();
+  const musicSlider = createVolumeSlider();
+  const muteToggle = document.createElement("input");
+  muteToggle.type = "checkbox";
+  muteToggle.style.margin = "0";
+  muteToggle.style.justifySelf = "start";
+  appendAudioControl(audioPanel, "Master", masterSlider);
+  appendAudioControl(audioPanel, "SFX", sfxSlider);
+  appendAudioControl(audioPanel, "Music", musicSlider);
+  appendAudioControl(audioPanel, "Mute", muteToggle);
 
   const fpsPanel = document.createElement("div");
   fpsPanel.style.position = "absolute";
@@ -165,6 +210,16 @@ export function createWebShell(app: HTMLDivElement): WebShell {
   let statusText = "";
   let errorText = "";
   let mapInfoLines: string[] = [];
+  let viewportFocusTarget: HTMLElement = viewport;
+
+  viewport.tabIndex = -1;
+  viewport.style.outline = "none";
+
+  const refocusViewport = (): void => {
+    requestAnimationFrame(() => {
+      viewportFocusTarget.focus({ preventScroll: true });
+    });
+  };
 
   /**
    * Category: New
@@ -180,7 +235,7 @@ export function createWebShell(app: HTMLDivElement): WebShell {
   };
 
   fpsContent.append(fpsTitle, fpsCanvas);
-  viewport.append(overlay, fpsPanel, mapSelect, ghostButton);
+  viewport.append(overlay, fpsPanel, audioPanel, mapSelect, ghostButton);
   root.append(viewport);
   app.append(root);
 
@@ -192,7 +247,30 @@ export function createWebShell(app: HTMLDivElement): WebShell {
       canvas.style.display = "block";
       canvas.style.width = "100%";
       canvas.style.height = "100%";
+      canvas.tabIndex = 0;
+      canvas.style.outline = "none";
+      viewportFocusTarget = canvas;
       viewport.prepend(canvas);
+      refocusViewport();
+    },
+    bindAudioControls: ({
+      masterVolume,
+      sfxVolume,
+      musicVolume,
+      muted,
+      onMasterVolume,
+      onSfxVolume,
+      onMusicVolume,
+      onMuted
+    }) => {
+      masterSlider.value = volumeToSlider(masterVolume);
+      sfxSlider.value = volumeToSlider(sfxVolume);
+      musicSlider.value = volumeToSlider(musicVolume);
+      muteToggle.checked = muted;
+      masterSlider.addEventListener("input", () => onMasterVolume(sliderToVolume(masterSlider.value)));
+      sfxSlider.addEventListener("input", () => onSfxVolume(sliderToVolume(sfxSlider.value)));
+      musicSlider.addEventListener("input", () => onMusicVolume(sliderToVolume(musicSlider.value)));
+      muteToggle.addEventListener("change", () => onMuted(muteToggle.checked));
     },
     bindGhostToggle: ({ initialValue, onToggle }) => {
       let enabled = initialValue;
@@ -207,6 +285,8 @@ export function createWebShell(app: HTMLDivElement): WebShell {
         enabled = !enabled;
         onToggle(enabled);
         refreshGhostButton();
+        ghostButton.blur();
+        refocusViewport();
       });
 
       refreshGhostButton();
@@ -228,8 +308,11 @@ export function createWebShell(app: HTMLDivElement): WebShell {
           return;
         }
 
+        mapSelect.blur();
+        refocusViewport();
         onChange(mapSelect.value);
       });
+      mapSelect.addEventListener("blur", refocusViewport);
     },
     setPerformance: (frameAtMilliseconds) => {
       fpsTracker.pushFrame(frameAtMilliseconds);
@@ -294,6 +377,45 @@ export function createWebShell(app: HTMLDivElement): WebShell {
 
 /**
  * Category: New
+ * Purpose: Keep interactive overlay controls from bubbling into the viewport input/pointer-lock handlers.
+ */
+function stopViewportInputPropagation(element: HTMLElement): void {
+  for (const eventName of ["pointerdown", "pointerup", "mousedown", "mouseup", "click", "dblclick", "keydown", "keyup"]) {
+    element.addEventListener(eventName, (event) => {
+      event.stopPropagation();
+    });
+  }
+}
+
+function createVolumeSlider(): HTMLInputElement {
+  const slider = document.createElement("input");
+  slider.type = "range";
+  slider.min = "0";
+  slider.max = "100";
+  slider.step = "1";
+  slider.style.width = "86px";
+  slider.style.margin = "0";
+  return slider;
+}
+
+function appendAudioControl(panel: HTMLDivElement, labelText: string, control: HTMLElement): void {
+  const label = document.createElement("label");
+  label.textContent = labelText;
+  label.style.color = "#9ca19e";
+  label.style.whiteSpace = "nowrap";
+  panel.append(label, control);
+}
+
+function volumeToSlider(value: number): string {
+  return `${Math.round(Math.max(0, Math.min(1, value)) * 100)}`;
+}
+
+function sliderToVolume(value: string): number {
+  return Math.max(0, Math.min(1, Number.parseFloat(value) / 100));
+}
+
+/**
+ * Category: New
  * Purpose: Format one BSP path into a compact UI label for the top-right map selector.
  */
 function getDisplayMapName(mapPath: string): string {
@@ -312,9 +434,9 @@ function applyLiquidGlassPanel(element: HTMLDivElement): HTMLDivElement {
   element.style.background =
     [
       "radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.018) 34%, rgba(255, 255, 255, 0) 72%)",
-      "linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.025) 18%, rgba(255, 255, 255, 0.008) 100%)",
-      "radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.025) 18%, rgba(255, 255, 255, 0) 42%)",
-      "linear-gradient(180deg, rgba(18, 15, 13, 0.11) 0%, rgba(10, 9, 8, 0.05) 100%)",
+      "linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.014) 18%, rgba(255, 255, 255, 0.004) 100%)",
+      "radial-gradient(circle at 14% 10%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.014) 18%, rgba(255, 255, 255, 0) 42%)",
+      "linear-gradient(180deg, rgba(18, 15, 13, 0.22) 0%, rgba(10, 9, 8, 0.12) 100%)",
       "linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0) 10%, rgba(255, 255, 255, 0) 90%, rgba(255, 255, 255, 0.025) 100%)"
     ].join(", ");
   element.style.border = "1px solid rgba(255, 255, 255, 0.10)";
@@ -340,7 +462,7 @@ function applyLiquidGlassPanel(element: HTMLDivElement): HTMLDivElement {
       "linear-gradient(105deg, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0.045) 34%, rgba(255, 255, 255, 0.01) 46%, rgba(255, 255, 255, 0) 62%)",
       "radial-gradient(circle at 50% -14%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 28%, rgba(255, 255, 255, 0) 54%)"
     ].join(", ");
-  sheen.style.opacity = "0.58";
+  sheen.style.opacity = "0.34";
 
   const caustic = document.createElement("div");
   caustic.style.position = "absolute";
@@ -354,7 +476,7 @@ function applyLiquidGlassPanel(element: HTMLDivElement): HTMLDivElement {
       "radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 38%)"
     ].join(", ");
   caustic.style.mixBlendMode = "screen";
-  caustic.style.opacity = "0.42";
+  caustic.style.opacity = "0.24";
 
   const edgeDensity = document.createElement("div");
   edgeDensity.style.position = "absolute";

@@ -62,6 +62,12 @@ import {
   CHAN_AUTO,
   CHAN_BODY,
   CHAN_WEAPON,
+  EF_ANIM_ALLFAST,
+  EF_BLASTER,
+  EF_GRENADE,
+  EF_HYPERBLASTER,
+  EF_PLASMA,
+  EF_TRACKER,
   type entity_state_t,
   entity_event_t,
   temp_event_t,
@@ -77,6 +83,7 @@ import type {
 import { getMonsterFlashOffset } from "./monster-flash.js";
 import {
   CL_BlasterParticles2,
+  CL_BlasterTrail2,
   CL_BubbleTrail2,
   CL_ColorExplosionParticles,
   CL_ColorFlash,
@@ -139,6 +146,12 @@ export interface ClientActionEffect {
   spacing?: number;
   durationMs?: number;
   packet?: ClientMuzzleFlashPacket | ClientMuzzleFlash2Packet | ClientTempEntityPacket;
+}
+
+export interface ClientPacketEntityEffectSource {
+  number: number;
+  effects: number;
+  origin: vec3_t;
 }
 
 /**
@@ -1203,6 +1216,11 @@ export function CL_ExecuteTempEntityEffects(runtime: ClientRuntime, packet: Clie
         CL_DebugTrail(runtime, packet.position, packet.position2);
       }
       break;
+    case temp_event_t.TE_RAILTRAIL:
+      if (packet.position && packet.position2) {
+        CL_RailTrail(runtime, packet.position, packet.position2);
+      }
+      break;
     case temp_event_t.TE_HEATBEAM_SPARKS:
       if (packet.position && packet.direction) {
         CL_ParticleSteamEffect(runtime, packet.position, packet.direction, 8, 50, 60);
@@ -1290,6 +1308,50 @@ export function CL_ExecuteTempEntityEffects(runtime: ClientRuntime, packet: Clie
       break;
     default:
       break;
+  }
+}
+
+/**
+ * Original name: automatic particle trails in CL_AddPacketEntities
+ * Source: client/cl_ents.c
+ * Category: Ported integration
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies projectile/entity trails as particles while packet entities are composed for refresh.
+ */
+export function CL_ExecutePacketEntityEffects(
+  runtime: ClientRuntime,
+  entities: readonly ClientPacketEntityEffectSource[]
+): void {
+  for (const entity of entities) {
+    const effects = entity.effects;
+    if ((effects & ~0x00000001) === 0) {
+      continue;
+    }
+
+    const centity = runtime.cl_entities[entity.number];
+    if (!centity) {
+      continue;
+    }
+
+    if ((effects & EF_ROCKET) !== 0) {
+      CL_RocketTrail(runtime, centity.lerp_origin, entity.origin, centity);
+    } else if ((effects & EF_BLASTER) !== 0) {
+      if ((effects & EF_TRACKER) !== 0) {
+        CL_BlasterTrail2(runtime, centity.lerp_origin, entity.origin);
+      } else {
+        CL_BlasterTrail(runtime, centity.lerp_origin, entity.origin);
+      }
+    } else if ((effects & EF_GIB) !== 0) {
+      CL_DiminishingTrail(runtime, centity.lerp_origin, entity.origin, centity, effects);
+    } else if ((effects & EF_GRENADE) !== 0) {
+      CL_DiminishingTrail(runtime, centity.lerp_origin, entity.origin, centity, effects);
+    } else if ((effects & EF_GREENGIB) !== 0) {
+      CL_DiminishingTrail(runtime, centity.lerp_origin, entity.origin, centity, effects);
+    } else if ((effects & EF_PLASMA) !== 0 && (effects & EF_ANIM_ALLFAST) !== 0) {
+      CL_BlasterTrail(runtime, centity.lerp_origin, entity.origin);
+    }
   }
 }
 
@@ -1623,8 +1685,27 @@ export function CL_BlasterParticles(
  * Behavior:
  * - Emits the logical blaster trail segment metadata between two points.
  */
-export function CL_BlasterTrail(start: vec3_t, end: vec3_t): ClientActionEffect[] {
-  return [createTrailEffect("blaster-trail", start, end, 0xe0, 5)];
+export function CL_BlasterTrail(start: vec3_t, end: vec3_t): ClientActionEffect[];
+export function CL_BlasterTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;
+export function CL_BlasterTrail(
+  runtimeOrStart: ClientRuntime | vec3_t,
+  startOrEnd: vec3_t,
+  maybeEnd?: vec3_t
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrStart)) {
+    return [createTrailEffect("blaster-trail", runtimeOrStart, startOrEnd, 0xe0, 5)];
+  }
+
+  spawnSimpleTrailParticles(runtimeOrStart, startOrEnd, maybeEnd as vec3_t, {
+    spacing: 5,
+    colorBase: 0xe0,
+    colorMask: 0,
+    alphaVelocityBase: 0.3,
+    alphaVelocityRandom: 0.2,
+    originJitter: 1,
+    velocityJitter: 5,
+    gravity: false
+  });
 }
 
 /**
@@ -1665,17 +1746,39 @@ export function CL_FlagTrail(start: vec3_t, end: vec3_t, color: number): ClientA
  * Porting notes:
  * - Keeps the original `trailcount` decay mutation on the passed `centity_t`.
  */
-export function CL_DiminishingTrail(start: vec3_t, end: vec3_t, old: centity_t, flags: number): ClientActionEffect[] {
-  const effects: ClientActionEffect[] = [];
-  const kind = (flags & EF_GIB) !== 0
-    ? "diminishing-trail-gib"
-    : (flags & EF_GREENGIB) !== 0
-      ? "diminishing-trail-greengib"
-      : "diminishing-trail";
-  const color = (flags & EF_GIB) !== 0 ? 0xe8 : (flags & EF_GREENGIB) !== 0 ? 0xdb : 4;
-  effects.push(createTrailEffect(kind, start, end, color, 0.5));
-  old.trailcount = Math.max(100, old.trailcount - 5);
-  return effects;
+export function CL_DiminishingTrail(start: vec3_t, end: vec3_t, old: centity_t, flags: number): ClientActionEffect[];
+export function CL_DiminishingTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t, old: centity_t, flags: number): void;
+export function CL_DiminishingTrail(
+  runtimeOrStart: ClientRuntime | vec3_t,
+  startOrEnd: vec3_t,
+  endOrOld: vec3_t | centity_t,
+  oldOrFlags: centity_t | number,
+  maybeFlags?: number
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrStart)) {
+    const start = runtimeOrStart;
+    const end = startOrEnd;
+    const old = endOrOld as centity_t;
+    const flags = oldOrFlags as number;
+    const effects: ClientActionEffect[] = [];
+    const kind = (flags & EF_GIB) !== 0
+      ? "diminishing-trail-gib"
+      : (flags & EF_GREENGIB) !== 0
+        ? "diminishing-trail-greengib"
+        : "diminishing-trail";
+    const color = (flags & EF_GIB) !== 0 ? 0xe8 : (flags & EF_GREENGIB) !== 0 ? 0xdb : 4;
+    effects.push(createTrailEffect(kind, start, end, color, 0.5));
+    old.trailcount = Math.max(100, old.trailcount - 5);
+    return effects;
+  }
+
+  spawnDiminishingTrailParticles(
+    runtimeOrStart,
+    startOrEnd,
+    endOrOld as vec3_t,
+    oldOrFlags as centity_t,
+    maybeFlags ?? 0
+  );
 }
 
 /**
@@ -1707,11 +1810,39 @@ export function MakeNormalVectors(forward: vec3_t): { right: vec3_t; up: vec3_t 
  * Behavior:
  * - Emits the original combined smoke and fire rocket trail metadata.
  */
-export function CL_RocketTrail(start: vec3_t, end: vec3_t, old: centity_t): ClientActionEffect[] {
-  return [
-    ...CL_DiminishingTrail(start, end, old, EF_ROCKET),
-    createTrailEffect("rocket-fire-trail", start, end, 0xdc, 1)
-  ];
+export function CL_RocketTrail(start: vec3_t, end: vec3_t, old: centity_t): ClientActionEffect[];
+export function CL_RocketTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t, old: centity_t): void;
+export function CL_RocketTrail(
+  runtimeOrStart: ClientRuntime | vec3_t,
+  startOrEnd: vec3_t,
+  endOrOld: vec3_t | centity_t,
+  maybeOld?: centity_t
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrStart)) {
+    const start = runtimeOrStart;
+    const end = startOrEnd;
+    const old = endOrOld as centity_t;
+    return [
+      ...CL_DiminishingTrail(start, end, old, EF_ROCKET),
+      createTrailEffect("rocket-fire-trail", start, end, 0xdc, 1)
+    ];
+  }
+
+  const runtime = runtimeOrStart;
+  const start = startOrEnd;
+  const end = endOrOld as vec3_t;
+  CL_DiminishingTrail(runtime, start, end, maybeOld as centity_t, EF_ROCKET);
+  spawnSimpleTrailParticles(runtime, start, end, {
+    spacing: 1,
+    colorBase: 0xdc,
+    colorMask: 3,
+    alphaVelocityBase: 1,
+    alphaVelocityRandom: 0.2,
+    originJitter: 5,
+    velocityJitter: 20,
+    gravity: true,
+    randomChanceMask: 7
+  });
 }
 
 /**
@@ -1723,11 +1854,21 @@ export function CL_RocketTrail(start: vec3_t, end: vec3_t, old: centity_t): Clie
  * Behavior:
  * - Emits the spiral rail core and the secondary spark trail metadata.
  */
-export function CL_RailTrail(start: vec3_t, end: vec3_t): ClientActionEffect[] {
-  return [
-    createTrailEffect("rail-core-trail", start, end, 0x74, 1),
-    createTrailEffect("rail-spark-trail", start, end, 0x0, 0.75)
-  ];
+export function CL_RailTrail(start: vec3_t, end: vec3_t): ClientActionEffect[];
+export function CL_RailTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;
+export function CL_RailTrail(
+  runtimeOrStart: ClientRuntime | vec3_t,
+  startOrEnd: vec3_t,
+  maybeEnd?: vec3_t
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrStart)) {
+    return [
+      createTrailEffect("rail-core-trail", runtimeOrStart, startOrEnd, 0x74, 1),
+      createTrailEffect("rail-spark-trail", runtimeOrStart, startOrEnd, 0x0, 0.75)
+    ];
+  }
+
+  spawnRailTrailParticles(runtimeOrStart, startOrEnd, maybeEnd as vec3_t);
 }
 
 /**
@@ -2436,6 +2577,176 @@ function promoteToEntityEvent(effect: ClientActionEffect): ClientActionEffect {
     ...effect,
     category: "entity-event"
   };
+}
+
+function spawnSimpleTrailParticles(
+  runtime: ClientRuntime,
+  start: vec3_t,
+  end: vec3_t,
+  options: {
+    spacing: number;
+    colorBase: number;
+    colorMask: number;
+    alphaVelocityBase: number;
+    alphaVelocityRandom: number;
+    originJitter: number;
+    velocityJitter: number;
+    gravity: boolean;
+    randomChanceMask?: number;
+  }
+): void {
+  const move = [...start] as vec3_t;
+  const vec = subtractVec3(end, start);
+  let len = normalizeVectorCopy(vec);
+  const dec = options.spacing;
+  vec[0] *= dec;
+  vec[1] *= dec;
+  vec[2] *= dec;
+
+  while (len > 0) {
+    len -= dec;
+
+    if (options.randomChanceMask !== undefined && (Math.floor(Math.random() * 0x7fffffff) & options.randomChanceMask) !== 0) {
+      move[0] += vec[0];
+      move[1] += vec[1];
+      move[2] += vec[2];
+      continue;
+    }
+
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.accel = [0, 0, 0];
+    particle.time = runtime.cl.time;
+    particle.alpha = 1.0;
+    particle.alphavel = -1.0 / (options.alphaVelocityBase + Math.random() * options.alphaVelocityRandom);
+    particle.color = options.colorBase + (Math.floor(Math.random() * 0x7fffffff) & options.colorMask);
+
+    for (let component = 0; component < 3; component += 1) {
+      particle.org[component] = move[component] + (crand() * options.originJitter);
+      particle.vel[component] = crand() * options.velocityJitter;
+    }
+    if (options.gravity) {
+      particle.accel[2] = -PARTICLE_GRAVITY;
+    }
+
+    move[0] += vec[0];
+    move[1] += vec[1];
+    move[2] += vec[2];
+  }
+}
+
+function spawnDiminishingTrailParticles(
+  runtime: ClientRuntime,
+  start: vec3_t,
+  end: vec3_t,
+  old: centity_t,
+  flags: number
+): void {
+  const move = [...start] as vec3_t;
+  const vec = subtractVec3(end, start);
+  let len = normalizeVectorCopy(vec);
+  const dec = 0.5;
+  vec[0] *= dec;
+  vec[1] *= dec;
+  vec[2] *= dec;
+
+  const orgscale = old.trailcount > 900 ? 4 : old.trailcount > 800 ? 2 : 1;
+  const velscale = old.trailcount > 900 ? 15 : old.trailcount > 800 ? 10 : 5;
+
+  while (len > 0) {
+    len -= dec;
+
+    if ((Math.floor(Math.random() * 0x7fffffff) & 1023) < old.trailcount) {
+      const particle = allocParticle(runtime);
+      if (!particle) {
+        return;
+      }
+
+      particle.accel = [0, 0, 0];
+      particle.time = runtime.cl.time;
+      particle.alpha = 1.0;
+      if ((flags & EF_GIB) !== 0 || (flags & EF_GREENGIB) !== 0) {
+        particle.alphavel = -1.0 / (1 + Math.random() * 0.4);
+        particle.color = ((flags & EF_GIB) !== 0 ? 0xe8 : 0xdb) + (Math.floor(Math.random() * 0x7fffffff) & 7);
+        for (let component = 0; component < 3; component += 1) {
+          particle.org[component] = move[component] + (crand() * orgscale);
+          particle.vel[component] = crand() * velscale;
+        }
+        particle.vel[2] -= PARTICLE_GRAVITY;
+      } else {
+        particle.alphavel = -1.0 / (1 + Math.random() * 0.2);
+        particle.color = 4 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+        for (let component = 0; component < 3; component += 1) {
+          particle.org[component] = move[component] + (crand() * orgscale);
+          particle.vel[component] = crand() * velscale;
+        }
+        particle.accel[2] = 20;
+      }
+    }
+
+    old.trailcount = Math.max(100, old.trailcount - 5);
+    move[0] += vec[0];
+    move[1] += vec[1];
+    move[2] += vec[2];
+  }
+}
+
+function spawnRailTrailParticles(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void {
+  const move = [...start] as vec3_t;
+  const vec = subtractVec3(end, start);
+  let len = normalizeVectorCopy(vec);
+  const { right, up } = MakeNormalVectors(vec);
+
+  for (let i = 0; i < len; i += 1) {
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    const d = i * 0.1;
+    const c = Math.cos(d);
+    const s = Math.sin(d);
+    const dir: vec3_t = [
+      (right[0] * c) + (up[0] * s),
+      (right[1] * c) + (up[1] * s),
+      (right[2] * c) + (up[2] * s)
+    ];
+
+    particle.time = runtime.cl.time;
+    particle.accel = [0, 0, 0];
+    particle.alpha = 1.0;
+    particle.alphavel = -1.0 / (1 + Math.random() * 0.2);
+    particle.color = 0x74 + (Math.floor(Math.random() * 0x7fffffff) & 7);
+    for (let component = 0; component < 3; component += 1) {
+      particle.org[component] = move[component] + (dir[component] * 3);
+      particle.vel[component] = dir[component] * 6;
+      move[component] += vec[component];
+    }
+  }
+
+  const sparkMove = [...start] as vec3_t;
+  const sparkStep: vec3_t = [vec[0] * 0.75, vec[1] * 0.75, vec[2] * 0.75];
+  while (len > 0) {
+    len -= 0.75;
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    particle.accel = [0, 0, 0];
+    particle.alpha = 1.0;
+    particle.alphavel = -1.0 / (0.6 + Math.random() * 0.2);
+    particle.color = Math.floor(Math.random() * 0x7fffffff) & 15;
+    for (let component = 0; component < 3; component += 1) {
+      particle.org[component] = sparkMove[component] + (crand() * 3);
+      particle.vel[component] = crand() * 3;
+      sparkMove[component] += sparkStep[component];
+    }
+  }
 }
 
 /**

@@ -1,0 +1,970 @@
+/**
+ * File: g_target.ts
+ * Source: Quake II original / game/g_target.c
+ * Purpose: Port of Quake II target entities and their activation behaviors.
+ *
+ * Porting policy:
+ * - Preserve original behavior first.
+ * - Preserve original names whenever possible.
+ * - Avoid structural refactors unless documented.
+ *
+ * Deviations:
+ * - `gi.WriteByte` / `gi.multicast` temp-entity side effects are queued as structured runtime events.
+ * - `gi.configstring` updates are recorded in the gameplay runtime configstring map.
+ * - Sound calls are queued through the runtime sound-event bridge with source sound indices preserved on entities.
+ *
+ * Notes:
+ * - This file is intended to stay close to the original C source.
+ */
+
+import {
+  ATTN_NONE,
+  ATTN_NORM,
+  CHAN_AUTO,
+  CHAN_RELIABLE,
+  CHAN_VOICE,
+  CS_CDTRACK,
+  CS_LIGHTS,
+  DF_ALLOW_EXIT,
+  EF_BLASTER,
+  EF_HYPERBLASTER,
+  RF_BEAM,
+  RF_TRANSLUCENT,
+  multicast_t,
+  temp_event_t,
+  vec3_origin,
+  type vec3_t
+} from "../../qcommon/src/index.js";
+import {
+  CONTENTS_DEADMONSTER,
+  CONTENTS_MONSTER,
+  CONTENTS_SOLID
+} from "../../qcommon/src/q-shared.js";
+import {
+  DAMAGE_ENERGY,
+  FL_IMMUNE_LASER,
+  MOD_EXIT,
+  MOD_EXPLOSIVE,
+  MOD_SPLASH,
+  MOD_TARGET_BLASTER,
+  MOD_TARGET_LASER,
+  SFL_CROSS_TRIGGER_MASK
+} from "./g-local.js";
+import {
+  FRAMETIME,
+  MOVETYPE_NONE,
+  SOLID_NOT,
+  SVF_MONSTER,
+  SVF_NOCLIENT,
+  emitRegisteredGameSound,
+  emitGameTempEntity,
+  freeGameEntity,
+  linkGameEntity,
+  registerGameSound,
+  setGameConfigstring
+} from "./runtime.js";
+import { T_Damage, T_RadiusDamage } from "./g_combat.js";
+import { fire_blaster } from "./g_weapon.js";
+import { ED_CallSpawn } from "./g_spawn.js";
+import { G_Find, G_FreeEdict, G_SetMovedir, G_Spawn, G_UseTargets, KillBox, vtos } from "./g_utils.js";
+import { BeginIntermission } from "./p_hud.js";
+import type { GameEntity, GameRuntime } from "./runtime.js";
+
+const TARGET_SPEAKER_LOOPED_ON = 1;
+const TARGET_SPEAKER_LOOPED_OFF = 2;
+const TARGET_SPEAKER_RELIABLE = 4;
+const TARGET_LASER_START_ON = 1;
+const TARGET_LASER_RED = 2;
+const TARGET_LASER_GREEN = 4;
+const TARGET_LASER_BLUE = 8;
+const TARGET_LASER_YELLOW = 16;
+const TARGET_LASER_ORANGE = 32;
+const TARGET_LASER_FAT = 64;
+const TARGET_LASER_SPARKS = 0x80000000;
+
+/**
+ * Original name: Use_Target_Tent
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits one origin-based temporary entity event to clients in the PVS.
+ */
+export function Use_Target_Tent(ent: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  emitGameTempEntity(runtime, ent.style as temp_event_t, ent.s.origin, multicast_t.MULTICAST_PVS, {
+    style: ent.style
+  });
+}
+
+/**
+ * Original name: SP_target_temp_entity
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function SP_target_temp_entity(ent: GameEntity, _runtime: GameRuntime): void {
+  ent.use = Use_Target_Tent;
+}
+
+/**
+ * Original name: Use_Target_Speaker
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Use_Target_Speaker(ent: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  if ((ent.spawnflags & (TARGET_SPEAKER_LOOPED_ON | TARGET_SPEAKER_LOOPED_OFF)) !== 0) {
+    ent.s.sound = ent.s.sound ? 0 : ent.noise_index;
+    return;
+  }
+
+  const channel = (ent.spawnflags & TARGET_SPEAKER_RELIABLE) !== 0
+    ? CHAN_VOICE | CHAN_RELIABLE
+    : CHAN_VOICE;
+  emitRegisteredSound(runtime, ent, ent.noise_index, {
+    origin: ent.s.origin,
+    channel,
+    volume: ent.volume,
+    attenuation: ent.attenuation,
+    timeofs: 0
+  });
+}
+
+/**
+ * Original name: SP_target_speaker
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SP_target_speaker(ent: GameEntity, runtime: GameRuntime): void {
+  const noise = ent.properties.noise;
+  if (!noise) {
+    runtime.log({
+      kind: "warning",
+      message: `target_speaker with no noise set at ${vtos(ent.s.origin)}`,
+      entityIndex: ent.index,
+      entityClassname: ent.classname
+    });
+    return;
+  }
+
+  const soundPath = noise.includes(".wav") ? noise : `${noise}.wav`;
+  ent.noise_index = registerGameSound(runtime, soundPath);
+  if (!ent.volume) {
+    ent.volume = 1.0;
+  }
+  if (!ent.attenuation) {
+    ent.attenuation = 1.0;
+  } else if (ent.attenuation === -1) {
+    ent.attenuation = 0;
+  }
+
+  if ((ent.spawnflags & TARGET_SPEAKER_LOOPED_ON) !== 0) {
+    ent.s.sound = ent.noise_index;
+  }
+
+  ent.use = Use_Target_Speaker;
+  linkGameEntity(runtime, ent);
+}
+
+/**
+ * Original name: Use_Target_Help
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function Use_Target_Help(ent: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  if ((ent.spawnflags & 1) !== 0) {
+    runtime.helpmessage1 = ent.message ?? "";
+  } else {
+    runtime.helpmessage2 = ent.message ?? "";
+  }
+  runtime.helpchanged += 1;
+}
+
+/**
+ * Original name: SP_target_help
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SP_target_help(ent: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    freeGameEntity(runtime, ent);
+    return;
+  }
+
+  if (!ent.message) {
+    runtime.log({
+      kind: "warning",
+      message: `${ent.classname} with no message at ${vtos(ent.s.origin)}`,
+      entityIndex: ent.index,
+      entityClassname: ent.classname
+    });
+    freeGameEntity(runtime, ent);
+    return;
+  }
+
+  ent.use = Use_Target_Help;
+}
+
+/**
+ * Original name: use_target_secret
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function use_target_secret(ent: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  emitRegisteredSound(runtime, ent, ent.noise_index, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+  runtime.found_secrets += 1;
+  G_UseTargets(runtime, ent, activator);
+  G_FreeEdict(runtime, ent);
+}
+
+/**
+ * Original name: SP_target_secret
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SP_target_secret(ent: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    freeGameEntity(runtime, ent);
+    return;
+  }
+
+  ent.use = use_target_secret;
+  ent.noise_index = registerGameSound(runtime, ent.properties.noise ?? "misc/secret.wav");
+  ent.svflags = SVF_NOCLIENT;
+  runtime.total_secrets += 1;
+
+  if (
+    stringsEqualIgnoreCase(runtime.mapname, "mine3") &&
+    ent.s.origin[0] === 280 &&
+    ent.s.origin[1] === -2048 &&
+    ent.s.origin[2] === -624
+  ) {
+    ent.message = "You have found a secret area.";
+  }
+}
+
+/**
+ * Original name: use_target_goal
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function use_target_goal(ent: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  emitRegisteredSound(runtime, ent, ent.noise_index, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+  runtime.found_goals += 1;
+
+  if (runtime.found_goals === runtime.total_goals) {
+    setGameConfigstring(runtime, CS_CDTRACK, "0");
+  }
+
+  G_UseTargets(runtime, ent, activator);
+  G_FreeEdict(runtime, ent);
+}
+
+/**
+ * Original name: SP_target_goal
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SP_target_goal(ent: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    freeGameEntity(runtime, ent);
+    return;
+  }
+
+  ent.use = use_target_goal;
+  ent.noise_index = registerGameSound(runtime, ent.properties.noise ?? "misc/secret.wav");
+  ent.svflags = SVF_NOCLIENT;
+  runtime.total_goals += 1;
+}
+
+/**
+ * Original name: target_explosion_explode
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function target_explosion_explode(self: GameEntity, runtime: GameRuntime): void {
+  emitGameTempEntity(runtime, temp_event_t.TE_EXPLOSION1, self.s.origin, multicast_t.MULTICAST_PHS);
+  T_RadiusDamage(self, self.activator ?? self, self.dmg, null, self.dmg + 40, MOD_EXPLOSIVE, runtime);
+
+  const save = self.delay;
+  self.delay = 0;
+  G_UseTargets(runtime, self, self.activator);
+  self.delay = save;
+}
+
+/**
+ * Original name: use_target_explosion
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function use_target_explosion(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  self.activator = activator;
+  if (!self.delay) {
+    target_explosion_explode(self, runtime);
+    return;
+  }
+
+  self.think = target_explosion_explode;
+  self.nextthink = runtime.time + self.delay;
+}
+
+/**
+ * Original name: SP_target_explosion
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function SP_target_explosion(ent: GameEntity, _runtime: GameRuntime): void {
+  ent.use = use_target_explosion;
+  ent.svflags = SVF_NOCLIENT;
+}
+
+/**
+ * Original name: use_target_changelevel
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function use_target_changelevel(self: GameEntity, other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  if (runtime.intermissiontime) {
+    return;
+  }
+
+  if (!runtime.deathmatch && !runtime.coop) {
+    const player = runtime.entities[1] ?? null;
+    if (player && player.health <= 0) {
+      return;
+    }
+  }
+
+  if (runtime.deathmatch && (runtime.dmflags & DF_ALLOW_EXIT) === 0 && other && other !== runtime.entities[0]) {
+    T_Damage(other, self, self, vec3_origin, other.s.origin, vec3_origin, 10 * other.max_health, 1000, 0, MOD_EXIT, runtime);
+    return;
+  }
+
+  if (runtime.deathmatch && activator?.client) {
+    runtime.log({
+      kind: "message",
+      message: `${activator.client.pers.netname} exited the level.`,
+      entityIndex: self.index,
+      entityClassname: self.classname,
+      otherIndex: activator.index,
+      otherClassname: activator.classname
+    });
+  }
+
+  if (self.map?.includes("*")) {
+    runtime.serverflags &= ~SFL_CROSS_TRIGGER_MASK;
+  }
+
+  BeginIntermission(self, runtime);
+}
+
+/**
+ * Original name: SP_target_changelevel
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SP_target_changelevel(ent: GameEntity, runtime: GameRuntime): void {
+  if (!ent.map) {
+    runtime.log({
+      kind: "warning",
+      message: `target_changelevel with no map at ${vtos(ent.s.origin)}`,
+      entityIndex: ent.index,
+      entityClassname: ent.classname
+    });
+    freeGameEntity(runtime, ent);
+    return;
+  }
+
+  if (stringsEqualIgnoreCase(runtime.mapname, "fact1") && stringsEqualIgnoreCase(ent.map, "fact3")) {
+    ent.map = "fact3$secret1";
+  }
+
+  ent.use = use_target_changelevel;
+  ent.svflags = SVF_NOCLIENT;
+}
+
+/**
+ * Original name: use_target_splash
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function use_target_splash(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  emitGameTempEntity(runtime, temp_event_t.TE_SPLASH, self.s.origin, multicast_t.MULTICAST_PVS, {
+    count: self.count,
+    dir: [...self.movedir],
+    sounds: self.sounds
+  });
+
+  if (self.dmg) {
+    T_RadiusDamage(self, activator ?? self, self.dmg, null, self.dmg + 40, MOD_SPLASH, runtime);
+  }
+}
+
+/**
+ * Original name: SP_target_splash
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function SP_target_splash(self: GameEntity, _runtime: GameRuntime): void {
+  self.use = use_target_splash;
+  G_SetMovedir(self.s.angles, self.movedir);
+
+  if (!self.count) {
+    self.count = 32;
+  }
+  self.svflags = SVF_NOCLIENT;
+}
+
+/**
+ * Original name: use_target_spawner
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function use_target_spawner(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  const ent = G_Spawn(runtime);
+  ent.classname = self.target ?? "noclass";
+  ent.s.origin = [...self.s.origin];
+  ent.origin = [...self.s.origin];
+  ent.s.angles = [...self.s.angles];
+  ent.angles = [...self.s.angles];
+  ED_CallSpawn(ent, runtime);
+  if (ent.inuse) {
+    // The original unlinks before KillBox. In this runtime, spawn links may be absent or already fresh.
+    KillBox(runtime, ent);
+    linkGameEntity(runtime, ent);
+    if (self.speed) {
+      ent.velocity = [...self.movedir];
+    }
+  }
+}
+
+/**
+ * Original name: SP_target_spawner
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SP_target_spawner(self: GameEntity, _runtime: GameRuntime): void {
+  self.use = use_target_spawner;
+  self.svflags = SVF_NOCLIENT;
+  if (self.speed) {
+    G_SetMovedir(self.s.angles, self.movedir);
+    self.movedir = scaleVec3(self.movedir, self.speed);
+  }
+}
+
+/**
+ * Original name: use_target_blaster
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function use_target_blaster(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  const effect = (self.spawnflags & 2) !== 0 ? 0 : ((self.spawnflags & 1) !== 0 ? EF_HYPERBLASTER : EF_BLASTER);
+  fire_blaster(self, self.s.origin, self.movedir, self.dmg, self.speed, effect, false, runtime);
+  emitRegisteredSound(runtime, self, self.noise_index, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+  void MOD_TARGET_BLASTER;
+}
+
+/**
+ * Original name: SP_target_blaster
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function SP_target_blaster(self: GameEntity, runtime: GameRuntime): void {
+  self.use = use_target_blaster;
+  G_SetMovedir(self.s.angles, self.movedir);
+  self.noise_index = registerGameSound(runtime, "weapons/laser2.wav");
+
+  if (!self.dmg) {
+    self.dmg = 15;
+  }
+  if (!self.speed) {
+    self.speed = 1000;
+  }
+  self.svflags = SVF_NOCLIENT;
+}
+
+/**
+ * Original name: trigger_crosslevel_trigger_use
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function trigger_crosslevel_trigger_use(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  runtime.serverflags |= self.spawnflags;
+  freeGameEntity(runtime, self);
+}
+
+/**
+ * Original name: SP_target_crosslevel_trigger
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function SP_target_crosslevel_trigger(self: GameEntity, _runtime: GameRuntime): void {
+  self.svflags = SVF_NOCLIENT;
+  self.use = trigger_crosslevel_trigger_use;
+}
+
+/**
+ * Original name: target_crosslevel_target_think
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function target_crosslevel_target_think(self: GameEntity, runtime: GameRuntime): void {
+  if (self.spawnflags === (runtime.serverflags & SFL_CROSS_TRIGGER_MASK & self.spawnflags)) {
+    G_UseTargets(runtime, self, self);
+    freeGameEntity(runtime, self);
+  }
+}
+
+/**
+ * Original name: SP_target_crosslevel_target
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function SP_target_crosslevel_target(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.delay) {
+    self.delay = 1;
+  }
+  self.svflags = SVF_NOCLIENT;
+  self.think = target_crosslevel_target_think;
+  self.nextthink = runtime.time + self.delay;
+}
+
+/**
+ * Original name: target_laser_think
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function target_laser_think(self: GameEntity, runtime: GameRuntime): void {
+  const count = (self.spawnflags & TARGET_LASER_SPARKS) !== 0 ? 8 : 4;
+
+  if (self.enemy) {
+    const lastMovedir = [...self.movedir] as vec3_t;
+    const point = addVec3(self.enemy.absmin, scaleVec3(self.enemy.size, 0.5));
+    self.movedir = normalizeVec3(subtractVec3(point, self.s.origin));
+    if (!vec3Equal(self.movedir, lastMovedir)) {
+      self.spawnflags |= TARGET_LASER_SPARKS;
+    }
+  }
+
+  let ignore: GameEntity | null = self;
+  let start = [...self.s.origin] as vec3_t;
+  const end = addVec3(start, scaleVec3(self.movedir, 2048));
+  let endpos = [...end] as vec3_t;
+
+  while (runtime.collision) {
+    const tr = runtime.collision.trace(start, [0, 0, 0], [0, 0, 0], end, ignore, CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_DEADMONSTER);
+    endpos = [...tr.endpos];
+    const hit = tr.ent as GameEntity | null;
+    if (!hit) {
+      break;
+    }
+
+    if (hit.takedamage && (hit.flags & FL_IMMUNE_LASER) === 0) {
+      T_Damage(hit, self, self.activator ?? self, self.movedir, tr.endpos, vec3_origin, self.dmg, 1, DAMAGE_ENERGY, MOD_TARGET_LASER, runtime);
+    }
+
+    if ((hit.svflags & SVF_MONSTER) === 0 && !hit.client) {
+      if ((self.spawnflags & TARGET_LASER_SPARKS) !== 0) {
+        self.spawnflags &= ~TARGET_LASER_SPARKS;
+        emitGameTempEntity(runtime, temp_event_t.TE_LASER_SPARKS, tr.endpos, multicast_t.MULTICAST_PVS, {
+          count,
+          dir: [...tr.plane.normal],
+          color: self.s.skinnum
+        });
+      }
+      break;
+    }
+
+    ignore = hit;
+    start = [...tr.endpos];
+  }
+
+  self.s.old_origin = [...endpos];
+  self.nextthink = runtime.time + FRAMETIME;
+}
+
+/**
+ * Original name: target_laser_on
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function target_laser_on(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.activator) {
+    self.activator = self;
+  }
+  self.spawnflags |= TARGET_LASER_SPARKS | TARGET_LASER_START_ON;
+  self.svflags &= ~SVF_NOCLIENT;
+  target_laser_think(self, runtime);
+}
+
+/**
+ * Original name: target_laser_off
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function target_laser_off(self: GameEntity, _runtime: GameRuntime): void {
+  self.spawnflags &= ~TARGET_LASER_START_ON;
+  self.svflags |= SVF_NOCLIENT;
+  self.nextthink = 0;
+}
+
+/**
+ * Original name: target_laser_use
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function target_laser_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  self.activator = activator;
+  if ((self.spawnflags & TARGET_LASER_START_ON) !== 0) {
+    target_laser_off(self, runtime);
+  } else {
+    target_laser_on(self, runtime);
+  }
+}
+
+/**
+ * Original name: target_laser_start
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function target_laser_start(self: GameEntity, runtime: GameRuntime): void {
+  self.movetype = MOVETYPE_NONE;
+  self.solid = SOLID_NOT;
+  self.s.renderfx |= RF_BEAM | RF_TRANSLUCENT;
+  self.s.modelindex = 1;
+  self.s.frame = (self.spawnflags & TARGET_LASER_FAT) !== 0 ? 16 : 4;
+
+  if ((self.spawnflags & TARGET_LASER_RED) !== 0) {
+    self.s.skinnum = 0xf2f2f0f0;
+  } else if ((self.spawnflags & TARGET_LASER_GREEN) !== 0) {
+    self.s.skinnum = 0xd0d1d2d3;
+  } else if ((self.spawnflags & TARGET_LASER_BLUE) !== 0) {
+    self.s.skinnum = 0xf3f3f1f1;
+  } else if ((self.spawnflags & TARGET_LASER_YELLOW) !== 0) {
+    self.s.skinnum = 0xdcdddedf;
+  } else if ((self.spawnflags & TARGET_LASER_ORANGE) !== 0) {
+    self.s.skinnum = 0xe0e1e2e3;
+  }
+
+  if (!self.enemy) {
+    if (self.target) {
+      const ent = G_Find(runtime, null, "targetname", self.target);
+      if (!ent) {
+        runtime.log({
+          kind: "warning",
+          message: `${self.classname} at ${vtos(self.s.origin)}: ${self.target} is a bad target`,
+          entityIndex: self.index,
+          entityClassname: self.classname
+        });
+      }
+      self.enemy = ent;
+    } else {
+      G_SetMovedir(self.s.angles, self.movedir);
+    }
+  }
+
+  self.use = target_laser_use;
+  self.think = target_laser_think;
+  if (!self.dmg) {
+    self.dmg = 1;
+  }
+  self.mins = [-8, -8, -8];
+  self.maxs = [8, 8, 8];
+  linkGameEntity(runtime, self);
+
+  if ((self.spawnflags & TARGET_LASER_START_ON) !== 0) {
+    target_laser_on(self, runtime);
+  } else {
+    target_laser_off(self, runtime);
+  }
+}
+
+/**
+ * Original name: SP_target_laser
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function SP_target_laser(self: GameEntity, runtime: GameRuntime): void {
+  self.think = target_laser_start;
+  self.nextthink = runtime.time + 1;
+}
+
+/**
+ * Original name: target_lightramp_think
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function target_lightramp_think(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const lightLevel = Math.trunc(self.movedir[0] + ((runtime.time - self.timestamp) / FRAMETIME) * self.movedir[2]);
+  setGameConfigstring(runtime, CS_LIGHTS + self.enemy.style, String.fromCharCode("a".charCodeAt(0) + lightLevel));
+
+  if ((runtime.time - self.timestamp) < self.speed) {
+    self.nextthink = runtime.time + FRAMETIME;
+  } else if ((self.spawnflags & 1) !== 0) {
+    const temp = self.movedir[0];
+    self.movedir[0] = self.movedir[1];
+    self.movedir[1] = temp;
+    self.movedir[2] *= -1;
+  }
+}
+
+/**
+ * Original name: target_lightramp_use
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function target_lightramp_use(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    let e: GameEntity | null = null;
+    while ((e = G_Find(runtime, e, "targetname", self.target ?? "")) !== null) {
+      if (e.classname !== "light") {
+        runtime.log({
+          kind: "warning",
+          message: `${self.classname} target ${self.target} (${e.classname} at ${vtos(e.s.origin)}) is not a light`,
+          entityIndex: self.index,
+          entityClassname: self.classname,
+          otherIndex: e.index,
+          otherClassname: e.classname
+        });
+      } else {
+        self.enemy = e;
+      }
+    }
+
+    if (!self.enemy) {
+      runtime.log({
+        kind: "warning",
+        message: `${self.classname} target ${self.target} not found at ${vtos(self.s.origin)}`,
+        entityIndex: self.index,
+        entityClassname: self.classname
+      });
+      freeGameEntity(runtime, self);
+      return;
+    }
+  }
+
+  self.timestamp = runtime.time;
+  target_lightramp_think(self, runtime);
+}
+
+/**
+ * Original name: SP_target_lightramp
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SP_target_lightramp(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.message || self.message.length !== 2 || !isLowercaseLetter(self.message[0]) || !isLowercaseLetter(self.message[1]) || self.message[0] === self.message[1]) {
+    runtime.log({
+      kind: "warning",
+      message: `target_lightramp has bad ramp (${self.message ?? ""}) at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
+    freeGameEntity(runtime, self);
+    return;
+  }
+
+  if (runtime.deathmatch) {
+    freeGameEntity(runtime, self);
+    return;
+  }
+
+  if (!self.target) {
+    runtime.log({
+      kind: "warning",
+      message: `${self.classname} with no target at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
+    freeGameEntity(runtime, self);
+    return;
+  }
+
+  self.svflags |= SVF_NOCLIENT;
+  self.use = target_lightramp_use;
+  self.think = target_lightramp_think;
+  self.movedir[0] = self.message.charCodeAt(0) - "a".charCodeAt(0);
+  self.movedir[1] = self.message.charCodeAt(1) - "a".charCodeAt(0);
+  self.movedir[2] = (self.movedir[1] - self.movedir[0]) / (self.speed / FRAMETIME);
+}
+
+/**
+ * Original name: target_earthquake_think
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function target_earthquake_think(self: GameEntity, runtime: GameRuntime): void {
+  if (self.last_move_time < runtime.time) {
+    emitRegisteredSound(runtime, self, self.noise_index, {
+      origin: self.s.origin,
+      channel: CHAN_AUTO,
+      volume: 1,
+      attenuation: ATTN_NONE,
+      timeofs: 0
+    });
+    self.last_move_time = runtime.time + 0.5;
+  }
+
+  for (let i = 1; i < runtime.entities.length; i += 1) {
+    const e = runtime.entities[i];
+    if (!e.inuse || !e.client || !e.groundentity) {
+      continue;
+    }
+    e.groundentity = null;
+    e.velocity[0] += crandom() * 150;
+    e.velocity[1] += crandom() * 150;
+    e.velocity[2] = self.speed * (100.0 / e.mass);
+  }
+
+  if (runtime.time < self.timestamp) {
+    self.nextthink = runtime.time + FRAMETIME;
+  }
+}
+
+/**
+ * Original name: target_earthquake_use
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function target_earthquake_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  self.timestamp = runtime.time + self.count;
+  self.nextthink = runtime.time + FRAMETIME;
+  self.activator = activator;
+  self.last_move_time = 0;
+}
+
+/**
+ * Original name: SP_target_earthquake
+ * Source: game/g_target.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SP_target_earthquake(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.targetname) {
+    runtime.log({
+      kind: "warning",
+      message: `untargeted ${self.classname} at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
+  }
+
+  if (!self.count) {
+    self.count = 5;
+  }
+  if (!self.speed) {
+    self.speed = 200;
+  }
+
+  self.svflags |= SVF_NOCLIENT;
+  self.think = target_earthquake_think;
+  self.use = target_earthquake_use;
+  self.noise_index = registerGameSound(runtime, "world/quake.wav");
+}
+
+function emitRegisteredSound(
+  runtime: GameRuntime,
+  entity: GameEntity,
+  soundIndex: number,
+  options: {
+    origin?: vec3_t | null;
+    channel?: number;
+    volume?: number;
+    attenuation?: number;
+    timeofs?: number;
+  } = {}
+): void {
+  const soundPath = runtime.assets.soundPaths[soundIndex - 1];
+  if (soundPath) {
+    emitRegisteredGameSound(runtime, entity, soundIndex, soundPath, options);
+  }
+}
+
+function stringsEqualIgnoreCase(left: string, right: string): boolean {
+  return left.localeCompare(right, undefined, { sensitivity: "accent", usage: "search" }) === 0;
+}
+
+function isLowercaseLetter(value: string): boolean {
+  return value >= "a" && value <= "z";
+}
+
+function crandom(): number {
+  return (Math.random() * 2) - 1;
+}
+
+function vec3Equal(left: vec3_t, right: vec3_t): boolean {
+  return left[0] === right[0] && left[1] === right[1] && left[2] === right[2];
+}
+
+function addVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
+}
+
+function scaleVec3(vector: vec3_t, scalar: number): vec3_t {
+  return [vector[0] * scalar, vector[1] * scalar, vector[2] * scalar];
+}
+
+function normalizeVec3(vector: vec3_t): vec3_t {
+  const length = Math.hypot(vector[0], vector[1], vector[2]);
+  if (length === 0) {
+    return [0, 0, 0];
+  }
+  return [vector[0] / length, vector[1] / length, vector[2] / length];
+}

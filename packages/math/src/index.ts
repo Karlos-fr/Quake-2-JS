@@ -122,6 +122,26 @@ export function VectorScale(
 }
 
 /**
+ * Original name: Q_fabs
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Clears the sign bit of one 32-bit float and returns the resulting absolute value.
+ *
+ * Porting notes:
+ * - Uses explicit float32 reinterpretation to mirror the original integer mask implementation.
+ */
+export function Q_fabs(value: number): number {
+  const buffer = new ArrayBuffer(4);
+  const view = new DataView(buffer);
+  view.setFloat32(0, value, true);
+  view.setUint32(0, view.getUint32(0, true) & 0x7fffffff, true);
+  return view.getFloat32(0, true);
+}
+
+/**
  * Original name: VectorMA
  * Source: game/q_shared.h
  * Category: Ported
@@ -648,6 +668,49 @@ export function BoxOnPlaneSide(
     sides = 1;
   }
   if (dist2 < plane.dist) {
+    sides |= 2;
+  }
+
+  return sides;
+}
+
+/**
+ * Original name: BoxOnPlaneSide2
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Classifies an AABB against one plane using the slow general corner-selection path.
+ */
+export function BoxOnPlaneSide2(
+  emins: [number, number, number],
+  emaxs: [number, number, number],
+  plane: PlaneLike
+): number {
+  const corners: [[number, number, number], [number, number, number]] = [
+    [0, 0, 0],
+    [0, 0, 0]
+  ];
+
+  for (let axis = 0; axis < 3; axis += 1) {
+    if (plane.normal[axis] < 0) {
+      corners[0][axis] = emins[axis];
+      corners[1][axis] = emaxs[axis];
+    } else {
+      corners[1][axis] = emins[axis];
+      corners[0][axis] = emaxs[axis];
+    }
+  }
+
+  const dist1 = DotProduct(plane.normal, corners[0]) - plane.dist;
+  const dist2 = DotProduct(plane.normal, corners[1]) - plane.dist;
+
+  let sides = 0;
+  if (dist1 >= 0) {
+    sides = 1;
+  }
+  if (dist2 < 0) {
     sides |= 2;
   }
 

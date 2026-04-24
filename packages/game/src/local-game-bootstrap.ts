@@ -11,9 +11,10 @@
  * - packages/game/src/g_items.ts
  */
 
-import { DF_INFINITE_AMMO, type vec3_t } from "../../qcommon/src/index.js";
+import { DF_INFINITE_AMMO, multicast_t, type vec3_t } from "../../qcommon/src/index.js";
 import {
   attachGameClient,
+  emitGameTempEntity,
   emitGameSound,
   emitPlayerMuzzleFlash,
   linkGameEntity,
@@ -31,7 +32,8 @@ import {
   fire_grenade2,
   fire_rail,
   fire_rocket,
-  fire_shotgun
+  fire_shotgun,
+  type GameWeaponWorldHooks
 } from "./g_weapon.js";
 import {
   ChangeWeapon,
@@ -156,14 +158,22 @@ export const LOCAL_GAME_WEAPON_HOOKS: GameWeaponHooks = {
   playWeaponSound: (ent, soundPath, _channel, runtime) => {
     emitGameSound(runtime, ent, soundPath);
   },
-  fire_bfg,
-  fire_blaster,
-  fire_bullet,
-  fire_grenade,
-  fire_grenade2,
-  fire_rail,
-  fire_rocket,
-  fire_shotgun,
+  fire_bfg: (ent, start, dir, damage, speed, damageRadius, runtime) =>
+    fire_bfg(ent, start, dir, damage, speed, damageRadius, runtime, LOCAL_GAME_WORLD_WEAPON_HOOKS),
+  fire_blaster: (ent, start, dir, damage, speed, effect, hyper, runtime) =>
+    fire_blaster(ent, start, dir, damage, speed, effect, hyper, runtime, LOCAL_GAME_WORLD_WEAPON_HOOKS),
+  fire_bullet: (ent, start, aimdir, damage, kick, hspread, vspread, mod, runtime) =>
+    fire_bullet(ent, start, aimdir, damage, kick, hspread, vspread, mod, runtime, LOCAL_GAME_WORLD_WEAPON_HOOKS),
+  fire_grenade: (ent, start, dir, damage, speed, timer, damageRadius, runtime) =>
+    fire_grenade(ent, start, dir, damage, speed, timer, damageRadius, runtime, LOCAL_GAME_WORLD_WEAPON_HOOKS),
+  fire_grenade2: (ent, start, dir, damage, speed, timer, damageRadius, held, runtime) =>
+    fire_grenade2(ent, start, dir, damage, speed, timer, damageRadius, held, runtime, LOCAL_GAME_WORLD_WEAPON_HOOKS),
+  fire_rail: (ent, start, dir, damage, kick, runtime) =>
+    fire_rail(ent, start, dir, damage, kick, runtime, LOCAL_GAME_WORLD_WEAPON_HOOKS),
+  fire_rocket: (ent, start, dir, damage, speed, damageRadius, radiusDamage, runtime) =>
+    fire_rocket(ent, start, dir, damage, speed, damageRadius, radiusDamage, runtime, LOCAL_GAME_WORLD_WEAPON_HOOKS),
+  fire_shotgun: (ent, start, aimdir, damage, kick, hspread, vspread, count, mod, runtime) =>
+    fire_shotgun(ent, start, aimdir, damage, kick, hspread, vspread, count, mod, runtime, LOCAL_GAME_WORLD_WEAPON_HOOKS),
   weaponThink: {
     Weapon_Blaster,
     Weapon_Shotgun,
@@ -178,6 +188,38 @@ export const LOCAL_GAME_WEAPON_HOOKS: GameWeaponHooks = {
     Weapon_BFG
   }
 };
+
+const LOCAL_GAME_WORLD_WEAPON_HOOKS: GameWeaponWorldHooks = {
+  emitTempEntity: (event, payload, runtime) => {
+    const origin = readTempEntityOrigin(payload) ?? [0, 0, 0];
+    emitGameTempEntity(runtime, event, origin, multicast_t.MULTICAST_PVS, payload);
+  }
+};
+
+function readTempEntityOrigin(payload: Record<string, unknown>): vec3_t | null {
+  const origin = payload.origin;
+  if (isVec3(origin)) {
+    return [...origin];
+  }
+
+  const end = payload.end;
+  if (isVec3(end)) {
+    return [...end];
+  }
+
+  const start = payload.start;
+  if (isVec3(start)) {
+    return [...start];
+  }
+
+  return null;
+}
+
+function isVec3(value: unknown): value is vec3_t {
+  return Array.isArray(value)
+    && value.length === 3
+    && value.every((component) => typeof component === "number" && Number.isFinite(component));
+}
 
 /**
  * Category: New

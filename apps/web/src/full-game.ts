@@ -20,7 +20,12 @@ import {
   readMountedFile,
   type VirtualFilesystem
 } from "../../../packages/filesystem/src/index.js";
-import { createQuakeWebAudioAdapter, type QuakeWebAudioAdapter } from "../../../packages/platform/src/index.js";
+import {
+  createQuakeWebAudioAdapter,
+  createWebCDAudioAdapter,
+  type QuakeWebAudioAdapter,
+  type WebCDAudioAdapter
+} from "../../../packages/platform/src/index.js";
 import {
   Cmd_Init,
   Cvar_Command,
@@ -113,6 +118,7 @@ interface FullGameRuntime {
   drawCommands: DrawCommand[];
   assets: CanvasAssetCache;
   audio: QuakeWebAudioAdapter;
+  cdAudio: WebCDAudioAdapter;
   currentCinematicIndex: number;
   mode: "cinematic" | "menu";
   lastFrameTime: number;
@@ -306,6 +312,14 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       onWarning: (message) => appendLog(page, message)
     }
   });
+  const cdAudio = createWebCDAudioAdapter({
+    context: audio.context,
+    filesystem,
+    logs: {
+      onInfo: (message) => appendLog(page, message),
+      onWarning: (message) => appendLog(page, message)
+    }
+  });
 
   const ref = createCanvasRef(filesystem, assets, drawCommands);
   const keys = createClientKeyContext({ cmd, cvar, client });
@@ -364,6 +378,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     drawCommands,
     assets,
     audio,
+    cdAudio,
     currentCinematicIndex: 0,
     mode: "cinematic",
     lastFrameTime: 0,
@@ -447,6 +462,9 @@ function startNextCinematic(runtime: FullGameRuntime, page: FullGamePage): void 
     },
     onCinematicSoundRestart: () => {
       runtime.audio.stopRaw();
+    },
+    onCDAudioStop: () => {
+      runtime.cdAudio.stop();
     }
   });
 
@@ -498,6 +516,9 @@ function drawCinematicFrame(runtime: FullGameRuntime, page: FullGamePage): void 
     },
     onCinematicSoundRestart: () => {
       runtime.audio.stopRaw();
+    },
+    onCDAudioStop: () => {
+      runtime.cdAudio.stop();
     }
   });
 

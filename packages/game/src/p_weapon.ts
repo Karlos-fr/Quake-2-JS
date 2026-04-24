@@ -43,6 +43,7 @@ import {
   MZ_SHOTGUN,
   MZ_SSHOTGUN,
   ROLL,
+  temp_event_t,
   YAW,
   type vec3_t
 } from "../../qcommon/src/index.js";
@@ -113,6 +114,7 @@ export interface GameWeaponHooks {
   Drop_Item?: (ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime) => GameEntity | null;
   SetRespawn?: (ent: GameEntity, delaySeconds: number, runtime: GameRuntime) => void;
   emitPlayerMuzzleFlash?: (ent: GameEntity, weapon: number, runtime: GameRuntime) => void;
+  emitTempEntity?: (event: temp_event_t, payload: Record<string, unknown>, runtime: GameRuntime) => void;
   playWeaponSound?: (ent: GameEntity, soundPath: string, channel: number, runtime: GameRuntime) => void;
   fire_bfg?: (
     ent: GameEntity,

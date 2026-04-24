@@ -33,6 +33,8 @@ export interface QuakeWebAudioAdapter {
   resume: () => Promise<void>;
   setMuted: (muted: boolean) => void;
   setMasterVolume: (volume: number) => void;
+  setSfxVolume: (volume: number) => void;
+  setListener: (listener: WebAudioListenerState) => void;
   stopAll: () => void;
   stopRaw: () => void;
   playSfx: (sfx: sfx_t, options?: WebAudioSfxPlaybackOptions) => void;
@@ -74,6 +76,12 @@ export interface WebAudioNamedLoop {
   rightVolume: number;
 }
 
+export interface WebAudioListenerState {
+  position: [number, number, number];
+  forward: [number, number, number];
+  up: [number, number, number];
+}
+
 interface ActiveSource {
   source: AudioBufferSourceNode;
   gain: GainNode;
@@ -97,18 +105,25 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
   const activeSources: ActiveSource[] = [];
   const activeLoops = new Map<string, ActiveSource>();
   const activeWavLoops = new Map<string, ActiveSource>();
+  const pendingWavLoops = new Set<string>();
   const activeRawSources: AudioBufferSourceNode[] = [];
   const pendingRawChunks: PendingRawChunk[] = [];
   const masterGain = context?.createGain() ?? null;
+  const sfxGain = context?.createGain() ?? null;
   let unlocked = false;
   let muted = false;
   let masterVolume = 1;
+  let sfxVolume = 1;
   let nextRawStartTime = 0;
   let rawChunkLogCount = 0;
 
   if (context && masterGain) {
     masterGain.gain.value = 1;
     masterGain.connect(context.destination);
+  }
+  if (sfxGain && masterGain) {
+    sfxGain.gain.value = 1;
+    sfxGain.connect(masterGain);
   }
 
   const adapter: QuakeWebAudioAdapter = {
@@ -156,6 +171,18 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
       masterVolume = clamp01(volume);
       updateMasterGain(masterGain, muted, masterVolume);
     },
+    setSfxVolume: (volume) => {
+      sfxVolume = clamp01(volume);
+      if (sfxGain) {
+        sfxGain.gain.value = sfxVolume;
+      }
+    },
+    setListener: (listener) => {
+      if (!context) {
+        return;
+      }
+      updateAudioContextListener(context, listener);
+    },
     stopAll: () => {
       stopActiveSources(activeSources);
       activeLoops.clear();
@@ -172,7 +199,7 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
       nextRawStartTime = context ? context.currentTime : 0;
     },
     playSfx: (sfx, playOptions = {}) => {
-      if (!context || !masterGain || !unlocked || context.state !== "running") {
+      if (!context || !sfxGain || !unlocked || context.state !== "running") {
         return;
       }
       const cache = sfx.cache;
@@ -186,7 +213,7 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
         stopMatchingSources(activeSources, key);
       }
 
-      const active = createSpatialSource(context, masterGain, buffer, {
+      const active = createSpatialSource(context, sfxGain, buffer, {
         leftVolume: playOptions.leftVolume ?? 255,
         rightVolume: playOptions.rightVolume ?? 255,
         key,
@@ -251,15 +278,16 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
       }
     },
     playWavAt: (filesystem, name, playOptions = {}) => {
-      if (!context || !masterGain || !unlocked || context.state !== "running") {
+      if (!context || !sfxGain || !unlocked || context.state !== "running") {
         return;
       }
-      void playDecodedWav(context, masterGain, decodedWavCache, filesystem, name, logs, {
+      void playDecodedWav(context, sfxGain, decodedWavCache, filesystem, name, logs, {
         leftVolume: playOptions.leftVolume ?? 255,
         rightVolume: playOptions.rightVolume ?? 255,
         loop: playOptions.loop ?? false,
         loopKey: playOptions.loopKey ?? null,
-        activeLoops: activeWavLoops
+        activeLoops: activeWavLoops,
+        pendingLoops: pendingWavLoops
       });
     },
     syncWavLoops: (filesystem, loops) => {
@@ -322,10 +350,10 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
       activeRawSources.push(source);
     },
     playWav: (filesystem, name) => {
-      if (!context || !masterGain || !unlocked || context.state !== "running") {
+      if (!context || !sfxGain || !unlocked || context.state !== "running") {
         return;
       }
-      void playDecodedWav(context, masterGain, decodedWavCache, filesystem, name, logs);
+      void playDecodedWav(context, sfxGain, decodedWavCache, filesystem, name, logs);
     }
   };
 
@@ -484,54 +512,67 @@ async function playDecodedWav(
     loop?: boolean;
     loopKey?: string | null;
     activeLoops?: Map<string, ActiveSource>;
+    pendingLoops?: Set<string>;
   } = {}
 ): Promise<void> {
   const path = resolveQuakeSoundPath(name);
+  if (options.loopKey) {
+    if (options.activeLoops?.has(options.loopKey) || options.pendingLoops?.has(options.loopKey)) {
+      return;
+    }
+    options.pendingLoops?.add(options.loopKey);
+  }
   let buffer = cache.get(path);
 
-  if (buffer === undefined) {
-    const file = readMountedFile(filesystem, path);
-    if (!file) {
-      cache.set(path, null);
-      return;
-    }
-
-    try {
-      const wavBytes = new Uint8Array(file.bytes.byteLength);
-      wavBytes.set(file.bytes);
-      const audioData = new ArrayBuffer(wavBytes.byteLength);
-      new Uint8Array(audioData).set(wavBytes);
-      buffer = await context.decodeAudioData(audioData);
-      cache.set(path, buffer);
-    } catch (error) {
-      cache.set(path, null);
-      logs.onWarning?.(`son illisible: ${path} (${error instanceof Error ? error.message : error})`);
-      return;
-    }
-  }
-
-  if (!buffer) {
-    return;
-  }
-
-  if (options.loopKey && options.activeLoops?.has(options.loopKey)) {
-    return;
-  }
-
-  const active = createSpatialSource(context, destination, buffer, {
-    leftVolume: options.leftVolume ?? 255,
-    rightVolume: options.rightVolume ?? 255,
-    key: options.loopKey ?? null,
-    loop: options.loop ?? false,
-    offsetSamples: 0
-  });
-  if (options.loop && options.loopKey && options.activeLoops) {
-    options.activeLoops.set(options.loopKey, active);
-    active.source.onended = () => {
-      if (options.activeLoops?.get(options.loopKey ?? "") === active) {
-        options.activeLoops.delete(options.loopKey ?? "");
+  try {
+    if (buffer === undefined) {
+      const file = readMountedFile(filesystem, path);
+      if (!file) {
+        cache.set(path, null);
+        return;
       }
-    };
+
+      try {
+        const wavBytes = new Uint8Array(file.bytes.byteLength);
+        wavBytes.set(file.bytes);
+        const audioData = new ArrayBuffer(wavBytes.byteLength);
+        new Uint8Array(audioData).set(wavBytes);
+        buffer = await context.decodeAudioData(audioData);
+        cache.set(path, buffer);
+      } catch (error) {
+        cache.set(path, null);
+        logs.onWarning?.(`son illisible: ${path} (${error instanceof Error ? error.message : error})`);
+        return;
+      }
+    }
+
+    if (!buffer) {
+      return;
+    }
+
+    if (options.loopKey && options.activeLoops?.has(options.loopKey)) {
+      return;
+    }
+
+    const active = createSpatialSource(context, destination, buffer, {
+      leftVolume: options.leftVolume ?? 255,
+      rightVolume: options.rightVolume ?? 255,
+      key: options.loopKey ?? null,
+      loop: options.loop ?? false,
+      offsetSamples: 0
+    });
+    if (options.loop && options.loopKey && options.activeLoops) {
+      options.activeLoops.set(options.loopKey, active);
+      active.source.onended = () => {
+        if (options.activeLoops?.get(options.loopKey ?? "") === active) {
+          options.activeLoops.delete(options.loopKey ?? "");
+        }
+      };
+    }
+  } finally {
+    if (options.loopKey) {
+      options.pendingLoops?.delete(options.loopKey);
+    }
   }
 }
 
@@ -575,6 +616,27 @@ function updateMasterGain(masterGain: GainNode | null, muted: boolean, volume: n
   if (masterGain) {
     masterGain.gain.value = muted ? 0 : clamp01(volume);
   }
+}
+
+function updateAudioContextListener(context: AudioContext, listener: WebAudioListenerState): void {
+  const audioListener = context.listener;
+  const time = context.currentTime;
+  setAudioParam(audioListener.positionX, listener.position[0], time);
+  setAudioParam(audioListener.positionY, listener.position[1], time);
+  setAudioParam(audioListener.positionZ, listener.position[2], time);
+  setAudioParam(audioListener.forwardX, listener.forward[0], time);
+  setAudioParam(audioListener.forwardY, listener.forward[1], time);
+  setAudioParam(audioListener.forwardZ, listener.forward[2], time);
+  setAudioParam(audioListener.upX, listener.up[0], time);
+  setAudioParam(audioListener.upY, listener.up[1], time);
+  setAudioParam(audioListener.upZ, listener.up[2], time);
+}
+
+function setAudioParam(param: AudioParam | undefined, value: number, time: number): void {
+  if (!param) {
+    return;
+  }
+  param.setValueAtTime(value, time);
 }
 
 function clamp01(value: number): number {

@@ -583,9 +583,14 @@ export function LerpAngle(a2: number, a1: number, frac: number): number {
  * - Builds forward, right and up vectors from Quake II pitch/yaw/roll angles in degrees.
  *
  * Porting notes:
- * - Returns vectors in one object instead of mutating nullable output pointers.
+ * - Supports nullable output-style mutation and also returns the vectors for existing TypeScript callers.
  */
-export function AngleVectors(angles: vec3_t): { forward: vec3_t; right: vec3_t; up: vec3_t } {
+export function AngleVectors(
+  angles: vec3_t,
+  forwardOut?: vec3_t | null,
+  rightOut?: vec3_t | null,
+  upOut?: vec3_t | null
+): { forward: vec3_t; right: vec3_t; up: vec3_t } {
   const yaw = angles[YAW] * (Math.PI * 2 / 360);
   const pitch = angles[PITCH] * (Math.PI * 2 / 360);
   const roll = angles[ROLL] * (Math.PI * 2 / 360);
@@ -597,19 +602,35 @@ export function AngleVectors(angles: vec3_t): { forward: vec3_t; right: vec3_t; 
   const sr = Math.sin(roll);
   const cr = Math.cos(roll);
 
-  return {
-    forward: [cp * cy, cp * sy, -sp],
-    right: [
-      (-sr * sp * cy) + (-cr * -sy),
-      (-sr * sp * sy) + (-cr * cy),
-      -sr * cp
-    ],
-    up: [
-      (cr * sp * cy) + (-sr * -sy),
-      (cr * sp * sy) + (-sr * cy),
-      cr * cp
-    ]
-  };
+  const forward: vec3_t = [cp * cy, cp * sy, -sp];
+  const right: vec3_t = [
+    (-sr * sp * cy) + (-cr * -sy),
+    (-sr * sp * sy) + (-cr * cy),
+    -sr * cp
+  ];
+  const up: vec3_t = [
+    (cr * sp * cy) + (-sr * -sy),
+    (cr * sp * sy) + (-sr * cy),
+    cr * cp
+  ];
+
+  if (forwardOut) {
+    forwardOut[0] = forward[0];
+    forwardOut[1] = forward[1];
+    forwardOut[2] = forward[2];
+  }
+  if (rightOut) {
+    rightOut[0] = right[0];
+    rightOut[1] = right[1];
+    rightOut[2] = right[2];
+  }
+  if (upOut) {
+    upOut[0] = up[0];
+    upOut[1] = up[1];
+    upOut[2] = up[2];
+  }
+
+  return { forward, right, up };
 }
 
 /**

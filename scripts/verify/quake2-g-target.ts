@@ -1,0 +1,484 @@
+/**
+ * File: quake2-g-target.ts
+ * Purpose: Verify the first TypeScript target for `game/g_target.c`.
+ *
+ * This file is not a direct source port.
+ * It is a targeted verification harness for target entity behavior now attached to `packages/game/src/g_target.ts`.
+ *
+ * Dependencies:
+ * - packages/game/src/g_target.ts
+ * - packages/game/src/runtime.ts
+ */
+
+import { strict as assert } from "node:assert";
+
+import {
+  CHAN_RELIABLE,
+  CHAN_VOICE,
+  CS_CDTRACK,
+  CS_LIGHTS,
+  DF_ALLOW_EXIT,
+  multicast_t,
+  temp_event_t,
+  type trace_t,
+  type vec3_t
+} from "../../packages/qcommon/src/index.js";
+import { svc_temp_entity } from "../../packages/game/src/g-local.js";
+import {
+  FRAMETIME,
+  SVF_MONSTER,
+  SVF_NOCLIENT,
+  attachGameClient,
+  createGameRuntimeFromBspEntities,
+  drainGameConfigstringUpdates,
+  drainGameTempEntityEvents,
+  runPendingThinks,
+  spawnGameEntity
+} from "../../packages/game/src/index.js";
+import { G_RunFrame, createGameMainContext } from "../../packages/game/src/g_main.js";
+import {
+  SP_target_blaster,
+  SP_target_changelevel,
+  SP_target_crosslevel_target,
+  SP_target_crosslevel_trigger,
+  SP_target_earthquake,
+  SP_target_explosion,
+  SP_target_goal,
+  SP_target_help,
+  SP_target_laser,
+  SP_target_lightramp,
+  SP_target_secret,
+  SP_target_speaker,
+  SP_target_spawner,
+  SP_target_splash,
+  SP_target_temp_entity,
+  Use_Target_Tent,
+  target_lightramp_use,
+  trigger_crosslevel_trigger_use,
+  use_target_explosion,
+  use_target_goal,
+  use_target_secret
+} from "../../packages/game/src/g_target.js";
+import type { game_import_t } from "../../packages/game/src/game.js";
+import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
+
+verifyTargetTempEntity();
+verifyTargetSpeaker();
+verifyTargetHelpSecretGoal();
+verifyTargetExplosionAndSplash();
+verifyChangelevelAndSpawner();
+verifyCrosslevelTargets();
+verifyLaserDamageAndLightramp();
+verifyBlasterAndEarthquake();
+verifyRuntimeEngineFlush();
+
+console.log("quake2-g-target: ok");
+
+function verifyTargetTempEntity(): void {
+  const runtime = createRuntime();
+  const ent = spawnGameEntity(runtime);
+  ent.classname = "target_temp_entity";
+  ent.style = temp_event_t.TE_EXPLOSION1;
+  ent.s.origin = [10, 20, 30];
+  SP_target_temp_entity(ent, runtime);
+
+  Use_Target_Tent(ent, null, null, runtime);
+  const events = drainGameTempEntityEvents(runtime);
+  assert.equal(events.at(-1)?.type, temp_event_t.TE_EXPLOSION1, "target_temp_entity event type mismatch");
+  assert.equal(events.at(-1)?.multicast, multicast_t.MULTICAST_PVS, "target_temp_entity multicast mismatch");
+}
+
+function verifyTargetSpeaker(): void {
+  const runtime = createRuntime();
+  const normal = spawnGameEntity(runtime);
+  normal.classname = "target_speaker";
+  normal.properties.noise = "misc/talk";
+  SP_target_speaker(normal, runtime);
+
+  assert.equal(runtime.assets.soundPaths[normal.noise_index - 1], "misc/talk.wav", "target_speaker wav suffix mismatch");
+  normal.use?.(normal, null, null, runtime);
+  assert.equal(runtime.soundEvents.at(-1)?.soundPath, "misc/talk.wav", "target_speaker sound event mismatch");
+
+  const looped = spawnGameEntity(runtime);
+  looped.classname = "target_speaker";
+  looped.properties.noise = "world/hum.wav";
+  looped.spawnflags = 1;
+  SP_target_speaker(looped, runtime);
+  assert.equal(looped.s.sound, looped.noise_index, "target_speaker prestarted loop mismatch");
+  looped.use?.(looped, null, null, runtime);
+  assert.equal(looped.s.sound, 0, "target_speaker loop toggle off mismatch");
+}
+
+function verifyTargetHelpSecretGoal(): void {
+  const runtime = createRuntime();
+  const help = spawnGameEntity(runtime);
+  help.classname = "target_help";
+  help.message = "Find the exit";
+  SP_target_help(help, runtime);
+  help.use?.(help, null, null, runtime);
+  assert.equal(runtime.helpmessage2, "Find the exit", "target_help message mismatch");
+  assert.equal(runtime.helpchanged, 1, "target_help counter mismatch");
+
+  const secret = createHighEntity(runtime, "target_secret");
+  SP_target_secret(secret, runtime);
+  assert.equal(runtime.total_secrets, 1, "target_secret total mismatch");
+  use_target_secret(secret, null, null, runtime);
+  assert.equal(runtime.found_secrets, 1, "target_secret found mismatch");
+  assert.equal(secret.inuse, false, "target_secret must free itself");
+
+  const goal = createHighEntity(runtime, "target_goal");
+  SP_target_goal(goal, runtime);
+  assert.equal(runtime.total_goals, 1, "target_goal total mismatch");
+  use_target_goal(goal, null, null, runtime);
+  assert.deepEqual(drainGameConfigstringUpdates(runtime), [{ index: CS_CDTRACK, value: "0" }], "target_goal must stop CD track when all goals found");
+}
+
+function verifyTargetExplosionAndSplash(): void {
+  const runtime = createRuntime();
+  const explosion = spawnGameEntity(runtime);
+  explosion.classname = "target_explosion";
+  explosion.dmg = 0;
+  SP_target_explosion(explosion, runtime);
+  use_target_explosion(explosion, null, null, runtime);
+  assert.equal(drainGameTempEntityEvents(runtime).at(-1)?.type, temp_event_t.TE_EXPLOSION1, "target_explosion temp event mismatch");
+
+  const delayed = spawnGameEntity(runtime);
+  delayed.classname = "target_explosion";
+  delayed.delay = 0.3;
+  SP_target_explosion(delayed, runtime);
+  delayed.use?.(delayed, null, null, runtime);
+  assert.equal(delayed.nextthink, runtime.time + 0.3, "target_explosion delayed think mismatch");
+
+  const splash = spawnGameEntity(runtime);
+  splash.classname = "target_splash";
+  splash.s.angles = [0, 90, 0];
+  splash.angles = [0, 90, 0];
+  splash.sounds = 1;
+  SP_target_splash(splash, runtime);
+  assert.equal(splash.count, 32, "target_splash default count mismatch");
+  splash.use?.(splash, null, null, runtime);
+  assert.equal(drainGameTempEntityEvents(runtime).at(-1)?.type, temp_event_t.TE_SPLASH, "target_splash temp event mismatch");
+}
+
+function verifyChangelevelAndSpawner(): void {
+  const runtime = createRuntime();
+  runtime.time = 2;
+  const player = runtime.entities[1] ?? createPlayer(runtime);
+  attachGameClient(player);
+  player.health = 100;
+
+  const changelevel = spawnGameEntity(runtime);
+  changelevel.classname = "target_changelevel";
+  changelevel.map = "unit2";
+  SP_target_changelevel(changelevel, runtime);
+  changelevel.use?.(changelevel, player, player, runtime);
+  assert.equal(runtime.intermissiontime, runtime.time, "target_changelevel must enter intermission");
+  assert.equal(runtime.changemap, "unit2", "target_changelevel map mismatch");
+  assert.equal(runtime.exitintermission, 1, "single-player target_changelevel should request exit");
+
+  const blockedRuntime = createRuntime();
+  blockedRuntime.time = 3;
+  blockedRuntime.deathmatch = true;
+  blockedRuntime.dmflags = 0;
+  const victim = createPlayer(blockedRuntime);
+  victim.max_health = 10;
+  victim.health = 100;
+  const noexit = spawnGameEntity(blockedRuntime);
+  noexit.classname = "target_changelevel";
+  noexit.map = "dm2";
+  SP_target_changelevel(noexit, blockedRuntime);
+  noexit.use?.(noexit, victim, victim, blockedRuntime);
+  assert.equal(blockedRuntime.intermissiontime, 0, "deathmatch noexit must block intermission");
+  assert.equal(victim.health < 100, true, "deathmatch noexit must damage activator");
+
+  blockedRuntime.dmflags = DF_ALLOW_EXIT;
+  noexit.use?.(noexit, victim, victim, blockedRuntime);
+  assert.notEqual(blockedRuntime.intermissiontime, 0, "DF_ALLOW_EXIT must allow changelevel");
+
+  const spawnerRuntime = createRuntime();
+  const spawner = spawnGameEntity(spawnerRuntime);
+  spawner.classname = "target_spawner";
+  spawner.target = "target_temp_entity";
+  spawner.s.origin = [9, 8, 7];
+  spawner.s.angles = [0, 90, 0];
+  SP_target_spawner(spawner, spawnerRuntime);
+  spawner.use?.(spawner, null, null, spawnerRuntime);
+  const spawned = spawnerRuntime.entities.at(-1);
+  assert.equal(spawned?.classname, "target_temp_entity", "target_spawner classname mismatch");
+  assert.ok(spawned?.use, "target_spawner must call spawned entity spawn function");
+  assert.deepEqual(spawned?.s.origin, [9, 8, 7], "target_spawner origin mismatch");
+}
+
+function verifyCrosslevelTargets(): void {
+  const runtime = createRuntime();
+  const trigger = spawnGameEntity(runtime);
+  trigger.classname = "target_crosslevel_trigger";
+  trigger.spawnflags = 4;
+  SP_target_crosslevel_trigger(trigger, runtime);
+  trigger_crosslevel_trigger_use(trigger, null, null, runtime);
+  assert.equal(runtime.serverflags & 4, 4, "crosslevel trigger serverflags mismatch");
+  assert.equal(trigger.inuse, false, "crosslevel trigger must free itself");
+
+  const target = createHighEntity(runtime, "target_crosslevel_target");
+  target.spawnflags = 4;
+  SP_target_crosslevel_target(target, runtime);
+  assert.equal(target.nextthink, runtime.time + 1, "crosslevel target default delay mismatch");
+  runPendingThinks(runtime, 1);
+  assert.equal(target.inuse, false, "crosslevel target must fire and free when flags match");
+}
+
+function verifyLaserDamageAndLightramp(): void {
+  const runtime = createRuntime();
+  const laser = spawnGameEntity(runtime);
+  laser.classname = "target_laser";
+  laser.spawnflags = 1 | 2;
+  laser.s.angles = [0, 0, 0];
+  laser.angles = [0, 0, 0];
+  SP_target_laser(laser, runtime);
+  runPendingThinks(runtime, 1);
+  assert.equal((laser.svflags & SVF_NOCLIENT) === 0, true, "target_laser START_ON visibility mismatch");
+  laser.use?.(laser, null, null, runtime);
+  assert.equal((laser.svflags & SVF_NOCLIENT) !== 0, true, "target_laser use must toggle off");
+
+  const tracedRuntime = createRuntime();
+  const tracedLaser = spawnGameEntity(tracedRuntime);
+  tracedLaser.classname = "target_laser";
+  tracedLaser.spawnflags = 1;
+  tracedLaser.s.origin = [0, 0, 0];
+  tracedLaser.s.angles = [0, 0, 0];
+  tracedLaser.angles = [0, 0, 0];
+  const target = spawnGameEntity(tracedRuntime);
+  target.classname = "monster_soldier";
+  target.svflags |= SVF_MONSTER;
+  target.takedamage = 1;
+  target.health = 25;
+  const wall = spawnGameEntity(tracedRuntime);
+  wall.classname = "wall";
+  let traceCount = 0;
+  tracedRuntime.collision = {
+    world: {} as never,
+    trace: () => {
+      traceCount += 1;
+      return traceCount === 1
+        ? createTrace([64, 0, 0], target)
+        : createTrace([128, 0, 0], wall);
+    },
+    pointcontents: () => 0
+  };
+  SP_target_laser(tracedLaser, tracedRuntime);
+  runPendingThinks(tracedRuntime, 1);
+  assert.equal(target.health < 25, true, "target_laser must damage trace hit targets");
+  assert.equal(tracedLaser.s.old_origin[0], 128, "target_laser beam endpoint mismatch");
+  assert.equal(drainGameTempEntityEvents(tracedRuntime).some((event) => event.type === temp_event_t.TE_LASER_SPARKS), true, "target_laser wall spark mismatch");
+
+  const light = spawnGameEntity(runtime);
+  light.classname = "light";
+  light.targetname = "lamp";
+  light.style = 3;
+
+  const ramp = spawnGameEntity(runtime);
+  ramp.classname = "target_lightramp";
+  ramp.target = "lamp";
+  ramp.message = "az";
+  ramp.speed = 1;
+  SP_target_lightramp(ramp, runtime);
+  target_lightramp_use(ramp, null, null, runtime);
+  assert.deepEqual(drainGameConfigstringUpdates(runtime), [{ index: CS_LIGHTS + light.style, value: "a" }], "target_lightramp initial lightstyle mismatch");
+  runPendingThinks(runtime, runtime.time + FRAMETIME);
+  assert.equal(drainGameConfigstringUpdates(runtime).length > 0, true, "target_lightramp must keep updating lightstyle");
+}
+
+function verifyBlasterAndEarthquake(): void {
+  const runtime = createRuntime();
+  const blaster = spawnGameEntity(runtime);
+  blaster.classname = "target_blaster";
+  blaster.s.angles = [0, 0, 0];
+  blaster.angles = [0, 0, 0];
+  SP_target_blaster(blaster, runtime);
+  assert.equal(blaster.dmg, 15, "target_blaster default damage mismatch");
+  assert.equal(blaster.speed, 1000, "target_blaster default speed mismatch");
+  blaster.use?.(blaster, null, null, runtime);
+  assert.equal(runtime.soundEvents.at(-1)?.soundPath, "weapons/laser2.wav", "target_blaster fire sound mismatch");
+
+  const quake = spawnGameEntity(runtime);
+  quake.classname = "target_earthquake";
+  SP_target_earthquake(quake, runtime);
+  assert.equal(quake.count, 5, "target_earthquake default count mismatch");
+  assert.equal(quake.speed, 200, "target_earthquake default speed mismatch");
+
+  const player = createPlayer(runtime);
+  player.groundentity = runtime.entities[0] ?? null;
+  player.mass = 100;
+  quake.use?.(quake, null, player, runtime);
+  runPendingThinks(runtime, runtime.time + FRAMETIME);
+  assert.equal(player.groundentity, null, "target_earthquake must clear player groundentity");
+  assert.equal(player.velocity[2], 200, "target_earthquake vertical velocity mismatch");
+}
+
+function verifyRuntimeEngineFlush(): void {
+  const runtime = createRuntime();
+  const writes: string[] = [];
+  const sounds: string[] = [];
+  const configstrings = new Map<number, string>();
+  const multicasts: Array<{ origin: vec3_t; to: multicast_t }> = [];
+  const imports = createRecordingImports(writes, configstrings, multicasts, sounds);
+  const context = createGameMainContext(imports, { runtime });
+
+  const goal = createHighEntity(runtime, "target_goal");
+  SP_target_goal(goal, runtime);
+  use_target_goal(goal, null, null, runtime);
+
+  const splash = spawnGameEntity(runtime);
+  splash.classname = "target_splash";
+  splash.s.origin = [1, 2, 3];
+  splash.movedir = [0, 0, 1];
+  splash.count = 7;
+  splash.sounds = 6;
+  SP_target_splash(splash, runtime);
+  splash.use?.(splash, null, null, runtime);
+
+  const speaker = spawnGameEntity(runtime);
+  speaker.classname = "target_speaker";
+  speaker.properties.noise = "misc/talk.wav";
+  speaker.spawnflags = 4;
+  speaker.volume = 0.5;
+  speaker.attenuation = 2;
+  SP_target_speaker(speaker, runtime);
+  speaker.use?.(speaker, null, null, runtime);
+
+  G_RunFrame(context);
+
+  assert.equal(configstrings.get(CS_CDTRACK), "0", "runtime configstring updates must flush through gi.configstring");
+  assert.equal(
+    sounds.at(-1),
+    `positioned:${speaker.index}:${CHAN_VOICE | CHAN_RELIABLE}:${speaker.noise_index}:0.5:2:0:0,0,0`,
+    "target_speaker must flush through gi.positioned_sound"
+  );
+  assert.deepEqual(
+    writes.slice(-6),
+    [
+      `byte:${svc_temp_entity}`,
+      `byte:${temp_event_t.TE_SPLASH}`,
+      "byte:7",
+      "pos:1,2,3",
+      "dir:1,0,0",
+      "byte:6"
+    ],
+    "runtime temp entity event must flush through gi.Write*"
+  );
+  assert.equal(multicasts.at(-1)?.to, multicast_t.MULTICAST_PVS, "runtime temp entity multicast mismatch");
+  assert.equal(drainGameConfigstringUpdates(runtime).length, 0, "configstring queue must drain after G_RunFrame");
+  assert.equal(drainGameTempEntityEvents(runtime).length, 0, "temp entity queue must drain after G_RunFrame");
+}
+
+function createRuntime(): GameRuntime {
+  const runtime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+  runtime.maxclients = 1;
+  runtime.maxentities = 128;
+  runtime.mapname = "unit";
+  return runtime;
+}
+
+function createHighEntity(runtime: GameRuntime, classname: string): GameEntity {
+  while (runtime.entities.length <= runtime.maxclients + 8) {
+    const filler = spawnGameEntity(runtime);
+    filler.classname = "filler";
+  }
+
+  const entity = spawnGameEntity(runtime);
+  entity.classname = classname;
+  return entity;
+}
+
+function createPlayer(runtime: GameRuntime): GameEntity {
+  const player = spawnGameEntity(runtime);
+  player.classname = "player";
+  attachGameClient(player);
+  player.health = 100;
+  player.takedamage = 1;
+  player.mass = 100;
+  return player;
+}
+
+function createRecordingImports(
+  writes: string[],
+  configstrings: Map<number, string>,
+  multicasts: Array<{ origin: vec3_t; to: multicast_t }>,
+  sounds: string[] = []
+): game_import_t {
+  return {
+    bprintf: () => {},
+    dprintf: () => {},
+    cprintf: () => {},
+    centerprintf: () => {},
+    sound: (entity, channel, soundIndex, volume, attenuation, timeofs) => {
+      sounds.push(`sound:${entity?.index ?? -1}:${channel}:${soundIndex}:${volume}:${attenuation}:${timeofs}`);
+    },
+    positioned_sound: (origin, entity, channel, soundIndex, volume, attenuation, timeofs) => {
+      sounds.push(`positioned:${entity?.index ?? -1}:${channel}:${soundIndex}:${volume}:${attenuation}:${timeofs}:${origin.join(",")}`);
+    },
+    configstring: (index, value) => {
+      configstrings.set(index, value);
+    },
+    error: (fmt) => {
+      throw new Error(fmt);
+    },
+    modelindex: () => 0,
+    soundindex: () => 0,
+    imageindex: () => 0,
+    setmodel: () => {},
+    trace: () => createTrace([0, 0, 0], null),
+    pointcontents: () => 0,
+    inPVS: () => false,
+    inPHS: () => false,
+    SetAreaPortalState: () => {},
+    AreasConnected: () => false,
+    linkentity: () => {},
+    unlinkentity: () => {},
+    BoxEdicts: () => 0,
+    Pmove: () => {},
+    multicast: (origin, to) => {
+      multicasts.push({ origin: [...origin], to });
+    },
+    unicast: () => {},
+    WriteChar: (value) => writes.push(`char:${value}`),
+    WriteByte: (value) => writes.push(`byte:${value}`),
+    WriteShort: (value) => writes.push(`short:${value}`),
+    WriteLong: (value) => writes.push(`long:${value}`),
+    WriteFloat: (value) => writes.push(`float:${value}`),
+    WriteString: (value) => writes.push(`string:${value}`),
+    WritePosition: (value) => writes.push(`pos:${value.join(",")}`),
+    WriteDir: (value) => writes.push(`dir:${value.join(",")}`),
+    WriteAngle: (value) => writes.push(`angle:${value}`),
+    TagMalloc: () => new Uint8Array(0),
+    TagFree: () => {},
+    FreeTags: () => {},
+    cvar: (_name, value) => ({ name: "", string: value, latched_string: "", flags: 0, modified: false, value: Number(value) || 0 }),
+    cvar_set: () => null,
+    cvar_forceset: () => null,
+    argc: () => 0,
+    argv: () => "",
+    args: () => "",
+    AddCommandString: () => {},
+    DebugGraph: () => {}
+  };
+}
+
+function createTrace(endpos: vec3_t, ent: GameEntity | null): trace_t {
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: ent ? 0.5 : 1,
+    endpos: [...endpos],
+    plane: {
+      normal: [0, 0, 1],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent
+  };
+}

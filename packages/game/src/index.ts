@@ -240,6 +240,7 @@ export {
   FL_TEAMSLAVE,
   FRAMETIME,
   MOVETYPE_BOUNCE,
+  MOVETYPE_NOCLIP,
   MOVETYPE_FLYMISSILE,
   MOD_BLASTER,
   MOD_BFG_BLAST,
@@ -264,6 +265,7 @@ export {
   MOVETYPE_PUSH,
   MOVETYPE_STEP,
   MOVETYPE_TOSS,
+  MOVETYPE_WALK,
   WEAP_BFG,
   WEAP_BLASTER,
   WEAP_CHAINGUN,
@@ -296,9 +298,13 @@ export {
   createGameRuntimeFromBspMap,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
+  drainGameConfigstringUpdates,
   drainPlayerMuzzleFlashEvents,
+  drainGameTempEntityEvents,
   drainGameSoundEvents,
+  emitGameTempEntity,
   emitGameSound,
+  emitRegisteredGameSound,
   emitPlayerMuzzleFlash,
   findRuntimeEntitiesByTargetname,
   getRuntimeEntityLabel,
@@ -309,6 +315,7 @@ export {
   registerGameImage,
   registerGameModel,
   registerGameSound,
+  setGameConfigstring,
   refreshEntitySpatialState,
   runPendingThinks,
   spawnGameEntity,
@@ -336,6 +343,28 @@ export {
 } from "./g_chase.js";
 
 export {
+  ClientCommand as GameCommandsClientCommand,
+  ClientTeam,
+  Cmd_Drop_f,
+  Cmd_Give_f,
+  Cmd_God_f,
+  Cmd_Inven_f,
+  Cmd_InvDrop_f,
+  Cmd_InvUse_f,
+  Cmd_Kill_f,
+  Cmd_Noclip_f,
+  Cmd_Notarget_f,
+  Cmd_PlayerList_f,
+  Cmd_Players_f,
+  Cmd_PutAway_f,
+  Cmd_Say_f,
+  Cmd_Use_f,
+  Cmd_Wave_f,
+  Cmd_WeapLast_f,
+  Cmd_WeapNext_f,
+  Cmd_WeapPrev_f,
+  OnSameTeam,
+  PlayerSort,
   SelectNextItem,
   SelectPrevItem,
   ValidateSelectedItem
@@ -437,6 +466,7 @@ export {
 export {
   SP_func_areaportal,
   SP_func_clock,
+  SP_func_explosive,
   SP_info_notnull,
   SP_info_null,
   SP_light,
@@ -449,6 +479,7 @@ export {
   SP_misc_easterchick,
   SP_misc_easterchick2,
   SP_misc_eastertank,
+  SP_misc_explobox,
   SP_misc_gib_arm,
   SP_misc_gib_head,
   SP_misc_gib_leg,
@@ -469,6 +500,9 @@ export {
   ThrowDebris,
   ThrowGib,
   ThrowHead,
+  barrel_delay,
+  barrel_explode,
+  barrel_touch,
   commander_body_drop,
   commander_body_think,
   commander_body_use,
@@ -476,6 +510,9 @@ export {
   func_clock_reset,
   func_clock_think,
   func_clock_use,
+  func_explosive_explode,
+  func_explosive_spawn,
+  func_explosive_use,
   gib_die,
   gib_think,
   gib_touch,
@@ -610,6 +647,19 @@ export {
 } from "./g_main.js";
 
 export {
+  clientfields,
+  findGameSaveFunction,
+  findGameSaveMove,
+  fields as gameSaveFields,
+  levelfields,
+  mmove_reloc,
+  registerGameSaveFunction,
+  registerGameSaveFunctions,
+  registerGameSaveMove,
+  registerGameSaveMoves
+} from "./g_save.js";
+
+export {
   SP_func_button,
   SP_func_conveyor,
   SP_func_door,
@@ -693,6 +743,46 @@ export {
   trigger_push_touch,
   trigger_relay_use
 } from "./g_trigger.js";
+
+export {
+  SP_target_blaster,
+  SP_target_changelevel,
+  SP_target_crosslevel_target,
+  SP_target_crosslevel_trigger,
+  SP_target_earthquake,
+  SP_target_explosion,
+  SP_target_goal,
+  SP_target_help,
+  SP_target_laser,
+  SP_target_lightramp,
+  SP_target_secret,
+  SP_target_speaker,
+  SP_target_spawner,
+  SP_target_splash,
+  SP_target_temp_entity,
+  Use_Target_Help,
+  Use_Target_Speaker,
+  Use_Target_Tent,
+  target_crosslevel_target_think,
+  target_earthquake_think,
+  target_earthquake_use,
+  target_explosion_explode,
+  target_laser_off,
+  target_laser_on,
+  target_laser_start,
+  target_laser_think,
+  target_laser_use,
+  target_lightramp_think,
+  target_lightramp_use,
+  trigger_crosslevel_trigger_use,
+  use_target_blaster,
+  use_target_changelevel,
+  use_target_explosion,
+  use_target_goal,
+  use_target_secret,
+  use_target_spawner,
+  use_target_splash
+} from "./g_target.js";
 
 export {
   Grenade_Explode,
@@ -873,7 +963,9 @@ export type {
   GameEntityThink,
   GameAssetRegistry,
   GameCollisionBridge,
+  GameConfigstringUpdate,
   GameSoundEvent,
+  GameTempEntityEvent,
   GameMoveInfo,
   GameEntityTouch,
   GameEntityUse,
@@ -896,6 +988,7 @@ export type {
 } from "./g-local.js";
 
 export type { GameWeaponHooks } from "./p_weapon.js";
+export type { GameCommandContext, GameCommandCvars, GameCommandHooks } from "./g_cmds.js";
 export type {
   LocalInventoryGrant,
   LocalItemStringEntry,

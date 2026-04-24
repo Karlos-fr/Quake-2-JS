@@ -329,6 +329,22 @@ export type {
   ClientVidMenuHooks
 } from "./vid-menu.js";
 export {
+  CDAudio_Activate,
+  CDAudio_Init,
+  CDAudio_Pause,
+  CDAudio_Play,
+  CDAudio_Resume,
+  CDAudio_Shutdown,
+  CDAudio_Stop,
+  CDAudio_Update,
+  createClientCDAudioContext
+} from "./cdaudio.js";
+export type {
+  ClientCDAudioContext,
+  ClientCDAudioHooks,
+  ClientCDAudioState
+} from "./cdaudio.js";
+export {
   CL_GetEntitySoundOrigin,
   S_Activate,
   S_BeginRegistration,

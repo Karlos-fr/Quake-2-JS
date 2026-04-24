@@ -24,6 +24,16 @@ import {
 } from "../../../packages/renderer-three/src/index.js";
 import { findPrimarySpawnPoint, parseBsp } from "../../../packages/formats/src/index.js";
 import { createVirtualFilesystem, mountPak, readMountedFile } from "../../../packages/filesystem/src/index.js";
+import {
+  CDAudio_Init,
+  CDAudio_Pause,
+  CDAudio_Play,
+  CDAudio_Resume,
+  CDAudio_Update,
+  createClientCDAudioContext
+} from "../../../packages/client/src/index.js";
+import { createQuakeWebAudioAdapter, createWebCDAudioAdapter } from "../../../packages/platform/src/index.js";
+import { CS_CDTRACK } from "../../../packages/qcommon/src/index.js";
 import { createLocalClientController } from "./local-client-controller.js";
 import { startWebDemoLoop } from "./web-demo-loop.js";
 import { createRefreshDebugLayer } from "./refresh-debug-layer.js";
@@ -80,6 +90,84 @@ async function bootstrap(): Promise<void> {
     const pakBytes = await loadFirstAvailablePak(BASEQ2_PAK_CANDIDATES);
     const filesystem = createVirtualFilesystem();
     const mountedPak = mountPak(filesystem, pakBytes, "pak0.pak");
+    const audio = createQuakeWebAudioAdapter({
+      logs: {
+        onInfo: (message) => ui.setStatus(message),
+        onWarning: (message) => ui.setStatus(message)
+      }
+    });
+    const cdAudioBackend = createWebCDAudioAdapter({
+      context: audio.context,
+      filesystem,
+      logs: {
+        onInfo: (message) => ui.setStatus(message),
+        onWarning: (message) => ui.setStatus(message)
+      }
+    });
+    const audioSettings = {
+      masterVolume: 1,
+      sfxVolume: 0.7,
+      musicVolume: 1,
+      muted: false
+    };
+    const applyAudioSettings = (): void => {
+      const effectiveMaster = audioSettings.muted ? 0 : audioSettings.masterVolume;
+      audio.setMuted(audioSettings.muted);
+      audio.setMasterVolume(audioSettings.masterVolume);
+      audio.setSfxVolume(audioSettings.sfxVolume);
+      cdAudioBackend.setMasterVolume(effectiveMaster);
+      cdAudioBackend.setMusicVolume(audioSettings.musicVolume);
+    };
+    applyAudioSettings();
+    ui.bindAudioControls({
+      masterVolume: audioSettings.masterVolume,
+      sfxVolume: audioSettings.sfxVolume,
+      musicVolume: audioSettings.musicVolume,
+      muted: audioSettings.muted,
+      onMasterVolume: (value) => {
+        audioSettings.masterVolume = value;
+        applyAudioSettings();
+      },
+      onSfxVolume: (value) => {
+        audioSettings.sfxVolume = value;
+        applyAudioSettings();
+      },
+      onMusicVolume: (value) => {
+        audioSettings.musicVolume = value;
+        applyAudioSettings();
+      },
+      onMuted: (value) => {
+        audioSettings.muted = value;
+        applyAudioSettings();
+      }
+    });
+    const cdAudio = createClientCDAudioContext({
+      onInit: () => true,
+      onPlay: (track, looping) => cdAudioBackend.play(track, looping),
+      onStop: () => cdAudioBackend.stop(),
+      onPause: () => cdAudioBackend.pause(),
+      onResume: () => cdAudioBackend.resume(),
+      onUpdate: () => cdAudioBackend.update()
+    });
+    CDAudio_Init(cdAudio);
+    const unlockAudio = (): void => {
+      void audio.unlock();
+    };
+    ui.viewport.addEventListener("pointerdown", unlockAudio);
+    window.addEventListener("keydown", unlockAudio);
+    window.addEventListener("blur", () => {
+      void audio.pause();
+      CDAudio_Pause(cdAudio);
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        void audio.resume();
+        CDAudio_Resume(cdAudio);
+      } else {
+        void audio.pause();
+        CDAudio_Pause(cdAudio);
+      }
+    });
     const availableMaps = listPakMapPaths(mountedPak);
     ui.bindMapSelector({
       maps: availableMaps,
@@ -115,6 +203,8 @@ async function bootstrap(): Promise<void> {
     scene.add(camera);
     refreshEntitySync.attachToCamera(camera);
     const cameraController = createLocalClientController(ui.viewport, camera, map, spawn);
+    const cdTrack = Number.parseInt(cameraController.runtime.cl.configstrings[CS_CDTRACK] ?? "", 10);
+    CDAudio_Play(cdAudio, Number.isFinite(cdTrack) ? cdTrack : 0, true);
     ui.bindGhostToggle({
       initialValue: cameraController.ghostMode,
       onToggle: (enabled) => {
@@ -146,7 +236,10 @@ async function bootstrap(): Promise<void> {
       glWorldAdapter,
       refreshEntitySync,
       particleSync,
-      refreshDebug
+      refreshDebug,
+      filesystem,
+      audio,
+      updateCDAudio: () => CDAudio_Update(cdAudio)
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : `${error}`;
