@@ -23,20 +23,24 @@ import {
   connstate_t,
   createClientRuntime
 } from "../../packages/client/src/types.js";
-import { createClientSoundLocalContext, createSfx } from "../../packages/client/src/sound-local.js";
+import { createClientSoundLocalContext, createSfx, createSfxCache } from "../../packages/client/src/sound-local.js";
 import {
   createClientSndDmaContext,
   S_AliasName as S_DMA_AliasName,
+  S_AddLoopSounds as S_DMA_AddLoopSounds,
   S_ClearBuffer as S_DMA_ClearBuffer,
   S_FindName as S_DMA_FindName,
   S_Init as S_DMA_Init,
+  S_IssuePlaysound as S_DMA_IssuePlaysound,
   S_PickChannel as S_DMA_PickChannel,
   S_RawSamples as S_DMA_RawSamples,
   S_RegisterSexedSound as S_DMA_RegisterSexedSound,
   S_RegisterSound as S_DMA_RegisterSound,
   S_Shutdown as S_DMA_Shutdown,
   S_SpatializeOrigin as S_DMA_SpatializeOrigin,
+  S_StartSound as S_DMA_StartSound,
   S_StopAllSounds as S_DMA_StopAllSounds,
+  S_Update as S_DMA_Update,
   GetSoundtime as S_DMA_GetSoundtime
 } from "../../packages/client/src/snd_dma.js";
 
@@ -91,11 +95,36 @@ assert.equal(fallback?.truename, "player/male/death.wav", "S_RegisterSexedSound 
 
 const registered = S_DMA_RegisterSound(context, "misc/step.wav");
 assert.equal(registered?.name, "misc/step.wav", "S_RegisterSound mismatch");
+assert.ok(registered, "S_RegisterSound should return a sound effect");
+registered!.cache = createCachedSfx(32);
 
 S_DMA_StopAllSounds(context);
 assert.equal(context.sound.state.s_pendingplays.next, context.sound.state.s_pendingplays, "S_StopAllSounds pending sentinel mismatch");
 assert.equal(context.state.s_freeplays.next !== null, true, "S_StopAllSounds free list mismatch");
 assert.deepEqual(Array.from(context.sound.state.dma.buffer ?? []), new Array(8).fill(0x80), "S_StopAllSounds clear buffer mismatch");
+
+context.sound.state.dma.speed = 11025;
+context.sound.state.paintedtime = 100;
+client.cl.frame.servertime = 0;
+S_DMA_StartSound(context, [10, 20, 30], 9, 2, registered, 0.5, 1, 0.05);
+const queued = context.sound.state.s_pendingplays.next;
+assert.ok(queued && queued !== context.sound.state.s_pendingplays, "S_StartSound should queue one playsound");
+assert.equal(queued?.entnum, 9, "S_StartSound queued entnum mismatch");
+assert.equal(queued?.entchannel, 2, "S_StartSound queued entchannel mismatch");
+assert.equal(queued?.volume, Math.trunc(0.5 * 255), "S_StartSound queued volume mismatch");
+assert.equal(queued?.begin, 100 + Math.trunc(0.05 * 11025), "S_StartSound timeofs scheduling mismatch");
+
+S_DMA_IssuePlaysound(context, queued!);
+const issuedChannel = context.sound.state.channels.find((channel) => channel.sfx === registered);
+assert.ok(issuedChannel, "S_IssuePlaysound should assign a mixer channel");
+assert.equal(issuedChannel?.entnum, 9, "S_IssuePlaysound channel entnum mismatch");
+assert.equal(issuedChannel?.entchannel, 2, "S_IssuePlaysound channel entchannel mismatch");
+assert.equal(issuedChannel?.end, context.sound.state.paintedtime + 32, "S_IssuePlaysound channel end mismatch");
+
+const overrideTarget = issuedChannel!;
+overrideTarget.end = 9999;
+const overrideChannel = S_DMA_PickChannel(context, 9, 2);
+assert.equal(overrideChannel, overrideTarget, "S_PickChannel should override matching entnum + entchannel");
 
 context.sound.state.paintedtime = 10;
 context.sound.state.channels[0].entnum = client.cl.playernum + 1;
@@ -111,6 +140,29 @@ context.sound.state.listener_origin = [0, 0, 0];
 context.sound.state.listener_right = [1, 0, 0];
 const spatial = S_DMA_SpatializeOrigin(context, [100, 0, 0], 255, 0.001);
 assert.equal(spatial.left < spatial.right, true, "S_SpatializeOrigin stereo mismatch");
+
+const autosound = context.sound.state.channels[2];
+autosound.sfx = registered;
+autosound.autosound = true;
+autosound.leftvol = 200;
+autosound.rightvol = 200;
+S_DMA_Update(context, [0, 0, 0], [1, 0, 0], [0, 1, 0], [0, 0, 1]);
+assert.equal(autosound.sfx, null, "S_Update should clear old autosound channels before adding loops");
+
+const loopSfx = createSfx();
+loopSfx.name = "world/loop.wav";
+loopSfx.cache = createCachedSfx(64);
+client.cl.sound_prepped = true;
+client.cl.sound_precache[5] = loopSfx;
+client.cl.frame.num_entities = 1;
+client.cl.frame.parse_entities = 0;
+client.cl_parse_entities[0].sound = 5;
+client.cl_parse_entities[0].origin = [0, 128, 0];
+context.sound.state.paintedtime = 12;
+S_DMA_AddLoopSounds(context);
+const loopChannel = context.sound.state.channels.find((channel) => channel.autosound && channel.sfx === loopSfx);
+assert.ok(loopChannel, "S_AddLoopSounds should create an autosound loop channel from frame entities");
+assert.equal(loopChannel?.pos, 12 % 64, "S_AddLoopSounds loop position mismatch");
 
 context.sound.state.s_rawend = 0;
 context.sound.state.paintedtime = 0;
@@ -138,3 +190,14 @@ assert.equal(Cmd_Exists(cmd, "play"), false, "S_Shutdown play command mismatch")
 assert.equal(Cmd_Exists(cmd, "soundinfo"), false, "S_Shutdown soundinfo command mismatch");
 
 console.log("quake2-snd-dma: ok");
+
+function createCachedSfx(length: number) {
+  const cache = createSfxCache();
+  cache.length = length;
+  cache.loopstart = -1;
+  cache.speed = 11025;
+  cache.width = 1;
+  cache.stereo = 1;
+  cache.data = new Uint8Array(length);
+  return cache;
+}

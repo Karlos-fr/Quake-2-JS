@@ -1,7 +1,7 @@
 /**
  * File: g_func.ts
  * Source: Quake II original / game/g_func.c
- * Purpose: Port the first door and platform lifecycles needed by Quake II trigger-driven brush entities.
+ * Purpose: Port Quake II brush entity movement and use lifecycles from `game/g_func.c`.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,14 +9,25 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - Spawns simplified door trigger helper entities without full spatial linkage.
- * - Uses the local gameplay runtime instead of `gi.linkentity` / full engine services.
+ * - Spawns trigger helper entities through the local runtime instead of the live server edict pool.
+ * - Journals/link updates/sound registration through runtime services in place of direct `gi.*` calls.
  *
  * Notes:
- * - This file is intended to stay close to the original door and platform state flow.
+ * - This file is intended to stay close to the original brush-entity state flow.
  */
 
-import { G_Find, G_UseTargets } from "./g_utils.js";
+import {
+  AngleVectors,
+  EF_ANIM01,
+  EF_ANIM23,
+  EF_ANIM_ALL,
+  EF_ANIM_ALLFAST,
+  entity_event_t,
+  type vec3_t
+} from "../../qcommon/src/index.js";
+import { T_Damage } from "./g_combat.js";
+import { damage_t, MOD_CRUSH } from "./g-local.js";
+import { G_Find, G_PickTarget, G_SetMovedir, G_UseTargets, KillBox, vtos } from "./g_utils.js";
 import {
   DOOR_CRUSHER,
   DOOR_NOMONSTER,
@@ -29,6 +40,7 @@ import {
   FRAMETIME,
   MOVETYPE_NONE,
   MOVETYPE_PUSH,
+  MOVETYPE_STOP,
   PLAT_LOW_TRIGGER,
   SOLID_BSP,
   SOLID_TRIGGER,
@@ -37,15 +49,23 @@ import {
   STATE_TOP,
   STATE_UP,
   SVF_MONSTER,
+  SVF_NOCLIENT,
   freeGameEntity,
   getRuntimeEntityLabel,
   linkGameEntity,
   refreshEntitySpatialState,
+  registerGameSound,
   spawnGameEntity
 } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
 const ACCELERATION_DISTANCE_SCALE = 0.5;
+const TRAIN_START_ON = 1;
+const TRAIN_TOGGLE = 2;
+const TRAIN_BLOCK_STOPS = 4;
+const SECRET_ALWAYS_SHOOT = 1;
+const SECRET_1ST_LEFT = 2;
+const SECRET_1ST_DOWN = 4;
 
 /**
  * Original name: Move_Done
@@ -1173,6 +1193,657 @@ export function SP_func_plat(ent: GameEntity, runtime: GameRuntime): void {
 }
 
 /**
+ * Original name: rotating_blocked
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Damages anything blocking one `func_rotating`.
+ */
+export function rotating_blocked(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
+  T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], self.dmg, 1, 0, MOD_CRUSH, runtime);
+}
+
+/**
+ * Original name: rotating_touch
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Damages touchers only while the brush is rotating.
+ */
+export function rotating_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
+  if (self.avelocity[0] !== 0 || self.avelocity[1] !== 0 || self.avelocity[2] !== 0) {
+    T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], self.dmg, 1, 0, MOD_CRUSH, runtime);
+  }
+}
+
+/**
+ * Original name: rotating_use
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Toggles one rotating brush on and off.
+ */
+export function rotating_use(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, _runtime: GameRuntime): void {
+  if (!isZeroVec3(self.avelocity)) {
+    self.s.sound = 0;
+    self.avelocity = [0, 0, 0];
+    self.touch = undefined;
+    return;
+  }
+
+  self.s.sound = self.moveinfo.sound_middle;
+  self.avelocity = scaleVec3(self.movedir, self.speed);
+  if ((self.spawnflags & 16) !== 0) {
+    self.touch = rotating_touch;
+  }
+}
+
+/**
+ * Original name: SP_func_rotating
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes one rotating brush model.
+ */
+export function SP_func_rotating(ent: GameEntity, runtime: GameRuntime): void {
+  ent.solid = SOLID_BSP;
+  ent.movetype = (ent.spawnflags & 32) !== 0 ? MOVETYPE_STOP : MOVETYPE_PUSH;
+  ent.movedir = [0, 0, 0];
+  if ((ent.spawnflags & 4) !== 0) {
+    ent.movedir[2] = 1;
+  } else if ((ent.spawnflags & 8) !== 0) {
+    ent.movedir[0] = 1;
+  } else {
+    ent.movedir[1] = 1;
+  }
+  if ((ent.spawnflags & DOOR_REVERSE) !== 0) {
+    ent.movedir = scaleVec3(ent.movedir, -1);
+  }
+  if (!ent.speed) {
+    ent.speed = 100;
+  }
+  if (!ent.dmg) {
+    ent.dmg = 2;
+  }
+
+  ent.use = rotating_use;
+  if (ent.dmg) {
+    ent.blocked = rotating_blocked;
+  }
+  if ((ent.spawnflags & 1) !== 0) {
+    rotating_use(ent, null, null, runtime);
+  }
+  if ((ent.spawnflags & 64) !== 0) {
+    ent.s.effects |= EF_ANIM_ALL;
+  }
+  if ((ent.spawnflags & 128) !== 0) {
+    ent.s.effects |= EF_ANIM_ALLFAST;
+  }
+  refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
+}
+
+export function button_done(self: GameEntity, _runtime: GameRuntime): void {
+  self.moveinfo.state = STATE_BOTTOM;
+  self.s.effects &= ~EF_ANIM23;
+  self.s.effects |= EF_ANIM01;
+}
+
+export function button_return(self: GameEntity, runtime: GameRuntime): void {
+  self.moveinfo.state = STATE_DOWN;
+  Move_Calc(self, self.moveinfo.start_origin, button_done, runtime);
+  self.s.frame = 0;
+  if (self.health) {
+    self.takedamage = damage_t.DAMAGE_YES;
+  }
+}
+
+export function button_wait(self: GameEntity, runtime: GameRuntime): void {
+  self.moveinfo.state = STATE_TOP;
+  self.s.effects &= ~EF_ANIM01;
+  self.s.effects |= EF_ANIM23;
+  G_UseTargets(runtime, self, self.activator);
+  self.s.frame = 1;
+  if (self.moveinfo.wait >= 0) {
+    self.nextthink = runtime.time + self.moveinfo.wait;
+    self.think = button_return;
+  }
+}
+
+export function button_fire(self: GameEntity, runtime: GameRuntime): void {
+  if (self.moveinfo.state === STATE_UP || self.moveinfo.state === STATE_TOP) {
+    return;
+  }
+  self.moveinfo.state = STATE_UP;
+  Move_Calc(self, self.moveinfo.end_origin, button_wait, runtime);
+}
+
+export function button_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  self.activator = activator;
+  button_fire(self, runtime);
+}
+
+export function button_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
+  if (!other.client || other.health <= 0) {
+    return;
+  }
+  self.activator = other;
+  button_fire(self, runtime);
+}
+
+export function button_killed(self: GameEntity, _inflictor: GameEntity | null, attacker: GameEntity | null, _damage: number, runtime: GameRuntime): void {
+  self.activator = attacker;
+  self.health = self.max_health;
+  self.takedamage = damage_t.DAMAGE_NO;
+  button_fire(self, runtime);
+}
+
+/**
+ * Original name: SP_func_button
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes one pressable or shootable brush button.
+ */
+export function SP_func_button(ent: GameEntity, runtime: GameRuntime): void {
+  G_SetMovedir(ent.s.angles, ent.movedir);
+  ent.movetype = MOVETYPE_STOP;
+  ent.solid = SOLID_BSP;
+  if (!ent.speed) {
+    ent.speed = 40;
+  }
+  if (!ent.accel) {
+    ent.accel = ent.speed;
+  }
+  if (!ent.decel) {
+    ent.decel = ent.speed;
+  }
+  if (!ent.wait) {
+    ent.wait = 3;
+  }
+
+  const lip = parseDistance(ent.properties.lip, 4);
+  const absMovedir = absVec3(ent.movedir);
+  const dist = absMovedir[0] * ent.size[0] + absMovedir[1] * ent.size[1] + absMovedir[2] * ent.size[2] - lip;
+  ent.pos1 = [...ent.origin];
+  ent.pos2 = addVec3(ent.pos1, scaleVec3(ent.movedir, dist));
+  ent.use = button_use;
+  ent.moveinfo.state = STATE_BOTTOM;
+  ent.moveinfo.speed = ent.speed;
+  ent.moveinfo.accel = ent.accel;
+  ent.moveinfo.decel = ent.decel;
+  ent.moveinfo.wait = ent.wait;
+  ent.moveinfo.start_origin = [...ent.pos1];
+  ent.moveinfo.end_origin = [...ent.pos2];
+  ent.moveinfo.start_angles = [...ent.angles];
+  ent.moveinfo.end_angles = [...ent.angles];
+  if (ent.health) {
+    ent.max_health = ent.health;
+    ent.takedamage = damage_t.DAMAGE_YES;
+    ent.die = button_killed;
+  } else if (!ent.targetname) {
+    ent.touch = button_touch;
+  }
+  ent.s.effects |= EF_ANIM01;
+  refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
+}
+
+/**
+ * Original name: SP_func_water
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes one moveable water brush using the same door movement callbacks.
+ */
+export function SP_func_water(self: GameEntity, runtime: GameRuntime): void {
+  G_SetMovedir(self.s.angles, self.movedir);
+  self.movetype = MOVETYPE_PUSH;
+  self.solid = SOLID_BSP;
+  if (self.sounds === 1 || self.sounds === 2) {
+    self.moveinfo.sound_start = registerGameSound(runtime, "world/mov_watr.wav");
+    self.moveinfo.sound_end = registerGameSound(runtime, "world/stp_watr.wav");
+  }
+  self.pos1 = [...self.origin];
+  const absMovedir = absVec3(self.movedir);
+  self.moveinfo.distance = absMovedir[0] * self.size[0] + absMovedir[1] * self.size[1] + absMovedir[2] * self.size[2] - parseDistance(self.properties.lip, 0);
+  self.pos2 = addVec3(self.pos1, scaleVec3(self.movedir, self.moveinfo.distance));
+  if ((self.spawnflags & DOOR_START_OPEN) !== 0) {
+    self.origin = [...self.pos2];
+    self.pos2 = [...self.pos1];
+    self.pos1 = [...self.origin];
+  }
+  self.moveinfo.start_origin = [...self.pos1];
+  self.moveinfo.start_angles = [...self.angles];
+  self.moveinfo.end_origin = [...self.pos2];
+  self.moveinfo.end_angles = [...self.angles];
+  self.moveinfo.state = STATE_BOTTOM;
+  if (!self.speed) {
+    self.speed = 25;
+  }
+  self.moveinfo.speed = self.speed;
+  self.moveinfo.accel = self.speed;
+  self.moveinfo.decel = self.speed;
+  if (!self.wait) {
+    self.wait = -1;
+  }
+  self.moveinfo.wait = self.wait;
+  self.use = door_use;
+  if (self.wait === -1) {
+    self.spawnflags |= DOOR_TOGGLE;
+  }
+  self.classname = "func_door";
+  refreshEntitySpatialState(self);
+  linkGameEntity(runtime, self);
+}
+
+export function train_blocked(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
+  if ((other.svflags & SVF_MONSTER) === 0 && !other.client) {
+    T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], 100000, 1, 0, MOD_CRUSH, runtime);
+    if (other.inuse) {
+      freeGameEntity(runtime, other);
+    }
+    return;
+  }
+  if (runtime.time < self.touch_debounce_time || !self.dmg) {
+    return;
+  }
+  self.touch_debounce_time = runtime.time + 0.5;
+  T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], self.dmg, 1, 0, MOD_CRUSH, runtime);
+}
+
+export function train_wait(self: GameEntity, runtime: GameRuntime): void {
+  if (self.target_ent?.pathtarget) {
+    const ent = self.target_ent;
+    const savetarget = ent.target;
+    ent.target = ent.pathtarget;
+    G_UseTargets(runtime, ent, self.activator);
+    ent.target = savetarget;
+    if (!self.inuse) {
+      return;
+    }
+  }
+  if (self.moveinfo.wait) {
+    if (self.moveinfo.wait > 0) {
+      self.nextthink = runtime.time + self.moveinfo.wait;
+      self.think = train_next;
+    } else if ((self.spawnflags & TRAIN_TOGGLE) !== 0) {
+      train_next(self, runtime);
+      self.spawnflags &= ~TRAIN_START_ON;
+      self.velocity = [0, 0, 0];
+      self.nextthink = 0;
+    }
+    if ((self.flags & FL_TEAMSLAVE) === 0) {
+      self.s.sound = 0;
+    }
+  } else {
+    train_next(self, runtime);
+  }
+}
+
+export function train_next(self: GameEntity, runtime: GameRuntime): void {
+  let first = true;
+  while (true) {
+    if (!self.target) {
+      return;
+    }
+    const ent = G_PickTarget(runtime, self.target);
+    if (!ent) {
+      runtime.log({ kind: "warning", message: `train_next: bad target ${self.target}`, entityIndex: self.index, entityClassname: self.classname });
+      return;
+    }
+    self.target = ent.target;
+    if ((ent.spawnflags & 1) !== 0) {
+      if (!first) {
+        runtime.log({ kind: "warning", message: `connected teleport path_corners, see ${ent.classname} at ${vtos(ent.s.origin)}`, entityIndex: self.index, entityClassname: self.classname });
+        return;
+      }
+      first = false;
+      setEntityOrigin(self, subtractVec3(ent.s.origin, self.mins));
+      self.s.old_origin = [...self.s.origin];
+      self.s.event = entity_event_t.EV_OTHER_TELEPORT;
+      linkGameEntity(runtime, self);
+      continue;
+    }
+    self.moveinfo.wait = ent.wait;
+    self.target_ent = ent;
+    if ((self.flags & FL_TEAMSLAVE) === 0) {
+      self.s.sound = self.moveinfo.sound_middle;
+    }
+    const dest = subtractVec3(ent.s.origin, self.mins);
+    self.moveinfo.state = STATE_TOP;
+    self.moveinfo.start_origin = [...self.origin];
+    self.moveinfo.end_origin = [...dest];
+    Move_Calc(self, dest, train_wait, runtime);
+    self.spawnflags |= TRAIN_START_ON;
+    return;
+  }
+}
+
+export function train_resume(self: GameEntity, runtime: GameRuntime): void {
+  const ent = self.target_ent;
+  if (!ent) {
+    return;
+  }
+  const dest = subtractVec3(ent.s.origin, self.mins);
+  self.moveinfo.state = STATE_TOP;
+  self.moveinfo.start_origin = [...self.origin];
+  self.moveinfo.end_origin = [...dest];
+  Move_Calc(self, dest, train_wait, runtime);
+  self.spawnflags |= TRAIN_START_ON;
+}
+
+export function func_train_find(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.target) {
+    runtime.log({ kind: "warning", message: "train_find: no target", entityIndex: self.index, entityClassname: self.classname });
+    return;
+  }
+  const ent = G_PickTarget(runtime, self.target);
+  if (!ent) {
+    runtime.log({ kind: "warning", message: `train_find: target ${self.target} not found`, entityIndex: self.index, entityClassname: self.classname });
+    return;
+  }
+  self.target = ent.target;
+  setEntityOrigin(self, subtractVec3(ent.s.origin, self.mins));
+  linkGameEntity(runtime, self);
+  if (!self.targetname) {
+    self.spawnflags |= TRAIN_START_ON;
+  }
+  if ((self.spawnflags & TRAIN_START_ON) !== 0) {
+    self.nextthink = runtime.time + FRAMETIME;
+    self.think = train_next;
+    self.activator = self;
+  }
+}
+
+export function train_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  self.activator = activator;
+  if ((self.spawnflags & TRAIN_START_ON) !== 0) {
+    if ((self.spawnflags & TRAIN_TOGGLE) === 0) {
+      return;
+    }
+    self.spawnflags &= ~TRAIN_START_ON;
+    self.velocity = [0, 0, 0];
+    self.nextthink = 0;
+  } else if (self.target_ent) {
+    train_resume(self, runtime);
+  } else {
+    train_next(self, runtime);
+  }
+}
+
+export function SP_func_train(self: GameEntity, runtime: GameRuntime): void {
+  self.movetype = MOVETYPE_PUSH;
+  self.angles = [0, 0, 0];
+  self.s.angles = [0, 0, 0];
+  self.blocked = train_blocked;
+  self.dmg = (self.spawnflags & TRAIN_BLOCK_STOPS) !== 0 ? 0 : (self.dmg || 100);
+  self.solid = SOLID_BSP;
+  const noise = self.properties.noise;
+  if (noise) {
+    self.moveinfo.sound_middle = registerGameSound(runtime, noise);
+  }
+  if (!self.speed) {
+    self.speed = 100;
+  }
+  self.moveinfo.speed = self.speed;
+  self.moveinfo.accel = self.speed;
+  self.moveinfo.decel = self.speed;
+  self.use = train_use;
+  refreshEntitySpatialState(self);
+  linkGameEntity(runtime, self);
+  if (self.target) {
+    self.nextthink = runtime.time + FRAMETIME;
+    self.think = func_train_find;
+  } else {
+    runtime.log({ kind: "warning", message: `func_train without a target at ${vtos(self.absmin)}`, entityIndex: self.index, entityClassname: self.classname });
+  }
+}
+
+export function trigger_elevator_use(self: GameEntity, other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  if (self.movetarget?.nextthink) {
+    return;
+  }
+  if (!other?.pathtarget) {
+    runtime.log({ kind: "warning", message: "elevator used with no pathtarget", entityIndex: self.index, entityClassname: self.classname });
+    return;
+  }
+  const target = G_PickTarget(runtime, other.pathtarget);
+  if (!target) {
+    runtime.log({ kind: "warning", message: `elevator used with bad pathtarget: ${other.pathtarget}`, entityIndex: self.index, entityClassname: self.classname });
+    return;
+  }
+  if (self.movetarget) {
+    self.movetarget.target_ent = target;
+    train_resume(self.movetarget, runtime);
+  }
+}
+
+export function trigger_elevator_init(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.target) {
+    runtime.log({ kind: "warning", message: "trigger_elevator has no target", entityIndex: self.index, entityClassname: self.classname });
+    return;
+  }
+  self.movetarget = G_PickTarget(runtime, self.target);
+  if (!self.movetarget) {
+    runtime.log({ kind: "warning", message: `trigger_elevator unable to find target ${self.target}`, entityIndex: self.index, entityClassname: self.classname });
+    return;
+  }
+  if (self.movetarget.classname !== "func_train") {
+    runtime.log({ kind: "warning", message: `trigger_elevator target ${self.target} is not a train`, entityIndex: self.index, entityClassname: self.classname });
+    return;
+  }
+  self.use = trigger_elevator_use;
+  self.svflags = SVF_NOCLIENT;
+}
+
+export function SP_trigger_elevator(self: GameEntity, runtime: GameRuntime): void {
+  self.think = trigger_elevator_init;
+  self.nextthink = runtime.time + FRAMETIME;
+}
+
+export function func_timer_think(self: GameEntity, runtime: GameRuntime): void {
+  G_UseTargets(runtime, self, self.activator);
+  self.nextthink = runtime.time + self.wait + crandom() * self.random;
+  self.think = func_timer_think;
+}
+
+export function func_timer_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  self.activator = activator;
+  if (self.nextthink) {
+    self.nextthink = 0;
+    return;
+  }
+  if (self.delay) {
+    self.nextthink = runtime.time + self.delay;
+    self.think = func_timer_think;
+  } else {
+    func_timer_think(self, runtime);
+  }
+}
+
+export function SP_func_timer(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.wait) {
+    self.wait = 1;
+  }
+  self.use = func_timer_use;
+  self.think = func_timer_think;
+  if (self.random >= self.wait) {
+    self.random = self.wait - FRAMETIME;
+    runtime.log({ kind: "warning", message: `func_timer at ${vtos(self.s.origin)} has random >= wait`, entityIndex: self.index, entityClassname: self.classname });
+  }
+  if ((self.spawnflags & 1) !== 0) {
+    const pausetime = parseDistance(self.properties.pausetime, 0);
+    self.nextthink = runtime.time + 1 + pausetime + self.delay + self.wait + crandom() * self.random;
+    self.think = func_timer_think;
+    self.activator = self;
+  }
+  self.svflags = SVF_NOCLIENT;
+}
+
+export function func_conveyor_use(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, _runtime: GameRuntime): void {
+  if ((self.spawnflags & 1) !== 0) {
+    self.speed = 0;
+    self.spawnflags &= ~1;
+  } else {
+    self.speed = self.count;
+    self.spawnflags |= 1;
+  }
+  if ((self.spawnflags & 2) === 0) {
+    self.count = 0;
+  }
+}
+
+export function SP_func_conveyor(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.speed) {
+    self.speed = 100;
+  }
+  if ((self.spawnflags & 1) === 0) {
+    self.count = self.speed;
+    self.speed = 0;
+  }
+  self.use = func_conveyor_use;
+  self.solid = SOLID_BSP;
+  refreshEntitySpatialState(self);
+  linkGameEntity(runtime, self);
+}
+
+export function door_secret_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+  if (!isZeroVec3(self.origin)) {
+    return;
+  }
+  self.activator = activator;
+  Move_Calc(self, self.pos1, door_secret_move1, runtime);
+  door_use_areaportals(self, true, runtime);
+}
+
+export function door_secret_move1(self: GameEntity, runtime: GameRuntime): void {
+  self.nextthink = runtime.time + 1;
+  self.think = door_secret_move2;
+}
+
+export function door_secret_move2(self: GameEntity, runtime: GameRuntime): void {
+  Move_Calc(self, self.pos2, door_secret_move3, runtime);
+}
+
+export function door_secret_move3(self: GameEntity, runtime: GameRuntime): void {
+  if (self.wait === -1) {
+    return;
+  }
+  self.nextthink = runtime.time + self.wait;
+  self.think = door_secret_move4;
+}
+
+export function door_secret_move4(self: GameEntity, runtime: GameRuntime): void {
+  Move_Calc(self, self.pos1, door_secret_move5, runtime);
+}
+
+export function door_secret_move5(self: GameEntity, runtime: GameRuntime): void {
+  self.nextthink = runtime.time + 1;
+  self.think = door_secret_move6;
+}
+
+export function door_secret_move6(self: GameEntity, runtime: GameRuntime): void {
+  Move_Calc(self, [0, 0, 0], door_secret_done, runtime);
+}
+
+export function door_secret_done(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.targetname || (self.spawnflags & SECRET_ALWAYS_SHOOT) !== 0) {
+    self.health = 0;
+    self.takedamage = damage_t.DAMAGE_YES;
+  }
+  door_use_areaportals(self, false, runtime);
+}
+
+export function door_secret_blocked(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
+  if ((other.svflags & SVF_MONSTER) === 0 && !other.client) {
+    T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], 100000, 1, 0, MOD_CRUSH, runtime);
+    if (other.inuse) {
+      freeGameEntity(runtime, other);
+    }
+    return;
+  }
+  if (runtime.time < self.touch_debounce_time) {
+    return;
+  }
+  self.touch_debounce_time = runtime.time + 0.5;
+  T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], self.dmg, 1, 0, MOD_CRUSH, runtime);
+}
+
+export function door_secret_die(self: GameEntity, _inflictor: GameEntity | null, attacker: GameEntity | null, _damage: number, runtime: GameRuntime): void {
+  self.takedamage = damage_t.DAMAGE_NO;
+  door_secret_use(self, attacker, attacker, runtime);
+}
+
+export function SP_func_door_secret(ent: GameEntity, runtime: GameRuntime): void {
+  ent.moveinfo.sound_start = registerGameSound(runtime, "doors/dr1_strt.wav");
+  ent.moveinfo.sound_middle = registerGameSound(runtime, "doors/dr1_mid.wav");
+  ent.moveinfo.sound_end = registerGameSound(runtime, "doors/dr1_end.wav");
+  ent.movetype = MOVETYPE_PUSH;
+  ent.solid = SOLID_BSP;
+  ent.blocked = door_secret_blocked;
+  ent.use = door_secret_use;
+  if (!ent.targetname || (ent.spawnflags & SECRET_ALWAYS_SHOOT) !== 0) {
+    ent.health = 0;
+    ent.takedamage = damage_t.DAMAGE_YES;
+    ent.die = door_secret_die;
+  }
+  if (!ent.dmg) {
+    ent.dmg = 2;
+  }
+  if (!ent.wait) {
+    ent.wait = 5;
+  }
+  ent.moveinfo.accel = 50;
+  ent.moveinfo.decel = 50;
+  ent.moveinfo.speed = 50;
+
+  const { forward, right, up } = AngleVectors(ent.s.angles);
+  ent.angles = [0, 0, 0];
+  ent.s.angles = [0, 0, 0];
+  const side = 1.0 - (ent.spawnflags & SECRET_1ST_LEFT);
+  const width = (ent.spawnflags & SECRET_1ST_DOWN) !== 0 ? Math.abs(dotProduct(up, ent.size)) : Math.abs(dotProduct(right, ent.size));
+  const length = Math.abs(dotProduct(forward, ent.size));
+  ent.pos1 = (ent.spawnflags & SECRET_1ST_DOWN) !== 0
+    ? addVec3(ent.origin, scaleVec3(up, -width))
+    : addVec3(ent.origin, scaleVec3(right, side * width));
+  ent.pos2 = addVec3(ent.pos1, scaleVec3(forward, length));
+  if (ent.health) {
+    ent.takedamage = damage_t.DAMAGE_YES;
+    ent.die = door_killed;
+    ent.max_health = ent.health;
+  } else if (ent.targetname && ent.message) {
+    ent.touch = door_touch;
+  }
+  ent.classname = "func_door";
+  refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
+}
+
+export function use_killbox(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  KillBox(runtime, self);
+}
+
+export function SP_func_killbox(ent: GameEntity, runtime: GameRuntime): void {
+  ent.use = use_killbox;
+  ent.svflags = SVF_NOCLIENT;
+  refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
+}
+
+/**
  * Category: New
  * Purpose: Derive the linear translation distance of one door from its movedir and brush bounds.
  *
@@ -1215,6 +1886,27 @@ function parseDoorMovedir(properties: Record<string, string>): [number, number, 
 function parseDistance(value: string | undefined, fallback: number): number {
   const parsed = Number.parseFloat(value ?? "");
   return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+function crandom(): number {
+  return (Math.random() * 2) - 1;
+}
+
+function addVec3(left: vec3_t, right: vec3_t): [number, number, number] {
+  return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
+}
+
+function absVec3(vector: vec3_t): [number, number, number] {
+  return [Math.abs(vector[0]), Math.abs(vector[1]), Math.abs(vector[2])];
+}
+
+function dotProduct(left: vec3_t, right: vec3_t): number {
+  return left[0] * right[0] + left[1] * right[1] + left[2] * right[2];
+}
+
+function setEntityOrigin(entity: GameEntity, origin: vec3_t): void {
+  entity.origin = [...origin];
+  entity.s.origin = [...origin];
 }
 
 /**

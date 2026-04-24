@@ -99,6 +99,7 @@
     "verify:g-spawn": "npx tsx ./scripts/verify/quake2-g-spawn.ts",
     "verify:g-turret": "npx tsx ./scripts/verify/quake2-g-turret.ts",
     "verify:g-trigger": "npx tsx ./scripts/verify/quake2-g-trigger.ts",
+    "verify:g-func": "npx tsx ./scripts/verify/quake2-g-func.ts",
     "verify:g-svcmds": "npx tsx ./scripts/verify/quake2-g-svcmds.ts",
     "verify:p-hud": "npx tsx ./scripts/verify/quake2-p-hud.ts",
     "verify:p-client": "npx tsx ./scripts/verify/quake2-p-client.ts",

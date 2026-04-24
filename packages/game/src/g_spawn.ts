@@ -17,7 +17,20 @@
  */
 
 import { MOVETYPE_PUSH, SOLID_BSP } from "./g-local.js";
-import { SP_func_door, SP_func_door_rotating, SP_func_plat } from "./g_func.js";
+import {
+  SP_func_button,
+  SP_func_conveyor,
+  SP_func_door,
+  SP_func_door_rotating,
+  SP_func_door_secret,
+  SP_func_killbox,
+  SP_func_plat,
+  SP_func_rotating,
+  SP_func_timer,
+  SP_func_train,
+  SP_func_water,
+  SP_trigger_elevator
+} from "./g_func.js";
 import { FindItemByClassname, SP_item_health, SP_item_health_large, SP_item_health_mega, SP_item_health_small, SpawnItem } from "./g_items.js";
 import {
   SP_func_areaportal,
@@ -92,6 +105,15 @@ const spawns: SpawnEntry[] = [
   { name: "func_plat", spawn: SP_func_plat },
   { name: "func_door", spawn: SP_func_door },
   { name: "func_door_rotating", spawn: SP_func_door_rotating },
+  { name: "func_rotating", spawn: SP_func_rotating },
+  { name: "func_button", spawn: SP_func_button },
+  { name: "func_water", spawn: SP_func_water },
+  { name: "func_train", spawn: SP_func_train },
+  { name: "trigger_elevator", spawn: SP_trigger_elevator },
+  { name: "func_timer", spawn: SP_func_timer },
+  { name: "func_conveyor", spawn: SP_func_conveyor },
+  { name: "func_door_secret", spawn: SP_func_door_secret },
+  { name: "func_killbox", spawn: SP_func_killbox },
   { name: "func_areaportal", spawn: SP_func_areaportal },
   { name: "func_clock", spawn: SP_func_clock },
   { name: "light", spawn: SP_light },

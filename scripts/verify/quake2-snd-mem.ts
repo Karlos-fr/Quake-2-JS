@@ -34,6 +34,11 @@ const badLoopWav = createMono8BitWav({
   loopstart: 1,
   loopLength: 8
 });
+const stereoWav = createPcm8BitWav({
+  rate: 11025,
+  channels: 2,
+  samples: [0, 255, 64, 128]
+});
 
 const info = GetWavinfo("misc/test.wav", wav, wav.length);
 assert.equal(info.rate, 11025, "GetWavinfo rate mismatch");
@@ -97,6 +102,44 @@ assert.deepEqual(Array.from(new Int8Array(loaded?.data.buffer ?? new ArrayBuffer
 assert.deepEqual(loadLog, ["load:sound/misc/test.wav", "free"], "S_LoadSound hook usage mismatch");
 assert.equal(S_LoadSound(loadContext, sfx), loaded, "S_LoadSound should reuse cached sounds");
 
+const starSfx = createSfx();
+starSfx.name = "*pain.wav";
+assert.equal(S_LoadSound(loadContext, starSfx), null, "S_LoadSound should not load sexed placeholder names directly");
+
+const aliasLoadLog: string[] = [];
+const aliasContext = createClientSoundLocalContext({
+  onFS_LoadFile: (path) => {
+    aliasLoadLog.push(`load:${path}`);
+    return wav;
+  },
+  onFS_FreeFile: () => {
+    aliasLoadLog.push("free");
+  }
+});
+aliasContext.state.dma.speed = 11025;
+aliasContext.state.s_loadas8bit = { value: 0 } as never;
+const aliasSfx = createSfx();
+aliasSfx.name = "#players/female/pain.wav";
+assert.ok(S_LoadSound(aliasContext, aliasSfx), "S_LoadSound should load # alias paths");
+assert.deepEqual(aliasLoadLog, ["load:players/female/pain.wav", "free"], "S_LoadSound # alias path mismatch");
+
+const stereoLog: string[] = [];
+const stereoContext = createClientSoundLocalContext({
+  onFS_LoadFile: () => stereoWav,
+  onFS_FreeFile: () => {
+    stereoLog.push("free");
+  },
+  onComPrintf: (message) => {
+    stereoLog.push(message.trim());
+  }
+});
+stereoContext.state.dma.speed = 11025;
+stereoContext.state.s_loadas8bit = { value: 0 } as never;
+const stereoSfx = createSfx();
+stereoSfx.name = "misc/stereo.wav";
+assert.equal(S_LoadSound(stereoContext, stereoSfx), null, "S_LoadSound should reject stereo gameplay samples");
+assert.deepEqual(stereoLog, ["misc/stereo.wav is a stereo sample", "free"], "S_LoadSound stereo rejection mismatch");
+
 let dropMessage = "";
 try {
   GetWavinfo(
@@ -119,6 +162,22 @@ console.log("quake2-snd-mem: ok");
 
 function createMono8BitWav(options: {
   rate: number;
+  samples: number[];
+  loopstart?: number;
+  loopLength?: number;
+}): Uint8Array {
+  return createPcm8BitWav({
+    rate: options.rate,
+    channels: 1,
+    samples: options.samples,
+    loopstart: options.loopstart,
+    loopLength: options.loopLength
+  });
+}
+
+function createPcm8BitWav(options: {
+  rate: number;
+  channels: number;
   samples: number[];
   loopstart?: number;
   loopLength?: number;
@@ -151,13 +210,13 @@ function createMono8BitWav(options: {
   offset += 4;
   view.setUint16(offset, 1, true);
   offset += 2;
-  view.setUint16(offset, 1, true);
+  view.setUint16(offset, options.channels, true);
   offset += 2;
   view.setUint32(offset, options.rate, true);
   offset += 4;
-  view.setUint32(offset, options.rate, true);
+  view.setUint32(offset, options.rate * options.channels, true);
   offset += 4;
-  view.setUint16(offset, 1, true);
+  view.setUint16(offset, options.channels, true);
   offset += 2;
   view.setUint16(offset, 8, true);
   offset += 2;

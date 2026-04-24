@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - Temp-entity multicast/configstring side effects are journaled through runtime state, logs and queued sounds instead of a live server import table.
- * - A few movement-driven specialty spawns (`misc_viper`, `misc_strogg_ship`) use local helper glue until the full `func_train` port is present.
+ * - Movement-driven specialty spawns (`misc_viper`, `misc_strogg_ship`) delegate train setup/use to the `g_func` port.
  *
  * Notes:
  * - This file is intended to stay close to the original C source.
@@ -78,7 +78,7 @@ import {
   type GameRuntime
 } from "./runtime.js";
 import { T_Damage, T_RadiusDamage } from "./g_combat.js";
-import { SP_func_door, door_use } from "./g_func.js";
+import { SP_func_door, door_use, func_train_find, train_use } from "./g_func.js";
 import { M_droptofloor } from "./g_monster.js";
 import { G_Find, G_FreeEdict, G_PickTarget, G_Spawn, G_UseTargets, KillBox, vectoyaw, vectoangles } from "./g_utils.js";
 
@@ -150,61 +150,6 @@ function ClipGibVelocity(ent: GameEntity): void {
 
 function findFirstByClassname(runtime: GameRuntime, classname: string): GameEntity | null {
   return runtime.entities.find((entity) => entity.inuse && entity.classname === classname) ?? null;
-}
-
-function train_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
-  if (!self.target) {
-    return;
-  }
-
-  const target = G_PickTarget(runtime, self.target);
-  if (!target) {
-    runtime.log({
-      kind: "warning",
-      message: `${self.classname} missing train target ${self.target}`,
-      entityIndex: self.index,
-      entityClassname: self.classname
-    });
-    return;
-  }
-
-  self.target_ent = target;
-  self.goalentity = target;
-  self.movetarget = target;
-  self.moveinfo.dir = normalizeVec3(subVec3(target.s.origin, self.s.origin));
-  self.activator = activator;
-}
-
-function func_train_find(self: GameEntity, runtime: GameRuntime): void {
-  if (!self.target) {
-    runtime.log({
-      kind: "warning",
-      message: `${self.classname} without target`,
-      entityIndex: self.index,
-      entityClassname: self.classname
-    });
-    freeGameEntity(runtime, self);
-    return;
-  }
-
-  const target = G_PickTarget(runtime, self.target);
-  if (!target) {
-    runtime.log({
-      kind: "warning",
-      message: `${self.classname} unable to resolve first path target ${self.target}`,
-      entityIndex: self.index,
-      entityClassname: self.classname
-    });
-    freeGameEntity(runtime, self);
-    return;
-  }
-
-  self.target_ent = target;
-  self.goalentity = target;
-  self.movetarget = target;
-  self.moveinfo.dir = normalizeVec3(subVec3(target.s.origin, self.s.origin));
-  self.think = undefined;
-  self.nextthink = 0;
 }
 
 export function Use_Areaportal(

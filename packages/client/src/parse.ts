@@ -36,6 +36,11 @@ import {
   MSG_WriteString,
   MAX_IMAGES,
   PRINT_CHAT,
+  SND_ATTENUATION,
+  SND_ENT,
+  SND_OFFSET,
+  SND_POS,
+  SND_VOLUME,
   createEntityState,
   entity_event_t,
   MAX_MODELS,
@@ -134,6 +139,15 @@ export interface ClientParseHooks {
   onPlayCdTrack?: (track: number, looping: boolean) => void;
   onStartLocalSound?: (path: string) => void;
   onSoundPacket?: (packet: ClientSoundPacket) => void;
+  onStartSound?: (
+    origin: [number, number, number] | null,
+    ent: number,
+    channel: number,
+    sound: unknown,
+    volume: number,
+    attenuation: number,
+    timeofs: number
+  ) => void;
   onMuzzleFlash?: (packet: ClientMuzzleFlashPacket) => void;
   onMuzzleFlash2?: (packet: ClientMuzzleFlash2Packet) => void;
   onParticleEffect?: (packet: ClientParticleEffectPacket) => void;
@@ -533,25 +547,25 @@ export function CL_ParseBaseline(runtime: ClientRuntime): void {
  * Original name: CL_ParseStartSoundPacket
  * Source: client/cl_parse.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Parses one `svc_sound` packet into a normalized sound event payload.
+ * - Parses one `svc_sound` packet, resolves the precached sound handle and forwards it to the client sound runtime.
  *
  * Porting notes:
- * - Returns structured data through a hook instead of calling `S_StartSound`.
+ * - Keeps the direct `S_StartSound` dependency injectable so the parser stays testable without a concrete audio backend.
  */
 export function CL_ParseStartSoundPacket(runtime: ClientRuntime, hooks: ClientParseHooks = {}): ClientSoundPacket {
   const flags = MSG_ReadByte(runtime.net_message);
   const sound_num = MSG_ReadByte(runtime.net_message);
 
-  const volume = (flags & 1) !== 0 ? MSG_ReadByte(runtime.net_message) / 255 : 1.0;
-  const attenuation = (flags & 2) !== 0 ? MSG_ReadByte(runtime.net_message) / 64 : 1.0;
-  const ofs = (flags & 16) !== 0 ? MSG_ReadByte(runtime.net_message) / 1000 : 0;
+  const volume = (flags & SND_VOLUME) !== 0 ? MSG_ReadByte(runtime.net_message) / 255 : 1.0;
+  const attenuation = (flags & SND_ATTENUATION) !== 0 ? MSG_ReadByte(runtime.net_message) / 64 : 1.0;
+  const ofs = (flags & SND_OFFSET) !== 0 ? MSG_ReadByte(runtime.net_message) / 1000 : 0;
 
   let ent = 0;
   let channel = 0;
-  if ((flags & 8) !== 0) {
+  if ((flags & SND_ENT) !== 0) {
     const packedChannel = MSG_ReadShort(runtime.net_message);
     ent = packedChannel >> 3;
     if (ent > MAX_EDICTS) {
@@ -560,7 +574,7 @@ export function CL_ParseStartSoundPacket(runtime: ClientRuntime, hooks: ClientPa
     channel = packedChannel & 7;
   }
 
-  const pos = (flags & 4) !== 0 ? MSG_ReadPos(runtime.net_message) : null;
+  const pos = (flags & SND_POS) !== 0 ? MSG_ReadPos(runtime.net_message) : null;
   const packet: ClientSoundPacket = {
     flags,
     sound_num,
@@ -573,6 +587,10 @@ export function CL_ParseStartSoundPacket(runtime: ClientRuntime, hooks: ClientPa
   };
 
   hooks.onSoundPacket?.(packet);
+  const sound = runtime.cl.sound_precache[sound_num] ?? null;
+  if (sound) {
+    hooks.onStartSound?.(pos, ent, channel, sound, volume, attenuation, ofs);
+  }
   return packet;
 }
 

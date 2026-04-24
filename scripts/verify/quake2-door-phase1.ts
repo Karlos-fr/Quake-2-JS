@@ -93,7 +93,7 @@ function main(): void {
       touchGameEntity(runtime, entity, actor);
     }
 
-    runPendingThinks(runtime);
+    runPendingThinks(runtime, runtime.time + 1.0);
 
     for (const entry of runtime.logEntries) {
       console.log(formatLogEntry(entry));

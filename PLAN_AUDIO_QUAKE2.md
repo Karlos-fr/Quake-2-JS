@@ -213,7 +213,7 @@ Validation Phase 3 :
 - [x] finaliser `CL_ParseConfigString` pour :
   - `CS_SOUNDS`
   - `CS_CDTRACK`
-- [~] porter strictement `CL_ParseStartSoundPacket` (porte en `Close`, retourne un payload structure via hook)
+- [x] porter strictement `CL_ParseStartSoundPacket`
 - [x] produire un evenement audio normalise conservant :
   - `sound_num`
   - `volume`
@@ -225,6 +225,15 @@ Validation Phase 3 :
 - [x] porter `CL_EntityEvent` pour les sons `EV_*`
 - [x] porter les effets clients de `cl_fx.c`
 - [x] porter les sons temporaires de `cl_tent.c`
+
+Validation Phase 4 :
+
+- [x] `npm run verify:cl-parse`
+- [x] `npx tsx ./scripts/verify/quake2-cl-view.ts`
+- [x] `npm run verify:cl-main`
+- [x] `npm run verify:sound:header`
+- [x] `npm run verify:snd-dma`
+- [x] `npm run typecheck`
 
 ### Phase 5 - Runtime audio client Quake II
 
@@ -245,6 +254,16 @@ Validation Phase 3 :
 - [x] conserver la logique `autosound` des loops par snapshot
 - [x] conserver le drift / scheduling de `timeofs`
 
+Validation Phase 5 :
+
+- [x] `npm run verify:snd-dma`
+- [x] `npm run verify:snd-mix`
+- [x] `npm run verify:snd-mem`
+- [x] `npm run verify:snd-loc:header`
+- [x] `npm run verify:sound:header`
+- [x] `npm run verify:cl-parse`
+- [x] `npm run typecheck`
+
 ### Phase 6 - Chargement et decodage des assets sonores
 
 - [x] porter `GetWavinfo`
@@ -258,19 +277,33 @@ Validation Phase 3 :
 - [x] gerer correctement les alias `#` et `*`
 - [x] porter le fallback des sons sexed `S_RegisterSexedSound`
 
+Validation Phase 6 :
+
+- [x] `npm run verify:snd-mem`
+- [x] `npm run verify:snd-dma`
+- [x] `npm run verify:snd-mix`
+- [x] `npm run verify:snd-loc:header`
+- [x] `npm run verify:sound:header`
+- [x] `npm run typecheck`
+
 ### Phase 7 - Adapter Web Audio
 
-- [~] creer un backend web dedie dans `packages/platform` ou `apps/web`
+- [x] creer un backend web dedie dans `packages/platform` ou `apps/web`
 - [x] instancier un `AudioContext` pilote par le runtime
-- [~] mapper un `sfx_t` / cache Quake II vers `AudioBuffer`
-- [~] mapper les sons ponctuels sur `AudioBufferSourceNode`
-- [ ] mapper volume et attenuation sur `GainNode`
-- [ ] mapper la spatialisation Quake II sur :
+- [x] mapper un `sfx_t` / cache Quake II vers `AudioBuffer`
+- [x] mapper les sons ponctuels sur `AudioBufferSourceNode`
+- [x] mapper volume et attenuation sur `GainNode` (attenuation deja reduite en volumes gauche/droite par le runtime Quake II)
+- [x] mapper la spatialisation Quake II sur :
   - `PannerNode`
   - ou une spatialisation manuelle si necessaire pour rester fidele
-- [ ] gerer les loops `ent->s.sound`
-- [ ] gerer le stop / remplacement par canal
-- [ ] gerer le mute / pause global
+- [x] gerer les loops `ent->s.sound`
+- [x] gerer le stop / remplacement par canal
+- [x] gerer le mute / pause global
+
+Validation Phase 7 :
+
+- [x] `npx tsx ./scripts/verify/quake2-web-audio-adapter.ts`
+- [x] `npm run typecheck`
 
 ### Phase 8 - Musique de map
 

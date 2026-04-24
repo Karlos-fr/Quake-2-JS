@@ -16,8 +16,11 @@ import { findPakEntry, parsePak, readPakEntryData } from "../../packages/formats
 import { parseBsp } from "../../packages/formats/src/bsp.js";
 import {
   FL_TEAMSLAVE,
+  MOVETYPE_NONE,
+  MOVETYPE_STEP,
   SOLID_BSP,
   SOLID_NOT,
+  attachGameClient,
   createGameRuntimeFromBspMap,
   getRuntimeEntityLabel,
   initializeDoorPlanEntities,
@@ -231,9 +234,9 @@ function createVerificationActor(
 ): GameEntity {
   const actor = spawnGameEntity(runtime);
   actor.classname = classname;
-  actor.client = true;
+  attachGameClient(actor);
   actor.health = 100;
-  actor.movetype = 2;
+  actor.movetype = solid === SOLID_NOT ? MOVETYPE_NONE : MOVETYPE_STEP;
   actor.solid = solid;
   actor.origin = [...origin];
   actor.mins = [-16, -16, -24];

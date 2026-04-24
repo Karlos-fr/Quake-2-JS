@@ -20,6 +20,7 @@ import {
   readMountedFile,
   type VirtualFilesystem
 } from "../../../packages/filesystem/src/index.js";
+import { createQuakeWebAudioAdapter, type QuakeWebAudioAdapter } from "../../../packages/platform/src/index.js";
 import {
   Cmd_Init,
   Cvar_Command,
@@ -111,27 +112,11 @@ interface FullGameRuntime {
   filesystem: VirtualFilesystem;
   drawCommands: DrawCommand[];
   assets: CanvasAssetCache;
-  audio: WebAudioAdapter;
+  audio: QuakeWebAudioAdapter;
   currentCinematicIndex: number;
   mode: "cinematic" | "menu";
   lastFrameTime: number;
   cinematicStartedAt: number;
-}
-
-interface WebAudioAdapter {
-  context: AudioContext | null;
-  nextRawStartTime: number;
-  unlocked: boolean;
-  unlock: () => Promise<void>;
-  stopRaw: () => void;
-  queueRawSamples: (
-    count: number,
-    sampleRate: number,
-    sampleWidth: number,
-    channels: number,
-    samples: Uint8Array
-  ) => void;
-  playWav: (filesystem: VirtualFilesystem, name: string) => void;
 }
 
 
@@ -310,7 +295,17 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     glyphs: null,
     paletteRgb: null
   };
-  const audio = createWebAudioAdapter(page);
+  const audio = createQuakeWebAudioAdapter({
+    logs: {
+      onInfo: (message) => {
+        appendLog(page, message);
+        if (message.startsWith("audio actif")) {
+          page.hint.textContent = "Entree/Espace: avancer | Fleches: menu | Echap: menu";
+        }
+      },
+      onWarning: (message) => appendLog(page, message)
+    }
+  });
 
   const ref = createCanvasRef(filesystem, assets, drawCommands);
   const keys = createClientKeyContext({ cmd, cvar, client });
@@ -747,179 +742,4 @@ function clearCanvas(page: FullGamePage): void {
 function appendLog(page: FullGamePage, line: string): void {
   const next = `${page.log.textContent ?? ""}${line}\n`;
   page.log.textContent = next.split("\n").slice(-8).join("\n");
-}
-
-function createWebAudioAdapter(page: FullGamePage): WebAudioAdapter {
-  const AudioContextCtor = window.AudioContext ?? window.webkitAudioContext;
-  const context = AudioContextCtor ? new AudioContextCtor() : null;
-  const activeRawSources: AudioBufferSourceNode[] = [];
-  const decodedWavCache = new Map<string, AudioBuffer | null>();
-  const pendingRawChunks: Array<{
-    count: number;
-    sampleRate: number;
-    sampleWidth: number;
-    channels: number;
-    samples: Uint8Array;
-  }> = [];
-  let rawChunkLogCount = 0;
-
-  const adapter: WebAudioAdapter = {
-    context,
-    nextRawStartTime: 0,
-    unlocked: false,
-    unlock: async () => {
-      if (!context) {
-        appendLog(page, "Web Audio indisponible dans ce navigateur.");
-        return;
-      }
-
-      if (context.state !== "running") {
-        await context.resume();
-      }
-      adapter.unlocked = context.state === "running";
-      if (adapter.unlocked) {
-        appendLog(page, `audio actif (${context.sampleRate} Hz), chunks en attente: ${pendingRawChunks.length}`);
-        page.hint.textContent = "Entree/Espace: avancer | Fleches: menu | Echap: menu";
-        const queued = pendingRawChunks.splice(0);
-        for (const chunk of queued) {
-          adapter.queueRawSamples(chunk.count, chunk.sampleRate, chunk.sampleWidth, chunk.channels, chunk.samples);
-        }
-      } else {
-        appendLog(page, `audio suspendu (${context.state})`);
-      }
-    },
-    stopRaw: () => {
-      for (const source of activeRawSources.splice(0)) {
-        try {
-          source.stop();
-        } catch {
-          // Already stopped by the audio backend.
-        }
-      }
-      adapter.nextRawStartTime = context ? context.currentTime : 0;
-    },
-    queueRawSamples: (count, sampleRate, sampleWidth, channels, samples) => {
-      if (!context) {
-        return;
-      }
-      if (!adapter.unlocked || context.state !== "running") {
-        if (pendingRawChunks.length < 96) {
-          pendingRawChunks.push({
-            count,
-            sampleRate,
-            sampleWidth,
-            channels,
-            samples: samples.slice()
-          });
-        }
-        return;
-      }
-
-      if (rawChunkLogCount < 3) {
-        appendLog(page, `audio cin: ${count} samples, ${sampleRate} Hz, ${sampleWidth * 8} bit, ${channels} ch`);
-        rawChunkLogCount += 1;
-      }
-
-      const audioBuffer = context.createBuffer(Math.max(1, channels), count, sampleRate);
-      writeRawSamplesToAudioBuffer(audioBuffer, count, sampleWidth, channels, samples);
-
-      const source = context.createBufferSource();
-      source.buffer = audioBuffer;
-      source.connect(context.destination);
-      source.onended = () => {
-        const index = activeRawSources.indexOf(source);
-        if (index >= 0) {
-          activeRawSources.splice(index, 1);
-        }
-      };
-
-      const startTime = Math.max(context.currentTime + 0.02, adapter.nextRawStartTime);
-      source.start(startTime);
-      adapter.nextRawStartTime = startTime + audioBuffer.duration;
-      activeRawSources.push(source);
-    },
-    playWav: (filesystem, name) => {
-      if (!context || !adapter.unlocked) {
-        return;
-      }
-
-      void playDecodedWav(context, decodedWavCache, filesystem, name, page);
-    }
-  };
-
-  return adapter;
-}
-
-function writeRawSamplesToAudioBuffer(
-  audioBuffer: AudioBuffer,
-  count: number,
-  sampleWidth: number,
-  channels: number,
-  samples: Uint8Array
-): void {
-  const view = new DataView(samples.buffer, samples.byteOffset, samples.byteLength);
-
-  for (let frame = 0; frame < count; frame += 1) {
-    for (let channel = 0; channel < audioBuffer.numberOfChannels; channel += 1) {
-      const sourceChannel = Math.min(channel, channels - 1);
-      let value = 0;
-
-      if (sampleWidth === 2) {
-        const offset = (frame * channels + sourceChannel) * 2;
-        value = offset + 1 < samples.byteLength ? view.getInt16(offset, true) / 32768 : 0;
-      } else {
-        const offset = frame * channels + sourceChannel;
-        value = offset < samples.byteLength ? (samples[offset] - 128) / 128 : 0;
-      }
-
-      audioBuffer.getChannelData(channel)[frame] = Math.max(-1, Math.min(1, value));
-    }
-  }
-}
-
-async function playDecodedWav(
-  context: AudioContext,
-  cache: Map<string, AudioBuffer | null>,
-  filesystem: VirtualFilesystem,
-  name: string,
-  page: FullGamePage
-): Promise<void> {
-  const path = name.includes("/") ? `sound/${name}` : `sound/${name}`;
-  let buffer = cache.get(path);
-
-  if (buffer === undefined) {
-    const file = readMountedFile(filesystem, path);
-    if (!file) {
-      cache.set(path, null);
-      return;
-    }
-
-    try {
-      const wavBytes = new Uint8Array(file.bytes.byteLength);
-      wavBytes.set(file.bytes);
-      const audioData = new ArrayBuffer(wavBytes.byteLength);
-      new Uint8Array(audioData).set(wavBytes);
-      buffer = await context.decodeAudioData(audioData);
-      cache.set(path, buffer);
-    } catch (error) {
-      cache.set(path, null);
-      appendLog(page, `son illisible: ${path} (${error instanceof Error ? error.message : error})`);
-      return;
-    }
-  }
-
-  if (!buffer) {
-    return;
-  }
-
-  const source = context.createBufferSource();
-  source.buffer = buffer;
-  source.connect(context.destination);
-  source.start();
-}
-
-declare global {
-  interface Window {
-    webkitAudioContext?: typeof AudioContext;
-  }
 }

@@ -262,6 +262,7 @@ export {
   MOD_SSHOTGUN,
   MOVETYPE_NONE,
   MOVETYPE_PUSH,
+  MOVETYPE_STEP,
   MOVETYPE_TOSS,
   WEAP_BFG,
   WEAP_BLASTER,
@@ -609,8 +610,12 @@ export {
 } from "./g_main.js";
 
 export {
+  SP_func_button,
+  SP_func_conveyor,
   SP_func_door,
   SP_func_door_rotating,
+  SP_func_door_secret,
+  SP_func_killbox,
   AngleMove_Begin,
   AngleMove_Calc,
   AngleMove_Done,
@@ -624,6 +629,11 @@ export {
   Think_SpawnDoorTrigger,
   Touch_DoorTrigger,
   Touch_Plat_Center,
+  SP_func_rotating,
+  SP_func_timer,
+  SP_func_train,
+  SP_func_water,
+  SP_trigger_elevator,
   door_blocked,
   door_go_down,
   door_go_up,
@@ -640,7 +650,22 @@ export {
   plat_go_up,
   plat_hit_bottom,
   plat_hit_top,
-  plat_spawn_inside_trigger
+  plat_spawn_inside_trigger,
+  button_fire,
+  button_killed,
+  button_touch,
+  button_use,
+  func_conveyor_use,
+  func_timer_think,
+  func_timer_use,
+  func_train_find,
+  rotating_use,
+  train_next,
+  train_resume,
+  train_use,
+  trigger_elevator_init,
+  trigger_elevator_use,
+  use_killbox
 } from "./g_func.js";
 
 export {

@@ -17,6 +17,7 @@ import {
   CL_ParseConfigString,
   CL_ParseDownload,
   CL_ParseServerData,
+  CL_ParseStartSoundPacket,
   CL_ParseServerMessage,
   CL_WriteStringCmd
 } from "../../packages/client/src/parse.js";
@@ -30,9 +31,15 @@ import {
   CS_SOUNDS,
   MSG_WriteByte,
   MSG_WriteLong,
+  MSG_WritePos,
   MSG_WriteShort,
   MSG_WriteString,
   PRINT_CHAT,
+  SND_ATTENUATION,
+  SND_ENT,
+  SND_OFFSET,
+  SND_POS,
+  SND_VOLUME,
   svc_ops_e
 } from "../../packages/qcommon/src/index.js";
 
@@ -150,6 +157,51 @@ CL_ParseConfigString(runtime, {
 });
 assert.deepEqual(playedTracks, [{ track: 7, looping: true }], "CL_ParseConfigString cd track mismatch");
 
+const ambienceSound = { name: "world/ambience.wav" };
+runtime.cl.sound_precache[3] = ambienceSound;
+const startedSounds: Array<{
+  origin: [number, number, number] | null;
+  ent: number;
+  channel: number;
+  sound: unknown;
+  volume: number;
+  attenuation: number;
+  timeofs: number;
+}> = [];
+resetIncoming(runtime);
+MSG_WriteByte(runtime.net_message, SND_VOLUME | SND_ATTENUATION | SND_OFFSET | SND_ENT | SND_POS);
+MSG_WriteByte(runtime.net_message, 3);
+MSG_WriteByte(runtime.net_message, 128);
+MSG_WriteByte(runtime.net_message, 32);
+MSG_WriteByte(runtime.net_message, 25);
+MSG_WriteShort(runtime.net_message, (9 << 3) | 2);
+MSG_WritePos(runtime.net_message, [64, 128, 16]);
+runtime.net_message.readcount = 0;
+const soundPacket = CL_ParseStartSoundPacket(runtime, {
+  onStartSound: (origin, ent, channel, sound, volume, attenuation, timeofs) => {
+    startedSounds.push({ origin, ent, channel, sound, volume, attenuation, timeofs });
+  }
+});
+assert.equal(soundPacket.sound_num, 3, "CL_ParseStartSoundPacket sound index mismatch");
+assert.equal(startedSounds.length, 1, "CL_ParseStartSoundPacket should call S_StartSound hook for precached sounds");
+assert.deepEqual(startedSounds[0]?.origin, [64, 128, 16], "CL_ParseStartSoundPacket origin mismatch");
+assert.equal(startedSounds[0]?.ent, 9, "CL_ParseStartSoundPacket ent mismatch");
+assert.equal(startedSounds[0]?.channel, 2, "CL_ParseStartSoundPacket channel mismatch");
+assert.equal(startedSounds[0]?.sound, ambienceSound, "CL_ParseStartSoundPacket sound handle mismatch");
+assert.equal(startedSounds[0]?.volume, 128 / 255, "CL_ParseStartSoundPacket volume mismatch");
+assert.equal(startedSounds[0]?.attenuation, 32 / 64, "CL_ParseStartSoundPacket attenuation mismatch");
+assert.equal(startedSounds[0]?.timeofs, 0.025, "CL_ParseStartSoundPacket offset mismatch");
+
+resetIncoming(runtime);
+MSG_WriteByte(runtime.net_message, 0);
+MSG_WriteByte(runtime.net_message, 4);
+runtime.net_message.readcount = 0;
+CL_ParseStartSoundPacket(runtime, {
+  onStartSound: () => {
+    throw new Error("CL_ParseStartSoundPacket should ignore unregistered sound indices");
+  }
+});
+
 resetIncoming(runtime);
 MSG_WriteShort(runtime.net_message, CS_LIGHTS);
 MSG_WriteString(runtime.net_message, "abc");
@@ -214,6 +266,7 @@ const executedStufftexts: string[] = [];
 let executedBuffer = 0;
 let wroteDemo = 0;
 const startedLocalSounds: string[] = [];
+const parsedServerSounds: unknown[] = [];
 let serverDataName = "";
 
 resetIncoming(runtime);
@@ -222,6 +275,10 @@ MSG_WriteByte(runtime.net_message, PRINT_CHAT);
 MSG_WriteString(runtime.net_message, "hello marine");
 MSG_WriteByte(runtime.net_message, svc_ops_e.svc_stufftext);
 MSG_WriteString(runtime.net_message, "cmd test\n");
+MSG_WriteByte(runtime.net_message, svc_ops_e.svc_sound);
+MSG_WriteByte(runtime.net_message, SND_ENT);
+MSG_WriteByte(runtime.net_message, 3);
+MSG_WriteShort(runtime.net_message, (5 << 3) | 1);
 MSG_WriteByte(runtime.net_message, svc_ops_e.svc_serverdata);
 MSG_WriteLong(runtime.net_message, 34);
 MSG_WriteLong(runtime.net_message, 123);
@@ -233,6 +290,9 @@ runtime.net_message.readcount = 0;
 CL_ParseServerMessage(runtime, {
   onStartLocalSound: (path) => {
     startedLocalSounds.push(path);
+  },
+  onStartSound: (_origin, ent, channel, sound) => {
+    parsedServerSounds.push({ ent, channel, sound });
   },
   onStufftext: (text) => {
     executedStufftexts.push(text);
@@ -248,6 +308,7 @@ CL_ParseServerMessage(runtime, {
   }
 });
 assert.deepEqual(startedLocalSounds, ["misc/talk.wav"], "CL_ParseServerMessage chat sound mismatch");
+assert.deepEqual(parsedServerSounds, [{ ent: 5, channel: 1, sound: ambienceSound }], "CL_ParseServerMessage sound handoff mismatch");
 assert.deepEqual(executedStufftexts, ["cmd test\n"], "CL_ParseServerMessage stufftext mismatch");
 assert.equal(executedBuffer, 1, "CL_ParseServerMessage command-buffer execution mismatch");
 assert.equal(serverDataName, "Map Unit", "CL_ParseServerMessage serverdata handoff mismatch");
