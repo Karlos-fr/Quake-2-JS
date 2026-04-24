@@ -38,6 +38,8 @@ export interface QuakeWebAudioAdapter {
   playSfx: (sfx: sfx_t, options?: WebAudioSfxPlaybackOptions) => void;
   playChannel: (channel: channel_t) => void;
   syncLoopChannels: (channels: readonly channel_t[]) => void;
+  playWavAt: (filesystem: VirtualFilesystem, name: string, options?: WebAudioNamedSoundOptions) => void;
+  syncWavLoops: (filesystem: VirtualFilesystem, loops: readonly WebAudioNamedLoop[]) => void;
   queueRawSamples: (
     count: number,
     sampleRate: number,
@@ -56,6 +58,20 @@ export interface WebAudioSfxPlaybackOptions {
   loopKey?: string;
   loop?: boolean;
   offsetSamples?: number;
+}
+
+export interface WebAudioNamedSoundOptions {
+  leftVolume?: number;
+  rightVolume?: number;
+  loop?: boolean;
+  loopKey?: string;
+}
+
+export interface WebAudioNamedLoop {
+  key: string;
+  name: string;
+  leftVolume: number;
+  rightVolume: number;
 }
 
 interface ActiveSource {
@@ -80,6 +96,7 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
   const sfxBufferCache = new WeakMap<sfxcache_t, AudioBuffer>();
   const activeSources: ActiveSource[] = [];
   const activeLoops = new Map<string, ActiveSource>();
+  const activeWavLoops = new Map<string, ActiveSource>();
   const activeRawSources: AudioBufferSourceNode[] = [];
   const pendingRawChunks: PendingRawChunk[] = [];
   const masterGain = context?.createGain() ?? null;
@@ -142,6 +159,10 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
     stopAll: () => {
       stopActiveSources(activeSources);
       activeLoops.clear();
+      for (const active of activeWavLoops.values()) {
+        stopSource(active.source);
+      }
+      activeWavLoops.clear();
       adapter.stopRaw();
     },
     stopRaw: () => {
@@ -227,6 +248,43 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
         stopSource(active.source);
         activeLoops.delete(key);
         removeActiveSource(activeSources, active);
+      }
+    },
+    playWavAt: (filesystem, name, playOptions = {}) => {
+      if (!context || !masterGain || !unlocked || context.state !== "running") {
+        return;
+      }
+      void playDecodedWav(context, masterGain, decodedWavCache, filesystem, name, logs, {
+        leftVolume: playOptions.leftVolume ?? 255,
+        rightVolume: playOptions.rightVolume ?? 255,
+        loop: playOptions.loop ?? false,
+        loopKey: playOptions.loopKey ?? null,
+        activeLoops: activeWavLoops
+      });
+    },
+    syncWavLoops: (filesystem, loops) => {
+      const wanted = new Set<string>();
+      for (const loop of loops) {
+        wanted.add(loop.key);
+        const active = activeWavLoops.get(loop.key);
+        if (active) {
+          applyQuakeStereoVolumes(active.gain, active.panner, loop.leftVolume, loop.rightVolume);
+          continue;
+        }
+        adapter.playWavAt(filesystem, loop.name, {
+          leftVolume: loop.leftVolume,
+          rightVolume: loop.rightVolume,
+          loop: true,
+          loopKey: loop.key
+        });
+      }
+
+      for (const [key, active] of activeWavLoops) {
+        if (wanted.has(key)) {
+          continue;
+        }
+        stopSource(active.source);
+        activeWavLoops.delete(key);
       }
     },
     queueRawSamples: (count, sampleRate, sampleWidth, channels, samples) => {
@@ -419,7 +477,14 @@ async function playDecodedWav(
   cache: Map<string, AudioBuffer | null>,
   filesystem: VirtualFilesystem,
   name: string,
-  logs: WebAudioAdapterLogHooks
+  logs: WebAudioAdapterLogHooks,
+  options: {
+    leftVolume?: number;
+    rightVolume?: number;
+    loop?: boolean;
+    loopKey?: string | null;
+    activeLoops?: Map<string, ActiveSource>;
+  } = {}
 ): Promise<void> {
   const path = resolveQuakeSoundPath(name);
   let buffer = cache.get(path);
@@ -449,10 +514,25 @@ async function playDecodedWav(
     return;
   }
 
-  const source = context.createBufferSource();
-  source.buffer = buffer;
-  source.connect(destination);
-  source.start();
+  if (options.loopKey && options.activeLoops?.has(options.loopKey)) {
+    return;
+  }
+
+  const active = createSpatialSource(context, destination, buffer, {
+    leftVolume: options.leftVolume ?? 255,
+    rightVolume: options.rightVolume ?? 255,
+    key: options.loopKey ?? null,
+    loop: options.loop ?? false,
+    offsetSamples: 0
+  });
+  if (options.loop && options.loopKey && options.activeLoops) {
+    options.activeLoops.set(options.loopKey, active);
+    active.source.onended = () => {
+      if (options.activeLoops?.get(options.loopKey ?? "") === active) {
+        options.activeLoops.delete(options.loopKey ?? "");
+      }
+    };
+  }
 }
 
 function makeChannelKey(entnum: number, entchannel: number): string | null {

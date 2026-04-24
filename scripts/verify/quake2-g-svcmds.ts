@@ -1,6 +1,6 @@
 /**
  * File: quake2-g-svcmds.ts
- * Purpose: Verify the first TypeScript port of `game/g_svcmds.c`.
+ * Purpose: Verify the closed TypeScript port of `game/g_svcmds.c`.
  *
  * This file is not a direct source port.
  * It is a targeted verification harness for packet filters and `ServerCommand` dispatch.
@@ -86,6 +86,13 @@ assert.equal(
   "writeip contents mismatch"
 );
 
+runCommand(["sv", "addip", "1.2.3.200"]);
+assert.equal(
+  SV_FilterPacket(state, context, "1.2.3.200:27910"),
+  true,
+  "high-bit fourth octet filters must compare as unsigned values"
+);
+
 cvars.set("filterban", createCvar("filterban", "0"));
 assert.equal(SV_FilterPacket(state, context, "10.1.2.3:27910"), false, "matching addresses must pass when filterban=0");
 assert.equal(SV_FilterPacket(state, context, "11.1.2.3:27910"), true, "non-matching addresses must be rejected when filterban=0");
@@ -94,7 +101,7 @@ runCommand(["sv", "bogus"]);
 assert.equal(prints.pop(), "Unknown server command \"bogus\"\n", "unknown command mismatch");
 
 runCommand(["sv", "addip", "bad.ip"]);
-assert.equal(state.numipfilters, 2, "failed addip must still consume the newly allocated slot like the original code");
+assert.equal(state.numipfilters, 3, "failed addip must still consume the newly allocated slot like the original code");
 assert.equal(prints.splice(0).join(""), "Bad filter address: bad.ip\n", "bad addip diagnostic mismatch");
 
 assert.equal(MAX_IPFILTERS, 1024, "MAX_IPFILTERS mismatch");

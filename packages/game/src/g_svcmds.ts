@@ -174,7 +174,7 @@ export function SV_FilterPacket(
 
   for (let index = 0; index < state.numipfilters; index += 1) {
     const filter = state.ipfilters[index];
-    if ((address & filter.mask) === filter.compare) {
+    if (((address & filter.mask) >>> 0) === filter.compare) {
       return filterban !== 0;
     }
   }

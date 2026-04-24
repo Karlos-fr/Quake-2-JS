@@ -10,5 +10,7 @@ export {
   type QuakeWebAudioAdapter,
   type QuakeWebAudioAdapterOptions,
   type WebAudioAdapterLogHooks,
+  type WebAudioNamedLoop,
+  type WebAudioNamedSoundOptions,
   type WebAudioSfxPlaybackOptions
 } from "./web-audio-adapter.js";
