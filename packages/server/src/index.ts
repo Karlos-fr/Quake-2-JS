@@ -31,6 +31,7 @@ export {
 } from "./server.js";
 
 export { SV_Frame, SV_Init, SV_Shutdown } from "./sv_null.js";
+export { createServerWorldProcedures } from "./sv_world.js";
 
 export type {
   challenge_t,
@@ -50,3 +51,5 @@ export type {
   ServerUserProcedures,
   ServerWorldProcedures
 } from "./server.js";
+
+export type { ServerWorldContext } from "./sv_world.js";
