@@ -18,6 +18,7 @@ import {
   FacingIdeal,
   HuntTarget,
   FoundTarget,
+  M_CheckAttack,
   ai_checkattack,
   ai_run,
   infront,
@@ -32,6 +33,11 @@ import {
   AI_SOUND_TARGET,
   AI_STAND_GROUND,
   AI_TEMP_STAND_GROUND,
+  AS_MELEE,
+  AS_MISSILE,
+  AS_SLIDING,
+  AS_STRAIGHT,
+  FL_FLY,
   FL_NOTARGET,
   RANGE_FAR,
   RANGE_MELEE,
@@ -515,6 +521,78 @@ assert.equal((pursueRightMonster.monsterinfo.aiflags & AI_PURSUE_TEMP) !== 0, tr
 assert.deepEqual(pursueRightMonster.monsterinfo.saved_goal, [100, 0, 0], "ai_run must save original goal before right adjustment");
 assert.equal(pursueRightMonster.monsterinfo.last_sighting[1] < 0, true, "ai_run right adjustment must steer to negative Y side");
 
+const attackEnemy = createPointEntity(60, 0, 0, 70);
+attackEnemy.viewheight = 22;
+runtime.entities[70] = attackEnemy;
+
+const meleeMonster = createRuntimeEntity({ classname: "monster_melee" }, 71);
+meleeMonster.inuse = true;
+meleeMonster.enemy = attackEnemy;
+meleeMonster.health = 100;
+meleeMonster.viewheight = 25;
+meleeMonster.monsterinfo.checkattack = M_CheckAttack;
+let meleeCalls = 0;
+meleeMonster.monsterinfo.melee = () => {
+  meleeCalls += 1;
+};
+runtime.entities[71] = meleeMonster;
+
+runtime.skill = 1;
+runtime.collision = createClearAttackCollision(attackEnemy);
+assert.equal(ai_checkattack(meleeMonster, 0, runtime), true, "ai_checkattack must select melee in melee range");
+assert.equal(meleeMonster.monsterinfo.attack_state, AS_MELEE, "M_CheckAttack must set AS_MELEE when melee callback exists");
+ai_run(meleeMonster, 0, runtime);
+assert.equal(meleeCalls, 1, "ai_run must execute selected melee attack callback");
+assert.equal(meleeMonster.monsterinfo.attack_state, AS_STRAIGHT, "ai_run_melee must restore AS_STRAIGHT after firing");
+
+const missileEnemy = createPointEntity(200, 0, 0, 72);
+missileEnemy.viewheight = 22;
+runtime.entities[72] = missileEnemy;
+
+const missileMonster = createRuntimeEntity({ classname: "monster_missile" }, 73);
+missileMonster.inuse = true;
+missileMonster.enemy = missileEnemy;
+missileMonster.health = 100;
+missileMonster.viewheight = 25;
+missileMonster.monsterinfo.checkattack = M_CheckAttack;
+let missileCalls = 0;
+missileMonster.monsterinfo.attack = () => {
+  missileCalls += 1;
+};
+runtime.entities[73] = missileMonster;
+
+const originalRandom = Math.random;
+try {
+  Math.random = () => 0;
+  runtime.collision = createClearAttackCollision(missileEnemy);
+  assert.equal(ai_checkattack(missileMonster, 0, runtime), true, "ai_checkattack must select missile when chance passes");
+  assert.equal(missileMonster.monsterinfo.attack_state, AS_MISSILE, "M_CheckAttack must set AS_MISSILE after a passed missile chance");
+  ai_run(missileMonster, 0, runtime);
+  assert.equal(missileCalls, 1, "ai_run must execute selected missile attack callback");
+  assert.equal(missileMonster.monsterinfo.attack_state, AS_STRAIGHT, "ai_run_missile must restore AS_STRAIGHT after firing");
+
+  missileMonster.monsterinfo.attack_state = AS_STRAIGHT;
+  missileMonster.monsterinfo.attack_finished = runtime.time + 1;
+  assert.equal(ai_checkattack(missileMonster, 0, runtime), false, "M_CheckAttack must respect attack_finished cooldown");
+  assert.equal(missileMonster.monsterinfo.attack_state, AS_STRAIGHT, "cooldown must not change attack_state");
+
+  const flyingMonster = createRuntimeEntity({ classname: "monster_flyer" }, 74);
+  flyingMonster.inuse = true;
+  flyingMonster.enemy = missileEnemy;
+  flyingMonster.health = 100;
+  flyingMonster.viewheight = 25;
+  flyingMonster.flags |= FL_FLY;
+  flyingMonster.monsterinfo.checkattack = M_CheckAttack;
+  flyingMonster.monsterinfo.attack = () => {};
+  runtime.entities[74] = flyingMonster;
+
+  Math.random = () => 0.2;
+  assert.equal(ai_checkattack(flyingMonster, 0, runtime), false, "flying monsters must keep moving when missile chance fails");
+  assert.equal(flyingMonster.monsterinfo.attack_state, AS_SLIDING, "failed flying attack chance may enter AS_SLIDING");
+} finally {
+  Math.random = originalRandom;
+}
+
 console.log("quake2-g-ai: ok");
 
 function createPointEntity(x: number, y: number, z: number, index: number) {
@@ -526,4 +604,27 @@ function createPointEntity(x: number, y: number, z: number, index: number) {
   entity.health = 1;
   entity.light_level = 64;
   return entity;
+}
+
+function createClearAttackCollision(target: ReturnType<typeof createPointEntity>) {
+  return {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => ({
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 1],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: 0,
+      ent: target
+    }),
+    pointcontents: () => 0
+  };
 }

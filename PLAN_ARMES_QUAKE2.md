@@ -45,13 +45,25 @@ Le portage doit rester rattache au code source original et eviter les trous fonc
   - logique joueur ;
   - logique projectiles monde ;
   - effets client ;
-  - rendu first-person ;
-  - audio.
+- rendu first-person ;
+- audio.
 - Ne pas melanger trop tot les adapters web dans les fichiers portes.
+
+## 3.1 Etat constate dans le depot
+
+Lecture du code porte au 2026-04-24 :
+
+- `game/p_weapon.c` est porte dans `packages/game/src/p_weapon.ts`, avec les pensees d'armes, les tirs, les changements d'arme, les muzzle flashes joueur et les sons ponctuels journalises dans le runtime.
+- `game/g_weapon.c` est porte dans `packages/game/src/g_weapon.ts`, avec les projectiles, impacts, explosions, radius damage, loops `s.sound` des projectiles et emission de temp entities.
+- `client/cl_fx.c` et `client/cl_tent.c` sont portes dans `packages/client/src/effects.ts`, `packages/client/src/newfx.ts`, `packages/client/src/parse.ts` et `packages/client/src/tent.ts`.
+- Le rendu first-person est deja branche cote client via `packages/client/src/refresh.ts`, `packages/client/src/view.ts` et `packages/client/src/local-gameplay-sync.ts`.
+- `game/p_view.c` est porte dans `packages/game/src/p_view.ts` et couvre les aspects utiles aux armes, notamment `gunoffset`, `gunangles`, `kick_angles` et les loops `ent->s.sound`.
+- Plusieurs harnais existent deja (`scripts/verify/quake2-p-weapon.ts`, `scripts/verify/quake2-p-view.ts`, `scripts/verify/quake2-m-flash.ts`), mais pas encore une verification complete du sous-systeme armes bout en bout.
+- Les points encore ouverts concernent surtout la verification de fidelite et l'integration bout en bout du sous-systeme armes, pas le statut de portage source des fichiers principaux deja refermes dans `PORTAGE_QUAKE2.md`.
 
 ## 4. Phases
 
-### Phase 0 [en cours] - Verrouiller le client effets armes
+### Phase 0 [x] - Verrouiller le client effets armes
 
 #### 0.1 `client/cl_fx.c`
 
@@ -90,9 +102,9 @@ Points cibles :
 Sortie attendue de la phase 0 :
 
 - le client sait deja rendre et jouer correctement les effets d'armes attendus quand les evenements arrivent ;
-- la suite du portage armes peut se concentrer sur la logique et non sur des placeholders d'effets.
+- la suite du portage armes peut se concentrer sur la logique, l'integration et la verification de fidelite plutot que sur des trous de portage `cl_fx` / `cl_tent`.
 
-### Phase 1 - Fondations communes armes
+### Phase 1 [x] - Fondations communes armes
 
 - [x] verifier / completer les constantes et enums armes de `q_shared.h`
 - [x] verifier / completer les structures partagees liees aux armes dans `g_local.h`
@@ -128,7 +140,7 @@ Point d'attention :
 
 ### Phase 3 - Portage complet de `game/g_weapon.c`
 
-- [~] porter le bloc entier `g_weapon.c`
+- [x] porter le bloc entier `g_weapon.c`
 
 Objectif :
 
@@ -144,7 +156,7 @@ Perimetre vise :
 - [x] rail / traces si presents dans ce bloc
 - [x] impacts
 - [x] explosions
-- [~] sons des projectiles et explosions
+- [x] sons des projectiles et explosions
 - [x] loops projectiles si necessaires
 
 Point d'attention :
@@ -156,11 +168,11 @@ Point d'attention :
 - `CheckArmor` et `CheckPowerArmor` sont maintenant portes dans `g_combat.c` et reutilisables sans hook obligatoire.
 - `Killed` et `SpawnDamage` peuvent etre fermes avant les sous-blocs monster / armor complets.
 
-### Phase 4 - Portage du rendu et des animations first-person
+### Phase 4 [x] - Portage du rendu et des animations first-person
 
 #### 4.1 `client/cl_view.c`
 
-- [~] etendre / finaliser le bloc necessaire aux armes
+- [x] etendre / finaliser le bloc necessaire aux armes
 
 Objectif :
 
@@ -169,24 +181,34 @@ Objectif :
 Points cibles :
 
 - [x] placement du gun model
-- [~] animation de vue associee
+- [x] animation de vue associee
 - [x] synchronisation avec `gunframe`
-- [~] FOV et mouvements perceptifs pertinents pour les armes
+- [x] FOV et mouvements perceptifs pertinents pour les armes
 
 #### 4.2 Integration web du view model
 
 - [x] verifier que le bridge courant sait afficher le modele d'arme first-person
-- [~] brancher les animations d'armes sur les donnees client portees
-- [~] verifier les skins / models de vue
+- [x] brancher les animations d'armes sur les donnees client portees
+- [x] verifier les skins / models de vue
 
-### Phase 5 - Portage du feedback audio armes
+Etat constate :
 
-- [ ] raccorder tous les sons d'armes precaches au runtime client
-- [ ] verifier les loops d'armes :
+- `apps/web/src/local-client-controller.ts` propage maintenant aussi `cl_gun`, `gun_frame` et `gun_model` vers `CL_BuildRefreshFrame`, ce qui aligne le bridge web local sur les finalisations de `client/cl_view.c`.
+- `packages/renderer-three/src/refresh-entity-sync.ts` respecte desormais `resolvedModelPath` pour les view models first-person, au lieu de forcer une resolution par `configstrings` uniquement.
+- La verification ciblee `scripts/verify/quake2-web-view-weapon.ts` couvre :
+  - rattachement du view model a la camera ;
+  - animation par `frame` ;
+  - changement de skin par `skinnum` ;
+  - override de modele first-person.
+
+### Phase 5 [~] - Portage du feedback audio armes
+
+- [~] raccorder les sons d'armes deja portes au runtime client
+- [~] verifier les loops d'armes :
   - hums
   - charge
   - spin
-- [ ] verifier les sons ponctuels :
+- [~] verifier les sons ponctuels :
   - tir
   - impact
   - reload
@@ -198,18 +220,18 @@ Point d'attention :
 
 - cette phase doit suivre les regles du plan audio, mais ici seulement pour le perimetre armes.
 
-### Phase 6 - Integration gameplay complete
+### Phase 6 [~] - Integration gameplay complete
 
 - [~] verifier les interactions armes / ammo / inventaire
 - [~] verifier les interactions armes / HUD
-- [ ] verifier les interactions armes / effets clients
+- [~] verifier les interactions armes / effets clients
 - [ ] verifier les interactions armes / monstres
 - [ ] verifier les interactions armes / triggers et monde
-- [ ] verifier les interactions armes / loops `ent->s.sound`
+- [~] verifier les interactions armes / loops `ent->s.sound`
 
-### Phase 7 - Verification de fidelite
+### Phase 7 [~] - Verification de fidelite
 
-- [ ] creer des harnais de verification dedies au sous-systeme armes
+- [~] creer des harnais de verification dedies au sous-systeme armes
 - [ ] verifier les transitions d'armes
 - [ ] verifier les timings de tir
 - [ ] verifier la consommation d'ammo
@@ -222,13 +244,13 @@ Point d'attention :
 ## 5. Ordre de reprise recommande
 
 1. [x] Phase 0
-2. [~] Phase 1
+2. [x] Phase 1
 3. [x] Phase 2
-4. [~] Phase 3
-5. [ ] Phase 4
-6. [ ] Phase 5
-7. [ ] Phase 6
-8. [ ] Phase 7
+4. [x] Phase 3
+5. [~] Phase 4
+6. [~] Phase 5
+7. [~] Phase 6
+8. [~] Phase 7
 
 ## 6. Premiere sequence pratique
 
@@ -237,8 +259,8 @@ Sequence immediate recommandee :
 1. [x] finaliser `client/cl_fx.c`
 2. [x] finaliser `client/cl_tent.c`
 3. [x] porter `game/p_weapon.c`
-4. [~] porter `game/g_weapon.c`
-5. [ ] finaliser la partie armes de `client/cl_view.c`
+4. [x] porter `game/g_weapon.c`
+5. [x] finaliser la partie armes de `client/cl_view.c`
 
 ## 7. Livrables attendus
 

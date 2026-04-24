@@ -11,6 +11,7 @@
  */
 
 import { strict as assert } from "node:assert";
+import { readFileSync } from "node:fs";
 
 import {
   GL_DISTANCE_ATTENUATION_EXT,
@@ -21,14 +22,19 @@ import {
   GL_TEXTURE0_SGIS,
   GL_TEXTURE1_SGIS,
   QGL_Init,
+  QWGL_Init,
+  createQglBootstrapHooks,
   QGL_PROCEDURES,
   QGL_OPTIONAL_PROCEDURES,
   QGL_REQUIRED_PROCEDURES,
   QGL_Shutdown,
+  QWGL_Shutdown,
   QWGL_WIN32_PROCEDURES,
   createObjectQglProvider,
   createQglRuntime,
-  hasQglProcedure
+  createQwglRuntime,
+  hasQglProcedure,
+  hasQwglProcedure
 } from "../../packages/renderer-three/src/index.js";
 
 assert.equal(GL_POINT_SIZE_MIN_EXT, 0x8126, "GL_POINT_SIZE_MIN_EXT mismatch");
@@ -50,6 +56,11 @@ assert.equal(QGL_OPTIONAL_PROCEDURES.includes("qglColorTableEXT"), true, "qglCol
 assert.equal(QGL_OPTIONAL_PROCEDURES.includes("qglSelectTextureSGIS"), true, "qglSelectTextureSGIS must stay optional");
 assert.equal(QWGL_WIN32_PROCEDURES.includes("qwglSwapBuffers"), true, "qwglSwapBuffers inventory mismatch");
 assert.equal(QWGL_WIN32_PROCEDURES.length, 24, "QWGL_WIN32_PROCEDURES count mismatch");
+
+const sourceHeader = readFileSync(new URL("../../Quake-2-master/ref_gl/qgl.h", import.meta.url), "utf8");
+const sourceProcedures = extractSourceProcedureNames(sourceHeader);
+assert.deepEqual(QGL_PROCEDURES, sourceProcedures.qgl, "QGL_PROCEDURES must match ref_gl/qgl.h declarations");
+assert.deepEqual(QWGL_WIN32_PROCEDURES, sourceProcedures.qwgl, "QWGL_WIN32_PROCEDURES must match ref_gl/qgl.h declarations");
 
 const callLog: string[] = [];
 const bindings: Record<string, unknown> = {};
@@ -100,4 +111,127 @@ assert.equal(failingInit, false, "QGL_Init should fail when required procedures 
 assert.equal(failingRuntime.initialized, false, "failed init must leave runtime uninitialized");
 assert.equal(failingRuntime.missingRequiredProcedures.includes("qglEnd"), true, "missing required inventory mismatch");
 
+const qwglCallLog: string[] = [];
+const qwglBindings: Record<string, unknown> = {};
+for (const name of QWGL_WIN32_PROCEDURES) {
+  qwglBindings[name] = () => {
+    qwglCallLog.push(name);
+  };
+}
+
+const qwglRuntime = createQwglRuntime();
+const qwglInitialized = QWGL_Init(
+  qwglRuntime,
+  createObjectQglProvider(qwglBindings)
+);
+assert.equal(qwglInitialized, true, "QWGL_Init should succeed when all Win32 procedures are present");
+assert.equal(qwglRuntime.initialized, true, "qwgl runtime.initialized mismatch");
+assert.equal(qwglRuntime.missingRequiredProcedures.length, 0, "qwgl missingRequiredProcedures mismatch");
+assert.equal(hasQwglProcedure(qwglRuntime, "qwglGetProcAddress"), true, "qwglGetProcAddress availability mismatch");
+qwglRuntime.symbols.qwglGetProcAddress();
+qwglRuntime.symbols.qwglSwapBuffers();
+assert.deepEqual(qwglCallLog, ["qwglGetProcAddress", "qwglSwapBuffers"], "resolved Win32 procedure dispatch mismatch");
+
+QWGL_Shutdown(qwglRuntime);
+assert.equal(qwglRuntime.initialized, false, "qwgl runtime must be shut down");
+assert.equal(hasQwglProcedure(qwglRuntime, "qwglGetProcAddress"), false, "Win32 procedure availability should reset on shutdown");
+
+const failingQwglRuntime = createQwglRuntime();
+const failingQwglInit = QWGL_Init(
+  failingQwglRuntime,
+  createObjectQglProvider({
+    qwglGetProcAddress: () => undefined
+  })
+);
+assert.equal(failingQwglInit, false, "QWGL_Init should fail when Win32 procedures are missing");
+assert.equal(failingQwglRuntime.initialized, false, "failed QWGL init must leave runtime uninitialized");
+assert.equal(failingQwglRuntime.missingRequiredProcedures.includes("qwglSwapBuffers"), true, "missing Win32 inventory mismatch");
+
+const bootstrapCallLog: string[] = [];
+const bootstrapQglBindings: Record<string, unknown> = {};
+for (const name of QGL_REQUIRED_PROCEDURES) {
+  bootstrapQglBindings[name] = () => undefined;
+}
+bootstrapQglBindings.qglGetString = (name: number) => {
+  switch (name) {
+    case 0x1f00:
+      return "bootstrap-vendor";
+    case 0x1f01:
+      return "bootstrap-renderer";
+    case 0x1f02:
+      return "bootstrap-version";
+    case 0x1f03:
+      return "GL_EXT_point_parameters";
+    default:
+      return "";
+  }
+};
+bootstrapQglBindings.qglPointParameterfEXT = () => {
+  bootstrapCallLog.push("qglPointParameterfEXT");
+};
+bootstrapQglBindings.qglGetError = () => 0x0500;
+const bootstrapQwglBindings: Record<string, unknown> = {};
+for (const name of QWGL_WIN32_PROCEDURES) {
+  bootstrapQwglBindings[name] = () => undefined;
+}
+bootstrapQwglBindings.qwglGetProcAddress = (name: string) => {
+  bootstrapCallLog.push(`proc:${name}`);
+  return () => undefined;
+};
+bootstrapQwglBindings.qwglSwapIntervalEXT = () => {
+  bootstrapCallLog.push("qwglSwapIntervalEXT");
+};
+
+const bootstrapQglRuntime = createQglRuntime();
+const bootstrapQwglRuntime = createQwglRuntime();
+const bootstrapHooks = createQglBootstrapHooks({
+  qglRuntime: bootstrapQglRuntime,
+  qwglRuntime: bootstrapQwglRuntime,
+  createQglProvider: () => createObjectQglProvider(bootstrapQglBindings),
+  createQwglProvider: () => createObjectQglProvider(bootstrapQwglBindings)
+});
+assert.equal(bootstrapHooks.qglInit?.("opengl32"), true, "createQglBootstrapHooks init mismatch");
+assert.equal(bootstrapQglRuntime.initialized, true, "bootstrap qgl runtime init mismatch");
+assert.equal(bootstrapQwglRuntime.initialized, true, "bootstrap qwgl runtime init mismatch");
+assert.equal(bootstrapHooks.getGlStrings?.()?.renderer, "bootstrap-renderer", "createQglBootstrapHooks GL string mismatch");
+assert.equal(bootstrapHooks.getGlError?.(), 0x0500, "createQglBootstrapHooks GL error mismatch");
+assert.equal(typeof bootstrapHooks.resolveBackendProc?.("glPointParameterfEXT"), "function", "createQglBootstrapHooks direct qgl proc mismatch");
+assert.equal(typeof bootstrapHooks.resolveBackendProc?.("wglSwapIntervalEXT"), "function", "createQglBootstrapHooks direct qwgl proc mismatch");
+assert.equal(typeof bootstrapHooks.resolveBackendProc?.("glLockArraysEXT"), "function", "createQglBootstrapHooks proc-address fallback mismatch");
+assert.equal(bootstrapCallLog.includes("proc:glLockArraysEXT"), true, "createQglBootstrapHooks fallback call log mismatch");
+bootstrapHooks.qglShutdown?.();
+assert.equal(bootstrapQglRuntime.initialized, false, "bootstrap qgl runtime shutdown mismatch");
+assert.equal(bootstrapQwglRuntime.initialized, false, "bootstrap qwgl runtime shutdown mismatch");
+
 console.log("quake2-qgl-header: ok");
+
+function extractSourceProcedureNames(source: string): { qgl: string[]; qwgl: string[] } {
+  const qgl: string[] = [];
+  const qwgl: string[] = [];
+  let declaration = "";
+
+  for (const line of source.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!declaration && !trimmed.startsWith("extern")) {
+      continue;
+    }
+
+    declaration = `${declaration} ${trimmed}`.trim();
+    if (!trimmed.endsWith(";")) {
+      continue;
+    }
+
+    const match = /\*\s*(q(?:w)?gl[A-Za-z0-9_]+)\s*\)/.exec(declaration);
+    if (match) {
+      const name = match[1];
+      if (name.startsWith("qwgl")) {
+        qwgl.push(name);
+      } else {
+        qgl.push(name);
+      }
+    }
+    declaration = "";
+  }
+
+  return { qgl, qwgl };
+}

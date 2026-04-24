@@ -27,6 +27,7 @@ import {
   CL_SetInputFrameTime,
   clearLocalMovementState,
   cloneBrushModelSnapshots,
+  createClientViewContext,
   createClientInputContext,
   createClientMainContext,
   createClientRuntime,
@@ -35,21 +36,25 @@ import {
   type LocalClientCollisionAdapter,
   stepLocalClientSession,
   toggleLocalLayoutBit,
+  type BrushModelSnapshot,
   type ClientRefreshFrame,
   type LocalClientSessionInputState,
   type ClientScreenHudState,
   type ClientRuntime,
+  V_Init,
   type QuakeSkySnapshot
 } from "../../../packages/client/src/index.js";
 import {
   LOCAL_WEAPON_SLOTS,
-  selectLocalWeapon,
+  selectLocalDemoWeapon,
   type GameEntity,
   type GameRuntime
 } from "../../../packages/game/src/index.js";
-import type { BrushModelSnapshot } from "../../../packages/renderer-three/src/index.js";
 import {
   AngleVectors,
+  CVAR_ARCHIVE,
+  Cvar_Get,
+  Cvar_VariableValue,
   MASK_PLAYERSOLID,
   PITCH,
   STAT_SELECTED_ITEM,
@@ -76,6 +81,7 @@ export interface LocalClientController {
   skySnapshot: QuakeSkySnapshot | null;
   ghostMode: boolean;
   getBrushModelSnapshots: () => BrushModelSnapshot[];
+  getCvarValue: (name: string) => number;
   setGhostMode: (enabled: boolean) => void;
   update: (deltaSeconds: number) => void;
 }
@@ -106,6 +112,9 @@ export function createLocalClientController(
   const cvarRuntime = createCvarRuntime();
   const mainContext = createClientMainContext(runtime, cmdRuntime, cvarRuntime);
   CL_InitLocal(mainContext);
+  const viewContext = createClientViewContext(runtime, cmdRuntime, cvarRuntime);
+  V_Init(viewContext);
+  Cvar_Get(cvarRuntime, "gl_shadows", "0", CVAR_ARCHIVE);
 
   const inputContext = createClientInputContext(runtime, cmdRuntime, cvarRuntime);
   CL_InitInput(inputContext);
@@ -177,7 +186,7 @@ export function createLocalClientController(
     }
 
     if (event.code in LOCAL_WEAPON_SLOTS) {
-      const selectedIndex = selectLocalWeapon(
+      const selectedIndex = selectLocalDemoWeapon(
         gameplayPlayer,
         LOCAL_WEAPON_SLOTS[event.code as keyof typeof LOCAL_WEAPON_SLOTS],
         gameplayRuntime
@@ -244,9 +253,7 @@ export function createLocalClientController(
     }
   });
 
-  let refreshFrame: ClientRefreshFrame | null = CL_BuildRefreshFrame(runtime, {
-    predictMovement: true
-  });
+  let refreshFrame: ClientRefreshFrame | null = buildLocalRefreshFrame();
 
   return {
     runtime,
@@ -269,6 +276,7 @@ export function createLocalClientController(
       return CL_BuildSkySnapshot(runtime);
     },
     getBrushModelSnapshots: () => buildInterpolatedBrushModelSnapshots(brushModelInterpolation, session.realtimeMs / 1000),
+    getCvarValue: (name) => Cvar_VariableValue(cvarRuntime, name),
     setGhostMode: (enabled) => {
       session.ghostMode = enabled;
       applyLocalMovementMode(runtime, session.ghostMode);
@@ -294,11 +302,18 @@ export function createLocalClientController(
       );
       applyPredictedCamera(camera, runtime);
 
-      refreshFrame = CL_BuildRefreshFrame(runtime, {
-        predictMovement: true
-      });
+      refreshFrame = buildLocalRefreshFrame();
     }
   };
+
+  function buildLocalRefreshFrame(): ClientRefreshFrame {
+    return CL_BuildRefreshFrame(runtime, {
+      predictMovement: true,
+      drawGun: (viewContext.cl_gun?.value ?? 1) !== 0,
+      gunFrameOverride: viewContext.debug.gun_frame,
+      gunModelOverride: viewContext.debug.gun_model
+    });
+  }
 }
 
 /**

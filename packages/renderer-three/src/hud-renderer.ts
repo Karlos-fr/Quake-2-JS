@@ -22,6 +22,7 @@ import {
 } from "three";
 import type {
   HudDrawCommand,
+  HudFillCommand,
   HudNumberCommand,
   HudPictureCommand,
   HudTextCommand
@@ -90,6 +91,7 @@ export function createThreeHudLayer(resourceResolver: QuakeHudResourceResolver):
             appendTextCommand(root, command, resourceResolver, viewportHeight);
             break;
           case "fill":
+            appendFillCommand(root, command, resourceResolver, viewportHeight);
             break;
         }
       }
@@ -98,6 +100,36 @@ export function createThreeHudLayer(resourceResolver: QuakeHudResourceResolver):
       clearHudGroup(root);
     }
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Append one palette-indexed fill command using Quake II `Draw_Fill` color semantics.
+ */
+function appendFillCommand(
+  root: Group,
+  command: HudFillCommand,
+  resourceResolver: QuakeHudResourceResolver,
+  viewportHeight: number
+): void {
+  if (command.width <= 0 || command.height <= 0) {
+    return;
+  }
+
+  const color = resourceResolver.resolvePaletteColor(command.color);
+  const geometry = new PlaneGeometry(command.width, command.height);
+  const material = new MeshBasicMaterial({
+    color: 0xffffff,
+    opacity: color.alpha,
+    transparent: color.alpha < 1,
+    depthTest: false,
+    depthWrite: false
+  });
+  material.color.setRGB(color.red, color.green, color.blue);
+
+  const mesh = new Mesh(geometry, material);
+  mesh.position.set(command.x + command.width / 2, viewportHeight - (command.y + command.height / 2), 0);
+  root.add(mesh);
 }
 
 /**

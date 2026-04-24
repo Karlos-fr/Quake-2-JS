@@ -110,7 +110,9 @@ async function bootstrap(): Promise<void> {
     scene.add(skyAdapter.root);
     scene.add(refreshEntitySync.root);
     scene.add(particleSync.root);
+    refreshEntitySync.setShadowReceiverRoot(glWorldAdapter.root);
     const camera = createCamera();
+    scene.add(camera);
     refreshEntitySync.attachToCamera(camera);
     const cameraController = createLocalClientController(ui.viewport, camera, map, spawn);
     ui.bindGhostToggle({

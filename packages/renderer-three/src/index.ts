@@ -17,8 +17,26 @@ export { createQuakeSkyResolver } from "./quake-sky-resolver.js";
 export { createThreeSkySceneAdapter } from "./sky-scene-adapter.js";
 export { createThreeRefreshEntitySync } from "./refresh-entity-sync.js";
 export { createThreeParticleSync } from "./particle-sync.js";
+export { createRefGlBootstrap } from "./ref-gl-bootstrap.js";
+export { createRefGlHost } from "./ref-gl-host.js";
+export {
+  GL_DrawAliasShadow,
+  R_CullAliasModel,
+  aliasEntityHasShell,
+  type AliasCullEntityState,
+  buildAliasShellShadeLight,
+  buildAliasShadeVector,
+  buildAliasVertexColors,
+  computeAliasShadeLight,
+  computeAliasWeaponLightLevel,
+  getAliasShadedotsForYaw,
+  sanitizeAliasFramePair
+} from "./gl-mesh.js";
 export {
   GL_DrawParticles,
+  GL_DrawColoredStereoLinePair,
+  GL_DrawStereoPattern,
+  GL_BACK_LEFT,
   MYgluPerspective,
   R_BeginFrame,
   R_Clear,
@@ -30,11 +48,17 @@ export {
   R_DrawParticles,
   R_PolyBlend,
   R_DrawSpriteModel,
+  R_Init,
+  R_Register,
+  R_SetMode,
+  R_Shutdown,
+  GetRefAPI,
   R_RenderFrame,
   R_RenderView,
   R_RotateForEntity,
   R_SetGL2D,
   R_SetFrustum,
+  R_SetLightLevel,
   R_SetPalette,
   R_SetupFrame,
   R_SetupGL,
@@ -78,6 +102,7 @@ export {
   createGlRmiscRuntime,
   findScreenshotName,
   setRmiscCvars,
+  syncRmiscExtensionStateFromRmain,
   setRmiscExtensionState,
   setRmiscGlConfig,
   setRmiscGlState,
@@ -113,19 +138,23 @@ export {
   setWarpPaletteExtensionState,
   setWarpRefdefTime,
   setWarpSkyCvars,
+  setWarpTurbulenceScale,
   setWarpViewOrigin
 } from "./gl-warp.js";
+export { r_turbsin } from "./warpsin.js";
 export {
   DLIGHT_CUTOFF,
   R_AddDynamicLights,
   R_BuildLightMap,
   R_LightPoint,
   R_MarkLights,
+  R_MarkModelLights,
   R_PushDlights,
   R_RenderDlight,
   R_RenderDlights,
   R_SetCacheState,
   RecursiveLightPoint,
+  createGlLightRmainHooks,
   createGlLightRsurfHooks,
   createGlLightRuntime,
   setGlFlashblendEnabled,
@@ -192,7 +221,13 @@ export {
   GL_InitImages,
   GL_LoadPic,
   GL_LoadWal,
+  GL_LightScaleTexture,
   GL_MBind,
+  GL_MipMap,
+  GL_BuildPalettedTexture,
+  GL_Upload8,
+  GL_Upload32,
+  GL_ResampleTexture,
   GL_RENDERER_VOODOO,
   GL_RENDERER_VOODOO2,
   GL_SelectTexture,
@@ -206,6 +241,7 @@ export {
   LoadTGA,
   MAX_GLTEXTURES,
   MAX_SCRAPS,
+  R_FloodFillSkin,
   R_RegisterSkin,
   Scrap_AllocBlock,
   Scrap_Upload,
@@ -261,16 +297,21 @@ export {
   GL_TEXTURE0_SGIS,
   GL_TEXTURE1_SGIS,
   QGL_Init,
+  QWGL_Init,
+  createQglBootstrapHooks,
   QGL_PROCEDURES,
   QGL_OPTIONAL_PROCEDURES,
   QGL_REQUIRED_PROCEDURES,
   QGL_Shutdown,
+  QWGL_Shutdown,
   QWGL_WIN32_PROCEDURES,
   createObjectQglProvider,
   createQglRuntime,
-  hasQglProcedure
+  createQwglRuntime,
+  hasQglProcedure,
+  hasQwglProcedure
 } from "./qgl.js";
-export { applyMd2Frame, applyMd2LerpedFrame, buildMd2Mesh, loadMd2Model } from "./md2-mesh-builder.js";
+export { applyMd2AliasFrameLerp, applyMd2Frame, applyMd2LerpedFrame, buildMd2Mesh, loadMd2Model } from "./md2-mesh-builder.js";
 export { createThreeHudLayer } from "./hud-renderer.js";
 export { createQuakeHudResourceResolver } from "./hud-resource-resolver.js";
 export {
@@ -309,9 +350,11 @@ export {
   setCurrentTime,
   setFrameCount,
   setFlashblendEnabled,
+  setFullbrightEnabled,
   setLightmapOnly,
   setLightstyles,
   setMonolightmapMode,
+  syncRsurfMultitextureFromRmain,
   setRefdefState,
   setShowTriangleOutlines,
   setMultitextureEnabled,
@@ -384,7 +427,7 @@ export {
   modtype_t
 } from "./gl-model.js";
 
-export type { BrushModelSnapshot, ThreeBrushModelSync } from "./brush-model-sync.js";
+export type { ThreeBrushModelSync } from "./brush-model-sync.js";
 export type { ThreeGlWorldSceneAdapter } from "./gl-world-scene-adapter.js";
 export type { BspModelOriginResolver, BspTextureResolver, ThreeBspBuildOptions } from "./bsp-group-builder.js";
 export type { GlImage, GlImageHooks, GlImageRuntime, GlImageUploadResult, GlImageUploadSource } from "./gl-image.js";
@@ -396,6 +439,8 @@ export type {
   GlRmainParticleTriangle,
   GlRmainProjection,
   GlRmainRuntime,
+  GlRmainStereoLine,
+  GlRmainStereoPattern,
   GlRmainSpriteVertex,
   GlRmainViewport
 } from "./gl-rmain.js";
@@ -403,9 +448,15 @@ export type { GlRmiscHooks, GlRmiscRuntime, TargaHeader } from "./gl-rmisc.js";
 export type { GlWarpRuntime, GlWarpSkyFace, GlWarpWaterPoly, GlWarpWaterVertex } from "./gl-warp.js";
 export type {
   GL_DrawParticles_t,
+  GL_BeginRenderingResult,
+  GL_BeginRendering_t,
+  GL_EndRendering_t,
   GlLocalContext,
+  GlimpSetModeResult,
   GlimpHooks,
   R_MarkLights_t,
+  R_SwapBuffers_t,
+  R_TranslatePlayerSkin_t,
   SurfaceVoidCallback,
   WaterWarpPolyVerts_t,
   glconfig_t,
@@ -417,6 +468,7 @@ export type { GlDrawHooks, GlDrawImage, GlDrawQuad, GlDrawRawUpload, GlDrawRunti
 export type { GlLightmapState, GlRsurfEntityRef, GlRsurfHooks, GlRsurfLightstyle, GlRsurfRuntime } from "./gl-rsurf.js";
 export type {
   QglDispatchTable,
+  QglBootstrapOptions,
   QglInitOptions,
   QglInventoryProcedure,
   QglOptionalProcedure,
@@ -424,7 +476,10 @@ export type {
   QglRequiredProcedure,
   QglRuntime,
   QglSymbolProvider,
-  QwglProcedureName
+  QwglDispatchTable,
+  QwglInventoryProcedure,
+  QwglProcedureName,
+  QwglRuntime
 } from "./qgl.js";
 export type {
   glpoly_t,
@@ -444,9 +499,12 @@ export type {
 export type { GlModelHooks, GlModelRuntime, renderer_dvis_t } from "./gl-model-loader.js";
 export type { ThreeHudLayer } from "./hud-renderer.js";
 export type { HudTextTexture, QuakeHudResourceResolver } from "./hud-resource-resolver.js";
-export type { Md2MeshBuildOptions, Md2MeshInstance } from "./md2-mesh-builder.js";
+export type { Md2AliasEntityState, Md2MeshBuildOptions, Md2MeshInstance } from "./md2-mesh-builder.js";
+export type { AliasShadeLightOptions } from "./gl-mesh.js";
 export type { QuakeTextureResolver } from "./quake-texture-resolver.js";
 export type { RefreshEntitySyncStats, ThreeRefreshEntitySync } from "./refresh-entity-sync.js";
 export type { ThreeParticleSync } from "./particle-sync.js";
 export type { LoadedQuakeSkyTextureSet, QuakeSkyResolver } from "./quake-sky-resolver.js";
 export type { ThreeSkySceneAdapter } from "./sky-scene-adapter.js";
+export type { RefGlBootstrap, RefGlBootstrapOptions } from "./ref-gl-bootstrap.js";
+export type { RefGlHost, RefGlHostOptions } from "./ref-gl-host.js";

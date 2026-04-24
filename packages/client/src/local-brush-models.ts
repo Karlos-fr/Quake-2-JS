@@ -8,13 +8,25 @@
  * Dependencies:
  * - packages/game
  * - packages/qcommon
- * - packages/renderer-three
  */
 
 import { LerpAngle } from "../../qcommon/src/index.js";
 import { SOLID_TRIGGER, SVF_NOCLIENT, type GameRuntime } from "../../game/src/index.js";
-import type { BrushModelSnapshot } from "../../renderer-three/src/index.js";
 import type { BrushModelInterpolationState } from "./local-gameplay-sync.js";
+
+/**
+ * Category: New
+ * Purpose: Describe one gameplay-owned inline model transform snapshot.
+ *
+ * Constraints:
+ * - Must use the original Quake II `*N` model naming convention.
+ * - Must stay renderer-neutral so runtime code never imports renderer adapters.
+ */
+export interface BrushModelSnapshot {
+  model: string | undefined;
+  origin: [number, number, number];
+  angles: [number, number, number];
+}
 
 /**
  * Category: New

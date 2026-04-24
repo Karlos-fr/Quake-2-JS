@@ -401,9 +401,9 @@ export function Options_MenuInit(context: ClientMenuContext): void {
   Cvar_Get(context.cvar, "win_noalttab", "0", CVAR_ARCHIVE);
 
   const menu = context.state.s_options_menu;
+  resetMenuFramework(menu);
   menu.x = Math.trunc(context.vid.viddef.width / 2);
   menu.y = Math.trunc(context.vid.viddef.height / 2 - 58);
-  resetMenuFramework(menu);
 
   const sfx = context.state.s_options_sfxvolume_slider;
   sfx.generic.type = MTYPE_SLIDER;

@@ -10,19 +10,7 @@
  */
 
 import { Group, MathUtils, type Object3D } from "three";
-
-/**
- * Category: New
- * Purpose: Describe one gameplay-owned inline model transform snapshot.
- *
- * Constraints:
- * - Must use the original Quake II `*N` model naming convention.
- */
-export interface BrushModelSnapshot {
-  model: string | undefined;
-  origin: [number, number, number];
-  angles: [number, number, number];
-}
+import type { BrushModelSnapshot } from "../../client/src/local-brush-models.js";
 
 /**
  * Category: New

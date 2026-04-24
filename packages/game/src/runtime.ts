@@ -636,6 +636,19 @@ export interface GameSoundEvent {
 
 /**
  * Category: New
+ * Purpose: Queue one gameplay-side player muzzleflash event until a client/demo bridge consumes it.
+ *
+ * Constraints:
+ * - Must preserve the source entity index and the original muzzleflash weapon bits.
+ */
+export interface GamePlayerMuzzleFlashEvent {
+  frame: number;
+  entityIndex: number;
+  weapon: number;
+}
+
+/**
+ * Category: New
  * Purpose: Hold the circular player-trail state used by pursuit helpers from `p_trail.c`.
  *
  * Constraints:
@@ -665,12 +678,19 @@ export interface GameRuntime {
   maxclients: number;
   maxentities: number;
   body_que: number;
+  power_cubes: number;
   meansOfDeath: number;
   intermissiontime: number;
   exitintermission: number;
   intermission_origin: vec3_t;
   intermission_angle: vec3_t;
   changemap: string | null;
+  total_secrets: number;
+  found_secrets: number;
+  total_goals: number;
+  found_goals: number;
+  total_monsters: number;
+  killed_monsters: number;
   deathmatch: boolean;
   coop: boolean;
   dmflags: number;
@@ -688,6 +708,7 @@ export interface GameRuntime {
   sound2_entity: GameEntity | null;
   sound2_entity_framenum: number;
   soundEvents: GameSoundEvent[];
+  playerMuzzleFlashEvents: GamePlayerMuzzleFlashEvent[];
   linkedSolidEntities: GameEntity[];
   linkedTriggerEntities: GameEntity[];
   linkedInlineBspEntities: GameEntity[];
@@ -1100,12 +1121,19 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     maxclients: 0,
     maxentities: Number.MAX_SAFE_INTEGER,
     body_que: 0,
+    power_cubes: 0,
     meansOfDeath: 0,
     intermissiontime: 0,
     exitintermission: 0,
     intermission_origin: [0, 0, 0],
     intermission_angle: [0, 0, 0],
     changemap: null,
+    total_secrets: 0,
+    found_secrets: 0,
+    total_goals: 0,
+    found_goals: 0,
+    total_monsters: 0,
+    killed_monsters: 0,
     deathmatch: false,
     coop: false,
     dmflags: 0,
@@ -1123,6 +1151,7 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     sound2_entity: null,
     sound2_entity_framenum: 0,
     soundEvents: [],
+    playerMuzzleFlashEvents: [],
     linkedSolidEntities: [],
     linkedTriggerEntities: [],
     linkedInlineBspEntities: [],
@@ -1807,6 +1836,34 @@ export function emitGameSound(runtime: GameRuntime, entity: GameEntity | null, p
 export function drainGameSoundEvents(runtime: GameRuntime): GameSoundEvent[] {
   const events = runtime.soundEvents.slice();
   runtime.soundEvents.length = 0;
+  return events;
+}
+
+/**
+ * Category: New
+ * Purpose: Queue one gameplay-side player muzzleflash event while preserving the original weapon bitfield.
+ *
+ * Constraints:
+ * - Must preserve emission order within one frame.
+ */
+export function emitPlayerMuzzleFlash(runtime: GameRuntime, entity: GameEntity, weapon: number): void {
+  runtime.playerMuzzleFlashEvents.push({
+    frame: runtime.framenum,
+    entityIndex: entity.index,
+    weapon
+  });
+}
+
+/**
+ * Category: New
+ * Purpose: Drain the queued gameplay player muzzleflash events accumulated since the previous consumer pass.
+ *
+ * Constraints:
+ * - Must preserve FIFO ordering.
+ */
+export function drainPlayerMuzzleFlashEvents(runtime: GameRuntime): GamePlayerMuzzleFlashEvent[] {
+  const events = runtime.playerMuzzleFlashEvents.slice();
+  runtime.playerMuzzleFlashEvents.length = 0;
   return events;
 }
 

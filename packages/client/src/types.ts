@@ -10,7 +10,8 @@
  *
  * Deviations:
  * - Uses arrays and typed objects instead of raw C fixed-size buffers.
- * - Leaves renderer and sound object pointers as `unknown` placeholders for later adapter work.
+ * - Leaves renderer, sound and file handles as `unknown` placeholders for later adapter work.
+ * - Keeps `keydest_t` in `keys.ts`, which remains the canonical TypeScript target for the `cls.key_dest` surface from `client.h`.
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original C source.
@@ -516,28 +517,57 @@ export enum connstate_t {
 }
 
 /**
+ * Original name: dltype_t
+ * Source: client/client.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Describes which asset family the current server download belongs to.
+ *
+ * Porting notes:
+ * - Preserves original enum ordering.
+ */
+export enum dltype_t {
+  dl_none,
+  dl_model,
+  dl_sound,
+  dl_skin,
+  dl_single
+}
+
+/**
  * Category: New
- * Purpose: Preserve the minimal `client_static_t` fields needed by early network parsing and connection state.
+ * Purpose: Preserve the persistent client connection/download/demo state from `client.h`.
  *
  * Constraints:
- * - Must keep connection state and protocol fields explicit.
+ * - Must keep connection, download and demo fields explicit across map changes.
+ *
+ * Porting notes:
+ * - `key_dest` remains owned by `keys.ts` to keep the keyboard state cluster grouped with `keys.c`.
+ * - File handles stay abstract as `unknown`.
  */
 export interface client_static_t {
   state: connstate_t;
   realtime: number;
   frametime: number;
+  framecount: number;
   disable_screen: number;
   disable_servercount: number;
   servername: string;
   connect_time: number;
+  quakePort: number;
   serverProtocol: number;
   challenge: number;
+  download: unknown | null;
   downloadname: string;
   downloadtempname: string;
   downloadnumber: number;
+  downloadtype: dltype_t;
   downloadpercent: number;
   demorecording: boolean;
   demowaiting: boolean;
+  demofile: unknown | null;
   netchan: netchan_t;
   precache: client_precache_state_t;
 }
@@ -1004,18 +1034,23 @@ export function createClientStatic(): client_static_t {
     state: connstate_t.ca_disconnected,
     realtime: 0,
     frametime: 0,
+    framecount: 0,
     disable_screen: 0,
     disable_servercount: 0,
     servername: "",
     connect_time: 0,
+    quakePort: 0,
     serverProtocol: 0,
     challenge: 0,
+    download: null,
     downloadname: "",
     downloadtempname: "",
     downloadnumber: 0,
+    downloadtype: dltype_t.dl_none,
     downloadpercent: 0,
     demorecording: false,
     demowaiting: false,
+    demofile: null,
     netchan: createNetchan(netsrc_t.NS_CLIENT),
     precache: createClientPrecacheState()
   };

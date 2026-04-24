@@ -9,7 +9,7 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - This port currently covers a broad first slice of the player lifecycle, including the authoritative `pmove` path, but still omits the complete intermission flow and some side-effect integrations.
+ * - Engine import side effects such as broadcast prints, configstrings and multicast effects are exposed through explicit hooks or runtime event queues.
  *
  * Notes:
  * - This file is intended to stay close to the original C source.
@@ -22,6 +22,7 @@ import {
   DF_FIXED_FOV,
   DF_SPAWN_FARTHEST,
   DF_QUAD_DROP,
+  EF_GIB,
   MASK_DEADSOLID,
   MASK_PLAYERSOLID,
   MZ_LOGIN,
@@ -57,6 +58,7 @@ import {
   FL_NOTARGET,
   FL_POWER_ARMOR,
   FL_NO_KNOCKBACK,
+  GIB_ORGANIC,
   ITEM_INDEX,
   IT_KEY,
   MOD_BARREL,
@@ -94,6 +96,7 @@ import {
   MOD_TRIGGER_HURT,
   MOD_WATER,
   MOVETYPE_NOCLIP,
+  MOVETYPE_BOUNCE,
   MOVETYPE_TOSS,
   MOVETYPE_WALK,
   PNOISE_SELF,
@@ -116,13 +119,13 @@ import {
   FRAME_death308
 } from "./m_player.js";
 import { MoveClientToIntermission } from "./p_hud.js";
-import { FindItem, FindItemByClassname, G_Find, G_InitEdict, GetItemByIndex, InitItems } from "./index.js";
+import { Drop_Item, FindItem, FindItemByClassname, GetItemByIndex, InitItems, Touch_Item } from "./g_items.js";
 import { cloneGameClientPersistant, emitGameSound, linkGameEntity, registerGameModel, spawnGameEntity } from "./runtime.js";
 import { ChangeWeapon, PlayerNoise, Think_Weapon, type GameWeaponHooks } from "./p_weapon.js";
 import { PlayerTrail_Add, PlayerTrail_LastSpot } from "./p_trail.js";
 import { touchTriggerEntities } from "./touch.js";
-import { G_FreeEdict, G_Spawn } from "./g_utils.js";
-import { SP_misc_teleporter_dest } from "./g_misc.js";
+import { G_Find, G_FreeEdict, G_InitEdict, G_Spawn, KillBox } from "./g_utils.js";
+import { SP_misc_teleporter_dest, ThrowGib } from "./g_misc.js";
 import type { GameClient, GameClientPersistant, GameEntity, GameRuntime } from "./runtime.js";
 
 const PLAYER_MINS: [number, number, number] = [-16, -16, -24];
@@ -926,7 +929,7 @@ export function SelectCoopSpawnPoint(ent: GameEntity, runtime: GameRuntime): Gam
  * - Reinitializes one player entity at a spawn point using the Quake II player defaults.
  *
  * Porting notes:
- * - Uses explicit hooks for spawn selection, killbox checks and outer engine-side effects.
+ * - Uses explicit hooks only for overridable policy/engine side effects; core spawn behavior is locally wired.
  */
 export function PutClientInServer(
   ent: GameEntity,
@@ -1052,7 +1055,7 @@ export function PutClientInServer(
 
   client.resp.spectator = false;
 
-  hooks.KillBox?.(ent, runtime);
+  (hooks.KillBox ?? ((target, localRuntime) => KillBox(localRuntime, target)))(ent, runtime);
   linkGameEntity(runtime, ent);
 
   client.newweapon = client.pers.weapon;
@@ -1094,12 +1097,15 @@ export function body_die(
 ): void {
   void inflictor;
   void attacker;
-  void runtime;
 
   if (self.health < -40) {
+    emitGameSound(runtime, self, "misc/udeath.wav");
+    for (let index = 0; index < 4; index += 1) {
+      ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
     self.s.origin[2] -= 48;
+    ThrowClientHead(self, damage, runtime);
     self.takedamage = damage_t.DAMAGE_NO;
-    void damage;
   }
 }
 
@@ -1115,11 +1121,11 @@ let deathAnimationIndex = 0;
  * - Drops the player's current weapon and optionally an expiring quad damage pickup on deathmatch death.
  *
  * Porting notes:
- * - Reuses the existing explicit `Drop_Item` hook from `p_weapon.c` until `g_items.c` drop spawning is ported.
+ * - Uses the ported `Drop_Item` path by default while preserving hook injection for tests/adapters.
  */
 export function TossClientWeapon(self: GameEntity, runtime: GameRuntime, hooks: GamePlayerClientHooks = {}): void {
   const client = self.client;
-  if (!client || !runtime.deathmatch || !hooks.Drop_Item) {
+  if (!client || !runtime.deathmatch) {
     return;
   }
 
@@ -1136,7 +1142,7 @@ export function TossClientWeapon(self: GameEntity, runtime: GameRuntime, hooks: 
 
   if (item) {
     client.v_angle[YAW] -= spread;
-    const drop = hooks.Drop_Item(self, item, runtime);
+    const drop = (hooks.Drop_Item ?? Drop_Item)(self, item, runtime);
     client.v_angle[YAW] += spread;
     if (drop) {
       drop.spawnflags = DROPPED_PLAYER_ITEM;
@@ -1150,7 +1156,7 @@ export function TossClientWeapon(self: GameEntity, runtime: GameRuntime, hooks: 
     }
 
     client.v_angle[YAW] += spread;
-    const drop = hooks.Drop_Item(self, quadItem, runtime);
+    const drop = (hooks.Drop_Item ?? Drop_Item)(self, quadItem, runtime);
     client.v_angle[YAW] -= spread;
 
     if (!drop) {
@@ -1158,6 +1164,7 @@ export function TossClientWeapon(self: GameEntity, runtime: GameRuntime, hooks: 
     }
 
     drop.spawnflags |= DROPPED_PLAYER_ITEM;
+    drop.touch = Touch_Item;
     drop.nextthink = runtime.time + (client.quad_framenum - runtime.framenum) * FRAMETIME;
     drop.think = (ent, rt) => G_FreeEdict(rt, ent);
   }
@@ -1173,7 +1180,7 @@ export function TossClientWeapon(self: GameEntity, runtime: GameRuntime, hooks: 
  * - Applies the core player death transition, obituary, inventory clearing and death animation selection.
  *
  * Porting notes:
- * - Weapon tossing, corpse gib effects, death sounds and score display stay externalized through hooks.
+ * - Broadcast/UI side effects remain overridable through hooks; gameplay drops, sounds and gib spawning have local defaults.
  */
 export function player_die(
   self: GameEntity,
@@ -1231,8 +1238,12 @@ export function player_die(
   self.flags &= ~FL_POWER_ARMOR;
 
   if (self.health < -40) {
-    hooks.onDeathSound?.(self, "misc/udeath.wav", runtime);
-    hooks.onDeathGib?.(self, damage, runtime);
+    emitDeathSound(self, "misc/udeath.wav", runtime, hooks);
+    if (hooks.onDeathGib) {
+      hooks.onDeathGib(self, damage, runtime);
+    } else {
+      throwPlayerGibs(self, damage, runtime);
+    }
     self.takedamage = damage_t.DAMAGE_NO;
   } else if (!self.deadflag) {
     deathAnimationIndex = (deathAnimationIndex + 1) % 3;
@@ -1252,10 +1263,51 @@ export function player_die(
       client.anim_end = FRAME_death308;
     }
 
-    hooks.onDeathSound?.(self, `*death${Math.trunc(Math.random() * 4) + 1}.wav`, runtime);
+    emitDeathSound(self, `*death${Math.trunc(Math.random() * 4) + 1}.wav`, runtime, hooks);
   }
 
   self.deadflag = DEAD_DEAD;
+  linkGameEntity(runtime, self);
+}
+
+/**
+ * Original name: ThrowClientHead
+ * Source: game/p_client.c via game/g_misc.c helper
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Converts the player or queued body entity into the flying client head/skull gib.
+ */
+export function ThrowClientHead(self: GameEntity, damage: number, runtime: GameRuntime): void {
+  const usePlayerHead = (Math.trunc(Math.random() * 0x7fffffff) & 1) !== 0;
+  const gibname = usePlayerHead
+    ? "models/objects/gibs/head2/tris.md2"
+    : "models/objects/gibs/skull/tris.md2";
+
+  self.s.skinnum = usePlayerHead ? 1 : 0;
+  self.s.origin[2] += 32;
+  self.s.frame = 0;
+  self.model = gibname;
+  self.s.modelindex = registerGameModel(runtime, gibname);
+  self.mins = [-16, -16, 0];
+  self.maxs = [16, 16, 16];
+  self.takedamage = damage_t.DAMAGE_NO;
+  self.solid = SOLID_NOT;
+  self.s.effects = EF_GIB;
+  self.s.sound = 0;
+  self.flags |= FL_NO_KNOCKBACK;
+  self.movetype = MOVETYPE_BOUNCE;
+  self.velocity = addVec3(self.velocity, velocityForDamage(damage));
+
+  if (self.client) {
+    self.client.anim_priority = ANIM_DEATH;
+    self.client.anim_end = self.s.frame;
+  } else {
+    self.think = undefined;
+    self.nextthink = 0;
+  }
+
   linkGameEntity(runtime, self);
 }
 
@@ -1731,7 +1783,7 @@ export function ClientThink(
  * - Runs the first server-frame-side player upkeep already needed by the current gameplay runtime.
  *
  * Porting notes:
- * - Omits intermission, respawn and spectator mode transition logic until the wider player lifecycle is ported.
+ * - Mirrors the source intermission early-out, spectator transition, weapon thunk, respawn and player-trail paths.
  */
 export function ClientBeginServerFrame(
   ent: GameEntity,
@@ -1820,6 +1872,46 @@ function resetPersistantState(pers: GameClientPersistant): void {
   pers.game_helpchanged = 0;
   pers.helpchanged = 0;
   pers.spectator = false;
+}
+
+function emitDeathSound(
+  self: GameEntity,
+  soundPath: string,
+  runtime: GameRuntime,
+  hooks: GamePlayerClientHooks
+): void {
+  if (hooks.onDeathSound) {
+    hooks.onDeathSound(self, soundPath, runtime);
+    return;
+  }
+
+  emitGameSound(runtime, self, soundPath);
+}
+
+function throwPlayerGibs(self: GameEntity, damage: number, runtime: GameRuntime): void {
+  for (let index = 0; index < 4; index += 1) {
+    ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+  }
+  ThrowClientHead(self, damage, runtime);
+}
+
+function velocityForDamage(damage: number): [number, number, number] {
+  const random = (): number => (Math.random() * 2) - 1;
+  const velocity: [number, number, number] = [
+    100 * random(),
+    100 * random(),
+    200 + (100 * Math.random())
+  ];
+  const scale = damage < 50 ? 0.7 : 1.2;
+  return [velocity[0] * scale, velocity[1] * scale, velocity[2] * scale];
+}
+
+function addVec3(left: [number, number, number], right: [number, number, number]): [number, number, number] {
+  return [
+    left[0] + right[0],
+    left[1] + right[1],
+    left[2] + right[2]
+  ];
 }
 
 function resetClientTransientState(client: GameClient): void {

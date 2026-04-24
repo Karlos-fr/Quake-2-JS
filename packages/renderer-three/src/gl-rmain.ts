@@ -11,17 +11,20 @@
  * Deviations:
  * - Replaces direct GL state mutation with explicit runtime state and hooks.
  * - Leaves renderer-backend submission behind callbacks while preserving the original call order.
- * - Focuses this tranche on frame setup, frustum state, beam geometry, palette handling and render orchestration.
+ * - Keeps the original disabled stereo-pattern call disabled; the static helpers are ported for traceability.
+ * - Exposes the original `r_turbsin *= 0.5` bootstrap mutation through an optional hook because the table itself is immutable in this port.
  *
  * Notes:
  * - This file is the principal attachment point for `ref_gl/gl_rmain.c`.
- * - The remaining bootstrap and API-export portions can build on this runtime once more renderer branches are ported.
+ * - Backend-specific GL, QGL, GLimp and Draw/Mod/Image side effects are explicit hooks.
  */
 
 import { CONTENTS_SOLID, type dsprite_t } from "../../formats/src/index.js";
 import {
   AngleVectors,
   BoxOnPlaneSide,
+  CVAR_ARCHIVE,
+  CVAR_USERINFO,
   DotProduct,
   ERR_DROP,
   M_PI,
@@ -41,11 +44,30 @@ import {
   type vec3_t
 } from "../../qcommon/src/index.js";
 import type { cvar_t } from "../../qcommon/src/cvar.js";
-import type { dlight_t, entity_t, particle_t, refdef_t } from "../../client/src/ref.js";
+import { API_VERSION, type dlight_t, type entity_t, type particle_t, type refdef_t, type refexport_t, type refimport_t } from "../../client/src/ref.js";
 import type { image_t, model_t, msurface_t } from "./gl-model.js";
 import { modtype_t } from "./gl-model.js";
+import { rserr_t, type GlimpSetModeResult } from "./gl-local.js";
+import {
+  GL_RENDERER_3DLABS,
+  GL_RENDERER_DYPIC,
+  GL_RENDERER_GLINT_MX,
+  GL_RENDERER_INTERGRAPH,
+  GL_RENDERER_MCD,
+  GL_RENDERER_OTHER,
+  GL_RENDERER_PCX2,
+  GL_RENDERER_PERMEDIA2,
+  GL_RENDERER_POWERVR,
+  GL_RENDERER_REALIZM,
+  GL_RENDERER_RENDITION,
+  GL_RENDERER_SGI,
+  GL_RENDERER_VOODOO,
+  GL_RENDERER_VOODOO_RUSH,
+  REF_VERSION
+} from "./gl-local.js";
 
 const NUM_BEAM_SEGS = 6;
+export const GL_BACK_LEFT = 0x0402;
 
 export interface GlRmainViewport {
   x: number;
@@ -72,6 +94,17 @@ export interface GlRmainParticleTriangle {
   }>;
 }
 
+export interface GlRmainStereoLine {
+  color: [number, number, number];
+  start: [number, number];
+  end: [number, number];
+}
+
+export interface GlRmainStereoPattern {
+  drawBuffer: typeof GL_BACK_LEFT;
+  frames: GlRmainStereoLine[][];
+}
+
 export interface GlRmainProjection {
   xmin: number;
   xmax: number;
@@ -85,6 +118,7 @@ export interface GlRmainGlState {
   camera_separation: number;
   stereo_enabled: boolean;
   current_draw_buffer: "GL_FRONT" | "GL_BACK" | null;
+  prev_mode: number;
 }
 
 export interface GlRmainHooks {
@@ -102,6 +136,8 @@ export interface GlRmainHooks {
   onDrawNullModel?: (entity: entity_t, shadelight: vec3_t, topFan: vec3_t[], bottomFan: vec3_t[]) => void;
   onDrawParticles?: (texture: image_t | null, triangles: GlRmainParticleTriangle[]) => void;
   onDrawPointParticles?: (particles: Array<{ position: vec3_t; color: [number, number, number, number]; size: number }>) => void;
+  onDrawStereoPattern?: (pattern: GlRmainStereoPattern) => void;
+  onDepthMaskChange?: (enabled: boolean) => void;
   drawAliasModel?: (entity: entity_t) => void;
   drawBrushModel?: (entity: entity_t) => void;
   drawSpriteModel?: (entity: entity_t) => void;
@@ -123,6 +159,50 @@ export interface GlRmainHooks {
   textureAlphaMode?: (mode: string) => void;
   textureSolidMode?: (mode: string) => void;
   sysError?: (level: number, message: string) => never;
+  qglInit?: (driver: string) => boolean;
+  qglShutdown?: () => void;
+  glimpInit?: (hinstance: unknown, hWnd: unknown) => boolean;
+  glimpShutdown?: () => void;
+  glimpBeginFrame?: (camera_separation: number) => void;
+  glimpEndFrame?: () => void;
+  glimpAppActivate?: (activate: boolean) => void;
+  drawGetPalette?: () => void;
+  scaleTurbulence?: (scale: number) => void;
+  getGlStrings?: () => { vendor: string; renderer: string; version: string; extensions: string } | null;
+  getGlError?: () => number | null;
+  glSetDefaultState?: () => void;
+  glInitImages?: () => void;
+  modInit?: () => void;
+  rInitParticleTexture?: () => void;
+  drawInitLocal?: () => void;
+  glimpSetMode?: (width: number, height: number, mode: number, fullscreen: boolean) => GlimpSetModeResult;
+  glShutdownImages?: () => void;
+  modFreeAll?: () => void;
+  resolveBackendProc?: (name: string) => unknown;
+}
+
+export interface GlRmainRefApiHooks {
+  imagelistCommand?: () => void;
+  screenshotCommand?: () => void;
+  modellistCommand?: () => void;
+  glStringsCommand?: () => void;
+  beginRegistration?: (map: string) => void;
+  registerModel?: (name: string) => model_t | null;
+  registerSkin?: (name: string) => image_t | null;
+  registerPic?: (name: string) => image_t | null;
+  setSky?: (name: string, rotate: number, axis: vec3_t) => void;
+  endRegistration?: () => void;
+  drawGetPicSize?: (name: string) => { width: number; height: number };
+  drawPic?: (x: number, y: number, name: string) => void;
+  drawStretchPic?: (x: number, y: number, w: number, h: number, name: string) => void;
+  drawChar?: (x: number, y: number, c: number) => void;
+  drawTileClear?: (x: number, y: number, w: number, h: number, name: string) => void;
+  drawFill?: (x: number, y: number, w: number, h: number, c: number) => void;
+  drawFadeScreen?: () => void;
+  drawStretchRaw?: (x: number, y: number, w: number, h: number, cols: number, rows: number, data: Uint8Array) => void;
+  endFrame?: () => void;
+  appActivate?: (activate: boolean) => void;
+  swapInit?: () => void;
 }
 
 export interface GlRmainRuntime {
@@ -176,6 +256,56 @@ export interface GlRmainRuntime {
   vid_gamma: cvar_t | null;
   vid_ref: cvar_t | null;
   r_lightlevel: cvar_t | null;
+  ri: refimport_t | null;
+  r_drawworld: cvar_t | null;
+  r_fullbright: cvar_t | null;
+  r_novis: cvar_t | null;
+  r_lerpmodels: cvar_t | null;
+  r_lefthand: cvar_t | null;
+  gl_nosubimage: cvar_t | null;
+  gl_allow_software: cvar_t | null;
+  gl_vertex_arrays: cvar_t | null;
+  gl_particle_min_size: cvar_t | null;
+  gl_particle_max_size: cvar_t | null;
+  gl_particle_att_a: cvar_t | null;
+  gl_particle_att_b: cvar_t | null;
+  gl_particle_att_c: cvar_t | null;
+  gl_ext_swapinterval: cvar_t | null;
+  gl_ext_palettedtexture: cvar_t | null;
+  gl_ext_multitexture: cvar_t | null;
+  gl_ext_compiled_vertex_array: cvar_t | null;
+  gl_bitdepth: cvar_t | null;
+  gl_driver: cvar_t | null;
+  gl_lightmap: cvar_t | null;
+  gl_shadows: cvar_t | null;
+  gl_dynamic: cvar_t | null;
+  gl_monolightmap: cvar_t | null;
+  gl_modulate: cvar_t | null;
+  gl_nobind: cvar_t | null;
+  gl_round_down: cvar_t | null;
+  gl_picmip: cvar_t | null;
+  gl_skymip: cvar_t | null;
+  gl_showtris: cvar_t | null;
+  gl_cull: cvar_t | null;
+  gl_flashblend: cvar_t | null;
+  gl_playermip: cvar_t | null;
+  gl_saturatelighting: cvar_t | null;
+  gl_lockpvs: cvar_t | null;
+  gl_3dlabs_broken: cvar_t | null;
+  gl_allow_cds: boolean;
+  gl_renderer: number;
+  gl_vendor_string: string;
+  gl_renderer_string: string;
+  gl_version_string: string;
+  gl_extensions_string: string;
+  qglLockArraysEXT: boolean;
+  qglUnlockArraysEXT: boolean;
+  qwglSwapIntervalEXT: boolean;
+  qglPointParameterfEXT: boolean;
+  qglPointParameterfvEXT: boolean;
+  qglColorTableEXT: boolean;
+  qglMTexCoord2fSGIS: boolean;
+  qglSelectTextureSGIS: boolean;
   hooks: GlRmainHooks;
 }
 
@@ -189,7 +319,8 @@ export function createGlRmainRuntime(hooks: GlRmainHooks = {}): GlRmainRuntime {
     gl_state: {
       camera_separation: 0,
       stereo_enabled: false,
-      current_draw_buffer: null
+      current_draw_buffer: null,
+      prev_mode: 3
     },
     r_worldmodel: null,
     currententity: null,
@@ -239,6 +370,56 @@ export function createGlRmainRuntime(hooks: GlRmainHooks = {}): GlRmainRuntime {
     vid_gamma: null,
     vid_ref: null,
     r_lightlevel: null,
+    ri: null,
+    r_drawworld: null,
+    r_fullbright: null,
+    r_novis: null,
+    r_lerpmodels: null,
+    r_lefthand: null,
+    gl_nosubimage: null,
+    gl_allow_software: null,
+    gl_vertex_arrays: null,
+    gl_particle_min_size: null,
+    gl_particle_max_size: null,
+    gl_particle_att_a: null,
+    gl_particle_att_b: null,
+    gl_particle_att_c: null,
+    gl_ext_swapinterval: null,
+    gl_ext_palettedtexture: null,
+    gl_ext_multitexture: null,
+    gl_ext_compiled_vertex_array: null,
+    gl_bitdepth: null,
+    gl_driver: null,
+    gl_lightmap: null,
+    gl_shadows: null,
+    gl_dynamic: null,
+    gl_monolightmap: null,
+    gl_modulate: null,
+    gl_nobind: null,
+    gl_round_down: null,
+    gl_picmip: null,
+    gl_skymip: null,
+    gl_showtris: null,
+    gl_cull: null,
+    gl_flashblend: null,
+    gl_playermip: null,
+    gl_saturatelighting: null,
+    gl_lockpvs: null,
+    gl_3dlabs_broken: null,
+    gl_allow_cds: true,
+    gl_renderer: 0,
+    gl_vendor_string: "",
+    gl_renderer_string: "",
+    gl_version_string: "",
+    gl_extensions_string: "",
+    qglLockArraysEXT: false,
+    qglUnlockArraysEXT: false,
+    qwglSwapIntervalEXT: false,
+    qglPointParameterfEXT: false,
+    qglPointParameterfvEXT: false,
+    qglColorTableEXT: false,
+    qglMTexCoord2fSGIS: false,
+    qglSelectTextureSGIS: false,
     hooks
   };
 }
@@ -537,6 +718,82 @@ export function R_SetGL2D(runtime: GlRmainRuntime): void {
 }
 
 /**
+ * Original name: GL_DrawColoredStereoLinePair
+ * Source: ref_gl/gl_rmain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds the colored stereo calibration line and following black line emitted by the original immediate-mode helper.
+ */
+export function GL_DrawColoredStereoLinePair(
+  runtime: GlRmainRuntime,
+  r: number,
+  g: number,
+  b: number,
+  y: number
+): GlRmainStereoLine[] {
+  return [
+    {
+      color: [r, g, b],
+      start: [0, y],
+      end: [runtime.vid.width, y]
+    },
+    {
+      color: [0, 0, 0],
+      start: [0, y + 1],
+      end: [runtime.vid.width, y + 1]
+    }
+  ];
+}
+
+/**
+ * Original name: GL_DrawStereoPattern
+ * Source: ref_gl/gl_rmain.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the Intergraph stereo calibration pattern only when stereo rendering is enabled.
+ *
+ * Porting notes:
+ * - The original `R_Init` call is compiled out by `#if 0`; this helper remains callable for traceability and tests.
+ */
+export function GL_DrawStereoPattern(runtime: GlRmainRuntime): GlRmainStereoPattern | null {
+  if ((runtime.gl_renderer & GL_RENDERER_INTERGRAPH) === 0) {
+    return null;
+  }
+
+  if (!runtime.gl_state.stereo_enabled) {
+    return null;
+  }
+
+  R_SetGL2D(runtime);
+
+  const frameLines: GlRmainStereoLine[] = [
+    ...GL_DrawColoredStereoLinePair(runtime, 1, 0, 0, 0),
+    ...GL_DrawColoredStereoLinePair(runtime, 1, 0, 0, 2),
+    ...GL_DrawColoredStereoLinePair(runtime, 1, 0, 0, 4),
+    ...GL_DrawColoredStereoLinePair(runtime, 1, 0, 0, 6),
+    ...GL_DrawColoredStereoLinePair(runtime, 0, 1, 0, 8),
+    ...GL_DrawColoredStereoLinePair(runtime, 1, 1, 0, 10),
+    ...GL_DrawColoredStereoLinePair(runtime, 1, 1, 0, 12),
+    ...GL_DrawColoredStereoLinePair(runtime, 0, 1, 0, 14)
+  ];
+  const pattern: GlRmainStereoPattern = {
+    drawBuffer: GL_BACK_LEFT,
+    frames: Array.from({ length: 20 }, () => frameLines.map((line) => ({
+      color: [...line.color] as [number, number, number],
+      start: [...line.start] as [number, number],
+      end: [...line.end] as [number, number]
+    })))
+  };
+
+  runtime.hooks.onDrawStereoPattern?.(pattern);
+  return pattern;
+}
+
+/**
  * Original name: R_PolyBlend
  * Source: ref_gl/gl_rmain.c
  * Category: Ported
@@ -795,7 +1052,7 @@ export function R_DrawParticles(runtime: GlRmainRuntime): void {
     return;
   }
 
-  if (runtime.gl_ext_pointparameters?.value) {
+  if (runtime.gl_ext_pointparameters?.value && runtime.qglPointParameterfEXT) {
     const points = refdef.particles.slice(0, refdef.num_particles).map((particle) => {
       const packed = runtime.d_8to24table[particle.color] ?? 0;
       return {
@@ -835,6 +1092,10 @@ export function R_DrawEntitiesOnList(runtime: GlRmainRuntime): void {
 
   for (let pass = 0; pass < 2; pass += 1) {
     const translucentPass = pass === 1;
+    if (translucentPass) {
+      runtime.hooks.onDepthMaskChange?.(false);
+    }
+
     for (let index = 0; index < refdef.num_entities; index += 1) {
       const entity = refdef.entities[index];
       const isTranslucent = (entity.flags & RF_TRANSLUCENT) !== 0;
@@ -867,6 +1128,10 @@ export function R_DrawEntitiesOnList(runtime: GlRmainRuntime): void {
         default:
           failSysError(runtime, ERR_DROP, "Bad modeltype");
       }
+    }
+
+    if (translucentPass) {
+      runtime.hooks.onDepthMaskChange?.(true);
     }
   }
 }
@@ -928,6 +1193,8 @@ export function R_RenderView(runtime: GlRmainRuntime, fd: refdef_t): void {
  */
 export function R_RenderFrame(runtime: GlRmainRuntime, fd: refdef_t): void {
   R_RenderView(runtime, fd);
+  R_SetLightLevel(runtime);
+  R_SetGL2D(runtime);
 }
 
 /**
@@ -961,6 +1228,7 @@ export function R_BeginFrame(runtime: GlRmainRuntime, camera_separation: number)
     runtime.vid_gamma.modified = false;
   }
 
+  runtime.hooks.glimpBeginFrame?.(camera_separation);
   R_SetGL2D(runtime);
 
   if (runtime.gl_drawbuffer?.modified) {
@@ -1032,6 +1300,489 @@ export function setRmainCvars(runtime: GlRmainRuntime, cvars: Partial<Pick<GlRma
   "r_norefresh" | "r_drawentities" | "r_speeds" | "r_nocull" | "gl_finish" | "gl_clear" | "gl_ztrick" | "gl_polyblend" | "gl_log" | "gl_drawbuffer" | "gl_texturemode" | "gl_texturealphamode" | "gl_texturesolidmode" | "gl_swapinterval" | "gl_mode" | "gl_ext_pointparameters" | "gl_particle_size" | "vid_fullscreen" | "vid_gamma" | "vid_ref" | "r_lightlevel"
 >>): void {
   Object.assign(runtime, cvars);
+}
+
+/**
+ * Original name: R_SetLightLevel
+ * Source: ref_gl/gl_rmain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Samples view-origin light and stores a scalar light level for client-side hacks.
+ */
+export function R_SetLightLevel(runtime: GlRmainRuntime): void {
+  const refdef = runtime.r_newrefdef;
+  if (!refdef) {
+    return;
+  }
+
+  if ((refdef.rdflags & RDF_NOWORLDMODEL) !== 0) {
+    return;
+  }
+
+  const shadelight = runtime.hooks.lightPoint?.(refdef.vieworg) ?? ([0, 0, 0] as vec3_t);
+  const maxComponent = Math.max(shadelight[0], shadelight[1], shadelight[2]);
+  if (runtime.r_lightlevel) {
+    runtime.r_lightlevel.value = 150 * maxComponent;
+  }
+}
+
+/**
+ * Original name: R_Register
+ * Source: ref_gl/gl_rmain.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the renderer-owned cvars and console commands through the imported engine services.
+ */
+export function R_Register(runtime: GlRmainRuntime, ri: refimport_t, commands: {
+  imagelist?: () => void;
+  screenshot?: () => void;
+  modellist?: () => void;
+  gl_strings?: () => void;
+} = {}): void {
+  runtime.ri = ri;
+
+  runtime.r_lefthand = ri.Cvar_Get("hand", "0", CVAR_USERINFO | CVAR_ARCHIVE);
+  runtime.r_norefresh = ri.Cvar_Get("r_norefresh", "0", 0);
+  runtime.r_fullbright = ri.Cvar_Get("r_fullbright", "0", 0);
+  runtime.r_drawentities = ri.Cvar_Get("r_drawentities", "1", 0);
+  runtime.r_drawworld = ri.Cvar_Get("r_drawworld", "1", 0);
+  runtime.r_novis = ri.Cvar_Get("r_novis", "0", 0);
+  runtime.r_nocull = ri.Cvar_Get("r_nocull", "0", 0);
+  runtime.r_lerpmodels = ri.Cvar_Get("r_lerpmodels", "1", 0);
+  runtime.r_speeds = ri.Cvar_Get("r_speeds", "0", 0);
+  runtime.r_lightlevel = ri.Cvar_Get("r_lightlevel", "0", 0);
+
+  runtime.gl_nosubimage = ri.Cvar_Get("gl_nosubimage", "0", 0);
+  runtime.gl_allow_software = ri.Cvar_Get("gl_allow_software", "0", 0);
+  runtime.gl_vertex_arrays = ri.Cvar_Get("gl_vertex_arrays", "0", CVAR_ARCHIVE);
+
+  runtime.gl_particle_min_size = ri.Cvar_Get("gl_particle_min_size", "2", CVAR_ARCHIVE);
+  runtime.gl_particle_max_size = ri.Cvar_Get("gl_particle_max_size", "40", CVAR_ARCHIVE);
+  runtime.gl_particle_size = ri.Cvar_Get("gl_particle_size", "40", CVAR_ARCHIVE);
+  runtime.gl_particle_att_a = ri.Cvar_Get("gl_particle_att_a", "0.01", CVAR_ARCHIVE);
+  runtime.gl_particle_att_b = ri.Cvar_Get("gl_particle_att_b", "0.0", CVAR_ARCHIVE);
+  runtime.gl_particle_att_c = ri.Cvar_Get("gl_particle_att_c", "0.01", CVAR_ARCHIVE);
+
+  runtime.gl_modulate = ri.Cvar_Get("gl_modulate", "1", CVAR_ARCHIVE);
+  runtime.gl_log = ri.Cvar_Get("gl_log", "0", 0);
+  runtime.gl_bitdepth = ri.Cvar_Get("gl_bitdepth", "0", 0);
+  runtime.gl_mode = ri.Cvar_Get("gl_mode", "3", CVAR_ARCHIVE);
+  runtime.gl_lightmap = ri.Cvar_Get("gl_lightmap", "0", 0);
+  runtime.gl_shadows = ri.Cvar_Get("gl_shadows", "0", CVAR_ARCHIVE);
+  runtime.gl_dynamic = ri.Cvar_Get("gl_dynamic", "1", 0);
+  runtime.gl_nobind = ri.Cvar_Get("gl_nobind", "0", 0);
+  runtime.gl_round_down = ri.Cvar_Get("gl_round_down", "1", 0);
+  runtime.gl_picmip = ri.Cvar_Get("gl_picmip", "0", 0);
+  runtime.gl_skymip = ri.Cvar_Get("gl_skymip", "0", 0);
+  runtime.gl_showtris = ri.Cvar_Get("gl_showtris", "0", 0);
+  runtime.gl_ztrick = ri.Cvar_Get("gl_ztrick", "0", 0);
+  runtime.gl_finish = ri.Cvar_Get("gl_finish", "0", CVAR_ARCHIVE);
+  runtime.gl_clear = ri.Cvar_Get("gl_clear", "0", 0);
+  runtime.gl_cull = ri.Cvar_Get("gl_cull", "1", 0);
+  runtime.gl_polyblend = ri.Cvar_Get("gl_polyblend", "1", 0);
+  runtime.gl_flashblend = ri.Cvar_Get("gl_flashblend", "0", 0);
+  runtime.gl_playermip = ri.Cvar_Get("gl_playermip", "0", 0);
+  runtime.gl_monolightmap = ri.Cvar_Get("gl_monolightmap", "0", 0);
+  runtime.gl_driver = ri.Cvar_Get("gl_driver", "opengl32", CVAR_ARCHIVE);
+  runtime.gl_texturemode = ri.Cvar_Get("gl_texturemode", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE);
+  runtime.gl_texturealphamode = ri.Cvar_Get("gl_texturealphamode", "default", CVAR_ARCHIVE);
+  runtime.gl_texturesolidmode = ri.Cvar_Get("gl_texturesolidmode", "default", CVAR_ARCHIVE);
+  runtime.gl_lockpvs = ri.Cvar_Get("gl_lockpvs", "0", 0);
+  runtime.gl_ext_swapinterval = ri.Cvar_Get("gl_ext_swapinterval", "1", CVAR_ARCHIVE);
+  runtime.gl_ext_palettedtexture = ri.Cvar_Get("gl_ext_palettedtexture", "1", CVAR_ARCHIVE);
+  runtime.gl_ext_multitexture = ri.Cvar_Get("gl_ext_multitexture", "1", CVAR_ARCHIVE);
+  runtime.gl_ext_pointparameters = ri.Cvar_Get("gl_ext_pointparameters", "1", CVAR_ARCHIVE);
+  runtime.gl_ext_compiled_vertex_array = ri.Cvar_Get("gl_ext_compiled_vertex_array", "1", CVAR_ARCHIVE);
+  runtime.gl_drawbuffer = ri.Cvar_Get("gl_drawbuffer", "GL_BACK", 0);
+  runtime.gl_swapinterval = ri.Cvar_Get("gl_swapinterval", "1", CVAR_ARCHIVE);
+  runtime.gl_saturatelighting = ri.Cvar_Get("gl_saturatelighting", "0", 0);
+  runtime.gl_3dlabs_broken = ri.Cvar_Get("gl_3dlabs_broken", "1", CVAR_ARCHIVE);
+  runtime.vid_fullscreen = ri.Cvar_Get("vid_fullscreen", "0", CVAR_ARCHIVE);
+  runtime.vid_gamma = ri.Cvar_Get("vid_gamma", "1.0", CVAR_ARCHIVE);
+  runtime.vid_ref = ri.Cvar_Get("vid_ref", "soft", CVAR_ARCHIVE);
+
+  ri.Cmd_AddCommand("imagelist", commands.imagelist ?? (() => {}));
+  ri.Cmd_AddCommand("screenshot", commands.screenshot ?? (() => {}));
+  ri.Cmd_AddCommand("modellist", commands.modellist ?? (() => {}));
+  ri.Cmd_AddCommand("gl_strings", commands.gl_strings ?? (() => {}));
+}
+
+/**
+ * Original name: R_Init
+ * Source: ref_gl/gl_rmain.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers cvars/commands, initializes platform GL bindings and executes the renderer bootstrap sequence.
+ */
+export function R_Init(
+  runtime: GlRmainRuntime,
+  ri: refimport_t,
+  hinstance: unknown,
+  hWnd: unknown,
+  commands: Parameters<typeof R_Register>[2] = {}
+): number {
+  runtime.hooks.scaleTurbulence?.(0.5);
+  ri.Con_Printf(PRINT_ALL, `ref_gl version: ${REF_VERSION}\n`);
+  runtime.hooks.drawGetPalette?.();
+  resetBootstrapRuntimeState(runtime);
+
+  R_Register(runtime, ri, commands);
+
+  const driver = runtime.gl_driver?.string ?? "opengl32";
+  if (runtime.hooks.qglInit && !runtime.hooks.qglInit(driver)) {
+    runtime.hooks.qglShutdown?.();
+    ri.Con_Printf(PRINT_ALL, `ref_gl::R_Init() - could not load "${driver}"\n`);
+    return -1;
+  }
+
+  if (runtime.hooks.glimpInit && !runtime.hooks.glimpInit(hinstance, hWnd)) {
+    runtime.hooks.qglShutdown?.();
+    return -1;
+  }
+
+  runtime.gl_state.prev_mode = 3;
+  if (!R_SetMode(runtime, ri)) {
+    runtime.hooks.qglShutdown?.();
+    ri.Con_Printf(PRINT_ALL, "ref_gl::R_Init() - could not R_SetMode()\n");
+    return -1;
+  }
+
+  ri.Vid_MenuInit();
+  const strings = runtime.hooks.getGlStrings?.() ?? null;
+  runtime.gl_vendor_string = strings?.vendor ?? "";
+  runtime.gl_renderer_string = strings?.renderer ?? "";
+  runtime.gl_version_string = strings?.version ?? "";
+  runtime.gl_extensions_string = strings?.extensions ?? "";
+  ri.Con_Printf(PRINT_ALL, `GL_VENDOR: ${runtime.gl_vendor_string}\n`);
+  ri.Con_Printf(PRINT_ALL, `GL_RENDERER: ${runtime.gl_renderer_string}\n`);
+  ri.Con_Printf(PRINT_ALL, `GL_VERSION: ${runtime.gl_version_string}\n`);
+  ri.Con_Printf(PRINT_ALL, `GL_EXTENSIONS: ${runtime.gl_extensions_string}\n`);
+
+  runtime.gl_renderer = detectRendererFlags(runtime.gl_renderer_string, runtime.gl_vendor_string);
+  applyRendererSpecificDefaults(runtime, ri);
+  if ((runtime.gl_renderer & GL_RENDERER_3DLABS) !== 0) {
+    runtime.gl_allow_cds = (runtime.gl_3dlabs_broken?.value ?? 0) === 0;
+  } else {
+    runtime.gl_allow_cds = true;
+  }
+
+  ri.Con_Printf(PRINT_ALL, runtime.gl_allow_cds ? "...allowing CDS\n" : "...disabling CDS\n");
+  detectBackendExtensions(runtime, ri);
+  runtime.hooks.glSetDefaultState?.();
+  runtime.hooks.glInitImages?.();
+  runtime.hooks.modInit?.();
+  runtime.hooks.rInitParticleTexture?.();
+  runtime.hooks.drawInitLocal?.();
+  reportBootstrapGlError(runtime, ri);
+  return 0;
+}
+
+/**
+ * Original name: R_SetMode
+ * Source: ref_gl/gl_rmain.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resolves fullscreen/mode changes through the platform `GLimp_SetMode` hook and preserves fallback logic.
+ */
+export function R_SetMode(runtime: GlRmainRuntime, ri: refimport_t): boolean {
+  const vidFullscreen = runtime.vid_fullscreen;
+  const glMode = runtime.gl_mode;
+  if (!vidFullscreen || !glMode) {
+    throw new Error("R_SetMode: required cvars are not registered");
+  }
+
+  if (vidFullscreen.modified && !runtime.gl_allow_cds) {
+    ri.Con_Printf(PRINT_ALL, "R_SetMode() - CDS not allowed with this driver\n");
+    ri.Cvar_SetValue("vid_fullscreen", vidFullscreen.value ? 0 : 1);
+    vidFullscreen.modified = false;
+  }
+
+  const fullscreen = Boolean(vidFullscreen.value);
+  vidFullscreen.modified = false;
+  glMode.modified = false;
+
+  const setMode = runtime.hooks.glimpSetMode;
+  if (!setMode) {
+    return true;
+  }
+
+  let result = setMode(runtime.vid.width, runtime.vid.height, glMode.value, fullscreen);
+  if ((result.err as number) === rserr_t.rserr_ok) {
+    runtime.vid.width = result.width;
+    runtime.vid.height = result.height;
+    runtime.gl_state.prev_mode = glMode.value;
+    return true;
+  }
+
+  if ((result.err as number) === rserr_t.rserr_invalid_fullscreen) {
+    ri.Cvar_SetValue("vid_fullscreen", 0);
+    vidFullscreen.modified = false;
+    ri.Con_Printf(PRINT_ALL, "ref_gl::R_SetMode() - fullscreen unavailable in this mode\n");
+    result = setMode(runtime.vid.width, runtime.vid.height, glMode.value, false);
+    if ((result.err as number) === rserr_t.rserr_ok) {
+      runtime.vid.width = result.width;
+      runtime.vid.height = result.height;
+      return true;
+    }
+  } else if ((result.err as number) === rserr_t.rserr_invalid_mode) {
+    ri.Cvar_SetValue("gl_mode", runtime.gl_state.prev_mode);
+    glMode.modified = false;
+    ri.Con_Printf(PRINT_ALL, "ref_gl::R_SetMode() - invalid mode\n");
+  }
+
+  result = setMode(runtime.vid.width, runtime.vid.height, runtime.gl_state.prev_mode, false);
+  if ((result.err as number) !== rserr_t.rserr_ok) {
+    ri.Con_Printf(PRINT_ALL, "ref_gl::R_SetMode() - could not revert to safe mode\n");
+    return false;
+  }
+
+  runtime.vid.width = result.width;
+  runtime.vid.height = result.height;
+  return true;
+}
+
+/**
+ * Original name: R_Shutdown
+ * Source: ref_gl/gl_rmain.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Unregisters renderer console commands and forwards shutdown to dependent subsystems through hooks.
+ */
+export function R_Shutdown(runtime: GlRmainRuntime, ri: refimport_t): void {
+  ri.Cmd_RemoveCommand("modellist");
+  ri.Cmd_RemoveCommand("screenshot");
+  ri.Cmd_RemoveCommand("imagelist");
+  ri.Cmd_RemoveCommand("gl_strings");
+  runtime.hooks.modFreeAll?.();
+  runtime.hooks.glShutdownImages?.();
+  runtime.hooks.glimpShutdown?.();
+  runtime.hooks.qglShutdown?.();
+  resetBootstrapRuntimeState(runtime);
+  runtime.ri = null;
+  runtime.currententity = null;
+  runtime.currentmodel = null;
+  runtime.r_newrefdef = null;
+}
+
+/**
+ * Original name: GetRefAPI
+ * Source: ref_gl/gl_rmain.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Exposes the refresh export table consumed by the client runtime.
+ */
+export function GetRefAPI(runtime: GlRmainRuntime, rimp: refimport_t, hooks: GlRmainRefApiHooks): refexport_t {
+  runtime.ri = rimp;
+  hooks.swapInit?.();
+  const commandHooks = {
+    ...(hooks.imagelistCommand ? { imagelist: hooks.imagelistCommand } : {}),
+    ...(hooks.screenshotCommand ? { screenshot: hooks.screenshotCommand } : {}),
+    ...(hooks.modellistCommand ? { modellist: hooks.modellistCommand } : {}),
+    ...(hooks.glStringsCommand ? { gl_strings: hooks.glStringsCommand } : {})
+  };
+  return {
+    api_version: API_VERSION,
+    Init: (hinstance: unknown, wndproc: unknown) => R_Init(runtime, rimp, hinstance, wndproc, commandHooks) >= 0,
+    Shutdown: () => R_Shutdown(runtime, rimp),
+    BeginRegistration: (map: string) => hooks.beginRegistration?.(map),
+    RegisterModel: (name: string) => hooks.registerModel?.(name) ?? null,
+    RegisterSkin: (name: string) => hooks.registerSkin?.(name) ?? null,
+    RegisterPic: (name: string) => hooks.registerPic?.(name) ?? null,
+    SetSky: (name: string, rotate: number, axis: vec3_t) => hooks.setSky?.(name, rotate, axis),
+    EndRegistration: () => hooks.endRegistration?.(),
+    RenderFrame: (fd: refdef_t) => R_RenderFrame(runtime, fd),
+    DrawGetPicSize: (name: string) => hooks.drawGetPicSize?.(name) ?? { width: 0, height: 0 },
+    DrawPic: (x: number, y: number, name: string) => hooks.drawPic?.(x, y, name),
+    DrawStretchPic: (x: number, y: number, w: number, h: number, name: string) => hooks.drawStretchPic?.(x, y, w, h, name),
+    DrawChar: (x: number, y: number, c: number) => hooks.drawChar?.(x, y, c),
+    DrawTileClear: (x: number, y: number, w: number, h: number, name: string) => hooks.drawTileClear?.(x, y, w, h, name),
+    DrawFill: (x: number, y: number, w: number, h: number, c: number) => hooks.drawFill?.(x, y, w, h, c),
+    DrawFadeScreen: () => hooks.drawFadeScreen?.(),
+    DrawStretchRaw: (x: number, y: number, w: number, h: number, cols: number, rows: number, data: Uint8Array) =>
+      hooks.drawStretchRaw?.(x, y, w, h, cols, rows, data),
+    CinematicSetPalette: (palette: Uint8Array | null) => R_SetPalette(runtime, palette),
+    BeginFrame: (camera_separation: number) => R_BeginFrame(runtime, camera_separation),
+    EndFrame: () => {
+      runtime.hooks.glimpEndFrame?.();
+      hooks.endFrame?.();
+    },
+    AppActivate: (activate: boolean) => {
+      runtime.hooks.glimpAppActivate?.(activate);
+      hooks.appActivate?.(activate);
+    }
+  };
+}
+
+function detectRendererFlags(rendererString: string, vendorString: string): number {
+  const renderer = rendererString.toLowerCase();
+  const vendor = vendorString.toLowerCase();
+
+  if (renderer.includes("voodoo")) {
+    return renderer.includes("rush") ? GL_RENDERER_VOODOO_RUSH : GL_RENDERER_VOODOO;
+  }
+  if (vendor.includes("sgi")) {
+    return GL_RENDERER_SGI;
+  }
+  if (renderer.includes("permedia")) {
+    return GL_RENDERER_PERMEDIA2;
+  }
+  if (renderer.includes("glint")) {
+    return GL_RENDERER_GLINT_MX;
+  }
+  if (renderer.includes("glzicd")) {
+    return GL_RENDERER_REALIZM;
+  }
+  if (renderer.includes("gdi")) {
+    return GL_RENDERER_MCD;
+  }
+  if (renderer.includes("pcx2")) {
+    return GL_RENDERER_PCX2;
+  }
+  if (renderer.includes("verite")) {
+    return GL_RENDERER_RENDITION;
+  }
+  if (renderer.includes("dypic")) {
+    return GL_RENDERER_DYPIC;
+  }
+  if (renderer.includes("intergraph")) {
+    return GL_RENDERER_INTERGRAPH;
+  }
+  if (renderer.includes("powervr")) {
+    return GL_RENDERER_POWERVR;
+  }
+
+  return GL_RENDERER_OTHER;
+}
+
+function applyRendererSpecificDefaults(runtime: GlRmainRuntime, ri: refimport_t): void {
+  const monolightmapMode = runtime.gl_monolightmap?.string[1]?.toUpperCase() ?? "\0";
+  if (monolightmapMode !== "F") {
+    if (runtime.gl_renderer === GL_RENDERER_PERMEDIA2) {
+      ri.Cvar_Set("gl_monolightmap", "A");
+      ri.Con_Printf(PRINT_ALL, "...using gl_monolightmap 'a'\n");
+    } else {
+      ri.Cvar_Set("gl_monolightmap", "0");
+    }
+  }
+
+  if ((runtime.gl_renderer & GL_RENDERER_POWERVR) !== 0) {
+    ri.Cvar_Set("scr_drawall", "1");
+  } else {
+    ri.Cvar_Set("scr_drawall", "0");
+  }
+
+  if (runtime.gl_renderer === GL_RENDERER_MCD) {
+    ri.Cvar_SetValue("gl_finish", 1);
+    if (runtime.gl_finish) {
+      runtime.gl_finish.value = 1;
+      runtime.gl_finish.string = "1";
+    }
+  }
+}
+
+function detectBackendExtensions(runtime: GlRmainRuntime, ri: refimport_t): void {
+  const extensions = runtime.gl_extensions_string;
+  runtime.qglLockArraysEXT = false;
+  runtime.qglUnlockArraysEXT = false;
+  runtime.qwglSwapIntervalEXT = false;
+  runtime.qglPointParameterfEXT = false;
+  runtime.qglPointParameterfvEXT = false;
+  runtime.qglColorTableEXT = false;
+  runtime.qglMTexCoord2fSGIS = false;
+  runtime.qglSelectTextureSGIS = false;
+
+  if (hasExtension(extensions, "GL_EXT_compiled_vertex_array") || hasExtension(extensions, "GL_SGI_compiled_vertex_array")) {
+    ri.Con_Printf(PRINT_ALL, "...enabling GL_EXT_compiled_vertex_array\n");
+    runtime.qglLockArraysEXT = isBackendProcResolved(runtime, "glLockArraysEXT");
+    runtime.qglUnlockArraysEXT = isBackendProcResolved(runtime, "glUnlockArraysEXT");
+  } else {
+    ri.Con_Printf(PRINT_ALL, "...GL_EXT_compiled_vertex_array not found\n");
+  }
+
+  if (hasExtension(extensions, "WGL_EXT_swap_control")) {
+    runtime.qwglSwapIntervalEXT = isBackendProcResolved(runtime, "wglSwapIntervalEXT");
+    ri.Con_Printf(PRINT_ALL, "...enabling WGL_EXT_swap_control\n");
+  } else {
+    ri.Con_Printf(PRINT_ALL, "...WGL_EXT_swap_control not found\n");
+  }
+
+  if (hasExtension(extensions, "GL_EXT_point_parameters")) {
+    if (runtime.gl_ext_pointparameters?.value) {
+      runtime.qglPointParameterfEXT = isBackendProcResolved(runtime, "glPointParameterfEXT");
+      runtime.qglPointParameterfvEXT = isBackendProcResolved(runtime, "glPointParameterfvEXT");
+      ri.Con_Printf(PRINT_ALL, "...using GL_EXT_point_parameters\n");
+    } else {
+      ri.Con_Printf(PRINT_ALL, "...ignoring GL_EXT_point_parameters\n");
+    }
+  } else {
+    ri.Con_Printf(PRINT_ALL, "...GL_EXT_point_parameters not found\n");
+  }
+
+  if (hasExtension(extensions, "GL_EXT_paletted_texture") && hasExtension(extensions, "GL_EXT_shared_texture_palette")) {
+    if (runtime.gl_ext_palettedtexture?.value) {
+      runtime.qglColorTableEXT = isBackendProcResolved(runtime, "glColorTableEXT");
+      ri.Con_Printf(PRINT_ALL, "...using GL_EXT_shared_texture_palette\n");
+    } else {
+      ri.Con_Printf(PRINT_ALL, "...ignoring GL_EXT_shared_texture_palette\n");
+    }
+  } else {
+    ri.Con_Printf(PRINT_ALL, "...GL_EXT_shared_texture_palette not found\n");
+  }
+
+  if (hasExtension(extensions, "GL_SGIS_multitexture")) {
+    if (runtime.gl_ext_multitexture?.value) {
+      runtime.qglMTexCoord2fSGIS = isBackendProcResolved(runtime, "glMTexCoord2fSGIS");
+      runtime.qglSelectTextureSGIS = isBackendProcResolved(runtime, "glSelectTextureSGIS");
+      ri.Con_Printf(PRINT_ALL, "...using GL_SGIS_multitexture\n");
+    } else {
+      ri.Con_Printf(PRINT_ALL, "...ignoring GL_SGIS_multitexture\n");
+    }
+  } else {
+    ri.Con_Printf(PRINT_ALL, "...GL_SGIS_multitexture not found\n");
+  }
+}
+
+function hasExtension(extensions: string, extension: string): boolean {
+  return extensions.includes(extension);
+}
+
+function isBackendProcResolved(runtime: GlRmainRuntime, name: string): boolean {
+  return typeof runtime.hooks.resolveBackendProc?.(name) === "function";
+}
+
+function resetBootstrapRuntimeState(runtime: GlRmainRuntime): void {
+  runtime.gl_state.camera_separation = 0;
+  runtime.gl_state.stereo_enabled = false;
+  runtime.gl_state.current_draw_buffer = null;
+  runtime.qglLockArraysEXT = false;
+  runtime.qglUnlockArraysEXT = false;
+  runtime.qwglSwapIntervalEXT = false;
+  runtime.qglPointParameterfEXT = false;
+  runtime.qglPointParameterfvEXT = false;
+  runtime.qglColorTableEXT = false;
+  runtime.qglMTexCoord2fSGIS = false;
+  runtime.qglSelectTextureSGIS = false;
+}
+
+function reportBootstrapGlError(runtime: GlRmainRuntime, ri: refimport_t): void {
+  const glError = runtime.hooks.getGlError?.();
+  if (glError == null || glError === 0) {
+    return;
+  }
+
+  ri.Con_Printf(PRINT_ALL, `glGetError() = 0x${glError.toString(16)}\n`);
 }
 
 function buildWorldMatrix(vieworg: vec3_t, viewangles: vec3_t): Float32Array {

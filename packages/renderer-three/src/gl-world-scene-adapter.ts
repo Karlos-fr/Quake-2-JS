@@ -33,6 +33,7 @@ import {
   Texture,
   UnsignedByteType,
 } from "three";
+import type { BrushModelSnapshot } from "../../client/src/local-brush-models.js";
 import type { GlModelRuntime } from "./gl-model-loader.js";
 import { Mod_ForName, Mod_Init, Mod_PointInLeaf, createGlModelRuntime } from "./gl-model-loader.js";
 import type { GlRsurfRuntime } from "./gl-rsurf.js";
@@ -66,12 +67,16 @@ import { buildNoTextureRgba } from "./gl-rmisc.js";
 import {
   EmitWaterPolys,
   GL_SubdivideSurface,
+  R_AddSkySurface,
+  R_ClearSkyBox,
+  R_DrawSkyBox,
   createGlWarpRuntime,
   setWarpModel,
-  setWarpRefdefTime
+  setWarpRefdefTime,
+  setWarpViewOrigin,
+  type GlWarpSkyFace
 } from "./gl-warp.js";
 import { SURF_DRAWTURB, type glpoly_t, type image_t, type model_t, type msurface_t } from "./gl-model.js";
-import type { BrushModelSnapshot } from "./brush-model-sync.js";
 
 const SHARED_PALETTE_PATH = "pics/colormap.pcx";
 
@@ -105,6 +110,7 @@ interface InlineModelBinding {
 
 interface SkyState {
   queuedSurfaceCount: number;
+  faces: GlWarpSkyFace[];
 }
 
 interface AlphaDrawState {
@@ -116,6 +122,7 @@ export interface ThreeGlWorldSceneAdapter {
   worldmodel: model_t;
   glModelRuntime: GlModelRuntime;
   glRsurfRuntime: GlRsurfRuntime;
+  readonly skyFaces: readonly GlWarpSkyFace[];
   update: (
     timeSeconds: number,
     vieworg?: readonly [number, number, number],
@@ -146,7 +153,7 @@ export function createThreeGlWorldSceneAdapter(
   const surfaceMeshes = new Map<msurface_t, SurfaceMeshBinding>();
   const inlineModels = new Map<number, InlineModelBinding>();
   const inlineModelsByModel = new Map<model_t, InlineModelBinding>();
-  const skyState: SkyState = { queuedSurfaceCount: 0 };
+  const skyState: SkyState = { queuedSurfaceCount: 0, faces: [] };
   const alphaDrawState: AlphaDrawState = { nextRenderOrder: 1000 };
   const sharedPalette = loadSharedPalette(filesystem);
   const whiteLightmapTexture = createSolidTexture(255, 255, 255, 255, false);
@@ -250,14 +257,15 @@ export function createThreeGlWorldSceneAdapter(
     },
     clearSkyBox: () => {
       skyState.queuedSurfaceCount = 0;
+      skyState.faces = [];
+      R_ClearSkyBox(glWarpRuntime);
     },
-    addSkySurface: () => {
+    addSkySurface: (surface) => {
       skyState.queuedSurfaceCount += 1;
+      R_AddSkySurface(glWarpRuntime, surface);
     },
     drawSkyBox: () => {
-      // Sky rendering is still handled by the dedicated sky scene adapter. Keeping the hook consumed
-      // here makes the `gl_rsurf.c` flow explicit until the sky paths converge.
-      void skyState.queuedSurfaceCount;
+      skyState.faces = R_DrawSkyBox(glWarpRuntime);
     },
     beginBrushModelDraw: (entity, model) => {
       const binding = inlineModelsByModel.get(model);
@@ -328,6 +336,9 @@ export function createThreeGlWorldSceneAdapter(
     worldmodel,
     glModelRuntime,
     glRsurfRuntime,
+    get skyFaces() {
+      return skyState.faces;
+    },
     update: (timeSeconds, vieworg, brushModels) => {
       const scroll = computeFlowingScroll(timeSeconds);
       for (const binding of flowingMaterials) {
@@ -341,6 +352,7 @@ export function createThreeGlWorldSceneAdapter(
       if (vieworg) {
         setCurrentTime(glRsurfRuntime, timeSeconds);
         setViewOrigin(glRsurfRuntime, [vieworg[0], vieworg[1], vieworg[2]]);
+        setWarpViewOrigin(glWarpRuntime, [vieworg[0], vieworg[1], vieworg[2]]);
         setFrameCount(glRsurfRuntime, glRsurfRuntime.r_framecount + 1);
 
         const leaf = Mod_PointInLeaf([vieworg[0], vieworg[1], vieworg[2]], worldmodel);

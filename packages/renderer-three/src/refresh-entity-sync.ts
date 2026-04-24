@@ -15,23 +15,38 @@
 import {
   BufferAttribute,
   BufferGeometry,
+  Euler,
+  Frustum,
   DataTexture,
   Group,
+  Matrix4,
   MathUtils,
   Mesh,
   MeshBasicMaterial,
+  Quaternion,
+  Raycaster,
   RGBAFormat,
   SRGBColorSpace,
   UnsignedByteType,
+  Vector3,
   type Camera,
   type Object3D,
   type Texture
 } from "three";
 import type { ClientRefreshFrame, ClientRenderEntity, ClientRuntime } from "../../client/src/index.js";
-import { CS_MODELS, RF_DEPTHHACK, RF_FRAMELERP, RF_GLOW, RF_TRANSLUCENT, RF_WEAPONMODEL, AngleVectors } from "../../qcommon/src/index.js";
+import {
+  AngleVectors,
+  CS_MODELS,
+  DotProduct,
+  RF_DEPTHHACK,
+  RF_FRAMELERP,
+  RF_TRANSLUCENT,
+  RF_WEAPONMODEL,
+  type cplane_t
+} from "../../qcommon/src/index.js";
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
 import { parsePcx, parseSp2, type dsprite_t } from "../../formats/src/index.js";
-import { applyMd2Frame, applyMd2LerpedFrame, buildMd2Mesh, loadMd2Model, type Md2MeshInstance } from "./md2-mesh-builder.js";
+import { applyMd2AliasFrameLerp, applyMd2Frame, buildMd2Mesh, loadMd2Model, type Md2MeshInstance } from "./md2-mesh-builder.js";
 import {
   R_DrawSpriteModel,
   createGlRmainRuntime,
@@ -39,13 +54,18 @@ import {
   type GlRmainSpriteVertex
 } from "./gl-rmain.js";
 import { createModel, modtype_t, type image_t, type model_t } from "./gl-model.js";
+import {
+  GL_DrawAliasShadow,
+  R_CullAliasModel,
+  aliasEntityHasShell,
+  buildAliasShadeVector,
+  buildAliasVertexColors,
+  computeAliasShadeLight,
+  sanitizeAliasFramePair
+} from "./gl-mesh.js";
 
 const MD2_MODEL_EXTENSION = ".md2";
 const SPRITE_MODEL_EXTENSION = ".sp2";
-const RF_GLOW_SCALE = 0.1;
-const RF_GLOW_RATE = 7;
-const RF_GLOW_MIN_FACTOR = 0.8;
-
 /**
  * Category: New
  * Purpose: Hold one renderable MD2 instance bound to a client refresh entity key.
@@ -60,6 +80,7 @@ interface RefreshEntityMd2Instance {
   skinnum: number;
   root: Group;
   md2: Md2MeshInstance;
+  shadowMesh: Mesh<BufferGeometry, MeshBasicMaterial>;
 }
 
 interface RefreshEntitySpriteInstance {
@@ -104,6 +125,8 @@ export interface ThreeRefreshEntitySync {
   root: Group;
   viewWeaponRoot: Group;
   attachToCamera: (camera: Camera) => void;
+  setAliasShadowsEnabled: (enabled: boolean) => void;
+  setShadowReceiverRoot: (root: Object3D | null) => void;
   apply: (runtime: ClientRuntime, refreshFrame: ClientRefreshFrame | null) => RefreshEntitySyncStats;
 }
 
@@ -121,6 +144,10 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
   root.name = "refresh-entities";
   const viewWeaponRoot = new Group();
   viewWeaponRoot.name = "refresh-view-weapon";
+  let attachedCamera: Camera | null = null;
+  let aliasShadowsEnabled = false;
+  let shadowReceiverRoot: Object3D | null = null;
+  const shadowRaycaster = new Raycaster();
 
   const modelCache = new Map<string, ReturnType<typeof loadMd2Model>>();
   const spriteCache = new Map<string, model_t | null>();
@@ -131,10 +158,17 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
     root,
     viewWeaponRoot,
     attachToCamera: (camera) => {
+      attachedCamera = camera;
       if (viewWeaponRoot.parent !== camera) {
         viewWeaponRoot.removeFromParent();
         camera.add(viewWeaponRoot);
       }
+    },
+    setAliasShadowsEnabled: (enabled) => {
+      aliasShadowsEnabled = enabled;
+    },
+    setShadowReceiverRoot: (rootNode) => {
+      shadowReceiverRoot = rootNode;
     },
     apply: (runtime, refreshFrame) => {
       const activeKeys = new Set<string>();
@@ -145,6 +179,7 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
       let skippedNonMd2Model = 0;
       let skippedInlineOrBrushModel = 0;
       let missingMd2AssetCount = 0;
+      const aliasCullFrustum = attachedCamera ? buildAliasCullFrustum(attachedCamera) : null;
 
       for (const entity of refreshFrame?.entities ?? []) {
         visibleEntities += 1;
@@ -192,7 +227,36 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
           getRefreshEntityParent(entity, root, viewWeaponRoot).add(instance.root);
         }
 
-        updateRefreshEntityInstance(runtime, refreshFrame, instance, entity);
+        const framePair = instance.kind === "md2"
+          ? sanitizeAliasFramePair(entity.frame, entity.oldframe, instance.md2.model.frames.length)
+          : null;
+
+        if (
+          instance.kind === "md2" &&
+          (entity.flags & RF_WEAPONMODEL) === 0 &&
+          aliasCullFrustum &&
+          R_CullAliasModel(instance.md2.model, {
+            origin: [...entity.origin],
+            angles: [...entity.angles],
+            frame: entity.frame,
+            oldframe: entity.oldframe
+          }, aliasCullFrustum).culled
+        ) {
+          instance.root.visible = false;
+          continue;
+        }
+
+        updateRefreshEntityInstance(
+          runtime,
+          refreshFrame,
+          instance,
+          entity,
+          framePair,
+          aliasShadowsEnabled,
+          shadowReceiverRoot,
+          shadowRaycaster,
+          attachedCamera
+        );
         renderedEntities += 1;
       }
 
@@ -215,11 +279,45 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
   };
 }
 
+function buildAliasCullFrustum(camera: Camera): [cplane_t, cplane_t, cplane_t, cplane_t] | null {
+  if (!("projectionMatrix" in camera) || !("matrixWorldInverse" in camera)) {
+    return null;
+  }
+
+  const clipMatrix = new Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+  const frustum = new Frustum().setFromProjectionMatrix(clipMatrix);
+
+  if (frustum.planes.length < 4) {
+    return null;
+  }
+
+  return [
+    convertThreePlaneToQ2Plane(frustum.planes[0]),
+    convertThreePlaneToQ2Plane(frustum.planes[1]),
+    convertThreePlaneToQ2Plane(frustum.planes[2]),
+    convertThreePlaneToQ2Plane(frustum.planes[3])
+  ];
+}
+
+function convertThreePlaneToQ2Plane(plane: Frustum["planes"][number]): cplane_t {
+  return {
+    normal: [plane.normal.x, plane.normal.y, plane.normal.z],
+    dist: -plane.constant,
+    type: 5,
+    signbits: 0,
+    pad: [0, 0]
+  };
+}
+
 /**
  * Category: New
  * Purpose: Resolve the current model path for one refresh entity through the client model configstrings.
  */
 function resolveRefreshModelPath(runtime: ClientRuntime, entity: ClientRenderEntity): string | null {
+  if (entity.resolvedModelPath) {
+    return entity.resolvedModelPath;
+  }
+
   if (entity.modelindex <= 0) {
     return null;
   }
@@ -247,6 +345,14 @@ function classifyRefreshModelSkipReason(
   runtime: ClientRuntime,
   entity: ClientRenderEntity
 ): "no-modelindex" | "missing-configstring" | "inline-or-brush" | "non-md2" | null {
+  if (entity.resolvedModelPath) {
+    if (!entity.resolvedModelPath.endsWith(MD2_MODEL_EXTENSION) && !entity.resolvedModelPath.endsWith(SPRITE_MODEL_EXTENSION)) {
+      return "non-md2";
+    }
+
+    return null;
+  }
+
   if (entity.modelindex <= 0) {
     return "no-modelindex";
   }
@@ -306,10 +412,12 @@ function createRefreshEntityInstance(
   const md2 = skinPath
     ? buildMd2Mesh(filesystem, model, { skinPath })
     : buildMd2Mesh(filesystem, model);
+  const shadowMesh = createMd2ShadowMesh(md2);
   const root = new Group();
   root.name = `refresh-entity:${key}`;
 
   root.add(md2.mesh);
+  root.add(shadowMesh);
 
   return {
     kind: "md2",
@@ -317,7 +425,8 @@ function createRefreshEntityInstance(
     modelPath,
     skinnum,
     root,
-    md2
+    md2,
+    shadowMesh
   };
 }
 
@@ -329,47 +438,102 @@ function updateRefreshEntityInstance(
   runtime: ClientRuntime,
   refreshFrame: ClientRefreshFrame | null,
   instance: RefreshEntityInstance,
-  entity: ClientRenderEntity
+  entity: ClientRenderEntity,
+  framePair: { frame: number; oldframe: number } | null,
+  aliasShadowsEnabled: boolean,
+  shadowReceiverRoot: Object3D | null,
+  shadowRaycaster: Raycaster,
+  attachedCamera: Camera | null
 ): void {
   if (instance.kind === "sprite") {
-    updateRefreshSpriteInstance(refreshFrame, instance, entity);
+    updateRefreshSpriteInstance(refreshFrame, instance, entity, attachedCamera);
     return;
   }
 
   if ((entity.flags & RF_WEAPONMODEL) !== 0) {
-    const vieworg = refreshFrame?.view.vieworg ?? [0, 0, 0];
-    const viewangles = refreshFrame?.view.viewangles ?? [0, 0, 0];
-    instance.root.position.set(
-      entity.origin[0] - vieworg[0],
-      entity.origin[1] - vieworg[1],
-      entity.origin[2] - vieworg[2]
-    );
-    applyAliasEntityRotation(instance.root, {
-      ...entity,
-      angles: [
-        entity.angles[0] - viewangles[0],
-        entity.angles[1] - viewangles[1],
-        entity.angles[2] - viewangles[2]
-      ]
-    });
+    const localPose = buildViewWeaponLocalPose(attachedCamera, refreshFrame, entity);
+    instance.root.position.copy(localPose.position);
+    instance.root.quaternion.copy(localPose.quaternion);
   } else {
     instance.root.position.set(entity.origin[0], entity.origin[1], entity.origin[2]);
     applyAliasEntityRotation(instance.root, entity);
   }
   instance.root.visible = true;
 
+  const frame = framePair?.frame ?? entity.frame;
+  const oldframe = framePair?.oldframe ?? entity.oldframe;
+
   if ((entity.flags & RF_FRAMELERP) !== 0) {
-    applyMd2LerpedFrame(instance.md2, entity.frame, entity.oldframe, entity.backlerp);
+    applyMd2AliasFrameLerp(instance.md2, {
+      frame,
+      oldframe,
+      backlerp: entity.backlerp,
+      flags: entity.flags,
+      origin: [...entity.origin],
+      oldorigin: [...entity.oldorigin],
+      angles: [...entity.angles]
+    });
   } else {
-    applyMd2Frame(instance.md2, entity.frame);
+    applyMd2Frame(instance.md2, frame);
   }
 
+  const shell = aliasEntityHasShell(entity.flags);
+  const targetMap = shell ? null : instance.md2.skinTexture;
+  if (instance.md2.mesh.material.map !== targetMap) {
+    instance.md2.mesh.material.map = targetMap;
+    instance.md2.mesh.material.needsUpdate = true;
+  }
+
+  const shadelight = computeAliasShadeLight({
+    flags: entity.flags,
+    rdflags: runtime.cl.frame.playerstate.rdflags,
+    timeSeconds: runtime.cl.time / 1000,
+    baseShadeLight: [1, 1, 1]
+  });
+  if (shell) {
+    instance.md2.mesh.material.vertexColors = false;
+    instance.md2.mesh.material.color.setRGB(shadelight[0], shadelight[1], shadelight[2]);
+  } else {
+    applyAliasVertexColorAttribute(instance, frame, entity.angles[1], shadelight);
+    instance.md2.mesh.material.vertexColors = true;
+    instance.md2.mesh.material.color.setRGB(1, 1, 1);
+  }
   instance.md2.mesh.material.transparent = entity.alpha < 1 || (entity.flags & RF_TRANSLUCENT) !== 0;
   instance.md2.mesh.material.opacity = entity.alpha;
   instance.md2.mesh.material.depthTest = (entity.flags & RF_DEPTHHACK) === 0;
   instance.md2.mesh.material.depthWrite = (entity.flags & RF_DEPTHHACK) === 0;
   instance.md2.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
-  applyRefreshEntityGlow(runtime, instance, entity);
+  instance.md2.mesh.material.needsUpdate = true;
+  updateRefreshAliasShadow(instance, entity, aliasShadowsEnabled, shadowReceiverRoot, shadowRaycaster);
+}
+
+function applyAliasVertexColorAttribute(
+  instance: RefreshEntityMd2Instance,
+  frameIndex: number,
+  yawDegrees: number,
+  shadelight: [number, number, number]
+): void {
+  const geometry = instance.md2.mesh.geometry;
+  const existing = geometry.getAttribute("color") as BufferAttribute | undefined;
+  const expectedLength = instance.md2.vertexIndices.length * 3;
+
+  let colorAttribute: BufferAttribute;
+  if (!existing || (existing.array as Float32Array).length !== expectedLength) {
+    colorAttribute = new BufferAttribute(new Float32Array(expectedLength), 3);
+    geometry.setAttribute("color", colorAttribute);
+  } else {
+    colorAttribute = existing;
+  }
+
+  buildAliasVertexColors(
+    instance.md2.model,
+    frameIndex,
+    instance.md2.vertexIndices,
+    yawDegrees,
+    shadelight,
+    colorAttribute.array as Float32Array
+  );
+  colorAttribute.needsUpdate = true;
 }
 
 /**
@@ -398,30 +562,6 @@ function applyAliasEntityRotation(root: Group, entity: ClientRenderEntity): void
   const rollRadians = MathUtils.degToRad(entity.angles[2]);
 
   root.rotation.set(-rollRadians, pitchRadians, yawRadians, "ZYX");
-}
-
-/**
- * Category: New
- * Purpose: Apply the original `RF_GLOW` bonus-item pulse from `ref_gl/gl_mesh.c` onto the current MD2 material state.
- *
- * Constraints:
- * - Must preserve the original sine frequency and minimum factor semantics.
- * - Must fall back to neutral white modulation when `RF_GLOW` is absent.
- */
-function applyRefreshEntityGlow(runtime: ClientRuntime, instance: RefreshEntityInstance, entity: ClientRenderEntity): void {
-  let colorScale = 1;
-
-  if ((entity.flags & RF_GLOW) !== 0) {
-    const pulse = RF_GLOW_SCALE * Math.sin((runtime.cl.time / 1000) * RF_GLOW_RATE);
-    colorScale = Math.max(1 + pulse, RF_GLOW_MIN_FACTOR);
-  }
-
-  if (instance.kind === "md2") {
-    instance.md2.mesh.material.color.setRGB(colorScale, colorScale, colorScale);
-    return;
-  }
-
-  instance.mesh.material.color.setRGB(colorScale, colorScale, colorScale);
 }
 
 /**
@@ -509,10 +649,10 @@ function createRefreshSpriteInstance(
 function updateRefreshSpriteInstance(
   refreshFrame: ClientRefreshFrame | null,
   instance: RefreshEntitySpriteInstance,
-  entity: ClientRenderEntity
+  entity: ClientRenderEntity,
+  attachedCamera: Camera | null
 ): void {
   const viewangles = refreshFrame?.view.viewangles ?? [0, 0, 0];
-  const vieworg = refreshFrame?.view.vieworg ?? [0, 0, 0];
   const vectors = AngleVectors(viewangles);
 
   const runtime = instance.spriteRuntime;
@@ -524,11 +664,7 @@ function updateRefreshSpriteInstance(
   const drawEntity: ClientRenderEntity = (entity.flags & RF_WEAPONMODEL) !== 0
     ? {
         ...entity,
-        origin: [
-          entity.origin[0] - vieworg[0],
-          entity.origin[1] - vieworg[1],
-          entity.origin[2] - vieworg[2]
-        ]
+        origin: buildViewWeaponLocalOrigin(attachedCamera, refreshFrame, entity.origin)
       }
     : entity;
 
@@ -620,6 +756,79 @@ function loadSpriteTexture(
   }
 }
 
+function createMd2ShadowMesh(md2: Md2MeshInstance): Mesh<BufferGeometry, MeshBasicMaterial> {
+  const sourcePosition = md2.mesh.geometry.getAttribute("position") as BufferAttribute;
+  const shadowGeometry = new BufferGeometry();
+  shadowGeometry.setAttribute("position", new BufferAttribute(new Float32Array(sourcePosition.array.length), 3));
+
+  const shadowMaterial = new MeshBasicMaterial({
+    color: 0x000000,
+    transparent: true,
+    opacity: 0.5,
+    depthWrite: false
+  });
+  const shadowMesh = new Mesh(shadowGeometry, shadowMaterial);
+  shadowMesh.visible = false;
+  shadowMesh.renderOrder = -1;
+  return shadowMesh;
+}
+
+function updateRefreshAliasShadow(
+  instance: RefreshEntityMd2Instance,
+  entity: ClientRenderEntity,
+  enabled: boolean,
+  shadowReceiverRoot: Object3D | null,
+  shadowRaycaster: Raycaster
+): void {
+  const shouldDrawShadow =
+    enabled &&
+    (entity.flags & (RF_TRANSLUCENT | RF_WEAPONMODEL)) === 0 &&
+    instance.root.visible;
+
+  instance.shadowMesh.visible = shouldDrawShadow;
+  if (!shouldDrawShadow) {
+    return;
+  }
+
+  const sourcePosition = instance.md2.mesh.geometry.getAttribute("position") as BufferAttribute;
+  const shadowPosition = instance.shadowMesh.geometry.getAttribute("position") as BufferAttribute;
+  const sourceArray = sourcePosition.array as Float32Array;
+  const targetArray = shadowPosition.array as Float32Array;
+
+  const shadevector = buildAliasShadeVector(entity.angles[1]);
+  // Deviation from original `lightspot`: approximate the downward world hit via Three.js raycast
+  // against the registered world receiver root.
+  const lheight = resolveAliasShadowLheight(entity, shadowReceiverRoot, shadowRaycaster);
+  GL_DrawAliasShadow(sourceArray, shadevector, lheight, targetArray);
+
+  shadowPosition.needsUpdate = true;
+  instance.shadowMesh.geometry.computeBoundingSphere();
+}
+
+function resolveAliasShadowLheight(
+  entity: ClientRenderEntity,
+  shadowReceiverRoot: Object3D | null,
+  shadowRaycaster: Raycaster
+): number {
+  if (!shadowReceiverRoot) {
+    return entity.origin[2];
+  }
+
+  shadowRaycaster.set(
+    new Vector3(entity.origin[0], entity.origin[1], entity.origin[2]),
+    new Vector3(0, 0, -1)
+  );
+  shadowRaycaster.near = 0;
+  shadowRaycaster.far = 2048;
+
+  const hits = shadowRaycaster.intersectObject(shadowReceiverRoot, true);
+  if (hits.length === 0) {
+    return entity.origin[2];
+  }
+
+  return entity.origin[2] - hits[0].point.z;
+}
+
 function asSpriteTexture(image: image_t | null): Texture | null {
   if (!image || typeof image !== "object") {
     return null;
@@ -627,6 +836,72 @@ function asSpriteTexture(image: image_t | null): Texture | null {
 
   const candidate = image as Partial<ThreeSpriteImageHandle>;
   return candidate.texture ?? null;
+}
+
+function projectViewWeaponToCameraLocal(
+  refreshFrame: ClientRefreshFrame | null,
+  worldOrigin: [number, number, number]
+): [number, number, number] {
+  const view = refreshFrame?.view;
+  if (!view) {
+    return [...worldOrigin];
+  }
+
+  const relative: [number, number, number] = [
+    worldOrigin[0] - view.vieworg[0],
+    worldOrigin[1] - view.vieworg[1],
+    worldOrigin[2] - view.vieworg[2]
+  ];
+
+  return [
+    DotProduct(relative, view.right),
+    DotProduct(relative, view.up),
+    -DotProduct(relative, view.forward)
+  ];
+}
+
+function buildViewWeaponLocalOrigin(
+  attachedCamera: Camera | null,
+  refreshFrame: ClientRefreshFrame | null,
+  worldOrigin: [number, number, number]
+): [number, number, number] {
+  if (!attachedCamera || !attachedCamera.parent) {
+    return projectViewWeaponToCameraLocal(refreshFrame, worldOrigin);
+  }
+
+  attachedCamera.updateMatrixWorld(true);
+  const localOrigin = attachedCamera.worldToLocal(new Vector3(worldOrigin[0], worldOrigin[1], worldOrigin[2]));
+  return [localOrigin.x, localOrigin.y, localOrigin.z];
+}
+
+function buildViewWeaponLocalPose(
+  attachedCamera: Camera | null,
+  refreshFrame: ClientRefreshFrame | null,
+  entity: ClientRenderEntity
+): { position: Vector3; quaternion: Quaternion } {
+  const position = new Vector3(...buildViewWeaponLocalOrigin(attachedCamera, refreshFrame, entity.origin));
+  if (!attachedCamera || !attachedCamera.parent) {
+    return {
+      position,
+      quaternion: buildAliasEntityQuaternion(entity)
+    };
+  }
+
+  attachedCamera.updateMatrixWorld(true);
+  const worldQuaternion = buildAliasEntityQuaternion(entity);
+  const cameraQuaternion = attachedCamera.getWorldQuaternion(new Quaternion());
+  const localQuaternion = cameraQuaternion.invert().multiply(worldQuaternion);
+  return {
+    position,
+    quaternion: localQuaternion
+  };
+}
+
+function buildAliasEntityQuaternion(entity: ClientRenderEntity): Quaternion {
+  const pitchRadians = MathUtils.degToRad(entity.angles[0]);
+  const yawRadians = MathUtils.degToRad(entity.angles[1]);
+  const rollRadians = MathUtils.degToRad(entity.angles[2]);
+  return new Quaternion().setFromEuler(new Euler(-rollRadians, pitchRadians, yawRadians, "ZYX"));
 }
 
 /**

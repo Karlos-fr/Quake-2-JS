@@ -1037,7 +1037,9 @@ function filterTableRows(rows) {
       }
 
       if (key === "aPorter" || key === "porte") {
-        if (!rawFilter.includes(String(row[key] ?? ""))) {
+        const normalizedValue = String(row[key] ?? "").trim();
+        const matchesEmpty = rawFilter.includes("__empty__") && normalizedValue.length === 0;
+        if (!matchesEmpty && !rawFilter.includes(normalizedValue)) {
           return false;
         }
         continue;

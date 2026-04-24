@@ -11,6 +11,7 @@
  * Deviations:
  * - Replaces renderer globals with an explicit runtime.
  * - Returns structured geometry/UV payloads instead of issuing immediate-mode GL commands directly.
+ * - Keeps `ref_gl/warpsin.h` immutable and stores the `gl_rmain.c` bootstrap scale in runtime state.
  *
  * Notes:
  * - This file is the principal attachment point for `ref_gl/gl_warp.c`.
@@ -38,6 +39,7 @@ import {
   type model_t,
   type msurface_t
 } from "./gl-model.js";
+import { r_turbsin } from "./warpsin.js";
 
 export const SUBDIVIDE_SIZE = 64;
 export const TURBSCALE = 256.0 / (2 * Math.PI);
@@ -98,6 +100,10 @@ export interface GlWarpSkyFace {
   mins: [number, number];
   maxs: [number, number];
   image: image_t | null;
+  vertices: Array<{
+    position: vec3_t;
+    uv: [number, number];
+  }>;
 }
 
 export interface GlWarpRuntime {
@@ -118,6 +124,7 @@ export interface GlWarpRuntime {
   gl_picmip: cvar_t | null;
   gl_ext_palettedtexture: cvar_t | null;
   qglColorTableEXT: qboolean;
+  turbulence_scale: number;
   r_notexture: image_t | null;
   hooks: {
     findImage?: (path: string, type: "sky") => image_t | null;
@@ -144,6 +151,7 @@ export function createGlWarpRuntime(): GlWarpRuntime {
     gl_picmip: null,
     gl_ext_palettedtexture: null,
     qglColorTableEXT: false,
+    turbulence_scale: 0.5,
     r_notexture: null,
     hooks: {}
   };
@@ -169,6 +177,19 @@ export function setWarpSkyCvars(runtime: GlWarpRuntime, cvars: Partial<Pick<GlWa
 
 export function setWarpPaletteExtensionState(runtime: GlWarpRuntime, enabled: qboolean): void {
   runtime.qglColorTableEXT = enabled;
+}
+
+/**
+ * Original name: r_turbsin bootstrap scale in R_Init
+ * Source: ref_gl/gl_rmain.c + ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies the post-`R_Init` turbulence amplitude used by water warping without mutating the canonical table.
+ */
+export function setWarpTurbulenceScale(runtime: GlWarpRuntime, scale: number): void {
+  runtime.turbulence_scale = scale;
 }
 
 export function setWarpFallbackTexture(runtime: GlWarpRuntime, image: image_t | null): void {
@@ -295,8 +316,8 @@ export function SubdividePolygon(runtime: GlWarpRuntime, numverts: number, verts
     const vertex = verts[index];
     const sAxis: vec3_t = [warpface.texinfo.vecs[0][0], warpface.texinfo.vecs[0][1], warpface.texinfo.vecs[0][2]];
     const tAxis: vec3_t = [warpface.texinfo.vecs[1][0], warpface.texinfo.vecs[1][1], warpface.texinfo.vecs[1][2]];
-    const s = DotProduct(vertex, sAxis) + warpface.texinfo.vecs[0][3];
-    const t = DotProduct(vertex, tAxis) + warpface.texinfo.vecs[1][3];
+    const s = DotProduct(vertex, sAxis);
+    const t = DotProduct(vertex, tAxis);
     poly.verts[index + 1] = [vertex[0], vertex[1], vertex[2], s, t, 0, 0];
     total[0] += vertex[0];
     total[1] += vertex[1];
@@ -337,12 +358,6 @@ export function GL_SubdivideSurface(runtime: GlWarpRuntime, fa: msurface_t): glp
   return SubdividePolygon(runtime, verts.length, verts);
 }
 
-function buildWarpSinTable(): number[] {
-  return Array.from({ length: 256 }, (_, index) => Math.sin((index / 256) * 2 * Math.PI) * 8);
-}
-
-const r_turbsin = buildWarpSinTable();
-
 export function EmitWaterPolys(runtime: GlWarpRuntime, fa: msurface_t): GlWarpWaterPoly[] {
   const out: GlWarpWaterPoly[] = [];
   const rdt = runtime.r_newrefdef_time;
@@ -356,10 +371,10 @@ export function EmitWaterPolys(runtime: GlWarpRuntime, fa: msurface_t): GlWarpWa
       const v = bp.verts[index];
       const os = v[3];
       const ot = v[4];
-      let s = os + r_turbsin[Math.trunc((ot * 0.125 + runtime.r_newrefdef_time) * TURBSCALE) & 255];
+      let s = os + r_turbsin[Math.trunc((ot * 0.125 + runtime.r_newrefdef_time) * TURBSCALE) & 255] * runtime.turbulence_scale;
       s += scroll;
       s *= 1.0 / 64;
-      let t = ot + r_turbsin[Math.trunc((os * 0.125 + rdt) * TURBSCALE) & 255];
+      let t = ot + r_turbsin[Math.trunc((os * 0.125 + rdt) * TURBSCALE) & 255] * runtime.turbulence_scale;
       t *= 1.0 / 64;
       vertices.push({
         position: [v[0], v[1], v[2]],
@@ -576,7 +591,13 @@ export function R_DrawSkyBox(runtime: GlWarpRuntime): GlWarpSkyFace[] {
     faces.push({
       mins: [runtime.skymins[0][index], runtime.skymins[1][index]],
       maxs: [runtime.skymaxs[0][index], runtime.skymaxs[1][index]],
-      image: runtime.sky_images[SKY_TEX_ORDER[index]] ?? null
+      image: runtime.sky_images[SKY_TEX_ORDER[index]] ?? null,
+      vertices: [
+        MakeSkyVec(runtime, runtime.skymins[0][index], runtime.skymins[1][index], index),
+        MakeSkyVec(runtime, runtime.skymins[0][index], runtime.skymaxs[1][index], index),
+        MakeSkyVec(runtime, runtime.skymaxs[0][index], runtime.skymaxs[1][index], index),
+        MakeSkyVec(runtime, runtime.skymaxs[0][index], runtime.skymins[1][index], index)
+      ]
     });
   }
 

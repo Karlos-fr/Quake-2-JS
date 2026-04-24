@@ -11,7 +11,6 @@
  * Deviations:
  * - Engine-side muzzleflash emission is delegated through an explicit hook.
  * - AI entry points can still be overridden through hooks, but default to the local `g_ai.ts` port.
- * - `level.total_monsters` bookkeeping is not wired yet because the current runtime does not expose level locals.
  * - The `st.item` spawn-temp lookup falls back to `self.properties.item`.
  *
  * Notes:
@@ -46,7 +45,6 @@ import {
   SVF_DEADMONSTER,
   SVF_MONSTER,
   SVF_NOCLIENT,
-  createMonsterInfo,
   emitGameSound,
   linkGameEntity,
   MOVETYPE_NONE,
@@ -75,7 +73,7 @@ import {
 } from "./g-local.js";
 import { FoundTarget, M_CheckAttack } from "./g_ai.js";
 import { T_Damage } from "./g_combat.js";
-import { FindItemByClassname, type GameItemDefinition } from "./g_items.js";
+import { Drop_Item, FindItemByClassname, type GameItemDefinition } from "./g_items.js";
 import { G_Find, G_FreeEdict, G_PickTarget, G_UseTargets, KillBox, vectoyaw, vtos } from "./g_utils.js";
 import { M_walkmove } from "./m_move.js";
 import {
@@ -786,7 +784,7 @@ export function monster_death_use(self: GameEntity, runtime: GameRuntime, hooks:
   self.monsterinfo.aiflags &= AI_GOOD_GUY;
 
   if (self.item) {
-    hooks.Drop_Item?.(self, self.item, runtime);
+    (hooks.Drop_Item ?? Drop_Item)(self, self.item, runtime);
     self.item = null;
   }
 
@@ -819,6 +817,10 @@ export function monster_start(self: GameEntity, runtime: GameRuntime, hooks: Gam
   if ((self.spawnflags & 4) !== 0 && (self.monsterinfo.aiflags & AI_GOOD_GUY) === 0) {
     self.spawnflags &= ~4;
     self.spawnflags |= 1;
+  }
+
+  if ((self.monsterinfo.aiflags & AI_GOOD_GUY) === 0) {
+    runtime.total_monsters += 1;
   }
 
   self.nextthink = runtime.time + FRAMETIME;
@@ -862,12 +864,6 @@ export function monster_start(self: GameEntity, runtime: GameRuntime, hooks: Gam
 
   if (!self.monsterinfo.scale) {
     self.monsterinfo.scale = 1;
-  }
-  if (!self.monsterinfo.currentmove && !self.monsterinfo.aiflags) {
-    self.monsterinfo = {
-      ...createMonsterInfo(),
-      ...self.monsterinfo
-    };
   }
 
   return true;

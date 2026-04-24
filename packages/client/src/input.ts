@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - Uses explicit context objects instead of file-static globals.
- * - Uses hooks only for `CL_FixUpGender`, which belongs to `cl_main.c` and is not part of this source file.
+ * - Bridges the cross-file `CL_FixUpGender` call through an explicit hook supplied by the `cl_main.c` port.
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original C source.
@@ -112,6 +112,17 @@ export interface ClientInputHooks {
 export interface ClientInputFrameOptions {
   anykeydown?: boolean;
   key_game_active?: boolean;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe the runtime-side options used by the concrete `cl_main.c` -> `cl_input.c` bridge.
+ *
+ * Constraints:
+ * - Must stay limited to host/UI state that the original `CL_FinishMove` reads indirectly.
+ */
+export interface ClientSendCmdBridgeOptions {
+  getFrameOptions?: () => ClientInputFrameOptions;
 }
 
 /**
@@ -528,7 +539,7 @@ function createNullUsercmd(): usercmd_t {
  *
  * Porting notes:
  * - Uses `context.qnet` as the explicit replacement for qcommon net globals required by `Netchan_Transmit`.
- * - Uses `onFixUpGender` for the cross-file `CL_FixUpGender` call, while preserving the userinfo write sequence here.
+ * - Uses `onFixUpGender` for the cross-file `CL_FixUpGender` call supplied by `cl_main.c`, while preserving the userinfo write sequence here.
  */
 export function CL_SendCmd(context: ClientInputContext, options: ClientInputFrameOptions = {}): void {
   const qnet = context.qnet;
@@ -686,6 +697,23 @@ export function CL_SetInputFrameTime(context: ClientInputContext, sys_frame_time
 
 /**
  * Category: New
+ * Purpose: Build the concrete runtime bridge that lets the `cl_main.c` port call the `cl_input.c` packet path.
+ *
+ * Constraints:
+ * - Must preserve the source-level sequencing: update input frame time first, then call `CL_SendCmd`.
+ */
+export function createClientSendCmdBridge(
+  context: ClientInputContext,
+  options: ClientSendCmdBridgeOptions = {}
+): () => void {
+  return () => {
+    CL_SetInputFrameTime(context, context.client.cls.realtime);
+    CL_SendCmd(context, options.getFrameOptions?.() ?? {});
+  };
+}
+
+/**
+ * Category: New
  * Purpose: Register paired `+command` / `-command` handlers for one tracked key button.
  *
  * Constraints:
@@ -699,3 +727,4 @@ function bindButtonCommands(context: ClientInputContext, downName: string, upNam
     KeyUp(context, button);
   });
 }
+

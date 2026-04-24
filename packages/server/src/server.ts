@@ -293,18 +293,22 @@ export interface ServerHeaderState {
  * Purpose: Declare the `sv_main.c` entry points exposed by `server.h`.
  */
 export interface ServerMainProcedures {
+  SV_Init: () => void;
+  SV_Shutdown: (finalmsg: string, reconnect: qboolean) => void;
   SV_FinalMessage: (message: string, reconnect: qboolean) => void;
   SV_DropClient: (drop: client_t) => void;
-  SV_ModelIndex: (name: string) => number;
-  SV_SoundIndex: (name: string) => number;
-  SV_ImageIndex: (name: string) => number;
-  SV_WriteClientdataToMessage: (client: client_t, msg: sizebuf_t) => void;
-  SV_ExecuteUserCommand: (s: string) => void;
-  SV_InitOperatorCommands: () => void;
-  SV_SendServerinfo: (client: client_t) => void;
+  SVC_Status: () => void;
+  SVC_Ping: () => void;
+  SV_ConnectionlessPacket: () => string;
+  SV_ReadPackets: () => number;
+  SV_CheckTimeouts: () => void;
+  SV_CalcPings: () => void;
+  SV_GiveMsec: () => void;
+  SV_PrepWorldFrame: () => void;
+  SV_RunGameFrame: () => void;
+  SV_Frame: (msec: number) => void;
   SV_UserinfoChanged: (client: client_t) => void;
   Master_Heartbeat: () => void;
-  Master_Packet: () => void;
 }
 
 /**
@@ -312,6 +316,19 @@ export interface ServerMainProcedures {
  * Purpose: Declare the `sv_init.c` entry points exposed by `server.h`.
  */
 export interface ServerInitProcedures {
+  SV_FindIndex: (name: string, start: number, max: number, create: qboolean) => number;
+  SV_ModelIndex: (name: string) => number;
+  SV_SoundIndex: (name: string) => number;
+  SV_ImageIndex: (name: string) => number;
+  SV_CreateBaseline: () => void;
+  SV_CheckForSavegame: () => void;
+  SV_SpawnServer: (
+    server: string,
+    spawnpoint: string,
+    serverstate: server_state_t,
+    attractloop: qboolean,
+    loadgame: qboolean
+  ) => void;
   SV_InitGame: () => void;
   SV_Map: (attractloop: qboolean, levelstring: string, loadgame: qboolean) => void;
 }
@@ -332,9 +349,9 @@ export interface ServerSendProcedures {
   SV_FlushRedirect: (sv_redirected: number, outputbuf: string) => void;
   SV_DemoCompleted: () => void;
   SV_SendClientMessages: () => void;
-  SV_Multicast: (origin: vec3_t, to: multicast_t) => void;
+  SV_Multicast: (origin: vec3_t | null, to: multicast_t) => void;
   SV_StartSound: (
-    origin: vec3_t,
+    origin: vec3_t | null,
     entity: edict_t | null,
     channel: number,
     soundindex: number,
@@ -352,7 +369,17 @@ export interface ServerSendProcedures {
  * Purpose: Declare the `sv_user.c` entry points exposed by `server.h`.
  */
 export interface ServerUserProcedures {
+  SV_New_f: () => void;
+  SV_Configstrings_f: () => void;
+  SV_Baselines_f: () => void;
+  SV_Begin_f: () => void;
+  SV_NextDownload_f: () => void;
+  SV_BeginDownload_f: () => void;
+  SV_Disconnect_f: () => void;
+  SV_ShowServerinfo_f: () => string[];
   SV_Nextserver: () => void;
+  SV_ExecuteUserCommand: (command: string) => void;
+  SV_ClientThink: (client: client_t, cmd: usercmd_t) => void;
   SV_ExecuteClientMessage: (client: client_t) => void;
 }
 
@@ -363,6 +390,7 @@ export interface ServerUserProcedures {
 export interface ServerConsoleProcedures {
   SV_ReadLevelFile: () => void;
   SV_Status_f: () => void;
+  SV_InitOperatorCommands: () => void;
 }
 
 /**

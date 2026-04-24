@@ -30,7 +30,22 @@ export {
   NUM_FOR_EDICT
 } from "./server.js";
 
-export { SV_Frame, SV_Init, SV_Shutdown } from "./sv_null.js";
+export {
+  configureServerHost,
+  configureServerHostFromFacade,
+  resetServerHost,
+  SV_Frame,
+  SV_Init,
+  SV_Shutdown
+} from "./host.js";
+export { createServerRuntimeFacade } from "./runtime.js";
+export { createServerEntityProcedures } from "./sv_ents.js";
+export { createServerGameProcedures } from "./sv_game.js";
+export { createServerInitProcedures } from "./sv_init.js";
+export { createServerMainProcedures } from "./sv_main.js";
+export { createServerConsoleProcedures } from "./sv_ccmds.js";
+export { createServerSendProcedures } from "./sv_send.js";
+export { createServerUserProcedures } from "./sv_user.js";
 export { createServerWorldProcedures } from "./sv_world.js";
 
 export type {
@@ -53,3 +68,12 @@ export type {
 } from "./server.js";
 
 export type { ServerWorldContext } from "./sv_world.js";
+export type { ServerEntityContext } from "./sv_ents.js";
+export type { ServerGameContext } from "./sv_game.js";
+export type { ServerInitContext } from "./sv_init.js";
+export type { ServerMainContext } from "./sv_main.js";
+export type { ServerConsoleContext } from "./sv_ccmds.js";
+export type { ServerSendContext } from "./sv_send.js";
+export type { ServerUserContext } from "./sv_user.js";
+export type { ServerHostBindings } from "./host.js";
+export type { ServerRuntimeFacade, ServerRuntimeFacadeContext } from "./runtime.js";

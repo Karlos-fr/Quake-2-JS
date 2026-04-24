@@ -17,7 +17,10 @@
 import { strict as assert } from "node:assert";
 
 import {
+  CL_BuildRefreshFrame,
+  CL_CalcViewValues,
   CL_PrepRefresh,
+  CalcFov,
   V_RenderView,
   createClientRuntime,
   createClientViewContext,
@@ -33,7 +36,10 @@ main();
 
 function main(): void {
   verifyPrepRefreshRegistersLevelAssets();
+  verifyCalcViewValuesInterpolatesWeaponRelevantMotion();
   verifyRenderViewResolvesDefaultEntityModelsAndSkins();
+  verifyRenderViewAppliesViewWeaponDebugOverrides();
+  verifyRenderViewHidesWeaponForWideFovAndComputesFovY();
   console.log("quake2-cl-view: ok");
 }
 
@@ -244,4 +250,145 @@ function verifyRenderViewResolvesDefaultEntityModelsAndSkins(): void {
   }, "V_RenderView lightstyle copy mismatch");
   assert.deepEqual(context.scene.r_lightstyles[0].rgb, [0.2, 0.3, 0.4], "V_RenderView scene lightstyle mismatch");
   assert.equal(rendered?.refdef.rdflags, 9, "V_RenderView rdflags mismatch");
+}
+
+function verifyRenderViewAppliesViewWeaponDebugOverrides(): void {
+  const runtime = createClientRuntime();
+  const cmd = createCommandRuntime();
+  const cvar = createCvarRuntime();
+  const context = createClientViewContext(runtime, cmd, cvar);
+
+  runtime.cls.state = connstate_t.ca_active;
+  runtime.cl.refresh_prepped = true;
+  runtime.cl.force_refdef = true;
+  runtime.cl.frame.valid = true;
+  runtime.cl.time = 200;
+  runtime.cl.lerpfrac = 0.25;
+  runtime.cl.playernum = 0;
+  runtime.cl.screen.scr_vrect = { x: 0, y: 0, width: 320, height: 200 };
+  runtime.cl.model_draw[3] = "model:stockgun";
+  runtime.cl.frame.serverframe = 1;
+  runtime.cl.frame.playerstate.fov = 90;
+  runtime.cl.frame.playerstate.gunindex = 3;
+  runtime.cl.frame.playerstate.gunframe = 7;
+  runtime.cl.frame.playerstate.gunoffset = [1, 2, 3];
+  runtime.cl.frame.playerstate.gunangles = [4, 5, 6];
+  runtime.cl.frame.playerstate.viewoffset = [0, 0, 22];
+  runtime.cl.frame.playerstate.viewangles = [0, 90, 0];
+  runtime.cl.frame.playerstate.kick_angles = [0, 0, 0];
+  runtime.cl.frames[0] = {
+    ...runtime.cl.frame,
+    valid: true,
+    serverframe: 0,
+    playerstate: {
+      ...runtime.cl.frame.playerstate,
+      gunframe: 6,
+      gunoffset: [0, 0, 0],
+      gunangles: [0, 0, 0]
+    }
+  };
+
+  context.debug.gun_model = "models/debug/tris.md2";
+  context.debug.gun_frame = 11;
+  context.cl_gun = { value: 1 } as never;
+
+  const rendered = V_RenderView(context, {
+    predictMovement: false,
+    buildRefreshFrame: CL_BuildRefreshFrame
+  });
+
+  assert.ok(rendered, "V_RenderView debug gun render should succeed");
+  assert.equal(rendered?.refdef.num_entities, 1, "V_RenderView debug gun entity count mismatch");
+  assert.equal(rendered?.refdef.entities[0]?.model, "models/debug/tris.md2", "V_RenderView gun_model override mismatch");
+  assert.equal(rendered?.refdef.entities[0]?.frame, 11, "V_RenderView gun_frame override mismatch");
+  assert.equal(rendered?.refdef.entities[0]?.oldframe, 11, "V_RenderView gun_frame oldframe override mismatch");
+
+  runtime.cl.force_refdef = true;
+  context.cl_gun = { value: 0 } as never;
+  const hidden = V_RenderView(context, {
+    predictMovement: false,
+    buildRefreshFrame: CL_BuildRefreshFrame
+  });
+  assert.ok(hidden, "V_RenderView hidden gun render should still return one refdef");
+  assert.equal(hidden?.refdef.num_entities, 0, "V_RenderView cl_gun=0 should hide the view weapon");
+}
+
+function verifyCalcViewValuesInterpolatesWeaponRelevantMotion(): void {
+  const runtime = createClientRuntime();
+  runtime.cl.lerpfrac = 0.25;
+  runtime.cls.realtime = 1000;
+  runtime.cl.predicted_origin = [100, 200, 300];
+  runtime.cl.prediction_error = [1, 2, 3];
+  runtime.cl.predicted_angles = [10, 20, 30];
+  runtime.cl.predicted_step = 16;
+  runtime.cl.predicted_step_time = 980;
+  runtime.cl.frame.serverframe = 10;
+  runtime.cl.frame.valid = true;
+  runtime.cl.frame.playerstate.pmove.pm_flags = 0;
+  runtime.cl.frame.playerstate.pmove.pm_type = 0 as never;
+  runtime.cl.frame.playerstate.viewoffset = [8, 12, 24];
+  runtime.cl.frame.playerstate.kick_angles = [4, 8, 12];
+  runtime.cl.frame.playerstate.fov = 100;
+
+  runtime.cl.frames[9] = {
+    ...runtime.cl.frame,
+    valid: true,
+    serverframe: 9,
+    playerstate: {
+      ...runtime.cl.frame.playerstate,
+      viewoffset: [4, 8, 20],
+      kick_angles: [0, 0, 0],
+      fov: 90
+    }
+  };
+
+  const view = CL_CalcViewValues(runtime, { predictMovement: true });
+  assert.equal(view.fov_x, 92.5, "CL_CalcViewValues should lerp playerstate fov");
+  assert.ok(Math.abs(view.viewangles[0] - 11) < 1e-6, "CL_CalcViewValues kick pitch interpolation mismatch");
+  assert.ok(Math.abs(view.viewangles[1] - 22) < 1e-6, "CL_CalcViewValues kick yaw interpolation mismatch");
+  assert.ok(Math.abs(view.viewangles[2] - 33) < 1e-6, "CL_CalcViewValues kick roll interpolation mismatch");
+  assert.ok(Math.abs(view.vieworg[0] - 104.25) < 1e-6, "CL_CalcViewValues predicted-origin X mismatch");
+  assert.ok(Math.abs(view.vieworg[1] - 207.5) < 1e-6, "CL_CalcViewValues predicted-origin Y mismatch");
+  assert.ok(Math.abs(view.vieworg[2] - 305.95) < 1e-6, "CL_CalcViewValues predicted step smoothing mismatch");
+}
+
+function verifyRenderViewHidesWeaponForWideFovAndComputesFovY(): void {
+  const runtime = createClientRuntime();
+  const cmd = createCommandRuntime();
+  const cvar = createCvarRuntime();
+  const context = createClientViewContext(runtime, cmd, cvar);
+
+  runtime.cls.state = connstate_t.ca_active;
+  runtime.cl.refresh_prepped = true;
+  runtime.cl.force_refdef = true;
+  runtime.cl.frame.valid = true;
+  runtime.cl.time = 100;
+  runtime.cl.lerpfrac = 1;
+  runtime.cl.playernum = 0;
+  runtime.cl.screen.scr_vrect = { x: 0, y: 0, width: 320, height: 200 };
+  runtime.cl.frame.serverframe = 5;
+  runtime.cl.frame.playerstate.fov = 100;
+  runtime.cl.frame.playerstate.gunindex = 3;
+  runtime.cl.frame.playerstate.gunframe = 2;
+  runtime.cl.frame.playerstate.gunoffset = [1, 2, 3];
+  runtime.cl.frame.playerstate.gunangles = [0, 0, 0];
+  runtime.cl.frame.playerstate.viewoffset = [0, 0, 22];
+  runtime.cl.frame.playerstate.viewangles = [0, 0, 0];
+  runtime.cl.frame.playerstate.kick_angles = [0, 0, 0];
+  runtime.cl.frames[4] = {
+    ...runtime.cl.frame,
+    valid: true,
+    serverframe: 4
+  };
+
+  context.cl_gun = { value: 1 } as never;
+  const rendered = V_RenderView(context, {
+    predictMovement: false,
+    buildRefreshFrame: CL_BuildRefreshFrame
+  });
+
+  assert.ok(rendered, "V_RenderView wide-FOV render should return one refdef");
+  assert.equal(rendered?.refdef.fov_x, 100, "V_RenderView should keep horizontal fov from playerstate");
+  assert.ok(Math.abs((rendered?.refdef.fov_y ?? 0) - CalcFov(100, 320, 200)) < 1e-6, "V_RenderView fov_y mismatch");
+  assert.equal(rendered?.refdef.num_entities, 0, "V_RenderView should hide first-person weapon when fov > 90");
 }

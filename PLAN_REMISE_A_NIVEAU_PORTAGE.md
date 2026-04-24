@@ -1,38 +1,36 @@
-﻿# PLAN_REMISE_A_NIVEAU_PORTAGE.md
+﻿# Quake2JS - Audit de conformite et plan de remise a niveau
 
-# Quake2JS - Audit complet de conformite et plan de remise a niveau
+Date de reprise : 2026-04-24
 
 ## 1. Objet
 
 Ce document remplace l'ancien plan de remise a niveau.
 
-Il a ete reconstruit a partir :
+Il a ete reconstruit apres relecture de :
 
-- des regles actuellement presentes dans [README.md](C:\a\Projets\Quake-2\README.md) ;
-- du code effectivement porte dans `packages/*` et `apps/web/*` ;
-- du referentiel [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md) ;
-- des harnais presents dans `scripts/verify` et `packages/tests-golden`.
+- [README.md](C:\a\Projets\Quake-2\README.md) ;
+- [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md) ;
+- l'arborescence runtime `packages/*` ;
+- l'application adapter `apps/web` ;
+- les harnais `scripts/verify/*` ;
+- les plans recents ouverts dans le depot.
 
-Le but n'est pas de relancer un portage fonctionnel "qui marche a peu pres".
-Le but est de remettre le depot en conformite avec les regles d'architecture, de tracabilite et de verification deja actees.
+Le constat principal est simple : le depot a fortement avance depuis le precedent plan. Beaucoup de chantiers qui etaient identifies comme a extraire ou a clarifier sont maintenant fermes, testes ou mieux rattaches. Le role de ce plan n'est donc plus de relancer les phases anciennes, mais de nettoyer les derniers ecarts de conformite et de securiser la suite du portage.
 
 ## 2. Methode d'audit
 
-L'audit a verifie toutes les familles de regles du `README` :
+L'audit a verifie les axes suivants :
 
-- emplacement du portage principal par package ;
-- direction des dependances runtime -> adapter ;
-- rattachement source `C/H -> TS principal` ;
-- dispersion des headers mixtes ;
-- presence de code source dans des adapters ;
-- usage de stubs generes ;
-- statut des fichiers `🟠` et `✅` ;
-- coherence entre code et [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md) ;
-- presence de validations ciblees pour les blocs `Strict` importants ;
-- conformite des headers de fichiers ;
-- discipline sur les globals, constantes et contrats runtime.
+- coherence avec les regles du `README` ;
+- absence de dependance runtime directe vers les adapters ;
+- existence d'une cible principale claire par fichier source porte ;
+- absence de stubs generes comme cibles architecturales ;
+- coherence entre le code, les harnais et `PORTAGE_QUAKE2.md` ;
+- statut reel des fichiers marques `âœ…` ou `ðŸŸ ` ;
+- frontieres entre runtime, renderer dedie, platform et web app ;
+- couverture de verification ciblee sur les blocs `Strict` ou proches du source.
 
-Le perimetre relu est :
+Perimetre relu :
 
 - `apps/web`
 - `packages/client`
@@ -52,685 +50,316 @@ Le perimetre relu est :
 
 ## 3. Diagnostic global
 
-## 3.1 Blocs globalement conformes ou proches de la cible
+## 3.1 Avancees majeures depuis le precedent plan
 
-Les groupes suivants sont deja relativement bien alignes avec les regles :
+Les chantiers suivants, precedemment ouverts, sont maintenant globalement remis a niveau :
 
-- `packages/formats/src/*`
-  - bon decoupage par format source ;
-  - bonne preservation des constantes et validations binaires ;
-  - headers de fichiers globalement propres ;
-  - parseurs deja defensifs sur la fidelite binaire.
-- `packages/memory/src/sizebuf.ts`
-- `packages/memory/src/binary-io.ts`
-- `packages/qcommon/src/cmd.ts`
-- `packages/qcommon/src/cvar.ts`
-- `packages/qcommon/src/common.ts`
-- `packages/qcommon/src/collision.ts`
-- `packages/qcommon/src/pmove.ts`
-- `packages/game/src/g_func.ts`
-- `packages/game/src/g_trigger.ts`
-- `packages/game/src/g_utils.ts`
-- `packages/game/src/g_phys.ts`
-- `packages/game/src/p_weapon.ts`
-- `packages/client/src/input.ts`
-- `packages/client/src/monster-flash.ts`
+- le noyau client principal est beaucoup plus ferme : `cl_main.c`, `cl_parse.c`, `cl_input.c`, `cl_pred.c`, `cl_scrn.c`, `cl_view.c`, `cl_ents.c`, `cl_fx.c`, `cl_tent.c`, `cl_newfx.c`, `client.h`, `screen.h`, `ref.h`, `sound.h`, `vid.h`, menus, console et son ont des cibles principales explicites et des harnais dedies ;
+- les dependances runtime client vers `renderer-common` ont ete en grande partie corrigees par l'introduction des contrats runtime cote client ;
+- `apps/web/src/main.ts` et `apps/web/src/local-client-controller.ts` ont ete allegees : elles jouent maintenant surtout le role de bootstrap DOM/Three.js, de wiring input/camera et de consommation des sorties runtime ;
+- les headers mixtes critiques `game/g_local.h`, `game/game.h` et `qcommon/qcommon.h` ont maintenant des fichiers principaux lisibles : `packages/game/src/g-local.ts`, `packages/game/src/game.ts`, `packages/qcommon/src/qcommon.ts` ;
+- les stubs generes `generated/ts-stubs/*` ne sont plus visibles comme cibles dans `PORTAGE_QUAKE2.md` ;
+- le perimetre `ref_gl/*` a beaucoup progresse : `gl_draw.c`, `gl_image.c`, `gl_light.c`, `gl_mesh.c`, `gl_model.c`, `gl_rsurf.c`, `gl_warp.c` et plusieurs headers renderer ont des ports reels dans `packages/renderer-three` ;
+- le sous-systeme serveur est apparu comme un nouveau bloc substantiel : `server.h`, `sv_ccmds.c`, `sv_ents.c`, `sv_game.c`, `sv_init.c`, `sv_main.c`, `sv_null.c`, `sv_send.c`, `sv_user.c`, `sv_world.c` sont maintenant fermes ou proches ;
+- la couverture de verification a ete fortement etendue : client, qcommon, gameplay, renderer GL, serveur, particules, prediction, menus, son et headers disposent maintenant de nombreux harnais explicites.
 
-Ces blocs ne sont pas tous termines, mais ils respectent deja assez bien :
+## 3.2 Blocs globalement conformes
 
-- le principe de fichier principal identifiable ;
-- le fait de rester dans les packages runtime ;
-- la separation d'avec les adapters ;
-- l'usage de noms proches du source.
+Les familles suivantes respectent maintenant bien les regles du `README` :
 
-## 3.2 Ecarts moderes mais recuperables
+- `packages/formats` : parseurs binaires separes, defensifs et rattaches a `qfiles.h` ;
+- `packages/memory` : buffers et IO binaires bas niveau ;
+- `packages/qcommon` : commandes, cvars, protocol, messages, pmove, collision, qcommon.h et plusieurs helpers communs ;
+- `packages/client` : grand socle client runtime, avec sorties renderer-neutral et hooks explicites pour les effets plateforme ;
+- `packages/game` : gameplay de base, armes, items, combat, plusieurs entites, headers principaux et bootstrap local ;
+- `packages/server` : serveur runtime en progression rapide, bien isole dans son package ;
+- `packages/renderer-three` : port renderer dedie pour `ref_gl/*`, avec hooks backend a la place des appels OpenGL directs ;
+- `scripts/verify` : verification ciblee de plus en plus systematique.
 
-Les blocs suivants restent recuperables sans refonte majeure, a condition d'expliciter un rattachement principal et de nettoyer leurs dependances :
+## 3.3 Ecarts encore observes
 
-- `packages/client/src/main.ts`
-  - principal plausible pour `client/cl_main.c`, mais trop entoure de sous-fichiers lateraux.
-- `packages/client/src/parse.ts`
-  - principal plausible pour `client/cl_parse.c`, mais couvre aussi des morceaux de `cl_fx.c`, `cl_tent.c`, `cl_inv.c`.
-- `packages/client/src/types.ts`
-  - principal plausible pour `client/client.h`, mais le header reste encore eparpille.
-- `packages/client/src/screen.ts`
-  - principal plausible pour `client/cl_scrn.c` et `client/screen.h`, mais avec dependance vers `renderer-common`.
-- `packages/game/src/g_items.ts`
-  - principal plausible pour `game/g_items.c`, mais encore cite avec `apps/web` dans le referentiel.
-- `packages/game/src/g_combat.ts`
-  - principal plausible pour `game/g_combat.c`, mais encore tres incomplet et mal borne dans le suivi.
-- `packages/game/src/runtime.ts`
-  - utile comme support runtime ;
-  - mais absorbe aujourd'hui des morceaux de `game/game.h` et `game/g_local.h` sans cible declarative clairement separee.
-- `packages/qcommon/src/q-shared.ts`
-  - bon candidat principal pour `game/q_shared.h` ;
-  - mais la fermeture du header et son suivi restent incomplets.
+### A. Doublons obsoletes dans `PORTAGE_QUAKE2.md`
 
-## 3.3 Ecarts importants et repetes
+`PORTAGE_QUAKE2.md` contient des lignes dupliquees pour au moins :
 
-### A. Comportement source encore ancre dans des adapters
+- `ref_gl\gl_image.c`
+- `ref_gl\gl_rmain.c`
+- `ref_gl\gl_warp.c`
 
-Les fichiers suivants portent encore trop de logique source ou de decisions de portage principal :
+Les premieres occurrences, placees anormalement dans la zone client du tableau, decrivent un ancien etat `ðŸŸ `. Les occurrences plus loin dans le bloc `ref_gl` sont l'etat courant. C'est actuellement le plus gros ecart documentaire, car il peut faire croire qu'un port ferme est encore ouvert ou rattache a une mauvaise cible.
 
-- `apps/web/src/local-client-controller.ts`
-  - prediction locale ;
-  - bootstrap gameplay ;
-  - hooks d'armes ;
-  - layouts HUD locaux ;
-  - creation de collision adapter ;
-  - orchestration de vue et de tir ;
-  - trop de responsabilites runtime et gameplay dans un adapter web.
-- `apps/web/src/main.ts`
-  - contient encore du branchement de pipeline de jeu et de rendu qui depasse le simple bootstrap web.
-- `packages/renderer-three/src/refresh-entity-sync.ts`
-  - couche renderer acceptable pour du `ref_gl/*` ;
-  - mais encore cite comme cible de `client/cl_ents.c` et `client/cl_view.c`, ce qui reste problematique.
-- `packages/renderer-three/src/sky-scene-adapter.ts`
-  - header explicite `Source: Quake II original / ref_gl/gl_warp.c` ;
-  - est acceptable comme cible principale de `ref_gl/gl_warp.c` avec la nouvelle lecture du `README` ;
-  - doit en revanche rester strictement bornee au perimetre renderer.
-- `packages/renderer-three/src/quake-sky-resolver.ts`
-- `packages/renderer-three/src/md2-mesh-builder.ts`
-- `packages/renderer-common/src/sky.ts`
-- `packages/renderer-common/src/hud-draw.ts`
-- `packages/renderer-common/src/hud-resources.ts`
-  - ces fichiers sont legitimes comme couches renderer ou contrats ;
-  - ils ne sont problematiques que lorsqu'ils deviennent cibles principales de fichiers source hors perimetre renderer.
+### B. Dependances runtime -> renderer
 
-### B. Dependances runtime -> adapter encore presentes
+Etat initial de l'audit : `packages/client/src/local-brush-models.ts` importait le type `BrushModelSnapshot` depuis `packages/renderer-three/src/index.ts`.
 
-Les fichiers runtime suivants importent explicitement des modules de `renderer-common`, ce qui viole la regle de dependance :
+Etat apres phase 2 : cet ecart est corrige. `BrushModelSnapshot` vit maintenant dans `packages/client/src/local-brush-models.ts`, et `renderer-three` consomme ce contrat runtime.
 
-- `packages/client/src/screen.ts`
-- `packages/client/src/sky.ts`
-- `packages/client/src/index.ts`
+### C. `apps/web` apparait encore comme consommateur dans certaines lignes `âœ…`
 
-Constat :
+Certaines lignes fermees listent encore `apps/web/*` dans la colonne `Cible`, par exemple autour de `client/cl_view.c` ou `ref_gl/gl_mesh.c`.
 
-- le client runtime depend encore de contrats places dans un package d'adaptation ;
-- il faut re-internaliser ces contrats cote runtime ou creer un vrai package runtime partage, puis laisser les adapters les consommer.
+Ce n'est pas forcement faux si `apps/web` est cite comme consommateur, mais le referentiel ne distingue pas toujours assez visiblement :
 
-### C. Fichiers source originaux sans cible principale suffisamment claire
+- cible principale de portage ;
+- sous-modules ;
+- adapters consommateurs ;
+- harnais.
 
-Les fichiers suivants restent trop disperses dans le code et dans le referentiel :
+La regle a conserver : `apps/web` peut etre cite comme consommateur ou integration de demo, jamais comme cible principale.
 
-- `client/cl_ents.c`
-- `client/cl_fx.c`
-- `client/cl_tent.c`
-- `client/cl_main.c`
-- `client/cl_parse.c`
-- `client/cl_view.c`
-- `client/cl_pred.c`
-- `client/cl_inv.c`
-- `client/console.c`
-- `client/client.h`
-- `client/screen.h`
-- `client/ref.h`
-- `game/g_local.h`
-- `game/game.h`
-- `game/g_combat.c`
-- `qcommon/qcommon.h`
-Problemes observes :
+### D. `index.ts` reste tres present dans les cibles
 
-- listes de cibles trop longues ;
-- melange entre cible principale, sous-modules et adapters consommateurs ;
-- headers mixtes encore absorbes par des fichiers runtime generalistes ;
-- utilisation de `index.ts` comme cible de rattachement secondaire alors qu'il ne devrait etre qu'un point d'export.
+Plusieurs lignes citent `packages/*/src/index.ts`. C'est acceptable comme facade package, mais pas comme cible de portage.
 
-### D. Ports `✅` encore contestables au regard des nouvelles regles
+Le referentiel doit continuer a eviter toute ambiguite : `index.ts` est une facade d'export, sauf mention explicite contraire et justifiee.
 
-Les lignes suivantes ne sont plus totalement credibles avec la definition actuelle du `README` :
+### E. Ports `âœ…` avec hooks d'adaptation nombreux
 
-- `client/cl_scrn.c`
-  - marque `✅` ;
-  - mais le portage principal expose encore des types venant de `renderer-common` ;
-  - le referentiel liste des adapters comme cibles alors que la ligne est fermee.
-- `game/m_flash.c`
-  - ferme et globalement correct ;
-  - mais la cible principale n'est pas encore la premiere la plus evidente dans tous les raisonnements de suivi.
+Plusieurs ports fermes restent relies a des hooks explicites pour les effets plateforme, backend, IO ou rendu. C'est permis par le `README`, mais chaque fermeture `âœ…` doit rester honnete :
 
-Le point le plus important reste `cl_scrn.c`, qui doit etre reevalue avant de rester `✅`.
+- pas de comportement source critique remplace par un hook temporaire non porte ;
+- hook acceptable seulement pour un effet de bord plateforme ou backend ;
+- deviation documentee dans la description ou le header.
 
-### E. Headers mixtes encore mal traites
+Les lignes les plus sensibles sont les ports renderer GL, audio, serveur et client main/parse/view, car ils ont naturellement beaucoup de hooks.
 
-Les cas les plus fragiles sont :
+### F. Le serveur restant est ferme
 
-- `game/g_local.h`
-  - pieces portees dans `packages/game/src/runtime.ts`, `g_items.ts`, `index.ts` ;
-  - cible principale non stabilisee ;
-  - presence de `generated/ts-stubs/game/g_local.ts` dans le referentiel.
-- `qcommon/qcommon.h`
-  - pieces reelles dans `packages/memory/src/sizebuf.ts`, `binary-io.ts`, `packages/qcommon/src/messages.ts` ;
-  - stub genere encore cite comme cible.
-- `client/client.h`
-  - reparti entre `types.ts` et `parse.ts` ;
-  - l'axe principal `types.ts` existe mais n'est pas assez fort dans le suivi.
-- `client/screen.h`
-  - proche de `screen.ts`, mais encore incomplet sur les declarations de loop/cinematic.
-- `client/ref.h`
-  - toujours non ferme ;
-  - risque de dispersion durable entre `client`, `renderer-common` et `renderer-three`.
+Le serveur est maintenant un vrai sous-systeme du portage. Les derniers fichiers suivis en priorite sont fermes :
 
-### F. Stubs generes encore trop presents dans le dispositif de suivi
+- `server/sv_game.c`
+- `server/sv_init.c`
+- `server/sv_send.c`
 
-Constat :
+La suite cote serveur releve maintenant surtout de l'integration avec les autres familles de portage.
 
-- `generated/ts-stubs/game/g_local.ts` est encore mentionne dans [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md) comme cible ;
-- `generated/ts-stubs/qcommon/qcommon.ts` idem ;
-- les stubs sont utiles comme outil ;
-- ils ne doivent pas rester des cibles architecturales visibles d'un port en cours.
+### G. Gameplay encore ouvert autour des monstres, commandes et joueur
 
-### G. Couverture de verification encore tres heterogene
+Le gameplay a beaucoup avance, mais plusieurs lignes importantes restent volontairement `ðŸŸ ` :
 
-La couverture de verification est bonne sur :
+- `game/g_ai.c`
+- `game/g_chase.c`
+- `game/g_cmds.c`
+- `game/g_func.c`
+- `game/g_svcmds.c`
+- `game/g_turret.c`
+- `game/p_client.c`
+- `game/p_hud.c`
 
-- collision / BSP / portes ;
-- sky ;
-- entites visibles ;
-- une partie du HUD ;
-- quelques aspects alias models.
+Le risque n'est plus architectural, mais fonctionnel : les fichiers ont des cibles claires et des harnais, mais il reste de l'integration comportementale a fermer.
 
-En revanche, elle reste faible ou absente de maniere explicite sur :
+### H. Renderer GL encore ouvert sur le bootstrap fin
 
-- `qcommon/cmd.c`
-- `qcommon/cvar.c`
-- `qcommon/common.c`
-- `qcommon/files.c`
-- `client/cl_input.c`
-- `client/cl_main.c`
-- `client/client.h`
-- `client/screen.h`
-- `game/g_items.c`
-- `game/g_combat.c`
-- `game/g_local.h`
-- `game/game.h`
-- `qcommon/qcommon.h`
-- `game/q_shared.h`
+Le renderer GL original est maintenant majoritairement porte dans `packages/renderer-three`, ce qui est conforme a l'exception renderer du `README`.
 
-Ces blocs sont partiellement portes ou structures, mais sans harnais cible clairement rattache dans le dispositif courant.
+Restent en `ðŸŸ ` :
 
-### H. Quelques ecarts documentaires residuels
+- `ref_gl/gl_local.h`
+- `ref_gl/gl_rmain.c`
+- `ref_gl/gl_rmisc.c`
+- `ref_gl/qgl.h`
 
-Les fichiers suivants n'utilisent pas encore un vrai header de fichier au format standard :
+Le risque principal est le bootstrap fin `R_Init` / `GLimp_*` / `QGL_*`, la detection backend et le raccord exact des extensions.
 
-- `packages/platform/src/index.ts`
-- `packages/server/src/index.ts`
-- `packages/shared/src/index.ts`
-
-Ce sont des ecarts mineurs, mais ils restent des ecarts au `README`.
-
-## 4. Diagnostic par famille de regles
+## 4. Etat par famille de regles
 
 ## 4.1 Regles respectees
 
-- Le portage principal est majoritairement dans les packages runtime.
-- Les parseurs binaires restent bien separes des adapters web.
-- Les noms des fonctions portees restent globalement proches du source.
-- Les constantes source importantes sont bien conservees dans `q-shared.ts`, `runtime.ts`, `bsp.ts`, `screen.ts`, `effects.ts`, `tent.ts`.
-- Les valeurs binaires et validations de formats sont deja bien traitees dans `packages/formats`.
-- Le depot dispose deja d'un vrai socle de harnais de verification ciblee.
+- Le portage principal vit maintenant majoritairement dans les packages runtime ou dans `renderer-three` pour le cas autorise `ref_gl/*`.
+- Les parseurs et formats restent decouples des adapters web.
+- Les stubs generes ne sont plus des cibles architecturales visibles.
+- Les headers mixtes critiques ont maintenant des points de rattachement principaux.
+- Les fonctions et constantes gardent globalement les noms et valeurs source.
+- La verification ciblee est devenue une pratique courante du depot.
+- `apps/web` est beaucoup plus proche d'une couche adapter pure.
 
 ## 4.2 Regles partiellement respectees
 
-- `1 fichier source -> 1 fichier principal TS` :
-  - vrai sur plusieurs blocs ;
-  - faux ou trop flou sur les gros ports client et headers mixtes.
-- `PORTAGE_QUAKE2.md` comme referentiel architectural :
-  - l'intention existe ;
-  - mais beaucoup de lignes melangent principal, sous-fichiers, adapters et harnais.
-- `✅` reserve aux fichiers reellement fermes :
-  - correct pour certains petits fichiers ;
-  - discutable pour `client/cl_scrn.c`.
-- validation minimale des blocs `Strict` :
-  - bien couverte sur certains sous-systemes ;
-  - insuffisante ou implicite sur plusieurs blocs fondateurs.
+- Le referentiel `PORTAGE_QUAKE2.md` est riche mais encore trop verbeux et parfois ambigu dans la colonne `Cible`.
+- Les consommateurs adapters sont parfois listes sans label clair, ce qui brouille la notion de cible principale.
+- Quelques fichiers `index.ts` restent cites dans des lignes de portage alors qu'ils devraient etre marques comme facades.
+- Les ports `âœ…` avec hooks d'adaptation doivent rester surveilles pour ne pas masquer des comportements source non portes.
 
 ## 4.3 Regles non respectees
 
-- absence de dependance runtime -> adapter :
-  - violes dans `packages/client/src/screen.ts`, `sky.ts`, `index.ts`.
-- pas de comportement source principal dans les adapters :
-  - viole dans `apps/web/src/local-client-controller.ts` ;
-  - ne concerne plus globalement le cas `ref_gl/*` dans `renderer-common` / `renderer-three`, des lors que le perimetre renderer est explicite.
-- headers mixtes avec point principal explicite :
-  - pas encore vrai pour `g_local.h`, `qcommon.h`, `ref.h`.
-- stubs temporaires clairement balises et non architecturaux :
-  - encore faux dans le referentiel courant.
+Les deux ecarts identifies au demarrage de ce plan ont ete corriges par les phases 1 et 2. Cette section doit etre reauditee apres les phases suivantes plutot que consideree comme une liste active.
 
-## 5. Fichiers prioritaires de remise a niveau
+## 5. Priorites de remise a niveau
 
-Priorite maximale :
+Priorite 0 : corriger les incoherences qui faussent l'audit.
 
-1. `apps/web/src/local-client-controller.ts`
-2. `packages/client/src/screen.ts`
-3. `packages/client/src/sky.ts`
-4. `packages/client/src/index.ts`
-5. `packages/renderer-three/src/sky-scene-adapter.ts`
-6. `client/cl_scrn.c` dans [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md)
-7. `client/cl_view.c`
-8. `client/cl_pred.c`
-9. `client/cl_ents.c`
-10. `client/cl_fx.c`
-11. `client/cl_tent.c`
-12. `game/g_local.h`
-13. `qcommon/qcommon.h`
-14. `client/ref.h`
+- fait en phase 1 : supprimer les doublons obsoletes `ref_gl/*` dans `PORTAGE_QUAKE2.md` ;
+- fait en phase 1 : verifier qu'il n'existe pas d'autres chemins dupliques dans le tableau ;
+- fait en phase 1 : clarifier dans les lignes concernees que `apps/web` et `index.ts` sont des consommateurs/facades, pas des cibles principales.
 
-Priorite forte mais apres stabilisation architecturale :
+Priorite 1 : refermer la derniere dependance runtime -> renderer.
 
-- `client/cl_main.c`
-- `client/cl_parse.c`
-- `client/cl_inv.c`
-- `client/console.c`
-- `game/g_items.c`
-- `game/g_combat.c`
-- `game/game.h`
-- `game/q_shared.h`
-- `ref_gl/gl_warp.c`
-- `ref_gl/gl_mesh.c`
+- fait en phase 2 : `BrushModelSnapshot` a ete extrait hors de `packages/renderer-three` ;
+- fait en phase 2 : `renderer-three` consomme maintenant ce type runtime au lieu de le definir ;
+- fait en phase 2 : aucun import runtime vers `renderer-common`, `renderer-three`, `platform` ou `apps/web` ne subsiste hors commentaire documentaire.
+
+Priorite 2 : stabiliser le serveur restant.
+
+- fait : `server/sv_game.c`
+- fait : `server/sv_init.c`
+- fait : `server/sv_send.c`
+
+Priorite 3 : poursuivre le gameplay ouvert.
+
+- `game/p_client.c` et `game/p_hud.c` pour la boucle joueur/intermission/scoreboard ;
+- `game/g_cmds.c` pour les commandes client ;
+- `game/g_ai.c`, `g_chase.c`, `g_turret.c`, `g_func.c`, `g_svcmds.c` selon dependances.
+
+Priorite 4 : fermer le bootstrap renderer GL.
+
 - `ref_gl/gl_rmain.c`
-- `ref_gl/gl_image.c`
+- `ref_gl/gl_rmisc.c`
+- `ref_gl/gl_local.h`
+- `ref_gl/qgl.h`
 
 ## 6. Plan de remise a niveau
 
-## Phase 0 - Geler l'interpretation operative des regles
+## Phase 1 - Nettoyer le referentiel `PORTAGE_QUAKE2.md`
 
-- [x] confirmer que la definition actuelle de `✅` du `README` est la definition de reference pour le depot
-- [x] confirmer qu'un adapter web ou plateforme ne peut pas etre la cible principale d'un fichier source original
-- [x] confirmer que `renderer-common` et `renderer-three` peuvent etre des cibles principales legitimes pour `ref_gl/*`
-- [x] confirmer que `index.ts` ne compte pas comme cible principale de portage sauf cas explicitement documente
-- [x] confirmer qu'un stub genere ne doit plus apparaitre comme cible architecturale dans [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md)
-
-Sortie attendue :
-
-- plus aucun doute de cadrage avant de toucher au referentiel ou au code.
-
-Statut :
-
-- Phase 0 consideree comme realisee sur la base des clarifications integrees dans [README.md](C:\a\Projets\Quake-2\README.md).
-- Les confirmations de cadrage sont maintenant suffisamment stables pour demarrer directement la phase 1 sur le referentiel [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md).
-
-## Phase 1 - Reparer le referentiel [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md)
-
-- [ ] reclasser chaque ligne actuellement `🟠` ou `✅` selon :
-  - [x] conforme
-  - [x] conforme mais a clarifier
-  - [x] non conforme au `README`
-- [x] supprimer des colonnes `Cible` les stubs generes comme cibles architecturales
-- [x] faire commencer chaque `Cible` par le vrai fichier principal de rattachement
-- [x] separer dans les descriptions :
-  - [x] portage principal
-  - [x] sous-fichiers extraits
-  - [x] adapters consommateurs
-  - [x] harnais de verification
-- [x] reevaluer toutes les lignes `✅` a la lumiere de la nouvelle definition
-- [ ] traiter en priorite :
-  - [x] `client/cl_scrn.c`
-  - [x] `client/cl_view.c`
-  - [x] `client/cl_pred.c`
-  - [x] `client/cl_ents.c`
-  - [x] `client/cl_fx.c`
-  - [x] `client/cl_tent.c`
-  - [x] `client/client.h`
-  - [x] `client/screen.h`
-  - [x] `client/ref.h`
-  - [x] `game/g_local.h`
-  - [x] `game/game.h`
-  - [x] `qcommon/qcommon.h`
-
-Statut :
-
-- Les premieres lignes prioritaires du referentiel ont ete requalifiees pour rendre explicites :
-  - la cible principale ;
-  - les sous-fichiers extraits ;
-  - le fait que les adapters web ne sont plus listés comme cibles principales ;
-  - le retrait des stubs generes comme cibles architecturales.
-- Les lignes `🟠` deja renseignees dans le tableau ont maintenant ete nettoyees au meme format editorial :
-  - rattachement principal explicite quand il est etabli ;
-  - distinction entre portage principal, supports, consommateurs et harnais ;
-  - absence de cible artificielle quand le rattachement principal n'est pas encore prouve.
-- La relecture des lignes `✅` a deja conduit a une nouvelle retrogradation explicite :
-  - `game/p_weapon.c` est revenu en `🟠` car son port reste encore branche sur des hooks gameplay/monde non totalement refermes.
-- Les lignes encore en `✅` ont ete relues et normalisees au meme format editorial que le reste du referentiel.
-- Une premiere vague de lignes vides a aussi ete classee explicitement hors perimetre :
-  - documentation et fichiers historiques de release ;
-  - sauvegardes/configuration locale ;
-  - projets IDE / fichiers de build historiques ;
-  - couches plateformes natives `irix`, `linux`, `null`, `rhapsody`, `solaris`, `win32`, `unix`.
-- La phase 1 reste ouverte tant que le reste des lignes `🟠` et `✅` n'a pas recu le meme niveau de nettoyage editorial.
-
-## Phase 2 - Supprimer les dependances runtime -> adapter
-
-- [x] sortir de `packages/client/src/screen.ts` tous les types venant de `renderer-common`
-- [x] sortir de `packages/client/src/sky.ts` le type `QuakeSkySnapshot` venant de `renderer-common`
-- [x] cesser de re-exporter depuis `packages/client/src/index.ts` des types provenant de `renderer-common`
-- [x] recreer cote runtime client les contrats de HUD et de sky necessaires
-- [x] laisser `renderer-common` consommer ces contrats runtime au lieu de les definir pour le client
-
-Statut :
-
-- Les contrats HUD et sky ont ete recrees dans `packages/client/src/render-contracts.ts`.
-- `screen.ts`, `sky.ts` et `index.ts` ne dependent plus de `renderer-common`.
-- `renderer-common` consomme maintenant ces types runtime au lieu de les definir pour le client.
-- `npm run typecheck` passe apres la bascule.
+- [x] supprimer les anciennes lignes dupliquees de `ref_gl\gl_image.c`, `ref_gl\gl_rmain.c` et `ref_gl\gl_warp.c`
+- [x] corriger aussi le cas associe `ref_gl\gl_mesh.c`, dont la ligne renseignee etait mal placee et dont la ligne renderer etait vide
+- [x] lancer une verification simple des chemins dupliques dans le tableau
+- [x] conserver une seule ligne par fichier source original
+- [x] faire commencer chaque colonne `Cible` par la cible principale reelle pour les lignes touchees
+- [x] deplacer editorialement les facades `index.ts`, adapters web et harnais apres la cible principale pour `ref_gl\gl_mesh.c`
+- [x] annoter explicitement `apps/web` comme consommateur lorsque la description pouvait preter a confusion
 
 Definition de termine :
 
-- aucun fichier de `packages/client`, `packages/game`, `packages/qcommon`, `packages/formats`, `packages/filesystem`, `packages/memory`, `packages/math` ne doit importer `renderer-common`, `renderer-three`, `platform` ou `apps/web`.
-
-## Phase 3 - Extraire le comportement source encore present dans `apps/web`
-
-### 3.1 `apps/web/src/local-client-controller.ts`
-
-- [x] classer le contenu en quatre groupes :
-  - [x] vrai adapter web
-  - [x] logique client source a rapatrier
-  - [x] logique gameplay source a rapatrier
-  - [x] glue temporaire a eliminer
-- [x] sortir :
-  - [x] orchestration prediction source
-  - [x] orchestration vue source
-  - [x] hooks d'armes localement declares
-  - [x] layouts locaux qui dupliquent du source
-  - [x] morceaux de bootstrap gameplay non web-specifiques
+- [x] aucun doublon de chemin dans `PORTAGE_QUAKE2.md` ;
+- [x] aucun ancien etat `ðŸŸ ` ne contredit un etat courant `âœ…` ;
+- [x] les lignes `ref_gl/*` touchees sont toutes regroupees dans le bloc renderer attendu.
 
 Statut :
 
-- Les hooks d'armes locaux, slots, inventaire bootstrap et selection d'arme ont ete extraits vers `packages/game/src/local-game-bootstrap.ts`.
-- Les layouts/status bar locaux et le bootstrap HUD client ont ete extraits vers `packages/client/src/local-client-bootstrap.ts`.
-- Le noyau de prediction/vue locale a commence a etre extrait vers `packages/client/src/local-loop.ts` :
-  - mode de mouvement local ;
-  - bootstrap de prediction au spawn ;
-  - promotion de l'etat predit ;
-  - clonage de `usercmd` ;
-  - calcul de vue predit pour l'adapter camera.
-- Une partie importante du pont gameplay local -> client runtime a aussi ete extraite vers `packages/client/src/local-gameplay-sync.ts` :
-  - avance du runtime local sur `FRAMETIME` ;
-  - synchronisation gameplay -> frame client ;
-  - bootstrap sky local ;
-  - conversion du bootstrap gameplay vers le bootstrap HUD client ;
-  - mise a jour du joueur gameplay a partir de la prediction client.
-- Le bootstrap du joueur gameplay local a ete recentralise dans `packages/game/src/local-game-bootstrap.ts`.
-- Les helpers de bascule `STAT_LAYOUTS` ont ete centralises dans `packages/client/src/local-client-bootstrap.ts`.
-- Les helpers de saisie locale et de mirroring des `kbutton_t` ont ete extraits vers `packages/client/src/local-input.ts`.
-- Les helpers d'instantanes et d'interpolation des brush models mobiles ont ete extraits vers `packages/client/src/local-brush-models.ts`.
-- Le bootstrap et le tick d'orchestration locale prediction/gameplay ont ete recentralises dans `packages/client/src/local-session.ts`.
-- `apps/web/src/local-client-controller.ts` conserve encore :
-  - le branchement de la session locale avec l'input navigateur et la camera ;
-  - les handlers DOM / pointer lock et le mapping clavier navigateur ;
-  - l'adaptateur camera `PerspectiveCamera` ;
-  - l'adaptateur collision local vers le runtime gameplay.
-- La phase 3.1 est consideree comme close :
-  - le calcul de vue reste cote runtime ;
-  - l'application a `PerspectiveCamera` reste volontairement cote adapter web.
+- Phase 1 realisee le 2026-04-24.
+- Verification executee : script Node de comptage des chemins Markdown, resultat `NO_DUPLICATE_PATHS`.
+- Les lignes `ref_gl\gl_image.c`, `ref_gl\gl_mesh.c`, `ref_gl\gl_rmain.c` et `ref_gl\gl_warp.c` n'ont plus qu'une occurrence chacune.
 
-### 3.2 `apps/web/src/main.ts`
+## Phase 2 - Supprimer la dependance client runtime vers `renderer-three`
 
-- [x] laisser seulement :
-  - [x] bootstrap navigateur
-  - [x] choix de map
-  - [x] wire renderer
-  - [x] wire input DOM
-  - [x] wire HUD renderer
-- [x] deplacer tout ce qui releve encore d'un comportement source ou d'une decision runtime stable
-
-Statut :
-
-- La coquille DOM, les widgets HUD/FPS et le panneau d'etat ont ete extraits vers `apps/web/src/web-shell.ts`.
-- La couche de debug refresh Three.js a ete extraite vers `apps/web/src/refresh-debug-layer.ts`.
-- Les helpers de chargement PAK/URL/map selector ont ete extraits vers `apps/web/src/web-map-bootstrap.ts`.
-- Les helpers de renderer/scene/camera/sky formatting ont ete extraits vers `apps/web/src/web-render-bootstrap.ts`.
-- La boucle d'animation, le resize renderer/HUD et les bindings HUD de demo ont ete extraits vers `apps/web/src/web-demo-loop.ts`.
-- `apps/web/src/main.ts` agit maintenant davantage comme point de bootstrap :
-  - chargement du PAK ;
-  - selection de map ;
-  - creation renderer/scene/camera ;
-  - branchement du controleur local, du ciel, du HUD et du refresh.
-- La phase 3.2 est consideree comme close :
-  - `main.ts` est maintenant limite au bootstrap navigateur et au wiring des adapters web ;
-  - le reliquat extrait reste explicitement borne au perimetre web/Three.js.
-
-## Phase 4 - Recentraliser les gros ports client
-
-### 4.1 `client/cl_ents.c`
-
-- [x] designer clairement `packages/client/src/entities.ts` comme cible principale
-- [x] faire de `parse.ts` un fournisseur de paquets seulement
-- [x] laisser `refresh.ts` comme projection du resultat
-- [x] retirer `apps/web` et `renderer-three` du role de cibles de portage principal
-
-Statut :
-
-- `packages/client/src/entities.ts` porte bien le noyau principal issu de `cl_ents.c` pour :
-  - les entity events ;
-  - la collecte des entity states de frame ;
-  - la reconstruction des packet entity snapshots interpoles.
-- `packages/client/src/parse.ts` reste le lieu de lecture des messages reseau et des deltas de frame :
-  - `CL_ParseEntityBits` ;
-  - `CL_ParseDelta` ;
-  - `CL_ParsePlayerstate` ;
-  - `CL_ParseFrame` ;
-  - `CL_ParsePacketEntities` ;
-  - ce rattachement est coherent avec le role de fournisseur de paquets/frame data plutot qu'avec une cible de projection refresh.
-- `packages/client/src/refresh.ts` joue bien le role de projection du resultat :
-  - composition de `ClientRefreshFrame` ;
-  - emission des render entities, lights, particles et temp refresh ;
-  - sans devenir la cible principale du port source.
-- Les adapters renderer restent consommateurs :
-  - `packages/renderer-three/src/refresh-entity-sync.ts` ;
-  - `packages/renderer-three/src/md2-mesh-builder.ts` ;
-  - aucun fichier de `apps/web` n'est plus a traiter comme cible principale pour `cl_ents.c`.
-
-### 4.2 `client/cl_fx.c`
-
-- [x] designer clairement `packages/client/src/effects.ts` comme cible principale
-- [x] laisser dans `parse.ts` seulement la lecture de paquets
-- [x] laisser dans `refresh.ts` seulement la projection renderer/audio-ready
-- [x] garder `monster-flash.ts` comme sous-module justifie, non comme cible concurrente
-
-Statut :
-
-- `packages/client/src/effects.ts` porte bien le noyau principal issu de `cl_fx.c` pour :
-  - les muzzle flashes joueur et monstre ;
-  - les dynamic lights ;
-  - les light styles ;
-  - les particules runtime ;
-  - la traduction des entity events vers sorties structurees.
-- `packages/client/src/parse.ts` reste borne a la lecture des paquets source lies a `cl_fx.c` :
-  - `CL_ParseMuzzleFlash` ;
-  - `CL_ParseMuzzleFlash2` ;
-  - ainsi que les paquets auxiliaires rediriges ensuite vers `effects.ts`.
-- `packages/client/src/refresh.ts` reste du cote projection/composition :
-  - `CL_RunDLights` / `CL_AddDLights` ;
-  - `CL_RunLightStyles` / `CL_AddLightStyles` ;
-  - `CL_AddParticles` ;
-  - integration dans `ClientRefreshFrame`.
-- `packages/client/src/monster-flash.ts` reste un sous-module justifie :
-  - table `monster_flash_offset` ;
-  - acces `getMonsterFlashOffset` ;
-  - sans concurrencer `effects.ts` comme cible principale de `cl_fx.c`.
-
-### 4.3 `client/cl_tent.c`
-
-- [x] designer `packages/client/src/tent.ts` comme cible principale
-- [x] clarifier la frontiere avec `effects.ts`
-- [x] sortir du referentiel les cibles qui ne sont que consommatrices
-
-Statut :
-
-- `packages/client/src/tent.ts` porte bien le noyau principal issu de `cl_tent.c` pour :
-  - l'etat persistant des beams, player beams, lasers, explosions, force walls et sustains ;
-  - `CL_ClearTEnts`, `CL_RegisterTEntSounds`, `CL_RegisterTEntModels`, `CL_AddTEntPacket` et `CL_BuildTEntRefresh`.
-- `packages/client/src/parse.ts` reste borne a la lecture des paquets temp entities :
-  - `CL_ParseTEnt` ;
-  - `CL_ParseParticles` ;
-  - construction des `ClientTempEntityPacket` consommes ensuite par `tent.ts`.
-- `packages/client/src/effects.ts` reste un module de support partage :
-  - helpers reutilises par `tent.ts` ;
-  - sans concurrencer `tent.ts` comme cible principale de `cl_tent.c`.
-- `packages/client/src/refresh.ts` reste un consommateur de projection :
-  - integration de `CL_BuildTEntRefresh` dans `ClientRefreshFrame` ;
-  - sans devenir une cible principale de portage source.
-
-### 4.4 `client/cl_view.c`
-
-- [x] designer `packages/client/src/view.ts` comme cible principale
-- [x] retirer le pilotage principal de la vue depuis `apps/web`
-- [x] retirer les decisions source de `renderer-three`
-
-Statut :
-
-- `packages/client/src/view.ts` porte bien le noyau principal actuellement disponible pour `cl_view.c` :
-  - `CL_CalcViewValues` ;
-  - `CL_UpdateLerpFraction` ;
-  - l'etat de vue logique consomme ensuite par le reste du client.
-- `apps/web/src/local-client-controller.ts` ne pilote plus la vue au sens source :
-  - il se contente d'appeler `buildLocalPredictedViewState` ;
-  - puis d'appliquer le resultat a `PerspectiveCamera`.
-- `packages/client/src/refresh.ts` reste consommateur de la vue logique :
-  - `CL_BuildRefreshFrame` compose `view` a partir de `CL_CalcViewValues` ;
-  - le view weapon qu'il ajoute reste rattache au flux refresh issu de `cl_ents.c`, pas a la cible principale de `cl_view.c`.
-- `packages/renderer-three/src/refresh-entity-sync.ts` reste un adapter pur :
-  - il consomme `ClientRefreshFrame` et `RF_WEAPONMODEL` ;
-  - il ne decide ni le calcul de camera, ni les valeurs source de vue.
-
-### 4.5 `client/cl_pred.c`
-
-- [ ] designer `packages/client/src/view.ts` ou un futur `predict.ts` comme cible principale explicite
-- [ ] sortir de `apps/web` la prediction source et ne laisser qu'un simple branchage de collision/input
-
-### 4.6 `client/cl_main.c`, `client/cl_parse.c`, `client/cl_inv.c`, `client/console.c`
-
-- [ ] confirmer pour chacun le fichier principal
-- [ ] reduire les cibles secondaires au strict minimum
-- [ ] lister explicitement ce qui reste non porte pour chaque ligne `🟠`
-
-## Phase 5 - Fermer proprement les headers mixtes
-
-### 5.1 `client/client.h`
-
-- [ ] renforcer `packages/client/src/types.ts` comme cible principale
-- [ ] ne laisser `parse.ts` qu'en consommateur de declarations
-
-### 5.2 `client/screen.h`
-
-- [ ] rattacher completement a `packages/client/src/screen.ts`
-- [ ] isoler clairement les declarations encore manquantes
-
-### 5.3 `client/ref.h`
-
-- [ ] definir une vraie cible principale
-- [ ] separer declarations source renderer-side et adapters Three.js
-
-### 5.4 `game/g_local.h`
-
-- [ ] faire emerger un vrai fichier principal de declarations gameplay
-- [ ] decharger `runtime.ts` des declarations qui ne lui appartiennent pas comme support runtime
-- [ ] sortir `generated/ts-stubs/game/g_local.ts` du role de cible visible
-
-### 5.5 `game/game.h`
-
-- [ ] clarifier la frontiere avec `g_local.h`
-- [ ] identifier la vraie cible principale des declarations entites/runtime de jeu
-
-### 5.6 `qcommon/qcommon.h`
-
-- [ ] faire emerger une cible principale lisible
-- [ ] sortir `generated/ts-stubs/qcommon/qcommon.ts` du role de cible visible
-
-### 5.7 `game/q_shared.h`
-
-- [ ] confirmer `packages/qcommon/src/q-shared.ts` comme cible principale
-- [ ] lister explicitement les declarations encore manquantes si la ligne reste `🟠`
-
-## Phase 6 - Borner proprement le perimetre renderer `ref_gl/*`
-
-Constat :
-
-- le cas `ref_gl/*` est maintenant considere comme un portage renderer legitimement rattache a une couche renderer dediee ;
-- en revanche, ses frontieres avec le reste du runtime et du suivi restent encore trop floues.
-
-Actions :
-
-- [ ] expliciter dans [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md) que `renderer-common` / `renderer-three` sont des cibles principales autorisees pour `ref_gl/*`
-- [ ] verifier que chaque ligne `ref_gl/*` commence bien par sa vraie cible principale renderer
-- [ ] separer pour chaque ligne `ref_gl/*` :
-  - [ ] cible principale de portage renderer
-  - [ ] sous-modules renderer extraits
-  - [ ] simples consommateurs
-- [ ] verifier que `renderer-common` / `renderer-three` n'absorbent pas au passage du comportement source venant de `client/*`, `game/*`, `qcommon/*` ou `server/*`
-- [ ] documenter plus clairement le perimetre renderer de :
-  - [ ] `packages/renderer-three/src/sky-scene-adapter.ts`
-  - [ ] `packages/renderer-three/src/refresh-entity-sync.ts`
-  - [ ] `packages/renderer-three/src/md2-mesh-builder.ts`
-  - [ ] `packages/renderer-three/src/quake-sky-resolver.ts`
-  - [ ] `packages/renderer-common/src/sky.ts`
-
-Note :
-
-- cette phase ne vise plus a sortir `ref_gl/*` des couches renderer ;
-- elle vise a rendre ce rattachement explicite, borne et non contaminant pour le reste du portage.
-
-## Phase 7 - Normaliser les supports runtime non-source et les entry points
-
-- [ ] documenter mieux `packages/qcommon/src/runtime.ts` comme couche d'integration et verifier qu'elle ne devienne pas un puits de portage source
-- [ ] verifier que `packages/game/src/runtime.ts` reste un support runtime et non le lieu principal de plusieurs headers sans frontiere
-- [ ] retirer de `packages/game/src/index.ts`, `packages/client/src/index.ts`, `packages/qcommon/src/index.ts` toute ambiguite de "cible de portage"
-- [ ] mettre au format de header standard :
-  - [ ] `packages/platform/src/index.ts`
-  - [ ] `packages/server/src/index.ts`
-  - [ ] `packages/shared/src/index.ts`
-
-## Phase 8 - Renforcer les verifications ciblees
-
-- [ ] ajouter un harnais explicite pour `qcommon/cmd.c`
-- [ ] ajouter un harnais explicite pour `qcommon/cvar.c`
-- [ ] ajouter un harnais explicite pour `qcommon/common.c`
-- [ ] ajouter un harnais explicite pour `qcommon/files.c`
-- [ ] ajouter un harnais explicite pour `client/cl_input.c`
-- [ ] ajouter un harnais explicite pour `client/cl_main.c`
-- [ ] ajouter un harnais explicite pour `client/screen.h`
-- [ ] ajouter un harnais explicite ou une verification documentee pour `game/g_items.c`
-- [ ] ajouter un harnais explicite ou une verification documentee pour `game/g_combat.c`
-- [ ] ajouter une verification declarative/documentee pour :
-  - [ ] `game/g_local.h`
-  - [ ] `game/game.h`
-  - [ ] `qcommon/qcommon.h`
-  - [ ] `game/q_shared.h`
+- [x] creer ou reutiliser un type runtime neutre pour les snapshots de brush models locaux
+- [x] remplacer l'import de `BrushModelSnapshot` dans `packages/client/src/local-brush-models.ts`
+- [x] faire importer le meme contrat neutre par `packages/renderer-three/src/brush-model-sync.ts`
+- [x] verifier que `packages/client`, `packages/game`, `packages/qcommon`, `packages/server`, `packages/formats`, `packages/filesystem`, `packages/memory` et `packages/math` n'importent plus de package renderer/platform/web
 
 Definition de termine :
 
-- chaque bloc `Strict` important porte ou partiellement porte a une verification ciblee rattachee.
+- [x] la recherche `renderer-common|renderer-three|apps/web|platform` dans les packages runtime ne trouve plus que des commentaires documentaires acceptables, ou rien ;
+- [x] `npm run typecheck` passe.
 
-## Phase 9 - Requalifier les statuts `🟠` et `✅`
+Statut :
 
-- [ ] revisiter toutes les lignes `✅`
-- [ ] retrograder celles qui ne respectent pas la nouvelle definition
-- [ ] pour chaque ligne `🟠`, expliciter ce qui manque encore
-- [ ] interdire les descriptions qui laissent croire qu'un bloc est "ferme" alors qu'un adapter reste cible principale
+- Phase 2 realisee le 2026-04-24.
+- `BrushModelSnapshot` vit maintenant cote runtime client dans `packages/client/src/local-brush-models.ts`.
+- `packages/renderer-three/src/brush-model-sync.ts` et `packages/renderer-three/src/gl-world-scene-adapter.ts` consomment ce contrat runtime au lieu de le definir.
+- Verification executee : recherche d'import runtime vers adapters, seul un commentaire documentaire dans `packages/client/src/view.ts` mentionne encore `apps/web`.
 
-## 7. Ordre recommande d'execution
+## Phase 3 - Requalifier les references adapters/facades
 
-1. [ ] Phase 0
-2. [ ] Phase 1
-3. [ ] Phase 2
-4. [ ] Phase 3
-5. [ ] Phase 4
-6. [ ] Phase 5
-7. [ ] Phase 6
-8. [ ] Phase 7
-9. [ ] Phase 8
-10. [ ] Phase 9
+- [x] relire les lignes fermees qui citent `apps/web/*`
+- [x] relire les lignes fermees qui citent `packages/*/src/index.ts`
+- [x] modifier les descriptions pour dire clairement "consommateur", "facade package" ou "harnais"
+- [x] verifier en priorite :
+  - `client/cl_view.c`
+  - `client/cl_scrn.c`
+  - `ref_gl/gl_mesh.c`
+  - `server/server.h`
+  - les headers client et game qui citent `index.ts`
 
-## 8. Definition de termine
+Definition de termine :
+
+- [x] aucune ligne ne laisse penser qu'un adapter web ou un `index.ts` porte le comportement source principal.
+
+Statut :
+
+- Phase 3 realisee le 2026-04-24.
+- Les references `packages/*/src/index.ts` sont annotees comme `facade package`.
+- Les references `apps/web/src/*` sont annotees comme consommateurs adapter web.
+- Verification executee : script Node de controle des cibles `apps/web` / `src/index.ts`, resultat `ADAPTER_FACADE_TARGETS_ANNOTATED`.
+
+## Phase 4 - Fermer le serveur restant
+
+- [x] terminer `server/sv_game.c` autour de l'integration complete `GetGameApi`, imports moteur et lifecycle game module
+- [x] terminer `server/sv_init.c` autour de `SV_SpawnServer`, map loading, savegame/loading plaque et raccord collision/map
+- [x] terminer `server/sv_send.c` autour du frame update, demo send path, multicast/message delivery et drop overflow
+- [x] renforcer le harnais `quake2-sv-init.ts`
+- [x] renforcer le harnais `quake2-sv-game.ts`
+- [x] renforcer le harnais `quake2-sv-send.ts`
+- [x] mettre a jour `PORTAGE_QUAKE2.md` apres chaque fermeture
+
+Definition de termine :
+
+- les lignes serveur restantes peuvent passer en `✅` sans hook temporaire masquant un comportement source critique.
+
+## Phase 5 - Consolider gameplay joueur/monstres
+
+- [ ] continuer `game/p_client.c` : scoreboard/intermission complet, drops/effets et integration bord a bord
+- [ ] continuer `game/p_hud.c` : dispatch commandes HUD et branchement engine final des layouts
+- [ ] continuer `game/g_cmds.c` : commandes client, chat, cheats, armes, scoreboard
+- [x] continuer `game/g_ai.c` : validation de poursuite/attaque au-dela des cas deja couverts
+- [ ] continuer `game/g_chase.c`, `game/g_turret.c`, `game/g_func.c`, `game/g_svcmds.c` selon les dependances ouvertes
+
+Definition de termine :
+
+- chaque ligne gameplay ouverte indique exactement le reste a porter ;
+- chaque fermeture `âœ…` a un harnais ou une verification documentee.
+
+## Phase 6 - Fermer le bootstrap renderer GL
+
+- [ ] terminer `ref_gl/gl_rmain.c` autour du bootstrap fin `R_Init`, backend flags et chainage renderer
+- [ ] terminer `ref_gl/gl_rmisc.c` si les hooks GL/filesystem restants peuvent etre classes comme adaptations finales
+- [x] terminer `ref_gl/gl_local.h` quand les declarations partagees restantes ne dependent plus de fichiers ouverts
+- [x] terminer `ref_gl/qgl.h` ou documenter precisement la part non portee volontairement des procedures Win32/QGL
+- [ ] verifier que le renderer dedie n'absorbe pas de comportement `client/*`, `game/*`, `qcommon/*` ou `server/*`
+
+Definition de termine :
+
+- chaque ligne `ref_gl/*` a une cible principale renderer unique ;
+- les hooks backend sont des adaptations assumee, pas des placeholders de comportement source.
+
+## Phase 7 - Verifications finales d'architecture
+
+- [ ] `npm run typecheck`
+- [ ] lancer les harnais touches par les phases precedentes
+- [ ] relancer au minimum les familles :
+  - `verify:cl-*` pertinentes
+  - `verify:server:*`
+  - `verify:g-*` pertinentes
+  - `verify:gl-*` pertinentes
+  - `verify:qcommon:header`
+- [ ] verifier les imports runtime -> adapters
+- [ ] relire les lignes `âœ…` modifiees
+
+Definition de termine :
+
+- le plan courant ne contient plus d'actions documentaires bloquantes ;
+- `PORTAGE_QUAKE2.md` redevient fiable comme referentiel architectural.
+
+## 7. Ordre recommande
+
+1. Phase 1 : nettoyer `PORTAGE_QUAKE2.md`.
+2. Phase 2 : supprimer l'import runtime vers `renderer-three`.
+3. Phase 3 : clarifier adapters/facades dans les lignes fermees.
+4. Phase 4 : fermer le serveur restant.
+5. Phase 5 : poursuivre gameplay joueur/monstres.
+6. Phase 6 : fermer le bootstrap renderer GL.
+7. Phase 7 : verifier et requalifier les statuts.
+
+## 8. Definition de termine globale
 
 Le depot pourra etre considere remis a niveau quand :
 
-- tous les fichiers sources deja portes ou en cours ont une cible principale claire dans [PORTAGE_QUAKE2.md](C:\a\Projets\Quake-2\PORTAGE_QUAKE2.md) ;
-- les packages runtime n'importent plus les adapters ;
-- `apps/web` et `platform` ne sont plus cibles principales d'un port source original ;
-- `renderer-common` et `renderer-three` ne sont cibles principales que pour le perimetre renderer `ref_gl/*`, de maniere explicite et bornee ;
-- les headers mixtes critiques (`client.h`, `screen.h`, `ref.h`, `g_local.h`, `game.h`, `qcommon.h`) ont un vrai point principal de rattachement ;
-- les stubs generes ne sont plus visibles comme cibles architecturales ;
-- les lignes `✅` sont compatibles avec la definition du `README` ;
-- chaque bloc `Strict` important porte ou deja expose a une verification ciblee.
+- `PORTAGE_QUAKE2.md` ne contient plus de doublons ni d'anciens etats contradictoires ;
+- chaque fichier source porte ou en cours a une cible principale claire ;
+- aucun package runtime n'importe un package adapter ou renderer, hors commentaire documentaire ;
+- `apps/web` et `platform` ne sont jamais des cibles principales de port source ;
+- `renderer-three` et `renderer-common` ne sont cibles principales que pour le perimetre renderer autorise `ref_gl/*` ;
+- les facades `index.ts` sont identifiees comme facades, pas comme portage principal ;
+- les lignes `âœ…` ne masquent pas de hook temporaire remplacant un comportement source critique ;
+- chaque bloc `Strict` important ferme dispose d'un harnais ou d'une verification ciblee.

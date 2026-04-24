@@ -1,7 +1,7 @@
 /**
  * File: g_items.ts
  * Source: Quake II original / game/g_items.c
- * Purpose: Port the first item definitions and spawn helpers required to preserve visible world pickups.
+ * Purpose: Port the Quake II base-game item definitions plus the shared pickup / use / drop / respawn logic.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,14 +9,27 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - The current port focuses on spawn-side visual state and omits pickup/inventory gameplay.
  * - `droptofloor` keeps the original delayed spawn structure but uses the local gameplay collision bridge instead of `gi.trace`.
+ * - Engine-side `configstring`, print and sound-emission side effects are modeled through runtime tables, logs and queued sound events.
+ * - Invalid item spawnflags are normalized without reproducing the original `gi.dprintf` diagnostic side effect.
  *
  * Notes:
  * - This file is intended to stay close to the original item spawn path.
  */
 
-import { EF_GIB, EF_ROTATE, MASK_SOLID, RF_GLOW } from "../../qcommon/src/index.js";
+import {
+  AngleVectors,
+  DF_INFINITE_AMMO,
+  DF_INSTANT_ITEMS,
+  DF_NO_HEALTH,
+  DF_NO_ITEMS,
+  EF_GIB,
+  EF_ROTATE,
+  MASK_SOLID,
+  PRINT_HIGH,
+  RF_GLOW
+} from "../../qcommon/src/index.js";
+import { entity_event_t } from "../../qcommon/src/q-shared.js";
 import {
   WEAP_BLASTER,
   WEAP_BFG,
@@ -32,15 +45,21 @@ import {
   ammo_t,
   FRAMETIME,
   MOVETYPE_TOSS,
+  SOLID_BBOX,
   SOLID_NOT,
   SOLID_TRIGGER,
   FL_POWER_ARMOR,
+  FL_TEAMSLAVE,
+  FL_RESPAWN,
   POWER_ARMOR_NONE,
   POWER_ARMOR_SCREEN,
   POWER_ARMOR_SHIELD,
   SVF_NOCLIENT,
-  freeGameEntity,
+  DROPPED_ITEM,
+  DROPPED_PLAYER_ITEM,
+  emitGameSound,
   linkGameEntity,
+  spawnGameEntity,
   refreshEntitySpatialState,
   registerGameImage,
   registerGameModel,
@@ -48,16 +67,17 @@ import {
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
+import { ITEM_NO_TOUCH, ITEM_TARGETS_USED, ITEM_TRIGGER_SPAWN, IT_KEY } from "./g-local.js";
+import { ValidateSelectedItem } from "./g_cmds.js";
+import { G_FreeEdict, G_UseTargets, G_ProjectSource } from "./g_utils.js";
+import { Pickup_Weapon, Use_Weapon } from "./p_weapon.js";
 
 const HEALTH_IGNORE_MAX = 1;
 const HEALTH_TIMED = 2;
-const ITEM_TRIGGER_SPAWN = 0x00000001;
-const ITEM_NO_TOUCH = 0x00000002;
 const IT_WEAPON = 1;
 const IT_AMMO = 2;
 const IT_ARMOR = 4;
 const IT_STAY_COOP = 8;
-const IT_KEY = 16;
 const IT_POWERUP = 32;
 const ARMOR_JACKET = 1;
 const ARMOR_COMBAT = 2;
@@ -69,6 +89,24 @@ const AMMO_CELLS = ammo_t.AMMO_CELLS;
 const AMMO_ROCKETS = ammo_t.AMMO_ROCKETS;
 const AMMO_SLUGS = ammo_t.AMMO_SLUGS;
 const AMMO_GRENADES = ammo_t.AMMO_GRENADES;
+let jacket_armor_index = 0;
+let combat_armor_index = 0;
+let body_armor_index = 0;
+let power_screen_index = 0;
+let power_shield_index = 0;
+let quad_drop_timeout_hack = 0;
+
+function cacheItemIndices(): void {
+  if (jacket_armor_index !== 0) {
+    return;
+  }
+
+  jacket_armor_index = itemlist.find((item) => item.pickupName === "Jacket Armor")?.index ?? 0;
+  combat_armor_index = itemlist.find((item) => item.pickupName === "Combat Armor")?.index ?? 0;
+  body_armor_index = itemlist.find((item) => item.pickupName === "Body Armor")?.index ?? 0;
+  power_screen_index = itemlist.find((item) => item.pickupName === "Power Screen")?.index ?? 0;
+  power_shield_index = itemlist.find((item) => item.pickupName === "Power Shield")?.index ?? 0;
+}
 
 export type GameItemPickupKind =
   | "Pickup_Armor"
@@ -418,6 +456,7 @@ export function FindWeaponItemByThink(kind: GameItemWeaponThinkKind): GameItemDe
  * - Returns the Quake II item count excluding the null sentinel entry.
  */
 export function InitItems(): number {
+  cacheItemIndices();
   return itemlist.length;
 }
 
@@ -431,6 +470,7 @@ export function InitItems(): number {
  * - Exposes the pickup-name list in original itemlist order for later configstring wiring.
  */
 export function SetItemNames(): string[] {
+  cacheItemIndices();
   return itemlist.map((item) => item.pickupName);
 }
 
@@ -444,7 +484,9 @@ export function SetItemNames(): string[] {
  * - Registers the visible asset references used by one item definition.
  */
 export function PrecacheItem(runtime: GameRuntime, item: GameItemDefinition): void {
-  registerGameModel(runtime, item.worldModel);
+  if (item.worldModel) {
+    registerGameModel(runtime, item.worldModel);
+  }
 
   if (item.pickupSound) {
     registerGameSound(runtime, item.pickupSound);
@@ -467,6 +509,51 @@ export function PrecacheItem(runtime: GameRuntime, item: GameItemDefinition): vo
       registerGameImage(runtime, assetPath);
     }
   }
+}
+
+/**
+ * Original name: DoRespawn
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Makes one hidden respawning item visible and touchable again, choosing a random team slave when needed.
+ */
+export function DoRespawn(ent: GameEntity, runtime: GameRuntime): void {
+  if (ent.team) {
+    const master = ent.teammaster ?? ent;
+    const choices: GameEntity[] = [];
+    for (let candidate: GameEntity | null = master; candidate; candidate = candidate.chain) {
+      choices.push(candidate);
+    }
+
+    const choice = Math.floor(Math.random() * choices.length);
+    ent = choices[choice] ?? ent;
+  }
+
+  ent.svflags &= ~SVF_NOCLIENT;
+  ent.solid = SOLID_TRIGGER;
+  linkGameEntity(runtime, ent);
+  ent.s.event = entity_event_t.EV_ITEM_RESPAWN;
+}
+
+/**
+ * Original name: SetRespawn
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Arms one item for delayed respawn by hiding it and scheduling `DoRespawn`.
+ */
+export function SetRespawn(ent: GameEntity, delaySeconds: number, runtime: GameRuntime): void {
+  ent.flags |= FL_RESPAWN;
+  ent.svflags |= SVF_NOCLIENT;
+  ent.solid = SOLID_NOT;
+  ent.nextthink = runtime.time + delaySeconds;
+  ent.think = DoRespawn;
+  linkGameEntity(runtime, ent);
 }
 
 /**
@@ -493,20 +580,29 @@ export function droptofloor(ent: GameEntity, runtime: GameRuntime): void {
 
   ent.solid = SOLID_TRIGGER;
   ent.movetype = MOVETYPE_TOSS;
+  ent.touch = Touch_Item;
 
   if (runtime.collision) {
     const dest: [number, number, number] = [ent.origin[0], ent.origin[1], ent.origin[2] - 128];
     const trace = runtime.collision.trace(ent.origin, ent.mins, ent.maxs, dest, ent, MASK_SOLID);
     if (trace.startsolid) {
-      freeGameEntity(runtime, ent);
+      G_FreeEdict(runtime, ent);
       return;
     }
 
     ent.origin = [...trace.endpos];
+    ent.s.origin = [...trace.endpos];
+  }
+
+  if (ent.team) {
+    ent.chain = ent.teamchain;
+    ent.teamchain = null;
+    ent.flags &= ~FL_TEAMSLAVE;
   }
 
   if ((ent.spawnflags & ITEM_NO_TOUCH) !== 0) {
-    ent.solid = SOLID_NOT;
+    ent.solid = SOLID_BBOX;
+    ent.touch = undefined;
     ent.s.effects &= ~EF_ROTATE;
     ent.s.renderfx &= ~RF_GLOW;
   }
@@ -514,9 +610,695 @@ export function droptofloor(ent: GameEntity, runtime: GameRuntime): void {
   if ((ent.spawnflags & ITEM_TRIGGER_SPAWN) !== 0) {
     ent.solid = SOLID_NOT;
     ent.svflags |= SVF_NOCLIENT;
+    ent.use = Use_Item;
   }
 
   refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
+}
+
+/**
+ * Original name: Pickup_Powerup
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Grants one powerup item, applies the original skill/coop limits, and auto-uses instant items in deathmatch.
+ */
+export function Pickup_Powerup(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  const client = requireClient(other, "Pickup_Powerup");
+  const item = ent.item;
+  if (!item) {
+    return false;
+  }
+
+  const index = ITEM_INDEX(item);
+  const quantity = client.pers.inventory[index];
+  if ((runtime.skill === 1 && quantity >= 2) || (runtime.skill >= 2 && quantity >= 1)) {
+    return false;
+  }
+
+  if (runtime.coop && (item.flags & IT_STAY_COOP) !== 0 && quantity > 0) {
+    return false;
+  }
+
+  client.pers.inventory[index] += 1;
+
+  if (runtime.deathmatch) {
+    if ((ent.spawnflags & DROPPED_ITEM) === 0) {
+      SetRespawn(ent, item.quantity, runtime);
+    }
+
+    if ((runtime.dmflags & DF_INSTANT_ITEMS) !== 0 || (item.use === "Use_Quad" && (ent.spawnflags & DROPPED_PLAYER_ITEM) !== 0)) {
+      if (item.use === "Use_Quad" && (ent.spawnflags & DROPPED_PLAYER_ITEM) !== 0) {
+        quad_drop_timeout_hack = Math.trunc((ent.nextthink - runtime.time) / FRAMETIME);
+      }
+
+      callItemUse(other, item, runtime);
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Original name: Drop_General
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Drops one general inventory item and validates the current selection.
+ */
+export function Drop_General(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  const client = requireClient(ent, "Drop_General");
+  Drop_Item(ent, item, runtime);
+  client.pers.inventory[ITEM_INDEX(item)] -= 1;
+  ValidateSelectedItem(ent, runtime);
+}
+
+/**
+ * Original name: Pickup_Adrenaline
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function Pickup_Adrenaline(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  if (!runtime.deathmatch) {
+    other.max_health += 1;
+  }
+
+  if (other.health < other.max_health) {
+    other.health = other.max_health;
+  }
+
+  if ((ent.spawnflags & DROPPED_ITEM) === 0 && runtime.deathmatch) {
+    SetRespawn(ent, ent.item?.quantity ?? 0, runtime);
+  }
+
+  return true;
+}
+
+/**
+ * Original name: Pickup_AncientHead
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function Pickup_AncientHead(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  other.max_health += 2;
+
+  if ((ent.spawnflags & DROPPED_ITEM) === 0 && runtime.deathmatch) {
+    SetRespawn(ent, ent.item?.quantity ?? 0, runtime);
+  }
+
+  return true;
+}
+
+/**
+ * Original name: Pickup_Bandolier
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Pickup_Bandolier(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  const client = requireClient(other, "Pickup_Bandolier");
+  client.pers.max_bullets = Math.max(client.pers.max_bullets, 250);
+  client.pers.max_shells = Math.max(client.pers.max_shells, 150);
+  client.pers.max_cells = Math.max(client.pers.max_cells, 250);
+  client.pers.max_slugs = Math.max(client.pers.max_slugs, 75);
+
+  grantAmmoPickup(client, "Bullets");
+  grantAmmoPickup(client, "Shells");
+
+  if ((ent.spawnflags & DROPPED_ITEM) === 0 && runtime.deathmatch) {
+    SetRespawn(ent, ent.item?.quantity ?? 0, runtime);
+  }
+
+  return true;
+}
+
+/**
+ * Original name: Pickup_Pack
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Pickup_Pack(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  const client = requireClient(other, "Pickup_Pack");
+  client.pers.max_bullets = Math.max(client.pers.max_bullets, 300);
+  client.pers.max_shells = Math.max(client.pers.max_shells, 200);
+  client.pers.max_rockets = Math.max(client.pers.max_rockets, 100);
+  client.pers.max_grenades = Math.max(client.pers.max_grenades, 100);
+  client.pers.max_cells = Math.max(client.pers.max_cells, 300);
+  client.pers.max_slugs = Math.max(client.pers.max_slugs, 100);
+
+  grantAmmoPickup(client, "Bullets");
+  grantAmmoPickup(client, "Shells");
+  grantAmmoPickup(client, "Cells");
+  grantAmmoPickup(client, "Grenades");
+  grantAmmoPickup(client, "Rockets");
+  grantAmmoPickup(client, "Slugs");
+
+  if ((ent.spawnflags & DROPPED_ITEM) === 0 && runtime.deathmatch) {
+    SetRespawn(ent, ent.item?.quantity ?? 0, runtime);
+  }
+
+  return true;
+}
+
+/**
+ * Original name: Use_Quad
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Use_Quad(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  const client = requireClient(ent, "Use_Quad");
+  client.pers.inventory[ITEM_INDEX(item)] -= 1;
+  ValidateSelectedItem(ent, runtime);
+
+  const timeout = quad_drop_timeout_hack || 300;
+  quad_drop_timeout_hack = 0;
+  if (client.quad_framenum > runtime.framenum) {
+    client.quad_framenum += timeout;
+  } else {
+    client.quad_framenum = runtime.framenum + timeout;
+  }
+
+  emitGameSound(runtime, ent, "items/damage.wav");
+}
+
+/**
+ * Original name: Use_Breather
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function Use_Breather(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  const client = requireClient(ent, "Use_Breather");
+  client.pers.inventory[ITEM_INDEX(item)] -= 1;
+  ValidateSelectedItem(ent, runtime);
+  client.breather_framenum = client.breather_framenum > runtime.framenum ? client.breather_framenum + 300 : runtime.framenum + 300;
+}
+
+/**
+ * Original name: Use_Envirosuit
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function Use_Envirosuit(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  const client = requireClient(ent, "Use_Envirosuit");
+  client.pers.inventory[ITEM_INDEX(item)] -= 1;
+  ValidateSelectedItem(ent, runtime);
+  client.enviro_framenum = client.enviro_framenum > runtime.framenum ? client.enviro_framenum + 300 : runtime.framenum + 300;
+}
+
+/**
+ * Original name: Use_Invulnerability
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Use_Invulnerability(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  const client = requireClient(ent, "Use_Invulnerability");
+  client.pers.inventory[ITEM_INDEX(item)] -= 1;
+  ValidateSelectedItem(ent, runtime);
+  client.invincible_framenum = client.invincible_framenum > runtime.framenum ? client.invincible_framenum + 300 : runtime.framenum + 300;
+  emitGameSound(runtime, ent, "items/protect.wav");
+}
+
+/**
+ * Original name: Use_Silencer
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function Use_Silencer(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  const client = requireClient(ent, "Use_Silencer");
+  client.pers.inventory[ITEM_INDEX(item)] -= 1;
+  ValidateSelectedItem(ent, runtime);
+  client.silencer_shots += 30;
+}
+
+/**
+ * Original name: Pickup_Key
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Pickup_Key(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  const client = requireClient(other, "Pickup_Key");
+  const item = ent.item;
+  if (!item) {
+    return false;
+  }
+
+  const index = ITEM_INDEX(item);
+  if (runtime.coop) {
+    if (ent.classname === "key_power_cube") {
+      const cubeMask = (ent.spawnflags & 0x0000ff00) >> 8;
+      if ((client.pers.power_cubes & cubeMask) !== 0) {
+        return false;
+      }
+      client.pers.inventory[index] += 1;
+      client.pers.power_cubes |= cubeMask;
+    } else {
+      if (client.pers.inventory[index] !== 0) {
+        return false;
+      }
+      client.pers.inventory[index] = 1;
+    }
+    return true;
+  }
+
+  client.pers.inventory[index] += 1;
+  return true;
+}
+
+/**
+ * Original name: Add_Ammo
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function Add_Ammo(ent: GameEntity, item: GameItemDefinition, count: number, runtime: GameRuntime): boolean {
+  void runtime;
+  const client = ent.client;
+  if (!client) {
+    return false;
+  }
+
+  const max = getAmmoMax(client, item.tag);
+  if (max <= 0) {
+    return false;
+  }
+
+  const index = ITEM_INDEX(item);
+  if (client.pers.inventory[index] === max) {
+    return false;
+  }
+
+  client.pers.inventory[index] += count;
+  if (client.pers.inventory[index] > max) {
+    client.pers.inventory[index] = max;
+  }
+
+  return true;
+}
+
+/**
+ * Original name: Pickup_Ammo
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Pickup_Ammo(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  const client = requireClient(other, "Pickup_Ammo");
+  const item = ent.item;
+  if (!item) {
+    return false;
+  }
+
+  const weapon = (item.flags & IT_WEAPON) !== 0;
+  const count = weapon && (runtime.dmflags & DF_INFINITE_AMMO) !== 0
+    ? 1000
+    : ent.count || item.quantity;
+  const oldcount = client.pers.inventory[ITEM_INDEX(item)];
+
+  if (!Add_Ammo(other, item, count, runtime)) {
+    return false;
+  }
+
+  if (weapon && !oldcount) {
+    if (client.pers.weapon !== item && (!runtime.deathmatch || client.pers.weapon === FindItem("blaster"))) {
+      client.newweapon = item;
+    }
+  }
+
+  if ((ent.spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)) === 0 && runtime.deathmatch) {
+    SetRespawn(ent, 30, runtime);
+  }
+  return true;
+}
+
+/**
+ * Original name: Drop_Ammo
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Drop_Ammo(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  const client = requireClient(ent, "Drop_Ammo");
+  const index = ITEM_INDEX(item);
+  const dropped = Drop_Item(ent, item, runtime);
+  dropped.count = client.pers.inventory[index] >= item.quantity ? item.quantity : client.pers.inventory[index];
+
+  if (
+    client.pers.weapon &&
+    client.pers.weapon.tag === AMMO_GRENADES &&
+    item.tag === AMMO_GRENADES &&
+    client.pers.inventory[index] - dropped.count <= 0
+  ) {
+    runtime.log({
+      kind: "message",
+      message: `PRINT_${PRINT_HIGH}: Can't drop current weapon`,
+      entityIndex: ent.index,
+      entityClassname: ent.classname
+    });
+    G_FreeEdict(runtime, dropped);
+    return;
+  }
+
+  client.pers.inventory[index] -= dropped.count;
+  ValidateSelectedItem(ent, runtime);
+}
+
+/**
+ * Original name: MegaHealth_think
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function MegaHealth_think(self: GameEntity, runtime: GameRuntime): void {
+  if (self.owner && self.owner.health > self.owner.max_health) {
+    self.nextthink = runtime.time + 1;
+    self.think = MegaHealth_think;
+    self.owner.health -= 1;
+    return;
+  }
+
+  if ((self.spawnflags & DROPPED_ITEM) === 0 && runtime.deathmatch) {
+    SetRespawn(self, 20, runtime);
+  } else {
+    G_FreeEdict(runtime, self);
+  }
+}
+
+/**
+ * Original name: Pickup_Health
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Pickup_Health(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  if ((ent.style & HEALTH_IGNORE_MAX) === 0 && other.health >= other.max_health) {
+    return false;
+  }
+
+  other.health += ent.count;
+  if ((ent.style & HEALTH_IGNORE_MAX) === 0 && other.health > other.max_health) {
+    other.health = other.max_health;
+  }
+
+  if ((ent.style & HEALTH_TIMED) !== 0) {
+    ent.think = MegaHealth_think;
+    ent.nextthink = runtime.time + 5;
+    ent.owner = other;
+    ent.flags |= FL_RESPAWN;
+    ent.svflags |= SVF_NOCLIENT;
+    ent.solid = SOLID_NOT;
+  } else if ((ent.spawnflags & DROPPED_ITEM) === 0 && runtime.deathmatch) {
+    SetRespawn(ent, 30, runtime);
+  }
+
+  return true;
+}
+
+/**
+ * Original name: Pickup_Armor
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Pickup_Armor(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  cacheItemIndices();
+  const client = requireClient(other, "Pickup_Armor");
+  const item = ent.item;
+  if (!item) {
+    return false;
+  }
+
+  const newinfo = GetArmorInfoByItem(item);
+  const old_armor_index = ArmorIndex(other);
+
+  if (item.tag === ARMOR_SHARD) {
+    if (!old_armor_index) {
+      client.pers.inventory[jacket_armor_index] = 2;
+    } else {
+      client.pers.inventory[old_armor_index] += 2;
+    }
+  } else if (!newinfo) {
+    return false;
+  } else if (!old_armor_index) {
+    client.pers.inventory[ITEM_INDEX(item)] = newinfo.base_count;
+  } else {
+    const oldinfo = getArmorInfoByIndex(old_armor_index);
+    if (!oldinfo) {
+      return false;
+    }
+
+    if (newinfo.normal_protection > oldinfo.normal_protection) {
+      const salvage = oldinfo.normal_protection / newinfo.normal_protection;
+      const salvagecount = Math.trunc(salvage * client.pers.inventory[old_armor_index]);
+      let newcount = newinfo.base_count + salvagecount;
+      if (newcount > newinfo.max_count) {
+        newcount = newinfo.max_count;
+      }
+
+      client.pers.inventory[old_armor_index] = 0;
+      client.pers.inventory[ITEM_INDEX(item)] = newcount;
+    } else {
+      const salvage = newinfo.normal_protection / oldinfo.normal_protection;
+      const salvagecount = Math.trunc(salvage * newinfo.base_count);
+      let newcount = client.pers.inventory[old_armor_index] + salvagecount;
+      if (newcount > oldinfo.max_count) {
+        newcount = oldinfo.max_count;
+      }
+
+      if (client.pers.inventory[old_armor_index] >= newcount) {
+        return false;
+      }
+
+      client.pers.inventory[old_armor_index] = newcount;
+    }
+  }
+
+  if ((ent.spawnflags & DROPPED_ITEM) === 0 && runtime.deathmatch) {
+    SetRespawn(ent, 20, runtime);
+  }
+
+  return true;
+}
+
+/**
+ * Original name: Use_PowerArmor
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Use_PowerArmor(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  const client = requireClient(ent, "Use_PowerArmor");
+
+  if ((ent.flags & FL_POWER_ARMOR) !== 0) {
+    ent.flags &= ~FL_POWER_ARMOR;
+    emitGameSound(runtime, ent, "misc/power2.wav");
+    return;
+  }
+
+  const cells = FindItem("cells");
+  const index = ITEM_INDEX(cells);
+  if (!cells || !client.pers.inventory[index]) {
+    runtime.log({
+      kind: "message",
+      message: "PRINT_2: No cells for power armor.",
+      entityIndex: ent.index,
+      entityClassname: ent.classname
+    });
+    return;
+  }
+
+  ent.flags |= FL_POWER_ARMOR;
+  emitGameSound(runtime, ent, "misc/power1.wav");
+  void item;
+}
+
+/**
+ * Original name: Pickup_PowerArmor
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Pickup_PowerArmor(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  const client = requireClient(other, "Pickup_PowerArmor");
+  const item = ent.item;
+  if (!item) {
+    return false;
+  }
+
+  const index = ITEM_INDEX(item);
+  const quantity = client.pers.inventory[index];
+  client.pers.inventory[index] += 1;
+
+  if (runtime.deathmatch) {
+    if ((ent.spawnflags & DROPPED_ITEM) === 0) {
+      SetRespawn(ent, item.quantity, runtime);
+    }
+    if (!quantity) {
+      Use_PowerArmor(other, item, runtime);
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Original name: Drop_PowerArmor
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Drop_PowerArmor(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  const client = requireClient(ent, "Drop_PowerArmor");
+  if ((ent.flags & FL_POWER_ARMOR) !== 0 && client.pers.inventory[ITEM_INDEX(item)] === 1) {
+    Use_PowerArmor(ent, item, runtime);
+  }
+  Drop_General(ent, item, runtime);
+}
+
+/**
+ * Original name: Touch_Item
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Executes one item pickup path, including pickup/use side effects, touch disable, target firing and cleanup/respawn.
+ */
+export function Touch_Item(ent: GameEntity, other: GameEntity, runtime: GameRuntime): void {
+  if (!other.client) {
+    return;
+  }
+  if (other.health < 1) {
+    return;
+  }
+  if (!ent.item?.pickup) {
+    return;
+  }
+
+  const taken = callItemPickup(ent, other, runtime);
+  if (!taken) {
+    return;
+  }
+
+  other.client.bonus_alpha = 0.25;
+  other.client.ps.stats[0] = ent.item.icon ? registerGameImage(runtime, ent.item.icon) : 0;
+  other.client.pers.selected_item = ITEM_INDEX(ent.item);
+  other.client.pickup_msg_time = runtime.time + 3.0;
+
+  if (ent.item.pickupSound) {
+    emitGameSound(runtime, other, ent.item.pickupSound);
+  }
+
+  if ((ent.spawnflags & ITEM_TARGETS_USED) === 0) {
+    G_UseTargets(runtime, ent, other);
+    ent.spawnflags |= ITEM_TARGETS_USED;
+  }
+
+  if ((ent.spawnflags & DROPPED_ITEM) !== 0) {
+    G_FreeEdict(runtime, ent);
+    return;
+  }
+
+  if ((ent.spawnflags & DROPPED_PLAYER_ITEM) !== 0) {
+    if ((ent.flags & FL_RESPAWN) !== 0) {
+      ent.flags &= ~FL_RESPAWN;
+    } else {
+      G_FreeEdict(runtime, ent);
+    }
+    return;
+  }
+
+  ent.svflags |= SVF_NOCLIENT;
+  ent.solid = SOLID_NOT;
+  ent.touch = undefined;
+  linkGameEntity(runtime, ent);
+}
+
+function drop_temp_touch(ent: GameEntity, other: GameEntity, runtime: GameRuntime): void {
+  if (other === ent.owner) {
+    return;
+  }
+
+  Touch_Item(ent, other, runtime);
+}
+
+function drop_make_touchable(ent: GameEntity, runtime: GameRuntime): void {
+  ent.touch = Touch_Item;
+  if (runtime.deathmatch) {
+    ent.nextthink = runtime.time + 29;
+    ent.think = (self, localRuntime) => G_FreeEdict(localRuntime, self);
+  }
+}
+
+/**
+ * Original name: Drop_Item
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Drop_Item(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): GameEntity {
+  const dropped = spawnGameEntity(runtime);
+  dropped.classname = item.classname;
+  dropped.item = item;
+  dropped.spawnflags = DROPPED_ITEM;
+  dropped.s.effects = item.worldModelFlags;
+  dropped.s.renderfx = RF_GLOW;
+  dropped.mins = [-15, -15, -15];
+  dropped.maxs = [15, 15, 15];
+  dropped.solid = SOLID_TRIGGER;
+  dropped.movetype = MOVETYPE_TOSS;
+  dropped.touch = drop_temp_touch;
+  dropped.owner = ent;
+
+  if (item.worldModel) {
+    dropped.s.modelindex = registerGameModel(runtime, item.worldModel);
+  }
+
+  const angles = ent.client ? ent.client.v_angle : ent.s.angles;
+  const { forward, right } = AngleVectors(angles);
+  const offset: [number, number, number] = [24, 0, -16];
+  const origin = G_ProjectSource(ent.s.origin, offset, forward, right);
+  dropped.origin = [...origin];
+  dropped.s.origin = [...origin];
+  dropped.velocity = [forward[0] * 100, forward[1] * 100, 300];
+
+  dropped.think = drop_make_touchable;
+  dropped.nextthink = runtime.time + 1;
+  linkGameEntity(runtime, dropped);
+  return dropped;
+}
+
+/**
+ * Original name: Use_Item
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function Use_Item(ent: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  ent.svflags &= ~SVF_NOCLIENT;
+  ent.use = undefined;
+
+  if ((ent.spawnflags & ITEM_NO_TOUCH) !== 0) {
+    ent.solid = SOLID_BBOX;
+    ent.touch = undefined;
+  } else {
+    ent.solid = SOLID_TRIGGER;
+    ent.touch = Touch_Item;
+  }
+
   linkGameEntity(runtime, ent);
 }
 
@@ -533,8 +1315,27 @@ export function droptofloor(ent: GameEntity, runtime: GameRuntime): void {
  * - Focuses on the spawn-time visual fields needed by later client/entity rendering phases.
  */
 export function SpawnItem(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  if (ent.spawnflags !== 0 && ent.classname !== "key_power_cube") {
+    ent.spawnflags = 0;
+  }
+
+  if (runtime.deathmatch && (runtime.dmflags & DF_NO_ITEMS) !== 0 && (item.flags & IT_KEY) === 0) {
+    G_FreeEdict(runtime, ent);
+    return;
+  }
+
   PrecacheItem(runtime, item);
 
+  if (runtime.coop && ent.classname === "key_power_cube") {
+    ent.spawnflags |= (1 << (8 + runtime.power_cubes));
+    runtime.power_cubes += 1;
+  }
+
+  if (runtime.coop && (item.flags & IT_STAY_COOP) !== 0) {
+    item = { ...item, drop: null };
+  }
+
+  ent.item = item;
   ent.itemIndex = item.index;
   ent.itemClassname = item.classname;
   ent.itemPickupName = item.pickupName;
@@ -560,6 +1361,11 @@ export function SpawnItem(ent: GameEntity, item: GameItemDefinition, runtime: Ga
  * - Spawns the medium health pickup.
  */
 export function SP_item_health(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch && (runtime.dmflags & DF_NO_HEALTH) !== 0) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
   self.model = "models/items/healing/medium/tris.md2";
   self.count = 10;
   const item = FindItem("Health");
@@ -579,6 +1385,11 @@ export function SP_item_health(self: GameEntity, runtime: GameRuntime): void {
  * - Spawns the small stimpack health pickup.
  */
 export function SP_item_health_small(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch && (runtime.dmflags & DF_NO_HEALTH) !== 0) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
   self.model = "models/items/healing/stimpack/tris.md2";
   self.count = 2;
   const item = FindItem("Health");
@@ -599,6 +1410,11 @@ export function SP_item_health_small(self: GameEntity, runtime: GameRuntime): vo
  * - Spawns the large health pickup.
  */
 export function SP_item_health_large(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch && (runtime.dmflags & DF_NO_HEALTH) !== 0) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
   self.model = "models/items/healing/large/tris.md2";
   self.count = 25;
   const item = FindItem("Health");
@@ -618,6 +1434,11 @@ export function SP_item_health_large(self: GameEntity, runtime: GameRuntime): vo
  * - Spawns the mega-health pickup.
  */
 export function SP_item_health_mega(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch && (runtime.dmflags & DF_NO_HEALTH) !== 0) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
   self.model = "models/items/mega_h/tris.md2";
   self.count = 100;
   const item = FindItem("Health");
@@ -626,4 +1447,119 @@ export function SP_item_health_mega(self: GameEntity, runtime: GameRuntime): voi
   }
   self.style = HEALTH_IGNORE_MAX | HEALTH_TIMED;
   registerGameSound(runtime, "items/m_health.wav");
+}
+
+function ITEM_INDEX(item: GameItemDefinition | null): number {
+  return item?.index ?? 0;
+}
+
+function requireClient(ent: GameEntity, caller: string) {
+  if (!ent.client) {
+    throw new Error(`${caller}: entity #${ent.index} has no client`);
+  }
+
+  return ent.client;
+}
+
+function getArmorInfoByIndex(index: number): GameItemArmorInfo | null {
+  if (index === jacket_armor_index) {
+    return jacketarmor_info;
+  }
+  if (index === combat_armor_index) {
+    return combatarmor_info;
+  }
+  if (index === body_armor_index) {
+    return bodyarmor_info;
+  }
+  return null;
+}
+
+function getAmmoMax(client: NonNullable<GameEntity["client"]>, tag: number): number {
+  switch (tag) {
+    case AMMO_BULLETS:
+      return client.pers.max_bullets;
+    case AMMO_SHELLS:
+      return client.pers.max_shells;
+    case AMMO_ROCKETS:
+      return client.pers.max_rockets;
+    case AMMO_GRENADES:
+      return client.pers.max_grenades;
+    case AMMO_CELLS:
+      return client.pers.max_cells;
+    case AMMO_SLUGS:
+      return client.pers.max_slugs;
+    default:
+      return 0;
+  }
+}
+
+function grantAmmoPickup(client: NonNullable<GameEntity["client"]>, pickupName: string): void {
+  const item = FindItem(pickupName);
+  if (!item) {
+    return;
+  }
+
+  const index = ITEM_INDEX(item);
+  client.pers.inventory[index] += item.quantity;
+  const max = getAmmoMax(client, item.tag);
+  if (client.pers.inventory[index] > max) {
+    client.pers.inventory[index] = max;
+  }
+}
+
+function callItemPickup(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
+  switch (ent.item?.pickup) {
+    case "Pickup_Armor":
+      return Pickup_Armor(ent, other, runtime);
+    case "Pickup_PowerArmor":
+      return Pickup_PowerArmor(ent, other, runtime);
+    case "Pickup_Weapon":
+      return Pickup_Weapon(ent, other, ent.item, runtime, { Add_Ammo, SetRespawn });
+    case "Pickup_Ammo":
+      return Pickup_Ammo(ent, other, runtime);
+    case "Pickup_Powerup":
+      return Pickup_Powerup(ent, other, runtime);
+    case "Pickup_AncientHead":
+      return Pickup_AncientHead(ent, other, runtime);
+    case "Pickup_Adrenaline":
+      return Pickup_Adrenaline(ent, other, runtime);
+    case "Pickup_Bandolier":
+      return Pickup_Bandolier(ent, other, runtime);
+    case "Pickup_Pack":
+      return Pickup_Pack(ent, other, runtime);
+    case "Pickup_Key":
+      return Pickup_Key(ent, other, runtime);
+    case "Pickup_Health":
+      return Pickup_Health(ent, other, runtime);
+    default:
+      return false;
+  }
+}
+
+function callItemUse(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  switch (item.use) {
+    case "Use_PowerArmor":
+      Use_PowerArmor(ent, item, runtime);
+      break;
+    case "Use_Weapon":
+      Use_Weapon(ent, item, runtime);
+      break;
+    case "Use_Quad":
+      Use_Quad(ent, item, runtime);
+      break;
+    case "Use_Invulnerability":
+      Use_Invulnerability(ent, item, runtime);
+      break;
+    case "Use_Silencer":
+      Use_Silencer(ent, item, runtime);
+      break;
+    case "Use_Breather":
+      Use_Breather(ent, item, runtime);
+      break;
+    case "Use_Envirosuit":
+      Use_Envirosuit(ent, item, runtime);
+      break;
+    default:
+      break;
+  }
 }

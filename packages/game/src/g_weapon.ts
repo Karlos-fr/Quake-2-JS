@@ -9,8 +9,8 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - This first pass focuses on projectile entity allocation and spawn-side state.
- * - Touch / think combat callbacks remain explicit hooks until `g_combat.c` and the missing impact helpers are ported.
+ * - Keeps explicit hook overrides for touch/think, damage and temp-entity emission so adapters can stay decoupled.
+ * - One-shot world sounds are queued through the gameplay runtime sound bridge pending full backend audio wiring.
  *
  * Notes:
  * - This file is intended to stay close to the original C source.
@@ -44,6 +44,7 @@ import {
   freeGameEntity,
   DAMAGE_BULLET,
   DAMAGE_ENERGY,
+  DAMAGE_NO_KNOCKBACK,
   DAMAGE_RADIUS,
   FL_IMMUNE_LASER,
   FRAMETIME,
@@ -59,6 +60,7 @@ import {
   MOD_HELD_GRENADE,
   MOD_HG_SPLASH,
   MOD_HYPERBLASTER,
+  MOD_HIT,
   MOD_RAILGUN,
   SPLASH_BLUE_WATER,
   SPLASH_BROWN_WATER,
@@ -80,6 +82,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
+import { infront } from "./g_ai.js";
 import { CanDamage, T_Damage, T_RadiusDamage } from "./g_combat.js";
 import { findradius } from "./g_utils.js";
 import { PlayerNoise } from "./p_weapon.js";
@@ -128,6 +131,98 @@ export interface GameWeaponWorldHooks {
     runtime: GameRuntime
   ) => void;
   rocket_touch?: (self: GameEntity, other: GameEntity, runtime: GameRuntime) => void;
+}
+
+/**
+ * Original name: fire_hit
+ * Source: game/g_weapon.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resolves one melee hit test, damage application and special knockback push on the current enemy.
+ *
+ * Porting notes:
+ * - Damage application remains delegated through `T_Damage`.
+ */
+export function fire_hit(
+  self: GameEntity,
+  aim: vec3_t,
+  damage: number,
+  kick: number,
+  runtime: GameRuntime,
+  hooks: GameWeaponWorldHooks = {}
+): boolean {
+  if (!runtime.collision || !self.enemy) {
+    return false;
+  }
+
+  const enemy = self.enemy;
+  const enemyOffset = subtractVec3(enemy.s.origin, self.s.origin);
+  const range = vec3Length(enemyOffset);
+  if (range > aim[0]) {
+    return false;
+  }
+
+  let adjustedAimY = aim[1];
+  if (!(adjustedAimY > self.mins[0] && adjustedAimY < self.maxs[0])) {
+    if (adjustedAimY < 0) {
+      adjustedAimY = enemy.mins[0];
+    } else {
+      adjustedAimY = enemy.maxs[0];
+    }
+  }
+
+  let point = addVec3(self.s.origin, scaleVec3(enemyOffset, range));
+  const trace = runtime.collision.trace(self.s.origin, [0, 0, 0], [0, 0, 0], point, self, MASK_SHOT);
+  const traceEntity = trace.ent as GameEntity | null;
+  let damageTarget = traceEntity;
+  if (trace.fraction < 1) {
+    if (!damageTarget || !isDamageable(damageTarget, hooks)) {
+      return false;
+    }
+    if (((damageTarget.svflags & SVF_MONSTER) !== 0) || damageTarget.client !== null) {
+      damageTarget = enemy;
+    }
+  }
+
+  const vectors = AngleVectors(self.s.angles);
+  point = addVec3(self.s.origin, scaleVec3(vectors.forward, range));
+  point = addVec3(point, scaleVec3(vectors.right, adjustedAimY));
+  point = addVec3(point, scaleVec3(vectors.up, aim[2]));
+  const dir = subtractVec3(point, enemy.s.origin);
+
+  if (!damageTarget) {
+    return false;
+  }
+
+  directDamage(
+    damageTarget,
+    self,
+    self,
+    dir,
+    point,
+    [0, 0, 0],
+    damage,
+    Math.trunc(kick / 2),
+    DAMAGE_NO_KNOCKBACK,
+    MOD_HIT,
+    runtime,
+    hooks
+  );
+
+  if ((damageTarget.svflags & SVF_MONSTER) === 0 && !damageTarget.client) {
+    return false;
+  }
+
+  let pushDir = addVec3(enemy.absmin, scaleVec3(enemy.size, 0.5));
+  pushDir = subtractVec3(pushDir, point);
+  pushDir = normalizeVec3(pushDir);
+  enemy.velocity = addVec3(enemy.velocity, scaleVec3(pushDir, kick));
+  if (enemy.velocity[2] > 0) {
+    enemy.groundentity = null;
+  }
+  return true;
 }
 
 /**
@@ -183,7 +278,18 @@ export function fire_blaster(
 
   refreshEntitySpatialState(bolt);
   linkGameEntity(runtime, bolt);
-  hooks.check_dodge?.(self, bolt.s.origin, normalizedDir, speed, runtime);
+  if (self.client) {
+    (hooks.check_dodge ?? check_dodge)(self, bolt.s.origin, normalizedDir, speed, runtime);
+  }
+
+  if (runtime.collision) {
+    const trace = runtime.collision.trace(self.s.origin, [0, 0, 0], [0, 0, 0], bolt.s.origin, bolt, MASK_SHOT);
+    if (trace.fraction < 1.0 && bolt.touch && trace.ent) {
+      bolt.s.origin = addVec3(bolt.s.origin, scaleVec3(normalizedDir, -10));
+      bolt.origin = [...bolt.s.origin];
+      bolt.touch(bolt, trace.ent as GameEntity, runtime);
+    }
+  }
   return bolt;
 }
 
@@ -359,7 +465,9 @@ export function fire_rocket(
 
   refreshEntitySpatialState(rocket);
   linkGameEntity(runtime, rocket);
-  hooks.check_dodge?.(self, rocket.s.origin, normalizedDir, speed, runtime);
+  if (self.client) {
+    (hooks.check_dodge ?? check_dodge)(self, rocket.s.origin, normalizedDir, speed, runtime);
+  }
   return rocket;
 }
 
@@ -414,7 +522,9 @@ export function fire_bfg(
 
   refreshEntitySpatialState(bfg);
   linkGameEntity(runtime, bfg);
-  hooks.check_dodge?.(self, bfg.s.origin, normalizedDir, speed, runtime);
+  if (self.client) {
+    (hooks.check_dodge ?? check_dodge)(self, bfg.s.origin, normalizedDir, speed, runtime);
+  }
   return bfg;
 }
 
@@ -946,6 +1056,52 @@ function normalizeVec3(vector: vec3_t): vec3_t {
     return [0, 0, 0];
   }
   return [vector[0] / length, vector[1] / length, vector[2] / length];
+}
+
+/**
+ * Original name: check_dodge
+ * Source: game/g_weapon.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Traces ahead of one non-instant shot and triggers a monster dodge callback when conditions match.
+ *
+ * Porting notes:
+ * - Uses runtime skill/collision state and reuses the existing `infront` gameplay helper.
+ */
+function check_dodge(
+  self: GameEntity,
+  start: vec3_t,
+  dir: vec3_t,
+  speed: number,
+  runtime: GameRuntime
+): void {
+  if (!runtime.collision) {
+    return;
+  }
+
+  if (runtime.skill === 0 && Math.random() > 0.25) {
+    return;
+  }
+
+  const end = addVec3(start, scaleVec3(dir, 8192));
+  const trace = runtime.collision.trace(start, [0, 0, 0], [0, 0, 0], end, self, MASK_SHOT);
+  const hit = trace.ent as GameEntity | null;
+  if (!hit) {
+    return;
+  }
+
+  if (
+    (hit.svflags & SVF_MONSTER) !== 0 &&
+    hit.health > 0 &&
+    hit.monsterinfo.dodge &&
+    infront(hit, self)
+  ) {
+    const v = subtractVec3(trace.endpos, start);
+    const eta = (vec3Length(v) - hit.maxs[0]) / speed;
+    hit.monsterinfo.dodge(hit, self, eta, runtime);
+  }
 }
 
 /**

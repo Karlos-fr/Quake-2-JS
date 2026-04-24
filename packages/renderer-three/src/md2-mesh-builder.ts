@@ -14,6 +14,17 @@
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
 import { parseMd2, parsePcx, type Md2Model } from "../../formats/src/index.js";
 import {
+  AngleVectors,
+  DotProduct,
+  RF_SHELL_BLUE,
+  RF_SHELL_DOUBLE,
+  RF_SHELL_GREEN,
+  RF_SHELL_HALF_DAM,
+  RF_SHELL_RED,
+  DirFromByte
+} from "../../qcommon/src/index.js";
+import { POWERSUIT_SCALE } from "../../client/src/ref.js";
+import {
   BackSide,
   BufferAttribute,
   BufferGeometry,
@@ -51,6 +62,23 @@ export interface Md2MeshInstance {
  */
 export interface Md2MeshBuildOptions {
   skinPath?: string;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe the renderer-facing alias entity state needed by the strict `GL_LerpVerts`-style MD2 interpolation path.
+ *
+ * Constraints:
+ * - Must preserve the original frame/origin/angle/backlerp payload expected by `ref_gl/gl_mesh.c`.
+ */
+export interface Md2AliasEntityState {
+  frame: number;
+  oldframe: number;
+  backlerp: number;
+  flags: number;
+  origin: [number, number, number];
+  oldorigin: [number, number, number];
+  angles: [number, number, number];
 }
 
 /**
@@ -182,6 +210,105 @@ export function applyMd2LerpedFrame(
     array[writeIndex + 2] =
       (previousFrame.positions[vertexIndex + 2] * backlerp) +
       (currentFrame.positions[vertexIndex + 2] * frontlerp);
+    writeIndex += 3;
+  }
+
+  positionAttribute.needsUpdate = true;
+  meshInstance.mesh.geometry.computeVertexNormals();
+}
+
+/**
+ * Original name: GL_LerpVerts / GL_DrawAliasFrameLerp
+ * Source: ref_gl/gl_mesh.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies Quake II alias-model vertex interpolation using compressed MD2 vertices plus
+ *   frame scale/translate and the original `oldorigin/origin` local-space movement correction.
+ *
+ * Porting notes:
+ * - Reuses decoded mesh topology from this adapter but preserves the original lerp math and shell offset semantics.
+ */
+export function applyMd2AliasFrameLerp(meshInstance: Md2MeshInstance, entityState: Md2AliasEntityState): void {
+  const frame = meshInstance.model.frames[entityState.frame];
+  if (!frame) {
+    return;
+  }
+
+  const oldframe = meshInstance.model.frames[entityState.oldframe];
+  if (!oldframe || entityState.frame === entityState.oldframe || entityState.backlerp <= 0) {
+    applyMd2Frame(meshInstance, entityState.frame);
+    return;
+  }
+
+  const positionAttribute = meshInstance.mesh.geometry.getAttribute("position") as BufferAttribute | undefined;
+  if (!positionAttribute) {
+    return;
+  }
+
+  const frontlerp = 1 - entityState.backlerp;
+  const vectors = AngleVectors(entityState.angles);
+  const delta: [number, number, number] = [
+    entityState.oldorigin[0] - entityState.origin[0],
+    entityState.oldorigin[1] - entityState.origin[1],
+    entityState.oldorigin[2] - entityState.origin[2]
+  ];
+
+  const move: [number, number, number] = [
+    DotProduct(delta, vectors.forward),
+    -DotProduct(delta, vectors.right),
+    DotProduct(delta, vectors.up)
+  ];
+
+  move[0] += oldframe.translate[0];
+  move[1] += oldframe.translate[1];
+  move[2] += oldframe.translate[2];
+
+  move[0] = entityState.backlerp * move[0] + frontlerp * frame.translate[0];
+  move[1] = entityState.backlerp * move[1] + frontlerp * frame.translate[1];
+  move[2] = entityState.backlerp * move[2] + frontlerp * frame.translate[2];
+
+  const frontv: [number, number, number] = [
+    frontlerp * frame.scale[0],
+    frontlerp * frame.scale[1],
+    frontlerp * frame.scale[2]
+  ];
+  const backv: [number, number, number] = [
+    entityState.backlerp * oldframe.scale[0],
+    entityState.backlerp * oldframe.scale[1],
+    entityState.backlerp * oldframe.scale[2]
+  ];
+  const shell = hasShellFlags(entityState.flags);
+
+  const array = positionAttribute.array as Float32Array;
+  let writeIndex = 0;
+
+  for (const sourceVertexIndex of meshInstance.vertexIndices) {
+    const v = frame.verts[sourceVertexIndex];
+    const ov = oldframe.verts[sourceVertexIndex];
+    if (!v || !ov) {
+      array[writeIndex] = 0;
+      array[writeIndex + 1] = 0;
+      array[writeIndex + 2] = 0;
+      writeIndex += 3;
+      continue;
+    }
+
+    let x = move[0] + ov.v[0] * backv[0] + v.v[0] * frontv[0];
+    let y = move[1] + ov.v[1] * backv[1] + v.v[1] * frontv[1];
+    let z = move[2] + ov.v[2] * backv[2] + v.v[2] * frontv[2];
+
+    if (shell) {
+      const normal = DirFromByte(frame.verts[sourceVertexIndex]?.lightnormalindex);
+      x += normal[0] * POWERSUIT_SCALE;
+      y += normal[1] * POWERSUIT_SCALE;
+      z += normal[2] * POWERSUIT_SCALE;
+    }
+
+    array[writeIndex] = x;
+    array[writeIndex + 1] = y;
+    array[writeIndex + 2] = z;
     writeIndex += 3;
   }
 
@@ -349,4 +476,8 @@ function loadMd2SkinTexture(filesystem: VirtualFilesystem, path: string): Textur
   } catch {
     return null;
   }
+}
+
+function hasShellFlags(flags: number): boolean {
+  return (flags & (RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE | RF_SHELL_DOUBLE | RF_SHELL_HALF_DAM)) !== 0;
 }

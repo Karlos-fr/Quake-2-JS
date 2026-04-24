@@ -228,6 +228,39 @@ export function R_PushDlights(runtime: GlLightRuntime): void {
 }
 
 /**
+ * Original source path: R_DrawInlineBModel -> R_MarkLights
+ * Source: ref_gl/gl_rsurf.c + ref_gl/gl_light.c
+ * Category: Ported integration
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Marks dynamic lights against the current inline brush model using the same `R_MarkLights` routine as the world model.
+ *
+ * Porting notes:
+ * - This keeps the `gl_light.c` behavior attached to the light runtime while exposing the hook shape consumed by `gl_rsurf.c`.
+ */
+export function R_MarkModelLights(runtime: GlLightRuntime, model: model_t): void {
+  const refdef = runtime.r_newrefdef;
+  if (!refdef || runtime.gl_flashblend) {
+    return;
+  }
+
+  const previousWorldModel = runtime.r_worldmodel;
+  runtime.r_worldmodel = model;
+  try {
+    const rootNode = model.nodes[model.firstnode] ?? model.nodes[0] ?? null;
+    for (let index = 0; index < refdef.num_dlights; index += 1) {
+      const light = refdef.dlights[index];
+      if (light) {
+        R_MarkLights(runtime, light, 1 << index, rootNode);
+      }
+    }
+  } finally {
+    runtime.r_worldmodel = previousWorldModel;
+  }
+}
+
+/**
  * Original name: RecursiveLightPoint
  * Source: ref_gl/gl_light.c
  * Category: Ported
@@ -437,7 +470,7 @@ export function R_AddDynamicLights(runtime: GlLightRuntime, surf: msurface_t): v
     let blocklightIndex = 0;
     let ftacc = 0;
     for (let t = 0; t < tmax; t += 1, ftacc += 16) {
-      let td = local1 - ftacc;
+      let td = Math.trunc(local1 - ftacc);
       if (td < 0) {
         td = -td;
       }
@@ -660,6 +693,33 @@ export function createGlLightRsurfHooks(runtime: GlLightRuntime) {
     },
     buildLightMap: (surface: msurface_t, dest: Uint8Array, stride: number) => {
       R_BuildLightMap(runtime, surface, dest, stride);
+    },
+    markBrushModelLights: (model: model_t) => {
+      R_MarkModelLights(runtime, model);
+    }
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Expose `gl_light.c` hooks in the shape consumed by the `gl_rmain.c` port.
+ *
+ * Constraints:
+ * - Must delegate directly to the source-port routines (`R_PushDlights`, `R_RenderDlights`, `R_LightPoint`).
+ * - Must return a fresh color vector for `lightPoint` without mutating caller-owned input vectors.
+ */
+export function createGlLightRmainHooks(runtime: GlLightRuntime) {
+  return {
+    pushDlights: (): void => {
+      R_PushDlights(runtime);
+    },
+    renderDlights: (): void => {
+      R_RenderDlights(runtime);
+    },
+    lightPoint: (origin: vec3_t): vec3_t => {
+      const color: vec3_t = [0, 0, 0];
+      R_LightPoint(runtime, [origin[0], origin[1], origin[2]], color);
+      return color;
     }
   };
 }

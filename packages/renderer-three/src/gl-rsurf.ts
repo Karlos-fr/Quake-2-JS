@@ -35,6 +35,7 @@ import { RDF_NOWORLDMODEL } from "../../qcommon/src/index.js";
 import { Mod_ClusterPVS } from "./gl-model-loader.js";
 import {
   createGlPoly,
+  SURF_DRAWSKY,
   SURF_DRAWTURB,
   SURF_PLANEBACK,
   VERTEXSIZE,
@@ -47,6 +48,7 @@ import {
   type msurface_t,
   type mtexinfo_t
 } from "./gl-model.js";
+import type { GlRmainRuntime } from "./gl-rmain.js";
 
 export const DYNAMIC_LIGHT_WIDTH = 128;
 export const DYNAMIC_LIGHT_HEIGHT = 128;
@@ -161,6 +163,7 @@ export interface GlRsurfRuntime {
   currentEntityAlpha: number | null;
   showTriangleOutlines: boolean;
   lightmapOnly: boolean;
+  fullbrightEnabled: boolean;
   flashblendEnabled: boolean;
   gl_lms: GlLightmapState;
   hooks: GlRsurfHooks;
@@ -199,6 +202,7 @@ export function createGlRsurfRuntime(hooks: GlRsurfHooks = {}): GlRsurfRuntime {
     currentEntityAlpha: null,
     showTriangleOutlines: false,
     lightmapOnly: false,
+    fullbrightEnabled: false,
     flashblendEnabled: false,
     gl_lms: {
       internal_format: 0,
@@ -262,7 +266,7 @@ export function LM_AllocBlock(runtime: GlRsurfRuntime, w: number, h: number): { 
   let bestX = -1;
   let bestY = -1;
 
-  for (let index = 0; index <= BLOCK_WIDTH - w; index += 1) {
+  for (let index = 0; index < BLOCK_WIDTH - w; index += 1) {
     let best2 = 0;
     let offset = 0;
     for (; offset < w; offset += 1) {
@@ -306,9 +310,10 @@ export function LM_AllocBlock(runtime: GlRsurfRuntime, w: number, h: number): { 
  * - GPU upload is deferred to a hook until the backend GL texture path is ported.
  */
 export function LM_UploadBlock(runtime: GlRsurfRuntime, dynamic: boolean): void {
+  const textureIndex = dynamic ? 0 : runtime.gl_lms.current_lightmap_texture;
   runtime.hooks.uploadLightmapBlock?.(
     dynamic,
-    runtime.gl_lms.current_lightmap_texture,
+    textureIndex,
     runtime.gl_lms.lightmap_buffer
   );
 
@@ -330,6 +335,10 @@ export function LM_UploadBlock(runtime: GlRsurfRuntime, dynamic: boolean): void 
  * - Allocates one surface rectangle inside the current lightmap atlas and asks the light builder to populate it.
  */
 export function GL_CreateSurfaceLightmap(runtime: GlRsurfRuntime, surf: msurface_t): void {
+  if ((surf.flags & (SURF_DRAWSKY | SURF_DRAWTURB)) !== 0) {
+    return;
+  }
+
   const smax = (surf.extents[0] >> 4) + 1;
   const tmax = (surf.extents[1] >> 4) + 1;
 
@@ -471,7 +480,22 @@ export function R_RenderBrushPoly(runtime: GlRsurfRuntime, fa: msurface_t): imag
     runtime.hooks.renderBrushPoly?.(fa, image);
   }
 
-  queueSurfaceLightmap(runtime, fa, fa.lightmaptexturenum);
+  const dynamicState = evaluateDynamicLightmapState(runtime, fa);
+  if (dynamicState.isDynamic) {
+    if (dynamicState.canUseSurfaceLightmapTexture) {
+      const smax = (fa.extents[0] >> 4) + 1;
+      const tmax = (fa.extents[1] >> 4) + 1;
+      const temp = new Uint8Array(smax * tmax * LIGHTMAP_BYTES);
+      runtime.hooks.buildLightMap?.(fa, temp, smax * LIGHTMAP_BYTES);
+      runtime.hooks.setCacheState?.(fa);
+      runtime.hooks.uploadSurfaceLightmap?.(fa, fa.lightmaptexturenum, smax, tmax, temp);
+      queueSurfaceLightmap(runtime, fa, fa.lightmaptexturenum);
+    } else {
+      queueSurfaceLightmap(runtime, fa, 0);
+    }
+  } else {
+    queueSurfaceLightmap(runtime, fa, fa.lightmaptexturenum);
+  }
   return image;
 }
 
@@ -566,6 +590,10 @@ export function DrawGLPolyChain(
  *   atlas updates and chain dispatch.
  */
 export function R_BlendLightmaps(runtime: GlRsurfRuntime): void {
+  if (runtime.fullbrightEnabled) {
+    return;
+  }
+
   const worldmodel = runtime.r_worldmodel;
   if (!worldmodel?.lightdata) {
     return;
@@ -1284,6 +1312,24 @@ export function setMultitextureEnabled(runtime: GlRsurfRuntime, enabled: boolean
 
 /**
  * Category: New
+ * Purpose: Mirror the multitexture availability resolved during `R_Init` into the `gl_rsurf.c` runtime.
+ *
+ * Constraints:
+ * - Must only enable the multitexture split path when both SGIS procedures were resolved and the cvar allows it.
+ */
+export function syncRsurfMultitextureFromRmain(
+  runtime: GlRsurfRuntime,
+  rmain: Pick<GlRmainRuntime, "gl_ext_multitexture" | "qglMTexCoord2fSGIS" | "qglSelectTextureSGIS">
+): void {
+  runtime.multitextureEnabled = Boolean(
+    rmain.gl_ext_multitexture?.value
+    && rmain.qglMTexCoord2fSGIS
+    && rmain.qglSelectTextureSGIS
+  );
+}
+
+/**
+ * Category: New
  * Purpose: Toggle the original `gl_showtris` debug visualization path.
  */
 export function setShowTriangleOutlines(runtime: GlRsurfRuntime, enabled: boolean): void {
@@ -1296,6 +1342,14 @@ export function setShowTriangleOutlines(runtime: GlRsurfRuntime, enabled: boolea
  */
 export function setLightmapOnly(runtime: GlRsurfRuntime, enabled: boolean): void {
   runtime.lightmapOnly = enabled;
+}
+
+/**
+ * Category: New
+ * Purpose: Toggle the original `r_fullbright` short-circuit for the lightmap blend pass.
+ */
+export function setFullbrightEnabled(runtime: GlRsurfRuntime, enabled: boolean): void {
+  runtime.fullbrightEnabled = enabled;
 }
 
 /**

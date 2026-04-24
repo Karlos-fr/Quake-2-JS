@@ -123,6 +123,7 @@ export function startWebDemoLoop(options: WebDemoLoopOptions): void {
     if (!glWorldAdapter) {
       brushModelSync.apply(brushModelSnapshots);
     }
+    refreshEntitySync.setAliasShadowsEnabled(cameraController.getCvarValue("gl_shadows") !== 0);
     const refreshEntityStats = refreshEntitySync.apply(cameraController.runtime, cameraController.refreshFrame);
     particleSync.apply(cameraController.refreshFrame);
     refreshDebug.update(cameraController.refreshFrame);

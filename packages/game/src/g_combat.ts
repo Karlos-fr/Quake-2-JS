@@ -1,7 +1,7 @@
 /**
  * File: g_combat.ts
  * Source: Quake II original / game/g_combat.c
- * Purpose: Port the first gameplay combat helpers required by `g_weapon.c`.
+ * Purpose: Port of Quake II gameplay combat helpers and damage resolution.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,14 +9,17 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - This file currently ports only the autonomous helper subset needed by `g_weapon.c`.
- * - Full damage resolution stays outside this first combat slice.
+ * - `SpawnDamage` still emits through the explicit temp-entity hook path used by the current runtime.
+ * - Monster death-use dispatch can still be overridden through hooks to avoid a hard cycle with `g_monster.ts`.
  *
  * Notes:
  * - This file is intended to stay close to the original C source.
  */
 
 import { AngleVectors, MASK_SOLID, temp_event_t, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
+import { Info_ValueForKey } from "../../qcommon/src/common.js";
+import { FoundTarget, visible } from "./g_ai.js";
+import { AI_DUCKED, AI_GOOD_GUY, AI_SOUND_TARGET, FL_FLY, FL_SWIM } from "./g-local.js";
 import {
   DAMAGE_BULLET,
   DAMAGE_ENERGY,
@@ -83,7 +86,6 @@ export interface GameCombatHooks {
   ) => void;
   M_ReactToDamage?: (targ: GameEntity, attacker: GameEntity, runtime: GameRuntime) => void;
   monsterDeathUse?: (targ: GameEntity, runtime: GameRuntime) => void;
-  OnSameTeam?: (targ: GameEntity, attacker: GameEntity, runtime: GameRuntime) => boolean;
   T_Damage?: (
     targ: GameEntity,
     inflictor: GameEntity,
@@ -142,8 +144,8 @@ export function CheckPowerArmor(
       power = client.pers.inventory[index];
     }
   } else if ((ent.svflags & SVF_MONSTER) !== 0) {
-    powerArmorType = ent.power_armor_type;
-    power = ent.power_armor_power;
+    powerArmorType = ent.monsterinfo.power_armor_type;
+    power = ent.monsterinfo.power_armor_power;
   } else {
     return 0;
   }
@@ -188,7 +190,7 @@ export function CheckPowerArmor(
   if (client) {
     client.pers.inventory[index] -= powerUsed;
   } else {
-    ent.power_armor_power -= powerUsed;
+    ent.monsterinfo.power_armor_power -= powerUsed;
   }
 
   return save;
@@ -428,11 +430,113 @@ export function Killed(
   }
 
   if ((targ.svflags & SVF_MONSTER) !== 0 && targ.deadflag !== DEAD_DEAD) {
+    if ((targ.monsterinfo.aiflags & AI_GOOD_GUY) === 0) {
+      incrementKilledMonsters(runtime);
+      if (runtime.coop && attacker.client) {
+        attacker.client.resp.score += 1;
+      }
+      if (attacker.classname === "monster_medic") {
+        targ.owner = attacker;
+      }
+    }
+
     targ.touch = undefined;
     hooks.monsterDeathUse?.(targ, runtime);
   }
 
   targ.die?.(targ, inflictor, attacker, damage, runtime);
+}
+
+/**
+ * Original name: M_ReactToDamage
+ * Source: game/g_combat.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Updates one monster's enemy selection in response to incoming damage, preserving the original good-guy, buddy-help and pursuit rules.
+ */
+export function M_ReactToDamage(targ: GameEntity, attacker: GameEntity, runtime: GameRuntime): void {
+  if (!attacker.client && (attacker.svflags & SVF_MONSTER) === 0) {
+    return;
+  }
+
+  if (attacker === targ || attacker === targ.enemy) {
+    return;
+  }
+
+  if ((targ.monsterinfo.aiflags & AI_GOOD_GUY) !== 0) {
+    if (attacker.client || (attacker.monsterinfo.aiflags & AI_GOOD_GUY) !== 0) {
+      return;
+    }
+  }
+
+  if (attacker.client) {
+    targ.monsterinfo.aiflags &= ~AI_SOUND_TARGET;
+
+    if (targ.enemy?.client) {
+      if (visible(targ, targ.enemy, runtime)) {
+        targ.oldenemy = attacker;
+        return;
+      }
+      targ.oldenemy = targ.enemy;
+    }
+
+    targ.enemy = attacker;
+    if ((targ.monsterinfo.aiflags & AI_DUCKED) === 0) {
+      FoundTarget(targ, runtime);
+    }
+    return;
+  }
+
+  if (
+    (targ.flags & (FL_FLY | FL_SWIM)) === (attacker.flags & (FL_FLY | FL_SWIM)) &&
+    targ.classname !== attacker.classname &&
+    attacker.classname !== "monster_tank" &&
+    attacker.classname !== "monster_supertank" &&
+    attacker.classname !== "monster_makron" &&
+    attacker.classname !== "monster_jorg"
+  ) {
+    if (targ.enemy?.client) {
+      targ.oldenemy = targ.enemy;
+    }
+    targ.enemy = attacker;
+    if ((targ.monsterinfo.aiflags & AI_DUCKED) === 0) {
+      FoundTarget(targ, runtime);
+    }
+  } else if (attacker.enemy === targ) {
+    if (targ.enemy?.client) {
+      targ.oldenemy = targ.enemy;
+    }
+    targ.enemy = attacker;
+    if ((targ.monsterinfo.aiflags & AI_DUCKED) === 0) {
+      FoundTarget(targ, runtime);
+    }
+  } else if (attacker.enemy && attacker.enemy !== targ) {
+    if (targ.enemy?.client) {
+      targ.oldenemy = targ.enemy;
+    }
+    targ.enemy = attacker.enemy;
+    if ((targ.monsterinfo.aiflags & AI_DUCKED) === 0) {
+      FoundTarget(targ, runtime);
+    }
+  }
+}
+
+/**
+ * Original name: CheckTeamDamage
+ * Source: game/g_combat.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Mirrors the original stubbed team-damage helper, which currently never blocks damage.
+ */
+export function CheckTeamDamage(targ: GameEntity, attacker: GameEntity, runtime: GameRuntime): boolean {
+  void targ;
+  void attacker;
+  void runtime;
+  return false;
 }
 
 /**
@@ -471,7 +575,7 @@ export function T_Damage(
     targ !== attacker &&
     ((runtime.deathmatch && (runtime.dmflags & (DF_MODELTEAMS | DF_SKINTEAMS)) !== 0) || runtime.coop)
   ) {
-    if (hooks.OnSameTeam?.(targ, attacker, runtime)) {
+    if (OnSameTeam(targ, attacker, runtime)) {
       if ((runtime.dmflags & DF_NO_FRIENDLY_FIRE) !== 0) {
         damage = 0;
       } else {
@@ -538,7 +642,7 @@ export function T_Damage(
   take -= asave;
   asave += save;
 
-  if ((dflags & DAMAGE_NO_PROTECTION) === 0 && (hooks.CheckTeamDamage?.(targ, attacker, runtime) ?? false)) {
+  if ((dflags & DAMAGE_NO_PROTECTION) === 0 && (hooks.CheckTeamDamage?.(targ, attacker, runtime) ?? CheckTeamDamage(targ, attacker, runtime))) {
     return;
   }
 
@@ -561,9 +665,12 @@ export function T_Damage(
   }
 
   if ((targ.svflags & SVF_MONSTER) !== 0) {
-    hooks.M_ReactToDamage?.(targ, attacker, runtime);
-    if (take) {
+    (hooks.M_ReactToDamage ?? M_ReactToDamage)(targ, attacker, runtime);
+    if ((targ.monsterinfo.aiflags & AI_DUCKED) === 0 && take) {
       targ.pain?.(targ, attacker, knockback, take, runtime);
+      if (runtime.skill === 3) {
+        targ.pain_debounce_time = runtime.time + 5;
+      }
     }
   } else if (client) {
     if ((targ.flags & FL_GODMODE) === 0 && take) {
@@ -588,6 +695,40 @@ export function T_Damage(
  */
 function dotProduct(left: vec3_t, right: vec3_t): number {
   return left[0] * right[0] + left[1] * right[1] + left[2] * right[2];
+}
+
+/**
+ * Category: New
+ * Purpose: Mirror the original `ClientTeam` parsing from `g_cmds.c` so combat can apply source-faithful friendly-fire rules.
+ */
+function ClientTeam(ent: GameEntity, runtime: GameRuntime): string {
+  if (!ent.client) {
+    return "";
+  }
+
+  const skin = Info_ValueForKey(ent.client.pers.userinfo, "skin");
+  const slash = skin.indexOf("/");
+  if (slash < 0) {
+    return skin;
+  }
+
+  if ((runtime.dmflags & DF_MODELTEAMS) !== 0) {
+    return skin.slice(0, slash);
+  }
+
+  return skin.slice(slash + 1);
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve the original `OnSameTeam` helper used by combat friendly-fire logic.
+ */
+function OnSameTeam(ent1: GameEntity, ent2: GameEntity, runtime: GameRuntime): boolean {
+  if ((runtime.dmflags & (DF_MODELTEAMS | DF_SKINTEAMS)) === 0) {
+    return false;
+  }
+
+  return ClientTeam(ent1, runtime) === ClientTeam(ent2, runtime);
 }
 
 /**
@@ -660,4 +801,13 @@ function normalizeVec3(vector: vec3_t): vec3_t {
     return [0, 0, 0];
   }
   return [vector[0] / length, vector[1] / length, vector[2] / length];
+}
+
+type GameCombatRuntimeBookkeeping = GameRuntime & {
+  killed_monsters?: number;
+};
+
+function incrementKilledMonsters(runtime: GameRuntime): void {
+  const bookkeepingRuntime = runtime as GameCombatRuntimeBookkeeping;
+  bookkeepingRuntime.killed_monsters = (bookkeepingRuntime.killed_monsters ?? 0) + 1;
 }

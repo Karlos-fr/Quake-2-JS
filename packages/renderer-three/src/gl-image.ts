@@ -21,6 +21,7 @@
 import { parsePcx, parseTga, parseWal } from "../../formats/src/index.js";
 import { ERR_DROP, ERR_FATAL, MAX_QPATH, PRINT_ALL, PRINT_DEVELOPER } from "../../qcommon/src/index.js";
 import type { image_t } from "./gl-model.js";
+import { GL_SHARED_TEXTURE_PALETTE_EXT, GL_TEXTURE0_SGIS, GL_TEXTURE1_SGIS } from "./qgl.js";
 
 export const TEXNUM_LIGHTMAPS = 1024;
 export const TEXNUM_SCRAPS = 1152;
@@ -30,13 +31,10 @@ export const MAX_SCRAPS = 1;
 export const BLOCK_WIDTH = 256;
 export const BLOCK_HEIGHT = 256;
 
-export const GL_TEXTURE0_SGIS = 0x835e;
-export const GL_TEXTURE1_SGIS = 0x835f;
 export const GL_TEXTURE_ENV = 0x2300;
 export const GL_TEXTURE_ENV_MODE = 0x2200;
 export const GL_REPLACE = 0x1e01;
 export const GL_TEXTURE_2D = 0x0de1;
-export const GL_SHARED_TEXTURE_PALETTE_EXT = 0x81fb;
 export const GL_RGB = 0x1907;
 export const GL_RGBA = 0x1908;
 export const GL_RGB8 = 0x8051;
@@ -112,11 +110,21 @@ export interface GlImageHooks {
   loadFile?: (path: string) => Uint8Array | null;
   bindTexture?: (texnum: number, tmu: number) => void;
   selectTexture?: (texture: number) => void;
+  setTexture2DEnabled?: (tmu: number, enabled: boolean) => void;
   texEnv?: (tmu: number, mode: number) => void;
   setTextureFilter?: (texnum: number, minFilter: number, magFilter: number) => void;
   deleteTexture?: (texnum: number) => void;
   uploadScrapTexture?: (texnum: number, width: number, height: number, data: Uint8Array) => void;
   uploadImage?: (image: GlImage, source: GlImageUploadSource) => GlImageUploadResult | null;
+  uploadTextureData?: (upload: {
+    level: number;
+    internalFormat: number;
+    width: number;
+    height: number;
+    format: number;
+    type: number;
+    data: Uint8Array | Uint32Array;
+  }) => void;
   setSharedTexturePalette?: (paletteRgb: Uint8Array) => void;
   Con_Printf?: (printLevel: number, message: string) => void;
   Sys_Error?: (errLevel: number, message: string) => never;
@@ -141,6 +149,7 @@ export interface GlImageRuntime {
   gl_nobind_value: boolean;
   currenttextures: [number, number];
   currenttmu: number;
+  texEnvModes: [number, number];
   inverse_intensity: number;
   d_16to8table: Uint8Array | null;
   d_8to24table: Uint32Array;
@@ -154,6 +163,9 @@ export interface GlImageRuntime {
   r_notexture: GlImage | null;
   r_particletexture: GlImage | null;
   renderer_flags: number;
+  upload_width: number;
+  upload_height: number;
+  uploaded_paletted: boolean;
   hooks: GlImageHooks;
 }
 
@@ -219,6 +231,7 @@ export function createGlImageRuntime(hooks: GlImageHooks = {}): GlImageRuntime {
     gl_nobind_value: false,
     currenttextures: [0, 0],
     currenttmu: 0,
+    texEnvModes: [-1, -1],
     inverse_intensity: 0.5,
     d_16to8table: null,
     d_8to24table: new Uint32Array(256),
@@ -232,6 +245,9 @@ export function createGlImageRuntime(hooks: GlImageHooks = {}): GlImageRuntime {
     r_notexture: null,
     r_particletexture: null,
     renderer_flags: 0,
+    upload_width: 0,
+    upload_height: 0,
+    uploaded_paletted: false,
     hooks
   };
 }
@@ -329,15 +345,17 @@ export function GL_SetTexturePalette(runtime: GlImageRuntime, palette: Uint32Arr
  * Fidelity level: Close
  */
 export function GL_EnableMultitexture(runtime: GlImageRuntime, enable: boolean): void {
-  if (!runtime.qglColorTableEXT && !hasSelectTextureHook(runtime)) {
+  if (!hasSelectTextureHook(runtime)) {
     return;
   }
 
   if (enable) {
     GL_SelectTexture(runtime, GL_TEXTURE1_SGIS);
+    runtime.hooks.setTexture2DEnabled?.(runtime.currenttmu, true);
     GL_TexEnv(runtime, GL_REPLACE);
   } else {
     GL_SelectTexture(runtime, GL_TEXTURE1_SGIS);
+    runtime.hooks.setTexture2DEnabled?.(runtime.currenttmu, false);
     GL_TexEnv(runtime, GL_REPLACE);
   }
 
@@ -372,6 +390,11 @@ export function GL_SelectTexture(runtime: GlImageRuntime, texture: number): void
  * Fidelity level: Close
  */
 export function GL_TexEnv(runtime: GlImageRuntime, mode: number): void {
+  if (runtime.texEnvModes[runtime.currenttmu] === mode) {
+    return;
+  }
+
+  runtime.texEnvModes[runtime.currenttmu] = mode;
   runtime.hooks.texEnv?.(runtime.currenttmu, mode);
 }
 
@@ -549,7 +572,11 @@ export function Scrap_AllocBlock(runtime: GlImageRuntime, w: number, h: number):
 export function Scrap_Upload(runtime: GlImageRuntime): void {
   runtime.scrap_uploads += 1;
   GL_Bind(runtime, TEXNUM_SCRAPS);
-  runtime.hooks.uploadScrapTexture?.(TEXNUM_SCRAPS, BLOCK_WIDTH, BLOCK_HEIGHT, runtime.scrap_texels[0]);
+  if (runtime.hooks.uploadScrapTexture) {
+    runtime.hooks.uploadScrapTexture(TEXNUM_SCRAPS, BLOCK_WIDTH, BLOCK_HEIGHT, runtime.scrap_texels[0]);
+  } else {
+    GL_Upload8(runtime, runtime.scrap_texels[0], BLOCK_WIDTH, BLOCK_HEIGHT, false, false);
+  }
   runtime.scrap_dirty = false;
 }
 
@@ -606,6 +633,454 @@ export function LoadTGA(runtime: GlImageRuntime, name: string): { pic: Uint8Arra
 }
 
 /**
+ * Original name: R_FloodFillSkin
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function R_FloodFillSkin(runtime: GlImageRuntime, skin: Uint8Array, skinwidth: number, skinheight: number): void {
+  const fillcolor = skin[0] ?? 0;
+  const fifoSize = 0x1000;
+  const fifoMask = fifoSize - 1;
+  const fifoX = new Int16Array(fifoSize);
+  const fifoY = new Int16Array(fifoSize);
+  let inpt = 0;
+  let outpt = 0;
+
+  let filledcolor = 0;
+  for (let i = 0; i < 256; i += 1) {
+    if ((runtime.d_8to24table[i] ?? 0) === 255) {
+      filledcolor = i;
+      break;
+    }
+  }
+
+  if (fillcolor === filledcolor || fillcolor === 255) {
+    return;
+  }
+
+  fifoX[inpt] = 0;
+  fifoY[inpt] = 0;
+  inpt = (inpt + 1) & fifoMask;
+
+  while (outpt !== inpt) {
+    const x = fifoX[outpt];
+    const y = fifoY[outpt];
+    outpt = (outpt + 1) & fifoMask;
+
+    let fdc = filledcolor;
+    const center = x + skinwidth * y;
+
+    const step = (offset: number, dx: number, dy: number): void => {
+      const value = skin[center + offset] ?? 0;
+      if (value === fillcolor) {
+        skin[center + offset] = 255;
+        fifoX[inpt] = x + dx;
+        fifoY[inpt] = y + dy;
+        inpt = (inpt + 1) & fifoMask;
+      } else if (value !== 255) {
+        fdc = value;
+      }
+    };
+
+    if (x > 0) {
+      step(-1, -1, 0);
+    }
+    if (x < skinwidth - 1) {
+      step(1, 1, 0);
+    }
+    if (y > 0) {
+      step(-skinwidth, 0, -1);
+    }
+    if (y < skinheight - 1) {
+      step(skinwidth, 0, 1);
+    }
+
+    skin[center] = fdc;
+  }
+}
+
+/**
+ * Original name: GL_ResampleTexture
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function GL_ResampleTexture(
+  input: Uint32Array,
+  inwidth: number,
+  inheight: number,
+  output: Uint32Array,
+  outwidth: number,
+  outheight: number
+): void {
+  const p1 = new Uint32Array(outwidth);
+  const p2 = new Uint32Array(outwidth);
+
+  const fracstep = Math.trunc((inwidth * 0x10000) / outwidth);
+  let frac = fracstep >> 2;
+  for (let i = 0; i < outwidth; i += 1) {
+    p1[i] = frac >> 16;
+    frac += fracstep;
+  }
+
+  frac = 3 * (fracstep >> 2);
+  for (let i = 0; i < outwidth; i += 1) {
+    p2[i] = frac >> 16;
+    frac += fracstep;
+  }
+
+  for (let i = 0; i < outheight; i += 1) {
+    const inrow = inwidth * Math.trunc(((i + 0.25) * inheight) / outheight);
+    const inrow2 = inwidth * Math.trunc(((i + 0.75) * inheight) / outheight);
+    const outrow = i * outwidth;
+
+    for (let j = 0; j < outwidth; j += 1) {
+      const c1 = input[inrow + p1[j]] ?? 0;
+      const c2 = input[inrow + p2[j]] ?? 0;
+      const c3 = input[inrow2 + p1[j]] ?? 0;
+      const c4 = input[inrow2 + p2[j]] ?? 0;
+
+      output[outrow + j] = packRgba(
+        (redOf(c1) + redOf(c2) + redOf(c3) + redOf(c4)) >> 2,
+        (greenOf(c1) + greenOf(c2) + greenOf(c3) + greenOf(c4)) >> 2,
+        (blueOf(c1) + blueOf(c2) + blueOf(c3) + blueOf(c4)) >> 2,
+        (alphaOf(c1) + alphaOf(c2) + alphaOf(c3) + alphaOf(c4)) >> 2
+      );
+    }
+  }
+}
+
+/**
+ * Original name: GL_LightScaleTexture
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function GL_LightScaleTexture(
+  runtime: GlImageRuntime,
+  texture: Uint32Array,
+  inwidth: number,
+  inheight: number,
+  only_gamma: boolean
+): void {
+  const count = inwidth * inheight;
+  for (let i = 0; i < count; i += 1) {
+    const value = texture[i] ?? 0;
+    const r = redOf(value);
+    const g = greenOf(value);
+    const b = blueOf(value);
+    const a = alphaOf(value);
+
+    const nr = only_gamma ? runtime.gammatable[r] : runtime.gammatable[runtime.intensitytable[r] ?? 0];
+    const ng = only_gamma ? runtime.gammatable[g] : runtime.gammatable[runtime.intensitytable[g] ?? 0];
+    const nb = only_gamma ? runtime.gammatable[b] : runtime.gammatable[runtime.intensitytable[b] ?? 0];
+
+    texture[i] = packRgba(nr ?? 0, ng ?? 0, nb ?? 0, a);
+  }
+}
+
+/**
+ * Original name: GL_MipMap
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function GL_MipMap(texture: Uint32Array, width: number, height: number): void {
+  const src = texture.slice(0, width * height);
+  const outWidth = Math.max(1, width >> 1);
+  const outHeight = Math.max(1, height >> 1);
+
+  for (let y = 0; y < outHeight; y += 1) {
+    const y0 = Math.min(height - 1, y * 2);
+    const y1 = Math.min(height - 1, y0 + 1);
+    for (let x = 0; x < outWidth; x += 1) {
+      const x0 = Math.min(width - 1, x * 2);
+      const x1 = Math.min(width - 1, x0 + 1);
+
+      const c1 = src[y0 * width + x0] ?? 0;
+      const c2 = src[y0 * width + x1] ?? 0;
+      const c3 = src[y1 * width + x0] ?? 0;
+      const c4 = src[y1 * width + x1] ?? 0;
+
+      texture[y * outWidth + x] = packRgba(
+        (redOf(c1) + redOf(c2) + redOf(c3) + redOf(c4)) >> 2,
+        (greenOf(c1) + greenOf(c2) + greenOf(c3) + greenOf(c4)) >> 2,
+        (blueOf(c1) + blueOf(c2) + blueOf(c3) + blueOf(c4)) >> 2,
+        (alphaOf(c1) + alphaOf(c2) + alphaOf(c3) + alphaOf(c4)) >> 2
+      );
+    }
+  }
+}
+
+/**
+ * Original name: GL_BuildPalettedTexture
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
+export function GL_BuildPalettedTexture(
+  runtime: GlImageRuntime,
+  paletted_texture: Uint8Array,
+  scaled: Uint32Array,
+  scaled_width: number,
+  scaled_height: number
+): void {
+  const table = runtime.d_16to8table;
+  for (let i = 0; i < scaled_width * scaled_height; i += 1) {
+    const pixel = scaled[i] ?? 0;
+    const r = (redOf(pixel) >> 3) & 31;
+    const g = (greenOf(pixel) >> 2) & 63;
+    const b = (blueOf(pixel) >> 3) & 31;
+    const c = r | (g << 5) | (b << 11);
+    paletted_texture[i] = table ? (table[c] ?? 0) : 0;
+  }
+}
+
+/**
+ * Original name: GL_Upload32
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function GL_Upload32(runtime: GlImageRuntime, data: Uint32Array, width: number, height: number, mipmap: boolean): boolean {
+  const maxPixels = 256 * 256;
+  const scaled = new Uint32Array(maxPixels);
+  const paletted_texture = new Uint8Array(maxPixels);
+
+  runtime.uploaded_paletted = false;
+
+  let scaled_width = nextPowerOfTwo(width);
+  let scaled_height = nextPowerOfTwo(height);
+
+  if (runtime.gl_round_down_value && scaled_width > width && mipmap) {
+    scaled_width >>= 1;
+  }
+  if (runtime.gl_round_down_value && scaled_height > height && mipmap) {
+    scaled_height >>= 1;
+  }
+
+  if (mipmap) {
+    scaled_width >>= runtime.gl_picmip_value;
+    scaled_height >>= runtime.gl_picmip_value;
+  }
+
+  if (scaled_width > 256) {
+    scaled_width = 256;
+  }
+  if (scaled_height > 256) {
+    scaled_height = 256;
+  }
+  if (scaled_width < 1) {
+    scaled_width = 1;
+  }
+  if (scaled_height < 1) {
+    scaled_height = 1;
+  }
+
+  runtime.upload_width = scaled_width;
+  runtime.upload_height = scaled_height;
+
+  if (scaled_width * scaled_height > maxPixels) {
+    failSysError(runtime, ERR_DROP, "GL_Upload32: too big");
+  }
+
+  let samples = runtime.gl_solid_format;
+  for (let i = 0; i < width * height; i += 1) {
+    if (alphaOf(data[i] ?? 0) !== 255) {
+      samples = runtime.gl_alpha_format;
+      break;
+    }
+  }
+
+  let comp = samples;
+  if (samples === runtime.gl_solid_format) {
+    comp = runtime.gl_tex_solid_format;
+  } else if (samples === runtime.gl_alpha_format) {
+    comp = runtime.gl_tex_alpha_format;
+  } else {
+    runtime.hooks.Con_Printf?.(PRINT_ALL, `Unknown number of texture components ${samples}\n`);
+  }
+
+  if (scaled_width === width && scaled_height === height) {
+    if (!mipmap) {
+      if (runtime.qglColorTableEXT && runtime.gl_ext_palettedtexture_value && samples === runtime.gl_solid_format && runtime.d_16to8table) {
+        runtime.uploaded_paletted = true;
+        GL_BuildPalettedTexture(runtime, paletted_texture, data, scaled_width, scaled_height);
+        runtime.hooks.uploadTextureData?.({
+          level: 0,
+          internalFormat: GL_COLOR_INDEX8_EXT,
+          width: scaled_width,
+          height: scaled_height,
+          format: GL_COLOR_INDEX,
+          type: GL_UNSIGNED_BYTE,
+          data: paletted_texture.subarray(0, scaled_width * scaled_height)
+        });
+      } else {
+        runtime.hooks.uploadTextureData?.({
+          level: 0,
+          internalFormat: comp,
+          width: scaled_width,
+          height: scaled_height,
+          format: GL_RGBA,
+          type: GL_UNSIGNED_BYTE,
+          data: data.subarray(0, width * height)
+        });
+      }
+
+      runtime.hooks.setTextureFilter?.(runtime.currenttextures[runtime.currenttmu], runtime.gl_filter_max, runtime.gl_filter_max);
+      return samples === runtime.gl_alpha_format;
+    }
+
+    scaled.set(data.subarray(0, width * height), 0);
+  } else {
+    GL_ResampleTexture(data, width, height, scaled, scaled_width, scaled_height);
+  }
+
+  GL_LightScaleTexture(runtime, scaled, scaled_width, scaled_height, !mipmap);
+
+  if (runtime.qglColorTableEXT && runtime.gl_ext_palettedtexture_value && samples === runtime.gl_solid_format && runtime.d_16to8table) {
+    runtime.uploaded_paletted = true;
+    GL_BuildPalettedTexture(runtime, paletted_texture, scaled, scaled_width, scaled_height);
+    runtime.hooks.uploadTextureData?.({
+      level: 0,
+      internalFormat: GL_COLOR_INDEX8_EXT,
+      width: scaled_width,
+      height: scaled_height,
+      format: GL_COLOR_INDEX,
+      type: GL_UNSIGNED_BYTE,
+      data: paletted_texture.subarray(0, scaled_width * scaled_height)
+    });
+  } else {
+    runtime.hooks.uploadTextureData?.({
+      level: 0,
+      internalFormat: comp,
+      width: scaled_width,
+      height: scaled_height,
+      format: GL_RGBA,
+      type: GL_UNSIGNED_BYTE,
+      data: scaled.subarray(0, scaled_width * scaled_height)
+    });
+  }
+
+  if (mipmap) {
+    let miplevel = 0;
+    let mipWidth = scaled_width;
+    let mipHeight = scaled_height;
+
+    while (mipWidth > 1 || mipHeight > 1) {
+      GL_MipMap(scaled, mipWidth, mipHeight);
+      mipWidth >>= 1;
+      mipHeight >>= 1;
+      if (mipWidth < 1) {
+        mipWidth = 1;
+      }
+      if (mipHeight < 1) {
+        mipHeight = 1;
+      }
+      miplevel += 1;
+
+      if (runtime.qglColorTableEXT && runtime.gl_ext_palettedtexture_value && samples === runtime.gl_solid_format && runtime.d_16to8table) {
+        runtime.uploaded_paletted = true;
+        GL_BuildPalettedTexture(runtime, paletted_texture, scaled, mipWidth, mipHeight);
+        runtime.hooks.uploadTextureData?.({
+          level: miplevel,
+          internalFormat: GL_COLOR_INDEX8_EXT,
+          width: mipWidth,
+          height: mipHeight,
+          format: GL_COLOR_INDEX,
+          type: GL_UNSIGNED_BYTE,
+          data: paletted_texture.subarray(0, mipWidth * mipHeight)
+        });
+      } else {
+        runtime.hooks.uploadTextureData?.({
+          level: miplevel,
+          internalFormat: comp,
+          width: mipWidth,
+          height: mipHeight,
+          format: GL_RGBA,
+          type: GL_UNSIGNED_BYTE,
+          data: scaled.subarray(0, mipWidth * mipHeight)
+        });
+      }
+    }
+  }
+
+  if (mipmap) {
+    runtime.hooks.setTextureFilter?.(runtime.currenttextures[runtime.currenttmu], runtime.gl_filter_min, runtime.gl_filter_max);
+  } else {
+    runtime.hooks.setTextureFilter?.(runtime.currenttextures[runtime.currenttmu], runtime.gl_filter_max, runtime.gl_filter_max);
+  }
+
+  return samples === runtime.gl_alpha_format;
+}
+
+/**
+ * Original name: GL_Upload8
+ * Source: ref_gl/gl_image.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function GL_Upload8(
+  runtime: GlImageRuntime,
+  data: Uint8Array,
+  width: number,
+  height: number,
+  mipmap: boolean,
+  is_sky: boolean
+): boolean {
+  const s = width * height;
+  const trans = new Uint32Array(512 * 256);
+
+  if (s > trans.length) {
+    failSysError(runtime, ERR_DROP, "GL_Upload8: too large");
+  }
+
+  if (runtime.qglColorTableEXT && runtime.gl_ext_palettedtexture_value && is_sky) {
+    runtime.upload_width = width;
+    runtime.upload_height = height;
+    runtime.uploaded_paletted = true;
+
+    runtime.hooks.uploadTextureData?.({
+      level: 0,
+      internalFormat: GL_COLOR_INDEX8_EXT,
+      width,
+      height,
+      format: GL_COLOR_INDEX,
+      type: GL_UNSIGNED_BYTE,
+      data: data.subarray(0, s)
+    });
+
+    runtime.hooks.setTextureFilter?.(runtime.currenttextures[runtime.currenttmu], runtime.gl_filter_max, runtime.gl_filter_max);
+    return false;
+  }
+
+  for (let i = 0; i < s; i += 1) {
+    let p = data[i] ?? 0;
+    trans[i] = runtime.d_8to24table[p] ?? 0;
+
+    if (p === 255) {
+      if (i > width && (data[i - width] ?? 255) !== 255) {
+        p = data[i - width] ?? 0;
+      } else if (i < s - width && (data[i + width] ?? 255) !== 255) {
+        p = data[i + width] ?? 0;
+      } else if (i > 0 && (data[i - 1] ?? 255) !== 255) {
+        p = data[i - 1] ?? 0;
+      } else if (i < s - 1 && (data[i + 1] ?? 255) !== 255) {
+        p = data[i + 1] ?? 0;
+      } else {
+        p = 0;
+      }
+
+      const fallback = runtime.d_8to24table[p] ?? 0;
+      trans[i] = packRgba(redOf(fallback), greenOf(fallback), blueOf(fallback), alphaOf(trans[i]));
+    }
+  }
+
+  return GL_Upload32(runtime, trans.subarray(0, s), width, height, mipmap);
+}
+
+/**
  * Original name: GL_LoadPic
  * Source: ref_gl/gl_image.c
  * Category: Ported
@@ -632,6 +1107,10 @@ export function GL_LoadPic(
   image.width = width;
   image.height = height;
   image.type = type;
+
+  if (type === imagetype_t.it_skin && bits === 8) {
+    R_FloodFillSkin(runtime, pic, width, height);
+  }
 
   if (image.type === imagetype_t.it_pic && bits === 8 && image.width < 64 && image.height < 64) {
     const allocation = Scrap_AllocBlock(runtime, image.width, image.height);
@@ -671,11 +1150,21 @@ export function GL_LoadPic(
     mipmap: image.type !== imagetype_t.it_pic && image.type !== imagetype_t.it_sky,
     is_sky: image.type === imagetype_t.it_sky
   };
-  const upload = runtime.hooks.uploadImage?.(image, uploadSource) ?? defaultUploadImage(runtime, uploadSource);
-  image.has_alpha = upload.has_alpha;
-  image.upload_width = upload.upload_width;
-  image.upload_height = upload.upload_height;
-  image.paletted = upload.paletted;
+  if (runtime.hooks.uploadImage) {
+    const upload = runtime.hooks.uploadImage(image, uploadSource) ?? defaultUploadImage(runtime, uploadSource);
+    runtime.upload_width = upload.upload_width;
+    runtime.upload_height = upload.upload_height;
+    runtime.uploaded_paletted = upload.paletted;
+    image.has_alpha = upload.has_alpha;
+  } else if (bits === 8) {
+    image.has_alpha = GL_Upload8(runtime, pic, width, height, uploadSource.mipmap, uploadSource.is_sky);
+  } else {
+    image.has_alpha = GL_Upload32(runtime, uploadSource.pixels as Uint32Array, width, height, uploadSource.mipmap);
+  }
+
+  image.upload_width = runtime.upload_width;
+  image.upload_height = runtime.upload_height;
+  image.paletted = runtime.uploaded_paletted;
   image.sl = 0;
   image.sh = 1;
   image.tl = 0;
@@ -1002,6 +1491,26 @@ function toUint32Pixels(pixels: Uint8Array): Uint32Array {
     ? pixels
     : pixels.slice();
   return new Uint32Array(source.buffer, source.byteOffset, source.byteLength >> 2);
+}
+
+function redOf(value: number): number {
+  return value & 0xff;
+}
+
+function greenOf(value: number): number {
+  return (value >> 8) & 0xff;
+}
+
+function blueOf(value: number): number {
+  return (value >> 16) & 0xff;
+}
+
+function alphaOf(value: number): number {
+  return (value >>> 24) & 0xff;
+}
+
+function packRgba(r: number, g: number, b: number, a: number): number {
+  return ((a << 24) | (b << 16) | (g << 8) | r) >>> 0;
 }
 
 function failSysError(runtime: GlImageRuntime, errLevel: number, message: string): never {

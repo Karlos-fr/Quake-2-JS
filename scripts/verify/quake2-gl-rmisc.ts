@@ -53,6 +53,7 @@ import {
   setRmiscGlConfig,
   setRmiscImageRuntime,
   setRmiscVid,
+  syncRmiscExtensionStateFromRmain,
   swapRgbToBgr
 } from "../../packages/renderer-three/src/index.js";
 
@@ -148,6 +149,14 @@ setRmiscGlConfig(runtime, {
   extensions_string: "GL_EXT_a GL_EXT_b"
 });
 setRmiscImageRuntime(runtime, imageRuntime);
+setRmiscExtensionState(runtime, { pointParameters: true, colorTable: true });
+syncRmiscExtensionStateFromRmain(runtime, {
+  qglPointParameterfEXT: true,
+  qglPointParameterfvEXT: false,
+  qglColorTableEXT: true
+} as never);
+assert.equal(runtime.qglPointParameterfEXT, false, "syncRmiscExtensionStateFromRmain point-parameter mismatch");
+assert.equal(runtime.qglColorTableEXT, true, "syncRmiscExtensionStateFromRmain color-table mismatch");
 setRmiscExtensionState(runtime, { pointParameters: true, colorTable: true });
 setRmiscCvars(runtime, {
   gl_texturemode: Cvar_Get(cvarRuntime, "gl_texturemode", "GL_LINEAR", 0),

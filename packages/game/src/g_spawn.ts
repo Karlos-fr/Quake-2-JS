@@ -16,11 +16,22 @@
  * - This file is intended to stay close to the original spawn and team-linking flow.
  */
 
+import { MOVETYPE_PUSH, SOLID_BSP } from "./g-local.js";
 import { SP_func_door, SP_func_door_rotating, SP_func_plat } from "./g_func.js";
 import { FindItemByClassname, SP_item_health, SP_item_health_large, SP_item_health_mega, SP_item_health_small, SpawnItem } from "./g_items.js";
 import {
+  SP_func_areaportal,
+  SP_func_clock,
   SP_light_mine1,
   SP_light_mine2,
+  SP_light,
+  SP_path_corner,
+  SP_point_combat,
+  SP_target_character,
+  SP_target_string,
+  SP_viewthing,
+  SP_info_notnull,
+  SP_info_null,
   SP_misc_banner,
   SP_misc_blackhole,
   SP_misc_bigviper,
@@ -39,7 +50,19 @@ import {
   SP_misc_viper_bomb,
   SP_monster_commander_body
 } from "./g_misc.js";
-import { SP_trigger_multiple, SP_trigger_once, SP_trigger_relay } from "./g_trigger.js";
+import {
+  SP_trigger_always,
+  SP_trigger_counter,
+  SP_trigger_gravity,
+  SP_trigger_hurt,
+  SP_trigger_key,
+  SP_trigger_monsterjump,
+  SP_trigger_multiple,
+  SP_trigger_once,
+  SP_trigger_push,
+  SP_trigger_relay
+} from "./g_trigger.js";
+import { SP_turret_base, SP_turret_breach, SP_turret_driver } from "./g_turret.js";
 import {
   SP_info_player_coop,
   SP_info_player_deathmatch,
@@ -57,6 +80,7 @@ interface SpawnEntry {
 }
 
 const spawns: SpawnEntry[] = [
+  { name: "worldspawn", spawn: SP_worldspawn },
   { name: "info_player_start", spawn: SP_info_player_start },
   { name: "info_player_deathmatch", spawn: SP_info_player_deathmatch },
   { name: "info_player_coop", spawn: SP_info_player_coop },
@@ -68,9 +92,29 @@ const spawns: SpawnEntry[] = [
   { name: "func_plat", spawn: SP_func_plat },
   { name: "func_door", spawn: SP_func_door },
   { name: "func_door_rotating", spawn: SP_func_door_rotating },
+  { name: "func_areaportal", spawn: SP_func_areaportal },
+  { name: "func_clock", spawn: SP_func_clock },
+  { name: "light", spawn: SP_light },
+  { name: "path_corner", spawn: SP_path_corner },
+  { name: "point_combat", spawn: SP_point_combat },
+  { name: "target_character", spawn: SP_target_character },
+  { name: "target_string", spawn: SP_target_string },
+  { name: "viewthing", spawn: SP_viewthing },
+  { name: "info_null", spawn: SP_info_null },
+  { name: "info_notnull", spawn: SP_info_notnull },
   { name: "trigger_once", spawn: SP_trigger_once },
   { name: "trigger_multiple", spawn: SP_trigger_multiple },
   { name: "trigger_relay", spawn: SP_trigger_relay },
+  { name: "trigger_key", spawn: SP_trigger_key },
+  { name: "trigger_counter", spawn: SP_trigger_counter },
+  { name: "trigger_always", spawn: SP_trigger_always },
+  { name: "trigger_push", spawn: SP_trigger_push },
+  { name: "trigger_hurt", spawn: SP_trigger_hurt },
+  { name: "trigger_gravity", spawn: SP_trigger_gravity },
+  { name: "trigger_monsterjump", spawn: SP_trigger_monsterjump },
+  { name: "turret_breach", spawn: SP_turret_breach },
+  { name: "turret_base", spawn: SP_turret_base },
+  { name: "turret_driver", spawn: SP_turret_driver },
   { name: "misc_banner", spawn: SP_misc_banner },
   { name: "misc_blackhole", spawn: SP_misc_blackhole },
   { name: "misc_eastertank", spawn: SP_misc_eastertank },
@@ -93,6 +137,25 @@ const spawns: SpawnEntry[] = [
 ];
 
 /**
+ * Original name: SP_worldspawn
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes the world entity baseline so edict zero matches the original push/BSP setup.
+ *
+ * Porting notes:
+ * - The wider `configstring`, statusbar and precache side effects are coordinated from `g_main.ts`.
+ */
+export function SP_worldspawn(ent: GameEntity, _runtime: GameRuntime): void {
+  ent.movetype = MOVETYPE_PUSH;
+  ent.solid = SOLID_BSP;
+  ent.inuse = true;
+  ent.s.modelindex = 1;
+}
+
+/**
  * Original name: ED_CallSpawn
  * Source: game/g_spawn.c
  * Category: Ported
@@ -106,6 +169,11 @@ const spawns: SpawnEntry[] = [
  */
 export function ED_CallSpawn(ent: GameEntity, runtime: GameRuntime): void {
   if (!ent.classname) {
+    runtime.log({
+      kind: "warning",
+      message: "ED_CallSpawn: NULL classname",
+      entityIndex: ent.index
+    });
     return;
   }
 
@@ -123,6 +191,13 @@ export function ED_CallSpawn(ent: GameEntity, runtime: GameRuntime): void {
     entry.spawn(ent, runtime);
     return;
   }
+
+  runtime.log({
+    kind: "warning",
+    message: `${ent.classname} doesn't have a spawn function`,
+    entityIndex: ent.index,
+    entityClassname: ent.classname
+  });
 }
 
 /**

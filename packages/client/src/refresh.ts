@@ -57,6 +57,7 @@ import { type ClientRuntime } from "./types.js";
 export interface ClientRenderEntity {
   entityNumber: number;
   modelindex: number;
+  resolvedModelPath?: string | null;
   frame: number;
   oldframe: number;
   backlerp: number;
@@ -148,7 +149,7 @@ export function CL_BuildRefreshFrame(
   const particles = CL_AddParticles(runtime);
   const lightStyles = CL_AddLightStyles(runtime);
 
-  appendViewWeapon(runtime, view, entities);
+  appendViewWeapon(runtime, view, entities, options);
 
   for (const snapshot of packetEntities) {
     if (snapshot.viewerEntity) {
@@ -223,7 +224,8 @@ export function CL_GetEntitySoundOrigin(runtime: ClientRuntime, ent: number): ve
 function appendViewWeapon(
   runtime: ClientRuntime,
   view: ClientViewValues,
-  entities: ClientRenderEntity[]
+  entities: ClientRenderEntity[],
+  options: ClientViewOptions = {}
 ): void {
   const ps = runtime.cl.frame.playerstate;
   let oldframe = runtime.cl.frames[(runtime.cl.frame.serverframe - 1) & (runtime.cl.frames.length - 1)];
@@ -232,7 +234,11 @@ function appendViewWeapon(
   }
 
   const ops = oldframe.playerstate;
-  if (ps.fov > 90 || ps.gunindex === 0) {
+  if (options.drawGun === false || ps.fov > 90) {
+    return;
+  }
+
+  if (ps.gunindex === 0 && !options.gunModelOverride) {
     return;
   }
 
@@ -252,8 +258,17 @@ function appendViewWeapon(
   entities.push({
     entityNumber: runtime.cl.playernum + 1,
     modelindex: ps.gunindex,
-    frame: ps.gunframe,
-    oldframe: ps.gunframe === 0 ? 0 : ops.gunframe,
+    resolvedModelPath: options.gunModelOverride ?? null,
+    frame:
+      options.gunFrameOverride && options.gunFrameOverride !== 0
+        ? options.gunFrameOverride
+        : ps.gunframe,
+    oldframe:
+      options.gunFrameOverride && options.gunFrameOverride !== 0
+        ? options.gunFrameOverride
+        : ps.gunframe === 0
+          ? 0
+          : ops.gunframe,
     backlerp: 1 - runtime.cl.lerpfrac,
     origin,
     oldorigin: [...origin],

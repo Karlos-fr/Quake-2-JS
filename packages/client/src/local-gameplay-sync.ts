@@ -19,6 +19,7 @@ import {
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE,
+  MZ_SILENCED,
   PMF_DUCKED,
   PMF_ON_GROUND,
   PITCH,
@@ -37,6 +38,7 @@ import {
   FRAMETIME,
   ClientBeginServerFrame,
   ClientThink,
+  drainPlayerMuzzleFlashEvents,
   GetAmmoItemForWeapon,
   G_RunFrame,
   LOCAL_GAME_WEAPON_HOOKS,
@@ -49,6 +51,7 @@ import {
 } from "../../game/src/index.js";
 import type { BspMap } from "../../formats/src/index.js";
 import { findClientImageIndex, type LocalClientHudBootstrapData } from "./local-client-bootstrap.js";
+import { CL_AllocDlight, CL_BuildMuzzleFlashEffects, CL_LogoutEffect, type ClientActionEffect } from "./effects.js";
 import { getPredictedViewheight } from "./local-loop.js";
 import type { ClientRuntime } from "./types.js";
 
@@ -220,6 +223,8 @@ export function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: 
     copyEntityState(storedState, entity.current);
     entity.current.event = 0;
   }
+
+  syncLocalGameplayTransientEffects(runtime, gameplayRuntime);
 }
 
 /**
@@ -427,6 +432,49 @@ function syncLocalGameplayModelClip(runtime: ClientRuntime, gameplayRuntime: Gam
     }
 
     runtime.cl.model_clip[index] = CM_InlineModel(world, modelPath);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Convert local gameplay one-shot visual events into the client effect pools consumed by refresh adapters.
+ *
+ * Constraints:
+ * - Must keep renderer packages as consumers of `ClientRefreshFrame`, not direct consumers of `GameRuntime`.
+ * - Must preserve the original `CL_ParseMuzzleFlash` visual path for locally generated player weapon events.
+ */
+function syncLocalGameplayTransientEffects(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  for (const event of drainPlayerMuzzleFlashEvents(gameplayRuntime)) {
+    const effects = CL_BuildMuzzleFlashEffects({
+      entity: event.entityIndex,
+      weapon: event.weapon,
+      silenced: (event.weapon & MZ_SILENCED) !== 0
+    }, runtime);
+
+    applyLocalGameplayActionEffects(runtime, effects);
+  }
+}
+
+function applyLocalGameplayActionEffects(runtime: ClientRuntime, effects: ClientActionEffect[]): void {
+  for (const effect of effects) {
+    if (effect.light && effect.position && effect.entity !== undefined) {
+      const dlight = CL_AllocDlight(runtime, effect.entity);
+      dlight.origin = [...effect.position];
+      dlight.radius = effect.light.radius;
+      dlight.minlight = effect.light.minlight ?? 0;
+      dlight.die = runtime.cl.time + effect.light.durationMs;
+      dlight.decay = 0;
+      dlight.color = [...effect.light.color];
+    }
+
+    if (
+      effect.position &&
+      effect.packet &&
+      "weapon" in effect.packet &&
+      (effect.kind === "login" || effect.kind === "logout" || effect.kind === "respawn")
+    ) {
+      CL_LogoutEffect(runtime, effect.position, effect.packet.weapon & ~MZ_SILENCED);
+    }
   }
 }
 

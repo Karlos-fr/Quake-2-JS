@@ -15,11 +15,19 @@ import { strict as assert } from "node:assert";
 import {
   Draw_GetPalette,
   GL_Bind,
+  GL_EnableMultitexture,
   GL_FindImage,
   GL_SetTexturePalette,
   GL_InitImages,
   GL_MBind,
+  GL_MipMap,
+  GL_ResampleTexture,
+  GL_LightScaleTexture,
+  GL_BuildPalettedTexture,
+  GL_Upload8,
+  GL_Upload32,
   GL_ShutdownImages,
+  GL_TexEnv,
   GL_TEXTURE0_SGIS,
   GL_TEXTURE1_SGIS,
   GL_TextureAlphaMode,
@@ -29,6 +37,7 @@ import {
   GL_ImageList_f,
   GL_LoadPic,
   R_RegisterSkin,
+  R_FloodFillSkin,
   Scrap_AllocBlock,
   Scrap_Upload,
   TEXNUM_IMAGES,
@@ -63,6 +72,9 @@ const runtime = createGlImageRuntime({
   },
   selectTexture: (texture) => {
     calls.push(`select:${texture}`);
+  },
+  setTexture2DEnabled: (tmu, enabled) => {
+    calls.push(`texture2d:${tmu}:${enabled}`);
   },
   texEnv: (tmu, mode) => {
     calls.push(`texenv:${tmu}:${mode}`);
@@ -131,6 +143,21 @@ GL_MBind(runtime, GL_TEXTURE1_SGIS, 50);
 assert.equal(runtime.currenttmu, 1, "GL_MBind currenttmu mismatch");
 assert.equal(calls.includes(`select:${GL_TEXTURE1_SGIS}`), true, "GL_MBind select mismatch");
 assert.equal(calls.includes("bind:1:50"), true, "GL_MBind bind mismatch");
+
+runtime.texEnvModes = [-1, -1];
+calls.length = 0;
+runtime.currenttmu = 1;
+GL_TexEnv(runtime, 7681);
+GL_TexEnv(runtime, 7681);
+assert.equal(calls.filter((call) => call === "texenv:1:7681").length, 1, "GL_TexEnv cache mismatch");
+
+calls.length = 0;
+runtime.currenttmu = 0;
+runtime.texEnvModes = [-1, -1];
+GL_EnableMultitexture(runtime, true);
+assert.equal(calls.includes("texture2d:1:true"), true, "GL_EnableMultitexture enable mismatch");
+GL_EnableMultitexture(runtime, false);
+assert.equal(calls.includes("texture2d:1:false"), true, "GL_EnableMultitexture disable mismatch");
 
 const scrap = GL_LoadPic(runtime, "pics/smallpic.pcx", Uint8Array.from([1, 2, 3, 4]), 2, 2, imagetype_t.it_pic, 8);
 assert.equal(scrap.scrap, true, "GL_LoadPic scrap mismatch");
@@ -202,6 +229,85 @@ setPaletteExtensionState(paletteRuntime, true, true);
 paletteRuntime.d_8to24table[0] = 0x00112233;
 paletteRuntime.d_8to24table[1] = 0x00445566;
 GL_SetTexturePalette(paletteRuntime, paletteRuntime.d_8to24table);
+
+const uploadEvents: Array<{ level: number; width: number; height: number; format: number; bytes: number }> = [];
+const uploadFilterEvents: Array<{ texnum: number; minFilter: number; magFilter: number }> = [];
+const uploadRuntime = createGlImageRuntime({
+  uploadTextureData: (upload) => {
+    uploadEvents.push({
+      level: upload.level,
+      width: upload.width,
+      height: upload.height,
+      format: upload.format,
+      bytes: upload.data.length
+    });
+  },
+  setTextureFilter: (texnum, minFilter, magFilter) => {
+    uploadFilterEvents.push({ texnum, minFilter, magFilter });
+  }
+});
+uploadRuntime.currenttextures[0] = 1234;
+for (let i = 0; i < 256; i += 1) {
+  uploadRuntime.gammatable[i] = i;
+  uploadRuntime.intensitytable[i] = i;
+  uploadRuntime.d_8to24table[i] = (((255 << 24) >>> 0) | (i << 16) | (i << 8) | i) >>> 0;
+}
+uploadRuntime.d_8to24table[255] = 0x00000000;
+uploadRuntime.d_16to8table = Uint8Array.from({ length: 65536 }, (_, index) => index & 0xff);
+
+const upload8HasAlpha = GL_Upload8(uploadRuntime, Uint8Array.from([255, 1, 2, 3]), 2, 2, false, false);
+assert.equal(upload8HasAlpha, true, "GL_Upload8 alpha mismatch");
+assert.equal(uploadRuntime.upload_width, 2, "GL_Upload8 upload width mismatch");
+assert.equal(uploadRuntime.upload_height, 2, "GL_Upload8 upload height mismatch");
+assert.equal(uploadEvents.at(-1)?.level, 0, "GL_Upload8 level mismatch");
+assert.equal(uploadEvents.at(-1)?.bytes, 4, "GL_Upload8 payload size mismatch");
+
+const upload32HasAlpha = GL_Upload32(
+  uploadRuntime,
+  Uint32Array.from([0xff0000ff, 0xff00ff00, 0xffff0000, 0xff112233]),
+  2,
+  2,
+  true
+);
+assert.equal(upload32HasAlpha, false, "GL_Upload32 alpha mismatch");
+assert.equal(uploadEvents.some((event) => event.level === 1 && event.width === 1 && event.height === 1), true, "GL_Upload32 mip upload mismatch");
+assert.equal(uploadFilterEvents.at(-1)?.minFilter !== undefined, true, "GL_Upload32 filter call mismatch");
+
+const floodRuntime = createGlImageRuntime();
+floodRuntime.d_8to24table[0] = 255;
+const skin = Uint8Array.from([
+  1, 1, 2,
+  1, 1, 2,
+  2, 2, 2
+]);
+R_FloodFillSkin(floodRuntime, skin, 3, 3);
+assert.equal(skin[0], 0, "R_FloodFillSkin center fill mismatch");
+assert.equal(skin[1] !== 1, true, "R_FloodFillSkin spread mismatch");
+
+const resampleIn = Uint32Array.from([0xff000000, 0xff0000ff, 0xff00ff00, 0xffff0000]);
+const resampleOut = new Uint32Array(1);
+GL_ResampleTexture(resampleIn, 2, 2, resampleOut, 1, 1);
+assert.equal(resampleOut[0] !== 0, true, "GL_ResampleTexture output mismatch");
+
+const lightScaleRuntime = createGlImageRuntime();
+for (let i = 0; i < 256; i += 1) {
+  lightScaleRuntime.gammatable[i] = i;
+  lightScaleRuntime.intensitytable[i] = i;
+}
+const lit = Uint32Array.from([0xff010203]);
+GL_LightScaleTexture(lightScaleRuntime, lit, 1, 1, true);
+assert.equal(lit[0], 0xff010203, "GL_LightScaleTexture gamma-only mismatch");
+
+const mip = Uint32Array.from([
+  0xff000000, 0xff000004,
+  0xff000008, 0xff00000c
+]);
+GL_MipMap(mip, 2, 2);
+assert.equal(mip[0] & 0xff, 6, "GL_MipMap output mismatch");
+
+const paletted = new Uint8Array(4);
+GL_BuildPalettedTexture(uploadRuntime, paletted, Uint32Array.from([0xff000000, 0xff112233, 0xff445566, 0xff778899]), 2, 2);
+assert.equal(paletted.length, 4, "GL_BuildPalettedTexture size mismatch");
 
 assert.equal(
   GL_FindImage(createGlImageRuntime(), "abc.tga", imagetype_t.it_pic),

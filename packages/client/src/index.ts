@@ -322,6 +322,13 @@ export {
   createVidDef
 } from "./vid.js";
 export {
+  createClientVidMenuController
+} from "./vid-menu.js";
+export type {
+  ClientVidMenuController,
+  ClientVidMenuHooks
+} from "./vid-menu.js";
+export {
   CL_GetEntitySoundOrigin,
   S_Activate,
   S_BeginRegistration,
@@ -463,23 +470,41 @@ export {
   toggleLocalLayoutBit
 } from "./local-client-bootstrap.js";
 export {
+  CL_FixUpGender,
   Cmd_ForwardToServer,
   CL_Changing_f,
+  CL_CheckForResend,
+  CL_ConnectionlessPacket,
   CL_Connect_f,
+  CL_DumpPackets,
+  CL_Drop,
   CL_Disconnect,
   CL_Disconnect_f,
+  CL_Frame,
+  CL_FixCvarCheats,
   CL_ForwardToServer_f,
+  CL_Init,
   CL_InitLocal,
+  CL_Packet_f,
+  CL_ParseStatusMessage,
   CL_Pause_f,
   CL_PingServers_f,
   CL_Quit_f,
+  CL_Record_f,
   CL_Rcon_f,
   CL_Reconnect_f,
+  CL_SendConnectPacket,
+  CL_SendCommand,
+  CL_ReadPackets,
+  CL_Shutdown,
   CL_Setenv_f,
   CL_Snd_Restart_f,
   CL_Skins_f,
+  CL_Stop_f,
   CL_TogglePause,
   CL_Userinfo_f,
+  CL_WriteDemoMessage,
+  CL_WriteConfiguration,
   createClientMainContext
 } from "./main.js";
 export {
@@ -492,6 +517,7 @@ export {
   CL_KeyState,
   CL_SendCmd,
   CL_SetInputFrameTime,
+  createClientSendCmdBridge,
   IN_CenterView,
   KeyDown,
   KeyUp,
@@ -652,11 +678,13 @@ export {
   MAX_EXPLOSIONS,
   MAX_LASERS,
   MAX_SUSTAINS,
+  MAX_DLIGHTS,
   MAX_PARTICLES,
   MAX_CLIENTWEAPONMODELS,
   MAX_PARSE_ENTITIES,
   INSTANT_PARTICLE,
   connstate_t,
+  dltype_t,
   createClientBeam,
   createCentity,
   createClientExplosion,
@@ -825,13 +853,16 @@ export type {
   ClientScreenFrame,
   ClientScreenHudState
 } from "./screen.js";
-export type { ClientInputContext, ClientInputFrameOptions, ClientInputHooks } from "./input.js";
+export type { ClientInputContext, ClientInputFrameOptions, ClientInputHooks, ClientSendCmdBridgeOptions } from "./input.js";
 export type { ClientInputDeviceContext, ClientInputDeviceHooks } from "./input-device.js";
 export type { LocalClientCollisionAdapter } from "./local-loop.js";
 export type {
   BrushModelInterpolationState,
   LocalViewMotionState
 } from "./local-gameplay-sync.js";
+export type {
+  BrushModelSnapshot
+} from "./local-brush-models.js";
 export type {
   LocalClientSessionInputState,
   LocalClientSessionSnapshotHooks,

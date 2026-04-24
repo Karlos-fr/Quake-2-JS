@@ -22,6 +22,7 @@ import {
   createLocalGameplayPlayer,
   createGameRuntimeFromBspMap,
   LOCAL_GAME_WEAPON_HOOKS,
+  refillLocalDemoInventory,
   type GameEntity,
   type GameRuntime
 } from "../../game/src/index.js";
@@ -205,6 +206,7 @@ export function stepLocalClientSession<TSnapshot>(
   runtime.cl.time = session.realtimeMs;
 
   applyLocalMovementMode(runtime, session.ghostMode);
+  refillLocalDemoInventory(session.gameplayPlayer, session.gameplayRuntime);
   advanceLocalGameplayRuntime(
     session.gameplayRuntime,
     session.realtimeMs,

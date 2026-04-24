@@ -87,7 +87,8 @@ setLittleFloat(modBase, 20, 1);
 setLittleFloat(modBase, 24, 0);
 setLittleFloat(modBase, 28, 0);
 setLittleLong(modBase, 32, 0);
-writeCString(modBase, 36, 32, "test0");
+setLittleLong(modBase, 36, 0);
+writeCString(modBase, 40, 32, "test0");
 setLittleLong(modBase, 72, 1);
 
 const tex1 = 76;
@@ -100,7 +101,8 @@ setLittleFloat(modBase, tex1 + 20, 1);
 setLittleFloat(modBase, tex1 + 24, 0);
 setLittleFloat(modBase, tex1 + 28, 0);
 setLittleLong(modBase, tex1 + 32, SURF_WARP);
-writeCString(modBase, tex1 + 36, 32, "test1");
+setLittleLong(modBase, tex1 + 36, 0);
+writeCString(modBase, tex1 + 40, 32, "test1");
 setLittleLong(modBase, tex1 + 72, 0);
 
 Mod_LoadTexinfo(runtime, texinfoLump, modBase);

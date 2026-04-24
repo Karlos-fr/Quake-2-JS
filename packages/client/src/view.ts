@@ -1,7 +1,7 @@
 /**
  * File: view.ts
  * Source: Quake II original / client/cl_view.c and client/cl_pred.c
- * Purpose: Port the client-side logical view composition and the first prediction helpers used to build camera-ready values.
+ * Purpose: Port the client-side logical view composition and prediction helpers used to build camera-ready values.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - Exposes view values as a returned object instead of mutating renderer-facing globals.
- * - Accepts prediction-related toggles as arguments while matching original branch behavior.
+ * - Accepts explicit prediction/runtime toggles as arguments while matching original branch behavior.
  *
  * Notes:
  * - This file is intended to stay conceptually close to the original C source.
@@ -129,6 +129,9 @@ export interface ClientViewOptions {
   predictionCollision?: ClientPredictionCollisionSource;
   trace?: (start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t) => trace_t;
   pointcontents?: (point: vec3_t) => number;
+  drawGun?: boolean;
+  gunFrameOverride?: number;
+  gunModelOverride?: string | null;
 }
 
 /**
@@ -183,6 +186,7 @@ export interface ClientViewContext {
   scene: ClientViewScene;
   refdef: refdef_t;
   crosshair: cvar_t | null;
+  cl_gun: cvar_t | null;
   cl_testblend: cvar_t | null;
   cl_testparticles: cvar_t | null;
   cl_testentities: cvar_t | null;
@@ -304,6 +308,7 @@ export function createClientViewContext(client: ClientRuntime, cmd: CommandRunti
     scene: createClientViewScene(),
     refdef: createRefDef(),
     crosshair: null,
+    cl_gun: null,
     cl_testblend: null,
     cl_testparticles: null,
     cl_testentities: null,
@@ -634,6 +639,7 @@ export function V_Init(context: ClientViewContext): void {
   });
 
   context.crosshair = Cvar_Get(context.cvar, "crosshair", "0", CVAR_ARCHIVE);
+  context.cl_gun = Cvar_Get(context.cvar, "cl_gun", "1", 0);
   context.cl_testblend = Cvar_Get(context.cvar, "cl_testblend", "0", 0);
   context.cl_testparticles = Cvar_Get(context.cvar, "cl_testparticles", "0", 0);
   context.cl_testentities = Cvar_Get(context.cvar, "cl_testentities", "0", 0);
@@ -834,7 +840,12 @@ export function V_RenderView(
   if (runtime.cl.frame.valid && (runtime.cl.force_refdef || !options.paused)) {
     runtime.cl.force_refdef = false;
 
-    const refreshFrame = options.buildRefreshFrame(runtime, options);
+    const refreshFrame = options.buildRefreshFrame(runtime, {
+      ...options,
+      drawGun: options.drawGun ?? ((context.cl_gun?.value ?? 1) !== 0),
+      gunFrameOverride: options.gunFrameOverride ?? context.debug.gun_frame,
+      gunModelOverride: options.gunModelOverride ?? context.debug.gun_model
+    });
     fillSceneFromRefreshFrame(context.scene, runtime, refreshFrame, options);
 
     if ((context.cl_testparticles?.value ?? 0) !== 0) {
@@ -1039,10 +1050,10 @@ export function CL_CalcViewValues(runtime: ClientRuntime, options: ClientViewOpt
  * Fidelity level: Close
  *
  * Behavior:
- * - Applies the no-prediction branch that still derives predicted angles from viewangles and delta angles.
+ * - Runs the acknowledged-to-current client prediction loop and updates predicted origin, angles and step smoothing state.
  *
  * Porting notes:
- * - Keeps only the currently usable branch until pmove/collision are ported.
+ * - Accepts explicit callbacks/options in place of the original globals while preserving the source branch order.
  */
 export function CL_PredictMovement(runtime: ClientRuntime, options: ClientViewOptions = {}): void {
   if (runtime.cls.state !== connstate_t.ca_active) {
@@ -1424,6 +1435,10 @@ function resolveSceneEntityModel(
   entity: ClientRenderEntity,
   resolveEntityModel?: (entity: ClientRenderEntity) => entity_t["model"]
 ): model_s | null {
+  if (entity.resolvedModelPath) {
+    return entity.resolvedModelPath as model_s;
+  }
+
   const resolved = resolveEntityModel?.(entity);
   if (resolved !== undefined) {
     return resolved;

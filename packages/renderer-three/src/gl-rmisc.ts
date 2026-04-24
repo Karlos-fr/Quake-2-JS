@@ -14,10 +14,11 @@
  *
  * Notes:
  * - This file is the principal attachment point for `ref_gl/gl_rmisc.c`.
- * - The current tranche focuses on `R_InitParticleTexture`, `GL_ScreenShot_f`, `GL_Strings_f`, `GL_SetDefaultState` and `GL_UpdateSwapInterval`.
+ * - `R_InitParticleTexture`, `GL_ScreenShot_f`, `GL_Strings_f`, `GL_SetDefaultState` and `GL_UpdateSwapInterval` are ported here.
  */
 
 import { PRINT_ALL, type cvar_t } from "../../qcommon/src/index.js";
+import type { GlRmainRuntime } from "./gl-rmain.js";
 import {
   GL_COLOR_INDEX,
   GL_REPLACE,
@@ -32,6 +33,7 @@ import {
   imagetype_t
 } from "./gl-image.js";
 import { createGlState, type glconfig_t, type glstate_t, type viddef_t } from "./gl-local.js";
+import { GL_SHARED_TEXTURE_PALETTE_EXT } from "./qgl.js";
 
 export const GL_ALPHA_TEST = 0x0bc0;
 export const GL_BLEND = 0x0be2;
@@ -48,7 +50,6 @@ export const GL_POINT_SIZE_MIN_EXT = 0x8126;
 export const GL_POINT_SMOOTH = 0x0b10;
 export const GL_REPEAT = 0x2901;
 export const GL_RGB = 0x1907;
-export const GL_SHARED_TEXTURE_PALETTE_EXT = 0x81fb;
 export const GL_SRC_ALPHA = 0x0302;
 export const GL_TEXTURE_2D = 0x0de1;
 export const GL_TEXTURE_MAG_FILTER = 0x2800;
@@ -68,6 +69,15 @@ const DOT_TEXTURE: readonly number[][] = [
   [0, 0, 0, 0, 0, 0, 0, 0]
 ] as const;
 
+/**
+ * Original name: dottexture-backed particle data build in R_InitParticleTexture
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds the canonical 8x8 white particle texture with alpha from `dottexture`.
+ */
 export function buildParticleTextureRgba(): Uint8Array {
   const particleData = new Uint8Array(8 * 8 * 4);
   for (let x = 0; x < 8; x += 1) {
@@ -82,6 +92,15 @@ export function buildParticleTextureRgba(): Uint8Array {
   return particleData;
 }
 
+/**
+ * Original name: dottexture-backed r_notexture data build in R_InitParticleTexture
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds the canonical 8x8 red opaque fallback texture used for missing textures.
+ */
 export function buildNoTextureRgba(): Uint8Array {
   const noTextureData = new Uint8Array(8 * 8 * 4);
   for (let x = 0; x < 8; x += 1) {
@@ -212,12 +231,39 @@ export function setRmiscExtensionState(runtime: GlRmiscRuntime, options: { point
   runtime.qglColorTableEXT = options.colorTable;
 }
 
+/**
+ * Category: New
+ * Purpose: Mirror the backend extension procedures resolved by `R_Init` into the `gl_rmisc.c` runtime.
+ *
+ * Constraints:
+ * - Must keep `GL_SetDefaultState` aligned with the procedures actually available on the backend.
+ */
+export function syncRmiscExtensionStateFromRmain(
+  runtime: GlRmiscRuntime,
+  rmain: Pick<GlRmainRuntime, "qglPointParameterfEXT" | "qglPointParameterfvEXT" | "qglColorTableEXT">
+): void {
+  runtime.qglPointParameterfEXT = rmain.qglPointParameterfEXT && rmain.qglPointParameterfvEXT;
+  runtime.qglColorTableEXT = rmain.qglColorTableEXT;
+}
+
 export function setRmiscCvars(runtime: GlRmiscRuntime, cvars: Partial<Pick<GlRmiscRuntime,
   "gl_texturemode" | "gl_texturealphamode" | "gl_texturesolidmode" | "gl_particle_att_a" | "gl_particle_att_b" | "gl_particle_att_c" | "gl_particle_min_size" | "gl_particle_max_size" | "gl_ext_palettedtexture" | "gl_swapinterval"
 >>): void {
   Object.assign(runtime, cvars);
 }
 
+/**
+ * Original name: R_InitParticleTexture
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Loads the protected particle and missing-texture images using the original names, dimensions and image types.
+ *
+ * Porting notes:
+ * - Direct writes to `r_particletexture` and `r_notexture` are surfaced through `setProtectedImages`.
+ */
 export function R_InitParticleTexture(runtime: GlRmiscRuntime): { particletexture: GlImage | null; notexture: GlImage | null } {
   const particleData = buildParticleTextureRgba();
   const noTextureData = buildNoTextureRgba();
@@ -228,6 +274,15 @@ export function R_InitParticleTexture(runtime: GlRmiscRuntime): { particletextur
   return { particletexture, notexture };
 }
 
+/**
+ * Original name: TargaHeader population in GL_ScreenShot_f
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds the 18-byte uncompressed 24-bit TGA header used by screenshots.
+ */
 export function buildTgaHeader(width: number, height: number): Uint8Array {
   const header = new Uint8Array(18);
   header[2] = 2;
@@ -239,6 +294,15 @@ export function buildTgaHeader(width: number, height: number): Uint8Array {
   return header;
 }
 
+/**
+ * Original name: GL_ScreenShot_f filename loop
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finds the first `quake00.tga` through `quake99.tga` slot that is not already present.
+ */
 export function findScreenshotName(existingPaths: readonly string[]): string | null {
   const normalized = new Set(existingPaths.map((path) => path.replace(/\\/g, "/").toLowerCase()));
   for (let index = 0; index <= 99; index += 1) {
@@ -250,6 +314,15 @@ export function findScreenshotName(existingPaths: readonly string[]): string | n
   return null;
 }
 
+/**
+ * Original name: GL_ScreenShot_f RGB/BGR swap loop
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Swaps each screenshot pixel from RGB to BGR before TGA output.
+ */
 export function swapRgbToBgr(rgb: Uint8Array): Uint8Array {
   const out = Uint8Array.from(rgb);
   for (let index = 0; index + 2 < out.length; index += 3) {
@@ -260,6 +333,19 @@ export function swapRgbToBgr(rgb: Uint8Array): Uint8Array {
   return out;
 }
 
+/**
+ * Original name: GL_ScreenShot_f
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Creates the `scrnshot` directory, finds the first free Quake II screenshot name, reads RGB pixels and writes a 24-bit TGA.
+ *
+ * Porting notes:
+ * - Filesystem and GL readback are explicit hooks.
+ * - The TGA payload is returned to make browser and verification integrations deterministic.
+ */
 export function GL_ScreenShot_f(runtime: GlRmiscRuntime, gameDir: string): { path: string; bytes: Uint8Array } | null {
   const directory = `${gameDir.replace(/[\\/]+$/u, "")}/scrnshot`;
   runtime.hooks.ensureDirectory?.(directory);
@@ -284,6 +370,15 @@ export function GL_ScreenShot_f(runtime: GlRmiscRuntime, gameDir: string): { pat
   return { path, bytes };
 }
 
+/**
+ * Original name: GL_Strings_f
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Prints the GL vendor, renderer, version and extension strings.
+ */
 export function GL_Strings_f(runtime: GlRmiscRuntime): void {
   runtime.hooks.print?.(PRINT_ALL, `GL_VENDOR: ${runtime.gl_config.vendor_string}\n`);
   runtime.hooks.print?.(PRINT_ALL, `GL_RENDERER: ${runtime.gl_config.renderer_string}\n`);
@@ -291,6 +386,18 @@ export function GL_Strings_f(runtime: GlRmiscRuntime): void {
   runtime.hooks.print?.(PRINT_ALL, `GL_EXTENSIONS: ${runtime.gl_config.extensions_string}\n`);
 }
 
+/**
+ * Original name: GL_SetDefaultState
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Restores the renderer's default GL state, texture modes, particle parameters, palette extension state and swap interval.
+ *
+ * Porting notes:
+ * - Immediate GL calls are represented by backend hooks while preserving call order.
+ */
 export function GL_SetDefaultState(runtime: GlRmiscRuntime): void {
   runtime.hooks.clearColor?.(1, 0, 0.5, 0.5);
   runtime.hooks.cullFace?.(GL_FRONT);
@@ -350,6 +457,18 @@ export function GL_SetDefaultState(runtime: GlRmiscRuntime): void {
   GL_UpdateSwapInterval(runtime);
 }
 
+/**
+ * Original name: GL_UpdateSwapInterval
+ * Source: ref_gl/gl_rmisc.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies `gl_swapinterval` when modified and stereo rendering is disabled.
+ *
+ * Porting notes:
+ * - The original Win32 `qwglSwapIntervalEXT` call is exposed as a backend hook.
+ */
 export function GL_UpdateSwapInterval(runtime: GlRmiscRuntime): void {
   if (!runtime.gl_swapinterval?.modified) {
     return;

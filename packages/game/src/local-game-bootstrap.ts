@@ -11,9 +11,11 @@
  * - packages/game/src/g_items.ts
  */
 
-import type { vec3_t } from "../../qcommon/src/index.js";
+import { DF_INFINITE_AMMO, type vec3_t } from "../../qcommon/src/index.js";
 import {
   attachGameClient,
+  emitGameSound,
+  emitPlayerMuzzleFlash,
   linkGameEntity,
   refreshEntitySpatialState,
   spawnGameEntity,
@@ -48,7 +50,7 @@ import {
   Weapon_Shotgun,
   Weapon_SuperShotgun
 } from "./p_weapon.js";
-import { FindItem, GetAmmoItemForWeapon } from "./g_items.js";
+import { Add_Ammo, Drop_Item, FindItem, GetAmmoItemForWeapon, SetRespawn } from "./g_items.js";
 
 const LOCAL_PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
 const LOCAL_PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
@@ -145,6 +147,15 @@ export interface LocalWeaponBootstrapData {
  * - Must keep still-explicit gameplay hook wiring outside the web adapter.
  */
 export const LOCAL_GAME_WEAPON_HOOKS: GameWeaponHooks = {
+  Add_Ammo,
+  Drop_Item,
+  SetRespawn,
+  emitPlayerMuzzleFlash: (ent, weapon, runtime) => {
+    emitPlayerMuzzleFlash(runtime, ent, weapon);
+  },
+  playWeaponSound: (ent, soundPath, _channel, runtime) => {
+    emitGameSound(runtime, ent, soundPath);
+  },
   fire_bfg,
   fire_blaster,
   fire_bullet,
@@ -181,6 +192,7 @@ export function seedLocalWeaponInventory(
   runtime: GameRuntime,
   hooks: GameWeaponHooks = LOCAL_GAME_WEAPON_HOOKS
 ): void {
+  runtime.dmflags |= DF_INFINITE_AMMO;
   const bootstrap = buildLocalWeaponBootstrapData();
 
   for (const entry of bootstrap.inventory) {
@@ -232,6 +244,52 @@ export function selectLocalWeapon(player: GameEntity, weaponName: string, runtim
 
   Use_Weapon(player, weapon, runtime);
   return weapon.index;
+}
+
+/**
+ * Category: New
+ * Purpose: Keep the standalone browser demo inventory in a weapon-ready state with direct slot access and effectively infinite ammo.
+ *
+ * Constraints:
+ * - Must stay local-demo-only and avoid changing the general gameplay weapon rules.
+ */
+export function refillLocalDemoInventory(player: GameEntity, runtime: GameRuntime): void {
+  const client = player.client;
+  if (!client) {
+    return;
+  }
+
+  runtime.dmflags |= DF_INFINITE_AMMO;
+
+  for (const weaponName of Object.values(LOCAL_WEAPON_SLOTS)) {
+    const weapon = FindItem(weaponName);
+    if (!weapon) {
+      continue;
+    }
+
+    client.pers.inventory[weapon.index] = Math.max(1, client.pers.inventory[weapon.index] ?? 0);
+  }
+
+  for (const [ammoName, amount] of LOCAL_AMMO_GRANTS) {
+    const ammo = FindItem(ammoName);
+    if (!ammo) {
+      continue;
+    }
+
+    client.pers.inventory[ammo.index] = Math.max(amount, client.pers.inventory[ammo.index] ?? 0);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Force one local demo weapon slot switch while keeping the browser demo inventory primed for immediate use.
+ *
+ * Constraints:
+ * - Must preserve the original `Use_Weapon` switch path after topping up the needed local inventory.
+ */
+export function selectLocalDemoWeapon(player: GameEntity, weaponName: string, runtime: GameRuntime): number | null {
+  refillLocalDemoInventory(player, runtime);
+  return selectLocalWeapon(player, weaponName, runtime);
 }
 
 /**

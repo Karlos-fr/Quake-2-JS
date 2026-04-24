@@ -26,6 +26,14 @@ import type { dlight_t, entity_t, particle_t, refdef_t, refimport_t } from "../.
 import type { GlImage } from "./gl-image.js";
 import type { glpoly_t, model_t, msurface_t, mnode_t } from "./gl-model.js";
 
+export {
+  MAX_GLTEXTURES,
+  TEXNUM_IMAGES,
+  TEXNUM_LIGHTMAPS,
+  TEXNUM_SCRAPS,
+  imagetype_t
+} from "./gl-image.js";
+
 export const REF_VERSION = "GL 0.01";
 
 export const PITCH = 0;
@@ -265,6 +273,34 @@ export interface GlLocalContext {
 
 /**
  * Category: New
+ * Purpose: Represent the pointer-mutating result of `GLimp_SetMode`.
+ *
+ * Constraints:
+ * - `err` preserves the original `rserr_t` return value.
+ * - `width` and `height` preserve the dimensions written back through `int *pwidth` / `int *pheight`.
+ */
+export interface GlimpSetModeResult {
+  err: rserr_t | number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Category: New
+ * Purpose: Represent the viewport pointer writes performed by `GL_BeginRendering`.
+ *
+ * Constraints:
+ * - Keeps the original `int *x`, `int *y`, `int *width`, `int *height` result shape explicit.
+ */
+export interface GL_BeginRenderingResult {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/**
+ * Category: New
  * Purpose: Describe the host hooks standing in for the platform-specific `GLimp_*` procedures.
  *
  * Constraints:
@@ -275,11 +311,35 @@ export interface GlimpHooks {
   endFrame?: () => void;
   init?: (hinstance: unknown, hWnd: unknown) => number;
   shutdown?: () => void;
-  setMode?: (width: number, height: number, mode: number, fullscreen: qboolean) => rserr_t | number;
+  setMode?: (width: number, height: number, mode: number, fullscreen: qboolean) => GlimpSetModeResult;
   appActivate?: (active: qboolean) => void;
   enableLogging?: (enable: qboolean) => void;
   logNewFrame?: () => void;
 }
+
+/**
+ * Category: New
+ * Purpose: Preserve the original `GL_BeginRendering` header signature shape.
+ */
+export type GL_BeginRendering_t = () => GL_BeginRenderingResult;
+
+/**
+ * Category: New
+ * Purpose: Preserve the original `GL_EndRendering` header signature shape.
+ */
+export type GL_EndRendering_t = () => void;
+
+/**
+ * Category: New
+ * Purpose: Preserve the original `R_SwapBuffers` header signature shape.
+ */
+export type R_SwapBuffers_t = (v: number) => void;
+
+/**
+ * Category: New
+ * Purpose: Preserve the original `R_TranslatePlayerSkin` header signature shape.
+ */
+export type R_TranslatePlayerSkin_t = (playernum: number) => void;
 
 /**
  * Category: New
@@ -477,7 +537,11 @@ export function hasValidWorldMatrix(context: GlLocalContext): boolean {
 
 /**
  * Category: New
- * Purpose: Project one header-visible renderer image handle to the image type used by the active ports.
+ * Purpose: Project original `image_s` / `image_t` handles to the concrete image manager port.
+ *
+ * Porting notes:
+ * - `imagetype_t`, `TEXNUM_*` and `MAX_GLTEXTURES` are re-exported from `gl-image.ts` above.
+ * - The owning implementation remains attached to `ref_gl/gl_image.c`; this header keeps the declaration surface traceable.
  */
 export type image_t = GlImage;
 

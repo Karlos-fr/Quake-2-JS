@@ -24,7 +24,7 @@ import {
 } from "three";
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
 import { parsePcx } from "../../formats/src/index.js";
-import type { HudGlyphSetDescriptor } from "../../renderer-common/src/index.js";
+import type { HudGlyphSetDescriptor, HudPaletteColor } from "../../renderer-common/src/index.js";
 
 /**
  * Category: New
@@ -49,11 +49,13 @@ export interface HudTextTexture {
  */
 export interface QuakeHudResourceResolver {
   resolvePicture: (name: string) => Texture | null;
+  resolvePaletteColor: (index: number) => HudPaletteColor;
   resolveGlyphSet: () => HudGlyphSetDescriptor;
   buildTextTexture: (text: string) => HudTextTexture | null;
 }
 
 const GLYPH_PATH = "pics/conchars.pcx";
+const SHARED_PALETTE_PATH = "pics/colormap.pcx";
 
 /**
  * Category: New
@@ -66,6 +68,7 @@ export function createQuakeHudResourceResolver(filesystem: VirtualFilesystem): Q
   const pictureCache = new Map<string, Texture | null>();
   const textCache = new Map<string, HudTextTexture | null>();
   const glyphAtlas = loadGlyphAtlas(filesystem);
+  const paletteRgb = loadHudPalette(filesystem, glyphAtlas);
 
   return {
     resolvePicture: (name) => {
@@ -77,6 +80,7 @@ export function createQuakeHudResourceResolver(filesystem: VirtualFilesystem): Q
       pictureCache.set(name, texture);
       return texture;
     },
+    resolvePaletteColor: (index) => resolvePaletteColor(paletteRgb, index),
     resolveGlyphSet: () => ({
       kind: "glyphs",
       name: "conchars",
@@ -100,6 +104,42 @@ export function createQuakeHudResourceResolver(filesystem: VirtualFilesystem): Q
       textCache.set(text, resolved);
       return resolved;
     }
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Load the palette used by Quake II indexed HUD fills.
+ */
+function loadHudPalette(filesystem: VirtualFilesystem, glyphAtlas: ReturnType<typeof parsePcx> | null): Uint8Array | null {
+  const paletteFile = readMountedFile(filesystem, SHARED_PALETTE_PATH);
+  if (paletteFile) {
+    try {
+      return parsePcx(paletteFile.bytes, paletteFile.path).paletteRgb;
+    } catch {
+      // Fall through to the glyph atlas palette when the shared palette asset is unavailable or malformed.
+    }
+  }
+
+  return glyphAtlas?.paletteRgb ?? null;
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve one Quake II 8-bit palette index into normalized renderer color components.
+ */
+function resolvePaletteColor(paletteRgb: Uint8Array | null, index: number): HudPaletteColor {
+  const paletteIndex = Math.max(0, Math.min(255, Math.trunc(index))) * 3;
+  if (!paletteRgb) {
+    const value = (paletteIndex / 3) / 255;
+    return { red: value, green: value, blue: value, alpha: 1 };
+  }
+
+  return {
+    red: (paletteRgb[paletteIndex] ?? 0) / 255,
+    green: (paletteRgb[paletteIndex + 1] ?? 0) / 255,
+    blue: (paletteRgb[paletteIndex + 2] ?? 0) / 255,
+    alpha: 1
   };
 }
 

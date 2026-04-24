@@ -29,6 +29,20 @@ export type {
 
 /**
  * Category: New
+ * Purpose: Describe one renderer-agnostic normalized color resolved from a Quake II palette index.
+ *
+ * Constraints:
+ * - Components must stay in the 0..1 range expected by render backends.
+ */
+export interface HudPaletteColor {
+  red: number;
+  green: number;
+  blue: number;
+  alpha: number;
+}
+
+/**
+ * Category: New
  * Purpose: Describe the minimal contract a renderer uses to resolve one Quake II HUD picture name.
  *
  * Constraints:

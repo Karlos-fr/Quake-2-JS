@@ -24,6 +24,14 @@ import {
   CVAR_NOSET,
   CVAR_SERVERINFO,
   CVAR_USERINFO,
+  CS_CDTRACK,
+  CS_ITEMS,
+  CS_MAXCLIENTS,
+  CS_NAME,
+  CS_SKY,
+  CS_SKYAXIS,
+  CS_SKYROTATE,
+  CS_STATUSBAR,
   DF_SAME_LEVEL,
   PRINT_HIGH,
   type cvar_t,
@@ -34,6 +42,7 @@ import { GAME_API_VERSION, type edict_t, type game_export_t, type game_import_t 
 import {
   FL_FLY,
   FL_SWIM,
+  FRAMETIME,
   GAMEVERSION,
   SVF_MONSTER,
   TAG_GAME,
@@ -44,7 +53,7 @@ import {
   type level_locals_t
 } from "./g-local.js";
 import { AI_SetSightClient } from "./g_ai.js";
-import { InitItems } from "./g_items.js";
+import { FindItem, InitItems, PrecacheItem, SetItemNames } from "./g_items.js";
 import { G_RunEntity } from "./g_phys.js";
 import { M_CheckGround } from "./g_monster.js";
 import type { GameHudHooks } from "./p_hud.js";
@@ -59,6 +68,7 @@ import {
   ClientUserinfoChanged,
   InitBodyQue
 } from "./p_client.js";
+import { PlayerTrail_Init } from "./p_trail.js";
 import { ClientEndServerFrame } from "./p_view.js";
 import { ED_CallSpawn, G_FindTeams } from "./g_spawn.js";
 import { G_Find, G_Spawn } from "./g_utils.js";
@@ -66,6 +76,7 @@ import {
   attachGameClient,
   createGameRuntimeFromBspEntities,
   linkGameEntity,
+  registerGameSound,
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
@@ -225,10 +236,22 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
   applyMainCvarsToRuntime(context);
 
   context.runtime.spawnpoint = spawnpoint;
+  context.runtime.mapname = mapname;
+  context.runtime.power_cubes = 0;
   context.game.spawnpoint = spawnpoint;
   context.level.mapname = mapname;
   context.level.framenum = 0;
   context.level.time = 0;
+  context.level.nextmap = "";
+  context.level.level_name = "";
+  context.level.power_cubes = 0;
+
+  const worldspawn = context.runtime.entities[0] ?? null;
+  if (worldspawn) {
+    linkGameEntity(context.runtime, worldspawn);
+    ED_CallSpawn(worldspawn, context.runtime);
+    configureWorldspawn(context, worldspawn, mapname);
+  }
 
   for (let index = 1; index <= context.runtime.maxclients; index += 1) {
     const player = context.runtime.entities[index]!;
@@ -252,6 +275,7 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
 
   G_FindTeams(context.runtime);
   InitBodyQue(context.runtime);
+  PlayerTrail_Init(context.runtime);
 }
 
 /**
@@ -265,7 +289,7 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
  */
 export function G_RunFrame(context: GameMainContext): void {
   context.runtime.framenum += 1;
-  context.runtime.time += 0.1;
+  context.runtime.time = context.runtime.framenum * FRAMETIME;
   syncLevelFromRuntime(context);
   AI_SetSightClient(context.runtime);
 
@@ -614,12 +638,146 @@ function applyMainCvarsToRuntime(context: GameMainContext): void {
   context.game.maxentities = context.runtime.maxentities;
 }
 
+function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, mapname: string): void {
+  context.level.level_name = worldspawn.message && worldspawn.message.length > 0
+    ? worldspawn.message
+    : mapname;
+  context.level.nextmap = worldspawn.properties.nextmap ?? "";
+
+  context.gi.configstring(CS_NAME, context.level.level_name);
+  context.gi.configstring(CS_SKY, worldspawn.properties.sky ?? "unit1_");
+  context.gi.configstring(CS_SKYROTATE, worldspawn.properties.skyrotate ?? "0");
+  context.gi.configstring(CS_SKYAXIS, worldspawn.properties.skyaxis ?? "0 0 0");
+  context.gi.configstring(CS_CDTRACK, String(worldspawn.sounds));
+  context.gi.configstring(CS_MAXCLIENTS, String(context.runtime.maxclients));
+  context.gi.configstring(CS_STATUSBAR, "");
+
+  context.gi.imageindex("i_help");
+  context.level.pic_health = context.gi.imageindex("i_health");
+  context.gi.imageindex("help");
+  context.gi.imageindex("field_3");
+
+  const itemNames = SetItemNames();
+  for (let index = 0; index < itemNames.length; index += 1) {
+    context.gi.configstring(CS_ITEMS + index + 1, itemNames[index]);
+  }
+
+  const gravity = worldspawn.properties.gravity;
+  if (gravity && gravity.length > 0) {
+    context.gi.cvar_set("sv_gravity", gravity);
+    const parsedGravity = Number.parseFloat(gravity);
+    if (Number.isFinite(parsedGravity)) {
+      context.runtime.gravity = parsedGravity;
+    }
+  } else {
+    context.gi.cvar_set("sv_gravity", "800");
+    context.runtime.gravity = 800;
+  }
+
+  precacheWorldspawnSounds(context);
+}
+
+/**
+ * Original name: SP_worldspawn sound precache block
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the global player/world/item sounds made available by worldspawn.
+ *
+ * Porting notes:
+ * - The local gameplay runtime owns stable sound indices; `gi.soundindex` is also called so server-backed integrations can populate `CS_SOUNDS`.
+ */
+function precacheWorldspawnSounds(context: GameMainContext): void {
+  precacheGameSound(context, "player/fry.wav");
+
+  const blaster = FindItem("Blaster");
+  if (blaster) {
+    PrecacheItem(context.runtime, blaster);
+    if (blaster.pickupSound) {
+      context.gi.soundindex(blaster.pickupSound);
+    }
+    for (const assetPath of blaster.precaches.split(/\s+/).filter((value) => value.endsWith(".wav"))) {
+      context.gi.soundindex(assetPath);
+    }
+  }
+
+  for (const soundPath of WORLDSPAWN_SOUND_PRECACHE) {
+    precacheGameSound(context, soundPath);
+  }
+}
+
+function precacheGameSound(context: GameMainContext, path: string): void {
+  registerGameSound(context.runtime, path);
+  context.gi.soundindex(path);
+}
+
+const WORLDSPAWN_SOUND_PRECACHE = [
+  "player/lava1.wav",
+  "player/lava2.wav",
+  "misc/pc_up.wav",
+  "misc/talk1.wav",
+  "misc/udeath.wav",
+  "items/respawn1.wav",
+  "*death1.wav",
+  "*death2.wav",
+  "*death3.wav",
+  "*death4.wav",
+  "*fall1.wav",
+  "*fall2.wav",
+  "*gurp1.wav",
+  "*gurp2.wav",
+  "*jump1.wav",
+  "*pain25_1.wav",
+  "*pain25_2.wav",
+  "*pain50_1.wav",
+  "*pain50_2.wav",
+  "*pain75_1.wav",
+  "*pain75_2.wav",
+  "*pain100_1.wav",
+  "*pain100_2.wav",
+  "player/gasp1.wav",
+  "player/gasp2.wav",
+  "player/watr_in.wav",
+  "player/watr_out.wav",
+  "player/watr_un.wav",
+  "player/u_breath1.wav",
+  "player/u_breath2.wav",
+  "items/pkup.wav",
+  "world/land.wav",
+  "misc/h2ohit1.wav",
+  "items/damage.wav",
+  "items/protect.wav",
+  "items/protect4.wav",
+  "weapons/noammo.wav",
+  "infantry/inflies1.wav"
+] as const;
+
 function syncLevelFromRuntime(context: GameMainContext): void {
   context.level.framenum = context.runtime.framenum;
   context.level.time = context.runtime.time;
   context.level.intermissiontime = context.runtime.intermissiontime;
   context.level.exitintermission = context.runtime.exitintermission;
+  context.level.intermission_origin = [...context.runtime.intermission_origin];
+  context.level.intermission_angle = [...context.runtime.intermission_angle];
   context.level.changemap = context.runtime.changemap;
+  context.level.sight_client = context.runtime.sight_client;
+  context.level.sight_entity = context.runtime.sight_entity;
+  context.level.sight_entity_framenum = context.runtime.sight_entity_framenum;
+  context.level.sound_entity = context.runtime.sound_entity;
+  context.level.sound_entity_framenum = context.runtime.sound_entity_framenum;
+  context.level.sound2_entity = context.runtime.sound2_entity;
+  context.level.sound2_entity_framenum = context.runtime.sound2_entity_framenum;
+  context.level.total_secrets = context.runtime.total_secrets;
+  context.level.found_secrets = context.runtime.found_secrets;
+  context.level.total_goals = context.runtime.total_goals;
+  context.level.found_goals = context.runtime.found_goals;
+  context.level.total_monsters = context.runtime.total_monsters;
+  context.level.killed_monsters = context.runtime.killed_monsters;
+  context.level.current_entity = context.runtime.current_entity;
+  context.level.body_que = context.runtime.body_que;
+  context.level.power_cubes = context.runtime.power_cubes;
 }
 
 function buildServerEntityList(parsedEntities: BspEntity[], maxclients: number): BspEntity[] {

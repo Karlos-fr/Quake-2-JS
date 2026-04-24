@@ -17,6 +17,7 @@ import { strict as assert } from "node:assert";
 import { createSizeBuffer } from "../../packages/memory/src/index.js";
 import {
   Cmd_ExecuteString,
+  BUTTON_ATTACK,
   Cvar_Get,
   Cvar_Set,
   CVAR_USERINFO,
@@ -41,6 +42,31 @@ import {
   connstate_t
 } from "../../packages/client/src/index.js";
 import type { usercmd_t } from "../../packages/qcommon/src/index.js";
+
+function readMoveDeltaFrame(packetBytes: Uint8Array): number {
+  const packet = createSizeBuffer(packetBytes);
+  packet.cursize = packetBytes.length;
+  MSG_BeginReading(packet);
+  MSG_ReadLong(packet);
+  MSG_ReadLong(packet);
+  MSG_ReadShort(packet);
+
+  while (packet.readcount < packet.cursize) {
+    const opcode = MSG_ReadByte(packet);
+    if (opcode === clc_ops_e.clc_userinfo) {
+      while (MSG_ReadByte(packet) !== 0) {
+        // consume the userinfo string
+      }
+      continue;
+    }
+
+    assert.equal(opcode, clc_ops_e.clc_move, "expected clc_move opcode while reading delta frame");
+    MSG_ReadByte(packet);
+    return MSG_ReadLong(packet);
+  }
+
+  assert.fail("expected one clc_move payload");
+}
 
 const sentPackets: Uint8Array[] = [];
 let movedByDevice = false;
@@ -146,5 +172,68 @@ client.cls.netchan.last_sent = 2500;
 CL_SetInputFrameTime(input, 200);
 CL_SendCmd(input);
 assert.equal(sentPackets.length, 1, "CL_SendCmd connected state should send keepalive after timeout");
+
+sentPackets.length = 0;
+client.cls.state = connstate_t.ca_disconnected;
+client.cls.realtime = 5000;
+client.cls.netchan.outgoing_sequence = 4;
+CL_SetInputFrameTime(input, 250);
+CL_SendCmd(input);
+assert.equal(sentPackets.length, 0, "CL_SendCmd disconnected state should not transmit packets");
+assert.equal(client.cl.cmd_time[4], 5000, "CL_SendCmd disconnected state should still store command timing");
+
+sentPackets.length = 0;
+client.cls.state = connstate_t.ca_connecting;
+client.cls.realtime = 5100;
+client.cls.netchan.outgoing_sequence = 5;
+CL_SetInputFrameTime(input, 260);
+CL_SendCmd(input);
+assert.equal(sentPackets.length, 0, "CL_SendCmd connecting state should not transmit packets");
+assert.equal(client.cl.cmd_time[5], 5100, "CL_SendCmd connecting state should still build a command");
+
+client.cls.state = connstate_t.ca_active;
+client.cls.netchan.outgoing_sequence = 6;
+client.cls.realtime = 6200;
+client.cl.frame.valid = true;
+client.cl.frame.serverframe = 88;
+input.cl_nodelta!.value = 1;
+CL_SetInputFrameTime(input, 320);
+sentPackets.length = 0;
+CL_SendCmd(input);
+assert.equal(readMoveDeltaFrame(sentPackets[0]!), -1, "CL_SendCmd should force no-delta mode when cl_nodelta is set");
+input.cl_nodelta!.value = 0;
+
+client.cls.netchan.outgoing_sequence = 7;
+client.cls.realtime = 6300;
+client.cl.frame.valid = false;
+CL_SetInputFrameTime(input, 330);
+sentPackets.length = 0;
+CL_SendCmd(input);
+assert.equal(readMoveDeltaFrame(sentPackets[0]!), -1, "CL_SendCmd should force no-delta mode when the frame is invalid");
+client.cl.frame.valid = true;
+
+client.cls.netchan.outgoing_sequence = 8;
+client.cls.realtime = 6400;
+client.cls.demowaiting = true;
+CL_SetInputFrameTime(input, 340);
+sentPackets.length = 0;
+CL_SendCmd(input);
+assert.equal(readMoveDeltaFrame(sentPackets[0]!), -1, "CL_SendCmd should force no-delta mode while waiting for demo playback");
+client.cls.demowaiting = false;
+
+client.cls.netchan.outgoing_sequence = 9;
+client.cls.realtime = 8000;
+client.cl.cinematic.cinematictime = 6000;
+client.cl.attractloop = false;
+client.net_message.cursize = 0;
+client.net_message.readcount = 0;
+input.in_attack.state = 3;
+CL_SetInputFrameTime(input, 350);
+sentPackets.length = 0;
+CL_SendCmd(input);
+assert.equal(client.cl.cmd.buttons & BUTTON_ATTACK, BUTTON_ATTACK, "CL_SendCmd cinematic skip path should preserve the attack button");
+MSG_BeginReading(client.net_message);
+assert.equal(MSG_ReadByte(client.net_message), clc_ops_e.clc_stringcmd, "CL_SendCmd cinematic skip path should queue nextserver");
+assert.equal(MSG_ReadByte(client.net_message), "n".charCodeAt(0), "CL_SendCmd cinematic skip path should start the nextserver string");
 
 console.log("quake2-cl-input: ok");

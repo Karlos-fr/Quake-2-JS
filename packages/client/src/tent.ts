@@ -346,6 +346,7 @@ export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntit
     case temp_event_t.TE_EXPLOSION2:
     case temp_event_t.TE_GRENADE_EXPLOSION:
     case temp_event_t.TE_GRENADE_EXPLOSION_WATER:
+    case temp_event_t.TE_PLASMA_EXPLOSION:
     case temp_event_t.TE_EXPLOSION1_BIG:
     case temp_event_t.TE_EXPLOSION1_NP:
     case temp_event_t.TE_PLAIN_EXPLOSION:
@@ -449,7 +450,7 @@ export function CL_AddTEntPacket(runtime: ClientRuntime, packet: ClientTempEntit
  *
  * Porting notes:
  * - Emits structured beams, explosions and dynamic lights instead of renderer calls.
- * - Sustains are tracked but not yet visualized until their thinker functions are ported.
+ * - Executes sustain thinkers before returning renderer-facing sustain descriptors.
  */
 export function CL_BuildTEntRefresh(runtime: ClientRuntime): ClientTEntRefresh {
   const beams = [
@@ -1258,7 +1259,11 @@ function assignBeam(
       : candidate.entity === entity
   );
   if (!slot) {
-    slot = slots.find((candidate) => candidate.model === null || candidate.endtime < runtime.cl.time) ?? slots[0];
+    slot = slots.find((candidate) => candidate.model === null || candidate.endtime < runtime.cl.time);
+  }
+
+  if (!slot) {
+    return;
   }
 
   slot.entity = entity;
@@ -1282,6 +1287,9 @@ function assignPlayerBeam(
 ): void {
   const entity = packet.entity ?? 0;
   const existing = runtime.cl.tents.playerbeams.find((candidate) => candidate.entity === entity);
+  if (!existing && !runtime.cl.tents.playerbeams.some((candidate) => candidate.model === null || candidate.endtime < runtime.cl.time)) {
+    return;
+  }
 
   assignBeam(
     runtime,
@@ -1300,9 +1308,10 @@ function assignPlayerBeam(
  * Purpose: Assign one parsed laser packet into the fixed-size laser array.
  */
 function assignLaser(runtime: ClientRuntime, packet: ClientTempEntityPacket, colors: number): void {
-  const slot =
-    runtime.cl.tents.lasers.find((candidate) => candidate.endtime < runtime.cl.time) ??
-    runtime.cl.tents.lasers[0];
+  const slot = runtime.cl.tents.lasers.find((candidate) => candidate.endtime < runtime.cl.time);
+  if (!slot) {
+    return;
+  }
 
   slot.start = [...(packet.position ?? [0, 0, 0])];
   slot.end = [...(packet.position2 ?? [0, 0, 0])];
@@ -1337,7 +1346,10 @@ function assignSteamSustain(runtime: ClientRuntime, packet: ClientTempEntityPack
     return;
   }
 
-  const slot = runtime.cl.tents.sustains.find((candidate) => candidate.id === 0) ?? runtime.cl.tents.sustains[0];
+  const slot = runtime.cl.tents.sustains.find((candidate) => candidate.id === 0);
+  if (!slot) {
+    return;
+  }
   slot.id = packet.id;
   slot.type = "steam";
   slot.thinker = "CL_ParticleSteamEffect2";
@@ -1363,7 +1375,10 @@ function assignTimedSustain(
   durationMs: number,
   thinkinterval: number
 ): void {
-  const slot = runtime.cl.tents.sustains.find((candidate) => candidate.id === 0) ?? runtime.cl.tents.sustains[0];
+  const slot = runtime.cl.tents.sustains.find((candidate) => candidate.id === 0);
+  if (!slot) {
+    return;
+  }
   slot.id = id;
   slot.type = type;
   slot.thinker = type === "widow" ? "CL_Widowbeamout" : "CL_Nukeblast";

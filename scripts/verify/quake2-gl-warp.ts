@@ -36,6 +36,7 @@ import {
   setWarpPaletteExtensionState,
   setWarpRefdefTime,
   setWarpSkyCvars,
+  setWarpTurbulenceScale,
   setWarpViewOrigin
 } from "../../packages/renderer-three/src/index.js";
 import { createGlPoly, createMSurface, createModel } from "../../packages/renderer-three/src/gl-model.js";
@@ -81,6 +82,11 @@ const emitted = EmitWaterPolys(runtime, waterSurface);
 assert.equal(emitted.length, 1, "EmitWaterPolys chain length mismatch");
 assert.equal(emitted[0]?.vertices.length, 3, "EmitWaterPolys vertex count mismatch");
 assert.equal(emitted[0]!.vertices[0]!.uv[0] < 0, true, "EmitWaterPolys flowing scroll mismatch");
+assert.equal(Math.abs(emitted[0]!.vertices[0]!.uv[0] + 0.687669375) < 0.00001, true, "EmitWaterPolys bootstrapped turbsin scale mismatch");
+setWarpTurbulenceScale(runtime, 1);
+const unscaled = EmitWaterPolys(runtime, waterSurface);
+assert.equal(Math.abs(unscaled[0]!.vertices[0]!.uv[0] + 0.62533875) < 0.00001, true, "setWarpTurbulenceScale mismatch");
+setWarpTurbulenceScale(runtime, 0.5);
 
 const model = createModel();
 model.surfedges = [1, 2, 3, 4];
@@ -112,6 +118,31 @@ const polys = GL_SubdivideSurface(runtime, subdividedSurface);
 assert.equal(polys.length > 1, true, "GL_SubdivideSurface split mismatch");
 assert.equal(subdividedSurface.polys !== null, true, "GL_SubdivideSurface surface chain mismatch");
 assert.equal(polys[0]!.numverts >= 3, true, "GL_SubdivideSurface poly verts mismatch");
+
+const offsetModel = createModel();
+offsetModel.surfedges = [1, 2, 3, 4];
+offsetModel.edges = model.edges;
+offsetModel.vertexes = [
+  { position: [0, 0, 0] },
+  { position: [32, 0, 0] },
+  { position: [32, 32, 0] },
+  { position: [0, 32, 0] }
+];
+setWarpModel(runtime, offsetModel);
+const offsetSurface = createMSurface();
+offsetSurface.firstedge = 0;
+offsetSurface.numedges = 4;
+offsetSurface.texinfo = {
+  vecs: [[1, 0, 0, 123], [0, 1, 0, 456]],
+  flags: 0,
+  numframes: 1,
+  next: null,
+  image: null
+};
+const offsetPolys = GL_SubdivideSurface(runtime, offsetSurface);
+assert.equal(offsetPolys.length, 1, "GL_SubdivideSurface offset fixture split mismatch");
+assert.equal(offsetPolys[0]!.verts[0]![3], 16, "SubdividePolygon center s must ignore texinfo offset");
+assert.equal(offsetPolys[0]!.verts[0]![4], 16, "SubdividePolygon center t must ignore texinfo offset");
 
 R_ClearSkyBox(runtime);
 assert.equal(runtime.skymins[0][0], 9999, "R_ClearSkyBox mins mismatch");
@@ -165,6 +196,7 @@ runtime.skyrotate = 0;
 const drawnFaces = R_DrawSkyBox(runtime);
 assert.equal(drawnFaces.length, 1, "R_DrawSkyBox visible face mismatch");
 assert.equal((drawnFaces[0]?.image as { name: string }).name, "face-0", "R_DrawSkyBox face order mismatch");
+assert.equal(drawnFaces[0]?.vertices.length, 4, "R_DrawSkyBox quad vertex mismatch");
 
 runtime.skyrotate = 45;
 R_ClearSkyBox(runtime);

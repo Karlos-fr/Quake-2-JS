@@ -15,7 +15,7 @@ import { DF_SAME_LEVEL, type cvar_t } from "../../packages/qcommon/src/index.js"
 import { TAG_GAME, TAG_LEVEL } from "../../packages/game/src/g-local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient } from "../../packages/game/src/runtime.js";
-import { CheckDMRules, ClientEndServerFrames, ExitLevel, GetGameApi, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, createGameMainContext } from "../../packages/game/src/g_main.js";
 
 const dprints: string[] = [];
 const bprints: string[] = [];
@@ -115,7 +115,29 @@ api.SpawnEntities("base1", entityString, "start");
 assert.equal(api.edicts[0]?.classname, "worldspawn", "worldspawn must stay at edict 0");
 assert.ok(api.edicts[1]?.client, "first reserved client slot must have a client block");
 assert.equal(api.edicts[5]?.classname, "func_door", "map entities must be shifted behind reserved player slots");
-assert.equal(api.num_edicts, 14, "SpawnEntities edict count mismatch");
+assert.equal(api.num_edicts, 22, "SpawnEntities must include reserved body queue and player trail edicts");
+assert.deepEqual(
+  api.edicts.slice(6).map((ent) => ent?.classname),
+  [
+    "bodyque",
+    "bodyque",
+    "bodyque",
+    "bodyque",
+    "bodyque",
+    "bodyque",
+    "bodyque",
+    "bodyque",
+    "player_trail",
+    "player_trail",
+    "player_trail",
+    "player_trail",
+    "player_trail",
+    "player_trail",
+    "player_trail",
+    "player_trail"
+  ],
+  "SpawnEntities post-map edict bootstrap mismatch"
+);
 
 command.argv = ["sv", "test"];
 command.args = "test";
@@ -180,6 +202,19 @@ helpContext.runtime.entities[1].client!.resp.spectator = true;
 helpContext.runtime.entities[1].client!.ps.stats = helpContext.runtime.entities[1].client!.ps.stats.slice();
 ClientEndServerFrames(helpContext);
 assert.equal(helpContext.runtime.helpchanged, 7, "ClientEndServerFrames helpchanged sync mismatch");
+
+const frameContext = createGameMainContext(imports);
+frameContext.runtime.maxclients = 1;
+frameContext.runtime.entities = [{ ...api.edicts[0]! }, { ...api.edicts[1]! }];
+frameContext.runtime.entities[1].client = frameContext.runtime.entities[1].client ?? attachGameClient(frameContext.runtime.entities[1]);
+frameContext.runtime.entities[1].inuse = true;
+frameContext.runtime.entities[1].s.origin = [11, 22, 33];
+frameContext.runtime.entities[1].s.old_origin = [0, 0, 0];
+G_RunFrame(frameContext);
+assert.equal(frameContext.runtime.framenum, 1, "G_RunFrame framenum mismatch");
+assert.equal(frameContext.runtime.time, 0.1, "G_RunFrame must advance using FRAMETIME");
+assert.deepEqual(frameContext.runtime.entities[1].s.old_origin, [11, 22, 33], "G_RunFrame old_origin copy mismatch");
+assert.equal(frameContext.level.current_entity, null, "G_RunFrame must clear level.current_entity after the entity loop");
 
 api.Shutdown();
 assert.ok(dprints.includes("==== ShutdownGame ====\n"), "ShutdownGame banner mismatch");

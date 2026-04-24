@@ -17,10 +17,13 @@ import { createLightstyle, createRefDef } from "../../packages/client/src/ref.js
 import {
   DLIGHT_CUTOFF,
   R_BuildLightMap,
+  R_AddDynamicLights,
   R_LightPoint,
+  R_MarkModelLights,
   R_PushDlights,
   R_RenderDlights,
   R_SetCacheState,
+  createGlLightRmainHooks,
   createGlLightRuntime,
   setGlFlashblendEnabled,
   setGlLightCurrentEntity,
@@ -146,6 +149,19 @@ assert.equal(renderCalls.length, 3, "R_RenderDlights hook count mismatch");
 assert.equal(renderCalls[1]?.ringCount, 17, "R_RenderDlight ring mismatch");
 assert.equal(renderCalls[1]?.radius, 35, "R_RenderDlight radius mismatch");
 
+setGlFlashblendEnabled(runtime, false);
+R_RenderDlights(runtime);
+assert.equal(renderCalls.length, 3, "R_RenderDlights flashblend-off mismatch");
+
+const pushSkipRuntime = createGlLightRuntime();
+setGlLightWorldModel(pushSkipRuntime, worldmodel);
+setGlLightRefdef(pushSkipRuntime, refdef);
+setGlFlashblendEnabled(pushSkipRuntime, true);
+surface.dlightbits = 0;
+surface.dlightframe = 0;
+R_PushDlights(pushSkipRuntime);
+assert.equal(surface.dlightbits, 0, "R_PushDlights flashblend skip mismatch");
+
 const unlitRuntime = createGlLightRuntime();
 const unlitModel = createModel();
 unlitModel.nodes = [rootNode];
@@ -156,5 +172,62 @@ setGlLightRefdef(unlitRuntime, refdef);
 const unlitColor: [number, number, number] = [0, 0, 0];
 R_LightPoint(unlitRuntime, [0, 0, 10], unlitColor);
 assert.deepEqual(unlitColor, [1, 1, 1], "R_LightPoint unlit fallback mismatch");
+
+const monolRuntime = createGlLightRuntime();
+setGlLightWorldModel(monolRuntime, worldmodel);
+setGlLightRefdef(monolRuntime, refdef);
+setGlModulate(monolRuntime, 1);
+surface.dlightframe = -1;
+surface.dlightbits = 0;
+
+const monoLDest = new Uint8Array(16);
+setGlMonolightmapMode(monolRuntime, "L");
+R_BuildLightMap(monolRuntime, surface, monoLDest, 8);
+assert.equal(monoLDest[1], 0, "monolightmap L green mismatch");
+assert.equal(monoLDest[2], 0, "monolightmap L blue mismatch");
+
+const monoCDest = new Uint8Array(16);
+setGlMonolightmapMode(monolRuntime, "C");
+R_BuildLightMap(monolRuntime, surface, monoCDest, 8);
+assert.equal(monoCDest[0] > 0 || monoCDest[1] > 0 || monoCDest[2] > 0, true, "monolightmap C rgb mismatch");
+assert.equal(monoCDest[3] <= 255, true, "monolightmap C alpha mismatch");
+
+const rmainHooks = createGlLightRmainHooks(runtime);
+const hookColor = rmainHooks.lightPoint([0, 0, 10]);
+assert.equal(Array.isArray(hookColor) && hookColor.length === 3, true, "createGlLightRmainHooks lightPoint mismatch");
+rmainHooks.pushDlights();
+rmainHooks.renderDlights();
+
+const fractionalSurface = createMSurface();
+fractionalSurface.plane = rootNode.plane;
+fractionalSurface.texturemins = [0, 0];
+fractionalSurface.extents = [16, 16];
+fractionalSurface.dlightbits = 1;
+fractionalSurface.texinfo = createMTexinfo();
+fractionalSurface.texinfo.vecs = [
+  [1, 0, 0, 0],
+  [0, 1, 0, 0]
+];
+runtime.s_blocklights.fill(0);
+refdef.dlights[0].origin = [2.9, 2.9, 0];
+refdef.dlights[0].intensity = 100;
+R_AddDynamicLights(runtime, fractionalSurface);
+assert.equal(runtime.s_blocklights[0], 97, "R_AddDynamicLights must truncate td like the C int path");
+
+const brushModel = createModel();
+const brushNode = createMNode();
+brushNode.plane = rootNode.plane;
+brushNode.firstsurface = 0;
+brushNode.numsurfaces = 1;
+brushNode.children = [createMLeaf(), createMLeaf()];
+const brushSurface = createMSurface();
+brushModel.nodes = [brushNode];
+brushModel.surfaces = [brushSurface];
+brushModel.firstnode = 0;
+runtime.r_dlightframecount = 22;
+R_MarkModelLights(runtime, brushModel);
+assert.equal(brushSurface.dlightframe, 22, "R_MarkModelLights frame mismatch");
+assert.equal(brushSurface.dlightbits, 1, "R_MarkModelLights bit mismatch");
+assert.equal(runtime.r_worldmodel, worldmodel, "R_MarkModelLights must restore r_worldmodel");
 
 console.log("quake2-gl-light: ok");

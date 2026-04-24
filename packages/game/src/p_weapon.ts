@@ -1,7 +1,7 @@
 /**
  * File: p_weapon.ts
  * Source: Quake II original / game/p_weapon.c
- * Purpose: Port the first player-weapon management routines.
+ * Purpose: Port the player-weapon management routines and all player-fired weapon paths.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,8 +9,8 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - Starts with the non-projectile core (`ChangeWeapon`, `NoAmmoWeaponChange`, `Think_Weapon`, `Use_Weapon`, `Drop_Weapon`, `Weapon_Generic`).
- * - Uses explicit hook callbacks for still-unported engine/game-import paths such as `Drop_Item` and per-weapon fire functions.
+ * - Keeps optional override hooks for tests and adapters, but the default gameplay path is now fully wired to the local `g_items.ts`, `g_weapon.ts` and runtime event queues.
+ * - Player muzzle flashes and one-shot weapon sounds are journaled through runtime queues instead of a live Quake II server import table.
  *
  * Notes:
  * - This file is intended to stay close to the original C source.
@@ -19,6 +19,7 @@
 import {
   AngleVectors,
   CHAN_AUTO,
+  CHAN_ITEM,
   BUTTON_ATTACK,
   CHAN_WEAPON,
   MZ_BFG,
@@ -69,6 +70,8 @@ import {
   ANIM_REVERSE,
   DEAD_NO,
   SVF_NOCLIENT,
+  emitGameSound,
+  emitPlayerMuzzleFlash,
   linkGameEntity,
   spawnGameEntity,
   weaponstate_t,
@@ -78,7 +81,8 @@ import {
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
-import { FindItem, type GameItemDefinition, type GameItemWeaponThinkKind } from "./g_items.js";
+import { fire_bfg, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_rail, fire_rocket, fire_shotgun } from "./g_weapon.js";
+import { Add_Ammo, Drop_Item, FindItem, SetRespawn, type GameItemDefinition, type GameItemWeaponThinkKind } from "./g_items.js";
 
 const IT_AMMO = 2;
 const FRAME_attack1 = 46;
@@ -191,7 +195,6 @@ export interface GameWeaponHooks {
     mod: number,
     runtime: GameRuntime
   ) => void;
-  weapon_grenade_fire?: (ent: GameEntity, held: boolean, runtime: GameRuntime) => void;
   weaponThink?: Partial<Record<GameItemWeaponThinkKind, (ent: GameEntity, runtime: GameRuntime, hooks: GameWeaponHooks) => void>>;
 }
 
@@ -292,7 +295,7 @@ export function PlayerNoise(who: GameEntity, where: vec3_t, type: number, runtim
  * - Handles weapon pickup inventory, ammo grant and default weapon switch rules.
  *
  * Porting notes:
- * - Keeps `Add_Ammo` and `SetRespawn` as explicit hooks until the full `g_items.c` gameplay path is ported.
+ * - Uses local `g_items.ts` functions by default, while keeping optional overrides for targeted tests.
  */
 export function Pickup_Weapon(
   ent: GameEntity,
@@ -314,11 +317,12 @@ export function Pickup_Weapon(
 
   if ((ent.spawnflags & DROPPED_ITEM) === 0) {
     const ammo = item.ammo ? FindItem(item.ammo) : null;
-    if (ammo && hooks.Add_Ammo) {
+    if (ammo) {
+      const addAmmo = hooks.Add_Ammo ?? Add_Ammo;
       if ((runtime.dmflags & DF_INFINITE_AMMO) !== 0) {
-        hooks.Add_Ammo(other, ammo, 1000, runtime);
+        addAmmo(other, ammo, 1000, runtime);
       } else {
-        hooks.Add_Ammo(other, ammo, ammo.quantity, runtime);
+        addAmmo(other, ammo, ammo.quantity, runtime);
       }
     }
 
@@ -327,7 +331,7 @@ export function Pickup_Weapon(
         if ((runtime.dmflags & DF_WEAPONS_STAY) !== 0) {
           ent.flags |= FL_RESPAWN;
         } else {
-          hooks.SetRespawn?.(ent, 30, runtime);
+          (hooks.SetRespawn ?? SetRespawn)(ent, 30, runtime);
         }
       }
       if (runtime.coop) {
@@ -357,7 +361,7 @@ export function Pickup_Weapon(
  * - Drops the previous weapon completely and activates `client->newweapon`.
  *
  * Porting notes:
- * - Keeps the original `grenade_time` special case behind an explicit hook because the grenade fire path is not ported yet.
+ * - Preserves the original held-grenade flush during weapon change by reusing the same local weapon fire path.
  */
 export function ChangeWeapon(ent: GameEntity, runtime: GameRuntime, hooks: GameWeaponHooks = {}): void {
   const client = requireClient(ent, "ChangeWeapon");
@@ -365,7 +369,7 @@ export function ChangeWeapon(ent: GameEntity, runtime: GameRuntime, hooks: GameW
   if (client.grenade_time) {
     client.grenade_time = runtime.time;
     client.weapon_sound = 0;
-    hooks.weapon_grenade_fire?.(ent, false, runtime);
+    weapon_grenade_fire(ent, false, runtime, hooks);
     client.grenade_time = 0;
   }
 
@@ -450,7 +454,7 @@ export function NoAmmoWeaponChange(ent: GameEntity): void {
  * - Dispatches the active weapon think routine once per player frame.
  *
  * Porting notes:
- * - Uses explicit weapon-think hooks until each concrete weapon function is ported.
+ * - Falls back to the local `p_weapon.ts` dispatch table and keeps overrides only for targeted tests/adapters.
  */
 export function Think_Weapon(ent: GameEntity, runtime: GameRuntime, hooks: GameWeaponHooks = {}): void {
   const client = requireClient(ent, "Think_Weapon");
@@ -465,7 +469,7 @@ export function Think_Weapon(ent: GameEntity, runtime: GameRuntime, hooks: GameW
     return;
   }
 
-  const thinker = hooks.weaponThink?.[weaponThinkKind];
+  const thinker = hooks.weaponThink?.[weaponThinkKind] ?? getDefaultWeaponThink(weaponThinkKind);
   if (!thinker) {
     runtime.log({
       kind: "warning",
@@ -538,17 +542,7 @@ export function Drop_Weapon(ent: GameEntity, item: GameItemDefinition, runtime: 
     return;
   }
 
-  if (!hooks.Drop_Item) {
-    runtime.log({
-      kind: "warning",
-      message: `Drop_Item hook missing for ${item.pickupName}`,
-      entityIndex: ent.index,
-      entityClassname: ent.classname
-    });
-    return;
-  }
-
-  hooks.Drop_Item(ent, item, runtime);
+  (hooks.Drop_Item ?? Drop_Item)(ent, item, runtime);
   client.pers.inventory[index]--;
 }
 
@@ -650,7 +644,7 @@ export function Weapon_Generic(
         }
       } else {
         if (runtime.time >= ent.pain_debounce_time) {
-          ent.noise_index = registerGameSound(runtime, "weapons/noammo.wav");
+          playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
           ent.pain_debounce_time = runtime.time + 1;
         }
         NoAmmoWeaponChange(ent);
@@ -686,7 +680,7 @@ export function Weapon_Generic(
       if (client.ps.gunframe === fireFrame) {
         matched = true;
         if (client.quad_framenum > runtime.framenum) {
-          ent.sounds = registerGameSound(runtime, "items/damage3.wav");
+          playWeaponOneShot(ent, "items/damage3.wav", CHAN_ITEM, runtime, hooks);
         }
         fire(ent, runtime, hooks);
         break;
@@ -737,8 +731,8 @@ export function Blaster_Fire(
   client.kick_origin = [vectors.forward[0] * -2, vectors.forward[1] * -2, vectors.forward[2] * -2];
   client.kick_angles[0] = -1;
 
-  hooks.fire_blaster?.(ent, start, vectors.forward, damage, 1000, effect, hyper, runtime);
-  hooks.emitPlayerMuzzleFlash?.(ent, (hyper ? MZ_HYPERBLASTER : MZ_BLASTER) | getSilencedMuzzleBits(client), runtime);
+  (hooks.fire_blaster ?? fire_blaster)(ent, start, vectors.forward, damage, 1000, effect, hyper, runtime);
+  queuePlayerMuzzleFlash(ent, (hyper ? MZ_HYPERBLASTER : MZ_BLASTER) | getSilencedMuzzleBits(client), runtime, hooks);
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
 }
 
@@ -804,7 +798,7 @@ export function weapon_shotgun_fire(ent: GameEntity, runtime: GameRuntime, hooks
     kick *= 4;
   }
 
-  hooks.fire_shotgun?.(
+  (hooks.fire_shotgun ?? fire_shotgun)(
     ent,
     start,
     vectors.forward,
@@ -816,7 +810,7 @@ export function weapon_shotgun_fire(ent: GameEntity, runtime: GameRuntime, hooks
     MOD_SHOTGUN,
     runtime
   );
-  hooks.emitPlayerMuzzleFlash?.(ent, MZ_SHOTGUN | getSilencedMuzzleBits(client), runtime);
+  queuePlayerMuzzleFlash(ent, MZ_SHOTGUN | getSilencedMuzzleBits(client), runtime, hooks);
 
   client.ps.gunframe++;
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
@@ -869,7 +863,7 @@ export function weapon_supershotgun_fire(ent: GameEntity, runtime: GameRuntime, 
 
   const v: vec3_t = [client.v_angle[PITCH], client.v_angle[YAW] - 5, client.v_angle[ROLL]];
   let forward = AngleVectors(v).forward;
-  hooks.fire_shotgun?.(
+  (hooks.fire_shotgun ?? fire_shotgun)(
     ent,
     start,
     forward,
@@ -884,7 +878,7 @@ export function weapon_supershotgun_fire(ent: GameEntity, runtime: GameRuntime, 
 
   v[YAW] = client.v_angle[YAW] + 5;
   forward = AngleVectors(v).forward;
-  hooks.fire_shotgun?.(
+  (hooks.fire_shotgun ?? fire_shotgun)(
     ent,
     start,
     forward,
@@ -897,7 +891,7 @@ export function weapon_supershotgun_fire(ent: GameEntity, runtime: GameRuntime, 
     runtime
   );
 
-  hooks.emitPlayerMuzzleFlash?.(ent, MZ_SSHOTGUN | getSilencedMuzzleBits(client), runtime);
+  queuePlayerMuzzleFlash(ent, MZ_SSHOTGUN | getSilencedMuzzleBits(client), runtime, hooks);
 
   client.ps.gunframe++;
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
@@ -944,7 +938,7 @@ export function Weapon_HyperBlaster_Fire(ent: GameEntity, runtime: GameRuntime, 
   } else {
     if (client.pers.inventory[client.ammo_index] === 0) {
       if (runtime.time >= ent.pain_debounce_time) {
-        ent.noise_index = registerGameSound(runtime, "weapons/noammo.wav");
+        playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
         ent.pain_debounce_time = runtime.time + 1;
       }
       NoAmmoWeaponChange(ent);
@@ -976,7 +970,7 @@ export function Weapon_HyperBlaster_Fire(ent: GameEntity, runtime: GameRuntime, 
   }
 
   if (client.ps.gunframe === 12) {
-    hooks.playWeaponSound?.(ent, "weapons/hyprbd1a.wav", CHAN_AUTO, runtime);
+    playWeaponOneShot(ent, "weapons/hyprbd1a.wav", CHAN_AUTO, runtime, hooks);
     client.weapon_sound = 0;
   }
 }
@@ -1022,7 +1016,7 @@ export function Machinegun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Ga
   if (client.pers.inventory[client.ammo_index] < 1) {
     client.ps.gunframe = 6;
     if (runtime.time >= ent.pain_debounce_time) {
-      ent.noise_index = registerGameSound(runtime, "weapons/noammo.wav");
+      playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
       ent.pain_debounce_time = runtime.time + 1;
     }
     NoAmmoWeaponChange(ent);
@@ -1056,7 +1050,7 @@ export function Machinegun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Ga
   const vectors = AngleVectors(angles);
   const start = P_ProjectSource(client, ent.s.origin, [0, 8, ent.viewheight - 8], vectors.forward, vectors.right);
 
-  hooks.fire_bullet?.(
+  (hooks.fire_bullet ?? fire_bullet)(
     ent,
     start,
     vectors.forward,
@@ -1067,7 +1061,7 @@ export function Machinegun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Ga
     MOD_MACHINEGUN,
     runtime
   );
-  hooks.emitPlayerMuzzleFlash?.(ent, MZ_MACHINEGUN | getSilencedMuzzleBits(client), runtime);
+  queuePlayerMuzzleFlash(ent, MZ_MACHINEGUN | getSilencedMuzzleBits(client), runtime, hooks);
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
 
   if ((runtime.dmflags & DF_INFINITE_AMMO) === 0) {
@@ -1115,7 +1109,7 @@ export function Chaingun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Game
   let kick = 2;
 
   if (client.ps.gunframe === 5) {
-    hooks.playWeaponSound?.(ent, "weapons/chngnu1a.wav", CHAN_AUTO, runtime);
+    playWeaponOneShot(ent, "weapons/chngnu1a.wav", CHAN_AUTO, runtime, hooks);
   }
 
   if (client.ps.gunframe === 14 && (client.buttons & BUTTON_ATTACK) === 0) {
@@ -1131,7 +1125,7 @@ export function Chaingun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Game
 
   if (client.ps.gunframe === 22) {
     client.weapon_sound = 0;
-    hooks.playWeaponSound?.(ent, "weapons/chngnd1a.wav", CHAN_AUTO, runtime);
+    playWeaponOneShot(ent, "weapons/chngnd1a.wav", CHAN_AUTO, runtime, hooks);
   } else {
     client.weapon_sound = registerGameSound(runtime, "weapons/chngnl1a.wav");
   }
@@ -1160,7 +1154,7 @@ export function Chaingun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Game
 
   if (!shots) {
     if (runtime.time >= ent.pain_debounce_time) {
-      ent.noise_index = registerGameSound(runtime, "weapons/noammo.wav");
+      playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
       ent.pain_debounce_time = runtime.time + 1;
     }
     NoAmmoWeaponChange(ent);
@@ -1183,7 +1177,7 @@ export function Chaingun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Game
     const r = 7 + crandom() * 4;
     const u = crandom() * 4;
     lastStart = P_ProjectSource(client, ent.s.origin, [0, r, u + ent.viewheight - 8], vectors.forward, vectors.right);
-    hooks.fire_bullet?.(
+    (hooks.fire_bullet ?? fire_bullet)(
       ent,
       lastStart,
       vectors.forward,
@@ -1197,7 +1191,7 @@ export function Chaingun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Game
   }
 
   const muzzleWeapon = (MZ_CHAINGUN1 + shots - 1) | getSilencedMuzzleBits(client);
-  hooks.emitPlayerMuzzleFlash?.(ent, muzzleWeapon, runtime);
+  queuePlayerMuzzleFlash(ent, muzzleWeapon, runtime, hooks);
   PlayerNoise(ent, lastStart, PNOISE_WEAPON, runtime);
 
   if ((runtime.dmflags & DF_INFINITE_AMMO) === 0) {
@@ -1255,7 +1249,7 @@ export function weapon_grenade_fire(ent: GameEntity, held: boolean, runtime: Gam
   const timer = client.grenade_time - runtime.time;
   const speed = GRENADE_MINSPEED + (GRENADE_TIMER - timer) * ((GRENADE_MAXSPEED - GRENADE_MINSPEED) / GRENADE_TIMER);
 
-  hooks.fire_grenade2?.(ent, start, vectors.forward, damage, speed, timer, radius, held, runtime);
+  (hooks.fire_grenade2 ?? fire_grenade2)(ent, start, vectors.forward, damage, speed, timer, radius, held, runtime);
 
   if ((runtime.dmflags & DF_INFINITE_AMMO) === 0) {
     client.pers.inventory[client.ammo_index]--;
@@ -1313,7 +1307,7 @@ export function Weapon_Grenade(ent: GameEntity, runtime: GameRuntime, hooks: Gam
         client.grenade_time = 0;
       } else {
         if (runtime.time >= ent.pain_debounce_time) {
-          ent.noise_index = registerGameSound(runtime, "weapons/noammo.wav");
+          playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
           ent.pain_debounce_time = runtime.time + 1;
         }
         NoAmmoWeaponChange(ent);
@@ -1334,7 +1328,7 @@ export function Weapon_Grenade(ent: GameEntity, runtime: GameRuntime, hooks: Gam
 
   if (client.weaponstate === weaponstate_t.WEAPON_FIRING) {
     if (client.ps.gunframe === 5) {
-      hooks.playWeaponSound?.(ent, "weapons/hgrena1b.wav", CHAN_WEAPON, runtime);
+      playWeaponOneShot(ent, "weapons/hgrena1b.wav", CHAN_WEAPON, runtime, hooks);
     }
 
     if (client.ps.gunframe === 11) {
@@ -1403,8 +1397,8 @@ export function weapon_grenadelauncher_fire(ent: GameEntity, runtime: GameRuntim
   client.kick_origin = [vectors.forward[0] * -2, vectors.forward[1] * -2, vectors.forward[2] * -2];
   client.kick_angles[0] = -1;
 
-  hooks.fire_grenade?.(ent, start, vectors.forward, damage, 600, 2.5, radius, runtime);
-  hooks.emitPlayerMuzzleFlash?.(ent, MZ_GRENADE | getSilencedMuzzleBits(client), runtime);
+  (hooks.fire_grenade ?? fire_grenade)(ent, start, vectors.forward, damage, 600, 2.5, radius, runtime);
+  queuePlayerMuzzleFlash(ent, MZ_GRENADE | getSilencedMuzzleBits(client), runtime, hooks);
 
   client.ps.gunframe++;
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
@@ -1452,8 +1446,8 @@ export function Weapon_RocketLauncher_Fire(ent: GameEntity, runtime: GameRuntime
   client.kick_angles[0] = -1;
 
   const start = P_ProjectSource(client, ent.s.origin, [8, 8, ent.viewheight - 8], vectors.forward, vectors.right);
-  hooks.fire_rocket?.(ent, start, vectors.forward, damage, 650, damageRadius, radiusDamage, runtime);
-  hooks.emitPlayerMuzzleFlash?.(ent, MZ_ROCKET | getSilencedMuzzleBits(client), runtime);
+  (hooks.fire_rocket ?? fire_rocket)(ent, start, vectors.forward, damage, 650, damageRadius, radiusDamage, runtime);
+  queuePlayerMuzzleFlash(ent, MZ_ROCKET | getSilencedMuzzleBits(client), runtime, hooks);
 
   client.ps.gunframe++;
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
@@ -1508,8 +1502,8 @@ export function weapon_railgun_fire(ent: GameEntity, runtime: GameRuntime, hooks
   client.kick_angles[0] = -3;
 
   const start = P_ProjectSource(client, ent.s.origin, [0, 7, ent.viewheight - 8], vectors.forward, vectors.right);
-  hooks.fire_rail?.(ent, start, vectors.forward, damage, kick, runtime);
-  hooks.emitPlayerMuzzleFlash?.(ent, MZ_RAILGUN | getSilencedMuzzleBits(client), runtime);
+  (hooks.fire_rail ?? fire_rail)(ent, start, vectors.forward, damage, kick, runtime);
+  queuePlayerMuzzleFlash(ent, MZ_RAILGUN | getSilencedMuzzleBits(client), runtime, hooks);
 
   client.ps.gunframe++;
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
@@ -1547,7 +1541,7 @@ export function weapon_bfg_fire(ent: GameEntity, runtime: GameRuntime, hooks: Ga
   const damageRadius = 1000;
 
   if (client.ps.gunframe === 9) {
-    hooks.emitPlayerMuzzleFlash?.(ent, MZ_BFG | getSilencedMuzzleBits(client), runtime);
+    queuePlayerMuzzleFlash(ent, MZ_BFG | getSilencedMuzzleBits(client), runtime, hooks);
     client.ps.gunframe++;
     PlayerNoise(ent, ent.s.origin, PNOISE_WEAPON, runtime);
     return;
@@ -1569,7 +1563,7 @@ export function weapon_bfg_fire(ent: GameEntity, runtime: GameRuntime, hooks: Ga
   client.v_dmg_time = runtime.time + DAMAGE_TIME;
 
   const start = P_ProjectSource(client, ent.s.origin, [8, 8, ent.viewheight - 8], vectors.forward, vectors.right);
-  hooks.fire_bfg?.(ent, start, vectors.forward, damage, 400, damageRadius, runtime);
+  (hooks.fire_bfg ?? fire_bfg)(ent, start, vectors.forward, damage, 400, damageRadius, runtime);
 
   client.ps.gunframe++;
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
@@ -1605,6 +1599,41 @@ function requireClient(ent: GameEntity, caller: string): GameClient {
 
 /**
  * Category: New
+ * Purpose: Resolve one default player-weapon thinker from the local `p_weapon.c` port when no override hook is supplied.
+ */
+function getDefaultWeaponThink(
+  weaponThinkKind: GameItemWeaponThinkKind
+): ((ent: GameEntity, runtime: GameRuntime, hooks: GameWeaponHooks) => void) | null {
+  switch (weaponThinkKind) {
+    case "Weapon_Blaster":
+      return Weapon_Blaster;
+    case "Weapon_Shotgun":
+      return Weapon_Shotgun;
+    case "Weapon_SuperShotgun":
+      return Weapon_SuperShotgun;
+    case "Weapon_Machinegun":
+      return Weapon_Machinegun;
+    case "Weapon_Chaingun":
+      return Weapon_Chaingun;
+    case "Weapon_Grenade":
+      return Weapon_Grenade;
+    case "Weapon_GrenadeLauncher":
+      return Weapon_GrenadeLauncher;
+    case "Weapon_RocketLauncher":
+      return Weapon_RocketLauncher;
+    case "Weapon_HyperBlaster":
+      return Weapon_HyperBlaster;
+    case "Weapon_Railgun":
+      return Weapon_Railgun;
+    case "Weapon_BFG":
+      return Weapon_BFG;
+    default:
+      return null;
+  }
+}
+
+/**
+ * Category: New
  * Purpose: Convert one item reference to the original Quake II item index space.
  */
 function ITEM_INDEX(item: GameItemDefinition | null): number {
@@ -1617,6 +1646,36 @@ function ITEM_INDEX(item: GameItemDefinition | null): number {
  */
 function getSilencedMuzzleBits(client: GameClient): number {
   return client.silencer_shots ? MZ_SILENCED : 0;
+}
+
+/**
+ * Category: New
+ * Purpose: Route one player muzzleflash through an override hook or the local runtime event queue.
+ */
+function queuePlayerMuzzleFlash(ent: GameEntity, weapon: number, runtime: GameRuntime, hooks: GameWeaponHooks): void {
+  if (hooks.emitPlayerMuzzleFlash) {
+    hooks.emitPlayerMuzzleFlash(ent, weapon, runtime);
+    return;
+  }
+  emitPlayerMuzzleFlash(runtime, ent, weapon);
+}
+
+/**
+ * Category: New
+ * Purpose: Route one explicit one-shot weapon sound through an override hook or the local runtime sound queue.
+ */
+function playWeaponOneShot(
+  ent: GameEntity,
+  soundPath: string,
+  channel: number,
+  runtime: GameRuntime,
+  hooks: GameWeaponHooks
+): void {
+  if (hooks.playWeaponSound) {
+    hooks.playWeaponSound(ent, soundPath, channel, runtime);
+    return;
+  }
+  emitGameSound(runtime, ent, soundPath);
 }
 
 /**

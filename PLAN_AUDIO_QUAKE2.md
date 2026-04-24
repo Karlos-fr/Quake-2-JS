@@ -92,13 +92,29 @@ Packages cibles :
 - `packages/game`
 - `packages/server`
 - `packages/client`
-- `packages/audio`
+
+Option future :
+
+- `packages/audio` seulement si un decoupage futur apporte un gain reel sans casser la tracabilite source
 
 Responsabilites :
 
 - produire et transporter des indices de sons et des evenements sonores ;
 - conserver la logique Quake II de canaux, attenuation, loops et offsets ;
 - decoupler la logique audio du backend navigateur.
+- garder le noyau audio client proche des fichiers source originaux tant que cela reste lisible.
+
+Decision d'architecture :
+
+- le coeur fidele du runtime audio client doit rester rattache a `packages/client`, car les sources originales `sound.h`, `snd_loc.h`, `snd_dma.c`, `snd_mem.c` et `snd_mix.c` appartiennent au client Quake II ;
+- `packages/audio` ne doit pas devenir une abstraction moderne imposee au portage ; il ne sera cree que si une extraction ulterieure est clairement justifiee par la maintenabilite ou par un partage technique documente ;
+- les adapters Web Audio consomment le runtime porte, mais ne portent pas eux-memes la semantique Quake II des canaux, du scheduling, des loops ou de la registration.
+
+Etat actuel constate :
+
+- le portage strict du noyau audio client vit pour l'instant dans `packages/client/src/sound-public.ts`, `sound-local.ts`, `snd_dma.ts`, `snd_mem.ts` et `snd_mix.ts`, afin de rester traceable aux fichiers source `client/sound.h`, `client/snd_loc.h`, `client/snd_dma.c`, `client/snd_mem.c` et `client/snd_mix.c` ;
+- aucun package `packages/audio` dedie n'existe encore ;
+- l'adapter navigateur existe partiellement dans `apps/web/src/full-game.ts`, surtout pour les sons locaux simples et le flux brut des cinematics.
 
 ### 4.2 Couche adapter web
 
@@ -113,13 +129,20 @@ Responsabilites :
 - decoder les WAV pour `Web Audio` ;
 - mapper la logique Quake II vers `AudioContext`, `GainNode`, `PannerNode` et sources bufferisees ;
 - gerer le contournement web de la musique CD.
+- respecter les contraintes navigateur, notamment le deverrouillage par gesture utilisateur, sans modifier la logique portee.
 
 ## 5. Phases de mise en oeuvre
 
+Legende de suivi :
+
+- `[x]` realise / porte dans le depot courant
+- `[~]` partiel, raccord temporaire ou architecture differente de la cible initiale
+- `[ ]` non realise ou non verifie dans le depot courant
+
 ### Phase 1 - Fondations protocolaires et types
 
-- [ ] porter toutes les constantes audio de `q_shared.h`
-- [ ] verifier / completer les definitions :
+- [x] porter toutes les constantes audio de `q_shared.h`
+- [x] verifier / completer les definitions :
   - `SND_VOLUME`
   - `SND_ATTENUATION`
   - `SND_OFFSET`
@@ -129,49 +152,69 @@ Responsabilites :
   - `ATTN_*`
   - `CS_SOUNDS`
   - `CS_CDTRACK`
-- [ ] formaliser les types audio runtime dans un package dedie
-- [ ] definir les structures TS proches de :
+- [x] formaliser les types audio runtime dans leur cible fidele actuelle (`packages/client/src/sound-local.ts`)
+- [x] definir les structures TS proches de :
   - `sfx_t`
   - `playsound_t`
   - `channel_t`
   - etats musique / raw samples
-- [ ] definir les interfaces adapter pour backend web sans casser la fidelite moteur
+- [x] definir les interfaces adapter pour backend web sans casser la fidelite moteur (`sound-public.ts`, hooks DMA/local et backend web consomme en Phase 7)
+
+Validation Phase 1 :
+
+- [x] `npm run verify:q-shared:header`
+- [x] `npm run verify:qcommon:header`
+- [x] `npm run verify:snd-loc:header`
+- [x] `npm run verify:sound:header`
 
 ### Phase 2 - Emission serveur des sons
 
-- [ ] porter `SV_SoundIndex`
-- [ ] verifier / completer `gi.soundindex` et stockage dans `CS_SOUNDS`
-- [ ] porter strictement `SV_StartSound` depuis `server/sv_send.c`
-- [ ] conserver les regles d'encodage de paquet :
+- [x] porter `SV_SoundIndex`
+- [x] verifier / completer `gi.soundindex` et stockage dans `CS_SOUNDS`
+- [x] porter strictement `SV_StartSound` depuis `server/sv_send.c`
+- [x] conserver les regles d'encodage de paquet :
   - flags
   - volume
   - attenuation
   - offset
   - entite / canal
   - position optionnelle
-- [ ] conserver la logique `PHS` / `ALL`
-- [ ] verifier la regle `ATTN_NONE => diffusion globale`
-- [ ] raccorder `PF_StartSound` et `positioned_sound`
+- [x] conserver la logique `PHS` / `ALL`
+- [x] verifier la regle `ATTN_NONE => diffusion globale`
+- [x] raccorder `PF_StartSound` et `positioned_sound`
 
 ### Phase 3 - Precache gameplay et configstrings
 
-- [ ] finaliser le port des enregistrements sonores dans `SP_worldspawn`
-- [ ] verifier le precache des items dans `g_items.c`
-- [ ] verifier le precache des portes / plats / triggers dans `g_func.c`, `g_trigger.c`, `g_target.c`
-- [ ] verifier le precache des armes et projectiles dans `g_weapon.c`, `p_weapon.c`
-- [ ] verifier le precache des monstres dans `m_*.c`
-- [ ] garantir que `runtime.assets.soundPaths` reste iso avec les indices Quake II
-- [ ] couvrir les sons loops gameplay via `ent->s.sound`
+- [x] finaliser le port des enregistrements sonores dans `SP_worldspawn`
+- [x] verifier le precache des items dans `g_items.c`
+- [x] verifier le precache des portes / plats / triggers dans `g_func.c`, `g_trigger.c`, `g_target.c`
+- [x] verifier le precache des armes et projectiles dans `g_weapon.c`, `p_weapon.c`
+- [~] verifier le precache des monstres dans `m_*.c` (les fichiers `m_*.ts` actuels sont surtout des headers de frames ; le precache `infantry/inflies1.wav` de worldspawn est couvert)
+- [x] garantir que `runtime.assets.soundPaths` reste iso avec les indices Quake II
+- [~] couvrir les sons loops gameplay via `ent->s.sound`
+
+Validation Phase 3 :
+
+- [x] `npm run verify:g-spawn`
+- [x] `npm run verify:g-items`
+- [x] `npm run verify:g-trigger`
+- [x] `npm run verify:g-misc`
+- [x] `npm run verify:g-monster`
+- [x] `npm run verify:p-view`
+- [x] `npm run verify:p-weapon`
+- [x] `npm run verify:doors:phase7`
+- [x] `npm run verify:local-gameplay-sync`
+- [x] `npm run typecheck`
 
 ### Phase 4 - Parsing client des evenements sonores
 
-- [ ] finaliser `CL_RegisterSounds`
-- [ ] porter `S_BeginRegistration` / `S_EndRegistration` comme logique de registration runtime
-- [ ] finaliser `CL_ParseConfigString` pour :
+- [x] finaliser `CL_RegisterSounds`
+- [x] porter `S_BeginRegistration` / `S_EndRegistration` comme logique de registration runtime
+- [x] finaliser `CL_ParseConfigString` pour :
   - `CS_SOUNDS`
   - `CS_CDTRACK`
-- [ ] porter strictement `CL_ParseStartSoundPacket`
-- [ ] produire un evenement audio normalise conservant :
+- [~] porter strictement `CL_ParseStartSoundPacket` (porte en `Close`, retourne un payload structure via hook)
+- [x] produire un evenement audio normalise conservant :
   - `sound_num`
   - `volume`
   - `attenuation`
@@ -179,47 +222,48 @@ Responsabilites :
   - `ent`
   - `channel`
   - `position`
-- [ ] porter `CL_EntityEvent` pour les sons `EV_*`
-- [ ] porter les effets clients de `cl_fx.c`
-- [ ] porter les sons temporaires de `cl_tent.c`
+- [x] porter `CL_EntityEvent` pour les sons `EV_*`
+- [x] porter les effets clients de `cl_fx.c`
+- [x] porter les sons temporaires de `cl_tent.c`
 
 ### Phase 5 - Runtime audio client Quake II
 
-- [ ] creer `packages/audio` comme coeur logique de portage
-- [ ] porter `S_FindName`
-- [ ] porter `S_RegisterSound`
-- [ ] porter `S_StartSound`
-- [ ] porter `S_StartLocalSound`
-- [ ] porter `S_PickChannel`
-- [ ] porter `S_IssuePlaysound`
-- [ ] porter `S_StopAllSounds`
-- [ ] porter `S_SpatializeOrigin`
-- [ ] porter `S_Spatialize`
-- [ ] porter `S_AddLoopSounds`
-- [ ] porter `S_Update`
-- [ ] conserver la logique d'override par `entnum` + `entchannel`
-- [ ] conserver la logique `autosound` des loops par snapshot
-- [ ] conserver le drift / scheduling de `timeofs`
+- [x] assumer `packages/client/src/snd_*.ts` comme coeur logique fidele du portage audio client
+- [x] ne pas creer `packages/audio` comme passage oblige du portage courant
+- [x] porter `S_FindName`
+- [x] porter `S_RegisterSound`
+- [x] porter `S_StartSound`
+- [x] porter `S_StartLocalSound`
+- [x] porter `S_PickChannel`
+- [x] porter `S_IssuePlaysound`
+- [x] porter `S_StopAllSounds`
+- [x] porter `S_SpatializeOrigin`
+- [x] porter `S_Spatialize`
+- [x] porter `S_AddLoopSounds`
+- [x] porter `S_Update`
+- [x] conserver la logique d'override par `entnum` + `entchannel`
+- [x] conserver la logique `autosound` des loops par snapshot
+- [x] conserver le drift / scheduling de `timeofs`
 
 ### Phase 6 - Chargement et decodage des assets sonores
 
-- [ ] porter `GetWavinfo`
-- [ ] porter `S_LoadSound`
-- [ ] porter `ResampleSfx`
-- [ ] verifier les contraintes Quake II :
+- [x] porter `GetWavinfo`
+- [x] porter `S_LoadSound`
+- [x] porter `ResampleSfx`
+- [x] verifier les contraintes Quake II :
   - WAV PCM
   - mono pour les samples gameplay classiques
   - resampling vers le taux runtime
-- [ ] brancher le chargement via le filesystem deja porte
-- [ ] gerer correctement les alias `#` et `*`
-- [ ] porter le fallback des sons sexed `S_RegisterSexedSound`
+- [x] brancher le chargement via le filesystem deja porte
+- [x] gerer correctement les alias `#` et `*`
+- [x] porter le fallback des sons sexed `S_RegisterSexedSound`
 
 ### Phase 7 - Adapter Web Audio
 
-- [ ] creer un backend web dedie dans `packages/platform` ou `apps/web`
-- [ ] instancier un `AudioContext` pilote par le runtime
-- [ ] mapper un `sfx_t` / cache Quake II vers `AudioBuffer`
-- [ ] mapper les sons ponctuels sur `AudioBufferSourceNode`
+- [~] creer un backend web dedie dans `packages/platform` ou `apps/web`
+- [x] instancier un `AudioContext` pilote par le runtime
+- [~] mapper un `sfx_t` / cache Quake II vers `AudioBuffer`
+- [~] mapper les sons ponctuels sur `AudioBufferSourceNode`
 - [ ] mapper volume et attenuation sur `GainNode`
 - [ ] mapper la spatialisation Quake II sur :
   - `PannerNode`
@@ -231,7 +275,7 @@ Responsabilites :
 ### Phase 8 - Musique de map
 
 - [ ] porter l'interface `CDAudio_*` au niveau logique
-- [ ] porter la reaction client a `CS_CDTRACK`
+- [x] porter la reaction client a `CS_CDTRACK`
 - [ ] definir un mapping web `track -> asset musical`
 - [ ] implementer :
   - `play(track, looping)`
@@ -244,36 +288,36 @@ Responsabilites :
 
 ### Phase 9 - Audio des cinematics
 
-- [ ] porter `S_RawSamples`
-- [ ] porter la file / buffer logique des raw samples
-- [ ] brancher `cl_cin.c` sur le runtime audio porte
-- [ ] gerer le flux PCM brut dans le backend web
-- [ ] verifier la synchronisation image / son des cinematics
+- [x] porter `S_RawSamples`
+- [x] porter la file / buffer logique des raw samples
+- [x] brancher `cl_cin.c` sur le runtime audio porte
+- [x] gerer le flux PCM brut dans le backend web
+- [~] verifier la synchronisation image / son des cinematics
 
 ### Phase 10 - Integration web
 
-- [ ] brancher le runtime audio dans `apps/web`
+- [~] brancher le runtime audio dans `apps/web`
 - [ ] connecter le listener a la camera / vue client
-- [ ] connecter les snapshots / events du client local
+- [~] connecter les snapshots / events du client local
 - [ ] connecter les loops des entites visibles
 - [ ] connecter l'etat pause / focus navigateur
 - [ ] connecter les reglages utilisateur :
   - volume global
   - musique
   - SFX
-- [ ] respecter les contraintes de gesture utilisateur avant demarrage audio
+- [x] respecter les contraintes de gesture utilisateur avant demarrage audio
 
 ### Phase 11 - Verification de fidelite
 
-- [ ] creer des harnais de verification audio cibles
-- [ ] verifier la stabilite des indices `soundindex`
-- [ ] verifier l'encodage / decodage de `svc_sound`
-- [ ] verifier les overrides de canaux
-- [ ] verifier les loops `ent->s.sound`
-- [ ] verifier les sons sexed
-- [ ] verifier les sons de portes / triggers / pickups / armes / monstres
-- [ ] verifier `CS_CDTRACK`
-- [ ] verifier `S_RawSamples`
+- [x] creer des harnais de verification audio cibles
+- [~] verifier la stabilite des indices `soundindex`
+- [~] verifier l'encodage / decodage de `svc_sound`
+- [x] verifier les overrides de canaux
+- [~] verifier les loops `ent->s.sound`
+- [x] verifier les sons sexed
+- [~] verifier les sons de portes / triggers / pickups / armes / monstres
+- [~] verifier `CS_CDTRACK`
+- [x] verifier `S_RawSamples`
 - [ ] documenter les ecarts inevitables lies au web
 
 ## 6. Ordre de reprise recommande
@@ -301,10 +345,11 @@ Responsabilites :
 
 ## 8. Livrables attendus
 
-- un runtime audio porte dans `packages/audio`
+- un runtime audio client porte et traceable dans `packages/client/src/snd_*.ts`
 - un chemin client complet pour `svc_sound`, `EV_*`, loops et precache
 - un backend `Web Audio` fonctionnel pour SFX
 - une gestion web de la musique de map
 - une gestion du flux PCM des cinematics
 - des scripts de verification dedies
 - la mise a jour de `PORTAGE_QUAKE2.md` au fur et a mesure
+- optionnellement, une extraction vers `packages/audio` seulement si elle est decidee et documentee plus tard

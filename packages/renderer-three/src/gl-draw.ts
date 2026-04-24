@@ -265,10 +265,6 @@ export function Draw_Char(runtime: GlDrawRuntime, x: number, y: number, num: num
  */
 export function Draw_FindPic(runtime: GlDrawRuntime, name: string): image_t | null {
   const resolvedName = resolvePicName(name);
-  if (!resolvedName) {
-    return null;
-  }
-
   return runtime.hooks.findImage?.(resolvedName, "pic") ?? null;
 }
 
@@ -573,19 +569,12 @@ function usesAlphaTestWorkaround(runtime: GlDrawRuntime, image: GlDrawImage | nu
   return runtime.gl_config_renderer === GL_RENDERER_MCD || (runtime.gl_config_renderer & GL_RENDERER_RENDITION) !== 0;
 }
 
-function resolvePicName(name: string): string | null {
-  if (name.length === 0) {
-    return null;
+function resolvePicName(name: string): string {
+  if (name[0] !== "/" && name[0] !== "\\") {
+    return truncateQPath(`pics/${name}.pcx`);
   }
 
-  const normalized = name.replaceAll("\\", "/");
-  if (normalized[0] !== "/") {
-    const fullname = `pics/${normalized}.pcx`;
-    return fullname.length < MAX_QPATH ? fullname : fullname;
-  }
-
-  const stripped = normalized.slice(1);
-  return stripped.length === 0 ? null : stripped;
+  return name.slice(1);
 }
 
 function getGlDrawImage(image: image_t, functionName: string): GlDrawImage {
@@ -638,9 +627,18 @@ function failSysError(runtime: GlDrawRuntime, errLevel: number, message: string)
 }
 
 function coercePaletteTable(table: Uint32Array | readonly number[]): Uint32Array {
-  if (table instanceof Uint32Array) {
-    return table.length === 256 ? table : Uint32Array.from(table.slice(0, 256));
+  const out = new Uint32Array(256);
+  const count = Math.min(256, table.length);
+  for (let index = 0; index < count; index += 1) {
+    out[index] = table[index] ?? 0;
+  }
+  return out;
+}
+
+function truncateQPath(path: string): string {
+  if (path.length < MAX_QPATH) {
+    return path;
   }
 
-  return Uint32Array.from(table.slice(0, 256));
+  return path.slice(0, MAX_QPATH - 1);
 }

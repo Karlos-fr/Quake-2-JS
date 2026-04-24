@@ -45,6 +45,7 @@ const solidQuads: Array<Record<string, number>> = [];
 const rawUploads: Array<Record<string, unknown>> = [];
 const alphaStates: boolean[] = [];
 const colorStates: Array<[number, number, number, number]> = [];
+const findImageNames: string[] = [];
 
 const images = new Map<string, ReturnType<typeof createGlDrawImage>>([
   ["pics/conchars.pcx", createGlDrawImage({ name: "pics/conchars.pcx", width: 128, height: 128, texnum: 11 })],
@@ -54,7 +55,10 @@ const images = new Map<string, ReturnType<typeof createGlDrawImage>>([
 ]);
 
 const runtime = createGlDrawRuntime({
-  findImage: (name) => images.get(name) ?? null,
+  findImage: (name) => {
+    findImageNames.push(name);
+    return images.get(name) ?? null;
+  },
   uploadScrap: () => {
     calls.push("uploadScrap");
   },
@@ -106,6 +110,13 @@ assert.equal(calls.includes("filter:11:nearest:nearest"), true, "Draw_InitLocal 
 
 assert.equal(Draw_FindPic(runtime, "statusbar"), images.get("pics/statusbar.pcx") ?? null, "relative Draw_FindPic mismatch");
 assert.equal(Draw_FindPic(runtime, "/pics/absolute.pcx"), images.get("pics/absolute.pcx") ?? null, "absolute Draw_FindPic mismatch");
+assert.equal(Draw_FindPic(runtime, "\\pics\\absolute.pcx"), null, "backslash absolute Draw_FindPic mismatch");
+assert.equal(Draw_FindPic(runtime, ""), null, "empty Draw_FindPic mismatch");
+assert.equal(findImageNames.includes("pics/.pcx"), true, "Draw_FindPic empty relative path mismatch");
+assert.equal(findImageNames.includes("pics\\absolute.pcx"), true, "Draw_FindPic backslash absolute path mismatch");
+const longName = "a".repeat(80);
+Draw_FindPic(runtime, longName);
+assert.equal(findImageNames.at(-1), `pics/${longName}.pcx`.slice(0, 63), "Draw_FindPic MAX_QPATH truncation mismatch");
 assert.deepEqual(Draw_GetPicSize(runtime, "statusbar"), { width: 320, height: 24 }, "Draw_GetPicSize mismatch");
 assert.deepEqual(Draw_GetPicSize(runtime, "missing"), { width: -1, height: -1 }, "Draw_GetPicSize missing mismatch");
 

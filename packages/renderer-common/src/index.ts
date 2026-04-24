@@ -24,6 +24,7 @@ export type {
   HudDrawCommand,
   HudFillCommand,
   HudNumberCommand,
+  HudPaletteColor,
   HudPictureCommand,
   HudPictureResourceResolver,
   HudTextCommand

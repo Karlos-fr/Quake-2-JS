@@ -170,7 +170,8 @@ function createMinimalBrushModelBuffer(): Uint8Array {
   setLittleFloat(buffer, 332, 0);
   setLittleFloat(buffer, 336, 0);
   setLittleLong(buffer, 340, 0);
-  writeCString(buffer, 344, 32, "test");
+  setLittleLong(buffer, 344, 0);
+  writeCString(buffer, 348, 32, "test");
   setLittleLong(buffer, 380, 0);
 
   setLittleShort(buffer, 384, 0);
