@@ -324,7 +324,7 @@ SCR_RunCinematic(client, { currentTimeMs: 150, keyDest: "game" }, {
   }
 });
 assert.equal(client.cl.cinematic.cinematictime, 0, "SCR_RunCinematic should finish the synthetic stream");
-assert.equal(client.cl.screen.scr_draw_loading, 1, "SCR_RunCinematic loading plaque mismatch");
+assert.equal(client.cl.screen.scr_draw_loading, 2, "SCR_RunCinematic loading plaque mismatch");
 assert.deepEqual(soundRestarts, [14, undefined], "SCR_RunCinematic sound restore mismatch");
 
 const finishOffset = client.net_message.cursize;

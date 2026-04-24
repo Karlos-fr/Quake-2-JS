@@ -17,7 +17,10 @@
  */
 
 import {
+  CS_CDTRACK,
+  CS_IMAGES,
   CS_LIGHTS,
+  CS_MODELS,
   DirFromByte,
   MSG_ReadAngle,
   MSG_ReadAngle16,
@@ -31,15 +34,19 @@ import {
   MSG_ReadString,
   MSG_WriteByte,
   MSG_WriteString,
+  MAX_IMAGES,
   PRINT_CHAT,
   createEntityState,
   entity_event_t,
+  MAX_MODELS,
+  MAX_SOUNDS,
   pmtype_t,
   temp_event_t,
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE,
   CS_PLAYERSKINS,
+  CS_SOUNDS,
   MAX_CONFIGSTRINGS,
   MAX_CLIENTS,
   MAX_EDICTS,
@@ -100,7 +107,7 @@ import { type ClientRuntime, type frame_t } from "./types.js";
 import { MAX_PARSE_ENTITIES, connstate_t, createFrame } from "./types.js";
 import { CL_FireEntityEvents, type ClientEntityEvent } from "./entities.js";
 import { CL_ClearEffects, CL_ExecuteTempEntityEffects, CL_ParticleEffect, CL_SetLightstyle } from "./effects.js";
-import { SCR_CenterPrint } from "./screen.js";
+import { CL_AddNetgraph, SCR_CenterPrint, SCR_PlayCinematic } from "./screen.js";
 import { CL_AddTEntPacket, CL_ClearTEnts } from "./tent.js";
 import { CL_CheckPredictionError } from "./view.js";
 import { createClientCinematicState, createClientScreenState, createClientSkyState } from "./types.js";
@@ -117,19 +124,30 @@ export interface ClientParseHooks {
   onDisconnect?: (reason: string) => void;
   onReconnect?: () => void;
   onStufftext?: (text: string) => void;
+  onExecuteCommandBuffer?: () => void;
   onCenterPrint?: (text: string) => void;
   onLayout?: (text: string) => void;
   onConfigString?: (index: number, value: string) => void;
   onClientinfo?: (player: number, clientinfo: ClientRuntime["cl"]["clientinfo"][number]) => void;
   onServerData?: (levelName: string) => void;
+  onPlayCinematic?: (name: string) => void;
+  onPlayCdTrack?: (track: number, looping: boolean) => void;
+  onStartLocalSound?: (path: string) => void;
   onSoundPacket?: (packet: ClientSoundPacket) => void;
   onMuzzleFlash?: (packet: ClientMuzzleFlashPacket) => void;
   onMuzzleFlash2?: (packet: ClientMuzzleFlash2Packet) => void;
   onParticleEffect?: (packet: ClientParticleEffectPacket) => void;
   onTempEntity?: (packet: ClientTempEntityPacket) => void;
   onDownloadBlock?: (block: ClientDownloadBlock) => void;
+  onRequestNextDownload?: () => void;
+  onWriteDemoMessage?: () => void;
   onEntityEvent?: (event: ClientEntityEvent) => void;
   onFrameParsed?: (frame: frame_t) => void;
+  registerModel?: (path: string) => unknown;
+  registerSkin?: (path: string) => unknown;
+  registerPic?: (path: string) => unknown;
+  registerSound?: (path: string) => unknown;
+  inlineModel?: (path: string) => unknown;
   onUnsupportedCommand?: (command: number) => void;
 }
 
@@ -575,6 +593,8 @@ export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks
   const percent = MSG_ReadByte(runtime.net_message);
 
   if (size === -1) {
+    emitPrint(runtime, "Server does not have this file.\n", hooks);
+    runtime.cls.downloadpercent = 0;
     const missingBlock: ClientDownloadBlock = {
       size,
       percent,
@@ -582,6 +602,7 @@ export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks
       missing: true
     };
     hooks.onDownloadBlock?.(missingBlock);
+    hooks.onRequestNextDownload?.();
     return missingBlock;
   }
 
@@ -598,6 +619,9 @@ export function CL_ParseDownload(runtime: ClientRuntime, hooks: ClientParseHooks
     missing: false
   };
   hooks.onDownloadBlock?.(block);
+  if (percent === 100) {
+    hooks.onRequestNextDownload?.();
+  }
   return block;
 }
 
@@ -1063,6 +1087,9 @@ export function CL_LoadClientinfo(runtime: ClientRuntime, clientinfo: ClientRunt
   clientinfo.model_filename = "";
   clientinfo.skin_filename = "";
   clientinfo.iconname = "";
+  clientinfo.model = null;
+  clientinfo.skin = null;
+  clientinfo.icon = null;
   clientinfo.weaponmodel.fill(null);
   clientinfo.weaponmodel_paths.fill("");
   clientinfo.valid = false;
@@ -1076,26 +1103,19 @@ export function CL_LoadClientinfo(runtime: ClientRuntime, clientinfo: ClientRunt
     info = "";
   }
 
-  if (info.length === 0) {
-    clientinfo.model_name = "male";
-    clientinfo.skin_name = "grunt";
-    clientinfo.model_filename = "players/male/tris.md2";
-    clientinfo.skin_filename = "players/male/grunt.pcx";
-    clientinfo.iconname = "/players/male/grunt_i.pcx";
-    clientinfo.weaponmodel_paths[0] = "players/male/weapon.md2";
-    clientinfo.valid = true;
-    return;
-  }
+  let model_name = "male";
+  let skin_name = "grunt";
 
-  let model_name = info;
-  const slashIndex = Math.max(model_name.indexOf("/"), model_name.indexOf("\\"));
-  if (slashIndex >= 0) {
-    model_name = model_name.slice(0, slashIndex);
-  }
-
-  let skin_name = info.slice(model_name.length + 1);
-  if (skin_name.length === 0) {
-    skin_name = "grunt";
+  if (info.length > 0) {
+    const slashIndex = findModelSkinSeparator(info);
+    if (slashIndex > 0) {
+      model_name = info.slice(0, slashIndex);
+      skin_name = info.slice(slashIndex + 1) || "grunt";
+    } else if (slashIndex === 0) {
+      skin_name = info.slice(1) || "grunt";
+    } else {
+      model_name = info;
+    }
   }
 
   clientinfo.model_name = model_name;
@@ -1131,6 +1151,9 @@ export function CL_ParseClientinfo(runtime: ClientRuntime, player: number, hooks
   const info = runtime.cl.configstrings[player + CS_PLAYERSKINS] ?? "";
   const clientinfo = runtime.cl.clientinfo[player];
   CL_LoadClientinfo(runtime, clientinfo, info);
+  if (runtime.cl.refresh_prepped) {
+    registerClientinfoResources(clientinfo, hooks);
+  }
   hooks.onClientinfo?.(player, clientinfo);
 }
 
@@ -1199,6 +1222,24 @@ export function CL_ParseConfigString(runtime: ClientRuntime, hooks: ClientParseH
   if (index >= CS_LIGHTS && index < CS_LIGHTS + runtime.cl.lightstyles.length) {
     CL_SetLightstyle(runtime, index - CS_LIGHTS);
   }
+  if (runtime.cl.refresh_prepped) {
+    if (index === CS_CDTRACK) {
+      const track = Number.parseInt(value, 10);
+      hooks.onPlayCdTrack?.(Number.isFinite(track) ? track : 0, true);
+    } else if (index >= CS_MODELS && index < CS_MODELS + MAX_MODELS) {
+      const modelIndex = index - CS_MODELS;
+      runtime.cl.model_draw[modelIndex] = value.length > 0 ? (hooks.registerModel?.(value) ?? value) : null;
+      runtime.cl.model_clip[modelIndex] = value.startsWith("*")
+        ? (hooks.inlineModel?.(value) ?? value)
+        : null;
+    } else if (index >= CS_SOUNDS && index < CS_SOUNDS + MAX_SOUNDS) {
+      const soundIndex = index - CS_SOUNDS;
+      runtime.cl.sound_precache[soundIndex] = value.length > 0 ? (hooks.registerSound?.(value) ?? value) : null;
+    } else if (index >= CS_IMAGES && index < CS_IMAGES + MAX_IMAGES) {
+      const imageIndex = index - CS_IMAGES;
+      runtime.cl.image_precache[imageIndex] = value.length > 0 ? (hooks.registerPic?.(value) ?? value) : null;
+    }
+  }
 
   if (index >= CS_PLAYERSKINS && index < CS_PLAYERSKINS + MAX_CLIENTS) {
     CL_ParseClientinfo(runtime, index - CS_PLAYERSKINS, hooks);
@@ -1236,6 +1277,14 @@ export function CL_ParseServerData(runtime: ClientRuntime, hooks: ClientParseHoo
 
   runtime.cl.playernum = MSG_ReadShort(runtime.net_message);
   const levelName = MSG_ReadString(runtime.net_message);
+  if (runtime.cl.playernum === -1) {
+    hooks.onPlayCinematic?.(levelName);
+    if (!hooks.onPlayCinematic) {
+      SCR_PlayCinematic(runtime, levelName);
+    }
+  } else {
+    runtime.cl.refresh_prepped = false;
+  }
   hooks.onServerData?.(levelName);
 }
 
@@ -1352,6 +1401,7 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
         hooks.onDisconnect?.("Server disconnected");
         throw new Error("Server disconnected");
       case svc_ops_e.svc_reconnect:
+        runtime.cls.downloadpercent = 0;
         runtime.cls.state = connstate_t.ca_connecting;
         runtime.cls.connect_time = -99999;
         hooks.onReconnect?.();
@@ -1360,6 +1410,7 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
         const level = MSG_ReadByte(runtime.net_message);
         const text = MSG_ReadString(runtime.net_message);
         if (level === PRINT_CHAT) {
+          hooks.onStartLocalSound?.("misc/talk.wav");
           emitPrint(runtime, text, hooks);
         } else {
           emitPrint(runtime, text, hooks);
@@ -1379,6 +1430,7 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
         break;
       }
       case svc_ops_e.svc_serverdata:
+        hooks.onExecuteCommandBuffer?.();
         CL_ParseServerData(runtime, hooks);
         break;
       case svc_ops_e.svc_configstring:
@@ -1421,6 +1473,30 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
         throw new Error(`CL_ParseServerMessage: unsupported command ${svc_strings[command] ?? command}`);
     }
   }
+
+  CL_AddNetgraph({
+    client: runtime,
+    cmd: null as never,
+    cvar: null as never,
+    scr_viewsize: null,
+    scr_conspeed: null,
+    scr_showturtle: null,
+    scr_showpause: null,
+    scr_centertime: null,
+    scr_printspeed: null,
+    scr_netgraph: null,
+    scr_drawall: null,
+    scr_timegraph: null,
+    scr_debuggraph: null,
+    scr_graphheight: null,
+    scr_graphscale: null,
+    scr_graphshift: null,
+    crosshair: null
+  });
+
+  if (runtime.cls.demorecording && !runtime.cls.demowaiting) {
+    hooks.onWriteDemoMessage?.();
+  }
 }
 
 /**
@@ -1431,8 +1507,8 @@ export function CL_ParseServerMessage(runtime: ClientRuntime, hooks: ClientParse
  * - Must preserve command serialization order and null-terminated string encoding.
  */
 export function CL_WriteStringCmd(runtime: ClientRuntime, text: string): void {
-  MSG_WriteByte(runtime.net_message, clc_ops_e.clc_stringcmd);
-  MSG_WriteString(runtime.net_message, text);
+  MSG_WriteByte(runtime.cls.netchan.message, clc_ops_e.clc_stringcmd);
+  MSG_WriteString(runtime.cls.netchan.message, text);
 }
 
 /**
@@ -1590,6 +1666,38 @@ function CL_ParsePacketEntities(runtime: ClientRuntime, oldframe: frame_t | null
 function emitPrint(runtime: ClientRuntime, text: string, hooks: ClientParseHooks): void {
   runtime.output.push(text);
   hooks.onPrint?.(text);
+}
+
+function findModelSkinSeparator(value: string): number {
+  const forwardSlash = value.indexOf("/");
+  const backSlash = value.indexOf("\\");
+
+  if (forwardSlash === -1) {
+    return backSlash;
+  }
+  if (backSlash === -1) {
+    return forwardSlash;
+  }
+  return Math.min(forwardSlash, backSlash);
+}
+
+function registerClientinfoResources(
+  clientinfo: ClientRuntime["cl"]["clientinfo"][number],
+  hooks: Pick<ClientParseHooks, "registerModel" | "registerSkin" | "registerPic">
+): void {
+  clientinfo.model = clientinfo.model_filename ? (hooks.registerModel?.(clientinfo.model_filename) ?? clientinfo.model_filename) : null;
+  clientinfo.skin = clientinfo.skin_filename ? (hooks.registerSkin?.(clientinfo.skin_filename) ?? clientinfo.skin_filename) : null;
+  clientinfo.icon = clientinfo.iconname ? (hooks.registerPic?.(clientinfo.iconname) ?? clientinfo.iconname) : null;
+
+  for (let index = 0; index < clientinfo.weaponmodel_paths.length; index += 1) {
+    const weaponPath = clientinfo.weaponmodel_paths[index];
+    clientinfo.weaponmodel[index] = weaponPath ? (hooks.registerModel?.(weaponPath) ?? weaponPath) : null;
+  }
+
+  clientinfo.valid = clientinfo.model !== null
+    && clientinfo.skin !== null
+    && clientinfo.icon !== null
+    && clientinfo.weaponmodel[0] !== null;
 }
 
 /**

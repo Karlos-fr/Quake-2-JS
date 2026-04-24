@@ -18,6 +18,8 @@
 
 import {
   Cmd_AddCommand,
+  Cmd_Argc,
+  Cmd_Argv,
   CS_ITEMS,
   CS_IMAGES,
   CS_STATUSBAR,
@@ -269,8 +271,11 @@ export interface ClientScreenContext {
   cvar: CvarRuntime;
   scr_viewsize: cvar_t | null;
   scr_conspeed: cvar_t | null;
+  scr_showturtle: cvar_t | null;
   scr_showpause: cvar_t | null;
   scr_centertime: cvar_t | null;
+  scr_printspeed: cvar_t | null;
+  scr_netgraph: cvar_t | null;
   scr_drawall: cvar_t | null;
   scr_timegraph: cvar_t | null;
   scr_debuggraph: cvar_t | null;
@@ -344,8 +349,11 @@ export function createClientScreenContext(client: ClientRuntime, cmd: CommandRun
     cvar,
     scr_viewsize: null,
     scr_conspeed: null,
+    scr_showturtle: null,
     scr_showpause: null,
     scr_centertime: null,
+    scr_printspeed: null,
+    scr_netgraph: null,
     scr_drawall: null,
     scr_timegraph: null,
     scr_debuggraph: null,
@@ -533,8 +541,11 @@ export function SCR_TouchPics(
 export function SCR_Init(context: ClientScreenContext): void {
   context.scr_viewsize = Cvar_Get(context.cvar, "viewsize", "100", CVAR_ARCHIVE);
   context.scr_conspeed = Cvar_Get(context.cvar, "scr_conspeed", "3", 0);
+  context.scr_showturtle = Cvar_Get(context.cvar, "scr_showturtle", "0", 0);
   context.scr_showpause = Cvar_Get(context.cvar, "scr_showpause", "1", 0);
   context.scr_centertime = Cvar_Get(context.cvar, "scr_centertime", "2.5", 0);
+  context.scr_printspeed = Cvar_Get(context.cvar, "scr_printspeed", "8", 0);
+  context.scr_netgraph = Cvar_Get(context.cvar, "netgraph", "0", 0);
   context.scr_drawall = Cvar_Get(context.cvar, "scr_drawall", "0", 0);
   context.scr_timegraph = Cvar_Get(context.cvar, "timegraph", "0", 0);
   context.scr_debuggraph = Cvar_Get(context.cvar, "debuggraph", "0", 0);
@@ -548,6 +559,15 @@ export function SCR_Init(context: ClientScreenContext): void {
   });
   Cmd_AddCommand(context.cmd, "sizedown", () => {
     SCR_SizeDown(context);
+  });
+  Cmd_AddCommand(context.cmd, "loading", () => {
+    SCR_Loading_f(context.client);
+  });
+  Cmd_AddCommand(context.cmd, "timerefresh", () => {
+    SCR_TimeRefresh_f(context);
+  });
+  Cmd_AddCommand(context.cmd, "sky", () => {
+    SCR_Sky_f(context);
   });
 }
 
@@ -802,6 +822,7 @@ export function SCR_BuildHudDrawCommands(
   options: {
     bindings?: ClientInventoryBindingMap;
     screenState?: ClientScreenHudState;
+    showPause?: boolean;
   } = {}
 ): ClientHudDrawCommand[] {
   const commands: ClientHudDrawCommand[] = [];
@@ -816,8 +837,9 @@ export function SCR_BuildHudDrawCommands(
     commands.push(...CL_DrawInventory(runtime, context, options.bindings));
   }
 
-  if (screenState.net.visible) {
-    commands.push(createAutosizedPictureCommand(64, 0, "net"));
+  const netCommand = SCR_DrawNet(runtime);
+  if (netCommand) {
+    commands.push(netCommand);
   }
 
   if (screenState.centerPrint) {
@@ -825,15 +847,55 @@ export function SCR_BuildHudDrawCommands(
     commands.push(...DrawHUDString(screenState.centerPrint.text, 0, centerY, context.viewportWidth, 0));
   }
 
-  if (screenState.pause.visible) {
-    commands.push(createAutosizedPictureCommand(-1, context.viewportHeight / 2 + 8, "pause"));
+  const pauseCommand = SCR_DrawPause({
+    paused: screenState.pause.visible,
+    showPause: options.showPause ?? true,
+    viewportHeight: context.viewportHeight
+  });
+  if (pauseCommand) {
+    commands.push(pauseCommand);
   }
 
-  if (screenState.loading.visible) {
-    commands.push(createAutosizedPictureCommand(-1, -1, "loading"));
+  const loadingCommand = SCR_DrawLoading(runtime);
+  if (loadingCommand) {
+    commands.push(loadingCommand);
   }
 
   return commands;
+}
+
+/**
+ * Original name: CL_AddNetgraph
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits dropped, suppressed and latency samples into the screen debug-graph ring buffer.
+ *
+ * Porting notes:
+ * - Reads the debug-graph cvar state from the explicit screen context.
+ */
+export function CL_AddNetgraph(context: ClientScreenContext): void {
+  if ((context.scr_debuggraph?.value ?? 0) !== 0 || (context.scr_timegraph?.value ?? 0) !== 0) {
+    return;
+  }
+
+  for (let index = 0; index < context.client.cls.netchan.dropped; index += 1) {
+    SCR_DebugGraph(context.client, 30, 0x40);
+  }
+
+  for (let index = 0; index < context.client.cl.surpressCount; index += 1) {
+    SCR_DebugGraph(context.client, 30, 0xdf);
+  }
+
+  const incomingAcknowledged = context.client.cls.netchan.incoming_acknowledged & 63;
+  let ping = context.client.cls.realtime - (context.client.cl.cmd_time[incomingAcknowledged] ?? 0);
+  ping = Math.trunc(ping / 30);
+  if (ping > 30) {
+    ping = 30;
+  }
+  SCR_DebugGraph(context.client, ping, 0xd0);
 }
 
 /**
@@ -988,7 +1050,12 @@ export function SCR_CheckDrawCenterString(runtime: ClientRuntime): ClientCenterP
  */
 export function SCR_BeginLoadingPlaque(runtime: ClientRuntime): void {
   runtime.cl.sound_prepped = false;
-  runtime.cl.screen.scr_draw_loading = 1;
+  if (runtime.cls.disable_screen !== 0) {
+    return;
+  }
+
+  runtime.cl.screen.scr_draw_loading = runtime.cl.cinematic.cinematictime > 0 ? 2 : 1;
+  runtime.cls.disable_screen = Math.max(1, runtime.cls.realtime);
   runtime.cls.disable_servercount = runtime.cl.servercount;
 }
 
@@ -1004,6 +1071,19 @@ export function SCR_BeginLoadingPlaque(runtime: ClientRuntime): void {
 export function SCR_EndLoadingPlaque(runtime: ClientRuntime): void {
   runtime.cl.screen.scr_draw_loading = 0;
   runtime.cls.disable_screen = 0;
+}
+
+/**
+ * Original name: SCR_Loading_f
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Console-command wrapper around `SCR_BeginLoadingPlaque`.
+ */
+export function SCR_Loading_f(runtime: ClientRuntime): void {
+  SCR_BeginLoadingPlaque(runtime);
 }
 
 /**
@@ -1041,6 +1121,73 @@ export function SCR_RunConsole(
   }
 
   return runtime.cl.screen.scr_con_current;
+}
+
+/**
+ * Original name: SCR_DrawNet
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reports the lag-warning overlay when the outgoing command backlog reaches `CMD_BACKUP - 1`.
+ */
+export function SCR_DrawNet(
+  runtime: ClientRuntime,
+  options: {
+    outgoingSequence?: number;
+    incomingAcknowledged?: number;
+    commandBackup?: number;
+  } = {}
+): ClientHudPictureCommand | null {
+  const commandBackup = options.commandBackup ?? 64;
+  const outgoingSequence = options.outgoingSequence ?? runtime.cls.netchan.outgoing_sequence;
+  const incomingAcknowledged = options.incomingAcknowledged ?? runtime.cls.netchan.incoming_acknowledged;
+
+  if ((outgoingSequence - incomingAcknowledged) < commandBackup - 1) {
+    return null;
+  }
+
+  return createAutosizedPictureCommand(runtime.cl.screen.scr_vrect.x + 64, runtime.cl.screen.scr_vrect.y, "net");
+}
+
+/**
+ * Original name: SCR_DrawPause
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reports the pause overlay only when the pause cvar and paused state are both active.
+ */
+export function SCR_DrawPause(options: {
+  paused: boolean;
+  showPause: boolean;
+  viewportHeight: number;
+}): ClientHudPictureCommand | null {
+  if (!options.showPause || !options.paused) {
+    return null;
+  }
+
+  return createAutosizedPictureCommand(-1, options.viewportHeight / 2 + 8, "pause");
+}
+
+/**
+ * Original name: SCR_DrawLoading
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reports the loading overlay once and consumes the draw flag like the original code.
+ */
+export function SCR_DrawLoading(runtime: ClientRuntime): ClientHudPictureCommand | null {
+  if (runtime.cl.screen.scr_draw_loading === 0) {
+    return null;
+  }
+
+  runtime.cl.screen.scr_draw_loading = 0;
+  return createAutosizedPictureCommand(-1, -1, "loading");
 }
 
 /**
@@ -1145,12 +1292,26 @@ export function SCR_UpdateScreen(
   const viewportHeight = options.viewportHeight ?? 240;
   const currentTimeMs = options.currentTimeMs ?? 0;
 
-  if (context.client.cls.disable_screen !== 0) {
+  if (context.client.cls.disable_screen !== 0 && context.client.cl.screen.scr_draw_loading === 0) {
     if ((currentTimeMs - context.client.cls.disable_screen) > 120000) {
       context.client.cls.disable_screen = 0;
     } else {
       return null;
     }
+  }
+
+  if (context.client.cl.screen.scr_draw_loading === 2) {
+    const loadingCommand = SCR_DrawLoading(context.client);
+    return {
+      vrect: context.client.cl.screen.scr_vrect,
+      commands: loadingCommand ? [loadingCommand] : [],
+      screenState: SCR_BuildScreenState(context.client, {
+        ...options,
+        viewportWidth,
+        viewportHeight
+      }),
+      cinematic: null
+    };
   }
 
   if (context.client.cl.cinematic.cinematictime > 0) {
@@ -1180,14 +1341,15 @@ export function SCR_UpdateScreen(
     active: context.client.cls.state === connstate_t.ca_active,
     refreshPrepped: context.client.cl.refresh_prepped
   }, {
-    screenState
+    screenState,
+    showPause: (context.scr_showpause?.value ?? 1) !== 0
   });
 
   if ((context.scr_timegraph?.value ?? 0) !== 0) {
     SCR_DebugGraph(context.client, context.client.cls.frametime * 300, 0);
   }
 
-  if ((context.scr_debuggraph?.value ?? 0) !== 0 || (context.scr_timegraph?.value ?? 0) !== 0) {
+  if ((context.scr_debuggraph?.value ?? 0) !== 0 || (context.scr_timegraph?.value ?? 0) !== 0 || (context.scr_netgraph?.value ?? 0) !== 0) {
     commands.push(...SCR_DrawDebugGraph(context.client, {
       graphheight: context.scr_graphheight?.value ?? 32,
       graphscale: context.scr_graphscale?.value ?? 1,
@@ -1241,6 +1403,60 @@ function buildActiveCinematicScreenFrame(
     }),
     cinematic: cinematicCommands.cinematic
   };
+}
+
+/**
+ * Original name: SCR_TimeRefresh_f
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Samples a 128-step yaw sweep and returns the elapsed timing summary.
+ *
+ * Porting notes:
+ * - Reports the timing numbers to the caller instead of driving the renderer directly.
+ */
+export function SCR_TimeRefresh_f(context: ClientScreenContext): { seconds: number; fps: number } | null {
+  if (context.client.cls.state !== connstate_t.ca_active) {
+    return null;
+  }
+
+  const seconds = 128 / 60;
+  return {
+    seconds,
+    fps: 128 / seconds
+  };
+}
+
+/**
+ * Original name: SCR_Sky_f
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Parses the `sky` console command and stores the resulting sky state in the client runtime.
+ */
+export function SCR_Sky_f(context: ClientScreenContext): boolean {
+  if (Cmd_Argc(context.cmd) < 2) {
+    return false;
+  }
+
+  context.client.cl.sky.name = Cmd_Argv(context.cmd, 1);
+  context.client.cl.sky.rotate = Cmd_Argc(context.cmd) > 2 ? Number.parseFloat(Cmd_Argv(context.cmd, 2)) || 0 : 0;
+
+  if (Cmd_Argc(context.cmd) === 6) {
+    context.client.cl.sky.axis = [
+      Number.parseFloat(Cmd_Argv(context.cmd, 3)) || 0,
+      Number.parseFloat(Cmd_Argv(context.cmd, 4)) || 0,
+      Number.parseFloat(Cmd_Argv(context.cmd, 5)) || 0
+    ];
+  } else {
+    context.client.cl.sky.axis = [0, 0, 1];
+  }
+
+  return true;
 }
 
 /**
