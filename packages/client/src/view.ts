@@ -27,14 +27,24 @@ import {
   CM_TransformedBoxTrace,
   CM_TransformedPointContents,
   CS_AIRACCEL,
+  CS_CDTRACK,
+  CS_IMAGES,
+  CS_MODELS,
+  CS_PLAYERSKINS,
+  CS_SKY,
+  CS_SKYAXIS,
+  CS_SKYROTATE,
   LerpAngle,
   MASK_PLAYERSOLID,
+  MAX_CLIENTS,
+  MAX_IMAGES,
   PMF_NO_PREDICTION,
   PMF_ON_GROUND,
   Pmove,
   SHORT2ANGLE,
   createPmoveContext,
   MAX_LIGHTSTYLES,
+  MAX_MODELS,
   CVAR_ARCHIVE,
   Cmd_Argc,
   Cmd_AddCommand,
@@ -58,7 +68,8 @@ import {
   type vec3_t
 } from "../../qcommon/src/index.js";
 import { CMD_BACKUP, type ClientRuntime, connstate_t } from "./types.js";
-import { UPDATE_MASK } from "../../qcommon/src/index.js";
+import { RF_USE_DISGUISE, UPDATE_MASK } from "../../qcommon/src/index.js";
+import { MAX_CLIENTWEAPONMODELS } from "./types.js";
 import {
   MAX_DLIGHTS,
   MAX_ENTITIES,
@@ -68,14 +79,20 @@ import {
   createEntity,
   createLightstyle,
   createParticle,
+  type image_s,
+  type model_s,
   type dlight_t,
   type entity_t,
   type refdef_t,
+  type refexport_t,
   type lightstyle_t,
   type particle_t
 } from "./ref.js";
-import { SCR_AddDirtyPoint } from "./screen.js";
+import { CL_LoadClientinfo, CL_ParseClientinfo } from "./parse.js";
+import { SCR_AddDirtyPoint, SCR_TouchPics } from "./screen.js";
 import type { vrect_t } from "./screen.js";
+import { Con_ClearNotify, type console_t } from "./console.js";
+import { CL_RegisterTEntModels } from "./tent.js";
 import type { ClientDynamicLight, ClientRefreshFrame, ClientRenderEntity, ClientRenderParticle } from "./refresh.js";
 
 /**
@@ -208,6 +225,43 @@ export interface ClientRenderViewOptions extends ClientViewOptions {
   resolveEntityModel?: (entity: ClientRenderEntity) => entity_t["model"];
   resolveEntitySkin?: (entity: ClientRenderEntity) => entity_t["skin"];
   renderFrame?: (refdef: refdef_t) => void;
+}
+
+/**
+ * Category: New
+ * Purpose: Describe the host/runtime services needed by the `CL_PrepRefresh` port.
+ *
+ * Constraints:
+ * - Must keep renderer, console and platform side effects explicit while preserving the original call order.
+ */
+export interface ClientPrepRefreshOptions {
+  ref?: Pick<
+    refexport_t,
+    "BeginRegistration" | "RegisterModel" | "RegisterSkin" | "RegisterPic" | "SetSky" | "EndRegistration" | "DrawGetPicSize"
+  >;
+  viewportWidth?: number;
+  viewportHeight?: number;
+  crosshairValue?: number;
+  console?: console_t;
+  onPrint?: (line: string) => void;
+  onUpdateScreen?: () => void;
+  onPumpEvents?: () => void;
+  onPlayCdTrack?: (track: number, looping: boolean) => void;
+  inlineModel?: (name: string) => cmodel_t | null;
+}
+
+/**
+ * Category: New
+ * Purpose: Report the registration work completed by the `CL_PrepRefresh` port.
+ *
+ * Constraints:
+ * - Must expose the original map and asset counts without depending on one renderer backend.
+ */
+export interface ClientPrepRefreshResult {
+  mapname: string;
+  modelCount: number;
+  imageCount: number;
+  clientInfoCount: number;
 }
 
 /**
@@ -588,6 +642,165 @@ export function V_Init(context: ClientViewContext): void {
 }
 
 /**
+ * Original name: CL_PrepRefresh
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Prepares the client refresh state for a newly loaded level by registering models, pics, player info and sky data.
+ *
+ * Porting notes:
+ * - Keeps renderer/platform effects in explicit hooks while preserving the original registration order.
+ * - Stores registered handles back into the client runtime so later view composition can resolve models and skins without adapter callbacks.
+ */
+export function CL_PrepRefresh(
+  runtime: ClientRuntime,
+  options: ClientPrepRefreshOptions = {}
+): ClientPrepRefreshResult | null {
+  const worldModel = runtime.cl.configstrings[CS_MODELS + 1] ?? "";
+  if (worldModel.length === 0) {
+    return null;
+  }
+
+  const viewportWidth = options.viewportWidth ?? runtime.cl.screen.scr_vrect.width;
+  const viewportHeight = options.viewportHeight ?? runtime.cl.screen.scr_vrect.height;
+  if (viewportWidth > 0 && viewportHeight > 0) {
+    SCR_AddDirtyPoint(runtime, 0, 0);
+    SCR_AddDirtyPoint(runtime, viewportWidth - 1, viewportHeight - 1);
+  }
+
+  const mapname = extractMapName(worldModel);
+
+  options.onPrint?.(`Map: ${mapname}\r`);
+  options.onUpdateScreen?.();
+  options.ref?.BeginRegistration(mapname);
+  options.onPrint?.("                                     \r");
+
+  options.onPrint?.("pics\r");
+  options.onUpdateScreen?.();
+  const touchPicsOptions: {
+    runtime: ClientRuntime;
+    getPicSize?: (pic: string) => { width: number; height: number };
+  } = {
+    runtime,
+    ...(options.ref?.DrawGetPicSize ? { getPicSize: options.ref.DrawGetPicSize } : {})
+  };
+  for (const pic of SCR_TouchPics(options.crosshairValue ?? 0, touchPicsOptions)) {
+    options.ref?.RegisterPic(pic);
+  }
+  options.onPrint?.("                                     \r");
+
+  const tentAssets = CL_RegisterTEntModels(runtime);
+  for (const model of tentAssets.models) {
+    options.ref?.RegisterModel(model);
+  }
+  for (const pic of tentAssets.pics) {
+    options.ref?.RegisterPic(pic);
+  }
+
+  runtime.cl.num_cl_weaponmodels = 1;
+  runtime.cl.cl_weaponmodels[0] = "weapon.md2";
+  for (let index = 1; index < MAX_CLIENTWEAPONMODELS; index += 1) {
+    runtime.cl.cl_weaponmodels[index] = "";
+  }
+
+  let modelCount = 0;
+  for (let index = 1; index < MAX_MODELS; index += 1) {
+    const name = runtime.cl.configstrings[CS_MODELS + index] ?? "";
+    if (name.length === 0) {
+      break;
+    }
+
+    const displayName = name.slice(0, 37);
+    if (!name.startsWith("*")) {
+      options.onPrint?.(`${displayName}\r`);
+      options.onUpdateScreen?.();
+      options.onPumpEvents?.();
+    }
+
+    if (name.startsWith("#")) {
+      if (runtime.cl.num_cl_weaponmodels < MAX_CLIENTWEAPONMODELS) {
+        runtime.cl.cl_weaponmodels[runtime.cl.num_cl_weaponmodels] = name.slice(1);
+        runtime.cl.num_cl_weaponmodels += 1;
+      }
+      modelCount += 1;
+      continue;
+    }
+
+    runtime.cl.model_draw[index] = options.ref?.RegisterModel(name) ?? name;
+    runtime.cl.model_clip[index] = name.startsWith("*")
+      ? (options.inlineModel?.(name) ?? null)
+      : null;
+
+    if (!name.startsWith("*")) {
+      options.onPrint?.("                                     \r");
+    }
+    modelCount += 1;
+  }
+
+  options.onPrint?.("images\r");
+  options.onUpdateScreen?.();
+  let imageCount = 0;
+  for (let index = 1; index < MAX_IMAGES; index += 1) {
+    const name = runtime.cl.configstrings[CS_IMAGES + index] ?? "";
+    if (name.length === 0) {
+      break;
+    }
+
+    runtime.cl.image_precache[index] = options.ref?.RegisterPic(name) ?? name;
+    options.onPumpEvents?.();
+    imageCount += 1;
+  }
+  options.onPrint?.("                                     \r");
+
+  let clientInfoCount = 0;
+  for (let index = 0; index < MAX_CLIENTS; index += 1) {
+    if (!(runtime.cl.configstrings[CS_PLAYERSKINS + index] ?? "").length) {
+      continue;
+    }
+
+    options.onPrint?.(`client ${index}\r`);
+    options.onUpdateScreen?.();
+    options.onPumpEvents?.();
+    CL_ParseClientinfo(runtime, index);
+    registerClientinfoResources(runtime.cl.clientinfo[index], options.ref);
+    options.onPrint?.("                                     \r");
+    clientInfoCount += 1;
+  }
+
+  CL_LoadClientinfo(runtime, runtime.cl.baseclientinfo, "unnamed\\male/grunt");
+  registerClientinfoResources(runtime.cl.baseclientinfo, options.ref);
+
+  options.onPrint?.("sky\r");
+  options.onUpdateScreen?.();
+  runtime.cl.sky.name = runtime.cl.configstrings[CS_SKY] ?? "";
+  runtime.cl.sky.rotate = parseSkyRotate(runtime.cl.configstrings[CS_SKYROTATE] ?? "");
+  runtime.cl.sky.axis = parseSkyAxis(runtime.cl.configstrings[CS_SKYAXIS] ?? "");
+  options.ref?.SetSky(runtime.cl.sky.name, runtime.cl.sky.rotate, runtime.cl.sky.axis);
+  options.onPrint?.("                                     \r");
+
+  options.ref?.EndRegistration();
+  if (options.console) {
+    Con_ClearNotify(options.console);
+  }
+  options.onUpdateScreen?.();
+  runtime.cl.refresh_prepped = true;
+  runtime.cl.force_refdef = true;
+
+  const cdTrackText = runtime.cl.configstrings[CS_CDTRACK] ?? "";
+  const cdTrack = Number.parseInt(cdTrackText, 10);
+  options.onPlayCdTrack?.(Number.isFinite(cdTrack) ? cdTrack : 0, true);
+
+  return {
+    mapname,
+    modelCount,
+    imageCount,
+    clientInfoCount
+  };
+}
+
+/**
  * Original name: V_RenderView
  * Source: client/cl_view.c
  * Category: Ported
@@ -622,7 +835,7 @@ export function V_RenderView(
     runtime.cl.force_refdef = false;
 
     const refreshFrame = options.buildRefreshFrame(runtime, options);
-    fillSceneFromRefreshFrame(context.scene, refreshFrame, options);
+    fillSceneFromRefreshFrame(context.scene, runtime, refreshFrame, options);
 
     if ((context.cl_testparticles?.value ?? 0) !== 0) {
       V_TestParticles(context.scene, refreshFrame.view, context.cl_testparticles?.value ?? 0);
@@ -1085,6 +1298,7 @@ function createPredictedPmove(runtime: ClientRuntime, options: ClientViewOptions
 
 function fillSceneFromRefreshFrame(
   scene: ClientViewScene,
+  runtime: ClientRuntime,
   refreshFrame: ClientRefreshFrame,
   options: ClientRenderViewOptions
 ): void {
@@ -1104,7 +1318,7 @@ function fillSceneFromRefreshFrame(
   const sortedEntities = [...refreshFrame.entities].sort(compareRenderEntities);
   for (const renderEntity of sortedEntities) {
     V_AddEntity(scene, {
-      model: options.resolveEntityModel?.(renderEntity) ?? null,
+      model: resolveSceneEntityModel(runtime, renderEntity, options.resolveEntityModel),
       angles: [...renderEntity.angles],
       origin: [...renderEntity.origin],
       frame: renderEntity.frame,
@@ -1114,7 +1328,7 @@ function fillSceneFromRefreshFrame(
       skinnum: renderEntity.skinnum,
       lightstyle: 0,
       alpha: renderEntity.alpha,
-      skin: options.resolveEntitySkin?.(renderEntity) ?? null,
+      skin: resolveSceneEntitySkin(runtime, renderEntity, options.resolveEntitySkin),
       flags: renderEntity.flags
     });
   }
@@ -1203,6 +1417,102 @@ function compareRenderEntities(a: ClientRenderEntity, b: ClientRenderEntity): nu
   }
 
   return a.modelindex - b.modelindex;
+}
+
+function resolveSceneEntityModel(
+  runtime: ClientRuntime,
+  entity: ClientRenderEntity,
+  resolveEntityModel?: (entity: ClientRenderEntity) => entity_t["model"]
+): model_s | null {
+  const resolved = resolveEntityModel?.(entity);
+  if (resolved !== undefined) {
+    return resolved;
+  }
+
+  if (entity.customPlayerSkin || entity.customWeaponModel) {
+    const clientInfo = runtime.cl.clientinfo[entity.skinnum & 0xff] ?? runtime.cl.baseclientinfo;
+    if (entity.linkedModelSlot === 2) {
+      const weaponModelIndex = Math.trunc(entity.skinnum / 256);
+      const resolvedWeaponModelIndex =
+        weaponModelIndex > 0 && weaponModelIndex < MAX_CLIENTWEAPONMODELS
+          ? weaponModelIndex
+          : 0;
+      return (clientInfo.weaponmodel[resolvedWeaponModelIndex] as model_s | null)
+        ?? (clientInfo.weaponmodel[0] as model_s | null)
+          ?? (runtime.cl.baseclientinfo.weaponmodel[0] as model_s | null)
+          ?? null;
+    }
+
+    if ((entity.flags & RF_USE_DISGUISE) !== 0) {
+      const disguiseModelPath = getDisguiseModelPath(clientInfo.model_name);
+      if (disguiseModelPath) {
+        return disguiseModelPath as model_s;
+      }
+    }
+
+    return (clientInfo.model as model_s | null) ?? (runtime.cl.baseclientinfo.model as model_s | null) ?? null;
+  }
+
+  return (runtime.cl.model_draw[entity.modelindex] as model_s | null) ?? null;
+}
+
+function resolveSceneEntitySkin(
+  runtime: ClientRuntime,
+  entity: ClientRenderEntity,
+  resolveEntitySkin?: (entity: ClientRenderEntity) => entity_t["skin"]
+): image_s | null {
+  const resolved = resolveEntitySkin?.(entity);
+  if (resolved !== undefined) {
+    return resolved;
+  }
+
+  if (entity.customPlayerSkin) {
+    const clientInfo = runtime.cl.clientinfo[entity.skinnum & 0xff] ?? runtime.cl.baseclientinfo;
+    if ((entity.flags & RF_USE_DISGUISE) !== 0) {
+      const disguiseSkinPath = getDisguiseSkinPath(clientInfo.model_name);
+      if (disguiseSkinPath) {
+        return disguiseSkinPath as image_s;
+      }
+    }
+
+    return (clientInfo.skin as image_s | null) ?? (runtime.cl.baseclientinfo.skin as image_s | null) ?? null;
+  }
+
+  return null;
+}
+
+/**
+ * Category: New
+ * Purpose: Recreate the `RF_USE_DISGUISE` player-model remap from `CL_AddPacketEntities`.
+ */
+function getDisguiseModelPath(modelName: string): string | null {
+  switch (modelName) {
+    case "male":
+      return "players/male/tris.md2";
+    case "female":
+      return "players/female/tris.md2";
+    case "cyborg":
+      return "players/cyborg/tris.md2";
+    default:
+      return null;
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Recreate the `RF_USE_DISGUISE` player-skin remap from `CL_AddPacketEntities`.
+ */
+function getDisguiseSkinPath(modelName: string): string | null {
+  switch (modelName) {
+    case "male":
+      return "players/male/disguise.pcx";
+    case "female":
+      return "players/female/disguise.pcx";
+    case "cyborg":
+      return "players/cyborg/disguise.pcx";
+    default:
+      return null;
+  }
 }
 
 /**
@@ -1295,4 +1605,42 @@ function collectPredictionEntities(runtime: ClientRuntime): entity_state_t[] {
   }
 
   return entities;
+}
+
+function registerClientinfoResources(
+  clientinfo: ClientRuntime["cl"]["clientinfo"][number],
+  ref?: Pick<refexport_t, "RegisterModel" | "RegisterSkin" | "RegisterPic">
+): void {
+  clientinfo.model = clientinfo.model_filename ? (ref?.RegisterModel(clientinfo.model_filename) ?? clientinfo.model_filename) : null;
+  clientinfo.skin = clientinfo.skin_filename ? (ref?.RegisterSkin(clientinfo.skin_filename) ?? clientinfo.skin_filename) : null;
+  clientinfo.icon = clientinfo.iconname ? (ref?.RegisterPic(clientinfo.iconname) ?? clientinfo.iconname) : null;
+
+  for (let index = 0; index < clientinfo.weaponmodel_paths.length; index += 1) {
+    const weaponModelPath = clientinfo.weaponmodel_paths[index];
+    clientinfo.weaponmodel[index] = weaponModelPath ? (ref?.RegisterModel(weaponModelPath) ?? weaponModelPath) : null;
+  }
+}
+
+function extractMapName(worldModel: string): string {
+  const mapPath = worldModel.startsWith("maps/") ? worldModel.slice(5) : worldModel;
+  return mapPath.endsWith(".bsp") ? mapPath.slice(0, -4) : mapPath;
+}
+
+function parseSkyRotate(value: string): number {
+  const parsed = Number.parseFloat(value.trim());
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function parseSkyAxis(value: string): vec3_t {
+  const parts = value
+    .trim()
+    .split(/\s+/)
+    .filter((part) => part.length > 0)
+    .map((part) => Number.parseFloat(part));
+
+  if (parts.length !== 3 || parts.some((part) => !Number.isFinite(part))) {
+    return [0, 0, 0];
+  }
+
+  return [parts[0], parts[1], parts[2]];
 }

@@ -408,10 +408,14 @@ export {
   getSoundNameCapacity
 } from "./sound-local.js";
 export {
+  CL_AddNetgraph,
   DrawHUDString,
   createClientScreenContext,
   SCR_AddDirtyPoint,
   SCR_BuildHudDrawCommands,
+  SCR_DrawLoading,
+  SCR_DrawNet,
+  SCR_DrawPause,
   SCR_DirtyScreen,
   SCR_DrawCinematic,
   SCR_DrawDebugGraph,
@@ -435,7 +439,10 @@ export {
   SCR_BuildScreenState,
   SCR_CenterPrint,
   SCR_CheckDrawCenterString,
-  SCR_EndLoadingPlaque
+  SCR_EndLoadingPlaque,
+  SCR_Loading_f,
+  SCR_Sky_f,
+  SCR_TimeRefresh_f
 } from "./screen.js";
 export {
   CL_DrawInventory,
@@ -536,6 +543,7 @@ export {
   CL_CalcViewValues,
   CL_CheckPredictionError,
   CL_ClipMoveToEntities,
+  CL_PrepRefresh,
   CL_PMpointcontents,
   CL_PMTrace,
   CL_PredictMovement,
@@ -830,6 +838,7 @@ export type {
   LocalClientSessionState
 } from "./local-session.js";
 export type { ClientPredictionCollisionSource, ClientViewOptions, ClientViewValues } from "./view.js";
+export type { ClientPrepRefreshOptions, ClientPrepRefreshResult } from "./view.js";
 export type {
   HudBounds,
   HudDrawCommand,

@@ -57,25 +57,25 @@ Objectif: definir un ordre de portage fichier par fichier qui maximise les ferme
 
 ### Phase 2 - Noyau client avant fermeture des hubs
 
-11. `client/cl_newfx.c`
+11. ✅`client/cl_newfx.c`
     Raison: satellite direct de `cl_tent.c`; mieux vaut le fermer avant `cl_tent.c`.
 
-12. `client/cl_fx.c`
+12. ✅`client/cl_fx.c`
     Raison: depend de la vue et nourrit parse/tent/main; bon pivot a fermer avant les hubs.
 
-13. `client/cl_tent.c`
+13. ✅`client/cl_tent.c`
     Raison: le graphe montre sa dependance vers `cl_fx.c`, `cl_newfx.c`, `cl_view.c`.
 
-14. `client/cl_view.c`
+14.✅`client/cl_view.c`
     Raison: mieux ferme avant `cl_parse.c` et `cl_main.c`; sert de socle pour vue, particles, lights et refresh.
 
-15. `client/cl_ents.c`
+15. ✅`client/cl_ents.c`
     Raison: gros bloc mais sous-hub plus local que `cl_parse.c`; a fermer avant le parse central.
 
-16. `client/cl_scrn.c`
+16. ✅`client/cl_scrn.c`
     Raison: a fermer apres console/cinematics/menu pour eviter de melanger UI de base et orchestration globale.
 
-17. `client/cl_parse.c`
+17. ⚠️`client/cl_parse.c`
     Raison: hub client intermediaire; il depend deja de `cl_ents.c`, `cl_fx.c`, `cl_inv.c`, `cl_tent.c`, `cl_scrn.c`, `snd_dma.c`.
 
 18. `client/cl_main.c`
