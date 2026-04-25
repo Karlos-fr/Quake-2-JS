@@ -349,13 +349,12 @@ export function createServerWorldProcedures(context: ServerWorldContext): Server
       }
 
       const headnode = SV_HullForEntity(hit, context);
-      const angles = hit.solid !== SOLID_BSP ? vec3_origin : hit.s.angles;
       const c2 = CM_TransformedPointContents(
         context.collisionWorld,
         point,
         headnode,
         hit.s.origin,
-        angles
+        hit.s.angles
       );
       contents |= c2;
     }
