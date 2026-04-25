@@ -81,13 +81,15 @@ function parseTrackingRows(markdown) {
       continue;
     }
 
+    const hasValidatedColumn = cells.length >= 7;
     rows.push({
       sourcePath: toPortablePath(cells[0]),
       name: cells[1],
       description: cells[2],
       toPort: cells[3],
       ported: cells[4],
-      target: cells[5]
+      validated: hasValidatedColumn ? cells[5] : "",
+      target: hasValidatedColumn ? cells[6] : cells[5]
     });
   }
 
@@ -115,6 +117,7 @@ function buildMappingEntry(row) {
     description: row.description,
     toPort: row.toPort || null,
     ported: row.ported || null,
+    validated: row.validated || null,
     declaredTargets,
     generatedStubTarget
   };

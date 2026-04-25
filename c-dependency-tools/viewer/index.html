@@ -121,6 +121,7 @@
                   <col data-col-key="module" />
                   <col data-col-key="aPorter" />
                   <col data-col-key="porte" />
+                  <col data-col-key="valide" />
                   <col data-col-key="cible" />
                   <col data-col-key="incomingCount" />
                   <col data-col-key="outgoingCount" />
@@ -135,6 +136,7 @@
                     <th data-col-key="module"><button type="button" class="sort-button" data-sort-key="module">Module</button><span class="col-resizer" data-col-key="module" aria-hidden="true"></span></th>
                     <th data-col-key="aPorter">A porter<span class="col-resizer" data-col-key="aPorter" aria-hidden="true"></span></th>
                     <th data-col-key="porte">Porte<span class="col-resizer" data-col-key="porte" aria-hidden="true"></span></th>
+                    <th data-col-key="valide">Valide<span class="col-resizer" data-col-key="valide" aria-hidden="true"></span></th>
                     <th data-col-key="cible">Cible<span class="col-resizer" data-col-key="cible" aria-hidden="true"></span></th>
                     <th data-col-key="incomingCount"><button type="button" class="sort-button" data-sort-key="incomingCount">Entrantes</button><span class="col-resizer" data-col-key="incomingCount" aria-hidden="true"></span></th>
                     <th data-col-key="outgoingCount"><button type="button" class="sort-button" data-sort-key="outgoingCount">Sortantes</button><span class="col-resizer" data-col-key="outgoingCount" aria-hidden="true"></span></th>
@@ -160,6 +162,14 @@
                         <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="&#x1F7E0;" />&#x1F7E0;</label>
                         <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="&#x26D4;" />&#x26D4;</label>
                         <label><input type="checkbox" class="status-filter" data-filter-key="porte" value="__empty__" />(vide / non renseigne)</label>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="checkbox-filter">
+                        <label><input type="checkbox" class="status-filter" data-filter-key="valide" value="&#x2705;" />&#x2705;</label>
+                        <label><input type="checkbox" class="status-filter" data-filter-key="valide" value="&#x1F7E1;" />&#x1F7E1;</label>
+                        <label><input type="checkbox" class="status-filter" data-filter-key="valide" value="&#x26D4;" />&#x26D4;</label>
+                        <label><input type="checkbox" class="status-filter" data-filter-key="valide" value="__empty__" />(vide / non renseigne)</label>
                       </div>
                     </th>
                     <th><input id="filter-cible" class="column-filter" data-filter-key="cible" type="text" placeholder="Filtrer" /></th>

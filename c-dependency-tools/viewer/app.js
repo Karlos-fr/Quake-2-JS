@@ -35,6 +35,7 @@ const DEFAULT_COLUMN_WIDTHS = {
   module: 110,
   aPorter: 86,
   porte: 80,
+  valide: 80,
   cible: 220,
   incomingCount: 92,
   outgoingCount: 92,
@@ -48,6 +49,7 @@ const MIN_COLUMN_WIDTHS = {
   module: 90,
   aPorter: 72,
   porte: 72,
+  valide: 72,
   cible: 110,
   incomingCount: 84,
   outgoingCount: 84,
@@ -79,6 +81,7 @@ const state = {
     module: "",
     aPorter: [],
     porte: [],
+    valide: [],
     cible: "",
     incomingCount: "",
     outgoingCount: "",
@@ -478,6 +481,7 @@ function renderDetailsForNode(node) {
     <p>Description / role: ${escapeHtml(portage?.description ?? "-")}</p>
     <p>A porter: ${escapeHtml(portage?.aPorter ?? "-")}</p>
     <p>Porte: ${escapeHtml(portage?.porte ?? "-")}</p>
+    <p>Valide: ${escapeHtml(portage?.valide ?? "-")}</p>
     <p>Cible: ${escapeHtml(portage?.cible ?? "-")}</p>
     <p>Fonctions definies: ${file.functionsDefined.length}</p>
     <p>Includes internes: ${file.includes.length}</p>
@@ -571,6 +575,7 @@ function renderTable(nodes, links) {
           <td>${escapeHtml(row.module)}</td>
           <td class="status-cell" title="${escapeHtml(row.aPorter)}"><span class="status-badge">${escapeHtml(row.aPorterShort)}</span></td>
           <td class="status-cell" title="${escapeHtml(row.porte)}"><span class="status-badge">${escapeHtml(row.porteShort)}</span></td>
+          <td class="status-cell" title="${escapeHtml(row.valide)}"><span class="status-badge">${escapeHtml(row.valideShort)}</span></td>
           <td class="target-cell" title="${escapeHtml(row.cible)}">${escapeHtml(row.cible)}</td>
           <td><span class="metric-chip">${row.incomingCount}</span></td>
           <td><span class="metric-chip">${row.outgoingCount}</span></td>
@@ -614,6 +619,8 @@ function buildTableMetrics(nodes, links) {
         aPorterShort: "",
         porte: "",
         porteShort: "",
+        valide: "",
+        valideShort: "",
         cible: ""
       }
     ])
@@ -645,6 +652,8 @@ function buildTableMetrics(nodes, links) {
       aPorterShort: shortenStatus(metadata?.aPorter ?? ""),
       porte: metadata?.porte ?? "",
       porteShort: shortenStatus(metadata?.porte ?? ""),
+      valide: metadata?.valide ?? "",
+      valideShort: shortenStatus(metadata?.valide ?? ""),
       cible: metadata?.cible ?? ""
     };
   });
@@ -934,7 +943,10 @@ function escapeHtml(value) {
 
 function parsePortageMetadata(markdownText) {
   const lines = markdownText.split(/\r?\n/);
-  const tableStart = lines.findIndex((line) => line.trim() === "| Path | Nom | Description / role | A porter | Porte | Cible |");
+  const tableStart = lines.findIndex((line) =>
+    line.trim() === "| Path | Nom | Description / role | A porter | Porte | Valide | Cible |" ||
+    line.trim() === "| Path | Nom | Description / role | A porter | Porte | Cible |"
+  );
   if (tableStart === -1) {
     return new Map();
   }
@@ -952,11 +964,13 @@ function parsePortageMetadata(markdownText) {
     }
 
     const pathKey = normalizePath(cells[0]);
+    const hasValideColumn = cells.length >= 7;
     metadata.set(pathKey, {
       description: cells[2].trim(),
       aPorter: cells[3].trim(),
       porte: cells[4].trim(),
-      cible: cells[5].trim()
+      valide: hasValideColumn ? cells[5].trim() : "",
+      cible: hasValideColumn ? cells[6].trim() : cells[5].trim()
     });
   }
 
@@ -1036,7 +1050,7 @@ function filterTableRows(rows) {
         continue;
       }
 
-      if (key === "aPorter" || key === "porte") {
+      if (key === "aPorter" || key === "porte" || key === "valide") {
         const normalizedValue = String(row[key] ?? "").trim();
         const matchesEmpty = rawFilter.includes("__empty__") && normalizedValue.length === 0;
         if (!matchesEmpty && !rawFilter.includes(normalizedValue)) {
@@ -1077,6 +1091,7 @@ function resetTableFilters() {
     module: "",
     aPorter: [],
     porte: [],
+    valide: [],
     cible: "",
     incomingCount: "",
     outgoingCount: "",
