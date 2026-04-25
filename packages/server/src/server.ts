@@ -297,6 +297,8 @@ export interface ServerMainProcedures {
   SV_Shutdown: (finalmsg: string, reconnect: qboolean) => void;
   SV_FinalMessage: (message: string, reconnect: qboolean) => void;
   SV_DropClient: (drop: client_t) => void;
+  SV_WriteClientdataToMessage?: (client: client_t, msg: sizebuf_t) => void;
+  SV_SendServerinfo?: (client: client_t) => void;
   SVC_Status: () => void;
   SVC_Ping: () => void;
   SV_ConnectionlessPacket: () => string;
@@ -309,6 +311,7 @@ export interface ServerMainProcedures {
   SV_Frame: (msec: number) => void;
   SV_UserinfoChanged: (client: client_t) => void;
   Master_Heartbeat: () => void;
+  Master_Packet?: () => void;
 }
 
 /**
