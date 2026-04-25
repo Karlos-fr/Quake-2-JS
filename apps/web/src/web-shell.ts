@@ -50,7 +50,8 @@ export interface WebShell {
   }) => void;
   setRuntimeInfo: (
     value: LocalClientController["refreshFrame"],
-    refreshStats: RefreshEntitySyncStats | null
+    refreshStats: RefreshEntitySyncStats | null,
+    renderedParticleCount?: number
   ) => void;
 }
 
@@ -349,10 +350,11 @@ export function createWebShell(app: HTMLDivElement): WebShell {
       ];
       refreshDebugOverlay();
     },
-    setRuntimeInfo: (value, refreshStats) => {
+    setRuntimeInfo: (value, refreshStats, renderedParticleCount = 0) => {
       const nextRuntimeText = value
         ? [
             `Refresh: entites ${value.entities.length}`,
+            `Particles: frame ${value.particles.length}, rendered ${renderedParticleCount}`,
             refreshStats ? `Refresh MD2: ${refreshStats.renderedEntities}/${refreshStats.visibleEntities}` : "Refresh MD2: en attente",
             refreshStats
               ? `Skip refresh: no-model ${refreshStats.skippedNoModelIndex}, cfg ${refreshStats.skippedMissingConfigstring}, brush ${refreshStats.skippedInlineOrBrushModel}, non-md2 ${refreshStats.skippedNonMd2Model}, asset ${refreshStats.missingMd2AssetCount}`

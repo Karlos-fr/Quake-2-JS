@@ -29,9 +29,10 @@ import {
   BufferAttribute,
   BufferGeometry,
   DataTexture,
+  LinearFilter,
+  LinearMipmapNearestFilter,
   Mesh,
   MeshBasicMaterial,
-  NearestFilter,
   RepeatWrapping,
   RGBAFormat,
   SRGBColorSpace,
@@ -467,8 +468,9 @@ function loadMd2SkinTexture(filesystem: VirtualFilesystem, path: string): Textur
     const texture = new DataTexture(image.rgba, image.width, image.height, RGBAFormat, UnsignedByteType);
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
-    texture.magFilter = NearestFilter;
-    texture.minFilter = NearestFilter;
+    texture.magFilter = LinearFilter;
+    texture.minFilter = LinearMipmapNearestFilter;
+    texture.generateMipmaps = true;
     texture.flipY = true;
     texture.colorSpace = SRGBColorSpace;
     texture.needsUpdate = true;

@@ -28,7 +28,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { MAX_EDICTS, MZ_BLASTER, PMF_DUCKED, temp_event_t } from "../../packages/qcommon/src/index.js";
+import { EF_BLASTER, MAX_EDICTS, MZ_BLASTER, PMF_DUCKED, temp_event_t } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -38,6 +38,7 @@ function main(): void {
   verifyLocalExplosionSoundIsQueued();
   verifyOutOfProtocolEntityNumbersAreSkipped();
   verifyLocalCrouchViewheightIsSmoothed();
+  verifyRepeatedLocalSyncDoesNotResetBlasterTrailOrigin();
   console.log("quake2-local-gameplay-sync: ok");
 }
 
@@ -138,6 +139,33 @@ function verifyLocalCrouchViewheightIsSmoothed(): void {
   }
 
   assertNumber(client.cl.frame.playerstate.viewoffset[2], -2, "local rendered crouch viewheight must eventually reach target");
+}
+
+function verifyRepeatedLocalSyncDoesNotResetBlasterTrailOrigin(): void {
+  const client = createClientRuntime();
+  const gameplay = createHarnessRuntime();
+  const bolt = spawnGameEntity(gameplay);
+
+  bolt.classname = "bolt";
+  bolt.inuse = true;
+  bolt.s.origin = [64, 0, 0];
+  bolt.s.old_origin = [0, 0, 0];
+  bolt.s.effects = EF_BLASTER;
+  bolt.s.modelindex = registerGameModel(gameplay, "models/objects/laser/tris.md2");
+
+  client.cl.frame.serverframe = 1;
+  syncLocalGameplayFrame(client, gameplay);
+
+  const centity = client.cl_entities[bolt.index];
+  centity.lerp_origin = [64, 0, 0];
+
+  syncLocalGameplayFrame(client, gameplay);
+
+  assertNumber(
+    centity.lerp_origin[0],
+    64,
+    "same-frame local sync must not reset blaster trail start to old_origin"
+  );
 }
 
 function createHarnessRuntime(): GameRuntime {

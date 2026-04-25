@@ -1,6 +1,6 @@
 /**
  * File: quake2-particle-sync.ts
- * Purpose: Verify that the Three.js particle sync adapter consumes refresh particles through the ported `gl_rmain.c` triangle path.
+ * Purpose: Verify that the Three.js particle sync adapter consumes refresh particles through the ported `gl_rmain.c` point path and feeds one WebGPU instanced sprite.
  *
  * This file is not a direct source port.
  * It is a targeted verification harness for the particle adapter layer.
@@ -17,7 +17,10 @@ import { createVirtualFilesystem } from "../../packages/filesystem/src/index.js"
 import type { ClientRefreshFrame } from "../../packages/client/src/refresh.js";
 import { createThreeParticleSync } from "../../packages/renderer-three/src/index.js";
 
-const particleSync = createThreeParticleSync(createVirtualFilesystem());
+const particleSync = createThreeParticleSync(createVirtualFilesystem(), {
+  particleSize: 24,
+  getViewportSize: () => ({ width: 800, height: 600 })
+});
 
 const refreshFrame: ClientRefreshFrame = {
   view: {
@@ -44,16 +47,18 @@ const refreshFrame: ClientRefreshFrame = {
 
 const renderedCount = particleSync.apply(refreshFrame);
 assert.equal(renderedCount, 2, "particleSync rendered count mismatch");
-assert.equal(particleSync.root.children.length, 1, "particleSync child count mismatch");
+assert.equal(particleSync.root.children.length, 1, "particleSync instanced sprite count mismatch");
 
-const mesh = particleSync.root.children[0] as { visible: boolean; geometry: { getAttribute: (name: string) => { count: number } | undefined } };
-assert.equal(mesh.visible, true, "particleSync visible mismatch");
-assert.equal(mesh.geometry.getAttribute("position")?.count, 6, "particleSync triangle vertex count mismatch");
-assert.equal(mesh.geometry.getAttribute("uv")?.count, 6, "particleSync uv count mismatch");
-assert.equal(mesh.geometry.getAttribute("color")?.count, 6, "particleSync color count mismatch");
+const particleSprite = particleSync.root.children[0] as {
+  count: number;
+  visible: boolean;
+};
+assert.equal(particleSprite.visible, true, "particleSync sprite visibility mismatch");
+assert.equal(particleSprite.count, 2, "particleSync sprite instance count mismatch");
 
 const emptyCount = particleSync.apply(null);
 assert.equal(emptyCount, 0, "particleSync empty count mismatch");
-assert.equal(mesh.visible, false, "particleSync empty visibility mismatch");
+assert.equal(particleSprite.visible, false, "particleSync empty visibility mismatch");
+assert.equal(particleSprite.count, 0, "particleSync empty instance count mismatch");
 
 console.log("quake2-particle-sync: ok");

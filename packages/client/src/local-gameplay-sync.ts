@@ -230,7 +230,9 @@ export function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: 
       entity.serverframe = -99;
     }
 
-    if (entity.serverframe !== previousFrameServerframe) {
+    if (entity.serverframe === currentFrameServerframe) {
+      copyEntityState(entity.current, entity.prev);
+    } else if (entity.serverframe !== previousFrameServerframe) {
       entity.trailcount = 1024;
       copyEntityState(storedState, entity.prev);
       entity.prev.origin = [...storedState.old_origin];

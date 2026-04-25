@@ -140,10 +140,10 @@ export function startWebDemoLoop(options: WebDemoLoopOptions): void {
     }
     refreshEntitySync.setAliasShadowsEnabled(cameraController.getCvarValue("gl_shadows") !== 0);
     const refreshEntityStats = refreshEntitySync.apply(cameraController.runtime, cameraController.refreshFrame);
-    particleSync.apply(cameraController.refreshFrame);
+    const renderedParticleCount = particleSync.apply(cameraController.refreshFrame);
     dynamicLights.update(cameraController.refreshFrame);
     refreshDebug.update(cameraController.refreshFrame);
-    ui.setRuntimeInfo(cameraController.refreshFrame, refreshEntityStats);
+    ui.setRuntimeInfo(cameraController.refreshFrame, refreshEntityStats, renderedParticleCount);
 
     const hudCommands = SCR_BuildHudDrawCommands(
       cameraController.runtime,

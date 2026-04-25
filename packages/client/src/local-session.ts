@@ -204,6 +204,8 @@ export function stepLocalClientSession<TSnapshot>(
   session.realtimeMs += runtime.cls.frametime * 1000;
   runtime.cls.realtime = session.realtimeMs;
   runtime.cl.time = session.realtimeMs;
+  runtime.cl.frame.serverframe = session.nextCommandSequence;
+  runtime.cl.frame.servertime = session.realtimeMs;
 
   applyLocalMovementMode(runtime, session.ghostMode);
   refillLocalDemoInventory(session.gameplayPlayer, session.gameplayRuntime);
