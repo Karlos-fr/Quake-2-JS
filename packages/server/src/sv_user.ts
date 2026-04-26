@@ -340,6 +340,7 @@ export function createServerUserProcedures(context: ServerUserContext): ServerUs
    *
    * Porting notes:
    * - Filesystem access is delegated to `loadDownloadFile`.
+   * - Negative download offsets are clamped to zero instead of reproducing invalid pointer arithmetic.
    */
   function SV_BeginDownload_f(): void {
     const client = currentClient();

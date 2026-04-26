@@ -26,18 +26,22 @@ import {
   type ClientLightStyle
 } from "./effects.js";
 import {
+  AngleVectors,
   EF_BFG,
   EF_BLASTER,
   EF_BLUEHYPERBLASTER,
   EF_FLAG1,
   EF_FLAG2,
   EF_HYPERBLASTER,
+  EF_IONRIPPER,
   EF_POWERSCREEN,
   EF_PLASMA,
   EF_ROCKET,
+  EF_SPINNINGLIGHTS,
   EF_TAGTRAIL,
   EF_TRACKER,
   EF_TRACKERTRAIL,
+  EF_TRAP,
   LerpAngle,
   RF_DEPTHHACK,
   RF_MINLIGHT,
@@ -179,7 +183,7 @@ export function CL_BuildRefreshFrame(
       appendLinkedModels(snapshot, entities);
     }
 
-    appendEntityLights(snapshot, lights);
+    appendEntityLights(snapshot, lights, runtime.cl.time);
     updateEntityLerpOrigin(runtime, snapshot);
   }
 
@@ -400,7 +404,18 @@ function appendViewerLights(snapshot: ClientInterpolatedEntity, lights: ClientDy
  * Category: New
  * Purpose: Emit the first packet-entity-derived dynamic lights mirrored from `CL_AddPacketEntities`.
  */
-function appendEntityLights(snapshot: ClientInterpolatedEntity, lights: ClientDynamicLight[]): void {
+function appendEntityLights(snapshot: ClientInterpolatedEntity, lights: ClientDynamicLight[], clientTime: number): void {
+  if ((snapshot.effects & EF_SPINNINGLIGHTS) !== 0) {
+    const { forward } = AngleVectors(snapshot.angles);
+    lights.push(createLight(
+      vectorMA(snapshot.origin, 64, forward),
+      100,
+      [1, 0, 0],
+      snapshot.number,
+      "spinninglights"
+    ));
+  }
+
   if ((snapshot.effects & EF_ROCKET) !== 0) {
     lights.push(createLight(snapshot.origin, 200, [1, 1, 0], snapshot.number, "rocket"));
   } else if ((snapshot.effects & EF_BLASTER) !== 0) {
@@ -433,6 +448,16 @@ function appendEntityLights(snapshot: ClientInterpolatedEntity, lights: ClientDy
     lights.push(createLight(snapshot.origin, 130, [1, 0.5, 0.5], snapshot.number, "plasma"));
   }
 
+  if ((snapshot.effects & EF_TRAP) !== 0) {
+    lights.push(createLight(
+      [snapshot.origin[0], snapshot.origin[1], snapshot.origin[2] + 32],
+      150,
+      [1, 0.8, 0.1],
+      snapshot.number,
+      "trap"
+    ));
+  }
+
   if ((snapshot.effects & EF_FLAG1) !== 0) {
     lights.push(createLight(snapshot.origin, 225, [1, 0.1, 0.1], snapshot.number, "flag1"));
   }
@@ -445,12 +470,26 @@ function appendEntityLights(snapshot: ClientInterpolatedEntity, lights: ClientDy
     lights.push(createLight(snapshot.origin, 225, [1, 1, 0], snapshot.number, "tagtrail"));
   }
 
-  if ((snapshot.effects & EF_TRACKERTRAIL) !== 0 && (snapshot.effects & EF_TRACKER) === 0) {
-    lights.push(createLight(snapshot.origin, 155, [-1, -1, -1], snapshot.number, "tracker-shell"));
+  if ((snapshot.effects & EF_TRACKERTRAIL) !== 0) {
+    if ((snapshot.effects & EF_TRACKER) !== 0) {
+      lights.push(createLight(
+        snapshot.origin,
+        trackerPulseIntensity(clientTime),
+        [-1, -1, -1],
+        snapshot.number,
+        "trackertrail"
+      ));
+    } else {
+      lights.push(createLight(snapshot.origin, 155, [-1, -1, -1], snapshot.number, "tracker-shell"));
+    }
   }
 
-  if ((snapshot.effects & EF_TRACKER) !== 0) {
+  if ((snapshot.effects & EF_TRACKER) !== 0 && (snapshot.effects & EF_TRACKERTRAIL) === 0) {
     lights.push(createLight(snapshot.origin, 200, [-1, -1, -1], snapshot.number, "tracker"));
+  }
+
+  if ((snapshot.effects & EF_IONRIPPER) !== 0) {
+    lights.push(createLight(snapshot.origin, 100, [1, 0.5, 0.5], snapshot.number, "ionripper"));
   }
 }
 
@@ -480,4 +519,24 @@ function createLight(
     sourceEntity,
     kind
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Mirror the Rogue tracker trail pulse from `CL_AddPacketEntities`.
+ */
+function trackerPulseIntensity(clientTime: number): number {
+  return 50 + (500 * (Math.sin(clientTime / 500.0) + 1));
+}
+
+/**
+ * Category: New
+ * Purpose: Compute `origin + scale * direction` for light offsets.
+ */
+function vectorMA(origin: vec3_t, scale: number, direction: vec3_t): vec3_t {
+  return [
+    origin[0] + scale * direction[0],
+    origin[1] + scale * direction[1],
+    origin[2] + scale * direction[2]
+  ];
 }

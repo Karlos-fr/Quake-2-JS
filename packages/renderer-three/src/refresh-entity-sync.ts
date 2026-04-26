@@ -94,7 +94,15 @@ interface RefreshEntitySpriteInstance {
   spriteRuntime: GlRmainRuntime;
 }
 
-type RefreshEntityInstance = RefreshEntityMd2Instance | RefreshEntitySpriteInstance;
+interface RefreshEntityInlineBrushInstance {
+  kind: "inline-brush";
+  key: string;
+  modelPath: string;
+  skinnum: number;
+  root: Group;
+}
+
+type RefreshEntityInstance = RefreshEntityMd2Instance | RefreshEntitySpriteInstance | RefreshEntityInlineBrushInstance;
 
 interface ThreeSpriteImageHandle {
   texture: Texture;
@@ -136,7 +144,7 @@ export interface ThreeRefreshEntitySync {
  *
  * Constraints:
  * - Must resolve model paths through client configstrings.
- * - Must skip unsupported model families such as inline brush models.
+ * - Must account for inline brush models that are drawn by the world-scene brush path.
  * - Must keep one stable scene node per `entityNumber` and linked-model slot.
  */
 export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): ThreeRefreshEntitySync {
@@ -323,8 +331,12 @@ function resolveRefreshModelPath(runtime: ClientRuntime, entity: ClientRenderEnt
   }
 
   const modelPath = runtime.cl.configstrings[CS_MODELS + entity.modelindex] ?? "";
-  if (!modelPath || modelPath.startsWith("*")) {
+  if (!modelPath) {
     return null;
+  }
+
+  if (modelPath.startsWith("*")) {
+    return modelPath;
   }
 
   if (!modelPath.endsWith(MD2_MODEL_EXTENSION) && !modelPath.endsWith(SPRITE_MODEL_EXTENSION)) {
@@ -363,7 +375,7 @@ function classifyRefreshModelSkipReason(
   }
 
   if (modelPath.startsWith("*")) {
-    return "inline-or-brush";
+    return null;
   }
 
   if (!modelPath.endsWith(MD2_MODEL_EXTENSION) && !modelPath.endsWith(SPRITE_MODEL_EXTENSION)) {
@@ -394,6 +406,10 @@ function createRefreshEntityInstance(
   modelPath: string,
   skinnum: number
 ): RefreshEntityInstance | null {
+  if (modelPath.startsWith("*")) {
+    return createRefreshInlineBrushInstance(key, modelPath, skinnum);
+  }
+
   if (modelPath.endsWith(SPRITE_MODEL_EXTENSION)) {
     return createRefreshSpriteInstance(filesystem, spriteCache, spriteTextureCache, key, modelPath, skinnum);
   }
@@ -445,6 +461,11 @@ function updateRefreshEntityInstance(
   shadowRaycaster: Raycaster,
   attachedCamera: Camera | null
 ): void {
+  if (instance.kind === "inline-brush") {
+    updateRefreshInlineBrushInstance(instance, entity);
+    return;
+  }
+
   if (instance.kind === "sprite") {
     updateRefreshSpriteInstance(refreshFrame, instance, entity, attachedCamera);
     return;
@@ -505,6 +526,42 @@ function updateRefreshEntityInstance(
   instance.md2.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
   instance.md2.mesh.material.needsUpdate = true;
   updateRefreshAliasShadow(instance, entity, aliasShadowsEnabled, shadowReceiverRoot, shadowRaycaster);
+}
+
+/**
+ * Category: New
+ * Purpose: Represent one inline BSP model already handled by the world brush renderer.
+ *
+ * Constraints:
+ * - Must keep the refresh entity accounted for so map audits do not treat brush models as dropped.
+ */
+function createRefreshInlineBrushInstance(
+  key: string,
+  modelPath: string,
+  skinnum: number
+): RefreshEntityInlineBrushInstance {
+  const root = new Group();
+  root.name = `refresh-inline-brush:${key}:${modelPath}`;
+  return {
+    kind: "inline-brush",
+    key,
+    modelPath,
+    skinnum,
+    root
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Keep the placeholder transform synchronized with the client refresh entity.
+ */
+function updateRefreshInlineBrushInstance(
+  instance: RefreshEntityInlineBrushInstance,
+  entity: ClientRenderEntity
+): void {
+  instance.root.position.set(entity.origin[0], entity.origin[1], entity.origin[2]);
+  applyAliasEntityRotation(instance.root, entity);
+  instance.root.visible = true;
 }
 
 function computeRefreshAliasLight(

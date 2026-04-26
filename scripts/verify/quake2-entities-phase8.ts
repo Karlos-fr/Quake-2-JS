@@ -26,6 +26,7 @@ import {
   useGameEntity
 } from "../../packages/game/src/index.js";
 import { EF_ROTATE, RF_GLOW } from "../../packages/qcommon/src/index.js";
+import { MOVETYPE_TOSS } from "../../packages/game/src/index.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 
 main();
@@ -101,7 +102,7 @@ function verifyCommanderBodySequence(): void {
   SP_monster_commander_body(entity, runtime);
 
   runPendingThinks(runtime, runtime.time + 5 * FRAMETIME);
-  assertNumber(entity.movetype, 2, "monster_commander_body switches to MOVETYPE_TOSS");
+  assertNumber(entity.movetype, MOVETYPE_TOSS, "monster_commander_body switches to MOVETYPE_TOSS");
   assertNumber(entity.origin[2], 32, "monster_commander_body drop raises origin by 2");
 
   useGameEntity(runtime, entity, null, null);

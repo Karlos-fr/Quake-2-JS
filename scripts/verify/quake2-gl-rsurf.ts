@@ -15,6 +15,7 @@ import { strict as assert } from "node:assert";
 import {
   GL_BuildPolygonFromSurface,
   GL_CreateSurfaceLightmap,
+  GL_RenderLightmappedPoly,
   LM_AllocBlock,
   LM_InitBlock,
   LM_UploadBlock,
@@ -37,9 +38,10 @@ import { SURF_DRAWSKY, SURF_DRAWTURB, createMEdge, createMSurface, createMTexinf
 const hookLog = {
   setCacheStateCalls: 0,
   buildLightMapCalls: 0,
-  renderLightmapChainSurfaceCalls: 0,
+  renderLightmapChainSurfaceCalls: [] as Array<{ textureIndex: number; sOffset: number; tOffset: number }>,
   uploadLightmapBlockCalls: [] as Array<{ dynamic: boolean; textureIndex: number }>,
   uploadSurfaceLightmapCalls: [] as Array<{ textureIndex: number; smax: number; tmax: number }>,
+  renderLightmappedPolyChainCalls: [] as Array<{ textureIndex: number }>,
   renderBrushPolyCalls: 0
 };
 const cvarRuntime = createCvarRuntime();
@@ -63,8 +65,11 @@ const runtime = createGlRsurfRuntime({
   renderBrushPoly: () => {
     hookLog.renderBrushPolyCalls += 1;
   },
-  renderLightmapChainSurface: () => {
-    hookLog.renderLightmapChainSurfaceCalls += 1;
+  renderLightmappedPolyChain: (_surface, _image, lightmapTextureIndex) => {
+    hookLog.renderLightmappedPolyChainCalls.push({ textureIndex: lightmapTextureIndex });
+  },
+  renderLightmapChainSurface: (_surface, textureIndex, sOffset, tOffset) => {
+    hookLog.renderLightmapChainSurfaceCalls.push({ textureIndex, sOffset, tOffset });
   }
 });
 
@@ -161,6 +166,20 @@ dynamicFrameSurface.dlightframe = 9;
 R_RenderBrushPoly(runtime, dynamicFrameSurface);
 assert.equal(runtime.gl_lms.lightmap_surfaces[0], dynamicFrameSurface, "R_RenderBrushPoly dynamic block chain mismatch");
 
+hookLog.uploadSurfaceLightmapCalls.length = 0;
+hookLog.renderLightmappedPolyChainCalls.length = 0;
+GL_RenderLightmappedPoly(runtime, dynamicFrameSurface);
+assert.deepEqual(
+  hookLog.uploadSurfaceLightmapCalls.at(-1),
+  { textureIndex: 0, smax: 2, tmax: 2 },
+  "GL_RenderLightmappedPoly current-frame dlight upload texture mismatch"
+);
+assert.deepEqual(
+  hookLog.renderLightmappedPolyChainCalls.at(-1),
+  { textureIndex: 0 },
+  "GL_RenderLightmappedPoly current-frame dlight render texture mismatch"
+);
+
 const model = createModel();
 model.vertexes = [
   { position: [0, 0, 0] },
@@ -212,10 +231,30 @@ setCurrentModel(runtime, blendWorld);
 
 setFullbrightEnabled(runtime, true);
 R_BlendLightmaps(runtime);
-assert.equal(hookLog.renderLightmapChainSurfaceCalls, 0, "R_BlendLightmaps fullbright short-circuit mismatch");
+assert.equal(hookLog.renderLightmapChainSurfaceCalls.length, 0, "R_BlendLightmaps fullbright short-circuit mismatch");
 
 setFullbrightEnabled(runtime, false);
 R_BlendLightmaps(runtime);
-assert.equal(hookLog.renderLightmapChainSurfaceCalls, 1, "R_BlendLightmaps static chain mismatch");
+assert.equal(hookLog.renderLightmapChainSurfaceCalls.length, 1, "R_BlendLightmaps static chain mismatch");
+assert.deepEqual(
+  hookLog.renderLightmapChainSurfaceCalls.at(-1),
+  { textureIndex: 1, sOffset: 0, tOffset: 0 },
+  "R_BlendLightmaps static lightmap offset mismatch"
+);
+
+runtime.gl_lms.lightmap_surfaces.fill(null);
+hookLog.renderLightmapChainSurfaceCalls.length = 0;
+const dynamicBlendSurface = createMSurface();
+dynamicBlendSurface.polys = blendSurface.polys;
+dynamicBlendSurface.extents = [16, 16];
+dynamicBlendSurface.light_s = 12;
+dynamicBlendSurface.light_t = 20;
+runtime.gl_lms.lightmap_surfaces[0] = dynamicBlendSurface;
+R_BlendLightmaps(runtime);
+assert.deepEqual(
+  hookLog.renderLightmapChainSurfaceCalls.at(-1),
+  { textureIndex: 0, sOffset: 12 / 128, tOffset: 20 / 128 },
+  "R_BlendLightmaps dynamic lightmap offset mismatch"
+);
 
 console.log("quake2-gl-rsurf: ok");

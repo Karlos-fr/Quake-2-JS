@@ -147,8 +147,9 @@ function verifyRefreshScene(runtime: ReturnType<typeof createClientRuntime>): vo
   const refresh = CL_BuildRefreshFrame(runtime, { predictMovement: false });
   const animatedBanner = refresh.entities.find((entity) => entity.entityNumber === 2);
 
-  assertNumber(refresh.entities.length, 2, "refresh entity count");
+  assertNumber(refresh.entities.length, 3, "refresh entity count");
   assertNumber(animatedBanner?.frame ?? -1, 15, "EF_ANIM_ALLFAST frame");
+  assertBoolean(refresh.entities.some((entity) => entity.entityNumber === -1000), true, "temp explosion refresh entity");
   assertBoolean(refresh.lights.length >= 2, true, "refresh lights include temp entities");
   assertNumber(refresh.forceWalls.length, 1, "refresh force-wall count");
   assertNumber(refresh.explosions.length, 1, "refresh explosion count");

@@ -65,6 +65,14 @@ Pour chaque item source, verifier :
 - si un fichier C a ete disperse dans plusieurs fichiers TS ;
 - si cette dispersion est justifiee et documentee.
 
+La granularite d'audit ne change jamais a cause du decoupage TypeScript :
+
+- chaque fonction C active inventoriee doit etre verifiee individuellement ;
+- chaque structure, type, enum, constante, flag et macro utile inventorie doit etre verifie individuellement ;
+- les blocs source desactives (`#if 0`, variantes compile-time, plateformes natives) doivent etre explicitement inventories et documentes comme portes, non portes ou non applicables ;
+- si un item C est disperse dans plusieurs fichiers TS, l'audit de cet item doit couvrir tous ses fragments TS et ses consommateurs ;
+- aucune checklist globale ne doit etre cochee uniquement parce qu'un sous-ensemble representatif a ete verifie.
+
 Regle par defaut :
 
 - viser `1 fichier C = 1 fichier TS`.
@@ -113,6 +121,8 @@ Pour chaque fonction ou item source important, verifier :
 - constantes et flags ;
 - mutations d'etat ;
 - branchement reel.
+
+Dans cette section, "important" signifie tout item inventorie depuis le C ou ses headers associes qui influence le comportement, l'etat, les donnees exposees, le branchement ou la tracabilite du port. Un gros fichier doit donc etre audite en plusieurs passes si necessaire, mais il n'est complet que lorsque tous les items inventories ont ete traites.
 
 Cocher chaque point valide avec `[x]`.
 

@@ -132,14 +132,20 @@ function verifyPredictionErrorSmoothing(): void {
   const runtime = createClientRuntime();
   runtime.cl.predicted_origins[3] = [80, 160, 240];
   runtime.cl.frame.playerstate.pmove.origin = [88, 176, 264];
+  runtime.cl.frame.serverframe = 42;
+  const messages: string[] = [];
 
   CL_CheckPredictionError(runtime, {
     predictMovement: true,
-    incomingAcknowledged: 3
+    incomingAcknowledged: 3,
+    showmiss: true,
+    onPredictionMessage: (message) => messages.push(message)
   });
 
   assertVector(runtime.cl.prediction_error, [1, 2, 3], "prediction error smoothing mismatch");
   assertVector(runtime.cl.predicted_origins[3], [88, 176, 264], "prediction error should refresh stored origin");
+  assertEqual(messages.length, 1, "prediction miss message count mismatch");
+  assertEqual(messages[0], "prediction miss on 42: 48", "prediction miss message mismatch");
 }
 
 /**
@@ -241,11 +247,14 @@ function verifyCmdBackupGuard(): void {
   runtime.cl.predicted_viewheight = 44;
   runtime.cl.predicted_angles = [1, 2, 3];
   runtime.cl.frame.playerstate.pmove.pm_flags = 0;
+  const messages: string[] = [];
 
   CL_PredictMovement(runtime, {
     predictMovement: true,
     incomingAcknowledged: 0,
     outgoingSequence: 64,
+    showmiss: true,
+    onPredictionMessage: (message) => messages.push(message),
     trace: createPassThroughTrace,
     pointcontents: () => 0
   });
@@ -253,6 +262,8 @@ function verifyCmdBackupGuard(): void {
   assertVector(runtime.cl.predicted_origin, [11, 22, 33], "CMD_BACKUP guard should freeze predicted origin");
   assertEqual(runtime.cl.predicted_viewheight, 44, "CMD_BACKUP guard should freeze predicted viewheight");
   assertVector(runtime.cl.predicted_angles, [1, 2, 3], "CMD_BACKUP guard should freeze predicted angles");
+  assertEqual(messages.length, 1, "CMD_BACKUP debug message count mismatch");
+  assertEqual(messages[0], "exceeded CMD_BACKUP", "CMD_BACKUP debug message mismatch");
 }
 
 /**
@@ -312,7 +323,7 @@ function assert(condition: boolean, message: string): void {
  * Category: New
  * Purpose: Assert one strict numeric equality in the harness.
  */
-function assertEqual(actual: number, expected: number, message: string): void {
+function assertEqual<T>(actual: T, expected: T, message: string): void {
   if (actual !== expected) {
     throw new Error(`${message}: attendu ${expected}, obtenu ${actual}`);
   }

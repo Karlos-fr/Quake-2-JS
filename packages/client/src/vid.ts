@@ -56,6 +56,13 @@ export interface ClientVidContext {
   hooks: ClientVidHooks;
 }
 
+/**
+ * Category: New
+ * Purpose: Create a zero-initialized `viddef_t` matching the public `client/vid.h` global state.
+ *
+ * Constraints:
+ * - Must keep width and height mutable for menu, screen and renderer consumers.
+ */
 export function createVidDef(): viddef_t {
   return {
     width: 0,
@@ -63,6 +70,13 @@ export function createVidDef(): viddef_t {
   };
 }
 
+/**
+ * Category: New
+ * Purpose: Create the explicit context replacing the C global `viddef` plus the public `VID_*` hooks.
+ *
+ * Constraints:
+ * - Must keep the hook bundle optional so the public video API remains safe before a backend is attached.
+ */
 export function createClientVidContext(hooks: ClientVidHooks = {}): ClientVidContext {
   return {
     viddef: createVidDef(),
@@ -70,26 +84,80 @@ export function createClientVidContext(hooks: ClientVidHooks = {}): ClientVidCon
   };
 }
 
+/**
+ * Original name: VID_Init
+ * Source: client/vid.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes the video backend.
+ */
 export function VID_Init(context: ClientVidContext): void {
   context.hooks.onInit?.();
 }
 
+/**
+ * Original name: VID_Shutdown
+ * Source: client/vid.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Shuts down the video backend.
+ */
 export function VID_Shutdown(context: ClientVidContext): void {
   context.hooks.onShutdown?.();
 }
 
+/**
+ * Original name: VID_CheckChanges
+ * Source: client/vid.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Lets the video backend apply pending video mode or renderer changes.
+ */
 export function VID_CheckChanges(context: ClientVidContext): void {
   context.hooks.onCheckChanges?.();
 }
 
+/**
+ * Original name: VID_MenuInit
+ * Source: client/vid.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes the video options menu.
+ */
 export function VID_MenuInit(context: ClientVidContext): void {
   context.hooks.onMenuInit?.();
 }
 
+/**
+ * Original name: VID_MenuDraw
+ * Source: client/vid.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws the active video options menu.
+ */
 export function VID_MenuDraw(context: ClientVidContext): void {
   context.hooks.onMenuDraw?.();
 }
 
+/**
+ * Original name: VID_MenuKey
+ * Source: client/vid.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Dispatches one key to the video options menu and returns the source sound name when applicable.
+ */
 export function VID_MenuKey(context: ClientVidContext, key: number): string | null {
   return context.hooks.onMenuKey?.(key) ?? null;
 }

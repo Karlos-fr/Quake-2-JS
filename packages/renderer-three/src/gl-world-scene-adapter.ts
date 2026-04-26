@@ -24,10 +24,11 @@ import {
   ClampToEdgeWrapping,
   DataTexture,
   Group,
+  LinearFilter,
+  LinearMipmapNearestFilter,
   MathUtils,
   Mesh,
   MeshBasicMaterial,
-  MeshPhongMaterial,
   RepeatWrapping,
   RGBAFormat,
   SRGBColorSpace,
@@ -98,17 +99,25 @@ interface FlowingMaterialBinding {
 }
 
 interface SurfaceMeshBinding {
-  mesh: Mesh<BufferGeometry, MeshPhongMaterial | MeshBasicMaterial>;
+  mesh: Mesh<BufferGeometry, MeshBasicMaterial>;
   modelIndex: number;
   baseOpacity: number;
   surface: msurface_t;
   uvAttribute: BufferAttribute;
   lightmapUvAttribute: BufferAttribute;
+  lightmapped: boolean;
   warp: boolean;
   flowing: boolean;
   currentMapSource: Texture | null;
   currentLightmapSource: Texture | null;
   currentLightmapOffset: [number, number];
+}
+
+interface SurfaceLightmapBinding {
+  textureIndex: number;
+  sOffset: number;
+  tOffset: number;
+  texture?: Texture;
 }
 
 interface InlineModelBinding {
@@ -139,7 +148,8 @@ export interface ThreeGlWorldSceneAdapter {
   ) => void;
 }
 
-const ORIGINAL_DEFAULT_INVERSE_INTENSITY = 0.5;
+const ORIGINAL_DEFAULT_TEXTURE_INTENSITY = 2;
+const ORIGINAL_DEFAULT_INVERSE_INTENSITY = 1 / ORIGINAL_DEFAULT_TEXTURE_INTENSITY;
 
 /**
  * Category: New
@@ -159,6 +169,8 @@ export function createThreeGlWorldSceneAdapter(
   const imageCache = new Map<string, ThreeGlImageHandle | null>();
   const flowingMaterials: FlowingMaterialBinding[] = [];
   const lightmapTextures = new Map<number, DataTexture>();
+  // ref_gl reuses dynamic texture 0 immediately; Three renders later, so isolate those uploads per surface.
+  const immediateDynamicLightmapTextures = new Map<msurface_t, DataTexture>();
   const surfaceMeshes = new Map<msurface_t, SurfaceMeshBinding>();
   const inlineModels = new Map<number, InlineModelBinding>();
   const inlineModelsByModel = new Map<model_t, InlineModelBinding>();
@@ -207,7 +219,9 @@ export function createThreeGlWorldSceneAdapter(
       // No explicit backend state unwind is needed with material-based rendering.
     },
     uploadSurfaceLightmap: (surface, textureIndex, smax, tmax, buffer) => {
-      const texture = ensureLightmapTexture(lightmapTextures, textureIndex);
+      const texture = textureIndex === 0
+        ? ensureSurfaceDynamicLightmapTexture(immediateDynamicLightmapTextures, surface)
+        : ensureLightmapTexture(lightmapTextures, textureIndex);
       blitLightmapRect(texture.image.data as Uint8Array, surface.light_s, surface.light_t, smax, tmax, buffer);
       texture.needsUpdate = true;
     },
@@ -224,8 +238,20 @@ export function createThreeGlWorldSceneAdapter(
       surfaceMeshes.get(surface)?.mesh
         && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, alphaDrawState.nextRenderOrder++);
     },
-    renderLightmappedPolyChain: (surface) => {
-      surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface);
+    renderLightmappedPolyChain: (surface, _image, lightmapTextureIndex) => {
+      const dynamicTexture = lightmapTextureIndex === 0
+        ? immediateDynamicLightmapTextures.get(surface)
+        : undefined;
+      const lightmap: SurfaceLightmapBinding = {
+        textureIndex: lightmapTextureIndex,
+        sOffset: 0,
+        tOffset: 0
+      };
+      if (dynamicTexture) {
+        lightmap.texture = dynamicTexture;
+      }
+      surfaceMeshes.get(surface)?.mesh
+        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, undefined, lightmap);
     },
     renderLightmapChainSurface: (surface, lightmapTextureIndex, sOffset, tOffset) => {
       surfaceMeshes.get(surface)?.mesh
@@ -466,7 +492,8 @@ function buildWorldGroup(
           baseOpacity: alphaForSurface(surface),
           surface,
           uvAttribute: mesh.geometry.getAttribute("uv") as BufferAttribute,
-          lightmapUvAttribute: mesh.geometry.getAttribute("uv2") as BufferAttribute,
+          lightmapUvAttribute: mesh.geometry.getAttribute("uv1") as BufferAttribute,
+          lightmapped: ((surface.flags & SURF_DRAWTURB) === 0) && alphaForSurface(surface) >= 1,
           warp: (surface.flags & SURF_DRAWTURB) !== 0,
           flowing: ((surface.texinfo?.flags ?? 0) & SURF_FLOWING) !== 0,
           currentMapSource: null,
@@ -487,7 +514,7 @@ function buildSurfaceMesh(
   lightmapTextures: Map<number, DataTexture>,
   whiteLightmapTexture: Texture,
   flowingMaterials: FlowingMaterialBinding[]
-): Mesh<BufferGeometry, MeshPhongMaterial | MeshBasicMaterial> | null {
+): Mesh<BufferGeometry, MeshBasicMaterial> | null {
   const polygons = collectPolygons(surface.polys);
   if (polygons.length === 0 || !surface.texinfo) {
     return null;
@@ -542,7 +569,9 @@ function buildSurfaceMesh(
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new BufferAttribute(positions, 3));
   geometry.setAttribute("uv", new BufferAttribute(uvs, 2));
-  geometry.setAttribute("uv2", new BufferAttribute(uv2s, 2));
+  const lightmapUvAttribute = new BufferAttribute(uv2s, 2);
+  geometry.setAttribute("uv1", lightmapUvAttribute);
+  geometry.setAttribute("uv2", lightmapUvAttribute);
   geometry.setIndex(new BufferAttribute(indices, 1));
   geometry.computeVertexNormals();
 
@@ -600,7 +629,7 @@ function createSurfaceMaterial(
     flowing: boolean;
     warp: boolean;
   }
-): MeshPhongMaterial | MeshBasicMaterial {
+): MeshBasicMaterial {
   const { flowing, warp } = options;
   const map = createMaterialTexture(baseTexture, flowing && !warp);
   map.needsUpdate = true;
@@ -617,10 +646,11 @@ function createSurfaceMaterial(
     return material;
   }
 
-  return new MeshPhongMaterial({
+  return new MeshBasicMaterial({
     map,
     lightMap: lightmapTexture,
-    lightMapIntensity: 1,
+    // Three's basic lightmap path applies RECIPROCAL_PI; Quake GL uses direct texture * lightmap modulation.
+    lightMapIntensity: Math.PI,
     side: BackSide,
     transparent: alpha < 1,
     opacity: alpha,
@@ -652,9 +682,38 @@ function ensureLightmapTexture(
   const texture = new DataTexture(data, width, height, RGBAFormat, UnsignedByteType);
   texture.wrapS = ClampToEdgeWrapping;
   texture.wrapT = ClampToEdgeWrapping;
+  // Three r184 maps Texture.channel 1 to the uv1 attribute; this carries the Quake lightmap UVs.
+  texture.channel = 1;
+  texture.magFilter = LinearFilter;
+  texture.minFilter = LinearFilter;
+  texture.generateMipmaps = false;
   texture.flipY = false;
   texture.needsUpdate = true;
   textures.set(textureIndex, texture);
+  return texture;
+}
+
+function ensureSurfaceDynamicLightmapTexture(
+  textures: Map<msurface_t, DataTexture>,
+  surface: msurface_t
+): DataTexture {
+  const existing = textures.get(surface);
+  if (existing) {
+    return existing;
+  }
+
+  const data = new Uint8Array(128 * 128 * 4);
+  fillWhiteLightmap(data);
+  const texture = new DataTexture(data, 128, 128, RGBAFormat, UnsignedByteType);
+  texture.wrapS = ClampToEdgeWrapping;
+  texture.wrapT = ClampToEdgeWrapping;
+  texture.channel = 1;
+  texture.magFilter = LinearFilter;
+  texture.minFilter = LinearFilter;
+  texture.generateMipmaps = false;
+  texture.flipY = false;
+  texture.needsUpdate = true;
+  textures.set(surface, texture);
   return texture;
 }
 
@@ -708,7 +767,13 @@ function loadPcxImage(filesystem: VirtualFilesystem, path: string): ThreeGlImage
 
   try {
     const image = parsePcx(file.bytes, file.path);
-    const texture = new DataTexture(image.rgba, image.width, image.height, RGBAFormat, UnsignedByteType);
+    const texture = new DataTexture(
+      applyOriginalTextureIntensity(image.rgba.slice()),
+      image.width,
+      image.height,
+      RGBAFormat,
+      UnsignedByteType
+    );
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
     texture.flipY = false;
@@ -737,19 +802,35 @@ function createIndexedTexture(
   for (let index = 0; index < indices.length; index += 1) {
     const paletteIndex = indices[index] * 3;
     const rgbaIndex = index * 4;
-    rgba[rgbaIndex] = paletteRgb[paletteIndex];
-    rgba[rgbaIndex + 1] = paletteRgb[paletteIndex + 1];
-    rgba[rgbaIndex + 2] = paletteRgb[paletteIndex + 2];
+    rgba[rgbaIndex] = applyOriginalTextureIntensityChannel(paletteRgb[paletteIndex] ?? 0);
+    rgba[rgbaIndex + 1] = applyOriginalTextureIntensityChannel(paletteRgb[paletteIndex + 1] ?? 0);
+    rgba[rgbaIndex + 2] = applyOriginalTextureIntensityChannel(paletteRgb[paletteIndex + 2] ?? 0);
     rgba[rgbaIndex + 3] = 255;
   }
 
   const texture = new DataTexture(rgba, width, height, RGBAFormat, UnsignedByteType);
   texture.wrapS = repeating ? RepeatWrapping : ClampToEdgeWrapping;
   texture.wrapT = repeating ? RepeatWrapping : ClampToEdgeWrapping;
+  texture.magFilter = LinearFilter;
+  texture.minFilter = LinearMipmapNearestFilter;
+  texture.generateMipmaps = true;
   texture.flipY = false;
   texture.colorSpace = SRGBColorSpace;
   texture.needsUpdate = true;
   return texture;
+}
+
+function applyOriginalTextureIntensity(rgba: Uint8Array): Uint8Array {
+  for (let offset = 0; offset < rgba.length; offset += 4) {
+    rgba[offset] = applyOriginalTextureIntensityChannel(rgba[offset] ?? 0);
+    rgba[offset + 1] = applyOriginalTextureIntensityChannel(rgba[offset + 1] ?? 0);
+    rgba[offset + 2] = applyOriginalTextureIntensityChannel(rgba[offset + 2] ?? 0);
+  }
+  return rgba;
+}
+
+function applyOriginalTextureIntensityChannel(value: number): number {
+  return Math.min(255, Math.trunc(value * ORIGINAL_DEFAULT_TEXTURE_INTENSITY));
 }
 
 function loadSharedPalette(filesystem: VirtualFilesystem): Uint8Array | null {
@@ -908,7 +989,7 @@ function markSurfaceVisible(
   surfaceMeshes: Map<msurface_t, SurfaceMeshBinding>,
   surface: msurface_t,
   renderOrder?: number,
-  lightmapOverride?: { textureIndex: number; sOffset: number; tOffset: number }
+  lightmapOverride?: SurfaceLightmapBinding
 ): void {
   const binding = surfaceMeshes.get(surface);
   if (!binding) {
@@ -916,9 +997,12 @@ function markSurfaceVisible(
   }
 
   syncSurfaceTexture(runtime, binding);
-  if (lightmapOverride) {
-    syncSurfaceLightmap(binding, lightmapOverride);
-  }
+  const lightmap = lightmapOverride ?? {
+    textureIndex: surface.lightmaptexturenum,
+    sOffset: 0,
+    tOffset: 0
+  };
+  syncSurfaceLightmap(binding, lightmap);
   const entityAlpha = binding.modelIndex > 0 ? runtime.currentEntityAlpha : null;
   const opacity = entityAlpha ?? binding.baseOpacity;
   binding.mesh.material.transparent = opacity < 1;
@@ -930,15 +1014,19 @@ function markSurfaceVisible(
 
 function syncSurfaceLightmap(
   binding: SurfaceMeshBinding,
-  lightmap: { textureIndex: number; sOffset: number; tOffset: number }
+  lightmap: SurfaceLightmapBinding
 ): void {
+  if (!binding.lightmapped) {
+    return;
+  }
+
   const material = binding.mesh.material;
   if (!("lightMap" in material)) {
     return;
   }
 
   const source = binding.mesh.userData.lightmapTextures as Map<number, DataTexture> | undefined;
-  const texture = source?.get(lightmap.textureIndex) ?? null;
+  const texture = lightmap.texture ?? source?.get(lightmap.textureIndex) ?? null;
   if (!texture) {
     return;
   }
@@ -966,7 +1054,8 @@ function updateLightmapUvs(binding: SurfaceMeshBinding, sOffset: number, tOffset
       if (uvOffset >= binding.lightmapUvAttribute.count) {
         break;
       }
-      binding.lightmapUvAttribute.setXY(uvOffset, vertex[5] + sOffset, vertex[6] + tOffset);
+      // DrawGLPolyChain offsets are subtracted in the original ref_gl path.
+      binding.lightmapUvAttribute.setXY(uvOffset, vertex[5] - sOffset, vertex[6] - tOffset);
       uvOffset += 1;
     }
   }

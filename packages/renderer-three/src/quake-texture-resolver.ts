@@ -16,8 +16,8 @@ import { parsePcx, parseWal } from "../../formats/src/index.js";
 import {
   ClampToEdgeWrapping,
   DataTexture,
-  LinearMipmapLinearFilter,
-  NearestFilter,
+  LinearFilter,
+  LinearMipmapNearestFilter,
   RepeatWrapping,
   RGBAFormat,
   SRGBColorSpace,
@@ -123,8 +123,8 @@ function createWalDataTexture(width: number, height: number, indices: Uint8Array
   const texture = new DataTexture(rgba, width, height, RGBAFormat, UnsignedByteType);
   texture.wrapS = RepeatWrapping;
   texture.wrapT = RepeatWrapping;
-  texture.magFilter = NearestFilter;
-  texture.minFilter = LinearMipmapLinearFilter;
+  texture.magFilter = LinearFilter;
+  texture.minFilter = LinearMipmapNearestFilter;
   texture.generateMipmaps = true;
   texture.flipY = false;
   texture.colorSpace = SRGBColorSpace;

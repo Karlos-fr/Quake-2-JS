@@ -54,14 +54,42 @@ export interface ClientSoundPublicContext {
   hooks: ClientSoundPublicHooks;
 }
 
+/**
+ * Category: New
+ * Purpose: Create the explicit context used by the public `client/sound.h` procedure forwards.
+ *
+ * Constraints:
+ * - Must default to an empty hook bundle so the public API remains safe until a concrete sound runtime is attached.
+ */
 export function createClientSoundPublicContext(hooks: ClientSoundPublicHooks = {}): ClientSoundPublicContext {
   return { hooks };
 }
 
+/**
+ * Original name: S_Init
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes the public client sound backend.
+ *
+ * Porting notes:
+ * - Forwards to the attached sound runtime hook instead of a process-global backend.
+ */
 export function S_Init(context: ClientSoundPublicContext): void {
   context.hooks.onInit?.();
 }
 
+/**
+ * Original name: S_Shutdown
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Shuts down the public client sound backend.
+ */
 export function S_Shutdown(context: ClientSoundPublicContext): void {
   context.hooks.onShutdown?.();
 }
@@ -91,10 +119,31 @@ export function S_StartSound(
   context.hooks.onStartSound?.(origin, entnum, entchannel, sfx, fvol, attenuation, timeofs);
 }
 
+/**
+ * Original name: S_StartLocalSound
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Starts one non-spatialized local sound by sample name.
+ */
 export function S_StartLocalSound(context: ClientSoundPublicContext, name: string): void {
   context.hooks.onStartLocalSound?.(name);
 }
 
+/**
+ * Original name: S_RawSamples
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Streams raw decoded samples into the client sound pipeline.
+ *
+ * Porting notes:
+ * - Preserves the byte payload as a `Uint8Array`.
+ */
 export function S_RawSamples(
   context: ClientSoundPublicContext,
   samples: number,
@@ -106,10 +155,28 @@ export function S_RawSamples(
   context.hooks.onRawSamples?.(samples, rate, width, channels, data);
 }
 
+/**
+ * Original name: S_StopAllSounds
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Stops all active client sounds.
+ */
 export function S_StopAllSounds(context: ClientSoundPublicContext): void {
   context.hooks.onStopAllSounds?.();
 }
 
+/**
+ * Original name: S_Update
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Updates listener origin and orientation for spatialized playback.
+ */
 export function S_Update(
   context: ClientSoundPublicContext,
   origin: vec3_t,
@@ -120,22 +187,67 @@ export function S_Update(
   context.hooks.onUpdate?.(origin, v_forward, v_right, v_up);
 }
 
+/**
+ * Original name: S_Activate
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Activates or deactivates the client sound system.
+ */
 export function S_Activate(context: ClientSoundPublicContext, active: qboolean): void {
   context.hooks.onActivate?.(active);
 }
 
+/**
+ * Original name: S_BeginRegistration
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Begins one sound registration pass.
+ */
 export function S_BeginRegistration(context: ClientSoundPublicContext): void {
   context.hooks.onBeginRegistration?.();
 }
 
+/**
+ * Original name: S_RegisterSound
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers or looks up one sound sample by name.
+ */
 export function S_RegisterSound(context: ClientSoundPublicContext, sample: string): sfx_t | null {
   return context.hooks.onRegisterSound?.(sample) ?? null;
 }
 
+/**
+ * Original name: S_EndRegistration
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Ends the current sound registration pass and releases stale registrations.
+ */
 export function S_EndRegistration(context: ClientSoundPublicContext): void {
   context.hooks.onEndRegistration?.();
 }
 
+/**
+ * Original name: S_FindName
+ * Source: client/sound.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Finds or optionally creates one `sfx_t` entry by canonical sound name.
+ */
 export function S_FindName(context: ClientSoundPublicContext, name: string, create: qboolean): sfx_t | null {
   return context.hooks.onFindName?.(name, create) ?? null;
 }

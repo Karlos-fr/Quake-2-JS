@@ -22,11 +22,16 @@ import {
   EF_ANIM_ALL,
   EF_ANIM_ALLFAST,
   EF_DOUBLE,
+  EF_IONRIPPER,
   EF_ROTATE,
   EF_SPINNINGLIGHTS,
+  EF_TRACKER,
+  EF_TRACKERTRAIL,
+  EF_TRAP,
   RF_FRAMELERP,
   RF_SHELL_DOUBLE,
   RF_TRANSLUCENT,
+  AngleVectors,
   anglemod,
   createEntityState,
   type entity_state_t
@@ -44,6 +49,7 @@ function main(): void {
   verifyLinkedModels();
   verifyRenderFlags();
   verifyShellPromotionEffects();
+  verifyPacketEntityLights();
 
   console.log("Verification phase 5 - cl_ents entity composition OK");
 }
@@ -163,6 +169,60 @@ function verifyShellPromotionEffects(): void {
   assertBoolean(((snapshot?.effects ?? 0) & EF_DOUBLE) === 0, true, "EF_DOUBLE cleared after shell promotion");
   assertBoolean(((snapshot?.renderfx ?? 0) & RF_SHELL_DOUBLE) !== 0, true, "EF_DOUBLE promotes RF_SHELL_DOUBLE");
   assertNumber(snapshot?.flags ?? -1, 0, "color shell keeps primary entity flags clear");
+}
+
+/**
+ * Category: New
+ * Purpose: Verify that `CL_AddPacketEntities` dynamic-light branches from `cl_ents.c` survive the refresh bridge.
+ */
+function verifyPacketEntityLights(): void {
+  const spinningRuntime = createSeededRuntime();
+  spinningRuntime.cl.time = 1000;
+  spinningRuntime.cl.frame.servertime = 1000;
+  setSingleEntity(spinningRuntime, {
+    effects: EF_SPINNINGLIGHTS,
+    origin: [10, 20, 30],
+    angles: [0, 0, 0]
+  });
+  const spinningLight = CL_BuildRefreshFrame(spinningRuntime, { predictMovement: false }).lights.find((light) => light.kind === "spinninglights");
+  const spinningForward = AngleVectors([0, anglemod(1000 / 2), 180]).forward;
+  assertNumber(spinningLight?.intensity ?? -1, 100, "EF_SPINNINGLIGHTS light intensity");
+  assertClose(spinningLight?.origin[0] ?? -1, 10 + 64 * spinningForward[0], 0.0001, "EF_SPINNINGLIGHTS light x offset");
+  assertNumber(spinningLight?.color[0] ?? -1, 1, "EF_SPINNINGLIGHTS light red");
+
+  const trapRuntime = createSeededRuntime();
+  trapRuntime.cl.frame.servertime = trapRuntime.cl.time;
+  setSingleEntity(trapRuntime, {
+    effects: EF_TRAP,
+    origin: [1, 2, 3]
+  });
+  const trapLight = CL_BuildRefreshFrame(trapRuntime, { predictMovement: false }).lights.find((light) => light.kind === "trap");
+  assertNumber(trapLight?.intensity ?? -1, 150, "EF_TRAP light intensity");
+  assertNumber(trapLight?.origin[2] ?? -1, 35, "EF_TRAP light z offset");
+  assertClose(trapLight?.color[1] ?? -1, 0.8, 0.0001, "EF_TRAP light green");
+
+  const ionRuntime = createSeededRuntime();
+  ionRuntime.cl.frame.servertime = ionRuntime.cl.time;
+  setSingleEntity(ionRuntime, {
+    effects: EF_IONRIPPER,
+    origin: [4, 5, 6]
+  });
+  const ionLight = CL_BuildRefreshFrame(ionRuntime, { predictMovement: false }).lights.find((light) => light.kind === "ionripper");
+  assertNumber(ionLight?.intensity ?? -1, 100, "EF_IONRIPPER light intensity");
+  assertClose(ionLight?.color[1] ?? -1, 0.5, 0.0001, "EF_IONRIPPER light green");
+
+  const trackerRuntime = createSeededRuntime();
+  trackerRuntime.cl.time = 500;
+  trackerRuntime.cl.frame.servertime = 500;
+  setSingleEntity(trackerRuntime, {
+    effects: EF_TRACKERTRAIL | EF_TRACKER,
+    origin: [7, 8, 9]
+  });
+  const trackerLights = CL_BuildRefreshFrame(trackerRuntime, { predictMovement: false }).lights.filter((light) => light.kind.startsWith("tracker"));
+  assertNumber(trackerLights.length, 1, "EF_TRACKERTRAIL | EF_TRACKER light count");
+  assertNumber(trackerLights[0]?.kind === "trackertrail" ? 1 : 0, 1, "EF_TRACKERTRAIL | EF_TRACKER light kind");
+  assertClose(trackerLights[0]?.intensity ?? -1, 50 + (500 * (Math.sin(1) + 1)), 0.0001, "EF_TRACKERTRAIL pulse intensity");
+  assertNumber(trackerLights[0]?.color[0] ?? 0, -1, "EF_TRACKERTRAIL signed color");
 }
 
 /**

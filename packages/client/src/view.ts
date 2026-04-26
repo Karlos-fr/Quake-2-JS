@@ -124,6 +124,7 @@ export interface ClientViewOptions {
   timedemo?: boolean;
   paused?: boolean;
   showmiss?: boolean;
+  onPredictionMessage?: (message: string) => void;
   incomingAcknowledged?: number;
   outgoingSequence?: number;
   predictionCollision?: ClientPredictionCollisionSource;
@@ -919,6 +920,10 @@ export function CL_CheckPredictionError(runtime: ClientRuntime, options: ClientV
     return;
   }
 
+  if (options.showmiss && (delta[0] !== 0 || delta[1] !== 0 || delta[2] !== 0)) {
+    options.onPredictionMessage?.(`prediction miss on ${runtime.cl.frame.serverframe}: ${delta[0] + delta[1] + delta[2]}`);
+  }
+
   runtime.cl.predicted_origins[frame] = [...actual];
   runtime.cl.prediction_error = [
     delta[0] * 0.125,
@@ -1077,6 +1082,9 @@ export function CL_PredictMovement(runtime: ClientRuntime, options: ClientViewOp
   const current = options.outgoingSequence ?? ack;
 
   if (current - ack >= CMD_BACKUP) {
+    if (options.showmiss) {
+      options.onPredictionMessage?.("exceeded CMD_BACKUP");
+    }
     return;
   }
 
