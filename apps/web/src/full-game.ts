@@ -344,7 +344,7 @@ async function bootstrap(): Promise<void> {
     window.addEventListener("beforeunload", () => {
       runtime.writeConfiguration();
     });
-    window.addEventListener("pointerdown", (event) => handlePointerDown(event, runtime, page));
+    window.addEventListener("pointerdown", (event) => handleGlobalPointerDown(event, runtime, page), { capture: true });
     document.addEventListener("pointerlockchange", () => handlePointerLockChange(runtime, page));
     window.addEventListener("pointerlockerror", () => {
       runtime.mouse.pointerLocked = false;
@@ -2361,6 +2361,28 @@ function handleKeyUp(event: KeyboardEvent, runtime: FullGameRuntime, page: FullG
   executeRuntimeCommandBuffer(runtime, page);
 }
 
+function handleGlobalPointerDown(event: PointerEvent, runtime: FullGameRuntime, page: FullGamePage): void {
+  if (isPointInsideElement(event, page.consoleButton)) {
+    event.preventDefault();
+    event.stopPropagation();
+    void runtime.audio.unlock();
+    releaseFullGameMouseLook(runtime, page);
+    toggleFullGameConsole(runtime, page);
+    return;
+  }
+
+  if (isPointInsideElement(event, page.audioInfoButton)) {
+    event.preventDefault();
+    event.stopPropagation();
+    void runtime.audio.unlock();
+    releaseFullGameMouseLook(runtime, page);
+    printFullGameWebAudioInfo(runtime, page);
+    return;
+  }
+
+  handlePointerDown(event, runtime, page);
+}
+
 function handlePointerDown(event: PointerEvent, runtime: FullGameRuntime, page: FullGamePage): void {
   void runtime.audio.unlock();
   if (isOverlayControlTarget(page, event.target)) {
@@ -2435,6 +2457,14 @@ function mapMouseButton(event: MouseEvent): number | null {
 
 function isOverlayControlTarget(page: FullGamePage, target: EventTarget | null): boolean {
   return target instanceof Node && (page.controls.contains(target) || page.consolePanel.contains(target));
+}
+
+function isPointInsideElement(event: PointerEvent, element: HTMLElement): boolean {
+  const rect = element.getBoundingClientRect();
+  return event.clientX >= rect.left
+    && event.clientX <= rect.right
+    && event.clientY >= rect.top
+    && event.clientY <= rect.bottom;
 }
 
 function isTextInputTarget(target: EventTarget | null): boolean {
