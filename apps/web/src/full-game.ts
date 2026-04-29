@@ -301,6 +301,7 @@ interface FullGameRuntime {
   pumpAuthoritativeFrame: (milliseconds: number) => void;
   authoritativeGameReady: () => boolean;
   markAuthoritativeGameActive: () => void;
+  consoleRenderedInThree: boolean;
 }
 
 interface FullGameAudioDebugState {
@@ -736,6 +737,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   let gameRenderer: FullGameRendererState | null = null;
   let gameRendererPromise: Promise<FullGameRendererState> | null = null;
   let gameRendererPromiseMapPath: string | null = null;
+  let consoleRenderedInThree = false;
   const audioDebug: FullGameAudioDebugState = {
     serverStartSoundCalls: 0,
     serverResolvedSfx: 0,
@@ -1215,6 +1217,12 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     audioDebug,
     gameBridge,
     serverHost,
+    get consoleRenderedInThree() {
+      return consoleRenderedInThree;
+    },
+    set consoleRenderedInThree(value) {
+      consoleRenderedInThree = value;
+    },
     get gameRenderer() {
       return gameRenderer;
     },
@@ -1509,6 +1517,7 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
   }
   runtime.updateClientAudio();
   executeRuntimeCommandBuffer(runtime, page);
+  runtime.consoleRenderedInThree = false;
   syncFullGameViewportVisibility(runtime, page);
 
   clearCanvas(page);
@@ -1524,7 +1533,7 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
   }
 
   if (runtime.menu.keys.state.key_dest === keydest_t.key_console
-    && !(runtime.mode === "game" && runtime.gameRenderer !== null)) {
+    && !runtime.consoleRenderedInThree) {
     page.status.style.display = "none";
     drawConsoleFrame(runtime, page);
   }
@@ -1668,6 +1677,7 @@ function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSecond
       ? {
           drawOverlay: ({ ref, viewportWidth, viewportHeight }) => {
             drawConsoleFrameRef(runtime, ref, viewportWidth, viewportHeight);
+            runtime.consoleRenderedInThree = true;
           }
         }
       : {})
@@ -2497,12 +2507,7 @@ function resizeCanvas(page: FullGamePage): void {
 
 function syncFullGameViewportVisibility(runtime: FullGameRuntime, page: FullGamePage): void {
   const gameVisible = runtime.mode === "game";
-  const consoleInThree = gameVisible
-    && runtime.gameRenderer !== null
-    && runtime.menu.keys.state.key_dest === keydest_t.key_console;
-  const overlayVisible = !gameVisible
-    || runtime.gameRenderer === null
-    || (runtime.menu.keys.state.key_dest !== keydest_t.key_game && !consoleInThree);
+  const overlayVisible = !gameVisible || runtime.gameRenderer === null;
   page.gameViewport.style.display = gameVisible ? "block" : "none";
   page.canvas.style.display = overlayVisible ? "block" : "none";
 }
