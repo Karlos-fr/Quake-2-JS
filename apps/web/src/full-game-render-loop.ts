@@ -81,6 +81,11 @@ export interface FullGameRenderLoop {
     source: FullGameRenderSource;
     elapsedSeconds: number;
   }) => void;
+  renderOverlay: (draw: (api: {
+    ref: refexport_t;
+    viewportWidth: number;
+    viewportHeight: number;
+  }) => void) => void;
   dispose: () => void;
 }
 
@@ -188,6 +193,20 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
     renderer.render(glDrawAdapter.scene, glDrawAdapter.camera);
   };
 
+  const renderOverlay: FullGameRenderLoop["renderOverlay"] = (draw) => {
+    const viewportSize = getRenderableViewportSize(ui.viewport);
+    glDrawAdapter.setViewport(viewportSize.width, viewportSize.height);
+    glDrawAdapter.clear();
+    draw({
+      ref,
+      viewportWidth: viewportSize.width,
+      viewportHeight: viewportSize.height
+    });
+    renderer.autoClear = false;
+    renderer.clearDepth();
+    renderer.render(glDrawAdapter.scene, glDrawAdapter.camera);
+  };
+
   const dispose = (): void => {
     if (enableRenderSourceAudio) {
       audio.syncWavLoops(filesystem, []);
@@ -200,7 +219,7 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
     disposeObjectTree(scene);
   };
 
-  return { resize, renderFrame, dispose };
+  return { resize, renderFrame, renderOverlay, dispose };
 }
 
 function getRenderableViewportSize(viewport: HTMLElement): { width: number; height: number } {

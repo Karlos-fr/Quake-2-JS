@@ -98,6 +98,7 @@ import {
   Con_SyncConsoleToKeys,
   createClientConsoleContext,
   type ClientConsoleContext,
+  type ConsoleDrawConsoleSnapshot,
   type ConsoleTextCommand
 } from "../../../packages/client/src/console.js";
 import {
@@ -1834,10 +1835,21 @@ function getAuthoritativeMapPath(runtime: FullGameRuntime): string | null {
 }
 
 function drawConsoleFrame(runtime: FullGameRuntime, page: FullGamePage): void {
-  SCR_RunConsole(runtime.client, {
+  const frac = SCR_RunConsole(runtime.client, {
     keyDest: "console"
   });
-  const frac = 0.5;
+  const renderer = runtime.gameRenderer;
+  if (renderer) {
+    renderer.renderLoop.renderOverlay(({ ref, viewportWidth, viewportHeight }) => {
+      const snapshot = Con_DrawConsole(runtime.console, frac, viewportWidth, viewportHeight);
+      if (!snapshot) {
+        return;
+      }
+      drawConsoleFrameRef(ref, snapshot);
+    });
+    return;
+  }
+
   const snapshot = Con_DrawConsole(runtime.console, frac, LOGICAL_WIDTH, LOGICAL_HEIGHT);
   if (!snapshot) {
     return;
@@ -1872,6 +1884,38 @@ function drawConsoleFrame(runtime: FullGameRuntime, page: FullGamePage): void {
     drawConsoleText(page, runtime, snapshot.input);
   }
   drawConsoleText(page, runtime, snapshot.version);
+}
+
+function drawConsoleFrameRef(ref: refexport_t, snapshot: ConsoleDrawConsoleSnapshot): void {
+  ref.DrawStretchPic(
+    snapshot.background.x,
+    snapshot.background.y,
+    snapshot.background.width,
+    snapshot.background.height,
+    snapshot.background.pic
+  );
+  ref.DrawFill(0, 0, snapshot.background.width, snapshot.lines, 0);
+
+  for (const line of snapshot.rows) {
+    drawConsoleTextRef(ref, line);
+  }
+  if (snapshot.backscroll) {
+    drawConsoleTextRef(ref, snapshot.backscroll);
+  }
+  if (snapshot.downloadBar) {
+    drawConsoleTextRef(ref, snapshot.downloadBar);
+  }
+  if (snapshot.input) {
+    drawConsoleTextRef(ref, snapshot.input);
+  }
+  drawConsoleTextRef(ref, snapshot.version);
+}
+
+function drawConsoleTextRef(ref: refexport_t, command: ConsoleTextCommand): void {
+  const highBit = command.variant === "alt" ? 128 : 0;
+  for (let index = 0; index < command.text.length; index += 1) {
+    ref.DrawChar(command.x + index * 8, command.y, command.text.charCodeAt(index) | highBit);
+  }
 }
 
 function drawConsoleText(page: FullGamePage, runtime: FullGameRuntime, command: ConsoleTextCommand): void {
@@ -2388,7 +2432,12 @@ function resizeCanvas(page: FullGamePage): void {
 
 function syncFullGameViewportVisibility(runtime: FullGameRuntime, page: FullGamePage): void {
   const gameVisible = runtime.mode === "game";
-  const overlayVisible = !gameVisible || runtime.gameRenderer === null || runtime.menu.keys.state.key_dest !== keydest_t.key_game;
+  const consoleInThree = gameVisible
+    && runtime.gameRenderer !== null
+    && runtime.menu.keys.state.key_dest === keydest_t.key_console;
+  const overlayVisible = !gameVisible
+    || runtime.gameRenderer === null
+    || (runtime.menu.keys.state.key_dest !== keydest_t.key_game && !consoleInThree);
   page.gameViewport.style.display = gameVisible ? "block" : "none";
   page.canvas.style.display = overlayVisible ? "block" : "none";
 }
