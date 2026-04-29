@@ -103,6 +103,7 @@ import {
 } from "../../../packages/client/src/console.js";
 import {
   M_Draw,
+  M_ForceMenuOff,
   M_Init,
   M_Keydown,
   M_Menu_Main_f,
@@ -1991,7 +1992,6 @@ function drawConsoleText(page: FullGamePage, runtime: FullGameRuntime, command: 
       command.text.charCodeAt(index) | highBit
     );
   }
-  drawConsoleTextFallback(page, command);
 }
 
 function drawConsoleTextFallback(page: FullGamePage, command: ConsoleTextCommand): void {
@@ -2263,6 +2263,7 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
 
   const keyDestAfterMenu = runtime.menu.keys.state.key_dest as keydest_t;
   if (keyDestAfterMenu === keydest_t.key_console) {
+    runtime.menu.keys.state.console_open = true;
     page.status.textContent = "Console Quake II.";
     return;
   }
@@ -2277,8 +2278,16 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
 function toggleFullGameConsole(runtime: FullGameRuntime, page: FullGamePage, showHtmlPanel = false): void {
   const keys = runtime.menu.keys.state;
   Con_ClearNotify(runtime.console.con);
-  keys.console_open = !keys.console_open;
-  keys.key_dest = keys.console_open ? keydest_t.key_console : keydest_t.key_game;
+  if (keys.key_dest === keydest_t.key_console) {
+    keys.console_open = false;
+    keys.key_dest = runtime.mode === "game" && runtime.client.cls.state === connstate_t.ca_active
+      ? keydest_t.key_game
+      : keydest_t.key_menu;
+  } else {
+    M_ForceMenuOff(runtime.menu);
+    keys.console_open = true;
+    keys.key_dest = keydest_t.key_console;
+  }
   Con_SyncConsoleToKeys(runtime.console);
   executeRuntimeCommandBuffer(runtime, page);
   setHtmlConsoleVisible(runtime, page, showHtmlPanel ? keys.console_open : false);
