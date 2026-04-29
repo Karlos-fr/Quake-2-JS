@@ -1535,6 +1535,7 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
   if (runtime.menu.keys.state.key_dest === keydest_t.key_console
     && !runtime.consoleRenderedInThree) {
     page.status.style.display = "none";
+    page.canvas.style.display = "block";
     drawConsoleFrame(runtime, page);
   }
 
