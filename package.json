@@ -51,6 +51,7 @@
     "verify:console": "npx tsx ./scripts/verify/quake2-console.ts",
     "verify:full-game:bridge": "npx tsx ./scripts/verify/quake2-full-game-command-bridge.ts",
     "verify:full-game:commands": "npx tsx ./scripts/verify/quake2-full-game-console-commands.ts",
+    "verify:full-game:console-background": "npx tsx ./scripts/verify/quake2-full-game-console-background.ts",
     "verify:full-game:authoritative-handshake": "npx tsx ./scripts/verify/quake2-full-game-authoritative-handshake.ts",
     "verify:full-game:demo-cleanup": "npx tsx ./scripts/verify/quake2-full-game-demo-cleanup.ts",
     "verify:full-game:forward": "npx tsx ./scripts/verify/quake2-full-game-command-forward.ts",

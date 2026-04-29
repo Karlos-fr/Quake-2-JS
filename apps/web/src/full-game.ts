@@ -1820,6 +1820,8 @@ function drawConsoleSnapshotCanvas(
   page: FullGamePage,
   snapshot: ConsoleDrawConsoleSnapshot
 ): void {
+  drawOpaqueConsoleBackground(page, snapshot);
+
   const background = loadPictureCanvas(runtime.filesystem, runtime.assets, snapshot.background.pic);
   if (background) {
     page.context.drawImage(
@@ -1830,7 +1832,7 @@ function drawConsoleSnapshotCanvas(
       snapshot.background.height
     );
   } else {
-    page.context.fillStyle = "rgba(0, 0, 0, 0.92)";
+    page.context.fillStyle = "rgb(0, 0, 0)";
     page.context.fillRect(0, 0, snapshot.background.width, snapshot.lines);
   }
 
@@ -1847,6 +1849,20 @@ function drawConsoleSnapshotCanvas(
     drawConsoleText(page, runtime, snapshot.input);
   }
   drawConsoleText(page, runtime, snapshot.version);
+}
+
+/**
+ * Category: New
+ * Purpose: Preserve Quake II's opaque `conback` console area when compositing the browser canvas overlay.
+ *
+ * Constraints:
+ * - Must only cover the visible console fraction; the rest of the overlay canvas stays transparent.
+ */
+function drawOpaqueConsoleBackground(page: FullGamePage, snapshot: ConsoleDrawConsoleSnapshot): void {
+  page.context.globalAlpha = 1;
+  page.context.globalCompositeOperation = "source-over";
+  page.context.fillStyle = "rgb(0, 0, 0)";
+  page.context.fillRect(0, 0, snapshot.background.width, snapshot.lines);
 }
 
 function drawConsoleFrameRef(
