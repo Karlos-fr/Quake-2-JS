@@ -244,7 +244,6 @@ const STARTUP_CINEMATICS = [
 
 const LOGICAL_WIDTH = 640;
 const LOGICAL_HEIGHT = 480;
-const FORCE_HTML_CONSOLE_OVERLAY_FOR_TEST = true;
 
 type DrawCommand =
   | { type: "pic"; x: number; y: number; name: string; width?: number; height?: number }
@@ -259,12 +258,6 @@ interface FullGamePage {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   status: HTMLElement;
-  controls: HTMLDivElement;
-  consoleButton: HTMLButtonElement;
-  audioInfoButton: HTMLButtonElement;
-  consolePanel: HTMLDivElement;
-  consoleOutput: HTMLPreElement;
-  consoleInput: HTMLInputElement;
   log: HTMLElement;
 }
 
@@ -348,7 +341,7 @@ async function bootstrap(): Promise<void> {
     window.addEventListener("beforeunload", () => {
       runtime.writeConfiguration();
     });
-    window.addEventListener("pointerdown", (event) => handleGlobalPointerDown(event, runtime, page), { capture: true });
+    window.addEventListener("pointerdown", (event) => handlePointerDown(event, runtime, page), { capture: true });
     document.addEventListener("pointerlockchange", () => handlePointerLockChange(runtime, page));
     window.addEventListener("pointerlockerror", () => {
       runtime.mouse.pointerLocked = false;
@@ -361,31 +354,6 @@ async function bootstrap(): Promise<void> {
     window.addEventListener("mouseup", (event) => handleMouseButton(event, false, runtime, page));
     window.addEventListener("wheel", (event) => handleMouseWheel(event, runtime, page), { passive: false });
     window.addEventListener("blur", () => resetFullGameMouseLook(runtime));
-    bindOverlayButton(page.consoleButton, (event) => {
-      event.preventDefault();
-      void runtime.audio.unlock();
-      toggleFullGameConsole(runtime, page);
-    });
-    bindOverlayButton(page.audioInfoButton, (event) => {
-      event.preventDefault();
-      void runtime.audio.unlock();
-      printFullGameWebAudioInfo(runtime, page);
-    });
-    page.consoleInput.addEventListener("keydown", (event) => {
-      event.stopPropagation();
-      if (event.key !== "Enter") {
-        return;
-      }
-      event.preventDefault();
-      const command = page.consoleInput.value.trim();
-      page.consoleInput.value = "";
-      if (!command) {
-        return;
-      }
-      Cbuf_AddText(runtime.menu.cmd, `${command}\n`);
-      executeRuntimeCommandBuffer(runtime, page);
-      renderHtmlConsole(runtime, page);
-    });
 
     page.status.textContent = "Lecture de l'intro...";
     startNextCinematic(runtime, page);
@@ -455,18 +423,6 @@ function createPage(root: HTMLElement): FullGamePage {
   status.style.fontSize = "12px";
   status.style.zIndex = "20";
 
-  const controls = document.createElement("div");
-  controls.style.position = "absolute";
-  controls.style.right = "12px";
-  controls.style.top = "12px";
-  controls.style.display = "flex";
-  controls.style.gap = "6px";
-  controls.style.zIndex = "30";
-  controls.style.pointerEvents = "auto";
-
-  const consoleButton = createOverlayButton("Console");
-  const audioInfoButton = createOverlayButton("Audio");
-
   const log = document.createElement("pre");
   log.style.position = "absolute";
   log.style.left = "16px";
@@ -482,49 +438,12 @@ function createPage(root: HTMLElement): FullGamePage {
   log.style.display = "none";
   log.style.zIndex = "25";
 
-  const consolePanel = document.createElement("div");
-  consolePanel.style.position = "absolute";
-  consolePanel.style.left = "16px";
-  consolePanel.style.top = "48px";
-  consolePanel.style.width = "min(760px, calc(100vw - 32px))";
-  consolePanel.style.height = "min(360px, calc(100vh - 72px))";
-  consolePanel.style.display = "none";
-  consolePanel.style.flexDirection = "column";
-  consolePanel.style.gap = "8px";
-  consolePanel.style.padding = "10px";
-  consolePanel.style.boxSizing = "border-box";
-  consolePanel.style.background = "rgba(0, 0, 0, 0.88)";
-  consolePanel.style.border = "1px solid rgba(216, 210, 199, 0.34)";
-  consolePanel.style.zIndex = "10000";
-  consolePanel.style.pointerEvents = "auto";
-
-  const consoleOutput = document.createElement("pre");
-  consoleOutput.style.flex = "1";
-  consoleOutput.style.margin = "0";
-  consoleOutput.style.overflow = "auto";
-  consoleOutput.style.whiteSpace = "pre-wrap";
-  consoleOutput.style.color = "#d8d2c7";
-  consoleOutput.style.font = "12px Consolas, monospace";
-
-  const consoleInput = document.createElement("input");
-  consoleInput.type = "text";
-  consoleInput.spellcheck = false;
-  consoleInput.style.boxSizing = "border-box";
-  consoleInput.style.width = "100%";
-  consoleInput.style.border = "1px solid rgba(216, 210, 199, 0.28)";
-  consoleInput.style.background = "rgba(18, 18, 18, 0.96)";
-  consoleInput.style.color = "#f0d060";
-  consoleInput.style.font = "13px Consolas, monospace";
-  consoleInput.style.padding = "7px 8px";
-  consolePanel.append(consoleOutput, consoleInput);
-
   const context = canvas.getContext("2d");
   if (!context) {
     throw new Error("Canvas 2D indisponible.");
   }
 
-  controls.append(consoleButton, audioInfoButton);
-  shell.append(gameViewport, canvas, status, controls, consolePanel, log);
+  shell.append(gameViewport, canvas, status, log);
   root.append(shell);
   canvas.focus();
 
@@ -534,92 +453,8 @@ function createPage(root: HTMLElement): FullGamePage {
     canvas,
     context,
     status,
-    controls,
-    consoleButton,
-    audioInfoButton,
-    consolePanel,
-    consoleOutput,
-    consoleInput,
     log
   };
-}
-
-function createOverlayButton(label: string): HTMLButtonElement {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.textContent = label;
-  button.style.border = "1px solid rgba(216, 210, 199, 0.35)";
-  button.style.background = "rgba(0, 0, 0, 0.72)";
-  button.style.color = "#d8d2c7";
-  button.style.font = "12px Arial, Helvetica, sans-serif";
-  button.style.padding = "6px 8px";
-  button.style.borderRadius = "3px";
-  button.style.cursor = "pointer";
-  button.style.pointerEvents = "auto";
-  return button;
-}
-
-function showOverlayLog(page: FullGamePage, text: string): void {
-  page.log.style.display = "block";
-  page.log.textContent = text.endsWith("\n") ? text : `${text}\n`;
-}
-
-function setHtmlConsoleVisible(runtime: FullGameRuntime, page: FullGamePage, visible: boolean): void {
-  page.consolePanel.style.display = visible ? "flex" : "none";
-  if (!visible) {
-    page.canvas.focus();
-    return;
-  }
-
-  renderHtmlConsole(runtime, page);
-  page.consoleInput.focus();
-}
-
-function syncHtmlConsoleOverlayForTest(runtime: FullGameRuntime, page: FullGamePage): void {
-  if (!FORCE_HTML_CONSOLE_OVERLAY_FOR_TEST) {
-    return;
-  }
-
-  const visible = runtime.menu.keys.state.key_dest === keydest_t.key_console;
-  page.consolePanel.style.display = visible ? "flex" : "none";
-}
-
-function renderHtmlConsole(runtime: FullGameRuntime, page: FullGamePage): void {
-  const con = runtime.console.con;
-  const lines: string[] = [];
-  const start = Math.max(0, con.current - 40);
-  for (let line = start; line <= con.current; line += 1) {
-    const text = readFullGameConsoleLine(con, line).trimEnd();
-    if (text.length > 0) {
-      lines.push(text);
-    }
-  }
-  page.consoleOutput.textContent = lines.join("\n");
-  page.consoleOutput.scrollTop = page.consoleOutput.scrollHeight;
-}
-
-function readFullGameConsoleLine(con: { text: string[]; linewidth: number; totallines: number }, line: number): string {
-  if (con.linewidth <= 0 || con.totallines <= 0) {
-    return "";
-  }
-
-  const offset = (line % con.totallines) * con.linewidth;
-  let text = "";
-  for (let index = 0; index < con.linewidth; index += 1) {
-    text += con.text[offset + index] ?? " ";
-  }
-  return text;
-}
-
-function bindOverlayButton(button: HTMLButtonElement, handler: (event: Event) => void): void {
-  button.addEventListener("pointerdown", (event) => {
-    event.stopPropagation();
-    handler(event);
-  }, { capture: true });
-  button.addEventListener("click", (event) => {
-    event.stopPropagation();
-    event.preventDefault();
-  }, { capture: true });
 }
 
 async function createMountedFilesystem(): Promise<VirtualFilesystem> {
@@ -669,6 +504,10 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   let consoleContext: ClientConsoleContext | null = null;
   let mainContext: ClientMainContext | null = null;
   const printToConsole = (line: string): void => {
+    if (shouldSuppressFullGameConsoleLine(line)) {
+      return;
+    }
+
     if (!consoleContext) {
       appendLog(page, line);
       return;
@@ -1279,6 +1118,23 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   };
 }
 
+function shouldSuppressFullGameConsoleLine(line: string): boolean {
+  const trimmed = line.trim();
+  return trimmed === "Begin() from Player"
+    || trimmed.startsWith("ref_gl version:")
+    || trimmed.startsWith("GL_VENDOR:")
+    || trimmed.startsWith("GL_RENDERER:")
+    || trimmed.startsWith("GL_VERSION:")
+    || trimmed.startsWith("GL_EXTENSIONS:")
+    || trimmed.startsWith("...allowing CDS")
+    || trimmed.startsWith("...disabling CDS")
+    || trimmed.startsWith("...enabling ")
+    || trimmed.startsWith("...using ")
+    || trimmed.startsWith("...ignoring ")
+    || trimmed.startsWith("...GL_")
+    || trimmed.startsWith("...WGL_");
+}
+
 function initializeWebSoundDma(sound: ClientSoundLocalContext, audio: QuakeWebAudioAdapter): boolean {
   const context = audio.context;
   if (!context) {
@@ -1572,12 +1428,6 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
     drawConsoleFrame(runtime, page);
   }
 
-  syncHtmlConsoleOverlayForTest(runtime, page);
-
-  if (page.consolePanel.style.display !== "none") {
-    renderHtmlConsole(runtime, page);
-  }
-
   requestAnimationFrame((nextTime) => frame(nextTime, runtime, page));
 }
 
@@ -1812,6 +1662,10 @@ async function createFullGameThreeRenderer(
       glimpEndFrame: () => undefined
     },
     imports: createFullGameRefImports((message) => {
+      if (shouldSuppressFullGameConsoleLine(message)) {
+        return;
+      }
+
       Con_Print(runtime.console.con, `${message}\n`, runtime.client.cls.realtime);
       Con_SyncConsoleToKeys(runtime.console);
     })
@@ -1973,10 +1827,8 @@ function drawConsoleSnapshotCanvas(
     );
   } else {
     page.context.fillStyle = "rgba(0, 0, 0, 0.92)";
-    page.context.fillRect(0, 0, LOGICAL_WIDTH, snapshot.lines);
+    page.context.fillRect(0, 0, snapshot.background.width, snapshot.lines);
   }
-  page.context.fillStyle = "rgba(0, 0, 0, 0.68)";
-  page.context.fillRect(0, 0, LOGICAL_WIDTH, snapshot.lines);
 
   for (const line of snapshot.rows) {
     drawConsoleText(page, runtime, line);
@@ -2014,7 +1866,6 @@ function drawConsoleFrameRef(
     snapshot.background.height,
     snapshot.background.pic
   );
-  ref.DrawFill(0, 0, snapshot.background.width, snapshot.lines, 0);
 
   for (const line of snapshot.rows) {
     drawConsoleTextRef(ref, line);
@@ -2265,13 +2116,7 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
   if (isConsoleToggleDomKey(event)) {
     event.preventDefault();
     void runtime.audio.unlock();
-    const before = formatKeyDest(runtime.menu.keys.state.key_dest);
     toggleFullGameConsole(runtime, page);
-    const after = formatKeyDest(runtime.menu.keys.state.key_dest);
-    showOverlayLog(page, [
-      `touche console detectee: key=${formatDomKeyForLog(event.key)} code=${event.code}`,
-      `console: ${before} -> ${after}`
-    ].join("\n"));
     return;
   }
 
@@ -2288,7 +2133,7 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
   void runtime.audio.unlock();
   if (key === K_F10) {
     if (event.ctrlKey) {
-      printFullGameWebAudioInfo(runtime, page);
+      printFullGameWebAudioInfo(runtime);
     } else {
       toggleFullGameConsole(runtime, page);
     }
@@ -2344,9 +2189,8 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
   }
 }
 
-function toggleFullGameConsole(runtime: FullGameRuntime, page: FullGamePage, showHtmlPanel = false): void {
+function toggleFullGameConsole(runtime: FullGameRuntime, page: FullGamePage): void {
   toggleFullGameConsoleContext(runtime.menu, runtime.console, page, runtime.client);
-  setHtmlConsoleVisible(runtime, page, showHtmlPanel ? runtime.menu.keys.state.console_open : false);
 }
 
 function toggleFullGameConsoleContext(
@@ -2375,35 +2219,10 @@ function toggleFullGameConsoleContext(
       : "";
 }
 
-function printFullGameWebAudioInfo(runtime: FullGameRuntime, page: FullGamePage): void {
+function printFullGameWebAudioInfo(runtime: FullGameRuntime): void {
   const info = formatWebAudioInfo(runtime.audio, runtime.sndDma, runtime.audioDebug);
-  showOverlayLog(page, info);
   Con_Print(runtime.console.con, info, runtime.client.cls.realtime);
   Con_SyncConsoleToKeys(runtime.console);
-  if (runtime.menu.keys.state.key_dest !== keydest_t.key_console) {
-    toggleFullGameConsole(runtime, page, true);
-  } else {
-    setHtmlConsoleVisible(runtime, page, true);
-  }
-}
-
-function formatDomKeyForLog(key: string): string {
-  return key.length > 0 ? JSON.stringify(key) : "<empty>";
-}
-
-function formatKeyDest(dest: keydest_t): string {
-  switch (dest) {
-    case keydest_t.key_game:
-      return "game";
-    case keydest_t.key_console:
-      return "console";
-    case keydest_t.key_message:
-      return "message";
-    case keydest_t.key_menu:
-      return "menu";
-    default:
-      return `unknown(${dest})`;
-  }
 }
 
 function isConsoleToggleDomKey(event: KeyboardEvent): boolean {
@@ -2447,34 +2266,8 @@ function handleKeyUp(event: KeyboardEvent, runtime: FullGameRuntime, page: FullG
   executeRuntimeCommandBuffer(runtime, page);
 }
 
-function handleGlobalPointerDown(event: PointerEvent, runtime: FullGameRuntime, page: FullGamePage): void {
-  if (isPointInsideElement(event, page.consoleButton)) {
-    event.preventDefault();
-    event.stopPropagation();
-    void runtime.audio.unlock();
-    releaseFullGameMouseLook(runtime, page);
-    toggleFullGameConsole(runtime, page);
-    return;
-  }
-
-  if (isPointInsideElement(event, page.audioInfoButton)) {
-    event.preventDefault();
-    event.stopPropagation();
-    void runtime.audio.unlock();
-    releaseFullGameMouseLook(runtime, page);
-    printFullGameWebAudioInfo(runtime, page);
-    return;
-  }
-
-  handlePointerDown(event, runtime, page);
-}
-
 function handlePointerDown(event: PointerEvent, runtime: FullGameRuntime, page: FullGamePage): void {
   void runtime.audio.unlock();
-  if (isOverlayControlTarget(page, event.target)) {
-    return;
-  }
-
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game) {
     return;
   }
@@ -2492,10 +2285,6 @@ function handlePointerLockChange(runtime: FullGameRuntime, page: FullGamePage): 
 }
 
 function handleMouseButton(event: MouseEvent, down: boolean, runtime: FullGameRuntime, page: FullGamePage): void {
-  if (isOverlayControlTarget(page, event.target)) {
-    return;
-  }
-
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game) {
     return;
   }
@@ -2517,10 +2306,6 @@ function handleMouseButton(event: MouseEvent, down: boolean, runtime: FullGameRu
 }
 
 function handleMouseWheel(event: WheelEvent, runtime: FullGameRuntime, page: FullGamePage): void {
-  if (isOverlayControlTarget(page, event.target)) {
-    return;
-  }
-
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game || event.deltaY === 0) {
     return;
   }
@@ -2539,18 +2324,6 @@ function mapMouseButton(event: MouseEvent): number | null {
     case 2: return K_MOUSE2;
     default: return null;
   }
-}
-
-function isOverlayControlTarget(page: FullGamePage, target: EventTarget | null): boolean {
-  return target instanceof Node && (page.controls.contains(target) || page.consolePanel.contains(target));
-}
-
-function isPointInsideElement(event: PointerEvent, element: HTMLElement): boolean {
-  const rect = element.getBoundingClientRect();
-  return event.clientX >= rect.left
-    && event.clientX <= rect.right
-    && event.clientY >= rect.top
-    && event.clientY <= rect.bottom;
 }
 
 function isTextInputTarget(target: EventTarget | null): boolean {
@@ -2604,6 +2377,11 @@ function mapFunctionKey(key: string): number | null {
 }
 
 function mapPrintableDomKey(event: KeyboardEvent): number | null {
+  const digitMatch = /^Digit(\d)$/.exec(event.code);
+  if (digitMatch) {
+    return digitMatch[1]!.charCodeAt(0);
+  }
+
   if (event.key.length !== 1) {
     return null;
   }

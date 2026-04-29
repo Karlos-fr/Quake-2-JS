@@ -12,9 +12,11 @@
 import { strict as assert } from "node:assert";
 
 import {
+  CS_IMAGES,
   CS_PLAYERSKINS,
   pmtype_t,
   RDF_UNDERWATER,
+  STAT_AMMO_ICON,
   STAT_CHASE,
   STAT_HEALTH,
   STAT_HEALTH_ICON,
@@ -49,6 +51,10 @@ runtime.intermission_angle = [0, 90, 0];
 runtime.framenum = 1200;
 runtime.time = 42;
 runtime.pic_health = 77;
+const engineImageIndexes = new Map<string, number>([
+  ["a_cells", 42]
+]);
+runtime.engineImageIndex = (path) => engineImageIndexes.get(path) ?? 0;
 
 while (runtime.entities.length <= runtime.maxclients) {
   runtime.entities.push({
@@ -95,6 +101,16 @@ G_SetStats(runtime.entities[1]!, runtime);
 assert.ok(runtime.entities[1]!.client!.ps.stats[STAT_LAYOUTS] >= 0, "G_SetStats layouts mismatch");
 assert.equal(runtime.entities[1]!.client!.ps.stats[STAT_HEALTH], 100, "G_SetStats health value mismatch");
 assert.equal(runtime.entities[1]!.client!.ps.stats[STAT_HEALTH_ICON], 77, "G_SetStats level health icon mismatch");
+
+const ammoCells = FindItem("Cells");
+if (ammoCells) {
+  runtime.entities[1]!.client!.ammo_index = ITEM_INDEX(ammoCells);
+  runtime.entities[1]!.client!.pers.inventory[ITEM_INDEX(ammoCells)] = 200;
+  G_SetStats(runtime.entities[1]!, runtime);
+  assert.equal(runtime.entities[1]!.client!.ps.stats[STAT_AMMO_ICON], 42, "G_SetStats must resolve HUD ammo icons through the engine image table when available");
+  assert.equal(runtime.assets.imagePaths[41], "a_cells", "engine-backed image registration should mirror the gameplay image table");
+  assert.equal(runtime.configstrings.has(CS_IMAGES + 42), false, "engine-backed image registration should leave authoritative CS_IMAGES ownership to the server import");
+}
 
 const powerShield = FindItem("Power Shield");
 const cells = FindItem("Cells");

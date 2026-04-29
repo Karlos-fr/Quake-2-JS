@@ -17,6 +17,7 @@ import {
   CM_PointContents,
   CM_TransformedBoxTrace,
   CM_TransformedPointContents,
+  CS_IMAGES,
   CS_MODELS,
   CS_SOUNDS,
   MASK_SOLID,
@@ -797,6 +798,7 @@ export interface GameRuntime {
   playerTrail: GamePlayerTrailState;
   engineLinkEntity?: (entity: GameEntity) => void;
   engineUnlinkEntity?: (entity: GameEntity) => void;
+  engineImageIndex?: (path: string) => number;
   log: (entry: Omit<GameRuntimeLogEntry, "time">) => void;
 }
 
@@ -2241,7 +2243,16 @@ export function drainMonsterMuzzleFlashEvents(runtime: GameRuntime): GameMonster
  * Purpose: Register one image path in the local gameplay runtime and return its stable Quake-style index.
  */
 export function registerGameImage(runtime: GameRuntime, path: string): number {
-  return registerAssetPath(runtime.assets.imagePaths, runtime.assets.imageIndexByPath, path);
+  const engineIndex = runtime.engineImageIndex?.(path);
+  if (engineIndex && engineIndex > 0) {
+    runtime.assets.imagePaths[engineIndex - 1] = path;
+    runtime.assets.imageIndexByPath.set(path, engineIndex);
+    return engineIndex;
+  }
+
+  const index = registerAssetPath(runtime.assets.imagePaths, runtime.assets.imageIndexByPath, path);
+  setGameConfigstring(runtime, CS_IMAGES + index, path);
+  return index;
 }
 
 /**

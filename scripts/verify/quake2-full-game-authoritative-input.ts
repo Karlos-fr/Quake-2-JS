@@ -35,6 +35,8 @@ import {
   Cbuf_AddText,
   Cbuf_Execute,
   Cmd_Init,
+  STAT_AMMO,
+  STAT_ARMOR,
   Cvar_Init,
   createCommandRuntime,
   createCvarRuntime
@@ -298,5 +300,47 @@ for (let frame = 0; frame < 20; frame += 1) {
 
 assert.ok(zPeak > zAfterJump, "authoritative jump should continue upward briefly after release");
 assert.ok(zAfterFall < zPeak, "authoritative gravity should pull the player back down after a jump");
+
+Cbuf_AddText(cmd, "give all\n");
+Cbuf_Execute(cmd);
+
+for (let frame = 0; frame < 4; frame += 1) {
+  now += 100;
+  client.cls.realtime = now;
+  CL_Frame(mainContext, 100, createClientHooks(true));
+  serverHost.frame(100);
+  CL_ReadPackets(mainContext, createClientHooks(false));
+  Cbuf_Execute(cmd);
+}
+
+assert.equal(client.cl.frame.playerstate.stats[STAT_ARMOR], 200, "give all should grant body armor through the authoritative server path");
+
+Cbuf_AddText(cmd, "weapnext\n");
+Cbuf_Execute(cmd);
+
+for (let frame = 0; frame < 12; frame += 1) {
+  now += 100;
+  client.cls.realtime = now;
+  CL_Frame(mainContext, 100, createClientHooks(true));
+  serverHost.frame(100);
+  CL_ReadPackets(mainContext, createClientHooks(false));
+  Cbuf_Execute(cmd);
+}
+
+assert.equal(client.cl.frame.playerstate.stats[STAT_AMMO], 100, "weapnext after give all should switch from Blaster to Shotgun with shell ammo");
+
+Cbuf_AddText(cmd, "use Railgun\n");
+Cbuf_Execute(cmd);
+
+for (let frame = 0; frame < 12; frame += 1) {
+  now += 100;
+  client.cls.realtime = now;
+  CL_Frame(mainContext, 100, createClientHooks(true));
+  serverHost.frame(100);
+  CL_ReadPackets(mainContext, createClientHooks(false));
+  Cbuf_Execute(cmd);
+}
+
+assert.equal(client.cl.frame.playerstate.stats[STAT_AMMO], 50, "give all should grant railgun ammo so the original use command can select it");
 
 console.log("quake2-full-game-authoritative-input: ok");

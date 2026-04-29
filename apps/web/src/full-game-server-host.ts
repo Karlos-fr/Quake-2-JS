@@ -472,6 +472,7 @@ function createServerBackedGameRuntime(world: CollisionWorld, imports: game_impo
   runtime.engineUnlinkEntity = (entity) => {
     imports.unlinkentity(entity);
   };
+  runtime.engineImageIndex = (path) => imports.imageindex(path);
   return runtime;
 }
 

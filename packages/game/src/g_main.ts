@@ -76,7 +76,7 @@ import {
 import { PlayerTrail_Init } from "./p_trail.js";
 import { ClientEndServerFrame } from "./p_view.js";
 import { ClientCommand as ClientCommand_Cmds } from "./g_cmds.js";
-import { ED_CallSpawn, G_FindTeams } from "./g_spawn.js";
+import { ED_CallSpawn, G_FindTeams, dm_statusbar, single_statusbar } from "./g_spawn.js";
 import { G_Find, G_Spawn } from "./g_utils.js";
 import {
   attachGameClient,
@@ -713,7 +713,7 @@ function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, m
   context.gi.configstring(CS_SKYAXIS, worldspawn.properties.skyaxis ?? "0 0 0");
   context.gi.configstring(CS_CDTRACK, String(worldspawn.sounds));
   context.gi.configstring(CS_MAXCLIENTS, String(context.runtime.maxclients));
-  context.gi.configstring(CS_STATUSBAR, "");
+  context.gi.configstring(CS_STATUSBAR, context.runtime.deathmatch ? dm_statusbar : single_statusbar);
 
   context.gi.imageindex("i_help");
   context.level.pic_health = context.gi.imageindex("i_health");

@@ -11,11 +11,12 @@
 
 import { strict as assert } from "node:assert";
 
-import { DF_SAME_LEVEL, MZ_BLASTER, type cvar_t } from "../../packages/qcommon/src/index.js";
+import { CS_STATUSBAR, DF_SAME_LEVEL, MZ_BLASTER, type cvar_t } from "../../packages/qcommon/src/index.js";
 import { TAG_GAME, TAG_LEVEL, svc_muzzleflash } from "../../packages/game/src/g-local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
 import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { single_statusbar } from "../../packages/game/src/g_spawn.js";
 
 const dprints: string[] = [];
 const bprints: string[] = [];
@@ -26,6 +27,7 @@ const writeShorts: number[] = [];
 const multicasts: Array<{ origin: [number, number, number]; to: number }> = [];
 const command = { argv: ["sv"], args: "" };
 const cvars = new Map<string, cvar_t>();
+const configstrings = new Map<number, string>();
 
 const imports = {
   bprintf: () => {},
@@ -36,7 +38,9 @@ const imports = {
   centerprintf: () => {},
   sound: () => {},
   positioned_sound: () => {},
-  configstring: () => {},
+  configstring: (index, value) => {
+    configstrings.set(index, value);
+  },
   error: (fmt, ...args) => {
     throw new Error(formatPrintf(fmt, args));
   },
@@ -122,6 +126,9 @@ const entityString = `
 
 api.SpawnEntities("base1", entityString, "start");
 assert.equal(api.edicts[0]?.classname, "worldspawn", "worldspawn must stay at edict 0");
+assert.equal(configstrings.get(CS_STATUSBAR), single_statusbar, "SpawnEntities must publish the original single-player HUD statusbar");
+assert.equal(configstrings.get(CS_STATUSBAR)?.includes("hnum"), true, "statusbar must include the original health field");
+assert.equal(configstrings.get(CS_STATUSBAR)?.includes("anum"), true, "statusbar must include the original ammo field");
 assert.ok(api.edicts[1]?.client, "first reserved client slot must have a client block");
 assert.equal(api.edicts[5]?.classname, "func_door", "map entities must be shifted behind reserved player slots");
 assert.equal(api.num_edicts, 22, "SpawnEntities must include reserved body queue and player trail edicts");

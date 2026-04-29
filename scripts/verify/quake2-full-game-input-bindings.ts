@@ -59,6 +59,7 @@ for (const expected of [
   "case \"Alt\": return K_ALT",
   "case \"Insert\": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_INS : K_INS",
   "case \"/\": return event.location === KeyboardEvent.DOM_KEY_LOCATION_NUMPAD ? K_KP_SLASH",
+  "const digitMatch = /^Digit(\\d)$/.exec(event.code)",
   "return index >= 1 && index <= 12 ? K_F1 + index - 1 : null"
 ]) {
   assert.ok(fullGameSource.includes(expected), `full-game keyboard mapping should include ${expected}`);

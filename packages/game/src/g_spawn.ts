@@ -135,6 +135,123 @@ interface SpawnEntry {
   spawn: SpawnFunction;
 }
 
+/**
+ * Original name: single_statusbar
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the original single-player status bar layout program sent through `CS_STATUSBAR`.
+ */
+export const single_statusbar =
+  "yb\t-24 "
+  + "xv\t0 "
+  + "hnum "
+  + "xv\t50 "
+  + "pic 0 "
+  + "if 2 "
+  + "\txv\t100 "
+  + "\tanum "
+  + "\txv\t150 "
+  + "\tpic 2 "
+  + "endif "
+  + "if 4 "
+  + "\txv\t200 "
+  + "\trnum "
+  + "\txv\t250 "
+  + "\tpic 4 "
+  + "endif "
+  + "if 6 "
+  + "\txv\t296 "
+  + "\tpic 6 "
+  + "endif "
+  + "yb\t-50 "
+  + "if 7 "
+  + "\txv\t0 "
+  + "\tpic 7 "
+  + "\txv\t26 "
+  + "\tyb\t-42 "
+  + "\tstat_string 8 "
+  + "\tyb\t-50 "
+  + "endif "
+  + "if 9 "
+  + "\txv\t262 "
+  + "\tnum\t2\t10 "
+  + "\txv\t296 "
+  + "\tpic\t9 "
+  + "endif "
+  + "if 11 "
+  + "\txv\t148 "
+  + "\tpic\t11 "
+  + "endif ";
+
+/**
+ * Original name: dm_statusbar
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the original deathmatch status bar layout program sent through `CS_STATUSBAR`.
+ */
+export const dm_statusbar =
+  "yb\t-24 "
+  + "xv\t0 "
+  + "hnum "
+  + "xv\t50 "
+  + "pic 0 "
+  + "if 2 "
+  + "\txv\t100 "
+  + "\tanum "
+  + "\txv\t150 "
+  + "\tpic 2 "
+  + "endif "
+  + "if 4 "
+  + "\txv\t200 "
+  + "\trnum "
+  + "\txv\t250 "
+  + "\tpic 4 "
+  + "endif "
+  + "if 6 "
+  + "\txv\t296 "
+  + "\tpic 6 "
+  + "endif "
+  + "yb\t-50 "
+  + "if 7 "
+  + "\txv\t0 "
+  + "\tpic 7 "
+  + "\txv\t26 "
+  + "\tyb\t-42 "
+  + "\tstat_string 8 "
+  + "\tyb\t-50 "
+  + "endif "
+  + "if 9 "
+  + "\txv\t246 "
+  + "\tnum\t2\t10 "
+  + "\txv\t296 "
+  + "\tpic\t9 "
+  + "endif "
+  + "if 11 "
+  + "\txv\t148 "
+  + "\tpic\t11 "
+  + "endif "
+  + "xr\t-50 "
+  + "yt 2 "
+  + "num 3 14 "
+  + "if 17 "
+  + "xv 0 "
+  + "yb -58 "
+  + "string2 \"SPECTATOR MODE\" "
+  + "endif "
+  + "if 16 "
+  + "xv 0 "
+  + "yb -68 "
+  + "string \"Chasing\" "
+  + "xv 64 "
+  + "stat_string 16 "
+  + "endif ";
+
 const spawns: SpawnEntry[] = [
   { name: "worldspawn", spawn: SP_worldspawn },
   { name: "info_player_start", spawn: SP_info_player_start },
