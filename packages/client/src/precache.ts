@@ -34,7 +34,7 @@ import {
 } from "../../qcommon/src/index.js";
 import type { CommandRuntime } from "../../qcommon/src/index.js";
 import { CL_CheckOrDownloadFile, type ClientDownloadHooks } from "./download.js";
-import { CL_WriteStringCmd } from "./parse.js";
+import { CL_WriteStringCmd } from "./cl_parse.js";
 import { connstate_t, type ClientRuntime } from "./types.js";
 
 const PLAYER_MULT = 5;

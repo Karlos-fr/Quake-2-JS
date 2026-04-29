@@ -6,7 +6,7 @@
  * It is a runtime-side helper layer for the current standalone client loop.
  *
  * Dependencies:
- * - packages/client/src/input.ts
+ * - packages/client/src/cl_input.ts
  */
 
 import type { ClientInputContext } from "./index.js";

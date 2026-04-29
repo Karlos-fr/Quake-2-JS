@@ -46,7 +46,7 @@ import {
   SVF_DEADMONSTER,
   SVF_MONSTER,
   damage_t
-} from "./g-local.js";
+} from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, FoundTarget, M_CheckAttack, visible } from "./g_ai.js";
 import { monster_fire_blaster, walkmonster_start } from "./g_monster.js";
 import { ThrowGib, ThrowHead } from "./g_misc.js";

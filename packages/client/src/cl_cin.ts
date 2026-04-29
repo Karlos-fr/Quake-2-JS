@@ -1,5 +1,5 @@
 /**
- * File: cinematic.ts
+ * File: cl_cin.ts
  * Source: Quake II original / client/cl_cin.c
  * Purpose: Port of client-side cinematic loading, decoding and timing routines.
  *

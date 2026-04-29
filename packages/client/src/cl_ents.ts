@@ -1,5 +1,5 @@
 /**
- * File: entities.ts
+ * File: cl_ents.ts
  * Source: Quake II original / client/cl_ents.c
  * Purpose: Port the first entity-frame event and interpolation helpers that sit between parsed server frames and renderer adapters.
  *
@@ -48,7 +48,7 @@ import {
   type vec3_t
 } from "../../qcommon/src/index.js";
 import { MAX_PARSE_ENTITIES, type ClientRuntime, type frame_t } from "./types.js";
-import { CL_BuildEntityEventEffects, type ClientActionEffect } from "./effects.js";
+import { CL_BuildEntityEventEffects, type ClientActionEffect } from "./cl_fx.js";
 
 /**
  * Category: New

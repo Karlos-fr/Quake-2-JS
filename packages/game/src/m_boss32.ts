@@ -27,7 +27,7 @@ import {
   YAW,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import { CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID } from "../../qcommon/src/q-shared.js";
+import { CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID } from "../../qcommon/src/q_shared.js";
 import {
   AI_STAND_GROUND,
   AS_MELEE,
@@ -50,7 +50,7 @@ import {
   SOLID_NOT,
   SVF_DEADMONSTER,
   damage_t
-} from "./g-local.js";
+} from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range } from "./g_ai.js";
 import { monster_fire_bfg, monster_fire_blaster, monster_fire_railgun, walkmonster_start } from "./g_monster.js";
 import { ThrowGib, ThrowHead } from "./g_misc.js";

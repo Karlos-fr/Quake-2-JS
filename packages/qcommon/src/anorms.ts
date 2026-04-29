@@ -15,7 +15,7 @@
  * - This file is intended to stay byte-for-byte faithful to the original direction set.
  */
 
-import type { vec3_t } from "./q-shared.js";
+import type { vec3_t } from "./q_shared.js";
 
 /**
  * Category: New

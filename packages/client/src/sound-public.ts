@@ -17,7 +17,7 @@
  */
 
 import type { byte, qboolean, vec3_t } from "../../qcommon/src/index.js";
-import type { sfx_t } from "./sound-local.js";
+import type { sfx_t } from "./snd_loc.js";
 
 /**
  * Category: New

@@ -16,7 +16,7 @@
  */
 
 import { multicast_t, temp_event_t } from "../../qcommon/src/index.js";
-import { FRAMETIME, MOVETYPE_STEP, SOLID_BBOX } from "./g-local.js";
+import { FRAMETIME, MOVETYPE_STEP, SOLID_BBOX } from "./g_local.js";
 import { G_FreeEdict } from "./g_utils.js";
 import {
   emitGameTempEntity,

@@ -6,7 +6,7 @@
  * It is a package entry point for shared runtime exports.
  *
  * Dependencies:
- * - packages/qcommon/src/q-shared.ts
+ * - packages/qcommon/src/q_shared.ts
  */
 
 export {
@@ -162,7 +162,7 @@ export {
   Netchan_Process,
   Netchan_Setup,
   Netchan_Transmit
-} from "./net-chan.js";
+} from "./net_chan.js";
 export {
   Com_PageInMemory,
   createSystemRuntime,
@@ -598,7 +598,7 @@ export {
   SPLASH_UNKNOWN,
   createEntityState,
   createPlayerState
-} from "./q-shared.js";
+} from "./q_shared.js";
 
 export {
   MSG_BeginReading,
@@ -636,7 +636,7 @@ export {
   multicast_t,
   pmtype_t,
   temp_event_t
-} from "./q-shared.js";
+} from "./q_shared.js";
 
 export type {
   CommandAlias,
@@ -690,4 +690,4 @@ export type {
   vec3_t,
   vec5_t,
   vec_t
-} from "./q-shared.js";
+} from "./q_shared.js";

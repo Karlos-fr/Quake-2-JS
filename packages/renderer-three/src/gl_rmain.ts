@@ -1,5 +1,5 @@
 /**
- * File: gl-rmain.ts
+ * File: gl_rmain.ts
  * Source: Quake II original / ref_gl/gl_rmain.c
  * Purpose: Port the main GL refresh frame orchestration helpers and shared view-state routines.
  *
@@ -47,7 +47,7 @@ import type { cvar_t } from "../../qcommon/src/cvar.js";
 import { API_VERSION, type dlight_t, type entity_t, type particle_t, type refdef_t, type refexport_t, type refimport_t } from "../../client/src/ref.js";
 import type { image_t, model_t, msurface_t } from "./gl-model.js";
 import { modtype_t } from "./gl-model.js";
-import { rserr_t, type GlimpSetModeResult } from "./gl-local.js";
+import { rserr_t, type GlimpSetModeResult } from "./gl_local.js";
 import {
   GL_RENDERER_3DLABS,
   GL_RENDERER_DYPIC,
@@ -64,7 +64,7 @@ import {
   GL_RENDERER_VOODOO,
   GL_RENDERER_VOODOO_RUSH,
   REF_VERSION
-} from "./gl-local.js";
+} from "./gl_local.js";
 
 const NUM_BEAM_SEGS = 6;
 export const GL_BACK_LEFT = 0x0402;

@@ -1,5 +1,5 @@
 /**
- * File: gl-mesh.ts
+ * File: gl_mesh.ts
  * Source: Quake II original / ref_gl/gl_mesh.c
  * Purpose: Port alias-model shading and helper logic from the original GL mesh renderer.
  *

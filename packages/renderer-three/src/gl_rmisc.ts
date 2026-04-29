@@ -1,5 +1,5 @@
 /**
- * File: gl-rmisc.ts
+ * File: gl_rmisc.ts
  * Source: Quake II original / ref_gl/gl_rmisc.c
  * Purpose: Port the miscellaneous GL refresh helpers that initialize fallback textures, default state and screenshots.
  *
@@ -18,7 +18,7 @@
  */
 
 import { PRINT_ALL, type cvar_t } from "../../qcommon/src/index.js";
-import type { GlRmainRuntime } from "./gl-rmain.js";
+import type { GlRmainRuntime } from "./gl_rmain.js";
 import {
   GL_COLOR_INDEX,
   GL_REPLACE,
@@ -31,8 +31,8 @@ import {
   type GlImage,
   type GlImageRuntime,
   imagetype_t
-} from "./gl-image.js";
-import { createGlState, type glconfig_t, type glstate_t, type viddef_t } from "./gl-local.js";
+} from "./gl_image.js";
+import { createGlState, type glconfig_t, type glstate_t, type viddef_t } from "./gl_local.js";
 import { GL_SHARED_TEXTURE_PALETTE_EXT } from "./qgl.js";
 
 export const GL_ALPHA_TEST = 0x0bc0;

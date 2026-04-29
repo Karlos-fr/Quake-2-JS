@@ -112,7 +112,7 @@ export {
   svc_stufftext,
   svc_temp_entity,
   world
-} from "./g-local.js";
+} from "./g_local.js";
 
 export {
   FRAME_stand201,
@@ -1703,7 +1703,7 @@ export type {
   mmove_t,
   monsterinfo_t,
   spawn_temp_t
-} from "./g-local.js";
+} from "./g_local.js";
 
 export type { GameWeaponHooks } from "./p_weapon.js";
 export type { GameCommandContext, GameCommandCvars, GameCommandHooks } from "./g_cmds.js";

@@ -11,7 +11,7 @@
  */
 
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
-import type { channel_t, sfx_t, sfxcache_t } from "../../client/src/sound-local.js";
+import type { channel_t, sfx_t, sfxcache_t } from "../../client/src/snd_loc.js";
 
 export interface WebAudioAdapterLogHooks {
   onInfo?: (message: string) => void;

@@ -66,7 +66,7 @@ import {
   ITEM_INDEX,
   fieldtype_t,
   type field_t
-} from "./g-local.js";
+} from "./g_local.js";
 import {
   attachGameClient,
   createRuntimeEntity,

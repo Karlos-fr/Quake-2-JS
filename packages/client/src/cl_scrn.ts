@@ -1,5 +1,5 @@
 /**
- * File: screen.ts
+ * File: cl_scrn.ts
  * Source: Quake II original / client/cl_scrn.c
  * Purpose: Port the first client-side screen and HUD state logic, starting with center prints and screen-facing HUD snapshots.
  *
@@ -65,7 +65,7 @@ import {
   SCR_StopCinematic as SCR_StopCinematic_Impl,
   type ClientCinematicSnapshot,
   type ClientScreenHooks
-} from "./cinematic.js";
+} from "./cl_cin.js";
 import {
   CL_DrawInventory,
   CL_DrawInventoryRef,
@@ -73,24 +73,24 @@ import {
   Inv_DrawStringRef,
   SetStringHighBit,
   type ClientInventoryBindingMap
-} from "./inventory.js";
+} from "./cl_inv.js";
 import type { refexport_t } from "./ref.js";
 import { connstate_t, type ClientRuntime } from "./types.js";
 
 export type {
   ClientCinematicSnapshot,
   ClientScreenHooks
-} from "./cinematic.js";
+} from "./cl_cin.js";
 export {
   CL_DrawInventory,
   CL_DrawInventoryRef,
   Inv_DrawString,
   Inv_DrawStringRef,
   SetStringHighBit
-} from "./inventory.js";
+} from "./cl_inv.js";
 export type {
   ClientInventoryBindingMap
-} from "./inventory.js";
+} from "./cl_inv.js";
 
 const STAT_MINUS = 10;
 const CHAR_WIDTH = 16;

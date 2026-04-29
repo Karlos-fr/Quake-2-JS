@@ -19,7 +19,7 @@
 import { AngleVectors, MASK_SOLID, temp_event_t, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
 import { Info_ValueForKey } from "../../qcommon/src/common.js";
 import { FoundTarget, visible } from "./g_ai.js";
-import { AI_DUCKED, AI_GOOD_GUY, AI_SOUND_TARGET, FL_FLY, FL_SWIM } from "./g-local.js";
+import { AI_DUCKED, AI_GOOD_GUY, AI_SOUND_TARGET, FL_FLY, FL_SWIM } from "./g_local.js";
 import {
   DAMAGE_BULLET,
   DAMAGE_ENERGY,

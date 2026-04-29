@@ -1,5 +1,5 @@
 /**
- * File: q-shared.ts
+ * File: q_shared.ts
  * Source: Quake II original / game/q_shared.h
  * Purpose: Port the shared Quake II constants and data structures used across runtime modules.
  *

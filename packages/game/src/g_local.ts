@@ -1,5 +1,5 @@
 /**
- * File: g-local.ts
+ * File: g_local.ts
  * Source: Quake II original / game/g_local.h
  * Purpose: Port of the mixed gameplay header declarations shared across the Quake II game module.
  *

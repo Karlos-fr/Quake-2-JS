@@ -17,7 +17,7 @@
  */
 
 import { ERR_DROP } from "../../qcommon/src/index.js";
-import type { ClientSoundLocalContext, sfx_t, sfxcache_t, wavinfo_t } from "./sound-local.js";
+import type { ClientSoundLocalContext, sfx_t, sfxcache_t, wavinfo_t } from "./snd_loc.js";
 
 export let cache_full_cycle = 0;
 

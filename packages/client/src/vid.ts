@@ -15,7 +15,7 @@
  * - This file is the principal attachment point for `client/vid.h`.
  */
 
-export type { vrect_t } from "./screen.js";
+export type { vrect_t } from "./cl_scrn.js";
 
 /**
  * Original name: viddef_t

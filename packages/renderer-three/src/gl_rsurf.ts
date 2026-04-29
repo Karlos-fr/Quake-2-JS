@@ -1,5 +1,5 @@
 /**
- * File: gl-rsurf.ts
+ * File: gl_rsurf.ts
  * Source: Quake II original / ref_gl/gl_rsurf.c
  * Purpose: Port surface-related GL refresh routines for brush polygons, texture animation and lightmap staging.
  *
@@ -48,7 +48,7 @@ import {
   type msurface_t,
   type mtexinfo_t
 } from "./gl-model.js";
-import type { GlRmainRuntime } from "./gl-rmain.js";
+import type { GlRmainRuntime } from "./gl_rmain.js";
 
 export const DYNAMIC_LIGHT_WIDTH = 128;
 export const DYNAMIC_LIGHT_HEIGHT = 128;

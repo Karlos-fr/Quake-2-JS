@@ -32,7 +32,7 @@ import {
   STAT_PICKUP_ICON,
   STAT_PICKUP_STRING
 } from "../../qcommon/src/index.js";
-import { entity_event_t } from "../../qcommon/src/q-shared.js";
+import { entity_event_t } from "../../qcommon/src/q_shared.js";
 import {
   WEAP_BLASTER,
   WEAP_BFG,
@@ -70,7 +70,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
-import { ITEM_NO_TOUCH, ITEM_TARGETS_USED, ITEM_TRIGGER_SPAWN, IT_KEY } from "./g-local.js";
+import { ITEM_NO_TOUCH, ITEM_TARGETS_USED, ITEM_TRIGGER_SPAWN, IT_KEY } from "./g_local.js";
 import { ValidateSelectedItem } from "./g_cmds.js";
 import { G_FreeEdict, G_UseTargets, G_ProjectSource } from "./g_utils.js";
 import { Pickup_Weapon, Use_Weapon } from "./p_weapon.js";

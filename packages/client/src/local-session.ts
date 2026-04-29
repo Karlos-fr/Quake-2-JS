@@ -56,7 +56,7 @@ import {
   setLocalButtonHeld,
   syncLocalMovementButtons
 } from "./local-input.js";
-import type { ClientInputContext } from "./input.js";
+import type { ClientInputContext } from "./cl_input.js";
 import { connstate_t, type ClientRuntime } from "./types.js";
 
 const DEFAULT_SPAWN_LIFT = 24;

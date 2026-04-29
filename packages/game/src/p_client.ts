@@ -107,7 +107,7 @@ import {
   SVF_DEADMONSTER,
   SVF_NOCLIENT,
   damage_t
-} from "./g-local.js";
+} from "./g_local.js";
 import {
   FRAME_crdeath1,
   FRAME_crdeath5,

@@ -36,7 +36,7 @@ import {
   CONTENTS_LAVA,
   CONTENTS_SLIME,
   CONTENTS_WATER
-} from "../../qcommon/src/q-shared.js";
+} from "../../qcommon/src/q_shared.js";
 import {
   POWER_ARMOR_SCREEN,
   POWER_ARMOR_SHIELD,
@@ -71,7 +71,7 @@ import {
   MOD_UNKNOWN,
   MOD_WATER,
   damage_t
-} from "./g-local.js";
+} from "./g_local.js";
 import { FoundTarget, M_CheckAttack } from "./g_ai.js";
 import { T_Damage } from "./g_combat.js";
 import { Drop_Item, FindItemByClassname, type GameItemDefinition } from "./g_items.js";

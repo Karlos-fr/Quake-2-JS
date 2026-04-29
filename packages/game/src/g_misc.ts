@@ -57,7 +57,7 @@ import {
   SOLID_BBOX,
   SVF_DEADMONSTER,
   damage_t
-} from "./g-local.js";
+} from "./g_local.js";
 import {
   FRAMETIME,
   MOVETYPE_NONE,

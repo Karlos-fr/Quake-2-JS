@@ -30,7 +30,7 @@ import {
 } from "three";
 import { QUAKE_SKY_FACE_SUFFIXES, type QuakeSkySnapshot } from "../../renderer-common/src/index.js";
 import type { LoadedQuakeSkyTextureSet, QuakeSkyResolver } from "./quake-sky-resolver.js";
-import { MakeSkyVec, SKY_TEX_ORDER, createGlWarpRuntime, getSkyTexClampBounds, type GlWarpSkyFace } from "./gl-warp.js";
+import { MakeSkyVec, SKY_TEX_ORDER, createGlWarpRuntime, getSkyTexClampBounds, type GlWarpSkyFace } from "./gl_warp.js";
 
 /**
  * Category: New

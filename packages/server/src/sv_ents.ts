@@ -65,7 +65,7 @@ import {
   type entity_state_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import { RF_BEAM } from "../../qcommon/src/q-shared.js";
+import { RF_BEAM } from "../../qcommon/src/q_shared.js";
 import { SVF_NOCLIENT, type edict_t, type game_export_t } from "../../game/src/index.js";
 import type {
   ServerEntityProcedures,

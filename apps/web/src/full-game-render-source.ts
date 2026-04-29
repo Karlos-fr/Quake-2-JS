@@ -17,7 +17,7 @@ import {
   type CvarRuntime
 } from "../../../packages/qcommon/src/index.js";
 import { CL_BuildRefreshFrame } from "../../../packages/client/src/refresh.js";
-import { SCR_BuildScreenState } from "../../../packages/client/src/screen.js";
+import { SCR_BuildScreenState } from "../../../packages/client/src/cl_scrn.js";
 import { CL_BuildSkySnapshot } from "../../../packages/client/src/sky.js";
 import type {
   BrushModelSnapshot,

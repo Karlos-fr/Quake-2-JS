@@ -20,7 +20,7 @@ import {
   MAX_INFO_KEY,
   MAX_INFO_STRING,
   MAX_TOKEN_CHARS
-} from "./q-shared.js";
+} from "./q_shared.js";
 
 const MAX_NUM_ARGVS = 50;
 

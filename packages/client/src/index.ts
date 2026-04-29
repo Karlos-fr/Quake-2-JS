@@ -7,7 +7,7 @@
  *
  * Dependencies:
  * - packages/client/src/types.ts
- * - packages/client/src/parse.ts
+ * - packages/client/src/cl_parse.ts
  */
 
 export {
@@ -272,7 +272,7 @@ export {
   CL_ParseTEnt,
   CL_ParseWidow,
   CL_WriteStringCmd
-} from "./parse.js";
+} from "./cl_parse.js";
 export {
   CL_CheckOrDownloadFile,
   CL_Download_f,
@@ -429,7 +429,7 @@ export {
   createSfxCache,
   createWavInfo,
   getSoundNameCapacity
-} from "./sound-local.js";
+} from "./snd_loc.js";
 export {
   CL_AddNetgraph,
   DrawHUDString,
@@ -474,21 +474,21 @@ export {
   SCR_Loading_f,
   SCR_Sky_f,
   SCR_TimeRefresh_f
-} from "./screen.js";
+} from "./cl_scrn.js";
 export {
   CL_DrawInventory,
   CL_DrawInventoryRef,
   Inv_DrawString,
   Inv_DrawStringRef,
   SetStringHighBit
-} from "./inventory.js";
+} from "./cl_inv.js";
 export type {
   ClientCinematicSnapshot,
   ClientScreenHooks
-} from "./cinematic.js";
+} from "./cl_cin.js";
 export type {
   ClientInventoryBindingMap
-} from "./inventory.js";
+} from "./cl_inv.js";
 export {
   findClientImageIndex as findLocalClientImageIndex,
   initializeLocalHudState as initializeLocalClientHudState,
@@ -532,7 +532,7 @@ export {
   CL_WriteDemoMessage,
   CL_WriteConfiguration,
   createClientMainContext
-} from "./main.js";
+} from "./cl_main.js";
 export {
   CL_AdjustAngles,
   CL_BaseMove,
@@ -548,7 +548,7 @@ export {
   KeyDown,
   KeyUp,
   createClientInputContext
-} from "./input.js";
+} from "./cl_input.js";
 export {
   IN_Activate,
   IN_Commands,
@@ -625,7 +625,7 @@ export {
   CL_BuildFrameEntityEventEffects,
   CL_FireEntityEvents,
   CL_GetFrameEntityStates
-} from "./entities.js";
+} from "./cl_ents.js";
 export {
   CL_BuildRefreshFrame,
   CL_GetEntitySoundOrigin as CL_GetRefreshEntitySoundOrigin
@@ -643,7 +643,7 @@ export {
   CL_ProcessSustain,
   CL_RegisterTEntModels,
   CL_RegisterTEntSounds
-} from "./tent.js";
+} from "./cl_tent.js";
 export {
   CL_BuildSkySnapshot
 } from "./sky.js";
@@ -670,7 +670,7 @@ export {
   CL_TeleporterParticles,
   CL_TeleportParticles,
   CL_BigTeleportParticles
-} from "./effects.js";
+} from "./cl_fx.js";
 export {
   CL_Flashlight,
   CL_FlameEffects,
@@ -695,7 +695,7 @@ export {
   CL_TrackerTrail,
   CL_Widowbeamout,
   CL_WidowSplash
-} from "./newfx.js";
+} from "./cl_newfx.js";
 
 export { svc_strings } from "../../qcommon/src/index.js";
 
@@ -824,7 +824,7 @@ export type {
   sfx_t,
   sfxcache_t,
   wavinfo_t
-} from "./sound-local.js";
+} from "./snd_loc.js";
 export type {
   ClientRuntime,
   client_beam_t,
@@ -845,10 +845,10 @@ export type {
   kbutton_t
 } from "./types.js";
 
-export type { ClientEntityEvent, ClientInterpolatedEntity } from "./entities.js";
-export type { ClientActionEffect } from "./effects.js";
+export type { ClientEntityEvent, ClientInterpolatedEntity } from "./cl_ents.js";
+export type { ClientActionEffect } from "./cl_fx.js";
 export type { ClientDynamicLight, ClientRefreshFrame, ClientRenderEntity, ClientRenderParticle } from "./refresh.js";
-export type { ClientBeamRender, ClientExplosionRender, ClientForceWallRender, ClientSustainRender, ClientTEntRefresh } from "./tent.js";
+export type { ClientBeamRender, ClientExplosionRender, ClientForceWallRender, ClientSustainRender, ClientTEntRefresh } from "./cl_tent.js";
 export type {
   ClientDownloadBlock,
   ClientMuzzleFlash2Packet,
@@ -857,8 +857,8 @@ export type {
   ClientParseHooks,
   ClientSoundPacket,
   ClientTempEntityPacket
-} from "./parse.js";
-export type { ClientMainContext, ClientMainHooks } from "./main.js";
+} from "./cl_parse.js";
+export type { ClientMainContext, ClientMainHooks } from "./cl_main.js";
 export type { ClientDownloadHooks } from "./download.js";
 export type { ClientPrecacheHooks } from "./precache.js";
 export type { ClientSoundRegistrationHooks } from "./sound.js";
@@ -879,8 +879,8 @@ export type {
   ClientScreenBuildOptions,
   ClientScreenFrame,
   ClientScreenHudState
-} from "./screen.js";
-export type { ClientInputContext, ClientInputFrameOptions, ClientInputHooks, ClientSendCmdBridgeOptions } from "./input.js";
+} from "./cl_scrn.js";
+export type { ClientInputContext, ClientInputFrameOptions, ClientInputHooks, ClientSendCmdBridgeOptions } from "./cl_input.js";
 export type { ClientInputDeviceContext, ClientInputDeviceHooks } from "./input-device.js";
 export type { LocalClientCollisionAdapter } from "./local-loop.js";
 export type {

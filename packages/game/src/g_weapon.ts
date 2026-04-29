@@ -39,7 +39,7 @@ import {
   CONTENTS_SOLID,
   CONTENTS_SLIME,
   SURF_SKY
-} from "../../qcommon/src/q-shared.js";
+} from "../../qcommon/src/q_shared.js";
 import {
   freeGameEntity,
   DAMAGE_BULLET,

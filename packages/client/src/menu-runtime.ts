@@ -97,7 +97,7 @@ import {
   Menu_SlideItem,
   MTYPE_FIELD
 } from "./qmenu.js";
-import { SCR_DirtyScreen } from "./screen.js";
+import { SCR_DirtyScreen } from "./cl_scrn.js";
 
 /**
  * Original name: M_PushMenu

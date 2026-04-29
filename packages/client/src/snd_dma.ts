@@ -48,7 +48,7 @@ import type {
   ClientSoundLocalContext,
   playsound_t,
   sfx_t
-} from "./sound-local.js";
+} from "./snd_loc.js";
 import {
   MAX_CHANNELS,
   SNDDMA_BeginPainting,
@@ -62,7 +62,7 @@ import {
   createChannel,
   createPlaySound,
   createSfx
-} from "./sound-local.js";
+} from "./snd_loc.js";
 
 const SOUND_FULLVOLUME = 80;
 const SOUND_LOOPATTENUATE = 0.003;

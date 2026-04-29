@@ -35,7 +35,7 @@ import {
   CONTENTS_SLIME,
   CONTENTS_SOLID,
   CONTENTS_WINDOW
-} from "../../qcommon/src/q-shared.js";
+} from "../../qcommon/src/q_shared.js";
 import {
   AI_BRUTAL,
   AI_COMBAT_POINT,
@@ -60,7 +60,7 @@ import {
   RANGE_MID,
   RANGE_NEAR,
   SVF_MONSTER
-} from "./g-local.js";
+} from "./g_local.js";
 import { AttackFinished } from "./g_monster.js";
 import { G_FreeEdict, G_PickTarget, G_ProjectSource, G_Spawn, vectoyaw, vtos } from "./g_utils.js";
 import { M_ChangeYaw, M_MoveToGoal, M_walkmove } from "./m_move.js";

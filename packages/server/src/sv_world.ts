@@ -37,7 +37,7 @@ import {
   VectorCopy,
   VectorSubtract
 } from "../../qcommon/src/index.js";
-import { CONTENTS_DEADMONSTER } from "../../qcommon/src/q-shared.js";
+import { CONTENTS_DEADMONSTER } from "../../qcommon/src/q_shared.js";
 import {
   MAX_ENT_CLUSTERS,
   SOLID_BBOX,

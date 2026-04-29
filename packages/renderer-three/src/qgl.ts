@@ -22,7 +22,7 @@
  *   intentionally generic because browser/WebGL providers are adapter calls.
  */
 
-import type { GlRmainHooks } from "./gl-rmain.js";
+import type { GlRmainHooks } from "./gl_rmain.js";
 
 export type qboolean = boolean;
 

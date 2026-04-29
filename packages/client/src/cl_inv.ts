@@ -1,5 +1,5 @@
 /**
- * File: inventory.ts
+ * File: cl_inv.ts
  * Source: Quake II original / client/cl_inv.c
  * Purpose: Port of the client inventory parsing-facing presentation helpers and overlay draw logic.
  *

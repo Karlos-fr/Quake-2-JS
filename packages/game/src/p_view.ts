@@ -34,7 +34,7 @@ import {
   entity_event_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_SOLID, CONTENTS_WATER } from "../../qcommon/src/q-shared.js";
+import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_SOLID, CONTENTS_WATER } from "../../qcommon/src/q_shared.js";
 import {
   ANIM_PAIN,
   ANIM_BASIC,
@@ -55,7 +55,7 @@ import {
   PNOISE_SELF,
   POWER_ARMOR_SCREEN,
   POWER_ARMOR_SHIELD
-} from "./g-local.js";
+} from "./g_local.js";
 import { T_Damage } from "./g_combat.js";
 import { PowerArmorType } from "./g_items.js";
 import {

@@ -53,7 +53,7 @@ import {
   type CvarRuntime,
   type QcommonNetRuntime
 } from "../../qcommon/src/index.js";
-import { createEntityState, type usercmd_t } from "../../qcommon/src/q-shared.js";
+import { createEntityState, type usercmd_t } from "../../qcommon/src/q_shared.js";
 import {
   EDICT_NUM,
   LATENCY_COUNTS,

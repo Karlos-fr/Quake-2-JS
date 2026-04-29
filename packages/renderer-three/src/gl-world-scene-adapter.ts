@@ -9,7 +9,7 @@
  * - packages/filesystem
  * - packages/formats
  * - packages/renderer-three/src/gl-model-loader.ts
- * - packages/renderer-three/src/gl-rsurf.ts
+ * - packages/renderer-three/src/gl_rsurf.ts
  * - three
  */
 
@@ -38,7 +38,7 @@ import {
 import type { BrushModelSnapshot } from "../../client/src/local-brush-models.js";
 import type { GlModelRuntime } from "./gl-model-loader.js";
 import { Mod_ForName, Mod_Init, Mod_PointInLeaf, createGlModelRuntime } from "./gl-model-loader.js";
-import type { GlRsurfRuntime } from "./gl-rsurf.js";
+import type { GlRsurfRuntime } from "./gl_rsurf.js";
 import {
   R_PushDlights,
   createGlLightRsurfHooks,
@@ -48,7 +48,7 @@ import {
   setGlLightWorldModel,
   setGlModulate,
   setGlMonolightmapMode
-} from "./gl-light.js";
+} from "./gl_light.js";
 import {
   R_DrawAlphaSurfaces,
   R_DrawBrushModel,
@@ -68,8 +68,8 @@ import {
   setViewOrigin,
   setWorldDrawFlags,
   setWorldModel
-} from "./gl-rsurf.js";
-import { buildNoTextureRgba } from "./gl-rmisc.js";
+} from "./gl_rsurf.js";
+import { buildNoTextureRgba } from "./gl_rmisc.js";
 import {
   EmitWaterPolys,
   GL_SubdivideSurface,
@@ -81,7 +81,7 @@ import {
   setWarpRefdefTime,
   setWarpViewOrigin,
   type GlWarpSkyFace
-} from "./gl-warp.js";
+} from "./gl_warp.js";
 import { SURF_DRAWTURB, type glpoly_t, type image_t, type model_t, type msurface_t } from "./gl-model.js";
 
 const SHARED_PALETTE_PATH = "pics/colormap.pcx";

@@ -38,7 +38,7 @@ import {
   STAT_TIMER_ICON,
   pmtype_t
 } from "../../qcommon/src/index.js";
-import { CENTER_HANDED, FL_POWER_ARMOR, ITEM_INDEX, IT_KEY, SOLID_NOT } from "./g-local.js";
+import { CENTER_HANDED, FL_POWER_ARMOR, ITEM_INDEX, IT_KEY, SOLID_NOT } from "./g_local.js";
 import { FindItem, GetItemByIndex, ArmorIndex, PowerArmorType } from "./g_items.js";
 import { G_Find } from "./g_utils.js";
 import { respawn } from "./p_client.js";

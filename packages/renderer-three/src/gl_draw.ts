@@ -1,5 +1,5 @@
 /**
- * File: gl-draw.ts
+ * File: gl_draw.ts
  * Source: Quake II original / ref_gl/gl_draw.c
  * Purpose: Port the 2D GL refresh drawing helpers used for pics, console glyphs, fades and cinematics.
  *

@@ -72,11 +72,11 @@ import {
   CL_BuildTempEntityEffects,
   CL_LogoutEffect,
   type ClientActionEffect
-} from "./effects.js";
-import { CL_ExecuteTempEntityEffects } from "./effects.js";
-import { CL_AddTEntPacket } from "./tent.js";
+} from "./cl_fx.js";
+import { CL_ExecuteTempEntityEffects } from "./cl_fx.js";
+import { CL_AddTEntPacket } from "./cl_tent.js";
 import { getPredictedViewheight } from "./local-loop.js";
-import type { ClientTempEntityPacket } from "./parse.js";
+import type { ClientTempEntityPacket } from "./cl_parse.js";
 import type { ClientRuntime } from "./types.js";
 
 const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];

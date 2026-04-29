@@ -16,7 +16,7 @@
  */
 
 import { MASK_MONSTERSOLID, MASK_WATER, anglemod, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
-import { AI_NOSTEP, FL_FLY, FL_PARTIALGROUND, FL_SWIM } from "./g-local.js";
+import { AI_NOSTEP, FL_FLY, FL_PARTIALGROUND, FL_SWIM } from "./g_local.js";
 import { linkGameEntity } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 import { touchTriggerEntities } from "./touch.js";

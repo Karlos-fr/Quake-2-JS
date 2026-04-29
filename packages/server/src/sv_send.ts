@@ -51,7 +51,7 @@ import {
   type netadr_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import { CHAN_NO_PHS_ADD } from "../../qcommon/src/q-shared.js";
+import { CHAN_NO_PHS_ADD } from "../../qcommon/src/q_shared.js";
 import { SOLID_BSP, SVF_NOCLIENT, type edict_t, type game_export_t } from "../../game/src/index.js";
 import {
   NUM_FOR_EDICT,

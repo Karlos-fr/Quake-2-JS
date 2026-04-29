@@ -49,7 +49,7 @@ import {
   pmtype_t,
   type qboolean,
   type vec3_t
-} from "./q-shared.js";
+} from "./q_shared.js";
 import {
   CrossProduct,
   DotProduct,

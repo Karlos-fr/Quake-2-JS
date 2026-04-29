@@ -6,11 +6,11 @@
  * It is a small integration layer that packages the classic `ref_gl` bootstrap path for host runtimes.
  *
  * Dependencies:
- * - packages/renderer-three/src/gl-rmain.ts
+ * - packages/renderer-three/src/gl_rmain.ts
  * - packages/renderer-three/src/qgl.ts
  */
 
-import { createGlRmainRuntime, type GlRmainHooks, type GlRmainRuntime } from "./gl-rmain.js";
+import { createGlRmainRuntime, type GlRmainHooks, type GlRmainRuntime } from "./gl_rmain.js";
 import {
   createQglBootstrapHooks,
   createQglRuntime,

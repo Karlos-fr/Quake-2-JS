@@ -16,7 +16,7 @@
  * - This file closes the platform-facing `Sys_*`, `Hunk_*` and `Com_PageInMemory` portion of `q_shared.h`.
  */
 
-import type { byte } from "./q-shared.js";
+import type { byte } from "./q_shared.js";
 
 /**
  * Category: New

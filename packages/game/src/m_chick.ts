@@ -30,7 +30,7 @@ import {
   SOLID_BBOX,
   SVF_DEADMONSTER,
   damage_t
-} from "./g-local.js";
+} from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range, visible } from "./g_ai.js";
 import { monster_fire_rocket, walkmonster_start } from "./g_monster.js";
 import { ThrowGib, ThrowHead } from "./g_misc.js";

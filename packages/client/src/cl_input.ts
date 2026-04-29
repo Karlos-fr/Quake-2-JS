@@ -1,5 +1,5 @@
 /**
- * File: input.ts
+ * File: cl_input.ts
  * Source: Quake II original / client/cl_input.c
  * Purpose: Port the Quake II client input button tracking and base usercmd construction logic.
  *
@@ -44,7 +44,7 @@ import {
 } from "../../qcommon/src/index.js";
 import { createSizeBuffer } from "../../memory/src/index.js";
 import { IN_Move, type ClientInputDeviceContext } from "./input-device.js";
-import { SCR_FinishCinematic } from "./screen.js";
+import { SCR_FinishCinematic } from "./cl_scrn.js";
 import { CMD_BACKUP, connstate_t, type ClientRuntime, createKbutton, type kbutton_t } from "./types.js";
 
 /**

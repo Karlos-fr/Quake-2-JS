@@ -1,5 +1,5 @@
 /**
- * File: gl-warp.ts
+ * File: gl_warp.ts
  * Source: Quake II original / ref_gl/gl_warp.c
  * Purpose: Port the sky and water polygon helpers used by the original GL renderer.
  *

@@ -41,7 +41,7 @@ import {
   MOVETYPE_NOCLIP,
   MOVETYPE_WALK,
   svc_inventory
-} from "./g-local.js";
+} from "./g_local.js";
 import {
   FRAME_flip01,
   FRAME_flip12,

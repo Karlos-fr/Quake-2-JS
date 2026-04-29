@@ -25,7 +25,7 @@ import {
   type csurface_t,
   type trace_t,
   type vec3_t
-} from "./q-shared.js";
+} from "./q_shared.js";
 import { Com_BlockChecksum } from "./md4.js";
 import { DVIS_PHS, DVIS_PVS, MAX_MAP_AREAPORTALS } from "../../formats/src/index.js";
 import { parseBsp, type BspMap, type darea_t, type dareaportal_t, type dplane_t, type dvis_t, type texinfo_t } from "../../formats/src/bsp.js";

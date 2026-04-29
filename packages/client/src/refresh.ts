@@ -24,7 +24,7 @@ import {
   CL_RunDLights,
   CL_RunLightStyles,
   type ClientLightStyle
-} from "./effects.js";
+} from "./cl_fx.js";
 import {
   AngleVectors,
   EF_BFG,
@@ -50,9 +50,9 @@ import {
   RF_WEAPONMODEL,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import { CL_BuildPacketEntitySnapshots, type ClientInterpolatedEntity } from "./entities.js";
-import { CL_BuildTEntRefresh, type ClientBeamRender, type ClientExplosionRender, type ClientForceWallRender } from "./tent.js";
-import type { ClientSustainRender } from "./tent.js";
+import { CL_BuildPacketEntitySnapshots, type ClientInterpolatedEntity } from "./cl_ents.js";
+import { CL_BuildTEntRefresh, type ClientBeamRender, type ClientExplosionRender, type ClientForceWallRender } from "./cl_tent.js";
+import type { ClientSustainRender } from "./cl_tent.js";
 import { CL_CalcViewValues, CL_UpdateLerpFraction, type ClientViewOptions, type ClientViewValues } from "./view.js";
 import { type ClientRuntime } from "./types.js";
 

@@ -17,7 +17,7 @@
  */
 
 import { AngleVectors, ATTN_NORM, CHAN_BODY, CHAN_VOICE, type vec3_t } from "../../qcommon/src/index.js";
-import { CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID } from "../../qcommon/src/q-shared.js";
+import { CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID } from "../../qcommon/src/q_shared.js";
 import {
   AI_STAND_GROUND,
   AS_MELEE,
@@ -35,7 +35,7 @@ import {
   RANGE_NEAR,
   SOLID_BBOX,
   damage_t
-} from "./g-local.js";
+} from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range, visible } from "./g_ai.js";
 import { monster_fire_bfg, monster_fire_bullet, walkmonster_start } from "./g_monster.js";
 import { G_FreeEdict, G_ProjectSource, vectoyaw } from "./g_utils.js";

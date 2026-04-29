@@ -1,5 +1,5 @@
 /**
- * File: net-chan.ts
+ * File: net_chan.ts
  * Source: Quake II original / qcommon/net_chan.c
  * Purpose: Port the Quake II network-channel sequencing, reliable delivery and out-of-band packet helpers.
  *
@@ -16,7 +16,7 @@
  * - This file is intended to stay close to the original `qcommon/net_chan.c`.
  */
 
-import type { qboolean } from "./q-shared.js";
+import type { qboolean } from "./q_shared.js";
 import type { sizebuf_t } from "../../memory/src/index.js";
 import { createSizeBuffer, SZ_Init, SZ_Write } from "../../memory/src/index.js";
 import { MSG_BeginReading, MSG_ReadLong, MSG_ReadShort, MSG_WriteLong, MSG_WriteShort } from "./messages.js";

@@ -8,7 +8,7 @@
  * Dependencies:
  * - packages/client/src/ref.ts
  * - packages/client/src/refresh.ts
- * - packages/renderer-three/src/gl-light.ts
+ * - packages/renderer-three/src/gl_light.ts
  * - three
  */
 
@@ -33,7 +33,7 @@ import {
   setGlLightRefdef,
   setGlLightViewVectors,
   type GlLightRuntime
-} from "./gl-light.js";
+} from "./gl_light.js";
 
 export interface ThreeDlightSync {
   root: Group;

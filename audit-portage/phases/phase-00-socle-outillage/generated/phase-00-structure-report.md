@@ -7,10 +7,10 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 
 - Sources C/H indexees : 264
 - Fichiers TS indexes : 200
-- Correspondances exactes attendues : 134
-- Sources sans fichier TS identique : 130
+- Correspondances exactes attendues : 159
+- Sources sans fichier TS identique : 105
 - Sources avec plusieurs fichiers TS identiques : 0
-- Fichiers TS sans basename source identique : 117
+- Fichiers TS sans basename source identique : 96
 - Fichiers TS avec marqueurs de stub : 61
 - Fichiers TS avec marqueurs temporaires/TODO : 26
 - Fichiers TS avec header de portage mais sans Source : 55
@@ -41,31 +41,16 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 | Quake-2-master/client/asm_i386.h | asm_i386.ts |
 | Quake-2-master/client/block16.h | block16.ts |
 | Quake-2-master/client/block8.h | block8.ts |
-| Quake-2-master/client/cl_cin.c | cl_cin.ts |
-| Quake-2-master/client/cl_ents.c | cl_ents.ts |
-| Quake-2-master/client/cl_fx.c | cl_fx.ts |
-| Quake-2-master/client/cl_input.c | cl_input.ts |
-| Quake-2-master/client/cl_inv.c | cl_inv.ts |
-| Quake-2-master/client/cl_main.c | cl_main.ts |
-| Quake-2-master/client/cl_newfx.c | cl_newfx.ts |
-| Quake-2-master/client/cl_parse.c | cl_parse.ts |
 | Quake-2-master/client/cl_pred.c | cl_pred.ts |
-| Quake-2-master/client/cl_scrn.c | cl_scrn.ts |
-| Quake-2-master/client/cl_tent.c | cl_tent.ts |
 | Quake-2-master/client/cl_view.c | cl_view.ts |
 | Quake-2-master/client/client.h | client.ts |
-| Quake-2-master/client/snd_loc.h | snd_loc.ts |
+| Quake-2-master/client/input.h | input.ts |
+| Quake-2-master/client/screen.h | screen.ts |
 | Quake-2-master/client/x86.c | x86.ts |
 | Quake-2-master/ctf/g_ctf.c | g_ctf.ts |
 | Quake-2-master/ctf/g_ctf.h | g_ctf.ts |
-| Quake-2-master/ctf/g_local.h | g_local.ts |
 | Quake-2-master/ctf/p_menu.c | p_menu.ts |
 | Quake-2-master/ctf/p_menu.h | p_menu.ts |
-| Quake-2-master/ctf/q_shared.c | q_shared.ts |
-| Quake-2-master/ctf/q_shared.h | q_shared.ts |
-| Quake-2-master/game/g_local.h | g_local.ts |
-| Quake-2-master/game/q_shared.c | q_shared.ts |
-| Quake-2-master/game/q_shared.h | q_shared.ts |
 | Quake-2-master/irix/cd_irix.c | cd_irix.ts |
 | Quake-2-master/irix/glw_imp.c | glw_imp.ts |
 | Quake-2-master/irix/q_shirix.c | q_shirix.ts |
@@ -106,19 +91,9 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 | Quake-2-master/qcommon/crc.c | crc.ts |
 | Quake-2-master/qcommon/crc.h | crc.ts |
 | Quake-2-master/qcommon/files.c | files.ts |
-| Quake-2-master/qcommon/net_chan.c | net_chan.ts |
 | Quake-2-master/qcommon/qfiles.h | qfiles.ts |
-| Quake-2-master/ref_gl/gl_draw.c | gl_draw.ts |
-| Quake-2-master/ref_gl/gl_image.c | gl_image.ts |
-| Quake-2-master/ref_gl/gl_light.c | gl_light.ts |
-| Quake-2-master/ref_gl/gl_local.h | gl_local.ts |
-| Quake-2-master/ref_gl/gl_mesh.c | gl_mesh.ts |
 | Quake-2-master/ref_gl/gl_model.c | gl_model.ts |
 | Quake-2-master/ref_gl/gl_model.h | gl_model.ts |
-| Quake-2-master/ref_gl/gl_rmain.c | gl_rmain.ts |
-| Quake-2-master/ref_gl/gl_rmisc.c | gl_rmisc.ts |
-| Quake-2-master/ref_gl/gl_rsurf.c | gl_rsurf.ts |
-| Quake-2-master/ref_gl/gl_warp.c | gl_warp.ts |
 | Quake-2-master/ref_soft/adivtab.h | adivtab.ts |
 | Quake-2-master/ref_soft/asm_draw.h | asm_draw.ts |
 | Quake-2-master/ref_soft/d_ifacea.h | d_ifacea.ts |
@@ -195,20 +170,15 @@ Aucun point detecte.
 | apps/web/src/web-save-storage.ts |  |
 | apps/web/src/web-shell.ts |  |
 | apps/web/vite.config.ts |  |
-| packages/client/src/cinematic.ts | Quake II original / client/cl_cin.c |
 | packages/client/src/download.ts | Quake II original / client/cl_parse.c |
-| packages/client/src/effects.ts | Quake II original / client/cl_fx.c |
-| packages/client/src/entities.ts | Quake II original / client/cl_ents.c |
 | packages/client/src/index.ts |  |
 | packages/client/src/input-device.ts | Quake II original / client/input.h |
-| packages/client/src/inventory.ts | Quake II original / client/cl_inv.c |
 | packages/client/src/local-brush-models.ts |  |
 | packages/client/src/local-client-bootstrap.ts |  |
 | packages/client/src/local-gameplay-sync.ts |  |
 | packages/client/src/local-input.ts |  |
 | packages/client/src/local-loop.ts |  |
 | packages/client/src/local-session.ts |  |
-| packages/client/src/main.ts | Quake II original / client/cl_main.c |
 | packages/client/src/menu-draw.ts | Quake II original / client/menu.c |
 | packages/client/src/menu-main-game.ts | Quake II original / client/menu.c |
 | packages/client/src/menu-misc.ts | Quake II original / client/menu.c |
@@ -218,15 +188,11 @@ Aucun point detecte.
 | packages/client/src/menu-runtime.ts | Quake II original / client/menu.c |
 | packages/client/src/menu-types.ts | Quake II original / client/menu.c |
 | packages/client/src/monster-flash.ts |  |
-| packages/client/src/newfx.ts | Quake II original / client/cl_newfx.c |
-| packages/client/src/parse.ts | Quake II original / client/cl_parse.c and client/cl_ents.c |
 | packages/client/src/precache.ts | Quake II original / client/cl_main.c |
 | packages/client/src/refresh.ts | Quake II original / client/cl_ents.c |
 | packages/client/src/render-contracts.ts |  |
 | packages/client/src/sky.ts | Quake II original / client/cl_parse.c |
-| packages/client/src/sound-local.ts | Quake II original / client/snd_loc.h |
 | packages/client/src/sound-public.ts | Quake II original / client/sound.h |
-| packages/client/src/tent.ts | Quake II original / client/cl_tent.c and client/client.h |
 | packages/client/src/types.ts | Quake II original / client/client.h |
 | packages/client/src/vid-menu.ts | Quake II original / win32/vid_menu.c |
 | packages/client/src/view.ts | Quake II original / client/cl_view.c and client/cl_pred.c |
@@ -240,7 +206,6 @@ Aucun point detecte.
 | packages/formats/src/sp2.ts | Quake II original / qcommon/qfiles.h |
 | packages/formats/src/tga.ts | Quake II original / ref_gl/gl_image.c |
 | packages/formats/src/wal.ts | Quake II original / qcommon/qfiles.h |
-| packages/game/src/g-local.ts | Quake II original / game/g_local.h |
 | packages/game/src/index.ts |  |
 | packages/game/src/local-game-bootstrap.ts |  |
 | packages/game/src/runtime.ts | game/g_local.h |
@@ -255,24 +220,13 @@ Aucun point detecte.
 | packages/qcommon/src/collision.ts | Quake II original / qcommon/cmodel.c |
 | packages/qcommon/src/index.ts |  |
 | packages/qcommon/src/messages.ts | Quake II original / qcommon/common.c |
-| packages/qcommon/src/net-chan.ts | Quake II original / qcommon/net_chan.c |
 | packages/qcommon/src/protocol.ts | Quake II original / qcommon/qcommon.h |
-| packages/qcommon/src/q-shared.ts | Quake II original / game/q_shared.h |
 | packages/qcommon/src/runtime.ts |  |
 | packages/qcommon/src/system.ts | Quake II original / game/q_shared.h |
 | packages/renderer-common/src/index.ts |  |
 | packages/renderer-common/src/sky.ts |  |
-| packages/renderer-three/src/gl-draw.ts | Quake II original / ref_gl/gl_draw.c |
-| packages/renderer-three/src/gl-image.ts | Quake II original / ref_gl/gl_image.c |
-| packages/renderer-three/src/gl-light.ts | Quake II original / ref_gl/gl_light.c |
-| packages/renderer-three/src/gl-local.ts | Quake II original / ref_gl/gl_local.h |
-| packages/renderer-three/src/gl-mesh.ts | Quake II original / ref_gl/gl_mesh.c |
 | packages/renderer-three/src/gl-model-loader.ts | Quake II original / ref_gl/gl_model.c |
 | packages/renderer-three/src/gl-model.ts | Quake II original / ref_gl/gl_model.h |
-| packages/renderer-three/src/gl-rmain.ts | Quake II original / ref_gl/gl_rmain.c |
-| packages/renderer-three/src/gl-rmisc.ts | Quake II original / ref_gl/gl_rmisc.c |
-| packages/renderer-three/src/gl-rsurf.ts | Quake II original / ref_gl/gl_rsurf.c |
-| packages/renderer-three/src/gl-warp.ts | Quake II original / ref_gl/gl_warp.c |
 | packages/renderer-three/src/gl-world-scene-adapter.ts |  |
 | packages/renderer-three/src/index.ts |  |
 | packages/renderer-three/src/md2-mesh-builder.ts | ref_gl/gl_mesh.c |
@@ -304,14 +258,14 @@ Aucun point detecte.
 | apps/web/src/main.ts |
 | apps/web/src/web-map-bootstrap.ts |
 | apps/web/src/web-shell.ts |
-| packages/client/src/cinematic.ts |
-| packages/client/src/effects.ts |
+| packages/client/src/cl_cin.ts |
+| packages/client/src/cl_fx.ts |
+| packages/client/src/cl_parse.ts |
+| packages/client/src/cl_scrn.ts |
 | packages/client/src/keys.ts |
 | packages/client/src/menu-types.ts |
-| packages/client/src/parse.ts |
 | packages/client/src/precache.ts |
 | packages/client/src/refresh.ts |
-| packages/client/src/screen.ts |
 | packages/client/src/snd_dma.ts |
 | packages/client/src/snd_mem.ts |
 | packages/client/src/view.ts |
@@ -338,14 +292,14 @@ Aucun point detecte.
 | packages/qcommon/src/pmove.ts |
 | packages/qcommon/src/qcommon.ts |
 | packages/qcommon/src/system.ts |
-| packages/renderer-three/src/gl-draw.ts |
-| packages/renderer-three/src/gl-image.ts |
-| packages/renderer-three/src/gl-light.ts |
-| packages/renderer-three/src/gl-local.ts |
+| packages/renderer-three/src/gl_draw.ts |
+| packages/renderer-three/src/gl_image.ts |
+| packages/renderer-three/src/gl_light.ts |
+| packages/renderer-three/src/gl_local.ts |
+| packages/renderer-three/src/gl_rmain.ts |
+| packages/renderer-three/src/gl_rsurf.ts |
+| packages/renderer-three/src/gl_warp.ts |
 | packages/renderer-three/src/gl-model-loader.ts |
-| packages/renderer-three/src/gl-rmain.ts |
-| packages/renderer-three/src/gl-rsurf.ts |
-| packages/renderer-three/src/gl-warp.ts |
 | packages/renderer-three/src/gl-world-scene-adapter.ts |
 | packages/renderer-three/src/qgl.ts |
 | packages/renderer-three/src/ref-gl-host.ts |
@@ -365,11 +319,11 @@ Aucun point detecte.
 | TS |
 | --- |
 | apps/web/src/web-config-commands.ts |
+| packages/client/src/cl_fx.ts |
+| packages/client/src/cl_parse.ts |
+| packages/client/src/cl_tent.ts |
 | packages/client/src/download.ts |
-| packages/client/src/effects.ts |
-| packages/client/src/parse.ts |
 | packages/client/src/precache.ts |
-| packages/client/src/tent.ts |
 | packages/client/src/types.ts |
 | packages/client/src/view.ts |
 | packages/game/src/g_items.ts |
@@ -388,7 +342,7 @@ Aucun point detecte.
 | packages/qcommon/src/common.ts |
 | packages/qcommon/src/messages.ts |
 | packages/qcommon/src/pmove.ts |
-| packages/renderer-three/src/gl-light.ts |
+| packages/renderer-three/src/gl_light.ts |
 | packages/renderer-three/src/refresh-entity-sync.ts |
 
 ## Headers de portage sans Source

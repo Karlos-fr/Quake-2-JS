@@ -1,5 +1,5 @@
 /**
- * File: sound-local.ts
+ * File: snd_loc.ts
  * Source: Quake II original / client/snd_loc.h
  * Purpose: Port the private Quake II sound mixing declarations shared across the client sound subsystem.
  *

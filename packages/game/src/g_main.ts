@@ -56,7 +56,7 @@ import {
   createLevelLocals,
   type game_locals_t,
   type level_locals_t
-} from "./g-local.js";
+} from "./g_local.js";
 import { AI_SetSightClient } from "./g_ai.js";
 import { FindItem, InitItems, PrecacheItem, SetItemNames } from "./g_items.js";
 import { G_RunEntity } from "./g_phys.js";

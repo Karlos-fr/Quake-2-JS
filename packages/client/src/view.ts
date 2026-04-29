@@ -88,11 +88,11 @@ import {
   type lightstyle_t,
   type particle_t
 } from "./ref.js";
-import { CL_LoadClientinfo, CL_ParseClientinfo } from "./parse.js";
-import { SCR_AddDirtyPoint, SCR_TouchPics } from "./screen.js";
-import type { vrect_t } from "./screen.js";
+import { CL_LoadClientinfo, CL_ParseClientinfo } from "./cl_parse.js";
+import { SCR_AddDirtyPoint, SCR_TouchPics } from "./cl_scrn.js";
+import type { vrect_t } from "./cl_scrn.js";
 import { Con_ClearNotify, type console_t } from "./console.js";
-import { CL_RegisterTEntModels } from "./tent.js";
+import { CL_RegisterTEntModels } from "./cl_tent.js";
 import type { ClientDynamicLight, ClientRefreshFrame, ClientRenderEntity, ClientRenderParticle } from "./refresh.js";
 
 /**

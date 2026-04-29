@@ -54,7 +54,7 @@ import {
   createGlRmainRuntime,
   type GlRmainRuntime,
   type GlRmainSpriteVertex
-} from "./gl-rmain.js";
+} from "./gl_rmain.js";
 import { createModel, modtype_t, type image_t, type model_t } from "./gl-model.js";
 import {
   GL_DrawAliasShadow,
@@ -64,7 +64,7 @@ import {
   buildAliasVertexColors,
   computeAliasShadeLight,
   sanitizeAliasFramePair
-} from "./gl-mesh.js";
+} from "./gl_mesh.js";
 
 const MD2_MODEL_EXTENSION = ".md2";
 const SPRITE_MODEL_EXTENSION = ".sp2";

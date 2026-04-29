@@ -29,7 +29,7 @@ export {
   computeAliasWeaponLightLevel,
   getAliasShadedotsForYaw,
   sanitizeAliasFramePair
-} from "./gl-mesh.js";
+} from "./gl_mesh.js";
 export {
   GL_DrawParticles,
   GL_DrawColoredStereoLinePair,
@@ -68,7 +68,7 @@ export {
   setRmainParticleTexture,
   setRmainVid,
   setRmainWorldModel
-} from "./gl-rmain.js";
+} from "./gl_rmain.js";
 export {
   GL_ALPHA_TEST,
   GL_BLEND,
@@ -107,7 +107,7 @@ export {
   setRmiscImageRuntime,
   setRmiscVid,
   swapRgbToBgr
-} from "./gl-rmisc.js";
+} from "./gl_rmisc.js";
 export {
   BoundPoly,
   ClipSkyPolygon,
@@ -138,7 +138,7 @@ export {
   setWarpSkyCvars,
   setWarpTurbulenceScale,
   setWarpViewOrigin
-} from "./gl-warp.js";
+} from "./gl_warp.js";
 export { r_turbsin } from "./warpsin.js";
 export {
   DLIGHT_CUTOFF,
@@ -163,7 +163,7 @@ export {
   setGlLightWorldModel,
   setGlModulate,
   setGlMonolightmapMode
-} from "./gl-light.js";
+} from "./gl_light.js";
 export {
   BACKFACE_EPSILON,
   GL_RENDERER_3DFX,
@@ -208,7 +208,7 @@ export {
   hasValidWorldMatrix,
   isGlImageNameWithinQPath,
   rserr_t
-} from "./gl-local.js";
+} from "./gl_local.js";
 export {
   Draw_GetPalette,
   GL_Bind,
@@ -258,7 +258,7 @@ export {
   setProtectedImages,
   setRoundDownEnabled,
   setVidGammaValue
-} from "./gl-image.js";
+} from "./gl_image.js";
 export {
   Draw_Char,
   Draw_FadeScreen,
@@ -285,7 +285,7 @@ export {
   setRendererFlags,
   setScrapDirty,
   setVidState
-} from "./gl-draw.js";
+} from "./gl_draw.js";
 export {
   GL_DISTANCE_ATTENUATION_EXT,
   GL_POINT_FADE_THRESHOLD_SIZE_EXT,
@@ -364,7 +364,7 @@ export {
   setWorldModel,
   chainSurfaceByImage,
   queueAlphaSurface
-} from "./gl-rsurf.js";
+} from "./gl_rsurf.js";
 export { getAliasShadedot, getAliasShadedots, R_AVERTEXNORMAL_DOTS, SHADEDOT_NORMALS, SHADEDOT_QUANT } from "./anormtab.js";
 export {
   CalcSurfaceExtents,
@@ -428,8 +428,8 @@ export {
 } from "./gl-model.js";
 
 export type { ThreeGlWorldSceneAdapter } from "./gl-world-scene-adapter.js";
-export type { GlImage, GlImageHooks, GlImageRuntime, GlImageUploadResult, GlImageUploadSource } from "./gl-image.js";
-export type { GlLightHooks, GlLightRuntime } from "./gl-light.js";
+export type { GlImage, GlImageHooks, GlImageRuntime, GlImageUploadResult, GlImageUploadSource } from "./gl_image.js";
+export type { GlLightHooks, GlLightRuntime } from "./gl_light.js";
 export type {
   GlRmainBeamSegment,
   GlRmainGlState,
@@ -441,9 +441,9 @@ export type {
   GlRmainStereoPattern,
   GlRmainSpriteVertex,
   GlRmainViewport
-} from "./gl-rmain.js";
-export type { GlRmiscHooks, GlRmiscRuntime, TargaHeader } from "./gl-rmisc.js";
-export type { GlWarpRuntime, GlWarpSkyFace, GlWarpWaterPoly, GlWarpWaterVertex } from "./gl-warp.js";
+} from "./gl_rmain.js";
+export type { GlRmiscHooks, GlRmiscRuntime, TargaHeader } from "./gl_rmisc.js";
+export type { GlWarpRuntime, GlWarpSkyFace, GlWarpWaterPoly, GlWarpWaterVertex } from "./gl_warp.js";
 export type {
   GL_DrawParticles_t,
   GL_BeginRenderingResult,
@@ -461,9 +461,9 @@ export type {
   glstate_t,
   glvert_t,
   viddef_t
-} from "./gl-local.js";
-export type { GlDrawHooks, GlDrawImage, GlDrawQuad, GlDrawRawUpload, GlDrawRuntime } from "./gl-draw.js";
-export type { GlLightmapState, GlRsurfEntityRef, GlRsurfHooks, GlRsurfLightstyle, GlRsurfRuntime } from "./gl-rsurf.js";
+} from "./gl_local.js";
+export type { GlDrawHooks, GlDrawImage, GlDrawQuad, GlDrawRawUpload, GlDrawRuntime } from "./gl_draw.js";
+export type { GlLightmapState, GlRsurfEntityRef, GlRsurfHooks, GlRsurfLightstyle, GlRsurfRuntime } from "./gl_rsurf.js";
 export type {
   QglDispatchTable,
   QglBootstrapOptions,
@@ -500,7 +500,7 @@ export type { ThreeDlightSync } from "./three-dlight-sync.js";
 export type { ThreeGlDrawAdapter } from "./three-gl-draw-adapter.js";
 export type { ThreePolyblendOverlay } from "./three-polyblend-overlay.js";
 export type { Md2AliasEntityState, Md2MeshBuildOptions, Md2MeshInstance } from "./md2-mesh-builder.js";
-export type { AliasShadeLightOptions } from "./gl-mesh.js";
+export type { AliasShadeLightOptions } from "./gl_mesh.js";
 export type { RefreshEntitySyncStats, ThreeRefreshEntitySync } from "./refresh-entity-sync.js";
 export type { ThreeParticleSync } from "./particle-sync.js";
 export type { LoadedQuakeSkyTextureSet, QuakeSkyResolver } from "./quake-sky-resolver.js";

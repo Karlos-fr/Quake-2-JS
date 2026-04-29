@@ -7,7 +7,7 @@
  *
  * Dependencies:
  * - packages/client/src/refresh.ts
- * - packages/renderer-three/src/gl-rmain.ts
+ * - packages/renderer-three/src/gl_rmain.ts
  * - three
  */
 
@@ -22,7 +22,7 @@ import {
   Vector3
 } from "three";
 import type { ClientRefreshFrame } from "../../client/src/refresh.js";
-import type { GlRmainHooks } from "./gl-rmain.js";
+import type { GlRmainHooks } from "./gl_rmain.js";
 
 export interface ThreePolyblendOverlay {
   scene: Scene;

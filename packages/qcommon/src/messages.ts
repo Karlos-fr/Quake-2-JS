@@ -59,7 +59,7 @@ import {
   type entity_state_t,
   type usercmd_t,
   type vec3_t
-} from "./q-shared.js";
+} from "./q_shared.js";
 
 const READ_STRING_LIMIT = 2048;
 const COORD_SCALE = 8;

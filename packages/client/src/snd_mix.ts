@@ -22,8 +22,8 @@ import type {
   playsound_t,
   portable_samplepair_t,
   sfxcache_t
-} from "./sound-local.js";
-import { MAX_CHANNELS, MAX_RAW_SAMPLES, S_IssuePlaysound, S_LoadSound } from "./sound-local.js";
+} from "./snd_loc.js";
+import { MAX_CHANNELS, MAX_RAW_SAMPLES, S_IssuePlaysound, S_LoadSound } from "./snd_loc.js";
 
 export const PAINTBUFFER_SIZE = 2048;
 

@@ -1,5 +1,5 @@
 /**
- * File: effects.ts
+ * File: cl_fx.ts
  * Source: Quake II original / client/cl_fx.c
  * Purpose: Port the main client-side effect, muzzle flash, dlight, lightstyle and particle routines into runtime-side structured outputs.
  *
@@ -73,13 +73,13 @@ import {
   temp_event_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import type { ClientEntityEvent } from "./entities.js";
+import type { ClientEntityEvent } from "./cl_ents.js";
 import type {
   ClientMuzzleFlash2Packet,
   ClientMuzzleFlashPacket,
   ClientParticleEffectPacket,
   ClientTempEntityPacket
-} from "./parse.js";
+} from "./cl_parse.js";
 import { getMonsterFlashOffset } from "./monster-flash.js";
 import {
   CL_BlasterParticles2,
@@ -93,7 +93,7 @@ import {
   CL_ParticleSmokeEffect,
   CL_ParticleSteamEffect,
   CL_WidowSplash
-} from "./newfx.js";
+} from "./cl_newfx.js";
 import { INSTANT_PARTICLE, MAX_DLIGHTS, type ClientRuntime, type centity_t, type cparticle_t } from "./types.js";
 import type { ClientDynamicLight, ClientRenderParticle } from "./refresh.js";
 

@@ -22,7 +22,7 @@ import {
   MOVETYPE_STEP,
   RANGE_MELEE,
   SOLID_BBOX
-} from "./g-local.js";
+} from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range } from "./g_ai.js";
 import { flymonster_start, monster_fire_blaster } from "./g_monster.js";
 import { BecomeExplosion1 } from "./g_misc.js";

@@ -1,5 +1,5 @@
 /**
- * File: gl-light.ts
+ * File: gl_light.ts
  * Source: Quake II original / ref_gl/gl_light.c
  * Purpose: Port the GL refresh dynamic-light marking, point sampling and lightmap building routines.
  *

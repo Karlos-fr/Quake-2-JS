@@ -10,7 +10,7 @@
  * - packages/filesystem
  * - packages/formats
  * - packages/qcommon
- * - packages/renderer-three/src/gl-rmain.ts
+ * - packages/renderer-three/src/gl_rmain.ts
  * - three
  */
 
@@ -33,7 +33,7 @@ import {
   R_DrawParticles,
   setRmainPaletteTable,
   setRmainParticleTexture
-} from "./gl-rmain.js";
+} from "./gl_rmain.js";
 
 export interface ThreeParticleSync {
   root: Group;

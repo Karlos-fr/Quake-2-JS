@@ -16,7 +16,7 @@
  * - This file is intended to stay close to the original spawn and team-linking flow.
  */
 
-import { MOVETYPE_PUSH, SOLID_BSP } from "./g-local.js";
+import { MOVETYPE_PUSH, SOLID_BSP } from "./g_local.js";
 import {
   SP_func_button,
   SP_func_conveyor,

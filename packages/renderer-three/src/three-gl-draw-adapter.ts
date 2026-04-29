@@ -6,8 +6,8 @@
  * It is an adapter layer between `GlDrawHooks` / `GlImageHooks` and Three.js.
  *
  * Dependencies:
- * - packages/renderer-three/src/gl-draw.ts
- * - packages/renderer-three/src/gl-image.ts
+ * - packages/renderer-three/src/gl_draw.ts
+ * - packages/renderer-three/src/gl_image.ts
  * - three
  */
 
@@ -29,8 +29,8 @@ import {
   type MagnificationTextureFilter,
   type MinificationTextureFilter
 } from "three";
-import type { GlDrawHooks, GlDrawQuad, GlDrawRawUpload } from "./gl-draw.js";
-import type { GlImageHooks } from "./gl-image.js";
+import type { GlDrawHooks, GlDrawQuad, GlDrawRawUpload } from "./gl_draw.js";
+import type { GlImageHooks } from "./gl_image.js";
 
 /**
  * Category: New

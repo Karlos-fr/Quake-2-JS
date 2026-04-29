@@ -1,5 +1,5 @@
 /**
- * File: gl-image.ts
+ * File: gl_image.ts
  * Source: Quake II original / ref_gl/gl_image.c
  * Purpose: Port the GL image manager used by the original refresh module.
  *

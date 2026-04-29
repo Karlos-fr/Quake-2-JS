@@ -1,5 +1,5 @@
 /**
- * File: parse.ts
+ * File: cl_parse.ts
  * Source: Quake II original / client/cl_parse.c and client/cl_ents.c
  * Purpose: Port the first Quake II client message parsing routines for server data, configstrings, baselines and frames.
  *
@@ -110,10 +110,10 @@ import {
 } from "../../qcommon/src/index.js";
 import { type ClientRuntime, type frame_t } from "./types.js";
 import { MAX_PARSE_ENTITIES, connstate_t, createFrame } from "./types.js";
-import { CL_FireEntityEvents, type ClientEntityEvent } from "./entities.js";
-import { CL_ClearEffects, CL_ExecuteTempEntityEffects, CL_ParticleEffect, CL_SetLightstyle } from "./effects.js";
-import { CL_AddNetgraph, SCR_CenterPrint, SCR_PlayCinematic } from "./screen.js";
-import { CL_AddTEntPacket, CL_ClearTEnts } from "./tent.js";
+import { CL_FireEntityEvents, type ClientEntityEvent } from "./cl_ents.js";
+import { CL_ClearEffects, CL_ExecuteTempEntityEffects, CL_ParticleEffect, CL_SetLightstyle } from "./cl_fx.js";
+import { CL_AddNetgraph, SCR_CenterPrint, SCR_PlayCinematic } from "./cl_scrn.js";
+import { CL_AddTEntPacket, CL_ClearTEnts } from "./cl_tent.js";
 import { CL_CheckPredictionError } from "./view.js";
 import { createClientCinematicState, createClientScreenState, createClientSkyState } from "./types.js";
 

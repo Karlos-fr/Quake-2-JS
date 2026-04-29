@@ -1,5 +1,5 @@
 /**
- * File: tent.ts
+ * File: cl_tent.ts
  * Source: Quake II original / client/cl_tent.c and client/client.h
  * Purpose: Port the persistent temporary-entity state used by client beams, explosions, lasers and sustains.
  *
@@ -31,10 +31,10 @@ import {
   temp_event_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import type { ClientTempEntityPacket } from "./parse.js";
+import type { ClientTempEntityPacket } from "./cl_parse.js";
 import type { ClientDynamicLight } from "./refresh.js";
 import type { ClientViewValues } from "./view.js";
-import { CL_Flashlight, CL_Heatbeam, CL_MonsterPlasma_Shell, CL_Nukeblast, CL_ParticleSteamEffect2, CL_Widowbeamout } from "./newfx.js";
+import { CL_Flashlight, CL_Heatbeam, CL_MonsterPlasma_Shell, CL_Nukeblast, CL_ParticleSteamEffect2, CL_Widowbeamout } from "./cl_newfx.js";
 import {
   createClientBeam,
   createClientExplosion,

@@ -30,7 +30,7 @@ import {
   FL_SWIM,
   ITEM_INDEX,
   MOD_TRIGGER_HURT
-} from "./g-local.js";
+} from "./g_local.js";
 import { FindItemByClassname } from "./g_items.js";
 import {
   FRAMETIME,

@@ -16,7 +16,7 @@
  * - This file is intended to stay close to the original C source.
  */
 
-import { GAMEVERSION } from "./g-local.js";
+import { GAMEVERSION } from "./g_local.js";
 import type { game_import_t } from "./game.js";
 import { PRINT_HIGH } from "../../qcommon/src/index.js";
 

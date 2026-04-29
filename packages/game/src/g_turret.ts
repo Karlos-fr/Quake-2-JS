@@ -38,7 +38,7 @@ import {
   MOD_CRUSH,
   SVF_MONSTER,
   damage_t
-} from "./g-local.js";
+} from "./g_local.js";
 import { FindTarget, visible } from "./g_ai.js";
 import { T_Damage } from "./g_combat.js";
 import { FindItemByClassname } from "./g_items.js";

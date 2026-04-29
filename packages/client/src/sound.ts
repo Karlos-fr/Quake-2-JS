@@ -17,7 +17,7 @@
  */
 
 import { CS_SOUNDS, MAX_SOUNDS } from "../../qcommon/src/index.js";
-import { CL_RegisterTEntSounds } from "./tent.js";
+import { CL_RegisterTEntSounds } from "./cl_tent.js";
 import type { ClientRuntime } from "./types.js";
 
 /**

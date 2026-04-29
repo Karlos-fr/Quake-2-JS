@@ -38,7 +38,7 @@ import {
 import type { GameEntity, GameRuntime } from "./runtime.js";
 import { M_CheckBottom } from "./m_move.js";
 import { touchTriggerEntities } from "./touch.js";
-import { FL_FLY, FL_SWIM } from "./g-local.js";
+import { FL_FLY, FL_SWIM } from "./g_local.js";
 import {
   AngleVectors,
   MASK_MONSTERSOLID,

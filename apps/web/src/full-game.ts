@@ -122,15 +122,15 @@ import {
   SCR_RunCinematic,
   SCR_RunConsole,
   SCR_StopCinematic
-} from "../../../packages/client/src/screen.js";
+} from "../../../packages/client/src/cl_scrn.js";
 import { CL_RegisterSounds } from "../../../packages/client/src/sound.js";
 import type {
   ClientMuzzleFlash2Packet,
   ClientMuzzleFlashPacket,
   ClientTempEntityPacket
-} from "../../../packages/client/src/parse.js";
-import type { ClientEntityEvent } from "../../../packages/client/src/entities.js";
-import { CL_InitInput, createClientInputContext, createClientSendCmdBridge } from "../../../packages/client/src/input.js";
+} from "../../../packages/client/src/cl_parse.js";
+import type { ClientEntityEvent } from "../../../packages/client/src/cl_ents.js";
+import { CL_InitInput, createClientInputContext, createClientSendCmdBridge } from "../../../packages/client/src/cl_input.js";
 import {
   CL_Frame,
   CL_InitLocal,
@@ -139,7 +139,7 @@ import {
   Cmd_ForwardToServer as CL_Cmd_ForwardToServer,
   createClientMainContext,
   type ClientMainContext
-} from "../../../packages/client/src/main.js";
+} from "../../../packages/client/src/cl_main.js";
 import {
   CL_BuildActionEffects,
   CL_BuildEntityEventEffects,
@@ -147,9 +147,9 @@ import {
   CL_LogoutEffect,
   CL_ParticleEffect,
   type ClientActionEffect
-} from "../../../packages/client/src/effects.js";
-import { CL_SmokeAndFlash } from "../../../packages/client/src/tent.js";
-import { createClientScreenContext } from "../../../packages/client/src/screen.js";
+} from "../../../packages/client/src/cl_fx.js";
+import { CL_SmokeAndFlash } from "../../../packages/client/src/cl_tent.js";
+import { createClientScreenContext } from "../../../packages/client/src/cl_scrn.js";
 import {
   createClientSndDmaContext,
   S_BeginRegistration as S_DMA_BeginRegistration,
@@ -164,7 +164,7 @@ import {
   S_Update as S_DMA_Update,
   type ClientSndDmaContext
 } from "../../../packages/client/src/snd_dma.js";
-import { createClientSoundLocalContext, type ClientSoundLocalContext, type playsound_t, type sfx_t } from "../../../packages/client/src/sound-local.js";
+import { createClientSoundLocalContext, type ClientSoundLocalContext, type playsound_t, type sfx_t } from "../../../packages/client/src/snd_loc.js";
 import {
   CL_CalcViewValues,
   CL_PredictMovement,

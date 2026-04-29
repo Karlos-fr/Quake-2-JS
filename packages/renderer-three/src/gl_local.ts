@@ -1,5 +1,5 @@
 /**
- * File: gl-local.ts
+ * File: gl_local.ts
  * Source: Quake II original / ref_gl/gl_local.h
  * Purpose: Port the shared GL renderer declarations, constants and global state exposed by the original refresh header.
  *
@@ -23,7 +23,7 @@ import type { cvar_t } from "../../qcommon/src/cvar.js";
 import { MAX_QPATH } from "../../qcommon/src/index.js";
 import type { cplane_t, qboolean, vec3_t } from "../../qcommon/src/index.js";
 import type { dlight_t, entity_t, particle_t, refdef_t, refimport_t } from "../../client/src/ref.js";
-import type { GlImage } from "./gl-image.js";
+import type { GlImage } from "./gl_image.js";
 import type { glpoly_t, model_t, msurface_t, mnode_t } from "./gl-model.js";
 
 export {
@@ -32,7 +32,7 @@ export {
   TEXNUM_LIGHTMAPS,
   TEXNUM_SCRAPS,
   imagetype_t
-} from "./gl-image.js";
+} from "./gl_image.js";
 
 export const REF_VERSION = "GL 0.01";
 

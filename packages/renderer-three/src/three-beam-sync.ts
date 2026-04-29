@@ -11,7 +11,7 @@
  * - packages/filesystem
  * - packages/formats
  * - packages/qcommon
- * - packages/renderer-three/src/gl-rmain.ts
+ * - packages/renderer-three/src/gl_rmain.ts
  * - three
  */
 
@@ -32,7 +32,7 @@ import {
   createGlRmainRuntime,
   setRmainPaletteTable,
   type GlRmainBeamSegment
-} from "./gl-rmain.js";
+} from "./gl_rmain.js";
 
 export interface ThreeBeamSync {
   root: Group;

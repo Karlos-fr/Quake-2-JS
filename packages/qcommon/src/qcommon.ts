@@ -16,7 +16,7 @@
  * - This file is the principal TypeScript attachment point for `qcommon/qcommon.h`.
  */
 
-import type { byte, qboolean } from "./q-shared.js";
+import type { byte, qboolean } from "./q_shared.js";
 import type { cvar_t } from "./cvar.js";
 import type { sizebuf_t } from "../../memory/src/index.js";
 import { createSizeBuffer, SZ_Clear, SZ_Init, SZ_Write } from "../../memory/src/index.js";

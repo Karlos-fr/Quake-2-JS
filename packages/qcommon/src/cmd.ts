@@ -17,7 +17,7 @@
  */
 
 import { createSizeBuffer, SZ_Clear, SZ_Write, type sizebuf_t } from "../../memory/src/index.js";
-import { MAX_STRING_CHARS, MAX_STRING_TOKENS } from "./q-shared.js";
+import { MAX_STRING_CHARS, MAX_STRING_TOKENS } from "./q_shared.js";
 import { COM_Argc, COM_Argv, COM_ClearArgv, type CommonRuntime } from "./common.js";
 
 export const EXEC_NOW = 0;

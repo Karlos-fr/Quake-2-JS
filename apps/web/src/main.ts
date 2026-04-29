@@ -1,5 +1,5 @@
 /**
- * File: main.ts
+ * File: cl_main.ts
  * Purpose: Boot a browser demo that loads Quake II assets, parses one BSP map and renders it with Three.js.
  *
  * This file is not a direct source port.

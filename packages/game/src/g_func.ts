@@ -29,7 +29,7 @@ import {
   type vec3_t
 } from "../../qcommon/src/index.js";
 import { T_Damage } from "./g_combat.js";
-import { damage_t, MOD_CRUSH } from "./g-local.js";
+import { damage_t, MOD_CRUSH } from "./g_local.js";
 import { G_Find, G_PickTarget, G_SetMovedir, G_UseTargets, KillBox, vtos } from "./g_utils.js";
 import {
   DOOR_CRUSHER,

@@ -39,7 +39,7 @@ import {
   CONTENTS_DEADMONSTER,
   CONTENTS_MONSTER,
   CONTENTS_SOLID
-} from "../../qcommon/src/q-shared.js";
+} from "../../qcommon/src/q_shared.js";
 import {
   DAMAGE_ENERGY,
   FL_IMMUNE_LASER,
@@ -49,7 +49,7 @@ import {
   MOD_TARGET_BLASTER,
   MOD_TARGET_LASER,
   SFL_CROSS_TRIGGER_MASK
-} from "./g-local.js";
+} from "./g_local.js";
 import {
   FRAMETIME,
   MOVETYPE_NONE,

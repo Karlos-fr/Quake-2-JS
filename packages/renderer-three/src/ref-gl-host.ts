@@ -8,8 +8,8 @@
  * Dependencies:
  * - packages/client/src/ref.ts
  * - packages/renderer-three/src/ref-gl-bootstrap.ts
- * - packages/renderer-three/src/gl-rmain.ts
- * - packages/renderer-three/src/gl-rmisc.ts
+ * - packages/renderer-three/src/gl_rmain.ts
+ * - packages/renderer-three/src/gl_rmisc.ts
  */
 
 import { createRefImport, type refexport_t, type refimport_t } from "../../client/src/ref.js";
@@ -34,9 +34,9 @@ import {
   setRoundDownEnabled,
   setVidGammaValue,
   type GlImageRuntime
-} from "./gl-image.js";
-import { GetRefAPI, setRmainParticleTexture, type GlRmainRefApiHooks } from "./gl-rmain.js";
-import { setWarpTurbulenceScale, type GlWarpRuntime } from "./gl-warp.js";
+} from "./gl_image.js";
+import { GetRefAPI, setRmainParticleTexture, type GlRmainRefApiHooks } from "./gl_rmain.js";
+import { setWarpTurbulenceScale, type GlWarpRuntime } from "./gl_warp.js";
 import {
   GL_ScreenShot_f,
   GL_SetDefaultState,
@@ -52,7 +52,7 @@ import {
   syncRmiscExtensionStateFromRmain,
   type GlRmiscHooks,
   type GlRmiscRuntime
-} from "./gl-rmisc.js";
+} from "./gl_rmisc.js";
 import {
   Draw_Char,
   Draw_FadeScreen,
@@ -73,7 +73,7 @@ import {
   setVidState,
   type GlDrawHooks,
   type GlDrawRuntime
-} from "./gl-draw.js";
+} from "./gl_draw.js";
 import { createRefGlBootstrap, type RefGlBootstrap, type RefGlBootstrapOptions } from "./ref-gl-bootstrap.js";
 import type { QglProcedure } from "./qgl.js";
 
