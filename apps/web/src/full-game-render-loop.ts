@@ -90,6 +90,11 @@ export interface FullGameRenderLoop {
   renderFrame: (options: {
     source: FullGameRenderSource;
     elapsedSeconds: number;
+    drawOverlay?: (api: {
+      ref: refexport_t;
+      viewportWidth: number;
+      viewportHeight: number;
+    }) => void;
   }) => void;
   renderOverlay: (draw: (api: {
     ref: refexport_t;
@@ -153,7 +158,7 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
     polyblendOverlay.setViewport(width, height);
   };
 
-  const renderFrame: FullGameRenderLoop["renderFrame"] = ({ source, elapsedSeconds }) => {
+  const renderFrame: FullGameRenderLoop["renderFrame"] = ({ source, elapsedSeconds, drawOverlay }) => {
     updateAudioListener(audio, camera);
     if (enableRenderSourceAudio) {
       flushLocalGameplaySounds(source, filesystem, audio, camera);
@@ -196,6 +201,11 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
         bindings: hudBindings
       }
     );
+    drawOverlay?.({
+      ref,
+      viewportWidth: viewportSize.width,
+      viewportHeight: viewportSize.height
+    });
 
     renderer.autoClear = false;
     renderer.clear();

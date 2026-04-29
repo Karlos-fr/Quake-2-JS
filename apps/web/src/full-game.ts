@@ -1522,7 +1522,8 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
     drawMenuFrame(runtime, page);
   }
 
-  if (runtime.menu.keys.state.key_dest === keydest_t.key_console) {
+  if (runtime.menu.keys.state.key_dest === keydest_t.key_console
+    && !(runtime.mode === "game" && runtime.gameRenderer !== null)) {
     page.status.style.display = "none";
     drawConsoleFrame(runtime, page);
   }
@@ -1661,7 +1662,14 @@ function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSecond
   syncThreeCameraToRefresh(renderer.camera, source.refreshFrame);
   renderer.renderLoop.renderFrame({
     source,
-    elapsedSeconds: runtime.client.cl.time * 0.001
+    elapsedSeconds: runtime.client.cl.time * 0.001,
+    ...(runtime.menu.keys.state.key_dest === keydest_t.key_console
+      ? {
+          drawOverlay: ({ ref, viewportWidth, viewportHeight }) => {
+            drawConsoleFrameRef(runtime, ref, viewportWidth, viewportHeight);
+          }
+        }
+      : {})
   });
 }
 
@@ -1921,7 +1929,20 @@ function drawConsoleSnapshotCanvas(
   drawConsoleText(page, runtime, snapshot.version);
 }
 
-function drawConsoleFrameRef(ref: refexport_t, snapshot: ConsoleDrawConsoleSnapshot): void {
+function drawConsoleFrameRef(
+  runtime: FullGameRuntime,
+  ref: refexport_t,
+  viewportWidth: number,
+  viewportHeight: number
+): void {
+  const frac = SCR_RunConsole(runtime.client, {
+    keyDest: "console"
+  });
+  const snapshot = Con_DrawConsole(runtime.console, frac, viewportWidth, viewportHeight);
+  if (!snapshot) {
+    return;
+  }
+
   ref.DrawStretchPic(
     snapshot.background.x,
     snapshot.background.y,
