@@ -43,8 +43,8 @@ import {
   emitGameSound,
   freeGameEntity,
   linkGameEntity,
-  registerGameModel,
-  registerGameSound
+  registerGameSound,
+  setGameEntityModel
 } from "./runtime.js";
 import { G_SetMovedir, G_UseTargets, vtos } from "./g_utils.js";
 import { G_TouchSolids } from "./touch.js";
@@ -713,7 +713,7 @@ function setEntityModel(self: GameEntity, runtime: GameRuntime): void {
     return;
   }
 
-  self.s.modelindex = registerGameModel(runtime, self.model);
+  setGameEntityModel(runtime, self, self.model);
 }
 
 function emitRegisteredSound(runtime: GameRuntime, entity: GameEntity | null, soundIndex: number, fallbackPath: string): void {

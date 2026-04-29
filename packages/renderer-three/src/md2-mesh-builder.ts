@@ -237,8 +237,9 @@ export function applyMd2AliasFrameLerp(meshInstance: Md2MeshInstance, entityStat
     return;
   }
 
+  const shell = hasShellFlags(entityState.flags);
   const oldframe = meshInstance.model.frames[entityState.oldframe];
-  if (!oldframe || entityState.frame === entityState.oldframe || entityState.backlerp <= 0) {
+  if (!shell && (!oldframe || entityState.frame === entityState.oldframe || entityState.backlerp <= 0)) {
     applyMd2Frame(meshInstance, entityState.frame);
     return;
   }
@@ -248,7 +249,9 @@ export function applyMd2AliasFrameLerp(meshInstance: Md2MeshInstance, entityStat
     return;
   }
 
-  const frontlerp = 1 - entityState.backlerp;
+  const frontlerp = oldframe && entityState.frame !== entityState.oldframe && entityState.backlerp > 0
+    ? 1 - entityState.backlerp
+    : 1;
   const vectors = AngleVectors(entityState.angles);
   const delta: [number, number, number] = [
     entityState.oldorigin[0] - entityState.origin[0],
@@ -262,9 +265,9 @@ export function applyMd2AliasFrameLerp(meshInstance: Md2MeshInstance, entityStat
     DotProduct(delta, vectors.up)
   ];
 
-  move[0] += oldframe.translate[0];
-  move[1] += oldframe.translate[1];
-  move[2] += oldframe.translate[2];
+  move[0] += oldframe?.translate[0] ?? frame.translate[0];
+  move[1] += oldframe?.translate[1] ?? frame.translate[1];
+  move[2] += oldframe?.translate[2] ?? frame.translate[2];
 
   move[0] = entityState.backlerp * move[0] + frontlerp * frame.translate[0];
   move[1] = entityState.backlerp * move[1] + frontlerp * frame.translate[1];
@@ -276,18 +279,17 @@ export function applyMd2AliasFrameLerp(meshInstance: Md2MeshInstance, entityStat
     frontlerp * frame.scale[2]
   ];
   const backv: [number, number, number] = [
-    entityState.backlerp * oldframe.scale[0],
-    entityState.backlerp * oldframe.scale[1],
-    entityState.backlerp * oldframe.scale[2]
+    oldframe ? entityState.backlerp * oldframe.scale[0] : 0,
+    oldframe ? entityState.backlerp * oldframe.scale[1] : 0,
+    oldframe ? entityState.backlerp * oldframe.scale[2] : 0
   ];
-  const shell = hasShellFlags(entityState.flags);
 
   const array = positionAttribute.array as Float32Array;
   let writeIndex = 0;
 
   for (const sourceVertexIndex of meshInstance.vertexIndices) {
     const v = frame.verts[sourceVertexIndex];
-    const ov = oldframe.verts[sourceVertexIndex];
+    const ov = oldframe?.verts[sourceVertexIndex] ?? v;
     if (!v || !ov) {
       array[writeIndex] = 0;
       array[writeIndex + 1] = 0;

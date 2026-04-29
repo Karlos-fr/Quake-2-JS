@@ -21,6 +21,7 @@ import {
   attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameSoundEvents,
+  emitMonsterMuzzleFlash,
   emitGameTempEntity,
   emitPlayerMuzzleFlash,
   registerGameModel,
@@ -34,6 +35,7 @@ main();
 
 function main(): void {
   verifyLocalMuzzleFlashReachesRefreshLights();
+  verifyLocalMonsterMuzzleFlashReachesRefreshLights();
   verifyLocalBlasterImpactReachesRefreshEntities();
   verifyLocalExplosionSoundIsQueued();
   verifyOutOfProtocolEntityNumbersAreSkipped();
@@ -61,6 +63,32 @@ function verifyLocalMuzzleFlashReachesRefreshLights(): void {
   assertBoolean(Boolean(muzzleLight), true, "local muzzle flash must become a refresh dynamic light");
   assertBoolean((muzzleLight?.intensity ?? 0) > 0, true, "local muzzle flash light must be visible");
   assertBoolean(sounds.some((event) => event.soundPath === "weapons/blastf1a.wav"), true, "local muzzle flash must queue weapon fire sound");
+}
+
+function verifyLocalMonsterMuzzleFlashReachesRefreshLights(): void {
+  const client = createClientRuntime();
+  const gameplay = createHarnessRuntime();
+  const monster = spawnGameEntity(gameplay);
+
+  monster.classname = "misc_actor";
+  monster.inuse = true;
+  monster.s.origin = [48, 64, 24];
+  monster.s.angles = [0, 90, 0];
+  monster.s.modelindex = registerGameModel(gameplay, "players/male/tris.md2");
+
+  syncLocalGameplayFrame(client, gameplay);
+
+  emitMonsterMuzzleFlash(gameplay, monster, [48, 64, 24], 63);
+  assertNumber(gameplay.monsterMuzzleFlashEvents.length, 1, "monster muzzle flash event must be queued before sync");
+
+  syncLocalGameplayFrame(client, gameplay);
+  const refresh = CL_BuildRefreshFrame(client, { predictMovement: false });
+  const muzzleLight = refresh.lights.find((light) => light.kind === "dlight" && light.sourceEntity === monster.index);
+  const sounds = drainGameSoundEvents(gameplay);
+
+  assertNumber(gameplay.monsterMuzzleFlashEvents.length, 0, "monster muzzle flash event must be drained by sync");
+  assertBoolean(Boolean(muzzleLight), true, "local monster muzzle flash must become a refresh dynamic light");
+  assertBoolean(sounds.some((event) => event.soundPath === "infantry/infatck1.wav"), true, "actor monster muzzle flash must queue machinegun sound");
 }
 
 function verifyLocalBlasterImpactReachesRefreshEntities(): void {

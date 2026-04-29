@@ -11,7 +11,7 @@
  * Deviations:
  * - Spawn-temp fields are read from parsed entity properties instead of the original global `st`.
  * - `turret_breach_fire` queues a gameplay sound event instead of calling `gi.positioned_sound` directly.
- * - `turret_driver_die` keeps the turret-specific unlink semantics explicit, then falls back to a reduced infantry death cleanup until `m_infantry.c` is ported.
+ * - `turret_driver_die` keeps the turret-specific unlink semantics explicit before calling the ported infantry death handler.
  *
  * Notes:
  * - This file is intended to stay close to the original C source.
@@ -43,6 +43,7 @@ import { FindItemByClassname } from "./g_items.js";
 import { monster_use } from "./g_monster.js";
 import { G_FreeEdict, G_PickTarget, vectoangles, vtos } from "./g_utils.js";
 import { fire_rocket } from "./g_weapon.js";
+import { infantry_die, infantry_stand } from "./m_infantry.js";
 import {
   MOVETYPE_PUSH,
   SOLID_BBOX,
@@ -379,7 +380,7 @@ export function turret_driver_die(
 
   self.teammaster = null;
   self.flags &= ~0x00000400;
-  fallbackInfantryDie(self, inflictor, attacker, damage, runtime);
+  infantry_die(self, inflictor, attacker, damage, runtime);
 }
 
 /**
@@ -545,30 +546,6 @@ export function SP_turret_driver(self: GameEntity, runtime: GameRuntime): void {
 
   refreshEntitySpatialState(self);
   linkGameEntity(runtime, self);
-}
-
-function infantry_stand(_self: GameEntity, _runtime: GameRuntime): void {
-}
-
-function fallbackInfantryDie(
-  self: GameEntity,
-  _inflictor: GameEntity | null,
-  attacker: GameEntity | null,
-  damage: number,
-  runtime: GameRuntime
-): void {
-  if (self.health > 0) {
-    self.health -= damage;
-  }
-  self.enemy = attacker;
-  self.deadflag = 1;
-  self.takedamage = damage_t.DAMAGE_YES;
-  self.velocity = [0, 0, 0];
-  self.avelocity = [0, 0, 0];
-  self.think = undefined;
-  self.nextthink = 0;
-
-  void runtime;
 }
 
 function parseEntityFloat(entity: GameEntity, key: string, fallback: number): number {

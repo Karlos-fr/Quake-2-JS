@@ -1031,6 +1031,7 @@ export function PutClientInServer(
   ent.s.origin = [...spawn.origin];
   ent.s.origin[2] += 1;
   ent.s.old_origin = [...ent.s.origin];
+  ent.origin = [...ent.s.origin];
 
   for (let i = 0; i < 3; i += 1) {
     client.ps.pmove.delta_angles[i] = ANGLE2SHORT(spawn.angles[i] - client.resp.cmd_angles[i]);
@@ -1039,6 +1040,7 @@ export function PutClientInServer(
   ent.s.angles[PITCH] = 0;
   ent.s.angles[YAW] = spawn.angles[YAW];
   ent.s.angles[ROLL] = 0;
+  ent.angles = [...ent.s.angles];
   client.ps.viewangles = [...ent.s.angles];
   client.v_angle = [...ent.s.angles];
 
@@ -1690,6 +1692,7 @@ export function ClientThink(
       ent.s.origin[i] = pm.s.origin[i] * 0.125;
       ent.velocity[i] = pm.s.velocity[i] * 0.125;
     }
+    ent.origin = [...ent.s.origin];
 
     ent.mins = [...pm.mins];
     ent.maxs = [...pm.maxs];

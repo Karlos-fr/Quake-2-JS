@@ -433,19 +433,27 @@ export {
 export {
   CL_AddNetgraph,
   DrawHUDString,
+  DrawHUDStringRef,
   createClientScreenContext,
   SCR_AddDirtyPoint,
   SCR_BuildHudDrawCommands,
+  SCR_DrawHudRef,
   SCR_DrawLoading,
   SCR_DrawNet,
   SCR_DrawPause,
   SCR_DirtyScreen,
   SCR_DrawCinematic,
+  SCR_DrawCinematicRef,
+  SCR_DrawCrosshairRef,
   SCR_DrawDebugGraph,
   SCR_ExecuteLayoutString,
+  SCR_ExecuteLayoutStringRef,
   SCR_DrawField,
+  SCR_DrawFieldRef,
   SCR_DrawLayout,
+  SCR_DrawLayoutRef,
   SCR_DrawStats,
+  SCR_DrawStatsRef,
   SCR_DebugGraph,
   SCR_FinishCinematic,
   SCR_Init,
@@ -469,7 +477,9 @@ export {
 } from "./screen.js";
 export {
   CL_DrawInventory,
+  CL_DrawInventoryRef,
   Inv_DrawString,
+  Inv_DrawStringRef,
   SetStringHighBit
 } from "./inventory.js";
 export type {
@@ -629,6 +639,7 @@ export {
   CL_AddTEnts,
   CL_BuildTEntRefresh,
   CL_ClearTEnts,
+  CL_SmokeAndFlash,
   CL_ProcessSustain,
   CL_RegisterTEntModels,
   CL_RegisterTEntSounds

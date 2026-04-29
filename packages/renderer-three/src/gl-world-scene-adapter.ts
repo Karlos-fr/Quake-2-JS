@@ -234,9 +234,9 @@ export function createThreeGlWorldSceneAdapter(
     renderWaterPoly: (surface) => {
       surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface);
     },
-    renderAlphaSurface: (surface) => {
+    renderAlphaSurface: (surface, _image, alpha) => {
       surfaceMeshes.get(surface)?.mesh
-        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, alphaDrawState.nextRenderOrder++);
+        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, alphaDrawState.nextRenderOrder++, undefined, alpha);
     },
     renderLightmappedPolyChain: (surface, _image, lightmapTextureIndex) => {
       const dynamicTexture = lightmapTextureIndex === 0
@@ -493,7 +493,7 @@ function buildWorldGroup(
           surface,
           uvAttribute: mesh.geometry.getAttribute("uv") as BufferAttribute,
           lightmapUvAttribute: mesh.geometry.getAttribute("uv1") as BufferAttribute,
-          lightmapped: ((surface.flags & SURF_DRAWTURB) === 0) && alphaForSurface(surface) >= 1,
+          lightmapped: (surface.flags & SURF_DRAWTURB) === 0,
           warp: (surface.flags & SURF_DRAWTURB) !== 0,
           flowing: ((surface.texinfo?.flags ?? 0) & SURF_FLOWING) !== 0,
           currentMapSource: null,
@@ -592,6 +592,13 @@ function buildSurfaceMesh(
   const mesh = new Mesh(geometry, material);
   mesh.name = `gl-surface:${surface.lightmaptexturenum}`;
   mesh.userData.lightmapTextures = lightmapTextures;
+  mesh.userData.refGl = {
+    surfaceFlags: surface.flags,
+    texinfoFlags: surface.texinfo.flags,
+    lightmapped: warp ? false : true,
+    warp,
+    flowing
+  };
   mesh.renderOrder = alpha < 1 ? 1 : 0;
   return mesh;
 }
@@ -634,7 +641,7 @@ function createSurfaceMaterial(
   const map = createMaterialTexture(baseTexture, flowing && !warp);
   map.needsUpdate = true;
 
-  if (warp || alpha < 1) {
+  if (warp) {
     const material = new MeshBasicMaterial({
       map,
       side: BackSide,
@@ -989,7 +996,8 @@ function markSurfaceVisible(
   surfaceMeshes: Map<msurface_t, SurfaceMeshBinding>,
   surface: msurface_t,
   renderOrder?: number,
-  lightmapOverride?: SurfaceLightmapBinding
+  lightmapOverride?: SurfaceLightmapBinding,
+  alphaOverride?: number
 ): void {
   const binding = surfaceMeshes.get(surface);
   if (!binding) {
@@ -1004,7 +1012,7 @@ function markSurfaceVisible(
   };
   syncSurfaceLightmap(binding, lightmap);
   const entityAlpha = binding.modelIndex > 0 ? runtime.currentEntityAlpha : null;
-  const opacity = entityAlpha ?? binding.baseOpacity;
+  const opacity = entityAlpha ?? alphaOverride ?? binding.baseOpacity;
   binding.mesh.material.transparent = opacity < 1;
   binding.mesh.material.opacity = opacity;
   binding.mesh.material.depthWrite = opacity >= 1;
@@ -1109,7 +1117,7 @@ function drawInlineBrushModels(
       frame: 0,
       origin: [snapshot.origin[0], snapshot.origin[1], snapshot.origin[2]],
       angles: [snapshot.angles[0], snapshot.angles[1], snapshot.angles[2]],
-      flags: 0
+      flags: snapshot.flags ?? 0
     });
   }
 }

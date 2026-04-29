@@ -33,7 +33,6 @@ import {
   createClientRuntime,
   initializeLocalClientSession,
   setLocalLayoutBit,
-  type LocalClientCollisionAdapter,
   stepLocalClientSession,
   toggleLocalLayoutBit,
   type BrushModelSnapshot,
@@ -46,16 +45,17 @@ import {
 } from "../../../packages/client/src/index.js";
 import {
   LOCAL_WEAPON_SLOTS,
+  drainGameSoundEvents,
   selectLocalDemoWeapon,
-  type GameEntity,
+  type GameSoundEvent,
   type GameRuntime
 } from "../../../packages/game/src/index.js";
 import {
   AngleVectors,
   CVAR_ARCHIVE,
   Cvar_Get,
+  Cvar_SetValue,
   Cvar_VariableValue,
-  MASK_PLAYERSOLID,
   PITCH,
   STAT_SELECTED_ITEM,
   YAW,
@@ -63,6 +63,7 @@ import {
   createCvarRuntime,
 } from "../../../packages/qcommon/src/index.js";
 import type { BspSpawnPoint, BspMap } from "../../../packages/formats/src/index.js";
+import { createLocalCollisionAdapter } from "./local-collision-adapter.js";
 const CAMERA_MOUSE_SENSITIVITY = 0.0022;
 type MovementKey = "forward" | "backward" | "left" | "right" | "up" | "down";
 
@@ -82,6 +83,8 @@ export interface LocalClientController {
   ghostMode: boolean;
   getBrushModelSnapshots: () => BrushModelSnapshot[];
   getCvarValue: (name: string) => number;
+  resolveSoundPath: (soundIndex: number) => string | null;
+  drainLocalGameplaySounds: () => GameSoundEvent[];
   setGhostMode: (enabled: boolean) => void;
   update: (deltaSeconds: number) => void;
 }
@@ -114,6 +117,8 @@ export function createLocalClientController(
   CL_InitLocal(mainContext);
   const viewContext = createClientViewContext(runtime, cmdRuntime, cvarRuntime);
   V_Init(viewContext);
+  Cvar_SetValue(cvarRuntime, "crosshair", 1);
+  Cvar_Get(cvarRuntime, "gl_polyblend", "1", 0);
   Cvar_Get(cvarRuntime, "gl_shadows", "0", CVAR_ARCHIVE);
 
   const inputContext = createClientInputContext(runtime, cmdRuntime, cvarRuntime);
@@ -277,6 +282,8 @@ export function createLocalClientController(
     },
     getBrushModelSnapshots: () => buildInterpolatedBrushModelSnapshots(brushModelInterpolation, session.realtimeMs / 1000),
     getCvarValue: (name) => Cvar_VariableValue(cvarRuntime, name),
+    resolveSoundPath: (soundIndex) => gameplayRuntime.assets.soundPaths[soundIndex - 1] ?? null,
+    drainLocalGameplaySounds: () => drainGameSoundEvents(gameplayRuntime),
     setGhostMode: (enabled) => {
       session.ghostMode = enabled;
       applyLocalMovementMode(runtime, session.ghostMode);
@@ -315,37 +322,6 @@ export function createLocalClientController(
     });
   }
 }
-
-/**
- * Category: New
- * Purpose: Build the local collision adapter that reuses the gameplay collision bridge for browser-side prediction.
- *
- * Constraints:
- * - Must stay close to Quake II `CL_PMTrace` / `CL_PMpointcontents` behavior.
- * - Must consume the current transformed inline-model poses from the gameplay runtime.
- */
-export function createLocalCollisionAdapter(
-  gameplayRuntime: GameRuntime,
-  gameplayPlayer: GameEntity | null
-): LocalClientCollisionAdapter {
-  return {
-    trace: (start, mins, maxs, end) => {
-      if (!gameplayRuntime.collision) {
-        throw new Error("createLocalCollisionAdapter requires gameplay collision bridge");
-      }
-
-      return gameplayRuntime.collision.trace(start, mins, maxs, end, gameplayPlayer, MASK_PLAYERSOLID);
-    },
-    pointcontents: (point) => {
-      if (!gameplayRuntime.collision) {
-        throw new Error("createLocalCollisionAdapter requires gameplay collision bridge");
-      }
-
-      return gameplayRuntime.collision.pointcontents(point, gameplayPlayer);
-    }
-  };
-}
-
 
 /**
  * Category: New

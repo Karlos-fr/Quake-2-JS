@@ -69,6 +69,8 @@ const sync = createThreeRefreshEntitySync(filesystem);
 const stats = sync.apply(runtime, refreshFrame);
 assert.equal(stats.renderedEntities, 1, "sprite renderedEntities mismatch");
 assert.equal(stats.skippedNonMd2Model, 0, "sprite skip mismatch");
+assert.equal(sync.root.userData.refGl?.source, "R_DrawEntitiesOnList", "sprite dispatch source mismatch");
+assert.equal(sync.root.userData.refGl?.queuedEntities, 1, "sprite queued entity count mismatch");
 assert.equal(sync.root.children.length, 1, "sprite root child mismatch");
 
 const spriteRoot = sync.root.children[0] as { children: Array<{ geometry?: { getAttribute: (name: string) => { count: number } | undefined }; material?: { opacity?: number; transparent?: boolean } }>; visible?: boolean };
@@ -79,6 +81,20 @@ assert.equal(spriteMesh.geometry?.getAttribute("position")?.count, 4, "sprite qu
 assert.equal(spriteMesh.geometry?.getAttribute("uv")?.count, 4, "sprite quad uv count mismatch");
 assert.equal(spriteMesh.material?.opacity, 0.75, "sprite opacity mismatch");
 assert.equal(spriteMesh.material?.transparent, true, "sprite transparency mismatch");
+
+const opaqueAlphaStats = sync.apply(runtime, {
+  ...refreshFrame,
+  entities: [{
+    ...refreshFrame.entities[0],
+    alpha: 1,
+    flags: RF_TRANSLUCENT
+  }]
+});
+assert.equal(opaqueAlphaStats.renderedEntities, 1, "sprite RF_TRANSLUCENT alpha-1 renderedEntities mismatch");
+const translucentFlagSpriteRoot = sync.root.children[0] as { children: Array<{ material?: { opacity?: number; transparent?: boolean } }> };
+const translucentFlagSpriteMesh = translucentFlagSpriteRoot.children[0];
+assert.equal(translucentFlagSpriteMesh.material?.opacity, 1, "sprite RF_TRANSLUCENT alpha-1 opacity mismatch");
+assert.equal(translucentFlagSpriteMesh.material?.transparent, true, "sprite RF_TRANSLUCENT flag transparency mismatch");
 
 const clearedStats = sync.apply(runtime, {
   ...refreshFrame,

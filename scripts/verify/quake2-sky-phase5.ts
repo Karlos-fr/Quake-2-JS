@@ -13,7 +13,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { PerspectiveCamera } from "three";
+import { Mesh, PerspectiveCamera } from "three";
 import type { QuakeSkySnapshot } from "../../packages/renderer-common/src/index.js";
 import { createVirtualFilesystem, mountPak } from "../../packages/filesystem/src/index.js";
 import { createQuakeSkyResolver, createThreeSkySceneAdapter } from "../../packages/renderer-three/src/index.js";
@@ -69,6 +69,33 @@ function main(): void {
 
   adapter.update(firstSnapshot, camera, 4);
   assertChildCount(adapter.root.children.length, 1, "apres recreation du ciel");
+
+  adapter.update(firstSnapshot, camera, 5, [{
+    axis: 2,
+    mins: [-0.25, -0.5],
+    maxs: [0.75, 0.5],
+    image: null,
+    vertices: [
+      { position: [-1, -1, 1], uv: [0.1, 0.2] },
+      { position: [-1, 1, 1], uv: [0.1, 0.8] },
+      { position: [1, 1, 1], uv: [0.9, 0.8] },
+      { position: [1, -1, 1], uv: [0.9, 0.2] }
+    ]
+  }]);
+  assertChildCount(adapter.root.children.length, 1, "apres ciel clippe R_DrawSkyBox");
+  const clippedMesh = adapter.root.children[0];
+  if (!(clippedMesh instanceof Mesh)) {
+    throw new Error("mesh de ciel clippe manquant");
+  }
+  if (clippedMesh.userData.refGl?.source !== "R_DrawSkyBox") {
+    throw new Error(`source ciel inattendue: ${clippedMesh.userData.refGl?.source}`);
+  }
+  if (clippedMesh.geometry.getAttribute("position").count !== 4) {
+    throw new Error("geometrie ciel clippe inattendue");
+  }
+  if (clippedMesh.geometry.groups[0]?.materialIndex !== 2) {
+    throw new Error("materialIndex ciel clippe inattendu");
+  }
 
   console.log("Verification phase 5 ciel OK:");
   console.log(`- premier ciel -> ${firstMeshName}`);

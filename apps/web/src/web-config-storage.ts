@@ -1,0 +1,117 @@
+/**
+ * File: web-config-storage.ts
+ * Purpose: Persist logical Quake II config files in the browser without exposing localStorage to engine packages.
+ *
+ * This file is not a direct source port.
+ * It is a web adapter for logical files such as `baseq2/config.cfg`.
+ *
+ * Dependencies:
+ * - packages/filesystem
+ */
+
+import {
+  FS_Gamedir,
+  readMountedTextFile,
+  type VirtualFilesystem
+} from "../../../packages/filesystem/src/index.js";
+
+const STORAGE_PREFIX = "quake2js:fs:";
+
+export interface WebConfigStorage {
+  readText: (path: string) => string | null;
+  writeText: (path: string, contents: string) => boolean;
+  remove: (path: string) => void;
+}
+
+export interface WebStorageLike {
+  getItem: (key: string) => string | null;
+  setItem: (key: string, value: string) => void;
+  removeItem: (key: string) => void;
+}
+
+export function createWebConfigStorage(storage: WebStorageLike | null = getDefaultStorage()): WebConfigStorage {
+  return {
+    readText: (path) => {
+      if (!storage) {
+        return null;
+      }
+
+      return storage.getItem(toConfigStorageKey(path));
+    },
+    writeText: (path, contents) => {
+      if (!storage) {
+        return false;
+      }
+
+      try {
+        storage.setItem(toConfigStorageKey(path), contents);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    remove: (path) => {
+      storage?.removeItem(toConfigStorageKey(path));
+    }
+  };
+}
+
+export function readWebConfigOrMountedText(
+  storage: WebConfigStorage,
+  filesystem: VirtualFilesystem,
+  path: string
+): string | null {
+  const normalized = normalizeConfigPath(path);
+  const gamedir = normalizeConfigPath(FS_Gamedir(filesystem));
+  const candidates = buildConfigReadCandidates(normalized, gamedir);
+
+  for (const candidate of candidates.storage) {
+    const stored = storage.readText(candidate);
+    if (stored !== null) {
+      return stored;
+    }
+  }
+
+  for (const candidate of candidates.mounted) {
+    const mounted = readMountedTextFile(filesystem, candidate);
+    if (mounted !== undefined) {
+      return mounted;
+    }
+  }
+
+  return null;
+}
+
+export function toConfigStorageKey(path: string): string {
+  return `${STORAGE_PREFIX}${normalizeConfigPath(path)}`;
+}
+
+function buildConfigReadCandidates(path: string, gamedir: string): { storage: string[]; mounted: string[] } {
+  const storage = path.includes("/")
+    ? [path]
+    : [`${gamedir}/${path}`, path];
+  const mounted = path.startsWith(`${gamedir}/`)
+    ? [path.slice(gamedir.length + 1), path]
+    : [path];
+
+  return {
+    storage: unique(storage),
+    mounted: unique(mounted)
+  };
+}
+
+function normalizeConfigPath(path: string): string {
+  return path.replaceAll("\\", "/").replace(/^\/+/, "").replace(/\/+/g, "/").toLowerCase();
+}
+
+function unique(values: string[]): string[] {
+  return Array.from(new Set(values.filter((value) => value.length > 0)));
+}
+
+function getDefaultStorage(): WebStorageLike | null {
+  try {
+    return globalThis.localStorage ?? null;
+  } catch {
+    return null;
+  }
+}

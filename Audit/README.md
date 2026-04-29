@@ -55,6 +55,13 @@ Puis remplir :
 
 L'inventaire doit partir du C, pas du TS.
 
+Le perimetre reste le fichier source demande. Les headers, modules TS partages,
+helpers et consommateurs ne doivent etre verifies que pour les symbols, constantes,
+types, effets et branchements effectivement utilises par ce fichier source.
+Un ecart trouve dans une dependance partagee doit etre note comme dependance
+bloquante ou point de support pour ce fichier, mais il ne transforme pas l'audit
+en audit complet de cette dependance.
+
 ### 3. Verifier le rattachement source -> TS
 
 Pour chaque item source, verifier :
@@ -72,6 +79,9 @@ La granularite d'audit ne change jamais a cause du decoupage TypeScript :
 - les blocs source desactives (`#if 0`, variantes compile-time, plateformes natives) doivent etre explicitement inventories et documentes comme portes, non portes ou non applicables ;
 - si un item C est disperse dans plusieurs fichiers TS, l'audit de cet item doit couvrir tous ses fragments TS et ses consommateurs ;
 - aucune checklist globale ne doit etre cochee uniquement parce qu'un sous-ensemble representatif a ete verifie.
+- les fichiers TS partages ou deja rattaches a un autre fichier C ne sont pas
+  re-audites integralement ; seuls les fragments necessaires au fichier C audite
+  sont compares.
 
 Regle par defaut :
 
@@ -159,6 +169,8 @@ Il faut verifier aussi, si applicable :
 - audio.
 
 Une fonctionnalite presente mais non consommee ne doit pas etre consideree comme completement validee.
+Cette verification des consommateurs reste limitee au chemin de donnees produit par
+le fichier C audite. Elle ne remplace pas l'audit propre des consommateurs eux-memes.
 
 ### 8. Conclure
 

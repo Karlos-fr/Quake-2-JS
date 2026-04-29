@@ -16,8 +16,8 @@ import {
   createGameRuntimeFromBspEntities,
   createRuntimeEntity
 } from "../../packages/game/src/index.js";
-import { CheckPowerArmor, Killed, M_ReactToDamage, T_Damage } from "../../packages/game/src/g_combat.js";
-import { MOVETYPE_STEP, MOVETYPE_WALK, POWER_ARMOR_SHIELD, SVF_MONSTER } from "../../packages/game/src/runtime.js";
+import { CheckPowerArmor, Killed, M_ReactToDamage, T_Damage, T_RadiusDamage } from "../../packages/game/src/g_combat.js";
+import { MOVETYPE_STEP, MOVETYPE_WALK, POWER_ARMOR_SHIELD, SOLID_BBOX, SVF_MONSTER } from "../../packages/game/src/runtime.js";
 import {
   DAMAGE_NO_PROTECTION,
   DF_NO_FRIENDLY_FIRE,
@@ -35,6 +35,7 @@ function main(): void {
   verifyReactToClientDamagePreservesVisibleEnemy();
   verifyTDamageAppliesNightmarePainDebounce();
   verifyFriendlyFireUsesSkinTeams();
+  verifyRadiusDamageUsesDefaultDamageCore();
 
   console.log("Verification g_combat - damage/combat gameplay OK");
 }
@@ -169,6 +170,30 @@ function verifyFriendlyFireUsesSkinTeams(): void {
     CheckTeamDamage: () => false
   });
   assertNumber(target.health, 100, "T_Damage keeps friendly-fire cancellation ahead of no-protection handling");
+}
+
+function verifyRadiusDamageUsesDefaultDamageCore(): void {
+  const runtime = createHarnessRuntime();
+  const inflictor = createRuntimeEntity({ classname: "explosion" }, 22);
+  inflictor.inuse = true;
+  inflictor.s.origin = [0, 0, 0];
+  inflictor.origin = [0, 0, 0];
+  inflictor.solid = SOLID_BBOX;
+  runtime.entities[22] = inflictor;
+
+  const target = createPlayer(23);
+  target.s.origin = [0, 0, 0];
+  target.origin = [0, 0, 0];
+  target.solid = SOLID_BBOX;
+  runtime.entities[23] = target;
+
+  T_RadiusDamage(inflictor, inflictor, 40, null, 64, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false
+  });
+
+  assertNumber(target.health, 60, "T_RadiusDamage must dispatch into T_Damage when no T_Damage hook is supplied");
 }
 
 function createHarnessRuntime(): GameRuntime {

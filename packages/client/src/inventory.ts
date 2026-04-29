@@ -26,6 +26,7 @@ import type {
   HudPictureCommand,
   HudTextCommand
 } from "./render-contracts.js";
+import type { refexport_t } from "./ref.js";
 import type { ClientRuntime } from "./types.js";
 
 const DISPLAY_ITEMS = 17;
@@ -79,6 +80,21 @@ export function Inv_DrawString(x: number, y: number, text: string): HudTextComma
       height: 8
     }
   };
+}
+
+/**
+ * Original name: Inv_DrawString
+ * Source: client/cl_inv.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws one left-aligned inventory string through the renderer export table.
+ */
+export function Inv_DrawStringRef(ref: refexport_t, x: number, y: number, text: string): void {
+  for (let index = 0; index < text.length; index += 1) {
+    ref.DrawChar(x + index * 8, y, text.charCodeAt(index) & 0xff);
+  }
 }
 
 /**
@@ -185,6 +201,79 @@ export function CL_DrawInventory(
   }
 
   return commands;
+}
+
+/**
+ * Original name: CL_DrawInventory
+ * Source: client/cl_inv.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws the Quake II inventory overlay through `refexport_t`.
+ *
+ * Porting notes:
+ * - Kept beside `CL_DrawInventory` while the legacy HUD command path is still tested.
+ */
+export function CL_DrawInventoryRef(
+  runtime: ClientRuntime,
+  ref: refexport_t,
+  context: ClientInventoryContext,
+  bindings: ClientInventoryBindingMap = {}
+): void {
+  if (!context.active) {
+    return;
+  }
+
+  const selected = runtime.cl.frame.playerstate.stats[STAT_SELECTED_ITEM] ?? 0;
+  const index: number[] = [];
+  let num = 0;
+  let selected_num = 0;
+
+  for (let i = 0; i < runtime.cl.inventory.length; i += 1) {
+    if (i === selected) {
+      selected_num = num;
+    }
+    if ((runtime.cl.inventory[i] ?? 0) !== 0) {
+      index[num] = i;
+      num += 1;
+    }
+  }
+
+  let top = selected_num - Math.trunc(DISPLAY_ITEMS / 2);
+  if ((num - top) < DISPLAY_ITEMS) {
+    top = num - DISPLAY_ITEMS;
+  }
+  if (top < 0) {
+    top = 0;
+  }
+
+  let x = Math.trunc((context.viewportWidth - 256) / 2);
+  let y = Math.trunc((context.viewportHeight - 240) / 2);
+
+  ref.DrawPic(x, y + 8, "inventory");
+
+  y += 24;
+  x += 24;
+  Inv_DrawStringRef(ref, x, y, "hotkey ### item");
+  Inv_DrawStringRef(ref, x, y + 8, "------ --- ----");
+  y += 16;
+
+  for (let i = top; i < num && i < (top + DISPLAY_ITEMS); i += 1) {
+    const item = index[i];
+    const itemName = runtime.cl.configstrings[CS_ITEMS + item] ?? "";
+    const bind = bindings[itemName] ?? "";
+    let line = `${bind.padStart(6, " ")} ${`${runtime.cl.inventory[item] ?? 0}`.padStart(3, " ")} ${itemName}`;
+
+    if (item !== selected) {
+      line = SetStringHighBit(line);
+    } else if ((Math.trunc(runtime.cls.realtime * 10) & 1) !== 0) {
+      ref.DrawChar(x - 8, y, 15);
+    }
+
+    Inv_DrawStringRef(ref, x, y, line);
+    y += 8;
+  }
 }
 
 /**

@@ -34,6 +34,7 @@ import {
   CS_STATUSBAR,
   DF_SAME_LEVEL,
   PRINT_HIGH,
+  multicast_t,
   temp_event_t,
   type cvar_t,
   type qboolean,
@@ -46,6 +47,8 @@ import {
   FRAMETIME,
   GAMEVERSION,
   SVF_MONSTER,
+  svc_muzzleflash,
+  svc_muzzleflash2,
   svc_temp_entity,
   TAG_GAME,
   TAG_LEVEL,
@@ -79,9 +82,11 @@ import {
   attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameConfigstringUpdates,
+  drainGameCprintfEvents,
+  drainMonsterMuzzleFlashEvents,
+  drainPlayerMuzzleFlashEvents,
   drainGameSoundEvents,
   drainGameTempEntityEvents,
-  linkGameEntity,
   registerGameSound,
   type GameEntity,
   type GameRuntime
@@ -252,6 +257,13 @@ export function InitGame(context: GameMainContext): void {
 export function SpawnEntities(context: GameMainContext, mapname: string, entstring: string, spawnpoint: string): void {
   const parsedEntities = parseEntityLump(entstring);
   const nextRuntime = createGameRuntimeFromBspEntities(buildServerEntityList(parsedEntities, context.runtime.maxclients));
+  nextRuntime.collision = context.runtime.collision;
+  if (context.runtime.engineLinkEntity) {
+    nextRuntime.engineLinkEntity = context.runtime.engineLinkEntity;
+  }
+  if (context.runtime.engineUnlinkEntity) {
+    nextRuntime.engineUnlinkEntity = context.runtime.engineUnlinkEntity;
+  }
 
   syncMainRuntimeState(context.runtime, nextRuntime);
   applyMainCvarsToRuntime(context);
@@ -269,7 +281,6 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
 
   const worldspawn = context.runtime.entities[0] ?? null;
   if (worldspawn) {
-    linkGameEntity(context.runtime, worldspawn);
     ED_CallSpawn(worldspawn, context.runtime);
     configureWorldspawn(context, worldspawn, mapname);
   }
@@ -281,7 +292,6 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
     if (!player.client) {
       attachGameClient(player);
     }
-    linkGameEntity(context.runtime, player);
   }
 
   for (let index = context.runtime.maxclients + 1; index < context.runtime.entities.length; index += 1) {
@@ -290,7 +300,6 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
       continue;
     }
 
-    linkGameEntity(context.runtime, entity);
     ED_CallSpawn(entity, context.runtime);
   }
 
@@ -781,6 +790,11 @@ function flushRuntimeEngineEvents(context: GameMainContext): void {
     context.gi.configstring(update.index, update.value);
   }
 
+  for (const event of drainGameCprintfEvents(context.runtime)) {
+    const entity = event.entity ?? (event.entityIndex !== null ? context.runtime.entities[event.entityIndex] ?? null : null);
+    context.gi.cprintf(entity, event.printlevel, "%s", event.message);
+  }
+
   for (const sound of drainGameSoundEvents(context.runtime)) {
     const entity = sound.entity ?? (sound.entityIndex !== null ? context.runtime.entities[sound.entityIndex] ?? null : null);
     if (!entity) {
@@ -796,6 +810,25 @@ function flushRuntimeEngineEvents(context: GameMainContext): void {
     } else {
       context.gi.sound(entity, channel, sound.soundIndex, volume, attenuation, timeofs);
     }
+  }
+
+  for (const event of drainPlayerMuzzleFlashEvents(context.runtime)) {
+    const entity = context.runtime.entities[event.entityIndex] ?? null;
+    if (!entity) {
+      continue;
+    }
+
+    context.gi.WriteByte(svc_muzzleflash);
+    context.gi.WriteShort(event.entityIndex);
+    context.gi.WriteByte(event.weapon);
+    context.gi.multicast(entity.s.origin, multicast_t.MULTICAST_PVS);
+  }
+
+  for (const event of drainMonsterMuzzleFlashEvents(context.runtime)) {
+    context.gi.WriteByte(svc_muzzleflash2);
+    context.gi.WriteShort(event.entityIndex);
+    context.gi.WriteByte(event.flashNumber);
+    context.gi.multicast(event.origin, multicast_t.MULTICAST_PVS);
   }
 
   for (const event of drainGameTempEntityEvents(context.runtime)) {

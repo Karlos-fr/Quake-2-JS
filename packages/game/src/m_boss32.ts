@@ -1,7 +1,7 @@
 /**
  * File: m_boss32.ts
- * Source: Quake II original / game/m_boss32.h
- * Purpose: Port of the generated boss32 model frame constants used by the boss3 rider model.
+ * Source: Quake II original / game/m_boss32.h and game/m_boss32.c
+ * Purpose: Port of the generated boss32 model frame constants and Makron final boss gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,63 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - None.
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_boss32`.
  */
+
+import {
+  AngleVectors,
+  ATTN_NONE,
+  ATTN_NORM,
+  CHAN_AUTO,
+  CHAN_BODY,
+  CHAN_VOICE,
+  CHAN_WEAPON,
+  EF_BLASTER,
+  YAW,
+  type vec3_t
+} from "../../qcommon/src/index.js";
+import { CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID } from "../../qcommon/src/q-shared.js";
+import {
+  AI_STAND_GROUND,
+  AS_MELEE,
+  AS_MISSILE,
+  AS_SLIDING,
+  AS_STRAIGHT,
+  DEAD_DEAD,
+  FL_FLY,
+  FRAMETIME,
+  GIB_METALLIC,
+  GIB_ORGANIC,
+  MOVETYPE_NONE,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  RANGE_FAR,
+  RANGE_MELEE,
+  RANGE_MID,
+  RANGE_NEAR,
+  SOLID_BBOX,
+  SOLID_NOT,
+  SVF_DEADMONSTER,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range } from "./g_ai.js";
+import { monster_fire_bfg, monster_fire_blaster, monster_fire_railgun, walkmonster_start } from "./g_monster.js";
+import { ThrowGib, ThrowHead } from "./g_misc.js";
+import { G_FreeEdict, G_ProjectSource, G_Spawn, vectoangles, vectoyaw } from "./g_utils.js";
+import { getMonsterFlashOffset } from "./m_flash.js";
+import {
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_attak101 = 0;
 export const FRAME_attak102 = 1;
@@ -508,3 +560,638 @@ export const FRAME_walk216 = 489;
 export const FRAME_walk217 = 490;
 
 export const MODEL_SCALE = 1.0;
+
+export const MZ2_MAKRON_BFG = 101;
+export const MZ2_MAKRON_BLASTER_1 = 102;
+export const MZ2_MAKRON_RAILGUN_1 = 119;
+
+const MAKRON_ATTACK_TRACE_MASK = CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA;
+const SOUND_PAIN4 = "makron/pain3.wav";
+const SOUND_PAIN5 = "makron/pain2.wav";
+const SOUND_PAIN6 = "makron/pain1.wav";
+const SOUND_DEATH = "makron/death.wav";
+const SOUND_STEP_LEFT = "makron/step1.wav";
+const SOUND_STEP_RIGHT = "makron/step2.wav";
+const SOUND_ATTACK_BFG = "makron/bfg_fire.wav";
+const SOUND_BRAINSPLORCH = "makron/brain1.wav";
+const SOUND_PRERAILGUN = "makron/rail_up.wav";
+const SOUND_POPUP = "makron/popup.wav";
+const SOUND_TAUNT1 = "makron/voice4.wav";
+const SOUND_TAUNT2 = "makron/voice3.wav";
+const SOUND_TAUNT3 = "makron/voice.wav";
+const SOUND_HIT = "makron/bhit.wav";
+const SOUND_SPINE = "makron/spine.wav";
+const SOUND_UDEATH = "misc/udeath.wav";
+const MODEL_RIDER = "models/monsters/boss3/rider/tris.md2";
+
+let sound_pain4 = 0;
+let sound_pain5 = 0;
+let sound_pain6 = 0;
+let sound_death = 0;
+let sound_step_left = 0;
+let sound_step_right = 0;
+let sound_attack_bfg = 0;
+let sound_brainsplorch = 0;
+let sound_prerailgun = 0;
+let sound_popup = 0;
+let sound_taunt1 = 0;
+let sound_taunt2 = 0;
+let sound_taunt3 = 0;
+let sound_hit = 0;
+
+export function makron_taunt(self: GameEntity, runtime: GameRuntime): void {
+  const r = Math.random();
+
+  if (r <= 0.3) {
+    emitRegisteredGameSound(runtime, self, sound_taunt1, SOUND_TAUNT1, soundOptions(CHAN_AUTO, ATTN_NONE));
+  } else if (r <= 0.6) {
+    emitRegisteredGameSound(runtime, self, sound_taunt2, SOUND_TAUNT2, soundOptions(CHAN_AUTO, ATTN_NONE));
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_taunt3, SOUND_TAUNT3, soundOptions(CHAN_AUTO, ATTN_NONE));
+  }
+}
+
+export const makron_frames_stand = makeFrames(ai_stand, new Array<number>(60).fill(0));
+export const makron_move_stand: GameMonsterMove = {
+  firstframe: FRAME_stand201,
+  lastframe: FRAME_stand260,
+  frame: makron_frames_stand,
+  endfunc: undefined
+};
+
+export function makron_stand(self: GameEntity): void {
+  self.monsterinfo.currentmove = makron_move_stand;
+}
+
+export const makron_frames_run = makeFrames(
+  ai_run,
+  [3, 12, 8, 8, 8, 6, 12, 9, 6, 12],
+  indexedThinks(10, [[0, makron_step_left], [4, makron_step_right]])
+);
+export const makron_move_run: GameMonsterMove = {
+  firstframe: FRAME_walk204,
+  lastframe: FRAME_walk213,
+  frame: makron_frames_run,
+  endfunc: undefined
+};
+
+export function makron_hit(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_hit, SOUND_HIT, soundOptions(CHAN_AUTO, ATTN_NONE));
+}
+
+export function makron_popup(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_popup, SOUND_POPUP, soundOptions(CHAN_BODY, ATTN_NONE));
+}
+
+export function makron_step_left(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_step_left, SOUND_STEP_LEFT, soundOptions(CHAN_BODY, ATTN_NORM));
+}
+
+export function makron_step_right(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_step_right, SOUND_STEP_RIGHT, soundOptions(CHAN_BODY, ATTN_NORM));
+}
+
+export function makron_brainsplorch(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_brainsplorch, SOUND_BRAINSPLORCH, soundOptions(CHAN_VOICE, ATTN_NORM));
+}
+
+export function makron_prerailgun(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_prerailgun, SOUND_PRERAILGUN, soundOptions(CHAN_WEAPON, ATTN_NORM));
+}
+
+export const makron_frames_walk = makeFrames(
+  ai_walk,
+  [3, 12, 8, 8, 8, 6, 12, 9, 6, 12],
+  indexedThinks(10, [[0, makron_step_left], [4, makron_step_right]])
+);
+export const makron_move_walk: GameMonsterMove = {
+  firstframe: FRAME_walk204,
+  lastframe: FRAME_walk213,
+  frame: makron_frames_run,
+  endfunc: undefined
+};
+
+export function makron_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = makron_move_walk;
+}
+
+export function makron_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = makron_move_stand;
+  } else {
+    self.monsterinfo.currentmove = makron_move_run;
+  }
+}
+
+export const makron_frames_pain6 = makeFrames(
+  ai_move,
+  new Array<number>(27).fill(0),
+  indexedThinks(27, [[15, makron_popup], [23, makron_taunt]])
+);
+export const makron_move_pain6: GameMonsterMove = {
+  firstframe: FRAME_pain601,
+  lastframe: FRAME_pain627,
+  frame: makron_frames_pain6,
+  endfunc: makron_run
+};
+
+export const makron_frames_pain5 = makeFrames(ai_move, new Array<number>(4).fill(0));
+export const makron_move_pain5: GameMonsterMove = {
+  firstframe: FRAME_pain501,
+  lastframe: FRAME_pain504,
+  frame: makron_frames_pain5,
+  endfunc: makron_run
+};
+
+export const makron_frames_pain4 = makeFrames(ai_move, new Array<number>(4).fill(0));
+export const makron_move_pain4: GameMonsterMove = {
+  firstframe: FRAME_pain401,
+  lastframe: FRAME_pain404,
+  frame: makron_frames_pain4,
+  endfunc: makron_run
+};
+
+export const makron_frames_death2 = makeFrames(
+  ai_move,
+  [
+    -15, 3, -12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 12, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 5, 7, 6, 0, 0, -1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -4, -6, -4, -4, 0, 0, 0, 0,
+    -2, -5, -3, -8, -3, -7, -4, -4, -6, -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0,
+    2, 0, 27, 26, 0, 0, 0
+  ],
+  indexedThinks(95, [
+    [3, makron_step_left],
+    [17, makron_step_right],
+    [35, makron_step_left],
+    [55, makron_step_right],
+    [57, makron_step_left],
+    [64, makron_step_right],
+    [66, makron_step_left],
+    [69, makron_step_right],
+    [72, makron_step_left],
+    [90, makron_hit],
+    [92, makron_brainsplorch]
+  ])
+);
+export const makron_move_death2: GameMonsterMove = {
+  firstframe: FRAME_death201,
+  lastframe: FRAME_death295,
+  frame: makron_frames_death2,
+  endfunc: makron_dead
+};
+
+export const makron_frames_death3 = makeFrames(ai_move, new Array<number>(20).fill(0));
+export const makron_move_death3: GameMonsterMove = {
+  firstframe: FRAME_death301,
+  lastframe: FRAME_death320,
+  frame: makron_frames_death3,
+  endfunc: undefined
+};
+
+export const makron_frames_sight = makeFrames(ai_move, new Array<number>(13).fill(0));
+export const makron_move_sight: GameMonsterMove = {
+  firstframe: FRAME_active01,
+  lastframe: FRAME_active13,
+  frame: makron_frames_sight,
+  endfunc: makron_run
+};
+
+export function makronBFG(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, makronFlashOffset(MZ2_MAKRON_BFG), forward, right);
+  const vec: vec3_t = [...self.enemy.s.origin];
+  vec[2] += self.enemy.viewheight;
+  const dir = normalizeVec3(subtractVec3(vec, start));
+
+  emitRegisteredGameSound(runtime, self, sound_attack_bfg, SOUND_ATTACK_BFG, soundOptions(CHAN_VOICE, ATTN_NORM));
+  monster_fire_bfg(self, start, dir, 50, 300, 100, 300, MZ2_MAKRON_BFG, runtime);
+}
+
+export const makron_frames_attack3 = [
+  ...makeFrames(ai_charge, new Array<number>(4).fill(0), indexedThinks(4, [[3, makronBFG]])),
+  ...makeFrames(ai_move, new Array<number>(4).fill(0))
+];
+export const makron_move_attack3: GameMonsterMove = {
+  firstframe: FRAME_attak301,
+  lastframe: FRAME_attak308,
+  frame: makron_frames_attack3,
+  endfunc: makron_run
+};
+
+export const makron_frames_attack4 = [
+  ...makeFrames(ai_charge, new Array<number>(4).fill(0)),
+  ...makeFrames(ai_move, new Array<number>(17).fill(0), new Array<GameMonsterFrame["thinkfunc"]>(17).fill(MakronHyperblaster)),
+  ...makeFrames(ai_move, new Array<number>(5).fill(0))
+];
+export const makron_move_attack4: GameMonsterMove = {
+  firstframe: FRAME_attak401,
+  lastframe: FRAME_attak426,
+  frame: makron_frames_attack4,
+  endfunc: makron_run
+};
+
+export const makron_frames_attack5 = [
+  ...makeFrames(ai_charge, new Array<number>(8).fill(0), indexedThinks(8, [[0, makron_prerailgun], [7, MakronSaveloc]])),
+  ...makeFrames(ai_move, new Array<number>(8).fill(0), indexedThinks(8, [[0, MakronRailgun]]))
+];
+export const makron_move_attack5: GameMonsterMove = {
+  firstframe: FRAME_attak501,
+  lastframe: FRAME_attak516,
+  frame: makron_frames_attack5,
+  endfunc: makron_run
+};
+
+export function MakronSaveloc(self: GameEntity): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  copyVec3(self.pos1, self.enemy.s.origin);
+  self.pos1[2] += self.enemy.viewheight;
+}
+
+export function MakronRailgun(self: GameEntity, runtime: GameRuntime): void {
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, makronFlashOffset(MZ2_MAKRON_RAILGUN_1), forward, right);
+  const dir = normalizeVec3(subtractVec3(self.pos1, start));
+
+  monster_fire_railgun(self, start, dir, 50, 100, MZ2_MAKRON_RAILGUN_1, runtime);
+}
+
+export function MakronHyperblaster(self: GameEntity, runtime: GameRuntime): void {
+  const flash_number = MZ2_MAKRON_BLASTER_1 + (self.s.frame - FRAME_attak405);
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, makronFlashOffset(flash_number), forward, right);
+  const dir: vec3_t = [0, 0, 0];
+
+  if (self.enemy) {
+    const vec: vec3_t = [...self.enemy.s.origin];
+    vec[2] += self.enemy.viewheight;
+    const angles = vectoangles(subtractVec3(vec, start));
+    dir[0] = angles[0];
+  }
+
+  if (self.s.frame <= FRAME_attak413) {
+    dir[1] = self.s.angles[1] - 10 * (self.s.frame - FRAME_attak413);
+  } else {
+    dir[1] = self.s.angles[1] + 10 * (self.s.frame - FRAME_attak421);
+  }
+  dir[2] = 0;
+
+  monster_fire_blaster(self, start, AngleVectors(dir).forward, 15, 1000, MZ2_MAKRON_BLASTER_1, EF_BLASTER, runtime);
+}
+
+export function makron_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < self.max_health / 2) {
+    self.s.skinnum = 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  if (damage <= 25 && Math.random() < 0.2) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  if (damage <= 40) {
+    emitRegisteredGameSound(runtime, self, sound_pain4, SOUND_PAIN4, soundOptions(CHAN_VOICE, ATTN_NONE));
+    self.monsterinfo.currentmove = makron_move_pain4;
+  } else if (damage <= 110) {
+    emitRegisteredGameSound(runtime, self, sound_pain5, SOUND_PAIN5, soundOptions(CHAN_VOICE, ATTN_NONE));
+    self.monsterinfo.currentmove = makron_move_pain5;
+  } else {
+    if (damage <= 150 && Math.random() <= 0.45) {
+      emitRegisteredGameSound(runtime, self, sound_pain6, SOUND_PAIN6, soundOptions(CHAN_VOICE, ATTN_NONE));
+      self.monsterinfo.currentmove = makron_move_pain6;
+    } else if (damage <= 150 && Math.random() <= 0.35) {
+      emitRegisteredGameSound(runtime, self, sound_pain6, SOUND_PAIN6, soundOptions(CHAN_VOICE, ATTN_NONE));
+      self.monsterinfo.currentmove = makron_move_pain6;
+    }
+  }
+}
+
+export function makron_sight(self: GameEntity): void {
+  self.monsterinfo.currentmove = makron_move_sight;
+}
+
+export function makron_attack(self: GameEntity): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const r = Math.random();
+  if (r <= 0.3) {
+    self.monsterinfo.currentmove = makron_move_attack3;
+  } else if (r <= 0.6) {
+    self.monsterinfo.currentmove = makron_move_attack4;
+  } else {
+    self.monsterinfo.currentmove = makron_move_attack5;
+  }
+}
+
+export function makron_torso_think(self: GameEntity, runtime: GameRuntime): void {
+  self.s.frame += 1;
+  if (self.s.frame < 365) {
+    self.nextthink = runtime.time + FRAMETIME;
+  } else {
+    self.s.frame = 346;
+    self.nextthink = runtime.time + FRAMETIME;
+  }
+}
+
+export function makron_torso(ent: GameEntity, runtime: GameRuntime): void {
+  ent.movetype = MOVETYPE_NONE;
+  ent.solid = SOLID_NOT;
+  setVec3(ent.mins, -8, -8, 0);
+  setVec3(ent.maxs, 8, 8, 8);
+  ent.s.frame = 346;
+  ent.s.modelindex = registerGameModel(runtime, MODEL_RIDER);
+  ent.think = makron_torso_think;
+  ent.nextthink = runtime.time + 2 * FRAMETIME;
+  ent.s.sound = registerGameSound(runtime, SOUND_SPINE);
+  linkGameEntity(runtime, ent);
+}
+
+export function makron_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -60, -60, 0);
+  setVec3(self.maxs, 60, 60, 72);
+  self.movetype = MOVETYPE_TOSS;
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+export function makron_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  self.s.sound = 0;
+
+  if (self.health <= self.gib_health) {
+    emitRegisteredGameSound(runtime, self, registerGameSound(runtime, SOUND_UDEATH), SOUND_UDEATH, soundOptions(CHAN_VOICE, ATTN_NORM));
+    ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    for (let n = 0; n < 4; n += 1) {
+      ThrowGib(self, "models/objects/gibs/sm_metal/tris.md2", damage, GIB_METALLIC, runtime);
+    }
+    ThrowHead(self, "models/objects/gibs/gear/tris.md2", damage, GIB_METALLIC, runtime);
+    self.deadflag = DEAD_DEAD;
+    return;
+  }
+
+  if (self.deadflag === DEAD_DEAD) {
+    return;
+  }
+
+  emitRegisteredGameSound(runtime, self, sound_death, SOUND_DEATH, soundOptions(CHAN_VOICE, ATTN_NONE));
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_YES;
+
+  const tempent = G_Spawn(runtime);
+  copyVec3(tempent.s.origin, self.s.origin);
+  copyVec3(tempent.origin, self.s.origin);
+  copyVec3(tempent.s.angles, self.s.angles);
+  copyVec3(tempent.angles, self.s.angles);
+  tempent.s.origin[1] -= 84;
+  tempent.origin[1] -= 84;
+  makron_torso(tempent, runtime);
+
+  self.monsterinfo.currentmove = makron_move_death2;
+}
+
+export function Makron_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
+  if (!self.enemy) {
+    return false;
+  }
+
+  if (self.enemy.health > 0) {
+    const spot1: vec3_t = [...self.s.origin];
+    spot1[2] += self.viewheight;
+    const spot2: vec3_t = [...self.enemy.s.origin];
+    spot2[2] += self.enemy.viewheight;
+
+    const tr = runtime.collision?.trace(spot1, [0, 0, 0], [0, 0, 0], spot2, self, MAKRON_ATTACK_TRACE_MASK);
+    if (!tr || tr.ent !== self.enemy) {
+      return false;
+    }
+  }
+
+  const enemy_range = range(self, self.enemy);
+  const temp = subtractVec3(self.enemy.s.origin, self.s.origin);
+  self.ideal_yaw = vectoyaw(temp);
+
+  if (enemy_range === RANGE_MELEE) {
+    self.monsterinfo.attack_state = self.monsterinfo.melee ? AS_MELEE : AS_MISSILE;
+    return true;
+  }
+
+  if (!self.monsterinfo.attack) {
+    return false;
+  }
+
+  if (runtime.time < self.monsterinfo.attack_finished) {
+    return false;
+  }
+
+  if (enemy_range === RANGE_FAR) {
+    return false;
+  }
+
+  let chance: number;
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    chance = 0.4;
+  } else if (enemy_range === RANGE_MELEE) {
+    chance = 0.8;
+  } else if (enemy_range === RANGE_NEAR) {
+    chance = 0.4;
+  } else if (enemy_range === RANGE_MID) {
+    chance = 0.2;
+  } else {
+    return false;
+  }
+
+  if (Math.random() < chance) {
+    self.monsterinfo.attack_state = AS_MISSILE;
+    self.monsterinfo.attack_finished = runtime.time + 2 * Math.random();
+    return true;
+  }
+
+  if ((self.flags & FL_FLY) !== 0) {
+    self.monsterinfo.attack_state = Math.random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
+  }
+
+  return false;
+}
+
+export function MakronPrecache(runtime: GameRuntime): void {
+  sound_pain4 = registerGameSound(runtime, SOUND_PAIN4);
+  sound_pain5 = registerGameSound(runtime, SOUND_PAIN5);
+  sound_pain6 = registerGameSound(runtime, SOUND_PAIN6);
+  sound_death = registerGameSound(runtime, SOUND_DEATH);
+  sound_step_left = registerGameSound(runtime, SOUND_STEP_LEFT);
+  sound_step_right = registerGameSound(runtime, SOUND_STEP_RIGHT);
+  sound_attack_bfg = registerGameSound(runtime, SOUND_ATTACK_BFG);
+  sound_brainsplorch = registerGameSound(runtime, SOUND_BRAINSPLORCH);
+  sound_prerailgun = registerGameSound(runtime, SOUND_PRERAILGUN);
+  sound_popup = registerGameSound(runtime, SOUND_POPUP);
+  sound_taunt1 = registerGameSound(runtime, SOUND_TAUNT1);
+  sound_taunt2 = registerGameSound(runtime, SOUND_TAUNT2);
+  sound_taunt3 = registerGameSound(runtime, SOUND_TAUNT3);
+  sound_hit = registerGameSound(runtime, SOUND_HIT);
+
+  registerGameModel(runtime, MODEL_RIDER);
+}
+
+/**
+ * Original name: SP_monster_makron
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns monster_makron, precaches assets and initializes walking monster callbacks.
+ */
+export function SP_monster_makron(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  MakronPrecache(runtime);
+
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+  self.s.modelindex = registerGameModel(runtime, MODEL_RIDER);
+  setVec3(self.mins, -30, -30, 0);
+  setVec3(self.maxs, 30, 30, 90);
+
+  self.health = 3000;
+  self.gib_health = -2000;
+  self.mass = 500;
+
+  self.pain = makron_pain;
+  self.die = makron_die;
+  self.monsterinfo.stand = makron_stand;
+  self.monsterinfo.walk = makron_walk;
+  self.monsterinfo.run = makron_run;
+  self.monsterinfo.dodge = undefined;
+  self.monsterinfo.attack = makron_attack;
+  self.monsterinfo.melee = undefined;
+  self.monsterinfo.sight = makron_sight;
+  self.monsterinfo.checkattack = Makron_CheckAttack;
+
+  linkGameEntity(runtime, self);
+
+  self.monsterinfo.currentmove = makron_move_sight;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  walkmonster_start(self, runtime);
+}
+
+export function MakronSpawn(self: GameEntity, runtime: GameRuntime): void {
+  SP_monster_makron(self, runtime);
+
+  const player = runtime.sight_client;
+  if (!player) {
+    return;
+  }
+
+  const vec = subtractVec3(player.s.origin, self.s.origin);
+  self.s.angles[YAW] = vectoyaw(vec);
+  self.angles[YAW] = self.s.angles[YAW];
+  const normalized = normalizeVec3(vec);
+  copyVec3(self.velocity, scaleVec3(normalized, 400));
+  self.velocity[2] = 200;
+  self.groundentity = null;
+}
+
+export function MakronToss(self: GameEntity, runtime: GameRuntime): void {
+  const ent = G_Spawn(runtime);
+  ent.nextthink = runtime.time + 0.8;
+  ent.think = MakronSpawn;
+  ent.target = self.target;
+  copyVec3(ent.s.origin, self.s.origin);
+  copyVec3(ent.origin, self.s.origin);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function soundOptions(channel: number, attenuation: number): { channel: number; volume: number; attenuation: number; timeofs: number } {
+  return {
+    channel,
+    volume: 1,
+    attenuation,
+    timeofs: 0
+  };
+}
+
+function makronFlashOffset(flashNumber: number): vec3_t {
+  return getMonsterFlashOffset(flashNumber);
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function copyVec3(target: [number, number, number], source: vec3_t): void {
+  target[0] = source[0];
+  target[1] = source[1];
+  target[2] = source[2];
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
+}
+
+function scaleVec3(vector: vec3_t, scale: number): vec3_t {
+  return [vector[0] * scale, vector[1] * scale, vector[2] * scale];
+}
+
+function normalizeVec3(vector: vec3_t): vec3_t {
+  const length = Math.hypot(vector[0], vector[1], vector[2]);
+  if (length === 0) {
+    return [0, 0, 0];
+  }
+  return [vector[0] / length, vector[1] / length, vector[2] / length];
+}

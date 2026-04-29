@@ -1,7 +1,7 @@
 /**
  * File: m_insane.ts
- * Source: Quake II original / game/m_insane.h
- * Purpose: Port of the generated insane model frame constants used by the monster insane model.
+ * Source: Quake II original / game/m_insane.h and game/m_insane.c
+ * Purpose: Port of the generated insane model frame constants and misc_insane gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,41 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - None.
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_insane`.
  */
+
+import { ATTN_IDLE, CHAN_VOICE } from "../../qcommon/src/index.js";
+import {
+  AI_GOOD_GUY,
+  AI_STAND_GROUND,
+  DEAD_DEAD,
+  FL_FLY,
+  FL_NO_KNOCKBACK,
+  GIB_ORGANIC,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  SOLID_BBOX,
+  SVF_DEADMONSTER,
+  damage_t
+} from "./g-local.js";
+import { ai_move, ai_stand, ai_walk } from "./g_ai.js";
+import { ThrowGib, ThrowHead } from "./g_misc.js";
+import { flymonster_start, walkmonster_start } from "./g_monster.js";
+import { G_FreeEdict } from "./g_utils.js";
+import {
+  emitGameSound,
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_stand1 = 0;
 export const FRAME_stand2 = 1;
@@ -299,3 +329,649 @@ export const FRAME_cross29 = 280;
 export const FRAME_cross30 = 281;
 
 export const MODEL_SCALE = 1.0;
+
+const INSANE_SOUND_FIST = "insane/insane11.wav";
+const INSANE_SOUND_SHAKE = "insane/insane5.wav";
+const INSANE_SOUND_MOAN = "insane/insane7.wav";
+const INSANE_SOUND_SCREAMS = [
+  "insane/insane1.wav",
+  "insane/insane2.wav",
+  "insane/insane3.wav",
+  "insane/insane4.wav",
+  "insane/insane6.wav",
+  "insane/insane8.wav",
+  "insane/insane9.wav",
+  "insane/insane10.wav"
+] as const;
+
+let sound_fist = 0;
+let sound_shake = 0;
+let sound_moan = 0;
+const sound_scream = new Array<number>(8).fill(0);
+
+/**
+ * Original name: insane_fist
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the idle fist impact voice sample.
+ */
+export function insane_fist(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_fist, INSANE_SOUND_FIST, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_IDLE,
+    timeofs: 0
+  });
+}
+
+/**
+ * Original name: insane_shake
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the idle shake voice sample.
+ */
+export function insane_shake(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_shake, INSANE_SOUND_SHAKE, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_IDLE,
+    timeofs: 0
+  });
+}
+
+/**
+ * Original name: insane_moan
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the idle moan voice sample.
+ */
+export function insane_moan(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_moan, INSANE_SOUND_MOAN, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_IDLE,
+    timeofs: 0
+  });
+}
+
+/**
+ * Original name: insane_scream
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays one of the eight randomized scream samples.
+ */
+export function insane_scream(self: GameEntity, runtime: GameRuntime): void {
+  const index = randomInt(8);
+  emitRegisteredGameSound(runtime, self, sound_scream[index], INSANE_SOUND_SCREAMS[index], {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_IDLE,
+    timeofs: 0
+  });
+}
+
+const insane_frames_stand_normal = makeFrames(ai_stand, [0, 0, 0, 0, 0, 0], [undefined, undefined, undefined, undefined, undefined, insane_checkdown]);
+export const insane_move_stand_normal: GameMonsterMove = {
+  firstframe: FRAME_stand60,
+  lastframe: FRAME_stand65,
+  frame: insane_frames_stand_normal,
+  endfunc: insane_stand
+};
+
+const insane_frames_stand_insane = makeFrames(
+  ai_stand,
+  new Array<number>(30).fill(0),
+  [insane_shake, ...new Array<undefined>(28).fill(undefined), insane_checkdown]
+);
+export const insane_move_stand_insane: GameMonsterMove = {
+  firstframe: FRAME_stand65,
+  lastframe: FRAME_stand94,
+  frame: insane_frames_stand_insane,
+  endfunc: insane_stand
+};
+
+const insane_frames_uptodown = makeFrames(
+  ai_move,
+  [
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    2.7, 4.1, 6, 7.6, 3.6, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+  ],
+  indexedThinks(40, [
+    [7, insane_moan],
+    [27, insane_fist],
+    [33, insane_fist]
+  ])
+);
+export const insane_move_uptodown: GameMonsterMove = {
+  firstframe: FRAME_stand1,
+  lastframe: FRAME_stand40,
+  frame: insane_frames_uptodown,
+  endfunc: insane_onground
+};
+
+const insane_frames_downtoup = makeFrames(ai_move, [
+  -0.7, -1.2, -1.5, -4.5, -3.5, -0.2, 0, -1.3, -3, -2,
+  0, 0, 0, -3.3, -1.6, -0.3, 0, 0, 0
+]);
+export const insane_move_downtoup: GameMonsterMove = {
+  firstframe: FRAME_stand41,
+  lastframe: FRAME_stand59,
+  frame: insane_frames_downtoup,
+  endfunc: insane_stand
+};
+
+const insane_frames_jumpdown = makeFrames(ai_move, [0.2, 11.5, 5.1, 7.1, 0]);
+export const insane_move_jumpdown: GameMonsterMove = {
+  firstframe: FRAME_stand96,
+  lastframe: FRAME_stand100,
+  frame: insane_frames_jumpdown,
+  endfunc: insane_onground
+};
+
+const insane_frames_down = makeFrames(
+  ai_move,
+  [
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, -1.7, -1.6, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0.5, 0, -0.2, 0, 0.2, 0.4, 0.6, 0.8, 0.7, 0
+  ],
+  indexedThinks(61, [
+    [16, insane_fist],
+    [33, insane_moan],
+    [53, insane_scream],
+    [60, insane_checkup]
+  ])
+);
+export const insane_move_down: GameMonsterMove = {
+  firstframe: FRAME_stand100,
+  lastframe: FRAME_stand160,
+  frame: insane_frames_down,
+  endfunc: insane_onground
+};
+
+const insane_frames_walk_normal = makeFrames(
+  ai_walk,
+  [0, 2.5, 3.5, 1.7, 2.3, 2.4, 2.2, 4.2, 5.6, 3.3, 2.4, 0.9, 0],
+  indexedThinks(13, [[0, insane_scream]])
+);
+export const insane_move_walk_normal: GameMonsterMove = {
+  firstframe: FRAME_walk27,
+  lastframe: FRAME_walk39,
+  frame: insane_frames_walk_normal,
+  endfunc: insane_walk
+};
+export const insane_move_run_normal: GameMonsterMove = {
+  firstframe: FRAME_walk27,
+  lastframe: FRAME_walk39,
+  frame: insane_frames_walk_normal,
+  endfunc: insane_run
+};
+
+const insane_frames_walk_insane = makeFrames(
+  ai_walk,
+  [
+    0, 3.4, 3.6, 2.9, 2.2, 2.6, 0, 0.7, 4.8, 5.3, 1.1, 2, 0.5,
+    0, 0, 4.9, 6.7, 3.8, 2, 0.2, 0, 3.4, 6.4, 5, 1.8, 0
+  ],
+  indexedThinks(26, [[0, insane_scream]])
+);
+export const insane_move_walk_insane: GameMonsterMove = {
+  firstframe: FRAME_walk1,
+  lastframe: FRAME_walk26,
+  frame: insane_frames_walk_insane,
+  endfunc: insane_walk
+};
+export const insane_move_run_insane: GameMonsterMove = {
+  firstframe: FRAME_walk1,
+  lastframe: FRAME_walk26,
+  frame: insane_frames_walk_insane,
+  endfunc: insane_run
+};
+
+const insane_frames_stand_pain = makeFrames(ai_move, new Array<number>(11).fill(0));
+export const insane_move_stand_pain: GameMonsterMove = {
+  firstframe: FRAME_st_pain2,
+  lastframe: FRAME_st_pain12,
+  frame: insane_frames_stand_pain,
+  endfunc: insane_run
+};
+
+const insane_frames_stand_death = makeFrames(ai_move, new Array<number>(17).fill(0));
+export const insane_move_stand_death: GameMonsterMove = {
+  firstframe: FRAME_st_death2,
+  lastframe: FRAME_st_death18,
+  frame: insane_frames_stand_death,
+  endfunc: insane_dead
+};
+
+const insane_frames_crawl = makeFrames(
+  ai_walk,
+  [0, 1.5, 2.1, 3.6, 2, 0.9, 3, 3.4, 2.4],
+  indexedThinks(9, [[0, insane_scream]])
+);
+export const insane_move_crawl: GameMonsterMove = {
+  firstframe: FRAME_crawl1,
+  lastframe: FRAME_crawl9,
+  frame: insane_frames_crawl,
+  endfunc: undefined
+};
+export const insane_move_runcrawl: GameMonsterMove = {
+  firstframe: FRAME_crawl1,
+  lastframe: FRAME_crawl9,
+  frame: insane_frames_crawl,
+  endfunc: undefined
+};
+
+const insane_frames_crawl_pain = makeFrames(ai_move, new Array<number>(9).fill(0));
+export const insane_move_crawl_pain: GameMonsterMove = {
+  firstframe: FRAME_cr_pain2,
+  lastframe: FRAME_cr_pain10,
+  frame: insane_frames_crawl_pain,
+  endfunc: insane_run
+};
+
+const insane_frames_crawl_death = makeFrames(ai_move, new Array<number>(7).fill(0));
+export const insane_move_crawl_death: GameMonsterMove = {
+  firstframe: FRAME_cr_death10,
+  lastframe: FRAME_cr_death16,
+  frame: insane_frames_crawl_death,
+  endfunc: insane_dead
+};
+
+const insane_frames_cross = makeFrames(ai_move, new Array<number>(15).fill(0), indexedThinks(15, [[0, insane_moan]]));
+export const insane_move_cross: GameMonsterMove = {
+  firstframe: FRAME_cross1,
+  lastframe: FRAME_cross15,
+  frame: insane_frames_cross,
+  endfunc: insane_cross
+};
+
+const insane_frames_struggle_cross = makeFrames(
+  ai_move,
+  new Array<number>(15).fill(0),
+  indexedThinks(15, [[0, insane_scream]])
+);
+export const insane_move_struggle_cross: GameMonsterMove = {
+  firstframe: FRAME_cross16,
+  lastframe: FRAME_cross30,
+  frame: insane_frames_struggle_cross,
+  endfunc: insane_cross
+};
+
+/**
+ * Original name: insane_cross
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Alternates crucified idle loops with the original probability split.
+ */
+export function insane_cross(self: GameEntity): void {
+  self.monsterinfo.currentmove = Math.random() < 0.8 ? insane_move_cross : insane_move_struggle_cross;
+}
+
+/**
+ * Original name: insane_walk
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Picks the walking/crawling animation state according to spawn flags.
+ */
+export function insane_walk(self: GameEntity): void {
+  if ((self.spawnflags & 16) !== 0 && self.s.frame === FRAME_cr_pain10) {
+    self.monsterinfo.currentmove = insane_move_down;
+    return;
+  }
+
+  if ((self.spawnflags & 4) !== 0) {
+    self.monsterinfo.currentmove = insane_move_crawl;
+  } else if (Math.random() <= 0.5) {
+    self.monsterinfo.currentmove = insane_move_walk_normal;
+  } else {
+    self.monsterinfo.currentmove = insane_move_walk_insane;
+  }
+}
+
+/**
+ * Original name: insane_run
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Picks the running/crawling animation state according to spawn flags.
+ */
+export function insane_run(self: GameEntity): void {
+  if ((self.spawnflags & 16) !== 0 && self.s.frame === FRAME_cr_pain10) {
+    self.monsterinfo.currentmove = insane_move_down;
+    return;
+  }
+
+  if ((self.spawnflags & 4) !== 0) {
+    self.monsterinfo.currentmove = insane_move_runcrawl;
+  } else if (Math.random() <= 0.5) {
+    self.monsterinfo.currentmove = insane_move_run_normal;
+  } else {
+    self.monsterinfo.currentmove = insane_move_run_insane;
+  }
+}
+
+/**
+ * Original name: insane_pain
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies pain debounce, emits the player pain voice sample, and chooses the pain move.
+ */
+export function insane_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+
+  const r = 1 + (randomInt(2) & 1);
+  let l: number;
+  if (self.health < 25) {
+    l = 25;
+  } else if (self.health < 50) {
+    l = 50;
+  } else if (self.health < 75) {
+    l = 75;
+  } else {
+    l = 100;
+  }
+
+  emitGameSound(runtime, self, `player/male/pain${l}_${r}.wav`);
+
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  if ((self.spawnflags & 8) !== 0) {
+    self.monsterinfo.currentmove = insane_move_struggle_cross;
+    return;
+  }
+
+  if (isCrawlingFrame(self)) {
+    self.monsterinfo.currentmove = insane_move_crawl_pain;
+  } else {
+    self.monsterinfo.currentmove = insane_move_stand_pain;
+  }
+}
+
+/**
+ * Original name: insane_onground
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns the monster to the down/crawling idle loop.
+ */
+export function insane_onground(self: GameEntity): void {
+  self.monsterinfo.currentmove = insane_move_down;
+}
+
+/**
+ * Original name: insane_checkdown
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Randomly moves a standing insane monster down unless it must always stand.
+ */
+export function insane_checkdown(self: GameEntity): void {
+  if ((self.spawnflags & 32) !== 0) {
+    return;
+  }
+  if (Math.random() < 0.3) {
+    self.monsterinfo.currentmove = Math.random() < 0.5 ? insane_move_uptodown : insane_move_jumpdown;
+  }
+}
+
+/**
+ * Original name: insane_checkup
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Randomly rises from the down/crawling idle loop unless held down by spawn flags.
+ */
+export function insane_checkup(self: GameEntity): void {
+  if ((self.spawnflags & 4) !== 0 && (self.spawnflags & 16) !== 0) {
+    return;
+  }
+  if (Math.random() < 0.5) {
+    self.monsterinfo.currentmove = insane_move_downtoup;
+  }
+}
+
+/**
+ * Original name: insane_stand
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Chooses the next standing, crucified, or forced crawling state.
+ */
+export function insane_stand(self: GameEntity): void {
+  if ((self.spawnflags & 8) !== 0) {
+    self.monsterinfo.currentmove = insane_move_cross;
+    self.monsterinfo.aiflags |= AI_STAND_GROUND;
+  } else if ((self.spawnflags & 4) !== 0 && (self.spawnflags & 16) !== 0) {
+    self.monsterinfo.currentmove = insane_move_down;
+  } else if (Math.random() < 0.5) {
+    self.monsterinfo.currentmove = insane_move_stand_normal;
+  } else {
+    self.monsterinfo.currentmove = insane_move_stand_insane;
+  }
+}
+
+/**
+ * Original name: insane_dead
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finalizes the corpse bbox, flags and link state.
+ */
+export function insane_dead(self: GameEntity, runtime: GameRuntime): void {
+  if ((self.spawnflags & 8) !== 0) {
+    self.flags |= FL_FLY;
+  } else {
+    setVec3(self.mins, -16, -16, -24);
+    setVec3(self.maxs, 16, 16, -8);
+    self.movetype = MOVETYPE_TOSS;
+  }
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+/**
+ * Original name: insane_die
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Handles gib death, ordinary death sounds, and death animation selection.
+ */
+export function insane_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health <= self.gib_health) {
+    emitGameSound(runtime, self, "misc/udeath.wav");
+    for (let n = 0; n < 2; n += 1) {
+      ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    for (let n = 0; n < 4; n += 1) {
+      ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC, runtime);
+    self.deadflag = DEAD_DEAD;
+    return;
+  }
+
+  if (self.deadflag === DEAD_DEAD) {
+    return;
+  }
+
+  emitGameSound(runtime, self, `player/male/death${randomInt(4) + 1}.wav`);
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_YES;
+
+  if ((self.spawnflags & 8) !== 0) {
+    insane_dead(self, runtime);
+  } else if (isCrawlingFrame(self)) {
+    self.monsterinfo.currentmove = insane_move_crawl_death;
+  } else {
+    self.monsterinfo.currentmove = insane_move_stand_death;
+  }
+}
+
+/**
+ * Original name: SP_misc_insane
+ * Source: game/m_insane.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns the misc_insane monster/decorative entity and initializes its movement callbacks.
+ */
+export function SP_misc_insane(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  precacheInsaneSounds(runtime);
+
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/insane/tris.md2");
+
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, 32);
+
+  self.health = 100;
+  self.gib_health = -50;
+  self.mass = 300;
+
+  self.pain = insane_pain;
+  self.die = insane_die;
+
+  self.monsterinfo.stand = insane_stand;
+  self.monsterinfo.walk = insane_walk;
+  self.monsterinfo.run = insane_run;
+  self.monsterinfo.dodge = undefined;
+  self.monsterinfo.attack = undefined;
+  self.monsterinfo.melee = undefined;
+  self.monsterinfo.sight = undefined;
+  self.monsterinfo.aiflags |= AI_GOOD_GUY;
+
+  linkGameEntity(runtime, self);
+
+  if ((self.spawnflags & 16) !== 0) {
+    self.monsterinfo.aiflags |= AI_STAND_GROUND;
+  }
+
+  self.monsterinfo.currentmove = insane_move_stand_normal;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  if ((self.spawnflags & 8) !== 0) {
+    setVec3(self.mins, -16, 0, 0);
+    setVec3(self.maxs, 16, 8, 32);
+    self.flags |= FL_NO_KNOCKBACK;
+    flymonster_start(self, runtime);
+  } else {
+    walkmonster_start(self, runtime);
+    self.s.skinnum = randomInt(3);
+  }
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function precacheInsaneSounds(runtime: GameRuntime): void {
+  sound_fist = registerGameSound(runtime, INSANE_SOUND_FIST);
+  sound_shake = registerGameSound(runtime, INSANE_SOUND_SHAKE);
+  sound_moan = registerGameSound(runtime, INSANE_SOUND_MOAN);
+  for (let i = 0; i < INSANE_SOUND_SCREAMS.length; i += 1) {
+    sound_scream[i] = registerGameSound(runtime, INSANE_SOUND_SCREAMS[i]);
+  }
+}
+
+function isCrawlingFrame(self: GameEntity): boolean {
+  return (
+    (self.s.frame >= FRAME_crawl1 && self.s.frame <= FRAME_crawl9) ||
+    (self.s.frame >= FRAME_stand99 && self.s.frame <= FRAME_stand160)
+  );
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function randomInt(maxExclusive: number): number {
+  return Math.trunc(Math.random() * maxExclusive);
+}

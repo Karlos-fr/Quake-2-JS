@@ -1,7 +1,7 @@
 /**
  * File: m_supertank.ts
- * Source: Quake II original / game/m_supertank.h
- * Purpose: Port of the generated supertank model frame constants used by the boss1 backup model.
+ * Source: Quake II original / game/m_supertank.h and game/m_supertank.c
+ * Purpose: Port of the generated supertank model frame constants and monster_supertank gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,43 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
  * - None.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_supertank`.
  */
+
+import { AngleVectors, ATTN_NORM, CHAN_VOICE, multicast_t, temp_event_t, type vec3_t } from "../../qcommon/src/index.js";
+import {
+  AI_STAND_GROUND,
+  DEAD_DEAD,
+  DEFAULT_BULLET_HSPREAD,
+  DEFAULT_BULLET_VSPREAD,
+  GIB_METALLIC,
+  GIB_ORGANIC,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  SOLID_BBOX,
+  SVF_DEADMONSTER,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, visible } from "./g_ai.js";
+import { monster_fire_bullet, monster_fire_rocket, walkmonster_start } from "./g_monster.js";
+import { ThrowGib, ThrowHead } from "./g_misc.js";
+import { G_FreeEdict, G_ProjectSource } from "./g_utils.js";
+import { getMonsterFlashOffset } from "./m_flash.js";
+import {
+  emitGameTempEntity,
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_attak1_1 = 0;
 export const FRAME_attak1_2 = 1;
@@ -271,3 +303,530 @@ export const FRAME_stand_59 = 252;
 export const FRAME_stand_60 = 253;
 
 export const MODEL_SCALE = 1.0;
+
+export const MZ2_SUPERTANK_MACHINEGUN_1 = 64;
+export const MZ2_SUPERTANK_MACHINEGUN_2 = 65;
+export const MZ2_SUPERTANK_MACHINEGUN_3 = 66;
+export const MZ2_SUPERTANK_MACHINEGUN_4 = 67;
+export const MZ2_SUPERTANK_MACHINEGUN_5 = 68;
+export const MZ2_SUPERTANK_MACHINEGUN_6 = 69;
+export const MZ2_SUPERTANK_ROCKET_1 = 70;
+export const MZ2_SUPERTANK_ROCKET_2 = 71;
+export const MZ2_SUPERTANK_ROCKET_3 = 72;
+
+const SOUND_PAIN1 = "bosstank/btkpain1.wav";
+const SOUND_PAIN2 = "bosstank/btkpain2.wav";
+const SOUND_PAIN3 = "bosstank/btkpain3.wav";
+const SOUND_DEATH = "bosstank/btkdeth1.wav";
+const SOUND_SEARCH1 = "bosstank/btkunqv1.wav";
+const SOUND_SEARCH2 = "bosstank/btkunqv2.wav";
+const SOUND_TREAD = "bosstank/btkengn1.wav";
+
+let sound_pain1 = 0;
+let sound_pain2 = 0;
+let sound_pain3 = 0;
+let sound_death = 0;
+let sound_search1 = 0;
+let sound_search2 = 0;
+let tread_sound = 0;
+
+export function TreadSound(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, tread_sound, SOUND_TREAD, soundOptions(CHAN_VOICE));
+}
+
+export function supertank_search(self: GameEntity, runtime: GameRuntime): void {
+  if (Math.random() < 0.5) {
+    emitRegisteredGameSound(runtime, self, sound_search1, SOUND_SEARCH1, soundOptions(CHAN_VOICE));
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_search2, SOUND_SEARCH2, soundOptions(CHAN_VOICE));
+  }
+}
+
+export const supertank_frames_stand = makeFrames(ai_stand, new Array<number>(60).fill(0));
+export const supertank_move_stand: GameMonsterMove = {
+  firstframe: FRAME_stand_1,
+  lastframe: FRAME_stand_60,
+  frame: supertank_frames_stand,
+  endfunc: undefined
+};
+
+export function supertank_stand(self: GameEntity): void {
+  self.monsterinfo.currentmove = supertank_move_stand;
+}
+
+export const supertank_frames_run = makeFrames(
+  ai_run,
+  new Array<number>(18).fill(12),
+  indexedThinks(18, [[0, TreadSound]])
+);
+export const supertank_move_run: GameMonsterMove = {
+  firstframe: FRAME_forwrd_1,
+  lastframe: FRAME_forwrd_18,
+  frame: supertank_frames_run,
+  endfunc: undefined
+};
+
+export const supertank_frames_forward = makeFrames(
+  ai_walk,
+  new Array<number>(18).fill(4),
+  indexedThinks(18, [[0, TreadSound]])
+);
+export const supertank_move_forward: GameMonsterMove = {
+  firstframe: FRAME_forwrd_1,
+  lastframe: FRAME_forwrd_18,
+  frame: supertank_frames_forward,
+  endfunc: undefined
+};
+
+export function supertank_forward(self: GameEntity): void {
+  self.monsterinfo.currentmove = supertank_move_forward;
+}
+
+export function supertank_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = supertank_move_forward;
+}
+
+export function supertank_run(self: GameEntity): void {
+  if (self.monsterinfo.aiflags & AI_STAND_GROUND) {
+    self.monsterinfo.currentmove = supertank_move_stand;
+  } else {
+    self.monsterinfo.currentmove = supertank_move_run;
+  }
+}
+
+export const supertank_frames_turn_right = makeFrames(
+  ai_move,
+  new Array<number>(18).fill(0),
+  indexedThinks(18, [[0, TreadSound]])
+);
+export const supertank_move_turn_right: GameMonsterMove = {
+  firstframe: FRAME_right_1,
+  lastframe: FRAME_right_18,
+  frame: supertank_frames_turn_right,
+  endfunc: supertank_run
+};
+
+export const supertank_frames_turn_left = makeFrames(
+  ai_move,
+  new Array<number>(18).fill(0),
+  indexedThinks(18, [[0, TreadSound]])
+);
+export const supertank_move_turn_left: GameMonsterMove = {
+  firstframe: FRAME_left_1,
+  lastframe: FRAME_left_18,
+  frame: supertank_frames_turn_left,
+  endfunc: supertank_run
+};
+
+export const supertank_frames_pain3 = makeFrames(ai_move, new Array<number>(4).fill(0));
+export const supertank_move_pain3: GameMonsterMove = {
+  firstframe: FRAME_pain3_9,
+  lastframe: FRAME_pain3_12,
+  frame: supertank_frames_pain3,
+  endfunc: supertank_run
+};
+
+export const supertank_frames_pain2 = makeFrames(ai_move, new Array<number>(4).fill(0));
+export const supertank_move_pain2: GameMonsterMove = {
+  firstframe: FRAME_pain2_5,
+  lastframe: FRAME_pain2_8,
+  frame: supertank_frames_pain2,
+  endfunc: supertank_run
+};
+
+export const supertank_frames_pain1 = makeFrames(ai_move, new Array<number>(4).fill(0));
+export const supertank_move_pain1: GameMonsterMove = {
+  firstframe: FRAME_pain1_1,
+  lastframe: FRAME_pain1_4,
+  frame: supertank_frames_pain1,
+  endfunc: supertank_run
+};
+
+export const supertank_frames_death1 = makeFrames(
+  ai_move,
+  new Array<number>(24).fill(0),
+  indexedThinks(24, [[23, BossExplode]])
+);
+export const supertank_move_death: GameMonsterMove = {
+  firstframe: FRAME_death_1,
+  lastframe: FRAME_death_24,
+  frame: supertank_frames_death1,
+  endfunc: supertank_dead
+};
+
+export const supertank_frames_backward = makeFrames(
+  ai_walk,
+  new Array<number>(18).fill(0),
+  indexedThinks(18, [[0, TreadSound]])
+);
+export const supertank_move_backward: GameMonsterMove = {
+  firstframe: FRAME_backwd_1,
+  lastframe: FRAME_backwd_18,
+  frame: supertank_frames_backward,
+  endfunc: undefined
+};
+
+export const supertank_frames_attack4 = makeFrames(ai_move, new Array<number>(6).fill(0));
+export const supertank_move_attack4: GameMonsterMove = {
+  firstframe: FRAME_attak4_1,
+  lastframe: FRAME_attak4_6,
+  frame: supertank_frames_attack4,
+  endfunc: supertank_run
+};
+
+export const supertank_frames_attack3 = makeFrames(ai_move, new Array<number>(27).fill(0));
+export const supertank_move_attack3: GameMonsterMove = {
+  firstframe: FRAME_attak3_1,
+  lastframe: FRAME_attak3_27,
+  frame: supertank_frames_attack3,
+  endfunc: supertank_run
+};
+
+export const supertank_frames_attack2 = [
+  ...makeFrames(ai_charge, new Array<number>(8).fill(0), indexedThinks(8, [[7, supertankRocket]])),
+  ...makeFrames(ai_move, new Array<number>(19).fill(0), indexedThinks(19, [[2, supertankRocket], [5, supertankRocket]]))
+];
+export const supertank_move_attack2: GameMonsterMove = {
+  firstframe: FRAME_attak2_1,
+  lastframe: FRAME_attak2_27,
+  frame: supertank_frames_attack2,
+  endfunc: supertank_run
+};
+
+export const supertank_frames_attack1 = makeFrames(
+  ai_charge,
+  new Array<number>(6).fill(0),
+  new Array<GameMonsterFrame["thinkfunc"]>(6).fill(supertankMachineGun)
+);
+export const supertank_move_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak1_1,
+  lastframe: FRAME_attak1_6,
+  frame: supertank_frames_attack1,
+  endfunc: supertank_reattack1
+};
+
+export const supertank_frames_end_attack1 = makeFrames(ai_move, new Array<number>(14).fill(0));
+export const supertank_move_end_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak1_7,
+  lastframe: FRAME_attak1_20,
+  frame: supertank_frames_end_attack1,
+  endfunc: supertank_run
+};
+
+export function supertank_reattack1(self: GameEntity, runtime: GameRuntime): void {
+  if (self.enemy && visible(self, self.enemy, runtime)) {
+    if (Math.random() < 0.9) {
+      self.monsterinfo.currentmove = supertank_move_attack1;
+    } else {
+      self.monsterinfo.currentmove = supertank_move_end_attack1;
+    }
+  } else {
+    self.monsterinfo.currentmove = supertank_move_end_attack1;
+  }
+}
+
+export function supertank_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < self.max_health / 2) {
+    self.s.skinnum = 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  if (damage <= 25 && Math.random() < 0.2) {
+    return;
+  }
+
+  if (runtime.skill >= 2 && self.s.frame >= FRAME_attak2_1 && self.s.frame <= FRAME_attak2_14) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  if (damage <= 10) {
+    emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, soundOptions(CHAN_VOICE));
+    self.monsterinfo.currentmove = supertank_move_pain1;
+  } else if (damage <= 25) {
+    emitRegisteredGameSound(runtime, self, sound_pain3, SOUND_PAIN3, soundOptions(CHAN_VOICE));
+    self.monsterinfo.currentmove = supertank_move_pain2;
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_pain2, SOUND_PAIN2, soundOptions(CHAN_VOICE));
+    self.monsterinfo.currentmove = supertank_move_pain3;
+  }
+}
+
+export function supertankRocket(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  let flash_number: number;
+
+  if (self.s.frame === FRAME_attak2_8) {
+    flash_number = MZ2_SUPERTANK_ROCKET_1;
+  } else if (self.s.frame === FRAME_attak2_11) {
+    flash_number = MZ2_SUPERTANK_ROCKET_2;
+  } else {
+    flash_number = MZ2_SUPERTANK_ROCKET_3;
+  }
+
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, supertankFlashOffset(flash_number), forward, right);
+  const vec: vec3_t = [...self.enemy.s.origin];
+  vec[2] += self.enemy.viewheight;
+  const dir = normalizeVec3(subtractVec3(vec, start));
+
+  monster_fire_rocket(self, start, dir, 50, 500, flash_number, runtime);
+}
+
+export function supertankMachineGun(self: GameEntity, runtime: GameRuntime): void {
+  const flash_number = MZ2_SUPERTANK_MACHINEGUN_1 + (self.s.frame - FRAME_attak1_1);
+  const dirAngles: vec3_t = [0, self.s.angles[1], 0];
+  const { forward, right } = AngleVectors(dirAngles);
+  const start = G_ProjectSource(self.s.origin, supertankFlashOffset(flash_number), forward, right);
+  let aim = forward;
+
+  if (self.enemy) {
+    const vec: vec3_t = [...self.enemy.s.origin];
+    vec[2] += self.enemy.viewheight;
+    aim = normalizeVec3(subtractVec3(vec, start));
+  }
+
+  monster_fire_bullet(
+    self,
+    start,
+    aim,
+    6,
+    4,
+    DEFAULT_BULLET_HSPREAD,
+    DEFAULT_BULLET_VSPREAD,
+    flash_number,
+    runtime
+  );
+}
+
+export function supertank_attack(self: GameEntity): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const vec = subtractVec3(self.enemy.s.origin, self.s.origin);
+  const range = Math.hypot(vec[0], vec[1], vec[2]);
+
+  if (range <= 160) {
+    self.monsterinfo.currentmove = supertank_move_attack1;
+  } else if (Math.random() < 0.3) {
+    self.monsterinfo.currentmove = supertank_move_attack1;
+  } else {
+    self.monsterinfo.currentmove = supertank_move_attack2;
+  }
+}
+
+export function supertank_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -60, -60, 0);
+  setVec3(self.maxs, 60, 60, 72);
+  self.movetype = MOVETYPE_TOSS;
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+export function BossExplode(self: GameEntity, runtime: GameRuntime): void {
+  const org: vec3_t = [...self.s.origin];
+  let n: number;
+
+  self.think = BossExplode;
+  org[2] += 24 + (randomInt(32768) & 15);
+
+  switch (self.count++) {
+    case 0:
+      org[0] -= 24;
+      org[1] -= 24;
+      break;
+    case 1:
+      org[0] += 24;
+      org[1] += 24;
+      break;
+    case 2:
+      org[0] += 24;
+      org[1] -= 24;
+      break;
+    case 3:
+      org[0] -= 24;
+      org[1] += 24;
+      break;
+    case 4:
+      org[0] -= 48;
+      org[1] -= 48;
+      break;
+    case 5:
+      org[0] += 48;
+      org[1] += 48;
+      break;
+    case 6:
+      org[0] -= 48;
+      org[1] += 48;
+      break;
+    case 7:
+      org[0] += 48;
+      org[1] -= 48;
+      break;
+    case 8:
+      self.s.sound = 0;
+      for (n = 0; n < 4; n += 1) {
+        ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", 500, GIB_ORGANIC, runtime);
+      }
+      for (n = 0; n < 8; n += 1) {
+        ThrowGib(self, "models/objects/gibs/sm_metal/tris.md2", 500, GIB_METALLIC, runtime);
+      }
+      ThrowGib(self, "models/objects/gibs/chest/tris.md2", 500, GIB_ORGANIC, runtime);
+      ThrowHead(self, "models/objects/gibs/gear/tris.md2", 500, GIB_METALLIC, runtime);
+      self.deadflag = DEAD_DEAD;
+      return;
+  }
+
+  emitGameTempEntity(runtime, temp_event_t.TE_EXPLOSION1, org, multicast_t.MULTICAST_PVS, {
+    source: "BossExplode"
+  });
+
+  self.nextthink = runtime.time + 0.1;
+}
+
+export function supertank_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  emitRegisteredGameSound(runtime, self, sound_death, SOUND_DEATH, soundOptions(CHAN_VOICE));
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_NO;
+  self.count = 0;
+  self.monsterinfo.currentmove = supertank_move_death;
+}
+
+/**
+ * Original name: SP_monster_supertank
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns monster_supertank, precaches assets and initializes walking monster callbacks.
+ */
+export function SP_monster_supertank(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  precacheSupertankAssets(runtime);
+
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/boss1/tris.md2");
+  setVec3(self.mins, -64, -64, 0);
+  setVec3(self.maxs, 64, 64, 112);
+
+  self.health = 1500;
+  self.gib_health = -500;
+  self.mass = 800;
+
+  self.pain = supertank_pain;
+  self.die = supertank_die;
+  self.monsterinfo.stand = supertank_stand;
+  self.monsterinfo.walk = supertank_walk;
+  self.monsterinfo.run = supertank_run;
+  self.monsterinfo.dodge = undefined;
+  self.monsterinfo.attack = supertank_attack;
+  self.monsterinfo.search = supertank_search;
+  self.monsterinfo.melee = undefined;
+  self.monsterinfo.sight = undefined;
+
+  linkGameEntity(runtime, self);
+
+  self.monsterinfo.currentmove = supertank_move_stand;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  walkmonster_start(self, runtime);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function precacheSupertankAssets(runtime: GameRuntime): void {
+  sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
+  sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
+  sound_pain3 = registerGameSound(runtime, SOUND_PAIN3);
+  sound_death = registerGameSound(runtime, SOUND_DEATH);
+  sound_search1 = registerGameSound(runtime, SOUND_SEARCH1);
+  sound_search2 = registerGameSound(runtime, SOUND_SEARCH2);
+  tread_sound = registerGameSound(runtime, SOUND_TREAD);
+}
+
+function soundOptions(channel: number, attenuation: number = ATTN_NORM): { channel: number; volume: number; attenuation: number; timeofs: number } {
+  return {
+    channel,
+    volume: 1,
+    attenuation,
+    timeofs: 0
+  };
+}
+
+function supertankFlashOffset(flashNumber: number): vec3_t {
+  return getMonsterFlashOffset(flashNumber);
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
+}
+
+function normalizeVec3(vector: vec3_t): vec3_t {
+  const length = Math.hypot(vector[0], vector[1], vector[2]);
+  if (length === 0) {
+    return [0, 0, 0];
+  }
+  return [vector[0] / length, vector[1] / length, vector[2] / length];
+}
+
+function randomInt(maxExclusive: number): number {
+  return Math.trunc(Math.random() * maxExclusive);
+}

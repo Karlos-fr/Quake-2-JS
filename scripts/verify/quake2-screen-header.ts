@@ -19,7 +19,9 @@ import {
   SCR_AddDirtyPoint,
   SCR_BeginLoadingPlaque,
   SCR_DrawCinematic,
+  SCR_DrawCinematicRef,
   SCR_DrawDebugGraph,
+  SCR_DrawHudRef,
   SCR_DebugGraph,
   SCR_DirtyScreen,
   SCR_EndLoadingPlaque,
@@ -216,6 +218,52 @@ assert.ok(
   "CL_DrawInventory high-bit line mismatch"
 );
 
+const drawCalls: string[] = [];
+client.cls.realtime = 0.1;
+SCR_DrawHudRef(client, {
+  api_version: 3,
+  Init: () => true,
+  Shutdown: () => {},
+  BeginRegistration: () => {},
+  RegisterModel: () => null,
+  RegisterSkin: () => null,
+  RegisterPic: () => null,
+  SetSky: () => {},
+  EndRegistration: () => {},
+  RenderFrame: () => {},
+  DrawGetPicSize: (name) => name === "loading" ? { width: 64, height: 64 } : { width: 32, height: 32 },
+  DrawPic: (x, y, name) => {
+    drawCalls.push(`pic:${name}:${x}:${y}`);
+  },
+  DrawStretchPic: (x, y, w, h, name) => {
+    drawCalls.push(`stretch:${name}:${x}:${y}:${w}:${h}`);
+  },
+  DrawChar: (x, y, num) => {
+    drawCalls.push(`char:${num}:${x}:${y}`);
+  },
+  DrawTileClear: () => {},
+  DrawFill: (x, y, w, h, c) => {
+    drawCalls.push(`fill:${x}:${y}:${w}:${h}:${c}`);
+  },
+  DrawFadeScreen: () => {},
+  DrawStretchRaw: () => {},
+  CinematicSetPalette: () => {},
+  BeginFrame: () => {},
+  EndFrame: () => {},
+  AppActivate: () => {}
+}, {
+  viewportWidth: 640,
+  viewportHeight: 480,
+  active: true,
+  refreshPrepped: true
+}, {
+  crosshairValue: 2
+});
+assert.ok(drawCalls.some((call) => call.startsWith("pic:inventory:")), "SCR_DrawHudRef inventory picture mismatch");
+assert.ok(drawCalls.some((call) => call.startsWith("char:104:")), "SCR_DrawHudRef inventory text mismatch");
+assert.ok(drawCalls.some((call) => call.startsWith("char:15:")), "SCR_DrawHudRef selected cursor mismatch");
+assert.ok(drawCalls.includes("pic:ch2:304:224"), "SCR_DrawHudRef crosshair picture mismatch");
+
 SCR_DebugGraph(client, 10, 3);
 const graphCommands = SCR_DrawDebugGraph(client, {
   graphheight: 32,
@@ -264,6 +312,41 @@ assert.deepEqual(cinematicDraw.commands, [{
     height: 480
   }
 }], "SCR_DrawCinematic command mismatch");
+
+const cinematicRefCalls: string[] = [];
+const cinematicRefResult = SCR_DrawCinematicRef(client, {
+  api_version: 3,
+  Init: () => true,
+  Shutdown: () => {},
+  BeginRegistration: () => {},
+  RegisterModel: () => null,
+  RegisterSkin: () => null,
+  RegisterPic: () => null,
+  SetSky: () => {},
+  EndRegistration: () => {},
+  RenderFrame: () => {},
+  DrawGetPicSize: () => ({ width: 0, height: 0 }),
+  DrawPic: () => {},
+  DrawStretchPic: () => {},
+  DrawChar: () => {},
+  DrawTileClear: () => {},
+  DrawFill: () => {},
+  DrawFadeScreen: () => {},
+  DrawStretchRaw: (x, y, w, h, cols, rows, data) => {
+    cinematicRefCalls.push(`raw:${x}:${y}:${w}:${h}:${cols}:${rows}:${data[0]}`);
+  },
+  CinematicSetPalette: (palette) => {
+    cinematicRefCalls.push(`palette:${palette?.[21] ?? -1}`);
+  },
+  BeginFrame: () => {},
+  EndFrame: () => {},
+  AppActivate: () => {}
+}, {
+  viewportWidth: 640,
+  viewportHeight: 480
+});
+assert.equal(cinematicRefResult, true, "SCR_DrawCinematicRef active mismatch");
+assert.deepEqual(cinematicRefCalls, ["palette:45", "raw:0:0:640:480:1:1:7"], "SCR_DrawCinematicRef raw draw mismatch");
 
 const cinematicMenuDraw = SCR_DrawCinematic(client, {
   viewportWidth: 640,

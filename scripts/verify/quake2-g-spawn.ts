@@ -167,6 +167,16 @@ const warnedNull = context.runtime.logEntries.some(
 );
 assert.equal(warnedNull, true, "ED_CallSpawn must warn on null classname");
 
+const wallEntity = spawnGameEntity(context.runtime);
+wallEntity.classname = "func_wall";
+ED_CallSpawn(wallEntity, context.runtime);
+assert.equal(wallEntity.solid, SOLID_BSP, "ED_CallSpawn must dispatch func_wall");
+
+const objectEntity = spawnGameEntity(context.runtime);
+objectEntity.classname = "func_object";
+ED_CallSpawn(objectEntity, context.runtime);
+assert.equal(objectEntity.solid, SOLID_BSP, "ED_CallSpawn must dispatch func_object");
+
 const teamRuntime = createGameMainContext(imports).runtime;
 const teamMaster = spawnGameEntity(teamRuntime);
 teamMaster.classname = "func_door";

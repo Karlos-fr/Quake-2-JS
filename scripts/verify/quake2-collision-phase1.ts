@@ -139,6 +139,7 @@ function main(): void {
   console.log(`rotating contents at origin: ${pointContents}`);
 
   assertAlmostEqual(linearTrace.fraction, linearLocalTrace.fraction, "fraction translation");
+  assertVecAlmostEqual(linearTrace.plane.normal, [0, 0, 0], "miss trace default plane normal");
   assertVecAlmostEqual(
     linearTrace.endpos,
     interpolateTraceEnd(linearStart, linearEnd, linearLocalTrace.fraction),

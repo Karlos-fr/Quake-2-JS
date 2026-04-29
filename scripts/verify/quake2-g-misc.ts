@@ -225,6 +225,7 @@ function verifyFuncExplosiveSpawnsAndExplodesBrushModel(): void {
   SP_func_explosive(explosive, runtime);
 
   assert.equal(explosive.solid, SOLID_BSP, "func_explosive must spawn solid when not trigger-spawned");
+  assert.equal(explosive.s.modelindex, 2, "func_explosive must apply gi.setmodel-style inline modelindex");
   assert.equal(explosive.takedamage, damage_t.DAMAGE_YES, "untargeted func_explosive must be shootable");
   assert.equal(explosive.die, func_explosive_explode, "untargeted func_explosive must use func_explosive_explode");
 

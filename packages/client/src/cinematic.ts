@@ -25,6 +25,7 @@ import { parsePcx } from "../../formats/src/index.js";
 import type {
   HudDrawCommand
 } from "./render-contracts.js";
+import type { refexport_t } from "./ref.js";
 import { connstate_t, type ClientRuntime } from "./types.js";
 
 /**
@@ -233,6 +234,52 @@ export function SCR_DrawCinematic(
     }] : [],
     cinematic
   };
+}
+
+/**
+ * Original name: SCR_DrawCinematic
+ * Source: client/cl_cin.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws the active cinematic frame through `refexport_t` using the original raw upload path.
+ */
+export function SCR_DrawCinematicRef(
+  runtime: ClientRuntime,
+  ref: refexport_t,
+  options: {
+    viewportWidth: number;
+    viewportHeight: number;
+    keyDest?: "game" | "console" | "message" | "menu";
+  }
+): boolean {
+  if (runtime.cl.cinematic.cinematictime <= 0) {
+    return false;
+  }
+
+  if (options.keyDest === "menu") {
+    runtime.cl.cinematic.cinematicpalette_active = false;
+    ref.CinematicSetPalette(null);
+    return true;
+  }
+
+  runtime.cl.cinematic.cinematicpalette_active = true;
+  if (!runtime.cl.cinematic.pic) {
+    return true;
+  }
+
+  ref.CinematicSetPalette(runtime.cl.cinematic.cinematicpalette);
+  ref.DrawStretchRaw(
+    0,
+    0,
+    options.viewportWidth,
+    options.viewportHeight,
+    runtime.cl.cinematic.width,
+    runtime.cl.cinematic.height,
+    runtime.cl.cinematic.pic
+  );
+  return true;
 }
 
 /**

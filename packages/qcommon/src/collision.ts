@@ -1384,9 +1384,9 @@ function createSurface(texinfo: texinfo_t): csurface_t {
  */
 function createDefaultPlane(): cplane_t {
   return {
-    normal: [0, 0, 1],
+    normal: [0, 0, 0],
     dist: 0,
-    type: 2,
+    type: 0,
     signbits: 0,
     pad: [0, 0]
   };

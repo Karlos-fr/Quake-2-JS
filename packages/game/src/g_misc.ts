@@ -73,6 +73,7 @@ import {
   refreshEntitySpatialState,
   registerGameModel,
   registerGameSound,
+  setGameEntityModel,
   spawnGameEntity,
   emitGameTempEntity,
   emitRegisteredGameSound,
@@ -485,7 +486,7 @@ export function func_wall_use(
 export function SP_func_wall(self: GameEntity, runtime: GameRuntime): void {
   self.movetype = MOVETYPE_PUSH;
   if (self.model) {
-    self.s.modelindex = self.model.startsWith("*") ? self.s.modelindex : registerGameModel(runtime, self.model);
+    setGameEntityModel(runtime, self, self.model);
   }
 
   if ((self.spawnflags & 8) !== 0) {
@@ -554,8 +555,8 @@ export function func_object_use(
 }
 
 export function SP_func_object(self: GameEntity, runtime: GameRuntime): void {
-  if (self.model && !self.model.startsWith("*")) {
-    self.s.modelindex = registerGameModel(runtime, self.model);
+  if (self.model) {
+    setGameEntityModel(runtime, self, self.model);
   }
 
   self.mins = [self.mins[0] + 1, self.mins[1] + 1, self.mins[2] + 1];
@@ -755,8 +756,8 @@ export function SP_func_explosive(self: GameEntity, runtime: GameRuntime): void 
   self.movetype = MOVETYPE_PUSH;
   registerGameModel(runtime, "models/objects/debris1/tris.md2");
   registerGameModel(runtime, "models/objects/debris2/tris.md2");
-  if (self.model && !self.model.startsWith("*")) {
-    self.s.modelindex = registerGameModel(runtime, self.model);
+  if (self.model) {
+    setGameEntityModel(runtime, self, self.model);
   }
 
   if ((self.spawnflags & 1) !== 0) {

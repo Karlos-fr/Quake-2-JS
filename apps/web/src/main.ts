@@ -7,20 +7,24 @@
  *
  * Dependencies:
  * - packages/formats
- * - packages/renderer-common
  * - packages/renderer-three
  * - three
  */
 
 import {
+  QGL_REQUIRED_PROCEDURES,
+  createGlImageRuntime,
+  createObjectQglProvider,
   createQuakeSkyResolver,
-  createThreeBrushModelSync,
+  createRefGlHost,
+  createThreeBeamSync,
+  createThreeDlightSync,
+  createThreeGlDrawAdapter,
   createThreeGlWorldSceneAdapter,
-  createQuakeHudResourceResolver,
   createThreeParticleSync,
+  createThreePolyblendOverlay,
   createThreeRefreshEntitySync,
-  createThreeSkySceneAdapter,
-  createThreeHudLayer
+  createThreeSkySceneAdapter
 } from "../../../packages/renderer-three/src/index.js";
 import { findPrimarySpawnPoint, parseBsp } from "../../../packages/formats/src/index.js";
 import { createVirtualFilesystem, mountPak, readMountedFile } from "../../../packages/filesystem/src/index.js";
@@ -32,8 +36,9 @@ import {
   CDAudio_Update,
   createClientCDAudioContext
 } from "../../../packages/client/src/index.js";
+import type { refimport_t } from "../../../packages/client/src/index.js";
 import { createQuakeWebAudioAdapter, createWebCDAudioAdapter } from "../../../packages/platform/src/index.js";
-import { CS_CDTRACK } from "../../../packages/qcommon/src/index.js";
+import { CS_CDTRACK, PRINT_ALL, createCvarRuntime, Cvar_Get, type cvar_t } from "../../../packages/qcommon/src/index.js";
 import { createLocalClientController } from "./local-client-controller.js";
 import { startWebDemoLoop } from "./web-demo-loop.js";
 import { createRefreshDebugLayer } from "./refresh-debug-layer.js";
@@ -186,18 +191,39 @@ async function bootstrap(): Promise<void> {
     const spawn = findPrimarySpawnPoint(map);
     const glWorldAdapter = createThreeGlWorldSceneAdapter(filesystem, selectedMapPath);
     const skyResolver = createQuakeSkyResolver(filesystem);
-    const hudResourceResolver = createQuakeHudResourceResolver(filesystem);
-    const hudLayer = createThreeHudLayer(hudResourceResolver);
+    const glDrawAdapter = createThreeGlDrawAdapter();
+    const imageRuntime = createGlImageRuntime({
+      loadFile: (path) => readMountedFile(filesystem, path)?.bytes ?? null,
+      ...glDrawAdapter.imageHooks
+    });
+    const refGlHost = createRefGlHost({
+      createQglProvider: () => createObjectQglProvider(createNoopQglBindings()),
+      imageRuntime,
+      drawHooks: glDrawAdapter.drawHooks,
+      hooks: {
+        glimpInit: () => true,
+        glimpShutdown: () => {},
+        glimpSetMode: () => ({ err: 0, width: ui.viewport.clientWidth || 640, height: ui.viewport.clientHeight || 480 }),
+        glimpBeginFrame: () => {},
+        glimpEndFrame: () => {}
+      },
+      imports: createWebRefImports(ui.setStatus)
+    });
+    refGlHost.init();
     const group = glWorldAdapter.root;
     const skyAdapter = createThreeSkySceneAdapter(skyResolver);
-    const brushModelSync = createThreeBrushModelSync(group);
     const refreshEntitySync = createThreeRefreshEntitySync(filesystem);
     const particleSync = createThreeParticleSync(filesystem);
+    const beamSync = createThreeBeamSync(filesystem);
+    const dlightSync = createThreeDlightSync();
+    const polyblendOverlay = createThreePolyblendOverlay();
 
     const scene = createScene(group);
     scene.add(skyAdapter.root);
     scene.add(refreshEntitySync.root);
     scene.add(particleSync.root);
+    scene.add(beamSync.root);
+    scene.add(dlightSync.root);
     refreshEntitySync.setShadowReceiverRoot(glWorldAdapter.root);
     const camera = createCamera();
     scene.add(camera);
@@ -230,12 +256,15 @@ async function bootstrap(): Promise<void> {
       scene,
       camera,
       cameraController,
-      hudLayer,
+      glDrawAdapter,
+      polyblendOverlay,
+      ref: refGlHost.api,
       skyAdapter,
-      brushModelSync,
       glWorldAdapter,
       refreshEntitySync,
       particleSync,
+      beamSync,
+      dlightSync,
       refreshDebug,
       filesystem,
       audio,
@@ -253,4 +282,80 @@ async function bootstrap(): Promise<void> {
       ].join("\n")
     );
   }
+}
+
+function createNoopQglBindings(): Record<string, unknown> {
+  const bindings: Record<string, unknown> = {};
+  for (const name of QGL_REQUIRED_PROCEDURES) {
+    bindings[name] = () => undefined;
+  }
+  bindings.qglGetString = (name: number) => {
+    switch (name) {
+      case 0x1f00:
+        return "Quake2JS";
+      case 0x1f01:
+        return "Three.js";
+      case 0x1f02:
+        return "1.0";
+      case 0x1f03:
+        return "";
+      default:
+        return "";
+    }
+  };
+  bindings.qglGetError = () => 0;
+  return bindings;
+}
+
+function createWebRefImports(onStatus: (message: string) => void): Partial<refimport_t> {
+  const cvarRuntime = createCvarRuntime();
+  const cvars = new Map<string, cvar_t>();
+
+  return {
+    Con_Printf: (level: number, message: string) => {
+      if (level === PRINT_ALL && message.trim().length > 0) {
+        onStatus(message.trim());
+      }
+    },
+    Sys_Error: (_level: number, message: string): never => {
+      throw new Error(message);
+    },
+    Cvar_Get: (name: string, value: string, flags: number) => {
+      const existing = cvars.get(name);
+      if (existing) {
+        return existing;
+      }
+      const created = requireCvar(Cvar_Get(cvarRuntime, name, value, flags), name);
+      cvars.set(name, created);
+      return created;
+    },
+    Cvar_Set: (name: string, value: string) => {
+      const target = cvars.get(name) ?? requireCvar(Cvar_Get(cvarRuntime, name, value, 0), name);
+      target.string = value;
+      const numeric = Number(value);
+      if (!Number.isNaN(numeric)) {
+        target.value = numeric;
+      }
+      cvars.set(name, target);
+      return target;
+    },
+    Cvar_SetValue: (name: string, value: number) => {
+      const target = cvars.get(name) ?? requireCvar(Cvar_Get(cvarRuntime, name, String(value), 0), name);
+      target.value = value;
+      target.string = String(value);
+      cvars.set(name, target);
+    },
+    Cmd_AddCommand: () => {},
+    Cmd_RemoveCommand: () => {},
+    FS_Gamedir: () => "baseq2",
+    Vid_MenuInit: () => {}
+  };
+}
+
+function requireCvar(cvar: cvar_t | null, name: string): cvar_t {
+  if (!cvar) {
+    throw new Error(`Unable to create cvar ${name}`);
+  }
+
+  return cvar;
 }

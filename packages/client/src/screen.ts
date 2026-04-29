@@ -58,6 +58,7 @@ import type {
 } from "./render-contracts.js";
 import {
   SCR_DrawCinematic as SCR_DrawCinematic_Impl,
+  SCR_DrawCinematicRef as SCR_DrawCinematicRef_Impl,
   SCR_FinishCinematic as SCR_FinishCinematic_Impl,
   SCR_PlayCinematic as SCR_PlayCinematic_Impl,
   SCR_RunCinematic as SCR_RunCinematic_Impl,
@@ -67,10 +68,13 @@ import {
 } from "./cinematic.js";
 import {
   CL_DrawInventory,
+  CL_DrawInventoryRef,
   Inv_DrawString,
+  Inv_DrawStringRef,
   SetStringHighBit,
   type ClientInventoryBindingMap
 } from "./inventory.js";
+import type { refexport_t } from "./ref.js";
 import { connstate_t, type ClientRuntime } from "./types.js";
 
 export type {
@@ -79,7 +83,9 @@ export type {
 } from "./cinematic.js";
 export {
   CL_DrawInventory,
+  CL_DrawInventoryRef,
   Inv_DrawString,
+  Inv_DrawStringRef,
   SetStringHighBit
 } from "./inventory.js";
 export type {
@@ -440,6 +446,30 @@ export function DrawHUDString(text: string, x: number, y: number, centerWidth: n
 }
 
 /**
+ * Original name: DrawHUDString
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws one HUD string through the renderer export table with Quake-style centering and XOR masking.
+ */
+export function DrawHUDStringRef(ref: refexport_t, text: string, x: number, y: number, centerWidth: number, xorMask: number): void {
+  const margin = x;
+  const lines = text.split("\n");
+  let currentY = y;
+
+  for (const line of lines) {
+    const drawX = centerWidth !== 0 ? margin + (centerWidth - line.length * 8) / 2 : margin;
+    const output = applyHudXor(line, xorMask);
+    for (let index = 0; index < output.length; index += 1) {
+      ref.DrawChar(drawX + index * 8, currentY, output.charCodeAt(index) & 0xff);
+    }
+    currentY += 8;
+  }
+}
+
+/**
  * Original name: SCR_DrawField
  * Source: client/cl_scrn.c
  * Category: Ported
@@ -477,6 +507,32 @@ export function SCR_DrawField(x: number, y: number, color: number, width: number
       height: 23
     }
   };
+}
+
+/**
+ * Original name: SCR_DrawField
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws the Quake II number field digit pictures through `refexport_t`.
+ */
+export function SCR_DrawFieldRef(ref: refexport_t, x: number, y: number, color: number, width: number, value: number): void {
+  if (width < 1) {
+    return;
+  }
+
+  const clampedWidth = Math.min(width, 5);
+  const numText = `${Math.trunc(value)}`;
+  const visibleLength = Math.min(numText.length, clampedWidth);
+  const visibleText = visibleLength < numText.length ? numText.slice(0, visibleLength) : numText;
+  const drawX = x + 2 + CHAR_WIDTH * (clampedWidth - visibleLength);
+  const mapDigit = mapHudDigitToPic(color);
+
+  for (let index = 0; index < visibleText.length; index += 1) {
+    ref.DrawPic(drawX + index * CHAR_WIDTH, y, mapDigit(visibleText[index]));
+  }
 }
 
 /**
@@ -810,6 +866,194 @@ export function SCR_DrawLayout(runtime: ClientRuntime, context: ClientHudLayoutC
 }
 
 /**
+ * Original name: SCR_ExecuteLayoutString
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Interprets the Quake II HUD mini-language and draws through `refexport_t`.
+ */
+export function SCR_ExecuteLayoutStringRef(
+  runtime: ClientRuntime,
+  ref: refexport_t,
+  layout: string,
+  context: ClientHudLayoutContext
+): void {
+  if (!context.active || !context.refreshPrepped || layout.length === 0) {
+    return;
+  }
+
+  const tokens = tokenizeLayoutString(layout);
+  const state = {
+    x: 0,
+    y: 0,
+    width: 3
+  };
+
+  for (let index = 0; index < tokens.length; index += 1) {
+    const token = tokens[index];
+
+    switch (token) {
+      case "xl":
+        state.x = Number.parseInt(tokens[++index] ?? "0", 10);
+        break;
+      case "xr":
+        state.x = context.viewportWidth + Number.parseInt(tokens[++index] ?? "0", 10);
+        break;
+      case "xv":
+        state.x = context.viewportWidth / 2 - 160 + Number.parseInt(tokens[++index] ?? "0", 10);
+        break;
+      case "yt":
+        state.y = Number.parseInt(tokens[++index] ?? "0", 10);
+        break;
+      case "yb":
+        state.y = context.viewportHeight + Number.parseInt(tokens[++index] ?? "0", 10);
+        break;
+      case "yv":
+        state.y = context.viewportHeight / 2 - 120 + Number.parseInt(tokens[++index] ?? "0", 10);
+        break;
+      case "pic": {
+        const statIndex = Number.parseInt(tokens[++index] ?? "0", 10);
+        const value = runtime.cl.frame.playerstate.stats[statIndex] ?? 0;
+        if (value < 0 || value >= MAX_IMAGES) {
+          throw new Error(`Pic >= MAX_IMAGES (${value})`);
+        }
+
+        const pic = resolveConfigstring(runtime, CS_IMAGES + value);
+        if (pic) {
+          ref.DrawPic(state.x, state.y, pic);
+        }
+        break;
+      }
+      case "picn": {
+        const pic = tokens[++index] ?? "";
+        if (pic.length > 0) {
+          ref.DrawPic(state.x, state.y, pic);
+        }
+        break;
+      }
+      case "num": {
+        state.width = Number.parseInt(tokens[++index] ?? "3", 10);
+        const statIndex = Number.parseInt(tokens[++index] ?? "0", 10);
+        const value = runtime.cl.frame.playerstate.stats[statIndex] ?? 0;
+        SCR_DrawFieldRef(ref, state.x, state.y, 0, state.width, value);
+        break;
+      }
+      case "hnum": {
+        const value = runtime.cl.frame.playerstate.stats[STAT_HEALTH] ?? 0;
+        const color = value > 25 ? 0 : value > 0 ? (runtime.cl.frame.serverframe >> 2) & 1 : 1;
+        if (((runtime.cl.frame.playerstate.stats[STAT_FLASHES] ?? 0) & 1) !== 0) {
+          ref.DrawPic(state.x, state.y, "field_3");
+        }
+        SCR_DrawFieldRef(ref, state.x, state.y, color, 3, value);
+        break;
+      }
+      case "anum": {
+        const value = runtime.cl.frame.playerstate.stats[STAT_AMMO] ?? 0;
+        if (value < 0) {
+          break;
+        }
+
+        const color = value > 5 ? 0 : (runtime.cl.frame.serverframe >> 2) & 1;
+        if (((runtime.cl.frame.playerstate.stats[STAT_FLASHES] ?? 0) & 4) !== 0) {
+          ref.DrawPic(state.x, state.y, "field_3");
+        }
+        SCR_DrawFieldRef(ref, state.x, state.y, color, 3, value);
+        break;
+      }
+      case "rnum": {
+        const value = runtime.cl.frame.playerstate.stats[STAT_ARMOR] ?? 0;
+        if (value < 1) {
+          break;
+        }
+
+        if (((runtime.cl.frame.playerstate.stats[STAT_FLASHES] ?? 0) & 2) !== 0) {
+          ref.DrawPic(state.x, state.y, "field_3");
+        }
+        SCR_DrawFieldRef(ref, state.x, state.y, 0, 3, value);
+        break;
+      }
+      case "stat_string": {
+        const statIndex = Number.parseInt(tokens[++index] ?? "0", 10);
+        const configIndex = runtime.cl.frame.playerstate.stats[statIndex] ?? -1;
+        if (configIndex < 0 || configIndex >= MAX_CONFIGSTRINGS) {
+          throw new Error(`Bad stat_string index (${configIndex})`);
+        }
+
+        const value = runtime.cl.configstrings[configIndex] ?? "";
+        if (value.length > 0) {
+          Inv_DrawStringRef(ref, state.x, state.y, value);
+        }
+        break;
+      }
+      case "cstring": {
+        const text = tokens[++index] ?? "";
+        DrawHUDStringRef(ref, text, state.x, state.y, 320, 0);
+        break;
+      }
+      case "string": {
+        const text = tokens[++index] ?? "";
+        Inv_DrawStringRef(ref, state.x, state.y, text);
+        break;
+      }
+      case "cstring2": {
+        const text = tokens[++index] ?? "";
+        DrawHUDStringRef(ref, text, state.x, state.y, 320, 0x80);
+        break;
+      }
+      case "string2": {
+        const text = tokens[++index] ?? "";
+        Inv_DrawStringRef(ref, state.x, state.y, SetStringHighBit(text));
+        break;
+      }
+      case "if": {
+        const statIndex = Number.parseInt(tokens[++index] ?? "0", 10);
+        const value = runtime.cl.frame.playerstate.stats[statIndex] ?? 0;
+        if (value === 0) {
+          index = skipToEndif(tokens, index);
+        }
+        break;
+      }
+      case "endif":
+        break;
+      case "client":
+        index = executeClientLayoutBlockRef(runtime, ref, context, tokens, index);
+        break;
+      case "ctf":
+        index = executeCtfLayoutBlockRef(runtime, ref, context, tokens, index);
+        break;
+      default:
+        break;
+    }
+  }
+}
+
+/**
+ * Original name: SCR_DrawStats
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SCR_DrawStatsRef(runtime: ClientRuntime, ref: refexport_t, context: ClientHudLayoutContext): void {
+  SCR_ExecuteLayoutStringRef(runtime, ref, runtime.cl.configstrings[CS_STATUSBAR] ?? "", context);
+}
+
+/**
+ * Original name: SCR_DrawLayout
+ * Source: client/cl_scrn.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SCR_DrawLayoutRef(runtime: ClientRuntime, ref: refexport_t, context: ClientHudLayoutContext): void {
+  if ((runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] ?? 0) === 0) {
+    return;
+  }
+
+  SCR_ExecuteLayoutStringRef(runtime, ref, runtime.cl.layout, context);
+}
+
+/**
  * Category: New
  * Purpose: Compose the current Quake II HUD overlays in the same high-level order as `SCR_UpdateScreen`.
  *
@@ -862,6 +1106,101 @@ export function SCR_BuildHudDrawCommands(
   }
 
   return commands;
+}
+
+/**
+ * Category: New
+ * Purpose: Draw the current Quake II HUD overlays through the original renderer export table order.
+ *
+ * Constraints:
+ * - Must preserve status bar, layout and inventory ordering before center/pause/loading overlays.
+ * - Kept beside `SCR_BuildHudDrawCommands` until all legacy command consumers are removed.
+ */
+export function SCR_DrawHudRef(
+  runtime: ClientRuntime,
+  ref: refexport_t,
+  context: ClientHudLayoutContext,
+  options: {
+    bindings?: ClientInventoryBindingMap;
+    crosshairValue?: number;
+    screenState?: ClientScreenHudState;
+    showPause?: boolean;
+  } = {}
+): void {
+  const screenState = options.screenState ?? SCR_BuildScreenState(runtime);
+  SCR_DrawStatsRef(runtime, ref, context);
+
+  if (((runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] ?? 0) & 1) !== 0) {
+    SCR_DrawLayoutRef(runtime, ref, context);
+  }
+
+  if (((runtime.cl.frame.playerstate.stats[STAT_LAYOUTS] ?? 0) & 2) !== 0) {
+    CL_DrawInventoryRef(runtime, ref, context, options.bindings);
+  }
+
+  const netCommand = SCR_DrawNet(runtime);
+  if (netCommand) {
+    drawPictureCommandRef(ref, netCommand, context.viewportWidth, context.viewportHeight);
+  }
+
+  if (screenState.centerPrint) {
+    const centerY = screenState.centerPrint.lines <= 4 ? context.viewportHeight * 0.35 : 48;
+    DrawHUDStringRef(ref, screenState.centerPrint.text, 0, centerY, context.viewportWidth, 0);
+  }
+
+  const pauseCommand = SCR_DrawPause({
+    paused: screenState.pause.visible,
+    showPause: options.showPause ?? true,
+    viewportHeight: context.viewportHeight
+  });
+  if (pauseCommand) {
+    drawPictureCommandRef(ref, pauseCommand, context.viewportWidth, context.viewportHeight);
+  }
+
+  const loadingCommand = SCR_DrawLoading(runtime);
+  if (loadingCommand) {
+    drawPictureCommandRef(ref, loadingCommand, context.viewportWidth, context.viewportHeight);
+  }
+
+  SCR_DrawCrosshairRef(runtime, ref, context, options.crosshairValue ?? 0);
+}
+
+/**
+ * Original name: SCR_DrawCrosshair
+ * Source: client/cl_view.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws the selected crosshair picture centered in the current rendered viewport.
+ *
+ * Porting notes:
+ * - Lives in the HUD/ref path so the split Three.js runtime still emits the original `ref.DrawPic` call.
+ */
+export function SCR_DrawCrosshairRef(
+  runtime: ClientRuntime,
+  ref: refexport_t,
+  context: ClientHudLayoutContext,
+  crosshairValue: number
+): void {
+  if (crosshairValue === 0) {
+    SCR_TouchPics(0, { runtime });
+    return;
+  }
+
+  SCR_TouchPics(crosshairValue, {
+    runtime,
+    getPicSize: ref.DrawGetPicSize
+  });
+
+  const pic = runtime.cl.screen.crosshair_pic;
+  if (!pic || runtime.cl.screen.crosshair_width <= 0 || runtime.cl.screen.crosshair_height <= 0) {
+    return;
+  }
+
+  const x = (context.viewportWidth - runtime.cl.screen.crosshair_width) >> 1;
+  const y = (context.viewportHeight - runtime.cl.screen.crosshair_height) >> 1;
+  ref.DrawPic(x, y, pic);
 }
 
 /**
@@ -1535,6 +1874,27 @@ export function SCR_DrawCinematic(
 }
 
 /**
+ * Original name: SCR_DrawCinematic
+ * Source: client/cl_cin.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Draws the active cinematic frame through `refexport_t`.
+ */
+export function SCR_DrawCinematicRef(
+  runtime: ClientRuntime,
+  ref: refexport_t,
+  options: {
+    viewportWidth: number;
+    viewportHeight: number;
+    keyDest?: "game" | "console" | "message" | "menu";
+  }
+): boolean {
+  return SCR_DrawCinematicRef_Impl(runtime, ref, options);
+}
+
+/**
  * Original name: SCR_PlayCinematic
  * Source: client/cl_cin.c
  * Category: Ported
@@ -1824,6 +2184,47 @@ function executeClientLayoutBlock(
 
 /**
  * Category: New
+ * Purpose: Draw the contents of one `client` layout block through `refexport_t`.
+ */
+function executeClientLayoutBlockRef(
+  runtime: ClientRuntime,
+  ref: refexport_t,
+  context: ClientHudLayoutContext,
+  tokens: string[],
+  currentIndex: number
+): number {
+  let index = currentIndex;
+  const x = context.viewportWidth / 2 - 160 + Number.parseInt(tokens[++index] ?? "0", 10);
+  const y = context.viewportHeight / 2 - 120 + Number.parseInt(tokens[++index] ?? "0", 10);
+  const clientIndex = Number.parseInt(tokens[++index] ?? "0", 10);
+  const score = Number.parseInt(tokens[++index] ?? "0", 10);
+  const ping = Number.parseInt(tokens[++index] ?? "0", 10);
+  const time = Number.parseInt(tokens[++index] ?? "0", 10);
+
+  if (clientIndex < 0 || clientIndex >= runtime.cl.clientinfo.length) {
+    throw new Error(`client >= MAX_CLIENTS (${clientIndex})`);
+  }
+
+  let clientInfo = runtime.cl.clientinfo[clientIndex];
+  if (!clientInfo.iconname) {
+    clientInfo = runtime.cl.baseclientinfo;
+  }
+
+  if (clientInfo.iconname.length > 0) {
+    ref.DrawPic(x, y, clientInfo.iconname);
+  }
+
+  drawInlineStringRef(ref, x + 32, y, SetStringHighBit(clientInfo.name));
+  drawInlineStringRef(ref, x + 32, y + 8, "Score: ");
+  drawInlineStringRef(ref, x + 32 + 7 * 8, y + 8, SetStringHighBit(`${score}`));
+  drawInlineStringRef(ref, x + 32, y + 16, `Ping:  ${ping}`);
+  drawInlineStringRef(ref, x + 32, y + 24, `Time:  ${time}`);
+
+  return index;
+}
+
+/**
+ * Category: New
  * Purpose: Emit the draw commands corresponding to one `ctf` layout block.
  */
 function executeCtfLayoutBlock(
@@ -1849,6 +2250,72 @@ function executeCtfLayoutBlock(
   commands.push(createTextCommand(x, y, block, clientIndex === runtime.cl.playernum ? "alt" : "normal"));
 
   return index;
+}
+
+/**
+ * Category: New
+ * Purpose: Draw the contents of one `ctf` layout block through `refexport_t`.
+ */
+function executeCtfLayoutBlockRef(
+  runtime: ClientRuntime,
+  ref: refexport_t,
+  context: ClientHudLayoutContext,
+  tokens: string[],
+  currentIndex: number
+): number {
+  let index = currentIndex;
+  const x = context.viewportWidth / 2 - 160 + Number.parseInt(tokens[++index] ?? "0", 10);
+  const y = context.viewportHeight / 2 - 120 + Number.parseInt(tokens[++index] ?? "0", 10);
+  const clientIndex = Number.parseInt(tokens[++index] ?? "0", 10);
+  const score = Number.parseInt(tokens[++index] ?? "0", 10);
+  const ping = Math.min(999, Number.parseInt(tokens[++index] ?? "0", 10));
+
+  if (clientIndex < 0 || clientIndex >= runtime.cl.clientinfo.length) {
+    throw new Error(`client >= MAX_CLIENTS (${clientIndex})`);
+  }
+
+  const clientInfo = runtime.cl.clientinfo[clientIndex];
+  const block = `${`${score}`.padStart(3, " ")} ${`${ping}`.padStart(3, " ")} ${clientInfo.name.padEnd(12, " ").slice(0, 12)}`;
+  drawInlineStringRef(ref, x, y, clientIndex === runtime.cl.playernum ? SetStringHighBit(block) : block);
+
+  return index;
+}
+
+/**
+ * Category: New
+ * Purpose: Draw one command-era HUD picture through `refexport_t` while preserving native sizing and centering.
+ */
+function drawPictureCommandRef(
+  ref: refexport_t,
+  command: ClientHudPictureCommand,
+  viewportWidth: number,
+  viewportHeight: number
+): void {
+  const requestedWidth = command.bounds.width;
+  const requestedHeight = command.bounds.height;
+  const needsSize = requestedWidth <= 0 || requestedHeight <= 0 || command.x < 0 || command.y < 0;
+  const nativeSize = needsSize ? ref.DrawGetPicSize(command.pic) : { width: requestedWidth, height: requestedHeight };
+  const width = requestedWidth > 0 ? requestedWidth : nativeSize.width;
+  const height = requestedHeight > 0 ? requestedHeight : nativeSize.height;
+  const x = command.x < 0 ? (viewportWidth - width) / 2 : command.x;
+  const y = command.y < 0 ? (viewportHeight - height) / 2 : command.y;
+
+  if (requestedWidth > 0 && requestedHeight > 0) {
+    ref.DrawStretchPic(x, y, requestedWidth, requestedHeight, command.pic);
+    return;
+  }
+
+  ref.DrawPic(x, y, command.pic);
+}
+
+/**
+ * Category: New
+ * Purpose: Draw one single-line string through `DrawChar`.
+ */
+function drawInlineStringRef(ref: refexport_t, x: number, y: number, text: string): void {
+  for (let index = 0; index < text.length; index += 1) {
+    ref.DrawChar(x + index * 8, y, text.charCodeAt(index) & 0xff);
+  }
 }
 
 /**

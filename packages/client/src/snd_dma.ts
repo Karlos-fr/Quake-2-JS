@@ -552,7 +552,7 @@ export function S_FreePlaysound(context: ClientSndDmaContext, ps: playsound_t): 
   insertAfter(context.state.s_freeplays, ps);
 }
 
-export function S_IssuePlaysound(context: ClientSndDmaContext, ps: playsound_t): void {
+export function S_IssuePlaysound(context: ClientSndDmaContext, ps: playsound_t): channel_t | null {
   if ((context.sound.state.s_show?.value ?? 0) !== 0) {
     sndDmaPrintf(context, `Issue ${ps.begin}\n`);
   }
@@ -560,7 +560,7 @@ export function S_IssuePlaysound(context: ClientSndDmaContext, ps: playsound_t):
   const ch = S_PickChannel(context, ps.entnum, ps.entchannel);
   if (!ch) {
     S_FreePlaysound(context, ps);
-    return;
+    return null;
   }
 
   ch.dist_mult = ps.attenuation === ATTN_STATIC ? ps.attenuation * 0.001 : ps.attenuation * 0.0005;
@@ -578,6 +578,7 @@ export function S_IssuePlaysound(context: ClientSndDmaContext, ps: playsound_t):
   ch.end = context.sound.state.paintedtime + (sc?.length ?? 0);
 
   S_FreePlaysound(context, ps);
+  return ch;
 }
 
 export function S_RegisterSexedSound(context: ClientSndDmaContext, entNumber: number, base: string): sfx_t | null {
@@ -622,27 +623,27 @@ export function S_StartSound(
   fvol: number,
   attenuation: number,
   timeofs: number
-): void {
+): playsound_t | null {
   if (!context.state.sound_started || !sfx) {
-    return;
+    return null;
   }
 
   if (sfx.name[0] === "*") {
     sfx = S_RegisterSexedSound(context, entnum, sfx.name);
   }
   if (!sfx) {
-    return;
+    return null;
   }
 
   const sc = S_LoadSound(context.sound, sfx);
   if (!sc) {
-    return;
+    return null;
   }
 
   const vol = Math.trunc(fvol * 255);
   const ps = S_AllocPlaysound(context);
   if (!ps) {
-    return;
+    return null;
   }
 
   if (origin) {
@@ -671,6 +672,28 @@ export function S_StartSound(
 
   ps.begin = !timeofs ? context.sound.state.paintedtime : Math.trunc(start + timeofs * context.sound.state.dma.speed);
   insertPendingByBegin(context.sound.state.s_pendingplays, ps);
+  return ps;
+}
+
+export function S_IssueReadyPlaysounds(context: ClientSndDmaContext): channel_t[] {
+  const issued: channel_t[] = [];
+  const sentinel = context.sound.state.s_pendingplays;
+
+  while (true) {
+    const ps = sentinel.next;
+    if (!ps || ps === sentinel || ps.begin > context.sound.state.paintedtime) {
+      break;
+    }
+
+    unlinkPlaySound(ps);
+    const channel = S_IssuePlaysound(context, ps);
+    if (channel) {
+      issued.push(channel);
+    }
+    S_FreePlaysound(context, ps);
+  }
+
+  return issued;
 }
 
 export function S_StartLocalSound(context: ClientSndDmaContext, sound: string): void {

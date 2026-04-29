@@ -5,13 +5,13 @@ Date : 2026-04-26
 ## Verdict
 
 Statut : OK ISO branche
-Risque principal : faible ; les ecarts sont limites a la transformation des appels renderer immediats en commandes HUD et a l'injection explicite des bindings clavier.
+Risque principal : faible ; le chemin runtime dispose maintenant des appels renderer immediats via `refexport_t`, et les commandes HUD restent conservees pour snapshots/tests avec injection explicite des bindings clavier.
 
 ## Source verifiee
 
 - Source C/H : `Quake-2-master/client/cl_inv.c`
 - Port TS : `packages/client/src/inventory.ts`, `packages/client/src/parse.ts`
-- Consommateurs : `packages/client/src/screen.ts`, `packages/renderer-common/src/hud-resources.ts`, `packages/renderer-three/src/hud-resource-resolver.ts`
+- Consommateurs : `packages/client/src/screen.ts`, `apps/web/src/web-demo-loop.ts`, `packages/renderer-three/src/gl-draw.ts`, `packages/renderer-three/src/three-gl-draw-adapter.ts`
 
 ## Fiche d'identification
 
@@ -25,8 +25,8 @@ Risque principal : faible ; les ecarts sont limites a la transformation des appe
 - Niveau de fidelite annonce : Strict / Close selon symbole
 - Role attendu : lire l'inventaire reseau et dessiner l'overlay inventaire Quake II.
 - Consommateurs directs : `packages/client/src/parse.ts`, `packages/client/src/screen.ts`, `packages/client/src/index.ts`
-- Consommateurs finaux : renderer HUD common/three, web via commandes HUD
-- Tests existants : `npm run verify:screen:header`, `npm run verify:hud-renderer`
+- Consommateurs finaux : runtime HUD via `SCR_DrawHudRef` / `refexport_t` / `gl_draw.ts`, snapshots/tests via commandes HUD
+- Tests existants : `npm run verify:screen:header`, `npm run verify:gl-draw`, `npm run verify:three-gl-draw-adapter`
 - Conclusion audit : OK ISO branche
 
 ## Mapping C -> TS
@@ -34,9 +34,9 @@ Risque principal : faible ; les ecarts sont limites a la transformation des appe
 | Source | Type | Fichier TS | Symbole TS | Statut | Notes |
 |---|---|---|---|---|---|
 | `CL_ParseInventory` | fonction | `packages/client/src/parse.ts` | `CL_ParseInventory` | OK | Lit `MAX_ITEMS` shorts et mute `runtime.cl.inventory`. |
-| `Inv_DrawString` | fonction | `packages/client/src/inventory.ts` | `Inv_DrawString` | OK avec ecart | Emet une commande texte au lieu de `re.DrawChar` immediat. |
+| `Inv_DrawString` | fonction | `packages/client/src/inventory.ts` | `Inv_DrawString`, `Inv_DrawStringRef` | OK branche | Conserve le chemin commandes pour snapshots et le chemin immediat `ref.DrawChar` pour le runtime. |
 | `SetStringHighBit` | fonction | `packages/client/src/inventory.ts` | `SetStringHighBit` | OK avec ecart | Retourne une nouvelle chaine au lieu de muter un buffer C. |
-| `CL_DrawInventory` | fonction | `packages/client/src/inventory.ts` | `CL_DrawInventory` | OK branche | Conserve selection, scroll, header, high-bit et curseur clignotant. |
+| `CL_DrawInventory` | fonction | `packages/client/src/inventory.ts` | `CL_DrawInventory`, `CL_DrawInventoryRef` | OK branche | Conserve selection, scroll, header, high-bit et curseur clignotant. |
 | `DISPLAY_ITEMS` | macro | `packages/client/src/inventory.ts` | `DISPLAY_ITEMS` | OK | Valeur `17`. |
 | `MAX_ITEMS` | macro | `packages/qcommon/src/q-shared.ts` | `MAX_ITEMS` | OK | Valeur `256`. |
 | `STAT_SELECTED_ITEM` | macro | `packages/qcommon/src/q-shared.ts` | `STAT_SELECTED_ITEM` | OK | Valeur `12`. |
@@ -134,8 +134,8 @@ Risque principal : faible ; les ecarts sont limites a la transformation des appe
 
 ### Renderer et web
 
-- [x] Si applicable, les sorties sont raccordees a `packages/renderer-common`.
-- [x] Si applicable, les sorties sont raccordees a `packages/renderer-three`.
+- [x] Si applicable, les sorties renderer-neutral restent disponibles pour snapshots/tests.
+- [x] Si applicable, les sorties runtime sont raccordees a `packages/renderer-three` via `refexport_t` / `gl_draw.ts`.
 - [x] Si applicable, les synchronisations web consomment bien les sorties runtime/client.
 - [x] L'effet est visible/consomme et pas seulement present en memoire.
 
@@ -155,10 +155,10 @@ Risque principal : faible ; les ecarts sont limites a la transformation des appe
 
 ## Findings
 
-1. [Info] Le port est conforme avec ecarts documentes de rendu renderer-neutral.
+1. [Info] Le port est conforme avec chemin runtime `refexport_t` et ecarts documentes de rendu renderer-neutral pour tests.
    - Fichier/ligne : `packages/client/src/inventory.ts`
    - Source originale : `client/cl_inv.c`
-   - Impact : pas de correction requise ; `re.DrawChar` et `re.DrawPic` sont representes par commandes HUD consommees par le renderer.
+   - Impact : pas de correction requise ; `re.DrawChar` et `re.DrawPic` sont executes via `CL_DrawInventoryRef` en runtime, et representes par commandes HUD pour les snapshots/tests.
    - Correction recommandee : aucune.
 
 ## Decision

@@ -36,6 +36,8 @@ import {
   SP_func_areaportal,
   SP_func_clock,
   SP_func_explosive,
+  SP_func_object,
+  SP_func_wall,
   SP_light_mine1,
   SP_light_mine2,
   SP_light,
@@ -65,6 +67,26 @@ import {
   SP_misc_viper_bomb,
   SP_monster_commander_body
 } from "./g_misc.js";
+import { SP_misc_insane } from "./m_insane.js";
+import { SP_monster_berserk } from "./m_berserk.js";
+import { SP_monster_boss2 } from "./m_boss2.js";
+import { SP_monster_jorg } from "./m_boss31.js";
+import { SP_monster_makron } from "./m_boss32.js";
+import { SP_monster_brain } from "./m_brain.js";
+import { SP_monster_chick } from "./m_chick.js";
+import { SP_monster_flipper } from "./m_flipper.js";
+import { SP_monster_floater } from "./m_float.js";
+import { SP_monster_flyer } from "./m_flyer.js";
+import { SP_monster_gladiator } from "./m_gladiator.js";
+import { SP_monster_gunner } from "./m_gunner.js";
+import { SP_monster_hover } from "./m_hover.js";
+import { SP_monster_infantry } from "./m_infantry.js";
+import { SP_monster_medic } from "./m_medic.js";
+import { SP_monster_mutant } from "./m_mutant.js";
+import { SP_monster_parasite } from "./m_parasite.js";
+import { SP_monster_supertank } from "./m_supertank.js";
+import { SP_monster_tank } from "./m_tank.js";
+import { SP_misc_actor, SP_target_actor } from "./m_actor.js";
 import {
   SP_target_blaster,
   SP_target_changelevel,
@@ -133,6 +155,8 @@ const spawns: SpawnEntry[] = [
   { name: "func_conveyor", spawn: SP_func_conveyor },
   { name: "func_door_secret", spawn: SP_func_door_secret },
   { name: "func_killbox", spawn: SP_func_killbox },
+  { name: "func_wall", spawn: SP_func_wall },
+  { name: "func_object", spawn: SP_func_object },
   { name: "func_areaportal", spawn: SP_func_areaportal },
   { name: "func_clock", spawn: SP_func_clock },
   { name: "func_explosive", spawn: SP_func_explosive },
@@ -156,6 +180,7 @@ const spawns: SpawnEntry[] = [
   { name: "target_earthquake", spawn: SP_target_earthquake },
   { name: "target_character", spawn: SP_target_character },
   { name: "target_string", spawn: SP_target_string },
+  { name: "target_actor", spawn: SP_target_actor },
   { name: "viewthing", spawn: SP_viewthing },
   { name: "info_null", spawn: SP_info_null },
   { name: "info_notnull", spawn: SP_info_notnull },
@@ -179,6 +204,27 @@ const spawns: SpawnEntry[] = [
   { name: "misc_easterchick2", spawn: SP_misc_easterchick2 },
   { name: "monster_commander_body", spawn: SP_monster_commander_body },
   { name: "misc_explobox", spawn: SP_misc_explobox },
+  { name: "misc_actor", spawn: SP_misc_actor },
+  { name: "misc_insane", spawn: SP_misc_insane },
+  { name: "monster_berserk", spawn: SP_monster_berserk },
+  { name: "monster_boss2", spawn: SP_monster_boss2 },
+  { name: "monster_jorg", spawn: SP_monster_jorg },
+  { name: "monster_makron", spawn: SP_monster_makron },
+  { name: "monster_brain", spawn: SP_monster_brain },
+  { name: "monster_chick", spawn: SP_monster_chick },
+  { name: "monster_flipper", spawn: SP_monster_flipper },
+  { name: "monster_floater", spawn: SP_monster_floater },
+  { name: "monster_flyer", spawn: SP_monster_flyer },
+  { name: "monster_gladiator", spawn: SP_monster_gladiator },
+  { name: "monster_gunner", spawn: SP_monster_gunner },
+  { name: "monster_hover", spawn: SP_monster_hover },
+  { name: "monster_infantry", spawn: SP_monster_infantry },
+  { name: "monster_medic", spawn: SP_monster_medic },
+  { name: "monster_mutant", spawn: SP_monster_mutant },
+  { name: "monster_parasite", spawn: SP_monster_parasite },
+  { name: "monster_supertank", spawn: SP_monster_supertank },
+  { name: "monster_tank", spawn: SP_monster_tank },
+  { name: "monster_tank_commander", spawn: SP_monster_tank },
   { name: "misc_deadsoldier", spawn: SP_misc_deadsoldier },
   { name: "misc_satellite_dish", spawn: SP_misc_satellite_dish },
   { name: "misc_teleporter", spawn: SP_misc_teleporter },

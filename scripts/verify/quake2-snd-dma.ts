@@ -114,9 +114,10 @@ assert.equal(queued?.entchannel, 2, "S_StartSound queued entchannel mismatch");
 assert.equal(queued?.volume, Math.trunc(0.5 * 255), "S_StartSound queued volume mismatch");
 assert.equal(queued?.begin, 100 + Math.trunc(0.05 * 11025), "S_StartSound timeofs scheduling mismatch");
 
-S_DMA_IssuePlaysound(context, queued!);
+const issuedFromReturn = S_DMA_IssuePlaysound(context, queued!);
 const issuedChannel = context.sound.state.channels.find((channel) => channel.sfx === registered);
 assert.ok(issuedChannel, "S_IssuePlaysound should assign a mixer channel");
+assert.equal(issuedFromReturn, issuedChannel, "S_IssuePlaysound should return the assigned mixer channel");
 assert.equal(issuedChannel?.entnum, 9, "S_IssuePlaysound channel entnum mismatch");
 assert.equal(issuedChannel?.entchannel, 2, "S_IssuePlaysound channel entchannel mismatch");
 assert.equal(issuedChannel?.end, context.sound.state.paintedtime + 32, "S_IssuePlaysound channel end mismatch");

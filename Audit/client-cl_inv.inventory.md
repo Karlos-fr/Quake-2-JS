@@ -8,16 +8,16 @@ Date : 2026-04-26
 - Sources C/H secondaires : `Quake-2-master/client/client.h`, `Quake-2-master/game/q_shared.h`
 - Package cible principal : `packages/client`
 - Fichier TS principal pressenti : `packages/client/src/inventory.ts`
-- Fichiers TS secondaires pressentis : `packages/client/src/parse.ts`, `packages/client/src/screen.ts`, `packages/renderer-common/src/hud-resources.ts`, `packages/client/src/index.ts`
+- Fichiers TS secondaires pressentis : `packages/client/src/parse.ts`, `packages/client/src/screen.ts`, `packages/client/src/index.ts`, `packages/renderer-three/src/gl-draw.ts`, `packages/renderer-three/src/three-gl-draw-adapter.ts`
 - Domaine : client / inventaire HUD et parsing `svc_inventory`
-- Niveau de fidelite attendu : Strict pour `CL_ParseInventory` et `SetStringHighBit`, Close pour la projection renderer-neutral de `CL_DrawInventory`.
+- Niveau de fidelite attendu : Strict pour `CL_ParseInventory` et `SetStringHighBit`, Close pour `CL_DrawInventoryRef` via `refexport_t` ; la projection renderer-neutral de `CL_DrawInventory` reste disponible pour snapshots/tests.
 - Statut actuel dans `PORTAGE_QUAKE2.md` : porte
 - Statut `Valide` actuel dans `PORTAGE_QUAKE2.md` : vide avant cet audit
 
 ## Regles de rattachement
 
 - Regle cible attendue : `1 fichier C = 1 fichier TS`.
-- Exception de decoupage documentee : `CL_ParseInventory` est rattache a `packages/client/src/parse.ts`, car il consomme `net_message` avec les autres parseurs client ; `screen.ts` orchestre l'affichage comme facade HUD ; `hud-resources.ts` ne contient que le catalogue d'assets.
+- Exception de decoupage documentee : `CL_ParseInventory` est rattache a `packages/client/src/parse.ts`, car il consomme `net_message` avec les autres parseurs client ; `screen.ts` orchestre l'affichage comme facade HUD ; `gl_draw.ts` et l'adapter Three consomment les appels `refexport_t`.
 - Justification si `1 fichier C != 1 fichier TS` : le fichier source mele un parseur reseau et le rendu HUD immediat. Le port conserve `inventory.ts` comme cible principale pour le comportement inventaire visible, tout en gardant le parsing dans le module parse existant.
 
 ## Inventaire source
@@ -36,7 +36,7 @@ Date : 2026-04-26
   - Role : dessiner une chaine avec `re.DrawChar` tous les 8 pixels.
   - Cible TS pressentie : `packages/client/src/inventory.ts`
   - Statut : porte.
-  - Notes : rendu converti en `HudTextCommand` avec largeur `text.length * 8`.
+  - Notes : rendu conserve en `HudTextCommand` pour snapshots/tests et en appels immediats `ref.DrawChar` via `Inv_DrawStringRef`.
 
 - [x] Nom : `SetStringHighBit`
   - Source : `client/cl_inv.c`
@@ -50,7 +50,7 @@ Date : 2026-04-26
   - Role : composer l'overlay inventaire, calculer le scroll, afficher bindings, quantites, noms d'items et curseur clignotant.
   - Cible TS pressentie : `packages/client/src/inventory.ts`, appele par `packages/client/src/screen.ts`
   - Statut : porte et branche.
-  - Notes : draw calls immediats remplaces par commandes HUD renderer-neutral.
+  - Notes : chemin runtime immediat conserve via `CL_DrawInventoryRef`; commandes HUD conservees pour snapshots/tests.
 
 ### Structures / types
 
@@ -103,7 +103,7 @@ Date : 2026-04-26
   - Valeur / role : `13`, bit `2` active l'inventaire.
   - Cible TS pressentie : `packages/qcommon/src/q-shared.ts`, `packages/client/src/screen.ts`
   - Statut : porte et branche.
-  - Notes : `SCR_BuildHudDrawCommands` appelle `CL_DrawInventory` si le bit est present.
+  - Notes : `SCR_DrawHudRef` appelle `CL_DrawInventoryRef` en runtime ; `SCR_BuildHudDrawCommands` appelle `CL_DrawInventory` pour snapshots/tests.
 
 - [x] Nom : `CS_ITEMS`
   - Source : `game/q_shared.h`
@@ -124,13 +124,13 @@ Date : 2026-04-26
 | Item source | Type | Fichier TS principal | Symbole TS | Statut | Notes |
 |---|---|---|---|---|---|
 | `CL_ParseInventory` | fonction | `packages/client/src/parse.ts` | `CL_ParseInventory` | Porte | Lit `MAX_ITEMS` shorts. |
-| `Inv_DrawString` | fonction | `packages/client/src/inventory.ts` | `Inv_DrawString` | Porte | Commande texte 8x8. |
+| `Inv_DrawString` | fonction | `packages/client/src/inventory.ts` | `Inv_DrawString`, `Inv_DrawStringRef` | Porte | Commande texte 8x8 et chemin immediat `ref.DrawChar`. |
 | `SetStringHighBit` | fonction | `packages/client/src/inventory.ts` | `SetStringHighBit` | Porte | Chaine immutable TS. |
-| `CL_DrawInventory` | fonction | `packages/client/src/inventory.ts` | `CL_DrawInventory` | Porte et branche | Appele par `screen.ts`. |
+| `CL_DrawInventory` | fonction | `packages/client/src/inventory.ts` | `CL_DrawInventory`, `CL_DrawInventoryRef` | Porte et branche | Appele par `screen.ts`. |
 | `DISPLAY_ITEMS` | macro locale | `packages/client/src/inventory.ts` | `DISPLAY_ITEMS` | Porte | Valeur `17`. |
 | `cl.inventory` | state | `packages/client/src/types.ts` | `ClientRuntime.cl.inventory` | Porte | Taille `MAX_ITEMS`. |
-| `STAT_LAYOUTS & 2` | branchement HUD | `packages/client/src/screen.ts` | `SCR_BuildHudDrawCommands` | Porte | Declenche l'overlay inventaire. |
-| `"inventory"` | asset | `packages/renderer-common/src/hud-resources.ts` | catalogue HUD | Porte | Pic source `CL_DrawInventory`. |
+| `STAT_LAYOUTS & 2` | branchement HUD | `packages/client/src/screen.ts` | `SCR_DrawHudRef`, `SCR_BuildHudDrawCommands` | Porte | Declenche l'overlay inventaire en runtime et en snapshots/tests. |
+| `"inventory"` | asset | `packages/renderer-three/src/gl-image.ts` | image `pics/inventory.pcx` via `ref.DrawPic` | Porte | Pic source `CL_DrawInventory`. |
 
 ## Points d'attention
 
@@ -146,8 +146,8 @@ Date : 2026-04-26
 - Runtime : `packages/client/src/types.ts`, `packages/client/src/parse.ts`
 - Client : `packages/client/src/inventory.ts`, `packages/client/src/screen.ts`, `packages/client/src/index.ts`
 - Server : `packages/game/src/g_cmds.ts` emet `svc_inventory`
-- Renderer common : `packages/renderer-common/src/hud-resources.ts`, `packages/renderer-common/src/hud-draw.ts`
-- Renderer three : `packages/renderer-three/src/hud-resource-resolver.ts`
-- Web / platform : consommation HUD via le pipeline renderer/web
+- Renderer common : non applicable pour le runtime HUD actuel.
+- Renderer three : `packages/renderer-three/src/gl-draw.ts`, `packages/renderer-three/src/three-gl-draw-adapter.ts`, `packages/renderer-three/src/ref-gl-host.ts`
+- Web / platform : consommation HUD via `SCR_DrawHudRef` et `refexport_t`
 - Audio : non applicable
-- Tests existants : `scripts/verify/quake2-screen-header.ts`, `scripts/verify/quake2-hud-renderer.ts`
+- Tests existants : `scripts/verify/quake2-screen-header.ts`, `scripts/verify/quake2-gl-draw.ts`, `scripts/verify/quake2-three-gl-draw-adapter.ts`

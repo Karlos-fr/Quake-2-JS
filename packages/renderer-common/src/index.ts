@@ -6,34 +6,8 @@
  * It is a package entry point for renderer-common modules.
  *
  * Dependencies:
- * - packages/renderer-common/src/bsp-surface-builder.ts
+ * - packages/renderer-common/src/sky.ts
  */
 
-export { buildBspSurfaces } from "./bsp-surface-builder.js";
-export { collectHudPictureResourceNames } from "./hud-draw.js";
-export {
-  collectHudFrameResourceRequirements,
-  getQuake2HudResourceCatalog
-} from "./hud-resources.js";
-
-export type { BspSurface, BspSurfaceBuildOptions } from "./bsp-surface-builder.js";
 export { QUAKE_SKY_FACE_SUFFIXES } from "./sky.js";
 export type { QuakeSkyAssetSet, QuakeSkyFaceName, QuakeSkySnapshot } from "./sky.js";
-export type {
-  HudBounds,
-  HudDrawCommand,
-  HudFillCommand,
-  HudNumberCommand,
-  HudPaletteColor,
-  HudPictureCommand,
-  HudPictureResourceResolver,
-  HudTextCommand
-} from "./hud-draw.js";
-export type {
-  HudFrameResourceRequirements,
-  HudGlyphSetDescriptor,
-  HudPictureDescriptor,
-  HudResourceCatalog,
-  HudResourceKind,
-  HudResourceOrigin
-} from "./hud-resources.js";

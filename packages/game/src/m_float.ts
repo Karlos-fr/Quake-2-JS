@@ -1,7 +1,7 @@
 /**
  * File: m_float.ts
- * Source: Quake II original / game/m_float.h
- * Purpose: Port of the generated float model frame constants used by the monster float model.
+ * Source: Quake II original / game/m_float.h and game/m_float.c
+ * Purpose: Port of the generated float model frame constants and monster_floater gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,52 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - None.
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
+ * - Keeps `FLOAT_ZAP_OFFSET` local because `game/m_float.c` uses a manual zap offset and comments out `monster_flash_offset`.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_float`.
  */
+
+import {
+  AngleVectors,
+  ATTN_IDLE,
+  ATTN_NORM,
+  CHAN_VOICE,
+  CHAN_WEAPON,
+  EF_HYPERBLASTER,
+  multicast_t,
+  temp_event_t,
+  type vec3_t
+} from "../../qcommon/src/index.js";
+import {
+  AI_STAND_GROUND,
+  DAMAGE_ENERGY,
+  MELEE_DISTANCE,
+  MOD_UNKNOWN,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  SOLID_BBOX,
+  SVF_DEADMONSTER
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk } from "./g_ai.js";
+import { T_Damage } from "./g_combat.js";
+import { flymonster_start, monster_fire_blaster } from "./g_monster.js";
+import { BecomeExplosion1 } from "./g_misc.js";
+import { G_FreeEdict, G_ProjectSource } from "./g_utils.js";
+import { getMonsterFlashOffset } from "./m_flash.js";
+import { fire_hit } from "./g_weapon.js";
+import {
+  emitGameTempEntity,
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_actvat01 = 0;
 export const FRAME_actvat02 = 1;
@@ -265,3 +306,539 @@ export const FRAME_stand251 = 246;
 export const FRAME_stand252 = 247;
 
 export const MODEL_SCALE = 1.0;
+
+const MZ2_FLOAT_BLASTER_1 = 82;
+const FLOAT_ZAP_OFFSET: vec3_t = [18.5, -0.9, 10];
+
+const SOUND_ATTACK1 = "floater/fltatck1.wav";
+const SOUND_ATTACK2 = "floater/fltatck2.wav";
+const SOUND_ATTACK3 = "floater/fltatck3.wav";
+const SOUND_DEATH1 = "floater/fltdeth1.wav";
+const SOUND_IDLE = "floater/fltidle1.wav";
+const SOUND_PAIN1 = "floater/fltpain1.wav";
+const SOUND_PAIN2 = "floater/fltpain2.wav";
+const SOUND_SEARCH = "floater/fltsrch1.wav";
+const SOUND_SIGHT = "floater/fltsght1.wav";
+
+let sound_attack2 = 0;
+let sound_attack3 = 0;
+let sound_death1 = 0;
+let sound_idle = 0;
+let sound_pain1 = 0;
+let sound_pain2 = 0;
+let sound_sight = 0;
+
+/**
+ * Original name: floater_sight
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the floater sight sound on target acquisition.
+ */
+export function floater_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+}
+
+/**
+ * Original name: floater_idle
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the floater idle sound with the original idle attenuation.
+ */
+export function floater_idle(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_idle, SOUND_IDLE, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_IDLE,
+    timeofs: 0
+  });
+}
+
+/**
+ * Original name: floater_fire_blaster
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Projects the floater blaster muzzle and fires one low-damage fast blaster bolt toward the enemy view height.
+ */
+export function floater_fire_blaster(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const effect = (self.s.frame === FRAME_attak104 || self.s.frame === FRAME_attak107) ? EF_HYPERBLASTER : 0;
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, getMonsterFlashOffset(MZ2_FLOAT_BLASTER_1), forward, right);
+  const end: vec3_t = [...self.enemy.s.origin];
+  end[2] += self.enemy.viewheight;
+  const dir = subtractVec3(end, start);
+
+  monster_fire_blaster(self, start, dir, 1, 1000, MZ2_FLOAT_BLASTER_1, effect, runtime);
+}
+
+const floater_frames_stand1 = makeFrames(ai_stand, new Array<number>(52).fill(0));
+export const floater_move_stand1: GameMonsterMove = {
+  firstframe: FRAME_stand101,
+  lastframe: FRAME_stand152,
+  frame: floater_frames_stand1,
+  endfunc: undefined
+};
+
+const floater_frames_stand2 = makeFrames(ai_stand, new Array<number>(52).fill(0));
+export const floater_move_stand2: GameMonsterMove = {
+  firstframe: FRAME_stand201,
+  lastframe: FRAME_stand252,
+  frame: floater_frames_stand2,
+  endfunc: undefined
+};
+
+/**
+ * Original name: floater_stand
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Randomly selects one of the two floater standing loops.
+ */
+export function floater_stand(self: GameEntity): void {
+  if (Math.random() <= 0.5) {
+    self.monsterinfo.currentmove = floater_move_stand1;
+  } else {
+    self.monsterinfo.currentmove = floater_move_stand2;
+  }
+}
+
+const floater_frames_activate = makeFrames(ai_move, new Array<number>(30).fill(0));
+export const floater_move_activate: GameMonsterMove = {
+  firstframe: FRAME_actvat01,
+  lastframe: FRAME_actvat31,
+  frame: floater_frames_activate,
+  endfunc: undefined
+};
+
+const floater_frames_attack1 = makeFrames(
+  ai_charge,
+  new Array<number>(14).fill(0),
+  indexedThinks(14, [
+    [3, floater_fire_blaster],
+    [4, floater_fire_blaster],
+    [5, floater_fire_blaster],
+    [6, floater_fire_blaster],
+    [7, floater_fire_blaster],
+    [8, floater_fire_blaster],
+    [9, floater_fire_blaster]
+  ])
+);
+export const floater_move_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak101,
+  lastframe: FRAME_attak114,
+  frame: floater_frames_attack1,
+  endfunc: floater_run
+};
+
+const floater_frames_attack2 = makeFrames(
+  ai_charge,
+  new Array<number>(25).fill(0),
+  indexedThinks(25, [[11, floater_wham]])
+);
+export const floater_move_attack2: GameMonsterMove = {
+  firstframe: FRAME_attak201,
+  lastframe: FRAME_attak225,
+  frame: floater_frames_attack2,
+  endfunc: floater_run
+};
+
+const floater_frames_attack3 = makeFrames(
+  ai_charge,
+  new Array<number>(34).fill(0),
+  indexedThinks(34, [[8, floater_zap]])
+);
+export const floater_move_attack3: GameMonsterMove = {
+  firstframe: FRAME_attak301,
+  lastframe: FRAME_attak334,
+  frame: floater_frames_attack3,
+  endfunc: floater_run
+};
+
+const floater_frames_death = makeFrames(ai_move, new Array<number>(13).fill(0));
+export const floater_move_death: GameMonsterMove = {
+  firstframe: FRAME_death01,
+  lastframe: FRAME_death13,
+  frame: floater_frames_death,
+  endfunc: floater_dead
+};
+
+const floater_frames_pain1 = makeFrames(ai_move, new Array<number>(7).fill(0));
+export const floater_move_pain1: GameMonsterMove = {
+  firstframe: FRAME_pain101,
+  lastframe: FRAME_pain107,
+  frame: floater_frames_pain1,
+  endfunc: floater_run
+};
+
+const floater_frames_pain2 = makeFrames(ai_move, new Array<number>(8).fill(0));
+export const floater_move_pain2: GameMonsterMove = {
+  firstframe: FRAME_pain201,
+  lastframe: FRAME_pain208,
+  frame: floater_frames_pain2,
+  endfunc: floater_run
+};
+
+const floater_frames_pain3 = makeFrames(ai_move, new Array<number>(12).fill(0));
+export const floater_move_pain3: GameMonsterMove = {
+  firstframe: FRAME_pain301,
+  lastframe: FRAME_pain312,
+  frame: floater_frames_pain3,
+  endfunc: floater_run
+};
+
+const floater_frames_walk = makeFrames(ai_walk, new Array<number>(52).fill(5));
+export const floater_move_walk: GameMonsterMove = {
+  firstframe: FRAME_stand101,
+  lastframe: FRAME_stand152,
+  frame: floater_frames_walk,
+  endfunc: undefined
+};
+
+const floater_frames_run = makeFrames(ai_run, new Array<number>(52).fill(13));
+export const floater_move_run: GameMonsterMove = {
+  firstframe: FRAME_stand101,
+  lastframe: FRAME_stand152,
+  frame: floater_frames_run,
+  endfunc: undefined
+};
+
+/**
+ * Original name: floater_run
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Uses stand animation while holding ground, otherwise enters the run loop.
+ */
+export function floater_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = floater_move_stand1;
+  } else {
+    self.monsterinfo.currentmove = floater_move_run;
+  }
+}
+
+/**
+ * Original name: floater_walk
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the floater walk loop.
+ */
+export function floater_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = floater_move_walk;
+}
+
+/**
+ * Original name: floater_wham
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the claw impact sound and performs the original melee hit test.
+ */
+export function floater_wham(self: GameEntity, runtime: GameRuntime): void {
+  const aim: vec3_t = [MELEE_DISTANCE, 0, 0];
+  emitRegisteredGameSound(runtime, self, sound_attack3, SOUND_ATTACK3, {
+    channel: CHAN_WEAPON,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+  fire_hit(self, aim, 5 + randomInt(6), -50, runtime);
+}
+
+/**
+ * Original name: floater_zap
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the claw zap spark splash and applies direct energy damage to the current enemy.
+ */
+export function floater_zap(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const dir = subtractVec3(self.enemy.s.origin, self.s.origin);
+  const { forward, right } = AngleVectors(self.s.angles);
+  const origin = G_ProjectSource(self.s.origin, FLOAT_ZAP_OFFSET, forward, right);
+
+  emitRegisteredGameSound(runtime, self, sound_attack2, SOUND_ATTACK2, {
+    channel: CHAN_WEAPON,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+
+  emitGameTempEntity(runtime, temp_event_t.TE_SPLASH, origin, multicast_t.MULTICAST_PVS, {
+    count: 32,
+    dir,
+    color: 1
+  });
+
+  T_Damage(
+    self.enemy,
+    self,
+    self,
+    dir,
+    self.enemy.s.origin,
+    [0, 0, 0],
+    5 + randomInt(6),
+    -10,
+    DAMAGE_ENERGY,
+    MOD_UNKNOWN,
+    runtime
+  );
+}
+
+/**
+ * Original name: floater_attack
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the floater ranged blaster attack.
+ */
+export function floater_attack(self: GameEntity): void {
+  self.monsterinfo.currentmove = floater_move_attack1;
+}
+
+/**
+ * Original name: floater_melee
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Randomly chooses the zap or claw melee attack.
+ */
+export function floater_melee(self: GameEntity): void {
+  if (Math.random() < 0.5) {
+    self.monsterinfo.currentmove = floater_move_attack3;
+  } else {
+    self.monsterinfo.currentmove = floater_move_attack2;
+  }
+}
+
+/**
+ * Original name: floater_pain
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies damaged skin, pain debounce, nightmare suppression and one of two used pain moves.
+ */
+export function floater_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < (self.max_health / 2)) {
+    self.s.skinnum = 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  const n = (randomInt(0x7fffffff) + 1) % 3;
+  if (n === 0) {
+    emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, {
+      channel: CHAN_VOICE,
+      volume: 1,
+      attenuation: ATTN_NORM,
+      timeofs: 0
+    });
+    self.monsterinfo.currentmove = floater_move_pain1;
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_pain2, SOUND_PAIN2, {
+      channel: CHAN_VOICE,
+      volume: 1,
+      attenuation: ATTN_NORM,
+      timeofs: 0
+    });
+    self.monsterinfo.currentmove = floater_move_pain2;
+  }
+}
+
+/**
+ * Original name: floater_dead
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finalizes the floater corpse bbox, movetype, dead-monster flag and link state.
+ */
+export function floater_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, -8);
+  self.movetype = MOVETYPE_TOSS;
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+/**
+ * Original name: floater_die
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the death sound and immediately turns the floater into the original explosion temp entity.
+ */
+export function floater_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  emitRegisteredGameSound(runtime, self, sound_death1, SOUND_DEATH1, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+  BecomeExplosion1(self, runtime);
+}
+
+/**
+ * Original name: SP_monster_floater
+ * Source: game/m_float.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns monster_floater, precaches assets and initializes flying monster callbacks.
+ */
+export function SP_monster_floater(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  precacheFloaterAssets(runtime);
+
+  self.s.sound = registerGameSound(runtime, SOUND_SEARCH);
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/float/tris.md2");
+  setVec3(self.mins, -24, -24, -24);
+  setVec3(self.maxs, 24, 24, 32);
+
+  self.health = 200;
+  self.gib_health = -80;
+  self.mass = 300;
+
+  self.pain = floater_pain;
+  self.die = floater_die;
+
+  self.monsterinfo.stand = floater_stand;
+  self.monsterinfo.walk = floater_walk;
+  self.monsterinfo.run = floater_run;
+  self.monsterinfo.attack = floater_attack;
+  self.monsterinfo.melee = floater_melee;
+  self.monsterinfo.sight = floater_sight;
+  self.monsterinfo.idle = floater_idle;
+
+  linkGameEntity(runtime, self);
+
+  if (Math.random() <= 0.5) {
+    self.monsterinfo.currentmove = floater_move_stand1;
+  } else {
+    self.monsterinfo.currentmove = floater_move_stand2;
+  }
+
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  flymonster_start(self, runtime);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function precacheFloaterAssets(runtime: GameRuntime): void {
+  sound_attack2 = registerGameSound(runtime, SOUND_ATTACK2);
+  sound_attack3 = registerGameSound(runtime, SOUND_ATTACK3);
+  sound_death1 = registerGameSound(runtime, SOUND_DEATH1);
+  sound_idle = registerGameSound(runtime, SOUND_IDLE);
+  sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
+  sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
+  sound_sight = registerGameSound(runtime, SOUND_SIGHT);
+  registerGameSound(runtime, SOUND_ATTACK1);
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [
+    left[0] - right[0],
+    left[1] - right[1],
+    left[2] - right[2]
+  ];
+}
+
+function randomInt(maxExclusive: number): number {
+  return Math.trunc(Math.random() * maxExclusive);
+}

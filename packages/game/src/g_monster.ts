@@ -45,6 +45,7 @@ import {
   SVF_DEADMONSTER,
   SVF_MONSTER,
   SVF_NOCLIENT,
+  emitMonsterMuzzleFlash,
   emitGameSound,
   linkGameEntity,
   MOVETYPE_NONE,
@@ -126,7 +127,7 @@ export function monster_fire_bullet(
   hooks: GameMonsterHooks = {}
 ): void {
   fire_bullet(self, start, dir, damage, kick, hspread, vspread, MOD_UNKNOWN, runtime, hooks);
-  hooks.emitMonsterMuzzleFlash?.(self, start, flashtype, runtime);
+  queueMonsterMuzzleFlash(self, start, flashtype, runtime, hooks);
 }
 
 /**
@@ -152,7 +153,7 @@ export function monster_fire_shotgun(
   hooks: GameMonsterHooks = {}
 ): void {
   fire_shotgun(self, start, aimdir, damage, kick, hspread, vspread, count, MOD_UNKNOWN, runtime, hooks);
-  hooks.emitMonsterMuzzleFlash?.(self, start, flashtype, runtime);
+  queueMonsterMuzzleFlash(self, start, flashtype, runtime, hooks);
 }
 
 /**
@@ -176,7 +177,7 @@ export function monster_fire_blaster(
   hooks: GameMonsterHooks = {}
 ): void {
   fire_blaster(self, start, dir, damage, speed, effect, false, runtime, hooks);
-  hooks.emitMonsterMuzzleFlash?.(self, start, flashtype, runtime);
+  queueMonsterMuzzleFlash(self, start, flashtype, runtime, hooks);
 }
 
 /**
@@ -199,7 +200,7 @@ export function monster_fire_grenade(
   hooks: GameMonsterHooks = {}
 ): void {
   fire_grenade(self, start, aimdir, damage, speed, 2.5, damage + 40, runtime, hooks);
-  hooks.emitMonsterMuzzleFlash?.(self, start, flashtype, runtime);
+  queueMonsterMuzzleFlash(self, start, flashtype, runtime, hooks);
 }
 
 /**
@@ -222,7 +223,7 @@ export function monster_fire_rocket(
   hooks: GameMonsterHooks = {}
 ): void {
   fire_rocket(self, start, dir, damage, speed, damage + 20, damage, runtime, hooks);
-  hooks.emitMonsterMuzzleFlash?.(self, start, flashtype, runtime);
+  queueMonsterMuzzleFlash(self, start, flashtype, runtime, hooks);
 }
 
 /**
@@ -245,7 +246,7 @@ export function monster_fire_railgun(
   hooks: GameMonsterHooks = {}
 ): void {
   fire_rail(self, start, aimdir, damage, kick, runtime, hooks);
-  hooks.emitMonsterMuzzleFlash?.(self, start, flashtype, runtime);
+  queueMonsterMuzzleFlash(self, start, flashtype, runtime, hooks);
 }
 
 /**
@@ -270,7 +271,22 @@ export function monster_fire_bfg(
   hooks: GameMonsterHooks = {}
 ): void {
   fire_bfg(self, start, aimdir, damage, speed, damage_radius, runtime, hooks);
-  hooks.emitMonsterMuzzleFlash?.(self, start, flashtype, runtime);
+  queueMonsterMuzzleFlash(self, start, flashtype, runtime, hooks);
+}
+
+function queueMonsterMuzzleFlash(
+  self: GameEntity,
+  start: vec3_t,
+  flashtype: number,
+  runtime: GameRuntime,
+  hooks: GameMonsterHooks
+): void {
+  if (hooks.emitMonsterMuzzleFlash) {
+    hooks.emitMonsterMuzzleFlash(self, start, flashtype, runtime);
+    return;
+  }
+
+  emitMonsterMuzzleFlash(runtime, self, start, flashtype);
 }
 
 /**

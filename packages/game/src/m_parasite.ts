@@ -1,7 +1,7 @@
 /**
  * File: m_parasite.ts
- * Source: Quake II original / game/m_parasite.h
- * Purpose: Port of the generated parasite model frame constants used by the monster parasite model.
+ * Source: Quake II original / game/m_parasite.h and game/m_parasite.c
+ * Purpose: Port of the generated parasite model frame constants and monster_parasite gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,54 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - None.
+ * - Uses the explicit gameplay runtime and structured temp-entity event queue instead of `gi.*` writes.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_parasite`.
  */
+
+import {
+  AngleVectors,
+  ATTN_IDLE,
+  ATTN_NORM,
+  CHAN_AUTO,
+  CHAN_VOICE,
+  CHAN_WEAPON,
+  MASK_SHOT,
+  PITCH,
+  multicast_t,
+  temp_event_t,
+  type vec3_t
+} from "../../qcommon/src/index.js";
+import {
+  AI_STAND_GROUND,
+  DEAD_DEAD,
+  DAMAGE_NO_KNOCKBACK,
+  GIB_ORGANIC,
+  MOD_UNKNOWN,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  SOLID_BBOX,
+  SVF_DEADMONSTER,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk } from "./g_ai.js";
+import { T_Damage } from "./g_combat.js";
+import { walkmonster_start } from "./g_monster.js";
+import { ThrowGib, ThrowHead } from "./g_misc.js";
+import { G_FreeEdict, G_ProjectSource, vectoangles } from "./g_utils.js";
+import {
+  emitGameSound,
+  emitGameTempEntity,
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_break01 = 0;
 export const FRAME_break02 = 1;
@@ -135,3 +178,458 @@ export const FRAME_stand34 = 116;
 export const FRAME_stand35 = 117;
 
 export const MODEL_SCALE = 1.0;
+
+const SOUND_PAIN1 = "parasite/parpain1.wav";
+const SOUND_PAIN2 = "parasite/parpain2.wav";
+const SOUND_DIE = "parasite/pardeth1.wav";
+const SOUND_LAUNCH = "parasite/paratck1.wav";
+const SOUND_IMPACT = "parasite/paratck2.wav";
+const SOUND_SUCK = "parasite/paratck3.wav";
+const SOUND_REELIN = "parasite/paratck4.wav";
+const SOUND_SIGHT = "parasite/parsght1.wav";
+const SOUND_TAP = "parasite/paridle1.wav";
+const SOUND_SCRATCH = "parasite/paridle2.wav";
+const SOUND_SEARCH = "parasite/parsrch1.wav";
+
+let sound_pain1 = 0;
+let sound_pain2 = 0;
+let sound_die = 0;
+let sound_launch = 0;
+let sound_impact = 0;
+let sound_suck = 0;
+let sound_reelin = 0;
+let sound_sight = 0;
+let sound_tap = 0;
+let sound_scratch = 0;
+let sound_search = 0;
+
+export function parasite_launch(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_launch, SOUND_LAUNCH, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
+}
+
+export function parasite_reel_in(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_reelin, SOUND_REELIN, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
+}
+
+export function parasite_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
+}
+
+export function parasite_tap(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_tap, SOUND_TAP, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_IDLE, timeofs: 0 });
+}
+
+export function parasite_scratch(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_scratch, SOUND_SCRATCH, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_IDLE, timeofs: 0 });
+}
+
+export function parasite_search(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_search, SOUND_SEARCH, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_IDLE, timeofs: 0 });
+}
+
+const parasite_frames_start_fidget = makeFrames(ai_stand, [0, 0, 0, 0]);
+export const parasite_move_start_fidget: GameMonsterMove = {
+  firstframe: FRAME_stand18,
+  lastframe: FRAME_stand21,
+  frame: parasite_frames_start_fidget,
+  endfunc: parasite_do_fidget
+};
+
+const parasite_frames_fidget = makeFrames(ai_stand, [0, 0, 0, 0, 0, 0], indexedThinks(6, [[0, parasite_scratch], [3, parasite_scratch]]));
+export const parasite_move_fidget: GameMonsterMove = {
+  firstframe: FRAME_stand22,
+  lastframe: FRAME_stand27,
+  frame: parasite_frames_fidget,
+  endfunc: parasite_refidget
+};
+
+const parasite_frames_end_fidget = makeFrames(ai_stand, [0, 0, 0, 0, 0, 0, 0, 0], indexedThinks(8, [[0, parasite_scratch]]));
+export const parasite_move_end_fidget: GameMonsterMove = {
+  firstframe: FRAME_stand28,
+  lastframe: FRAME_stand35,
+  frame: parasite_frames_end_fidget,
+  endfunc: parasite_stand
+};
+
+export function parasite_end_fidget(self: GameEntity): void {
+  self.monsterinfo.currentmove = parasite_move_end_fidget;
+}
+
+export function parasite_do_fidget(self: GameEntity): void {
+  self.monsterinfo.currentmove = parasite_move_fidget;
+}
+
+export function parasite_refidget(self: GameEntity): void {
+  if (Math.random() <= 0.8) {
+    self.monsterinfo.currentmove = parasite_move_fidget;
+  } else {
+    self.monsterinfo.currentmove = parasite_move_end_fidget;
+  }
+}
+
+export function parasite_idle(self: GameEntity): void {
+  self.monsterinfo.currentmove = parasite_move_start_fidget;
+}
+
+const parasite_frames_stand = makeFrames(
+  ai_stand,
+  new Array<number>(17).fill(0),
+  indexedThinks(17, [[2, parasite_tap], [4, parasite_tap], [8, parasite_tap], [10, parasite_tap], [14, parasite_tap], [16, parasite_tap]])
+);
+export const parasite_move_stand: GameMonsterMove = {
+  firstframe: FRAME_stand01,
+  lastframe: FRAME_stand17,
+  frame: parasite_frames_stand,
+  endfunc: parasite_stand
+};
+
+export function parasite_stand(self: GameEntity): void {
+  self.monsterinfo.currentmove = parasite_move_stand;
+}
+
+const parasite_frames_run = makeFrames(ai_run, [30, 30, 22, 19, 24, 28, 25]);
+export const parasite_move_run: GameMonsterMove = {
+  firstframe: FRAME_run03,
+  lastframe: FRAME_run09,
+  frame: parasite_frames_run,
+  endfunc: undefined
+};
+
+const parasite_frames_start_run = makeFrames(ai_run, [0, 30]);
+export const parasite_move_start_run: GameMonsterMove = {
+  firstframe: FRAME_run01,
+  lastframe: FRAME_run02,
+  frame: parasite_frames_start_run,
+  endfunc: parasite_run
+};
+
+const parasite_frames_stop_run = makeFrames(ai_run, [20, 20, 12, 10, 0, 0]);
+export const parasite_move_stop_run: GameMonsterMove = {
+  firstframe: FRAME_run10,
+  lastframe: FRAME_run15,
+  frame: parasite_frames_stop_run,
+  endfunc: undefined
+};
+
+export function parasite_start_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = parasite_move_stand;
+  } else {
+    self.monsterinfo.currentmove = parasite_move_start_run;
+  }
+}
+
+export function parasite_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = parasite_move_stand;
+  } else {
+    self.monsterinfo.currentmove = parasite_move_run;
+  }
+}
+
+const parasite_frames_walk = makeFrames(ai_walk, [30, 30, 22, 19, 24, 28, 25]);
+export const parasite_move_walk: GameMonsterMove = {
+  firstframe: FRAME_run03,
+  lastframe: FRAME_run09,
+  frame: parasite_frames_walk,
+  endfunc: parasite_walk
+};
+
+const parasite_frames_start_walk = makeFrames(ai_walk, [0, 30], indexedThinks(2, [[1, parasite_walk]]));
+export const parasite_move_start_walk: GameMonsterMove = {
+  firstframe: FRAME_run01,
+  lastframe: FRAME_run02,
+  frame: parasite_frames_start_walk,
+  endfunc: undefined
+};
+
+const parasite_frames_stop_walk = makeFrames(ai_walk, [20, 20, 12, 10, 0, 0]);
+export const parasite_move_stop_walk: GameMonsterMove = {
+  firstframe: FRAME_run10,
+  lastframe: FRAME_run15,
+  frame: parasite_frames_stop_walk,
+  endfunc: undefined
+};
+
+export function parasite_start_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = parasite_move_start_walk;
+}
+
+export function parasite_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = parasite_move_walk;
+}
+
+const parasite_frames_pain1 = makeFrames(ai_move, [0, 0, 0, 0, 0, 0, 6, 16, -6, -7, 0]);
+export const parasite_move_pain1: GameMonsterMove = {
+  firstframe: FRAME_pain101,
+  lastframe: FRAME_pain111,
+  frame: parasite_frames_pain1,
+  endfunc: parasite_start_run
+};
+
+export function parasite_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < (self.max_health / 2)) {
+    self.s.skinnum = 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  if (Math.random() < 0.5) {
+    emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, { channel: CHAN_VOICE, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_pain2, SOUND_PAIN2, { channel: CHAN_VOICE, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
+  }
+
+  self.monsterinfo.currentmove = parasite_move_pain1;
+}
+
+export function parasite_drain_attack_ok(start: vec3_t, end: vec3_t): boolean {
+  const dir = subtractVec3(start, end);
+  if (vec3Length(dir) > 256) {
+    return false;
+  }
+
+  const angles = vectoangles(dir);
+  if (angles[PITCH] < -180) {
+    angles[PITCH] += 360;
+  }
+  if (Math.abs(angles[PITCH]) > 30) {
+    return false;
+  }
+
+  return true;
+}
+
+export function parasite_drain_attack(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, [24, 0, 6], forward, right);
+  let end: vec3_t = [...self.enemy.s.origin];
+
+  if (!parasite_drain_attack_ok(start, end)) {
+    end[2] = self.enemy.s.origin[2] + self.enemy.maxs[2] - 8;
+    if (!parasite_drain_attack_ok(start, end)) {
+      end[2] = self.enemy.s.origin[2] + self.enemy.mins[2] + 8;
+      if (!parasite_drain_attack_ok(start, end)) {
+        return;
+      }
+    }
+  }
+
+  end = [...self.enemy.s.origin];
+  const trace = runtime.collision?.trace(start, [0, 0, 0], [0, 0, 0], end, self, MASK_SHOT);
+  if (trace && trace.ent !== self.enemy) {
+    return;
+  }
+
+  let damage: number;
+  if (self.s.frame === FRAME_drain03) {
+    damage = 5;
+    emitRegisteredGameSound(runtime, self.enemy, sound_impact, SOUND_IMPACT, { channel: CHAN_AUTO, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
+  } else {
+    if (self.s.frame === FRAME_drain04) {
+      emitRegisteredGameSound(runtime, self, sound_suck, SOUND_SUCK, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
+    }
+    damage = 2;
+  }
+
+  emitGameTempEntity(runtime, temp_event_t.TE_PARASITE_ATTACK, self.s.origin, multicast_t.MULTICAST_PVS, {
+    entityIndex: self.index,
+    start: [...start],
+    end: [...end]
+  });
+
+  T_Damage(self.enemy, self, self, subtractVec3(start, end), self.enemy.s.origin, [0, 0, 0], damage, 0, DAMAGE_NO_KNOCKBACK, MOD_UNKNOWN, runtime);
+}
+
+const parasite_frames_drain = makeFrames(
+  ai_charge,
+  [0, 0, 15, 0, 0, 0, 0, -2, -2, -3, -2, 0, -1, 0, -2, -2, -3, 0],
+  indexedThinks(18, [
+    [0, parasite_launch],
+    [2, parasite_drain_attack],
+    [3, parasite_drain_attack],
+    [4, parasite_drain_attack],
+    [5, parasite_drain_attack],
+    [6, parasite_drain_attack],
+    [7, parasite_drain_attack],
+    [8, parasite_drain_attack],
+    [9, parasite_drain_attack],
+    [10, parasite_drain_attack],
+    [11, parasite_drain_attack],
+    [12, parasite_drain_attack],
+    [13, parasite_reel_in]
+  ])
+);
+export const parasite_move_drain: GameMonsterMove = {
+  firstframe: FRAME_drain01,
+  lastframe: FRAME_drain18,
+  frame: parasite_frames_drain,
+  endfunc: parasite_start_run
+};
+
+const parasite_frames_break = makeFrames(
+  ai_charge,
+  [0, -3, 1, 2, -3, 1, 1, 3, 0, -18, 3, 9, 6, 0, -18, 0, 8, 9, 0, -18, 0, 0, 0, 0, 0, 0, 0, 4, 11, -2, -5, 1]
+);
+export const parasite_move_break: GameMonsterMove = {
+  firstframe: FRAME_break01,
+  lastframe: FRAME_break32,
+  frame: parasite_frames_break,
+  endfunc: parasite_start_run
+};
+
+export function parasite_attack(self: GameEntity): void {
+  self.monsterinfo.currentmove = parasite_move_drain;
+}
+
+export function parasite_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, -8);
+  self.movetype = MOVETYPE_TOSS;
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+const parasite_frames_death = makeFrames(ai_move, [0, 0, 0, 0, 0, 0, 0]);
+export const parasite_move_death: GameMonsterMove = {
+  firstframe: FRAME_death101,
+  lastframe: FRAME_death107,
+  frame: parasite_frames_death,
+  endfunc: parasite_dead
+};
+
+export function parasite_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health <= self.gib_health) {
+    emitGameSound(runtime, self, "misc/udeath.wav");
+    for (let n = 0; n < 2; n += 1) {
+      ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    for (let n = 0; n < 4; n += 1) {
+      ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC, runtime);
+    self.deadflag = DEAD_DEAD;
+    return;
+  }
+
+  if (self.deadflag === DEAD_DEAD) {
+    return;
+  }
+
+  emitRegisteredGameSound(runtime, self, sound_die, SOUND_DIE, { channel: CHAN_VOICE, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_YES;
+  self.monsterinfo.currentmove = parasite_move_death;
+}
+
+export function SP_monster_parasite(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  precacheParasiteAssets(runtime);
+
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/parasite/tris.md2");
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, 24);
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+
+  self.health = 175;
+  self.gib_health = -50;
+  self.mass = 250;
+
+  self.pain = parasite_pain;
+  self.die = parasite_die;
+
+  self.monsterinfo.stand = parasite_stand;
+  self.monsterinfo.walk = parasite_start_walk;
+  self.monsterinfo.run = parasite_start_run;
+  self.monsterinfo.attack = parasite_attack;
+  self.monsterinfo.sight = parasite_sight;
+  self.monsterinfo.idle = parasite_idle;
+
+  linkGameEntity(runtime, self);
+
+  self.monsterinfo.currentmove = parasite_move_stand;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  walkmonster_start(self, runtime);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function precacheParasiteAssets(runtime: GameRuntime): void {
+  sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
+  sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
+  sound_die = registerGameSound(runtime, SOUND_DIE);
+  sound_launch = registerGameSound(runtime, SOUND_LAUNCH);
+  sound_impact = registerGameSound(runtime, SOUND_IMPACT);
+  sound_suck = registerGameSound(runtime, SOUND_SUCK);
+  sound_reelin = registerGameSound(runtime, SOUND_REELIN);
+  sound_sight = registerGameSound(runtime, SOUND_SIGHT);
+  sound_tap = registerGameSound(runtime, SOUND_TAP);
+  sound_scratch = registerGameSound(runtime, SOUND_SCRATCH);
+  sound_search = registerGameSound(runtime, SOUND_SEARCH);
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
+}
+
+function vec3Length(vector: vec3_t): number {
+  return Math.hypot(vector[0], vector[1], vector[2]);
+}

@@ -12,6 +12,8 @@
  */
 
 import { strict as assert } from "node:assert";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
 import {
   CL_ParseConfigString,
@@ -54,6 +56,11 @@ function resetOutgoing(runtime: ReturnType<typeof createClientRuntime>): void {
 }
 
 const runtime = createClientRuntime();
+const parseSource = readFileSync(join(process.cwd(), "packages", "client", "src", "parse.ts"), "utf8");
+assert.ok(
+  parseSource.includes("incomingAcknowledged: runtime.cls.netchan.incoming_acknowledged"),
+  "CL_ParseFrame should check prediction error against the acknowledged usercmd, not the serverframe"
+);
 
 resetOutgoing(runtime);
 resetIncoming(runtime);

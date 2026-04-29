@@ -1381,7 +1381,7 @@ export function CL_ParseFrame(runtime: ClientRuntime, hooks: ClientParseHooks = 
     runtime.cl.sound_prepped = true;
     CL_FireEntityEvents(runtime, runtime.cl.frame, hooks.onEntityEvent);
     CL_CheckPredictionError(runtime, {
-      incomingAcknowledged: runtime.cl.frame.serverframe,
+      incomingAcknowledged: runtime.cls.netchan.incoming_acknowledged,
       predictMovement: true
     });
   }

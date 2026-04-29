@@ -77,6 +77,7 @@ export interface LocalClientSessionState<TSnapshot> {
   realtimeMs: number;
   nextCommandSequence: number;
   ghostMode: boolean;
+  refillDemoInventoryEachFrame: boolean;
 }
 
 /**
@@ -89,6 +90,7 @@ export interface LocalClientSessionState<TSnapshot> {
 export interface LocalClientSessionInputState {
   pressedKeys: Record<string, boolean>;
   attackPressed: boolean;
+  useBoundInput?: boolean;
 }
 
 /**
@@ -105,6 +107,16 @@ export interface LocalClientSessionSnapshotHooks<TSnapshot> {
 
 /**
  * Category: New
+ * Purpose: Keep standalone-demo conveniences explicit instead of making every local session inherit them.
+ */
+export interface LocalClientSessionOptions {
+  demoInventory?: boolean;
+  ghostMode?: boolean;
+  refillDemoInventoryEachFrame?: boolean;
+}
+
+/**
+ * Category: New
  * Purpose: Build the standalone local client/gameplay session state for one BSP map without leaving the bootstrap in a web adapter.
  *
  * Constraints:
@@ -115,11 +127,13 @@ export function initializeLocalClientSession<TSnapshot>(
   map: BspMap,
   spawn: BspSpawnPoint | null,
   createCollisionAdapter: (gameplayRuntime: GameRuntime, gameplayPlayer: GameEntity) => LocalClientCollisionAdapter,
-  snapshotHooks: LocalClientSessionSnapshotHooks<TSnapshot>
+  snapshotHooks: LocalClientSessionSnapshotHooks<TSnapshot>,
+  options: LocalClientSessionOptions = {}
 ): LocalClientSessionState<TSnapshot> {
+  const demoInventory = options.demoInventory ?? true;
   const gameplayRuntime = createGameRuntimeFromBspMap(map);
   initializeDoorPlanEntities(gameplayRuntime);
-  const gameplayPlayer = createLocalGameplayPlayer(gameplayRuntime);
+  const gameplayPlayer = createLocalGameplayPlayer(gameplayRuntime, { seedDemoInventory: demoInventory });
   const localWeaponBootstrap = buildLocalWeaponBootstrapData();
   const collision = createCollisionAdapter(gameplayRuntime, gameplayPlayer);
 
@@ -169,7 +183,8 @@ export function initializeLocalClientSession<TSnapshot>(
     localViewMotion: createLocalViewMotionState(spawnYaw),
     realtimeMs: 0,
     nextCommandSequence: 1,
-    ghostMode: true
+    ghostMode: options.ghostMode ?? true,
+    refillDemoInventoryEachFrame: options.refillDemoInventoryEachFrame ?? demoInventory
   };
 }
 
@@ -208,7 +223,9 @@ export function stepLocalClientSession<TSnapshot>(
   runtime.cl.frame.servertime = session.realtimeMs;
 
   applyLocalMovementMode(runtime, session.ghostMode);
-  refillLocalDemoInventory(session.gameplayPlayer, session.gameplayRuntime);
+  if (session.refillDemoInventoryEachFrame) {
+    refillLocalDemoInventory(session.gameplayPlayer, session.gameplayRuntime);
+  }
   advanceLocalGameplayRuntime(
     session.gameplayRuntime,
     session.realtimeMs,
@@ -220,8 +237,10 @@ export function stepLocalClientSession<TSnapshot>(
     }
   );
 
-  syncLocalMovementButtons(inputContext, inputState.pressedKeys, session.realtimeMs);
-  setLocalButtonHeld(inputContext.in_attack, inputState.attackPressed, session.realtimeMs);
+  if (!inputState.useBoundInput) {
+    syncLocalMovementButtons(inputContext, inputState.pressedKeys, session.realtimeMs);
+    setLocalButtonHeld(inputContext.in_attack, inputState.attackPressed, session.realtimeMs);
+  }
 
   const cmd = createCmd(inputContext, {
     anykeydown: Object.values(inputState.pressedKeys).some(Boolean),

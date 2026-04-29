@@ -34,6 +34,7 @@ import {
   type Texture
 } from "three";
 import type { ClientRefreshFrame, ClientRenderEntity, ClientRuntime } from "../../client/src/index.js";
+import { createEntity, createRefDef, type entity_t } from "../../client/src/ref.js";
 import {
   AngleVectors,
   CS_MODELS,
@@ -48,6 +49,7 @@ import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/in
 import { parsePcx, parseSp2, type dsprite_t } from "../../formats/src/index.js";
 import { applyMd2AliasFrameLerp, applyMd2Frame, buildMd2Mesh, loadMd2Model, type Md2MeshInstance } from "./md2-mesh-builder.js";
 import {
+  R_DrawEntitiesOnList,
   R_DrawSpriteModel,
   createGlRmainRuntime,
   type GlRmainRuntime,
@@ -108,6 +110,23 @@ interface ThreeSpriteImageHandle {
   texture: Texture;
 }
 
+type QueuedRefreshEntity = entity_t & {
+  userData: {
+    source: ClientRenderEntity;
+    instance: RefreshEntityInstance;
+    framePair: { frame: number; oldframe: number } | null;
+  };
+};
+
+interface RefreshEntityDrawContext {
+  runtime: ClientRuntime;
+  refreshFrame: ClientRefreshFrame | null;
+  aliasShadowsEnabled: boolean;
+  shadowReceiverRoot: Object3D | null;
+  shadowRaycaster: Raycaster;
+  attachedCamera: Camera | null;
+}
+
 /**
  * Category: New
  * Purpose: Report the visible and rendered entity counts produced by the sync step.
@@ -161,6 +180,52 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
   const spriteCache = new Map<string, model_t | null>();
   const spriteTextureCache = new Map<string, Texture | null>();
   const instances = new Map<string, RefreshEntityInstance>();
+  let drawContext: RefreshEntityDrawContext | null = null;
+  const entityRuntime = createGlRmainRuntime({
+    drawAliasModel: (entity) => {
+      const queued = entity as QueuedRefreshEntity;
+      const context = requireEntityDrawContext(drawContext);
+      updateRefreshEntityInstance(
+        context.runtime,
+        context.refreshFrame,
+        queued.userData.instance,
+        queued.userData.source,
+        queued.userData.framePair,
+        context.aliasShadowsEnabled,
+        context.shadowReceiverRoot,
+        context.shadowRaycaster,
+        context.attachedCamera
+      );
+    },
+    drawBrushModel: (entity) => {
+      const queued = entity as QueuedRefreshEntity;
+      updateRefreshInlineBrushInstance(queued.userData.instance as RefreshEntityInlineBrushInstance, queued.userData.source);
+    },
+    onDrawSpriteModel: (entity, texture, alpha, vertices) => {
+      const queued = entity as QueuedRefreshEntity;
+      const instance = queued.userData.instance;
+      if (instance.kind !== "sprite") {
+        return;
+      }
+      instance.mesh.userData.refGl = {
+        translucent: (queued.userData.source.flags & RF_TRANSLUCENT) !== 0
+      };
+      applySpriteQuad(instance.mesh, texture, alpha, vertices);
+      instance.root.position.set(0, 0, 0);
+      instance.root.rotation.set(0, 0, 0);
+      instance.root.visible = true;
+      instance.mesh.material.depthTest = (queued.userData.source.flags & RF_DEPTHHACK) === 0;
+      instance.mesh.material.depthWrite = (queued.userData.source.flags & RF_DEPTHHACK) === 0;
+      instance.mesh.renderOrder = (queued.userData.source.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
+    },
+    onDepthMaskChange: (enabled) => {
+      root.userData.refGl = {
+        ...root.userData.refGl,
+        depthMask: enabled
+      };
+    }
+  });
+  entityRuntime.r_drawentities = createRuntimeCvar("r_drawentities", 1);
 
   return {
     root,
@@ -188,6 +253,7 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
       let skippedInlineOrBrushModel = 0;
       let missingMd2AssetCount = 0;
       const aliasCullFrustum = attachedCamera ? buildAliasCullFrustum(attachedCamera) : null;
+      const drawEntities: QueuedRefreshEntity[] = [];
 
       for (const entity of refreshFrame?.entities ?? []) {
         visibleEntities += 1;
@@ -254,17 +320,7 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
           continue;
         }
 
-        updateRefreshEntityInstance(
-          runtime,
-          refreshFrame,
-          instance,
-          entity,
-          framePair,
-          aliasShadowsEnabled,
-          shadowReceiverRoot,
-          shadowRaycaster,
-          attachedCamera
-        );
+        drawEntities.push(createQueuedRefreshEntity(entity, instance, framePair));
         renderedEntities += 1;
       }
 
@@ -273,6 +329,31 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
           removeRefreshEntityInstance(instances, key);
         }
       }
+
+      drawContext = {
+        runtime,
+        refreshFrame,
+        aliasShadowsEnabled,
+        shadowReceiverRoot,
+        shadowRaycaster,
+        attachedCamera
+      };
+      const refdef = createRefDef();
+      refdef.num_entities = drawEntities.length;
+      refdef.entities = drawEntities;
+      entityRuntime.r_newrefdef = refdef;
+      const vectors = refreshFrame ? AngleVectors(refreshFrame.view.viewangles) : null;
+      entityRuntime.vup = vectors ? [...vectors.up] : [0, 0, 1];
+      entityRuntime.vright = vectors ? [...vectors.right] : [1, 0, 0];
+      entityRuntime.vpn = vectors ? [...vectors.forward] : [1, 0, 0];
+      R_DrawEntitiesOnList(entityRuntime);
+      drawContext = null;
+
+      root.userData.refGl = {
+        ...root.userData.refGl,
+        source: "R_DrawEntitiesOnList",
+        queuedEntities: drawEntities.length
+      };
 
       return {
         visibleEntities,
@@ -284,6 +365,60 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
         missingMd2AssetCount
       };
     }
+  };
+}
+
+function createQueuedRefreshEntity(
+  source: ClientRenderEntity,
+  instance: RefreshEntityInstance,
+  framePair: { frame: number; oldframe: number } | null
+): QueuedRefreshEntity {
+  const entity = createEntity() as QueuedRefreshEntity;
+  entity.model = instance.kind === "md2"
+    ? createQueuedModel(modtype_t.mod_alias)
+    : instance.kind === "sprite"
+      ? instance.model
+      : createQueuedModel(modtype_t.mod_brush);
+  entity.angles = [...source.angles];
+  entity.origin = [...source.origin];
+  entity.frame = source.frame;
+  entity.oldorigin = [...source.oldorigin];
+  entity.oldframe = source.oldframe;
+  entity.backlerp = source.backlerp;
+  entity.skinnum = source.skinnum;
+  entity.lightstyle = 0;
+  entity.alpha = source.alpha;
+  entity.skin = null;
+  entity.flags = source.flags;
+  entity.userData = {
+    source,
+    instance,
+    framePair
+  };
+  return entity;
+}
+
+function createQueuedModel(type: modtype_t): model_t {
+  const model = createModel();
+  model.type = type;
+  return model;
+}
+
+function requireEntityDrawContext(context: RefreshEntityDrawContext | null): RefreshEntityDrawContext {
+  if (!context) {
+    throw new Error("refresh-entity-sync: missing R_DrawEntitiesOnList draw context");
+  }
+  return context;
+}
+
+function createRuntimeCvar(name: string, value: number) {
+  return {
+    name,
+    string: String(value),
+    latched_string: null,
+    flags: 0,
+    modified: false,
+    value
   };
 }
 
@@ -484,7 +619,7 @@ function updateRefreshEntityInstance(
   const frame = framePair?.frame ?? entity.frame;
   const oldframe = framePair?.oldframe ?? entity.oldframe;
 
-  if ((entity.flags & RF_FRAMELERP) !== 0) {
+  if ((entity.flags & RF_FRAMELERP) !== 0 || aliasEntityHasShell(entity.flags)) {
     applyMd2AliasFrameLerp(instance.md2, {
       frame,
       oldframe,
@@ -751,6 +886,9 @@ function updateRefreshSpriteInstance(
       }
     : entity;
 
+  instance.mesh.userData.refGl = {
+    translucent: (entity.flags & RF_TRANSLUCENT) !== 0
+  };
   R_DrawSpriteModel(runtime, drawEntity as never);
   instance.root.position.set(0, 0, 0);
   instance.root.rotation.set(0, 0, 0);
@@ -779,7 +917,7 @@ function applySpriteQuad(
 
   mesh.material.map = asSpriteTexture(texture);
   mesh.material.opacity = alpha;
-  mesh.material.transparent = alpha < 1;
+  mesh.material.transparent = alpha < 1 || Boolean(mesh.userData.refGl?.translucent);
   mesh.material.needsUpdate = true;
 }
 

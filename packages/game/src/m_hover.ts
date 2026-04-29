@@ -1,7 +1,7 @@
 /**
  * File: m_hover.ts
- * Source: Quake II original / game/m_hover.h
- * Purpose: Port of the generated hover model frame constants used by the monster hover model.
+ * Source: Quake II original / game/m_hover.h and game/m_hover.c
+ * Purpose: Port of the generated hover model frame constants and monster_hover gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,40 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
  * - None.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_hover`.
  */
+
+import { AngleVectors, ATTN_NORM, CHAN_VOICE, EF_HYPERBLASTER, type vec3_t } from "../../qcommon/src/index.js";
+import {
+  AI_STAND_GROUND,
+  DEAD_DEAD,
+  FRAMETIME,
+  GIB_ORGANIC,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  SOLID_BBOX,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, visible } from "./g_ai.js";
+import { flymonster_start, monster_fire_blaster } from "./g_monster.js";
+import { BecomeExplosion1, ThrowGib, ThrowHead } from "./g_misc.js";
+import { G_FreeEdict, G_ProjectSource } from "./g_utils.js";
+import { getMonsterFlashOffset } from "./m_flash.js";
+import {
+  emitGameSound,
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_stand01 = 0;
 export const FRAME_stand02 = 1;
@@ -222,3 +251,534 @@ export const FRAME_attak107 = 203;
 export const FRAME_attak108 = 204;
 
 export const MODEL_SCALE = 1.0;
+
+const MZ2_HOVER_BLASTER_1 = 62;
+
+const SOUND_PAIN1 = "hover/hovpain1.wav";
+const SOUND_PAIN2 = "hover/hovpain2.wav";
+const SOUND_DEATH1 = "hover/hovdeth1.wav";
+const SOUND_DEATH2 = "hover/hovdeth2.wav";
+const SOUND_SIGHT = "hover/hovsght1.wav";
+const SOUND_SEARCH1 = "hover/hovsrch1.wav";
+const SOUND_SEARCH2 = "hover/hovsrch2.wav";
+const SOUND_ATTACK = "hover/hovatck1.wav";
+const SOUND_IDLE = "hover/hovidle1.wav";
+
+let sound_pain1 = 0;
+let sound_pain2 = 0;
+let sound_death1 = 0;
+let sound_death2 = 0;
+let sound_sight = 0;
+let sound_search1 = 0;
+let sound_search2 = 0;
+
+/**
+ * Original name: hover_sight
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the hover sight sound on target acquisition.
+ */
+export function hover_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+}
+
+/**
+ * Original name: hover_search
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Randomly plays one of the two hover search sounds.
+ */
+export function hover_search(self: GameEntity, runtime: GameRuntime): void {
+  const soundIndex = Math.random() < 0.5 ? sound_search1 : sound_search2;
+  const soundPath = soundIndex === sound_search1 ? SOUND_SEARCH1 : SOUND_SEARCH2;
+  emitRegisteredGameSound(runtime, self, soundIndex, soundPath, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+}
+
+const hover_frames_stand = makeFrames(ai_stand, new Array<number>(30).fill(0));
+export const hover_move_stand: GameMonsterMove = {
+  firstframe: FRAME_stand01,
+  lastframe: FRAME_stand30,
+  frame: hover_frames_stand,
+  endfunc: undefined
+};
+
+const hover_frames_stop1 = makeFrames(ai_move, new Array<number>(9).fill(0));
+export const hover_move_stop1: GameMonsterMove = {
+  firstframe: FRAME_stop101,
+  lastframe: FRAME_stop109,
+  frame: hover_frames_stop1,
+  endfunc: undefined
+};
+
+const hover_frames_stop2 = makeFrames(ai_move, new Array<number>(8).fill(0));
+export const hover_move_stop2: GameMonsterMove = {
+  firstframe: FRAME_stop201,
+  lastframe: FRAME_stop208,
+  frame: hover_frames_stop2,
+  endfunc: undefined
+};
+
+const hover_frames_takeoff = makeFrames(ai_move, [
+  0, -2, 5, -1, 1, 0, 0, -1, -1, -1,
+  0, 2, 2, 1, 1, -6, -9, 1, 0, 2,
+  2, 1, 1, 1, 2, 0, 2, 3, 2, 0
+]);
+export const hover_move_takeoff: GameMonsterMove = {
+  firstframe: FRAME_takeof01,
+  lastframe: FRAME_takeof30,
+  frame: hover_frames_takeoff,
+  endfunc: undefined
+};
+
+const hover_frames_pain3 = makeFrames(ai_move, new Array<number>(9).fill(0));
+export const hover_move_pain3: GameMonsterMove = {
+  firstframe: FRAME_pain301,
+  lastframe: FRAME_pain309,
+  frame: hover_frames_pain3,
+  endfunc: hover_run
+};
+
+const hover_frames_pain2 = makeFrames(ai_move, new Array<number>(12).fill(0));
+export const hover_move_pain2: GameMonsterMove = {
+  firstframe: FRAME_pain201,
+  lastframe: FRAME_pain212,
+  frame: hover_frames_pain2,
+  endfunc: hover_run
+};
+
+const hover_frames_pain1 = makeFrames(ai_move, [
+  0, 0, 2, -8, -4, -6, -4, -3, 1, 0, 0, 0, 3, 1,
+  0, 2, 3, 2, 7, 1, 0, 0, 2, 0, 0, 5, 3, 4
+]);
+export const hover_move_pain1: GameMonsterMove = {
+  firstframe: FRAME_pain101,
+  lastframe: FRAME_pain128,
+  frame: hover_frames_pain1,
+  endfunc: hover_run
+};
+
+const hover_frames_land = makeFrames(ai_move, [0]);
+export const hover_move_land: GameMonsterMove = {
+  firstframe: FRAME_land01,
+  lastframe: FRAME_land01,
+  frame: hover_frames_land,
+  endfunc: undefined
+};
+
+const hover_frames_forward = makeFrames(ai_move, new Array<number>(35).fill(0));
+export const hover_move_forward: GameMonsterMove = {
+  firstframe: FRAME_forwrd01,
+  lastframe: FRAME_forwrd35,
+  frame: hover_frames_forward,
+  endfunc: undefined
+};
+
+const hover_frames_walk = makeFrames(ai_walk, new Array<number>(35).fill(4));
+export const hover_move_walk: GameMonsterMove = {
+  firstframe: FRAME_forwrd01,
+  lastframe: FRAME_forwrd35,
+  frame: hover_frames_walk,
+  endfunc: undefined
+};
+
+const hover_frames_run = makeFrames(ai_run, new Array<number>(35).fill(10));
+export const hover_move_run: GameMonsterMove = {
+  firstframe: FRAME_forwrd01,
+  lastframe: FRAME_forwrd35,
+  frame: hover_frames_run,
+  endfunc: undefined
+};
+
+const hover_frames_death1 = makeFrames(ai_move, [0, 0, 0, 0, 0, 0, -10, 3, 5, 4, 7]);
+export const hover_move_death1: GameMonsterMove = {
+  firstframe: FRAME_death101,
+  lastframe: FRAME_death111,
+  frame: hover_frames_death1,
+  endfunc: hover_dead
+};
+
+const hover_frames_backward = makeFrames(ai_move, new Array<number>(24).fill(0));
+export const hover_move_backward: GameMonsterMove = {
+  firstframe: FRAME_backwd01,
+  lastframe: FRAME_backwd24,
+  frame: hover_frames_backward,
+  endfunc: undefined
+};
+
+const hover_frames_start_attack = makeFrames(ai_charge, [1, 1, 1]);
+export const hover_move_start_attack: GameMonsterMove = {
+  firstframe: FRAME_attak101,
+  lastframe: FRAME_attak103,
+  frame: hover_frames_start_attack,
+  endfunc: hover_attack
+};
+
+const hover_frames_attack1 = makeFrames(
+  ai_charge,
+  [-10, -10, 0],
+  [hover_fire_blaster, hover_fire_blaster, hover_reattack]
+);
+export const hover_move_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak104,
+  lastframe: FRAME_attak106,
+  frame: hover_frames_attack1,
+  endfunc: undefined
+};
+
+const hover_frames_end_attack = makeFrames(ai_charge, [1, 1]);
+export const hover_move_end_attack: GameMonsterMove = {
+  firstframe: FRAME_attak107,
+  lastframe: FRAME_attak108,
+  frame: hover_frames_end_attack,
+  endfunc: hover_run
+};
+
+/**
+ * Original name: hover_reattack
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Continues the blaster attack while the enemy is alive, visible and the random reattack check succeeds.
+ */
+export function hover_reattack(self: GameEntity, runtime: GameRuntime): void {
+  if (self.enemy && self.enemy.health > 0 && visible(self, self.enemy, runtime) && Math.random() <= 0.6) {
+    self.monsterinfo.currentmove = hover_move_attack1;
+    return;
+  }
+  self.monsterinfo.currentmove = hover_move_end_attack;
+}
+
+/**
+ * Original name: hover_fire_blaster
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Projects the hover blaster muzzle and fires one low-damage fast blaster bolt toward the enemy view height.
+ */
+export function hover_fire_blaster(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const effect = self.s.frame === FRAME_attak104 ? EF_HYPERBLASTER : 0;
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, getMonsterFlashOffset(MZ2_HOVER_BLASTER_1), forward, right);
+  const end: vec3_t = [...self.enemy.s.origin];
+  end[2] += self.enemy.viewheight;
+  const dir = subtractVec3(end, start);
+
+  monster_fire_blaster(self, start, dir, 1, 1000, MZ2_HOVER_BLASTER_1, effect, runtime);
+}
+
+/**
+ * Original name: hover_stand
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Sets the hover to its standing loop.
+ */
+export function hover_stand(self: GameEntity): void {
+  self.monsterinfo.currentmove = hover_move_stand;
+}
+
+/**
+ * Original name: hover_run
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Uses stand animation while holding ground, otherwise enters the forward run loop.
+ */
+export function hover_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = hover_move_stand;
+  } else {
+    self.monsterinfo.currentmove = hover_move_run;
+  }
+}
+
+/**
+ * Original name: hover_walk
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the hover walk loop.
+ */
+export function hover_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = hover_move_walk;
+}
+
+/**
+ * Original name: hover_start_attack
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the hover attack windup.
+ */
+export function hover_start_attack(self: GameEntity): void {
+  self.monsterinfo.currentmove = hover_move_start_attack;
+}
+
+/**
+ * Original name: hover_attack
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Enters the repeated hover blaster firing sequence.
+ */
+export function hover_attack(self: GameEntity): void {
+  self.monsterinfo.currentmove = hover_move_attack1;
+}
+
+/**
+ * Original name: hover_pain
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies damaged skin, pain debounce, nightmare suppression and damage-sized pain move selection.
+ */
+export function hover_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < (self.max_health / 2)) {
+    self.s.skinnum = 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  if (damage <= 25) {
+    if (Math.random() < 0.5) {
+      emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, {
+        channel: CHAN_VOICE,
+        volume: 1,
+        attenuation: ATTN_NORM,
+        timeofs: 0
+      });
+      self.monsterinfo.currentmove = hover_move_pain3;
+    } else {
+      emitRegisteredGameSound(runtime, self, sound_pain2, SOUND_PAIN2, {
+        channel: CHAN_VOICE,
+        volume: 1,
+        attenuation: ATTN_NORM,
+        timeofs: 0
+      });
+      self.monsterinfo.currentmove = hover_move_pain2;
+    }
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, {
+      channel: CHAN_VOICE,
+      volume: 1,
+      attenuation: ATTN_NORM,
+      timeofs: 0
+    });
+    self.monsterinfo.currentmove = hover_move_pain1;
+  }
+}
+
+/**
+ * Original name: hover_deadthink
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Waits for the dead hover to land or timeout, then becomes a temp explosion and frees itself.
+ */
+export function hover_deadthink(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.groundentity && runtime.time < self.timestamp) {
+    self.nextthink = runtime.time + FRAMETIME;
+    return;
+  }
+  BecomeExplosion1(self, runtime);
+}
+
+/**
+ * Original name: hover_dead
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finalizes the hover corpse bbox and schedules delayed explosion cleanup.
+ */
+export function hover_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, -8);
+  self.movetype = MOVETYPE_TOSS;
+  self.think = hover_deadthink;
+  self.nextthink = runtime.time + FRAMETIME;
+  self.timestamp = runtime.time + 15;
+  linkGameEntity(runtime, self);
+}
+
+/**
+ * Original name: hover_die
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Handles gib death, ordinary randomized death sound and death animation selection.
+ */
+export function hover_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health <= self.gib_health) {
+    emitGameSound(runtime, self, "misc/udeath.wav");
+    for (let n = 0; n < 2; n += 1) {
+      ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    for (let n = 0; n < 2; n += 1) {
+      ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    ThrowHead(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    self.deadflag = DEAD_DEAD;
+    return;
+  }
+
+  if (self.deadflag === DEAD_DEAD) {
+    return;
+  }
+
+  const soundIndex = Math.random() < 0.5 ? sound_death1 : sound_death2;
+  const soundPath = soundIndex === sound_death1 ? SOUND_DEATH1 : SOUND_DEATH2;
+  emitRegisteredGameSound(runtime, self, soundIndex, soundPath, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_YES;
+  self.monsterinfo.currentmove = hover_move_death1;
+}
+
+/**
+ * Original name: SP_monster_hover
+ * Source: game/m_hover.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns monster_hover, precaches assets and initializes flying monster callbacks.
+ */
+export function SP_monster_hover(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  precacheHoverAssets(runtime);
+
+  self.s.sound = registerGameSound(runtime, SOUND_IDLE);
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/hover/tris.md2");
+  setVec3(self.mins, -24, -24, -24);
+  setVec3(self.maxs, 24, 24, 32);
+
+  self.health = 240;
+  self.gib_health = -100;
+  self.mass = 150;
+
+  self.pain = hover_pain;
+  self.die = hover_die;
+
+  self.monsterinfo.stand = hover_stand;
+  self.monsterinfo.walk = hover_walk;
+  self.monsterinfo.run = hover_run;
+  self.monsterinfo.attack = hover_start_attack;
+  self.monsterinfo.sight = hover_sight;
+  self.monsterinfo.search = hover_search;
+
+  linkGameEntity(runtime, self);
+
+  self.monsterinfo.currentmove = hover_move_stand;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  flymonster_start(self, runtime);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function precacheHoverAssets(runtime: GameRuntime): void {
+  sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
+  sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
+  sound_death1 = registerGameSound(runtime, SOUND_DEATH1);
+  sound_death2 = registerGameSound(runtime, SOUND_DEATH2);
+  sound_sight = registerGameSound(runtime, SOUND_SIGHT);
+  sound_search1 = registerGameSound(runtime, SOUND_SEARCH1);
+  sound_search2 = registerGameSound(runtime, SOUND_SEARCH2);
+  registerGameSound(runtime, SOUND_ATTACK);
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [
+    left[0] - right[0],
+    left[1] - right[1],
+    left[2] - right[2]
+  ];
+}

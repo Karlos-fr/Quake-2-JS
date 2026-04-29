@@ -5,7 +5,7 @@ Date : 2026-04-26
 ## Identification
 
 - Source C/H principale : `Quake-2-master/client/cl_ents.c`
-- Sources C/H secondaires : `Quake-2-master/client/client.h`, `Quake-2-master/qcommon/q_shared.h` equivalent TS `packages/qcommon/src/q-shared.ts`, `Quake-2-master/qcommon/protocol.h` equivalent TS `packages/qcommon/src/protocol.ts`
+- Sources C/H secondaires : `Quake-2-master/client/client.h`, fragments `Quake-2-master/qcommon/qcommon.h` et `Quake-2-master/game/q_shared.h` utilises par `client/cl_ents.c`
 - Package cible principal : `packages/client`
 - Fichier TS principal pressenti : `packages/client/src/entities.ts`
 - Fichiers TS secondaires pressentis : `packages/client/src/parse.ts`, `packages/client/src/refresh.ts`, `packages/client/src/view.ts`, `packages/client/src/effects.ts`, `packages/client/src/newfx.ts`, `packages/client/src/tent.ts`, `packages/client/src/types.ts`, `packages/qcommon/src/protocol.ts`, `packages/qcommon/src/q-shared.ts`
@@ -36,21 +36,21 @@ Date : 2026-04-26
   - Role : appliquer un delta `entity_state_t`
   - Cible TS pressentie : `packages/client/src/parse.ts`
   - Statut : non valide
-  - Notes : ordre des champs conforme, mais depend des bitmasks `U_*` divergents.
+  - Notes : ordre des champs conforme, mais depend des bitmasks support `U_*` divergents pour ce chemin.
 
 - [ ] Nom : `CL_DeltaEntity`
   - Source : `client/cl_ents.c`
   - Role : stocker une entite delta dans le ring `cl_parse_entities` et mettre a jour `centity_t`
   - Cible TS pressentie : `packages/client/src/parse.ts`
   - Statut : non valide
-  - Notes : mutations locales conformes, mais depend de `CL_ParseDelta` non valide tant que `U_*` diverge.
+  - Notes : mutations locales conformes, mais depend de `CL_ParseDelta` non valide tant que le support `U_*` diverge.
 
 - [ ] Nom : `CL_ParsePacketEntities`
   - Source : `client/cl_ents.c`
   - Role : reconstruire les packet entities d'une frame par comparaison old/new
   - Cible TS pressentie : `packages/client/src/parse.ts`
   - Statut : non valide
-  - Notes : merge old/new structurel conforme, mais depend de `CL_ParseEntityBits` / `CL_ParseDelta` et donc des bitmasks `U_*` divergents ; logs shownet non portes.
+  - Notes : merge old/new structurel conforme, mais depend de `CL_ParseEntityBits` / `CL_ParseDelta` et donc des bitmasks support `U_*` divergents ; logs shownet non portes.
 
 - [x] Nom : `CL_ParsePlayerstate`
   - Source : `client/cl_ents.c`
@@ -64,14 +64,14 @@ Date : 2026-04-26
   - Role : declencher les events d'entites et particules teleporter
   - Cible TS pressentie : `packages/client/src/entities.ts`
   - Statut : verification commencee, non valide
-  - Notes : extraction event OK a premiere vue ; consommation `EF_TELEPORTER -> CL_TeleporterParticles` non confirmee.
+  - Notes : extraction event OK, mais `EF_TELEPORTER -> CL_TeleporterParticles` n'est pas consomme ; le builder d'effets ignore explicitement cet evenement synthetique.
 
 - [ ] Nom : `CL_ParseFrame`
   - Source : `client/cl_ents.c`
   - Role : parser une frame serveur complete et choisir l'oldframe valide
   - Cible TS pressentie : `packages/client/src/parse.ts`
   - Statut : non valide
-  - Notes : parsing principal proche, mais equivalent `SCR_EndLoadingPlaque` non branche au point source.
+  - Notes : parsing principal proche, mais equivalent `SCR_EndLoadingPlaque` non branche au point source ; `ClientParseHooks` n'expose pas ce hook.
 
 - [x] Nom : `S_RegisterSexedModel`
   - Source : `client/cl_ents.c`
@@ -85,7 +85,7 @@ Date : 2026-04-26
   - Role : interpoler les entites packet, appliquer flags/effects, modeles lies, lumieres et trails
   - Cible TS pressentie : `packages/client/src/entities.ts`, `packages/client/src/refresh.ts`, `packages/client/src/effects.ts`, `packages/client/src/view.ts`
   - Statut : verification commencee, non valide
-  - Notes : plusieurs sous-blocs conformes, mais color-shell separee et trails/particules automatiques incomplets.
+  - Notes : plusieurs sous-blocs conformes, mais custom player/weapon non resolus par le consommateur renderer direct, color-shell separee, powerscreen, trails/particules automatiques, randomisation `RF_BEAM`, mutation `EF_TRAP` et branches tracker `vidref_val` incomplets.
 
 - [ ] Nom : `CL_AddViewWeapon`
   - Source : `client/cl_ents.c`
@@ -106,7 +106,7 @@ Date : 2026-04-26
   - Role : orchestrer scene client : frame events, packet entities, temp entities, particles, lights
   - Cible TS pressentie : `packages/client/src/refresh.ts`, `packages/client/src/view.ts`
   - Statut : non valide
-  - Notes : orchestration partiellement branchee, mais depend de `CL_AddPacketEntities` et `CL_FireEntityEvents` non valides.
+  - Notes : orchestration partiellement branchee, mais depend de `CL_AddPacketEntities` et `CL_FireEntityEvents` non valides ; ordre `CL_RunDLights` / `CL_RunLightStyles` dans le builder TS differe du point source et de `CL_Frame`.
 
 - [x] Nom : `CL_GetEntitySoundOrigin`
   - Source : `client/cl_ents.c`
@@ -192,11 +192,11 @@ Date : 2026-04-26
   - Notes : `UPDATE_BACKUP = 16`, `UPDATE_MASK = 15` conserves.
 
 - [ ] Nom : `U_*`
-  - Source : `protocol.h`
+  - Source : `qcommon/qcommon.h`
   - Valeur / role : bitmasks delta entity/playerstate
   - Cible TS pressentie : `packages/qcommon/src/protocol.ts`, `packages/client/src/parse.ts`
   - Statut : non valide
-  - Notes : plusieurs bitmasks divergent de `Quake-2-master/qcommon/qcommon.h` a partir de `U_EFFECTS8`.
+  - Notes : plusieurs bitmasks utilises par `cl_ents.c` divergent de `Quake-2-master/qcommon/qcommon.h` a partir de `U_EFFECTS8`.
 
 - [x] Nom : `EF_*`
   - Source : `q_shared.h`
@@ -223,31 +223,31 @@ Date : 2026-04-26
   - Source : `client/cl_ents.c`, `q_shared.h`
   - Valeur / role : branchements rendu OpenGL/soft historiques
   - Cible TS pressentie : `packages/qcommon/src/q-shared.ts`, `packages/client/src/refresh.ts`
-  - Statut : a verifier
-  - Notes :
+  - Statut : non valide pour `CL_AddPacketEntities`
+  - Notes : les constantes support existent, mais les branches `EF_TRACKERTRAIL | EF_TRACKER` et `EF_TRACKER` du chemin audite emettent toujours la variante negative type GL dans `refresh.ts`.
 
 ## Mapping source -> cible
 
 | Item source | Type | Fichier TS principal | Symbole TS | Statut | Notes |
 |---|---|---|---|---|---|
-| `CL_ParseEntityBits` | Fonction | `packages/client/src/parse.ts` | `CL_ParseEntityBits` | Non valide | `U_MOREBITS2/3` divergent ; `bitcounts[32]` non porte |
-| `CL_ParseDelta` | Fonction | `packages/client/src/parse.ts` | `CL_ParseDelta` | Non valide | depend de `U_*` divergents |
+| `CL_ParseEntityBits` | Fonction | `packages/client/src/parse.ts` | `CL_ParseEntityBits` | Non valide | support `U_MOREBITS2/3` divergent ; `bitcounts[32]` non porte |
+| `CL_ParseDelta` | Fonction | `packages/client/src/parse.ts` | `CL_ParseDelta` | Non valide | depend du support `U_*` divergent |
 | `CL_DeltaEntity` | Fonction | `packages/client/src/parse.ts` | `CL_DeltaEntity` | Non valide | depend de `CL_ParseDelta` |
 | `CL_ParsePacketEntities` | Fonction | `packages/client/src/parse.ts` | `CL_ParsePacketEntities` | Non valide | depend de `CL_ParseEntityBits` / `CL_ParseDelta` ; shownet/debug omis |
 | `CL_ParsePlayerstate` | Fonction | `packages/client/src/parse.ts` | `CL_ParsePlayerstate` | Verifie | |
-| `CL_FireEntityEvents` | Fonction | `packages/client/src/entities.ts` | `CL_FireEntityEvents`, `CL_BuildFrameEntityEventEffects` | Non valide | `EF_TELEPORTER` non consomme comme particules runtime |
+| `CL_FireEntityEvents` | Fonction | `packages/client/src/entities.ts` | `CL_FireEntityEvents`, `CL_BuildFrameEntityEventEffects` | Non valide | `EF_TELEPORTER` ignore par le builder d'effets |
 | `CL_ParseFrame` | Fonction | `packages/client/src/parse.ts` | `CL_ParseFrame` | Non valide | manque equivalent `SCR_EndLoadingPlaque` |
 | `S_RegisterSexedModel` | Fonction | Aucun port direct | Aucun | Verifie non consomme | Fonction C non appelee dans le depot original |
-| `CL_AddPacketEntities` | Fonction | `packages/client/src/entities.ts` | `CL_BuildPacketEntitySnapshots` | Non valide | color-shell separee et trails/particules incomplets |
+| `CL_AddPacketEntities` | Fonction | `packages/client/src/entities.ts` | `CL_BuildPacketEntitySnapshots` | Non valide | custom models web, color-shell, powerscreen, trails/particules, `RF_BEAM`, `EF_TRAP` et `vidref_val` incomplets |
 | `CL_AddViewWeapon` | Fonction | `packages/client/src/refresh.ts` | `appendViewWeapon` | Non valide | garde modele introuvable non confirmee |
 | `CL_CalcViewValues` | Fonction | `packages/client/src/view.ts` | `CL_CalcViewValues` | Verifie | |
-| `CL_AddEntities` | Fonction | `packages/client/src/refresh.ts` | `CL_BuildRefreshFrame` | Non valide | depend de `CL_AddPacketEntities` / `CL_FireEntityEvents` |
+| `CL_AddEntities` | Fonction | `packages/client/src/refresh.ts` | `CL_BuildRefreshFrame` | Non valide | depend de `CL_AddPacketEntities` / `CL_FireEntityEvents` ; ordre `Run*` a justifier |
 | `CL_GetEntitySoundOrigin` | Fonction | `packages/client/src/refresh.ts` | `CL_GetEntitySoundOrigin` | Verifie | |
 | `frame_t` | Type | `packages/client/src/types.ts` | `frame_t` | Verifie | |
 | `centity_t` | Type | `packages/client/src/types.ts` | `centity_t` | Verifie | |
 | `entity_state_t` | Type | `packages/qcommon/src/q-shared.ts` | `entity_state_t` | Verifie | |
 | `MAX_PARSE_ENTITIES` | Constante | `packages/client/src/types.ts` | `MAX_PARSE_ENTITIES` | Verifie | `1024` |
-| `U_*`, `EF_*`, `RF_*` | Constantes | `packages/qcommon/src/protocol.ts`, `packages/qcommon/src/q-shared.ts` | noms originaux | Non valide | `U_*` diverge ; `EF_*`/`RF_*` verifies |
+| `U_*`, `EF_*`, `RF_*` | Constantes | `packages/qcommon/src/protocol.ts`, `packages/qcommon/src/q-shared.ts` | noms originaux | Non valide pour `cl_ents.c` | `U_*` diverge dans le chemin audite ; `EF_*`/`RF_*` verifies |
 
 ## Points d'attention
 

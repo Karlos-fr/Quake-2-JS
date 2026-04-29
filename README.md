@@ -62,6 +62,7 @@ En cas de doute entre "moderniser" et "rester fidele", on choisit d'abord la fid
 Utiliser `kebab-case` :
 
 - `three-bsp-mesh-builder.ts`
+- `three-gl-world-scene-adapter.ts`
 - `binary-reader.ts`
 - `render-scene-bridge.ts`
 - `c-header-indexer.ts`
@@ -142,15 +143,15 @@ Utiliser `PascalCase` :
 
 ```ts
 /**
- * File: three-bsp-mesh-builder.ts
- * Purpose: Convert Quake II BSP surfaces into Three.js geometries.
+ * File: three-gl-world-scene-adapter.ts
+ * Purpose: Project ref_gl world state into a Three.js scene.
  *
  * This file is not a direct source port.
  * It is an adapter layer between the engine data model and the rendering backend.
  *
  * Dependencies:
- * - packages/formats
- * - packages/renderer-common
+ * - packages/filesystem
+ * - packages/renderer-three/ref_gl ports
  * - three
  */
 ```
@@ -180,10 +181,10 @@ Utiliser `PascalCase` :
 ```ts
 /**
  * Category: New
- * Purpose: Build a Three.js mesh from parsed BSP geometry.
+ * Purpose: Project loaded ref_gl brush surfaces into Three.js objects.
  *
  * Constraints:
- * - Must not mutate source BSP data.
+ * - Must not mutate source ref_gl model data.
  * - Must preserve surface-to-material mapping.
  */
 ```
@@ -202,7 +203,7 @@ Exemples :
 - collision / traces -> `Strict`
 - boucle tick serveur -> `Strict`
 - parsing PAK/BSP -> `Strict`
-- conversion BSP -> Three.js -> `Adapter`
+- projection ref_gl monde -> Three.js -> `Adapter`
 - inspecteur de ressources -> `NewTooling`
 
 ## Regles de portage
@@ -422,8 +423,8 @@ docs/
 - `packages/server` : monde, snapshots, traces, etat serveur.
 - `packages/game` : logique gameplay originale.
 - `packages/client` : logique client non liee au rendu.
-- `packages/renderer-common` : contrats de rendu independants de Three.js.
-- `packages/renderer-three` : bridge de scene et backend Three.js / WebGPU / WebGL.
+- `packages/renderer-common` : contrats de rendu independants de Three.js encore partages, notamment sky.
+- `packages/renderer-three` : ports `ref_gl/*`, projection de scene et backend Three.js / WebGPU / WebGL.
 - `packages/platform` : raccords web, IO hote, temps, input, audio.
 - `packages/shared` : types et utilitaires partages sans couplage fort.
 - `packages/tests-golden` : golden tests, fixtures de comparaison, rapports.

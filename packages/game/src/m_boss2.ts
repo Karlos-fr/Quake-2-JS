@@ -1,7 +1,7 @@
 /**
  * File: m_boss2.ts
- * Source: Quake II original / game/m_boss2.h
- * Purpose: Port of the generated boss2 model frame constants used by the boss2 monster model.
+ * Source: Quake II original / game/m_boss2.h and game/m_boss2.c
+ * Purpose: Port of the generated boss2 model frame constants and monster_boss2 gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,55 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - None.
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_boss2`.
  */
+
+import {
+  AngleVectors,
+  ATTN_NONE,
+  CHAN_VOICE,
+  type vec3_t
+} from "../../qcommon/src/index.js";
+import { CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID } from "../../qcommon/src/q-shared.js";
+import {
+  AI_STAND_GROUND,
+  AS_MELEE,
+  AS_MISSILE,
+  AS_SLIDING,
+  AS_STRAIGHT,
+  DEAD_DEAD,
+  DEFAULT_BULLET_HSPREAD,
+  DEFAULT_BULLET_VSPREAD,
+  FL_FLY,
+  FL_IMMUNE_LASER,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  RANGE_FAR,
+  RANGE_MELEE,
+  RANGE_MID,
+  RANGE_NEAR,
+  SOLID_BBOX,
+  SVF_DEADMONSTER,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, infront, range } from "./g_ai.js";
+import { flymonster_start, monster_fire_bullet, monster_fire_rocket } from "./g_monster.js";
+import { G_FreeEdict, G_ProjectSource, vectoyaw } from "./g_utils.js";
+import { getMonsterFlashOffset } from "./m_flash.js";
+import { BossExplode } from "./m_supertank.js";
+import {
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_stand30 = 0;
 export const FRAME_stand31 = 1;
@@ -198,3 +242,499 @@ export const FRAME_death49 = 179;
 export const FRAME_death50 = 180;
 
 export const MODEL_SCALE = 1.0;
+
+export const MZ2_BOSS2_MACHINEGUN_L1 = 73;
+export const MZ2_BOSS2_MACHINEGUN_L2 = 74;
+export const MZ2_BOSS2_MACHINEGUN_L3 = 75;
+export const MZ2_BOSS2_MACHINEGUN_L4 = 76;
+export const MZ2_BOSS2_MACHINEGUN_L5 = 77;
+export const MZ2_BOSS2_ROCKET_1 = 78;
+export const MZ2_BOSS2_ROCKET_2 = 79;
+export const MZ2_BOSS2_ROCKET_3 = 80;
+export const MZ2_BOSS2_ROCKET_4 = 81;
+export const MZ2_BOSS2_MACHINEGUN_R1 = 133;
+export const MZ2_BOSS2_MACHINEGUN_R2 = 134;
+export const MZ2_BOSS2_MACHINEGUN_R3 = 135;
+export const MZ2_BOSS2_MACHINEGUN_R4 = 136;
+export const MZ2_BOSS2_MACHINEGUN_R5 = 137;
+
+const BOSS2_ATTACK_TRACE_MASK = CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA;
+const SOUND_PAIN1 = "bosshovr/bhvpain1.wav";
+const SOUND_PAIN2 = "bosshovr/bhvpain2.wav";
+const SOUND_PAIN3 = "bosshovr/bhvpain3.wav";
+const SOUND_DEATH = "bosshovr/bhvdeth1.wav";
+const SOUND_SEARCH1 = "bosshovr/bhvunqv1.wav";
+const SOUND_ENGINE = "bosshovr/bhvengn1.wav";
+
+let sound_pain1 = 0;
+let sound_pain2 = 0;
+let sound_pain3 = 0;
+let sound_death = 0;
+let sound_search1 = 0;
+
+export function boss2_search(self: GameEntity, runtime: GameRuntime): void {
+  if (Math.random() < 0.5) {
+    emitRegisteredGameSound(runtime, self, sound_search1, SOUND_SEARCH1, soundOptions(CHAN_VOICE, ATTN_NONE));
+  }
+}
+
+export function Boss2Rocket(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const { forward, right } = AngleVectors(self.s.angles);
+  fireBoss2Rocket(self, MZ2_BOSS2_ROCKET_1, forward, right, runtime);
+  fireBoss2Rocket(self, MZ2_BOSS2_ROCKET_2, forward, right, runtime);
+  fireBoss2Rocket(self, MZ2_BOSS2_ROCKET_3, forward, right, runtime);
+  fireBoss2Rocket(self, MZ2_BOSS2_ROCKET_4, forward, right, runtime);
+}
+
+export function boss2_firebullet_right(self: GameEntity, runtime: GameRuntime): void {
+  fireBoss2Machinegun(self, MZ2_BOSS2_MACHINEGUN_R1, runtime);
+}
+
+export function boss2_firebullet_left(self: GameEntity, runtime: GameRuntime): void {
+  fireBoss2Machinegun(self, MZ2_BOSS2_MACHINEGUN_L1, runtime);
+}
+
+export function Boss2MachineGun(self: GameEntity, runtime: GameRuntime): void {
+  boss2_firebullet_left(self, runtime);
+  boss2_firebullet_right(self, runtime);
+}
+
+export const boss2_frames_stand = makeFrames(ai_stand, new Array<number>(21).fill(0));
+export const boss2_move_stand: GameMonsterMove = {
+  firstframe: FRAME_stand30,
+  lastframe: FRAME_stand50,
+  frame: boss2_frames_stand,
+  endfunc: undefined
+};
+
+export const boss2_frames_fidget = makeFrames(ai_stand, new Array<number>(30).fill(0));
+export const boss2_move_fidget: GameMonsterMove = {
+  firstframe: FRAME_stand1,
+  lastframe: FRAME_stand30,
+  frame: boss2_frames_fidget,
+  endfunc: undefined
+};
+
+export const boss2_frames_walk = makeFrames(ai_walk, new Array<number>(20).fill(8));
+export const boss2_move_walk: GameMonsterMove = {
+  firstframe: FRAME_walk1,
+  lastframe: FRAME_walk20,
+  frame: boss2_frames_walk,
+  endfunc: undefined
+};
+
+export const boss2_frames_run = makeFrames(ai_run, new Array<number>(20).fill(8));
+export const boss2_move_run: GameMonsterMove = {
+  firstframe: FRAME_walk1,
+  lastframe: FRAME_walk20,
+  frame: boss2_frames_run,
+  endfunc: undefined
+};
+
+export const boss2_frames_attack_pre_mg = makeFrames(
+  ai_charge,
+  new Array<number>(9).fill(1),
+  indexedThinks(9, [[8, boss2_attack_mg]])
+);
+export const boss2_move_attack_pre_mg: GameMonsterMove = {
+  firstframe: FRAME_attack1,
+  lastframe: FRAME_attack9,
+  frame: boss2_frames_attack_pre_mg,
+  endfunc: undefined
+};
+
+export const boss2_frames_attack_mg = makeFrames(
+  ai_charge,
+  new Array<number>(6).fill(1),
+  [Boss2MachineGun, Boss2MachineGun, Boss2MachineGun, Boss2MachineGun, Boss2MachineGun, boss2_reattack_mg]
+);
+export const boss2_move_attack_mg: GameMonsterMove = {
+  firstframe: FRAME_attack10,
+  lastframe: FRAME_attack15,
+  frame: boss2_frames_attack_mg,
+  endfunc: undefined
+};
+
+export const boss2_frames_attack_post_mg = makeFrames(ai_charge, new Array<number>(4).fill(1));
+export const boss2_move_attack_post_mg: GameMonsterMove = {
+  firstframe: FRAME_attack16,
+  lastframe: FRAME_attack19,
+  frame: boss2_frames_attack_post_mg,
+  endfunc: boss2_run
+};
+
+export const boss2_frames_attack_rocket = makeIndexedFrames(
+  (index) => (index === 12 ? ai_move : ai_charge),
+  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -20, 1, 1, 1, 1, 1, 1, 1, 1],
+  indexedThinks(21, [[12, Boss2Rocket]])
+);
+export const boss2_move_attack_rocket: GameMonsterMove = {
+  firstframe: FRAME_attack20,
+  lastframe: FRAME_attack40,
+  frame: boss2_frames_attack_rocket,
+  endfunc: boss2_run
+};
+
+export const boss2_frames_pain_heavy = makeFrames(ai_move, new Array<number>(18).fill(0));
+export const boss2_move_pain_heavy: GameMonsterMove = {
+  firstframe: FRAME_pain2,
+  lastframe: FRAME_pain19,
+  frame: boss2_frames_pain_heavy,
+  endfunc: boss2_run
+};
+
+export const boss2_frames_pain_light = makeFrames(ai_move, new Array<number>(4).fill(0));
+export const boss2_move_pain_light: GameMonsterMove = {
+  firstframe: FRAME_pain20,
+  lastframe: FRAME_pain23,
+  frame: boss2_frames_pain_light,
+  endfunc: boss2_run
+};
+
+export const boss2_frames_death = makeFrames(
+  ai_move,
+  new Array<number>(49).fill(0),
+  indexedThinks(49, [[48, BossExplode]])
+);
+export const boss2_move_death: GameMonsterMove = {
+  firstframe: FRAME_death2,
+  lastframe: FRAME_death50,
+  frame: boss2_frames_death,
+  endfunc: boss2_dead
+};
+
+export function boss2_stand(self: GameEntity): void {
+  self.monsterinfo.currentmove = boss2_move_stand;
+}
+
+export function boss2_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = boss2_move_stand;
+  } else {
+    self.monsterinfo.currentmove = boss2_move_run;
+  }
+}
+
+export function boss2_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = boss2_move_walk;
+}
+
+export function boss2_attack(self: GameEntity): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const distance = lengthVec3(subtractVec3(self.enemy.s.origin, self.s.origin));
+  if (distance <= 125 || Math.random() <= 0.6) {
+    self.monsterinfo.currentmove = boss2_move_attack_pre_mg;
+  } else {
+    self.monsterinfo.currentmove = boss2_move_attack_rocket;
+  }
+}
+
+export function boss2_attack_mg(self: GameEntity): void {
+  self.monsterinfo.currentmove = boss2_move_attack_mg;
+}
+
+export function boss2_reattack_mg(self: GameEntity): void {
+  if (self.enemy && infront(self, self.enemy) && Math.random() <= 0.7) {
+    self.monsterinfo.currentmove = boss2_move_attack_mg;
+  } else {
+    self.monsterinfo.currentmove = boss2_move_attack_post_mg;
+  }
+}
+
+export function boss2_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < self.max_health / 2) {
+    self.s.skinnum = 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+  if (damage < 10) {
+    emitRegisteredGameSound(runtime, self, sound_pain3, SOUND_PAIN3, soundOptions(CHAN_VOICE, ATTN_NONE));
+    self.monsterinfo.currentmove = boss2_move_pain_light;
+  } else if (damage < 30) {
+    emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, soundOptions(CHAN_VOICE, ATTN_NONE));
+    self.monsterinfo.currentmove = boss2_move_pain_light;
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_pain2, SOUND_PAIN2, soundOptions(CHAN_VOICE, ATTN_NONE));
+    self.monsterinfo.currentmove = boss2_move_pain_heavy;
+  }
+}
+
+export function boss2_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -56, -56, 0);
+  setVec3(self.maxs, 56, 56, 80);
+  self.movetype = MOVETYPE_TOSS;
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+export function boss2_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  emitRegisteredGameSound(runtime, self, sound_death, SOUND_DEATH, soundOptions(CHAN_VOICE, ATTN_NONE));
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_NO;
+  self.count = 0;
+  self.monsterinfo.currentmove = boss2_move_death;
+}
+
+export function Boss2_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
+  if (!self.enemy) {
+    return false;
+  }
+
+  if (self.enemy.health > 0) {
+    const spot1: vec3_t = [...self.s.origin];
+    spot1[2] += self.viewheight;
+    const spot2: vec3_t = [...self.enemy.s.origin];
+    spot2[2] += self.enemy.viewheight;
+
+    const tr = runtime.collision?.trace(spot1, [0, 0, 0], [0, 0, 0], spot2, self, BOSS2_ATTACK_TRACE_MASK);
+    if (!tr) {
+      return false;
+    }
+    if (tr.ent !== self.enemy) {
+      return false;
+    }
+  }
+
+  const enemy_range = range(self, self.enemy);
+  const temp = subtractVec3(self.enemy.s.origin, self.s.origin);
+  self.ideal_yaw = vectoyaw(temp);
+
+  if (enemy_range === RANGE_MELEE) {
+    self.monsterinfo.attack_state = self.monsterinfo.melee ? AS_MELEE : AS_MISSILE;
+    return true;
+  }
+
+  if (!self.monsterinfo.attack) {
+    return false;
+  }
+
+  if (runtime.time < self.monsterinfo.attack_finished) {
+    return false;
+  }
+
+  if (enemy_range === RANGE_FAR) {
+    return false;
+  }
+
+  let chance: number;
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    chance = 0.4;
+  } else if (enemy_range === RANGE_MELEE) {
+    chance = 0.8;
+  } else if (enemy_range === RANGE_NEAR) {
+    chance = 0.8;
+  } else if (enemy_range === RANGE_MID) {
+    chance = 0.8;
+  } else {
+    return false;
+  }
+
+  if (Math.random() < chance) {
+    self.monsterinfo.attack_state = AS_MISSILE;
+    self.monsterinfo.attack_finished = runtime.time + 2 * Math.random();
+    return true;
+  }
+
+  if ((self.flags & FL_FLY) !== 0) {
+    self.monsterinfo.attack_state = Math.random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
+  }
+
+  return false;
+}
+
+/**
+ * Original name: SP_monster_boss2
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns monster_boss2, precaches assets and initializes flying monster callbacks.
+ */
+export function SP_monster_boss2(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  precacheBoss2Assets(runtime);
+
+  self.s.sound = registerGameSound(runtime, SOUND_ENGINE);
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/boss2/tris.md2");
+  setVec3(self.mins, -56, -56, 0);
+  setVec3(self.maxs, 56, 56, 80);
+
+  self.health = 2000;
+  self.gib_health = -200;
+  self.mass = 1000;
+  self.flags |= FL_IMMUNE_LASER;
+
+  self.pain = boss2_pain;
+  self.die = boss2_die;
+  self.monsterinfo.stand = boss2_stand;
+  self.monsterinfo.walk = boss2_walk;
+  self.monsterinfo.run = boss2_run;
+  self.monsterinfo.dodge = undefined;
+  self.monsterinfo.attack = boss2_attack;
+  self.monsterinfo.melee = undefined;
+  self.monsterinfo.sight = undefined;
+  self.monsterinfo.search = boss2_search;
+  self.monsterinfo.checkattack = Boss2_CheckAttack;
+
+  linkGameEntity(runtime, self);
+
+  self.monsterinfo.currentmove = boss2_move_stand;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  flymonster_start(self, runtime);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function makeIndexedFrames(
+  aifunc: (index: number) => GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc: aifunc(index),
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function precacheBoss2Assets(runtime: GameRuntime): void {
+  sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
+  sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
+  sound_pain3 = registerGameSound(runtime, SOUND_PAIN3);
+  sound_death = registerGameSound(runtime, SOUND_DEATH);
+  sound_search1 = registerGameSound(runtime, SOUND_SEARCH1);
+}
+
+function fireBoss2Rocket(
+  self: GameEntity,
+  flashNumber: number,
+  forward: vec3_t,
+  right: vec3_t,
+  runtime: GameRuntime
+): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const start = G_ProjectSource(self.s.origin, boss2FlashOffset(flashNumber), forward, right);
+  const vec: vec3_t = [...self.enemy.s.origin];
+  vec[2] += self.enemy.viewheight;
+  const dir = normalizeVec3(subtractVec3(vec, start));
+  monster_fire_rocket(self, start, dir, 50, 500, flashNumber, runtime);
+}
+
+function fireBoss2Machinegun(self: GameEntity, flashNumber: number, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, boss2FlashOffset(flashNumber), forward, right);
+  const target = vectorMA(self.enemy.s.origin, -0.2, self.enemy.velocity);
+  target[2] += self.enemy.viewheight;
+  const aim = normalizeVec3(subtractVec3(target, start));
+
+  monster_fire_bullet(
+    self,
+    start,
+    aim,
+    6,
+    4,
+    DEFAULT_BULLET_HSPREAD,
+    DEFAULT_BULLET_VSPREAD,
+    flashNumber,
+    runtime
+  );
+}
+
+function soundOptions(channel: number, attenuation: number): { channel: number; volume: number; attenuation: number; timeofs: number } {
+  return {
+    channel,
+    volume: 1,
+    attenuation,
+    timeofs: 0
+  };
+}
+
+function boss2FlashOffset(flashNumber: number): vec3_t {
+  return getMonsterFlashOffset(flashNumber);
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
+}
+
+function vectorMA(veca: vec3_t, scale: number, vecb: vec3_t): vec3_t {
+  return [veca[0] + scale * vecb[0], veca[1] + scale * vecb[1], veca[2] + scale * vecb[2]];
+}
+
+function normalizeVec3(vector: vec3_t): vec3_t {
+  const length = lengthVec3(vector);
+  if (length === 0) {
+    return [0, 0, 0];
+  }
+  return [vector[0] / length, vector[1] / length, vector[2] / length];
+}
+
+function lengthVec3(vector: vec3_t): number {
+  return Math.hypot(vector[0], vector[1], vector[2]);
+}

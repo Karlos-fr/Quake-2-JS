@@ -17,7 +17,10 @@ import { strict as assert } from "node:assert";
 import { createRuntimeEntity, type game_export_t } from "../../packages/game/src/index.js";
 import { createCommandRuntime, createCvarRuntime, createQcommonNetRuntime } from "../../packages/qcommon/src/index.js";
 import {
+  ATTN_STATIC,
   ATTN_NONE,
+  CHAN_NO_PHS_ADD,
+  CHAN_VOICE,
   CS_SOUNDS,
   MSG_ReadByte,
   SND_ATTENUATION,
@@ -155,6 +158,32 @@ function verifySvcSoundRoundTrip(): void {
     attenuation: 0,
     timeofs: 0.125
   }], "CL_ParseStartSoundPacket handoff mismatch");
+
+  serverClient.datagram.cursize = 0;
+  send.SV_StartSound([11, 22, 33], player, CHAN_NO_PHS_ADD + CHAN_VOICE, 8, 1, ATTN_STATIC, 0);
+  client.cl.sound_precache[8] = { name: "doors/dr1_strt.wav" };
+  client.net_message.cursize = serverClient.datagram.cursize;
+  client.net_message.data.set(serverClient.datagram.data.subarray(0, serverClient.datagram.cursize));
+  client.net_message.readcount = 0;
+
+  assert.equal(MSG_ReadByte(client.net_message), svc_ops_e.svc_sound, "door sound should be sent as svc_sound");
+  const doorStarts: unknown[] = [];
+  const doorPacket = CL_ParseStartSoundPacket(client, {
+    onStartSound: (origin, ent, channel, sound, volume, attenuation, timeofs) => {
+      doorStarts.push({ origin, ent, channel, sound, volume, attenuation, timeofs });
+    }
+  });
+  assert.equal(doorPacket.channel, CHAN_VOICE, "door CHAN_NO_PHS_ADD must not leak into client channel id");
+  assert.equal(doorPacket.attenuation, ATTN_STATIC, "door mover sound attenuation mismatch");
+  assert.deepEqual(doorStarts, [{
+    origin: [11, 22, 33],
+    ent: 1,
+    channel: CHAN_VOICE,
+    sound: client.cl.sound_precache[8],
+    volume: 1,
+    attenuation: ATTN_STATIC,
+    timeofs: 0
+  }], "door mover sound packet handoff mismatch");
 }
 
 function verifyGameplayLoopAndOneShotSpeaker(): void {

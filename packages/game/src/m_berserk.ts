@@ -1,7 +1,7 @@
 /**
  * File: m_berserk.ts
- * Source: Quake II original / game/m_berserk.h
- * Purpose: Port of the generated berserk model frame constants used by the monster berserk model.
+ * Source: Quake II original / game/m_berserk.h and game/m_berserk.c
+ * Purpose: Port of the generated berserk model frame constants and monster_berserk gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,40 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - None.
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_berserk`.
  */
+
+import { ATTN_IDLE, ATTN_NORM, CHAN_VOICE, CHAN_WEAPON, type vec3_t } from "../../qcommon/src/index.js";
+import {
+  AI_STAND_GROUND,
+  DEAD_DEAD,
+  GIB_ORGANIC,
+  MELEE_DISTANCE,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  SOLID_BBOX,
+  SVF_DEADMONSTER,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk } from "./g_ai.js";
+import { walkmonster_start } from "./g_monster.js";
+import { ThrowGib, ThrowHead } from "./g_misc.js";
+import { G_FreeEdict } from "./g_utils.js";
+import { fire_hit } from "./g_weapon.js";
+import {
+  emitGameSound,
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_stand1 = 0;
 export const FRAME_stand2 = 1;
@@ -261,3 +290,511 @@ export const FRAME_deathc7 = 242;
 export const FRAME_deathc8 = 243;
 
 export const MODEL_SCALE = 1.0;
+
+const SOUND_PAIN = "berserk/berpain2.wav";
+const SOUND_DIE = "berserk/berdeth2.wav";
+const SOUND_IDLE = "berserk/beridle1.wav";
+const SOUND_PUNCH = "berserk/attack.wav";
+const SOUND_SEARCH = "berserk/bersrch1.wav";
+const SOUND_SIGHT = "berserk/sight.wav";
+
+let sound_pain = 0;
+let sound_die = 0;
+let sound_idle = 0;
+let sound_punch = 0;
+let sound_sight = 0;
+let sound_search = 0;
+
+/**
+ * Original name: berserk_sight
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the berserk sight sound on target acquisition.
+ */
+export function berserk_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+}
+
+/**
+ * Original name: berserk_search
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the berserk search sound while looking for a target.
+ */
+export function berserk_search(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_search, SOUND_SEARCH, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+}
+
+const berserk_frames_stand = makeFrames(
+  ai_stand,
+  new Array<number>(5).fill(0),
+  indexedThinks(5, [[0, berserk_fidget]])
+);
+export const berserk_move_stand: GameMonsterMove = {
+  firstframe: FRAME_stand1,
+  lastframe: FRAME_stand5,
+  frame: berserk_frames_stand,
+  endfunc: undefined
+};
+
+/**
+ * Original name: berserk_stand
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Sets the berserk to its standing loop.
+ */
+export function berserk_stand(self: GameEntity): void {
+  self.monsterinfo.currentmove = berserk_move_stand;
+}
+
+const berserk_frames_stand_fidget = makeFrames(ai_stand, new Array<number>(20).fill(0));
+export const berserk_move_stand_fidget: GameMonsterMove = {
+  firstframe: FRAME_standb1,
+  lastframe: FRAME_standb20,
+  frame: berserk_frames_stand_fidget,
+  endfunc: berserk_stand
+};
+
+/**
+ * Original name: berserk_fidget
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Randomly switches from stand to the fidget animation unless standing ground.
+ */
+export function berserk_fidget(self: GameEntity, runtime: GameRuntime): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    return;
+  }
+  if (Math.random() > 0.15) {
+    return;
+  }
+
+  self.monsterinfo.currentmove = berserk_move_stand_fidget;
+  emitRegisteredGameSound(runtime, self, sound_idle, SOUND_IDLE, {
+    channel: CHAN_WEAPON,
+    volume: 1,
+    attenuation: ATTN_IDLE,
+    timeofs: 0
+  });
+}
+
+const berserk_frames_walk = makeFrames(ai_walk, [
+  9.1, 6.3, 4.9, 6.7, 6.0, 8.2, 7.2, 6.1, 4.9, 4.7, 4.7, 4.8
+]);
+export const berserk_move_walk: GameMonsterMove = {
+  firstframe: FRAME_walkc1,
+  lastframe: FRAME_walkc11,
+  frame: berserk_frames_walk,
+  endfunc: undefined
+};
+
+/**
+ * Original name: berserk_walk
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the berserk walk loop.
+ */
+export function berserk_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = berserk_move_walk;
+}
+
+const berserk_frames_run1 = makeFrames(ai_run, [21, 11, 21, 25, 18, 19]);
+export const berserk_move_run1: GameMonsterMove = {
+  firstframe: FRAME_run1,
+  lastframe: FRAME_run6,
+  frame: berserk_frames_run1,
+  endfunc: undefined
+};
+
+/**
+ * Original name: berserk_run
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Uses stand animation while holding ground, otherwise enters the run loop.
+ */
+export function berserk_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = berserk_move_stand;
+  } else {
+    self.monsterinfo.currentmove = berserk_move_run1;
+  }
+}
+
+/**
+ * Original name: berserk_attack_spike
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Performs the fast upward melee hit with original damage range and kick.
+ */
+export function berserk_attack_spike(self: GameEntity, runtime: GameRuntime): void {
+  const aim: vec3_t = [MELEE_DISTANCE, 0, -24];
+  fire_hit(self, aim, 15 + randomInt(6), 400, runtime);
+}
+
+/**
+ * Original name: berserk_swing
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the berserk punch swing sound.
+ */
+export function berserk_swing(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_punch, SOUND_PUNCH, {
+    channel: CHAN_WEAPON,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+}
+
+const berserk_frames_attack_spike = makeFrames(
+  ai_charge,
+  new Array<number>(8).fill(0),
+  indexedThinks(8, [
+    [2, berserk_swing],
+    [3, berserk_attack_spike]
+  ])
+);
+export const berserk_move_attack_spike: GameMonsterMove = {
+  firstframe: FRAME_att_c1,
+  lastframe: FRAME_att_c8,
+  frame: berserk_frames_attack_spike,
+  endfunc: berserk_run
+};
+
+/**
+ * Original name: berserk_attack_club
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Performs the slower club melee hit with original damage range and kick.
+ */
+export function berserk_attack_club(self: GameEntity, runtime: GameRuntime): void {
+  const aim: vec3_t = [MELEE_DISTANCE, self.mins[0], -4];
+  fire_hit(self, aim, 5 + randomInt(6), 400, runtime);
+}
+
+const berserk_frames_attack_club = makeFrames(
+  ai_charge,
+  new Array<number>(12).fill(0),
+  indexedThinks(12, [
+    [4, berserk_swing],
+    [8, berserk_attack_club]
+  ])
+);
+export const berserk_move_attack_club: GameMonsterMove = {
+  firstframe: FRAME_att_c9,
+  lastframe: FRAME_att_c20,
+  frame: berserk_frames_attack_club,
+  endfunc: berserk_run
+};
+
+/**
+ * Original name: berserk_strike
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Placeholder matching the original empty FIXME impact-sound hook.
+ */
+export function berserk_strike(_self: GameEntity): void {
+}
+
+const berserk_frames_attack_strike = makeFrames(
+  ai_move,
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9.7, 13.6],
+  indexedThinks(14, [
+    [3, berserk_swing],
+    [7, berserk_strike]
+  ])
+);
+export const berserk_move_attack_strike: GameMonsterMove = {
+  firstframe: FRAME_att_c21,
+  lastframe: FRAME_att_c34,
+  frame: berserk_frames_attack_strike,
+  endfunc: berserk_run
+};
+
+/**
+ * Original name: berserk_melee
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Randomly starts either the spike or club melee animation.
+ */
+export function berserk_melee(self: GameEntity): void {
+  if (randomInt(2) === 0) {
+    self.monsterinfo.currentmove = berserk_move_attack_spike;
+  } else {
+    self.monsterinfo.currentmove = berserk_move_attack_club;
+  }
+}
+
+const berserk_frames_pain1 = makeFrames(ai_move, new Array<number>(4).fill(0));
+export const berserk_move_pain1: GameMonsterMove = {
+  firstframe: FRAME_painc1,
+  lastframe: FRAME_painc4,
+  frame: berserk_frames_pain1,
+  endfunc: berserk_run
+};
+
+const berserk_frames_pain2 = makeFrames(ai_move, new Array<number>(20).fill(0));
+export const berserk_move_pain2: GameMonsterMove = {
+  firstframe: FRAME_painb1,
+  lastframe: FRAME_painb20,
+  frame: berserk_frames_pain2,
+  endfunc: berserk_run
+};
+
+/**
+ * Original name: berserk_pain
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies damaged skin, pain debounce, nightmare suppression and damage/random pain move selection.
+ */
+export function berserk_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < (self.max_health / 2)) {
+    self.s.skinnum = 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+  emitRegisteredGameSound(runtime, self, sound_pain, SOUND_PAIN, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  if (damage < 20 || Math.random() < 0.5) {
+    self.monsterinfo.currentmove = berserk_move_pain1;
+  } else {
+    self.monsterinfo.currentmove = berserk_move_pain2;
+  }
+}
+
+/**
+ * Original name: berserk_dead
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finalizes the berserk corpse bbox, movetype, dead-monster flag and link state.
+ */
+export function berserk_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, -8);
+  self.movetype = MOVETYPE_TOSS;
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+const berserk_frames_death1 = makeFrames(ai_move, new Array<number>(13).fill(0));
+export const berserk_move_death1: GameMonsterMove = {
+  firstframe: FRAME_death1,
+  lastframe: FRAME_death13,
+  frame: berserk_frames_death1,
+  endfunc: berserk_dead
+};
+
+const berserk_frames_death2 = makeFrames(ai_move, new Array<number>(8).fill(0));
+export const berserk_move_death2: GameMonsterMove = {
+  firstframe: FRAME_deathc1,
+  lastframe: FRAME_deathc8,
+  frame: berserk_frames_death2,
+  endfunc: berserk_dead
+};
+
+/**
+ * Original name: berserk_die
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Handles gib death, ordinary death sound and damage-sized death animation selection.
+ */
+export function berserk_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health <= self.gib_health) {
+    emitGameSound(runtime, self, "misc/udeath.wav");
+    for (let n = 0; n < 2; n += 1) {
+      ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    for (let n = 0; n < 4; n += 1) {
+      ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC, runtime);
+    self.deadflag = DEAD_DEAD;
+    return;
+  }
+
+  if (self.deadflag === DEAD_DEAD) {
+    return;
+  }
+
+  emitRegisteredGameSound(runtime, self, sound_die, SOUND_DIE, {
+    channel: CHAN_VOICE,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_YES;
+
+  if (damage >= 50) {
+    self.monsterinfo.currentmove = berserk_move_death1;
+  } else {
+    self.monsterinfo.currentmove = berserk_move_death2;
+  }
+}
+
+/**
+ * Original name: SP_monster_berserk
+ * Source: game/m_berserk.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns monster_berserk, precaches assets and initializes walking monster callbacks.
+ */
+export function SP_monster_berserk(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  precacheBerserkAssets(runtime);
+
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/berserk/tris.md2");
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, 32);
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+
+  self.health = 240;
+  self.gib_health = -60;
+  self.mass = 250;
+
+  self.pain = berserk_pain;
+  self.die = berserk_die;
+
+  self.monsterinfo.stand = berserk_stand;
+  self.monsterinfo.walk = berserk_walk;
+  self.monsterinfo.run = berserk_run;
+  self.monsterinfo.dodge = undefined;
+  self.monsterinfo.attack = undefined;
+  self.monsterinfo.melee = berserk_melee;
+  self.monsterinfo.sight = berserk_sight;
+  self.monsterinfo.search = berserk_search;
+
+  self.monsterinfo.currentmove = berserk_move_stand;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  linkGameEntity(runtime, self);
+
+  walkmonster_start(self, runtime);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function precacheBerserkAssets(runtime: GameRuntime): void {
+  sound_pain = registerGameSound(runtime, SOUND_PAIN);
+  sound_die = registerGameSound(runtime, SOUND_DIE);
+  sound_idle = registerGameSound(runtime, SOUND_IDLE);
+  sound_punch = registerGameSound(runtime, SOUND_PUNCH);
+  sound_search = registerGameSound(runtime, SOUND_SEARCH);
+  sound_sight = registerGameSound(runtime, SOUND_SIGHT);
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function randomInt(maxExclusive: number): number {
+  return Math.trunc(Math.random() * maxExclusive);
+}

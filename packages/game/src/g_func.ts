@@ -18,6 +18,9 @@
 
 import {
   AngleVectors,
+  ATTN_STATIC,
+  CHAN_NO_PHS_ADD,
+  CHAN_VOICE,
   EF_ANIM01,
   EF_ANIM23,
   EF_ANIM_ALL,
@@ -50,11 +53,13 @@ import {
   STATE_UP,
   SVF_MONSTER,
   SVF_NOCLIENT,
+  emitRegisteredGameSound,
   freeGameEntity,
   getRuntimeEntityLabel,
   linkGameEntity,
   refreshEntitySpatialState,
   registerGameSound,
+  setGameEntityModel,
   spawnGameEntity
 } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
@@ -66,6 +71,7 @@ const TRAIN_BLOCK_STOPS = 4;
 const SECRET_ALWAYS_SHOOT = 1;
 const SECRET_1ST_LEFT = 2;
 const SECRET_1ST_DOWN = 4;
+const MOVE_SOUND_CHANNEL = CHAN_NO_PHS_ADD + CHAN_VOICE;
 
 /**
  * Original name: Move_Done
@@ -400,6 +406,7 @@ export function door_use_areaportals(self: GameEntity, open: boolean, runtime: G
  * - Marks the door as fully open and schedules the return trip when appropriate.
  */
 export function door_hit_top(self: GameEntity, runtime: GameRuntime): void {
+  stopMoverLoop(self, runtime);
   self.moveinfo.state = STATE_TOP;
   runtime.log({
     kind: "think",
@@ -428,6 +435,7 @@ export function door_hit_top(self: GameEntity, runtime: GameRuntime): void {
  * - Marks the door as fully closed and closes linked area portals.
  */
 export function door_hit_bottom(self: GameEntity, runtime: GameRuntime): void {
+  stopMoverLoop(self, runtime);
   self.moveinfo.state = STATE_BOTTOM;
   runtime.log({
     kind: "think",
@@ -448,6 +456,7 @@ export function door_hit_bottom(self: GameEntity, runtime: GameRuntime): void {
  * - Starts the closing phase of one door.
  */
 export function door_go_down(self: GameEntity, runtime: GameRuntime): void {
+  startMoverLoop(self, runtime);
   if (self.max_health > 0) {
     self.health = self.max_health;
   }
@@ -481,6 +490,7 @@ export function door_go_up(self: GameEntity, activator: GameEntity | null, runti
     return;
   }
 
+  startMoverLoop(self, runtime);
   self.moveinfo.state = STATE_UP;
   self.activator = activator;
   if (self.classname === "func_door") {
@@ -749,8 +759,17 @@ export function door_touch(self: GameEntity, other: GameEntity, runtime: GameRun
 export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
   ent.movetype = MOVETYPE_PUSH;
   ent.solid = SOLID_BSP;
+  if (ent.model) {
+    setGameEntityModel(runtime, ent, ent.model);
+  }
   ent.blocked = door_blocked;
   ent.use = door_use;
+
+  if (ent.sounds !== 1) {
+    ent.moveinfo.sound_start = registerGameSound(runtime, "doors/dr1_strt.wav");
+    ent.moveinfo.sound_middle = registerGameSound(runtime, "doors/dr1_mid.wav");
+    ent.moveinfo.sound_end = registerGameSound(runtime, "doors/dr1_end.wav");
+  }
 
   if (!ent.speed) {
     ent.speed = 100;
@@ -826,6 +845,9 @@ export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
 export function SP_func_door_rotating(ent: GameEntity, runtime: GameRuntime): void {
   ent.movetype = MOVETYPE_PUSH;
   ent.solid = SOLID_BSP;
+  if (ent.model) {
+    setGameEntityModel(runtime, ent, ent.model);
+  }
   ent.blocked = door_blocked;
   ent.use = door_use;
 
@@ -843,6 +865,12 @@ export function SP_func_door_rotating(ent: GameEntity, runtime: GameRuntime): vo
   }
   if (!ent.dmg) {
     ent.dmg = 2;
+  }
+
+  if (ent.sounds !== 1) {
+    ent.moveinfo.sound_start = registerGameSound(runtime, "doors/dr1_strt.wav");
+    ent.moveinfo.sound_middle = registerGameSound(runtime, "doors/dr1_mid.wav");
+    ent.moveinfo.sound_end = registerGameSound(runtime, "doors/dr1_end.wav");
   }
 
   const distance = parseDistance(ent.properties.distance, 90);
@@ -911,6 +939,7 @@ export function SP_func_door_rotating(ent: GameEntity, runtime: GameRuntime): vo
  * - Marks one platform as fully raised and schedules the return trip after the original delay.
  */
 export function plat_hit_top(self: GameEntity, runtime: GameRuntime): void {
+  stopMoverLoop(self, runtime);
   self.moveinfo.state = STATE_TOP;
   runtime.log({
     kind: "think",
@@ -933,6 +962,7 @@ export function plat_hit_top(self: GameEntity, runtime: GameRuntime): void {
  * - Marks one platform as fully lowered.
  */
 export function plat_hit_bottom(self: GameEntity, runtime: GameRuntime): void {
+  stopMoverLoop(self, runtime);
   self.moveinfo.state = STATE_BOTTOM;
   runtime.log({
     kind: "think",
@@ -952,6 +982,7 @@ export function plat_hit_bottom(self: GameEntity, runtime: GameRuntime): void {
  * - Starts the lowering phase of one platform toward `moveinfo.end_origin`.
  */
 export function plat_go_down(self: GameEntity, runtime: GameRuntime): void {
+  startMoverLoop(self, runtime);
   self.moveinfo.state = STATE_DOWN;
   Move_Calc(self, self.moveinfo.end_origin, plat_hit_bottom, runtime);
 }
@@ -966,6 +997,7 @@ export function plat_go_down(self: GameEntity, runtime: GameRuntime): void {
  * - Starts the raising phase of one platform toward `moveinfo.start_origin`.
  */
 export function plat_go_up(self: GameEntity, runtime: GameRuntime): void {
+  startMoverLoop(self, runtime);
   self.moveinfo.state = STATE_UP;
   Move_Calc(self, self.moveinfo.start_origin, plat_hit_top, runtime);
 }
@@ -1134,6 +1166,9 @@ export function SP_func_plat(ent: GameEntity, runtime: GameRuntime): void {
   ent.angles = [0, 0, 0];
   ent.solid = SOLID_BSP;
   ent.movetype = MOVETYPE_PUSH;
+  if (ent.model) {
+    setGameEntityModel(runtime, ent, ent.model);
+  }
   ent.blocked = plat_blocked;
 
   if (!ent.speed) {
@@ -1190,6 +1225,9 @@ export function SP_func_plat(ent: GameEntity, runtime: GameRuntime): void {
   ent.moveinfo.start_angles = [...ent.angles];
   ent.moveinfo.end_origin = [...ent.pos2];
   ent.moveinfo.end_angles = [...ent.angles];
+  ent.moveinfo.sound_start = registerGameSound(runtime, "plats/pt1_strt.wav");
+  ent.moveinfo.sound_middle = registerGameSound(runtime, "plats/pt1_mid.wav");
+  ent.moveinfo.sound_end = registerGameSound(runtime, "plats/pt1_end.wav");
 }
 
 /**
@@ -1256,6 +1294,9 @@ export function rotating_use(self: GameEntity, _other: GameEntity | null, _activ
 export function SP_func_rotating(ent: GameEntity, runtime: GameRuntime): void {
   ent.solid = SOLID_BSP;
   ent.movetype = (ent.spawnflags & 32) !== 0 ? MOVETYPE_STOP : MOVETYPE_PUSH;
+  if (ent.model) {
+    setGameEntityModel(runtime, ent, ent.model);
+  }
   ent.movedir = [0, 0, 0];
   if ((ent.spawnflags & 4) !== 0) {
     ent.movedir[2] = 1;
@@ -1323,6 +1364,9 @@ export function button_fire(self: GameEntity, runtime: GameRuntime): void {
     return;
   }
   self.moveinfo.state = STATE_UP;
+  if ((self.flags & FL_TEAMSLAVE) === 0) {
+    emitMoverSound(runtime, self, self.moveinfo.sound_start);
+  }
   Move_Calc(self, self.moveinfo.end_origin, button_wait, runtime);
 }
 
@@ -1359,6 +1403,12 @@ export function SP_func_button(ent: GameEntity, runtime: GameRuntime): void {
   G_SetMovedir(ent.s.angles, ent.movedir);
   ent.movetype = MOVETYPE_STOP;
   ent.solid = SOLID_BSP;
+  if (ent.model) {
+    setGameEntityModel(runtime, ent, ent.model);
+  }
+  if (ent.sounds !== 1) {
+    ent.moveinfo.sound_start = registerGameSound(runtime, "switches/butn2.wav");
+  }
   if (!ent.speed) {
     ent.speed = 40;
   }
@@ -1412,6 +1462,9 @@ export function SP_func_water(self: GameEntity, runtime: GameRuntime): void {
   G_SetMovedir(self.s.angles, self.movedir);
   self.movetype = MOVETYPE_PUSH;
   self.solid = SOLID_BSP;
+  if (self.model) {
+    setGameEntityModel(runtime, self, self.model);
+  }
   if (self.sounds === 1 || self.sounds === 2) {
     self.moveinfo.sound_start = registerGameSound(runtime, "world/mov_watr.wav");
     self.moveinfo.sound_end = registerGameSound(runtime, "world/stp_watr.wav");
@@ -1486,6 +1539,7 @@ export function train_wait(self: GameEntity, runtime: GameRuntime): void {
       self.nextthink = 0;
     }
     if ((self.flags & FL_TEAMSLAVE) === 0) {
+      emitMoverSound(runtime, self, self.moveinfo.sound_end);
       self.s.sound = 0;
     }
   } else {
@@ -1520,6 +1574,7 @@ export function train_next(self: GameEntity, runtime: GameRuntime): void {
     self.moveinfo.wait = ent.wait;
     self.target_ent = ent;
     if ((self.flags & FL_TEAMSLAVE) === 0) {
+      emitMoverSound(runtime, self, self.moveinfo.sound_start);
       self.s.sound = self.moveinfo.sound_middle;
     }
     const dest = subtractVec3(ent.s.origin, self.mins);
@@ -1591,6 +1646,9 @@ export function SP_func_train(self: GameEntity, runtime: GameRuntime): void {
   self.blocked = train_blocked;
   self.dmg = (self.spawnflags & TRAIN_BLOCK_STOPS) !== 0 ? 0 : (self.dmg || 100);
   self.solid = SOLID_BSP;
+  if (self.model) {
+    setGameEntityModel(runtime, self, self.model);
+  }
   const noise = self.properties.noise;
   if (noise) {
     self.moveinfo.sound_middle = registerGameSound(runtime, noise);
@@ -1716,6 +1774,9 @@ export function SP_func_conveyor(self: GameEntity, runtime: GameRuntime): void {
   }
   self.use = func_conveyor_use;
   self.solid = SOLID_BSP;
+  if (self.model) {
+    setGameEntityModel(runtime, self, self.model);
+  }
   refreshEntitySpatialState(self);
   linkGameEntity(runtime, self);
 }
@@ -1793,6 +1854,9 @@ export function SP_func_door_secret(ent: GameEntity, runtime: GameRuntime): void
   ent.moveinfo.sound_end = registerGameSound(runtime, "doors/dr1_end.wav");
   ent.movetype = MOVETYPE_PUSH;
   ent.solid = SOLID_BSP;
+  if (ent.model) {
+    setGameEntityModel(runtime, ent, ent.model);
+  }
   ent.blocked = door_secret_blocked;
   ent.use = door_secret_use;
   if (!ent.targetname || (ent.spawnflags & SECRET_ALWAYS_SHOOT) !== 0) {
@@ -1839,8 +1903,47 @@ export function use_killbox(self: GameEntity, _other: GameEntity | null, _activa
 export function SP_func_killbox(ent: GameEntity, runtime: GameRuntime): void {
   ent.use = use_killbox;
   ent.svflags = SVF_NOCLIENT;
+  if (ent.model) {
+    setGameEntityModel(runtime, ent, ent.model);
+  }
   refreshEntitySpatialState(ent);
   linkGameEntity(runtime, ent);
+}
+
+function emitMoverSound(runtime: GameRuntime, self: GameEntity, soundIndex: number): void {
+  if (!soundIndex) {
+    return;
+  }
+
+  const soundPath = runtime.assets.soundPaths[soundIndex - 1];
+  if (!soundPath) {
+    return;
+  }
+
+  emitRegisteredGameSound(runtime, self, soundIndex, soundPath, {
+    channel: MOVE_SOUND_CHANNEL,
+    volume: 1,
+    attenuation: ATTN_STATIC,
+    timeofs: 0
+  });
+}
+
+function startMoverLoop(self: GameEntity, runtime: GameRuntime): void {
+  if ((self.flags & FL_TEAMSLAVE) !== 0) {
+    return;
+  }
+
+  emitMoverSound(runtime, self, self.moveinfo.sound_start);
+  self.s.sound = self.moveinfo.sound_middle;
+}
+
+function stopMoverLoop(self: GameEntity, runtime: GameRuntime): void {
+  if ((self.flags & FL_TEAMSLAVE) !== 0) {
+    return;
+  }
+
+  emitMoverSound(runtime, self, self.moveinfo.sound_end);
+  self.s.sound = 0;
 }
 
 /**

@@ -6,13 +6,11 @@
  * It is a package entry point for the Three.js backend package.
  *
  * Dependencies:
- * - packages/renderer-three/src/bsp-group-builder.ts
+ * - packages/renderer-three/src/ref-gl-host.ts
+ * - packages/renderer-three/src/gl-world-scene-adapter.ts
  */
 
-export { buildThreeBspGroup } from "./bsp-group-builder.js";
-export { createThreeBrushModelSync } from "./brush-model-sync.js";
 export { createThreeGlWorldSceneAdapter } from "./gl-world-scene-adapter.js";
-export { createQuakeTextureResolver } from "./quake-texture-resolver.js";
 export { createQuakeSkyResolver } from "./quake-sky-resolver.js";
 export { createThreeSkySceneAdapter } from "./sky-scene-adapter.js";
 export { createThreeRefreshEntitySync } from "./refresh-entity-sync.js";
@@ -312,8 +310,10 @@ export {
   hasQwglProcedure
 } from "./qgl.js";
 export { applyMd2AliasFrameLerp, applyMd2Frame, applyMd2LerpedFrame, buildMd2Mesh, loadMd2Model } from "./md2-mesh-builder.js";
-export { createThreeHudLayer } from "./hud-renderer.js";
-export { createQuakeHudResourceResolver } from "./hud-resource-resolver.js";
+export { createThreeBeamSync } from "./three-beam-sync.js";
+export { createThreeDlightSync } from "./three-dlight-sync.js";
+export { createThreeGlDrawAdapter } from "./three-gl-draw-adapter.js";
+export { createThreePolyblendOverlay } from "./three-polyblend-overlay.js";
 export {
   BLOCK_HEIGHT,
   BLOCK_WIDTH,
@@ -427,9 +427,7 @@ export {
   modtype_t
 } from "./gl-model.js";
 
-export type { ThreeBrushModelSync } from "./brush-model-sync.js";
 export type { ThreeGlWorldSceneAdapter } from "./gl-world-scene-adapter.js";
-export type { BspModelOriginResolver, BspTextureResolver, ThreeBspBuildOptions } from "./bsp-group-builder.js";
 export type { GlImage, GlImageHooks, GlImageRuntime, GlImageUploadResult, GlImageUploadSource } from "./gl-image.js";
 export type { GlLightHooks, GlLightRuntime } from "./gl-light.js";
 export type {
@@ -497,11 +495,12 @@ export type {
   mvertex_t
 } from "./gl-model.js";
 export type { GlModelHooks, GlModelRuntime, renderer_dvis_t } from "./gl-model-loader.js";
-export type { ThreeHudLayer } from "./hud-renderer.js";
-export type { HudTextTexture, QuakeHudResourceResolver } from "./hud-resource-resolver.js";
+export type { ThreeBeamSync } from "./three-beam-sync.js";
+export type { ThreeDlightSync } from "./three-dlight-sync.js";
+export type { ThreeGlDrawAdapter } from "./three-gl-draw-adapter.js";
+export type { ThreePolyblendOverlay } from "./three-polyblend-overlay.js";
 export type { Md2AliasEntityState, Md2MeshBuildOptions, Md2MeshInstance } from "./md2-mesh-builder.js";
 export type { AliasShadeLightOptions } from "./gl-mesh.js";
-export type { QuakeTextureResolver } from "./quake-texture-resolver.js";
 export type { RefreshEntitySyncStats, ThreeRefreshEntitySync } from "./refresh-entity-sync.js";
 export type { ThreeParticleSync } from "./particle-sync.js";
 export type { LoadedQuakeSkyTextureSet, QuakeSkyResolver } from "./quake-sky-resolver.js";

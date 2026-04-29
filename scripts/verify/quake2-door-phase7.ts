@@ -6,9 +6,9 @@
  * It is a verification harness for phase 7 of the door plan.
  *
  * Dependencies:
+ * - packages/filesystem
  * - packages/formats
  * - packages/game
- * - packages/renderer-common
  * - packages/renderer-three
  * - three
  */
@@ -18,6 +18,7 @@ import path from "node:path";
 import { Group, type Object3D } from "three";
 import { findPakEntry, parsePak, readPakEntryData } from "../../packages/formats/src/pak.js";
 import { parseBsp } from "../../packages/formats/src/bsp.js";
+import { createVirtualFilesystem, mountPak, type VirtualFilesystem } from "../../packages/filesystem/src/index.js";
 import {
   createGameRuntimeFromBspMap,
   initializeDoorPlanEntities,
@@ -28,8 +29,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { buildBspSurfaces } from "../../packages/renderer-common/src/index.js";
-import { buildThreeBspGroup, createThreeBrushModelSync } from "../../packages/renderer-three/src/index.js";
+import { createThreeGlWorldSceneAdapter } from "../../packages/renderer-three/src/index.js";
 
 const DEFAULT_PAK_PATH = path.join(process.cwd(), "Quake 2", "baseq2", "pak0.pak");
 const MAP_PATH = "maps/base2.bsp";
@@ -50,6 +50,8 @@ function main(): void {
 
   const pakBytes = new Uint8Array(fs.readFileSync(pakPath));
   const pak = parsePak(pakBytes, pakPath);
+  const filesystem = createVirtualFilesystem();
+  mountPak(filesystem, pakBytes, pakPath);
   const bspEntry = findPakEntry(pak, MAP_PATH);
   if (!bspEntry) {
     throw new Error(`${MAP_PATH} introuvable dans ${pakPath}`);
@@ -69,16 +71,14 @@ function main(): void {
     linearPlayer.origin = computeBoundsCenter(linearTrigger);
     touchTriggerEntities(linearRuntime, linearPlayer);
   });
-  const linearGroupRoot = createSceneGroup(map);
-  createThreeBrushModelSync(linearGroupRoot).apply(buildBrushSnapshots(linearRuntime));
+  const linearGroupRoot = createSceneGroup(filesystem, linearPlayer.origin, buildBrushSnapshots(linearRuntime));
 
   const rotatingRuntime = createRuntime(map);
   const rotatingDoor = rotatingRuntime.entities[ROTATING_DOOR_INDEX];
   const rotatingPlayer = createVerificationPlayer(rotatingRuntime, [...rotatingDoor.origin]);
   useGameEntity(rotatingRuntime, rotatingDoor, rotatingPlayer, rotatingPlayer);
   runGameFrames(rotatingRuntime, 1.5);
-  const rotatingGroupRoot = createSceneGroup(map);
-  createThreeBrushModelSync(rotatingGroupRoot).apply(buildBrushSnapshots(rotatingRuntime));
+  const rotatingGroupRoot = createSceneGroup(filesystem, rotatingPlayer.origin, buildBrushSnapshots(rotatingRuntime));
 
   const linearGroup = requireModelGroup(linearGroupRoot, 27);
   const rotatingGroup = requireModelGroup(rotatingGroupRoot, 40);
@@ -96,13 +96,16 @@ function main(): void {
 
 /**
  * Category: New
- * Purpose: Build one Three.js BSP root configured like the browser scene for the current map.
+ * Purpose: Build one Three.js BSP root through the ported `ref_gl` world adapter.
  */
-function createSceneGroup(map: ReturnType<typeof parseBsp>): Group {
-  const surfaces = buildBspSurfaces(map);
-  return buildThreeBspGroup(surfaces, {
-    resolveModelOrigin: (modelIndex) => getInlineModelRenderOrigin(map, modelIndex)
-  });
+function createSceneGroup(
+  filesystem: VirtualFilesystem,
+  vieworg: readonly [number, number, number],
+  brushModels: ReturnType<typeof buildBrushSnapshots>
+): Group {
+  const adapter = createThreeGlWorldSceneAdapter(filesystem, MAP_PATH);
+  adapter.update(0.1, vieworg, brushModels, null);
+  return adapter.root;
 }
 
 /**
@@ -160,41 +163,6 @@ function buildBrushSnapshots(runtime: GameRuntime): Array<{ model: string | unde
       origin: [...entity.origin],
       angles: [...entity.angles]
     }));
-}
-
-/**
- * Category: New
- * Purpose: Resolve the compiled render origin used for one BSP inline model group.
- */
-function getInlineModelRenderOrigin(map: ReturnType<typeof parseBsp>, modelIndex: number): [number, number, number] {
-  if (modelIndex <= 0) {
-    return [0, 0, 0];
-  }
-
-  const modelName = `*${modelIndex}`;
-  const entity = map.parsedEntities.find((candidate) => candidate.properties.model === modelName);
-  if (entity?.properties.origin) {
-    const origin = parseEntityOrigin(entity.properties.origin);
-    if (origin) {
-      return origin;
-    }
-  }
-
-  const model = map.models[modelIndex];
-  return model ? [...model.origin] : [0, 0, 0];
-}
-
-/**
- * Category: New
- * Purpose: Parse one Quake-style entity origin string into a numeric tuple.
- */
-function parseEntityOrigin(value: string): [number, number, number] | null {
-  const parts = value.trim().split(/\s+/).map((part) => Number.parseFloat(part));
-  if (parts.length !== 3 || parts.some((part) => !Number.isFinite(part))) {
-    return null;
-  }
-
-  return [parts[0], parts[1], parts[2]];
 }
 
 /**

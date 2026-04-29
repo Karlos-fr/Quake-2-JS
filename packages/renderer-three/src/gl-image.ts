@@ -333,9 +333,7 @@ export function GL_SetTexturePalette(runtime: GlImageRuntime, palette: Uint32Arr
     temptable[i * 3 + 2] = (color >> 16) & 0xff;
   }
 
-  if (runtime.qglColorTableEXT && runtime.gl_ext_palettedtexture_value) {
-    runtime.hooks.setSharedTexturePalette?.(temptable);
-  }
+  runtime.hooks.setSharedTexturePalette?.(temptable);
 }
 
 /**
@@ -1317,6 +1315,7 @@ export function GL_InitImages(runtime: GlImageRuntime): void {
 
   runtime.inverse_intensity = 1 / runtime.intensity_value;
   Draw_GetPalette(runtime);
+  GL_SetTexturePalette(runtime, runtime.d_8to24table);
 
   if (runtime.qglColorTableEXT) {
     runtime.d_16to8table = runtime.hooks.loadFile?.("pics/16to8.dat") ?? null;

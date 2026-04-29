@@ -47,6 +47,7 @@ import {
   FRAMETIME,
   ClientBeginServerFrame,
   ClientThink,
+  drainMonsterMuzzleFlashEvents,
   drainPlayerMuzzleFlashEvents,
   drainGameTempEntityEvents,
   GetAmmoItemForWeapon,
@@ -64,7 +65,14 @@ import {
 } from "../../game/src/index.js";
 import type { BspMap } from "../../formats/src/index.js";
 import { findClientImageIndex, type LocalClientHudBootstrapData } from "./local-client-bootstrap.js";
-import { CL_AllocDlight, CL_BuildMuzzleFlashEffects, CL_BuildTempEntityEffects, CL_LogoutEffect, type ClientActionEffect } from "./effects.js";
+import {
+  CL_AllocDlight,
+  CL_BuildMuzzleFlash2Effects,
+  CL_BuildMuzzleFlashEffects,
+  CL_BuildTempEntityEffects,
+  CL_LogoutEffect,
+  type ClientActionEffect
+} from "./effects.js";
 import { CL_ExecuteTempEntityEffects } from "./effects.js";
 import { CL_AddTEntPacket } from "./tent.js";
 import { getPredictedViewheight } from "./local-loop.js";
@@ -495,6 +503,16 @@ function syncLocalGameplayTransientEffects(runtime: ClientRuntime, gameplayRunti
       entity: event.entityIndex,
       weapon: event.weapon,
       silenced: (event.weapon & MZ_SILENCED) !== 0
+    }, runtime);
+
+    applyLocalGameplayActionEffects(runtime, effects);
+    queueLocalGameplayActionSounds(gameplayRuntime, effects);
+  }
+
+  for (const event of drainMonsterMuzzleFlashEvents(gameplayRuntime)) {
+    const effects = CL_BuildMuzzleFlash2Effects({
+      entity: event.entityIndex,
+      flashNumber: event.flashNumber
     }, runtime);
 
     applyLocalGameplayActionEffects(runtime, effects);

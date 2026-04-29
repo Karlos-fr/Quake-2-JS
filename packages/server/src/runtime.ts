@@ -15,7 +15,7 @@
  * - packages/server/src/sv_world.ts
  */
 
-import type { game_export_t } from "../../game/src/index.js";
+import type { GetGameApi, game_export_t } from "../../game/src/index.js";
 import type {
   CollisionModelRuntime,
   CollisionWorld,
@@ -119,6 +119,7 @@ export interface ServerRuntimeFacadeContext {
   setServerState?: (state: number) => void;
   setPmAiraccelerate?: (value: number) => void;
   debugGraph?: (value: number, color: number) => void;
+  getGameApi?: GetGameApi;
   SV_Error?: (error: string, ...args: unknown[]) => never;
 }
 
@@ -289,6 +290,7 @@ export function createServerRuntimeFacade(context: ServerRuntimeFacadeContext): 
     SV_SoundIndex: (name) => init.SV_SoundIndex(name),
     SV_ImageIndex: (name) => init.SV_ImageIndex(name),
     ...(context.debugGraph ? { debugGraph: context.debugGraph } : {}),
+    ...(context.getGameApi ? { getGameApi: context.getGameApi } : {}),
     ...(context.onPrintf ? { onPrintf: context.onPrintf } : {}),
     ...(context.onDPrintf ? { onDPrintf: context.onDPrintf } : {}),
     ...(context.SV_Error ? { SV_Error: context.SV_Error } : {})

@@ -13,9 +13,12 @@
 import type { BspEntity, BspMap } from "../../formats/src/bsp.js";
 import {
   CM_BoxTrace,
+  CM_InlineModel,
   CM_PointContents,
   CM_TransformedBoxTrace,
   CM_TransformedPointContents,
+  CS_MODELS,
+  CS_SOUNDS,
   MASK_SOLID,
   MAX_ITEMS,
   createEntityState,
@@ -644,6 +647,21 @@ export interface GameSoundEvent {
 
 /**
  * Category: New
+ * Purpose: Queue one gameplay-side `gi.cprintf` request before the engine/server import is available.
+ *
+ * Constraints:
+ * - Must preserve the target entity, print level and final formatted message text.
+ */
+export interface GameCprintfEvent {
+  frame: number;
+  entity?: GameEntity | null;
+  entityIndex: number | null;
+  printlevel: number;
+  message: string;
+}
+
+/**
+ * Category: New
  * Purpose: Queue one gameplay-side temporary entity event emitted by source ports before server multicast serialization is attached.
  *
  * Constraints:
@@ -677,6 +695,20 @@ export interface GamePlayerMuzzleFlashEvent {
   frame: number;
   entityIndex: number;
   weapon: number;
+}
+
+/**
+ * Category: New
+ * Purpose: Queue one gameplay-side monster muzzleflash event until a client/demo bridge consumes it.
+ *
+ * Constraints:
+ * - Must preserve the source entity index and original `MZ2_*` flash number.
+ */
+export interface GameMonsterMuzzleFlashEvent {
+  frame: number;
+  entityIndex: number;
+  flashNumber: number;
+  origin: vec3_t;
 }
 
 /**
@@ -745,15 +777,19 @@ export interface GameRuntime {
   sound2_entity: GameEntity | null;
   sound2_entity_framenum: number;
   soundEvents: GameSoundEvent[];
+  cprintfEvents: GameCprintfEvent[];
   tempEntityEvents: GameTempEntityEvent[];
   configstrings: Map<number, string>;
   playerMuzzleFlashEvents: GamePlayerMuzzleFlashEvent[];
+  monsterMuzzleFlashEvents: GameMonsterMuzzleFlashEvent[];
   linkedSolidEntities: GameEntity[];
   linkedTriggerEntities: GameEntity[];
   linkedInlineBspEntities: GameEntity[];
   linkedRuntimeTriggerEntities: GameEntity[];
   linkedDynamicBoxEntities: GameEntity[];
   playerTrail: GamePlayerTrailState;
+  engineLinkEntity?: (entity: GameEntity) => void;
+  engineUnlinkEntity?: (entity: GameEntity) => void;
   log: (entry: Omit<GameRuntimeLogEntry, "time">) => void;
 }
 
@@ -1195,9 +1231,11 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     sound2_entity: null,
     sound2_entity_framenum: 0,
     soundEvents: [],
+    cprintfEvents: [],
     tempEntityEvents: [],
     configstrings: new Map<number, string>(),
     playerMuzzleFlashEvents: [],
+    monsterMuzzleFlashEvents: [],
     linkedSolidEntities: [],
     linkedTriggerEntities: [],
     linkedInlineBspEntities: [],
@@ -1814,6 +1852,53 @@ function applyInlineModelBounds(entity: GameEntity, map: BspMap): void {
 
 /**
  * Category: New
+ * Purpose: Attach server collision inline-model bounds while preserving the original `gi.setmodel` effect for brush entities.
+ *
+ * Constraints:
+ * - Must only expose an inline modelindex once gameplay made the brush solid/renderable.
+ * - Must ignore unavailable collision state so pure local runtime tests stay independent from the server package.
+ */
+function applyInlineModelBoundsFromCollision(runtime: GameRuntime, entity: GameEntity, force = false): void {
+  const model = entity.model;
+  const world = runtime.collision?.world ?? null;
+  if (!model?.startsWith("*") || !world) {
+    return;
+  }
+
+  if (!force && entity.solid === SOLID_NOT && entity.s.modelindex === 0) {
+    return;
+  }
+
+  let inlineModel: ReturnType<typeof CM_InlineModel> = null;
+  try {
+    inlineModel = CM_InlineModel(world, model);
+  } catch {
+    return;
+  }
+
+  if (!inlineModel) {
+    return;
+  }
+
+  entity.headnode = inlineModel.headnode;
+  entity.mins = [...inlineModel.mins];
+  entity.maxs = [...inlineModel.maxs];
+  entity.size = [
+    inlineModel.maxs[0] - inlineModel.mins[0],
+    inlineModel.maxs[1] - inlineModel.mins[1],
+    inlineModel.maxs[2] - inlineModel.mins[2]
+  ];
+
+  if (entity.s.modelindex === 0) {
+    const modelIndex = Number.parseInt(model.slice(1), 10);
+    if (Number.isFinite(modelIndex)) {
+      entity.s.modelindex = modelIndex + 1;
+    }
+  }
+}
+
+/**
+ * Category: New
  * Purpose: Keep the exported `entity_state_t` fields aligned with the gameplay entity pose and solidity.
  */
 function syncEntityStateFromRuntimeEntity(entity: GameEntity): void {
@@ -1843,7 +1928,90 @@ export function refreshEntitySpatialState(entity: GameEntity): void {
  * Purpose: Register one model path in the local gameplay runtime and return its stable Quake-style index.
  */
 export function registerGameModel(runtime: GameRuntime, path: string): number {
-  return registerAssetPath(runtime.assets.modelPaths, runtime.assets.modelIndexByPath, path);
+  reserveServerModelConfigstrings(runtime);
+
+  if (path.startsWith("*")) {
+    const inlineModelIndex = Number.parseInt(path.slice(1), 10);
+    if (Number.isFinite(inlineModelIndex) && inlineModelIndex >= 1) {
+      const index = inlineModelIndex + 1;
+      runtime.assets.modelPaths[index - 1] = path;
+      runtime.assets.modelIndexByPath.set(path, index);
+      setGameConfigstring(runtime, CS_MODELS + index, path);
+      return index;
+    }
+  }
+
+  const index = registerAssetPath(runtime.assets.modelPaths, runtime.assets.modelIndexByPath, path);
+  setGameConfigstring(runtime, CS_MODELS + index, path);
+  return index;
+}
+
+/**
+ * Category: New
+ * Purpose: Mirror the server-side model table layout before gameplay registers dynamic alias models.
+ *
+ * Constraints:
+ * - Must reserve the world model at index 1 and inline BSP models at index `N + 1`, matching `SV_SpawnServer`.
+ * - Must stay inert for pure unit runtimes that have no loaded collision world.
+ */
+function reserveServerModelConfigstrings(runtime: GameRuntime): void {
+  const world = runtime.collision?.world ?? null;
+  if (!world || !Array.isArray(world.map_cmodels)) {
+    return;
+  }
+
+  const modelCount = world.map_cmodels.length;
+  if (modelCount <= 0 || runtime.assets.modelPaths.length >= modelCount) {
+    return;
+  }
+
+  if (runtime.mapname) {
+    reserveModelConfigstring(runtime, 1, `maps/${runtime.mapname}.bsp`);
+  }
+
+  for (let index = 1; index < modelCount; index += 1) {
+    reserveModelConfigstring(runtime, index + 1, `*${index}`);
+  }
+}
+
+function reserveModelConfigstring(runtime: GameRuntime, index: number, path: string): void {
+  const slot = index - 1;
+  const existing = runtime.assets.modelPaths[slot];
+  if (existing && existing !== path) {
+    return;
+  }
+
+  runtime.assets.modelPaths[slot] = path;
+  runtime.assets.modelIndexByPath.set(path, index);
+  setGameConfigstring(runtime, CS_MODELS + index, path);
+}
+
+/**
+ * Category: New
+ * Purpose: Apply the gameplay equivalent of `gi.setmodel` for brush and alias entities.
+ *
+ * Constraints:
+ * - Must register the model into the Quake-style model table.
+ * - Must attach inline BSP bounds before spawn code computes movement distances.
+ * - Must mirror the original server import by linking inline models immediately when possible.
+ */
+export function setGameEntityModel(runtime: GameRuntime, entity: GameEntity, path: string): void {
+  if (!path) {
+    return;
+  }
+
+  entity.model = path;
+  entity.s.modelindex = registerGameModel(runtime, path);
+
+  if (!path.startsWith("*")) {
+    return;
+  }
+
+  applyInlineModelBoundsFromCollision(runtime, entity, true);
+  refreshEntitySpatialState(entity);
+  if (runtime.collision?.world) {
+    linkGameEntity(runtime, entity);
+  }
 }
 
 /**
@@ -1851,7 +2019,9 @@ export function registerGameModel(runtime: GameRuntime, path: string): number {
  * Purpose: Register one sound path in the local gameplay runtime and return its stable Quake-style index.
  */
 export function registerGameSound(runtime: GameRuntime, path: string): number {
-  return registerAssetPath(runtime.assets.soundPaths, runtime.assets.soundIndexByPath, path);
+  const index = registerAssetPath(runtime.assets.soundPaths, runtime.assets.soundIndexByPath, path);
+  setGameConfigstring(runtime, CS_SOUNDS + index, path);
+  return index;
 }
 
 /**
@@ -1980,6 +2150,30 @@ export function drainGameSoundEvents(runtime: GameRuntime): GameSoundEvent[] {
 
 /**
  * Category: New
+ * Purpose: Queue one gameplay-side client print event while preserving the original `gi.cprintf` target semantics.
+ */
+export function emitGameCprintf(runtime: GameRuntime, entity: GameEntity | null, printlevel: number, message: string): void {
+  runtime.cprintfEvents.push({
+    frame: runtime.framenum,
+    entity,
+    entityIndex: entity?.index ?? null,
+    printlevel,
+    message
+  });
+}
+
+/**
+ * Category: New
+ * Purpose: Drain queued gameplay client print events in FIFO order for a server/client bridge.
+ */
+export function drainGameCprintfEvents(runtime: GameRuntime): GameCprintfEvent[] {
+  const events = runtime.cprintfEvents.slice();
+  runtime.cprintfEvents.length = 0;
+  return events;
+}
+
+/**
+ * Category: New
  * Purpose: Queue one gameplay-side player muzzleflash event while preserving the original weapon bitfield.
  *
  * Constraints:
@@ -2008,6 +2202,35 @@ export function drainPlayerMuzzleFlashEvents(runtime: GameRuntime): GamePlayerMu
 
 /**
  * Category: New
+ * Purpose: Queue one gameplay-side monster muzzleflash event while preserving the original `MZ2_*` id.
+ *
+ * Constraints:
+ * - Must preserve emission order within one frame.
+ */
+export function emitMonsterMuzzleFlash(runtime: GameRuntime, entity: GameEntity, origin: vec3_t, flashNumber: number): void {
+  runtime.monsterMuzzleFlashEvents.push({
+    frame: runtime.framenum,
+    entityIndex: entity.index,
+    flashNumber,
+    origin: [...origin]
+  });
+}
+
+/**
+ * Category: New
+ * Purpose: Drain queued gameplay monster muzzleflash events accumulated since the previous consumer pass.
+ *
+ * Constraints:
+ * - Must preserve FIFO ordering.
+ */
+export function drainMonsterMuzzleFlashEvents(runtime: GameRuntime): GameMonsterMuzzleFlashEvent[] {
+  const events = runtime.monsterMuzzleFlashEvents.slice();
+  runtime.monsterMuzzleFlashEvents.length = 0;
+  return events;
+}
+
+/**
+ * Category: New
  * Purpose: Register one image path in the local gameplay runtime and return its stable Quake-style index.
  */
 export function registerGameImage(runtime: GameRuntime, path: string): number {
@@ -2024,6 +2247,7 @@ export function registerGameImage(runtime: GameRuntime, path: string): number {
  */
 export function linkGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   unlinkGameEntity(runtime, entity);
+  applyInlineModelBoundsFromCollision(runtime, entity);
   refreshEntitySpatialState(entity);
   entity.entityKind = classifyGameEntity(entity);
   entity.linked = true;
@@ -2032,6 +2256,7 @@ export function linkGameEntity(runtime: GameRuntime, entity: GameEntity): void {
   if (entity.solid === SOLID_TRIGGER) {
     runtime.linkedTriggerEntities.push(entity);
     runtime.linkedRuntimeTriggerEntities.push(entity);
+    runtime.engineLinkEntity?.(entity);
     return;
   }
 
@@ -2039,12 +2264,15 @@ export function linkGameEntity(runtime: GameRuntime, entity: GameEntity): void {
     runtime.linkedSolidEntities.push(entity);
     if (entity.entityKind === "inline_bsp") {
       runtime.linkedInlineBspEntities.push(entity);
+      runtime.engineLinkEntity?.(entity);
       return;
     }
     if (entity.entityKind === "dynamic_box") {
       runtime.linkedDynamicBoxEntities.push(entity);
     }
   }
+
+  runtime.engineLinkEntity?.(entity);
 }
 
 /**
@@ -2060,6 +2288,7 @@ export function unlinkGameEntity(runtime: GameRuntime, entity: GameEntity): void
   removeLinkedEntity(runtime.linkedInlineBspEntities, entity);
   removeLinkedEntity(runtime.linkedRuntimeTriggerEntities, entity);
   removeLinkedEntity(runtime.linkedDynamicBoxEntities, entity);
+  runtime.engineUnlinkEntity?.(entity);
   entity.linked = false;
 }
 

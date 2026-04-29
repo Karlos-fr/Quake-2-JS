@@ -26,6 +26,7 @@ export interface BrushModelSnapshot {
   model: string | undefined;
   origin: [number, number, number];
   angles: [number, number, number];
+  flags?: number;
 }
 
 /**
@@ -54,7 +55,8 @@ export function buildBrushModelSnapshots(runtime: GameRuntime): BrushModelSnapsh
     snapshots.push({
       model: entity.model,
       origin: [...entity.origin],
-      angles: [...entity.angles]
+      angles: [...entity.angles],
+      flags: entity.s.renderfx
     });
   }
 
@@ -114,7 +116,7 @@ export function buildInterpolatedBrushModelSnapshots(
       return cloneBrushModelSnapshot(currentSnapshot);
     }
 
-    return {
+    const nextSnapshot: BrushModelSnapshot = {
       model: currentSnapshot.model,
       origin: [
         lerpValue(previousSnapshot.origin[0], currentSnapshot.origin[0], lerpFraction),
@@ -127,6 +129,10 @@ export function buildInterpolatedBrushModelSnapshots(
         LerpAngle(previousSnapshot.angles[2], currentSnapshot.angles[2], lerpFraction)
       ]
     };
+    if (currentSnapshot.flags !== undefined) {
+      nextSnapshot.flags = currentSnapshot.flags;
+    }
+    return nextSnapshot;
   });
 }
 
@@ -143,11 +149,15 @@ export function cloneBrushModelSnapshots(snapshots: BrushModelSnapshot[]): Brush
  * Purpose: Clone one brush-model snapshot without sharing mutable tuple references.
  */
 export function cloneBrushModelSnapshot(snapshot: BrushModelSnapshot): BrushModelSnapshot {
-  return {
+  const clone: BrushModelSnapshot = {
     model: snapshot.model,
     origin: [...snapshot.origin],
     angles: [...snapshot.angles]
   };
+  if (snapshot.flags !== undefined) {
+    clone.flags = snapshot.flags;
+  }
+  return clone;
 }
 
 /**

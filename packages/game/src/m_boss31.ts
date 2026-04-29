@@ -1,7 +1,7 @@
 /**
  * File: m_boss31.ts
- * Source: Quake II original / game/m_boss31.h
- * Purpose: Port of the generated boss31 model frame constants used by the boss3 jorg model.
+ * Source: Quake II original / game/m_boss31.h and game/m_boss31.c
+ * Purpose: Port of the generated boss31 model frame constants and monster_jorg gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,49 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - None.
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_boss31`.
+ * - Makron handoff behavior is imported from the `m_boss32.c` port.
  */
+
+import { AngleVectors, ATTN_NORM, CHAN_BODY, CHAN_VOICE, type vec3_t } from "../../qcommon/src/index.js";
+import { CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID } from "../../qcommon/src/q-shared.js";
+import {
+  AI_STAND_GROUND,
+  AS_MELEE,
+  AS_MISSILE,
+  AS_SLIDING,
+  AS_STRAIGHT,
+  DEAD_DEAD,
+  DEFAULT_BULLET_HSPREAD,
+  DEFAULT_BULLET_VSPREAD,
+  FL_FLY,
+  MOVETYPE_STEP,
+  RANGE_FAR,
+  RANGE_MELEE,
+  RANGE_MID,
+  RANGE_NEAR,
+  SOLID_BBOX,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range, visible } from "./g_ai.js";
+import { monster_fire_bfg, monster_fire_bullet, walkmonster_start } from "./g_monster.js";
+import { G_FreeEdict, G_ProjectSource, vectoyaw } from "./g_utils.js";
+import { getMonsterFlashOffset } from "./m_flash.js";
+import { MakronPrecache, MakronToss } from "./m_boss32.js";
+import { BossExplode } from "./m_supertank.js";
+import {
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_attak101 = 0;
 export const FRAME_attak102 = 1;
@@ -205,3 +243,560 @@ export const FRAME_walk24 = 186;
 export const FRAME_walk25 = 187;
 
 export const MODEL_SCALE = 1.0;
+
+export const MZ2_JORG_MACHINEGUN_L1 = 120;
+export const MZ2_JORG_MACHINEGUN_R1 = 126;
+export const MZ2_JORG_BFG_1 = 132;
+
+const JORG_ATTACK_TRACE_MASK = CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA;
+const SOUND_PAIN1 = "boss3/bs3pain1.wav";
+const SOUND_PAIN2 = "boss3/bs3pain2.wav";
+const SOUND_PAIN3 = "boss3/bs3pain3.wav";
+const SOUND_DEATH = "boss3/bs3deth1.wav";
+const SOUND_ATTACK1 = "boss3/bs3atck1.wav";
+const SOUND_ATTACK2 = "boss3/bs3atck2.wav";
+const SOUND_SEARCH1 = "boss3/bs3srch1.wav";
+const SOUND_SEARCH2 = "boss3/bs3srch2.wav";
+const SOUND_SEARCH3 = "boss3/bs3srch3.wav";
+const SOUND_IDLE = "boss3/bs3idle1.wav";
+const SOUND_STEP_LEFT = "boss3/step1.wav";
+const SOUND_STEP_RIGHT = "boss3/step2.wav";
+const SOUND_FIREGUN = "boss3/xfire.wav";
+const SOUND_DEATH_HIT = "boss3/d_hit.wav";
+const SOUND_W_LOOP = "boss3/w_loop.wav";
+
+let sound_pain1 = 0;
+let sound_pain2 = 0;
+let sound_pain3 = 0;
+let sound_idle = 0;
+let sound_death = 0;
+let sound_search1 = 0;
+let sound_search2 = 0;
+let sound_search3 = 0;
+let sound_attack1 = 0;
+let sound_attack2 = 0;
+let sound_step_left = 0;
+let sound_step_right = 0;
+let sound_death_hit = 0;
+
+export function jorg_search(self: GameEntity, runtime: GameRuntime): void {
+  const r = Math.random();
+
+  if (r <= 0.3) {
+    emitRegisteredGameSound(runtime, self, sound_search1, SOUND_SEARCH1, soundOptions(CHAN_VOICE));
+  } else if (r <= 0.6) {
+    emitRegisteredGameSound(runtime, self, sound_search2, SOUND_SEARCH2, soundOptions(CHAN_VOICE));
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_search3, SOUND_SEARCH3, soundOptions(CHAN_VOICE));
+  }
+}
+
+export function jorg_idle(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_idle, SOUND_IDLE, soundOptions(CHAN_VOICE));
+}
+
+export function jorg_death_hit(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_death_hit, SOUND_DEATH_HIT, soundOptions(CHAN_BODY));
+}
+
+export function jorg_step_left(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_step_left, SOUND_STEP_LEFT, soundOptions(CHAN_BODY));
+}
+
+export function jorg_step_right(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_step_right, SOUND_STEP_RIGHT, soundOptions(CHAN_BODY));
+}
+
+export const jorg_frames_stand = makeFrames(
+  ai_stand,
+  [
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    19, 11, 0, 0, 6, 9, 0, 0, 0, 0, 0, 0, 0, -2, -17, 0, -12, -14
+  ],
+  indexedThinks(51, [[0, jorg_idle], [34, jorg_step_left], [38, jorg_step_right], [47, jorg_step_left], [50, jorg_step_right]])
+);
+export const jorg_move_stand: GameMonsterMove = {
+  firstframe: FRAME_stand01,
+  lastframe: FRAME_stand51,
+  frame: jorg_frames_stand,
+  endfunc: undefined
+};
+
+export function jorg_stand(self: GameEntity): void {
+  self.monsterinfo.currentmove = jorg_move_stand;
+}
+
+export const jorg_frames_run = makeFrames(
+  ai_run,
+  [17, 0, 0, 0, 12, 8, 10, 33, 0, 0, 0, 9, 9, 9],
+  indexedThinks(14, [[0, jorg_step_left], [7, jorg_step_right]])
+);
+export const jorg_move_run: GameMonsterMove = {
+  firstframe: FRAME_walk06,
+  lastframe: FRAME_walk19,
+  frame: jorg_frames_run,
+  endfunc: undefined
+};
+
+export const jorg_frames_start_walk = makeFrames(ai_walk, [5, 6, 7, 9, 15]);
+export const jorg_move_start_walk: GameMonsterMove = {
+  firstframe: FRAME_walk01,
+  lastframe: FRAME_walk05,
+  frame: jorg_frames_start_walk,
+  endfunc: undefined
+};
+
+export const jorg_frames_walk = makeFrames(ai_walk, [17, 0, 0, 0, 12, 8, 10, 33, 0, 0, 0, 9, 9, 9]);
+export const jorg_move_walk: GameMonsterMove = {
+  firstframe: FRAME_walk06,
+  lastframe: FRAME_walk19,
+  frame: jorg_frames_walk,
+  endfunc: undefined
+};
+
+export const jorg_frames_end_walk = makeFrames(ai_walk, [11, 0, 0, 0, 8, -8]);
+export const jorg_move_end_walk: GameMonsterMove = {
+  firstframe: FRAME_walk20,
+  lastframe: FRAME_walk25,
+  frame: jorg_frames_end_walk,
+  endfunc: undefined
+};
+
+export function jorg_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = jorg_move_walk;
+}
+
+export function jorg_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = jorg_move_stand;
+  } else {
+    self.monsterinfo.currentmove = jorg_move_run;
+  }
+}
+
+export const jorg_frames_pain3 = makeFrames(
+  ai_move,
+  [-28, -6, -3, -9, 0, 0, 0, 0, -7, 1, -11, -4, 0, 0, 10, 11, 0, 10, 3, 10, 7, 17, 0, 0, 0],
+  indexedThinks(25, [[2, jorg_step_left], [4, jorg_step_right], [20, jorg_step_left], [24, jorg_step_right]])
+);
+export const jorg_move_pain3: GameMonsterMove = {
+  firstframe: FRAME_pain301,
+  lastframe: FRAME_pain325,
+  frame: jorg_frames_pain3,
+  endfunc: jorg_run
+};
+
+export const jorg_frames_pain2 = makeFrames(ai_move, [0, 0, 0]);
+export const jorg_move_pain2: GameMonsterMove = {
+  firstframe: FRAME_pain201,
+  lastframe: FRAME_pain203,
+  frame: jorg_frames_pain2,
+  endfunc: jorg_run
+};
+
+export const jorg_frames_pain1 = makeFrames(ai_move, [0, 0, 0]);
+export const jorg_move_pain1: GameMonsterMove = {
+  firstframe: FRAME_pain101,
+  lastframe: FRAME_pain103,
+  frame: jorg_frames_pain1,
+  endfunc: jorg_run
+};
+
+export const jorg_frames_death1 = makeFrames(
+  ai_move,
+  new Array<number>(50).fill(0),
+  indexedThinks(50, [[48, MakronToss], [49, BossExplode]])
+);
+export const jorg_move_death: GameMonsterMove = {
+  firstframe: FRAME_death01,
+  lastframe: FRAME_death50,
+  frame: jorg_frames_death1,
+  endfunc: jorg_dead
+};
+
+export const jorg_frames_attack2 = [
+  ...makeFrames(ai_charge, new Array<number>(7).fill(0), indexedThinks(7, [[6, jorgBFG]])),
+  ...makeFrames(ai_move, new Array<number>(6).fill(0))
+];
+export const jorg_move_attack2: GameMonsterMove = {
+  firstframe: FRAME_attak201,
+  lastframe: FRAME_attak213,
+  frame: jorg_frames_attack2,
+  endfunc: jorg_run
+};
+
+export const jorg_frames_start_attack1 = makeFrames(ai_charge, new Array<number>(8).fill(0));
+export const jorg_move_start_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak101,
+  lastframe: FRAME_attak108,
+  frame: jorg_frames_start_attack1,
+  endfunc: jorg_attack1
+};
+
+export const jorg_frames_attack1 = makeFrames(
+  ai_charge,
+  new Array<number>(6).fill(0),
+  new Array<GameMonsterFrame["thinkfunc"]>(6).fill(jorg_firebullet)
+);
+export const jorg_move_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak109,
+  lastframe: FRAME_attak114,
+  frame: jorg_frames_attack1,
+  endfunc: jorg_reattack1
+};
+
+export const jorg_frames_end_attack1 = makeFrames(ai_move, new Array<number>(4).fill(0));
+export const jorg_move_end_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak115,
+  lastframe: FRAME_attak118,
+  frame: jorg_frames_end_attack1,
+  endfunc: jorg_run
+};
+
+export function jorg_reattack1(self: GameEntity, runtime: GameRuntime): void {
+  if (self.enemy && visible(self, self.enemy, runtime)) {
+    if (Math.random() < 0.9) {
+      self.monsterinfo.currentmove = jorg_move_attack1;
+    } else {
+      self.s.sound = 0;
+      self.monsterinfo.currentmove = jorg_move_end_attack1;
+    }
+  } else {
+    self.s.sound = 0;
+    self.monsterinfo.currentmove = jorg_move_end_attack1;
+  }
+}
+
+export function jorg_attack1(self: GameEntity): void {
+  self.monsterinfo.currentmove = jorg_move_attack1;
+}
+
+export function jorg_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < self.max_health / 2) {
+    self.s.skinnum = 1;
+  }
+
+  self.s.sound = 0;
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  if (damage <= 40 && Math.random() <= 0.6) {
+    return;
+  }
+
+  if (self.s.frame >= FRAME_attak101 && self.s.frame <= FRAME_attak108 && Math.random() <= 0.005) {
+    return;
+  }
+
+  if (self.s.frame >= FRAME_attak109 && self.s.frame <= FRAME_attak114 && Math.random() <= 0.00005) {
+    return;
+  }
+
+  if (self.s.frame >= FRAME_attak201 && self.s.frame <= FRAME_attak208 && Math.random() <= 0.005) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  if (damage <= 50) {
+    emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, soundOptions(CHAN_VOICE));
+    self.monsterinfo.currentmove = jorg_move_pain1;
+  } else if (damage <= 100) {
+    emitRegisteredGameSound(runtime, self, sound_pain2, SOUND_PAIN2, soundOptions(CHAN_VOICE));
+    self.monsterinfo.currentmove = jorg_move_pain2;
+  } else if (Math.random() <= 0.3) {
+    emitRegisteredGameSound(runtime, self, sound_pain3, SOUND_PAIN3, soundOptions(CHAN_VOICE));
+    self.monsterinfo.currentmove = jorg_move_pain3;
+  }
+}
+
+export function jorgBFG(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, jorgFlashOffset(MZ2_JORG_BFG_1), forward, right);
+  const vec: vec3_t = [...self.enemy.s.origin];
+  vec[2] += self.enemy.viewheight;
+  const dir = normalizeVec3(subtractVec3(vec, start));
+
+  emitRegisteredGameSound(runtime, self, sound_attack2, SOUND_ATTACK2, soundOptions(CHAN_VOICE));
+  monster_fire_bfg(self, start, dir, 50, 300, 100, 200, MZ2_JORG_BFG_1, runtime);
+}
+
+export function jorg_firebullet_right(self: GameEntity, runtime: GameRuntime): void {
+  fireJorgMachinegun(self, MZ2_JORG_MACHINEGUN_R1, runtime);
+}
+
+export function jorg_firebullet_left(self: GameEntity, runtime: GameRuntime): void {
+  fireJorgMachinegun(self, MZ2_JORG_MACHINEGUN_L1, runtime);
+}
+
+export function jorg_firebullet(self: GameEntity, runtime: GameRuntime): void {
+  jorg_firebullet_left(self, runtime);
+  jorg_firebullet_right(self, runtime);
+}
+
+export function jorgMachineGun(self: GameEntity, runtime: GameRuntime): void {
+  jorg_firebullet(self, runtime);
+}
+
+export function jorg_attack(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  if (Math.random() <= 0.75) {
+    emitRegisteredGameSound(runtime, self, sound_attack1, SOUND_ATTACK1, soundOptions(CHAN_VOICE));
+    self.s.sound = registerGameSound(runtime, SOUND_W_LOOP);
+    self.monsterinfo.currentmove = jorg_move_start_attack1;
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_attack2, SOUND_ATTACK2, soundOptions(CHAN_VOICE));
+    self.monsterinfo.currentmove = jorg_move_attack2;
+  }
+}
+
+export function jorg_dead(_self: GameEntity): void {
+  // Original body is compiled out under `#if 0`; preserve that no-op behavior.
+}
+
+export function jorg_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  emitRegisteredGameSound(runtime, self, sound_death, SOUND_DEATH, soundOptions(CHAN_VOICE));
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_NO;
+  self.s.sound = 0;
+  self.count = 0;
+  self.monsterinfo.currentmove = jorg_move_death;
+}
+
+export function Jorg_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
+  if (!self.enemy) {
+    return false;
+  }
+
+  if (self.enemy.health > 0) {
+    const spot1: vec3_t = [...self.s.origin];
+    spot1[2] += self.viewheight;
+    const spot2: vec3_t = [...self.enemy.s.origin];
+    spot2[2] += self.enemy.viewheight;
+
+    const tr = runtime.collision?.trace(spot1, [0, 0, 0], [0, 0, 0], spot2, self, JORG_ATTACK_TRACE_MASK);
+    if (!tr || tr.ent !== self.enemy) {
+      return false;
+    }
+  }
+
+  const enemy_range = range(self, self.enemy);
+  const temp = subtractVec3(self.enemy.s.origin, self.s.origin);
+  self.ideal_yaw = vectoyaw(temp);
+
+  if (enemy_range === RANGE_MELEE) {
+    self.monsterinfo.attack_state = self.monsterinfo.melee ? AS_MELEE : AS_MISSILE;
+    return true;
+  }
+
+  if (!self.monsterinfo.attack) {
+    return false;
+  }
+
+  if (runtime.time < self.monsterinfo.attack_finished) {
+    return false;
+  }
+
+  if (enemy_range === RANGE_FAR) {
+    return false;
+  }
+
+  let chance: number;
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    chance = 0.4;
+  } else if (enemy_range === RANGE_MELEE) {
+    chance = 0.8;
+  } else if (enemy_range === RANGE_NEAR) {
+    chance = 0.4;
+  } else if (enemy_range === RANGE_MID) {
+    chance = 0.2;
+  } else {
+    return false;
+  }
+
+  if (Math.random() < chance) {
+    self.monsterinfo.attack_state = AS_MISSILE;
+    self.monsterinfo.attack_finished = runtime.time + 2 * Math.random();
+    return true;
+  }
+
+  if ((self.flags & FL_FLY) !== 0) {
+    self.monsterinfo.attack_state = Math.random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
+  }
+
+  return false;
+}
+
+/**
+ * Original name: SP_monster_jorg
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns monster_jorg, precaches Jorg assets and initializes walking monster callbacks.
+ *
+ */
+export function SP_monster_jorg(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  precacheJorgAssets(runtime);
+  MakronPrecache(runtime);
+
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/boss3/rider/tris.md2");
+  self.s.modelindex2 = registerGameModel(runtime, "models/monsters/boss3/jorg/tris.md2");
+  setVec3(self.mins, -80, -80, 0);
+  setVec3(self.maxs, 80, 80, 140);
+
+  self.health = 3000;
+  self.gib_health = -2000;
+  self.mass = 1000;
+
+  self.pain = jorg_pain;
+  self.die = jorg_die;
+  self.monsterinfo.stand = jorg_stand;
+  self.monsterinfo.walk = jorg_walk;
+  self.monsterinfo.run = jorg_run;
+  self.monsterinfo.dodge = undefined;
+  self.monsterinfo.attack = jorg_attack;
+  self.monsterinfo.search = jorg_search;
+  self.monsterinfo.melee = undefined;
+  self.monsterinfo.sight = undefined;
+  self.monsterinfo.checkattack = Jorg_CheckAttack;
+
+  linkGameEntity(runtime, self);
+
+  self.monsterinfo.currentmove = jorg_move_stand;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  walkmonster_start(self, runtime);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function precacheJorgAssets(runtime: GameRuntime): void {
+  sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
+  sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
+  sound_pain3 = registerGameSound(runtime, SOUND_PAIN3);
+  sound_death = registerGameSound(runtime, SOUND_DEATH);
+  sound_attack1 = registerGameSound(runtime, SOUND_ATTACK1);
+  sound_attack2 = registerGameSound(runtime, SOUND_ATTACK2);
+  sound_search1 = registerGameSound(runtime, SOUND_SEARCH1);
+  sound_search2 = registerGameSound(runtime, SOUND_SEARCH2);
+  sound_search3 = registerGameSound(runtime, SOUND_SEARCH3);
+  sound_idle = registerGameSound(runtime, SOUND_IDLE);
+  sound_step_left = registerGameSound(runtime, SOUND_STEP_LEFT);
+  sound_step_right = registerGameSound(runtime, SOUND_STEP_RIGHT);
+  registerGameSound(runtime, SOUND_FIREGUN);
+  sound_death_hit = registerGameSound(runtime, SOUND_DEATH_HIT);
+}
+
+function fireJorgMachinegun(self: GameEntity, flashNumber: number, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, jorgFlashOffset(flashNumber), forward, right);
+  const target = vectorMA(self.enemy.s.origin, -0.2, self.enemy.velocity);
+  target[2] += self.enemy.viewheight;
+  const aim = normalizeVec3(subtractVec3(target, start));
+
+  monster_fire_bullet(
+    self,
+    start,
+    aim,
+    6,
+    4,
+    DEFAULT_BULLET_HSPREAD,
+    DEFAULT_BULLET_VSPREAD,
+    flashNumber,
+    runtime
+  );
+}
+
+function soundOptions(channel: number): { channel: number; volume: number; attenuation: number; timeofs: number } {
+  return {
+    channel,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  };
+}
+
+function jorgFlashOffset(flashNumber: number): vec3_t {
+  return getMonsterFlashOffset(flashNumber);
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
+}
+
+function vectorMA(veca: vec3_t, scale: number, vecb: vec3_t): vec3_t {
+  return [veca[0] + scale * vecb[0], veca[1] + scale * vecb[1], veca[2] + scale * vecb[2]];
+}
+
+function normalizeVec3(vector: vec3_t): vec3_t {
+  const length = Math.hypot(vector[0], vector[1], vector[2]);
+  if (length === 0) {
+    return [0, 0, 0];
+  }
+  return [vector[0] / length, vector[1] / length, vector[2] / length];
+}

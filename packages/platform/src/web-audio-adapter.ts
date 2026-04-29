@@ -28,6 +28,7 @@ export interface QuakeWebAudioAdapter {
   readonly context: AudioContext | null;
   readonly unlocked: boolean;
   readonly muted: boolean;
+  readonly debug: WebAudioAdapterDebugState;
   unlock: () => Promise<void>;
   pause: () => Promise<void>;
   resume: () => Promise<void>;
@@ -50,6 +51,16 @@ export interface QuakeWebAudioAdapter {
     samples: Uint8Array
   ) => void;
   playWav: (filesystem: VirtualFilesystem, name: string) => void;
+}
+
+export interface WebAudioAdapterDebugState {
+  readonly playedSfx: number;
+  readonly skippedSfxNoCache: number;
+  readonly pendingSfx: number;
+  readonly activeSources: number;
+  readonly activeLoops: number;
+  readonly lastSfxName: string;
+  readonly lastSkippedSfxName: string;
 }
 
 export interface WebAudioSfxPlaybackOptions {
@@ -97,6 +108,11 @@ interface PendingRawChunk {
   samples: Uint8Array;
 }
 
+interface PendingSfxPlayback {
+  sfx: sfx_t;
+  options: WebAudioSfxPlaybackOptions;
+}
+
 export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions = {}): QuakeWebAudioAdapter {
   const context = options.context ?? options.createContext?.() ?? createDefaultAudioContext();
   const logs = options.logs ?? {};
@@ -108,6 +124,11 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
   const pendingWavLoops = new Set<string>();
   const activeRawSources: AudioBufferSourceNode[] = [];
   const pendingRawChunks: PendingRawChunk[] = [];
+  const pendingSfxPlaybacks: PendingSfxPlayback[] = [];
+  let playedSfx = 0;
+  let skippedSfxNoCache = 0;
+  let lastSfxName = "";
+  let lastSkippedSfxName = "";
   const masterGain = context?.createGain() ?? null;
   const sfxGain = context?.createGain() ?? null;
   let unlocked = false;
@@ -134,6 +155,17 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
     get muted() {
       return muted;
     },
+    get debug() {
+      return {
+        playedSfx,
+        skippedSfxNoCache,
+        pendingSfx: pendingSfxPlaybacks.length,
+        activeSources: activeSources.length,
+        activeLoops: activeLoops.size,
+        lastSfxName,
+        lastSkippedSfxName
+      };
+    },
     unlock: async () => {
       if (!context) {
         logs.onWarning?.("Web Audio indisponible dans ce navigateur.");
@@ -141,7 +173,13 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
       }
 
       if (context.state !== "running") {
-        await context.resume();
+        try {
+          await context.resume();
+        } catch (error) {
+          unlocked = false;
+          logs.onWarning?.(`audio suspendu (${error instanceof Error ? error.message : error})`);
+          return;
+        }
       }
       unlocked = context.state === "running";
       if (!unlocked) {
@@ -153,6 +191,10 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
       const queued = pendingRawChunks.splice(0);
       for (const chunk of queued) {
         adapter.queueRawSamples(chunk.count, chunk.sampleRate, chunk.sampleWidth, chunk.channels, chunk.samples);
+      }
+      const queuedSfx = pendingSfxPlaybacks.splice(0);
+      for (const playback of queuedSfx) {
+        adapter.playSfx(playback.sfx, playback.options);
       }
     },
     pause: async () => {
@@ -199,11 +241,21 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
       nextRawStartTime = context ? context.currentTime : 0;
     },
     playSfx: (sfx, playOptions = {}) => {
-      if (!context || !sfxGain || !unlocked || context.state !== "running") {
+      if (!context || !sfxGain) {
+        return;
+      }
+      unlocked = context.state === "running";
+      if (!unlocked || context.state !== "running") {
+        if (pendingSfxPlaybacks.length < 128) {
+          pendingSfxPlaybacks.push({ sfx, options: { ...playOptions } });
+        }
+        void adapter.unlock().catch(() => undefined);
         return;
       }
       const cache = sfx.cache;
       if (!cache) {
+        skippedSfxNoCache += 1;
+        lastSkippedSfxName = sfx.name;
         return;
       }
 
@@ -221,6 +273,8 @@ export function createQuakeWebAudioAdapter(options: QuakeWebAudioAdapterOptions 
         offsetSamples: playOptions.offsetSamples ?? 0
       });
       activeSources.push(active);
+      playedSfx += 1;
+      lastSfxName = sfx.name;
       if (playOptions.loop && key) {
         activeLoops.set(key, active);
       }
@@ -482,7 +536,7 @@ function createSpatialSource(
   const offsetSeconds = buffer.sampleRate > 0
     ? Math.max(0, options.offsetSamples) / buffer.sampleRate
     : 0;
-  source.start(0, Math.min(offsetSeconds, Math.max(0, buffer.duration - 0.001)));
+  source.start(context.currentTime, Math.min(offsetSeconds, Math.max(0, buffer.duration - 0.001)));
   return { source, gain, panner, key: options.key };
 }
 

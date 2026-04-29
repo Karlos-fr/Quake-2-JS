@@ -1,6 +1,6 @@
 /**
  * File: refresh-debug-layer.ts
- * Purpose: Hold the lightweight web-only Three.js debug layer for client refresh beams, force walls and sustains.
+ * Purpose: Hold the lightweight web-only Three.js debug layer for client refresh force walls and sustains.
  *
  * This file is not a direct source port.
  * It is an adapter layer for visual debugging in the browser renderer.
@@ -26,7 +26,7 @@ import type { LocalClientController } from "./local-client-controller.js";
 
 /**
  * Category: New
- * Purpose: Build a lightweight scene debug layer for client refresh beams and force walls.
+ * Purpose: Build a lightweight scene debug layer for client refresh force walls and sustains.
  *
  * Constraints:
  * - Must stay cheap enough to rebuild every frame during the current prototype stage.
@@ -36,14 +36,11 @@ export function createRefreshDebugLayer(): {
   update: (frame: LocalClientController["refreshFrame"]) => void;
 } {
   const root = new Group();
-  const beams = new Group();
   const forceWalls = new Group();
   const sustains = new Group();
-  root.add(beams);
   root.add(forceWalls);
   root.add(sustains);
 
-  const beamMaterial = new LineBasicMaterial({ color: new Color("#74c9ff"), transparent: true, opacity: 0.72 });
   const forceWallMaterial = new LineBasicMaterial({ color: new Color("#e0a85f"), transparent: true, opacity: 0.9 });
   const steamMaterial = new LineBasicMaterial({ color: new Color("#c6d5d9"), transparent: true, opacity: 0.75 });
   const widowMaterial = new MeshBasicMaterial({ color: new Color("#8dd6ff"), wireframe: true, transparent: true, opacity: 0.4 });
@@ -52,16 +49,11 @@ export function createRefreshDebugLayer(): {
   return {
     root,
     update: (frame) => {
-      clearGroup(beams);
       clearGroup(forceWalls);
       clearGroup(sustains);
 
       if (!frame) {
         return;
-      }
-
-      for (const beam of frame.beams) {
-        beams.add(createLineObject(beam.start, beam.end, beamMaterial));
       }
 
       for (const wall of frame.forceWalls) {

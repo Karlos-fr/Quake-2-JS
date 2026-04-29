@@ -53,6 +53,7 @@ import {
   Weapon_SuperShotgun
 } from "./p_weapon.js";
 import { Add_Ammo, Drop_Item, FindItem, GetAmmoItemForWeapon, SetRespawn } from "./g_items.js";
+import { InitClientPersistant } from "./p_client.js";
 
 const LOCAL_PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
 const LOCAL_PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];
@@ -139,6 +140,14 @@ export interface LocalWeaponBootstrapData {
   selectedAmmoIndex: number;
   selectedAmmoIcon: string | null;
   selectedAmmoCount: number;
+}
+
+/**
+ * Category: New
+ * Purpose: Make standalone-demo inventory grants opt-in for local session users.
+ */
+export interface LocalGameplayPlayerOptions {
+  seedDemoInventory?: boolean;
 }
 
 /**
@@ -256,15 +265,22 @@ export function seedLocalWeaponInventory(
  * - Must preserve the original player trigger hull dimensions.
  * - Must seed the same local bootstrap inventory as the current standalone path.
  */
-export function createLocalGameplayPlayer(runtime: GameRuntime): GameEntity {
+export function createLocalGameplayPlayer(runtime: GameRuntime, options: LocalGameplayPlayerOptions = {}): GameEntity {
   const player = spawnGameEntity(runtime);
   player.classname = "player";
   const client = attachGameClient(player);
+  InitClientPersistant(client);
   player.health = 100;
+  player.max_health = client.pers.max_health;
   player.viewheight = LOCAL_PLAYER_VIEWHEIGHT;
   player.mins = [...LOCAL_PLAYER_TRIGGER_MINS];
   player.maxs = [...LOCAL_PLAYER_TRIGGER_MAXS];
-  seedLocalWeaponInventory(player, client, runtime);
+  if (options.seedDemoInventory ?? true) {
+    seedLocalWeaponInventory(player, client, runtime);
+  } else if (client.pers.weapon) {
+    client.newweapon = client.pers.weapon;
+    ChangeWeapon(player, runtime);
+  }
   refreshEntitySpatialState(player);
   linkGameEntity(runtime, player);
   return player;

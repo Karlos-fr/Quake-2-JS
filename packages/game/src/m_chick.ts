@@ -1,7 +1,7 @@
 /**
  * File: m_chick.ts
- * Source: Quake II original / game/m_chick.h
- * Purpose: Port of the generated chick model frame constants used by the monster chick model.
+ * Source: Quake II original / game/m_chick.h and game/m_chick.c
+ * Purpose: Port of the generated chick model frame constants and monster_chick gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,45 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
  * - None.
  *
  * Notes:
- * - This file is a declarative header port generated from the original qdata output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_chick`.
  */
+
+import { AngleVectors, ATTN_IDLE, ATTN_NORM, CHAN_VOICE, CHAN_WEAPON, type vec3_t } from "../../qcommon/src/index.js";
+import {
+  AI_DUCKED,
+  AI_HOLD_FRAME,
+  AI_STAND_GROUND,
+  DEAD_DEAD,
+  GIB_ORGANIC,
+  MELEE_DISTANCE,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  RANGE_MELEE,
+  SOLID_BBOX,
+  SVF_DEADMONSTER,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range, visible } from "./g_ai.js";
+import { monster_fire_rocket, walkmonster_start } from "./g_monster.js";
+import { ThrowGib, ThrowHead } from "./g_misc.js";
+import { G_FreeEdict, G_ProjectSource } from "./g_utils.js";
+import { getMonsterFlashOffset } from "./m_flash.js";
+import { fire_hit } from "./g_weapon.js";
+import {
+  emitGameSound,
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_attak101 = 0;
 export const FRAME_attak102 = 1;
@@ -305,3 +339,564 @@ export const FRAME_recln139 = 286;
 export const FRAME_recln140 = 287;
 
 export const MODEL_SCALE = 1.0;
+
+export const MZ2_CHICK_ROCKET_1 = 57;
+
+const SOUND_MISSILE_PRELAUNCH = "chick/chkatck1.wav";
+const SOUND_MISSILE_LAUNCH = "chick/chkatck2.wav";
+const SOUND_MELEE_SWING = "chick/chkatck3.wav";
+const SOUND_MELEE_HIT = "chick/chkatck4.wav";
+const SOUND_MISSILE_RELOAD = "chick/chkatck5.wav";
+const SOUND_DEATH1 = "chick/chkdeth1.wav";
+const SOUND_DEATH2 = "chick/chkdeth2.wav";
+const SOUND_FALL_DOWN = "chick/chkfall1.wav";
+const SOUND_IDLE1 = "chick/chkidle1.wav";
+const SOUND_IDLE2 = "chick/chkidle2.wav";
+const SOUND_PAIN1 = "chick/chkpain1.wav";
+const SOUND_PAIN2 = "chick/chkpain2.wav";
+const SOUND_PAIN3 = "chick/chkpain3.wav";
+const SOUND_SIGHT = "chick/chksght1.wav";
+const SOUND_SEARCH = "chick/chksrch1.wav";
+
+let sound_missile_prelaunch = 0;
+let sound_missile_launch = 0;
+let sound_melee_swing = 0;
+let sound_melee_hit = 0;
+let sound_missile_reload = 0;
+let sound_death1 = 0;
+let sound_death2 = 0;
+let sound_fall_down = 0;
+let sound_idle1 = 0;
+let sound_idle2 = 0;
+let sound_pain1 = 0;
+let sound_pain2 = 0;
+let sound_pain3 = 0;
+let sound_sight = 0;
+let sound_search = 0;
+
+/**
+ * Original name: ChickMoan
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function ChickMoan(self: GameEntity, runtime: GameRuntime): void {
+  if (Math.random() < 0.5) {
+    emitRegisteredGameSound(runtime, self, sound_idle1, SOUND_IDLE1, soundOptions(CHAN_VOICE, ATTN_IDLE));
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_idle2, SOUND_IDLE2, soundOptions(CHAN_VOICE, ATTN_IDLE));
+  }
+}
+
+const chick_frames_fidget = makeFrames(
+  ai_stand,
+  new Array<number>(30).fill(0),
+  indexedThinks(30, [[8, ChickMoan]])
+);
+export const chick_move_fidget: GameMonsterMove = {
+  firstframe: FRAME_stand201,
+  lastframe: FRAME_stand230,
+  frame: chick_frames_fidget,
+  endfunc: chick_stand
+};
+
+export function chick_fidget(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    return;
+  }
+  if (Math.random() <= 0.3) {
+    self.monsterinfo.currentmove = chick_move_fidget;
+  }
+}
+
+const chick_frames_stand = makeFrames(
+  ai_stand,
+  new Array<number>(30).fill(0),
+  indexedThinks(30, [[29, chick_fidget]])
+);
+export const chick_move_stand: GameMonsterMove = {
+  firstframe: FRAME_stand101,
+  lastframe: FRAME_stand130,
+  frame: chick_frames_stand,
+  endfunc: undefined
+};
+
+export function chick_stand(self: GameEntity): void {
+  self.monsterinfo.currentmove = chick_move_stand;
+}
+
+const chick_frames_start_run = makeFrames(ai_run, [1, 0, 0, -1, -1, 0, 1, 3, 6, 3]);
+export const chick_move_start_run: GameMonsterMove = {
+  firstframe: FRAME_walk01,
+  lastframe: FRAME_walk10,
+  frame: chick_frames_start_run,
+  endfunc: chick_run
+};
+
+const chick_frames_run = makeFrames(ai_run, [6, 8, 13, 5, 7, 4, 11, 5, 9, 7]);
+export const chick_move_run: GameMonsterMove = {
+  firstframe: FRAME_walk11,
+  lastframe: FRAME_walk20,
+  frame: chick_frames_run,
+  endfunc: undefined
+};
+
+const chick_frames_walk = makeFrames(ai_walk, [6, 8, 13, 5, 7, 4, 11, 5, 9, 7]);
+export const chick_move_walk: GameMonsterMove = {
+  firstframe: FRAME_walk11,
+  lastframe: FRAME_walk20,
+  frame: chick_frames_walk,
+  endfunc: undefined
+};
+
+export function chick_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = chick_move_walk;
+}
+
+export function chick_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = chick_move_stand;
+    return;
+  }
+
+  if (self.monsterinfo.currentmove === chick_move_walk || self.monsterinfo.currentmove === chick_move_start_run) {
+    self.monsterinfo.currentmove = chick_move_run;
+  } else {
+    self.monsterinfo.currentmove = chick_move_start_run;
+  }
+}
+
+const chick_frames_pain1 = makeFrames(ai_move, [0, 0, 0, 0, 0]);
+export const chick_move_pain1: GameMonsterMove = {
+  firstframe: FRAME_pain101,
+  lastframe: FRAME_pain105,
+  frame: chick_frames_pain1,
+  endfunc: chick_run
+};
+
+const chick_frames_pain2 = makeFrames(ai_move, [0, 0, 0, 0, 0]);
+export const chick_move_pain2: GameMonsterMove = {
+  firstframe: FRAME_pain201,
+  lastframe: FRAME_pain205,
+  frame: chick_frames_pain2,
+  endfunc: chick_run
+};
+
+const chick_frames_pain3 = makeFrames(ai_move, [0, 0, -6, 3, 11, 3, 0, 0, 4, 1, 0, -3, -4, 5, 7, -2, 3, -5, -2, -8, 2]);
+export const chick_move_pain3: GameMonsterMove = {
+  firstframe: FRAME_pain301,
+  lastframe: FRAME_pain321,
+  frame: chick_frames_pain3,
+  endfunc: chick_run
+};
+
+export function chick_pain(
+  self: GameEntity,
+  _other: GameEntity | null,
+  _kick: number,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < self.max_health / 2) {
+    self.s.skinnum = 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+
+  const r = Math.random();
+  if (r < 0.33) {
+    emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, soundOptions(CHAN_VOICE));
+  } else if (r < 0.66) {
+    emitRegisteredGameSound(runtime, self, sound_pain2, SOUND_PAIN2, soundOptions(CHAN_VOICE));
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_pain3, SOUND_PAIN3, soundOptions(CHAN_VOICE));
+  }
+
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  if (damage <= 10) {
+    self.monsterinfo.currentmove = chick_move_pain1;
+  } else if (damage <= 25) {
+    self.monsterinfo.currentmove = chick_move_pain2;
+  } else {
+    self.monsterinfo.currentmove = chick_move_pain3;
+  }
+}
+
+export function chick_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -16, -16, 0);
+  setVec3(self.maxs, 16, 16, 16);
+  self.movetype = MOVETYPE_TOSS;
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+const chick_frames_death2 = makeFrames(ai_move, [-6, 0, -1, -5, 0, -1, -2, 1, 10, 2, 3, 1, 2, 0, 3, 3, 1, -3, -5, 4, 15, 14, 1]);
+export const chick_move_death2: GameMonsterMove = {
+  firstframe: FRAME_death201,
+  lastframe: FRAME_death223,
+  frame: chick_frames_death2,
+  endfunc: chick_dead
+};
+
+const chick_frames_death1 = makeFrames(ai_move, [0, 0, -7, 4, 11, 0, 0, 0, 0, 0, 0, 0]);
+export const chick_move_death1: GameMonsterMove = {
+  firstframe: FRAME_death101,
+  lastframe: FRAME_death112,
+  frame: chick_frames_death1,
+  endfunc: chick_dead
+};
+
+export function chick_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health <= self.gib_health) {
+    emitGameSound(runtime, self, "misc/udeath.wav");
+    for (let n = 0; n < 2; n += 1) {
+      ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    for (let n = 0; n < 4; n += 1) {
+      ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC, runtime);
+    self.deadflag = DEAD_DEAD;
+    return;
+  }
+
+  if (self.deadflag === DEAD_DEAD) {
+    return;
+  }
+
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_YES;
+
+  if (randomInt(2) === 0) {
+    self.monsterinfo.currentmove = chick_move_death1;
+    emitRegisteredGameSound(runtime, self, sound_death1, SOUND_DEATH1, soundOptions(CHAN_VOICE));
+  } else {
+    self.monsterinfo.currentmove = chick_move_death2;
+    emitRegisteredGameSound(runtime, self, sound_death2, SOUND_DEATH2, soundOptions(CHAN_VOICE));
+  }
+}
+
+export function chick_duck_down(self: GameEntity, runtime: GameRuntime): void {
+  if ((self.monsterinfo.aiflags & AI_DUCKED) !== 0) {
+    return;
+  }
+  self.monsterinfo.aiflags |= AI_DUCKED;
+  self.maxs[2] -= 32;
+  self.takedamage = damage_t.DAMAGE_YES;
+  self.monsterinfo.pausetime = runtime.time + 1;
+  linkGameEntity(runtime, self);
+}
+
+export function chick_duck_hold(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.time >= self.monsterinfo.pausetime) {
+    self.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
+  } else {
+    self.monsterinfo.aiflags |= AI_HOLD_FRAME;
+  }
+}
+
+export function chick_duck_up(self: GameEntity, runtime: GameRuntime): void {
+  self.monsterinfo.aiflags &= ~AI_DUCKED;
+  self.maxs[2] += 32;
+  self.takedamage = damage_t.DAMAGE_AIM;
+  linkGameEntity(runtime, self);
+}
+
+const chick_frames_duck = makeFrames(ai_move, [0, 1, 4, -4, -5, 3, 1], [
+  chick_duck_down,
+  undefined,
+  chick_duck_hold,
+  undefined,
+  chick_duck_up,
+  undefined,
+  undefined
+]);
+export const chick_move_duck: GameMonsterMove = {
+  firstframe: FRAME_duck01,
+  lastframe: FRAME_duck07,
+  frame: chick_frames_duck,
+  endfunc: chick_run
+};
+
+export function chick_dodge(self: GameEntity, attacker: GameEntity | null, _eta: number): void {
+  if (Math.random() > 0.25) {
+    return;
+  }
+
+  if (!self.enemy) {
+    self.enemy = attacker;
+  }
+
+  self.monsterinfo.currentmove = chick_move_duck;
+}
+
+export function ChickSlash(self: GameEntity, runtime: GameRuntime): void {
+  const aim: vec3_t = [MELEE_DISTANCE, self.mins[0], 10];
+  emitRegisteredGameSound(runtime, self, sound_melee_swing, SOUND_MELEE_SWING, soundOptions(CHAN_WEAPON));
+  if (fire_hit(self, aim, 10 + randomInt(6), 100, runtime)) {
+    void sound_melee_hit;
+  }
+}
+
+export function ChickRocket(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy) {
+    return;
+  }
+
+  const { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, getMonsterFlashOffset(MZ2_CHICK_ROCKET_1), forward, right);
+  const vec: vec3_t = [...self.enemy.s.origin];
+  vec[2] += self.enemy.viewheight;
+  const dir = normalizeVec3(subtractVec3(vec, start));
+
+  monster_fire_rocket(self, start, dir, 50, 500, MZ2_CHICK_ROCKET_1, runtime);
+}
+
+export function Chick_PreAttack1(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_missile_prelaunch, SOUND_MISSILE_PRELAUNCH, soundOptions(CHAN_VOICE));
+}
+
+export function ChickReload(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_missile_reload, SOUND_MISSILE_RELOAD, soundOptions(CHAN_VOICE));
+}
+
+const chick_frames_start_attack1 = makeFrames(
+  ai_charge,
+  [0, 0, 0, 4, 0, -3, 3, 5, 7, 0, 0, 0, 0],
+  indexedThinks(13, [[0, Chick_PreAttack1], [12, chick_attack1]])
+);
+export const chick_move_start_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak101,
+  lastframe: FRAME_attak113,
+  frame: chick_frames_start_attack1,
+  endfunc: undefined
+};
+
+const chick_frames_attack1 = makeFrames(
+  ai_charge,
+  [19, -6, -5, -2, -7, 0, 1, 10, 4, 5, 6, 6, 4, 3],
+  indexedThinks(14, [[0, ChickRocket], [7, ChickReload], [13, chick_rerocket]])
+);
+export const chick_move_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak114,
+  lastframe: FRAME_attak127,
+  frame: chick_frames_attack1,
+  endfunc: undefined
+};
+
+const chick_frames_end_attack1 = makeFrames(ai_charge, [-3, 0, -6, -4, -2]);
+export const chick_move_end_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak128,
+  lastframe: FRAME_attak132,
+  frame: chick_frames_end_attack1,
+  endfunc: chick_run
+};
+
+export function chick_rerocket(self: GameEntity, runtime: GameRuntime): void {
+  if (
+    self.enemy &&
+    self.enemy.health > 0 &&
+    range(self, self.enemy) > RANGE_MELEE &&
+    visible(self, self.enemy, runtime) &&
+    Math.random() <= 0.6
+  ) {
+    self.monsterinfo.currentmove = chick_move_attack1;
+    return;
+  }
+
+  self.monsterinfo.currentmove = chick_move_end_attack1;
+}
+
+export function chick_attack1(self: GameEntity): void {
+  self.monsterinfo.currentmove = chick_move_attack1;
+}
+
+const chick_frames_slash = makeFrames(
+  ai_charge,
+  [1, 7, -7, 1, -1, 1, 0, 1, -2],
+  indexedThinks(9, [[1, ChickSlash], [8, chick_reslash]])
+);
+export const chick_move_slash: GameMonsterMove = {
+  firstframe: FRAME_attak204,
+  lastframe: FRAME_attak212,
+  frame: chick_frames_slash,
+  endfunc: undefined
+};
+
+const chick_frames_end_slash = makeFrames(ai_charge, [-6, -1, -6, 0]);
+export const chick_move_end_slash: GameMonsterMove = {
+  firstframe: FRAME_attak213,
+  lastframe: FRAME_attak216,
+  frame: chick_frames_end_slash,
+  endfunc: chick_run
+};
+
+export function chick_reslash(self: GameEntity): void {
+  if (self.enemy && self.enemy.health > 0 && range(self, self.enemy) === RANGE_MELEE) {
+    if (Math.random() <= 0.9) {
+      self.monsterinfo.currentmove = chick_move_slash;
+      return;
+    }
+
+    self.monsterinfo.currentmove = chick_move_end_slash;
+    return;
+  }
+
+  self.monsterinfo.currentmove = chick_move_end_slash;
+}
+
+export function chick_slash(self: GameEntity): void {
+  self.monsterinfo.currentmove = chick_move_slash;
+}
+
+const chick_frames_start_slash = makeFrames(ai_charge, [1, 8, 3]);
+export const chick_move_start_slash: GameMonsterMove = {
+  firstframe: FRAME_attak201,
+  lastframe: FRAME_attak203,
+  frame: chick_frames_start_slash,
+  endfunc: chick_slash
+};
+
+export function chick_melee(self: GameEntity): void {
+  self.monsterinfo.currentmove = chick_move_start_slash;
+}
+
+export function chick_attack(self: GameEntity): void {
+  self.monsterinfo.currentmove = chick_move_start_attack1;
+}
+
+export function chick_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
+  emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, soundOptions(CHAN_VOICE));
+}
+
+/**
+ * Original name: SP_monster_chick
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function SP_monster_chick(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  precacheChickAssets(runtime);
+
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/bitch/tris.md2");
+  setVec3(self.mins, -16, -16, 0);
+  setVec3(self.maxs, 16, 16, 56);
+
+  self.health = 175;
+  self.gib_health = -70;
+  self.mass = 200;
+
+  self.pain = chick_pain;
+  self.die = chick_die;
+
+  self.monsterinfo.stand = chick_stand;
+  self.monsterinfo.walk = chick_walk;
+  self.monsterinfo.run = chick_run;
+  self.monsterinfo.dodge = chick_dodge;
+  self.monsterinfo.attack = chick_attack;
+  self.monsterinfo.melee = chick_melee;
+  self.monsterinfo.sight = chick_sight;
+
+  linkGameEntity(runtime, self);
+
+  self.monsterinfo.currentmove = chick_move_stand;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  walkmonster_start(self, runtime);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function precacheChickAssets(runtime: GameRuntime): void {
+  sound_missile_prelaunch = registerGameSound(runtime, SOUND_MISSILE_PRELAUNCH);
+  sound_missile_launch = registerGameSound(runtime, SOUND_MISSILE_LAUNCH);
+  sound_melee_swing = registerGameSound(runtime, SOUND_MELEE_SWING);
+  sound_melee_hit = registerGameSound(runtime, SOUND_MELEE_HIT);
+  sound_missile_reload = registerGameSound(runtime, SOUND_MISSILE_RELOAD);
+  sound_death1 = registerGameSound(runtime, SOUND_DEATH1);
+  sound_death2 = registerGameSound(runtime, SOUND_DEATH2);
+  sound_fall_down = registerGameSound(runtime, SOUND_FALL_DOWN);
+  sound_idle1 = registerGameSound(runtime, SOUND_IDLE1);
+  sound_idle2 = registerGameSound(runtime, SOUND_IDLE2);
+  sound_pain1 = registerGameSound(runtime, SOUND_PAIN1);
+  sound_pain2 = registerGameSound(runtime, SOUND_PAIN2);
+  sound_pain3 = registerGameSound(runtime, SOUND_PAIN3);
+  sound_sight = registerGameSound(runtime, SOUND_SIGHT);
+  sound_search = registerGameSound(runtime, SOUND_SEARCH);
+  void sound_missile_launch;
+  void sound_fall_down;
+  void sound_search;
+}
+
+function soundOptions(channel: number, attenuation: number = ATTN_NORM): { channel: number; volume: number; attenuation: number; timeofs: number } {
+  return {
+    channel,
+    volume: 1,
+    attenuation,
+    timeofs: 0
+  };
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
+}
+
+function normalizeVec3(vector: vec3_t): vec3_t {
+  const length = Math.hypot(vector[0], vector[1], vector[2]);
+  if (length === 0) {
+    return [0, 0, 0];
+  }
+  return [vector[0] / length, vector[1] / length, vector[2] / length];
+}
+
+function randomInt(maxExclusive: number): number {
+  return Math.trunc(Math.random() * maxExclusive);
+}

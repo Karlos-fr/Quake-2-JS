@@ -128,6 +128,30 @@ blocker.pain = (_self, _attacker, _knockback, damage) => {
 };
 assert.equal(KillBox(runtime, telefragger), true, "KillBox must clear blocker");
 assert.equal(damageCalls > 0, true, "KillBox must apply telefrag damage");
+
+let repeatedTraceCalls = 0;
+blocker.solid = 0;
+runtime.collision.trace = () => {
+  repeatedTraceCalls += 1;
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: 0,
+    endpos: [0, 0, 0],
+    plane: {
+      normal: [0, 0, 0],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent: blocker
+  };
+};
+assert.equal(KillBox(runtime, telefragger), true, "KillBox must stop if collision repeats a cleared blocker");
+assert.equal(repeatedTraceCalls, 2, "KillBox repeated-blocker guard should stop after one retry");
 assert.equal(MOD_TELEFRAG, 21, "MOD_TELEFRAG mismatch");
 
 console.log("quake2-g-utils: ok");

@@ -22,8 +22,10 @@ import {
 import {
   SP_func_button,
   SP_func_conveyor,
+  SP_func_door,
   SP_func_door_secret,
   SP_func_killbox,
+  SP_func_plat,
   SP_func_rotating,
   SP_func_timer,
   SP_func_train,
@@ -31,8 +33,11 @@ import {
   SP_trigger_elevator,
   button_killed,
   button_wait,
+  door_go_up,
+  door_hit_top,
   func_conveyor_use,
   func_timer_use,
+  plat_go_down,
   train_next,
   trigger_elevator_use
 } from "../../packages/game/src/g_func.js";
@@ -66,6 +71,8 @@ assert.equal(button.movetype, MOVETYPE_STOP, "SP_func_button movetype mismatch")
 assert.equal(button.solid, SOLID_BSP, "SP_func_button solid mismatch");
 assert.deepEqual(button.moveinfo.end_origin, [60, 0, 0], "SP_func_button end origin mismatch");
 assert.equal((button.s.effects & EF_ANIM01) !== 0, true, "SP_func_button initial animation mismatch");
+assert.equal(button.moveinfo.sound_start > 0, true, "SP_func_button default sound mismatch");
+button_fire_forSound(button);
 button_wait(button, runtime);
 assert.equal(button.moveinfo.state, STATE_TOP, "button_wait state mismatch");
 assert.equal((button.s.effects & EF_ANIM23) !== 0, true, "button_wait animation mismatch");
@@ -86,6 +93,27 @@ SP_func_water(water, runtime);
 assert.equal(water.classname, "func_door", "SP_func_water must reuse door classname");
 assert.equal(water.moveinfo.wait, -1, "SP_func_water default wait mismatch");
 assert.equal(water.moveinfo.sound_start > 0, true, "SP_func_water sound registration mismatch");
+
+const door = entity("func_door", 17, { angle: "0" });
+door.size = [64, 16, 16];
+door.maxs = [64, 16, 16];
+SP_func_door(door, runtime);
+assert.equal(door.s.modelindex, 0, "SP_func_door without model should not invent a modelindex");
+assert.equal(door.moveinfo.sound_start > 0, true, "SP_func_door start sound registration mismatch");
+door_go_up(door, button, runtime);
+assert.equal(runtime.soundEvents.at(-1)?.soundPath, "doors/dr1_strt.wav", "door_go_up start sound mismatch");
+assert.equal(door.s.sound, door.moveinfo.sound_middle, "door_go_up loop sound mismatch");
+door_hit_top(door, runtime);
+assert.equal(runtime.soundEvents.at(-1)?.soundPath, "doors/dr1_end.wav", "door_hit_top end sound mismatch");
+assert.equal(door.s.sound, 0, "door_hit_top must clear loop sound");
+
+const plat = entity("func_plat", 18);
+plat.size = [64, 64, 32];
+plat.maxs = [64, 64, 32];
+SP_func_plat(plat, runtime);
+assert.equal(plat.moveinfo.sound_start > 0, true, "SP_func_plat start sound registration mismatch");
+plat_go_down(plat, runtime);
+assert.equal(runtime.soundEvents.at(-1)?.soundPath, "plats/pt1_strt.wav", "plat_go_down start sound mismatch");
 
 const conveyor = entity("func_conveyor", 5, { speed: "120" });
 SP_func_conveyor(conveyor, runtime);
@@ -156,4 +184,11 @@ function entity(classname: string, index: number, properties: Record<string, str
   ent.s.origin = [...ent.origin];
   runtime.entities[index] = ent;
   return ent;
+}
+
+function button_fire_forSound(button: GameEntity): void {
+  const before = runtime.soundEvents.length;
+  button.use?.(button, null, button, runtime);
+  assert.equal(runtime.soundEvents.length, before + 1, "button_fire must emit default sound");
+  assert.equal(runtime.soundEvents.at(-1)?.soundPath, "switches/butn2.wav", "button_fire sound mismatch");
 }

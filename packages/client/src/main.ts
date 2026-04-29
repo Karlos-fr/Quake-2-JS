@@ -1355,6 +1355,10 @@ export function CL_ReadPackets(context: ClientMainContext, hooks: ClientMainHook
     if (hooks.onPacketParseServerMessage) {
       hooks.onPacketParseServerMessage();
     } else {
+      context.client.net_message.data.set(hooks.qnet.net_message.data.subarray(0, hooks.qnet.net_message.cursize), 0);
+      context.client.net_message.cursize = hooks.qnet.net_message.cursize;
+      context.client.net_message.readcount = hooks.qnet.net_message.readcount;
+      context.client.net_message.overflowed = hooks.qnet.net_message.overflowed;
       CL_ParseServerMessage(context.client, hooks);
     }
   }

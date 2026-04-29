@@ -195,6 +195,7 @@ runtime.skymaxs[1][0] = 0.25;
 runtime.skyrotate = 0;
 const drawnFaces = R_DrawSkyBox(runtime);
 assert.equal(drawnFaces.length, 1, "R_DrawSkyBox visible face mismatch");
+assert.equal(drawnFaces[0]?.axis, 0, "R_DrawSkyBox face axis mismatch");
 assert.equal((drawnFaces[0]?.image as { name: string }).name, "face-0", "R_DrawSkyBox face order mismatch");
 assert.equal(drawnFaces[0]?.vertices.length, 4, "R_DrawSkyBox quad vertex mismatch");
 

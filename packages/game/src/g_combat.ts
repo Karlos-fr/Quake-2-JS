@@ -318,7 +318,7 @@ export function CanDamage(targ: GameEntity, inflictor: GameEntity, runtime: Game
  * - Iterates entities found by `findradius`, applies the original distance falloff and forwards each valid hit into `T_Damage`.
  *
  * Porting notes:
- * - Keeps `T_Damage` explicit through hooks until the full damage core is ported.
+ * - Allows focused tests to intercept `T_Damage`, but otherwise dispatches into the ported damage core.
  */
 export function T_RadiusDamage(
   inflictor: GameEntity,
@@ -356,19 +356,36 @@ export function T_RadiusDamage(
     }
 
     const dir = subtractVec3(ent.s.origin, inflictor.s.origin);
-    hooks.T_Damage?.(
-      ent,
-      inflictor,
-      attacker,
-      dir,
-      inflictor.s.origin,
-      [0, 0, 0],
-      Math.trunc(points),
-      Math.trunc(points),
-      DAMAGE_RADIUS,
-      mod,
-      runtime
-    );
+    if (hooks.T_Damage) {
+      hooks.T_Damage(
+        ent,
+        inflictor,
+        attacker,
+        dir,
+        inflictor.s.origin,
+        [0, 0, 0],
+        Math.trunc(points),
+        Math.trunc(points),
+        DAMAGE_RADIUS,
+        mod,
+        runtime
+      );
+    } else {
+      T_Damage(
+        ent,
+        inflictor,
+        attacker,
+        dir,
+        inflictor.s.origin,
+        [0, 0, 0],
+        Math.trunc(points),
+        Math.trunc(points),
+        DAMAGE_RADIUS,
+        mod,
+        runtime,
+        hooks
+      );
+    }
   }
 }
 

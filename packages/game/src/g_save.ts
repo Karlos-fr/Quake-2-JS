@@ -32,6 +32,24 @@ import * as gTriggerExports from "./g_trigger.js";
 import * as gTurretExports from "./g_turret.js";
 import * as gUtilsExports from "./g_utils.js";
 import * as gWeaponExports from "./g_weapon.js";
+import * as mBerserkExports from "./m_berserk.js";
+import * as mBoss2Exports from "./m_boss2.js";
+import * as mBoss31Exports from "./m_boss31.js";
+import * as mBoss32Exports from "./m_boss32.js";
+import * as mBrainExports from "./m_brain.js";
+import * as mChickExports from "./m_chick.js";
+import * as mFlipperExports from "./m_flipper.js";
+import * as mFloatExports from "./m_float.js";
+import * as mFlyerExports from "./m_flyer.js";
+import * as mGladiatorExports from "./m_gladiator.js";
+import * as mGunnerExports from "./m_gunner.js";
+import * as mHoverExports from "./m_hover.js";
+import * as mInfantryExports from "./m_infantry.js";
+import * as mMedicExports from "./m_medic.js";
+import * as mMutantExports from "./m_mutant.js";
+import * as mParasiteExports from "./m_parasite.js";
+import * as mSupertankExports from "./m_supertank.js";
+import * as mTankExports from "./m_tank.js";
 import * as pClientExports from "./p_client.js";
 import * as pTrailExports from "./p_trail.js";
 import {
@@ -180,6 +198,24 @@ for (const moduleExports of [
   gTurretExports,
   gUtilsExports,
   gWeaponExports,
+  mBerserkExports,
+  mBoss2Exports,
+  mBoss31Exports,
+  mBoss32Exports,
+  mBrainExports,
+  mChickExports,
+  mFlipperExports,
+  mFloatExports,
+  mFlyerExports,
+  mGladiatorExports,
+  mGunnerExports,
+  mHoverExports,
+  mInfantryExports,
+  mMedicExports,
+  mMutantExports,
+  mParasiteExports,
+  mSupertankExports,
+  mTankExports,
   pClientExports,
   pTrailExports
 ]) {

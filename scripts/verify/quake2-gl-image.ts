@@ -131,6 +131,11 @@ assert.equal(runtime.intensity_value, 2, "GL_InitImages intensity mismatch");
 assert.equal(runtime.inverse_intensity, 0.5, "GL_InitImages inverse intensity mismatch");
 assert.equal(runtime.d_16to8table?.length, 65536, "GL_InitImages 16to8 mismatch");
 assert.equal(runtime.gammatable[64], 64, "voodoo gamma override mismatch");
+assert.deepEqual(
+  Array.from(sharedPalettes.at(-1)?.slice(3, 6) ?? []),
+  [1, 2, 3],
+  "GL_InitImages shared palette upload mismatch"
+);
 
 const drawChars = createGlImage({ texnum: 999, registration_sequence: 1 });
 setDrawCharsImage(runtime, drawChars);

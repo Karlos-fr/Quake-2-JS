@@ -9,7 +9,7 @@
  * - packages/qcommon/src/q-shared.ts
  * - packages/qcommon/src/cvar.ts
  * - packages/math/src/index.ts
- * - packages/client/src/monster-flash.ts
+ * - packages/game/src/m_flash.ts
  */
 
 import { strict as assert } from "node:assert";
@@ -36,7 +36,7 @@ import {
   VectorNormalize2,
   vec3_origin
 } from "../../packages/math/src/index.js";
-import { monster_flash_offset } from "../../packages/client/src/monster-flash.js";
+import { monster_flash_offset } from "../../packages/game/src/m_flash.js";
 import {
   BigFloat,
   BigLong,

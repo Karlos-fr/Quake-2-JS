@@ -97,6 +97,7 @@ export interface GlWarpWaterPoly {
 }
 
 export interface GlWarpSkyFace {
+  axis: number;
   mins: [number, number];
   maxs: [number, number];
   image: image_t | null;
@@ -589,6 +590,7 @@ export function R_DrawSkyBox(runtime: GlWarpRuntime): GlWarpSkyFace[] {
     }
 
     faces.push({
+      axis: index,
       mins: [runtime.skymins[0][index], runtime.skymins[1][index]],
       maxs: [runtime.skymaxs[0][index], runtime.skymaxs[1][index]],
       image: runtime.sky_images[SKY_TEX_ORDER[index]] ?? null,

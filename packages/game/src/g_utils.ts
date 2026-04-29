@@ -555,15 +555,22 @@ export function KillBox(runtime: GameRuntime, ent: GameEntity): boolean {
     return true;
   }
 
+  const touched = new Set<GameEntity>();
   while (true) {
     const tr: trace_t = runtime.collision.trace(ent.s.origin, ent.mins, ent.maxs, ent.s.origin, null, MASK_PLAYERSOLID);
     if (!tr.ent) {
       break;
     }
 
-    applyTelefragDamage(tr.ent as GameEntity, ent, runtime);
+    const blocker = tr.ent as GameEntity;
+    if (touched.has(blocker)) {
+      return blocker.solid === 0;
+    }
 
-    if ((tr.ent as GameEntity).solid) {
+    touched.add(blocker);
+    applyTelefragDamage(blocker, ent, runtime);
+
+    if (blocker.solid) {
       return false;
     }
   }

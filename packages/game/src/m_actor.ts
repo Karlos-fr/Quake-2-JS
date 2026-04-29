@@ -1,7 +1,7 @@
 /**
  * File: m_actor.ts
- * Source: Quake II original / game/m_actor.h
- * Purpose: Port of the generated actor model frame constants used by the misc actor model.
+ * Source: Quake II original / game/m_actor.h and game/m_actor.c
+ * Purpose: Port of the generated actor model frame constants and misc_actor gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,58 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - None.
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
+ * - Actor chat messages are queued as runtime `cprintf` events before server/client flushing.
+ * - Monster muzzle-flash networking is represented as a gameplay runtime event and drained by client bridges.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_actor`.
  */
+
+import {
+  ATTN_NORM,
+  AngleVectors,
+  CHAN_VOICE,
+  PRINT_CHAT,
+  YAW,
+  type cplane_t,
+  type csurface_t,
+  type vec3_t
+} from "../../qcommon/src/index.js";
+import {
+  AI_BRUTAL,
+  AI_GOOD_GUY,
+  AI_HOLD_FRAME,
+  AI_STAND_GROUND,
+  DEAD_DEAD,
+  DEFAULT_BULLET_HSPREAD,
+  DEFAULT_BULLET_VSPREAD,
+  FRAMETIME,
+  GIB_ORGANIC,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  SOLID_BBOX,
+  SOLID_TRIGGER,
+  SVF_DEADMONSTER,
+  SVF_NOCLIENT,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_turn, ai_walk } from "./g_ai.js";
+import { ThrowGib, ThrowHead } from "./g_misc.js";
+import { monster_fire_bullet, walkmonster_start } from "./g_monster.js";
+import { G_FreeEdict, G_PickTarget, G_ProjectSource, G_SetMovedir, G_UseTargets, vectoyaw, vtos } from "./g_utils.js";
+import { getMonsterFlashOffset } from "./m_flash.js";
+import {
+  emitRegisteredGameSound,
+  emitGameCprintf,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_attak01 = 0;
 export const FRAME_attak02 = 1;
@@ -498,3 +545,635 @@ export const FRAME_crbl_w06 = 479;
 export const FRAME_crbl_w07 = 480;
 
 export const MODEL_SCALE = 1.0;
+
+export const MAX_ACTOR_NAMES = 8;
+export const MZ2_ACTOR_MACHINEGUN_1 = 63;
+const MONSTER_PAUSE_FOREVER = 100000000;
+
+export const actor_names = [
+  "Hellrot",
+  "Tokay",
+  "Killme",
+  "Disruptor",
+  "Adrianator",
+  "Rambear",
+  "Titus",
+  "Bitterman"
+] as const;
+
+const messages = [
+  "Watch it",
+  "#$@*&",
+  "Idiot",
+  "Check your targets"
+] as const;
+
+export const actor_frames_stand = makeFrames(ai_stand, new Array<number>(40).fill(0));
+export const actor_move_stand: GameMonsterMove = {
+  firstframe: FRAME_stand101,
+  lastframe: FRAME_stand140,
+  frame: actor_frames_stand,
+  endfunc: undefined
+};
+
+export const actor_frames_walk = makeFrames(ai_walk, [0, 6, 10, 3, 2, 7, 10, 1, 4, 0, 0]);
+export const actor_move_walk: GameMonsterMove = {
+  firstframe: FRAME_walk01,
+  lastframe: FRAME_walk08,
+  frame: actor_frames_walk,
+  endfunc: undefined
+};
+
+export const actor_frames_run = makeFrames(ai_run, [4, 15, 15, 8, 20, 15, 8, 17, 12, -2, -2, -1]);
+export const actor_move_run: GameMonsterMove = {
+  firstframe: FRAME_run02,
+  lastframe: FRAME_run07,
+  frame: actor_frames_run,
+  endfunc: undefined
+};
+
+export const actor_frames_pain1 = makeFrames(ai_move, [-5, 4, 1]);
+export const actor_move_pain1: GameMonsterMove = {
+  firstframe: FRAME_pain101,
+  lastframe: FRAME_pain103,
+  frame: actor_frames_pain1,
+  endfunc: actor_run
+};
+
+export const actor_frames_pain2 = makeFrames(ai_move, [-4, 4, 0]);
+export const actor_move_pain2: GameMonsterMove = {
+  firstframe: FRAME_pain201,
+  lastframe: FRAME_pain203,
+  frame: actor_frames_pain2,
+  endfunc: actor_run
+};
+
+export const actor_frames_pain3 = makeFrames(ai_move, [-1, 1, 0]);
+export const actor_move_pain3: GameMonsterMove = {
+  firstframe: FRAME_pain301,
+  lastframe: FRAME_pain303,
+  frame: actor_frames_pain3,
+  endfunc: actor_run
+};
+
+export const actor_frames_flipoff = makeFrames(ai_turn, new Array<number>(14).fill(0));
+export const actor_move_flipoff: GameMonsterMove = {
+  firstframe: FRAME_flip01,
+  lastframe: FRAME_flip14,
+  frame: actor_frames_flipoff,
+  endfunc: actor_run
+};
+
+export const actor_frames_taunt = makeFrames(ai_turn, new Array<number>(17).fill(0));
+export const actor_move_taunt: GameMonsterMove = {
+  firstframe: FRAME_taunt01,
+  lastframe: FRAME_taunt17,
+  frame: actor_frames_taunt,
+  endfunc: actor_run
+};
+
+export const actor_frames_death1 = makeFrames(ai_move, [0, 0, -13, 14, 3, -2, 1]);
+export const actor_move_death1: GameMonsterMove = {
+  firstframe: FRAME_death101,
+  lastframe: FRAME_death107,
+  frame: actor_frames_death1,
+  endfunc: actor_dead
+};
+
+export const actor_frames_death2 = makeFrames(ai_move, [0, 7, -6, -5, 1, 0, -1, -2, -1, -9, -13, -13, 0]);
+export const actor_move_death2: GameMonsterMove = {
+  firstframe: FRAME_death201,
+  lastframe: FRAME_death213,
+  frame: actor_frames_death2,
+  endfunc: actor_dead
+};
+
+export const actor_frames_attack = makeFrames(ai_charge, [-2, -2, 3, 2], [actor_fire]);
+export const actor_move_attack: GameMonsterMove = {
+  firstframe: FRAME_attak01,
+  lastframe: FRAME_attak04,
+  frame: actor_frames_attack,
+  endfunc: actor_run
+};
+
+/**
+ * Original name: actor_stand
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Enters the standing actor loop and randomizes the initial frame during map startup.
+ */
+export function actor_stand(self: GameEntity, runtime: GameRuntime): void {
+  self.monsterinfo.currentmove = actor_move_stand;
+
+  if (runtime.time < 1.0) {
+    const span = actor_move_stand.lastframe - actor_move_stand.firstframe + 1;
+    self.s.frame = actor_move_stand.firstframe + randomInt(span);
+  }
+}
+
+/**
+ * Original name: actor_walk
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Enters the scripted walking movement.
+ */
+export function actor_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = actor_move_walk;
+}
+
+/**
+ * Original name: actor_run
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Chooses stand, walk, or run according to pain debounce, target state and stand-ground flags.
+ */
+export function actor_run(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.time < self.pain_debounce_time && !self.enemy) {
+    if (self.movetarget) {
+      actor_walk(self);
+    } else {
+      actor_stand(self, runtime);
+    }
+    return;
+  }
+
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    actor_stand(self, runtime);
+    return;
+  }
+
+  self.monsterinfo.currentmove = actor_move_run;
+}
+
+/**
+ * Original name: actor_pain
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies skin changes, pain debounce, player-directed taunts and pain animations.
+ */
+export function actor_pain(
+  self: GameEntity,
+  other: GameEntity | null,
+  _kick: number,
+  _damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health < self.max_health / 2) {
+    self.s.skinnum = 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+
+  if (other?.client && Math.random() < 0.4) {
+    const v = subtractVec3(other.s.origin, self.s.origin);
+    self.ideal_yaw = vectoyaw(v);
+    self.monsterinfo.currentmove = Math.random() < 0.5 ? actor_move_flipoff : actor_move_taunt;
+    emitGameCprintf(runtime, other, PRINT_CHAT, `${actorNameForEntity(self)}: ${messages[randomInt(3)]}!\n`);
+    return;
+  }
+
+  const n = randomInt(3);
+  if (n === 0) {
+    self.monsterinfo.currentmove = actor_move_pain1;
+  } else if (n === 1) {
+    self.monsterinfo.currentmove = actor_move_pain2;
+  } else {
+    self.monsterinfo.currentmove = actor_move_pain3;
+  }
+}
+
+/**
+ * Original name: actorMachineGun
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Computes the actor machinegun muzzle and fires one bullet toward the current enemy.
+ */
+export function actorMachineGun(self: GameEntity, runtime: GameRuntime): void {
+  let { forward, right } = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, getMonsterFlashOffset(MZ2_ACTOR_MACHINEGUN_1), forward, right);
+
+  if (self.enemy) {
+    let target: vec3_t;
+    if (self.enemy.health > 0) {
+      target = addVec3(self.enemy.s.origin, scaleVec3(self.enemy.velocity, -0.2));
+      target[2] += self.enemy.viewheight;
+    } else {
+      target = [...self.enemy.absmin];
+      target[2] += self.enemy.size[2] / 2;
+    }
+    forward = normalizeVec3(subtractVec3(target, start));
+  } else {
+    forward = AngleVectors(self.s.angles).forward;
+  }
+
+  monster_fire_bullet(
+    self,
+    start,
+    forward,
+    3,
+    4,
+    DEFAULT_BULLET_HSPREAD,
+    DEFAULT_BULLET_VSPREAD,
+    MZ2_ACTOR_MACHINEGUN_1,
+    runtime
+  );
+}
+
+/**
+ * Original name: actor_dead
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finalizes the corpse bbox, toss movement and dead-monster flag.
+ */
+export function actor_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, -8);
+  self.movetype = MOVETYPE_TOSS;
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+/**
+ * Original name: actor_die
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Handles gib death and ordinary death animation selection.
+ */
+export function actor_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  damage: number,
+  runtime: GameRuntime
+): void {
+  if (self.health <= -80) {
+    for (let n = 0; n < 2; n += 1) {
+      ThrowGib(self, "models/objects/gibs/bone/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    for (let n = 0; n < 4; n += 1) {
+      ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC, runtime);
+    self.deadflag = DEAD_DEAD;
+    return;
+  }
+
+  if (self.deadflag === DEAD_DEAD) {
+    return;
+  }
+
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_YES;
+  self.monsterinfo.currentmove = randomInt(2) === 0 ? actor_move_death1 : actor_move_death2;
+}
+
+/**
+ * Original name: actor_fire
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Fires the actor machinegun and holds the attack frame until pausetime expires.
+ */
+export function actor_fire(self: GameEntity, runtime: GameRuntime): void {
+  actorMachineGun(self, runtime);
+
+  if (runtime.time >= self.monsterinfo.pausetime) {
+    self.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
+  } else {
+    self.monsterinfo.aiflags |= AI_HOLD_FRAME;
+  }
+}
+
+/**
+ * Original name: actor_attack
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Enters the machinegun attack loop and randomizes its duration.
+ */
+export function actor_attack(self: GameEntity, runtime: GameRuntime): void {
+  self.monsterinfo.currentmove = actor_move_attack;
+  const n = (randomInt(0x1000000) & 15) + 3 + 7;
+  self.monsterinfo.pausetime = runtime.time + n * FRAMETIME;
+}
+
+/**
+ * Original name: actor_use
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts one dormant actor on its `target_actor` path.
+ */
+export function actor_use(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  self.goalentity = G_PickTarget(runtime, self.target);
+  self.movetarget = self.goalentity;
+
+  if (!self.movetarget || self.movetarget.classname !== "target_actor") {
+    runtime.log({
+      kind: "warning",
+      message: `${self.classname} has bad target ${self.target ?? ""} at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
+    self.target = undefined;
+    self.monsterinfo.pausetime = MONSTER_PAUSE_FOREVER;
+    self.monsterinfo.stand?.(self, runtime);
+    return;
+  }
+
+  const goalentity = self.movetarget;
+  const v = subtractVec3(goalentity.s.origin, self.s.origin);
+  const yaw = vectoyaw(v);
+  self.ideal_yaw = yaw;
+  self.s.angles[YAW] = yaw;
+  self.angles[YAW] = yaw;
+  self.monsterinfo.walk?.(self, runtime);
+  self.target = undefined;
+}
+
+/**
+ * Original name: SP_misc_actor
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns a dormant scripted misc_actor and initializes its movement callbacks.
+ */
+export function SP_misc_actor(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  if (!self.targetname) {
+    runtime.log({
+      kind: "warning",
+      message: `untargeted ${self.classname} at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  if (!self.target) {
+    runtime.log({
+      kind: "warning",
+      message: `${self.classname} with no target at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+  self.s.modelindex = registerGameModel(runtime, "players/male/tris.md2");
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, 32);
+
+  if (!self.health) {
+    self.health = 100;
+  }
+  self.mass = 200;
+
+  self.pain = actor_pain;
+  self.die = actor_die;
+
+  self.monsterinfo.stand = actor_stand;
+  self.monsterinfo.walk = actor_walk;
+  self.monsterinfo.run = actor_run;
+  self.monsterinfo.attack = actor_attack;
+  self.monsterinfo.melee = undefined;
+  self.monsterinfo.sight = undefined;
+  self.monsterinfo.aiflags |= AI_GOOD_GUY;
+
+  linkGameEntity(runtime, self);
+
+  self.monsterinfo.currentmove = actor_move_stand;
+  self.monsterinfo.scale = MODEL_SCALE;
+
+  walkmonster_start(self, runtime);
+
+  self.use = actor_use;
+}
+
+/**
+ * Original name: target_actor_touch
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Advances one actor path node, dispatching messages, jumps, attacks and pathtargets.
+ */
+export function target_actor_touch(
+  self: GameEntity,
+  other: GameEntity,
+  runtime: GameRuntime,
+  _plane: cplane_t | null = null,
+  _surf: csurface_t | null = null
+): void {
+  if (other.movetarget !== self) {
+    return;
+  }
+
+  if (other.enemy) {
+    return;
+  }
+
+  other.goalentity = null;
+  other.movetarget = null;
+
+  if (self.message) {
+    for (let n = 1; n <= runtime.maxclients; n += 1) {
+      const ent = runtime.entities[n];
+      if (!ent?.inuse) {
+        continue;
+      }
+      emitGameCprintf(runtime, ent, PRINT_CHAT, `${actorNameForEntity(other)}: ${self.message}\n`);
+    }
+  }
+
+  if ((self.spawnflags & 1) !== 0) {
+    other.velocity[0] = self.movedir[0] * self.speed;
+    other.velocity[1] = self.movedir[1] * self.speed;
+
+    if (other.groundentity) {
+      other.groundentity = null;
+      other.velocity[2] = self.movedir[2];
+      const soundIndex = registerGameSound(runtime, "player/male/jump1.wav");
+      emitRegisteredGameSound(runtime, other, soundIndex, "player/male/jump1.wav", {
+        channel: CHAN_VOICE,
+        volume: 1,
+        attenuation: ATTN_NORM,
+        timeofs: 0
+      });
+    }
+  }
+
+  if ((self.spawnflags & 2) !== 0) {
+    // The original SHOOT branch is intentionally empty.
+  } else if ((self.spawnflags & 4) !== 0) {
+    other.enemy = G_PickTarget(runtime, self.pathtarget);
+    if (other.enemy) {
+      other.goalentity = other.enemy;
+      if ((self.spawnflags & 32) !== 0) {
+        other.monsterinfo.aiflags |= AI_BRUTAL;
+      }
+      if ((self.spawnflags & 16) !== 0) {
+        other.monsterinfo.aiflags |= AI_STAND_GROUND;
+        actor_stand(other, runtime);
+      } else {
+        actor_run(other, runtime);
+      }
+    }
+  }
+
+  if ((self.spawnflags & 6) === 0 && self.pathtarget) {
+    const savetarget = self.target;
+    self.target = self.pathtarget;
+    G_UseTargets(runtime, self, other);
+    self.target = savetarget;
+  }
+
+  other.movetarget = G_PickTarget(runtime, self.target);
+
+  if (!other.goalentity) {
+    other.goalentity = other.movetarget;
+  }
+
+  if (!other.movetarget && !other.enemy) {
+    other.monsterinfo.pausetime = runtime.time + MONSTER_PAUSE_FOREVER;
+    other.monsterinfo.stand?.(other, runtime);
+  } else if (other.movetarget === other.goalentity && other.movetarget) {
+    const v = subtractVec3(other.movetarget.s.origin, other.s.origin);
+    other.ideal_yaw = vectoyaw(v);
+  }
+}
+
+/**
+ * Original name: SP_target_actor
+ * Source: game/m_actor.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns one actor path trigger and configures jump movedir state when needed.
+ */
+export function SP_target_actor(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.targetname) {
+    runtime.log({
+      kind: "warning",
+      message: `${self.classname} with no targetname at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
+  }
+
+  self.solid = SOLID_TRIGGER;
+  self.touch = target_actor_touch;
+  setVec3(self.mins, -8, -8, -8);
+  setVec3(self.maxs, 8, 8, 8);
+  self.svflags = SVF_NOCLIENT;
+
+  if ((self.spawnflags & 1) !== 0) {
+    if (!self.speed) {
+      self.speed = 200;
+    }
+
+    const height = Number.parseFloat(self.properties.height ?? "");
+    if (!Number.isFinite(height) || height === 0) {
+      self.properties.height = "200";
+    }
+
+    if (self.s.angles[YAW] === 0) {
+      self.s.angles[YAW] = 360;
+      self.angles[YAW] = 360;
+    }
+    G_SetMovedir(self.s.angles, self.movedir);
+    self.movedir[2] = Number.parseFloat(self.properties.height ?? "200");
+  }
+
+  linkGameEntity(runtime, self);
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function actorNameForEntity(entity: GameEntity): string {
+  return actor_names[entity.index % MAX_ACTOR_NAMES];
+}
+
+function randomInt(max: number): number {
+  return Math.trunc(Math.random() * max);
+}
+
+function setVec3(vector: vec3_t, x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
+}
+
+function addVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [left[0] + right[0], left[1] + right[1], left[2] + right[2]];
+}
+
+function scaleVec3(vector: vec3_t, scale: number): vec3_t {
+  return [vector[0] * scale, vector[1] * scale, vector[2] * scale];
+}
+
+function normalizeVec3(vector: vec3_t): vec3_t {
+  const length = Math.hypot(vector[0], vector[1], vector[2]);
+  if (length === 0) {
+    return [0, 0, 0];
+  }
+  return [vector[0] / length, vector[1] / length, vector[2] / length];
+}

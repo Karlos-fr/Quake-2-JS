@@ -20,7 +20,7 @@ import { createVirtualFilesystem, mountDirectory } from "../../packages/filesyst
 import { createClientRuntime, type ClientRefreshFrame } from "../../packages/client/src/index.js";
 import { ALIAS_VERSION, IDALIASHEADER } from "../../packages/formats/src/index.js";
 import { setLittleFloat, setLittleLong, setLittleShort, setUnsignedByte } from "../../packages/memory/src/binary-io.js";
-import { CS_MODELS, RF_DEPTHHACK, RF_MINLIGHT, RF_WEAPONMODEL } from "../../packages/qcommon/src/index.js";
+import { CS_MODELS, RF_DEPTHHACK, RF_MINLIGHT, RF_TRANSLUCENT, RF_WEAPONMODEL } from "../../packages/qcommon/src/index.js";
 import { createThreeRefreshEntitySync } from "../../packages/renderer-three/src/index.js";
 
 main();
@@ -59,6 +59,8 @@ function main(): void {
   const firstFrame = createWeaponRefreshFrame();
   const firstStats = sync.apply(runtime, firstFrame);
   assert.equal(firstStats.renderedEntities, 1, "first-person weapon renderedEntities mismatch");
+  assert.equal(sync.root.userData.refGl?.source, "R_DrawEntitiesOnList", "weapon dispatch source mismatch");
+  assert.equal(sync.root.userData.refGl?.queuedEntities, 1, "weapon queued entity count mismatch");
   assert.equal(sync.root.children.length, 0, "weapon model must stay out of the world root");
   assert.equal(sync.viewWeaponRoot.children.length, 1, "weapon model must attach under the camera root");
 
@@ -70,6 +72,9 @@ function main(): void {
 
   const firstMesh = firstRoot.children[0] as Mesh;
   const firstMaterialMap = ((firstMesh.material as { map?: unknown }).map ?? null);
+  assert.equal((firstMesh.material as { depthTest?: boolean }).depthTest, false, "weapon depthhack depthTest mismatch");
+  assert.equal((firstMesh.material as { depthWrite?: boolean }).depthWrite, false, "weapon depthhack depthWrite mismatch");
+  assert.equal(firstMesh.renderOrder, 1000, "weapon depthhack renderOrder mismatch");
   const firstPositions = readPositions(firstMesh);
   assert.deepEqual(firstPositions, [0, 0, 0, 8, 0, 0, 0, 8, 0], "weapon frame-0 geometry mismatch");
 
@@ -99,6 +104,22 @@ function main(): void {
   const overridePositions = readPositions(overrideMesh);
   assert.notEqual(overrideRoot, animatedRoot, "model override must rebuild the weapon instance");
   assert.deepEqual(overridePositions, [0, 0, 0, 20, 0, 0, 0, 20, 0], "resolvedModelPath override geometry mismatch");
+
+  const translucentStats = sync.apply(runtime, createWeaponRefreshFrame({
+    entityNumber: 2,
+    flags: RF_TRANSLUCENT,
+    alpha: 1,
+    origin: [40, 0, 0],
+    oldorigin: [40, 0, 0]
+  }));
+  assert.equal(translucentStats.renderedEntities, 1, "translucent alias renderedEntities mismatch");
+  assert.equal(sync.root.children.length, 1, "translucent alias should attach to world root");
+  assert.equal(sync.viewWeaponRoot.children.length, 0, "translucent alias should clear weapon root");
+  const translucentRoot = sync.root.children[0];
+  const translucentMesh = translucentRoot.children[0] as Mesh;
+  assert.equal((translucentMesh.material as { transparent?: boolean }).transparent, true, "RF_TRANSLUCENT alias transparency mismatch");
+  assert.equal((translucentMesh.material as { opacity?: number }).opacity, 1, "RF_TRANSLUCENT alias opacity mismatch");
+  assert.equal((translucentMesh.material as { depthWrite?: boolean }).depthWrite, true, "RF_TRANSLUCENT alias depthWrite mismatch");
 
   console.log("quake2-web-view-weapon: ok");
 }

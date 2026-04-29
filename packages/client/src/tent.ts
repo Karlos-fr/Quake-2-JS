@@ -1194,7 +1194,7 @@ function createImpactExplosion(
  * Porting notes:
  * - Reuses the persistent explosion slot pool instead of immediate renderer entities.
  */
-function CL_SmokeAndFlash(runtime: ClientRuntime, origin: vec3_t): void {
+export function CL_SmokeAndFlash(runtime: ClientRuntime, origin: vec3_t): void {
   allocateExplosion(runtime, {
     type: "misc",
     ent: {

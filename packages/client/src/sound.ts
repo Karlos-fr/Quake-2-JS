@@ -44,7 +44,7 @@ export interface ClientSoundRegistrationHooks {
  * - Registers temp-entity sounds first, then all configstring sound assets.
  *
  * Porting notes:
- * - Uses sound path strings as the stored precache value until a concrete sound backend is wired.
+ * - Stores backend sound handles when a concrete registration hook returns one, falling back to path strings.
  */
 export function CL_RegisterSounds(runtime: ClientRuntime, hooks: ClientSoundRegistrationHooks = {}): string[] {
   const registered: string[] = [];
@@ -62,8 +62,7 @@ export function CL_RegisterSounds(runtime: ClientRuntime, hooks: ClientSoundRegi
       break;
     }
 
-    runtime.cl.sound_precache[index] = path;
-    hooks.onRegisterSound?.(path, "precache");
+    runtime.cl.sound_precache[index] = hooks.onRegisterSound?.(path, "precache") ?? path;
     hooks.onPumpEvents?.();
     registered.push(path);
   }

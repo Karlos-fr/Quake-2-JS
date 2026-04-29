@@ -139,7 +139,6 @@ export function SV_RunThink(ent: GameEntity, runtime: GameRuntime): boolean {
 
   ent.nextthink = 0;
   const think = ent.think;
-  ent.think = undefined;
   if (!think) {
     throw new Error(`SV_RunThink: NULL ent.think for ${getRuntimeEntityLabel(ent)}`);
   }
