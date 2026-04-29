@@ -1520,6 +1520,11 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
     drawMenuFrame(runtime, page);
   }
 
+  if (runtime.menu.keys.state.key_dest === keydest_t.key_console) {
+    page.status.style.display = "none";
+    drawConsoleFrame(runtime, page);
+  }
+
   if (page.consolePanel.style.display !== "none") {
     renderHtmlConsole(runtime, page);
   }
@@ -1606,7 +1611,6 @@ function drawMenuFrame(runtime: FullGameRuntime, page: FullGamePage): void {
 
   if (runtime.menu.keys.state.key_dest === keydest_t.key_console) {
     page.status.style.display = "none";
-    drawConsoleFrame(runtime, page);
   } else {
     page.status.style.display = "block";
     M_Draw(runtime.menu);
@@ -1622,15 +1626,15 @@ function drawLoadingFrame(runtime: FullGameRuntime, page: FullGamePage): void {
 }
 
 function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSeconds: number): void {
-  if (!runtime.authoritativeGameReady()) {
-    page.status.textContent = "Preparation du jeu...";
-    page.status.style.display = "block";
-    return;
-  }
-
   if (runtime.menu.keys.state.key_dest === keydest_t.key_console) {
     page.status.style.display = "none";
-    drawConsoleFrame(runtime, page);
+  }
+
+  if (!runtime.authoritativeGameReady()) {
+    if (runtime.menu.keys.state.key_dest !== keydest_t.key_console) {
+      page.status.textContent = "Preparation du jeu...";
+      page.status.style.display = "block";
+    }
     return;
   }
 
