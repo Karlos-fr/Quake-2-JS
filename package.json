@@ -153,6 +153,8 @@
     "verify:m-boss2:header": "npx tsx ./scripts/verify/quake2-m-boss2-header.ts",
     "verify:m-boss2": "npx tsx ./scripts/verify/quake2-m-boss2.ts",
     "verify:m-boss2:source-parity": "npx tsx ./scripts/verify/quake2-m-boss2-source-parity.ts",
+    "verify:m-boss3": "npx tsx ./scripts/verify/quake2-m-boss3.ts",
+    "verify:m-boss3:source-parity": "npx tsx ./scripts/verify/quake2-m-boss3-source-parity.ts",
     "verify:m-boss31:header": "npx tsx ./scripts/verify/quake2-m-boss31-header.ts",
     "verify:m-boss31": "npx tsx ./scripts/verify/quake2-m-boss31.ts",
     "verify:m-boss31:source-parity": "npx tsx ./scripts/verify/quake2-m-boss31-source-parity.ts",

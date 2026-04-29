@@ -70,6 +70,7 @@ import {
 import { SP_misc_insane } from "./m_insane.js";
 import { SP_monster_berserk } from "./m_berserk.js";
 import { SP_monster_boss2 } from "./m_boss2.js";
+import { SP_monster_boss3_stand } from "./m_boss3.js";
 import { SP_monster_jorg } from "./m_boss31.js";
 import { SP_monster_makron } from "./m_boss32.js";
 import { SP_monster_brain } from "./m_brain.js";
@@ -209,6 +210,7 @@ const spawns: SpawnEntry[] = [
   { name: "misc_insane", spawn: SP_misc_insane },
   { name: "monster_berserk", spawn: SP_monster_berserk },
   { name: "monster_boss2", spawn: SP_monster_boss2 },
+  { name: "monster_boss3_stand", spawn: SP_monster_boss3_stand },
   { name: "monster_jorg", spawn: SP_monster_jorg },
   { name: "monster_makron", spawn: SP_monster_makron },
   { name: "monster_brain", spawn: SP_monster_brain },

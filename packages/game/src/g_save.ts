@@ -34,6 +34,7 @@ import * as gUtilsExports from "./g_utils.js";
 import * as gWeaponExports from "./g_weapon.js";
 import * as mBerserkExports from "./m_berserk.js";
 import * as mBoss2Exports from "./m_boss2.js";
+import * as mBoss3Exports from "./m_boss3.js";
 import * as mBoss31Exports from "./m_boss31.js";
 import * as mBoss32Exports from "./m_boss32.js";
 import * as mBrainExports from "./m_brain.js";
@@ -201,6 +202,7 @@ for (const moduleExports of [
   gWeaponExports,
   mBerserkExports,
   mBoss2Exports,
+  mBoss3Exports,
   mBoss31Exports,
   mBoss32Exports,
   mBrainExports,

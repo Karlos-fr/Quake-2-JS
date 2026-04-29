@@ -181,6 +181,7 @@ export {
 export * as actorFrames from "./m_actor.js";
 export * as berserkFrames from "./m_berserk.js";
 export * as boss2Frames from "./m_boss2.js";
+export * as boss3Frames from "./m_boss3.js";
 export * as boss31Frames from "./m_boss31.js";
 export * as boss32Frames from "./m_boss32.js";
 export * as brainFrames from "./m_brain.js";
@@ -733,6 +734,12 @@ export {
   boss2_stand,
   boss2_walk
 } from "./m_boss2.js";
+
+export {
+  SP_monster_boss3_stand,
+  Think_Boss3Stand,
+  Use_Boss3
+} from "./m_boss3.js";
 
 export {
   Jorg_CheckAttack,
