@@ -315,6 +315,7 @@ interface FullGameRendererState {
   renderer: ActiveRenderer;
   renderLoop: FullGameRenderLoop;
   camera: ReturnType<typeof createCamera>;
+  consoleCanvas: HTMLCanvasElement;
 }
 
 interface FullGameMouseState {
@@ -1810,7 +1811,8 @@ async function createFullGameThreeRenderer(
     mapPath,
     renderer: rendererBundle.renderer,
     renderLoop,
-    camera
+    camera,
+    consoleCanvas: document.createElement("canvas")
   };
 }
 
@@ -1840,13 +1842,13 @@ function drawConsoleFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   });
   const renderer = runtime.gameRenderer;
   if (renderer) {
-    renderer.renderLoop.renderOverlay(({ ref, viewportWidth, viewportHeight }) => {
-      const snapshot = Con_DrawConsole(runtime.console, frac, viewportWidth, viewportHeight);
-      if (!snapshot) {
-        return;
-      }
-      drawConsoleFrameRef(ref, snapshot);
-    });
+    const width = Math.max(1, page.gameViewport.clientWidth || window.innerWidth || LOGICAL_WIDTH);
+    const height = Math.max(1, page.gameViewport.clientHeight || window.innerHeight || LOGICAL_HEIGHT);
+    const snapshot = Con_DrawConsole(runtime.console, frac, width, height);
+    if (snapshot) {
+      drawConsoleSnapshotToCanvas(runtime, page, renderer.consoleCanvas, snapshot);
+      renderer.renderLoop.renderCanvasOverlay(renderer.consoleCanvas);
+    }
     return;
   }
 
@@ -1855,6 +1857,39 @@ function drawConsoleFrame(runtime: FullGameRuntime, page: FullGamePage): void {
     return;
   }
 
+  drawConsoleSnapshotCanvas(runtime, page, snapshot);
+}
+
+function drawConsoleSnapshotToCanvas(
+  runtime: FullGameRuntime,
+  page: FullGamePage,
+  canvas: HTMLCanvasElement,
+  snapshot: ConsoleDrawConsoleSnapshot
+): void {
+  const width = Math.max(1, Math.trunc(snapshot.background.width));
+  const height = Math.max(1, Math.trunc(snapshot.background.height));
+  if (canvas.width !== width) {
+    canvas.width = width;
+  }
+  if (canvas.height !== height) {
+    canvas.height = height;
+  }
+
+  const context = canvas.getContext("2d");
+  if (!context) {
+    return;
+  }
+
+  context.clearRect(0, 0, width, height);
+  const overlayPage: FullGamePage = { ...page, context };
+  drawConsoleSnapshotCanvas(runtime, overlayPage, snapshot);
+}
+
+function drawConsoleSnapshotCanvas(
+  runtime: FullGameRuntime,
+  page: FullGamePage,
+  snapshot: ConsoleDrawConsoleSnapshot
+): void {
   const background = loadPictureCanvas(runtime.filesystem, runtime.assets, snapshot.background.pic);
   if (background) {
     page.context.drawImage(

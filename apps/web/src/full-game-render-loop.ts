@@ -13,7 +13,17 @@
  * - three
  */
 
-import { Vector3, type PerspectiveCamera, type Scene } from "three";
+import {
+  CanvasTexture,
+  LinearFilter,
+  Mesh,
+  MeshBasicMaterial,
+  OrthographicCamera,
+  PlaneGeometry,
+  Scene,
+  Vector3,
+  type PerspectiveCamera,
+} from "three";
 import {
   SCR_DrawHudRef,
   type BrushModelSnapshot,
@@ -86,6 +96,7 @@ export interface FullGameRenderLoop {
     viewportWidth: number;
     viewportHeight: number;
   }) => void) => void;
+  renderCanvasOverlay: (canvas: HTMLCanvasElement) => void;
   dispose: () => void;
 }
 
@@ -131,6 +142,7 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
     hudBindings = {},
     enableRenderSourceAudio = true
   } = options;
+  const canvasOverlay = createCanvasOverlay();
 
   const resize = (): void => {
     const { width, height } = getRenderableViewportSize(ui.viewport);
@@ -207,6 +219,15 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
     renderer.render(glDrawAdapter.scene, glDrawAdapter.camera);
   };
 
+  const renderCanvasOverlay: FullGameRenderLoop["renderCanvasOverlay"] = (canvas) => {
+    const viewportSize = getRenderableViewportSize(ui.viewport);
+    canvasOverlay.setViewport(viewportSize.width, viewportSize.height);
+    canvasOverlay.setCanvas(canvas);
+    renderer.autoClear = false;
+    renderer.clearDepth();
+    renderer.render(canvasOverlay.scene, canvasOverlay.camera);
+  };
+
   const dispose = (): void => {
     if (enableRenderSourceAudio) {
       audio.syncWavLoops(filesystem, []);
@@ -216,10 +237,67 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
     beamSync.dispose();
     dlightSync.dispose();
     refreshDebug.update(null);
+    canvasOverlay.dispose();
     disposeObjectTree(scene);
   };
 
-  return { resize, renderFrame, renderOverlay, dispose };
+  return { resize, renderFrame, renderOverlay, renderCanvasOverlay, dispose };
+}
+
+function createCanvasOverlay(): {
+  scene: Scene;
+  camera: OrthographicCamera;
+  setViewport: (width: number, height: number) => void;
+  setCanvas: (canvas: HTMLCanvasElement) => void;
+  dispose: () => void;
+} {
+  const scene = new Scene();
+  const camera = new OrthographicCamera(0, 1, 1, 0, -100, 100);
+  const geometry = new PlaneGeometry(1, 1);
+  const material = new MeshBasicMaterial({
+    transparent: true,
+    depthTest: false,
+    depthWrite: false
+  });
+  const mesh = new Mesh(geometry, material);
+  mesh.name = "full-game-console-canvas-overlay";
+  mesh.renderOrder = 1000;
+  scene.add(mesh);
+  let texture: CanvasTexture | null = null;
+
+  return {
+    scene,
+    camera,
+    setViewport: (width, height) => {
+      const safeWidth = Math.max(1, width);
+      const safeHeight = Math.max(1, height);
+      camera.left = 0;
+      camera.right = safeWidth;
+      camera.top = safeHeight;
+      camera.bottom = 0;
+      camera.position.set(0, 0, 10);
+      camera.lookAt(new Vector3(0, 0, 0));
+      camera.updateProjectionMatrix();
+      mesh.position.set(safeWidth / 2, safeHeight / 2, 0);
+      mesh.scale.set(safeWidth, safeHeight, 1);
+    },
+    setCanvas: (canvas) => {
+      if (!texture || texture.image !== canvas) {
+        texture?.dispose();
+        texture = new CanvasTexture(canvas);
+        texture.minFilter = LinearFilter;
+        texture.magFilter = LinearFilter;
+        material.map = texture;
+      }
+      texture.needsUpdate = true;
+      material.needsUpdate = true;
+    },
+    dispose: () => {
+      texture?.dispose();
+      geometry.dispose();
+      material.dispose();
+    }
+  };
 }
 
 function getRenderableViewportSize(viewport: HTMLElement): { width: number; height: number } {
