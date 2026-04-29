@@ -2236,7 +2236,13 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
   if (isConsoleToggleDomKey(event)) {
     event.preventDefault();
     void runtime.audio.unlock();
+    const before = formatKeyDest(runtime.menu.keys.state.key_dest);
     toggleFullGameConsole(runtime, page);
+    const after = formatKeyDest(runtime.menu.keys.state.key_dest);
+    showOverlayLog(page, [
+      `touche console detectee: key=${formatDomKeyForLog(event.key)} code=${event.code}`,
+      `console: ${before} -> ${after}`
+    ].join("\n"));
     return;
   }
 
@@ -2348,6 +2354,25 @@ function printFullGameWebAudioInfo(runtime: FullGameRuntime, page: FullGamePage)
   }
 }
 
+function formatDomKeyForLog(key: string): string {
+  return key.length > 0 ? JSON.stringify(key) : "<empty>";
+}
+
+function formatKeyDest(dest: keydest_t): string {
+  switch (dest) {
+    case keydest_t.key_game:
+      return "game";
+    case keydest_t.key_console:
+      return "console";
+    case keydest_t.key_message:
+      return "message";
+    case keydest_t.key_menu:
+      return "menu";
+    default:
+      return `unknown(${dest})`;
+  }
+}
+
 function isConsoleToggleDomKey(event: KeyboardEvent): boolean {
   if (event.altKey || event.ctrlKey || event.metaKey) {
     return false;
@@ -2356,6 +2381,7 @@ function isConsoleToggleDomKey(event: KeyboardEvent): boolean {
   return event.code === "Backquote"
     || event.key === "`"
     || event.key === "~"
+    || event.key.charCodeAt(0) === 178
     || event.key === "²";
 }
 
