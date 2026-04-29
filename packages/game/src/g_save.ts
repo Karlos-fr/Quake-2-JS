@@ -49,8 +49,8 @@ import * as mInfantryExports from "./m_infantry.js";
 import * as mMedicExports from "./m_medic.js";
 import * as mMutantExports from "./m_mutant.js";
 import * as mParasiteExports from "./m_parasite.js";
-import * as mSupertankExports from "./m_supertank.js";
 import * as mSoldierExports from "./m_soldier.js";
+import * as mSupertankExports from "./m_supertank.js";
 import * as mTankExports from "./m_tank.js";
 import * as pClientExports from "./p_client.js";
 import * as pTrailExports from "./p_trail.js";
@@ -69,7 +69,6 @@ import {
 } from "./g-local.js";
 import {
   attachGameClient,
-  createGameRuntimeFromBspEntities,
   createRuntimeEntity,
   linkGameEntity,
   type GameClient,
@@ -217,9 +216,9 @@ for (const moduleExports of [
   mMedicExports,
   mMutantExports,
   mParasiteExports,
+  mSoldierExports,
   mSupertankExports,
   mTankExports,
-  mSoldierExports,
   pClientExports,
   pTrailExports
 ]) {
@@ -427,22 +426,18 @@ export function ReadLevel(context: GameMainContext, filename: string): void {
   const save = readSaveFile<LevelSaveFile>(context, filename);
   validateSaveFile(context, save);
 
-  const runtime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
-  runtime.maxclients = context.runtime.maxclients;
-  runtime.maxentities = context.runtime.maxentities;
-  runtime.collision = context.runtime.collision;
-  runtime.assets = context.runtime.assets;
-  context.runtime = runtime;
+  resetRuntimeEntitiesForLevelLoad(context.runtime);
 
   for (const record of save.entities) {
     while (context.runtime.entities.length <= record.entnum) {
-      context.runtime.entities.push(createRuntimeEntity({ classname: "noclass" }, context.runtime.entities.length));
+      context.runtime.entities.push(createClearedRuntimeEntity(context.runtime.entities.length));
     }
     context.runtime.entities[record.entnum] = restoreEntity(record.entity, context.runtime);
   }
 
   resolveEntityReferences(context.runtime, save.entities);
   restoreLevel(context, save.level);
+  syncRuntimeFromLevel(context);
 
   for (const entity of context.runtime.entities) {
     entity.area = { prev: null, next: null };
@@ -453,10 +448,10 @@ export function ReadLevel(context: GameMainContext, filename: string): void {
   }
 
   for (let i = 0; i < context.runtime.maxclients; i += 1) {
-    const ent = context.runtime.entities[i + 1];
-    if (!ent) {
-      continue;
-    }
+    const entnum = i + 1;
+    const ent = context.runtime.entities[entnum] ?? createClearedRuntimeEntity(entnum);
+    context.runtime.entities[entnum] = ent;
+    ent.classname = ent.classname === "noclass" ? "player" : ent.classname;
     ent.client = context.game.clients[i] ?? attachGameClient(ent);
     ent.client.pers.connected = false;
   }
@@ -466,6 +461,34 @@ export function ReadLevel(context: GameMainContext, filename: string): void {
       entity.nextthink = context.level.time + entity.delay;
     }
   }
+}
+
+function resetRuntimeEntitiesForLevelLoad(runtime: GameRuntime): void {
+  runtime.entities.length = 0;
+  runtime.entities.push(createClearedRuntimeEntity(0));
+  for (let index = 1; index <= runtime.maxclients; index += 1) {
+    const ent = createClearedRuntimeEntity(index);
+    ent.classname = "player";
+    ent.properties.classname = "player";
+    runtime.entities.push(ent);
+  }
+
+  runtime.current_entity = null;
+  runtime.sight_client = null;
+  runtime.sight_entity = null;
+  runtime.sound_entity = null;
+  runtime.sound2_entity = null;
+  runtime.linkedSolidEntities = [];
+  runtime.linkedTriggerEntities = [];
+  runtime.linkedInlineBspEntities = [];
+  runtime.linkedRuntimeTriggerEntities = [];
+  runtime.linkedDynamicBoxEntities = [];
+}
+
+function createClearedRuntimeEntity(index: number): GameEntity {
+  const entity = createRuntimeEntity({ classname: "noclass" }, index);
+  entity.inuse = false;
+  return entity;
 }
 
 function snapshotGame(context: GameMainContext) {
@@ -542,6 +565,33 @@ function restoreLevel(context: GameMainContext, snapshot: ReturnType<typeof snap
   context.level.current_entity = edictByIndex(context.runtime, snapshot.current_entity);
   context.level.body_que = snapshot.body_que;
   context.level.power_cubes = snapshot.power_cubes;
+}
+
+function syncRuntimeFromLevel(context: GameMainContext): void {
+  context.runtime.framenum = context.level.framenum;
+  context.runtime.time = context.level.time;
+  context.runtime.intermissiontime = context.level.intermissiontime;
+  context.runtime.exitintermission = context.level.exitintermission;
+  context.runtime.intermission_origin = copyVec3(context.level.intermission_origin);
+  context.runtime.intermission_angle = copyVec3(context.level.intermission_angle);
+  context.runtime.changemap = context.level.changemap;
+  context.runtime.pic_health = context.level.pic_health;
+  context.runtime.total_secrets = context.level.total_secrets;
+  context.runtime.found_secrets = context.level.found_secrets;
+  context.runtime.total_goals = context.level.total_goals;
+  context.runtime.found_goals = context.level.found_goals;
+  context.runtime.total_monsters = context.level.total_monsters;
+  context.runtime.killed_monsters = context.level.killed_monsters;
+  context.runtime.current_entity = context.level.current_entity;
+  context.runtime.body_que = context.level.body_que;
+  context.runtime.power_cubes = context.level.power_cubes;
+  context.runtime.sight_client = context.level.sight_client;
+  context.runtime.sight_entity = context.level.sight_entity;
+  context.runtime.sight_entity_framenum = context.level.sight_entity_framenum;
+  context.runtime.sound_entity = context.level.sound_entity;
+  context.runtime.sound_entity_framenum = context.level.sound_entity_framenum;
+  context.runtime.sound2_entity = context.level.sound2_entity;
+  context.runtime.sound2_entity_framenum = context.level.sound2_entity_framenum;
 }
 
 function snapshotClient(client: GameClient, runtime: GameRuntime) {
