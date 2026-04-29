@@ -65,6 +65,32 @@ for (const expected of [
   assert.ok(fullGameSource.includes(expected), `full-game keyboard mapping should include ${expected}`);
 }
 
+assert.ok(
+  fullGameSource.includes("Key_Event(runtime.menu.keys, key, true, runtime.client.cls.realtime);\n    executeRuntimeCommandBuffer(runtime, page);\n    syncFullGameKeyDestination(runtime, page);"),
+  "full-game in-game keydown path should route Escape through Key_Event before syncing the web view"
+);
+assert.equal(
+  fullGameSource.includes("if (key === K_ESCAPE) {\n      enterMainMenu(runtime, page);\n      return;\n    }"),
+  false,
+  "full-game should not bypass Key_Event with a web-only Escape menu shortcut"
+);
+assert.ok(
+  fullGameSource.includes("&& keys.state.key_dest !== keydest_t.key_menu"),
+  "authoritative active sync should preserve an open Quake II menu"
+);
+assert.ok(
+  fullGameSource.includes("function syncFullGameActiveView"),
+  "full-game active view sync should keep runtime.mode aligned with key_dest"
+);
+assert.ok(
+  fullGameSource.includes("pendingAuthoritativeMapRequest = null;\n    gameBridge.requestedMap = null;"),
+  "full-game should clear completed map requests so menu New Game can restart the same map"
+);
+assert.ok(
+  fullGameSource.includes("const requestedMap = runtime.gameBridge.requestedMap;"),
+  "full-game should snapshot requestedMap before markAuthoritativeGameActive clears it"
+);
+
 for (const expected of [
   "requestFullGamePointerLock(runtime, page, event.target)",
   "document.addEventListener(\"pointerlockchange\"",
@@ -73,10 +99,21 @@ for (const expected of [
   "runtime.mouse.lookActive = true",
   "isFullGamePointerLocked(page)",
   "isFullGameMouseLookActive(runtime, page, event)",
-  "applyFullGameMouseLook(runtime, event.movementX, event.movementY)"
+  "applyFullGameMouseLook(runtime, event.movementX, event.movementY)",
+  "pointerLockEscapeArmed",
+  "const shouldRouteEscape = runtime.mouse.pointerLockEscapeArmed",
+  "routeFullGameEscapeToClient(runtime, page);",
+  "key === K_ESCAPE\n    && runtime.mode === \"game\"",
+  "suppressNextEscapeKeyUp"
 ]) {
   assert.ok(fullGameSource.includes(expected), `full-game mouse look path should include ${expected}`);
 }
+
+assert.equal(
+  fullGameSource.includes("wasPointerLocked || wasMouseLookActive"),
+  false,
+  "full-game should not treat a plain mouse-look request or pointer-lock denial as Escape"
+);
 
 const filesystem = createVirtualFilesystem();
 mountPak(filesystem, new Uint8Array(readFileSync(pakPath)), "pak0.pak");

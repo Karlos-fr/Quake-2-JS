@@ -319,8 +319,10 @@ interface FullGameRendererState {
 
 interface FullGameMouseState {
   pointerLocked: boolean;
+  pointerLockEscapeArmed: boolean;
   lookActive: boolean;
   dragging: boolean;
+  suppressNextEscapeKeyUp: boolean;
 }
 
 
@@ -495,8 +497,10 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   const client = createClientRuntime();
   const mouse: FullGameMouseState = {
     pointerLocked: false,
+    pointerLockEscapeArmed: false,
     lookActive: false,
-    dragging: false
+    dragging: false,
+    suppressNextEscapeKeyUp: false
   };
   const configStorage = createWebConfigStorage();
   const saveStorage = createWebSaveStorage();
@@ -2152,13 +2156,9 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
   }
 
   if (runtime.mode === "game" && runtime.menu.keys.state.key_dest === keydest_t.key_game) {
-    if (key === K_ESCAPE) {
-      enterMainMenu(runtime, page);
-      return;
-    }
-
     Key_Event(runtime.menu.keys, key, true, runtime.client.cls.realtime);
     executeRuntimeCommandBuffer(runtime, page);
+    syncFullGameKeyDestination(runtime, page);
     return;
   }
 
@@ -2166,6 +2166,7 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
     Key_Event(runtime.menu.keys, key, true, runtime.client.cls.realtime);
     Key_Event(runtime.menu.keys, key, false, runtime.client.cls.realtime);
     executeRuntimeCommandBuffer(runtime, page);
+    syncFullGameKeyDestination(runtime, page);
     page.status.textContent = runtime.menu.keys.state.key_dest === keydest_t.key_console
       ? "Console Quake II."
       : "Menu principal Quake II.";
@@ -2174,6 +2175,10 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
 
   M_Keydown(runtime.menu, key);
   executeRuntimeCommandBuffer(runtime, page);
+  syncFullGameKeyDestination(runtime, page);
+  if (key === K_ESCAPE) {
+    runtime.mouse.suppressNextEscapeKeyUp = true;
+  }
 
   const keyDestAfterMenu = runtime.menu.keys.state.key_dest as keydest_t;
   if (keyDestAfterMenu === keydest_t.key_console) {
@@ -2186,6 +2191,26 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
     && runtime.client.cls.state === connstate_t.ca_disconnected
     && runtime.gameBridge.phase === "idle") {
     enterMainMenu(runtime, page);
+  }
+}
+
+function syncFullGameKeyDestination(runtime: FullGameRuntime, page: FullGamePage): void {
+  const keyDest = runtime.menu.keys.state.key_dest as keydest_t;
+
+  if (keyDest === keydest_t.key_menu && runtime.mode === "game") {
+    releaseFullGameMouseLook(runtime, page);
+    runtime.mode = "menu";
+    page.status.textContent = "Menu principal Quake II.";
+    page.status.style.display = "block";
+    return;
+  }
+
+  if (keyDest === keydest_t.key_game
+    && runtime.mode === "menu"
+    && (runtime.client.cls.state === connstate_t.ca_active || runtime.serverHost.hasActiveGameMap())) {
+    runtime.mode = "game";
+    page.status.textContent = "";
+    page.status.style.display = "none";
   }
 }
 
@@ -2257,6 +2282,21 @@ function handleKeyUp(event: KeyboardEvent, runtime: FullGameRuntime, page: FullG
     return;
   }
 
+  if (key === K_ESCAPE && runtime.mouse.suppressNextEscapeKeyUp) {
+    runtime.mouse.suppressNextEscapeKeyUp = false;
+    event.preventDefault();
+    return;
+  }
+
+  if (key === K_ESCAPE
+    && runtime.mode === "game"
+    && runtime.menu.keys.state.key_dest === keydest_t.key_game
+    && !isFullGamePointerLocked(page)) {
+    event.preventDefault();
+    routeFullGameEscapeToClient(runtime, page);
+    return;
+  }
+
   if (runtime.mode !== "game" || runtime.menu.keys.state.key_dest !== keydest_t.key_game) {
     return;
   }
@@ -2278,10 +2318,30 @@ function handlePointerDown(event: PointerEvent, runtime: FullGameRuntime, page: 
 }
 
 function handlePointerLockChange(runtime: FullGameRuntime, page: FullGamePage): void {
+  const shouldRouteEscape = runtime.mouse.pointerLockEscapeArmed
+    && runtime.mode === "game"
+    && runtime.menu.keys.state.key_dest === keydest_t.key_game;
+
   runtime.mouse.pointerLocked = isFullGamePointerLocked(page);
   if (runtime.mouse.pointerLocked) {
     runtime.mouse.lookActive = true;
+    runtime.mouse.pointerLockEscapeArmed = runtime.mode === "game"
+      && runtime.menu.keys.state.key_dest === keydest_t.key_game;
+    return;
   }
+
+  runtime.mouse.pointerLockEscapeArmed = false;
+  if (shouldRouteEscape) {
+    routeFullGameEscapeToClient(runtime, page);
+  }
+}
+
+function routeFullGameEscapeToClient(runtime: FullGameRuntime, page: FullGamePage): void {
+  runtime.mouse.lookActive = false;
+  runtime.mouse.dragging = false;
+  Key_Event(runtime.menu.keys, K_ESCAPE, true, runtime.client.cls.realtime);
+  executeRuntimeCommandBuffer(runtime, page);
+  syncFullGameKeyDestination(runtime, page);
 }
 
 function handleMouseButton(event: MouseEvent, down: boolean, runtime: FullGameRuntime, page: FullGamePage): void {
@@ -2415,6 +2475,7 @@ function clearCanvas(page: FullGamePage): void {
 
 function resetFullGameMouseLook(runtime: FullGameRuntime): void {
   runtime.mouse.pointerLocked = false;
+  runtime.mouse.pointerLockEscapeArmed = false;
   runtime.mouse.lookActive = false;
   runtime.mouse.dragging = false;
 }
