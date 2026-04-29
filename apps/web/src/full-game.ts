@@ -1690,10 +1690,15 @@ function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSecond
     cvar: runtime.menu.cvar
   });
   syncThreeCameraToRefresh(renderer.camera, source.refreshFrame);
+  const consoleCanvas = runtime.menu.keys.state.key_dest === keydest_t.key_console
+    ? prepareConsoleCanvasOverlay(runtime, page, renderer)
+    : null;
   renderer.renderLoop.renderFrame({
     source,
-    elapsedSeconds: runtime.client.cl.time * 0.001
+    elapsedSeconds: runtime.client.cl.time * 0.001,
+    ...(consoleCanvas ? { canvasOverlay: consoleCanvas } : {})
   });
+  runtime.consoleRenderedInThree = consoleCanvas !== null;
 }
 
 function ensureFullGameRenderer(
@@ -1890,6 +1895,25 @@ function drawConsoleFrame(runtime: FullGameRuntime, page: FullGamePage): void {
   }
 
   drawConsoleSnapshotCanvas(runtime, page, snapshot);
+}
+
+function prepareConsoleCanvasOverlay(
+  runtime: FullGameRuntime,
+  page: FullGamePage,
+  renderer: FullGameRendererState
+): HTMLCanvasElement | null {
+  const frac = SCR_RunConsole(runtime.client, {
+    keyDest: "console"
+  });
+  const width = Math.max(1, page.gameViewport.clientWidth || window.innerWidth || LOGICAL_WIDTH);
+  const height = Math.max(1, page.gameViewport.clientHeight || window.innerHeight || LOGICAL_HEIGHT);
+  const snapshot = Con_DrawConsole(runtime.console, frac, width, height);
+  if (!snapshot) {
+    return null;
+  }
+
+  drawConsoleSnapshotToCanvas(runtime, page, renderer.consoleCanvas, snapshot);
+  return renderer.consoleCanvas;
 }
 
 function drawConsoleSnapshotToCanvas(
