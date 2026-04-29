@@ -1692,15 +1692,7 @@ function drawGameFrame(runtime: FullGameRuntime, page: FullGamePage, deltaSecond
   syncThreeCameraToRefresh(renderer.camera, source.refreshFrame);
   renderer.renderLoop.renderFrame({
     source,
-    elapsedSeconds: runtime.client.cl.time * 0.001,
-    ...(runtime.menu.keys.state.key_dest === keydest_t.key_console
-      ? {
-          drawOverlay: ({ ref, viewportWidth, viewportHeight }) => {
-            drawConsoleFrameRef(runtime, ref, viewportWidth, viewportHeight);
-            runtime.consoleRenderedInThree = true;
-          }
-        }
-      : {})
+    elapsedSeconds: runtime.client.cl.time * 0.001
   });
 }
 
@@ -1887,6 +1879,7 @@ function drawConsoleFrame(runtime: FullGameRuntime, page: FullGamePage): void {
     if (snapshot) {
       drawConsoleSnapshotToCanvas(runtime, page, renderer.consoleCanvas, snapshot);
       renderer.renderLoop.renderCanvasOverlay(renderer.consoleCanvas);
+      runtime.consoleRenderedInThree = true;
     }
     return;
   }
