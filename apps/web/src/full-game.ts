@@ -244,6 +244,7 @@ const STARTUP_CINEMATICS = [
 
 const LOGICAL_WIDTH = 640;
 const LOGICAL_HEIGHT = 480;
+const FORCE_HTML_CONSOLE_OVERLAY_FOR_TEST = true;
 
 type DrawCommand =
   | { type: "pic"; x: number; y: number; name: string; width?: number; height?: number }
@@ -494,7 +495,8 @@ function createPage(root: HTMLElement): FullGamePage {
   consolePanel.style.boxSizing = "border-box";
   consolePanel.style.background = "rgba(0, 0, 0, 0.88)";
   consolePanel.style.border = "1px solid rgba(216, 210, 199, 0.34)";
-  consolePanel.style.zIndex = "35";
+  consolePanel.style.zIndex = "10000";
+  consolePanel.style.pointerEvents = "auto";
 
   const consoleOutput = document.createElement("pre");
   consoleOutput.style.flex = "1";
@@ -571,6 +573,15 @@ function setHtmlConsoleVisible(runtime: FullGameRuntime, page: FullGamePage, vis
 
   renderHtmlConsole(runtime, page);
   page.consoleInput.focus();
+}
+
+function syncHtmlConsoleOverlayForTest(runtime: FullGameRuntime, page: FullGamePage): void {
+  if (!FORCE_HTML_CONSOLE_OVERLAY_FOR_TEST) {
+    return;
+  }
+
+  const visible = runtime.menu.keys.state.key_dest === keydest_t.key_console;
+  page.consolePanel.style.display = visible ? "flex" : "none";
 }
 
 function renderHtmlConsole(runtime: FullGameRuntime, page: FullGamePage): void {
@@ -1558,6 +1569,8 @@ function frame(time: number, runtime: FullGameRuntime, page: FullGamePage): void
     drawConsoleFrame(runtime, page);
   }
 
+  syncHtmlConsoleOverlayForTest(runtime, page);
+
   if (page.consolePanel.style.display !== "none") {
     renderHtmlConsole(runtime, page);
   }
@@ -2246,10 +2259,6 @@ function pcxToCanvas(image: PcxImage): HTMLCanvasElement {
 }
 
 function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: FullGamePage): void {
-  if (isTextInputTarget(event.target)) {
-    return;
-  }
-
   if (isConsoleToggleDomKey(event)) {
     event.preventDefault();
     void runtime.audio.unlock();
@@ -2260,6 +2269,10 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
       `touche console detectee: key=${formatDomKeyForLog(event.key)} code=${event.code}`,
       `console: ${before} -> ${after}`
     ].join("\n"));
+    return;
+  }
+
+  if (isTextInputTarget(event.target)) {
     return;
   }
 
