@@ -33,7 +33,7 @@ import {
   type QcommonHostRuntime,
   type qboolean
 } from "../../qcommon/src/index.js";
-import { connstate_t, type ClientRuntime } from "./types.js";
+import { connstate_t, type ClientRuntime } from "./client.js";
 
 export const KEY_ARRAY_SIZE = 256;
 export const MAXCMDLINE = 256;

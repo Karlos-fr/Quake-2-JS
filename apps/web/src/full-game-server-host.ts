@@ -14,7 +14,7 @@
 
 import { readMountedFile, type VirtualFilesystem } from "../../../packages/filesystem/src/index.js";
 import { CL_ParseServerMessage, type ClientParseHooks } from "../../../packages/client/src/cl_parse.js";
-import { connstate_t, type ClientRuntime } from "../../../packages/client/src/types.js";
+import { connstate_t, type ClientRuntime } from "../../../packages/client/src/client.js";
 import { createSizeBuffer, MSG_BeginReading, SZ_Clear, SZ_Write } from "../../../packages/memory/src/index.js";
 import {
   GetGameApiFunction,

@@ -10,7 +10,7 @@
  * - packages/game/src/g_utils.ts
  */
 
-import type { BspEntity, BspMap } from "../../formats/src/bsp.js";
+import type { BspEntity, BspMap } from "../../formats/src/qfiles.js";
 import {
   CM_BoxTrace,
   CM_InlineModel,

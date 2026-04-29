@@ -1,5 +1,5 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Expose the low-level binary and buffer primitives used by the Quake II port.
  *
  * This file is not a direct source port.

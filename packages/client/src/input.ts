@@ -1,5 +1,5 @@
 /**
- * File: input-device.ts
+ * File: input.ts
  * Source: Quake II original / client/input.h
  * Purpose: Port the external input-device header declarations used by the Quake II client.
  *

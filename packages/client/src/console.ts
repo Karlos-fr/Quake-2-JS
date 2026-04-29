@@ -36,7 +36,7 @@ import {
   type qboolean
 } from "../../qcommon/src/index.js";
 import { MAXCMDLINE, keydest_t, type ClientKeyContext } from "./keys.js";
-import { connstate_t, type ClientRuntime } from "./types.js";
+import { connstate_t, type ClientRuntime } from "./client.js";
 
 export const NUM_CON_TIMES = 4;
 export const CON_TEXTSIZE = 32768;

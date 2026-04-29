@@ -1,5 +1,5 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Expose the Quake II server package entry points.
  *
  * This file is not a direct source port.

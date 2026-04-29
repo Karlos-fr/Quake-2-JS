@@ -31,7 +31,7 @@ import {
   RF_SHELL_BLUE,
   YAW,
   type vec3_t
-} from "../../qcommon/src/index.js";
+} from "../../qcommon/src/q_shared.js";
 import {
   CONTENTS_LAVA,
   CONTENTS_SLIME,

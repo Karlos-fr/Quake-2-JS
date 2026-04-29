@@ -1,5 +1,5 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Expose the Three.js rendering bridge helpers for Quake II runtime data.
  *
  * This file is not a direct source port.

@@ -1,5 +1,5 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Expose renderer-agnostic contracts and bridge helpers for Quake II data.
  *
  * This file is not a direct source port.

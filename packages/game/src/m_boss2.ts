@@ -20,7 +20,7 @@ import {
   ATTN_NONE,
   CHAN_VOICE,
   type vec3_t
-} from "../../qcommon/src/index.js";
+} from "../../qcommon/src/q_shared.js";
 import { CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID } from "../../qcommon/src/q_shared.js";
 import {
   AI_STAND_GROUND,

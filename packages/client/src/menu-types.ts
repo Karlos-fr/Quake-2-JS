@@ -41,7 +41,7 @@ import {
 } from "./qmenu.js";
 import { createRefExport, type refexport_t } from "./ref.js";
 import type { refdef_t, entity_t } from "./ref.js";
-import { type ClientRuntime } from "./types.js";
+import { type ClientRuntime } from "./client.js";
 import { type ClientVidContext } from "./vid.js";
 
 export const MAX_MENU_DEPTH = 8;

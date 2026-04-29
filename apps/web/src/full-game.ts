@@ -175,7 +175,7 @@ import {
   V_Init
 } from "../../../packages/client/src/view.js";
 import { createRefExport, type refexport_t, type refimport_t } from "../../../packages/client/src/ref.js";
-import { createClientRuntime, connstate_t, type ClientRuntime } from "../../../packages/client/src/types.js";
+import { createClientRuntime, connstate_t, type ClientRuntime } from "../../../packages/client/src/client.js";
 import type { ClientRefreshFrame } from "../../../packages/client/src/index.js";
 import { createClientVidMenuController, type ClientVidMenuController } from "../../../packages/client/src/vid-menu.js";
 import { createClientVidContext } from "../../../packages/client/src/vid.js";

@@ -78,7 +78,7 @@ import { Key_WriteBindings, type ClientKeyContext } from "./keys.js";
 import { CL_Precache_f, type ClientPrecacheHooks } from "./precache.js";
 import { type ClientParseHooks, CL_ClearState, CL_ParseClientinfo, CL_ParseServerMessage, CL_WriteStringCmd } from "./cl_parse.js";
 import { CL_RegisterSounds, type ClientSoundRegistrationHooks } from "./sound.js";
-import { createClientPrecacheState, type ClientRuntime, connstate_t } from "./types.js";
+import { createClientPrecacheState, type ClientRuntime, connstate_t } from "./client.js";
 
 /**
  * Category: New

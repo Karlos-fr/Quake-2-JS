@@ -75,7 +75,7 @@ import {
   type ClientInventoryBindingMap
 } from "./cl_inv.js";
 import type { refexport_t } from "./ref.js";
-import { connstate_t, type ClientRuntime } from "./types.js";
+import { connstate_t, type ClientRuntime } from "./client.js";
 
 export type {
   ClientCinematicSnapshot,

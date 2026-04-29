@@ -10,7 +10,7 @@
  * - packages/qcommon
  */
 
-import type { ClientRuntime } from "../../../packages/client/src/types.js";
+import type { ClientRuntime } from "../../../packages/client/src/client.js";
 import {
   Cbuf_AddText,
   Cmd_AddCommand,

@@ -16,7 +16,7 @@
  */
 
 import { AngleVectors, type vec3_t } from "../../qcommon/src/index.js";
-import { INSTANT_PARTICLE, type ClientRuntime, type centity_t, type cparticle_t, type client_sustain_t } from "./types.js";
+import { INSTANT_PARTICLE, type ClientRuntime, type centity_t, type cparticle_t, type client_sustain_t } from "./client.js";
 import type { ClientActionEffect } from "./cl_fx.js";
 
 const PARTICLE_GRAVITY = 40;

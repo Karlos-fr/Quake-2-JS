@@ -51,7 +51,7 @@
     "primaryTsTarget": "packages/client/src/cl_cin.ts",
     "secondaryTsTargets": [
       "packages/client/src/cl_scrn.ts",
-      "packages/client/src/types.ts"
+      "packages/client/src/client.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "not justified automatically; human review required",
@@ -109,7 +109,7 @@
       "packages/client/src/monster-flash.ts",
       "packages/client/src/cl_ents.ts",
       "packages/client/src/cl_main.ts",
-      "packages/client/src/types.ts"
+      "packages/client/src/client.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "broad split detected (8 declared TS targets)",
@@ -120,10 +120,10 @@
       "packages/client/src/cl_newfx.ts",
       "packages/client/src/cl_parse.ts",
       "packages/client/src/cl_tent.ts",
+      "packages/client/src/client.ts",
       "packages/client/src/index.ts",
       "packages/client/src/local-gameplay-sync.ts",
-      "packages/client/src/refresh.ts",
-      "packages/client/src/types.ts"
+      "packages/client/src/refresh.ts"
     ],
     "status": "to-review",
     "requiredEvidence": [
@@ -137,8 +137,8 @@
     "sourcePath": "Quake-2-master/client/cl_input.c",
     "primaryTsTarget": "packages/client/src/cl_input.ts",
     "secondaryTsTargets": [
-      "packages/client/src/input-device.ts",
-      "packages/client/src/types.ts"
+      "packages/client/src/input.ts",
+      "packages/client/src/client.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "not justified automatically; human review required",
@@ -191,7 +191,7 @@
       "packages/client/src/sound.ts",
       "packages/client/src/cl_parse.ts",
       "packages/client/src/sky.ts",
-      "packages/client/src/types.ts"
+      "packages/client/src/client.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "broad split detected (7 declared TS targets)",
@@ -274,7 +274,7 @@
     "primaryTsTarget": "packages/client/src/cl_scrn.ts",
     "secondaryTsTargets": [
       "packages/client/src/cl_main.ts",
-      "packages/client/src/types.ts",
+      "packages/client/src/client.ts",
       "packages/renderer-three/src/gl_draw.ts",
       "packages/renderer-three/src/three-gl-draw-adapter.ts"
     ],
@@ -308,7 +308,7 @@
       "packages/client/src/cl_newfx.ts",
       "packages/client/src/refresh.ts",
       "packages/client/src/sound.ts",
-      "packages/client/src/types.ts"
+      "packages/client/src/client.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "broad split detected (7 declared TS targets)",
@@ -367,18 +367,26 @@
   },
   {
     "sourcePath": "Quake-2-master/client/client.h",
-    "primaryTsTarget": "packages/client/src/types.ts",
+    "primaryTsTarget": "packages/client/src/client.ts",
     "secondaryTsTargets": [
       "packages/client/src/keys.ts",
       "packages/client/src/index.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "large source surface detected (153 extracted source symbols)",
-    "primaryNameEvidence": "primary TS target does not keep the source basename; justification required",
+    "primaryNameEvidence": "primary TS target keeps the source basename",
     "publicImportImpact": [
       "apps/web/src/full-game-command-bridge.ts",
+      "apps/web/src/full-game-local-session.ts",
+      "apps/web/src/full-game-render-loop.ts",
+      "apps/web/src/full-game-render-source.ts",
       "apps/web/src/full-game-server-host.ts",
       "apps/web/src/full-game.ts",
+      "apps/web/src/local-client-controller.ts",
+      "apps/web/src/local-collision-adapter.ts",
+      "apps/web/src/main.ts",
+      "apps/web/src/web-demo-loop.ts",
+      "apps/web/src/web-save-storage.ts",
       "packages/client/src/cl_cin.ts",
       "packages/client/src/cl_ents.ts",
       "packages/client/src/cl_fx.ts",
@@ -393,8 +401,10 @@
       "packages/client/src/download.ts",
       "packages/client/src/index.ts",
       "packages/client/src/keys.ts",
+      "packages/client/src/local-brush-models.ts",
       "packages/client/src/local-client-bootstrap.ts",
       "packages/client/src/local-gameplay-sync.ts",
+      "packages/client/src/local-input.ts",
       "packages/client/src/local-loop.ts",
       "packages/client/src/local-session.ts",
       "packages/client/src/menu-types.ts",
@@ -403,7 +413,24 @@
       "packages/client/src/sky.ts",
       "packages/client/src/snd_dma.ts",
       "packages/client/src/sound.ts",
-      "packages/client/src/view.ts"
+      "packages/client/src/view.ts",
+      "packages/game/src/g_save.ts",
+      "packages/game/src/m_actor.ts",
+      "packages/game/src/runtime.ts",
+      "packages/platform/src/web-audio-adapter.ts",
+      "packages/qcommon/src/qcommon.ts",
+      "packages/renderer-common/src/sky.ts",
+      "packages/renderer-three/src/gl-world-scene-adapter.ts",
+      "packages/renderer-three/src/gl_light.ts",
+      "packages/renderer-three/src/gl_local.ts",
+      "packages/renderer-three/src/gl_rmain.ts",
+      "packages/renderer-three/src/md2-mesh-builder.ts",
+      "packages/renderer-three/src/particle-sync.ts",
+      "packages/renderer-three/src/ref-gl-host.ts",
+      "packages/renderer-three/src/refresh-entity-sync.ts",
+      "packages/renderer-three/src/three-beam-sync.ts",
+      "packages/renderer-three/src/three-dlight-sync.ts",
+      "packages/renderer-three/src/three-polyblend-overlay.ts"
     ],
     "status": "to-review",
     "requiredEvidence": [
@@ -411,9 +438,7 @@
       "proof primary TS target keeps source basename or justified exception",
       "public import impact"
     ],
-    "findings": [
-      "primary-name-not-source-basename"
-    ]
+    "findings": []
   },
   {
     "sourcePath": "Quake-2-master/client/console.c",
@@ -463,13 +488,13 @@
   },
   {
     "sourcePath": "Quake-2-master/client/input.h",
-    "primaryTsTarget": "packages/client/src/input-device.ts",
+    "primaryTsTarget": "packages/client/src/input.ts",
     "secondaryTsTargets": [
       "packages/client/src/index.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "not justified automatically; human review required",
-    "primaryNameEvidence": "primary TS target does not keep the source basename; justification required",
+    "primaryNameEvidence": "primary TS target keeps the source basename",
     "publicImportImpact": [
       "packages/client/src/cl_input.ts",
       "packages/client/src/index.ts"
@@ -481,7 +506,6 @@
       "public import impact"
     ],
     "findings": [
-      "primary-name-not-source-basename",
       "small-source-split-needs-justification"
     ]
   },
@@ -700,7 +724,7 @@
     "sourcePath": "Quake-2-master/client/screen.h",
     "primaryTsTarget": "packages/client/src/cl_scrn.ts",
     "secondaryTsTargets": [
-      "packages/client/src/types.ts",
+      "packages/client/src/client.ts",
       "packages/client/src/cl_cin.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
@@ -1314,7 +1338,7 @@
     "primaryTsTarget": "packages/game/src/g_spawn.ts",
     "secondaryTsTargets": [
       "packages/game/src/g_main.ts",
-      "packages/formats/src/bsp.ts",
+      "packages/formats/src/qfiles.ts",
       "packages/game/src/g_items.ts",
       "packages/game/src/g_misc.ts"
     ],
@@ -2861,7 +2885,7 @@
   },
   {
     "sourcePath": "Quake-2-master/game/q_shared.c",
-    "primaryTsTarget": "packages/math/src/index.ts",
+    "primaryTsTarget": "packages/math/src/q_shared.ts",
     "secondaryTsTargets": [
       "packages/qcommon/src/common.ts",
       "packages/qcommon/src/system.ts",
@@ -2870,152 +2894,28 @@
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "broad split detected (5 declared TS targets)",
-    "primaryNameEvidence": "primary TS target does not keep the source basename; justification required",
+    "primaryNameEvidence": "primary TS target keeps the source basename",
     "publicImportImpact": [
-      "apps/web/src/full-game-command-bridge.ts",
-      "apps/web/src/full-game-local-session.ts",
-      "apps/web/src/full-game-local-transport.ts",
-      "apps/web/src/full-game-render-loop.ts",
-      "apps/web/src/full-game-render-source.ts",
-      "apps/web/src/full-game-server-host.ts",
-      "apps/web/src/full-game.ts",
-      "apps/web/src/local-client-controller.ts",
-      "apps/web/src/local-collision-adapter.ts",
-      "apps/web/src/main.ts",
-      "apps/web/src/web-config-commands.ts",
-      "apps/web/src/web-config-storage.ts",
-      "apps/web/src/web-demo-loop.ts",
-      "apps/web/src/web-map-bootstrap.ts",
-      "apps/web/src/web-render-bootstrap.ts",
-      "apps/web/src/web-shell.ts",
-      "packages/client/src/cdaudio.ts",
-      "packages/client/src/cl_cin.ts",
-      "packages/client/src/cl_ents.ts",
-      "packages/client/src/cl_fx.ts",
-      "packages/client/src/cl_input.ts",
-      "packages/client/src/cl_inv.ts",
-      "packages/client/src/cl_main.ts",
-      "packages/client/src/cl_newfx.ts",
-      "packages/client/src/cl_parse.ts",
-      "packages/client/src/cl_scrn.ts",
-      "packages/client/src/cl_tent.ts",
-      "packages/client/src/console.ts",
-      "packages/client/src/download.ts",
-      "packages/client/src/index.ts",
-      "packages/client/src/input-device.ts",
-      "packages/client/src/keys.ts",
-      "packages/client/src/local-brush-models.ts",
-      "packages/client/src/local-client-bootstrap.ts",
-      "packages/client/src/local-gameplay-sync.ts",
-      "packages/client/src/local-input.ts",
-      "packages/client/src/local-loop.ts",
-      "packages/client/src/local-session.ts",
-      "packages/client/src/menu-main-game.ts",
-      "packages/client/src/menu-multiplayer.ts",
-      "packages/client/src/menu-options-keys.ts",
-      "packages/client/src/menu-player-config.ts",
-      "packages/client/src/menu-runtime.ts",
-      "packages/client/src/menu-types.ts",
-      "packages/client/src/precache.ts",
-      "packages/client/src/qmenu.ts",
-      "packages/client/src/ref.ts",
-      "packages/client/src/refresh.ts",
-      "packages/client/src/snd_dma.ts",
-      "packages/client/src/snd_loc.ts",
-      "packages/client/src/snd_mem.ts",
-      "packages/client/src/sound-public.ts",
-      "packages/client/src/sound.ts",
-      "packages/client/src/types.ts",
-      "packages/client/src/vid-menu.ts",
-      "packages/client/src/view.ts",
       "packages/game/src/g_ai.ts",
-      "packages/game/src/g_chase.ts",
-      "packages/game/src/g_cmds.ts",
-      "packages/game/src/g_combat.ts",
-      "packages/game/src/g_func.ts",
-      "packages/game/src/g_items.ts",
-      "packages/game/src/g_local.ts",
-      "packages/game/src/g_main.ts",
-      "packages/game/src/g_misc.ts",
       "packages/game/src/g_monster.ts",
       "packages/game/src/g_phys.ts",
-      "packages/game/src/g_save.ts",
-      "packages/game/src/g_svcmds.ts",
       "packages/game/src/g_target.ts",
-      "packages/game/src/g_trigger.ts",
-      "packages/game/src/g_turret.ts",
-      "packages/game/src/g_utils.ts",
       "packages/game/src/g_weapon.ts",
-      "packages/game/src/game.ts",
-      "packages/game/src/local-game-bootstrap.ts",
-      "packages/game/src/m_actor.ts",
-      "packages/game/src/m_berserk.ts",
       "packages/game/src/m_boss2.ts",
-      "packages/game/src/m_boss3.ts",
       "packages/game/src/m_boss31.ts",
       "packages/game/src/m_boss32.ts",
-      "packages/game/src/m_brain.ts",
-      "packages/game/src/m_chick.ts",
-      "packages/game/src/m_flash.ts",
-      "packages/game/src/m_flipper.ts",
-      "packages/game/src/m_float.ts",
-      "packages/game/src/m_flyer.ts",
-      "packages/game/src/m_gladiator.ts",
-      "packages/game/src/m_gunner.ts",
-      "packages/game/src/m_hover.ts",
-      "packages/game/src/m_infantry.ts",
-      "packages/game/src/m_insane.ts",
-      "packages/game/src/m_medic.ts",
-      "packages/game/src/m_move.ts",
-      "packages/game/src/m_mutant.ts",
-      "packages/game/src/m_parasite.ts",
-      "packages/game/src/m_soldier.ts",
-      "packages/game/src/m_supertank.ts",
-      "packages/game/src/m_tank.ts",
-      "packages/game/src/p_client.ts",
-      "packages/game/src/p_hud.ts",
-      "packages/game/src/p_trail.ts",
       "packages/game/src/p_view.ts",
-      "packages/game/src/p_weapon.ts",
-      "packages/game/src/runtime.ts",
-      "packages/platform/src/web-audio-adapter.ts",
-      "packages/platform/src/web-cd-audio-adapter.ts",
+      "packages/qcommon/src/anorms.ts",
       "packages/qcommon/src/cmd.ts",
-      "packages/qcommon/src/collision.ts",
+      "packages/qcommon/src/cmodel.ts",
+      "packages/qcommon/src/common.ts",
       "packages/qcommon/src/index.ts",
       "packages/qcommon/src/messages.ts",
       "packages/qcommon/src/net_chan.ts",
       "packages/qcommon/src/pmove.ts",
+      "packages/qcommon/src/q_shared.ts",
       "packages/qcommon/src/qcommon.ts",
-      "packages/qcommon/src/runtime.ts",
-      "packages/renderer-three/src/gl-model-loader.ts",
-      "packages/renderer-three/src/gl-model.ts",
-      "packages/renderer-three/src/gl-world-scene-adapter.ts",
-      "packages/renderer-three/src/gl_draw.ts",
-      "packages/renderer-three/src/gl_image.ts",
-      "packages/renderer-three/src/gl_light.ts",
-      "packages/renderer-three/src/gl_local.ts",
-      "packages/renderer-three/src/gl_mesh.ts",
-      "packages/renderer-three/src/gl_rmain.ts",
-      "packages/renderer-three/src/gl_rmisc.ts",
-      "packages/renderer-three/src/gl_rsurf.ts",
-      "packages/renderer-three/src/gl_warp.ts",
-      "packages/renderer-three/src/md2-mesh-builder.ts",
-      "packages/renderer-three/src/particle-sync.ts",
-      "packages/renderer-three/src/quake-sky-resolver.ts",
-      "packages/renderer-three/src/refresh-entity-sync.ts",
-      "packages/renderer-three/src/sky-scene-adapter.ts",
-      "packages/renderer-three/src/three-beam-sync.ts",
-      "packages/server/src/host.ts",
-      "packages/server/src/runtime.ts",
-      "packages/server/src/server.ts",
-      "packages/server/src/sv_ccmds.ts",
-      "packages/server/src/sv_ents.ts",
-      "packages/server/src/sv_game.ts",
-      "packages/server/src/sv_init.ts",
-      "packages/server/src/sv_main.ts",
-      "packages/server/src/sv_send.ts",
-      "packages/server/src/sv_user.ts",
+      "packages/qcommon/src/system.ts",
       "packages/server/src/sv_world.ts"
     ],
     "status": "to-review",
@@ -3024,9 +2924,7 @@
       "proof primary TS target keeps source basename or justified exception",
       "public import impact"
     ],
-    "findings": [
-      "primary-name-not-source-basename"
-    ]
+    "findings": []
   },
   {
     "sourcePath": "Quake-2-master/game/q_shared.h",
@@ -3035,7 +2933,7 @@
       "packages/qcommon/src/common.ts",
       "packages/qcommon/src/system.ts",
       "packages/qcommon/src/cvar.ts",
-      "packages/math/src/index.ts",
+      "packages/math/src/q_shared.ts",
       "packages/game/src/m_flash.ts",
       "packages/client/src/monster-flash.ts"
     ],
@@ -3044,18 +2942,18 @@
     "primaryNameEvidence": "primary TS target keeps the source basename",
     "publicImportImpact": [
       "packages/game/src/g_ai.ts",
-      "packages/game/src/g_items.ts",
       "packages/game/src/g_monster.ts",
+      "packages/game/src/g_phys.ts",
       "packages/game/src/g_target.ts",
       "packages/game/src/g_weapon.ts",
       "packages/game/src/m_boss2.ts",
       "packages/game/src/m_boss31.ts",
       "packages/game/src/m_boss32.ts",
       "packages/game/src/p_view.ts",
-      "packages/math/src/index.ts",
+      "packages/math/src/q_shared.ts",
       "packages/qcommon/src/anorms.ts",
       "packages/qcommon/src/cmd.ts",
-      "packages/qcommon/src/collision.ts",
+      "packages/qcommon/src/cmodel.ts",
       "packages/qcommon/src/common.ts",
       "packages/qcommon/src/index.ts",
       "packages/qcommon/src/messages.ts",
@@ -3063,9 +2961,6 @@
       "packages/qcommon/src/pmove.ts",
       "packages/qcommon/src/qcommon.ts",
       "packages/qcommon/src/system.ts",
-      "packages/server/src/sv_ents.ts",
-      "packages/server/src/sv_send.ts",
-      "packages/server/src/sv_user.ts",
       "packages/server/src/sv_world.ts"
     ],
     "status": "to-review",
@@ -3100,17 +2995,15 @@
   },
   {
     "sourcePath": "Quake-2-master/qcommon/cmodel.c",
-    "primaryTsTarget": "packages/qcommon/src/collision.ts",
+    "primaryTsTarget": "packages/qcommon/src/cmodel.ts",
     "secondaryTsTargets": [
       "packages/qcommon/src/index.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "large source surface detected (109 extracted source symbols)",
-    "primaryNameEvidence": "primary TS target does not keep the source basename; justification required",
+    "primaryNameEvidence": "primary TS target keeps the source basename",
     "publicImportImpact": [
-      "packages/game/src/g_weapon.ts",
-      "packages/qcommon/src/index.ts",
-      "packages/server/src/server.ts"
+      "packages/qcommon/src/index.ts"
     ],
     "status": "to-review",
     "requiredEvidence": [
@@ -3118,9 +3011,7 @@
       "proof primary TS target keeps source basename or justified exception",
       "public import impact"
     ],
-    "findings": [
-      "primary-name-not-source-basename"
-    ]
+    "findings": []
   },
   {
     "sourcePath": "Quake-2-master/qcommon/common.c",
@@ -3185,10 +3076,11 @@
       "packages/client/src/cl_parse.ts",
       "packages/client/src/cl_scrn.ts",
       "packages/client/src/cl_tent.ts",
+      "packages/client/src/client.ts",
       "packages/client/src/console.ts",
       "packages/client/src/download.ts",
       "packages/client/src/index.ts",
-      "packages/client/src/input-device.ts",
+      "packages/client/src/input.ts",
       "packages/client/src/keys.ts",
       "packages/client/src/local-brush-models.ts",
       "packages/client/src/local-client-bootstrap.ts",
@@ -3210,7 +3102,6 @@
       "packages/client/src/snd_mem.ts",
       "packages/client/src/sound-public.ts",
       "packages/client/src/sound.ts",
-      "packages/client/src/types.ts",
       "packages/client/src/vid-menu.ts",
       "packages/client/src/view.ts",
       "packages/game/src/g_ai.ts",
@@ -3337,10 +3228,11 @@
       "packages/client/src/cl_parse.ts",
       "packages/client/src/cl_scrn.ts",
       "packages/client/src/cl_tent.ts",
+      "packages/client/src/client.ts",
       "packages/client/src/console.ts",
       "packages/client/src/download.ts",
       "packages/client/src/index.ts",
-      "packages/client/src/input-device.ts",
+      "packages/client/src/input.ts",
       "packages/client/src/keys.ts",
       "packages/client/src/local-brush-models.ts",
       "packages/client/src/local-client-bootstrap.ts",
@@ -3362,7 +3254,6 @@
       "packages/client/src/snd_mem.ts",
       "packages/client/src/sound-public.ts",
       "packages/client/src/sound.ts",
-      "packages/client/src/types.ts",
       "packages/client/src/vid-menu.ts",
       "packages/client/src/view.ts",
       "packages/game/src/g_ai.ts",
@@ -3460,16 +3351,38 @@
   },
   {
     "sourcePath": "Quake-2-master/qcommon/files.c",
-    "primaryTsTarget": "packages/filesystem/src/virtual-filesystem.ts",
+    "primaryTsTarget": "packages/filesystem/src/files.ts",
     "secondaryTsTargets": [
       "packages/filesystem/src/index.ts",
       "packages/formats/src/pak.ts"
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "not justified automatically; human review required",
-    "primaryNameEvidence": "primary TS target does not keep the source basename; justification required",
+    "primaryNameEvidence": "primary TS target keeps the source basename",
     "publicImportImpact": [
-      "packages/filesystem/src/index.ts"
+      "apps/web/src/full-game-local-session.ts",
+      "apps/web/src/full-game-render-loop.ts",
+      "apps/web/src/full-game-server-host.ts",
+      "apps/web/src/full-game.ts",
+      "apps/web/src/main.ts",
+      "apps/web/src/web-config-storage.ts",
+      "apps/web/src/web-demo-loop.ts",
+      "apps/web/src/web-map-bootstrap.ts",
+      "packages/client/src/cl_cin.ts",
+      "packages/client/src/cl_main.ts",
+      "packages/client/src/console.ts",
+      "packages/client/src/menu-main-game.ts",
+      "packages/filesystem/src/index.ts",
+      "packages/formats/src/pak.ts",
+      "packages/platform/src/web-audio-adapter.ts",
+      "packages/platform/src/web-cd-audio-adapter.ts",
+      "packages/qcommon/src/runtime.ts",
+      "packages/renderer-three/src/gl-world-scene-adapter.ts",
+      "packages/renderer-three/src/md2-mesh-builder.ts",
+      "packages/renderer-three/src/particle-sync.ts",
+      "packages/renderer-three/src/quake-sky-resolver.ts",
+      "packages/renderer-three/src/refresh-entity-sync.ts",
+      "packages/renderer-three/src/three-beam-sync.ts"
     ],
     "status": "to-review",
     "requiredEvidence": [
@@ -3477,9 +3390,7 @@
       "proof primary TS target keeps source basename or justified exception",
       "public import impact"
     ],
-    "findings": [
-      "primary-name-not-source-basename"
-    ]
+    "findings": []
   },
   {
     "sourcePath": "Quake-2-master/qcommon/md4.c",
@@ -3491,7 +3402,7 @@
     "sizeOrComplexityJustification": "not justified automatically; human review required",
     "primaryNameEvidence": "primary TS target keeps the source basename",
     "publicImportImpact": [
-      "packages/qcommon/src/collision.ts",
+      "packages/qcommon/src/cmodel.ts",
       "packages/qcommon/src/index.ts",
       "packages/qcommon/src/qcommon.ts"
     ],
@@ -3537,9 +3448,9 @@
       "packages/qcommon/src/protocol.ts",
       "packages/qcommon/src/cmd.ts",
       "packages/qcommon/src/cvar.ts",
-      "packages/qcommon/src/collision.ts",
+      "packages/qcommon/src/cmodel.ts",
       "packages/qcommon/src/pmove.ts",
-      "packages/filesystem/src/virtual-filesystem.ts",
+      "packages/filesystem/src/files.ts",
       "packages/qcommon/src/md4.ts",
       "packages/qcommon/src/common.ts",
       "packages/qcommon/src/system.ts"
@@ -3569,10 +3480,11 @@
       "packages/client/src/cl_parse.ts",
       "packages/client/src/cl_scrn.ts",
       "packages/client/src/cl_tent.ts",
+      "packages/client/src/client.ts",
       "packages/client/src/console.ts",
       "packages/client/src/download.ts",
       "packages/client/src/index.ts",
-      "packages/client/src/input-device.ts",
+      "packages/client/src/input.ts",
       "packages/client/src/keys.ts",
       "packages/client/src/local-brush-models.ts",
       "packages/client/src/local-client-bootstrap.ts",
@@ -3594,7 +3506,6 @@
       "packages/client/src/snd_mem.ts",
       "packages/client/src/sound-public.ts",
       "packages/client/src/sound.ts",
-      "packages/client/src/types.ts",
       "packages/client/src/vid-menu.ts",
       "packages/client/src/view.ts",
       "packages/game/src/g_ai.ts",
@@ -3689,7 +3600,7 @@
   },
   {
     "sourcePath": "Quake-2-master/qcommon/qfiles.h",
-    "primaryTsTarget": "packages/formats/src/bsp.ts",
+    "primaryTsTarget": "packages/formats/src/qfiles.ts",
     "secondaryTsTargets": [
       "packages/formats/src/pak.ts",
       "packages/formats/src/pcx.ts",
@@ -3700,12 +3611,17 @@
     ],
     "reason": "multiple TS targets declared; justification must be reviewed in phase 02.B",
     "sizeOrComplexityJustification": "large source surface detected (124 extracted source symbols)",
-    "primaryNameEvidence": "primary TS target does not keep the source basename; justification required",
+    "primaryNameEvidence": "primary TS target keeps the source basename",
     "publicImportImpact": [
       "packages/formats/src/index.ts",
+      "packages/formats/src/md2.ts",
+      "packages/formats/src/pak.ts",
+      "packages/formats/src/pcx.ts",
+      "packages/formats/src/sp2.ts",
+      "packages/formats/src/wal.ts",
       "packages/game/src/g_main.ts",
       "packages/game/src/runtime.ts",
-      "packages/qcommon/src/collision.ts"
+      "packages/qcommon/src/cmodel.ts"
     ],
     "status": "to-review",
     "requiredEvidence": [
@@ -3713,9 +3629,7 @@
       "proof primary TS target keeps source basename or justified exception",
       "public import impact"
     ],
-    "findings": [
-      "primary-name-not-source-basename"
-    ]
+    "findings": []
   },
   {
     "sourcePath": "Quake-2-master/ref_gl/gl_draw.c",

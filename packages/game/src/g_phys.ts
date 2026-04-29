@@ -47,7 +47,7 @@ import {
   type trace_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import { DotProduct } from "../../math/src/index.js";
+import { DotProduct } from "../../math/src/q_shared.js";
 
 const STOP_EPSILON = 0.1;
 const MAX_CLIP_PLANES = 5;

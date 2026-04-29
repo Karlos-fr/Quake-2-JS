@@ -94,7 +94,7 @@ import {
   CL_ParticleSteamEffect,
   CL_WidowSplash
 } from "./cl_newfx.js";
-import { INSTANT_PARTICLE, MAX_DLIGHTS, type ClientRuntime, type centity_t, type cparticle_t } from "./types.js";
+import { INSTANT_PARTICLE, MAX_DLIGHTS, type ClientRuntime, type centity_t, type cparticle_t } from "./client.js";
 import type { ClientDynamicLight, ClientRenderParticle } from "./refresh.js";
 
 const PARTICLE_GRAVITY = 40;

@@ -45,7 +45,7 @@ import {
   type ClientRuntime,
   type client_beam_t,
   type client_explosion_t
-} from "./types.js";
+} from "./client.js";
 
 const MODEL_PARASITE_SEGMENT = "models/monsters/parasite/segment/tris.md2";
 const MODEL_GRAPPLE_CABLE = "models/ctf/segment/tris.md2";

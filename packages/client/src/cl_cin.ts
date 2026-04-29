@@ -26,7 +26,7 @@ import type {
   HudDrawCommand
 } from "./render-contracts.js";
 import type { refexport_t } from "./ref.js";
-import { connstate_t, type ClientRuntime } from "./types.js";
+import { connstate_t, type ClientRuntime } from "./client.js";
 
 /**
  * Category: New

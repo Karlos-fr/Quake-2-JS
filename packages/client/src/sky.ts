@@ -16,7 +16,7 @@
  */
 
 import type { QuakeSkySnapshot } from "./render-contracts.js";
-import type { ClientRuntime } from "./types.js";
+import type { ClientRuntime } from "./client.js";
 
 /**
  * Category: New

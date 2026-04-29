@@ -1,5 +1,5 @@
 /**
- * File: bsp.ts
+ * File: qfiles.ts
  * Source: Quake II original / qcommon/qfiles.h
  * Purpose: Parse Quake II BSP map files and expose their core lumps for future rendering and collision ports.
  *

@@ -16,7 +16,7 @@ Il reconcilie le suivi, les sources C/H et les fichiers TS sans valider le porta
 - Fichiers TS non references par le suivi : 35
 - Lignes avec plusieurs cibles TS : 136
 - Lignes ciblant apps/web ou packages/platform : 3
-- Sources avec cible declaree non conforme au basename strict : 14
+- Sources avec cible declaree non conforme au basename strict : 9
 - Sources dupliquees dans le suivi : 0
 - Sources avec perimetre unknown : 0
 - Corrections factuelles applicables en 01.D : 0
@@ -46,8 +46,9 @@ Il reconcilie le suivi, les sources C/H et les fichiers TS sans valider le porta
 | Anomalie | Sources |
 | --- | --- |
 | multiple-declared-ts-targets | 136 |
-| strict-basename-target-missing | 105 |
-| declared-target-not-strict-basename | 14 |
+| strict-basename-target-missing | 100 |
+| declared-target-not-strict-basename | 9 |
+| strict-basename-target-multiple | 4 |
 | adapter-target-declared | 3 |
 
 ## Table de reference normalisee
@@ -72,10 +73,10 @@ Il reconcilie le suivi, les sources C/H et les fichiers TS sans valider le porta
 | Quake-2-master/client/cl_scrn.c | core-runtime | to-port | packages/client/src/cl_scrn.ts | cl_scrn.ts | packages/client/src/cl_scrn.ts | non | scripts/verify/quake2-cl-scrn.ts<br>scripts/verify/quake2-screen-header.ts<br>scripts/verify/quake2-three-gl-draw-adapter.ts | multiple-declared-ts-targets |
 | Quake-2-master/client/cl_tent.c | core-runtime | to-port | packages/client/src/cl_tent.ts | cl_tent.ts | packages/client/src/cl_tent.ts | non | scripts/verify/quake2-entities-phase8-scene.ts<br>scripts/verify/quake2-particle-sync.ts | multiple-declared-ts-targets |
 | Quake-2-master/client/cl_view.c | core-runtime | to-port | packages/client/src/view.ts | cl_view.ts |  | non | scripts/verify/quake2-cl-view.ts | multiple-declared-ts-targets<br>strict-basename-target-missing<br>adapter-target-declared<br>declared-target-not-strict-basename |
-| Quake-2-master/client/client.h | core-runtime | to-port | packages/client/src/types.ts | client.ts |  | non | scripts/verify/quake2-client-header.ts | multiple-declared-ts-targets<br>strict-basename-target-missing<br>declared-target-not-strict-basename |
+| Quake-2-master/client/client.h | core-runtime | to-port | packages/client/src/client.ts | client.ts | packages/client/src/client.ts | non | scripts/verify/quake2-client-header.ts | multiple-declared-ts-targets |
 | Quake-2-master/client/console.c | core-runtime | to-port | packages/client/src/console.ts | console.ts | packages/client/src/console.ts | non | scripts/verify/quake2-console-header.ts<br>scripts/verify/quake2-console.ts | multiple-declared-ts-targets |
 | Quake-2-master/client/console.h | core-runtime | to-port | packages/client/src/console.ts | console.ts | packages/client/src/console.ts | oui | scripts/verify/quake2-console-header.ts<br>scripts/verify/quake2-console.ts | multiple-declared-ts-targets |
-| Quake-2-master/client/input.h | core-runtime | to-port | packages/client/src/input-device.ts | input.ts |  | oui | scripts/verify/quake2-cl-input.ts<br>scripts/verify/quake2-input-header.ts | multiple-declared-ts-targets<br>strict-basename-target-missing<br>declared-target-not-strict-basename |
+| Quake-2-master/client/input.h | core-runtime | to-port | packages/client/src/input.ts | input.ts | packages/client/src/input.ts | oui | scripts/verify/quake2-cl-input.ts<br>scripts/verify/quake2-input-header.ts | multiple-declared-ts-targets |
 | Quake-2-master/client/keys.c | core-runtime | to-port | packages/client/src/keys.ts | keys.ts | packages/client/src/keys.ts | non | scripts/verify/quake2-keys-header.ts<br>scripts/verify/quake2-keys.ts | multiple-declared-ts-targets |
 | Quake-2-master/client/keys.h | core-runtime | to-port | packages/client/src/keys.ts | keys.ts | packages/client/src/keys.ts | non | scripts/verify/quake2-keys-header.ts<br>scripts/verify/quake2-keys.ts | multiple-declared-ts-targets |
 | Quake-2-master/client/menu.c | core-runtime | to-port | packages/client/src/menu.ts | menu.ts | packages/client/src/menu.ts | non | scripts/verify/quake2-menu.ts | multiple-declared-ts-targets |
@@ -120,8 +121,8 @@ Il reconcilie le suivi, les sources C/H et les fichiers TS sans valider le porta
 | Quake-2-master/ctf/p_trail.c | ctf | voluntarily-excluded |  | p_trail.ts | packages/game/src/p_trail.ts | non |  |  |
 | Quake-2-master/ctf/p_view.c | ctf | voluntarily-excluded |  | p_view.ts | packages/game/src/p_view.ts | non |  |  |
 | Quake-2-master/ctf/p_weapon.c | ctf | voluntarily-excluded |  | p_weapon.ts | packages/game/src/p_weapon.ts | non |  |  |
-| Quake-2-master/ctf/q_shared.c | ctf | voluntarily-excluded |  | q_shared.ts | packages/qcommon/src/q_shared.ts | non |  |  |
-| Quake-2-master/ctf/q_shared.h | ctf | voluntarily-excluded |  | q_shared.ts | packages/qcommon/src/q_shared.ts | non |  |  |
+| Quake-2-master/ctf/q_shared.c | ctf | voluntarily-excluded |  | q_shared.ts | packages/math/src/q_shared.ts<br>packages/qcommon/src/q_shared.ts | non |  | strict-basename-target-multiple |
+| Quake-2-master/ctf/q_shared.h | ctf | voluntarily-excluded |  | q_shared.ts | packages/math/src/q_shared.ts<br>packages/qcommon/src/q_shared.ts | non |  | strict-basename-target-multiple |
 | Quake-2-master/game/g_ai.c | core-runtime | to-port | packages/game/src/g_ai.ts | g_ai.ts | packages/game/src/g_ai.ts | non | scripts/verify/quake2-g-ai.ts | multiple-declared-ts-targets |
 | Quake-2-master/game/g_chase.c | core-runtime | to-port | packages/game/src/g_chase.ts | g_chase.ts | packages/game/src/g_chase.ts | non | scripts/verify/quake2-g-chase.ts | multiple-declared-ts-targets |
 | Quake-2-master/game/g_cmds.c | core-runtime | to-port | packages/game/src/g_cmds.ts | g_cmds.ts | packages/game/src/g_cmds.ts | non | scripts/verify/quake2-g-cmds.ts | multiple-declared-ts-targets |
@@ -194,8 +195,8 @@ Il reconcilie le suivi, les sources C/H et les fichiers TS sans valider le porta
 | Quake-2-master/game/p_trail.c | core-runtime | to-port | packages/game/src/p_trail.ts | p_trail.ts | packages/game/src/p_trail.ts | non | scripts/verify/quake2-p-trail.ts | multiple-declared-ts-targets |
 | Quake-2-master/game/p_view.c | core-runtime | to-port | packages/game/src/p_view.ts | p_view.ts | packages/game/src/p_view.ts | non | scripts/verify/quake2-g-main.ts<br>scripts/verify/quake2-p-view.ts | multiple-declared-ts-targets |
 | Quake-2-master/game/p_weapon.c | core-runtime | to-port | packages/game/src/p_weapon.ts | p_weapon.ts | packages/game/src/p_weapon.ts | non | scripts/verify/quake2-p-weapon.ts | multiple-declared-ts-targets |
-| Quake-2-master/game/q_shared.c | core-runtime | to-port | packages/math/src/index.ts | q_shared.ts | packages/qcommon/src/q_shared.ts | non | scripts/verify/quake2-q-shared-header.ts | multiple-declared-ts-targets |
-| Quake-2-master/game/q_shared.h | core-runtime | to-port | packages/qcommon/src/q_shared.ts | q_shared.ts | packages/qcommon/src/q_shared.ts | non | scripts/verify/quake2-q-shared-header.ts | multiple-declared-ts-targets |
+| Quake-2-master/game/q_shared.c | core-runtime | to-port | packages/math/src/q_shared.ts | q_shared.ts | packages/math/src/q_shared.ts<br>packages/qcommon/src/q_shared.ts | non | scripts/verify/quake2-q-shared-header.ts | multiple-declared-ts-targets<br>strict-basename-target-multiple |
+| Quake-2-master/game/q_shared.h | core-runtime | to-port | packages/qcommon/src/q_shared.ts | q_shared.ts | packages/math/src/q_shared.ts<br>packages/qcommon/src/q_shared.ts | non | scripts/verify/quake2-q-shared-header.ts | multiple-declared-ts-targets<br>strict-basename-target-multiple |
 | Quake-2-master/irix/cd_irix.c | platform-native | voluntarily-excluded |  | cd_irix.ts |  | non |  | strict-basename-target-missing |
 | Quake-2-master/irix/glw_imp.c | platform-native | voluntarily-excluded |  | glw_imp.ts |  | non |  | strict-basename-target-missing |
 | Quake-2-master/irix/q_shirix.c | platform-native | voluntarily-excluded |  | q_shirix.ts |  | non |  | strict-basename-target-missing |
@@ -233,17 +234,17 @@ Il reconcilie le suivi, les sources C/H et les fichiers TS sans valider le porta
 | Quake-2-master/null/sys_null.c | platform-native | voluntarily-excluded |  | sys_null.ts |  | non |  | strict-basename-target-missing |
 | Quake-2-master/null/vid_null.c | platform-native | voluntarily-excluded |  | vid_null.ts |  | non |  | strict-basename-target-missing |
 | Quake-2-master/qcommon/cmd.c | core-runtime | to-port | packages/qcommon/src/cmd.ts | cmd.ts | packages/qcommon/src/cmd.ts | non | scripts/verify/quake2-cmd.ts | multiple-declared-ts-targets |
-| Quake-2-master/qcommon/cmodel.c | core-runtime | to-port | packages/qcommon/src/collision.ts | cmodel.ts |  | non | scripts/verify/quake2-cmodel.ts<br>scripts/verify/quake2-collision-phase1.ts | multiple-declared-ts-targets<br>strict-basename-target-missing<br>declared-target-not-strict-basename |
+| Quake-2-master/qcommon/cmodel.c | core-runtime | to-port | packages/qcommon/src/cmodel.ts | cmodel.ts | packages/qcommon/src/cmodel.ts | non | scripts/verify/quake2-cmodel.ts<br>scripts/verify/quake2-collision-phase1.ts | multiple-declared-ts-targets |
 | Quake-2-master/qcommon/common.c | core-runtime | to-port | packages/qcommon/src/common.ts | common.ts | packages/qcommon/src/common.ts | non | scripts/verify/quake2-qcommon-header.ts | multiple-declared-ts-targets |
 | Quake-2-master/qcommon/crc.c | core-runtime | to-port | packages/qcommon/src/qcommon.ts | crc.ts |  | non | scripts/verify/quake2-crc.ts | multiple-declared-ts-targets<br>strict-basename-target-missing<br>declared-target-not-strict-basename |
 | Quake-2-master/qcommon/crc.h | core-runtime | to-port | packages/qcommon/src/qcommon.ts | crc.ts |  | non | scripts/verify/quake2-crc-header.ts | multiple-declared-ts-targets<br>strict-basename-target-missing<br>declared-target-not-strict-basename |
 | Quake-2-master/qcommon/cvar.c | core-runtime | to-port | packages/qcommon/src/cvar.ts | cvar.ts | packages/qcommon/src/cvar.ts | non | scripts/verify/quake2-cvar.ts |  |
-| Quake-2-master/qcommon/files.c | core-runtime | to-port | packages/filesystem/src/virtual-filesystem.ts | files.ts |  | non | scripts/verify/quake2-files.ts | multiple-declared-ts-targets<br>strict-basename-target-missing<br>declared-target-not-strict-basename |
+| Quake-2-master/qcommon/files.c | core-runtime | to-port | packages/filesystem/src/files.ts | files.ts | packages/filesystem/src/files.ts | non | scripts/verify/quake2-files.ts | multiple-declared-ts-targets |
 | Quake-2-master/qcommon/md4.c | core-runtime | to-port | packages/qcommon/src/md4.ts | md4.ts | packages/qcommon/src/md4.ts | non | scripts/verify/quake2-md4.ts<br>scripts/verify/quake2-qcommon-header.ts | multiple-declared-ts-targets |
 | Quake-2-master/qcommon/net_chan.c | core-runtime | to-port | packages/qcommon/src/net_chan.ts | net_chan.ts | packages/qcommon/src/net_chan.ts | non | scripts/verify/quake2-net-chan.ts | multiple-declared-ts-targets |
 | Quake-2-master/qcommon/pmove.c | core-runtime | to-port | packages/qcommon/src/pmove.ts | pmove.ts | packages/qcommon/src/pmove.ts | non | scripts/verify/quake2-cl-pred.ts<br>scripts/verify/quake2-client-pmove-viewheight.ts<br>scripts/verify/quake2-pmove-local-bmodel.ts<br>scripts/verify/quake2-pmove.ts |  |
 | Quake-2-master/qcommon/qcommon.h | core-runtime | to-port | packages/qcommon/src/qcommon.ts | qcommon.ts | packages/qcommon/src/qcommon.ts | non | scripts/verify/quake2-qcommon-header.ts | multiple-declared-ts-targets |
-| Quake-2-master/qcommon/qfiles.h | core-runtime | to-port | packages/formats/src/bsp.ts | qfiles.ts |  | non | scripts/verify/quake2-qfiles.ts | multiple-declared-ts-targets<br>strict-basename-target-missing<br>declared-target-not-strict-basename |
+| Quake-2-master/qcommon/qfiles.h | core-runtime | to-port | packages/formats/src/qfiles.ts | qfiles.ts | packages/formats/src/qfiles.ts | non | scripts/verify/quake2-qfiles.ts | multiple-declared-ts-targets |
 | Quake-2-master/ref_gl/anorms.h | renderer-ref-gl | to-port | packages/qcommon/src/anorms.ts | anorms.ts | packages/qcommon/src/anorms.ts | non | scripts/verify/quake2-anorms.ts |  |
 | Quake-2-master/ref_gl/anormtab.h | renderer-ref-gl | to-port | packages/renderer-three/src/anormtab.ts | anormtab.ts | packages/renderer-three/src/anormtab.ts | non | scripts/verify/quake2-anormtab.ts |  |
 | Quake-2-master/ref_gl/gl_draw.c | renderer-ref-gl | to-port | packages/renderer-three/src/gl_draw.ts | gl_draw.ts | packages/renderer-three/src/gl_draw.ts | non | scripts/verify/quake2-gl-draw.ts | multiple-declared-ts-targets |
@@ -322,28 +323,28 @@ Aucun point detecte.
 | --- | --- | --- |
 | 41 | client/anorms.h | packages/qcommon/src/anorms.ts<br>packages/client/src/cl_tent.ts |
 | 45 | client/cdaudio.h | packages/client/src/cdaudio.ts<br>packages/platform/src/web-cd-audio-adapter.ts |
-| 46 | client/cl_cin.c | packages/client/src/cl_cin.ts<br>packages/client/src/cl_scrn.ts<br>packages/client/src/types.ts |
+| 46 | client/cl_cin.c | packages/client/src/cl_cin.ts<br>packages/client/src/cl_scrn.ts<br>packages/client/src/client.ts |
 | 47 | client/cl_ents.c | packages/client/src/cl_ents.ts<br>packages/client/src/cl_parse.ts<br>packages/client/src/refresh.ts<br>packages/client/src/view.ts<br>packages/client/src/cl_tent.ts<br>packages/client/src/cl_newfx.ts<br>packages/renderer-three/src/refresh-entity-sync.ts<br>packages/renderer-three/src/md2-mesh-builder.ts |
-| 48 | client/cl_fx.c | packages/client/src/cl_fx.ts<br>packages/client/src/cl_newfx.ts<br>packages/client/src/cl_parse.ts<br>packages/client/src/refresh.ts<br>packages/client/src/monster-flash.ts<br>packages/client/src/cl_ents.ts<br>packages/client/src/cl_main.ts<br>packages/client/src/types.ts |
-| 49 | client/cl_input.c | packages/client/src/cl_input.ts<br>packages/client/src/input-device.ts<br>packages/client/src/types.ts |
+| 48 | client/cl_fx.c | packages/client/src/cl_fx.ts<br>packages/client/src/cl_newfx.ts<br>packages/client/src/cl_parse.ts<br>packages/client/src/refresh.ts<br>packages/client/src/monster-flash.ts<br>packages/client/src/cl_ents.ts<br>packages/client/src/cl_main.ts<br>packages/client/src/client.ts |
+| 49 | client/cl_input.c | packages/client/src/cl_input.ts<br>packages/client/src/input.ts<br>packages/client/src/client.ts |
 | 50 | client/cl_inv.c | packages/client/src/cl_inv.ts<br>packages/client/src/cl_parse.ts<br>packages/client/src/cl_scrn.ts |
-| 51 | client/cl_main.c | packages/client/src/cl_main.ts<br>packages/client/src/download.ts<br>packages/client/src/precache.ts<br>packages/client/src/sound.ts<br>packages/client/src/cl_parse.ts<br>packages/client/src/sky.ts<br>packages/client/src/types.ts |
+| 51 | client/cl_main.c | packages/client/src/cl_main.ts<br>packages/client/src/download.ts<br>packages/client/src/precache.ts<br>packages/client/src/sound.ts<br>packages/client/src/cl_parse.ts<br>packages/client/src/sky.ts<br>packages/client/src/client.ts |
 | 52 | client/cl_newfx.c | packages/client/src/cl_newfx.ts<br>packages/client/src/cl_tent.ts<br>packages/client/src/cl_fx.ts<br>packages/client/src/cl_parse.ts<br>packages/client/src/refresh.ts |
 | 53 | client/cl_parse.c | packages/client/src/cl_parse.ts<br>packages/client/src/download.ts<br>packages/client/src/sound.ts<br>packages/client/src/cl_scrn.ts<br>packages/client/src/sky.ts |
-| 55 | client/cl_scrn.c | packages/client/src/cl_scrn.ts<br>packages/client/src/cl_main.ts<br>packages/client/src/types.ts<br>packages/renderer-three/src/gl_draw.ts<br>packages/renderer-three/src/three-gl-draw-adapter.ts |
-| 56 | client/cl_tent.c | packages/client/src/cl_tent.ts<br>packages/client/src/cl_parse.ts<br>packages/client/src/cl_fx.ts<br>packages/client/src/cl_newfx.ts<br>packages/client/src/refresh.ts<br>packages/client/src/sound.ts<br>packages/client/src/types.ts |
+| 55 | client/cl_scrn.c | packages/client/src/cl_scrn.ts<br>packages/client/src/cl_main.ts<br>packages/client/src/client.ts<br>packages/renderer-three/src/gl_draw.ts<br>packages/renderer-three/src/three-gl-draw-adapter.ts |
+| 56 | client/cl_tent.c | packages/client/src/cl_tent.ts<br>packages/client/src/cl_parse.ts<br>packages/client/src/cl_fx.ts<br>packages/client/src/cl_newfx.ts<br>packages/client/src/refresh.ts<br>packages/client/src/sound.ts<br>packages/client/src/client.ts |
 | 57 | client/cl_view.c | packages/client/src/view.ts<br>packages/client/src/refresh.ts<br>packages/client/src/menu-player-config.ts<br>apps/web/src/local-client-controller.ts<br>packages/renderer-three/src/refresh-entity-sync.ts |
-| 58 | client/client.h | packages/client/src/types.ts<br>packages/client/src/keys.ts<br>packages/client/src/index.ts |
+| 58 | client/client.h | packages/client/src/client.ts<br>packages/client/src/keys.ts<br>packages/client/src/index.ts |
 | 59 | client/console.c | packages/client/src/console.ts<br>packages/client/src/index.ts |
 | 60 | client/console.h | packages/client/src/console.ts<br>packages/client/src/index.ts |
-| 61 | client/input.h | packages/client/src/input-device.ts<br>packages/client/src/index.ts |
+| 61 | client/input.h | packages/client/src/input.ts<br>packages/client/src/index.ts |
 | 62 | client/keys.c | packages/client/src/keys.ts<br>packages/client/src/index.ts |
 | 63 | client/keys.h | packages/client/src/keys.ts<br>packages/client/src/index.ts |
 | 64 | client/menu.c | packages/client/src/menu.ts<br>packages/client/src/menu-main-game.ts<br>packages/client/src/menu-multiplayer.ts<br>packages/client/src/menu-options-keys.ts<br>packages/client/src/menu-player-config.ts<br>packages/client/src/menu-draw.ts<br>packages/client/src/menu-misc.ts<br>packages/client/src/menu-runtime.ts<br>packages/client/src/menu-types.ts<br>packages/client/src/qmenu.ts<br>packages/client/src/keys.ts<br>packages/client/src/vid.ts |
 | 65 | client/qmenu.c | packages/client/src/qmenu.ts<br>packages/client/src/index.ts |
 | 66 | client/qmenu.h | packages/client/src/qmenu.ts<br>packages/client/src/keys.ts<br>packages/client/src/index.ts |
 | 67 | client/ref.h | packages/client/src/ref.ts<br>packages/qcommon/src/q_shared.ts<br>packages/client/src/cl_scrn.ts<br>packages/client/src/index.ts |
-| 68 | client/screen.h | packages/client/src/cl_scrn.ts<br>packages/client/src/types.ts<br>packages/client/src/cl_cin.ts |
+| 68 | client/screen.h | packages/client/src/cl_scrn.ts<br>packages/client/src/client.ts<br>packages/client/src/cl_cin.ts |
 | 69 | client/snd_dma.c | packages/client/src/snd_dma.ts<br>packages/client/src/snd_loc.ts<br>packages/client/src/snd_mix.ts<br>packages/client/src/index.ts |
 | 70 | client/snd_loc.h | packages/client/src/snd_loc.ts<br>packages/client/src/index.ts |
 | 71 | client/snd_mem.c | packages/client/src/snd_mem.ts<br>packages/client/src/snd_loc.ts<br>packages/client/src/snd_dma.ts<br>packages/client/src/snd_mix.ts<br>packages/client/src/index.ts |
@@ -362,7 +363,7 @@ Aucun point detecte.
 | 139 | game/g_monster.c | packages/game/src/g_monster.ts<br>packages/game/src/runtime.ts<br>packages/game/src/g_ai.ts<br>packages/game/src/g_items.ts<br>packages/game/src/index.ts |
 | 140 | game/g_phys.c | packages/game/src/g_phys.ts<br>packages/game/src/runtime.ts<br>packages/game/src/touch.ts<br>packages/game/src/m_move.ts |
 | 141 | game/g_save.c | packages/game/src/g_save.ts<br>packages/game/src/g_main.ts<br>packages/game/src/index.ts |
-| 142 | game/g_spawn.c | packages/game/src/g_spawn.ts<br>packages/game/src/g_main.ts<br>packages/formats/src/bsp.ts<br>packages/game/src/g_items.ts<br>packages/game/src/g_misc.ts |
+| 142 | game/g_spawn.c | packages/game/src/g_spawn.ts<br>packages/game/src/g_main.ts<br>packages/formats/src/qfiles.ts<br>packages/game/src/g_items.ts<br>packages/game/src/g_misc.ts |
 | 143 | game/g_svcmds.c | packages/game/src/g_svcmds.ts<br>packages/game/src/g_main.ts<br>packages/game/src/index.ts |
 | 144 | game/g_target.c | packages/game/src/g_target.ts<br>packages/game/src/g_spawn.ts<br>packages/game/src/runtime.ts<br>packages/game/src/g_main.ts<br>packages/game/src/index.ts |
 | 145 | game/g_trigger.c | packages/game/src/g_trigger.ts<br>packages/game/src/g_spawn.ts<br>packages/game/src/index.ts<br>packages/game/src/touch.ts<br>packages/game/src/g_combat.ts<br>packages/game/src/g_items.ts |
@@ -436,15 +437,10 @@ Aucun point detecte.
 | --- | --- | --- | --- | --- |
 | Quake-2-master/client/cl_pred.c | cl_pred.ts | packages/client/src/view.ts |  | naming-or-split-decision, strict-basename-map-missing |
 | Quake-2-master/client/cl_view.c | cl_view.ts | packages/client/src/view.ts<br>packages/client/src/refresh.ts<br>packages/client/src/menu-player-config.ts<br>apps/web/src/local-client-controller.ts<br>packages/renderer-three/src/refresh-entity-sync.ts |  | adapter-boundary-review, multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
-| Quake-2-master/client/client.h | client.ts | packages/client/src/types.ts<br>packages/client/src/keys.ts<br>packages/client/src/index.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
-| Quake-2-master/client/input.h | input.ts | packages/client/src/input-device.ts<br>packages/client/src/index.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
-| Quake-2-master/client/screen.h | screen.ts | packages/client/src/cl_scrn.ts<br>packages/client/src/types.ts<br>packages/client/src/cl_cin.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
+| Quake-2-master/client/screen.h | screen.ts | packages/client/src/cl_scrn.ts<br>packages/client/src/client.ts<br>packages/client/src/cl_cin.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
 | Quake-2-master/client/sound.h | sound.ts | packages/client/src/sound-public.ts<br>packages/client/src/snd_loc.ts<br>packages/client/src/snd_dma.ts<br>packages/client/src/index.ts | packages/client/src/sound.ts | multiple-targets-to-review, naming-or-split-decision |
-| Quake-2-master/qcommon/cmodel.c | cmodel.ts | packages/qcommon/src/collision.ts<br>packages/qcommon/src/index.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
 | Quake-2-master/qcommon/crc.c | crc.ts | packages/qcommon/src/qcommon.ts<br>packages/qcommon/src/index.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
 | Quake-2-master/qcommon/crc.h | crc.ts | packages/qcommon/src/qcommon.ts<br>packages/qcommon/src/index.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
-| Quake-2-master/qcommon/files.c | files.ts | packages/filesystem/src/virtual-filesystem.ts<br>packages/filesystem/src/index.ts<br>packages/formats/src/pak.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
-| Quake-2-master/qcommon/qfiles.h | qfiles.ts | packages/formats/src/bsp.ts<br>packages/formats/src/pak.ts<br>packages/formats/src/pcx.ts<br>packages/formats/src/wal.ts<br>packages/formats/src/md2.ts<br>packages/formats/src/sp2.ts<br>packages/formats/src/index.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |
 | Quake-2-master/ref_gl/gl_model.c | gl_model.ts | packages/renderer-three/src/gl-model-loader.ts |  | naming-or-split-decision, strict-basename-map-missing |
 | Quake-2-master/ref_gl/gl_model.h | gl_model.ts | packages/renderer-three/src/gl-model.ts |  | naming-or-split-decision, strict-basename-map-missing |
 | Quake-2-master/win32/vid_menu.c | vid_menu.ts | packages/client/src/vid-menu.ts<br>packages/client/src/vid.ts<br>packages/client/src/index.ts |  | multiple-targets-to-review, naming-or-split-decision, strict-basename-map-missing |

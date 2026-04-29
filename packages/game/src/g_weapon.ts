@@ -31,7 +31,7 @@ import {
   EF_ROCKET,
   MASK_SHOT,
   type vec3_t
-} from "../../qcommon/src/index.js";
+} from "../../qcommon/src/q_shared.js";
 import {
   CONTENTS_DEADMONSTER,
   CONTENTS_LAVA,

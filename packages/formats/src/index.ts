@@ -1,5 +1,5 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Expose Quake II binary format parsers.
  *
  * This file is not a direct source port.
@@ -101,7 +101,7 @@ export {
   findPrimarySpawnPoint,
   parseEntityLump,
   parseBsp
-} from "./bsp.js";
+} from "./qfiles.js";
 
 export {
   IDPAKHEADER,
@@ -136,7 +136,7 @@ export type {
   dvis_t,
   lump_t,
   texinfo_t
-} from "./bsp.js";
+} from "./qfiles.js";
 export type { PakArchive, PakEntry } from "./pak.js";
 export type { daliasframe_t, dmdl_t, dstvert_t, dtriangle_t, dtrivertx_t, Md2Model } from "./md2.js";
 export type { PcxImage, pcx_t } from "./pcx.js";

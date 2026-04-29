@@ -1,5 +1,5 @@
 /**
- * File: collision.ts
+ * File: cmodel.ts
  * Source: Quake II original / qcommon/cmodel.c
  * Purpose: Port the first BSP collision and contents queries used by client prediction and shared movement code.
  *
@@ -28,13 +28,13 @@ import {
 } from "./q_shared.js";
 import { Com_BlockChecksum } from "./md4.js";
 import { DVIS_PHS, DVIS_PVS, MAX_MAP_AREAPORTALS } from "../../formats/src/index.js";
-import { parseBsp, type BspMap, type darea_t, type dareaportal_t, type dplane_t, type dvis_t, type texinfo_t } from "../../formats/src/bsp.js";
+import { parseBsp, type BspMap, type darea_t, type dareaportal_t, type dplane_t, type dvis_t, type texinfo_t } from "../../formats/src/qfiles.js";
 import {
   DotProduct,
   VectorAdd,
   VectorClear,
   VectorCopy
-} from "../../math/src/index.js";
+} from "../../math/src/q_shared.js";
 
 const DIST_EPSILON = 0.03125;
 const PORTAL_STATE_BYTES = MAX_MAP_AREAPORTALS * 4;

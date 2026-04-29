@@ -1,12 +1,12 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Expose the first ported Quake II client runtime structures and parsing routines.
  *
  * This file is not a direct source port.
  * It is a package entry point for early client-side runtime modules.
  *
  * Dependencies:
- * - packages/client/src/types.ts
+ * - packages/client/src/client.ts
  * - packages/client/src/cl_parse.ts
  */
 
@@ -557,7 +557,7 @@ export {
   IN_Move,
   IN_Shutdown,
   createClientInputDeviceContext
-} from "./input-device.js";
+} from "./input.js";
 export {
   applyLocalMovementMode,
   buildLocalPredictedViewState,
@@ -730,7 +730,7 @@ export {
   createClientStatic,
   createClientTentState,
   createFrame
-} from "./types.js";
+} from "./client.js";
 
 export type {
   ClientConsoleContext,
@@ -843,7 +843,7 @@ export type {
   centity_t,
   frame_t,
   kbutton_t
-} from "./types.js";
+} from "./client.js";
 
 export type { ClientEntityEvent, ClientInterpolatedEntity } from "./cl_ents.js";
 export type { ClientActionEffect } from "./cl_fx.js";
@@ -881,7 +881,7 @@ export type {
   ClientScreenHudState
 } from "./cl_scrn.js";
 export type { ClientInputContext, ClientInputFrameOptions, ClientInputHooks, ClientSendCmdBridgeOptions } from "./cl_input.js";
-export type { ClientInputDeviceContext, ClientInputDeviceHooks } from "./input-device.js";
+export type { ClientInputDeviceContext, ClientInputDeviceHooks } from "./input.js";
 export type { LocalClientCollisionAdapter } from "./local-loop.js";
 export type {
   BrushModelInterpolationState,

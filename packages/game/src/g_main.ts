@@ -17,7 +17,7 @@
  * - This file is intended to stay close to the original C source.
  */
 
-import { parseEntityLump, type BspEntity } from "../../formats/src/bsp.js";
+import { parseEntityLump, type BspEntity } from "../../formats/src/qfiles.js";
 import {
   CVAR_ARCHIVE,
   CVAR_LATCH,

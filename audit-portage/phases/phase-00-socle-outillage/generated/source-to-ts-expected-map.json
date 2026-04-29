@@ -134,8 +134,10 @@
   {
     "sourcePath": "Quake-2-master/client/client.h",
     "expectedTsFile": "client.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/client/src/client.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/client/console.c",
@@ -156,8 +158,10 @@
   {
     "sourcePath": "Quake-2-master/client/input.h",
     "expectedTsFile": "input.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/client/src/input.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/client/keys.c",
@@ -503,17 +507,19 @@
     "sourcePath": "Quake-2-master/ctf/q_shared.c",
     "expectedTsFile": "q_shared.ts",
     "matchingTsFiles": [
+      "packages/math/src/q_shared.ts",
       "packages/qcommon/src/q_shared.ts"
     ],
-    "status": "matched"
+    "status": "multiple"
   },
   {
     "sourcePath": "Quake-2-master/ctf/q_shared.h",
     "expectedTsFile": "q_shared.ts",
     "matchingTsFiles": [
+      "packages/math/src/q_shared.ts",
       "packages/qcommon/src/q_shared.ts"
     ],
-    "status": "matched"
+    "status": "multiple"
   },
   {
     "sourcePath": "Quake-2-master/game/g_ai.c",
@@ -1095,17 +1101,19 @@
     "sourcePath": "Quake-2-master/game/q_shared.c",
     "expectedTsFile": "q_shared.ts",
     "matchingTsFiles": [
+      "packages/math/src/q_shared.ts",
       "packages/qcommon/src/q_shared.ts"
     ],
-    "status": "matched"
+    "status": "multiple"
   },
   {
     "sourcePath": "Quake-2-master/game/q_shared.h",
     "expectedTsFile": "q_shared.ts",
     "matchingTsFiles": [
+      "packages/math/src/q_shared.ts",
       "packages/qcommon/src/q_shared.ts"
     ],
-    "status": "matched"
+    "status": "multiple"
   },
   {
     "sourcePath": "Quake-2-master/irix/cd_irix.c",
@@ -1334,8 +1342,10 @@
   {
     "sourcePath": "Quake-2-master/qcommon/cmodel.c",
     "expectedTsFile": "cmodel.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/qcommon/src/cmodel.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/qcommon/common.c",
@@ -1368,8 +1378,10 @@
   {
     "sourcePath": "Quake-2-master/qcommon/files.c",
     "expectedTsFile": "files.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/filesystem/src/files.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/qcommon/md4.c",
@@ -1406,8 +1418,10 @@
   {
     "sourcePath": "Quake-2-master/qcommon/qfiles.h",
     "expectedTsFile": "qfiles.ts",
-    "matchingTsFiles": [],
-    "status": "missing"
+    "matchingTsFiles": [
+      "packages/formats/src/qfiles.ts"
+    ],
+    "status": "matched"
   },
   {
     "sourcePath": "Quake-2-master/ref_gl/anorms.h",

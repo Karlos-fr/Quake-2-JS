@@ -1,5 +1,5 @@
 /**
- * File: types.ts
+ * File: client.ts
  * Source: Quake II original / client/client.h
  * Purpose: Port the core Quake II client runtime structures used by client parsing, baselines and frame state.
  *

@@ -42,7 +42,7 @@ import {
   connstate_t,
   createClientRuntime,
   type ClientRuntime
-} from "./types.js";
+} from "./client.js";
 import type {
   channel_t,
   ClientSoundLocalContext,

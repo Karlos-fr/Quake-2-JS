@@ -1,5 +1,5 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Expose the shared Quake II runtime core modules.
  *
  * This file is not a direct source port.
@@ -210,7 +210,7 @@ export {
   VectorScale,
   VectorSubtract,
   vec3_origin
-} from "../../math/src/index.js";
+} from "../../math/src/q_shared.js";
 export {
   BASEDIRNAME,
   clc_ops_e,
@@ -335,7 +335,7 @@ export {
   createCollisionPointContents,
   createCollisionTrace,
   createCollisionWorld
-} from "./collision.js";
+} from "./cmodel.js";
 export {
   MAX_CLIP_PLANES,
   MIN_STEP_NORMAL,
@@ -654,7 +654,7 @@ export type {
 
 export type { QcommonRuntime, QcommonRuntimeOptions } from "./runtime.js";
 export type { CommonRuntime, ComParseResult } from "./common.js";
-export type { CollisionLoadResult, CollisionMapLoader, CollisionModelRuntime, CollisionWorld } from "./collision.js";
+export type { CollisionLoadResult, CollisionMapLoader, CollisionModelRuntime, CollisionWorld } from "./cmodel.js";
 export type { PmoveContext, PmoveOptions, pml_t } from "./pmove.js";
 export type {
   NetPacket,
@@ -669,7 +669,7 @@ export type {
 } from "./qcommon.js";
 export type { DebugGraphSample } from "./qcommon.js";
 export type { SysFindResult, SystemHooks, SystemRuntime } from "./system.js";
-export type { PlaneLike } from "../../math/src/index.js";
+export type { PlaneLike } from "../../math/src/q_shared.js";
 
 export type {
   byte,

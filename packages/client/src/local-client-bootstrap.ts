@@ -6,7 +6,7 @@
  * It is a runtime bootstrap helper for the current standalone client flow.
  *
  * Dependencies:
- * - packages/client/src/types.ts
+ * - packages/client/src/client.ts
  */
 
 import {
@@ -28,7 +28,7 @@ import {
   STAT_TIMER,
   STAT_TIMER_ICON
 } from "../../qcommon/src/index.js";
-import type { ClientRuntime } from "./types.js";
+import type { ClientRuntime } from "./client.js";
 
 const LOCAL_SINGLE_STATUSBAR =
   "yb -24 "

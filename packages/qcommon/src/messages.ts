@@ -22,7 +22,7 @@ import {
   SZ_Write,
   type sizebuf_t
 } from "../../memory/src/index.js";
-import { DotProduct } from "../../math/src/index.js";
+import { DotProduct } from "../../math/src/q_shared.js";
 import { BYTE_DIRS } from "./anorms.js";
 import {
   U_ANGLE1,

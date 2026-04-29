@@ -27,7 +27,7 @@ import type {
   HudTextCommand
 } from "./render-contracts.js";
 import type { refexport_t } from "./ref.js";
-import type { ClientRuntime } from "./types.js";
+import type { ClientRuntime } from "./client.js";
 
 const DISPLAY_ITEMS = 17;
 

@@ -1,5 +1,5 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Expose the first gameplay runtime helpers used by the Quake II door/trigger port.
  *
  * This file is not a direct source port.

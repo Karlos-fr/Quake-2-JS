@@ -1,6 +1,6 @@
 {
   "generatedBy": "audit-portage/phases/phase-01-referentiel-audit/tools/build-reference-audit.ts",
-  "generatedAt": "2026-04-29T21:06:06.355Z",
+  "generatedAt": "2026-04-29T21:16:25.783Z",
   "trackingEntries": [
     {
       "line": 32,
@@ -260,11 +260,11 @@
       "aPorter": "✅",
       "porte": "✅",
       "valide": "✅",
-      "cible": "packages/client/src/cl_cin.ts, packages/client/src/cl_scrn.ts, packages/client/src/types.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cinematic-audio-sync.ts, Audit/client-cl_cin.inventory.md, Audit/client-cl_cin.audit.md",
+      "cible": "packages/client/src/cl_cin.ts, packages/client/src/cl_scrn.ts, packages/client/src/client.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cinematic-audio-sync.ts, Audit/client-cl_cin.inventory.md, Audit/client-cl_cin.audit.md",
       "targetPaths": [
         "packages/client/src/cl_cin.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-screen-header.ts",
         "scripts/verify/quake2-cinematic-audio-sync.ts",
         "Audit/client-cl_cin.inventory.md",
@@ -273,7 +273,7 @@
       "tsTargetPaths": [
         "packages/client/src/cl_cin.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "auditPaths": [
         "Audit/client-cl_cin.audit.md"
@@ -356,7 +356,7 @@
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/refresh.ts, packages/client/src/monster-flash.ts, packages/client/src/cl_ents.ts, packages/client/src/cl_main.ts, packages/client/src/types.ts, scripts/verify/quake2-particle-sync.ts",
+      "cible": "packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/refresh.ts, packages/client/src/monster-flash.ts, packages/client/src/cl_ents.ts, packages/client/src/cl_main.ts, packages/client/src/client.ts, scripts/verify/quake2-particle-sync.ts",
       "targetPaths": [
         "packages/client/src/cl_fx.ts",
         "packages/client/src/cl_newfx.ts",
@@ -365,7 +365,7 @@
         "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-particle-sync.ts"
       ],
       "tsTargetPaths": [
@@ -376,7 +376,7 @@
         "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "auditPaths": [],
       "scriptPaths": [
@@ -393,18 +393,18 @@
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/client/src/cl_input.ts, packages/client/src/input-device.ts, packages/client/src/types.ts, scripts/verify/quake2-cl-input.ts, scripts/verify/quake2-cl-main.ts",
+      "cible": "packages/client/src/cl_input.ts, packages/client/src/input.ts, packages/client/src/client.ts, scripts/verify/quake2-cl-input.ts, scripts/verify/quake2-cl-main.ts",
       "targetPaths": [
         "packages/client/src/cl_input.ts",
-        "packages/client/src/input-device.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/input.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-cl-input.ts",
         "scripts/verify/quake2-cl-main.ts"
       ],
       "tsTargetPaths": [
         "packages/client/src/cl_input.ts",
-        "packages/client/src/input-device.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/input.ts",
+        "packages/client/src/client.ts"
       ],
       "auditPaths": [],
       "scriptPaths": [
@@ -455,7 +455,7 @@
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/client/src/cl_main.ts, packages/client/src/download.ts, packages/client/src/precache.ts, packages/client/src/sound.ts, packages/client/src/cl_parse.ts, packages/client/src/sky.ts, packages/client/src/types.ts, scripts/verify/quake2-cl-main.ts",
+      "cible": "packages/client/src/cl_main.ts, packages/client/src/download.ts, packages/client/src/precache.ts, packages/client/src/sound.ts, packages/client/src/cl_parse.ts, packages/client/src/sky.ts, packages/client/src/client.ts, scripts/verify/quake2-cl-main.ts",
       "targetPaths": [
         "packages/client/src/cl_main.ts",
         "packages/client/src/download.ts",
@@ -463,7 +463,7 @@
         "packages/client/src/sound.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-cl-main.ts"
       ],
       "tsTargetPaths": [
@@ -473,7 +473,7 @@
         "packages/client/src/sound.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "auditPaths": [],
       "scriptPaths": [
@@ -591,11 +591,11 @@
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/client/src/cl_scrn.ts, packages/client/src/cl_main.ts, packages/client/src/types.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, packages/renderer-three/src/gl_draw.ts, packages/renderer-three/src/three-gl-draw-adapter.ts, scripts/verify/quake2-three-gl-draw-adapter.ts",
+      "cible": "packages/client/src/cl_scrn.ts, packages/client/src/cl_main.ts, packages/client/src/client.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, packages/renderer-three/src/gl_draw.ts, packages/renderer-three/src/three-gl-draw-adapter.ts, scripts/verify/quake2-three-gl-draw-adapter.ts",
       "targetPaths": [
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-screen-header.ts",
         "scripts/verify/quake2-cl-scrn.ts",
         "packages/renderer-three/src/gl_draw.ts",
@@ -605,7 +605,7 @@
       "tsTargetPaths": [
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/renderer-three/src/gl_draw.ts",
         "packages/renderer-three/src/three-gl-draw-adapter.ts"
       ],
@@ -626,7 +626,7 @@
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/client/src/cl_tent.ts, packages/client/src/cl_parse.ts, packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts, packages/client/src/types.ts, scripts/verify/quake2-entities-phase8-scene.ts, scripts/verify/quake2-particle-sync.ts",
+      "cible": "packages/client/src/cl_tent.ts, packages/client/src/cl_parse.ts, packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts, packages/client/src/client.ts, scripts/verify/quake2-entities-phase8-scene.ts, scripts/verify/quake2-particle-sync.ts",
       "targetPaths": [
         "packages/client/src/cl_tent.ts",
         "packages/client/src/cl_parse.ts",
@@ -634,7 +634,7 @@
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/refresh.ts",
         "packages/client/src/sound.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-entities-phase8-scene.ts",
         "scripts/verify/quake2-particle-sync.ts"
       ],
@@ -645,7 +645,7 @@
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/refresh.ts",
         "packages/client/src/sound.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "auditPaths": [],
       "scriptPaths": [
@@ -690,19 +690,19 @@
       "normalizedPath": "client/client.h",
       "sourcePath": "Quake-2-master/client/client.h",
       "name": "client.h",
-      "description": "Header mixte client maintenant ferme autour de `packages/client/src/types.ts` pour les structures et constantes runtime (`frame_t`, `centity_t`, `clientinfo_t`, `client_state_t`, `client_static_t`, `connstate_t`, `dltype_t`, `kbutton_t`, `cdlight_t`, `cl_sustain_t`, `cparticle_t`, `MAX_PARSE_ENTITIES`, `MAX_CLIENTWEAPONMODELS`, `MAX_SUSTAINS`, `INSTANT_PARTICLE`), avec `packages/client/src/keys.ts` comme cible explicite de `keydest_t` et de la surface `cls.key_dest`, `packages/client/src/index.ts (facade package)` comme facade package et un harnais dedie qui verrouille enums, factories, tailles fixes et etat persistant client. Les handles renderer/audio/fichiers restent volontairement abstractises en `unknown` et `keydest_t` demeure regroupe avec `keys.c`, ce qui constitue une deviation structurelle documentee mais pas un manque de portage.",
+      "description": "Header mixte client maintenant ferme autour de `packages/client/src/client.ts` pour les structures et constantes runtime (`frame_t`, `centity_t`, `clientinfo_t`, `client_state_t`, `client_static_t`, `connstate_t`, `dltype_t`, `kbutton_t`, `cdlight_t`, `cl_sustain_t`, `cparticle_t`, `MAX_PARSE_ENTITIES`, `MAX_CLIENTWEAPONMODELS`, `MAX_SUSTAINS`, `INSTANT_PARTICLE`), avec `packages/client/src/keys.ts` comme cible explicite de `keydest_t` et de la surface `cls.key_dest`, `packages/client/src/index.ts (facade package)` comme facade package et un harnais dedie qui verrouille enums, factories, tailles fixes et etat persistant client. Les handles renderer/audio/fichiers restent volontairement abstractises en `unknown` et `keydest_t` demeure regroupe avec `keys.c`, ce qui constitue une deviation structurelle documentee mais pas un manque de portage.",
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/client/src/types.ts, packages/client/src/keys.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-client-header.ts",
+      "cible": "packages/client/src/client.ts, packages/client/src/keys.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-client-header.ts",
       "targetPaths": [
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/keys.ts",
         "packages/client/src/index.ts",
         "scripts/verify/quake2-client-header.ts"
       ],
       "tsTargetPaths": [
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/keys.ts",
         "packages/client/src/index.ts"
       ],
@@ -775,13 +775,13 @@
       "normalizedPath": "client/input.h",
       "sourcePath": "Quake-2-master/client/input.h",
       "name": "input.h",
-      "description": "Header declaratif des peripheriques d'entree externes maintenant rattache explicitement a `packages/client/src/input-device.ts` pour les points d'entree `IN_Init`, `IN_Shutdown`, `IN_Commands`, `IN_Frame`, `IN_Move` et `IN_Activate`, exposes via `packages/client/src/index.ts (facade package)` avec un runtime de hooks explicite afin de conserver la separation source entre `cl_input.c` et les backends souris/joystick/non-clavier. Un harnais dedie verrouille l'ordre des forwards, la mutation in-place du `usercmd_t` et le comportement no-op par defaut sans adapter branche ; audit `Audit/client-input_h.audit.md` termine en verdict OK ISO branche.",
+      "description": "Header declaratif des peripheriques d'entree externes maintenant rattache explicitement a `packages/client/src/input.ts` pour les points d'entree `IN_Init`, `IN_Shutdown`, `IN_Commands`, `IN_Frame`, `IN_Move` et `IN_Activate`, exposes via `packages/client/src/index.ts (facade package)` avec un runtime de hooks explicite afin de conserver la separation source entre `cl_input.c` et les backends souris/joystick/non-clavier. Un harnais dedie verrouille l'ordre des forwards, la mutation in-place du `usercmd_t` et le comportement no-op par defaut sans adapter branche ; audit `Audit/client-input_h.audit.md` termine en verdict OK ISO branche.",
       "aPorter": "✅",
       "porte": "✅",
       "valide": "✅",
-      "cible": "packages/client/src/input-device.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-input-header.ts, scripts/verify/quake2-cl-input.ts, Audit/client-input_h.inventory.md, Audit/client-input_h.audit.md",
+      "cible": "packages/client/src/input.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-input-header.ts, scripts/verify/quake2-cl-input.ts, Audit/client-input_h.inventory.md, Audit/client-input_h.audit.md",
       "targetPaths": [
-        "packages/client/src/input-device.ts",
+        "packages/client/src/input.ts",
         "packages/client/src/index.ts",
         "scripts/verify/quake2-input-header.ts",
         "scripts/verify/quake2-cl-input.ts",
@@ -789,7 +789,7 @@
         "Audit/client-input_h.audit.md"
       ],
       "tsTargetPaths": [
-        "packages/client/src/input-device.ts",
+        "packages/client/src/input.ts",
         "packages/client/src/index.ts"
       ],
       "auditPaths": [
@@ -998,14 +998,14 @@
       "normalizedPath": "client/screen.h",
       "sourcePath": "Quake-2-master/client/screen.h",
       "name": "screen.h",
-      "description": "Header mixte screen/HUD rattache principalement a `packages/client/src/cl_scrn.ts` et `packages/client/src/types.ts` pour `SCR_Init`, `SCR_UpdateScreen`, `SCR_SizeUp`, `SCR_SizeDown`, `SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_DebugGraph`, `SCR_TouchPics`, `SCR_RunConsole`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen` et tout le bloc cinematique (`SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`), avec etats exposes (`scr_con_current`, `scr_conlines`, `sb_lines`, `scr_vrect`, `crosshair_pic`, `crosshair_width`, `crosshair_height`) et verification ciblee couvrant HUD, debug graph, `.pcx` statique et `.cin` Huffman/audio via hooks explicites. Audit `Audit/client-screen_h.audit.md` termine en verdict OK ISO branche.",
+      "description": "Header mixte screen/HUD rattache principalement a `packages/client/src/cl_scrn.ts` et `packages/client/src/client.ts` pour `SCR_Init`, `SCR_UpdateScreen`, `SCR_SizeUp`, `SCR_SizeDown`, `SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_DebugGraph`, `SCR_TouchPics`, `SCR_RunConsole`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen` et tout le bloc cinematique (`SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`), avec etats exposes (`scr_con_current`, `scr_conlines`, `sb_lines`, `scr_vrect`, `crosshair_pic`, `crosshair_width`, `crosshair_height`) et verification ciblee couvrant HUD, debug graph, `.pcx` statique et `.cin` Huffman/audio via hooks explicites. Audit `Audit/client-screen_h.audit.md` termine en verdict OK ISO branche.",
       "aPorter": "✅",
       "porte": "✅",
       "valide": "✅",
-      "cible": "packages/client/src/cl_scrn.ts, packages/client/src/types.ts, packages/client/src/cl_cin.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, Audit/client-screen_h.inventory.md, Audit/client-screen_h.audit.md",
+      "cible": "packages/client/src/cl_scrn.ts, packages/client/src/client.ts, packages/client/src/cl_cin.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, Audit/client-screen_h.inventory.md, Audit/client-screen_h.audit.md",
       "targetPaths": [
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/cl_cin.ts",
         "scripts/verify/quake2-screen-header.ts",
         "scripts/verify/quake2-cl-scrn.ts",
@@ -1014,7 +1014,7 @@
       ],
       "tsTargetPaths": [
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/cl_cin.ts"
       ],
       "auditPaths": [
@@ -2505,15 +2505,15 @@
       "normalizedPath": "game/g_spawn.c",
       "sourcePath": "Quake-2-master/game/g_spawn.c",
       "name": "g_spawn.c",
-      "description": "Portage principal maintenant referme entre `packages/game/src/g_spawn.ts` pour le registre de spawn (`ED_CallSpawn`, `SP_worldspawn`, `G_FindTeams`), `packages/game/src/g_main.ts` pour le flux `SpawnEntities`, et `packages/formats/src/bsp.ts` pour le parsing de l'entity lump qui remplace `ED_NewString` / `ED_ParseField` / `ED_ParseEdict`. Le branchement `worldspawn` cote `SpawnEntities` est maintenant execute en premier comme dans le source original, avec synchro `runtime.mapname`, configstrings de base et verification ciblee dediee.",
+      "description": "Portage principal maintenant referme entre `packages/game/src/g_spawn.ts` pour le registre de spawn (`ED_CallSpawn`, `SP_worldspawn`, `G_FindTeams`), `packages/game/src/g_main.ts` pour le flux `SpawnEntities`, et `packages/formats/src/qfiles.ts` pour le parsing de l'entity lump qui remplace `ED_NewString` / `ED_ParseField` / `ED_ParseEdict`. Le branchement `worldspawn` cote `SpawnEntities` est maintenant execute en premier comme dans le source original, avec synchro `runtime.mapname`, configstrings de base et verification ciblee dediee.",
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/game/src/g_spawn.ts, packages/game/src/g_main.ts, packages/formats/src/bsp.ts, packages/game/src/g_items.ts, packages/game/src/g_misc.ts, scripts/verify/quake2-g-spawn.ts",
+      "cible": "packages/game/src/g_spawn.ts, packages/game/src/g_main.ts, packages/formats/src/qfiles.ts, packages/game/src/g_items.ts, packages/game/src/g_misc.ts, scripts/verify/quake2-g-spawn.ts",
       "targetPaths": [
         "packages/game/src/g_spawn.ts",
         "packages/game/src/g_main.ts",
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_misc.ts",
         "scripts/verify/quake2-g-spawn.ts"
@@ -2521,7 +2521,7 @@
       "tsTargetPaths": [
         "packages/game/src/g_spawn.ts",
         "packages/game/src/g_main.ts",
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_misc.ts"
       ],
@@ -4338,13 +4338,13 @@
       "normalizedPath": "game/q_shared.c",
       "sourcePath": "Quake-2-master/game/q_shared.c",
       "name": "q_shared.c",
-      "description": "Portage principal referme et rattache au socle partage existant : fonctions math/vectorielles dans `packages/math/src/index.ts` (`Q_fabs`, `R_Concat*`, `ProjectPointOnPlane`, `PerpendicularVector`, `RotatePointAroundVector`, `BoxOnPlaneSide*`, bounds et vecteurs), helpers chemin/parsing/endian/info/string dans `packages/qcommon/src/common.ts` (`COM_*`, `Big/Little*`, `Swap_Init`, `va`, `Com_sprintf`, `Q_str*`, `Info_*`), glue memoire/systeme dans `packages/qcommon/src/system.ts` (`Com_PageInMemory`) et `AngleVectors` / `LerpAngle` dans `packages/qcommon/src/q_shared.ts`. Les adaptations JS documentees restent les retours string/objet au lieu de buffers C et varargs printf. Verification ciblee etendue dans `scripts/verify/quake2-q-shared-header.ts`, plus `npm run typecheck`.",
+      "description": "Portage principal referme et rattache au socle partage existant : fonctions math/vectorielles dans `packages/math/src/q_shared.ts` (`Q_fabs`, `R_Concat*`, `ProjectPointOnPlane`, `PerpendicularVector`, `RotatePointAroundVector`, `BoxOnPlaneSide*`, bounds et vecteurs), helpers chemin/parsing/endian/info/string dans `packages/qcommon/src/common.ts` (`COM_*`, `Big/Little*`, `Swap_Init`, `va`, `Com_sprintf`, `Q_str*`, `Info_*`), glue memoire/systeme dans `packages/qcommon/src/system.ts` (`Com_PageInMemory`) et `AngleVectors` / `LerpAngle` dans `packages/qcommon/src/q_shared.ts`. Les adaptations JS documentees restent les retours string/objet au lieu de buffers C et varargs printf. Verification ciblee etendue dans `scripts/verify/quake2-q-shared-header.ts`, plus `npm run typecheck`.",
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/math/src/index.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/q_shared.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-q-shared-header.ts",
+      "cible": "packages/math/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/q_shared.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-q-shared-header.ts",
       "targetPaths": [
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/q_shared.ts",
@@ -4352,7 +4352,7 @@
         "scripts/verify/quake2-q-shared-header.ts"
       ],
       "tsTargetPaths": [
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/q_shared.ts",
@@ -4369,17 +4369,17 @@
       "normalizedPath": "game/q_shared.h",
       "sourcePath": "Quake-2-master/game/q_shared.h",
       "name": "q_shared.h",
-      "description": "Header partage rattache principalement a `packages/qcommon/src/q_shared.ts` pour les constantes coeur, structures communes, `entity_state_t`, `player_state_t`, flags DM/effects et configstrings ; le decoupage secondaire legitime rattache les helpers utilitaires `COM_*`, `Info_*`, `Big/Little*`, `va` et `Com_sprintf` a `packages/qcommon/src/common.ts`, le glue hote `Sys_*`, `Hunk_*`, `Com_PageInMemory` et `Sys_Error` a `packages/qcommon/src/system.ts` via un runtime explicite injecte, `cvar_t` a `packages/qcommon/src/cvar.ts`, les primitives math partagees a `packages/math/src/index.ts (facade package)`, et la table `monster_flash_offset` / `MZ2_*` a `packages/game/src/m_flash.ts` avec re-export client.",
+      "description": "Header partage rattache principalement a `packages/qcommon/src/q_shared.ts` pour les constantes coeur, structures communes, `entity_state_t`, `player_state_t`, flags DM/effects et configstrings ; le decoupage secondaire legitime rattache les helpers utilitaires `COM_*`, `Info_*`, `Big/Little*`, `va` et `Com_sprintf` a `packages/qcommon/src/common.ts`, le glue hote `Sys_*`, `Hunk_*`, `Com_PageInMemory` et `Sys_Error` a `packages/qcommon/src/system.ts` via un runtime explicite injecte, `cvar_t` a `packages/qcommon/src/cvar.ts`, les primitives math partagees a `packages/math/src/q_shared.ts (facade package)`, et la table `monster_flash_offset` / `MZ2_*` a `packages/game/src/m_flash.ts` avec re-export client.",
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/qcommon/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/cvar.ts, packages/math/src/index.ts (facade package), packages/game/src/m_flash.ts, packages/client/src/monster-flash.ts, scripts/verify/quake2-q-shared-header.ts",
+      "cible": "packages/qcommon/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/cvar.ts, packages/math/src/q_shared.ts (facade package), packages/game/src/m_flash.ts, packages/client/src/monster-flash.ts, scripts/verify/quake2-q-shared-header.ts",
       "targetPaths": [
         "packages/qcommon/src/q_shared.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/game/src/m_flash.ts",
         "packages/client/src/monster-flash.ts",
         "scripts/verify/quake2-q-shared-header.ts"
@@ -4389,7 +4389,7 @@
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/game/src/m_flash.ts",
         "packages/client/src/monster-flash.ts"
       ],
@@ -5325,19 +5325,19 @@
       "normalizedPath": "qcommon/cmodel.c",
       "sourcePath": "Quake-2-master/qcommon/cmodel.c",
       "name": "cmodel.c",
-      "description": "Portage principal maintenant rattache a `packages/qcommon/src/collision.ts` pour le chargement/caching de BSP (`CM_LoadMap` avec checksum et reuse de map), les traces (`CM_BoxTrace`, `CM_TransformedBoxTrace`), contenus/leafs (`CM_PointContents`, `CM_PointLeafnum`, `CM_BoxLeafnums*`), inline models, box hull temporaire, PVS/PHS (`CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS`), area portals (`CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, `CM_HeadnodeVisible`) et le save/load de leur etat (`CM_WritePortalState`, `CM_ReadPortalState`) sous forme binaire compatible `qboolean`. Le port reste explicitement base sur un runtime TS et un loader injecte au lieu des globals/IO C bruts, et il est verrouille par des harnais cibles de collision et `cmodel`.",
+      "description": "Portage principal maintenant rattache a `packages/qcommon/src/cmodel.ts` pour le chargement/caching de BSP (`CM_LoadMap` avec checksum et reuse de map), les traces (`CM_BoxTrace`, `CM_TransformedBoxTrace`), contenus/leafs (`CM_PointContents`, `CM_PointLeafnum`, `CM_BoxLeafnums*`), inline models, box hull temporaire, PVS/PHS (`CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS`), area portals (`CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, `CM_HeadnodeVisible`) et le save/load de leur etat (`CM_WritePortalState`, `CM_ReadPortalState`) sous forme binaire compatible `qboolean`. Le port reste explicitement base sur un runtime TS et un loader injecte au lieu des globals/IO C bruts, et il est verrouille par des harnais cibles de collision et `cmodel`.",
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/qcommon/src/collision.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-collision-phase1.ts, scripts/verify/quake2-cmodel.ts",
+      "cible": "packages/qcommon/src/cmodel.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-collision-phase1.ts, scripts/verify/quake2-cmodel.ts",
       "targetPaths": [
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/index.ts",
         "scripts/verify/quake2-collision-phase1.ts",
         "scripts/verify/quake2-cmodel.ts"
       ],
       "tsTargetPaths": [
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/index.ts"
       ],
       "auditPaths": [],
@@ -5456,19 +5456,19 @@
       "normalizedPath": "qcommon/files.c",
       "sourcePath": "Quake-2-master/qcommon/files.c",
       "name": "files.c",
-      "description": "Portage principal rattache a `packages/filesystem/src/virtual-filesystem.ts` pour les search paths, le montage et la lecture des fichiers, avec `packages/formats/src/pak.ts` comme parseur de support et `packages/filesystem/src/index.ts (facade package)` comme point d'export. Le bloc couvre desormais `FS_AddGameDirectory`, `FS_LoadPackFile`, `FS_FOpenFile`/`FS_LoadFile`, `FS_FreeFile`, `FS_Link_f`, `FS_Gamedir`, `FS_SetGamedir`, `FS_Path_f`, `FS_NextPath`, `FS_ListFiles`, `FS_Dir_f`, `FS_ExecAutoexec` et `Developer_searchpath`, avec une restauration effective au socle `fs_base_searchpaths` lors des changements de gamedir dans le runtime virtuel.",
+      "description": "Portage principal rattache a `packages/filesystem/src/files.ts` pour les search paths, le montage et la lecture des fichiers, avec `packages/formats/src/pak.ts` comme parseur de support et `packages/filesystem/src/index.ts (facade package)` comme point d'export. Le bloc couvre desormais `FS_AddGameDirectory`, `FS_LoadPackFile`, `FS_FOpenFile`/`FS_LoadFile`, `FS_FreeFile`, `FS_Link_f`, `FS_Gamedir`, `FS_SetGamedir`, `FS_Path_f`, `FS_NextPath`, `FS_ListFiles`, `FS_Dir_f`, `FS_ExecAutoexec` et `Developer_searchpath`, avec une restauration effective au socle `fs_base_searchpaths` lors des changements de gamedir dans le runtime virtuel.",
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/filesystem/src/virtual-filesystem.ts, packages/filesystem/src/index.ts (facade package), packages/formats/src/pak.ts, scripts/verify/quake2-files.ts",
+      "cible": "packages/filesystem/src/files.ts, packages/filesystem/src/index.ts (facade package), packages/formats/src/pak.ts, scripts/verify/quake2-files.ts",
       "targetPaths": [
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/filesystem/src/index.ts",
         "packages/formats/src/pak.ts",
         "scripts/verify/quake2-files.ts"
       ],
       "tsTargetPaths": [
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/filesystem/src/index.ts",
         "packages/formats/src/pak.ts"
       ],
@@ -5566,11 +5566,11 @@
       "normalizedPath": "qcommon/qcommon.h",
       "sourcePath": "Quake-2-master/qcommon/qcommon.h",
       "name": "qcommon.h",
-      "description": "Header mixte qcommon maintenant referme autour de `packages/qcommon/src/qcommon.ts` comme point principal de rattachement du header, avec `messages.ts` pour `MSG_*`, `packages/memory/src/sizebuf.ts` pour `sizebuf_t` / `SZ_*`, `protocol.ts` pour les constantes de protocole, `cmd.ts` pour `Cbuf_*` / `Cmd_*`, `cvar.ts` pour `cvar_t` / `Cvar_*`, `collision.ts` et `pmove.ts` pour les blocs associes, `packages/filesystem/src/virtual-filesystem.ts` pour le sous-ensemble `FS_*` deja porte, `md4.ts` pour `Com_BlockChecksum`, et `system.ts` / `common.ts` pour le glue qcommon partage. Le point principal couvre explicitement `CRC_*`, `COM_BlockSequenceCRCByte`, `Com_DPrintf`, `Com_Error`, `Com_Quit`, les allocateurs `Z_*`, le cycle `Qcommon_Init` / `Qcommon_Frame` / `Qcommon_Shutdown`, `Com_BlockChecksum`, le bloc reseau `NET_*` / `Netchan_*`, la queue de declarations `Sys_*` / `CL_*` / `SV_*` / `Con_Print` / `SCR_BeginLoadingPlaque` / `SCR_DebugGraph`, ainsi que le sous-ensemble bootstrap commande du header (`Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cmd_ForwardToServer`) desormais porte et verifie par un harnais dedie.",
+      "description": "Header mixte qcommon maintenant referme autour de `packages/qcommon/src/qcommon.ts` comme point principal de rattachement du header, avec `messages.ts` pour `MSG_*`, `packages/memory/src/sizebuf.ts` pour `sizebuf_t` / `SZ_*`, `protocol.ts` pour les constantes de protocole, `cmd.ts` pour `Cbuf_*` / `Cmd_*`, `cvar.ts` pour `cvar_t` / `Cvar_*`, `collision.ts` et `pmove.ts` pour les blocs associes, `packages/filesystem/src/files.ts` pour le sous-ensemble `FS_*` deja porte, `md4.ts` pour `Com_BlockChecksum`, et `system.ts` / `common.ts` pour le glue qcommon partage. Le point principal couvre explicitement `CRC_*`, `COM_BlockSequenceCRCByte`, `Com_DPrintf`, `Com_Error`, `Com_Quit`, les allocateurs `Z_*`, le cycle `Qcommon_Init` / `Qcommon_Frame` / `Qcommon_Shutdown`, `Com_BlockChecksum`, le bloc reseau `NET_*` / `Netchan_*`, la queue de declarations `Sys_*` / `CL_*` / `SV_*` / `Con_Print` / `SCR_BeginLoadingPlaque` / `SCR_DebugGraph`, ainsi que le sous-ensemble bootstrap commande du header (`Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cmd_ForwardToServer`) desormais porte et verifie par un harnais dedie.",
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/qcommon/src/qcommon.ts, packages/qcommon/src/messages.ts, packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/protocol.ts, packages/qcommon/src/cmd.ts, packages/qcommon/src/cvar.ts, packages/qcommon/src/collision.ts, packages/qcommon/src/pmove.ts, packages/filesystem/src/virtual-filesystem.ts, packages/qcommon/src/md4.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, scripts/verify/quake2-qcommon-header.ts",
+      "cible": "packages/qcommon/src/qcommon.ts, packages/qcommon/src/messages.ts, packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/protocol.ts, packages/qcommon/src/cmd.ts, packages/qcommon/src/cvar.ts, packages/qcommon/src/cmodel.ts, packages/qcommon/src/pmove.ts, packages/filesystem/src/files.ts, packages/qcommon/src/md4.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, scripts/verify/quake2-qcommon-header.ts",
       "targetPaths": [
         "packages/qcommon/src/qcommon.ts",
         "packages/qcommon/src/messages.ts",
@@ -5579,9 +5579,9 @@
         "packages/qcommon/src/protocol.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/pmove.ts",
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/qcommon/src/md4.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
@@ -5595,9 +5595,9 @@
         "packages/qcommon/src/protocol.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/pmove.ts",
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/qcommon/src/md4.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts"
@@ -5617,9 +5617,9 @@
       "aPorter": "✅",
       "porte": "✅",
       "valide": "",
-      "cible": "packages/formats/src/bsp.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/index.ts (facade package), scripts/verify/quake2-qfiles.ts",
+      "cible": "packages/formats/src/qfiles.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/index.ts (facade package), scripts/verify/quake2-qfiles.ts",
       "targetPaths": [
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/formats/src/pak.ts",
         "packages/formats/src/pcx.ts",
         "packages/formats/src/wal.ts",
@@ -5629,7 +5629,7 @@
         "scripts/verify/quake2-qfiles.ts"
       ],
       "tsTargetPaths": [
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/formats/src/pak.ts",
         "packages/formats/src/pcx.ts",
         "packages/formats/src/wal.ts",
@@ -8342,11 +8342,11 @@
           "aPorter": "✅",
           "porte": "✅",
           "valide": "✅",
-          "cible": "packages/client/src/cl_cin.ts, packages/client/src/cl_scrn.ts, packages/client/src/types.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cinematic-audio-sync.ts, Audit/client-cl_cin.inventory.md, Audit/client-cl_cin.audit.md",
+          "cible": "packages/client/src/cl_cin.ts, packages/client/src/cl_scrn.ts, packages/client/src/client.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cinematic-audio-sync.ts, Audit/client-cl_cin.inventory.md, Audit/client-cl_cin.audit.md",
           "targetPaths": [
             "packages/client/src/cl_cin.ts",
             "packages/client/src/cl_scrn.ts",
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "scripts/verify/quake2-screen-header.ts",
             "scripts/verify/quake2-cinematic-audio-sync.ts",
             "Audit/client-cl_cin.inventory.md",
@@ -8355,7 +8355,7 @@
           "tsTargetPaths": [
             "packages/client/src/cl_cin.ts",
             "packages/client/src/cl_scrn.ts",
-            "packages/client/src/types.ts"
+            "packages/client/src/client.ts"
           ],
           "auditPaths": [
             "Audit/client-cl_cin.audit.md"
@@ -8369,7 +8369,7 @@
       "declaredTargets": [
         "packages/client/src/cl_cin.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-screen-header.ts",
         "scripts/verify/quake2-cinematic-audio-sync.ts",
         "Audit/client-cl_cin.inventory.md",
@@ -8378,12 +8378,12 @@
       "declaredTsTargets": [
         "packages/client/src/cl_cin.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_cin.ts",
       "declaredSecondaryTsTargets": [
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "expectedTsFile": "cl_cin.ts",
       "detectedExactTsTargets": [
@@ -8392,7 +8392,7 @@
       "declaredTsTargetsExistingInIndex": [
         "packages/client/src/cl_cin.ts",
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "hasHistoricalAudit": true,
       "testReferences": [
@@ -8574,7 +8574,7 @@
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/refresh.ts, packages/client/src/monster-flash.ts, packages/client/src/cl_ents.ts, packages/client/src/cl_main.ts, packages/client/src/types.ts, scripts/verify/quake2-particle-sync.ts",
+          "cible": "packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/refresh.ts, packages/client/src/monster-flash.ts, packages/client/src/cl_ents.ts, packages/client/src/cl_main.ts, packages/client/src/client.ts, scripts/verify/quake2-particle-sync.ts",
           "targetPaths": [
             "packages/client/src/cl_fx.ts",
             "packages/client/src/cl_newfx.ts",
@@ -8583,7 +8583,7 @@
             "packages/client/src/monster-flash.ts",
             "packages/client/src/cl_ents.ts",
             "packages/client/src/cl_main.ts",
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "scripts/verify/quake2-particle-sync.ts"
           ],
           "tsTargetPaths": [
@@ -8594,7 +8594,7 @@
             "packages/client/src/monster-flash.ts",
             "packages/client/src/cl_ents.ts",
             "packages/client/src/cl_main.ts",
-            "packages/client/src/types.ts"
+            "packages/client/src/client.ts"
           ],
           "auditPaths": [],
           "scriptPaths": [
@@ -8610,7 +8610,7 @@
         "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-particle-sync.ts"
       ],
       "declaredTsTargets": [
@@ -8621,7 +8621,7 @@
         "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_fx.ts",
       "declaredSecondaryTsTargets": [
@@ -8631,7 +8631,7 @@
         "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "expectedTsFile": "cl_fx.ts",
       "detectedExactTsTargets": [
@@ -8645,7 +8645,7 @@
         "packages/client/src/monster-flash.ts",
         "packages/client/src/cl_ents.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "hasHistoricalAudit": false,
       "testReferences": [
@@ -8675,18 +8675,18 @@
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/client/src/cl_input.ts, packages/client/src/input-device.ts, packages/client/src/types.ts, scripts/verify/quake2-cl-input.ts, scripts/verify/quake2-cl-main.ts",
+          "cible": "packages/client/src/cl_input.ts, packages/client/src/input.ts, packages/client/src/client.ts, scripts/verify/quake2-cl-input.ts, scripts/verify/quake2-cl-main.ts",
           "targetPaths": [
             "packages/client/src/cl_input.ts",
-            "packages/client/src/input-device.ts",
-            "packages/client/src/types.ts",
+            "packages/client/src/input.ts",
+            "packages/client/src/client.ts",
             "scripts/verify/quake2-cl-input.ts",
             "scripts/verify/quake2-cl-main.ts"
           ],
           "tsTargetPaths": [
             "packages/client/src/cl_input.ts",
-            "packages/client/src/input-device.ts",
-            "packages/client/src/types.ts"
+            "packages/client/src/input.ts",
+            "packages/client/src/client.ts"
           ],
           "auditPaths": [],
           "scriptPaths": [
@@ -8697,20 +8697,20 @@
       ],
       "declaredTargets": [
         "packages/client/src/cl_input.ts",
-        "packages/client/src/input-device.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/input.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-cl-input.ts",
         "scripts/verify/quake2-cl-main.ts"
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_input.ts",
-        "packages/client/src/input-device.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/input.ts",
+        "packages/client/src/client.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_input.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/input-device.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/input.ts",
+        "packages/client/src/client.ts"
       ],
       "expectedTsFile": "cl_input.ts",
       "detectedExactTsTargets": [
@@ -8718,8 +8718,8 @@
       ],
       "declaredTsTargetsExistingInIndex": [
         "packages/client/src/cl_input.ts",
-        "packages/client/src/input-device.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/input.ts",
+        "packages/client/src/client.ts"
       ],
       "hasHistoricalAudit": false,
       "testReferences": [
@@ -8831,7 +8831,7 @@
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/client/src/cl_main.ts, packages/client/src/download.ts, packages/client/src/precache.ts, packages/client/src/sound.ts, packages/client/src/cl_parse.ts, packages/client/src/sky.ts, packages/client/src/types.ts, scripts/verify/quake2-cl-main.ts",
+          "cible": "packages/client/src/cl_main.ts, packages/client/src/download.ts, packages/client/src/precache.ts, packages/client/src/sound.ts, packages/client/src/cl_parse.ts, packages/client/src/sky.ts, packages/client/src/client.ts, scripts/verify/quake2-cl-main.ts",
           "targetPaths": [
             "packages/client/src/cl_main.ts",
             "packages/client/src/download.ts",
@@ -8839,7 +8839,7 @@
             "packages/client/src/sound.ts",
             "packages/client/src/cl_parse.ts",
             "packages/client/src/sky.ts",
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "scripts/verify/quake2-cl-main.ts"
           ],
           "tsTargetPaths": [
@@ -8849,7 +8849,7 @@
             "packages/client/src/sound.ts",
             "packages/client/src/cl_parse.ts",
             "packages/client/src/sky.ts",
-            "packages/client/src/types.ts"
+            "packages/client/src/client.ts"
           ],
           "auditPaths": [],
           "scriptPaths": [
@@ -8864,7 +8864,7 @@
         "packages/client/src/sound.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-cl-main.ts"
       ],
       "declaredTsTargets": [
@@ -8874,7 +8874,7 @@
         "packages/client/src/sound.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_main.ts",
       "declaredSecondaryTsTargets": [
@@ -8883,7 +8883,7 @@
         "packages/client/src/sound.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "expectedTsFile": "cl_main.ts",
       "detectedExactTsTargets": [
@@ -8896,7 +8896,7 @@
         "packages/client/src/sound.ts",
         "packages/client/src/cl_parse.ts",
         "packages/client/src/sky.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "hasHistoricalAudit": false,
       "testReferences": [
@@ -9180,11 +9180,11 @@
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/client/src/cl_scrn.ts, packages/client/src/cl_main.ts, packages/client/src/types.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, packages/renderer-three/src/gl_draw.ts, packages/renderer-three/src/three-gl-draw-adapter.ts, scripts/verify/quake2-three-gl-draw-adapter.ts",
+          "cible": "packages/client/src/cl_scrn.ts, packages/client/src/cl_main.ts, packages/client/src/client.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, packages/renderer-three/src/gl_draw.ts, packages/renderer-three/src/three-gl-draw-adapter.ts, scripts/verify/quake2-three-gl-draw-adapter.ts",
           "targetPaths": [
             "packages/client/src/cl_scrn.ts",
             "packages/client/src/cl_main.ts",
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "scripts/verify/quake2-screen-header.ts",
             "scripts/verify/quake2-cl-scrn.ts",
             "packages/renderer-three/src/gl_draw.ts",
@@ -9194,7 +9194,7 @@
           "tsTargetPaths": [
             "packages/client/src/cl_scrn.ts",
             "packages/client/src/cl_main.ts",
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "packages/renderer-three/src/gl_draw.ts",
             "packages/renderer-three/src/three-gl-draw-adapter.ts"
           ],
@@ -9209,7 +9209,7 @@
       "declaredTargets": [
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-screen-header.ts",
         "scripts/verify/quake2-cl-scrn.ts",
         "packages/renderer-three/src/gl_draw.ts",
@@ -9219,14 +9219,14 @@
       "declaredTsTargets": [
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/renderer-three/src/gl_draw.ts",
         "packages/renderer-three/src/three-gl-draw-adapter.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_scrn.ts",
       "declaredSecondaryTsTargets": [
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/renderer-three/src/gl_draw.ts",
         "packages/renderer-three/src/three-gl-draw-adapter.ts"
       ],
@@ -9237,7 +9237,7 @@
       "declaredTsTargetsExistingInIndex": [
         "packages/client/src/cl_scrn.ts",
         "packages/client/src/cl_main.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/renderer-three/src/gl_draw.ts",
         "packages/renderer-three/src/three-gl-draw-adapter.ts"
       ],
@@ -9271,7 +9271,7 @@
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/client/src/cl_tent.ts, packages/client/src/cl_parse.ts, packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts, packages/client/src/types.ts, scripts/verify/quake2-entities-phase8-scene.ts, scripts/verify/quake2-particle-sync.ts",
+          "cible": "packages/client/src/cl_tent.ts, packages/client/src/cl_parse.ts, packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts, packages/client/src/client.ts, scripts/verify/quake2-entities-phase8-scene.ts, scripts/verify/quake2-particle-sync.ts",
           "targetPaths": [
             "packages/client/src/cl_tent.ts",
             "packages/client/src/cl_parse.ts",
@@ -9279,7 +9279,7 @@
             "packages/client/src/cl_newfx.ts",
             "packages/client/src/refresh.ts",
             "packages/client/src/sound.ts",
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "scripts/verify/quake2-entities-phase8-scene.ts",
             "scripts/verify/quake2-particle-sync.ts"
           ],
@@ -9290,7 +9290,7 @@
             "packages/client/src/cl_newfx.ts",
             "packages/client/src/refresh.ts",
             "packages/client/src/sound.ts",
-            "packages/client/src/types.ts"
+            "packages/client/src/client.ts"
           ],
           "auditPaths": [],
           "scriptPaths": [
@@ -9306,7 +9306,7 @@
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/refresh.ts",
         "packages/client/src/sound.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "scripts/verify/quake2-entities-phase8-scene.ts",
         "scripts/verify/quake2-particle-sync.ts"
       ],
@@ -9317,7 +9317,7 @@
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/refresh.ts",
         "packages/client/src/sound.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_tent.ts",
       "declaredSecondaryTsTargets": [
@@ -9326,7 +9326,7 @@
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/refresh.ts",
         "packages/client/src/sound.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "expectedTsFile": "cl_tent.ts",
       "detectedExactTsTargets": [
@@ -9339,7 +9339,7 @@
         "packages/client/src/cl_newfx.ts",
         "packages/client/src/refresh.ts",
         "packages/client/src/sound.ts",
-        "packages/client/src/types.ts"
+        "packages/client/src/client.ts"
       ],
       "hasHistoricalAudit": false,
       "testReferences": [
@@ -9453,19 +9453,19 @@
           "normalizedPath": "client/client.h",
           "sourcePath": "Quake-2-master/client/client.h",
           "name": "client.h",
-          "description": "Header mixte client maintenant ferme autour de `packages/client/src/types.ts` pour les structures et constantes runtime (`frame_t`, `centity_t`, `clientinfo_t`, `client_state_t`, `client_static_t`, `connstate_t`, `dltype_t`, `kbutton_t`, `cdlight_t`, `cl_sustain_t`, `cparticle_t`, `MAX_PARSE_ENTITIES`, `MAX_CLIENTWEAPONMODELS`, `MAX_SUSTAINS`, `INSTANT_PARTICLE`), avec `packages/client/src/keys.ts` comme cible explicite de `keydest_t` et de la surface `cls.key_dest`, `packages/client/src/index.ts (facade package)` comme facade package et un harnais dedie qui verrouille enums, factories, tailles fixes et etat persistant client. Les handles renderer/audio/fichiers restent volontairement abstractises en `unknown` et `keydest_t` demeure regroupe avec `keys.c`, ce qui constitue une deviation structurelle documentee mais pas un manque de portage.",
+          "description": "Header mixte client maintenant ferme autour de `packages/client/src/client.ts` pour les structures et constantes runtime (`frame_t`, `centity_t`, `clientinfo_t`, `client_state_t`, `client_static_t`, `connstate_t`, `dltype_t`, `kbutton_t`, `cdlight_t`, `cl_sustain_t`, `cparticle_t`, `MAX_PARSE_ENTITIES`, `MAX_CLIENTWEAPONMODELS`, `MAX_SUSTAINS`, `INSTANT_PARTICLE`), avec `packages/client/src/keys.ts` comme cible explicite de `keydest_t` et de la surface `cls.key_dest`, `packages/client/src/index.ts (facade package)` comme facade package et un harnais dedie qui verrouille enums, factories, tailles fixes et etat persistant client. Les handles renderer/audio/fichiers restent volontairement abstractises en `unknown` et `keydest_t` demeure regroupe avec `keys.c`, ce qui constitue une deviation structurelle documentee mais pas un manque de portage.",
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/client/src/types.ts, packages/client/src/keys.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-client-header.ts",
+          "cible": "packages/client/src/client.ts, packages/client/src/keys.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-client-header.ts",
           "targetPaths": [
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "packages/client/src/keys.ts",
             "packages/client/src/index.ts",
             "scripts/verify/quake2-client-header.ts"
           ],
           "tsTargetPaths": [
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "packages/client/src/keys.ts",
             "packages/client/src/index.ts"
           ],
@@ -9476,25 +9476,27 @@
         }
       ],
       "declaredTargets": [
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/keys.ts",
         "packages/client/src/index.ts",
         "scripts/verify/quake2-client-header.ts"
       ],
       "declaredTsTargets": [
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/keys.ts",
         "packages/client/src/index.ts"
       ],
-      "declaredPrimaryTsTarget": "packages/client/src/types.ts",
+      "declaredPrimaryTsTarget": "packages/client/src/client.ts",
       "declaredSecondaryTsTargets": [
         "packages/client/src/keys.ts",
         "packages/client/src/index.ts"
       ],
       "expectedTsFile": "client.ts",
-      "detectedExactTsTargets": [],
+      "detectedExactTsTargets": [
+        "packages/client/src/client.ts"
+      ],
       "declaredTsTargetsExistingInIndex": [
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/keys.ts",
         "packages/client/src/index.ts"
       ],
@@ -9503,14 +9505,10 @@
         "scripts/verify/quake2-client-header.ts"
       ],
       "anomalies": [
-        "multiple-declared-ts-targets",
-        "strict-basename-target-missing",
-        "declared-target-not-strict-basename"
+        "multiple-declared-ts-targets"
       ],
       "phase02Hints": [
-        "multiple-targets-to-review",
-        "naming-or-split-decision",
-        "strict-basename-map-missing"
+        "multiple-targets-to-review"
       ]
     },
     {
@@ -9670,13 +9668,13 @@
           "normalizedPath": "client/input.h",
           "sourcePath": "Quake-2-master/client/input.h",
           "name": "input.h",
-          "description": "Header declaratif des peripheriques d'entree externes maintenant rattache explicitement a `packages/client/src/input-device.ts` pour les points d'entree `IN_Init`, `IN_Shutdown`, `IN_Commands`, `IN_Frame`, `IN_Move` et `IN_Activate`, exposes via `packages/client/src/index.ts (facade package)` avec un runtime de hooks explicite afin de conserver la separation source entre `cl_input.c` et les backends souris/joystick/non-clavier. Un harnais dedie verrouille l'ordre des forwards, la mutation in-place du `usercmd_t` et le comportement no-op par defaut sans adapter branche ; audit `Audit/client-input_h.audit.md` termine en verdict OK ISO branche.",
+          "description": "Header declaratif des peripheriques d'entree externes maintenant rattache explicitement a `packages/client/src/input.ts` pour les points d'entree `IN_Init`, `IN_Shutdown`, `IN_Commands`, `IN_Frame`, `IN_Move` et `IN_Activate`, exposes via `packages/client/src/index.ts (facade package)` avec un runtime de hooks explicite afin de conserver la separation source entre `cl_input.c` et les backends souris/joystick/non-clavier. Un harnais dedie verrouille l'ordre des forwards, la mutation in-place du `usercmd_t` et le comportement no-op par defaut sans adapter branche ; audit `Audit/client-input_h.audit.md` termine en verdict OK ISO branche.",
           "aPorter": "✅",
           "porte": "✅",
           "valide": "✅",
-          "cible": "packages/client/src/input-device.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-input-header.ts, scripts/verify/quake2-cl-input.ts, Audit/client-input_h.inventory.md, Audit/client-input_h.audit.md",
+          "cible": "packages/client/src/input.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-input-header.ts, scripts/verify/quake2-cl-input.ts, Audit/client-input_h.inventory.md, Audit/client-input_h.audit.md",
           "targetPaths": [
-            "packages/client/src/input-device.ts",
+            "packages/client/src/input.ts",
             "packages/client/src/index.ts",
             "scripts/verify/quake2-input-header.ts",
             "scripts/verify/quake2-cl-input.ts",
@@ -9684,7 +9682,7 @@
             "Audit/client-input_h.audit.md"
           ],
           "tsTargetPaths": [
-            "packages/client/src/input-device.ts",
+            "packages/client/src/input.ts",
             "packages/client/src/index.ts"
           ],
           "auditPaths": [
@@ -9697,7 +9695,7 @@
         }
       ],
       "declaredTargets": [
-        "packages/client/src/input-device.ts",
+        "packages/client/src/input.ts",
         "packages/client/src/index.ts",
         "scripts/verify/quake2-input-header.ts",
         "scripts/verify/quake2-cl-input.ts",
@@ -9705,17 +9703,19 @@
         "Audit/client-input_h.audit.md"
       ],
       "declaredTsTargets": [
-        "packages/client/src/input-device.ts",
+        "packages/client/src/input.ts",
         "packages/client/src/index.ts"
       ],
-      "declaredPrimaryTsTarget": "packages/client/src/input-device.ts",
+      "declaredPrimaryTsTarget": "packages/client/src/input.ts",
       "declaredSecondaryTsTargets": [
         "packages/client/src/index.ts"
       ],
       "expectedTsFile": "input.ts",
-      "detectedExactTsTargets": [],
+      "detectedExactTsTargets": [
+        "packages/client/src/input.ts"
+      ],
       "declaredTsTargetsExistingInIndex": [
-        "packages/client/src/input-device.ts",
+        "packages/client/src/input.ts",
         "packages/client/src/index.ts"
       ],
       "hasHistoricalAudit": true,
@@ -9724,14 +9724,10 @@
         "scripts/verify/quake2-input-header.ts"
       ],
       "anomalies": [
-        "multiple-declared-ts-targets",
-        "strict-basename-target-missing",
-        "declared-target-not-strict-basename"
+        "multiple-declared-ts-targets"
       ],
       "phase02Hints": [
-        "multiple-targets-to-review",
-        "naming-or-split-decision",
-        "strict-basename-map-missing"
+        "multiple-targets-to-review"
       ]
     },
     {
@@ -10243,14 +10239,14 @@
           "normalizedPath": "client/screen.h",
           "sourcePath": "Quake-2-master/client/screen.h",
           "name": "screen.h",
-          "description": "Header mixte screen/HUD rattache principalement a `packages/client/src/cl_scrn.ts` et `packages/client/src/types.ts` pour `SCR_Init`, `SCR_UpdateScreen`, `SCR_SizeUp`, `SCR_SizeDown`, `SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_DebugGraph`, `SCR_TouchPics`, `SCR_RunConsole`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen` et tout le bloc cinematique (`SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`), avec etats exposes (`scr_con_current`, `scr_conlines`, `sb_lines`, `scr_vrect`, `crosshair_pic`, `crosshair_width`, `crosshair_height`) et verification ciblee couvrant HUD, debug graph, `.pcx` statique et `.cin` Huffman/audio via hooks explicites. Audit `Audit/client-screen_h.audit.md` termine en verdict OK ISO branche.",
+          "description": "Header mixte screen/HUD rattache principalement a `packages/client/src/cl_scrn.ts` et `packages/client/src/client.ts` pour `SCR_Init`, `SCR_UpdateScreen`, `SCR_SizeUp`, `SCR_SizeDown`, `SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_DebugGraph`, `SCR_TouchPics`, `SCR_RunConsole`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen` et tout le bloc cinematique (`SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`), avec etats exposes (`scr_con_current`, `scr_conlines`, `sb_lines`, `scr_vrect`, `crosshair_pic`, `crosshair_width`, `crosshair_height`) et verification ciblee couvrant HUD, debug graph, `.pcx` statique et `.cin` Huffman/audio via hooks explicites. Audit `Audit/client-screen_h.audit.md` termine en verdict OK ISO branche.",
           "aPorter": "✅",
           "porte": "✅",
           "valide": "✅",
-          "cible": "packages/client/src/cl_scrn.ts, packages/client/src/types.ts, packages/client/src/cl_cin.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, Audit/client-screen_h.inventory.md, Audit/client-screen_h.audit.md",
+          "cible": "packages/client/src/cl_scrn.ts, packages/client/src/client.ts, packages/client/src/cl_cin.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, Audit/client-screen_h.inventory.md, Audit/client-screen_h.audit.md",
           "targetPaths": [
             "packages/client/src/cl_scrn.ts",
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "packages/client/src/cl_cin.ts",
             "scripts/verify/quake2-screen-header.ts",
             "scripts/verify/quake2-cl-scrn.ts",
@@ -10259,7 +10255,7 @@
           ],
           "tsTargetPaths": [
             "packages/client/src/cl_scrn.ts",
-            "packages/client/src/types.ts",
+            "packages/client/src/client.ts",
             "packages/client/src/cl_cin.ts"
           ],
           "auditPaths": [
@@ -10273,7 +10269,7 @@
       ],
       "declaredTargets": [
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/cl_cin.ts",
         "scripts/verify/quake2-screen-header.ts",
         "scripts/verify/quake2-cl-scrn.ts",
@@ -10282,19 +10278,19 @@
       ],
       "declaredTsTargets": [
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/cl_cin.ts"
       ],
       "declaredPrimaryTsTarget": "packages/client/src/cl_scrn.ts",
       "declaredSecondaryTsTargets": [
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/cl_cin.ts"
       ],
       "expectedTsFile": "screen.ts",
       "detectedExactTsTargets": [],
       "declaredTsTargetsExistingInIndex": [
         "packages/client/src/cl_scrn.ts",
-        "packages/client/src/types.ts",
+        "packages/client/src/client.ts",
         "packages/client/src/cl_cin.ts"
       ],
       "hasHistoricalAudit": true,
@@ -12045,13 +12041,18 @@
       "declaredSecondaryTsTargets": [],
       "expectedTsFile": "q_shared.ts",
       "detectedExactTsTargets": [
+        "packages/math/src/q_shared.ts",
         "packages/qcommon/src/q_shared.ts"
       ],
       "declaredTsTargetsExistingInIndex": [],
       "hasHistoricalAudit": false,
       "testReferences": [],
-      "anomalies": [],
-      "phase02Hints": []
+      "anomalies": [
+        "strict-basename-target-multiple"
+      ],
+      "phase02Hints": [
+        "basename-collision-or-duplicate"
+      ]
     },
     {
       "sourcePath": "Quake-2-master/ctf/q_shared.h",
@@ -12083,13 +12084,18 @@
       "declaredSecondaryTsTargets": [],
       "expectedTsFile": "q_shared.ts",
       "detectedExactTsTargets": [
+        "packages/math/src/q_shared.ts",
         "packages/qcommon/src/q_shared.ts"
       ],
       "declaredTsTargetsExistingInIndex": [],
       "hasHistoricalAudit": false,
       "testReferences": [],
-      "anomalies": [],
-      "phase02Hints": []
+      "anomalies": [
+        "strict-basename-target-multiple"
+      ],
+      "phase02Hints": [
+        "basename-collision-or-duplicate"
+      ]
     },
     {
       "sourcePath": "Quake-2-master/game/g_ai.c",
@@ -13130,15 +13136,15 @@
           "normalizedPath": "game/g_spawn.c",
           "sourcePath": "Quake-2-master/game/g_spawn.c",
           "name": "g_spawn.c",
-          "description": "Portage principal maintenant referme entre `packages/game/src/g_spawn.ts` pour le registre de spawn (`ED_CallSpawn`, `SP_worldspawn`, `G_FindTeams`), `packages/game/src/g_main.ts` pour le flux `SpawnEntities`, et `packages/formats/src/bsp.ts` pour le parsing de l'entity lump qui remplace `ED_NewString` / `ED_ParseField` / `ED_ParseEdict`. Le branchement `worldspawn` cote `SpawnEntities` est maintenant execute en premier comme dans le source original, avec synchro `runtime.mapname`, configstrings de base et verification ciblee dediee.",
+          "description": "Portage principal maintenant referme entre `packages/game/src/g_spawn.ts` pour le registre de spawn (`ED_CallSpawn`, `SP_worldspawn`, `G_FindTeams`), `packages/game/src/g_main.ts` pour le flux `SpawnEntities`, et `packages/formats/src/qfiles.ts` pour le parsing de l'entity lump qui remplace `ED_NewString` / `ED_ParseField` / `ED_ParseEdict`. Le branchement `worldspawn` cote `SpawnEntities` est maintenant execute en premier comme dans le source original, avec synchro `runtime.mapname`, configstrings de base et verification ciblee dediee.",
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/game/src/g_spawn.ts, packages/game/src/g_main.ts, packages/formats/src/bsp.ts, packages/game/src/g_items.ts, packages/game/src/g_misc.ts, scripts/verify/quake2-g-spawn.ts",
+          "cible": "packages/game/src/g_spawn.ts, packages/game/src/g_main.ts, packages/formats/src/qfiles.ts, packages/game/src/g_items.ts, packages/game/src/g_misc.ts, scripts/verify/quake2-g-spawn.ts",
           "targetPaths": [
             "packages/game/src/g_spawn.ts",
             "packages/game/src/g_main.ts",
-            "packages/formats/src/bsp.ts",
+            "packages/formats/src/qfiles.ts",
             "packages/game/src/g_items.ts",
             "packages/game/src/g_misc.ts",
             "scripts/verify/quake2-g-spawn.ts"
@@ -13146,7 +13152,7 @@
           "tsTargetPaths": [
             "packages/game/src/g_spawn.ts",
             "packages/game/src/g_main.ts",
-            "packages/formats/src/bsp.ts",
+            "packages/formats/src/qfiles.ts",
             "packages/game/src/g_items.ts",
             "packages/game/src/g_misc.ts"
           ],
@@ -13159,7 +13165,7 @@
       "declaredTargets": [
         "packages/game/src/g_spawn.ts",
         "packages/game/src/g_main.ts",
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_misc.ts",
         "scripts/verify/quake2-g-spawn.ts"
@@ -13167,14 +13173,14 @@
       "declaredTsTargets": [
         "packages/game/src/g_spawn.ts",
         "packages/game/src/g_main.ts",
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_misc.ts"
       ],
       "declaredPrimaryTsTarget": "packages/game/src/g_spawn.ts",
       "declaredSecondaryTsTargets": [
         "packages/game/src/g_main.ts",
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_misc.ts"
       ],
@@ -13185,7 +13191,7 @@
       "declaredTsTargetsExistingInIndex": [
         "packages/game/src/g_spawn.ts",
         "packages/game/src/g_main.ts",
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/game/src/g_items.ts",
         "packages/game/src/g_misc.ts"
       ],
@@ -17772,13 +17778,13 @@
           "normalizedPath": "game/q_shared.c",
           "sourcePath": "Quake-2-master/game/q_shared.c",
           "name": "q_shared.c",
-          "description": "Portage principal referme et rattache au socle partage existant : fonctions math/vectorielles dans `packages/math/src/index.ts` (`Q_fabs`, `R_Concat*`, `ProjectPointOnPlane`, `PerpendicularVector`, `RotatePointAroundVector`, `BoxOnPlaneSide*`, bounds et vecteurs), helpers chemin/parsing/endian/info/string dans `packages/qcommon/src/common.ts` (`COM_*`, `Big/Little*`, `Swap_Init`, `va`, `Com_sprintf`, `Q_str*`, `Info_*`), glue memoire/systeme dans `packages/qcommon/src/system.ts` (`Com_PageInMemory`) et `AngleVectors` / `LerpAngle` dans `packages/qcommon/src/q_shared.ts`. Les adaptations JS documentees restent les retours string/objet au lieu de buffers C et varargs printf. Verification ciblee etendue dans `scripts/verify/quake2-q-shared-header.ts`, plus `npm run typecheck`.",
+          "description": "Portage principal referme et rattache au socle partage existant : fonctions math/vectorielles dans `packages/math/src/q_shared.ts` (`Q_fabs`, `R_Concat*`, `ProjectPointOnPlane`, `PerpendicularVector`, `RotatePointAroundVector`, `BoxOnPlaneSide*`, bounds et vecteurs), helpers chemin/parsing/endian/info/string dans `packages/qcommon/src/common.ts` (`COM_*`, `Big/Little*`, `Swap_Init`, `va`, `Com_sprintf`, `Q_str*`, `Info_*`), glue memoire/systeme dans `packages/qcommon/src/system.ts` (`Com_PageInMemory`) et `AngleVectors` / `LerpAngle` dans `packages/qcommon/src/q_shared.ts`. Les adaptations JS documentees restent les retours string/objet au lieu de buffers C et varargs printf. Verification ciblee etendue dans `scripts/verify/quake2-q-shared-header.ts`, plus `npm run typecheck`.",
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/math/src/index.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/q_shared.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-q-shared-header.ts",
+          "cible": "packages/math/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/q_shared.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-q-shared-header.ts",
           "targetPaths": [
-            "packages/math/src/index.ts",
+            "packages/math/src/q_shared.ts",
             "packages/qcommon/src/common.ts",
             "packages/qcommon/src/system.ts",
             "packages/qcommon/src/q_shared.ts",
@@ -17786,7 +17792,7 @@
             "scripts/verify/quake2-q-shared-header.ts"
           ],
           "tsTargetPaths": [
-            "packages/math/src/index.ts",
+            "packages/math/src/q_shared.ts",
             "packages/qcommon/src/common.ts",
             "packages/qcommon/src/system.ts",
             "packages/qcommon/src/q_shared.ts",
@@ -17799,7 +17805,7 @@
         }
       ],
       "declaredTargets": [
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/q_shared.ts",
@@ -17807,13 +17813,13 @@
         "scripts/verify/quake2-q-shared-header.ts"
       ],
       "declaredTsTargets": [
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/q_shared.ts",
         "packages/qcommon/src/index.ts"
       ],
-      "declaredPrimaryTsTarget": "packages/math/src/index.ts",
+      "declaredPrimaryTsTarget": "packages/math/src/q_shared.ts",
       "declaredSecondaryTsTargets": [
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
@@ -17822,10 +17828,11 @@
       ],
       "expectedTsFile": "q_shared.ts",
       "detectedExactTsTargets": [
+        "packages/math/src/q_shared.ts",
         "packages/qcommon/src/q_shared.ts"
       ],
       "declaredTsTargetsExistingInIndex": [
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/q_shared.ts",
@@ -17836,9 +17843,11 @@
         "scripts/verify/quake2-q-shared-header.ts"
       ],
       "anomalies": [
-        "multiple-declared-ts-targets"
+        "multiple-declared-ts-targets",
+        "strict-basename-target-multiple"
       ],
       "phase02Hints": [
+        "basename-collision-or-duplicate",
         "multiple-targets-to-review"
       ]
     },
@@ -17855,17 +17864,17 @@
           "normalizedPath": "game/q_shared.h",
           "sourcePath": "Quake-2-master/game/q_shared.h",
           "name": "q_shared.h",
-          "description": "Header partage rattache principalement a `packages/qcommon/src/q_shared.ts` pour les constantes coeur, structures communes, `entity_state_t`, `player_state_t`, flags DM/effects et configstrings ; le decoupage secondaire legitime rattache les helpers utilitaires `COM_*`, `Info_*`, `Big/Little*`, `va` et `Com_sprintf` a `packages/qcommon/src/common.ts`, le glue hote `Sys_*`, `Hunk_*`, `Com_PageInMemory` et `Sys_Error` a `packages/qcommon/src/system.ts` via un runtime explicite injecte, `cvar_t` a `packages/qcommon/src/cvar.ts`, les primitives math partagees a `packages/math/src/index.ts (facade package)`, et la table `monster_flash_offset` / `MZ2_*` a `packages/game/src/m_flash.ts` avec re-export client.",
+          "description": "Header partage rattache principalement a `packages/qcommon/src/q_shared.ts` pour les constantes coeur, structures communes, `entity_state_t`, `player_state_t`, flags DM/effects et configstrings ; le decoupage secondaire legitime rattache les helpers utilitaires `COM_*`, `Info_*`, `Big/Little*`, `va` et `Com_sprintf` a `packages/qcommon/src/common.ts`, le glue hote `Sys_*`, `Hunk_*`, `Com_PageInMemory` et `Sys_Error` a `packages/qcommon/src/system.ts` via un runtime explicite injecte, `cvar_t` a `packages/qcommon/src/cvar.ts`, les primitives math partagees a `packages/math/src/q_shared.ts (facade package)`, et la table `monster_flash_offset` / `MZ2_*` a `packages/game/src/m_flash.ts` avec re-export client.",
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/qcommon/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/cvar.ts, packages/math/src/index.ts (facade package), packages/game/src/m_flash.ts, packages/client/src/monster-flash.ts, scripts/verify/quake2-q-shared-header.ts",
+          "cible": "packages/qcommon/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/cvar.ts, packages/math/src/q_shared.ts (facade package), packages/game/src/m_flash.ts, packages/client/src/monster-flash.ts, scripts/verify/quake2-q-shared-header.ts",
           "targetPaths": [
             "packages/qcommon/src/q_shared.ts",
             "packages/qcommon/src/common.ts",
             "packages/qcommon/src/system.ts",
             "packages/qcommon/src/cvar.ts",
-            "packages/math/src/index.ts",
+            "packages/math/src/q_shared.ts",
             "packages/game/src/m_flash.ts",
             "packages/client/src/monster-flash.ts",
             "scripts/verify/quake2-q-shared-header.ts"
@@ -17875,7 +17884,7 @@
             "packages/qcommon/src/common.ts",
             "packages/qcommon/src/system.ts",
             "packages/qcommon/src/cvar.ts",
-            "packages/math/src/index.ts",
+            "packages/math/src/q_shared.ts",
             "packages/game/src/m_flash.ts",
             "packages/client/src/monster-flash.ts"
           ],
@@ -17890,7 +17899,7 @@
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/game/src/m_flash.ts",
         "packages/client/src/monster-flash.ts",
         "scripts/verify/quake2-q-shared-header.ts"
@@ -17900,7 +17909,7 @@
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/game/src/m_flash.ts",
         "packages/client/src/monster-flash.ts"
       ],
@@ -17909,12 +17918,13 @@
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/game/src/m_flash.ts",
         "packages/client/src/monster-flash.ts"
       ],
       "expectedTsFile": "q_shared.ts",
       "detectedExactTsTargets": [
+        "packages/math/src/q_shared.ts",
         "packages/qcommon/src/q_shared.ts"
       ],
       "declaredTsTargetsExistingInIndex": [
@@ -17922,7 +17932,7 @@
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/math/src/index.ts",
+        "packages/math/src/q_shared.ts",
         "packages/game/src/m_flash.ts",
         "packages/client/src/monster-flash.ts"
       ],
@@ -17931,9 +17941,11 @@
         "scripts/verify/quake2-q-shared-header.ts"
       ],
       "anomalies": [
-        "multiple-declared-ts-targets"
+        "multiple-declared-ts-targets",
+        "strict-basename-target-multiple"
       ],
       "phase02Hints": [
+        "basename-collision-or-duplicate",
         "multiple-targets-to-review"
       ]
     },
@@ -19455,19 +19467,19 @@
           "normalizedPath": "qcommon/cmodel.c",
           "sourcePath": "Quake-2-master/qcommon/cmodel.c",
           "name": "cmodel.c",
-          "description": "Portage principal maintenant rattache a `packages/qcommon/src/collision.ts` pour le chargement/caching de BSP (`CM_LoadMap` avec checksum et reuse de map), les traces (`CM_BoxTrace`, `CM_TransformedBoxTrace`), contenus/leafs (`CM_PointContents`, `CM_PointLeafnum`, `CM_BoxLeafnums*`), inline models, box hull temporaire, PVS/PHS (`CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS`), area portals (`CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, `CM_HeadnodeVisible`) et le save/load de leur etat (`CM_WritePortalState`, `CM_ReadPortalState`) sous forme binaire compatible `qboolean`. Le port reste explicitement base sur un runtime TS et un loader injecte au lieu des globals/IO C bruts, et il est verrouille par des harnais cibles de collision et `cmodel`.",
+          "description": "Portage principal maintenant rattache a `packages/qcommon/src/cmodel.ts` pour le chargement/caching de BSP (`CM_LoadMap` avec checksum et reuse de map), les traces (`CM_BoxTrace`, `CM_TransformedBoxTrace`), contenus/leafs (`CM_PointContents`, `CM_PointLeafnum`, `CM_BoxLeafnums*`), inline models, box hull temporaire, PVS/PHS (`CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS`), area portals (`CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, `CM_HeadnodeVisible`) et le save/load de leur etat (`CM_WritePortalState`, `CM_ReadPortalState`) sous forme binaire compatible `qboolean`. Le port reste explicitement base sur un runtime TS et un loader injecte au lieu des globals/IO C bruts, et il est verrouille par des harnais cibles de collision et `cmodel`.",
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/qcommon/src/collision.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-collision-phase1.ts, scripts/verify/quake2-cmodel.ts",
+          "cible": "packages/qcommon/src/cmodel.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-collision-phase1.ts, scripts/verify/quake2-cmodel.ts",
           "targetPaths": [
-            "packages/qcommon/src/collision.ts",
+            "packages/qcommon/src/cmodel.ts",
             "packages/qcommon/src/index.ts",
             "scripts/verify/quake2-collision-phase1.ts",
             "scripts/verify/quake2-cmodel.ts"
           ],
           "tsTargetPaths": [
-            "packages/qcommon/src/collision.ts",
+            "packages/qcommon/src/cmodel.ts",
             "packages/qcommon/src/index.ts"
           ],
           "auditPaths": [],
@@ -19478,23 +19490,25 @@
         }
       ],
       "declaredTargets": [
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/index.ts",
         "scripts/verify/quake2-collision-phase1.ts",
         "scripts/verify/quake2-cmodel.ts"
       ],
       "declaredTsTargets": [
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/index.ts"
       ],
-      "declaredPrimaryTsTarget": "packages/qcommon/src/collision.ts",
+      "declaredPrimaryTsTarget": "packages/qcommon/src/cmodel.ts",
       "declaredSecondaryTsTargets": [
         "packages/qcommon/src/index.ts"
       ],
       "expectedTsFile": "cmodel.ts",
-      "detectedExactTsTargets": [],
+      "detectedExactTsTargets": [
+        "packages/qcommon/src/cmodel.ts"
+      ],
       "declaredTsTargetsExistingInIndex": [
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/index.ts"
       ],
       "hasHistoricalAudit": false,
@@ -19503,14 +19517,10 @@
         "scripts/verify/quake2-collision-phase1.ts"
       ],
       "anomalies": [
-        "multiple-declared-ts-targets",
-        "strict-basename-target-missing",
-        "declared-target-not-strict-basename"
+        "multiple-declared-ts-targets"
       ],
       "phase02Hints": [
-        "multiple-targets-to-review",
-        "naming-or-split-decision",
-        "strict-basename-map-missing"
+        "multiple-targets-to-review"
       ]
     },
     {
@@ -19797,19 +19807,19 @@
           "normalizedPath": "qcommon/files.c",
           "sourcePath": "Quake-2-master/qcommon/files.c",
           "name": "files.c",
-          "description": "Portage principal rattache a `packages/filesystem/src/virtual-filesystem.ts` pour les search paths, le montage et la lecture des fichiers, avec `packages/formats/src/pak.ts` comme parseur de support et `packages/filesystem/src/index.ts (facade package)` comme point d'export. Le bloc couvre desormais `FS_AddGameDirectory`, `FS_LoadPackFile`, `FS_FOpenFile`/`FS_LoadFile`, `FS_FreeFile`, `FS_Link_f`, `FS_Gamedir`, `FS_SetGamedir`, `FS_Path_f`, `FS_NextPath`, `FS_ListFiles`, `FS_Dir_f`, `FS_ExecAutoexec` et `Developer_searchpath`, avec une restauration effective au socle `fs_base_searchpaths` lors des changements de gamedir dans le runtime virtuel.",
+          "description": "Portage principal rattache a `packages/filesystem/src/files.ts` pour les search paths, le montage et la lecture des fichiers, avec `packages/formats/src/pak.ts` comme parseur de support et `packages/filesystem/src/index.ts (facade package)` comme point d'export. Le bloc couvre desormais `FS_AddGameDirectory`, `FS_LoadPackFile`, `FS_FOpenFile`/`FS_LoadFile`, `FS_FreeFile`, `FS_Link_f`, `FS_Gamedir`, `FS_SetGamedir`, `FS_Path_f`, `FS_NextPath`, `FS_ListFiles`, `FS_Dir_f`, `FS_ExecAutoexec` et `Developer_searchpath`, avec une restauration effective au socle `fs_base_searchpaths` lors des changements de gamedir dans le runtime virtuel.",
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/filesystem/src/virtual-filesystem.ts, packages/filesystem/src/index.ts (facade package), packages/formats/src/pak.ts, scripts/verify/quake2-files.ts",
+          "cible": "packages/filesystem/src/files.ts, packages/filesystem/src/index.ts (facade package), packages/formats/src/pak.ts, scripts/verify/quake2-files.ts",
           "targetPaths": [
-            "packages/filesystem/src/virtual-filesystem.ts",
+            "packages/filesystem/src/files.ts",
             "packages/filesystem/src/index.ts",
             "packages/formats/src/pak.ts",
             "scripts/verify/quake2-files.ts"
           ],
           "tsTargetPaths": [
-            "packages/filesystem/src/virtual-filesystem.ts",
+            "packages/filesystem/src/files.ts",
             "packages/filesystem/src/index.ts",
             "packages/formats/src/pak.ts"
           ],
@@ -19820,25 +19830,27 @@
         }
       ],
       "declaredTargets": [
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/filesystem/src/index.ts",
         "packages/formats/src/pak.ts",
         "scripts/verify/quake2-files.ts"
       ],
       "declaredTsTargets": [
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/filesystem/src/index.ts",
         "packages/formats/src/pak.ts"
       ],
-      "declaredPrimaryTsTarget": "packages/filesystem/src/virtual-filesystem.ts",
+      "declaredPrimaryTsTarget": "packages/filesystem/src/files.ts",
       "declaredSecondaryTsTargets": [
         "packages/filesystem/src/index.ts",
         "packages/formats/src/pak.ts"
       ],
       "expectedTsFile": "files.ts",
-      "detectedExactTsTargets": [],
+      "detectedExactTsTargets": [
+        "packages/filesystem/src/files.ts"
+      ],
       "declaredTsTargetsExistingInIndex": [
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/filesystem/src/index.ts",
         "packages/formats/src/pak.ts"
       ],
@@ -19847,14 +19859,10 @@
         "scripts/verify/quake2-files.ts"
       ],
       "anomalies": [
-        "multiple-declared-ts-targets",
-        "strict-basename-target-missing",
-        "declared-target-not-strict-basename"
+        "multiple-declared-ts-targets"
       ],
       "phase02Hints": [
-        "multiple-targets-to-review",
-        "naming-or-split-decision",
-        "strict-basename-map-missing"
+        "multiple-targets-to-review"
       ]
     },
     {
@@ -20076,11 +20084,11 @@
           "normalizedPath": "qcommon/qcommon.h",
           "sourcePath": "Quake-2-master/qcommon/qcommon.h",
           "name": "qcommon.h",
-          "description": "Header mixte qcommon maintenant referme autour de `packages/qcommon/src/qcommon.ts` comme point principal de rattachement du header, avec `messages.ts` pour `MSG_*`, `packages/memory/src/sizebuf.ts` pour `sizebuf_t` / `SZ_*`, `protocol.ts` pour les constantes de protocole, `cmd.ts` pour `Cbuf_*` / `Cmd_*`, `cvar.ts` pour `cvar_t` / `Cvar_*`, `collision.ts` et `pmove.ts` pour les blocs associes, `packages/filesystem/src/virtual-filesystem.ts` pour le sous-ensemble `FS_*` deja porte, `md4.ts` pour `Com_BlockChecksum`, et `system.ts` / `common.ts` pour le glue qcommon partage. Le point principal couvre explicitement `CRC_*`, `COM_BlockSequenceCRCByte`, `Com_DPrintf`, `Com_Error`, `Com_Quit`, les allocateurs `Z_*`, le cycle `Qcommon_Init` / `Qcommon_Frame` / `Qcommon_Shutdown`, `Com_BlockChecksum`, le bloc reseau `NET_*` / `Netchan_*`, la queue de declarations `Sys_*` / `CL_*` / `SV_*` / `Con_Print` / `SCR_BeginLoadingPlaque` / `SCR_DebugGraph`, ainsi que le sous-ensemble bootstrap commande du header (`Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cmd_ForwardToServer`) desormais porte et verifie par un harnais dedie.",
+          "description": "Header mixte qcommon maintenant referme autour de `packages/qcommon/src/qcommon.ts` comme point principal de rattachement du header, avec `messages.ts` pour `MSG_*`, `packages/memory/src/sizebuf.ts` pour `sizebuf_t` / `SZ_*`, `protocol.ts` pour les constantes de protocole, `cmd.ts` pour `Cbuf_*` / `Cmd_*`, `cvar.ts` pour `cvar_t` / `Cvar_*`, `collision.ts` et `pmove.ts` pour les blocs associes, `packages/filesystem/src/files.ts` pour le sous-ensemble `FS_*` deja porte, `md4.ts` pour `Com_BlockChecksum`, et `system.ts` / `common.ts` pour le glue qcommon partage. Le point principal couvre explicitement `CRC_*`, `COM_BlockSequenceCRCByte`, `Com_DPrintf`, `Com_Error`, `Com_Quit`, les allocateurs `Z_*`, le cycle `Qcommon_Init` / `Qcommon_Frame` / `Qcommon_Shutdown`, `Com_BlockChecksum`, le bloc reseau `NET_*` / `Netchan_*`, la queue de declarations `Sys_*` / `CL_*` / `SV_*` / `Con_Print` / `SCR_BeginLoadingPlaque` / `SCR_DebugGraph`, ainsi que le sous-ensemble bootstrap commande du header (`Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cmd_ForwardToServer`) desormais porte et verifie par un harnais dedie.",
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/qcommon/src/qcommon.ts, packages/qcommon/src/messages.ts, packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/protocol.ts, packages/qcommon/src/cmd.ts, packages/qcommon/src/cvar.ts, packages/qcommon/src/collision.ts, packages/qcommon/src/pmove.ts, packages/filesystem/src/virtual-filesystem.ts, packages/qcommon/src/md4.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, scripts/verify/quake2-qcommon-header.ts",
+          "cible": "packages/qcommon/src/qcommon.ts, packages/qcommon/src/messages.ts, packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/protocol.ts, packages/qcommon/src/cmd.ts, packages/qcommon/src/cvar.ts, packages/qcommon/src/cmodel.ts, packages/qcommon/src/pmove.ts, packages/filesystem/src/files.ts, packages/qcommon/src/md4.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, scripts/verify/quake2-qcommon-header.ts",
           "targetPaths": [
             "packages/qcommon/src/qcommon.ts",
             "packages/qcommon/src/messages.ts",
@@ -20089,9 +20097,9 @@
             "packages/qcommon/src/protocol.ts",
             "packages/qcommon/src/cmd.ts",
             "packages/qcommon/src/cvar.ts",
-            "packages/qcommon/src/collision.ts",
+            "packages/qcommon/src/cmodel.ts",
             "packages/qcommon/src/pmove.ts",
-            "packages/filesystem/src/virtual-filesystem.ts",
+            "packages/filesystem/src/files.ts",
             "packages/qcommon/src/md4.ts",
             "packages/qcommon/src/common.ts",
             "packages/qcommon/src/system.ts",
@@ -20105,9 +20113,9 @@
             "packages/qcommon/src/protocol.ts",
             "packages/qcommon/src/cmd.ts",
             "packages/qcommon/src/cvar.ts",
-            "packages/qcommon/src/collision.ts",
+            "packages/qcommon/src/cmodel.ts",
             "packages/qcommon/src/pmove.ts",
-            "packages/filesystem/src/virtual-filesystem.ts",
+            "packages/filesystem/src/files.ts",
             "packages/qcommon/src/md4.ts",
             "packages/qcommon/src/common.ts",
             "packages/qcommon/src/system.ts"
@@ -20126,9 +20134,9 @@
         "packages/qcommon/src/protocol.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/pmove.ts",
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/qcommon/src/md4.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts",
@@ -20142,9 +20150,9 @@
         "packages/qcommon/src/protocol.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/pmove.ts",
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/qcommon/src/md4.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts"
@@ -20157,9 +20165,9 @@
         "packages/qcommon/src/protocol.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/pmove.ts",
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/qcommon/src/md4.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts"
@@ -20176,9 +20184,9 @@
         "packages/qcommon/src/protocol.ts",
         "packages/qcommon/src/cmd.ts",
         "packages/qcommon/src/cvar.ts",
-        "packages/qcommon/src/collision.ts",
+        "packages/qcommon/src/cmodel.ts",
         "packages/qcommon/src/pmove.ts",
-        "packages/filesystem/src/virtual-filesystem.ts",
+        "packages/filesystem/src/files.ts",
         "packages/qcommon/src/md4.ts",
         "packages/qcommon/src/common.ts",
         "packages/qcommon/src/system.ts"
@@ -20211,9 +20219,9 @@
           "aPorter": "✅",
           "porte": "✅",
           "valide": "",
-          "cible": "packages/formats/src/bsp.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/index.ts (facade package), scripts/verify/quake2-qfiles.ts",
+          "cible": "packages/formats/src/qfiles.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/index.ts (facade package), scripts/verify/quake2-qfiles.ts",
           "targetPaths": [
-            "packages/formats/src/bsp.ts",
+            "packages/formats/src/qfiles.ts",
             "packages/formats/src/pak.ts",
             "packages/formats/src/pcx.ts",
             "packages/formats/src/wal.ts",
@@ -20223,7 +20231,7 @@
             "scripts/verify/quake2-qfiles.ts"
           ],
           "tsTargetPaths": [
-            "packages/formats/src/bsp.ts",
+            "packages/formats/src/qfiles.ts",
             "packages/formats/src/pak.ts",
             "packages/formats/src/pcx.ts",
             "packages/formats/src/wal.ts",
@@ -20238,7 +20246,7 @@
         }
       ],
       "declaredTargets": [
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/formats/src/pak.ts",
         "packages/formats/src/pcx.ts",
         "packages/formats/src/wal.ts",
@@ -20248,7 +20256,7 @@
         "scripts/verify/quake2-qfiles.ts"
       ],
       "declaredTsTargets": [
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/formats/src/pak.ts",
         "packages/formats/src/pcx.ts",
         "packages/formats/src/wal.ts",
@@ -20256,7 +20264,7 @@
         "packages/formats/src/sp2.ts",
         "packages/formats/src/index.ts"
       ],
-      "declaredPrimaryTsTarget": "packages/formats/src/bsp.ts",
+      "declaredPrimaryTsTarget": "packages/formats/src/qfiles.ts",
       "declaredSecondaryTsTargets": [
         "packages/formats/src/pak.ts",
         "packages/formats/src/pcx.ts",
@@ -20266,9 +20274,11 @@
         "packages/formats/src/index.ts"
       ],
       "expectedTsFile": "qfiles.ts",
-      "detectedExactTsTargets": [],
+      "detectedExactTsTargets": [
+        "packages/formats/src/qfiles.ts"
+      ],
       "declaredTsTargetsExistingInIndex": [
-        "packages/formats/src/bsp.ts",
+        "packages/formats/src/qfiles.ts",
         "packages/formats/src/pak.ts",
         "packages/formats/src/pcx.ts",
         "packages/formats/src/wal.ts",
@@ -20281,14 +20291,10 @@
         "scripts/verify/quake2-qfiles.ts"
       ],
       "anomalies": [
-        "multiple-declared-ts-targets",
-        "strict-basename-target-missing",
-        "declared-target-not-strict-basename"
+        "multiple-declared-ts-targets"
       ],
       "phase02Hints": [
-        "multiple-targets-to-review",
-        "naming-or-split-decision",
-        "strict-basename-map-missing"
+        "multiple-targets-to-review"
       ]
     },
     {
@@ -24285,11 +24291,11 @@
         "aPorter": "✅",
         "porte": "✅",
         "valide": "✅",
-        "cible": "packages/client/src/cl_cin.ts, packages/client/src/cl_scrn.ts, packages/client/src/types.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cinematic-audio-sync.ts, Audit/client-cl_cin.inventory.md, Audit/client-cl_cin.audit.md",
+        "cible": "packages/client/src/cl_cin.ts, packages/client/src/cl_scrn.ts, packages/client/src/client.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cinematic-audio-sync.ts, Audit/client-cl_cin.inventory.md, Audit/client-cl_cin.audit.md",
         "targetPaths": [
           "packages/client/src/cl_cin.ts",
           "packages/client/src/cl_scrn.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "scripts/verify/quake2-screen-header.ts",
           "scripts/verify/quake2-cinematic-audio-sync.ts",
           "Audit/client-cl_cin.inventory.md",
@@ -24298,7 +24304,7 @@
         "tsTargetPaths": [
           "packages/client/src/cl_cin.ts",
           "packages/client/src/cl_scrn.ts",
-          "packages/client/src/types.ts"
+          "packages/client/src/client.ts"
         ],
         "auditPaths": [
           "Audit/client-cl_cin.audit.md"
@@ -24381,7 +24387,7 @@
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/refresh.ts, packages/client/src/monster-flash.ts, packages/client/src/cl_ents.ts, packages/client/src/cl_main.ts, packages/client/src/types.ts, scripts/verify/quake2-particle-sync.ts",
+        "cible": "packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/cl_parse.ts, packages/client/src/refresh.ts, packages/client/src/monster-flash.ts, packages/client/src/cl_ents.ts, packages/client/src/cl_main.ts, packages/client/src/client.ts, scripts/verify/quake2-particle-sync.ts",
         "targetPaths": [
           "packages/client/src/cl_fx.ts",
           "packages/client/src/cl_newfx.ts",
@@ -24390,7 +24396,7 @@
           "packages/client/src/monster-flash.ts",
           "packages/client/src/cl_ents.ts",
           "packages/client/src/cl_main.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "scripts/verify/quake2-particle-sync.ts"
         ],
         "tsTargetPaths": [
@@ -24401,7 +24407,7 @@
           "packages/client/src/monster-flash.ts",
           "packages/client/src/cl_ents.ts",
           "packages/client/src/cl_main.ts",
-          "packages/client/src/types.ts"
+          "packages/client/src/client.ts"
         ],
         "auditPaths": [],
         "scriptPaths": [
@@ -24418,18 +24424,18 @@
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/client/src/cl_input.ts, packages/client/src/input-device.ts, packages/client/src/types.ts, scripts/verify/quake2-cl-input.ts, scripts/verify/quake2-cl-main.ts",
+        "cible": "packages/client/src/cl_input.ts, packages/client/src/input.ts, packages/client/src/client.ts, scripts/verify/quake2-cl-input.ts, scripts/verify/quake2-cl-main.ts",
         "targetPaths": [
           "packages/client/src/cl_input.ts",
-          "packages/client/src/input-device.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/input.ts",
+          "packages/client/src/client.ts",
           "scripts/verify/quake2-cl-input.ts",
           "scripts/verify/quake2-cl-main.ts"
         ],
         "tsTargetPaths": [
           "packages/client/src/cl_input.ts",
-          "packages/client/src/input-device.ts",
-          "packages/client/src/types.ts"
+          "packages/client/src/input.ts",
+          "packages/client/src/client.ts"
         ],
         "auditPaths": [],
         "scriptPaths": [
@@ -24480,7 +24486,7 @@
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/client/src/cl_main.ts, packages/client/src/download.ts, packages/client/src/precache.ts, packages/client/src/sound.ts, packages/client/src/cl_parse.ts, packages/client/src/sky.ts, packages/client/src/types.ts, scripts/verify/quake2-cl-main.ts",
+        "cible": "packages/client/src/cl_main.ts, packages/client/src/download.ts, packages/client/src/precache.ts, packages/client/src/sound.ts, packages/client/src/cl_parse.ts, packages/client/src/sky.ts, packages/client/src/client.ts, scripts/verify/quake2-cl-main.ts",
         "targetPaths": [
           "packages/client/src/cl_main.ts",
           "packages/client/src/download.ts",
@@ -24488,7 +24494,7 @@
           "packages/client/src/sound.ts",
           "packages/client/src/cl_parse.ts",
           "packages/client/src/sky.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "scripts/verify/quake2-cl-main.ts"
         ],
         "tsTargetPaths": [
@@ -24498,7 +24504,7 @@
           "packages/client/src/sound.ts",
           "packages/client/src/cl_parse.ts",
           "packages/client/src/sky.ts",
-          "packages/client/src/types.ts"
+          "packages/client/src/client.ts"
         ],
         "auditPaths": [],
         "scriptPaths": [
@@ -24585,11 +24591,11 @@
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/client/src/cl_scrn.ts, packages/client/src/cl_main.ts, packages/client/src/types.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, packages/renderer-three/src/gl_draw.ts, packages/renderer-three/src/three-gl-draw-adapter.ts, scripts/verify/quake2-three-gl-draw-adapter.ts",
+        "cible": "packages/client/src/cl_scrn.ts, packages/client/src/cl_main.ts, packages/client/src/client.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, packages/renderer-three/src/gl_draw.ts, packages/renderer-three/src/three-gl-draw-adapter.ts, scripts/verify/quake2-three-gl-draw-adapter.ts",
         "targetPaths": [
           "packages/client/src/cl_scrn.ts",
           "packages/client/src/cl_main.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "scripts/verify/quake2-screen-header.ts",
           "scripts/verify/quake2-cl-scrn.ts",
           "packages/renderer-three/src/gl_draw.ts",
@@ -24599,7 +24605,7 @@
         "tsTargetPaths": [
           "packages/client/src/cl_scrn.ts",
           "packages/client/src/cl_main.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "packages/renderer-three/src/gl_draw.ts",
           "packages/renderer-three/src/three-gl-draw-adapter.ts"
         ],
@@ -24620,7 +24626,7 @@
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/client/src/cl_tent.ts, packages/client/src/cl_parse.ts, packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts, packages/client/src/types.ts, scripts/verify/quake2-entities-phase8-scene.ts, scripts/verify/quake2-particle-sync.ts",
+        "cible": "packages/client/src/cl_tent.ts, packages/client/src/cl_parse.ts, packages/client/src/cl_fx.ts, packages/client/src/cl_newfx.ts, packages/client/src/refresh.ts, packages/client/src/sound.ts, packages/client/src/client.ts, scripts/verify/quake2-entities-phase8-scene.ts, scripts/verify/quake2-particle-sync.ts",
         "targetPaths": [
           "packages/client/src/cl_tent.ts",
           "packages/client/src/cl_parse.ts",
@@ -24628,7 +24634,7 @@
           "packages/client/src/cl_newfx.ts",
           "packages/client/src/refresh.ts",
           "packages/client/src/sound.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "scripts/verify/quake2-entities-phase8-scene.ts",
           "scripts/verify/quake2-particle-sync.ts"
         ],
@@ -24639,7 +24645,7 @@
           "packages/client/src/cl_newfx.ts",
           "packages/client/src/refresh.ts",
           "packages/client/src/sound.ts",
-          "packages/client/src/types.ts"
+          "packages/client/src/client.ts"
         ],
         "auditPaths": [],
         "scriptPaths": [
@@ -24684,19 +24690,19 @@
         "normalizedPath": "client/client.h",
         "sourcePath": "Quake-2-master/client/client.h",
         "name": "client.h",
-        "description": "Header mixte client maintenant ferme autour de `packages/client/src/types.ts` pour les structures et constantes runtime (`frame_t`, `centity_t`, `clientinfo_t`, `client_state_t`, `client_static_t`, `connstate_t`, `dltype_t`, `kbutton_t`, `cdlight_t`, `cl_sustain_t`, `cparticle_t`, `MAX_PARSE_ENTITIES`, `MAX_CLIENTWEAPONMODELS`, `MAX_SUSTAINS`, `INSTANT_PARTICLE`), avec `packages/client/src/keys.ts` comme cible explicite de `keydest_t` et de la surface `cls.key_dest`, `packages/client/src/index.ts (facade package)` comme facade package et un harnais dedie qui verrouille enums, factories, tailles fixes et etat persistant client. Les handles renderer/audio/fichiers restent volontairement abstractises en `unknown` et `keydest_t` demeure regroupe avec `keys.c`, ce qui constitue une deviation structurelle documentee mais pas un manque de portage.",
+        "description": "Header mixte client maintenant ferme autour de `packages/client/src/client.ts` pour les structures et constantes runtime (`frame_t`, `centity_t`, `clientinfo_t`, `client_state_t`, `client_static_t`, `connstate_t`, `dltype_t`, `kbutton_t`, `cdlight_t`, `cl_sustain_t`, `cparticle_t`, `MAX_PARSE_ENTITIES`, `MAX_CLIENTWEAPONMODELS`, `MAX_SUSTAINS`, `INSTANT_PARTICLE`), avec `packages/client/src/keys.ts` comme cible explicite de `keydest_t` et de la surface `cls.key_dest`, `packages/client/src/index.ts (facade package)` comme facade package et un harnais dedie qui verrouille enums, factories, tailles fixes et etat persistant client. Les handles renderer/audio/fichiers restent volontairement abstractises en `unknown` et `keydest_t` demeure regroupe avec `keys.c`, ce qui constitue une deviation structurelle documentee mais pas un manque de portage.",
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/client/src/types.ts, packages/client/src/keys.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-client-header.ts",
+        "cible": "packages/client/src/client.ts, packages/client/src/keys.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-client-header.ts",
         "targetPaths": [
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "packages/client/src/keys.ts",
           "packages/client/src/index.ts",
           "scripts/verify/quake2-client-header.ts"
         ],
         "tsTargetPaths": [
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "packages/client/src/keys.ts",
           "packages/client/src/index.ts"
         ],
@@ -24769,13 +24775,13 @@
         "normalizedPath": "client/input.h",
         "sourcePath": "Quake-2-master/client/input.h",
         "name": "input.h",
-        "description": "Header declaratif des peripheriques d'entree externes maintenant rattache explicitement a `packages/client/src/input-device.ts` pour les points d'entree `IN_Init`, `IN_Shutdown`, `IN_Commands`, `IN_Frame`, `IN_Move` et `IN_Activate`, exposes via `packages/client/src/index.ts (facade package)` avec un runtime de hooks explicite afin de conserver la separation source entre `cl_input.c` et les backends souris/joystick/non-clavier. Un harnais dedie verrouille l'ordre des forwards, la mutation in-place du `usercmd_t` et le comportement no-op par defaut sans adapter branche ; audit `Audit/client-input_h.audit.md` termine en verdict OK ISO branche.",
+        "description": "Header declaratif des peripheriques d'entree externes maintenant rattache explicitement a `packages/client/src/input.ts` pour les points d'entree `IN_Init`, `IN_Shutdown`, `IN_Commands`, `IN_Frame`, `IN_Move` et `IN_Activate`, exposes via `packages/client/src/index.ts (facade package)` avec un runtime de hooks explicite afin de conserver la separation source entre `cl_input.c` et les backends souris/joystick/non-clavier. Un harnais dedie verrouille l'ordre des forwards, la mutation in-place du `usercmd_t` et le comportement no-op par defaut sans adapter branche ; audit `Audit/client-input_h.audit.md` termine en verdict OK ISO branche.",
         "aPorter": "✅",
         "porte": "✅",
         "valide": "✅",
-        "cible": "packages/client/src/input-device.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-input-header.ts, scripts/verify/quake2-cl-input.ts, Audit/client-input_h.inventory.md, Audit/client-input_h.audit.md",
+        "cible": "packages/client/src/input.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-input-header.ts, scripts/verify/quake2-cl-input.ts, Audit/client-input_h.inventory.md, Audit/client-input_h.audit.md",
         "targetPaths": [
-          "packages/client/src/input-device.ts",
+          "packages/client/src/input.ts",
           "packages/client/src/index.ts",
           "scripts/verify/quake2-input-header.ts",
           "scripts/verify/quake2-cl-input.ts",
@@ -24783,7 +24789,7 @@
           "Audit/client-input_h.audit.md"
         ],
         "tsTargetPaths": [
-          "packages/client/src/input-device.ts",
+          "packages/client/src/input.ts",
           "packages/client/src/index.ts"
         ],
         "auditPaths": [
@@ -24992,14 +24998,14 @@
         "normalizedPath": "client/screen.h",
         "sourcePath": "Quake-2-master/client/screen.h",
         "name": "screen.h",
-        "description": "Header mixte screen/HUD rattache principalement a `packages/client/src/cl_scrn.ts` et `packages/client/src/types.ts` pour `SCR_Init`, `SCR_UpdateScreen`, `SCR_SizeUp`, `SCR_SizeDown`, `SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_DebugGraph`, `SCR_TouchPics`, `SCR_RunConsole`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen` et tout le bloc cinematique (`SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`), avec etats exposes (`scr_con_current`, `scr_conlines`, `sb_lines`, `scr_vrect`, `crosshair_pic`, `crosshair_width`, `crosshair_height`) et verification ciblee couvrant HUD, debug graph, `.pcx` statique et `.cin` Huffman/audio via hooks explicites. Audit `Audit/client-screen_h.audit.md` termine en verdict OK ISO branche.",
+        "description": "Header mixte screen/HUD rattache principalement a `packages/client/src/cl_scrn.ts` et `packages/client/src/client.ts` pour `SCR_Init`, `SCR_UpdateScreen`, `SCR_SizeUp`, `SCR_SizeDown`, `SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_DebugGraph`, `SCR_TouchPics`, `SCR_RunConsole`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen` et tout le bloc cinematique (`SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`), avec etats exposes (`scr_con_current`, `scr_conlines`, `sb_lines`, `scr_vrect`, `crosshair_pic`, `crosshair_width`, `crosshair_height`) et verification ciblee couvrant HUD, debug graph, `.pcx` statique et `.cin` Huffman/audio via hooks explicites. Audit `Audit/client-screen_h.audit.md` termine en verdict OK ISO branche.",
         "aPorter": "✅",
         "porte": "✅",
         "valide": "✅",
-        "cible": "packages/client/src/cl_scrn.ts, packages/client/src/types.ts, packages/client/src/cl_cin.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, Audit/client-screen_h.inventory.md, Audit/client-screen_h.audit.md",
+        "cible": "packages/client/src/cl_scrn.ts, packages/client/src/client.ts, packages/client/src/cl_cin.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, Audit/client-screen_h.inventory.md, Audit/client-screen_h.audit.md",
         "targetPaths": [
           "packages/client/src/cl_scrn.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "packages/client/src/cl_cin.ts",
           "scripts/verify/quake2-screen-header.ts",
           "scripts/verify/quake2-cl-scrn.ts",
@@ -25008,7 +25014,7 @@
         ],
         "tsTargetPaths": [
           "packages/client/src/cl_scrn.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "packages/client/src/cl_cin.ts"
         ],
         "auditPaths": [
@@ -25619,15 +25625,15 @@
         "normalizedPath": "game/g_spawn.c",
         "sourcePath": "Quake-2-master/game/g_spawn.c",
         "name": "g_spawn.c",
-        "description": "Portage principal maintenant referme entre `packages/game/src/g_spawn.ts` pour le registre de spawn (`ED_CallSpawn`, `SP_worldspawn`, `G_FindTeams`), `packages/game/src/g_main.ts` pour le flux `SpawnEntities`, et `packages/formats/src/bsp.ts` pour le parsing de l'entity lump qui remplace `ED_NewString` / `ED_ParseField` / `ED_ParseEdict`. Le branchement `worldspawn` cote `SpawnEntities` est maintenant execute en premier comme dans le source original, avec synchro `runtime.mapname`, configstrings de base et verification ciblee dediee.",
+        "description": "Portage principal maintenant referme entre `packages/game/src/g_spawn.ts` pour le registre de spawn (`ED_CallSpawn`, `SP_worldspawn`, `G_FindTeams`), `packages/game/src/g_main.ts` pour le flux `SpawnEntities`, et `packages/formats/src/qfiles.ts` pour le parsing de l'entity lump qui remplace `ED_NewString` / `ED_ParseField` / `ED_ParseEdict`. Le branchement `worldspawn` cote `SpawnEntities` est maintenant execute en premier comme dans le source original, avec synchro `runtime.mapname`, configstrings de base et verification ciblee dediee.",
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/game/src/g_spawn.ts, packages/game/src/g_main.ts, packages/formats/src/bsp.ts, packages/game/src/g_items.ts, packages/game/src/g_misc.ts, scripts/verify/quake2-g-spawn.ts",
+        "cible": "packages/game/src/g_spawn.ts, packages/game/src/g_main.ts, packages/formats/src/qfiles.ts, packages/game/src/g_items.ts, packages/game/src/g_misc.ts, scripts/verify/quake2-g-spawn.ts",
         "targetPaths": [
           "packages/game/src/g_spawn.ts",
           "packages/game/src/g_main.ts",
-          "packages/formats/src/bsp.ts",
+          "packages/formats/src/qfiles.ts",
           "packages/game/src/g_items.ts",
           "packages/game/src/g_misc.ts",
           "scripts/verify/quake2-g-spawn.ts"
@@ -25635,7 +25641,7 @@
         "tsTargetPaths": [
           "packages/game/src/g_spawn.ts",
           "packages/game/src/g_main.ts",
-          "packages/formats/src/bsp.ts",
+          "packages/formats/src/qfiles.ts",
           "packages/game/src/g_items.ts",
           "packages/game/src/g_misc.ts"
         ],
@@ -27388,13 +27394,13 @@
         "normalizedPath": "game/q_shared.c",
         "sourcePath": "Quake-2-master/game/q_shared.c",
         "name": "q_shared.c",
-        "description": "Portage principal referme et rattache au socle partage existant : fonctions math/vectorielles dans `packages/math/src/index.ts` (`Q_fabs`, `R_Concat*`, `ProjectPointOnPlane`, `PerpendicularVector`, `RotatePointAroundVector`, `BoxOnPlaneSide*`, bounds et vecteurs), helpers chemin/parsing/endian/info/string dans `packages/qcommon/src/common.ts` (`COM_*`, `Big/Little*`, `Swap_Init`, `va`, `Com_sprintf`, `Q_str*`, `Info_*`), glue memoire/systeme dans `packages/qcommon/src/system.ts` (`Com_PageInMemory`) et `AngleVectors` / `LerpAngle` dans `packages/qcommon/src/q_shared.ts`. Les adaptations JS documentees restent les retours string/objet au lieu de buffers C et varargs printf. Verification ciblee etendue dans `scripts/verify/quake2-q-shared-header.ts`, plus `npm run typecheck`.",
+        "description": "Portage principal referme et rattache au socle partage existant : fonctions math/vectorielles dans `packages/math/src/q_shared.ts` (`Q_fabs`, `R_Concat*`, `ProjectPointOnPlane`, `PerpendicularVector`, `RotatePointAroundVector`, `BoxOnPlaneSide*`, bounds et vecteurs), helpers chemin/parsing/endian/info/string dans `packages/qcommon/src/common.ts` (`COM_*`, `Big/Little*`, `Swap_Init`, `va`, `Com_sprintf`, `Q_str*`, `Info_*`), glue memoire/systeme dans `packages/qcommon/src/system.ts` (`Com_PageInMemory`) et `AngleVectors` / `LerpAngle` dans `packages/qcommon/src/q_shared.ts`. Les adaptations JS documentees restent les retours string/objet au lieu de buffers C et varargs printf. Verification ciblee etendue dans `scripts/verify/quake2-q-shared-header.ts`, plus `npm run typecheck`.",
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/math/src/index.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/q_shared.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-q-shared-header.ts",
+        "cible": "packages/math/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/q_shared.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-q-shared-header.ts",
         "targetPaths": [
-          "packages/math/src/index.ts",
+          "packages/math/src/q_shared.ts",
           "packages/qcommon/src/common.ts",
           "packages/qcommon/src/system.ts",
           "packages/qcommon/src/q_shared.ts",
@@ -27402,7 +27408,7 @@
           "scripts/verify/quake2-q-shared-header.ts"
         ],
         "tsTargetPaths": [
-          "packages/math/src/index.ts",
+          "packages/math/src/q_shared.ts",
           "packages/qcommon/src/common.ts",
           "packages/qcommon/src/system.ts",
           "packages/qcommon/src/q_shared.ts",
@@ -27419,17 +27425,17 @@
         "normalizedPath": "game/q_shared.h",
         "sourcePath": "Quake-2-master/game/q_shared.h",
         "name": "q_shared.h",
-        "description": "Header partage rattache principalement a `packages/qcommon/src/q_shared.ts` pour les constantes coeur, structures communes, `entity_state_t`, `player_state_t`, flags DM/effects et configstrings ; le decoupage secondaire legitime rattache les helpers utilitaires `COM_*`, `Info_*`, `Big/Little*`, `va` et `Com_sprintf` a `packages/qcommon/src/common.ts`, le glue hote `Sys_*`, `Hunk_*`, `Com_PageInMemory` et `Sys_Error` a `packages/qcommon/src/system.ts` via un runtime explicite injecte, `cvar_t` a `packages/qcommon/src/cvar.ts`, les primitives math partagees a `packages/math/src/index.ts (facade package)`, et la table `monster_flash_offset` / `MZ2_*` a `packages/game/src/m_flash.ts` avec re-export client.",
+        "description": "Header partage rattache principalement a `packages/qcommon/src/q_shared.ts` pour les constantes coeur, structures communes, `entity_state_t`, `player_state_t`, flags DM/effects et configstrings ; le decoupage secondaire legitime rattache les helpers utilitaires `COM_*`, `Info_*`, `Big/Little*`, `va` et `Com_sprintf` a `packages/qcommon/src/common.ts`, le glue hote `Sys_*`, `Hunk_*`, `Com_PageInMemory` et `Sys_Error` a `packages/qcommon/src/system.ts` via un runtime explicite injecte, `cvar_t` a `packages/qcommon/src/cvar.ts`, les primitives math partagees a `packages/math/src/q_shared.ts (facade package)`, et la table `monster_flash_offset` / `MZ2_*` a `packages/game/src/m_flash.ts` avec re-export client.",
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/qcommon/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/cvar.ts, packages/math/src/index.ts (facade package), packages/game/src/m_flash.ts, packages/client/src/monster-flash.ts, scripts/verify/quake2-q-shared-header.ts",
+        "cible": "packages/qcommon/src/q_shared.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, packages/qcommon/src/cvar.ts, packages/math/src/q_shared.ts (facade package), packages/game/src/m_flash.ts, packages/client/src/monster-flash.ts, scripts/verify/quake2-q-shared-header.ts",
         "targetPaths": [
           "packages/qcommon/src/q_shared.ts",
           "packages/qcommon/src/common.ts",
           "packages/qcommon/src/system.ts",
           "packages/qcommon/src/cvar.ts",
-          "packages/math/src/index.ts",
+          "packages/math/src/q_shared.ts",
           "packages/game/src/m_flash.ts",
           "packages/client/src/monster-flash.ts",
           "scripts/verify/quake2-q-shared-header.ts"
@@ -27439,7 +27445,7 @@
           "packages/qcommon/src/common.ts",
           "packages/qcommon/src/system.ts",
           "packages/qcommon/src/cvar.ts",
-          "packages/math/src/index.ts",
+          "packages/math/src/q_shared.ts",
           "packages/game/src/m_flash.ts",
           "packages/client/src/monster-flash.ts"
         ],
@@ -27479,19 +27485,19 @@
         "normalizedPath": "qcommon/cmodel.c",
         "sourcePath": "Quake-2-master/qcommon/cmodel.c",
         "name": "cmodel.c",
-        "description": "Portage principal maintenant rattache a `packages/qcommon/src/collision.ts` pour le chargement/caching de BSP (`CM_LoadMap` avec checksum et reuse de map), les traces (`CM_BoxTrace`, `CM_TransformedBoxTrace`), contenus/leafs (`CM_PointContents`, `CM_PointLeafnum`, `CM_BoxLeafnums*`), inline models, box hull temporaire, PVS/PHS (`CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS`), area portals (`CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, `CM_HeadnodeVisible`) et le save/load de leur etat (`CM_WritePortalState`, `CM_ReadPortalState`) sous forme binaire compatible `qboolean`. Le port reste explicitement base sur un runtime TS et un loader injecte au lieu des globals/IO C bruts, et il est verrouille par des harnais cibles de collision et `cmodel`.",
+        "description": "Portage principal maintenant rattache a `packages/qcommon/src/cmodel.ts` pour le chargement/caching de BSP (`CM_LoadMap` avec checksum et reuse de map), les traces (`CM_BoxTrace`, `CM_TransformedBoxTrace`), contenus/leafs (`CM_PointContents`, `CM_PointLeafnum`, `CM_BoxLeafnums*`), inline models, box hull temporaire, PVS/PHS (`CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS`), area portals (`CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, `CM_HeadnodeVisible`) et le save/load de leur etat (`CM_WritePortalState`, `CM_ReadPortalState`) sous forme binaire compatible `qboolean`. Le port reste explicitement base sur un runtime TS et un loader injecte au lieu des globals/IO C bruts, et il est verrouille par des harnais cibles de collision et `cmodel`.",
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/qcommon/src/collision.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-collision-phase1.ts, scripts/verify/quake2-cmodel.ts",
+        "cible": "packages/qcommon/src/cmodel.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-collision-phase1.ts, scripts/verify/quake2-cmodel.ts",
         "targetPaths": [
-          "packages/qcommon/src/collision.ts",
+          "packages/qcommon/src/cmodel.ts",
           "packages/qcommon/src/index.ts",
           "scripts/verify/quake2-collision-phase1.ts",
           "scripts/verify/quake2-cmodel.ts"
         ],
         "tsTargetPaths": [
-          "packages/qcommon/src/collision.ts",
+          "packages/qcommon/src/cmodel.ts",
           "packages/qcommon/src/index.ts"
         ],
         "auditPaths": [],
@@ -27587,19 +27593,19 @@
         "normalizedPath": "qcommon/files.c",
         "sourcePath": "Quake-2-master/qcommon/files.c",
         "name": "files.c",
-        "description": "Portage principal rattache a `packages/filesystem/src/virtual-filesystem.ts` pour les search paths, le montage et la lecture des fichiers, avec `packages/formats/src/pak.ts` comme parseur de support et `packages/filesystem/src/index.ts (facade package)` comme point d'export. Le bloc couvre desormais `FS_AddGameDirectory`, `FS_LoadPackFile`, `FS_FOpenFile`/`FS_LoadFile`, `FS_FreeFile`, `FS_Link_f`, `FS_Gamedir`, `FS_SetGamedir`, `FS_Path_f`, `FS_NextPath`, `FS_ListFiles`, `FS_Dir_f`, `FS_ExecAutoexec` et `Developer_searchpath`, avec une restauration effective au socle `fs_base_searchpaths` lors des changements de gamedir dans le runtime virtuel.",
+        "description": "Portage principal rattache a `packages/filesystem/src/files.ts` pour les search paths, le montage et la lecture des fichiers, avec `packages/formats/src/pak.ts` comme parseur de support et `packages/filesystem/src/index.ts (facade package)` comme point d'export. Le bloc couvre desormais `FS_AddGameDirectory`, `FS_LoadPackFile`, `FS_FOpenFile`/`FS_LoadFile`, `FS_FreeFile`, `FS_Link_f`, `FS_Gamedir`, `FS_SetGamedir`, `FS_Path_f`, `FS_NextPath`, `FS_ListFiles`, `FS_Dir_f`, `FS_ExecAutoexec` et `Developer_searchpath`, avec une restauration effective au socle `fs_base_searchpaths` lors des changements de gamedir dans le runtime virtuel.",
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/filesystem/src/virtual-filesystem.ts, packages/filesystem/src/index.ts (facade package), packages/formats/src/pak.ts, scripts/verify/quake2-files.ts",
+        "cible": "packages/filesystem/src/files.ts, packages/filesystem/src/index.ts (facade package), packages/formats/src/pak.ts, scripts/verify/quake2-files.ts",
         "targetPaths": [
-          "packages/filesystem/src/virtual-filesystem.ts",
+          "packages/filesystem/src/files.ts",
           "packages/filesystem/src/index.ts",
           "packages/formats/src/pak.ts",
           "scripts/verify/quake2-files.ts"
         ],
         "tsTargetPaths": [
-          "packages/filesystem/src/virtual-filesystem.ts",
+          "packages/filesystem/src/files.ts",
           "packages/filesystem/src/index.ts",
           "packages/formats/src/pak.ts"
         ],
@@ -27668,11 +27674,11 @@
         "normalizedPath": "qcommon/qcommon.h",
         "sourcePath": "Quake-2-master/qcommon/qcommon.h",
         "name": "qcommon.h",
-        "description": "Header mixte qcommon maintenant referme autour de `packages/qcommon/src/qcommon.ts` comme point principal de rattachement du header, avec `messages.ts` pour `MSG_*`, `packages/memory/src/sizebuf.ts` pour `sizebuf_t` / `SZ_*`, `protocol.ts` pour les constantes de protocole, `cmd.ts` pour `Cbuf_*` / `Cmd_*`, `cvar.ts` pour `cvar_t` / `Cvar_*`, `collision.ts` et `pmove.ts` pour les blocs associes, `packages/filesystem/src/virtual-filesystem.ts` pour le sous-ensemble `FS_*` deja porte, `md4.ts` pour `Com_BlockChecksum`, et `system.ts` / `common.ts` pour le glue qcommon partage. Le point principal couvre explicitement `CRC_*`, `COM_BlockSequenceCRCByte`, `Com_DPrintf`, `Com_Error`, `Com_Quit`, les allocateurs `Z_*`, le cycle `Qcommon_Init` / `Qcommon_Frame` / `Qcommon_Shutdown`, `Com_BlockChecksum`, le bloc reseau `NET_*` / `Netchan_*`, la queue de declarations `Sys_*` / `CL_*` / `SV_*` / `Con_Print` / `SCR_BeginLoadingPlaque` / `SCR_DebugGraph`, ainsi que le sous-ensemble bootstrap commande du header (`Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cmd_ForwardToServer`) desormais porte et verifie par un harnais dedie.",
+        "description": "Header mixte qcommon maintenant referme autour de `packages/qcommon/src/qcommon.ts` comme point principal de rattachement du header, avec `messages.ts` pour `MSG_*`, `packages/memory/src/sizebuf.ts` pour `sizebuf_t` / `SZ_*`, `protocol.ts` pour les constantes de protocole, `cmd.ts` pour `Cbuf_*` / `Cmd_*`, `cvar.ts` pour `cvar_t` / `Cvar_*`, `collision.ts` et `pmove.ts` pour les blocs associes, `packages/filesystem/src/files.ts` pour le sous-ensemble `FS_*` deja porte, `md4.ts` pour `Com_BlockChecksum`, et `system.ts` / `common.ts` pour le glue qcommon partage. Le point principal couvre explicitement `CRC_*`, `COM_BlockSequenceCRCByte`, `Com_DPrintf`, `Com_Error`, `Com_Quit`, les allocateurs `Z_*`, le cycle `Qcommon_Init` / `Qcommon_Frame` / `Qcommon_Shutdown`, `Com_BlockChecksum`, le bloc reseau `NET_*` / `Netchan_*`, la queue de declarations `Sys_*` / `CL_*` / `SV_*` / `Con_Print` / `SCR_BeginLoadingPlaque` / `SCR_DebugGraph`, ainsi que le sous-ensemble bootstrap commande du header (`Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cmd_ForwardToServer`) desormais porte et verifie par un harnais dedie.",
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/qcommon/src/qcommon.ts, packages/qcommon/src/messages.ts, packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/protocol.ts, packages/qcommon/src/cmd.ts, packages/qcommon/src/cvar.ts, packages/qcommon/src/collision.ts, packages/qcommon/src/pmove.ts, packages/filesystem/src/virtual-filesystem.ts, packages/qcommon/src/md4.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, scripts/verify/quake2-qcommon-header.ts",
+        "cible": "packages/qcommon/src/qcommon.ts, packages/qcommon/src/messages.ts, packages/memory/src/sizebuf.ts, packages/memory/src/binary-io.ts, packages/qcommon/src/protocol.ts, packages/qcommon/src/cmd.ts, packages/qcommon/src/cvar.ts, packages/qcommon/src/cmodel.ts, packages/qcommon/src/pmove.ts, packages/filesystem/src/files.ts, packages/qcommon/src/md4.ts, packages/qcommon/src/common.ts, packages/qcommon/src/system.ts, scripts/verify/quake2-qcommon-header.ts",
         "targetPaths": [
           "packages/qcommon/src/qcommon.ts",
           "packages/qcommon/src/messages.ts",
@@ -27681,9 +27687,9 @@
           "packages/qcommon/src/protocol.ts",
           "packages/qcommon/src/cmd.ts",
           "packages/qcommon/src/cvar.ts",
-          "packages/qcommon/src/collision.ts",
+          "packages/qcommon/src/cmodel.ts",
           "packages/qcommon/src/pmove.ts",
-          "packages/filesystem/src/virtual-filesystem.ts",
+          "packages/filesystem/src/files.ts",
           "packages/qcommon/src/md4.ts",
           "packages/qcommon/src/common.ts",
           "packages/qcommon/src/system.ts",
@@ -27697,9 +27703,9 @@
           "packages/qcommon/src/protocol.ts",
           "packages/qcommon/src/cmd.ts",
           "packages/qcommon/src/cvar.ts",
-          "packages/qcommon/src/collision.ts",
+          "packages/qcommon/src/cmodel.ts",
           "packages/qcommon/src/pmove.ts",
-          "packages/filesystem/src/virtual-filesystem.ts",
+          "packages/filesystem/src/files.ts",
           "packages/qcommon/src/md4.ts",
           "packages/qcommon/src/common.ts",
           "packages/qcommon/src/system.ts"
@@ -27719,9 +27725,9 @@
         "aPorter": "✅",
         "porte": "✅",
         "valide": "",
-        "cible": "packages/formats/src/bsp.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/index.ts (facade package), scripts/verify/quake2-qfiles.ts",
+        "cible": "packages/formats/src/qfiles.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/index.ts (facade package), scripts/verify/quake2-qfiles.ts",
         "targetPaths": [
-          "packages/formats/src/bsp.ts",
+          "packages/formats/src/qfiles.ts",
           "packages/formats/src/pak.ts",
           "packages/formats/src/pcx.ts",
           "packages/formats/src/wal.ts",
@@ -27731,7 +27737,7 @@
           "scripts/verify/quake2-qfiles.ts"
         ],
         "tsTargetPaths": [
-          "packages/formats/src/bsp.ts",
+          "packages/formats/src/qfiles.ts",
           "packages/formats/src/pak.ts",
           "packages/formats/src/pcx.ts",
           "packages/formats/src/wal.ts",
@@ -28659,156 +28665,6 @@
         ]
       },
       {
-        "sourcePath": "Quake-2-master/client/client.h",
-        "sourceBasename": "client",
-        "extension": "h",
-        "scope": "core-runtime",
-        "expectedStatus": "to-port",
-        "trackingEntries": [
-          {
-            "line": 58,
-            "path": "client\\client.h",
-            "normalizedPath": "client/client.h",
-            "sourcePath": "Quake-2-master/client/client.h",
-            "name": "client.h",
-            "description": "Header mixte client maintenant ferme autour de `packages/client/src/types.ts` pour les structures et constantes runtime (`frame_t`, `centity_t`, `clientinfo_t`, `client_state_t`, `client_static_t`, `connstate_t`, `dltype_t`, `kbutton_t`, `cdlight_t`, `cl_sustain_t`, `cparticle_t`, `MAX_PARSE_ENTITIES`, `MAX_CLIENTWEAPONMODELS`, `MAX_SUSTAINS`, `INSTANT_PARTICLE`), avec `packages/client/src/keys.ts` comme cible explicite de `keydest_t` et de la surface `cls.key_dest`, `packages/client/src/index.ts (facade package)` comme facade package et un harnais dedie qui verrouille enums, factories, tailles fixes et etat persistant client. Les handles renderer/audio/fichiers restent volontairement abstractises en `unknown` et `keydest_t` demeure regroupe avec `keys.c`, ce qui constitue une deviation structurelle documentee mais pas un manque de portage.",
-            "aPorter": "✅",
-            "porte": "✅",
-            "valide": "",
-            "cible": "packages/client/src/types.ts, packages/client/src/keys.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-client-header.ts",
-            "targetPaths": [
-              "packages/client/src/types.ts",
-              "packages/client/src/keys.ts",
-              "packages/client/src/index.ts",
-              "scripts/verify/quake2-client-header.ts"
-            ],
-            "tsTargetPaths": [
-              "packages/client/src/types.ts",
-              "packages/client/src/keys.ts",
-              "packages/client/src/index.ts"
-            ],
-            "auditPaths": [],
-            "scriptPaths": [
-              "scripts/verify/quake2-client-header.ts"
-            ]
-          }
-        ],
-        "declaredTargets": [
-          "packages/client/src/types.ts",
-          "packages/client/src/keys.ts",
-          "packages/client/src/index.ts",
-          "scripts/verify/quake2-client-header.ts"
-        ],
-        "declaredTsTargets": [
-          "packages/client/src/types.ts",
-          "packages/client/src/keys.ts",
-          "packages/client/src/index.ts"
-        ],
-        "declaredPrimaryTsTarget": "packages/client/src/types.ts",
-        "declaredSecondaryTsTargets": [
-          "packages/client/src/keys.ts",
-          "packages/client/src/index.ts"
-        ],
-        "expectedTsFile": "client.ts",
-        "detectedExactTsTargets": [],
-        "declaredTsTargetsExistingInIndex": [
-          "packages/client/src/types.ts",
-          "packages/client/src/keys.ts",
-          "packages/client/src/index.ts"
-        ],
-        "hasHistoricalAudit": false,
-        "testReferences": [
-          "scripts/verify/quake2-client-header.ts"
-        ],
-        "anomalies": [
-          "multiple-declared-ts-targets",
-          "strict-basename-target-missing",
-          "declared-target-not-strict-basename"
-        ],
-        "phase02Hints": [
-          "multiple-targets-to-review",
-          "naming-or-split-decision",
-          "strict-basename-map-missing"
-        ]
-      },
-      {
-        "sourcePath": "Quake-2-master/client/input.h",
-        "sourceBasename": "input",
-        "extension": "h",
-        "scope": "core-runtime",
-        "expectedStatus": "to-port",
-        "trackingEntries": [
-          {
-            "line": 61,
-            "path": "client\\input.h",
-            "normalizedPath": "client/input.h",
-            "sourcePath": "Quake-2-master/client/input.h",
-            "name": "input.h",
-            "description": "Header declaratif des peripheriques d'entree externes maintenant rattache explicitement a `packages/client/src/input-device.ts` pour les points d'entree `IN_Init`, `IN_Shutdown`, `IN_Commands`, `IN_Frame`, `IN_Move` et `IN_Activate`, exposes via `packages/client/src/index.ts (facade package)` avec un runtime de hooks explicite afin de conserver la separation source entre `cl_input.c` et les backends souris/joystick/non-clavier. Un harnais dedie verrouille l'ordre des forwards, la mutation in-place du `usercmd_t` et le comportement no-op par defaut sans adapter branche ; audit `Audit/client-input_h.audit.md` termine en verdict OK ISO branche.",
-            "aPorter": "✅",
-            "porte": "✅",
-            "valide": "✅",
-            "cible": "packages/client/src/input-device.ts, packages/client/src/index.ts (facade package), scripts/verify/quake2-input-header.ts, scripts/verify/quake2-cl-input.ts, Audit/client-input_h.inventory.md, Audit/client-input_h.audit.md",
-            "targetPaths": [
-              "packages/client/src/input-device.ts",
-              "packages/client/src/index.ts",
-              "scripts/verify/quake2-input-header.ts",
-              "scripts/verify/quake2-cl-input.ts",
-              "Audit/client-input_h.inventory.md",
-              "Audit/client-input_h.audit.md"
-            ],
-            "tsTargetPaths": [
-              "packages/client/src/input-device.ts",
-              "packages/client/src/index.ts"
-            ],
-            "auditPaths": [
-              "Audit/client-input_h.audit.md"
-            ],
-            "scriptPaths": [
-              "scripts/verify/quake2-input-header.ts",
-              "scripts/verify/quake2-cl-input.ts"
-            ]
-          }
-        ],
-        "declaredTargets": [
-          "packages/client/src/input-device.ts",
-          "packages/client/src/index.ts",
-          "scripts/verify/quake2-input-header.ts",
-          "scripts/verify/quake2-cl-input.ts",
-          "Audit/client-input_h.inventory.md",
-          "Audit/client-input_h.audit.md"
-        ],
-        "declaredTsTargets": [
-          "packages/client/src/input-device.ts",
-          "packages/client/src/index.ts"
-        ],
-        "declaredPrimaryTsTarget": "packages/client/src/input-device.ts",
-        "declaredSecondaryTsTargets": [
-          "packages/client/src/index.ts"
-        ],
-        "expectedTsFile": "input.ts",
-        "detectedExactTsTargets": [],
-        "declaredTsTargetsExistingInIndex": [
-          "packages/client/src/input-device.ts",
-          "packages/client/src/index.ts"
-        ],
-        "hasHistoricalAudit": true,
-        "testReferences": [
-          "scripts/verify/quake2-cl-input.ts",
-          "scripts/verify/quake2-input-header.ts"
-        ],
-        "anomalies": [
-          "multiple-declared-ts-targets",
-          "strict-basename-target-missing",
-          "declared-target-not-strict-basename"
-        ],
-        "phase02Hints": [
-          "multiple-targets-to-review",
-          "naming-or-split-decision",
-          "strict-basename-map-missing"
-        ]
-      },
-      {
         "sourcePath": "Quake-2-master/client/screen.h",
         "sourceBasename": "screen",
         "extension": "h",
@@ -28821,14 +28677,14 @@
             "normalizedPath": "client/screen.h",
             "sourcePath": "Quake-2-master/client/screen.h",
             "name": "screen.h",
-            "description": "Header mixte screen/HUD rattache principalement a `packages/client/src/cl_scrn.ts` et `packages/client/src/types.ts` pour `SCR_Init`, `SCR_UpdateScreen`, `SCR_SizeUp`, `SCR_SizeDown`, `SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_DebugGraph`, `SCR_TouchPics`, `SCR_RunConsole`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen` et tout le bloc cinematique (`SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`), avec etats exposes (`scr_con_current`, `scr_conlines`, `sb_lines`, `scr_vrect`, `crosshair_pic`, `crosshair_width`, `crosshair_height`) et verification ciblee couvrant HUD, debug graph, `.pcx` statique et `.cin` Huffman/audio via hooks explicites. Audit `Audit/client-screen_h.audit.md` termine en verdict OK ISO branche.",
+            "description": "Header mixte screen/HUD rattache principalement a `packages/client/src/cl_scrn.ts` et `packages/client/src/client.ts` pour `SCR_Init`, `SCR_UpdateScreen`, `SCR_SizeUp`, `SCR_SizeDown`, `SCR_CenterPrint`, `SCR_BeginLoadingPlaque`, `SCR_EndLoadingPlaque`, `SCR_DebugGraph`, `SCR_TouchPics`, `SCR_RunConsole`, `SCR_AddDirtyPoint`, `SCR_DirtyScreen` et tout le bloc cinematique (`SCR_PlayCinematic`, `SCR_DrawCinematic`, `SCR_RunCinematic`, `SCR_StopCinematic`, `SCR_FinishCinematic`), avec etats exposes (`scr_con_current`, `scr_conlines`, `sb_lines`, `scr_vrect`, `crosshair_pic`, `crosshair_width`, `crosshair_height`) et verification ciblee couvrant HUD, debug graph, `.pcx` statique et `.cin` Huffman/audio via hooks explicites. Audit `Audit/client-screen_h.audit.md` termine en verdict OK ISO branche.",
             "aPorter": "✅",
             "porte": "✅",
             "valide": "✅",
-            "cible": "packages/client/src/cl_scrn.ts, packages/client/src/types.ts, packages/client/src/cl_cin.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, Audit/client-screen_h.inventory.md, Audit/client-screen_h.audit.md",
+            "cible": "packages/client/src/cl_scrn.ts, packages/client/src/client.ts, packages/client/src/cl_cin.ts, scripts/verify/quake2-screen-header.ts, scripts/verify/quake2-cl-scrn.ts, Audit/client-screen_h.inventory.md, Audit/client-screen_h.audit.md",
             "targetPaths": [
               "packages/client/src/cl_scrn.ts",
-              "packages/client/src/types.ts",
+              "packages/client/src/client.ts",
               "packages/client/src/cl_cin.ts",
               "scripts/verify/quake2-screen-header.ts",
               "scripts/verify/quake2-cl-scrn.ts",
@@ -28837,7 +28693,7 @@
             ],
             "tsTargetPaths": [
               "packages/client/src/cl_scrn.ts",
-              "packages/client/src/types.ts",
+              "packages/client/src/client.ts",
               "packages/client/src/cl_cin.ts"
             ],
             "auditPaths": [
@@ -28851,7 +28707,7 @@
         ],
         "declaredTargets": [
           "packages/client/src/cl_scrn.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "packages/client/src/cl_cin.ts",
           "scripts/verify/quake2-screen-header.ts",
           "scripts/verify/quake2-cl-scrn.ts",
@@ -28860,19 +28716,19 @@
         ],
         "declaredTsTargets": [
           "packages/client/src/cl_scrn.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "packages/client/src/cl_cin.ts"
         ],
         "declaredPrimaryTsTarget": "packages/client/src/cl_scrn.ts",
         "declaredSecondaryTsTargets": [
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "packages/client/src/cl_cin.ts"
         ],
         "expectedTsFile": "screen.ts",
         "detectedExactTsTargets": [],
         "declaredTsTargetsExistingInIndex": [
           "packages/client/src/cl_scrn.ts",
-          "packages/client/src/types.ts",
+          "packages/client/src/client.ts",
           "packages/client/src/cl_cin.ts"
         ],
         "hasHistoricalAudit": true,
@@ -28982,77 +28838,6 @@
         "phase02Hints": [
           "multiple-targets-to-review",
           "naming-or-split-decision"
-        ]
-      },
-      {
-        "sourcePath": "Quake-2-master/qcommon/cmodel.c",
-        "sourceBasename": "cmodel",
-        "extension": "c",
-        "scope": "core-runtime",
-        "expectedStatus": "to-port",
-        "trackingEntries": [
-          {
-            "line": 265,
-            "path": "qcommon\\cmodel.c",
-            "normalizedPath": "qcommon/cmodel.c",
-            "sourcePath": "Quake-2-master/qcommon/cmodel.c",
-            "name": "cmodel.c",
-            "description": "Portage principal maintenant rattache a `packages/qcommon/src/collision.ts` pour le chargement/caching de BSP (`CM_LoadMap` avec checksum et reuse de map), les traces (`CM_BoxTrace`, `CM_TransformedBoxTrace`), contenus/leafs (`CM_PointContents`, `CM_PointLeafnum`, `CM_BoxLeafnums*`), inline models, box hull temporaire, PVS/PHS (`CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS`), area portals (`CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, `CM_HeadnodeVisible`) et le save/load de leur etat (`CM_WritePortalState`, `CM_ReadPortalState`) sous forme binaire compatible `qboolean`. Le port reste explicitement base sur un runtime TS et un loader injecte au lieu des globals/IO C bruts, et il est verrouille par des harnais cibles de collision et `cmodel`.",
-            "aPorter": "✅",
-            "porte": "✅",
-            "valide": "",
-            "cible": "packages/qcommon/src/collision.ts, packages/qcommon/src/index.ts (facade package), scripts/verify/quake2-collision-phase1.ts, scripts/verify/quake2-cmodel.ts",
-            "targetPaths": [
-              "packages/qcommon/src/collision.ts",
-              "packages/qcommon/src/index.ts",
-              "scripts/verify/quake2-collision-phase1.ts",
-              "scripts/verify/quake2-cmodel.ts"
-            ],
-            "tsTargetPaths": [
-              "packages/qcommon/src/collision.ts",
-              "packages/qcommon/src/index.ts"
-            ],
-            "auditPaths": [],
-            "scriptPaths": [
-              "scripts/verify/quake2-collision-phase1.ts",
-              "scripts/verify/quake2-cmodel.ts"
-            ]
-          }
-        ],
-        "declaredTargets": [
-          "packages/qcommon/src/collision.ts",
-          "packages/qcommon/src/index.ts",
-          "scripts/verify/quake2-collision-phase1.ts",
-          "scripts/verify/quake2-cmodel.ts"
-        ],
-        "declaredTsTargets": [
-          "packages/qcommon/src/collision.ts",
-          "packages/qcommon/src/index.ts"
-        ],
-        "declaredPrimaryTsTarget": "packages/qcommon/src/collision.ts",
-        "declaredSecondaryTsTargets": [
-          "packages/qcommon/src/index.ts"
-        ],
-        "expectedTsFile": "cmodel.ts",
-        "detectedExactTsTargets": [],
-        "declaredTsTargetsExistingInIndex": [
-          "packages/qcommon/src/collision.ts",
-          "packages/qcommon/src/index.ts"
-        ],
-        "hasHistoricalAudit": false,
-        "testReferences": [
-          "scripts/verify/quake2-cmodel.ts",
-          "scripts/verify/quake2-collision-phase1.ts"
-        ],
-        "anomalies": [
-          "multiple-declared-ts-targets",
-          "strict-basename-target-missing",
-          "declared-target-not-strict-basename"
-        ],
-        "phase02Hints": [
-          "multiple-targets-to-review",
-          "naming-or-split-decision",
-          "strict-basename-map-missing"
         ]
       },
       {
@@ -29177,176 +28962,6 @@
         "hasHistoricalAudit": false,
         "testReferences": [
           "scripts/verify/quake2-crc-header.ts"
-        ],
-        "anomalies": [
-          "multiple-declared-ts-targets",
-          "strict-basename-target-missing",
-          "declared-target-not-strict-basename"
-        ],
-        "phase02Hints": [
-          "multiple-targets-to-review",
-          "naming-or-split-decision",
-          "strict-basename-map-missing"
-        ]
-      },
-      {
-        "sourcePath": "Quake-2-master/qcommon/files.c",
-        "sourceBasename": "files",
-        "extension": "c",
-        "scope": "core-runtime",
-        "expectedStatus": "to-port",
-        "trackingEntries": [
-          {
-            "line": 270,
-            "path": "qcommon\\files.c",
-            "normalizedPath": "qcommon/files.c",
-            "sourcePath": "Quake-2-master/qcommon/files.c",
-            "name": "files.c",
-            "description": "Portage principal rattache a `packages/filesystem/src/virtual-filesystem.ts` pour les search paths, le montage et la lecture des fichiers, avec `packages/formats/src/pak.ts` comme parseur de support et `packages/filesystem/src/index.ts (facade package)` comme point d'export. Le bloc couvre desormais `FS_AddGameDirectory`, `FS_LoadPackFile`, `FS_FOpenFile`/`FS_LoadFile`, `FS_FreeFile`, `FS_Link_f`, `FS_Gamedir`, `FS_SetGamedir`, `FS_Path_f`, `FS_NextPath`, `FS_ListFiles`, `FS_Dir_f`, `FS_ExecAutoexec` et `Developer_searchpath`, avec une restauration effective au socle `fs_base_searchpaths` lors des changements de gamedir dans le runtime virtuel.",
-            "aPorter": "✅",
-            "porte": "✅",
-            "valide": "",
-            "cible": "packages/filesystem/src/virtual-filesystem.ts, packages/filesystem/src/index.ts (facade package), packages/formats/src/pak.ts, scripts/verify/quake2-files.ts",
-            "targetPaths": [
-              "packages/filesystem/src/virtual-filesystem.ts",
-              "packages/filesystem/src/index.ts",
-              "packages/formats/src/pak.ts",
-              "scripts/verify/quake2-files.ts"
-            ],
-            "tsTargetPaths": [
-              "packages/filesystem/src/virtual-filesystem.ts",
-              "packages/filesystem/src/index.ts",
-              "packages/formats/src/pak.ts"
-            ],
-            "auditPaths": [],
-            "scriptPaths": [
-              "scripts/verify/quake2-files.ts"
-            ]
-          }
-        ],
-        "declaredTargets": [
-          "packages/filesystem/src/virtual-filesystem.ts",
-          "packages/filesystem/src/index.ts",
-          "packages/formats/src/pak.ts",
-          "scripts/verify/quake2-files.ts"
-        ],
-        "declaredTsTargets": [
-          "packages/filesystem/src/virtual-filesystem.ts",
-          "packages/filesystem/src/index.ts",
-          "packages/formats/src/pak.ts"
-        ],
-        "declaredPrimaryTsTarget": "packages/filesystem/src/virtual-filesystem.ts",
-        "declaredSecondaryTsTargets": [
-          "packages/filesystem/src/index.ts",
-          "packages/formats/src/pak.ts"
-        ],
-        "expectedTsFile": "files.ts",
-        "detectedExactTsTargets": [],
-        "declaredTsTargetsExistingInIndex": [
-          "packages/filesystem/src/virtual-filesystem.ts",
-          "packages/filesystem/src/index.ts",
-          "packages/formats/src/pak.ts"
-        ],
-        "hasHistoricalAudit": false,
-        "testReferences": [
-          "scripts/verify/quake2-files.ts"
-        ],
-        "anomalies": [
-          "multiple-declared-ts-targets",
-          "strict-basename-target-missing",
-          "declared-target-not-strict-basename"
-        ],
-        "phase02Hints": [
-          "multiple-targets-to-review",
-          "naming-or-split-decision",
-          "strict-basename-map-missing"
-        ]
-      },
-      {
-        "sourcePath": "Quake-2-master/qcommon/qfiles.h",
-        "sourceBasename": "qfiles",
-        "extension": "h",
-        "scope": "core-runtime",
-        "expectedStatus": "to-port",
-        "trackingEntries": [
-          {
-            "line": 275,
-            "path": "qcommon\\qfiles.h",
-            "normalizedPath": "qcommon/qfiles.h",
-            "sourcePath": "Quake-2-master/qcommon/qfiles.h",
-            "name": "qfiles.h",
-            "description": "Header declaratif ferme, rattache a la famille de modules `packages/formats/src/*` avec `bsp.ts`, `pak.ts`, `pcx.ts`, `wal.ts`, `md2.ts` et `sp2.ts` comme sous-blocs specialises ; `index.ts` n'est qu'un point d'export et non une cible principale concurrente, et un harnais dedie verrouille les constantes/idents critiques ainsi que des parsings minimaux synthetiques pour les formats majeurs du header.",
-            "aPorter": "✅",
-            "porte": "✅",
-            "valide": "",
-            "cible": "packages/formats/src/bsp.ts, packages/formats/src/pak.ts, packages/formats/src/pcx.ts, packages/formats/src/wal.ts, packages/formats/src/md2.ts, packages/formats/src/sp2.ts, packages/formats/src/index.ts (facade package), scripts/verify/quake2-qfiles.ts",
-            "targetPaths": [
-              "packages/formats/src/bsp.ts",
-              "packages/formats/src/pak.ts",
-              "packages/formats/src/pcx.ts",
-              "packages/formats/src/wal.ts",
-              "packages/formats/src/md2.ts",
-              "packages/formats/src/sp2.ts",
-              "packages/formats/src/index.ts",
-              "scripts/verify/quake2-qfiles.ts"
-            ],
-            "tsTargetPaths": [
-              "packages/formats/src/bsp.ts",
-              "packages/formats/src/pak.ts",
-              "packages/formats/src/pcx.ts",
-              "packages/formats/src/wal.ts",
-              "packages/formats/src/md2.ts",
-              "packages/formats/src/sp2.ts",
-              "packages/formats/src/index.ts"
-            ],
-            "auditPaths": [],
-            "scriptPaths": [
-              "scripts/verify/quake2-qfiles.ts"
-            ]
-          }
-        ],
-        "declaredTargets": [
-          "packages/formats/src/bsp.ts",
-          "packages/formats/src/pak.ts",
-          "packages/formats/src/pcx.ts",
-          "packages/formats/src/wal.ts",
-          "packages/formats/src/md2.ts",
-          "packages/formats/src/sp2.ts",
-          "packages/formats/src/index.ts",
-          "scripts/verify/quake2-qfiles.ts"
-        ],
-        "declaredTsTargets": [
-          "packages/formats/src/bsp.ts",
-          "packages/formats/src/pak.ts",
-          "packages/formats/src/pcx.ts",
-          "packages/formats/src/wal.ts",
-          "packages/formats/src/md2.ts",
-          "packages/formats/src/sp2.ts",
-          "packages/formats/src/index.ts"
-        ],
-        "declaredPrimaryTsTarget": "packages/formats/src/bsp.ts",
-        "declaredSecondaryTsTargets": [
-          "packages/formats/src/pak.ts",
-          "packages/formats/src/pcx.ts",
-          "packages/formats/src/wal.ts",
-          "packages/formats/src/md2.ts",
-          "packages/formats/src/sp2.ts",
-          "packages/formats/src/index.ts"
-        ],
-        "expectedTsFile": "qfiles.ts",
-        "detectedExactTsTargets": [],
-        "declaredTsTargetsExistingInIndex": [
-          "packages/formats/src/bsp.ts",
-          "packages/formats/src/pak.ts",
-          "packages/formats/src/pcx.ts",
-          "packages/formats/src/wal.ts",
-          "packages/formats/src/md2.ts",
-          "packages/formats/src/sp2.ts",
-          "packages/formats/src/index.ts"
-        ],
-        "hasHistoricalAudit": false,
-        "testReferences": [
-          "scripts/verify/quake2-qfiles.ts"
         ],
         "anomalies": [
           "multiple-declared-ts-targets",
@@ -29591,10 +29206,11 @@
       "to-clarify": 0
     },
     "anomalyCounts": {
-      "strict-basename-target-missing": 105,
+      "strict-basename-target-missing": 100,
       "multiple-declared-ts-targets": 136,
       "adapter-target-declared": 3,
-      "declared-target-not-strict-basename": 14
+      "declared-target-not-strict-basename": 9,
+      "strict-basename-target-multiple": 4
     },
     "unknownScopeSources": [],
     "factualCorrectionCandidates": []

@@ -1,5 +1,5 @@
 /**
- * File: virtual-filesystem.ts
+ * File: files.ts
  * Source: Quake II original / qcommon/files.c
  * Purpose: Port the Quake II virtual filesystem search path logic over mounted in-memory directories and PAK archives.
  *

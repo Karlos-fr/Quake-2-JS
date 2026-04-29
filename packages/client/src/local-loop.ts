@@ -24,7 +24,7 @@ import {
   CL_UpdateLerpFraction,
   type ClientViewValues
 } from "./view.js";
-import { createFrame, type ClientRuntime } from "./types.js";
+import { createFrame, type ClientRuntime } from "./client.js";
 
 /**
  * Category: New

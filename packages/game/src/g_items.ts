@@ -32,7 +32,7 @@ import {
   STAT_PICKUP_ICON,
   STAT_PICKUP_STRING
 } from "../../qcommon/src/index.js";
-import { entity_event_t } from "../../qcommon/src/q_shared.js";
+import { entity_event_t } from "../../qcommon/src/index.js";
 import {
   WEAP_BLASTER,
   WEAP_BFG,

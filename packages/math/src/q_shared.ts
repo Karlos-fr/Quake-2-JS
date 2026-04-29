@@ -1,5 +1,5 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Provide the shared vector and scalar math helpers required by strict Quake II ports.
  *
  * This file is not a direct source port.

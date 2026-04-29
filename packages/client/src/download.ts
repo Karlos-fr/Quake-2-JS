@@ -19,7 +19,7 @@
 import { Cmd_Argc, Cmd_Argv, type CommandRuntime } from "../../qcommon/src/index.js";
 import { BASEDIRNAME } from "../../qcommon/src/index.js";
 import { CL_WriteStringCmd } from "./cl_parse.js";
-import type { ClientRuntime } from "./types.js";
+import type { ClientRuntime } from "./client.js";
 
 /**
  * Category: New

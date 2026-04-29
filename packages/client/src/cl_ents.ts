@@ -47,7 +47,7 @@ import {
   entity_event_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import { MAX_PARSE_ENTITIES, type ClientRuntime, type frame_t } from "./types.js";
+import { MAX_PARSE_ENTITIES, type ClientRuntime, type frame_t } from "./client.js";
 import { CL_BuildEntityEventEffects, type ClientActionEffect } from "./cl_fx.js";
 
 /**

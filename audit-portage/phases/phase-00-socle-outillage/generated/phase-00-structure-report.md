@@ -7,10 +7,10 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 
 - Sources C/H indexees : 264
 - Fichiers TS indexes : 200
-- Correspondances exactes attendues : 159
-- Sources sans fichier TS identique : 105
-- Sources avec plusieurs fichiers TS identiques : 0
-- Fichiers TS sans basename source identique : 96
+- Correspondances exactes attendues : 160
+- Sources sans fichier TS identique : 100
+- Sources avec plusieurs fichiers TS identiques : 4
+- Fichiers TS sans basename source identique : 90
 - Fichiers TS avec marqueurs de stub : 61
 - Fichiers TS avec marqueurs temporaires/TODO : 26
 - Fichiers TS avec header de portage mais sans Source : 55
@@ -43,8 +43,6 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 | Quake-2-master/client/block8.h | block8.ts |
 | Quake-2-master/client/cl_pred.c | cl_pred.ts |
 | Quake-2-master/client/cl_view.c | cl_view.ts |
-| Quake-2-master/client/client.h | client.ts |
-| Quake-2-master/client/input.h | input.ts |
 | Quake-2-master/client/screen.h | screen.ts |
 | Quake-2-master/client/x86.c | x86.ts |
 | Quake-2-master/ctf/g_ctf.c | g_ctf.ts |
@@ -87,11 +85,8 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 | Quake-2-master/null/swimp_null.c | swimp_null.ts |
 | Quake-2-master/null/sys_null.c | sys_null.ts |
 | Quake-2-master/null/vid_null.c | vid_null.ts |
-| Quake-2-master/qcommon/cmodel.c | cmodel.ts |
 | Quake-2-master/qcommon/crc.c | crc.ts |
 | Quake-2-master/qcommon/crc.h | crc.ts |
-| Quake-2-master/qcommon/files.c | files.ts |
-| Quake-2-master/qcommon/qfiles.h | qfiles.ts |
 | Quake-2-master/ref_gl/gl_model.c | gl_model.ts |
 | Quake-2-master/ref_gl/gl_model.h | gl_model.ts |
 | Quake-2-master/ref_soft/adivtab.h | adivtab.ts |
@@ -145,7 +140,12 @@ Il ne valide aucun fichier ; il signale les points a examiner.
 
 ## Sources avec plusieurs fichiers TS identiques
 
-Aucun point detecte.
+| Source | Cibles |
+| --- | --- |
+| Quake-2-master/ctf/q_shared.c | packages/math/src/q_shared.ts<br>packages/qcommon/src/q_shared.ts |
+| Quake-2-master/ctf/q_shared.h | packages/math/src/q_shared.ts<br>packages/qcommon/src/q_shared.ts |
+| Quake-2-master/game/q_shared.c | packages/math/src/q_shared.ts<br>packages/qcommon/src/q_shared.ts |
+| Quake-2-master/game/q_shared.h | packages/math/src/q_shared.ts<br>packages/qcommon/src/q_shared.ts |
 
 ## Fichiers TS sans basename source identique
 
@@ -172,7 +172,6 @@ Aucun point detecte.
 | apps/web/vite.config.ts |  |
 | packages/client/src/download.ts | Quake II original / client/cl_parse.c |
 | packages/client/src/index.ts |  |
-| packages/client/src/input-device.ts | Quake II original / client/input.h |
 | packages/client/src/local-brush-models.ts |  |
 | packages/client/src/local-client-bootstrap.ts |  |
 | packages/client/src/local-gameplay-sync.ts |  |
@@ -193,12 +192,9 @@ Aucun point detecte.
 | packages/client/src/render-contracts.ts |  |
 | packages/client/src/sky.ts | Quake II original / client/cl_parse.c |
 | packages/client/src/sound-public.ts | Quake II original / client/sound.h |
-| packages/client/src/types.ts | Quake II original / client/client.h |
 | packages/client/src/vid-menu.ts | Quake II original / win32/vid_menu.c |
 | packages/client/src/view.ts | Quake II original / client/cl_view.c and client/cl_pred.c |
 | packages/filesystem/src/index.ts |  |
-| packages/filesystem/src/virtual-filesystem.ts | Quake II original / qcommon/files.c |
-| packages/formats/src/bsp.ts | Quake II original / qcommon/qfiles.h |
 | packages/formats/src/index.ts |  |
 | packages/formats/src/md2.ts | Quake II original / qcommon/qfiles.h |
 | packages/formats/src/pak.ts | Quake II original / qcommon/qfiles.h and qcommon/files.c |
@@ -210,14 +206,12 @@ Aucun point detecte.
 | packages/game/src/local-game-bootstrap.ts |  |
 | packages/game/src/runtime.ts | game/g_local.h |
 | packages/game/src/touch.ts | Quake II original / game/g_utils.c |
-| packages/math/src/index.ts | game/q_shared.h |
 | packages/memory/src/binary-io.ts |  |
 | packages/memory/src/index.ts |  |
 | packages/memory/src/sizebuf.ts | Quake II original / qcommon/qcommon.h and qcommon/common.c |
 | packages/platform/src/index.ts |  |
 | packages/platform/src/web-audio-adapter.ts |  |
 | packages/platform/src/web-cd-audio-adapter.ts |  |
-| packages/qcommon/src/collision.ts | Quake II original / qcommon/cmodel.c |
 | packages/qcommon/src/index.ts |  |
 | packages/qcommon/src/messages.ts | Quake II original / qcommon/common.c |
 | packages/qcommon/src/protocol.ts | Quake II original / qcommon/qcommon.h |
@@ -269,10 +263,10 @@ Aucun point detecte.
 | packages/client/src/snd_dma.ts |
 | packages/client/src/snd_mem.ts |
 | packages/client/src/view.ts |
-| packages/formats/src/bsp.ts |
 | packages/formats/src/md2.ts |
 | packages/formats/src/pak.ts |
 | packages/formats/src/pcx.ts |
+| packages/formats/src/qfiles.ts |
 | packages/formats/src/sp2.ts |
 | packages/formats/src/tga.ts |
 | packages/formats/src/wal.ts |
@@ -286,7 +280,7 @@ Aucun point detecte.
 | packages/game/src/p_weapon.ts |
 | packages/memory/src/sizebuf.ts |
 | packages/qcommon/src/cmd.ts |
-| packages/qcommon/src/collision.ts |
+| packages/qcommon/src/cmodel.ts |
 | packages/qcommon/src/common.ts |
 | packages/qcommon/src/messages.ts |
 | packages/qcommon/src/pmove.ts |
@@ -322,9 +316,9 @@ Aucun point detecte.
 | packages/client/src/cl_fx.ts |
 | packages/client/src/cl_parse.ts |
 | packages/client/src/cl_tent.ts |
+| packages/client/src/client.ts |
 | packages/client/src/download.ts |
 | packages/client/src/precache.ts |
-| packages/client/src/types.ts |
 | packages/client/src/view.ts |
 | packages/game/src/g_items.ts |
 | packages/game/src/g_main.ts |
@@ -338,7 +332,7 @@ Aucun point detecte.
 | packages/game/src/p_view.ts |
 | packages/game/src/runtime.ts |
 | packages/qcommon/src/cmd.ts |
-| packages/qcommon/src/collision.ts |
+| packages/qcommon/src/cmodel.ts |
 | packages/qcommon/src/common.ts |
 | packages/qcommon/src/messages.ts |
 | packages/qcommon/src/pmove.ts |

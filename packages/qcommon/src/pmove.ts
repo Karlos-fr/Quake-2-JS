@@ -60,7 +60,7 @@ import {
   VectorNormalize,
   VectorScale,
   vec3_origin
-} from "../../math/src/index.js";
+} from "../../math/src/q_shared.js";
 
 export const STEPSIZE = 18;
 export const STOP_EPSILON = 0.1;

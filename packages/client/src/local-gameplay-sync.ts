@@ -6,7 +6,7 @@
  * It is a runtime-side bridge for the current local standalone loop.
  *
  * Dependencies:
- * - packages/client/src/types.ts
+ * - packages/client/src/client.ts
  * - packages/game
  * - packages/qcommon
  */
@@ -77,7 +77,7 @@ import { CL_ExecuteTempEntityEffects } from "./cl_fx.js";
 import { CL_AddTEntPacket } from "./cl_tent.js";
 import { getPredictedViewheight } from "./local-loop.js";
 import type { ClientTempEntityPacket } from "./cl_parse.js";
-import type { ClientRuntime } from "./types.js";
+import type { ClientRuntime } from "./client.js";
 
 const PLAYER_TRIGGER_MINS: vec3_t = [-16, -16, -24];
 const PLAYER_TRIGGER_MAXS: vec3_t = [16, 16, 32];

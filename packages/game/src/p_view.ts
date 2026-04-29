@@ -33,7 +33,7 @@ import {
   YAW,
   entity_event_t,
   type vec3_t
-} from "../../qcommon/src/index.js";
+} from "../../qcommon/src/q_shared.js";
 import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_SOLID, CONTENTS_WATER } from "../../qcommon/src/q_shared.js";
 import {
   ANIM_PAIN,

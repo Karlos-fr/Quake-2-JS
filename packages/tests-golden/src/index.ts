@@ -1,5 +1,5 @@
 /**
- * File: index.ts
+ * File: q_shared.ts
  * Purpose: Expose golden-test snapshot helpers used to compare current port output against recorded expectations.
  *
  * This file is not a direct source port.

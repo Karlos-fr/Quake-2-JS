@@ -43,9 +43,9 @@ import {
   type usercmd_t
 } from "../../qcommon/src/index.js";
 import { createSizeBuffer } from "../../memory/src/index.js";
-import { IN_Move, type ClientInputDeviceContext } from "./input-device.js";
+import { IN_Move, type ClientInputDeviceContext } from "./input.js";
 import { SCR_FinishCinematic } from "./cl_scrn.js";
-import { CMD_BACKUP, connstate_t, type ClientRuntime, createKbutton, type kbutton_t } from "./types.js";
+import { CMD_BACKUP, connstate_t, type ClientRuntime, createKbutton, type kbutton_t } from "./client.js";
 
 /**
  * Category: New

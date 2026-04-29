@@ -16,7 +16,7 @@
  * - Makron handoff behavior is imported from the `m_boss32.c` port.
  */
 
-import { AngleVectors, ATTN_NORM, CHAN_BODY, CHAN_VOICE, type vec3_t } from "../../qcommon/src/index.js";
+import { AngleVectors, ATTN_NORM, CHAN_BODY, CHAN_VOICE, type vec3_t } from "../../qcommon/src/q_shared.js";
 import { CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID } from "../../qcommon/src/q_shared.js";
 import {
   AI_STAND_GROUND,

@@ -67,9 +67,9 @@ import {
   type usercmd_t,
   type vec3_t
 } from "../../qcommon/src/index.js";
-import { CMD_BACKUP, type ClientRuntime, connstate_t } from "./types.js";
+import { CMD_BACKUP, type ClientRuntime, connstate_t } from "./client.js";
 import { RF_USE_DISGUISE, UPDATE_MASK } from "../../qcommon/src/index.js";
-import { MAX_CLIENTWEAPONMODELS } from "./types.js";
+import { MAX_CLIENTWEAPONMODELS } from "./client.js";
 import {
   MAX_DLIGHTS,
   MAX_ENTITIES,

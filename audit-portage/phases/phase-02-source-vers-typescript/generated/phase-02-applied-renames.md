@@ -4,7 +4,7 @@ Ce rapport trace la premiere passe de corrections structurelles simples.
 
 ## Corrections appliquees
 
-23 renommages simples ont ete appliques avec mise a jour des imports et de `PORTAGE_QUAKE2.md`.
+29 renommages simples ont ete appliques avec mise a jour des imports et de `PORTAGE_QUAKE2.md`.
 
 | Ancien fichier | Nouveau fichier |
 | --- | --- |
@@ -19,9 +19,15 @@ Ce rapport trace la premiere passe de corrections structurelles simples.
 | `packages/client/src/screen.ts` | `packages/client/src/cl_scrn.ts` |
 | `packages/client/src/tent.ts` | `packages/client/src/cl_tent.ts` |
 | `packages/client/src/sound-local.ts` | `packages/client/src/snd_loc.ts` |
+| `packages/client/src/types.ts` | `packages/client/src/client.ts` |
+| `packages/client/src/input-device.ts` | `packages/client/src/input.ts` |
 | `packages/game/src/g-local.ts` | `packages/game/src/g_local.ts` |
+| `packages/math/src/index.ts` | `packages/math/src/q_shared.ts` |
+| `packages/qcommon/src/collision.ts` | `packages/qcommon/src/cmodel.ts` |
 | `packages/qcommon/src/q-shared.ts` | `packages/qcommon/src/q_shared.ts` |
 | `packages/qcommon/src/net-chan.ts` | `packages/qcommon/src/net_chan.ts` |
+| `packages/filesystem/src/virtual-filesystem.ts` | `packages/filesystem/src/files.ts` |
+| `packages/formats/src/bsp.ts` | `packages/formats/src/qfiles.ts` |
 | `packages/renderer-three/src/gl-draw.ts` | `packages/renderer-three/src/gl_draw.ts` |
 | `packages/renderer-three/src/gl-image.ts` | `packages/renderer-three/src/gl_image.ts` |
 | `packages/renderer-three/src/gl-light.ts` | `packages/renderer-three/src/gl_light.ts` |
@@ -39,8 +45,11 @@ Exemples :
 
 - plusieurs sources voulant renommer le meme fichier cible ;
 - destination deja existante ;
-- point d'entree public ou module trop generique ;
 - cas qui ressemble a un rerattachement plutot qu'a un renommage simple.
+
+La seconde passe a aussi necessite une correction de quelques imports trop largement
+reecrits vers `q_shared.js` : les imports de package index sont revenus vers `index.js`
+quand le package ne possede pas de fichier `q_shared.ts`.
 
 ## Verification
 
