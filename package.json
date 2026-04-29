@@ -16,6 +16,8 @@
     "extract:c-signatures": "node ./tools/c-analyzer/extract-signatures.mjs",
     "generate:ts-stubs": "node ./tools/stub-generator/generate-ts-stubs.mjs",
     "map:c-to-ts": "node ./tools/c-analyzer/build-source-module-map.mjs",
+    "audit:socle": "npx tsx ./audit-portage/phases/phase-00-socle-outillage/tools/build-portage-audit-index.ts",
+    "audit:phase1": "npm run audit:socle",
     "golden:pak0:write": "npx tsx ./scripts/verify/golden-pak-summary.mjs --write",
     "golden:pak0": "npx tsx ./scripts/verify/golden-pak-summary.mjs",
     "verify:doors:phase1": "npx tsx ./scripts/verify/quake2-door-phase1.ts",
