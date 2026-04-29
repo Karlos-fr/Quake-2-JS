@@ -317,9 +317,16 @@ export type GameEntityBlocked = (self: GameEntity, other: GameEntity, runtime: G
  * Purpose: Preserve the `die` callback shape used by shootable brush entities such as doors.
  *
  * Constraints:
- * - Must preserve the Quake-style `(self, inflictor, attacker, damage)` flow while receiving the runtime explicitly.
+ * - Must preserve the Quake-style `(self, inflictor, attacker, damage, point)` flow while receiving the runtime explicitly.
  */
-export type GameEntityDie = (self: GameEntity, inflictor: GameEntity | null, attacker: GameEntity | null, damage: number, runtime: GameRuntime) => void;
+export type GameEntityDie = (
+  self: GameEntity,
+  inflictor: GameEntity | null,
+  attacker: GameEntity | null,
+  damage: number,
+  runtime: GameRuntime,
+  point?: vec3_t
+) => void;
 
 /**
  * Category: New

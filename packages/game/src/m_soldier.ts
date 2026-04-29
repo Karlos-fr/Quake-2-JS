@@ -1,7 +1,7 @@
 /**
  * File: m_soldier.ts
- * Source: Quake II original / game/m_soldier.h
- * Purpose: Port of the generated soldier model frame constants used by the monster soldier model.
+ * Source: Quake II original / game/m_soldier.h and game/m_soldier.c
+ * Purpose: Port of the generated soldier model frame constants and monster_soldier gameplay behavior.
  *
  * Porting policy:
  * - Preserve original behavior first.
@@ -9,11 +9,50 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - None.
+ * - Uses the explicit gameplay runtime and asset helpers instead of `gi.*`.
+ * - The shared `GameEntityDie` callback receives the original C impact `point` after the explicit runtime argument.
  *
  * Notes:
- * - This file is a declarative header port generated from the original ModelGen output.
+ * - This file keeps the header constants and C behavior together as the principal attachment point for `m_soldier`.
  */
+
+import { AngleVectors, ATTN_IDLE, ATTN_NORM, CHAN_VOICE, CHAN_WEAPON, EF_BLASTER, type vec3_t } from "../../qcommon/src/index.js";
+import {
+  AI_DUCKED,
+  AI_HOLD_FRAME,
+  AI_STAND_GROUND,
+  DEAD_DEAD,
+  DEFAULT_BULLET_HSPREAD,
+  DEFAULT_BULLET_VSPREAD,
+  DEFAULT_SHOTGUN_COUNT,
+  DEFAULT_SHOTGUN_HSPREAD,
+  DEFAULT_SHOTGUN_VSPREAD,
+  FRAMETIME,
+  GIB_ORGANIC,
+  MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  RANGE_MID,
+  RANGE_MELEE,
+  SOLID_BBOX,
+  SVF_DEADMONSTER,
+  damage_t
+} from "./g-local.js";
+import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range } from "./g_ai.js";
+import { monster_fire_blaster, monster_fire_bullet, monster_fire_shotgun, walkmonster_start } from "./g_monster.js";
+import { ThrowGib, ThrowHead } from "./g_misc.js";
+import { G_FreeEdict, G_ProjectSource, vectoangles } from "./g_utils.js";
+import { getMonsterFlashOffset } from "./m_flash.js";
+import {
+  emitGameSound,
+  emitRegisteredGameSound,
+  linkGameEntity,
+  registerGameModel,
+  registerGameSound,
+  type GameEntity,
+  type GameMonsterFrame,
+  type GameMonsterMove,
+  type GameRuntime
+} from "./runtime.js";
 
 export const FRAME_attak101 = 0;
 export const FRAME_attak102 = 1;
@@ -492,3 +531,788 @@ export const FRAME_death609 = 473;
 export const FRAME_death610 = 474;
 
 export const MODEL_SCALE = 1.2;
+
+export const MZ2_SOLDIER_BLASTER_1 = 39;
+export const MZ2_SOLDIER_BLASTER_2 = 40;
+export const MZ2_SOLDIER_SHOTGUN_1 = 41;
+export const MZ2_SOLDIER_SHOTGUN_2 = 42;
+export const MZ2_SOLDIER_MACHINEGUN_1 = 43;
+export const MZ2_SOLDIER_MACHINEGUN_2 = 44;
+export const MZ2_SOLDIER_BLASTER_3 = 83;
+export const MZ2_SOLDIER_SHOTGUN_3 = 84;
+export const MZ2_SOLDIER_MACHINEGUN_3 = 85;
+export const MZ2_SOLDIER_BLASTER_4 = 86;
+export const MZ2_SOLDIER_SHOTGUN_4 = 87;
+export const MZ2_SOLDIER_MACHINEGUN_4 = 88;
+export const MZ2_SOLDIER_BLASTER_5 = 89;
+export const MZ2_SOLDIER_SHOTGUN_5 = 90;
+export const MZ2_SOLDIER_MACHINEGUN_5 = 91;
+export const MZ2_SOLDIER_BLASTER_6 = 92;
+export const MZ2_SOLDIER_SHOTGUN_6 = 93;
+export const MZ2_SOLDIER_MACHINEGUN_6 = 94;
+export const MZ2_SOLDIER_BLASTER_7 = 95;
+export const MZ2_SOLDIER_SHOTGUN_7 = 96;
+export const MZ2_SOLDIER_MACHINEGUN_7 = 97;
+export const MZ2_SOLDIER_BLASTER_8 = 98;
+export const MZ2_SOLDIER_SHOTGUN_8 = 99;
+export const MZ2_SOLDIER_MACHINEGUN_8 = 100;
+
+const SOUND_IDLE = "soldier/solidle1.wav";
+const SOUND_SIGHT1 = "soldier/solsght1.wav";
+const SOUND_SIGHT2 = "soldier/solsrch1.wav";
+const SOUND_PAIN_LIGHT = "soldier/solpain2.wav";
+const SOUND_PAIN = "soldier/solpain1.wav";
+const SOUND_PAIN_SS = "soldier/solpain3.wav";
+const SOUND_DEATH_LIGHT = "soldier/soldeth2.wav";
+const SOUND_DEATH = "soldier/soldeth1.wav";
+const SOUND_DEATH_SS = "soldier/soldeth3.wav";
+const SOUND_COCK = "infantry/infatck3.wav";
+
+let sound_idle = 0;
+let sound_sight1 = 0;
+let sound_sight2 = 0;
+let sound_pain_light = 0;
+let sound_pain = 0;
+let sound_pain_ss = 0;
+let sound_death_light = 0;
+let sound_death = 0;
+let sound_death_ss = 0;
+let sound_cock = 0;
+
+const blaster_flash = [
+  MZ2_SOLDIER_BLASTER_1, MZ2_SOLDIER_BLASTER_2, MZ2_SOLDIER_BLASTER_3, MZ2_SOLDIER_BLASTER_4,
+  MZ2_SOLDIER_BLASTER_5, MZ2_SOLDIER_BLASTER_6, MZ2_SOLDIER_BLASTER_7, MZ2_SOLDIER_BLASTER_8
+];
+const shotgun_flash = [
+  MZ2_SOLDIER_SHOTGUN_1, MZ2_SOLDIER_SHOTGUN_2, MZ2_SOLDIER_SHOTGUN_3, MZ2_SOLDIER_SHOTGUN_4,
+  MZ2_SOLDIER_SHOTGUN_5, MZ2_SOLDIER_SHOTGUN_6, MZ2_SOLDIER_SHOTGUN_7, MZ2_SOLDIER_SHOTGUN_8
+];
+const machinegun_flash = [
+  MZ2_SOLDIER_MACHINEGUN_1, MZ2_SOLDIER_MACHINEGUN_2, MZ2_SOLDIER_MACHINEGUN_3, MZ2_SOLDIER_MACHINEGUN_4,
+  MZ2_SOLDIER_MACHINEGUN_5, MZ2_SOLDIER_MACHINEGUN_6, MZ2_SOLDIER_MACHINEGUN_7, MZ2_SOLDIER_MACHINEGUN_8
+];
+
+/**
+ * Original name: soldier_idle
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
+export function soldier_idle(self: GameEntity, runtime: GameRuntime): void {
+  if (Math.random() > 0.8) {
+    emitRegisteredGameSound(runtime, self, sound_idle, SOUND_IDLE, soundOptions(CHAN_VOICE, ATTN_IDLE));
+  }
+}
+
+export function soldier_cock(self: GameEntity, runtime: GameRuntime): void {
+  emitRegisteredGameSound(
+    runtime,
+    self,
+    sound_cock,
+    SOUND_COCK,
+    soundOptions(CHAN_WEAPON, self.s.frame === FRAME_stand322 ? ATTN_IDLE : ATTN_NORM)
+  );
+}
+
+const soldier_frames_stand1 = makeFrames(ai_stand, new Array<number>(30).fill(0), indexedThinks(30, [[0, soldier_idle]]));
+export const soldier_move_stand1: GameMonsterMove = {
+  firstframe: FRAME_stand101,
+  lastframe: FRAME_stand130,
+  frame: soldier_frames_stand1,
+  endfunc: soldier_stand
+};
+
+const soldier_frames_stand3 = makeFrames(ai_stand, new Array<number>(39).fill(0), indexedThinks(39, [[21, soldier_cock]]));
+export const soldier_move_stand3: GameMonsterMove = {
+  firstframe: FRAME_stand301,
+  lastframe: FRAME_stand339,
+  frame: soldier_frames_stand3,
+  endfunc: soldier_stand
+};
+
+export function soldier_stand(self: GameEntity): void {
+  if (self.monsterinfo.currentmove === soldier_move_stand3 || Math.random() < 0.8) {
+    self.monsterinfo.currentmove = soldier_move_stand1;
+  } else {
+    self.monsterinfo.currentmove = soldier_move_stand3;
+  }
+}
+
+export function soldier_walk1_random(self: GameEntity): void {
+  if (Math.random() > 0.1) {
+    self.monsterinfo.nextframe = FRAME_walk101;
+  }
+}
+
+const soldier_frames_walk1 = makeFrames(
+  ai_walk,
+  [3, 6, 2, 2, 2, 1, 6, 5, 3, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  indexedThinks(33, [[9, soldier_walk1_random]])
+);
+export const soldier_move_walk1: GameMonsterMove = {
+  firstframe: FRAME_walk101,
+  lastframe: FRAME_walk133,
+  frame: soldier_frames_walk1,
+  endfunc: undefined
+};
+
+const soldier_frames_walk2 = makeFrames(ai_walk, [4, 4, 9, 8, 5, 1, 3, 7, 6, 7]);
+export const soldier_move_walk2: GameMonsterMove = {
+  firstframe: FRAME_walk209,
+  lastframe: FRAME_walk218,
+  frame: soldier_frames_walk2,
+  endfunc: undefined
+};
+
+export function soldier_walk(self: GameEntity): void {
+  self.monsterinfo.currentmove = Math.random() < 0.5 ? soldier_move_walk1 : soldier_move_walk2;
+}
+
+const soldier_frames_start_run = makeFrames(ai_run, [7, 5]);
+export const soldier_move_start_run: GameMonsterMove = {
+  firstframe: FRAME_run01,
+  lastframe: FRAME_run02,
+  frame: soldier_frames_start_run,
+  endfunc: soldier_run
+};
+
+const soldier_frames_run = makeFrames(ai_run, [10, 11, 11, 16, 10, 15]);
+export const soldier_move_run: GameMonsterMove = {
+  firstframe: FRAME_run03,
+  lastframe: FRAME_run08,
+  frame: soldier_frames_run,
+  endfunc: undefined
+};
+
+export function soldier_run(self: GameEntity): void {
+  if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
+    self.monsterinfo.currentmove = soldier_move_stand1;
+    return;
+  }
+
+  if (
+    self.monsterinfo.currentmove === soldier_move_walk1 ||
+    self.monsterinfo.currentmove === soldier_move_walk2 ||
+    self.monsterinfo.currentmove === soldier_move_start_run
+  ) {
+    self.monsterinfo.currentmove = soldier_move_run;
+  } else {
+    self.monsterinfo.currentmove = soldier_move_start_run;
+  }
+}
+
+const soldier_frames_pain1 = makeFrames(ai_move, [-3, 4, 1, 1, 0]);
+export const soldier_move_pain1: GameMonsterMove = {
+  firstframe: FRAME_pain101,
+  lastframe: FRAME_pain105,
+  frame: soldier_frames_pain1,
+  endfunc: soldier_run
+};
+
+const soldier_frames_pain2 = makeFrames(ai_move, [-13, -1, 2, 4, 2, 3, 2]);
+export const soldier_move_pain2: GameMonsterMove = {
+  firstframe: FRAME_pain201,
+  lastframe: FRAME_pain207,
+  frame: soldier_frames_pain2,
+  endfunc: soldier_run
+};
+
+const soldier_frames_pain3 = makeFrames(ai_move, [-8, 10, -4, -1, -3, 0, 3, 0, 0, 0, 0, 1, 0, 1, 2, 4, 3, 2]);
+export const soldier_move_pain3: GameMonsterMove = {
+  firstframe: FRAME_pain301,
+  lastframe: FRAME_pain318,
+  frame: soldier_frames_pain3,
+  endfunc: soldier_run
+};
+
+const soldier_frames_pain4 = makeFrames(ai_move, [0, 0, 0, -10, -6, 8, 4, 1, 0, 2, 5, 2, -1, -1, 3, 2, 0]);
+export const soldier_move_pain4: GameMonsterMove = {
+  firstframe: FRAME_pain401,
+  lastframe: FRAME_pain417,
+  frame: soldier_frames_pain4,
+  endfunc: soldier_run
+};
+
+export function soldier_pain(self: GameEntity, _other: GameEntity | null, _kick: number, _damage: number, runtime: GameRuntime): void {
+  if (self.health < self.max_health / 2) {
+    self.s.skinnum |= 1;
+  }
+
+  if (runtime.time < self.pain_debounce_time) {
+    if (
+      self.velocity[2] > 100 &&
+      (self.monsterinfo.currentmove === soldier_move_pain1 ||
+        self.monsterinfo.currentmove === soldier_move_pain2 ||
+        self.monsterinfo.currentmove === soldier_move_pain3)
+    ) {
+      self.monsterinfo.currentmove = soldier_move_pain4;
+    }
+    return;
+  }
+
+  self.pain_debounce_time = runtime.time + 3;
+  const n = self.s.skinnum | 1;
+  if (n === 1) {
+    emitRegisteredGameSound(runtime, self, sound_pain_light, SOUND_PAIN_LIGHT, soundOptions(CHAN_VOICE));
+  } else if (n === 3) {
+    emitRegisteredGameSound(runtime, self, sound_pain, SOUND_PAIN, soundOptions(CHAN_VOICE));
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_pain_ss, SOUND_PAIN_SS, soundOptions(CHAN_VOICE));
+  }
+
+  if (self.velocity[2] > 100) {
+    self.monsterinfo.currentmove = soldier_move_pain4;
+    return;
+  }
+  if (runtime.skill === 3) {
+    return;
+  }
+
+  const r = Math.random();
+  if (r < 0.33) {
+    self.monsterinfo.currentmove = soldier_move_pain1;
+  } else if (r < 0.66) {
+    self.monsterinfo.currentmove = soldier_move_pain2;
+  } else {
+    self.monsterinfo.currentmove = soldier_move_pain3;
+  }
+}
+
+export function soldier_fire(self: GameEntity, flash_number: number, runtime: GameRuntime): void {
+  let flash_index: number;
+  if (self.s.skinnum < 2) {
+    flash_index = blaster_flash[flash_number];
+  } else if (self.s.skinnum < 4) {
+    flash_index = shotgun_flash[flash_number];
+  } else {
+    flash_index = machinegun_flash[flash_number];
+  }
+
+  const basis = AngleVectors(self.s.angles);
+  const start = G_ProjectSource(self.s.origin, getMonsterFlashOffset(flash_index), basis.forward, basis.right);
+  let aim: vec3_t;
+
+  if (flash_number === 5 || flash_number === 6 || !self.enemy) {
+    aim = [...basis.forward];
+  } else {
+    const end: vec3_t = [...self.enemy.s.origin];
+    end[2] += self.enemy.viewheight;
+    const dir = vectoangles(subtractVec3(end, start));
+    const aimBasis = AngleVectors(dir);
+    let projected = addVec3(start, scaleVec3(aimBasis.forward, 8192));
+    projected = addVec3(projected, scaleVec3(aimBasis.right, crandom() * 1000));
+    projected = addVec3(projected, scaleVec3(aimBasis.up, crandom() * 500));
+    aim = normalizeVec3(subtractVec3(projected, start));
+  }
+
+  if (self.s.skinnum <= 1) {
+    monster_fire_blaster(self, start, aim, 5, 600, flash_index, EF_BLASTER, runtime);
+  } else if (self.s.skinnum <= 3) {
+    monster_fire_shotgun(
+      self,
+      start,
+      aim,
+      2,
+      1,
+      DEFAULT_SHOTGUN_HSPREAD,
+      DEFAULT_SHOTGUN_VSPREAD,
+      DEFAULT_SHOTGUN_COUNT,
+      flash_index,
+      runtime
+    );
+  } else {
+    if ((self.monsterinfo.aiflags & AI_HOLD_FRAME) === 0) {
+      self.monsterinfo.pausetime = runtime.time + (3 + randomInt(8)) * FRAMETIME;
+    }
+    monster_fire_bullet(self, start, aim, 2, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash_index, runtime);
+    if (runtime.time >= self.monsterinfo.pausetime) {
+      self.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
+    } else {
+      self.monsterinfo.aiflags |= AI_HOLD_FRAME;
+    }
+  }
+}
+
+export function soldier_fire1(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 0, runtime); }
+export function soldier_fire2(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 1, runtime); }
+export function soldier_fire4(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 3, runtime); }
+export function soldier_fire8(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 7, runtime); }
+export function soldier_fire6(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 5, runtime); }
+export function soldier_fire7(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 6, runtime); }
+
+export function soldier_attack1_refire1(self: GameEntity, runtime: GameRuntime): void {
+  if (self.s.skinnum > 1 || !self.enemy || self.enemy.health <= 0) {
+    return;
+  }
+  self.monsterinfo.nextframe = ((runtime.skill === 3 && Math.random() < 0.5) || range(self, self.enemy) === RANGE_MELEE)
+    ? FRAME_attak102
+    : FRAME_attak110;
+}
+
+export function soldier_attack1_refire2(self: GameEntity, runtime: GameRuntime): void {
+  if (self.s.skinnum < 2 || !self.enemy || self.enemy.health <= 0) {
+    return;
+  }
+  if ((runtime.skill === 3 && Math.random() < 0.5) || range(self, self.enemy) === RANGE_MELEE) {
+    self.monsterinfo.nextframe = FRAME_attak102;
+  }
+}
+
+const soldier_frames_attack1 = makeFrames(ai_charge, new Array<number>(12).fill(0), indexedThinks(12, [
+  [2, soldier_fire1],
+  [5, soldier_attack1_refire1],
+  [7, soldier_cock],
+  [8, soldier_attack1_refire2]
+]));
+export const soldier_move_attack1: GameMonsterMove = {
+  firstframe: FRAME_attak101,
+  lastframe: FRAME_attak112,
+  frame: soldier_frames_attack1,
+  endfunc: soldier_run
+};
+
+export function soldier_attack2_refire1(self: GameEntity, runtime: GameRuntime): void {
+  if (self.s.skinnum > 1 || !self.enemy || self.enemy.health <= 0) {
+    return;
+  }
+  self.monsterinfo.nextframe = ((runtime.skill === 3 && Math.random() < 0.5) || range(self, self.enemy) === RANGE_MELEE)
+    ? FRAME_attak204
+    : FRAME_attak216;
+}
+
+export function soldier_attack2_refire2(self: GameEntity, runtime: GameRuntime): void {
+  if (self.s.skinnum < 2 || !self.enemy || self.enemy.health <= 0) {
+    return;
+  }
+  if ((runtime.skill === 3 && Math.random() < 0.5) || range(self, self.enemy) === RANGE_MELEE) {
+    self.monsterinfo.nextframe = FRAME_attak204;
+  }
+}
+
+const soldier_frames_attack2 = makeFrames(ai_charge, new Array<number>(18).fill(0), indexedThinks(18, [
+  [4, soldier_fire2],
+  [7, soldier_attack2_refire1],
+  [12, soldier_cock],
+  [14, soldier_attack2_refire2]
+]));
+export const soldier_move_attack2: GameMonsterMove = {
+  firstframe: FRAME_attak201,
+  lastframe: FRAME_attak218,
+  frame: soldier_frames_attack2,
+  endfunc: soldier_run
+};
+
+export function soldier_duck_down(self: GameEntity, runtime: GameRuntime): void {
+  if ((self.monsterinfo.aiflags & AI_DUCKED) !== 0) {
+    return;
+  }
+  self.monsterinfo.aiflags |= AI_DUCKED;
+  self.maxs[2] -= 32;
+  self.takedamage = damage_t.DAMAGE_YES;
+  self.monsterinfo.pausetime = runtime.time + 1;
+  linkGameEntity(runtime, self);
+}
+
+export function soldier_duck_up(self: GameEntity, runtime: GameRuntime): void {
+  self.monsterinfo.aiflags &= ~AI_DUCKED;
+  self.maxs[2] += 32;
+  self.takedamage = damage_t.DAMAGE_AIM;
+  linkGameEntity(runtime, self);
+}
+
+export function soldier_fire3(self: GameEntity, runtime: GameRuntime): void {
+  soldier_duck_down(self, runtime);
+  soldier_fire(self, 2, runtime);
+}
+
+export function soldier_attack3_refire(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.time + 0.4 < self.monsterinfo.pausetime) {
+    self.monsterinfo.nextframe = FRAME_attak303;
+  }
+}
+
+const soldier_frames_attack3 = makeFrames(ai_charge, new Array<number>(9).fill(0), indexedThinks(9, [
+  [2, soldier_fire3],
+  [5, soldier_attack3_refire],
+  [6, soldier_duck_up]
+]));
+export const soldier_move_attack3: GameMonsterMove = {
+  firstframe: FRAME_attak301,
+  lastframe: FRAME_attak309,
+  frame: soldier_frames_attack3,
+  endfunc: soldier_run
+};
+
+const soldier_frames_attack4 = makeFrames(ai_charge, new Array<number>(6).fill(0), indexedThinks(6, [[2, soldier_fire4]]));
+export const soldier_move_attack4: GameMonsterMove = {
+  firstframe: FRAME_attak401,
+  lastframe: FRAME_attak406,
+  frame: soldier_frames_attack4,
+  endfunc: soldier_run
+};
+
+export function soldier_attack6_refire(self: GameEntity, runtime: GameRuntime): void {
+  if (!self.enemy || self.enemy.health <= 0) {
+    return;
+  }
+  if (range(self, self.enemy) < RANGE_MID) {
+    return;
+  }
+  if (runtime.skill === 3) {
+    self.monsterinfo.nextframe = FRAME_runs03;
+  }
+}
+
+const soldier_frames_attack6 = makeFrames(
+  ai_charge,
+  [10, 4, 12, 11, 13, 18, 15, 14, 11, 8, 11, 12, 12, 17],
+  indexedThinks(14, [
+    [3, soldier_fire8],
+    [13, soldier_attack6_refire]
+  ])
+);
+export const soldier_move_attack6: GameMonsterMove = {
+  firstframe: FRAME_runs01,
+  lastframe: FRAME_runs14,
+  frame: soldier_frames_attack6,
+  endfunc: soldier_run
+};
+
+export function soldier_attack(self: GameEntity): void {
+  if (self.s.skinnum < 4) {
+    self.monsterinfo.currentmove = Math.random() < 0.5 ? soldier_move_attack1 : soldier_move_attack2;
+  } else {
+    self.monsterinfo.currentmove = soldier_move_attack4;
+  }
+}
+
+export function soldier_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
+  if (Math.random() < 0.5) {
+    emitRegisteredGameSound(runtime, self, sound_sight1, SOUND_SIGHT1, soundOptions(CHAN_VOICE));
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_sight2, SOUND_SIGHT2, soundOptions(CHAN_VOICE));
+  }
+
+  if (runtime.skill > 0 && self.enemy && range(self, self.enemy) >= RANGE_MID && Math.random() > 0.5) {
+    self.monsterinfo.currentmove = soldier_move_attack6;
+  }
+}
+
+export function soldier_duck_hold(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.time >= self.monsterinfo.pausetime) {
+    self.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
+  } else {
+    self.monsterinfo.aiflags |= AI_HOLD_FRAME;
+  }
+}
+
+const soldier_frames_duck = makeFrames(ai_move, [5, -1, 1, 0, 5], [
+  soldier_duck_down,
+  soldier_duck_hold,
+  undefined,
+  soldier_duck_up,
+  undefined
+]);
+export const soldier_move_duck: GameMonsterMove = {
+  firstframe: FRAME_duck01,
+  lastframe: FRAME_duck05,
+  frame: soldier_frames_duck,
+  endfunc: soldier_run
+};
+
+export function soldier_dodge(self: GameEntity, attacker: GameEntity | null, eta: number, runtime: GameRuntime): void {
+  if (Math.random() > 0.25) {
+    return;
+  }
+  if (!self.enemy) {
+    self.enemy = attacker;
+  }
+  if (runtime.skill === 0) {
+    self.monsterinfo.currentmove = soldier_move_duck;
+    return;
+  }
+
+  self.monsterinfo.pausetime = runtime.time + eta + 0.3;
+  const r = Math.random();
+  if (runtime.skill === 1) {
+    self.monsterinfo.currentmove = r > 0.33 ? soldier_move_duck : soldier_move_attack3;
+    return;
+  }
+  if (runtime.skill >= 2) {
+    self.monsterinfo.currentmove = r > 0.66 ? soldier_move_duck : soldier_move_attack3;
+    return;
+  }
+  self.monsterinfo.currentmove = soldier_move_attack3;
+}
+
+export function soldier_dead(self: GameEntity, runtime: GameRuntime): void {
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, -8);
+  self.movetype = MOVETYPE_TOSS;
+  self.svflags |= SVF_DEADMONSTER;
+  self.nextthink = 0;
+  linkGameEntity(runtime, self);
+}
+
+const soldier_frames_death1 = makeFrames(
+  ai_move,
+  [0, -10, -10, -10, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  indexedThinks(36, [
+    [21, soldier_fire6],
+    [24, soldier_fire7]
+  ])
+);
+export const soldier_move_death1: GameMonsterMove = {
+  firstframe: FRAME_death101,
+  lastframe: FRAME_death136,
+  frame: soldier_frames_death1,
+  endfunc: soldier_dead
+};
+
+const soldier_frames_death2 = makeFrames(ai_move, [-5, -5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+export const soldier_move_death2: GameMonsterMove = {
+  firstframe: FRAME_death201,
+  lastframe: FRAME_death235,
+  frame: soldier_frames_death2,
+  endfunc: soldier_dead
+};
+
+const soldier_frames_death3 = makeFrames(ai_move, [-5, -5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+export const soldier_move_death3: GameMonsterMove = {
+  firstframe: FRAME_death301,
+  lastframe: FRAME_death345,
+  frame: soldier_frames_death3,
+  endfunc: soldier_dead
+};
+
+const soldier_frames_death4 = makeFrames(ai_move, new Array<number>(53).fill(0));
+export const soldier_move_death4: GameMonsterMove = {
+  firstframe: FRAME_death401,
+  lastframe: FRAME_death453,
+  frame: soldier_frames_death4,
+  endfunc: soldier_dead
+};
+
+const soldier_frames_death5 = makeFrames(ai_move, [-5, -5, -5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+export const soldier_move_death5: GameMonsterMove = {
+  firstframe: FRAME_death501,
+  lastframe: FRAME_death524,
+  frame: soldier_frames_death5,
+  endfunc: soldier_dead
+};
+
+const soldier_frames_death6 = makeFrames(ai_move, new Array<number>(10).fill(0));
+export const soldier_move_death6: GameMonsterMove = {
+  firstframe: FRAME_death601,
+  lastframe: FRAME_death610,
+  frame: soldier_frames_death6,
+  endfunc: soldier_dead
+};
+
+export function soldier_die(
+  self: GameEntity,
+  _inflictor: GameEntity | null,
+  _attacker: GameEntity | null,
+  damage: number,
+  runtime: GameRuntime,
+  point?: vec3_t
+): void {
+  if (self.health <= self.gib_health) {
+    emitGameSound(runtime, self, "misc/udeath.wav");
+    for (let n = 0; n < 3; n += 1) {
+      ThrowGib(self, "models/objects/gibs/sm_meat/tris.md2", damage, GIB_ORGANIC, runtime);
+    }
+    ThrowGib(self, "models/objects/gibs/chest/tris.md2", damage, GIB_ORGANIC, runtime);
+    ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC, runtime);
+    self.deadflag = DEAD_DEAD;
+    return;
+  }
+
+  if (self.deadflag === DEAD_DEAD) {
+    return;
+  }
+
+  self.deadflag = DEAD_DEAD;
+  self.takedamage = damage_t.DAMAGE_YES;
+  self.s.skinnum |= 1;
+
+  if (self.s.skinnum === 1) {
+    emitRegisteredGameSound(runtime, self, sound_death_light, SOUND_DEATH_LIGHT, soundOptions(CHAN_VOICE));
+  } else if (self.s.skinnum === 3) {
+    emitRegisteredGameSound(runtime, self, sound_death, SOUND_DEATH, soundOptions(CHAN_VOICE));
+  } else {
+    emitRegisteredGameSound(runtime, self, sound_death_ss, SOUND_DEATH_SS, soundOptions(CHAN_VOICE));
+  }
+
+  if (point && Math.abs(self.s.origin[2] + self.viewheight - point[2]) <= 4) {
+    self.monsterinfo.currentmove = soldier_move_death3;
+    return;
+  }
+
+  const n = randomInt(5);
+  if (n === 0) {
+    self.monsterinfo.currentmove = soldier_move_death1;
+  } else if (n === 1) {
+    self.monsterinfo.currentmove = soldier_move_death2;
+  } else if (n === 2) {
+    self.monsterinfo.currentmove = soldier_move_death4;
+  } else if (n === 3) {
+    self.monsterinfo.currentmove = soldier_move_death5;
+  } else {
+    self.monsterinfo.currentmove = soldier_move_death6;
+  }
+}
+
+export function SP_monster_soldier_x(self: GameEntity, runtime: GameRuntime): void {
+  self.s.modelindex = registerGameModel(runtime, "models/monsters/soldier/tris.md2");
+  self.monsterinfo.scale = MODEL_SCALE;
+  setVec3(self.mins, -16, -16, -24);
+  setVec3(self.maxs, 16, 16, 32);
+  self.movetype = MOVETYPE_STEP;
+  self.solid = SOLID_BBOX;
+
+  sound_idle = registerGameSound(runtime, SOUND_IDLE);
+  sound_sight1 = registerGameSound(runtime, SOUND_SIGHT1);
+  sound_sight2 = registerGameSound(runtime, SOUND_SIGHT2);
+  sound_cock = registerGameSound(runtime, SOUND_COCK);
+
+  self.mass = 100;
+  self.pain = soldier_pain;
+  self.die = soldier_die;
+  self.monsterinfo.stand = soldier_stand;
+  self.monsterinfo.walk = soldier_walk;
+  self.monsterinfo.run = soldier_run;
+  self.monsterinfo.dodge = soldier_dodge;
+  self.monsterinfo.attack = soldier_attack;
+  self.monsterinfo.melee = undefined;
+  self.monsterinfo.sight = soldier_sight;
+
+  linkGameEntity(runtime, self);
+  soldier_stand(self);
+  walkmonster_start(self, runtime);
+}
+
+export function SP_monster_soldier_light(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  SP_monster_soldier_x(self, runtime);
+  sound_pain_light = registerGameSound(runtime, SOUND_PAIN_LIGHT);
+  sound_death_light = registerGameSound(runtime, SOUND_DEATH_LIGHT);
+  registerGameModel(runtime, "models/objects/laser/tris.md2");
+  registerGameSound(runtime, "misc/lasfly.wav");
+  registerGameSound(runtime, "soldier/solatck2.wav");
+  self.s.skinnum = 0;
+  self.health = 20;
+  self.gib_health = -30;
+}
+
+export function SP_monster_soldier(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  SP_monster_soldier_x(self, runtime);
+  sound_pain = registerGameSound(runtime, SOUND_PAIN);
+  sound_death = registerGameSound(runtime, SOUND_DEATH);
+  registerGameSound(runtime, "soldier/solatck1.wav");
+  self.s.skinnum = 2;
+  self.health = 30;
+  self.gib_health = -30;
+}
+
+export function SP_monster_soldier_ss(self: GameEntity, runtime: GameRuntime): void {
+  if (runtime.deathmatch) {
+    G_FreeEdict(runtime, self);
+    return;
+  }
+
+  SP_monster_soldier_x(self, runtime);
+  sound_pain_ss = registerGameSound(runtime, SOUND_PAIN_SS);
+  sound_death_ss = registerGameSound(runtime, SOUND_DEATH_SS);
+  registerGameSound(runtime, "soldier/solatck3.wav");
+  self.s.skinnum = 4;
+  self.health = 40;
+  self.gib_health = -30;
+}
+
+function makeFrames(
+  aifunc: GameMonsterFrame["aifunc"],
+  distances: number[],
+  thinks: GameMonsterFrame["thinkfunc"][] = []
+): GameMonsterFrame[] {
+  return distances.map((dist, index) => ({
+    aifunc,
+    dist,
+    thinkfunc: thinks[index]
+  }));
+}
+
+function indexedThinks(
+  count: number,
+  entries: Array<[index: number, thinkfunc: GameMonsterFrame["thinkfunc"]]>
+): GameMonsterFrame["thinkfunc"][] {
+  const thinks = new Array<GameMonsterFrame["thinkfunc"]>(count).fill(undefined);
+  for (const [index, thinkfunc] of entries) {
+    thinks[index] = thinkfunc;
+  }
+  return thinks;
+}
+
+function soundOptions(channel: number, attenuation = ATTN_NORM): { channel: number; volume: number; attenuation: number; timeofs: number } {
+  return {
+    channel,
+    volume: 1,
+    attenuation,
+    timeofs: 0
+  };
+}
+
+function setVec3(vector: [number, number, number], x: number, y: number, z: number): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+function addVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [
+    left[0] + right[0],
+    left[1] + right[1],
+    left[2] + right[2]
+  ];
+}
+
+function subtractVec3(left: vec3_t, right: vec3_t): vec3_t {
+  return [
+    left[0] - right[0],
+    left[1] - right[1],
+    left[2] - right[2]
+  ];
+}
+
+function scaleVec3(vector: vec3_t, scale: number): vec3_t {
+  return [
+    vector[0] * scale,
+    vector[1] * scale,
+    vector[2] * scale
+  ];
+}
+
+function normalizeVec3(vector: vec3_t): vec3_t {
+  const length = Math.hypot(vector[0], vector[1], vector[2]);
+  if (length === 0) {
+    return [0, 0, 0];
+  }
+  return [vector[0] / length, vector[1] / length, vector[2] / length];
+}
+
+function randomInt(maxExclusive: number): number {
+  return Math.trunc(Math.random() * maxExclusive);
+}
+
+function crandom(): number {
+  return 2 * (Math.random() - 0.5);
+}

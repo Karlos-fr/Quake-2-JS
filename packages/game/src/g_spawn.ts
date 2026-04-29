@@ -84,6 +84,7 @@ import { SP_monster_infantry } from "./m_infantry.js";
 import { SP_monster_medic } from "./m_medic.js";
 import { SP_monster_mutant } from "./m_mutant.js";
 import { SP_monster_parasite } from "./m_parasite.js";
+import { SP_monster_soldier, SP_monster_soldier_light, SP_monster_soldier_ss } from "./m_soldier.js";
 import { SP_monster_supertank } from "./m_supertank.js";
 import { SP_monster_tank } from "./m_tank.js";
 import { SP_misc_actor, SP_target_actor } from "./m_actor.js";
@@ -222,6 +223,9 @@ const spawns: SpawnEntry[] = [
   { name: "monster_medic", spawn: SP_monster_medic },
   { name: "monster_mutant", spawn: SP_monster_mutant },
   { name: "monster_parasite", spawn: SP_monster_parasite },
+  { name: "monster_soldier_light", spawn: SP_monster_soldier_light },
+  { name: "monster_soldier", spawn: SP_monster_soldier },
+  { name: "monster_soldier_ss", spawn: SP_monster_soldier_ss },
   { name: "monster_supertank", spawn: SP_monster_supertank },
   { name: "monster_tank", spawn: SP_monster_tank },
   { name: "monster_tank_commander", spawn: SP_monster_tank },

@@ -49,6 +49,7 @@ import * as mMedicExports from "./m_medic.js";
 import * as mMutantExports from "./m_mutant.js";
 import * as mParasiteExports from "./m_parasite.js";
 import * as mSupertankExports from "./m_supertank.js";
+import * as mSoldierExports from "./m_soldier.js";
 import * as mTankExports from "./m_tank.js";
 import * as pClientExports from "./p_client.js";
 import * as pTrailExports from "./p_trail.js";
@@ -216,6 +217,7 @@ for (const moduleExports of [
   mParasiteExports,
   mSupertankExports,
   mTankExports,
+  mSoldierExports,
   pClientExports,
   pTrailExports
 ]) {

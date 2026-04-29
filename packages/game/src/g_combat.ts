@@ -442,7 +442,7 @@ export function Killed(
   targ.enemy = attacker;
 
   if ((targ.movetype === MOVETYPE_PUSH) || (targ.movetype === MOVETYPE_STOP) || (targ.movetype === MOVETYPE_NONE)) {
-    targ.die?.(targ, inflictor, attacker, damage, runtime);
+    targ.die?.(targ, inflictor, attacker, damage, runtime, point);
     return;
   }
 
@@ -461,7 +461,7 @@ export function Killed(
     hooks.monsterDeathUse?.(targ, runtime);
   }
 
-  targ.die?.(targ, inflictor, attacker, damage, runtime);
+  targ.die?.(targ, inflictor, attacker, damage, runtime, point);
 }
 
 /**

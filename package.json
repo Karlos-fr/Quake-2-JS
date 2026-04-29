@@ -200,6 +200,8 @@
     "verify:m-parasite:source-parity": "npx tsx ./scripts/verify/quake2-m-parasite-source-parity.ts",
     "verify:m-player:header": "npx tsx ./scripts/verify/quake2-m-player-header.ts",
     "verify:m-soldier:header": "npx tsx ./scripts/verify/quake2-m-soldier-header.ts",
+    "verify:m-soldier": "npx tsx ./scripts/verify/quake2-m-soldier.ts",
+    "verify:m-soldier:source-parity": "npx tsx ./scripts/verify/quake2-m-soldier-source-parity.ts",
     "verify:m-supertank:header": "npx tsx ./scripts/verify/quake2-m-supertank-header.ts",
     "verify:m-supertank": "npx tsx ./scripts/verify/quake2-m-supertank.ts",
     "verify:m-supertank:source-parity": "npx tsx ./scripts/verify/quake2-m-supertank-source-parity.ts",
