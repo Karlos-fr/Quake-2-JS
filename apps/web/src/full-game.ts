@@ -931,9 +931,12 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   const markAuthoritativeGameActive = (): void => {
     client.cl.screen.scr_draw_loading = 0;
     if (keys.state.key_dest !== keydest_t.key_console
-      && keys.state.key_dest !== keydest_t.key_message) {
+      && keys.state.key_dest !== keydest_t.key_message
+      && keys.state.key_dest !== keydest_t.key_menu) {
       keys.state.key_dest = keydest_t.key_game;
     }
+    pendingAuthoritativeMapRequest = null;
+    gameBridge.requestedMap = null;
     gameBridge.serverRunning = true;
     gameBridge.phase = "idle";
   };
@@ -1450,28 +1453,39 @@ function executeRuntimeCommandBuffer(runtime: FullGameRuntime, page: FullGamePag
   runtime.updateClientAudio();
 
   if (runtime.gameBridge.requestedMap) {
+    const requestedMap = runtime.gameBridge.requestedMap;
     if (runtime.serverHost.hasActiveGameMap()) {
-      runtime.beginAuthoritativeConnection(runtime.gameBridge.requestedMap);
+      runtime.beginAuthoritativeConnection(requestedMap);
     }
 
     if (runtime.authoritativeGameReady()) {
       runtime.markAuthoritativeGameActive();
-      runtime.mode = "game";
-      page.status.textContent = `Jeu actif: ${runtime.serverHost.currentMapRequest ?? runtime.gameBridge.requestedMap}.`;
-      page.status.style.display = "none";
+      syncFullGameActiveView(runtime, page, `Jeu actif: ${runtime.serverHost.currentMapRequest ?? requestedMap}.`);
     } else {
       runtime.mode = "loading";
-      page.status.textContent = `Preparation de ${runtime.gameBridge.requestedMap}.`;
+      page.status.textContent = `Preparation de ${requestedMap}.`;
       page.status.style.display = "block";
     }
   } else if (runtime.serverHost.hasActiveGameMap() && runtime.serverHost.currentMapRequest && runtime.authoritativeGameReady()) {
     runtime.markAuthoritativeGameActive();
-    runtime.mode = "game";
-    page.status.style.display = "none";
+    syncFullGameActiveView(runtime, page, "");
   } else if (runtime.gameBridge.phase === "loading" || enteredLoading) {
     page.status.textContent = "Chargement du jeu...";
     page.status.style.display = "block";
   }
+}
+
+function syncFullGameActiveView(runtime: FullGameRuntime, page: FullGamePage, gameStatus: string): void {
+  if (runtime.menu.keys.state.key_dest === keydest_t.key_menu) {
+    runtime.mode = "menu";
+    page.status.textContent = "Menu principal Quake II.";
+    page.status.style.display = "block";
+    return;
+  }
+
+  runtime.mode = "game";
+  page.status.textContent = gameStatus;
+  page.status.style.display = "none";
 }
 
 function drawCinematicFrame(runtime: FullGameRuntime, page: FullGamePage): void {
