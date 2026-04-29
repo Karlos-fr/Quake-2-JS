@@ -1087,7 +1087,10 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   );
   const markAuthoritativeGameActive = (): void => {
     client.cl.screen.scr_draw_loading = 0;
-    keys.state.key_dest = keydest_t.key_game;
+    if (keys.state.key_dest !== keydest_t.key_console
+      && keys.state.key_dest !== keydest_t.key_message) {
+      keys.state.key_dest = keydest_t.key_game;
+    }
     gameBridge.serverRunning = true;
     gameBridge.phase = "idle";
   };
