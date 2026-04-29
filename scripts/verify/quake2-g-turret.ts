@@ -20,13 +20,14 @@ import {
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
-import { AI_DUCKED, AI_STAND_GROUND, FL_NO_KNOCKBACK, SVF_MONSTER, damage_t } from "../../packages/game/src/g-local.js";
+import { AI_DUCKED, AI_STAND_GROUND, FL_NO_KNOCKBACK, FL_TEAMSLAVE, SVF_MONSTER, damage_t } from "../../packages/game/src/g-local.js";
 import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import {
   SP_turret_base,
   SP_turret_breach,
   SP_turret_driver,
   turret_breach_think,
+  turret_driver_die,
   turret_driver_think
 } from "../../packages/game/src/g_turret.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
@@ -46,6 +47,7 @@ function verifyTurretBreachFinishInitAndSpawnRegistry(): void {
 
   const base = spawnGameEntity(runtime);
   base.classname = "turret_base";
+  base.model = "*1";
   ED_CallSpawn(base, runtime);
 
   const muzzle = spawnGameEntity(runtime);
@@ -57,6 +59,7 @@ function verifyTurretBreachFinishInitAndSpawnRegistry(): void {
 
   const breach = spawnGameEntity(runtime);
   breach.classname = "turret_breach";
+  breach.model = "*2";
   breach.target = "turret_muzzle";
   breach.s.origin = [64, 0, 0];
   breach.origin = [64, 0, 0];
@@ -71,6 +74,8 @@ function verifyTurretBreachFinishInitAndSpawnRegistry(): void {
 
   ED_CallSpawn(breach, runtime);
   assert.equal(breach.solid !== 0, true, "SP_turret_breach must initialize brush solidity");
+  assert.equal(base.s.modelindex, 2, "SP_turret_base must apply gi.setmodel-style inline modelindex");
+  assert.equal(breach.s.modelindex, 3, "SP_turret_breach must apply gi.setmodel-style inline modelindex");
   assert.equal(breach.speed, 50, "SP_turret_breach default speed mismatch");
   assert.equal(breach.dmg, 10, "SP_turret_breach default damage mismatch");
   assert.equal(breach.pos1[0], 20, "SP_turret_breach minpitch clamp mismatch");
@@ -132,7 +137,7 @@ function verifyTurretDriverLinkAndThink(): void {
   assert.equal(base.teamchain, breach, "turret team chain head mismatch");
   assert.equal(breach.teamchain, driver, "turret_driver_link must append driver to team chain");
   assert.equal(driver.teammaster, base, "turret_driver_link teammaster mismatch");
-  assert.equal((driver.flags & 0x00000400) !== 0, true, "turret_driver_link must set FL_TEAMSLAVE");
+  assert.equal((driver.flags & FL_TEAMSLAVE) !== 0, true, "turret_driver_link must set FL_TEAMSLAVE");
   assert.equal(driver.move_origin[0] > 0, true, "turret_driver_link mount distance mismatch");
 
   const enemy = spawnGameEntity(runtime);
@@ -154,6 +159,14 @@ function verifyTurretDriverLinkAndThink(): void {
   assert.notDeepEqual(breach.move_angles, [0, 0, 0], "turret_driver_think must steer the breach");
   assert.equal((breach.spawnflags & 65536) !== 0, true, "turret_driver_think must arm the fire flag");
   assert.equal(driver.monsterinfo.attack_finished > runtime.time, true, "turret_driver_think attack cooldown mismatch");
+
+  breach.move_angles[0] = 25;
+  turret_driver_die(driver, null, enemy, 25, runtime);
+  assert.equal(breach.move_angles[0], 0, "turret_driver_die must level the turret pitch");
+  assert.equal(breach.owner, null, "turret_driver_die must clear breach owner");
+  assert.equal(base.owner, null, "turret_driver_die must clear teammaster owner");
+  assert.equal(breach.teamchain, null, "turret_driver_die must unlink driver from team chain");
+  assert.equal((driver.flags & FL_TEAMSLAVE) === 0, true, "turret_driver_die must clear FL_TEAMSLAVE");
 }
 
 function verifyTurretBreachThinkFiresRocket(): void {

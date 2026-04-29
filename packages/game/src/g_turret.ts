@@ -21,6 +21,7 @@ import {
   AngleVectors,
   ATTN_NORM,
   CHAN_WEAPON,
+  MASK_MONSTERSOLID,
   M_PI,
   PITCH,
   RF_FRAMELERP,
@@ -32,6 +33,7 @@ import {
   AI_LOST_SIGHT,
   AI_STAND_GROUND,
   FL_NO_KNOCKBACK,
+  FL_TEAMSLAVE,
   FRAMETIME,
   MOD_CRUSH,
   SVF_MONSTER,
@@ -52,6 +54,7 @@ import {
   linkGameEntity,
   refreshEntitySpatialState,
   registerGameModel,
+  setGameEntityModel,
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
@@ -298,6 +301,9 @@ export function turret_breach_finish_init(self: GameEntity, runtime: GameRuntime
 export function SP_turret_breach(self: GameEntity, runtime: GameRuntime): void {
   self.solid = SOLID_BSP;
   self.movetype = MOVETYPE_PUSH;
+  if (self.model) {
+    setGameEntityModel(runtime, self, self.model);
+  }
 
   if (!self.speed) {
     self.speed = 50;
@@ -338,6 +344,9 @@ export function SP_turret_breach(self: GameEntity, runtime: GameRuntime): void {
 export function SP_turret_base(self: GameEntity, runtime: GameRuntime): void {
   self.solid = SOLID_BSP;
   self.movetype = MOVETYPE_PUSH;
+  if (self.model) {
+    setGameEntityModel(runtime, self, self.model);
+  }
   self.blocked = turret_blocked;
 
   refreshEntitySpatialState(self);
@@ -379,7 +388,7 @@ export function turret_driver_die(
   }
 
   self.teammaster = null;
-  self.flags &= ~0x00000400;
+  self.flags &= ~FL_TEAMSLAVE;
   infantry_die(self, inflictor, attacker, damage, runtime);
 }
 
@@ -485,7 +494,7 @@ export function turret_driver_link(self: GameEntity, runtime: GameRuntime): void
   }
   ent.teamchain = self;
   self.teammaster = self.target_ent.teammaster ?? self.target_ent;
-  self.flags |= 0x00000400;
+  self.flags |= FL_TEAMSLAVE;
 }
 
 /**
@@ -524,7 +533,7 @@ export function SP_turret_driver(self: GameEntity, runtime: GameRuntime): void {
   self.s.renderfx |= RF_FRAMELERP;
   self.takedamage = damage_t.DAMAGE_AIM;
   self.use = (useSelf, other, activator, localRuntime) => monster_use(useSelf, other, activator, localRuntime);
-  self.clipmask = 0x2004001;
+  self.clipmask = MASK_MONSTERSOLID;
   self.s.old_origin = [...self.s.origin];
   self.monsterinfo.aiflags |= AI_STAND_GROUND | AI_DUCKED;
 
