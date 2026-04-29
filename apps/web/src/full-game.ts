@@ -30,7 +30,10 @@ import {
   type WebCDAudioAdapter
 } from "../../../packages/platform/src/index.js";
 import {
+  Cmd_AddCommand,
+  Cmd_Exists,
   Cmd_Init,
+  Cmd_RemoveCommand,
   Cbuf_AddText,
   Cbuf_Execute,
   Cvar_Command,
@@ -1168,7 +1171,13 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
   menuContext = menu;
   keys.hooks.onMenuKeydown = (key) => M_Keydown(menu, key);
   keys.hooks.onMenuMain = () => M_Menu_Main_f(menu);
+  keys.hooks.onToggleConsole = () => {
+    toggleFullGameConsoleContext(menu, consoleContext, page, client);
+  };
   M_Init(menu);
+  registerFullGameToggleConsoleCommand(cmd, () => {
+    toggleFullGameConsoleContext(menu, consoleContext, page, client);
+  });
   queueFullGameConfigBootstrap(cmd);
   const flushClientOutput = (): void => {
     while (client.output.length > 0) {
@@ -1390,6 +1399,16 @@ function queueFullGameConfigBootstrap(cmd: ReturnType<typeof createCommandRuntim
   Cbuf_AddText(cmd, "bind d +moveright\n");
   Cbuf_AddText(cmd, "bind z +forward\n");
   Cbuf_AddText(cmd, "bind q +moveleft\n");
+}
+
+function registerFullGameToggleConsoleCommand(
+  cmd: ReturnType<typeof createCommandRuntime>,
+  handler: () => void
+): void {
+  if (Cmd_Exists(cmd, "toggleconsole")) {
+    Cmd_RemoveCommand(cmd, "toggleconsole");
+  }
+  Cmd_AddCommand(cmd, "toggleconsole", handler);
 }
 
 function seedMenuCvars(cvar: ReturnType<typeof createCvarRuntime>): void {
@@ -2287,24 +2306,32 @@ function handleKeyDown(event: KeyboardEvent, runtime: FullGameRuntime, page: Ful
 }
 
 function toggleFullGameConsole(runtime: FullGameRuntime, page: FullGamePage, showHtmlPanel = false): void {
-  const keys = runtime.menu.keys.state;
-  Con_ClearNotify(runtime.console.con);
+  toggleFullGameConsoleContext(runtime.menu, runtime.console, page, runtime.client);
+  setHtmlConsoleVisible(runtime, page, showHtmlPanel ? runtime.menu.keys.state.console_open : false);
+}
+
+function toggleFullGameConsoleContext(
+  menu: ClientMenuContext,
+  consoleContext: ClientConsoleContext,
+  page: FullGamePage,
+  client: ClientRuntime
+): void {
+  const keys = menu.keys.state;
+  Con_ClearNotify(consoleContext.con);
   if (keys.key_dest === keydest_t.key_console) {
     keys.console_open = false;
-    keys.key_dest = runtime.mode === "game" && runtime.client.cls.state === connstate_t.ca_active
+    keys.key_dest = client.cls.state === connstate_t.ca_active
       ? keydest_t.key_game
       : keydest_t.key_menu;
   } else {
-    M_ForceMenuOff(runtime.menu);
+    M_ForceMenuOff(menu);
     keys.console_open = true;
     keys.key_dest = keydest_t.key_console;
   }
-  Con_SyncConsoleToKeys(runtime.console);
-  executeRuntimeCommandBuffer(runtime, page);
-  setHtmlConsoleVisible(runtime, page, showHtmlPanel ? keys.console_open : false);
-  page.status.textContent = runtime.menu.keys.state.key_dest === keydest_t.key_console
+  Con_SyncConsoleToKeys(consoleContext);
+  page.status.textContent = keys.key_dest === keydest_t.key_console
     ? "Console Quake II."
-    : runtime.mode === "menu"
+    : client.cls.state !== connstate_t.ca_active
       ? "Menu principal Quake II."
       : "";
 }
