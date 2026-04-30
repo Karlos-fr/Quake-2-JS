@@ -46,3 +46,13 @@
 - Tests: harness inline `npx tsx -` OK pour orientation, distance zero, avance avec `dist`, et garde defensive sans ennemi; `npm run verify:g-ai` OK; `npm run typecheck` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `range` et locale `len`, ou `visible` avec locale `trace`; garder `FindTarget` pour une session dediee.
+
+## Session 2026-04-30 - range / len
+
+- Lot traite: `range` et locale `len`.
+- Verdict: `range` valide; `len` non applicable comme variable locale portee.
+- Corrections TS: aucune.
+- Preuves: comparaison C/TS effectuee; le C soustrait `self->s.origin - other->s.origin`, calcule `VectorLength`, puis classe avec les seuils stricts `< MELEE_DISTANCE`, `< 500`, `< 1000`; le TS conserve la meme soustraction, `Math.hypot` via `vectorLength`, les constantes `RANGE_*` et le commentaire d'en-tete `Strict`. Branchement runtime verifie via `FindTarget`, `M_CheckAttack`/`ai_run` et usages monstres directs; `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique; `renderer-three` consomme les entites visibles issues des frames client, pas ce helper AI directement.
+- Tests: harness inline `npx tsx -` OK pour les bornes strictes `79.999/80/499.999/500/999.999/1000`; `npm run verify:g-ai` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `visible` avec locale `trace`, puis `infront` avec locale `dot`; garder `FindTarget` pour une session dediee.

@@ -35,3 +35,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:full-game:bridge`; `npm run verify:server:user`; `npm run typecheck`.
 - Blocages: `npm run verify:full-game:gameplay` et `npm run verify:full-game:forward` echouent avant execution sur import obsolete `packages/client/src/main.js`; non corrige hors perimetre.
 - Prochain lot recommande: `Cmd_Notarget_f` et temporaires locaux associes (`msg`).
+
+## Session 2026-04-30 - Cmd_Notarget_f
+
+- Lot valide: `Cmd_Notarget_f` et temporaires C associes (`msg`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme gate `deathmatch && !sv_cheats`, bascule XOR `FL_NOTARGET`, messages `notarget ON/OFF`, retour sans effet si cheats interdits.
+- Branchement runtime: `ClientCommand` dispatch `notarget`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `sv_user`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` passe par le pont client/serveur et ne remplace pas la logique runtime. `packages/renderer-three` non applicable directement: `FL_NOTARGET` est un flag gameplay consomme par IA/monstres/armes, sans sortie renderer directe; les effets visibles restent ceux des snapshots/entites existants.
+- Corrections: aucune correction TS necessaire; commentaire d'en-tete existant verifie pour `Cmd_Notarget_f`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:bridge`; controle cible `npx tsx` inline pour ON/OFF et refus deathmatch sans cheats.
+- Blocages: controle cible relance apres un premier import incorrect de `FL_NOTARGET` depuis `packages/game/src/index.ts`; passage OK en important le flag depuis `packages/game/src/g_local.ts`.
+- Prochain lot recommande: `Cmd_Noclip_f` et temporaires locaux associes (`msg`).

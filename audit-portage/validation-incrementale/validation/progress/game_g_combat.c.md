@@ -13,6 +13,16 @@
 
 ## Dernier lot valide
 
+- 2026-04-30: `CheckArmor` et locales associees (`save`, `index`, `armor`)
+  - Source comparee: `Quake-2-master/game/g_combat.c`
+  - Cible comparee: `packages/game/src/g_combat.ts`; dependances `ArmorIndex`, `GetItemByIndex` et `GetArmorInfoByItem` verifiees dans `packages/game/src/g_items.ts`.
+  - Correction appliquee: aucune. Le port conserve les sorties `damage == 0`, absence de client, `DAMAGE_NO_ARMOR`, absence d'armor; le choix `DAMAGE_ENERGY` vs normal; le `ceil`; le plafonnement par inventaire; la consommation d'armor; et l'emission `SpawnDamage(te_sparks, point, normal, save)`.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`.
+  - Branchement runtime verifie: `T_Damage` appelle `CheckArmor` apres `CheckPowerArmor`; `asave` alimente ensuite `client.damage_armor`, la sante retire seulement le reliquat non absorbe, et les flux armes/trigger/eau/fall dispatchent vers `T_Damage`.
+  - `apps/web`: aucune logique parallele constatee; le flux attendu est indirect via le runtime game et le client full-game, avec armor visible par les stats/HUD (`p_hud`) et les effets view damage (`p_view`).
+  - `renderer-three`: pas de branchement gameplay direct attendu; les effets visibles attendus passent par les temp entities `TE_SPARKS`/`TE_BULLET_SPARKS` produites par `SpawnDamage`, serialisees avec direction puis consommees indirectement via la synchronisation particules.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; verification inline `CheckArmor` couvrant armor normale, energy, plafonnement inventaire, `DAMAGE_NO_ARMOR` et integration `T_Damage`; `npm run verify:p-view`; `npm run verify:particle-sync`; `npm run typecheck`.
+
 - 2026-04-30: `CheckPowerArmor`
   - Source comparee: `Quake-2-master/game/g_combat.c`
   - Cible comparee: `packages/game/src/g_combat.ts`; dependance `PowerArmorType`/`FindItem("Cells")` verifiee dans `packages/game/src/g_items.ts`.
@@ -55,7 +65,7 @@
 
 ## Prochain lot recommande
 
-- `CheckArmor` avec ses variables locales associees si le lot reste court.
+- `M_ReactToDamage`, avec jugement cible sur `visible`/`FoundTarget` et les changements `enemy`/`oldenemy`.
 
 ## Blocages
 

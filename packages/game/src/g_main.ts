@@ -46,6 +46,11 @@ import {
   FL_SWIM,
   FRAMETIME,
   GAMEVERSION,
+  SPAWNFLAG_NOT_COOP,
+  SPAWNFLAG_NOT_DEATHMATCH,
+  SPAWNFLAG_NOT_EASY,
+  SPAWNFLAG_NOT_HARD,
+  SPAWNFLAG_NOT_MEDIUM,
   SVF_MONSTER,
   svc_muzzleflash,
   svc_muzzleflash2,
@@ -87,6 +92,7 @@ import {
   drainPlayerMuzzleFlashEvents,
   drainGameSoundEvents,
   drainGameTempEntityEvents,
+  freeGameEntity,
   registerGameSound,
   type GameEntity,
   type GameRuntime
@@ -253,6 +259,7 @@ export function InitGame(context: GameMainContext): void {
  *
  * Porting notes:
  * - Keeps player edicts at slots `1..maxclients`, then appends BSP entities after the worldspawn.
+ * - Applies the original skill/deathmatch spawnflag inhibition before dispatching entity spawners.
  */
 export function SpawnEntities(context: GameMainContext, mapname: string, entstring: string, spawnpoint: string): void {
   const parsedEntities = parseEntityLump(entstring);
@@ -299,6 +306,13 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
     if (!entity) {
       continue;
     }
+
+    applySpawnFlagMapHack(context.runtime, entity);
+    if (shouldInhibitSpawnEntity(context.runtime, entity)) {
+      freeGameEntity(context.runtime, entity);
+      continue;
+    }
+    entity.spawnflags &= ~SPAWNFLAG_NOT_MASK;
 
     ED_CallSpawn(entity, context.runtime);
   }
@@ -968,6 +982,36 @@ function buildServerEntityList(parsedEntities: BspEntity[], maxclients: number):
   const worldspawn = parsedEntities[0] ?? { properties: { classname: "worldspawn" } };
   const reservedClients = Array.from({ length: maxclients }, () => ({ properties: { classname: "player" } }));
   return [worldspawn, ...reservedClients, ...parsedEntities.slice(1)];
+}
+
+const SPAWNFLAG_NOT_MASK =
+  SPAWNFLAG_NOT_EASY |
+  SPAWNFLAG_NOT_MEDIUM |
+  SPAWNFLAG_NOT_HARD |
+  SPAWNFLAG_NOT_DEATHMATCH |
+  SPAWNFLAG_NOT_COOP;
+
+function applySpawnFlagMapHack(runtime: GameRuntime, entity: GameEntity): void {
+  if (
+    stringsEqualIgnoreCase(runtime.mapname, "command") &&
+    stringsEqualIgnoreCase(entity.classname, "trigger_once") &&
+    stringsEqualIgnoreCase(entity.model ?? "", "*27")
+  ) {
+    entity.spawnflags &= ~SPAWNFLAG_NOT_HARD;
+  }
+}
+
+function shouldInhibitSpawnEntity(runtime: GameRuntime, entity: GameEntity): boolean {
+  if (runtime.deathmatch) {
+    return (entity.spawnflags & SPAWNFLAG_NOT_DEATHMATCH) !== 0;
+  }
+
+  const skill = Math.max(0, Math.min(3, Math.trunc(runtime.skill)));
+  return (
+    (skill === 0 && (entity.spawnflags & SPAWNFLAG_NOT_EASY) !== 0) ||
+    (skill === 1 && (entity.spawnflags & SPAWNFLAG_NOT_MEDIUM) !== 0) ||
+    ((skill === 2 || skill === 3) && (entity.spawnflags & SPAWNFLAG_NOT_HARD) !== 0)
+  );
 }
 
 function syncMainRuntimeState(target: GameRuntime, source: GameRuntime): void {

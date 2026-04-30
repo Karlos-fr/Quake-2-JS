@@ -22,6 +22,12 @@ import {
   CS_SKYROTATE
 } from "../../packages/qcommon/src/index.js";
 import { FL_TEAMSLAVE, MOVETYPE_PUSH, SOLID_BSP } from "../../packages/game/src/runtime.js";
+import {
+  SPAWNFLAG_NOT_DEATHMATCH,
+  SPAWNFLAG_NOT_EASY,
+  SPAWNFLAG_NOT_HARD,
+  SPAWNFLAG_NOT_MEDIUM
+} from "../../packages/game/src/g_local.js";
 import { ED_CallSpawn, G_FindTeams } from "../../packages/game/src/g_spawn.js";
 import { InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { spawnGameEntity } from "../../packages/game/src/runtime.js";
@@ -193,6 +199,90 @@ assert.deepEqual(teamResult, { teamCount: 2, entityCount: 3 }, "G_FindTeams coun
 assert.equal(teamMaster.teamchain, teamSlave, "G_FindTeams must chain team members in entity order");
 assert.equal(teamSlave.teammaster, teamMaster, "G_FindTeams teammaster mismatch");
 assert.equal((teamSlave.flags & FL_TEAMSLAVE) !== 0, true, "G_FindTeams team slave flag mismatch");
+
+const skillContext = createGameMainContext(imports);
+InitGame(skillContext);
+skillContext.cvars.skill!.value = 0;
+skillContext.cvars.skill!.string = "0";
+SpawnEntities(
+  skillContext,
+  "skilltest",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "func_door"
+"model" "*1"
+"targetname" "easy_only_filtered"
+"spawnflags" "${SPAWNFLAG_NOT_EASY}"
+}
+{
+"classname" "func_door"
+"model" "*2"
+"targetname" "medium_only_survives"
+"spawnflags" "${SPAWNFLAG_NOT_MEDIUM}"
+}
+`,
+  ""
+);
+assert.equal(
+  skillContext.runtime.entities.some((entity) => entity.inuse && entity.targetname === "easy_only_filtered"),
+  false,
+  "SPAWNFLAG_NOT_EASY must inhibit entities on skill 0"
+);
+const mediumSurvivor = skillContext.runtime.entities.find((entity) => entity.inuse && entity.targetname === "medium_only_survives");
+assert.ok(mediumSurvivor, "non-matching skill spawnflag entity should survive");
+assert.equal(mediumSurvivor.spawnflags & SPAWNFLAG_NOT_MEDIUM, 0, "surviving spawnflags must be stripped");
+
+const deathmatchContext = createGameMainContext(imports);
+InitGame(deathmatchContext);
+deathmatchContext.cvars.deathmatch!.value = 1;
+deathmatchContext.cvars.deathmatch!.string = "1";
+SpawnEntities(
+  deathmatchContext,
+  "dmtest",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "func_door"
+"model" "*1"
+"targetname" "dm_filtered"
+"spawnflags" "${SPAWNFLAG_NOT_DEATHMATCH}"
+}
+`,
+  ""
+);
+assert.equal(
+  deathmatchContext.runtime.entities.some((entity) => entity.inuse && entity.targetname === "dm_filtered"),
+  false,
+  "SPAWNFLAG_NOT_DEATHMATCH must inhibit entities in deathmatch"
+);
+
+const commandContext = createGameMainContext(imports);
+InitGame(commandContext);
+commandContext.cvars.skill!.value = 3;
+commandContext.cvars.skill!.string = "3";
+SpawnEntities(
+  commandContext,
+  "command",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "trigger_once"
+"model" "*27"
+"targetname" "command_hack_survives"
+"spawnflags" "${SPAWNFLAG_NOT_HARD}"
+}
+`,
+  ""
+);
+const commandHackEntity = commandContext.runtime.entities.find(
+  (entity) => entity.inuse && entity.targetname === "command_hack_survives"
+);
+assert.ok(commandHackEntity, "command trigger_once *27 hack must clear SPAWNFLAG_NOT_HARD before skill filtering");
+assert.equal(commandHackEntity.spawnflags & SPAWNFLAG_NOT_HARD, 0, "command hack survivor must have spawnflags stripped");
 
 console.log("quake2-g-spawn: ok");
 
