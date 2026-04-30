@@ -8,6 +8,22 @@
 
 ## Dernier lot traite
 
+- 2026-04-30: lot premiers flags `FL_*`: `FL_FLY`, `FL_SWIM`, `FL_INWATER`.
+- Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public.
+- Valeurs H/TS comparees et conformes:
+  - `FL_FLY = 0x00000001`
+  - `FL_SWIM = 0x00000002`
+  - `FL_INWATER = 0x00000008`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public corrige dans `packages/game/src/index.ts`.
+- Runtime:
+  - `FL_FLY`/`FL_SWIM` sont consommes par les flux AI, physique, monstres, triggers et movement (`g_ai`, `g_phys`, `g_monster`, `g_trigger`, `m_move`, `g_combat`, `g_main`).
+  - `FL_SWIM` conserve le comportement C de nage/immunite noyade via la logique monstre `M_WorldEffects`.
+  - `FL_INWATER` est pose/retire dans les transitions eau joueur (`p_view`) et monstre (`g_monster`).
+- apps/web: aucune reference directe; pas d'integration web directe attendue pour ces macros de flags edict, le comportement passe par le runtime game.
+- renderer-three: aucune reference directe; pas d'integration renderer directe attendue, ces bits ne produisent pas seuls des donnees visuelles. Les effets visibles passent par les entites/evenements produits par le runtime.
+- Commentaires d'en-tete: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; pas de fonction dans ce lot.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports `g_local.ts`/`index.ts`; `npm run verify:g-local:header` OK; `npm run verify:p-view` OK; `npm run verify:m-move` OK; `npm run verify:g-monster` OK; `npm run verify:g-phys` OK; `npm run verify:g-ai` OK; `npm run typecheck` OK.
+
 - 2026-04-30: lot `SPAWNFLAG_NOT_EASY` a `SPAWNFLAG_NOT_COOP`.
 - Verdict: `Valide` pour les 5 macros apres correction coordinateur du branchement runtime.
 - Valeurs H/TS comparees et conformes:
@@ -57,7 +73,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les premiers flags `FL_*` si le lot reste petit.
+- Continuer avec le prochain petit lot `FL_*`: `FL_IMMUNE_LASER`, `FL_GODMODE`, `FL_NOTARGET` si coherent.
 
 ## Blocages
 

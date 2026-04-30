@@ -292,6 +292,10 @@ export function range(self: GameEntity, other: GameEntity): number {
  *
  * Behavior:
  * - Returns whether `other` is visible to `self` by tracing between their eye positions.
+ *
+ * Porting notes:
+ * - The original always calls `gi.trace`; this adapter returns `false` when no collision
+ *   backend is installed.
  */
 export function visible(self: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   if (!runtime.collision) {

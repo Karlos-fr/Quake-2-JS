@@ -2,6 +2,13 @@
 
 ## Dernier lot valide
 
+- 2026-04-30: callbacks de plateforme `plat_go_down`, `plat_hit_top`, `plat_hit_bottom` et doublon matrice `plat_go_down`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:356-392` avec `packages/game/src/g_func.ts:933-987`.
+- Effets verifies: sons start/end via `CHAN_NO_PHS_ADD + CHAN_VOICE`/`ATTN_STATIC`, respect `FL_TEAMSLAVE`, `s.sound`, transitions `STATE_DOWN`/`STATE_TOP`/`STATE_BOTTOM`, `think = plat_go_down`, `nextthink = level.time + 3`, `Move_Calc(... end_origin, plat_hit_bottom)`.
+- Branchement: `plat_go_down` est appelee par `Use_Plat`, `Touch_Plat_Center` et le `think` programme par `plat_hit_top`; `plat_hit_top`/`plat_hit_bottom` sont callbacks de fin de `Move_Calc`; execution via `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune compensation gameplay dans `apps/web`; les sons gameplay sont drainables via `drainLocalGameplaySounds`, les poses de brush models passent par snapshots/interpolation. `packages/renderer-three` consomme les brush snapshots via `gl-world-scene-adapter`, donc pas de correction renderer attendue dans ce lot.
+- Tests: `npm run verify:g-func` OK; controle inline `npx tsx -e` OK pour les trois callbacks; `npm run verify:full-game:three-renderer` OK; `npm run verify:full-game:audio-routing` bloque sur import manquant `packages/client/src/types.js` hors lot.
+
 - 2026-04-30: suite du mouvement accelere `AccelerationDistance`, `plat_CalcAcceleratedMove`, `plat_Accelerate` et temporaires associes.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:233-330` avec `packages/game/src/g_func.ts:142-215,2093-2095`.
 - Effets verifies: formule `AccelerationDistance`, `move_speed`, branche distance courte, `decel_distance`, calcul de vitesse plafonnee, reprise `next_speed`, deceleration, crossover pleine vitesse vers deceleration, acceleration simple et acceleration/crossover.
@@ -31,11 +38,11 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `plat_go_down`, `plat_hit_top`, `plat_hit_bottom` et doublon `plat_go_down` de la matrice.
+- Valider le bloc suivant sans elargir: `plat_go_up`, `plat_blocked`, `Use_Plat`.
 
 ## Blocages
 
-- Aucun pour ce lot.
+- `npm run verify:full-game:audio-routing` bloque sur import manquant `packages/client/src/types.js` hors lot.
 
 ## Decisions
 

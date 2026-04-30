@@ -56,3 +56,13 @@
 - Tests: harness inline `npx tsx -` OK pour les bornes strictes `79.999/80/499.999/500/999.999/1000`; `npm run verify:g-ai` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `visible` avec locale `trace`, puis `infront` avec locale `dot`; garder `FindTarget` pour une session dediee.
+
+## Session 2026-04-30 - visible / trace
+
+- Lot traite: `visible` et locale `trace`.
+- Verdict: `visible` valide; `trace` non applicable comme variable locale portee.
+- Corrections TS: commentaire d'en-tete de `visible` complete avec la note adapter `runtime.collision` absent -> `false`; aucune correction comportementale.
+- Preuves: comparaison C/TS effectuee; le C copie `self->s.origin` et `other->s.origin`, ajoute les `viewheight`, appelle `gi.trace(spot1, vec3_origin, vec3_origin, spot2, self, MASK_OPAQUE)`, puis retourne vrai seulement si `trace.fraction == 1.0`; le TS conserve les memes points, extents zero, passant, masque et test strict `fraction === 1.0`, avec garde defensive si le backend collision n'est pas installe. Branchement runtime verifie via `FindTarget`, `M_CheckAttack`/`ai_run` et les autres consommateurs gameplay (`g_combat`, monstres, `p_trail`); `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique; `renderer-three` consomme les sorties visibles via `ClientRefreshFrame`, pas ce helper AI directement.
+- Tests: harness inline `npx tsx -` OK pour points yeux, extents, `MASK_OPAQUE`, trace bloquee et absence de collision; `npm run verify:g-ai` OK; `npm run typecheck` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `infront` avec locale `dot`; garder `FindTarget` pour une session dediee.

@@ -13,6 +13,16 @@
 
 ## Dernier lot valide
 
+- 2026-04-30: `M_ReactToDamage`
+  - Source comparee: `Quake-2-master/game/g_combat.c`
+  - Cible comparee: `packages/game/src/g_combat.ts`; dependances directes `visible` et `FoundTarget` verifiees dans `packages/game/src/g_ai.ts`.
+  - Correction appliquee: aucune. Le port conserve les gardes attaquant non-client/non-monstre, self/current enemy, good-guy; la branche client avec conservation de l'ennemi client visible; les exclusions tank/supertank/makron/jorg; les cas tir intentionnel et aide du buddy; et la suppression de `FoundTarget` quand `AI_DUCKED`.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, `Behavior`.
+  - Branchement runtime verifie: `T_Damage` appelle `M_ReactToDamage` pour les monstres survivants; les appels armes, radius damage, trigger/eau/lava/fall portes deleguent ensuite vers `T_Damage`.
+  - `apps/web`: aucune logique parallele constatee; pas de branchement direct attendu, car le lot modifie l'etat IA serveur (`enemy`/`oldenemy`/`monsterinfo`) qui est ensuite observe via le runtime game et les snapshots.
+  - `renderer-three`: aucune integration directe attendue; les effets visibles resultent indirectement des changements d'IA, de mouvement et d'attaque des monstres deja exposes comme entites visibles.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; `npm run verify:g-ai`; verification inline couvrant good-guy, ennemi client visible, changement monster-vers-monster, exclusion tank accidentelle, tir intentionnel ducked, adoption de l'ennemi du buddy; `npm run typecheck`.
+
 - 2026-04-30: `CheckArmor` et locales associees (`save`, `index`, `armor`)
   - Source comparee: `Quake-2-master/game/g_combat.c`
   - Cible comparee: `packages/game/src/g_combat.ts`; dependances `ArmorIndex`, `GetItemByIndex` et `GetArmorInfoByItem` verifiees dans `packages/game/src/g_items.ts`.
@@ -65,7 +75,7 @@
 
 ## Prochain lot recommande
 
-- `M_ReactToDamage`, avec jugement cible sur `visible`/`FoundTarget` et les changements `enemy`/`oldenemy`.
+- `CheckTeamDamage`, puis debut de `T_Damage` avec ses locales `take`/`save`/`asave`/`psave` si le lot reste assez petit.
 
 ## Blocages
 
