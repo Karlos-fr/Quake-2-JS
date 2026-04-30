@@ -26,6 +26,7 @@ import {
   PM_SnapPosition,
   PM_StepSlideMove,
   PM_WaterMove,
+  PITCH,
   Pmove,
   createPmoveContext,
   pmtype_t,
@@ -40,7 +41,7 @@ import {
   CONTENTS_SLIME,
   CONTENTS_SOLID,
   CONTENTS_WATER
-} from "../../packages/qcommon/src/q-shared.js";
+} from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -62,6 +63,7 @@ function main(): void {
   verifyWaterJumpUsesWatertypeSpecificVerticalSpeed();
   verifyStepSlideMovePrefersStepUpWhenFlatMoveIsBlocked();
   verifyWaterMoveAcceleratesAndAdvancesWithNoCollision();
+  verifyPmoveKeepsFullPitchVectorsForWaterMove();
   verifyAirMoveAcceleratesAndAppliesGravityOffGround();
   verifyAirMoveAcceleratesAndPreservesZeroVerticalSpeedOnGround();
   verifyFlyMoveIntegratesFreelyWithoutClip();
@@ -346,6 +348,27 @@ function verifyWaterMoveAcceleratesAndAdvancesWithNoCollision(): void {
   assertApprox(context.pml.velocity[0], 100, 0.0001, "water move accelerates along forward wishdir");
   assertApprox(context.pml.origin[0], 10, 0.0001, "water move advances origin through step-slide move");
   assertApprox(context.pml.velocity[2], 0, 0.0001, "water move keeps neutral vertical speed when no upmove is requested");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert that full `Pmove` preserves the original full-pitch water vector path.
+ */
+function verifyPmoveKeepsFullPitchVectorsForWaterMove(): void {
+  const pm = createBasePmove();
+  pm.cmd.msec = 50;
+  pm.cmd.angles[PITCH] = 16384;
+  pm.cmd.forwardmove = 200;
+  pm.mins = [-16, -16, -24];
+  pm.maxs = [16, 16, 32];
+  pm.trace = createPassThroughTrace;
+  pm.pointcontents = () => CONTENTS_WATER;
+
+  const context = createPmoveContext(pm);
+  Pmove(context, { allowSnapPosition: false });
+
+  assertApprox(context.pml.velocity[0], 0.8726203218641798, 0.0001, "water pmove keeps full pitch forward X");
+  assertApprox(context.pml.velocity[2], -49.992384757819565, 0.0001, "water pmove keeps full pitch forward Z");
 }
 
 /**

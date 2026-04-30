@@ -1,0 +1,4770 @@
+[
+  {
+    "category": "protocol-or-effect-enum",
+    "file": "Quake-2-master/client/cl_tent.c",
+    "line": 24,
+    "name": "enum",
+    "entries": [
+      "RF_TRANSLUCENT",
+      "RF_FULLBRIGHT",
+      "RF_TRANSLUCENT",
+      "RF_BEAM"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "enum-constant-heuristic"
+    ]
+  },
+  {
+    "category": "items-ammo-weapons",
+    "file": "Quake-2-master/game/g_items.c",
+    "line": 1134,
+    "name": "itemlist",
+    "entries": [
+      "item_armor_body",
+      "misc/ar1_pkup.wav",
+      "models/items/armor/body/tris.md2",
+      "i_bodyarmor",
+      "Body Armor",
+      "\n\t},\n\n\n\n\t{\n\t\t",
+      ", \n\t\tPickup_Armor,\n\t\tNULL,\n\t\tNULL,\n\t\tNULL,\n\t\t",
+      ",\n\t\t",
+      ", EF_ROTATE,\n\t\tNULL,\n\t\t",
+      ",\n\t",
+      ",\n\t\t3,\n\t\t0,\n\t\tNULL,\n\t\tIT_ARMOR,\n\t\t0,\n\t\t&combatarmor_info,\n\t\tARMOR_COMBAT,\n ",
+      ",\n\t\t3,\n\t\t0,\n\t\tNULL,\n\t\tIT_ARMOR,\n\t\t0,\n\t\t&jacketarmor_info,\n\t\tARMOR_JACKET,\n ",
+      ",\n\t\t3,\n\t\t0,\n\t\tNULL,\n\t\tIT_ARMOR,\n\t\t0,\n\t\tNULL,\n\t\tARMOR_SHARD,\n ",
+      "\n\t},\n\n\n\n\n\t{\n\t\t",
+      ", \n\t\tPickup_PowerArmor,\n\t\tUse_PowerArmor,\n\t\tDrop_PowerArmor,\n\t\tNULL,\n\t\t",
+      ",\n\t\t0,\n\t\t60,\n\t\tNULL,\n\t\tIT_ARMOR,\n\t\t0,\n\t\tNULL,\n\t\t0,\n ",
+      ",\n\t\tPickup_PowerArmor,\n\t\tUse_PowerArmor,\n\t\tDrop_PowerArmor,\n\t\tNULL,\n\t\t",
+      "\n\t},\n\n\n\t\n\t\n\t\n\n\n\n\n\t{\n\t\t",
+      ", \n\t\tNULL,\n\t\tUse_Weapon,\n\t\tNULL,\n\t\tWeapon_Blaster,\n\t\t",
+      ",\n\t\tNULL, 0,\n\t\t",
+      ",\n\t\t0,\n\t\t0,\n\t\tNULL,\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_BLASTER,\n\t\tNULL,\n\t\t0,\n ",
+      ", \n\t\tPickup_Weapon,\n\t\tUse_Weapon,\n\t\tDrop_Weapon,\n\t\tWeapon_Shotgun,\n\t\t",
+      ", EF_ROTATE,\n\t\t",
+      ",\n\t\t0,\n\t\t1,\n\t\t",
+      ",\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_SHOTGUN,\n\t\tNULL,\n\t\t0,\n ",
+      ", \n\t\tPickup_Weapon,\n\t\tUse_Weapon,\n\t\tDrop_Weapon,\n\t\tWeapon_SuperShotgun,\n\t\t",
+      ",\n\t\t0,\n\t\t2,\n\t\t",
+      ",\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_SUPERSHOTGUN,\n\t\tNULL,\n\t\t0,\n ",
+      ", \n\t\tPickup_Weapon,\n\t\tUse_Weapon,\n\t\tDrop_Weapon,\n\t\tWeapon_Machinegun,\n\t\t",
+      ",\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_MACHINEGUN,\n\t\tNULL,\n\t\t0,\n ",
+      ", \n\t\tPickup_Weapon,\n\t\tUse_Weapon,\n\t\tDrop_Weapon,\n\t\tWeapon_Chaingun,\n\t\t",
+      ",\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_CHAINGUN,\n\t\tNULL,\n\t\t0,\n ",
+      ",\n\t\tPickup_Ammo,\n\t\tUse_Weapon,\n\t\tDrop_Ammo,\n\t\tWeapon_Grenade,\n\t\t",
+      ", 0,\n\t\t",
+      ",\n\t\t3,\n\t\t5,\n\t\t",
+      ",\n\t\tIT_AMMO|IT_WEAPON,\n\t\tWEAP_GRENADES,\n\t\tNULL,\n\t\tAMMO_GRENADES,\n ",
+      ",\n\t\tPickup_Weapon,\n\t\tUse_Weapon,\n\t\tDrop_Weapon,\n\t\tWeapon_GrenadeLauncher,\n\t\t",
+      ",\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_GRENADELAUNCHER,\n\t\tNULL,\n\t\t0,\n ",
+      ",\n\t\tPickup_Weapon,\n\t\tUse_Weapon,\n\t\tDrop_Weapon,\n\t\tWeapon_RocketLauncher,\n\t\t",
+      ",\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_ROCKETLAUNCHER,\n\t\tNULL,\n\t\t0,\n ",
+      ", \n\t\tPickup_Weapon,\n\t\tUse_Weapon,\n\t\tDrop_Weapon,\n\t\tWeapon_HyperBlaster,\n\t\t",
+      ",\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_HYPERBLASTER,\n\t\tNULL,\n\t\t0,\n ",
+      ", \n\t\tPickup_Weapon,\n\t\tUse_Weapon,\n\t\tDrop_Weapon,\n\t\tWeapon_Railgun,\n\t\t",
+      ",\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_RAILGUN,\n\t\tNULL,\n\t\t0,\n ",
+      ",\n\t\tPickup_Weapon,\n\t\tUse_Weapon,\n\t\tDrop_Weapon,\n\t\tWeapon_BFG,\n\t\t",
+      ",\n\t\t0,\n\t\t50,\n\t\t",
+      ",\n\t\tIT_WEAPON|IT_STAY_COOP,\n\t\tWEAP_BFG,\n\t\tNULL,\n\t\t0,\n ",
+      "\n\t},\n\n\t\n\t\n\t\n\n\n\n\t{\n\t\t",
+      ",\n\t\tPickup_Ammo,\n\t\tNULL,\n\t\tDrop_Ammo,\n\t\tNULL,\n\t\t",
+      ", 0,\n\t\tNULL,\n\t\t",
+      ",\n\t\t3,\n\t\t10,\n\t\tNULL,\n\t\tIT_AMMO,\n\t\t0,\n\t\tNULL,\n\t\tAMMO_SHELLS,\n ",
+      ",\n\t\t3,\n\t\t50,\n\t\tNULL,\n\t\tIT_AMMO,\n\t\t0,\n\t\tNULL,\n\t\tAMMO_BULLETS,\n ",
+      ",\n\t\t3,\n\t\t50,\n\t\tNULL,\n\t\tIT_AMMO,\n\t\t0,\n\t\tNULL,\n\t\tAMMO_CELLS,\n ",
+      ",\n\t\t3,\n\t\t5,\n\t\tNULL,\n\t\tIT_AMMO,\n\t\t0,\n\t\tNULL,\n\t\tAMMO_ROCKETS,\n ",
+      ",\n\t\t3,\n\t\t10,\n\t\tNULL,\n\t\tIT_AMMO,\n\t\t0,\n\t\tNULL,\n\t\tAMMO_SLUGS,\n ",
+      "\n\t},\n\n\n\t\n\t\n\t\n\n\n\t{\n\t\t",
+      ", \n\t\tPickup_Powerup,\n\t\tUse_Quad,\n\t\tDrop_General,\n\t\tNULL,\n\t\t",
+      ",\n\t\t2,\n\t\t60,\n\t\tNULL,\n\t\tIT_POWERUP,\n\t\t0,\n\t\tNULL,\n\t\t0,\n ",
+      ",\n\t\tPickup_Powerup,\n\t\tUse_Invulnerability,\n\t\tDrop_General,\n\t\tNULL,\n\t\t",
+      ",\n\t\t2,\n\t\t300,\n\t\tNULL,\n\t\tIT_POWERUP,\n\t\t0,\n\t\tNULL,\n\t\t0,\n ",
+      ",\n\t\tPickup_Powerup,\n\t\tUse_Silencer,\n\t\tDrop_General,\n\t\tNULL,\n\t\t",
+      ",\n\t\tPickup_Powerup,\n\t\tUse_Breather,\n\t\tDrop_General,\n\t\tNULL,\n\t\t",
+      ",\n\t\t2,\n\t\t60,\n\t\tNULL,\n\t\tIT_STAY_COOP|IT_POWERUP,\n\t\t0,\n\t\tNULL,\n\t\t0,\n ",
+      ",\n\t\tPickup_Powerup,\n\t\tUse_Envirosuit,\n\t\tDrop_General,\n\t\tNULL,\n\t\t",
+      ",\n\t\tPickup_AncientHead,\n\t\tNULL,\n\t\tNULL,\n\t\tNULL,\n\t\t",
+      ",\n\t\t2,\n\t\t60,\n\t\tNULL,\n\t\t0,\n\t\t0,\n\t\tNULL,\n\t\t0,\n ",
+      ",\n\t\tPickup_Adrenaline,\n\t\tNULL,\n\t\tNULL,\n\t\tNULL,\n\t\t",
+      ",\n\t\tPickup_Bandolier,\n\t\tNULL,\n\t\tNULL,\n\t\tNULL,\n\t\t",
+      ",\n\t\tPickup_Pack,\n\t\tNULL,\n\t\tNULL,\n\t\tNULL,\n\t\t",
+      ",\n\t\t2,\n\t\t180,\n\t\tNULL,\n\t\t0,\n\t\t0,\n\t\tNULL,\n\t\t0,\n ",
+      ",\n\t\tPickup_Key,\n\t\tNULL,\n\t\tDrop_General,\n\t\tNULL,\n\t\t",
+      ",\n\t\t2,\n\t\t0,\n\t\tNULL,\n\t\tIT_STAY_COOP|IT_KEY,\n\t\t0,\n\t\tNULL,\n\t\t0,\n ",
+      ", EF_GIB,\n\t\tNULL,\n\t\t",
+      "\n\t},\n\n\t{\n\t\tNULL,\n\t\tPickup_Health,\n\t\tNULL,\n\t\tNULL,\n\t\tNULL,\n\t\t",
+      ",\n\t\tNULL, 0,\n\t\tNULL,\n\t\t",
+      ",\n\t\t3,\n\t\t0,\n\t\tNULL,\n\t\t0,\n\t\t0,\n\t\tNULL,\n\t\t0,\n ",
+      "Pickup_Armor",
+      "misc",
+      "ar1_pkup",
+      "wav",
+      "models",
+      "items",
+      "armor",
+      "body",
+      "tris",
+      "md2",
+      "EF_ROTATE",
+      "Body",
+      "Armor",
+      "IT_ARMOR",
+      "bodyarmor_info",
+      "ARMOR_BODY",
+      "item_armor_combat",
+      "combat",
+      "i_combatarmor",
+      "Combat",
+      "combatarmor_info",
+      "ARMOR_COMBAT",
+      "item_armor_jacket",
+      "jacket",
+      "i_jacketarmor",
+      "Jacket",
+      "jacketarmor_info",
+      "ARMOR_JACKET",
+      "item_armor_shard",
+      "ar2_pkup",
+      "shard",
+      "Shard",
+      "ARMOR_SHARD",
+      "item_power_screen",
+      "Pickup_PowerArmor",
+      "Use_PowerArmor",
+      "Drop_PowerArmor",
+      "ar3_pkup",
+      "screen",
+      "i_powerscreen",
+      "Power",
+      "Screen",
+      "item_power_shield",
+      "shield",
+      "i_powershield",
+      "Shield",
+      "power2",
+      "power1",
+      "weapon_blaster",
+      "Use_Weapon",
+      "Weapon_Blaster",
+      "w_pkup",
+      "weapons",
+      "v_blast",
+      "w_blaster",
+      "Blaster",
+      "IT_WEAPON",
+      "IT_STAY_COOP",
+      "WEAP_BLASTER",
+      "blastf1a",
+      "lasfly",
+      "weapon_shotgun",
+      "Pickup_Weapon",
+      "Drop_Weapon",
+      "Weapon_Shotgun",
+      "g_shotg",
+      "v_shotg",
+      "w_shotgun",
+      "Shotgun",
+      "Shells",
+      "WEAP_SHOTGUN",
+      "shotgf1b",
+      "shotgr1b",
+      "weapon_supershotgun",
+      "Weapon_SuperShotgun",
+      "g_shotg2",
+      "v_shotg2",
+      "w_sshotgun",
+      "Super",
+      "WEAP_SUPERSHOTGUN",
+      "sshotf1b",
+      "weapon_machinegun",
+      "Weapon_Machinegun",
+      "g_machn",
+      "v_machn",
+      "w_machinegun",
+      "Machinegun",
+      "Bullets",
+      "WEAP_MACHINEGUN",
+      "machgf1b",
+      "machgf2b",
+      "machgf3b",
+      "machgf4b",
+      "machgf5b",
+      "weapon_chaingun",
+      "Weapon_Chaingun",
+      "g_chain",
+      "v_chain",
+      "w_chaingun",
+      "Chaingun",
+      "WEAP_CHAINGUN",
+      "chngnu1a",
+      "chngnl1a",
+      "chngnd1a",
+      "ammo_grenades",
+      "Pickup_Ammo",
+      "Drop_Ammo",
+      "Weapon_Grenade",
+      "am_pkup",
+      "ammo",
+      "grenades",
+      "medium",
+      "v_handgr",
+      "a_grenades",
+      "Grenades",
+      "IT_AMMO",
+      "WEAP_GRENADES",
+      "AMMO_GRENADES",
+      "hgrent1a",
+      "hgrena1b",
+      "hgrenc1b",
+      "hgrenb1a",
+      "hgrenb2a",
+      "weapon_grenadelauncher",
+      "Weapon_GrenadeLauncher",
+      "g_launch",
+      "v_launch",
+      "w_glauncher",
+      "Grenade",
+      "Launcher",
+      "WEAP_GRENADELAUNCHER",
+      "objects",
+      "grenade",
+      "grenlf1a",
+      "grenlr1b",
+      "grenlb1b",
+      "weapon_rocketlauncher",
+      "Weapon_RocketLauncher",
+      "g_rocket",
+      "v_rocket",
+      "w_rlauncher",
+      "Rocket",
+      "Rockets",
+      "WEAP_ROCKETLAUNCHER",
+      "rocket",
+      "rockfly",
+      "rocklf1a",
+      "rocklr1b",
+      "debris2",
+      "weapon_hyperblaster",
+      "Weapon_HyperBlaster",
+      "g_hyperb",
+      "v_hyperb",
+      "w_hyperblaster",
+      "HyperBlaster",
+      "Cells",
+      "WEAP_HYPERBLASTER",
+      "hyprbu1a",
+      "hyprbl1a",
+      "hyprbf1a",
+      "hyprbd1a",
+      "weapon_railgun",
+      "Weapon_Railgun",
+      "g_rail",
+      "v_rail",
+      "w_railgun",
+      "Railgun",
+      "Slugs",
+      "WEAP_RAILGUN",
+      "rg_hum",
+      "weapon_bfg",
+      "Weapon_BFG",
+      "g_bfg",
+      "v_bfg",
+      "w_bfg",
+      "BFG10K",
+      "WEAP_BFG",
+      "sprites",
+      "s_bfg1",
+      "sp2",
+      "s_bfg2",
+      "s_bfg3",
+      "bfg__f1y",
+      "bfg__l1a",
+      "bfg__x1b",
+      "bfg_hum",
+      "ammo_shells",
+      "shells",
+      "a_shells",
+      "AMMO_SHELLS",
+      "ammo_bullets",
+      "bullets",
+      "a_bullets",
+      "AMMO_BULLETS",
+      "ammo_cells",
+      "cells",
+      "a_cells",
+      "AMMO_CELLS",
+      "ammo_rockets",
+      "rockets",
+      "a_rockets",
+      "AMMO_ROCKETS",
+      "ammo_slugs",
+      "slugs",
+      "a_slugs",
+      "AMMO_SLUGS",
+      "item_quad",
+      "Pickup_Powerup",
+      "Use_Quad",
+      "Drop_General",
+      "pkup",
+      "quaddama",
+      "p_quad",
+      "Quad",
+      "Damage",
+      "IT_POWERUP",
+      "damage",
+      "damage2",
+      "damage3",
+      "item_invulnerability",
+      "Use_Invulnerability",
+      "invulner",
+      "p_invulnerability",
+      "Invulnerability",
+      "protect",
+      "protect2",
+      "protect4",
+      "item_silencer",
+      "Use_Silencer",
+      "silencer",
+      "p_silencer",
+      "Silencer",
+      "item_breather",
+      "Use_Breather",
+      "breather",
+      "p_rebreather",
+      "Rebreather",
+      "airout",
+      "item_enviro",
+      "Use_Envirosuit",
+      "enviro",
+      "p_envirosuit",
+      "Environment",
+      "Suit",
+      "item_ancient_head",
+      "Pickup_AncientHead",
+      "c_head",
+      "i_fixme",
+      "Ancient",
+      "Head",
+      "item_adrenaline",
+      "Pickup_Adrenaline",
+      "adrenal",
+      "p_adrenaline",
+      "Adrenaline",
+      "item_bandolier",
+      "Pickup_Bandolier",
+      "band",
+      "p_bandolier",
+      "Bandolier",
+      "item_pack",
+      "Pickup_Pack",
+      "pack",
+      "i_pack",
+      "Ammo",
+      "Pack",
+      "key_data_cd",
+      "Pickup_Key",
+      "keys",
+      "data_cd",
+      "k_datacd",
+      "Data",
+      "CD",
+      "IT_KEY",
+      "key_power_cube",
+      "power",
+      "k_powercube",
+      "Cube",
+      "key_pyramid",
+      "pyramid",
+      "k_pyramid",
+      "Pyramid",
+      "Key",
+      "key_data_spinner",
+      "spinner",
+      "k_dataspin",
+      "Spinner",
+      "key_pass",
+      "pass",
+      "k_security",
+      "Security",
+      "Pass",
+      "key_blue_key",
+      "key",
+      "k_bluekey",
+      "Blue",
+      "key_red_key",
+      "red_key",
+      "k_redkey",
+      "Red",
+      "key_commander_head",
+      "monsters",
+      "commandr",
+      "head",
+      "EF_GIB",
+      "k_comhead",
+      "Commander",
+      "s",
+      "key_airstrike_target",
+      "target",
+      "i_airstrike",
+      "Airstrike",
+      "Marker",
+      "Pickup_Health",
+      "i_health",
+      "Health",
+      "s_health",
+      "n_health",
+      "l_health",
+      "m_health"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "spawn-functions",
+    "file": "Quake-2-master/game/g_spawn.c",
+    "line": 1,
+    "name": "spawns",
+    "entries": [
+      "item_health -> SP_item_health",
+      "item_health_small -> SP_item_health_small",
+      "item_health_large -> SP_item_health_large",
+      "item_health_mega -> SP_item_health_mega",
+      "info_player_start -> SP_info_player_start",
+      "info_player_deathmatch -> SP_info_player_deathmatch",
+      "info_player_coop -> SP_info_player_coop",
+      "info_player_intermission -> SP_info_player_intermission",
+      "func_plat -> SP_func_plat",
+      "func_button -> SP_func_button",
+      "func_door -> SP_func_door",
+      "func_door_secret -> SP_func_door_secret",
+      "func_door_rotating -> SP_func_door_rotating",
+      "func_rotating -> SP_func_rotating",
+      "func_train -> SP_func_train",
+      "func_water -> SP_func_water",
+      "func_conveyor -> SP_func_conveyor",
+      "func_areaportal -> SP_func_areaportal",
+      "func_clock -> SP_func_clock",
+      "func_wall -> SP_func_wall",
+      "func_object -> SP_func_object",
+      "func_timer -> SP_func_timer",
+      "func_explosive -> SP_func_explosive",
+      "func_killbox -> SP_func_killbox",
+      "trigger_always -> SP_trigger_always",
+      "trigger_once -> SP_trigger_once",
+      "trigger_multiple -> SP_trigger_multiple",
+      "trigger_relay -> SP_trigger_relay",
+      "trigger_push -> SP_trigger_push",
+      "trigger_hurt -> SP_trigger_hurt",
+      "trigger_key -> SP_trigger_key",
+      "trigger_counter -> SP_trigger_counter",
+      "trigger_elevator -> SP_trigger_elevator",
+      "trigger_gravity -> SP_trigger_gravity",
+      "trigger_monsterjump -> SP_trigger_monsterjump",
+      "target_temp_entity -> SP_target_temp_entity",
+      "target_speaker -> SP_target_speaker",
+      "target_explosion -> SP_target_explosion",
+      "target_changelevel -> SP_target_changelevel",
+      "target_secret -> SP_target_secret",
+      "target_goal -> SP_target_goal",
+      "target_splash -> SP_target_splash",
+      "target_spawner -> SP_target_spawner",
+      "target_blaster -> SP_target_blaster",
+      "target_crosslevel_trigger -> SP_target_crosslevel_trigger",
+      "target_crosslevel_target -> SP_target_crosslevel_target",
+      "target_laser -> SP_target_laser",
+      "target_help -> SP_target_help",
+      "target_actor -> SP_target_actor",
+      "target_lightramp -> SP_target_lightramp",
+      "target_earthquake -> SP_target_earthquake",
+      "target_character -> SP_target_character",
+      "target_string -> SP_target_string",
+      "worldspawn -> SP_worldspawn",
+      "viewthing -> SP_viewthing",
+      "light -> SP_light",
+      "light_mine1 -> SP_light_mine1",
+      "light_mine2 -> SP_light_mine2",
+      "info_null -> SP_info_null",
+      "func_group -> SP_info_null",
+      "info_notnull -> SP_info_notnull",
+      "path_corner -> SP_path_corner",
+      "point_combat -> SP_point_combat",
+      "misc_explobox -> SP_misc_explobox",
+      "misc_banner -> SP_misc_banner",
+      "misc_satellite_dish -> SP_misc_satellite_dish",
+      "misc_actor -> SP_misc_actor",
+      "misc_gib_arm -> SP_misc_gib_arm",
+      "misc_gib_leg -> SP_misc_gib_leg",
+      "misc_gib_head -> SP_misc_gib_head",
+      "misc_insane -> SP_misc_insane",
+      "misc_deadsoldier -> SP_misc_deadsoldier",
+      "misc_viper -> SP_misc_viper",
+      "misc_viper_bomb -> SP_misc_viper_bomb",
+      "misc_bigviper -> SP_misc_bigviper",
+      "misc_strogg_ship -> SP_misc_strogg_ship",
+      "misc_teleporter -> SP_misc_teleporter",
+      "misc_teleporter_dest -> SP_misc_teleporter_dest",
+      "misc_blackhole -> SP_misc_blackhole",
+      "misc_eastertank -> SP_misc_eastertank",
+      "misc_easterchick -> SP_misc_easterchick",
+      "misc_easterchick2 -> SP_misc_easterchick2",
+      "monster_berserk -> SP_monster_berserk",
+      "monster_gladiator -> SP_monster_gladiator",
+      "monster_gunner -> SP_monster_gunner",
+      "monster_infantry -> SP_monster_infantry",
+      "monster_soldier_light -> SP_monster_soldier_light",
+      "monster_soldier -> SP_monster_soldier",
+      "monster_soldier_ss -> SP_monster_soldier_ss",
+      "monster_tank -> SP_monster_tank",
+      "monster_tank_commander -> SP_monster_tank",
+      "monster_medic -> SP_monster_medic",
+      "monster_flipper -> SP_monster_flipper",
+      "monster_chick -> SP_monster_chick",
+      "monster_parasite -> SP_monster_parasite",
+      "monster_flyer -> SP_monster_flyer",
+      "monster_brain -> SP_monster_brain",
+      "monster_floater -> SP_monster_floater",
+      "monster_hover -> SP_monster_hover",
+      "monster_mutant -> SP_monster_mutant",
+      "monster_supertank -> SP_monster_supertank",
+      "monster_boss2 -> SP_monster_boss2",
+      "monster_boss3_stand -> SP_monster_boss3_stand",
+      "monster_jorg -> SP_monster_jorg",
+      "monster_commander_body -> SP_monster_commander_body",
+      "turret_breach -> SP_turret_breach",
+      "turret_base -> SP_turret_base",
+      "turret_driver -> SP_turret_driver"
+    ],
+    "confidence": "high",
+    "notes": []
+  },
+  {
+    "category": "spawn-functions",
+    "file": "Quake-2-master/game/g_spawn.c",
+    "line": 148,
+    "name": "spawns",
+    "entries": [
+      "item_health",
+      "item_health_small",
+      "item_health_large",
+      "item_health_mega",
+      "info_player_start",
+      "info_player_deathmatch",
+      "info_player_coop",
+      "info_player_intermission",
+      "func_plat",
+      "func_button",
+      "func_door",
+      "func_door_secret",
+      "func_door_rotating",
+      "func_rotating",
+      "func_train",
+      "func_water",
+      "func_conveyor",
+      "func_areaportal",
+      "func_clock",
+      "func_wall",
+      "func_object",
+      "func_timer",
+      "func_explosive",
+      "func_killbox",
+      "trigger_always",
+      "trigger_once",
+      "trigger_multiple",
+      "trigger_relay",
+      "trigger_push",
+      "trigger_hurt",
+      "trigger_key",
+      "trigger_counter",
+      "trigger_elevator",
+      "trigger_gravity",
+      "trigger_monsterjump",
+      "target_temp_entity",
+      "target_speaker",
+      "target_explosion",
+      "target_changelevel",
+      "target_secret",
+      "target_goal",
+      "target_splash",
+      "target_spawner",
+      "target_blaster",
+      "target_crosslevel_trigger",
+      "target_crosslevel_target",
+      "target_laser",
+      "target_help",
+      "target_actor",
+      "target_lightramp",
+      "target_earthquake",
+      "target_character",
+      "target_string",
+      "worldspawn",
+      "viewthing",
+      "light",
+      "light_mine1",
+      "light_mine2",
+      "info_null",
+      "func_group",
+      "info_notnull",
+      "path_corner",
+      "point_combat",
+      "misc_explobox",
+      "misc_banner",
+      "misc_satellite_dish",
+      "misc_actor",
+      "misc_gib_arm",
+      "misc_gib_leg",
+      "misc_gib_head",
+      "misc_insane",
+      "misc_deadsoldier",
+      "misc_viper",
+      "misc_viper_bomb",
+      "misc_bigviper",
+      "misc_strogg_ship",
+      "misc_teleporter",
+      "misc_teleporter_dest",
+      "misc_blackhole",
+      "misc_eastertank",
+      "misc_easterchick",
+      "misc_easterchick2",
+      "monster_berserk",
+      "monster_gladiator",
+      "monster_gunner",
+      "monster_infantry",
+      "monster_soldier_light",
+      "monster_soldier",
+      "monster_soldier_ss",
+      "monster_tank",
+      "monster_tank_commander",
+      "monster_medic",
+      "monster_flipper",
+      "monster_chick",
+      "monster_parasite",
+      "monster_flyer",
+      "monster_brain",
+      "monster_floater",
+      "monster_hover",
+      "monster_mutant",
+      "monster_supertank",
+      "monster_boss2",
+      "monster_boss3_stand",
+      "monster_jorg",
+      "monster_commander_body",
+      "turret_breach",
+      "turret_base",
+      "turret_driver",
+      "SP_item_health",
+      "SP_item_health_small",
+      "SP_item_health_large",
+      "SP_item_health_mega",
+      "SP_info_player_start",
+      "SP_info_player_deathmatch",
+      "SP_info_player_coop",
+      "SP_info_player_intermission",
+      "SP_func_plat",
+      "SP_func_button",
+      "SP_func_door",
+      "SP_func_door_secret",
+      "SP_func_door_rotating",
+      "SP_func_rotating",
+      "SP_func_train",
+      "SP_func_water",
+      "SP_func_conveyor",
+      "SP_func_areaportal",
+      "SP_func_clock",
+      "SP_func_wall",
+      "SP_func_object",
+      "SP_func_timer",
+      "SP_func_explosive",
+      "SP_func_killbox",
+      "SP_trigger_always",
+      "SP_trigger_once",
+      "SP_trigger_multiple",
+      "SP_trigger_relay",
+      "SP_trigger_push",
+      "SP_trigger_hurt",
+      "SP_trigger_key",
+      "SP_trigger_counter",
+      "SP_trigger_elevator",
+      "SP_trigger_gravity",
+      "SP_trigger_monsterjump",
+      "SP_target_temp_entity",
+      "SP_target_speaker",
+      "SP_target_explosion",
+      "SP_target_changelevel",
+      "SP_target_secret",
+      "SP_target_goal",
+      "SP_target_splash",
+      "SP_target_spawner",
+      "SP_target_blaster",
+      "SP_target_crosslevel_trigger",
+      "SP_target_crosslevel_target",
+      "SP_target_laser",
+      "SP_target_help",
+      "SP_target_actor",
+      "SP_target_lightramp",
+      "SP_target_earthquake",
+      "SP_target_character",
+      "SP_target_string",
+      "SP_worldspawn",
+      "SP_viewthing",
+      "SP_light",
+      "SP_light_mine1",
+      "SP_light_mine2",
+      "SP_info_null",
+      "SP_info_notnull",
+      "SP_path_corner",
+      "SP_point_combat",
+      "SP_misc_explobox",
+      "SP_misc_banner",
+      "SP_misc_satellite_dish",
+      "SP_misc_actor",
+      "SP_misc_gib_arm",
+      "SP_misc_gib_leg",
+      "SP_misc_gib_head",
+      "SP_misc_insane",
+      "SP_misc_deadsoldier",
+      "SP_misc_viper",
+      "SP_misc_viper_bomb",
+      "SP_misc_bigviper",
+      "SP_misc_strogg_ship",
+      "SP_misc_teleporter",
+      "SP_misc_teleporter_dest",
+      "SP_misc_blackhole",
+      "SP_misc_eastertank",
+      "SP_misc_easterchick",
+      "SP_misc_easterchick2",
+      "SP_monster_berserk",
+      "SP_monster_gladiator",
+      "SP_monster_gunner",
+      "SP_monster_infantry",
+      "SP_monster_soldier_light",
+      "SP_monster_soldier",
+      "SP_monster_soldier_ss",
+      "SP_monster_tank",
+      "SP_monster_medic",
+      "SP_monster_flipper",
+      "SP_monster_chick",
+      "SP_monster_parasite",
+      "SP_monster_flyer",
+      "SP_monster_brain",
+      "SP_monster_floater",
+      "SP_monster_hover",
+      "SP_monster_mutant",
+      "SP_monster_supertank",
+      "SP_monster_boss2",
+      "SP_monster_boss3_stand",
+      "SP_monster_jorg",
+      "SP_monster_commander_body",
+      "SP_turret_breach",
+      "SP_turret_base",
+      "SP_turret_driver"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 39,
+    "name": "actor_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 97,
+    "name": "actor_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 119,
+    "name": "actor_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 157,
+    "name": "actor_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 165,
+    "name": "actor_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 173,
+    "name": "actor_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 181,
+    "name": "actor_frames_flipoff",
+    "entries": [
+      "ai_turn"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 200,
+    "name": "actor_frames_taunt",
+    "entries": [
+      "ai_turn"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 309,
+    "name": "actor_frames_death1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 321,
+    "name": "actor_frames_death2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_actor.c",
+    "line": 382,
+    "name": "actor_frames_attack",
+    "entries": [
+      "ai_charge",
+      "actor_fire"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 51,
+    "name": "berserk_frames_stand",
+    "entries": [
+      "ai_stand",
+      "berserk_fidget"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 66,
+    "name": "berserk_frames_stand_fidget",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 103,
+    "name": "berserk_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 150,
+    "name": "berserk_frames_run1",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 182,
+    "name": "berserk_frames_attack_spike",
+    "entries": [
+      "ai_charge",
+      "berserk_swing",
+      "berserk_attack_spike"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 204,
+    "name": "berserk_frames_attack_club",
+    "entries": [
+      "ai_charge",
+      "berserk_swing",
+      "berserk_attack_club"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 228,
+    "name": "berserk_frames_attack_strike",
+    "entries": [
+      "ai_move",
+      "berserk_swing",
+      "berserk_strike"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 280,
+    "name": "berserk_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 290,
+    "name": "berserk_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 347,
+    "name": "berserk_frames_death1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_berserk.c",
+    "line": 367,
+    "name": "berserk_frames_death2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 154,
+    "name": "boss2_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 180,
+    "name": "boss2_frames_fidget",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 215,
+    "name": "boss2_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 241,
+    "name": "boss2_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 266,
+    "name": "boss2_frames_attack_pre_mg",
+    "entries": [
+      "ai_charge",
+      "boss2_attack_mg"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 282,
+    "name": "boss2_frames_attack_mg",
+    "entries": [
+      "ai_charge",
+      "Boss2MachineGun",
+      "boss2_reattack_mg"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 293,
+    "name": "boss2_frames_attack_post_mg",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 302,
+    "name": "boss2_frames_attack_rocket",
+    "entries": [
+      "ai_charge",
+      "ai_move",
+      "Boss2Rocket"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 328,
+    "name": "boss2_frames_pain_heavy",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 351,
+    "name": "boss2_frames_pain_light",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss2.c",
+    "line": 360,
+    "name": "boss2_frames_death",
+    "entries": [
+      "ai_move",
+      "BossExplode"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 83,
+    "name": "jorg_frames_stand",
+    "entries": [
+      "ai_stand",
+      "jorg_idle",
+      "jorg_step_left",
+      "jorg_step_right"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 166,
+    "name": "jorg_frames_run",
+    "entries": [
+      "ai_run",
+      "jorg_step_left",
+      "jorg_step_right"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 189,
+    "name": "jorg_frames_start_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 199,
+    "name": "jorg_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 218,
+    "name": "jorg_frames_end_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 242,
+    "name": "jorg_frames_pain3",
+    "entries": [
+      "ai_move",
+      "jorg_step_left",
+      "jorg_step_right"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 272,
+    "name": "jorg_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 280,
+    "name": "jorg_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 288,
+    "name": "jorg_frames_death1",
+    "entries": [
+      "ai_move",
+      "MakronToss",
+      "BossExplode"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 343,
+    "name": "jorg_frames_attack2",
+    "entries": [
+      "ai_charge",
+      "jorgBFG",
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 361,
+    "name": "jorg_frames_start_attack1",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 374,
+    "name": "jorg_frames_attack1",
+    "entries": [
+      "ai_charge",
+      "jorg_firebullet"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss31.c",
+    "line": 385,
+    "name": "jorg_frames_end_attack1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 73,
+    "name": "makron_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 143,
+    "name": "makron_frames_run",
+    "entries": [
+      "ai_run",
+      "makron_step_left",
+      "makron_step_right"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 189,
+    "name": "makron_frames_walk",
+    "entries": [
+      "ai_walk",
+      "makron_step_left",
+      "makron_step_right"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 217,
+    "name": "makron_frames_pain6",
+    "entries": [
+      "ai_move",
+      "makron_popup",
+      "makron_taunt"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 249,
+    "name": "makron_frames_pain5",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 258,
+    "name": "makron_frames_pain4",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 267,
+    "name": "makron_frames_death2",
+    "entries": [
+      "ai_move",
+      "makron_step_left",
+      "makron_step_right",
+      "makron_hit",
+      "makron_brainsplorch"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 367,
+    "name": "makron_frames_death3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 392,
+    "name": "makron_frames_sight",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 429,
+    "name": "makron_frames_attack3",
+    "entries": [
+      "ai_charge",
+      "makronBFG",
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 442,
+    "name": "makron_frames_attack4",
+    "entries": [
+      "ai_charge",
+      "ai_move",
+      "MakronHyperblaster"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_boss32.c",
+    "line": 473,
+    "name": "makron_frames_attack5",
+    "entries": [
+      "ai_charge",
+      "makron_prerailgun",
+      "MakronSaveloc",
+      "ai_move",
+      "MakronRailgun"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 67,
+    "name": "brain_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 114,
+    "name": "brain_frames_idle",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 161,
+    "name": "brain_frames_walk1",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 244,
+    "name": "brain_frames_defense",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 258,
+    "name": "brain_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 269,
+    "name": "brain_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 282,
+    "name": "brain_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 339,
+    "name": "brain_frames_duck",
+    "entries": [
+      "ai_move",
+      "brain_duck_down",
+      "brain_duck_hold",
+      "brain_duck_up"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 365,
+    "name": "brain_frames_death2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 375,
+    "name": "brain_frames_death1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 431,
+    "name": "brain_frames_attack1",
+    "entries": [
+      "ai_charge",
+      "brain_swing_right",
+      "brain_hit_right",
+      "brain_swing_left",
+      "brain_hit_left"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 481,
+    "name": "brain_frames_attack2",
+    "entries": [
+      "ai_charge",
+      "brain_chest_open",
+      "brain_tentacle_attack",
+      "brain_chest_closed"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_brain.c",
+    "line": 516,
+    "name": "brain_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 64,
+    "name": "chick_frames_fidget",
+    "entries": [
+      "ai_stand",
+      "ChickMoan"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 107,
+    "name": "chick_frames_stand",
+    "entries": [
+      "ai_stand",
+      "chick_fidget"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 148,
+    "name": "chick_frames_start_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 163,
+    "name": "chick_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 180,
+    "name": "chick_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 220,
+    "name": "chick_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 230,
+    "name": "chick_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 240,
+    "name": "chick_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 307,
+    "name": "chick_frames_death2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 335,
+    "name": "chick_frames_death1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 418,
+    "name": "chick_frames_duck",
+    "entries": [
+      "ai_move",
+      "chick_duck_down",
+      "chick_duck_hold",
+      "chick_duck_up"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 480,
+    "name": "chick_frames_start_attack1",
+    "entries": [
+      "ai_charge",
+      "Chick_PreAttack1",
+      "chick_attack1"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 499,
+    "name": "chick_frames_attack1",
+    "entries": [
+      "ai_charge",
+      "ChickRocket",
+      "ChickReload",
+      "chick_rerocket"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 519,
+    "name": "chick_frames_end_attack1",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 549,
+    "name": "chick_frames_slash",
+    "entries": [
+      "ai_charge",
+      "ChickSlash",
+      "chick_reslash"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 563,
+    "name": "chick_frames_end_slash",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_chick.c",
+    "line": 598,
+    "name": "chick_frames_start_slash",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "muzzle-flashes",
+    "file": "Quake-2-master/game/m_flash.c",
+    "line": 27,
+    "name": "monster_flash_offset",
+    "entries": [],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flipper.c",
+    "line": 44,
+    "name": "flipper_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flipper.c",
+    "line": 58,
+    "name": "flipper_frames_run",
+    "entries": [
+      "ai_run",
+      "FLIPPER_RUN_SPEED"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flipper.c",
+    "line": 94,
+    "name": "flipper_frames_run_start",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flipper.c",
+    "line": 111,
+    "name": "flipper_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flipper.c",
+    "line": 145,
+    "name": "flipper_frames_start_run",
+    "entries": [
+      "ai_run",
+      "flipper_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flipper.c",
+    "line": 160,
+    "name": "flipper_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flipper.c",
+    "line": 170,
+    "name": "flipper_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flipper.c",
+    "line": 193,
+    "name": "flipper_frames_attack",
+    "entries": [
+      "ai_charge",
+      "flipper_preattack",
+      "flipper_bite"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flipper.c",
+    "line": 261,
+    "name": "flipper_frames_death",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 83,
+    "name": "floater_frames_stand1",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 140,
+    "name": "floater_frames_stand2",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 205,
+    "name": "floater_frames_activate",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 240,
+    "name": "floater_frames_attack1",
+    "entries": [
+      "ai_charge",
+      "floater_fire_blaster"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 259,
+    "name": "floater_frames_attack2",
+    "entries": [
+      "ai_charge",
+      "floater_wham"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 289,
+    "name": "floater_frames_attack3",
+    "entries": [
+      "ai_charge",
+      "floater_zap"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 328,
+    "name": "floater_frames_death",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 346,
+    "name": "floater_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 358,
+    "name": "floater_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 371,
+    "name": "floater_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 388,
+    "name": "floater_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_float.c",
+    "line": 445,
+    "name": "floater_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 68,
+    "name": "flyer_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 119,
+    "name": "flyer_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 169,
+    "name": "flyer_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 237,
+    "name": "flyer_frames_start",
+    "entries": [
+      "ai_move",
+      "flyer_nextmove"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 248,
+    "name": "flyer_frames_stop",
+    "entries": [
+      "ai_move",
+      "flyer_nextmove"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 271,
+    "name": "flyer_frames_rollright",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 285,
+    "name": "flyer_frames_rollleft",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 299,
+    "name": "flyer_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 308,
+    "name": "flyer_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 317,
+    "name": "flyer_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 331,
+    "name": "flyer_frames_defense",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 342,
+    "name": "flyer_frames_bankright",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 354,
+    "name": "flyer_frames_bankleft",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 400,
+    "name": "flyer_frames_attack2",
+    "entries": [
+      "ai_charge",
+      "flyer_fireleft",
+      "flyer_fireright"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 441,
+    "name": "flyer_frames_start_melee",
+    "entries": [
+      "ai_charge",
+      "flyer_pop_blades"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 452,
+    "name": "flyer_frames_end_melee",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_flyer.c",
+    "line": 461,
+    "name": "flyer_frames_loop_melee",
+    "entries": [
+      "ai_charge",
+      "flyer_slash_left",
+      "flyer_slash_right"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gladiator.c",
+    "line": 64,
+    "name": "gladiator_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gladiator.c",
+    "line": 82,
+    "name": "gladiator_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gladiator.c",
+    "line": 109,
+    "name": "gladiator_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gladiator.c",
+    "line": 140,
+    "name": "gladiator_frames_attack_melee",
+    "entries": [
+      "ai_charge",
+      "gladiator_cleaver_swing",
+      "GaldiatorMelee"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gladiator.c",
+    "line": 184,
+    "name": "gladiator_frames_attack_gun",
+    "entries": [
+      "ai_charge",
+      "GladiatorGun"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gladiator.c",
+    "line": 217,
+    "name": "gladiator_frames_pain",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gladiator.c",
+    "line": 228,
+    "name": "gladiator_frames_pain_air",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gladiator.c",
+    "line": 281,
+    "name": "gladiator_frames_death",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 66,
+    "name": "gunner_frames_fidget",
+    "entries": [
+      "ai_stand",
+      "gunner_idlesound"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 132,
+    "name": "gunner_frames_stand",
+    "entries": [
+      "ai_stand",
+      "gunner_fidget"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 175,
+    "name": "gunner_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 198,
+    "name": "gunner_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 220,
+    "name": "gunner_frames_runandshoot",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 237,
+    "name": "gunner_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 247,
+    "name": "gunner_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 260,
+    "name": "gunner_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 319,
+    "name": "gunner_frames_death",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 396,
+    "name": "gunner_frames_duck",
+    "entries": [
+      "ai_move",
+      "gunner_duck_down",
+      "gunner_duck_hold",
+      "gunner_duck_up"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 474,
+    "name": "gunner_frames_attack_chain",
+    "entries": [
+      "ai_charge",
+      "gunner_opengun"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 496,
+    "name": "gunner_frames_fire_chain",
+    "entries": [
+      "ai_charge",
+      "GunnerFire"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 509,
+    "name": "gunner_frames_endfire_chain",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_gunner.c",
+    "line": 521,
+    "name": "gunner_frames_attack_grenade",
+    "entries": [
+      "ai_charge",
+      "GunnerGrenade"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 65,
+    "name": "hover_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 100,
+    "name": "hover_frames_stop1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 114,
+    "name": "hover_frames_stop2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 127,
+    "name": "hover_frames_takeoff",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 162,
+    "name": "hover_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 176,
+    "name": "hover_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 193,
+    "name": "hover_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 226,
+    "name": "hover_frames_land",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 232,
+    "name": "hover_frames_forward",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 272,
+    "name": "hover_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 312,
+    "name": "hover_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 352,
+    "name": "hover_frames_death1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 368,
+    "name": "hover_frames_backward",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 397,
+    "name": "hover_frames_start_attack",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 405,
+    "name": "hover_frames_attack1",
+    "entries": [
+      "ai_charge",
+      "hover_fire_blaster",
+      "hover_reattack"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_hover.c",
+    "line": 414,
+    "name": "hover_frames_end_attack",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 48,
+    "name": "infantry_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 81,
+    "name": "infantry_frames_fidget",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 141,
+    "name": "infantry_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 163,
+    "name": "infantry_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 185,
+    "name": "infantry_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 200,
+    "name": "infantry_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 315,
+    "name": "infantry_frames_death1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 341,
+    "name": "infantry_frames_death2",
+    "entries": [
+      "ai_move",
+      "InfantryMachineGun"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 371,
+    "name": "infantry_frames_death3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 456,
+    "name": "infantry_frames_duck",
+    "entries": [
+      "ai_move",
+      "infantry_duck_down",
+      "infantry_duck_hold",
+      "infantry_duck_up"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 497,
+    "name": "infantry_frames_attack1",
+    "entries": [
+      "ai_charge",
+      "infantry_cock_gun",
+      "infantry_fire"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_infantry.c",
+    "line": 532,
+    "name": "infantry_frames_attack2",
+    "entries": [
+      "ai_charge",
+      "infantry_swing",
+      "infantry_smack"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 68,
+    "name": "insane_frames_stand_normal",
+    "entries": [
+      "ai_stand",
+      "insane_checkdown"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 79,
+    "name": "insane_frames_stand_insane",
+    "entries": [
+      "ai_stand",
+      "insane_shake",
+      "insane_checkdown"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 114,
+    "name": "insane_frames_uptodown",
+    "entries": [
+      "ai_move",
+      "insane_moan",
+      "insane_fist"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 163,
+    "name": "insane_frames_downtoup",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 187,
+    "name": "insane_frames_jumpdown",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 198,
+    "name": "insane_frames_down",
+    "entries": [
+      "ai_move",
+      "insane_fist",
+      "insane_moan",
+      "insane_scream",
+      "insane_checkup"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 264,
+    "name": "insane_frames_walk_normal",
+    "entries": [
+      "ai_walk",
+      "insane_scream"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 283,
+    "name": "insane_frames_walk_insane",
+    "entries": [
+      "ai_walk",
+      "insane_scream"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 315,
+    "name": "insane_frames_stand_pain",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 331,
+    "name": "insane_frames_stand_death",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 353,
+    "name": "insane_frames_crawl",
+    "entries": [
+      "ai_walk",
+      "insane_scream"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 368,
+    "name": "insane_frames_crawl_pain",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 382,
+    "name": "insane_frames_crawl_death",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 394,
+    "name": "insane_frames_cross",
+    "entries": [
+      "ai_move",
+      "insane_moan"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_insane.c",
+    "line": 414,
+    "name": "insane_frames_struggle_cross",
+    "entries": [
+      "ai_move",
+      "insane_scream"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 122,
+    "name": "medic_frames_stand",
+    "entries": [
+      "ai_stand",
+      "medic_idle"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 224,
+    "name": "medic_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 247,
+    "name": "medic_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 284,
+    "name": "medic_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 297,
+    "name": "medic_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 378,
+    "name": "medic_frames_death",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 473,
+    "name": "medic_frames_duck",
+    "entries": [
+      "ai_move",
+      "medic_duck_down",
+      "medic_duck_hold",
+      "medic_duck_up"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 505,
+    "name": "medic_frames_attackHyperBlaster",
+    "entries": [
+      "ai_charge",
+      "medic_fire_blaster"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 535,
+    "name": "medic_frames_attackBlaster",
+    "entries": [
+      "ai_charge",
+      "medic_fire_blaster",
+      "medic_continue"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_medic.c",
+    "line": 662,
+    "name": "medic_frames_attackCable",
+    "entries": [
+      "ai_move",
+      "ai_charge",
+      "medic_hook_launch",
+      "medic_cable_attack",
+      "medic_hook_retract"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 82,
+    "name": "mutant_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 159,
+    "name": "mutant_frames_idle",
+    "entries": [
+      "ai_stand",
+      "mutant_idle_loop"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 190,
+    "name": "mutant_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 212,
+    "name": "mutant_frames_start_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 231,
+    "name": "mutant_frames_run",
+    "entries": [
+      "ai_run",
+      "mutant_step"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 286,
+    "name": "mutant_frames_attack",
+    "entries": [
+      "ai_charge",
+      "mutant_hit_left",
+      "mutant_hit_right",
+      "mutant_check_refire"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 376,
+    "name": "mutant_frames_jump",
+    "entries": [
+      "ai_charge",
+      "mutant_jump_takeoff",
+      "mutant_check_landing"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 459,
+    "name": "mutant_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 469,
+    "name": "mutant_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 480,
+    "name": "mutant_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 545,
+    "name": "mutant_frames_death1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_mutant.c",
+    "line": 559,
+    "name": "mutant_frames_death2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 86,
+    "name": "parasite_frames_start_fidget",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 95,
+    "name": "parasite_frames_fidget",
+    "entries": [
+      "ai_stand",
+      "parasite_scratch"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 106,
+    "name": "parasite_frames_end_fidget",
+    "entries": [
+      "ai_stand",
+      "parasite_scratch"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 143,
+    "name": "parasite_frames_stand",
+    "entries": [
+      "ai_stand",
+      "parasite_tap"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 171,
+    "name": "parasite_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 183,
+    "name": "parasite_frames_start_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 190,
+    "name": "parasite_frames_stop_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 218,
+    "name": "parasite_frames_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 230,
+    "name": "parasite_frames_start_walk",
+    "entries": [
+      "ai_walk",
+      "parasite_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 237,
+    "name": "parasite_frames_stop_walk",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 259,
+    "name": "parasite_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 366,
+    "name": "parasite_frames_drain",
+    "entries": [
+      "ai_charge",
+      "parasite_launch",
+      "parasite_drain_attack",
+      "parasite_reel_in"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 390,
+    "name": "parasite_frames_break",
+    "entries": [
+      "ai_charge"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_parasite.c",
+    "line": 459,
+    "name": "parasite_frames_death",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 63,
+    "name": "soldier_frames_stand1",
+    "entries": [
+      "ai_stand",
+      "soldier_idle"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 100,
+    "name": "soldier_frames_stand3",
+    "entries": [
+      "ai_stand",
+      "soldier_cock"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 230,
+    "name": "soldier_frames_walk1",
+    "entries": [
+      "ai_walk",
+      "soldier_walk1_random"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 268,
+    "name": "soldier_frames_walk2",
+    "entries": [
+      "ai_walk"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 298,
+    "name": "soldier_frames_start_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 305,
+    "name": "soldier_frames_run",
+    "entries": [
+      "ai_run"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 341,
+    "name": "soldier_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 351,
+    "name": "soldier_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 363,
+    "name": "soldier_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 386,
+    "name": "soldier_frames_pain4",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "muzzle-flashes",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 458,
+    "name": "blaster_flash",
+    "entries": [
+      "MZ2_SOLDIER_BLASTER_1",
+      "MZ2_SOLDIER_BLASTER_2",
+      "MZ2_SOLDIER_BLASTER_3",
+      "MZ2_SOLDIER_BLASTER_4",
+      "MZ2_SOLDIER_BLASTER_5",
+      "MZ2_SOLDIER_BLASTER_6",
+      "MZ2_SOLDIER_BLASTER_7",
+      "MZ2_SOLDIER_BLASTER_8",
+      "int",
+      "shotgun_flash",
+      "MZ2_SOLDIER_SHOTGUN_1",
+      "MZ2_SOLDIER_SHOTGUN_2",
+      "MZ2_SOLDIER_SHOTGUN_3",
+      "MZ2_SOLDIER_SHOTGUN_4",
+      "MZ2_SOLDIER_SHOTGUN_5",
+      "MZ2_SOLDIER_SHOTGUN_6",
+      "MZ2_SOLDIER_SHOTGUN_7",
+      "MZ2_SOLDIER_SHOTGUN_8",
+      "machinegun_flash",
+      "MZ2_SOLDIER_MACHINEGUN_1",
+      "MZ2_SOLDIER_MACHINEGUN_2",
+      "MZ2_SOLDIER_MACHINEGUN_3",
+      "MZ2_SOLDIER_MACHINEGUN_4",
+      "MZ2_SOLDIER_MACHINEGUN_5",
+      "MZ2_SOLDIER_MACHINEGUN_6",
+      "MZ2_SOLDIER_MACHINEGUN_7",
+      "MZ2_SOLDIER_MACHINEGUN_8",
+      "void",
+      "soldier_fire",
+      "edict_t",
+      "self",
+      "flash_number",
+      "vec3_t",
+      "start",
+      "forward",
+      "right",
+      "up",
+      "aim",
+      "dir",
+      "end",
+      "float",
+      "r",
+      "u",
+      "flash_index",
+      "if",
+      "s",
+      "skinnum",
+      "blaster_flash",
+      "else",
+      "AngleVectors",
+      "angles",
+      "G_ProjectSource",
+      "origin",
+      "monster_flash_offset",
+      "VectorCopy",
+      "enemy",
+      "viewheight",
+      "VectorSubtract",
+      "vectoangles",
+      "crandom",
+      "VectorMA",
+      "VectorNormalize",
+      "monster_fire_blaster",
+      "EF_BLASTER",
+      "monster_fire_shotgun",
+      "DEFAULT_SHOTGUN_HSPREAD",
+      "DEFAULT_SHOTGUN_VSPREAD",
+      "DEFAULT_SHOTGUN_COUNT",
+      "monsterinfo",
+      "aiflags",
+      "AI_HOLD_FRAME",
+      "pausetime",
+      "level",
+      "time",
+      "rand",
+      "FRAMETIME",
+      "monster_fire_bullet",
+      "DEFAULT_BULLET_HSPREAD",
+      "DEFAULT_BULLET_VSPREAD",
+      "soldier_fire1",
+      "soldier_attack1_refire1",
+      "return",
+      "health",
+      "skill",
+      "value",
+      "random",
+      "range",
+      "RANGE_MELEE",
+      "nextframe",
+      "FRAME_attak102",
+      "FRAME_attak110",
+      "soldier_attack1_refire2",
+      "mframe_t",
+      "soldier_frames_attack1",
+      "ai_charge",
+      "soldier_cock"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 609,
+    "name": "soldier_frames_attack2",
+    "entries": [
+      "ai_charge",
+      "soldier_fire2",
+      "soldier_attack2_refire1",
+      "soldier_cock",
+      "soldier_attack2_refire2"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 665,
+    "name": "soldier_frames_attack3",
+    "entries": [
+      "ai_charge",
+      "soldier_fire3",
+      "soldier_attack3_refire",
+      "soldier_duck_up"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 692,
+    "name": "soldier_frames_attack4",
+    "entries": [
+      "ai_charge",
+      "soldier_fire4"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 753,
+    "name": "soldier_frames_attack6",
+    "entries": [
+      "ai_charge",
+      "soldier_fire8",
+      "soldier_attack6_refire"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 818,
+    "name": "soldier_frames_duck",
+    "entries": [
+      "ai_move",
+      "soldier_duck_down",
+      "soldier_duck_hold",
+      "soldier_duck_up"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 894,
+    "name": "soldier_frames_death1",
+    "entries": [
+      "ai_move",
+      "soldier_fire6",
+      "soldier_fire7"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 938,
+    "name": "soldier_frames_death2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 981,
+    "name": "soldier_frames_death3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 1035,
+    "name": "soldier_frames_death4",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 1098,
+    "name": "soldier_frames_death5",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_soldier.c",
+    "line": 1129,
+    "name": "soldier_frames_death6",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 68,
+    "name": "supertank_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 139,
+    "name": "supertank_frames_run",
+    "entries": [
+      "ai_run",
+      "TreadSound"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 167,
+    "name": "supertank_frames_forward",
+    "entries": [
+      "ai_walk",
+      "TreadSound"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 208,
+    "name": "supertank_frames_turn_right",
+    "entries": [
+      "ai_move",
+      "TreadSound"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 231,
+    "name": "supertank_frames_turn_left",
+    "entries": [
+      "ai_move",
+      "TreadSound"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 255,
+    "name": "supertank_frames_pain3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 264,
+    "name": "supertank_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 273,
+    "name": "supertank_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 282,
+    "name": "supertank_frames_death1",
+    "entries": [
+      "ai_move",
+      "BossExplode"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 311,
+    "name": "supertank_frames_backward",
+    "entries": [
+      "ai_walk",
+      "TreadSound"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 334,
+    "name": "supertank_frames_attack4",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 345,
+    "name": "supertank_frames_attack3",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 377,
+    "name": "supertank_frames_attack2",
+    "entries": [
+      "ai_charge",
+      "supertankRocket",
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 409,
+    "name": "supertank_frames_attack1",
+    "entries": [
+      "ai_charge",
+      "supertankMachineGun"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_supertank.c",
+    "line": 421,
+    "name": "supertank_frames_end_attack1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 80,
+    "name": "tank_frames_stand",
+    "entries": [
+      "ai_stand"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 127,
+    "name": "tank_frames_start_walk",
+    "entries": [
+      "ai_walk",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 136,
+    "name": "tank_frames_walk",
+    "entries": [
+      "ai_walk",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 157,
+    "name": "tank_frames_stop_walk",
+    "entries": [
+      "ai_walk",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 179,
+    "name": "tank_frames_start_run",
+    "entries": [
+      "ai_run",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 188,
+    "name": "tank_frames_run",
+    "entries": [
+      "ai_run",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 209,
+    "name": "tank_frames_stop_run",
+    "entries": [
+      "ai_run",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 247,
+    "name": "tank_frames_pain1",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 256,
+    "name": "tank_frames_pain2",
+    "entries": [
+      "ai_move"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 266,
+    "name": "tank_frames_pain3",
+    "entries": [
+      "ai_move",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 424,
+    "name": "tank_frames_attack_blast",
+    "entries": [
+      "ai_charge",
+      "TankBlaster"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 445,
+    "name": "tank_frames_reattack_blast",
+    "entries": [
+      "ai_charge",
+      "TankBlaster"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 456,
+    "name": "tank_frames_attack_post_blast",
+    "entries": [
+      "ai_move",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 487,
+    "name": "tank_frames_attack_strike",
+    "entries": [
+      "ai_move",
+      "tank_footstep",
+      "tank_windup",
+      "TankStrike"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 530,
+    "name": "tank_frames_attack_pre_rocket",
+    "entries": [
+      "ai_charge",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 558,
+    "name": "tank_frames_attack_fire_rocket",
+    "entries": [
+      "ai_charge",
+      "TankRocket"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 572,
+    "name": "tank_frames_attack_post_rocket",
+    "entries": [
+      "ai_charge",
+      "tank_footstep"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 602,
+    "name": "tank_frames_attack_chain",
+    "entries": [
+      "ai_charge",
+      "TankMachineGun"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "monster-tables",
+    "file": "Quake-2-master/game/m_tank.c",
+    "line": 716,
+    "name": "tank_frames_death1",
+    "entries": [
+      "ai_move",
+      "tank_thud"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  },
+  {
+    "category": "commands",
+    "file": "Quake-2-master/server/sv_user.c",
+    "line": 451,
+    "name": "ucmds",
+    "entries": [
+      "new",
+      "configstrings",
+      "baselines",
+      "begin",
+      "nextserver",
+      "disconnect",
+      "info",
+      "download",
+      "nextdl",
+      "SV_New_f",
+      "SV_Configstrings_f",
+      "SV_Baselines_f",
+      "SV_Begin_f",
+      "SV_Nextserver_f",
+      "SV_Disconnect_f",
+      "SV_ShowServerinfo_f",
+      "SV_BeginDownload_f",
+      "SV_NextDownload_f"
+    ],
+    "confidence": "medium",
+    "notes": [
+      "array-table-heuristic"
+    ]
+  }
+]

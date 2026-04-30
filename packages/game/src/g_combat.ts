@@ -285,27 +285,27 @@ export function CanDamage(targ: GameEntity, inflictor: GameEntity, runtime: Game
     return false;
   }
 
-  if (traceCanDamage(inflictor.s.origin, targ.s.origin, targ, inflictor, runtime)) {
+  if (traceCanDamage(inflictor.s.origin, targ.s.origin, inflictor, runtime)) {
     return true;
   }
 
   const dest1: vec3_t = [targ.s.origin[0] + 15.0, targ.s.origin[1] + 15.0, targ.s.origin[2]];
-  if (traceCanDamage(inflictor.s.origin, dest1, targ, inflictor, runtime)) {
+  if (traceCanDamage(inflictor.s.origin, dest1, inflictor, runtime)) {
     return true;
   }
 
   const dest2: vec3_t = [targ.s.origin[0] + 15.0, targ.s.origin[1] - 15.0, targ.s.origin[2]];
-  if (traceCanDamage(inflictor.s.origin, dest2, targ, inflictor, runtime)) {
+  if (traceCanDamage(inflictor.s.origin, dest2, inflictor, runtime)) {
     return true;
   }
 
   const dest3: vec3_t = [targ.s.origin[0] - 15.0, targ.s.origin[1] + 15.0, targ.s.origin[2]];
-  if (traceCanDamage(inflictor.s.origin, dest3, targ, inflictor, runtime)) {
+  if (traceCanDamage(inflictor.s.origin, dest3, inflictor, runtime)) {
     return true;
   }
 
   const dest4: vec3_t = [targ.s.origin[0] - 15.0, targ.s.origin[1] - 15.0, targ.s.origin[2]];
-  return traceCanDamage(inflictor.s.origin, dest4, targ, inflictor, runtime);
+  return traceCanDamage(inflictor.s.origin, dest4, inflictor, runtime);
 }
 
 /**
@@ -755,12 +755,11 @@ function OnSameTeam(ent1: GameEntity, ent2: GameEntity, runtime: GameRuntime): b
 function traceCanDamage(
   start: vec3_t,
   end: vec3_t,
-  targ: GameEntity,
   inflictor: GameEntity,
   runtime: GameRuntime
 ): boolean {
   const trace: trace_t = runtime.collision!.trace(start, [0, 0, 0], [0, 0, 0], end, inflictor, MASK_SOLID);
-  return trace.fraction === 1.0 || trace.ent === targ;
+  return trace.fraction === 1.0;
 }
 
 /**

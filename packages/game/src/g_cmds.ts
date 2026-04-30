@@ -120,6 +120,8 @@ export interface GameCommandContext {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Extract the client skin team string, using the model prefix when DF_MODELTEAMS is active and the skin suffix otherwise.
+ * Porting notes: Mirrors the original static-buffer return value as an immutable string and reads dmflags from the explicit runtime.
  */
 export function ClientTeam(ent: GameEntity, runtime: GameRuntime): string {
   if (!ent.client) {
@@ -144,6 +146,8 @@ export function ClientTeam(ent: GameEntity, runtime: GameRuntime): string {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Return true only when teamplay flags are enabled and both players resolve to the same ClientTeam value.
+ * Porting notes: Keeps the original DF_MODELTEAMS precedence through ClientTeam while avoiding C string buffers.
  */
 export function OnSameTeam(ent1: GameEntity, ent2: GameEntity, runtime: GameRuntime): boolean {
   if ((runtime.dmflags & (DF_MODELTEAMS | DF_SKINTEAMS)) === 0) {

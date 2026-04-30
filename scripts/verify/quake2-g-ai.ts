@@ -43,7 +43,7 @@ import {
   RANGE_MELEE,
   RANGE_MID,
   RANGE_NEAR
-} from "../../packages/game/src/g-local.js";
+} from "../../packages/game/src/g_local.js";
 import { attachGameClient, createGameRuntimeFromBspEntities, createRuntimeEntity } from "../../packages/game/src/runtime.js";
 
 const runtime = createGameRuntimeFromBspEntities([]);

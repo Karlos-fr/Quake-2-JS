@@ -1350,20 +1350,20 @@ export function Pmove(context: PmoveContext, options: PmoveOptions = {}): void {
     PM_CheckJump(context);
     PM_Friction(context);
 
-    const angles: vec3_t = [context.pm.viewangles[0], context.pm.viewangles[1], context.pm.viewangles[2]];
-    if (angles[PITCH] > 180) {
-      angles[PITCH] -= 360;
-    }
-    angles[PITCH] /= 3;
-
-    const vectors = AngleVectors(angles);
-    VectorCopy(vectors.forward, context.pml.forward);
-    VectorCopy(vectors.right, context.pml.right);
-    VectorCopy(vectors.up, context.pml.up);
-
     if (context.pm.waterlevel >= 2 && options.allowWaterMove !== false) {
       PM_WaterMove(context);
     } else {
+      const angles: vec3_t = [context.pm.viewangles[0], context.pm.viewangles[1], context.pm.viewangles[2]];
+      if (angles[PITCH] > 180) {
+        angles[PITCH] -= 360;
+      }
+      angles[PITCH] /= 3;
+
+      const vectors = AngleVectors(angles);
+      VectorCopy(vectors.forward, context.pml.forward);
+      VectorCopy(vectors.right, context.pml.right);
+      VectorCopy(vectors.up, context.pml.up);
+
       PM_AirMove(context);
     }
   }

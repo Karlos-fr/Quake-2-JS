@@ -379,6 +379,12 @@ let sound_search = 0;
  * Source: game/m_chick.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Randomly plays one of the two idle voice sounds on the voice channel with idle attenuation.
+ *
+ * Porting notes:
+ * - Uses the runtime sound adapter while preserving the original random split and sound options.
  */
 export function ChickMoan(self: GameEntity, runtime: GameRuntime): void {
   if (Math.random() < 0.5) {
@@ -400,6 +406,19 @@ export const chick_move_fidget: GameMonsterMove = {
   endfunc: chick_stand
 };
 
+/**
+ * Original name: chick_fidget
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Leaves standing-ground monsters unchanged.
+ * - Otherwise starts the fidget move with the original 30 percent chance.
+ *
+ * Porting notes:
+ * - Preserves the direct currentmove assignment used by the original callback.
+ */
 export function chick_fidget(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     return;
@@ -421,6 +440,18 @@ export const chick_move_stand: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: chick_stand
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the Chick standing move table.
+ *
+ * Porting notes:
+ * - Preserve the direct currentmove assignment used by the original callback.
+ */
 export function chick_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = chick_move_stand;
 }
@@ -449,10 +480,34 @@ export const chick_move_walk: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: chick_walk
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the Chick walking move table.
+ *
+ * Porting notes:
+ * - Preserve the direct currentmove assignment used by the original callback.
+ */
 export function chick_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = chick_move_walk;
 }
 
+/**
+ * Original name: chick_run
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects standing, running, or run-start move tables from the current AI state.
+ *
+ * Porting notes:
+ * - Preserve the original branch order and currentmove transitions.
+ */
 export function chick_run(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     self.monsterinfo.currentmove = chick_move_stand;
@@ -706,6 +761,20 @@ export const chick_move_end_attack1: GameMonsterMove = {
   endfunc: chick_run
 };
 
+/**
+ * Original name: chick_rerocket
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Repeats the rocket attack when the enemy is alive, visible, outside melee range, and the random check passes.
+ * - Otherwise selects the rocket attack ending move table.
+ *
+ * Porting notes:
+ * - Preserve the original branch conditions and 0.6 random threshold.
+ * - The TypeScript port guards nullable enemy references before applying the original enemy checks.
+ */
 export function chick_rerocket(self: GameEntity, runtime: GameRuntime): void {
   if (
     self.enemy &&
@@ -721,6 +790,18 @@ export function chick_rerocket(self: GameEntity, runtime: GameRuntime): void {
   self.monsterinfo.currentmove = chick_move_end_attack1;
 }
 
+/**
+ * Original name: chick_attack1
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the Chick rocket attack loop move table.
+ *
+ * Porting notes:
+ * - Preserve the direct currentmove assignment used by the original callback.
+ */
 export function chick_attack1(self: GameEntity): void {
   self.monsterinfo.currentmove = chick_move_attack1;
 }
@@ -745,6 +826,20 @@ export const chick_move_end_slash: GameMonsterMove = {
   endfunc: chick_run
 };
 
+/**
+ * Original name: chick_reslash
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Repeats the slash attack when the enemy is alive, in melee range, and the random check passes.
+ * - Otherwise selects the slash ending move table.
+ *
+ * Porting notes:
+ * - Preserve the original branch conditions and 0.9 random threshold.
+ * - The TypeScript port guards nullable enemy references before applying the original enemy checks.
+ */
 export function chick_reslash(self: GameEntity): void {
   if (self.enemy && self.enemy.health > 0 && range(self, self.enemy) === RANGE_MELEE) {
     if (Math.random() <= 0.9) {
@@ -759,6 +854,18 @@ export function chick_reslash(self: GameEntity): void {
   self.monsterinfo.currentmove = chick_move_end_slash;
 }
 
+/**
+ * Original name: chick_slash
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the Chick melee slash move table.
+ *
+ * Porting notes:
+ * - Preserve the direct currentmove assignment used by the original callback.
+ */
 export function chick_slash(self: GameEntity): void {
   self.monsterinfo.currentmove = chick_move_slash;
 }
@@ -771,14 +878,50 @@ export const chick_move_start_slash: GameMonsterMove = {
   endfunc: chick_slash
 };
 
+/**
+ * Original name: chick_melee
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the Chick melee startup move table.
+ *
+ * Porting notes:
+ * - Preserve the direct currentmove assignment used by the original callback.
+ */
 export function chick_melee(self: GameEntity): void {
   self.monsterinfo.currentmove = chick_move_start_slash;
 }
 
+/**
+ * Original name: chick_attack
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the Chick rocket attack startup move table.
+ *
+ * Porting notes:
+ * - Preserve the direct currentmove assignment used by the original callback.
+ */
 export function chick_attack(self: GameEntity): void {
   self.monsterinfo.currentmove = chick_move_start_attack1;
 }
 
+/**
+ * Original name: chick_sight
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the Chick sight voice sound at normal attenuation.
+ *
+ * Porting notes:
+ * - Keeps the unused `other` parameter for callback parity with the original monsterinfo.sight signature.
+ */
 export function chick_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, soundOptions(CHAN_VOICE));
 }

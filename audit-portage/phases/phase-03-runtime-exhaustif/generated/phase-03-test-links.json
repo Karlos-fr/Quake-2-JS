@@ -1,0 +1,1502 @@
+[
+  {
+    "file": "Quake-2-master/client/anorms.h",
+    "tests": [
+      "scripts/verify/quake2-anorms.ts"
+    ],
+    "npmScripts": [
+      "verify:anorms"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cdaudio.h",
+    "tests": [
+      "scripts/verify/quake2-cdaudio.ts"
+    ],
+    "npmScripts": []
+  },
+  {
+    "file": "Quake-2-master/client/cl_cin.c",
+    "tests": [
+      "scripts/verify/quake2-client-header.ts",
+      "scripts/verify/quake2-client-pmove-viewheight.ts"
+    ],
+    "npmScripts": [
+      "verify:client:header",
+      "verify:client:pmove:viewheight"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_ents.c",
+    "tests": [
+      "scripts/verify/quake2-refresh-entity-alias-flags.ts",
+      "scripts/verify/quake2-refresh-entity-sprite.ts",
+      "scripts/verify/quake2-web-view-weapon.ts"
+    ],
+    "npmScripts": [
+      "verify:refresh-entity:alias-flags",
+      "verify:refresh-entity:sprite",
+      "verify:refresh-entity:weapon"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_fx.c",
+    "tests": [
+      "scripts/verify/quake2-client-header.ts",
+      "scripts/verify/quake2-client-pmove-viewheight.ts",
+      "scripts/verify/quake2-refresh-entity-alias-flags.ts",
+      "scripts/verify/quake2-refresh-entity-sprite.ts"
+    ],
+    "npmScripts": [
+      "verify:client:header",
+      "verify:client:pmove:viewheight",
+      "verify:refresh-entity:alias-flags",
+      "verify:refresh-entity:sprite"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_input.c",
+    "tests": [
+      "scripts/verify/quake2-cl-input.ts",
+      "scripts/verify/quake2-client-header.ts",
+      "scripts/verify/quake2-client-pmove-viewheight.ts",
+      "scripts/verify/quake2-full-game-input-bindings.ts",
+      "scripts/verify/quake2-input-header.ts"
+    ],
+    "npmScripts": [
+      "verify:cl-input",
+      "verify:client:header",
+      "verify:client:pmove:viewheight",
+      "verify:full-game:input-bindings",
+      "verify:input:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_inv.c",
+    "tests": [],
+    "npmScripts": []
+  },
+  {
+    "file": "Quake-2-master/client/cl_main.c",
+    "tests": [
+      "scripts/verify/quake2-cl-main.ts",
+      "scripts/verify/quake2-client-header.ts",
+      "scripts/verify/quake2-client-pmove-viewheight.ts",
+      "scripts/verify/quake2-sky-phase1.ts",
+      "scripts/verify/quake2-sky-phase2.ts",
+      "scripts/verify/quake2-sky-phase3.ts",
+      "scripts/verify/quake2-sky-phase4.ts",
+      "scripts/verify/quake2-sky-phase5.ts",
+      "scripts/verify/quake2-sound-header.ts"
+    ],
+    "npmScripts": [
+      "verify:cl-main",
+      "verify:client:header",
+      "verify:client:pmove:viewheight",
+      "verify:sky:phase1",
+      "verify:sky:phase2",
+      "verify:sky:phase3",
+      "verify:sky:phase4",
+      "verify:sky:phase5",
+      "verify:sound:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_newfx.c",
+    "tests": [
+      "scripts/verify/quake2-refresh-entity-alias-flags.ts",
+      "scripts/verify/quake2-refresh-entity-sprite.ts"
+    ],
+    "npmScripts": [
+      "verify:refresh-entity:alias-flags",
+      "verify:refresh-entity:sprite"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_parse.c",
+    "tests": [
+      "scripts/verify/quake2-cl-parse.ts",
+      "scripts/verify/quake2-sky-phase1.ts",
+      "scripts/verify/quake2-sky-phase2.ts",
+      "scripts/verify/quake2-sky-phase3.ts",
+      "scripts/verify/quake2-sky-phase4.ts",
+      "scripts/verify/quake2-sky-phase5.ts",
+      "scripts/verify/quake2-sound-header.ts"
+    ],
+    "npmScripts": [
+      "verify:cl-parse",
+      "verify:sky:phase1",
+      "verify:sky:phase2",
+      "verify:sky:phase3",
+      "verify:sky:phase4",
+      "verify:sky:phase5",
+      "verify:sound:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_pred.c",
+    "tests": [
+      "scripts/verify/quake2-cl-pred.ts",
+      "scripts/verify/quake2-web-view-weapon.ts"
+    ],
+    "npmScripts": [
+      "verify:cl-pred",
+      "verify:refresh-entity:weapon"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_scrn.c",
+    "tests": [
+      "scripts/verify/quake2-cl-scrn.ts",
+      "scripts/verify/quake2-client-header.ts",
+      "scripts/verify/quake2-client-pmove-viewheight.ts",
+      "scripts/verify/quake2-three-gl-draw-adapter.ts"
+    ],
+    "npmScripts": [
+      "verify:cl-scrn",
+      "verify:client:header",
+      "verify:client:pmove:viewheight",
+      "verify:three-gl-draw-adapter"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_tent.c",
+    "tests": [
+      "scripts/verify/quake2-cl-tent.ts",
+      "scripts/verify/quake2-client-header.ts",
+      "scripts/verify/quake2-client-pmove-viewheight.ts",
+      "scripts/verify/quake2-refresh-entity-alias-flags.ts",
+      "scripts/verify/quake2-refresh-entity-sprite.ts",
+      "scripts/verify/quake2-sound-header.ts"
+    ],
+    "npmScripts": [
+      "verify:client:header",
+      "verify:client:pmove:viewheight",
+      "verify:refresh-entity:alias-flags",
+      "verify:refresh-entity:sprite",
+      "verify:sound:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/cl_view.c",
+    "tests": [
+      "scripts/verify/quake2-cl-view.ts",
+      "scripts/verify/quake2-refresh-entity-alias-flags.ts",
+      "scripts/verify/quake2-refresh-entity-sprite.ts",
+      "scripts/verify/quake2-web-view-weapon.ts"
+    ],
+    "npmScripts": [
+      "verify:refresh-entity:alias-flags",
+      "verify:refresh-entity:sprite",
+      "verify:refresh-entity:weapon"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/client.h",
+    "tests": [
+      "scripts/verify/quake2-client-header.ts",
+      "scripts/verify/quake2-client-pmove-viewheight.ts",
+      "scripts/verify/quake2-keys-header.ts",
+      "scripts/verify/quake2-keys.ts"
+    ],
+    "npmScripts": [
+      "verify:client:header",
+      "verify:client:pmove:viewheight",
+      "verify:keys",
+      "verify:keys:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/console.c",
+    "tests": [
+      "scripts/verify/quake2-console-header.ts",
+      "scripts/verify/quake2-console.ts",
+      "scripts/verify/quake2-full-game-console-background.ts",
+      "scripts/verify/quake2-full-game-console-commands.ts"
+    ],
+    "npmScripts": [
+      "verify:console",
+      "verify:console:header",
+      "verify:full-game:commands",
+      "verify:full-game:console-background"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/console.h",
+    "tests": [
+      "scripts/verify/quake2-console-header.ts",
+      "scripts/verify/quake2-console.ts",
+      "scripts/verify/quake2-full-game-console-background.ts",
+      "scripts/verify/quake2-full-game-console-commands.ts"
+    ],
+    "npmScripts": [
+      "verify:console",
+      "verify:console:header",
+      "verify:full-game:commands",
+      "verify:full-game:console-background"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/input.h",
+    "tests": [
+      "scripts/verify/quake2-full-game-input-bindings.ts",
+      "scripts/verify/quake2-input-header.ts"
+    ],
+    "npmScripts": [
+      "verify:full-game:input-bindings",
+      "verify:input:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/keys.c",
+    "tests": [
+      "scripts/verify/quake2-keys-header.ts",
+      "scripts/verify/quake2-keys.ts"
+    ],
+    "npmScripts": [
+      "verify:keys",
+      "verify:keys:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/keys.h",
+    "tests": [
+      "scripts/verify/quake2-keys-header.ts",
+      "scripts/verify/quake2-keys.ts"
+    ],
+    "npmScripts": [
+      "verify:keys",
+      "verify:keys:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/menu.c",
+    "tests": [
+      "scripts/verify/quake2-keys-header.ts",
+      "scripts/verify/quake2-keys.ts",
+      "scripts/verify/quake2-menu.ts",
+      "scripts/verify/quake2-qmenu-header.ts",
+      "scripts/verify/quake2-qmenu.ts",
+      "scripts/verify/quake2-vid-header.ts"
+    ],
+    "npmScripts": [
+      "verify:keys",
+      "verify:keys:header",
+      "verify:menu",
+      "verify:qmenu",
+      "verify:qmenu:header",
+      "verify:vid:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/qmenu.c",
+    "tests": [
+      "scripts/verify/quake2-qmenu-header.ts",
+      "scripts/verify/quake2-qmenu.ts"
+    ],
+    "npmScripts": [
+      "verify:qmenu",
+      "verify:qmenu:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/qmenu.h",
+    "tests": [
+      "scripts/verify/quake2-keys-header.ts",
+      "scripts/verify/quake2-keys.ts",
+      "scripts/verify/quake2-qmenu-header.ts",
+      "scripts/verify/quake2-qmenu.ts"
+    ],
+    "npmScripts": [
+      "verify:keys",
+      "verify:keys:header",
+      "verify:qmenu",
+      "verify:qmenu:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/ref.h",
+    "tests": [
+      "scripts/verify/quake2-ref-gl-host.ts",
+      "scripts/verify/quake2-ref-header.ts"
+    ],
+    "npmScripts": [
+      "verify:ref-gl-host",
+      "verify:ref:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/screen.h",
+    "tests": [
+      "scripts/verify/quake2-client-header.ts",
+      "scripts/verify/quake2-client-pmove-viewheight.ts",
+      "scripts/verify/quake2-screen-header.ts"
+    ],
+    "npmScripts": [
+      "verify:client:header",
+      "verify:client:pmove:viewheight",
+      "verify:screen:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/snd_dma.c",
+    "tests": [
+      "scripts/verify/quake2-snd-dma.ts"
+    ],
+    "npmScripts": [
+      "verify:snd-dma"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/snd_loc.h",
+    "tests": [
+      "scripts/verify/quake2-snd-loc-header.ts"
+    ],
+    "npmScripts": [
+      "verify:snd-loc:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/snd_mem.c",
+    "tests": [
+      "scripts/verify/quake2-snd-mem.ts"
+    ],
+    "npmScripts": [
+      "verify:snd-mem"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/snd_mix.c",
+    "tests": [
+      "scripts/verify/quake2-snd-mix.ts"
+    ],
+    "npmScripts": [
+      "verify:snd-mix"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/sound.h",
+    "tests": [
+      "scripts/verify/quake2-sound-header.ts"
+    ],
+    "npmScripts": [
+      "verify:sound:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/client/vid.h",
+    "tests": [
+      "scripts/verify/quake2-vid-header.ts"
+    ],
+    "npmScripts": [
+      "verify:vid:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_ai.c",
+    "tests": [
+      "scripts/verify/quake2-g-ai.ts"
+    ],
+    "npmScripts": [
+      "verify:g-ai"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_chase.c",
+    "tests": [
+      "scripts/verify/quake2-g-chase.ts"
+    ],
+    "npmScripts": [
+      "verify:g-chase"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_cmds.c",
+    "tests": [
+      "scripts/verify/quake2-g-cmds.ts"
+    ],
+    "npmScripts": [
+      "verify:g-cmds"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_combat.c",
+    "tests": [
+      "scripts/verify/quake2-g-combat.ts"
+    ],
+    "npmScripts": []
+  },
+  {
+    "file": "Quake-2-master/game/g_func.c",
+    "tests": [
+      "scripts/verify/quake2-g-func.ts"
+    ],
+    "npmScripts": [
+      "verify:g-func"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_items.c",
+    "tests": [
+      "scripts/verify/quake2-g-items.ts"
+    ],
+    "npmScripts": [
+      "verify:g-items"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_local.h",
+    "tests": [
+      "scripts/verify/quake2-g-local-header.ts"
+    ],
+    "npmScripts": [
+      "verify:g-local:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_main.c",
+    "tests": [
+      "scripts/verify/quake2-g-main.ts"
+    ],
+    "npmScripts": [
+      "verify:g-main"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_misc.c",
+    "tests": [
+      "scripts/verify/quake2-g-misc.ts"
+    ],
+    "npmScripts": [
+      "verify:g-misc"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_monster.c",
+    "tests": [
+      "scripts/verify/quake2-g-monster.ts"
+    ],
+    "npmScripts": [
+      "verify:g-monster"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_phys.c",
+    "tests": [
+      "scripts/verify/quake2-g-phys.ts"
+    ],
+    "npmScripts": [
+      "verify:g-phys"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_save.c",
+    "tests": [
+      "scripts/verify/quake2-g-save.ts"
+    ],
+    "npmScripts": [
+      "verify:g-save"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_spawn.c",
+    "tests": [
+      "scripts/verify/quake2-g-spawn.ts",
+      "scripts/verify/quake2-qfiles.ts"
+    ],
+    "npmScripts": [
+      "verify:g-spawn",
+      "verify:qfiles"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_svcmds.c",
+    "tests": [
+      "scripts/verify/quake2-g-svcmds.ts"
+    ],
+    "npmScripts": [
+      "verify:g-svcmds"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_target.c",
+    "tests": [
+      "scripts/verify/quake2-g-target.ts"
+    ],
+    "npmScripts": [
+      "verify:g-target"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_trigger.c",
+    "tests": [
+      "scripts/verify/quake2-g-trigger.ts"
+    ],
+    "npmScripts": [
+      "verify:g-trigger"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_turret.c",
+    "tests": [
+      "scripts/verify/quake2-g-turret.ts"
+    ],
+    "npmScripts": [
+      "verify:g-turret"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_utils.c",
+    "tests": [
+      "scripts/verify/quake2-g-utils.ts"
+    ],
+    "npmScripts": [
+      "verify:g-utils"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/g_weapon.c",
+    "tests": [],
+    "npmScripts": []
+  },
+  {
+    "file": "Quake-2-master/game/game.h",
+    "tests": [
+      "scripts/verify/quake2-full-game-audio-routing.ts",
+      "scripts/verify/quake2-full-game-authoritative-handshake.ts",
+      "scripts/verify/quake2-full-game-authoritative-input.ts",
+      "scripts/verify/quake2-full-game-command-bridge.ts",
+      "scripts/verify/quake2-full-game-command-forward.ts",
+      "scripts/verify/quake2-full-game-console-background.ts",
+      "scripts/verify/quake2-full-game-console-commands.ts",
+      "scripts/verify/quake2-full-game-demo-cleanup.ts",
+      "scripts/verify/quake2-full-game-gameplay-commands.ts",
+      "scripts/verify/quake2-full-game-input-bindings.ts",
+      "scripts/verify/quake2-full-game-local-transport.ts",
+      "scripts/verify/quake2-full-game-newgame.ts",
+      "scripts/verify/quake2-full-game-render-source.ts",
+      "scripts/verify/quake2-full-game-rules-transitions.ts",
+      "scripts/verify/quake2-full-game-save-slots.ts",
+      "scripts/verify/quake2-full-game-server-host.ts",
+      "scripts/verify/quake2-full-game-server-snapshots.ts",
+      "scripts/verify/quake2-full-game-three-renderer.ts",
+      "scripts/verify/quake2-game-header.ts"
+    ],
+    "npmScripts": [
+      "verify:full-game:audio-routing",
+      "verify:full-game:authoritative-handshake",
+      "verify:full-game:authoritative-input",
+      "verify:full-game:bridge",
+      "verify:full-game:commands",
+      "verify:full-game:console-background",
+      "verify:full-game:demo-cleanup",
+      "verify:full-game:forward",
+      "verify:full-game:gameplay",
+      "verify:full-game:input-bindings",
+      "verify:full-game:local-transport",
+      "verify:full-game:newgame",
+      "verify:full-game:render-source",
+      "verify:full-game:rules-transitions",
+      "verify:full-game:save-slots",
+      "verify:full-game:server-host",
+      "verify:full-game:server-snapshots",
+      "verify:full-game:three-renderer",
+      "verify:game:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_actor.c",
+    "tests": [
+      "scripts/verify/quake2-local-gameplay-sync.ts",
+      "scripts/verify/quake2-m-actor-header.ts",
+      "scripts/verify/quake2-m-actor.ts"
+    ],
+    "npmScripts": [
+      "verify:local-gameplay-sync",
+      "verify:m-actor",
+      "verify:m-actor:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_actor.h",
+    "tests": [
+      "scripts/verify/quake2-m-actor-header.ts",
+      "scripts/verify/quake2-m-actor.ts"
+    ],
+    "npmScripts": [
+      "verify:m-actor",
+      "verify:m-actor:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_berserk.c",
+    "tests": [
+      "scripts/verify/quake2-m-berserk-header.ts",
+      "scripts/verify/quake2-m-berserk-source-parity.ts",
+      "scripts/verify/quake2-m-berserk.ts"
+    ],
+    "npmScripts": [
+      "verify:m-berserk",
+      "verify:m-berserk:header",
+      "verify:m-berserk:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_berserk.h",
+    "tests": [
+      "scripts/verify/quake2-m-berserk-header.ts",
+      "scripts/verify/quake2-m-berserk-source-parity.ts",
+      "scripts/verify/quake2-m-berserk.ts"
+    ],
+    "npmScripts": [
+      "verify:m-berserk",
+      "verify:m-berserk:header",
+      "verify:m-berserk:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_boss2.c",
+    "tests": [
+      "scripts/verify/quake2-m-boss2-header.ts",
+      "scripts/verify/quake2-m-boss2-source-parity.ts",
+      "scripts/verify/quake2-m-boss2.ts"
+    ],
+    "npmScripts": [
+      "verify:m-boss2",
+      "verify:m-boss2:header",
+      "verify:m-boss2:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_boss2.h",
+    "tests": [
+      "scripts/verify/quake2-m-boss2-header.ts",
+      "scripts/verify/quake2-m-boss2-source-parity.ts",
+      "scripts/verify/quake2-m-boss2.ts"
+    ],
+    "npmScripts": [
+      "verify:m-boss2",
+      "verify:m-boss2:header",
+      "verify:m-boss2:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_boss3.c",
+    "tests": [
+      "scripts/verify/quake2-m-boss3-source-parity.ts",
+      "scripts/verify/quake2-m-boss3.ts"
+    ],
+    "npmScripts": [
+      "verify:m-boss3",
+      "verify:m-boss3:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_boss31.c",
+    "tests": [
+      "scripts/verify/quake2-m-boss31-header.ts",
+      "scripts/verify/quake2-m-boss31-source-parity.ts",
+      "scripts/verify/quake2-m-boss31.ts"
+    ],
+    "npmScripts": [
+      "verify:m-boss31",
+      "verify:m-boss31:header",
+      "verify:m-boss31:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_boss31.h",
+    "tests": [
+      "scripts/verify/quake2-m-boss31-header.ts",
+      "scripts/verify/quake2-m-boss31-source-parity.ts",
+      "scripts/verify/quake2-m-boss31.ts"
+    ],
+    "npmScripts": [
+      "verify:m-boss31",
+      "verify:m-boss31:header",
+      "verify:m-boss31:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_boss32.c",
+    "tests": [
+      "scripts/verify/quake2-m-boss32-header.ts",
+      "scripts/verify/quake2-m-boss32-source-parity.ts",
+      "scripts/verify/quake2-m-boss32.ts"
+    ],
+    "npmScripts": [
+      "verify:m-boss32",
+      "verify:m-boss32:header",
+      "verify:m-boss32:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_boss32.h",
+    "tests": [
+      "scripts/verify/quake2-m-boss32-header.ts",
+      "scripts/verify/quake2-m-boss32-source-parity.ts",
+      "scripts/verify/quake2-m-boss32.ts"
+    ],
+    "npmScripts": [
+      "verify:m-boss32",
+      "verify:m-boss32:header",
+      "verify:m-boss32:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_brain.c",
+    "tests": [
+      "scripts/verify/quake2-m-brain-header.ts",
+      "scripts/verify/quake2-m-brain-source-parity.ts",
+      "scripts/verify/quake2-m-brain.ts"
+    ],
+    "npmScripts": [
+      "verify:m-brain",
+      "verify:m-brain:header",
+      "verify:m-brain:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_brain.h",
+    "tests": [
+      "scripts/verify/quake2-m-brain-header.ts",
+      "scripts/verify/quake2-m-brain-source-parity.ts",
+      "scripts/verify/quake2-m-brain.ts"
+    ],
+    "npmScripts": [
+      "verify:m-brain",
+      "verify:m-brain:header",
+      "verify:m-brain:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_chick.c",
+    "tests": [
+      "scripts/verify/quake2-m-chick-header.ts",
+      "scripts/verify/quake2-m-chick-source-parity.ts",
+      "scripts/verify/quake2-m-chick.ts"
+    ],
+    "npmScripts": [
+      "verify:m-chick",
+      "verify:m-chick:header",
+      "verify:m-chick:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_chick.h",
+    "tests": [
+      "scripts/verify/quake2-m-chick-header.ts",
+      "scripts/verify/quake2-m-chick-source-parity.ts",
+      "scripts/verify/quake2-m-chick.ts"
+    ],
+    "npmScripts": [
+      "verify:m-chick",
+      "verify:m-chick:header",
+      "verify:m-chick:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_flash.c",
+    "tests": [
+      "scripts/verify/quake2-m-flash.ts"
+    ],
+    "npmScripts": [
+      "verify:m-flash"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_flipper.c",
+    "tests": [
+      "scripts/verify/quake2-m-flipper-header.ts",
+      "scripts/verify/quake2-m-flipper-source-parity.ts",
+      "scripts/verify/quake2-m-flipper.ts"
+    ],
+    "npmScripts": [
+      "verify:m-flipper",
+      "verify:m-flipper:header",
+      "verify:m-flipper:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_flipper.h",
+    "tests": [
+      "scripts/verify/quake2-m-flipper-header.ts",
+      "scripts/verify/quake2-m-flipper-source-parity.ts",
+      "scripts/verify/quake2-m-flipper.ts"
+    ],
+    "npmScripts": [
+      "verify:m-flipper",
+      "verify:m-flipper:header",
+      "verify:m-flipper:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_float.c",
+    "tests": [
+      "scripts/verify/quake2-m-float-header.ts",
+      "scripts/verify/quake2-m-float-source-parity.ts",
+      "scripts/verify/quake2-m-float.ts"
+    ],
+    "npmScripts": [
+      "verify:m-float",
+      "verify:m-float:header",
+      "verify:m-float:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_float.h",
+    "tests": [
+      "scripts/verify/quake2-m-float-header.ts",
+      "scripts/verify/quake2-m-float-source-parity.ts",
+      "scripts/verify/quake2-m-float.ts"
+    ],
+    "npmScripts": [
+      "verify:m-float",
+      "verify:m-float:header",
+      "verify:m-float:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_flyer.c",
+    "tests": [
+      "scripts/verify/quake2-m-flyer-header.ts",
+      "scripts/verify/quake2-m-flyer-source-parity.ts",
+      "scripts/verify/quake2-m-flyer.ts"
+    ],
+    "npmScripts": [
+      "verify:m-flyer",
+      "verify:m-flyer:header",
+      "verify:m-flyer:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_flyer.h",
+    "tests": [
+      "scripts/verify/quake2-m-flyer-header.ts",
+      "scripts/verify/quake2-m-flyer-source-parity.ts",
+      "scripts/verify/quake2-m-flyer.ts"
+    ],
+    "npmScripts": [
+      "verify:m-flyer",
+      "verify:m-flyer:header",
+      "verify:m-flyer:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_gladiator.c",
+    "tests": [
+      "scripts/verify/quake2-m-gladiator-header.ts",
+      "scripts/verify/quake2-m-gladiator-source-parity.ts",
+      "scripts/verify/quake2-m-gladiator.ts"
+    ],
+    "npmScripts": [
+      "verify:m-gladiator",
+      "verify:m-gladiator:header",
+      "verify:m-gladiator:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_gladiator.h",
+    "tests": [
+      "scripts/verify/quake2-m-gladiator-header.ts",
+      "scripts/verify/quake2-m-gladiator-source-parity.ts",
+      "scripts/verify/quake2-m-gladiator.ts"
+    ],
+    "npmScripts": [
+      "verify:m-gladiator",
+      "verify:m-gladiator:header",
+      "verify:m-gladiator:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_gunner.c",
+    "tests": [
+      "scripts/verify/quake2-m-gunner-header.ts",
+      "scripts/verify/quake2-m-gunner-source-parity.ts",
+      "scripts/verify/quake2-m-gunner.ts"
+    ],
+    "npmScripts": [
+      "verify:m-gunner",
+      "verify:m-gunner:header",
+      "verify:m-gunner:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_gunner.h",
+    "tests": [
+      "scripts/verify/quake2-m-gunner-header.ts",
+      "scripts/verify/quake2-m-gunner-source-parity.ts",
+      "scripts/verify/quake2-m-gunner.ts"
+    ],
+    "npmScripts": [
+      "verify:m-gunner",
+      "verify:m-gunner:header",
+      "verify:m-gunner:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_hover.c",
+    "tests": [
+      "scripts/verify/quake2-m-hover-header.ts",
+      "scripts/verify/quake2-m-hover-source-parity.ts",
+      "scripts/verify/quake2-m-hover.ts"
+    ],
+    "npmScripts": [
+      "verify:m-hover",
+      "verify:m-hover:header",
+      "verify:m-hover:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_hover.h",
+    "tests": [
+      "scripts/verify/quake2-m-hover-header.ts",
+      "scripts/verify/quake2-m-hover-source-parity.ts",
+      "scripts/verify/quake2-m-hover.ts"
+    ],
+    "npmScripts": [
+      "verify:m-hover",
+      "verify:m-hover:header",
+      "verify:m-hover:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_infantry.c",
+    "tests": [
+      "scripts/verify/quake2-m-infantry-header.ts",
+      "scripts/verify/quake2-m-infantry-source-parity.ts",
+      "scripts/verify/quake2-m-infantry.ts"
+    ],
+    "npmScripts": [
+      "verify:m-infantry",
+      "verify:m-infantry:header",
+      "verify:m-infantry:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_infantry.h",
+    "tests": [
+      "scripts/verify/quake2-m-infantry-header.ts",
+      "scripts/verify/quake2-m-infantry-source-parity.ts",
+      "scripts/verify/quake2-m-infantry.ts"
+    ],
+    "npmScripts": [
+      "verify:m-infantry",
+      "verify:m-infantry:header",
+      "verify:m-infantry:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_insane.c",
+    "tests": [
+      "scripts/verify/quake2-m-insane-header.ts",
+      "scripts/verify/quake2-m-insane.ts"
+    ],
+    "npmScripts": [
+      "verify:m-insane",
+      "verify:m-insane:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_insane.h",
+    "tests": [
+      "scripts/verify/quake2-m-insane-header.ts",
+      "scripts/verify/quake2-m-insane.ts"
+    ],
+    "npmScripts": [
+      "verify:m-insane",
+      "verify:m-insane:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_medic.c",
+    "tests": [
+      "scripts/verify/quake2-m-medic-header.ts",
+      "scripts/verify/quake2-m-medic-source-parity.ts",
+      "scripts/verify/quake2-m-medic.ts"
+    ],
+    "npmScripts": [
+      "verify:m-medic",
+      "verify:m-medic:header",
+      "verify:m-medic:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_medic.h",
+    "tests": [
+      "scripts/verify/quake2-m-medic-header.ts",
+      "scripts/verify/quake2-m-medic-source-parity.ts",
+      "scripts/verify/quake2-m-medic.ts"
+    ],
+    "npmScripts": [
+      "verify:m-medic",
+      "verify:m-medic:header",
+      "verify:m-medic:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_move.c",
+    "tests": [
+      "scripts/verify/quake2-m-move.ts"
+    ],
+    "npmScripts": [
+      "verify:m-move"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_mutant.c",
+    "tests": [
+      "scripts/verify/quake2-m-mutant-header.ts",
+      "scripts/verify/quake2-m-mutant-source-parity.ts",
+      "scripts/verify/quake2-m-mutant.ts"
+    ],
+    "npmScripts": [
+      "verify:m-mutant",
+      "verify:m-mutant:header",
+      "verify:m-mutant:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_mutant.h",
+    "tests": [
+      "scripts/verify/quake2-m-mutant-header.ts",
+      "scripts/verify/quake2-m-mutant-source-parity.ts",
+      "scripts/verify/quake2-m-mutant.ts"
+    ],
+    "npmScripts": [
+      "verify:m-mutant",
+      "verify:m-mutant:header",
+      "verify:m-mutant:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_parasite.c",
+    "tests": [
+      "scripts/verify/quake2-m-parasite-header.ts",
+      "scripts/verify/quake2-m-parasite-source-parity.ts",
+      "scripts/verify/quake2-m-parasite.ts"
+    ],
+    "npmScripts": [
+      "verify:m-parasite",
+      "verify:m-parasite:header",
+      "verify:m-parasite:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_parasite.h",
+    "tests": [
+      "scripts/verify/quake2-m-parasite-header.ts",
+      "scripts/verify/quake2-m-parasite-source-parity.ts",
+      "scripts/verify/quake2-m-parasite.ts"
+    ],
+    "npmScripts": [
+      "verify:m-parasite",
+      "verify:m-parasite:header",
+      "verify:m-parasite:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_player.h",
+    "tests": [
+      "scripts/verify/quake2-m-player-header.ts"
+    ],
+    "npmScripts": [
+      "verify:m-player:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_rider.h",
+    "tests": [
+      "scripts/verify/quake2-m-rider-header.ts"
+    ],
+    "npmScripts": [
+      "verify:m-rider:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_soldier.c",
+    "tests": [
+      "scripts/verify/quake2-m-soldier-header.ts",
+      "scripts/verify/quake2-m-soldier-source-parity.ts",
+      "scripts/verify/quake2-m-soldier.ts"
+    ],
+    "npmScripts": [
+      "verify:m-soldier",
+      "verify:m-soldier:header",
+      "verify:m-soldier:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_soldier.h",
+    "tests": [
+      "scripts/verify/quake2-m-soldier-header.ts",
+      "scripts/verify/quake2-m-soldier-source-parity.ts",
+      "scripts/verify/quake2-m-soldier.ts"
+    ],
+    "npmScripts": [
+      "verify:m-soldier",
+      "verify:m-soldier:header",
+      "verify:m-soldier:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_supertank.c",
+    "tests": [
+      "scripts/verify/quake2-m-supertank-header.ts",
+      "scripts/verify/quake2-m-supertank-source-parity.ts",
+      "scripts/verify/quake2-m-supertank.ts"
+    ],
+    "npmScripts": [
+      "verify:m-supertank",
+      "verify:m-supertank:header",
+      "verify:m-supertank:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_supertank.h",
+    "tests": [
+      "scripts/verify/quake2-m-supertank-header.ts",
+      "scripts/verify/quake2-m-supertank-source-parity.ts",
+      "scripts/verify/quake2-m-supertank.ts"
+    ],
+    "npmScripts": [
+      "verify:m-supertank",
+      "verify:m-supertank:header",
+      "verify:m-supertank:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_tank.c",
+    "tests": [
+      "scripts/verify/quake2-m-tank-header.ts",
+      "scripts/verify/quake2-m-tank-source-parity.ts",
+      "scripts/verify/quake2-m-tank.ts"
+    ],
+    "npmScripts": [
+      "verify:m-tank",
+      "verify:m-tank:header",
+      "verify:m-tank:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/m_tank.h",
+    "tests": [
+      "scripts/verify/quake2-m-tank-header.ts",
+      "scripts/verify/quake2-m-tank-source-parity.ts",
+      "scripts/verify/quake2-m-tank.ts"
+    ],
+    "npmScripts": [
+      "verify:m-tank",
+      "verify:m-tank:header",
+      "verify:m-tank:source-parity"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/p_client.c",
+    "tests": [
+      "scripts/verify/quake2-p-client.ts"
+    ],
+    "npmScripts": [
+      "verify:p-client"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/p_hud.c",
+    "tests": [
+      "scripts/verify/quake2-p-hud.ts"
+    ],
+    "npmScripts": [
+      "verify:p-hud"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/p_trail.c",
+    "tests": [
+      "scripts/verify/quake2-p-trail.ts"
+    ],
+    "npmScripts": [
+      "verify:p-trail"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/p_view.c",
+    "tests": [
+      "scripts/verify/quake2-p-view.ts"
+    ],
+    "npmScripts": [
+      "verify:p-view"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/p_weapon.c",
+    "tests": [
+      "scripts/verify/quake2-p-weapon.ts"
+    ],
+    "npmScripts": [
+      "verify:p-weapon"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/q_shared.c",
+    "tests": [
+      "scripts/verify/quake2-q-shared-header.ts"
+    ],
+    "npmScripts": [
+      "verify:q-shared:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/game/q_shared.h",
+    "tests": [
+      "scripts/verify/quake2-cvar.ts",
+      "scripts/verify/quake2-q-shared-header.ts"
+    ],
+    "npmScripts": [
+      "verify:cvar",
+      "verify:q-shared:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/cmd.c",
+    "tests": [
+      "scripts/verify/quake2-cmd.ts"
+    ],
+    "npmScripts": [
+      "verify:cmd"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/cmodel.c",
+    "tests": [
+      "scripts/verify/quake2-cmodel.ts"
+    ],
+    "npmScripts": []
+  },
+  {
+    "file": "Quake-2-master/qcommon/common.c",
+    "tests": [
+      "scripts/verify/quake2-qcommon-header.ts"
+    ],
+    "npmScripts": [
+      "verify:qcommon:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/crc.c",
+    "tests": [
+      "scripts/verify/quake2-crc-header.ts",
+      "scripts/verify/quake2-crc.ts",
+      "scripts/verify/quake2-qcommon-header.ts"
+    ],
+    "npmScripts": [
+      "verify:crc",
+      "verify:crc:header",
+      "verify:qcommon:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/crc.h",
+    "tests": [
+      "scripts/verify/quake2-crc-header.ts",
+      "scripts/verify/quake2-crc.ts",
+      "scripts/verify/quake2-qcommon-header.ts"
+    ],
+    "npmScripts": [
+      "verify:crc",
+      "verify:crc:header",
+      "verify:qcommon:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/cvar.c",
+    "tests": [
+      "scripts/verify/quake2-cvar.ts"
+    ],
+    "npmScripts": [
+      "verify:cvar"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/files.c",
+    "tests": [
+      "scripts/verify/golden-pak-summary.mjs",
+      "scripts/verify/quake2-files.ts"
+    ],
+    "npmScripts": [
+      "verify:files"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/md4.c",
+    "tests": [
+      "scripts/verify/quake2-md4.ts",
+      "scripts/verify/quake2-qcommon-header.ts"
+    ],
+    "npmScripts": [
+      "verify:md4",
+      "verify:qcommon:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/net_chan.c",
+    "tests": [
+      "scripts/verify/quake2-net-chan.ts",
+      "scripts/verify/quake2-qcommon-header.ts"
+    ],
+    "npmScripts": [
+      "verify:net-chan",
+      "verify:qcommon:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/pmove.c",
+    "tests": [
+      "scripts/verify/quake2-client-pmove-viewheight.ts",
+      "scripts/verify/quake2-pmove-local-bmodel.ts",
+      "scripts/verify/quake2-pmove.ts"
+    ],
+    "npmScripts": [
+      "verify:client:pmove:viewheight",
+      "verify:pmove",
+      "verify:pmove:local-bmodel"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/qcommon.h",
+    "tests": [
+      "scripts/verify/quake2-client-pmove-viewheight.ts",
+      "scripts/verify/quake2-cmd.ts",
+      "scripts/verify/quake2-cmodel.ts",
+      "scripts/verify/quake2-cvar.ts",
+      "scripts/verify/quake2-files.ts",
+      "scripts/verify/quake2-md4.ts",
+      "scripts/verify/quake2-pmove-local-bmodel.ts",
+      "scripts/verify/quake2-pmove.ts",
+      "scripts/verify/quake2-qcommon-header.ts"
+    ],
+    "npmScripts": [
+      "verify:client:pmove:viewheight",
+      "verify:cmd",
+      "verify:cvar",
+      "verify:files",
+      "verify:md4",
+      "verify:pmove",
+      "verify:pmove:local-bmodel",
+      "verify:qcommon:header"
+    ]
+  },
+  {
+    "file": "Quake-2-master/qcommon/qfiles.h",
+    "tests": [
+      "scripts/verify/golden-pak-summary.mjs",
+      "scripts/verify/quake2-qfiles.ts"
+    ],
+    "npmScripts": [
+      "verify:qfiles"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/server.h",
+    "tests": [
+      "scripts/verify/quake2-full-game-server-host.ts",
+      "scripts/verify/quake2-full-game-server-snapshots.ts",
+      "scripts/verify/quake2-server-header.ts",
+      "scripts/verify/quake2-server-runtime.ts"
+    ],
+    "npmScripts": [
+      "verify:full-game:server-host",
+      "verify:full-game:server-snapshots",
+      "verify:server:header",
+      "verify:server:runtime"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/sv_ccmds.c",
+    "tests": [
+      "scripts/verify/quake2-full-game-server-host.ts",
+      "scripts/verify/quake2-full-game-server-snapshots.ts",
+      "scripts/verify/quake2-server-header.ts",
+      "scripts/verify/quake2-server-runtime.ts",
+      "scripts/verify/quake2-sv-ccmds.ts"
+    ],
+    "npmScripts": [
+      "verify:full-game:server-host",
+      "verify:full-game:server-snapshots",
+      "verify:server:ccmds",
+      "verify:server:header",
+      "verify:server:runtime"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/sv_ents.c",
+    "tests": [
+      "scripts/verify/quake2-sv-ents.ts"
+    ],
+    "npmScripts": [
+      "verify:server:ents"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/sv_game.c",
+    "tests": [
+      "scripts/verify/quake2-sv-game.ts"
+    ],
+    "npmScripts": [
+      "verify:server:game"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/sv_init.c",
+    "tests": [
+      "scripts/verify/quake2-sv-init.ts"
+    ],
+    "npmScripts": [
+      "verify:server:init"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/sv_main.c",
+    "tests": [
+      "scripts/verify/quake2-sv-main.ts"
+    ],
+    "npmScripts": [
+      "verify:server:main"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/sv_null.c",
+    "tests": [
+      "scripts/verify/quake2-sv-null.ts"
+    ],
+    "npmScripts": [
+      "verify:server:null"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/sv_send.c",
+    "tests": [
+      "scripts/verify/quake2-sv-send.ts"
+    ],
+    "npmScripts": [
+      "verify:server:send"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/sv_user.c",
+    "tests": [
+      "scripts/verify/quake2-sv-user.ts"
+    ],
+    "npmScripts": [
+      "verify:server:user"
+    ]
+  },
+  {
+    "file": "Quake-2-master/server/sv_world.c",
+    "tests": [
+      "scripts/verify/quake2-sv-world.ts"
+    ],
+    "npmScripts": [
+      "verify:server:world"
+    ]
+  }
+]
