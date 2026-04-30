@@ -36,3 +36,13 @@
 - Verdict: statut conserve. Branchement runtime confirme via `G_RunFrame` -> `AI_SetSightClient` et via `M_MoveFrame`/frames monstres -> fonctions `ai_*`; `apps/web` attend seulement le chemin serveur `SV_Frame`/`RunFrame` et ne contient pas de remplacement local; `packages/renderer-three` attend seulement les sorties visibles (`ClientRefreshFrame`/entites avec origin, angles, frame, modelindex) et ne doit pas integrer ces symboles AI directement.
 - Corrections TS: aucune. Matrice inchangee, aucune ligne `Valide` retrogradee.
 - Commandes: `rg` cible sur symboles `g_ai`, runtime, `apps/web`, `packages/renderer-three`; lectures ciblées de `g_ai.ts`, `g_main.ts`, `g_monster.ts`, `full-game-server-host.ts`, `full-game-render-loop.ts`, `refresh-entity-sync.ts`.
+
+## Session 2026-04-30 - ai_charge
+
+- Lot traite: `ai_charge`.
+- Verdict: valide.
+- Corrections TS: commentaire d'en-tete de `ai_charge` ajuste de `Strict` a `Close` et note de portage ajoutee pour la garde defensive `!self.enemy`, absente du C mais sans impact attendu sur le flux normal d'attaque.
+- Preuves: comparaison C/TS effectuee; le C calcule `v = enemy.origin - self.origin`, affecte `ideal_yaw`, appelle `M_ChangeYaw`, puis `M_walkmove` seulement si `dist` est non nul; le TS conserve cet ordre avec runtime explicite. Branchement runtime verifie via `M_MoveFrame`/tables `aifunc` des monstres et export `packages/game/src/index.ts`; `apps/web` passe par `SV_Frame`/runtime et ne remplace pas la logique; `renderer-three` consomme seulement les sorties visibles via `ClientRefreshFrame`, pas ce symbole AI directement.
+- Tests: harness inline `npx tsx -` OK pour orientation, distance zero, avance avec `dist`, et garde defensive sans ennemi; `npm run verify:g-ai` OK; `npm run typecheck` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `range` et locale `len`, ou `visible` avec locale `trace`; garder `FindTarget` pour une session dediee.

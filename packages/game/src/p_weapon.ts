@@ -529,7 +529,7 @@ export function Use_Weapon(ent: GameEntity, item: GameItemDefinition, runtime: G
  * - Drops one weapon item when the current rules allow it.
  *
  * Porting notes:
- * - Delegates the actual `Drop_Item` spawn path to an explicit hook until `g_items.c` drop logic is ported.
+ * - Uses the ported `Drop_Item` path by default while preserving hook injection for tests/adapters.
  */
 export function Drop_Weapon(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime, hooks: GameWeaponHooks = {}): void {
   const client = requireClient(ent, "Drop_Weapon");

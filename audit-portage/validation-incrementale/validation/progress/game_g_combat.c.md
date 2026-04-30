@@ -13,6 +13,16 @@
 
 ## Dernier lot valide
 
+- 2026-04-30: `CheckPowerArmor`
+  - Source comparee: `Quake-2-master/game/g_combat.c`
+  - Cible comparee: `packages/game/src/g_combat.ts`; dependance `PowerArmorType`/`FindItem("Cells")` verifiee dans `packages/game/src/g_items.ts`.
+  - Correction appliquee: aucune. Le port conserve les retours `damage == 0`/`DAMAGE_NO_ARMOR`, le split client/monstre, le test frontal `POWER_ARMOR_SCREEN`, les ratios d'absorption et la consommation de cellules.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`.
+  - Branchement runtime verifie: `T_Damage` appelle `CheckPowerArmor`; les appels armes et entites portees dispatchent vers `T_Damage`; `SpawnDamage` produit les temp entities `TE_SCREEN_SPARKS`/`TE_SHIELD_SPARKS` avec position et direction.
+  - `apps/web`: aucune logique parallele; le client full-game consomme les temp entities parsees et demarre les sons/effects associes.
+  - `renderer-three`: integration indirecte attendue via particules du `ClientRefreshFrame` et `particle-sync`; pas de branchement direct gameplay attendu.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; verification inline `CheckPowerArmor` couvrant bouclier client, ecran client frontal, ecran arriere refuse, monstre `DAMAGE_NO_ARMOR`; `npm run typecheck`.
+
 - 2026-04-30: `SpawnDamage`
   - Source comparee: `Quake-2-master/game/g_combat.c`
   - Cible comparee: `packages/game/src/g_combat.ts`
@@ -45,7 +55,7 @@
 
 ## Prochain lot recommande
 
-- `CheckPowerArmor` avec ses variables locales associees si le lot reste court.
+- `CheckArmor` avec ses variables locales associees si le lot reste court.
 
 ## Blocages
 

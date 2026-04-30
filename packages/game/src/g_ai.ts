@@ -215,10 +215,14 @@ export function ai_walk(self: GameEntity, dist: number, runtime: GameRuntime): v
  * Original name: ai_charge
  * Source: game/g_ai.c
  * Category: Ported
- * Fidelity level: Strict
+ * Fidelity level: Close
  *
  * Behavior:
  * - Turns toward the current enemy and optionally advances.
+ *
+ * Porting notes:
+ * - The C original assumes `self->enemy` is non-null; TypeScript returns early when
+ *   no enemy is attached so attack-frame callbacks cannot throw on partial entities.
  */
 export function ai_charge(self: GameEntity, dist: number, runtime: GameRuntime): void {
   if (!self.enemy) {

@@ -24,3 +24,14 @@
 - Prochain lot recommande: `Cmd_God_f` et temporaires locaux associes (`msg`).
 
 Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` dans la matrice. Branchement runtime confirme via `SV_ExecuteUserCommand` -> `ge.ClientCommand` -> `g_main.ClientCommand` -> `g_cmds.ClientCommand`, avec dispatch `give` et `invnext`/`invprev`/variantes; integration `apps/web` confirmee par `createFullGameServerHost` qui charge `GetGameApiFunction` et par le pont `createClientSendCmdBridge`, sans raccord web specifique attendu pour ces helpers gameplay. `packages/renderer-three` ne porte pas ces commandes directement: les sorties visibles passent par les snapshots/entites/HUD consommes par le render loop, donc aucun statut `Valide` retrograde sur cette passe. Commandes de controle: recherches `rg` ciblees, pas de revalidation C/TS complete.
+
+## Session 2026-04-30 - Cmd_God_f
+
+- Lot valide: `Cmd_God_f` et temporaires C associes (`msg`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme gate `deathmatch && !sv_cheats`, bascule `FL_GODMODE`, message ON/OFF, retour sans effet si cheats interdits.
+- Branchement runtime: `ClientCommand` dispatch `god`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `sv_user`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` envoie les commandes par le pont client/serveur et charge l'API game; aucune logique web parallele attendue. `packages/renderer-three` non applicable directement: `Cmd_God_f` modifie un flag gameplay, les effets visibles eventuels passent par snapshots/HUD/player effects.
+- Corrections: aucune correction TS necessaire; commentaire d'en-tete existant verifie pour `Cmd_God_f`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:full-game:bridge`; `npm run verify:server:user`; `npm run typecheck`.
+- Blocages: `npm run verify:full-game:gameplay` et `npm run verify:full-game:forward` echouent avant execution sur import obsolete `packages/client/src/main.js`; non corrige hors perimetre.
+- Prochain lot recommande: `Cmd_Notarget_f` et temporaires locaux associes (`msg`).
