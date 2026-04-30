@@ -75,6 +75,7 @@ function createFrame(overrides: Partial<ClientRefreshFrame["entities"][number]> 
       fov_x: 90,
       blend: [0, 0, 0, 0]
     },
+    areabits: new Uint8Array([0xff]),
     entities: [{
       entityNumber: 1,
       modelindex: 1,

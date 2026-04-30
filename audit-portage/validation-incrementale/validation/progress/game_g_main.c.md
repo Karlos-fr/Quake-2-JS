@@ -22,6 +22,10 @@
 - `apps/web` et `packages/renderer-three` ne remplacent pas ces globals d'apres la recherche de references.
 - Les blocages de harness initiaux ont ete leves cote coordinateur; les statuts `Partiel` restent intentionnels pour absence de champ global/runtime explicite.
 
+## Passe rapide post-validation
+
+- 2026-04-30: controle limite aux lignes deja `Valide` de la matrice. Seul `meansOfDeath` etait concerne; statut conserve `Valide`. Le branchement runtime attendu/reel passe par `runtime.meansOfDeath`, ecrit par `g_combat.ts`/`g_cmds.ts` puis lu par `p_client.ts`. `apps/web` est integre indirectement via `full-game-server-host.ts` qui fournit `GetGameApiFunction` avec un runtime serveur-backed et redirige les sorties visibles via `onPrint`; aucun etat applicatif local n'est attendu. `packages/renderer-three` n'a pas d'integration attendue pour ce global: les recherches ne montrent que des `MOD_` renderer sans rapport avec les modes de mort gameplay, et les sorties visibles de `meansOfDeath` sont des messages/score, pas du rendu.
+
 ## Prochain lot recommande
 
 - Continuer au debut de la matrice avec le groupe d'etat runtime/cvars suivant: `g_edicts`, `deathmatch`, `coop`, `dmflags`, `skill`.

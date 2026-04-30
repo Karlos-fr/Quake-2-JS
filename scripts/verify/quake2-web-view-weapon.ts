@@ -135,6 +135,7 @@ function createWeaponRefreshFrame(overrides: Partial<ClientRefreshFrame["entitie
       fov_x: 90,
       blend: [0, 0, 0, 0]
     },
+    areabits: new Uint8Array([0xff]),
     entities: [{
       entityNumber: 1,
       modelindex: 1,

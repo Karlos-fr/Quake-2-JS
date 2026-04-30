@@ -176,6 +176,7 @@ function verifyRenderViewResolvesDefaultEntityModelsAndSkins(): void {
         fov_x: 90,
         blend: [0, 0, 0, 0]
       },
+      areabits: new Uint8Array([1, 2, 3]),
       entities: [
         {
           entityNumber: 7,
@@ -250,6 +251,7 @@ function verifyRenderViewResolvesDefaultEntityModelsAndSkins(): void {
   }, "V_RenderView lightstyle copy mismatch");
   assert.deepEqual(context.scene.r_lightstyles[0].rgb, [0.2, 0.3, 0.4], "V_RenderView scene lightstyle mismatch");
   assert.equal(rendered?.refdef.rdflags, 9, "V_RenderView rdflags mismatch");
+  assert.deepEqual(Array.from(rendered?.refdef.areabits ?? []), [1, 2, 3], "V_RenderView areabits mismatch");
 }
 
 function verifyRenderViewAppliesViewWeaponDebugOverrides(): void {

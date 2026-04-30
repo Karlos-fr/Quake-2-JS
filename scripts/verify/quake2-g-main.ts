@@ -11,10 +11,10 @@
 
 import { strict as assert } from "node:assert";
 
-import { CS_STATUSBAR, DF_SAME_LEVEL, MZ_BLASTER, type cvar_t } from "../../packages/qcommon/src/index.js";
-import { TAG_GAME, TAG_LEVEL, svc_muzzleflash } from "../../packages/game/src/g_local.js";
+import { CS_STATUSBAR, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, temp_event_t, type cvar_t } from "../../packages/qcommon/src/index.js";
+import { TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
-import { attachGameClient, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
+import { attachGameClient, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
 import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { single_statusbar } from "../../packages/game/src/g_spawn.js";
 
@@ -24,6 +24,8 @@ const freeTags: number[] = [];
 const addedCommands: string[] = [];
 const writeBytes: number[] = [];
 const writeShorts: number[] = [];
+const writePositions: Array<[number, number, number]> = [];
+const writeDirs: Array<[number, number, number]> = [];
 const multicasts: Array<{ origin: [number, number, number]; to: number }> = [];
 const command = { argv: ["sv"], args: "" };
 const cvars = new Map<string, cvar_t>();
@@ -74,8 +76,12 @@ const imports = {
   WriteLong: () => {},
   WriteFloat: () => {},
   WriteString: () => {},
-  WritePosition: () => {},
-  WriteDir: () => {},
+  WritePosition: (value) => {
+    writePositions.push([...value]);
+  },
+  WriteDir: (value) => {
+    writeDirs.push([...value]);
+  },
   WriteAngle: () => {},
   TagMalloc: () => ({}),
   TagFree: () => {},
@@ -228,16 +234,25 @@ frameContext.runtime.entities[1].s.origin = [11, 22, 33];
 frameContext.runtime.entities[1].s.old_origin = [0, 0, 0];
 writeBytes.length = 0;
 writeShorts.length = 0;
+writePositions.length = 0;
+writeDirs.length = 0;
 multicasts.length = 0;
 emitPlayerMuzzleFlash(frameContext.runtime, frameContext.runtime.entities[1], MZ_BLASTER);
+emitGameTempEntity(frameContext.runtime, temp_event_t.TE_BLOOD, [44, 55, 66], multicast_t.MULTICAST_PVS, {
+  dir: [0, 0, 1]
+});
 G_RunFrame(frameContext);
 assert.equal(frameContext.runtime.framenum, 1, "G_RunFrame framenum mismatch");
 assert.equal(frameContext.runtime.time, 0.1, "G_RunFrame must advance using FRAMETIME");
 assert.deepEqual(frameContext.runtime.entities[1].s.old_origin, [11, 22, 33], "G_RunFrame old_origin copy mismatch");
 assert.equal(frameContext.level.current_entity, null, "G_RunFrame must clear level.current_entity after the entity loop");
-assert.deepEqual(writeBytes.slice(-2), [svc_muzzleflash, MZ_BLASTER], "G_RunFrame must flush player weapon muzzleflash bytes");
+assert.deepEqual(writeBytes.slice(0, 2), [svc_muzzleflash, MZ_BLASTER], "G_RunFrame must flush player weapon muzzleflash bytes");
 assert.equal(writeShorts.at(-1), 1, "G_RunFrame must flush player muzzleflash entity index");
-assert.deepEqual(multicasts.at(-1)?.origin, [11, 22, 33], "G_RunFrame must multicast player muzzleflash at player origin");
+assert.deepEqual(writeBytes.slice(-2), [svc_temp_entity, temp_event_t.TE_BLOOD], "G_RunFrame must flush damage temp entity bytes");
+assert.deepEqual(writePositions.at(-1), [44, 55, 66], "G_RunFrame must flush damage temp entity origin");
+assert.deepEqual(writeDirs.at(-1), [0, 0, 1], "G_RunFrame must flush damage temp entity direction");
+assert.deepEqual(multicasts.at(-2)?.origin, [11, 22, 33], "G_RunFrame must multicast player muzzleflash at player origin");
+assert.deepEqual(multicasts.at(-1)?.origin, [44, 55, 66], "G_RunFrame must multicast damage temp entity at event origin");
 
 api.Shutdown();
 assert.ok(dprints.includes("==== ShutdownGame ====\n"), "ShutdownGame banner mismatch");

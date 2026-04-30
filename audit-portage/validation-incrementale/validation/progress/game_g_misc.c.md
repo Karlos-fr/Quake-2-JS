@@ -1,5 +1,16 @@
 # Progress - Quake-2-master/game/g_misc.c
 
+## Correction des partielles
+
+- 2026-04-30: correction de l'integration visible areaportals (`Use_Areaportal`, `SP_func_areaportal`).
+  - Correction appliquee: `packages/client/src/refresh.ts` ajoute `ClientRefreshFrame.areabits` clone depuis `runtime.cl.frame.areabits`; `packages/renderer-three/src/gl-world-scene-adapter.ts` recopie ces bits dans la refdef et appelle `setRefdefState` pendant `update`, avant `R_MarkLeaves`/`R_DrawWorld`.
+  - Checklist reprise: source C/TS deja comparee sur `Use_Areaportal`/`SP_func_areaportal`; commentaires d'en-tete TS verifies; branchement runtime `CM_SetAreaPortalState` et spawn/export verifies; `apps/web` passe deja `refreshFrame` au world adapter; `renderer-three` consomme maintenant les `areabits` pour le culling visible des zones fermees.
+  - Tests lances: `npm run verify:g-misc`, `npm run verify:g-spawn`, `npx tsx ./scripts/verify/quake2-cl-view.ts`, `npm run verify:gl-rsurf`, `npm run verify:particle-sync`, `npm run verify:beam-sync`, `npm run verify:dlight-sync`, `npm run verify:refresh-entity:sprite`, `npm run verify:refresh-entity:alias-flags`, `npm run verify:refresh-entity:weapon`, `npm run typecheck`.
+
+## Passe rapide post-validation
+
+- 2026-04-30: controle limite aux lignes deja `Valide` de la matrice (`Use_Areaportal`, `SP_func_areaportal`). Verdict documentaire alors corrige en `Partiel`: le branchement runtime game etait present (`CM_SetAreaPortalState`, spawn `func_areaportal`, export `index.ts`), mais l'integration visible attendue n'etait pas complete car `ClientRefreshFrame`/`apps/web` ne propageaient pas les `areabits` vers `renderer-three`; point corrige dans la section precedente.
+
 ## Dernier lot valide
 
 - 2026-04-30: `Use_Areaportal` + `SP_func_areaportal`.

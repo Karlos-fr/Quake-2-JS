@@ -845,11 +845,36 @@ function flushRuntimeEngineEvents(context: GameMainContext): void {
       context.gi.WritePosition(event.origin);
       context.gi.WriteDir(vectorPayload(event.payload, "dir"));
       context.gi.WriteByte(numberPayload(event.payload, "color"));
+    } else if (tempEntityWritesDirection(event.type)) {
+      context.gi.WritePosition(event.origin);
+      context.gi.WriteDir(vectorPayload(event.payload, "dir"));
     } else {
       context.gi.WritePosition(event.origin);
     }
 
     context.gi.multicast(event.origin, event.multicast);
+  }
+}
+
+function tempEntityWritesDirection(type: temp_event_t): boolean {
+  switch (type) {
+    case temp_event_t.TE_BLOOD:
+    case temp_event_t.TE_GUNSHOT:
+    case temp_event_t.TE_SPARKS:
+    case temp_event_t.TE_SHOTGUN:
+    case temp_event_t.TE_SCREEN_SPARKS:
+    case temp_event_t.TE_SHIELD_SPARKS:
+    case temp_event_t.TE_BULLET_SPARKS:
+    case temp_event_t.TE_GREENBLOOD:
+    case temp_event_t.TE_HEATBEAM_SPARKS:
+    case temp_event_t.TE_HEATBEAM_STEAM:
+    case temp_event_t.TE_ELECTRIC_SPARKS:
+    case temp_event_t.TE_BLASTER:
+    case temp_event_t.TE_BLASTER2:
+    case temp_event_t.TE_FLECHETTE:
+      return true;
+    default:
+      return false;
   }
 }
 

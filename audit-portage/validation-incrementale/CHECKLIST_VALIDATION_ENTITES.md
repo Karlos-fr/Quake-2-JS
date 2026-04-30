@@ -30,21 +30,32 @@ Cette checklist est a appliquer pour une entite precise ou un petit lot simple.
 ## 4. Verifier le branchement runtime
 
 - [ ] Chercher les appels directs et indirects de l'entite TS.
+- [ ] Determiner si l'entite devrait etre appelee par un flux runtime normal, pas seulement si elle est deja referencee.
 - [ ] Verifier si elle est atteignable depuis une racine pertinente : `Qcommon_Frame`, `SV_Frame`, `G_RunFrame`, `CL_Frame`, `CL_ParseServerMessage`, `PMove`, ou une commande/callback documentee.
-- [ ] Si le code est present mais non appele, marquer `Partiel` ou `Manquant` selon le cas.
+- [ ] Si aucune racine n'atteint l'entite alors que le comportement original l'exige, corriger le branchement si le correctif reste dans le lot.
+- [ ] Si le code est present mais non appele et que la correction depasse le lot, marquer `Partiel` ou `Manquant` selon le cas et noter l'integration manquante.
+- [ ] Ne pas conclure `Non applicable` ou `Valide` seulement parce qu'aucune reference n'existe : expliquer pourquoi le runtime n'a pas besoin de cette entite, ou documenter le manque.
 
 ## 5. Verifier apps/web
 
 - [ ] Chercher les references dans `apps/web`.
+- [ ] Determiner si `apps/web` devrait declencher ce flux via le runtime porte ou consommer ses sorties.
 - [ ] Confirmer que `apps/web` ne remplace pas la logique runtime principale.
-- [ ] Verifier que l'integration web appelle le runtime porte ou consomme ses sorties.
+- [ ] Verifier que l'integration web appelle le runtime porte ou consomme ses sorties quand le comportement touche le navigateur : commandes, input, HUD, inventaire, sons, temp entities, layout, areabits, etats client/serveur.
+- [ ] Si `apps/web` contient une logique parallele, determiner si c'est un adapter legitime ou une compensation qui masque un manque runtime.
+- [ ] Si une integration web est attendue mais absente, corriger si le lot le permet; sinon marquer `Partiel` ou `Manquant` et noter l'action suivante.
 - [ ] Ajouter ou lancer un test `verify:web:*` ou `verify:full-game:*` si l'entite touche au flux navigateur.
 
 ## 6. Verifier renderer-three
 
 - [ ] Chercher les references dans `packages/renderer-three`.
+- [ ] Determiner si `renderer-three` devrait integrer ou consommer une sortie produite par l'entite, pas seulement si une reference existe deja.
+- [ ] Identifier le type de sortie attendue : entites visibles, modeles, frames, skins, images, dlights, particules, beams, temp entities, areabits, etat de camera, interpolation ou donnees de scene.
 - [ ] Si l'entite produit des donnees de rendu, verifier que le renderer consomme les bons champs.
+- [ ] Si le flux runtime produit bien la donnee mais que `renderer-three` ne la consomme pas alors que le rendu original l'exige, corriger l'adapter si le lot le permet.
 - [ ] Confirmer que `renderer-three` reste un adapter ou un port `ref_gl/*`, pas une compensation gameplay/client.
+- [ ] Si une integration renderer est attendue mais absente, corriger si le lot le permet; sinon marquer `Partiel` ou `Manquant` et noter l'action suivante.
+- [ ] Ne pas conclure `Non applicable` seulement parce que `renderer-three` n'a aucune reference : expliquer pourquoi l'entite ne produit rien de visible, ou documenter l'integration renderer manquante.
 - [ ] Ajouter ou lancer un test renderer si l'entite touche aux entites visibles, particules, beams, dlights, images, modeles ou frames.
 
 ## 7. Lancer les tests
@@ -57,7 +68,8 @@ Cette checklist est a appliquer pour une entite precise ou un petit lot simple.
 ## 8. Corriger si necessaire
 
 - [ ] Corriger le port TS quand le comportement source est clair.
-- [ ] Ne pas masquer un manque runtime dans `apps/web` ou `renderer-three`.
+- [ ] Corriger le branchement runtime, `apps/web` ou `renderer-three` quand l'integration attendue est claire et reste dans le lot.
+- [ ] Ne pas masquer un manque runtime, `apps/web` ou `renderer-three` en appelant cela non applicable sans justification.
 - [ ] Garder la correction limitee a l'entite ou au petit lot en cours.
 - [ ] Relancer les tests impactes.
 
@@ -67,4 +79,4 @@ Cette checklist est a appliquer pour une entite precise ou un petit lot simple.
 - [ ] Renseigner `Notes` avec les tests lances et les ecarts documentes.
 - [ ] Noter dans `Notes` si un commentaire d'en-tete de fonction a ete verifie, ajoute ou mis a jour.
 - [ ] Si une correction a ete faite, noter le fichier modifie.
-- [ ] Si un manque reste ouvert, noter l'action suivante.
+- [ ] Si un manque runtime, `apps/web` ou `renderer-three` reste ouvert, ne pas marquer `Valide`; noter l'action suivante.

@@ -120,6 +120,7 @@ export interface ClientRenderParticle {
  */
 export interface ClientRefreshFrame {
   view: ClientViewValues;
+  areabits: Uint8Array;
   entities: ClientRenderEntity[];
   lights: ClientDynamicLight[];
   particles: ClientRenderParticle[];
@@ -191,6 +192,7 @@ export function CL_BuildRefreshFrame(
 
   return {
     view,
+    areabits: new Uint8Array(runtime.cl.frame.areabits),
     entities,
     lights,
     particles,

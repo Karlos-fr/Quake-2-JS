@@ -391,6 +391,7 @@ export function createThreeGlWorldSceneAdapter(
         setViewOrigin(glRsurfRuntime, [vieworg[0], vieworg[1], vieworg[2]]);
         setWarpViewOrigin(glWarpRuntime, [vieworg[0], vieworg[1], vieworg[2]]);
         syncCurrentRefdef(bootstrapRefdef, refreshFrame, timeSeconds, vieworg);
+        setRefdefState(glRsurfRuntime, bootstrapRefdef.areabits, bootstrapRefdef.rdflags);
         setLightstyles(glRsurfRuntime, bootstrapRefdef.lightstyles.map((lightstyle) => ({ white: lightstyle.white })));
         const nextFrameCount = glRsurfRuntime.r_framecount + 1;
         setFrameCount(glRsurfRuntime, nextFrameCount);
@@ -421,6 +422,7 @@ function syncCurrentRefdef(
   refdef.viewangles = frame ? [...frame.view.viewangles] : [0, 0, 0];
   refdef.fov_x = frame?.view.fov_x ?? refdef.fov_x;
   refdef.blend = frame ? [...frame.view.blend] : [0, 0, 0, 0];
+  refdef.areabits = frame ? frame.areabits : null;
 
   for (const lightstyle of refdef.lightstyles) {
     lightstyle.rgb = [1, 1, 1];

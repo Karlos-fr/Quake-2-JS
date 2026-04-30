@@ -43,6 +43,7 @@ Il doit :
 - ouvrir le progress file si disponible;
 - choisir le prochain petit lot non valide;
 - appliquer toute la checklist au lot;
+- juger si le lot doit etre branche dans le runtime, `apps/web` ou `packages/renderer-three`, et pas seulement chercher les references existantes;
 - corriger uniquement les manques clairement rattaches au lot;
 - lancer les tests utiles;
 - mettre a jour la matrice;
@@ -92,6 +93,8 @@ L'etat utile doit etre dans la matrice et le progress file.
 - Les notes de matrice restent vides par defaut.
 - La colonne `Notes` ne doit contenir que les informations importantes : ecart volontaire, comportement partiel, cible renomme ou deplacee, test manquant, integration particuliere, raison d'un statut non valide.
 - Ne jamais marquer `Valide` sans preuve obtenue pendant la session.
+- Ne jamais marquer `Valide` si une integration runtime, `apps/web` ou `renderer-three` est attendue mais absente; utiliser `Partiel` ou `Manquant` et documenter l'action suivante.
+- Pour `renderer-three`, l'agent doit juger l'integration attendue a partir des sorties runtime visibles : modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene. L'absence de reference renderer ne suffit pas a dire `Non applicable`.
 
 ## Rapport attendu d'un agent
 
@@ -102,5 +105,6 @@ En fin de session, l'agent indique :
 - verdict;
 - corrections appliquees;
 - tests lances;
+- jugement d'integration runtime, `apps/web` et `renderer-three` : integre, non applicable justifie, ou manque ouvert;
 - matrice/progress mis a jour;
 - prochain lot recommande.

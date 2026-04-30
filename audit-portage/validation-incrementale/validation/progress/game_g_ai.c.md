@@ -29,3 +29,10 @@
 - Tests: harness inline `npx tsx -` OK pour ordre mouvement puis `FindTarget`, branches `idle_time` de `ai_walk`, retour avant `search` quand cible trouvee, mouvement d'animation de `ai_turn`, retour avant `M_ChangeYaw` quand cible trouvee et changement de yaw quand aucune cible; `npm run verify:g-ai` OK; `npm run typecheck` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `ai_charge` separement, en documentant/validant la garde TS `!self.enemy` absente du C; garder `range`/`visible`/`infront` ou `FindTarget` pour des sessions dediees.
+
+## Session 2026-04-30 - passe rapide post-validation
+
+- Controle cible des lignes deja `Valide`: `enemy_vis`, `enemy_infront`, `enemy_range`, `enemy_yaw`, `AI_SetSightClient`, `ai_move`, `ai_stand`, `ai_walk`, `ai_turn`.
+- Verdict: statut conserve. Branchement runtime confirme via `G_RunFrame` -> `AI_SetSightClient` et via `M_MoveFrame`/frames monstres -> fonctions `ai_*`; `apps/web` attend seulement le chemin serveur `SV_Frame`/`RunFrame` et ne contient pas de remplacement local; `packages/renderer-three` attend seulement les sorties visibles (`ClientRefreshFrame`/entites avec origin, angles, frame, modelindex) et ne doit pas integrer ces symboles AI directement.
+- Corrections TS: aucune. Matrice inchangee, aucune ligne `Valide` retrogradee.
+- Commandes: `rg` cible sur symboles `g_ai`, runtime, `apps/web`, `packages/renderer-three`; lectures ciblées de `g_ai.ts`, `g_main.ts`, `g_monster.ts`, `full-game-server-host.ts`, `full-game-render-loop.ts`, `refresh-entity-sync.ts`.

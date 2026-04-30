@@ -21,6 +21,7 @@
 - Aucune correction TS appliquee sur ce lot.
 - `ChasePrev` correspond au parcours C de la cible courante vers le client actif non-spectateur precedent; branchement via `g_cmds.ts`; aucune reference directe trouvee dans `apps/web` ou `packages/renderer-three` pour ce lot.
 - Aucune correction TS appliquee sur ce lot.
+- Passe rapide post-validation du 2026-04-30: controle limite aux lignes deja `Valide` (`UpdateChaseCam`, `ChaseNext`, `ChasePrev`). Branchement runtime confirme dans `packages/game`; pas de branchement direct attendu dans `apps/web`/`packages/renderer-three`, car les sorties visibles transitent par `playerstate`, `CL_CalcViewValues`/`ClientRefreshFrame`, puis camera/refdef renderer. Aucun statut degrade.
 
 ## Prochain lot recommande
 

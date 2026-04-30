@@ -1,5 +1,16 @@
 # Progress - Quake-2-master/game/g_combat.c
 
+## Correction des partielles
+
+- 2026-04-30: correction de l'integration visible `SpawnDamage` (deux lignes matrice).
+  - Correction appliquee: `packages/game/src/g_main.ts` ecrit maintenant `WriteDir(payload.dir)` pour les temp entities qui sont parsees cote client comme `position + direction` (`TE_BLOOD`, sparks, blaster/flechette et variantes proches), en plus des cas `TE_SPLASH`/`TE_LASER_SPARKS` deja specifiques.
+  - Checklist reprise: source C/TS deja comparee sur `SpawnDamage`; commentaire d'en-tete TS conserve; branchement runtime verifie via `SpawnDamage` -> evenement temp entity -> `flushRuntimeEngineEvents`; `apps/web` consomme ce flux via le client full-game; `renderer-three` reste consommateur indirect des effets client, sans branchement direct attendu.
+  - Tests lances: `npm run verify:g-main` (nouvelle assertion sur `TE_BLOOD` origin + dir), `npx tsx ./scripts/verify/quake2-g-combat.ts`, `npm run typecheck`.
+
+## Passe rapide post-validation
+
+- 2026-04-30: controle cible des lignes deja marquees `Valide` (`CanDamage`, `Killed`, `SpawnDamage` x2), sans revalidation comportementale complete C/TS. `CanDamage` et `Killed` restent coherents: branchement runtime via `T_RadiusDamage`/`T_Damage` et appels gameplay constates; aucune integration directe `apps/web` ou `renderer-three` attendue, les effets visibles passent par les etats/evenements client existants. `SpawnDamage` avait ete retrograde en `Partiel` pendant cette passe: le chemin local-gameplay-sync preservait bien `origin` et `dir`, mais le pont serveur/apps web (`g_main.ts`) serialisait les temp entities generiques avec seulement `origin`, alors que `CL_ParseTEnt` attend aussi une direction pour `TE_BLOOD`, `TE_SPARKS`, `TE_BULLET_SPARKS`, `TE_SCREEN_SPARKS` et `TE_SHIELD_SPARKS`; point corrige dans la section precedente.
+
 ## Dernier lot valide
 
 - 2026-04-30: `SpawnDamage`
@@ -42,4 +53,4 @@
 
 ## Decisions importantes
 
-- La matrice conserve le statut automatique `A redecouper`; seul le statut de validation manuel de `CanDamage` a ete avance.
+- La matrice conserve le statut automatique `A redecouper`; les deux lignes `SpawnDamage` ont ete repassees en `Valide` apres correction du pont serveur/apps web.

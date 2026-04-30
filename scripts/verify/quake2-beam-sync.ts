@@ -99,6 +99,7 @@ function createRefreshFrame(): ClientRefreshFrame {
       fov_x: 90,
       blend: [0, 0, 0, 0]
     },
+    areabits: new Uint8Array([0xff]),
     entities: [],
     lights: [],
     particles: [],
