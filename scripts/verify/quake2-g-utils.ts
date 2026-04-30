@@ -12,7 +12,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { MOD_TELEFRAG } from "../../packages/game/src/g-local.js";
+import { MOD_TELEFRAG } from "../../packages/game/src/g_local.js";
 import {
   G_CopyString,
   G_Find,

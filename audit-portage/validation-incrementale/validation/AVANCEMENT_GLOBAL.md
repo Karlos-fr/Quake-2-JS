@@ -37,15 +37,15 @@ Statuts possibles : `A demarrer`, `En cours`, `Bloque`, `Partiel`, `Termine`, `A
 | `Quake-2-master/client/snd_mix.c` | [`client_snd_mix.c.md`](matrices/client_snd_mix.c.md) |  | A demarrer | 41 | 0 | 0 | 0 | 0 | 0 |  | Normale |
 | `Quake-2-master/client/sound.h` | [`client_sound.h.md`](matrices/client_sound.h.md) |  | A demarrer | 13 | 0 | 0 | 0 | 0 | 0 |  | Normale |
 | `Quake-2-master/client/vid.h` | [`client_vid.h.md`](matrices/client_vid.h.md) |  | A demarrer | 10 | 0 | 0 | 0 | 0 | 0 |  | Normale |
-| `Quake-2-master/game/g_ai.c` | [`game_g_ai.c.md`](matrices/game_g_ai.c.md) | [`game_g_ai.c.md`](progress/game_g_ai.c.md) | En cours | 48 | 6 | 0 | 0 | 0 | 3 | `ai_stand`, puis `ai_walk`/`ai_charge`/`ai_turn` si petit | Haute |
-| `Quake-2-master/game/g_chase.c` | [`game_g_chase.c.md`](matrices/game_g_chase.c.md) | [`game_g_chase.c.md`](progress/game_g_chase.c.md) | En cours | 14 | 1 | 0 | 0 | 0 | 4 | `ChaseNext` et locales `i`/`e` | Haute |
-| `Quake-2-master/game/g_cmds.c` | [`game_g_cmds.c.md`](matrices/game_g_cmds.c.md) | [`game_g_cmds.c.md`](progress/game_g_cmds.c.md) | En cours | 74 | 6 | 0 | 0 | 0 | 0 | `SelectNextItem`, `SelectPrevItem`, `ValidateSelectedItem` | Haute |
-| `Quake-2-master/game/g_combat.c` | [`game_g_combat.c.md`](matrices/game_g_combat.c.md) | [`game_g_combat.c.md`](progress/game_g_combat.c.md) | En cours | 36 | 1 | 0 | 0 | 0 | 0 | `Killed` | Haute |
-| `Quake-2-master/game/g_func.c` | [`game_g_func.c.md`](matrices/game_g_func.c.md) |  | A demarrer | 150 | 0 | 0 | 0 | 0 | 0 |  | Haute |
-| `Quake-2-master/game/g_items.c` | [`game_g_items.c.md`](matrices/game_g_items.c.md) |  | A demarrer | 109 | 0 | 0 | 0 | 0 | 0 |  | Haute |
-| `Quake-2-master/game/g_local.h` | [`game_g_local.h.md`](matrices/game_g_local.h.md) |  | A demarrer | 620 | 0 | 0 | 0 | 0 | 0 |  | Haute |
-| `Quake-2-master/game/g_main.c` | [`game_g_main.c.md`](matrices/game_g_main.c.md) |  | A demarrer | 75 | 0 | 0 | 0 | 0 | 0 |  | Haute |
-| `Quake-2-master/game/g_misc.c` | [`game_g_misc.c.md`](matrices/game_g_misc.c.md) |  | A demarrer | 119 | 0 | 0 | 0 | 0 | 0 |  | Haute |
+| `Quake-2-master/game/g_ai.c` | [`game_g_ai.c.md`](matrices/game_g_ai.c.md) | [`game_g_ai.c.md`](progress/game_g_ai.c.md) | En cours | 48 | 7 | 0 | 0 | 0 | 3 | `ai_walk` et `ai_turn`; garder `ai_charge` a part | Haute |
+| `Quake-2-master/game/g_chase.c` | [`game_g_chase.c.md`](matrices/game_g_chase.c.md) | [`game_g_chase.c.md`](progress/game_g_chase.c.md) | En cours | 14 | 2 | 0 | 0 | 0 | 6 | `ChasePrev` et locales `i`/`e` | Haute |
+| `Quake-2-master/game/g_cmds.c` | [`game_g_cmds.c.md`](matrices/game_g_cmds.c.md) | [`game_g_cmds.c.md`](progress/game_g_cmds.c.md) | En cours | 74 | 11 | 0 | 0 | 0 | 0 | `Cmd_Give_f` et temporaires associes | Haute |
+| `Quake-2-master/game/g_combat.c` | [`game_g_combat.c.md`](matrices/game_g_combat.c.md) | [`game_g_combat.c.md`](progress/game_g_combat.c.md) | En cours | 36 | 2 | 0 | 0 | 0 | 0 | `SpawnDamage`, puis `CheckPowerArmor` | Haute |
+| `Quake-2-master/game/g_func.c` | [`game_g_func.c.md`](matrices/game_g_func.c.md) | [`game_g_func.c.md`](progress/game_g_func.c.md) | En cours | 150 | 12 | 0 | 0 | 0 | 0 | `Move_Done`, `Move_Final`, `Move_Begin` | Haute |
+| `Quake-2-master/game/g_items.c` | [`game_g_items.c.md`](matrices/game_g_items.c.md) | [`game_g_items.c.md`](progress/game_g_items.c.md) | En cours | 109 | 1 | 0 | 0 | 0 | 0 | `Use_Weapon` | Haute |
+| `Quake-2-master/game/g_local.h` | [`game_g_local.h.md`](matrices/game_g_local.h.md) | [`game_g_local.h.md`](progress/game_g_local.h.md) | En cours | 620 | 9 | 0 | 0 | 0 | 1 | `SPAWNFLAG_NOT_EASY` a `SPAWNFLAG_NOT_COOP` | Haute |
+| `Quake-2-master/game/g_main.c` | [`game_g_main.c.md`](matrices/game_g_main.c.md) | [`game_g_main.c.md`](progress/game_g_main.c.md) | En cours | 75 | 1 | 2 | 0 | 0 | 0 | `g_edicts`, puis cvars `deathmatch`/`coop`/`dmflags`/`skill` | Haute |
+| `Quake-2-master/game/g_misc.c` | [`game_g_misc.c.md`](matrices/game_g_misc.c.md) | [`game_g_misc.c.md`](progress/game_g_misc.c.md) | En cours | 119 | 2 | 0 | 0 | 0 | 0 | `VelocityForDamage`, `VectorScale`, `ClipGibVelocity` | Haute |
 | `Quake-2-master/game/g_monster.c` | [`game_g_monster.c.md`](matrices/game_g_monster.c.md) |  | A demarrer | 45 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/g_phys.c` | [`game_g_phys.c.md`](matrices/game_g_phys.c.md) |  | A demarrer | 64 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/g_save.c` | [`game_g_save.c.md`](matrices/game_g_save.c.md) |  | A demarrer | 52 | 0 | 0 | 0 | 0 | 0 |  | Haute |
@@ -70,7 +70,7 @@ Statuts possibles : `A demarrer`, `En cours`, `Bloque`, `Partiel`, `Termine`, `A
 | `Quake-2-master/game/m_boss32.h` | [`game_m_boss32.h.md`](matrices/game_m_boss32.h.md) |  | A demarrer | 492 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/m_brain.c` | [`game_m_brain.c.md`](matrices/game_m_brain.c.md) |  | A demarrer | 92 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/m_brain.h` | [`game_m_brain.h.md`](matrices/game_m_brain.h.md) |  | A demarrer | 223 | 0 | 0 | 0 | 0 | 0 |  | Haute |
-| `Quake-2-master/game/m_chick.c` | [`game_m_chick.c.md`](matrices/game_m_chick.c.md) | [`game_m_chick.c.md`](progress/game_m_chick.c.md) | En cours | 115 | 36 | 0 | 0 | 0 | 0 | stand/start-run/run/walk tables | Haute |
+| `Quake-2-master/game/m_chick.c` | [`game_m_chick.c.md`](matrices/game_m_chick.c.md) | [`game_m_chick.c.md`](progress/game_m_chick.c.md) | En cours | 115 | 52 | 0 | 0 | 0 | 0 | pain tables et `chick_pain` | Haute |
 | `Quake-2-master/game/m_chick.h` | [`game_m_chick.h.md`](matrices/game_m_chick.h.md) |  | A demarrer | 289 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/m_flash.c` | [`game_m_flash.c.md`](matrices/game_m_flash.c.md) |  | A demarrer | 2 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/m_flipper.c` | [`game_m_flipper.c.md`](matrices/game_m_flipper.c.md) |  | A demarrer | 61 | 0 | 0 | 0 | 0 | 0 |  | Haute |

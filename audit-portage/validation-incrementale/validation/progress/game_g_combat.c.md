@@ -2,6 +2,16 @@
 
 ## Dernier lot valide
 
+- 2026-04-30: `Killed`
+  - Source comparee: `Quake-2-master/game/g_combat.c`
+  - Cible comparee: `packages/game/src/g_combat.ts`
+  - Correction appliquee: le bookkeeping monstre (`killed_monsters`, score coop, owner medic) est maintenant execute avant le retour special `MOVETYPE_PUSH` / `MOVETYPE_STOP` / `MOVETYPE_NONE`, comme dans le C original.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, `Behavior`, `Porting notes`; l'ecart `monster_death_use` via hook reste documente.
+  - Branchement runtime verifie: `Killed` est appele par `T_Damage`; `T_Damage` est appele par `T_RadiusDamage` et par les flux armes/runtime references dans `packages/game/src`.
+  - `apps/web`: aucune reference directe trouvee pour `Killed`; pas de remplacement de logique gameplay constate pour ce lot.
+  - `renderer-three`: aucune reference directe trouvee; non applicable pour ce lot.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; verification inline `Killed` couvrant le bookkeeping avant retour `MOVETYPE_NONE`; `npm run typecheck`.
+
 - 2026-04-30: `CanDamage`
   - Source comparee: `Quake-2-master/game/g_combat.c`
   - Cible comparee: `packages/game/src/g_combat.ts`
@@ -14,7 +24,7 @@
 
 ## Prochain lot recommande
 
-- `Killed` seul, ou `Killed` + son bookkeeping minimal si la comparaison reste courte.
+- `SpawnDamage` seul, puis `CheckPowerArmor` avec ses variables locales associees si le lot reste court.
 
 ## Blocages
 

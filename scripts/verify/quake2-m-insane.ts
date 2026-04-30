@@ -25,7 +25,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { FL_FLY, FL_NO_KNOCKBACK } from "../../packages/game/src/g-local.js";
+import { FL_FLY, FL_NO_KNOCKBACK } from "../../packages/game/src/g_local.js";
 import {
   FRAME_cr_pain10,
   FRAME_crawl1,

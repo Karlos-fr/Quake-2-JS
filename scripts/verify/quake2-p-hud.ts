@@ -24,7 +24,7 @@ import {
   STAT_SPECTATOR
 } from "../../packages/qcommon/src/index.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
-import { FL_POWER_ARMOR, ITEM_INDEX } from "../../packages/game/src/g-local.js";
+import { FL_POWER_ARMOR, ITEM_INDEX } from "../../packages/game/src/g_local.js";
 import {
   BeginIntermission,
   Cmd_Help_f,

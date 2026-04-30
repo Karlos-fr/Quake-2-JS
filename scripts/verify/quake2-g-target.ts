@@ -23,7 +23,7 @@ import {
   type trace_t,
   type vec3_t
 } from "../../packages/qcommon/src/index.js";
-import { svc_temp_entity } from "../../packages/game/src/g-local.js";
+import { svc_temp_entity } from "../../packages/game/src/g_local.js";
 import {
   FRAMETIME,
   SVF_MONSTER,

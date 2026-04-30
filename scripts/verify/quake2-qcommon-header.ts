@@ -143,7 +143,7 @@ import {
   clc_ops_e,
   svc_ops_e
 } from "../../packages/qcommon/src/protocol.js";
-import { createEntityState, type usercmd_t } from "../../packages/qcommon/src/q-shared.js";
+import { createEntityState, type usercmd_t } from "../../packages/qcommon/src/q_shared.js";
 
 assert.equal(VERSION, 3.19, "VERSION mismatch");
 assert.equal(PORT_MASTER, 27900, "PORT_MASTER mismatch");

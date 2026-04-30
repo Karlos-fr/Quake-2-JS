@@ -22,7 +22,7 @@ import {
   createRuntimeEntity
 } from "../../packages/game/src/index.js";
 import { MASK_MONSTERSOLID } from "../../packages/qcommon/src/index.js";
-import { FL_NOTARGET } from "../../packages/game/src/g-local.js";
+import { FL_NOTARGET } from "../../packages/game/src/g_local.js";
 import {
   monster_death_use,
   monster_start,

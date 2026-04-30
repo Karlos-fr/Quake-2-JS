@@ -10,8 +10,8 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/g_misc.c` | function | `Use_Areaportal` | `packages/game/src/g_misc.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/index.ts` | `Use_Areaportal` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_func_areaportal` | `packages/game/src/g_misc.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/index.ts` | `SP_func_areaportal` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `Use_Areaportal` | `packages/game/src/g_misc.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/index.ts` | `Use_Areaportal` | Valide | A redecouper | Correction: appel `CM_SetAreaPortalState`; commentaires verifies/ajoutes; tests session: `npm run verify:g-misc`, `npm run verify:g-spawn`, `npm run typecheck`, controle ad hoc areaportal. |
+| `Quake-2-master/game/g_misc.c` | function | `SP_func_areaportal` | `packages/game/src/g_misc.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/index.ts` | `SP_func_areaportal` | Valide | A redecouper | Commentaire ajoute; branchement spawn `func_areaportal` verifie dans `g_spawn.ts`; tests session: `npm run verify:g-misc`, `npm run verify:g-spawn`, `npm run typecheck`, controle ad hoc areaportal. |
 | `Quake-2-master/game/g_misc.c` | function | `VelocityForDamage` | `packages/game/src/g_misc.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/index.ts` | `VelocityForDamage` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `VectorScale` | `packages/game/src/g_misc.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/index.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `ClipGibVelocity` | `packages/game/src/g_misc.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/index.ts` | `ClipGibVelocity` | A verifier | A redecouper |  |

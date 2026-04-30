@@ -441,11 +441,6 @@ export function Killed(
 
   targ.enemy = attacker;
 
-  if ((targ.movetype === MOVETYPE_PUSH) || (targ.movetype === MOVETYPE_STOP) || (targ.movetype === MOVETYPE_NONE)) {
-    targ.die?.(targ, inflictor, attacker, damage, runtime, point);
-    return;
-  }
-
   if ((targ.svflags & SVF_MONSTER) !== 0 && targ.deadflag !== DEAD_DEAD) {
     if ((targ.monsterinfo.aiflags & AI_GOOD_GUY) === 0) {
       incrementKilledMonsters(runtime);
@@ -456,7 +451,14 @@ export function Killed(
         targ.owner = attacker;
       }
     }
+  }
 
+  if ((targ.movetype === MOVETYPE_PUSH) || (targ.movetype === MOVETYPE_STOP) || (targ.movetype === MOVETYPE_NONE)) {
+    targ.die?.(targ, inflictor, attacker, damage, runtime, point);
+    return;
+  }
+
+  if ((targ.svflags & SVF_MONSTER) !== 0 && targ.deadflag !== DEAD_DEAD) {
     targ.touch = undefined;
     hooks.monsterDeathUse?.(targ, runtime);
   }

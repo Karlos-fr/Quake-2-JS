@@ -36,7 +36,7 @@ import { findGameSaveFunction, findGameSaveMove } from "../../packages/game/src/
 import {
   POWER_ARMOR_NONE,
   POWER_ARMOR_SCREEN
-} from "../../packages/game/src/g-local.js";
+} from "../../packages/game/src/g_local.js";
 import {
   FRAME_attak201,
   FRAME_duck01,

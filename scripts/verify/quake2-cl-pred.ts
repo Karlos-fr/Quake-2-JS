@@ -32,7 +32,7 @@ import {
   type cmodel_t
 } from "../../packages/qcommon/src/index.js";
 import type { csurface_t, trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_MONSTER } from "../../packages/qcommon/src/q-shared.js";
+import { CONTENTS_MONSTER } from "../../packages/qcommon/src/q_shared.js";
 
 const DEFAULT_PAK_PATH = path.join(process.cwd(), "Quake 2", "baseq2", "pak0.pak");
 const MAP_PATH = "maps/base1.bsp";

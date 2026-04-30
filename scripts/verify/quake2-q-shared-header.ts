@@ -117,7 +117,7 @@ import {
   AngleVectors,
   createEntityState,
   createPlayerState
-} from "../../packages/qcommon/src/q-shared.js";
+} from "../../packages/qcommon/src/q_shared.js";
 import { CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO } from "../../packages/qcommon/src/cvar.js";
 
 assert.equal(LAST_VISIBLE_CONTENTS, 64, "LAST_VISIBLE_CONTENTS mismatch");

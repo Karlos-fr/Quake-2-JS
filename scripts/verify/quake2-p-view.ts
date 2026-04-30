@@ -24,7 +24,7 @@ import {
   YAW,
   entity_event_t
 } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_LAVA, CONTENTS_WATER } from "../../packages/qcommon/src/q-shared.js";
+import { CONTENTS_LAVA, CONTENTS_WATER } from "../../packages/qcommon/src/q_shared.js";
 import {
   ANIM_BASIC,
   FL_INWATER,
@@ -35,7 +35,7 @@ import {
   MOD_SLIME,
   MOD_WATER,
   MOVETYPE_NOCLIP
-} from "../../packages/game/src/g-local.js";
+} from "../../packages/game/src/g_local.js";
 import { FRAME_crwalk1, FRAME_jump1, FRAME_run1 } from "../../packages/game/src/m_player.js";
 import {
   ClientEndServerFrame,

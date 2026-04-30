@@ -12,7 +12,7 @@
 import { strict as assert } from "node:assert";
 
 import { CS_STATUSBAR, DF_SAME_LEVEL, MZ_BLASTER, type cvar_t } from "../../packages/qcommon/src/index.js";
-import { TAG_GAME, TAG_LEVEL, svc_muzzleflash } from "../../packages/game/src/g-local.js";
+import { TAG_GAME, TAG_LEVEL, svc_muzzleflash } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
 import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, createGameMainContext } from "../../packages/game/src/g_main.js";

@@ -32,7 +32,7 @@ import {
   damage_t,
   movetype_t,
   world
-} from "../../packages/game/src/g-local.js";
+} from "../../packages/game/src/g_local.js";
 import { GetItemByIndex } from "../../packages/game/src/g_items.js";
 import { createRuntimeEntity } from "../../packages/game/src/runtime.js";
 

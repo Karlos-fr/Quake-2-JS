@@ -20,7 +20,7 @@ import {
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
-import { AI_DUCKED, AI_STAND_GROUND, FL_NO_KNOCKBACK, FL_TEAMSLAVE, SVF_MONSTER, damage_t } from "../../packages/game/src/g-local.js";
+import { AI_DUCKED, AI_STAND_GROUND, FL_NO_KNOCKBACK, FL_TEAMSLAVE, SVF_MONSTER, damage_t } from "../../packages/game/src/g_local.js";
 import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import {
   SP_turret_base,

@@ -29,7 +29,7 @@ import {
   type GameMonsterMove,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { FL_FLY } from "../../packages/game/src/g-local.js";
+import { FL_FLY } from "../../packages/game/src/g_local.js";
 import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import { findGameSaveFunction, findGameSaveMove } from "../../packages/game/src/g_save.js";
 import {

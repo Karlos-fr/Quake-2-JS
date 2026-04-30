@@ -29,7 +29,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { FL_SWIM } from "../../packages/game/src/g-local.js";
+import { FL_SWIM } from "../../packages/game/src/g_local.js";
 import {
   FRAME_flpbit01,
   FRAME_flpbit20,

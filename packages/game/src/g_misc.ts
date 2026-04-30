@@ -20,6 +20,7 @@ import {
   ATTN_NORM,
   CHAN_BODY,
   CHAN_VOICE,
+  CM_SetAreaPortalState,
   CS_LIGHTS,
   EF_ANIM_ALL,
   EF_ANIM_ALLFAST,
@@ -157,6 +158,19 @@ function findFirstByClassname(runtime: GameRuntime, classname: string): GameEnti
   return runtime.entities.find((entity) => entity.inuse && entity.classname === classname) ?? null;
 }
 
+/**
+ * Original name: Use_Areaportal
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Toggles the areaportal state and applies it to the collision area's portal table.
+ *
+ * Porting notes:
+ * - The original `gi.SetAreaPortalState` call is mapped to `CM_SetAreaPortalState` through the runtime collision world.
+ * - Harness runtimes without collision keep only the entity count/log side effects.
+ */
 export function Use_Areaportal(
   ent: GameEntity,
   _other: GameEntity | null,
@@ -164,6 +178,9 @@ export function Use_Areaportal(
   runtime: GameRuntime
 ): void {
   ent.count ^= 1;
+  if (runtime.collision) {
+    CM_SetAreaPortalState(runtime.collision.world, ent.style, ent.count !== 0);
+  }
   runtime.log({
     kind: "use",
     message: `${ent.classname} style=${ent.style} portal=${ent.count}`,
@@ -172,6 +189,18 @@ export function Use_Areaportal(
   });
 }
 
+/**
+ * Original name: SP_func_areaportal
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Installs the areaportal use callback and always starts the portal closed.
+ *
+ * Porting notes:
+ * - `Use_Areaportal` updates the qcommon collision portal state when a collision world is attached.
+ */
 export function SP_func_areaportal(ent: GameEntity, _runtime: GameRuntime): void {
   ent.use = Use_Areaportal;
   ent.count = 0;

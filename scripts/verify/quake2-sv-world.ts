@@ -21,7 +21,7 @@ import {
   createServerWorldProcedures
 } from "../../packages/server/src/index.js";
 import { createCollisionWorld } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_MONSTER } from "../../packages/qcommon/src/q-shared.js";
+import { CONTENTS_MONSTER } from "../../packages/qcommon/src/q_shared.js";
 import { createRuntimeEntity, SOLID_BBOX, AREA_SOLID, type game_export_t } from "../../packages/game/src/index.js";
 
 const DEFAULT_PAK_PATH = path.join(process.cwd(), "Quake 2", "baseq2", "pak0.pak");

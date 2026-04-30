@@ -13,7 +13,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { findPakEntry, parsePak, readPakEntryData } from "../../packages/formats/src/pak.js";
-import { CONTENTS_MONSTER, CONTENTS_SOLID } from "../../packages/qcommon/src/q-shared.js";
+import { CONTENTS_MONSTER, CONTENTS_SOLID } from "../../packages/qcommon/src/q_shared.js";
 import { parseBsp, type darea_t } from "../../packages/formats/src/bsp.js";
 import {
   CM_LoadMap,

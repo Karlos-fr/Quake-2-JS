@@ -12,7 +12,7 @@
 import { strict as assert } from "node:assert";
 
 import { DF_QUAD_DROP } from "../../packages/qcommon/src/index.js";
-import { DEAD_DEAD, DROPPED_PLAYER_ITEM, damage_t } from "../../packages/game/src/g-local.js";
+import { DEAD_DEAD, DROPPED_PLAYER_ITEM, damage_t } from "../../packages/game/src/g_local.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
 import {
   TossClientWeapon,

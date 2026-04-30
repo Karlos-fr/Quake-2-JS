@@ -4,8 +4,8 @@
 
 - Matrice: `validation/matrices/game_m_chick.c.md`
 - Statut global: En cours
-- Dernier lot valide: sons, fidget et sight
-- Prochain lot recommande: stand/start-run/run/walk tables (`chick_frames_stand`, `chick_move_stand`, `chick_frames_start_run`, `chick_move_start_run`, `chick_frames_run`, `chick_move_run`, `chick_frames_walk`, `chick_move_walk`)
+- Dernier lot valide: stand/start-run/run/walk tables
+- Prochain lot recommande: pain tables et `chick_pain` (`chick_frames_pain1`, `chick_move_pain1`, `chick_frames_pain2`, `chick_move_pain2`, `chick_frames_pain3`, `chick_move_pain3`, `chick_pain`)
 
 ## Lots traites
 
@@ -14,6 +14,7 @@
 | transitions simples | `chick_stand`, `chick_walk`, `chick_attack1`, `chick_slash`, `chick_melee`, `chick_attack` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `typecheck` | Headers ajoutes. |
 | branches run/re-attaque | `chick_run`, `chick_rerocket`, `chick_reslash` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `typecheck` | Garde TS `self.enemy` documentee pour `chick_rerocket` et `chick_reslash`. |
 | sons, fidget et sight | `sound_*`, `ChickMoan`, `chick_frames_fidget`, `chick_move_fidget`, `chick_fidget`, `chick_sight` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `typecheck` | Headers completes pour `ChickMoan`, `chick_fidget` et `chick_sight`. |
+| stand/start-run/run/walk tables | `chick_frames_stand`, `chick_move_stand`, `chick_frames_start_run`, `chick_move_start_run`, `chick_frames_run`, `chick_move_run`, `chick_frames_walk`, `chick_move_walk` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `typecheck` | Aucune correction TS requise. |
 
 ## Blocages
 

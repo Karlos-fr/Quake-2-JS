@@ -12,7 +12,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { AI_NOSTEP, FL_FLY, FL_PARTIALGROUND } from "../../packages/game/src/g-local.js";
+import { AI_NOSTEP, FL_FLY, FL_PARTIALGROUND } from "../../packages/game/src/g_local.js";
 import {
   M_ChangeYaw,
   M_CheckBottom,

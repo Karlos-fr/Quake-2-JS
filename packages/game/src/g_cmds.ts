@@ -162,6 +162,8 @@ export function OnSameTeam(ent1: GameEntity, ent2: GameEntity, runtime: GameRunt
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Advance the client's selected inventory slot to the next usable item matching `itflags`, or chase the next target while spectating.
+ * Porting notes: Preserves the MAX_ITEMS wraparound scan and uses the explicit runtime only for the ChaseNext side effect.
  */
 export function SelectNextItem(ent: GameEntity, itflags: number, runtime: GameRuntime): void {
   const cl = ent.client;
@@ -200,6 +202,8 @@ export function SelectNextItem(ent: GameEntity, itflags: number, runtime: GameRu
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Move the client's selected inventory slot to the previous usable item matching `itflags`, or chase the previous target while spectating.
+ * Porting notes: Preserves the reverse MAX_ITEMS wraparound scan and uses the explicit runtime only for the ChasePrev side effect.
  */
 export function SelectPrevItem(ent: GameEntity, itflags: number, runtime: GameRuntime): void {
   const cl = ent.client;
@@ -238,6 +242,8 @@ export function SelectPrevItem(ent: GameEntity, itflags: number, runtime: GameRu
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Keep the current selected inventory slot when it still has an item, otherwise select the next usable item.
+ * Porting notes: The explicit non-negative guard avoids a JavaScript negative array lookup while keeping the intended fallback to SelectNextItem.
  */
 export function ValidateSelectedItem(ent: GameEntity, runtime: GameRuntime): void {
   const cl = ent.client;
