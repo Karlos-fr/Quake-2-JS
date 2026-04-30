@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-04-30: callbacks de plateforme `plat_go_up`, `plat_blocked`, `Use_Plat`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:395-433` avec `packages/game/src/g_func.ts:990-1048`.
+- Correction appliquee: `plat_blocked` ne reduit plus les effets a un log/free local; il appelle `T_Damage` avec 100000 pour les bloqueurs non-monstre/non-client, declenche `BecomeExplosion1` si l'entite est encore `inuse`, applique `T_Damage` avec `self.dmg` aux monstres/clients, puis inverse le mouvement selon `STATE_UP`/`STATE_DOWN`.
+- Effets verifies: `plat_go_up` conserve sons start/middle via `startMoverLoop`, STATE_UP et `Move_Calc(... start_origin, plat_hit_top)`; `Use_Plat` retourne si `think` est deja actif puis descend via `plat_go_down`; `plat_blocked` suit les branches C de dommages/explosion et inversion.
+- Branchement: `plat_go_up` est appelee par `Touch_Plat_Center` et par `plat_blocked`; `plat_blocked` est affectee a `ent.blocked` par `SP_func_plat` puis appelee par le flux push de `g_phys`; `Use_Plat` est affectee a `ent.use` pour les plateformes ciblees et appelee par les triggers/G_UseTargets. Execution via `G_RunFrame`/`G_RunEntity`/`SV_RunThink` pour les thinks programmes.
+- Integration: aucune compensation gameplay dans `apps/web`; les sons gameplay et temp entities sont produits par le runtime. `packages/renderer-three` n'a pas a porter cette logique et consomme les poses/snapshots de brush models; l'explosion devient une temp entity runtime.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:full-game:audio-routing` bloque sur import manquant `packages/client/src/types.js` hors lot.
+
 - 2026-04-30: callbacks de plateforme `plat_go_down`, `plat_hit_top`, `plat_hit_bottom` et doublon matrice `plat_go_down`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:356-392` avec `packages/game/src/g_func.ts:933-987`.
 - Effets verifies: sons start/end via `CHAN_NO_PHS_ADD + CHAN_VOICE`/`ATTN_STATIC`, respect `FL_TEAMSLAVE`, `s.sound`, transitions `STATE_DOWN`/`STATE_TOP`/`STATE_BOTTOM`, `think = plat_go_down`, `nextthink = level.time + 3`, `Move_Calc(... end_origin, plat_hit_bottom)`.
@@ -38,7 +46,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `plat_go_up`, `plat_blocked`, `Use_Plat`.
+- Valider le bloc suivant sans elargir: `Touch_Plat_Center`, `plat_spawn_inside_trigger`, puis variable locale matrice `trigger` si elle est confirmee comme faux global.
 
 ## Blocages
 

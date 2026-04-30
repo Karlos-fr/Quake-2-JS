@@ -30,6 +30,7 @@ import {
 } from "../../qcommon/src/index.js";
 import { T_Damage } from "./g_combat.js";
 import { damage_t, MOD_CRUSH } from "./g_local.js";
+import { BecomeExplosion1 } from "./g_misc.js";
 import { G_Find, G_PickTarget, G_SetMovedir, G_UseTargets, KillBox, vtos } from "./g_utils.js";
 import {
   DOOR_CRUSHER,
@@ -1009,33 +1010,18 @@ export function plat_go_up(self: GameEntity, runtime: GameRuntime): void {
  * Fidelity level: Close
  *
  * Behavior:
- * - Reacts to a blocked platform by damaging or removing obstruction proxies and reversing the platform.
- *
- * Porting notes:
- * - Damage and explosion side effects are reduced to runtime logging plus entity freeing for non-player blockers.
+ * - Damages or explodes a platform blocker, then reverses the platform while moving.
  */
 export function plat_blocked(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if ((other.svflags & SVF_MONSTER) === 0 && !other.client) {
-    runtime.log({
-      kind: "warning",
-      message: `${getRuntimeEntityLabel(self)} plat blocked by non-client ${getRuntimeEntityLabel(other)}`,
-      entityIndex: self.index,
-      entityClassname: self.classname,
-      otherIndex: other.index,
-      otherClassname: other.classname
-    });
-    freeGameEntity(runtime, other);
+    T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], 100000, 1, 0, MOD_CRUSH, runtime);
+    if (other.inuse) {
+      BecomeExplosion1(other, runtime);
+    }
     return;
   }
 
-  runtime.log({
-    kind: "warning",
-    message: `${getRuntimeEntityLabel(self)} plat blocked by ${getRuntimeEntityLabel(other)}`,
-    entityIndex: self.index,
-    entityClassname: self.classname,
-    otherIndex: other.index,
-    otherClassname: other.classname
-  });
+  T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], self.dmg, 1, 0, MOD_CRUSH, runtime);
 
   if (self.moveinfo.state === STATE_UP) {
     plat_go_down(self, runtime);

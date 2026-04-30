@@ -8,6 +8,23 @@
 
 ## Dernier lot traite
 
+- 2026-04-30: lot flags `FL_IMMUNE_LASER`, `FL_GODMODE`, `FL_NOTARGET`.
+- Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public.
+- Valeurs H/TS comparees et conformes:
+  - `FL_IMMUNE_LASER = 0x00000004`
+  - `FL_GODMODE = 0x00000010`
+  - `FL_NOTARGET = 0x00000020`
+- Cible declarative verifiee: `packages/game/src/g_local.ts` et constantes miroir `packages/game/src/runtime.ts`; export public corrige dans `packages/game/src/index.ts` pour `FL_GODMODE` et `FL_NOTARGET`, puis verifie avec `FL_IMMUNE_LASER`.
+- Runtime:
+  - `FL_IMMUNE_LASER` est consomme par `g_target`/`g_weapon` pour ignorer les degats laser/BFG et pose par `m_boss2`.
+  - `FL_GODMODE` est consomme par `g_cmds`, `g_combat`, `p_view`, `p_client` et `g_misc` pour toggle/protection/sauvegarde/feedback.
+  - `FL_NOTARGET` est consomme par `g_cmds`, `g_ai`, `g_monster`, `p_weapon` et `p_client` pour toggle, acquisition cible, activation monstre, bruit joueur et savedFlags.
+- apps/web: aucune reference directe; pas d'integration web directe attendue pour ces bits `edict->flags`, le comportement passe par le runtime game et ses sorties existantes.
+- renderer-three: aucune reference directe; pas d'integration renderer directe attendue. Ces flags ne produisent pas seuls des donnees de scene; ils modifient les decisions gameplay avant emission d'entites/evenements visibles.
+- Commentaires d'en-tete: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; pas de fonction dans ce lot.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports `g_local.ts`/`index.ts`; `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-cmds` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK (`verify:g-combat` absent du package); `npm run verify:g-monster` OK; `npm run verify:m-boss2` OK; `npm run verify:p-view` OK; `npm run verify:p-weapon` OK; `npm run verify:p-client` OK; `npm run verify:g-misc` OK; `npm run verify:g-save` OK; `npm run typecheck` OK.
+- Test bloque non lie au lot: `npm run verify:g-target` echoue avant les assertions `target_laser` sur `target_goal must stop CD track when all goals found`, avec une configstring son `misc/secret.wav` supplementaire.
+
 - 2026-04-30: lot premiers flags `FL_*`: `FL_FLY`, `FL_SWIM`, `FL_INWATER`.
 - Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public.
 - Valeurs H/TS comparees et conformes:
@@ -73,8 +90,9 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain petit lot `FL_*`: `FL_IMMUNE_LASER`, `FL_GODMODE`, `FL_NOTARGET` si coherent.
+- Continuer avec le prochain petit lot `FL_*`: `FL_IMMUNE_SLIME`, `FL_IMMUNE_LAVA`, `FL_PARTIALGROUND` si coherent.
 
 ## Blocages
 
+- `npm run verify:g-target` echoue dans un cas `target_goal`/configstring son avant les assertions `target_laser`; a investiguer dans le lot `g_target` dedie ou avant de s'appuyer sur ce script comme preuve complete de `FL_IMMUNE_LASER`.
 - Aucun blocage sur le lot `SPAWNFLAG_NOT_*` apres correction coordinateur de `SpawnEntities`.

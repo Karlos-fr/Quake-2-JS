@@ -13,6 +13,16 @@
 
 ## Dernier lot valide
 
+- 2026-04-30: `CheckTeamDamage`
+  - Source comparee: `Quake-2-master/game/g_combat.c`.
+  - Cible comparee: `packages/game/src/g_combat.ts`.
+  - Correction appliquee: aucune. Le C original garde le bloc reel en FIXME/commentaire et retourne toujours `false`; le TS conserve ce stub strict, avec arguments neutralises par `void`.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`.
+  - Branchement runtime verifie: `T_Damage` appelle `CheckTeamDamage` seulement hors `DAMAGE_NO_PROTECTION`; le stub ne bloque jamais les degats, comme le C. La logique effective de friendly fire reste le bloc precedent `OnSameTeam`/`DF_NO_FRIENDLY_FIRE` de `T_Damage`.
+  - `apps/web`: aucune logique parallele constatee et aucun branchement direct attendu; ce helper ne produit pas de sortie navigateur, il influence uniquement l'absence de retour anticipe dans le runtime combat.
+  - `renderer-three`: aucune integration directe attendue; le helper ne produit ni temp entity, ni etat de modele/frame/particule/dlight, et les effets visibles restent ceux de `T_Damage`/`SpawnDamage`.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; verification inline couvrant retour `false`, non-blocage par defaut dans `T_Damage`, et absence d'appel sous `DAMAGE_NO_PROTECTION`; `npm run typecheck`.
+
 - 2026-04-30: `M_ReactToDamage`
   - Source comparee: `Quake-2-master/game/g_combat.c`
   - Cible comparee: `packages/game/src/g_combat.ts`; dependances directes `visible` et `FoundTarget` verifiees dans `packages/game/src/g_ai.ts`.
@@ -75,7 +85,7 @@
 
 ## Prochain lot recommande
 
-- `CheckTeamDamage`, puis debut de `T_Damage` avec ses locales `take`/`save`/`asave`/`psave` si le lot reste assez petit.
+- Debut de `T_Damage` avec ses locales `take`/`save`/`asave`/`psave`, en gardant le lot assez petit.
 
 ## Blocages
 

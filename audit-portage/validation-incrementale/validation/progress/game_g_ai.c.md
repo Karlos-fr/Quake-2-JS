@@ -66,3 +66,14 @@
 - Tests: harness inline `npx tsx -` OK pour points yeux, extents, `MASK_OPAQUE`, trace bloquee et absence de collision; `npm run verify:g-ai` OK; `npm run typecheck` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `infront` avec locale `dot`; garder `FindTarget` pour une session dediee.
+
+## Session 2026-04-30 - infront / dot
+
+- Lot traite: `infront` et locale `dot`.
+- Verdict: `infront` valide; `dot` non applicable comme variable locale portee.
+- Corrections TS: aucune.
+- Preuves: comparaison C/TS effectuee; le C calcule `AngleVectors(self->s.angles, forward, NULL, NULL)`, soustrait `other->s.origin - self->s.origin`, normalise le vecteur, calcule `DotProduct(vec, forward)`, puis retourne vrai seulement si `dot > 0.3`; le TS conserve le meme ordre via `AngleVectors`, `subtractVec3`, `normalizeVec3`, `dotProduct` et le seuil strict. Commentaire d'en-tete verifie avec fidelite `Strict`.
+- Integration: runtime verifie via `FindTarget` et `ai_run` dans `g_ai.ts`, plus consommateurs gameplay `g_weapon` dodge et `m_boss2`; export public verifie dans `packages/game/src/index.ts`. `apps/web` passe par `SV_Frame`/runtime et ne reference pas `infront` directement. `renderer-three` consomme les sorties visibles via `ClientRefreshFrame`, sans integration directe attendue pour ce helper AI purement decisionnel.
+- Tests: harness inline `npx tsx -` OK pour cible devant, derriere, cote, seuil strict `dot == 0.3`, seuil juste au-dessus, yaw 90 et zero-vector; `npm run verify:g-ai` OK; `npm run typecheck` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `HuntTarget` puis `FoundTarget`, ou `FacingIdeal` avec locale `delta` si l'on veut garder un lot tres petit; garder `FindTarget` pour une session dediee.

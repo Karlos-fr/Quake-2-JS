@@ -57,3 +57,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:bridge`; `npm run typecheck`; controle cible `npx tsx` inline pour refus deathmatch sans cheats puis activation avec cheats.
 - Blocages: aucun pour le lot. Deux premiers essais du controle inline ont echoue sur le harnais local uniquement (`tsx -e` resolution `.js`, puis import `PRINT_HIGH` depuis le mauvais index), relance OK avec imports `.ts` et `PRINT_HIGH` depuis `qcommon`.
 - Prochain lot recommande: `Cmd_Use_f` et temporaires locaux associes (`index`, `it`, `s`).
+
+## Session 2026-04-30 - Cmd_Use_f
+
+- Lot valide: `Cmd_Use_f` et temporaires C associes (`index`, `it`, `s`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme sequence `gi.args`/`FindItem`, rejet item inconnu, rejet item sans callback `use`, controle inventaire via `ITEM_INDEX`, puis dispatch `it->use` via `callItemUse`.
+- Branchement runtime: `ClientCommand` dispatch `use`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `sv_user`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet `use` comme commande client forwardee via le pont full-game et ne remplace pas la logique runtime. `packages/renderer-three` non applicable directement: `Cmd_Use_f` modifie l'etat gameplay/inventaire/arme/powerup; les effets visibles passent ensuite par snapshots, stats HUD, effets joueur ou modele d'arme existants.
+- Corrections: aucune correction TS necessaire; commentaire d'en-tete existant verifie pour `Cmd_Use_f`.
+- Tests de reference: controle cible inline `npx tsx` pour branches unknown/not usable/out/success; `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:bridge`; `npm run verify:full-game:commands`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_Drop_f` et temporaires locaux associes (`index`, `it`, `s`).
