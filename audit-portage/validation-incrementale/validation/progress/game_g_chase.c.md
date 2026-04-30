@@ -6,6 +6,8 @@
 - Variables generees `targ`, `trace`, `i`, `old`: non applicables, ce sont des locales C de `UpdateChaseCam`.
 - 2026-04-30: `ChaseNext` valide.
 - Variables generees `i`, `e`: non applicables, ce sont des locales C de `ChaseNext`.
+- 2026-04-30: `ChasePrev` valide.
+- Variables generees `i`, `e`: non applicables, ce sont des locales C de `ChasePrev`.
 
 ## Tests de reference
 
@@ -17,10 +19,12 @@
 - Aucune correction TS appliquee sur ce lot.
 - `ChaseNext` correspond au parcours C de la cible courante vers le prochain client actif non-spectateur; branchement via `g_cmds.ts`/`p_client.ts`; aucune reference directe trouvee dans `apps/web` ou `packages/renderer-three` pour ce lot.
 - Aucune correction TS appliquee sur ce lot.
+- `ChasePrev` correspond au parcours C de la cible courante vers le client actif non-spectateur precedent; branchement via `g_cmds.ts`; aucune reference directe trouvee dans `apps/web` ou `packages/renderer-three` pour ce lot.
+- Aucune correction TS appliquee sur ce lot.
 
 ## Prochain lot recommande
 
-- `ChasePrev` et ses variables locales generees `i`/`e`.
+- `GetChaseTarget` et ses variables locales generees `i`/`other`.
 
 ## Blocages
 

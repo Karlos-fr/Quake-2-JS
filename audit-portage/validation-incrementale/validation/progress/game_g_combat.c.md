@@ -2,6 +2,16 @@
 
 ## Dernier lot valide
 
+- 2026-04-30: `SpawnDamage`
+  - Source comparee: `Quake-2-master/game/g_combat.c`
+  - Cible comparee: `packages/game/src/g_combat.ts`
+  - Correction appliquee: commentaire d'en-tete clarifie; le cap `damage > 255` est conserve mais le damage n'est pas serialise, comme la ligne `gi.WriteByte(damage)` commentee dans le C original.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`, `Porting notes`.
+  - Branchement runtime verifie: `SpawnDamage` est appele par `CheckPowerArmor`, `CheckArmor` et `T_Damage`; les flux armes passent le hook `emitTempEntity` vers `T_Damage`; `local-game-bootstrap` convertit ce hook en evenement runtime `MULTICAST_PVS`; `local-gameplay-sync` reconstruit le packet client avec `origin` et `dir`.
+  - `apps/web`: aucune reference directe trouvee pour `SpawnDamage`; `apps/web/src/full-game.ts` consomme les temp entities cote client, sans remplacer la logique gameplay.
+  - `renderer-three`: aucune reference directe trouvee; non applicable pour ce lot.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; verification inline `SpawnDamage` couvrant type, origin, dir et absence de payload `damage` avec entree `300`; `npm run typecheck`.
+
 - 2026-04-30: `Killed`
   - Source comparee: `Quake-2-master/game/g_combat.c`
   - Cible comparee: `packages/game/src/g_combat.ts`
@@ -24,7 +34,7 @@
 
 ## Prochain lot recommande
 
-- `SpawnDamage` seul, puis `CheckPowerArmor` avec ses variables locales associees si le lot reste court.
+- `CheckPowerArmor` avec ses variables locales associees si le lot reste court.
 
 ## Blocages
 

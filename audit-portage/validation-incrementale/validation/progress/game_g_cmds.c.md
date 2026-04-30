@@ -15,3 +15,10 @@
 - Tests de reference: `npm run verify:g-cmds`; `npm run typecheck`.
 - Blocages: aucun pour ce lot.
 - Prochain lot recommande: `Cmd_Give_f` et temporaires locaux associes (`name`, `it`, `index`, `i`, `give_all`, `it_ent`).
+- Lot valide: `Cmd_Give_f` et temporaires C associes (`name`, `it`, `index`, `i`, `give_all`, `it_ent`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; branchement runtime verifie via `ClientCommand` (`give`) et relais `g_main.ts`.
+- Integration web/renderer: aucune reference directe dans `apps/web` ou `packages/renderer-three`; logique gameplay portee dans `packages/game`.
+- Corrections: commentaire d'en-tete complete pour `Cmd_Give_f` dans `packages/game/src/g_cmds.ts`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run typecheck`.
+- Blocages: aucun pour ce lot.
+- Prochain lot recommande: `Cmd_God_f` et temporaires locaux associes (`msg`).

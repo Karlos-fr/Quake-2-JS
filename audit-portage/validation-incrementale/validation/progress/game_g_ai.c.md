@@ -19,3 +19,13 @@
 - Tests: harness inline `npx tsx -` OK pour mouvement d'animation, `AI_STAND_GROUND`, sortie stand-ground sans ennemi, transition `walk`, idle, initialisation `idle_time` et blocage `spawnflags & 1`; `npm run verify:g-ai` OK; `npm run typecheck` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `ai_walk` et `ai_turn` peuvent etre traites ensemble si le lot reste petit; garder `ai_charge` sous attention separee a cause de la garde TS `!self.enemy` absente du C; garder `FindTarget` pour une session dediee.
+
+## Session 2026-04-30 - ai_walk / ai_turn
+
+- Lot traite: `ai_walk`, `ai_turn`; `ai_charge` laisse a part.
+- Verdict: valide.
+- Corrections TS: aucune.
+- Preuves: comparaison C/TS effectuee; commentaires d'en-tete verifies; branchement runtime verifie via `M_MoveFrame`/tables de frames monstres et exports `packages/game/src/index.ts`; `apps/web` passe par `SV_Frame` et ne remplace pas la logique; aucune reference `renderer-three`.
+- Tests: harness inline `npx tsx -` OK pour ordre mouvement puis `FindTarget`, branches `idle_time` de `ai_walk`, retour avant `search` quand cible trouvee, mouvement d'animation de `ai_turn`, retour avant `M_ChangeYaw` quand cible trouvee et changement de yaw quand aucune cible; `npm run verify:g-ai` OK; `npm run typecheck` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `ai_charge` separement, en documentant/validant la garde TS `!self.enemy` absente du C; garder `range`/`visible`/`infront` ou `FindTarget` pour des sessions dediees.

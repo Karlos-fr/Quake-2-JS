@@ -396,7 +396,11 @@ export function T_RadiusDamage(
  * Fidelity level: Strict
  *
  * Behavior:
- * - Emits one capped damage temp-entity event at the requested origin and normal.
+ * - Emits one damage temp-entity event at the requested origin and normal.
+ *
+ * Porting notes:
+ * - Preserves the original damage cap side effect even though the C `gi.WriteByte(damage)` line is commented out.
+ * - Uses the current explicit temp-entity hook path instead of direct `gi.Write*` calls.
  */
 export function SpawnDamage(
   type: temp_event_t,

@@ -263,6 +263,12 @@ export function ValidateSelectedItem(ent: GameEntity, runtime: GameRuntime): voi
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Grants health, weapons, ammo, armor, power shield or a named pickup through the original cheat command flow.
+ *
+ * Porting notes:
+ * - Preserves command argument checks and item side effects while routing globals and gi calls through GameCommandContext.
  */
 export function Cmd_Give_f(ent: GameEntity, context: GameCommandContext): void {
   const client = ent.client;

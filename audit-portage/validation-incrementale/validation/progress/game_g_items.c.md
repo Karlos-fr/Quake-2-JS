@@ -2,7 +2,7 @@
 
 ## Dernier lot valide
 
-- `Pickup_Weapon` reference par `g_items.c` et porte dans `packages/game/src/p_weapon.ts`, avec dispatch depuis `packages/game/src/g_items.ts`.
+- `Use_Weapon` reference par `g_items.c` et porte dans `packages/game/src/p_weapon.ts`, avec dispatch depuis `packages/game/src/g_items.ts`, `packages/game/src/g_cmds.ts` et le chemin demo web via `packages/game/src/local-game-bootstrap.ts`.
 
 ## Tests de reference
 
@@ -15,4 +15,4 @@
 
 ## Prochain lot recommande
 
-- `Use_Weapon`, en gardant la meme attention au rattachement `g_items.c` declarations/table vers le corps original `game/p_weapon.c` et le port `packages/game/src/p_weapon.ts`.
+- `Drop_Weapon`, en gardant la meme attention au rattachement `g_items.c` declarations/table vers le corps original `game/p_weapon.c` et le port `packages/game/src/p_weapon.ts`.
