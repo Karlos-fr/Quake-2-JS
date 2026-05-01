@@ -409,8 +409,13 @@ export function SV_PushEntity(ent: GameEntity, push: vec3_t, runtime: GameRuntim
  * Behavior:
  * - Applies one pusher translation/rotation step and rolls everything back on blockage.
  */
-export function SV_Push(pusher: GameEntity, move: vec3_t, amove: vec3_t, runtime: GameRuntime): boolean {
-  const pushed: pushed_t[] = [];
+export function SV_Push(
+  pusher: GameEntity,
+  move: vec3_t,
+  amove: vec3_t,
+  runtime: GameRuntime,
+  pushed: pushed_t[] = []
+): boolean {
   const clampedMove = clampPushMove(move);
   const mins: vec3_t = [
     pusher.absmin[0] + clampedMove[0],
@@ -524,6 +529,7 @@ export function SV_Physics_Pusher(ent: GameEntity, runtime: GameRuntime): void {
   }
 
   let part: GameEntity | null = ent;
+  const pushed: pushed_t[] = [];
   for (; part; part = part.teamchain) {
     if (!hasMovement(part)) {
       continue;
@@ -531,7 +537,7 @@ export function SV_Physics_Pusher(ent: GameEntity, runtime: GameRuntime): void {
 
     const move = scaleVec3(part.velocity, FRAMETIME);
     const amove = scaleVec3(part.avelocity, FRAMETIME);
-    if (!SV_Push(part, move, amove, runtime)) {
+    if (!SV_Push(part, move, amove, runtime, pushed)) {
       break;
     }
   }

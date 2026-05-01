@@ -690,6 +690,9 @@ export function monster_think(self: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Makes one idle monster angry at the activating entity when the original filters allow it.
+ *
+ * Porting notes:
+ * - Accepts a nullable activator to match the shared TypeScript `use` callback shape; C callers pass an edict.
  */
 export function monster_use(
   self: GameEntity,

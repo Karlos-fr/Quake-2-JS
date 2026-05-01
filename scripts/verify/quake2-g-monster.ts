@@ -25,7 +25,8 @@ import {
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
   drainGameSoundEvents,
-  drainMonsterMuzzleFlashEvents
+  drainMonsterMuzzleFlashEvents,
+  useGameEntity
 } from "../../packages/game/src/index.js";
 import {
   EF_COLOR_SHELL,
@@ -205,6 +206,7 @@ function verifyMonsterUseHonorsOriginalFilters(): void {
   const runtime = createHarnessRuntime();
   const monster = createMonster(runtime, 3);
   const activator = createPlayer(runtime, 4);
+  const previousEnemy = createPlayer(runtime, 40);
 
   let foundTargetCalls = 0;
   monster_use(monster, null, activator, runtime, {
@@ -216,10 +218,31 @@ function verifyMonsterUseHonorsOriginalFilters(): void {
   assert.equal(monster.enemy, activator, "monster_use should acquire the activator as enemy");
   assert.equal(foundTargetCalls, 1, "monster_use should call FoundTarget after acquiring an enemy");
 
+  const alreadyAngryMonster = createMonster(runtime, 41);
+  alreadyAngryMonster.enemy = previousEnemy;
+  monster_use(alreadyAngryMonster, null, activator, runtime, {
+    FoundTarget: () => {
+      foundTargetCalls += 1;
+    }
+  });
+  assert.equal(alreadyAngryMonster.enemy, previousEnemy, "monster_use should ignore monsters that already have an enemy");
+  assert.equal(foundTargetCalls, 1, "monster_use should not call FoundTarget for an existing enemy");
+
+  const deadMonster = createMonster(runtime, 42);
+  deadMonster.health = 0;
+  monster_use(deadMonster, null, activator, runtime, {
+    FoundTarget: () => {
+      foundTargetCalls += 1;
+    }
+  });
+  assert.equal(deadMonster.enemy, null, "monster_use should ignore dead monsters");
+  assert.equal(foundTargetCalls, 1, "monster_use should not call FoundTarget for dead monsters");
+
   const notargetMonster = createMonster(runtime, 5);
   activator.flags |= FL_NOTARGET;
   monster_use(notargetMonster, null, activator, runtime);
   assert.equal(notargetMonster.enemy, null, "monster_use should reject notarget activators");
+  activator.flags &= ~FL_NOTARGET;
 
   const standGroundMonster = createMonster(runtime, 6);
   const nonClientActivator = createMonster(runtime, 7);
@@ -233,6 +256,18 @@ function verifyMonsterUseHonorsOriginalFilters(): void {
     }
   });
   assert.equal(standGroundMonster.enemy, nonClientActivator, "monster_use should accept good-guy monster activators");
+
+  const runtimeCallbackMonster = createMonster(runtime, 43);
+  runtimeCallbackMonster.use = (useSelf, other, useActivator, localRuntime) => {
+    monster_use(useSelf, other, useActivator, localRuntime, {
+      FoundTarget: () => {
+        foundTargetCalls += 1;
+      }
+    });
+  };
+  useGameEntity(runtime, runtimeCallbackMonster, null, activator);
+  assert.equal(runtimeCallbackMonster.enemy, activator, "monster_use should be reachable through the runtime use callback");
+  assert.equal(foundTargetCalls, 3, "monster_use should call FoundTarget through the runtime use callback");
 }
 
 function verifyMonsterDeathUseDropsItemsAndFiresTargets(): void {

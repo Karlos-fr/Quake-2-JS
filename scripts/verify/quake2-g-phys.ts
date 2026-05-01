@@ -34,6 +34,7 @@ import {
   SOLID_BSP,
   SOLID_NOT,
   SOLID_TRIGGER,
+  attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameSoundEvents,
   drainGameTempEntityEvents,
@@ -776,6 +777,97 @@ pusher.velocity = [64, 0, 0];
 linkGameEntity(runtime, pusher);
 G_RunEntity(pusher, runtime);
 assertEqual("G_RunEntity.push.linked", pusher.linked, true);
+
+const teamRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+teamRuntime.collision = {
+  world: {} as never,
+  trace(start, _mins, _maxs, end, passent, contentmask) {
+    const blocked = passent?.classname === "team-rider-blocked";
+    return {
+      allsolid: blocked,
+      startsolid: blocked,
+      fraction: blocked ? 0 : 1,
+      endpos: blocked ? [...start] : [...end],
+      plane: {
+        normal: blocked ? [-1, 0, 0] : [0, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: teamRuntime.entities[0]
+    };
+  },
+  pointcontents() {
+    return 0;
+  }
+};
+
+const teamCaptain = spawnGameEntity(teamRuntime);
+teamCaptain.classname = "team-captain";
+teamCaptain.movetype = MOVETYPE_PUSH;
+teamCaptain.solid = SOLID_BSP;
+teamCaptain.velocity = [80, 0, 0];
+teamCaptain.mins = [-32, -32, 0];
+teamCaptain.maxs = [32, 32, 64];
+refreshEntitySpatialState(teamCaptain);
+linkGameEntity(teamRuntime, teamCaptain);
+
+const teamSlave = spawnGameEntity(teamRuntime);
+teamSlave.classname = "team-slave";
+teamSlave.movetype = MOVETYPE_PUSH;
+teamSlave.solid = SOLID_BSP;
+teamSlave.origin = [200, 0, 0];
+teamSlave.s.origin = [200, 0, 0];
+teamSlave.velocity = [80, 0, 0];
+teamSlave.mins = [-32, -32, 0];
+teamSlave.maxs = [32, 32, 64];
+refreshEntitySpatialState(teamSlave);
+linkGameEntity(teamRuntime, teamSlave);
+teamCaptain.teamchain = teamSlave;
+
+const teamRiderOk = spawnGameEntity(teamRuntime);
+teamRiderOk.classname = "team-rider-ok";
+teamRiderOk.movetype = MOVETYPE_STEP;
+teamRiderOk.solid = SOLID_BBOX;
+teamRiderOk.origin = [0, 0, 80];
+teamRiderOk.s.origin = [0, 0, 80];
+teamRiderOk.mins = [-16, -16, -24];
+teamRiderOk.maxs = [16, 16, 32];
+teamRiderOk.groundentity = teamCaptain;
+teamRiderOk.groundentity_linkcount = teamCaptain.linkcount;
+refreshEntitySpatialState(teamRiderOk);
+linkGameEntity(teamRuntime, teamRiderOk);
+
+const teamRiderBlocked = spawnGameEntity(teamRuntime);
+teamRiderBlocked.classname = "team-rider-blocked";
+teamRiderBlocked.movetype = MOVETYPE_STEP;
+teamRiderBlocked.solid = SOLID_BBOX;
+teamRiderBlocked.origin = [200, 0, 80];
+teamRiderBlocked.s.origin = [200, 0, 80];
+teamRiderBlocked.mins = [-16, -16, -24];
+teamRiderBlocked.maxs = [16, 16, 32];
+teamRiderBlocked.groundentity = teamSlave;
+teamRiderBlocked.groundentity_linkcount = teamSlave.linkcount;
+const blockedClient = attachGameClient(teamRiderBlocked);
+blockedClient.ps.pmove.delta_angles[1] = 900;
+refreshEntitySpatialState(teamRiderBlocked);
+linkGameEntity(teamRuntime, teamRiderBlocked);
+
+let teamBlockedOther = "";
+teamSlave.blocked = (_self, other) => {
+  teamBlockedOther = other.classname;
+};
+
+G_RunEntity(teamCaptain, teamRuntime);
+assertVec("SV_Physics_Pusher.team-rollback.captain-origin", teamCaptain.origin, [0, 0, 0]);
+assertVec("SV_Physics_Pusher.team-rollback.slave-origin", teamSlave.origin, [200, 0, 0]);
+assertVec("SV_Physics_Pusher.team-rollback.rider-ok-origin", teamRiderOk.origin, [0, 0, 80]);
+assertVec("SV_Physics_Pusher.team-rollback.rider-blocked-origin", teamRiderBlocked.origin, [200, 0, 80]);
+assertEqual("SV_Physics_Pusher.team-rollback.rider-deltayaw", blockedClient.ps.pmove.delta_angles[1], 900);
+assertEqual("SV_Physics_Pusher.team-rollback.obstacle", teamBlockedOther, "team-rider-blocked");
 
 const badEnt = spawnGameEntity(runtime);
 badEnt.classname = "bad";

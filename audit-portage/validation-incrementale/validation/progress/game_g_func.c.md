@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: initialisation differee de trigger elevator `trigger_elevator_init` et spawn `SP_trigger_elevator`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1726-1754` avec `packages/game/src/g_func.ts:1904-1925` apres ajout des commentaires d'en-tete.
+- Correction appliquee: ajout des commentaires d'en-tete `trigger_elevator_init` et `SP_trigger_elevator` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `trigger_elevator_init` conserve les warnings target absent, target introuvable et cible non `func_train`, la selection `movetarget = G_PickTarget(self->target)`, l'installation `use = trigger_elevator_use` et `SVF_NOCLIENT`; `SP_trigger_elevator` conserve `think = trigger_elevator_init` et `nextthink = level.time + FRAMETIME`.
+- Branchement: `SP_trigger_elevator` est referencee par `packages/game/src/g_spawn.ts` pour `trigger_elevator`, appelee par `ED_CallSpawn`/`SpawnEntities`, puis `trigger_elevator_init` est executee par `G_RunFrame`/`G_RunEntity`/`SV_RunThink`; l'usage rejoint `trigger_elevator_use` puis `train_resume`.
+- Integration: aucune logique parallele `trigger_elevator` dans `apps/web`; le navigateur consomme le runtime local/full-game, sons, snapshots et refresh frames. `packages/renderer-three` ne porte pas ce trigger no-client, mais consomme les sorties visibles attendues du train cible via brush models/origines des refresh frames; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: spawn de train `SP_func_train`, activation elevator `trigger_elevator_use` et locale matricielle `target`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1654-1724` avec `packages/game/src/g_func.ts:1828-1902`.
 - Correction appliquee: ajout des commentaires d'en-tete `SP_func_train` et `trigger_elevator_use` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
@@ -294,7 +302,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `trigger_elevator_init` puis `SP_trigger_elevator` si le lot reste petit.
+- Continuer avec `func_timer_think`, `func_timer_use`, puis `SP_func_timer` si le lot reste petit.
 
 ## Blocages
 

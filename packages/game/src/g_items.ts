@@ -906,6 +906,8 @@ export function Use_Breather(ent: GameEntity, item: GameItemDefinition, runtime:
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Consume one Environment Suit inventory slot, validate the selected item, then extend or start `enviro_framenum` by the original 300 frames.
+ * Porting notes: The original activation sound call is commented out in C; the port intentionally does not emit a use sound here.
  */
 export function Use_Envirosuit(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   const client = requireClient(ent, "Use_Envirosuit");

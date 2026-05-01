@@ -52,6 +52,7 @@ import {
   Touch_Item,
   Use_Item,
   Use_Breather,
+  Use_Envirosuit,
   Use_PowerArmor,
   Use_Quad,
   SVF_NOCLIENT,
@@ -100,6 +101,7 @@ function main(): void {
   verifyPickupPowerupLimitsRespawnAndInstantUse();
   verifyUseQuadTimeoutAndDroppedHack();
   verifyUseBreatherTimeout();
+  verifyUseEnvirosuitTimeout();
   verifyItemLookupHelpers();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
@@ -1250,6 +1252,32 @@ function verifyUseBreatherTimeout(): void {
 
   assertNumber(player.client!.breather_framenum, 800, "Use_Breather extends an active Rebreather by the same timeout");
   assertNumber(player.client!.pers.selected_item, -1, "Use_Breather revalidates selected item after consuming the last Rebreather");
+}
+
+function verifyUseEnvirosuitTimeout(): void {
+  const envirosuit = requireItem("Environment Suit");
+  const runtime = createHarnessRuntime();
+  runtime.framenum = 200;
+  const player = createPlayer(runtime);
+  player.client!.pers.inventory[envirosuit.index] = 2;
+  player.client!.pers.selected_item = envirosuit.index;
+
+  Use_Envirosuit(player, envirosuit, runtime);
+
+  assertNumber(player.client!.pers.inventory[envirosuit.index], 1, "Use_Envirosuit consumes one Environment Suit inventory slot");
+  assertNumber(player.client!.enviro_framenum, 500, "Use_Envirosuit starts the original 300-frame timeout");
+  assertNumber(player.client!.pers.selected_item, envirosuit.index, "Use_Envirosuit keeps a still-owned Environment Suit selected");
+  assertNumber(drainGameSoundEvents(runtime).length, 0, "Use_Envirosuit preserves the original commented-out activation sound");
+
+  G_SetStats(player, runtime);
+  assertNumber(player.client!.ps.stats[STAT_TIMER], 30, "Use_Envirosuit feeds the HUD timer through enviro_framenum");
+  assertNumber(player.client!.ps.stats[STAT_TIMER_ICON] > 0 ? 1 : 0, 1, "Use_Envirosuit feeds the HUD Environment Suit timer icon");
+
+  player.client!.pers.inventory[envirosuit.index] = 1;
+  Use_Envirosuit(player, envirosuit, runtime);
+
+  assertNumber(player.client!.enviro_framenum, 800, "Use_Envirosuit extends an active Environment Suit by the same timeout");
+  assertNumber(player.client!.pers.selected_item, -1, "Use_Envirosuit revalidates selected item after consuming the last Environment Suit");
 }
 
 function verifyCoopPowerCubeSpawnFlags(): void {

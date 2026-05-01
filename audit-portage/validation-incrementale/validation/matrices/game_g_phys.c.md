@@ -40,10 +40,10 @@
 | `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | Valide | A redecouper | Locale de `SV_PushEntity`; trace, retry, relink et retour couverts par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Locale de `SV_PushEntity`; `clipmask` explicite couvert par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Entree locale dupliquee par la matrice pour `SV_PushEntity`; fallback `MASK_SOLID` couvert par `npm run verify:g-phys`. |
-| `Quake-2-master/game/g_phys.c` | struct | `pushed_t` | `packages/game/src/g_phys.ts` | `pushed_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `ent` | `packages/game/src/g_phys.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `deltayaw` | `packages/game/src/g_phys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `obstacle` | `packages/game/src/g_phys.ts` | `obstacle` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | struct | `pushed_t` | `packages/game/src/g_phys.ts` | `pushed_t` | Valide | A redecouper | Correction: pile `pushed_t` partagee par team pusher; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `ent` | `packages/game/src/g_phys.ts` | `ent` | Valide | A redecouper | Champ de `pushed_t`; rollback reverse couvert par `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `deltayaw` | `packages/game/src/g_phys.ts` | `deltaYaw` | Valide | A redecouper | Champ de `pushed_t`, restaure `client.ps.pmove.delta_angles[YAW]`; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `obstacle` | `packages/game/src/g_phys.ts` | `obstacle` | Valide | A redecouper | Obstacle global route au callback `blocked`; `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | function | `SV_Push` | `packages/game/src/g_phys.ts` | `SV_Push` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `temp` | `packages/game/src/g_phys.ts` | `temp` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Pusher` | `packages/game/src/g_phys.ts` | `SV_Physics_Pusher` | A verifier | A redecouper |  |

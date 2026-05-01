@@ -1901,6 +1901,19 @@ export function trigger_elevator_use(self: GameEntity, other: GameEntity | null,
   }
 }
 
+/**
+ * Original name: trigger_elevator_init
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Resolves the configured elevator target, verifies that it points at a `func_train`,
+ *   then installs `trigger_elevator_use` and hides the trigger from clients.
+ *
+ * Porting notes:
+ * - Uses runtime warning logs in place of `gi.dprintf`.
+ */
 export function trigger_elevator_init(self: GameEntity, runtime: GameRuntime): void {
   if (!self.target) {
     runtime.log({ kind: "warning", message: "trigger_elevator has no target", entityIndex: self.index, entityClassname: self.classname });
@@ -1919,6 +1932,15 @@ export function trigger_elevator_init(self: GameEntity, runtime: GameRuntime): v
   self.svflags = SVF_NOCLIENT;
 }
 
+/**
+ * Original name: SP_trigger_elevator
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defers elevator trigger initialization by one frame so target trains have spawned.
+ */
 export function SP_trigger_elevator(self: GameEntity, runtime: GameRuntime): void {
   self.think = trigger_elevator_init;
   self.nextthink = runtime.time + FRAMETIME;

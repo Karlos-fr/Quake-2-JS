@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Use_Envirosuit`.
+
+Validation Environment Suit du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Use_Envirosuit` conserve le comportement C: decremente l'inventaire `ITEM_INDEX(item)`, appelle `ValidateSelectedItem`, puis demarre ou prolonge `enviro_framenum` de 300 frames. L'appel son d'activation est commente dans le C; le port TS n'emet donc pas de son dans `Use_Envirosuit`. L'entree `item_enviro` de `itemlist` est alignee (`Pickup_Powerup`, `Use_Envirosuit`, `Drop_General`, pickup sound `items/pkup.wav`, modele `models/items/enviro/tris.md2`, `EF_ROTATE`, icone `p_envirosuit`, pickup name `Environment Suit`, width 2, quantity 60, flags `IT_STAY_COOP|IT_POWERUP`, precache `items/airout.wav`). Header TS complete avec `Behavior` et note de portage sur le son commente.
+
+Runtime branche via `Cmd_Use_f`/`Cmd_InvUse_f`, le dispatch `g_cmds.ts`, `callItemUse`, `Pickup_Powerup`/`Touch_Item` et l'entree `item_enviro`; les effets aval passent par `p_hud.ts` pour le timer, et `p_view.ts` pour la protection environnementale, le son `items/airout.wav` a 30 frames restantes et le blend vert. `apps/web` doit consommer ce flux par le runtime local/full-game, les commandes/inventaire, les stats HUD, les sons gameplay, les snapshots et le render loop; aucune logique parallele Environment Suit detectee. `renderer-three` doit consommer les sorties visibles attendues: item MD2 generique pour pickup/drop/respawn et polyblend overlay vert issu du playerstate; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyUseEnvirosuitTimeout` couvre la consommation d'inventaire, le timeout initial de 300 frames, l'extension active, `ValidateSelectedItem`, l'absence du son d'activation commente et la propagation HUD timer/icone. Tests lances: `npm run verify:g-items`, `npm run verify:p-hud`, `npm run verify:p-view`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck` OK.
+
 - `Use_Breather`.
 
 Validation Rebreather du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Use_Breather` conserve le comportement C: decremente l'inventaire `ITEM_INDEX(item)`, appelle `ValidateSelectedItem`, puis demarre ou prolonge `breather_framenum` de 300 frames. L'appel son d'activation est commente dans le C; le port TS n'emet donc pas de son dans `Use_Breather`. L'entree `item_breather` de `itemlist` est alignee (`Pickup_Powerup`, `Use_Breather`, `Drop_General`, pickup sound `items/pkup.wav`, modele `models/items/breather/tris.md2`, `EF_ROTATE`, icone `p_rebreather`, pickup name `Rebreather`, width 2, quantity 60, flags `IT_STAY_COOP|IT_POWERUP`, precache `items/airout.wav`). Header TS complete avec `Behavior` et note de portage sur le son commente.
@@ -261,4 +269,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Use_Envirosuit`.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Use_Invulnerability`.

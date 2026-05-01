@@ -67,6 +67,7 @@ import {
   train_resume,
   train_wait,
   train_use,
+  trigger_elevator_init,
   trigger_elevator_use
 } from "../../packages/game/src/g_func.js";
 import { MOD_CRUSH, damage_t } from "../../packages/game/src/g_local.js";
@@ -88,6 +89,7 @@ import {
   STATE_TOP,
   STATE_UP,
   SVF_MONSTER,
+  SVF_NOCLIENT,
   createGameClient,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
@@ -1114,8 +1116,12 @@ const elevator = entity("trigger_elevator", 13, { target: "elevator_train" });
 elevatorTarget.targetname = "elevator_train";
 elevatorTarget.classname = "func_train";
 SP_trigger_elevator(elevator, runtime);
+assert.equal(elevator.think, trigger_elevator_init, "SP_trigger_elevator think callback mismatch");
+assert.equal(elevator.nextthink, runtime.time + 0.1, "SP_trigger_elevator nextthink mismatch");
 elevator.think!(elevator, runtime);
 assert.equal(elevator.movetarget, elevatorTarget, "trigger_elevator_init movetarget mismatch");
+assert.equal(elevator.use, trigger_elevator_use, "trigger_elevator_init use callback mismatch");
+assert.equal(elevator.svflags, SVF_NOCLIENT, "trigger_elevator_init svflags mismatch");
 const caller = entity("path_corner", 14, { pathtarget: "e2" });
 trigger_elevator_use(elevator, caller, caller, runtime);
 assert.equal(elevatorTarget.target_ent, elevatorCorner, "trigger_elevator_use target_ent mismatch");
@@ -1133,6 +1139,17 @@ assert.equal(runtime.logEntries.at(-1)?.message, "elevator used with no pathtarg
 const badPathtargetCaller = entity("path_corner", 140, { pathtarget: "missing_elevator_corner" });
 trigger_elevator_use(elevator, badPathtargetCaller, badPathtargetCaller, runtime);
 assert.equal(runtime.logEntries.at(-1)?.message, "elevator used with bad pathtarget: missing_elevator_corner", "trigger_elevator_use bad pathtarget warning mismatch");
+const elevatorNoTarget = entity("trigger_elevator", 141);
+trigger_elevator_init(elevatorNoTarget, runtime);
+assert.equal(runtime.logEntries.at(-1)?.message, "trigger_elevator has no target", "trigger_elevator_init missing target warning mismatch");
+const elevatorMissingTarget = entity("trigger_elevator", 142, { target: "missing_elevator_train" });
+trigger_elevator_init(elevatorMissingTarget, runtime);
+assert.equal(runtime.logEntries.at(-1)?.message, "trigger_elevator unable to find target missing_elevator_train", "trigger_elevator_init missing train warning mismatch");
+const elevatorBadTarget = entity("trigger_elevator", 143, { target: "not_a_train" });
+const nonTrainTarget = entity("func_door", 144, { targetname: "not_a_train" });
+runtime.entities[144] = nonTrainTarget;
+trigger_elevator_init(elevatorBadTarget, runtime);
+assert.equal(runtime.logEntries.at(-1)?.message, "trigger_elevator target not_a_train is not a train", "trigger_elevator_init non-train warning mismatch");
 
 const secret = entity("func_door_secret", 15, { angle: "0", wait: "1" });
 secret.size = [32, 64, 16];
