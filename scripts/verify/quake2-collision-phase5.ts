@@ -11,7 +11,9 @@
 
 import {
   MOVETYPE_PUSH,
+  MOVETYPE_STEP,
   SOLID_BSP,
+  SOLID_BBOX,
   SOLID_TRIGGER,
   SV_Physics_Pusher,
   SV_Push,
@@ -189,8 +191,8 @@ function spawnPusher(runtime: GameRuntime, classname: string): GameEntity {
 function spawnDynamicBox(runtime: GameRuntime, classname: string): GameEntity {
   const entity = spawnGameEntity(runtime);
   entity.classname = classname;
-  entity.movetype = 2;
-  entity.solid = SOLID_BSP;
+  entity.movetype = MOVETYPE_STEP;
+  entity.solid = SOLID_BBOX;
   entity.mins = [-16, -16, -24];
   entity.maxs = [16, 16, 32];
   refreshEntitySpatialState(entity);
