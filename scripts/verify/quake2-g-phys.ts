@@ -15,6 +15,7 @@ import {
   G_RunFrame,
   ClipVelocity,
   G_RunEntity,
+  SV_AddRotationalFriction,
   SV_AddGravity,
   SV_FlyMove,
   SV_CheckVelocity,
@@ -51,6 +52,7 @@ import {
   refreshEntitySpatialState,
   spawnGameEntity
 } from "../../packages/game/src/runtime.js";
+import { FL_FLY, FL_SWIM } from "../../packages/game/src/g_local.js";
 
 function assertEqual<T>(label: string, actual: T, expected: T): void {
   if (actual !== expected) {
@@ -978,6 +980,50 @@ SV_Physics_Toss(captain, runtime);
 assertVec("SV_Physics_Toss.teamchain-origin", slave.origin, [4, 4, 5]);
 assertVec("SV_Physics_Toss.teamchain-s-origin", slave.s.origin, [4, 4, 5]);
 assertEqual("SV_Physics_Toss.teamchain-linked", slave.linked, true);
+
+const rotationalFrictionEnt = spawnGameEntity(runtime);
+rotationalFrictionEnt.classname = "rotational-friction";
+rotationalFrictionEnt.angles = [1, 2, 3];
+rotationalFrictionEnt.s.angles = [1, 2, 3];
+rotationalFrictionEnt.avelocity = [120, -45, 0];
+SV_AddRotationalFriction(rotationalFrictionEnt);
+assertVec("SV_AddRotationalFriction.angles", rotationalFrictionEnt.angles, [13, -2.5, 3]);
+assertVec("SV_AddRotationalFriction.s-angles", rotationalFrictionEnt.s.angles, [13, -2.5, 3]);
+assertVec("SV_AddRotationalFriction.avelocity", rotationalFrictionEnt.avelocity, [60, 0, 0]);
+
+const stepRotationalEnt = spawnGameEntity(runtime);
+stepRotationalEnt.classname = "step-rotational-friction";
+stepRotationalEnt.movetype = MOVETYPE_STEP;
+stepRotationalEnt.groundentity = worldspawn;
+stepRotationalEnt.angles = [0, 10, 20];
+stepRotationalEnt.s.angles = [0, 10, 20];
+stepRotationalEnt.avelocity = [30, -90, 120];
+G_RunEntity(stepRotationalEnt, runtime);
+assertVec("SV_Physics_Step.rotational-angles", stepRotationalEnt.angles, [3, 1, 32]);
+assertVec("SV_Physics_Step.rotational-avelocity", stepRotationalEnt.avelocity, [0, -30, 60]);
+
+const stepFlyFrictionEnt = spawnGameEntity(runtime);
+stepFlyFrictionEnt.classname = "step-fly-friction";
+stepFlyFrictionEnt.movetype = MOVETYPE_STEP;
+stepFlyFrictionEnt.flags = FL_FLY;
+stepFlyFrictionEnt.groundentity = worldspawn;
+stepFlyFrictionEnt.origin = [0, 0, 100];
+stepFlyFrictionEnt.s.origin = [0, 0, 100];
+stepFlyFrictionEnt.velocity = [0, 0, 90];
+G_RunEntity(stepFlyFrictionEnt, runtime);
+assertVec("SV_Physics_Step.fly-friction-velocity", stepFlyFrictionEnt.velocity, [0, 0, 70]);
+
+const stepSwimFrictionEnt = spawnGameEntity(runtime);
+stepSwimFrictionEnt.classname = "step-swim-friction";
+stepSwimFrictionEnt.movetype = MOVETYPE_STEP;
+stepSwimFrictionEnt.flags = FL_SWIM;
+stepSwimFrictionEnt.groundentity = worldspawn;
+stepSwimFrictionEnt.origin = [0, 0, 100];
+stepSwimFrictionEnt.s.origin = [0, 0, 100];
+stepSwimFrictionEnt.velocity = [0, 0, 90];
+stepSwimFrictionEnt.waterlevel = 2;
+G_RunEntity(stepSwimFrictionEnt, runtime);
+assertVec("SV_Physics_Step.swim-friction-velocity", stepSwimFrictionEnt.velocity, [0, 0, 70]);
 
 const dispatchEnt = spawnGameEntity(runtime);
 let noneBranch = 0;

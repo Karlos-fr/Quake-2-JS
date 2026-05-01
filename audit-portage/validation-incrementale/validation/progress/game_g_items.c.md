@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Drop_Ammo` et locale `index`.
+
+Validation Drop_Ammo du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Drop_Ammo` conserve le comportement C: calcule `index = ITEM_INDEX(item)`, cree l'entite visible via `Drop_Item`, pose `dropped.count` a `min(inventory[index], item.quantity)`, refuse le drop si l'item est les grenades, que les grenades sont l'arme courante et que le drop viderait l'inventaire, journalise alors `Can't drop current weapon`, libere l'entite transitoire et ne modifie pas l'inventaire; sinon soustrait `dropped.count` puis appelle `ValidateSelectedItem`. La locale deja valide `dropped` a ete relue dans cette interaction sans elargir le lot. Header TS complete avec `Behavior` et `Porting notes`.
+
+Runtime branche via `Cmd_Drop_f`/`Cmd_InvDrop_f`, `g_cmds.ts`/`callItemDrop`, les entrees `Drop_Ammo` de `itemlist`, `Drop_Item`, `ValidateSelectedItem`, puis les callbacks `drop_temp_touch`/`Touch_Item` et `drop_make_touchable`. `apps/web` doit consommer ce flux via les commandes/runtime local-full-game, inventaire/HUD, snapshots et sons/effets issus des pickups; aucune logique parallele de drop ammo detectee. `renderer-three` doit consommer les sorties visibles produites: entite ammo MD2, `modelindex`, `RF_GLOW`, origine/velocity, disparition apres pickup ou timeout; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyDropAmmoInventoryCountAndGrenadeGuard` couvre le drop a `item.quantity`, le drop partiel sous `item.quantity`, la soustraction via `ITEM_INDEX(item)`, la validation de selection quand le slot tombe a zero, le modele visible, et le refus de drop de la derniere grenade quand les grenades sont l'arme courante. Tests lances: `npm run verify:g-items`, `npm run verify:g-cmds`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `Pickup_Ammo`, locales `oldcount` / `count` / `weapon` et doublon matriciel de `count`.
 
 Validation Pickup_Ammo du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_Ammo` conserve le comportement C: detecte les pickups weapon par `IT_WEAPON`, choisit `count = 1000` pour les weapon pickups sous `DF_INFINITE_AMMO`, sinon `ent->count`, sinon `ent->item->quantity`; lit `oldcount` avant `Add_Ammo`; refuse le pickup si `Add_Ammo` retourne `false`; arme `newweapon` seulement pour un weapon pickup avec `oldcount` nul et, en deathmatch, uniquement si l'arme courante est le blaster; planifie `SetRespawn(ent, 30)` en deathmatch pour les items de carte non droppes. Header TS complete avec `Behavior` et note de portage sur les flags runtime.
@@ -309,4 +317,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Drop_Ammo` avec la locale `index`. La locale `dropped` est deja `Valide`, mais relire son interaction si necessaire sans elargir le lot.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `MegaHealth_think`, puis `Pickup_Health` si le lot reste petit.

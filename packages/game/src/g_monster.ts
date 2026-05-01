@@ -845,6 +845,10 @@ setDefaultMonsterDeathUse(monster_death_use);
  *
  * Behavior:
  * - Performs the common monster startup initialization used by walk, fly and swim monsters.
+ *
+ * Porting notes:
+ * - Defaults `monsterinfo.scale` to 1 because the TS runtime initializes numeric fields to 0,
+ *   while the original spawn paths rely on the C game defaults before `M_MoveFrame`.
  */
 export function monster_start(self: GameEntity, runtime: GameRuntime, hooks: GameMonsterHooks = {}): boolean {
   if (runtime.deathmatch) {

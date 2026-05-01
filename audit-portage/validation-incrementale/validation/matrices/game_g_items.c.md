@@ -71,9 +71,9 @@
 | `Quake-2-master/game/g_items.c` | global | `count` | `packages/game/src/g_items.ts` | `count` | Valide | A redecouper | Locale C portee par le ternaire TS `DF_INFINITE_AMMO`/`ent.count`/`item.quantity`; test direct couvre `ent.count` et count 1000 clamp en `DF_INFINITE_AMMO`. |
 | `Quake-2-master/game/g_items.c` | global | `weapon` | `packages/game/src/g_items.ts` | `weapon` | Valide | A redecouper | Locale C portee comme `(item.flags & IT_WEAPON) !== 0`; test direct couvre l'entree `Grenades` `IT_AMMO|IT_WEAPON` et les branches auto-switch deathmatch. |
 | `Quake-2-master/game/g_items.c` | global | `count` | `packages/game/src/g_items.ts` | `count` | Valide | A redecouper | Doublon matriciel de la locale `count` de `Pickup_Ammo`; couvert par le meme test direct. |
-| `Quake-2-master/game/g_items.c` | function | `Drop_Ammo` | `packages/game/src/g_items.ts` | `Drop_Ammo` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_items.c` | function | `Drop_Ammo` | `packages/game/src/g_items.ts` | `Drop_Ammo` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_items.c` | global | `dropped` | `packages/game/src/g_items.ts` | `dropped` | Valide | A redecouper | Locale de `Drop_Item` portee comme `const dropped = spawnGameEntity(runtime)`; champs et callbacks verifies par `verifyDropItemPlacementAndTrace` et `verifyDropTempTouchAndDeathmatchFree`. |
-| `Quake-2-master/game/g_items.c` | global | `index` | `packages/game/src/g_items.ts` | `index` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_items.c` | global | `index` | `packages/game/src/g_items.ts` | `index` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_items.c` | function | `MegaHealth_think` | `packages/game/src/g_items.ts` | `MegaHealth_think` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_items.c` | function | `G_FreeEdict` | `packages/game/src/g_items.ts` |  | Valide | A redecouper | Reference importee depuis `g_utils.c` en C et `g_utils.ts` en TS; implementation/header verifies. Usage `g_items` conforme pour liberte differee ou cleanup via callbacks runtime. Tests: `npm run verify:g-utils`, `npm run verify:g-items`. |
 | `Quake-2-master/game/g_items.c` | function | `Pickup_Health` | `packages/game/src/g_items.ts` | `Pickup_Health` | A verifier | A redecouper |  |

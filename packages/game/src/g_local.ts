@@ -370,6 +370,18 @@ export interface level_locals_t {
   power_cubes: number;
 }
 
+/**
+ * Original name: spawn_temp_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Holds editor-only spawn fields parsed from entity text before spawn functions consume them.
+ *
+ * Porting notes:
+ * - C string pointers are represented as nullable strings; vector storage remains a mutable vec3 tuple.
+ */
 export interface spawn_temp_t {
   sky: string | null;
   skyrotate: number;

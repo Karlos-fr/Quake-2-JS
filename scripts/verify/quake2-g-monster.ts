@@ -37,6 +37,7 @@ import {
   EF_POWERSCREEN,
   MASK_MONSTERSOLID,
   MASK_SHOT,
+  RF_FRAMELERP,
   RF_SHELL_BLUE,
   RF_SHELL_GREEN,
   RF_SHELL_RED
@@ -45,6 +46,7 @@ import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_WATER } from "../../packages/qc
 import {
   DAMAGE_NO_ARMOR,
   AI_RESURRECTING,
+  DEAD_NO,
   FL_IMMUNE_LAVA,
   FL_IMMUNE_SLIME,
   FL_INWATER,
@@ -99,6 +101,7 @@ function main(): void {
   verifyMonsterWeaponWrappers();
   verifyMonsterStartBookkeepingAndDefaults();
   verifyMonsterStartSkipsGoodGuys();
+  verifyMonsterStartDeathmatchAndFallbacks();
   verifyMonsterUseHonorsOriginalFilters();
   verifyMonsterDeathUseDropsItemsAndFiresTargets();
   verifyMonsterDeathUseRuntimeDamagePath();
@@ -192,25 +195,87 @@ function verifyMonsterWeaponWrappers(): void {
 function verifyMonsterStartBookkeepingAndDefaults(): void {
   const runtime = createHarnessRuntime();
   const monster = createMonster(runtime, 1);
+  const customCheckAttack = () => true;
+  monster.spawnflags = 4;
+  monster.s.origin = [10, 20, 30];
+  monster.s.old_origin = [-1, -1, -1];
+  monster.s.renderfx = RF_SHELL_BLUE;
+  monster.s.skinnum = 7;
+  monster.svflags |= SVF_DEADMONSTER;
+  monster.deadflag = 2;
+  monster.health = 125;
+  monster.properties.item = "item_quad";
+  monster.monsterinfo.checkattack = customCheckAttack;
+  monster.monsterinfo.currentmove = {
+    firstframe: 20,
+    lastframe: 24,
+    frames: [],
+    endfunc: undefined
+  };
+  monster.monsterinfo.scale = 0;
 
+  const originalRandom = Math.random;
+  Math.random = () => 0.62;
   const started = monster_start(monster, runtime);
+  Math.random = originalRandom;
 
   assert.equal(started, true, "monster_start should keep monsters outside deathmatch");
   assert.equal(runtime.total_monsters, 1, "monster_start should increment total_monsters for hostile monsters");
+  assert.equal(monster.spawnflags, 1, "monster_start should convert ambush-only spawnflag 4 to trigger spawnflag 1 for hostile monsters");
   assert.equal(monster.svflags & SVF_MONSTER, SVF_MONSTER, "monster_start should mark the entity as a monster");
+  assert.equal(monster.svflags & SVF_DEADMONSTER, 0, "monster_start should clear SVF_DEADMONSTER");
+  assert.equal(monster.s.renderfx & RF_FRAMELERP, RF_FRAMELERP, "monster_start should add RF_FRAMELERP");
+  assert.equal(monster.takedamage, damage_t.DAMAGE_AIM, "monster_start should make the monster aim-damageable");
   assert.equal(monster.clipmask, MASK_MONSTERSOLID, "monster_start should use the monster collision mask");
-  assert.equal(typeof monster.monsterinfo.checkattack, "function", "monster_start should install the default M_CheckAttack");
+  assert.equal(monster.monsterinfo.checkattack, customCheckAttack, "monster_start should preserve an existing checkattack callback");
   assert.equal(monster.nextthink, runtime.time + FRAMETIME, "monster_start should arm the first think frame");
+  assert.equal(monster.air_finished, runtime.time + 12, "monster_start should initialize the air timer");
+  assert.equal(typeof monster.use, "function", "monster_start should install monster_use as the use callback");
+  assert.equal(monster.max_health, 125, "monster_start should copy health to max_health");
+  assert.equal(monster.s.skinnum, 0, "monster_start should reset the skin number");
+  assert.equal(monster.deadflag, DEAD_NO, "monster_start should reset deadflag");
+  assert.deepEqual(monster.s.old_origin, [10, 20, 30], "monster_start should copy origin to old_origin");
+  assert.equal(monster.item?.classname, "item_quad", "monster_start should resolve st.item through FindItemByClassname");
+  assert.equal(monster.s.frame, 23, "monster_start should randomize the first frame within the current move span");
+  assert.equal(monster.monsterinfo.scale, 1, "monster_start should default monsterinfo.scale for the TS move-frame runtime");
 }
 
 function verifyMonsterStartSkipsGoodGuys(): void {
   const runtime = createHarnessRuntime();
   const monster = createMonster(runtime, 2);
   monster.monsterinfo.aiflags |= AI_GOOD_GUY;
+  monster.spawnflags = 4;
 
   monster_start(monster, runtime);
 
   assert.equal(runtime.total_monsters, 0, "monster_start should not count good-guy monsters");
+  assert.equal(monster.spawnflags, 4, "monster_start should not rewrite spawnflag 4 for good-guy monsters");
+}
+
+function verifyMonsterStartDeathmatchAndFallbacks(): void {
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  const deathmatchMonster = createMonster(deathmatchRuntime, 40);
+
+  const started = monster_start(deathmatchMonster, deathmatchRuntime);
+
+  assert.equal(started, false, "monster_start should reject monsters in deathmatch");
+  assert.equal(deathmatchMonster.inuse, false, "monster_start should free deathmatch monsters");
+  assert.equal(deathmatchRuntime.total_monsters, 0, "monster_start should not count freed deathmatch monsters");
+
+  const runtime = createHarnessRuntime();
+  const monster = createMonster(runtime, 3);
+  monster.properties.item = "bad_monster_drop";
+
+  monster_start(monster, runtime);
+
+  assert.equal(typeof monster.monsterinfo.checkattack, "function", "monster_start should install M_CheckAttack when none exists");
+  assert.equal(monster.item, null, "monster_start should leave item empty when FindItemByClassname fails");
+  assert.equal(
+    runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message.includes("bad item: bad_monster_drop")),
+    true,
+    "monster_start should log the original bad item warning"
+  );
 }
 
 function verifyMonsterUseHonorsOriginalFilters(): void {

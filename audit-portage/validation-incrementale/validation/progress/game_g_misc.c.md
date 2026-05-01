@@ -2,6 +2,27 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `SP_misc_bigviper`, `misc_viper_bomb_touch` et `misc_viper_bomb_prethink`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `SP_misc_bigviper` conserve `MOVETYPE_NONE`, `SOLID_BBOX`, bbox `[-176,-120,-24]` / `[176,120,72]`, modele `models/ships/bigviper/tris.md2` et link. `misc_viper_bomb_touch` conserve `G_UseTargets(self, self->activator)`, `s.origin[2] = absmin[2] + 1`, `T_RadiusDamage` avec `MOD_BOMB`, puis `BecomeExplosion2`. `misc_viper_bomb_prethink` conserve l'effacement de `groundentity`, le calcul `timestamp - level.time`, le clamp `diff >= -1`, la direction `moveinfo.dir * (1 + diff)`, `v[2] = diff`, `vectoangles` et le roll `+10`.
+  - Commentaires d'en-tete verifies/ajoutes: `SP_misc_bigviper` etait documente; commentaires Strict ajoutes pour `misc_viper_bomb_touch` et `misc_viper_bomb_prethink`.
+  - Branchement runtime verifie: `misc_bigviper` et `misc_viper_bomb` sont enregistres dans `g_spawn.ts`, exportes via `index.ts` et dispatchables par `ED_CallSpawn`. Le bigviper est visible apres spawn. Les callbacks bombe sont atteints par `SP_misc_viper_bomb` puis `misc_viper_bomb_use`; `prethink` est appele par la physique toss (`G_RunFrame` / `G_RunEntity` / `SV_Physics_Toss`) et `touch` par `SV_Impact`.
+  - `apps/web`: integration attendue car le lot produit un gros modele MD2 visible, puis une bombe visible avec `EF_ROCKET`, mouvement toss, degats, cible activee et explosion temp entity. Aucune logique parallele trouvee; le web consomme les sorties runtime via local/full-game, snapshots, effets et temp entities.
+  - `renderer-three`: integration attendue pour modeles MD2, origine/angles de la bombe, effet `EF_ROCKET`, `TE_EXPLOSION2`, particules/dlights et scene. Les sorties passent par `ClientRefreshFrame.entities`, `CL_AddEntityEffects`/temp entities et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaires d'en-tete ajoutes pour `misc_viper_bomb_touch` et `misc_viper_bomb_prethink`.
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour spawn `misc_bigviper`, dispatch `ED_CallSpawn`, spawn/activation bombe, prethink, touch, relay targets, radius damage, `TE_EXPLOSION2` et free.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npx tsx ./scripts/verify/quake2-cl-tent.ts` OK.
+  - `npm run verify:refresh-entity:alias-flags` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `diff`, `misc_viper_bomb_use`, `viper` et `SP_misc_viper_bomb` si le lot reste petit.
+
 - 2026-05-01: `train_use`, `func_train_find`, `misc_viper_use` et `SP_misc_viper`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts` et `packages/game/src/g_func.ts`: les deux declarations externes C `train_use`/`func_train_find` sont deleguees au port `g_func.ts`; `misc_viper_use` conserve le retrait de `SVF_NOCLIENT`, le remplacement du callback `use` par `train_use` et l'appel immediat a `train_use`; `SP_misc_viper` conserve le refus sans `target`, le warning source, le free de l'edict, le speed par defaut `300`, `MOVETYPE_PUSH`, `SOLID_NOT`, modele `models/ships/viper/tris.md2`, bbox, think `func_train_find`, first think `level.time + FRAMETIME`, callback `misc_viper_use`, `SVF_NOCLIENT`, `moveinfo` speed/accel/decel et link.

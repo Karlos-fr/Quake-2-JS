@@ -10,7 +10,7 @@
  */
 
 import { strict as assert } from "node:assert";
-import { ATTN_NORM, CHAN_BODY, CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, MASK_MONSTERSOLID, RF_FRAMELERP, RF_TRANSLUCENT, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t, type trace_t } from "../../packages/qcommon/src/index.js";
+import { ATTN_NORM, CHAN_BODY, CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, EF_ROCKET, MASK_MONSTERSOLID, RF_FRAMELERP, RF_TRANSLUCENT, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t, type trace_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
@@ -39,7 +39,9 @@ import {
   SP_misc_easterchick2,
   SP_misc_eastertank,
   SP_misc_explobox,
+  SP_misc_bigviper,
   SP_misc_viper,
+  SP_misc_viper_bomb,
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
   SP_monster_commander_body,
@@ -78,6 +80,9 @@ import {
   misc_easterchick_think,
   misc_blackhole_use,
   misc_eastertank_think,
+  misc_viper_bomb_prethink,
+  misc_viper_bomb_touch,
+  misc_viper_bomb_use,
   misc_viper_use,
   path_corner_touch,
   point_combat_touch,
@@ -119,6 +124,7 @@ function main(): void {
   verifyCommanderBodySpawnDropUseAndAnimation();
   verifyMiscDeadsoldierSpawnAndGibDeath();
   verifyMiscViperDelegatesTrainMovement();
+  verifyBigViperAndViperBombCallbacks();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
   verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities();
@@ -1053,6 +1059,119 @@ function verifyMiscViperDelegatesTrainMovement(): void {
   dispatch.target = "viper_p1";
   ED_CallSpawn(dispatch, runtime);
   assert.equal(dispatch.use, misc_viper_use, "ED_CallSpawn must dispatch misc_viper to SP_misc_viper");
+}
+
+function verifyBigViperAndViperBombCallbacks(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 72;
+
+  const bigviper = spawnFreeableEntity(runtime);
+  bigviper.classname = "misc_bigviper";
+  SP_misc_bigviper(bigviper, runtime);
+
+  assert.equal(bigviper.movetype, MOVETYPE_NONE, "misc_bigviper must be stationary");
+  assert.equal(bigviper.solid, SOLID_BBOX, "misc_bigviper must use a bbox solid");
+  assert.deepEqual(bigviper.mins, [-176, -120, -24], "misc_bigviper mins mismatch");
+  assert.deepEqual(bigviper.maxs, [176, 120, 72], "misc_bigviper maxs mismatch");
+  assert.equal(runtime.assets.modelPaths[bigviper.s.modelindex - 1], "models/ships/bigviper/tris.md2", "misc_bigviper modelindex mismatch");
+  assert.equal(bigviper.linked, true, "misc_bigviper must link for runtime snapshots");
+
+  const dispatchBigviper = spawnFreeableEntity(runtime);
+  dispatchBigviper.classname = "misc_bigviper";
+  ED_CallSpawn(dispatchBigviper, runtime);
+  assert.equal(runtime.assets.modelPaths[dispatchBigviper.s.modelindex - 1], "models/ships/bigviper/tris.md2", "ED_CallSpawn must dispatch misc_bigviper");
+
+  const viper = spawnFreeableEntity(runtime);
+  viper.classname = "misc_viper";
+  viper.moveinfo.dir = [1, 2, 0];
+  viper.moveinfo.speed = 320;
+  viper.inuse = true;
+
+  const bomb = spawnFreeableEntity(runtime);
+  bomb.classname = "misc_viper_bomb";
+  bomb.s.origin = [10, 20, 40];
+  bomb.origin = [10, 20, 40];
+  bomb.absmin = [2, 12, 24];
+  bomb.mins = [-8, -8, -8];
+  bomb.maxs = [8, 8, 8];
+
+  SP_misc_viper_bomb(bomb, runtime);
+
+  assert.equal(bomb.movetype, MOVETYPE_NONE, "misc_viper_bomb must start stationary");
+  assert.equal(bomb.solid, SOLID_NOT, "misc_viper_bomb must start nonsolid");
+  assert.deepEqual(bomb.mins, [-8, -8, -8], "misc_viper_bomb mins mismatch");
+  assert.deepEqual(bomb.maxs, [8, 8, 8], "misc_viper_bomb maxs mismatch");
+  assert.equal(runtime.assets.modelPaths[bomb.s.modelindex - 1], "models/objects/bomb/tris.md2", "misc_viper_bomb modelindex mismatch");
+  assert.equal(bomb.dmg, 1000, "misc_viper_bomb must default dmg to 1000");
+  assert.equal(bomb.use, misc_viper_bomb_use, "misc_viper_bomb must install use callback");
+  assert.equal((bomb.svflags & SVF_NOCLIENT) !== 0, true, "misc_viper_bomb must start hidden");
+  assert.equal(bomb.linked, true, "misc_viper_bomb must link while hidden");
+
+  const activator = spawnGameEntity(runtime);
+  activator.classname = "target_relay";
+  let relayedActivator: typeof activator | null = null;
+  const relay = spawnGameEntity(runtime);
+  relay.classname = "target_counter";
+  relay.targetname = "bomb_relay";
+  relay.use = (_self, _other, usedActivator) => {
+    relayedActivator = usedActivator;
+  };
+  bomb.target = "bomb_relay";
+
+  useGameEntity(runtime, bomb, null, activator);
+  assert.equal(bomb.solid, SOLID_BBOX, "misc_viper_bomb_use must make the bomb solid");
+  assert.equal((bomb.svflags & SVF_NOCLIENT) === 0, true, "misc_viper_bomb_use must reveal the bomb");
+  assert.equal((bomb.s.effects & EF_ROCKET) !== 0, true, "misc_viper_bomb_use must apply EF_ROCKET");
+  assert.equal(bomb.use, undefined, "misc_viper_bomb_use must clear the use callback");
+  assert.equal(bomb.movetype, MOVETYPE_TOSS, "misc_viper_bomb_use must switch to toss physics");
+  assert.equal(bomb.prethink, misc_viper_bomb_prethink, "misc_viper_bomb_use must install prethink");
+  assert.equal(bomb.touch, misc_viper_bomb_touch, "misc_viper_bomb_use must install touch");
+  assert.equal(bomb.activator, activator, "misc_viper_bomb_use must keep the activator for G_UseTargets");
+  assert.deepEqual(bomb.velocity, [320, 640, 0], "misc_viper_bomb_use must copy viper dir * speed into velocity");
+  assert.deepEqual(bomb.moveinfo.dir, [1, 2, 0], "misc_viper_bomb_use must copy the viper move direction");
+  assert.equal(bomb.timestamp, 72, "misc_viper_bomb_use must timestamp the launch");
+
+  runtime.time = 72.4;
+  bomb.s.angles = [0, 90, 15];
+  bomb.groundentity = runtime.entities[0]!;
+  misc_viper_bomb_prethink(bomb, runtime);
+
+  assert.equal(bomb.groundentity, null, "misc_viper_bomb_prethink must clear groundentity");
+  assert.equal(bomb.s.angles[0], -344, "misc_viper_bomb_prethink pitch mismatch");
+  assert.equal(bomb.s.angles[1], 63, "misc_viper_bomb_prethink yaw mismatch");
+  assert.equal(bomb.s.angles[2], 25, "misc_viper_bomb_prethink must add 10 degrees of roll");
+
+  runtime.time = 80;
+  bomb.s.angles = [0, 0, 25];
+  misc_viper_bomb_prethink(bomb, runtime);
+  assert.equal(bomb.s.angles[2], 35, "misc_viper_bomb_prethink must clamp late diff and keep rolling");
+
+  const damaged = spawnGameEntity(runtime);
+  damaged.classname = "bomb_radius_target";
+  damaged.s.origin = [10, 20, 25];
+  damaged.origin = [10, 20, 25];
+  damaged.mins = [0, 0, 0];
+  damaged.maxs = [0, 0, 0];
+  damaged.health = 2000;
+  damaged.solid = SOLID_BBOX;
+  damaged.takedamage = damage_t.DAMAGE_YES;
+
+  bomb.absmin = [2, 12, 24];
+  misc_viper_bomb_touch(bomb, damaged, runtime);
+
+  assert.equal(relayedActivator, activator, "misc_viper_bomb_touch must fire targets with the stored activator");
+  assert.equal(damaged.health < 2000, true, "misc_viper_bomb_touch must apply MOD_BOMB radius damage");
+  const events = drainGameTempEntityEvents(runtime);
+  assert.equal(events.at(-1)?.type, temp_event_t.TE_EXPLOSION2, "misc_viper_bomb_touch must emit TE_EXPLOSION2");
+  assert.deepEqual(events.at(-1)?.origin, [10, 20, 25], "misc_viper_bomb_touch explosion origin mismatch");
+  assert.equal(bomb.inuse, false, "misc_viper_bomb_touch must free the bomb via BecomeExplosion2");
+
+  const dispatchBomb = spawnFreeableEntity(runtime);
+  dispatchBomb.classname = "misc_viper_bomb";
+  dispatchBomb.dmg = 250;
+  ED_CallSpawn(dispatchBomb, runtime);
+  assert.equal(dispatchBomb.use, misc_viper_bomb_use, "ED_CallSpawn must dispatch misc_viper_bomb to SP_misc_viper_bomb");
+  assert.equal(dispatchBomb.dmg, 250, "SP_misc_viper_bomb must preserve explicit dmg values");
 }
 
 function verifyBarrelDelaySchedulesDelayedExplosion(): void {

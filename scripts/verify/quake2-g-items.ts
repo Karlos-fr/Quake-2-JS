@@ -13,6 +13,7 @@ import {
   Add_Ammo,
   ArmorIndex,
   DoRespawn,
+  Drop_Ammo,
   Drop_General,
   Drop_Item,
   FL_TEAMSLAVE,
@@ -79,6 +80,7 @@ main();
 function main(): void {
   verifyAddAmmoCapsToMax();
   verifyPickupAmmoCountWeaponSelectionAndRespawn();
+  verifyDropAmmoInventoryCountAndGrenadeGuard();
   verifySetRespawnRoundTrip();
   verifyDoRespawnTeamChoice();
   verifyTouchHealthPickup();
@@ -324,6 +326,74 @@ function verifyPickupAmmoCountWeaponSelectionAndRespawn(): void {
 
   assertBoolean(Pickup_Ammo(noSwitchGrenadeEntity, noSwitchPlayer, noSwitchRuntime), true, "Pickup_Ammo accepts deathmatch weapon ammo with non-blaster current weapon");
   assertBoolean(noSwitchPlayer.client!.newweapon === null, true, "Pickup_Ammo does not auto-switch in deathmatch from a non-blaster weapon");
+}
+
+function verifyDropAmmoInventoryCountAndGrenadeGuard(): void {
+  const runtime = createHarnessRuntime();
+  const shells = requireItem("Shells");
+  const player = createPlayer(runtime);
+  player.s.origin = [16, 32, 48];
+  player.origin = [16, 32, 48];
+  player.client!.v_angle = [0, 0, 0];
+  player.client!.pers.inventory[shells.index] = 25;
+  player.client!.pers.selected_item = shells.index;
+
+  const entityCountBeforeFullDrop = runtime.entities.length;
+  Drop_Ammo(player, shells, runtime);
+  const fullDrop = runtime.entities.at(-1);
+
+  assertNumber(runtime.entities.length, entityCountBeforeFullDrop + 1, "Drop_Ammo creates one dropped ammo entity");
+  assertBoolean(fullDrop?.item === shells, true, "Drop_Ammo delegates to Drop_Item with the ammo definition");
+  assertNumber(fullDrop?.count ?? 0, shells.quantity, "Drop_Ammo caps dropped count to item.quantity");
+  assertNumber(player.client!.pers.inventory[shells.index], 15, "Drop_Ammo subtracts dropped ammo from ITEM_INDEX(item)");
+  assertNumber(player.client!.pers.selected_item, shells.index, "Drop_Ammo keeps a still-stocked selected ammo item selected");
+  assertNumber(fullDrop?.spawnflags ?? 0, DROPPED_ITEM, "Drop_Ammo produces a DROPPED_ITEM entity");
+  assertNumber(fullDrop?.s.modelindex && fullDrop.s.modelindex > 0 ? 1 : 0, 1, "Drop_Ammo produces a renderer-visible ammo model");
+
+  const partialRuntime = createHarnessRuntime();
+  const partialPlayer = createPlayer(partialRuntime);
+  partialPlayer.client!.pers.inventory[shells.index] = 4;
+  partialPlayer.client!.pers.selected_item = shells.index;
+
+  Drop_Ammo(partialPlayer, shells, partialRuntime);
+  const partialDrop = partialRuntime.entities.at(-1);
+
+  assertNumber(partialDrop?.count ?? 0, 4, "Drop_Ammo drops the remaining inventory when below item.quantity");
+  assertNumber(partialPlayer.client!.pers.inventory[shells.index], 0, "Drop_Ammo clears the ammo slot after a partial drop");
+  assertNumber(partialPlayer.client!.pers.selected_item, -1, "Drop_Ammo validates away an emptied selected ammo item");
+
+  const grenadeRuntime = createHarnessRuntime();
+  while (grenadeRuntime.entities.length <= grenadeRuntime.maxclients + 8) {
+    spawnGameEntity(grenadeRuntime);
+  }
+  const grenades = requireItem("Grenades");
+  const grenadePlayer = createPlayer(grenadeRuntime);
+  grenadePlayer.client!.pers.weapon = grenades;
+  grenadePlayer.client!.pers.inventory[grenades.index] = grenades.quantity;
+  grenadePlayer.client!.pers.selected_item = grenades.index;
+
+  Drop_Ammo(grenadePlayer, grenades, grenadeRuntime);
+  const refusedDrop = grenadeRuntime.entities.at(-1);
+
+  assertNumber(grenadePlayer.client!.pers.inventory[grenades.index], grenades.quantity, "Drop_Ammo refuses to drop the last current grenade weapon ammo");
+  assertNumber(refusedDrop?.inuse ? 1 : 0, 0, "Drop_Ammo frees the refused grenade drop entity");
+  assertBoolean(
+    grenadeRuntime.logEntries.some((entry) => entry.message.includes("Can't drop current weapon")),
+    true,
+    "Drop_Ammo reports the original current-weapon grenade refusal"
+  );
+
+  const spareGrenadeRuntime = createHarnessRuntime();
+  const spareGrenadePlayer = createPlayer(spareGrenadeRuntime);
+  spareGrenadePlayer.client!.pers.weapon = grenades;
+  spareGrenadePlayer.client!.pers.inventory[grenades.index] = grenades.quantity + 2;
+
+  Drop_Ammo(spareGrenadePlayer, grenades, spareGrenadeRuntime);
+  const allowedGrenadeDrop = spareGrenadeRuntime.entities.at(-1);
+
+  assertNumber(allowedGrenadeDrop?.count ?? 0, grenades.quantity, "Drop_Ammo still drops one grenade-ammo quantity when spare ammo remains");
+  assertNumber(spareGrenadePlayer.client!.pers.inventory[grenades.index], 2, "Drop_Ammo leaves spare grenade ammo after an allowed current-weapon drop");
+  assertNumber(allowedGrenadeDrop?.inuse ? 1 : 0, 1, "Drop_Ammo keeps an allowed grenade drop in use");
 }
 
 function verifySetRespawnRoundTrip(): void {

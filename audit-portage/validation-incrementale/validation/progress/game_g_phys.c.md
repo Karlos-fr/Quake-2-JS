@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `SV_Physics_Toss`.
-- Prochain lot recommande: `sv_stopspeed`, `sv_friction`, `sv_waterfriction`, `SV_AddRotationalFriction` avec locales `n` et `adjustment`.
+- Dernier lot valide: `sv_stopspeed`, `sv_friction`, `sv_waterfriction`, `SV_AddRotationalFriction` avec locales `n` et `adjustment`.
+- Prochain lot recommande: `SV_Physics_Step` avec locales `wasonground`, `hitsound`, `vel`, `friction`, `groundentity` et `mask` si le lot reste raisonnable.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -170,3 +170,14 @@
 - renderer-three: pas de logique gameplay renderer attendue; les sorties visibles sont les origines/angles des entites toss/bounce/fly/flymissile, modeles/frames deja presents et eventuels effets indirects via callbacks. Les sons positionnes restent des sorties audio runtime, pas un rendu Three direct.
 - Correction: `packages/game/src/g_phys.ts` emet maintenant les sons `misc/h2ohit1.wav` avec origine explicite comme `gi.positioned_sound`; `scripts/verify/quake2-g-phys.ts` couvre teamslave, onground, groundentity liberee, skip gravite fly/flymissile, bounce backoff/seuil sol, transitions eau avec origine sonore, et propagation teamchain.
 - Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `SV_AddRotationalFriction` et constantes de friction
+
+- Lot traite: `sv_stopspeed`, `sv_friction`, `sv_waterfriction`, `SV_AddRotationalFriction`, locales `n` et `adjustment`.
+- Comparaison C/TS: le C definit `sv_stopspeed = 100`, `sv_friction = 6`, `sv_waterfriction = 1`, avance `ent->s.angles` avec `FRAMETIME * ent->avelocity`, calcule `adjustment = FRAMETIME * sv_stopspeed * sv_friction`, puis boucle `n = 0..2` pour rapprocher chaque composante de `avelocity` de zero sans depasser. Le TS porte ces constantes en `SV_STOPSPEED`, `SV_FRICTION`, `SV_WATERFRICTION`, synchronise `angles`/`s.angles` via `setEntityAngles`, calcule le meme `adjustment`, et porte la boucle `n` sous forme d'index local.
+- Commentaire d'en-tete: present et conforme pour `SV_AddRotationalFriction` (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement). Les macros sont des constantes privees de module.
+- Runtime: integre via `G_RunFrame` / `G_RunEntity` -> `SV_Physics_Step` pour les entites `MOVETYPE_STEP` avec `avelocity`; les constantes sont aussi consommees par les frictions verticales fly/swim et horizontales de `SV_Physics_Step`.
+- apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace cette friction. Les sorties attendues sont les angles/origines/vitesses visibles exposes ensuite par snapshots et refresh frames.
+- renderer-three: pas de sortie renderer directe propre; les sorties visibles attendues sont les orientations et positions d'entites/modeles step apres physique, consommees indirectement via `ClientRefreshFrame` et les adapters `renderer-three`. Pas de particules, beams, dlights, temp entities, images, areabits ou camera produits directement par ce lot.
+- Correction: ajout de preuves ciblees dans `scripts/verify/quake2-g-phys.ts` pour l'appel direct de `SV_AddRotationalFriction`, l'atteignabilite via `G_RunEntity`/`SV_Physics_Step`, et l'usage de `SV_FRICTION`/`SV_WATERFRICTION` dans les branches fly/swim.
+- Tests lances: `npm run verify:g-phys` OK.

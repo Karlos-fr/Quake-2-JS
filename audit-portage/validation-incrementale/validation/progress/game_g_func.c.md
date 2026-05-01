@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `door_secret_move6`, `door_secret_done` et leurs doublons matriciels.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1926-1939` avec `packages/game/src/g_func.ts:2170-2190` apres ajout des commentaires d'en-tete de `door_secret_move6` et `door_secret_done`.
+- Correction appliquee: commentaires d'en-tete `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `door_secret_move6` lance `Move_Calc` vers l'origine avec `door_secret_done` comme callback de fin; `door_secret_done` restaure `health = 0` et `DAMAGE_YES` pour les portes sans `targetname` ou `SECRET_ALWAYS_SHOOT`, conserve les portes ciblees sans ce flag, et ferme les areaportals lies.
+- Branchement: `door_secret_move6` est programme par `door_secret_move5`, puis le callback `door_secret_done` est appele par la fin de mouvement via `Move_Calc`; le flux normal `G_RunFrame`/`G_RunEntity`/`SV_RunThink` execute les thinks et callbacks.
+- Integration: aucune logique parallele `func_door_secret` dans `apps/web`; le navigateur consomme les snapshots runtime, sons et areabits. `packages/renderer-three` ne porte pas la logique gameplay de porte secrete, mais consomme les sorties visibles attendues via les brush models, positions/interpolations et scene/areabits; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:g-spawn` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: `door_secret_move4`, `door_secret_move5` et leurs doublons matriciels.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1915-1924` avec `packages/game/src/g_func.ts:2134-2160` apres ajout des commentaires d'en-tete de `door_secret_move4` et `door_secret_move5`.
 - Correction appliquee: commentaires d'en-tete `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
@@ -342,7 +350,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `door_secret_move6` et `door_secret_done`, puis leurs doublons matriciels si le lot reste petit.
+- Continuer avec `door_secret_use`, puis `door_secret_blocked` si le lot reste petit.
 
 ## Blocages
 

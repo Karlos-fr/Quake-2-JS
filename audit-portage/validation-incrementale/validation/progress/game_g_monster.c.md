@@ -1,12 +1,22 @@
 # Progress - Quake-2-master/game/g_monster.c
 
 - Statut: En cours
-- Dernier lot valide: `monster_death_use`
-- Prochain lot recommande: `monster_start`
+- Dernier lot valide: `monster_start`
+- Prochain lot recommande: locales `notcombat`, `fixup`, `target` de `monster_start_go`, puis `walkmonster_start_go` si le lot reste petit
 - Tests de reference: `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Blocages: aucun pour le lot valide
 
 ## Session courante
+
+- Lot traite: `monster_start`.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS complete avec la note de portage `monsterinfo.scale`, test cible renforce dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
+- Runtime: atteignable depuis les spawn routines de monstres (`walkmonster_start`, `flymonster_start`, `swimmonster_start`) appelees par les fichiers `m_*.ts`; le lot couvre le free deathmatch, la conversion de `spawnflags & 4`, le comptage `total_monsters`, les flags/champs de startup, `monster_use`, `M_CheckAttack`, `old_origin`, l'item drop depuis `st.item`/`properties.item` et la randomisation de frame.
+- apps/web: pas de logique parallele attendue; les monstres sont crees par le runtime local/full-game, puis les entites, sons/logs et snapshots produits sont consommes par le client web. Tests `verify:local-gameplay-sync`, `verify:full-game:three-renderer` et `verify:web-render-order` OK.
+- renderer-three: sortie visible attendue indirecte via monstres demarres, modeles MD2, frames, origines/angles et etats render; ces donnees passent par snapshots/client refresh et sont consommees par les adapters Three. Pas de branchement gameplay renderer requis.
+- Tests lances: `npm run verify:g-monster` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
+- Prochain lot recommande: locales `notcombat`, `fixup`, `target` de `monster_start_go`, puis `walkmonster_start_go` si le lot reste petit.
+
+## Session precedente
 
 - Lot traite: `monster_death_use`.
 - Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS `Close` verifie, test cible renforce dans `scripts/verify/quake2-g-monster.ts`, dispatch runtime `T_Damage`/`Killed` restaure via registre `setDefaultMonsterDeathUse`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.

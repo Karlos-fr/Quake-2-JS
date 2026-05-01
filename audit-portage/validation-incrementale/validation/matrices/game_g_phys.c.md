@@ -58,12 +58,12 @@
 | `Quake-2-master/game/g_phys.c` | global | `isinwater` | `packages/game/src/g_phys.ts` | `isinwater` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `old_origin` | `packages/game/src/g_phys.ts` | `old_origin` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `backoff` | `packages/game/src/g_phys.ts` | `backoff` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | macro | `sv_stopspeed` | `packages/game/src/g_phys.ts` | `SV_STOPSPEED` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | macro | `sv_friction` | `packages/game/src/g_phys.ts` | `SV_FRICTION` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | macro | `sv_waterfriction` | `packages/game/src/g_phys.ts` | `SV_WATERFRICTION` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | function | `SV_AddRotationalFriction` | `packages/game/src/g_phys.ts` | `SV_AddRotationalFriction` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `n` | `packages/game/src/g_phys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `adjustment` | `packages/game/src/g_phys.ts` | `adjustment` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | macro | `sv_stopspeed` | `packages/game/src/g_phys.ts` | `SV_STOPSPEED` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | macro | `sv_friction` | `packages/game/src/g_phys.ts` | `SV_FRICTION` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | macro | `sv_waterfriction` | `packages/game/src/g_phys.ts` | `SV_WATERFRICTION` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | function | `SV_AddRotationalFriction` | `packages/game/src/g_phys.ts` | `SV_AddRotationalFriction` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `n` | `packages/game/src/g_phys.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `adjustment` | `packages/game/src/g_phys.ts` | `adjustment` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Step` | `packages/game/src/g_phys.ts` | `SV_Physics_Step` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `wasonground` | `packages/game/src/g_phys.ts` | `wasonground` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `hitsound` | `packages/game/src/g_phys.ts` | `hitsound` | A verifier | A redecouper |  |

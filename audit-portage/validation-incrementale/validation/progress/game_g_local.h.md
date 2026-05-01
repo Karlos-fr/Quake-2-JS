@@ -740,6 +740,24 @@
   - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration et miroir runtime des trois champs.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:p-client` OK; `npm run verify:g-items` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `spawn_temp_t` avec champs worldspawn `sky`, `skyrotate`, `skyaxis`.
+- Verdict: `Valide` pour la structure et les 3 champs apres comparaison H/TS, commentaire de structure ajoute et renforcement des preuves.
+- Source H comparee: `spawn_temp_t` porte les valeurs editeur absentes de `edict_t`; `sky`, `skyrotate` et `skyaxis` sont les world vars consommees par `SP_worldspawn` pour publier les configstrings de ciel, avec fallbacks `unit1_`, `0`, `0 0 0`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `spawn_temp_t` porte les champs du bloc C; `createSpawnTemp` initialise `sky` a `null`, `skyrotate` a `0` et `skyaxis` a `[0, 0, 0]`; `STOFS` selectionne les champs spawn temp par nom.
+  - `packages/game/src/g_save.ts`: `fields` mappe `sky`, `skyrotate` et `skyaxis` en `FFL_SPAWNTEMP`, types `F_LSTRING`, `F_FLOAT` et `F_VECTOR`, comme le C.
+  - `packages/game/src/g_main.ts`: `configureWorldspawn` publie `CS_SKY`, `CS_SKYROTATE` et `CS_SKYAXIS` depuis les proprietes worldspawn, avec les defaults originaux.
+  - `packages/client/src/cl_parse.ts` et `packages/client/src/sky.ts`: les configstrings ciel alimentent l'etat client structure et `CL_BuildSkySnapshot`.
+- Runtime: flux attendu branche depuis `SpawnEntities`/worldspawn vers `gi.configstring`, puis serveur/client configstrings, parsing client et snapshot de rendu. Les champs ne restent pas dans un global mutable `st` comme en C; ils sont portes par les proprietes parsees et les metadata `STOFS`, representation equivalente pour le runtime TS.
+- apps/web: integration attendue et verifiee. `apps/web` consomme les configstrings serveur/local via `full-game-server-host`, construit `skySnapshot` dans `full-game-render-source`, puis appelle `skyAdapter.update` et l'overlay debug; aucune logique parallele masquante detectee.
+- renderer-three: integration attendue et verifiee. Le ciel produit une sortie visible de scene; `packages/renderer-three` consomme `skySnapshot.name`, `rotate`, `axis` via `createThreeSkySceneAdapter`, charge les faces sky et applique rotation/axe, avec faces `R_DrawSkyBox` quand disponibles.
+- Commentaires/documentation: commentaire de portage ajoute a `spawn_temp_t`; `createSpawnTemp`, `STOFS`, `configureWorldspawn` et `CL_BuildSkySnapshot` avaient des commentaires d'en-tete verifies.
+- Corrections appliquees:
+  - `packages/game/src/g_local.ts`: commentaire de portage `spawn_temp_t`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defauts, mutation et `STOFS` pour tous les champs `spawn_temp_t`, dont `sky`, `skyrotate`, `skyaxis`.
+  - `scripts/verify/quake2-g-spawn.ts`: assertion des defaults worldspawn `CS_SKY`, `CS_SKYROTATE`, `CS_SKYAXIS`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-spawn` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npx tsx ./scripts/verify/quake2-sky-phase2.ts` OK; `npx tsx ./scripts/verify/quake2-sky-phase4.ts` OK; `npx tsx ./scripts/verify/quake2-sky-phase5.ts` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -773,7 +791,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `spawn_temp_t`, puis `sky`, `skyrotate`, `skyaxis` si le lot reste petit.
+- Continuer avec `nextmap`, puis `lip`, `distance`, `height`, `noise`, `pausetime` si le lot reste petit.
 
 ## Blocages
 

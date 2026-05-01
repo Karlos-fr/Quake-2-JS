@@ -2158,10 +2158,29 @@ export function door_secret_move5(self: GameEntity, runtime: GameRuntime): void 
   self.think = door_secret_move6;
 }
 
+/**
+ * Original name: door_secret_move6
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the final secret-door return movement back to the world origin.
+ */
 export function door_secret_move6(self: GameEntity, runtime: GameRuntime): void {
   Move_Calc(self, [0, 0, 0], door_secret_done, runtime);
 }
 
+/**
+ * Original name: door_secret_done
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Restores shootability for untargeted or always-shoot secret doors after they close.
+ * - Closes linked area portals when the secret door is fully back at its origin.
+ */
 export function door_secret_done(self: GameEntity, runtime: GameRuntime): void {
   if (!self.targetname || (self.spawnflags & SECRET_ALWAYS_SHOOT) !== 0) {
     self.health = 0;

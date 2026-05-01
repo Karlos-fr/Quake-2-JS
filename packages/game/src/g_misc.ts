@@ -1821,6 +1821,15 @@ export function misc_strogg_ship_use(
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: misc_viper_bomb_touch
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fires the bomb targets with the stored activator, snaps the explosion origin to the floor contact, applies bomb radius damage and becomes `TE_EXPLOSION2`.
+ */
 export function misc_viper_bomb_touch(self: GameEntity, _other: GameEntity, runtime: GameRuntime): void {
   G_UseTargets(runtime, self, self.activator);
   self.s.origin[2] = self.absmin[2] + 1;
@@ -1829,6 +1838,15 @@ export function misc_viper_bomb_touch(self: GameEntity, _other: GameEntity, runt
   BecomeExplosion2(self, runtime);
 }
 
+/**
+ * Original name: misc_viper_bomb_prethink
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Keeps the launched viper bomb airborne, pitches it from the launch direction and time delta, clamps late falloff at -1, and rolls it by 10 degrees each frame.
+ */
 export function misc_viper_bomb_prethink(self: GameEntity, runtime: GameRuntime): void {
   self.groundentity = null;
   let diff = self.timestamp - runtime.time;

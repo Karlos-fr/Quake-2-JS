@@ -85,6 +85,7 @@ import {
   SFL_CROSS_TRIGGER_7,
   SFL_CROSS_TRIGGER_8,
   SFL_CROSS_TRIGGER_MASK,
+  STOFS,
   TAG_GAME,
   TAG_LEVEL,
   WEAP_BFG,
@@ -432,8 +433,45 @@ assert.equal(level.current_entity, entity, "level_locals_t current_entity field 
 assert.equal(level.body_que, 6, "level_locals_t body_que field mismatch");
 assert.equal(level.power_cubes, 3, "level_locals_t power_cubes field mismatch");
 assert.equal(st.sky, null, "spawn_temp sky default mismatch");
+assert.equal(st.skyrotate, 0, "spawn_temp skyrotate default mismatch");
+assert.deepEqual(st.skyaxis, [0, 0, 0], "spawn_temp skyaxis default mismatch");
+assert.equal(st.nextmap, null, "spawn_temp nextmap default mismatch");
+assert.equal(st.lip, 0, "spawn_temp lip default mismatch");
+assert.equal(st.distance, 0, "spawn_temp distance default mismatch");
+assert.equal(st.height, 0, "spawn_temp height default mismatch");
+assert.equal(st.noise, null, "spawn_temp noise default mismatch");
+assert.equal(st.pausetime, 0, "spawn_temp pausetime default mismatch");
+assert.equal(st.item, null, "spawn_temp item default mismatch");
+assert.equal(st.gravity, null, "spawn_temp gravity default mismatch");
+assert.equal(st.minyaw, 0, "spawn_temp minyaw default mismatch");
+assert.equal(st.maxyaw, 0, "spawn_temp maxyaw default mismatch");
+assert.equal(st.minpitch, 0, "spawn_temp minpitch default mismatch");
+assert.equal(st.maxpitch, 0, "spawn_temp maxpitch default mismatch");
+st.sky = "space1";
+st.skyrotate = 5;
+st.skyaxis = [0, 0, 1];
+st.nextmap = "unit_next";
+assert.equal(st.sky, "space1", "spawn_temp sky field mismatch");
+assert.equal(st.skyrotate, 5, "spawn_temp skyrotate field mismatch");
+assert.deepEqual(st.skyaxis, [0, 0, 1], "spawn_temp skyaxis field mismatch");
+assert.equal(st.nextmap, "unit_next", "spawn_temp nextmap field mismatch");
 assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");
 assert.equal(FOFS("classname"), "classname", "FOFS selector mismatch");
+assert.equal(STOFS("sky"), "sky", "STOFS sky selector mismatch");
+assert.equal(STOFS("skyrotate"), "skyrotate", "STOFS skyrotate selector mismatch");
+assert.equal(STOFS("skyaxis"), "skyaxis", "STOFS skyaxis selector mismatch");
+assert.equal(STOFS("nextmap"), "nextmap", "STOFS nextmap selector mismatch");
+assert.equal(STOFS("lip"), "lip", "STOFS lip selector mismatch");
+assert.equal(STOFS("distance"), "distance", "STOFS distance selector mismatch");
+assert.equal(STOFS("height"), "height", "STOFS height selector mismatch");
+assert.equal(STOFS("noise"), "noise", "STOFS noise selector mismatch");
+assert.equal(STOFS("pausetime"), "pausetime", "STOFS pausetime selector mismatch");
+assert.equal(STOFS("item"), "item", "STOFS item selector mismatch");
+assert.equal(STOFS("gravity"), "gravity", "STOFS gravity selector mismatch");
+assert.equal(STOFS("minyaw"), "minyaw", "STOFS minyaw selector mismatch");
+assert.equal(STOFS("maxyaw"), "maxyaw", "STOFS maxyaw selector mismatch");
+assert.equal(STOFS("minpitch"), "minpitch", "STOFS minpitch selector mismatch");
+assert.equal(STOFS("maxpitch"), "maxpitch", "STOFS maxpitch selector mismatch");
 assert.equal(LLOFS("framenum"), "framenum", "LLOFS framenum selector mismatch");
 assert.equal(LLOFS("time"), "time", "LLOFS time selector mismatch");
 assert.equal(LLOFS("level_name"), "level_name", "LLOFS level_name selector mismatch");

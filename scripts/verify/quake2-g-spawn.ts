@@ -169,6 +169,9 @@ SpawnEntities(
 );
 assert.equal(unnamedContext.level.level_name, "base2", "worldspawn without message must use mapname as level_name");
 assert.equal(unnamedContext.level.nextmap, "", "worldspawn without nextmap must leave level.nextmap empty");
+assert.equal(configstrings.get(CS_SKY), "unit1_", "worldspawn without sky must publish the original default sky");
+assert.equal(configstrings.get(CS_SKYROTATE), "0", "worldspawn without skyrotate must publish the original default rotation");
+assert.equal(configstrings.get(CS_SKYAXIS), "0 0 0", "worldspawn without skyaxis must publish the original default axis");
 
 const firstDoor = context.runtime.entities[5]!;
 const secondDoor = context.runtime.entities[6]!;

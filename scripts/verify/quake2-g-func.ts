@@ -52,6 +52,8 @@ import {
   door_secret_move3,
   door_secret_move4,
   door_secret_move5,
+  door_secret_move6,
+  door_secret_done,
   door_go_down,
   door_go_up,
   door_hit_bottom,
@@ -1269,6 +1271,54 @@ secret.think = null;
 door_secret_move5(secret, runtime);
 assert.equal(secret.nextthink, runtime.time + 1, "door_secret_move5 delay mismatch");
 assert.equal(secret.think?.name, "door_secret_move6", "door_secret_move5 next think mismatch");
+secret.origin = [...secret.pos1];
+secret.s.origin = [...secret.pos1];
+secret.nextthink = 0;
+secret.think = null;
+door_secret_move6(secret, runtime);
+assert.equal(secret.moveinfo.remaining_distance, Math.hypot(secret.pos1[0], secret.pos1[1], secret.pos1[2]), "door_secret_move6 distance mismatch");
+assert.equal(secret.moveinfo.endfunc?.name, "door_secret_done", "door_secret_move6 endfunc mismatch");
+assert.equal(secret.think?.name, "Move_Begin", "door_secret_move6 must schedule movement");
+
+const secretPortalRuntime = createGameRuntimeFromBspEntities([]);
+secretPortalRuntime.collision = {
+  world: {
+    areas: [
+      { numareaportals: 0, firstareaportal: 0, floodnum: 0, floodvalid: 0 },
+      { numareaportals: 1, firstareaportal: 0, floodnum: 0, floodvalid: 0 },
+      { numareaportals: 1, firstareaportal: 1, floodnum: 0, floodvalid: 0 }
+    ],
+    map_areaportals: [
+      { portalnum: 1, otherarea: 2 },
+      { portalnum: 1, otherarea: 1 }
+    ],
+    portalopen: new Uint8Array(2)
+  },
+  trace: () => {
+    throw new Error("unexpected secret areaportal trace");
+  }
+};
+const untargetedSecret = createRuntimeEntity({ classname: "func_door_secret", target: "secret_portal" }, 160);
+untargetedSecret.inuse = true;
+untargetedSecret.takedamage = damage_t.DAMAGE_NO;
+const secretPortal = createRuntimeEntity({ classname: "func_areaportal", targetname: "secret_portal" }, 161);
+secretPortal.inuse = true;
+secretPortal.style = 1;
+secretPortalRuntime.entities[160] = untargetedSecret;
+secretPortalRuntime.entities[161] = secretPortal;
+secretPortalRuntime.collision.world.portalopen[1] = 1;
+door_secret_done(untargetedSecret, secretPortalRuntime);
+assert.equal(untargetedSecret.health, 0, "door_secret_done untargeted health mismatch");
+assert.equal(untargetedSecret.takedamage, damage_t.DAMAGE_YES, "door_secret_done untargeted takedamage mismatch");
+assert.equal(secretPortalRuntime.collision.world.portalopen[1], 0, "door_secret_done must close targeted areaportal");
+
+const targetedSecret = createRuntimeEntity({ classname: "func_door_secret", targetname: "secret_targeted" }, 162);
+targetedSecret.inuse = true;
+targetedSecret.health = 25;
+targetedSecret.takedamage = damage_t.DAMAGE_NO;
+door_secret_done(targetedSecret, secretPortalRuntime);
+assert.equal(targetedSecret.health, 25, "door_secret_done targeted health must stay unchanged");
+assert.equal(targetedSecret.takedamage, damage_t.DAMAGE_NO, "door_secret_done targeted takedamage must stay unchanged");
 
 const secretLeft = entity("func_door_secret", 145, { angle: "0", spawnflags: "2", targetname: "secret_left" });
 secretLeft.size = [32, 64, 16];

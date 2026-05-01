@@ -1063,6 +1063,8 @@ export function Pickup_Ammo(ent: GameEntity, other: GameEntity, runtime: GameRun
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Drop at most one ammo item quantity from the player's inventory, using the `ITEM_INDEX(item)` slot.
+ * Porting notes: The current-grenade guard preserves the C refusal path and frees the transient dropped entity.
  */
 export function Drop_Ammo(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   const client = requireClient(ent, "Drop_Ammo");
