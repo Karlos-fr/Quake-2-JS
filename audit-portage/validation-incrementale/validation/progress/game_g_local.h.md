@@ -8,6 +8,26 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot `game_locals_t` avec champs `spawnpoint`, `maxclients`, `maxentities`, `serverflags`.
+- Verdict: `Valide` pour les 4 champs apres renforcement des preuves; aucune correction gameplay TS necessaire.
+- Source H comparee: `spawnpoint[512]` est conserve dans `game_locals_t` pour les respawns coop entre niveaux; `maxclients` et `maxentities` stockent les cvars latchees frequemment consultees; `serverflags` porte les cross-level triggers.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `game_locals_t` porte `spawnpoint`, `maxclients`, `maxentities`, `serverflags`; `createGameLocals` initialise les valeurs vides/zero; le commentaire de portage `game_locals_t` couvre la representation string de `spawnpoint`.
+  - `packages/game/src/runtime.ts`: miroir runtime `spawnpoint`, `maxclients`, `maxentities`, `serverflags` present pour les flux actifs.
+  - `packages/game/src/g_main.ts`: `InitGame`/`applyMainCvarsToRuntime` synchronisent `maxclients`/`maxentities`; `SpawnEntities` conserve `spawnpoint` dans runtime et `game_locals_t`.
+  - `packages/game/src/g_save.ts`: `WriteGame`/`ReadGame` persistent et restaurent les 4 champs, y compris le miroir runtime.
+- Runtime:
+  - `spawnpoint` est fourni par le serveur au chargement de map et consommé par `SelectSpawnPoint`/`SelectCoopSpawnPoint` pour les respawns.
+  - `maxclients` reserve les edicts joueurs et borne les scans clients; `maxentities` borne `G_Spawn`; `serverflags` est modifie/consomme par les cross-level triggers et restauré sur savegame.
+- apps/web: integration attendue via le host full-game/local qui parse `map$spawnpoint`, initialise le runtime et consomme les snapshots/HUD; pas de logique gameplay parallele masquant ces champs. `verify:web-render-order` OK.
+- renderer-three: aucune consommation directe des champs `game_locals_t` attendue. Les sorties visibles passent en aval par les entites/snapshots, la camera et les frames refresh; `serverflags` ne produit pas directement modeles/frames/images/particules/beams/dlights/temp entities/areabits/camera/scene. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage de `game_locals_t` verifie; pas de fonction nouvelle dans ce lot.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions structure/champs mutables `spawnpoint`, `maxclients`, `maxentities`, `serverflags`.
+  - `scripts/verify/quake2-g-main.ts`: assertions `InitGame`/`SpawnEntities` sur la synchronisation runtime/game.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration des 4 champs.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:p-client` OK; `npm run verify:g-utils` OK; `npm run verify:g-target` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot `game_locals_t` avec champs `helpmessage1`, `helpmessage2`, `helpchanged`.
 - Verdict: `Valide` pour la structure et les 3 champs apres correction du branchement runtime/game.
 - Source H comparee: `game_locals_t` conserve l'etat cross-level persiste dans `server.ssv`; `helpmessage1[512]`, `helpmessage2[512]` et `helpchanged` pilotent le message help/F1, puis `clients`, `spawnpoint`, `maxclients`, `maxentities`, `serverflags`, `num_items`, `autosaved`.
@@ -567,7 +587,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les champs restants de `game_locals_t`: `spawnpoint`, `maxclients`, `maxentities`, puis `serverflags` si le lot reste raisonnable.
+- Continuer avec les champs restants de `game_locals_t`: `num_items` et `autosaved`, puis clore la tranche `game_locals_t` si le lot reste raisonnable.
 
 ## Blocages
 

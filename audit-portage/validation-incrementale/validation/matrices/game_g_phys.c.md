@@ -24,11 +24,11 @@
 | `Quake-2-master/game/g_phys.c` | function | `ClipVelocity` | `packages/game/src/g_phys.ts` | `ClipVelocity` | Valide | A redecouper | Commentaire d'en-tete verifie; runtime via `SV_FlyMove`/`SV_Physics_Toss` depuis `G_RunFrame`/`G_RunEntity`; web via runtime gameplay; renderer consomme seulement les positions/origines visibles resultantes. |
 | `Quake-2-master/game/g_phys.c` | global | `backoff` | `packages/game/src/g_phys.ts` | `backoff` | Valide | A redecouper | Locale de `ClipVelocity`; calcul `DotProduct(in, normal) * overbounce` couvert par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `change` | `packages/game/src/g_phys.ts` | `change` | Valide | A redecouper | Locale de `ClipVelocity`; projection par composante et zero `STOP_EPSILON` couverts par `npm run verify:g-phys`. |
-| `Quake-2-master/game/g_phys.c` | macro | `MAX_CLIP_PLANES` | `packages/game/src/g_phys.ts` | `MAX_CLIP_PLANES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | function | `SV_FlyMove` | `packages/game/src/g_phys.ts` | `SV_FlyMove` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `hit` | `packages/game/src/g_phys.ts` | `hit` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `dir` | `packages/game/src/g_phys.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `d` | `packages/game/src/g_phys.ts` | `d` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | macro | `MAX_CLIP_PLANES` | `packages/game/src/g_phys.ts` | `MAX_CLIP_PLANES` | Valide | A redecouper | Constante 5 verifiee dans `SV_FlyMove`; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | function | `SV_FlyMove` | `packages/game/src/g_phys.ts` | `SV_FlyMove` | Valide | A redecouper | Commentaire d'en-tete verifie; runtime via `G_RunFrame`/`G_RunEntity` -> `SV_Physics_Step`/`SV_Physics_Toss`; web/renderer via positions visibles et refresh frames; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `hit` | `packages/game/src/g_phys.ts` | `hit` | Valide | A redecouper | Locale de `SV_FlyMove`; affectation `groundentity`/`groundentity_linkcount` couverte par `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `dir` | `packages/game/src/g_phys.ts` | `dir` | Valide | A redecouper | Locale de crease de `SV_FlyMove`; cross product des deux plans couvert par `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `d` | `packages/game/src/g_phys.ts` | `d` | Valide | A redecouper | Locale de crease de `SV_FlyMove`; projection `DotProduct(dir, velocity)` couverte par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `numplanes` | `packages/game/src/g_phys.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `planes` | `packages/game/src/g_phys.ts` | `planes` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | A verifier | A redecouper |  |
