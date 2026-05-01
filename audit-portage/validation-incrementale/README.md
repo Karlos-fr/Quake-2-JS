@@ -19,10 +19,22 @@ Generer ou regenerer les matrices :
 npm run audit:validation:matrices
 ```
 
+Generer ou regenerer les matrices TS croisees avec les matrices C/H :
+
+```powershell
+npm run audit:validation:ts-matrices
+```
+
 Les matrices sont ecrites dans :
 
 ```text
 audit-portage/validation-incrementale/validation/matrices/
+```
+
+Les matrices TS croisees sont ecrites dans :
+
+```text
+audit-portage/validation-incrementale/validation/ts-matrices/
 ```
 
 Un index global est ecrit dans :
@@ -31,10 +43,22 @@ Un index global est ecrit dans :
 audit-portage/validation-incrementale/validation/INDEX.md
 ```
 
+L'index TS croise est ecrit dans :
+
+```text
+audit-portage/validation-incrementale/validation/INDEX_TS.md
+```
+
 Le pilotage global par fichier est ecrit dans :
 
 ```text
 audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md
+```
+
+Le pilotage global TS croise est ecrit dans :
+
+```text
+audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL_TS.md
 ```
 
 Les fichiers de reprise par source en cours vivent dans :
@@ -43,11 +67,19 @@ Les fichiers de reprise par source en cours vivent dans :
 audit-portage/validation-incrementale/validation/progress/
 ```
 
+Les fichiers de reprise TS croisee vivent dans :
+
+```text
+audit-portage/validation-incrementale/validation/ts-progress/
+```
+
 ## Organisation multi-agents
 
 - `ORGANISATION_AGENTS.md` decrit le decoupage recommande : un agent par fichier, un petit lot par session.
 - `PROMPT_LANCEMENT.md` contient le prompt a utiliser pour reprendre la validation depuis l'avancement global.
+- `PROMPT_VALIDATION_TS.md` contient le prompt a utiliser pour reprendre la validation TS croisee.
 - `AVANCEMENT_GLOBAL.md` est le point d'entree pour choisir les prochains fichiers ou continuer ceux en cours.
+- `AVANCEMENT_GLOBAL_TS.md` est le point d'entree pour choisir les prochains fichiers TS a auditer.
 
 ## Statuts de validation
 
