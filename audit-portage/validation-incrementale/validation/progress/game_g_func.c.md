@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: callback de blocage `rotating_blocked`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:595-598` avec `packages/game/src/g_func.ts:1220-1230`.
+- Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier que `SP_func_rotating` branche `rotating_blocked`, que le bloqueur perd `self.dmg` PV et que `runtime.meansOfDeath` vaut `MOD_CRUSH`.
+- Effets verifies: `rotating_blocked` delegue a `T_Damage(other, self, self, vec3_origin, other.s.origin, vec3_origin, self.dmg, 1, 0, MOD_CRUSH)` comme le C; le parametre runtime est seulement l'adapter TS requis par le port.
+- Branchement: `SP_func_rotating` affecte `ent.blocked = rotating_blocked` quand `dmg` est non nul; le callback est appele par `SV_Physics_Pusher` pendant le flux `G_RunFrame`/`G_RunEntity` si le push/rotation rencontre un obstacle.
+- Integration: aucune logique parallele dans `apps/web`; les dommages restent gameplay runtime. Les sorties visibles du brush rotating passent par les snapshots de brush models/angles et sont consommees par `packages/renderer-three/src/gl-world-scene-adapter.ts`.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: spawn de plateforme `SP_func_plat`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:513-579` avec `packages/game/src/g_func.ts:1151-1218`.
 - Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour les defaults `speed`/`accel`/`decel`/`dmg`, le scaling des proprietes explicites, `solid`/`movetype`, callbacks `blocked`/`use`, `pos1`/`pos2`, etats `STATE_BOTTOM`/`STATE_UP`, `moveinfo` et sons.
@@ -62,7 +70,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `rotating_blocked`.
+- Valider le bloc suivant sans elargir: `rotating_touch`.
 
 ## Blocages
 

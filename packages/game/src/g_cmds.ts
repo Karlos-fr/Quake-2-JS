@@ -512,6 +512,12 @@ export function Cmd_Inven_f(ent: GameEntity, context: GameCommandContext): void 
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Revalidates the selected inventory slot, rejects empty/non-usable selections, then dispatches the item use callback.
+ *
+ * Porting notes:
+ * - The local C `it` pointer is represented by `GetItemByIndex(selected)` and callback dispatch goes through `callItemUse`.
  */
 export function Cmd_InvUse_f(ent: GameEntity, context: GameCommandContext): void {
   ValidateSelectedItem(ent, context.runtime);

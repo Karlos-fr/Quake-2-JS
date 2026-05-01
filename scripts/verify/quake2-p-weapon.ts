@@ -18,6 +18,7 @@ import {
   MOD_MACHINEGUN,
   Think_Weapon,
   Weapon_Chaingun,
+  Weapon_HyperBlaster,
   Weapon_Machinegun,
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -28,7 +29,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_VOICE, DF_INFINITE_AMMO, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_MACHINEGUN } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_HYPERBLASTER, MZ_MACHINEGUN } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -38,6 +39,7 @@ function main(): void {
   verifyMachinegunFireParity();
   verifyMachinegunNoAmmoUsesVoiceChannel();
   verifyChaingunFireParity();
+  verifyHyperBlasterFireParity();
 
   console.log("Verification p_weapon - player weapon gameplay OK");
 }
@@ -256,6 +258,112 @@ function verifyChaingunFireParity(): void {
   assertNumber(flashes.length, 0, "Chaingun wind-down branch should not emit a muzzleflash");
 }
 
+function verifyHyperBlasterFireParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const hyperblaster = requireItem("HyperBlaster");
+  const cells = requireItem("Cells");
+  const shots: Array<{ damage: number; speed: number; effect: number; hyper: boolean }> = [];
+  const flashes: number[] = [];
+  const sounds: Array<{ soundPath: string; channel: number }> = [];
+
+  player.s.modelindex = 255;
+  player.client!.pers.weapon = hyperblaster;
+  player.client!.ammo_index = cells.index;
+  player.client!.pers.inventory[hyperblaster.index] = 1;
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 6;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.pers.inventory[cells.index] = 3;
+
+  Weapon_HyperBlaster(player, runtime, {
+    fire_blaster: (_ent, _start, _dir, damage, speed, effect, hyper) => {
+      shots.push({ damage, speed, effect, hyper });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots.length, 1, "Weapon_HyperBlaster should fire one bolt on frame 6");
+  assertNumber(shots[0].damage, 80, "HyperBlaster quad damage should match C");
+  assertNumber(shots[0].speed, 1000, "HyperBlaster bolt speed should match C");
+  assertNumber(shots[0].effect, EF_HYPERBLASTER, "HyperBlaster frame 6 should set EF_HYPERBLASTER");
+  assertBoolean(shots[0].hyper, true, "HyperBlaster should mark the bolt as hyper");
+  assertNumber(flashes[0], MZ_HYPERBLASTER, "HyperBlaster should emit MZ_HYPERBLASTER");
+  assertNumber(player.client!.ps.gunframe, 7, "HyperBlaster firing should advance gunframe 6 to 7");
+  assertNumber(player.client!.pers.inventory[cells.index], 2, "HyperBlaster should consume one cell");
+  assertBoolean(player.client!.weapon_sound > 0, true, "HyperBlaster should keep the looping hum while firing");
+
+  player.client!.quad_framenum = 0;
+  player.client!.ps.gunframe = 11;
+  player.client!.pers.inventory[cells.index] = 2;
+  shots.length = 0;
+  flashes.length = 0;
+
+  Weapon_HyperBlaster(player, runtime, {
+    fire_blaster: (_ent, _start, _dir, damage, speed, effect, hyper) => {
+      shots.push({ damage, speed, effect, hyper });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots.length, 1, "HyperBlaster frame 11 should still fire");
+  assertNumber(shots[0].damage, 20, "HyperBlaster solo damage should match C");
+  assertNumber(shots[0].effect, 0, "HyperBlaster frame 11 should not set EF_HYPERBLASTER");
+  assertNumber(player.client!.ps.gunframe, 6, "HyperBlaster should loop frame 12 back to 6 when cells remain");
+  assertNumber(player.client!.pers.inventory[cells.index], 1, "HyperBlaster loop shot should consume one cell");
+
+  runtime.deathmatch = true;
+  player.client!.ps.gunframe = 9;
+  player.client!.pers.inventory[cells.index] = 1;
+  shots.length = 0;
+
+  Weapon_HyperBlaster(player, runtime, {
+    fire_blaster: (_ent, _start, _dir, damage, speed, effect, hyper) => {
+      shots.push({ damage, speed, effect, hyper });
+    }
+  });
+
+  assertNumber(shots[0].damage, 15, "HyperBlaster deathmatch damage should match C");
+  assertNumber(shots[0].effect, EF_HYPERBLASTER, "HyperBlaster frame 9 should set EF_HYPERBLASTER");
+  assertNumber(player.client!.ps.gunframe, 10, "HyperBlaster should advance gunframe 9 to 10");
+  assertNumber(player.client!.pers.inventory[cells.index], 0, "HyperBlaster deathmatch shot should consume the last cell");
+
+  player.client!.buttons = 0;
+  player.client!.ps.gunframe = 11;
+  player.client!.weapon_sound = 123;
+
+  Weapon_HyperBlaster(player, runtime, {
+    playWeaponSound: (_ent, soundPath, channel) => {
+      sounds.push({ soundPath, channel });
+    }
+  });
+
+  assertNumber(player.client!.ps.gunframe, 12, "HyperBlaster release should advance to frame 12");
+  assertString(sounds[0]?.soundPath ?? "", "weapons/hyprbd1a.wav", "HyperBlaster release should play the wind-down sound");
+  assertNumber(sounds[0]?.channel ?? -1, CHAN_AUTO, "HyperBlaster wind-down sound should use CHAN_AUTO");
+  assertNumber(player.client!.weapon_sound, 0, "HyperBlaster wind-down should clear looping weapon sound");
+
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.ps.gunframe = 6;
+  player.client!.pers.inventory[cells.index] = 0;
+  sounds.length = 0;
+
+  Weapon_HyperBlaster(player, runtime, {
+    playWeaponSound: (_ent, soundPath, channel) => {
+      sounds.push({ soundPath, channel });
+    }
+  });
+
+  assertString(sounds[0]?.soundPath ?? "", "weapons/noammo.wav", "HyperBlaster no-ammo path should play the original sound");
+  assertNumber(sounds[0]?.channel ?? -1, CHAN_VOICE, "HyperBlaster no-ammo path should use CHAN_VOICE");
+  assertString(player.client!.newweapon?.pickupName ?? "", "Shotgun", "HyperBlaster no-ammo should select the next available weapon");
+}
+
 function createHarnessRuntime(): GameRuntime {
   return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 }
@@ -276,12 +384,14 @@ function createPlayer(runtime: GameRuntime): GameEntity {
   const shells = requireItem("Shells");
   const shotgun = requireItem("Shotgun");
   const bullets = requireItem("Bullets");
+  const cells = requireItem("Cells");
 
   client.pers.weapon = blaster;
   client.pers.inventory[blaster.index] = 1;
   client.pers.inventory[shotgun.index] = 1;
   client.pers.inventory[shells.index] = 10;
   client.pers.inventory[bullets.index] = 50;
+  client.pers.inventory[cells.index] = 50;
 
   return player;
 }

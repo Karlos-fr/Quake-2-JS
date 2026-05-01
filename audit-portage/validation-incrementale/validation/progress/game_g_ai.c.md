@@ -99,3 +99,14 @@
 - Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `FindTarget` avec locales `client`, `heardit` et `r`, ou `M_CheckAttack` avec locales `chance`/`tr` si l'on veut eviter le gros bloc acquisition.
+
+## Session 2026-05-01 - FindTarget / client / heardit / r
+
+- Lot traite: `FindTarget` avec locales `client`, `heardit`, `r`.
+- Verdict: `FindTarget` valide; `client`, `heardit` et `r` non applicables comme variables locales portees.
+- Corrections TS: commentaire d'en-tete de `FindTarget` complete avec les notes runtime explicite et adapter collision/PHS; aucune correction comportementale.
+- Preuves: comparaison C/TS effectuee; selection `sight_entity`/`sound_entity`/`sound2_entity`/`sight_client`, filtres `inuse`, `FL_NOTARGET`, monstres hostiles, `heardit`, calcul `r = range`, refus `RANGE_FAR`, lumiere basse, `visible`, `infront`, resolution des monstres vers leur ennemi client, chemin son avec PHS, distance, areaportals, yaw et `AI_SOUND_TARGET` conserves.
+- Integration: runtime verifie via `ai_stand`, `ai_walk`, `ai_turn`, `ai_run`, `g_turret` et exports `packages/game/src/index.ts`, atteignables depuis `G_RunFrame`/frames monstres. `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` ne consomme pas `FindTarget` directement; il consomme les sorties visibles apres simulation via `ClientRefreshFrame`/`refresh-entity-sync` (`origin`, `angles`, `frame`, `modelindex`), controle par `verify:full-game:three-renderer`.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `M_CheckAttack` avec locales `chance` et `tr`.

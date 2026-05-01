@@ -13,6 +13,18 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: suite de `T_Damage`: `SpawnDamage` pour `take`, retrait de `health`, mort via `Killed`
+  - Source comparee: `Quake-2-master/game/g_combat.c`.
+  - Cible comparee: `packages/game/src/g_combat.ts`; integration visible controlee via `packages/game/src/g_main.ts`, `packages/client/src/cl_parse.ts`, `packages/client/src/cl_tent.ts`, `packages/client/src/cl_fx.ts`, `apps/web` et `packages/renderer-three`.
+  - Correction runtime appliquee: aucune. Test cible ajoute dans `scripts/verify/quake2-g-combat.ts`.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, `Behavior`, `Porting notes`.
+  - Comparaison comportementale: si `take` reste non nul, le port emet `TE_BLOOD` pour monstre/client et `teSparks` pour les autres entites, retire `take` de `targ.health`, applique `FL_NO_KNOCKBACK` avant la mort des monstres/clients, appelle `Killed` avec le `take` final et le point d'impact, puis retourne sans appeler les callbacks pain.
+  - Branchement runtime verifie: `T_Damage` est atteint depuis `T_RadiusDamage`, armes, triggers, fonctions, monstres, world effects et `p_view`; `Killed` relaye ensuite vers `die`/hooks de mort existants.
+  - `apps/web`: aucune logique parallele constatee; le flux navigateur attendu passe par le runtime game et les packets temp entities (`TE_BLOOD`/sparks) deja serialises avec direction.
+  - `renderer-three`: integration directe gameplay non attendue; les sorties visibles du lot passent indirectement par `CL_ParseTEnt`/`CL_AddTEntPacket`, `CL_ParticleEffect`, `CL_AddParticles` et `particle-sync`.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; `npm run verify:g-main`; `npm run verify:particle-sync`; `npm run verify:p-view`; `npm run typecheck`.
+  - Statut matrice: `T_Damage` reste `Partiel`; la tranche `SpawnDamage`/`health`/`Killed` est validee.
+
 - 2026-05-01: suite de `T_Damage`: `te_sparks`, knockback/momentum avec `mass`
   - Source comparee: `Quake-2-master/game/g_combat.c`.
   - Cible comparee: `packages/game/src/g_combat.ts`; integration visible controlee via `packages/game/src/g_main.ts`, `packages/client/src/cl_parse.ts`, `packages/client/src/cl_tent.ts`, `apps/web` et `packages/renderer-three`.
@@ -110,7 +122,7 @@
 
 ## Prochain lot recommande
 
-- Suite de `T_Damage`: emission `SpawnDamage` take, retrait de `health`, mort via `Killed`, puis pain callbacks si le lot reste raisonnable.
+- Suite de `T_Damage`: callbacks pain et accumulation finale `client.damage_*`.
 
 ## Blocages
 

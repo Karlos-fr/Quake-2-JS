@@ -43,6 +43,7 @@ function main(): void {
   verifyFriendlyFireUsesSkinTeams();
   verifyTDamageAccountingAndMeansOfDeath();
   verifyTDamageSparksAndMassKnockback();
+  verifyTDamageTakeHealthAndKilled();
   verifyRadiusDamageUsesDefaultDamageCore();
 
   console.log("Verification g_combat - damage/combat gameplay OK");
@@ -308,6 +309,70 @@ function verifyTDamageSparksAndMassKnockback(): void {
   assertApprox(bounce.velocity[0], 0, 0.0001, "T_Damage skips momentum for MOVETYPE_BOUNCE");
 }
 
+function verifyTDamageTakeHealthAndKilled(): void {
+  const runtime = createHarnessRuntime();
+  const attacker = createPlayer(33);
+
+  const monster = createMonster(34);
+  monster.health = 18;
+  let monsterPainCalls = 0;
+  monster.pain = () => {
+    monsterPainCalls += 1;
+  };
+
+  const emittedMonsterTypes: temp_event_t[] = [];
+  let killedDamage = 0;
+  let killedPoint: [number, number, number] | null = null;
+  T_Damage(monster, attacker, attacker, [1, 0, 0], [7, 8, 9], [0, 0, 1], 10, 5, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false,
+    emitTempEntity: (type) => {
+      emittedMonsterTypes.push(type);
+    },
+    Killed: (_targ, _inflictor, _attacker, damage, point) => {
+      killedDamage = damage;
+      killedPoint = [...point];
+    },
+    M_ReactToDamage: () => {
+      throw new Error("T_Damage must return immediately after Killed");
+    }
+  });
+
+  assertNumber(emittedMonsterTypes[0], temp_event_t.TE_BLOOD, "T_Damage emits blood for monster take damage");
+  assertNumber(monster.health, -2, "T_Damage subtracts take from health before Killed");
+  assertNumber(monster.flags & FL_NO_KNOCKBACK, FL_NO_KNOCKBACK, "T_Damage sets FL_NO_KNOCKBACK on monster/client death");
+  assertNumber(killedDamage, 20, "T_Damage forwards the final take value to Killed");
+  assertVec3(killedPoint, [7, 8, 9], "T_Damage forwards the damage point to Killed");
+  assertNumber(monsterPainCalls, 0, "T_Damage does not call pain after a lethal hit");
+
+  const crate = createRuntimeEntity({ classname: "func_breakable" }, 35);
+  crate.inuse = true;
+  crate.movetype = MOVETYPE_WALK;
+  crate.takedamage = 1;
+  crate.health = 12;
+  crate.mass = 200;
+
+  const emittedCrateTypes: temp_event_t[] = [];
+  let crateKilledDamage = 0;
+  T_Damage(crate, attacker, attacker, [1, 0, 0], [1, 2, 3], [0, 0, 1], 13, 0, DAMAGE_BULLET, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false,
+    emitTempEntity: (type) => {
+      emittedCrateTypes.push(type);
+    },
+    Killed: (_targ, _inflictor, _attacker, damage) => {
+      crateKilledDamage = damage;
+    }
+  });
+
+  assertNumber(emittedCrateTypes[0], temp_event_t.TE_BULLET_SPARKS, "T_Damage emits sparks for non-monster non-client take damage");
+  assertNumber(crate.health, -1, "T_Damage subtracts lethal take from non-client health");
+  assertNumber(crate.flags & FL_NO_KNOCKBACK, 0, "T_Damage leaves FL_NO_KNOCKBACK unchanged for non-monster non-client death");
+  assertNumber(crateKilledDamage, 13, "T_Damage kills non-client entities with the take value");
+}
+
 function verifyRadiusDamageUsesDefaultDamageCore(): void {
   const runtime = createHarnessRuntime();
   const inflictor = createRuntimeEntity({ classname: "explosion" }, 22);
@@ -377,6 +442,12 @@ function assertApprox(actual: number, expected: number, epsilon: number, label: 
 function assertEntity(actual: GameEntity | null, expected: GameEntity | null, label: string): void {
   if (actual !== expected) {
     throw new Error(`${label}: entite inattendue`);
+  }
+}
+
+function assertVec3(actual: [number, number, number] | null, expected: [number, number, number], label: string): void {
+  if (!actual || actual[0] !== expected[0] || actual[1] !== expected[1] || actual[2] !== expected[2]) {
+    throw new Error(`${label}: attendu [${expected.join(", ")}], recu ${actual ? `[${actual.join(", ")}]` : "null"}`);
   }
 }
 

@@ -90,3 +90,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:p-hud`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:demo-cleanup`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 - Blocages: `npm run verify:cl-parse`, `npm run verify:cl-scrn` et `npm run verify:screen:header` echouent avant execution sur imports obsoletes `packages/client/src/parse.js`/`screen.js`; non corrige hors perimetre.
 - Prochain lot recommande: `Cmd_InvUse_f` et temporaire local associe (`it`).
+
+## Session 2026-05-01 - Cmd_InvUse_f
+
+- Lot valide: `Cmd_InvUse_f` et temporaire C associe (`it`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme appel initial a `ValidateSelectedItem`, meme rejet `selected_item == -1`, meme rejet item sans callback `use`, puis dispatch `it->use` via `callItemUse`.
+- Branchement runtime: `ClientCommand` dispatch `invuse`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes par `createClientSendCmdBridge` et charge l'API game, sans logique parallele pour `invuse`. `packages/renderer-three` consomme les effets visibles indirects par le chemin client refresh: selection/usage d'arme met a jour `player_state_t.gunindex` et les refresh entities de l'arme vue; les overlays inventaire/HUD restent cote client.
+- Corrections: commentaire d'en-tete complete pour `Cmd_InvUse_f`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour selection vide, item non utilisable, selection perimee et callback d'arme.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_WeapPrev_f` et temporaires locaux associes (`it`, `selected_weapon`).

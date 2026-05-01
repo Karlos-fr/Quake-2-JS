@@ -43,7 +43,8 @@ import {
   RANGE_FAR,
   RANGE_MELEE,
   RANGE_MID,
-  RANGE_NEAR
+  RANGE_NEAR,
+  SVF_MONSTER
 } from "../../packages/game/src/g_local.js";
 import { attachGameClient, createGameRuntimeFromBspEntities, createRuntimeEntity } from "../../packages/game/src/runtime.js";
 
@@ -143,6 +144,64 @@ assert.equal(runCalls, 1, "FindTarget must enter run state once");
 assert.equal(sightCalls, 1, "FindTarget must call sight callback for direct target acquisition");
 assert.equal(monster.show_hostile, runtime.time + 1, "FindTarget show_hostile mismatch");
 assert.equal(monster.monsterinfo.attack_finished, runtime.time + 1, "HuntTarget attack delay mismatch");
+
+runtime.collision = createClearVisibilityCollision();
+runtime.sight_entity = null;
+runtime.sight_entity_framenum = 0;
+runtime.sound_entity = null;
+runtime.sound_entity_framenum = 0;
+runtime.sound2_entity = null;
+runtime.sound2_entity_framenum = 0;
+
+const farClient = createPointEntity(1200, 0, 0, 32);
+attachGameClient(farClient);
+runtime.entities[32] = farClient;
+const farRangeMonster = createFindTargetMonster(33);
+runtime.sight_client = farClient;
+assert.equal(FindTarget(farRangeMonster, runtime), false, "FindTarget must reject RANGE_FAR sight clients");
+assert.equal(farRangeMonster.enemy, null, "FindTarget must not keep a far sight client as enemy");
+
+const darkClient = createPointEntity(100, 0, 0, 34);
+attachGameClient(darkClient);
+darkClient.light_level = 5;
+runtime.entities[34] = darkClient;
+const darkTargetMonster = createFindTargetMonster(35);
+runtime.sight_client = darkClient;
+assert.equal(FindTarget(darkTargetMonster, runtime), false, "FindTarget must reject sight clients in light level 5 or darker");
+
+const nearBehindClient = createPointEntity(-100, 0, 0, 36);
+attachGameClient(nearBehindClient);
+nearBehindClient.show_hostile = runtime.time - 0.1;
+runtime.entities[36] = nearBehindClient;
+const nearBehindMonster = createFindTargetMonster(37);
+runtime.sight_client = nearBehindClient;
+assert.equal(FindTarget(nearBehindMonster, runtime), false, "FindTarget must reject quiet RANGE_NEAR clients behind the monster");
+
+nearBehindClient.show_hostile = runtime.time;
+assert.equal(FindTarget(nearBehindMonster, runtime), true, "FindTarget must accept hostile RANGE_NEAR clients behind the monster");
+assert.equal(nearBehindMonster.enemy, nearBehindClient, "FindTarget must keep the accepted hostile near client");
+runtime.sight_entity = null;
+runtime.sight_entity_framenum = 0;
+
+const midBehindClient = createPointEntity(-700, 0, 0, 38);
+attachGameClient(midBehindClient);
+midBehindClient.show_hostile = runtime.time + 10;
+runtime.entities[38] = midBehindClient;
+const midBehindMonster = createFindTargetMonster(39);
+runtime.sight_client = midBehindClient;
+assert.equal(FindTarget(midBehindMonster, runtime), false, "FindTarget must reject RANGE_MID clients behind the monster");
+
+const angryMonster = createPointEntity(120, 0, 0, 40);
+angryMonster.classname = "monster_angry";
+angryMonster.svflags |= SVF_MONSTER;
+angryMonster.enemy = player3;
+runtime.entities[40] = angryMonster;
+const monsterTargetObserver = createFindTargetMonster(41);
+runtime.sight_entity = null;
+runtime.sight_entity_framenum = 0;
+runtime.sight_client = angryMonster;
+assert.equal(FindTarget(monsterTargetObserver, runtime), true, "FindTarget must accept angry monster sight targets");
+assert.equal(monsterTargetObserver.enemy, player3, "FindTarget must resolve angry monster sight targets to their client enemy");
 
 monster.s.angles[1] = 30;
 monster.ideal_yaw = 40;
@@ -664,6 +723,44 @@ function createPointEntity(x: number, y: number, z: number, index: number) {
   entity.health = 1;
   entity.light_level = 64;
   return entity;
+}
+
+function createFindTargetMonster(index: number) {
+  const entity = createRuntimeEntity({ classname: "monster_findtarget" }, index);
+  entity.inuse = true;
+  entity.health = 50;
+  entity.viewheight = 25;
+  entity.s.origin = [0, 0, 0];
+  entity.origin = [0, 0, 0];
+  entity.s.angles = [0, 0, 0];
+  entity.angles = [0, 0, 0];
+  entity.yaw_speed = 20;
+  entity.monsterinfo.run = () => {};
+  runtime.entities[index] = entity;
+  return entity;
+}
+
+function createClearVisibilityCollision() {
+  return {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => ({
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 1],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: 0,
+      ent: null
+    }),
+    pointcontents: () => 0
+  };
 }
 
 function createClearAttackCollision(target: ReturnType<typeof createPointEntity>) {

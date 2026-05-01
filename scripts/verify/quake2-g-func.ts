@@ -41,9 +41,11 @@ import {
   func_timer_use,
   plat_go_down,
   plat_blocked,
+  rotating_blocked,
   train_next,
   trigger_elevator_use
 } from "../../packages/game/src/g_func.js";
+import { MOD_CRUSH, damage_t } from "../../packages/game/src/g_local.js";
 import {
   MOVETYPE_PUSH,
   MOVETYPE_NONE,
@@ -70,6 +72,14 @@ assert.deepEqual(rotating.movedir, [0, 0, 1], "SP_func_rotating axis mismatch");
 assert.deepEqual(rotating.avelocity, [0, 0, 75], "SP_func_rotating START_ON velocity mismatch");
 assert.equal((rotating.s.effects & EF_ANIM_ALL) !== 0, true, "SP_func_rotating EF_ANIM_ALL mismatch");
 assert.equal((rotating.s.effects & EF_ANIM_ALLFAST) !== 0, true, "SP_func_rotating EF_ANIM_ALLFAST mismatch");
+assert.equal(rotating.blocked, rotating_blocked, "SP_func_rotating blocked callback mismatch");
+const rotatingBlocker = entity("blocker", 18);
+rotatingBlocker.health = 20;
+rotatingBlocker.takedamage = damage_t.DAMAGE_YES;
+rotatingBlocker.s.origin = [16, 24, 32];
+rotating_blocked(rotating, rotatingBlocker, runtime);
+assert.equal(rotatingBlocker.health, 16, "rotating_blocked damage mismatch");
+assert.equal(runtime.meansOfDeath, MOD_CRUSH, "rotating_blocked damage mod mismatch");
 
 const button = entity("func_button", 2, { angle: "0", lip: "4", wait: "2" });
 button.size = [64, 16, 16];

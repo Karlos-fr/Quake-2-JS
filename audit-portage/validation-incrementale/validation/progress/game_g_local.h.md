@@ -8,6 +8,23 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot `FL_POWER_ARMOR`, `FL_RESPAWN`, `FRAMETIME`.
+- Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public.
+- Valeurs H/TS comparees et conformes:
+  - `FL_POWER_ARMOR = 0x00001000`
+  - `FL_RESPAWN = 0x80000000`
+  - `FRAMETIME = 0.1`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; constantes miroir runtime verifiees dans `packages/game/src/runtime.ts`; export public corrige dans `packages/game/src/index.ts` pour `FL_POWER_ARMOR` et `FL_RESPAWN`.
+- Runtime:
+  - `FL_POWER_ARMOR` est consomme par `PowerArmorType`, `Use_PowerArmor`, `Drop_PowerArmor`, `G_SetStats`, `InitClientResp`, `ClientBeginDeathmatch` et `SaveClientData` comme dans le C: activation/desactivation, type d'armure, sauvegarde des flags persistants et nettoyage au respawn/deathmatch.
+  - `FL_RESPAWN` est pose par les chemins item/weapon respawn (`SetRespawn`, pickups deathmatch et give weapon) puis efface dans `Touch_Item` quand l'item respawne.
+  - `FRAMETIME` pilote `G_RunFrame`, les schedules `nextthink`, les mouvements/physiques et la synchronisation locale au pas original de 0.1 seconde.
+- apps/web: aucune reference directe aux flags; `FRAMETIME` est consomme via `packages/client/src/local-gameplay-sync.ts` et le host full-game appelle le `RunFrame` runtime. Pas d'integration web parallele attendue pour ces bits `edict->flags`.
+- renderer-three: aucune reference directe aux flags; pas d'integration renderer directe attendue. Les effets visibles passent par les entites/evenements runtime; `verify:full-game:three-renderer` confirme que la source renderer full-game reste branchee.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaires source de `FL_POWER_ARMOR` et `FL_RESPAWN` conserves par equivalence declarative; pas de fonction nouvelle dans ce lot.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK; `npm run verify:g-items` OK; `npm run verify:g-main` OK; `npm run verify:p-hud` OK; `npm run verify:p-client` OK; `npm run verify:p-weapon` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+- Test bloque non lie au lot: `npx tsx ./scripts/verify/quake2-g-combat.ts` echoue sur `T_Damage subtracts take from health before Killed: attendu -2, recu -22`.
+
 - 2026-05-01: lot flags `FL_WATERJUMP`, `FL_TEAMSLAVE`, `FL_NO_KNOCKBACK`.
 - Verdict: `Valide` pour les 3 macros apres correction limitee du commentaire/export public.
 - Valeurs H/TS comparees et conformes:
@@ -122,9 +139,10 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain petit lot `FL_*`: `FL_POWER_ARMOR`, `FL_RESPAWN`, puis `FRAMETIME` si coherent.
+- Continuer avec les macros memoire simples `TAG_GAME`, `TAG_LEVEL`.
 
 ## Blocages
 
 - `npm run verify:g-target` echoue dans un cas `target_goal`/configstring son avant les assertions `target_laser`; a investiguer dans le lot `g_target` dedie ou avant de s'appuyer sur ce script comme preuve complete de `FL_IMMUNE_LASER`.
+- `npx tsx ./scripts/verify/quake2-g-combat.ts` echoue sur `T_Damage subtracts take from health before Killed: attendu -2, recu -22`; a investiguer dans le lot `g_combat` dedie.
 - Aucun blocage sur le lot `SPAWNFLAG_NOT_*` apres correction coordinateur de `SpawnEntities`.

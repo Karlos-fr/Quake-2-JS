@@ -17,6 +17,7 @@ import {
   Cmd_Drop_f,
   Cmd_Give_f,
   Cmd_Inven_f,
+  Cmd_InvUse_f,
   Cmd_PlayerList_f,
   Cmd_Say_f,
   Cmd_Wave_f,
@@ -48,6 +49,7 @@ verifyInventorySelection();
 verifyCommandsAndChat();
 verifyDropCommand();
 verifyInventorySerialization();
+verifyInventoryUseCommand();
 verifyPlayerListAndWave();
 
 console.log("Verification g_cmds - client commands OK");
@@ -167,6 +169,38 @@ function verifyInventorySerialization(): void {
   assert.equal(player.client!.showinventory, false, "Cmd_Inven_f should close an already visible inventory");
   assert.equal(writes.length, 0, "Cmd_Inven_f should not write inventory payload when closing");
   assert.equal(unicasts.length, 0, "Cmd_Inven_f should not unicast when closing inventory");
+}
+
+function verifyInventoryUseCommand(): void {
+  const runtime = createRuntime();
+  const localContext = createContext(runtime);
+  const player = createClient(runtime, 1, "inventory-use");
+  const shells = requireItem("Shells");
+  const blaster = requireItem("Blaster");
+  const shotgun = requireItem("Shotgun");
+
+  player.client!.pers.selected_item = -1;
+  Cmd_InvUse_f(player, localContext);
+  assert.equal(lastPrint().message, "No item to use.\n", "Cmd_InvUse_f should reject an empty selection");
+
+  player.client!.pers.selected_item = shells.index;
+  player.client!.pers.inventory[shells.index] = 1;
+  Cmd_InvUse_f(player, localContext);
+  assert.equal(lastPrint().message, "Item is not usable.\n", "Cmd_InvUse_f should reject selected items without use callbacks");
+
+  player.client!.pers.selected_item = shotgun.index;
+  player.client!.pers.inventory[shells.index] = 0;
+  player.client!.pers.inventory[shotgun.index] = 0;
+  player.client!.pers.inventory[blaster.index] = 1;
+  Cmd_InvUse_f(player, localContext);
+  assert.equal(player.client!.newweapon, blaster, "Cmd_InvUse_f should revalidate stale selected inventory slots");
+
+  player.client!.newweapon = null;
+  player.client!.pers.selected_item = shotgun.index;
+  player.client!.pers.inventory[shells.index] = 1;
+  player.client!.pers.inventory[shotgun.index] = 1;
+  Cmd_InvUse_f(player, localContext);
+  assert.equal(player.client!.newweapon, shotgun, "Cmd_InvUse_f should dispatch the selected item use callback");
 }
 
 function verifyPlayerListAndWave(): void {

@@ -424,6 +424,11 @@ export function FoundTarget(self: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Searches for one suitable enemy based on sight or recent sound events.
+ *
+ * Porting notes:
+ * - Uses explicit `GameRuntime` fields for `level.sight_*` and `level.sound_*`.
+ * - Keeps the original single-client-per-frame selection, visibility/range gates and
+ *   sound-target wake-up rules; area/PHS checks are routed through the collision adapter.
  */
 export function FindTarget(self: GameEntity, runtime: GameRuntime): boolean {
   if ((self.monsterinfo.aiflags & AI_GOOD_GUY) !== 0) {

@@ -2,7 +2,7 @@
 
 ## Dernier lot valide
 
-- `Weapon_Chaingun` reference par `g_items.c` et porte dans `packages/game/src/p_weapon.ts`, avec entree `weapon_chaingun` alignee dans `packages/game/src/g_items.ts`.
+- `Weapon_HyperBlaster` reference par `g_items.c` et porte dans `packages/game/src/p_weapon.ts`, avec entree `weapon_hyperblaster` alignee dans `packages/game/src/g_items.ts`.
 
 Passe rapide post-validation du 2026-04-30: controle limite aux lignes deja `Valide` (`Pickup_Weapon`, `Use_Weapon`). Branchements runtime confirmes (`Touch_Item`/dispatch item pour pickup, commandes et bootstrap local pour use); integration `apps/web` attendue via la synchro gameplay/client et le bootstrap local; pas de branchement dedie `renderer-three` attendu au niveau de ces fonctions, les sorties visibles transitant par les entites refresh MD2 generiques et le HUD client.
 
@@ -18,6 +18,8 @@ Validation `Weapon_Machinegun` du 2026-05-01: comparaison avec `game/p_weapon.c`
 
 Validation `Weapon_Chaingun` du 2026-05-01: comparaison avec `game/p_weapon.c` confirmee (`Weapon_Generic(ent, 4, 31, 61, 64, [38, 43, 51, 61, 0], [5..21, 0], Chaingun_Fire)`, degats 8 solo / 6 deathmatch, quad x4, windup `chngnu1a`, boucle `weapon_sound` `chngnl1a`, wind-down `chngnd1a`, sortie frame 14 sans attaque vers `gunframe` 32, boucle frame 21 vers 15 si attaque+ammo, 1/2/3 tirs selon frame, clamp au stock ammo, `fire_bullet` avec spreads balle par defaut et `MOD_CHAINGUN`, `MZ_CHAINGUN1..3`, `PlayerNoise`, decrement ammo par `shots` hors `DF_INFINITE_AMMO`). Entree `weapon_chaingun` de `g_items.c` alignee dans `rawItemlist` (`Pickup_Weapon`, `Use_Weapon`, `Drop_Weapon`, view/world models chaingun, icone `w_chaingun`, quantity 1, ammo `Bullets`, flags `IT_WEAPON|IT_STAY_COOP`, `WEAP_CHAINGUN`); ecart volontaire documente: le port TS retire le caractere parasite apres `weapons/machgf3b.wav` present dans le precache C. Headers TS verifies pour `Chaingun_Fire` et `Weapon_Chaingun`. Test ajoute dans `scripts/verify/quake2-p-weapon.ts`: tirs 2/3, degats quad/deathmatch, `MOD_CHAINGUN`, `MZ_CHAINGUN2/3`, ammo, branche wind-down sans tir. Runtime branche via `Think_Weapon`/`Weapon_Generic` depuis `ClientThink`/`ClientBeginServerFrame` et depuis `local-game-bootstrap.ts`; `apps/web` attendu via runtime local/commandes et binding demo `Digit4`/HUD; `renderer-three` consomme les sorties visibles generiques (view weapon MD2, `MZ_CHAINGUN1..3`, impacts/dlights/particules/audio client), pas de branchement dedie requis.
 
+Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.c` confirmee (`Weapon_Generic(ent, 5, 20, 49, 53, [0], [6, 7, 8, 9, 10, 11, 0], Weapon_HyperBlaster_Fire)`, boucle `weapon_sound` `hyprbl1a`, no-ammo `CHAN_VOICE`, rotation `(gunframe - 5) * 2*pi/6`, offsets `[-4*sin(rotation), 0, 4*cos(rotation)]`, `EF_HYPERBLASTER` aux frames 6 et 9, degats 20 solo / 15 deathmatch, `Blaster_Fire` hyper, decrement d'une cell hors `DF_INFINITE_AMMO`, anim attaque debout/accroupi, boucle `gunframe` 12 vers 6 si ammo, son d'arret `hyprbd1a` sur `CHAN_AUTO`). Entree `weapon_hyperblaster` de `g_items.c` alignee dans `rawItemlist` (`Pickup_Weapon`, `Use_Weapon`, `Drop_Weapon`, view/world models hyperblaster, icone `w_hyperblaster`, quantity 1, ammo `Cells`, flags `IT_WEAPON|IT_STAY_COOP`, `WEAP_HYPERBLASTER`, precaches `weapons/hyprbu1a.wav weapons/hyprbl1a.wav weapons/hyprbf1a.wav weapons/hyprbd1a.wav misc/lasfly.wav`). Headers TS verifies pour `Weapon_HyperBlaster_Fire` et `Weapon_HyperBlaster`. Test ajoute dans `scripts/verify/quake2-p-weapon.ts`: degats solo/deathmatch/quad, vitesse 1000, flag hyper, `EF_HYPERBLASTER`, `MZ_HYPERBLASTER`, boucle 12->6, consommation ammo, no-ammo `CHAN_VOICE`, wind-down `CHAN_AUTO`. Runtime branche via `Think_Weapon`/`Weapon_Generic` depuis le flux client et depuis `local-game-bootstrap.ts`; `apps/web` attendu via runtime local/commandes et binding demo `Digit8`/HUD; `renderer-three` consomme les sorties visibles generiques (view weapon MD2, bolt `EF_HYPERBLASTER`, `MZ_HYPERBLASTER`, dlights/particules/audio client), pas de branchement dedie requis.
+
 ## Tests de reference
 
 - `npm run verify:g-items`
@@ -31,6 +33,7 @@ Validation `Weapon_Chaingun` du 2026-05-01: comparaison avec `game/p_weapon.c` c
 - Sonde directe `weapon_supershotgun_fire` normal/quad/infinite ammo via `npx tsx` stdin: deux groupes, yaw -5/+5, degats/kick, spreads/count/mod, `MZ_SSHOTGUN`, `gunframe`, ammo.
 - Sonde `Weapon_Machinegun` ajoutee a `npm run verify:p-weapon`: degats/kick quad, spreads/mod, `MZ_MACHINEGUN`, alternance `gunframe`, recoil, ammo normal/`DF_INFINITE_AMMO`, relachement attaque et canal no-ammo `CHAN_VOICE`.
 - Sonde `Weapon_Chaingun` ajoutee a `npm run verify:p-weapon`: tirs 2/3, degats/kick quad, degat deathmatch, spreads/mod, `MZ_CHAINGUN2/3`, ammo, branche wind-down frame 14.
+- Sonde `Weapon_HyperBlaster` ajoutee a `npm run verify:p-weapon`: degats solo/deathmatch/quad, vitesse, flag hyper, `EF_HYPERBLASTER`, `MZ_HYPERBLASTER`, boucle frame 12, ammo, no-ammo `CHAN_VOICE`, wind-down `CHAN_AUTO`.
 
 ## Blocages
 
@@ -38,4 +41,4 @@ Validation `Weapon_Chaingun` du 2026-05-01: comparaison avec `game/p_weapon.c` c
 
 ## Prochain lot recommande
 
-- `Weapon_HyperBlaster`, en gardant la meme attention au rattachement `g_items.c` declarations/table vers le corps original `game/p_weapon.c` et le port `packages/game/src/p_weapon.ts`.
+- `Weapon_RocketLauncher`, en gardant la meme attention au rattachement `g_items.c` declarations/table vers le corps original `game/p_weapon.c` et le port `packages/game/src/p_weapon.ts`.
