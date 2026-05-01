@@ -10,6 +10,8 @@
  */
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Read a signed byte from a byte buffer without depending on Node-specific APIs.
  *
@@ -21,6 +23,8 @@ export function getSignedByte(buffer: Uint8Array, offset: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Read an unsigned byte from a byte buffer.
  *
@@ -32,6 +36,8 @@ export function getUnsignedByte(buffer: Uint8Array, offset: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Read a little-endian signed short from a byte buffer.
  *
@@ -43,6 +49,8 @@ export function getLittleShort(buffer: Uint8Array, offset: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Read a little-endian signed long from a byte buffer.
  *
@@ -54,6 +62,8 @@ export function getLittleLong(buffer: Uint8Array, offset: number): number {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (local helper)
  * Category: New
  * Purpose: Read a little-endian float from a byte buffer.
  *

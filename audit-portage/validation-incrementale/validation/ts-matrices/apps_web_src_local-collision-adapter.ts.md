@@ -5,8 +5,8 @@
 - Fichier TS: `apps/web/src/local-collision-adapter.ts`
 - Symboles TS: 1
 - Couvert C/H: 0
-- Reste a auditer: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/local-collision-adapter.ts` | function | `createLocalCollisionAdapter` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `apps/web/src/local-collision-adapter.ts` | function | `createLocalCollisionAdapter` | oui | `N/A` | `N/A (web adapter)` | New |  | Hors C/H | Valide | Adapter web local classe `Category: New`, sans port C/H proprietaire; ownership apps/web coherent. `npm run typecheck` OK. `verify:collision:phase8` bloque avant scenario sur resolution `packages/formats/src/bsp.js`. |

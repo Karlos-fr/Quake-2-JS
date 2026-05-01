@@ -5,8 +5,8 @@
 - Fichier TS: `packages/shared/src/index.ts`
 - Symboles TS: 1
 - Couvert C/H: 0
-- Reste a auditer: 1
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/shared/src/index.ts` | value | `QUAKE2JS_WORKSPACE_READY` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/shared/src/index.ts` | value | `QUAKE2JS_WORKSPACE_READY` | oui | `N/A` | `N/A (workspace marker)` | New |  | Hors C/H | Non applicable | Symbole nouveau de socle workspace sans equivalent C/H; en-tete Category/Purpose verifie, aucune Source C/H a declarer. |

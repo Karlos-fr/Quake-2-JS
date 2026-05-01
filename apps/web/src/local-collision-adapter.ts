@@ -19,6 +19,8 @@ import {
 import { MASK_PLAYERSOLID } from "../../../packages/qcommon/src/index.js";
 
 /**
+ * Original name: N/A
+ * Source: N/A (web adapter)
  * Category: New
  * Purpose: Build the local collision adapter that reuses the gameplay collision bridge for browser-side prediction.
  *

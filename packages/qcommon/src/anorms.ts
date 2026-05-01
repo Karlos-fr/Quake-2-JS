@@ -18,10 +18,15 @@
 import type { vec3_t } from "./q_shared.js";
 
 /**
- * Category: New
- * Purpose: Preserve the original Quake II 162-entry byte-direction lookup table from `anorms.h`.
+ * Original name: bytedirs
+ * Source: qcommon/common.c, client/anorms.h
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
+ * Behavior:
+ * - Preserves the original Quake II 162-entry byte-direction lookup table.
+ *
+ * Porting notes:
  * - Entry ordering must remain identical to the original table.
  */
 export const BYTE_DIRS: readonly vec3_t[] = [
@@ -190,11 +195,18 @@ export const BYTE_DIRS: readonly vec3_t[] = [
 ];
 
 /**
- * Category: New
- * Purpose: Resolve one Quake byte-direction index to the original normalized vector.
+ * Original name: MSG_ReadDir
+ * Source: qcommon/common.c
+ * Category: Adapter
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must clamp invalid indices to the classic upward fallback used by current port stages.
+ * Behavior:
+ * - Resolves one already-read Quake byte-direction index to the original normalized vector.
+ *
+ * Porting notes:
+ * - This is a local helper for callers that already parsed a direction byte; the owner port of
+ *   MSG_ReadDir remains in messages.ts and throws on out-of-range bytes.
+ * - Invalid or absent indices use the current shared fallback vector for visual-effect callers.
  */
 export function DirFromByte(directionByte: number | undefined): vec3_t {
   if (directionByte === undefined || directionByte < 0 || directionByte >= BYTE_DIRS.length) {

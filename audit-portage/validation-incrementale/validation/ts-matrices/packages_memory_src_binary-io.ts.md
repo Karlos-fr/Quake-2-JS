@@ -5,15 +5,15 @@
 - Fichier TS: `packages/memory/src/binary-io.ts`
 - Symboles TS: 10
 - Couvert C/H: 0
-- Reste a auditer: 10
+- Reste a auditer: 5
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/memory/src/binary-io.ts` | function | `getSignedByte` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/memory/src/binary-io.ts` | function | `getUnsignedByte` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/memory/src/binary-io.ts` | function | `getLittleShort` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/memory/src/binary-io.ts` | function | `getLittleLong` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/memory/src/binary-io.ts` | function | `getLittleFloat` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/memory/src/binary-io.ts` | function | `getSignedByte` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
+| `packages/memory/src/binary-io.ts` | function | `getUnsignedByte` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
+| `packages/memory/src/binary-io.ts` | function | `getLittleShort` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
+| `packages/memory/src/binary-io.ts` | function | `getLittleLong` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
+| `packages/memory/src/binary-io.ts` | function | `getLittleFloat` | oui | `N/A` | `N/A (local helper)` | New |  | Hors C/H | Valide |  |
 | `packages/memory/src/binary-io.ts` | function | `setSignedByte` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/memory/src/binary-io.ts` | function | `setUnsignedByte` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
 | `packages/memory/src/binary-io.ts` | function | `setLittleShort` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |

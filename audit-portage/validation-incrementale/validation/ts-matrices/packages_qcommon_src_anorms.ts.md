@@ -5,9 +5,9 @@
 - Fichier TS: `packages/qcommon/src/anorms.ts`
 - Symboles TS: 2
 - Couvert C/H: 0
-- Reste a auditer: 2
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/qcommon/src/anorms.ts` | value | `BYTE_DIRS` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `packages/qcommon/src/anorms.ts` | function | `DirFromByte` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
+| `packages/qcommon/src/anorms.ts` | value | `BYTE_DIRS` | oui | `bytedirs` | `Quake-2-master/qcommon/common.c`, `Quake-2-master/client/anorms.h` | Ported |  | TS sans ligne C/H | Valide | Table declaree dans `common.c` via include de `client/anorms.h`; la matrice C/H ne contient pas de ligne `bytedirs`. |
+| `packages/qcommon/src/anorms.ts` | function | `DirFromByte` | oui | `MSG_ReadDir` | `Quake-2-master/qcommon/common.c` | Adapter | [`qcommon_common.c.md`](../matrices/qcommon_common.c.md) | Doublon potentiel | Valide | Adapter local; portage proprietaire `MSG_ReadDir` dans `packages/qcommon/src/messages.ts`. |
