@@ -50,6 +50,7 @@ import {
   drainGameSoundEvents,
   drainGameTempEntityEvents,
   ED_CallSpawn,
+  barrel_explode,
   func_explosive_explode,
   func_explosive_spawn,
   func_explosive_use,
@@ -88,6 +89,7 @@ function main(): void {
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
+  verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities();
   verifyLightWritesSourceConfigstrings();
   verifyFuncWallSpawnAndUseTogglesVisibility();
   verifyFuncObjectSpawnUseReleaseAndCrush();
@@ -607,6 +609,72 @@ function verifyBarrelTouchPushesOnlyFromGroundedActors(): void {
   pusher.groundentity = barrel;
   barrel_touch(barrel, pusher, runtime);
   assert.equal(traceCount, 1, "barrel_touch must ignore actors standing on the barrel itself");
+}
+
+function verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities(): void {
+  const runtime = createHarnessRuntime();
+  const attacker = spawnGameEntity(runtime);
+  attacker.classname = "barrel_attacker";
+
+  const barrel = spawnFreeableEntity(runtime);
+  barrel.classname = "misc_explobox";
+  barrel.s.origin = [20, 30, 40];
+  barrel.origin = [20, 30, 40];
+  barrel.absmin = [4, 8, 12];
+  barrel.size = [32, 48, 40];
+  barrel.dmg = 150;
+  barrel.activator = attacker;
+
+  const damaged = spawnGameEntity(runtime);
+  damaged.classname = "barrel_radius_target";
+  damaged.s.origin = [20, 32, 32];
+  damaged.origin = [20, 32, 32];
+  damaged.mins = [0, 0, 0];
+  damaged.maxs = [0, 0, 0];
+  damaged.health = 200;
+  damaged.takedamage = damage_t.DAMAGE_YES;
+  damaged.solid = SOLID_BBOX;
+
+  withMockedRandom(Array(200).fill(0.5), () => {
+    barrel_explode(barrel, runtime);
+  });
+
+  const debris = runtime.entities.filter((entity) => entity.classname === "debris");
+  assert.equal(debris.length, 14, "barrel_explode must throw two big, four corner and eight small debris chunks");
+  assert.equal(debris.filter((entity) => entity.model === "models/objects/debris1/tris.md2").length, 2, "barrel_explode must throw two debris1 chunks");
+  assert.equal(debris.filter((entity) => entity.model === "models/objects/debris3/tris.md2").length, 4, "barrel_explode must throw four debris3 bottom-corner chunks");
+  assert.equal(debris.filter((entity) => entity.model === "models/objects/debris2/tris.md2").length, 8, "barrel_explode must throw eight debris2 chunks");
+  assert.deepEqual(debris[0]?.s.origin, [20, 32, 32], "random barrel debris must use the centered barrel origin");
+  assert.deepEqual(debris[2]?.s.origin, [4, 8, 12], "first corner debris must start at absmin");
+  assert.deepEqual(debris[5]?.s.origin, [36, 56, 12], "last corner debris must start at the opposite bottom corner");
+  assert.equal(debris[0]?.velocity[2], 112.5, "debris1 speed must use spd = 1.5 * dmg / 200");
+  assert.equal(debris[2]?.velocity[2], 131.25, "debris3 speed must use spd = 1.75 * dmg / 200");
+  assert.equal(debris[6]?.velocity[2], 150, "debris2 speed must use spd = 2 * dmg / 200");
+  assert.equal(damaged.health < 200, true, "barrel_explode must apply MOD_BARREL radius damage");
+
+  let events = drainGameTempEntityEvents(runtime);
+  assert.equal(events.at(-1)?.type, temp_event_t.TE_EXPLOSION1, "airborne barrel_explode must become TE_EXPLOSION1");
+  assert.deepEqual(events.at(-1)?.origin, [20, 30, 40], "barrel_explode must restore the saved origin before the temp entity");
+  assert.equal(barrel.inuse, false, "barrel_explode must free the exploding barrel");
+
+  const groundedRuntime = createHarnessRuntime();
+  const ground = groundedRuntime.entities[0]!;
+  const groundedBarrel = spawnFreeableEntity(groundedRuntime);
+  groundedBarrel.classname = "misc_explobox";
+  groundedBarrel.s.origin = [1, 2, 3];
+  groundedBarrel.origin = [1, 2, 3];
+  groundedBarrel.absmin = [0, 0, 0];
+  groundedBarrel.size = [16, 16, 32];
+  groundedBarrel.dmg = 80;
+  groundedBarrel.groundentity = ground;
+
+  withMockedRandom(Array(200).fill(0.5), () => {
+    barrel_explode(groundedBarrel, groundedRuntime);
+  });
+
+  events = drainGameTempEntityEvents(groundedRuntime);
+  assert.equal(events.at(-1)?.type, temp_event_t.TE_EXPLOSION2, "grounded barrel_explode must become TE_EXPLOSION2");
+  assert.deepEqual(events.at(-1)?.origin, [1, 2, 3], "grounded barrel_explode must restore the saved origin before TE_EXPLOSION2");
 }
 
 function verifyLightWritesSourceConfigstrings(): void {

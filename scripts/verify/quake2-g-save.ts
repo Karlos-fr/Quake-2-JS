@@ -113,6 +113,7 @@ writeContext.runtime.maxclients = 1;
 writeContext.runtime.maxentities = 64;
 writeContext.game.maxclients = 1;
 writeContext.game.maxentities = 64;
+writeContext.game.spawnpoint = "unit_start";
 writeContext.game.helpmessage1 = "help one";
 writeContext.runtime.serverflags = 3;
 
@@ -128,6 +129,10 @@ writeContext.runtime.entities = [createRuntimeEntity({ classname: "worldspawn" }
 WriteGame(writeContext, "save/game.sav", false);
 const gameJson = files.get("save/game.sav") ?? "";
 assert.ok(gameJson.includes("\"helpmessage1\": \"help one\""), "WriteGame must persist game locals");
+assert.ok(gameJson.includes("\"spawnpoint\": \"unit_start\""), "WriteGame must persist game spawnpoint");
+assert.ok(gameJson.includes("\"maxclients\": 1"), "WriteGame must persist game maxclients");
+assert.ok(gameJson.includes("\"maxentities\": 64"), "WriteGame must persist game maxentities");
+assert.ok(gameJson.includes("\"serverflags\": 3"), "WriteGame must persist runtime serverflags through game locals");
 assert.ok(gameJson.includes("\"health\": 75"), "WriteGame must call SaveClientData before manual saves");
 
 writeContext.runtime.helpmessage1 = "runtime help one";
@@ -150,6 +155,12 @@ const readContext = createGameMainContext(imports, {
 });
 ReadGame(readContext, "save/game.sav");
 assert.equal(readContext.game.helpmessage1, "help one", "ReadGame helpmessage mismatch");
+assert.equal(readContext.game.spawnpoint, "unit_start", "ReadGame game spawnpoint mismatch");
+assert.equal(readContext.runtime.spawnpoint, "unit_start", "ReadGame runtime spawnpoint mismatch");
+assert.equal(readContext.game.maxclients, 1, "ReadGame game maxclients mismatch");
+assert.equal(readContext.runtime.maxclients, 1, "ReadGame runtime maxclients mismatch");
+assert.equal(readContext.game.maxentities, 64, "ReadGame game maxentities mismatch");
+assert.equal(readContext.runtime.maxentities, 64, "ReadGame runtime maxentities mismatch");
 assert.equal(readContext.game.serverflags, 3, "ReadGame serverflags mismatch");
 assert.equal(readContext.runtime.serverflags, 3, "ReadGame runtime serverflags mismatch");
 assert.equal(readContext.game.clients[0]?.pers.health, 75, "ReadGame client pers health mismatch");

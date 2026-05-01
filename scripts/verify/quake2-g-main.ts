@@ -188,6 +188,10 @@ cvars.set("sv_gravity", createCvar("sv_gravity", "600"));
 InitGame(cvarMirrorContext);
 assert.equal(cvarMirrorContext.runtime.g_select_empty, true, "InitGame must mirror g_select_empty to the gameplay runtime");
 assert.equal(cvarMirrorContext.runtime.gravity, 600, "InitGame must mirror sv_gravity to the gameplay runtime");
+assert.equal(cvarMirrorContext.runtime.maxclients, 4, "InitGame must mirror maxclients to runtime");
+assert.equal(cvarMirrorContext.game.maxclients, 4, "InitGame must mirror maxclients to game_locals_t");
+assert.equal(cvarMirrorContext.runtime.maxentities, 1024, "InitGame must mirror maxentities to runtime");
+assert.equal(cvarMirrorContext.game.maxentities, 1024, "InitGame must mirror maxentities to game_locals_t");
 
 const entityString = `
 {
@@ -231,6 +235,14 @@ assert.deepEqual(
   "SpawnEntities post-map edict bootstrap mismatch"
 );
 assert.ok(dprints.includes("0 entities inhibited\n"), "SpawnEntities must report the inhibited entity count");
+
+const spawnpointContext = createGameMainContext(imports);
+InitGame(spawnpointContext);
+SpawnEntities(spawnpointContext, "base1", entityString, "unit_start");
+assert.equal(spawnpointContext.runtime.spawnpoint, "unit_start", "SpawnEntities must mirror spawnpoint to runtime");
+assert.equal(spawnpointContext.game.spawnpoint, "unit_start", "SpawnEntities must persist spawnpoint in game_locals_t");
+assert.equal(spawnpointContext.runtime.maxclients, spawnpointContext.game.maxclients, "SpawnEntities must keep runtime/game maxclients in sync");
+assert.equal(spawnpointContext.runtime.maxentities, spawnpointContext.game.maxentities, "SpawnEntities must keep runtime/game maxentities in sync");
 
 const preservedClient = api.edicts[1]!.client!;
 api.edicts[1]!.inuse = true;

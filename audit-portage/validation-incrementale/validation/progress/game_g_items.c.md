@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Pickup_AncientHead`.
+
+Validation ancient head du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_AncientHead` conserve le comportement C: augmente toujours `other->max_health` de 2, ne modifie pas `other->health`, planifie `SetRespawn(ent, ent->item->quantity)` en deathmatch seulement pour les items de carte non droppes, puis retourne toujours `true`. L'entree `item_ancient_head` de `itemlist` est alignee (`Pickup_AncientHead`, pickup sound `items/pkup.wav`, modele `models/items/c_head/tris.md2`, `EF_ROTATE`, icone `i_fixme`, pickup name `Ancient Head`, width 2, quantity 60, pas de flags/precache). Header TS complete avec `Behavior` et note runtime deathmatch.
+
+Runtime branche via `SpawnItem`/`droptofloor`, `Touch_Item`, le dispatch `callItemPickup`, l'entree `item_ancient_head` et l'inhibition `DF_NO_HEALTH` dans `SpawnItem`. `apps/web` doit consommer ce flux par le runtime local/full-game, les stats HUD pickup, sons pickup et snapshots; aucune logique parallele d'ancient head detectee. `renderer-three` doit consommer les sorties visibles generiques: modele item rotatif, disparition pendant pickup/respawn, reapparition apres `SetRespawn`; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyPickupAncientHeadMaxHealthAndRespawn` couvre l'appel direct single-player, l'absence de top-up de sante, le chemin `Touch_Item` deathmatch avec stats/son/respawn, et l'absence de respawn pour dropped item. Tests lances: `npm run verify:g-items`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `Pickup_Adrenaline`.
 
 Validation adrenaline du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_Adrenaline` conserve le comportement C: en non-deathmatch, augmente `other->max_health` de 1; si la sante courante est sous le max, remonte `other->health` a `other->max_health`; en deathmatch, planifie `SetRespawn(ent, ent->item->quantity)` seulement pour les items de carte non droppes; retourne toujours `true`. L'entree `item_adrenaline` de `itemlist` est alignee (`Pickup_Adrenaline`, pickup sound `items/pkup.wav`, modele `models/items/adrenal/tris.md2`, `EF_ROTATE`, icone `p_adrenaline`, pickup name `Adrenaline`, width 2, quantity 60, pas de flags/precache). Header TS complete avec `Behavior` et note runtime deathmatch.
@@ -229,4 +237,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_AncientHead`.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Bandolier`, avec la locale `item` si le lot reste coherent.

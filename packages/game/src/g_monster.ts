@@ -535,6 +535,9 @@ export function M_WorldEffects(ent: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Drops one monster vertically to the floor, links it, then refreshes ground and water state.
+ *
+ * Porting notes:
+ * - Keeps `origin` mirrored with `s.origin` around the drop because TS collision and refresh adapters read both forms.
  */
 export function M_droptofloor(ent: GameEntity, runtime: GameRuntime): void {
   if (!runtime.collision) {

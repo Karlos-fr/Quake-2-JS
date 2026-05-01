@@ -301,11 +301,20 @@ assert.equal(gameLocals.helpmessage2, "", "game_locals_t helpmessage2 default mi
 assert.equal(gameLocals.helpchanged, 0, "game_locals_t helpchanged default mismatch");
 assert.deepEqual(gameLocals.clients, [], "game_locals_t clients default mismatch");
 assert.equal(gameLocals.spawnpoint, "", "game_locals_t spawnpoint default mismatch");
-assert.equal(game.maxclients, 0, "game_locals maxclients mismatch");
+assert.equal(gameLocals.maxclients, 0, "game_locals_t maxclients default mismatch");
 assert.equal(gameLocals.maxentities, 0, "game_locals_t maxentities default mismatch");
 assert.equal(gameLocals.serverflags, 0, "game_locals_t serverflags default mismatch");
 assert.equal(gameLocals.num_items, 0, "game_locals_t num_items default mismatch");
 assert.equal(gameLocals.autosaved, false, "game_locals_t autosaved default mismatch");
+
+gameLocals.spawnpoint = "unit_start";
+gameLocals.maxclients = 3;
+gameLocals.maxentities = 128;
+gameLocals.serverflags = SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3;
+assert.equal(game.spawnpoint, "unit_start", "game_locals_t spawnpoint string field mismatch");
+assert.equal(game.maxclients, 3, "game_locals_t maxclients field mismatch");
+assert.equal(game.maxentities, 128, "game_locals_t maxentities field mismatch");
+assert.equal(game.serverflags, SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3, "game_locals_t serverflags field mismatch");
 assert.equal(level.body_que, 0, "level_locals body_que mismatch");
 assert.equal(st.sky, null, "spawn_temp sky default mismatch");
 assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");

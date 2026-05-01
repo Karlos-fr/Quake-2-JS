@@ -32,6 +32,7 @@ import {
   MOVETYPE_TOSS,
   Pickup_Health,
   Pickup_Adrenaline,
+  Pickup_AncientHead,
   Pickup_Armor,
   Pickup_Powerup,
   PowerArmorType,
@@ -74,6 +75,7 @@ function main(): void {
   verifyTouchHealthPickup();
   verifyTouchHealthPickupUsesItemPath();
   verifyPickupAdrenalineHealthAndRespawn();
+  verifyPickupAncientHeadMaxHealthAndRespawn();
   verifyTouchRejectedPickupStillUsesTargets();
   verifyTouchAmmoPickupUsesItemPath();
   verifyTouchWeaponPickupUsesWeaponPath();
@@ -387,6 +389,61 @@ function verifyPickupAdrenalineHealthAndRespawn(): void {
 
   assertBoolean(Pickup_Adrenaline(droppedAdrenaline, droppedPlayer, droppedRuntime), true, "Pickup_Adrenaline accepts dropped adrenaline");
   assertNumber(droppedAdrenaline.nextthink, 0, "Dropped adrenaline does not schedule map-item respawn");
+}
+
+function verifyPickupAncientHeadMaxHealthAndRespawn(): void {
+  const singlePlayerRuntime = createHarnessRuntime();
+  const singlePlayerHead = spawnFreeableEntity(singlePlayerRuntime);
+  const singlePlayer = createPlayer(singlePlayerRuntime);
+
+  singlePlayer.health = 40;
+  singlePlayer.max_health = 100;
+  singlePlayerHead.item = requireItem("Ancient Head");
+  singlePlayerHead.spawnflags = 0;
+
+  assertBoolean(Pickup_AncientHead(singlePlayerHead, singlePlayer, singlePlayerRuntime), true, "Pickup_AncientHead accepts single-player ancient head");
+  assertNumber(singlePlayer.max_health, 102, "Pickup_AncientHead increments max_health by two");
+  assertNumber(singlePlayer.health, 40, "Pickup_AncientHead does not top up current health");
+  assertNumber(singlePlayerHead.nextthink, 0, "Pickup_AncientHead does not respawn single-player ancient head");
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  deathmatchRuntime.time = 20;
+  const deathmatchHead = spawnFreeableEntity(deathmatchRuntime);
+  const deathmatchPlayer = createPlayer(deathmatchRuntime);
+  const ancientHead = requireItem("Ancient Head");
+
+  deathmatchPlayer.health = 80;
+  deathmatchPlayer.max_health = 100;
+  deathmatchHead.item = ancientHead;
+  deathmatchHead.spawnflags = 0;
+  deathmatchHead.touch = Touch_Item;
+  deathmatchHead.solid = SOLID_TRIGGER;
+  linkGameEntity(deathmatchRuntime, deathmatchHead);
+
+  Touch_Item(deathmatchHead, deathmatchPlayer, deathmatchRuntime);
+
+  assertNumber(deathmatchPlayer.max_health, 102, "Touch_Item routes Ancient Head max_health gain in deathmatch");
+  assertNumber(deathmatchPlayer.health, 80, "Deathmatch Ancient Head does not top up current health");
+  assertNumber(deathmatchHead.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "Deathmatch Ancient Head is hidden for respawn");
+  assertNumber(deathmatchHead.solid, SOLID_NOT, "Deathmatch Ancient Head is made nonsolid while respawning");
+  assertNumber(deathmatchHead.nextthink, 80, "Deathmatch Ancient Head uses item quantity as respawn delay");
+  assertNumber(deathmatchPlayer.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + ancientHead.index, "Touch_Item reports the Ancient Head pickup string");
+  assertBoolean(drainGameSoundEvents(deathmatchRuntime).some((event) => event.soundPath === "items/pkup.wav"), true, "Touch_Item queues the Ancient Head pickup sound");
+
+  const droppedRuntime = createHarnessRuntime();
+  droppedRuntime.deathmatch = true;
+  const droppedHead = spawnFreeableEntity(droppedRuntime);
+  const droppedPlayer = createPlayer(droppedRuntime);
+
+  droppedPlayer.health = 25;
+  droppedPlayer.max_health = 100;
+  droppedHead.item = ancientHead;
+  droppedHead.spawnflags = DROPPED_ITEM;
+
+  assertBoolean(Pickup_AncientHead(droppedHead, droppedPlayer, droppedRuntime), true, "Pickup_AncientHead accepts dropped ancient head");
+  assertNumber(droppedPlayer.max_health, 102, "Dropped Ancient Head still increments max_health");
+  assertNumber(droppedHead.nextthink, 0, "Dropped Ancient Head does not schedule map-item respawn");
 }
 
 function verifyTouchRejectedPickupStillUsesTargets(): void {

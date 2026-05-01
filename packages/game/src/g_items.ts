@@ -780,6 +780,13 @@ export function Pickup_Adrenaline(ent: GameEntity, other: GameEntity, runtime: G
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Raises the player's max health by two without topping up current health.
+ * - Schedules deathmatch map-item respawn for non-dropped Ancient Head items.
+ *
+ * Porting notes:
+ * - Uses the runtime deathmatch flag instead of the original cvar pointer.
  */
 export function Pickup_AncientHead(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   other.max_health += 2;

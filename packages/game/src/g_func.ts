@@ -1613,11 +1613,24 @@ export function SP_func_water(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: train_blocked
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Crushes non-monster/non-client blockers and turns surviving debris into an explosion.
+ * - Applies debounced crush damage to monsters and clients.
+ *
+ * Porting notes:
+ * - The original `level.time` and temp-entity side effects are routed through `GameRuntime`.
+ */
 export function train_blocked(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if ((other.svflags & SVF_MONSTER) === 0 && !other.client) {
     T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], 100000, 1, 0, MOD_CRUSH, runtime);
     if (other.inuse) {
-      freeGameEntity(runtime, other);
+      BecomeExplosion1(other, runtime);
     }
     return;
   }
@@ -1628,6 +1641,16 @@ export function train_blocked(self: GameEntity, other: GameEntity, runtime: Game
   T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], self.dmg, 1, 0, MOD_CRUSH, runtime);
 }
 
+/**
+ * Original name: train_wait
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fires a reached path corner's `pathtarget` while preserving its original target.
+ * - Schedules the next train movement, handles toggle trains with negative waits, and stops end sounds.
+ */
 export function train_wait(self: GameEntity, runtime: GameRuntime): void {
   if (self.target_ent?.pathtarget) {
     const ent = self.target_ent;

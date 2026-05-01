@@ -17,7 +17,8 @@ import {
   EF_ANIM_ALLFAST,
   EF_ANIM01,
   EF_ANIM23,
-  entity_event_t
+  entity_event_t,
+  temp_event_t
 } from "../../packages/qcommon/src/index.js";
 import {
   SP_func_button,
@@ -60,7 +61,9 @@ import {
   rotating_blocked,
   rotating_touch,
   rotating_use,
+  train_blocked,
   train_next,
+  train_wait,
   train_use,
   trigger_elevator_use
 } from "../../packages/game/src/g_func.js";
@@ -86,6 +89,7 @@ import {
   createGameClient,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
+  drainGameTempEntityEvents,
   type GameEntity
 } from "../../packages/game/src/runtime.js";
 import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
@@ -943,6 +947,71 @@ assert.deepEqual(train.moveinfo.end_origin, [90, 0, 0], "train_next end origin m
 assert.equal(train.moveinfo.endfunc?.name, "train_wait", "train_next endfunc mismatch");
 assert.equal(train.s.sound, train.moveinfo.sound_middle, "train_next middle sound mismatch");
 assert.equal((train.spawnflags & 1) !== 0, true, "train_next must keep START_ON set");
+
+const trainDebris = entity("train debris", 27);
+trainDebris.health = 10;
+trainDebris.takedamage = damage_t.DAMAGE_YES;
+trainDebris.s.origin = [12, 24, 36];
+drainGameTempEntityEvents(runtime);
+train_blocked(train, trainDebris, runtime);
+assert.equal(trainDebris.inuse, false, "train_blocked debris must be freed by explosion");
+assert.equal(drainGameTempEntityEvents(runtime).at(-1)?.type, temp_event_t.TE_EXPLOSION1, "train_blocked debris explosion mismatch");
+assert.equal(runtime.meansOfDeath, MOD_CRUSH, "train_blocked debris damage mod mismatch");
+
+const trainMonsterBlocker = entity("train monster blocker", 28);
+trainMonsterBlocker.svflags = SVF_MONSTER;
+trainMonsterBlocker.health = 80;
+trainMonsterBlocker.takedamage = damage_t.DAMAGE_YES;
+trainMonsterBlocker.s.origin = [8, 0, 0];
+train.dmg = 15;
+train.touch_debounce_time = runtime.time + 0.25;
+train_blocked(train, trainMonsterBlocker, runtime);
+assert.equal(trainMonsterBlocker.health, 80, "train_blocked debounce must skip monster damage");
+train.touch_debounce_time = runtime.time - 0.25;
+train_blocked(train, trainMonsterBlocker, runtime);
+assert.equal(trainMonsterBlocker.health, 65, "train_blocked monster damage mismatch");
+assert.equal(train.touch_debounce_time, runtime.time + 0.5, "train_blocked debounce update mismatch");
+
+const trainClientBlocker = entity("train client blocker", 29);
+trainClientBlocker.client = createGameClient();
+trainClientBlocker.health = 40;
+trainClientBlocker.takedamage = damage_t.DAMAGE_YES;
+trainClientBlocker.s.origin = [0, 8, 0];
+train.dmg = 0;
+train.touch_debounce_time = runtime.time - 1;
+train_blocked(train, trainClientBlocker, runtime);
+assert.equal(trainClientBlocker.health, 40, "train_blocked zero damage must skip client damage");
+
+const waitCorner = entity("path_corner", 30, { target: "p1", pathtarget: "train_pathtarget" });
+const trainPathtarget = entity("target_relay", 31, { targetname: "train_pathtarget" });
+const trainActivator = entity("train activator", 32);
+const waitTrain = entity("func_train", 33);
+trainPathtarget.count = 0;
+trainPathtarget.use = (self) => {
+  self.count += 1;
+};
+waitTrain.target_ent = waitCorner;
+waitTrain.activator = trainActivator;
+waitTrain.moveinfo.wait = 1.5;
+waitTrain.moveinfo.sound_end = 1234;
+waitTrain.s.sound = train.moveinfo.sound_middle;
+train_wait(waitTrain, runtime);
+assert.equal(trainPathtarget.count, 1, "train_wait pathtarget use mismatch");
+assert.equal(waitCorner.target, "p1", "train_wait must restore path_corner target");
+assert.equal(waitTrain.nextthink, runtime.time + 1.5, "train_wait positive wait nextthink mismatch");
+assert.equal(waitTrain.think, train_next, "train_wait positive wait think mismatch");
+assert.equal(waitTrain.s.sound, 0, "train_wait must stop train sound on wait");
+
+const toggleWaitTrain = entity("func_train", 34);
+toggleWaitTrain.target_ent = path1;
+toggleWaitTrain.moveinfo.wait = -1;
+toggleWaitTrain.spawnflags = 1 | 2;
+toggleWaitTrain.velocity = [7, 8, 9];
+toggleWaitTrain.nextthink = runtime.time + 9;
+train_wait(toggleWaitTrain, runtime);
+assert.equal((toggleWaitTrain.spawnflags & 1) === 0, true, "train_wait negative toggle must clear START_ON");
+assert.deepEqual(toggleWaitTrain.velocity, [0, 0, 0], "train_wait negative toggle must clear velocity");
+assert.equal(toggleWaitTrain.nextthink, 0, "train_wait negative toggle nextthink mismatch");
 
 const blockStopsTrain = entity("func_train", 25, { target: "p1", spawnflags: "4", dmg: "80" });
 SP_func_train(blockStopsTrain, runtime);

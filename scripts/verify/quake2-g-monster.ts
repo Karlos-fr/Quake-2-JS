@@ -47,6 +47,7 @@ import {
   AttackFinished,
   M_CatagorizePosition,
   M_CheckGround,
+  M_droptofloor,
   M_FliesOff,
   M_FliesOn,
   M_FlyCheck,
@@ -87,6 +88,7 @@ function main(): void {
   verifyMCatagorizePositionWaterLevels();
   verifyMCatagorizePositionRuntimeReachability();
   verifyMWorldEffectsDamageAndSounds();
+  verifyMDroptofloorTraceAndStateRefresh();
 
   console.log("Verification g_monster - shared monster gameplay OK");
 }
@@ -667,6 +669,94 @@ function verifyMWorldEffectsDamageAndSounds(): void {
   M_WorldEffects(immune, runtime);
   assert.equal(immune.health, 100, "M_WorldEffects should honor lava and slime immunity flags");
   assert.equal(DAMAGE_NO_ARMOR, 0x00000002, "M_WorldEffects DAMAGE_NO_ARMOR constant should match the C flag value");
+}
+
+function verifyMDroptofloorTraceAndStateRefresh(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 12;
+  const ground = createRuntimeEntity({ classname: "floor" }, 37);
+  ground.linkcount = 9;
+  runtime.entities[ground.index] = ground;
+
+  const traces: Array<{ start: vec3_t; end: vec3_t; mask: number; passent: GameEntity | null }> = [];
+  const contentsProbes: vec3_t[] = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (start, _mins, _maxs, end, passent, mask) => {
+      traces.push({ start: [...start], end: [...end], mask, passent });
+      if (traces.length === 1) {
+        return {
+          allsolid: false,
+          startsolid: false,
+          fraction: 0.5,
+          endpos: [start[0], start[1], 40],
+          plane: {
+            normal: [0, 0, 1],
+            dist: 0,
+            type: 0,
+            signbits: 0,
+            pad: [0, 0]
+          },
+          surface: null,
+          contents: 0,
+          ent: ground
+        };
+      }
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 0,
+        endpos: [...end],
+        plane: {
+          normal: [0, 0, 1],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: 0,
+        ent: ground
+      };
+    },
+    pointcontents: (point) => {
+      contentsProbes.push([...point]);
+      return CONTENTS_WATER;
+    }
+  };
+
+  const monster = createMonster(runtime, 38);
+  monster.s.origin = [8, 16, 64];
+  monster.origin = [8, 16, 64];
+  monster.mins = [-16, -16, -24];
+  monster.maxs = [16, 16, 32];
+
+  M_droptofloor(monster, runtime);
+
+  assert.deepEqual(traces[0]?.start, [8, 16, 65], "M_droptofloor should raise the monster one unit before tracing");
+  assert.deepEqual(traces[0]?.end, [8, 16, -191], "M_droptofloor should trace 256 units down from the raised origin");
+  assert.equal(traces[0]?.mask, MASK_MONSTERSOLID, "M_droptofloor should use MASK_MONSTERSOLID for the floor trace");
+  assert.equal(traces[0]?.passent, monster, "M_droptofloor should skip the monster in its floor trace");
+  assert.deepEqual(monster.s.origin, [8, 16, 39.75], "M_droptofloor should drop to trace.endpos then let M_CheckGround settle by a quarter unit");
+  assert.deepEqual(monster.origin, monster.s.origin, "M_droptofloor should keep origin mirrored for runtime/web refresh adapters");
+  assert.equal(monster.groundentity, ground, "M_droptofloor should refresh groundentity through M_CheckGround");
+  assert.equal(monster.groundentity_linkcount, 9, "M_droptofloor should refresh the traced ground linkcount");
+  assert.equal(monster.waterlevel, 3, "M_droptofloor should recategorize water state after linking");
+  assert.deepEqual(contentsProbes, [[8, 16, 16.75], [8, 16, 42.75], [8, 16, 64.75]], "M_droptofloor should run the original categorize probes from the dropped origin");
+  assert.equal(monster.linkcount > 0, true, "M_droptofloor should link the entity after moving it");
+
+  const noFloor = createMonster(runtime, 39);
+  noFloor.s.origin = [1, 2, 3];
+  noFloor.origin = [1, 2, 3];
+  runtime.collision.trace = (start, _mins, _maxs, end, passent, mask) => {
+    traces.push({ start: [...start], end: [...end], mask, passent });
+    return createClearTrace(end);
+  };
+
+  M_droptofloor(noFloor, runtime);
+
+  assert.deepEqual(noFloor.s.origin, [1, 2, 4], "M_droptofloor should preserve the original one-unit raise when no floor is found");
+  assert.equal(noFloor.groundentity, null, "M_droptofloor should not refresh ground when the drop trace misses");
 }
 
 function createHarnessRuntime(): GameRuntime {
