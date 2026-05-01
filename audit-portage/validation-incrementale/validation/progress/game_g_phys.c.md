@@ -70,4 +70,4 @@
 - apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game (`advanceLocalGameplayRuntime` puis `G_RunFrame`) et consomme les positions/snapshots/refresh frames resultants; aucune logique web parallele ne remplace `SV_FlyMove`.
 - renderer-three: pas de sortie renderer directe propre au calcul; les sorties visibles attendues sont les entites/modeles/brush models/camera-scene via origines et refresh frames apres mouvement. Les particules, beams, dlights, temp entities ou sons peuvent seulement venir des callbacks `SV_Impact` deja routes par les flux client/renderer existants.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour `hit`/`groundentity`, la resolution `dir`/`d` sur crease, et la limite `MAX_CLIP_PLANES` avec les 4 bumps du C.
-- Tests lances: `npm run verify:g-phys` OK.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
