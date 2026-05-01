@@ -202,6 +202,9 @@ writeContext.level.changemap = "unit3";
 writeContext.level.exitintermission = 1;
 writeContext.level.intermission_origin = [320, -128, 48];
 writeContext.level.intermission_angle = [20, 270, 0];
+writeContext.level.sight_client = player;
+writeContext.level.sight_entity = target;
+writeContext.level.sight_entity_framenum = 121;
 writeContext.level.sound_entity = target;
 WriteLevel(writeContext, "save/level.sav");
 const levelJson = files.get("save/level.sav") ?? "";
@@ -213,6 +216,9 @@ assert.ok(levelJson.includes("\"changemap\": \"unit3\""), "WriteLevel must persi
 assert.ok(levelJson.includes("\"exitintermission\": 1"), "WriteLevel must persist exitintermission");
 assert.ok(levelJson.includes("\"intermission_origin\": ["), "WriteLevel must persist intermission_origin");
 assert.ok(levelJson.includes("\"intermission_angle\": ["), "WriteLevel must persist intermission_angle");
+assert.ok(levelJson.includes("\"sight_client\": 1"), "WriteLevel must persist sight_client edict reference");
+assert.ok(levelJson.includes("\"sight_entity\": 2"), "WriteLevel must persist sight_entity edict reference");
+assert.ok(levelJson.includes("\"sight_entity_framenum\": 121"), "WriteLevel must persist sight_entity_framenum");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
 readContext.runtime.maxclients = 1;
@@ -241,6 +247,12 @@ assert.deepEqual(readContext.level.intermission_origin, [320, -128, 48], "ReadLe
 assert.deepEqual(readContext.runtime.intermission_origin, [320, -128, 48], "ReadLevel runtime intermission_origin mismatch");
 assert.deepEqual(readContext.level.intermission_angle, [20, 270, 0], "ReadLevel intermission_angle mismatch");
 assert.deepEqual(readContext.runtime.intermission_angle, [20, 270, 0], "ReadLevel runtime intermission_angle mismatch");
+assert.equal(readContext.level.sight_client, readContext.runtime.entities[1], "ReadLevel sight_client mismatch");
+assert.equal(readContext.runtime.sight_client, readContext.runtime.entities[1], "ReadLevel runtime sight_client mismatch");
+assert.equal(readContext.level.sight_entity, readContext.runtime.entities[2], "ReadLevel sight_entity mismatch");
+assert.equal(readContext.runtime.sight_entity, readContext.runtime.entities[2], "ReadLevel runtime sight_entity mismatch");
+assert.equal(readContext.level.sight_entity_framenum, 121, "ReadLevel sight_entity_framenum mismatch");
+assert.equal(readContext.runtime.sight_entity_framenum, 121, "ReadLevel runtime sight_entity_framenum mismatch");
 assert.equal(readContext.runtime.entities[3]?.inuse, undefined, "ReadLevel must wipe entities not present in the save");
 assert.equal(readContext.runtime.entities[2]?.nextthink, 14.5, "ReadLevel cross-level target nextthink mismatch");
 assert.equal(readContext.runtime.entities[1]?.client?.pers.connected, false, "ReadLevel must mark client slots disconnected");

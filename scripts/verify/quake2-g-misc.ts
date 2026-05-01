@@ -10,7 +10,7 @@
  */
 
 import { strict as assert } from "node:assert";
-import { CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, MASK_MONSTERSOLID, RF_FRAMELERP, RF_TRANSLUCENT, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t, type trace_t } from "../../packages/qcommon/src/index.js";
+import { ATTN_NORM, CHAN_BODY, CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, MASK_MONSTERSOLID, RF_FRAMELERP, RF_TRANSLUCENT, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t, type trace_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
@@ -38,6 +38,7 @@ import {
   SP_misc_explobox,
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
+  SP_monster_commander_body,
   SP_path_corner,
   SP_point_combat,
   SP_viewthing,
@@ -48,6 +49,9 @@ import {
   attachGameClient,
   barrel_delay,
   barrel_touch,
+  commander_body_drop,
+  commander_body_think,
+  commander_body_use,
   createGameRuntimeFromBspEntities,
   damage_t,
   drainGameConfigstringUpdates,
@@ -79,7 +83,7 @@ import {
   useGameEntity
 } from "../../packages/game/src/index.js";
 import { SP_func_object, SP_func_wall, func_object_touch, func_object_use, func_wall_use } from "../../packages/game/src/g_misc.js";
-import { AI_COMBAT_POINT, AI_NOSTEP, AI_STAND_GROUND, FL_FLY, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
+import { AI_COMBAT_POINT, AI_NOSTEP, AI_STAND_GROUND, FL_FLY, FL_GODMODE, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
 import { ThrowClientHead } from "../../packages/game/src/p_client.js";
 import { SVF_MONSTER } from "../../packages/game/src/runtime.js";
 
@@ -101,6 +105,7 @@ function main(): void {
   verifyMiscEastertankSpawnsAndLoopsStandFrames();
   verifyMiscEasterchickSpawnsAndLoopsStandFrames();
   verifyMiscEasterchick2SpawnsAndLoopsStandFrames();
+  verifyCommanderBodySpawnDropUseAndAnimation();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
   verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities();
@@ -764,6 +769,68 @@ function verifyMiscEasterchick2SpawnsAndLoopsStandFrames(): void {
   dispatch.classname = "misc_easterchick2";
   ED_CallSpawn(dispatch, runtime);
   assert.equal(dispatch.think, misc_easterchick2_think, "ED_CallSpawn must dispatch misc_easterchick2 to SP_misc_easterchick2");
+}
+
+function verifyCommanderBodySpawnDropUseAndAnimation(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 40;
+
+  const body = spawnFreeableEntity(runtime);
+  body.classname = "monster_commander_body";
+  body.origin = [16, 24, 32];
+  body.s.origin = [16, 24, 32];
+
+  SP_monster_commander_body(body, runtime);
+
+  assert.equal(body.movetype, MOVETYPE_NONE, "monster_commander_body must spawn stationary");
+  assert.equal(body.solid, SOLID_BBOX, "monster_commander_body must use a bbox solid");
+  assert.deepEqual(body.mins, [-32, -32, 0], "monster_commander_body mins mismatch");
+  assert.deepEqual(body.maxs, [32, 32, 48], "monster_commander_body maxs mismatch");
+  assert.equal(body.model, "models/monsters/commandr/tris.md2", "monster_commander_body model field mismatch");
+  assert.equal(runtime.assets.modelPaths[body.s.modelindex - 1], "models/monsters/commandr/tris.md2", "monster_commander_body modelindex must resolve to commandr/tris.md2");
+  assert.equal(body.use, commander_body_use, "monster_commander_body must install commander_body_use");
+  assert.equal(body.takedamage, damage_t.DAMAGE_YES, "monster_commander_body must be damageable like the source");
+  assert.equal((body.flags & FL_GODMODE) !== 0, true, "monster_commander_body must keep FL_GODMODE");
+  assert.equal((body.s.renderfx & RF_FRAMELERP) !== 0, true, "monster_commander_body must enable RF_FRAMELERP");
+  assert.equal(body.think, commander_body_drop, "monster_commander_body must schedule commander_body_drop");
+  assert.equal(body.nextthink, runtime.time + 5 * FRAMETIME, "monster_commander_body drop must be scheduled five frames later");
+  assert.equal(runtime.assets.soundPaths.includes("tank/thud.wav"), true, "monster_commander_body must precache tank/thud.wav");
+  assert.equal(runtime.assets.soundPaths.includes("tank/pain.wav"), true, "monster_commander_body must precache tank/pain.wav");
+  assert.equal(body.linked, true, "monster_commander_body must be linked for snapshots");
+
+  runPendingThinks(runtime, runtime.time + 5 * FRAMETIME);
+  assert.equal(body.movetype, MOVETYPE_TOSS, "commander_body_drop must switch to MOVETYPE_TOSS");
+  assert.equal(body.origin[2], 34, "commander_body_drop must nudge origin Z by two units");
+  assert.deepEqual(body.s.origin, body.origin, "commander_body_drop must publish the updated origin");
+
+  useGameEntity(runtime, body, null, body);
+  let sounds = drainGameSoundEvents(runtime);
+  assert.equal(sounds.at(-1)?.soundPath, "tank/pain.wav", "commander_body_use must play tank/pain.wav");
+  assert.equal(sounds.at(-1)?.channel, CHAN_BODY, "commander_body_use must use CHAN_BODY");
+  assert.equal(sounds.at(-1)?.attenuation, ATTN_NORM, "commander_body_use must use ATTN_NORM");
+  assert.equal(body.think, commander_body_think, "commander_body_use must install commander_body_think");
+  assert.equal(body.nextthink, runtime.time + FRAMETIME, "commander_body_use must schedule the first animation frame");
+
+  runPendingThinks(runtime, runtime.time + FRAMETIME);
+  assert.equal(body.s.frame, 1, "commander_body_think must pre-increment frame from zero to one");
+  assert.equal(body.nextthink, runtime.time + FRAMETIME, "commander_body_think must reschedule before frame 24");
+
+  body.s.frame = 21;
+  runPendingThinks(runtime, runtime.time + FRAMETIME);
+  sounds = drainGameSoundEvents(runtime);
+  assert.equal(body.s.frame, 22, "commander_body_think must advance frame 21 to 22");
+  assert.equal(sounds.at(-1)?.soundPath, "tank/thud.wav", "commander_body_think must play the thud at source frame 22");
+
+  body.s.frame = 23;
+  runPendingThinks(runtime, runtime.time + FRAMETIME);
+  assert.equal(body.s.frame, 24, "commander_body_think must stop after frame 23 has advanced");
+  assert.equal(body.nextthink, 0, "commander_body_think must clear nextthink after the last frame");
+  assert.equal(body.think, undefined, "commander_body_think must clear the callback when complete");
+
+  const dispatch = spawnFreeableEntity(runtime);
+  dispatch.classname = "monster_commander_body";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(dispatch.use, commander_body_use, "ED_CallSpawn must dispatch monster_commander_body to SP_monster_commander_body");
 }
 
 function verifyBarrelDelaySchedulesDelayedExplosion(): void {

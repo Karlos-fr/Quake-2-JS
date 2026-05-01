@@ -18,9 +18,11 @@ import {
   FL_FLY,
   FL_SWIM,
   FRAMETIME,
+  SOLID_BBOX,
   SOLID_NOT,
   SVF_DEADMONSTER,
   SVF_MONSTER,
+  SVF_NOCLIENT,
   attachGameClient,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
@@ -76,6 +78,7 @@ import {
   monster_start,
   monster_start_go,
   monster_think,
+  monster_triggered_spawn,
   monster_use,
   type GameMonsterHooks,
   walkmonster_start_go
@@ -437,32 +440,43 @@ function verifyMonsterStartGoTargetBranches(): void {
 function verifyTriggeredSpawnStartupPath(): void {
   const runtime = createHarnessRuntime();
   runtime.time = 0;
+  let killBoxTraceCalls = 0;
   runtime.collision = {
     world: {} as never,
-    trace: (_start, _mins, _maxs, end) => ({
-      allsolid: false,
-      startsolid: false,
-      fraction: 0,
-      endpos: [...end],
-      plane: {
-        normal: [0, 0, 1],
-        dist: 0,
-        type: 0,
-        signbits: 0,
-        pad: [0, 0]
-      },
-      surface: null,
-      contents: 0,
-      ent: null
-    }),
+    trace: (_start, _mins, _maxs, end) => {
+      killBoxTraceCalls += 1;
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 0,
+        endpos: [...end],
+        plane: {
+          normal: [0, 0, 1],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: 0,
+        ent: null
+      };
+    },
     pointcontents: () => 0
   };
 
   const monster = createMonster(runtime, 13);
   const activator = createPlayer(runtime, 14);
   monster.spawnflags = 2;
+  monster.solid = SOLID_NOT;
+  monster.movetype = 0;
+  monster.svflags |= SVF_NOCLIENT;
+  monster.s.origin = [8, 16, 24];
+  monster.origin = [8, 16, 24];
   monster.groundentity = createRuntimeEntity({ classname: "ground" }, 15);
+  let standCalls = 0;
   monster.monsterinfo.stand = () => {
+    standCalls += 1;
     return;
   };
 
@@ -477,6 +491,47 @@ function verifyTriggeredSpawnStartupPath(): void {
   assert.equal(monster.nextthink, runtime.time + FRAMETIME, "monster_triggered_spawn_use should delay spawn by one frame");
   assert.equal(monster.enemy, activator, "monster_triggered_spawn_use should preserve the activating client as enemy");
 
+  let foundTargetCalls = 0;
+  monster_triggered_spawn(monster, runtime, {
+    FoundTarget: () => {
+      foundTargetCalls += 1;
+    }
+  });
+
+  assert.deepEqual(monster.s.origin, [8, 16, 25], "monster_triggered_spawn should raise the spawn origin by one unit before KillBox");
+  assert.deepEqual(monster.origin, [8, 16, 25], "monster_triggered_spawn should keep the runtime origin mirror aligned");
+  assert.equal(killBoxTraceCalls >= 1, true, "monster_triggered_spawn should run KillBox before materializing");
+  assert.equal(monster.solid, SOLID_BBOX, "monster_triggered_spawn should restore SOLID_BBOX");
+  assert.equal(monster.movetype, MOVETYPE_STEP, "monster_triggered_spawn should restore MOVETYPE_STEP");
+  assert.equal((monster.svflags & SVF_NOCLIENT) === 0, true, "monster_triggered_spawn should make the monster client-visible");
+  assert.equal(monster.air_finished, runtime.time + 12, "monster_triggered_spawn should reset the monster air timer");
+  assert.equal(monster.linked, true, "monster_triggered_spawn should relink the monster");
+  assert.equal(runtime.linkedSolidEntities.includes(monster), true, "monster_triggered_spawn should expose the monster as a solid runtime entity");
+  assert.equal(standCalls >= 1, true, "monster_triggered_spawn should enter monster_start_go");
+  assert.equal(monster.think, monster_think, "monster_triggered_spawn should arm the regular monster think callback");
+  assert.equal(monster.nextthink, runtime.time + FRAMETIME, "monster_triggered_spawn should schedule the regular monster think");
+  assert.equal(foundTargetCalls, 1, "monster_triggered_spawn should call FoundTarget for a valid activating enemy");
+  assert.equal(monster.enemy, activator, "monster_triggered_spawn should keep a valid activating enemy");
+
+  const noAttackSpawn = createMonster(runtime, 18);
+  const notargetActivator = createPlayer(runtime, 19);
+  notargetActivator.flags |= FL_NOTARGET;
+  noAttackSpawn.spawnflags = 2;
+  noAttackSpawn.solid = SOLID_NOT;
+  noAttackSpawn.movetype = 0;
+  noAttackSpawn.svflags |= SVF_NOCLIENT;
+  noAttackSpawn.enemy = notargetActivator;
+  noAttackSpawn.monsterinfo.stand = () => {
+    return;
+  };
+
+  monster_triggered_spawn(noAttackSpawn, runtime, {
+    FoundTarget: () => {
+      throw new Error("monster_triggered_spawn should not call FoundTarget for FL_NOTARGET enemies");
+    }
+  });
+
+  assert.equal(noAttackSpawn.enemy, null, "monster_triggered_spawn should clear invalid or suppressed activating enemies");
 }
 
 function verifyCorpseFlyScheduling(): void {

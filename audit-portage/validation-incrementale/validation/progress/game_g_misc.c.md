@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `commander_body_think`, `commander_body_use`, `commander_body_drop` et `SP_monster_commander_body`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `commander_body_think` conserve le pre-increment de frame, la reschedule tant que `s.frame < 24`, l'arret par `nextthink = 0` et le son `tank/thud.wav` quand la frame source atteint 22; `commander_body_use` installe le think, planifie `level.time + FRAMETIME` et joue `tank/pain.wav`; `commander_body_drop` force `MOVETYPE_TOSS` et ajoute 2 a l'origine Z; `SP_monster_commander_body` conserve `MOVETYPE_NONE`, `SOLID_BBOX`, modele `models/monsters/commandr/tris.md2`, bbox `[-32,-32,0]` / `[32,32,48]`, callback use, `DAMAGE_YES`, `FL_GODMODE`, `RF_FRAMELERP`, precache sons, link et drop a `level.time + 5 * FRAMETIME`.
+  - Commentaires d'en-tete verifies pour les quatre fonctions; commentaire de `SP_monster_commander_body` mis a jour pour retirer une note obsolete sur `takedamage`/`FL_GODMODE`.
+  - Branchement runtime verifie: `monster_commander_body` est enregistre dans `g_spawn.ts`, exporte via `index.ts`, dispatchable par `ED_CallSpawn`; `SP_monster_commander_body` installe `use` et `think`; `commander_body_drop` et `commander_body_think` sont atteints via `G_RunFrame`/`SV_RunThink` ou `runPendingThinks`, et `commander_body_use` via callback `use`/`G_UseTargets`.
+  - `apps/web`: integration attendue car le lot produit un modele MD2 visible, un mouvement drop, des frames animees et des sons. Aucune logique parallele trouvee; les flux local/full-game consomment snapshots, modelindices, frames et sons issus du runtime.
+  - `renderer-three`: integration attendue pour modele MD2, origine, frame courante et `RF_FRAMELERP`. Les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et `refresh-entity-sync`; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaire de portage de `SP_monster_commander_body` corrige.
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour spawn complet, precache sons, drop, use, sons, cadence d'animation, arret, dispatch `ED_CallSpawn` et sortie visible linkee.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npx tsx ./scripts/verify/quake2-entities-phase8.ts` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `misc_banner_think` et `SP_misc_banner` si le lot reste petit.
+
 - 2026-05-01: `misc_easterchick2_think` et `SP_misc_easterchick2`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `misc_easterchick2_think` conserve le pre-increment de frame, la progression tant que `s.frame < 287`, le wrap a `248` et `nextthink = level.time + FRAMETIME`; `SP_misc_easterchick2` conserve `MOVETYPE_NONE`, `SOLID_BBOX`, bbox `[-32,-32,0]` / `[32,32,32]`, modele `models/monsters/bitch/tris.md2`, frame initiale `248`, callback think, premier think a `level.time + 2 * FRAMETIME` et link.

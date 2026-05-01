@@ -31,6 +31,7 @@ import {
   MOVETYPE_PUSH,
   MOVETYPE_STEP,
   MOVETYPE_TOSS,
+  FL_TEAMSLAVE,
   SOLID_BBOX,
   SOLID_BSP,
   SOLID_NOT,
@@ -869,6 +870,128 @@ assertVec("SV_Physics_Pusher.team-rollback.rider-ok-origin", teamRiderOk.origin,
 assertVec("SV_Physics_Pusher.team-rollback.rider-blocked-origin", teamRiderBlocked.origin, [200, 0, 80]);
 assertEqual("SV_Physics_Pusher.team-rollback.rider-deltayaw", blockedClient.ps.pmove.delta_angles[1], 900);
 assertEqual("SV_Physics_Pusher.team-rollback.obstacle", teamBlockedOther, "team-rider-blocked");
+
+const teamSlaveOnly = spawnGameEntity(teamRuntime);
+teamSlaveOnly.classname = "team-slave-only";
+teamSlaveOnly.movetype = MOVETYPE_PUSH;
+teamSlaveOnly.flags = FL_TEAMSLAVE;
+teamSlaveOnly.velocity = [80, 0, 0];
+teamSlaveOnly.nextthink = teamRuntime.time;
+let teamSlaveOnlyThinkCount = 0;
+teamSlaveOnly.think = () => {
+  teamSlaveOnlyThinkCount += 1;
+};
+G_RunEntity(teamSlaveOnly, teamRuntime);
+assertVec("SV_Physics_Pusher.team-slave-noop.origin", teamSlaveOnly.origin, [0, 0, 0]);
+assertEqual("SV_Physics_Pusher.team-slave-noop.think", teamSlaveOnlyThinkCount, 0);
+
+const pusherThinkRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+pusherThinkRuntime.collision = {
+  world: {} as never,
+  trace(_start, _mins, _maxs, end, _passent, contentmask) {
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: pusherThinkRuntime.entities[0]
+    };
+  },
+  pointcontents() {
+    return 0;
+  }
+};
+
+const movingThinkPusher = spawnGameEntity(pusherThinkRuntime);
+movingThinkPusher.classname = "moving-think-pusher";
+movingThinkPusher.movetype = MOVETYPE_PUSH;
+movingThinkPusher.solid = SOLID_BSP;
+movingThinkPusher.velocity = [80, 0, 0];
+movingThinkPusher.nextthink = pusherThinkRuntime.time + 0.0005;
+let movingThinkCount = 0;
+movingThinkPusher.think = () => {
+  movingThinkCount += 1;
+};
+linkGameEntity(pusherThinkRuntime, movingThinkPusher);
+G_RunEntity(movingThinkPusher, pusherThinkRuntime);
+assertVec("SV_Physics_Pusher.success.origin", movingThinkPusher.origin, [8, 0, 0]);
+assertEqual("SV_Physics_Pusher.success.think", movingThinkCount, 1);
+assertEqual("SV_Physics_Pusher.success.nextthink", movingThinkPusher.nextthink, 0);
+assertEqual("SV_Physics_Pusher.success.linked", movingThinkPusher.linked, true);
+
+const blockedThinkRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+blockedThinkRuntime.collision = {
+  world: {} as never,
+  trace(start, _mins, _maxs, _end, passent, contentmask) {
+    const blocked = passent?.classname === "blocked-think-rider";
+    return {
+      allsolid: blocked,
+      startsolid: blocked,
+      fraction: blocked ? 0 : 1,
+      endpos: [...start],
+      plane: {
+        normal: blocked ? [-1, 0, 0] : [0, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: blockedThinkRuntime.entities[0]
+    };
+  },
+  pointcontents() {
+    return 0;
+  }
+};
+
+const blockedThinkPusher = spawnGameEntity(blockedThinkRuntime);
+blockedThinkPusher.classname = "blocked-think-pusher";
+blockedThinkPusher.movetype = MOVETYPE_PUSH;
+blockedThinkPusher.solid = SOLID_BSP;
+blockedThinkPusher.velocity = [80, 0, 0];
+blockedThinkPusher.nextthink = blockedThinkRuntime.time + 0.2;
+blockedThinkPusher.mins = [-32, -32, 0];
+blockedThinkPusher.maxs = [32, 32, 64];
+refreshEntitySpatialState(blockedThinkPusher);
+linkGameEntity(blockedThinkRuntime, blockedThinkPusher);
+
+const blockedThinkRider = spawnGameEntity(blockedThinkRuntime);
+blockedThinkRider.classname = "blocked-think-rider";
+blockedThinkRider.movetype = MOVETYPE_STEP;
+blockedThinkRider.solid = SOLID_BBOX;
+blockedThinkRider.origin = [0, 0, 80];
+blockedThinkRider.s.origin = [0, 0, 80];
+blockedThinkRider.mins = [-16, -16, -24];
+blockedThinkRider.maxs = [16, 16, 32];
+blockedThinkRider.groundentity = blockedThinkPusher;
+blockedThinkRider.groundentity_linkcount = blockedThinkPusher.linkcount;
+refreshEntitySpatialState(blockedThinkRider);
+linkGameEntity(blockedThinkRuntime, blockedThinkRider);
+
+let blockedThinkCount = 0;
+let blockedOtherClassname = "";
+blockedThinkPusher.think = () => {
+  blockedThinkCount += 1;
+};
+blockedThinkPusher.blocked = (_self, other) => {
+  blockedOtherClassname = other.classname;
+};
+G_RunEntity(blockedThinkPusher, blockedThinkRuntime);
+assertVec("SV_Physics_Pusher.blocked.origin", blockedThinkPusher.origin, [0, 0, 0]);
+assertEqual("SV_Physics_Pusher.blocked.nextthink", blockedThinkPusher.nextthink, 0.30000000000000004);
+assertEqual("SV_Physics_Pusher.blocked.think", blockedThinkCount, 0);
+assertEqual("SV_Physics_Pusher.blocked.other", blockedOtherClassname, "blocked-think-rider");
 
 const pushDirectRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 const pushDirectWorld = pushDirectRuntime.entities[0];

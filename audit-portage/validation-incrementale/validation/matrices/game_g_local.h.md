@@ -160,9 +160,9 @@
 | `Quake-2-master/game/g_local.h` | global | `exitintermission` | `packages/game/src/g_local.ts` | `level_locals_t.exitintermission` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `intermission_origin` | `packages/game/src/g_local.ts` | `level_locals_t.intermission_origin` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `intermission_angle` | `packages/game/src/g_local.ts` | `level_locals_t.intermission_angle` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `sight_client` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `sight_entity` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `sight_entity_framenum` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `sight_client` | `packages/game/src/g_local.ts` | `level_locals_t.sight_client` | Valide | A redecouper | Tests: `verify:g-local:header`, `verify:g-ai`, `verify:g-main`, `verify:g-save`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`, `typecheck`. |
+| `Quake-2-master/game/g_local.h` | global | `sight_entity` | `packages/game/src/g_local.ts` | `level_locals_t.sight_entity` | Valide | A redecouper | Tests: `verify:g-local:header`, `verify:g-ai`, `verify:g-main`, `verify:g-save`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`, `typecheck`. |
+| `Quake-2-master/game/g_local.h` | global | `sight_entity_framenum` | `packages/game/src/g_local.ts` | `level_locals_t.sight_entity_framenum` | Valide | A redecouper | Tests: `verify:g-local:header`, `verify:g-ai`, `verify:g-main`, `verify:g-save`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | global | `sound_entity` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `sound_entity_framenum` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `sound2_entity` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

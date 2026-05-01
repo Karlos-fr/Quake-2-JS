@@ -1706,9 +1706,6 @@ export function commander_body_drop(self: GameEntity, runtime: GameRuntime): voi
  *
  * Behavior:
  * - Spawns the commander's body decorative alias model with frame lerp enabled.
- *
- * Porting notes:
- * - The takedamage and godmode gameplay fields from the original are not modeled yet in the local runtime.
  */
 export function SP_monster_commander_body(self: GameEntity, runtime: GameRuntime): void {
   self.movetype = MOVETYPE_NONE;

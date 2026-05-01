@@ -360,6 +360,9 @@ assert.equal(levelLocals.changemap, null, "level_locals_t changemap default mism
 assert.equal(levelLocals.exitintermission, 0, "level_locals_t exitintermission default mismatch");
 assert.deepEqual(levelLocals.intermission_origin, [0, 0, 0], "level_locals_t intermission_origin default mismatch");
 assert.deepEqual(levelLocals.intermission_angle, [0, 0, 0], "level_locals_t intermission_angle default mismatch");
+assert.equal(levelLocals.sight_client, null, "level_locals_t sight_client default mismatch");
+assert.equal(levelLocals.sight_entity, null, "level_locals_t sight_entity default mismatch");
+assert.equal(levelLocals.sight_entity_framenum, 0, "level_locals_t sight_entity_framenum default mismatch");
 assert.equal(levelLocals.body_que, 0, "level_locals_t body_que mismatch");
 levelLocals.framenum = 42;
 levelLocals.time = 4.2;
@@ -371,6 +374,9 @@ levelLocals.changemap = "base3";
 levelLocals.exitintermission = 1;
 levelLocals.intermission_origin = [128, -64, 32];
 levelLocals.intermission_angle = [10, 90, 0];
+levelLocals.sight_client = entity;
+levelLocals.sight_entity = entity;
+levelLocals.sight_entity_framenum = 43;
 assert.equal(level.framenum, 42, "level_locals_t framenum field mismatch");
 assert.equal(level.time, 4.2, "level_locals_t time field mismatch");
 assert.equal(level.level_name, "Outer Base", "level_locals_t level_name field mismatch");
@@ -381,6 +387,9 @@ assert.equal(level.changemap, "base3", "level_locals_t changemap field mismatch"
 assert.equal(level.exitintermission, 1, "level_locals_t exitintermission field mismatch");
 assert.deepEqual(level.intermission_origin, [128, -64, 32], "level_locals_t intermission_origin field mismatch");
 assert.deepEqual(level.intermission_angle, [10, 90, 0], "level_locals_t intermission_angle field mismatch");
+assert.equal(level.sight_client, entity, "level_locals_t sight_client field mismatch");
+assert.equal(level.sight_entity, entity, "level_locals_t sight_entity field mismatch");
+assert.equal(level.sight_entity_framenum, 43, "level_locals_t sight_entity_framenum field mismatch");
 assert.equal(st.sky, null, "spawn_temp sky default mismatch");
 assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");
 assert.equal(FOFS("classname"), "classname", "FOFS selector mismatch");
@@ -394,6 +403,9 @@ assert.equal(LLOFS("changemap"), "changemap", "LLOFS changemap selector mismatch
 assert.equal(LLOFS("exitintermission"), "exitintermission", "LLOFS exitintermission selector mismatch");
 assert.equal(LLOFS("intermission_origin"), "intermission_origin", "LLOFS intermission_origin selector mismatch");
 assert.equal(LLOFS("intermission_angle"), "intermission_angle", "LLOFS intermission_angle selector mismatch");
+assert.equal(LLOFS("sight_client"), "sight_client", "LLOFS sight_client selector mismatch");
+assert.equal(LLOFS("sight_entity"), "sight_entity", "LLOFS sight_entity selector mismatch");
+assert.equal(LLOFS("sight_entity_framenum"), "sight_entity_framenum", "LLOFS sight_entity_framenum selector mismatch");
 assert.equal(world([entity]), entity, "world helper mismatch");
 assert.equal(ITEM_INDEX(shotgun!), 2, "ITEM_INDEX mismatch");
 

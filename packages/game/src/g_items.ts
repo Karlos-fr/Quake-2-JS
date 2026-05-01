@@ -937,6 +937,10 @@ export function Use_Invulnerability(ent: GameEntity, item: GameItemDefinition, r
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior: Consume one Silencer inventory slot, validate the selected item, then add the original 30 suppressed weapon-noise shots.
+ *
+ * Porting notes: The activation sound remains absent because the original `gi.sound` call is commented out.
  */
 export function Use_Silencer(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   const client = requireClient(ent, "Use_Silencer");

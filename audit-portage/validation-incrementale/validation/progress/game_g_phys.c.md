@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `SV_Push`, locale `temp`.
-- Prochain lot recommande: `SV_Physics_Pusher`.
+- Dernier lot valide: `SV_Physics_Pusher`.
+- Prochain lot recommande: `SV_Physics_None`.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -126,3 +126,14 @@
 - renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les origines/angles des entites, brush models, riders et scene apres mouvement ou rollback. Elles sont consommees via snapshots/refresh frames, `refresh-entity-sync` et l'adapter de scene; pas de particules, beams, dlights, images, frames ou areabits produits directement par `SV_Push`.
 - Correction: suppression du `linkGameEntity` TS dans la branche ou une entite riding est bloquee apres push mais peut rester a son ancienne position, pour respecter le C qui decrement seulement `pushed_p`. Ajout d'assertions ciblees pour l'arrondi `temp` positif/negatif, la conservation de l'ancienne position du rider, le `delta_angles[YAW]` conserve comme en C et l'absence de relink dans cette branche.
 - Tests lances: `npm run verify:g-phys` OK; `npm run verify:collision:phase5` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `SV_Physics_Pusher`
+
+- Lot traite: `SV_Physics_Pusher`.
+- Comparaison C/TS: le C ignore les `FL_TEAMSLAVE`, partage la pile `pushed` sur toute la team, deplace seulement les membres avec `velocity` ou `avelocity`, arrete au premier `SV_Push` bloque, verifie la borne `MAX_EDICTS`, bump les `nextthink` de toute la team en cas d'echec, appelle `part->blocked(part, obstacle)` si present, sinon execute `SV_RunThink` pour chaque membre en cas de succes. Le TS reprend ces branches avec `hasMovement`, une pile `pushed_t[]` partagee, `SV_Push(part, move, amove, runtime, pushed)`, bump de `nextthink`, callback `blocked(part, obstacle, runtime)` quand un obstacle existe, puis `SV_RunThink` sur la team au succes. La verification de depassement `MAX_EDICTS` n'est pas transposee telle quelle car la pile TS est dynamique, sans ecriture hors bornes.
+- Commentaire d'en-tete: present et conforme (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement).
+- Runtime: integre via `G_RunFrame` / `G_RunEntity` pour `MOVETYPE_PUSH` et `MOVETYPE_STOP`; le flux normal traite portes, plateformes et autres pushers, modifie `origin`/`angles`/`s.origin`, relink les entites et peut declencher callbacks `blocked`, `touch` et triggers via `SV_Push`.
+- apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace `SV_Physics_Pusher`. Les sorties attendues sont les positions/angles de brush models et les evenements indirects deja consommes par les snapshots/refresh frames/drains runtime.
+- renderer-three: pas de sortie renderer propre de type particules, beams, dlights, temp entities, images, frames, areabits ou camera; les sorties visibles attendues sont les origines/angles des entites et brush models deplaces, consommees par `buildBrushModelSnapshots`, `buildInterpolatedBrushModelSnapshots`, `CL_BuildRefreshFrame`, `createThreeRefreshEntitySync` et `gl-world-scene-adapter`.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour le no-op `FL_TEAMSLAVE`, le succes avec `SV_RunThink`, et l'echec avec rollback, bump de `nextthink` et callback `blocked`.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.

@@ -657,6 +657,25 @@
 - Commentaires d'en-tete: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; pas de fonction dans ce lot.
 - Tests apres correction: `npm run verify:g-spawn` OK avec assertions skill/deathmatch/hack command/nettoyage; `npm run verify:g-local:header` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `level_locals_t` avec champs `sight_client`, `sight_entity`, `sight_entity_framenum`.
+- Verdict: `Valide` pour les 3 champs apres comparaison H/TS et renforcement des preuves; aucune correction gameplay TS necessaire.
+- Source H comparee: `sight_client` est un `edict_t *` change une fois par frame pour les parties coop; `sight_entity` et `sight_entity_framenum` diffusent pendant une frame le monstre qui vient de voir un client.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `level_locals_t` porte les trois champs, `createLevelLocals` initialise les references a `null` et le framenum a `0`; commentaire de portage `level_locals_t` verifie.
+  - `packages/game/src/runtime.ts`: miroir runtime `sight_client`, `sight_entity`, `sight_entity_framenum` present avec les memes valeurs par defaut.
+  - `packages/game/src/g_ai.ts`: `AI_SetSightClient` parcourt les clients vivants/non `FL_NOTARGET`, `FoundTarget` pose `sight_entity`/`sight_entity_framenum`, et `FindTarget` consomme la fenetre `framenum - 1` comme le C.
+  - `packages/game/src/g_main.ts`: `G_RunFrame` appelle `AI_SetSightClient` puis synchronise le miroir runtime vers `level_locals_t`.
+  - `packages/game/src/g_save.ts`: `WriteLevel`/`ReadLevel` persistent et restaurent `sight_client`, `sight_entity` et `sight_entity_framenum`, puis resynchronisent le runtime.
+- Runtime: flux attendu branche depuis `G_RunFrame` vers `AI_SetSightClient`, puis par les routines monstres (`ai_stand`/`ai_walk`/`ai_turn` -> `FindTarget`, `FoundTarget`); les sauvegardes level conservent les references edict et le framenum.
+- apps/web: pas de reference directe attendue dans `apps/web`; l'integration navigateur doit passer par le host full-game/local qui avance le runtime serveur/game et expose ensuite snapshots/HUD/sons. `verify:full-game:server-host` et `verify:web-render-order` OK, aucune logique parallele masquante detectee pour ces champs.
+- renderer-three: aucune consommation directe attendue. Ces champs pilotent l'acquisition AI; ils ne produisent pas eux-memes modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene. Les sorties visibles eventuelles passent ensuite par les entites/snapshots runtime; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `level_locals_t` verifie; `AI_SetSightClient`, `FoundTarget`, `FindTarget`, `G_RunFrame`, `WriteLevel` et `ReadLevel` avaient deja des commentaires d'en-tete verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defauts, mutation et `LLOFS` pour les trois champs.
+  - `scripts/verify/quake2-g-main.ts`: assertions miroir `G_RunFrame -> level_locals_t`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration et miroir runtime des trois champs.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -690,7 +709,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `level_locals_t.sight_client`, puis `sight_entity` et `sight_entity_framenum` si le lot reste petit.
+- Continuer avec `level_locals_t.sound_entity`, `sound_entity_framenum`, `sound2_entity`, `sound2_entity_framenum` si le lot reste petit.
 
 ## Blocages
 

@@ -130,8 +130,8 @@
 | `Quake-2-master/game/g_func.c` | function | `func_timer_use` | `packages/game/src/g_func.ts` | `func_timer_use` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_func.c` | function | `func_timer_think` | `packages/game/src/g_func.ts` | `func_timer_think` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_func.c` | function | `SP_func_timer` | `packages/game/src/g_func.ts` | `SP_func_timer` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_func.c` | function | `func_conveyor_use` | `packages/game/src/g_func.ts` | `func_conveyor_use` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_func.c` | function | `SP_func_conveyor` | `packages/game/src/g_func.ts` | `SP_func_conveyor` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_func.c` | function | `func_conveyor_use` | `packages/game/src/g_func.ts` | `func_conveyor_use` | Valide | A redecouper | C g_func.c:1825-1840 == TS g_func.ts:2026-2037 apres ajout header; harness couvre START_ON on/off, count restore/clear et TOGGLE conserve; npm run verify:g-func/typecheck/verify:g-spawn/verify:local-gameplay-sync/verify:full-game:three-renderer/verify:web-render-order OK. |
+| `Quake-2-master/game/g_func.c` | function | `SP_func_conveyor` | `packages/game/src/g_func.ts` | `SP_func_conveyor` | Valide | A redecouper | C g_func.c:1842-1858 == TS g_func.ts:2039-2054 apres ajout header; harness couvre default speed, START_ON, use callback, SOLID_BSP, setmodel/link; runtime via g_spawn/ED_CallSpawn et triggers/G_UseTargets, apps/web consomme runtime, renderer-three consomme brush snapshots. |
 | `Quake-2-master/game/g_func.c` | macro | `SECRET_ALWAYS_SHOOT` | `packages/game/src/g_func.ts` | `SECRET_ALWAYS_SHOOT` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_func.c` | macro | `SECRET_1ST_LEFT` | `packages/game/src/g_func.ts` | `SECRET_1ST_LEFT` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_func.c` | macro | `SECRET_1ST_DOWN` | `packages/game/src/g_func.ts` | `SECRET_1ST_DOWN` | A verifier | A redecouper |  |

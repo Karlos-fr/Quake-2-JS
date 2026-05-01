@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: convoyeur brush `func_conveyor_use` et `SP_func_conveyor`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1819-1858` avec `packages/game/src/g_func.ts:2026-2054` apres ajout des commentaires d'en-tete.
+- Correction appliquee: ajout des commentaires d'en-tete `func_conveyor_use` et `SP_func_conveyor` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `func_conveyor_use` conserve le toggle START_ON, `speed = 0` a l'arret, `speed = count` au redemarrage, clear du flag START_ON, set du flag START_ON, et clear de `count` hors TOGGLE; `SP_func_conveyor` conserve default `speed = 100`, stockage `count` et stop initial hors START_ON, callback `use`, `SOLID_BSP`, setmodel et link runtime.
+- Branchement: `SP_func_conveyor` est referencee par `packages/game/src/g_spawn.ts` pour `func_conveyor`, appelee par `ED_CallSpawn`/`SpawnEntities`; `func_conveyor_use` est atteignable via triggers/G_UseTargets. Le mouvement courant du brush est porte par les champs runtime du conveyor et par le flux physique/snapshots normal.
+- Integration: aucune logique parallele `func_conveyor` dans `apps/web`; le navigateur consomme les etats runtime local/full-game et les snapshots. `packages/renderer-three` ne porte pas la logique gameplay du convoyeur; il consomme les sorties visibles attendues via les brush models/scene issus des snapshots, donc pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:g-spawn` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: timer de targets `func_timer_think`, `func_timer_use`, doublon matriciel `func_timer_think` et spawn `SP_func_timer`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1771-1816` avec `packages/game/src/g_func.ts:1950-2024` apres ajout des commentaires d'en-tete.
 - Correction appliquee: ajout des commentaires d'en-tete `func_timer_think`, `func_timer_use` et `SP_func_timer` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
@@ -310,7 +318,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `func_conveyor_use`, puis `SP_func_conveyor` si le lot reste petit.
+- Continuer avec `SECRET_ALWAYS_SHOOT`, `SECRET_1ST_LEFT` et `SECRET_1ST_DOWN`, puis `door_secret_move1` si le lot reste petit.
 
 ## Blocages
 

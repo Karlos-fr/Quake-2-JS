@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Use_Silencer`.
+
+Validation Silencer du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Use_Silencer` conserve le comportement C: decremente l'inventaire `ITEM_INDEX(item)`, appelle `ValidateSelectedItem`, puis ajoute 30 a `client->silencer_shots`. L'appel son d'activation reste absent comme dans le C, ou `gi.sound` est commente. L'entree `item_silencer` de `itemlist` est alignee (`Pickup_Powerup`, `Use_Silencer`, `Drop_General`, pickup sound `items/pkup.wav`, modele `models/items/silencer/tris.md2`, `EF_ROTATE`, icone `p_silencer`, pickup name `Silencer`, width 2, quantity 60, flags `IT_POWERUP`, precache vide). Header TS complete avec `Behavior` et note de portage sur le son commente.
+
+Runtime branche via `Cmd_Use_f`/`Cmd_InvUse_f`, le dispatch `g_cmds.ts`, `callItemUse`, `Pickup_Powerup`/`Touch_Item`, l'auto-use deathmatch `DF_INSTANT_ITEMS` et l'entree `item_silencer`; l'effet aval est consomme dans `p_weapon.ts` par `PlayerNoise` qui decremente `silencer_shots` et supprime le bruit d'arme, et par les muzzle flashes qui ajoutent `MZ_SILENCED` tant que des tirs silencieux restent. `apps/web` doit consommer ce flux par le runtime local/full-game, les commandes/inventaire, les sons pickup, snapshots et render loop; aucune logique parallele Silencer detectee. `renderer-three` doit consommer les sorties visibles attendues: item MD2 generique pour pickup/drop/respawn et muzzle/temp effects generiques deja marques `MZ_SILENCED` cote runtime/client; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyUseSilencerShots` couvre la consommation d'inventaire, l'ajout de 30 tirs, l'empilement a 60 sur deux usages, `ValidateSelectedItem` et l'absence du son d'activation commente. Tests lances: `npm run verify:g-items`, `npm run verify:p-weapon`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck` OK.
+
 - `Use_Invulnerability`.
 
 Validation Invulnerability du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Use_Invulnerability` conserve le comportement C: decremente l'inventaire `ITEM_INDEX(item)`, appelle `ValidateSelectedItem`, puis demarre ou prolonge `invincible_framenum` de 300 frames. L'appel `gi.sound` d'activation est porte par `emitGameSound(runtime, ent, "items/protect.wav")`. L'entree `item_invulnerability` de `itemlist` est alignee (`Pickup_Powerup`, `Use_Invulnerability`, `Drop_General`, pickup sound `items/pkup.wav`, modele `models/items/invulner/tris.md2`, `EF_ROTATE`, icone `p_invulnerability`, pickup name `Invulnerability`, width 2, quantity 300, flags `IT_POWERUP`, precache `items/protect.wav items/protect2.wav items/protect4.wav`). Header TS complete avec `Behavior` et note de portage sur la file de sons runtime.
@@ -277,4 +285,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Use_Silencer`.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Key`.

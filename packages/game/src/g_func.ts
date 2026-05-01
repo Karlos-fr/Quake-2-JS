@@ -2023,6 +2023,16 @@ export function SP_func_timer(self: GameEntity, runtime: GameRuntime): void {
   self.svflags = SVF_NOCLIENT;
 }
 
+/**
+ * Original name: func_conveyor_use
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Toggles a conveyor between stored speed and stopped state, then clears the
+ *   stored speed for one-shot conveyors that do not have TOGGLE set.
+ */
 export function func_conveyor_use(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, _runtime: GameRuntime): void {
   if ((self.spawnflags & 1) !== 0) {
     self.speed = 0;
@@ -2036,6 +2046,20 @@ export function func_conveyor_use(self: GameEntity, _other: GameEntity | null, _
   }
 }
 
+/**
+ * Original name: SP_func_conveyor
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Initializes a stationary BSP conveyor, stores the speed when not START_ON,
+ *   installs the use callback, assigns the inline model, and links it.
+ *
+ * Porting notes:
+ * - `setGameEntityModel` and `linkGameEntity` adapt `gi.setmodel` and
+ *   `gi.linkentity` to the TypeScript runtime.
+ */
 export function SP_func_conveyor(self: GameEntity, runtime: GameRuntime): void {
   if (!self.speed) {
     self.speed = 100;

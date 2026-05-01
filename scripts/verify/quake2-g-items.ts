@@ -56,6 +56,7 @@ import {
   Use_Invulnerability,
   Use_PowerArmor,
   Use_Quad,
+  Use_Silencer,
   SVF_NOCLIENT,
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -104,6 +105,7 @@ function main(): void {
   verifyUseBreatherTimeout();
   verifyUseEnvirosuitTimeout();
   verifyUseInvulnerabilityTimeout();
+  verifyUseSilencerShots();
   verifyItemLookupHelpers();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
@@ -1309,6 +1311,26 @@ function verifyUseInvulnerabilityTimeout(): void {
 
   assertNumber(player.client!.invincible_framenum, 800, "Use_Invulnerability extends an active Invulnerability by the same timeout");
   assertNumber(player.client!.pers.selected_item, -1, "Use_Invulnerability revalidates selected item after consuming the last Invulnerability");
+}
+
+function verifyUseSilencerShots(): void {
+  const silencer = requireItem("Silencer");
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  player.client!.pers.inventory[silencer.index] = 2;
+  player.client!.pers.selected_item = silencer.index;
+
+  Use_Silencer(player, silencer, runtime);
+
+  assertNumber(player.client!.pers.inventory[silencer.index], 1, "Use_Silencer consumes one Silencer inventory slot");
+  assertNumber(player.client!.silencer_shots, 30, "Use_Silencer grants the original 30 silenced shots");
+  assertNumber(player.client!.pers.selected_item, silencer.index, "Use_Silencer keeps a still-owned Silencer selected");
+  assertNumber(drainGameSoundEvents(runtime).length, 0, "Use_Silencer preserves the original commented-out activation sound");
+
+  Use_Silencer(player, silencer, runtime);
+
+  assertNumber(player.client!.silencer_shots, 60, "Use_Silencer stacks another 30 silenced shots on repeated use");
+  assertNumber(player.client!.pers.selected_item, -1, "Use_Silencer revalidates selected item after consuming the last Silencer");
 }
 
 function verifyCoopPowerCubeSpawnFlags(): void {

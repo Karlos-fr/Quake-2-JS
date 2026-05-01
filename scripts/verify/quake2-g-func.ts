@@ -897,11 +897,39 @@ assert.equal(targetedPlat.moveinfo.distance, 12, "SP_func_plat targeted distance
 assert.deepEqual(targetedPlat.moveinfo.end_origin, [0, 0, -12], "SP_func_plat targeted end origin mismatch");
 
 const conveyor = entity("func_conveyor", 5, { speed: "120" });
+conveyor.model = "*5";
 SP_func_conveyor(conveyor, runtime);
 assert.equal(conveyor.speed, 0, "SP_func_conveyor should start stopped without START_ON");
 assert.equal(conveyor.count, 120, "SP_func_conveyor saved speed mismatch");
+assert.equal(conveyor.use, func_conveyor_use, "SP_func_conveyor use callback mismatch");
+assert.equal(conveyor.solid, SOLID_BSP, "SP_func_conveyor solid mismatch");
+assert.equal(runtime.assets.modelPaths[conveyor.s.modelindex - 1], "*5", "SP_func_conveyor inline model mismatch");
 func_conveyor_use(conveyor, null, null, runtime);
 assert.equal(conveyor.speed, 120, "func_conveyor_use should restore speed");
+assert.equal((conveyor.spawnflags & 1) !== 0, true, "func_conveyor_use should set START_ON");
+assert.equal(conveyor.count, 0, "func_conveyor_use should clear count without TOGGLE");
+func_conveyor_use(conveyor, null, null, runtime);
+assert.equal(conveyor.speed, 0, "func_conveyor_use should stop active conveyor");
+assert.equal((conveyor.spawnflags & 1) !== 0, false, "func_conveyor_use should clear START_ON");
+
+const defaultConveyor = entity("func_conveyor", 135, {});
+SP_func_conveyor(defaultConveyor, runtime);
+assert.equal(defaultConveyor.speed, 0, "SP_func_conveyor default should start stopped");
+assert.equal(defaultConveyor.count, 100, "SP_func_conveyor default stored speed mismatch");
+
+const startOnConveyor = entity("func_conveyor", 136, { spawnflags: "1", speed: "80" });
+SP_func_conveyor(startOnConveyor, runtime);
+assert.equal(startOnConveyor.speed, 80, "SP_func_conveyor START_ON speed mismatch");
+assert.equal(startOnConveyor.count, 0, "SP_func_conveyor START_ON should not store count");
+
+const toggleConveyor = entity("func_conveyor", 137, { spawnflags: "2", speed: "90" });
+SP_func_conveyor(toggleConveyor, runtime);
+func_conveyor_use(toggleConveyor, null, null, runtime);
+assert.equal(toggleConveyor.speed, 90, "func_conveyor_use TOGGLE restore mismatch");
+assert.equal(toggleConveyor.count, 90, "func_conveyor_use TOGGLE should retain count");
+func_conveyor_use(toggleConveyor, null, null, runtime);
+assert.equal(toggleConveyor.speed, 0, "func_conveyor_use TOGGLE stop mismatch");
+assert.equal(toggleConveyor.count, 90, "func_conveyor_use TOGGLE should keep count after stop");
 
 const timerActivator = entity("activator", 6);
 const timer = entity("func_timer", 7, { wait: "1", random: "0", delay: "0.5", target: "timer_delayed_target" });
