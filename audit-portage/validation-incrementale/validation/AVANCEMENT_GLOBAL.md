@@ -47,7 +47,7 @@ Statuts possibles : `A demarrer`, `En cours`, `Bloque`, `Partiel`, `Termine`, `A
 | `Quake-2-master/game/g_main.c` | [`game_g_main.c.md`](matrices/game_g_main.c.md) | [`game_g_main.c.md`](progress/game_g_main.c.md) | Partiel | 75 | 37 | 8 | 0 | 0 | 1 | Continuer avec le prochain symbole `g_main.c` dans la matrice: `ReadLevel`. | Haute |
 | `Quake-2-master/game/g_misc.c` | [`game_g_misc.c.md`](matrices/game_g_misc.c.md) | [`game_g_misc.c.md`](progress/game_g_misc.c.md) | En cours | 119 | 45 | 0 | 0 | 0 | 0 | `func_explosive_explode` avec les locaux associes `count` et `mass` si le lot reste coherent. | Haute |
 | `Quake-2-master/game/g_monster.c` | [`game_g_monster.c.md`](matrices/game_g_monster.c.md) | [`game_g_monster.c.md`](progress/game_g_monster.c.md) | En cours | 45 | 11 | 0 | 0 | 0 | 0 | `M_CheckGround` avec ses locales `point` et `trace` si le lot reste petit | Haute |
-| `Quake-2-master/game/g_phys.c` | [`game_g_phys.c.md`](matrices/game_g_phys.c.md) | [`game_g_phys.c.md`](progress/game_g_phys.c.md) | En cours | 64 | 4 | 0 | 0 | 0 | 0 | `SV_CheckVelocity` avec sa locale `i`. | Haute |
+| `Quake-2-master/game/g_phys.c` | [`game_g_phys.c.md`](matrices/game_g_phys.c.md) | [`game_g_phys.c.md`](progress/game_g_phys.c.md) | En cours | 64 | 6 | 0 | 0 | 0 | 0 | `SV_RunThink` avec sa locale `thinktime`. | Haute |
 | `Quake-2-master/game/g_save.c` | [`game_g_save.c.md`](matrices/game_g_save.c.md) |  | A demarrer | 52 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/g_spawn.c` | [`game_g_spawn.c.md`](matrices/game_g_spawn.c.md) |  | A demarrer | 135 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/g_svcmds.c` | [`game_g_svcmds.c.md`](matrices/game_g_svcmds.c.md) |  | A demarrer | 29 | 0 | 0 | 0 | 0 | 0 |  | Haute |
