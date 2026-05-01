@@ -445,7 +445,7 @@ function createPage(root: HTMLElement): FullGamePage {
     throw new Error("Canvas 2D indisponible.");
   }
 
-  shell.append(gameViewport, canvas, status, log);
+  shell.append(gameViewport, canvas, log);
   root.append(shell);
   canvas.focus();
 
