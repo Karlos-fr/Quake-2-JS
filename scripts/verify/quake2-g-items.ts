@@ -34,6 +34,7 @@ import {
   Pickup_Adrenaline,
   Pickup_AncientHead,
   Pickup_Bandolier,
+  Pickup_Pack,
   Pickup_Armor,
   Pickup_Powerup,
   PowerArmorType,
@@ -78,6 +79,7 @@ function main(): void {
   verifyPickupAdrenalineHealthAndRespawn();
   verifyPickupAncientHeadMaxHealthAndRespawn();
   verifyPickupBandolierAmmoCapsAndRespawn();
+  verifyPickupPackAmmoCapsAndRespawn();
   verifyTouchRejectedPickupStillUsesTargets();
   verifyTouchAmmoPickupUsesItemPath();
   verifyTouchWeaponPickupUsesWeaponPath();
@@ -518,6 +520,102 @@ function verifyPickupBandolierAmmoCapsAndRespawn(): void {
 
   assertBoolean(Pickup_Bandolier(droppedBandolier, droppedPlayer, droppedRuntime), true, "Pickup_Bandolier accepts dropped bandolier");
   assertNumber(droppedBandolier.nextthink, 0, "Dropped Bandolier does not schedule map-item respawn");
+}
+
+function verifyPickupPackAmmoCapsAndRespawn(): void {
+  const singlePlayerRuntime = createHarnessRuntime();
+  const singlePlayerPack = spawnFreeableEntity(singlePlayerRuntime);
+  const singlePlayer = createPlayer(singlePlayerRuntime);
+  const pack = requireItem("Ammo Pack");
+  const bullets = requireItem("Bullets");
+  const shells = requireItem("Shells");
+  const cells = requireItem("Cells");
+  const grenades = requireItem("Grenades");
+  const rockets = requireItem("Rockets");
+  const slugs = requireItem("Slugs");
+
+  singlePlayerPack.item = pack;
+  singlePlayer.client!.pers.max_bullets = 290;
+  singlePlayer.client!.pers.max_shells = 195;
+  singlePlayer.client!.pers.max_rockets = 98;
+  singlePlayer.client!.pers.max_grenades = 96;
+  singlePlayer.client!.pers.max_cells = 275;
+  singlePlayer.client!.pers.max_slugs = 95;
+  singlePlayer.client!.pers.inventory[bullets.index] = 280;
+  singlePlayer.client!.pers.inventory[shells.index] = 193;
+  singlePlayer.client!.pers.inventory[cells.index] = 260;
+  singlePlayer.client!.pers.inventory[grenades.index] = 98;
+  singlePlayer.client!.pers.inventory[rockets.index] = 96;
+  singlePlayer.client!.pers.inventory[slugs.index] = 92;
+
+  assertBoolean(Pickup_Pack(singlePlayerPack, singlePlayer, singlePlayerRuntime), true, "Pickup_Pack accepts the map ammo pack");
+  assertNumber(singlePlayer.client!.pers.max_bullets, 300, "Pickup_Pack raises max_bullets to the C minimum");
+  assertNumber(singlePlayer.client!.pers.max_shells, 200, "Pickup_Pack raises max_shells to the C minimum");
+  assertNumber(singlePlayer.client!.pers.max_rockets, 100, "Pickup_Pack raises max_rockets to the C minimum");
+  assertNumber(singlePlayer.client!.pers.max_grenades, 100, "Pickup_Pack raises max_grenades to the C minimum");
+  assertNumber(singlePlayer.client!.pers.max_cells, 300, "Pickup_Pack raises max_cells to the C minimum");
+  assertNumber(singlePlayer.client!.pers.max_slugs, 100, "Pickup_Pack raises max_slugs to the C minimum");
+  assertNumber(singlePlayer.client!.pers.inventory[bullets.index], 300, "Pickup_Pack grants Bullets quantity and clamps to max_bullets");
+  assertNumber(singlePlayer.client!.pers.inventory[shells.index], 200, "Pickup_Pack grants Shells quantity and clamps to max_shells");
+  assertNumber(singlePlayer.client!.pers.inventory[cells.index], 300, "Pickup_Pack grants Cells quantity and clamps to max_cells");
+  assertNumber(singlePlayer.client!.pers.inventory[grenades.index], 100, "Pickup_Pack grants Grenades quantity and clamps to max_grenades");
+  assertNumber(singlePlayer.client!.pers.inventory[rockets.index], 100, "Pickup_Pack grants Rockets quantity and clamps to max_rockets");
+  assertNumber(singlePlayer.client!.pers.inventory[slugs.index], 100, "Pickup_Pack grants Slugs quantity and clamps to max_slugs");
+  assertNumber(singlePlayerPack.nextthink, 0, "Pickup_Pack does not respawn single-player ammo pack");
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  deathmatchRuntime.time = 13;
+  const deathmatchPack = spawnFreeableEntity(deathmatchRuntime);
+  const deathmatchPlayer = createPlayer(deathmatchRuntime);
+
+  deathmatchPack.item = pack;
+  deathmatchPack.touch = Touch_Item;
+  deathmatchPack.solid = SOLID_TRIGGER;
+  deathmatchPlayer.client!.pers.max_bullets = 350;
+  deathmatchPlayer.client!.pers.max_shells = 225;
+  deathmatchPlayer.client!.pers.max_rockets = 125;
+  deathmatchPlayer.client!.pers.max_grenades = 125;
+  deathmatchPlayer.client!.pers.max_cells = 350;
+  deathmatchPlayer.client!.pers.max_slugs = 125;
+  deathmatchPlayer.client!.pers.inventory[bullets.index] = 1;
+  deathmatchPlayer.client!.pers.inventory[shells.index] = 2;
+  deathmatchPlayer.client!.pers.inventory[cells.index] = 3;
+  deathmatchPlayer.client!.pers.inventory[grenades.index] = 4;
+  deathmatchPlayer.client!.pers.inventory[rockets.index] = 5;
+  deathmatchPlayer.client!.pers.inventory[slugs.index] = 6;
+  linkGameEntity(deathmatchRuntime, deathmatchPack);
+
+  Touch_Item(deathmatchPack, deathmatchPlayer, deathmatchRuntime);
+
+  assertNumber(deathmatchPlayer.client!.pers.max_bullets, 350, "Pickup_Pack preserves higher max_bullets");
+  assertNumber(deathmatchPlayer.client!.pers.max_shells, 225, "Pickup_Pack preserves higher max_shells");
+  assertNumber(deathmatchPlayer.client!.pers.max_rockets, 125, "Pickup_Pack preserves higher max_rockets");
+  assertNumber(deathmatchPlayer.client!.pers.max_grenades, 125, "Pickup_Pack preserves higher max_grenades");
+  assertNumber(deathmatchPlayer.client!.pers.max_cells, 350, "Pickup_Pack preserves higher max_cells");
+  assertNumber(deathmatchPlayer.client!.pers.max_slugs, 125, "Pickup_Pack preserves higher max_slugs");
+  assertNumber(deathmatchPlayer.client!.pers.inventory[bullets.index], 51, "Touch_Item routes Pack bullet grant through FindItem quantity");
+  assertNumber(deathmatchPlayer.client!.pers.inventory[shells.index], 12, "Touch_Item routes Pack shell grant through FindItem quantity");
+  assertNumber(deathmatchPlayer.client!.pers.inventory[cells.index], 53, "Touch_Item routes Pack cell grant through FindItem quantity");
+  assertNumber(deathmatchPlayer.client!.pers.inventory[grenades.index], 9, "Touch_Item routes Pack grenade grant through FindItem quantity");
+  assertNumber(deathmatchPlayer.client!.pers.inventory[rockets.index], 10, "Touch_Item routes Pack rocket grant through FindItem quantity");
+  assertNumber(deathmatchPlayer.client!.pers.inventory[slugs.index], 16, "Touch_Item routes Pack slug grant through FindItem quantity");
+  assertNumber(deathmatchPack.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "Deathmatch Pack is hidden for respawn");
+  assertNumber(deathmatchPack.solid, SOLID_NOT, "Deathmatch Pack is made nonsolid while respawning");
+  assertNumber(deathmatchPack.nextthink, 193, "Deathmatch Pack uses item quantity as respawn delay");
+  assertNumber(deathmatchPlayer.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + pack.index, "Touch_Item reports the Ammo Pack pickup string");
+  assertBoolean(drainGameSoundEvents(deathmatchRuntime).some((event) => event.soundPath === "items/pkup.wav"), true, "Touch_Item queues the Ammo Pack pickup sound");
+
+  const droppedRuntime = createHarnessRuntime();
+  droppedRuntime.deathmatch = true;
+  const droppedPack = spawnFreeableEntity(droppedRuntime);
+  const droppedPlayer = createPlayer(droppedRuntime);
+
+  droppedPack.item = pack;
+  droppedPack.spawnflags = DROPPED_ITEM;
+
+  assertBoolean(Pickup_Pack(droppedPack, droppedPlayer, droppedRuntime), true, "Pickup_Pack accepts dropped ammo pack");
+  assertNumber(droppedPack.nextthink, 0, "Dropped Pack does not schedule map-item respawn");
 }
 
 function verifyTouchRejectedPickupStillUsesTargets(): void {

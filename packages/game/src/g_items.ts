@@ -832,6 +832,12 @@ export function Pickup_Bandolier(ent: GameEntity, other: GameEntity, runtime: Ga
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Raises all ammo capacities to the original ammo-pack minimums,
+ * grants the C table quantities for Bullets, Shells, Cells, Grenades,
+ * Rockets and Slugs, then schedules map-item deathmatch respawn.
+ * Porting notes: The repeated C `item` and `index` locals are factored
+ * through `grantAmmoPickup`, which still resolves each pickup name with
+ * `FindItem`, uses `ITEM_INDEX`, and clamps against the matching ammo max.
  */
 export function Pickup_Pack(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   const client = requireClient(other, "Pickup_Pack");

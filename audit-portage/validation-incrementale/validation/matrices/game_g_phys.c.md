@@ -35,7 +35,7 @@
 | `Quake-2-master/game/g_phys.c` | global | `end` | `packages/game/src/g_phys.ts` | `end` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `time_left` | `packages/game/src/g_phys.ts` | `time_left` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `blocked` | `packages/game/src/g_phys.ts` | `blocked` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | function | `SV_AddGravity` | `packages/game/src/g_phys.ts` | `SV_AddGravity` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | function | `SV_AddGravity` | `packages/game/src/g_phys.ts` | `SV_AddGravity` | Valide | A redecouper | Correction: utilise `runtime.gravity`/`sv_gravity` au lieu de la constante 800 dans les flux runtime; `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`. |
 | `Quake-2-master/game/g_phys.c` | function | `SV_PushEntity` | `packages/game/src/g_phys.ts` | `SV_PushEntity` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | A verifier | A redecouper |  |

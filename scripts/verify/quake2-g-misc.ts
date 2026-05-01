@@ -10,7 +10,7 @@
  */
 
 import { strict as assert } from "node:assert";
-import { CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, MASK_MONSTERSOLID, RF_FRAMELERP, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t, type trace_t } from "../../packages/qcommon/src/index.js";
+import { CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, MASK_MONSTERSOLID, RF_FRAMELERP, RF_TRANSLUCENT, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t, type trace_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
@@ -31,6 +31,7 @@ import {
   MOVETYPE_TOSS,
   SP_info_notnull,
   SP_info_null,
+  SP_misc_blackhole,
   SP_misc_explobox,
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
@@ -58,6 +59,8 @@ import {
   gib_think,
   gib_touch,
   linkGameEntity,
+  misc_blackhole_think,
+  misc_blackhole_use,
   path_corner_touch,
   point_combat_touch,
   runPendingThinks,
@@ -88,6 +91,7 @@ function main(): void {
   verifyTargetStringMapsFrames();
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
+  verifyMiscBlackholeSpawnsLoopsAndFreesOnUse();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
   verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities();
@@ -602,6 +606,47 @@ function verifyMiscExploboxSpawnsShootableBarrel(): void {
   SP_misc_explobox(deathmatchBarrel, deathmatchRuntime);
   assert.equal(deathmatchBarrel.inuse, false, "misc_explobox must be auto-removed in deathmatch");
   assert.equal(deathmatchBarrel.linked, false, "deathmatch misc_explobox must not stay linked");
+}
+
+function verifyMiscBlackholeSpawnsLoopsAndFreesOnUse(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 10;
+
+  const blackhole = spawnFreeableEntity(runtime);
+  blackhole.classname = "misc_blackhole";
+  blackhole.origin = [8, 16, 24];
+  blackhole.s.origin = [8, 16, 24];
+
+  SP_misc_blackhole(blackhole, runtime);
+
+  assert.equal(blackhole.movetype, MOVETYPE_NONE, "misc_blackhole must be stationary");
+  assert.equal(blackhole.solid, SOLID_NOT, "misc_blackhole must be non-solid");
+  assert.deepEqual(blackhole.mins, [-64, -64, 0], "misc_blackhole mins mismatch");
+  assert.deepEqual(blackhole.maxs, [64, 64, 8], "misc_blackhole maxs mismatch");
+  assert.equal(runtime.assets.modelPaths[blackhole.s.modelindex - 1], "models/objects/black/tris.md2", "misc_blackhole modelindex must resolve to black/tris.md2");
+  assert.equal(blackhole.s.renderfx, RF_TRANSLUCENT, "misc_blackhole must be translucent");
+  assert.equal(blackhole.use, misc_blackhole_use, "misc_blackhole must install misc_blackhole_use");
+  assert.equal(blackhole.think, misc_blackhole_think, "misc_blackhole must install misc_blackhole_think");
+  assert.equal(blackhole.nextthink, runtime.time + 2 * FRAMETIME, "misc_blackhole must schedule first think two frames later");
+  assert.equal(blackhole.linked, true, "misc_blackhole must be linked for snapshots");
+
+  runPendingThinks(runtime, runtime.time + 2 * FRAMETIME);
+  assert.equal(blackhole.s.frame, 1, "misc_blackhole think must advance frame while below 19");
+  assert.equal(blackhole.nextthink, runtime.time + FRAMETIME, "misc_blackhole think must reschedule every frame");
+
+  blackhole.s.frame = 18;
+  runPendingThinks(runtime, runtime.time + FRAMETIME);
+  assert.equal(blackhole.s.frame, 0, "misc_blackhole think must wrap frame 18 to 0");
+  assert.equal(blackhole.think, misc_blackhole_think, "misc_blackhole wrap must keep the think callback");
+
+  const dispatch = spawnFreeableEntity(runtime);
+  dispatch.classname = "misc_blackhole";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(dispatch.use, misc_blackhole_use, "ED_CallSpawn must dispatch misc_blackhole to SP_misc_blackhole");
+
+  useGameEntity(runtime, dispatch, null, blackhole);
+  assert.equal(dispatch.inuse, false, "misc_blackhole_use must free the blackhole entity");
+  assert.equal(drainGameTempEntityEvents(runtime).length, 0, "misc_blackhole_use must keep the source-commented temp entity omitted");
 }
 
 function verifyBarrelDelaySchedulesDelayedExplosion(): void {

@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: resolution et activation de train `func_train_find`, locale matricielle `ent`, `train_use` et doublon d'appel `train_next`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1601-1652` avec `packages/game/src/g_func.ts:1763-1800` apres ajout des commentaires d'en-tete.
+- Correction appliquee: ajout des commentaires d'en-tete `func_train_find` et `train_use` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee ajoutee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: warnings `train_find: no target` et `target ... not found`, locale `ent` issue de `G_PickTarget`, transfert `self.target = ent.target`, positionnement `origin = ent.s.origin - mins`, link runtime, auto-start des trains sans `targetname`, conservation des trains cibles en attente, affectation `activator`, retour running non-toggle, stop toggle avec clear `TRAIN_START_ON`/velocity/nextthink, reprise via `train_resume` si `target_ent` existe, et appel `train_next` sinon.
+- Branchement: `func_train_find` est programme par `SP_func_train` apres spawn `func_train` via `g_spawn.ts`/`ED_CallSpawn`, puis execute par `G_RunFrame`/`G_RunEntity`/`SV_RunThink`; `train_use` est le callback `use` de `SP_func_train`, appele par triggers/G_UseTargets et rejoint `train_resume` ou `train_next`.
+- Integration: aucune logique parallele `func_train` dans `apps/web`; le navigateur consomme le runtime local/full-game, les sons, snapshots et refresh frames. `packages/renderer-three` ne porte pas la logique gameplay; les sorties visibles attendues sont les brush models/origines des trains dans les refresh frames et la scene, couvertes par le flux Three.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: locales matricielles restantes de `train_next` (`ent`, `dest`, `first`), puis `train_resume` et sa locale `ent`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1529-1599` avec `packages/game/src/g_func.ts:1697-1761`.
 - Correction appliquee: ajout du commentaire d'en-tete de `train_resume` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee directe ajoutee dans `scripts/verify/quake2-g-func.ts`.
@@ -278,7 +286,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `func_train_find` et sa locale `ent`, puis `train_use` avec l'appel `train_next` doublon si le lot reste petit.
+- Continuer avec `SP_func_train`, puis `trigger_elevator_use` avec la locale `target` si le lot reste petit.
 
 ## Blocages
 

@@ -53,9 +53,9 @@
 | `Quake-2-master/game/g_items.c` | function | `Pickup_Bandolier` | `packages/game/src/g_items.ts` | `Pickup_Bandolier` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_items.c` | global | `item` | `packages/game/src/g_items.ts` | `item` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_items.c` | global | `index` | `packages/game/src/g_items.ts` | `index` | Valide | A redecouper | Locale de `Use_PowerArmor` portee via `const index = ITEM_INDEX(cells)` apres `FindItem("cells")`; usage conforme pour tester l'inventaire cells avant activation. Couvert par `verify:g-items` et sonde directe sans/avec cells. |
-| `Quake-2-master/game/g_items.c` | function | `Pickup_Pack` | `packages/game/src/g_items.ts` | `Pickup_Pack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_items.c` | global | `item` | `packages/game/src/g_items.ts` | `item` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_items.c` | global | `index` | `packages/game/src/g_items.ts` | `index` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_items.c` | function | `Pickup_Pack` | `packages/game/src/g_items.ts` | `Pickup_Pack` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_items.c` | global | `item` | `packages/game/src/g_items.ts` | `item` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_items.c` | global | `index` | `packages/game/src/g_items.ts` | `index` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_items.c` | function | `Use_Quad` | `packages/game/src/g_items.ts` | `Use_Quad` | Valide | A redecouper | Corps C compare: decrement inventaire, validation selection, branche `quad_drop_timeout_hack` sinon 300, extension ou initialisation de `quad_framenum`, son d'activation. Correction commentaire dans `packages/game/src/g_items.ts`; test cible `verifyUseQuadTimeoutAndDroppedHack` ajoute. |
 | `Quake-2-master/game/g_items.c` | global | `timeout` | `packages/game/src/g_items.ts` | `timeout` | Valide | A redecouper | Locale C portee par `const timeout = quad_drop_timeout_hack |
 | `Quake-2-master/game/g_items.c` | function | `Use_Breather` | `packages/game/src/g_items.ts` | `Use_Breather` | A verifier | A redecouper |  |

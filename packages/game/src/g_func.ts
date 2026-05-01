@@ -1760,6 +1760,19 @@ export function train_resume(self: GameEntity, runtime: GameRuntime): void {
   self.spawnflags |= TRAIN_START_ON;
 }
 
+/**
+ * Original name: func_train_find
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Resolves the first `path_corner` for a spawned `func_train`, moves the brush to it, and links it.
+ * - Auto-starts untargeted trains by scheduling `train_next`; targeted trains wait for `train_use`.
+ *
+ * Porting notes:
+ * - `G_PickTarget`, warning output, origin updates, and `gi.linkentity` are routed through runtime adapters.
+ */
 export function func_train_find(self: GameEntity, runtime: GameRuntime): void {
   if (!self.target) {
     runtime.log({ kind: "warning", message: "train_find: no target", entityIndex: self.index, entityClassname: self.classname });
@@ -1783,6 +1796,19 @@ export function func_train_find(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: train_use
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Handles trigger/use activation for trains, including toggle stop, resume toward `target_ent`, or first `train_next`.
+ * - Stores the activator exactly like the C callback before deciding whether movement changes.
+ *
+ * Porting notes:
+ * - The explicit runtime parameter replaces the implicit global engine context used by `train_next`/`train_resume`.
+ */
 export function train_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   self.activator = activator;
   if ((self.spawnflags & TRAIN_START_ON) !== 0) {

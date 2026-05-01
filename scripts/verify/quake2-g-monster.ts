@@ -12,12 +12,14 @@
 import { strict as assert } from "node:assert";
 
 import {
+  AI_HOLD_FRAME,
   AI_GOOD_GUY,
   AI_STAND_GROUND,
   FL_FLY,
   FL_SWIM,
   FRAMETIME,
   SOLID_NOT,
+  SVF_DEADMONSTER,
   SVF_MONSTER,
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -59,6 +61,7 @@ import {
   M_FliesOff,
   M_FliesOn,
   M_FlyCheck,
+  M_MoveFrame,
   M_SetEffects,
   M_WorldEffects,
   monster_death_use,
@@ -76,7 +79,7 @@ import {
   type GameMonsterHooks,
   walkmonster_start_go
 } from "../../packages/game/src/g_monster.js";
-import { MOVETYPE_STEP } from "../../packages/game/src/runtime.js";
+import { MOVETYPE_STEP, type GameMonsterMove } from "../../packages/game/src/runtime.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 import type { trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
 
@@ -99,6 +102,7 @@ function main(): void {
   verifyMWorldEffectsDamageAndSounds();
   verifyMDroptofloorTraceAndStateRefresh();
   verifyMSetEffectsShellsAndPowerArmor();
+  verifyMMoveFrameSequenceAndCallbacks();
 
   console.log("Verification g_monster - shared monster gameplay OK");
 }
@@ -814,6 +818,113 @@ function verifyMSetEffectsShellsAndPowerArmor(): void {
   M_SetEffects(expired, runtime);
   assert.equal(expired.s.effects, 0, "expired power armor should leave no shell or powerscreen effect");
   assert.equal(expired.s.renderfx, 0, "expired power armor should clear stale shell renderfx");
+}
+
+function verifyMMoveFrameSequenceAndCallbacks(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 12.5;
+  const monster = createMonster(runtime, 45);
+  const aiCalls: Array<{ frame: number; dist: number }> = [];
+  const thinkCalls: number[] = [];
+
+  const baseMove: GameMonsterMove = {
+    firstframe: 10,
+    lastframe: 12,
+    frame: [10, 11, 12].map((frameNumber) => ({
+      aifunc: (self, dist) => {
+        aiCalls.push({ frame: self.s.frame, dist });
+      },
+      dist: frameNumber - 9,
+      thinkfunc: (self) => {
+        thinkCalls.push(self.s.frame);
+      }
+    })),
+    endfunc: undefined
+  };
+
+  monster.monsterinfo.currentmove = baseMove;
+  monster.monsterinfo.scale = 2;
+  monster.s.frame = 9;
+  M_MoveFrame(monster, runtime);
+  assert.equal(monster.nextthink, runtime.time + FRAMETIME, "M_MoveFrame should schedule the next monster think");
+  assert.equal(monster.s.frame, 10, "out-of-range frames should reset to the move firstframe");
+  assert.deepEqual(aiCalls.pop(), { frame: 10, dist: 2 }, "M_MoveFrame should call frame AI with scaled distance");
+  assert.equal(thinkCalls.pop(), 10, "M_MoveFrame should call the selected frame thinkfunc after AI");
+
+  monster.monsterinfo.nextframe = 12;
+  M_MoveFrame(monster, runtime);
+  assert.equal(monster.s.frame, 12, "valid monsterinfo.nextframe should override normal advancement");
+  assert.equal(monster.monsterinfo.nextframe, 0, "M_MoveFrame should clear consumed nextframe");
+
+  monster.monsterinfo.aiflags |= AI_HOLD_FRAME;
+  M_MoveFrame(monster, runtime);
+  assert.equal(monster.s.frame, 12, "AI_HOLD_FRAME should keep the current animation frame");
+  assert.deepEqual(aiCalls.pop(), { frame: 12, dist: 0 }, "AI_HOLD_FRAME should call AI with zero distance");
+
+  monster.monsterinfo.aiflags = AI_HOLD_FRAME;
+  monster.s.frame = 99;
+  M_MoveFrame(monster, runtime);
+  assert.equal(monster.s.frame, 10, "out-of-range reset should clear AI_HOLD_FRAME before selecting firstframe");
+  assert.equal((monster.monsterinfo.aiflags & AI_HOLD_FRAME) === 0, true, "M_MoveFrame should clear hold when fixing an invalid frame");
+
+  const replacementMove: GameMonsterMove = {
+    firstframe: 20,
+    lastframe: 21,
+    frame: [
+      {
+        aifunc: (_self, dist) => {
+          aiCalls.push({ frame: 20, dist });
+        },
+        dist: 7,
+        thinkfunc: undefined
+      },
+      {
+        aifunc: undefined,
+        dist: 0,
+        thinkfunc: undefined
+      }
+    ],
+    endfunc: undefined
+  };
+  const endingMove: GameMonsterMove = {
+    firstframe: 10,
+    lastframe: 12,
+    frame: baseMove.frame,
+    endfunc: (self) => {
+      self.monsterinfo.currentmove = replacementMove;
+    }
+  };
+
+  monster.monsterinfo.currentmove = endingMove;
+  monster.s.frame = 12;
+  M_MoveFrame(monster, runtime);
+  assert.equal(monster.monsterinfo.currentmove, replacementMove, "M_MoveFrame should regrab currentmove after endfunc changes it");
+  assert.equal(monster.s.frame, 20, "M_MoveFrame should advance using the replacement move after endfunc");
+  assert.deepEqual(aiCalls.pop(), { frame: 20, dist: 14 }, "replacement move index should be computed from its firstframe");
+
+  let deadEndfuncRan = false;
+  monster.svflags |= SVF_DEADMONSTER;
+  monster.monsterinfo.currentmove = {
+    firstframe: 30,
+    lastframe: 30,
+    frame: [{
+      aifunc: () => {
+        throw new Error("dead monster should return before frame AI");
+      },
+      dist: 1,
+      thinkfunc: () => {
+        throw new Error("dead monster should return before frame think");
+      }
+    }],
+    endfunc: (self) => {
+      deadEndfuncRan = true;
+      self.monsterinfo.currentmove = baseMove;
+    }
+  };
+  monster.s.frame = 30;
+  M_MoveFrame(monster, runtime);
+  assert.equal(deadEndfuncRan, true, "M_MoveFrame should still run endfunc before the dead-monster return");
+  assert.equal(monster.s.frame, 30, "SVF_DEADMONSTER after endfunc should stop before selecting a new frame");
 }
 
 function createHarnessRuntime(): GameRuntime {

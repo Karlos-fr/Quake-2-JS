@@ -601,6 +601,9 @@ export function M_SetEffects(ent: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Advances one monster `mmove_t` frame range, calling frame AI and think functions in the original order.
+ *
+ * Porting notes:
+ * - Frame callbacks receive the explicit runtime adapter instead of using C globals.
  */
 export function M_MoveFrame(self: GameEntity, runtime: GameRuntime): void {
   let move = self.monsterinfo.currentmove;

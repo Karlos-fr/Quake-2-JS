@@ -56,6 +56,7 @@ import {
   door_use_areaportals,
   func_conveyor_use,
   func_timer_use,
+  func_train_find,
   plat_go_down,
   plat_blocked,
   rotating_blocked,
@@ -935,7 +936,10 @@ assert.equal(train.linked, true, "SP_func_train link mismatch");
 assert.equal(train.nextthink, runtime.time + 0.1, "SP_func_train target think delay mismatch");
 train.think!(train, runtime);
 assert.deepEqual(train.origin, [90, 0, 0], "func_train_find origin mismatch");
+assert.equal(train.target, "p2", "func_train_find target handoff mismatch");
 assert.equal((train.spawnflags & 1) !== 0, true, "func_train_find must set START_ON for untargeted train");
+assert.equal(train.nextthink, runtime.time + 0.1, "func_train_find START_ON nextthink mismatch");
+assert.equal(train.think, train_next, "func_train_find START_ON think mismatch");
 assert.equal(train.activator, train, "func_train_find activator mismatch");
 train_next(train, runtime);
 assert.equal(train.target_ent, path1, "train_next must continue after one teleport path_corner");
@@ -1038,11 +1042,20 @@ const blockStopsTrain = entity("func_train", 25, { target: "p1", spawnflags: "4"
 SP_func_train(blockStopsTrain, runtime);
 assert.equal(blockStopsTrain.dmg, 0, "SP_func_train BLOCK_STOPS damage mismatch");
 
+const noTargetTrain = entity("func_train", 126);
+func_train_find(noTargetTrain, runtime);
+assert.equal(runtime.logEntries.at(-1)?.message, "train_find: no target", "func_train_find missing target warning mismatch");
+assert.equal(noTargetTrain.linked, false, "func_train_find missing target must not link");
+const badTargetTrain = entity("func_train", 127, { target: "missing_corner" });
+func_train_find(badTargetTrain, runtime);
+assert.equal(runtime.logEntries.at(-1)?.message, "train_find: target missing_corner not found", "func_train_find bad target warning mismatch");
+
 const targetedToggleTrain = entity("func_train", 26, { target: "p1", targetname: "toggle_train", spawnflags: "2" });
 targetedToggleTrain.mins = [10, 0, 0];
 SP_func_train(targetedToggleTrain, runtime);
 targetedToggleTrain.think!(targetedToggleTrain, runtime);
 assert.equal((targetedToggleTrain.spawnflags & 1) === 0, true, "func_train_find must not START_ON targeted toggle trains");
+assert.equal(targetedToggleTrain.nextthink, runtime.time + 0.1, "func_train_find targeted train must preserve spawn think time");
 targetedToggleTrain.spawnflags |= 1;
 targetedToggleTrain.velocity = [1, 2, 3];
 targetedToggleTrain.nextthink = runtime.time + 1;
@@ -1050,6 +1063,45 @@ train_use(targetedToggleTrain, null, targetedToggleTrain, runtime);
 assert.deepEqual(targetedToggleTrain.velocity, [0, 0, 0], "train_use TOGGLE must stop moving trains");
 assert.equal(targetedToggleTrain.nextthink, 0, "train_use TOGGLE nextthink mismatch");
 assert.equal((targetedToggleTrain.spawnflags & 1) === 0, true, "train_use TOGGLE must clear START_ON");
+
+const nonToggleRunningTrain = entity("func_train", 128);
+const nonToggleActivator = entity("train activator", 129);
+nonToggleRunningTrain.spawnflags = 1;
+nonToggleRunningTrain.velocity = [4, 5, 6];
+nonToggleRunningTrain.nextthink = runtime.time + 2;
+train_use(nonToggleRunningTrain, null, nonToggleActivator, runtime);
+assert.equal(nonToggleRunningTrain.activator, nonToggleActivator, "train_use non-toggle activator mismatch");
+assert.deepEqual(nonToggleRunningTrain.velocity, [4, 5, 6], "train_use non-toggle running train must continue");
+assert.equal(nonToggleRunningTrain.nextthink, runtime.time + 2, "train_use non-toggle running nextthink mismatch");
+assert.equal((nonToggleRunningTrain.spawnflags & 1) !== 0, true, "train_use non-toggle running must keep START_ON");
+
+const useResumeTrain = entity("func_train", 130);
+const useResumeCorner = entity("path_corner", 131);
+useResumeTrain.origin = [1, 2, 3];
+useResumeTrain.s.origin = [1, 2, 3];
+useResumeTrain.mins = [1, 1, 1];
+useResumeTrain.target_ent = useResumeCorner;
+useResumeTrain.moveinfo.speed = 32;
+useResumeTrain.moveinfo.accel = 32;
+useResumeTrain.moveinfo.decel = 32;
+useResumeCorner.origin = [11, 21, 31];
+useResumeCorner.s.origin = [11, 21, 31];
+train_use(useResumeTrain, null, trainActivator, runtime);
+assert.equal(useResumeTrain.activator, trainActivator, "train_use resume activator mismatch");
+assert.deepEqual(useResumeTrain.moveinfo.end_origin, [10, 20, 30], "train_use must resume toward target_ent");
+assert.equal(useResumeTrain.moveinfo.endfunc, train_wait, "train_use resume endfunc mismatch");
+assert.equal((useResumeTrain.spawnflags & 1) !== 0, true, "train_use resume must set START_ON");
+
+const useNextTrain = entity("func_train", 132, { target: "p1" });
+useNextTrain.mins = [10, 0, 0];
+useNextTrain.moveinfo.speed = 40;
+useNextTrain.moveinfo.accel = 40;
+useNextTrain.moveinfo.decel = 40;
+train_use(useNextTrain, null, trainActivator, runtime);
+assert.equal(useNextTrain.activator, trainActivator, "train_use train_next activator mismatch");
+assert.equal(useNextTrain.target_ent, path1, "train_use must call train_next when no target_ent is stored");
+assert.deepEqual(useNextTrain.moveinfo.end_origin, [90, 0, 0], "train_use train_next end origin mismatch");
+assert.equal((useNextTrain.spawnflags & 1) !== 0, true, "train_use train_next must set START_ON");
 
 const elevatorTarget = entity("func_train", 11);
 const elevatorCorner = entity("path_corner", 12, { targetname: "e2" });

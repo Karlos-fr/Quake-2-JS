@@ -350,9 +350,13 @@ export function SV_FlyMove(ent: GameEntity, time: number, mask: number, runtime:
  *
  * Behavior:
  * - Applies Quake II gravity for one frame to the vertical velocity of one entity.
+ *
+ * Porting notes:
+ * - Callers pass the current `sv_gravity` runtime value; direct calls keep the
+ *   original default cvar value.
  */
-export function SV_AddGravity(ent: GameEntity): void {
-  ent.velocity[2] -= ent.gravity * SV_GRAVITY * FRAMETIME;
+export function SV_AddGravity(ent: GameEntity, gravity = SV_GRAVITY): void {
+  ent.velocity[2] -= ent.gravity * gravity * FRAMETIME;
 }
 
 /**
@@ -620,7 +624,7 @@ export function SV_Physics_Toss(ent: GameEntity, runtime: GameRuntime): void {
   SV_CheckVelocity(ent, runtime.maxvelocity);
 
   if (ent.movetype !== MOVETYPE_FLY && ent.movetype !== MOVETYPE_FLYMISSILE) {
-    SV_AddGravity(ent);
+    SV_AddGravity(ent, runtime.gravity);
   }
 
   setEntityAngles(ent, addVec3(ent.angles, scaleVec3(ent.avelocity, FRAMETIME)));
@@ -721,11 +725,11 @@ export function SV_Physics_Step(ent: GameEntity, runtime: GameRuntime): void {
   if (!wasonground) {
     if ((ent.flags & FL_FLY) === 0) {
       if ((ent.flags & FL_SWIM) === 0 || ent.waterlevel <= 2) {
-        if (ent.velocity[2] < SV_GRAVITY * -0.1) {
+        if (ent.velocity[2] < runtime.gravity * -0.1) {
           hitsound = true;
         }
         if (ent.waterlevel === 0) {
-          SV_AddGravity(ent);
+          SV_AddGravity(ent, runtime.gravity);
         }
       }
     }

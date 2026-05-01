@@ -635,6 +635,8 @@ emitGameTempEntity(frameContext.runtime, temp_event_t.TE_BLOOD, [44, 55, 66], mu
 G_RunFrame(frameContext);
 assert.equal(frameContext.runtime.framenum, 1, "G_RunFrame framenum mismatch");
 assert.equal(frameContext.runtime.time, 0.1, "G_RunFrame must advance using FRAMETIME");
+assert.equal(frameContext.level.framenum, 1, "G_RunFrame must mirror framenum into level_locals_t");
+assert.equal(frameContext.level.time, 0.1, "G_RunFrame must mirror time into level_locals_t");
 assert.deepEqual(frameContext.runtime.entities[1].s.old_origin, [11, 22, 33], "G_RunFrame old_origin copy mismatch");
 assert.equal(frameContext.level.current_entity, null, "G_RunFrame must clear level.current_entity after the entity loop");
 assert.deepEqual(writeBytes.slice(0, 2), [svc_muzzleflash, MZ_BLASTER], "G_RunFrame must flush player weapon muzzleflash bytes");

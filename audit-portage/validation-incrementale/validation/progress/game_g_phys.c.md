@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: suite de `SV_FlyMove` avec locales `numplanes`, `planes`, `trace`, `end`, `time_left` et `blocked`.
-- Prochain lot recommande: `SV_AddGravity`.
+- Dernier lot valide: `SV_AddGravity`.
+- Prochain lot recommande: `SV_PushEntity` avec locales `trace` et `mask` incluant l'entree `mask` dupliquee si le lot reste petit.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -82,3 +82,14 @@
 - renderer-three: pas de sortie renderer directe propre a ces locales; les sorties visibles attendues sont les entites/modeles/brush models/camera-scene via origines et refresh frames apres mouvement. Les particules, beams, dlights, temp entities ou sons ne peuvent venir qu'indirectement des callbacks `SV_Impact` deja routes par les flux client/renderer existants.
 - Correction: ajout d'un scenario cible dans `scripts/verify/quake2-g-phys.ts` couvrant `trace`, les `end` successifs, la reduction de `time_left`, les flags `blocked`, la synchronisation `origin`/`s.origin`, et le refresh `groundentity` apres un plan floor.
 - Tests lances: `npm run verify:g-phys` OK.
+
+## Session 2026-05-01 - `SV_AddGravity`
+
+- Lot traite: `SV_AddGravity`.
+- Comparaison C/TS: le C applique `ent->velocity[2] -= ent->gravity * sv_gravity->value * FRAMETIME`; le TS applique maintenant le meme calcul avec le coefficient `ent.gravity`, la valeur `runtime.gravity` issue de `sv_gravity`, et une valeur par defaut 800 pour les appels directs.
+- Commentaire d'en-tete: present et mis a jour avec la note de portage sur le passage explicite de `sv_gravity`.
+- Runtime: integre via `G_RunFrame` / `G_RunEntity` vers `SV_Physics_Toss` pour toss/bounce, et vers `SV_Physics_Step` pour les entites step non au sol; correction faite pour que ces flux passent `runtime.gravity`.
+- apps/web: le navigateur utilise le runtime porte en local/full-game; `sv_gravity` et la cle `worldspawn.gravity` synchronisent `runtime.gravity`, puis les positions/origines resultantes sont exposees aux snapshots/refresh frames. Aucune logique web parallele ne remplace ce calcul.
+- renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les positions/origines des entites, brush models et scene/camera apres mouvement physique. Pas de modeles, frames, images, particules, beams, dlights, temp entities ou areabits produits directement par cette fonction.
+- Correction: `packages/game/src/g_phys.ts` utilise `runtime.gravity` pour `SV_AddGravity` dans les flux toss/step et pour le seuil `hitsound`; `scripts/verify/quake2-g-phys.ts` couvre l'appel direct avec gravite non standard et l'appel runtime via `G_RunEntity`.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.

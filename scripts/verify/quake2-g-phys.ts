@@ -15,6 +15,7 @@ import {
   G_RunFrame,
   ClipVelocity,
   G_RunEntity,
+  SV_AddGravity,
   SV_FlyMove,
   SV_CheckVelocity,
   SV_Impact,
@@ -168,6 +169,28 @@ assertVec("G_RunEntity.fly-clamp.velocity", flyClampEnt.velocity, [1200, -1200, 
 assertVec("G_RunEntity.fly-clamp.origin", flyClampEnt.origin, [120, -120, 18]);
 assertVec("G_RunEntity.fly-clamp.s.origin", flyClampEnt.s.origin, [120, -120, 18]);
 runtime.maxvelocity = 2000;
+
+const gravityDirectEnt = spawnGameEntity(runtime);
+gravityDirectEnt.velocity = [0, 0, 25];
+gravityDirectEnt.gravity = 0.5;
+SV_AddGravity(gravityDirectEnt, 600);
+assertVec("SV_AddGravity.direct-runtime-gravity", gravityDirectEnt.velocity, [0, 0, -5]);
+
+const gravityTossEnt = spawnGameEntity(runtime);
+gravityTossEnt.classname = "gravity-toss";
+gravityTossEnt.movetype = MOVETYPE_TOSS;
+gravityTossEnt.solid = SOLID_BBOX;
+gravityTossEnt.clipmask = MASK_SOLID;
+gravityTossEnt.origin = [0, 0, 100];
+gravityTossEnt.s.origin = [0, 0, 100];
+gravityTossEnt.velocity = [0, 0, 0];
+gravityTossEnt.gravity = 0.25;
+runtime.gravity = 1200;
+linkGameEntity(runtime, gravityTossEnt);
+G_RunEntity(gravityTossEnt, runtime);
+assertVec("SV_AddGravity.runtime-velocity", gravityTossEnt.velocity, [0, 0, -30]);
+assertVec("SV_AddGravity.runtime-origin", gravityTossEnt.origin, [0, 0, 97]);
+runtime.gravity = 800;
 
 const thinkEnt = spawnGameEntity(runtime);
 thinkEnt.classname = "thinker";

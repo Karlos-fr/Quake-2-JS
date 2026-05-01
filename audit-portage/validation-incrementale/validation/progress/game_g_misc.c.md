@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `misc_blackhole_use`, `misc_blackhole_think` et `SP_misc_blackhole`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `misc_blackhole_use` conserve la liberation immediate par `G_FreeEdict` et garde omis le bloc temp entity commente dans le C; `misc_blackhole_think` conserve l'increment de frame, la boucle 0..18 et le `nextthink = level.time + FRAMETIME`; `SP_misc_blackhole` conserve `MOVETYPE_NONE`, `SOLID_NOT`, bbox `[-64,-64,0]` / `[64,64,8]`, modele `models/objects/black/tris.md2`, `RF_TRANSLUCENT`, callbacks `use`/`think`, premier think a `level.time + 2 * FRAMETIME` et link.
+  - Commentaires d'en-tete verifies pour les trois fonctions: original/source/categorie portee/fidelite et comportement documentes, avec note explicite sur le temp entity commente du C pour `misc_blackhole_use`.
+  - Branchement runtime verifie: `misc_blackhole` est enregistre dans `g_spawn.ts`, exporte via `index.ts`, dispatchable par `ED_CallSpawn`; `SP_misc_blackhole` installe les callbacks; `misc_blackhole_think` est atteint via `G_RunFrame`/`SV_RunThink` ou `runPendingThinks`; `misc_blackhole_use` est atteint via callback `use`/`G_UseTargets`.
+  - `apps/web`: integration attendue car le lot produit un modele MD2 translucide anime, puis sa disparition au use. Aucune logique parallele trouvee; les flux local/full-game consomment snapshots, modelindices et frames issus du runtime.
+  - `renderer-three`: integration attendue pour modele MD2, frames, renderfx translucide, presence/disparition dans la scene. Les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour spawn complet, modelindex, `RF_TRANSLUCENT`, callbacks, cadence de think, wrap frame 18->0, dispatch `ED_CallSpawn`, use/free et absence de temp entity.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npx tsx ./scripts/verify/quake2-entities-phase8.ts` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `misc_eastertank_think` et `SP_misc_eastertank` si le lot reste petit.
+
 - 2026-05-01: `barrel_delay` et `SP_misc_explobox`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `barrel_delay` conserve `DAMAGE_NO`, `nextthink = level.time + 2 * FRAMETIME`, `think = barrel_explode` et `activator = attacker`. `SP_misc_explobox` conserve l'auto-free en deathmatch, le precache debris1/debris2/debris3, `SOLID_BBOX`, `MOVETYPE_STEP`, le modele barrel, bbox, valeurs par defaut `mass = 400`, `health = 10`, `dmg = 150`, `die = barrel_delay`, `DAMAGE_YES`, `AI_NOSTEP`, `touch = barrel_touch`, `think = M_droptofloor`, `nextthink = level.time + 2 * FRAMETIME` et link.

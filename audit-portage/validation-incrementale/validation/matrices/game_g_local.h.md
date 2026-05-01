@@ -149,9 +149,9 @@
 | `Quake-2-master/game/g_local.h` | global | `serverflags` | `packages/game/src/g_local.ts` | `game_locals_t.serverflags` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `num_items` | `packages/game/src/g_local.ts` | `game_locals_t.num_items` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `autosaved` | `packages/game/src/g_local.ts` | `game_locals_t.autosaved` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | struct | `level_locals_t` | `packages/game/src/g_local.ts` | `level_locals_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `framenum` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `time` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | struct | `level_locals_t` | `packages/game/src/g_local.ts` | `level_locals_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `framenum` | `packages/game/src/g_local.ts` | `level_locals_t.framenum` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `time` | `packages/game/src/g_local.ts` | `level_locals_t.time` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `level_name` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `mapname` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `nextmap` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

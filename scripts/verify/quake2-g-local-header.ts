@@ -52,6 +52,7 @@ import {
   IT_STAY_COOP,
   IT_WEAPON,
   LEFT_HANDED,
+  LLOFS,
   MELEE_DISTANCE,
   MOD_TRIGGER_HURT,
   MOVETYPE_BOUNCE,
@@ -108,7 +109,7 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { game_locals_t, gitem_armor_t, gitem_t } from "../../packages/game/src/g_local.js";
+import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t } from "../../packages/game/src/g_local.js";
 import {
   ARMOR_BODY as INDEX_ARMOR_BODY,
   ARMOR_COMBAT as INDEX_ARMOR_COMBAT,
@@ -315,10 +316,52 @@ assert.equal(game.spawnpoint, "unit_start", "game_locals_t spawnpoint string fie
 assert.equal(game.maxclients, 3, "game_locals_t maxclients field mismatch");
 assert.equal(game.maxentities, 128, "game_locals_t maxentities field mismatch");
 assert.equal(game.serverflags, SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3, "game_locals_t serverflags field mismatch");
-assert.equal(level.body_que, 0, "level_locals body_que mismatch");
+const levelLocals = level satisfies level_locals_t;
+assert.deepEqual(
+  Object.keys(levelLocals),
+  [
+    "framenum",
+    "time",
+    "level_name",
+    "mapname",
+    "nextmap",
+    "intermissiontime",
+    "changemap",
+    "exitintermission",
+    "intermission_origin",
+    "intermission_angle",
+    "sight_client",
+    "sight_entity",
+    "sight_entity_framenum",
+    "sound_entity",
+    "sound_entity_framenum",
+    "sound2_entity",
+    "sound2_entity_framenum",
+    "pic_health",
+    "total_secrets",
+    "found_secrets",
+    "total_goals",
+    "found_goals",
+    "total_monsters",
+    "killed_monsters",
+    "current_entity",
+    "body_que",
+    "power_cubes"
+  ],
+  "level_locals_t field order mismatch"
+);
+assert.equal(levelLocals.framenum, 0, "level_locals_t framenum default mismatch");
+assert.equal(levelLocals.time, 0, "level_locals_t time default mismatch");
+assert.equal(levelLocals.body_que, 0, "level_locals_t body_que mismatch");
+levelLocals.framenum = 42;
+levelLocals.time = 4.2;
+assert.equal(level.framenum, 42, "level_locals_t framenum field mismatch");
+assert.equal(level.time, 4.2, "level_locals_t time field mismatch");
 assert.equal(st.sky, null, "spawn_temp sky default mismatch");
 assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");
 assert.equal(FOFS("classname"), "classname", "FOFS selector mismatch");
+assert.equal(LLOFS("framenum"), "framenum", "LLOFS framenum selector mismatch");
+assert.equal(LLOFS("time"), "time", "LLOFS time selector mismatch");
 assert.equal(world([entity]), entity, "world helper mismatch");
 assert.equal(ITEM_INDEX(shotgun!), 2, "ITEM_INDEX mismatch");
 

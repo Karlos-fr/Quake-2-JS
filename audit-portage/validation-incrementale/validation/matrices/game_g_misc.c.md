@@ -68,9 +68,9 @@
 | `Quake-2-master/game/g_misc.c` | function | `BecomeExplosion1` | `packages/game/src/g_misc.ts` | `BecomeExplosion1` | Valide | A redecouper | Ligne dupliquee generee pour le meme symbole; validee avec la preuve `BecomeExplosion1` ci-dessus. |
 | `Quake-2-master/game/g_misc.c` | function | `barrel_delay` | `packages/game/src/g_misc.ts` | `barrel_delay` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_explobox` | `packages/game/src/g_misc.ts` | `SP_misc_explobox` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `misc_blackhole_use` | `packages/game/src/g_misc.ts` | `misc_blackhole_use` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `misc_blackhole_think` | `packages/game/src/g_misc.ts` | `misc_blackhole_think` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_misc_blackhole` | `packages/game/src/g_misc.ts` | `SP_misc_blackhole` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `misc_blackhole_use` | `packages/game/src/g_misc.ts` | `misc_blackhole_use` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `misc_blackhole_think` | `packages/game/src/g_misc.ts` | `misc_blackhole_think` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `SP_misc_blackhole` | `packages/game/src/g_misc.ts` | `SP_misc_blackhole` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_eastertank_think` | `packages/game/src/g_misc.ts` | `misc_eastertank_think` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_eastertank` | `packages/game/src/g_misc.ts` | `SP_misc_eastertank` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_easterchick_think` | `packages/game/src/g_misc.ts` | `misc_easterchick_think` | A verifier | A redecouper |  |

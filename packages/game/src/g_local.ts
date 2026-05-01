@@ -327,6 +327,19 @@ export interface game_locals_t {
   autosaved: qboolean;
 }
 
+/**
+ * Original name: level_locals_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Holds the per-level state reset on map load and persisted in level save files.
+ *
+ * Porting notes:
+ * - C fixed buffers are represented as strings, and edict pointers remain object references.
+ * - Active frame/time values are mirrored from `GameRuntime` during frame execution.
+ */
 export interface level_locals_t {
   framenum: number;
   time: number;

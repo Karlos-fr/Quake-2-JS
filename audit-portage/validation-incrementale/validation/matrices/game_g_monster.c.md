@@ -33,9 +33,9 @@
 | `Quake-2-master/game/g_monster.c` | global | `end` | `packages/game/src/g_monster.ts` | `end` | Valide | A redecouper | Preuve session: locale comparee avec C, trace 256 unites vers le bas depuis l'origine relevee verifie par `npm run verify:g-monster`. |
 | `Quake-2-master/game/g_monster.c` | global | `trace` | `packages/game/src/g_monster.ts` | `trace` | Valide | A redecouper | Preuve session: locale comparee avec C, masque `MASK_MONSTERSOLID`, `passent`, sortie `fraction == 1`/`allsolid`, `endpos` et ground refresh verifies par `npm run verify:g-monster`. |
 | `Quake-2-master/game/g_monster.c` | function | `M_SetEffects` | `packages/game/src/g_monster.ts` | `M_SetEffects` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | function | `M_MoveFrame` | `packages/game/src/g_monster.ts` | `M_MoveFrame` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | global | `move` | `packages/game/src/g_monster.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | global | `index` | `packages/game/src/g_monster.ts` | `index` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | function | `M_MoveFrame` | `packages/game/src/g_monster.ts` | `M_MoveFrame` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | global | `move` | `packages/game/src/g_monster.ts` | `move` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | global | `index` | `packages/game/src/g_monster.ts` | `index` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | function | `monster_think` | `packages/game/src/g_monster.ts` | `monster_think` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | function | `monster_use` | `packages/game/src/g_monster.ts` | `monster_use` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | function | `monster_start_go` | `packages/game/src/g_monster.ts` | `monster_start_go` | A verifier | A redecouper |  |

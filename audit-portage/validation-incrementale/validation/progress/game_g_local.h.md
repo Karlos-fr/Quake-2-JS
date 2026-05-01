@@ -8,6 +8,25 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot initial `level_locals_t` avec champs `framenum` et `time`.
+- Verdict: `Valide` pour la structure et les 2 champs apres ajout du commentaire de portage et renforcement des preuves.
+- Source H comparee: `level_locals_t` porte l'etat par niveau; `framenum` est un `int` avance a chaque `G_RunFrame`, et `time` est un `float` calcule depuis `framenum * FRAMETIME`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `level_locals_t` porte tous les champs du bloc C dans l'ordre attendu; `framenum` et `time` sont des nombres initialises a `0` par `createLevelLocals`; commentaire de portage ajoute.
+  - `packages/game/src/g_main.ts`: `createGameMainContext` instancie le bloc niveau; `SpawnEntities` remet `framenum` et `time` a `0`; `G_RunFrame` avance `runtime.framenum`/`runtime.time` puis les synchronise vers `level_locals_t`; `CheckDMRules` consomme `level.time` pour le timelimit.
+  - `packages/game/src/g_save.ts`: `WriteLevel` snapshot `framenum`/`time`; `ReadLevel` les restaure puis resynchronise le runtime.
+- Runtime:
+  - Source C: `G_RunFrame` incremente `level.framenum`, calcule `level.time`, puis tous les thinks, delais, regles DM et sauvegardes lisent cet etat de niveau.
+  - TS: le temps actif est centralise dans `GameRuntime` et miroir dans `level_locals_t`; les preuves de session couvrent le reset `SpawnEntities`, le pas `G_RunFrame`, la persistance `WriteLevel`/`ReadLevel`, et le scheduling de cross-level target depuis `level.time`.
+- apps/web: integration attendue via le host local/full-game qui avance le runtime game a pas fixe, synchronise les snapshots/HUD/sons et ne remplace pas `level_locals_t` par une logique parallele. `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: aucune consommation directe de `level_locals_t.framenum` ou `level_locals_t.time` attendue. Les sorties visibles possibles produites en aval par le frame runtime sont les entites, modeles, frames, temp entities, particules, dlights, camera/scene et snapshots; le renderer les consomme via le flux client/refresh, verifie par `verify:full-game:three-renderer`.
+- Commentaires/documentation: commentaire de portage ajoute a `level_locals_t`; `createLevelLocals`, `SpawnEntities`, `G_RunFrame`, `WriteLevel` et `ReadLevel` avaient deja des commentaires d'en-tete verifies.
+- Corrections appliquees:
+  - `packages/game/src/g_local.ts`: commentaire de portage `level_locals_t`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions structure/champs `level_locals_t`, valeurs par defaut, mutation `framenum`/`time`, et selectors `LLOFS`.
+  - `scripts/verify/quake2-g-main.ts`: assertions miroir `G_RunFrame -> level_locals_t`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot `game_locals_t` avec champs `num_items` et `autosaved`; tranche `game_locals_t` close.
 - Verdict: `Valide` pour les 2 champs apres correction du miroir runtime `autosaved` et renforcement des preuves.
 - Source H comparee: `num_items` stocke le nombre d'items actifs apres `InitItems`; `autosaved` est pose pendant `WriteGame(..., autosave)` pour que les reconnects issus d'un autosave conservent l'etat persistant charge.
@@ -610,7 +629,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `level_locals_t`, petit lot initial: structure `level_locals_t` puis champs `framenum` et `time` si le lot reste raisonnable.
+- Continuer avec `level_locals_t.level_name`, `mapname` et `nextmap` si le lot reste raisonnable.
 
 ## Blocages
 
