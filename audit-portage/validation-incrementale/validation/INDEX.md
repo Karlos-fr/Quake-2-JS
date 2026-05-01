@@ -123,6 +123,21 @@
 | [Quake-2-master/qcommon/pmove.c](matrices/qcommon_pmove.c.md) | 95 | Partiel | packages/qcommon/src/pmove.ts |
 | [Quake-2-master/qcommon/qcommon.h](matrices/qcommon_qcommon.h.md) | 321 | A redecouper | packages/qcommon/src/qcommon.ts |
 | [Quake-2-master/qcommon/qfiles.h](matrices/qcommon_qfiles.h.md) | 226 | A redecouper | packages/formats/src/qfiles.ts |
+| [Quake-2-master/ref_gl/anorms.h](matrices/ref_gl_anorms.h.md) | 0 | strict-ok | packages/qcommon/src/anorms.ts |
+| [Quake-2-master/ref_gl/anormtab.h](matrices/ref_gl_anormtab.h.md) | 0 | strict-ok | packages/renderer-three/src/anormtab.ts |
+| [Quake-2-master/ref_gl/gl_draw.c](matrices/ref_gl_gl_draw.c.md) | 15 | split-undocumented | packages/renderer-three/src/gl_draw.ts |
+| [Quake-2-master/ref_gl/gl_image.c](matrices/ref_gl_gl_image.c.md) | 76 | split-undocumented | packages/renderer-three/src/gl_image.ts |
+| [Quake-2-master/ref_gl/gl_light.c](matrices/ref_gl_gl_light.c.md) | 33 | split-undocumented | packages/renderer-three/src/gl_light.ts |
+| [Quake-2-master/ref_gl/gl_local.h](matrices/ref_gl_gl_local.h.md) | 144 | split-undocumented | packages/renderer-three/src/gl_local.ts |
+| [Quake-2-master/ref_gl/gl_mesh.c](matrices/ref_gl_gl_mesh.c.md) | 25 | split-undocumented | packages/renderer-three/src/gl_mesh.ts |
+| [Quake-2-master/ref_gl/gl_model.c](matrices/ref_gl_gl_model.c.md) | 42 | wrong-name | packages/renderer-three/src/gl-model-loader.ts |
+| [Quake-2-master/ref_gl/gl_model.h](matrices/ref_gl_gl_model.h.md) | 31 | wrong-name | packages/renderer-three/src/gl-model.ts |
+| [Quake-2-master/ref_gl/gl_rmain.c](matrices/ref_gl_gl_rmain.c.md) | 60 | split-undocumented | packages/renderer-three/src/gl_rmain.ts |
+| [Quake-2-master/ref_gl/gl_rmisc.c](matrices/ref_gl_gl_rmisc.c.md) | 8 | split-undocumented | packages/renderer-three/src/gl_rmisc.ts |
+| [Quake-2-master/ref_gl/gl_rsurf.c](matrices/ref_gl_gl_rsurf.c.md) | 56 | split-undocumented | packages/renderer-three/src/gl_rsurf.ts |
+| [Quake-2-master/ref_gl/gl_warp.c](matrices/ref_gl_gl_warp.c.md) | 31 | split-undocumented | packages/renderer-three/src/gl_warp.ts |
+| [Quake-2-master/ref_gl/qgl.h](matrices/ref_gl_qgl.h.md) | 21 | split-undocumented | packages/renderer-three/src/qgl.ts |
+| [Quake-2-master/ref_gl/warpsin.h](matrices/ref_gl_warpsin.h.md) | 0 | split-undocumented | packages/renderer-three/src/warpsin.ts |
 | [Quake-2-master/server/server.h](matrices/server_server.h.md) | 116 | A redecouper | packages/server/src/server.ts |
 | [Quake-2-master/server/sv_ccmds.c](matrices/server_sv_ccmds.c.md) | 57 | A redecouper | packages/server/src/sv_ccmds.ts |
 | [Quake-2-master/server/sv_ents.c](matrices/server_sv_ents.c.md) | 37 | A redecouper | packages/server/src/sv_ents.ts |

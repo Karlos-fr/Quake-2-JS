@@ -27,6 +27,28 @@ type FileAudit = {
   findings?: string[];
 };
 
+type SourceIndexEntry = {
+  path: string;
+  symbols?: Partial<Record<"functions" | "macros" | "typedefs" | "structs" | "enums" | "globals", string[]>>;
+};
+
+type Phase02Entry = {
+  sourcePath: string;
+  status?: string;
+  declaredPrimaryTsTarget?: string | null;
+  declaredTsTargets?: string[];
+  strictMatches?: string[];
+  headerFindings?: string[];
+  modernNameFindings?: string[];
+};
+
+type ExpectedMapEntry = {
+  sourcePath: string;
+  expectedTsFile?: string;
+  matchingTsFiles?: string[];
+  status?: string;
+};
+
 type DeclarativeComparison = {
   category: string;
   sourceFile: string;
@@ -67,6 +89,43 @@ const PROGRESS_DIR = path.join(OUT_ROOT, "progress");
 const MATRIX_JSON = path.join(PHASE03_GENERATED, "phase-03-runtime-coverage-matrix.json");
 const FILE_AUDITS_JSON = path.join(PHASE03_GENERATED, "phase-03-runtime-file-audits.json");
 const TABLES_JSON = path.join(PHASE03_GENERATED, "phase-03-declarative-tables-audit.json");
+const PHASE00_GENERATED = path.join(ROOT, "audit-portage/phases/phase-00-socle-outillage/generated");
+const PHASE02_GENERATED = path.join(ROOT, "audit-portage/phases/phase-02-source-vers-typescript/generated");
+const SOURCE_INDEX_JSON = path.join(PHASE00_GENERATED, "source-index.json");
+const EXPECTED_MAP_JSON = path.join(PHASE00_GENERATED, "source-to-ts-expected-map.json");
+const PHASE02_STRUCTURE_JSON = path.join(PHASE02_GENERATED, "phase-02-structure-index.json");
+
+const SUPPLEMENTAL_MODULE_PREFIXES = ["Quake-2-master/ref_gl/"];
+const REF_GL_TESTS_BY_SOURCE = new Map<string, string[]>([
+  ["Quake-2-master/ref_gl/gl_draw.c", ["verify:gl-draw", "verify:three-gl-draw-adapter"]],
+  ["Quake-2-master/ref_gl/gl_image.c", ["verify:gl-image"]],
+  ["Quake-2-master/ref_gl/gl_light.c", ["verify:gl-light", "verify:full-game:three-renderer"]],
+  ["Quake-2-master/ref_gl/gl_local.h", ["verify:gl-local:header", "verify:ref-gl-host"]],
+  ["Quake-2-master/ref_gl/gl_mesh.c", ["verify:gl-mesh", "verify:full-game:three-renderer"]],
+  [
+    "Quake-2-master/ref_gl/gl_model.c",
+    [
+      "verify:gl-model:phase1",
+      "verify:gl-model:phase2",
+      "verify:gl-model:phase3",
+      "verify:gl-model:phase4",
+      "verify:gl-model:phase5",
+      "verify:gl-model:phase6",
+      "verify:gl-model:phase7",
+      "verify:gl-model:phase8",
+      "verify:gl-model:phase9",
+      "verify:three-world-alpha",
+      "verify:three-world-warp-sky",
+    ],
+  ],
+  ["Quake-2-master/ref_gl/gl_model.h", ["verify:gl-model:header"]],
+  ["Quake-2-master/ref_gl/gl_rmain.c", ["verify:gl-rmain", "verify:ref-gl-host", "verify:full-game:three-renderer"]],
+  ["Quake-2-master/ref_gl/gl_rmisc.c", ["verify:gl-rmisc"]],
+  ["Quake-2-master/ref_gl/gl_rsurf.c", ["verify:gl-rsurf", "verify:three-world-alpha"]],
+  ["Quake-2-master/ref_gl/gl_warp.c", ["verify:gl-warp", "verify:three-world-warp-sky"]],
+  ["Quake-2-master/ref_gl/qgl.h", ["verify:qgl:header"]],
+  ["Quake-2-master/ref_gl/warpsin.h", ["verify:warpsin"]],
+]);
 
 function readJson<T>(filePath: string): T {
   return JSON.parse(readFileSync(filePath, "utf8")) as T;
@@ -96,7 +155,12 @@ function readNextBatchFromProgress(fileName: string): string {
 
   const content = readFileSync(filePath, "utf8");
   const match = content.match(/^- Prochain lot recommande:\s*(.+)$/m);
-  return match?.[1]?.trim() ?? "";
+  if (match?.[1]) {
+    return match[1].trim();
+  }
+
+  const section = content.match(/^## Prochain lot recommande\s*\r?\n\s*\r?\n-\s*(.+)$/m);
+  return section?.[1]?.trim() ?? "";
 }
 
 function md(value: unknown): string {
@@ -106,8 +170,8 @@ function md(value: unknown): string {
     .replace(/\|/g, "\\|");
 }
 
-function preserveKey(sourcePath: string, kind: string, sourceSymbol: string): string {
-  return `${sourcePath}\u0000${kind}\u0000${sourceSymbol}`;
+function preserveKey(sourcePath: string, kind: string, sourceSymbol: string, occurrence: number): string {
+  return `${sourcePath}\u0000${kind}\u0000${sourceSymbol}\u0000${occurrence}`;
 }
 
 function readPreservedStatuses(): Map<string, PreservedCell> {
@@ -122,6 +186,7 @@ function readPreservedStatuses(): Map<string, PreservedCell> {
     }
 
     const content = readFileSync(path.join(MATRICES_DIR, fileName), "utf8");
+    const occurrences = new Map<string, number>();
     for (const line of content.split(/\r?\n/)) {
       if (!line.startsWith("| `")) {
         continue;
@@ -139,7 +204,10 @@ function readPreservedStatuses(): Map<string, PreservedCell> {
       const notes = cells[7] ?? "";
 
       if (sourcePath && kind && sourceSymbol && valid && valid !== "A verifier") {
-        preserved.set(preserveKey(sourcePath, kind, sourceSymbol), { valid, notes });
+        const baseKey = `${sourcePath}\u0000${kind}\u0000${sourceSymbol}`;
+        const occurrence = occurrences.get(baseKey) ?? 0;
+        occurrences.set(baseKey, occurrence + 1);
+        preserved.set(preserveKey(sourcePath, kind, sourceSymbol, occurrence), { valid, notes });
       }
     }
   }
@@ -151,7 +219,14 @@ function stripCode(value: string): string {
   return value.replace(/^`/, "").replace(/`$/, "");
 }
 
-function formatMatrixRow(row: MatrixRow, preserved: Map<string, PreservedCell>): string {
+function occurrenceFor(occurrences: Map<string, number>, sourcePath: string, kind: string, symbol: string): number {
+  const key = `${sourcePath}\u0000${kind}\u0000${symbol}`;
+  const occurrence = occurrences.get(key) ?? 0;
+  occurrences.set(key, occurrence + 1);
+  return occurrence;
+}
+
+function formatMatrixRow(row: MatrixRow, preserved: Map<string, PreservedCell>, occurrence: number): string {
   const targetFiles = unique([
     row.primaryTsTarget,
     ...normalizeArray(row.declaredTsTargets),
@@ -161,7 +236,7 @@ function formatMatrixRow(row: MatrixRow, preserved: Map<string, PreservedCell>):
     row.tsSymbol,
     ...normalizeArray(row.tsSymbolMatches).map((match) => match.symbol),
   ]);
-  const saved = preserved.get(preserveKey(row.sourcePath, row.symbolKind, row.sourceSymbol));
+  const saved = preserved.get(preserveKey(row.sourcePath, row.symbolKind, row.sourceSymbol, occurrence));
   const notes = saved?.notes ?? "";
 
   return [
@@ -206,9 +281,10 @@ function countValidation(
   kind: string,
   symbol: string,
   preserved: Map<string, PreservedCell>,
+  occurrence: number,
 ): void {
   progress.total += 1;
-  const valid = preserved.get(preserveKey(sourcePath, kind, symbol))?.valid ?? "A verifier";
+  const valid = preserved.get(preserveKey(sourcePath, kind, symbol, occurrence))?.valid ?? "A verifier";
 
   if (valid === "Valide") {
     progress.valid += 1;
@@ -233,7 +309,7 @@ function declarativeRows(
     const kind = `declarative:${table.category}`;
     const sourceSymbol = table.tableName;
     const targetFiles = unique([table.primaryTsTarget, ...normalizeArray(table.tsTargets)]);
-    const saved = preserved.get(preserveKey(table.sourceFile, kind, sourceSymbol));
+    const saved = preserved.get(preserveKey(table.sourceFile, kind, sourceSymbol, 0));
     const notes = saved?.notes ?? "";
 
     const line = [
@@ -255,10 +331,96 @@ function declarativeRows(
   return byFile;
 }
 
+function isSupplementalSource(sourcePath: string): boolean {
+  return SUPPLEMENTAL_MODULE_PREFIXES.some((prefix) => sourcePath.startsWith(prefix));
+}
+
+function phase02Findings(entry: Phase02Entry | undefined, expected: ExpectedMapEntry | undefined): string[] {
+  return unique([
+    entry?.status ? `phase02-structural-status:${entry.status}` : undefined,
+    expected?.status ? `expected-map-status:${expected.status}` : undefined,
+    ...normalizeArray(entry?.headerFindings),
+    ...normalizeArray(entry?.modernNameFindings),
+  ]);
+}
+
+function supplementalTargetFiles(entry: Phase02Entry | undefined, expected: ExpectedMapEntry | undefined): string[] {
+  return unique([
+    entry?.declaredPrimaryTsTarget ?? undefined,
+    ...normalizeArray(entry?.declaredTsTargets),
+    ...normalizeArray(entry?.strictMatches),
+    ...normalizeArray(expected?.matchingTsFiles),
+  ]);
+}
+
+function supplementalRefGlData(existingSourcePaths: Set<string>): { rows: MatrixRow[]; audits: FileAudit[] } {
+  if (!existsSync(SOURCE_INDEX_JSON) || !existsSync(PHASE02_STRUCTURE_JSON) || !existsSync(EXPECTED_MAP_JSON)) {
+    return { rows: [], audits: [] };
+  }
+
+  const sourceIndex = readJson<SourceIndexEntry[]>(SOURCE_INDEX_JSON);
+  const phase02 = readJson<{ entries: Phase02Entry[] }>(PHASE02_STRUCTURE_JSON);
+  const expectedMap = readJson<ExpectedMapEntry[]>(EXPECTED_MAP_JSON);
+  const phase02BySource = new Map(normalizeArray(phase02.entries).map((entry) => [entry.sourcePath, entry]));
+  const expectedBySource = new Map(normalizeArray(expectedMap).map((entry) => [entry.sourcePath, entry]));
+  const supplementalSources = sourceIndex
+    .filter((entry) => isSupplementalSource(entry.path))
+    .filter((entry) => !existingSourcePaths.has(entry.path))
+    .sort((a, b) => a.path.localeCompare(b.path));
+
+  const rows: MatrixRow[] = [];
+  const audits: FileAudit[] = [];
+  const symbolKinds: Array<[keyof NonNullable<SourceIndexEntry["symbols"]>, string]> = [
+    ["functions", "function"],
+    ["macros", "macro"],
+    ["typedefs", "typedef"],
+    ["structs", "struct"],
+    ["enums", "enum"],
+    ["globals", "global"],
+  ];
+
+  for (const source of supplementalSources) {
+    const p2 = phase02BySource.get(source.path);
+    const expected = expectedBySource.get(source.path);
+    const targetFiles = supplementalTargetFiles(p2, expected);
+    const findings = phase02Findings(p2, expected);
+
+    audits.push({
+      sourcePath: source.path,
+      primaryTsTarget: targetFiles[0],
+      tsTargets: targetFiles,
+      linkedNpmScripts: REF_GL_TESTS_BY_SOURCE.get(source.path) ?? [],
+      verdict: p2?.status ?? expected?.status ?? "supplemental-ref-gl",
+      findings: findings.length ? findings : ["supplemental-ref-gl-from-phase00"],
+    });
+
+    for (const [sourceKind, matrixKind] of symbolKinds) {
+      for (const symbol of normalizeArray(source.symbols?.[sourceKind])) {
+        rows.push({
+          sourcePath: source.path,
+          sourceSymbol: symbol,
+          symbolKind: matrixKind,
+          primaryTsTarget: targetFiles[0],
+          declaredTsTargets: targetFiles,
+          tsSymbol: symbol,
+          structuralStatus: p2?.status ?? expected?.status,
+          findings,
+          provisionalVerdict: p2?.status ?? expected?.status,
+        });
+      }
+    }
+  }
+
+  return { rows, audits };
+}
+
 function writeMatrices(): void {
   const matrix = readJson<{ rows: MatrixRow[]; summary?: Record<string, unknown> }>(MATRIX_JSON);
   const fileAudits = readJson<{ audits: FileAudit[] }>(FILE_AUDITS_JSON);
   const tableAudit = readJson<{ comparisons: DeclarativeComparison[]; requiredCategoryFindings?: Array<{ category: string; finding: string }> }>(TABLES_JSON);
+  const supplemental = supplementalRefGlData(new Set(matrix.rows.map((row) => row.sourcePath)));
+  const matrixRows = [...matrix.rows, ...supplemental.rows];
+  const fileAuditRows = [...normalizeArray(fileAudits.audits), ...supplemental.audits];
 
   mkdirSync(MATRICES_DIR, { recursive: true });
   const preserved = readPreservedStatuses();
@@ -266,14 +428,14 @@ function writeMatrices(): void {
   mkdirSync(MATRICES_DIR, { recursive: true });
 
   const rowsByFile = new Map<string, MatrixRow[]>();
-  for (const row of matrix.rows) {
+  for (const row of matrixRows) {
     const rows = rowsByFile.get(row.sourcePath) ?? [];
     rows.push(row);
     rowsByFile.set(row.sourcePath, rows);
   }
 
   const tablesByFile = declarativeRows(normalizeArray(tableAudit.comparisons), preserved);
-  const auditsByFile = new Map(normalizeArray(fileAudits.audits).map((audit) => [audit.sourcePath, audit]));
+  const auditsByFile = new Map(fileAuditRows.map((audit) => [audit.sourcePath, audit]));
   const allFiles = unique([
     ...Array.from(rowsByFile.keys()),
     ...Array.from(tablesByFile.keys()),
@@ -304,16 +466,27 @@ function writeMatrices(): void {
       priority: "Normale",
     };
 
+    const validationOccurrences = new Map<string, number>();
     for (const row of sourceRows) {
-      countValidation(fileProgress, row.sourcePath, row.symbolKind, row.sourceSymbol, preserved);
+      countValidation(
+        fileProgress,
+        row.sourcePath,
+        row.symbolKind,
+        row.sourceSymbol,
+        preserved,
+        occurrenceFor(validationOccurrences, row.sourcePath, row.symbolKind, row.sourceSymbol),
+      );
     }
 
     for (const table of normalizeArray(tableAudit.comparisons).filter((comparison) => comparison.sourceFile === sourcePath)) {
-      countValidation(fileProgress, table.sourceFile, `declarative:${table.category}`, table.tableName, preserved);
+      countValidation(fileProgress, table.sourceFile, `declarative:${table.category}`, table.tableName, preserved, 0);
     }
 
     fileProgress.status = statusFromCounts(fileProgress);
-    fileProgress.priority = sourcePath.includes("/game/") || sourcePath.includes("/qcommon/") || sourcePath.includes("/server/")
+    fileProgress.priority = sourcePath.includes("/game/")
+      || sourcePath.includes("/qcommon/")
+      || sourcePath.includes("/server/")
+      || sourcePath.includes("/ref_gl/")
       ? "Haute"
       : "Normale";
     fileProgress.nextBatch = readNextBatchFromProgress(fileProgress.progressFileName);
@@ -347,7 +520,14 @@ function writeMatrices(): void {
       "",
       "| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |",
       "| --- | --- | --- | --- | --- | --- | --- | --- |",
-      ...sourceRows.map((row) => `| ${formatMatrixRow(row, preserved)} |`),
+      ...(() => {
+        const renderOccurrences = new Map<string, number>();
+        return sourceRows.map((row) => `| ${formatMatrixRow(
+          row,
+          preserved,
+          occurrenceFor(renderOccurrences, row.sourcePath, row.symbolKind, row.sourceSymbol),
+        )} |`);
+      })(),
       ...tableRows.map((row) => `| ${row} |`),
       "",
     ];
