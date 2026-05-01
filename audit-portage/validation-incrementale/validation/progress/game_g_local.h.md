@@ -8,6 +8,19 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot flags AI medic `AI_MEDIC`, `AI_RESURRECTING`.
+- Verdict: `Valide` pour les 2 macros apres ajout d'une assertion ciblee `AI_RESURRECTING` dans le harness header.
+- Valeurs H/TS comparees et conformes:
+  - `AI_MEDIC = 0x00002000`
+  - `AI_RESURRECTING = 0x00004000`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de definition directe attendue pour ces macros.
+- Runtime:
+  - Source C: `AI_MEDIC` est pose par `medic_idle`, `medic_search` et `medic_run` quand le medic cible un monstre mort, force `medic_attack`/`medic_checkattack` sur le cable de resurrection, et est efface par `ai_checkattack` quand la cible est de nouveau vivante. `AI_RESURRECTING` est pose pendant `medic_cable_attack`, conserve apres `ED_CallSpawn`, efface par `medic_hook_retract`, et consomme par `M_SetEffects` pour afficher le shell rouge.
+  - TS: `packages/game/src/m_medic.ts`, `packages/game/src/g_ai.ts` et `packages/game/src/g_monster.ts` conservent ces branches. Les commentaires d'en-tete de `ai_checkattack` et `M_SetEffects` ont ete verifies avec `Original name`, `Source`, `Category: Ported` et niveau de fidelite; le header de module `g_local.ts` rattache les macros au header original.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Le navigateur doit declencher ce comportement via le runtime serveur/game et consommer ses sorties via le host full-game, les sons/temp entities et les snapshots.
+- renderer-three: aucune reference directe aux macros; integration directe gameplay non attendue. Une sortie visible est attendue pour `AI_RESURRECTING`: `M_SetEffects` produit `EF_COLOR_SHELL` et `RF_SHELL_RED`, consommes par le flux renderer via les entites/snapshots; `verify:full-game:three-renderer` OK.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK apres ajout de l'assertion `AI_RESURRECTING`; `npm run verify:g-ai` OK; `npm run verify:m-medic` OK; `npm run verify:g-monster` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot flags AI comportement `AI_GOOD_GUY`, `AI_BRUTAL`, `AI_NOSTEP`, `AI_DUCKED`, `AI_COMBAT_POINT`.
 - Verdict: `Valide` pour les 5 macros apres ajout d'assertions ciblees dans le harness header.
 - Valeurs H/TS comparees et conformes:
@@ -284,7 +297,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les flags AI medic: `AI_MEDIC`, `AI_RESURRECTING`.
+- Continuer avec les attack states: `AS_STRAIGHT`, `AS_SLIDING`, `AS_MELEE`, `AS_MISSILE`.
 
 ## Blocages
 

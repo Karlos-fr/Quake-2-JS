@@ -363,6 +363,16 @@ export function gib_touch(
   }
 }
 
+/**
+ * Original name: ThrowHead
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts the source entity itself into a flying gib head, clears monster/render state
+ *   that should no longer survive death, applies organic/metallic movement and links it.
+ */
 export function ThrowHead(self: GameEntity, gibname: string, damage: number, type: number, runtime: GameRuntime): void {
   self.s.skinnum = 0;
   self.s.frame = 0;

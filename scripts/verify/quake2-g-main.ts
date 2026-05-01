@@ -11,10 +11,10 @@
 
 import { strict as assert } from "node:assert";
 
-import { CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, temp_event_t, type cvar_t } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ANY, BUTTON_ATTACK, CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, pmtype_t, temp_event_t, type cvar_t, type usercmd_t } from "../../packages/qcommon/src/index.js";
 import { TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
-import { attachGameClient, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
+import { attachGameClient, createGameRuntimeFromBspEntities, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
 import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { single_statusbar } from "../../packages/game/src/g_spawn.js";
 
@@ -242,6 +242,33 @@ command.argv = ["sv", "test"];
 command.args = "test";
 api.ServerCommand();
 
+const clientThinkRuntime = createGameRuntimeFromBspEntities([
+  { properties: { classname: "worldspawn" } },
+  { properties: { classname: "player" } }
+]);
+clientThinkRuntime.maxclients = 1;
+const clientThinkPlayer = clientThinkRuntime.entities[1]!;
+clientThinkPlayer.inuse = true;
+clientThinkPlayer.client = attachGameClient(clientThinkPlayer);
+const clientThinkApi = GetGameApi(imports, { runtime: clientThinkRuntime });
+clientThinkRuntime.intermissiontime = 1;
+clientThinkRuntime.time = 7;
+clientThinkApi.ClientThink(clientThinkPlayer, createUsercmd({ buttons: BUTTON_ANY, lightlevel: 18 }));
+assert.equal(clientThinkPlayer.client.ps.pmove.pm_type, pmtype_t.PM_FREEZE, "GetGameApi.ClientThink must delegate intermission freeze to p_client");
+assert.equal(clientThinkRuntime.exitintermission, 1, "GetGameApi.ClientThink must delegate intermission exit buttons to p_client");
+
+clientThinkRuntime.intermissiontime = 0;
+clientThinkRuntime.exitintermission = 0;
+clientThinkPlayer.client.latched_buttons = 0;
+clientThinkPlayer.client.buttons = 0;
+clientThinkPlayer.client.oldbuttons = 0;
+clientThinkApi.ClientThink(clientThinkPlayer, createUsercmd({ buttons: BUTTON_ATTACK, lightlevel: 42 }));
+assert.equal(clientThinkRuntime.current_entity, clientThinkPlayer, "ClientThink must set the current entity like the original game export");
+assert.equal(clientThinkPlayer.client.buttons, BUTTON_ATTACK, "ClientThink must copy the current command buttons");
+assert.equal(clientThinkPlayer.client.oldbuttons, 0, "ClientThink must preserve old buttons before latching");
+assert.equal(clientThinkPlayer.client.weapon_thunk, true, "ClientThink must thunk weapon fire from BUTTON_ATTACK");
+assert.equal(clientThinkPlayer.light_level, 42, "ClientThink must copy usercmd lightlevel for AI sighting");
+
 const dmContext = createGameMainContext(imports);
 dmContext.runtime.maxclients = 2;
 dmContext.runtime.entities = [
@@ -382,6 +409,21 @@ function createCvar(name: string, stringValue: string, flags = 0): cvar_t {
     flags,
     modified: false,
     value: Number.parseFloat(stringValue) || 0
+  };
+}
+
+function createUsercmd(overrides: Partial<usercmd_t> = {}): usercmd_t {
+  return {
+    msec: 0,
+    buttons: 0,
+    angles: [0, 0, 0],
+    forwardmove: 0,
+    sidemove: 0,
+    upmove: 0,
+    impulse: 0,
+    lightlevel: 0,
+    ...overrides,
+    angles: overrides.angles ? [...overrides.angles] : [0, 0, 0]
   };
 }
 

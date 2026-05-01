@@ -1258,6 +1258,15 @@ export function Touch_Item(ent: GameEntity, other: GameEntity, runtime: GameRunt
   }
 }
 
+/**
+ * Original name: drop_temp_touch
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Keeps a freshly dropped item untouchable by its owner, then delegates normal pickup touches to `Touch_Item`.
+ */
 function drop_temp_touch(ent: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if (other === ent.owner) {
     return;

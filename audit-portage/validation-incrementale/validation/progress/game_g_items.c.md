@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `G_FreeEdict` reference par `g_items.c` et `drop_temp_touch`.
+
+Validation `G_FreeEdict` / `drop_temp_touch` du 2026-05-01: comparaison avec `game/g_items.c` et `game/g_utils.c` confirmee. `G_FreeEdict` est une dependance importee: le C la declare via `g_local.h`, l'implemente dans `g_utils.c`, et `g_items.c` l'utilise pour le cleanup pickup/drop; le TS importe `G_FreeEdict` depuis `packages/game/src/g_utils.ts`, dont le commentaire d'en-tete a ete verifie. `drop_temp_touch` conserve le garde `other == owner` puis delegue a `Touch_Item`. La condition cleanup de `Touch_Item` a ete reverifiee contre le C: un drop pris (`DROPPED_ITEM`/`DROPPED_PLAYER_ITEM`) est libere immediatement par `G_FreeEdict`; un drop non pris devient touchable puis expire via `drop_make_touchable` en deathmatch. Header `drop_temp_touch` ajoute avec `Fidelity level: Strict`.
+
+Runtime branche via `Drop_Item` (`touch = drop_temp_touch`, `think = drop_make_touchable`), touches physiques/runtime (`SV_Impact`, `G_TouchTriggers`/`G_TouchSolids`), puis `Touch_Item`; en deathmatch, `drop_make_touchable` remplace le touch par `Touch_Item` et programme `G_FreeEdict` apres 29 secondes. `apps/web` doit consommer ce flux via commandes/runtime local, inventaire/HUD, sons et snapshots; aucune logique parallele drop/pickup masquante n'a ete detectee. `renderer-three` doit consommer les sorties visibles generiques: entite item MD2/drop, disparition/free par snapshot, et effets/HUD aval; les verifications renderer passent sans branchement gameplay dedie.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyDropTempTouchAndDeathmatchFree` couvre l'ignore owner, la delegation non-owner a `Touch_Item`, la liberation immediate du drop pris par `G_FreeEdict`, la restauration `Touch_Item` sur un drop non pris, et la liberation finale deathmatch via `G_FreeEdict` sur timeout. Tests lances: `npm run verify:g-items`, `npm run verify:g-utils`, `npm run verify:refresh-entity:weapon`, `npm run verify:full-game:three-renderer`, `npm run verify:full-game:bridge`, `npm run typecheck` OK.
+
 - `Touch_Item` et locale associee `taken`.
 
 Validation `Touch_Item` du 2026-05-01: comparaison avec `game/g_items.c` confirmee. Le TS conserve les retours originaux sans client, joueur mort ou item sans `pickup`, puis appelle le dispatch pickup une seule fois via `const taken = callItemPickup(...)`. Corrections appliquees dans `packages/game/src/g_items.ts`: `G_UseTargets` est maintenant appele avant le retour `!taken`, comme le C; le changement de `selected_item` et `STAT_SELECTED_ITEM` ne se fait que pour les items avec `use`; les pickups de sante jouent les sons specifiques `items/s_health.wav`, `items/n_health.wav`, `items/l_health.wav` ou `items/m_health.wav` selon `ent.count`; le cleanup suit la condition C avec `FL_RESPAWN`, `G_FreeEdict`, drops, et maintien des items `IT_STAY_COOP` en coop. Le commentaire d'en-tete `Touch_Item` a ete mis a jour en `Fidelity level: Strict` avec les comportements critiques.
@@ -99,4 +107,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- `G_FreeEdict` reference par `g_items.c` dans le cleanup pickup, puis `drop_temp_touch` si le coordinateur veut rester dans le flux drop/touch.
+- `drop_make_touchable`, puis `Drop_Item` avec locales `dropped` et `trace` si le coordinateur veut continuer le flux drop/touch.

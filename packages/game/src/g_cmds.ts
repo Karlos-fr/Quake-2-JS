@@ -833,6 +833,8 @@ export function Cmd_Say_f(ent: GameEntity, team: boolean, arg0: boolean, context
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Print one line per in-use client with connect time, ping, score, name and spectator suffix, truncating the buffer with `And more...`.
+ * Porting notes: Uses immutable string assembly for the C `st` and `text` buffers while preserving the maxclients scan and 1400-byte guard.
  */
 export function Cmd_PlayerList_f(ent: GameEntity, context: GameCommandContext): void {
   let text = "";

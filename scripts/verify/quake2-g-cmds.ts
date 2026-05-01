@@ -482,14 +482,48 @@ function verifyPlayerListAndWave(): void {
   const localContext = createContext(runtime);
   const player1 = createClient(runtime, 1, "alpha");
   const player2 = createClient(runtime, 2, "beta");
-  player1.client!.ps.stats[STAT_FRAGS] = 9;
-  player2.client!.ps.stats[STAT_FRAGS] = 2;
+  const inactive = createClient(runtime, 3, "inactive");
+  player1.client!.resp.score = 9;
+  player1.client!.ping = 42;
+  player2.client!.resp.score = -2;
+  player2.client!.ping = 7;
+  player2.client!.resp.spectator = true;
   player1.client!.resp.enterframe = 0;
   player2.client!.resp.enterframe = 10;
+  inactive.inuse = false;
   runtime.framenum = 610;
 
   Cmd_PlayerList_f(player1, localContext);
-  assert.match(lastPrint().message, /alpha/, "Cmd_PlayerList_f should list active players");
+  assert.equal(
+    lastPrint().message,
+    "01:01   42   9 alpha\n01:00    7  -2 beta (spectator)\n",
+    "Cmd_PlayerList_f should preserve C time, ping, score, name and spectator formatting"
+  );
+  assert.doesNotMatch(lastPrint().message, /inactive/, "Cmd_PlayerList_f should skip edicts that are not in use");
+
+  prints.length = 0;
+  localContext.runtime.intermissiontime = 1;
+  runCommand(localContext, ["playerlist"]);
+  GameCommandsClientCommand(localContext, player1);
+  assert.equal(prints.length, 0, "ClientCommand should block playerlist during intermission like the C dispatcher");
+  localContext.runtime.intermissiontime = 0;
+  GameCommandsClientCommand(localContext, player1);
+  assert.match(lastPrint().message, /beta \(spectator\)/, "ClientCommand should dispatch playerlist after intermission gating");
+
+  const longRuntime = createRuntime();
+  longRuntime.maxclients = 18;
+  const longContext = createContext(longRuntime);
+  const requester = createClient(longRuntime, 1, "requester");
+  for (let i = 2; i <= longRuntime.maxclients; i += 1) {
+    const listed = createClient(longRuntime, i, `player-${i}-${"x".repeat(72)}`);
+    listed.client!.ping = 9999;
+    listed.client!.resp.score = i;
+    listed.client!.resp.enterframe = 0;
+  }
+  longRuntime.framenum = 600;
+  Cmd_PlayerList_f(requester, longContext);
+  assert.match(lastPrint().message, /And more\...\n$/, "Cmd_PlayerList_f should append the C truncation marker near the text buffer limit");
+  assert.ok(lastPrint().message.length <= 1400, "Cmd_PlayerList_f should keep the emitted text within the original C buffer size");
 
   runCommand(localContext, ["wave", "3"]);
   Cmd_Wave_f(player1, localContext);

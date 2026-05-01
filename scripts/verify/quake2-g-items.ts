@@ -12,6 +12,7 @@
 import {
   Add_Ammo,
   ArmorIndex,
+  Drop_Item,
   FL_POWER_ARMOR,
   FL_RESPAWN,
   FRAMETIME,
@@ -47,6 +48,7 @@ function main(): void {
   verifyTouchAmmoPickupUsesItemPath();
   verifyTouchWeaponPickupUsesWeaponPath();
   verifyTouchCoopStayWeaponRemainsTouchable();
+  verifyDropTempTouchAndDeathmatchFree();
   verifyArmorAndPowerArmorIndices();
   verifyPickupArmorConversions();
   verifyUsePowerArmorRequiresCells();
@@ -231,6 +233,44 @@ function verifyTouchCoopStayWeaponRemainsTouchable(): void {
   assertNumber(weaponEntity.inuse ? 1 : 0, 1, "Touch_Item keeps coop stay weapons in use");
   assertNumber(weaponEntity.solid, SOLID_TRIGGER, "Touch_Item leaves coop stay weapons touchable");
   assertBoolean(weaponEntity.touch === Touch_Item, true, "Touch_Item leaves coop stay weapon touch callback installed");
+}
+
+function verifyDropTempTouchAndDeathmatchFree(): void {
+  const runtime = createHarnessRuntime();
+  runtime.deathmatch = true;
+  while (runtime.entities.length <= runtime.maxclients + 8) {
+    spawnGameEntity(runtime);
+  }
+  const owner = createPlayer(runtime);
+  const other = createPlayer(runtime);
+  const shells = requireItem("Shells");
+
+  owner.s.origin = [10, 20, 30];
+  owner.origin = [10, 20, 30];
+  owner.client!.v_angle = [0, 0, 0];
+  owner.client!.pers.inventory[shells.index] = 0;
+  other.client!.pers.inventory[shells.index] = 0;
+
+  const dropped = Drop_Item(owner, shells, runtime);
+  assertBoolean(dropped.owner === owner, true, "Drop_Item stores the original owner");
+
+  dropped.touch?.(dropped, owner, runtime);
+  assertNumber(owner.client!.pers.inventory[shells.index], 0, "drop_temp_touch ignores the owner");
+  assertNumber(dropped.inuse ? 1 : 0, 1, "drop_temp_touch keeps the ignored drop in use");
+
+  dropped.touch?.(dropped, other, runtime);
+  assertNumber(other.client!.pers.inventory[shells.index], shells.quantity, "drop_temp_touch delegates non-owner touches to Touch_Item");
+  assertNumber(dropped.inuse ? 1 : 0, 0, "Touch_Item frees picked dropped items immediately");
+  assertNumber(dropped.freetime, runtime.time, "G_FreeEdict stamps the picked dropped item free time");
+
+  const timeoutDrop = Drop_Item(owner, shells, runtime);
+  runPendingThinks(runtime, runtime.time + 1);
+  assertBoolean(timeoutDrop.touch === Touch_Item, true, "drop_make_touchable restores the normal Touch_Item callback");
+  assertNumber(timeoutDrop.nextthink, runtime.time + 29, "drop_make_touchable schedules the original deathmatch free delay");
+
+  runPendingThinks(runtime, runtime.time + 29);
+  assertNumber(timeoutDrop.inuse ? 1 : 0, 0, "deathmatch dropped items are freed through G_FreeEdict after timeout");
+  assertNumber(timeoutDrop.freetime, runtime.time, "G_FreeEdict stamps the timed-out dropped item free time");
 }
 
 function verifyArmorAndPowerArmorIndices(): void {

@@ -10,7 +10,7 @@
  */
 
 import { strict as assert } from "node:assert";
-import { CS_LIGHTS, entity_event_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_LIGHTS, EF_FLIES, EF_GIB, entity_event_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
@@ -45,9 +45,12 @@ import {
   runPendingThinks,
   spawnGameEntity,
   target_string_use,
+  ThrowHead,
   ThrowGib,
   useGameEntity
 } from "../../packages/game/src/index.js";
+import { FL_NO_KNOCKBACK } from "../../packages/game/src/g_local.js";
+import { SVF_MONSTER } from "../../packages/game/src/runtime.js";
 
 main();
 
@@ -62,6 +65,7 @@ function main(): void {
   verifyGibTypesSelectMovementAndTouchBehavior();
   verifyGibTouchMatchesPlaneGatedSourceBehavior();
   verifyGibThinkAndDieCallbacks();
+  verifyThrowHeadConvertsSourceEntityToGib();
 
   console.log("quake2-g-misc: ok");
 }
@@ -354,6 +358,67 @@ function verifyGibThinkAndDieCallbacks(): void {
   gib_die(doomed, null, null, 25, runtime);
 
   assert.equal(doomed.inuse, false, "gib_die must free the gib entity");
+}
+
+function verifyThrowHeadConvertsSourceEntityToGib(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 5;
+
+  withMockedRandom([0.75, 0.75, 0.75, 0.75, 0.25], () => {
+    const organicHead = spawnGameEntity(runtime);
+    organicHead.s.skinnum = 7;
+    organicHead.s.frame = 42;
+    organicHead.mins = [-16, -16, -24];
+    organicHead.maxs = [16, 16, 32];
+    organicHead.s.modelindex2 = 99;
+    organicHead.s.effects = EF_FLIES;
+    organicHead.s.sound = 17;
+    organicHead.svflags = SVF_MONSTER;
+    organicHead.velocity = [10, 20, 300];
+
+    ThrowHead(organicHead, "models/objects/gibs/head2/tris.md2", 100, GIB_ORGANIC, runtime);
+
+    assert.equal(organicHead.s.skinnum, 0, "ThrowHead must clear skin number");
+    assert.equal(organicHead.s.frame, 0, "ThrowHead must reset frame");
+    assert.deepEqual(organicHead.mins, [0, 0, 0], "ThrowHead must clear mins");
+    assert.deepEqual(organicHead.maxs, [0, 0, 0], "ThrowHead must clear maxs");
+    assert.equal(organicHead.s.modelindex2, 0, "ThrowHead must clear modelindex2");
+    assert.equal(organicHead.model, "models/objects/gibs/head2/tris.md2", "ThrowHead model mismatch");
+    assert.equal((organicHead.s.effects & EF_GIB) !== 0, true, "ThrowHead must set EF_GIB");
+    assert.equal((organicHead.s.effects & EF_FLIES) === 0, true, "ThrowHead must clear EF_FLIES");
+    assert.equal(organicHead.s.sound, 0, "ThrowHead must clear looping sound");
+    assert.equal((organicHead.flags & FL_NO_KNOCKBACK) !== 0, true, "ThrowHead must set FL_NO_KNOCKBACK");
+    assert.equal((organicHead.svflags & SVF_MONSTER) === 0, true, "ThrowHead must clear SVF_MONSTER");
+    assert.equal(organicHead.takedamage, damage_t.DAMAGE_YES, "ThrowHead must make the head damageable");
+    assert.equal(organicHead.die, gib_die, "ThrowHead must install gib_die");
+    assert.equal(organicHead.movetype, MOVETYPE_TOSS, "organic ThrowHead must use MOVETYPE_TOSS");
+    assert.equal(organicHead.touch, gib_touch, "organic ThrowHead must install gib_touch");
+    assert.deepEqual(organicHead.velocity, [40, 50, 465], "organic ThrowHead must apply vscale 0.5 before clipping");
+    assert.equal(organicHead.avelocity[1], 300, "ThrowHead must randomize yaw angular velocity with crandom()*600");
+    assert.equal(organicHead.nextthink, 17.5, "ThrowHead must schedule free after 10 + random()*10 seconds");
+  });
+
+  withMockedRandom([0.75, 0.75, 0.75, 0.75, 0.25], () => {
+    const metallicHead = spawnGameEntity(runtime);
+    metallicHead.velocity = [10, 20, 300];
+
+    ThrowHead(metallicHead, "models/objects/gibs/head2/tris.md2", 100, GIB_METALLIC, runtime);
+
+    assert.equal(metallicHead.movetype, MOVETYPE_BOUNCE, "metallic ThrowHead must use MOVETYPE_BOUNCE");
+    assert.equal(metallicHead.touch, undefined, "metallic ThrowHead must not install gib_touch");
+    assert.deepEqual(metallicHead.velocity, [70, 80, 500], "metallic ThrowHead must apply vscale 1.0 before clipping");
+  });
+}
+
+function withMockedRandom(sequence: number[], callback: () => void): void {
+  const originalRandom = Math.random;
+  let index = 0;
+  Math.random = () => sequence[index++] ?? sequence.at(-1) ?? 0;
+  try {
+    callback();
+  } finally {
+    Math.random = originalRandom;
+  }
 }
 
 function createHarnessRuntime() {

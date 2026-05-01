@@ -1426,6 +1426,16 @@ export function button_touch(self: GameEntity, other: GameEntity, runtime: GameR
   button_fire(self, runtime);
 }
 
+/**
+ * Original name: button_killed
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts a shootable button hit into one button press.
+ * - Records the attacker as activator, restores button health, disables damage while moving and delegates to `button_fire`.
+ */
 export function button_killed(self: GameEntity, _inflictor: GameEntity | null, attacker: GameEntity | null, _damage: number, runtime: GameRuntime): void {
   self.activator = attacker;
   self.health = self.max_health;

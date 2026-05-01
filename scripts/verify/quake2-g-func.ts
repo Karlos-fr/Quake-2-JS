@@ -235,9 +235,14 @@ const shootButton = entity("func_button", 3, { angle: "90", health: "10" });
 shootButton.size = [16, 64, 16];
 shootButton.maxs = [16, 64, 16];
 SP_func_button(shootButton, runtime);
-button_killed(shootButton, null, button, 10, runtime);
+shootButton.health = 4;
+const shooter = entity("attacker", 33);
+button_killed(shootButton, null, shooter, 10, runtime);
+assert.equal(shootButton.activator, shooter, "button_killed activator mismatch");
+assert.equal(shootButton.health, shootButton.max_health, "button_killed must restore health");
 assert.equal(shootButton.takedamage, 0, "button_killed must disable damage while moving");
 assert.equal(shootButton.moveinfo.state !== STATE_BOTTOM, true, "button_killed must fire button");
+assert.equal(shootButton.moveinfo.endfunc, button_wait, "button_killed must delegate to button_fire");
 
 const water = entity("func_water", 4, { angle: "-1", sounds: "1", lip: "4", wait: "0" });
 water.size = [32, 32, 96];

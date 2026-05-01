@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: locaux `gib` / `vscale` de `ThrowGib`, puis `ThrowHead` avec son local `vscale`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `gib` reste une entite creee par `G_Spawn`, positionnee dans la bbox source, configuree avec model/effects/damage callbacks, vitesse randomisee puis clipee et liee au runtime; les deux `vscale` conservent `0.5` pour `GIB_ORGANIC` et `1.0` sinon; `ThrowHead` convertit l'entite source elle-meme en gib head, remet skin/frame/bounds/modelindex2, efface `EF_FLIES`, son et `SVF_MONSTER`, conserve `EF_GIB`, `FL_NO_KNOCKBACK`, `DAMAGE_YES`, `gib_die`, type de mouvement, callback touch organique, vitesse, yaw avelocity, cleanup et link.
+  - Commentaire d'en-tete ajoute pour `ThrowHead`; commentaire `ThrowGib` deja present et verifie.
+  - Branchement runtime verifie: `ThrowHead` est appele par les morts monstres et joueur (`m_*`, `p_client.ts`), `ThrowGib` reste appele par les memes flux; les entites liees sont avancees par `G_RunFrame`/physique et visibles via snapshots.
+  - `apps/web`: aucune logique gib/head parallele trouvee; le navigateur consomme le `ClientRefreshFrame` construit depuis le runtime client/full-game (`full-game-render-source`, `full-game-render-loop`).
+  - `renderer-three`: integration attendue car sorties visibles MD2 + `EF_GIB`; consommation presente via `refresh-entity-sync`, et les trails `EF_GIB` sont generes cote client par `CL_AddEntityEffects`/`CL_DiminishingTrail`.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaire d'en-tete `ThrowHead`.
+  - `scripts/verify/quake2-g-misc.ts`: test cible `ThrowHead` avec hasard controle pour les champs nettoyes et les deux valeurs `vscale`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:refresh-entity:alias-flags` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+
+## Dernier lot valide
+
 - 2026-05-01: comportements gib `gib_think`, `gib_touch`, `gib_die` et `ThrowGib`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `gib_think` conserve l'increment de frame, le `FRAMETIME` et le basculement vers cleanup a la frame 10; `gib_die` appelle `G_FreeEdict`; `ThrowGib` conserve spawn, origine dans la bbox, model/effects, `FL_NO_KNOCKBACK`, `DAMAGE_YES`, die callback, choix organique/metallique, vitesse randomisee/clipee, avelocity, cleanup et link.
@@ -69,4 +87,4 @@
 
 ## Prochain lot recommande
 
-- globals locaux `gib` et `vscale`, puis `ThrowHead` si le coordinateur veut rester dans le groupe gib.
+- `ThrowClientHead` et local `gibname`.

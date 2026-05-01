@@ -200,3 +200,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `Cmd_PlayerList_f` et temporaires locaux associes (`i`, `st`, `text`, `e2`).
+
+## Session 2026-05-01 - Cmd_PlayerList_f
+
+- Lot valide: `Cmd_PlayerList_f` et temporaires C associes (`i`, `st`, `text`, `e2`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme scan `maxclients`, meme acces edict `i + 1`, meme filtre `inuse`, meme calcul minutes/secondes depuis `framenum - enterframe`, meme format ping/score/nom/spectateur, meme garde de buffer `1400 - 50`, meme suffixe `And more...\n`, meme `cprintf(ent, PRINT_HIGH, "%s", text)`.
+- Branchement runtime: `ClientCommand` dispatch `playerlist` apres les commandes toujours autorisees et apres la garde intermission, relaye depuis `g_main.ClientCommand`, `GetGameApiFunction` et `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes par `createClientSendCmdBridge` et charge le runtime game sans logique `playerlist` parallele. La sortie attendue est un texte `gi.cprintf`/`svc_print` vers console/notify client; `packages/renderer-three` n'a pas de sortie 3D a consommer (aucun modele, frame, image, particule, beam, dlight, areabit, camera ou scene).
+- Corrections: commentaire d'en-tete complete pour `Cmd_PlayerList_f`; test cible renforce dans `scripts/verify/quake2-g-cmds.ts` pour format complet, spectateur, exclusion `inuse=false`, dispatch `playerlist` et garde de troncature.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `ClientCommand` et temporaire local associe (`cmd`).

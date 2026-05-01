@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: fonction `ClientThink`.
 - 2026-05-01: fonction `SpawnEntities`.
 - 2026-05-01: cvars serveur/commande `sv_cheats`, `flood_msgs`, `flood_persecond`, `flood_waitdelay`, `sv_maplist`.
 - 2026-05-01: cvars de vue/arme `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`.
@@ -12,6 +13,7 @@
 
 ## Verdict du lot
 
+- `ClientThink`: valide. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientThink`; le TS `GetGameApi().ClientThink` delegue au port `p_client.ts` `ClientThink`. La comparaison C/TS couvre l'intermission (`PM_FREEZE`, sortie apres 5 secondes + bouton), le passage par `SV_ClientThink`, la mise a jour `current_entity`, boutons/latched buttons, `light_level`, attaque/`weapon_thunk`, chase/spectator followers et la branche pmove quand une collision runtime est disponible. Commentaire d'en-tete verifie dans `p_client.ts`.
 - `SpawnEntities`: valide apres correction. Le port TS normalise `skill`, sauvegarde maintenant les donnees persistantes client avant reconstruction (`SaveClientData`), libere les tags niveau (`FreeTags(TAG_LEVEL)`), reconstruit worldspawn/joueurs/entites BSP, conserve les blocs client persistants sur les slots joueurs, applique les filtres `spawnflags` skill/deathmatch et le hack map `command`/`trigger_once`/`*27`, dispatch les spawners, journalise le nombre d'entites inhibees, puis initialise teams, body queue et player trail. Commentaire d'en-tete verifie. Fidelity `Close`: le bootstrap TS garde l'ordre existant et teste des entites BSP avant body queue/player trail.
 - `sv_cheats`: valide. Cvar init portee avec nom `cheats`, default `0` et flags `CVAR_SERVERINFO | CVAR_LATCH`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou les commandes `give`/`god`/`notarget`/`noclip` gardent le gate original `deathmatch && !sv_cheats`.
 - `flood_msgs`: valide. Cvar init portee avec default `4` et flags `0`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou `Cmd_Say_f` l'utilise comme fenetre de messages pour la protection flood.
@@ -51,6 +53,11 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().ClientThink` vers `p_client.ts`, intermission freeze/exit, `current_entity`, boutons, `weapon_thunk` et `light_level`.
+- `npx tsx ./scripts/verify/quake2-sv-user.ts`: ok le 2026-05-01, confirme le chemin serveur `SV_ClientThink -> ge.ClientThink`.
+- `npm run verify:full-game:authoritative-input`: ok le 2026-05-01, confirme le flux navigateur autoritatif `CL_SendCmd -> clc_move -> SV_ClientThink`.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-main`: ok le 2026-05-01, couvre `SpawnEntities` avec `FreeTags(TAG_LEVEL)`, `SaveClientData`, conservation du bloc client persistant, statusbar, slots joueurs, body queue/player trail et `dprintf` inhibit.
 - `npm run verify:g-spawn`: ok le 2026-05-01, couvre worldspawn, configstrings, precaches, filtres de spawnflags skill/deathmatch, hack map `command`, `G_FindTeams`, `PlayerTrail_Init`.
 - `npx tsx ./scripts/verify/quake2-sv-game.ts`: ok le 2026-05-01, confirme le branchement serveur `SV_SpawnServer`/game export et les configstrings gameplay.
@@ -89,6 +96,10 @@
 
 ## Blocages / decisions
 
+- Correction appliquee dans `scripts/verify/quake2-g-main.ts`: ajout d'une preuve ciblee sur l'export `ClientThink`.
+- Pas de correction appliquee dans `packages/game/src/g_main.ts` ou `packages/game/src/p_client.ts`: l'export `GetGameApi().ClientThink` est branche et le port `p_client.ts` couvre les branches attendues du lot.
+- `apps/web`: integration presente via le flux full-game autoritatif (`CL_SendCmd`, transport local, `SV_ClientThink`, export game `ClientThink`). Le placeholder `ClientThink` de `createPlaceholderGameExports` reste limite au bootstrap avant installation de l'API portee et ne remplace pas la logique runtime.
+- `packages/renderer-three`: pas de logique gameplay directe attendue. `ClientThink` produit surtout position/playerstate, weapon thunk, light level, sons/temp entities et eventuellement camera/chase; le renderer consomme ces sorties en aval via snapshots/client refresh, playerstate/camera, entites visibles, effets et temp entities.
 - Corrections appliquees dans `packages/game/src/g_main.ts`: appel `SaveClientData`, liberation `TAG_LEVEL`, preservation des blocs `client` sur les edicts joueurs reconstruits, et log `%i entities inhibited`.
 - Correction appliquee dans `scripts/verify/quake2-g-main.ts`: couverture ciblee de ces effets et support `%i` dans le formateur du harness.
 - `apps/web`: integration presente via `full-game-server-host.ts`/`SV_SpawnServer`, qui appelle l'export porte `SpawnEntities`; aucune logique web parallele ne remplace le spawn gameplay.
@@ -125,4 +136,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ClientThink`.
+- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ClientConnect`.
