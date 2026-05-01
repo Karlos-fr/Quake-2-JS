@@ -83,9 +83,9 @@
 | `Quake-2-master/game/g_misc.c` | function | `SP_monster_commander_body` | `packages/game/src/g_misc.ts` | `SP_monster_commander_body` | Valide | A redecouper | Header mis a jour; preuve C/TS: model/bbox/use/takedamage/FL_GODMODE/RF_FRAMELERP/precache/drop schedule/link et dispatch `ED_CallSpawn`; modele MD2/frame consommes par web/renderer. Memes tests que `commander_body_think`. |
 | `Quake-2-master/game/g_misc.c` | function | `misc_banner_think` | `packages/game/src/g_misc.ts` | `misc_banner_think` | Valide | A redecouper | Header verifie; preuve C/TS: frame `(frame + 1) % 16`, maintien du think loop et `nextthink = level.time + FRAMETIME`. Tests: `npm run verify:g-misc`, `npm run verify:g-spawn`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`. |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_banner` | `packages/game/src/g_misc.ts` | `SP_misc_banner` | Valide | A redecouper | Header verifie; preuve C/TS: `MOVETYPE_NONE`, `SOLID_NOT`, modele banner, frame initiale `rand()%16`, link, think et dispatch `ED_CallSpawn`; modele/frame consommes par web/renderer. Memes tests que `misc_banner_think`. |
-| `Quake-2-master/game/g_misc.c` | function | `misc_deadsoldier_die` | `packages/game/src/g_misc.ts` | `misc_deadsoldier_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | global | `n` | `packages/game/src/g_misc.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_misc_deadsoldier` | `packages/game/src/g_misc.ts` | `SP_misc_deadsoldier` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `misc_deadsoldier_die` | `packages/game/src/g_misc.ts` | `misc_deadsoldier_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | global | `n` | `packages/game/src/g_misc.ts` | `n` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `SP_misc_deadsoldier` | `packages/game/src/g_misc.ts` | `SP_misc_deadsoldier` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `train_use` | `packages/game/src/g_misc.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `func_train_find` | `packages/game/src/g_misc.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_viper_use` | `packages/game/src/g_misc.ts` | `misc_viper_use` | A verifier | A redecouper |  |

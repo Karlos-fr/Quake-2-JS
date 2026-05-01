@@ -993,6 +993,8 @@ export function Pickup_Key(ent: GameEntity, other: GameEntity, runtime: GameRunt
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Adds ammo to the inventory slot for the item's ammo tag, rejects non-clients, unknown ammo tags and already-full ammo, and clamps to the client's current max.
+ * Porting notes: The C if/else tag chain is expressed through `getAmmoMax`; `runtime` is accepted for callback signature consistency but is not used by this routine.
  */
 export function Add_Ammo(ent: GameEntity, item: GameItemDefinition, count: number, runtime: GameRuntime): boolean {
   void runtime;

@@ -163,6 +163,7 @@ const helpData: GameHudHelpComputerData = {
 const helpLayout = HelpComputer(runtime.entities[1]!, runtime, helpData, hooks);
 assert.ok(helpLayout.includes('picn help'), "HelpComputer background mismatch");
 assert.ok(helpLayout.includes('cstring2 "Unit Test"'), "HelpComputer level name mismatch");
+assert.ok(helpLayout.includes('  1/  3     2/4       1/2'), "HelpComputer must print kills/goals/secrets counters");
 
 runtime.deathmatch = false;
 runtime.helpchanged = 3;

@@ -2100,10 +2100,29 @@ export function door_secret_move1(self: GameEntity, runtime: GameRuntime): void 
   self.think = door_secret_move2;
 }
 
+/**
+ * Original name: door_secret_move2
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the second secret-door slide toward `pos2`, then chains into the wait phase.
+ */
 export function door_secret_move2(self: GameEntity, runtime: GameRuntime): void {
   Move_Calc(self, self.pos2, door_secret_move3, runtime);
 }
 
+/**
+ * Original name: door_secret_move3
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Leaves one-shot secret doors open when `wait == -1`.
+ * - Otherwise schedules the return sequence after the configured wait delay.
+ */
 export function door_secret_move3(self: GameEntity, runtime: GameRuntime): void {
   if (self.wait === -1) {
     return;

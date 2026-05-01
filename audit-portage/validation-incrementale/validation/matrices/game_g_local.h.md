@@ -167,13 +167,13 @@
 | `Quake-2-master/game/g_local.h` | global | `sound_entity_framenum` | `packages/game/src/g_local.ts` | `level_locals_t.sound_entity_framenum` | Valide | A redecouper | Tests: `verify:g-local:header`, `verify:g-ai`, `verify:p-weapon`, `verify:g-main`, `verify:g-save`, full-game server/three, web render-order, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | global | `sound2_entity` | `packages/game/src/g_local.ts` | `level_locals_t.sound2_entity` | Valide | A redecouper | Tests: `verify:g-local:header`, `verify:g-ai`, `verify:p-weapon`, `verify:g-main`, `verify:g-save`, full-game server/three, web render-order, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | global | `sound2_entity_framenum` | `packages/game/src/g_local.ts` | `level_locals_t.sound2_entity_framenum` | Valide | A redecouper | Tests: `verify:g-local:header`, `verify:g-ai`, `verify:p-weapon`, `verify:g-main`, `verify:g-save`, full-game server/three, web render-order, `typecheck`. |
-| `Quake-2-master/game/g_local.h` | global | `pic_health` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `total_secrets` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `found_secrets` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `total_goals` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `found_goals` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `total_monsters` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `killed_monsters` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `pic_health` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `total_secrets` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `found_secrets` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `total_goals` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `found_goals` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `total_monsters` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `killed_monsters` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `current_entity` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `body_que` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `power_cubes` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

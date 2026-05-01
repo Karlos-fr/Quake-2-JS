@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `misc_deadsoldier_die`, local `n` et `SP_misc_deadsoldier`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `misc_deadsoldier_die` conserve le seuil `health > -80`, le son `misc/udeath.wav`, les 4 appels `ThrowGib` organiques et `ThrowHead`; le local `n` est porte par la boucle TS `index < 4`; `SP_misc_deadsoldier` conserve le free deathmatch, `MOVETYPE_NONE`, `SOLID_BBOX`, modele `models/deadbods/dude/tris.md2`, priorite des frames par `spawnflags`, bbox, `DEAD_DEAD`, `DAMAGE_YES`, `SVF_MONSTER | SVF_DEADMONSTER`, callback die et `AI_GOOD_GUY`.
+  - Commentaires d'en-tete verifies: `SP_misc_deadsoldier` etait documente; commentaire d'en-tete ajoute pour `misc_deadsoldier_die` avec original/source/categorie/fidelite/comportement.
+  - Branchement runtime verifie: `misc_deadsoldier` est enregistre dans `g_spawn.ts`, exporte via `index.ts`, dispatchable par `ED_CallSpawn`; `SP_misc_deadsoldier` installe `die`; `misc_deadsoldier_die` est atteint via le flux damage/die runtime.
+  - `apps/web`: integration attendue car le lot produit un modele MD2 visible, puis des gibs/head visibles et un son. Aucune logique parallele trouvee; les flux local/full-game consomment snapshots, modelindices, effets et sons issus du runtime.
+  - `renderer-three`: integration attendue pour modele du corps, gibs/head MD2, origine, effets `EF_GIB` et disparition/conversion visible. Les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaire d'en-tete ajoute pour `misc_deadsoldier_die`.
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour spawn, frames par `spawnflags`, deathmatch free, dispatch `ED_CallSpawn`, seuil de gib, son, 4 gibs et head `ThrowHead`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `train_use` et `func_train_find`, puis `misc_viper_use` / `SP_misc_viper` si le lot reste petit.
+
 - 2026-05-01: `misc_banner_think` et `SP_misc_banner`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `misc_banner_think` conserve `s.frame = (s.frame + 1) % 16` et `nextthink = level.time + FRAMETIME`; `SP_misc_banner` conserve `MOVETYPE_NONE`, `SOLID_NOT`, modele `models/objects/banner/tris.md2`, frame initiale `rand() % 16`, link, callback think et premier think a `level.time + FRAMETIME`.

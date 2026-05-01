@@ -22,6 +22,7 @@ import {
   ANIM_DEATH,
   BecomeExplosion1,
   BecomeExplosion2,
+  DEAD_DEAD,
   GIB_METALLIC,
   GIB_ORGANIC,
   FRAMETIME,
@@ -33,6 +34,7 @@ import {
   SP_info_null,
   SP_misc_blackhole,
   SP_misc_banner,
+  SP_misc_deadsoldier,
   SP_misc_easterchick,
   SP_misc_easterchick2,
   SP_misc_eastertank,
@@ -46,6 +48,7 @@ import {
   SP_target_character,
   SP_target_string,
   SOLID_TRIGGER,
+  SVF_DEADMONSTER,
   SVF_NOCLIENT,
   attachGameClient,
   barrel_delay,
@@ -69,6 +72,7 @@ import {
   linkGameEntity,
   misc_blackhole_think,
   misc_banner_think,
+  misc_deadsoldier_die,
   misc_easterchick2_think,
   misc_easterchick_think,
   misc_blackhole_use,
@@ -85,7 +89,7 @@ import {
   useGameEntity
 } from "../../packages/game/src/index.js";
 import { SP_func_object, SP_func_wall, func_object_touch, func_object_use, func_wall_use } from "../../packages/game/src/g_misc.js";
-import { AI_COMBAT_POINT, AI_NOSTEP, AI_STAND_GROUND, FL_FLY, FL_GODMODE, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
+import { AI_COMBAT_POINT, AI_GOOD_GUY, AI_NOSTEP, AI_STAND_GROUND, FL_FLY, FL_GODMODE, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
 import { ThrowClientHead } from "../../packages/game/src/p_client.js";
 import { SVF_MONSTER } from "../../packages/game/src/runtime.js";
 
@@ -109,6 +113,7 @@ function main(): void {
   verifyMiscEasterchickSpawnsAndLoopsStandFrames();
   verifyMiscEasterchick2SpawnsAndLoopsStandFrames();
   verifyCommanderBodySpawnDropUseAndAnimation();
+  verifyMiscDeadsoldierSpawnAndGibDeath();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
   verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities();
@@ -874,6 +879,92 @@ function verifyCommanderBodySpawnDropUseAndAnimation(): void {
   dispatch.classname = "monster_commander_body";
   ED_CallSpawn(dispatch, runtime);
   assert.equal(dispatch.use, commander_body_use, "ED_CallSpawn must dispatch monster_commander_body to SP_monster_commander_body");
+}
+
+function verifyMiscDeadsoldierSpawnAndGibDeath(): void {
+  const runtime = createHarnessRuntime();
+
+  const poses: Array<[number, number]> = [
+    [0, 0],
+    [2, 1],
+    [4, 2],
+    [8, 3],
+    [16, 4],
+    [32, 5],
+    [2 | 4 | 8, 1]
+  ];
+
+  for (const [spawnflags, expectedFrame] of poses) {
+    const body = spawnFreeableEntity(runtime);
+    body.classname = "misc_deadsoldier";
+    body.spawnflags = spawnflags;
+
+    SP_misc_deadsoldier(body, runtime);
+
+    assert.equal(body.movetype, MOVETYPE_NONE, "misc_deadsoldier must be stationary");
+    assert.equal(body.solid, SOLID_BBOX, "misc_deadsoldier must use a bbox solid");
+    assert.equal(runtime.assets.modelPaths[body.s.modelindex - 1], "models/deadbods/dude/tris.md2", "misc_deadsoldier modelindex must resolve to dude/tris.md2");
+    assert.equal(body.s.frame, expectedFrame, "misc_deadsoldier pose frame must follow source spawnflag priority");
+    assert.deepEqual(body.mins, [-16, -16, 0], "misc_deadsoldier mins mismatch");
+    assert.deepEqual(body.maxs, [16, 16, 16], "misc_deadsoldier maxs mismatch");
+    assert.equal(body.deadflag, DEAD_DEAD, "misc_deadsoldier must spawn dead");
+    assert.equal(body.takedamage, damage_t.DAMAGE_YES, "misc_deadsoldier must be damageable");
+    assert.equal((body.svflags & SVF_MONSTER) !== 0, true, "misc_deadsoldier must keep SVF_MONSTER");
+    assert.equal((body.svflags & SVF_DEADMONSTER) !== 0, true, "misc_deadsoldier must keep SVF_DEADMONSTER");
+    assert.equal(body.die, misc_deadsoldier_die, "misc_deadsoldier must install misc_deadsoldier_die");
+    assert.equal((body.monsterinfo.aiflags & AI_GOOD_GUY) !== 0, true, "misc_deadsoldier must be marked AI_GOOD_GUY");
+    assert.equal(body.linked, true, "misc_deadsoldier must be linked for snapshots");
+  }
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  const deathmatchBody = spawnFreeableEntity(deathmatchRuntime);
+  deathmatchBody.classname = "misc_deadsoldier";
+  SP_misc_deadsoldier(deathmatchBody, deathmatchRuntime);
+  assert.equal(deathmatchBody.inuse, false, "misc_deadsoldier must auto-remove in deathmatch");
+
+  const dispatch = spawnFreeableEntity(runtime);
+  dispatch.classname = "misc_deadsoldier";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(dispatch.die, misc_deadsoldier_die, "ED_CallSpawn must dispatch misc_deadsoldier to SP_misc_deadsoldier");
+
+  const survivor = spawnFreeableEntity(runtime);
+  survivor.classname = "misc_deadsoldier";
+  survivor.health = -79;
+  misc_deadsoldier_die(survivor, null, null, 40, runtime);
+  assert.equal(drainGameSoundEvents(runtime).length, 0, "misc_deadsoldier_die must do nothing above the gib threshold");
+
+  const gibbed = spawnFreeableEntity(runtime);
+  gibbed.classname = "misc_deadsoldier";
+  gibbed.origin = [64, 72, 8];
+  gibbed.s.origin = [64, 72, 8];
+  gibbed.mins = [-16, -16, 0];
+  gibbed.maxs = [16, 16, 16];
+  gibbed.absmin = [48, 56, 8];
+  gibbed.size = [32, 32, 16];
+  gibbed.health = -80;
+
+  withMockedRandom(Array(80).fill(0.5), () => {
+    misc_deadsoldier_die(gibbed, null, null, 120, runtime);
+  });
+
+  const sounds = drainGameSoundEvents(runtime);
+  assert.equal(sounds.at(-1)?.soundPath, "misc/udeath.wav", "misc_deadsoldier_die must play the source udeath sound");
+  assert.equal(sounds.at(-1)?.channel, CHAN_BODY, "misc_deadsoldier_die must use CHAN_BODY");
+  assert.equal(sounds.at(-1)?.attenuation, ATTN_NORM, "misc_deadsoldier_die must use ATTN_NORM");
+
+  const meatGibs = runtime.entities.filter((entity) => entity.inuse && runtime.assets.modelPaths[entity.s.modelindex - 1] === "models/objects/gibs/sm_meat/tris.md2");
+  assert.equal(meatGibs.length, 4, "misc_deadsoldier_die must throw four small meat gibs");
+  for (const gib of meatGibs) {
+    assert.equal((gib.s.effects & EF_GIB) !== 0, true, "dead soldier meat gib must carry EF_GIB");
+    assert.equal(gib.movetype, MOVETYPE_TOSS, "dead soldier meat gib must be organic toss gib");
+    assert.equal(gib.linked, true, "dead soldier meat gib must be linked for snapshots");
+  }
+
+  assert.equal(runtime.assets.modelPaths[gibbed.s.modelindex - 1], "models/objects/gibs/head2/tris.md2", "dead soldier head model mismatch");
+  assert.equal((gibbed.s.effects & EF_GIB) !== 0, true, "dead soldier head must carry EF_GIB");
+  assert.equal(gibbed.movetype, MOVETYPE_TOSS, "dead soldier head must be an organic toss gib");
+  assert.equal(gibbed.linked, true, "dead soldier head must stay linked after ThrowHead");
 }
 
 function verifyBarrelDelaySchedulesDelayedExplosion(): void {

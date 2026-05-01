@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `SV_Physics_None`.
-- Prochain lot recommande: `SV_Physics_Noclip`.
+- Dernier lot valide: `SV_Physics_Noclip`.
+- Prochain lot recommande: `SV_Physics_Toss`.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -147,4 +147,15 @@
 - apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace `SV_Physics_None`. Les sorties attendues sont uniquement celles que le callback think peut produire ensuite via snapshots, sons, temp entities ou etats runtime.
 - renderer-three: pas de sortie renderer directe de type modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene. Si le think modifie des champs visibles ou emet des evenements, les flux client/renderer existants les consomment indirectement.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour think futur/du, absence de trace collision et absence de modification d'origine/velocite.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `SV_Physics_Noclip`
+
+- Lot traite: `SV_Physics_Noclip`.
+- Comparaison C/TS: le C appelle `SV_RunThink(ent)` et retourne si le think est execute, sinon avance `s.angles` par `FRAMETIME * avelocity`, avance `s.origin` par `FRAMETIME * velocity`, puis relink l'entite sans trace collision. Le TS reprend ces branches avec `SV_RunThink(ent, runtime)`, `setEntityPose` pour synchroniser `origin`/`s.origin` et `angles`/`s.angles`, puis `linkGameEntity(runtime, ent)`.
+- Commentaire d'en-tete: present et conforme (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement). Le niveau `Close` reste justifie par le runtime explicite et la synchronisation TS des champs miroir.
+- Runtime: integre via `G_RunFrame` / `G_RunEntity` pour `MOVETYPE_NOCLIP`; ce flux couvre les entites qui doivent se deplacer sans collision, avec relink spatial apres mouvement.
+- apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace `SV_Physics_Noclip`. Les sorties attendues sont les positions/angles et snapshots/refresh frames resultant du runtime.
+- renderer-three: pas de sortie renderer directe de type modele, frame, image, particule, beam, dlight, temp entity, areabits ou camera; les sorties visibles attendues sont les origines/angles des entites noclip, consommees indirectement via snapshots, refresh frames et adapters renderer existants.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour think futur/du, mouvement noclip, synchronisation `s.origin`/`s.angles`, relink et absence de trace collision.
 - Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.

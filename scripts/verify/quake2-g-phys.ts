@@ -22,12 +22,14 @@ import {
   SV_Push,
   SV_PushEntity,
   SV_Physics_None,
+  SV_Physics_Noclip,
   SV_Physics_Toss,
   SV_RunThink,
   SV_TestEntityPosition
 } from "../../packages/game/src/g_phys.js";
 import {
   MOVETYPE_FLY,
+  MOVETYPE_NOCLIP,
   MOVETYPE_NONE,
   MOVETYPE_PUSH,
   MOVETYPE_STEP,
@@ -774,6 +776,47 @@ nonePhysicsEnt.nextthink = runtime.time;
 SV_Physics_None(nonePhysicsEnt, runtime);
 assertEqual("SV_Physics_None.due-think", nonePhysicsThinkCount, 1);
 assertEqual("SV_Physics_None.nextthink", nonePhysicsEnt.nextthink, 0);
+runtime.collision = defaultCollision;
+
+const noclipPhysicsEnt = spawnGameEntity(runtime);
+let noclipThinkCount = 0;
+let noclipTraceCount = 0;
+noclipPhysicsEnt.classname = "noclip-direct";
+noclipPhysicsEnt.movetype = MOVETYPE_NOCLIP;
+noclipPhysicsEnt.origin = [10, 20, 30];
+noclipPhysicsEnt.s.origin = [10, 20, 30];
+noclipPhysicsEnt.angles = [5, 10, 15];
+noclipPhysicsEnt.s.angles = [5, 10, 15];
+noclipPhysicsEnt.velocity = [100, -50, 25];
+noclipPhysicsEnt.avelocity = [30, -60, 90];
+noclipPhysicsEnt.nextthink = runtime.time + 1;
+noclipPhysicsEnt.think = () => {
+  noclipThinkCount += 1;
+};
+runtime.collision = {
+  ...defaultCollision,
+  trace: (...args) => {
+    noclipTraceCount += 1;
+    return defaultCollision.trace(...args);
+  }
+};
+SV_Physics_Noclip(noclipPhysicsEnt, runtime);
+assertEqual("SV_Physics_Noclip.future-think", noclipThinkCount, 0);
+assertEqual("SV_Physics_Noclip.trace-count", noclipTraceCount, 0);
+assertVec("SV_Physics_Noclip.origin", noclipPhysicsEnt.origin, [20, 15, 32.5]);
+assertVec("SV_Physics_Noclip.s-origin", noclipPhysicsEnt.s.origin, [20, 15, 32.5]);
+assertVec("SV_Physics_Noclip.angles", noclipPhysicsEnt.angles, [8, 4, 24]);
+assertVec("SV_Physics_Noclip.s-angles", noclipPhysicsEnt.s.angles, [8, 4, 24]);
+assertEqual("SV_Physics_Noclip.linked", noclipPhysicsEnt.linked, true);
+
+noclipPhysicsEnt.nextthink = runtime.time;
+const noclipLinkcount = noclipPhysicsEnt.linkcount;
+SV_Physics_Noclip(noclipPhysicsEnt, runtime);
+assertEqual("SV_Physics_Noclip.due-think", noclipThinkCount, 1);
+assertEqual("SV_Physics_Noclip.nextthink", noclipPhysicsEnt.nextthink, 0);
+assertEqual("SV_Physics_Noclip.no-move-after-due-think-linkcount", noclipPhysicsEnt.linkcount, noclipLinkcount);
+assertVec("SV_Physics_Noclip.no-move-after-due-think-origin", noclipPhysicsEnt.origin, [20, 15, 32.5]);
+assertVec("SV_Physics_Noclip.no-move-after-due-think-angles", noclipPhysicsEnt.angles, [8, 4, 24]);
 runtime.collision = defaultCollision;
 
 const tossEnt = spawnGameEntity(runtime);

@@ -402,6 +402,18 @@ export function ThrowHead(self: GameEntity, gibname: string, damage: number, typ
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: misc_deadsoldier_die
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Gibs a dead soldier body once health reaches the source gib threshold.
+ *
+ * Porting notes:
+ * - Sound, gib and head side effects use the runtime adapters instead of `gi.sound` and direct edict allocation.
+ */
 export function misc_deadsoldier_die(
   self: GameEntity,
   _inflictor: GameEntity | null,

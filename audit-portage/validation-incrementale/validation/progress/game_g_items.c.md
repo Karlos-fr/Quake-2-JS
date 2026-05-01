@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Add_Ammo`, locales `index` / `max`.
+
+Validation Add_Ammo du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Add_Ammo` conserve le comportement C: retourne `false` sans client, choisit le plafond selon `item->tag` pour Bullets/Shells/Rockets/Grenades/Cells/Slugs, retourne `false` pour un tag inconnu, calcule `ITEM_INDEX(item)`, refuse un slot deja exactement au maximum, ajoute `count`, clamp au max, puis retourne `true`. Le port TS garde ce flux via `getAmmoMax`, `ITEM_INDEX(item)` et l'inventaire client. Header TS complete avec `Behavior` et note de portage sur la factorisation de la chaine de tags.
+
+Runtime branche via `Pickup_Ammo`, `Pickup_Weapon`, `Cmd_Give_f` et les hooks `local-game-bootstrap.ts`/`p_weapon.ts`. `apps/web` doit consommer ce flux par le runtime local/full-game, les commandes, l'inventaire/HUD, les sons pickup produits par les appelants et les snapshots; aucune logique parallele ammo detectee dans `apps/web`. `renderer-three` doit consommer les sorties visibles generiques des appelants: entites ammo/armes MD2, disparition pendant pickup, respawn et scene refresh; `Add_Ammo` ne produit pas directement de modele, frame, image, particule, beam, dlight, areabits, camera ou scene.
+
+Test renforce dans `scripts/verify/quake2-g-items.ts`: `verifyAddAmmoCapsToMax` couvre les six tags ammo, les plafonds correspondants, l'ecriture dans les slots `ITEM_INDEX`, le rejet deja plein, le rejet tag inconnu et le rejet entite sans client. Tests lances: `npm run verify:g-items`, `npm run verify:p-weapon`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `Pickup_Key`.
 
 Validation Pickup_Key du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_Key` conserve le comportement C: hors coop, chaque pickup incremente l'inventaire; en coop, une cle normale deja possedee est refusee et l'inventaire reste a 1; pour `key_power_cube`, le bit `((spawnflags & 0x0000ff00) >> 8)` est teste dans `client.pers.power_cubes`, l'inventaire est incremente seulement au premier bit, puis le bit est memorise. Header TS complete avec `Behavior` et note de portage sur la garde item absente du C mais utile aux entites TS mal formees.
@@ -293,4 +301,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Add_Ammo`.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Ammo` avec les locales `oldcount`, `count` et `weapon` si le lot reste petit.

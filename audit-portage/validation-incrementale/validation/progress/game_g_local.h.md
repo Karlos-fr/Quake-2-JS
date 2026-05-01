@@ -697,6 +697,28 @@
   - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration et miroir runtime des deux canaux.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:p-weapon` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `level_locals_t` avec champs `pic_health`, `total_secrets`, `found_secrets`, `total_goals`, `found_goals`, `total_monsters`, `killed_monsters`.
+- Verdict: `Valide` pour les 7 champs apres comparaison H/TS, verification des commentaires de fonctions portees et renforcement des preuves; aucune correction gameplay TS necessaire.
+- Source H comparee: `pic_health` stocke l'image HUD sante precachee par worldspawn; les compteurs secrets/goals/monsters comptabilisent les objectifs et monstres de niveau pour le help computer, les regles de cible et la progression.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `level_locals_t` porte les sept champs dans l'ordre C attendu; `createLevelLocals` initialise chaque compteur a `0`; commentaire de portage `level_locals_t` verifie.
+  - `packages/game/src/runtime.ts`: miroir runtime present pour les sept champs avec les memes valeurs par defaut.
+  - `packages/game/src/g_main.ts`: `configureWorldspawn` pose `pic_health` via `gi.imageindex("i_health")`; `ClientCommand` transmet les compteurs au help layout; `G_RunFrame` synchronise runtime vers `level_locals_t`.
+  - `packages/game/src/p_hud.ts`: `G_SetStats` consomme `runtime.pic_health` pour `STAT_HEALTH_ICON`; `HelpComputer` affiche kills/goals/secrets comme le C.
+  - `packages/game/src/g_target.ts`: `SP_target_secret`/`use_target_secret` et `SP_target_goal`/`use_target_goal` incrementent total/found et stoppent `CS_CDTRACK` quand tous les goals sont trouves.
+  - `packages/game/src/g_monster.ts`, `g_turret.ts`, `g_combat.ts`: `monster_start`/turret driver incrementent `total_monsters`; `Killed` incremente `killed_monsters` pour les monstres hostiles non deja morts.
+  - `packages/game/src/g_save.ts`: `WriteLevel`/`ReadLevel` persistent et restaurent les sept champs, puis resynchronisent le miroir runtime.
+- Runtime: flux attendu branche depuis `SpawnEntities`/worldspawn et les callbacks `target_secret`, `target_goal`, `monster_start`, `Killed`, puis consommation par `G_SetStats`, `HelpComputer`, `ClientCommand`, `G_RunFrame` et save/load level.
+- apps/web: integration attendue via host local/full-game, commandes client/help, HUD/stats, snapshots et configstrings; aucune logique parallele detectee dans `apps/web` pour remplacer ces compteurs. `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: pas de consommation directe de `pic_health` ou des compteurs attendue dans `packages/renderer-three`. `pic_health` et les compteurs produisent des sorties HUD/layout et decisions gameplay; les sorties visibles de monstres/objectifs passent ensuite par entites/snapshots/configstrings consommes par le flux full-game. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `level_locals_t` verifie; commentaires d'en-tete de `configureWorldspawn`/worldspawn, `G_SetStats`, `HelpComputer`, `use_target_secret`, `SP_target_secret`, `use_target_goal`, `SP_target_goal`, `monster_start`, `Killed`, `G_RunFrame`, `WriteLevel` et `ReadLevel` verifies quand applicables.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defauts, mutation et `LLOFS` pour les sept champs.
+  - `scripts/verify/quake2-g-main.ts`: assertions miroir `G_RunFrame -> level_locals_t` pour les sept champs.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration et miroir runtime pour les sept champs.
+  - `scripts/verify/quake2-p-hud.ts`: assertion du layout help pour les compteurs kills/goals/secrets.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:p-hud` OK; `npm run verify:g-target` OK; `npm run verify:g-monster` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -730,7 +752,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `level_locals_t.pic_health`, puis les compteurs `total_secrets`/`found_secrets`, `total_goals`/`found_goals`, `total_monsters`/`killed_monsters` si le lot reste petit.
+- Continuer avec `level_locals_t.current_entity`, `body_que`, `power_cubes` si le lot reste petit.
 
 ## Blocages
 

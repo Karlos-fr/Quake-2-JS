@@ -225,14 +225,36 @@ function verifyHealthSpawnFunctionsUseGenericHealthItem(): void {
 function verifyAddAmmoCapsToMax(): void {
   const runtime = createHarnessRuntime();
   const player = createPlayer(runtime);
-  const bullets = requireItem("Bullets");
+  const client = player.client!;
+  const ammoCases: Array<{ name: string; maxField: keyof typeof client.pers; max: number; start: number; count: number }> = [
+    { name: "Bullets", maxField: "max_bullets", max: 200, start: 190, count: 25 },
+    { name: "Shells", maxField: "max_shells", max: 100, start: 95, count: 10 },
+    { name: "Rockets", maxField: "max_rockets", max: 50, start: 49, count: 5 },
+    { name: "Grenades", maxField: "max_grenades", max: 50, start: 45, count: 10 },
+    { name: "Cells", maxField: "max_cells", max: 200, start: 175, count: 50 },
+    { name: "Slugs", maxField: "max_slugs", max: 50, start: 40, count: 15 }
+  ];
 
-  player.client!.pers.max_bullets = 200;
-  player.client!.pers.inventory[bullets.index] = 190;
+  for (const ammoCase of ammoCases) {
+    const item = requireItem(ammoCase.name);
+    client.pers[ammoCase.maxField] = ammoCase.max;
+    client.pers.inventory[item.index] = ammoCase.start;
 
-  const accepted = Add_Ammo(player, bullets, 25, runtime);
-  assertBoolean(accepted, true, "Add_Ammo accepts partial bullet refill");
-  assertNumber(player.client!.pers.inventory[bullets.index], 200, "Add_Ammo caps bullets to max_bullets");
+    const accepted = Add_Ammo(player, item, ammoCase.count, runtime);
+    assertBoolean(accepted, true, `Add_Ammo accepts partial ${ammoCase.name} refill`);
+    assertNumber(client.pers.inventory[item.index], ammoCase.max, `Add_Ammo caps ${ammoCase.name} to ${String(ammoCase.maxField)}`);
+  }
+
+  const shells = requireItem("Shells");
+  client.pers.inventory[shells.index] = client.pers.max_shells;
+  assertBoolean(Add_Ammo(player, shells, 1, runtime), false, "Add_Ammo rejects already-full ammo");
+  assertNumber(client.pers.inventory[shells.index], client.pers.max_shells, "Add_Ammo leaves full ammo unchanged");
+
+  const unknownAmmo = { ...requireItem("Health"), tag: 9999 };
+  assertBoolean(Add_Ammo(player, unknownAmmo, 10, runtime), false, "Add_Ammo rejects unknown ammo tags");
+
+  const nonClient = spawnGameEntity(runtime);
+  assertBoolean(Add_Ammo(nonClient, requireItem("Bullets"), 10, runtime), false, "Add_Ammo rejects entities without clients");
 }
 
 function verifySetRespawnRoundTrip(): void {

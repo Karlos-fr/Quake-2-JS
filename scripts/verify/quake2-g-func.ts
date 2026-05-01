@@ -48,6 +48,8 @@ import {
   door_blocked,
   door_use,
   door_secret_move1,
+  door_secret_move2,
+  door_secret_move3,
   door_go_down,
   door_go_up,
   door_hit_bottom,
@@ -1236,6 +1238,21 @@ assert.equal(secret.die?.name, "door_secret_die", "SECRET_ALWAYS_SHOOT default d
 door_secret_move1(secret, runtime);
 assert.equal(secret.nextthink, runtime.time + 1, "door_secret_move1 delay mismatch");
 assert.equal(secret.think?.name, "door_secret_move2", "door_secret_move1 next think mismatch");
+door_secret_move2(secret, runtime);
+assert.equal(secret.moveinfo.remaining_distance, Math.hypot(secret.pos2[0], secret.pos2[1], secret.pos2[2]), "door_secret_move2 distance mismatch");
+assert.equal(secret.moveinfo.endfunc?.name, "door_secret_move3", "door_secret_move2 endfunc mismatch");
+assert.equal(secret.think?.name, "Move_Begin", "door_secret_move2 must schedule movement");
+secret.nextthink = 0;
+secret.think = null;
+door_secret_move3(secret, runtime);
+assert.equal(secret.nextthink, runtime.time + secret.wait, "door_secret_move3 wait delay mismatch");
+assert.equal(secret.think?.name, "door_secret_move4", "door_secret_move3 return think mismatch");
+secret.nextthink = 123;
+secret.think = null;
+secret.wait = -1;
+door_secret_move3(secret, runtime);
+assert.equal(secret.nextthink, 123, "door_secret_move3 wait -1 must not schedule");
+assert.equal(secret.think, null, "door_secret_move3 wait -1 must not set return think");
 
 const secretLeft = entity("func_door_secret", 145, { angle: "0", spawnflags: "2", targetname: "secret_left" });
 secretLeft.size = [32, 64, 16];

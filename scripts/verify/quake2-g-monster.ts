@@ -67,6 +67,7 @@ import {
   M_MoveFrame,
   M_SetEffects,
   M_WorldEffects,
+  flymonster_start_go,
   monster_death_use,
   monster_fire_bfg,
   monster_fire_blaster,
@@ -80,11 +81,13 @@ import {
   monster_think,
   monster_triggered_spawn,
   monster_triggered_spawn_use,
+  monster_triggered_start,
   monster_use,
+  swimmonster_start_go,
   type GameMonsterHooks,
   walkmonster_start_go
 } from "../../packages/game/src/g_monster.js";
-import { MOVETYPE_STEP, type GameMonsterMove } from "../../packages/game/src/runtime.js";
+import { MOVETYPE_NONE, MOVETYPE_STEP, type GameMonsterMove } from "../../packages/game/src/runtime.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 import type { trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
 
@@ -468,10 +471,14 @@ function verifyTriggeredSpawnStartupPath(): void {
 
   const monster = createMonster(runtime, 13);
   const activator = createPlayer(runtime, 14);
+  const retainedThink = (): void => {
+    return;
+  };
+  monster.think = retainedThink;
   monster.spawnflags = 2;
-  monster.solid = SOLID_NOT;
-  monster.movetype = 0;
-  monster.svflags |= SVF_NOCLIENT;
+  monster.solid = SOLID_BBOX;
+  monster.movetype = MOVETYPE_STEP;
+  monster.svflags &= ~SVF_NOCLIENT;
   monster.s.origin = [8, 16, 24];
   monster.origin = [8, 16, 24];
   monster.groundentity = createRuntimeEntity({ classname: "ground" }, 15);
@@ -481,10 +488,14 @@ function verifyTriggeredSpawnStartupPath(): void {
     return;
   };
 
-  walkmonster_start_go(monster, runtime);
+  monster_triggered_start(monster, runtime);
 
-  assert.equal(monster.solid, SOLID_NOT, "walkmonster_start_go should hide trigger-spawn monsters after shared startup");
-  assert.equal(typeof monster.use, "function", "walkmonster_start_go should arm trigger-spawn use");
+  assert.equal(monster.solid, SOLID_NOT, "monster_triggered_start should hide trigger-spawn monsters");
+  assert.equal(monster.movetype, MOVETYPE_NONE, "monster_triggered_start should disable movement until triggered");
+  assert.equal((monster.svflags & SVF_NOCLIENT) !== 0, true, "monster_triggered_start should hide the monster from clients");
+  assert.equal(monster.nextthink, 0, "monster_triggered_start should cancel the pending startup think");
+  assert.equal(monster.think, retainedThink, "monster_triggered_start should preserve the existing think callback like the C code");
+  assert.equal(typeof monster.use, "function", "monster_triggered_start should arm trigger-spawn use");
 
   monster.use!(monster, null, activator, runtime);
 
@@ -508,6 +519,28 @@ function verifyTriggeredSpawnStartupPath(): void {
   hiddenMonster.use!(hiddenMonster, null, activator, runtime);
   assert.equal(hiddenMonster.enemy, activator, "monster_triggered_spawn_use should install monster_use for later activations");
   assert.equal(delayedFoundTargetCalls, 1, "monster_triggered_spawn_use should preserve hooks through the installed monster_use callback");
+
+  const walkMonster = createMonster(runtime, 20);
+  const flyMonster = createMonster(runtime, 21);
+  const swimMonster = createMonster(runtime, 22);
+  for (const startupMonster of [walkMonster, flyMonster, swimMonster]) {
+    startupMonster.spawnflags = 2;
+    startupMonster.solid = SOLID_BBOX;
+    startupMonster.movetype = MOVETYPE_STEP;
+    startupMonster.svflags &= ~SVF_NOCLIENT;
+  }
+
+  walkmonster_start_go(walkMonster, runtime);
+  flymonster_start_go(flyMonster, runtime);
+  swimmonster_start_go(swimMonster, runtime);
+
+  for (const startupMonster of [walkMonster, flyMonster, swimMonster]) {
+    assert.equal(startupMonster.solid, SOLID_NOT, "walk/fly/swim startup should hide trigger-spawn monsters after shared startup");
+    assert.equal(startupMonster.movetype, MOVETYPE_NONE, "walk/fly/swim startup should park trigger-spawn monsters");
+    assert.equal((startupMonster.svflags & SVF_NOCLIENT) !== 0, true, "walk/fly/swim startup should keep trigger-spawn monsters out of snapshots");
+    assert.equal(startupMonster.nextthink, 0, "walk/fly/swim startup should cancel regular monster thinking until triggered");
+    assert.equal(typeof startupMonster.use, "function", "walk/fly/swim startup should arm trigger-spawn use");
+  }
 
   let foundTargetCalls = 0;
   monster_triggered_spawn(monster, runtime, {
