@@ -781,10 +781,12 @@ export function door_touch(self: GameEntity, other: GameEntity, runtime: GameRun
  * - Initializes one translating brush door from BSP entity properties.
  *
  * Porting notes:
+ * - Uses `G_SetMovedir` and runtime deathmatch state in place of the original spawn-time globals.
  * - Computes travel distance from inline model bounds already attached to the runtime entity.
  * - Defers true pusher movement to the later movement phases.
  */
 export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
+  G_SetMovedir(ent.angles, ent.movedir);
   ent.movetype = MOVETYPE_PUSH;
   ent.solid = SOLID_BSP;
   if (ent.model) {
@@ -801,6 +803,9 @@ export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
 
   if (!ent.speed) {
     ent.speed = 100;
+  }
+  if (runtime.deathmatch) {
+    ent.speed *= 2;
   }
   if (!ent.accel) {
     ent.accel = ent.speed;
@@ -822,22 +827,21 @@ export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
     ent.origin[1] + ent.movedir[1] * ent.moveinfo.distance,
     ent.origin[2] + ent.movedir[2] * ent.moveinfo.distance
   ];
-  ent.angles = [0, 0, 0];
 
   if ((ent.spawnflags & DOOR_START_OPEN) !== 0) {
     ent.origin = [...ent.pos2];
     ent.pos2 = [...ent.pos1];
     ent.pos1 = [...ent.origin];
   }
-  refreshEntitySpatialState(ent);
-  linkGameEntity(runtime, ent);
 
   ent.moveinfo.state = STATE_BOTTOM;
 
   if (ent.health > 0) {
+    ent.takedamage = damage_t.DAMAGE_YES;
     ent.die = door_killed;
     ent.max_health = ent.health;
   } else if (ent.targetname && ent.message) {
+    registerGameSound(runtime, "misc/talk.wav");
     ent.touch = door_touch;
   }
 
@@ -850,9 +854,19 @@ export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
   ent.moveinfo.start_angles = [...ent.angles];
   ent.moveinfo.end_angles = [...ent.angles];
 
+  if ((ent.spawnflags & 16) !== 0) {
+    ent.s.effects |= EF_ANIM_ALL;
+  }
+  if ((ent.spawnflags & 64) !== 0) {
+    ent.s.effects |= EF_ANIM_ALLFAST;
+  }
+
   if (!ent.team) {
     ent.teammaster = ent;
   }
+
+  refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
 
   ent.nextthink = runtime.time + FRAMETIME;
   ent.think = ent.health > 0 || Boolean(ent.targetname) ? Think_CalcMoveSpeed : Think_SpawnDoorTrigger;
