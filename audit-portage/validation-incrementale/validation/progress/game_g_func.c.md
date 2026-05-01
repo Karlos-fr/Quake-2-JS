@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: spawn de trigger de porte `Think_SpawnDoorTrigger` et locale matricielle `other`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1038-1073` avec `packages/game/src/g_func.ts:630-672` et helper de bounds `packages/game/src/g_func.ts:2087-2115`.
+- Correction appliquee: `Think_SpawnDoorTrigger` teste maintenant le flag `FL_TEAMSLAVE` comme le C, au lieu de se baser seulement sur `teammaster`; le commentaire d'en-tete documente l'adapter `G_Spawn`/`gi.linkentity`.
+- Effets verifies: retour immediat pour team slave, merge des bounds absolues du master et de `teamchain`, expansion X/Y de 60 unites, creation du helper local `other` avec owner/`SOLID_TRIGGER`/`MOVETYPE_NONE`/`Touch_DoorTrigger`, link runtime, ouverture d'areaportal sous `DOOR_START_OPEN`, puis appel a `Think_CalcMoveSpeed`.
+- Branchement: `Think_SpawnDoorTrigger` est programme par `SP_func_door` et `SP_func_door_rotating` pour les portes non ciblees/non shootables, puis execute par `G_RunFrame`/`G_RunEntity`/`SV_RunThink`; le trigger cree rejoint le flux touch vers `Touch_DoorTrigger`/`door_use`/mouvements de portes.
+- Integration: aucune logique parallele `func_door` dans `apps/web`; le navigateur consomme le runtime serveur/local, sons, areabits et snapshots/interpolations de brush models. `packages/renderer-three` ne porte pas le spawn gameplay et consomme les sorties visibles attendues via brush snapshots et areabits; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: trigger de porte `Touch_DoorTrigger`, harmonisation de vitesse `Think_CalcMoveSpeed` et locales `ent`/`min`/`time`/`newspeed`/`ratio`/`dist`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:980-1035` avec `packages/game/src/g_func.ts:550-619`.
 - Correction appliquee: `Think_CalcMoveSpeed` teste maintenant `FL_TEAMSLAVE` comme le C et conserve la logique `ratio` pour `accel`/`decel` quand ces valeurs ne sont pas egales a l'ancienne `speed`, au lieu de les forcer toutes a `newspeed`.
@@ -198,7 +206,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `Think_SpawnDoorTrigger`, puis `other` local si coherent.
+- Continuer avec `door_blocked`, puis locale `ent` si coherent.
 
 ## Blocages
 
