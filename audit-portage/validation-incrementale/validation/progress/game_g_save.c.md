@@ -2,6 +2,40 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: fonction `ReadClient` et temporaire local auto-detecte `field`.
+
+## Verdict du lot
+
+- `ReadClient`: valide. Dans le C, la fonction lit le bloc `gclient_t` par `fread`, puis itere `clientfields` pour appliquer `ReadField` aux trois pointeurs `F_ITEM` (`pers.weapon`, `pers.lastweapon`, `newweapon`). Dans le port TS, le format binaire est remplace par `restoreClient`: l'etat client est restaure depuis le snapshot JSON structure, les tableaux/vecteurs sont clones, et les trois pointeurs d'items sont resolus par `GetItemByIndex`.
+- `field`: valide. Le pointeur d'iteration C sur `clientfields` est porte par les trois lookups explicites dans `restoreClient`; le harness verifie maintenant que `ReadGame` restaure `pers.weapon`, `pers.lastweapon` et `newweapon` depuis les index ecrits par `snapshotClient`.
+- Commentaires d'en-tete: commentaire ajoute sur `restoreClient` dans `packages/game/src/g_save.ts` avec `Original name: ReadClient`, source, categorie, niveau de fidelite, comportement et notes de portage.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. Le role de `ReadClient` est atteint par `ReadGame`, expose par `g_main.ts` dans l'API game et appele par le serveur via `SV_ReadServerFile`; la reprise niveau separee passe par `ReadLevel`.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` connecte les flux save/load au `web-save-storage` et appelle le runtime porte; aucune logique web parallele ne remplace la restauration client.
+- renderer-three: non applicable directement. `ReadClient` restaure l'etat gameplay client et des pointeurs d'items; il ne produit pas directement modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene. Les armes/items restaures peuvent ensuite influencer HUD/viewmodel/snapshots via le runtime client/serveur.
+
+## Corrections appliquees
+
+- `packages/game/src/g_save.ts`: ajout du commentaire d'en-tete de `restoreClient`.
+- `scripts/verify/quake2-g-save.ts`: ajout d'assertions pour la restauration de `pers.weapon`, `pers.lastweapon` et `newweapon`.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `ReadClient` et `field`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: compteur `Validees` et prochain lot mis a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-01.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01.
+- `npm run verify:web-save-storage`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
+
+## Prochain lot recommande
+
+- Continuer avec `WriteGame`, puis ses temporaires locaux `i` et `str` si le lot reste coherent.
+
+---
+
 - 2026-05-01: fonction `WriteClient` et temporaire local auto-detecte `field`.
 
 ## Verdict du lot

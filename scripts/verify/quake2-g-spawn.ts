@@ -270,7 +270,8 @@ const funcSpawnNames = [
   "func_door_secret",
   "func_door_rotating",
   "func_water",
-  "func_train"
+  "func_train",
+  "func_clock"
 ] as const;
 
 for (const name of funcSpawnNames) {
@@ -951,6 +952,67 @@ timerKillboxContext.runtime.collision = {
 };
 spawnedKillbox.use?.(spawnedKillbox, null, null, timerKillboxContext.runtime);
 assert.equal(killboxBlocker.solid, 0, "func_killbox use must delegate to KillBox telefrag damage");
+
+const clockContext = createGameMainContext(imports);
+InitGame(clockContext);
+SpawnEntities(
+  clockContext,
+  "clock_map",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "target_string"
+"targetname" "clock_display"
+"team" "clock_digits"
+}
+{
+"classname" "target_character"
+"team" "clock_digits"
+"model" "*30"
+"count" "1"
+}
+{
+"classname" "target_character"
+"team" "clock_digits"
+"model" "*31"
+"count" "3"
+}
+{
+"classname" "target_character"
+"team" "clock_digits"
+"model" "*32"
+"count" "4"
+}
+{
+"classname" "func_clock"
+"target" "clock_display"
+"spawnflags" "5"
+"style" "1"
+"count" "2"
+}
+`,
+  ""
+);
+const spawnedClock = clockContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_clock");
+assert.ok(spawnedClock, "SpawnEntities must keep func_clock in the runtime");
+assert.equal(spawnedClock.message?.length, 16, "SP_func_clock must allocate the fixed CLOCK_MESSAGE_SIZE buffer");
+assert.equal(spawnedClock.health, 0, "START_OFF TIMER_UP func_clock must reset health to zero");
+assert.equal(spawnedClock.wait, 2, "START_OFF TIMER_UP func_clock must copy count into wait");
+assert.equal(typeof spawnedClock.use, "function", "START_OFF func_clock must expose func_clock_use");
+assert.equal(typeof spawnedClock.think, "function", "func_clock must expose func_clock_think");
+spawnedClock.use?.(spawnedClock, null, spawnedClock, clockContext.runtime);
+const clockDisplay = clockContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "target_string");
+assert.equal(clockDisplay?.message, " 0:00", "func_clock_use must immediately push the first formatted message");
+const clockDigits = clockContext.runtime.entities.filter((entity) => entity.inuse && entity.classname === "target_character");
+assert.equal(clockDigits.find((entity) => entity.count === 1)?.s.frame, 12, "target_character count 1 must display the leading blank from func_clock");
+assert.equal(clockDigits.find((entity) => entity.count === 3)?.s.frame, 11, "target_character count 3 must display the func_clock colon");
+assert.equal(clockDigits.find((entity) => entity.count === 4)?.s.frame, 0, "target_character count 4 must display the func_clock minute digit");
+clockContext.runtime.framenum = 9;
+G_RunFrame(clockContext);
+assert.equal(clockDisplay?.message, " 0:01", "G_RunFrame must execute func_clock_think and update target_string");
+assert.equal(clockDigits.find((entity) => entity.count === 4)?.s.frame, 0, "renderer-visible target_character frame must remain synchronized for minutes");
+assert.equal(clockDigits.find((entity) => entity.count === 1)?.s.modelindex > 0, true, "target_character digits must publish inline brush modelindexes");
 
 const commandContext = createGameMainContext(imports);
 InitGame(commandContext);

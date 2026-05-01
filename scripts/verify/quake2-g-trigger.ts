@@ -34,14 +34,17 @@ import {
   SP_trigger_multiple,
   SP_trigger_once,
   SP_trigger_push,
+  SP_trigger_relay,
   Touch_Multi,
   trigger_counter_use,
-  trigger_key_use
+  trigger_key_use,
+  trigger_relay_use
 } from "../../packages/game/src/g_trigger.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 
 verifyTriggerMultipleDirectionalTouch();
 verifyTriggerOnceRemoval();
+verifyTriggerRelay();
 verifyTriggerKey();
 verifyTriggerCounter();
 verifyTriggerPush();
@@ -92,6 +95,29 @@ function verifyTriggerOnceRemoval(): void {
   ent.use?.(ent, null, actor, runtime);
   runPendingThinks(runtime, runtime.time + FRAMETIME);
   assert.equal(ent.inuse, false, "trigger_once must free itself after firing");
+}
+
+function verifyTriggerRelay(): void {
+  const runtime = createRuntime();
+  const relay = spawnGameEntity(runtime);
+  relay.classname = "trigger_relay";
+  relay.target = "relay_target";
+  SP_trigger_relay(relay, runtime);
+
+  assert.equal(relay.solid, SOLID_NOT, "trigger_relay must remain non-solid");
+  assert.equal(relay.use, trigger_relay_use, "trigger_relay use callback mismatch");
+
+  const target = spawnGameEntity(runtime);
+  target.classname = "target_test";
+  target.targetname = "relay_target";
+  let used = false;
+  target.use = (_self, other, activator) => {
+    used = other === relay && activator?.classname === "player";
+  };
+
+  const actor = createPlayer(runtime);
+  relay.use?.(relay, null, actor, runtime);
+  assert.equal(used, true, "trigger_relay must fire its targets with the original activator");
 }
 
 function verifyTriggerKey(): void {

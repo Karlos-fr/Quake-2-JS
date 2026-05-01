@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `use_target_splash` et `SP_target_splash`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `use_target_splash` conserve l'emission `svc_temp_entity`/`TE_SPLASH`, `count`, `s.origin`, `movedir`, `sounds`, `MULTICAST_PVS`, puis le `T_RadiusDamage(self, activator, dmg, NULL, dmg+40, MOD_SPLASH)` conditionnel. `SP_target_splash` conserve l'installation du callback, `G_SetMovedir(self->s.angles, self->movedir)`, le default `count = 32` et `SVF_NOCLIENT`.
+  - Commentaires d'en-tete completes pour les deux fonctions: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et `Porting notes` quand utile.
+  - Branchement runtime verifie: `target_splash` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; le callback est atteint via target use, les temp entities sont drainees par `G_RunFrame` vers `gi.WriteByte`, `gi.WritePosition`, `gi.WriteDir` et `gi.multicast`, et le radius damage passe par `T_RadiusDamage`.
+  - `apps/web`: integration attendue car le splash produit une temp entity visible et possiblement des effets audio/particules selon le type. Pas de logique parallele masquante constatee; le navigateur consomme le runtime via parsing serveur/client et refresh frames.
+  - `renderer-three`: integration attendue car `TE_SPLASH` produit des particules visibles. La consommation existe via `CL_ParseTEnt`, `CL_ExecuteTempEntityEffects`/`CL_ParticleEffect`, `CL_AddTEntPacket`, `CL_BuildTEntRefresh`/`CL_BuildRefreshFrame`, puis le chemin renderer-three de refresh/particules; pas de manque ouvert constate.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour `use_target_splash` et `SP_target_splash`.
+  - `scripts/verify/quake2-g-target.ts`: couverture renforcee pour `G_SetMovedir`, `SVF_NOCLIENT`, payload `TE_SPLASH` complet, `MULTICAST_PVS`, `MOD_SPLASH` et radius damage.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:g-main` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `use_target_spawner`, le local `ent` associe et `SP_target_spawner` si le lot reste petit.
+
 - 2026-05-01: `use_target_changelevel` et `SP_target_changelevel`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `use_target_changelevel` conserve l'early return si `level.intermissiontime`, le blocage solo quand `g_edicts[1].health <= 0`, la regle deathmatch noexit quand `DF_ALLOW_EXIT` est absent et `other != world`, le `T_Damage` avec `10 * max_health`, knockback 1000 et `MOD_EXIT`, l'annonce de l'activator en deathmatch, l'effacement de `SFL_CROSS_TRIGGER_MASK` seulement quand `self->map` contient `*`, puis `BeginIntermission(self)`. `SP_target_changelevel` conserve le warning/free sans `map`, le hack `fact1`/`fact3` vers `fact3$secret1`, le callback et `SVF_NOCLIENT`.

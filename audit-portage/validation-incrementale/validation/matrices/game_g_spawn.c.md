@@ -13,6 +13,7 @@
 | `Quake-2-master/game/g_spawn.c` | struct | `spawn_t` | `packages/game/src/g_spawn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `name` | `packages/game/src/g_spawn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `SP_worldspawn` | `packages/game/src/g_spawn.ts` | `SP_worldspawn` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | function | `SP_func_clock` | `packages/game/src/g_misc.ts` | `SP_func_clock` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | table | `spawns` | `packages/game/src/g_spawn.ts` | `spawns` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `ED_CallSpawn` | `packages/game/src/g_spawn.ts` | `ED_CallSpawn` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `item` | `packages/game/src/g_spawn.ts` | `item` | A verifier | A redecouper |  |

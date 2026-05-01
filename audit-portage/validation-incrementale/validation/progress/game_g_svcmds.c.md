@@ -83,6 +83,19 @@
 - Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
 - Corrections TS portees: aucune dans le port. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour couvrir explicitement `SVCmd_ListIP_f`, ses locaux `i` et `b`.
 
+## Session 2026-05-01 - SVCmd_WriteIP_f
+
+- Lot traite: `SVCmd_WriteIP_f`, ses locaux `name`, `b`, `i`, `game`, et l'adaptation `sprintf`.
+- Checklist appliquee: identification matrice/source/cible, comparaison C vs TS de l'ecriture `listip.cfg`, validation des messages console, effets de bord via fichier/callback, commentaire d'en-tete, branchement runtime, apps/web, renderer-three, tests, mise a jour matrice/progress/global.
+- Verdict: lot valide. Le C construit `name` avec `gi.cvar("game", "", 0)`, annonce `Writing %s.\n`, ouvre le fichier en `wb`, ecrit `set filterban %d\n`, puis une ligne `sv addip a.b.c.d\n` pour chaque filtre actif. Le TS conserve ce flux avec `context.gi.cvar`, `GAMEVERSION`, `context.gi.cprintf`, `getFilterBanValue(context)`, `unpackFilterBytes(compare)` et un callback `writeFile` a la place de `fopen`/`fprintf`.
+- Adaptation fichier: l'absence ou l'echec de `writeFile` represente l'echec `fopen` et conserve le diagnostic `Couldn't open %s\n`. Le chemin `sprintf("%s/listip.cfg", ...)` est represente par un template string; les tests prouvent le chemin `baseq2/listip.cfg`, le fallback quand `game` est vide et la valeur courante de `filterban`.
+- Locaux: `name` est le chemin TS `const name`; `b[4]` est `bytes` via `unpackFilterBytes`; `i` est `index`; `game` est le cvar retourne par `context.gi.cvar`. Les tests prouvent la boucle bornee par `numipfilters`, l'ordre little-endian des octets et un quatrieme octet haut `200`.
+- Runtime: `SVCmd_WriteIP_f` est atteignable par `ServerCommand` pour `writeip`, puis par la commande serveur `sv` via `SV_ServerCommand_f`; `g_main.ts` transmet le hook `writeFile` au contexte `g_svcmds`.
+- apps/web: le host full-game injecte `saveStorage.writeText` comme hook `writeFile`; le navigateur doit donc declencher ce flux via la commande serveur portee et ne masque pas la logique runtime par une implementation parallele.
+- renderer-three: non applicable, l'ecriture de `listip.cfg` et les messages console ne produisent ni entite visible, modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene.
+- Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
+- Corrections TS portees: aucune dans le port. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour couvrir le fallback `GAMEVERSION`, `filterban`, le format des filtres ecrits et le diagnostic d'echec d'ouverture.
+
 ## Prochain lot recommande
 
-- Continuer avec `SVCmd_WriteIP_f`, puis ses locaux `name`, `b`, `i`, `game` et l'adaptation `sprintf` si le lot reste coherent.
+- Continuer avec `ServerCommand`, puis son local `cmd`.

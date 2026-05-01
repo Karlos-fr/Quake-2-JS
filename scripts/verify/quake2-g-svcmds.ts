@@ -19,6 +19,7 @@ import {
   SVCmd_AddIP_f,
   SVCmd_ListIP_f,
   SVCmd_RemoveIP_f,
+  SVCmd_WriteIP_f,
   ServerCommand,
   StringToFilter,
   createGameServerCommandState,
@@ -151,10 +152,27 @@ assert.equal(
 );
 
 runCommand(["sv", "addip", "1.2.3.200"]);
+runCommand(["sv", "writeip"]);
+assert.equal(prints.pop(), "Writing baseq2/listip.cfg.\n", "writeip high-octet announce mismatch");
+assert.equal(
+  writes.get("baseq2/listip.cfg"),
+  "set filterban 1\nsv addip 10.0.0.0\nsv addip 1.2.3.200\n",
+  "writeip must serialize active filters with original byte order"
+);
 assert.equal(
   SV_FilterPacket(state, context, "1.2.3.200:27910"),
   true,
   "high-bit fourth octet filters must compare as unsigned values"
+);
+
+cvars.set("game", createCvar("game", ""));
+cvars.set("filterban", createCvar("filterban", "0"));
+runCommand(["sv", "writeip"]);
+assert.equal(prints.pop(), "Writing baseq2/listip.cfg.\n", "writeip must fall back to GAMEVERSION when game cvar is empty");
+assert.equal(
+  writes.get("baseq2/listip.cfg"),
+  "set filterban 0\nsv addip 10.0.0.0\nsv addip 1.2.3.200\n",
+  "writeip must serialize the current filterban cvar value"
 );
 
 cvars.set("filterban", createCvar("filterban", "0"));
@@ -226,6 +244,17 @@ assert.deepEqual(
   compactState.ipfilters.slice(0, compactState.numipfilters),
   beforeMissingRemove,
   "missing removeip must not alter active filters"
+);
+
+const noWriterState = createGameServerCommandState();
+noWriterState.numipfilters = 1;
+noWriterState.ipfilters[0] = { mask: 0xffffffff, compare: 0x04030201 };
+prints.splice(0);
+SVCmd_WriteIP_f(noWriterState, { gi: context.gi });
+assert.deepEqual(
+  prints.splice(0),
+  ["Writing baseq2/listip.cfg.\n", "Couldn't open baseq2/listip.cfg\n"],
+  "writeip without a writer must preserve the original fopen failure diagnostic"
 );
 
 console.log("quake2-g-svcmds: ok");

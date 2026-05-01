@@ -961,6 +961,24 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `pausetime`, `attack_finished`, `saved_goal` passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-monster` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `monsterinfo_t` avec champs `search_time`, `trail_time`, `last_sighting`.
+- Verdict: `Valide` pour les 3 champs apres comparaison H/TS, verification des defaults/mutations, usages AI/player-trail, save/load et flux web/renderer.
+- Source H comparee: apres `vec3_t saved_goal`, `monsterinfo_t` porte `float search_time`, `float trail_time`, puis `vec3_t last_sighting`; `FoundTarget`, `ai_checkattack` et `ai_run` les utilisent pour enregistrer la derniere position ennemie, le timestamp de piste joueur et le timeout de recherche.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `monsterinfo_t` vers `GameMonsterInfo`.
+  - `packages/game/src/runtime.ts`: `GameMonsterInfo` porte `search_time`, `trail_time`, `last_sighting` dans l'ordre C; `createMonsterInfo` initialise les floats a `0` et le vec3 a `[0, 0, 0]`; commentaire de portage `monsterinfo_t` verifie.
+  - `packages/game/src/g_ai.ts`: `FoundTarget` copie `enemy.s.origin` vers `last_sighting` et pose `trail_time`; `ai_checkattack` rafraichit `search_time` et `last_sighting` quand l'ennemi est visible; `ai_run` rafraichit/expire `search_time`, consomme les marqueurs `PlayerTrail` via `trail_time`, restaure `saved_goal` et ajuste `last_sighting` pour les detours.
+  - `packages/game/src/g_save.ts`: `snapshotEntity`/`restoreEntity` conservent les floats et copient `last_sighting` par valeur.
+- Runtime: integration attendue et branchee depuis les spawns monstres vers `monster_start`/`monster_start_go`, puis `monster_think`/`M_MoveFrame` et decisions AI appelees depuis `G_RunFrame`; les preuves couvrent acquisition cible, poursuite lost-sight, player trail, timeout de recherche et persistance.
+- apps/web: integration attendue via le host local/full-game qui avance le runtime game et consomme snapshots/sons/HUD issus des monstres; aucune logique parallele `monsterinfo_t.search_time`/`trail_time`/`last_sighting` detectee dans `apps/web`. Tests full-game/web OK.
+- renderer-three: integration indirecte attendue car ces champs influencent positions, frames/modeles visibles, tirs/sons/temp entities en aval. `packages/renderer-three` ne lit pas `monsterinfo_t` directement; il consomme les entites, modeles et frames via le flux full-game. Test renderer OK.
+- Commentaires/documentation: commentaire de portage `monsterinfo_t` verifie dans `runtime.ts`; commentaires d'en-tete de `FoundTarget`, `ai_checkattack`, `ai_run`, `M_MoveFrame`, `monster_think`, `monster_start` et `monster_start_go` verifies quand applicables.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defaults/mutations pour `search_time`, `trail_time`, `last_sighting`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration save/load pour les trois champs.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `search_time`, `trail_time`, `last_sighting` passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-monster` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -994,7 +1012,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `monsterinfo_t.search_time`, `trail_time` et `last_sighting` si le lot reste petit, en s'appuyant sur les preuves AI/monster et save/load.
+- Continuer avec `monsterinfo_t.attack_state`, `lefty` et `idle_time` si le lot reste petit, en s'appuyant sur les preuves AI attack/sliding/idle-search et save/load.
 
 ## Blocages
 

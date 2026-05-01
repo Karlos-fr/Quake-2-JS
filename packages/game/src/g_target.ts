@@ -490,6 +490,14 @@ export function SP_target_changelevel(ent: GameEntity, runtime: GameRuntime): vo
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits a `TE_SPLASH` temp entity with the configured particle count, origin, movedir and splash sound/color type.
+ * - Applies optional `MOD_SPLASH` radius damage with the original `dmg + 40` radius.
+ *
+ * Porting notes:
+ * - Runtime temp-entity events preserve the original `gi.Write*`/`MULTICAST_PVS` payload until `G_RunFrame` flushes them.
+ * - The attacker falls back to the splash entity if the callback activator is null.
  */
 export function use_target_splash(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   emitGameTempEntity(runtime, temp_event_t.TE_SPLASH, self.s.origin, multicast_t.MULTICAST_PVS, {
@@ -508,6 +516,9 @@ export function use_target_splash(self: GameEntity, _other: GameEntity | null, a
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Installs `use_target_splash`, converts `s.angles` to `movedir`, defaults a missing count to 32 and hides the entity from clients.
  */
 export function SP_target_splash(self: GameEntity, _runtime: GameRuntime): void {
   self.use = use_target_splash;

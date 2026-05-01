@@ -643,6 +643,21 @@ function snapshotClient(client: GameClient, runtime: GameRuntime) {
   };
 }
 
+/**
+ * Original name: ReadClient
+ * Source: game/g_save.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Restores one `gclient_t` from the structured snapshot and resolves the
+ *   original `clientfields` item indexes back to item pointers.
+ *
+ * Porting notes:
+ * - Replaces the C `fread` block plus `ReadField` pass with object cloning and
+ *   explicit `GetItemByIndex` lookups for `pers.weapon`, `pers.lastweapon` and
+ *   `newweapon`.
+ */
 function restoreClient(snapshot: ReturnType<typeof snapshotClient>): GameClient {
   const client = attachGameClient(createRuntimeEntity({ classname: "player" }, -1));
   Object.assign(client, snapshot);

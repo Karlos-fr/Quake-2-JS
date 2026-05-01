@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: `SP_func_clock`.
 - 2026-05-01: `SP_func_timer` et `SP_func_killbox`.
 - 2026-05-01: `SP_func_explosive` et `SP_func_areaportal`.
 - 2026-05-01: `SP_func_conveyor`, `SP_func_wall` et `SP_func_object`.
@@ -12,6 +13,7 @@
 
 ## Verdict du lot
 
+- `SP_func_clock`: valide. Le prototype et l'entree `func_clock` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_misc.ts`; la fonction conserve les rejets no-target/no-count avec warning et `G_FreeEdict`, le default `TIMER_UP` a une heure, `CLOCK_MESSAGE_SIZE`, `func_clock_reset`, le callback `func_clock_use` pour `START_OFF`, le scheduling `level.time + 1`, les formats `xx`/`xx:xx`/`xx:xx:xx`, la branche heure locale, la mise a jour `target_string`, le `pathtarget`, le reset multi-use et le one-shot non multi-use.
 - `SP_func_timer`: valide. Le prototype et l'entree `func_timer` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_func.ts`; la fonction conserve le default `wait = 1`, les callbacks `func_timer_use`/`func_timer_think`, le clamp `random >= wait`, `SVF_NOCLIENT`, `START_ON`, `st.pausetime`, `delay`, l'activator `self`, `G_UseTargets` et le reschedule `level.time + wait + crandom() * random`.
 - `SP_func_killbox`: valide. Le prototype et l'entree `func_killbox` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_func.ts`; la fonction conserve `gi.setmodel` via `setGameEntityModel`, `use_killbox`, `SVF_NOCLIENT`, et `use_killbox` delegue a `KillBox` pour telefrag les occupants.
 - `SP_func_explosive`: valide. Le prototype et l'entree `func_explosive` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_misc.ts`; la fonction conserve le retrait deathmatch, `MOVETYPE_PUSH`, le precache des debris, le modele inline, le mode trigger-spawn cache puis revele, le mode cible non shootable, le mode shootable avec health/die par defaut, les flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, les debris, `T_RadiusDamage`, `G_UseTargets`, `BecomeExplosion1` ou `G_FreeEdict`.
@@ -38,6 +40,12 @@
 
 ## Checklist appliquee
 
+- Identification: lot `SP_func_clock` dans matrice `game_g_spawn.c.md`, prototype et entree `func_clock` originaux dans `Quake-2-master/game/g_spawn.c`, definition originale dans `game/g_misc.c`, cible portee `packages/game/src/g_misc.ts` importee par `packages/game/src/g_spawn.ts`. La matrice n'avait pas de ligne directe pour ce prototype; une ligne explicite `SP_func_clock` a ete ajoutee.
+- Comparaison C/H vs TS: entrees `edict_t *self` vs `GameEntity, GameRuntime`, sorties void, classnames, flags `TIMER_UP`/`TIMER_DOWN`/`START_OFF`/`MULTI_USE`, `count`/`health`/`wait`, `message`, `target`/`pathtarget`, callbacks, warnings, allocation message et formats de temps verifies.
+- Commentaires d'en-tete: `func_clock_reset`, `func_clock_format_countdown`, `func_clock_think`, `func_clock_use` et `SP_func_clock` ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage pour l'heure locale; pas d'ajustement necessaire.
+- Runtime: valide. `SpawnEntities` parse `func_clock`, `ED_CallSpawn` dispatch via `spawns[]`, `func_clock_use` active le clock START_OFF, et `G_RunFrame` execute `func_clock_think` puis met a jour `target_string`/`target_character`.
+- apps/web: valide indirectement. Le navigateur doit consommer les sorties du runtime porte; aucune logique parallele `func_clock`/`target_string` n'a ete detectee dans `apps/web`. Les changements de frames des `target_character` transitent par les snapshots/refresh frames comme autres entites visibles.
+- renderer-three: valide indirectement. `func_clock` ne rend rien directement, mais produit des mises a jour visibles via les brush `target_character` (`modelindex` inline et `s.frame`); ces sorties sont dans le flux refresh/renderer standard verifie par le test Three.
 - Identification: lot `SP_func_timer`/`SP_func_killbox` dans matrice `game_g_spawn.c.md`, prototypes et entrees `spawns[]` originaux dans `Quake-2-master/game/g_spawn.c`, definitions originales dans `game/g_func.c`, cible portee `packages/game/src/g_func.ts` importee par `packages/game/src/g_spawn.ts`.
 - Comparaison C/H vs TS: entrees `edict_t *` vs `GameEntity, GameRuntime`, sorties void, classnames `func_timer`/`func_killbox`, callbacks, `wait`/`random`/`delay`/`pausetime`, `SVF_NOCLIENT`, modele inline et delegation `KillBox` verifies.
 - Commentaires d'en-tete: `func_timer_think`, `func_timer_use`, `SP_func_timer`, `use_killbox` et `SP_func_killbox` ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level` et `Behavior`; pas d'ajustement necessaire.
@@ -83,6 +91,7 @@
 
 ## Corrections appliquees
 
+- `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_clock`, sa presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, l'activation `START_OFF`, le tick `G_RunFrame`, la mise a jour `target_string` et les frames/modelindex visibles des `target_character`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_timer` et `func_killbox`, leur presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, `START_ON` avec `pausetime`, le think execute par `G_RunFrame`, le modele inline du killbox et la delegation `KillBox`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_areaportal` et `func_explosive`, leur presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, le toggle areaportal, les modeles inline, trigger-spawn/reveal, ciblage non shootable, animation flags et callbacks.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_conveyor`, `func_wall` et `func_object`, leur presence dans `spawns[]`, le dispatch `ED_CallSpawn`, le dispatch map `SpawnEntities`, les modeles inline visibles, callbacks, flags d'animation, transitions solid/visible et release planifiee.
@@ -94,6 +103,12 @@
 
 ## Tests
 
+- `npm run verify:g-spawn`: ok le 2026-05-01.
+- `npm run verify:g-misc`: ok le 2026-05-01.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run verify:web-render-order`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-spawn`: ok le 2026-05-01.
 - `npm run verify:g-func`: ok le 2026-05-01.
 - `npm run verify:full-game:server-host`: ok le 2026-05-01.
@@ -133,4 +148,4 @@
 
 ## Prochain lot recommande
 
-- Valider `SP_func_clock` dans un lot separe rattache a `packages/game/src/g_misc.ts`.
+- Valider `SP_light` dans un lot separe rattache a `packages/game/src/g_misc.ts`.

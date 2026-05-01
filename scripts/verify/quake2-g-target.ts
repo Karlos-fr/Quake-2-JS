@@ -30,6 +30,7 @@ import {
   SFL_CROSS_TRIGGER_MASK,
   MOD_EXPLOSIVE,
   MOD_EXIT,
+  MOD_SPLASH,
   svc_temp_entity
 } from "../../packages/game/src/g_local.js";
 import {
@@ -393,8 +394,33 @@ function verifyTargetExplosionAndSplash(): void {
   splash.sounds = 1;
   SP_target_splash(splash, runtime);
   assert.equal(splash.count, 32, "target_splash default count mismatch");
+  assertVec3NearlyEqual(splash.movedir, [0, 1, 0], "target_splash movedir must derive from angles");
+  assert.equal(splash.svflags, SVF_NOCLIENT, "target_splash must be hidden from clients");
   splash.use?.(splash, null, null, runtime);
-  assert.equal(drainGameTempEntityEvents(runtime).at(-1)?.type, temp_event_t.TE_SPLASH, "target_splash temp event mismatch");
+  const splashEvent = drainGameTempEntityEvents(runtime).at(-1);
+  assert.equal(splashEvent?.type, temp_event_t.TE_SPLASH, "target_splash temp event mismatch");
+  assert.equal(splashEvent?.multicast, multicast_t.MULTICAST_PVS, "target_splash multicast mismatch");
+  assert.deepEqual(splashEvent?.origin, splash.s.origin, "target_splash origin mismatch");
+  assert.equal(splashEvent?.payload.count, 32, "target_splash count payload mismatch");
+  assertVec3NearlyEqual(splashEvent?.payload.dir as vec3_t, [0, 1, 0], "target_splash dir payload mismatch");
+  assert.equal(splashEvent?.payload.sounds, 1, "target_splash sounds payload mismatch");
+
+  const damagingSplash = spawnGameEntity(runtime);
+  damagingSplash.classname = "target_splash";
+  damagingSplash.s.origin = [0, 0, 0];
+  damagingSplash.s.angles = [0, 0, 0];
+  damagingSplash.dmg = 40;
+  SP_target_splash(damagingSplash, runtime);
+  const splashVictim = spawnGameEntity(runtime);
+  splashVictim.classname = "splash_victim";
+  splashVictim.solid = SOLID_BBOX;
+  splashVictim.takedamage = 1;
+  splashVictim.health = 100;
+  splashVictim.s.origin = [0, 0, 0];
+  const splashActivator = createPlayer(runtime);
+  damagingSplash.use?.(damagingSplash, null, splashActivator, runtime);
+  assert.equal(splashVictim.health, 60, "target_splash radius damage mismatch");
+  assert.equal(runtime.meansOfDeath, MOD_SPLASH, "target_splash damage mod mismatch");
 }
 
 function verifyChangelevelAndSpawner(): void {
@@ -692,6 +718,12 @@ function createPlayer(runtime: GameRuntime): GameEntity {
   player.takedamage = 1;
   player.mass = 100;
   return player;
+}
+
+function assertVec3NearlyEqual(actual: vec3_t, expected: vec3_t, message: string): void {
+  for (let i = 0; i < 3; i++) {
+    assert.equal(Math.abs(actual[i] - expected[i]) < 1e-12, true, `${message} component ${i}`);
+  }
 }
 
 function createRecordingImports(
