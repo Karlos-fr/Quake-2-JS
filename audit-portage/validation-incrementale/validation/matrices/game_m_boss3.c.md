@@ -8,8 +8,8 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:3`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_boss3.c` | function | `Use_Boss3` | `packages/game/src/m_boss3.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/g_save.ts`<br>`packages/game/src/index.ts` | `Use_Boss3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss3.c` | function | `Think_Boss3Stand` | `packages/game/src/m_boss3.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/g_save.ts`<br>`packages/game/src/index.ts` | `Think_Boss3Stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss3.c` | function | `SP_monster_boss3_stand` | `packages/game/src/m_boss3.ts`<br>`packages/game/src/g_spawn.ts`<br>`packages/game/src/g_save.ts`<br>`packages/game/src/index.ts` | `SP_monster_boss3_stand` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss3.c` | function | `Use_Boss3` | `packages/game/src/m_boss3.ts` | `Use_Boss3` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss3.c` | function | `Think_Boss3Stand` | `packages/game/src/m_boss3.ts` | `Think_Boss3Stand` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss3.c` | function | `SP_monster_boss3_stand` | `packages/game/src/m_boss3.ts` | `SP_monster_boss3_stand` | A verifier | A redecouper |  |

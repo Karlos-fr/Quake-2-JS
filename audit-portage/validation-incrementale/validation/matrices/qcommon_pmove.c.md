@@ -8,7 +8,7 @@
 - Verdict Phase 03: Partiel
 - Findings Phase 03: `header:stub marker detected`, `header:temporary marker detected`, `missing-ts-symbols:25`, `missing-ts-symbol`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/qcommon/pmove.c` | macro | `STEPSIZE` | `packages/qcommon/src/pmove.ts` | `STEPSIZE` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | struct | `pml_t` | `packages/qcommon/src/pmove.ts` | `pml_t` | A verifier | A tester |  |

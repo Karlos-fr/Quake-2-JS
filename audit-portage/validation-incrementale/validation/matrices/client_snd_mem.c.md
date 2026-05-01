@@ -8,39 +8,39 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:8`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:2`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/snd_mem.c` | global | `cache_full_cycle` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `cache_full_cycle` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `S_Alloc` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `ResampleSfx` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `ResampleSfx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `outcount` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `outcount` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `srcsample` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `srcsample` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `stepscale` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `stepscale` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `i` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `sample` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `sample` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `S_LoadSound` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `S_LoadSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `namebuffer` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `data` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `data` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `len` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `stepscale` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `stepscale` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `size` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `size` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `Com_sprintf` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `data_p` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `data_p` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `iff_end` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `last_chunk` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `iff_data` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `iff_chunk_len` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `GetLittleShort` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `GetLittleShort` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `val` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `val` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `GetLittleLong` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `GetLittleLong` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `val` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `val` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `FindNextChunk` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `FindNextChunk` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `FindChunk` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `FindChunk` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `DumpChunks` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `DumpChunks` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `str` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `GetWavinfo` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `GetWavinfo` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `i` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `format` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `format` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | global | `samples` | `packages/client/src/snd_mem.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/snd_mix.ts`<br>`packages/client/src/index.ts` | `samples` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `cache_full_cycle` | `packages/client/src/snd_mem.ts` | `cache_full_cycle` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `S_Alloc` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `ResampleSfx` | `packages/client/src/snd_mem.ts` | `ResampleSfx` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `outcount` | `packages/client/src/snd_mem.ts` | `outcount` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `srcsample` | `packages/client/src/snd_mem.ts` | `srcsample` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `stepscale` | `packages/client/src/snd_mem.ts` | `stepscale` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `i` | `packages/client/src/snd_mem.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `sample` | `packages/client/src/snd_mem.ts` | `sample` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `S_LoadSound` | `packages/client/src/snd_mem.ts` | `S_LoadSound` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `namebuffer` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `data` | `packages/client/src/snd_mem.ts` | `data` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `len` | `packages/client/src/snd_mem.ts` | `len` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `stepscale` | `packages/client/src/snd_mem.ts` | `stepscale` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `size` | `packages/client/src/snd_dma.ts` | `size` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `Com_sprintf` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `data_p` | `packages/client/src/snd_mem.ts` | `data_p` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `iff_end` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `last_chunk` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `iff_data` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `iff_chunk_len` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `GetLittleShort` | `packages/client/src/snd_mem.ts` | `GetLittleShort` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `GetLittleLong` | `packages/client/src/snd_mem.ts` | `GetLittleLong` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `FindNextChunk` | `packages/client/src/snd_mem.ts` | `FindNextChunk` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `FindChunk` | `packages/client/src/snd_mem.ts` | `FindChunk` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `DumpChunks` | `packages/client/src/snd_mem.ts` | `DumpChunks` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `str` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | function | `GetWavinfo` | `packages/client/src/snd_mem.ts` | `GetWavinfo` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `i` | `packages/client/src/snd_mem.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `format` | `packages/client/src/snd_mem.ts` | `format` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mem.c` | global | `samples` | `packages/client/src/snd_mem.ts` | `samples` | A verifier | A redecouper |  |

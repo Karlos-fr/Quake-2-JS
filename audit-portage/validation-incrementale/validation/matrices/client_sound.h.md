@@ -8,18 +8,18 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `declared-target-not-strict-basename`, `multiple-declared-ts-targets`, `name:primary-basename 'sound-public' differs from source basename 'sound'`, `phase02-structural-status:split-undocumented`, `unreachable-functions:1`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/sound.h` | function | `S_Init` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_Shutdown` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_StartSound` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_StartSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_StartLocalSound` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_StartLocalSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_RawSamples` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_RawSamples` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_StopAllSounds` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_StopAllSounds` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_Update` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_Update` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_Activate` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_Activate` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_BeginRegistration` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_BeginRegistration` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_RegisterSound` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_RegisterSound` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_EndRegistration` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_EndRegistration` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `S_FindName` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_FindName` | A verifier | A redecouper |  |
-| `Quake-2-master/client/sound.h` | function | `CL_GetEntitySoundOrigin` | `packages/client/src/sound-public.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `CL_GetEntitySoundOrigin` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_Init` | `packages/client/src/sound-public.ts` | `S_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_Shutdown` | `packages/client/src/sound-public.ts` | `S_Shutdown` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_StartSound` | `packages/client/src/sound-public.ts` | `S_StartSound` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_StartLocalSound` | `packages/client/src/sound-public.ts` | `S_StartLocalSound` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_RawSamples` | `packages/client/src/sound-public.ts` | `S_RawSamples` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_StopAllSounds` | `packages/client/src/sound-public.ts` | `S_StopAllSounds` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_Update` | `packages/client/src/sound-public.ts` | `S_Update` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_Activate` | `packages/client/src/sound-public.ts` | `S_Activate` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_BeginRegistration` | `packages/client/src/sound-public.ts` | `S_BeginRegistration` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_RegisterSound` | `packages/client/src/sound-public.ts` | `S_RegisterSound` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_EndRegistration` | `packages/client/src/sound-public.ts` | `S_EndRegistration` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `S_FindName` | `packages/client/src/sound-public.ts` | `S_FindName` | A verifier | A redecouper |  |
+| `Quake-2-master/client/sound.h` | function | `CL_GetEntitySoundOrigin` | `packages/client/src/sound-public.ts` | `CL_GetEntitySoundOrigin` | A verifier | A redecouper |  |

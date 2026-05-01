@@ -8,5 +8,5 @@
 - Verdict Phase 03: Partiel
 - Findings Phase 03: `basename-collision`, `multiple-declared-ts-targets`, `no-runtime-matrix-row`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

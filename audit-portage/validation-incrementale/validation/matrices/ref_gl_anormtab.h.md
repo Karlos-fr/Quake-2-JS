@@ -8,5 +8,5 @@
 - Verdict Phase 03: strict-ok
 - Findings Phase 03: `phase02-structural-status:strict-ok`, `expected-map-status:matched`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |

@@ -8,42 +8,42 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:6`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_ents.c` | function | `SV_EmitPacketEntities` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `SV_EmitPacketEntities` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `from_num_entities` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `bits` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `bits` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `from_num_entities` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | function | `MSG_WriteByte` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | function | `SV_WritePlayerstateToClient` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `SV_WritePlayerstateToClient` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `i` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `pflags` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `pflags` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `dummy` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `statbits` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `statbits` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `ops` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `ops` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | function | `SV_WriteFrameToClient` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `SV_WriteFrameToClient` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `lastframe` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `lastframe` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `fatpvs` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `fatpvs` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | function | `SV_FatPVS` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `SV_FatPVS` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `leafs` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `leafs` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `longs` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `longs` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `src` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `src` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | function | `SV_BuildClientFrame` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `SV_BuildClientFrame` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `ent` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `clent` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `clent` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `frame` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `frame` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `state` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `state` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `l` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `l` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `leafnum` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `leafnum` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `c_fullsend` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `c_fullsend` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `clientphs` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `clientphs` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `bitvector` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `bitvector` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `bitvector` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `bitvector` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `len` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | function | `SV_RecordDemoMessage` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `SV_RecordDemoMessage` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `e` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `e` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `ent` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `nostate` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `buf` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `buf` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `buf_data` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ents.c` | global | `len` | `packages/server/src/sv_ents.ts`<br>`packages/server/src/index.ts` | `len` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | function | `SV_EmitPacketEntities` | `packages/server/src/sv_ents.ts` | `SV_EmitPacketEntities` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `from_num_entities` | `packages/server/src/sv_ents.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `bits` | `packages/server/src/sv_ents.ts` | `bits` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `from_num_entities` | `packages/server/src/sv_ents.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | function | `MSG_WriteByte` | `packages/server/src/sv_ents.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | function | `SV_WritePlayerstateToClient` | `packages/server/src/sv_ents.ts` | `SV_WritePlayerstateToClient` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `i` | `packages/server/src/sv_ents.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `pflags` | `packages/server/src/sv_ents.ts` | `pflags` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `dummy` | `packages/server/src/sv_ents.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `statbits` | `packages/server/src/sv_ents.ts` | `statbits` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `ops` | `packages/server/src/sv_ents.ts` | `ops` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | function | `SV_WriteFrameToClient` | `packages/server/src/sv_ents.ts` | `SV_WriteFrameToClient` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `lastframe` | `packages/server/src/sv_ents.ts` | `lastframe` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `fatpvs` | `packages/server/src/sv_ents.ts` | `fatpvs` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | function | `SV_FatPVS` | `packages/server/src/sv_ents.ts` | `SV_FatPVS` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `leafs` | `packages/server/src/sv_ents.ts` | `leafs` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `longs` | `packages/server/src/sv_ents.ts` | `longs` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `src` | `packages/server/src/sv_ents.ts` | `src` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | function | `SV_BuildClientFrame` | `packages/server/src/sv_ents.ts` | `SV_BuildClientFrame` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `ent` | `packages/server/src/sv_ents.ts` | `ent` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `clent` | `packages/server/src/sv_ents.ts` | `clent` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `frame` | `packages/server/src/sv_ents.ts` | `frame` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `state` | `packages/server/src/sv_ents.ts` | `state` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `l` | `packages/server/src/sv_ents.ts` | `l` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `leafnum` | `packages/server/src/sv_ents.ts` | `leafnum` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `c_fullsend` | `packages/server/src/sv_ents.ts` | `c_fullsend` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `clientphs` | `packages/server/src/sv_ents.ts` | `clientphs` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `bitvector` | `packages/server/src/sv_ents.ts` | `bitvector` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `bitvector` | `packages/server/src/sv_ents.ts` | `bitvector` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `len` | `packages/server/src/sv_ents.ts` | `len` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | function | `SV_RecordDemoMessage` | `packages/server/src/sv_ents.ts` | `SV_RecordDemoMessage` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `e` | `packages/server/src/sv_ents.ts` | `e` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `ent` | `packages/server/src/sv_ents.ts` | `ent` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `nostate` | `packages/server/src/sv_ents.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `buf` | `packages/server/src/sv_ents.ts` | `buf` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `buf_data` | `packages/server/src/sv_ents.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ents.c` | global | `len` | `packages/server/src/sv_ents.ts` | `len` | A verifier | A redecouper |  |

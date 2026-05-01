@@ -8,47 +8,47 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:15`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:7`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_send.c` | global | `sv_outputbuf` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_FlushRedirect` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_FlushRedirect` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_ClientPrintf` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_ClientPrintf` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `argptr` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `string` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_BroadcastPrintf` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_BroadcastPrintf` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `argptr` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `string` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `copy` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_BroadcastCommand` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_BroadcastCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `argptr` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `string` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_Multicast` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_Multicast` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `mask` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `mask` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `j` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `reliable` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `reliable` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SZ_Write` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_StartSound` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_StartSound` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `sendchan` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `sendchan` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `flags` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `flags` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `ent` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `origin_v` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `origin_v` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `use_phs` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `use_phs` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `use_phs` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `use_phs` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_Multicast` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_Multicast` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_Multicast` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_Multicast` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_SendClientDatagram` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_SendClientDatagram` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `msg_buf` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `msg` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `msg` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SZ_Write` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_DemoCompleted` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_DemoCompleted` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_RateDrop` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_RateDrop` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `total` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `total` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_SendClientMessages` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `SV_SendClientMessages` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `msglen` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `msgbuf` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `r` | `packages/server/src/sv_send.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `sv_outputbuf` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_FlushRedirect` | `packages/server/src/sv_send.ts` | `SV_FlushRedirect` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_ClientPrintf` | `packages/server/src/sv_send.ts` | `SV_ClientPrintf` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `argptr` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `string` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_BroadcastPrintf` | `packages/server/src/sv_send.ts` | `SV_BroadcastPrintf` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `argptr` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `string` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `copy` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_BroadcastCommand` | `packages/server/src/sv_send.ts` | `SV_BroadcastCommand` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `argptr` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `string` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_Multicast` | `packages/server/src/sv_send.ts` | `SV_Multicast` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `mask` | `packages/server/src/sv_send.ts` | `mask` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `j` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `reliable` | `packages/server/src/sv_send.ts` | `reliable` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SZ_Write` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_StartSound` | `packages/server/src/sv_send.ts` | `SV_StartSound` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `sendchan` | `packages/server/src/sv_send.ts` | `sendchan` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `flags` | `packages/server/src/sv_send.ts` | `flags` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `ent` | `packages/server/src/sv_send.ts` | `ent` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `origin_v` | `packages/server/src/sv_send.ts` | `origin_v` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `use_phs` | `packages/server/src/sv_send.ts` | `use_phs` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `use_phs` | `packages/server/src/sv_send.ts` | `use_phs` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_Multicast` | `packages/server/src/sv_send.ts` | `SV_Multicast` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_Multicast` | `packages/server/src/sv_send.ts` | `SV_Multicast` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_SendClientDatagram` | `packages/server/src/sv_send.ts` | `SV_SendClientDatagram` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `msg_buf` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `msg` | `packages/server/src/sv_send.ts` | `msg` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SZ_Write` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_DemoCompleted` | `packages/server/src/sv_send.ts` | `SV_DemoCompleted` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_RateDrop` | `packages/server/src/sv_send.ts` | `SV_RateDrop` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `total` | `packages/server/src/sv_send.ts` | `total` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_SendClientMessages` | `packages/server/src/sv_send.ts` | `SV_SendClientMessages` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `msglen` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `msgbuf` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `r` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |

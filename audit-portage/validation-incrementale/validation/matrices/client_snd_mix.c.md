@@ -8,46 +8,46 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `missing-ts-symbols:5`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/snd_mix.c` | macro | `PAINTBUFFER_SIZE` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `PAINTBUFFER_SIZE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_WriteLinearBlastStereo16` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_WriteLinearBlastStereo16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_WriteLinearBlastStereo16` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_WriteLinearBlastStereo16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `val` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `val` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_TransferStereo16` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_TransferStereo16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `lpos` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `lpos` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `lpaintedtime` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `lpaintedtime` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_TransferPaintBuffer` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_TransferPaintBuffer` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `out_idx` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `out_idx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `count` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `out_mask` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `out_mask` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `p` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `step` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `step` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `val` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `val` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `pbuf` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `count` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `out` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `out` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `out` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `out` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom8` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_PaintChannelFrom8` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_PaintChannelFrom16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannels` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_PaintChannels` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `end` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `end` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `s` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `stop` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `stop` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_PaintChannelFrom16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_InitScaletable` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_InitScaletable` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `scale` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `scale` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom8` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_PaintChannelFrom8` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `data` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `data` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `sfx` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `sfx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `S_PaintChannelFrom16` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `data` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `data` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `sfx` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `sfx` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts`<br>`packages/client/src/snd_loc.ts`<br>`packages/client/src/snd_dma.ts`<br>`packages/client/src/index.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | macro | `PAINTBUFFER_SIZE` | `packages/client/src/snd_mix.ts` | `PAINTBUFFER_SIZE` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_WriteLinearBlastStereo16` | `packages/client/src/snd_mix.ts` | `S_WriteLinearBlastStereo16` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_WriteLinearBlastStereo16` | `packages/client/src/snd_mix.ts` | `S_WriteLinearBlastStereo16` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `snd_out` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_TransferStereo16` | `packages/client/src/snd_mix.ts` | `S_TransferStereo16` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `lpos` | `packages/client/src/snd_mix.ts` | `lpos` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `lpaintedtime` | `packages/client/src/snd_mix.ts` | `lpaintedtime` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_TransferPaintBuffer` | `packages/client/src/snd_mix.ts` | `S_TransferPaintBuffer` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `out_idx` | `packages/client/src/snd_mix.ts` | `out_idx` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `count` | `packages/client/src/snd_mix.ts` | `count` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `out_mask` | `packages/client/src/snd_mix.ts` | `out_mask` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `p` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `step` | `packages/client/src/snd_mix.ts` | `step` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `val` | `packages/client/src/snd_mix.ts` | `val` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `pbuf` | `packages/client/src/snd_mix.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `count` | `packages/client/src/snd_mix.ts` | `count` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `out` | `packages/client/src/snd_mix.ts` | `out` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `out` | `packages/client/src/snd_mix.ts` | `out` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom8` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom8` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom16` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannels` | `packages/client/src/snd_mix.ts` | `S_PaintChannels` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `end` | `packages/client/src/snd_mix.ts` | `end` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `s` | `packages/client/src/snd_mix.ts` | `s` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `stop` | `packages/client/src/snd_mix.ts` | `stop` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom16` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_InitScaletable` | `packages/client/src/snd_mix.ts` | `S_InitScaletable` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `scale` | `packages/client/src/snd_mix.ts` | `scale` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom8` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom8` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `data` | `packages/client/src/snd_mix.ts` | `data` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `sfx` | `packages/client/src/snd_dma.ts` | `sfx` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | function | `S_PaintChannelFrom16` | `packages/client/src/snd_mix.ts` | `S_PaintChannelFrom16` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `data` | `packages/client/src/snd_mix.ts` | `data` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `sfx` | `packages/client/src/snd_dma.ts` | `sfx` | A verifier | A redecouper |  |
+| `Quake-2-master/client/snd_mix.c` | global | `i` | `packages/client/src/snd_mix.ts` | `i` | A verifier | A redecouper |  |

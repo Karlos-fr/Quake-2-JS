@@ -8,31 +8,31 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `missing-ts-symbols:11`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:2`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/net_chan.c` | global | `showpackets` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `showdrop` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `qport` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `net_message` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `net_message_buffer` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `net_message_buffer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Init` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `Netchan_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `port` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_OutOfBand` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `Netchan_OutOfBand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `send` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send_buf` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `send_buf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_OutOfBandPrint` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `Netchan_OutOfBandPrint` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `argptr` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `string` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Setup` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `Netchan_Setup` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_CanReliable` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `Netchan_CanReliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_NeedReliable` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `Netchan_NeedReliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send_reliable` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `send_reliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Transmit` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `Netchan_Transmit` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `send` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send_buf` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `send_buf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send_reliable` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `send_reliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Com_Printf` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Com_Printf` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Process` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `Netchan_Process` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `qport` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Com_Printf` | `packages/qcommon/src/net_chan.ts`<br>`packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `showpackets` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `showdrop` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `qport` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `net_message` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `net_message_buffer` | `packages/qcommon/src/qcommon.ts` | `net_message_buffer` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Init` | `packages/qcommon/src/net_chan.ts` | `Netchan_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `port` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_OutOfBand` | `packages/qcommon/src/net_chan.ts` | `Netchan_OutOfBand` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send` | `packages/qcommon/src/net_chan.ts` | `send` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send_buf` | `packages/qcommon/src/net_chan.ts` | `send_buf` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_OutOfBandPrint` | `packages/qcommon/src/net_chan.ts` | `Netchan_OutOfBandPrint` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `argptr` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `string` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Setup` | `packages/qcommon/src/net_chan.ts` | `Netchan_Setup` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_CanReliable` | `packages/qcommon/src/net_chan.ts` | `Netchan_CanReliable` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_NeedReliable` | `packages/qcommon/src/net_chan.ts` | `Netchan_NeedReliable` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send_reliable` | `packages/qcommon/src/net_chan.ts` | `send_reliable` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Transmit` | `packages/qcommon/src/net_chan.ts` | `Netchan_Transmit` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send` | `packages/qcommon/src/net_chan.ts` | `send` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send_buf` | `packages/qcommon/src/net_chan.ts` | `send_buf` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send_reliable` | `packages/qcommon/src/net_chan.ts` | `send_reliable` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Com_Printf` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Com_Printf` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Process` | `packages/qcommon/src/net_chan.ts` | `Netchan_Process` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `qport` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Com_Printf` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |

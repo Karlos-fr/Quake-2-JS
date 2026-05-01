@@ -8,49 +8,49 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `missing-ts-symbols:4`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/md4.c` | global | `POINTER` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `UINT2` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `UINT4` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `UINT4` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `UINT4` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `UINT4` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | struct | `MD4_CTX` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `MD4_CTX` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `buffer` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `MD4Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `MD4Update` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `MD4Final` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S11` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S11` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S12` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S12` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S13` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S13` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S14` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S14` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S21` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S21` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S22` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S22` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S23` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S23` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S24` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S24` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S31` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S31` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S32` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S32` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S33` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S33` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S34` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `S34` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `MD4Transform` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `Encode` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `Decode` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `PADDING` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `PADDING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `F` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `F` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `G` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `G` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `H` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `H` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `ROTATE_LEFT` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `ROTATE_LEFT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `FF` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `FF` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `GG` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `GG` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `HH` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `HH` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `MD4Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `MD4Update` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `i` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `MD4Final` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `bits` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `bits` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `MD4Transform` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `Encode` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `Decode` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `Com_BlockChecksum` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `Com_BlockChecksum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `digest` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `digest` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `val` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `ctx` | `packages/qcommon/src/md4.ts`<br>`packages/qcommon/src/qcommon.ts` | `ctx` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `POINTER` | `packages/qcommon/src/md4.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `UINT2` | `packages/qcommon/src/md4.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `UINT4` | `packages/qcommon/src/md4.ts` | `UINT4` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `UINT4` | `packages/qcommon/src/md4.ts` | `UINT4` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | struct | `MD4_CTX` | `packages/qcommon/src/md4.ts` | `MD4_CTX` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `buffer` | `packages/qcommon/src/md4.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts` | `MD4Init` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts` | `MD4Update` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts` | `MD4Final` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S11` | `packages/qcommon/src/md4.ts` | `S11` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S12` | `packages/qcommon/src/md4.ts` | `S12` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S13` | `packages/qcommon/src/md4.ts` | `S13` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S14` | `packages/qcommon/src/md4.ts` | `S14` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S21` | `packages/qcommon/src/md4.ts` | `S21` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S22` | `packages/qcommon/src/md4.ts` | `S22` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S23` | `packages/qcommon/src/md4.ts` | `S23` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S24` | `packages/qcommon/src/md4.ts` | `S24` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S31` | `packages/qcommon/src/md4.ts` | `S31` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S32` | `packages/qcommon/src/md4.ts` | `S32` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S33` | `packages/qcommon/src/md4.ts` | `S33` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S34` | `packages/qcommon/src/md4.ts` | `S34` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts` | `MD4Transform` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts` | `Encode` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts` | `Decode` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `PADDING` | `packages/qcommon/src/md4.ts` | `PADDING` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `F` | `packages/qcommon/src/md4.ts` | `F` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `G` | `packages/qcommon/src/md4.ts` | `G` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `H` | `packages/qcommon/src/md4.ts` | `H` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `ROTATE_LEFT` | `packages/qcommon/src/md4.ts` | `ROTATE_LEFT` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `FF` | `packages/qcommon/src/md4.ts` | `FF` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `GG` | `packages/qcommon/src/md4.ts` | `GG` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `HH` | `packages/qcommon/src/md4.ts` | `HH` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts` | `MD4Init` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts` | `MD4Update` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `i` | `packages/qcommon/src/md4.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts` | `MD4Final` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `bits` | `packages/qcommon/src/md4.ts` | `bits` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts` | `MD4Transform` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts` | `Encode` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts` | `Decode` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `Com_BlockChecksum` | `packages/qcommon/src/md4.ts` | `Com_BlockChecksum` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `digest` | `packages/qcommon/src/md4.ts` | `digest` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `val` | `packages/qcommon/src/md4.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `ctx` | `packages/qcommon/src/md4.ts` | `ctx` | A verifier | A redecouper |  |

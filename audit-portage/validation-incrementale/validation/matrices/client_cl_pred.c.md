@@ -8,7 +8,7 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `declared-target-not-strict-basename`, `header:stub marker detected`, `header:temporary marker detected`, `missing-ts-symbols:8`, `name:primary basename 'view' looks modernized or abstract`, `name:primary-basename 'view' differs from source basename 'cl_pred'`, `phase02-structural-status:wrong-name`, `strict-basename-target-missing`, `unreachable-functions:3`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/client/cl_pred.c` | function | `CL_CheckPredictionError` | `packages/client/src/view.ts` | `CL_CheckPredictionError` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_pred.c` | global | `frame` | `packages/client/src/view.ts` | `frame` | A verifier | A redecouper |  |

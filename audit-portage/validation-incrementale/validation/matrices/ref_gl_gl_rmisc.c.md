@@ -8,13 +8,13 @@
 - Verdict Phase 03: split-undocumented
 - Findings Phase 03: `phase02-structural-status:split-undocumented`, `expected-map-status:matched`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `GL_ScreenShot_f` | `packages/renderer-three/src/gl_rmisc.ts`<br>`packages/renderer-three/src/gl_image.ts`<br>`packages/renderer-three/src/gl-world-scene-adapter.ts`<br>`packages/renderer-three/src/qgl.ts` | `GL_ScreenShot_f` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `GL_SetDefaultState` | `packages/renderer-three/src/gl_rmisc.ts`<br>`packages/renderer-three/src/gl_image.ts`<br>`packages/renderer-three/src/gl-world-scene-adapter.ts`<br>`packages/renderer-three/src/qgl.ts` | `GL_SetDefaultState` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `GL_Strings_f` | `packages/renderer-three/src/gl_rmisc.ts`<br>`packages/renderer-three/src/gl_image.ts`<br>`packages/renderer-three/src/gl-world-scene-adapter.ts`<br>`packages/renderer-three/src/qgl.ts` | `GL_Strings_f` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `GL_UpdateSwapInterval` | `packages/renderer-three/src/gl_rmisc.ts`<br>`packages/renderer-three/src/gl_image.ts`<br>`packages/renderer-three/src/gl-world-scene-adapter.ts`<br>`packages/renderer-three/src/qgl.ts` | `GL_UpdateSwapInterval` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `R_InitParticleTexture` | `packages/renderer-three/src/gl_rmisc.ts`<br>`packages/renderer-three/src/gl_image.ts`<br>`packages/renderer-three/src/gl-world-scene-adapter.ts`<br>`packages/renderer-three/src/qgl.ts` | `R_InitParticleTexture` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmisc.c` | typedef | `image_type` | `packages/renderer-three/src/gl_rmisc.ts`<br>`packages/renderer-three/src/gl_image.ts`<br>`packages/renderer-three/src/gl-world-scene-adapter.ts`<br>`packages/renderer-three/src/qgl.ts` | `image_type` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmisc.c` | struct | `_TargaHeader` | `packages/renderer-three/src/gl_rmisc.ts`<br>`packages/renderer-three/src/gl_image.ts`<br>`packages/renderer-three/src/gl-world-scene-adapter.ts`<br>`packages/renderer-three/src/qgl.ts` | `_TargaHeader` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmisc.c` | global | `colormap_size` | `packages/renderer-three/src/gl_rmisc.ts`<br>`packages/renderer-three/src/gl_image.ts`<br>`packages/renderer-three/src/gl-world-scene-adapter.ts`<br>`packages/renderer-three/src/qgl.ts` | `colormap_size` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `GL_ScreenShot_f` | `packages/renderer-three/src/gl_rmisc.ts` | `GL_ScreenShot_f` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `GL_SetDefaultState` | `packages/renderer-three/src/gl_rmisc.ts` | `GL_SetDefaultState` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `GL_Strings_f` | `packages/renderer-three/src/gl_rmisc.ts` | `GL_Strings_f` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `GL_UpdateSwapInterval` | `packages/renderer-three/src/gl_rmisc.ts` | `GL_UpdateSwapInterval` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmisc.c` | function | `R_InitParticleTexture` | `packages/renderer-three/src/gl_rmisc.ts` | `R_InitParticleTexture` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmisc.c` | typedef | `image_type` | `packages/renderer-three/src/gl_rmisc.ts` | `image_type` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmisc.c` | struct | `_TargaHeader` | `packages/renderer-three/src/gl_rmisc.ts` | `_TargaHeader` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmisc.c` | global | `colormap_size` | `packages/renderer-three/src/gl_rmisc.ts` | `colormap_size` | A verifier | split-undocumented |  |

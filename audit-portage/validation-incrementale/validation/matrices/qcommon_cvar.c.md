@@ -8,7 +8,7 @@
 - Verdict Phase 03: Partiel
 - Findings Phase 03: `missing-ts-symbols:26`, `unreachable-functions:5`, `missing-ts-symbol`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/qcommon/cvar.c` | global | `cvar_vars` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_InfoValidate` | `packages/qcommon/src/cvar.ts` | `Cvar_InfoValidate` | A verifier | A tester |  |
@@ -59,8 +59,8 @@
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_BitInfo` | `packages/qcommon/src/cvar.ts` | `Cvar_BitInfo` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `info` | `packages/qcommon/src/cvar.ts` | `info` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Userinfo` | `packages/qcommon/src/cvar.ts` | `CVAR_USERINFO`<br>`Cvar_Userinfo` | A verifier | A tester |  |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Userinfo` | `packages/qcommon/src/cvar.ts` | `CVAR_USERINFO` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_BitInfo` | `packages/qcommon/src/cvar.ts` | `Cvar_BitInfo` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Serverinfo` | `packages/qcommon/src/cvar.ts` | `CVAR_SERVERINFO`<br>`Cvar_Serverinfo` | A verifier | A tester |  |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Serverinfo` | `packages/qcommon/src/cvar.ts` | `CVAR_SERVERINFO` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_BitInfo` | `packages/qcommon/src/cvar.ts` | `Cvar_BitInfo` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Init` | `packages/qcommon/src/cvar.ts` | `Cvar_Init` | A verifier | A tester |  |

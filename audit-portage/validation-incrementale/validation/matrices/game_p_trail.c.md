@@ -8,24 +8,24 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `basename-collision`, `missing-ts-symbols:5`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:4`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/p_trail.c` | macro | `TRAIL_LENGTH` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `TRAIL_LENGTH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `trail` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `trail_head` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `trail_active` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | macro | `NEXT` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `NEXT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | macro | `PREV` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `PREV` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_Init` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `PlayerTrail_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `n` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_Add` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `PlayerTrail_Add` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_New` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `PlayerTrail_New` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_PickFirst` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `PlayerTrail_PickFirst` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `marker` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `marker` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `n` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `break` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_PickNext` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `PlayerTrail_PickNext` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `marker` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `marker` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `n` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | global | `break` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_LastSpot` | `packages/game/src/p_trail.ts`<br>`packages/game/src/g_ai.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/index.ts` | `PlayerTrail_LastSpot` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | macro | `TRAIL_LENGTH` | `packages/game/src/p_trail.ts` | `TRAIL_LENGTH` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `trail` | `packages/game/src/p_trail.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `trail_head` | `packages/game/src/p_trail.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `trail_active` | `packages/game/src/p_trail.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | macro | `NEXT` | `packages/game/src/p_trail.ts` | `NEXT` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | macro | `PREV` | `packages/game/src/p_trail.ts` | `PREV` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_Init` | `packages/game/src/p_trail.ts` | `PlayerTrail_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `n` | `packages/game/src/p_trail.ts` | `n` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_Add` | `packages/game/src/p_trail.ts` | `PlayerTrail_Add` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_New` | `packages/game/src/p_trail.ts` | `PlayerTrail_New` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_PickFirst` | `packages/game/src/p_trail.ts` | `PlayerTrail_PickFirst` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `marker` | `packages/game/src/p_trail.ts` | `marker` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `n` | `packages/game/src/p_trail.ts` | `n` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `break` | `packages/game/src/p_trail.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_PickNext` | `packages/game/src/p_trail.ts` | `PlayerTrail_PickNext` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `marker` | `packages/game/src/p_trail.ts` | `marker` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `n` | `packages/game/src/p_trail.ts` | `n` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | global | `break` | `packages/game/src/p_trail.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_trail.c` | function | `PlayerTrail_LastSpot` | `packages/game/src/p_trail.ts` | `PlayerTrail_LastSpot` | A verifier | A redecouper |  |

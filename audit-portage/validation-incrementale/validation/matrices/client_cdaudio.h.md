@@ -8,11 +8,11 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `adapter-target-declared`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:2`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Init` | `packages/client/src/cdaudio.ts`<br>`packages/platform/src/web-cd-audio-adapter.ts` | `CDAudio_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Shutdown` | `packages/client/src/cdaudio.ts`<br>`packages/platform/src/web-cd-audio-adapter.ts` | `CDAudio_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Play` | `packages/client/src/cdaudio.ts`<br>`packages/platform/src/web-cd-audio-adapter.ts` | `CDAudio_Play` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Stop` | `packages/client/src/cdaudio.ts`<br>`packages/platform/src/web-cd-audio-adapter.ts` | `CDAudio_Stop` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Update` | `packages/client/src/cdaudio.ts`<br>`packages/platform/src/web-cd-audio-adapter.ts` | `CDAudio_Update` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Activate` | `packages/client/src/cdaudio.ts`<br>`packages/platform/src/web-cd-audio-adapter.ts` | `CDAudio_Activate` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Init` | `packages/client/src/cdaudio.ts` | `CDAudio_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Shutdown` | `packages/client/src/cdaudio.ts` | `CDAudio_Shutdown` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Play` | `packages/client/src/cdaudio.ts` | `CDAudio_Play` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Stop` | `packages/client/src/cdaudio.ts` | `CDAudio_Stop` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Update` | `packages/client/src/cdaudio.ts` | `CDAudio_Update` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Activate` | `packages/client/src/cdaudio.ts` | `CDAudio_Activate` | A verifier | A redecouper |  |

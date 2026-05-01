@@ -8,9 +8,9 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `basename-collision`, `declared-target-not-strict-basename`, `header:Source header 'Quake II original / qcommon/qcommon.h' does not clearly reference source`, `header:stub marker detected`, `multiple-declared-ts-targets`, `name:primary-basename 'qcommon' differs from source basename 'crc'`, `phase02-structural-status:split-undocumented`, `strict-basename-target-missing`, `unreachable-functions:2`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/crc.h` | function | `CRC_Init` | `packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `CRC_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.h` | function | `CRC_ProcessByte` | `packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `CRC_ProcessByte` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.h` | function | `CRC_Value` | `packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `CRC_Value` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.h` | function | `CRC_Block` | `packages/qcommon/src/qcommon.ts`<br>`packages/qcommon/src/index.ts` | `CRC_Block` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/crc.h` | function | `CRC_Init` | `packages/qcommon/src/qcommon.ts` | `CRC_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/crc.h` | function | `CRC_ProcessByte` | `packages/qcommon/src/qcommon.ts` | `CRC_ProcessByte` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/crc.h` | function | `CRC_Value` | `packages/qcommon/src/qcommon.ts` | `CRC_Value` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/crc.h` | function | `CRC_Block` | `packages/qcommon/src/qcommon.ts` | `CRC_Block` | A verifier | A redecouper |  |

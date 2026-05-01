@@ -8,62 +8,62 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `missing-ts-symbols:7`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:25`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_SetMaster_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_SetMaster_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_SetPlayer` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_SetPlayer` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `i` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `idnum` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `idnum` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `s` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `s` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_WipeSavegame` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_WipeSavegame` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `s` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `s` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `CopyFile` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `l` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `buffer` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_CopySaveGame` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_CopySaveGame` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `found` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `found` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_WriteLevelFile` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_WriteLevelFile` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ReadLevelFile` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_ReadLevelFile` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_WriteServerFile` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_WriteServerFile` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `var` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `comment` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `comment` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ReadServerFile` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_ReadServerFile` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `comment` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `comment` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `mapcmd` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `mapcmd` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_DemoMap_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_DemoMap_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_GameMap_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_GameMap_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `map` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `map` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `i` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `savedInuse` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `savedInuse` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Map_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_Map_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `map` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `map` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `expanded` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `expanded` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Loadgame_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_Loadgame_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `dir` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Savegame_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_Savegame_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `dir` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Kick_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_Kick_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Status_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_Status_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `s` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `s` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `ping` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `ping` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ConSay_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_ConSay_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `j` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `p` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `p` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `text` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Heartbeat_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_Heartbeat_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Serverinfo_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_Serverinfo_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_DumpUser_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_DumpUser_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ServerRecord_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_ServerRecord_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `buf_data` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `buf` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `buf` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `len` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | global | `i` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ServerStop_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_ServerStop_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_KillServer_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_KillServer_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ServerCommand_f` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_ServerCommand_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_ccmds.c` | function | `SV_InitOperatorCommands` | `packages/server/src/sv_ccmds.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/server.ts`<br>`packages/server/src/index.ts` | `SV_InitOperatorCommands` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_SetMaster_f` | `packages/server/src/sv_ccmds.ts` | `SV_SetMaster_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_SetPlayer` | `packages/server/src/sv_ccmds.ts` | `SV_SetPlayer` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `i` | `packages/server/src/sv_ccmds.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `idnum` | `packages/server/src/sv_ccmds.ts` | `idnum` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `s` | `packages/server/src/sv_ccmds.ts` | `s` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_WipeSavegame` | `packages/server/src/sv_ccmds.ts` | `SV_WipeSavegame` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `s` | `packages/server/src/sv_ccmds.ts` | `s` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `CopyFile` | `packages/server/src/sv_ccmds.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `l` | `packages/server/src/sv_ccmds.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `buffer` | `packages/server/src/sv_ccmds.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_CopySaveGame` | `packages/server/src/sv_ccmds.ts` | `SV_CopySaveGame` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `found` | `packages/server/src/sv_ccmds.ts` | `found` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_WriteLevelFile` | `packages/server/src/sv_ccmds.ts` | `SV_WriteLevelFile` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ReadLevelFile` | `packages/server/src/sv_ccmds.ts` | `SV_ReadLevelFile` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_WriteServerFile` | `packages/server/src/sv_ccmds.ts` | `SV_WriteServerFile` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `var` | `packages/server/src/sv_ccmds.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `comment` | `packages/server/src/sv_ccmds.ts` | `comment` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ReadServerFile` | `packages/server/src/sv_ccmds.ts` | `SV_ReadServerFile` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `comment` | `packages/server/src/sv_ccmds.ts` | `comment` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `mapcmd` | `packages/server/src/sv_ccmds.ts` | `mapcmd` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_DemoMap_f` | `packages/server/src/sv_ccmds.ts` | `SV_DemoMap_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_GameMap_f` | `packages/server/src/sv_ccmds.ts` | `SV_GameMap_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `map` | `packages/server/src/sv_ccmds.ts` | `map` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `i` | `packages/server/src/sv_ccmds.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `savedInuse` | `packages/server/src/sv_ccmds.ts` | `savedInuse` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Map_f` | `packages/server/src/sv_ccmds.ts` | `SV_Map_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `map` | `packages/server/src/sv_ccmds.ts` | `map` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `expanded` | `packages/server/src/sv_ccmds.ts` | `expanded` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Loadgame_f` | `packages/server/src/sv_ccmds.ts` | `SV_Loadgame_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `dir` | `packages/server/src/sv_ccmds.ts` | `dir` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Savegame_f` | `packages/server/src/sv_ccmds.ts` | `SV_Savegame_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `dir` | `packages/server/src/sv_ccmds.ts` | `dir` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Kick_f` | `packages/server/src/sv_ccmds.ts` | `SV_Kick_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Status_f` | `packages/server/src/sv_ccmds.ts` | `SV_Status_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `s` | `packages/server/src/sv_ccmds.ts` | `s` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `ping` | `packages/server/src/sv_ccmds.ts` | `ping` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ConSay_f` | `packages/server/src/sv_ccmds.ts` | `SV_ConSay_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `j` | `packages/server/src/sv_ccmds.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `p` | `packages/server/src/sv_ccmds.ts` | `p` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `text` | `packages/server/src/sv_ccmds.ts` | `text` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Heartbeat_f` | `packages/server/src/sv_ccmds.ts` | `SV_Heartbeat_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_Serverinfo_f` | `packages/server/src/sv_ccmds.ts` | `SV_Serverinfo_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_DumpUser_f` | `packages/server/src/sv_ccmds.ts` | `SV_DumpUser_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ServerRecord_f` | `packages/server/src/sv_ccmds.ts` | `SV_ServerRecord_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `name` | `packages/server/src/sv_ccmds.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `buf_data` | `packages/server/src/sv_ccmds.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `buf` | `packages/server/src/sv_ccmds.ts` | `buf` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `len` | `packages/server/src/sv_ccmds.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | global | `i` | `packages/server/src/sv_ccmds.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ServerStop_f` | `packages/server/src/sv_ccmds.ts` | `SV_ServerStop_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_KillServer_f` | `packages/server/src/sv_ccmds.ts` | `SV_KillServer_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_ServerCommand_f` | `packages/server/src/sv_ccmds.ts` | `SV_ServerCommand_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_ccmds.c` | function | `SV_InitOperatorCommands` | `packages/server/src/sv_ccmds.ts` | `SV_InitOperatorCommands` | A verifier | A redecouper |  |

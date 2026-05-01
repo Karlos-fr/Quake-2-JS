@@ -8,34 +8,34 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `basename-collision`, `missing-ts-symbols:20`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:1`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/game.h` | macro | `GAME_API_VERSION` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` | `GAME_API_VERSION` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | macro | `SVF_NOCLIENT` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` | `SVF_NOCLIENT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | macro | `SVF_DEADMONSTER` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` | `SVF_DEADMONSTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | macro | `SVF_MONSTER` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` | `SVF_MONSTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | enum | `solid_t` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` | `solid_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `link_s` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | macro | `MAX_ENT_CLUSTERS` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` | `MAX_ENT_CLUSTERS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `gclient_s` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `ps` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `ping` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `edict_s` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `s` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `inuse` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `linkcount` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `area` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `num_clusters` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `clusternums` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `headnode` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `svflags` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `solid` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `clipmask` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `owner` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `game_import_t` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` | `game_import_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `game_export_t` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` | `game_export_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `apiversion` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `edict_size` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `num_edicts` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `max_edicts` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | function | `GetGameApi` | `packages/game/src/game.ts`<br>`packages/game/src/runtime.ts` | `GetGameApi` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | macro | `GAME_API_VERSION` | `packages/game/src/game.ts` | `GAME_API_VERSION` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | macro | `SVF_NOCLIENT` | `packages/game/src/runtime.ts` | `SVF_NOCLIENT` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | macro | `SVF_DEADMONSTER` | `packages/game/src/runtime.ts` | `SVF_DEADMONSTER` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | macro | `SVF_MONSTER` | `packages/game/src/runtime.ts` | `SVF_MONSTER` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | enum | `solid_t` | `packages/game/src/game.ts` | `solid_t` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `link_s` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | macro | `MAX_ENT_CLUSTERS` | `packages/game/src/game.ts` | `MAX_ENT_CLUSTERS` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `gclient_s` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `ps` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `ping` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `edict_s` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `s` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `inuse` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `linkcount` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `area` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `num_clusters` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `clusternums` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `headnode` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `svflags` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `solid` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `clipmask` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `owner` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `game_import_t` | `packages/game/src/game.ts` | `game_import_t` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `game_export_t` | `packages/game/src/game.ts` | `game_export_t` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `apiversion` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `edict_size` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `num_edicts` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `max_edicts` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | function | `GetGameApi` | `packages/game/src/game.ts` | `GetGameApi` | A verifier | A redecouper |  |

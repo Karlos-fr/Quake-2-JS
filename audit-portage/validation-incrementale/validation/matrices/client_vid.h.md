@@ -8,15 +8,15 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `missing-ts-symbols:1`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:4`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/vid.h` | struct | `vrect_s` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/vid.h` | struct | `viddef_t` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` | `viddef_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/vid.h` | global | `width` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` | `width` | A verifier | A redecouper |  |
-| `Quake-2-master/client/vid.h` | global | `height` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` | `height` | A verifier | A redecouper |  |
-| `Quake-2-master/client/vid.h` | function | `VID_Init` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` | `VID_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/vid.h` | function | `VID_Shutdown` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` | `VID_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/vid.h` | function | `VID_CheckChanges` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` | `VID_CheckChanges` | A verifier | A redecouper |  |
-| `Quake-2-master/client/vid.h` | function | `VID_MenuInit` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` | `VID_MenuInit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/vid.h` | function | `VID_MenuDraw` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` | `VID_MenuDraw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/vid.h` | function | `VID_MenuKey` | `packages/client/src/vid.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/vid-menu.ts`<br>`packages/client/src/index.ts` | `VID_MenuKey` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | struct | `vrect_s` | `packages/client/src/vid.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | struct | `viddef_t` | `packages/client/src/vid.ts` | `viddef_t` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | global | `width` | `packages/client/src/cl_scrn.ts` | `width` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | global | `height` | `packages/client/src/cl_scrn.ts` | `height` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | function | `VID_Init` | `packages/client/src/vid.ts` | `VID_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | function | `VID_Shutdown` | `packages/client/src/vid.ts` | `VID_Shutdown` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | function | `VID_CheckChanges` | `packages/client/src/vid.ts` | `VID_CheckChanges` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | function | `VID_MenuInit` | `packages/client/src/vid.ts` | `VID_MenuInit` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | function | `VID_MenuDraw` | `packages/client/src/vid.ts` | `VID_MenuDraw` | A verifier | A redecouper |  |
+| `Quake-2-master/client/vid.h` | function | `VID_MenuKey` | `packages/client/src/vid.ts` | `VID_MenuKey` | A verifier | A redecouper |  |

@@ -8,55 +8,55 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `missing-ts-symbols:23`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/ref.h` | macro | `MAX_DLIGHTS` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `MAX_DLIGHTS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `MAX_ENTITIES` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `MAX_ENTITIES` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `MAX_PARTICLES` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `MAX_PARTICLES` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `MAX_LIGHTSTYLES` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `MAX_LIGHTSTYLES` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `POWERSUIT_SCALE` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `POWERSUIT_SCALE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_RED_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_RED_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_GREEN_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_GREEN_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_BLUE_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_BLUE_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_RG_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_RG_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_RB_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_RB_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_BG_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_BG_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_DOUBLE_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_DOUBLE_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_HALF_DAM_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_HALF_DAM_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_CYAN_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_CYAN_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `SHELL_WHITE_COLOR` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `SHELL_WHITE_COLOR` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `entity_s` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `model` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `angles` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `origin` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `frame` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `frame` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `oldorigin` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `oldframe` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `backlerp` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `skinnum` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `lightstyle` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `alpha` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `flags` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `ENTITY_FLAGS` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `ENTITY_FLAGS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `dlight_t` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `dlight_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `intensity` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `particle_t` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `particle_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `color` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `color` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `alpha` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `lightstyle_t` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `lightstyle_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `rgb` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `white` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `refdef_t` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `refdef_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `vieworg` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `viewangles` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `blend` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `time` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `time` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `rdflags` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `areabits` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `num_entities` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `num_dlights` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `num_particles` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | macro | `API_VERSION` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `API_VERSION` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `refexport_t` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `refexport_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | global | `api_version` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `API_VERSION` | A verifier | A redecouper |  |
-| `Quake-2-master/client/ref.h` | struct | `refimport_t` | `packages/client/src/ref.ts`<br>`packages/qcommon/src/q_shared.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/index.ts` | `refimport_t` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `MAX_DLIGHTS` | `packages/client/src/ref.ts` | `MAX_DLIGHTS` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `MAX_ENTITIES` | `packages/client/src/ref.ts` | `MAX_ENTITIES` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `MAX_PARTICLES` | `packages/client/src/ref.ts` | `MAX_PARTICLES` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `MAX_LIGHTSTYLES` | `packages/qcommon/src/q_shared.ts` | `MAX_LIGHTSTYLES` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `POWERSUIT_SCALE` | `packages/client/src/ref.ts` | `POWERSUIT_SCALE` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_RED_COLOR` | `packages/client/src/ref.ts` | `SHELL_RED_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_GREEN_COLOR` | `packages/client/src/ref.ts` | `SHELL_GREEN_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_BLUE_COLOR` | `packages/client/src/ref.ts` | `SHELL_BLUE_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_RG_COLOR` | `packages/client/src/ref.ts` | `SHELL_RG_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_RB_COLOR` | `packages/client/src/ref.ts` | `SHELL_RB_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_BG_COLOR` | `packages/client/src/ref.ts` | `SHELL_BG_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_DOUBLE_COLOR` | `packages/client/src/ref.ts` | `SHELL_DOUBLE_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_HALF_DAM_COLOR` | `packages/client/src/ref.ts` | `SHELL_HALF_DAM_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_CYAN_COLOR` | `packages/client/src/ref.ts` | `SHELL_CYAN_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `SHELL_WHITE_COLOR` | `packages/client/src/ref.ts` | `SHELL_WHITE_COLOR` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `entity_s` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `model` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `angles` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `origin` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `frame` | `packages/client/src/cl_scrn.ts` | `frame` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `oldorigin` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `oldframe` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `backlerp` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `skinnum` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `lightstyle` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `alpha` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `flags` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `ENTITY_FLAGS` | `packages/client/src/ref.ts` | `ENTITY_FLAGS` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `dlight_t` | `packages/client/src/ref.ts` | `dlight_t` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `intensity` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `particle_t` | `packages/client/src/ref.ts` | `particle_t` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `color` | `packages/client/src/cl_scrn.ts` | `color` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `alpha` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `lightstyle_t` | `packages/client/src/ref.ts` | `lightstyle_t` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `rgb` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `white` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `refdef_t` | `packages/client/src/ref.ts` | `refdef_t` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `vieworg` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `viewangles` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `blend` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `time` | `packages/client/src/cl_scrn.ts` | `time` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `rdflags` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `areabits` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `num_entities` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `num_dlights` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `num_particles` | `packages/client/src/ref.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | macro | `API_VERSION` | `packages/client/src/ref.ts` | `API_VERSION` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `refexport_t` | `packages/client/src/ref.ts` | `refexport_t` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | global | `api_version` | `packages/client/src/ref.ts` | `API_VERSION` | A verifier | A redecouper |  |
+| `Quake-2-master/client/ref.h` | struct | `refimport_t` | `packages/client/src/ref.ts` | `refimport_t` | A verifier | A redecouper |  |

@@ -8,29 +8,29 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `basename-collision`, `missing-ts-symbols:7`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:4`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/console.h` | macro | `NUM_CON_TIMES` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `NUM_CON_TIMES` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | macro | `CON_TEXTSIZE` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `CON_TEXTSIZE` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | struct | `console_t` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `console_t` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `initialized` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `text` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `current` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `current` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `x` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `x` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `display` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `display` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `ormask` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `linewidth` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `totallines` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `cursorspeed` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `vislines` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | global | `times` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_DrawCharacter` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_DrawCharacter` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_CheckResize` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_CheckResize` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_Init` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_DrawConsole` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_DrawConsole` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_Print` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_Print` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_CenteredPrint` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_CenteredPrint` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_Clear_f` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_Clear_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_DrawNotify` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_DrawNotify` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_ClearNotify` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_ClearNotify` | A verifier | A redecouper |  |
-| `Quake-2-master/client/console.h` | function | `Con_ToggleConsole_f` | `packages/client/src/console.ts`<br>`packages/client/src/index.ts` | `Con_ToggleConsole_f` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | macro | `NUM_CON_TIMES` | `packages/client/src/console.ts` | `NUM_CON_TIMES` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | macro | `CON_TEXTSIZE` | `packages/client/src/console.ts` | `CON_TEXTSIZE` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | struct | `console_t` | `packages/client/src/console.ts` | `console_t` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `initialized` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `text` | `packages/client/src/console.ts` | `text` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `current` | `packages/client/src/console.ts` | `current` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `x` | `packages/client/src/console.ts` | `x` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `display` | `packages/client/src/console.ts` | `display` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `ormask` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `linewidth` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `totallines` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `cursorspeed` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `vislines` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | global | `times` | `packages/client/src/console.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_DrawCharacter` | `packages/client/src/console.ts` | `Con_DrawCharacter` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_CheckResize` | `packages/client/src/console.ts` | `Con_CheckResize` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_Init` | `packages/client/src/console.ts` | `Con_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_DrawConsole` | `packages/client/src/console.ts` | `Con_DrawConsole` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_Print` | `packages/client/src/console.ts` | `Con_Print` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_CenteredPrint` | `packages/client/src/console.ts` | `Con_CenteredPrint` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_Clear_f` | `packages/client/src/console.ts` | `Con_Clear_f` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_DrawNotify` | `packages/client/src/console.ts` | `Con_DrawNotify` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_ClearNotify` | `packages/client/src/console.ts` | `Con_ClearNotify` | A verifier | A redecouper |  |
+| `Quake-2-master/client/console.h` | function | `Con_ToggleConsole_f` | `packages/client/src/console.ts` | `Con_ToggleConsole_f` | A verifier | A redecouper |  |

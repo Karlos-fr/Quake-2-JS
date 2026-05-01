@@ -8,77 +8,77 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `header:stub marker detected`, `header:temporary marker detected`, `missing-ts-symbols:31`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:13`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_ForwardToServer` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_ForwardToServer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | macro | `MAX_ALIAS_NAME` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | struct | `cmdalias_s` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `name` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `value` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_wait` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | macro | `ALIAS_LOOP_COUNT` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `ALIAS_LOOP_COUNT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `alias_count` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Wait_f` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Wait_f` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_text` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_text_buf` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `defer_text_buf` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_Init` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cbuf_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_AddText` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cbuf_AddText` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `l` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_InsertText` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cbuf_InsertText` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `temp` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `templen` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `temp` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_CopyToDefer` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cbuf_CopyToDefer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_InsertFromDefer` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cbuf_InsertFromDefer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_ExecuteText` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cbuf_ExecuteText` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_Execute` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cbuf_Execute` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `text` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `line` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `line` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `quotes` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `quotes` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_AddEarlyCommands` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cbuf_AddEarlyCommands` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `s` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_AddLateCommands` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cbuf_AddLateCommands` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `s` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `argc` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `argc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `ret` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Exec_f` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Exec_f` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `len` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Echo_f` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Echo_f` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Alias_f` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Alias_f` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `cmd` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `s` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | struct | `cmd_function_s` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `name` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `function` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_argc` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Argc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_argv` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Argv` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_null_string` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_args` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Args` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Argc` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Argc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Argv` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Argv` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Args` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Args` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_MacroExpandString` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_MacroExpandString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `inquote` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `inQuote` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `scan` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `scan` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `expanded` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `expanded` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `temporary` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_TokenizeString` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_TokenizeString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `com_token` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `l` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `break` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_AddCommand` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_AddCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_RemoveCommand` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_RemoveCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Exists` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Exists` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_CompleteCommand` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_CompleteCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `len` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `a` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_ExecuteString` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_ExecuteString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `a` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_List_f` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_List_f` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Init` | `packages/qcommon/src/cmd.ts`<br>`packages/qcommon/src/runtime.ts` | `Cmd_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_ForwardToServer` | `packages/qcommon/src/cmd.ts` | `Cmd_ForwardToServer` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | macro | `MAX_ALIAS_NAME` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | struct | `cmdalias_s` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `name` | `packages/qcommon/src/cmd.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `value` | `packages/qcommon/src/cmd.ts` | `value` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_wait` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | macro | `ALIAS_LOOP_COUNT` | `packages/qcommon/src/cmd.ts` | `ALIAS_LOOP_COUNT` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `alias_count` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Wait_f` | `packages/qcommon/src/cmd.ts` | `Cmd_Wait_f` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_text` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_text_buf` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `defer_text_buf` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_Init` | `packages/qcommon/src/cmd.ts` | `Cbuf_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_AddText` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddText` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `l` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_InsertText` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertText` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `temp` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `templen` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `temp` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_CopyToDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_CopyToDefer` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_InsertFromDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertFromDefer` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_ExecuteText` | `packages/qcommon/src/cmd.ts` | `Cbuf_ExecuteText` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_Execute` | `packages/qcommon/src/cmd.ts` | `Cbuf_Execute` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `text` | `packages/qcommon/src/cmd.ts` | `text` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `line` | `packages/qcommon/src/cmd.ts` | `line` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `quotes` | `packages/qcommon/src/cmd.ts` | `quotes` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_AddEarlyCommands` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddEarlyCommands` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `s` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_AddLateCommands` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddLateCommands` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `s` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `argc` | `packages/qcommon/src/cmd.ts` | `argc` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `ret` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Exec_f` | `packages/qcommon/src/cmd.ts` | `Cmd_Exec_f` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `len` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Echo_f` | `packages/qcommon/src/cmd.ts` | `Cmd_Echo_f` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Alias_f` | `packages/qcommon/src/cmd.ts` | `Cmd_Alias_f` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd` | `packages/qcommon/src/cmd.ts` | `cmd` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `s` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | struct | `cmd_function_s` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `name` | `packages/qcommon/src/cmd.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `function` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_argc` | `packages/qcommon/src/cmd.ts` | `Cmd_Argc` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_argv` | `packages/qcommon/src/cmd.ts` | `Cmd_Argv` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_null_string` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_args` | `packages/qcommon/src/cmd.ts` | `Cmd_Args` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Argc` | `packages/qcommon/src/cmd.ts` | `Cmd_Argc` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Argv` | `packages/qcommon/src/cmd.ts` | `Cmd_Argv` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Args` | `packages/qcommon/src/cmd.ts` | `Cmd_Args` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_MacroExpandString` | `packages/qcommon/src/cmd.ts` | `Cmd_MacroExpandString` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `inquote` | `packages/qcommon/src/cmd.ts` | `inQuote` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `scan` | `packages/qcommon/src/cmd.ts` | `scan` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `expanded` | `packages/qcommon/src/cmd.ts` | `expanded` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `temporary` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_TokenizeString` | `packages/qcommon/src/cmd.ts` | `Cmd_TokenizeString` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `com_token` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `l` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `break` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_AddCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_AddCommand` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_RemoveCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_RemoveCommand` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Exists` | `packages/qcommon/src/cmd.ts` | `Cmd_Exists` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_CompleteCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_CompleteCommand` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `len` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `a` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_ExecuteString` | `packages/qcommon/src/cmd.ts` | `Cmd_ExecuteString` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `a` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_List_f` | `packages/qcommon/src/cmd.ts` | `Cmd_List_f` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Init` | `packages/qcommon/src/cmd.ts` | `Cmd_Init` | A verifier | A redecouper |  |

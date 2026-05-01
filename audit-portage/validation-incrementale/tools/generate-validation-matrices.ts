@@ -226,16 +226,35 @@ function occurrenceFor(occurrences: Map<string, number>, sourcePath: string, kin
   return occurrence;
 }
 
+function selectOwnerTargetFile(row: MatrixRow): string | undefined {
+  const matchedFiles = unique(normalizeArray(row.tsSymbolMatches).map((match) => match.file));
+
+  if (row.primaryTsTarget && matchedFiles.includes(row.primaryTsTarget)) {
+    return row.primaryTsTarget;
+  }
+
+  if (matchedFiles.length === 1) {
+    return matchedFiles[0];
+  }
+
+  return row.primaryTsTarget ?? normalizeArray(row.declaredTsTargets)[0] ?? matchedFiles[0];
+}
+
+function selectOwnerTargetSymbol(row: MatrixRow, ownerTargetFile: string | undefined): string | undefined {
+  const ownerMatches = normalizeArray(row.tsSymbolMatches)
+    .filter((match) => !ownerTargetFile || match.file === ownerTargetFile);
+  const ownerSymbols = unique(ownerMatches.map((match) => match.symbol));
+
+  if (row.tsSymbol && (ownerSymbols.length === 0 || ownerSymbols.includes(row.tsSymbol))) {
+    return row.tsSymbol;
+  }
+
+  return ownerSymbols[0] ?? row.tsSymbol;
+}
+
 function formatMatrixRow(row: MatrixRow, preserved: Map<string, PreservedCell>, occurrence: number): string {
-  const targetFiles = unique([
-    row.primaryTsTarget,
-    ...normalizeArray(row.declaredTsTargets),
-    ...normalizeArray(row.tsSymbolMatches).map((match) => match.file),
-  ]);
-  const targetSymbols = unique([
-    row.tsSymbol,
-    ...normalizeArray(row.tsSymbolMatches).map((match) => match.symbol),
-  ]);
+  const targetFile = selectOwnerTargetFile(row);
+  const targetSymbol = selectOwnerTargetSymbol(row, targetFile);
   const saved = preserved.get(preserveKey(row.sourcePath, row.symbolKind, row.sourceSymbol, occurrence));
   const notes = saved?.notes ?? "";
 
@@ -243,8 +262,8 @@ function formatMatrixRow(row: MatrixRow, preserved: Map<string, PreservedCell>, 
     `\`${row.sourcePath}\``,
     md(row.symbolKind),
     `\`${md(row.sourceSymbol)}\``,
-    md(targetFiles.map((file) => `\`${file}\``)),
-    md(targetSymbols.map((symbol) => `\`${symbol}\``)),
+    targetFile ? `\`${md(targetFile)}\`` : "",
+    targetSymbol ? `\`${md(targetSymbol)}\`` : "",
     saved?.valid ?? "A verifier",
     md(row.provisionalVerdict ?? ""),
     md(notes),
@@ -308,7 +327,7 @@ function declarativeRows(
   for (const table of comparisons) {
     const kind = `declarative:${table.category}`;
     const sourceSymbol = table.tableName;
-    const targetFiles = unique([table.primaryTsTarget, ...normalizeArray(table.tsTargets)]);
+    const targetFile = table.primaryTsTarget ?? normalizeArray(table.tsTargets)[0];
     const saved = preserved.get(preserveKey(table.sourceFile, kind, sourceSymbol, 0));
     const notes = saved?.notes ?? "";
 
@@ -316,7 +335,7 @@ function declarativeRows(
       `\`${table.sourceFile}\``,
       md(kind),
       `\`${md(sourceSymbol)}\``,
-      md(targetFiles.map((file) => `\`${file}\``)),
+      targetFile ? `\`${md(targetFile)}\`` : "",
       `\`${md(sourceSymbol)}\``,
       saved?.valid ?? "A verifier",
       md(table.status ?? ""),
@@ -518,7 +537,7 @@ function writeMatrices(): void {
       `- Verdict Phase 03: ${audit?.verdict ?? "inconnu"}`,
       `- Findings Phase 03: ${findings.length ? findings.map((finding) => `\`${finding}\``).join(", ") : "aucun"}`,
       "",
-      "| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |",
+      "| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |",
       "| --- | --- | --- | --- | --- | --- | --- | --- |",
       ...(() => {
         const renderOccurrences = new Map<string, number>();

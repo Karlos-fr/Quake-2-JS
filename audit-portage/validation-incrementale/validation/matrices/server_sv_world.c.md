@@ -8,54 +8,54 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:14`, `multiple-declared-ts-targets`, `no-function-reached-from-runtime-roots`, `phase02-structural-status:split-undocumented`, `unreachable-functions:17`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_world.c` | macro | `STRUCT_FROM_LINK` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | macro | `EDICT_FROM_AREA` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | struct | `areanode_s` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `axis` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `dist` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | macro | `AREA_DEPTH` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `AREA_DEPTH` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | macro | `AREA_NODES` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `AREA_NODES` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `sv_numareanodes` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `area_type` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_HullForEntity` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_HullForEntity` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `ClearLink` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `ClearLink` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `RemoveLink` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `RemoveLink` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `InsertLinkBefore` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `InsertLinkBefore` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_CreateAreaNode` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_CreateAreaNode` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `size` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `size` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_ClearWorld` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_ClearWorld` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_UnlinkEdict` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_UnlinkEdict` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | macro | `MAX_TOTAL_ENT_LEAFS` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `MAX_TOTAL_ENT_LEAFS` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_LinkEdict` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_LinkEdict` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `leafs` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `leafs` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `clusters` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `clusters` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `num_leafs` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `area` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `area` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `topnode` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `i` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `break` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `InsertLinkBefore` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `InsertLinkBefore` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_AreaEdicts_r` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_AreaEdicts_r` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `check` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `check` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `count` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `start` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `start` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_AreaEdicts` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_AreaEdicts` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_PointContents` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_PointContents` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `headnode` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `headnode` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `angles` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `angles` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | struct | `moveclip_t` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `moveclip_t` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `passedict` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `contentmask` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_HullForEntity` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_HullForEntity` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `CM_HeadnodeForBox` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_ClipMoveToEntities` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_ClipMoveToEntities` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `headnode` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `headnode` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `angles` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `angles` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_TraceBounds` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_TraceBounds` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | global | `i` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `SV_Trace` | `packages/server/src/sv_world.ts`<br>`packages/server/src/index.ts` | `SV_Trace` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | macro | `STRUCT_FROM_LINK` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | macro | `EDICT_FROM_AREA` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | struct | `areanode_s` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `axis` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `dist` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | macro | `AREA_DEPTH` | `packages/server/src/sv_world.ts` | `AREA_DEPTH` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | macro | `AREA_NODES` | `packages/server/src/sv_world.ts` | `AREA_NODES` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `sv_numareanodes` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `area_type` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_HullForEntity` | `packages/server/src/sv_world.ts` | `SV_HullForEntity` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `ClearLink` | `packages/server/src/sv_world.ts` | `ClearLink` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `RemoveLink` | `packages/server/src/sv_world.ts` | `RemoveLink` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `InsertLinkBefore` | `packages/server/src/sv_world.ts` | `InsertLinkBefore` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_CreateAreaNode` | `packages/server/src/sv_world.ts` | `SV_CreateAreaNode` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `size` | `packages/server/src/sv_world.ts` | `size` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_ClearWorld` | `packages/server/src/sv_world.ts` | `SV_ClearWorld` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_UnlinkEdict` | `packages/server/src/sv_world.ts` | `SV_UnlinkEdict` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | macro | `MAX_TOTAL_ENT_LEAFS` | `packages/server/src/sv_world.ts` | `MAX_TOTAL_ENT_LEAFS` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_LinkEdict` | `packages/server/src/sv_world.ts` | `SV_LinkEdict` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `leafs` | `packages/server/src/sv_world.ts` | `leafs` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `clusters` | `packages/server/src/sv_world.ts` | `clusters` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `num_leafs` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `area` | `packages/server/src/sv_world.ts` | `area` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `topnode` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `i` | `packages/server/src/sv_world.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `break` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `InsertLinkBefore` | `packages/server/src/sv_world.ts` | `InsertLinkBefore` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_AreaEdicts_r` | `packages/server/src/sv_world.ts` | `SV_AreaEdicts_r` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `check` | `packages/server/src/sv_world.ts` | `check` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `count` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `start` | `packages/server/src/sv_world.ts` | `start` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_AreaEdicts` | `packages/server/src/sv_world.ts` | `SV_AreaEdicts` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_PointContents` | `packages/server/src/sv_world.ts` | `SV_PointContents` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `headnode` | `packages/server/src/sv_world.ts` | `headnode` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `angles` | `packages/server/src/sv_world.ts` | `angles` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | struct | `moveclip_t` | `packages/server/src/sv_world.ts` | `moveclip_t` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `passedict` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `contentmask` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_HullForEntity` | `packages/server/src/sv_world.ts` | `SV_HullForEntity` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `CM_HeadnodeForBox` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_ClipMoveToEntities` | `packages/server/src/sv_world.ts` | `SV_ClipMoveToEntities` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `headnode` | `packages/server/src/sv_world.ts` | `headnode` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `angles` | `packages/server/src/sv_world.ts` | `angles` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_TraceBounds` | `packages/server/src/sv_world.ts` | `SV_TraceBounds` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | global | `i` | `packages/server/src/sv_world.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_world.c` | function | `SV_Trace` | `packages/server/src/sv_world.ts` | `SV_Trace` | A verifier | A redecouper |  |

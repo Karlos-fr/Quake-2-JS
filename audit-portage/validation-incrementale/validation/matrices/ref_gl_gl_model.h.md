@@ -8,7 +8,7 @@
 - Verdict Phase 03: wrong-name
 - Findings Phase 03: `phase02-structural-status:wrong-name`, `expected-map-status:missing`, `primary-basename 'gl-model' differs from source basename 'gl_model'`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/ref_gl/gl_model.h` | function | `Hunk_End` | `packages/renderer-three/src/gl-model.ts` | `Hunk_End` | A verifier | wrong-name |  |
 | `Quake-2-master/ref_gl/gl_model.h` | function | `Hunk_Free` | `packages/renderer-three/src/gl-model.ts` | `Hunk_Free` | A verifier | wrong-name |  |

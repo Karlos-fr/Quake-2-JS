@@ -8,42 +8,42 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `basename-collision`, `header:stub marker detected`, `header:temporary marker detected`, `missing-ts-symbols:9`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:5`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/g_utils.c` | function | `G_ProjectSource` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_ProjectSource` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_Find` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_Find` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `findradius` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `findradius` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `j` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | macro | `MAXCHOICES` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_PickTarget` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_PickTarget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `ent` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `num_choices` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `choice` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `Think_Delay` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `Think_Delay` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_UseTargets` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_UseTargets` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `t` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `tv` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `tv` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `index` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `v` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `v` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `vtos` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `vtos` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `index` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_SetMovedir` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_SetMovedir` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `vectoyaw` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `vectoyaw` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `yaw` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `yaw` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `vectoangles` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `vectoangles` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `forward` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `forward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `pitch` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `pitch` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `yaw` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `yaw` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_CopyString` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_CopyString` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `out` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_InitEdict` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_InitEdict` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_Spawn` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_Spawn` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `i` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `e` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_FreeEdict` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_FreeEdict` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_TouchTriggers` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_TouchTriggers` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_TouchSolids` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `G_TouchSolids` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `KillBox` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `KillBox` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `tr` | `packages/game/src/g_utils.ts`<br>`packages/game/src/touch.ts`<br>`packages/game/src/runtime.ts`<br>`packages/game/src/g_weapon.ts` | `tr` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_ProjectSource` | `packages/game/src/g_utils.ts` | `G_ProjectSource` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_Find` | `packages/game/src/g_utils.ts` | `G_Find` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `findradius` | `packages/game/src/g_utils.ts` | `findradius` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `j` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | macro | `MAXCHOICES` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_PickTarget` | `packages/game/src/g_utils.ts` | `G_PickTarget` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `ent` | `packages/game/src/g_utils.ts` | `ent` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `num_choices` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `choice` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `Think_Delay` | `packages/game/src/runtime.ts` | `Think_Delay` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_UseTargets` | `packages/game/src/g_utils.ts` | `G_UseTargets` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `t` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `tv` | `packages/game/src/g_utils.ts` | `tv` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `v` | `packages/game/src/g_weapon.ts` | `v` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `vtos` | `packages/game/src/g_utils.ts` | `vtos` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_SetMovedir` | `packages/game/src/g_utils.ts` | `G_SetMovedir` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `vectoyaw` | `packages/game/src/g_utils.ts` | `vectoyaw` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `yaw` | `packages/game/src/g_utils.ts` | `yaw` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `vectoangles` | `packages/game/src/g_utils.ts` | `vectoangles` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `forward` | `packages/game/src/g_utils.ts` | `forward` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `pitch` | `packages/game/src/g_utils.ts` | `pitch` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `yaw` | `packages/game/src/g_utils.ts` | `yaw` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_CopyString` | `packages/game/src/g_utils.ts` | `G_CopyString` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `out` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_InitEdict` | `packages/game/src/g_utils.ts` | `G_InitEdict` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_Spawn` | `packages/game/src/g_utils.ts` | `G_Spawn` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `i` | `packages/game/src/g_weapon.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `e` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_FreeEdict` | `packages/game/src/g_utils.ts` | `G_FreeEdict` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_TouchTriggers` | `packages/game/src/touch.ts` | `G_TouchTriggers` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_TouchSolids` | `packages/game/src/touch.ts` | `G_TouchSolids` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `KillBox` | `packages/game/src/g_utils.ts` | `KillBox` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `tr` | `packages/game/src/g_utils.ts` | `tr` | A verifier | A redecouper |  |

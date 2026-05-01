@@ -8,17 +8,17 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `missing-linked-test-for-some-symbols`, `missing-ts-symbols:2`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_inv.c` | function | `CL_ParseInventory` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `CL_ParseInventory` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `i` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | function | `Inv_DrawString` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `Inv_DrawString` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | function | `SetStringHighBit` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `SetStringHighBit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | macro | `DISPLAY_ITEMS` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `DISPLAY_ITEMS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | function | `CL_DrawInventory` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `CL_DrawInventory` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `index` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `index` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `string` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `binding` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `bind` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `bind` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `selected` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `selected` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `top` | `packages/client/src/cl_inv.ts`<br>`packages/client/src/cl_parse.ts`<br>`packages/client/src/cl_scrn.ts` | `top` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | function | `CL_ParseInventory` | `packages/client/src/cl_parse.ts` | `CL_ParseInventory` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | global | `i` | `packages/client/src/cl_inv.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | function | `Inv_DrawString` | `packages/client/src/cl_inv.ts` | `Inv_DrawString` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | function | `SetStringHighBit` | `packages/client/src/cl_inv.ts` | `SetStringHighBit` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | macro | `DISPLAY_ITEMS` | `packages/client/src/cl_inv.ts` | `DISPLAY_ITEMS` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | function | `CL_DrawInventory` | `packages/client/src/cl_inv.ts` | `CL_DrawInventory` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | global | `index` | `packages/client/src/cl_inv.ts` | `index` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | global | `string` | `packages/client/src/cl_inv.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | global | `binding` | `packages/client/src/cl_inv.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | global | `bind` | `packages/client/src/cl_inv.ts` | `bind` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | global | `selected` | `packages/client/src/cl_inv.ts` | `selected` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | global | `top` | `packages/client/src/cl_inv.ts` | `top` | A verifier | A redecouper |  |

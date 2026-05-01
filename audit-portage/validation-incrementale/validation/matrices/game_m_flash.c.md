@@ -8,7 +8,7 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_flash.c` | table | `monster_flash_offset` | `packages/game/src/m_flash.ts`<br>`packages/client/src/monster-flash.ts`<br>`packages/client/src/cl_fx.ts`<br>`packages/game/src/m_actor.ts`<br>`packages/game/src/m_chick.ts`<br>`packages/game/src/m_flyer.ts`<br>`packages/game/src/m_float.ts`<br>`packages/game/src/m_gladiator.ts`<br>`packages/game/src/m_gunner.ts`<br>`packages/game/src/m_hover.ts`<br>`packages/game/src/m_infantry.ts`<br>`packages/game/src/m_medic.ts`<br>`packages/game/src/m_tank.ts`<br>`packages/game/src/m_supertank.ts` | `monster_flash_offset` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flash.c` | declarative:muzzle-flashes | `monster_flash_offset` | `packages/game/src/m_flash.ts`<br>`packages/client/src/monster-flash.ts`<br>`packages/client/src/cl_fx.ts`<br>`packages/game/src/m_actor.ts`<br>`packages/game/src/m_chick.ts`<br>`packages/game/src/m_flyer.ts`<br>`packages/game/src/m_float.ts`<br>`packages/game/src/m_gladiator.ts`<br>`packages/game/src/m_gunner.ts`<br>`packages/game/src/m_hover.ts`<br>`packages/game/src/m_infantry.ts`<br>`packages/game/src/m_medic.ts`<br>`packages/game/src/m_tank.ts`<br>`packages/game/src/m_supertank.ts` | `monster_flash_offset` | A verifier | matched |  |
+| `Quake-2-master/game/m_flash.c` | table | `monster_flash_offset` | `packages/game/src/m_flash.ts` | `monster_flash_offset` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_flash.c` | declarative:muzzle-flashes | `monster_flash_offset` | `packages/game/src/m_flash.ts` | `monster_flash_offset` | A verifier | matched |  |

@@ -6,7 +6,7 @@ Cette checklist est a appliquer pour une entite precise ou un petit lot simple.
 
 - [ ] Ouvrir la matrice du fichier source.
 - [ ] Identifier `Fichier source`, `Type entite source` et `Nom entite source`.
-- [ ] Confirmer le `Fichier cible` et le `Nom entite cible`.
+- [ ] Confirmer le `Fichier cible proprietaire` et le `Nom entite cible`.
 - [ ] Si la cible est vide, verifier si l'entite est renommee, deplacee, exclue ou vraiment manquante.
 
 ## 2. Comparer source et TypeScript

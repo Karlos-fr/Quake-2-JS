@@ -8,8 +8,8 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `header:stub marker detected`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:1`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_null.c` | function | `SV_Init` | `packages/server/src/sv_null.ts`<br>`packages/server/src/index.ts` | `SV_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_null.c` | function | `SV_Shutdown` | `packages/server/src/sv_null.ts`<br>`packages/server/src/index.ts` | `SV_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_null.c` | function | `SV_Frame` | `packages/server/src/sv_null.ts`<br>`packages/server/src/index.ts` | `SV_Frame` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_null.c` | function | `SV_Init` | `packages/server/src/sv_null.ts` | `SV_Init` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_null.c` | function | `SV_Shutdown` | `packages/server/src/sv_null.ts` | `SV_Shutdown` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_null.c` | function | `SV_Frame` | `packages/server/src/sv_null.ts` | `SV_Frame` | A verifier | A redecouper |  |

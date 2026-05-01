@@ -8,47 +8,47 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:15`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:20`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_game.c` | function | `PF_Unicast` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_Unicast` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `p` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `p` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `SZ_Write` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_dprintf` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_dprintf` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_cprintf` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_cprintf` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `n` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `Com_Printf` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_centerprintf` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_centerprintf` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `n` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_error` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_error` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_setmodel` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_setmodel` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `i` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_Configstring` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_Configstring` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_WriteChar` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_WriteChar` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_WriteByte` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_WriteByte` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_WriteShort` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_WriteShort` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_WriteLong` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_WriteLong` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_WriteFloat` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_WriteFloat` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_WriteString` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_WriteString` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_WritePos` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_WritePos` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_WriteDir` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_WriteDir` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_WriteAngle` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_WriteAngle` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_inPVS` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_inPVS` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `leafnum` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `cluster` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `mask` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `mask` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_inPHS` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_inPHS` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `leafnum` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `cluster` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | global | `mask` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `mask` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `PF_StartSound` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `PF_StartSound` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `SV_ShutdownGameProgs` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `SV_ShutdownGameProgs` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `SCR_DebugGraph` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `SV_InitGameProgs` | `packages/server/src/sv_game.ts`<br>`packages/server/src/runtime.ts`<br>`packages/server/src/index.ts` | `SV_InitGameProgs` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_Unicast` | `packages/server/src/sv_game.ts` | `PF_Unicast` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `p` | `packages/server/src/sv_game.ts` | `p` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `SZ_Write` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_dprintf` | `packages/server/src/sv_game.ts` | `PF_dprintf` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_cprintf` | `packages/server/src/sv_game.ts` | `PF_cprintf` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `n` | `packages/server/src/sv_game.ts` | `n` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `Com_Printf` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_centerprintf` | `packages/server/src/sv_game.ts` | `PF_centerprintf` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `n` | `packages/server/src/sv_game.ts` | `n` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_error` | `packages/server/src/sv_game.ts` | `PF_error` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_setmodel` | `packages/server/src/sv_game.ts` | `PF_setmodel` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `i` | `packages/server/src/sv_game.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_Configstring` | `packages/server/src/sv_game.ts` | `PF_Configstring` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_WriteChar` | `packages/server/src/sv_game.ts` | `PF_WriteChar` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_WriteByte` | `packages/server/src/sv_game.ts` | `PF_WriteByte` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_WriteShort` | `packages/server/src/sv_game.ts` | `PF_WriteShort` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_WriteLong` | `packages/server/src/sv_game.ts` | `PF_WriteLong` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_WriteFloat` | `packages/server/src/sv_game.ts` | `PF_WriteFloat` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_WriteString` | `packages/server/src/sv_game.ts` | `PF_WriteString` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_WritePos` | `packages/server/src/sv_game.ts` | `PF_WritePos` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_WriteDir` | `packages/server/src/sv_game.ts` | `PF_WriteDir` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_WriteAngle` | `packages/server/src/sv_game.ts` | `PF_WriteAngle` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_inPVS` | `packages/server/src/sv_game.ts` | `PF_inPVS` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `leafnum` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `cluster` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `mask` | `packages/server/src/sv_game.ts` | `mask` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_inPHS` | `packages/server/src/sv_game.ts` | `PF_inPHS` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `leafnum` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `cluster` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | global | `mask` | `packages/server/src/sv_game.ts` | `mask` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `PF_StartSound` | `packages/server/src/sv_game.ts` | `PF_StartSound` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `SV_ShutdownGameProgs` | `packages/server/src/sv_game.ts` | `SV_ShutdownGameProgs` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `SCR_DebugGraph` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_game.c` | function | `SV_InitGameProgs` | `packages/server/src/sv_game.ts` | `SV_InitGameProgs` | A verifier | A redecouper |  |

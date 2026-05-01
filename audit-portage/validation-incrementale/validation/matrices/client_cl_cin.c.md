@@ -8,53 +8,53 @@
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `header:stub marker detected`, `missing-ts-symbols:21`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`
 
-| Fichier source | Type entite source | Nom entite source | Fichier cible | Nom entite cible | Valide | Statut auto | Notes |
+| Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_cin.c` | struct | `cblock_t` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `data` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `count` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | struct | `cinematics_t` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `restart_sound` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `s_rate` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `s_width` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `s_channels` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `width` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `width` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `height` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `height` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `pic` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `pic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `pic_pending` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `hnodes1` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `numhnodes1` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `h_used` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `h_count` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `SCR_LoadPCX` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `raw` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `len` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `runLength` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `SCR_StopCinematic` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `SCR_StopCinematic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `SCR_FinishCinematic` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `SCR_FinishCinematic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `SmallestNode1` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `SmallestNode1` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `i` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `Huff1TableInit` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `Huff1TableInit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `prev` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `prev` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `j` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `counts` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `counts` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `numhnodes` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `numhnodes` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `Huff1Decompress` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `Huff1Decompress` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `input` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `out_p` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `nodenum` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `nodenum` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `count` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `inbyte` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `inbyte` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `SCR_ReadNextFrame` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `SCR_ReadNextFrame` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `r` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `command` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `command` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `samples` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `samples` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `compressed` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `compressed` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `size` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `size` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `pic` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `pic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `SCR_RunCinematic` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `SCR_RunCinematic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `frame` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `frame` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `SCR_DrawCinematic` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `SCR_DrawCinematic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | function | `SCR_PlayCinematic` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `SCR_PlayCinematic` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `palette` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` | `palette` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_cin.c` | global | `old_khz` | `packages/client/src/cl_cin.ts`<br>`packages/client/src/cl_scrn.ts`<br>`packages/client/src/client.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | struct | `cblock_t` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `data` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `count` | `packages/client/src/cl_cin.ts` | `count` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | struct | `cinematics_t` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `restart_sound` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `s_rate` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `s_width` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `s_channels` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `width` | `packages/client/src/cl_scrn.ts` | `width` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `height` | `packages/client/src/cl_scrn.ts` | `height` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `pic` | `packages/client/src/cl_cin.ts` | `pic` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `pic_pending` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `hnodes1` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `numhnodes1` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `h_used` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `h_count` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `SCR_LoadPCX` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `raw` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `len` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `runLength` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `SCR_StopCinematic` | `packages/client/src/cl_cin.ts` | `SCR_StopCinematic` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `SCR_FinishCinematic` | `packages/client/src/cl_cin.ts` | `SCR_FinishCinematic` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `SmallestNode1` | `packages/client/src/cl_cin.ts` | `SmallestNode1` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `i` | `packages/client/src/cl_scrn.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `Huff1TableInit` | `packages/client/src/cl_cin.ts` | `Huff1TableInit` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `prev` | `packages/client/src/cl_cin.ts` | `prev` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `j` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `counts` | `packages/client/src/cl_cin.ts` | `counts` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `numhnodes` | `packages/client/src/cl_cin.ts` | `numhnodes` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `Huff1Decompress` | `packages/client/src/cl_cin.ts` | `Huff1Decompress` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `input` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `out_p` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `nodenum` | `packages/client/src/cl_cin.ts` | `nodenum` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `count` | `packages/client/src/cl_cin.ts` | `count` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `inbyte` | `packages/client/src/cl_cin.ts` | `inbyte` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `SCR_ReadNextFrame` | `packages/client/src/cl_cin.ts` | `SCR_ReadNextFrame` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `r` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `command` | `packages/client/src/cl_cin.ts` | `command` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `samples` | `packages/client/src/cl_cin.ts` | `samples` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `compressed` | `packages/client/src/cl_cin.ts` | `compressed` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `size` | `packages/client/src/cl_cin.ts` | `size` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `pic` | `packages/client/src/cl_cin.ts` | `pic` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `SCR_RunCinematic` | `packages/client/src/cl_cin.ts` | `SCR_RunCinematic` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `frame` | `packages/client/src/cl_cin.ts` | `frame` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `SCR_DrawCinematic` | `packages/client/src/cl_cin.ts` | `SCR_DrawCinematic` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | function | `SCR_PlayCinematic` | `packages/client/src/cl_cin.ts` | `SCR_PlayCinematic` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `palette` | `packages/client/src/cl_cin.ts` | `palette` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_cin.c` | global | `old_khz` | `packages/client/src/cl_cin.ts` |  | A verifier | A redecouper |  |
