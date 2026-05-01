@@ -134,6 +134,8 @@ export interface GameMainCvars {
   filterban: cvar_t | null;
   sv_gravity: cvar_t | null;
   sv_maxvelocity: cvar_t | null;
+  sv_rollspeed: cvar_t | null;
+  sv_rollangle: cvar_t | null;
   sv_maplist: cvar_t | null;
 }
 
@@ -206,7 +208,14 @@ export function ClientEndServerFrames(context: GameMainContext): void {
       continue;
     }
 
-    ClientEndServerFrame(ent, context.runtime);
+    const viewOptions: { sv_rollangle?: number; sv_rollspeed?: number } = {};
+    if (context.cvars.sv_rollangle) {
+      viewOptions.sv_rollangle = context.cvars.sv_rollangle.value;
+    }
+    if (context.cvars.sv_rollspeed) {
+      viewOptions.sv_rollspeed = context.cvars.sv_rollspeed.value;
+    }
+    ClientEndServerFrame(ent, context.runtime, viewOptions);
   }
 }
 
@@ -242,6 +251,8 @@ export function InitGame(context: GameMainContext): void {
   context.cvars.filterban = context.gi.cvar("filterban", "1", 0);
   context.cvars.sv_gravity = context.gi.cvar("sv_gravity", "800", 0);
   context.cvars.sv_maxvelocity = context.gi.cvar("sv_maxvelocity", "2000", 0);
+  context.cvars.sv_rollspeed = context.gi.cvar("sv_rollspeed", "200", 0);
+  context.cvars.sv_rollangle = context.gi.cvar("sv_rollangle", "2", 0);
   context.cvars.sv_maplist = context.gi.cvar("sv_maplist", "", 0);
 
   context.game.num_items = InitItems();
@@ -700,6 +711,8 @@ function createGameMainCvars(): GameMainCvars {
     filterban: null,
     sv_gravity: null,
     sv_maxvelocity: null,
+    sv_rollspeed: null,
+    sv_rollangle: null,
     sv_maplist: null
   };
 }

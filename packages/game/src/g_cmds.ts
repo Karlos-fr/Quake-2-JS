@@ -645,6 +645,12 @@ export function Cmd_Kill_f(ent: GameEntity, context: GameCommandContext): void {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Closes every player overlay controlled by the game command layer: scores, help and inventory.
+ *
+ * Porting notes:
+ * - The C function assumes a valid client. The TypeScript port keeps a defensive null guard for runtime adapters.
  */
 export function Cmd_PutAway_f(ent: GameEntity): void {
   const cl = ent.client;

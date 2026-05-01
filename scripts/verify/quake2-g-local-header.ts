@@ -22,6 +22,8 @@ import {
   FALL_TIME,
   FOFS,
   GAMEVERSION,
+  GIB_METALLIC,
+  GIB_ORGANIC,
   ITEM_INDEX,
   MELEE_DISTANCE,
   MOD_TRIGGER_HURT,
@@ -68,6 +70,8 @@ assert.equal(RANGE_MELEE, 0, "RANGE_MELEE mismatch");
 assert.equal(RANGE_NEAR, 1, "RANGE_NEAR mismatch");
 assert.equal(RANGE_MID, 2, "RANGE_MID mismatch");
 assert.equal(RANGE_FAR, 3, "RANGE_FAR mismatch");
+assert.equal(GIB_ORGANIC, 0, "GIB_ORGANIC mismatch");
+assert.equal(GIB_METALLIC, 1, "GIB_METALLIC mismatch");
 assert.equal(AI_MEDIC, 0x00002000, "AI_MEDIC mismatch");
 assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");

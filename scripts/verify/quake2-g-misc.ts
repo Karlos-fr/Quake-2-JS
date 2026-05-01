@@ -17,6 +17,10 @@ import {
   SP_func_clock,
   SP_light,
   SOLID_BSP,
+  GIB_METALLIC,
+  GIB_ORGANIC,
+  MOVETYPE_BOUNCE,
+  MOVETYPE_TOSS,
   SP_misc_explobox,
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
@@ -32,11 +36,13 @@ import {
   func_explosive_explode,
   func_explosive_spawn,
   func_explosive_use,
+  gib_touch,
   linkGameEntity,
   path_corner_touch,
   runPendingThinks,
   spawnGameEntity,
   target_string_use,
+  ThrowGib,
   useGameEntity
 } from "../../packages/game/src/index.js";
 
@@ -50,6 +56,7 @@ function main(): void {
   verifyMiscExploboxSpawnsShootableBarrel();
   verifyLightWritesSourceConfigstrings();
   verifyFuncExplosiveSpawnsAndExplodesBrushModel();
+  verifyGibTypesSelectMovementAndTouchBehavior();
 
   console.log("quake2-g-misc: ok");
 }
@@ -256,6 +263,27 @@ function verifyFuncExplosiveSpawnsAndExplodesBrushModel(): void {
 
   assert.equal(targeted.use, func_explosive_use, "targeted func_explosive must be trigger-usable instead of shootable");
   assert.equal(targeted.takedamage, damage_t.DAMAGE_NO, "targeted func_explosive must not be shootable");
+}
+
+function verifyGibTypesSelectMovementAndTouchBehavior(): void {
+  const runtime = createHarnessRuntime();
+  const source = spawnGameEntity(runtime);
+  source.classname = "gib_source";
+  source.absmin = [0, 0, 0];
+  source.size = [32, 32, 32];
+  source.velocity = [0, 0, 0];
+
+  ThrowGib(source, "models/objects/gibs/sm_meat/tris.md2", 40, GIB_ORGANIC, runtime);
+  const organic = runtime.entities.at(-1)!;
+  assert.equal(organic.movetype, MOVETYPE_TOSS, "organic gibs must use MOVETYPE_TOSS");
+  assert.equal(organic.touch, gib_touch, "organic gibs must install gib_touch");
+  assert.equal(organic.model, "models/objects/gibs/sm_meat/tris.md2", "organic gib model mismatch");
+
+  ThrowGib(source, "models/objects/gibs/sm_metal/tris.md2", 40, GIB_METALLIC, runtime);
+  const metallic = runtime.entities.at(-1)!;
+  assert.equal(metallic.movetype, MOVETYPE_BOUNCE, "metallic gibs must use MOVETYPE_BOUNCE");
+  assert.equal(metallic.touch, undefined, "metallic gibs must not install gib_touch");
+  assert.equal(metallic.model, "models/objects/gibs/sm_metal/tris.md2", "metallic gib model mismatch");
 }
 
 function createHarnessRuntime() {

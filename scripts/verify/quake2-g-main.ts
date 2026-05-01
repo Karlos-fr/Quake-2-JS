@@ -11,11 +11,11 @@
 
 import { strict as assert } from "node:assert";
 
-import { CS_STATUSBAR, CVAR_LATCH, CVAR_SERVERINFO, CVAR_USERINFO, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, temp_event_t, type cvar_t } from "../../packages/qcommon/src/index.js";
+import { CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, temp_event_t, type cvar_t } from "../../packages/qcommon/src/index.js";
 import { TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
-import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { single_statusbar } from "../../packages/game/src/g_spawn.js";
 
 const dprints: string[] = [];
@@ -147,7 +147,28 @@ assert.equal(cvars.get("maxspectators")?.string, "4", "maxspectators default mis
 assert.equal(cvars.get("maxspectators")?.flags, CVAR_SERVERINFO, "maxspectators flags mismatch");
 assert.equal(cvars.get("maxentities")?.string, "1024", "maxentities default mismatch");
 assert.equal(cvars.get("maxentities")?.flags, CVAR_LATCH, "maxentities flags mismatch");
+assert.equal(cvars.get("g_select_empty")?.string, "0", "g_select_empty default mismatch");
+assert.equal(cvars.get("g_select_empty")?.flags, CVAR_ARCHIVE, "g_select_empty flags mismatch");
+assert.equal(cvars.get("dedicated")?.string, "0", "dedicated default mismatch");
+assert.equal(cvars.get("dedicated")?.flags, CVAR_NOSET, "dedicated flags mismatch");
+assert.equal(cvars.get("filterban")?.string, "1", "filterban default mismatch");
+assert.equal(cvars.get("filterban")?.flags, 0, "filterban flags mismatch");
+assert.equal(cvars.get("sv_maxvelocity")?.string, "2000", "sv_maxvelocity default mismatch");
+assert.equal(cvars.get("sv_maxvelocity")?.flags, 0, "sv_maxvelocity flags mismatch");
+assert.equal(cvars.get("sv_gravity")?.string, "800", "sv_gravity default mismatch");
+assert.equal(cvars.get("sv_gravity")?.flags, 0, "sv_gravity flags mismatch");
+assert.equal(cvars.get("sv_rollspeed")?.string, "200", "sv_rollspeed default mismatch");
+assert.equal(cvars.get("sv_rollspeed")?.flags, 0, "sv_rollspeed flags mismatch");
+assert.equal(cvars.get("sv_rollangle")?.string, "2", "sv_rollangle default mismatch");
+assert.equal(cvars.get("sv_rollangle")?.flags, 0, "sv_rollangle flags mismatch");
 assert.equal(api.edicts[0]?.classname, "worldspawn", "g_edicts export must expose the runtime edict array");
+
+const cvarMirrorContext = createGameMainContext(imports);
+cvars.set("g_select_empty", createCvar("g_select_empty", "1", CVAR_ARCHIVE));
+cvars.set("sv_gravity", createCvar("sv_gravity", "600"));
+InitGame(cvarMirrorContext);
+assert.equal(cvarMirrorContext.runtime.g_select_empty, true, "InitGame must mirror g_select_empty to the gameplay runtime");
+assert.equal(cvarMirrorContext.runtime.gravity, 600, "InitGame must mirror sv_gravity to the gameplay runtime");
 
 const entityString = `
 {
@@ -257,8 +278,13 @@ helpContext.runtime.entities[1].inuse = true;
 helpContext.game.helpchanged = 7;
 helpContext.runtime.entities[1].client!.resp.spectator = true;
 helpContext.runtime.entities[1].client!.ps.stats = helpContext.runtime.entities[1].client!.ps.stats.slice();
+helpContext.runtime.entities[1].client!.v_angle = [0, 90, 0];
+helpContext.runtime.entities[1].velocity = [100, 0, 0];
+helpContext.cvars.sv_rollangle = createCvar("sv_rollangle", "6");
+helpContext.cvars.sv_rollspeed = createCvar("sv_rollspeed", "100");
 ClientEndServerFrames(helpContext);
 assert.equal(helpContext.runtime.helpchanged, 7, "ClientEndServerFrames helpchanged sync mismatch");
+assert.equal(helpContext.runtime.entities[1].s.angles[2], 24, "ClientEndServerFrames must pass sv_rollangle/sv_rollspeed cvars to p_view");
 
 const frameContext = createGameMainContext(imports);
 frameContext.runtime.maxclients = 1;

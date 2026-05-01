@@ -23,6 +23,7 @@ import {
   Cmd_Kill_f,
   Cmd_WeapLast_f,
   Cmd_PlayerList_f,
+  Cmd_PutAway_f,
   Cmd_Say_f,
   Cmd_WeapNext_f,
   Cmd_WeapPrev_f,
@@ -64,6 +65,7 @@ verifyWeaponPreviousCommand();
 verifyWeaponNextCommand();
 verifyWeaponLastCommand();
 verifyKillCommand();
+verifyPutAwayCommand();
 verifyPlayerListAndWave();
 
 console.log("Verification g_cmds - client commands OK");
@@ -380,6 +382,29 @@ function verifyKillCommand(): void {
   runCommand(localContext, ["kill"]);
   GameCommandsClientCommand(localContext, dispatched);
   assert.equal(dispatched.deadflag, DEAD_DEAD, "ClientCommand should dispatch kill");
+}
+
+function verifyPutAwayCommand(): void {
+  const runtime = createRuntime();
+  const localContext = createContext(runtime);
+  const player = createClient(runtime, 1, "putaway");
+
+  player.client!.showscores = true;
+  player.client!.showhelp = true;
+  player.client!.showinventory = true;
+  Cmd_PutAway_f(player);
+  assert.equal(player.client!.showscores, false, "Cmd_PutAway_f should hide scores");
+  assert.equal(player.client!.showhelp, false, "Cmd_PutAway_f should hide help");
+  assert.equal(player.client!.showinventory, false, "Cmd_PutAway_f should hide inventory");
+
+  player.client!.showscores = true;
+  player.client!.showhelp = true;
+  player.client!.showinventory = true;
+  runCommand(localContext, ["putaway"]);
+  GameCommandsClientCommand(localContext, player);
+  assert.equal(player.client!.showscores, false, "ClientCommand should dispatch putaway for scores");
+  assert.equal(player.client!.showhelp, false, "ClientCommand should dispatch putaway for help");
+  assert.equal(player.client!.showinventory, false, "ClientCommand should dispatch putaway for inventory");
 }
 
 function verifyPlayerListAndWave(): void {

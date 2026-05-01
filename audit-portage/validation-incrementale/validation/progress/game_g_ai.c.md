@@ -165,3 +165,14 @@
 - Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
 - Blocage: aucun pour le sous-lot traite.
 - Prochain lot recommande: finir `ai_run` avec le bloc `AI_LOST_SIGHT`/`PlayerTrail` et les locales generees `tempgoal`, `save`, `new`/`isNew`, `marker`, `tr`.
+
+## Session 2026-05-01 - ai_run AI_LOST_SIGHT / PlayerTrail
+
+- Lot traite: fin de `ai_run`: bloc `AI_LOST_SIGHT`/`PlayerTrail`, locales generees `tempgoal`, `save`, `new`/`isNew`, `marker`, `tr`.
+- Verdict: `ai_run` valide; `tempgoal`, `save`, `new`, `marker` et `tr` non applicables comme variables locales portees.
+- Corrections TS: aucune correction comportementale.
+- Preuves: comparaison C/TS effectuee; le TS conserve la sauvegarde/restauration de `goalentity`, le but temporaire `G_Spawn`/`G_FreeEdict`, l'initialisation `AI_LOST_SIGHT | AI_PURSUIT_LAST_SEEN`, l'effacement de `AI_PURSUE_NEXT`/`AI_PURSUE_TEMP`, le prolongement `search_time = runtime.time + 5`, la reprise du `saved_goal`, les appels `PlayerTrail_PickFirst`/`PlayerTrail_PickNext`, la copie `last_sighting`, `trail_time`, yaw/`ideal_yaw`, le passage a `AI_PURSUE_NEXT` quand la distance restante est inferieure a `dist`, puis la correction de trajectoire `MASK_PLAYERSOLID` gauche/droite via `tr`. La locale C `new` est renommee `isNew` en TS.
+- Integration: runtime verifie via callbacks `monsterinfo.run`/frames monstres sous `M_MoveFrame` puis `G_RunFrame`, exports `packages/game/src/index.ts`; `PlayerTrail_*` est porte dans `p_trail.ts` et expose. `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` consomme les sorties visibles apres simulation via `ClientRefreshFrame`/`refresh-entity-sync`, sans integration directe attendue pour cette logique decisionnelle/deplacement.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: traiter la locale restante `v` de `ai_run` si le coordinateur veut fermer la derniere entree `A verifier` de cette matrice, puis centraliser `AVANCEMENT_GLOBAL.md`.

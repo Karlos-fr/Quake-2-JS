@@ -156,3 +156,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `Cmd_PutAway_f`.
+
+## Session 2026-05-01 - Cmd_PutAway_f
+
+- Lot valide: `Cmd_PutAway_f`.
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme remise a false de `showscores`, `showhelp` et `showinventory`. Le guard TS `!client` reste defensif pour les adapters runtime et ne change pas le flux C attendu pour une entite client valide.
+- Branchement runtime: `ClientCommand` dispatch `putaway`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` et le client envoient `cmd putaway` depuis Escape quand `STAT_LAYOUTS` indique un overlay; le pont full-game transmet ensuite la commande au runtime porte, sans logique gameplay parallele. `packages/renderer-three` non applicable directement: `Cmd_PutAway_f` ferme des overlays HUD client/game, sans entite visible, modele, particule, beam, dlight ou donnee scene 3D.
+- Corrections: commentaire d'en-tete complete pour `Cmd_PutAway_f`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour fermeture directe des trois overlays et dispatch `putaway`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `PlayerSort`, `Cmd_Players_f` et temporaires locaux associes (`i`, `count`, `small`, `large`, `index`) si le lot reste raisonnable; sinon commencer par `PlayerSort` seul.

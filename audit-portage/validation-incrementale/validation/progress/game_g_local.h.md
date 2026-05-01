@@ -8,6 +8,20 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot types de gib `GIB_ORGANIC`, `GIB_METALLIC`.
+- Verdict: `Valide` pour les 2 macros apres ajout d'assertions ciblees dans les harness header et `g_misc`.
+- Valeurs H/TS comparees et conformes:
+  - `GIB_ORGANIC = 0`
+  - `GIB_METALLIC = 1`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de definition directe attendue pour ces macros.
+- Runtime:
+  - Source C: `ThrowGib` et `ThrowHead` testent `type == GIB_ORGANIC`; organique donne `MOVETYPE_TOSS`, installe `gib_touch` et applique `vscale = 0.5`, sinon metallique donne `MOVETYPE_BOUNCE` et `vscale = 1.0`.
+  - TS: `packages/game/src/g_misc.ts` conserve cette branche pour `ThrowGib` et `ThrowHead`. Les appels organiques couvrent joueurs/corps et monstres biologiques; les appels metalliques couvrent notamment `m_tank`, `m_supertank` et `m_boss32`.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Les gibs sont produits par le runtime game et exposes via les entites/snapshots du host full-game; `verify:full-game:server-host` OK.
+- renderer-three: aucune reference directe aux constantes; integration directe non attendue. Les sorties visibles sont des entites MD2 avec modelindex/effects produits par `ThrowGib`/`ThrowHead`, consommees par le flux renderer full-game; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source `//gib types` verifie. `ThrowGib`/`ThrowHead` restent dans le fichier `g_misc.c` dedie et seront audites dans leur propre ligne/fichier.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK apres ajout des assertions `GIB_*`; `npm run verify:g-misc` OK apres ajout d'un cas organique/metallique sur `ThrowGib`; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot range `RANGE_MELEE`, `RANGE_NEAR`, `RANGE_MID`, `RANGE_FAR`.
 - Verdict: `Valide` pour les 4 macros apres ajout d'assertions dans le harness header.
 - Valeurs H/TS comparees et conformes:
@@ -223,7 +237,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les macros de gib `GIB_ORGANIC`, `GIB_METALLIC`.
+- Continuer avec les premiers flags AI: `AI_STAND_GROUND`, `AI_TEMP_STAND_GROUND`, `AI_SOUND_TARGET`.
 
 ## Blocages
 

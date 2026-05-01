@@ -1352,6 +1352,15 @@ export function button_return(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: button_wait
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Marks a `func_button` as fully pressed, fires its targets, and schedules the return think when wait is non-negative.
+ */
 export function button_wait(self: GameEntity, runtime: GameRuntime): void {
   self.moveinfo.state = STATE_TOP;
   self.s.effects &= ~EF_ANIM01;

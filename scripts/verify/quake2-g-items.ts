@@ -11,9 +11,14 @@
 
 import {
   Add_Ammo,
+  ArmorIndex,
+  FL_POWER_ARMOR,
   FRAMETIME,
   FindItem,
+  InitItems,
   Pickup_Health,
+  Pickup_Armor,
+  PowerArmorType,
   SetRespawn,
   SpawnItem,
   Touch_Item,
@@ -25,6 +30,7 @@ import {
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
+import { POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
 import { CS_ITEMS, STAT_PICKUP_ICON, STAT_PICKUP_STRING, entity_event_t } from "../../packages/qcommon/src/index.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 
@@ -37,6 +43,7 @@ function main(): void {
   verifyTouchHealthPickupUsesItemPath();
   verifyTouchAmmoPickupUsesItemPath();
   verifyTouchWeaponPickupUsesWeaponPath();
+  verifyArmorAndPowerArmorIndices();
   verifyUsePowerArmorRequiresCells();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
@@ -156,6 +163,42 @@ function verifyTouchWeaponPickupUsesWeaponPath(): void {
   assertNumber(player.client!.pers.inventory[weapon.index], 1, "Touch_Item routes weapon pickups to Pickup_Weapon");
   assertNumber(player.client!.pers.inventory[shells.index], shells.quantity, "Weapon pickup grants default ammo through Add_Ammo");
   assertNumber(weaponEntity.solid, 0, "Touch_Item hides a taken world weapon");
+}
+
+function verifyArmorAndPowerArmorIndices(): void {
+  InitItems();
+
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const body = requireItem("Body Armor");
+  const combat = requireItem("Combat Armor");
+  const jacket = requireItem("Jacket Armor");
+  const shard = requireItem("Armor Shard");
+  const powerScreen = requireItem("Power Screen");
+  const powerShield = requireItem("Power Shield");
+
+  assertNumber(body.index, 1, "Body Armor index must match the original itemlist slot");
+  assertNumber(combat.index, 2, "Combat Armor index must match the original itemlist slot");
+  assertNumber(jacket.index, 3, "Jacket Armor index must match the original itemlist slot");
+  assertNumber(powerScreen.index, 5, "Power Screen index must match the original itemlist slot");
+  assertNumber(powerShield.index, 6, "Power Shield index must match the original itemlist slot");
+
+  player.client!.pers.inventory[body.index] = 100;
+  player.client!.pers.inventory[combat.index] = 50;
+  player.client!.pers.inventory[jacket.index] = 25;
+  assertNumber(ArmorIndex(player), jacket.index, "ArmorIndex must preserve jacket/combat/body priority order");
+
+  const shardEntity = spawnGameEntity(runtime);
+  const shardPlayer = createPlayer(runtime);
+  shardEntity.item = shard;
+  Pickup_Armor(shardEntity, shardPlayer, runtime);
+  assertNumber(shardPlayer.client!.pers.inventory[jacket.index], 2, "Armor shards must seed jacket armor when no armor is held");
+
+  player.flags |= FL_POWER_ARMOR;
+  player.client!.pers.inventory[powerScreen.index] = 1;
+  assertNumber(PowerArmorType(player), POWER_ARMOR_SCREEN, "PowerArmorType must detect power screen when active");
+  player.client!.pers.inventory[powerShield.index] = 1;
+  assertNumber(PowerArmorType(player), POWER_ARMOR_SHIELD, "PowerArmorType must prefer power shield over power screen");
 }
 
 function verifyUsePowerArmorRequiresCells(): void {

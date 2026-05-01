@@ -2,12 +2,20 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: cvars `g_select_empty`, `dedicated`, `filterban`, `sv_maxvelocity`, `sv_gravity`, `sv_rollspeed`, `sv_rollangle`.
 - 2026-05-01: cvars `fraglimit`, `timelimit`, `password`, `spectator_password`, `maxclients`, `maxspectators`, `maxentities`.
 - 2026-05-01: groupe d'etat runtime/cvars `g_edicts`, `deathmatch`, `coop`, `dmflags`, `skill`.
 - 2026-04-30: globals initiaux `sm_meat_index`, `snd_fry`, `meansOfDeath`.
 
 ## Verdict du lot
 
+- `g_select_empty`: valide. Cvar init portee avec default `0` et `CVAR_ARCHIVE`; `applyMainCvarsToRuntime` alimente `runtime.g_select_empty`, consomme par `p_weapon.ts` pour autoriser/refuser la selection d'armes sans munitions.
+- `dedicated`: valide. Cvar init portee avec default `0` et `CVAR_NOSET`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou le chat echo dedie suit la branche originale.
+- `filterban`: valide. Cvar init portee avec default `1` et flags `0`; la commande serveur portee dans `g_svcmds.ts` relit le cvar via `gi.cvar` pour `SV_FilterPacket` et `writeip`.
+- `sv_maxvelocity`: partiel. Cvar init portee avec default `2000` et flags `0`; en revanche le consommateur original `g_phys.c` est encore code en TS avec la constante locale `SV_MAXVELOCITY = 2000`, sans lecture du cvar/runtime.
+- `sv_gravity`: partiel. Cvar init portee avec default `800` et flags `0`; `runtime.gravity` et PMove client sont branches, et worldspawn applique bien `cvar_set("sv_gravity", ...)`. Reste un ecart cote `g_phys.ts`, qui utilise encore `SV_GRAVITY = 800` pour la physique entite et le seuil de hitsound au lieu d'une valeur runtime/cvar.
+- `sv_rollspeed`: valide apres correction. `g_main.ts` cree maintenant le cvar avec default `200` et flags `0`, puis `ClientEndServerFrames` le transmet a `p_view.ts` pour `SV_CalcRoll`.
+- `sv_rollangle`: valide apres correction. `g_main.ts` cree maintenant le cvar avec default `2` et flags `0`, puis `ClientEndServerFrames` le transmet a `p_view.ts` pour `SV_CalcRoll`.
 - `fraglimit`: valide. Cvar init portee avec default `0` et `CVAR_SERVERINFO`; `CheckDMRules` la relit depuis `G_RunFrame`, parcourt les clients actifs via `runtime.maxclients`, annonce `Fraglimit hit.` puis declenche `EndDMLevel`.
 - `timelimit`: valide. Cvar init portee avec default `0` et `CVAR_SERVERINFO`; `CheckDMRules` la relit depuis `G_RunFrame`, compare `level.time >= timelimit * 60`, annonce `Timelimit hit.` puis declenche `EndDMLevel`.
 - `password`: partiel. Cvar init portee avec default vide et `CVAR_USERINFO`; en revanche le rejet original des connexions non-spectateur et des sorties de spectator dans `p_client.c` est actuellement delegue a des hooks TS, sans hook par defaut dans `g_main.ts` qui lise `context.cvars.password`.
@@ -26,6 +34,14 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour defaults/flags `g_select_empty`, `dedicated`, `filterban`, `sv_maxvelocity`, `sv_gravity`, `sv_rollspeed`, `sv_rollangle`, mirroring runtime `g_select_empty`/`sv_gravity`, et passage `sv_rollspeed`/`sv_rollangle` a `ClientEndServerFrames`.
+- `npm run verify:g-svcmds`: ok le 2026-05-01, confirme `filterban` dans `SV_FilterPacket` et `writeip`.
+- `npm run verify:g-cmds`: ok le 2026-05-01, confirme les branches client-command dont le chat dedie.
+- `npm run verify:p-weapon`: ok le 2026-05-01, controle les regressions gameplay armes consommatrices de `runtime.g_select_empty`.
+- `npm run verify:p-view`: ok le 2026-05-01, confirme `SV_CalcRoll`/`ClientEndServerFrame`.
+- `npm run verify:g-spawn`: ok le 2026-05-01, confirme l'application worldspawn de `sv_gravity`.
+- `npm run verify:g-phys`: ok le 2026-05-01, coverage physique existante; l'ecart cvar `sv_maxvelocity`/partiel `sv_gravity` reste documente.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour defaults/flags `fraglimit`, `timelimit`, `password`, `spectator_password`, `maxclients`, `maxspectators`, `maxentities`; couvre aussi DM rules frag/time, export `max_edicts` et reservation des edicts joueurs.
 - `npm run verify:full-game:rules-transitions`: ok le 2026-05-01, confirme le flux full-game des transitions de regles.
 - `npm run typecheck`: ok le 2026-05-01.
@@ -37,6 +53,11 @@
 
 ## Blocages / decisions
 
+- Correction appliquee dans `packages/game/src/g_main.ts`: ajout de `sv_rollspeed`/`sv_rollangle` au contexte cvars, init C-equivalente, et transmission a `ClientEndServerFrame`.
+- Correction appliquee dans `scripts/verify/quake2-g-main.ts`: assertions de defaults/flags du lot, mirroring runtime `g_select_empty`/`sv_gravity`, et verification du roll branche par cvars.
+- Pas de correction appliquee dans `packages/game/src/g_phys.ts`: `sv_maxvelocity` et le reliquat `sv_gravity` dependent du port de `g_phys.c`, fichier potentiellement traite par un autre agent; statuts gardes `Partiel` avec action suivante explicite.
+- `apps/web`: integration jugee presente via `full-game-server-host.ts` et le runtime server-backed. Aucune logique web parallele ne remplace `g_select_empty`, `filterban`, les cvars physiques ou le roll.
+- `packages/renderer-three`: pas d'integration directe attendue. Le roll/vue et les entites visibles arrivent via les etats client/serveur deja produits; `filterban`, `dedicated`, `g_select_empty` et les cvars physiques ne produisent pas de sortie renderer directe.
 - Correction appliquee dans `scripts/verify/quake2-g-main.ts`: ajout d'assertions ciblees sur les defaults/flags des cvars du lot.
 - Pas de correction runtime appliquee pour `password`/`spectator_password`/`maxspectators`: le comportement C depend de `p_client.c` et la version TS actuelle documente explicitement une delegation aux hooks. Une correction fidele toucherait la frontiere `g_main.ts`/`p_client.ts` et doit etre traitee dans un lot dedie ClientConnect/spectator_respawn.
 - `apps/web`: integration presente pour les cvars de regles via le runtime server-backed (`full-game-server-host.ts`) et les ecritures de menu/client; aucune logique web parallele ne remplace `CheckDMRules`. Les politiques password/spectator ne sont pas compensees cote web.
@@ -54,4 +75,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les cvars suivantes de `g_main.c`: `g_select_empty`, `dedicated`, `filterban`, `sv_maxvelocity`, `sv_gravity`, `sv_rollspeed`, `sv_rollangle`.
+- Continuer avec les cvars de vue/arme suivantes de `g_main.c`: `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`.
