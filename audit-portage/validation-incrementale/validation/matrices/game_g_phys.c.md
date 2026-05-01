@@ -14,8 +14,8 @@
 | `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | Valide | A redecouper | Locale de `SV_TestEntityPosition`; `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Locale de `SV_TestEntityPosition`; `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Entree locale dupliquee par la matrice pour `SV_TestEntityPosition`; `npm run verify:g-phys`. |
-| `Quake-2-master/game/g_phys.c` | function | `SV_CheckVelocity` | `packages/game/src/g_phys.ts` | `SV_CheckVelocity` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `i` | `packages/game/src/m_move.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | function | `SV_CheckVelocity` | `packages/game/src/g_phys.ts` | `SV_CheckVelocity` | Valide | A redecouper | `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`; correction `sv_maxvelocity` runtime. |
+| `Quake-2-master/game/g_phys.c` | global | `i` | `packages/game/src/m_move.ts` | `i` | Valide | A redecouper | Locale de boucle de `SV_CheckVelocity`, portee comme `index` local dans `packages/game/src/g_phys.ts`. |
 | `Quake-2-master/game/g_phys.c` | function | `SV_RunThink` | `packages/game/src/g_phys.ts` | `SV_RunThink` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `thinktime` | `packages/game/src/g_phys.ts` | `thinktime` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | function | `SV_Impact` | `packages/game/src/g_phys.ts` | `SV_Impact` | A verifier | A redecouper |  |

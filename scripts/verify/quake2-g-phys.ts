@@ -122,11 +122,13 @@ flyClampEnt.maxs = [16, 16, 16];
 flyClampEnt.origin = [0, 0, 8];
 flyClampEnt.s.origin = [0, 0, 8];
 flyClampEnt.velocity = [25000, -25000, 100];
+runtime.maxvelocity = 1200;
 linkGameEntity(runtime, flyClampEnt);
 G_RunEntity(flyClampEnt, runtime);
-assertVec("G_RunEntity.fly-clamp.velocity", flyClampEnt.velocity, [2000, -2000, 100]);
-assertVec("G_RunEntity.fly-clamp.origin", flyClampEnt.origin, [200, -200, 18]);
-assertVec("G_RunEntity.fly-clamp.s.origin", flyClampEnt.s.origin, [200, -200, 18]);
+assertVec("G_RunEntity.fly-clamp.velocity", flyClampEnt.velocity, [1200, -1200, 100]);
+assertVec("G_RunEntity.fly-clamp.origin", flyClampEnt.origin, [120, -120, 18]);
+assertVec("G_RunEntity.fly-clamp.s.origin", flyClampEnt.s.origin, [120, -120, 18]);
+runtime.maxvelocity = 2000;
 
 const thinkEnt = spawnGameEntity(runtime);
 thinkEnt.classname = "thinker";
