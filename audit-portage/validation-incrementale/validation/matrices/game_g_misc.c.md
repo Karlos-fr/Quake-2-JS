@@ -104,8 +104,8 @@
 | `Quake-2-master/game/g_misc.c` | function | `misc_satellite_dish_think` | `packages/game/src/g_misc.ts` | `misc_satellite_dish_think` | Valide | A redecouper | Header Strict verifie; preuve C/TS: increment frame, reschedule tant que frame < 38, arret a 38. Tests: `npm run verify:g-misc`, `npm run verify:g-spawn`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`. |
 | `Quake-2-master/game/g_misc.c` | function | `misc_satellite_dish_use` | `packages/game/src/g_misc.ts` | `misc_satellite_dish_use` | Valide | A redecouper | Header Strict verifie; preuve C/TS: reset frame 0, installe `misc_satellite_dish_think`, planifie `level.time + FRAMETIME`; runtime via callback use. Memes tests que le lot. |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_satellite_dish` | `packages/game/src/g_misc.ts` | `SP_misc_satellite_dish` | Valide | A redecouper | Header Strict verifie; preuve C/TS: `MOVETYPE_NONE`, `SOLID_BBOX`, bbox, modele satellite, callback use, link et dispatch `ED_CallSpawn`; modele/frame consommes par web/renderer. Memes tests que le lot. |
-| `Quake-2-master/game/g_misc.c` | function | `SP_light_mine1` | `packages/game/src/g_misc.ts` | `SP_light_mine1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_light_mine2` | `packages/game/src/g_misc.ts` | `SP_light_mine2` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `SP_light_mine1` | `packages/game/src/g_misc.ts` | `SP_light_mine1` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `SP_light_mine2` | `packages/game/src/g_misc.ts` | `SP_light_mine2` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_gib_arm` | `packages/game/src/g_misc.ts` | `SP_misc_gib_arm` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_gib_leg` | `packages/game/src/g_misc.ts` | `SP_misc_gib_leg` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_gib_head` | `packages/game/src/g_misc.ts` | `SP_misc_gib_head` | A verifier | A redecouper |  |

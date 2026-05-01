@@ -40,6 +40,8 @@ import {
   SP_misc_eastertank,
   SP_misc_explobox,
   SP_misc_bigviper,
+  SP_light_mine1,
+  SP_light_mine2,
   SP_misc_satellite_dish,
   SP_misc_strogg_ship,
   SP_misc_viper,
@@ -131,6 +133,7 @@ function main(): void {
   verifyMiscViperDelegatesTrainMovement();
   verifyMiscStroggShipDelegatesTrainMovement();
   verifyMiscSatelliteDishSpawnsAndAnimatesOnUse();
+  verifyLightMineSpawnsVisibleModels();
   verifyBigViperAndViperBombCallbacks();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
@@ -1190,6 +1193,40 @@ function verifyMiscSatelliteDishSpawnsAndAnimatesOnUse(): void {
   ED_CallSpawn(dispatch, runtime);
   assert.equal(dispatch.use, misc_satellite_dish_use, "ED_CallSpawn must dispatch misc_satellite_dish to SP_misc_satellite_dish");
   assert.equal(runtime.assets.modelPaths[dispatch.s.modelindex - 1], "models/objects/satellite/tris.md2", "ED_CallSpawn misc_satellite_dish model mismatch");
+}
+
+function verifyLightMineSpawnsVisibleModels(): void {
+  const runtime = createHarnessRuntime();
+
+  const mine1 = spawnFreeableEntity(runtime);
+  mine1.classname = "light_mine1";
+  SP_light_mine1(mine1, runtime);
+
+  assert.equal(mine1.movetype, MOVETYPE_NONE, "light_mine1 must be stationary");
+  assert.equal(mine1.solid, SOLID_BBOX, "light_mine1 must use a bbox solid");
+  assert.equal(runtime.assets.modelPaths[mine1.s.modelindex - 1], "models/objects/minelite/light1/tris.md2", "light_mine1 modelindex mismatch");
+  assert.equal(mine1.linked, true, "light_mine1 must link for runtime snapshots");
+  assert.equal(runtime.linkedDynamicBoxEntities.includes(mine1), true, "light_mine1 must be exposed to runtime bbox lists");
+
+  const mine2 = spawnFreeableEntity(runtime);
+  mine2.classname = "light_mine2";
+  SP_light_mine2(mine2, runtime);
+
+  assert.equal(mine2.movetype, MOVETYPE_NONE, "light_mine2 must be stationary");
+  assert.equal(mine2.solid, SOLID_BBOX, "light_mine2 must use a bbox solid");
+  assert.equal(runtime.assets.modelPaths[mine2.s.modelindex - 1], "models/objects/minelite/light2/tris.md2", "light_mine2 modelindex mismatch");
+  assert.equal(mine2.linked, true, "light_mine2 must link for runtime snapshots");
+  assert.equal(runtime.linkedDynamicBoxEntities.includes(mine2), true, "light_mine2 must be exposed to runtime bbox lists");
+
+  const dispatchMine1 = spawnFreeableEntity(runtime);
+  dispatchMine1.classname = "light_mine1";
+  ED_CallSpawn(dispatchMine1, runtime);
+  assert.equal(runtime.assets.modelPaths[dispatchMine1.s.modelindex - 1], "models/objects/minelite/light1/tris.md2", "ED_CallSpawn must dispatch light_mine1");
+
+  const dispatchMine2 = spawnFreeableEntity(runtime);
+  dispatchMine2.classname = "light_mine2";
+  ED_CallSpawn(dispatchMine2, runtime);
+  assert.equal(runtime.assets.modelPaths[dispatchMine2.s.modelindex - 1], "models/objects/minelite/light2/tris.md2", "ED_CallSpawn must dispatch light_mine2");
 }
 
 function verifyBigViperAndViperBombCallbacks(): void {

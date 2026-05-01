@@ -21,6 +21,10 @@ import {
   temp_event_t
 } from "../../packages/qcommon/src/index.js";
 import {
+  AngleMove_Begin,
+  AngleMove_Calc,
+  AngleMove_Done,
+  AngleMove_Final,
   SP_func_button,
   button_done,
   SP_func_conveyor,
@@ -112,6 +116,97 @@ import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 
 const runtime = createGameRuntimeFromBspEntities([]);
 runtime.time = 10;
+
+const angleMover = entity("angle_mover", 170);
+angleMover.avelocity = [1, 2, 3];
+let angleDoneCalls = 0;
+angleMover.moveinfo.endfunc = (self, activeRuntime) => {
+  assert.equal(self, angleMover, "AngleMove_Done callback entity mismatch");
+  assert.equal(activeRuntime, runtime, "AngleMove_Done callback runtime mismatch");
+  angleDoneCalls += 1;
+};
+AngleMove_Done(angleMover, runtime);
+assert.deepEqual(angleMover.avelocity, [0, 0, 0], "AngleMove_Done must clear avelocity");
+assert.equal(angleDoneCalls, 1, "AngleMove_Done must call endfunc");
+
+const angleFinal = entity("angle_final", 171);
+angleFinal.angles = [0, 0, 80];
+angleFinal.moveinfo.state = STATE_UP;
+angleFinal.moveinfo.end_angles = [0, 0, 90];
+AngleMove_Final(angleFinal, runtime);
+assert.deepEqual(angleFinal.avelocity, [0, 0, 100], "AngleMove_Final velocity mismatch");
+assert.equal(angleFinal.think, AngleMove_Done, "AngleMove_Final think mismatch");
+assert.ok(Math.abs(angleFinal.nextthink - (runtime.time + 0.1)) < 0.000001, "AngleMove_Final nextthink mismatch");
+
+const angleFinalDone = entity("angle_final_done", 172);
+let angleFinalDoneCalls = 0;
+angleFinalDone.angles = [0, 0, 90];
+angleFinalDone.moveinfo.state = STATE_UP;
+angleFinalDone.moveinfo.end_angles = [0, 0, 90];
+angleFinalDone.moveinfo.endfunc = () => {
+  angleFinalDoneCalls += 1;
+};
+AngleMove_Final(angleFinalDone, runtime);
+assert.equal(angleFinalDoneCalls, 1, "AngleMove_Final zero delta must finish immediately");
+
+const angleBegin = entity("angle_begin", 173);
+angleBegin.angles = [0, 0, 0];
+angleBegin.moveinfo.state = STATE_UP;
+angleBegin.moveinfo.speed = 45;
+angleBegin.moveinfo.end_angles = [0, 0, 90];
+AngleMove_Begin(angleBegin, runtime);
+assert.deepEqual(angleBegin.avelocity, [0, 0, 45], "AngleMove_Begin velocity mismatch");
+assert.equal(angleBegin.think, AngleMove_Final, "AngleMove_Begin think mismatch");
+assert.ok(Math.abs(angleBegin.nextthink - (runtime.time + 2)) < 0.000001, "AngleMove_Begin nextthink mismatch");
+
+const angleBeginDown = entity("angle_begin_down", 174);
+angleBeginDown.angles = [0, 0, 90];
+angleBeginDown.moveinfo.state = STATE_DOWN;
+angleBeginDown.moveinfo.speed = 30;
+angleBeginDown.moveinfo.start_angles = [0, 0, 0];
+AngleMove_Begin(angleBeginDown, runtime);
+assert.deepEqual(angleBeginDown.avelocity, [0, 0, -30], "AngleMove_Begin STATE_DOWN velocity mismatch");
+
+const angleBeginShort = entity("angle_begin_short", 175);
+angleBeginShort.angles = [0, 0, 0];
+angleBeginShort.moveinfo.state = STATE_UP;
+angleBeginShort.moveinfo.speed = 100;
+angleBeginShort.moveinfo.end_angles = [0, 0, 5];
+AngleMove_Begin(angleBeginShort, runtime);
+assert.deepEqual(angleBeginShort.avelocity, [0, 0, 50], "AngleMove_Begin short move must delegate to final frame");
+assert.equal(angleBeginShort.think, AngleMove_Done, "AngleMove_Begin short move think mismatch");
+
+const angleCalc = entity("angle_calc", 176);
+angleCalc.angles = [0, 0, 0];
+angleCalc.avelocity = [9, 9, 9];
+angleCalc.moveinfo.state = STATE_UP;
+angleCalc.moveinfo.speed = 45;
+angleCalc.moveinfo.end_angles = [0, 0, 90];
+runtime.current_entity = angleCalc;
+AngleMove_Calc(angleCalc, AngleMove_Done, runtime);
+assert.equal(angleCalc.moveinfo.endfunc, AngleMove_Done, "AngleMove_Calc endfunc mismatch");
+assert.deepEqual(angleCalc.avelocity, [0, 0, 45], "AngleMove_Calc immediate velocity mismatch");
+
+const angleCalcDeferred = entity("angle_calc_deferred", 177);
+angleCalcDeferred.avelocity = [7, 7, 7];
+runtime.current_entity = null;
+AngleMove_Calc(angleCalcDeferred, AngleMove_Done, runtime);
+assert.deepEqual(angleCalcDeferred.avelocity, [0, 0, 0], "AngleMove_Calc deferred must clear avelocity");
+assert.equal(angleCalcDeferred.think, AngleMove_Begin, "AngleMove_Calc deferred think mismatch");
+assert.ok(Math.abs(angleCalcDeferred.nextthink - (runtime.time + 0.1)) < 0.000001, "AngleMove_Calc deferred nextthink mismatch");
+
+const angleCalcMaster = entity("angle_calc_master", 178);
+const angleCalcSlave = entity("angle_calc_slave", 179);
+angleCalcSlave.flags |= FL_TEAMSLAVE;
+angleCalcSlave.teammaster = angleCalcMaster;
+angleCalcSlave.angles = [0, 0, 0];
+angleCalcSlave.moveinfo.state = STATE_UP;
+angleCalcSlave.moveinfo.speed = 90;
+angleCalcSlave.moveinfo.end_angles = [0, 0, 90];
+runtime.current_entity = angleCalcMaster;
+AngleMove_Calc(angleCalcSlave, AngleMove_Done, runtime);
+assert.deepEqual(angleCalcSlave.avelocity, [0, 0, 90], "AngleMove_Calc teamslave immediate velocity mismatch");
+runtime.current_entity = null;
 
 const rotating = entity("func_rotating", 1, { spawnflags: String(1 | 4 | 64 | 128), speed: "75", dmg: "4" });
 rotating.model = "*1";

@@ -130,7 +130,19 @@ import type { GameEntity, GameRuntime } from "./runtime.js";
 
 type SpawnFunction = (entity: GameEntity, runtime: GameRuntime) => void;
 
-interface SpawnEntry {
+/**
+ * Original name: spawn_t
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Maps one map classname to the spawn routine called by `ED_CallSpawn`.
+ *
+ * Porting notes:
+ * - Function pointers are represented by typed TypeScript callbacks.
+ */
+export interface SpawnEntry {
   name: string;
   spawn: SpawnFunction;
 }
@@ -252,7 +264,7 @@ export const dm_statusbar =
   + "stat_string 16 "
   + "endif ";
 
-const spawns: SpawnEntry[] = [
+export const spawns: SpawnEntry[] = [
   { name: "worldspawn", spawn: SP_worldspawn },
   { name: "info_player_start", spawn: SP_info_player_start },
   { name: "info_player_deathmatch", spawn: SP_info_player_deathmatch },

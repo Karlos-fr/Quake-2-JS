@@ -198,13 +198,13 @@
 | `Quake-2-master/game/g_local.h` | global | `start_angles` | `packages/game/src/g_local.ts` | `moveinfo_t.start_angles` | Valide | A redecouper | Champ `vec3_t` compare H/TS, defaut `[0,0,0]`, copie save/load et usages movers verifies. |
 | `Quake-2-master/game/g_local.h` | global | `end_origin` | `packages/game/src/g_local.ts` | `moveinfo_t.end_origin` | Valide | A redecouper | Champ `vec3_t` compare H/TS, defaut `[0,0,0]`, copie save/load et usages movers verifies. |
 | `Quake-2-master/game/g_local.h` | global | `end_angles` | `packages/game/src/g_local.ts` | `moveinfo_t.end_angles` | Valide | A redecouper | Champ `vec3_t` compare H/TS, defaut `[0,0,0]`, copie save/load et usages movers verifies. |
-| `Quake-2-master/game/g_local.h` | global | `sound_start` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `sound_middle` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `sound_end` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `accel` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `speed` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `decel` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `distance` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `sound_start` | `packages/game/src/g_local.ts` | `moveinfo_t.sound_start` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `sound_middle` | `packages/game/src/g_local.ts` | `moveinfo_t.sound_middle` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `sound_end` | `packages/game/src/g_local.ts` | `moveinfo_t.sound_end` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `accel` | `packages/game/src/g_local.ts` | `moveinfo_t.accel` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `speed` | `packages/game/src/g_local.ts` | `moveinfo_t.speed` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `decel` | `packages/game/src/g_local.ts` | `moveinfo_t.decel` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `distance` | `packages/game/src/g_local.ts` | `moveinfo_t.distance` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `wait` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `state` | `packages/game/src/runtime.ts` | `state` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `dir` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

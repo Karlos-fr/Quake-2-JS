@@ -1,12 +1,22 @@
 # Progress - Quake-2-master/game/g_monster.c
 
-- Statut: En cours
-- Dernier lot valide: `flymonster_start`, `swimmonster_start_go`
-- Prochain lot recommande: `swimmonster_start`
+- Statut: Termine
+- Dernier lot valide: `swimmonster_start`
+- Prochain lot recommande: aucun, matrice terminee
 - Tests de reference: `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Blocages: aucun pour le lot valide
 
 ## Session courante
+
+- Lot traite: `swimmonster_start`.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS `Close` verifie, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
+- Runtime: `swimmonster_start` pose `FL_SWIM`, arme le think differe `swimmonster_start_go`, puis passe par `monster_start`; il est attendu depuis les spawn routines de monstres nageurs et rejoint le flux `G_RunFrame`/`SV_RunThink` via `nextthink`.
+- apps/web: pas de logique parallele attendue; le navigateur doit declencher ce flux via le runtime local/full-game et consommer les entites, etats et snapshots produits. Tests `verify:local-gameplay-sync`, `verify:full-game:three-renderer` et `verify:web-render-order` OK.
+- renderer-three: sorties visibles attendues indirectes via monstres demarres ou caches, modeles MD2, frames, origines/angles et etats render; ces donnees passent par snapshots/client refresh et sont consommees par les adapters Three. Pas de branchement gameplay renderer requis.
+- Tests lances: `npm run verify:g-monster` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
+- Prochain lot recommande: aucun, matrice terminee.
+
+## Session precedente
 
 - Lot traite: `flymonster_start`, puis `swimmonster_start_go`.
 - Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaires d'en-tete TS `Close` verifies, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.

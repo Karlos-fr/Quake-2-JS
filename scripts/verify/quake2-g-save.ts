@@ -31,7 +31,7 @@ import {
   registerGameSaveFunction,
   registerGameSaveMove
 } from "../../packages/game/src/g_save.js";
-import { FFL_NOSPAWN, FFL_SPAWNTEMP, STOFS, fieldtype_t } from "../../packages/game/src/g_local.js";
+import { CLOFS, FFL_NOSPAWN, FFL_SPAWNTEMP, LLOFS, STOFS, fieldtype_t } from "../../packages/game/src/g_local.js";
 
 const files = new Map<string, string>();
 const linked: number[] = [];
@@ -227,6 +227,28 @@ assert.deepEqual(
   "fields must preserve spawn_temp movement/audio timing metadata"
 );
 
+assert.deepEqual(
+  levelfields.map((field) => [field.name, field.ofs, field.type, field.flags]),
+  [
+    ["changemap", LLOFS("changemap"), fieldtype_t.F_LSTRING, 0],
+    ["sight_client", LLOFS("sight_client"), fieldtype_t.F_EDICT, 0],
+    ["sight_entity", LLOFS("sight_entity"), fieldtype_t.F_EDICT, 0],
+    ["sound_entity", LLOFS("sound_entity"), fieldtype_t.F_EDICT, 0],
+    ["sound2_entity", LLOFS("sound2_entity"), fieldtype_t.F_EDICT, 0]
+  ],
+  "levelfields must preserve the original game/g_save.c level field table order, selectors, types, and flags"
+);
+
+assert.deepEqual(
+  clientfields.map((field) => [field.name, field.ofs, field.type, field.flags]),
+  [
+    ["pers.weapon", "pers.weapon", fieldtype_t.F_ITEM, 0],
+    ["pers.lastweapon", "pers.lastweapon", fieldtype_t.F_ITEM, 0],
+    ["newweapon", CLOFS("newweapon"), fieldtype_t.F_ITEM, 0]
+  ],
+  "clientfields must preserve the original game/g_save.c client field table order, selectors, types, and flags"
+);
+
 const testMonsterMove: GameMonsterMove = {
   firstframe: 1,
   lastframe: 1,
@@ -326,6 +348,13 @@ target.moveinfo.start_origin = [16, 24, 32];
 target.moveinfo.start_angles = [0, 90, 0];
 target.moveinfo.end_origin = [128, 24, 48];
 target.moveinfo.end_angles = [0, 180, 0];
+target.moveinfo.sound_start = 11;
+target.moveinfo.sound_middle = 12;
+target.moveinfo.sound_end = 13;
+target.moveinfo.accel = 14.5;
+target.moveinfo.speed = 80;
+target.moveinfo.decel = 21.25;
+target.moveinfo.distance = 256;
 target.think = target_crosslevel_target_think;
 target.use = use_target_secret;
 target.monsterinfo.currentmove = testMonsterMove;
@@ -391,6 +420,13 @@ assert.ok(levelJson.includes("\"start_origin\": ["), "WriteLevel must persist mo
 assert.ok(levelJson.includes("\"start_angles\": ["), "WriteLevel must persist moveinfo start_angles");
 assert.ok(levelJson.includes("\"end_origin\": ["), "WriteLevel must persist moveinfo end_origin");
 assert.ok(levelJson.includes("\"end_angles\": ["), "WriteLevel must persist moveinfo end_angles");
+assert.ok(levelJson.includes("\"sound_start\": 11"), "WriteLevel must persist moveinfo sound_start");
+assert.ok(levelJson.includes("\"sound_middle\": 12"), "WriteLevel must persist moveinfo sound_middle");
+assert.ok(levelJson.includes("\"sound_end\": 13"), "WriteLevel must persist moveinfo sound_end");
+assert.ok(levelJson.includes("\"accel\": 14.5"), "WriteLevel must persist moveinfo accel");
+assert.ok(levelJson.includes("\"speed\": 80"), "WriteLevel must persist moveinfo speed");
+assert.ok(levelJson.includes("\"decel\": 21.25"), "WriteLevel must persist moveinfo decel");
+assert.ok(levelJson.includes("\"distance\": 256"), "WriteLevel must persist moveinfo distance");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
 readContext.runtime.maxclients = 1;
@@ -407,6 +443,13 @@ assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_origin, [16, 24
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_angles, [0, 90, 0], "ReadLevel moveinfo start_angles mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.end_origin, [128, 24, 48], "ReadLevel moveinfo end_origin mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.end_angles, [0, 180, 0], "ReadLevel moveinfo end_angles mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.sound_start, 11, "ReadLevel moveinfo sound_start mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.sound_middle, 12, "ReadLevel moveinfo sound_middle mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.sound_end, 13, "ReadLevel moveinfo sound_end mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.accel, 14.5, "ReadLevel moveinfo accel mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.speed, 80, "ReadLevel moveinfo speed mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.decel, 21.25, "ReadLevel moveinfo decel mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.distance, 256, "ReadLevel moveinfo distance mismatch");
 assert.equal(readContext.level.sound_entity, readContext.runtime.entities[2], "ReadLevel level edict reference mismatch");
 assert.equal(readContext.runtime.sound_entity, readContext.runtime.entities[2], "ReadLevel runtime level mirror mismatch");
 assert.equal(readContext.level.sound_entity_framenum, 122, "ReadLevel sound_entity_framenum mismatch");

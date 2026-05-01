@@ -815,6 +815,24 @@
   - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration des quatre vecteurs `moveinfo`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-func` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
+- 2026-05-01: suite du lot `moveinfo_t` avec `sound_start`, `sound_middle`, `sound_end`, `accel`, `speed`, `decel`, `distance`.
+- Verdict: `Valide` pour les 7 champs apres comparaison H/TS, verification de l'ordre de struct, des valeurs par defaut, des mutations, des usages movers et de la persistance save/load.
+- Source H comparee: dans `moveinfo_t`, les trois sons sont des `int`, puis `accel`, `speed`, `decel`, `distance` sont des `float`, immediatement apres les quatre vecteurs fixes deja valides.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `moveinfo_t` vers `GameMoveInfo`.
+  - `packages/game/src/runtime.ts`: `GameMoveInfo` conserve les noms et l'ordre C; `createMoveInfo` initialise les sept champs a `0`.
+  - `packages/game/src/g_func.ts`: portes, portes rotatives, plateformes, boutons, eau, trains et portes secretes enregistrent/consomment les sons, vitesses, accelerations, decelerations et distances via le bloc `moveinfo`.
+  - `packages/game/src/g_misc.ts`: trains speciaux `misc_viper` et `misc_strogg_ship` renseignent `speed`/`accel`/`decel`.
+  - `packages/game/src/g_save.ts`: `snapshotMoveInfo` persiste tout le bloc `moveinfo`; `ReadLevel` restaure les valeurs numeriques.
+- Runtime: integration attendue et branchee depuis les spawn/use/think de movers vers `edict_t.moveinfo`, execution dans `G_RunFrame`/callbacks de mouvement, emission de sons movers et snapshots serveur. Aucune racine runtime manquante identifiee pour ces champs.
+- apps/web: integration attendue via le host local/full-game; le navigateur doit consommer les sorties runtime (positions, modeles brush, sons et snapshots) et ne doit pas dupliquer la logique `moveinfo`. Aucun flux parallele masquant un manque n'a ete trouve; tests full-game/web OK.
+- renderer-three: integration indirecte attendue car ces champs produisent des sorties visibles ou audibles en aval: modeles brush/trains/portes, positions de scene et sons movers. `packages/renderer-three` n'a pas a lire directement `moveinfo_t`; il consomme les entites/modeles/scene issus des snapshots full-game. Test renderer OK.
+- Commentaires/documentation: pas de fonction C portee nouvelle dans ce lot; commentaire de portage `moveinfo_t` existant dans `runtime.ts` verifie.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions d'ordre deja presentes completees par defaults et mutations pour les sept champs.
+  - `scripts/verify/quake2-g-save.ts`: assertions de persistance/restauration save/load pour les sept champs.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-func` OK; `npm run verify:g-misc` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -848,7 +866,7 @@
 
 ## Prochain lot recommande
 
-- Continuer `moveinfo_t` avec `sound_start`, `sound_middle`, `sound_end`, puis `accel`, `speed`, `decel`, `distance` si le lot reste petit.
+- Continuer `moveinfo_t` avec `wait`, `state`, `dir`, puis `current_speed`, `move_speed`, `next_speed` si le lot reste petit.
 
 ## Blocages
 

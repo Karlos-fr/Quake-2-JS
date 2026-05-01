@@ -17,6 +17,7 @@ import {
   CS_ITEMS,
   CS_MAXCLIENTS,
   CS_NAME,
+  RF_GLOW,
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE
@@ -28,7 +29,7 @@ import {
   SPAWNFLAG_NOT_HARD,
   SPAWNFLAG_NOT_MEDIUM
 } from "../../packages/game/src/g_local.js";
-import { ED_CallSpawn, G_FindTeams } from "../../packages/game/src/g_spawn.js";
+import { ED_CallSpawn, G_FindTeams, spawns } from "../../packages/game/src/g_spawn.js";
 import { InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { spawnGameEntity } from "../../packages/game/src/runtime.js";
 
@@ -218,6 +219,44 @@ assert.deepEqual(teamResult, { teamCount: 2, entityCount: 3 }, "G_FindTeams coun
 assert.equal(teamMaster.teamchain, teamSlave, "G_FindTeams must chain team members in entity order");
 assert.equal(teamSlave.teammaster, teamMaster, "G_FindTeams teammaster mismatch");
 assert.equal((teamSlave.flags & FL_TEAMSLAVE) !== 0, true, "G_FindTeams team slave flag mismatch");
+
+const healthSpawnNames = [
+  "item_health",
+  "item_health_small",
+  "item_health_large",
+  "item_health_mega"
+] as const;
+
+for (const name of healthSpawnNames) {
+  const entry = spawns.find((spawn) => spawn.name === name);
+  assert.ok(entry, `spawn table must include ${name}`);
+  assert.equal(typeof entry.name, "string", `${name} spawn_t.name must be a string`);
+  assert.equal(typeof entry.spawn, "function", `${name} spawn_t.spawn must be a function`);
+}
+
+const healthCases = [
+  { classname: "item_health", model: "models/items/healing/medium/tris.md2", count: 10, style: 0, sound: "items/n_health.wav" },
+  { classname: "item_health_small", model: "models/items/healing/stimpack/tris.md2", count: 2, style: 1, sound: "items/s_health.wav" },
+  { classname: "item_health_large", model: "models/items/healing/large/tris.md2", count: 25, style: 0, sound: "items/l_health.wav" },
+  { classname: "item_health_mega", model: "models/items/mega_h/tris.md2", count: 100, style: 3, sound: "items/m_health.wav" }
+] as const;
+
+for (const healthCase of healthCases) {
+  const healthContext = createGameMainContext(imports);
+  InitGame(healthContext);
+  const healthEntity = spawnGameEntity(healthContext.runtime);
+  healthEntity.classname = healthCase.classname;
+
+  ED_CallSpawn(healthEntity, healthContext.runtime);
+
+  assert.equal(healthEntity.model, healthCase.model, `${healthCase.classname} model mismatch`);
+  assert.equal(healthEntity.count, healthCase.count, `${healthCase.classname} count mismatch`);
+  assert.equal(healthEntity.style, healthCase.style, `${healthCase.classname} style mismatch`);
+  assert.equal(healthEntity.itemPickupName, "Health", `${healthCase.classname} must use the Health item`);
+  assert.equal(healthEntity.s.renderfx, RF_GLOW, `${healthCase.classname} renderfx mismatch`);
+  assert.equal(healthContext.runtime.assets.modelPaths.includes(healthCase.model), true, `${healthCase.classname} must register its model`);
+  assert.equal(healthContext.runtime.assets.soundPaths.includes(healthCase.sound), true, `${healthCase.classname} must register its sound`);
+}
 
 const skillContext = createGameMainContext(imports);
 InitGame(skillContext);

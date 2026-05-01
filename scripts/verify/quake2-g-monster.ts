@@ -87,6 +87,7 @@ import {
   monster_triggered_spawn_use,
   monster_triggered_start,
   monster_use,
+  swimmonster_start,
   swimmonster_start_go,
   type GameMonsterHooks,
   walkmonster_start,
@@ -687,6 +688,30 @@ function verifyWalkmonsterStartFlymonsterStartAndSwimmonsterStartGo(): void {
   assert.equal(swimStandCalls, 1, "swimmonster_start_go should continue through monster_start_go");
   assert.equal(swimming.think, monster_think, "swimmonster_start_go should arm regular monster thinking");
   assert.equal(swimming.nextthink, runtime.time + FRAMETIME, "swimmonster_start_go should schedule regular monster thinking");
+
+  const delayedSwimming = createMonster(runtime, 27);
+  delayedSwimming.flags = 0;
+  delayedSwimming.yaw_speed = 0;
+  delayedSwimming.viewheight = 0;
+  let delayedSwimStandCalls = 0;
+  delayedSwimming.monsterinfo.stand = () => {
+    delayedSwimStandCalls += 1;
+  };
+
+  swimmonster_start(delayedSwimming, runtime);
+
+  assert.equal((delayedSwimming.flags & FL_SWIM) !== 0, true, "swimmonster_start should mark the monster with FL_SWIM before delayed startup");
+  assert.equal(typeof delayedSwimming.think, "function", "swimmonster_start should arm a delayed swimming startup think");
+  assert.equal(delayedSwimming.nextthink, runtime.time + FRAMETIME, "swimmonster_start should keep monster_start scheduling for delayed startup");
+  assert.equal(delayedSwimming.takedamage, damage_t.DAMAGE_AIM, "swimmonster_start should run the shared monster_start initialization");
+  assert.equal(delayedSwimming.clipmask, MASK_MONSTERSOLID, "swimmonster_start should install the original monster collision mask");
+
+  delayedSwimming.think!(delayedSwimming, runtime);
+
+  assert.equal(delayedSwimStandCalls, 1, "swimmonster_start delayed think should enter shared monster startup");
+  assert.equal(delayedSwimming.yaw_speed, 10, "swimmonster_start delayed think should use swimming yaw speed");
+  assert.equal(delayedSwimming.viewheight, 10, "swimmonster_start delayed think should use swimming viewheight");
+  assert.equal(delayedSwimming.think, monster_think, "swimmonster_start delayed think should arm regular monster thinking");
 }
 
 function verifyTriggeredSpawnStartupPath(): void {

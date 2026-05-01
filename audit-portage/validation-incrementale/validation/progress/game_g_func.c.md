@@ -372,9 +372,17 @@
 - Integration: aucune reference directe dans `apps/web` ou `packages/renderer-three`; logique runtime uniquement.
 - Tests: `npm run verify:g-func` OK.
 
+- 2026-05-01: bloc angle move `AngleMove_Done`, `AngleMove_Final`, `AngleMove_Begin`, `AngleMove_Calc`, usages `VectorSubtract` et locales `len`/`traveltime`/`frames`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:147-222` avec `packages/game/src/g_func.ts:284-367`.
+- Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour les callbacks de fin, la remise a zero `avelocity`, les branches `STATE_UP`/`STATE_DOWN`, le mouvement court via `AngleMove_Final`, le calcul `len`/`traveltime`/`frames`, la planification `think`/`nextthink`, le depart immediat et le depart differe de `AngleMove_Calc`, y compris `FL_TEAMSLAVE`/`teammaster`.
+- Effets verifies: le port TS conserve `AngleMove_Done`, `AngleMove_Final`, `AngleMove_Begin` et `AngleMove_Calc`, avec `subtractVec3` pour les deux `VectorSubtract` C, `vec3Length`, `Math.floor`, `FRAMETIME`, stockage `moveinfo.endfunc`, choix de cible selon `STATE_UP` et appel final du callback.
+- Branchement: `AngleMove_Calc` est appelee par les portes rotatives et callbacks deja valides (`door_go_up`, `door_go_down`), puis les thinks programmes sont executes par `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele attendue dans `apps/web`; le navigateur consomme les sorties du runtime via snapshots/interpolations de brush models. `packages/renderer-three` consomme les angles/origines des brush snapshots via `gl-world-scene-adapter`, donc pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK.
+
 ## Prochain lot recommande
 
-- Reprendre le bloc angle move: `AngleMove_Done`, `AngleMove_Final`, puis `AngleMove_Begin` / `AngleMove_Calc` et leurs locales si le lot reste petit.
+- Aucun: toutes les entrees de `game_g_func.c` sont validees ou justifiees.
 
 ## Blocages
 

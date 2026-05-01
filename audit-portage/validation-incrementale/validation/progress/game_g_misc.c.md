@@ -2,6 +2,23 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `SP_light_mine1` et `SP_light_mine2`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: les deux spawns conservent `MOVETYPE_NONE`, `SOLID_BBOX`, l'enregistrement du modele MD2 respectif (`models/objects/minelite/light1/tris.md2` et `models/objects/minelite/light2/tris.md2`) et le link entity.
+  - Commentaires d'en-tete verifies: les deux fonctions sont documentees avec original/source/categorie portee/fidelite `Strict` et comportement.
+  - Branchement runtime verifie: `light_mine1` et `light_mine2` sont enregistres dans `g_spawn.ts`, exportes via `index.ts`, dispatchables par `ED_CallSpawn`, linkes et exposes dans les listes bbox runtime.
+  - `apps/web`: integration attendue car le lot produit des modeles MD2 visibles. Aucune logique parallele trouvee; le web consomme les sorties runtime via les flux local/full-game, snapshots et refresh frames.
+  - `renderer-three`: integration attendue pour modeles MD2, origine et scene. Les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour spawn direct, modele, solidite, link runtime, exposition bbox et dispatch `ED_CallSpawn` des deux light mines.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `SP_misc_gib_arm`, `SP_misc_gib_leg` et `SP_misc_gib_head` si le lot reste petit.
+
 - 2026-05-01: `misc_satellite_dish_think`, `misc_satellite_dish_use` et `SP_misc_satellite_dish`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `misc_satellite_dish_think` conserve l'increment de `s.frame`, la replanification seulement tant que `s.frame < 38` et l'arret a 38; `misc_satellite_dish_use` conserve le reset frame 0, l'installation du think et `nextthink = level.time + FRAMETIME`; `SP_misc_satellite_dish` conserve `MOVETYPE_NONE`, `SOLID_BBOX`, bbox `[-64,-64,0]` / `[64,64,128]`, modele `models/objects/satellite/tris.md2`, callback use et link.

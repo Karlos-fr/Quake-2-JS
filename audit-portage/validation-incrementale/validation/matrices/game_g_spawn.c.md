@@ -10,8 +10,8 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/g_spawn.c` | struct | `spawn_t` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `name` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | struct | `spawn_t` | `packages/game/src/g_spawn.ts` | `SpawnEntry` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | global | `name` | `packages/game/src/g_spawn.ts` | `spawns[].name` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `SP_item_health` | `packages/game/src/g_items.ts` | `SP_item_health` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `SP_item_health_small` | `packages/game/src/g_items.ts` | `SP_item_health_small` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `SP_item_health_large` | `packages/game/src/g_items.ts` | `SP_item_health_large` | A verifier | A redecouper |  |
