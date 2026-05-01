@@ -2,6 +2,26 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `barrel_explode` et local `spd`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `barrel_explode` conserve `T_RadiusDamage(self, activator, dmg, NULL, dmg+40, MOD_BARREL)`, sauvegarde `s.origin`, recentre temporairement sur `absmin + 0.5 * size`, lance 2 debris1 randomises, 4 debris3 aux coins bas, 8 debris2 randomises, restaure l'origine puis choisit `BecomeExplosion2` si grounded sinon `BecomeExplosion1`. Le port TS utilise `self.activator ?? self` comme garde defensive quand l'activator est absent; `barrel_delay` le renseigne dans le flux normal.
+  - Local `spd` compare: les trois valeurs C sont conservees, `1.5 * dmg / 200`, `1.75 * dmg / 200`, puis `2 * dmg / 200`.
+  - Commentaire d'en-tete verifie pour `barrel_explode`: original/source/categorie portee/fidelite `Close` et comportement documentes.
+  - Branchement runtime verifie: `SP_misc_explobox` installe `die = barrel_delay`; `barrel_delay` renseigne `activator`, planifie `think = barrel_explode`, puis `G_RunFrame`/`SV_RunThink` declenche l'explosion. Le flux de dommages passe par `T_RadiusDamage`, debris par `ThrowDebris`, et temp entities par `BecomeExplosion1/2`.
+  - `apps/web`: integration attendue car le lot produit dommages, disparition du barrel, debris MD2 visibles et temp entities explosion. Aucune logique parallele trouvee; les flux local/full-game drainent les temp entities et snapshots runtime vers le client.
+  - `renderer-three`: integration attendue pour modeles debris, entite barrel liberee, explosion temp entity, particules/dlights et scene. Les debris passent par `ClientRefreshFrame.entities`; les explosions passent par `CL_AddTEntPacket`/`CL_BuildTEntRefresh` puis entites/lumieres consommees par les adapters Three.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour radius damage, origine sauvee/recentree/restauree, compte et modeles des debris, valeurs `spd`, `TE_EXPLOSION1` airborne et `TE_EXPLOSION2` grounded.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npx tsx ./scripts/verify/quake2-cl-tent.ts` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `barrel_delay`, puis `SP_misc_explobox` si le lot reste petit.
+
 - 2026-05-01: `barrel_touch` et local `ratio`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `barrel_touch` conserve les gardes `!other->groundentity` et `other->groundentity == self`, calcule `ratio = other.mass / self.mass`, soustrait `self->s.origin - other->s.origin`, puis appelle `M_walkmove(self, vectoyaw(v), 20 * ratio * FRAMETIME)`. Le TS ajoute une garde defensive `self.mass === 0`, sans effet sur `misc_explobox` normal car `SP_misc_explobox` force `mass = 400` quand absent.

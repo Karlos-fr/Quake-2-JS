@@ -143,10 +143,10 @@
 | `Quake-2-master/game/g_local.h` | global | `helpmessage1` | `packages/game/src/g_local.ts` | `game_locals_t.helpmessage1` | Valide | A redecouper | Champ buffer C porte en string TS; correction `g_main.ts` sync runtime/game. Tests: voir `game_locals_t`. |
 | `Quake-2-master/game/g_local.h` | global | `helpmessage2` | `packages/game/src/g_local.ts` | `game_locals_t.helpmessage2` | Valide | A redecouper | Champ buffer C porte en string TS; correction `g_main.ts` sync runtime/game. Tests: voir `game_locals_t`. |
 | `Quake-2-master/game/g_local.h` | global | `helpchanged` | `packages/game/src/g_local.ts` | `game_locals_t.helpchanged` | Valide | A redecouper | Compteur monotone aide/F1 synchronise runtime/game. Tests: voir `game_locals_t`. |
-| `Quake-2-master/game/g_local.h` | global | `spawnpoint` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `maxclients` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `maxentities` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `serverflags` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `spawnpoint` | `packages/game/src/g_local.ts` | `game_locals_t.spawnpoint` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `maxclients` | `packages/game/src/g_local.ts` | `game_locals_t.maxclients` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `maxentities` | `packages/game/src/g_local.ts` | `game_locals_t.maxentities` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `serverflags` | `packages/game/src/g_local.ts` | `game_locals_t.serverflags` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `num_items` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `autosaved` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | struct | `level_locals_t` | `packages/game/src/g_local.ts` | `level_locals_t` | A verifier | A redecouper |  |

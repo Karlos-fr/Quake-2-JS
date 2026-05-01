@@ -15,6 +15,7 @@ import {
   G_RunFrame,
   ClipVelocity,
   G_RunEntity,
+  SV_FlyMove,
   SV_CheckVelocity,
   SV_Impact,
   SV_Physics_Toss,
@@ -325,6 +326,145 @@ assertEqual("G_RunEntity.SV_Impact.e2", impactTargetTouches, 1);
 runtime.collision = defaultCollision;
 drainGameSoundEvents(runtime);
 drainGameTempEntityEvents(runtime);
+
+const flyFloor = spawnGameEntity(runtime);
+flyFloor.classname = "fly-floor";
+flyFloor.solid = SOLID_BSP;
+flyFloor.linkcount = 77;
+const flyFloorEnt = spawnGameEntity(runtime);
+flyFloorEnt.classname = "fly-floor-ent";
+flyFloorEnt.solid = SOLID_BBOX;
+flyFloorEnt.clipmask = MASK_SOLID;
+flyFloorEnt.origin = [0, 0, 8];
+flyFloorEnt.s.origin = [0, 0, 8];
+flyFloorEnt.velocity = [0, 0, -80];
+runtime.collision = {
+  world: {} as never,
+  trace(start, mins, maxs, end, passent, contentmask) {
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 0,
+      endpos: [...start],
+      plane: {
+        normal: [0, 0, 1],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: flyFloor
+    };
+  },
+  pointcontents(point) {
+    return point[2] < 0 ? MASK_SOLID : 0;
+  }
+};
+assertEqual("SV_FlyMove.hit.floor-blocked", SV_FlyMove(flyFloorEnt, 0.1, MASK_SOLID, runtime), 1);
+assertEqual("SV_FlyMove.hit.groundentity", flyFloorEnt.groundentity, flyFloor);
+assertEqual("SV_FlyMove.hit.groundentity-linkcount", flyFloorEnt.groundentity_linkcount, 77);
+assertVec("SV_FlyMove.hit.velocity", flyFloorEnt.velocity, [0, 0, 0]);
+
+const flyCreaseEnt = spawnGameEntity(runtime);
+flyCreaseEnt.classname = "fly-crease";
+flyCreaseEnt.solid = SOLID_BBOX;
+flyCreaseEnt.clipmask = MASK_SOLID;
+flyCreaseEnt.origin = [0, 0, 0];
+flyCreaseEnt.s.origin = [0, 0, 0];
+flyCreaseEnt.velocity = [-10, -10, 5];
+const creaseNormals: [number, number, number][] = [
+  [1, 0, 0],
+  [0, 1, 0]
+];
+let creaseTraceCount = 0;
+runtime.collision = {
+  world: {} as never,
+  trace(start, mins, maxs, end, passent, contentmask) {
+    const normal = creaseNormals[creaseTraceCount];
+    creaseTraceCount += 1;
+    if (!normal) {
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 1,
+        endpos: [...end],
+        plane: {
+          normal: [0, 0, 1],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: contentmask,
+        ent: worldspawn
+      };
+    }
+
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 0,
+      endpos: [...start],
+      plane: {
+        normal,
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: worldspawn
+    };
+  },
+  pointcontents(point) {
+    return point[2] < 0 ? MASK_SOLID : 0;
+  }
+};
+assertEqual("SV_FlyMove.crease.blocked", SV_FlyMove(flyCreaseEnt, 0.1, MASK_SOLID, runtime), 2);
+assertEqual("SV_FlyMove.crease.trace-count", creaseTraceCount, 3);
+assertVec("SV_FlyMove.crease.dir-d-velocity", flyCreaseEnt.velocity, [0, 0, 5]);
+
+const flyMaxPlanesEnt = spawnGameEntity(runtime);
+flyMaxPlanesEnt.classname = "fly-max-planes";
+flyMaxPlanesEnt.solid = SOLID_BBOX;
+flyMaxPlanesEnt.clipmask = MASK_SOLID;
+flyMaxPlanesEnt.origin = [0, 0, 0];
+flyMaxPlanesEnt.s.origin = [0, 0, 0];
+flyMaxPlanesEnt.velocity = [-10, 0, 5];
+let maxPlanesTraceCount = 0;
+runtime.collision = {
+  world: {} as never,
+  trace(start, mins, maxs, end, passent, contentmask) {
+    maxPlanesTraceCount += 1;
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 0,
+      endpos: [...start],
+      plane: {
+        normal: [1, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: worldspawn
+    };
+  },
+  pointcontents(point) {
+    return point[2] < 0 ? MASK_SOLID : 0;
+  }
+};
+assertEqual("SV_FlyMove.MAX_CLIP_PLANES.numbumps", SV_FlyMove(flyMaxPlanesEnt, 0.1, MASK_SOLID, runtime), 2);
+assertEqual("SV_FlyMove.MAX_CLIP_PLANES.trace-count", maxPlanesTraceCount, 4);
+assertVec("SV_FlyMove.MAX_CLIP_PLANES.velocity", flyMaxPlanesEnt.velocity, [0, 0, 5]);
+runtime.collision = defaultCollision;
 
 const frameThinkEnt = spawnGameEntity(runtime);
 frameThinkEnt.classname = "frame-think";
