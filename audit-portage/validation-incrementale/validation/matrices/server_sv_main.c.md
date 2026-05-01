@@ -54,16 +54,13 @@
 | `Quake-2-master/server/sv_main.c` | global | `version` | `packages/server/src/sv_main.ts` | `version` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | global | `qport` | `packages/server/src/sv_main.ts` | `qport` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | global | `challenge` | `packages/server/src/sv_main.ts` | `challenge` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | function | `Netchan_OutOfBandPrint` | `packages/server/src/sv_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | function | `Rcon_Validate` | `packages/server/src/sv_main.ts` | `Rcon_Validate` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | function | `SVC_RemoteCommand` | `packages/server/src/sv_main.ts` | `SVC_RemoteCommand` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | global | `i` | `packages/server/src/sv_main.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | global | `remaining` | `packages/server/src/sv_main.ts` | `remaining` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | function | `Com_Printf` | `packages/server/src/sv_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | function | `SV_ConnectionlessPacket` | `packages/server/src/sv_main.ts` | `SV_ConnectionlessPacket` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | global | `s` | `packages/server/src/sv_main.ts` | `s` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | global | `c` | `packages/server/src/sv_main.ts` | `c` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | function | `Com_Printf` | `packages/server/src/sv_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | function | `SV_CalcPings` | `packages/server/src/sv_main.ts` | `SV_CalcPings` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | function | `SV_GiveMsec` | `packages/server/src/sv_main.ts` | `SV_GiveMsec` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | global | `i` | `packages/server/src/sv_main.ts` | `i` | A verifier | A redecouper |  |
@@ -91,5 +88,4 @@
 | `Quake-2-master/server/sv_main.c` | function | `SV_Init` | `packages/server/src/sv_main.ts` | `SV_Init` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | function | `SV_FinalMessage` | `packages/server/src/sv_main.ts` | `SV_FinalMessage` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | global | `i` | `packages/server/src/sv_main.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | function | `MSG_WriteByte` | `packages/server/src/sv_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | function | `SV_Shutdown` | `packages/server/src/sv_main.ts` | `SV_Shutdown` | A verifier | A redecouper |  |

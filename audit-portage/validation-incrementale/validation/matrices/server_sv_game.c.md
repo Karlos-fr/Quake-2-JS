@@ -12,7 +12,6 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/server/sv_game.c` | function | `PF_Unicast` | `packages/server/src/sv_game.ts` | `PF_Unicast` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `p` | `packages/server/src/sv_game.ts` | `p` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `SZ_Write` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | function | `PF_dprintf` | `packages/server/src/sv_game.ts` | `PF_dprintf` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
@@ -20,7 +19,6 @@
 | `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `n` | `packages/server/src/sv_game.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `Com_Printf` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | function | `PF_centerprintf` | `packages/server/src/sv_game.ts` | `PF_centerprintf` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `msg` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | global | `argptr` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
@@ -50,5 +48,4 @@
 | `Quake-2-master/server/sv_game.c` | global | `mask` | `packages/server/src/sv_game.ts` | `mask` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | function | `PF_StartSound` | `packages/server/src/sv_game.ts` | `PF_StartSound` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | function | `SV_ShutdownGameProgs` | `packages/server/src/sv_game.ts` | `SV_ShutdownGameProgs` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_game.c` | function | `SCR_DebugGraph` | `packages/server/src/sv_game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_game.c` | function | `SV_InitGameProgs` | `packages/server/src/sv_game.ts` | `SV_InitGameProgs` | A verifier | A redecouper |  |

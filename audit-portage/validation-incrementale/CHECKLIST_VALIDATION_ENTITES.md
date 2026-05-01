@@ -8,6 +8,10 @@ Cette checklist est a appliquer pour une entite precise ou un petit lot simple.
 - [ ] Identifier `Fichier source`, `Type entite source` et `Nom entite source`.
 - [ ] Confirmer le `Fichier cible proprietaire` et le `Nom entite cible`.
 - [ ] Si la cible est vide, verifier si l'entite est renommee, deplacee, exclue ou vraiment manquante.
+- [ ] Pour une entite portee, verifier que le nom TypeScript conserve le nom d'origine. Si une exception est necessaire pour un adapter local, un renommage idiomatique ou un deplacement, documenter explicitement `Original name`, le nom cible reel et la raison du renommage dans le commentaire d'en-tete et/ou `Notes`.
+- [ ] Si la matrice indique une fonction source qui est seulement un appel a une fonction externe definie dans un autre fichier, ne pas la traiter comme entite proprietaire du fichier: retirer cette ligne de la matrice du fichier courant. La fonction externe sera validee dans la matrice de son fichier de definition.
+- [ ] Verifier l'ownership du portage: le fichier TS proprietaire doit correspondre au module source attendu. Un helper commun ou deplace dans un autre package ne doit etre accepte que si l'ownership est justifie explicitement; sinon marquer `Non conforme` ou corriger.
+- [ ] Rechercher les doublons de portage: une meme entite source ne doit pas exister a la fois comme fonction portee officielle et comme helper/adaptateur local portant le meme `Original name`, sauf justification explicite. Si un doublon est trouve, marquer `Non conforme` ou `Partiel` selon l'impact et indiquer l'action suivante.
 
 ## 2. Comparer source et TypeScript
 
@@ -23,6 +27,8 @@ Cette checklist est a appliquer pour une entite precise ou un petit lot simple.
 
 - [ ] Pour une fonction portee, verifier qu'un commentaire de tete existe ou l'ajouter si la fonction est nouvelle, substantiellement modifiee ou critique.
 - [ ] Le commentaire d'une fonction portee doit reprendre l'esprit du README : `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et `Porting notes` quand c'est utile.
+- [ ] Verifier que `Original name` n'est pas utilise pour presenter un helper local comme portage d'une entite deja portee ailleurs. Dans ce cas, le commentaire doit indiquer `Category: Adapter` ou `New`, referencer l'entite source reutilisee, et ne pas masquer le portage proprietaire.
+- [ ] Verifier que `Source` pointe vers le fichier C/H qui definit reellement l'entite, pas seulement vers un fichier qui l'appelle.
 - [ ] Le niveau de fidelite doit etre explicite quand le comportement est important : `Strict`, `Close`, `Adapter` ou `NewTooling`.
 - [ ] Toute deviation volontaire au code original doit etre documentee dans le commentaire de la fonction ou du fichier concerne.
 - [ ] Pour une fonction nouvelle ou adapter, verifier que le commentaire indique `Category: New` ou `Adapter`, son `Purpose` et ses contraintes principales.

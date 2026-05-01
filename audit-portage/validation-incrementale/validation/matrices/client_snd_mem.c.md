@@ -26,7 +26,6 @@
 | `Quake-2-master/client/snd_mem.c` | global | `size` | `packages/client/src/snd_dma.ts` | `size` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_mem.c` | global | `name` | `packages/client/src/snd_mem.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_mem.c` | function | `Com_sprintf` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_mem.c` | global | `data_p` | `packages/client/src/snd_mem.ts` | `data_p` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_mem.c` | global | `iff_end` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_mem.c` | global | `last_chunk` | `packages/client/src/snd_mem.ts` |  | A verifier | A redecouper |  |

@@ -66,7 +66,6 @@
 | `Quake-2-master/client/snd_dma.c` | global | `source_vec` | `packages/client/src/snd_dma.ts` | `source_vec` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_Spatialize` | `packages/client/src/snd_dma.ts` | `S_Spatialize` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `origin` | `packages/client/src/snd_dma.ts` | `origin` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `CL_GetEntitySoundOrigin` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_AllocPlaysound` | `packages/client/src/snd_dma.ts` | `S_AllocPlaysound` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_FreePlaysound` | `packages/client/src/snd_dma.ts` | `S_FreePlaysound` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_IssuePlaysound` | `packages/client/src/snd_dma.ts` | `S_IssuePlaysound` | A verifier | A redecouper |  |
@@ -111,5 +110,3 @@
 | `Quake-2-master/client/snd_dma.c` | function | `strcpy` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | function | `S_SoundList` | `packages/client/src/snd_dma.ts` | `S_SoundList` | A verifier | A redecouper |  |
 | `Quake-2-master/client/snd_dma.c` | global | `i` | `packages/client/src/snd_dma.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `Com_Printf` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/snd_dma.c` | function | `Com_Printf` | `packages/client/src/snd_dma.ts` |  | A verifier | A redecouper |  |

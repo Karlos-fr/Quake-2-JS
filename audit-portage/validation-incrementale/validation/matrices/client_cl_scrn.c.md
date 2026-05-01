@@ -108,7 +108,6 @@
 | `Quake-2-master/client/cl_scrn.c` | global | `width` | `packages/client/src/cl_scrn.ts` | `width` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `index` | `packages/client/src/cl_scrn.ts` | `index` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `block` | `packages/client/src/cl_scrn.ts` | `block` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_scrn.c` | function | `DrawString` | `packages/client/src/cl_scrn.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `color` | `packages/client/src/cl_scrn.ts` | `color` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `color` | `packages/client/src/cl_scrn.ts` | `color` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_scrn.c` | global | `color` | `packages/client/src/cl_scrn.ts` | `color` | A verifier | A redecouper |  |

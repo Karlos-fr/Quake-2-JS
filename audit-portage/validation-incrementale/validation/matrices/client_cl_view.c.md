@@ -44,6 +44,5 @@
 | `Quake-2-master/client/cl_view.c` | global | `name` | `packages/client/src/view.ts` | `name` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | function | `SCR_DrawCrosshair` | `packages/client/src/view.ts` | `SCR_DrawCrosshair` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | function | `V_RenderView` | `packages/client/src/view.ts` | `V_RenderView` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_view.c` | function | `entitycmpfnc` | `packages/client/src/view.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | function | `V_Viewpos_f` | `packages/client/src/view.ts` | `V_Viewpos_f` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_view.c` | function | `V_Init` | `packages/client/src/view.ts` | `V_Init` | A verifier | A redecouper |  |

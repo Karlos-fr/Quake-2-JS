@@ -12,7 +12,6 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/client/cl_newfx.c` | global | `cl_numparticles` | `packages/client/src/cl_newfx.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | global | `vid_ref` | `packages/client/src/cl_newfx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `MakeNormalVectors` | `packages/client/src/cl_newfx.ts` | `MakeNormalVectors` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | function | `vectoangles2` | `packages/client/src/cl_newfx.ts` | `vectoangles2` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | global | `forward` | `packages/client/src/cl_newfx.ts` | `forward` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | global | `pitch` | `packages/client/src/cl_newfx.ts` | `pitch` | A verifier | A redecouper |  |

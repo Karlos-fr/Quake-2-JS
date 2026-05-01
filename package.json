@@ -28,6 +28,7 @@
     "audit:phase3:03f": "npx tsx ./audit-portage/phases/phase-03-runtime-exhaustif/tools/run-phase-03f.ts",
     "audit:phase3:functions": "npx tsx ./audit-portage/phases/phase-03-runtime-exhaustif/tools/run-function-body-comparison.ts",
     "audit:validation:matrices": "npx tsx ./audit-portage/validation-incrementale/tools/generate-validation-matrices.ts",
+    "audit:validation:matrices:reliable": "npx tsx ./audit-portage/validation-incrementale/tools/generate-reliable-validation-matrices.ts --with-base",
     "golden:pak0:write": "npx tsx ./scripts/verify/golden-pak-summary.mjs --write",
     "golden:pak0": "npx tsx ./scripts/verify/golden-pak-summary.mjs",
     "verify:doors:phase1": "npx tsx ./scripts/verify/quake2-door-phase1.ts",

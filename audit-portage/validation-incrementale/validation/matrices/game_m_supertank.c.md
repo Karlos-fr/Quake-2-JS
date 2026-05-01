@@ -10,7 +10,6 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_supertank.c` | function | `visible` | `packages/game/src/m_supertank.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | global | `sound_pain1` | `packages/game/src/m_supertank.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | global | `sound_pain2` | `packages/game/src/m_supertank.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | global | `sound_pain3` | `packages/game/src/m_supertank.ts` | `SOUND_PAIN3` | A verifier | A redecouper |  |

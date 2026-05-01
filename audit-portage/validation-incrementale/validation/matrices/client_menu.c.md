@@ -159,7 +159,6 @@
 | `Quake-2-master/client/menu.c` | function | `UpdateVolumeFunc` | `packages/client/src/menu-options-keys.ts` | `UpdateVolumeFunc` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `UpdateCDVolumeFunc` | `packages/client/src/menu-options-keys.ts` | `UpdateCDVolumeFunc` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `ConsoleFunc` | `packages/client/src/menu-options-keys.ts` | `ConsoleFunc` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `Key_ClearTyping` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `UpdateSoundQualityFunc` | `packages/client/src/menu-options-keys.ts` | `UpdateSoundQualityFunc` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `Options_MenuInit` | `packages/client/src/menu-options-keys.ts` | `Options_MenuInit` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `cd_music_items` | `packages/client/src/menu-options-keys.ts` | `cd_music_items` | A verifier | A redecouper |  |
@@ -182,7 +181,6 @@
 | `Quake-2-master/client/menu.c` | global | `bold` | `packages/client/src/menu-main-game.ts` | `bold` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `x` | `packages/client/src/menu.ts` | `x` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `M_Credits_Key` | `packages/client/src/menu-main-game.ts` | `M_Credits_Key` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `Developer_searchpath` | `packages/client/src/menu.ts` | `Developer_searchpath` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `M_Menu_Credits_f` | `packages/client/src/menu-main-game.ts` | `M_Menu_Credits_f` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `n` | `packages/client/src/menu.ts` | `n` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `count` | `packages/client/src/menu.ts` | `count` | A verifier | A redecouper |  |
@@ -358,7 +356,6 @@
 | `Quake-2-master/client/menu.c` | global | `handedness` | `packages/client/src/menu-player-config.ts` | `handedness` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `j` | `packages/client/src/menu.ts` | `j` | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | function | `PlayerConfig_MenuDraw` | `packages/client/src/menu-player-config.ts` | `PlayerConfig_MenuDraw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/menu.c` | function | `CalcFov` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `scratch` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `yaw` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/menu.c` | global | `maxframe` | `packages/client/src/menu.ts` |  | A verifier | A redecouper |  |

@@ -10,7 +10,6 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `Com_Printf` | `packages/renderer-three/src/gl_rmain.ts` | `Com_Printf` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `GetRefAPI` | `packages/renderer-three/src/gl_rmain.ts` | `GetRefAPI` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `GL_DrawColoredStereoLinePair` | `packages/renderer-three/src/gl_rmain.ts` | `GL_DrawColoredStereoLinePair` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `GL_DrawParticles` | `packages/renderer-three/src/gl_rmain.ts` | `GL_DrawParticles` | A verifier | split-undocumented |  |
@@ -40,7 +39,6 @@
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetupGL` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetupGL` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_Shutdown` | `packages/renderer-three/src/gl_rmain.ts` | `R_Shutdown` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `SignbitsForPlane` | `packages/renderer-three/src/gl_rmain.ts` | `SignbitsForPlane` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `Sys_Error` | `packages/renderer-three/src/gl_rmain.ts` | `Sys_Error` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | macro | `NUM_BEAM_SEGS` | `packages/renderer-three/src/gl_rmain.ts` | `NUM_BEAM_SEGS` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | struct | `image_s` | `packages/renderer-three/src/gl_rmain.ts` | `image_s` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | struct | `model_s` | `packages/renderer-three/src/gl_rmain.ts` | `model_s` | A verifier | split-undocumented |  |

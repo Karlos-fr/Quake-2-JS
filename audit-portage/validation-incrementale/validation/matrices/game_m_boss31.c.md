@@ -10,8 +10,6 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_boss31.c` | function | `SP_monster_makron` | `packages/game/src/m_boss32.ts` | `SP_monster_makron` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `visible` | `packages/game/src/m_boss31.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_pain1` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_pain2` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_pain3` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN3` | A verifier | A redecouper |  |
@@ -26,8 +24,6 @@
 | `Quake-2-master/game/m_boss31.c` | global | `sound_step_left` | `packages/game/src/m_boss31.ts` | `SOUND_STEP_LEFT` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_step_right` | `packages/game/src/m_boss31.ts` | `SOUND_STEP_RIGHT` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `sound_death_hit` | `packages/game/src/m_boss31.ts` | `SOUND_DEATH_HIT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `BossExplode` | `packages/game/src/m_boss31.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `MakronToss` | `packages/game/src/m_boss32.ts` | `MakronToss` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_search` | `packages/game/src/m_boss31.ts` | `jorg_search` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `r` | `packages/game/src/m_boss31.ts` | `r` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_dead` | `packages/game/src/m_boss31.ts` | `jorg_dead` | A verifier | A redecouper |  |
@@ -103,7 +99,6 @@
 | `Quake-2-master/game/m_boss31.c` | global | `enemy_infront` | `packages/game/src/m_boss31.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `enemy_range` | `packages/game/src/m_boss31.ts` | `enemy_range` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `enemy_yaw` | `packages/game/src/m_boss31.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `MakronPrecache` | `packages/game/src/m_boss32.ts` | `MakronPrecache` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `SP_monster_jorg` | `packages/game/src/m_boss31.ts` | `SP_monster_jorg` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_stand` | `packages/game/src/m_boss31.ts` | `jorg_frames_stand` | A verifier | matched |  |
 | `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_run` | `packages/game/src/m_boss31.ts` | `jorg_frames_run` | A verifier | matched |  |

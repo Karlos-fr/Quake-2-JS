@@ -36,7 +36,6 @@
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Get` | `packages/qcommon/src/cvar.ts` | `Cvar_Get` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_SetValue` | `packages/qcommon/src/cvar.ts` | `Cvar_SetValue` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `val` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Com_sprintf` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_GetLatchedVars` | `packages/qcommon/src/cvar.ts` | `Cvar_GetLatchedVars` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Command` | `packages/qcommon/src/cvar.ts` | `Cvar_Command` | A verifier | A tester |  |
@@ -51,10 +50,6 @@
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_List_f` | `packages/qcommon/src/cvar.ts` | `Cvar_List_f` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `i` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Com_Printf` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Com_Printf` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Com_Printf` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Com_Printf` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `userinfo_modified` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_BitInfo` | `packages/qcommon/src/cvar.ts` | `Cvar_BitInfo` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `info` | `packages/qcommon/src/cvar.ts` | `info` | A verifier | A tester |  |

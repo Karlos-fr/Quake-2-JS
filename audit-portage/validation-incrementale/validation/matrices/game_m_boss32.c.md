@@ -10,7 +10,6 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_boss32.c` | function | `visible` | `packages/game/src/m_boss32.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `MakronRailgun` | `packages/game/src/m_boss32.ts` | `MakronRailgun` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `MakronSaveloc` | `packages/game/src/m_boss32.ts` | `MakronSaveloc` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `MakronHyperblaster` | `packages/game/src/m_boss32.ts` | `MakronHyperblaster` | A verifier | A redecouper |  |

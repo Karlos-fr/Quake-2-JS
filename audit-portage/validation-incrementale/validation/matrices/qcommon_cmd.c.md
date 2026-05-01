@@ -10,7 +10,6 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_ForwardToServer` | `packages/qcommon/src/cmd.ts` | `Cmd_ForwardToServer` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | macro | `MAX_ALIAS_NAME` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | struct | `cmdalias_s` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | global | `name` | `packages/qcommon/src/cmd.ts` | `name` | A verifier | A redecouper |  |

@@ -26,12 +26,8 @@
 | `Quake-2-master/game/g_turret.c` | function | `turret_breach_finish_init` | `packages/game/src/g_turret.ts` | `turret_breach_finish_init` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_turret.c` | function | `SP_turret_breach` | `packages/game/src/g_turret.ts` | `SP_turret_breach` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_turret.c` | function | `SP_turret_base` | `packages/game/src/g_turret.ts` | `SP_turret_base` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_turret.c` | function | `infantry_die` | `packages/game/src/g_turret.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_turret.c` | function | `infantry_stand` | `packages/game/src/g_turret.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_turret.c` | function | `monster_use` | `packages/game/src/g_turret.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_turret.c` | function | `turret_driver_die` | `packages/game/src/g_turret.ts` | `turret_driver_die` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_turret.c` | global | `ent` | `packages/game/src/g_turret.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_turret.c` | function | `FindTarget` | `packages/game/src/g_turret.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_turret.c` | function | `turret_driver_think` | `packages/game/src/g_turret.ts` | `turret_driver_think` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_turret.c` | global | `reaction_time` | `packages/game/src/g_turret.ts` | `reaction_time` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_turret.c` | function | `turret_driver_link` | `packages/game/src/g_turret.ts` | `turret_driver_link` | A verifier | A redecouper |  |

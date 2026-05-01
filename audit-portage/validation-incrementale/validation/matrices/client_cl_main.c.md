@@ -123,7 +123,6 @@
 | `Quake-2-master/client/cl_main.c` | function | `CL_FixUpGender` | `packages/client/src/cl_main.ts` | `CL_FixUpGender` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `p` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `sk` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `Cvar_Set` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Userinfo_f` | `packages/client/src/cl_main.ts` | `CL_Userinfo_f` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Snd_Restart_f` | `packages/client/src/cl_main.ts` | `CL_Snd_Restart_f` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `precache_check` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
@@ -140,7 +139,6 @@
 | `Quake-2-master/client/cl_main.c` | global | `fn` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `p` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `n` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `Com_sprintf` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `numtexinfo` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `fn` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Precache_f` | `packages/client/src/precache.ts` | `CL_Precache_f` | A verifier | A redecouper |  |

@@ -31,12 +31,10 @@
 | `Quake-2-master/client/keys.c` | function | `Key_Console` | `packages/client/src/keys.ts` | `Key_Console` | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `cbd` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `i` | `packages/client/src/keys.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | function | `Cbuf_AddText` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `chat_team` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `chat_buffer` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `chat_bufferlen` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | function | `Key_Message` | `packages/client/src/keys.ts` | `Key_Message` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | function | `Cbuf_AddText` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | function | `Key_StringToKeynum` | `packages/client/src/keys.ts` | `Key_StringToKeynum` | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | function | `Key_KeynumToString` | `packages/client/src/keys.ts` | `Key_KeynumToString` | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `tinystr` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
@@ -49,7 +47,6 @@
 | `Quake-2-master/client/keys.c` | global | `i` | `packages/client/src/keys.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | function | `Key_Bind_f` | `packages/client/src/keys.ts` | `Key_Bind_f` | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `cmd` | `packages/client/src/keys.ts` | `cmd` | A verifier | A redecouper |  |
-| `Quake-2-master/client/keys.c` | function | `Com_Printf` | `packages/client/src/keys.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | function | `Key_WriteBindings` | `packages/client/src/keys.ts` | `Key_WriteBindings` | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | global | `i` | `packages/client/src/keys.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/client/keys.c` | function | `Key_Bindlist_f` | `packages/client/src/keys.ts` | `Key_Bindlist_f` | A verifier | A redecouper |  |

@@ -50,7 +50,6 @@
 | `Quake-2-master/server/sv_world.c` | global | `passedict` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_world.c` | global | `contentmask` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_world.c` | function | `SV_HullForEntity` | `packages/server/src/sv_world.ts` | `SV_HullForEntity` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_world.c` | function | `CM_HeadnodeForBox` | `packages/server/src/sv_world.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_world.c` | function | `SV_ClipMoveToEntities` | `packages/server/src/sv_world.ts` | `SV_ClipMoveToEntities` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_world.c` | global | `trace` | `packages/server/src/sv_world.ts` | `trace` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_world.c` | global | `headnode` | `packages/server/src/sv_world.ts` | `headnode` | A verifier | A redecouper |  |

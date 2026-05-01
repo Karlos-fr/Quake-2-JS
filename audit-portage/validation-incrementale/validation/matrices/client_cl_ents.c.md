@@ -49,11 +49,8 @@
 | `Quake-2-master/client/cl_ents.c` | global | `cent` | `packages/client/src/cl_ents.ts` | `cent` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | global | `autoanim` | `packages/client/src/cl_ents.ts` | `autoanim` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | global | `ci` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `V_AddLight` | `packages/client/src/view.ts` | `V_AddLight` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | global | `bfg_lightramp` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | global | `intensity` | `packages/client/src/cl_ents.ts` | `intensity` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `V_AddLight` | `packages/client/src/view.ts` | `V_AddLight` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `V_AddLight` | `packages/client/src/view.ts` | `V_AddLight` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | function | `CL_AddViewWeapon` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | function | `CL_CalcViewValues` | `packages/client/src/view.ts` | `CL_CalcViewValues` | A verifier | A redecouper |  |

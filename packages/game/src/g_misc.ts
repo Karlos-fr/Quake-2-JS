@@ -119,7 +119,7 @@ function subVec3(left: vec3_t, right: vec3_t): [number, number, number] {
 
 /**
  * Original name: VectorScale
- * Source: game/g_misc.c
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -128,6 +128,7 @@ function subVec3(left: vec3_t, right: vec3_t): [number, number, number] {
  *
  * Porting notes:
  * - The C `out` parameter is represented as a returned tuple for local TS callers.
+ * - This local adapter covers the `VectorScale` call sites in `game/g_misc.c`.
  */
 function scaleVec3(vector: vec3_t, scalar: number): [number, number, number] {
   return [vector[0] * scalar, vector[1] * scalar, vector[2] * scalar];

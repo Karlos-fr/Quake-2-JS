@@ -53,7 +53,6 @@
 | `Quake-2-master/qcommon/files.c` | global | `read` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `buf` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `tries` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `Com_Error` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | function | `FS_LoadFile` | `packages/filesystem/src/files.ts` | `FS_LoadFile` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `buf` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `len` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
@@ -74,7 +73,6 @@
 | `Quake-2-master/qcommon/files.c` | function | `FS_ExecAutoexec` | `packages/filesystem/src/files.ts` | `FS_ExecAutoexec` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `dir` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `name` | `packages/formats/src/pak.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `Com_sprintf` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | function | `FS_SetGamedir` | `packages/filesystem/src/files.ts` | `FS_SetGamedir` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | function | `FS_Link_f` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `s` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
@@ -86,10 +84,8 @@
 | `Quake-2-master/qcommon/files.c` | global | `ndirs` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `tmp` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `i` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `Com_Printf` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | function | `FS_Path_f` | `packages/filesystem/src/files.ts` | `FS_Path_f` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `l` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `Com_Printf` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | function | `FS_NextPath` | `packages/filesystem/src/files.ts` | `FS_NextPath` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `prev` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | function | `FS_InitFilesystem` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |

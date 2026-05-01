@@ -84,4 +84,3 @@
 | `Quake-2-master/client/cl_input.c` | global | `i` | `packages/client/src/cl_input.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_input.c` | global | `nullcmd` | `packages/client/src/cl_input.ts` | `nullcmd` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_input.c` | global | `checksumIndex` | `packages/client/src/cl_input.ts` | `checksumIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `MSG_WriteLong` | `packages/client/src/cl_input.ts` |  | A verifier | A redecouper |  |

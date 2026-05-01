@@ -12,7 +12,6 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/client/cl_parse.c` | global | `svc_strings` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_DownloadFileName` | `packages/client/src/download.ts` | `CL_DownloadFileName` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_parse.c` | function | `Com_sprintf` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | function | `CL_CheckOrDownloadFile` | `packages/client/src/download.ts` | `CL_CheckOrDownloadFile` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | global | `name` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_parse.c` | global | `len` | `packages/client/src/cl_parse.ts` |  | A verifier | A redecouper |  |

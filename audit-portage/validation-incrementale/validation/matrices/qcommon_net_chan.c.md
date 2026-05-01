@@ -31,8 +31,5 @@
 | `Quake-2-master/qcommon/net_chan.c` | global | `send` | `packages/qcommon/src/net_chan.ts` | `send` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | global | `send_buf` | `packages/qcommon/src/net_chan.ts` | `send_buf` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | global | `send_reliable` | `packages/qcommon/src/net_chan.ts` | `send_reliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Com_Printf` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Com_Printf` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Process` | `packages/qcommon/src/net_chan.ts` | `Netchan_Process` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | global | `qport` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Com_Printf` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |

@@ -10,7 +10,6 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_flyer.c` | function | `visible` | `packages/game/src/m_flyer.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_flyer.c` | global | `nextmove` | `packages/game/src/m_flyer.ts` | `nextmove` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_flyer.c` | global | `sound_sight` | `packages/game/src/m_flyer.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_flyer.c` | global | `sound_idle` | `packages/game/src/m_flyer.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |

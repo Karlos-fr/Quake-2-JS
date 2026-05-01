@@ -39,5 +39,4 @@
 | `Quake-2-master/server/sv_init.c` | global | `ch` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_init.c` | global | `l` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_init.c` | global | `spawnpoint` | `packages/server/src/sv_init.ts` | `spawnpoint` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `Cvar_Set` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_init.c` | global | `spawnpoint` | `packages/server/src/sv_init.ts` | `spawnpoint` | A verifier | A redecouper |  |

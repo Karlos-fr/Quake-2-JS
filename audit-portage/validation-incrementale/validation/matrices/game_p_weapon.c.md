@@ -19,8 +19,6 @@
 | `Quake-2-master/game/p_weapon.c` | function | `Pickup_Weapon` | `packages/game/src/p_weapon.ts` | `Pickup_Weapon` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `index` | `packages/game/src/p_weapon.ts` | `index` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `ammo` | `packages/game/src/p_weapon.ts` | `ammo` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Add_Ammo` | `packages/game/src/g_items.ts` | `Add_Ammo` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `SetRespawn` | `packages/game/src/g_items.ts` | `SetRespawn` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | function | `ChangeWeapon` | `packages/game/src/p_weapon.ts` | `ChangeWeapon` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `i` | `packages/game/src/p_weapon.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `i` | `packages/game/src/p_weapon.ts` | `i` | A verifier | A redecouper |  |
@@ -115,7 +113,6 @@
 | `Quake-2-master/game/p_weapon.c` | global | `offset` | `packages/game/src/p_weapon.ts` | `offset` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `kick` | `packages/game/src/p_weapon.ts` | `kick` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `fire_shotgun` | `packages/game/src/g_weapon.ts` | `fire_shotgun` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | function | `Weapon_Shotgun` | `packages/game/src/p_weapon.ts` | `Weapon_Shotgun` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |

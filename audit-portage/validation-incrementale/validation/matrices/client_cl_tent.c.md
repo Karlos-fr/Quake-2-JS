@@ -29,10 +29,6 @@
 | `Quake-2-master/client/cl_tent.c` | struct | `laser_t` | `packages/client/src/cl_tent.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `endtime` | `packages/client/src/cl_tent.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `cl_lasers` | `packages/client/src/cl_tent.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_TeleportParticles` | `packages/client/src/cl_fx.ts` | `CL_TeleportParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_BlasterParticles` | `packages/client/src/cl_fx.ts` | `CL_BlasterParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ExplosionParticles` | `packages/client/src/cl_fx.ts` | `CL_ExplosionParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_BFGExplosionParticles` | `packages/client/src/cl_fx.ts` | `CL_BFGExplosionParticles` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | function | `CL_BlueBlasterParticles` | `packages/client/src/cl_fx.ts` | `CL_BlueBlasterParticles` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | function | `CL_RegisterTEntSounds` | `packages/client/src/cl_tent.ts` | `CL_RegisterTEntSounds` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
@@ -54,7 +50,6 @@
 | `Quake-2-master/client/cl_tent.c` | function | `CL_ParsePlayerBeam` | `packages/client/src/cl_parse.ts` | `CL_ParsePlayerBeam` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `ent` | `packages/client/src/cl_tent.ts` | `ent` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `MSG_ReadPos` | `packages/client/src/cl_tent.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | function | `CL_ParseLightning` | `packages/client/src/cl_parse.ts` | `CL_ParseLightning` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | function | `CL_ParseLaser` | `packages/client/src/cl_parse.ts` | `CL_ParseLaser` | A verifier | A redecouper |  |
@@ -76,14 +71,7 @@
 | `Quake-2-master/client/cl_tent.c` | global | `r` | `packages/client/src/cl_newfx.ts` | `r` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `ent` | `packages/client/src/cl_tent.ts` | `ent` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `magnitude` | `packages/client/src/cl_newfx.ts` | `magnitude` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParticleEffect` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_ParticleEffect` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `color` | `packages/client/src/cl_tent.ts` | `color` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `S_StartSound` | `packages/client/src/cl_tent.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `S_StartSound` | `packages/client/src/cl_tent.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `S_StartSound` | `packages/client/src/cl_tent.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `CL_BlasterParticles2` | `packages/client/src/cl_newfx.ts` | `CL_BlasterParticles2` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_tent.c` | function | `S_StartSound` | `packages/client/src/cl_tent.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | function | `CL_AddBeams` | `packages/client/src/cl_tent.ts` | `CL_AddBeams` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `b` | `packages/client/src/cl_newfx.ts` | `b` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_tent.c` | global | `d` | `packages/client/src/cl_tent.ts` | `d` | A verifier | A redecouper |  |

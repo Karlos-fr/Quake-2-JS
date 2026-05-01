@@ -20,7 +20,6 @@
 | `Quake-2-master/game/m_gunner.c` | function | `gunner_idlesound` | `packages/game/src/m_gunner.ts` | `gunner_idlesound` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_gunner.c` | function | `gunner_sight` | `packages/game/src/m_gunner.ts` | `gunner_sight` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_gunner.c` | function | `gunner_search` | `packages/game/src/m_gunner.ts` | `gunner_search` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `visible` | `packages/game/src/m_gunner.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_gunner.c` | function | `GunnerGrenade` | `packages/game/src/m_gunner.ts` | `GunnerGrenade` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_gunner.c` | function | `GunnerFire` | `packages/game/src/m_gunner.ts` | `GunnerFire` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_gunner.c` | function | `gunner_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_fire_chain` | A verifier | A redecouper |  |

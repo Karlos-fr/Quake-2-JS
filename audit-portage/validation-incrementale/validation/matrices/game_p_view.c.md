@@ -43,7 +43,6 @@
 | `Quake-2-master/game/p_view.c` | function | `P_WorldEffects` | `packages/game/src/p_view.ts` | `P_WorldEffects` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_view.c` | global | `breather` | `packages/game/src/p_view.ts` | `breather` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_view.c` | global | `envirosuit` | `packages/game/src/p_view.ts` | `envirosuit` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `T_Damage` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_view.c` | function | `G_SetClientEffects` | `packages/game/src/p_view.ts` | `G_SetClientEffects` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_view.c` | global | `pa_type` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_view.c` | global | `remaining` | `packages/game/src/p_view.ts` | `remaining` | A verifier | A redecouper |  |
@@ -58,4 +57,3 @@
 | `Quake-2-master/game/p_view.c` | global | `bobtime` | `packages/game/src/p_view.ts` | `bobtime` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_view.c` | global | `i` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_view.c` | global | `bobmove` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `G_SetStats` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |

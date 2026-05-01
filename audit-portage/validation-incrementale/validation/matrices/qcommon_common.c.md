@@ -153,12 +153,9 @@
 | `Quake-2-master/qcommon/common.c` | global | `crc` | `packages/qcommon/src/qcommon.ts` | `crc` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `frand` | `packages/qcommon/src/qcommon.ts` | `frand` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `crand` | `packages/qcommon/src/qcommon.ts` | `crand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Key_Init` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `SCR_EndLoadingPlaque` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Com_Error_f` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Qcommon_Init` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Init` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `Cbuf_AddText` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `Qcommon_Frame` | `packages/qcommon/src/qcommon.ts` | `Qcommon_Frame` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `s` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `c_pointcontents` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
