@@ -189,3 +189,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: controle cible inline `npx tsx` pour les cinq gestes, valeur non numerique, defaut, refus ducked, refus priorite haute et dispatch `ClientCommand`; `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `Cmd_Say_f` et temporaires locaux associes (`other`, `p`, `text`), avec `Com_sprintf` si le lot reste coherent.
+
+## Session 2026-05-01 - Cmd_Say_f
+
+- Lot valide: `Cmd_Say_f` et temporaires C associes (`other`, `p`, `text`), avec l'usage local de `Com_sprintf`.
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme retour si argc insuffisant sans `arg0`, meme neutralisation du mode team sans `DF_MODELTEAMS`/`DF_SKINTEAMS`, memes prefixes global/team, meme suppression des guillemets, meme limite 150 + newline, meme protection flood, meme echo dedicated et meme boucle clients/team.
+- Branchement runtime: `ClientCommand` dispatch `say` et `say_team`, et fallback vers `Cmd_Say_f(ent, false, true)` pour les commandes inconnues; relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes par `createClientSendCmdBridge` et charge l'API game, sans logique chat parallele qui remplace le runtime. Les sorties chat passent par `gi.cprintf`/`svc_print` puis console/notify client; `packages/renderer-three` n'a pas de logique gameplay chat a porter, mais consomme l'affichage console/overlay comme sortie 2D, sans entite modele/particule/beam/dlight/scene 3D attendue.
+- Corrections: commentaire d'en-tete complete pour `Cmd_Say_f`; test cible renforce dans `scripts/verify/quake2-g-cmds.ts` pour message global, guillemets, `say_team`, `arg0`, limite 150 et flood protection.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_PlayerList_f` et temporaires locaux associes (`i`, `st`, `text`, `e2`).

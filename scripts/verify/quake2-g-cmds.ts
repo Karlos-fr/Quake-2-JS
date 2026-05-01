@@ -130,6 +130,44 @@ function verifyCommandsAndChat(): void {
     [player1.index, player2.index],
     "Cmd_Say_f should send chat to all active clients"
   );
+
+  runCommand(localContext, ["say", "\"quoted message\""], "\"quoted message\"");
+  Cmd_Say_f(player1, false, false, localContext);
+  assert.equal(lastPrint().message, "alpha: quoted message\n", "Cmd_Say_f should strip surrounding quotes like the C buffer path");
+
+  prints.length = 0;
+  runtime.dmflags = DF_MODELTEAMS;
+  createClient(runtime, 3, "gamma", "\\skin\\female/athena");
+  runCommand(localContext, ["say_team", "squad"], "squad");
+  Cmd_Say_f(player1, true, false, localContext);
+  assert.deepEqual(
+    prints.filter((entry) => entry.level === PRINT_CHAT).map((entry) => entry.ent?.index),
+    [player1.index, player2.index],
+    "Cmd_Say_f should restrict say_team to matching teams when team flags are enabled"
+  );
+
+  prints.length = 0;
+  runCommand(localContext, ["say", "hello"], "say hello");
+  Cmd_Say_f(player1, false, true, localContext);
+  assert.equal(lastPrint().message, "alpha: say say hello\n", "Cmd_Say_f arg0 path should include argv(0), a space and args");
+
+  const longMessage = "x".repeat(220);
+  runCommand(localContext, ["say", longMessage], longMessage);
+  Cmd_Say_f(player1, false, false, localContext);
+  assert.equal(lastPrint().message.length, 151, "Cmd_Say_f should clamp chat text to 150 chars plus newline");
+
+  prints.length = 0;
+  localContext.cvars!.flood_msgs!.value = 2;
+  runtime.time = 10;
+  runCommand(localContext, ["say", "one"], "one");
+  Cmd_Say_f(player1, false, false, localContext);
+  runtime.time = 11;
+  runCommand(localContext, ["say", "two"], "two");
+  Cmd_Say_f(player1, false, false, localContext);
+  runtime.time = 12;
+  runCommand(localContext, ["say", "three"], "three");
+  Cmd_Say_f(player1, false, false, localContext);
+  assert.equal(lastPrint().message, "Flood protection:  You can't talk for 10 seconds.\n", "Cmd_Say_f should enforce flood protection");
 }
 
 function verifyDropCommand(): void {

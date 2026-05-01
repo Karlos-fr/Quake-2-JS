@@ -777,6 +777,8 @@ export function Cmd_Wave_f(ent: GameEntity, context: GameCommandContext): void {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Formats player chat, applies team filtering and flood protection, mirrors dedicated-server echo, and emits PRINT_CHAT messages through gi.cprintf.
+ * Porting notes: C string buffers and Com_sprintf/strcat are represented with bounded TypeScript string assembly before the same 150-character payload clamp.
  */
 export function Cmd_Say_f(ent: GameEntity, team: boolean, arg0: boolean, context: GameCommandContext): void {
   const client = ent.client;
