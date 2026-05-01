@@ -21,6 +21,7 @@ Regles :
 - lancer 6 agents en parallele quand au moins 6 fichiers distincts peuvent etre traites;
 - donner a chaque agent un fichier source different;
 - demander a chaque agent de valider seulement le prochain petit lot raisonnable de son fichier;
+- preciser explicitement a chaque sous-agent qu'il ne doit jamais faire de `commit` ni de `push`;
 - lors d'un lancement avec contexte complet, ne pas forcer le type d'agent;
 - inclure explicitement le contexte de consignes dans chaque mission d'agent, meme si la session principale l'a deja lu;
 - ne pas lancer deux agents sur la meme matrice, le meme progress file ou le meme fichier TS;
@@ -52,6 +53,7 @@ Travaille uniquement sur le fichier :
 `Quake-2-master/game/m_chick.c`
 
 Applique explicitement toute la checklist.
+Ne fais pas de `commit` ni de `push`, et si tu lances des sous-agents, precise-leur explicitement qu'ils ne doivent jamais faire de `commit` ni de `push`.
 Pour le runtime, `apps/web` et `packages/renderer-three`, decide aussi si une integration est attendue; ne te limite pas a chercher les references existantes.
 Pour `renderer-three`, base ce jugement sur les sorties visibles attendues du runtime, pas uniquement sur les imports ou appels deja presents.
 Lis la matrice et le progress file du fichier.
