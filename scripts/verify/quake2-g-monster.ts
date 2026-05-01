@@ -70,6 +70,7 @@ import {
   M_MoveFrame,
   M_SetEffects,
   M_WorldEffects,
+  flymonster_start,
   flymonster_start_go,
   monster_death_use,
   monster_fire_bfg,
@@ -109,7 +110,7 @@ function main(): void {
   verifyMonsterStartGoFixesPointCombatTargets();
   verifyMonsterStartGoTargetBranches();
   verifyWalkmonsterStartGoGroundStartup();
-  verifyWalkmonsterStartAndFlymonsterStartGo();
+  verifyWalkmonsterStartFlymonsterStartAndSwimmonsterStartGo();
   verifyTriggeredSpawnStartupPath();
   verifyCorpseFlyScheduling();
   verifyAttackFinishedCooldown();
@@ -598,7 +599,7 @@ function verifyWalkmonsterStartGoGroundStartup(): void {
   assert.equal((delayed.svflags & SVF_NOCLIENT) !== 0, true, "walkmonster_start_go should remove trigger-spawn monsters from snapshots");
 }
 
-function verifyWalkmonsterStartAndFlymonsterStartGo(): void {
+function verifyWalkmonsterStartFlymonsterStartAndSwimmonsterStartGo(): void {
   const runtime = createHarnessRuntime();
   runtime.time = 2;
 
@@ -645,6 +646,47 @@ function verifyWalkmonsterStartAndFlymonsterStartGo(): void {
   assert.equal(flying.think, monster_think, "flymonster_start_go should arm regular monster thinking");
   assert.equal(flying.nextthink, runtime.time + FRAMETIME, "flymonster_start_go should schedule regular monster thinking");
   assert.equal(runtime.logEntries.some((entry) => entry.message.includes("in solid")), false, "flymonster_start_go should not warn for a clear movement probe");
+
+  const delayedFlying = createMonster(runtime, 25);
+  delayedFlying.flags = 0;
+  delayedFlying.yaw_speed = 0;
+  delayedFlying.viewheight = 0;
+  let delayedFlyStandCalls = 0;
+  delayedFlying.monsterinfo.stand = () => {
+    delayedFlyStandCalls += 1;
+  };
+
+  flymonster_start(delayedFlying, runtime);
+
+  assert.equal((delayedFlying.flags & FL_FLY) !== 0, true, "flymonster_start should mark the monster with FL_FLY before delayed startup");
+  assert.equal(typeof delayedFlying.think, "function", "flymonster_start should arm a delayed flying startup think");
+  assert.equal(delayedFlying.nextthink, runtime.time + FRAMETIME, "flymonster_start should keep monster_start scheduling for delayed startup");
+  assert.equal(delayedFlying.takedamage, damage_t.DAMAGE_AIM, "flymonster_start should run the shared monster_start initialization");
+  assert.equal(delayedFlying.clipmask, MASK_MONSTERSOLID, "flymonster_start should install the original monster collision mask");
+
+  delayedFlying.think!(delayedFlying, runtime);
+
+  assert.equal(delayedFlyStandCalls, 1, "flymonster_start delayed think should enter shared monster startup");
+  assert.equal(delayedFlying.yaw_speed, 10, "flymonster_start delayed think should use flying yaw speed");
+  assert.equal(delayedFlying.viewheight, 25, "flymonster_start delayed think should use flying viewheight");
+  assert.equal(delayedFlying.think, monster_think, "flymonster_start delayed think should arm regular monster thinking");
+
+  const swimming = createMonster(runtime, 26);
+  swimming.flags |= FL_SWIM;
+  swimming.yaw_speed = 0;
+  swimming.viewheight = 0;
+  let swimStandCalls = 0;
+  swimming.monsterinfo.stand = () => {
+    swimStandCalls += 1;
+  };
+
+  swimmonster_start_go(swimming, runtime);
+
+  assert.equal(swimming.yaw_speed, 10, "swimmonster_start_go should install the original swimming yaw speed");
+  assert.equal(swimming.viewheight, 10, "swimmonster_start_go should install the original swimming viewheight");
+  assert.equal(swimStandCalls, 1, "swimmonster_start_go should continue through monster_start_go");
+  assert.equal(swimming.think, monster_think, "swimmonster_start_go should arm regular monster thinking");
+  assert.equal(swimming.nextthink, runtime.time + FRAMETIME, "swimmonster_start_go should schedule regular monster thinking");
 }
 
 function verifyTriggeredSpawnStartupPath(): void {

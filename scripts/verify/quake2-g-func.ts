@@ -79,7 +79,8 @@ import {
   train_wait,
   train_use,
   trigger_elevator_init,
-  trigger_elevator_use
+  trigger_elevator_use,
+  use_killbox
 } from "../../packages/game/src/g_func.js";
 import { MOD_CRUSH, damage_t } from "../../packages/game/src/g_local.js";
 import {
@@ -1470,8 +1471,39 @@ door_secret_blocked(secretBlockerDoor, secretClientBlocker, secretBlockerRuntime
 assert.equal(secretClientBlocker.health, 40, "door_secret_blocked zero damage must skip client damage");
 
 const killbox = entity("func_killbox", 16);
+killbox.model = "*16";
 SP_func_killbox(killbox, runtime);
-assert.equal(killbox.use?.name, "use_killbox", "SP_func_killbox use mismatch");
+assert.equal(killbox.use, use_killbox, "SP_func_killbox use mismatch");
+assert.equal(killbox.svflags, SVF_NOCLIENT, "SP_func_killbox svflags mismatch");
+assert.equal(runtime.assets.modelPaths[killbox.s.modelindex - 1], "*16", "SP_func_killbox inline model mismatch");
+assert.equal(killbox.linked, true, "SP_func_killbox link mismatch");
+
+const killboxBlocker = createRuntimeEntity({ classname: "killbox blocker", health: "100" }, 155);
+killboxBlocker.solid = SOLID_BSP;
+killboxBlocker.health = 100;
+let killboxTraceCalls = 0;
+runtime.collision = {
+  world: {} as never,
+  trace: () => ({
+    allsolid: false,
+    startsolid: false,
+    fraction: 0,
+    endpos: [...killbox.s.origin],
+    plane: {
+      normal: [0, 0, 0],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent: killboxTraceCalls++ === 0 ? killboxBlocker : null
+  }),
+  pointcontents: () => 0
+};
+use_killbox(killbox, null, null, runtime);
+assert.equal(killboxBlocker.solid, 0, "use_killbox must delegate to KillBox telefrag damage");
 
 console.log("quake2-g-func: ok");
 

@@ -117,6 +117,7 @@ import {
   type GameClientPersistant,
   type GameClientRespawn,
   type GameEntity,
+  type GameMoveInfo,
   type GameMonsterFrame,
   type GameMonsterInfo,
   type GameMonsterMove,
@@ -300,6 +301,7 @@ export type client_respawn_t = GameClientRespawn;
 export type mframe_t = GameMonsterFrame;
 export type mmove_t = GameMonsterMove;
 export type monsterinfo_t = GameMonsterInfo;
+export type moveinfo_t = GameMoveInfo;
 
 /**
  * Original name: game_locals_t

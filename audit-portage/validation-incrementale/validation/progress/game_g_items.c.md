@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- locale `dropped` de `Drop_Item`.
+
+Validation `Drop_Item` locale `dropped` du 2026-05-01: comparaison avec `game/g_items.c` confirmee. La locale C `edict_t *dropped` creee par `G_Spawn()` est portee par `const dropped = spawnGameEntity(runtime)`. Le TS conserve les affectations C de l'entite droppee: `classname`, `item`, `DROPPED_ITEM`, `world_model_flags`, `RF_GLOW`, bounds `[-15, -15, -15]` / `[15, 15, 15]`, modele monde, `SOLID_TRIGGER`, `MOVETYPE_TOSS`, `drop_temp_touch`, `owner`, origine client projetee puis tracee avec `CONTENTS_SOLID`, origine non-client copiee, velocity `forward * 100` avec Z 300, `drop_make_touchable`, `nextthink = level.time + 1`, link et retour de l'entite. Le commentaire d'en-tete de `Drop_Item` est present et reste `Strict`; aucun commentaire dedie n'est attendu pour cette locale.
+
+Runtime branche via `Drop_General`, `Drop_Ammo`, `Drop_PowerArmor`, `Drop_Weapon`, les drops de `p_client.ts`/`g_monster.ts`, les commandes `Cmd_Drop_f`/`Cmd_InvDrop_f`, puis `drop_temp_touch`, `Touch_Item`, `drop_make_touchable`, `G_FreeEdict` et les thinks de `G_RunFrame`. `apps/web` doit consommer ce flux par le runtime local/full-game, les commandes client, l'inventaire/HUD, les sons de pickup/drop et les snapshots; aucune logique parallele de drop item detectee. `renderer-three` doit consommer les sorties visibles: modele MD2 de l'item droppe, `modelindex`, `RF_GLOW`, origine/velocity interpolee, apparition, disparition apres pickup ou timeout; pas de branchement gameplay dedie requis.
+
+Preuves existantes relancees pendant cette session: `verifyDropItemPlacementAndTrace` couvre projection, trace, `dropped.s.origin`, `dropped.origin`, velocity, `RF_GLOW`, modele et origine non-client; `verifyDropTempTouchAndDeathmatchFree` couvre owner guard, delegation `Touch_Item`, restauration du touch et free deathmatch; `Drop_General`/`Drop_Ammo` couvrent les consommateurs runtime. Tests lances: `npm run verify:g-items`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon` OK.
+
 - locales `index` et `quantity` de `Pickup_PowerArmor`.
 
 Validation power armor pickup locals du 2026-05-01: comparaison avec `game/g_items.c` confirmee. La locale C `quantity` lit `other->client->pers.inventory[ITEM_INDEX(ent->item)]` avant l'increment; le TS conserve ce comportement via `const index = ITEM_INDEX(item)` puis `const quantity = client.pers.inventory[index]`, avant `client.pers.inventory[index] += 1`. Cette valeur pre-increment pilote l'auto-use deathmatch uniquement quand le joueur ne possedait pas encore l'item. La locale `index` preserve le slot itemlist de `Power Screen` / `Power Shield` pour l'increment d'inventaire. Le commentaire d'en-tete de `Pickup_PowerArmor` etait deja present; le niveau reste `Close` a cause de la garde TS sur `ent.item` mal forme, hors comportement map normale.
@@ -333,4 +341,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: locale `dropped` de `Drop_Item`.
+- Aucun lot restant dans `game_g_items.c.md`: toutes les lignes sont `Valide`.

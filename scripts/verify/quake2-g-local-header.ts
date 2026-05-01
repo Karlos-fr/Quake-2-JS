@@ -110,7 +110,7 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t } from "../../packages/game/src/g_local.js";
+import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t, moveinfo_t } from "../../packages/game/src/g_local.js";
 import {
   ARMOR_BODY as INDEX_ARMOR_BODY,
   ARMOR_COMBAT as INDEX_ARMOR_COMBAT,
@@ -150,6 +150,7 @@ import { createGameRuntimeFromBspEntities, createRuntimeEntity } from "../../pac
 
 const client = createGameClient();
 const entity = createRuntimeEntity({}, 0);
+const moveinfo = entity.moveinfo satisfies moveinfo_t;
 const game = createGameLocals();
 const level = createLevelLocals();
 const st = createSpawnTemp();
@@ -432,6 +433,44 @@ assert.equal(level.killed_monsters, 5, "level_locals_t killed_monsters field mis
 assert.equal(level.current_entity, entity, "level_locals_t current_entity field mismatch");
 assert.equal(level.body_que, 6, "level_locals_t body_que field mismatch");
 assert.equal(level.power_cubes, 3, "level_locals_t power_cubes field mismatch");
+assert.deepEqual(
+  Object.keys(moveinfo),
+  [
+    "start_origin",
+    "start_angles",
+    "end_origin",
+    "end_angles",
+    "sound_start",
+    "sound_middle",
+    "sound_end",
+    "accel",
+    "speed",
+    "decel",
+    "distance",
+    "wait",
+    "state",
+    "dir",
+    "current_speed",
+    "move_speed",
+    "next_speed",
+    "remaining_distance",
+    "decel_distance",
+    "endfunc"
+  ],
+  "moveinfo_t field order mismatch"
+);
+assert.deepEqual(moveinfo.start_origin, [0, 0, 0], "moveinfo_t start_origin default mismatch");
+assert.deepEqual(moveinfo.start_angles, [0, 0, 0], "moveinfo_t start_angles default mismatch");
+assert.deepEqual(moveinfo.end_origin, [0, 0, 0], "moveinfo_t end_origin default mismatch");
+assert.deepEqual(moveinfo.end_angles, [0, 0, 0], "moveinfo_t end_angles default mismatch");
+moveinfo.start_origin = [1, 2, 3];
+moveinfo.start_angles = [4, 5, 6];
+moveinfo.end_origin = [7, 8, 9];
+moveinfo.end_angles = [10, 11, 12];
+assert.deepEqual(entity.moveinfo.start_origin, [1, 2, 3], "moveinfo_t start_origin field mismatch");
+assert.deepEqual(entity.moveinfo.start_angles, [4, 5, 6], "moveinfo_t start_angles field mismatch");
+assert.deepEqual(entity.moveinfo.end_origin, [7, 8, 9], "moveinfo_t end_origin field mismatch");
+assert.deepEqual(entity.moveinfo.end_angles, [10, 11, 12], "moveinfo_t end_angles field mismatch");
 assert.equal(st.sky, null, "spawn_temp sky default mismatch");
 assert.equal(st.skyrotate, 0, "spawn_temp skyrotate default mismatch");
 assert.deepEqual(st.skyaxis, [0, 0, 0], "spawn_temp skyaxis default mismatch");

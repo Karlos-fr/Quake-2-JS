@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `VectorMA`, `use_killbox` et `SP_func_killbox`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:793,1180,1285,1409,2011,2013,2014,2037-2047` avec `packages/game/src/g_func.ts` autour des calculs `addVec3`/`scaleVec3` et des fonctions `use_killbox`/`SP_func_killbox`.
+- Correction appliquee: ajout des commentaires d'en-tete `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter pour `use_killbox` et `SP_func_killbox`; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `VectorMA` est un helper externe appele par `g_func.c`, pas une entite proprietaire de ce fichier; ses usages restent portes par `addVec3(base, scaleVec3(direction, distance))` dans les entites porteuses. `use_killbox` delegue a `KillBox(runtime, self)`. `SP_func_killbox` conserve `gi.setmodel`, callback `use_killbox`, `SVF_NOCLIENT`, refresh/link runtime.
+- Branchement: `SP_func_killbox` est referencee par `packages/game/src/g_spawn.ts` pour `func_killbox`, appelee via `ED_CallSpawn`/`SpawnEntities`; `use_killbox` est atteignable via triggers/G_UseTargets et applique le telefrag sur le volume inline lie.
+- Integration: aucune logique parallele `func_killbox` dans `apps/web`; le navigateur declenche le runtime porte et consomme les effets d'etat/snapshots apres suppression des entites tuees. `packages/renderer-three` ne porte pas la logique killbox; la killbox elle-meme est `SVF_NOCLIENT` et les sorties visibles attendues sont uniquement les entites restantes ou supprimees des snapshots/scene, consommees par les adapters existants.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:g-spawn` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: `door_secret_die`, `SP_func_door_secret` et locales matricielles `side`, `width`, `length` incluant le doublon `width`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1960-2027` avec `packages/game/src/g_func.ts:2228-2301` apres ajout des commentaires d'en-tete `door_secret_die` et `SP_func_door_secret`.
 - Correction appliquee: commentaires d'en-tete `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
@@ -366,7 +374,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `VectorMA`, puis `use_killbox` / `SP_func_killbox` si le lot reste petit.
+- Reprendre le bloc angle move: `AngleMove_Done`, `AngleMove_Final`, puis `AngleMove_Begin` / `AngleMove_Calc` et leurs locales si le lot reste petit.
 
 ## Blocages
 

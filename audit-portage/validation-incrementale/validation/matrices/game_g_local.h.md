@@ -193,11 +193,11 @@
 | `Quake-2-master/game/g_local.h` | global | `maxyaw` | `packages/game/src/g_local.ts` | `maxyaw` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `minpitch` | `packages/game/src/g_local.ts` | `minpitch` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `maxpitch` | `packages/game/src/g_local.ts` | `maxpitch` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | struct | `moveinfo_t` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `start_origin` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `start_angles` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `end_origin` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `end_angles` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | struct | `moveinfo_t` | `packages/game/src/g_local.ts` | `moveinfo_t` | Valide | A redecouper | Type attache via `g_local.ts`, implementation `GameMoveInfo`/`createMoveInfo` alignee sur l'ordre C dans `runtime.ts`; tests: `verify:g-local:header`, `verify:g-save`, `verify:g-func`, full-game server/three, web render order, local gameplay sync, typecheck. |
+| `Quake-2-master/game/g_local.h` | global | `start_origin` | `packages/game/src/g_local.ts` | `moveinfo_t.start_origin` | Valide | A redecouper | Champ `vec3_t` compare H/TS, defaut `[0,0,0]`, copie save/load et usages movers verifies. |
+| `Quake-2-master/game/g_local.h` | global | `start_angles` | `packages/game/src/g_local.ts` | `moveinfo_t.start_angles` | Valide | A redecouper | Champ `vec3_t` compare H/TS, defaut `[0,0,0]`, copie save/load et usages movers verifies. |
+| `Quake-2-master/game/g_local.h` | global | `end_origin` | `packages/game/src/g_local.ts` | `moveinfo_t.end_origin` | Valide | A redecouper | Champ `vec3_t` compare H/TS, defaut `[0,0,0]`, copie save/load et usages movers verifies. |
+| `Quake-2-master/game/g_local.h` | global | `end_angles` | `packages/game/src/g_local.ts` | `moveinfo_t.end_angles` | Valide | A redecouper | Champ `vec3_t` compare H/TS, defaut `[0,0,0]`, copie save/load et usages movers verifies. |
 | `Quake-2-master/game/g_local.h` | global | `sound_start` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `sound_middle` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `sound_end` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

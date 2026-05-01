@@ -40,6 +40,7 @@ import {
   SP_misc_eastertank,
   SP_misc_explobox,
   SP_misc_bigviper,
+  SP_misc_satellite_dish,
   SP_misc_strogg_ship,
   SP_misc_viper,
   SP_misc_viper_bomb,
@@ -81,6 +82,8 @@ import {
   misc_easterchick_think,
   misc_blackhole_use,
   misc_eastertank_think,
+  misc_satellite_dish_think,
+  misc_satellite_dish_use,
   misc_viper_bomb_prethink,
   misc_viper_bomb_touch,
   misc_viper_bomb_use,
@@ -127,6 +130,7 @@ function main(): void {
   verifyMiscDeadsoldierSpawnAndGibDeath();
   verifyMiscViperDelegatesTrainMovement();
   verifyMiscStroggShipDelegatesTrainMovement();
+  verifyMiscSatelliteDishSpawnsAndAnimatesOnUse();
   verifyBigViperAndViperBombCallbacks();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
@@ -1145,6 +1149,47 @@ function verifyMiscStroggShipDelegatesTrainMovement(): void {
   dispatch.target = "strogg_p1";
   ED_CallSpawn(dispatch, runtime);
   assert.equal(dispatch.use, misc_strogg_ship_use, "ED_CallSpawn must dispatch misc_strogg_ship to SP_misc_strogg_ship");
+}
+
+function verifyMiscSatelliteDishSpawnsAndAnimatesOnUse(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 12;
+
+  const dish = spawnFreeableEntity(runtime);
+  dish.classname = "misc_satellite_dish";
+  SP_misc_satellite_dish(dish, runtime);
+
+  assert.equal(dish.movetype, MOVETYPE_NONE, "misc_satellite_dish must be stationary");
+  assert.equal(dish.solid, SOLID_BBOX, "misc_satellite_dish must use a bbox solid");
+  assert.deepEqual(dish.mins, [-64, -64, 0], "misc_satellite_dish mins mismatch");
+  assert.deepEqual(dish.maxs, [64, 64, 128], "misc_satellite_dish maxs mismatch");
+  assert.equal(runtime.assets.modelPaths[dish.s.modelindex - 1], "models/objects/satellite/tris.md2", "misc_satellite_dish modelindex mismatch");
+  assert.equal(dish.use, misc_satellite_dish_use, "misc_satellite_dish must install use callback");
+  assert.equal(dish.linked, true, "misc_satellite_dish must link for runtime snapshots");
+
+  const activator = spawnGameEntity(runtime);
+  activator.classname = "trigger_once";
+  dish.s.frame = 22;
+  useGameEntity(runtime, dish, null, activator);
+
+  assert.equal(dish.s.frame, 0, "misc_satellite_dish_use must reset frame to zero");
+  assert.equal(dish.think, misc_satellite_dish_think, "misc_satellite_dish_use must install think callback");
+  assert.equal(dish.nextthink, runtime.time + FRAMETIME, "misc_satellite_dish_use must schedule the first animation tick");
+
+  runPendingThinks(runtime, runtime.time + FRAMETIME);
+  assert.equal(dish.s.frame, 1, "misc_satellite_dish_think must increment the frame");
+  assert.equal(dish.nextthink, runtime.time + FRAMETIME, "misc_satellite_dish_think must keep scheduling before frame 38");
+
+  dish.s.frame = 37;
+  misc_satellite_dish_think(dish, runtime);
+  assert.equal(dish.s.frame, 38, "misc_satellite_dish_think must stop after reaching frame 38");
+  assert.equal(dish.nextthink, runtime.time + FRAMETIME, "misc_satellite_dish_think must leave no new schedule once the animation completes");
+
+  const dispatch = spawnFreeableEntity(runtime);
+  dispatch.classname = "misc_satellite_dish";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(dispatch.use, misc_satellite_dish_use, "ED_CallSpawn must dispatch misc_satellite_dish to SP_misc_satellite_dish");
+  assert.equal(runtime.assets.modelPaths[dispatch.s.modelindex - 1], "models/objects/satellite/tris.md2", "ED_CallSpawn misc_satellite_dish model mismatch");
 }
 
 function verifyBigViperAndViperBombCallbacks(): void {

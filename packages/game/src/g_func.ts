@@ -2302,10 +2302,34 @@ export function SP_func_door_secret(ent: GameEntity, runtime: GameRuntime): void
   linkGameEntity(runtime, ent);
 }
 
+/**
+ * Original name: use_killbox
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Telefrags every entity currently inside the hidden `func_killbox` brush when it is fired.
+ *
+ * Porting notes:
+ * - `other` and `activator` are intentionally unused, matching the original callback body.
+ */
 export function use_killbox(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   KillBox(runtime, self);
 }
 
+/**
+ * Original name: SP_func_killbox
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Registers the inline BSP model, installs `use_killbox`, and hides the brush from clients.
+ *
+ * Porting notes:
+ * - `setGameEntityModel` and `linkGameEntity` adapt the original `gi.setmodel` import for runtime collision queries.
+ */
 export function SP_func_killbox(ent: GameEntity, runtime: GameRuntime): void {
   ent.use = use_killbox;
   ent.svflags = SVF_NOCLIENT;

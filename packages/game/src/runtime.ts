@@ -339,23 +339,31 @@ export type GameEntityDie = (
 export type GameEntityPain = (self: GameEntity, attacker: GameEntity | null, knockback: number, damage: number, runtime: GameRuntime) => void;
 
 /**
- * Category: New
- * Purpose: Hold the first movement state fields needed by doors and plats.
+ * Original name: moveinfo_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Keeps the original Quake II field names so later movement ports can plug in incrementally.
+ * Behavior:
+ * - Holds the persistent mover endpoints, sounds, timing and active movement state embedded in each edict.
+ *
+ * Porting notes:
+ * - Function pointers are represented as explicit TypeScript callbacks and the original field names are preserved.
  */
 export interface GameMoveInfo {
-  state: number;
-  speed: number;
-  accel: number;
-  decel: number;
-  wait: number;
-  distance: number;
   start_origin: [number, number, number];
-  end_origin: [number, number, number];
   start_angles: [number, number, number];
+  end_origin: [number, number, number];
   end_angles: [number, number, number];
+  sound_start: number;
+  sound_middle: number;
+  sound_end: number;
+  accel: number;
+  speed: number;
+  decel: number;
+  distance: number;
+  wait: number;
+  state: number;
   dir: [number, number, number];
   current_speed: number;
   move_speed: number;
@@ -363,9 +371,6 @@ export interface GameMoveInfo {
   remaining_distance: number;
   decel_distance: number;
   endfunc: GameEntityThink | undefined;
-  sound_start: number;
-  sound_middle: number;
-  sound_end: number;
 }
 
 /**
@@ -1745,26 +1750,26 @@ function parseEntityInteger(value: string | undefined): number {
  */
 function createMoveInfo(): GameMoveInfo {
   return {
-    state: STATE_BOTTOM,
-    speed: 0,
-    accel: 0,
-    decel: 0,
-    wait: 0,
-    distance: 0,
     start_origin: [0, 0, 0],
-    end_origin: [0, 0, 0],
     start_angles: [0, 0, 0],
+    end_origin: [0, 0, 0],
     end_angles: [0, 0, 0],
+    sound_start: 0,
+    sound_middle: 0,
+    sound_end: 0,
+    accel: 0,
+    speed: 0,
+    decel: 0,
+    distance: 0,
+    wait: 0,
+    state: STATE_BOTTOM,
     dir: [0, 0, 0],
     current_speed: 0,
     move_speed: 0,
     next_speed: 0,
     remaining_distance: 0,
     decel_distance: 0,
-    endfunc: undefined,
-    sound_start: 0,
-    sound_middle: 0,
-    sound_end: 0
+    endfunc: undefined
   };
 }
 

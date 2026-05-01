@@ -2,6 +2,23 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `misc_satellite_dish_think`, `misc_satellite_dish_use` et `SP_misc_satellite_dish`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `misc_satellite_dish_think` conserve l'increment de `s.frame`, la replanification seulement tant que `s.frame < 38` et l'arret a 38; `misc_satellite_dish_use` conserve le reset frame 0, l'installation du think et `nextthink = level.time + FRAMETIME`; `SP_misc_satellite_dish` conserve `MOVETYPE_NONE`, `SOLID_BBOX`, bbox `[-64,-64,0]` / `[64,64,128]`, modele `models/objects/satellite/tris.md2`, callback use et link.
+  - Commentaires d'en-tete verifies: les trois fonctions sont documentees avec original/source/categorie portee/fidelite `Strict` et comportement.
+  - Branchement runtime verifie: `misc_satellite_dish` est enregistre dans `g_spawn.ts`, exporte via `index.ts` et dispatchable par `ED_CallSpawn`; `SP_misc_satellite_dish` installe `use`; l'activation passe par `useGameEntity`/`G_UseTargets`; le think est atteint via `G_RunFrame`/`SV_RunThink` ou `runPendingThinks`.
+  - `apps/web`: integration attendue car le lot produit un modele MD2 visible dont la frame change apres activation. Aucune logique parallele trouvee; le web consomme les sorties runtime par les flux full-game/local, snapshots et refresh frames.
+  - `renderer-three`: integration attendue pour modele MD2, presence scene et frame courante. Les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour spawn, modele, bbox, callback use, cadence de think, arret a frame 38, dispatch `ED_CallSpawn` et link visible.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `SP_light_mine1` et `SP_light_mine2` si le lot reste petit.
+
 - 2026-05-01: lignes externes restantes `train_use` et `func_train_find`, puis `misc_strogg_ship_use` et `SP_misc_strogg_ship`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts` et `packages/game/src/g_func.ts`: les declarations externes C `train_use`/`func_train_find` sont des callbacks train portes dans `g_func.ts`; `misc_strogg_ship_use` conserve le retrait de `SVF_NOCLIENT`, le remplacement du callback `use` par `train_use` et l'appel immediat a `train_use`; `SP_misc_strogg_ship` conserve le refus sans `target`, le warning source, le free de l'edict, le speed par defaut `300`, `MOVETYPE_PUSH`, `SOLID_NOT`, le modele `models/ships/strogg1/tris.md2`, bbox, think `func_train_find`, premier think `level.time + FRAMETIME`, callback `misc_strogg_ship_use`, `SVF_NOCLIENT`, moveinfo speed/accel/decel et link.

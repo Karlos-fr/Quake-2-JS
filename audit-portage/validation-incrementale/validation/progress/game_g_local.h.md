@@ -795,6 +795,26 @@
   - `scripts/verify/quake2-g-save.ts`: assertions metadata `fields` pour les six champs.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-spawn` OK; `npm run verify:g-trigger` OK; `npm run verify:g-turret` OK; `npm run verify:g-monster` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: debut du lot `moveinfo_t` avec structure, `start_origin`, `start_angles`, `end_origin`, `end_angles`.
+- Verdict: `Valide` pour la structure et les 4 champs apres comparaison H/TS, correction du commentaire de portage et renforcement des preuves structurelles/runtime/save.
+- Source H comparee: `moveinfo_t` est le bloc embarque dans `edict_t` qui stocke les positions/angles de depart et d'arrivee des movers, puis les sons, timings et etat de mouvement. Les quatre premiers champs sont des `vec3_t` dans l'ordre C `start_origin`, `start_angles`, `end_origin`, `end_angles`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `moveinfo_t` ajoute comme point d'attache header vers `GameMoveInfo`.
+  - `packages/game/src/runtime.ts`: `GameMoveInfo` et `createMoveInfo` portent les champs du bloc C, avec l'ordre des quatre premiers `vec3_t` aligne et les defaults `[0, 0, 0]`; commentaire de portage `moveinfo_t` mis a jour.
+  - `packages/game/src/g_func.ts`: portes, portes rotatives, plateformes, boutons, trains, elevators et portes secretes lisent/ecrivent ces endpoints pour calculer les mouvements via `Move_Calc`/callbacks.
+  - `packages/game/src/g_misc.ts`: les trains speciaux type viper/strogg ship utilisent aussi les endpoints `moveinfo`.
+  - `packages/game/src/g_save.ts`: `snapshotMoveInfo` copie les quatre vecteurs et `ReadLevel` restaure les entites sauvegardees avec leur bloc `moveinfo`.
+- Runtime: flux attendu branche depuis les spawn/use/think des brush movers et trains vers l'etat `edict_t.moveinfo`, puis execution dans `G_RunFrame`/callbacks de mouvement, link entity et snapshots serveur. Aucune racine runtime manquante identifiee pour ce debut de structure.
+- apps/web: integration attendue via le host local/full-game qui charge les entites BSP, avance le runtime game et consomme ensuite snapshots/HUD/sons. Aucune logique parallele dans `apps/web` ne remplace `moveinfo_t`; `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue car ces endpoints produisent des sorties visibles pour brush models, trains, portes, plateformes, camera/scene et snapshots. `packages/renderer-three` n'a pas a consommer `moveinfo_t` directement; il consomme les entites/modeles/frames issus du flux full-game. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `moveinfo_t` mis a jour dans `runtime.ts`; pas de fonction C portee nouvelle dans ce lot.
+- Corrections appliquees:
+  - `packages/game/src/runtime.ts`: commentaire `moveinfo_t` et ordre `GameMoveInfo`/`createMoveInfo` aligne sur le struct C.
+  - `packages/game/src/g_local.ts`: alias public `moveinfo_t`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions d'ordre, defauts et mutations pour `moveinfo_t` et ses quatre vecteurs.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration des quatre vecteurs `moveinfo`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-func` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -828,7 +848,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le debut de `moveinfo_t`: structure, puis `start_origin`, `start_angles`, `end_origin`, `end_angles` si le lot reste petit.
+- Continuer `moveinfo_t` avec `sound_start`, `sound_middle`, `sound_end`, puis `accel`, `speed`, `decel`, `distance` si le lot reste petit.
 
 ## Blocages
 

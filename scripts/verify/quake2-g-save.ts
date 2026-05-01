@@ -21,8 +21,17 @@ import {
   WriteLevel,
   createGameMainContext
 } from "../../packages/game/src/g_main.js";
-import { clientfields, fields, levelfields, registerGameSaveMove } from "../../packages/game/src/g_save.js";
-import { FFL_SPAWNTEMP, STOFS, fieldtype_t } from "../../packages/game/src/g_local.js";
+import {
+  clientfields,
+  fields,
+  findGameSaveFunction,
+  findGameSaveMove,
+  levelfields,
+  mmove_reloc,
+  registerGameSaveFunction,
+  registerGameSaveMove
+} from "../../packages/game/src/g_save.js";
+import { FFL_NOSPAWN, FFL_SPAWNTEMP, STOFS, fieldtype_t } from "../../packages/game/src/g_local.js";
 
 const files = new Map<string, string>();
 const linked: number[] = [];
@@ -92,6 +101,100 @@ assert.equal(fields[0]?.name, "classname", "fields must preserve the original fi
 assert.ok(fields.some((field) => field.name === "goalentity"), "fields must include edict reference metadata");
 assert.equal(levelfields[0]?.name, "changemap", "levelfields must preserve changemap metadata");
 assert.equal(clientfields[0]?.name, "pers.weapon", "clientfields must preserve weapon item metadata");
+assert.deepEqual(mmove_reloc, {}, "mmove_reloc must remain the symbolic data-segment relocation anchor");
+
+const saveHarnessCallback = () => "save-harness";
+registerGameSaveFunction("saveHarnessCallback", saveHarnessCallback);
+assert.equal(findGameSaveFunction("saveHarnessCallback"), saveHarnessCallback, "Function macro adapter must restore callbacks by name");
+assert.equal(findGameSaveFunction(null), undefined, "Function macro adapter must preserve null callbacks");
+
+const expectedFields = [
+  ["classname", "classname", fieldtype_t.F_LSTRING, 0],
+  ["model", "model", fieldtype_t.F_LSTRING, 0],
+  ["spawnflags", "spawnflags", fieldtype_t.F_INT, 0],
+  ["speed", "speed", fieldtype_t.F_FLOAT, 0],
+  ["accel", "accel", fieldtype_t.F_FLOAT, 0],
+  ["decel", "decel", fieldtype_t.F_FLOAT, 0],
+  ["target", "target", fieldtype_t.F_LSTRING, 0],
+  ["targetname", "targetname", fieldtype_t.F_LSTRING, 0],
+  ["pathtarget", "pathtarget", fieldtype_t.F_LSTRING, 0],
+  ["deathtarget", "deathtarget", fieldtype_t.F_LSTRING, 0],
+  ["killtarget", "killtarget", fieldtype_t.F_LSTRING, 0],
+  ["combattarget", "combattarget", fieldtype_t.F_LSTRING, 0],
+  ["message", "message", fieldtype_t.F_LSTRING, 0],
+  ["team", "team", fieldtype_t.F_LSTRING, 0],
+  ["wait", "wait", fieldtype_t.F_FLOAT, 0],
+  ["delay", "delay", fieldtype_t.F_FLOAT, 0],
+  ["random", "random", fieldtype_t.F_FLOAT, 0],
+  ["move_origin", "move_origin", fieldtype_t.F_VECTOR, 0],
+  ["move_angles", "move_angles", fieldtype_t.F_VECTOR, 0],
+  ["style", "style", fieldtype_t.F_INT, 0],
+  ["count", "count", fieldtype_t.F_INT, 0],
+  ["health", "health", fieldtype_t.F_INT, 0],
+  ["sounds", "sounds", fieldtype_t.F_INT, 0],
+  ["light", "", fieldtype_t.F_IGNORE, 0],
+  ["dmg", "dmg", fieldtype_t.F_INT, 0],
+  ["mass", "mass", fieldtype_t.F_INT, 0],
+  ["volume", "volume", fieldtype_t.F_FLOAT, 0],
+  ["attenuation", "attenuation", fieldtype_t.F_FLOAT, 0],
+  ["map", "map", fieldtype_t.F_LSTRING, 0],
+  ["origin", "s.origin", fieldtype_t.F_VECTOR, 0],
+  ["angles", "s.angles", fieldtype_t.F_VECTOR, 0],
+  ["angle", "s.angles", fieldtype_t.F_ANGLEHACK, 0],
+  ["goalentity", "goalentity", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["movetarget", "movetarget", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["enemy", "enemy", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["oldenemy", "oldenemy", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["activator", "activator", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["groundentity", "groundentity", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["teamchain", "teamchain", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["teammaster", "teammaster", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["owner", "owner", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["mynoise", "mynoise", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["mynoise2", "mynoise2", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["target_ent", "target_ent", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["chain", "chain", fieldtype_t.F_EDICT, FFL_NOSPAWN],
+  ["prethink", "prethink", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["think", "think", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["blocked", "blocked", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["touch", "touch", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["use", "use", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["pain", "pain", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["die", "die", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["stand", "monsterinfo.stand", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["idle", "monsterinfo.idle", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["search", "monsterinfo.search", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["walk", "monsterinfo.walk", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["run", "monsterinfo.run", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["dodge", "monsterinfo.dodge", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["attack", "monsterinfo.attack", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["melee", "monsterinfo.melee", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["sight", "monsterinfo.sight", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["checkattack", "monsterinfo.checkattack", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["currentmove", "monsterinfo.currentmove", fieldtype_t.F_MMOVE, FFL_NOSPAWN],
+  ["endfunc", "moveinfo.endfunc", fieldtype_t.F_FUNCTION, FFL_NOSPAWN],
+  ["lip", "lip", fieldtype_t.F_INT, FFL_SPAWNTEMP],
+  ["distance", "distance", fieldtype_t.F_INT, FFL_SPAWNTEMP],
+  ["height", "height", fieldtype_t.F_INT, FFL_SPAWNTEMP],
+  ["noise", "noise", fieldtype_t.F_LSTRING, FFL_SPAWNTEMP],
+  ["pausetime", "pausetime", fieldtype_t.F_FLOAT, FFL_SPAWNTEMP],
+  ["item", "item", fieldtype_t.F_LSTRING, FFL_SPAWNTEMP],
+  ["item", "item", fieldtype_t.F_ITEM, 0],
+  ["gravity", "gravity", fieldtype_t.F_LSTRING, FFL_SPAWNTEMP],
+  ["sky", "sky", fieldtype_t.F_LSTRING, FFL_SPAWNTEMP],
+  ["skyrotate", "skyrotate", fieldtype_t.F_FLOAT, FFL_SPAWNTEMP],
+  ["skyaxis", "skyaxis", fieldtype_t.F_VECTOR, FFL_SPAWNTEMP],
+  ["minyaw", "minyaw", fieldtype_t.F_FLOAT, FFL_SPAWNTEMP],
+  ["maxyaw", "maxyaw", fieldtype_t.F_FLOAT, FFL_SPAWNTEMP],
+  ["minpitch", "minpitch", fieldtype_t.F_FLOAT, FFL_SPAWNTEMP],
+  ["maxpitch", "maxpitch", fieldtype_t.F_FLOAT, FFL_SPAWNTEMP],
+  ["nextmap", "nextmap", fieldtype_t.F_LSTRING, FFL_SPAWNTEMP]
+];
+assert.deepEqual(
+  fields.map((field) => [field.name, field.ofs, field.type, field.flags]),
+  expectedFields,
+  "fields must preserve the original game/g_save.c edict field table order, selectors, types, and flags"
+);
 assert.deepEqual(
   fields
     .filter((field) => [
@@ -131,6 +234,8 @@ const testMonsterMove: GameMonsterMove = {
   endfunc: undefined
 };
 registerGameSaveMove("test_move_save_restore", testMonsterMove);
+assert.equal(findGameSaveMove("test_move_save_restore"), testMonsterMove, "mmove relocation adapter must restore moves by name");
+assert.equal(findGameSaveMove(null), undefined, "mmove relocation adapter must preserve null moves");
 
 const writeContext = createGameMainContext(imports, {
   hooks: {
@@ -217,6 +322,10 @@ const target = createRuntimeEntity({ classname: "target_crosslevel_target" }, 2)
 target.inuse = true;
 target.delay = 2.5;
 target.owner = player;
+target.moveinfo.start_origin = [16, 24, 32];
+target.moveinfo.start_angles = [0, 90, 0];
+target.moveinfo.end_origin = [128, 24, 48];
+target.moveinfo.end_angles = [0, 180, 0];
 target.think = target_crosslevel_target_think;
 target.use = use_target_secret;
 target.monsterinfo.currentmove = testMonsterMove;
@@ -278,6 +387,10 @@ assert.ok(levelJson.includes("\"killed_monsters\": 7"), "WriteLevel must persist
 assert.ok(levelJson.includes("\"current_entity\": 2"), "WriteLevel must persist current_entity edict reference");
 assert.ok(levelJson.includes("\"body_que\": 2"), "WriteLevel must persist body_que");
 assert.ok(levelJson.includes("\"power_cubes\": 4"), "WriteLevel must persist power_cubes");
+assert.ok(levelJson.includes("\"start_origin\": ["), "WriteLevel must persist moveinfo start_origin");
+assert.ok(levelJson.includes("\"start_angles\": ["), "WriteLevel must persist moveinfo start_angles");
+assert.ok(levelJson.includes("\"end_origin\": ["), "WriteLevel must persist moveinfo end_origin");
+assert.ok(levelJson.includes("\"end_angles\": ["), "WriteLevel must persist moveinfo end_angles");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
 readContext.runtime.maxclients = 1;
@@ -290,6 +403,10 @@ assert.equal(readContext.runtime.entities[2]?.owner, readContext.runtime.entitie
 assert.equal(readContext.runtime.entities[2]?.think, target_crosslevel_target_think, "ReadLevel think callback restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.use, use_target_secret, "ReadLevel use callback restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.monsterinfo.currentmove, testMonsterMove, "ReadLevel currentmove restore mismatch");
+assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_origin, [16, 24, 32], "ReadLevel moveinfo start_origin mismatch");
+assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_angles, [0, 90, 0], "ReadLevel moveinfo start_angles mismatch");
+assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.end_origin, [128, 24, 48], "ReadLevel moveinfo end_origin mismatch");
+assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.end_angles, [0, 180, 0], "ReadLevel moveinfo end_angles mismatch");
 assert.equal(readContext.level.sound_entity, readContext.runtime.entities[2], "ReadLevel level edict reference mismatch");
 assert.equal(readContext.runtime.sound_entity, readContext.runtime.entities[2], "ReadLevel runtime level mirror mismatch");
 assert.equal(readContext.level.sound_entity_framenum, 122, "ReadLevel sound_entity_framenum mismatch");

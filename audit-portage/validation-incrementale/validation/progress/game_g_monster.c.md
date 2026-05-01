@@ -1,12 +1,22 @@
 # Progress - Quake-2-master/game/g_monster.c
 
 - Statut: En cours
-- Dernier lot valide: `walkmonster_start`, `flymonster_start_go`
-- Prochain lot recommande: `flymonster_start`, puis `swimmonster_start_go` si le lot reste petit
+- Dernier lot valide: `flymonster_start`, `swimmonster_start_go`
+- Prochain lot recommande: `swimmonster_start`
 - Tests de reference: `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Blocages: aucun pour le lot valide
 
 ## Session courante
+
+- Lot traite: `flymonster_start`, puis `swimmonster_start_go`.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaires d'en-tete TS `Close` verifies, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
+- Runtime: `flymonster_start` est appele par les spawn routines volantes (`m_boss2`, `m_float`, `m_flyer`, `m_hover`, `m_insane`), pose `FL_FLY`, arme le think differe `flymonster_start_go`, puis passe par `monster_start`; `swimmonster_start_go` est atteint depuis `swimmonster_start`, pose les defaults `yaw_speed`/`viewheight`, appelle `monster_start_go` et conserve le masquage trigger-spawn via `monster_triggered_start`.
+- apps/web: pas de logique parallele attendue; le navigateur declenche ces spawns via le runtime local/full-game et consomme les entites, etats et snapshots produits. Tests `verify:local-gameplay-sync`, `verify:full-game:three-renderer` et `verify:web-render-order` OK.
+- renderer-three: sorties visibles attendues indirectes via monstres demarres ou caches, modeles MD2, frames, origines/angles, `SVF_NOCLIENT` et etats render; ces donnees passent par snapshots/client refresh et sont consommees par les adapters Three. Pas de branchement gameplay renderer requis.
+- Tests lances: `npm run verify:g-monster` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
+- Prochain lot recommande: `swimmonster_start`.
+
+## Session precedente
 
 - Lot traite: `walkmonster_start`, puis `flymonster_start_go`.
 - Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaires d'en-tete TS `Close` verifies, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
