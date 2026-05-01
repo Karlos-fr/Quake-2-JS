@@ -2,6 +2,26 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `func_object_touch` / `func_object_release` / `func_object_use` / `SP_func_object`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `SP_func_object` conserve `gi.setmodel`, shrink des bornes d'une unite, `dmg` par defaut a 100, branche plain `SOLID_BSP`/`MOVETYPE_PUSH`/think release a `level.time + 2 * FRAMETIME`, branche trigger-spawn cachee avec `use`, flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, `MASK_MONSTERSOLID` et link. `func_object_release` conserve `MOVETYPE_TOSS` + `func_object_touch`; `func_object_use` conserve reveal, one-shot use, `KillBox` et release; `func_object_touch` conserve les gardes plan/top-plane/damageable puis `T_Damage` `MOD_CRUSH`.
+  - Commentaires d'en-tete Strict ajoutes pour les quatre fonctions.
+  - Branchement runtime verifie: `func_object` est enregistre dans `g_spawn.ts`, dispatchable par `ED_CallSpawn`, lie au runtime; release atteignable par `runPendingThinks`/frames, use atteignable par `G_UseTargets`/callback `use`, touch atteignable par la physique `SV_Impact` avec plan de trace, avec collisions `SOLID_BSP`, `MOVETYPE_TOSS`, `clipmask` et dommages verifies.
+  - `apps/web`: pas de logique parallele trouvee; integration attendue car brush inline visible/cache, trajectoire et solidite doivent venir du runtime. Flux local/full-game verifies via snapshots/brush model adapters et ordre de rendu web.
+  - `renderer-three`: integration attendue pour modele inline, etats de scene, solid/svflags visibles et trajectoire. Consommation presente via brush snapshots vers `gl-world-scene-adapter`; pas de compensation gameplay cote renderer.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaires d'en-tete de portage ajoutes.
+  - `scripts/verify/quake2-g-misc.ts`: couverture directe spawn, release pensee, use trigger-spawn, animation flags, shrink bounds, `MASK_MONSTERSOLID`, dispatch `ED_CallSpawn` et crush top-plane.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+
+- Prochain lot recommande: `func_explosive_explode` avec les locaux associes `count` et `mass` si le lot reste coherent.
+
 - 2026-05-01: `func_wall_use` / `SP_func_wall`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `func_wall_use` conserve le toggle `SOLID_NOT` vers `SOLID_BSP`, efface/pose `SVF_NOCLIENT`, appelle `KillBox` quand le mur apparait, relink l'entite et supprime `use` hors `TOGGLE`; `SP_func_wall` conserve `MOVETYPE_PUSH`, `gi.setmodel` via `setGameEntityModel`, effets `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, mur simple solid/link, `TRIGGER_SPAWN` force, warning logique `START_ON` sans `TOGGLE` via ajout du bit, et etat initial visible/cache.
