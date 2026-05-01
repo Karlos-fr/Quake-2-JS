@@ -21,6 +21,7 @@ import {
 } from "../../packages/qcommon/src/index.js";
 import {
   SP_func_button,
+  button_done,
   SP_func_conveyor,
   SP_func_door,
   SP_func_door_secret,
@@ -34,6 +35,7 @@ import {
   Touch_Plat_Center,
   Use_Plat,
   button_killed,
+  button_return,
   button_wait,
   door_go_up,
   door_hit_top,
@@ -56,6 +58,7 @@ import {
   SOLID_BSP,
   SOLID_TRIGGER,
   STATE_BOTTOM,
+  STATE_DOWN,
   STATE_TOP,
   STATE_UP,
   createGameClient,
@@ -147,6 +150,22 @@ button_wait(button, runtime);
 assert.equal(button.moveinfo.state, STATE_TOP, "button_wait state mismatch");
 assert.equal((button.s.effects & EF_ANIM23) !== 0, true, "button_wait animation mismatch");
 assert.equal(button.think?.name, "button_return", "button_wait return think mismatch");
+button.origin = [...button.moveinfo.end_origin];
+button.s.origin = [...button.moveinfo.end_origin];
+button.s.frame = 1;
+button.health = 25;
+button.takedamage = 0;
+button_return(button, runtime);
+assert.equal(button.moveinfo.state, STATE_DOWN, "button_return state mismatch");
+assert.deepEqual(button.moveinfo.dir, [-1, 0, 0], "button_return direction mismatch");
+assert.equal(button.moveinfo.remaining_distance, 60, "button_return distance mismatch");
+assert.equal(button.moveinfo.endfunc, button_done, "button_return endfunc mismatch");
+assert.equal(button.s.frame, 0, "button_return frame mismatch");
+assert.equal(button.takedamage, damage_t.DAMAGE_YES, "button_return shootable damage mismatch");
+button_done(button, runtime);
+assert.equal(button.moveinfo.state, STATE_BOTTOM, "button_done state mismatch");
+assert.equal((button.s.effects & EF_ANIM23) === 0, true, "button_done must clear active animation");
+assert.equal((button.s.effects & EF_ANIM01) !== 0, true, "button_done must restore idle animation");
 
 const shootButton = entity("func_button", 3, { angle: "90", health: "10" });
 shootButton.size = [16, 64, 16];

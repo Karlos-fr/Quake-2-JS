@@ -134,3 +134,25 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:p-weapon`; `npm run verify:refresh-entity:weapon`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `Cmd_InvDrop_f` et temporaire local associe (`it`).
+
+## Session 2026-05-01 - Cmd_InvDrop_f
+
+- Lot valide: `Cmd_InvDrop_f` et temporaire C associe (`it`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme appel initial a `ValidateSelectedItem`, meme rejet `selected_item == -1`, meme rejet item sans callback `drop`, puis dispatch `it->drop` via `callItemDrop`. Subtilite verifiee: `ValidateSelectedItem` rescane selon les items utilisables, mais un slot ammo deja selectionne et possede reste droppable comme en C.
+- Branchement runtime: `ClientCommand` dispatch `invdrop`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes par `createClientSendCmdBridge` et charge l'API game, sans logique parallele pour `invdrop`. `packages/renderer-three` consomme les sorties visibles indirectes du drop par le chemin snapshot/client refresh: l'entite item creee porte modele/effets/renderfx et passe par `refresh-entity-sync`.
+- Corrections: commentaire d'en-tete complete pour `Cmd_InvDrop_f`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour selection vide, item non droppable, selection perimee, ammo selectionnee, callback drop et dispatch `invdrop`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:refresh-entity:alias-flags`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_Kill_f`.
+
+## Session 2026-05-01 - Cmd_Kill_f
+
+- Lot valide: `Cmd_Kill_f`.
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme garde `(level.time - respawn_time) < 5`, meme suppression `FL_GODMODE`, meme mise a zero de `health`, meme `MOD_SUICIDE`, puis meme passage par `player_die` avec un dommage massif.
+- Branchement runtime: `ClientCommand` dispatch `kill`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes client par le pont runtime et ne remplace pas la logique suicide. `packages/renderer-three` consomme les effets visibles indirects via le chemin snapshot/client refresh: `player_die` pose l'etat mort, le mouvement toss, les frames/sons/gibs eventuels et la synchronisation entite joueur existante.
+- Corrections: commentaire d'en-tete complete pour `Cmd_Kill_f`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour la garde de 5 secondes, la suppression de godmode, `MOD_SUICIDE`, le passage `player_die` et le dispatch `kill`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_PutAway_f`.

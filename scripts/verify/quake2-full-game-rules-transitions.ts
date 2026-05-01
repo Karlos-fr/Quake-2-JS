@@ -6,7 +6,7 @@
 import { strict as assert } from "node:assert";
 
 import { getFullGameServerMapPath } from "../../apps/web/src/full-game-render-source.js";
-import { createClientRuntime } from "../../packages/client/src/types.js";
+import { createClientRuntime } from "../../packages/client/src/index.js";
 import {
   BUTTON_ATTACK,
   BUTTON_ANY,

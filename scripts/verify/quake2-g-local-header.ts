@@ -15,12 +15,20 @@ import { strict as assert } from "node:assert";
 import {
   AI_MEDIC,
   BODY_QUEUE_SIZE,
+  DEAD_DEAD,
+  DEAD_DYING,
+  DEAD_NO,
+  DEAD_RESPAWNABLE,
   FALL_TIME,
   FOFS,
   GAMEVERSION,
   ITEM_INDEX,
   MELEE_DISTANCE,
   MOD_TRIGGER_HURT,
+  RANGE_FAR,
+  RANGE_MELEE,
+  RANGE_MID,
+  RANGE_NEAR,
   SFL_CROSS_TRIGGER_MASK,
   TAG_GAME,
   TAG_LEVEL,
@@ -52,6 +60,14 @@ assert.equal(TAG_GAME, 765, "TAG_GAME mismatch");
 assert.equal(TAG_LEVEL, 766, "TAG_LEVEL mismatch");
 assert.equal(MELEE_DISTANCE, 80, "MELEE_DISTANCE mismatch");
 assert.equal(BODY_QUEUE_SIZE, 8, "BODY_QUEUE_SIZE mismatch");
+assert.equal(DEAD_NO, 0, "DEAD_NO mismatch");
+assert.equal(DEAD_DYING, 1, "DEAD_DYING mismatch");
+assert.equal(DEAD_DEAD, 2, "DEAD_DEAD mismatch");
+assert.equal(DEAD_RESPAWNABLE, 3, "DEAD_RESPAWNABLE mismatch");
+assert.equal(RANGE_MELEE, 0, "RANGE_MELEE mismatch");
+assert.equal(RANGE_NEAR, 1, "RANGE_NEAR mismatch");
+assert.equal(RANGE_MID, 2, "RANGE_MID mismatch");
+assert.equal(RANGE_FAR, 3, "RANGE_FAR mismatch");
 assert.equal(AI_MEDIC, 0x00002000, "AI_MEDIC mismatch");
 assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");

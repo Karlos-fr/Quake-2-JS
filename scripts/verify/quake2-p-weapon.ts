@@ -21,8 +21,10 @@ import {
   Weapon_Chaingun,
   Weapon_Grenade,
   Weapon_GrenadeLauncher,
+  Weapon_BFG,
   Weapon_HyperBlaster,
   Weapon_Machinegun,
+  Weapon_Railgun,
   Weapon_RocketLauncher,
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -33,7 +35,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_ROCKET } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_BFG, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -46,6 +48,8 @@ function main(): void {
   verifyGrenadeLauncherFireParity();
   verifyRocketLauncherFireParity();
   verifyHyperBlasterFireParity();
+  verifyRailgunFireParity();
+  verifyBfgFireParity();
   verifyHandGrenadeParity();
 
   console.log("Verification p_weapon - player weapon gameplay OK");
@@ -497,6 +501,160 @@ function verifyHyperBlasterFireParity(): void {
   assertString(player.client!.newweapon?.pickupName ?? "", "Shotgun", "HyperBlaster no-ammo should select the next available weapon");
 }
 
+function verifyRailgunFireParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const railgun = requireItem("Railgun");
+  const slugs = requireItem("Slugs");
+  const shots: Array<{ start: [number, number, number]; dir: [number, number, number]; damage: number; kick: number }> = [];
+  const flashes: number[] = [];
+
+  player.s.modelindex = 255;
+  player.client!.pers.weapon = railgun;
+  player.client!.ammo_index = slugs.index;
+  player.client!.pers.inventory[railgun.index] = 1;
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 4;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.pers.inventory[slugs.index] = 3;
+
+  Weapon_Railgun(player, runtime, {
+    fire_rail: (_ent, start, dir, damage, kick) => {
+      shots.push({ start, dir, damage, kick });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots.length, 1, "Weapon_Railgun should fire one rail shot on frame 4");
+  assertNumber(shots[0].damage, 600, "Railgun quad solo damage should match C");
+  assertNumber(shots[0].kick, 1000, "Railgun quad solo kick should match C");
+  assertNumber(shots[0].start[0], 0, "Railgun projectile start should use original forward offset");
+  assertNumber(shots[0].start[1], -7, "Railgun projectile start should project the original right offset");
+  assertNumber(shots[0].start[2], player.viewheight - 8, "Railgun projectile start should use viewheight offset");
+  assertNumber(shots[0].dir[0], 1, "Railgun should fire along view forward");
+  assertNumber(flashes[0], MZ_RAILGUN, "Railgun should emit MZ_RAILGUN");
+  assertNumber(player.client!.ps.gunframe, 5, "Railgun firing should advance gunframe");
+  assertNumber(player.client!.kick_origin[0], -3, "Railgun should apply original kick origin");
+  assertNumber(player.client!.kick_angles[0], -3, "Railgun should apply original kick angle");
+  assertNumber(player.client!.pers.inventory[slugs.index], 2, "Railgun should consume one slug");
+
+  runtime.deathmatch = true;
+  runtime.dmflags |= DF_INFINITE_AMMO;
+  player.client!.quad_framenum = 0;
+  player.client!.ps.gunframe = 4;
+  player.client!.pers.inventory[slugs.index] = 2;
+  shots.length = 0;
+  flashes.length = 0;
+
+  Weapon_Railgun(player, runtime, {
+    fire_rail: (_ent, start, dir, damage, kick) => {
+      shots.push({ start, dir, damage, kick });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots[0].damage, 100, "Railgun deathmatch damage should match C");
+  assertNumber(shots[0].kick, 200, "Railgun deathmatch kick should match C");
+  assertNumber(flashes[0], MZ_RAILGUN, "Railgun infinite-ammo shot should still emit MZ_RAILGUN");
+  assertNumber(player.client!.pers.inventory[slugs.index], 2, "DF_INFINITE_AMMO should prevent slug consumption");
+}
+
+function verifyBfgFireParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const bfg = requireItem("BFG10K");
+  const cells = requireItem("Cells");
+  const shots: Array<{ start: [number, number, number]; dir: [number, number, number]; damage: number; speed: number; damageRadius: number }> = [];
+  const flashes: number[] = [];
+
+  player.s.modelindex = 255;
+  player.client!.pers.weapon = bfg;
+  player.client!.ammo_index = cells.index;
+  player.client!.pers.inventory[bfg.index] = 1;
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 9;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.pers.inventory[cells.index] = 50;
+
+  Weapon_BFG(player, runtime, {
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    },
+    fire_bfg: (_ent, start, dir, damage, speed, damageRadius) => {
+      shots.push({ start, dir, damage, speed, damageRadius });
+    }
+  });
+
+  assertNumber(flashes[0], MZ_BFG, "BFG frame 9 should emit the warmup muzzleflash");
+  assertNumber(shots.length, 0, "BFG frame 9 should not launch the projectile yet");
+  assertNumber(player.client!.ps.gunframe, 10, "BFG frame 9 should advance after the muzzleflash");
+  assertBoolean(runtime.sound_entity === player.mynoise, true, "BFG frame 9 should emit weapon noise at player origin");
+
+  player.client!.ps.gunframe = 17;
+  player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.pers.inventory[cells.index] = 50;
+  flashes.length = 0;
+  shots.length = 0;
+
+  withMathRandom([0.75], () => {
+    Weapon_BFG(player, runtime, {
+      fire_bfg: (_ent, start, dir, damage, speed, damageRadius) => {
+        shots.push({ start, dir, damage, speed, damageRadius });
+      }
+    });
+  });
+
+  assertNumber(shots.length, 1, "BFG frame 17 should launch one projectile");
+  assertNumber(shots[0].damage, 2000, "BFG quad solo damage should match C");
+  assertNumber(shots[0].speed, 400, "BFG projectile speed should match C");
+  assertNumber(shots[0].damageRadius, 1000, "BFG damage radius should match C");
+  assertNumber(shots[0].start[0], 8, "BFG projectile start should use original forward offset");
+  assertNumber(shots[0].start[2], player.viewheight - 8, "BFG projectile start should use viewheight offset");
+  assertNumber(shots[0].dir[0], 1, "BFG should fire along view forward");
+  assertNumber(player.client!.ps.gunframe, 18, "BFG firing should advance gunframe");
+  assertNumber(player.client!.kick_origin[0], -2, "BFG should apply original kick origin");
+  assertNumber(player.client!.v_dmg_pitch, -40, "BFG should apply original damage pitch");
+  assertNumber(player.client!.v_dmg_roll, 4, "BFG should apply original random damage roll");
+  assertNumber(player.client!.v_dmg_time, runtime.time + 0.5, "BFG should set the original damage kick time");
+  assertNumber(player.client!.pers.inventory[cells.index], 0, "BFG should consume fifty cells");
+
+  runtime.deathmatch = true;
+  runtime.dmflags |= DF_INFINITE_AMMO;
+  player.client!.quad_framenum = 0;
+  player.client!.ps.gunframe = 17;
+  player.client!.pers.inventory[cells.index] = 50;
+  shots.length = 0;
+
+  Weapon_BFG(player, runtime, {
+    fire_bfg: (_ent, start, dir, damage, speed, damageRadius) => {
+      shots.push({ start, dir, damage, speed, damageRadius });
+    }
+  });
+
+  assertNumber(shots[0].damage, 200, "BFG deathmatch damage should match C");
+  assertNumber(player.client!.pers.inventory[cells.index], 50, "DF_INFINITE_AMMO should prevent BFG cell consumption");
+
+  runtime.dmflags = 0;
+  player.client!.ps.gunframe = 17;
+  player.client!.pers.inventory[cells.index] = 49;
+  shots.length = 0;
+
+  Weapon_BFG(player, runtime, {
+    fire_bfg: (_ent, start, dir, damage, speed, damageRadius) => {
+      shots.push({ start, dir, damage, speed, damageRadius });
+    }
+  });
+
+  assertNumber(shots.length, 0, "BFG should abort the launch if cells dropped below fifty during windup");
+  assertNumber(player.client!.ps.gunframe, 18, "BFG aborted launch should still advance gunframe");
+  assertNumber(player.client!.pers.inventory[cells.index], 49, "BFG aborted launch should not consume cells");
+}
+
 function verifyHandGrenadeParity(): void {
   const runtime = createHarnessRuntime();
   const player = createPlayer(runtime);
@@ -635,6 +793,7 @@ function createPlayer(runtime: GameRuntime): GameEntity {
   const cells = requireItem("Cells");
   const rockets = requireItem("Rockets");
   const grenades = requireItem("Grenades");
+  const slugs = requireItem("Slugs");
 
   client.pers.weapon = blaster;
   client.pers.inventory[blaster.index] = 1;
@@ -644,6 +803,7 @@ function createPlayer(runtime: GameRuntime): GameEntity {
   client.pers.inventory[cells.index] = 50;
   client.pers.inventory[rockets.index] = 50;
   client.pers.inventory[grenades.index] = 50;
+  client.pers.inventory[slugs.index] = 50;
 
   return player;
 }

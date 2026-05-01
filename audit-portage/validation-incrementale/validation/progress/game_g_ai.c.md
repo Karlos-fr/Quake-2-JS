@@ -143,3 +143,25 @@
 - Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `ai_run` en sous-lots, en commencant par les branches initiales `AI_SOUND_TARGET`, `attack_state == AS_SLIDING` et le retour `ai_checkattack`, puis garder la poursuite `AI_LOST_SIGHT`/`PlayerTrail` pour un lot separe.
+
+## Session 2026-05-01 - ai_run sous-lot initial
+
+- Lot traite: `ai_run` sous-lot initial: `AI_SOUND_TARGET`, retour `ai_checkattack`, branche `attack_state == AS_SLIDING`.
+- Verdict: partiel pour `ai_run` global; sous-lot valide. La poursuite `AI_LOST_SIGHT`/`PlayerTrail` reste hors lot.
+- Corrections TS: commentaire d'en-tete de `ai_run` complete avec notes runtime explicite et gardes defensives; couverture `scripts/verify/quake2-g-ai.ts` etendue pour cible sonore distante, retour immediat apres `ai_checkattack` vrai, et delegation `AS_SLIDING` via `ai_run`.
+- Preuves: comparaison C/TS effectuee; le TS conserve le test `AI_COMBAT_POINT`, la distance stricte `< 64` pour `AI_SOUND_TARGET`, le passage `M_MoveToGoal` puis `FindTarget`, le retour immediat si `ai_checkattack` reussit, et la delegation `AS_SLIDING` vers `ai_run_slide`.
+- Integration: runtime verifie via callbacks `monsterinfo.run`/frames monstres sous `M_MoveFrame` puis `G_RunFrame`, exports `packages/game/src/index.ts`; `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` consomme les sorties visibles apres simulation via `ClientRefreshFrame`/`refresh-entity-sync`, sans integration directe attendue pour ce sous-lot decisionnel/deplacement.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
+- Blocage: aucun pour le sous-lot traite.
+- Prochain lot recommande: suite de `ai_run`: `enemy_vis` puis branche `coop`/`FindTarget` et expiration `search_time`, en gardant la poursuite `AI_LOST_SIGHT`/`PlayerTrail` pour un lot dedie si cela grossit trop.
+
+## Session 2026-05-01 - ai_run enemy_vis / coop / search_time
+
+- Lot traite: suite de `ai_run`: cache `enemy_vis`, branche `coop`/`FindTarget`, expiration `search_time`.
+- Verdict: partiel pour `ai_run` global; sous-lot valide. La poursuite `AI_LOST_SIGHT`/`PlayerTrail` reste hors lot.
+- Corrections TS: aucune correction comportementale. Couverture `scripts/verify/quake2-g-ai.ts` etendue pour reprise quand `enemy_vis` est vrai, reacquisition coop par `FindTarget`, et timeout strict `search_time + 20`.
+- Preuves: comparaison C/TS effectuee; le TS conserve le mouvement vers le but, l'effacement de `AI_LOST_SIGHT`, la copie `last_sighting`, `trail_time = runtime.time`, la branche coop qui retourne apres `FindTarget`, puis l'expiration `search_time !== 0 && runtime.time > search_time + 20` qui remet `search_time` a 0 avant la poursuite PlayerTrail.
+- Integration: runtime verifie via callbacks `monsterinfo.run`/frames monstres sous `M_MoveFrame` puis `G_RunFrame`, exports `packages/game/src/index.ts`; `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` consomme les sorties visibles apres simulation via `ClientRefreshFrame`/`refresh-entity-sync`, sans integration directe attendue pour ce sous-lot decisionnel/deplacement.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
+- Blocage: aucun pour le sous-lot traite.
+- Prochain lot recommande: finir `ai_run` avec le bloc `AI_LOST_SIGHT`/`PlayerTrail` et les locales generees `tempgoal`, `save`, `new`/`isNew`, `marker`, `tr`.

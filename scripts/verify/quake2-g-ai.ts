@@ -375,6 +375,226 @@ assert.equal((soundHunter.monsterinfo.aiflags & AI_STAND_GROUND) !== 0, true, "a
 assert.equal((soundHunter.monsterinfo.aiflags & AI_TEMP_STAND_GROUND) !== 0, true, "ai_run must set temp stand ground near sound target");
 assert.equal(standCalls, 1, "ai_run must call stand for close sound targets");
 
+const farNoiseTarget = createRuntimeEntity({ classname: "player_noise_far" }, 81);
+farNoiseTarget.inuse = true;
+farNoiseTarget.s.origin = [128, 0, 0];
+farNoiseTarget.origin = [128, 0, 0];
+farNoiseTarget.absmin = [112, -16, -24];
+farNoiseTarget.absmax = [144, 16, 32];
+runtime.entities[81] = farNoiseTarget;
+
+const farSoundHunter = createRuntimeEntity({ classname: "monster_sound_hunter_far" }, 82);
+farSoundHunter.inuse = true;
+farSoundHunter.enemy = farNoiseTarget;
+farSoundHunter.goalentity = farNoiseTarget;
+farSoundHunter.flags |= FL_FLY;
+farSoundHunter.groundentity = createPointEntity(0, 0, -1, 83);
+farSoundHunter.mins = [-16, -16, -24];
+farSoundHunter.maxs = [16, 16, 32];
+farSoundHunter.absmin = [-16, -16, -24];
+farSoundHunter.absmax = [16, 16, 32];
+farSoundHunter.yaw_speed = 360;
+farSoundHunter.monsterinfo.aiflags |= AI_SOUND_TARGET;
+let farStandCalls = 0;
+farSoundHunter.monsterinfo.stand = () => {
+  farStandCalls += 1;
+};
+runtime.entities[82] = farSoundHunter;
+
+const savedRandomForSoundRun = Math.random;
+try {
+  Math.random = () => 0;
+  runtime.sight_client = null;
+  runtime.sound_entity = null;
+  runtime.sound_entity_framenum = 0;
+  runtime.sound2_entity = null;
+  runtime.sound2_entity_framenum = 0;
+  runtime.collision = createClearVisibilityCollision();
+  ai_run(farSoundHunter, 16, runtime);
+} finally {
+  Math.random = savedRandomForSoundRun;
+}
+assert.equal(farStandCalls, 0, "ai_run must not stand for distant sound targets");
+assert.ok(farSoundHunter.s.origin[0] > 0, "ai_run must move toward distant sound targets before target reacquisition");
+
+const deadSlidingEnemy = createRuntimeEntity({ classname: "dead_sliding_enemy" }, 84);
+deadSlidingEnemy.inuse = true;
+deadSlidingEnemy.health = 0;
+runtime.entities[84] = deadSlidingEnemy;
+
+const slidingReturnMonster = createRuntimeEntity({ classname: "monster_sliding_return" }, 87);
+slidingReturnMonster.inuse = true;
+slidingReturnMonster.enemy = deadSlidingEnemy;
+slidingReturnMonster.monsterinfo.attack_state = AS_SLIDING;
+let slidingReturnStandCalls = 0;
+slidingReturnMonster.monsterinfo.stand = () => {
+  slidingReturnStandCalls += 1;
+};
+runtime.entities[87] = slidingReturnMonster;
+ai_run(slidingReturnMonster, 12, runtime);
+assert.equal(slidingReturnStandCalls, 1, "ai_run must return immediately when ai_checkattack resolves the enemy");
+assert.equal(slidingReturnMonster.monsterinfo.attack_state, AS_SLIDING, "ai_run must not enter sliding after ai_checkattack returns true");
+
+const runSlidingEnemy = createPointEntity(100, 0, 0, 85);
+runSlidingEnemy.viewheight = 22;
+runtime.entities[85] = runSlidingEnemy;
+
+const runSlidingMonster = createRuntimeEntity({ classname: "monster_run_slider" }, 86);
+runSlidingMonster.inuse = true;
+runSlidingMonster.enemy = runSlidingEnemy;
+runSlidingMonster.health = 100;
+runSlidingMonster.viewheight = 25;
+runSlidingMonster.flags |= FL_FLY;
+runSlidingMonster.yaw_speed = 360;
+runSlidingMonster.monsterinfo.attack_state = AS_SLIDING;
+runSlidingMonster.monsterinfo.lefty = 1;
+runtime.entities[86] = runSlidingMonster;
+
+const aiRunSlideTraceEnds: number[][] = [];
+let aiRunSlideTraceCount = 0;
+runtime.collision = {
+  world: {} as never,
+  trace: (_start, _mins, _maxs, end) => {
+    aiRunSlideTraceCount += 1;
+    if (aiRunSlideTraceCount > 1) {
+      aiRunSlideTraceEnds.push(cleanVecForAssert(end));
+    }
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: aiRunSlideTraceCount === 1 ? 0 : 1,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 1],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: 0,
+      ent: null
+    };
+  },
+  pointcontents: () => 0
+};
+ai_run(runSlidingMonster, 12, runtime);
+assert.deepEqual(aiRunSlideTraceEnds, [[0, 12, 0]], "ai_run must delegate AS_SLIDING to ai_run_slide after ai_checkattack returns false");
+
+const visibleRunEnemy = createPointEntity(160, 0, 0, 88);
+visibleRunEnemy.viewheight = 22;
+visibleRunEnemy.light_level = 64;
+visibleRunEnemy.absmin = [144, -16, -24];
+visibleRunEnemy.absmax = [176, 16, 32];
+runtime.entities[88] = visibleRunEnemy;
+
+const visibleRunner = createRuntimeEntity({ classname: "monster_visible_runner" }, 89);
+visibleRunner.inuse = true;
+visibleRunner.enemy = visibleRunEnemy;
+visibleRunner.goalentity = visibleRunEnemy;
+visibleRunner.health = 100;
+visibleRunner.viewheight = 25;
+visibleRunner.groundentity = createPointEntity(0, 0, -1, 90);
+visibleRunner.mins = [-16, -16, -24];
+visibleRunner.maxs = [16, 16, 32];
+visibleRunner.absmin = [-16, -16, -24];
+visibleRunner.absmax = [16, 16, 32];
+visibleRunner.yaw_speed = 360;
+visibleRunner.monsterinfo.aiflags = AI_LOST_SIGHT;
+visibleRunner.monsterinfo.checkattack = () => false;
+runtime.entities[89] = visibleRunner;
+runtime.collision = createClearVisibilityCollision();
+ai_run(visibleRunner, 0, runtime);
+assert.equal((visibleRunner.monsterinfo.aiflags & AI_LOST_SIGHT) === 0, true, "ai_run must clear AI_LOST_SIGHT when enemy_vis is cached true");
+assert.deepEqual(visibleRunner.monsterinfo.last_sighting, visibleRunEnemy.s.origin, "ai_run must refresh last_sighting while enemy is visible");
+assert.equal(visibleRunner.monsterinfo.trail_time, runtime.time, "ai_run must stamp trail_time when enemy is visible");
+
+const blockedCoopEnemy = createPointEntity(320, 0, 0, 91);
+blockedCoopEnemy.viewheight = 22;
+runtime.entities[91] = blockedCoopEnemy;
+
+const coopPlayer = createRuntimeEntity({ classname: "player" }, 92);
+attachGameClient(coopPlayer);
+coopPlayer.inuse = true;
+coopPlayer.health = 100;
+coopPlayer.s.origin = [96, 0, 0];
+coopPlayer.origin = [96, 0, 0];
+coopPlayer.viewheight = 22;
+coopPlayer.light_level = 64;
+runtime.entities[92] = coopPlayer;
+
+const coopRunner = createRuntimeEntity({ classname: "monster_coop_runner" }, 93);
+coopRunner.inuse = true;
+coopRunner.enemy = blockedCoopEnemy;
+coopRunner.health = 100;
+coopRunner.viewheight = 25;
+coopRunner.s.angles = [0, 0, 0];
+coopRunner.angles = [0, 0, 0];
+let coopRunCalls = 0;
+coopRunner.monsterinfo.run = () => {
+  coopRunCalls += 1;
+};
+runtime.entities[93] = coopRunner;
+
+runtime.coop = true;
+runtime.sight_entity = null;
+runtime.sight_entity_framenum = 0;
+runtime.sight_client = coopPlayer;
+runtime.sound_entity = null;
+runtime.sound_entity_framenum = 0;
+runtime.sound2_entity = null;
+runtime.sound2_entity_framenum = 0;
+runtime.collision = {
+  world: {} as never,
+  trace: (_start, _mins, _maxs, end) => ({
+    allsolid: false,
+    startsolid: false,
+    fraction: end[0] === blockedCoopEnemy.s.origin[0] ? 0 : 1,
+    endpos: [...end],
+    plane: {
+      normal: [0, 0, 1],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent: null
+  }),
+  pointcontents: () => 0
+};
+ai_run(coopRunner, 0, runtime);
+assert.equal(coopRunner.enemy, coopPlayer, "ai_run coop branch must reacquire a visible alternate player with FindTarget");
+assert.equal(coopRunner.goalentity, coopPlayer, "ai_run coop FindTarget path must hunt the reacquired player");
+assert.equal(coopRunCalls, 1, "ai_run coop FindTarget path must enter run state and return");
+
+const expiredSearchEnemy = createPointEntity(240, 0, 0, 94);
+expiredSearchEnemy.viewheight = 22;
+runtime.entities[94] = expiredSearchEnemy;
+
+const expiredSearchRunner = createRuntimeEntity({ classname: "monster_expired_search" }, 95);
+expiredSearchRunner.inuse = true;
+expiredSearchRunner.enemy = expiredSearchEnemy;
+expiredSearchRunner.goalentity = expiredSearchEnemy;
+expiredSearchRunner.health = 100;
+expiredSearchRunner.viewheight = 25;
+expiredSearchRunner.groundentity = createPointEntity(0, 0, -1, 96);
+expiredSearchRunner.mins = [-16, -16, -24];
+expiredSearchRunner.maxs = [16, 16, 32];
+expiredSearchRunner.absmin = [-16, -16, -24];
+expiredSearchRunner.absmax = [16, 16, 32];
+expiredSearchRunner.yaw_speed = 360;
+expiredSearchRunner.monsterinfo.search_time = runtime.time - 21;
+runtime.entities[95] = expiredSearchRunner;
+
+runtime.coop = false;
+runtime.sight_client = null;
+runtime.collision = createBlockedVisibilityCollision();
+ai_run(expiredSearchRunner, 0, runtime);
+assert.equal(expiredSearchRunner.monsterinfo.search_time, 0, "ai_run must clear expired search_time after moving to goal");
+assert.equal((expiredSearchRunner.monsterinfo.aiflags & AI_LOST_SIGHT) === 0, true, "ai_run search timeout must return before starting lost-sight pursuit");
+
 const deadEnemy = createRuntimeEntity({ classname: "dead_enemy" }, 21);
 deadEnemy.inuse = true;
 deadEnemy.health = 0;

@@ -18,6 +18,7 @@
 
 import { AngleVectors, MASK_PLAYERSOLID, VectorCompare, vec3_origin, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
 import {
+  DEAD_DEAD,
   Think_Delay,
   createMonsterInfo,
   freeGameEntity,
@@ -606,7 +607,7 @@ function applyTelefragDamage(target: GameEntity, attacker: GameEntity, runtime: 
 
   if (target.health <= 0) {
     target.solid = 0;
-    target.deadflag = 2;
+    target.deadflag = DEAD_DEAD;
     target.die?.(target, attacker, attacker, 100000, runtime);
     return;
   }

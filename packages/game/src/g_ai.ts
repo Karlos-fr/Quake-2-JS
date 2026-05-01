@@ -852,6 +852,10 @@ export function ai_checkattack(self: GameEntity, _dist: number, runtime: GameRun
  *
  * Behavior:
  * - Pursues the current enemy, handling sound targets, lost-sight pursuit and player-trail reacquisition.
+ *
+ * Porting notes:
+ * - Uses the explicit runtime for level time, target search and collision-backed movement.
+ * - Keeps defensive enemy and callback guards where the C path relies on valid monster setup.
  */
 export function ai_run(self: GameEntity, dist: number, runtime: GameRuntime): void {
   if ((self.monsterinfo.aiflags & AI_COMBAT_POINT) !== 0) {

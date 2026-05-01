@@ -11,11 +11,11 @@
 
 import { strict as assert } from "node:assert";
 
-import { CS_STATUSBAR, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, temp_event_t, type cvar_t } from "../../packages/qcommon/src/index.js";
+import { CS_STATUSBAR, CVAR_LATCH, CVAR_SERVERINFO, CVAR_USERINFO, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, temp_event_t, type cvar_t } from "../../packages/qcommon/src/index.js";
 import { TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
-import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { single_statusbar } from "../../packages/game/src/g_spawn.js";
 
 const dprints: string[] = [];
@@ -29,6 +29,7 @@ const writeDirs: Array<[number, number, number]> = [];
 const multicasts: Array<{ origin: [number, number, number]; to: number }> = [];
 const command = { argv: ["sv"], args: "" };
 const cvars = new Map<string, cvar_t>();
+const forcedCvars: Array<{ name: string; value: string }> = [];
 const configstrings = new Map<number, string>();
 
 const imports = {
@@ -88,16 +89,21 @@ const imports = {
   FreeTags: (tag) => {
     freeTags.push(tag);
   },
-  cvar: (name, value) => {
+  cvar: (name, value, flags) => {
     let variable = cvars.get(name);
     if (!variable) {
-      variable = createCvar(name, value);
+      variable = createCvar(name, value, flags);
       cvars.set(name, variable);
     }
     return variable;
   },
   cvar_set: () => null,
-  cvar_forceset: () => null,
+  cvar_forceset: (name, value) => {
+    forcedCvars.push({ name, value });
+    const variable = createCvar(name, value);
+    cvars.set(name, variable);
+    return variable;
+  },
   argc: () => command.argv.length,
   argv: (n) => command.argv[n] ?? "",
   args: () => command.args,
@@ -119,6 +125,29 @@ assert.equal(api.apiversion, GAME_API_VERSION, "GetGameApi apiversion mismatch")
 api.Init();
 assert.ok(dprints.includes("==== InitGame ====\n"), "InitGame banner mismatch");
 assert.equal(api.max_edicts, 1024, "InitGame maxentities cvar mismatch");
+assert.equal(cvars.get("deathmatch")?.string, "0", "deathmatch default mismatch");
+assert.equal(cvars.get("deathmatch")?.flags, CVAR_LATCH, "deathmatch flags mismatch");
+assert.equal(cvars.get("coop")?.string, "0", "coop default mismatch");
+assert.equal(cvars.get("coop")?.flags, CVAR_LATCH, "coop flags mismatch");
+assert.equal(cvars.get("dmflags")?.string, "0", "dmflags default mismatch");
+assert.equal(cvars.get("dmflags")?.flags, CVAR_SERVERINFO, "dmflags flags mismatch");
+assert.equal(cvars.get("skill")?.string, "1", "skill default mismatch");
+assert.equal(cvars.get("skill")?.flags, CVAR_LATCH, "skill flags mismatch");
+assert.equal(cvars.get("fraglimit")?.string, "0", "fraglimit default mismatch");
+assert.equal(cvars.get("fraglimit")?.flags, CVAR_SERVERINFO, "fraglimit flags mismatch");
+assert.equal(cvars.get("timelimit")?.string, "0", "timelimit default mismatch");
+assert.equal(cvars.get("timelimit")?.flags, CVAR_SERVERINFO, "timelimit flags mismatch");
+assert.equal(cvars.get("password")?.string, "", "password default mismatch");
+assert.equal(cvars.get("password")?.flags, CVAR_USERINFO, "password flags mismatch");
+assert.equal(cvars.get("spectator_password")?.string, "", "spectator_password default mismatch");
+assert.equal(cvars.get("spectator_password")?.flags, CVAR_USERINFO, "spectator_password flags mismatch");
+assert.equal(cvars.get("maxclients")?.string, "4", "maxclients default mismatch");
+assert.equal(cvars.get("maxclients")?.flags, CVAR_SERVERINFO | CVAR_LATCH, "maxclients flags mismatch");
+assert.equal(cvars.get("maxspectators")?.string, "4", "maxspectators default mismatch");
+assert.equal(cvars.get("maxspectators")?.flags, CVAR_SERVERINFO, "maxspectators flags mismatch");
+assert.equal(cvars.get("maxentities")?.string, "1024", "maxentities default mismatch");
+assert.equal(cvars.get("maxentities")?.flags, CVAR_LATCH, "maxentities flags mismatch");
+assert.equal(api.edicts[0]?.classname, "worldspawn", "g_edicts export must expose the runtime edict array");
 
 const entityString = `
 {
@@ -214,6 +243,12 @@ CheckDMRules(sameLevelContext);
 assert.equal(bprints.pop(), "Fraglimit hit.\n", "CheckDMRules fraglimit announce mismatch");
 assert.equal(sameLevelContext.runtime.changemap, "fact1", "DF_SAME_LEVEL must keep the current map");
 
+const skillContext = createGameMainContext(imports);
+skillContext.cvars.skill = createCvar("skill", "2.7");
+SpawnEntities(skillContext, "base1", entityString, "");
+assert.deepEqual(forcedCvars.at(-1), { name: "skill", value: "2.000000" }, "SpawnEntities must force skill to the original floored cvar value");
+assert.equal(skillContext.runtime.skill, 2, "SpawnEntities must apply the forced skill value to runtime");
+
 const helpContext = createGameMainContext(imports);
 helpContext.runtime.maxclients = 1;
 helpContext.runtime.entities = [{ ...api.edicts[0]! }, { ...api.edicts[1]! }];
@@ -260,12 +295,12 @@ assert.deepEqual(freeTags, [TAG_LEVEL, TAG_GAME], "ShutdownGame FreeTags mismatc
 
 console.log("quake2-g-main: ok");
 
-function createCvar(name: string, stringValue: string): cvar_t {
+function createCvar(name: string, stringValue: string, flags = 0): cvar_t {
   return {
     name,
     string: stringValue,
     latched_string: null,
-    flags: 0,
+    flags,
     modified: false,
     value: Number.parseFloat(stringValue) || 0
   };

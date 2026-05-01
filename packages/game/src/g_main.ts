@@ -262,6 +262,8 @@ export function InitGame(context: GameMainContext): void {
  * - Applies the original skill/deathmatch spawnflag inhibition before dispatching entity spawners.
  */
 export function SpawnEntities(context: GameMainContext, mapname: string, entstring: string, spawnpoint: string): void {
+  normalizeSkillCvar(context);
+
   const parsedEntities = parseEntityLump(entstring);
   const nextRuntime = createGameRuntimeFromBspEntities(buildServerEntityList(parsedEntities, context.runtime.maxclients));
   nextRuntime.collision = context.runtime.collision;
@@ -713,6 +715,24 @@ function applyMainCvarsToRuntime(context: GameMainContext): void {
   context.runtime.maxentities = Math.max(context.runtime.maxclients + 1, Math.trunc(context.cvars.maxentities?.value ?? context.runtime.maxentities));
   context.game.maxclients = context.runtime.maxclients;
   context.game.maxentities = context.runtime.maxentities;
+}
+
+function normalizeSkillCvar(context: GameMainContext): void {
+  const skill = context.cvars.skill;
+  if (!skill) {
+    return;
+  }
+
+  const skillLevel = Math.max(0, Math.min(3, Math.floor(skill.value)));
+  if (skill.value === skillLevel) {
+    return;
+  }
+
+  const skillString = skillLevel.toFixed(6);
+  const forced = context.gi.cvar_forceset("skill", skillString);
+  context.cvars.skill = forced ?? skill;
+  context.cvars.skill.string = skillString;
+  context.cvars.skill.value = skillLevel;
 }
 
 function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, mapname: string): void {

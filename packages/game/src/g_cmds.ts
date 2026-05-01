@@ -596,6 +596,12 @@ export function Cmd_WeapLast_f(ent: GameEntity, runtime: GameRuntime): void {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Revalidates the selected inventory slot, rejects empty/non-dropable selections, then dispatches the item drop callback.
+ *
+ * Porting notes:
+ * - The local C `it` pointer is represented by `GetItemByIndex(selected)` and callback dispatch goes through `callItemDrop`.
  */
 export function Cmd_InvDrop_f(ent: GameEntity, context: GameCommandContext): void {
   ValidateSelectedItem(ent, context.runtime);
@@ -617,6 +623,12 @@ export function Cmd_InvDrop_f(ent: GameEntity, context: GameCommandContext): voi
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Ignores fresh respawns, clears godmode, marks suicide damage and runs the player death path.
+ *
+ * Porting notes:
+ * - The original `level.time` and `meansOfDeath` globals are carried by the explicit game runtime.
  */
 export function Cmd_Kill_f(ent: GameEntity, context: GameCommandContext): void {
   if (!ent.client || context.runtime.time - ent.client.respawn_time < 5) {

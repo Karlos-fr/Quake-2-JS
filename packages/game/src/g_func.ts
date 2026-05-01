@@ -1318,12 +1318,31 @@ export function SP_func_rotating(ent: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, ent);
 }
 
+/**
+ * Original name: button_done
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Restores a returned `func_button` to its idle animation/state.
+ */
 export function button_done(self: GameEntity, _runtime: GameRuntime): void {
   self.moveinfo.state = STATE_BOTTOM;
   self.s.effects &= ~EF_ANIM23;
   self.s.effects |= EF_ANIM01;
 }
 
+/**
+ * Original name: button_return
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts a `func_button` returning to `moveinfo.start_origin`.
+ * - Resets the visible frame and re-enables damage for shootable buttons.
+ */
 export function button_return(self: GameEntity, runtime: GameRuntime): void {
   self.moveinfo.state = STATE_DOWN;
   Move_Calc(self, self.moveinfo.start_origin, button_done, runtime);

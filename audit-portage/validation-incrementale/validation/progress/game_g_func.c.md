@@ -2,6 +2,22 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: transition de retour bouton `button_return`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:699-708` avec `packages/game/src/g_func.ts:1337-1353`.
+- Correction appliquee: ajout du commentaire d'en-tete `button_return` et couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier `STATE_DOWN`, `Move_Calc` vers `moveinfo.start_origin` avec `button_done`, `s.frame = 0` et `takedamage = DAMAGE_YES` quand `health` est present.
+- Effets verifies: le port conserve la transition de retour du bouton, la destination basse, le callback de fin `button_done`, la remise de frame visible et la reactivation des boutons shootables; le parametre `runtime` sert seulement a remplacer `level.time`/callbacks implicites du C dans `Move_Calc`.
+- Branchement: `button_return` est programme par `button_wait` puis execute par le flux de think/mouvement `Move_Calc` pendant `G_RunFrame`/`G_RunEntity`/`SV_RunThink`; `func_button` est cree via `SP_func_button` reference par `g_spawn.ts`.
+- Integration: aucune logique parallele dans `apps/web`; le navigateur passe par le runtime serveur/local et consomme les sons/snapshots/interpolations de brush models. `packages/renderer-three` consomme les poses de brush snapshots via `gl-world-scene-adapter`; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+- 2026-05-01: callback de fin de retour bouton `button_done`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:692-697` avec `packages/game/src/g_func.ts:1321-1335`.
+- Correction appliquee: ajout du commentaire d'en-tete `button_done` et couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier `STATE_BOTTOM`, retrait de `EF_ANIM23` et restauration de `EF_ANIM01`.
+- Effets verifies: le port conserve exactement la remise a l'etat bas/idle du bouton apres son retour; pas d'appel de callback ni d'effet supplementaire dans cette fonction.
+- Branchement: `button_done` est passe a `Move_Calc` par `button_return`, puis appele par le flux de movement/think pendant `G_RunFrame`/`G_RunEntity`/`SV_RunThink`; le bouton est cree via `SP_func_button` reference par `g_spawn.ts` pour `func_button`.
+- Integration: aucune logique parallele dans `apps/web`; le navigateur consomme les sons/runtime et snapshots/interpolations de brush models. `packages/renderer-three` consomme les poses de brush snapshots via `gl-world-scene-adapter`; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: spawn de brush tournant `SP_func_rotating`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:623-661` avec `packages/game/src/g_func.ts:1272-1312`.
 - Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier `solid = SOLID_BSP`, `MOVETYPE_PUSH` ou `MOVETYPE_STOP`, axes par defaut/X/Y selon les flags C, inversion REVERSE, defaults `speed = 100` et `dmg = 2`, valeurs explicites, callbacks `use`/`blocked`, START_ON via `rotating_use`, flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, enregistrement modele inline et liaison runtime.
@@ -94,7 +110,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `button_done`.
+- Valider le bloc suivant sans elargir: `button_wait`.
 
 ## Blocages
 

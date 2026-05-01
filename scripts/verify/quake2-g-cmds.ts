@@ -14,10 +14,13 @@ import { strict as assert } from "node:assert";
 
 import { DF_MODELTEAMS, MAX_ITEMS, PRINT_CHAT, PRINT_HIGH, STAT_FRAGS, type cvar_t } from "../../packages/qcommon/src/index.js";
 import {
+  DEAD_DEAD,
   Cmd_Drop_f,
   Cmd_Give_f,
   Cmd_Inven_f,
+  Cmd_InvDrop_f,
   Cmd_InvUse_f,
+  Cmd_Kill_f,
   Cmd_WeapLast_f,
   Cmd_PlayerList_f,
   Cmd_Say_f,
@@ -25,9 +28,11 @@ import {
   Cmd_WeapPrev_f,
   Cmd_Wave_f,
   FindItem,
+  FL_GODMODE,
   GameCommandsClientCommand,
   IT_WEAPON,
   MOVETYPE_NOCLIP,
+  MOVETYPE_TOSS,
   MOVETYPE_WALK,
   OnSameTeam,
   SelectNextItem,
@@ -39,6 +44,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
+import { MOD_SUICIDE } from "../../packages/game/src/g_local.js";
 
 const prints: Array<{ ent: GameEntity | null; level: number; message: string }> = [];
 const writes: number[] = [];
@@ -53,9 +59,11 @@ verifyCommandsAndChat();
 verifyDropCommand();
 verifyInventorySerialization();
 verifyInventoryUseCommand();
+verifyInventoryDropCommand();
 verifyWeaponPreviousCommand();
 verifyWeaponNextCommand();
 verifyWeaponLastCommand();
+verifyKillCommand();
 verifyPlayerListAndWave();
 
 console.log("Verification g_cmds - client commands OK");
@@ -209,6 +217,45 @@ function verifyInventoryUseCommand(): void {
   assert.equal(player.client!.newweapon, shotgun, "Cmd_InvUse_f should dispatch the selected item use callback");
 }
 
+function verifyInventoryDropCommand(): void {
+  const runtime = createRuntime();
+  const localContext = createContext(runtime);
+  const player = createClient(runtime, 1, "inventory-drop");
+  const armor = requireItem("Body Armor");
+  const bullets = requireItem("Bullets");
+  const shells = requireItem("Shells");
+  const shotgun = requireItem("Shotgun");
+
+  player.client!.pers.selected_item = -1;
+  Cmd_InvDrop_f(player, localContext);
+  assert.equal(lastPrint().message, "No item to drop.\n", "Cmd_InvDrop_f should reject an empty selection");
+
+  player.client!.pers.selected_item = armor.index;
+  player.client!.pers.inventory[armor.index] = 1;
+  Cmd_InvDrop_f(player, localContext);
+  assert.equal(lastPrint().message, "Item is not dropable.\n", "Cmd_InvDrop_f should reject selected items without drop callbacks");
+
+  player.client!.pers.selected_item = armor.index;
+  player.client!.pers.inventory[armor.index] = 0;
+  player.client!.pers.inventory[shotgun.index] = 1;
+  Cmd_InvDrop_f(player, localContext);
+  assert.equal(player.client!.pers.selected_item, shotgun.index, "Cmd_InvDrop_f should revalidate stale selected inventory slots through SelectNextItem");
+  assert.equal(player.client!.pers.inventory[shotgun.index], 0, "Cmd_InvDrop_f should dispatch the revalidated item drop callback");
+  const droppedShotgun = runtime.entities.find((entity) => entity.classname === shotgun.classname && entity.owner === player);
+  assert.ok(droppedShotgun, "Cmd_InvDrop_f should spawn the revalidated selected item entity");
+
+  player.client!.pers.inventory[shells.index] = 25;
+  player.client!.pers.selected_item = shells.index;
+  Cmd_InvDrop_f(player, localContext);
+  assert.equal(player.client!.pers.inventory[shells.index], 15, "Cmd_InvDrop_f should drop selected ammo even though inventory selection normally scans usable items");
+
+  player.client!.pers.inventory[bullets.index] = 50;
+  player.client!.pers.selected_item = bullets.index;
+  runCommand(localContext, ["invdrop"]);
+  GameCommandsClientCommand(localContext, player);
+  assert.equal(player.client!.pers.inventory[bullets.index], 0, "ClientCommand should dispatch invdrop");
+}
+
 function verifyWeaponPreviousCommand(): void {
   const runtime = createRuntime();
   const player = createClient(runtime, 1, "weapon-prev");
@@ -300,6 +347,39 @@ function verifyWeaponLastCommand(): void {
   runCommand(localContext, ["weaplast"]);
   GameCommandsClientCommand(localContext, player);
   assert.equal(player.client!.newweapon, shotgun, "ClientCommand should dispatch weaplast");
+}
+
+function verifyKillCommand(): void {
+  const runtime = createRuntime();
+  const localContext = createContext(runtime);
+  localContext.hooks = {
+    TossClientWeapon: () => undefined,
+    onDeathSound: () => undefined
+  };
+  const player = createClient(runtime, 1, "kill");
+
+  runtime.time = 10;
+  player.client!.respawn_time = 6;
+  player.flags |= FL_GODMODE;
+  Cmd_Kill_f(player, localContext);
+  assert.equal(player.health, 100, "Cmd_Kill_f should ignore suicide attempts before the 5 second respawn guard expires");
+  assert.equal((player.flags & FL_GODMODE) !== 0, true, "Cmd_Kill_f should leave godmode untouched during the respawn guard");
+
+  runtime.time = 12;
+  Cmd_Kill_f(player, localContext);
+  assert.equal(player.flags & FL_GODMODE, 0, "Cmd_Kill_f should clear godmode before killing the player");
+  assert.equal(player.health, 0, "Cmd_Kill_f should zero health before player_die");
+  assert.equal(runtime.meansOfDeath, MOD_SUICIDE, "Cmd_Kill_f should set suicide as means of death");
+  assert.equal(player.deadflag, DEAD_DEAD, "Cmd_Kill_f should run the player death path");
+  assert.equal(player.movetype, MOVETYPE_TOSS, "Cmd_Kill_f should leave the player in death toss movement");
+
+  const dispatched = createClient(runtime, 2, "kill-dispatch");
+  runtime.time = 20;
+  dispatched.client!.respawn_time = 0;
+  dispatched.flags |= FL_GODMODE;
+  runCommand(localContext, ["kill"]);
+  GameCommandsClientCommand(localContext, dispatched);
+  assert.equal(dispatched.deadflag, DEAD_DEAD, "ClientCommand should dispatch kill");
 }
 
 function verifyPlayerListAndWave(): void {

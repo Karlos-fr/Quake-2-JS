@@ -8,6 +8,41 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot range `RANGE_MELEE`, `RANGE_NEAR`, `RANGE_MID`, `RANGE_FAR`.
+- Verdict: `Valide` pour les 4 macros apres ajout d'assertions dans le harness header.
+- Valeurs H/TS comparees et conformes:
+  - `RANGE_MELEE = 0`
+  - `RANGE_NEAR = 1`
+  - `RANGE_MID = 2`
+  - `RANGE_FAR = 3`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de definition directe attendue pour ces macros.
+- Runtime:
+  - `g_ai.range` conserve les seuils C stricts: `< MELEE_DISTANCE` donne `RANGE_MELEE`, `< 500` donne `RANGE_NEAR`, `< 1000` donne `RANGE_MID`, sinon `RANGE_FAR`.
+  - `FindTarget` rejette `RANGE_FAR`, applique la porte `show_hostile`/`infront` en `RANGE_NEAR`, et impose `infront` en `RANGE_MID` comme dans `game/g_ai.c`.
+  - `M_CheckAttack` accepte melee, rejette far, et applique les chances missile near/mid; les decisions boss/soldier/infantry/chick/flyer/gunner/mutant consomment les memes valeurs exportees.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Le navigateur declenche ce comportement via le runtime serveur/game, confirme par `verify:full-game:server-host`.
+- renderer-three: aucune reference directe trouvee; pas d'integration renderer directe attendue. Ces constantes orientent l'AI avant production des entites/snapshots; `verify:full-game:three-renderer` confirme que le flux renderer reste branche.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source `//range` verifie. Commentaire de fonction `range` existant dans `packages/game/src/g_ai.ts` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK apres ajout des assertions `RANGE_*`; `npm run verify:g-ai` OK; `npm run verify:m-boss2` OK; `npm run verify:m-boss31` OK; `npm run verify:m-boss32` OK; `npm run verify:m-infantry` OK; `npm run verify:m-soldier` OK; `npm run verify:m-chick` OK; `npm run verify:m-flyer` OK; `npm run verify:m-gunner` OK; `npm run verify:m-mutant` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- 2026-05-01: lot deadflags `DEAD_NO`, `DEAD_DYING`, `DEAD_DEAD`, `DEAD_RESPAWNABLE`.
+- Verdict: `Valide` pour les 4 macros apres corrections limitees de lisibilite runtime et du harness full-game utilise comme preuve.
+- Valeurs H/TS comparees et conformes:
+  - `DEAD_NO = 0`
+  - `DEAD_DYING = 1`
+  - `DEAD_DEAD = 2`
+  - `DEAD_RESPAWNABLE = 3`
+- Cible declarative verifiee: constantes definies dans `packages/game/src/runtime.ts`, reexportees par `packages/game/src/g_local.ts` et `packages/game/src/index.ts`.
+- Runtime:
+  - `DEAD_NO` initialise les edicts/clients et est retabli par `PutClientInServer` et les monstres spawned; il garde les armes actives via `p_weapon` quand le joueur est vivant.
+  - `DEAD_DEAD` pilote les chemins mort joueur/monstre/corps: `player_die`, morts monstres, `g_combat` pour la comptabilisation, `g_misc`, `g_chase`, et le telefrag `KillBox`.
+  - `DEAD_DYING` et `DEAD_RESPAWNABLE` sont declares par le header original mais aucune consommation game originale ou TS trouvee hors exports; conservation stricte des valeurs pour compatibilite header.
+  - Correction limitee dans `packages/game/src/g_utils.ts`: `applyTelefragDamage` utilise maintenant `DEAD_DEAD` au lieu du litteral `2`.
+- apps/web: aucune reference directe aux constantes; pas de logique parallele attendue. Les transitions joueur mort/respawn passent par le host full-game et `verify:full-game:rules-transitions`/`verify:full-game:server-host` OK.
+- renderer-three: aucune reference directe; pas d'integration renderer directe attendue pour les constantes. Les effets visibles passent par les etats d'entites/snapshots apres runtime; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source `//deadflag` verifie. Pas de fonction nouvelle dans ce lot.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK apres ajout des assertions `DEAD_*`; `npm run verify:g-utils` OK; `npm run verify:p-client` OK; `npm run verify:p-weapon` OK; `npm run verify:g-monster` OK; `npm run verify:g-misc` OK; `npm run verify:g-chase` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:m-berserk` OK; `npm run verify:m-chick` OK; `npm run verify:m-tank` OK; `npm run verify:full-game:rules-transitions` OK apres correction de son import vers `packages/client/src/index.js`; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot enums simples `damage_t`, `weaponstate_t`, `ammo_t`.
 - Verdict: `Valide` pour les 3 enums apres correction limitee du reexport public depuis le point d'attache header.
 - Valeurs H/TS comparees et conformes:
@@ -188,7 +223,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les macros `DEAD_NO`, `DEAD_DYING`, `DEAD_DEAD`, `DEAD_RESPAWNABLE`.
+- Continuer avec les macros de gib `GIB_ORGANIC`, `GIB_METALLIC`.
 
 ## Blocages
 
