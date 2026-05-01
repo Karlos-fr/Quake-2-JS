@@ -18,12 +18,15 @@ import {
   CS_MAXCLIENTS,
   CS_NAME,
   DF_NO_HEALTH,
+  EF_ANIM01,
+  EF_ANIM_ALL,
+  EF_ANIM_ALLFAST,
   RF_GLOW,
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE
 } from "../../packages/qcommon/src/index.js";
-import { FL_TEAMSLAVE, FRAMETIME, MOVETYPE_PUSH, SOLID_BBOX, SOLID_BSP } from "../../packages/game/src/runtime.js";
+import { FL_TEAMSLAVE, FRAMETIME, MOVETYPE_PUSH, MOVETYPE_STOP, SOLID_BBOX, SOLID_BSP, SOLID_TRIGGER, STATE_BOTTOM, STATE_UP } from "../../packages/game/src/runtime.js";
 import {
   SPAWNFLAG_NOT_DEATHMATCH,
   SPAWNFLAG_NOT_EASY,
@@ -246,6 +249,19 @@ for (const name of playerSpawnNames) {
   const entry = spawns.find((spawn) => spawn.name === name);
   assert.ok(entry, `spawn table must include ${name}`);
   assert.equal(typeof entry.name, "string", `${name} spawn_t.name must be a string`);
+  assert.equal(typeof entry.spawn, "function", `${name} spawn_t.spawn must be a function`);
+}
+
+const funcSpawnNames = [
+  "func_plat",
+  "func_rotating",
+  "func_button",
+  "func_door"
+] as const;
+
+for (const name of funcSpawnNames) {
+  const entry = spawns.find((spawn) => spawn.name === name);
+  assert.ok(entry, `spawn table must include ${name}`);
   assert.equal(typeof entry.spawn, "function", `${name} spawn_t.spawn must be a function`);
 }
 
@@ -538,6 +554,95 @@ assert.equal(
   deathmatchContext.runtime.entities.some((entity) => entity.inuse && entity.targetname === "dm_filtered"),
   false,
   "SPAWNFLAG_NOT_DEATHMATCH must inhibit entities in deathmatch"
+);
+
+const funcBrushContext = createGameMainContext(imports);
+InitGame(funcBrushContext);
+SpawnEntities(
+  funcBrushContext,
+  "func_brushes",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "func_plat"
+"model" "*10"
+"targetname" "lift"
+"height" "24"
+}
+{
+"classname" "func_rotating"
+"model" "*11"
+"spawnflags" "${1 | 4 | 64 | 128}"
+"speed" "90"
+}
+{
+"classname" "func_button"
+"model" "*12"
+"angle" "0"
+"lip" "4"
+"wait" "2"
+}
+{
+"classname" "func_door"
+"model" "*13"
+"angle" "0"
+"spawnflags" "${16 | 64}"
+"targetname" "remote_door"
+}
+`,
+  ""
+);
+
+const spawnedPlat = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_plat");
+assert.ok(spawnedPlat, "SpawnEntities must keep func_plat in the runtime");
+assert.equal(spawnedPlat.movetype, MOVETYPE_PUSH, "SpawnEntities func_plat movetype mismatch");
+assert.equal(spawnedPlat.solid, SOLID_BSP, "SpawnEntities func_plat solid mismatch");
+assert.equal(spawnedPlat.moveinfo.state, STATE_UP, "targetnamed func_plat must start in STATE_UP");
+assert.equal(spawnedPlat.moveinfo.distance, 24, "SpawnEntities func_plat height distance mismatch");
+assert.equal(spawnedPlat.s.modelindex > 0, true, "SpawnEntities func_plat must publish an inline brush modelindex");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedPlat.s.modelindex - 1], "*10", "func_plat modelindex must resolve to *10");
+const spawnedPlatTrigger = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "plat_trigger");
+assert.ok(spawnedPlatTrigger, "SP_func_plat must spawn its center trigger through ED_CallSpawn");
+assert.equal(spawnedPlatTrigger.solid, SOLID_TRIGGER, "func_plat trigger solid mismatch");
+assert.equal(spawnedPlatTrigger.enemy, spawnedPlat, "func_plat trigger must target the platform");
+
+const spawnedRotating = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_rotating");
+assert.ok(spawnedRotating, "SpawnEntities must keep func_rotating in the runtime");
+assert.equal(spawnedRotating.movetype, MOVETYPE_PUSH, "SpawnEntities func_rotating movetype mismatch");
+assert.deepEqual(spawnedRotating.movedir, [0, 0, 1], "SpawnEntities func_rotating X_AXIS movedir mismatch");
+assert.deepEqual(spawnedRotating.avelocity, [0, 0, 90], "SpawnEntities func_rotating START_ON velocity mismatch");
+assert.equal((spawnedRotating.s.effects & EF_ANIM_ALL) !== 0, true, "SpawnEntities func_rotating EF_ANIM_ALL mismatch");
+assert.equal((spawnedRotating.s.effects & EF_ANIM_ALLFAST) !== 0, true, "SpawnEntities func_rotating EF_ANIM_ALLFAST mismatch");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedRotating.s.modelindex - 1], "*11", "func_rotating modelindex must resolve to *11");
+
+const spawnedButton = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_button");
+assert.ok(spawnedButton, "SpawnEntities must keep func_button in the runtime");
+assert.equal(spawnedButton.movetype, MOVETYPE_STOP, "SpawnEntities func_button movetype mismatch");
+assert.equal(spawnedButton.solid, SOLID_BSP, "SpawnEntities func_button solid mismatch");
+assert.equal(spawnedButton.moveinfo.state, STATE_BOTTOM, "SpawnEntities func_button initial state mismatch");
+assert.equal(spawnedButton.moveinfo.wait, 2, "SpawnEntities func_button wait mismatch");
+assert.equal((spawnedButton.s.effects & EF_ANIM01) !== 0, true, "SpawnEntities func_button idle animation mismatch");
+assert.equal(typeof spawnedButton.touch, "function", "SpawnEntities func_button must be touchable when untargeted");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedButton.s.modelindex - 1], "*12", "func_button modelindex must resolve to *12");
+
+const spawnedDoor = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_door" && entity.targetname === "remote_door");
+assert.ok(spawnedDoor, "SpawnEntities must keep func_door in the runtime");
+assert.equal(spawnedDoor.movetype, MOVETYPE_PUSH, "SpawnEntities func_door movetype mismatch");
+assert.equal(spawnedDoor.solid, SOLID_BSP, "SpawnEntities func_door solid mismatch");
+assert.equal(spawnedDoor.moveinfo.state, STATE_BOTTOM, "SpawnEntities func_door initial state mismatch");
+assert.equal(typeof spawnedDoor.use, "function", "SpawnEntities func_door must expose the runtime use callback");
+assert.equal(typeof spawnedDoor.think, "function", "targetnamed func_door must schedule move-speed calculation");
+assert.equal(spawnedDoor.nextthink, FRAMETIME, "targetnamed func_door nextthink mismatch");
+assert.equal((spawnedDoor.s.effects & EF_ANIM_ALL) !== 0, true, "SpawnEntities func_door EF_ANIM_ALL mismatch");
+assert.equal((spawnedDoor.s.effects & EF_ANIM_ALLFAST) !== 0, true, "SpawnEntities func_door EF_ANIM_ALLFAST mismatch");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedDoor.s.modelindex - 1], "*13", "func_door modelindex must resolve to *13");
+G_RunFrame(funcBrushContext);
+assert.equal(spawnedDoor.nextthink, 0, "G_RunFrame must execute func_door scheduled move-speed think");
+assert.equal(
+  funcBrushContext.runtime.logEntries.some((entry) => entry.kind === "think" && entry.entityIndex === spawnedDoor.index && entry.message.includes("calc move speed")),
+  true,
+  "G_RunFrame must log func_door move-speed calculation"
 );
 
 const commandContext = createGameMainContext(imports);

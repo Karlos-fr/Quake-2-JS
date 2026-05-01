@@ -2,11 +2,16 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: `SP_func_plat`, `SP_func_rotating`, `SP_func_button` et `SP_func_door`.
 - 2026-05-01: `SP_info_player_start`, `SP_info_player_deathmatch`, `SP_info_player_coop` et `SP_info_player_intermission`.
 - 2026-05-01: `SP_item_health`, `SP_item_health_small`, `SP_item_health_large` et `SP_item_health_mega`.
 
 ## Verdict du lot
 
+- `SP_func_plat`: valide. Le prototype et l'entree `func_plat` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_func.ts`; la fonction conserve `SOLID_BSP`, `MOVETYPE_PUSH`, le modele inline, les defaults speed/accel/decel/dmg, le calcul top/bottom, `Use_Plat`, `plat_spawn_inside_trigger`, le state initial targetnamed/non-targetnamed et les sons.
+- `SP_func_rotating`: valide. Le dispatch `func_rotating` atteint `SP_func_rotating`; le port conserve `SOLID_BSP`, `MOVETYPE_PUSH`/`MOVETYPE_STOP`, choix d'axe, `REVERSE`, defaults speed/dmg, callbacks `rotating_use`/`rotating_blocked`, `START_ON`, flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, setmodel/link.
+- `SP_func_button`: valide. Le dispatch `func_button` atteint `SP_func_button`; le port conserve direction, `MOVETYPE_STOP`, `SOLID_BSP`, setmodel, son par defaut/silence, speed/accel/decel/wait/lip, positions `pos1`/`pos2`, callbacks use/touch/die, damage shootable, animation idle et moveinfo.
+- `SP_func_door`: valide. Le dispatch `func_door` atteint `SP_func_door`; le port conserve sons, direction, `MOVETYPE_PUSH`, `SOLID_BSP`, setmodel, blocked/use, speed deathmatch, accel/decel/wait/lip/dmg, positions start/open, damage/message touch, moveinfo, flags d'animation, teammaster, link et think `Think_CalcMoveSpeed`/`Think_SpawnDoorTrigger`.
 - `SP_info_player_start`: valide. La declaration/table de `game/g_spawn.c` est portee via `spawns[]` vers `packages/game/src/p_client.ts`; la fonction preserve le no-op hors coop et planifie `SP_CreateCoopSpots` a `level.time + FRAMETIME` sur `security`, avec creation des trois spots `jail3` d'origine.
 - `SP_info_player_deathmatch`: valide. Hors deathmatch, la fonction appelle `G_FreeEdict`; en deathmatch, elle branche `SP_misc_teleporter_dest`, modele `models/objects/dmspot/tris.md2`, `SOLID_BBOX`, bounds et modelindex visible. Le cas edict-prefix protege reste non lie/non visible, compatible avec le garde original de `G_FreeEdict`.
 - `SP_info_player_coop`: valide. Hors coop, la fonction appelle `G_FreeEdict`; en coop, elle conserve le spot et planifie `SP_FixCoopSpots` sur les maps originales, avec copie du `targetname` du `info_player_start` proche prouvee.
@@ -18,6 +23,12 @@
 
 ## Checklist appliquee
 
+- Identification: lot brush spawn dans matrice `game_g_spawn.c.md`, prototypes et `spawns[]` originaux dans `Quake-2-master/game/g_spawn.c`, definitions originales dans `game/g_func.c`, cible portee `packages/game/src/g_func.ts` importee par `packages/game/src/g_spawn.ts`.
+- Comparaison C/H vs TS: entrees `edict_t *ent` vs `GameEntity, GameRuntime`, sorties void, classnames `func_plat`/`func_rotating`/`func_button`/`func_door`, flags, defaults, callbacks, modeles inline, moveinfo, sons, damage, triggers et effects verifies.
+- Commentaires d'en-tete: les quatre fonctions TS ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage quand utiles; pas d'ajustement necessaire.
+- Runtime: valide. `SpawnEntities` parse le texte map, `ED_CallSpawn` dispatch par `spawns[]`, les quatre brush entities sont liees avec `modelindex` inline, `func_plat` cree son trigger interne, `func_door` execute son think via `G_RunFrame`, et `g_func` couvre use/touch/think/mover callbacks.
+- apps/web: valide indirectement. Le navigateur doit consommer ces sorties de runtime via local/full-game; aucune logique parallele de spawn brush n'a ete detectee. Les brush transforms visibles passent par refresh frames et snapshots.
+- renderer-three: valide indirectement. Ces entites produisent des brush models inline visibles/mouvants; `apps/web` extrait les modeles `*N` et poses, et `packages/renderer-three/src/refresh-entity-sync.ts` conserve/positionne les instances inline-brush avec origin/angles.
 - Identification: matrice `game_g_spawn.c.md`, source `Quake-2-master/game/g_spawn.c`, definitions originales dans `game/g_items.c`, cible proprietaire `packages/game/src/g_items.ts`.
 - Comparaison C/H vs TS: entrees `edict_t *self` vs `GameEntity, GameRuntime`, sorties void, branches `DF_NO_HEALTH`, effets de bord `model`, `count`, `style`, `SpawnItem`, sons et assets verifies.
 - Commentaires d'en-tete: les quatre fonctions TS ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level` et `Behavior`; pas d'ajustement necessaire.
@@ -33,11 +44,14 @@
 
 ## Corrections appliquees
 
+- `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour les quatre classnames brush `func_plat`, `func_rotating`, `func_button` et `func_door`, leur presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, les modeles inline, le trigger interne de plat, les effects, callbacks et le think door execute par `G_RunFrame`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour les quatre classnames player/intermission, le dispatch `spawns[]`, le spot deathmatch visible, les hacks coop `security`/fixup, et le flux intermission/camera.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour le flux map normal `SpawnEntities` -> `ED_CallSpawn` -> callbacks health -> `G_RunFrame`/`droptofloor`, et pour le rejet `DF_NO_HEALTH` en deathmatch sur les quatre variantes.
 
 ## Tests
 
+- `npm run verify:g-func`: ok le 2026-05-01.
+- `npm run verify:local-gameplay-sync`: ok le 2026-05-01.
 - `npm run verify:p-client`: ok le 2026-05-01.
 - `npm run verify:p-hud`: ok le 2026-05-01.
 - `npm run verify:full-game:newgame`: ok le 2026-05-01.
@@ -49,4 +63,4 @@
 
 ## Prochain lot recommande
 
-- Valider `SP_func_plat`, `SP_func_rotating`, `SP_func_button` et `SP_func_door` si le lot reste raisonnable.
+- Valider `SP_func_door_secret`, `SP_func_door_rotating`, `SP_func_water` et `SP_func_train` si le lot reste raisonnable.

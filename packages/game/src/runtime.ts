@@ -374,11 +374,16 @@ export interface GameMoveInfo {
 }
 
 /**
- * Category: New
- * Purpose: Preserve the `mframe_t` callback record used by monster move sequences.
+ * Original name: mframe_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must keep the original `aifunc`, `dist` and `thinkfunc` field names.
+ * Behavior:
+ * - Preserves one monster animation frame record with its AI callback, movement distance and optional think callback.
+ *
+ * Porting notes:
+ * - Function pointers are represented as explicit TypeScript callbacks that receive the runtime adapter.
  */
 export interface GameMonsterFrame {
   aifunc: ((self: GameEntity, dist: number, runtime: GameRuntime) => void) | undefined;

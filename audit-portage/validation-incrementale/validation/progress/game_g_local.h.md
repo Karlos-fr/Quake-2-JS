@@ -869,6 +869,24 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: ligne explicite ajoutee pour `moveinfo_t.endfunc`, absente de la matrice generee.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-func` OK; `npm run verify:g-misc` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `mframe_t` avec champs/callbacks `aifunc`, `dist`, `thinkfunc`.
+- Verdict: `Valide` pour la structure et les 3 champs apres comparaison H/TS, verification du commentaire de portage, branchement runtime monster et preuves renderer/web.
+- Source H comparee: `mframe_t` contient dans l'ordre le callback AI `void (*aifunc)(edict_t *self, float dist)`, le `float dist`, puis le callback de frame `void (*thinkfunc)(edict_t *self)`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `mframe_t` vers `GameMonsterFrame`, point d'attache header pour la structure.
+  - `packages/game/src/runtime.ts`: `GameMonsterFrame` porte `aifunc`, `dist`, `thinkfunc` avec les noms C; commentaire de portage mis a jour avec `Original name`, `Source`, `Category: Ported`, `Fidelity level`, comportement et notes.
+  - `packages/game/src/g_monster.ts`: `M_MoveFrame` selectionne la frame courante, appelle `aifunc(self, frame.dist * self.monsterinfo.scale, runtime)`, force `dist=0` sous `AI_HOLD_FRAME`, puis appelle `thinkfunc`.
+  - Modules monstres: les tables `mframe_t` portees alimentent `monsterinfo.currentmove`, puis `monster_think`/`M_MoveFrame`.
+- Runtime: integration attendue et branchee depuis les spawns monstres qui posent `self.think = monster_think` et `self.monsterinfo.currentmove`, puis `G_RunFrame` execute les callbacks de frame via `M_MoveFrame`. Les preuves de session couvrent l'ordre `aifunc` puis `thinkfunc`, le scale de distance et le cas `AI_HOLD_FRAME`.
+- apps/web: integration attendue via le host local/full-game qui avance le runtime game et consomme les snapshots, sons et etats produits par les frames monstres; aucune logique parallele `mframe_t` detectee dans `apps/web`. `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue car ces frames changent les frames/modeles visibles des monstres et peuvent declencher tirs/sons/temp entities en aval. `packages/renderer-three` ne lit pas `mframe_t` directement; il consomme les `ClientRefreshFrame.entities`, modeles, frames et sorties runtime issues du flux full-game. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `mframe_t` ajoute/mis a jour dans `runtime.ts`; commentaires d'en-tete de `M_MoveFrame` et `monster_think` verifies.
+- Corrections appliquees:
+  - `packages/game/src/runtime.ts`: commentaire de portage `GameMonsterFrame` rattache explicitement a `mframe_t`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions de structure `mframe_t`, mutation `dist`, callbacks `aifunc`/`thinkfunc`, execution `M_MoveFrame`, scale et `AI_HOLD_FRAME`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes explicites ajoutees pour `mframe_t.aifunc` et `mframe_t.thinkfunc`, absentes de la matrice generee.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-monster` OK; `npm run verify:m-soldier` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -902,7 +920,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `mframe_t`, `dist` et les callbacks `aifunc`/`thinkfunc` si le lot reste petit.
+- Continuer avec `mmove_t`, `firstframe`, `lastframe`, `frame` et le callback `endfunc` si le lot reste petit.
 
 ## Blocages
 

@@ -18,6 +18,7 @@ import {
   CS_CDTRACK,
   CS_LIGHTS,
   DF_ALLOW_EXIT,
+  MAX_QPATH,
   multicast_t,
   temp_event_t,
   type trace_t,
@@ -41,6 +42,7 @@ import {
   spawnGameEntity
 } from "../../packages/game/src/index.js";
 import { G_RunFrame, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import {
   SP_target_blaster,
   SP_target_changelevel,
@@ -158,6 +160,26 @@ function verifyTargetSpeaker(): void {
     runtime.logEntries.some((entry) => entry.message.includes("target_speaker with no noise set")),
     "target_speaker with no noise must warn"
   );
+
+  const longNoise = spawnGameEntity(runtime);
+  longNoise.classname = "target_speaker";
+  longNoise.properties.noise = "a".repeat(80);
+  SP_target_speaker(longNoise, runtime);
+  assert.equal(
+    runtime.assets.soundPaths[longNoise.noise_index - 1],
+    `${"a".repeat(80)}.wav`.slice(0, MAX_QPATH - 1),
+    "target_speaker Com_sprintf buffer branch must truncate to MAX_QPATH - 1"
+  );
+
+  const longNoiseWithSuffix = spawnGameEntity(runtime);
+  longNoiseWithSuffix.classname = "target_speaker";
+  longNoiseWithSuffix.properties.noise = `sound/${"b".repeat(70)}.wav`;
+  SP_target_speaker(longNoiseWithSuffix, runtime);
+  assert.equal(
+    runtime.assets.soundPaths[longNoiseWithSuffix.noise_index - 1],
+    longNoiseWithSuffix.properties.noise.slice(0, MAX_QPATH - 1),
+    "target_speaker strncpy buffer branch must truncate before sound registration"
+  );
 }
 
 function verifyTargetHelpSecretGoal(): void {
@@ -165,10 +187,45 @@ function verifyTargetHelpSecretGoal(): void {
   const help = spawnGameEntity(runtime);
   help.classname = "target_help";
   help.message = "Find the exit";
-  SP_target_help(help, runtime);
+  ED_CallSpawn(help, runtime);
+  assert.equal(help.use?.name, "Use_Target_Help", "target_help spawn table must install Use_Target_Help");
   help.use?.(help, null, null, runtime);
   assert.equal(runtime.helpmessage2, "Find the exit", "target_help message mismatch");
   assert.equal(runtime.helpchanged, 1, "target_help counter mismatch");
+
+  const help1 = spawnGameEntity(runtime);
+  help1.classname = "target_help";
+  help1.spawnflags = 1;
+  help1.message = "Use the computer";
+  SP_target_help(help1, runtime);
+  help1.use?.(help1, null, null, runtime);
+  assert.equal(runtime.helpmessage1, "Use the computer", "target_help spawnflag 1 must write helpmessage1");
+  assert.equal(runtime.helpchanged, 2, "target_help second use must increment helpchanged");
+
+  const longHelp = spawnGameEntity(runtime);
+  longHelp.classname = "target_help";
+  longHelp.message = "h".repeat(600);
+  SP_target_help(longHelp, runtime);
+  longHelp.use?.(longHelp, null, null, runtime);
+  assert.equal(runtime.helpmessage2.length, 511, "target_help strncpy must cap helpmessage copy at 511 chars");
+  assert.equal(runtime.helpmessage2, "h".repeat(511), "target_help truncated message content mismatch");
+
+  const missingMessage = spawnGameEntity(runtime);
+  missingMessage.classname = "target_help";
+  SP_target_help(missingMessage, runtime);
+  assert.equal(missingMessage.inuse, false, "target_help without message must free itself");
+  assert.ok(
+    runtime.logEntries.some((entry) => entry.message.includes("target_help with no message")),
+    "target_help without message must warn"
+  );
+
+  const deathmatchRuntime = createRuntime();
+  deathmatchRuntime.deathmatch = true;
+  const dmHelp = spawnGameEntity(deathmatchRuntime);
+  dmHelp.classname = "target_help";
+  dmHelp.message = "No help in deathmatch";
+  SP_target_help(dmHelp, deathmatchRuntime);
+  assert.equal(dmHelp.inuse, false, "target_help must auto-remove in deathmatch");
 
   const secret = createHighEntity(runtime, "target_secret");
   SP_target_secret(secret, runtime);

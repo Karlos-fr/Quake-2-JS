@@ -23,6 +23,18 @@
 - Tests lances: `npm run verify:g-svcmds`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
 - Corrections TS portees: aucune. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour prouver l'etat initial et le couple `mask`/`compare`.
 
+## Session 2026-05-01 - StringToFilter
+
+- Lot traite: `StringToFilter` et ses locaux `num`, `b`, `m`.
+- Checklist appliquee: identification matrice/source/cible, comparaison C vs TS du parsing d'adresse, validation des erreurs, effets de bord sur `filter.mask`/`filter.compare`, commentaire d'en-tete, branchement runtime, apps/web, renderer-three, tests, mise a jour matrice/progress/global.
+- Verdict: lot valide apres correction. Le C refuse une adresse dont l'octet courant ne commence pas par un chiffre, y compris chaine vide ou separateur final; le TS le fait maintenant aussi avant chaque octet. Les octets non nuls reglent le masque a 255, les octets zero ou omis restent wildcard, puis `mask` et `compare` sont packes en little-endian comme le cast C `*(unsigned *)`.
+- Locaux: le buffer C `num` est represente par la tranche `source.slice(start, cursor)`; `b[4]` par `bytes`; `m[4]` par `mask`. Les tests prouvent `192.246.40`, `0.0.5.0`, les erreurs `1.` et chaine vide, et le comportement permissif original avec un separateur non point entre runs numeriques.
+- Runtime: `StringToFilter` est appelee par `SVCmd_AddIP_f` et `SVCmd_RemoveIP_f`, atteignables via `ServerCommand` et la commande serveur `sv`; les filtres produits sont ensuite consommes par `SV_FilterPacket` dans la gate `ClientConnect`.
+- apps/web: le host full-game consomme l'API game portee et son etat serveur; aucune logique web parallele de parsing IP n'est attendue pour ce lot.
+- renderer-three: non applicable, le parsing IP ne produit ni modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene.
+- Tests lances: `npm run verify:g-svcmds`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
+- Corrections TS portees: `packages/game/src/g_svcmds.ts` refuse maintenant explicitement les octets absents avant `charCodeAt`. Test renforce dans `scripts/verify/quake2-g-svcmds.ts`.
+
 ## Prochain lot recommande
 
-- Continuer avec `StringToFilter` et ses locaux `num`, `b`, `m` si le lot reste centre sur le parsing d'adresse.
+- Continuer avec `SV_FilterPacket` et ses locaux `i`, `in`, `m`, `p` si le lot reste centre sur le filtrage d'adresse entrante.

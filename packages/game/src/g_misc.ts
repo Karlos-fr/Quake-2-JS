@@ -2219,11 +2219,29 @@ export function target_string_use(
   }
 }
 
+/**
+ * Original name: SP_target_string
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Installs the `target_string_use` callback and defaults missing messages to an empty string.
+ */
 export function SP_target_string(self: GameEntity, _runtime: GameRuntime): void {
   self.message ??= "";
   self.use = target_string_use;
 }
 
+/**
+ * Original name: func_clock_reset
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Clears the current activator and initializes `health`/`wait` for count-up or count-down clocks.
+ */
 export function func_clock_reset(self: GameEntity): void {
   self.activator = null;
   if ((self.spawnflags & 1) !== 0) {
@@ -2235,6 +2253,15 @@ export function func_clock_reset(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: func_clock_format_countdown
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Formats timer values in the source clock widths: `xx`, `xx:xx`, or `xx:xx:xx`.
+ */
 export function func_clock_format_countdown(self: GameEntity): void {
   if (self.style === 0) {
     self.message = `${self.health}`.padStart(2, " ");
@@ -2242,7 +2269,7 @@ export function func_clock_format_countdown(self: GameEntity): void {
   }
 
   if (self.style === 1) {
-    self.message = `${Math.trunc(self.health / 60)}`.padStart(2, " ") + `:${self.health % 60}`.padStart(2, "0");
+    self.message = `${Math.trunc(self.health / 60)}`.padStart(2, " ") + ":" + `${self.health % 60}`.padStart(2, "0");
     return;
   }
 
@@ -2250,7 +2277,7 @@ export function func_clock_format_countdown(self: GameEntity): void {
     const hours = Math.trunc(self.health / 3600);
     const minutes = Math.trunc((self.health - (hours * 3600)) / 60);
     const seconds = self.health % 60;
-    self.message = `${hours}`.padStart(2, " ") + `:${minutes}`.padStart(2, "0") + `:${seconds}`.padStart(2, "0");
+    self.message = `${hours}`.padStart(2, " ") + ":" + `${minutes}`.padStart(2, "0") + ":" + `${seconds}`.padStart(2, "0");
   }
 }
 

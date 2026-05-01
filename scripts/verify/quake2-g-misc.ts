@@ -105,6 +105,8 @@ import {
   ThrowGib,
   TH_viewthing,
   useGameEntity,
+  func_clock_format_countdown,
+  func_clock_reset,
   func_train_find,
   train_use
 } from "../../packages/game/src/index.js";
@@ -590,6 +592,36 @@ function verifyTargetStringMapsFrames(): void {
 function verifyFuncClockBootstrapsTargetStringMessage(): void {
   const runtime = createHarnessRuntime();
 
+  const resetUp = spawnGameEntity(runtime);
+  resetUp.spawnflags = 1;
+  resetUp.count = 7;
+  resetUp.activator = spawnGameEntity(runtime);
+  func_clock_reset(resetUp);
+  assert.equal(resetUp.activator, null, "func_clock_reset must clear the activator like the C helper");
+  assert.equal(resetUp.health, 0, "TIMER_UP reset must start health at zero");
+  assert.equal(resetUp.wait, 7, "TIMER_UP reset must copy count into wait");
+
+  const resetDown = spawnGameEntity(runtime);
+  resetDown.spawnflags = 2;
+  resetDown.count = 5;
+  func_clock_reset(resetDown);
+  assert.equal(resetDown.health, 5, "TIMER_DOWN reset must start health at count");
+  assert.equal(resetDown.wait, 0, "TIMER_DOWN reset must stop at zero");
+
+  const formatted = spawnGameEntity(runtime);
+  formatted.style = 0;
+  formatted.health = 7;
+  func_clock_format_countdown(formatted);
+  assert.equal(formatted.message, " 7", "style 0 countdown format must match %2i");
+  formatted.style = 1;
+  formatted.health = 65;
+  func_clock_format_countdown(formatted);
+  assert.equal(formatted.message, " 1:05", "style 1 countdown format must zero-pad seconds after the colon");
+  formatted.style = 2;
+  formatted.health = 3661;
+  func_clock_format_countdown(formatted);
+  assert.equal(formatted.message, " 1:01:01", "style 2 countdown format must zero-pad minutes and seconds");
+
   const stringTarget = spawnGameEntity(runtime);
   stringTarget.classname = "target_string";
   stringTarget.targetname = "clock_display";
@@ -599,15 +631,20 @@ function verifyFuncClockBootstrapsTargetStringMessage(): void {
   const clock = spawnGameEntity(runtime);
   clock.classname = "func_clock";
   clock.target = "clock_display";
-  clock.spawnflags = 1;
+  clock.spawnflags = 1 | 4;
   clock.style = 1;
   clock.count = 3;
   SP_func_clock(clock, runtime);
+  assert.equal(clock.message?.length, 16, "SP_func_clock must allocate a CLOCK_MESSAGE_SIZE-sized message buffer");
+  assert.equal(clock.health, 0, "SP_func_clock must reset count-up health before scheduling");
+  assert.equal(clock.wait, 3, "SP_func_clock must reset count-up wait from count before scheduling");
+  assert.equal(clock.use !== undefined, true, "START_OFF func_clock must install func_clock_use");
 
   useGameEntity(runtime, clock, null, clock);
+  assert.equal(stringTarget.message, " 0:00", "func_clock_use must immediately push the first formatted message");
   runPendingThinks(runtime, runtime.time + 1);
 
-  assert.ok(stringTarget.message && stringTarget.message.length >= 4, "func_clock must write a formatted target_string message");
+  assert.equal(stringTarget.message, " 0:01", "func_clock think must advance and push the next message through target_string");
 }
 
 function verifyMiscExploboxSpawnsShootableBarrel(): void {

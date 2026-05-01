@@ -18,6 +18,7 @@ import {
   AI_COMBAT_POINT,
   AI_DUCKED,
   AI_GOOD_GUY,
+  AI_HOLD_FRAME,
   AI_MEDIC,
   AI_NOSTEP,
   AI_RESURRECTING,
@@ -110,7 +111,7 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t, moveinfo_t } from "../../packages/game/src/g_local.js";
+import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, moveinfo_t } from "../../packages/game/src/g_local.js";
 import {
   ARMOR_BODY as INDEX_ARMOR_BODY,
   ARMOR_COMBAT as INDEX_ARMOR_COMBAT,
@@ -146,6 +147,7 @@ import {
   WEAP_SUPERSHOTGUN as INDEX_WEAP_SUPERSHOTGUN
 } from "../../packages/game/src/index.js";
 import { FindItem, GetArmorInfoByItem, GetItemByIndex, PrecacheItem } from "../../packages/game/src/g_items.js";
+import { M_MoveFrame } from "../../packages/game/src/g_monster.js";
 import { STATE_BOTTOM, STATE_UP, createGameRuntimeFromBspEntities, createRuntimeEntity } from "../../packages/game/src/runtime.js";
 
 const client = createGameClient();
@@ -569,6 +571,55 @@ assert.equal(st.maxyaw, 120, "spawn_temp maxyaw field mismatch");
 assert.equal(st.minpitch, -20, "spawn_temp minpitch field mismatch");
 assert.equal(st.maxpitch, 35, "spawn_temp maxpitch field mismatch");
 assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");
+assert.deepEqual(
+  Object.keys({
+    aifunc: undefined,
+    dist: 0,
+    thinkfunc: undefined
+  } satisfies mframe_t),
+  ["aifunc", "dist", "thinkfunc"],
+  "mframe_t field order mismatch"
+);
+let mframeAiDist = -1;
+let mframeThinkCalls = 0;
+let mframeCallbackOrder = "";
+const monsterFrame = {
+  aifunc: (_self, dist) => {
+    mframeCallbackOrder += "ai";
+    mframeAiDist = dist;
+  },
+  dist: 7.5,
+  thinkfunc: () => {
+    mframeCallbackOrder += "+think";
+    mframeThinkCalls++;
+  }
+} satisfies mframe_t;
+assert.equal(monsterFrame.dist, 7.5, "mframe_t dist field mismatch");
+assert.equal(typeof monsterFrame.aifunc, "function", "mframe_t aifunc callback mismatch");
+assert.equal(typeof monsterFrame.thinkfunc, "function", "mframe_t thinkfunc callback mismatch");
+const mframeRuntime = createGameRuntimeFromBspEntities([]);
+const mframeEntity = createRuntimeEntity({ classname: "mframe_probe" }, 23);
+mframeEntity.s.frame = 4;
+mframeEntity.monsterinfo.scale = 2;
+mframeEntity.monsterinfo.currentmove = {
+  firstframe: 5,
+  lastframe: 5,
+  frame: [monsterFrame],
+  endfunc: undefined
+};
+M_MoveFrame(mframeEntity, mframeRuntime);
+assert.equal(mframeEntity.s.frame, 5, "M_MoveFrame must advance into the current mframe_t range");
+assert.equal(mframeEntity.nextthink, 0.1, "M_MoveFrame must schedule the next monster think");
+assert.equal(mframeAiDist, 15, "M_MoveFrame must pass mframe_t.dist scaled by monsterinfo.scale");
+assert.equal(mframeThinkCalls, 1, "M_MoveFrame must invoke mframe_t.thinkfunc");
+assert.equal(mframeCallbackOrder, "ai+think", "M_MoveFrame must invoke aifunc before thinkfunc");
+mframeEntity.monsterinfo.aiflags |= AI_HOLD_FRAME;
+mframeAiDist = -1;
+mframeCallbackOrder = "";
+M_MoveFrame(mframeEntity, mframeRuntime);
+assert.equal(mframeEntity.s.frame, 5, "AI_HOLD_FRAME must keep the current mframe_t frame");
+assert.equal(mframeAiDist, 0, "AI_HOLD_FRAME must pass zero distance to mframe_t.aifunc");
+assert.equal(mframeCallbackOrder, "ai+think", "AI_HOLD_FRAME must still run mframe_t callbacks");
 assert.equal(FOFS("classname"), "classname", "FOFS selector mismatch");
 assert.equal(STOFS("sky"), "sky", "STOFS sky selector mismatch");
 assert.equal(STOFS("skyrotate"), "skyrotate", "STOFS skyrotate selector mismatch");

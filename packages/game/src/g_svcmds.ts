@@ -98,6 +98,11 @@ export function StringToFilter(context: GameServerCommandContext, source: string
   let cursor = 0;
 
   for (let index = 0; index < 4; index += 1) {
+    if (cursor >= source.length) {
+      context.gi.cprintf(null, PRINT_HIGH, "Bad filter address: %s\n", source);
+      return false;
+    }
+
     const character = source.charCodeAt(cursor);
     if (character < 48 || character > 57) {
       context.gi.cprintf(null, PRINT_HIGH, "Bad filter address: %s\n", source);

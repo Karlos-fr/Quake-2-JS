@@ -2,6 +2,22 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `SP_target_string`, `CLOCK_MESSAGE_SIZE`, `func_clock_reset` et `func_clock_format_countdown`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `SP_target_string` conserve le defaut `message = ""` et l'installation de `target_string_use`; `CLOCK_MESSAGE_SIZE` conserve la valeur `16`; `func_clock_reset` conserve l'effacement de l'activator et l'initialisation TIMER_UP/TIMER_DOWN de `health`/`wait`; `func_clock_format_countdown` conserve les trois formats `xx`, `xx:xx`, `xx:xx:xx` et le zero-padding apres les deux-points.
+  - Commentaires d'en-tete ajoutes: `SP_target_string`, `func_clock_reset` et `func_clock_format_countdown` documentent original/source/categorie portee/fidelite `Strict` et comportement.
+  - Correction appliquee: `packages/game/src/g_misc.ts` applique maintenant le padding aux champs minutes/secondes de `func_clock_format_countdown`; avant correction, `style 1` produisait ` 1:5` au lieu de ` 1:05`.
+  - Branchement runtime verifie: `target_string` et `func_clock` sont enregistres dans `g_spawn.ts` et exportes; `SP_func_clock` installe `func_clock_think` ou `func_clock_use`; le flux runtime trouve le `target_string`, pousse son message, puis appelle `target_string_use` pour mettre a jour les frames des brush digits.
+  - `apps/web`: integration attendue car le lot produit des frames de brush digits visibles. Aucune logique parallele trouvee; le web consomme les sorties via les flux full-game/local, packet entities et refresh frames.
+  - `renderer-three`: integration attendue pour brush models inline visibles et changements de frame; les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et adapters Three. Aucun manque renderer detecte.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+  - `npm run verify:g-spawn` bloque hors lot: assertion `targetnamed func_plat must start in STATE_UP` obtient `2` au lieu de `3`.
+- Prochain lot recommande: `func_clock_think`, local `gmtime`, locals `savetarget`/`savemessage`, puis `func_clock_use` si le lot reste petit.
+
 - 2026-05-01: `SP_target_character`, `target_string_use`, local `e` et local `c`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `SP_target_character` conserve `MOVETYPE_PUSH`, l'equivalent `gi.setmodel`, `SOLID_BSP`, la frame initiale 12 et le link; `target_string_use` conserve le parcours `teammaster`/`teamchain`, le skip `count == 0`, l'index `count - 1`, le blank hors longueur, et le mapping chiffres / `-` / `:` / autres caracteres.

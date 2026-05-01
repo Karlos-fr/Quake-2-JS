@@ -26,6 +26,7 @@ import {
   CS_CDTRACK,
   CS_LIGHTS,
   DF_ALLOW_EXIT,
+  MAX_QPATH,
   EF_BLASTER,
   EF_HYPERBLASTER,
   RF_BEAM,
@@ -81,6 +82,7 @@ const TARGET_LASER_YELLOW = 16;
 const TARGET_LASER_ORANGE = 32;
 const TARGET_LASER_FAT = 64;
 const TARGET_LASER_SPARKS = 0x80000000;
+const TARGET_HELP_MESSAGE_COPY_LENGTH = 511;
 
 /**
  * Original name: Use_Target_Tent
@@ -148,6 +150,7 @@ export function Use_Target_Speaker(ent: GameEntity, _other: GameEntity | null, _
  *
  * Porting notes:
  * - Uses `ent.properties.noise` for the original map spawn temp value `st.noise`.
+ * - Keeps the original fixed `MAX_QPATH` stack buffer limit before registering the sound.
  */
 export function SP_target_speaker(ent: GameEntity, runtime: GameRuntime): void {
   const noise = ent.properties.noise;
@@ -161,7 +164,7 @@ export function SP_target_speaker(ent: GameEntity, runtime: GameRuntime): void {
     return;
   }
 
-  const soundPath = noise.includes(".wav") ? noise : `${noise}.wav`;
+  const soundPath = truncateCString(noise.includes(".wav") ? noise : `${noise}.wav`, MAX_QPATH - 1);
   ent.noise_index = registerGameSound(runtime, soundPath);
   if (!ent.volume) {
     ent.volume = 1.0;
@@ -185,12 +188,19 @@ export function SP_target_speaker(ent: GameEntity, runtime: GameRuntime): void {
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Copies the entity message into the selected fixed-size help buffer and increments `helpchanged`.
+ *
+ * Porting notes:
+ * - Mirrors the original `strncpy(..., sizeof(game.helpmessage*) - 1)` limit with an explicit string slice.
  */
 export function Use_Target_Help(ent: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
+  const message = truncateCString(ent.message ?? "", TARGET_HELP_MESSAGE_COPY_LENGTH);
   if ((ent.spawnflags & 1) !== 0) {
-    runtime.helpmessage1 = ent.message ?? "";
+    runtime.helpmessage1 = message;
   } else {
-    runtime.helpmessage2 = ent.message ?? "";
+    runtime.helpmessage2 = message;
   }
   runtime.helpchanged += 1;
 }
@@ -200,6 +210,9 @@ export function Use_Target_Help(ent: GameEntity, _other: GameEntity | null, _act
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Removes itself in deathmatch, rejects missing messages, otherwise installs `Use_Target_Help`.
  */
 export function SP_target_help(ent: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
@@ -951,6 +964,10 @@ function stringsEqualIgnoreCase(left: string, right: string): boolean {
 
 function isLowercaseLetter(value: string): boolean {
   return value >= "a" && value <= "z";
+}
+
+function truncateCString(value: string, maxLength: number): string {
+  return value.length > maxLength ? value.slice(0, maxLength) : value;
 }
 
 function crandom(): number {

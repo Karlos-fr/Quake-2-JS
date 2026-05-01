@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `buffer`, le premier `strncpy`, `Use_Target_Help`, le second `strncpy`, et `SP_target_help`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: le buffer local `MAX_QPATH` de `SP_target_speaker` est maintenant borne avant `registerGameSound`, avec suffixe `.wav` conserve quand necessaire. `Use_Target_Help` conserve la selection `helpmessage1` quand `spawnflags & 1` sinon `helpmessage2`, la copie bornee `sizeof(game.helpmessage*) - 1` et l'increment `helpchanged`. `SP_target_help` conserve l'auto-remove deathmatch, le warning/free sans message, et l'installation du callback.
+  - Commentaires d'en-tete verifies et completes pour `SP_target_speaker`, `Use_Target_Help` et `SP_target_help`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage quand utile.
+  - Branchement runtime verifie: `target_help` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; le callback met a jour `runtime.helpmessage1/2` et `runtime.helpchanged`, puis `ClientEndServerFrames` synchronise vers `game_locals_t` quand le runtime est plus recent.
+  - `apps/web`: integration attendue car les messages d'aide alimentent HUD/help computer. Pas de logique parallele masquante constatee; le flux navigateur passe par le runtime full-game/local, les commandes client `help`, les layouts HUD/statusbar et les refresh frames.
+  - `renderer-three`: aucune sortie visible de scene/camera/modeles/particules/beams/dlights/areabits n'est produite directement par `target_help`; le rendu concerne le HUD/layout client, hors `renderer-three`. Les tests full-game renderer restent OK pour verifier l'absence de regression.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: ajout du bornage `MAX_QPATH - 1` pour le buffer son de `SP_target_speaker`; ajout du bornage 511 caracteres pour `Use_Target_Help`; headers completes.
+  - `scripts/verify/quake2-g-target.ts`: couverture ajoutee pour les deux branches de copie du buffer son, `ED_CallSpawn`, spawnflag help1, copie longue tronquee, warning/free sans message et auto-remove deathmatch.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:g-main` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `use_target_secret` et `SP_target_secret` si le lot reste petit.
+
 - 2026-05-01: `Use_Target_Speaker`, les deux entrees locales `chan`, et `SP_target_speaker`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `Use_Target_Speaker` conserve le toggle des sons looped par `spawnflags & 3`, le choix `CHAN_VOICE` ou `CHAN_VOICE | CHAN_RELIABLE`, et l'emission positionnee avec `noise_index`, `volume`, `attenuation` et `timeofs` 0. `SP_target_speaker` conserve le warning sans `st.noise`, l'ajout de `.wav`, le `soundindex`, les defaults volume/attenuation, la conversion `attenuation == -1` vers 0, le prestart du looped-on, l'installation du callback et le link entity.
