@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: flags de porte secrete `SECRET_ALWAYS_SHOOT`, `SECRET_1ST_LEFT`, `SECRET_1ST_DOWN`, puis `door_secret_move1` et son doublon matriciel.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1874-1900` avec `packages/game/src/g_func.ts:76-78,2090-2101` apres ajout du commentaire d'en-tete de `door_secret_move1`.
+- Correction appliquee: commentaire d'en-tete `door_secret_move1` ajoute avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `SECRET_ALWAYS_SHOOT` force les portes secretes ciblees a rester shootables, les portes sans `targetname` restent shootables par defaut, `SECRET_1ST_LEFT` inverse le premier deplacement lateral, `SECRET_1ST_DOWN` remplace ce premier deplacement par une descente, et `door_secret_move1` programme `nextthink = level.time + 1` avec `think = door_secret_move2`.
+- Branchement: `SP_func_door_secret` est referencee par `packages/game/src/g_spawn.ts` pour `func_door_secret`, appelee par `ED_CallSpawn`/`SpawnEntities`; `door_secret_move1` est atteint par `door_secret_use`, lui-meme appele par triggers/use ou par `door_secret_die`, puis par le flux `Move_Calc`/`G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door_secret` dans `apps/web`; le navigateur consomme les snapshots runtime, sons et areabits. `packages/renderer-three` ne porte pas la logique gameplay de porte secrete, mais consomme les sorties visibles attendues via les brush models, positions/interpolations et scene/areabits; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:g-spawn` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: convoyeur brush `func_conveyor_use` et `SP_func_conveyor`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1819-1858` avec `packages/game/src/g_func.ts:2026-2054` apres ajout des commentaires d'en-tete.
 - Correction appliquee: ajout des commentaires d'en-tete `func_conveyor_use` et `SP_func_conveyor` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
@@ -318,7 +326,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `SECRET_ALWAYS_SHOOT`, `SECRET_1ST_LEFT` et `SECRET_1ST_DOWN`, puis `door_secret_move1` si le lot reste petit.
+- Continuer avec `door_secret_move2` et `door_secret_move3`, puis leurs doublons matriciels si le lot reste petit.
 
 ## Blocages
 
