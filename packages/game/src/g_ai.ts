@@ -81,7 +81,7 @@ const ATTACK_TRACE_MASK =
 
 /**
  * Original name: AI_SetSightClient
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -122,7 +122,7 @@ export function AI_SetSightClient(runtime: GameRuntime): void {
 
 /**
  * Original name: ai_move
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -135,7 +135,7 @@ export function ai_move(self: GameEntity, dist: number, runtime: GameRuntime): v
 
 /**
  * Original name: ai_stand
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -187,7 +187,7 @@ export function ai_stand(self: GameEntity, dist: number, runtime: GameRuntime): 
 
 /**
  * Original name: ai_walk
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -213,7 +213,7 @@ export function ai_walk(self: GameEntity, dist: number, runtime: GameRuntime): v
 
 /**
  * Original name: ai_charge
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -240,7 +240,7 @@ export function ai_charge(self: GameEntity, dist: number, runtime: GameRuntime):
 
 /**
  * Original name: ai_turn
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -261,7 +261,7 @@ export function ai_turn(self: GameEntity, dist: number, runtime: GameRuntime): v
 
 /**
  * Original name: range
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -286,7 +286,7 @@ export function range(self: GameEntity, other: GameEntity): number {
 
 /**
  * Original name: visible
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -314,7 +314,7 @@ export function visible(self: GameEntity, other: GameEntity, runtime: GameRuntim
 
 /**
  * Original name: infront
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -330,7 +330,7 @@ export function infront(self: GameEntity, other: GameEntity): boolean {
 
 /**
  * Original name: HuntTarget
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -363,7 +363,7 @@ export function HuntTarget(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: FoundTarget
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -418,7 +418,7 @@ export function FoundTarget(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: FindTarget
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -569,7 +569,7 @@ export function FindTarget(self: GameEntity, runtime: GameRuntime): boolean {
 
 /**
  * Original name: FacingIdeal
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -583,7 +583,7 @@ export function FacingIdeal(self: GameEntity): boolean {
 
 /**
  * Original name: M_CheckAttack
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -670,7 +670,7 @@ export function M_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
 
 /**
  * Original name: ai_run_melee
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -693,7 +693,7 @@ export function ai_run_melee(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: ai_run_missile
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -716,7 +716,7 @@ export function ai_run_missile(self: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: ai_run_slide
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -738,7 +738,7 @@ export function ai_run_slide(self: GameEntity, distance: number, runtime: GameRu
 
 /**
  * Original name: ai_checkattack
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -846,7 +846,7 @@ export function ai_checkattack(self: GameEntity, _dist: number, runtime: GameRun
 
 /**
  * Original name: ai_run
- * Source: game/g_ai.c
+ * Source: Quake-2-master/game/g_ai.c
  * Category: Ported
  * Fidelity level: Close
  *

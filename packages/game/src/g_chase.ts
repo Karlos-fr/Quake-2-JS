@@ -36,7 +36,7 @@ import type { GameEntity, GameRuntime } from "./runtime.js";
 
 /**
  * Original name: UpdateChaseCam
- * Source: game/g_chase.c
+ * Source: Quake-2-master/game/g_chase.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -146,7 +146,7 @@ export function UpdateChaseCam(ent: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: ChaseNext
- * Source: game/g_chase.c
+ * Source: Quake-2-master/game/g_chase.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -186,7 +186,7 @@ export function ChaseNext(ent: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: ChasePrev
- * Source: game/g_chase.c
+ * Source: Quake-2-master/game/g_chase.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -226,7 +226,7 @@ export function ChasePrev(ent: GameEntity, runtime: GameRuntime): void {
 
 /**
  * Original name: GetChaseTarget
- * Source: game/g_chase.c
+ * Source: Quake-2-master/game/g_chase.c
  * Category: Ported
  * Fidelity level: Strict
  *

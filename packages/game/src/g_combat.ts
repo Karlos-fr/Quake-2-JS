@@ -115,7 +115,7 @@ export function setDefaultMonsterDeathUse(dispatcher: MonsterDeathUseDispatcher)
 
 /**
  * Original name: CheckPowerArmor
- * Source: game/g_combat.c
+ * Source: Quake-2-master/game/g_combat.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -210,7 +210,7 @@ export function CheckPowerArmor(
 
 /**
  * Original name: CheckArmor
- * Source: game/g_combat.c
+ * Source: Quake-2-master/game/g_combat.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -270,7 +270,7 @@ export function CheckArmor(
 
 /**
  * Original name: CanDamage
- * Source: game/g_combat.c
+ * Source: Quake-2-master/game/g_combat.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -322,7 +322,7 @@ export function CanDamage(targ: GameEntity, inflictor: GameEntity, runtime: Game
 
 /**
  * Original name: T_RadiusDamage
- * Source: game/g_combat.c
+ * Source: Quake-2-master/game/g_combat.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -403,7 +403,7 @@ export function T_RadiusDamage(
 
 /**
  * Original name: SpawnDamage
- * Source: game/g_combat.c
+ * Source: Quake-2-master/game/g_combat.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -432,7 +432,7 @@ export function SpawnDamage(
 
 /**
  * Original name: Killed
- * Source: game/g_combat.c
+ * Source: Quake-2-master/game/g_combat.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -484,7 +484,7 @@ export function Killed(
 
 /**
  * Original name: M_ReactToDamage
- * Source: game/g_combat.c
+ * Source: Quake-2-master/game/g_combat.c
  * Category: Ported
  * Fidelity level: Close
  *
@@ -560,7 +560,7 @@ export function M_ReactToDamage(targ: GameEntity, attacker: GameEntity, runtime:
 
 /**
  * Original name: CheckTeamDamage
- * Source: game/g_combat.c
+ * Source: Quake-2-master/game/g_combat.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -576,7 +576,7 @@ export function CheckTeamDamage(targ: GameEntity, attacker: GameEntity, runtime:
 
 /**
  * Original name: T_Damage
- * Source: game/g_combat.c
+ * Source: Quake-2-master/game/g_combat.c
  * Category: Ported
  * Fidelity level: Close
  *

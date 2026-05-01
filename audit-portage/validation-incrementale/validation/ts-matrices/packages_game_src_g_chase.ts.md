@@ -9,7 +9,7 @@
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `packages/game/src/g_chase.ts` | function | `UpdateChaseCam` | oui | `UpdateChaseCam` | `Quake-2-master/game/g_chase.c` | Ported | [`game_g_chase.c.md`](../matrices/game_g_chase.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_chase.ts` | function | `ChaseNext` | oui | `ChaseNext` | `Quake-2-master/game/g_chase.c` | Ported | [`game_g_chase.c.md`](../matrices/game_g_chase.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_chase.ts` | function | `ChasePrev` | oui | `ChasePrev` | `Quake-2-master/game/g_chase.c` | Ported | [`game_g_chase.c.md`](../matrices/game_g_chase.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
-| `packages/game/src/g_chase.ts` | function | `GetChaseTarget` | oui | `GetChaseTarget` | `Quake-2-master/game/g_chase.c` | Ported | [`game_g_chase.c.md`](../matrices/game_g_chase.c.md) | Couvert C/H | Couvert C/H | Couvert par la validation de la matrice C/H. |
+| `packages/game/src/g_chase.ts` | function | `UpdateChaseCam` | oui | `UpdateChaseCam` | `Quake-2-master/game/g_chase.c` | Ported | [`game_g_chase.c.md`](../matrices/game_g_chase.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_chase.ts` | function | `ChaseNext` | oui | `ChaseNext` | `Quake-2-master/game/g_chase.c` | Ported | [`game_g_chase.c.md`](../matrices/game_g_chase.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_chase.ts` | function | `ChasePrev` | oui | `ChasePrev` | `Quake-2-master/game/g_chase.c` | Ported | [`game_g_chase.c.md`](../matrices/game_g_chase.c.md) | Couvert C/H | Couvert C/H |  |
+| `packages/game/src/g_chase.ts` | function | `GetChaseTarget` | oui | `GetChaseTarget` | `Quake-2-master/game/g_chase.c` | Ported | [`game_g_chase.c.md`](../matrices/game_g_chase.c.md) | Couvert C/H | Couvert C/H |  |
