@@ -28,6 +28,7 @@ import {
   CS_ITEMS,
   CS_MAXCLIENTS,
   CS_NAME,
+  CS_PLAYERSKINS,
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE,
@@ -598,9 +599,9 @@ export function GetGameApi(imports: game_import_t, options: GameMainContextOptio
     ClientConnect: (ent, userinfo) => ClientConnect(ent, userinfo, context.runtime, createClientConnectHooks(context)),
     ClientBegin: (ent) => ClientBegin(ent, context.runtime, context.hooks),
     ClientUserinfoChanged: (ent, userinfo) => {
-      ClientUserinfoChanged(ent, userinfo, context.runtime, context.hooks);
+      ClientUserinfoChanged(ent, userinfo, context.runtime, createClientUserinfoHooks(context));
     },
-    ClientDisconnect: (ent) => ClientDisconnect(ent, context.runtime, context.hooks),
+    ClientDisconnect: (ent) => ClientDisconnect(ent, context.runtime, createClientUserinfoHooks(context)),
     ClientCommand: (ent) => ClientCommand(context, ent),
     ClientThink: (ent, cmd) => ClientThink(ent, cmd, context.runtime, context.hooks),
     RunFrame: () => G_RunFrame(context),
@@ -630,7 +631,7 @@ export function GetGameApi(imports: game_import_t, options: GameMainContextOptio
 function createClientConnectHooks(context: GameMainContext): GameMainHooks {
   const userValidateConnect = context.hooks.validateConnect;
   return {
-    ...context.hooks,
+    ...createClientUserinfoHooks(context),
     validateConnect: (ent, userinfo, runtime) => {
       const validation = validateClientConnect(context, userinfo);
       if (!validation.accepted) {
@@ -639,6 +640,19 @@ function createClientConnectHooks(context: GameMainContext): GameMainHooks {
 
       return userValidateConnect?.(ent, userinfo, runtime) ?? validation;
     }
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Reattach the `ClientUserinfoChanged`/disconnect player-skin configstring side effect to `gi.configstring`.
+ */
+function createClientUserinfoHooks(context: GameMainContext): GameMainHooks {
+  return {
+    ...context.hooks,
+    onConfigstringPlayer: context.hooks.onConfigstringPlayer ?? ((playernum, value) => {
+      context.gi.configstring(CS_PLAYERSKINS + playernum, value);
+    })
   };
 }
 

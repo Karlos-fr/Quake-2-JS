@@ -2,6 +2,16 @@
 
 ## Dernier lot valide
 
+- `Use_Item`, `droptofloor` et locales `tr`, `dest`, `v`.
+
+Validation `Use_Item` / `droptofloor` du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Use_Item` conserve le reveal `SVF_NOCLIENT`, clear `use`, branche `ITEM_NO_TOUCH` en `SOLID_BBOX` sans touch, sinon `SOLID_TRIGGER` + `Touch_Item`, puis relink. Header `Use_Item` mis a jour en `Fidelity level: Strict`.
+
+`droptofloor` conserve les bounds `[-15,-15,-15]` / `[15,15,15]`, le setmodel par modele explicite ou `item->world_model`, `SOLID_TRIGGER`, `MOVETYPE_TOSS`, `Touch_Item`, le trace `MASK_SOLID` vers `origin + [0,0,-128]`, la liberation `startsolid`, la copie de `tr.endpos`, les branches no-touch et trigger-spawn, puis relink. Corrections appliquees dans `packages/game/src/g_items.ts`: fallback modele via `ent.item?.worldModel` pour coller au C quand `itemWorldModel` n'a pas ete prepare; branche team completee avec `SVF_NOCLIENT`, `SOLID_NOT` et programmation `DoRespawn` a `level.time + FRAMETIME` sur le teammaster. Header `droptofloor` mis a jour; la note obsolete "pickup gameplay remains to be ported" retiree. Locales validees: `tr` portee comme `trace`, `dest` comme tuple TS, `v` comme tuples mins/maxs et offset.
+
+Runtime branche via `ED_CallSpawn`/`SP_*`/`SpawnItem`, puis `droptofloor` par le systeme de thinks (`G_RunFrame` / `runPendingThinks`), puis `Use_Item` par targets sur les items `ITEM_TRIGGER_SPAWN`. `apps/web` doit consommer ce flux via runtime local/command bridge, inventaire/HUD et snapshots; aucune logique parallele de placement item detectee. `renderer-three` consomme les sorties visibles generiques via snapshots client (`modelindex`, `origin`, `effects`, `renderfx`) et le sync MD2/SP2; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyUseItemTriggerSpawnActivation`, `verifyDropToFloorPlacementAndFlags`, `verifyDropToFloorTeamRespawnAndStartSolid` couvrent `Use_Item`, `droptofloor`, `tr`, `dest`, `v`, no-touch, trigger-spawn, team respawn et startsolid. Tests lances: `npm run verify:g-items`, `npm run verify:full-game:bridge`, `npm run verify:refresh-entity:weapon`, `npm run verify:full-game:three-renderer`, `npm run typecheck` OK. `npm run verify:full-game:gameplay` bloque toujours sur `ERR_MODULE_NOT_FOUND` pour `packages/client/src/main.js`.
+
 - `drop_make_touchable`, `Drop_Item` et locales `dropped`, `trace`.
 
 Validation `drop_make_touchable` / `Drop_Item` du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `drop_make_touchable` restaure `Touch_Item`, puis en deathmatch programme `G_FreeEdict` a `level.time + 29`; le TS conserve ce comportement avec un petit adapter pour l'ordre `G_FreeEdict(runtime, ent)`. `Drop_Item` conserve le spawn et les champs du drop (`classname`, `item`, `DROPPED_ITEM`, `worldModelFlags`, `RF_GLOW`, bounds, `SOLID_TRIGGER`, `MOVETYPE_TOSS`, `drop_temp_touch`, `owner`, modelindex, velocity, `think`, `nextthink`, link). Corrections appliquees dans `packages/game/src/g_items.ts`: pour les proprietaires client, le point projete est maintenant trace avec `CONTENTS_SOLID` et `trace.endpos` est copie comme en C; pour les proprietaires non-client, l'origine reste celle de l'entite et les angles ne servent qu'a la velocite. Headers `drop_make_touchable` ajoute et `Drop_Item` complete en `Fidelity level: Strict`.
@@ -115,4 +125,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- `Use_Item`, puis `droptofloor` avec locales `tr`, `dest`, `v` si le coordinateur veut continuer le flux spawn/touch.
+- `PrecacheItem` avec locales `data`, `len`, `ammo`, puis `SpawnItem` si le coordinateur veut continuer le flux spawn/touch.

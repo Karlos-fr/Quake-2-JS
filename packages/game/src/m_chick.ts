@@ -545,6 +545,20 @@ export const chick_move_pain3: GameMonsterMove = {
   endfunc: chick_run
 };
 
+/**
+ * Original name: chick_pain
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies the wounded skin, debounces pain reactions, emits one pain voice sound,
+ *   and selects a pain animation by damage amount unless nightmare skill suppresses it.
+ *
+ * Porting notes:
+ * - Uses the runtime skill/time and registered game sound bridge in place of `skill->value`,
+ *   `level.time`, and `gi.sound`.
+ */
 export function chick_pain(
   self: GameEntity,
   _other: GameEntity | null,

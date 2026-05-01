@@ -12,29 +12,39 @@
 import {
   Add_Ammo,
   ArmorIndex,
+  DoRespawn,
   Drop_Item,
+  FL_TEAMSLAVE,
   FL_POWER_ARMOR,
   FL_RESPAWN,
   FRAMETIME,
   FindItem,
   InitItems,
+  ITEM_NO_TOUCH,
+  ITEM_TRIGGER_SPAWN,
+  MOVETYPE_TOSS,
   Pickup_Health,
   Pickup_Armor,
   PowerArmorType,
   SetRespawn,
+  SOLID_BBOX,
+  SOLID_NOT,
   SOLID_TRIGGER,
   SpawnItem,
   Touch_Item,
+  Use_Item,
   Use_PowerArmor,
+  SVF_NOCLIENT,
   attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameSoundEvents,
+  droptofloor,
   linkGameEntity,
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
 import { ITEM_TARGETS_USED, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
-import { CS_ITEMS, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_ITEMS, EF_ROTATE, MASK_SOLID, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_SOLID } from "../../packages/qcommon/src/q_shared.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 import type { trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
@@ -52,6 +62,9 @@ function main(): void {
   verifyTouchCoopStayWeaponRemainsTouchable();
   verifyDropTempTouchAndDeathmatchFree();
   verifyDropItemPlacementAndTrace();
+  verifyUseItemTriggerSpawnActivation();
+  verifyDropToFloorPlacementAndFlags();
+  verifyDropToFloorTeamRespawnAndStartSolid();
   verifyArmorAndPowerArmorIndices();
   verifyPickupArmorConversions();
   verifyUsePowerArmorRequiresCells();
@@ -325,6 +338,142 @@ function verifyDropItemPlacementAndTrace(): void {
   assertNumber(traceCalls.length, 0, "Drop_Item does not trace non-client owner drops");
   assertVec3(nonClientDrop.s.origin, [7, 8, 9], "Drop_Item places non-client drops at the owner origin");
   assertVec3(nonClientDrop.velocity, [100, 0, 300], "Drop_Item uses non-client angles only for velocity");
+}
+
+function verifyUseItemTriggerSpawnActivation(): void {
+  const runtime = createHarnessRuntime();
+  const normalItem = spawnGameEntity(runtime);
+  normalItem.spawnflags = ITEM_TRIGGER_SPAWN;
+  normalItem.svflags = SVF_NOCLIENT;
+  normalItem.use = Use_Item;
+  normalItem.solid = SOLID_NOT;
+
+  Use_Item(normalItem, null, null, runtime);
+
+  assertNumber(normalItem.svflags & SVF_NOCLIENT, 0, "Use_Item clears SVF_NOCLIENT");
+  assertBoolean(normalItem.use === undefined, true, "Use_Item clears the use callback");
+  assertNumber(normalItem.solid, SOLID_TRIGGER, "Use_Item arms normal items as SOLID_TRIGGER");
+  assertBoolean(normalItem.touch === Touch_Item, true, "Use_Item installs Touch_Item on normal items");
+
+  const noTouchItem = spawnGameEntity(runtime);
+  noTouchItem.spawnflags = ITEM_TRIGGER_SPAWN | ITEM_NO_TOUCH;
+  noTouchItem.svflags = SVF_NOCLIENT;
+  noTouchItem.use = Use_Item;
+  noTouchItem.touch = Touch_Item;
+
+  Use_Item(noTouchItem, null, null, runtime);
+
+  assertNumber(noTouchItem.svflags & SVF_NOCLIENT, 0, "Use_Item reveals no-touch trigger-spawn items");
+  assertNumber(noTouchItem.solid, SOLID_BBOX, "Use_Item arms no-touch items as SOLID_BBOX");
+  assertBoolean(noTouchItem.touch === undefined, true, "Use_Item clears touch on no-touch items");
+}
+
+function verifyDropToFloorPlacementAndFlags(): void {
+  const runtime = createHarnessRuntime();
+  const shells = requireItem("Shells");
+  const itemEntity = spawnGameEntity(runtime);
+  const traceEnd: vec3_t = [7, 8, -32];
+  const traceCalls: Array<{ start: vec3_t; mins: vec3_t; maxs: vec3_t; end: vec3_t; passent: GameEntity | null; mask: number }> = [];
+
+  runtime.collision.trace = (start, mins, maxs, end, passent, mask) => {
+    traceCalls.push({
+      start: [...start],
+      mins: [...mins],
+      maxs: [...maxs],
+      end: [...end],
+      passent,
+      mask
+    });
+    return createTrace(traceEnd, null);
+  };
+
+  itemEntity.classname = "ammo_shells";
+  itemEntity.item = shells;
+  itemEntity.origin = [7, 8, 96];
+  itemEntity.s.origin = [7, 8, 96];
+  itemEntity.s.effects = EF_ROTATE;
+  itemEntity.s.renderfx = RF_GLOW;
+
+  droptofloor(itemEntity, runtime);
+
+  assertVec3(itemEntity.mins, [-15, -15, -15], "droptofloor writes original mins via local v");
+  assertVec3(itemEntity.maxs, [15, 15, 15], "droptofloor writes original maxs via local v");
+  assertNumber(traceCalls.length, 1, "droptofloor traces once");
+  assertVec3(traceCalls[0].start, [7, 8, 96], "droptofloor trace starts at item origin");
+  assertVec3(traceCalls[0].mins, [-15, -15, -15], "droptofloor trace uses item mins");
+  assertVec3(traceCalls[0].maxs, [15, 15, 15], "droptofloor trace uses item maxs");
+  assertVec3(traceCalls[0].end, [7, 8, -32], "droptofloor dest is origin plus local v [0,0,-128]");
+  assertBoolean(traceCalls[0].passent === itemEntity, true, "droptofloor passes the item as ignored entity");
+  assertNumber(traceCalls[0].mask, MASK_SOLID, "droptofloor uses MASK_SOLID");
+  assertVec3(itemEntity.s.origin, traceEnd, "droptofloor copies tr.endpos to s.origin");
+  assertVec3(itemEntity.origin, traceEnd, "droptofloor keeps runtime origin synced to tr.endpos");
+  assertNumber(itemEntity.s.modelindex > 0 ? 1 : 0, 1, "droptofloor registers the item world model");
+  assertNumber(itemEntity.solid, SOLID_TRIGGER, "droptofloor arms default items as SOLID_TRIGGER");
+  assertNumber(itemEntity.movetype, MOVETYPE_TOSS, "droptofloor preserves MOVETYPE_TOSS");
+  assertBoolean(itemEntity.touch === Touch_Item, true, "droptofloor installs Touch_Item");
+
+  const noTouchEntity = spawnGameEntity(runtime);
+  noTouchEntity.classname = "ammo_shells";
+  noTouchEntity.item = shells;
+  noTouchEntity.spawnflags = ITEM_NO_TOUCH;
+  noTouchEntity.s.effects = EF_ROTATE;
+  noTouchEntity.s.renderfx = RF_GLOW;
+
+  droptofloor(noTouchEntity, runtime);
+
+  assertNumber(noTouchEntity.solid, SOLID_BBOX, "droptofloor arms ITEM_NO_TOUCH items as SOLID_BBOX");
+  assertBoolean(noTouchEntity.touch === undefined, true, "droptofloor clears touch for ITEM_NO_TOUCH");
+  assertNumber(noTouchEntity.s.effects & EF_ROTATE, 0, "droptofloor clears EF_ROTATE for ITEM_NO_TOUCH");
+  assertNumber(noTouchEntity.s.renderfx & RF_GLOW, 0, "droptofloor clears RF_GLOW for ITEM_NO_TOUCH");
+
+  const triggerEntity = spawnGameEntity(runtime);
+  triggerEntity.classname = "ammo_shells";
+  triggerEntity.item = shells;
+  triggerEntity.spawnflags = ITEM_TRIGGER_SPAWN;
+
+  droptofloor(triggerEntity, runtime);
+
+  assertNumber(triggerEntity.solid, SOLID_NOT, "droptofloor hides ITEM_TRIGGER_SPAWN items");
+  assertBoolean((triggerEntity.svflags & SVF_NOCLIENT) !== 0, true, "droptofloor sets SVF_NOCLIENT for ITEM_TRIGGER_SPAWN");
+  assertBoolean(triggerEntity.use === Use_Item, true, "droptofloor installs Use_Item for ITEM_TRIGGER_SPAWN");
+}
+
+function verifyDropToFloorTeamRespawnAndStartSolid(): void {
+  const runtime = createHarnessRuntime();
+  const shells = requireItem("Shells");
+  const master = spawnGameEntity(runtime);
+  const slave = spawnGameEntity(runtime);
+
+  master.classname = "ammo_shells";
+  master.item = shells;
+  master.team = "ammo_team";
+  master.teammaster = master;
+  master.teamchain = slave;
+  master.flags = FL_TEAMSLAVE;
+  slave.team = "ammo_team";
+
+  droptofloor(master, runtime);
+
+  assertNumber(master.flags & FL_TEAMSLAVE, 0, "droptofloor clears FL_TEAMSLAVE on team entities");
+  assertBoolean(master.chain === slave, true, "droptofloor copies teamchain into chain");
+  assertBoolean(master.teamchain === null, true, "droptofloor clears teamchain");
+  assertBoolean((master.svflags & SVF_NOCLIENT) !== 0, true, "droptofloor hides team items");
+  assertNumber(master.solid, SOLID_NOT, "droptofloor makes team items non-solid");
+  assertNumber(master.nextthink, runtime.time + FRAMETIME, "droptofloor schedules team master respawn");
+  assertBoolean(master.think === DoRespawn, true, "droptofloor schedules DoRespawn on the team master");
+
+  const blocked = spawnFreeableEntity(runtime);
+  blocked.classname = "ammo_shells";
+  blocked.item = shells;
+  runtime.collision.trace = (_start, _mins, _maxs, end) => ({
+    ...createTrace(end, null),
+    startsolid: true
+  });
+
+  droptofloor(blocked, runtime);
+
+  assertNumber(blocked.inuse ? 1 : 0, 0, "droptofloor frees startsolid items");
+  assertNumber(blocked.freetime, runtime.time, "droptofloor startsolid free stamps freetime");
 }
 
 function verifyArmorAndPowerArmorIndices(): void {

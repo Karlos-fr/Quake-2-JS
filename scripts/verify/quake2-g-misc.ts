@@ -47,6 +47,7 @@ import {
   runPendingThinks,
   spawnGameEntity,
   target_string_use,
+  ThrowDebris,
   ThrowHead,
   ThrowGib,
   useGameEntity
@@ -70,6 +71,7 @@ function main(): void {
   verifyGibThinkAndDieCallbacks();
   verifyThrowHeadConvertsSourceEntityToGib();
   verifyThrowClientHeadConvertsPlayerOrBodyToClientGib();
+  verifyThrowDebrisSpawnsDamageableVisibleChunk();
 
   console.log("quake2-g-misc: ok");
 }
@@ -456,6 +458,41 @@ function verifyThrowClientHeadConvertsPlayerOrBodyToClientGib(): void {
     assert.deepEqual(body.velocity, [0, 0, 140], "ThrowClientHead low damage must use the 0.7 velocity scale");
     assert.equal(body.think, undefined, "ThrowClientHead queued bodies must clear think");
     assert.equal(body.nextthink, 0, "ThrowClientHead queued bodies must clear nextthink");
+  });
+}
+
+function verifyThrowDebrisSpawnsDamageableVisibleChunk(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 20;
+
+  withMockedRandom([0.75, 0.25, 1.0, 0.5, 0.25, 0.75, 0.4], () => {
+    for (let index = 0; index < 9; index += 1) {
+      spawnGameEntity(runtime);
+    }
+
+    const source = spawnGameEntity(runtime);
+    source.classname = "debris_source";
+    source.velocity = [10, 20, 30];
+
+    ThrowDebris(source, "models/objects/debris1/tris.md2", 2, [1, 2, 3], runtime);
+
+    const chunk = runtime.entities.at(-1)!;
+    assert.equal(chunk.classname, "debris", "ThrowDebris must name the spawned chunk debris");
+    assert.deepEqual(chunk.s.origin, [1, 2, 3], "ThrowDebris must copy the requested origin into entity_state");
+    assert.equal(chunk.model, "models/objects/debris1/tris.md2", "ThrowDebris model mismatch");
+    assert.equal(runtime.assets.modelPaths[chunk.s.modelindex - 1], "models/objects/debris1/tris.md2", "ThrowDebris must register the visible debris model");
+    assert.deepEqual(chunk.velocity, [110, -80, 430], "ThrowDebris must apply self velocity plus speed-scaled random vector");
+    assert.equal(chunk.movetype, MOVETYPE_BOUNCE, "ThrowDebris chunks must bounce");
+    assert.equal(chunk.solid, SOLID_NOT, "ThrowDebris chunks must be non-solid");
+    assert.deepEqual(chunk.avelocity, [300, 150, 450], "ThrowDebris must randomize angular velocity on all axes");
+    assert.equal(chunk.nextthink, 27, "ThrowDebris must schedule cleanup after 5 + random()*5 seconds");
+    assert.equal(chunk.s.frame, 0, "ThrowDebris must initialize frame 0");
+    assert.equal(chunk.flags, 0, "ThrowDebris must clear flags");
+    assert.equal(chunk.takedamage, damage_t.DAMAGE_YES, "ThrowDebris chunks must be damageable");
+    assert.equal(chunk.die?.name, "debris_die", "ThrowDebris must install debris_die");
+
+    chunk.die!(chunk, source, source, 25, runtime);
+    assert.equal(chunk.inuse, false, "debris_die must free the debris chunk");
   });
 }
 

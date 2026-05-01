@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `debris_die`, `ThrowDebris` et local `chunk`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `debris_die` libere l'edict; `ThrowDebris` cree un `chunk` par `G_Spawn`, copie l'origine, enregistre le modele, calcule `v = [100*crandom, 100*crandom, 100 + 100*crandom]`, applique `self.velocity + speed*v`, configure `MOVETYPE_BOUNCE`, `SOLID_NOT`, avelocity randomisee, cleanup `5 + random()*5`, frame 0, flags 0, classname `debris`, `DAMAGE_YES`, callback `debris_die`, puis link runtime.
+  - Commentaires d'en-tete ajoutes pour `debris_die` et `ThrowDebris`.
+  - Branchement runtime verifie: `ThrowDebris` est appele par `func_explosive_explode` et `barrel_explode`; ces flux sont atteignables via entites `func_explosive`/`misc_explobox`, dommages/use/think, puis les debris lies sont eligibles aux snapshots et avances par la physique.
+  - `apps/web`: aucune logique parallele de debris trouvee; le navigateur consomme les entites visibles via les flux local/full-game et `ClientRefreshFrame`.
+  - `renderer-three`: integration attendue car les debris sont des modeles MD2 visibles; consommation presente via `ClientRefreshFrame.entities`, configstrings `CS_MODELS + modelindex`, `refresh-entity-sync` et verification renderer.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaires d'en-tete de portage ajoutes.
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour le chunk debris visible, sa velocite, son cleanup, son callback `debris_die` et son modelindex.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:refresh-entity:alias-flags` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+
+## Lot precedent
+
 - 2026-05-01: `ThrowClientHead` et local `gibname`.
 - Checklist appliquee:
   - Source C comparee au port TS deplace dans `packages/game/src/p_client.ts`: le choix aleatoire `gibname` conserve les modeles `head2`/`skull` et les skins 1/0; l'origine Z est augmentee de 32; frame, bbox, `DAMAGE_NO`, `SOLID_NOT`, `EF_GIB`, son, `FL_NO_KNOCKBACK`, `MOVETYPE_BOUNCE`, vitesse ajoutee par `VelocityForDamage`, animation client et nettoyage `think`/`nextthink` des bodies sans client correspondent au C.
@@ -19,7 +37,7 @@
   - `npm run verify:refresh-entity:alias-flags` bloque sur le meme import existant.
   - `npm run typecheck` bloque sur `packages/game/src/g_items.ts`: `runtime.collision` possiblement `null`.
 
-## Dernier lot valide
+## Lot precedent
 
 - 2026-05-01: locaux `gib` / `vscale` de `ThrowGib`, puis `ThrowHead` avec son local `vscale`.
 - Checklist appliquee:
@@ -37,7 +55,7 @@
   - `npm run verify:full-game:three-renderer` OK.
   - `npm run typecheck` OK.
 
-## Dernier lot valide
+## Lot precedent
 
 - 2026-05-01: comportements gib `gib_think`, `gib_touch`, `gib_die` et `ThrowGib`.
 - Checklist appliquee:
@@ -57,7 +75,7 @@
   - `npm run typecheck` OK.
   - `npm run verify:full-game:render-source` tente mais bloque avant scenario sur import existant manquant `packages/client/src/types.js`.
 
-## Dernier lot valide
+## Lot precedent
 
 - 2026-05-01: helpers gib/debris `VelocityForDamage`, `VectorScale` et `ClipGibVelocity`.
 - Checklist appliquee:
@@ -84,7 +102,7 @@
 
 - 2026-04-30: controle limite aux lignes deja `Valide` de la matrice (`Use_Areaportal`, `SP_func_areaportal`). Verdict documentaire alors corrige en `Partiel`: le branchement runtime game etait present (`CM_SetAreaPortalState`, spawn `func_areaportal`, export `index.ts`), mais l'integration visible attendue n'etait pas complete car `ClientRefreshFrame`/`apps/web` ne propageaient pas les `areabits` vers `renderer-three`; point corrige dans la section precedente.
 
-## Dernier lot valide
+## Lot precedent
 
 - 2026-04-30: `Use_Areaportal` + `SP_func_areaportal`.
 - Correction appliquee dans `packages/game/src/g_misc.ts`: `Use_Areaportal` appelle maintenant `CM_SetAreaPortalState` via `runtime.collision.world` quand disponible, en plus du log de harness.

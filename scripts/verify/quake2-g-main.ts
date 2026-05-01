@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { BUTTON_ANY, BUTTON_ATTACK, CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, pmtype_t, temp_event_t, type cvar_t, type usercmd_t } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ANY, BUTTON_ATTACK, CS_PLAYERSKINS, CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_FIXED_FOV, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, pmtype_t, temp_event_t, type cvar_t, type usercmd_t } from "../../packages/qcommon/src/index.js";
 import { TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, createGameRuntimeFromBspEntities, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
@@ -306,6 +306,7 @@ assert.equal(
 );
 assert.equal(connectRuntime.entities[1]!.client!.pers.connected, true, "ClientConnect must mark accepted players connected");
 assert.equal(connectRuntime.entities[1]!.client!.pers.netname, "good", "ClientConnect must apply accepted userinfo");
+assert.equal(configstrings.get(CS_PLAYERSKINS), "good\\", "ClientConnect must publish the accepted player skin configstring through gi.configstring");
 
 connectRuntime.entities[1]!.inuse = true;
 connectRuntime.entities[1]!.client!.pers.spectator = true;
@@ -326,6 +327,29 @@ assert.equal(
   "ClientConnect must accept a spectator with the correct password and free slot"
 );
 assert.equal(connectRuntime.entities[2]!.client!.pers.spectator, true, "ClientConnect must apply spectator userinfo");
+assert.equal(configstrings.get(CS_PLAYERSKINS + 1), "spec\\", "ClientConnect must publish spectator userinfo through the player skin configstring");
+
+connectRuntime.dmflags = 0;
+connectApi.ClientUserinfoChanged(connectRuntime.entities[1]!, "\\name\\rename\\skin\\female/athena\\spectator\\0\\fov\\200\\hand\\2");
+assert.equal(connectRuntime.entities[1]!.client!.pers.netname, "rename", "ClientUserinfoChanged must copy the userinfo name");
+assert.equal(connectRuntime.entities[1]!.client!.pers.spectator, false, "ClientUserinfoChanged must clear spectator outside a true spectator value");
+assert.equal(connectRuntime.entities[1]!.client!.ps.fov, 160, "ClientUserinfoChanged must clamp high fov like the C code");
+assert.equal(connectRuntime.entities[1]!.client!.pers.hand, 2, "ClientUserinfoChanged must copy handedness");
+assert.equal(configstrings.get(CS_PLAYERSKINS), "rename\\female/athena", "ClientUserinfoChanged must combine name and skin into CS_PLAYERSKINS");
+
+connectApi.ClientUserinfoChanged(connectRuntime.entities[1]!, "\\skin\\male/grunt\\fov\\0\\hand\\abc");
+assert.equal(connectRuntime.entities[1]!.client!.pers.netname, "", "ClientUserinfoChanged must allow an empty name like strncpy from the C source");
+assert.equal(connectRuntime.entities[1]!.client!.ps.fov, 90, "ClientUserinfoChanged must reset invalid low fov to 90");
+assert.equal(connectRuntime.entities[1]!.client!.pers.hand, 0, "ClientUserinfoChanged must parse invalid hand values as atoi(...)=0");
+assert.equal(configstrings.get(CS_PLAYERSKINS), "\\male/grunt", "ClientUserinfoChanged must publish empty-name skin configstrings");
+
+connectRuntime.dmflags = DF_FIXED_FOV;
+connectApi.ClientUserinfoChanged(connectRuntime.entities[1]!, "\\name\\fixed\\skin\\male/grunt\\fov\\130\\hand\\1");
+assert.equal(connectRuntime.entities[1]!.client!.ps.fov, 90, "ClientUserinfoChanged must force fov 90 when DF_FIXED_FOV is active in deathmatch");
+
+connectApi.ClientUserinfoChanged(connectRuntime.entities[1]!, "\\bad\\info;\\x");
+assert.equal(connectRuntime.entities[1]!.client!.pers.userinfo, "\\name\\badinfo\\skin\\male/grunt", "ClientUserinfoChanged must replace malformed userinfo with the C fallback");
+assert.equal(configstrings.get(CS_PLAYERSKINS), "badinfo\\male/grunt", "ClientUserinfoChanged must publish the fallback skin configstring");
 
 const dmContext = createGameMainContext(imports);
 dmContext.runtime.maxclients = 2;

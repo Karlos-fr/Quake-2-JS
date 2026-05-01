@@ -568,17 +568,16 @@ export function SetRespawn(ent: GameEntity, delaySeconds: number, runtime: GameR
  * Fidelity level: Close
  *
  * Behavior:
- * - Finalizes one item entity after the original delayed spawn window.
+ * - Finalizes one item entity after the original delayed spawn window, traces it down to the floor, and arms normal, no-touch, trigger-spawn or team respawn state.
  *
  * Porting notes:
- * - Uses the local collision bridge when available.
- * - Keeps the original delayed-link structure even though pickup gameplay remains to be ported.
+ * - Uses the local collision bridge for the original `gi.trace(..., MASK_SOLID)` floor probe.
  */
 export function droptofloor(ent: GameEntity, runtime: GameRuntime): void {
   ent.mins = [-15, -15, -15];
   ent.maxs = [15, 15, 15];
 
-  const modelPath = ent.model ?? ent.itemWorldModel;
+  const modelPath = ent.model ?? ent.itemWorldModel ?? ent.item?.worldModel;
   if (modelPath) {
     ent.s.modelindex = registerGameModel(runtime, modelPath);
   }
@@ -600,9 +599,16 @@ export function droptofloor(ent: GameEntity, runtime: GameRuntime): void {
   }
 
   if (ent.team) {
+    ent.flags &= ~FL_TEAMSLAVE;
     ent.chain = ent.teamchain;
     ent.teamchain = null;
-    ent.flags &= ~FL_TEAMSLAVE;
+
+    ent.svflags |= SVF_NOCLIENT;
+    ent.solid = SOLID_NOT;
+    if (ent.teammaster === ent) {
+      ent.nextthink = runtime.time + FRAMETIME;
+      ent.think = DoRespawn;
+    }
   }
 
   if ((ent.spawnflags & ITEM_NO_TOUCH) !== 0) {
@@ -1353,7 +1359,10 @@ export function Drop_Item(ent: GameEntity, item: GameItemDefinition, runtime: Ga
  * Original name: Use_Item
  * Source: game/g_items.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Reveals a trigger-spawned item, clears its use callback, then arms either bbox/no-touch or trigger/touch pickup state before relinking.
  */
 export function Use_Item(ent: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   ent.svflags &= ~SVF_NOCLIENT;

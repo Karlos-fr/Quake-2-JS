@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: fonction `ClientUserinfoChanged`.
 - 2026-05-01: fonction `ClientConnect`.
 - 2026-05-01: fonction `ClientThink`.
 - 2026-05-01: fonction `SpawnEntities`.
@@ -14,6 +15,7 @@
 
 ## Verdict du lot
 
+- `ClientUserinfoChanged`: valide apres correction. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientUserinfoChanged`; l'implementation effective reste le port `p_client.ts` de `p_client.c`. Corrections: `GetGameApi().ClientUserinfoChanged` branche maintenant par defaut l'effet C `gi.configstring(CS_PLAYERSKINS + playernum, "name\\skin")`; `ClientConnect` et `ClientDisconnect` reutilisent le meme hook pour publier/vider le slot joueur. Le port applique userinfo invalide vers `\name\badinfo\skin\male/grunt`, copie le nom meme absent, calcule spectator seulement en deathmatch, publie name/skin, borne/force le fov selon `DF_FIXED_FOV`, parse `hand` avec fallback `atoi(...)=0`, puis sauvegarde `pers.userinfo`. Commentaire d'en-tete verifie dans `p_client.ts`; helper d'adapter documente dans `g_main.ts`.
 - `ClientConnect`: partiel apres correction. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientConnect`; le TS `GetGameApi().ClientConnect` delegue toujours au port `p_client.ts` `ClientConnect`, mais applique maintenant avant delegation la politique C par defaut: IP bannie via `SV_FilterPacket`, mot de passe joueur via `password`, mot de passe spectateur via `spectator_password`, et limite spectateur via `maxspectators`/`maxclients`. Les hooks utilisateurs restent appeles apres cette politique par defaut. Commentaire d'en-tete verifie sur `p_client.ts`; helper de rattachement documente dans `g_main.ts`. Reste partiel: le C ecrit `rejmsg` dans le buffer mutable `userinfo`, alors que l'ABI TS actuelle passe une string immuable et le serveur lit encore `rejmsg` depuis la string originale.
 - `ClientThink`: valide. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientThink`; le TS `GetGameApi().ClientThink` delegue au port `p_client.ts` `ClientThink`. La comparaison C/TS couvre l'intermission (`PM_FREEZE`, sortie apres 5 secondes + bouton), le passage par `SV_ClientThink`, la mise a jour `current_entity`, boutons/latched buttons, `light_level`, attaque/`weapon_thunk`, chase/spectator followers et la branche pmove quand une collision runtime est disponible. Commentaire d'en-tete verifie dans `p_client.ts`.
 - `SpawnEntities`: valide apres correction. Le port TS normalise `skill`, sauvegarde maintenant les donnees persistantes client avant reconstruction (`SaveClientData`), libere les tags niveau (`FreeTags(TAG_LEVEL)`), reconstruit worldspawn/joueurs/entites BSP, conserve les blocs client persistants sur les slots joueurs, applique les filtres `spawnflags` skill/deathmatch et le hack map `command`/`trigger_once`/`*27`, dispatch les spawners, journalise le nombre d'entites inhibees, puis initialise teams, body queue et player trail. Commentaire d'en-tete verifie. Fidelity `Close`: le bootstrap TS garde l'ordre existant et teste des entites BSP avant body queue/player trail.
@@ -55,6 +57,13 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().ClientUserinfoChanged`: publication `CS_PLAYERSKINS`, nom/skin, spectator, fov borne et `DF_FIXED_FOV`, hand invalide a `0`, fallback badinfo; verifie aussi la publication `CS_PLAYERSKINS` depuis `ClientConnect`.
+- `npm run verify:server:user`: ok le 2026-05-01, confirme le chemin serveur `SV_UserinfoChanged -> ge.ClientUserinfoChanged`.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01, confirme le chemin `apps/web` server-backed et la propagation des configstrings.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run verify:web-render-order`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
+- `npm run verify:cl-parse`: bloque le 2026-05-01 avant execution utile par import absent `packages/client/src/parse.js` dans `scripts/verify/quake2-cl-parse.ts`; non corrige dans ce lot.
 - `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().ClientConnect`: rejet IP bannie via `SV_FilterPacket`, rejet mot de passe joueur incorrect, acceptation joueur, rejet mot de passe spectateur incorrect, rejet limite spectateur pleine et acceptation spectateur avec slot disponible.
 - `npx tsx ./scripts/verify/quake2-sv-user.ts`: ok le 2026-05-01.
 - `npm run verify:full-game:server-host`: ok le 2026-05-01.
@@ -105,6 +114,12 @@
 
 ## Blocages / decisions
 
+- Corrections appliquees dans `packages/game/src/g_main.ts`: ajout du hook par defaut `onConfigstringPlayer -> gi.configstring(CS_PLAYERSKINS + playernum, value)` et reutilisation par `ClientUserinfoChanged`, `ClientConnect` et `ClientDisconnect`.
+- Corrections appliquees dans `packages/game/src/p_client.ts`: `ClientUserinfoChanged` copie maintenant exactement la valeur de `name` retournee par `Info_ValueForKey`, et `hand` invalide retombe a `0`, comme `atoi`.
+- Correction appliquee dans `scripts/verify/quake2-g-main.ts`: couverture ciblee des branches userinfo et de la publication `CS_PLAYERSKINS`.
+- `apps/web`: integration jugee presente via `full-game-server-host.ts` et le serveur TS, qui appelle `SV_UserinfoChanged -> ge.ClientUserinfoChanged`; les configstrings sont recopiees/encodees vers le client web. Aucune logique web parallele ne remplace le name/skin runtime.
+- `packages/renderer-three`: pas d'appel direct attendu depuis `ClientUserinfoChanged`. L'effet visible attendu est la configstring player skin; elle est consommee en aval par `packages/client/src/cl_parse.ts`/`view.ts` en `clientinfo` puis par `renderer-three` via les entites/player skins.
+- Blocage hors lot: `verify:cl-parse` echoue sur un import absent `packages/client/src/parse.js` avant de tester les clientinfos; laisse ouvert pour le fichier/proprietaire concerne.
 - Correction appliquee dans `packages/game/src/g_main.ts`: ajout d'un hook de validation par defaut pour `ClientConnect`, couvrant `SV_FilterPacket`, `password`, `spectator_password` et `maxspectators`.
 - Correction appliquee dans `scripts/verify/quake2-g-main.ts`: couverture ciblee des branches acceptation/refus de `ClientConnect`.
 - Decision: statut `Partiel` conserve pour `ClientConnect`, car le message de refus C (`Info_SetValueForKey(userinfo, "rejmsg", ...)`) n'est pas encore propage jusqu'a `packages/server/src/sv_main.ts` avec l'ABI TS actuelle.
@@ -150,4 +165,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ClientUserinfoChanged`.
+- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ClientDisconnect`.

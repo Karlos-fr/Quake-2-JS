@@ -42,6 +42,7 @@ import {
   button_wait,
   door_go_up,
   door_hit_top,
+  door_use_areaportals,
   func_conveyor_use,
   func_timer_use,
   plat_go_down,
@@ -289,6 +290,39 @@ assert.equal(door.s.sound, door.moveinfo.sound_middle, "door_go_up loop sound mi
 door_hit_top(door, runtime);
 assert.equal(runtime.soundEvents.at(-1)?.soundPath, "doors/dr1_end.wav", "door_hit_top end sound mismatch");
 assert.equal(door.s.sound, 0, "door_hit_top must clear loop sound");
+const areaportalRuntime = createGameRuntimeFromBspEntities([]);
+areaportalRuntime.collision = {
+  world: {
+    map_areas: [
+      { numareaportals: 0, firstareaportal: 0, floodnum: 0, floodvalid: 0 },
+      { numareaportals: 1, firstareaportal: 0, floodnum: 0, floodvalid: 0 },
+      { numareaportals: 1, firstareaportal: 1, floodnum: 0, floodvalid: 0 }
+    ],
+    map_areaportals: [
+      { portalnum: 1, otherarea: 2 },
+      { portalnum: 1, otherarea: 1 }
+    ],
+    numareas: 3,
+    floodvalid: 0,
+    portalopen: new Uint8Array(2)
+  } as never,
+  trace: () => {
+    throw new Error("unexpected areaportal trace");
+  },
+  pointcontents: () => 0
+};
+const portalDoor = createRuntimeEntity({ classname: "func_door", target: "portal_pair" }, 36);
+portalDoor.inuse = true;
+const portal = createRuntimeEntity({ classname: "func_areaportal", targetname: "portal_pair" }, 37);
+portal.inuse = true;
+portal.style = 1;
+areaportalRuntime.entities[36] = portalDoor;
+areaportalRuntime.entities[37] = portal;
+door_use_areaportals(portalDoor, true, areaportalRuntime);
+assert.equal(areaportalRuntime.collision.world.portalopen[1], 1, "door_use_areaportals must open targeted portal");
+assert.equal(areaportalRuntime.logEntries.at(-1)?.otherIndex, 37, "door_use_areaportals log target mismatch");
+door_use_areaportals(portalDoor, false, areaportalRuntime);
+assert.equal(areaportalRuntime.collision.world.portalopen[1], 0, "door_use_areaportals must close targeted portal");
 
 const plat = entity("func_plat", 18);
 plat.size = [64, 64, 32];

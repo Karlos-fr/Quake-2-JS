@@ -738,6 +738,15 @@ export function BecomeExplosion2(self: GameEntity, runtime: GameRuntime): void {
   G_FreeEdict(runtime, self);
 }
 
+/**
+ * Original name: debris_die
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Frees one damageable debris chunk when it is killed.
+ */
 export function debris_die(
   self: GameEntity,
   _inflictor: GameEntity | null,
@@ -748,6 +757,17 @@ export function debris_die(
   G_FreeEdict(runtime, self);
 }
 
+/**
+ * Original name: ThrowDebris
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns one bouncing visible debris chunk at the requested origin.
+ * - Applies the source entity velocity plus a random throw vector scaled by `speed`.
+ * - Makes the chunk damageable and schedules automatic cleanup after 5 + random()*5 seconds.
+ */
 export function ThrowDebris(self: GameEntity, modelname: string, speed: number, origin: vec3_t, runtime: GameRuntime): void {
   const chunk = G_Spawn(runtime);
   setEntityOrigin(chunk, origin);

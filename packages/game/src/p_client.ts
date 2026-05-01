@@ -1465,7 +1465,7 @@ export function ClientUserinfoChanged(
   }
 
   const name = Info_ValueForKey(normalizedUserinfo, "name");
-  client.pers.netname = name || client.pers.netname;
+  client.pers.netname = name;
 
   const spectatorValue = Info_ValueForKey(normalizedUserinfo, "spectator");
   client.pers.spectator = runtime.deathmatch && spectatorValue.length > 0 && spectatorValue !== "0";
@@ -1478,7 +1478,7 @@ export function ClientUserinfoChanged(
 
   const hand = Info_ValueForKey(normalizedUserinfo, "hand");
   if (hand.length > 0) {
-    client.pers.hand = readUserinfoNumber(normalizedUserinfo, "hand", client.pers.hand);
+    client.pers.hand = readUserinfoNumber(normalizedUserinfo, "hand", 0);
   }
 
   client.pers.userinfo = normalizedUserinfo;

@@ -8,6 +8,23 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot armor constants `ARMOR_NONE`, `ARMOR_JACKET`, `ARMOR_COMBAT`, `ARMOR_BODY`, `ARMOR_SHARD`.
+- Verdict: `Valide` pour les 5 macros, sans correction TS necessaire.
+- Valeurs H/TS comparees et conformes:
+  - `ARMOR_NONE = 0`
+  - `ARMOR_JACKET = 1`
+  - `ARMOR_COMBAT = 2`
+  - `ARMOR_BODY = 3`
+  - `ARMOR_SHARD = 4`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. `packages/game/src/g_items.ts` conserve des constantes locales equivalentes pour les tags d'item armor; les valeurs et tags runtime ont ete compares.
+- Runtime:
+  - Source C: les constantes typent les entrees `itemlist` armor, les tables `jacketarmor_info`/`combatarmor_info`/`bodyarmor_info`, la branche speciale `ARMOR_SHARD` dans `Pickup_Armor`, la priorite `ArmorIndex`, la protection `CheckArmor` et les stats HUD via `G_SetStats`.
+  - TS: `packages/game/src/g_items.ts` conserve les tags Body/Combat/Jacket/Shard, les valeurs base/max/protection, les conversions upgrade/salvage et le shard +2; `packages/game/src/g_combat.ts` consomme `ArmorIndex`/`GetArmorInfoByItem`; `packages/game/src/p_hud.ts` expose `STAT_ARMOR_ICON`/`STAT_ARMOR` comme le C. Les commentaires d'en-tete de `ArmorIndex`, `Pickup_Armor`, `CheckArmor` et `G_SetStats` ont ete verifies avec `Original name`, `Source`, `Category: Ported` et niveau de fidelite quand applicable; header de module `g_local.ts` deja present.
+- apps/web: aucune reference directe trouvee aux constantes armor ou a `STAT_ARMOR`; pas de logique parallele attendue. Le navigateur consomme ces effets via le runtime client/full-game et les stats HUD.
+- renderer-three: aucune reference directe trouvee; pas d'integration renderer directe attendue. Les sorties visibles liees au lot sont les modeles d'items armor et les stats HUD/inventaire produits en amont; le renderer consomme les entites/snapshots generiques.
+- Influence inventaire/HUD/sortie visible: oui. Les constantes pilotent les tags d'items d'armure, les quantites d'inventaire, l'absorption de degats, les icones/valeurs HUD armor et les modeles d'items armor exposes via snapshots.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs, exports publics et tags d'items; `npm run verify:g-local:header` OK; `npm run verify:g-items` OK; `npm run verify:p-hud` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:full-game:authoritative-input` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot attack states `AS_STRAIGHT`, `AS_SLIDING`, `AS_MELEE`, `AS_MISSILE`.
 - Verdict: `Valide` pour les 4 macros apres ajout d'assertions ciblees dans le harness header.
 - Valeurs H/TS comparees et conformes:
@@ -312,7 +329,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les armor constants: `ARMOR_NONE`, `ARMOR_JACKET`, `ARMOR_COMBAT`, `ARMOR_BODY`, `ARMOR_SHARD`.
+- Continuer avec les power armor constants: `POWER_ARMOR_NONE`, `POWER_ARMOR_SCREEN`, `POWER_ARMOR_SHIELD`.
 
 ## Blocages
 

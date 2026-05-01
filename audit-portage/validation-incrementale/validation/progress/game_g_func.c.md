@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: locale `dist` de `SP_func_button`, puis `door_use_areaportals`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:766,792-793,852-866` avec `packages/game/src/g_func.ts:367-398,1483-1485`.
+- Correction appliquee: `door_use_areaportals` appelle maintenant `CM_SetAreaPortalState(runtime.collision.world, entity.style, open)` pour chaque `func_areaportal` cible, comme le `gi.SetAreaPortalState` C; le commentaire d'en-tete documente l'adapter collision et le cas harness sans collision.
+- Effets verifies: `dist` reste la locale de calcul bouton `abs_movedir * size - lip` puis `pos2 = pos1 + movedir * dist`; `door_use_areaportals` conserve le retour sans target, la recherche `G_Find` par `targetname`, le filtre `func_areaportal`, et applique l'ouverture/fermeture du portal `style`.
+- Branchement: `door_use_areaportals` est appelee par les callbacks de porte/portes secretes (`door_hit_bottom`, `door_go_up`, spawn START_OPEN et secret door) eux-memes atteignables via `SP_func_door`/`SP_func_door_rotating`/`SP_func_door_secret`, `g_spawn.ts`, `SpawnEntities`, triggers/use et le flux `G_RunFrame`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door`/`func_areaportal` dans `apps/web`; le navigateur consomme le runtime serveur/local, les snapshots et areabits. `packages/renderer-three` ne remplace pas cette logique et consomme la visibilite/scene issue du runtime; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: spawn de bouton `SP_func_button`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:763-817` avec `packages/game/src/g_func.ts:1447-1505`.
 - Correction appliquee: commentaire d'en-tete `SP_func_button` renforce en fidelite `Strict` avec notes de portage; couverture ciblee ajoutee dans `scripts/verify/quake2-g-func.ts` pour defaults speed/accel/decel/wait, pos1/pos2, moveinfo start/end, `use`, `touch`, bouton cible, `sounds = 1`, bouton shootable `die`/`takedamage`/`max_health` et link runtime.
@@ -158,7 +166,7 @@
 
 ## Prochain lot recommande
 
-- Continuer au premier `A verifier` apres `SP_func_button`: locale `dist`, puis `door_use_areaportals` si le lot reste coherent.
+- Continuer au premier `A verifier` apres `door_use_areaportals`: locale `t`, puis `door_hit_top`/`door_hit_bottom` si le lot reste coherent.
 
 ## Blocages
 

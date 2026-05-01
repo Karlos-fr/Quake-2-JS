@@ -21,6 +21,7 @@ import {
   ATTN_STATIC,
   CHAN_NO_PHS_ADD,
   CHAN_VOICE,
+  CM_SetAreaPortalState,
   EF_ANIM01,
   EF_ANIM23,
   EF_ANIM_ALL,
@@ -373,7 +374,8 @@ export function AngleMove_Calc(ent: GameEntity, func: (entity: GameEntity, runti
  * - Resolves linked `func_areaportal` entities targeted by the door and toggles their logical open state.
  *
  * Porting notes:
- * - Logs portal state changes instead of talking to the renderer/server visibility layer.
+ * - The original `gi.SetAreaPortalState` call is mapped to `CM_SetAreaPortalState` through the runtime collision world.
+ * - Harness runtimes without collision keep only the log side effect.
  */
 export function door_use_areaportals(self: GameEntity, open: boolean, runtime: GameRuntime): void {
   if (!self.target) {
@@ -386,6 +388,9 @@ export function door_use_areaportals(self: GameEntity, open: boolean, runtime: G
       continue;
     }
 
+    if (runtime.collision) {
+      CM_SetAreaPortalState(runtime.collision.world, entity.style, open);
+    }
     runtime.log({
       kind: "use",
       message: `${getRuntimeEntityLabel(self)} areaportal ${open ? "open" : "close"} -> ${getRuntimeEntityLabel(entity)}`,

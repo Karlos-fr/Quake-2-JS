@@ -4,8 +4,8 @@
 
 - Matrice: `validation/matrices/game_m_chick.c.md`
 - Statut global: En cours
-- Dernier lot valide: stand/start-run/run/walk tables
-- Prochain lot recommande: pain tables et `chick_pain` (`chick_frames_pain1`, `chick_move_pain1`, `chick_frames_pain2`, `chick_move_pain2`, `chick_frames_pain3`, `chick_move_pain3`, `chick_pain`)
+- Dernier lot valide: pain tables et `chick_pain`
+- Prochain lot recommande: death setup (`chick_dead`, death tables, `chick_die`, local `n` si necessaire)
 
 ## Lots traites
 
@@ -15,6 +15,7 @@
 | branches run/re-attaque | `chick_run`, `chick_rerocket`, `chick_reslash` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `typecheck` | Garde TS `self.enemy` documentee pour `chick_rerocket` et `chick_reslash`. |
 | sons, fidget et sight | `sound_*`, `ChickMoan`, `chick_frames_fidget`, `chick_move_fidget`, `chick_fidget`, `chick_sight` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `typecheck` | Headers completes pour `ChickMoan`, `chick_fidget` et `chick_sight`. |
 | stand/start-run/run/walk tables | `chick_frames_stand`, `chick_move_stand`, `chick_frames_start_run`, `chick_move_start_run`, `chick_frames_run`, `chick_move_run`, `chick_frames_walk`, `chick_move_walk` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `typecheck` | Aucune correction TS requise. |
+| pain tables et `chick_pain` | `chick_frames_pain1`, `chick_move_pain1`, `chick_frames_pain2`, `chick_move_pain2`, `chick_frames_pain3`, `chick_move_pain3`, `chick_pain` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `verify:local-gameplay-sync`, `verify:refresh-entity:alias-flags`, `verify:refresh-entity:sprite`, `verify:full-game:three-renderer`, `typecheck` | Header ajoute pour `chick_pain`. `verify:full-game:render-source` et `verify:full-game:audio-routing` bloquent avant execution sur l'import manquant `packages/client/src/types.js`. |
 
 ## Passe rapide post-validation
 
@@ -22,7 +23,7 @@ Controle cible des lignes deja `Valide`: branchement runtime confirme via `monst
 
 ## Blocages
 
-Aucun blocage connu sur les lots deja traites.
+Blocage externe aux lots traites: `verify:full-game:render-source` et `verify:full-game:audio-routing` echouent avant execution sur l'import manquant `packages/client/src/types.js`.
 
 ## Reprise
 
