@@ -29,12 +29,12 @@
 | `Quake-2-master/game/g_phys.c` | global | `hit` | `packages/game/src/g_phys.ts` | `hit` | Valide | A redecouper | Locale de `SV_FlyMove`; affectation `groundentity`/`groundentity_linkcount` couverte par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `dir` | `packages/game/src/g_phys.ts` | `dir` | Valide | A redecouper | Locale de crease de `SV_FlyMove`; cross product des deux plans couvert par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `d` | `packages/game/src/g_phys.ts` | `d` | Valide | A redecouper | Locale de crease de `SV_FlyMove`; projection `DotProduct(dir, velocity)` couverte par `npm run verify:g-phys`. |
-| `Quake-2-master/game/g_phys.c` | global | `numplanes` | `packages/game/src/g_phys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `planes` | `packages/game/src/g_phys.ts` | `planes` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `end` | `packages/game/src/g_phys.ts` | `end` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `time_left` | `packages/game/src/g_phys.ts` | `time_left` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `blocked` | `packages/game/src/g_phys.ts` | `blocked` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `numplanes` | `packages/game/src/g_phys.ts` |  | Valide | A redecouper | Locale portee par `planes.length`. |
+| `Quake-2-master/game/g_phys.c` | global | `planes` | `packages/game/src/g_phys.ts` | `planes` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `end` | `packages/game/src/g_phys.ts` | `end` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `time_left` | `packages/game/src/g_phys.ts` | `time_left` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `blocked` | `packages/game/src/g_phys.ts` | `blocked` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | function | `SV_AddGravity` | `packages/game/src/g_phys.ts` | `SV_AddGravity` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | function | `SV_PushEntity` | `packages/game/src/g_phys.ts` | `SV_PushEntity` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | A verifier | A redecouper |  |

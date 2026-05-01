@@ -26,13 +26,19 @@ import {
   drainMonsterMuzzleFlashEvents
 } from "../../packages/game/src/index.js";
 import {
+  EF_COLOR_SHELL,
   EF_FLIES,
+  EF_POWERSCREEN,
   MASK_MONSTERSOLID,
-  MASK_SHOT
+  MASK_SHOT,
+  RF_SHELL_BLUE,
+  RF_SHELL_GREEN,
+  RF_SHELL_RED
 } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_WATER } from "../../packages/qcommon/src/q_shared.js";
 import {
   DAMAGE_NO_ARMOR,
+  AI_RESURRECTING,
   FL_IMMUNE_LAVA,
   FL_IMMUNE_SLIME,
   FL_INWATER,
@@ -41,6 +47,8 @@ import {
   MOD_SLIME,
   MOD_UNKNOWN,
   MOD_WATER,
+  POWER_ARMOR_SCREEN,
+  POWER_ARMOR_SHIELD,
   damage_t
 } from "../../packages/game/src/g_local.js";
 import {
@@ -51,6 +59,7 @@ import {
   M_FliesOff,
   M_FliesOn,
   M_FlyCheck,
+  M_SetEffects,
   M_WorldEffects,
   monster_death_use,
   monster_fire_bfg,
@@ -89,6 +98,7 @@ function main(): void {
   verifyMCatagorizePositionRuntimeReachability();
   verifyMWorldEffectsDamageAndSounds();
   verifyMDroptofloorTraceAndStateRefresh();
+  verifyMSetEffectsShellsAndPowerArmor();
 
   console.log("Verification g_monster - shared monster gameplay OK");
 }
@@ -757,6 +767,53 @@ function verifyMDroptofloorTraceAndStateRefresh(): void {
 
   assert.deepEqual(noFloor.s.origin, [1, 2, 4], "M_droptofloor should preserve the original one-unit raise when no floor is found");
   assert.equal(noFloor.groundentity, null, "M_droptofloor should not refresh ground when the drop trace misses");
+}
+
+function verifyMSetEffectsShellsAndPowerArmor(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 50;
+
+  const resurrecting = createMonster(runtime, 40);
+  resurrecting.s.effects = EF_POWERSCREEN;
+  resurrecting.s.renderfx = RF_SHELL_GREEN | RF_SHELL_BLUE;
+  resurrecting.monsterinfo.aiflags |= AI_RESURRECTING;
+  M_SetEffects(resurrecting, runtime);
+  assert.equal((resurrecting.s.effects & EF_COLOR_SHELL) !== 0, true, "AI_RESURRECTING should set EF_COLOR_SHELL");
+  assert.equal((resurrecting.s.effects & EF_POWERSCREEN) !== 0, false, "M_SetEffects should clear stale EF_POWERSCREEN");
+  assert.equal((resurrecting.s.renderfx & RF_SHELL_RED) !== 0, true, "AI_RESURRECTING should set red shell renderfx");
+  assert.equal((resurrecting.s.renderfx & (RF_SHELL_GREEN | RF_SHELL_BLUE)) === 0, true, "M_SetEffects should clear stale shell colors");
+
+  const deadShielded = createMonster(runtime, 41);
+  deadShielded.health = 0;
+  deadShielded.powerarmor_time = 60;
+  deadShielded.monsterinfo.power_armor_type = POWER_ARMOR_SHIELD;
+  M_SetEffects(deadShielded, runtime);
+  assert.equal(deadShielded.s.effects, 0, "dead monsters should return before power armor effects");
+  assert.equal(deadShielded.s.renderfx, 0, "dead monsters should not receive power armor shell renderfx");
+
+  const screen = createMonster(runtime, 42);
+  screen.powerarmor_time = 51;
+  screen.monsterinfo.power_armor_type = POWER_ARMOR_SCREEN;
+  M_SetEffects(screen, runtime);
+  assert.equal((screen.s.effects & EF_POWERSCREEN) !== 0, true, "POWER_ARMOR_SCREEN should set EF_POWERSCREEN while active");
+  assert.equal((screen.s.effects & EF_COLOR_SHELL) !== 0, false, "POWER_ARMOR_SCREEN should not set EF_COLOR_SHELL");
+
+  const shield = createMonster(runtime, 43);
+  shield.powerarmor_time = 51;
+  shield.monsterinfo.power_armor_type = POWER_ARMOR_SHIELD;
+  M_SetEffects(shield, runtime);
+  assert.equal((shield.s.effects & EF_COLOR_SHELL) !== 0, true, "POWER_ARMOR_SHIELD should set EF_COLOR_SHELL");
+  assert.equal((shield.s.renderfx & RF_SHELL_GREEN) !== 0, true, "POWER_ARMOR_SHIELD should set green shell renderfx");
+  assert.equal((shield.s.effects & EF_POWERSCREEN) !== 0, false, "POWER_ARMOR_SHIELD should not set EF_POWERSCREEN");
+
+  const expired = createMonster(runtime, 44);
+  expired.s.effects = EF_COLOR_SHELL | EF_POWERSCREEN;
+  expired.s.renderfx = RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE;
+  expired.powerarmor_time = runtime.time;
+  expired.monsterinfo.power_armor_type = POWER_ARMOR_SHIELD;
+  M_SetEffects(expired, runtime);
+  assert.equal(expired.s.effects, 0, "expired power armor should leave no shell or powerscreen effect");
+  assert.equal(expired.s.renderfx, 0, "expired power armor should clear stale shell renderfx");
 }
 
 function createHarnessRuntime(): GameRuntime {

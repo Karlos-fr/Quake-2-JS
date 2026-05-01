@@ -15,6 +15,7 @@ import { DF_QUAD_DROP } from "../../packages/qcommon/src/index.js";
 import { BODY_QUEUE_SIZE, DEAD_DEAD, DROPPED_PLAYER_ITEM, damage_t } from "../../packages/game/src/g_local.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
 import {
+  ClientConnect,
   CopyToBodyQue,
   InitBodyQue,
   TossClientWeapon,
@@ -32,10 +33,31 @@ main();
 
 function main(): void {
   verifyBodyQueueUsesOriginalSizeAndWraps();
+  verifyClientConnectRespectsAutosavedPersistentState();
   verifyTossClientWeaponUsesDefaultDropItem();
   verifyPlayerDieUsesDefaultSoundAndGibs();
 
   console.log("Verification p_client - player lifecycle defaults OK");
+}
+
+function verifyClientConnectRespectsAutosavedPersistentState(): void {
+  const runtime = createHarnessRuntime();
+  const player = spawnGameEntity(runtime);
+  const client = attachGameClient(player);
+  const shotgun = requireItem("Shotgun");
+  const blaster = requireItem("Blaster");
+
+  client.pers.weapon = shotgun;
+  player.inuse = false;
+  runtime.autosaved = false;
+  assert.equal(ClientConnect(player, "\\name\\manual", runtime), true, "ClientConnect should accept manual connects");
+  assert.equal(client.pers.weapon, blaster, "manual ClientConnect should reinitialize pers.weapon like non-autosaved C loads");
+
+  player.inuse = false;
+  client.pers.weapon = shotgun;
+  runtime.autosaved = true;
+  assert.equal(ClientConnect(player, "\\name\\auto", runtime), true, "ClientConnect should accept autosaved connects");
+  assert.equal(client.pers.weapon, shotgun, "autosaved ClientConnect should preserve existing pers.weapon");
 }
 
 function verifyBodyQueueUsesOriginalSizeAndWraps(): void {

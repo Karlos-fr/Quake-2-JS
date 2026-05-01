@@ -385,6 +385,7 @@ export function ReadGame(context: GameMainContext, filename: string): void {
   context.runtime.helpmessage2 = save.game.helpmessage2;
   context.runtime.helpchanged = save.game.helpchanged;
   context.runtime.spawnpoint = save.game.spawnpoint;
+  context.runtime.autosaved = save.game.autosaved;
   context.game.clients = save.clients.map((client) => restoreClient(client));
 }
 

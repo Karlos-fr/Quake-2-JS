@@ -88,6 +88,7 @@ function main(): void {
   verifyTargetStringMapsFrames();
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
+  verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
   verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities();
   verifyLightWritesSourceConfigstrings();
@@ -562,6 +563,75 @@ function verifyMiscExploboxSpawnsShootableBarrel(): void {
   assert.equal(barrel.die, barrel_delay, "misc_explobox must use barrel_delay as die callback");
   assert.ok(barrel.touch, "misc_explobox must expose barrel_touch");
   assert.ok(barrel.think, "misc_explobox must schedule M_droptofloor");
+  assert.equal(runtime.assets.modelPaths.includes("models/objects/debris1/tris.md2"), true, "misc_explobox must precache debris1");
+  assert.equal(runtime.assets.modelPaths.includes("models/objects/debris2/tris.md2"), true, "misc_explobox must precache debris2");
+  assert.equal(runtime.assets.modelPaths.includes("models/objects/debris3/tris.md2"), true, "misc_explobox must precache debris3");
+
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end, passent, mask) => {
+      assert.equal(passent, barrel, "misc_explobox droptofloor trace must pass the barrel");
+      assert.equal(mask, MASK_MONSTERSOLID, "misc_explobox droptofloor trace mask mismatch");
+      return makeTrace({
+        fraction: 0.5,
+        endpos: [...end],
+        ent: runtime.entities[0]!,
+        plane: { normal: [0, 0, 1], dist: 0, type: 0, signbits: 0, pad: [0, 0] }
+      });
+    },
+    pointcontents: () => 1
+  };
+  runPendingThinks(runtime, runtime.time + 2 * FRAMETIME);
+  assert.equal(barrel.groundentity, runtime.entities[0], "misc_explobox delayed M_droptofloor must refresh groundentity");
+
+  const custom = spawnGameEntity(runtime);
+  custom.classname = "misc_explobox";
+  custom.mass = 900;
+  custom.health = 25;
+  custom.dmg = 300;
+  ED_CallSpawn(custom, runtime);
+  assert.equal(custom.mass, 900, "misc_explobox must preserve explicit mass");
+  assert.equal(custom.health, 25, "misc_explobox must preserve explicit health");
+  assert.equal(custom.dmg, 300, "misc_explobox must preserve explicit damage");
+  assert.equal(custom.die, barrel_delay, "ED_CallSpawn must dispatch misc_explobox");
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  const deathmatchBarrel = spawnFreeableEntity(deathmatchRuntime);
+  deathmatchBarrel.classname = "misc_explobox";
+  SP_misc_explobox(deathmatchBarrel, deathmatchRuntime);
+  assert.equal(deathmatchBarrel.inuse, false, "misc_explobox must be auto-removed in deathmatch");
+  assert.equal(deathmatchBarrel.linked, false, "deathmatch misc_explobox must not stay linked");
+}
+
+function verifyBarrelDelaySchedulesDelayedExplosion(): void {
+  const runtime = createHarnessRuntime();
+  const attacker = spawnGameEntity(runtime);
+  attacker.classname = "barrel_attacker";
+
+  const barrel = spawnFreeableEntity(runtime);
+  barrel.classname = "misc_explobox";
+  barrel.s.origin = [12, 24, 36];
+  barrel.origin = [12, 24, 36];
+  barrel.absmin = [0, 0, 0];
+  barrel.size = [32, 32, 40];
+  barrel.dmg = 100;
+  barrel.takedamage = damage_t.DAMAGE_YES;
+
+  barrel_delay(barrel, null, attacker, 999, runtime);
+
+  assert.equal(barrel.takedamage, damage_t.DAMAGE_NO, "barrel_delay must make the barrel non-damageable");
+  assert.equal(barrel.nextthink, runtime.time + 2 * FRAMETIME, "barrel_delay must schedule exactly two frames later");
+  assert.equal(barrel.think, barrel_explode, "barrel_delay must install barrel_explode as next think");
+  assert.equal(barrel.activator, attacker, "barrel_delay must remember the attacker as activator");
+
+  withMockedRandom(Array(200).fill(0.5), () => {
+    runPendingThinks(runtime, runtime.time + 2 * FRAMETIME);
+  });
+
+  const events = drainGameTempEntityEvents(runtime);
+  assert.equal(events.at(-1)?.type, temp_event_t.TE_EXPLOSION1, "barrel_delay scheduled think must trigger barrel_explode");
+  assert.equal(barrel.inuse, false, "barrel_delay scheduled explosion must free the barrel");
 }
 
 function verifyBarrelTouchPushesOnlyFromGroundedActors(): void {

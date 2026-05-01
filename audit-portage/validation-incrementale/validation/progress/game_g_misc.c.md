@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `barrel_delay` et `SP_misc_explobox`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `barrel_delay` conserve `DAMAGE_NO`, `nextthink = level.time + 2 * FRAMETIME`, `think = barrel_explode` et `activator = attacker`. `SP_misc_explobox` conserve l'auto-free en deathmatch, le precache debris1/debris2/debris3, `SOLID_BBOX`, `MOVETYPE_STEP`, le modele barrel, bbox, valeurs par defaut `mass = 400`, `health = 10`, `dmg = 150`, `die = barrel_delay`, `DAMAGE_YES`, `AI_NOSTEP`, `touch = barrel_touch`, `think = M_droptofloor`, `nextthink = level.time + 2 * FRAMETIME` et link.
+  - Commentaires d'en-tete verifies pour `barrel_delay` et `SP_misc_explobox`: original/source/categorie portee/fidelite et comportement documentes.
+  - Branchement runtime verifie: `misc_explobox` est enregistre dans `g_spawn.ts` et dispatchable par `ED_CallSpawn`; le spawn installe les callbacks `die`, `touch` et `think`; `barrel_delay` est appele par le flux damage/die puis `G_RunFrame`/`SV_RunThink` declenche `barrel_explode`.
+  - `apps/web`: integration attendue car le lot produit une entite MD2 shootable/poussable, dommages, disparition du barrel, debris et temp entities. Aucune logique parallele trouvee; les flux local/full-game consomment les snapshots runtime, sons et temp entities.
+  - `renderer-three`: integration attendue pour le modele barrel, origines/frames, disparition, debris MD2, explosion temp entity, particules/dlights et scene. Les sorties passent par `ClientRefreshFrame.entities`/`lights`, configstrings modeles et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: assertions ciblees ajoutees pour `barrel_delay`, `SP_misc_explobox`, free deathmatch, precache debris, valeurs explicites preservees, dispatch `ED_CallSpawn` et think `M_droptofloor`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npx tsx ./scripts/verify/quake2-cl-tent.ts` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `misc_blackhole_use`, `misc_blackhole_think`, puis `SP_misc_blackhole` si le lot reste petit.
+
 - 2026-05-01: `barrel_explode` et local `spd`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `barrel_explode` conserve `T_RadiusDamage(self, activator, dmg, NULL, dmg+40, MOD_BARREL)`, sauvegarde `s.origin`, recentre temporairement sur `absmin + 0.5 * size`, lance 2 debris1 randomises, 4 debris3 aux coins bas, 8 debris2 randomises, restaure l'origine puis choisit `BecomeExplosion2` si grounded sinon `BecomeExplosion1`. Le port TS utilise `self.activator ?? self` comme garde defensive quand l'activator est absent; `barrel_delay` le renseigne dans le flux normal.

@@ -63,6 +63,7 @@ import {
   rotating_use,
   train_blocked,
   train_next,
+  train_resume,
   train_wait,
   train_use,
   trigger_elevator_use
@@ -947,6 +948,26 @@ assert.deepEqual(train.moveinfo.end_origin, [90, 0, 0], "train_next end origin m
 assert.equal(train.moveinfo.endfunc?.name, "train_wait", "train_next endfunc mismatch");
 assert.equal(train.s.sound, train.moveinfo.sound_middle, "train_next middle sound mismatch");
 assert.equal((train.spawnflags & 1) !== 0, true, "train_next must keep START_ON set");
+
+const resumedTrain = entity("func_train", 135);
+const resumeCorner = entity("path_corner", 138);
+resumedTrain.origin = [16, 24, 32];
+resumedTrain.s.origin = [16, 24, 32];
+resumedTrain.mins = [4, 8, 12];
+resumedTrain.target_ent = resumeCorner;
+resumedTrain.moveinfo.speed = 64;
+resumedTrain.moveinfo.accel = 64;
+resumedTrain.moveinfo.decel = 64;
+resumedTrain.spawnflags = 0;
+resumeCorner.origin = [100, 120, 140];
+resumeCorner.s.origin = [100, 120, 140];
+train_resume(resumedTrain, runtime);
+assert.equal(resumedTrain.target_ent, resumeCorner, "train_resume must use existing target_ent");
+assert.deepEqual(resumedTrain.moveinfo.start_origin, [16, 24, 32], "train_resume start origin mismatch");
+assert.deepEqual(resumedTrain.moveinfo.end_origin, [96, 112, 128], "train_resume end origin mismatch");
+assert.equal(resumedTrain.moveinfo.state, STATE_TOP, "train_resume state mismatch");
+assert.equal(resumedTrain.moveinfo.endfunc, train_wait, "train_resume endfunc mismatch");
+assert.equal((resumedTrain.spawnflags & 1) !== 0, true, "train_resume must set START_ON");
 
 const trainDebris = entity("train debris", 27);
 trainDebris.health = 10;

@@ -803,6 +803,12 @@ export function Pickup_AncientHead(ent: GameEntity, other: GameEntity, runtime: 
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Raises bullet/shell/cell/slug ammo capacities to the original
+ * bandolier minimums, grants the C table quantities for Bullets and Shells,
+ * then schedules map-item deathmatch respawn.
+ * Porting notes: The repeated C local `gitem_t *item` lookups are factored
+ * through `grantAmmoPickup`, which still resolves by pickup name and clamps to
+ * the matching per-client ammo max.
  */
 export function Pickup_Bandolier(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   const client = requireClient(other, "Pickup_Bandolier");

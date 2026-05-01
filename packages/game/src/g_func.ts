@@ -1734,6 +1734,19 @@ export function train_next(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: train_resume
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Resumes a stopped `func_train` toward its current `target_ent` path corner.
+ * - Rebuilds movement endpoints from the current origin and schedules `train_wait`.
+ *
+ * Porting notes:
+ * - `Move_Calc` receives the explicit runtime adapter used by the TypeScript movement loop.
+ */
 export function train_resume(self: GameEntity, runtime: GameRuntime): void {
   const ent = self.target_ent;
   if (!ent) {

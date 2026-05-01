@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: locales matricielles restantes de `train_next` (`ent`, `dest`, `first`), puis `train_resume` et sa locale `ent`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1529-1599` avec `packages/game/src/g_func.ts:1697-1761`.
+- Correction appliquee: ajout du commentaire d'en-tete de `train_resume` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee directe ajoutee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `train_next` conserve la locale `ent` issue de `G_PickTarget`, la garde `first` qui autorise un seul `path_corner` teleport, le calcul `dest = ent.origin - self.mins`, la mise a jour `target_ent`, `wait`, `start_origin`, `end_origin`, `endfunc = train_wait` et `TRAIN_START_ON`; `train_resume` reprend depuis `target_ent` existant, recalcule `dest`, restaure les endpoints depuis l'origine courante et programme `Move_Calc(..., train_wait)`.
+- Branchement: `train_next` reste atteint par `func_train_find`, `train_wait` et `train_use`; `train_resume` est atteint par `train_use` quand `target_ent` existe et par `trigger_elevator_use` apres selection du `path_corner`, tous deux depuis les callbacks spawn/use du runtime `SP_func_train`/`SP_trigger_elevator` puis `G_RunFrame`/`G_RunEntity`/`SV_RunThink` ou triggers.
+- Integration: aucune logique parallele `func_train`/`trigger_elevator` dans `apps/web`; le navigateur consomme les sons runtime, snapshots et refresh frames. `packages/renderer-three` n'a pas a porter la logique gameplay, mais consomme les sorties visibles attendues via brush models/origines des refresh frames dans la scene; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: blocage et attente de train `train_blocked`, `train_wait`, locales matricielles `savetarget` et `ent`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1461-1527` avec `packages/game/src/g_func.ts:1616-1679`.
 - Correction appliquee: `train_blocked` appelle maintenant `BecomeExplosion1` pour les bloqueurs non-monstre/non-client encore presents apres le crush, afin de produire la temp entity explosion comme le C; commentaires d'en-tete ajoutes pour `train_blocked` et `train_wait`; couverture ciblee ajoutee dans `scripts/verify/quake2-g-func.ts`.
@@ -270,7 +278,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les locales matricielles restantes de `train_next` (`ent`, `dest`, `first`), puis `train_resume` avec sa locale `ent` si le lot reste petit.
+- Continuer avec `func_train_find` et sa locale `ent`, puis `train_use` avec l'appel `train_next` doublon si le lot reste petit.
 
 ## Blocages
 

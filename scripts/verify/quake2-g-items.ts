@@ -33,6 +33,7 @@ import {
   Pickup_Health,
   Pickup_Adrenaline,
   Pickup_AncientHead,
+  Pickup_Bandolier,
   Pickup_Armor,
   Pickup_Powerup,
   PowerArmorType,
@@ -76,6 +77,7 @@ function main(): void {
   verifyTouchHealthPickupUsesItemPath();
   verifyPickupAdrenalineHealthAndRespawn();
   verifyPickupAncientHeadMaxHealthAndRespawn();
+  verifyPickupBandolierAmmoCapsAndRespawn();
   verifyTouchRejectedPickupStillUsesTargets();
   verifyTouchAmmoPickupUsesItemPath();
   verifyTouchWeaponPickupUsesWeaponPath();
@@ -444,6 +446,78 @@ function verifyPickupAncientHeadMaxHealthAndRespawn(): void {
   assertBoolean(Pickup_AncientHead(droppedHead, droppedPlayer, droppedRuntime), true, "Pickup_AncientHead accepts dropped ancient head");
   assertNumber(droppedPlayer.max_health, 102, "Dropped Ancient Head still increments max_health");
   assertNumber(droppedHead.nextthink, 0, "Dropped Ancient Head does not schedule map-item respawn");
+}
+
+function verifyPickupBandolierAmmoCapsAndRespawn(): void {
+  const singlePlayerRuntime = createHarnessRuntime();
+  const singlePlayerBandolier = spawnFreeableEntity(singlePlayerRuntime);
+  const singlePlayer = createPlayer(singlePlayerRuntime);
+  const bandolier = requireItem("Bandolier");
+  const bullets = requireItem("Bullets");
+  const shells = requireItem("Shells");
+  const cells = requireItem("Cells");
+  const slugs = requireItem("Slugs");
+
+  singlePlayerBandolier.item = bandolier;
+  singlePlayer.client!.pers.max_bullets = 240;
+  singlePlayer.client!.pers.max_shells = 149;
+  singlePlayer.client!.pers.max_cells = 120;
+  singlePlayer.client!.pers.max_slugs = 20;
+  singlePlayer.client!.pers.inventory[bullets.index] = 225;
+  singlePlayer.client!.pers.inventory[shells.index] = 145;
+  singlePlayer.client!.pers.inventory[cells.index] = 7;
+  singlePlayer.client!.pers.inventory[slugs.index] = 3;
+
+  assertBoolean(Pickup_Bandolier(singlePlayerBandolier, singlePlayer, singlePlayerRuntime), true, "Pickup_Bandolier accepts the map bandolier");
+  assertNumber(singlePlayer.client!.pers.max_bullets, 250, "Pickup_Bandolier raises max_bullets to the C minimum");
+  assertNumber(singlePlayer.client!.pers.max_shells, 150, "Pickup_Bandolier raises max_shells to the C minimum");
+  assertNumber(singlePlayer.client!.pers.max_cells, 250, "Pickup_Bandolier raises max_cells to the C minimum");
+  assertNumber(singlePlayer.client!.pers.max_slugs, 75, "Pickup_Bandolier raises max_slugs to the C minimum");
+  assertNumber(singlePlayer.client!.pers.inventory[bullets.index], 250, "Pickup_Bandolier grants Bullets quantity and clamps to max_bullets");
+  assertNumber(singlePlayer.client!.pers.inventory[shells.index], 150, "Pickup_Bandolier grants Shells quantity and clamps to max_shells");
+  assertNumber(singlePlayer.client!.pers.inventory[cells.index], 7, "Pickup_Bandolier does not grant Cells ammo");
+  assertNumber(singlePlayer.client!.pers.inventory[slugs.index], 3, "Pickup_Bandolier does not grant Slugs ammo");
+  assertNumber(singlePlayerBandolier.nextthink, 0, "Pickup_Bandolier does not respawn single-player bandolier");
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  deathmatchRuntime.time = 9;
+  const deathmatchBandolier = spawnFreeableEntity(deathmatchRuntime);
+  const deathmatchPlayer = createPlayer(deathmatchRuntime);
+
+  deathmatchBandolier.item = bandolier;
+  deathmatchBandolier.touch = Touch_Item;
+  deathmatchBandolier.solid = SOLID_TRIGGER;
+  deathmatchPlayer.client!.pers.max_bullets = 300;
+  deathmatchPlayer.client!.pers.max_shells = 200;
+  deathmatchPlayer.client!.pers.max_cells = 300;
+  deathmatchPlayer.client!.pers.max_slugs = 100;
+  deathmatchPlayer.client!.pers.inventory[bullets.index] = 1;
+  deathmatchPlayer.client!.pers.inventory[shells.index] = 2;
+  linkGameEntity(deathmatchRuntime, deathmatchBandolier);
+
+  Touch_Item(deathmatchBandolier, deathmatchPlayer, deathmatchRuntime);
+
+  assertNumber(deathmatchPlayer.client!.pers.max_bullets, 300, "Pickup_Bandolier preserves higher max_bullets");
+  assertNumber(deathmatchPlayer.client!.pers.max_shells, 200, "Pickup_Bandolier preserves higher max_shells");
+  assertNumber(deathmatchPlayer.client!.pers.inventory[bullets.index], 51, "Touch_Item routes Bandolier bullet grant through FindItem quantity");
+  assertNumber(deathmatchPlayer.client!.pers.inventory[shells.index], 12, "Touch_Item routes Bandolier shell grant through FindItem quantity");
+  assertNumber(deathmatchBandolier.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "Deathmatch Bandolier is hidden for respawn");
+  assertNumber(deathmatchBandolier.solid, SOLID_NOT, "Deathmatch Bandolier is made nonsolid while respawning");
+  assertNumber(deathmatchBandolier.nextthink, 69, "Deathmatch Bandolier uses item quantity as respawn delay");
+  assertNumber(deathmatchPlayer.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + bandolier.index, "Touch_Item reports the Bandolier pickup string");
+  assertBoolean(drainGameSoundEvents(deathmatchRuntime).some((event) => event.soundPath === "items/pkup.wav"), true, "Touch_Item queues the Bandolier pickup sound");
+
+  const droppedRuntime = createHarnessRuntime();
+  droppedRuntime.deathmatch = true;
+  const droppedBandolier = spawnFreeableEntity(droppedRuntime);
+  const droppedPlayer = createPlayer(droppedRuntime);
+
+  droppedBandolier.item = bandolier;
+  droppedBandolier.spawnflags = DROPPED_ITEM;
+
+  assertBoolean(Pickup_Bandolier(droppedBandolier, droppedPlayer, droppedRuntime), true, "Pickup_Bandolier accepts dropped bandolier");
+  assertNumber(droppedBandolier.nextthink, 0, "Dropped Bandolier does not schedule map-item respawn");
 }
 
 function verifyTouchRejectedPickupStillUsesTargets(): void {

@@ -1517,7 +1517,7 @@ export function ClientConnect(
 
   if (!ent.inuse) {
     InitClientResp(client, runtime);
-    if (!client.pers.weapon) {
+    if (!runtime.autosaved || !client.pers.weapon) {
       InitClientPersistant(client);
     }
   }

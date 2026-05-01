@@ -1,20 +1,20 @@
 # Progress - Quake-2-master/game/g_monster.c
 
 - Statut: En cours
-- Dernier lot valide: `M_droptofloor` avec locales `end` et `trace`
-- Prochain lot recommande: `M_SetEffects`
+- Dernier lot valide: `M_SetEffects`
+- Prochain lot recommande: `M_MoveFrame` avec `move` et `index` si le lot reste petit
 - Tests de reference: `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Blocages: aucun pour le lot valide
 
 ## Session courante
 
-- Lot traite: `M_droptofloor` avec locales `end` et `trace`.
-- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS mis a jour pour l'adaptation `origin`/`s.origin`, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
-- Runtime: atteignable depuis `walkmonster_start_go` pour les monstres marcheurs au spawn initial, et depuis `SP_misc_explobox` via le think differe des barrels; branches verifiees pour trace 256 unites vers le bas depuis l'origine relevee, sortie `fraction == 1`/`allsolid`, copie `trace.endpos`, `linkentity`, `M_CheckGround` et `M_CatagorizePosition`.
-- apps/web: pas de logique parallele attendue; le navigateur consomme le runtime porte via full-game/local session, sons/refresh et snapshots d'entites. La sortie utile du lot est l'origine corrigee des entites apres spawn/drop.
-- renderer-three: sortie visible attendue indirecte via modeles/origines d'entites dans les refresh frames; pas de branchement renderer dedie requis pour ce helper, qui ne produit ni particules, beams, dlights, temp entities, areabits, camera, ni scene propre.
+- Lot traite: `M_SetEffects`.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS `Strict` verifie, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
+- Runtime: atteignable depuis `G_RunFrame` -> `G_RunEntity` -> `monster_think` apres `M_MoveFrame`, `M_CatagorizePosition` et `M_WorldEffects`; branches verifiees pour nettoyage des anciens bits `EF_COLOR_SHELL`/`EF_POWERSCREEN` et `RF_SHELL_*`, resurrection rouge, retour anticipe des monstres morts, `POWER_ARMOR_SCREEN`, `POWER_ARMOR_SHIELD` et expiration `powerarmor_time <= level.time`.
+- apps/web: pas de logique parallele attendue; le navigateur consomme les `effects`/`renderfx` issus du runtime via snapshots/full-game/local sync, puis client refresh. `verify:local-gameplay-sync`, `verify:full-game:three-renderer` et `verify:web-render-order` couvrent ce flux.
+- renderer-three: sortie visible attendue via modeles MD2/scene avec shell rouge ou vert et powerscreen translucide; consommation verifiee dans les adapters client/renderer (`refresh` ajoute le shell powerscreen, `renderer-three` consomme `RF_SHELL_*`). Pas de correction renderer necessaire.
 - Tests lances: `npm run verify:g-monster` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
-- Prochain lot recommande: `M_SetEffects`.
+- Prochain lot recommande: `M_MoveFrame` avec `move` et `index` si le lot reste petit.
 
 ## Session precedente
 

@@ -32,7 +32,7 @@
 | `Quake-2-master/game/g_monster.c` | function | `M_droptofloor` | `packages/game/src/g_monster.ts` | `M_droptofloor` | Valide | A redecouper | Preuve session: comparaison C/TS, en-tete mis a jour, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster`; runtime via `walkmonster_start_go` et `misc_explobox`, apps/web/renderer consomment l'origine/modeles via snapshots/refresh sans logique parallele. |
 | `Quake-2-master/game/g_monster.c` | global | `end` | `packages/game/src/g_monster.ts` | `end` | Valide | A redecouper | Preuve session: locale comparee avec C, trace 256 unites vers le bas depuis l'origine relevee verifie par `npm run verify:g-monster`. |
 | `Quake-2-master/game/g_monster.c` | global | `trace` | `packages/game/src/g_monster.ts` | `trace` | Valide | A redecouper | Preuve session: locale comparee avec C, masque `MASK_MONSTERSOLID`, `passent`, sortie `fraction == 1`/`allsolid`, `endpos` et ground refresh verifies par `npm run verify:g-monster`. |
-| `Quake-2-master/game/g_monster.c` | function | `M_SetEffects` | `packages/game/src/g_monster.ts` | `M_SetEffects` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | function | `M_SetEffects` | `packages/game/src/g_monster.ts` | `M_SetEffects` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | function | `M_MoveFrame` | `packages/game/src/g_monster.ts` | `M_MoveFrame` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | global | `move` | `packages/game/src/g_monster.ts` | `move` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | global | `index` | `packages/game/src/g_monster.ts` | `index` | A verifier | A redecouper |  |

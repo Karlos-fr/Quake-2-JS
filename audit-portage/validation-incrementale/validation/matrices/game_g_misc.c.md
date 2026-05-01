@@ -66,8 +66,8 @@
 | `Quake-2-master/game/g_misc.c` | function | `barrel_explode` | `packages/game/src/g_misc.ts` | `barrel_explode` | Valide | A redecouper | Header verifie; preuve C/TS radius damage, origine sauvee/recentree/restauree, debris 2/4/8, TE_EXPLOSION1/2. Tests: `npm run verify:g-misc`, `npm run verify:g-spawn`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npx tsx ./scripts/verify/quake2-cl-tent.ts`, `npm run typecheck`. |
 | `Quake-2-master/game/g_misc.c` | global | `spd` | `packages/game/src/g_misc.ts` | `spd` | Valide | A redecouper | Local porte par les trois affectations `1.5 * dmg / 200`, `1.75 * dmg / 200`, `2 * dmg / 200`; couvert par `verify:g-misc`. |
 | `Quake-2-master/game/g_misc.c` | function | `BecomeExplosion1` | `packages/game/src/g_misc.ts` | `BecomeExplosion1` | Valide | A redecouper | Ligne dupliquee generee pour le meme symbole; validee avec la preuve `BecomeExplosion1` ci-dessus. |
-| `Quake-2-master/game/g_misc.c` | function | `barrel_delay` | `packages/game/src/g_misc.ts` | `barrel_delay` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_misc_explobox` | `packages/game/src/g_misc.ts` | `SP_misc_explobox` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `barrel_delay` | `packages/game/src/g_misc.ts` | `barrel_delay` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `SP_misc_explobox` | `packages/game/src/g_misc.ts` | `SP_misc_explobox` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_blackhole_use` | `packages/game/src/g_misc.ts` | `misc_blackhole_use` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_blackhole_think` | `packages/game/src/g_misc.ts` | `misc_blackhole_think` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_blackhole` | `packages/game/src/g_misc.ts` | `SP_misc_blackhole` | A verifier | A redecouper |  |

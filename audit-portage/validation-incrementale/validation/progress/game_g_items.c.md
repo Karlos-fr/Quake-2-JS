@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Pickup_Bandolier` et locale `item`.
+
+Validation bandolier du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_Bandolier` conserve le comportement C: releve les plafonds ammo a au moins 250 bullets, 150 shells, 250 cells et 75 slugs; cherche `Bullets` puis `Shells`; ajoute les quantites de la table itemlist a l'inventaire correspondant; clamp aux maxima du joueur; planifie `SetRespawn(ent, ent->item->quantity)` en deathmatch seulement pour les items de carte non droppes; retourne toujours `true`. La locale C `gitem_t *item` est portee dans `grantAmmoPickup`: resolution par `FindItem(pickupName)`, calcul `ITEM_INDEX(item)`, ajout `item.quantity`, puis clamp via le tag ammo. L'entree `item_bandolier` de `itemlist` est alignee (`Pickup_Bandolier`, pickup sound `items/pkup.wav`, modele `models/items/band/tris.md2`, `EF_ROTATE`, icone `p_bandolier`, pickup name `Bandolier`, width 2, quantity 60, pas de flags/precache). Header TS complete avec `Behavior` et note de portage sur la factorisation de la locale `item`.
+
+Runtime branche via `g_spawn.ts`/`SpawnItem` pour `item_bandolier`, `droptofloor`, `Touch_Item`, le dispatch `callItemPickup`, `FindItem` et `SetRespawn`. `apps/web` doit consommer ce flux via le runtime local/full-game, les sons gameplay (`drainGameSoundEvents`), les stats pickup/inventaire/HUD et les snapshots; aucune logique parallele `Bandolier` detectee dans `apps/web`. `renderer-three` doit consommer les sorties visibles generiques: modele item rotatif MD2, disparition pendant pickup/respawn, reapparition apres `DoRespawn` et scene refresh; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyPickupBandolierAmmoCapsAndRespawn` couvre les plafonds, l'ajout et clamp Bullets/Shells via les quantites itemlist, l'absence de grant Cells/Slugs, le chemin `Touch_Item` deathmatch avec stats/son/respawn, la preservation de plafonds deja plus hauts, et l'absence de respawn pour item droppe. Tests lances: `npm run verify:g-items`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `Pickup_AncientHead`.
 
 Validation ancient head du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_AncientHead` conserve le comportement C: augmente toujours `other->max_health` de 2, ne modifie pas `other->health`, planifie `SetRespawn(ent, ent->item->quantity)` en deathmatch seulement pour les items de carte non droppes, puis retourne toujours `true`. L'entree `item_ancient_head` de `itemlist` est alignee (`Pickup_AncientHead`, pickup sound `items/pkup.wav`, modele `models/items/c_head/tris.md2`, `EF_ROTATE`, icone `i_fixme`, pickup name `Ancient Head`, width 2, quantity 60, pas de flags/precache). Header TS complete avec `Behavior` et note runtime deathmatch.
@@ -237,4 +245,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Bandolier`, avec la locale `item` si le lot reste coherent.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Pack`, avec les locales `item` et `index` si le lot reste coherent.

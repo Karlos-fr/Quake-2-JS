@@ -8,6 +8,29 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot `game_locals_t` avec champs `num_items` et `autosaved`; tranche `game_locals_t` close.
+- Verdict: `Valide` pour les 2 champs apres correction du miroir runtime `autosaved` et renforcement des preuves.
+- Source H comparee: `num_items` stocke le nombre d'items actifs apres `InitItems`; `autosaved` est pose pendant `WriteGame(..., autosave)` pour que les reconnects issus d'un autosave conservent l'etat persistant charge.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `game_locals_t` porte `num_items` et `autosaved`; `createGameLocals` initialise `0` et `false`; commentaire de portage `game_locals_t` deja present.
+  - `packages/game/src/g_main.ts`: `InitGame` affecte `game.num_items = InitItems()`.
+  - `packages/game/src/g_save.ts`: `WriteGame` snapshot `num_items`/`autosaved`, remet le flag apres ecriture, et `ReadGame` restaure maintenant aussi `runtime.autosaved`.
+  - `packages/game/src/p_client.ts`: `ClientConnect` respecte maintenant la condition C `!game.autosaved || !pers.weapon` via `runtime.autosaved`.
+  - `packages/game/src/p_hud.ts`: `BeginIntermission` nettoie `runtime.autosaved` comme le C nettoie `game.autosaved`.
+- Runtime:
+  - `num_items` est initialise depuis l'itemlist originale et borne les flux item/inventaire en C; le port TS utilise surtout les helpers `InitItems`/`GetItemByIndex`/`MAX_ITEMS`, avec `game.num_items` conserve pour savegame et compatibilite du bloc `game_locals_t`.
+  - `autosaved` est integre dans le flux `WriteGame`/`ReadGame`/`ClientConnect`/`BeginIntermission`, ce qui preserve les persistant clients lors d'un autosave et les reinitialise lors d'un chargement manuel comme le C.
+- apps/web: integration attendue via host local/full-game, save/load, connect et HUD/intermission; aucune logique parallele `num_items`/`autosaved` detectee dans `apps/web`. `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: aucune consommation directe attendue. Ces champs ne produisent pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene; les consequences visibles passent par inventaire/items ou etats client deja exposes en snapshots/refresh. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage de `game_locals_t` verifie; pas de fonction nouvelle dans ce lot.
+- Corrections appliquees:
+  - `packages/game/src/g_save.ts`: `ReadGame` restaure `runtime.autosaved`.
+  - `packages/game/src/p_client.ts`: `ClientConnect` utilise `runtime.autosaved` pour la branche de persistance client.
+  - `scripts/verify/quake2-g-main.ts`: assertion `InitGame -> game.num_items`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration `num_items` et `autosaved`.
+  - `scripts/verify/quake2-p-client.ts`: assertions connect manuel vs autosaved.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:g-items` OK; `npm run verify:p-client` OK; `npm run verify:p-hud` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot `game_locals_t` avec champs `spawnpoint`, `maxclients`, `maxentities`, `serverflags`.
 - Verdict: `Valide` pour les 4 champs apres renforcement des preuves; aucune correction gameplay TS necessaire.
 - Source H comparee: `spawnpoint[512]` est conserve dans `game_locals_t` pour les respawns coop entre niveaux; `maxclients` et `maxentities` stockent les cvars latchees frequemment consultees; `serverflags` porte les cross-level triggers.
@@ -587,7 +610,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les champs restants de `game_locals_t`: `num_items` et `autosaved`, puis clore la tranche `game_locals_t` si le lot reste raisonnable.
+- Continuer avec `level_locals_t`, petit lot initial: structure `level_locals_t` puis champs `framenum` et `time` si le lot reste raisonnable.
 
 ## Blocages
 

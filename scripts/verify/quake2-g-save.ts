@@ -115,6 +115,7 @@ writeContext.game.maxclients = 1;
 writeContext.game.maxentities = 64;
 writeContext.game.spawnpoint = "unit_start";
 writeContext.game.helpmessage1 = "help one";
+writeContext.game.num_items = 41;
 writeContext.runtime.serverflags = 3;
 
 const player = createRuntimeEntity({ classname: "player" }, 1);
@@ -133,7 +134,15 @@ assert.ok(gameJson.includes("\"spawnpoint\": \"unit_start\""), "WriteGame must p
 assert.ok(gameJson.includes("\"maxclients\": 1"), "WriteGame must persist game maxclients");
 assert.ok(gameJson.includes("\"maxentities\": 64"), "WriteGame must persist game maxentities");
 assert.ok(gameJson.includes("\"serverflags\": 3"), "WriteGame must persist runtime serverflags through game locals");
+assert.ok(gameJson.includes("\"num_items\": 41"), "WriteGame must persist game num_items");
+assert.ok(gameJson.includes("\"autosaved\": false"), "manual WriteGame must persist autosaved false");
 assert.ok(gameJson.includes("\"health\": 75"), "WriteGame must call SaveClientData before manual saves");
+
+WriteGame(writeContext, "save/game-auto.ssv", true);
+const autosaveJson = files.get("save/game-auto.ssv") ?? "";
+assert.ok(autosaveJson.includes("\"autosaved\": true"), "autosave WriteGame must snapshot autosaved true");
+assert.equal(writeContext.game.autosaved, false, "WriteGame must clear game.autosaved after writing");
+assert.equal(writeContext.runtime.autosaved, false, "WriteGame must clear runtime.autosaved after writing");
 
 writeContext.runtime.helpmessage1 = "runtime help one";
 writeContext.runtime.helpmessage2 = "runtime help two";
@@ -163,7 +172,14 @@ assert.equal(readContext.game.maxentities, 64, "ReadGame game maxentities mismat
 assert.equal(readContext.runtime.maxentities, 64, "ReadGame runtime maxentities mismatch");
 assert.equal(readContext.game.serverflags, 3, "ReadGame serverflags mismatch");
 assert.equal(readContext.runtime.serverflags, 3, "ReadGame runtime serverflags mismatch");
+assert.equal(readContext.game.num_items, 41, "ReadGame num_items mismatch");
+assert.equal(readContext.game.autosaved, false, "ReadGame game autosaved mismatch");
+assert.equal(readContext.runtime.autosaved, false, "ReadGame runtime autosaved mismatch");
 assert.equal(readContext.game.clients[0]?.pers.health, 75, "ReadGame client pers health mismatch");
+
+ReadGame(readContext, "save/game-auto.ssv");
+assert.equal(readContext.game.autosaved, true, "ReadGame game autosaved true mismatch");
+assert.equal(readContext.runtime.autosaved, true, "ReadGame runtime autosaved true mismatch");
 
 const target = createRuntimeEntity({ classname: "target_crosslevel_target" }, 2);
 target.inuse = true;

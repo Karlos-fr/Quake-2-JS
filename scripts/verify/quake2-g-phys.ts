@@ -464,6 +464,97 @@ runtime.collision = {
 assertEqual("SV_FlyMove.MAX_CLIP_PLANES.numbumps", SV_FlyMove(flyMaxPlanesEnt, 0.1, MASK_SOLID, runtime), 2);
 assertEqual("SV_FlyMove.MAX_CLIP_PLANES.trace-count", maxPlanesTraceCount, 4);
 assertVec("SV_FlyMove.MAX_CLIP_PLANES.velocity", flyMaxPlanesEnt.velocity, [0, 0, 5]);
+
+const flyPartialEnt = spawnGameEntity(runtime);
+flyPartialEnt.classname = "fly-partial";
+flyPartialEnt.solid = SOLID_BBOX;
+flyPartialEnt.clipmask = MASK_SOLID;
+flyPartialEnt.origin = [1, 2, 10];
+flyPartialEnt.s.origin = [1, 2, 10];
+flyPartialEnt.velocity = [10, 0, -10];
+const partialFloor = spawnGameEntity(runtime);
+partialFloor.classname = "fly-partial-floor";
+partialFloor.solid = SOLID_BSP;
+partialFloor.linkcount = 91;
+const partialTraceStarts: [number, number, number][] = [];
+const partialTraceEnds: [number, number, number][] = [];
+let partialTraceCount = 0;
+runtime.collision = {
+  world: {} as never,
+  trace(start, mins, maxs, end, passent, contentmask) {
+    partialTraceStarts.push([...start] as [number, number, number]);
+    partialTraceEnds.push([...end] as [number, number, number]);
+    partialTraceCount += 1;
+
+    if (partialTraceCount === 1) {
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 0.25,
+        endpos: [3.5, 2, 7.5],
+        plane: {
+          normal: [0, 0, 1],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: contentmask,
+        ent: partialFloor
+      };
+    }
+
+    if (partialTraceCount === 2) {
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 0.5,
+        endpos: [7.25, 2, 7.5],
+        plane: {
+          normal: [0, 1, 0],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: contentmask,
+        ent: worldspawn
+      };
+    }
+
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 1],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: worldspawn
+    };
+  },
+  pointcontents(point) {
+    return point[2] < 0 ? MASK_SOLID : 0;
+  }
+};
+assertEqual("SV_FlyMove.locals.blocked", SV_FlyMove(flyPartialEnt, 1, MASK_SOLID, runtime), 3);
+assertEqual("SV_FlyMove.locals.trace-count", partialTraceCount, 3);
+assertVec("SV_FlyMove.locals.first-end", partialTraceEnds[0], [11, 2, 0]);
+assertVec("SV_FlyMove.locals.second-start", partialTraceStarts[1], [3.5, 2, 7.5]);
+assertVec("SV_FlyMove.locals.second-end-time-left", partialTraceEnds[1], [11, 2, 7.5]);
+assertVec("SV_FlyMove.locals.final-origin", flyPartialEnt.origin, [11, 2, 7.5]);
+assertVec("SV_FlyMove.locals.final-s-origin", flyPartialEnt.s.origin, [11, 2, 7.5]);
+assertVec("SV_FlyMove.locals.final-velocity", flyPartialEnt.velocity, [10, 0, 0]);
+assertEqual("SV_FlyMove.locals.groundentity", flyPartialEnt.groundentity, partialFloor);
+assertEqual("SV_FlyMove.locals.groundentity-linkcount", flyPartialEnt.groundentity_linkcount, 91);
 runtime.collision = defaultCollision;
 
 const frameThinkEnt = spawnGameEntity(runtime);

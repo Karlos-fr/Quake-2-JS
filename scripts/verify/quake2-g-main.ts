@@ -144,6 +144,10 @@ assert.equal(cvars.get("password")?.string, "", "password default mismatch");
 assert.equal(cvars.get("password")?.flags, CVAR_USERINFO, "password flags mismatch");
 assert.equal(cvars.get("spectator_password")?.string, "", "spectator_password default mismatch");
 assert.equal(cvars.get("spectator_password")?.flags, CVAR_USERINFO, "spectator_password flags mismatch");
+
+const initContext = createGameMainContext(imports);
+InitGame(initContext);
+assert.equal(initContext.game.num_items, 41, "InitGame must store InitItems count in game.num_items");
 assert.equal(cvars.get("maxclients")?.string, "4", "maxclients default mismatch");
 assert.equal(cvars.get("maxclients")?.flags, CVAR_SERVERINFO | CVAR_LATCH, "maxclients flags mismatch");
 assert.equal(cvars.get("maxspectators")?.string, "4", "maxspectators default mismatch");
