@@ -37,6 +37,7 @@ import {
   button_fire,
   button_killed,
   button_return,
+  button_touch,
   button_wait,
   door_go_up,
   door_hit_top,
@@ -206,6 +207,29 @@ button_done(button, runtime);
 assert.equal(button.moveinfo.state, STATE_BOTTOM, "button_done state mismatch");
 assert.equal((button.s.effects & EF_ANIM23) === 0, true, "button_done must clear active animation");
 assert.equal((button.s.effects & EF_ANIM01) !== 0, true, "button_done must restore idle animation");
+
+const touchButton = entity("func_button", 29);
+touchButton.moveinfo.state = STATE_BOTTOM;
+touchButton.moveinfo.end_origin = [12, 0, 0];
+touchButton.moveinfo.sound_start = button.moveinfo.sound_start;
+const nonClientToucher = entity("monster toucher", 30);
+nonClientToucher.health = 40;
+button_touch(touchButton, nonClientToucher, runtime);
+assert.equal(touchButton.activator, null, "button_touch must ignore non-clients");
+assert.equal(touchButton.moveinfo.state, STATE_BOTTOM, "button_touch non-client must not fire");
+const deadClientToucher = entity("dead client toucher", 31);
+deadClientToucher.client = createGameClient();
+deadClientToucher.health = 0;
+button_touch(touchButton, deadClientToucher, runtime);
+assert.equal(touchButton.activator, null, "button_touch must ignore dead clients");
+assert.equal(touchButton.moveinfo.state, STATE_BOTTOM, "button_touch dead client must not fire");
+const liveClientToucher = entity("live client toucher", 32);
+liveClientToucher.client = createGameClient();
+liveClientToucher.health = 100;
+button_touch(touchButton, liveClientToucher, runtime);
+assert.equal(touchButton.activator, liveClientToucher, "button_touch activator mismatch");
+assert.equal(touchButton.moveinfo.state, STATE_UP, "button_touch live client must fire");
+assert.equal(touchButton.moveinfo.endfunc, button_wait, "button_touch must delegate to button_fire");
 
 const shootButton = entity("func_button", 3, { angle: "90", health: "10" });
 shootButton.size = [16, 64, 16];

@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: contact joueur bouton `button_touch`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:743-752` avec `packages/game/src/g_func.ts:1411-1427`.
+- Correction appliquee: ajout du commentaire d'en-tete `button_touch` et couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier les gardes non-client/client mort, puis activator client vivant et delegation a `button_fire`.
+- Effets verifies: le port conserve les deux retours anticipes C, stocke `self.activator = other` uniquement pour un client vivant, puis lance la pression via `button_fire` avec transition `STATE_UP` et callback `button_wait`.
+- Branchement: `button_touch` est affecte a `ent.touch` par `SP_func_button` pour les boutons sans `health` ni `targetname`; le callback est atteignable via les flux de contact `SV_Impact`, `G_TouchTriggers` et `G_TouchSolids`, puis le mouvement passe par `Move_Calc` et les thinks runtime `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele dans `apps/web`; le navigateur passe par le runtime serveur/local et consomme les sons/snapshots/interpolations de brush models. `packages/renderer-three` consomme les poses de brush snapshots via `gl-world-scene-adapter`; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: activation ciblee bouton `button_use`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:737-740` avec `packages/game/src/g_func.ts:1397-1409`.
 - Correction appliquee: ajout du commentaire d'en-tete `button_use`.
@@ -134,7 +142,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `button_touch`.
+- Valider le bloc suivant sans elargir: `button_killed`.
 
 ## Blocages
 

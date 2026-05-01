@@ -1408,6 +1408,16 @@ export function button_use(self: GameEntity, _other: GameEntity | null, activato
   button_fire(self, runtime);
 }
 
+/**
+ * Original name: button_touch
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Ignores non-client and dead client touchers.
+ * - Records the touching client as activator and delegates the press transition to `button_fire`.
+ */
 export function button_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if (!other.client || other.health <= 0) {
     return;
