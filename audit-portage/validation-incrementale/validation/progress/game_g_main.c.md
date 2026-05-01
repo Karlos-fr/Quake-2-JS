@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: entree `WriteLevel`.
 - 2026-05-01: entree `ReadGame`.
 - 2026-05-01: entree `WriteGame`.
 - 2026-05-01: entree `RunEntity`.
@@ -21,6 +22,7 @@
 
 ## Verdict du lot
 
+- `WriteLevel`: valide. Dans `g_main.c`, `WriteLevel` est declare puis branche dans `GetGameAPI` comme slot `globals.WriteLevel`; l'implementation originale est dans `g_save.c`. Le port TS conserve cette separation: `GetGameApi().WriteLevel` appelle le wrapper `g_main.ts` `WriteLevel`, qui delegue a `g_save.ts` `WriteLevel`. La comparaison avec le C couvre l'ouverture/ecriture par hook host, le marqueur de taille d'edict remplace par `edict_size`, le marqueur de base fonction `InitGame`, la sauvegarde des `level_locals_t` et l'ecriture des edicts `inuse` avec leurs entnums. Le format TS reste volontairement JSON via hook `writeFile` au lieu du bloc binaire C. Commentaire d'en-tete verifie sur le wrapper `g_main.ts` et l'implementation `g_save.ts`.
 - `ReadGame`: valide. Dans `g_main.c`, `ReadGame` est declare puis branche dans `GetGameAPI` comme slot `globals.ReadGame`; l'implementation originale est dans `g_save.c`. Le port TS conserve cette separation: `GetGameApi().ReadGame` appelle le wrapper `g_main.ts` `ReadGame`, qui delegue a `g_save.ts` `ReadGame`. La comparaison avec le C couvre `FreeTags(TAG_GAME)`, ouverture/lecture par hook host, validation version/format, restauration des donnees cross-level `game`, clients, `maxclients`, `maxentities` et `serverflags`; le format TS reste volontairement JSON via hook `readFile` au lieu du bloc binaire C. Commentaire d'en-tete verifie sur le wrapper `g_main.ts` et l'implementation `g_save.ts`.
 - `WriteGame`: valide. Dans `g_main.c`, `WriteGame` est declare puis branche dans `GetGameAPI` comme slot `globals.WriteGame`; l'implementation originale est dans `g_save.c`. Le port TS conserve cette separation: `GetGameApi().WriteGame` appelle le wrapper `g_main.ts` `WriteGame`, qui delegue a `g_save.ts` `WriteGame`. La comparaison avec le C couvre le chemin `!autosave -> SaveClientData`, l'ecriture des donnees cross-level `game`, le flag temporaire `autosaved`, et les clients; le format TS est volontairement JSON via hook `writeFile` au lieu du bloc binaire C. Commentaire d'en-tete verifie sur le wrapper `g_main.ts` et l'implementation `g_save.ts`.
 - `RunEntity`: non applicable avec justification. Dans `g_main.c`, `RunEntity` n'est pas une implementation ni un export de `game_export_t`: c'est une declaration prototype isolee, tandis que la boucle originale `G_RunFrame` appelle directement `G_RunEntity`. Le port TS n'a donc pas besoin d'un symbole `RunEntity` separe; `packages/game/src/g_main.ts` importe `G_RunEntity` depuis `g_phys.ts` et l'appelle pour les entites non-client apres les memes controles d'inuse, old_origin, groundentity et slot client. Commentaires d'en-tete verifies sur `G_RunFrame` et `G_RunEntity`; preuve ajoutee dans `scripts/verify/quake2-g-main.ts` pour confirmer qu'une entite non-client passe bien par `G_RunEntity`/`SV_RunThink` depuis `G_RunFrame`.
@@ -69,6 +71,12 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().WriteLevel`: delegation au port `g_save.ts`, marqueur `function_base: InitGame`, persistance des locals de niveau apres `RunFrame` et ecriture des edicts `inuse`.
+- `npm run verify:g-save`: ok le 2026-05-01, confirme `WriteLevel` sur donnees level/edict, references edict et callbacks serialises.
+- `npx tsx ./scripts/verify/quake2-sv-ccmds.ts`: ok le 2026-05-01, confirme le branchement serveur `SV_WriteLevelFile -> ge.WriteLevel("current/<map>.sav")`.
+- `npm run verify:web-save-storage`: ok le 2026-05-01, confirme le stockage web des fichiers `.sav`.
+- `npm run verify:full-game:save-slots`: ok le 2026-05-01, confirme le flux navigateur save slots avec ecriture des `.sav` de niveau.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().ReadGame`: delegation au port `g_save.ts`, `FreeTags(TAG_GAME)`, restauration `serverflags`, `maxclients` et `maxentities` depuis un savegame produit par le slot exporte.
 - `npm run verify:g-save`: ok le 2026-05-01, confirme `ReadGame` sur donnees cross-level et etats clients.
 - `npx tsx ./scripts/verify/quake2-sv-ccmds.ts`: ok le 2026-05-01, confirme le branchement serveur `SV_ReadServerFile -> ge.ReadGame("current/game.ssv")`.
@@ -161,6 +169,7 @@
 
 ## Blocages / decisions
 
+- `WriteLevel`: decision `Valide` limitee au slot `g_main.c` et a sa delegation vers `g_save.ts`. L'implementation fine de la serialisation reste rattachee a la matrice `game_g_save.c.md`; ici le comportement attendu est le branchement export/runtime. `apps/web` est integre via `full-game-server-host.ts`, qui ecrit le `.sv2`, puis appelle `ge.WriteLevel` avec un hook `writeFile` vers `WebSaveStorage` pour le `.sav`. Aucune logique web parallele ne masque le runtime. `packages/renderer-three` n'a pas d'integration directe attendue: `WriteLevel` persiste locals/edicts et ne produit pas directement modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les donnees visibles restent consommees en aval par le flux normal serveur/client.
 - `ReadGame`: decision `Valide` limitee au slot `g_main.c` et a sa delegation vers `g_save.ts`. L'implementation fine de la deserialisation reste rattachee a la matrice `game_g_save.c.md`; ici le comportement attendu est le branchement export/runtime. `apps/web` est integre via `full-game-server-host.ts`, qui fournit le hook `readFile` depuis `WebSaveStorage` et le chemin serveur `SV_ReadServerFile`. Aucune logique web parallele ne masque le runtime. `packages/renderer-three` n'a pas d'integration directe attendue: `ReadGame` restaure des donnees persistantes de jeu et ne produit pas directement modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les sorties visibles reprennent ensuite par le flux normal serveur/client.
 - `WriteGame`: decision `Valide` limitee au slot `g_main.c` et a son delegation vers `g_save.ts`. L'implementation fine de la serialisation reste rattachee a la matrice `game_g_save.c.md`; ici le comportement attendu est le branchement export/runtime. `apps/web` est integre via `full-game-server-host.ts`, qui fournit les hooks `readFile`/`writeFile` sur `WebSaveStorage`; aucune logique web parallele ne masque le runtime. `packages/renderer-three` n'a pas d'integration directe attendue: `WriteGame` ne produit ni modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les donnees visibles restent celles du runtime avant/apres sauvegarde.
 - `RunEntity`: decision `Non applicable` limitee a l'entree de matrice generee depuis le prototype `void RunEntity(edict_t *ent);`. Aucun manque runtime n'est masque: le comportement attendu est le dispatch de `G_RunFrame` vers `G_RunEntity`, prouve pendant cette session.
@@ -230,4 +239,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain symbole `g_main.c` dans la matrice: `WriteLevel`.
+- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ReadLevel`.

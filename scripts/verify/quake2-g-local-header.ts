@@ -44,6 +44,12 @@ import {
   GIB_METALLIC,
   GIB_ORGANIC,
   ITEM_INDEX,
+  IT_AMMO,
+  IT_ARMOR,
+  IT_KEY,
+  IT_POWERUP,
+  IT_STAY_COOP,
+  IT_WEAPON,
   LEFT_HANDED,
   MELEE_DISTANCE,
   MOD_TRIGGER_HURT,
@@ -97,6 +103,12 @@ import {
   ARMOR_JACKET as INDEX_ARMOR_JACKET,
   ARMOR_NONE as INDEX_ARMOR_NONE,
   ARMOR_SHARD as INDEX_ARMOR_SHARD,
+  IT_AMMO as INDEX_IT_AMMO,
+  IT_ARMOR as INDEX_IT_ARMOR,
+  IT_KEY as INDEX_IT_KEY,
+  IT_POWERUP as INDEX_IT_POWERUP,
+  IT_STAY_COOP as INDEX_IT_STAY_COOP,
+  IT_WEAPON as INDEX_IT_WEAPON,
   MOVETYPE_BOUNCE as INDEX_MOVETYPE_BOUNCE,
   MOVETYPE_FLY as INDEX_MOVETYPE_FLY,
   MOVETYPE_FLYMISSILE as INDEX_MOVETYPE_FLYMISSILE,
@@ -155,6 +167,18 @@ assert.equal(AS_MISSILE, 4, "AS_MISSILE mismatch");
 assert.equal(POWER_ARMOR_NONE, 0, "POWER_ARMOR_NONE mismatch");
 assert.equal(POWER_ARMOR_SCREEN, 1, "POWER_ARMOR_SCREEN mismatch");
 assert.equal(POWER_ARMOR_SHIELD, 2, "POWER_ARMOR_SHIELD mismatch");
+assert.equal(IT_WEAPON, 1, "IT_WEAPON mismatch");
+assert.equal(IT_AMMO, 2, "IT_AMMO mismatch");
+assert.equal(IT_ARMOR, 4, "IT_ARMOR mismatch");
+assert.equal(IT_STAY_COOP, 8, "IT_STAY_COOP mismatch");
+assert.equal(IT_KEY, 16, "IT_KEY mismatch");
+assert.equal(IT_POWERUP, 32, "IT_POWERUP mismatch");
+assert.equal(INDEX_IT_WEAPON, IT_WEAPON, "public IT_WEAPON export mismatch");
+assert.equal(INDEX_IT_AMMO, IT_AMMO, "public IT_AMMO export mismatch");
+assert.equal(INDEX_IT_ARMOR, IT_ARMOR, "public IT_ARMOR export mismatch");
+assert.equal(INDEX_IT_STAY_COOP, IT_STAY_COOP, "public IT_STAY_COOP export mismatch");
+assert.equal(INDEX_IT_KEY, IT_KEY, "public IT_KEY export mismatch");
+assert.equal(INDEX_IT_POWERUP, IT_POWERUP, "public IT_POWERUP export mismatch");
 assert.equal(ARMOR_NONE, 0, "ARMOR_NONE mismatch");
 assert.equal(ARMOR_JACKET, 1, "ARMOR_JACKET mismatch");
 assert.equal(ARMOR_COMBAT, 2, "ARMOR_COMBAT mismatch");
@@ -267,5 +291,20 @@ assert.equal(combat?.tag, ARMOR_COMBAT, "Combat Armor item tag mismatch");
 assert.equal(body?.tag, ARMOR_BODY, "Body Armor item tag mismatch");
 assert.equal(shard?.tag, ARMOR_SHARD, "Armor Shard item tag mismatch");
 assert.equal(GetArmorInfoByItem(shard), null, "Armor Shard must not expose gitem_armor_t info");
+
+const blaster = FindItem("Blaster");
+const grenades = FindItem("Grenades");
+const shells = FindItem("Shells");
+const quad = FindItem("Quad Damage");
+const breather = FindItem("Rebreather");
+const dataCd = FindItem("Data CD");
+assert.equal((jacket?.flags ?? 0) & IT_ARMOR, IT_ARMOR, "Jacket Armor item IT_ARMOR flag mismatch");
+assert.equal((blaster?.flags ?? 0) & IT_WEAPON, IT_WEAPON, "Blaster item IT_WEAPON flag mismatch");
+assert.equal((blaster?.flags ?? 0) & IT_STAY_COOP, IT_STAY_COOP, "Blaster item IT_STAY_COOP flag mismatch");
+assert.equal((grenades?.flags ?? 0) & (IT_AMMO | IT_WEAPON), IT_AMMO | IT_WEAPON, "Grenades item IT_AMMO|IT_WEAPON flags mismatch");
+assert.equal(shells?.flags, IT_AMMO, "Shells item IT_AMMO flag mismatch");
+assert.equal(quad?.flags, IT_POWERUP, "Quad Damage item IT_POWERUP flag mismatch");
+assert.equal((breather?.flags ?? 0) & (IT_STAY_COOP | IT_POWERUP), IT_STAY_COOP | IT_POWERUP, "Rebreather item IT_STAY_COOP|IT_POWERUP flags mismatch");
+assert.equal((dataCd?.flags ?? 0) & (IT_STAY_COOP | IT_KEY), IT_STAY_COOP | IT_KEY, "Data CD item IT_STAY_COOP|IT_KEY flags mismatch");
 
 console.log("quake2-g-local-header: ok");

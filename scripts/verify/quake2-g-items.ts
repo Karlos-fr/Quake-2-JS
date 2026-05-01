@@ -129,6 +129,11 @@ function verifyItemLookupHelpers(): void {
   assertBoolean(FindItemByClassname("WEAPON_MACHINEGUN") === machinegun, true, "FindItemByClassname preserves Q_stricmp case-insensitive matching");
   assertBoolean(FindItemByClassname("") === null, true, "FindItemByClassname skips the C NULL classname sentinel represented as an empty string");
   assertBoolean(FindItemByClassname("item_health") === null, true, "FindItemByClassname does not resolve health spawn classnames that are not itemlist classnames");
+
+  assertBoolean(FindItem("Machinegun") === machinegun, true, "FindItem resolves a direct pickup name");
+  assertBoolean(FindItem("MACHINEGUN") === machinegun, true, "FindItem preserves Q_stricmp case-insensitive pickup matching");
+  assertBoolean(FindItem("weapon_machinegun") === null, true, "FindItem does not resolve classnames through the pickup-name lookup");
+  assertBoolean(FindItem("") === null, true, "FindItem skips the hidden C null slot and end marker");
 }
 
 function verifyHealthSpawnFunctionsUseGenericHealthItem(): void {

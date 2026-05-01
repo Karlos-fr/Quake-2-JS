@@ -657,6 +657,19 @@ export function SP_info_notnull(self: GameEntity, _runtime: GameRuntime): void {
   self.absmax = [...self.s.origin];
 }
 
+/**
+ * Original name: light_use
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Toggles targeted lightstyles between off (`a`) and normal brightness (`m`).
+ * - Mirrors the original `START_OFF` spawnflag state change around each configstring write.
+ *
+ * Porting notes:
+ * - Engine `gi.configstring` writes are queued through the explicit gameplay runtime bridge.
+ */
 export function light_use(
   self: GameEntity,
   _other: GameEntity | null,
@@ -674,6 +687,19 @@ export function light_use(
   });
 }
 
+/**
+ * Original name: SP_light
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Frees untargeted or deathmatch lights, matching the source global-message guard.
+ * - Installs `light_use` for targeted custom lightstyles and initializes the current style.
+ *
+ * Porting notes:
+ * - `START_OFF` remains a local port of the source macro value `1`.
+ */
 export function SP_light(self: GameEntity, runtime: GameRuntime): void {
   if (!self.targetname || runtime.deathmatch) {
     G_FreeEdict(runtime, self);

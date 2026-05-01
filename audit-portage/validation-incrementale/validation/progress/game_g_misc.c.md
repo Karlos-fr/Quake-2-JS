@@ -2,6 +2,29 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `START_OFF` / `light_use` / `SP_light`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `START_OFF` conserve la valeur macro `1`; `light_use` alterne `CS_LIGHTS + style` entre `"m"` et `"a"` en inversant le bit; `SP_light` libere les lights sans `targetname` ou en deathmatch, n'installe `light_use` que pour `style >= 32`, puis initialise `"a"` ou `"m"` selon `START_OFF`.
+  - Commentaires d'en-tete Strict ajoutes pour `light_use` et `SP_light`.
+  - Branchement runtime verifie: `light` est enregistre dans `g_spawn.ts`, exporte via `index.ts`, cree par `ED_CallSpawn`; `light_use` est atteignable par `G_UseTargets`/callback `use`; les configstrings gameplay sont videes par `G_RunFrame` vers `gi.configstring` dans le flux serveur.
+  - `apps/web`: flux full-game verifie via `SV_Frame` puis copie des `sv.configstrings` vers le client dans `full-game-server-host`; correction appliquee au flux local/browser pour drainer les configstrings gameplay et reparsir les `CS_LIGHTS` en lightstyles client.
+  - `renderer-three`: integration attendue car les lightstyles modifient l'eclairage visible des surfaces BSP; consommation presente via `CL_BuildRefreshFrame.lightStyles` puis `gl-world-scene-adapter`/`setLightstyles`.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: headers de portage ajoutes.
+  - `packages/client/src/local-gameplay-sync.ts`: propagation des configstrings gameplay locales vers `client.cl.configstrings`, avec reparse `CL_SetLightstyle` pour `CS_LIGHTS`.
+  - `scripts/verify/quake2-g-misc.ts`: branches `SP_light` et toggle `light_use` couvertes.
+  - `scripts/verify/quake2-local-gameplay-sync.ts`: couverture de la propagation lightstyle locale jusqu'au `ClientRefreshFrame`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npx tsx ./scripts/verify/quake2-local-gameplay-sync.ts` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:gl-light` OK.
+  - `npm run verify:gl-rsurf` OK.
+  - `npm run typecheck` OK.
+  - `npm run verify:cl-parse` bloque avant scenario sur import existant introuvable `packages/client/src/parse.js`.
+
+- Prochain lot recommande: `func_wall_use` / `SP_func_wall`.
+
 - 2026-05-01: `SP_info_null` / `SP_info_notnull`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `SP_info_null` libere le marqueur positionnel avec `G_FreeEdict`; `SP_info_notnull` conserve le marqueur non-solide en copiant `s.origin` vers `absmin` et `absmax`.

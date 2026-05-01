@@ -26,6 +26,8 @@ import {
   emitPlayerMuzzleFlash,
   registerGameModel,
   spawnGameEntity,
+  SP_light,
+  useGameEntity,
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
@@ -38,10 +40,32 @@ function main(): void {
   verifyLocalMonsterMuzzleFlashReachesRefreshLights();
   verifyLocalBlasterImpactReachesRefreshEntities();
   verifyLocalExplosionSoundIsQueued();
+  verifyLocalLightstyleConfigstringsReachRefreshFrame();
   verifyOutOfProtocolEntityNumbersAreSkipped();
   verifyLocalCrouchViewheightIsSmoothed();
   verifyRepeatedLocalSyncDoesNotResetBlasterTrailOrigin();
   console.log("quake2-local-gameplay-sync: ok");
+}
+
+function verifyLocalLightstyleConfigstringsReachRefreshFrame(): void {
+  const client = createClientRuntime();
+  const gameplay = createHarnessRuntime();
+  const light = spawnGameEntity(gameplay);
+
+  light.classname = "light";
+  light.targetname = "toggle_light";
+  light.style = 33;
+  light.spawnflags = 1;
+  SP_light(light, gameplay);
+
+  syncLocalGameplayFrame(client, gameplay);
+  let refresh = CL_BuildRefreshFrame(client, { predictMovement: false });
+  assertNumber(refresh.lightStyles[33]?.rgb[0] ?? -1, 0, "local START_OFF lightstyle must reach refresh frame");
+
+  useGameEntity(gameplay, light, null, light);
+  syncLocalGameplayFrame(client, gameplay);
+  refresh = CL_BuildRefreshFrame(client, { predictMovement: false });
+  assertNumber(refresh.lightStyles[33]?.rgb[0] ?? -1, 1, "local light_use toggle must reach refresh frame");
 }
 
 function verifyLocalMuzzleFlashReachesRefreshLights(): void {

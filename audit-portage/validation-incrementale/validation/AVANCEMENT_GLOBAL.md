@@ -41,12 +41,12 @@ Statuts possibles : `A demarrer`, `En cours`, `Bloque`, `Partiel`, `Termine`, `A
 | `Quake-2-master/game/g_chase.c` | [`game_g_chase.c.md`](matrices/game_g_chase.c.md) | [`game_g_chase.c.md`](progress/game_g_chase.c.md) | Termine | 14 | 4 | 0 | 0 | 0 | 10 |  | Haute |
 | `Quake-2-master/game/g_cmds.c` | [`game_g_cmds.c.md`](matrices/game_g_cmds.c.md) | [`game_g_cmds.c.md`](progress/game_g_cmds.c.md) | Termine | 74 | 74 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/g_combat.c` | [`game_g_combat.c.md`](matrices/game_g_combat.c.md) | [`game_g_combat.c.md`](progress/game_g_combat.c.md) | Termine | 36 | 36 | 0 | 0 | 0 | 0 |  | Haute |
-| `Quake-2-master/game/g_func.c` | [`game_g_func.c.md`](matrices/game_g_func.c.md) | [`game_g_func.c.md`](progress/game_g_func.c.md) | En cours | 150 | 77 | 0 | 0 | 0 | 1 | `door_killed`, puis locale `ent` si coherent | Haute |
-| `Quake-2-master/game/g_items.c` | [`game_g_items.c.md`](matrices/game_g_items.c.md) | [`game_g_items.c.md`](progress/game_g_items.c.md) | En cours | 109 | 72 | 0 | 0 | 0 | 0 | `FindItem` avec locales `i` / `it` si coherent | Haute |
-| `Quake-2-master/game/g_local.h` | [`game_g_local.h.md`](matrices/game_g_local.h.md) | [`game_g_local.h.md`](progress/game_g_local.h.md) | En cours | 620 | 95 | 0 | 0 | 0 | 1 | flags `IT_WEAPON` / `IT_AMMO` / `IT_ARMOR` / `IT_STAY_COOP` / `IT_KEY` / `IT_POWERUP` | Haute |
-| `Quake-2-master/game/g_main.c` | [`game_g_main.c.md`](matrices/game_g_main.c.md) | [`game_g_main.c.md`](progress/game_g_main.c.md) | En cours | 75 | 36 | 8 | 0 | 0 | 1 | `WriteLevel` | Haute |
-| `Quake-2-master/game/g_misc.c` | [`game_g_misc.c.md`](matrices/game_g_misc.c.md) | [`game_g_misc.c.md`](progress/game_g_misc.c.md) | En cours | 119 | 36 | 0 | 0 | 0 | 0 | `START_OFF` / `light_use` / `SP_light` si le lot reste coherent | Haute |
-| `Quake-2-master/game/g_monster.c` | [`game_g_monster.c.md`](matrices/game_g_monster.c.md) |  | A demarrer | 45 | 0 | 0 | 0 | 0 | 0 |  | Haute |
+| `Quake-2-master/game/g_func.c` | [`game_g_func.c.md`](matrices/game_g_func.c.md) | [`game_g_func.c.md`](progress/game_g_func.c.md) | En cours | 150 | 79 | 0 | 0 | 0 | 1 | `door_touch` | Haute |
+| `Quake-2-master/game/g_items.c` | [`game_g_items.c.md`](matrices/game_g_items.c.md) | [`game_g_items.c.md`](progress/game_g_items.c.md) | En cours | 109 | 75 | 0 | 0 | 0 | 0 | `DoRespawn` avec locales `master` / `count` / `choice` si coherent | Haute |
+| `Quake-2-master/game/g_local.h` | [`game_g_local.h.md`](matrices/game_g_local.h.md) | [`game_g_local.h.md`](progress/game_g_local.h.md) | En cours | 620 | 101 | 0 | 0 | 0 | 1 | constantes `WEAP_BLASTER` a `WEAP_BFG` | Haute |
+| `Quake-2-master/game/g_main.c` | [`game_g_main.c.md`](matrices/game_g_main.c.md) | [`game_g_main.c.md`](progress/game_g_main.c.md) | En cours | 75 | 37 | 8 | 0 | 0 | 1 | `ReadLevel` | Haute |
+| `Quake-2-master/game/g_misc.c` | [`game_g_misc.c.md`](matrices/game_g_misc.c.md) | [`game_g_misc.c.md`](progress/game_g_misc.c.md) | En cours | 119 | 39 | 0 | 0 | 0 | 0 | `func_wall_use` / `SP_func_wall` | Haute |
+| `Quake-2-master/game/g_monster.c` | [`game_g_monster.c.md`](matrices/game_g_monster.c.md) | [`game_g_monster.c.md`](progress/game_g_monster.c.md) | En cours | 45 | 7 | 0 | 0 | 0 | 0 | `M_FliesOff`, `M_FliesOn`, `M_FlyCheck` | Haute |
 | `Quake-2-master/game/g_phys.c` | [`game_g_phys.c.md`](matrices/game_g_phys.c.md) |  | A demarrer | 64 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/g_save.c` | [`game_g_save.c.md`](matrices/game_g_save.c.md) |  | A demarrer | 52 | 0 | 0 | 0 | 0 | 0 |  | Haute |
 | `Quake-2-master/game/g_spawn.c` | [`game_g_spawn.c.md`](matrices/game_g_spawn.c.md) |  | A demarrer | 135 | 0 | 0 | 0 | 0 | 0 |  | Haute |

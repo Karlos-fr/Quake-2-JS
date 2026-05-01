@@ -14,6 +14,7 @@
 import {
   CM_InlineModel,
   CS_CDTRACK,
+  CS_LIGHTS,
   CS_ITEMS,
   CS_IMAGES,
   CS_MODELS,
@@ -24,6 +25,7 @@ import {
   BYTE_DIRS,
   DotProduct,
   MAX_EDICTS,
+  MAX_LIGHTSTYLES,
   MZ_SILENCED,
   PMF_DUCKED,
   PMF_ON_GROUND,
@@ -47,6 +49,7 @@ import {
   FRAMETIME,
   ClientBeginServerFrame,
   ClientThink,
+  drainGameConfigstringUpdates,
   drainMonsterMuzzleFlashEvents,
   drainPlayerMuzzleFlashEvents,
   drainGameTempEntityEvents,
@@ -63,6 +66,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../game/src/index.js";
+import { CL_SetLightstyle } from "./cl_fx.js";
 import type { BspMap } from "../../formats/src/index.js";
 import { findClientImageIndex, type LocalClientHudBootstrapData } from "./local-client-bootstrap.js";
 import {
@@ -206,6 +210,7 @@ export function updateLocalGameplayPlayer(
  * - Must only expose entities that are currently client-visible.
  */
 export function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  syncLocalGameplayConfigstrings(runtime, gameplayRuntime);
   syncLocalGameplayAssetConfigstrings(runtime, gameplayRuntime);
   syncLocalGameplayModelClip(runtime, gameplayRuntime);
 
@@ -255,6 +260,24 @@ export function syncLocalGameplayFrame(runtime: ClientRuntime, gameplayRuntime: 
   }
 
   syncLocalGameplayTransientEffects(runtime, gameplayRuntime);
+}
+
+/**
+ * Category: New
+ * Purpose: Apply gameplay-originated configstring updates to the standalone local client.
+ *
+ * Constraints:
+ * - Must reparse lightstyle configstrings so renderer-facing refresh frames see toggled map lights.
+ */
+function syncLocalGameplayConfigstrings(runtime: ClientRuntime, gameplayRuntime: GameRuntime): void {
+  for (const update of drainGameConfigstringUpdates(gameplayRuntime)) {
+    runtime.cl.configstrings[update.index] = update.value;
+
+    if (update.index >= CS_LIGHTS && update.index < CS_LIGHTS + MAX_LIGHTSTYLES) {
+      CL_SetLightstyle(runtime, update.index - CS_LIGHTS);
+      runtime.cl.last_lightstyle_ofs = -1;
+    }
+  }
 }
 
 /**

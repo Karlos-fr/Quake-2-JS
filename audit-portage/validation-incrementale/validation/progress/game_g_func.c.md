@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: porte shootable `door_killed` et locale matricielle `ent`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1113-1123` avec `packages/game/src/g_func.ts:723-738`.
+- Correction appliquee: `door_killed` applique maintenant `takedamage = DAMAGE_NO` a chaque membre de l'equipe apres restauration `health = max_health`, comme le C; commentaire d'en-tete mis a jour.
+- Effets verifies: parcours de l'equipe par la locale C `ent` portee via `forEachDoorTeam`, restauration de la sante master+slave, desactivation des degats master+slave, puis delegation a `door_use(teammaster, attacker, attacker)` qui ouvre l'equipe.
+- Branchement: `door_killed` est affectee par `SP_func_door` et `SP_func_door_rotating` aux portes shootables, referencees par `g_spawn.ts`, puis appelee par `T_Damage` via le callback `die`; l'ouverture rejoint `door_use`/`door_go_up`/`Move_Calc` ou `AngleMove_Calc` et le flux `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door` dans `apps/web`; le navigateur consomme le runtime serveur/local, les sons, areabits et snapshots/interpolations de brush models. `packages/renderer-three` ne porte pas la mort gameplay et consomme les sorties visibles attendues via brush snapshots/areabits; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: blocage de porte `door_blocked` et locale matricielle `ent`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1076-1111` avec `packages/game/src/g_func.ts:676-715`.
 - Correction appliquee: `door_blocked` applique maintenant les dommages C avant la garde `DOOR_CRUSHER`, explose les bloqueurs non-monstre/non-client encore `inuse` via `BecomeExplosion1`, puis conserve les dommages `self.dmg` pour monstres/clients et l'inversion de l'equipe selon `STATE_DOWN` ou autre et `moveinfo.wait >= 0`.
@@ -214,7 +222,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `door_killed`, puis locale `ent` si coherent.
+- Continuer avec `door_touch`.
 
 ## Blocages
 

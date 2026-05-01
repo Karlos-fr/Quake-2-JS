@@ -558,6 +558,28 @@ function verifyMiscExploboxSpawnsShootableBarrel(): void {
 function verifyLightWritesSourceConfigstrings(): void {
   const runtime = createHarnessRuntime();
 
+  const untargeted = spawnFreeableEntity(runtime);
+  untargeted.classname = "light";
+  SP_light(untargeted, runtime);
+  assert.equal(untargeted.inuse, false, "SP_light must free untargeted lights");
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  const deathmatchLight = spawnFreeableEntity(deathmatchRuntime);
+  deathmatchLight.classname = "light";
+  deathmatchLight.targetname = "toggle_light";
+  deathmatchLight.style = 33;
+  SP_light(deathmatchLight, deathmatchRuntime);
+  assert.equal(deathmatchLight.inuse, false, "SP_light must free targeted lights in deathmatch");
+
+  const defaultStyleLight = spawnGameEntity(runtime);
+  defaultStyleLight.classname = "light";
+  defaultStyleLight.targetname = "default_style_light";
+  defaultStyleLight.style = 31;
+  SP_light(defaultStyleLight, runtime);
+  assert.equal(defaultStyleLight.use == null, true, "SP_light must not install light_use for styles below 32");
+  assert.deepEqual(drainGameConfigstringUpdates(runtime), [], "SP_light must not write default lightstyle configstrings");
+
   const light = spawnGameEntity(runtime);
   light.classname = "light";
   light.targetname = "toggle_light";

@@ -49,6 +49,7 @@ import {
   door_go_up,
   door_hit_bottom,
   door_hit_top,
+  door_killed,
   door_use_areaportals,
   func_conveyor_use,
   func_timer_use,
@@ -385,6 +386,27 @@ assert.equal(teamDoorMaster.moveinfo.state, STATE_DOWN, "door_use toggle must cl
 assert.equal(teamDoorSlave.moveinfo.state, STATE_DOWN, "door_use toggle must close chained slave");
 assert.equal(teamDoorMaster.moveinfo.endfunc, door_hit_bottom, "door_use master close callback mismatch");
 assert.equal(teamDoorSlave.moveinfo.endfunc, door_hit_bottom, "door_use slave close callback mismatch");
+const shootableDoorMaster = entity("func_door", 49);
+const shootableDoorSlave = entity("func_door", 50);
+const doorShooter = entity("player", 51);
+doorShooter.client = createGameClient();
+shootableDoorMaster.teammaster = shootableDoorMaster;
+shootableDoorMaster.teamchain = shootableDoorSlave;
+shootableDoorSlave.teammaster = shootableDoorMaster;
+shootableDoorSlave.flags |= FL_TEAMSLAVE;
+shootableDoorMaster.health = 1;
+shootableDoorMaster.max_health = 20;
+shootableDoorMaster.takedamage = damage_t.DAMAGE_YES;
+shootableDoorSlave.health = 2;
+shootableDoorSlave.max_health = 30;
+shootableDoorSlave.takedamage = damage_t.DAMAGE_YES;
+door_killed(shootableDoorSlave, null, doorShooter, 99, runtime);
+assert.equal(shootableDoorMaster.health, 20, "door_killed must restore master health");
+assert.equal(shootableDoorSlave.health, 30, "door_killed must restore chained slave health");
+assert.equal(shootableDoorMaster.takedamage, damage_t.DAMAGE_NO, "door_killed must disable master damage");
+assert.equal(shootableDoorSlave.takedamage, damage_t.DAMAGE_NO, "door_killed must disable chained slave damage");
+assert.equal(shootableDoorMaster.moveinfo.state, STATE_UP, "door_killed must open team master");
+assert.equal(shootableDoorSlave.moveinfo.state, STATE_UP, "door_killed must open chained slave");
 const triggerDoor = entity("func_door", 43);
 triggerDoor.moveinfo.state = STATE_BOTTOM;
 triggerDoor.moveinfo.end_origin = [16, 0, 0];

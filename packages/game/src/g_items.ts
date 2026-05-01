@@ -74,18 +74,23 @@ import {
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
-import { ITEM_NO_TOUCH, ITEM_TARGETS_USED, ITEM_TRIGGER_SPAWN, IT_KEY } from "./g_local.js";
+import {
+  ITEM_NO_TOUCH,
+  ITEM_TARGETS_USED,
+  ITEM_TRIGGER_SPAWN,
+  IT_AMMO,
+  IT_ARMOR,
+  IT_KEY,
+  IT_POWERUP,
+  IT_STAY_COOP,
+  IT_WEAPON
+} from "./g_local.js";
 import { ValidateSelectedItem } from "./g_cmds.js";
 import { G_FreeEdict, G_UseTargets, G_ProjectSource } from "./g_utils.js";
 import { Pickup_Weapon, Use_Weapon } from "./p_weapon.js";
 
 const HEALTH_IGNORE_MAX = 1;
 const HEALTH_TIMED = 2;
-const IT_WEAPON = 1;
-const IT_AMMO = 2;
-const IT_ARMOR = 4;
-const IT_STAY_COOP = 8;
-const IT_POWERUP = 32;
 const ARMOR_JACKET = 1;
 const ARMOR_COMBAT = 2;
 const ARMOR_BODY = 3;
@@ -321,10 +326,13 @@ export function GetItemByIndex(index: number): GameItemDefinition | null {
  * Original name: FindItem
  * Source: game/g_items.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Finds one item definition by its pickup name.
+ * - Finds one item definition by pickup name using the original case-insensitive comparison.
+ *
+ * Porting notes:
+ * - The C null slot and end marker are hidden from the TS item table, so the loop visits only real items.
  */
 export function FindItem(pickupName: string): GameItemDefinition | null {
   const normalizedPickupName = pickupName.toLowerCase();

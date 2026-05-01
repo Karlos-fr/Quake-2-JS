@@ -726,12 +726,13 @@ export function door_blocked(self: GameEntity, other: GameEntity, runtime: GameR
  * Fidelity level: Close
  *
  * Behavior:
- * - Resets shootable door health and opens the team when destroyed.
+ * - Resets shootable door health, disables further damage, and opens the team when destroyed.
  */
 export function door_killed(self: GameEntity, _inflictor: GameEntity | null, attacker: GameEntity | null, _damage: number, runtime: GameRuntime): void {
   const teammaster = self.teammaster ?? self;
   forEachDoorTeam(teammaster, (entity) => {
     entity.health = entity.max_health;
+    entity.takedamage = damage_t.DAMAGE_NO;
   });
   door_use(teammaster, attacker, attacker, runtime);
 }

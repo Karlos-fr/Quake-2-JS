@@ -262,6 +262,13 @@ saveWriteRuntime.entities[1]!.inuse = true;
 saveWriteRuntime.entities[1]!.health = 64;
 saveWriteRuntime.entities[1]!.max_health = 125;
 saveWriteApi.WriteGame("save/current/game.ssv", false);
+saveWriteRuntime.framenum = 124;
+saveWriteApi.RunFrame();
+saveWriteApi.WriteLevel("save/current/unit1.sav");
+const levelSaveJson = saveFiles.get("save/current/unit1.sav") ?? "";
+assert.ok(levelSaveJson.includes("\"function_base\": \"InitGame\""), "GetGameApi.WriteLevel must write the original function-base marker");
+assert.ok(levelSaveJson.includes("\"time\": 12.5"), "GetGameApi.WriteLevel must persist level locals through g_save");
+assert.ok(levelSaveJson.includes("\"entnum\": 1"), "GetGameApi.WriteLevel must persist in-use edicts through g_save");
 
 const saveReadRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 const saveReadApi = GetGameApi(imports, {

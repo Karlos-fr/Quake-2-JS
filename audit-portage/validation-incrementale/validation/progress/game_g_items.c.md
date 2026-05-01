@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `FindItem` et locales `i` / `it`.
+
+Validation lookup pickup names du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `FindItem` conserve le parcours de l'itemlist jusqu'a `game.num_items`, le skip des pickup names nulles, la comparaison insensible a la casse de `Q_stricmp` et le retour `NULL` si aucune entree ne correspond. Le port TS masque le slot nul C et le marqueur final dans son tableau, puis itere les seuls items reels; la locale C `i` est portee par l'iteration `for...of`, et le pointeur local `it` par l'element courant `item`. Commentaire d'en-tete `FindItem` mis a jour en `Fidelity level: Strict`.
+
+Runtime branche via les commandes `give`/`use`/`drop`, la selection et le fallback armes, le precache ammo, les spawns health, les helpers armor/power armor, `local-game-bootstrap.ts` et l'initialisation blaster dans `g_main.ts`. `apps/web` consomme ces flux via le runtime full-game/local, les commandes navigateur, l'inventaire/HUD, les configstrings et snapshots; aucune logique parallele de lookup item par pickup name n'a ete detectee. `renderer-three` ne requiert pas de branchement direct: `FindItem` ne produit pas de sortie visible, et les entites item visibles resolues en aval restent consommees par le pipeline generique snapshots/refresh/Three.
+
+Test complete dans `scripts/verify/quake2-g-items.ts`: `verifyItemLookupHelpers` couvre maintenant la resolution pickup directe, le matching case-insensitive, le rejet d'un classname par `FindItem`, et le rejet de la chaine vide/sentinelles cachees. Tests lances: `npm run verify:g-items`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck` OK.
+
 - `GetItemByIndex` / `FindItemByClassname` et locales `i` / `it` de `FindItemByClassname`.
 
 Validation lookup items du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `GetItemByIndex` conserve le rejet du slot nul C et du marqueur final; le port TS traduit les indices 1-based vers son tableau sans slot nul. `FindItemByClassname` conserve le parcours de l'itemlist, le skip des classnames nulles et la comparaison insensible a la casse de `Q_stricmp`. Correction appliquee dans `packages/game/src/g_items.ts`: skip explicite de la sentinelle C `NULL` representee par `""` et comparaison par nom normalise lowercase; headers `GetItemByIndex` et `FindItemByClassname` completes. Locales C `i` et `it` portees par l'iteration `for...of` et l'item courant.
@@ -181,4 +189,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `FindItem` avec ses locales `i` / `it` si le lot reste coherent.
+- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `DoRespawn` avec ses locales `master` / `count` / `choice` si le lot reste coherent.

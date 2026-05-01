@@ -19,23 +19,34 @@ import {
   SVF_MONSTER,
   attachGameClient,
   createGameRuntimeFromBspEntities,
-  createRuntimeEntity
+  createRuntimeEntity,
+  drainMonsterMuzzleFlashEvents
 } from "../../packages/game/src/index.js";
-import { MASK_MONSTERSOLID } from "../../packages/qcommon/src/index.js";
-import { FL_NOTARGET } from "../../packages/game/src/g_local.js";
+import { MASK_MONSTERSOLID, MASK_SHOT } from "../../packages/qcommon/src/index.js";
+import { FL_NOTARGET, MOD_UNKNOWN } from "../../packages/game/src/g_local.js";
 import {
   monster_death_use,
+  monster_fire_bfg,
+  monster_fire_blaster,
+  monster_fire_bullet,
+  monster_fire_grenade,
+  monster_fire_railgun,
+  monster_fire_rocket,
+  monster_fire_shotgun,
   monster_start,
   monster_start_go,
   monster_use,
+  type GameMonsterHooks,
   walkmonster_start_go
 } from "../../packages/game/src/g_monster.js";
 import { MOVETYPE_STEP } from "../../packages/game/src/runtime.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
+import type { trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
 
 main();
 
 function main(): void {
+  verifyMonsterWeaponWrappers();
   verifyMonsterStartBookkeepingAndDefaults();
   verifyMonsterStartSkipsGoodGuys();
   verifyMonsterUseHonorsOriginalFilters();
@@ -44,6 +55,75 @@ function main(): void {
   verifyTriggeredSpawnStartupPath();
 
   console.log("Verification g_monster - shared monster gameplay OK");
+}
+
+function verifyMonsterWeaponWrappers(): void {
+  const runtime = createHarnessRuntime();
+  runtime.framenum = 77;
+  const monster = createMonster(runtime, 20);
+  const target = createMonster(runtime, 21);
+  target.takedamage = 1;
+
+  runtime.collision = createStraightHitCollision(target);
+
+  const hits: Array<{ damage: number; knockback: number; mod: number }> = [];
+  const hooks: GameMonsterHooks = {
+    T_Damage: (_targ, _inflictor, _attacker, _dir, _point, _normal, damage, knockback, _dflags, mod) => {
+      hits.push({ damage, knockback, mod });
+    },
+    check_dodge: () => {
+      return;
+    }
+  };
+
+  monster_fire_bullet(monster, [1, 2, 3], [1, 0, 0], 9, 4, 100, 50, 43, runtime, hooks);
+  monster_fire_shotgun(monster, [1, 2, 3], [1, 0, 0], 3, 2, 100, 50, 2, 41, runtime, hooks);
+  assert.deepEqual(
+    hits.map((hit) => ({ damage: hit.damage, knockback: hit.knockback, mod: hit.mod })),
+    [
+      { damage: 9, knockback: 4, mod: MOD_UNKNOWN },
+      { damage: 3, knockback: 2, mod: MOD_UNKNOWN },
+      { damage: 3, knockback: 2, mod: MOD_UNKNOWN }
+    ],
+    "monster bullet/shotgun wrappers should preserve damage, kick, pellet count and MOD_UNKNOWN"
+  );
+
+  monster_fire_blaster(monster, [2, 3, 4], [0, 1, 0], 10, 700, 39, 0x20, runtime, hooks);
+  monster_fire_grenade(monster, [3, 4, 5], [1, 0, 0], 50, 600, 53, runtime, hooks);
+  monster_fire_rocket(monster, [4, 5, 6], [1, 0, 0], 50, 550, 23, runtime, hooks);
+  monster_fire_railgun(monster, [5, 6, 7], [1, 0, 0], 60, 120, 61, runtime, hooks);
+  monster_fire_bfg(monster, [6, 7, 8], [1, 0, 0], 70, 300, 100, 240, 101, runtime, hooks);
+
+  const entities = runtime.entities.filter((ent): ent is GameEntity => Boolean(ent));
+  const blaster = entities.find((ent) => ent.classname === "bolt");
+  const grenade = entities.find((ent) => ent.classname === "grenade");
+  const rocket = entities.find((ent) => ent.classname === "rocket");
+  const bfg = entities.find((ent) => ent.classname === "bfg blast");
+
+  assert.equal(blaster?.dmg, 10, "monster_fire_blaster should pass damage through to fire_blaster");
+  assert.deepEqual(blaster?.velocity, [0, 700, 0], "monster_fire_blaster should pass speed and direction through");
+  assert.equal(grenade?.dmg, 50, "monster_fire_grenade should pass direct damage through");
+  assert.equal(grenade?.dmg_radius, 90, "monster_fire_grenade should pass damage + 40 as radius damage");
+  assert.equal(rocket?.dmg, 50, "monster_fire_rocket should pass direct damage through");
+  assert.equal(rocket?.radius_dmg, 50, "monster_fire_rocket should pass damage as radius damage");
+  assert.equal(rocket?.dmg_radius, 70, "monster_fire_rocket should pass damage + 20 as damage radius");
+  assert.equal(bfg?.count, 70, "monster_fire_bfg should pass damage through to fire_bfg");
+  assert.equal(bfg?.dmg_radius, 240, "monster_fire_bfg should pass damage_radius and ignore kick like the C helper");
+
+  const flashes = drainMonsterMuzzleFlashEvents(runtime);
+  assert.deepEqual(
+    flashes.map((flash) => [flash.entityIndex, flash.flashNumber, flash.frame]),
+    [
+      [monster.index, 43, 77],
+      [monster.index, 41, 77],
+      [monster.index, 39, 77],
+      [monster.index, 53, 77],
+      [monster.index, 23, 77],
+      [monster.index, 61, 77],
+      [monster.index, 101, 77]
+    ],
+    "each monster weapon wrapper should queue the original svc_muzzleflash2 flash id"
+  );
 }
 
 function verifyMonsterStartBookkeepingAndDefaults(): void {
@@ -250,4 +330,49 @@ function createPlayer(runtime: GameRuntime, index: number): GameEntity {
   attachGameClient(player);
   runtime.entities[index] = player;
   return player;
+}
+
+function createStraightHitCollision(target: GameEntity): GameRuntime["collision"] {
+  let leadHitsRemaining = 3;
+
+  const hitTrace = (end: vec3_t): trace_t => ({
+    allsolid: false,
+    startsolid: false,
+    fraction: 0.5,
+    endpos: [...end],
+    plane: {
+      normal: [0, 0, 1],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent: target
+  });
+
+  const clearTrace = (end: vec3_t): trace_t => ({
+    ...hitTrace(end),
+    fraction: 1,
+    ent: null
+  });
+
+  return {
+    world: {} as never,
+    trace: (start, _mins, _maxs, end, passent, mask) => {
+      if (mask === MASK_SHOT && start[0] === 0 && start[1] === 0 && start[2] === 0) {
+        return clearTrace(end);
+      }
+      if (passent === target) {
+        return clearTrace(end);
+      }
+      if ((mask & MASK_SHOT) !== 0 && leadHitsRemaining > 0) {
+        leadHitsRemaining -= 1;
+        return hitTrace(end);
+      }
+      return clearTrace(end);
+    },
+    pointcontents: () => 0
+  };
 }

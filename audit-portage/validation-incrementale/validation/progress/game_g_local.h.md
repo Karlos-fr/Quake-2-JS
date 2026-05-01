@@ -8,6 +8,24 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot flags item `IT_WEAPON`, `IT_AMMO`, `IT_ARMOR`, `IT_STAY_COOP`, `IT_KEY`, `IT_POWERUP`.
+- Verdict: `Valide` pour les 6 macros apres correction limitee de la consommation TS et renforcement du harness header.
+- Valeurs H/TS comparees et conformes:
+  - `IT_WEAPON = 1`
+  - `IT_AMMO = 2`
+  - `IT_ARMOR = 4`
+  - `IT_STAY_COOP = 8`
+  - `IT_KEY = 16`
+  - `IT_POWERUP = 32`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Corrections appliquees: `packages/game/src/g_items.ts` importe maintenant les `IT_*` depuis `g_local.ts` au lieu de constantes locales, et `packages/game/src/p_weapon.ts` importe `IT_AMMO` depuis `g_local.ts`.
+- Runtime:
+  - Source C: les flags typent `gitem_t.flags` dans `itemlist`, filtrent les commandes give/use/drop/inventory, pilotent les pickups ammo/armor/weapon/powerup/key, la logique coop stay/respawn, la selection inventaire weapon/powerup, et des stats HUD/inventaire.
+  - TS: `g_items.ts`, `g_cmds.ts`, `p_weapon.ts`, `p_hud.ts` et `p_client.ts` conservent ces flux. Le harness header compare les valeurs, exports publics et combinaisons representatives d'itemlist: armor, blaster, grenades, shells, quad, rebreather et Data CD.
+- apps/web: aucune reference directe aux constantes `IT_*`; pas de logique parallele attendue. Le navigateur declenche ces comportements via commandes/input/full-game runtime et consomme inventaire/HUD/snapshots. `verify:full-game:authoritative-input` et `verify:full-game:server-host` OK.
+- renderer-three: aucune reference directe aux constantes; pas d'integration gameplay directe attendue. Les sorties visibles attendues sont les modeles d'items, le modele d'arme vue, les stats HUD/inventaire et les effets de powerup produits en amont; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source `// gitem_t->flags` verifie. Commentaires d'en-tete des fonctions consommatrices principales deja verifies ou presents: `Pickup_*`, `Use_*`, `Drop_*`, `Touch_Item`, `Cmd_*`, `G_SetStats`, `ClientBeginServerFrame`/lifecycle selon flux.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-items` OK; `npm run verify:g-cmds` OK; `npm run verify:p-weapon` OK; `npm run verify:p-hud` OK; `npm run verify:p-client` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:full-game:authoritative-input` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot structure armor `gitem_armor_t` et champs `base_count`, `max_count`, `normal_protection`, `energy_protection`, `armor`.
 - Verdict: `Valide` pour la structure et ses 5 champs, sans correction gameplay TS necessaire.
 - Source H comparee: `gitem_armor_t` contient `int base_count`, `int max_count`, `float normal_protection`, `float energy_protection`, `int armor`.
@@ -434,7 +452,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les flags `IT_WEAPON`, `IT_AMMO`, `IT_ARMOR`, `IT_STAY_COOP`, `IT_KEY`, `IT_POWERUP`.
+- Continuer avec les constantes `WEAP_BLASTER` a `WEAP_BFG`.
 
 ## Blocages
 
