@@ -2,6 +2,26 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: comportements gib `gib_think`, `gib_touch`, `gib_die` et `ThrowGib`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `gib_think` conserve l'increment de frame, le `FRAMETIME` et le basculement vers cleanup a la frame 10; `gib_die` appelle `G_FreeEdict`; `ThrowGib` conserve spawn, origine dans la bbox, model/effects, `FL_NO_KNOCKBACK`, `DAMAGE_YES`, die callback, choix organique/metallique, vitesse randomisee/clipee, avelocity, cleanup et link.
+  - Ecart corrige pour `gib_touch`: le C n'emet le son, n'oriente le gib et n'avance le petit `sm_meat` que si un `plane` est fourni. Le TS accepte maintenant le plan runtime, garde le cas sans plan sans effet visuel/sonore, et calcule `self.s.angles` via `vectoangles(AngleVectors(vectoangles(plane.normal)).right)`.
+  - Commentaires d'en-tete ajoutes pour `gib_think`, `gib_touch`, `gib_die` et `ThrowGib`.
+  - Branchement runtime verifie: `ThrowGib` est appele par les morts monstres/joueurs et cree des entites dynamiques; `gib_touch` est appele par `SV_Impact` avec `trace.plane` pendant `G_RunFrame`/`G_RunEntity`; `gib_think` et `gib_die` sont callbacks de ces gibs.
+  - `apps/web`: pas de logique gib parallele trouvee; le flux web consomme les snapshots et sons runtime via les chemins full-game/local.
+  - `renderer-three`: integration attendue car les gibs sont des MD2 visibles avec `EF_GIB`; consommation presente via `ClientRefreshFrame.entities`, `refresh-entity-sync` et les trails `EF_GIB` cote client.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: headers de portage ajoutes, `gib_touch` aligne sur le plan d'impact C.
+  - `scripts/verify/quake2-g-misc.ts`: tests directs ajoutes pour `gib_touch`, `gib_think` et `gib_die`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:refresh-entity:alias-flags` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+  - `npm run verify:full-game:render-source` tente mais bloque avant scenario sur import existant manquant `packages/client/src/types.js`.
+
+## Dernier lot valide
+
 - 2026-05-01: helpers gib/debris `VelocityForDamage`, `VectorScale` et `ClipGibVelocity`.
 - Checklist appliquee:
   - Source C comparee aux helpers TS dans `packages/game/src/g_misc.ts`: `VelocityForDamage` conserve les tirages `crandom`/`random`, le seuil `damage < 50` et les facteurs `0.7`/`1.2`; `VectorScale` est porte par le helper local `scaleVec3` avec retour tuple; `ClipGibVelocity` conserve les bornes `[-300, 300]` en X/Y et `[200, 500]` en Z.
@@ -49,4 +69,4 @@
 
 ## Prochain lot recommande
 
-- `gib_think`, `gib_touch`, `gib_die` et `ThrowGib`, comme prochain petit groupe coherent de comportements gib.
+- globals locaux `gib` et `vscale`, puis `ThrowHead` si le coordinateur veut rester dans le groupe gib.

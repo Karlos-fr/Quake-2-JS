@@ -17,6 +17,7 @@
  */
 
 import {
+  AngleVectors,
   ATTN_NORM,
   CHAN_BODY,
   CHAN_VOICE,
@@ -239,6 +240,16 @@ export function SP_func_areaportal(ent: GameEntity, _runtime: GameRuntime): void
   ent.count = 0;
 }
 
+/**
+ * Original name: gib_think
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Advances gib animation frames every server frame, then schedules entity cleanup after
+ *   frame 10 using the original randomized delay.
+ */
 export function gib_think(self: GameEntity, runtime: GameRuntime): void {
   self.s.frame += 1;
   self.nextthink = runtime.time + FRAMETIME;
@@ -250,6 +261,15 @@ export function gib_think(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: gib_die
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Frees one gib entity when it is damaged after becoming damageable.
+ */
 export function gib_die(
   self: GameEntity,
   _inflictor: GameEntity | null,
@@ -260,6 +280,16 @@ export function gib_die(
   G_FreeEdict(runtime, self);
 }
 
+/**
+ * Original name: ThrowGib
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns one gib inside the source entity bounds, assigns model/effects/damage callbacks,
+ *   chooses organic toss vs metallic bounce behavior, then links it into the runtime.
+ */
 export function ThrowGib(self: GameEntity, gibname: string, damage: number, type: number, runtime: GameRuntime): void {
   const gib = G_Spawn(runtime);
   const halfSize = scaleVec3(self.size, 0.5);
@@ -291,17 +321,41 @@ export function ThrowGib(self: GameEntity, gibname: string, damage: number, type
   linkGameEntity(runtime, gib);
 }
 
-export function gib_touch(self: GameEntity, _other: GameEntity, runtime: GameRuntime): void {
+/**
+ * Original name: gib_touch
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - When an organic gib lands on a traced plane, plays the flesh-hit sound, aligns the gib
+ *   to the plane-derived right vector, and advances the small-meat animation.
+ */
+export function gib_touch(
+  self: GameEntity,
+  _other: GameEntity,
+  runtime: GameRuntime,
+  plane?: cplane_t | null
+): void {
   if (!self.groundentity) {
     return;
   }
 
   self.touch = undefined;
+  if (!plane) {
+    return;
+  }
+
   emitRegisteredGameSound(runtime, self, registerGameSound(runtime, "misc/fhit3.wav"), "misc/fhit3.wav", {
     channel: CHAN_VOICE,
     volume: 1,
     attenuation: ATTN_NORM
   });
+
+  const normalAngles = vectoangles(plane.normal);
+  const { right } = AngleVectors(normalAngles);
+  self.s.angles = vectoangles(right);
+
   if (runtime.assets.modelPaths[self.s.modelindex - 1] === "models/objects/gibs/sm_meat/tris.md2") {
     self.s.frame += 1;
     self.think = gib_think;

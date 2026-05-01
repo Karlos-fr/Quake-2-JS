@@ -32,10 +32,13 @@ import {
   createGameRuntimeFromBspEntities,
   damage_t,
   drainGameConfigstringUpdates,
+  drainGameSoundEvents,
   drainGameTempEntityEvents,
   func_explosive_explode,
   func_explosive_spawn,
   func_explosive_use,
+  gib_die,
+  gib_think,
   gib_touch,
   linkGameEntity,
   path_corner_touch,
@@ -57,6 +60,8 @@ function main(): void {
   verifyLightWritesSourceConfigstrings();
   verifyFuncExplosiveSpawnsAndExplodesBrushModel();
   verifyGibTypesSelectMovementAndTouchBehavior();
+  verifyGibTouchMatchesPlaneGatedSourceBehavior();
+  verifyGibThinkAndDieCallbacks();
 
   console.log("quake2-g-misc: ok");
 }
@@ -284,6 +289,71 @@ function verifyGibTypesSelectMovementAndTouchBehavior(): void {
   assert.equal(metallic.movetype, MOVETYPE_BOUNCE, "metallic gibs must use MOVETYPE_BOUNCE");
   assert.equal(metallic.touch, undefined, "metallic gibs must not install gib_touch");
   assert.equal(metallic.model, "models/objects/gibs/sm_metal/tris.md2", "metallic gib model mismatch");
+}
+
+function verifyGibTouchMatchesPlaneGatedSourceBehavior(): void {
+  const runtime = createHarnessRuntime();
+  const ground = spawnGameEntity(runtime);
+
+  const noPlaneGib = spawnGameEntity(runtime);
+  noPlaneGib.groundentity = ground;
+  noPlaneGib.touch = gib_touch;
+  noPlaneGib.s.modelindex = 0;
+  noPlaneGib.s.frame = 3;
+
+  gib_touch(noPlaneGib, ground, runtime);
+
+  assert.equal(noPlaneGib.touch, undefined, "gib_touch must clear touch once the gib is grounded");
+  assert.equal(noPlaneGib.s.frame, 3, "gib_touch without a plane must not advance frames");
+  assert.deepEqual(drainGameSoundEvents(runtime), [], "gib_touch without a plane must not emit the flesh hit sound");
+
+  const planeGib = spawnGameEntity(runtime);
+  planeGib.groundentity = ground;
+  planeGib.touch = gib_touch;
+  planeGib.s.modelindex = 1;
+  runtime.assets.modelPaths[0] = "models/objects/gibs/sm_meat/tris.md2";
+  planeGib.s.frame = 3;
+
+  gib_touch(planeGib, ground, runtime, {
+    normal: [0, 0, 1],
+    dist: 0,
+    type: 2,
+    signbits: 0,
+    pad: [0, 0]
+  });
+
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "misc/fhit3.wav", "gib_touch with a plane must emit the flesh hit sound");
+  assert.deepEqual(planeGib.s.angles, [0, 270, 0], "gib_touch must orient the gib from the impact plane right vector");
+  assert.equal(planeGib.s.frame, 4, "small meat gib touch must advance one frame");
+  assert.equal(planeGib.nextthink, runtime.time + 0.1, "small meat gib touch must schedule gib_think one frame later");
+}
+
+function verifyGibThinkAndDieCallbacks(): void {
+  const runtime = createHarnessRuntime();
+  const gib = spawnGameEntity(runtime);
+  gib.s.frame = 8;
+  runtime.time = 2;
+
+  gib_think(gib, runtime);
+
+  assert.equal(gib.s.frame, 9, "gib_think must advance the frame");
+  assert.equal(gib.think, gib_think, "gib_think before frame 10 must keep itself scheduled");
+  assert.equal(gib.nextthink, 2.1, "gib_think before frame 10 must schedule the next frame");
+
+  gib.s.frame = 9;
+  gib_think(gib, runtime);
+
+  assert.equal(gib.s.frame, 10, "gib_think must reach cleanup frame 10");
+  assert.notEqual(gib.think, gib_think, "gib_think at frame 10 must switch to cleanup think");
+  assert.ok(gib.nextthink >= 10 && gib.nextthink < 20, "gib_think cleanup delay must match 8 + random()*10 from current time");
+
+  let doomed = spawnGameEntity(runtime);
+  while (doomed.index <= runtime.maxclients + 8) {
+    doomed = spawnGameEntity(runtime);
+  }
+  gib_die(doomed, null, null, 25, runtime);
+
+  assert.equal(doomed.inuse, false, "gib_die must free the gib entity");
 }
 
 function createHarnessRuntime() {
