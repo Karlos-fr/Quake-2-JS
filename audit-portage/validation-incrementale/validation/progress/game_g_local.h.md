@@ -676,6 +676,27 @@
   - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration et miroir runtime des trois champs.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `level_locals_t` avec champs `sound_entity`, `sound_entity_framenum`, `sound2_entity`, `sound2_entity_framenum`.
+- Verdict: `Valide` pour les 4 champs apres comparaison H/TS, verification des commentaires de fonctions portees et renforcement des preuves; aucune correction gameplay TS necessaire.
+- Source H comparee: `PlayerNoise` ecrit `level.sound_entity`/`sound_entity_framenum` pour les bruits personnels ou d'arme, et `level.sound2_entity`/`sound2_entity_framenum` pour les impacts; `FindTarget` consomme ces fenetres sonores pendant la frame courante ou precedente.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `level_locals_t` porte les quatre champs, `createLevelLocals` initialise les references a `null` et les framenums a `0`; commentaire de portage `level_locals_t` verifie.
+  - `packages/game/src/runtime.ts`: miroir runtime present avec les memes valeurs par defaut.
+  - `packages/game/src/p_weapon.ts`: `PlayerNoise` met a jour le canal primaire pour `PNOISE_SELF`/`PNOISE_WEAPON`, le canal secondaire pour `PNOISE_IMPACT`, respecte silencer/deathmatch/notarget, positionne et linke les entites `player_noise`.
+  - `packages/game/src/g_ai.ts`: `FindTarget` consomme le canal primaire, puis le canal secondaire seulement si le monstre n'a pas deja d'ennemi et n'est pas stand-ground; les portes PHS/zone/distance et `AI_SOUND_TARGET` restent conformes.
+  - `packages/game/src/g_main.ts`: `G_RunFrame` synchronise les quatre miroirs runtime vers `level_locals_t`.
+  - `packages/game/src/g_save.ts`: `WriteLevel`/`ReadLevel` persistent et restaurent les references edict et framenums des deux canaux, puis resynchronisent le runtime.
+- Runtime: flux attendu branche depuis commandes/armes/joueur (`PlayerNoise`) vers acquisition AI (`FindTarget`, `ai_run`, `ai_checkattack`), puis miroir `G_RunFrame` et save/load level.
+- apps/web: pas de logique parallele detectee dans `apps/web`; l'integration attendue passe par le host local/full-game qui avance le runtime game et consomme ensuite snapshots/HUD/sons. `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: aucune consommation directe des champs sonores attendue. Ils pilotent l'AI et ne produisent pas eux-memes modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene; les effets visibles passent ensuite par entites/snapshots runtime. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `level_locals_t` verifie; `PlayerNoise`, `FindTarget`, `G_RunFrame`, `WriteLevel` et `ReadLevel` avaient des commentaires d'en-tete verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defauts, mutation et `LLOFS` pour les quatre champs.
+  - `scripts/verify/quake2-g-ai.ts`: assertion du canal secondaire `sound2_entity` et de ses conditions d'exclusion.
+  - `scripts/verify/quake2-g-main.ts`: assertions miroir `G_RunFrame -> level_locals_t`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration et miroir runtime des deux canaux.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:p-weapon` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -709,7 +730,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `level_locals_t.sound_entity`, `sound_entity_framenum`, `sound2_entity`, `sound2_entity_framenum` si le lot reste petit.
+- Continuer avec `level_locals_t.pic_health`, puis les compteurs `total_secrets`/`found_secrets`, `total_goals`/`found_goals`, `total_monsters`/`killed_monsters` si le lot reste petit.
 
 ## Blocages
 
