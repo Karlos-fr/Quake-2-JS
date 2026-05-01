@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `SV_PushEntity`, locales `trace` et `mask` incluant l'entree `mask` dupliquee.
-- Prochain lot recommande: `pushed_t`, puis locales `ent`, `deltayaw` et `obstacle` si le lot reste petit.
+- Dernier lot valide: `pushed_t`, champs/locales matricielles `ent`, `deltayaw` et global `obstacle`.
+- Prochain lot recommande: `SV_Push`, puis locale `temp` si le lot reste petit.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -104,3 +104,14 @@
 - renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les entites, modeles/brush models, camera/scene via positions et refresh frames. Les particules, beams, dlights, temp entities ou sons peuvent venir indirectement des callbacks `SV_Impact`/trigger deja routes par les flux client/renderer existants.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour `trace`, `mask` explicite, fallback `MASK_SOLID`, retry apres entite impactee liberee, relink, conservation de `velocity` et trigger touch.
 - Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `pushed_t` / `obstacle`
+
+- Lot traite: `pushed_t`, champs/locales matricielles `ent`, `deltayaw` et global `obstacle`.
+- Comparaison C/TS: le C conserve pour chaque entite poussee `ent`, `origin`, `angles` et `deltayaw`, dans une pile `pushed` partagee par toute la team pendant `SV_Physics_Pusher`; `obstacle` garde l'entite bloquante pour le callback `blocked`. Le TS conserve les memes informations dans `pushed_t`, avec `deltaYaw` pour `client.ps.pmove.delta_angles[YAW]`, et utilise maintenant une pile partagee par les appels `SV_Push` d'une meme team pusher.
+- Commentaire d'en-tete: `pushed_t`, `capturePushedState` et `rollbackPush` ont des commentaires `Category: New` justifiant l'adaptation TS. Pas de fonction C propre a commenter pour les entrees locales `ent` / `deltayaw` / `obstacle`.
+- Runtime: integre via `G_RunFrame` / `G_RunEntity` -> `SV_Physics_Pusher` -> `SV_Push`; correction appliquee pour que le rollback d'un blocage sur un membre de team restaure aussi les mouvements des membres precedents, comme la pile globale C.
+- apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace la pile de rollback. Les sorties sont les positions/angles et callbacks `blocked` exposes ensuite par snapshots/evenements.
+- renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les origines/angles des brush models, riders et scene apres rollback ou mouvement pusher. Les modeles/frames/images/particules/beams/dlights/temp entities/areabits/camera ne sont pas produits directement par ce lot, mais les positions finales sont consommees par les refresh frames et adapters renderer existants.
+- Correction: `SV_Push` accepte une pile `pushed_t` optionnelle; `SV_Physics_Pusher` partage une pile unique sur toute la team. Ajout d'assertions ciblees couvrant rollback multi-part, restauration `delta_angles[YAW]`, et routage `obstacle` vers `blocked`.
+- Tests lances: `npm run verify:g-phys` OK.
