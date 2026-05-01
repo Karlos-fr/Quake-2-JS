@@ -123,12 +123,12 @@
 | `Quake-2-master/game/g_local.h` | macro | `WEAP_HYPERBLASTER` | `packages/game/src/runtime.ts` | `WEAP_HYPERBLASTER` | Valide | A redecouper | Valeurs H/TS comparees; exports `g_local.ts`/`index.ts` et itemlist `weapmodel` verifies. Tests: `verify:g-local:header`, `verify:g-items`, `verify:p-weapon`, `verify:p-hud`, `verify:local-gameplay-sync`, full-game server/three/input, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | macro | `WEAP_RAILGUN` | `packages/game/src/runtime.ts` | `WEAP_RAILGUN` | Valide | A redecouper | Valeurs H/TS comparees; exports `g_local.ts`/`index.ts` et itemlist `weapmodel` verifies. Tests: `verify:g-local:header`, `verify:g-items`, `verify:p-weapon`, `verify:p-hud`, `verify:local-gameplay-sync`, full-game server/three/input, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | macro | `WEAP_BFG` | `packages/game/src/runtime.ts` | `WEAP_BFG` | Valide | A redecouper | Valeurs H/TS comparees; exports `g_local.ts`/`index.ts` et itemlist `weapmodel` verifies. Tests: `verify:g-local:header`, `verify:g-items`, `verify:p-weapon`, `verify:p-hud`, `verify:local-gameplay-sync`, full-game server/three/input, `typecheck`. |
-| `Quake-2-master/game/g_local.h` | struct | `gitem_s` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `classname` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `pickup_sound` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `world_model` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `world_model_flags` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `view_model` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | struct | `gitem_s` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `classname` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `pickup_sound` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `world_model` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `world_model_flags` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `view_model` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `icon` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `pickup_name` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `count_width` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

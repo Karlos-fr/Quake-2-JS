@@ -50,10 +50,10 @@
 | `Quake-2-master/game/g_misc.c` | function | `SP_light` | `packages/game/src/g_misc.ts` | `SP_light` | Valide | A redecouper | Header Strict ajoute; free sans `targetname`/deathmatch, style `< 32`, spawn/export et initialisation `a`/`m` verifies. `apps/web` full-game consomme les configstrings serveur; local bridge corrige. `renderer-three` consomme `lightStyles`. Memes tests. |
 | `Quake-2-master/game/g_misc.c` | function | `func_wall_use` | `packages/game/src/g_misc.ts` | `func_wall_use` | Valide | A redecouper | Headers Strict ajoutes; preuve C/TS: toggle `SOLID_NOT`/`SOLID_BSP`, `SVF_NOCLIENT`, `KillBox`, relink et use one-shot/TOGGLE. Tests: `npm run verify:g-misc`, `npm run verify:g-spawn`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; `verify:full-game:render-source` bloque avant scenario sur import existant `packages/client/src/types.js`. |
 | `Quake-2-master/game/g_misc.c` | function | `SP_func_wall` | `packages/game/src/g_misc.ts` | `SP_func_wall` | Valide | A redecouper | Headers Strict ajoutes; preuve C/TS: `MOVETYPE_PUSH`, setmodel inline, effets `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, mur simple lie, trigger-spawn force, `START_ON` force `TOGGLE`, et dispatch `func_wall`. Memes tests; brush models visibles consommes via snapshots/brush model adapters web/Three. |
-| `Quake-2-master/game/g_misc.c` | function | `func_object_touch` | `packages/game/src/g_misc.ts` | `func_object_touch` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `func_object_release` | `packages/game/src/g_misc.ts` | `func_object_release` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `func_object_use` | `packages/game/src/g_misc.ts` | `func_object_use` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_func_object` | `packages/game/src/g_misc.ts` | `SP_func_object` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `func_object_touch` | `packages/game/src/g_misc.ts` | `func_object_touch` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `func_object_release` | `packages/game/src/g_misc.ts` | `func_object_release` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `func_object_use` | `packages/game/src/g_misc.ts` | `func_object_use` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `SP_func_object` | `packages/game/src/g_misc.ts` | `SP_func_object` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `func_explosive_explode` | `packages/game/src/g_misc.ts` | `func_explosive_explode` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | global | `count` | `packages/game/src/g_misc.ts` | `count` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | global | `mass` | `packages/game/src/g_misc.ts` | `mass` | A verifier | A redecouper |  |

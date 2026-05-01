@@ -20,6 +20,7 @@ import {
   SV_TestEntityPosition
 } from "../../packages/game/src/g_phys.js";
 import {
+  MOVETYPE_FLY,
   MOVETYPE_NONE,
   MOVETYPE_PUSH,
   MOVETYPE_STEP,
@@ -110,6 +111,22 @@ const velocityEnt = spawnGameEntity(runtime);
 velocityEnt.velocity = [2500, -2500, 100];
 SV_CheckVelocity(velocityEnt);
 assertVec("SV_CheckVelocity", velocityEnt.velocity, [2000, -2000, 100]);
+
+const flyClampEnt = spawnGameEntity(runtime);
+flyClampEnt.classname = "fly-clamp";
+flyClampEnt.movetype = MOVETYPE_FLY;
+flyClampEnt.solid = SOLID_BBOX;
+flyClampEnt.clipmask = MASK_SOLID;
+flyClampEnt.mins = [-16, -16, -16];
+flyClampEnt.maxs = [16, 16, 16];
+flyClampEnt.origin = [0, 0, 8];
+flyClampEnt.s.origin = [0, 0, 8];
+flyClampEnt.velocity = [25000, -25000, 100];
+linkGameEntity(runtime, flyClampEnt);
+G_RunEntity(flyClampEnt, runtime);
+assertVec("G_RunEntity.fly-clamp.velocity", flyClampEnt.velocity, [2000, -2000, 100]);
+assertVec("G_RunEntity.fly-clamp.origin", flyClampEnt.origin, [200, -200, 18]);
+assertVec("G_RunEntity.fly-clamp.s.origin", flyClampEnt.s.origin, [200, -200, 18]);
 
 const thinkEnt = spawnGameEntity(runtime);
 thinkEnt.classname = "thinker";

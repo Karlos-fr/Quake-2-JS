@@ -25,6 +25,7 @@ import {
 import { EF_FLIES, MASK_MONSTERSOLID, MASK_SHOT } from "../../packages/qcommon/src/index.js";
 import { FL_NOTARGET, MOD_UNKNOWN } from "../../packages/game/src/g_local.js";
 import {
+  AttackFinished,
   M_FliesOff,
   M_FliesOn,
   M_FlyCheck,
@@ -57,6 +58,7 @@ function main(): void {
   verifyMonsterStartGoFixesPointCombatTargets();
   verifyTriggeredSpawnStartupPath();
   verifyCorpseFlyScheduling();
+  verifyAttackFinishedCooldown();
 
   console.log("Verification g_monster - shared monster gameplay OK");
 }
@@ -331,6 +333,20 @@ function verifyCorpseFlyScheduling(): void {
   assert.equal(underwater.think, undefined, "M_FlyCheck should not schedule flies underwater");
   M_FliesOn(underwater, runtime);
   assert.equal((underwater.s.effects & EF_FLIES) !== 0, false, "M_FliesOn should not enable flies underwater");
+}
+
+function verifyAttackFinishedCooldown(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 42.5;
+  const monster = createMonster(runtime, 18);
+
+  AttackFinished(monster, 1.75, runtime);
+
+  assert.equal(
+    monster.monsterinfo.attack_finished,
+    44.25,
+    "AttackFinished should delay the monster attack window by runtime.time + time"
+  );
 }
 
 function createHarnessRuntime(): GameRuntime {

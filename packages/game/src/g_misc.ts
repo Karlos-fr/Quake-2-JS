@@ -796,6 +796,16 @@ export function SP_func_wall(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: func_object_touch
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior:
+ * - Crushes only damageable entities directly underneath a falling func_object.
+ * Porting notes:
+ * - The runtime touch adapter passes the original collision plane when physics produced one.
+ */
 export function func_object_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime, plane?: cplane_t | null): void {
   if (!plane || plane.normal[2] < 1.0) {
     return;
@@ -808,11 +818,29 @@ export function func_object_touch(self: GameEntity, other: GameEntity, runtime: 
   T_Damage(other, self, self, [0, 0, 0], self.s.origin, [0, 0, 0], self.dmg, 1, 0, MOD_CRUSH, runtime);
 }
 
+/**
+ * Original name: func_object_release
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior:
+ * - Releases the brush object into toss physics and arms the crush touch callback.
+ */
 export function func_object_release(self: GameEntity, _runtime: GameRuntime): void {
   self.movetype = MOVETYPE_TOSS;
   self.touch = func_object_touch;
 }
 
+/**
+ * Original name: func_object_use
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior:
+ * - Reveals a trigger-spawned func_object, clears one-shot use, killboxes occupants and releases it.
+ * Porting notes:
+ * - Refresh and link calls keep the TypeScript runtime spatial adapter synchronized after visibility changes.
+ */
 export function func_object_use(
   self: GameEntity,
   _other: GameEntity | null,
@@ -828,6 +856,16 @@ export function func_object_use(
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: SP_func_object
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior:
+ * - Spawns a falling inline BSP object, shrinking its bounds, setting default crush damage, animation flags and release/use state.
+ * Porting notes:
+ * - `setGameEntityModel` and `linkGameEntity` adapt the original `gi.setmodel` / `gi.linkentity` imports.
+ */
 export function SP_func_object(self: GameEntity, runtime: GameRuntime): void {
   if (self.model) {
     setGameEntityModel(runtime, self, self.model);

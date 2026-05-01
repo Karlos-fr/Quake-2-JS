@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `SetRespawn`.
+
+Validation respawn scheduling du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `SetRespawn` conserve le marquage `FL_RESPAWN`, le masquage `SVF_NOCLIENT`, le passage en `SOLID_NOT`, la planification `nextthink = level.time + delay`, l'installation du callback `DoRespawn`, puis le relink. Le port TS est strictement equivalent avec `runtime.time + delaySeconds` et `linkGameEntity(runtime, ent)`. Le header TS existant a ete verifie (`Fidelity level: Strict`).
+
+Runtime branche via les chemins de pickup deathmatch (`Pickup_Armor`, `Pickup_Ammo`, `Pickup_PowerArmor`, armes via hook `Pickup_Weapon`, mega-health et drops selon les cas deja couverts), les items team par `droptofloor`, puis les callbacks `think` executes par `G_RunFrame`/`runPendingThinks`. `apps/web` doit consommer ce flux par le runtime full-game/local, les snapshots client qui filtrent `SVF_NOCLIENT`, et les events client; aucune logique parallele de respawn item detectee. `renderer-three` doit consommer les sorties visibles attendues: disparition pendant `SVF_NOCLIENT`/`SOLID_NOT`, retour de l'item comme entite visible, puis `EV_ITEM_RESPAWN` converti cote client en son `items/respawn1.wav` et particules `CL_ItemRespawnParticles`.
+
+Test renforce dans `scripts/verify/quake2-g-items.ts`: `verifySetRespawnRoundTrip` verifie maintenant `FL_RESPAWN`, `SVF_NOCLIENT`, `SOLID_NOT`, `nextthink`, callback `DoRespawn`, relink hors listes trigger/solid pendant le masquage, execution par `G_RunFrame`, retour `SOLID_TRIGGER`, clear `SVF_NOCLIENT`, presence dans les liens trigger et emission `EV_ITEM_RESPAWN`. Tests lances: `npm run verify:g-items`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `DoRespawn` et locales `master` / `count` / `choice`.
 
 Validation respawn items du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `DoRespawn` conserve la branche sans team qui rend l'entite courante visible/touchable, et la branche team qui repart de `teammaster`, compte les membres via `chain`, choisit `rand() % count`, rend uniquement l'item choisi visible, relinke l'entite et emet `EV_ITEM_RESPAWN`. Le port TS est equivalent avec `const master = ent.teammaster ?? ent`, un tableau `choices` pour materialiser les deux boucles C sur `count`, puis `Math.floor(Math.random() * choices.length)` pour `choice`; le header TS existant a ete verifie (`Fidelity level: Close`, source aleatoire JS).
@@ -197,4 +205,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `SetRespawn`, puis `Pickup_Powerup` si le lot reste petit.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Powerup`.

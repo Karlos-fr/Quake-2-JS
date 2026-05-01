@@ -12,6 +12,7 @@
 
 import { strict as assert } from "node:assert";
 
+import { EF_ROTATE } from "../../packages/qcommon/src/index.js";
 import {
   AI_BRUTAL,
   AI_COMBAT_POINT,
@@ -107,7 +108,7 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { gitem_armor_t } from "../../packages/game/src/g_local.js";
+import type { gitem_armor_t, gitem_t } from "../../packages/game/src/g_local.js";
 import {
   ARMOR_BODY as INDEX_ARMOR_BODY,
   ARMOR_COMBAT as INDEX_ARMOR_COMBAT,
@@ -351,6 +352,20 @@ const shells = FindItem("Shells");
 const quad = FindItem("Quad Damage");
 const breather = FindItem("Rebreather");
 const dataCd = FindItem("Data CD");
+const shotgunGItem = shotgunItem satisfies gitem_t | null;
+assert.ok(shotgunGItem, "Shotgun gitem_t must resolve by pickup name");
+assert.equal(shotgunGItem.classname, "weapon_shotgun", "gitem_s classname field mismatch");
+assert.equal(shotgunGItem.pickupSound, "misc/w_pkup.wav", "gitem_s pickup_sound field mismatch");
+assert.equal(shotgunGItem.worldModel, "models/weapons/g_shotg/tris.md2", "gitem_s world_model field mismatch");
+assert.equal(shotgunGItem.worldModelFlags, EF_ROTATE, "gitem_s world_model_flags field mismatch");
+assert.equal(shotgunGItem.viewModel, "models/weapons/v_shotg/tris.md2", "gitem_s view_model field mismatch");
+assert.equal(blaster?.classname, "weapon_blaster", "gitem_s classname for Blaster mismatch");
+assert.equal(blaster?.worldModel, "", "gitem_s empty world_model sentinel for Blaster mismatch");
+assert.equal(blaster?.viewModel, "models/weapons/v_blast/tris.md2", "gitem_s view_model for Blaster mismatch");
+assert.equal(shells?.pickupSound, "misc/am_pkup.wav", "gitem_s pickup_sound for Shells mismatch");
+assert.equal(shells?.worldModelFlags, 0, "gitem_s world_model_flags for Shells mismatch");
+assert.equal(shells?.viewModel, null, "gitem_s NULL view_model mapping for Shells mismatch");
+assert.equal(dataCd?.worldModelFlags, EF_ROTATE, "gitem_s world_model_flags for Data CD mismatch");
 assert.equal((jacket?.flags ?? 0) & IT_ARMOR, IT_ARMOR, "Jacket Armor item IT_ARMOR flag mismatch");
 assert.equal((blaster?.flags ?? 0) & IT_WEAPON, IT_WEAPON, "Blaster item IT_WEAPON flag mismatch");
 assert.equal((blaster?.flags ?? 0) & IT_STAY_COOP, IT_STAY_COOP, "Blaster item IT_STAY_COOP flag mismatch");

@@ -162,11 +162,18 @@ export type GameItemWeaponThinkKind =
   | "Weapon_BFG";
 
 /**
- * Category: New
- * Purpose: Describe the subset of `gitem_t` currently required to spawn visible Quake II pickups faithfully.
+ * Original name: gitem_s
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must preserve the original classname, world model and world-model flags.
+ * Behavior:
+ * - Describes one Quake II item definition with spawn classname, callbacks, pickup audio,
+ *   world/view models, render flags, HUD metadata, inventory tags and precache tokens.
+ *
+ * Porting notes:
+ * - C function pointers are represented by stable callback-kind strings resolved by the item runtime.
+ * - C NULL strings are represented by `null` for optional fields and `""` only for the original health sentinel.
  */
 export interface GameItemDefinition {
   index: number;

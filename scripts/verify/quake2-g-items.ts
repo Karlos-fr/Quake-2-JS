@@ -20,6 +20,7 @@ import {
   FRAMETIME,
   FindItem,
   FindItemByClassname,
+  G_RunFrame,
   GetGameItems,
   GetItemByIndex,
   InitItems,
@@ -214,16 +215,39 @@ function verifySetRespawnRoundTrip(): void {
   const runtime = createHarnessRuntime();
   const entity = spawnGameEntity(runtime);
   const item = requireItem("Shells");
+  let engineLinkCount = 0;
+  let engineUnlinkCount = 0;
+
+  runtime.engineLinkEntity = () => {
+    engineLinkCount += 1;
+  };
+  runtime.engineUnlinkEntity = () => {
+    engineUnlinkCount += 1;
+  };
 
   SpawnItem(entity, item, runtime);
   entity.think?.(entity, runtime);
-  SetRespawn(entity, 5, runtime);
+  const linkcountBeforeRespawn = entity.linkcount;
 
-  assertNumber(entity.solid, 0, "SetRespawn hides the item");
+  SetRespawn(entity, FRAMETIME, runtime);
 
-  runPendingThinks(runtime, runtime.time + 5);
-  assertNumber(entity.solid, 1, "DoRespawn restores SOLID_TRIGGER");
+  assertBoolean((entity.flags & FL_RESPAWN) !== 0, true, "SetRespawn marks the item with FL_RESPAWN");
+  assertBoolean((entity.svflags & SVF_NOCLIENT) !== 0, true, "SetRespawn hides the item from client snapshots");
+  assertNumber(entity.solid, SOLID_NOT, "SetRespawn makes the item non-solid");
+  assertNumber(entity.nextthink, runtime.time + FRAMETIME, "SetRespawn schedules nextthink at level.time + delay");
+  assertBoolean(entity.think === DoRespawn, true, "SetRespawn installs DoRespawn as the next think callback");
+  assertNumber(entity.linkcount, linkcountBeforeRespawn + 1, "SetRespawn relinks the hidden item");
+  assertBoolean(runtime.linkedTriggerEntities.includes(entity), false, "SetRespawn removes the item from trigger links while hidden");
+  assertBoolean(runtime.linkedSolidEntities.includes(entity), false, "SetRespawn keeps the hidden item out of solid links");
+
+  G_RunFrame(runtime);
+
+  assertNumber(entity.solid, SOLID_TRIGGER, "G_RunFrame runs DoRespawn and restores SOLID_TRIGGER");
+  assertBoolean((entity.svflags & SVF_NOCLIENT) === 0, true, "DoRespawn clears SVF_NOCLIENT after the scheduled think");
+  assertBoolean(runtime.linkedTriggerEntities.includes(entity), true, "DoRespawn relinks the item as a trigger");
   assertNumber(entity.s.event, entity_event_t.EV_ITEM_RESPAWN, "DoRespawn emits EV_ITEM_RESPAWN");
+  assertBoolean(engineLinkCount >= 3, true, "SpawnItem/droptofloor/SetRespawn/DoRespawn all relink through the runtime bridge");
+  assertBoolean(engineUnlinkCount >= 3, true, "Relinks also notify the runtime unlink bridge before relinking");
 }
 
 function verifyDoRespawnTeamChoice(): void {

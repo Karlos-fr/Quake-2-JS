@@ -8,6 +8,28 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot structure `gitem_s` et champs `classname`, `pickup_sound`, `world_model`, `world_model_flags`, `view_model`.
+- Verdict: `Valide` pour la structure et les 5 champs apres correction du commentaire de portage et renforcement du harness header.
+- Source H comparee: `gitem_s` declare `char *classname`, les callbacks item, puis `char *pickup_sound`, `char *world_model`, `int world_model_flags`, `char *view_model`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_items.ts`: `GameItemDefinition` porte `classname`, `pickupSound`, `worldModel`, `worldModelFlags`, `viewModel`; commentaire mis a jour avec `Original name: gitem_s`, `Source: game/g_local.h`, `Category: Ported`, `Fidelity level: Close`.
+  - `packages/game/src/g_local.ts`: `export type gitem_t = GameItemDefinition`.
+  - `packages/game/src/index.ts`: export public de `GameItemDefinition` et `gitem_t` verifie par typecheck/imports existants.
+- Equivalences de champs verifiees sur items representatifs:
+  - `weapon_shotgun`: `classname`, `pickup_sound`, `world_model`, `world_model_flags = EF_ROTATE`, `view_model`.
+  - `weapon_blaster`: `world_model` vide conserve et `view_model` present.
+  - `ammo_shells`: `pickup_sound`, `world_model_flags = 0`, `view_model = null`.
+  - `key_data_cd`: `world_model_flags = EF_ROTATE`.
+- Runtime:
+  - Source C: `FindItemByClassname` cherche `classname`; `PrecacheItem` enregistre `pickup_sound`, `world_model`, `view_model`; `Drop_Item`, `droptofloor` et `SpawnItem` appliquent `world_model`/`world_model_flags`; `Touch_Item` joue `pickup_sound`.
+  - TS: `FindItemByClassname`, `PrecacheItem`, `Drop_Item`, `droptofloor`, `SpawnItem` et `Touch_Item` conservent ces flux via `GameItemDefinition`, assets runtime, `s.modelindex`, `s.effects`, sons runtime et snapshots.
+- apps/web: aucune logique item parallele attendue; le navigateur declenche le runtime full-game/local et consomme les assets/modeles/sons via configstrings, snapshots, stats et events. `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: integration attendue pour les modeles monde/vue et flags visibles. Elle passe par `ClientRefreshFrame.entities`, `modelindex`, `effects` (`EF_ROTATE` notamment), `ps.gunindex`, configstrings modeles et `refresh-entity-sync`; `verify:full-game:three-renderer` OK.
+- Corrections appliquees:
+  - `packages/game/src/g_items.ts`: commentaire de `GameItemDefinition` rattache explicitement `gitem_s`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ciblees sur `gitem_t` et les 5 champs du lot.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-items` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot constantes `WEAP_BLASTER`, `WEAP_SHOTGUN`, `WEAP_SUPERSHOTGUN`, `WEAP_MACHINEGUN`, `WEAP_CHAINGUN`, `WEAP_GRENADES`, `WEAP_GRENADELAUNCHER`, `WEAP_ROCKETLAUNCHER`, `WEAP_HYPERBLASTER`, `WEAP_RAILGUN`, `WEAP_BFG`.
 - Verdict: `Valide` pour les 11 macros apres renforcement du harness header; aucune correction gameplay TS necessaire.
 - Valeurs H/TS comparees et conformes:
@@ -475,7 +497,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec la structure `gitem_s` et le prochain petit groupe de champs associes (`classname`, `pickup_sound`, `world_model`, `world_model_flags`, `view_model`) si le lot reste raisonnable.
+- Continuer avec le prochain petit groupe de champs de `gitem_s`: `icon`, `pickup_name`, `count_width`, puis `quantity`/`ammo` si le lot reste raisonnable.
 
 ## Blocages
 

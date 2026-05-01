@@ -10,7 +10,7 @@
  */
 
 import { strict as assert } from "node:assert";
-import { CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, RF_FRAMELERP, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, MASK_MONSTERSOLID, RF_FRAMELERP, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
@@ -67,7 +67,7 @@ import {
   TH_viewthing,
   useGameEntity
 } from "../../packages/game/src/index.js";
-import { SP_func_wall, func_wall_use } from "../../packages/game/src/g_misc.js";
+import { SP_func_object, SP_func_wall, func_object_touch, func_object_use, func_wall_use } from "../../packages/game/src/g_misc.js";
 import { AI_COMBAT_POINT, AI_STAND_GROUND, FL_FLY, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
 import { ThrowClientHead } from "../../packages/game/src/p_client.js";
 import { SVF_MONSTER } from "../../packages/game/src/runtime.js";
@@ -88,6 +88,7 @@ function main(): void {
   verifyMiscExploboxSpawnsShootableBarrel();
   verifyLightWritesSourceConfigstrings();
   verifyFuncWallSpawnAndUseTogglesVisibility();
+  verifyFuncObjectSpawnUseReleaseAndCrush();
   verifyFuncExplosiveSpawnsAndExplodesBrushModel();
   verifyGibTypesSelectMovementAndTouchBehavior();
   verifyGibTouchMatchesPlaneGatedSourceBehavior();
@@ -665,6 +666,81 @@ function verifyFuncWallSpawnAndUseTogglesVisibility(): void {
   ED_CallSpawn(dispatch, runtime);
 
   assert.equal(dispatch.use, func_wall_use, "ED_CallSpawn must dispatch func_wall to SP_func_wall");
+}
+
+function verifyFuncObjectSpawnUseReleaseAndCrush(): void {
+  const runtime = createHarnessRuntime();
+
+  const plain = spawnGameEntity(runtime);
+  plain.classname = "func_object";
+  plain.model = "*1";
+  plain.mins = [-16, -16, 0];
+  plain.maxs = [16, 16, 32];
+
+  SP_func_object(plain, runtime);
+
+  assert.equal(plain.solid, SOLID_BSP, "plain func_object must spawn solid");
+  assert.equal(plain.movetype, MOVETYPE_PUSH, "plain func_object must wait as MOVETYPE_PUSH");
+  assert.equal(plain.dmg, 100, "func_object must default crush damage to 100");
+  assert.deepEqual(plain.mins, [-15, -15, 1], "func_object must shrink source mins by one unit");
+  assert.deepEqual(plain.maxs, [15, 15, 31], "func_object must shrink source maxs by one unit");
+  assert.equal(plain.clipmask, MASK_MONSTERSOLID, "func_object must use MASK_MONSTERSOLID");
+  assert.equal(runtime.assets.modelPaths[plain.s.modelindex - 1], "*1", "func_object must register its inline model");
+
+  runPendingThinks(runtime, 2 * FRAMETIME);
+
+  assert.equal(plain.movetype, MOVETYPE_TOSS, "plain func_object must release after two frames");
+  assert.equal(plain.touch, func_object_touch, "func_object_release must install func_object_touch");
+
+  const victim = spawnGameEntity(runtime);
+  victim.classname = "victim";
+  victim.health = 150;
+  victim.takedamage = damage_t.DAMAGE_YES;
+  const topPlane: cplane_t = { normal: [0, 0, 1], dist: 0, type: 0, signbits: 0, pad: [0, 0] };
+
+  plain.touch!(plain, victim, runtime, topPlane);
+  assert.equal(victim.health, 50, "func_object_touch must crush damageable entities below the falling object");
+
+  victim.health = 150;
+  plain.touch!(plain, victim, runtime, null);
+  assert.equal(victim.health, 150, "func_object_touch must ignore touches without a collision plane");
+  plain.touch!(plain, victim, runtime, { ...topPlane, normal: [0, 1, 0] });
+  assert.equal(victim.health, 150, "func_object_touch must ignore side planes");
+  victim.takedamage = damage_t.DAMAGE_NO;
+  plain.touch!(plain, victim, runtime, topPlane);
+  assert.equal(victim.health, 150, "func_object_touch must ignore non-damageable entities");
+
+  const hidden = spawnGameEntity(runtime);
+  hidden.classname = "func_object";
+  hidden.model = "*2";
+  hidden.spawnflags = 1 | 2 | 4;
+  hidden.dmg = 25;
+  hidden.mins = [-8, -8, 0];
+  hidden.maxs = [8, 8, 16];
+
+  SP_func_object(hidden, runtime);
+
+  assert.equal(hidden.use, func_object_use, "trigger-spawn func_object must install func_object_use");
+  assert.equal(hidden.solid, SOLID_NOT, "trigger-spawn func_object must start non-solid");
+  assert.equal((hidden.svflags & SVF_NOCLIENT) !== 0, true, "trigger-spawn func_object must start hidden");
+  assert.equal((hidden.s.effects & EF_ANIM_ALL) !== 0, true, "func_object spawnflag 2 must set EF_ANIM_ALL");
+  assert.equal((hidden.s.effects & EF_ANIM_ALLFAST) !== 0, true, "func_object spawnflag 4 must set EF_ANIM_ALLFAST");
+
+  useGameEntity(runtime, hidden, null, hidden);
+
+  assert.equal(hidden.solid, SOLID_BSP, "func_object_use must make the object solid");
+  assert.equal((hidden.svflags & SVF_NOCLIENT) === 0, true, "func_object_use must make the object client-visible");
+  assert.equal(hidden.use, undefined, "func_object_use must clear the one-shot use callback");
+  assert.equal(hidden.movetype, MOVETYPE_TOSS, "func_object_use must release the object immediately");
+  assert.equal(hidden.touch, func_object_touch, "func_object_use must arm crush touch");
+
+  const dispatch = spawnGameEntity(runtime);
+  dispatch.classname = "func_object";
+  dispatch.model = "*3";
+
+  ED_CallSpawn(dispatch, runtime);
+
+  assert.equal(dispatch.solid, SOLID_BSP, "ED_CallSpawn must dispatch func_object to SP_func_object");
 }
 
 function verifyFuncExplosiveSpawnsAndExplodesBrushModel(): void {

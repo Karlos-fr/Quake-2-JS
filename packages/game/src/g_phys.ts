@@ -108,6 +108,9 @@ export function SV_TestEntityPosition(ent: GameEntity, runtime: GameRuntime): Ga
  *
  * Behavior:
  * - Clamps one entity velocity to the Quake II maximum speed cvar bounds.
+ *
+ * Porting notes:
+ * - Uses the original default `sv_maxvelocity` value until broader physics cvar plumbing is introduced.
  */
 export function SV_CheckVelocity(ent: GameEntity): void {
   for (let index = 0; index < 3; index += 1) {
