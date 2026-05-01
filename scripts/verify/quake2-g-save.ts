@@ -216,6 +216,9 @@ writeContext.level.total_goals = 5;
 writeContext.level.found_goals = 3;
 writeContext.level.total_monsters = 11;
 writeContext.level.killed_monsters = 7;
+writeContext.level.current_entity = target;
+writeContext.level.body_que = 2;
+writeContext.level.power_cubes = 4;
 WriteLevel(writeContext, "save/level.sav");
 const levelJson = files.get("save/level.sav") ?? "";
 assert.ok(levelJson.includes("\"level_name\": \"Saved Unit\""), "WriteLevel must persist level_name");
@@ -240,6 +243,9 @@ assert.ok(levelJson.includes("\"total_goals\": 5"), "WriteLevel must persist tot
 assert.ok(levelJson.includes("\"found_goals\": 3"), "WriteLevel must persist found_goals");
 assert.ok(levelJson.includes("\"total_monsters\": 11"), "WriteLevel must persist total_monsters");
 assert.ok(levelJson.includes("\"killed_monsters\": 7"), "WriteLevel must persist killed_monsters");
+assert.ok(levelJson.includes("\"current_entity\": 2"), "WriteLevel must persist current_entity edict reference");
+assert.ok(levelJson.includes("\"body_que\": 2"), "WriteLevel must persist body_que");
+assert.ok(levelJson.includes("\"power_cubes\": 4"), "WriteLevel must persist power_cubes");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
 readContext.runtime.maxclients = 1;
@@ -294,6 +300,12 @@ assert.equal(readContext.level.total_monsters, 11, "ReadLevel total_monsters mis
 assert.equal(readContext.runtime.total_monsters, 11, "ReadLevel runtime total_monsters mismatch");
 assert.equal(readContext.level.killed_monsters, 7, "ReadLevel killed_monsters mismatch");
 assert.equal(readContext.runtime.killed_monsters, 7, "ReadLevel runtime killed_monsters mismatch");
+assert.equal(readContext.level.current_entity, readContext.runtime.entities[2], "ReadLevel current_entity mismatch");
+assert.equal(readContext.runtime.current_entity, readContext.runtime.entities[2], "ReadLevel runtime current_entity mismatch");
+assert.equal(readContext.level.body_que, 2, "ReadLevel body_que mismatch");
+assert.equal(readContext.runtime.body_que, 2, "ReadLevel runtime body_que mismatch");
+assert.equal(readContext.level.power_cubes, 4, "ReadLevel power_cubes mismatch");
+assert.equal(readContext.runtime.power_cubes, 4, "ReadLevel runtime power_cubes mismatch");
 assert.equal(readContext.runtime.entities[3]?.inuse, undefined, "ReadLevel must wipe entities not present in the save");
 assert.equal(readContext.runtime.entities[2]?.nextthink, 14.5, "ReadLevel cross-level target nextthink mismatch");
 assert.equal(readContext.runtime.entities[1]?.client?.pers.connected, false, "ReadLevel must mark client slots disconnected");

@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - `SpawnDamage` still emits through the explicit temp-entity hook path used by the current runtime.
- * - Monster death-use dispatch can still be overridden through hooks to avoid a hard cycle with `g_monster.ts`.
+ * - Monster death-use dispatch is registered by `g_monster.ts` and can still be overridden through hooks.
  *
  * Notes:
  * - This file is intended to stay close to the original C source.
@@ -99,6 +99,18 @@ export interface GameCombatHooks {
     mod: number,
     runtime: GameRuntime
   ) => void;
+}
+
+type MonsterDeathUseDispatcher = (targ: GameEntity, runtime: GameRuntime) => void;
+
+var defaultMonsterDeathUse: MonsterDeathUseDispatcher | undefined;
+
+/**
+ * Category: Adapter
+ * Purpose: Let `g_monster.ts` provide the original `monster_death_use` callback without a hard import cycle.
+ */
+export function setDefaultMonsterDeathUse(dispatcher: MonsterDeathUseDispatcher): void {
+  defaultMonsterDeathUse = dispatcher;
 }
 
 /**
@@ -428,7 +440,7 @@ export function SpawnDamage(
  * - Finalizes one entity death transition, clamps health, stores the attacker as enemy and dispatches `die`.
  *
  * Porting notes:
- * - Monster-specific bookkeeping and `monster_death_use` remain explicit through hooks until the monster subsystem is ported.
+ * - Monster-specific bookkeeping and `monster_death_use` remain explicit through the registered monster callback.
  */
 export function Killed(
   targ: GameEntity,
@@ -464,7 +476,7 @@ export function Killed(
 
   if ((targ.svflags & SVF_MONSTER) !== 0 && targ.deadflag !== DEAD_DEAD) {
     targ.touch = undefined;
-    hooks.monsterDeathUse?.(targ, runtime);
+    (hooks.monsterDeathUse ?? defaultMonsterDeathUse)?.(targ, runtime);
   }
 
   targ.die?.(targ, inflictor, attacker, damage, runtime, point);

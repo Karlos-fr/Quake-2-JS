@@ -74,7 +74,7 @@ import {
   damage_t
 } from "./g_local.js";
 import { FoundTarget, M_CheckAttack } from "./g_ai.js";
-import { T_Damage } from "./g_combat.js";
+import { T_Damage, setDefaultMonsterDeathUse } from "./g_combat.js";
 import { Drop_Item, FindItemByClassname, type GameItemDefinition } from "./g_items.js";
 import { G_Find, G_FreeEdict, G_PickTarget, G_UseTargets, KillBox, vectoyaw, vtos } from "./g_utils.js";
 import { M_walkmove } from "./m_move.js";
@@ -834,6 +834,8 @@ export function monster_death_use(self: GameEntity, runtime: GameRuntime, hooks:
 
   G_UseTargets(runtime, self, self.enemy);
 }
+
+setDefaultMonsterDeathUse(monster_death_use);
 
 /**
  * Original name: monster_start

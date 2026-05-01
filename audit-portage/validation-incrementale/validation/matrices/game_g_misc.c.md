@@ -86,10 +86,10 @@
 | `Quake-2-master/game/g_misc.c` | function | `misc_deadsoldier_die` | `packages/game/src/g_misc.ts` | `misc_deadsoldier_die` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | global | `n` | `packages/game/src/g_misc.ts` | `n` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_deadsoldier` | `packages/game/src/g_misc.ts` | `SP_misc_deadsoldier` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `train_use` | `packages/game/src/g_misc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `func_train_find` | `packages/game/src/g_misc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `misc_viper_use` | `packages/game/src/g_misc.ts` | `misc_viper_use` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_misc_viper` | `packages/game/src/g_misc.ts` | `SP_misc_viper` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `train_use` | `packages/game/src/g_func.ts` | `train_use` | Valide | A redecouper | Extern C delegue au port `g_func.ts`; preuve via `misc_viper_use` et `verify:g-misc`. |
+| `Quake-2-master/game/g_misc.c` | function | `func_train_find` | `packages/game/src/g_func.ts` | `func_train_find` | Valide | A redecouper | Extern C delegue au port `g_func.ts`; preuve via `SP_misc_viper` et `verify:g-misc`. |
+| `Quake-2-master/game/g_misc.c` | function | `misc_viper_use` | `packages/game/src/g_misc.ts` | `misc_viper_use` | Valide | A redecouper | Header mis a jour; preuve C/TS: rend visible, remplace `use` par `train_use`, transmet l'activateur et demarre le train. Tests: `npm run verify:g-misc`. |
+| `Quake-2-master/game/g_misc.c` | function | `SP_misc_viper` | `packages/game/src/g_misc.ts` | `SP_misc_viper` | Valide | A redecouper | Correction: warning source et `G_FreeEdict` si target absent; spawn/path/train visible couvert par `verify:g-misc`. |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_bigviper` | `packages/game/src/g_misc.ts` | `SP_misc_bigviper` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_viper_bomb_touch` | `packages/game/src/g_misc.ts` | `misc_viper_bomb_touch` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_viper_bomb_prethink` | `packages/game/src/g_misc.ts` | `misc_viper_bomb_prethink` | A verifier | A redecouper |  |

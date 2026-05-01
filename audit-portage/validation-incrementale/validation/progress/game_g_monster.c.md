@@ -1,12 +1,22 @@
 # Progress - Quake-2-master/game/g_monster.c
 
 - Statut: En cours
-- Dernier lot valide: `monster_triggered_start`
-- Prochain lot recommande: `monster_death_use`
+- Dernier lot valide: `monster_death_use`
+- Prochain lot recommande: `monster_start`
 - Tests de reference: `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Blocages: aucun pour le lot valide
 
 ## Session courante
+
+- Lot traite: `monster_death_use`.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS `Close` verifie, test cible renforce dans `scripts/verify/quake2-g-monster.ts`, dispatch runtime `T_Damage`/`Killed` restaure via registre `setDefaultMonsterDeathUse`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
+- Runtime: atteignable depuis `T_Damage` puis `Killed` pour un monstre vivant qui meurt; `Killed` efface `touch`, stocke l'attaquant comme `enemy`, appelle `monster_death_use`, puis dispatch `die`. Le lot efface `FL_FLY`/`FL_SWIM`, conserve seulement `AI_GOOD_GUY`, droppe `item`, remplace `target` par `deathtarget`, retourne sans cible et appelle `G_UseTargets` avec l'ennemi comme activateur.
+- apps/web: pas de logique parallele attendue; les morts de monstres passent par le runtime local/full-game, puis les targets, items droppes, sons/evenements et snapshots sont consommes par le client web. Tests `verify:local-gameplay-sync`, `verify:full-game:three-renderer` et `verify:web-render-order` OK.
+- renderer-three: sortie visible attendue indirecte par disparition/changement d'etat du monstre, item droppé et eventuels targets declenches; les modeles/origines/frames et effets passent par snapshots/client refresh et adapters Three. Pas de branchement gameplay renderer requis.
+- Tests lances: `npm run verify:g-monster` OK, `npx tsx ./scripts/verify/quake2-g-combat.ts` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
+- Prochain lot recommande: `monster_start`.
+
+## Session precedente
 
 - Lot traite: `monster_triggered_start`.
 - Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS `Strict` verifie, test cible renforce dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.

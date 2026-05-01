@@ -2,6 +2,26 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `train_use`, `func_train_find`, `misc_viper_use` et `SP_misc_viper`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts` et `packages/game/src/g_func.ts`: les deux declarations externes C `train_use`/`func_train_find` sont deleguees au port `g_func.ts`; `misc_viper_use` conserve le retrait de `SVF_NOCLIENT`, le remplacement du callback `use` par `train_use` et l'appel immediat a `train_use`; `SP_misc_viper` conserve le refus sans `target`, le warning source, le free de l'edict, le speed par defaut `300`, `MOVETYPE_PUSH`, `SOLID_NOT`, modele `models/ships/viper/tris.md2`, bbox, think `func_train_find`, first think `level.time + FRAMETIME`, callback `misc_viper_use`, `SVF_NOCLIENT`, `moveinfo` speed/accel/decel et link.
+  - Commentaires d'en-tete mis a jour pour `misc_viper_use` et `SP_misc_viper`: original/source/categorie portee/fidelite `Strict` et comportement documente. Les commentaires de `train_use` et `func_train_find` ont ete verifies dans `g_func.ts`.
+  - Branchement runtime verifie: `misc_viper` est enregistre dans `g_spawn.ts`, exporte via `index.ts`, dispatchable par `ED_CallSpawn`; le spawn installe `func_train_find` et `misc_viper_use`; l'activation passe par `useGameEntity`/`G_UseTargets` puis `train_use`; le mouvement continue via le flux train et `G_RunFrame`/`SV_RunThink`.
+  - `apps/web`: integration attendue car le lot produit un modele MD2 visible apres activation, avec origine/interpolation issues du mouvement train. Aucune logique parallele trouvee; le web consomme les sorties runtime par les flux local/full-game, snapshots et refresh frames.
+  - `renderer-three`: integration attendue pour modele MD2, origine, angles/frames eventuelles, presence initialement masquee par `SVF_NOCLIENT`, puis apparition et mouvement dans la scene. Les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: `SP_misc_viper` journalise et libere maintenant l'entite sans target comme le C; commentaires d'en-tete `misc_viper_use` et `SP_misc_viper` mis a jour.
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour free/warning sans target, spawn, speed par defaut/explicite, dispatch `ED_CallSpawn`, `func_train_find`, activation visible et delegation `train_use`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` bloque avant scenario sur `ReferenceError: Cannot access 'defaultMonsterDeathUse' before initialization` dans `packages/game/src/g_combat.ts` via `g_monster.ts`.
+  - `npm run verify:g-func` bloque sur le meme probleme d'initialisation `defaultMonsterDeathUse`.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `SP_misc_bigviper`, puis `misc_viper_bomb_touch` / `misc_viper_bomb_prethink` si le lot reste petit.
+
 - 2026-05-01: `misc_deadsoldier_die`, local `n` et `SP_misc_deadsoldier`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `misc_deadsoldier_die` conserve le seuil `health > -80`, le son `misc/udeath.wav`, les 4 appels `ThrowGib` organiques et `ThrowHead`; le local `n` est porte par la boucle TS `index < 4`; `SP_misc_deadsoldier` conserve le free deathmatch, `MOVETYPE_NONE`, `SOLID_BBOX`, modele `models/deadbods/dude/tris.md2`, priorite des frames par `spawnflags`, bbox, `DEAD_DEAD`, `DAMAGE_YES`, `SVF_MONSTER | SVF_DEADMONSTER`, callback die et `AI_GOOD_GUY`.

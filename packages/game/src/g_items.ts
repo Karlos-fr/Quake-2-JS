@@ -1026,6 +1026,8 @@ export function Add_Ammo(ent: GameEntity, item: GameItemDefinition, count: numbe
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Choose pickup count from infinite-ammo weapon rules, entity count, or item quantity; add ammo, optionally auto-select newly gained grenade weapons, and schedule deathmatch map-item respawn.
+ * Porting notes: Keeps the original `oldcount` auto-switch gate while using runtime flags instead of C globals.
  */
 export function Pickup_Ammo(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   const client = requireClient(other, "Pickup_Ammo");

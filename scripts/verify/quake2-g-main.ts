@@ -655,6 +655,8 @@ frameContext.runtime.total_goals = 3;
 frameContext.runtime.found_goals = 1;
 frameContext.runtime.total_monsters = 9;
 frameContext.runtime.killed_monsters = 5;
+frameContext.runtime.body_que = 3;
+frameContext.runtime.power_cubes = 2;
 writeBytes.length = 0;
 writeShorts.length = 0;
 writePositions.length = 0;
@@ -685,6 +687,8 @@ assert.equal(frameContext.level.total_goals, 3, "G_RunFrame must mirror total_go
 assert.equal(frameContext.level.found_goals, 1, "G_RunFrame must mirror found_goals into level_locals_t");
 assert.equal(frameContext.level.total_monsters, 9, "G_RunFrame must mirror total_monsters into level_locals_t");
 assert.equal(frameContext.level.killed_monsters, 5, "G_RunFrame must mirror killed_monsters into level_locals_t");
+assert.equal(frameContext.level.body_que, 3, "G_RunFrame must mirror body_que into level_locals_t");
+assert.equal(frameContext.level.power_cubes, 2, "G_RunFrame must mirror power_cubes into level_locals_t");
 assert.deepEqual(frameContext.runtime.entities[1].s.old_origin, [11, 22, 33], "G_RunFrame old_origin copy mismatch");
 assert.equal(frameContext.level.current_entity, null, "G_RunFrame must clear level.current_entity after the entity loop");
 assert.deepEqual(writeBytes.slice(0, 2), [svc_muzzleflash, MZ_BLASTER], "G_RunFrame must flush player weapon muzzleflash bytes");
@@ -708,6 +712,7 @@ runEntityContext.runtime.entities[2].nextthink = 0.1;
 let runEntityThinkCount = 0;
 runEntityContext.runtime.entities[2].think = () => {
   runEntityThinkCount += 1;
+  assert.equal(runEntityContext.runtime.current_entity, runEntityContext.runtime.entities[2], "G_RunFrame must expose the running entity");
 };
 G_RunFrame(runEntityContext);
 assert.equal(runEntityThinkCount, 1, "G_RunFrame must dispatch non-client entities through G_RunEntity/SV_RunThink");

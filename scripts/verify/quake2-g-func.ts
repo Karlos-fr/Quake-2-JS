@@ -50,6 +50,8 @@ import {
   door_secret_move1,
   door_secret_move2,
   door_secret_move3,
+  door_secret_move4,
+  door_secret_move5,
   door_go_down,
   door_go_up,
   door_hit_bottom,
@@ -1253,6 +1255,20 @@ secret.wait = -1;
 door_secret_move3(secret, runtime);
 assert.equal(secret.nextthink, 123, "door_secret_move3 wait -1 must not schedule");
 assert.equal(secret.think, null, "door_secret_move3 wait -1 must not set return think");
+secret.wait = 1;
+secret.origin = [...secret.pos2];
+secret.s.origin = [...secret.pos2];
+secret.nextthink = 0;
+secret.think = null;
+door_secret_move4(secret, runtime);
+assert.equal(secret.moveinfo.remaining_distance, Math.hypot(secret.pos2[0] - secret.pos1[0], secret.pos2[1] - secret.pos1[1], secret.pos2[2] - secret.pos1[2]), "door_secret_move4 distance mismatch");
+assert.equal(secret.moveinfo.endfunc?.name, "door_secret_move5", "door_secret_move4 endfunc mismatch");
+assert.equal(secret.think?.name, "Move_Begin", "door_secret_move4 must schedule movement");
+secret.nextthink = 0;
+secret.think = null;
+door_secret_move5(secret, runtime);
+assert.equal(secret.nextthink, runtime.time + 1, "door_secret_move5 delay mismatch");
+assert.equal(secret.think?.name, "door_secret_move6", "door_secret_move5 next think mismatch");
 
 const secretLeft = entity("func_door_secret", 145, { angle: "0", spawnflags: "2", targetname: "secret_left" });
 secretLeft.size = [32, 64, 16];

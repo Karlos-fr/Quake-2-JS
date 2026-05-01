@@ -49,15 +49,15 @@
 | `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Pusher` | `packages/game/src/g_phys.ts` | `SV_Physics_Pusher` | Valide | A redecouper | `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`; commentaire d'en-tete verifie; assertions ajoutees pour FL_TEAMSLAVE, succes/think et blocage/nextthink; runtime via `G_RunFrame`/`G_RunEntity`; renderer consomme les origines/angles visibles des brush models. |
 | `Quake-2-master/game/g_phys.c` | function | `SV_Physics_None` | `packages/game/src/g_phys.ts` | `SV_Physics_None` | Valide | A redecouper | `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`; commentaire d'en-tete verifie; assertions ajoutees pour think futur/du, absence de trace collision et absence de mouvement; runtime via `G_RunFrame`/`G_RunEntity`; renderer consomme seulement les sorties indirectes des callbacks think. |
 | `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Noclip` | `packages/game/src/g_phys.ts` | `SV_Physics_Noclip` | Valide | A redecouper | `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`; commentaire d'en-tete verifie; assertions ajoutees pour think futur/du, mouvement noclip, synchronisation `s.origin`/`s.angles`, relink et absence de trace collision; runtime via `G_RunFrame`/`G_RunEntity`; renderer consomme seulement les positions/angles visibles resultants. |
-| `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Toss` | `packages/game/src/g_phys.ts` | `SV_Physics_Toss` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `move` | `packages/game/src/g_phys.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `backoff` | `packages/game/src/g_phys.ts` | `backoff` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `slave` | `packages/game/src/g_phys.ts` | `slave` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `wasinwater` | `packages/game/src/g_phys.ts` | `wasinwater` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `isinwater` | `packages/game/src/g_phys.ts` | `isinwater` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `old_origin` | `packages/game/src/g_phys.ts` | `old_origin` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `backoff` | `packages/game/src/g_phys.ts` | `backoff` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Toss` | `packages/game/src/g_phys.ts` | `SV_Physics_Toss` | Valide | A redecouper | Correction: sons `gi.positioned_sound` portes avec origine explicite; tests `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`. |
+| `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `move` | `packages/game/src/g_phys.ts` | `move` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `backoff` | `packages/game/src/g_phys.ts` | `backoff` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `slave` | `packages/game/src/g_phys.ts` | `slave` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `wasinwater` | `packages/game/src/g_phys.ts` | `wasinwater` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `isinwater` | `packages/game/src/g_phys.ts` | `isinwater` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `old_origin` | `packages/game/src/g_phys.ts` | `old_origin` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | global | `backoff` | `packages/game/src/g_phys.ts` | `backoff` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | macro | `sv_stopspeed` | `packages/game/src/g_phys.ts` | `SV_STOPSPEED` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | macro | `sv_friction` | `packages/game/src/g_phys.ts` | `SV_FRICTION` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | macro | `sv_waterfriction` | `packages/game/src/g_phys.ts` | `SV_WATERFRICTION` | A verifier | A redecouper |  |

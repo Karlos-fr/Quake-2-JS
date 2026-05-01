@@ -37,6 +37,7 @@ import {
   Pickup_Pack,
   Pickup_Armor,
   Pickup_Key,
+  Pickup_Ammo,
   Pickup_Powerup,
   PowerArmorType,
   PrecacheItem,
@@ -77,6 +78,7 @@ main();
 
 function main(): void {
   verifyAddAmmoCapsToMax();
+  verifyPickupAmmoCountWeaponSelectionAndRespawn();
   verifySetRespawnRoundTrip();
   verifyDoRespawnTeamChoice();
   verifyTouchHealthPickup();
@@ -255,6 +257,73 @@ function verifyAddAmmoCapsToMax(): void {
 
   const nonClient = spawnGameEntity(runtime);
   assertBoolean(Add_Ammo(nonClient, requireItem("Bullets"), 10, runtime), false, "Add_Ammo rejects entities without clients");
+}
+
+function verifyPickupAmmoCountWeaponSelectionAndRespawn(): void {
+  const shellsRuntime = createHarnessRuntime();
+  const shellsPlayer = createPlayer(shellsRuntime);
+  const shellsEntity = spawnFreeableEntity(shellsRuntime);
+  const shells = requireItem("Shells");
+
+  shellsPlayer.client!.pers.inventory[shells.index] = 90;
+  shellsEntity.item = shells;
+  shellsEntity.count = 7;
+
+  assertBoolean(Pickup_Ammo(shellsEntity, shellsPlayer, shellsRuntime), true, "Pickup_Ammo accepts explicit ent.count ammo");
+  assertNumber(shellsPlayer.client!.pers.inventory[shells.index], 97, "Pickup_Ammo uses ent.count before item.quantity");
+
+  const fullRuntime = createHarnessRuntime();
+  const fullPlayer = createPlayer(fullRuntime);
+  const fullShellsEntity = spawnFreeableEntity(fullRuntime);
+  fullPlayer.client!.pers.inventory[shells.index] = fullPlayer.client!.pers.max_shells;
+  fullShellsEntity.item = shells;
+
+  assertBoolean(Pickup_Ammo(fullShellsEntity, fullPlayer, fullRuntime), false, "Pickup_Ammo returns false when Add_Ammo rejects full ammo");
+
+  const weaponRuntime = createHarnessRuntime();
+  weaponRuntime.deathmatch = true;
+  weaponRuntime.dmflags = DF_INFINITE_AMMO;
+  const weaponPlayer = createPlayer(weaponRuntime);
+  const grenadeEntity = spawnFreeableEntity(weaponRuntime);
+  const grenades = requireItem("Grenades");
+
+  weaponPlayer.client!.pers.weapon = requireItem("Blaster");
+  weaponPlayer.client!.pers.inventory[grenades.index] = 0;
+  grenadeEntity.item = grenades;
+  grenadeEntity.count = 1;
+  grenadeEntity.spawnflags = 0;
+
+  assertBoolean(Pickup_Ammo(grenadeEntity, weaponPlayer, weaponRuntime), true, "Pickup_Ammo accepts grenade weapon ammo");
+  assertNumber(weaponPlayer.client!.pers.inventory[grenades.index], weaponPlayer.client!.pers.max_grenades, "Pickup_Ammo applies DF_INFINITE_AMMO count and clamps to ammo max");
+  assertBoolean(weaponPlayer.client!.newweapon === grenades, true, "Pickup_Ammo selects weapon ammo when oldcount was zero and current weapon is blaster");
+  assertNumber(grenadeEntity.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "Pickup_Ammo schedules deathmatch respawn for map ammo");
+  assertNumber(grenadeEntity.solid, SOLID_NOT, "Pickup_Ammo hides respawning ammo");
+  assertNumber(grenadeEntity.nextthink, weaponRuntime.time + 30, "Pickup_Ammo respawns map ammo after 30 seconds");
+
+  const oldcountRuntime = createHarnessRuntime();
+  oldcountRuntime.deathmatch = true;
+  const oldcountPlayer = createPlayer(oldcountRuntime);
+  const oldcountGrenadeEntity = spawnFreeableEntity(oldcountRuntime);
+  oldcountPlayer.client!.pers.weapon = requireItem("Blaster");
+  oldcountPlayer.client!.pers.inventory[grenades.index] = 1;
+  oldcountGrenadeEntity.item = grenades;
+  oldcountGrenadeEntity.spawnflags = DROPPED_PLAYER_ITEM;
+
+  assertBoolean(Pickup_Ammo(oldcountGrenadeEntity, oldcountPlayer, oldcountRuntime), true, "Pickup_Ammo accepts weapon ammo when oldcount was non-zero");
+  assertBoolean(oldcountPlayer.client!.newweapon === null, true, "Pickup_Ammo does not select weapon ammo when oldcount was non-zero");
+  assertNumber(oldcountGrenadeEntity.nextthink, 0, "Pickup_Ammo does not respawn dropped player ammo");
+
+  const noSwitchRuntime = createHarnessRuntime();
+  noSwitchRuntime.deathmatch = true;
+  const noSwitchPlayer = createPlayer(noSwitchRuntime);
+  const noSwitchGrenadeEntity = spawnFreeableEntity(noSwitchRuntime);
+  noSwitchPlayer.client!.pers.weapon = requireItem("Shotgun");
+  noSwitchPlayer.client!.pers.inventory[grenades.index] = 0;
+  noSwitchGrenadeEntity.item = grenades;
+  noSwitchGrenadeEntity.spawnflags = DROPPED_ITEM;
+
+  assertBoolean(Pickup_Ammo(noSwitchGrenadeEntity, noSwitchPlayer, noSwitchRuntime), true, "Pickup_Ammo accepts deathmatch weapon ammo with non-blaster current weapon");
+  assertBoolean(noSwitchPlayer.client!.newweapon === null, true, "Pickup_Ammo does not auto-switch in deathmatch from a non-blaster weapon");
 }
 
 function verifySetRespawnRoundTrip(): void {

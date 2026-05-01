@@ -16,6 +16,7 @@ import {
   AI_GOOD_GUY,
   AI_STAND_GROUND,
   FL_FLY,
+  MOD_BLASTER,
   FL_SWIM,
   FRAMETIME,
   SOLID_BBOX,
@@ -87,6 +88,7 @@ import {
   type GameMonsterHooks,
   walkmonster_start_go
 } from "../../packages/game/src/g_monster.js";
+import { T_Damage } from "../../packages/game/src/g_combat.js";
 import { MOVETYPE_NONE, MOVETYPE_STEP, type GameMonsterMove } from "../../packages/game/src/runtime.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 import type { trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
@@ -99,6 +101,7 @@ function main(): void {
   verifyMonsterStartSkipsGoodGuys();
   verifyMonsterUseHonorsOriginalFilters();
   verifyMonsterDeathUseDropsItemsAndFiresTargets();
+  verifyMonsterDeathUseRuntimeDamagePath();
   verifyMonsterStartGoFixesPointCombatTargets();
   verifyMonsterStartGoTargetBranches();
   verifyTriggeredSpawnStartupPath();
@@ -293,6 +296,8 @@ function verifyMonsterDeathUseDropsItemsAndFiresTargets(): void {
   runtime.entities[relay.index] = relay;
 
   monster.enemy = enemy;
+  monster.flags |= FL_FLY | FL_SWIM;
+  monster.monsterinfo.aiflags = AI_GOOD_GUY | AI_HOLD_FRAME | AI_STAND_GROUND;
   monster.target = "unused";
   monster.deathtarget = "death-chain";
   monster.item = {
@@ -319,9 +324,52 @@ function verifyMonsterDeathUseDropsItemsAndFiresTargets(): void {
 
   monster_death_use(monster, runtime);
 
+  assert.equal((monster.flags & (FL_FLY | FL_SWIM)), 0, "monster_death_use should clear fly and swim flags");
+  assert.equal(monster.monsterinfo.aiflags, AI_GOOD_GUY, "monster_death_use should keep only AI_GOOD_GUY");
+  assert.equal(monster.target, "death-chain", "monster_death_use should replace target with deathtarget");
   assert.equal(monster.item, null, "monster_death_use should clear the dropped item");
   assert.equal(activatorSeen, enemy, "monster_death_use should forward the current enemy as activator");
   assert.equal(runtime.entities.length > 1, true, "monster_death_use should spawn a dropped item entity");
+
+  const noTargetMonster = createMonster(runtime, 11);
+  let unexpectedUse = false;
+  noTargetMonster.enemy = enemy;
+  relay.use = () => {
+    unexpectedUse = true;
+  };
+  monster_death_use(noTargetMonster, runtime);
+  assert.equal(unexpectedUse, false, "monster_death_use should return without firing targets when no target remains");
+}
+
+function verifyMonsterDeathUseRuntimeDamagePath(): void {
+  const runtime = createHarnessRuntime();
+  const attacker = createPlayer(runtime, 45);
+  const monster = createDamageableMonster(runtime, 46);
+  const relay = createRuntimeEntity({ classname: "target_relay", targetname: "death-runtime" }, 47);
+  relay.inuse = true;
+  runtime.entities[relay.index] = relay;
+
+  let activatorSeen: GameEntity | null = null;
+  let dieCalls = 0;
+  relay.use = (_self, _other, activator) => {
+    activatorSeen = activator;
+  };
+
+  monster.health = 5;
+  monster.target = "death-runtime";
+  monster.touch = () => {
+    throw new Error("Killed should clear monster touch before the die callback");
+  };
+  monster.die = () => {
+    dieCalls += 1;
+  };
+
+  T_Damage(monster, attacker, attacker, [1, 0, 0], [2, 3, 4], [0, 0, 1], 5, 0, 0, MOD_BLASTER, runtime);
+
+  assert.equal(monster.enemy, attacker, "Killed should store the attacker as the monster enemy");
+  assert.equal(monster.touch, undefined, "Killed should clear monster touch before monster_death_use");
+  assert.equal(activatorSeen, attacker, "Killed should reach monster_death_use through the default runtime dispatch");
+  assert.equal(dieCalls, 1, "Killed should still dispatch the monster die callback after monster_death_use");
 }
 
 function verifyMonsterStartGoFixesPointCombatTargets(): void {

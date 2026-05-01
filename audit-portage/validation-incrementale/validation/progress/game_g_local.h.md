@@ -719,6 +719,27 @@
   - `scripts/verify/quake2-p-hud.ts`: assertion du layout help pour les compteurs kills/goals/secrets.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:p-hud` OK; `npm run verify:g-target` OK; `npm run verify:g-monster` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `level_locals_t` avec champs `current_entity`, `body_que`, `power_cubes`.
+- Verdict: `Valide` pour les 3 champs apres comparaison H/TS, verification du commentaire de structure et renforcement des preuves; aucune correction gameplay TS necessaire.
+- Source H comparee: `current_entity` pointe l'entite en cours d'execution dans `G_RunFrame`; `body_que` indexe la file circulaire de cadavres; `power_cubes` numerote les cubes coop du niveau.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `level_locals_t` porte les trois champs dans l'ordre C attendu; `createLevelLocals` initialise `current_entity` a `null`, `body_que` a `0`, et `power_cubes` a `0`; commentaire de portage `level_locals_t` verifie.
+  - `packages/game/src/runtime.ts`: miroir runtime present pour les trois champs avec les memes valeurs par defaut.
+  - `packages/game/src/g_main.ts`: `SpawnEntities` remet `power_cubes` a `0`; `G_RunFrame` pose `current_entity` pendant la boucle entites, le nettoie apres la boucle et synchronise les trois champs vers `level_locals_t`.
+  - `packages/game/src/g_func.ts`: les pushers lisent `runtime.current_entity` pour eviter de se bloquer eux-memes, equivalent a l'usage C de `level.current_entity`.
+  - `packages/game/src/p_client.ts`: `InitBodyQue` remet `body_que` a `0`; `CopyToBodyQue` choisit `maxclients + body_que + 1` puis boucle modulo `BODY_QUEUE_SIZE`.
+  - `packages/game/src/g_items.ts` et `g_trigger.ts`: les `key_power_cube` coop recoivent un bit unique depuis `runtime.power_cubes`, puis les triggers de sortie consomment/retirent les bits persistant client.
+  - `packages/game/src/g_save.ts`: `WriteLevel`/`ReadLevel` persistent et restaurent les trois champs, puis resynchronisent le miroir runtime.
+- Runtime: flux attendu branche depuis `G_RunFrame`, `InitBodyQue`/`CopyToBodyQue`, `SpawnItem` pour `key_power_cube`, `trigger_key` et save/load level. `current_entity` est expose pendant le think d'entite et nettoye apres frame comme le C.
+- apps/web: integration attendue via host local/full-game qui avance le runtime game, respawn/copie les corps, spawn les items coop et expose ensuite snapshots/HUD/sons; aucune logique parallele detectee dans `apps/web` pour remplacer ces champs. `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: pas de consommation directe des champs `level_locals_t` attendue. Les sorties visibles possibles sont les brush models/pushers, corps joueurs et items/cubes coop produits en aval par le runtime puis consommes via entites, modeles, frames, camera/scene et snapshots; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `level_locals_t` verifie; commentaires d'en-tete des fonctions portees impliquees (`G_RunFrame`, `InitBodyQue`, `CopyToBodyQue`, `SpawnItem`, `WriteLevel`, `ReadLevel`) verifies quand applicables.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defauts, mutation et `LLOFS` pour les trois champs.
+  - `scripts/verify/quake2-g-main.ts`: assertions miroir `G_RunFrame -> level_locals_t`, `body_que`/`power_cubes`, et exposition de `runtime.current_entity` pendant le think d'entite.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration et miroir runtime des trois champs.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:p-client` OK; `npm run verify:g-items` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -752,7 +773,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `level_locals_t.current_entity`, `body_que`, `power_cubes` si le lot reste petit.
+- Continuer avec `spawn_temp_t`, puis `sky`, `skyrotate`, `skyaxis` si le lot reste petit.
 
 ## Blocages
 

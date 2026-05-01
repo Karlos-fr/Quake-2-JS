@@ -2131,10 +2131,28 @@ export function door_secret_move3(self: GameEntity, runtime: GameRuntime): void 
   self.think = door_secret_move4;
 }
 
+/**
+ * Original name: door_secret_move4
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the return movement of a secret door from its lateral/open offset back to `pos1`.
+ */
 export function door_secret_move4(self: GameEntity, runtime: GameRuntime): void {
   Move_Calc(self, self.pos1, door_secret_move5, runtime);
 }
 
+/**
+ * Original name: door_secret_move5
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Schedules the final one-second delay before the secret door returns to its origin.
+ */
 export function door_secret_move5(self: GameEntity, runtime: GameRuntime): void {
   self.nextthink = runtime.time + 1;
   self.think = door_secret_move6;

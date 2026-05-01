@@ -174,9 +174,9 @@
 | `Quake-2-master/game/g_local.h` | global | `found_goals` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `total_monsters` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `killed_monsters` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `current_entity` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `body_que` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `power_cubes` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `current_entity` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `body_que` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `power_cubes` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | struct | `spawn_temp_t` | `packages/game/src/g_local.ts` | `spawn_temp_t` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `sky` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `skyrotate` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

@@ -1742,13 +1742,10 @@ export function SP_monster_commander_body(self: GameEntity, runtime: GameRuntime
  * Original name: misc_viper_use
  * Source: game/g_misc.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Makes the viper visible when triggered.
- *
- * Porting notes:
- * - Defers the original `train_use` hand-off to a later movement phase.
+ * - Makes the viper visible when triggered, installs the generic train use callback, then activates train movement.
  */
 export function misc_viper_use(
   self: GameEntity,
@@ -1767,13 +1764,15 @@ export function misc_viper_use(
  * Original name: SP_misc_viper
  * Source: game/g_misc.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Spawns the trigger-activated flyby viper entity.
+ * - Spawns the trigger-activated flyby viper entity, or frees it with the source warning when no target path is set.
  */
 export function SP_misc_viper(ent: GameEntity, runtime: GameRuntime): void {
   if (!ent.target) {
+    runtime.log({ kind: "warning", message: `misc_viper without a target at ${vtos(ent.absmin)}`, entityIndex: ent.index, entityClassname: ent.classname });
+    G_FreeEdict(runtime, ent);
     return;
   }
 

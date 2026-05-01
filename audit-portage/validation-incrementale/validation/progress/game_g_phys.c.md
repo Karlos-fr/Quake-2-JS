@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `SV_Physics_Noclip`.
-- Prochain lot recommande: `SV_Physics_Toss`.
+- Dernier lot valide: `SV_Physics_Toss`.
+- Prochain lot recommande: `sv_stopspeed`, `sv_friction`, `sv_waterfriction`, `SV_AddRotationalFriction` avec locales `n` et `adjustment`.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -158,4 +158,15 @@
 - apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace `SV_Physics_Noclip`. Les sorties attendues sont les positions/angles et snapshots/refresh frames resultant du runtime.
 - renderer-three: pas de sortie renderer directe de type modele, frame, image, particule, beam, dlight, temp entity, areabits ou camera; les sorties visibles attendues sont les origines/angles des entites noclip, consommees indirectement via snapshots, refresh frames et adapters renderer existants.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour think futur/du, mouvement noclip, synchronisation `s.origin`/`s.angles`, relink et absence de trace collision.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `SV_Physics_Toss`
+
+- Lot traite: `SV_Physics_Toss`, locales `trace`, `move`, `backoff` (incluant l'entree dupliquee par la matrice), `slave`, `wasinwater`, `isinwater` et `old_origin`.
+- Comparaison C/TS: le C execute `SV_RunThink`, ignore ensuite les `FL_TEAMSLAVE`, libere `groundentity` sur vitesse verticale positive ou entite sol liberee, retourne si toujours au sol, conserve `old_origin`, clamp la vitesse, applique la gravite sauf `MOVETYPE_FLY`/`MOVETYPE_FLYMISSILE`, avance les angles, pousse l'origine, clippe avec backoff `1.5` pour bounce sinon `1`, stoppe au sol selon normal Z et seuil bounce, gere les transitions eau et recopie l'origine vers les `teamchain`. Le TS reprend ces branches avec runtime explicite, `setEntityAngles`/`setEntityOrigin`, `SV_PushEntity`, `ClipVelocity`, `runtime.collision.pointcontents` et `linkGameEntity`.
+- Commentaire d'en-tete: present et mis a jour avec la note de portage sur les sons d'eau positionnes.
+- Runtime: integre via `G_RunFrame` / `G_RunEntity` pour `MOVETYPE_TOSS`, `MOVETYPE_BOUNCE`, `MOVETYPE_FLY` et `MOVETYPE_FLYMISSILE`; ce flux modifie origine/angles/vitesse/waterlevel, relink les team slaves, peut declencher `SV_PushEntity`/`SV_Impact` et produit les sons de splash.
+- apps/web: le navigateur declenche ce flux via le runtime porte en local/full-game; aucune logique parallele web ne remplace cette physique. Les sorties attendues sont positions/snapshots/sons d'eau/callbacks indirects, consommees par les drains runtime et le client.
+- renderer-three: pas de logique gameplay renderer attendue; les sorties visibles sont les origines/angles des entites toss/bounce/fly/flymissile, modeles/frames deja presents et eventuels effets indirects via callbacks. Les sons positionnes restent des sorties audio runtime, pas un rendu Three direct.
+- Correction: `packages/game/src/g_phys.ts` emet maintenant les sons `misc/h2ohit1.wav` avec origine explicite comme `gi.positioned_sound`; `scripts/verify/quake2-g-phys.ts` couvre teamslave, onground, groundentity liberee, skip gravite fly/flymissile, bounce backoff/seuil sol, transitions eau avec origine sonore, et propagation teamchain.
 - Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.

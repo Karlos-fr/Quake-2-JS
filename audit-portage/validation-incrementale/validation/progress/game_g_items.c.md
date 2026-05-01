@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Pickup_Ammo`, locales `oldcount` / `count` / `weapon` et doublon matriciel de `count`.
+
+Validation Pickup_Ammo du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_Ammo` conserve le comportement C: detecte les pickups weapon par `IT_WEAPON`, choisit `count = 1000` pour les weapon pickups sous `DF_INFINITE_AMMO`, sinon `ent->count`, sinon `ent->item->quantity`; lit `oldcount` avant `Add_Ammo`; refuse le pickup si `Add_Ammo` retourne `false`; arme `newweapon` seulement pour un weapon pickup avec `oldcount` nul et, en deathmatch, uniquement si l'arme courante est le blaster; planifie `SetRespawn(ent, 30)` en deathmatch pour les items de carte non droppes. Header TS complete avec `Behavior` et note de portage sur les flags runtime.
+
+Runtime branche via `Touch_Item`, `callItemPickup`, les entrees `Pickup_Ammo` de `itemlist`, `SpawnItem`/`droptofloor`, `SetRespawn`/`DoRespawn`, et les consommations aval `p_weapon.ts` pour les armes utilisant ammo. `apps/web` doit consommer ce flux via le runtime local/full-game, les commandes, l'inventaire/HUD, les sons de pickup et les snapshots; aucune logique parallele ammo pickup detectee. `renderer-three` doit consommer les sorties visibles generiques: modeles ammo/weapon MD2, disparition apres pickup, reapparition apres respawn, frames/scene refresh; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyPickupAmmoCountWeaponSelectionAndRespawn` couvre `ent.count`, rejet ammo plein via `Add_Ammo`, `DF_INFINITE_AMMO` sur `Grenades` weapon ammo avec clamp, auto-switch par `oldcount` nul, absence d'auto-switch avec oldcount non nul ou weapon courant non-blaster en deathmatch, respawn 30s des items de carte et absence de respawn pour dropped player item. Tests lances: `npm run verify:g-items`, `npm run verify:p-weapon`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `Add_Ammo`, locales `index` / `max`.
 
 Validation Add_Ammo du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Add_Ammo` conserve le comportement C: retourne `false` sans client, choisit le plafond selon `item->tag` pour Bullets/Shells/Rockets/Grenades/Cells/Slugs, retourne `false` pour un tag inconnu, calcule `ITEM_INDEX(item)`, refuse un slot deja exactement au maximum, ajoute `count`, clamp au max, puis retourne `true`. Le port TS garde ce flux via `getAmmoMax`, `ITEM_INDEX(item)` et l'inventaire client. Header TS complete avec `Behavior` et note de portage sur la factorisation de la chaine de tags.
@@ -301,4 +309,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Ammo` avec les locales `oldcount`, `count` et `weapon` si le lot reste petit.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Drop_Ammo` avec la locale `index`. La locale `dropped` est deja `Valide`, mais relire son interaction si necessaire sans elargir le lot.

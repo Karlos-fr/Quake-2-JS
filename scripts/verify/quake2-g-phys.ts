@@ -10,7 +10,7 @@
  * - packages/game/src/runtime.ts
  */
 
-import { MASK_MONSTERSOLID, MASK_SOLID, multicast_t, temp_event_t, type trace_t } from "../../packages/qcommon/src/index.js";
+import { MASK_MONSTERSOLID, MASK_SOLID, MASK_WATER, multicast_t, temp_event_t, type trace_t } from "../../packages/qcommon/src/index.js";
 import {
   G_RunFrame,
   ClipVelocity,
@@ -29,6 +29,8 @@ import {
 } from "../../packages/game/src/g_phys.js";
 import {
   MOVETYPE_FLY,
+  MOVETYPE_BOUNCE,
+  MOVETYPE_FLYMISSILE,
   MOVETYPE_NOCLIP,
   MOVETYPE_NONE,
   MOVETYPE_PUSH,
@@ -834,6 +836,148 @@ linkGameEntity(runtime, tossEnt);
 SV_Physics_Toss(tossEnt, runtime);
 assertEqual("SV_Physics_Toss.groundentity", tossEnt.groundentity, worldspawn);
 assertVec("SV_Physics_Toss.velocity", tossEnt.velocity, [0, 0, 0]);
+assertVec("SV_Physics_Toss.avelocity", tossEnt.avelocity, [0, 0, 0]);
+
+const tossTeamSlave = spawnGameEntity(runtime);
+let tossTeamSlaveThinkCount = 0;
+tossTeamSlave.classname = "toss-teamslave";
+tossTeamSlave.movetype = MOVETYPE_TOSS;
+tossTeamSlave.flags = FL_TEAMSLAVE;
+tossTeamSlave.origin = [1, 2, 40];
+tossTeamSlave.s.origin = [1, 2, 40];
+tossTeamSlave.velocity = [100, 0, 100];
+tossTeamSlave.nextthink = runtime.time;
+tossTeamSlave.think = () => {
+  tossTeamSlaveThinkCount += 1;
+};
+SV_Physics_Toss(tossTeamSlave, runtime);
+assertEqual("SV_Physics_Toss.teamslave-think", tossTeamSlaveThinkCount, 1);
+assertVec("SV_Physics_Toss.teamslave-origin", tossTeamSlave.origin, [1, 2, 40]);
+assertVec("SV_Physics_Toss.teamslave-velocity", tossTeamSlave.velocity, [100, 0, 100]);
+
+const tossOnGround = spawnGameEntity(runtime);
+tossOnGround.classname = "toss-onground";
+tossOnGround.movetype = MOVETYPE_TOSS;
+tossOnGround.origin = [5, 6, 7];
+tossOnGround.s.origin = [5, 6, 7];
+tossOnGround.velocity = [80, 0, -120];
+tossOnGround.groundentity = worldspawn;
+SV_Physics_Toss(tossOnGround, runtime);
+assertVec("SV_Physics_Toss.onground-origin", tossOnGround.origin, [5, 6, 7]);
+assertVec("SV_Physics_Toss.onground-velocity", tossOnGround.velocity, [80, 0, -120]);
+
+const tossInvalidGround = spawnGameEntity(runtime);
+const freedGround = spawnGameEntity(runtime);
+freedGround.inuse = false;
+tossInvalidGround.classname = "toss-invalid-ground";
+tossInvalidGround.movetype = MOVETYPE_TOSS;
+tossInvalidGround.origin = [0, 0, 50];
+tossInvalidGround.s.origin = [0, 0, 50];
+tossInvalidGround.velocity = [0, 0, 0];
+tossInvalidGround.groundentity = freedGround;
+SV_Physics_Toss(tossInvalidGround, runtime);
+assertEqual("SV_Physics_Toss.invalid-groundentity", tossInvalidGround.groundentity, null);
+assertVec("SV_Physics_Toss.invalid-ground-moved", tossInvalidGround.origin, [0, 0, 42]);
+
+const tossFly = spawnGameEntity(runtime);
+tossFly.classname = "toss-fly";
+tossFly.movetype = MOVETYPE_FLY;
+tossFly.origin = [0, 0, 10];
+tossFly.s.origin = [0, 0, 10];
+tossFly.angles = [0, 10, 20];
+tossFly.s.angles = [0, 10, 20];
+tossFly.velocity = [10, 20, 30];
+tossFly.avelocity = [5, 0, -5];
+SV_Physics_Toss(tossFly, runtime);
+assertVec("SV_Physics_Toss.fly-origin", tossFly.origin, [1, 2, 13]);
+assertVec("SV_Physics_Toss.fly-velocity-no-gravity", tossFly.velocity, [10, 20, 30]);
+assertVec("SV_Physics_Toss.fly-angles", tossFly.angles, [0.5, 10, 19.5]);
+
+const tossFlyMissile = spawnGameEntity(runtime);
+tossFlyMissile.classname = "toss-flymissile";
+tossFlyMissile.movetype = MOVETYPE_FLYMISSILE;
+tossFlyMissile.origin = [0, 0, 10];
+tossFlyMissile.s.origin = [0, 0, 10];
+tossFlyMissile.velocity = [0, 0, 20];
+SV_Physics_Toss(tossFlyMissile, runtime);
+assertVec("SV_Physics_Toss.flymissile-no-gravity", tossFlyMissile.velocity, [0, 0, 20]);
+
+const bounceEnt = spawnGameEntity(runtime);
+bounceEnt.classname = "bounce";
+bounceEnt.movetype = MOVETYPE_BOUNCE;
+bounceEnt.solid = SOLID_BBOX;
+bounceEnt.clipmask = MASK_SOLID;
+bounceEnt.origin = [0, 0, 20];
+bounceEnt.s.origin = [0, 0, 20];
+bounceEnt.velocity = [100, 0, -50];
+runtime.collision = {
+  ...defaultCollision,
+  trace(start, mins, maxs, end, passent, contentmask) {
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 0.5,
+      endpos: [5, 0, 13.5],
+      plane: {
+        normal: [0, 0, 1],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: worldspawn
+    };
+  },
+  pointcontents: () => 0
+};
+SV_Physics_Toss(bounceEnt, runtime);
+assertEqual("SV_Physics_Toss.bounce-no-ground", bounceEnt.groundentity, null);
+assertVec("SV_Physics_Toss.bounce-backoff", bounceEnt.velocity, [100, 0, 65]);
+runtime.collision = defaultCollision;
+
+const waterEnt = spawnGameEntity(runtime);
+waterEnt.classname = "water-toss";
+waterEnt.movetype = MOVETYPE_TOSS;
+waterEnt.origin = [10, 20, 30];
+waterEnt.s.origin = [10, 20, 30];
+waterEnt.velocity = [0, 0, 0];
+runtime.collision = {
+  ...defaultCollision,
+  pointcontents(point) {
+    return point[2] <= 22 ? MASK_WATER : 0;
+  }
+};
+SV_Physics_Toss(waterEnt, runtime);
+let waterSounds = drainGameSoundEvents(runtime).filter((event) => event.soundPath === "misc/h2ohit1.wav");
+assertEqual("SV_Physics_Toss.water-enter-count", waterSounds.length, 1);
+assertVec("SV_Physics_Toss.water-enter-origin", waterSounds[0].origin ?? [], [10, 20, 30]);
+assertEqual("SV_Physics_Toss.water-enter-level", waterEnt.waterlevel, 1);
+
+waterEnt.velocity = [0, 0, 200];
+SV_Physics_Toss(waterEnt, runtime);
+waterSounds = drainGameSoundEvents(runtime).filter((event) => event.soundPath === "misc/h2ohit1.wav");
+assertEqual("SV_Physics_Toss.water-exit-count", waterSounds.length, 1);
+assertVec("SV_Physics_Toss.water-exit-origin", waterSounds[0].origin ?? [], [10, 20, 34]);
+assertEqual("SV_Physics_Toss.water-exit-level", waterEnt.waterlevel, 0);
+runtime.collision = defaultCollision;
+
+const captain = spawnGameEntity(runtime);
+const slave = spawnGameEntity(runtime);
+captain.classname = "toss-captain";
+captain.movetype = MOVETYPE_FLY;
+captain.origin = [3, 4, 5];
+captain.s.origin = [3, 4, 5];
+captain.velocity = [10, 0, 0];
+captain.teamchain = slave;
+slave.classname = "toss-slave";
+slave.origin = [-1, -1, -1];
+slave.s.origin = [-1, -1, -1];
+SV_Physics_Toss(captain, runtime);
+assertVec("SV_Physics_Toss.teamchain-origin", slave.origin, [4, 4, 5]);
+assertVec("SV_Physics_Toss.teamchain-s-origin", slave.s.origin, [4, 4, 5]);
+assertEqual("SV_Physics_Toss.teamchain-linked", slave.linked, true);
 
 const dispatchEnt = spawnGameEntity(runtime);
 let noneBranch = 0;

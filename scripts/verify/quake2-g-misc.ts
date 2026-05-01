@@ -39,6 +39,7 @@ import {
   SP_misc_easterchick2,
   SP_misc_eastertank,
   SP_misc_explobox,
+  SP_misc_viper,
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
   SP_monster_commander_body,
@@ -77,6 +78,7 @@ import {
   misc_easterchick_think,
   misc_blackhole_use,
   misc_eastertank_think,
+  misc_viper_use,
   path_corner_touch,
   point_combat_touch,
   runPendingThinks,
@@ -86,7 +88,9 @@ import {
   ThrowHead,
   ThrowGib,
   TH_viewthing,
-  useGameEntity
+  useGameEntity,
+  func_train_find,
+  train_use
 } from "../../packages/game/src/index.js";
 import { SP_func_object, SP_func_wall, func_object_touch, func_object_use, func_wall_use } from "../../packages/game/src/g_misc.js";
 import { AI_COMBAT_POINT, AI_GOOD_GUY, AI_NOSTEP, AI_STAND_GROUND, FL_FLY, FL_GODMODE, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
@@ -114,6 +118,7 @@ function main(): void {
   verifyMiscEasterchick2SpawnsAndLoopsStandFrames();
   verifyCommanderBodySpawnDropUseAndAnimation();
   verifyMiscDeadsoldierSpawnAndGibDeath();
+  verifyMiscViperDelegatesTrainMovement();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
   verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities();
@@ -965,6 +970,89 @@ function verifyMiscDeadsoldierSpawnAndGibDeath(): void {
   assert.equal((gibbed.s.effects & EF_GIB) !== 0, true, "dead soldier head must carry EF_GIB");
   assert.equal(gibbed.movetype, MOVETYPE_TOSS, "dead soldier head must be an organic toss gib");
   assert.equal(gibbed.linked, true, "dead soldier head must stay linked after ThrowHead");
+}
+
+function verifyMiscViperDelegatesTrainMovement(): void {
+  const missingTargetRuntime = createHarnessRuntime();
+  const missingTarget = spawnFreeableEntity(missingTargetRuntime);
+  missingTarget.classname = "misc_viper";
+  missingTarget.absmin = [1, 2, 3];
+
+  SP_misc_viper(missingTarget, missingTargetRuntime);
+
+  assert.equal(missingTarget.inuse, false, "misc_viper without target must be freed like the source");
+  assert.equal(
+    missingTargetRuntime.logEntries.some((entry) => entry.kind === "warning" && entry.message === "misc_viper without a target at (1 2 3)"),
+    true,
+    "misc_viper without target warning mismatch"
+  );
+
+  const runtime = createHarnessRuntime();
+  runtime.time = 50;
+
+  const corner1 = spawnGameEntity(runtime);
+  corner1.classname = "path_corner";
+  corner1.targetname = "viper_p1";
+  corner1.target = "viper_p2";
+  corner1.origin = [100, 0, 16];
+  corner1.s.origin = [100, 0, 16];
+
+  const corner2 = spawnGameEntity(runtime);
+  corner2.classname = "path_corner";
+  corner2.targetname = "viper_p2";
+  corner2.target = "viper_p1";
+  corner2.origin = [200, 64, 32];
+  corner2.s.origin = [200, 64, 32];
+
+  const viper = spawnFreeableEntity(runtime);
+  viper.classname = "misc_viper";
+  viper.target = "viper_p1";
+  viper.targetname = "viper_start";
+  viper.speed = 400;
+
+  SP_misc_viper(viper, runtime);
+
+  assert.equal(viper.movetype, MOVETYPE_PUSH, "misc_viper must use MOVETYPE_PUSH");
+  assert.equal(viper.solid, SOLID_NOT, "misc_viper must be non-solid");
+  assert.equal(runtime.assets.modelPaths[viper.s.modelindex - 1], "models/ships/viper/tris.md2", "misc_viper modelindex mismatch");
+  assert.deepEqual(viper.mins, [-16, -16, 0], "misc_viper mins mismatch");
+  assert.deepEqual(viper.maxs, [16, 16, 32], "misc_viper maxs mismatch");
+  assert.equal(viper.think, func_train_find, "misc_viper must install func_train_find");
+  assert.equal(viper.nextthink, runtime.time + FRAMETIME, "misc_viper must schedule train path resolution one frame later");
+  assert.equal(viper.use, misc_viper_use, "misc_viper must install misc_viper_use");
+  assert.equal((viper.svflags & SVF_NOCLIENT) !== 0, true, "misc_viper must start hidden");
+  assert.equal(viper.moveinfo.speed, 400, "misc_viper explicit speed mismatch");
+  assert.equal(viper.moveinfo.accel, 400, "misc_viper accel must match speed");
+  assert.equal(viper.moveinfo.decel, 400, "misc_viper decel must match speed");
+  assert.equal(viper.linked, true, "misc_viper must link for runtime snapshots");
+
+  viper.think!(viper, runtime);
+  assert.deepEqual(viper.origin, [116, 16, 16], "func_train_find must move misc_viper to the first path corner minus mins");
+  assert.equal(viper.target, "viper_p2", "func_train_find must hand off misc_viper target to the next path corner");
+  assert.equal((viper.spawnflags & 1) === 0, true, "targetnamed misc_viper must wait for use before START_ON");
+
+  const activator = spawnGameEntity(runtime);
+  activator.classname = "trigger_once";
+  useGameEntity(runtime, viper, null, activator);
+
+  assert.equal((viper.svflags & SVF_NOCLIENT) === 0, true, "misc_viper_use must make the ship visible");
+  assert.equal(viper.use, train_use, "misc_viper_use must replace itself with train_use");
+  assert.equal(viper.activator, activator, "misc_viper_use must pass the activator into train_use");
+  assert.equal(viper.target_ent, corner2, "train_use must resume misc_viper along the next path corner");
+  assert.deepEqual(viper.moveinfo.end_origin, [216, 80, 32], "train_use must calculate the next misc_viper train destination");
+  assert.equal((viper.spawnflags & 1) !== 0, true, "train_use must set START_ON for the activated misc_viper");
+
+  const defaultSpeed = spawnFreeableEntity(runtime);
+  defaultSpeed.classname = "misc_viper";
+  defaultSpeed.target = "viper_p1";
+  SP_misc_viper(defaultSpeed, runtime);
+  assert.equal(defaultSpeed.speed, 300, "misc_viper must default speed to 300");
+
+  const dispatch = spawnFreeableEntity(runtime);
+  dispatch.classname = "misc_viper";
+  dispatch.target = "viper_p1";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(dispatch.use, misc_viper_use, "ED_CallSpawn must dispatch misc_viper to SP_misc_viper");
 }
 
 function verifyBarrelDelaySchedulesDelayedExplosion(): void {

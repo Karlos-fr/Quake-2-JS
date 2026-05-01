@@ -32,8 +32,10 @@ import {
   FL_TEAMSLAVE,
   FRAMETIME,
   emitGameSound,
+  emitRegisteredGameSound,
   getRuntimeEntityLabel,
-  linkGameEntity
+  linkGameEntity,
+  registerGameSound
 } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 import { M_CheckBottom } from "./m_move.js";
@@ -41,6 +43,8 @@ import { touchTriggerEntities } from "./touch.js";
 import { FL_FLY, FL_SWIM } from "./g_local.js";
 import {
   AngleVectors,
+  ATTN_NORM,
+  CHAN_AUTO,
   MASK_MONSTERSOLID,
   MASK_SOLID,
   MASK_WATER,
@@ -597,6 +601,17 @@ export function SV_Physics_Noclip(ent: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, ent);
 }
 
+function emitPositionedWaterHit(runtime: GameRuntime, origin: vec3_t): void {
+  const soundPath = "misc/h2ohit1.wav";
+  emitRegisteredGameSound(runtime, null, registerGameSound(runtime, soundPath), soundPath, {
+    origin,
+    channel: CHAN_AUTO,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
+}
+
 /**
  * Original name: SV_Physics_Toss
  * Source: game/g_phys.c
@@ -605,6 +620,9 @@ export function SV_Physics_Noclip(ent: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Runs toss, bounce, fly and fly-missile movement including water transitions.
+ *
+ * Porting notes:
+ * - `gi.positioned_sound` water splashes are queued as runtime sound events with explicit origins.
  */
 export function SV_Physics_Toss(ent: GameEntity, runtime: GameRuntime): void {
   SV_RunThink(ent, runtime);
@@ -666,9 +684,9 @@ export function SV_Physics_Toss(ent: GameEntity, runtime: GameRuntime): void {
   ent.waterlevel = isinwater ? 1 : 0;
 
   if (!wasinwater && isinwater) {
-    emitGameSound(runtime, null, "misc/h2ohit1.wav");
+    emitPositionedWaterHit(runtime, old_origin);
   } else if (wasinwater && !isinwater) {
-    emitGameSound(runtime, null, "misc/h2ohit1.wav");
+    emitPositionedWaterHit(runtime, ent.origin);
   }
 
   for (let slave = ent.teamchain; slave; slave = slave.teamchain) {
