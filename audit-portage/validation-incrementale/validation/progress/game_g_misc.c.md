@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `diff`, `misc_viper_bomb_use`, `viper` et `SP_misc_viper_bomb`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `diff` conserve le calcul `timestamp - level.time`, le clamp a `-1`, le vecteur de pitch et la sauvegarde du roll courant dans `misc_viper_bomb_prethink`; `misc_viper_bomb_use` conserve `SOLID_BBOX`, retrait de `SVF_NOCLIENT`, `EF_ROCKET`, `use = NULL`, `MOVETYPE_TOSS`, callbacks `prethink`/`touch`, activator, copie `misc_viper.moveinfo.dir * speed`, timestamp et direction; `viper` est porte par la recherche du premier `misc_viper` actif; `SP_misc_viper_bomb` conserve `MOVETYPE_NONE`, `SOLID_NOT`, bbox `[-8,-8,-8]` / `[8,8,8]`, modele `models/objects/bomb/tris.md2`, degats par defaut `1000`, callback use, `SVF_NOCLIENT` et link.
+  - Commentaires d'en-tete verifies/ajoutes: commentaire Strict deja present pour `misc_viper_bomb_prethink`; commentaire ajoute pour `misc_viper_bomb_use` avec note sur la garde TS si map mal formee sans `misc_viper`; commentaire `SP_misc_viper_bomb` mis a jour en fidelite `Strict`.
+  - Branchement runtime verifie: `misc_viper_bomb` est enregistre dans `g_spawn.ts`, exporte via `index.ts` et dispatchable par `ED_CallSpawn`; `SP_misc_viper_bomb` installe `use`; `misc_viper_bomb_use` est atteignable via callback `useGameEntity`/`G_UseTargets`; `prethink` passe par la physique toss (`G_RunFrame`/`G_RunEntity`/`SV_Physics_Toss`) et `touch` par l'impact runtime.
+  - `apps/web`: integration attendue car le lot rend visible un modele MD2 avec `EF_ROCKET`, mouvement toss, degats de rayon, targets et explosion temp entity. Aucune logique parallele trouvee; le web consomme les sorties runtime via local/full-game, snapshots, effets et temp entities.
+  - `renderer-three`: integration attendue pour modele bomb, origine/angles, effet `EF_ROCKET`, `TE_EXPLOSION2`, particules/dlights et scene. Les sorties passent par `ClientRefreshFrame.entities`, effets/temp entities client et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaire d'en-tete ajoute pour `misc_viper_bomb_use`; commentaire de `SP_misc_viper_bomb` mis a jour en Strict.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: lignes externes restantes `train_use` et `func_train_find`, puis `misc_strogg_ship_use` / `SP_misc_strogg_ship` si le lot reste petit.
+
 - 2026-05-01: `SP_misc_bigviper`, `misc_viper_bomb_touch` et `misc_viper_bomb_prethink`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `SP_misc_bigviper` conserve `MOVETYPE_NONE`, `SOLID_BBOX`, bbox `[-176,-120,-24]` / `[176,120,72]`, modele `models/ships/bigviper/tris.md2` et link. `misc_viper_bomb_touch` conserve `G_UseTargets(self, self->activator)`, `s.origin[2] = absmin[2] + 1`, `T_RadiusDamage` avec `MOD_BOMB`, puis `BecomeExplosion2`. `misc_viper_bomb_prethink` conserve l'effacement de `groundentity`, le calcul `timestamp - level.time`, le clamp `diff >= -1`, la direction `moveinfo.dir * (1 + diff)`, `v[2] = diff`, `vectoangles` et le roll `+10`.

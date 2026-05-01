@@ -59,7 +59,6 @@ import {
   SVF_NOCLIENT,
   emitGameCenterprint,
   emitRegisteredGameSound,
-  freeGameEntity,
   getRuntimeEntityLabel,
   linkGameEntity,
   refreshEntitySpatialState,
@@ -2077,11 +2076,20 @@ export function SP_func_conveyor(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
-export function door_secret_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
+/**
+ * Original name: door_secret_use
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Ignores activator state, refuses to restart while the secret door is away from the origin,
+ *   starts the first slide toward `pos1`, and opens linked area portals.
+ */
+export function door_secret_use(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   if (!isZeroVec3(self.origin)) {
     return;
   }
-  self.activator = activator;
   Move_Calc(self, self.pos1, door_secret_move1, runtime);
   door_use_areaportals(self, true, runtime);
 }
@@ -2189,11 +2197,24 @@ export function door_secret_done(self: GameEntity, runtime: GameRuntime): void {
   door_use_areaportals(self, false, runtime);
 }
 
+/**
+ * Original name: door_secret_blocked
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Crushes debris/non-clients for lethal damage and explodes them if still present.
+ * - Debounces monster/client crush damage and applies the door's configured damage.
+ *
+ * Porting notes:
+ * - `other.inuse` mirrors the C `if (other)` post-damage survivor check.
+ */
 export function door_secret_blocked(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if ((other.svflags & SVF_MONSTER) === 0 && !other.client) {
     T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], 100000, 1, 0, MOD_CRUSH, runtime);
     if (other.inuse) {
-      freeGameEntity(runtime, other);
+      BecomeExplosion1(other, runtime);
     }
     return;
   }

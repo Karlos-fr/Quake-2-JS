@@ -93,10 +93,10 @@
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_bigviper` | `packages/game/src/g_misc.ts` | `SP_misc_bigviper` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_viper_bomb_touch` | `packages/game/src/g_misc.ts` | `misc_viper_bomb_touch` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_viper_bomb_prethink` | `packages/game/src/g_misc.ts` | `misc_viper_bomb_prethink` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | global | `diff` | `packages/game/src/g_misc.ts` | `diff` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `misc_viper_bomb_use` | `packages/game/src/g_misc.ts` | `misc_viper_bomb_use` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | global | `viper` | `packages/game/src/g_misc.ts` | `viper` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_misc_viper_bomb` | `packages/game/src/g_misc.ts` | `SP_misc_viper_bomb` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | global | `diff` | `packages/game/src/g_misc.ts` | `diff` | Valide | A redecouper | Local de `misc_viper_bomb_prethink` compare pendant cette session: calcul `timestamp - level.time`, clamp `-1`, reutilisation comme roll source; couvert par `npm run verify:g-misc`. |
+| `Quake-2-master/game/g_misc.c` | function | `misc_viper_bomb_use` | `packages/game/src/g_misc.ts` | `misc_viper_bomb_use` | Valide | A redecouper | Commentaire d'en-tete ajoute; preuve C/TS: revelation, `EF_ROCKET`, `MOVETYPE_TOSS`, callbacks, activator, timestamp et vitesse/direction depuis `misc_viper`. Tests: `npm run verify:g-misc`, `npm run verify:g-spawn`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`. |
+| `Quake-2-master/game/g_misc.c` | global | `viper` | `packages/game/src/g_misc.ts` | `viper` | Valide | A redecouper | Local de `misc_viper_bomb_use` porte par recherche du premier `misc_viper` actif; preuve: vitesse `[320,640,0]` et direction copiee depuis `moveinfo` dans `verify:g-misc`. |
+| `Quake-2-master/game/g_misc.c` | function | `SP_misc_viper_bomb` | `packages/game/src/g_misc.ts` | `SP_misc_viper_bomb` | Valide | A redecouper | Commentaire d'en-tete mis a jour en Strict; preuve C/TS: `MOVETYPE_NONE`, `SOLID_NOT`, bbox, modele bomb, dmg defaut/preserve, callback use, `SVF_NOCLIENT`, link et dispatch. Memes tests que `misc_viper_bomb_use`. |
 | `Quake-2-master/game/g_misc.c` | function | `train_use` | `packages/game/src/g_misc.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `func_train_find` | `packages/game/src/g_misc.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_strogg_ship_use` | `packages/game/src/g_misc.ts` | `misc_strogg_ship_use` | A verifier | A redecouper |  |

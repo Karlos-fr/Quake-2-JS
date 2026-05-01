@@ -64,13 +64,13 @@
 | `Quake-2-master/game/g_phys.c` | function | `SV_AddRotationalFriction` | `packages/game/src/g_phys.ts` | `SV_AddRotationalFriction` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `n` | `packages/game/src/g_phys.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `adjustment` | `packages/game/src/g_phys.ts` | `adjustment` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Step` | `packages/game/src/g_phys.ts` | `SV_Physics_Step` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `wasonground` | `packages/game/src/g_phys.ts` | `wasonground` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `hitsound` | `packages/game/src/g_phys.ts` | `hitsound` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `vel` | `packages/game/src/g_phys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `friction` | `packages/game/src/g_phys.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `groundentity` | `packages/game/src/g_phys.ts` | `groundentity` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `wasonground` | `packages/game/src/g_phys.ts` | `wasonground` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Step` | `packages/game/src/g_phys.ts` | `SV_Physics_Step` | Valide | A redecouper | `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`; commentaire d'en-tete verifie; runtime via `G_RunFrame`/`G_RunEntity`; web/renderer consomment les positions/angles/sons/callbacks indirects sans logique parallele. |
+| `Quake-2-master/game/g_phys.c` | global | `wasonground` | `packages/game/src/g_phys.ts` | `wasonground` | Valide | A redecouper | Locale couverte par les branches au sol/atterrissage; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `hitsound` | `packages/game/src/g_phys.ts` | `hitsound` | Valide | A redecouper | Locale couverte par l'atterrissage avec `world/land.wav`; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `vel` | `packages/game/src/g_phys.ts` |  | Valide | A redecouper | Locale portee par l'acces direct a `ent.velocity` pour la friction horizontale; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `friction` | `packages/game/src/g_phys.ts` |  | Valide | A redecouper | Locale portee par `SV_FRICTION`/`SV_WATERFRICTION` dans les branches verticales et horizontales; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `groundentity` | `packages/game/src/g_phys.ts` | `groundentity` | Valide | A redecouper | Snapshot initial couvert par les branches `wasonground` et atterrissage; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Selection `MASK_MONSTERSOLID` pour `SVF_MONSTER`; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `wasonground` | `packages/game/src/g_phys.ts` | `wasonground` | Valide | A redecouper | Entree locale dupliquee par la matrice pour `SV_Physics_Step`; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Entree locale dupliquee par la matrice; fallback `MASK_SOLID` couvert par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | function | `G_RunEntity` | `packages/game/src/g_phys.ts` | `G_RunEntity` | A verifier | A redecouper |  |

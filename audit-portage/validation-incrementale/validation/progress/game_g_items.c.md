@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `MegaHealth_think` et `Pickup_Health`.
+
+Validation health/mega health du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `MegaHealth_think` conserve le comportement C: tant que `owner->health > owner->max_health`, l'item se reprogramme a `level.time + 1` et retire 1 point de health; une fois le drain termine, un mega health de carte en deathmatch passe par `SetRespawn(self, 20)`, tandis qu'un item droppe ou hors deathmatch est libere via `G_FreeEdict`. `Pickup_Health` conserve le comportement C: health normale refusee au max, ajout de `ent->count`, clamp au `max_health` hors `HEALTH_IGNORE_MAX`, mega health temporisee avec `MegaHealth_think`, `owner`, `FL_RESPAWN`, `SVF_NOCLIENT`, `SOLID_NOT`, et respawn 30s des health non timed de carte en deathmatch. Headers TS completes en `Strict`; note de portage ajoutee pour la reinstallation du callback `think` apres chaque tick TS.
+
+Runtime branche via `SP_item_health*`, `SpawnItem`/`droptofloor`, `Touch_Item`/`callItemPickup`, `Pickup_Health`, `MegaHealth_think`, `SetRespawn`/`DoRespawn`, et execution des thinks par `G_RunFrame`/`SV_RunThink`. `apps/web` doit consommer ce flux via le runtime local/full-game, le HUD health, les sons de pickup, les snapshots et la render loop; aucune logique parallele health pickup/mega health detectee. `renderer-three` doit consommer les sorties visibles generiques: modeles MD2 des items health, `EF_ROTATE`/`RF_GLOW`, disparition pendant pickup/drain, reapparition apres respawn et scene refresh; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyMegaHealthAndPickupHealthRules` couvre rejet health normale au max, clamp health normale, pickup mega health ignore-max/timed, programmation du premier drain a +5s, owner/flags/solid/svflags, drain a -1 par seconde avec reprogrammation, respawn deathmatch a +20s apres fin du drain, et liberation d'un mega health droppe quand le drain est termine. Tests lances: `npm run verify:g-items`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `Drop_Ammo` et locale `index`.
 
 Validation Drop_Ammo du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Drop_Ammo` conserve le comportement C: calcule `index = ITEM_INDEX(item)`, cree l'entite visible via `Drop_Item`, pose `dropped.count` a `min(inventory[index], item.quantity)`, refuse le drop si l'item est les grenades, que les grenades sont l'arme courante et que le drop viderait l'inventaire, journalise alors `Can't drop current weapon`, libere l'entite transitoire et ne modifie pas l'inventaire; sinon soustrait `dropped.count` puis appelle `ValidateSelectedItem`. La locale deja valide `dropped` a ete relue dans cette interaction sans elargir le lot. Header TS complete avec `Behavior` et `Porting notes`.
@@ -317,4 +325,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `MegaHealth_think`, puis `Pickup_Health` si le lot reste petit.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: locale `index` de `Pickup_PowerArmor`, puis `quantity` si le lot reste petit.

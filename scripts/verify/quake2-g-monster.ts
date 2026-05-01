@@ -107,6 +107,7 @@ function main(): void {
   verifyMonsterDeathUseRuntimeDamagePath();
   verifyMonsterStartGoFixesPointCombatTargets();
   verifyMonsterStartGoTargetBranches();
+  verifyWalkmonsterStartGoGroundStartup();
   verifyTriggeredSpawnStartupPath();
   verifyCorpseFlyScheduling();
   verifyAttackFinishedCooldown();
@@ -552,6 +553,47 @@ function verifyMonsterStartGoTargetBranches(): void {
   monster_start_go(deadMonster, runtime);
 
   assert.equal(deadMonster.think, undefined, "monster_start_go should return before arming dead monsters");
+}
+
+function verifyWalkmonsterStartGoGroundStartup(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 0;
+  const ground = createRuntimeEntity({ classname: "worldspawn" }, 1);
+  ground.inuse = true;
+  ground.linkcount = 3;
+  runtime.entities[ground.index] = ground;
+  runtime.collision = createGroundingCollision(ground);
+
+  const monster = createMonster(runtime, 38);
+  monster.s.origin = [8, 16, 64];
+  monster.origin = [8, 16, 64];
+  monster.yaw_speed = 0;
+  monster.viewheight = 0;
+
+  let standCalls = 0;
+  monster.monsterinfo.stand = () => {
+    standCalls += 1;
+  };
+
+  walkmonster_start_go(monster, runtime);
+
+  assert.equal(monster.groundentity, ground, "walkmonster_start_go should drop normal startup monsters to floor before checking movement");
+  assert.equal(monster.yaw_speed, 20, "walkmonster_start_go should install the original default yaw speed");
+  assert.equal(monster.viewheight, 25, "walkmonster_start_go should install the original walking monster viewheight");
+  assert.equal(standCalls, 1, "walkmonster_start_go should continue through monster_start_go after floor setup");
+  assert.equal(monster.think, monster_think, "walkmonster_start_go should leave regular monster thinking armed");
+  assert.equal(monster.nextthink, runtime.time + FRAMETIME, "walkmonster_start_go should schedule regular monster thinking");
+
+  const delayed = createMonster(runtime, 39);
+  delayed.spawnflags = 2;
+  delayed.s.origin = [4, 4, 4];
+  delayed.origin = [4, 4, 4];
+  walkmonster_start_go(delayed, runtime);
+
+  assert.deepEqual(delayed.s.origin, [4, 4, 4], "walkmonster_start_go should not drop trigger-spawn monsters during initial level time");
+  assert.equal(delayed.solid, SOLID_NOT, "walkmonster_start_go should hide trigger-spawn monsters after shared startup");
+  assert.equal(delayed.movetype, MOVETYPE_NONE, "walkmonster_start_go should park trigger-spawn monsters after shared startup");
+  assert.equal((delayed.svflags & SVF_NOCLIENT) !== 0, true, "walkmonster_start_go should remove trigger-spawn monsters from snapshots");
 }
 
 function verifyTriggeredSpawnStartupPath(): void {

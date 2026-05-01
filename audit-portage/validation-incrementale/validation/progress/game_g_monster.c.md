@@ -1,12 +1,22 @@
 # Progress - Quake-2-master/game/g_monster.c
 
 - Statut: En cours
-- Dernier lot valide: `monster_start`
-- Prochain lot recommande: locales `notcombat`, `fixup`, `target` de `monster_start_go`, puis `walkmonster_start_go` si le lot reste petit
+- Dernier lot valide: locales `notcombat`, `fixup`, `target` de `monster_start_go` et `walkmonster_start_go`
+- Prochain lot recommande: `walkmonster_start`, puis `flymonster_start_go` si le lot reste petit
 - Tests de reference: `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Blocages: aucun pour le lot valide
 
 ## Session courante
+
+- Lot traite: locales `notcombat`, `fixup`, `target` de `monster_start_go`, puis `walkmonster_start_go`.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS `walkmonster_start_go` verifie, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
+- Runtime: atteignable depuis `walkmonster_start` puis `SV_RunThink`; les locales `notcombat`/`fixup`/`target` conservent le retag `point_combat`, l'avertissement mixed target, la validation `combattarget` et l'effacement de `target`. `walkmonster_start_go` couvre le drop initial `M_droptofloor`, le probe `M_walkmove`, les defaults `yaw_speed`/`viewheight`, l'appel `monster_start_go` et le masquage `monster_triggered_start` pour `spawnflags & 2`.
+- apps/web: pas de logique parallele attendue; le navigateur declenche les spawns via le runtime local/full-game et consomme les entites, avertissements, etats et snapshots produits. Tests `verify:local-gameplay-sync`, `verify:full-game:three-renderer` et `verify:web-render-order` OK.
+- renderer-three: sortie visible attendue indirecte via monstres demarres ou caches, modeles MD2, frames, origines/angles, `SVF_NOCLIENT` et etats render; ces donnees passent par snapshots/client refresh et sont consommees par les adapters Three. Pas de branchement gameplay renderer requis.
+- Tests lances: `npm run verify:g-monster` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
+- Prochain lot recommande: `walkmonster_start`, puis `flymonster_start_go` si le lot reste petit.
+
+## Session precedente
 
 - Lot traite: `monster_start`.
 - Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS complete avec la note de portage `monsterinfo.scale`, test cible renforce dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.

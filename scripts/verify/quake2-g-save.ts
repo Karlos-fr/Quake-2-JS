@@ -22,6 +22,7 @@ import {
   createGameMainContext
 } from "../../packages/game/src/g_main.js";
 import { clientfields, fields, levelfields, registerGameSaveMove } from "../../packages/game/src/g_save.js";
+import { FFL_SPAWNTEMP, STOFS, fieldtype_t } from "../../packages/game/src/g_local.js";
 
 const files = new Map<string, string>();
 const linked: number[] = [];
@@ -91,6 +92,19 @@ assert.equal(fields[0]?.name, "classname", "fields must preserve the original fi
 assert.ok(fields.some((field) => field.name === "goalentity"), "fields must include edict reference metadata");
 assert.equal(levelfields[0]?.name, "changemap", "levelfields must preserve changemap metadata");
 assert.equal(clientfields[0]?.name, "pers.weapon", "clientfields must preserve weapon item metadata");
+assert.deepEqual(
+  fields
+    .filter((field) => ["lip", "distance", "height", "noise", "pausetime"].includes(field.name) && field.flags === FFL_SPAWNTEMP)
+    .map((field) => [field.name, field.ofs, field.type]),
+  [
+    ["lip", STOFS("lip"), fieldtype_t.F_INT],
+    ["distance", STOFS("distance"), fieldtype_t.F_INT],
+    ["height", STOFS("height"), fieldtype_t.F_INT],
+    ["noise", STOFS("noise"), fieldtype_t.F_LSTRING],
+    ["pausetime", STOFS("pausetime"), fieldtype_t.F_FLOAT]
+  ],
+  "fields must preserve spawn_temp movement/audio timing metadata"
+);
 
 const testMonsterMove: GameMonsterMove = {
   firstframe: 1,

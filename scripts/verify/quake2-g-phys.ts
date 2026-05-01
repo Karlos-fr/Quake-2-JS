@@ -24,6 +24,7 @@ import {
   SV_PushEntity,
   SV_Physics_None,
   SV_Physics_Noclip,
+  SV_Physics_Step,
   SV_Physics_Toss,
   SV_RunThink,
   SV_TestEntityPosition
@@ -42,6 +43,7 @@ import {
   SOLID_BSP,
   SOLID_NOT,
   SOLID_TRIGGER,
+  SVF_MONSTER,
   attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameSoundEvents,
@@ -1024,6 +1026,127 @@ stepSwimFrictionEnt.velocity = [0, 0, 90];
 stepSwimFrictionEnt.waterlevel = 2;
 G_RunEntity(stepSwimFrictionEnt, runtime);
 assertVec("SV_Physics_Step.swim-friction-velocity", stepSwimFrictionEnt.velocity, [0, 0, 70]);
+
+const stepRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+const stepWorld = stepRuntime.entities[0];
+stepWorld.inuse = true;
+stepWorld.solid = SOLID_BSP;
+stepWorld.linked = true;
+let stepLastMask = 0;
+stepRuntime.collision = {
+  world: {} as never,
+  trace(start, _mins, _maxs, end, _passent, contentmask) {
+    stepLastMask = contentmask;
+    const lands = end[2] <= 0;
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: lands ? 0.5 : 1,
+      endpos: lands ? [end[0], end[1], 0] : [...end],
+      plane: {
+        normal: lands ? [0, 0, 1] : [0, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: stepWorld
+    };
+  },
+  pointcontents() {
+    return 0;
+  }
+};
+
+const stepFallEnt = spawnGameEntity(stepRuntime);
+stepFallEnt.classname = "step-fall-land";
+stepFallEnt.movetype = MOVETYPE_STEP;
+stepFallEnt.origin = [0, 0, 5];
+stepFallEnt.s.origin = [0, 0, 5];
+stepFallEnt.velocity = [0, 0, -100];
+SV_Physics_Step(stepFallEnt, stepRuntime);
+assertEqual("SV_Physics_Step.fall.wasonground", stepFallEnt.groundentity, stepWorld);
+assertEqual("SV_Physics_Step.fall.ground-linkcount", stepFallEnt.groundentity_linkcount, stepWorld.linkcount);
+assertEqual("SV_Physics_Step.fall.mask", stepLastMask, MASK_SOLID);
+assertEqual("SV_Physics_Step.fall.hitsound", drainGameSoundEvents(stepRuntime).some((event) => event.soundPath === "world/land.wav"), true);
+
+const stepMonsterEnt = spawnGameEntity(stepRuntime);
+stepMonsterEnt.classname = "step-monster-mask";
+stepMonsterEnt.movetype = MOVETYPE_STEP;
+stepMonsterEnt.svflags = SVF_MONSTER;
+stepMonsterEnt.groundentity = stepWorld;
+stepMonsterEnt.origin = [10, 0, 10];
+stepMonsterEnt.s.origin = [10, 0, 10];
+stepMonsterEnt.velocity = [100, 0, 0];
+SV_Physics_Step(stepMonsterEnt, stepRuntime);
+assertEqual("SV_Physics_Step.monster.mask", stepLastMask, MASK_MONSTERSOLID);
+assertVec("SV_Physics_Step.monster.horizontal-friction", stepMonsterEnt.velocity, [40, 0, 0]);
+
+const stepTrigger = spawnGameEntity(stepRuntime);
+stepTrigger.classname = "step-trigger";
+stepTrigger.solid = SOLID_TRIGGER;
+stepTrigger.mins = [-16, -16, -16];
+stepTrigger.maxs = [16, 16, 16];
+stepTrigger.origin = [14, 0, 10];
+stepTrigger.s.origin = [14, 0, 10];
+let stepTriggerTouches = 0;
+stepTrigger.touch = (_self, other) => {
+  if (other.classname === "step-triggered") {
+    stepTriggerTouches += 1;
+  }
+};
+linkGameEntity(stepRuntime, stepTrigger);
+
+const stepTriggeredEnt = spawnGameEntity(stepRuntime);
+stepTriggeredEnt.classname = "step-triggered";
+stepTriggeredEnt.movetype = MOVETYPE_STEP;
+stepTriggeredEnt.groundentity = stepWorld;
+stepTriggeredEnt.solid = SOLID_BBOX;
+stepTriggeredEnt.mins = [-8, -8, -8];
+stepTriggeredEnt.maxs = [8, 8, 8];
+stepTriggeredEnt.origin = [0, 0, 10];
+stepTriggeredEnt.s.origin = [0, 0, 10];
+stepTriggeredEnt.velocity = [100, 0, 0];
+SV_Physics_Step(stepTriggeredEnt, stepRuntime);
+assertEqual("SV_Physics_Step.trigger-touch", stepTriggerTouches, 1);
+assertEqual("SV_Physics_Step.linked", stepTriggeredEnt.linked, true);
+
+const stepDeadSlideEnt = spawnGameEntity(stepRuntime);
+stepDeadSlideEnt.classname = "step-dead-slide";
+stepDeadSlideEnt.movetype = MOVETYPE_STEP;
+stepDeadSlideEnt.groundentity = stepWorld;
+stepDeadSlideEnt.health = 0;
+stepDeadSlideEnt.origin = [0, 32, 100];
+stepDeadSlideEnt.s.origin = [0, 32, 100];
+stepDeadSlideEnt.velocity = [100, 0, 0];
+SV_Physics_Step(stepDeadSlideEnt, stepRuntime);
+assertVec("SV_Physics_Step.dead-no-bottom-no-friction", stepDeadSlideEnt.velocity, [100, 0, 0]);
+
+const stepFreedEnt = spawnGameEntity(stepRuntime);
+stepFreedEnt.classname = "step-freed-by-trigger";
+stepFreedEnt.movetype = MOVETYPE_STEP;
+stepFreedEnt.groundentity = stepWorld;
+stepFreedEnt.solid = SOLID_BBOX;
+stepFreedEnt.mins = [-8, -8, -8];
+stepFreedEnt.maxs = [8, 8, 8];
+stepFreedEnt.origin = [0, 0, 10];
+stepFreedEnt.s.origin = [0, 0, 10];
+stepFreedEnt.velocity = [100, 0, 0];
+let stepFreedThink = 0;
+stepFreedEnt.think = () => {
+  stepFreedThink += 1;
+};
+stepFreedEnt.nextthink = stepRuntime.time + 0.0005;
+stepTrigger.touch = (_self, other) => {
+  if (other.classname === "step-freed-by-trigger") {
+    other.inuse = false;
+  }
+};
+SV_Physics_Step(stepFreedEnt, stepRuntime);
+assertEqual("SV_Physics_Step.trigger-freed", stepFreedEnt.inuse, false);
+assertEqual("SV_Physics_Step.trigger-freed-no-think", stepFreedThink, 0);
 
 const dispatchEnt = spawnGameEntity(runtime);
 let noneBranch = 0;

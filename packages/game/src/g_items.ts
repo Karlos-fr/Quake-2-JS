@@ -1096,7 +1096,14 @@ export function Drop_Ammo(ent: GameEntity, item: GameItemDefinition, runtime: Ga
  * Original name: MegaHealth_think
  * Source: game/g_items.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Drains one point per second while the pickup owner remains above `max_health`.
+ * - Respawns non-dropped deathmatch mega health after the drain completes, otherwise frees the entity.
+ *
+ * Porting notes:
+ * - Reinstalls the think callback after each drain tick because the TS scheduler clears it before invocation.
  */
 export function MegaHealth_think(self: GameEntity, runtime: GameRuntime): void {
   if (self.owner && self.owner.health > self.owner.max_health) {
@@ -1117,7 +1124,14 @@ export function MegaHealth_think(self: GameEntity, runtime: GameRuntime): void {
  * Original name: Pickup_Health
  * Source: game/g_items.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Rejects normal health at `max_health`, clamps non-ignore-max pickups, and lets timed mega health exceed the cap.
+ * - Timed health hides the item, records the owner and schedules `MegaHealth_think`; non-timed map health respawns in deathmatch.
+ *
+ * Porting notes:
+ * - Variant spawn functions provide the original `style` bits, count and model while sharing the generic `Health` item definition.
  */
 export function Pickup_Health(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   if ((ent.style & HEALTH_IGNORE_MAX) === 0 && other.health >= other.max_health) {

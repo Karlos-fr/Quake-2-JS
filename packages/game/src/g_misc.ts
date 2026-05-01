@@ -1861,6 +1861,18 @@ export function misc_viper_bomb_prethink(self: GameEntity, runtime: GameRuntime)
   self.s.angles[2] = roll + 10;
 }
 
+/**
+ * Original name: misc_viper_bomb_use
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reveals the hidden viper bomb, turns on rocket effects, switches to toss physics, installs flight/touch callbacks, stores the activator and copies launch velocity/direction from the first active `misc_viper`.
+ *
+ * Porting notes:
+ * - The original dereferences the `misc_viper` search result; this port keeps the normal mapped flow identical when present and leaves the bomb inert rather than crashing if a malformed map lacks the viper.
+ */
 export function misc_viper_bomb_use(
   self: GameEntity,
   _other: GameEntity | null,
@@ -2314,13 +2326,10 @@ export function SP_func_clock(self: GameEntity, runtime: GameRuntime): void {
  * Original name: SP_misc_viper_bomb
  * Source: game/g_misc.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Spawns the hidden viper bomb entity with its world model and default damage.
- *
- * Porting notes:
- * - Activation, flight prethink and explosion touch are handled in this port; train motion still comes from `g_func`.
+ * - Spawns the hidden viper bomb entity with its world model, default damage, use callback and linked nonsolid bbox.
  */
 export function SP_misc_viper_bomb(self: GameEntity, runtime: GameRuntime): void {
   self.movetype = MOVETYPE_NONE;

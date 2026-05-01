@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `sv_stopspeed`, `sv_friction`, `sv_waterfriction`, `SV_AddRotationalFriction` avec locales `n` et `adjustment`.
-- Prochain lot recommande: `SV_Physics_Step` avec locales `wasonground`, `hitsound`, `vel`, `friction`, `groundentity` et `mask` si le lot reste raisonnable.
+- Dernier lot valide: `SV_Physics_Step` avec locales `wasonground`, `hitsound`, `vel`, `friction`, `groundentity` et `mask` (incluant les entrees dupliquees par la matrice).
+- Prochain lot recommande: `G_RunEntity`.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -181,3 +181,14 @@
 - renderer-three: pas de sortie renderer directe propre; les sorties visibles attendues sont les orientations et positions d'entites/modeles step apres physique, consommees indirectement via `ClientRefreshFrame` et les adapters `renderer-three`. Pas de particules, beams, dlights, temp entities, images, areabits ou camera produits directement par ce lot.
 - Correction: ajout de preuves ciblees dans `scripts/verify/quake2-g-phys.ts` pour l'appel direct de `SV_AddRotationalFriction`, l'atteignabilite via `G_RunEntity`/`SV_Physics_Step`, et l'usage de `SV_FRICTION`/`SV_WATERFRICTION` dans les branches fly/swim.
 - Tests lances: `npm run verify:g-phys` OK.
+
+## Session 2026-05-01 - `SV_Physics_Step`
+
+- Lot traite: `SV_Physics_Step`, locales `wasonground`, `hitsound`, `vel`, `friction`, `groundentity` et `mask`, incluant les entrees `wasonground` et `mask` dupliquees par la matrice.
+- Comparaison C/TS: le C verifie le sol via `M_CheckGround`, capture `groundentity`, clamp la vitesse, calcule `wasonground`, applique la friction rotationnelle, la gravite et `hitsound`, les frictions verticales fly/swim, la friction horizontale via `vel`/`friction`, choisit `MASK_MONSTERSOLID` ou `MASK_SOLID`, appelle `SV_FlyMove`, relink, touche les triggers, retourne si l'entite est liberee, joue `world/land.wav` a l'atterrissage puis execute `SV_RunThink`. Le TS reprend ces branches avec runtime explicite, `runtime.gravity`, `runtime.maxvelocity`, `linkGameEntity`, `touchTriggerEntities` et `emitGameSound`.
+- Commentaire d'en-tete: present et conforme (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement). Le niveau `Close` reste justifie par le runtime explicite et les adapters collision/sons.
+- Runtime: integre via `G_RunFrame` / `G_RunEntity` pour `MOVETYPE_STEP`; ce flux modifie `velocity`, `origin`/`s.origin`, `angles`/`s.angles`, `groundentity`, relink l'entite, declenche triggers/touch indirects et peut emettre le son d'atterrissage.
+- apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace cette physique. Les sorties attendues sont positions/angles/snapshots, sons runtime et callbacks indirects.
+- renderer-three: pas de sortie renderer directe propre; les sorties visibles attendues sont les entites/modeles/frames deja exposes par snapshots/refresh frames et les poses d'entites apres physique. Les particules, beams, dlights, temp entities, areabits, camera ou scene ne sont pas produits directement par `SV_Physics_Step`, mais peuvent venir indirectement des callbacks deja routes.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour `wasonground`, `hitsound`, gravite, friction horizontale `vel`/`friction`, masque monster/solid, relink, triggers, absence de think apres liberation, et branche dead-monster sans bottom.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.

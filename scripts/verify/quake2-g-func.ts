@@ -53,7 +53,9 @@ import {
   door_secret_move4,
   door_secret_move5,
   door_secret_move6,
+  door_secret_blocked,
   door_secret_done,
+  door_secret_use,
   door_go_down,
   door_go_up,
   door_hit_bottom,
@@ -1239,6 +1241,51 @@ assert.deepEqual(secret.pos2, [32, -64, 0], "SP_func_door_secret second move mis
 assert.equal(secret.health, 0, "SECRET_ALWAYS_SHOOT default shootable health mismatch");
 assert.equal(secret.takedamage, damage_t.DAMAGE_YES, "SECRET_ALWAYS_SHOOT default takedamage mismatch");
 assert.equal(secret.die?.name, "door_secret_die", "SECRET_ALWAYS_SHOOT default die callback mismatch");
+const secretUseRuntime = createGameRuntimeFromBspEntities([]);
+secretUseRuntime.time = runtime.time;
+secretUseRuntime.collision = {
+  world: {
+    areas: [
+      { numareaportals: 0, firstareaportal: 0, floodnum: 0, floodvalid: 0 },
+      { numareaportals: 1, firstareaportal: 0, floodnum: 0, floodvalid: 0 },
+      { numareaportals: 1, firstareaportal: 1, floodnum: 0, floodvalid: 0 }
+    ],
+    map_areaportals: [
+      { portalnum: 1, otherarea: 2 },
+      { portalnum: 1, otherarea: 1 }
+    ],
+    portalopen: new Uint8Array(2)
+  },
+  trace: () => {
+    throw new Error("unexpected secret use areaportal trace");
+  }
+};
+const secretUse = createRuntimeEntity({ classname: "func_door_secret", target: "secret_use_portal" }, 148);
+secretUse.inuse = true;
+secretUse.origin = [0, 0, 0];
+secretUse.s.origin = [0, 0, 0];
+secretUse.pos1 = [0, -64, 0];
+const secretUseActivator = entity("secret use activator", 149);
+const secretUsePortal = createRuntimeEntity({ classname: "func_areaportal", targetname: "secret_use_portal" }, 150);
+secretUsePortal.inuse = true;
+secretUsePortal.style = 1;
+secretUseRuntime.entities[148] = secretUse;
+secretUseRuntime.entities[150] = secretUsePortal;
+door_secret_use(secretUse, secretUseActivator, secretUseActivator, secretUseRuntime);
+assert.equal(secretUse.activator, null, "door_secret_use must ignore activator like the C original");
+assert.equal(secretUse.moveinfo.remaining_distance, 64, "door_secret_use first move distance mismatch");
+assert.equal(secretUse.moveinfo.endfunc?.name, "door_secret_move1", "door_secret_use endfunc mismatch");
+assert.equal(secretUse.think?.name, "Move_Begin", "door_secret_use must schedule movement");
+assert.equal(secretUseRuntime.collision.world.portalopen[1], 1, "door_secret_use must open targeted areaportal");
+secretUse.origin = [1, 0, 0];
+secretUse.s.origin = [1, 0, 0];
+secretUse.moveinfo.remaining_distance = 777;
+secretUse.think = null;
+secretUseRuntime.collision.world.portalopen[1] = 0;
+door_secret_use(secretUse, secretUseActivator, secretUseActivator, secretUseRuntime);
+assert.equal(secretUse.moveinfo.remaining_distance, 777, "door_secret_use moving guard must not restart movement");
+assert.equal(secretUse.think, null, "door_secret_use moving guard must not schedule think");
+assert.equal(secretUseRuntime.collision.world.portalopen[1], 0, "door_secret_use moving guard must not open areaportal");
 door_secret_move1(secret, runtime);
 assert.equal(secret.nextthink, runtime.time + 1, "door_secret_move1 delay mismatch");
 assert.equal(secret.think?.name, "door_secret_move2", "door_secret_move1 next think mismatch");
@@ -1339,6 +1386,43 @@ SP_func_door_secret(secretAlwaysShoot, runtime);
 assert.equal(secretAlwaysShoot.health, 0, "SECRET_ALWAYS_SHOOT targeted health mismatch");
 assert.equal(secretAlwaysShoot.takedamage, damage_t.DAMAGE_YES, "SECRET_ALWAYS_SHOOT targeted takedamage mismatch");
 assert.equal(secretAlwaysShoot.die?.name, "door_secret_die", "SECRET_ALWAYS_SHOOT targeted die callback mismatch");
+
+const secretBlockerRuntime = createGameRuntimeFromBspEntities([]);
+secretBlockerRuntime.time = runtime.time;
+const secretBlockerDoor = createRuntimeEntity({ classname: "func_door_secret", dmg: "11" }, 151);
+secretBlockerDoor.inuse = true;
+secretBlockerDoor.dmg = 11;
+const secretDebrisBlocker = createRuntimeEntity({ classname: "secret debris blocker", health: "10" }, 152);
+secretDebrisBlocker.inuse = true;
+secretDebrisBlocker.health = 10;
+secretDebrisBlocker.takedamage = damage_t.DAMAGE_YES;
+secretBlockerRuntime.entities[151] = secretBlockerDoor;
+secretBlockerRuntime.entities[152] = secretDebrisBlocker;
+door_secret_blocked(secretBlockerDoor, secretDebrisBlocker, secretBlockerRuntime);
+assert.equal(secretDebrisBlocker.inuse, false, "door_secret_blocked must explode non-monster non-client blockers");
+assert.equal(drainGameTempEntityEvents(secretBlockerRuntime).at(-1)?.type, temp_event_t.TE_EXPLOSION1, "door_secret_blocked debris explosion mismatch");
+assert.equal(secretBlockerRuntime.meansOfDeath, MOD_CRUSH, "door_secret_blocked debris damage mod mismatch");
+const secretMonsterBlocker = createRuntimeEntity({ classname: "secret monster blocker", health: "50" }, 153);
+secretMonsterBlocker.inuse = true;
+secretMonsterBlocker.svflags = SVF_MONSTER;
+secretMonsterBlocker.health = 50;
+secretMonsterBlocker.takedamage = damage_t.DAMAGE_YES;
+secretBlockerDoor.touch_debounce_time = secretBlockerRuntime.time + 0.25;
+door_secret_blocked(secretBlockerDoor, secretMonsterBlocker, secretBlockerRuntime);
+assert.equal(secretMonsterBlocker.health, 50, "door_secret_blocked debounce must skip monster damage");
+secretBlockerDoor.touch_debounce_time = secretBlockerRuntime.time - 0.25;
+door_secret_blocked(secretBlockerDoor, secretMonsterBlocker, secretBlockerRuntime);
+assert.equal(secretMonsterBlocker.health, 39, "door_secret_blocked monster damage mismatch");
+assert.equal(secretBlockerDoor.touch_debounce_time, secretBlockerRuntime.time + 0.5, "door_secret_blocked debounce update mismatch");
+const secretClientBlocker = createRuntimeEntity({ classname: "secret client blocker", health: "40" }, 154);
+secretClientBlocker.inuse = true;
+secretClientBlocker.client = createGameClient();
+secretClientBlocker.health = 40;
+secretClientBlocker.takedamage = damage_t.DAMAGE_YES;
+secretBlockerDoor.dmg = 0;
+secretBlockerDoor.touch_debounce_time = secretBlockerRuntime.time - 1;
+door_secret_blocked(secretBlockerDoor, secretClientBlocker, secretBlockerRuntime);
+assert.equal(secretClientBlocker.health, 40, "door_secret_blocked zero damage must skip client damage");
 
 const killbox = entity("func_killbox", 16);
 SP_func_killbox(killbox, runtime);

@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `door_secret_use` et `door_secret_blocked`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1886-1893,1941-1958` avec `packages/game/src/g_func.ts:2080-2094,2201-2226` apres correction et ajout des commentaires d'en-tete.
+- Correction appliquee: `door_secret_use` ne stocke plus `activator`, comme le C original; `door_secret_blocked` appelle maintenant `BecomeExplosion1` pour les bloqueurs non-monstre/non-client encore presents apres le crush, afin d'emettre `TE_EXPLOSION1` avant liberation; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `door_secret_use` ignore `other`/`activator`, refuse de redemarrer si l'origine n'est pas nulle, lance `Move_Calc` vers `pos1` avec `door_secret_move1`, et ouvre les areaportals lies; `door_secret_blocked` conserve les dommages 100000/MOD_CRUSH sur debris, l'explosion si survivant, le debounce `touch_debounce_time`, les dommages `self.dmg` sur monstre/client et la branche client avec `dmg = 0`.
+- Branchement: `door_secret_use` est affectee par `SP_func_door_secret` a `use` et appelee par triggers/G_UseTargets ou par `door_secret_die`; `door_secret_blocked` est affectee a `blocked` par `SP_func_door_secret` puis appelee par le flux pusher/physique pendant `G_RunFrame`/`G_RunEntity`; les mouvements rejoignent `Move_Calc`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door_secret` dans `apps/web`; le navigateur consomme les snapshots runtime, sons, areabits et temp entities. `packages/renderer-three` ne porte pas la logique gameplay de porte secrete, mais consomme les sorties visibles attendues via brush models, positions/interpolations, scene/areabits et effets runtime; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:g-spawn` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: `door_secret_move6`, `door_secret_done` et leurs doublons matriciels.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1926-1939` avec `packages/game/src/g_func.ts:2170-2190` apres ajout des commentaires d'en-tete de `door_secret_move6` et `door_secret_done`.
 - Correction appliquee: commentaires d'en-tete `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
@@ -350,7 +358,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `door_secret_use`, puis `door_secret_blocked` si le lot reste petit.
+- Continuer avec `door_secret_die`, puis `SP_func_door_secret` et ses locales matricielles (`side`, `width`, `length`) si le lot reste petit.
 
 ## Blocages
 

@@ -30,6 +30,7 @@ import {
   InitItems,
   ITEM_NO_TOUCH,
   ITEM_TRIGGER_SPAWN,
+  MegaHealth_think,
   MOVETYPE_TOSS,
   Pickup_Health,
   Pickup_Adrenaline,
@@ -84,6 +85,7 @@ function main(): void {
   verifySetRespawnRoundTrip();
   verifyDoRespawnTeamChoice();
   verifyTouchHealthPickup();
+  verifyMegaHealthAndPickupHealthRules();
   verifyTouchHealthPickupUsesItemPath();
   verifyPickupAdrenalineHealthAndRespawn();
   verifyPickupAncientHeadMaxHealthAndRespawn();
@@ -484,6 +486,68 @@ function verifyTouchHealthPickup(): void {
   const taken = Pickup_Health(itemEntity, player, runtime);
   assertBoolean(taken, true, "Pickup_Health accepts missing health");
   assertNumber(player.health, 85, "Pickup_Health adds count");
+}
+
+function verifyMegaHealthAndPickupHealthRules(): void {
+  const cappedRuntime = createHarnessRuntime();
+  const cappedHealth = spawnFreeableEntity(cappedRuntime);
+  const cappedPlayer = createPlayer(cappedRuntime);
+  cappedPlayer.health = 100;
+  cappedPlayer.max_health = 100;
+  cappedHealth.count = 25;
+  cappedHealth.style = 0;
+  assertBoolean(Pickup_Health(cappedHealth, cappedPlayer, cappedRuntime), false, "Pickup_Health rejects non-ignore-max health at max health");
+  assertNumber(cappedPlayer.health, 100, "Pickup_Health leaves rejected player health unchanged");
+
+  cappedPlayer.health = 90;
+  assertBoolean(Pickup_Health(cappedHealth, cappedPlayer, cappedRuntime), true, "Pickup_Health accepts non-ignore-max health below max health");
+  assertNumber(cappedPlayer.health, 100, "Pickup_Health clamps non-ignore-max health to max_health");
+
+  const megaRuntime = createHarnessRuntime();
+  megaRuntime.deathmatch = true;
+  megaRuntime.time = 10;
+  const mega = spawnFreeableEntity(megaRuntime);
+  const megaPlayer = createPlayer(megaRuntime);
+  megaPlayer.health = 90;
+  megaPlayer.max_health = 100;
+  mega.count = 100;
+  mega.style = 1 | 2;
+  mega.spawnflags = 0;
+
+  assertBoolean(Pickup_Health(mega, megaPlayer, megaRuntime), true, "Pickup_Health accepts timed mega health");
+  assertNumber(megaPlayer.health, 190, "Pickup_Health lets timed ignore-max health exceed max_health");
+  assertBoolean(mega.think === MegaHealth_think, true, "Pickup_Health installs MegaHealth_think for timed health");
+  assertNumber(mega.nextthink, 15, "Pickup_Health schedules first mega health decay five seconds later");
+  assertBoolean(mega.owner === megaPlayer, true, "Pickup_Health stores the health owner for timed decay");
+  assertBoolean((mega.flags & FL_RESPAWN) !== 0, true, "Pickup_Health marks timed health as respawning");
+  assertNumber(mega.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "Pickup_Health hides timed health while it decays");
+  assertNumber(mega.solid, SOLID_NOT, "Pickup_Health makes timed health non-solid while it decays");
+
+  runPendingThinks(megaRuntime, 15);
+  assertNumber(megaPlayer.health, 189, "MegaHealth_think subtracts one health while owner is above max_health");
+  assertNumber(mega.nextthink, 16, "MegaHealth_think reschedules one second later while above max_health");
+  assertBoolean(mega.think === MegaHealth_think, true, "MegaHealth_think keeps itself installed while draining");
+
+  megaPlayer.health = 100;
+  runPendingThinks(megaRuntime, 16);
+  assertNumber(mega.nextthink, 36, "MegaHealth_think schedules deathmatch map mega health respawn after twenty seconds");
+  assertBoolean((mega.svflags & SVF_NOCLIENT) !== 0, true, "MegaHealth_think leaves map mega health hidden until respawn");
+  assertNumber(mega.solid, SOLID_NOT, "MegaHealth_think leaves map mega health non-solid until respawn");
+
+  const droppedRuntime = createHarnessRuntime();
+  droppedRuntime.deathmatch = true;
+  droppedRuntime.time = 4;
+  const droppedMega = spawnFreeableEntity(droppedRuntime);
+  const droppedOwner = createPlayer(droppedRuntime);
+  droppedOwner.health = 100;
+  droppedOwner.max_health = 100;
+  droppedMega.owner = droppedOwner;
+  droppedMega.spawnflags = DROPPED_ITEM;
+  droppedMega.think = MegaHealth_think;
+  droppedMega.nextthink = 5;
+
+  runPendingThinks(droppedRuntime, 5);
+  assertNumber(droppedMega.inuse ? 1 : 0, 0, "MegaHealth_think frees dropped mega health when decay is complete");
 }
 
 function verifyTouchHealthPickupUsesItemPath(): void {

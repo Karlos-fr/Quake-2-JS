@@ -181,12 +181,12 @@
 | `Quake-2-master/game/g_local.h` | global | `sky` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `skyrotate` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `skyaxis` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `nextmap` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `lip` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `distance` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `height` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `noise` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `pausetime` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `nextmap` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `lip` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `distance` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `height` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `noise` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `pausetime` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `item` | `packages/game/src/g_items.ts` | `item` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `gravity` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `minyaw` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

@@ -758,6 +758,25 @@
   - `scripts/verify/quake2-g-spawn.ts`: assertion des defaults worldspawn `CS_SKY`, `CS_SKYROTATE`, `CS_SKYAXIS`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-spawn` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npx tsx ./scripts/verify/quake2-sky-phase2.ts` OK; `npx tsx ./scripts/verify/quake2-sky-phase4.ts` OK; `npx tsx ./scripts/verify/quake2-sky-phase5.ts` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `spawn_temp_t` avec champs `nextmap`, `lip`, `distance`, `height`, `noise`, `pausetime`.
+- Verdict: `Valide` pour les 6 champs apres comparaison H/TS, verification du commentaire de structure et renforcement des preuves; aucune correction runtime TS necessaire.
+- Source H comparee: `spawn_temp_t` porte les valeurs editeur temporaires absentes de `edict_t`; `nextmap` complete les world vars, `lip`/`distance`/`height` parametrent les movers et triggers, `noise` configure les sons d'entites, et `pausetime` decale les timers `START_ON`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `spawn_temp_t` porte les six champs dans l'ordre C attendu; `createSpawnTemp` initialise `nextmap`/`noise` a `null` et les valeurs numeriques a `0`; commentaire de portage `spawn_temp_t` verifie.
+  - `packages/game/src/g_save.ts`: `fields` mappe `lip`, `distance`, `height`, `noise`, `pausetime` et `nextmap` en `FFL_SPAWNTEMP`, avec les types C equivalents.
+  - `packages/game/src/g_main.ts`: `configureWorldspawn` consomme `nextmap` pour `level.nextmap`.
+  - `packages/game/src/g_func.ts`: `lip`, `distance`, `height`, `noise` et `pausetime` sont lus depuis les proprietes parsees pour portes, boutons, plateformes, eau, trains et timers.
+  - `packages/game/src/g_target.ts`: `noise` configure `target_speaker`, `target_secret` et `target_goal`.
+  - `packages/game/src/g_trigger.ts`: `height` configure `trigger_monsterjump`.
+- Runtime: flux attendu branche depuis `SpawnEntities`/`ED_ParseField` vers les spawn functions puis vers movers, sons, targets, triggers, configstrings, snapshots et scheduling runtime. Les champs restent temporaires comme en C: ils sont conserves dans la property bag parsee et non dans un etat gameplay global durable.
+- apps/web: integration attendue via host local/full-game qui charge les entites BSP, appelle le runtime game, relaie commandes/map transitions, sons, snapshots/HUD et ordre de rendu. Aucune logique parallele detectee dans `apps/web` pour remplacer ces champs; `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue pour les sorties visibles: movers brush (`lip`/`distance`/`height`), trains et triggers modifient entites/modeles/camera/scene via snapshots, et `noise` produit une sortie audio plutot que renderer. `packages/renderer-three` n'a pas a consommer directement `spawn_temp_t`; `verify:full-game:three-renderer` OK confirme le flux rendu full-game.
+- Commentaires/documentation: commentaire de portage `spawn_temp_t` verifie; commentaires d'en-tete verifies pour les fonctions portees impliquees (`configureWorldspawn`, `SP_func_button`, `SP_func_door`, `SP_func_door_rotating`, `SP_func_plat`, `SP_func_water`, `SP_func_train`, `SP_func_timer`, `SP_target_speaker`, `SP_target_secret`, `SP_target_goal`, `SP_trigger_monsterjump`).
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions de mutation pour `lip`, `distance`, `height`, `noise` et `pausetime`.
+  - `scripts/verify/quake2-g-save.ts`: assertions metadata `fields` pour `lip`, `distance`, `height`, `noise` et `pausetime`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-func` OK; `npm run verify:g-target` OK; `npm run verify:g-trigger` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -791,7 +810,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `nextmap`, puis `lip`, `distance`, `height`, `noise`, `pausetime` si le lot reste petit.
+- Continuer avec les prochains champs `spawn_temp_t`: `item`, puis `gravity`, `minyaw`, `maxyaw`, `minpitch`, `maxpitch` si le lot reste petit.
 
 ## Blocages
 
