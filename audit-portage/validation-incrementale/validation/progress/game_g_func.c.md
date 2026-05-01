@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: blocage et attente de train `train_blocked`, `train_wait`, locales matricielles `savetarget` et `ent`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1461-1527` avec `packages/game/src/g_func.ts:1616-1679`.
+- Correction appliquee: `train_blocked` appelle maintenant `BecomeExplosion1` pour les bloqueurs non-monstre/non-client encore presents apres le crush, afin de produire la temp entity explosion comme le C; commentaires d'en-tete ajoutes pour `train_blocked` et `train_wait`; couverture ciblee ajoutee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: dommages 100000/MOD_CRUSH sur debris, emission `TE_EXPLOSION1` et free, debounce `touch_debounce_time`, degats `self.dmg` sur monstre/client, garde `dmg == 0`, declenchement `pathtarget` via cible temporaire, restauration de `target` par `savetarget`, retour si le train est tue, wait positif vers `train_next`, wait negatif toggle avec clear `TRAIN_START_ON`, velocity nulle, `nextthink = 0`, et arret du son de fin hors `FL_TEAMSLAVE`.
+- Branchement: `train_blocked` est affectee par `SP_func_train` a `self.blocked` puis appelee par le flux pusher/physique pendant `G_RunFrame`/`G_RunEntity`; `train_wait` est le callback de fin passe par `train_next` a `Move_Calc`, puis execute par `SV_RunThink`/mouvement runtime.
+- Integration: aucune logique parallele `func_train` dans `apps/web`; le navigateur consomme les sons runtime, temp entities et snapshots/interpolations de brush models. `packages/renderer-three` consomme les sorties visibles attendues via brush models/origines des snapshots dans la scene, et les explosions passent par le flux temp-entity runtime deja verifie; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: flags de train `TRAIN_START_ON` / `TRAIN_TOGGLE` / `TRAIN_BLOCK_STOPS`, puis avance `train_next`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1445-1447,1459,1529-1583` avec `packages/game/src/g_func.ts:73-75,1661-1712`.
 - Correction appliquee: ajout du commentaire d'en-tete de `train_next` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture renforcee dans `scripts/verify/quake2-g-func.ts`.
@@ -262,7 +270,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `train_blocked`, puis `train_wait` et ses locales `savetarget`/`ent` si le lot reste petit.
+- Continuer avec les locales matricielles restantes de `train_next` (`ent`, `dest`, `first`), puis `train_resume` avec sa locale `ent` si le lot reste petit.
 
 ## Blocages
 

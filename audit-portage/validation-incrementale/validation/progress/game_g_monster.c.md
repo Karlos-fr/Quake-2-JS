@@ -9,11 +9,11 @@
 ## Session courante
 
 - Lot traite: `M_droptofloor` avec locales `end` et `trace`.
-- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS mis a jour pour l'adaptation `origin`/`s.origin`, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS mis a jour pour l'adaptation `origin`/`s.origin`, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
 - Runtime: atteignable depuis `walkmonster_start_go` pour les monstres marcheurs au spawn initial, et depuis `SP_misc_explobox` via le think differe des barrels; branches verifiees pour trace 256 unites vers le bas depuis l'origine relevee, sortie `fraction == 1`/`allsolid`, copie `trace.endpos`, `linkentity`, `M_CheckGround` et `M_CatagorizePosition`.
 - apps/web: pas de logique parallele attendue; le navigateur consomme le runtime porte via full-game/local session, sons/refresh et snapshots d'entites. La sortie utile du lot est l'origine corrigee des entites apres spawn/drop.
 - renderer-three: sortie visible attendue indirecte via modeles/origines d'entites dans les refresh frames; pas de branchement renderer dedie requis pour ce helper, qui ne produit ni particules, beams, dlights, temp entities, areabits, camera, ni scene propre.
-- Tests lances: `npm run verify:g-monster` OK.
+- Tests lances: `npm run verify:g-monster` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
 - Prochain lot recommande: `M_SetEffects`.
 
 ## Session precedente
