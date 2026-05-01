@@ -22,8 +22,20 @@ import {
   type CvarRuntime
 } from "../../../packages/qcommon/src/index.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (web host bridge)
+ * Category: New
+ * Purpose: Track the browser host phase while source-style commands bootstrap the final-game runtime.
+ */
 export type FullGameCommandBridgePhase = "idle" | "loading" | "newgame" | "gamemap" | "map";
 
+/**
+ * Original name: N/A
+ * Source: N/A (web host bridge)
+ * Category: New
+ * Purpose: Store command bridge state shared between the command callbacks and the full-game frame loop.
+ */
 export interface FullGameCommandBridgeState {
   phase: FullGameCommandBridgePhase;
   requestedMap: string | null;
@@ -31,6 +43,12 @@ export interface FullGameCommandBridgeState {
   serverRunning: boolean;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web host bridge)
+ * Category: New
+ * Purpose: Expose host callbacks used to connect command execution to browser UI and local server setup.
+ */
 export interface FullGameCommandBridgeHooks {
   onPrint?: (message: string) => void;
   onBeginLoading?: () => void;
@@ -38,6 +56,12 @@ export interface FullGameCommandBridgeHooks {
   onMapRequested?: (map: string, source: "gamemap" | "map") => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web host bridge)
+ * Category: New
+ * Purpose: Create the zeroed browser-side command bridge state.
+ */
 export function createFullGameCommandBridgeState(): FullGameCommandBridgeState {
   return {
     phase: "idle",
@@ -47,6 +71,15 @@ export function createFullGameCommandBridgeState(): FullGameCommandBridgeState {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web host bridge)
+ * Category: New
+ * Purpose: Register browser-host command shims until the authoritative server command ports own the full command path.
+ *
+ * Porting notes:
+ * - Does not claim ownership of `SV_KillServer_f`, `SV_GameMap_f` or `SV_Map_f`; those remain in `packages/server`.
+ */
 export function registerFullGameCommandBridge(
   cmd: CommandRuntime,
   cvar: CvarRuntime,
@@ -99,6 +132,12 @@ export function registerFullGameCommandBridge(
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web host bridge)
+ * Category: New
+ * Purpose: Reflect a ported loading-plaque state into the web host bridge without owning `SCR_BeginLoadingPlaque`.
+ */
 export function syncFullGameLoadingState(
   client: ClientRuntime,
   state: FullGameCommandBridgeState,
@@ -115,6 +154,12 @@ export function syncFullGameLoadingState(
   return true;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Add a command callback only when the ported command runtime has no existing owner for that name.
+ */
 function registerCommand(runtime: CommandRuntime, name: string, handler: () => void): void {
   if (!Cmd_Exists(runtime, name)) {
     Cmd_AddCommand(runtime, name, handler);

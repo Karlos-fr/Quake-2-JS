@@ -5,20 +5,20 @@
 - Fichier TS: `apps/web/src/full-game-render-loop.ts`
 - Symboles TS: 13
 - Couvert C/H: 0
-- Reste a auditer: 13
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/full-game-render-loop.ts` | value | `LOCAL_DEMO_HUD_WEAPON_BINDINGS` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | interface | `FullGameRenderSource` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | interface | `FullGameRenderUi` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | interface | `FullGameRenderLoop` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | interface | `FullGameRenderLoopOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | function | `createFullGameRenderLoop` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | function | `createCanvasOverlay` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | function | `getRenderableViewportSize` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | function | `disposeObjectTree` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | function | `updateAudioListener` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | function | `flushLocalGameplaySounds` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | function | `syncLocalLoopSounds` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-render-loop.ts` | function | `spatializeLoopSound` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game-render-loop.ts` | value | `LOCAL_DEMO_HUD_WEAPON_BINDINGS` | oui | `N/A` | `N/A (web renderer adapter)` | New |  | TS sans lien source | Valide | Demo-only HUD binding table; no C/H owner expected; duplicate search clean; header added. |
+| `apps/web/src/full-game-render-loop.ts` | interface | `FullGameRenderSource` | oui | `N/A` | `N/A (web renderer adapter)` | New |  | TS sans lien source | Valide | Web render-loop contract over ported client/runtime outputs; no C/H owner expected; duplicate search clean; header added. |
+| `apps/web/src/full-game-render-loop.ts` | interface | `FullGameRenderUi` | oui | `N/A` | `N/A (web renderer adapter)` | New |  | TS sans lien source | Valide | Browser UI adapter contract; no C/H owner expected; duplicate search clean; header added. |
+| `apps/web/src/full-game-render-loop.ts` | interface | `FullGameRenderLoop` | oui | `N/A` | `N/A (web renderer adapter)` | New |  | TS sans lien source | Valide | Shared apps/web render-loop contract; no C/H owner expected; duplicate search clean; header added. |
+| `apps/web/src/full-game-render-loop.ts` | interface | `FullGameRenderLoopOptions` | oui | `N/A` | `N/A (web renderer adapter)` | New |  | TS sans lien source | Valide | Composition options for renderer/ref_gl adapters; no C/H owner expected; duplicate search clean; header added. |
+| `apps/web/src/full-game-render-loop.ts` | function | `createFullGameRenderLoop` | oui | `N/A` | `N/A (web renderer adapter)` | New |  | TS sans lien source | Valide | Shared browser render orchestration; consumed by `full-game.ts` and `web-demo-loop.ts`; no C/H owner expected. |
+| `apps/web/src/full-game-render-loop.ts` | function | `createCanvasOverlay` | non | `N/A` | `N/A (local render-loop helper)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-render-loop.ts` | function | `getRenderableViewportSize` | non | `N/A` | `N/A (local render-loop helper)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-render-loop.ts` | function | `disposeObjectTree` | non | `N/A` | `N/A (local render-loop helper)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-render-loop.ts` | function | `updateAudioListener` | non | `N/A` | `N/A (web audio adapter helper)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-render-loop.ts` | function | `flushLocalGameplaySounds` | non | `N/A` | `N/A (web audio adapter helper)` | New |  | TS sans lien source | Valide | Authoritative full-game disables this WAV adapter path with `enableRenderSourceAudio: false`. |
+| `apps/web/src/full-game-render-loop.ts` | function | `syncLocalLoopSounds` | non | `N/A` | `N/A (web audio adapter helper)` | New |  | TS sans lien source | Valide | Authoritative full-game disables this WAV adapter path with `enableRenderSourceAudio: false`; DMA loop ownership remains outside this helper. |
+| `apps/web/src/full-game-render-loop.ts` | function | `spatializeLoopSound` | non | `N/A` | `N/A (web audio adapter helper)` | New |  | TS sans lien source | Valide | Local WAV adapter calculation only; not a client sound spatialization port owner. |

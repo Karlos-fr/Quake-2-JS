@@ -63,6 +63,12 @@ import {
 } from "../../../packages/server/src/index.js";
 import { createWebSaveStorage, type WebSaveStorage } from "./web-save-storage.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (web server host adapter)
+ * Category: New
+ * Purpose: Expose the browser-local server host facade backed by the ported server runtime.
+ */
 export interface FullGameServerHost {
   facade: ServerRuntimeFacade;
   collisionWorld: CollisionWorld;
@@ -74,6 +80,12 @@ export interface FullGameServerHost {
   shutdown: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web server host adapter)
+ * Category: New
+ * Purpose: Describe dependencies needed to wire the ported server runtime into the browser host.
+ */
 export interface FullGameServerHostOptions {
   cmd: CommandRuntime;
   cvar: CvarRuntime;
@@ -85,6 +97,12 @@ export interface FullGameServerHostOptions {
   onBeginLoading: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web server host adapter)
+ * Category: New
+ * Purpose: Create the browser-local server host that delegates frame, game API and snapshot work to ported packages.
+ */
 export function createFullGameServerHost(options: FullGameServerHostOptions): FullGameServerHost {
   const sv = createServerState();
   const svs = createServerStatic();
@@ -315,6 +333,12 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Keep an existing registered sound backend handle when it still matches the server configstring path.
+ */
 function preserveSoundPrecacheHandle(current: unknown, path: string): unknown {
   if (typeof current === "string") {
     return current === path ? current : path;
@@ -330,6 +354,12 @@ function preserveSoundPrecacheHandle(current: unknown, path: string): unknown {
   return path;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web server host bootstrap)
+ * Category: New
+ * Purpose: Provide temporary game exports until the ported game API is installed by the server facade.
+ */
 function createPlaceholderGameExports(): game_export_t {
   const worldspawn = createRuntimeEntity({}, 0);
   worldspawn.inuse = true;
@@ -361,6 +391,12 @@ function createPlaceholderGameExports(): game_export_t {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Copy a local-client command snapshot without aliasing its angle tuple.
+ */
 function cloneUsercmd(cmd: usercmd_t): usercmd_t {
   return {
     msec: cmd.msec,
@@ -374,10 +410,22 @@ function cloneUsercmd(cmd: usercmd_t): usercmd_t {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web save adapter helper)
+ * Category: New
+ * Purpose: Build normalized browser save-storage paths for server host callbacks.
+ */
 function buildSavePath(gamedir: string, savename: string, file: string): string {
   return `${gamedir}/save/${savename}/${file}`.replaceAll("\\", "/").replace(/\/+/g, "/").toLowerCase();
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web save adapter helper)
+ * Category: New
+ * Purpose: Serialize server configstrings into the browser save-slot level payload.
+ */
 function encodeConfigStrings(configstrings: string[]): Uint8Array {
   const bytes = new Uint8Array(MAX_CONFIGSTRINGS * MAX_QPATH);
   for (let i = 0; i < MAX_CONFIGSTRINGS; i += 1) {
@@ -386,18 +434,36 @@ function encodeConfigStrings(configstrings: string[]): Uint8Array {
   return bytes;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web save adapter helper)
+ * Category: New
+ * Purpose: Restore server configstrings from the browser save-slot level payload.
+ */
 function decodeConfigStrings(configstrings: string[], payload: Uint8Array): void {
   for (let i = 0; i < MAX_CONFIGSTRINGS; i += 1) {
     configstrings[i] = readFixedString(payload, i * MAX_QPATH, MAX_QPATH);
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web save adapter helper)
+ * Category: New
+ * Purpose: Write one null-terminated fixed-width configstring into a binary save payload.
+ */
 function writeFixedString(target: Uint8Array, offset: number, length: number, value: string): void {
   const encoded = new TextEncoder().encode(value);
   target.fill(0, offset, offset + length);
   target.set(encoded.subarray(0, Math.max(0, length - 1)), offset);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web save adapter helper)
+ * Category: New
+ * Purpose: Read one null-terminated fixed-width configstring from a binary save payload.
+ */
 function readFixedString(source: Uint8Array, offset: number, length: number): string {
   let end = offset;
   const limit = Math.min(source.length, offset + length);
@@ -407,6 +473,12 @@ function readFixedString(source: Uint8Array, offset: number, length: number): st
   return new TextDecoder().decode(source.subarray(offset, end));
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web save adapter helper)
+ * Category: New
+ * Purpose: Join binary save payload chunks before writing through browser storage.
+ */
 function concatBytes(chunks: Uint8Array[]): Uint8Array {
   const length = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
   const bytes = new Uint8Array(length);
@@ -418,6 +490,12 @@ function concatBytes(chunks: Uint8Array[]): Uint8Array {
   return bytes;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web server host adapter)
+ * Category: New
+ * Purpose: Expose the collision world loaded by the server facade through a stable adapter reference.
+ */
 function createDynamicCollisionWorld(runtime: CollisionModelRuntime): CollisionWorld {
   return new Proxy({} as CollisionWorld, {
     get: (_target, property) => {
@@ -457,6 +535,12 @@ function createDynamicCollisionWorld(runtime: CollisionModelRuntime): CollisionW
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web server host adapter)
+ * Category: New
+ * Purpose: Create a game runtime whose collision and engine callbacks are backed by the local server facade.
+ */
 function createServerBackedGameRuntime(world: CollisionWorld, imports: game_import_t) {
   const runtime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
   const bridge: GameCollisionBridge = {
@@ -476,6 +560,12 @@ function createServerBackedGameRuntime(world: CollisionWorld, imports: game_impo
   return runtime;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web server host adapter)
+ * Category: New
+ * Purpose: Wrap game exports so early local frames tolerate missing collision during bootstrap only.
+ */
 function createCollisionTolerantGameApi(source: game_export_t, onPrint: (message: string) => void): game_export_t {
   const descriptors = Object.getOwnPropertyDescriptors(source);
   const wrapped = Object.create(Object.getPrototypeOf(source)) as game_export_t;

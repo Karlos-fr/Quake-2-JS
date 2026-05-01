@@ -50,6 +50,15 @@ import {
 import type { createRefreshDebugLayer } from "./refresh-debug-layer.js";
 import { formatSkySnapshot, type ActiveRenderer } from "./web-render-bootstrap.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Keep standalone demo weapon hotkeys outside the authoritative full-game HUD path.
+ *
+ * Constraints:
+ * - Must be opt-in from the demo loop; the shared render loop default stays empty.
+ */
 export const LOCAL_DEMO_HUD_WEAPON_BINDINGS = {
   Blaster: "`",
   Shotgun: "1",
@@ -64,6 +73,15 @@ export const LOCAL_DEMO_HUD_WEAPON_BINDINGS = {
   BFG10K: "0"
 };
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Describe the client-frame data consumed by the shared browser render loop.
+ *
+ * Constraints:
+ * - Must expose already-ported client/runtime outputs instead of replacing their logic.
+ */
 export interface FullGameRenderSource {
   runtime: ClientRuntime;
   refreshFrame: ClientRefreshFrame | null;
@@ -75,6 +93,15 @@ export interface FullGameRenderSource {
   drainLocalGameplaySounds?: () => GameSoundEvent[];
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Describe the minimal browser UI callbacks used by the shared render loop.
+ *
+ * Constraints:
+ * - Must remain an adapter contract and avoid owning Quake II runtime behavior.
+ */
 export interface FullGameRenderUi {
   viewport: HTMLElement;
   setSkyText?: (value: string) => void;
@@ -85,6 +112,15 @@ export interface FullGameRenderUi {
   ) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Expose the shared browser render-loop operations used by the demo and full-game host.
+ *
+ * Constraints:
+ * - Must keep rendering orchestration in apps/web while delegating game/client behavior to packages.
+ */
 export interface FullGameRenderLoop {
   resize: () => void;
   renderFrame: (options: {
@@ -106,6 +142,15 @@ export interface FullGameRenderLoop {
   dispose: () => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Collect the renderer, ref_gl adapters and runtime services needed to build the shared render loop.
+ *
+ * Constraints:
+ * - Must compose package-owned adapters without presenting this apps/web file as their source port.
+ */
 export interface FullGameRenderLoopOptions {
   renderer: ActiveRenderer;
   ui: FullGameRenderUi;
@@ -127,6 +172,15 @@ export interface FullGameRenderLoopOptions {
   enableRenderSourceAudio?: boolean;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web renderer adapter)
+ * Category: New
+ * Purpose: Compose the browser Three/ref_gl frame loop from package-owned renderer and runtime adapters.
+ *
+ * Constraints:
+ * - Must orchestrate the active frame without replacing client, server or ref_gl ownership.
+ */
 export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): FullGameRenderLoop {
   const {
     renderer,
@@ -261,6 +315,15 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
   return { resize, renderFrame, renderOverlay, renderCanvasOverlay, dispose };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local render-loop helper)
+ * Category: New
+ * Purpose: Project a 2D canvas overlay into the shared Three render pass.
+ *
+ * Constraints:
+ * - Must stay private to the web render loop and dispose its Three resources.
+ */
 function createCanvasOverlay(): {
   scene: Scene;
   camera: OrthographicCamera;
@@ -317,6 +380,15 @@ function createCanvasOverlay(): {
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local render-loop helper)
+ * Category: New
+ * Purpose: Derive a safe non-zero render viewport from the browser DOM.
+ *
+ * Constraints:
+ * - Must prevent hidden or empty elements from passing zero dimensions to Three.
+ */
 function getRenderableViewportSize(viewport: HTMLElement): { width: number; height: number } {
   const rect = viewport.getBoundingClientRect();
   const width = Math.round(rect.width || viewport.clientWidth || window.innerWidth || 640);
@@ -328,6 +400,15 @@ function getRenderableViewportSize(viewport: HTMLElement): { width: number; heig
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local render-loop helper)
+ * Category: New
+ * Purpose: Dispose geometries and materials owned by the render-loop scene tree.
+ *
+ * Constraints:
+ * - Must remain cleanup-only and avoid mutating runtime/client state.
+ */
 function disposeObjectTree(root: Scene): void {
   root.traverse((object) => {
     const geometry = (object as { geometry?: { dispose?: () => void } }).geometry;
@@ -345,6 +426,15 @@ function disposeObjectTree(root: Scene): void {
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web audio adapter helper)
+ * Category: New
+ * Purpose: Mirror the active Three camera orientation into the browser audio listener.
+ *
+ * Constraints:
+ * - Must adapt renderer camera state only; gameplay audio ownership stays in client/audio packages.
+ */
 function updateAudioListener(audio: QuakeWebAudioAdapter, camera: PerspectiveCamera): void {
   const forward = new Vector3();
   camera.getWorldDirection(forward);
@@ -356,6 +446,15 @@ function updateAudioListener(audio: QuakeWebAudioAdapter, camera: PerspectiveCam
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web audio adapter helper)
+ * Category: New
+ * Purpose: Drain optional local gameplay one-shot WAV events for the standalone/demo render path.
+ *
+ * Constraints:
+ * - Must remain disabled by `enableRenderSourceAudio: false` in authoritative full-game mode.
+ */
 function flushLocalGameplaySounds(
   source: FullGameRenderSource,
   filesystem: VirtualFilesystem,
@@ -386,6 +485,15 @@ function flushLocalGameplaySounds(
   }
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web audio adapter helper)
+ * Category: New
+ * Purpose: Synchronize optional entity loop WAVs for the standalone/demo render path.
+ *
+ * Constraints:
+ * - Must consume already-produced client frame entities and not replace the authoritative DMA loop path.
+ */
 function syncLocalLoopSounds(
   source: FullGameRenderSource,
   filesystem: VirtualFilesystem,
@@ -424,6 +532,15 @@ function syncLocalLoopSounds(
   audio.syncWavLoops(filesystem, loops);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (web audio adapter helper)
+ * Category: New
+ * Purpose: Convert a world-space sound origin into simple stereo WAV volumes for web adapter playback.
+ *
+ * Constraints:
+ * - Must stay a local adapter calculation, not a port-owner for the client sound spatialization code.
+ */
 function spatializeLoopSound(
   camera: PerspectiveCamera,
   x: number,

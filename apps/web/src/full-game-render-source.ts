@@ -25,6 +25,12 @@ import type {
 } from "../../../packages/client/src/index.js";
 import type { FullGameRenderSource } from "./full-game-render-loop.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (web adapter)
+ * Category: New
+ * Purpose: Configure projection from the parsed client runtime to the full-game renderer source.
+ */
 export interface FullGameServerRenderSourceOptions {
   cvar: CvarRuntime;
   predictMovement?: boolean;
@@ -32,6 +38,8 @@ export interface FullGameServerRenderSourceOptions {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web adapter)
  * Category: New
  * Purpose: Resolve the authoritative BSP path from the parsed client world-model configstring.
  *
@@ -46,6 +54,8 @@ export function getFullGameServerMapPath(client: ClientRuntime, fallbackMapReque
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web adapter)
  * Category: New
  * Purpose: Project the parsed authoritative client snapshot into the renderer source contract.
  *
@@ -74,6 +84,8 @@ export function createFullGameServerRenderSource(
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web adapter)
  * Category: New
  * Purpose: Derive inline brush model transforms from the server-authored packet entities.
  *
@@ -106,6 +118,8 @@ export function buildServerBackedBrushModelSnapshots(client: ClientRuntime): Bru
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web adapter)
  * Category: New
  * Purpose: Resolve a client sound precache entry back to the web-loadable Quake sound path.
  *
@@ -117,6 +131,8 @@ export function resolveClientSoundPath(client: ClientRuntime, soundIndex: number
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (web adapter)
  * Category: New
  * Purpose: Resolve one opaque client sound precache value without depending on a concrete sound backend.
  */
@@ -133,6 +149,12 @@ export function resolveClientSoundPathValue(value: unknown): string | null {
   return typeof name === "string" && name.length > 0 ? name : null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Resolve one client model index through authoritative configstrings before transitional handles.
+ */
 function resolveClientModelPath(client: ClientRuntime, modelIndex: number): string | null {
   if (modelIndex <= 0) {
     return null;
@@ -147,6 +169,12 @@ function resolveClientModelPath(client: ClientRuntime, modelIndex: number): stri
   return typeof registered === "string" && registered.length > 0 ? registered : null;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (local helper)
+ * Category: New
+ * Purpose: Normalize server map requests and world-model configstrings to a BSP base name.
+ */
 function normalizeServerMapName(value: string): string | null {
   let name = value.trim().replaceAll("\\", "/");
   if (!name) {

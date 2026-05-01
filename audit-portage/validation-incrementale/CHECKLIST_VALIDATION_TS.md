@@ -10,6 +10,7 @@ Cette checklist est a appliquer pour une entite TypeScript ou un petit lot simpl
 - [ ] Si `Statut croise` est `Doublon potentiel`, rechercher tous les symboles TS portant le meme couple `Original name` + `Source declaree`.
 - [ ] Si `Statut croise` est `Ownership suspect`, verifier si le package TS correspond au module source attendu.
 - [ ] Si l'entete est absent ou incomplet, determiner si le symbole est un portage, un adapter, un helper local ou du code nouveau.
+- [ ] Pour toute entite classee `Category: New`, renseigner explicitement dans l'entete et la matrice `Original name: N/A` et `Source declaree: N/A (<raison courte>)`, par exemple `N/A (web adapter)`, `N/A (test harness)` ou `N/A (local helper)`.
 
 ## 2. Croiser avec C/H
 
@@ -18,6 +19,7 @@ Cette checklist est a appliquer pour une entite TypeScript ou un petit lot simpl
 - [ ] Verifier que la validation C/H couvre bien le symbole TS et pas seulement une fonction homonyme.
 - [ ] Si l'entite C/H est `Valide` ou `Non applicable`, marquer la ligne TS `Couvert C/H` seulement si le symbole TS est le proprietaire attendu.
 - [ ] Si plusieurs symboles TS couvrent la meme entite C/H, garder un seul portage proprietaire et classer les autres comme `Adapter`, `New` ou `Non conforme` selon le cas.
+- [ ] Ne pas laisser une entite `Category: New` avec `Original name` ou `Source declaree` vide: l'absence de source C/H doit etre une decision explicite, pas un champ incomplet.
 
 ## 3. Verifier ownership et doublons
 
@@ -38,6 +40,7 @@ Cette checklist est a appliquer pour une entite TypeScript ou un petit lot simpl
 ## 5. Mettre a jour
 
 - [ ] Mettre a jour `Validation TS` et `Notes` dans la matrice TS.
+- [ ] Pour les entites `Category: New`, reporter dans la matrice les memes metadonnees que dans l'entete: `Original name` = `N/A`, `Source declaree` = `N/A (<raison courte>)`, `Category` = `New`.
 - [ ] Laisser `Notes` vide sauf information utile: justification d'ownership, doublon, adapter, action suivante.
 - [ ] Mettre a jour le progress file TS correspondant dans `validation/ts-progress/` si le fichier est en cours.
 - [ ] Mettre a jour `validation/AVANCEMENT_GLOBAL_TS.md`.

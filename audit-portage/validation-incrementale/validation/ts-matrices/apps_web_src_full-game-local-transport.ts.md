@@ -5,12 +5,12 @@
 - Fichier TS: `apps/web/src/full-game-local-transport.ts`
 - Symboles TS: 5
 - Couvert C/H: 0
-- Reste a auditer: 5
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/full-game-local-transport.ts` | interface | `FullGameLocalTransport` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-transport.ts` | interface | `FullGameLocalTransportOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-transport.ts` | function | `createFullGameLocalTransport` | oui |  |  | New |  | Entete incomplet | A verifier | Entete incomplet: `Original name` et `Source` sont requis pour le croisement. |
-| `apps/web/src/full-game-local-transport.ts` | function | `clonePacket` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-transport.ts` | function | `cloneAddress` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game-local-transport.ts` | interface | `FullGameLocalTransport` | oui | `N/A` | `N/A (web transport adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-transport.ts` | interface | `FullGameLocalTransportOptions` | oui | `N/A` | `N/A (web transport adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-transport.ts` | function | `createFullGameLocalTransport` | oui | `N/A` | `N/A (web transport adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-transport.ts` | function | `clonePacket` | non | `N/A` | `N/A (local transport helper)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-transport.ts` | function | `cloneAddress` | non | `N/A` | `N/A (local transport helper)` | New |  | TS sans lien source | Valide |  |

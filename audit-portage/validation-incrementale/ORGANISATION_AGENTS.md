@@ -92,6 +92,7 @@ L'etat utile doit etre dans la matrice et le progress file.
 - Si plusieurs agents sont lances, chacun doit avoir un fichier source different.
 - Les notes de matrice restent vides par defaut.
 - La colonne `Notes` ne doit contenir que les informations importantes : ecart volontaire, comportement partiel, cible renomme ou deplacee, test manquant, integration particuliere, raison d'un statut non valide.
+- Pour les entites `Category: New`, l'agent doit renseigner explicitement les metadonnees dans l'entete et la matrice : `Original name: N/A`, `Source declaree: N/A (<raison courte>)`, `Category: New`. Ne pas laisser `Original name` ou `Source declaree` vide pour du code nouveau.
 - Ne jamais marquer `Valide` sans preuve obtenue pendant la session.
 - Ne jamais marquer `Valide` si une integration runtime, `apps/web` ou `renderer-three` est attendue mais absente; utiliser `Partiel` ou `Manquant` et documenter l'action suivante.
 - Pour `renderer-three`, l'agent doit juger l'integration attendue a partir des sorties runtime visibles : modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene. L'absence de reference renderer ne suffit pas a dire `Non applicable`.

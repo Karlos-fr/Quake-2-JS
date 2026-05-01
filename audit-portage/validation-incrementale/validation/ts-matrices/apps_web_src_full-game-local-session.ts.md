@@ -5,16 +5,16 @@
 - Fichier TS: `apps/web/src/full-game-local-session.ts`
 - Symboles TS: 9
 - Couvert C/H: 0
-- Reste a auditer: 9
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/full-game-local-session.ts` | interface | `FullGameLocalSession` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-session.ts` | interface | `FullGameLocalSessionOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-session.ts` | interface | `FullGameMapTarget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-session.ts` | function | `createFullGameLocalSession` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-session.ts` | function | `resolveFullGameMapTarget` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-session.ts` | function | `stepFullGameLocalSession` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-session.ts` | function | `buildRefreshFrame` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-session.ts` | function | `applyFullGameOverlayBits` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-local-session.ts` | function | `createIdleInputState` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game-local-session.ts` | interface | `FullGameLocalSession` | oui | `N/A` | `N/A (legacy web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-session.ts` | interface | `FullGameLocalSessionOptions` | oui | `N/A` | `N/A (legacy web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-session.ts` | interface | `FullGameMapTarget` | oui | `N/A` | `N/A (legacy web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-session.ts` | function | `createFullGameLocalSession` | oui | `N/A` | `N/A (legacy web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-session.ts` | function | `resolveFullGameMapTarget` | oui | `N/A` | `N/A (legacy web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-session.ts` | function | `stepFullGameLocalSession` | non | `N/A` | `N/A (legacy web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-session.ts` | function | `buildRefreshFrame` | non | `N/A` | `N/A (legacy web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-session.ts` | function | `applyFullGameOverlayBits` | non | `N/A` | `N/A (legacy web adapter)` | New |  | TS sans lien source | Valide |  |
+| `apps/web/src/full-game-local-session.ts` | function | `createIdleInputState` | non | `N/A` | `N/A (legacy web adapter)` | New |  | TS sans lien source | Valide |  |

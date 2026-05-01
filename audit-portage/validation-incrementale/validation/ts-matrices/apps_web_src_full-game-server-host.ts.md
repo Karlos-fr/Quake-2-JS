@@ -5,22 +5,22 @@
 - Fichier TS: `apps/web/src/full-game-server-host.ts`
 - Symboles TS: 15
 - Couvert C/H: 0
-- Reste a auditer: 15
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/full-game-server-host.ts` | interface | `FullGameServerHost` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | interface | `FullGameServerHostOptions` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `createFullGameServerHost` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `preserveSoundPrecacheHandle` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `createPlaceholderGameExports` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `cloneUsercmd` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `buildSavePath` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `encodeConfigStrings` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `decodeConfigStrings` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `writeFixedString` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `readFixedString` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `concatBytes` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `createDynamicCollisionWorld` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `createServerBackedGameRuntime` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-server-host.ts` | function | `createCollisionTolerantGameApi` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game-server-host.ts` | interface | `FullGameServerHost` | oui | `N/A` | `N/A (web server host adapter)` | New |  | TS sans lien source | Valide | Adapter web local documente par l'entete; expose la facade serveur portee sans ownership C/H. Test: `npm run verify:full-game:server-host`. |
+| `apps/web/src/full-game-server-host.ts` | interface | `FullGameServerHostOptions` | oui | `N/A` | `N/A (web server host adapter)` | New |  | TS sans lien source | Valide | Adapter web local documente par l'entete; dependances injectees sans ownership C/H. Test: `npm run verify:full-game:server-host`. |
+| `apps/web/src/full-game-server-host.ts` | function | `createFullGameServerHost` | oui | `N/A` | `N/A (web server host adapter)` | New |  | TS sans lien source | Valide | Adapter web local documente par l'entete; branche `packages/server`/`packages/game` et ne remplace pas le portage proprietaire. Test: `npm run verify:full-game:server-host`. |
+| `apps/web/src/full-game-server-host.ts` | function | `preserveSoundPrecacheHandle` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | |
+| `apps/web/src/full-game-server-host.ts` | function | `createPlaceholderGameExports` | non | `N/A` | `N/A (web server host bootstrap)` | New |  | TS sans lien source | Valide | |
+| `apps/web/src/full-game-server-host.ts` | function | `cloneUsercmd` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Valide | Nom duplique dans `qcommon/messages`, `client/cl_input` et `client/view`, mais helper local defensif sans ownership C/H. |
+| `apps/web/src/full-game-server-host.ts` | function | `buildSavePath` | non | `N/A` | `N/A (web save adapter helper)` | New |  | TS sans lien source | Valide | Nom duplique avec helper prive `packages/server/src/sv_ccmds.ts`; celui-ci adapte les chemins browser storage. |
+| `apps/web/src/full-game-server-host.ts` | function | `encodeConfigStrings` | non | `N/A` | `N/A (web save adapter helper)` | New |  | TS sans lien source | Valide | Nom duplique avec helper prive `packages/server/src/sv_ccmds.ts`; celui-ci adapte le payload browser storage. |
+| `apps/web/src/full-game-server-host.ts` | function | `decodeConfigStrings` | non | `N/A` | `N/A (web save adapter helper)` | New |  | TS sans lien source | Valide | Nom duplique avec helper prive `packages/server/src/sv_ccmds.ts`; celui-ci adapte le payload browser storage. |
+| `apps/web/src/full-game-server-host.ts` | function | `writeFixedString` | non | `N/A` | `N/A (web save adapter helper)` | New |  | TS sans lien source | Valide | Nom duplique avec helper prive `packages/server/src/sv_ccmds.ts`; celui-ci adapte le payload browser storage. |
+| `apps/web/src/full-game-server-host.ts` | function | `readFixedString` | non | `N/A` | `N/A (web save adapter helper)` | New |  | TS sans lien source | Valide | Nom duplique avec helper prive `packages/server/src/sv_ccmds.ts`; celui-ci adapte le payload browser storage. |
+| `apps/web/src/full-game-server-host.ts` | function | `concatBytes` | non | `N/A` | `N/A (web save adapter helper)` | New |  | TS sans lien source | Valide | Nom duplique avec helper prive `packages/server/src/sv_ccmds.ts`; celui-ci adapte le payload browser storage. |
+| `apps/web/src/full-game-server-host.ts` | function | `createDynamicCollisionWorld` | non | `N/A` | `N/A (web server host adapter)` | New |  | TS sans lien source | Valide | |
+| `apps/web/src/full-game-server-host.ts` | function | `createServerBackedGameRuntime` | non | `N/A` | `N/A (web server host adapter)` | New |  | TS sans lien source | Valide | |
+| `apps/web/src/full-game-server-host.ts` | function | `createCollisionTolerantGameApi` | non | `N/A` | `N/A (web server host adapter)` | New |  | TS sans lien source | Valide | |

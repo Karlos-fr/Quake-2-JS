@@ -53,6 +53,16 @@ import {
 import { type GameRuntime } from "../../../packages/game/src/index.js";
 import { createLocalCollisionAdapter } from "./local-collision-adapter.js";
 
+/**
+ * Original name: N/A
+ * Source: N/A (legacy web adapter)
+ * Category: New
+ * Purpose: Expose the browser-only legacy local-session harness used by transitional demo/tests.
+ *
+ * Constraints:
+ * - Must stay out of the active `full-game.html` authoritative gameplay path.
+ * - Must consume ported client/game/runtime state instead of replacing it with web-only gameplay.
+ */
 export interface FullGameLocalSession {
   runtime: ClientRuntime;
   mapName: string;
@@ -71,6 +81,15 @@ export interface FullGameLocalSession {
   update: (deltaSeconds: number, consumeServerFrame?: () => boolean) => void;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (legacy web adapter)
+ * Category: New
+ * Purpose: Describe the dependencies required to build the legacy local-session adapter.
+ *
+ * Constraints:
+ * - Must receive already-initialized ported runtimes from the caller.
+ */
 export interface FullGameLocalSessionOptions {
   filesystem: VirtualFilesystem;
   client: ClientRuntime;
@@ -79,12 +98,31 @@ export interface FullGameLocalSessionOptions {
   mapRequest: string;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (legacy web adapter)
+ * Category: New
+ * Purpose: Normalize a full-game map request into the BSP path and spawnpoint used by the legacy adapter.
+ *
+ * Constraints:
+ * - Must remain a web adapter contract, not the authoritative server map-selection owner.
+ */
 export interface FullGameMapTarget {
   mapName: string;
   mapPath: string;
   spawnpoint: string;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (legacy web adapter)
+ * Category: New
+ * Purpose: Build the browser-only legacy local-session harness from ported client/game runtime pieces.
+ *
+ * Constraints:
+ * - Must not be imported by the active authoritative `full-game.html` path.
+ * - Must leave map parsing, client frame construction and gameplay stepping to the ported packages.
+ */
 export function createFullGameLocalSession(options: FullGameLocalSessionOptions): FullGameLocalSession {
   const target = resolveFullGameMapTarget(options.mapRequest);
   const bspFile = readMountedFile(options.filesystem, target.mapPath);
@@ -163,6 +201,15 @@ export function createFullGameLocalSession(options: FullGameLocalSessionOptions)
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (legacy web adapter)
+ * Category: New
+ * Purpose: Convert legacy full-game map requests into a map name, BSP path and spawnpoint tuple.
+ *
+ * Constraints:
+ * - Must stay a request normalizer for the legacy harness, not the server-side map command owner.
+ */
 export function resolveFullGameMapTarget(mapRequest: string): FullGameMapTarget {
   const withoutQuotes = mapRequest.trim().replace(/^"+|"+$/g, "");
   const withoutLoadFlag = withoutQuotes.startsWith("*") ? withoutQuotes.slice(1) : withoutQuotes;
@@ -178,6 +225,15 @@ export function resolveFullGameMapTarget(mapRequest: string): FullGameMapTarget 
   };
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (legacy web adapter)
+ * Category: New
+ * Purpose: Advance the legacy local-session harness through the ported local client-session runtime.
+ *
+ * Constraints:
+ * - Must route command creation and prediction through client package APIs.
+ */
 function stepFullGameLocalSession(
   client: ClientRuntime,
   inputContext: ClientInputContext,
@@ -206,6 +262,15 @@ function stepFullGameLocalSession(
   );
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (legacy web adapter)
+ * Category: New
+ * Purpose: Build the current refresh frame exposed by the legacy web session.
+ *
+ * Constraints:
+ * - Must delegate refresh-frame construction to the ported client package.
+ */
 function buildRefreshFrame(client: ClientRuntime): ClientRefreshFrame {
   return CL_BuildRefreshFrame(client, {
     predictMovement: true,
@@ -213,6 +278,15 @@ function buildRefreshFrame(client: ClientRuntime): ClientRefreshFrame {
   });
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (legacy web adapter)
+ * Category: New
+ * Purpose: Project legacy web scoreboard and inventory toggles onto the Quake II layout stat bits.
+ *
+ * Constraints:
+ * - Must only toggle the overlay bits owned by the web harness state.
+ */
 function applyFullGameOverlayBits(
   client: ClientRuntime,
   state: { scoreboardVisible: boolean; inventoryVisible: boolean }
@@ -223,6 +297,15 @@ function applyFullGameOverlayBits(
   client.cl.frame.playerstate.stats[STAT_LAYOUTS] = layouts;
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (legacy web adapter)
+ * Category: New
+ * Purpose: Seed the legacy local-session harness with neutral input while bound client input drives commands.
+ *
+ * Constraints:
+ * - Must not reintroduce demo-only movement defaults.
+ */
 function createIdleInputState(): LocalClientSessionInputState {
   return {
     pressedKeys: {

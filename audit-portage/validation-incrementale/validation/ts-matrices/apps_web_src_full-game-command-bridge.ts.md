@@ -5,14 +5,14 @@
 - Fichier TS: `apps/web/src/full-game-command-bridge.ts`
 - Symboles TS: 7
 - Couvert C/H: 0
-- Reste a auditer: 7
+- Reste a auditer: 0
 
 | Fichier TS | Type TS | Symbole TS | Export | Original name | Source declaree | Category | Matrice C/H | Statut croise | Validation TS | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `apps/web/src/full-game-command-bridge.ts` | type | `FullGameCommandBridgePhase` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-command-bridge.ts` | interface | `FullGameCommandBridgeState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-command-bridge.ts` | interface | `FullGameCommandBridgeHooks` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-command-bridge.ts` | function | `createFullGameCommandBridgeState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-command-bridge.ts` | function | `registerFullGameCommandBridge` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-command-bridge.ts` | function | `syncFullGameLoadingState` | oui |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
-| `apps/web/src/full-game-command-bridge.ts` | function | `registerCommand` | non |  |  |  |  | TS sans lien source | A verifier | A classer: helper local, adapter ou portage non documente. |
+| `apps/web/src/full-game-command-bridge.ts` | type | `FullGameCommandBridgePhase` | oui | `N/A` | `N/A (web host bridge)` | New |  | TS sans lien source | Non applicable | Web host bridge, pas proprietaire C/H; entete verifie, test `verify:full-game:bridge`. |
+| `apps/web/src/full-game-command-bridge.ts` | interface | `FullGameCommandBridgeState` | oui | `N/A` | `N/A (web host bridge)` | New |  | TS sans lien source | Non applicable | Web host bridge, pas proprietaire C/H; entete verifie, test `verify:full-game:bridge`. |
+| `apps/web/src/full-game-command-bridge.ts` | interface | `FullGameCommandBridgeHooks` | oui | `N/A` | `N/A (web host bridge)` | New |  | TS sans lien source | Non applicable | Web host bridge, pas proprietaire C/H; entete verifie, test `verify:full-game:bridge`. |
+| `apps/web/src/full-game-command-bridge.ts` | function | `createFullGameCommandBridgeState` | oui | `N/A` | `N/A (web host bridge)` | New |  | TS sans lien source | Non applicable | Web host bridge, pas proprietaire C/H; entete verifie, test `verify:full-game:bridge`. |
+| `apps/web/src/full-game-command-bridge.ts` | function | `registerFullGameCommandBridge` | oui | `N/A` | `N/A (web host bridge)` | New |  | TS sans lien source | Non applicable | Web bridge transitoire; proprietaires C/H `SV_KillServer_f`, `SV_GameMap_f` et `SV_Map_f` dans `packages/server/src/sv_ccmds.ts`. |
+| `apps/web/src/full-game-command-bridge.ts` | function | `syncFullGameLoadingState` | oui | `N/A` | `N/A (web host bridge)` | New |  | TS sans lien source | Non applicable | Web bridge consommant l'etat client; proprietaire C/H `SCR_BeginLoadingPlaque` dans `packages/client/src/cl_scrn.ts`. |
+| `apps/web/src/full-game-command-bridge.ts` | function | `registerCommand` | non | `N/A` | `N/A (local helper)` | New |  | TS sans lien source | Non applicable |  |
