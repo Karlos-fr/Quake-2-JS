@@ -354,6 +354,28 @@ assert.equal(FindTarget(soundMonster, runtime), true, "FindTarget must accept re
 assert.equal(soundMonster.enemy, soundNoise, "FindTarget sound enemy mismatch");
 assert.equal((soundMonster.monsterinfo.aiflags & AI_SOUND_TARGET) !== 0, true, "FindTarget must set AI_SOUND_TARGET for heard targets");
 
+const impactNoise = createRuntimeEntity({ classname: "player_noise_impact" }, 88);
+impactNoise.inuse = true;
+impactNoise.owner = player3;
+impactNoise.s.origin = [24, 0, 0];
+impactNoise.origin = [24, 0, 0];
+runtime.entities[88] = impactNoise;
+const impactMonster = createFindTargetMonster(89);
+runtime.entities[89] = impactMonster;
+runtime.sound_entity = null;
+runtime.sound_entity_framenum = 0;
+runtime.sound2_entity = impactNoise;
+runtime.sound2_entity_framenum = runtime.framenum;
+assert.equal(FindTarget(impactMonster, runtime), true, "FindTarget must accept fresh secondary impact sound target");
+assert.equal(impactMonster.enemy, impactNoise, "FindTarget secondary sound enemy mismatch");
+assert.equal((impactMonster.monsterinfo.aiflags & AI_SOUND_TARGET) !== 0, true, "FindTarget must set AI_SOUND_TARGET for secondary heard targets");
+impactMonster.enemy = soundMonster.enemy;
+assert.equal(FindTarget(impactMonster, runtime), false, "FindTarget must ignore secondary sound target while already angry");
+impactMonster.enemy = null;
+impactMonster.spawnflags = 1;
+assert.equal(FindTarget(impactMonster, runtime), false, "FindTarget must ignore secondary sound target for stand-ground monsters");
+impactMonster.spawnflags = 0;
+
 const noiseTarget = createRuntimeEntity({ classname: "player_noise" }, 19);
 noiseTarget.inuse = true;
 noiseTarget.s.origin = [32, 0, 0];

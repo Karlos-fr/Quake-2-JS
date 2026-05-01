@@ -206,6 +206,9 @@ writeContext.level.sight_client = player;
 writeContext.level.sight_entity = target;
 writeContext.level.sight_entity_framenum = 121;
 writeContext.level.sound_entity = target;
+writeContext.level.sound_entity_framenum = 122;
+writeContext.level.sound2_entity = player;
+writeContext.level.sound2_entity_framenum = 123;
 WriteLevel(writeContext, "save/level.sav");
 const levelJson = files.get("save/level.sav") ?? "";
 assert.ok(levelJson.includes("\"level_name\": \"Saved Unit\""), "WriteLevel must persist level_name");
@@ -219,6 +222,10 @@ assert.ok(levelJson.includes("\"intermission_angle\": ["), "WriteLevel must pers
 assert.ok(levelJson.includes("\"sight_client\": 1"), "WriteLevel must persist sight_client edict reference");
 assert.ok(levelJson.includes("\"sight_entity\": 2"), "WriteLevel must persist sight_entity edict reference");
 assert.ok(levelJson.includes("\"sight_entity_framenum\": 121"), "WriteLevel must persist sight_entity_framenum");
+assert.ok(levelJson.includes("\"sound_entity\": 2"), "WriteLevel must persist sound_entity edict reference");
+assert.ok(levelJson.includes("\"sound_entity_framenum\": 122"), "WriteLevel must persist sound_entity_framenum");
+assert.ok(levelJson.includes("\"sound2_entity\": 1"), "WriteLevel must persist sound2_entity edict reference");
+assert.ok(levelJson.includes("\"sound2_entity_framenum\": 123"), "WriteLevel must persist sound2_entity_framenum");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
 readContext.runtime.maxclients = 1;
@@ -233,6 +240,12 @@ assert.equal(readContext.runtime.entities[2]?.use, use_target_secret, "ReadLevel
 assert.equal(readContext.runtime.entities[2]?.monsterinfo.currentmove, testMonsterMove, "ReadLevel currentmove restore mismatch");
 assert.equal(readContext.level.sound_entity, readContext.runtime.entities[2], "ReadLevel level edict reference mismatch");
 assert.equal(readContext.runtime.sound_entity, readContext.runtime.entities[2], "ReadLevel runtime level mirror mismatch");
+assert.equal(readContext.level.sound_entity_framenum, 122, "ReadLevel sound_entity_framenum mismatch");
+assert.equal(readContext.runtime.sound_entity_framenum, 122, "ReadLevel runtime sound_entity_framenum mismatch");
+assert.equal(readContext.level.sound2_entity, readContext.runtime.entities[1], "ReadLevel sound2_entity mismatch");
+assert.equal(readContext.runtime.sound2_entity, readContext.runtime.entities[1], "ReadLevel runtime sound2_entity mismatch");
+assert.equal(readContext.level.sound2_entity_framenum, 123, "ReadLevel sound2_entity_framenum mismatch");
+assert.equal(readContext.runtime.sound2_entity_framenum, 123, "ReadLevel runtime sound2_entity_framenum mismatch");
 assert.equal(readContext.runtime.time, 12, "ReadLevel must restore runtime time from level locals");
 assert.equal(readContext.level.level_name, "Saved Unit", "ReadLevel level_name mismatch");
 assert.equal(readContext.level.mapname, "unit1", "ReadLevel mapname mismatch");

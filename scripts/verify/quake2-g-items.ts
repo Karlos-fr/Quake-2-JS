@@ -36,6 +36,7 @@ import {
   Pickup_Bandolier,
   Pickup_Pack,
   Pickup_Armor,
+  Pickup_Key,
   Pickup_Powerup,
   PowerArmorType,
   PrecacheItem,
@@ -106,6 +107,7 @@ function main(): void {
   verifyUseEnvirosuitTimeout();
   verifyUseInvulnerabilityTimeout();
   verifyUseSilencerShots();
+  verifyPickupKeyCoopAndPowerCubeRules();
   verifyItemLookupHelpers();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
@@ -1331,6 +1333,64 @@ function verifyUseSilencerShots(): void {
 
   assertNumber(player.client!.silencer_shots, 60, "Use_Silencer stacks another 30 silenced shots on repeated use");
   assertNumber(player.client!.pers.selected_item, -1, "Use_Silencer revalidates selected item after consuming the last Silencer");
+}
+
+function verifyPickupKeyCoopAndPowerCubeRules(): void {
+  const dataCd = requireItem("Data CD");
+  const powerCube = requireItem("Power Cube");
+
+  const soloRuntime = createHarnessRuntime();
+  const soloPlayer = createPlayer(soloRuntime);
+  const soloKey = spawnGameEntity(soloRuntime);
+  soloKey.classname = "key_data_cd";
+  soloKey.item = dataCd;
+
+  assertBoolean(Pickup_Key(soloKey, soloPlayer, soloRuntime), true, "Pickup_Key accepts a single-player key pickup");
+  assertBoolean(Pickup_Key(soloKey, soloPlayer, soloRuntime), true, "Pickup_Key accepts duplicate single-player key pickups");
+  assertNumber(soloPlayer.client!.pers.inventory[dataCd.index], 2, "Pickup_Key increments non-coop key inventory each time");
+
+  const coopRuntime = createHarnessRuntime();
+  coopRuntime.coop = true;
+  const coopPlayer = createPlayer(coopRuntime);
+  const coopKey = spawnGameEntity(coopRuntime);
+  coopKey.classname = "key_data_cd";
+  coopKey.item = dataCd;
+
+  assertBoolean(Pickup_Key(coopKey, coopPlayer, coopRuntime), true, "Pickup_Key accepts the first coop normal key pickup");
+  assertNumber(coopPlayer.client!.pers.inventory[dataCd.index], 1, "Pickup_Key stores coop normal keys as a single owned slot");
+  assertBoolean(Pickup_Key(coopKey, coopPlayer, coopRuntime), false, "Pickup_Key rejects duplicate coop normal keys");
+  assertNumber(coopPlayer.client!.pers.inventory[dataCd.index], 1, "Pickup_Key leaves duplicate coop normal key inventory unchanged");
+
+  const cubeEntity = spawnGameEntity(coopRuntime);
+  cubeEntity.classname = "key_power_cube";
+  cubeEntity.item = powerCube;
+  cubeEntity.spawnflags = 1 << 10;
+
+  assertBoolean(Pickup_Key(cubeEntity, coopPlayer, coopRuntime), true, "Pickup_Key accepts the first coop power cube bit");
+  assertNumber(coopPlayer.client!.pers.inventory[powerCube.index], 1, "Pickup_Key increments power cube inventory on first bit pickup");
+  assertNumber(coopPlayer.client!.pers.power_cubes, 4, "Pickup_Key records the shifted coop power cube bitmask");
+  assertBoolean(Pickup_Key(cubeEntity, coopPlayer, coopRuntime), false, "Pickup_Key rejects a duplicate coop power cube bit");
+  assertNumber(coopPlayer.client!.pers.inventory[powerCube.index], 1, "Pickup_Key leaves duplicate power cube inventory unchanged");
+
+  const touchRuntime = createHarnessRuntime();
+  touchRuntime.coop = true;
+  const touchPlayer = createPlayer(touchRuntime);
+  const touchKey = spawnGameEntity(touchRuntime);
+  touchKey.classname = "key_data_cd";
+  touchKey.item = dataCd;
+  touchPlayer.client!.pers.selected_item = -1;
+
+  Touch_Item(touchKey, touchPlayer, touchRuntime);
+
+  assertNumber(touchPlayer.client!.pers.inventory[dataCd.index], 1, "Touch_Item routes key pickup through Pickup_Key");
+  assertNumber(touchPlayer.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + dataCd.index, "Touch_Item reports the key pickup string");
+  assertNumber(touchPlayer.client!.ps.stats[STAT_PICKUP_ICON] > 0 ? 1 : 0, 1, "Touch_Item reports the key pickup icon");
+  assertNumber(touchPlayer.client!.pers.selected_item, -1, "Touch_Item does not select keys because they have no use callback");
+  assertBoolean(drainGameSoundEvents(touchRuntime).some((event) => event.soundPath === "items/pkup.wav"), true, "Touch_Item emits the key pickup sound");
+  assertBoolean(touchKey.inuse, true, "Touch_Item keeps coop stay keys in the world after pickup");
+
+  Touch_Item(touchKey, touchPlayer, touchRuntime);
+  assertNumber(touchPlayer.client!.pers.inventory[dataCd.index], 1, "Touch_Item duplicate coop key rejection leaves inventory unchanged");
 }
 
 function verifyCoopPowerCubeSpawnFlags(): void {

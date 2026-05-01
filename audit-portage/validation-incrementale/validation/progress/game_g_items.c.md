@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Pickup_Key`.
+
+Validation Pickup_Key du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_Key` conserve le comportement C: hors coop, chaque pickup incremente l'inventaire; en coop, une cle normale deja possedee est refusee et l'inventaire reste a 1; pour `key_power_cube`, le bit `((spawnflags & 0x0000ff00) >> 8)` est teste dans `client.pers.power_cubes`, l'inventaire est incremente seulement au premier bit, puis le bit est memorise. Header TS complete avec `Behavior` et note de portage sur la garde item absente du C mais utile aux entites TS mal formees.
+
+Runtime branche via `Touch_Item`, le dispatch `callItemPickup`, les entrees `IT_KEY` de `itemlist`, le marquage des power cubes coop dans `SpawnItem`, la consommation des cles/power cubes dans `g_trigger.ts`, et la preservation des cles coop dans `p_client.ts`. `apps/web` doit consommer ce flux par le runtime local/full-game, les stats pickup/inventaire/HUD, sons pickup et snapshots; aucune logique parallele key pickup detectee. `renderer-three` doit consommer les sorties visibles generiques: modeles MD2 de cles, disparition hors coop ou maintien coop `IT_STAY_COOP`, et scene refresh; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyPickupKeyCoopAndPowerCubeRules` couvre solo, duplicate coop normal key, bitmask power cube, rejet duplicate cube, passage `Touch_Item`, stats pickup, son pickup, absence de selection de cle et maintien de l'entite coop stay. Tests lances: `npm run verify:g-items`, `npm run verify:p-hud`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck` OK.
+
 - `Use_Silencer`.
 
 Validation Silencer du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Use_Silencer` conserve le comportement C: decremente l'inventaire `ITEM_INDEX(item)`, appelle `ValidateSelectedItem`, puis ajoute 30 a `client->silencer_shots`. L'appel son d'activation reste absent comme dans le C, ou `gi.sound` est commente. L'entree `item_silencer` de `itemlist` est alignee (`Pickup_Powerup`, `Use_Silencer`, `Drop_General`, pickup sound `items/pkup.wav`, modele `models/items/silencer/tris.md2`, `EF_ROTATE`, icone `p_silencer`, pickup name `Silencer`, width 2, quantity 60, flags `IT_POWERUP`, precache vide). Header TS complete avec `Behavior` et note de portage sur le son commente.
@@ -285,4 +293,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Key`.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Add_Ammo`.

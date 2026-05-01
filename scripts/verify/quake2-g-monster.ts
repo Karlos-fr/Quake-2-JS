@@ -79,6 +79,7 @@ import {
   monster_start_go,
   monster_think,
   monster_triggered_spawn,
+  monster_triggered_spawn_use,
   monster_use,
   type GameMonsterHooks,
   walkmonster_start_go
@@ -490,6 +491,23 @@ function verifyTriggeredSpawnStartupPath(): void {
   assert.equal(typeof monster.think, "function", "monster_triggered_spawn_use should schedule the delayed spawn think");
   assert.equal(monster.nextthink, runtime.time + FRAMETIME, "monster_triggered_spawn_use should delay spawn by one frame");
   assert.equal(monster.enemy, activator, "monster_triggered_spawn_use should preserve the activating client as enemy");
+
+  const nonClientActivator = createRuntimeEntity({ classname: "func_button" }, 16);
+  const hiddenMonster = createMonster(runtime, 17);
+  hiddenMonster.health = 100;
+  hiddenMonster.enemy = null;
+  let delayedFoundTargetCalls = 0;
+  monster_triggered_spawn_use(hiddenMonster, null, nonClientActivator, runtime, {
+    FoundTarget: () => {
+      delayedFoundTargetCalls += 1;
+    }
+  });
+  assert.equal(hiddenMonster.enemy, null, "monster_triggered_spawn_use should ignore non-client activators as the delayed enemy");
+  assert.equal(hiddenMonster.nextthink, runtime.time + FRAMETIME, "monster_triggered_spawn_use should still schedule hidden monsters without a client enemy");
+  assert.equal(typeof hiddenMonster.use, "function", "monster_triggered_spawn_use should replace use with the normal monster_use path");
+  hiddenMonster.use!(hiddenMonster, null, activator, runtime);
+  assert.equal(hiddenMonster.enemy, activator, "monster_triggered_spawn_use should install monster_use for later activations");
+  assert.equal(delayedFoundTargetCalls, 1, "monster_triggered_spawn_use should preserve hooks through the installed monster_use callback");
 
   let foundTargetCalls = 0;
   monster_triggered_spawn(monster, runtime, {

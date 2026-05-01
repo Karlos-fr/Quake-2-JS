@@ -47,6 +47,7 @@ import {
   button_wait,
   door_blocked,
   door_use,
+  door_secret_move1,
   door_go_down,
   door_go_up,
   door_hit_bottom,
@@ -1229,6 +1230,32 @@ SP_func_door_secret(secret, runtime);
 assert.equal(secret.classname, "func_door", "SP_func_door_secret classname mismatch");
 assert.deepEqual(secret.pos1, [0, -64, 0], "SP_func_door_secret first move mismatch");
 assert.deepEqual(secret.pos2, [32, -64, 0], "SP_func_door_secret second move mismatch");
+assert.equal(secret.health, 0, "SECRET_ALWAYS_SHOOT default shootable health mismatch");
+assert.equal(secret.takedamage, damage_t.DAMAGE_YES, "SECRET_ALWAYS_SHOOT default takedamage mismatch");
+assert.equal(secret.die?.name, "door_secret_die", "SECRET_ALWAYS_SHOOT default die callback mismatch");
+door_secret_move1(secret, runtime);
+assert.equal(secret.nextthink, runtime.time + 1, "door_secret_move1 delay mismatch");
+assert.equal(secret.think?.name, "door_secret_move2", "door_secret_move1 next think mismatch");
+
+const secretLeft = entity("func_door_secret", 145, { angle: "0", spawnflags: "2", targetname: "secret_left" });
+secretLeft.size = [32, 64, 16];
+SP_func_door_secret(secretLeft, runtime);
+assert.deepEqual(secretLeft.pos1, [0, 64, 0], "SECRET_1ST_LEFT first move mismatch");
+assert.deepEqual(secretLeft.pos2, [32, 64, 0], "SECRET_1ST_LEFT second move mismatch");
+assert.equal(secretLeft.takedamage, damage_t.DAMAGE_NO, "targeted SECRET_1ST_LEFT must not be shootable by default");
+
+const secretDown = entity("func_door_secret", 146, { angle: "0", spawnflags: "4", targetname: "secret_down" });
+secretDown.size = [32, 64, 16];
+SP_func_door_secret(secretDown, runtime);
+assert.deepEqual(secretDown.pos1, [0, 0, -16], "SECRET_1ST_DOWN first move mismatch");
+assert.deepEqual(secretDown.pos2, [32, 0, -16], "SECRET_1ST_DOWN second move mismatch");
+
+const secretAlwaysShoot = entity("func_door_secret", 147, { angle: "0", spawnflags: "1", targetname: "secret_shoot" });
+secretAlwaysShoot.size = [32, 64, 16];
+SP_func_door_secret(secretAlwaysShoot, runtime);
+assert.equal(secretAlwaysShoot.health, 0, "SECRET_ALWAYS_SHOOT targeted health mismatch");
+assert.equal(secretAlwaysShoot.takedamage, damage_t.DAMAGE_YES, "SECRET_ALWAYS_SHOOT targeted takedamage mismatch");
+assert.equal(secretAlwaysShoot.die?.name, "door_secret_die", "SECRET_ALWAYS_SHOOT targeted die callback mismatch");
 
 const killbox = entity("func_killbox", 16);
 SP_func_killbox(killbox, runtime);

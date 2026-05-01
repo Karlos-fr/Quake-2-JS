@@ -21,6 +21,7 @@ import {
   SV_Impact,
   SV_Push,
   SV_PushEntity,
+  SV_Physics_None,
   SV_Physics_Toss,
   SV_RunThink,
   SV_TestEntityPosition
@@ -743,6 +744,37 @@ G_RunFrame(runtime);
 assertEqual("G_RunFrame.SV_RunThink.count", frameThinkCount, 1);
 assertEqual("G_RunFrame.SV_RunThink.nextthink", frameThinkEnt.nextthink, 0);
 assertEqual("G_RunFrame.SV_RunThink.visible-event", frameThinkEnt.s.event, 42);
+
+const nonePhysicsEnt = spawnGameEntity(runtime);
+nonePhysicsEnt.classname = "none-physics";
+nonePhysicsEnt.movetype = MOVETYPE_NONE;
+nonePhysicsEnt.origin = [5, 6, 7];
+nonePhysicsEnt.s.origin = [5, 6, 7];
+nonePhysicsEnt.velocity = [40, -30, 20];
+nonePhysicsEnt.nextthink = runtime.time + 10;
+let nonePhysicsThinkCount = 0;
+let nonePhysicsTraceCount = 0;
+nonePhysicsEnt.think = () => {
+  nonePhysicsThinkCount += 1;
+};
+runtime.collision = {
+  ...defaultCollision,
+  trace: (...args) => {
+    nonePhysicsTraceCount += 1;
+    return defaultCollision.trace(...args);
+  }
+};
+SV_Physics_None(nonePhysicsEnt, runtime);
+assertEqual("SV_Physics_None.future-think", nonePhysicsThinkCount, 0);
+assertEqual("SV_Physics_None.trace-count", nonePhysicsTraceCount, 0);
+assertVec("SV_Physics_None.origin", nonePhysicsEnt.origin, [5, 6, 7]);
+assertVec("SV_Physics_None.s-origin", nonePhysicsEnt.s.origin, [5, 6, 7]);
+assertVec("SV_Physics_None.velocity", nonePhysicsEnt.velocity, [40, -30, 20]);
+nonePhysicsEnt.nextthink = runtime.time;
+SV_Physics_None(nonePhysicsEnt, runtime);
+assertEqual("SV_Physics_None.due-think", nonePhysicsThinkCount, 1);
+assertEqual("SV_Physics_None.nextthink", nonePhysicsEnt.nextthink, 0);
+runtime.collision = defaultCollision;
 
 const tossEnt = spawnGameEntity(runtime);
 tossEnt.classname = "crate";

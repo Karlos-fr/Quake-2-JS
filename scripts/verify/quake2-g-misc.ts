@@ -32,6 +32,7 @@ import {
   SP_info_notnull,
   SP_info_null,
   SP_misc_blackhole,
+  SP_misc_banner,
   SP_misc_easterchick,
   SP_misc_easterchick2,
   SP_misc_eastertank,
@@ -67,6 +68,7 @@ import {
   gib_touch,
   linkGameEntity,
   misc_blackhole_think,
+  misc_banner_think,
   misc_easterchick2_think,
   misc_easterchick_think,
   misc_blackhole_use,
@@ -101,6 +103,7 @@ function main(): void {
   verifyTargetStringMapsFrames();
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
+  verifyMiscBannerSpawnsAndLoopsFrames();
   verifyMiscBlackholeSpawnsLoopsAndFreesOnUse();
   verifyMiscEastertankSpawnsAndLoopsStandFrames();
   verifyMiscEasterchickSpawnsAndLoopsStandFrames();
@@ -661,6 +664,46 @@ function verifyMiscBlackholeSpawnsLoopsAndFreesOnUse(): void {
   useGameEntity(runtime, dispatch, null, blackhole);
   assert.equal(dispatch.inuse, false, "misc_blackhole_use must free the blackhole entity");
   assert.equal(drainGameTempEntityEvents(runtime).length, 0, "misc_blackhole_use must keep the source-commented temp entity omitted");
+}
+
+function verifyMiscBannerSpawnsAndLoopsFrames(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 30;
+
+  withMockedRandom([0.75], () => {
+    const banner = spawnFreeableEntity(runtime);
+    banner.classname = "misc_banner";
+
+    SP_misc_banner(banner, runtime);
+
+    assert.equal(banner.movetype, MOVETYPE_NONE, "misc_banner must be stationary");
+    assert.equal(banner.solid, SOLID_NOT, "misc_banner must be non-solid");
+    assert.equal(runtime.assets.modelPaths[banner.s.modelindex - 1], "models/objects/banner/tris.md2", "misc_banner modelindex must resolve to banner/tris.md2");
+    assert.equal(banner.s.frame, 12, "misc_banner must choose rand()%16 as the initial frame");
+    assert.equal(banner.think, misc_banner_think, "misc_banner must install misc_banner_think");
+    assert.equal(banner.nextthink, runtime.time + FRAMETIME, "misc_banner must schedule its first think one frame later");
+    assert.equal(banner.linked, true, "misc_banner must be linked for snapshots");
+  });
+
+  const loopingBanner = spawnFreeableEntity(runtime);
+  loopingBanner.classname = "misc_banner";
+  loopingBanner.s.frame = 15;
+
+  misc_banner_think(loopingBanner, runtime);
+
+  assert.equal(loopingBanner.s.frame, 0, "misc_banner_think must wrap frames modulo 16");
+  assert.equal(loopingBanner.think, misc_banner_think, "misc_banner_think must keep its think loop installed");
+  assert.equal(loopingBanner.nextthink, runtime.time + FRAMETIME, "misc_banner_think must schedule the next source frame tick");
+
+  withMockedRandom([0], () => {
+    const dispatch = spawnFreeableEntity(runtime);
+    dispatch.classname = "misc_banner";
+
+    ED_CallSpawn(dispatch, runtime);
+
+    assert.equal(dispatch.think, misc_banner_think, "ED_CallSpawn must dispatch misc_banner to SP_misc_banner");
+    assert.equal(dispatch.s.frame, 0, "ED_CallSpawn misc_banner must preserve rand()%16 lower bound");
+  });
 }
 
 function verifyMiscEastertankSpawnsAndLoopsStandFrames(): void {

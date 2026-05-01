@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `misc_banner_think` et `SP_misc_banner`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `misc_banner_think` conserve `s.frame = (s.frame + 1) % 16` et `nextthink = level.time + FRAMETIME`; `SP_misc_banner` conserve `MOVETYPE_NONE`, `SOLID_NOT`, modele `models/objects/banner/tris.md2`, frame initiale `rand() % 16`, link, callback think et premier think a `level.time + FRAMETIME`.
+  - Commentaires d'en-tete verifies pour les deux fonctions: original/source/categorie portee/fidelite et comportement documentes.
+  - Branchement runtime verifie: `misc_banner` est enregistre dans `g_spawn.ts`, exporte via `index.ts`, dispatchable par `ED_CallSpawn`; `SP_misc_banner` installe le callback; `misc_banner_think` est atteint via `G_RunFrame`/`SV_RunThink` ou `runPendingThinks`.
+  - `apps/web`: integration attendue car le lot produit une entite MD2 visible animee par frames. Aucune logique parallele trouvee; les flux local/full-game consomment snapshots, modelindices et frames issus du runtime.
+  - `renderer-three`: integration attendue pour modele MD2, frame courante et presence dans la scene. Les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour spawn complet, modelindex, frame initiale aleatoire, cadence de think, wrap 15->0, dispatch `ED_CallSpawn` et link visible.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `misc_deadsoldier_die`, local `n` et `SP_misc_deadsoldier` si le lot reste petit.
+
 - 2026-05-01: `commander_body_think`, `commander_body_use`, `commander_body_drop` et `SP_monster_commander_body`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `commander_body_think` conserve le pre-increment de frame, la reschedule tant que `s.frame < 24`, l'arret par `nextthink = 0` et le son `tank/thud.wav` quand la frame source atteint 22; `commander_body_use` installe le think, planifie `level.time + FRAMETIME` et joue `tank/pain.wav`; `commander_body_drop` force `MOVETYPE_TOSS` et ajoute 2 a l'origine Z; `SP_monster_commander_body` conserve `MOVETYPE_NONE`, `SOLID_BBOX`, modele `models/monsters/commandr/tris.md2`, bbox `[-32,-32,0]` / `[32,32,48]`, callback use, `DAMAGE_YES`, `FL_GODMODE`, `RF_FRAMELERP`, precache sons, link et drop a `level.time + 5 * FRAMETIME`.

@@ -767,6 +767,10 @@ export function monster_triggered_spawn(self: GameEntity, runtime: GameRuntime, 
  *
  * Behavior:
  * - Arms one trigger-spawn monster for its delayed one-frame materialization.
+ *
+ * Porting notes:
+ * - Accepts a nullable activator for the shared TypeScript callback shape, while only client activators become the delayed enemy.
+ * - Uses wrappers so the delayed spawn and later `monster_use` callback keep the same hook adapter.
  */
 export function monster_triggered_spawn_use(
   self: GameEntity,

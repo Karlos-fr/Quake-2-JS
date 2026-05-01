@@ -1,12 +1,22 @@
 # Progress - Quake-2-master/game/g_monster.c
 
 - Statut: En cours
-- Dernier lot valide: `monster_triggered_spawn`
-- Prochain lot recommande: `monster_triggered_spawn_use`
+- Dernier lot valide: `monster_triggered_spawn_use`
+- Prochain lot recommande: `monster_triggered_start`
 - Tests de reference: `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Blocages: aucun pour le lot valide
 
 ## Session courante
+
+- Lot traite: `monster_triggered_spawn_use`.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS mis a jour, test cible renforce dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
+- Runtime: atteignable depuis les monstres a `spawnflags & 2` via `monster_triggered_start` puis le callback `use`; le lot arme `monster_triggered_spawn` avec un delai d'une frame, conserve seulement les activateurs clients comme `enemy`, puis remplace `use` par le flux normal `monster_use`. `SV_RunThink` execute ensuite la materialisation.
+- apps/web: pas de logique parallele attendue; les activations et frames serveur passent par le runtime local/full-game, puis les entites materialisees sont consommees par le client web via snapshots/refresh. Tests `verify:local-gameplay-sync`, `verify:full-game:three-renderer` et `verify:web-render-order` OK.
+- renderer-three: sortie visible attendue indirecte apres la materialisation du monstre: modele, origine, frames et render state. Ces donnees passent par les snapshots/client refresh et sont consommees par `refresh-entity-sync`/MD2; pas de branchement gameplay renderer requis.
+- Tests lances: `npm run verify:g-monster` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
+- Prochain lot recommande: `monster_triggered_start`.
+
+## Session precedente
 
 - Lot traite: `monster_triggered_spawn`.
 - Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS `Close` verifie, test cible renforce dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.

@@ -2086,6 +2086,15 @@ export function door_secret_use(self: GameEntity, _other: GameEntity | null, act
   door_use_areaportals(self, true, runtime);
 }
 
+/**
+ * Original name: door_secret_move1
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Waits one second after the first secret-door slide, then schedules the second move.
+ */
 export function door_secret_move1(self: GameEntity, runtime: GameRuntime): void {
   self.nextthink = runtime.time + 1;
   self.think = door_secret_move2;

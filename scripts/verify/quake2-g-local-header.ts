@@ -363,6 +363,10 @@ assert.deepEqual(levelLocals.intermission_angle, [0, 0, 0], "level_locals_t inte
 assert.equal(levelLocals.sight_client, null, "level_locals_t sight_client default mismatch");
 assert.equal(levelLocals.sight_entity, null, "level_locals_t sight_entity default mismatch");
 assert.equal(levelLocals.sight_entity_framenum, 0, "level_locals_t sight_entity_framenum default mismatch");
+assert.equal(levelLocals.sound_entity, null, "level_locals_t sound_entity default mismatch");
+assert.equal(levelLocals.sound_entity_framenum, 0, "level_locals_t sound_entity_framenum default mismatch");
+assert.equal(levelLocals.sound2_entity, null, "level_locals_t sound2_entity default mismatch");
+assert.equal(levelLocals.sound2_entity_framenum, 0, "level_locals_t sound2_entity_framenum default mismatch");
 assert.equal(levelLocals.body_que, 0, "level_locals_t body_que mismatch");
 levelLocals.framenum = 42;
 levelLocals.time = 4.2;
@@ -377,6 +381,10 @@ levelLocals.intermission_angle = [10, 90, 0];
 levelLocals.sight_client = entity;
 levelLocals.sight_entity = entity;
 levelLocals.sight_entity_framenum = 43;
+levelLocals.sound_entity = entity;
+levelLocals.sound_entity_framenum = 44;
+levelLocals.sound2_entity = entity;
+levelLocals.sound2_entity_framenum = 45;
 assert.equal(level.framenum, 42, "level_locals_t framenum field mismatch");
 assert.equal(level.time, 4.2, "level_locals_t time field mismatch");
 assert.equal(level.level_name, "Outer Base", "level_locals_t level_name field mismatch");
@@ -390,6 +398,10 @@ assert.deepEqual(level.intermission_angle, [10, 90, 0], "level_locals_t intermis
 assert.equal(level.sight_client, entity, "level_locals_t sight_client field mismatch");
 assert.equal(level.sight_entity, entity, "level_locals_t sight_entity field mismatch");
 assert.equal(level.sight_entity_framenum, 43, "level_locals_t sight_entity_framenum field mismatch");
+assert.equal(level.sound_entity, entity, "level_locals_t sound_entity field mismatch");
+assert.equal(level.sound_entity_framenum, 44, "level_locals_t sound_entity_framenum field mismatch");
+assert.equal(level.sound2_entity, entity, "level_locals_t sound2_entity field mismatch");
+assert.equal(level.sound2_entity_framenum, 45, "level_locals_t sound2_entity_framenum field mismatch");
 assert.equal(st.sky, null, "spawn_temp sky default mismatch");
 assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");
 assert.equal(FOFS("classname"), "classname", "FOFS selector mismatch");
@@ -406,6 +418,10 @@ assert.equal(LLOFS("intermission_angle"), "intermission_angle", "LLOFS intermiss
 assert.equal(LLOFS("sight_client"), "sight_client", "LLOFS sight_client selector mismatch");
 assert.equal(LLOFS("sight_entity"), "sight_entity", "LLOFS sight_entity selector mismatch");
 assert.equal(LLOFS("sight_entity_framenum"), "sight_entity_framenum", "LLOFS sight_entity_framenum selector mismatch");
+assert.equal(LLOFS("sound_entity"), "sound_entity", "LLOFS sound_entity selector mismatch");
+assert.equal(LLOFS("sound_entity_framenum"), "sound_entity_framenum", "LLOFS sound_entity_framenum selector mismatch");
+assert.equal(LLOFS("sound2_entity"), "sound2_entity", "LLOFS sound2_entity selector mismatch");
+assert.equal(LLOFS("sound2_entity_framenum"), "sound2_entity_framenum", "LLOFS sound2_entity_framenum selector mismatch");
 assert.equal(world([entity]), entity, "world helper mismatch");
 assert.equal(ITEM_INDEX(shotgun!), 2, "ITEM_INDEX mismatch");
 

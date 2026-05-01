@@ -954,6 +954,10 @@ export function Use_Silencer(ent: GameEntity, item: GameItemDefinition, runtime:
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior: In coop, reject duplicate normal keys, track `key_power_cube` ownership through the spawnflag bitmask, and otherwise add one key inventory slot.
+ *
+ * Porting notes: The extra missing-item guard keeps malformed TS harness entities from throwing where the original map item path always supplied `ent->item`.
  */
 export function Pickup_Key(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   const client = requireClient(other, "Pickup_Key");

@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `SV_Physics_Pusher`.
-- Prochain lot recommande: `SV_Physics_None`.
+- Dernier lot valide: `SV_Physics_None`.
+- Prochain lot recommande: `SV_Physics_Noclip`.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -136,4 +136,15 @@
 - apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace `SV_Physics_Pusher`. Les sorties attendues sont les positions/angles de brush models et les evenements indirects deja consommes par les snapshots/refresh frames/drains runtime.
 - renderer-three: pas de sortie renderer propre de type particules, beams, dlights, temp entities, images, frames, areabits ou camera; les sorties visibles attendues sont les origines/angles des entites et brush models deplaces, consommees par `buildBrushModelSnapshots`, `buildInterpolatedBrushModelSnapshots`, `CL_BuildRefreshFrame`, `createThreeRefreshEntitySync` et `gl-world-scene-adapter`.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour le no-op `FL_TEAMSLAVE`, le succes avec `SV_RunThink`, et l'echec avec rollback, bump de `nextthink` et callback `blocked`.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `SV_Physics_None`
+
+- Lot traite: `SV_Physics_None`.
+- Comparaison C/TS: le C appelle uniquement `SV_RunThink(ent)` pour les objets non mobiles; le TS appelle uniquement `SV_RunThink(ent, runtime)`. Aucun mouvement, gravite, collision, relink ou callback touch/trigger n'est ajoute.
+- Commentaire d'en-tete: present et conforme (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement).
+- Runtime: integre via `G_RunFrame` / `G_RunEntity` pour `MOVETYPE_NONE`; ce flux couvre les entites statiques qui ont seulement un think regulier.
+- apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace `SV_Physics_None`. Les sorties attendues sont uniquement celles que le callback think peut produire ensuite via snapshots, sons, temp entities ou etats runtime.
+- renderer-three: pas de sortie renderer directe de type modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene. Si le think modifie des champs visibles ou emet des evenements, les flux client/renderer existants les consomment indirectement.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour think futur/du, absence de trace collision et absence de modification d'origine/velocite.
 - Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
