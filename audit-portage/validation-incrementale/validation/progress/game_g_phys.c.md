@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `STOP_EPSILON` et `ClipVelocity` avec locales `backoff` / `change`.
-- Prochain lot recommande: `MAX_CLIP_PLANES`, puis debuter `SV_FlyMove` avec les locales `hit`, `dir` et `d` si le lot reste petit.
+- Dernier lot valide: `MAX_CLIP_PLANES` et debut de `SV_FlyMove` avec locales `hit`, `dir` et `d`.
+- Prochain lot recommande: continuer `SV_FlyMove` avec les locales `numplanes`, `planes`, `trace`, `end`, `time_left` et `blocked` si le lot reste petit.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -60,3 +60,14 @@
 - renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les positions/origines et poses derivees apres mouvement physique, consommees par les snapshots client et `renderer-three` (`refresh-entity-sync`, brush models/world scene). Pas de particules, beams, dlights, temp entities, areabits ou camera produits directement par cette entite.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour le flag floor, le flag step/wall, `overbounce`, le seuil `STOP_EPSILON`, et le cas entree/sortie aliasable.
 - Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `MAX_CLIP_PLANES` / debut `SV_FlyMove`
+
+- Lot traite: `MAX_CLIP_PLANES`, `SV_FlyMove`, locales `hit`, `dir` et `d`.
+- Comparaison C/TS: le C fixe `MAX_CLIP_PLANES` a 5, `numbumps` a 4, remet `groundentity` a `NULL`, trace depuis l'origine vers `end`, gere `allsolid`, deplacement partiel, flags floor/step, `hit = trace.ent`, appel `SV_Impact`, stockage des plans, resolution par plan puis par crease avec `CrossProduct(planes[0], planes[1], dir)`, `d = DotProduct(dir, ent->velocity)` et `VectorScale(dir, d, ent->velocity)`. Le TS conserve ces branches avec `runtime.collision`, `asGameEntity(trace.ent)`, tableaux `planes`, `crossProduct` et `scaleVec3`.
+- Commentaire d'en-tete: present et conforme pour `SV_FlyMove` (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement). Le niveau `Close` reste justifie par le runtime explicite et le bridge collision.
+- Runtime: atteignable depuis `G_RunFrame` / `G_RunEntity` via `SV_Physics_Step` pour `MOVETYPE_STEP`, et via `SV_Physics_Toss` pour `MOVETYPE_TOSS`, `MOVETYPE_BOUNCE`, `MOVETYPE_FLY` et `MOVETYPE_FLYMISSILE`. Le lot modifie `velocity`, `origin`, `s.origin`, `groundentity` et peut declencher `SV_Impact`.
+- apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game (`advanceLocalGameplayRuntime` puis `G_RunFrame`) et consomme les positions/snapshots/refresh frames resultants; aucune logique web parallele ne remplace `SV_FlyMove`.
+- renderer-three: pas de sortie renderer directe propre au calcul; les sorties visibles attendues sont les entites/modeles/brush models/camera-scene via origines et refresh frames apres mouvement. Les particules, beams, dlights, temp entities ou sons peuvent seulement venir des callbacks `SV_Impact` deja routes par les flux client/renderer existants.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour `hit`/`groundentity`, la resolution `dir`/`d` sur crease, et la limite `MAX_CLIP_PLANES` avec les 4 bumps du C.
+- Tests lances: `npm run verify:g-phys` OK.
