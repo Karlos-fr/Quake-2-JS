@@ -670,6 +670,20 @@ export interface GameCprintfEvent {
 
 /**
  * Category: New
+ * Purpose: Queue one gameplay-side `gi.centerprintf` request before the engine/server import is available.
+ *
+ * Constraints:
+ * - Must preserve the target entity and final formatted message text.
+ */
+export interface GameCenterprintEvent {
+  frame: number;
+  entity?: GameEntity | null;
+  entityIndex: number | null;
+  message: string;
+}
+
+/**
+ * Category: New
  * Purpose: Queue one gameplay-side temporary entity event emitted by source ports before server multicast serialization is attached.
  *
  * Constraints:
@@ -786,6 +800,7 @@ export interface GameRuntime {
   sound2_entity_framenum: number;
   soundEvents: GameSoundEvent[];
   cprintfEvents: GameCprintfEvent[];
+  centerprintEvents: GameCenterprintEvent[];
   tempEntityEvents: GameTempEntityEvent[];
   configstrings: Map<number, string>;
   playerMuzzleFlashEvents: GamePlayerMuzzleFlashEvent[];
@@ -1241,6 +1256,7 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     sound2_entity_framenum: 0,
     soundEvents: [],
     cprintfEvents: [],
+    centerprintEvents: [],
     tempEntityEvents: [],
     configstrings: new Map<number, string>(),
     playerMuzzleFlashEvents: [],
@@ -2178,6 +2194,29 @@ export function emitGameCprintf(runtime: GameRuntime, entity: GameEntity | null,
 export function drainGameCprintfEvents(runtime: GameRuntime): GameCprintfEvent[] {
   const events = runtime.cprintfEvents.slice();
   runtime.cprintfEvents.length = 0;
+  return events;
+}
+
+/**
+ * Category: New
+ * Purpose: Queue one gameplay-side centerprint event while preserving the original `gi.centerprintf` target semantics.
+ */
+export function emitGameCenterprint(runtime: GameRuntime, entity: GameEntity | null, message: string): void {
+  runtime.centerprintEvents.push({
+    frame: runtime.framenum,
+    entity,
+    entityIndex: entity?.index ?? null,
+    message
+  });
+}
+
+/**
+ * Category: New
+ * Purpose: Drain queued gameplay centerprint events in FIFO order for a server/client bridge.
+ */
+export function drainGameCenterprintEvents(runtime: GameRuntime): GameCenterprintEvent[] {
+  const events = runtime.centerprintEvents.slice();
+  runtime.centerprintEvents.length = 0;
   return events;
 }
 

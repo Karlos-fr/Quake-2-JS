@@ -22,9 +22,12 @@ import {
   createRuntimeEntity,
   drainMonsterMuzzleFlashEvents
 } from "../../packages/game/src/index.js";
-import { MASK_MONSTERSOLID, MASK_SHOT } from "../../packages/qcommon/src/index.js";
+import { EF_FLIES, MASK_MONSTERSOLID, MASK_SHOT } from "../../packages/qcommon/src/index.js";
 import { FL_NOTARGET, MOD_UNKNOWN } from "../../packages/game/src/g_local.js";
 import {
+  M_FliesOff,
+  M_FliesOn,
+  M_FlyCheck,
   monster_death_use,
   monster_fire_bfg,
   monster_fire_blaster,
@@ -53,6 +56,7 @@ function main(): void {
   verifyMonsterDeathUseDropsItemsAndFiresTargets();
   verifyMonsterStartGoFixesPointCombatTargets();
   verifyTriggeredSpawnStartupPath();
+  verifyCorpseFlyScheduling();
 
   console.log("Verification g_monster - shared monster gameplay OK");
 }
@@ -296,6 +300,39 @@ function verifyTriggeredSpawnStartupPath(): void {
 
 }
 
+function verifyCorpseFlyScheduling(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 12;
+  const monster = createMonster(runtime, 16);
+
+  const restoreRandom = replaceMathRandom([0.25, 0.75]);
+  try {
+    M_FlyCheck(monster, runtime);
+  } finally {
+    restoreRandom();
+  }
+
+  assert.equal(monster.think, M_FliesOn, "M_FlyCheck should schedule M_FliesOn when random allows it");
+  assert.equal(monster.nextthink, 24.5, "M_FlyCheck should delay flies by 5 + 10 * random seconds");
+
+  M_FliesOn(monster, runtime);
+  assert.equal((monster.s.effects & EF_FLIES) !== 0, true, "M_FliesOn should set EF_FLIES");
+  assert.equal(runtime.assets.soundPaths[monster.s.sound - 1], "infantry/inflies1.wav", "M_FliesOn should set the infantry flies loop sound");
+  assert.equal(monster.think, M_FliesOff, "M_FliesOn should schedule M_FliesOff");
+  assert.equal(monster.nextthink, runtime.time + 60, "M_FliesOn should shut flies off after 60 seconds");
+
+  M_FliesOff(monster);
+  assert.equal((monster.s.effects & EF_FLIES) !== 0, false, "M_FliesOff should clear EF_FLIES");
+  assert.equal(monster.s.sound, 0, "M_FliesOff should clear the loop sound");
+
+  const underwater = createMonster(runtime, 17);
+  underwater.waterlevel = 1;
+  M_FlyCheck(underwater, runtime);
+  assert.equal(underwater.think, undefined, "M_FlyCheck should not schedule flies underwater");
+  M_FliesOn(underwater, runtime);
+  assert.equal((underwater.s.effects & EF_FLIES) !== 0, false, "M_FliesOn should not enable flies underwater");
+}
+
 function createHarnessRuntime(): GameRuntime {
   return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 }
@@ -374,5 +411,14 @@ function createStraightHitCollision(target: GameEntity): GameRuntime["collision"
       return clearTrace(end);
     },
     pointcontents: () => 0
+  };
+}
+
+function replaceMathRandom(values: number[]): () => void {
+  const original = Math.random;
+  let index = 0;
+  Math.random = () => values[index++] ?? values[values.length - 1] ?? 0;
+  return () => {
+    Math.random = original;
   };
 }

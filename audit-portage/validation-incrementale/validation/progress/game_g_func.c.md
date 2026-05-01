@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: message tactile de porte `door_touch`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1125-1136` avec `packages/game/src/g_func.ts:743-780`.
+- Correction appliquee: `door_touch` emet maintenant une sortie `centerprint` runtime ciblee sur le client touche et le son runtime `misc/talk1.wav` avec canal `CHAN_AUTO`, volume 1 et attenuation `ATTN_NORM`, comme les appels C `gi.centerprintf` et `gi.sound`; le commentaire d'en-tete documente les adapters runtime.
+- Effets verifies: retour immediat pour non-client, garde `touch_debounce_time`, passage du debounce a `level.time + 5.0`/`runtime.time + 5.0`, emission du message centerprint de porte vers le client et son talk1 cible sur le joueur.
+- Branchement: `door_touch` est affectee par `SP_func_door`, `SP_func_door_rotating` et `SP_func_door_secret` aux portes avec `message`, referencees par `g_spawn.ts`; le callback est atteignable par les flux de contact `SV_Impact`, `G_TouchTriggers` et `G_TouchSolids` pendant `G_RunFrame`/physique locale.
+- Integration: `apps/web` ne contient pas de logique parallele `door_touch`; `local-client-controller.ts` draine les centerprints runtime vers `SCR_CenterPrint` et les sons via `drainGameSoundEvents`, puis le navigateur consomme les snapshots/interpolations de brush models. `packages/renderer-three` n'a pas a porter le message gameplay ni le son, et consomme seulement les sorties visibles attendues des portes via brush snapshots/areabits; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npx tsx ./scripts/verify/quake2-web-first-person-camera.ts` OK.
+
 - 2026-05-01: porte shootable `door_killed` et locale matricielle `ent`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1113-1123` avec `packages/game/src/g_func.ts:723-738`.
 - Correction appliquee: `door_killed` applique maintenant `takedamage = DAMAGE_NO` a chaque membre de l'equipe apres restauration `health = max_health`, comme le C; commentaire d'en-tete mis a jour.
@@ -222,7 +230,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `door_touch`.
+- Continuer avec `SP_func_door`.
 
 ## Blocages
 

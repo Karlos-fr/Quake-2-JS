@@ -10,10 +10,10 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/g_phys.c` | function | `SV_TestEntityPosition` | `packages/game/src/g_phys.ts` | `SV_TestEntityPosition` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | function | `SV_TestEntityPosition` | `packages/game/src/g_phys.ts` | `SV_TestEntityPosition` | Valide | A redecouper | `npm run verify:g-phys`; commentaire d'en-tete verifie; runtime via `G_RunFrame` -> `G_RunEntity` -> `SV_Physics_Pusher` -> `SV_Push`; web via runtime gameplay/collision; renderer consomme seulement les positions visibles resultantes. |
+| `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | Valide | A redecouper | Locale de `SV_TestEntityPosition`; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Locale de `SV_TestEntityPosition`; `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Entree locale dupliquee par la matrice pour `SV_TestEntityPosition`; `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | function | `SV_CheckVelocity` | `packages/game/src/g_phys.ts` | `SV_CheckVelocity` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `i` | `packages/game/src/m_move.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | function | `SV_RunThink` | `packages/game/src/g_phys.ts` | `SV_RunThink` | A verifier | A redecouper |  |

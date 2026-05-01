@@ -16,7 +16,8 @@ import {
   G_RunEntity,
   SV_CheckVelocity,
   SV_Physics_Toss,
-  SV_RunThink
+  SV_RunThink,
+  SV_TestEntityPosition
 } from "../../packages/game/src/g_phys.js";
 import {
   MOVETYPE_NONE,
@@ -49,10 +50,17 @@ const worldspawn = runtime.entities[0];
 worldspawn.inuse = true;
 worldspawn.solid = SOLID_BSP;
 worldspawn.linked = true;
+let forcedStartSolid = false;
+let lastTraceStart: [number, number, number] | null = null;
+let lastTraceEnd: [number, number, number] | null = null;
+let lastTraceMask = 0;
 
 runtime.collision = {
   world: {} as never,
   trace(start, mins, maxs, end, passent, contentmask) {
+    lastTraceStart = [...start];
+    lastTraceEnd = [...end];
+    lastTraceMask = contentmask;
     const traceEnt = runtime.entities[0];
     const fraction = end[2] < 0 ? 0.5 : 1;
     const endpos: [number, number, number] = fraction === 1
@@ -61,7 +69,7 @@ runtime.collision = {
 
     return {
       allsolid: false,
-      startsolid: false,
+      startsolid: forcedStartSolid,
       fraction,
       endpos,
       plane: {
@@ -85,6 +93,18 @@ const clipOut: [number, number, number] = [0, 0, 0];
 const clipBlocked = ClipVelocity([10, 0, -5], [0, 0, 1], clipOut, 1);
 assertEqual("ClipVelocity.blocked", clipBlocked, 1);
 assertVec("ClipVelocity.out", clipOut, [10, 0, 0]);
+
+const positionEnt = spawnGameEntity(runtime);
+positionEnt.origin = [7, 8, 9];
+positionEnt.s.origin = [7, 8, 9];
+positionEnt.clipmask = 1234;
+forcedStartSolid = true;
+assertEqual("SV_TestEntityPosition.blocked", SV_TestEntityPosition(positionEnt, runtime), worldspawn);
+assertVec("SV_TestEntityPosition.trace.start", lastTraceStart ?? [], [7, 8, 9]);
+assertVec("SV_TestEntityPosition.trace.end", lastTraceEnd ?? [], [7, 8, 9]);
+assertEqual("SV_TestEntityPosition.trace.mask", lastTraceMask, 1234);
+forcedStartSolid = false;
+assertEqual("SV_TestEntityPosition.clear", SV_TestEntityPosition(positionEnt, runtime), null);
 
 const velocityEnt = spawnGameEntity(runtime);
 velocityEnt.velocity = [2500, -2500, 100];

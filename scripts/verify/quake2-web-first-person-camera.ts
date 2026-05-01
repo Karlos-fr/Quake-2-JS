@@ -32,5 +32,9 @@ assert.ok(
   !controllerSource.includes("camera.updateProjectionMatrix();"),
   "predicted web camera must not churn the shared world projection matrix every frame"
 );
+assert.ok(
+  controllerSource.includes("drainGameCenterprintEvents(gameplayRuntime)") && controllerSource.includes("SCR_CenterPrint(runtime, event.message)"),
+  "local gameplay centerprints must be drained into the client screen centerprint state"
+);
 
 console.log("quake2-web-first-person-camera: ok");

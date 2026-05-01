@@ -2,6 +2,26 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `func_wall_use` / `SP_func_wall`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `func_wall_use` conserve le toggle `SOLID_NOT` vers `SOLID_BSP`, efface/pose `SVF_NOCLIENT`, appelle `KillBox` quand le mur apparait, relink l'entite et supprime `use` hors `TOGGLE`; `SP_func_wall` conserve `MOVETYPE_PUSH`, `gi.setmodel` via `setGameEntityModel`, effets `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, mur simple solid/link, `TRIGGER_SPAWN` force, warning logique `START_ON` sans `TOGGLE` via ajout du bit, et etat initial visible/cache.
+  - Commentaires d'en-tete Strict ajoutes pour `func_wall_use` et `SP_func_wall`.
+  - Branchement runtime verifie: `func_wall` est enregistre dans `g_spawn.ts`, dispatch par `ED_CallSpawn`, puis `func_wall_use` est atteignable par `G_UseTargets`/callback `use`; relink et changements `solid`/`svflags` sont exposes aux snapshots/queries pendant les frames serveur.
+  - `apps/web`: aucune logique parallele de `func_wall` trouvee; integration attendue car les murs brush visibles/caches doivent atteindre le navigateur. Flux full-game via packet entities/brush snapshots et flux local via `buildBrushModelSnapshots`/`syncLocalGameplayFrame` verifies; `verify:full-game:render-source` reste bloque avant scenario sur import existant `packages/client/src/types.js`.
+  - `renderer-three`: integration attendue car sortie visible brush inline (`model`, `solid`, `svflags`, entites de scene). Consommation presente via brush model snapshots passes par `full-game-render-loop` vers `gl-world-scene-adapter`; renderer Three verifie sans compensation gameplay.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaires d'en-tete de portage ajoutes.
+  - `scripts/verify/quake2-g-misc.ts`: couverture directe de `SP_func_wall`, `func_wall_use`, `START_ON`/`TOGGLE`, effets d'animation, dispatch `ED_CallSpawn` et enregistrement modele inline.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+  - `npm run verify:full-game:render-source` bloque avant scenario sur import existant `packages/client/src/types.js`.
+
+- Prochain lot recommande: `func_object_touch` / `func_object_release` / `func_object_use` / `SP_func_object` si le lot reste coherent.
+
 - 2026-05-01: `START_OFF` / `light_use` / `SP_light`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `START_OFF` conserve la valeur macro `1`; `light_use` alterne `CS_LIGHTS + style` entre `"m"` et `"a"` en inversant le bit; `SP_light` libere les lights sans `targetname` ou en deathmatch, n'installe `light_use` que pour `style >= 32`, puis initialise `"a"` ou `"m"` selon `START_OFF`.

@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `DoRespawn` et locales `master` / `count` / `choice`.
+
+Validation respawn items du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `DoRespawn` conserve la branche sans team qui rend l'entite courante visible/touchable, et la branche team qui repart de `teammaster`, compte les membres via `chain`, choisit `rand() % count`, rend uniquement l'item choisi visible, relinke l'entite et emet `EV_ITEM_RESPAWN`. Le port TS est equivalent avec `const master = ent.teammaster ?? ent`, un tableau `choices` pour materialiser les deux boucles C sur `count`, puis `Math.floor(Math.random() * choices.length)` pour `choice`; le header TS existant a ete verifie (`Fidelity level: Close`, source aleatoire JS).
+
+Runtime branche via `SetRespawn`, `droptofloor` pour les items en equipe, les callbacks `think`, `runPendingThinks` et `G_RunFrame`. `apps/web` doit consommer ce flux par le runtime full-game/local, les snapshots client et les effets d'entite; aucune logique parallele de respawn item detectee. `renderer-three` doit consommer les sorties visibles attendues: item re-visible (`modelindex`, origine, effets/renderfx) et evenement `EV_ITEM_RESPAWN` transforme cote client en son `items/respawn1.wav` et particules `CL_ItemRespawnParticles`, sans branchement gameplay dedie.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyDoRespawnTeamChoice` force temporairement `Math.random`, verifie la selection teammaster/chain, confirme que les items non choisis restent caches, et que l'item choisi repasse `SOLID_TRIGGER`, clear `SVF_NOCLIENT` et recoit `EV_ITEM_RESPAWN`. Tests lances: `npm run verify:g-items`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `FindItem` et locales `i` / `it`.
 
 Validation lookup pickup names du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `FindItem` conserve le parcours de l'itemlist jusqu'a `game.num_items`, le skip des pickup names nulles, la comparaison insensible a la casse de `Q_stricmp` et le retour `NULL` si aucune entree ne correspond. Le port TS masque le slot nul C et le marqueur final dans son tableau, puis itere les seuls items reels; la locale C `i` est portee par l'iteration `for...of`, et le pointeur local `it` par l'element courant `item`. Commentaire d'en-tete `FindItem` mis a jour en `Fidelity level: Strict`.
@@ -189,4 +197,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `DoRespawn` avec ses locales `master` / `count` / `choice` si le lot reste coherent.
+- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `SetRespawn`, puis `Pickup_Powerup` si le lot reste petit.

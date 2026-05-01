@@ -8,6 +8,29 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot constantes `WEAP_BLASTER`, `WEAP_SHOTGUN`, `WEAP_SUPERSHOTGUN`, `WEAP_MACHINEGUN`, `WEAP_CHAINGUN`, `WEAP_GRENADES`, `WEAP_GRENADELAUNCHER`, `WEAP_ROCKETLAUNCHER`, `WEAP_HYPERBLASTER`, `WEAP_RAILGUN`, `WEAP_BFG`.
+- Verdict: `Valide` pour les 11 macros apres renforcement du harness header; aucune correction gameplay TS necessaire.
+- Valeurs H/TS comparees et conformes:
+  - `WEAP_BLASTER = 1`
+  - `WEAP_SHOTGUN = 2`
+  - `WEAP_SUPERSHOTGUN = 3`
+  - `WEAP_MACHINEGUN = 4`
+  - `WEAP_CHAINGUN = 5`
+  - `WEAP_GRENADES = 6`
+  - `WEAP_GRENADELAUNCHER = 7`
+  - `WEAP_ROCKETLAUNCHER = 8`
+  - `WEAP_HYPERBLASTER = 9`
+  - `WEAP_RAILGUN = 10`
+  - `WEAP_BFG = 11`
+- Cible declarative verifiee: `packages/game/src/runtime.ts`; reexport depuis `packages/game/src/g_local.ts` et export public `packages/game/src/index.ts` verifies.
+- Runtime:
+  - Source C: les macros representent `gitem_t->weapmodel` pour les armes et alimentent le numero d'arme visible ajoute dans `ChangeWeapon` via `(weapmodel & 0xff) << 8`.
+  - TS: `packages/game/src/g_items.ts` applique les 11 valeurs aux entrees `rawItemlist`; `packages/game/src/p_weapon.ts` conserve le calcul `visibleWeapon` sur `client.pers.weapon.weapmodel`; `packages/game/src/p_client.ts`/`p_weapon.ts` enregistrent le modele de vue via `ps.gunindex`, et `p_hud.ts` expose l'icone d'arme/HUD via l'item courant.
+- apps/web: aucune reference directe aux constantes `WEAP_*`; pas de logique parallele attendue. Le navigateur declenche et consomme ce flux via le runtime full-game, les commandes/input, snapshots et stats HUD. `verify:full-game:server-host` et `verify:full-game:authoritative-input` OK.
+- renderer-three: aucune reference directe aux constantes; pas d'integration gameplay directe attendue. Les sorties visibles attendues sont les modeles d'armes monde/vue, `ps.gunindex`, frames d'arme et model index joueur produits par le runtime/client, puis consommes par les snapshots/render source; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire d'en-tete `Original name: WEAP_*`, `Source: game/g_local.h`, `Category: Ported`, `Fidelity level: Strict` verifie dans `packages/game/src/runtime.ts`; header de module `packages/game/src/g_local.ts` deja present.
+- Tests: `npm run verify:g-local:header` OK avec assertions valeurs, exports publics et `weapmodel` itemlist; `npm run verify:g-items` OK; `npm run verify:p-weapon` OK; `npm run verify:p-hud` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:full-game:authoritative-input` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot flags item `IT_WEAPON`, `IT_AMMO`, `IT_ARMOR`, `IT_STAY_COOP`, `IT_KEY`, `IT_POWERUP`.
 - Verdict: `Valide` pour les 6 macros apres correction limitee de la consommation TS et renforcement du harness header.
 - Valeurs H/TS comparees et conformes:
@@ -452,7 +475,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les constantes `WEAP_BLASTER` a `WEAP_BFG`.
+- Continuer avec la structure `gitem_s` et le prochain petit groupe de champs associes (`classname`, `pickup_sound`, `world_model`, `world_model_flags`, `view_model`) si le lot reste raisonnable.
 
 ## Blocages
 

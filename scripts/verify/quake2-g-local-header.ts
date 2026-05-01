@@ -85,6 +85,17 @@ import {
   SFL_CROSS_TRIGGER_MASK,
   TAG_GAME,
   TAG_LEVEL,
+  WEAP_BFG,
+  WEAP_BLASTER,
+  WEAP_CHAINGUN,
+  WEAP_GRENADELAUNCHER,
+  WEAP_GRENADES,
+  WEAP_HYPERBLASTER,
+  WEAP_MACHINEGUN,
+  WEAP_RAILGUN,
+  WEAP_ROCKETLAUNCHER,
+  WEAP_SHOTGUN,
+  WEAP_SUPERSHOTGUN,
   createGameClient,
   createGameLocals,
   createLevelLocals,
@@ -118,7 +129,18 @@ import {
   MOVETYPE_STEP as INDEX_MOVETYPE_STEP,
   MOVETYPE_STOP as INDEX_MOVETYPE_STOP,
   MOVETYPE_TOSS as INDEX_MOVETYPE_TOSS,
-  MOVETYPE_WALK as INDEX_MOVETYPE_WALK
+  MOVETYPE_WALK as INDEX_MOVETYPE_WALK,
+  WEAP_BFG as INDEX_WEAP_BFG,
+  WEAP_BLASTER as INDEX_WEAP_BLASTER,
+  WEAP_CHAINGUN as INDEX_WEAP_CHAINGUN,
+  WEAP_GRENADELAUNCHER as INDEX_WEAP_GRENADELAUNCHER,
+  WEAP_GRENADES as INDEX_WEAP_GRENADES,
+  WEAP_HYPERBLASTER as INDEX_WEAP_HYPERBLASTER,
+  WEAP_MACHINEGUN as INDEX_WEAP_MACHINEGUN,
+  WEAP_RAILGUN as INDEX_WEAP_RAILGUN,
+  WEAP_ROCKETLAUNCHER as INDEX_WEAP_ROCKETLAUNCHER,
+  WEAP_SHOTGUN as INDEX_WEAP_SHOTGUN,
+  WEAP_SUPERSHOTGUN as INDEX_WEAP_SUPERSHOTGUN
 } from "../../packages/game/src/index.js";
 import { FindItem, GetArmorInfoByItem, GetItemByIndex } from "../../packages/game/src/g_items.js";
 import { createRuntimeEntity } from "../../packages/game/src/runtime.js";
@@ -179,6 +201,28 @@ assert.equal(INDEX_IT_ARMOR, IT_ARMOR, "public IT_ARMOR export mismatch");
 assert.equal(INDEX_IT_STAY_COOP, IT_STAY_COOP, "public IT_STAY_COOP export mismatch");
 assert.equal(INDEX_IT_KEY, IT_KEY, "public IT_KEY export mismatch");
 assert.equal(INDEX_IT_POWERUP, IT_POWERUP, "public IT_POWERUP export mismatch");
+assert.equal(WEAP_BLASTER, 1, "WEAP_BLASTER mismatch");
+assert.equal(WEAP_SHOTGUN, 2, "WEAP_SHOTGUN mismatch");
+assert.equal(WEAP_SUPERSHOTGUN, 3, "WEAP_SUPERSHOTGUN mismatch");
+assert.equal(WEAP_MACHINEGUN, 4, "WEAP_MACHINEGUN mismatch");
+assert.equal(WEAP_CHAINGUN, 5, "WEAP_CHAINGUN mismatch");
+assert.equal(WEAP_GRENADES, 6, "WEAP_GRENADES mismatch");
+assert.equal(WEAP_GRENADELAUNCHER, 7, "WEAP_GRENADELAUNCHER mismatch");
+assert.equal(WEAP_ROCKETLAUNCHER, 8, "WEAP_ROCKETLAUNCHER mismatch");
+assert.equal(WEAP_HYPERBLASTER, 9, "WEAP_HYPERBLASTER mismatch");
+assert.equal(WEAP_RAILGUN, 10, "WEAP_RAILGUN mismatch");
+assert.equal(WEAP_BFG, 11, "WEAP_BFG mismatch");
+assert.equal(INDEX_WEAP_BLASTER, WEAP_BLASTER, "public WEAP_BLASTER export mismatch");
+assert.equal(INDEX_WEAP_SHOTGUN, WEAP_SHOTGUN, "public WEAP_SHOTGUN export mismatch");
+assert.equal(INDEX_WEAP_SUPERSHOTGUN, WEAP_SUPERSHOTGUN, "public WEAP_SUPERSHOTGUN export mismatch");
+assert.equal(INDEX_WEAP_MACHINEGUN, WEAP_MACHINEGUN, "public WEAP_MACHINEGUN export mismatch");
+assert.equal(INDEX_WEAP_CHAINGUN, WEAP_CHAINGUN, "public WEAP_CHAINGUN export mismatch");
+assert.equal(INDEX_WEAP_GRENADES, WEAP_GRENADES, "public WEAP_GRENADES export mismatch");
+assert.equal(INDEX_WEAP_GRENADELAUNCHER, WEAP_GRENADELAUNCHER, "public WEAP_GRENADELAUNCHER export mismatch");
+assert.equal(INDEX_WEAP_ROCKETLAUNCHER, WEAP_ROCKETLAUNCHER, "public WEAP_ROCKETLAUNCHER export mismatch");
+assert.equal(INDEX_WEAP_HYPERBLASTER, WEAP_HYPERBLASTER, "public WEAP_HYPERBLASTER export mismatch");
+assert.equal(INDEX_WEAP_RAILGUN, WEAP_RAILGUN, "public WEAP_RAILGUN export mismatch");
+assert.equal(INDEX_WEAP_BFG, WEAP_BFG, "public WEAP_BFG export mismatch");
 assert.equal(ARMOR_NONE, 0, "ARMOR_NONE mismatch");
 assert.equal(ARMOR_JACKET, 1, "ARMOR_JACKET mismatch");
 assert.equal(ARMOR_COMBAT, 2, "ARMOR_COMBAT mismatch");
@@ -293,7 +337,16 @@ assert.equal(shard?.tag, ARMOR_SHARD, "Armor Shard item tag mismatch");
 assert.equal(GetArmorInfoByItem(shard), null, "Armor Shard must not expose gitem_armor_t info");
 
 const blaster = FindItem("Blaster");
+const shotgunItem = FindItem("Shotgun");
+const superShotgun = FindItem("Super Shotgun");
+const machinegun = FindItem("Machinegun");
+const chaingun = FindItem("Chaingun");
 const grenades = FindItem("Grenades");
+const grenadeLauncher = FindItem("Grenade Launcher");
+const rocketLauncher = FindItem("Rocket Launcher");
+const hyperBlaster = FindItem("HyperBlaster");
+const railgun = FindItem("Railgun");
+const bfg = FindItem("BFG10K");
 const shells = FindItem("Shells");
 const quad = FindItem("Quad Damage");
 const breather = FindItem("Rebreather");
@@ -301,6 +354,17 @@ const dataCd = FindItem("Data CD");
 assert.equal((jacket?.flags ?? 0) & IT_ARMOR, IT_ARMOR, "Jacket Armor item IT_ARMOR flag mismatch");
 assert.equal((blaster?.flags ?? 0) & IT_WEAPON, IT_WEAPON, "Blaster item IT_WEAPON flag mismatch");
 assert.equal((blaster?.flags ?? 0) & IT_STAY_COOP, IT_STAY_COOP, "Blaster item IT_STAY_COOP flag mismatch");
+assert.equal(blaster?.weapmodel, WEAP_BLASTER, "Blaster weapmodel mismatch");
+assert.equal(shotgunItem?.weapmodel, WEAP_SHOTGUN, "Shotgun weapmodel mismatch");
+assert.equal(superShotgun?.weapmodel, WEAP_SUPERSHOTGUN, "Super Shotgun weapmodel mismatch");
+assert.equal(machinegun?.weapmodel, WEAP_MACHINEGUN, "Machinegun weapmodel mismatch");
+assert.equal(chaingun?.weapmodel, WEAP_CHAINGUN, "Chaingun weapmodel mismatch");
+assert.equal(grenades?.weapmodel, WEAP_GRENADES, "Grenades weapmodel mismatch");
+assert.equal(grenadeLauncher?.weapmodel, WEAP_GRENADELAUNCHER, "Grenade Launcher weapmodel mismatch");
+assert.equal(rocketLauncher?.weapmodel, WEAP_ROCKETLAUNCHER, "Rocket Launcher weapmodel mismatch");
+assert.equal(hyperBlaster?.weapmodel, WEAP_HYPERBLASTER, "HyperBlaster weapmodel mismatch");
+assert.equal(railgun?.weapmodel, WEAP_RAILGUN, "Railgun weapmodel mismatch");
+assert.equal(bfg?.weapmodel, WEAP_BFG, "BFG10K weapmodel mismatch");
 assert.equal((grenades?.flags ?? 0) & (IT_AMMO | IT_WEAPON), IT_AMMO | IT_WEAPON, "Grenades item IT_AMMO|IT_WEAPON flags mismatch");
 assert.equal(shells?.flags, IT_AMMO, "Shells item IT_AMMO flag mismatch");
 assert.equal(quad?.flags, IT_POWERUP, "Quad Damage item IT_POWERUP flag mismatch");

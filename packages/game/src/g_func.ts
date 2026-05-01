@@ -18,6 +18,8 @@
 
 import {
   AngleVectors,
+  ATTN_NORM,
+  CHAN_AUTO,
   ATTN_STATIC,
   CHAN_NO_PHS_ADD,
   CHAN_VOICE,
@@ -55,6 +57,7 @@ import {
   STATE_UP,
   SVF_MONSTER,
   SVF_NOCLIENT,
+  emitGameCenterprint,
   emitRegisteredGameSound,
   freeGameEntity,
   getRuntimeEntityLabel,
@@ -747,7 +750,7 @@ export function door_killed(self: GameEntity, _inflictor: GameEntity | null, att
  * - Emits the locked/remote door message when a player touches the door directly.
  *
  * Porting notes:
- * - Logs the message instead of centerprinting/audio side effects.
+ * - Queues the centerprint and sound through the local runtime adapters.
  */
 export function door_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if (!other.client) {
@@ -759,13 +762,12 @@ export function door_touch(self: GameEntity, other: GameEntity, runtime: GameRun
   }
 
   self.touch_debounce_time = runtime.time + 5.0;
-  runtime.log({
-    kind: "message",
-    message: `${getRuntimeEntityLabel(self)} touch message -> ${getRuntimeEntityLabel(other)} :: ${self.message ?? ""}`,
-    entityIndex: self.index,
-    entityClassname: self.classname,
-    otherIndex: other.index,
-    otherClassname: other.classname
+  emitGameCenterprint(runtime, other, self.message ?? "");
+  emitRegisteredGameSound(runtime, other, registerGameSound(runtime, "misc/talk1.wav"), "misc/talk1.wav", {
+    channel: CHAN_AUTO,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
   });
 }
 

@@ -24,6 +24,7 @@ import {
   emitMonsterMuzzleFlash,
   emitGameTempEntity,
   emitPlayerMuzzleFlash,
+  registerGameSound,
   registerGameModel,
   spawnGameEntity,
   SP_light,
@@ -31,7 +32,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { EF_BLASTER, MAX_EDICTS, MZ_BLASTER, PMF_DUCKED, temp_event_t } from "../../packages/qcommon/src/index.js";
+import { EF_BLASTER, EF_FLIES, MAX_EDICTS, MZ_BLASTER, PMF_DUCKED, temp_event_t } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -41,6 +42,7 @@ function main(): void {
   verifyLocalBlasterImpactReachesRefreshEntities();
   verifyLocalExplosionSoundIsQueued();
   verifyLocalLightstyleConfigstringsReachRefreshFrame();
+  verifyLocalCorpseFliesReachRefreshParticlesAndLoopSound();
   verifyOutOfProtocolEntityNumbersAreSkipped();
   verifyLocalCrouchViewheightIsSmoothed();
   verifyRepeatedLocalSyncDoesNotResetBlasterTrailOrigin();
@@ -66,6 +68,30 @@ function verifyLocalLightstyleConfigstringsReachRefreshFrame(): void {
   syncLocalGameplayFrame(client, gameplay);
   refresh = CL_BuildRefreshFrame(client, { predictMovement: false });
   assertNumber(refresh.lightStyles[33]?.rgb[0] ?? -1, 1, "local light_use toggle must reach refresh frame");
+}
+
+function verifyLocalCorpseFliesReachRefreshParticlesAndLoopSound(): void {
+  const client = createClientRuntime();
+  const gameplay = createHarnessRuntime();
+  const corpse = spawnGameEntity(gameplay);
+
+  corpse.classname = "monster_infantry";
+  corpse.inuse = true;
+  corpse.s.origin = [96, 48, 24];
+  corpse.s.old_origin = [96, 48, 24];
+  corpse.s.modelindex = registerGameModel(gameplay, "models/monsters/infantry/tris.md2");
+  corpse.s.effects = EF_FLIES;
+  corpse.s.sound = registerGameSound(gameplay, "infantry/inflies1.wav");
+
+  syncLocalGameplayFrame(client, gameplay);
+  client.cl.time = 1000;
+  CL_BuildRefreshFrame(client, { predictMovement: false });
+  client.cl.time = 2000;
+  const refresh = CL_BuildRefreshFrame(client, { predictMovement: false });
+  const parseEntity = client.cl_parse_entities[client.cl.frame.parse_entities & (client.cl_parse_entities.length - 1)];
+
+  assertBoolean(refresh.particles.length > 0, true, "local corpse flies must emit refresh particles for renderer-three");
+  assertNumber(parseEntity.sound, corpse.s.sound, "local corpse flies loop sound must remain on the render entity");
 }
 
 function verifyLocalMuzzleFlashReachesRefreshLights(): void {

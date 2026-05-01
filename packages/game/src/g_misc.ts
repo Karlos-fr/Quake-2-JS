@@ -712,6 +712,16 @@ export function SP_light(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: func_wall_use
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Toggles a trigger-spawned brush wall between `SOLID_BSP`/visible and `SOLID_NOT`/`SVF_NOCLIENT`.
+ * - Calls `KillBox` when the wall appears, relinks the entity, and clears one-shot uses when `TOGGLE` is not set.
+ */
 export function func_wall_use(
   self: GameEntity,
   _other: GameEntity | null,
@@ -734,6 +744,19 @@ export function func_wall_use(
   }
 }
 
+/**
+ * Original name: SP_func_wall
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns inline BSP wall brushes, preserving animation flags and trigger-spawn start/toggle semantics.
+ * - Links ordinary walls immediately and hides inactive trigger-spawn walls from client-visible snapshots.
+ *
+ * Porting notes:
+ * - `setGameEntityModel` is the runtime adapter for the original `gi.setmodel` import.
+ */
 export function SP_func_wall(self: GameEntity, runtime: GameRuntime): void {
   self.movetype = MOVETYPE_PUSH;
   if (self.model) {

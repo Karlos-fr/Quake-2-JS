@@ -50,6 +50,7 @@ import {
   door_hit_bottom,
   door_hit_top,
   door_killed,
+  door_touch,
   door_use_areaportals,
   func_conveyor_use,
   func_timer_use,
@@ -407,6 +408,31 @@ assert.equal(shootableDoorMaster.takedamage, damage_t.DAMAGE_NO, "door_killed mu
 assert.equal(shootableDoorSlave.takedamage, damage_t.DAMAGE_NO, "door_killed must disable chained slave damage");
 assert.equal(shootableDoorMaster.moveinfo.state, STATE_UP, "door_killed must open team master");
 assert.equal(shootableDoorSlave.moveinfo.state, STATE_UP, "door_killed must open chained slave");
+const messageDoor = entity("func_door", 62);
+messageDoor.message = "This door opens elsewhere.";
+const nonClientDoorMessageToucher = entity("door message non-client", 63);
+const messageCenterprintCount = runtime.centerprintEvents.length;
+const messageSoundCount = runtime.soundEvents.length;
+door_touch(messageDoor, nonClientDoorMessageToucher, runtime);
+assert.equal(messageDoor.touch_debounce_time, 0, "door_touch must ignore non-clients");
+assert.equal(runtime.centerprintEvents.length, messageCenterprintCount, "door_touch non-client must not centerprint");
+assert.equal(runtime.soundEvents.length, messageSoundCount, "door_touch non-client must not emit sound");
+const clientDoorMessageToucher = entity("door message client", 64);
+clientDoorMessageToucher.client = createGameClient();
+door_touch(messageDoor, clientDoorMessageToucher, runtime);
+assert.equal(messageDoor.touch_debounce_time, runtime.time + 5, "door_touch debounce mismatch");
+assert.equal(runtime.centerprintEvents.at(-1)?.entityIndex, clientDoorMessageToucher.index, "door_touch centerprint target mismatch");
+assert.equal(runtime.centerprintEvents.at(-1)?.message, "This door opens elsewhere.", "door_touch message text mismatch");
+assert.equal(runtime.soundEvents.at(-1)?.soundPath, "misc/talk1.wav", "door_touch talk sound mismatch");
+assert.equal(runtime.soundEvents.at(-1)?.entityIndex, clientDoorMessageToucher.index, "door_touch sound target mismatch");
+assert.equal(runtime.soundEvents.at(-1)?.channel, 0, "door_touch sound channel mismatch");
+assert.equal(runtime.soundEvents.at(-1)?.attenuation, 1, "door_touch sound attenuation mismatch");
+runtime.time += 1;
+const debouncedMessageCenterprintCount = runtime.centerprintEvents.length;
+const debouncedMessageSoundCount = runtime.soundEvents.length;
+door_touch(messageDoor, clientDoorMessageToucher, runtime);
+assert.equal(runtime.centerprintEvents.length, debouncedMessageCenterprintCount, "door_touch must debounce repeated messages");
+assert.equal(runtime.soundEvents.length, debouncedMessageSoundCount, "door_touch must debounce repeated sounds");
 const triggerDoor = entity("func_door", 43);
 triggerDoor.moveinfo.state = STATE_BOTTOM;
 triggerDoor.moveinfo.end_origin = [16, 0, 0];

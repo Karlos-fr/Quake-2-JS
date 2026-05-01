@@ -10,7 +10,7 @@
  */
 
 import { strict as assert } from "node:assert";
-import { CS_LIGHTS, EF_FLIES, EF_GIB, RF_FRAMELERP, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, RF_FRAMELERP, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
@@ -27,6 +27,7 @@ import {
   FRAMETIME,
   MOVETYPE_BOUNCE,
   MOVETYPE_NONE,
+  MOVETYPE_PUSH,
   MOVETYPE_TOSS,
   SP_info_notnull,
   SP_info_null,
@@ -66,6 +67,7 @@ import {
   TH_viewthing,
   useGameEntity
 } from "../../packages/game/src/index.js";
+import { SP_func_wall, func_wall_use } from "../../packages/game/src/g_misc.js";
 import { AI_COMBAT_POINT, AI_STAND_GROUND, FL_FLY, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
 import { ThrowClientHead } from "../../packages/game/src/p_client.js";
 import { SVF_MONSTER } from "../../packages/game/src/runtime.js";
@@ -85,6 +87,7 @@ function main(): void {
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
   verifyLightWritesSourceConfigstrings();
+  verifyFuncWallSpawnAndUseTogglesVisibility();
   verifyFuncExplosiveSpawnsAndExplodesBrushModel();
   verifyGibTypesSelectMovementAndTouchBehavior();
   verifyGibTouchMatchesPlaneGatedSourceBehavior();
@@ -591,6 +594,77 @@ function verifyLightWritesSourceConfigstrings(): void {
 
   useGameEntity(runtime, light, null, light);
   assert.deepEqual(drainGameConfigstringUpdates(runtime), [{ index: CS_LIGHTS + 33, value: "m" }], "light_use must toggle the lightstyle configstring on");
+}
+
+function verifyFuncWallSpawnAndUseTogglesVisibility(): void {
+  const runtime = createHarnessRuntime();
+
+  const plain = spawnGameEntity(runtime);
+  plain.classname = "func_wall";
+  plain.model = "*1";
+
+  SP_func_wall(plain, runtime);
+
+  assert.equal(plain.movetype, MOVETYPE_PUSH, "plain func_wall must use MOVETYPE_PUSH");
+  assert.equal(plain.solid, SOLID_BSP, "plain func_wall must spawn solid");
+  assert.equal(plain.use, undefined, "plain func_wall must not install a use callback");
+  assert.equal(plain.linked, true, "plain func_wall must link immediately");
+  assert.equal(runtime.assets.modelPaths[plain.s.modelindex - 1], "*1", "func_wall must register its inline model");
+
+  const hidden = spawnGameEntity(runtime);
+  hidden.classname = "func_wall";
+  hidden.model = "*2";
+  hidden.spawnflags = 1;
+
+  SP_func_wall(hidden, runtime);
+
+  assert.equal(hidden.use, func_wall_use, "trigger-spawn func_wall must install func_wall_use");
+  assert.equal(hidden.solid, SOLID_NOT, "trigger-spawn func_wall without START_ON must start non-solid");
+  assert.equal((hidden.svflags & SVF_NOCLIENT) !== 0, true, "hidden func_wall must set SVF_NOCLIENT");
+
+  useGameEntity(runtime, hidden, null, hidden);
+
+  assert.equal(hidden.solid, SOLID_BSP, "func_wall_use must make hidden wall solid");
+  assert.equal((hidden.svflags & SVF_NOCLIENT) === 0, true, "func_wall_use must make hidden wall client-visible");
+  assert.equal(hidden.use, undefined, "non-TOGGLE func_wall must clear use after first activation");
+
+  const startOnWithoutToggle = spawnGameEntity(runtime);
+  startOnWithoutToggle.classname = "func_wall";
+  startOnWithoutToggle.model = "*3";
+  startOnWithoutToggle.spawnflags = 1 | 4 | 8 | 16;
+
+  SP_func_wall(startOnWithoutToggle, runtime);
+
+  assert.equal((startOnWithoutToggle.spawnflags & 2) !== 0, true, "START_ON without TOGGLE must force TOGGLE like the C source");
+  assert.equal(startOnWithoutToggle.solid, SOLID_BSP, "START_ON func_wall must spawn solid");
+  assert.equal((startOnWithoutToggle.svflags & SVF_NOCLIENT) === 0, true, "START_ON func_wall must be visible");
+  assert.equal((startOnWithoutToggle.s.effects & EF_ANIM_ALL) !== 0, true, "func_wall spawnflag 8 must set EF_ANIM_ALL");
+  assert.equal((startOnWithoutToggle.s.effects & EF_ANIM_ALLFAST) !== 0, true, "func_wall spawnflag 16 must set EF_ANIM_ALLFAST");
+
+  useGameEntity(runtime, startOnWithoutToggle, null, startOnWithoutToggle);
+
+  assert.equal(startOnWithoutToggle.solid, SOLID_NOT, "TOGGLE func_wall use must hide an active wall");
+  assert.equal((startOnWithoutToggle.svflags & SVF_NOCLIENT) !== 0, true, "TOGGLE func_wall use must set SVF_NOCLIENT");
+  assert.equal(startOnWithoutToggle.use, func_wall_use, "TOGGLE func_wall must keep its use callback");
+
+  const missingTriggerSpawn = spawnGameEntity(runtime);
+  missingTriggerSpawn.classname = "func_wall";
+  missingTriggerSpawn.model = "*4";
+  missingTriggerSpawn.spawnflags = 2;
+
+  SP_func_wall(missingTriggerSpawn, runtime);
+
+  assert.equal((missingTriggerSpawn.spawnflags & 1) !== 0, true, "non-plain func_wall must force TRIGGER_SPAWN");
+  assert.equal(missingTriggerSpawn.solid, SOLID_NOT, "forced TRIGGER_SPAWN without START_ON must start hidden");
+
+  const dispatch = spawnGameEntity(runtime);
+  dispatch.classname = "func_wall";
+  dispatch.model = "*5";
+  dispatch.spawnflags = 1;
+
+  ED_CallSpawn(dispatch, runtime);
+
+  assert.equal(dispatch.use, func_wall_use, "ED_CallSpawn must dispatch func_wall to SP_func_wall");
 }
 
 function verifyFuncExplosiveSpawnsAndExplodesBrushModel(): void {

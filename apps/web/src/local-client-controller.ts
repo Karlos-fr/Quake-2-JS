@@ -24,6 +24,7 @@ import {
   CL_InitLocal,
   CL_PredictMovement,
   SCR_BuildScreenState,
+  SCR_CenterPrint,
   CL_SetInputFrameTime,
   clearLocalMovementState,
   cloneBrushModelSnapshots,
@@ -45,6 +46,7 @@ import {
 } from "../../../packages/client/src/index.js";
 import {
   LOCAL_WEAPON_SLOTS,
+  drainGameCenterprintEvents,
   drainGameSoundEvents,
   selectLocalDemoWeapon,
   type GameSoundEvent,
@@ -307,6 +309,9 @@ export function createLocalClientController(
           cloneSnapshots: cloneBrushModelSnapshots
         }
       );
+      for (const event of drainGameCenterprintEvents(gameplayRuntime)) {
+        SCR_CenterPrint(runtime, event.message);
+      }
       applyPredictedCamera(camera, runtime);
 
       refreshFrame = buildLocalRefreshFrame();

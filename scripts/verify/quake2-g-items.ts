@@ -64,6 +64,7 @@ main();
 function main(): void {
   verifyAddAmmoCapsToMax();
   verifySetRespawnRoundTrip();
+  verifyDoRespawnTeamChoice();
   verifyTouchHealthPickup();
   verifyTouchHealthPickupUsesItemPath();
   verifyTouchRejectedPickupStillUsesTargets();
@@ -223,6 +224,40 @@ function verifySetRespawnRoundTrip(): void {
   runPendingThinks(runtime, runtime.time + 5);
   assertNumber(entity.solid, 1, "DoRespawn restores SOLID_TRIGGER");
   assertNumber(entity.s.event, entity_event_t.EV_ITEM_RESPAWN, "DoRespawn emits EV_ITEM_RESPAWN");
+}
+
+function verifyDoRespawnTeamChoice(): void {
+  const runtime = createHarnessRuntime();
+  const master = spawnGameEntity(runtime);
+  const firstSlave = spawnGameEntity(runtime);
+  const secondSlave = spawnGameEntity(runtime);
+
+  master.team = "ammo_team";
+  firstSlave.team = "ammo_team";
+  secondSlave.team = "ammo_team";
+  master.teammaster = master;
+  firstSlave.teammaster = master;
+  secondSlave.teammaster = master;
+  master.chain = firstSlave;
+  firstSlave.chain = secondSlave;
+  for (const entity of [master, firstSlave, secondSlave]) {
+    entity.svflags |= SVF_NOCLIENT;
+    entity.solid = SOLID_NOT;
+  }
+
+  const originalRandom = Math.random;
+  Math.random = () => 0.5;
+  try {
+    DoRespawn(master, runtime);
+  } finally {
+    Math.random = originalRandom;
+  }
+
+  assertNumber(master.solid, SOLID_NOT, "DoRespawn keeps non-selected team items hidden");
+  assertNumber(firstSlave.solid, SOLID_TRIGGER, "DoRespawn selects the rand()%count team item");
+  assertNumber(secondSlave.solid, SOLID_NOT, "DoRespawn leaves later non-selected team items hidden");
+  assertBoolean((firstSlave.svflags & SVF_NOCLIENT) === 0, true, "DoRespawn clears SVF_NOCLIENT on the selected team item");
+  assertNumber(firstSlave.s.event, entity_event_t.EV_ITEM_RESPAWN, "DoRespawn emits EV_ITEM_RESPAWN on the selected team item");
 }
 
 function verifyTouchHealthPickup(): void {

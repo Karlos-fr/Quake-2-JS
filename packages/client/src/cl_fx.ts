@@ -19,8 +19,10 @@
 import {
   AngleVectors,
   ATTN_IDLE,
+  BYTE_DIRS,
   CS_LIGHTS,
   DirFromByte,
+  EF_FLIES,
   EF_GIB,
   EF_GREENGIB,
   EF_ROCKET,
@@ -56,6 +58,7 @@ import {
   MZ_UNUSED,
   MAX_LIGHTSTYLES,
   MAX_QPATH,
+  NUMVERTEXNORMALS,
   ATTN_NONE,
   ATTN_NORM,
   ATTN_STATIC,
@@ -98,6 +101,8 @@ import { INSTANT_PARTICLE, MAX_DLIGHTS, type ClientRuntime, type centity_t, type
 import type { ClientDynamicLight, ClientRenderParticle } from "./refresh.js";
 
 const PARTICLE_GRAVITY = 40;
+const FLY_BEAM_LENGTH = 16;
+const flyAvelocities: vec3_t[] = [];
 
 /**
  * Category: New
@@ -1349,6 +1354,8 @@ export function CL_ExecutePacketEntityEffects(
       CL_DiminishingTrail(runtime, centity.lerp_origin, entity.origin, centity, effects);
     } else if ((effects & EF_GREENGIB) !== 0) {
       CL_DiminishingTrail(runtime, centity.lerp_origin, entity.origin, centity, effects);
+    } else if ((effects & EF_FLIES) !== 0) {
+      CL_FlyEffectRuntime(runtime, centity, entity.origin);
     } else if ((effects & EF_PLASMA) !== 0 && (effects & EF_ANIM_ALLFAST) !== 0) {
       CL_BlasterTrail(runtime, centity.lerp_origin, entity.origin);
     }
@@ -1948,7 +1955,16 @@ export function CL_BubbleTrail(
  * Behavior:
  * - Emits the orbiting fly particle cloud metadata for a given count.
  */
-export function CL_FlyParticles(origin: vec3_t, count: number): ClientActionEffect[] {
+export function CL_FlyParticles(origin: vec3_t, count: number): ClientActionEffect[];
+export function CL_FlyParticles(runtime: ClientRuntime, origin: vec3_t, count: number): void;
+export function CL_FlyParticles(runtimeOrOrigin: ClientRuntime | vec3_t, maybeOriginOrCount: vec3_t | number, maybeCount?: number): ClientActionEffect[] | void {
+  if (isClientRuntime(runtimeOrOrigin)) {
+    spawnFlyParticles(runtimeOrOrigin, maybeOriginOrCount as vec3_t, maybeCount ?? 0);
+    return;
+  }
+
+  const origin = runtimeOrOrigin;
+  const count = maybeOriginOrCount as number;
   return [{
     category: "particle",
     kind: "fly-particles",
@@ -1985,6 +2001,20 @@ export function CL_FlyEffect(ent: centity_t, origin: vec3_t, time: number): Clie
   }
 
   return CL_FlyParticles(origin, count);
+}
+
+/**
+ * Original name: CL_FlyEffect
+ * Source: client/cl_fx.c
+ * Category: Ported integration
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies packet-entity fly particles directly into the active client particle pool.
+ */
+function CL_FlyEffectRuntime(runtime: ClientRuntime, ent: centity_t, origin: vec3_t): void {
+  const effects = CL_FlyEffect(ent, origin, runtime.cl.time);
+  CL_FlyParticles(runtime, origin, effects[0]?.count ?? 0);
 }
 
 /**
@@ -3256,6 +3286,68 @@ function allocParticle(runtime: ClientRuntime): cparticle_t | null {
   particle.next = runtime.cl.active_particles;
   runtime.cl.active_particles = freeIndex;
   return particle;
+}
+
+/**
+ * Category: New
+ * Purpose: Distinguish the runtime overload of particle helpers from pure descriptor mode.
+ */
+function isClientRuntime(value: ClientRuntime | vec3_t): value is ClientRuntime {
+  return typeof value === "object" && value !== null && "cl" in value && "cls" in value;
+}
+
+/**
+ * Original name: CL_FlyParticles
+ * Source: client/cl_fx.c
+ * Category: Ported integration
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns the original black orbiting fly particles around one entity origin.
+ */
+function spawnFlyParticles(runtime: ClientRuntime, origin: vec3_t, count: number): void {
+  const cappedCount = Math.min(count, NUMVERTEXNORMALS);
+
+  if (!flyAvelocities[0]) {
+    for (let index = 0; index < NUMVERTEXNORMALS; index += 1) {
+      flyAvelocities[index] = [
+        (Math.floor(Math.random() * 0x7fffffff) & 255) * 0.01,
+        (Math.floor(Math.random() * 0x7fffffff) & 255) * 0.01,
+        (Math.floor(Math.random() * 0x7fffffff) & 255) * 0.01
+      ];
+    }
+  }
+
+  const ltime = runtime.cl.time / 1000.0;
+  for (let index = 0; index < cappedCount; index += 2) {
+    const avelocity = flyAvelocities[index] ?? [0, 0, 0];
+    let angle = ltime * avelocity[0];
+    const sy = Math.sin(angle);
+    const cy = Math.cos(angle);
+    angle = ltime * avelocity[1];
+    const sp = Math.sin(angle);
+    const cp = Math.cos(angle);
+
+    const forward: vec3_t = [cp * cy, cp * sy, -sp];
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    const dist = Math.sin(ltime + index) * 64;
+    const bytedir = BYTE_DIRS[index] ?? [0, 0, 0];
+    particle.org = [
+      origin[0] + bytedir[0] * dist + forward[0] * FLY_BEAM_LENGTH,
+      origin[1] + bytedir[1] * dist + forward[1] * FLY_BEAM_LENGTH,
+      origin[2] + bytedir[2] * dist + forward[2] * FLY_BEAM_LENGTH
+    ];
+    particle.vel = [0, 0, 0];
+    particle.accel = [0, 0, 0];
+    particle.color = 0;
+    particle.alpha = 1;
+    particle.alphavel = -100;
+  }
 }
 
 /**
