@@ -269,6 +269,64 @@ assert.equal(clientThinkPlayer.client.oldbuttons, 0, "ClientThink must preserve 
 assert.equal(clientThinkPlayer.client.weapon_thunk, true, "ClientThink must thunk weapon fire from BUTTON_ATTACK");
 assert.equal(clientThinkPlayer.light_level, 42, "ClientThink must copy usercmd lightlevel for AI sighting");
 
+const connectRuntime = createGameRuntimeFromBspEntities([
+  { properties: { classname: "worldspawn" } },
+  { properties: { classname: "player" } },
+  { properties: { classname: "player" } }
+]);
+connectRuntime.maxclients = 2;
+connectRuntime.entities[1]!.client = attachGameClient(connectRuntime.entities[1]!);
+connectRuntime.entities[2]!.client = attachGameClient(connectRuntime.entities[2]!);
+const connectApi = GetGameApi(imports, { runtime: connectRuntime });
+connectApi.Init();
+setCvar("password", "secret", CVAR_USERINFO);
+setCvar("spectator_password", "watch", CVAR_USERINFO);
+setCvar("maxclients", "2", CVAR_SERVERINFO | CVAR_LATCH);
+setCvar("maxspectators", "1", CVAR_SERVERINFO);
+connectRuntime.maxclients = 2;
+connectRuntime.deathmatch = true;
+
+command.argv = ["sv", "addip", "203.0.113.7"];
+command.args = "addip 203.0.113.7";
+connectApi.ServerCommand();
+assert.equal(
+  connectApi.ClientConnect(connectRuntime.entities[1]!, "\\name\\bad\\password\\secret\\ip\\203.0.113.7:27910"),
+  false,
+  "ClientConnect must reject banned IPs through the g_svcmds filter"
+);
+assert.equal(
+  connectApi.ClientConnect(connectRuntime.entities[1]!, "\\name\\bad\\password\\wrong\\ip\\198.51.100.1:27910"),
+  false,
+  "ClientConnect must reject an incorrect player password"
+);
+assert.equal(
+  connectApi.ClientConnect(connectRuntime.entities[1]!, "\\name\\good\\password\\secret\\ip\\198.51.100.1:27910"),
+  true,
+  "ClientConnect must accept a player with the correct password"
+);
+assert.equal(connectRuntime.entities[1]!.client!.pers.connected, true, "ClientConnect must mark accepted players connected");
+assert.equal(connectRuntime.entities[1]!.client!.pers.netname, "good", "ClientConnect must apply accepted userinfo");
+
+connectRuntime.entities[1]!.inuse = true;
+connectRuntime.entities[1]!.client!.pers.spectator = true;
+assert.equal(
+  connectApi.ClientConnect(connectRuntime.entities[2]!, "\\name\\spec\\spectator\\bad\\ip\\198.51.100.2:27910"),
+  false,
+  "ClientConnect must reject an incorrect spectator password"
+);
+assert.equal(
+  connectApi.ClientConnect(connectRuntime.entities[2]!, "\\name\\spec\\spectator\\watch\\ip\\198.51.100.2:27910"),
+  false,
+  "ClientConnect must reject spectators over maxspectators"
+);
+setCvar("maxspectators", "2", CVAR_SERVERINFO);
+assert.equal(
+  connectApi.ClientConnect(connectRuntime.entities[2]!, "\\name\\spec\\spectator\\watch\\ip\\198.51.100.2:27910"),
+  true,
+  "ClientConnect must accept a spectator with the correct password and free slot"
+);
+assert.equal(connectRuntime.entities[2]!.client!.pers.spectator, true, "ClientConnect must apply spectator userinfo");
+
 const dmContext = createGameMainContext(imports);
 dmContext.runtime.maxclients = 2;
 dmContext.runtime.entities = [
@@ -410,6 +468,15 @@ function createCvar(name: string, stringValue: string, flags = 0): cvar_t {
     modified: false,
     value: Number.parseFloat(stringValue) || 0
   };
+}
+
+function setCvar(name: string, stringValue: string, flags = 0): cvar_t {
+  const variable = cvars.get(name) ?? createCvar(name, stringValue, flags);
+  variable.string = stringValue;
+  variable.flags = flags;
+  variable.value = Number.parseFloat(stringValue) || 0;
+  cvars.set(name, variable);
+  return variable;
 }
 
 function createUsercmd(overrides: Partial<usercmd_t> = {}): usercmd_t {

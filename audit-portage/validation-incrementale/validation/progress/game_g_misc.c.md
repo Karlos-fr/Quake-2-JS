@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `ThrowClientHead` et local `gibname`.
+- Checklist appliquee:
+  - Source C comparee au port TS deplace dans `packages/game/src/p_client.ts`: le choix aleatoire `gibname` conserve les modeles `head2`/`skull` et les skins 1/0; l'origine Z est augmentee de 32; frame, bbox, `DAMAGE_NO`, `SOLID_NOT`, `EF_GIB`, son, `FL_NO_KNOCKBACK`, `MOVETYPE_BOUNCE`, vitesse ajoutee par `VelocityForDamage`, animation client et nettoyage `think`/`nextthink` des bodies sans client correspondent au C.
+  - Commentaire d'en-tete `ThrowClientHead` verifie dans `p_client.ts`; il documente le deplacement depuis le helper `g_misc.c`.
+  - Branchement runtime verifie: `player_die` et `body_die` appellent `ThrowClientHead`; ces flux sont atteignables via `T_Damage`/`Killed`/mort joueur et body queue, puis les entites liees sont publiees par snapshots.
+  - `apps/web`: aucune logique parallele de client head trouvee; le navigateur consomme les sorties runtime par le flux full-game/local, `modelindex`, effets et snapshots.
+  - `renderer-three`: integration attendue car la sortie est un modele MD2 visible avec `EF_GIB`; consommation presente via `ClientRefreshFrame.entities`, resolution `CS_MODELS + modelindex`, `refresh-entity-sync`, et trail `EF_GIB` cote client.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour les deux choix `gibname`, skin, bbox, effets, vitesse, animation client et cleanup body queue.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_misc.c.md`: cible documentee comme port deplace dans `packages/game/src/p_client.ts`.
+- Tests lances:
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:g-misc` bloque avant scenario sur import existant `packages/game/src/g_items.ts`: `CONTENTS_SOLID` n'est pas exporte par `packages/qcommon/src/index.js`.
+  - `npx tsx ./scripts/verify/quake2-p-client.ts` bloque sur le meme import existant.
+  - `npm run verify:refresh-entity:alias-flags` bloque sur le meme import existant.
+  - `npm run typecheck` bloque sur `packages/game/src/g_items.ts`: `runtime.collision` possiblement `null`.
+
+## Dernier lot valide
+
 - 2026-05-01: locaux `gib` / `vscale` de `ThrowGib`, puis `ThrowHead` avec son local `vscale`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `gib` reste une entite creee par `G_Spawn`, positionnee dans la bbox source, configuree avec model/effects/damage callbacks, vitesse randomisee puis clipee et liee au runtime; les deux `vscale` conservent `0.5` pour `GIB_ORGANIC` et `1.0` sinon; `ThrowHead` convertit l'entite source elle-meme en gib head, remet skin/frame/bounds/modelindex2, efface `EF_FLIES`, son et `SVF_MONSTER`, conserve `EF_GIB`, `FL_NO_KNOCKBACK`, `DAMAGE_YES`, `gib_die`, type de mouvement, callback touch organique, vitesse, yaw avelocity, cleanup et link.
@@ -87,4 +106,4 @@
 
 ## Prochain lot recommande
 
-- `ThrowClientHead` et local `gibname`.
+- `debris_die`, puis `ThrowDebris` et local `chunk`.

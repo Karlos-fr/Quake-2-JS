@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `drop_make_touchable`, `Drop_Item` et locales `dropped`, `trace`.
+
+Validation `drop_make_touchable` / `Drop_Item` du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `drop_make_touchable` restaure `Touch_Item`, puis en deathmatch programme `G_FreeEdict` a `level.time + 29`; le TS conserve ce comportement avec un petit adapter pour l'ordre `G_FreeEdict(runtime, ent)`. `Drop_Item` conserve le spawn et les champs du drop (`classname`, `item`, `DROPPED_ITEM`, `worldModelFlags`, `RF_GLOW`, bounds, `SOLID_TRIGGER`, `MOVETYPE_TOSS`, `drop_temp_touch`, `owner`, modelindex, velocity, `think`, `nextthink`, link). Corrections appliquees dans `packages/game/src/g_items.ts`: pour les proprietaires client, le point projete est maintenant trace avec `CONTENTS_SOLID` et `trace.endpos` est copie comme en C; pour les proprietaires non-client, l'origine reste celle de l'entite et les angles ne servent qu'a la velocite. Headers `drop_make_touchable` ajoute et `Drop_Item` complete en `Fidelity level: Strict`.
+
+Runtime branche via `Drop_Weapon`, `Drop_Ammo`, `Drop_General`, `Drop_PowerArmor` et les commandes `Cmd_Drop_f` / `Cmd_InvDrop_f`; les drops deviennent des entites visibles linkees, avancees par les thinks runtime et ramassees via `drop_temp_touch` / `Touch_Item`. `apps/web` doit declencher ce flux par les commandes client et consommer les sorties via runtime local, inventaire/HUD, sons et snapshots; aucune logique drop parallele masquante n'a ete detectee. `renderer-three` doit consommer les sorties visibles du drop: modeles MD2 via `modelindex`, origine/velocity/interpolation, `RF_GLOW`, disparition/free par snapshots; les tests renderer passent sans branchement gameplay dedie.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyDropItemPlacementAndTrace` couvre `dropped`, `trace`, `CONTENTS_SOLID`, projection client, copie `trace.endpos`, `RF_GLOW`, modelindex, velocity, absence de trace pour proprietaire non-client et origine non-client. Le harness g-items fournit maintenant une collision bridge minimale pour les tests de drops client. Tests lances: `npm run verify:g-items`, `npm run verify:g-utils`, `npm run verify:refresh-entity:weapon`, `npm run verify:full-game:three-renderer`, `npm run verify:full-game:bridge`, `npm run typecheck` OK.
+
 - `G_FreeEdict` reference par `g_items.c` et `drop_temp_touch`.
 
 Validation `G_FreeEdict` / `drop_temp_touch` du 2026-05-01: comparaison avec `game/g_items.c` et `game/g_utils.c` confirmee. `G_FreeEdict` est une dependance importee: le C la declare via `g_local.h`, l'implemente dans `g_utils.c`, et `g_items.c` l'utilise pour le cleanup pickup/drop; le TS importe `G_FreeEdict` depuis `packages/game/src/g_utils.ts`, dont le commentaire d'en-tete a ete verifie. `drop_temp_touch` conserve le garde `other == owner` puis delegue a `Touch_Item`. La condition cleanup de `Touch_Item` a ete reverifiee contre le C: un drop pris (`DROPPED_ITEM`/`DROPPED_PLAYER_ITEM`) est libere immediatement par `G_FreeEdict`; un drop non pris devient touchable puis expire via `drop_make_touchable` en deathmatch. Header `drop_temp_touch` ajoute avec `Fidelity level: Strict`.
@@ -107,4 +115,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- `drop_make_touchable`, puis `Drop_Item` avec locales `dropped` et `trace` si le coordinateur veut continuer le flux drop/touch.
+- `Use_Item`, puis `droptofloor` avec locales `tr`, `dest`, `v` si le coordinateur veut continuer le flux spawn/touch.

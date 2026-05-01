@@ -863,7 +863,17 @@ export function Cmd_PlayerList_f(ent: GameEntity, context: GameCommandContext): 
  * Original name: ClientCommand
  * Source: game/g_cmds.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Reads the command name from `gi.argv(0)`, preserves the original always-allowed command group, then
+ *   blocks gameplay commands during intermission.
+ * - Dispatches inventory, item, cheat, weapon, suicide, overlay and player-list commands in the same order
+ *   as the C `else if` chain, with unknown commands falling back to chat.
+ *
+ * Porting notes:
+ * - `cmd` is represented by an immutable string from the explicit command context instead of the global
+ *   `gi.argv` table.
  */
 export function ClientCommand(context: GameCommandContext, ent: GameEntity): void {
   if (!ent.client) {

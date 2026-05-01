@@ -23,6 +23,10 @@ import {
   AI_SOUND_TARGET,
   AI_STAND_GROUND,
   AI_TEMP_STAND_GROUND,
+  AS_MELEE,
+  AS_MISSILE,
+  AS_SLIDING,
+  AS_STRAIGHT,
   BODY_QUEUE_SIZE,
   DEAD_DEAD,
   DEAD_DYING,
@@ -91,6 +95,10 @@ assert.equal(AI_DUCKED, 0x00000800, "AI_DUCKED mismatch");
 assert.equal(AI_COMBAT_POINT, 0x00001000, "AI_COMBAT_POINT mismatch");
 assert.equal(AI_MEDIC, 0x00002000, "AI_MEDIC mismatch");
 assert.equal(AI_RESURRECTING, 0x00004000, "AI_RESURRECTING mismatch");
+assert.equal(AS_STRAIGHT, 1, "AS_STRAIGHT mismatch");
+assert.equal(AS_SLIDING, 2, "AS_SLIDING mismatch");
+assert.equal(AS_MELEE, 3, "AS_MELEE mismatch");
+assert.equal(AS_MISSILE, 4, "AS_MISSILE mismatch");
 assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");
 assert.equal(damage_t.DAMAGE_NO, 0, "damage_t DAMAGE_NO mismatch");

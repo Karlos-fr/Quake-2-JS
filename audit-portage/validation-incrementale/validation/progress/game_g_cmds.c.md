@@ -211,3 +211,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `ClientCommand` et temporaire local associe (`cmd`).
+
+## Session 2026-05-01 - ClientCommand
+
+- Lot valide: `ClientCommand` et temporaire C associe (`cmd`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme garde `!ent->client`, meme lecture `gi.argv(0)`, meme groupe toujours autorise (`players`, `say`, `say_team`, `score`, `help`), meme blocage intermission avant les commandes gameplay, meme chaine de dispatch et meme fallback chat `Cmd_Say_f(ent, false, true)`.
+- Branchement runtime: `SV_ExecuteUserCommand` tokenise la commande client puis appelle `ge.ClientCommand`; `GetGameApiFunction` exporte `g_main.ClientCommand`, qui relaie vers `g_cmds.ClientCommand` avec les cvars et hooks requis.
+- Integration web/renderer: `apps/web` passe par le full-game server host et le pont de commandes client, sans logique parallele qui remplace le dispatcher game. `packages/renderer-three` ne doit pas porter `ClientCommand` directement: selon la commande, les sorties visibles passent par HUD/console/notify, snapshots, playerstate, entites, modeles, frames, sons ou temp entities deja produits par le runtime et consommes par les adapters existants.
+- Corrections: commentaire d'en-tete complete pour `ClientCommand`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour garde sans client, lecture de `cmd`, comparaison insensible a la casse, fallback chat, blocage intermission et commande `players` autorisee avant le gate.
+- Tests de reference: `npm run verify:g-cmds` OK avant apparition du blocage hors lot; `npm run verify:full-game:three-renderer` OK.
+- Blocages: `npm run verify:server:user`, `npm run verify:full-game:commands`, `npm run verify:full-game:bridge`, une relance de `npm run verify:g-cmds` et `npm run typecheck` bloquent avant validation utile sur `packages/game/src/g_items.ts` (`CONTENTS_SOLID` non exporte par `qcommon/src/index.js`, puis `runtime.collision` possiblement null). Non corrige hors perimetre fichier.
+- Prochain lot recommande: aucun dans `g_cmds.c`; toutes les lignes de la matrice sont validees.

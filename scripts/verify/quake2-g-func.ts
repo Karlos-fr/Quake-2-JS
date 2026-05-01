@@ -38,6 +38,7 @@ import {
   button_killed,
   button_return,
   button_touch,
+  button_use,
   button_wait,
   door_go_up,
   door_hit_top,
@@ -145,9 +146,29 @@ button.maxs = [64, 16, 16];
 SP_func_button(button, runtime);
 assert.equal(button.movetype, MOVETYPE_STOP, "SP_func_button movetype mismatch");
 assert.equal(button.solid, SOLID_BSP, "SP_func_button solid mismatch");
+assert.equal(button.use, button_use, "SP_func_button use callback mismatch");
+assert.equal(button.moveinfo.state, STATE_BOTTOM, "SP_func_button state mismatch");
+assert.equal(button.moveinfo.speed, 40, "SP_func_button default speed mismatch");
+assert.equal(button.moveinfo.accel, 40, "SP_func_button default accel mismatch");
+assert.equal(button.moveinfo.decel, 40, "SP_func_button default decel mismatch");
+assert.equal(button.moveinfo.wait, 2, "SP_func_button wait mismatch");
+assert.deepEqual(button.pos1, [0, 0, 0], "SP_func_button pos1 mismatch");
+assert.deepEqual(button.pos2, [60, 0, 0], "SP_func_button pos2 mismatch");
+assert.deepEqual(button.moveinfo.start_origin, [0, 0, 0], "SP_func_button start origin mismatch");
 assert.deepEqual(button.moveinfo.end_origin, [60, 0, 0], "SP_func_button end origin mismatch");
+assert.deepEqual(button.moveinfo.start_angles, [0, 0, 0], "SP_func_button start angles mismatch");
+assert.deepEqual(button.moveinfo.end_angles, [0, 0, 0], "SP_func_button end angles mismatch");
 assert.equal((button.s.effects & EF_ANIM01) !== 0, true, "SP_func_button initial animation mismatch");
 assert.equal(button.moveinfo.sound_start > 0, true, "SP_func_button default sound mismatch");
+assert.equal(button.touch, button_touch, "SP_func_button untargeted non-shootable touch mismatch");
+assert.equal(button.linked, true, "SP_func_button link mismatch");
+const silentButton = entity("func_button", 34, { sounds: "1" });
+SP_func_button(silentButton, runtime);
+assert.equal(silentButton.moveinfo.sound_start, 0, "SP_func_button sounds=1 must suppress start sound");
+const targetedButton = entity("func_button", 35, { targetname: "button_targetname" });
+SP_func_button(targetedButton, runtime);
+assert.equal(targetedButton.touch, undefined, "SP_func_button targeted button must not get touch callback");
+assert.equal(targetedButton.use, button_use, "SP_func_button targeted use callback mismatch");
 button_fire_forSound(button);
 assert.equal(button.moveinfo.state, STATE_UP, "button_fire state mismatch");
 assert.deepEqual(button.moveinfo.dir, [1, 0, 0], "button_fire direction mismatch");
@@ -235,6 +256,10 @@ const shootButton = entity("func_button", 3, { angle: "90", health: "10" });
 shootButton.size = [16, 64, 16];
 shootButton.maxs = [16, 64, 16];
 SP_func_button(shootButton, runtime);
+assert.equal(shootButton.max_health, 10, "SP_func_button shootable max health mismatch");
+assert.equal(shootButton.takedamage, damage_t.DAMAGE_YES, "SP_func_button shootable damage flag mismatch");
+assert.equal(shootButton.die, button_killed, "SP_func_button shootable die callback mismatch");
+assert.equal(shootButton.touch, undefined, "SP_func_button shootable must not get touch callback");
 shootButton.health = 4;
 const shooter = entity("attacker", 33);
 button_killed(shootButton, null, shooter, 10, runtime);

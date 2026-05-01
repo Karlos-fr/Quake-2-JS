@@ -8,6 +8,21 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot attack states `AS_STRAIGHT`, `AS_SLIDING`, `AS_MELEE`, `AS_MISSILE`.
+- Verdict: `Valide` pour les 4 macros apres ajout d'assertions ciblees dans le harness header.
+- Valeurs H/TS comparees et conformes:
+  - `AS_STRAIGHT = 1`
+  - `AS_SLIDING = 2`
+  - `AS_MELEE = 3`
+  - `AS_MISSILE = 4`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de definition directe attendue pour ces macros.
+- Runtime:
+  - Source C: `M_CheckAttack` pose `AS_MELEE` ou `AS_MISSILE` selon les callbacks et les chances d'attaque, peut retomber sur `AS_SLIDING`/`AS_STRAIGHT` pour les monstres volants; `ai_checkattack` route `AS_MISSILE` vers `ai_run_missile` et `AS_MELEE` vers `ai_run_melee`; `ai_run` route `AS_SLIDING` vers `ai_run_slide`; les callbacks melee/missile restaurent `AS_STRAIGHT`.
+  - TS: `packages/game/src/g_ai.ts` conserve ces branches; `m_boss2.ts`, `m_boss31.ts`, `m_boss32.ts` et `m_mutant.ts` conservent leurs selections specialisees d'attack state. Les commentaires d'en-tete de `M_CheckAttack`, `ai_run_melee`, `ai_run_missile`, `ai_run_slide`, `ai_checkattack` et `ai_run` ont ete verifies avec `Original name`, `Source`, `Category: Ported` et niveau de fidelite.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Le navigateur declenche ce comportement via le runtime serveur/game et consomme les sorties via le host full-game; `verify:full-game:server-host` OK.
+- renderer-three: aucune reference directe aux macros; pas d'integration gameplay directe attendue. Les sorties visibles attendues sont les frames/poses et attaques monstres produites par le runtime apres selection d'attack state, puis consommees via les snapshots/entites visibles; `verify:full-game:three-renderer` OK.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK apres ajout des assertions `AS_*`; `npm run verify:g-ai` OK; `npm run verify:m-boss2` OK; `npm run verify:m-boss31` OK; `npm run verify:m-boss32` OK; `npm run verify:m-mutant` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot flags AI medic `AI_MEDIC`, `AI_RESURRECTING`.
 - Verdict: `Valide` pour les 2 macros apres ajout d'une assertion ciblee `AI_RESURRECTING` dans le harness header.
 - Valeurs H/TS comparees et conformes:
@@ -297,7 +312,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les attack states: `AS_STRAIGHT`, `AS_SLIDING`, `AS_MELEE`, `AS_MISSILE`.
+- Continuer avec les armor constants: `ARMOR_NONE`, `ARMOR_JACKET`, `ARMOR_COMBAT`, `ARMOR_BODY`, `ARMOR_SHARD`.
 
 ## Blocages
 

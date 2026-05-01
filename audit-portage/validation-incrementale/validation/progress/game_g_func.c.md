@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: spawn de bouton `SP_func_button`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:763-817` avec `packages/game/src/g_func.ts:1447-1505`.
+- Correction appliquee: commentaire d'en-tete `SP_func_button` renforce en fidelite `Strict` avec notes de portage; couverture ciblee ajoutee dans `scripts/verify/quake2-g-func.ts` pour defaults speed/accel/decel/wait, pos1/pos2, moveinfo start/end, `use`, `touch`, bouton cible, `sounds = 1`, bouton shootable `die`/`takedamage`/`max_health` et link runtime.
+- Effets verifies par lecture: le port conserve `G_SetMovedir`, `MOVETYPE_STOP`, `SOLID_BSP`, `gi.setmodel` via `setGameEntityModel`, son par defaut sauf `sounds == 1`, defaults `speed`/`accel`/`decel`/`wait`, `lip` par defaut 4, calcul `pos1`/`pos2`, callbacks `button_use`/`button_killed`/`button_touch`, `EF_ANIM01`, et copie vers `moveinfo`.
+- Branchement: `SP_func_button` est referencee par `g_spawn.ts` pour `func_button`, appelee par `ED_CallSpawn` pendant `SpawnEntities`, puis ses callbacks sont atteignables par triggers/G_UseTargets, contacts et `T_Damage`; les mouvements passent par `Move_Calc` puis `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_button` dans `apps/web`; le navigateur consomme le runtime serveur/local, les sons et les snapshots/interpolations de brush models. `packages/renderer-three` doit consommer la sortie visible brush model/origine/angles, et le flux est couvert par les snapshots brush et `refresh-entity-sync`/world adapter; pas de correction renderer attendue.
+- Tests: `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `git diff --check -- packages/game/src/g_func.ts scripts/verify/quake2-g-func.ts ...` OK pendant le lot agent. Apres correction coordinateur du blocage hors lot dans `g_items.ts`, `npm run verify:g-func` et `npm run typecheck` relances OK; statut final `Valide`.
+
 - 2026-05-01: bouton shootable `button_killed`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:755-761` avec `packages/game/src/g_func.ts:1430-1444`.
 - Correction appliquee: ajout du commentaire d'en-tete `button_killed` et renforcement de `scripts/verify/quake2-g-func.ts` pour couvrir l'activator attaquant, la restauration `health = max_health`, `DAMAGE_NO`, la transition de pression et `button_wait`.
@@ -150,7 +158,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `SP_func_button`.
+- Continuer au premier `A verifier` apres `SP_func_button`: locale `dist`, puis `door_use_areaportals` si le lot reste coherent.
 
 ## Blocages
 

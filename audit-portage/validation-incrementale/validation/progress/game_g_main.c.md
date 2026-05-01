@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: fonction `ClientConnect`.
 - 2026-05-01: fonction `ClientThink`.
 - 2026-05-01: fonction `SpawnEntities`.
 - 2026-05-01: cvars serveur/commande `sv_cheats`, `flood_msgs`, `flood_persecond`, `flood_waitdelay`, `sv_maplist`.
@@ -13,6 +14,7 @@
 
 ## Verdict du lot
 
+- `ClientConnect`: partiel apres correction. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientConnect`; le TS `GetGameApi().ClientConnect` delegue toujours au port `p_client.ts` `ClientConnect`, mais applique maintenant avant delegation la politique C par defaut: IP bannie via `SV_FilterPacket`, mot de passe joueur via `password`, mot de passe spectateur via `spectator_password`, et limite spectateur via `maxspectators`/`maxclients`. Les hooks utilisateurs restent appeles apres cette politique par defaut. Commentaire d'en-tete verifie sur `p_client.ts`; helper de rattachement documente dans `g_main.ts`. Reste partiel: le C ecrit `rejmsg` dans le buffer mutable `userinfo`, alors que l'ABI TS actuelle passe une string immuable et le serveur lit encore `rejmsg` depuis la string originale.
 - `ClientThink`: valide. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientThink`; le TS `GetGameApi().ClientThink` delegue au port `p_client.ts` `ClientThink`. La comparaison C/TS couvre l'intermission (`PM_FREEZE`, sortie apres 5 secondes + bouton), le passage par `SV_ClientThink`, la mise a jour `current_entity`, boutons/latched buttons, `light_level`, attaque/`weapon_thunk`, chase/spectator followers et la branche pmove quand une collision runtime est disponible. Commentaire d'en-tete verifie dans `p_client.ts`.
 - `SpawnEntities`: valide apres correction. Le port TS normalise `skill`, sauvegarde maintenant les donnees persistantes client avant reconstruction (`SaveClientData`), libere les tags niveau (`FreeTags(TAG_LEVEL)`), reconstruit worldspawn/joueurs/entites BSP, conserve les blocs client persistants sur les slots joueurs, applique les filtres `spawnflags` skill/deathmatch et le hack map `command`/`trigger_once`/`*27`, dispatch les spawners, journalise le nombre d'entites inhibees, puis initialise teams, body queue et player trail. Commentaire d'en-tete verifie. Fidelity `Close`: le bootstrap TS garde l'ordre existant et teste des entites BSP avant body queue/player trail.
 - `sv_cheats`: valide. Cvar init portee avec nom `cheats`, default `0` et flags `CVAR_SERVERINFO | CVAR_LATCH`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou les commandes `give`/`god`/`notarget`/`noclip` gardent le gate original `deathmatch && !sv_cheats`.
@@ -53,6 +55,13 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().ClientConnect`: rejet IP bannie via `SV_FilterPacket`, rejet mot de passe joueur incorrect, acceptation joueur, rejet mot de passe spectateur incorrect, rejet limite spectateur pleine et acceptation spectateur avec slot disponible.
+- `npx tsx ./scripts/verify/quake2-sv-user.ts`: ok le 2026-05-01.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01.
+- `npm run verify:full-game:authoritative-input`: ok le 2026-05-01.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run verify:web-render-order`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().ClientThink` vers `p_client.ts`, intermission freeze/exit, `current_entity`, boutons, `weapon_thunk` et `light_level`.
 - `npx tsx ./scripts/verify/quake2-sv-user.ts`: ok le 2026-05-01, confirme le chemin serveur `SV_ClientThink -> ge.ClientThink`.
 - `npm run verify:full-game:authoritative-input`: ok le 2026-05-01, confirme le flux navigateur autoritatif `CL_SendCmd -> clc_move -> SV_ClientThink`.
@@ -96,6 +105,11 @@
 
 ## Blocages / decisions
 
+- Correction appliquee dans `packages/game/src/g_main.ts`: ajout d'un hook de validation par defaut pour `ClientConnect`, couvrant `SV_FilterPacket`, `password`, `spectator_password` et `maxspectators`.
+- Correction appliquee dans `scripts/verify/quake2-g-main.ts`: couverture ciblee des branches acceptation/refus de `ClientConnect`.
+- Decision: statut `Partiel` conserve pour `ClientConnect`, car le message de refus C (`Info_SetValueForKey(userinfo, "rejmsg", ...)`) n'est pas encore propage jusqu'a `packages/server/src/sv_main.ts` avec l'ABI TS actuelle.
+- `apps/web`: integration presente via le flux full-game server-backed (`full-game-server-host.ts` -> `GetGameApiFunction` -> export `ClientConnect`). Aucune logique web parallele ne remplace la politique de connexion.
+- `packages/renderer-three`: pas d'integration directe attendue. `ClientConnect` ne produit pas lui-meme de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene; apres acceptation, les sorties visibles passent par le flux normal de spawn/snapshots/client refresh.
 - Correction appliquee dans `scripts/verify/quake2-g-main.ts`: ajout d'une preuve ciblee sur l'export `ClientThink`.
 - Pas de correction appliquee dans `packages/game/src/g_main.ts` ou `packages/game/src/p_client.ts`: l'export `GetGameApi().ClientThink` est branche et le port `p_client.ts` couvre les branches attendues du lot.
 - `apps/web`: integration presente via le flux full-game autoritatif (`CL_SendCmd`, transport local, `SV_ClientThink`, export game `ClientThink`). Le placeholder `ClientThink` de `createPlaceholderGameExports` reste limite au bootstrap avant installation de l'API portee et ne remplace pas la logique runtime.
@@ -136,4 +150,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ClientConnect`.
+- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ClientUserinfoChanged`.

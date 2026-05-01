@@ -17,6 +17,8 @@ import {
   SP_func_clock,
   SP_light,
   SOLID_BSP,
+  SOLID_NOT,
+  ANIM_DEATH,
   GIB_METALLIC,
   GIB_ORGANIC,
   MOVETYPE_BOUNCE,
@@ -50,6 +52,7 @@ import {
   useGameEntity
 } from "../../packages/game/src/index.js";
 import { FL_NO_KNOCKBACK } from "../../packages/game/src/g_local.js";
+import { ThrowClientHead } from "../../packages/game/src/p_client.js";
 import { SVF_MONSTER } from "../../packages/game/src/runtime.js";
 
 main();
@@ -66,6 +69,7 @@ function main(): void {
   verifyGibTouchMatchesPlaneGatedSourceBehavior();
   verifyGibThinkAndDieCallbacks();
   verifyThrowHeadConvertsSourceEntityToGib();
+  verifyThrowClientHeadConvertsPlayerOrBodyToClientGib();
 
   console.log("quake2-g-misc: ok");
 }
@@ -407,6 +411,51 @@ function verifyThrowHeadConvertsSourceEntityToGib(): void {
     assert.equal(metallicHead.movetype, MOVETYPE_BOUNCE, "metallic ThrowHead must use MOVETYPE_BOUNCE");
     assert.equal(metallicHead.touch, undefined, "metallic ThrowHead must not install gib_touch");
     assert.deepEqual(metallicHead.velocity, [70, 80, 500], "metallic ThrowHead must apply vscale 1.0 before clipping");
+  });
+}
+
+function verifyThrowClientHeadConvertsPlayerOrBodyToClientGib(): void {
+  const runtime = createHarnessRuntime();
+
+  withMockedRandom([1 / 0x7fffffff, 0.75, 0.25, 0.5], () => {
+    const player = spawnGameEntity(runtime);
+    attachGameClient(player);
+    player.s.origin = [10, 20, 30];
+    player.velocity = [1, 2, 3];
+
+    ThrowClientHead(player, 100, runtime);
+
+    assert.equal(player.model, "models/objects/gibs/head2/tris.md2", "ThrowClientHead odd rand must choose player head");
+    assert.equal(player.s.skinnum, 1, "ThrowClientHead player head must use the player skin");
+    assert.deepEqual(player.s.origin, [10, 20, 62], "ThrowClientHead must raise the head origin by 32 units");
+    assert.equal(player.s.frame, 0, "ThrowClientHead must reset the frame");
+    assert.deepEqual(player.mins, [-16, -16, 0], "ThrowClientHead mins mismatch");
+    assert.deepEqual(player.maxs, [16, 16, 16], "ThrowClientHead maxs mismatch");
+    assert.equal(player.takedamage, damage_t.DAMAGE_NO, "ThrowClientHead must make the head non-damageable");
+    assert.equal(player.solid, SOLID_NOT, "ThrowClientHead must clear collision");
+    assert.equal(player.s.effects, EF_GIB, "ThrowClientHead must replace effects with EF_GIB");
+    assert.equal(player.s.sound, 0, "ThrowClientHead must clear looping sound");
+    assert.equal((player.flags & FL_NO_KNOCKBACK) !== 0, true, "ThrowClientHead must set FL_NO_KNOCKBACK");
+    assert.equal(player.movetype, MOVETYPE_BOUNCE, "ThrowClientHead must use MOVETYPE_BOUNCE");
+    assert.deepEqual(player.velocity, [61, -58, 303], "ThrowClientHead must add VelocityForDamage to current velocity");
+    assert.equal(player.client!.anim_priority, ANIM_DEATH, "ThrowClientHead must force client death animation priority");
+    assert.equal(player.client!.anim_end, 0, "ThrowClientHead must end the client animation at frame 0");
+  });
+
+  withMockedRandom([0, 0.5, 0.5, 0], () => {
+    const body = spawnGameEntity(runtime);
+    body.s.origin = [0, 0, 0];
+    body.velocity = [0, 0, 0];
+    body.think = () => undefined;
+    body.nextthink = 25;
+
+    ThrowClientHead(body, 40, runtime);
+
+    assert.equal(body.model, "models/objects/gibs/skull/tris.md2", "ThrowClientHead even rand must choose skull");
+    assert.equal(body.s.skinnum, 0, "ThrowClientHead skull must clear skin");
+    assert.deepEqual(body.velocity, [0, 0, 140], "ThrowClientHead low damage must use the 0.7 velocity scale");
+    assert.equal(body.think, undefined, "ThrowClientHead queued bodies must clear think");
+    assert.equal(body.nextthink, 0, "ThrowClientHead queued bodies must clear nextthink");
   });
 }
 

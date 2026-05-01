@@ -70,6 +70,7 @@ verifyKillCommand();
 verifyPutAwayCommand();
 verifyPlayersCommand();
 verifyPlayerListAndWave();
+verifyClientCommandDispatcher();
 
 console.log("Verification g_cmds - client commands OK");
 
@@ -529,6 +530,37 @@ function verifyPlayerListAndWave(): void {
   Cmd_Wave_f(player1, localContext);
   assert.match(lastPrint().message, /wave/, "Cmd_Wave_f should print selected wave animation");
   assert.equal(player1.client!.anim_end, 122, "Cmd_Wave_f should set wave animation end frame");
+}
+
+function verifyClientCommandDispatcher(): void {
+  const runtime = createRuntime();
+  const localContext = createContext(runtime);
+  const player = createClient(runtime, 1, "dispatcher");
+
+  prints.length = 0;
+  const notReady = runtime.entities[0]!;
+  runCommand(localContext, ["say", "ignored"], "ignored");
+  GameCommandsClientCommand(localContext, notReady);
+  assert.equal(prints.length, 0, "ClientCommand should return immediately when ent.client is missing");
+
+  runCommand(localContext, ["NoClip"]);
+  GameCommandsClientCommand(localContext, player);
+  assert.equal(player.movetype, MOVETYPE_NOCLIP, "ClientCommand should compare cmd case-insensitively like Q_stricmp");
+
+  prints.length = 0;
+  runCommand(localContext, ["unknown", "hello"], "hello");
+  GameCommandsClientCommand(localContext, player);
+  assert.equal(lastPrint().message, "dispatcher: unknown hello\n", "ClientCommand should route unknown commands to Cmd_Say_f arg0 fallback");
+
+  prints.length = 0;
+  runtime.intermissiontime = 1;
+  runCommand(localContext, ["unknown", "blocked"], "blocked");
+  GameCommandsClientCommand(localContext, player);
+  assert.equal(prints.length, 0, "ClientCommand should block fallback chat during intermission");
+
+  runCommand(localContext, ["players"]);
+  GameCommandsClientCommand(localContext, player);
+  assert.match(lastPrint().message, /1 players/, "ClientCommand should allow players before the intermission gate");
 }
 
 function createRuntime(): GameRuntime {

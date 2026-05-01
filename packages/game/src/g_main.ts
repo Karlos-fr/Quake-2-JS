@@ -40,6 +40,7 @@ import {
   type qboolean,
   type usercmd_t
 } from "../../qcommon/src/index.js";
+import { Info_ValueForKey } from "../../qcommon/src/common.js";
 import { GAME_API_VERSION, type edict_t, type game_export_t, type game_import_t } from "./game.js";
 import {
   FL_FLY,
@@ -99,6 +100,7 @@ import {
   type GameRuntime
 } from "./runtime.js";
 import {
+  SV_FilterPacket,
   ServerCommand as ServerCommand_Svcmds,
   createGameServerCommandState,
   type GameServerCommandState
@@ -593,7 +595,7 @@ export function GetGameApi(imports: game_import_t, options: GameMainContextOptio
     ReadGame: (filename) => ReadGame(context, filename),
     WriteLevel: (filename) => WriteLevel(context, filename),
     ReadLevel: (filename) => ReadLevel(context, filename),
-    ClientConnect: (ent, userinfo) => ClientConnect(ent, userinfo, context.runtime, context.hooks),
+    ClientConnect: (ent, userinfo) => ClientConnect(ent, userinfo, context.runtime, createClientConnectHooks(context)),
     ClientBegin: (ent) => ClientBegin(ent, context.runtime, context.hooks),
     ClientUserinfoChanged: (ent, userinfo) => {
       ClientUserinfoChanged(ent, userinfo, context.runtime, context.hooks);
@@ -619,6 +621,76 @@ export function GetGameApi(imports: game_import_t, options: GameMainContextOptio
       return context.runtime.maxentities;
     }
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Reattach the default `g_main.c` connection policy before delegating to the `p_client.c` port.
+ */
+function createClientConnectHooks(context: GameMainContext): GameMainHooks {
+  const userValidateConnect = context.hooks.validateConnect;
+  return {
+    ...context.hooks,
+    validateConnect: (ent, userinfo, runtime) => {
+      const validation = validateClientConnect(context, userinfo);
+      if (!validation.accepted) {
+        return validation;
+      }
+
+      return userValidateConnect?.(ent, userinfo, runtime) ?? validation;
+    }
+  };
+}
+
+/**
+ * Original name: ClientConnect connection gates
+ * Source: game/p_client.c through the `g_main.c` exported `ClientConnect` slot
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rejects banned IPs, invalid player passwords, invalid spectator passwords and full spectator slots.
+ *
+ * Porting notes:
+ * - The TS game-export ABI passes userinfo as an immutable string, so rejection text is returned through hooks
+ *   instead of mutating `userinfo` with `rejmsg`.
+ */
+function validateClientConnect(context: GameMainContext, userinfo: string): { accepted: boolean; reason?: string } {
+  const ip = Info_ValueForKey(userinfo, "ip");
+  if (SV_FilterPacket(context.serverCommands, { gi: context.gi }, ip)) {
+    return { accepted: false, reason: "Banned." };
+  }
+
+  const spectator = Info_ValueForKey(userinfo, "spectator");
+  if (context.runtime.deathmatch && spectator.length > 0 && spectator !== "0") {
+    const spectatorPassword = context.cvars.spectator_password?.string ?? "";
+    if (spectatorPassword.length > 0 && spectatorPassword !== "none" && spectatorPassword !== spectator) {
+      return { accepted: false, reason: "Spectator password required or incorrect." };
+    }
+
+    let numspec = 0;
+    const maxclients = Math.trunc(context.cvars.maxclients?.value ?? context.runtime.maxclients);
+    for (let index = 0; index < maxclients; index += 1) {
+      const ent = context.runtime.entities[index + 1];
+      if (ent?.inuse && ent.client?.pers.spectator) {
+        numspec += 1;
+      }
+    }
+
+    if (numspec >= (context.cvars.maxspectators?.value ?? 0)) {
+      return { accepted: false, reason: "Server spectator limit is full." };
+    }
+
+    return { accepted: true };
+  }
+
+  const password = context.cvars.password?.string ?? "";
+  const value = Info_ValueForKey(userinfo, "password");
+  if (password.length > 0 && password !== "none" && password !== value) {
+    return { accepted: false, reason: "Password required or incorrect." };
+  }
+
+  return { accepted: true };
 }
 
 /**

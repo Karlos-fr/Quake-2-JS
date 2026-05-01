@@ -1289,6 +1289,7 @@ export function ThrowClientHead(self: GameEntity, damage: number, runtime: GameR
 
   self.s.skinnum = usePlayerHead ? 1 : 0;
   self.s.origin[2] += 32;
+  self.origin = [...self.s.origin];
   self.s.frame = 0;
   self.model = gibname;
   self.s.modelindex = registerGameModel(runtime, gibname);

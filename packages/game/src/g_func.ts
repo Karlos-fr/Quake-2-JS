@@ -1447,10 +1447,13 @@ export function button_killed(self: GameEntity, _inflictor: GameEntity | null, a
  * Original name: SP_func_button
  * Source: game/g_func.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Initializes one pressable or shootable brush button.
+ * - Initializes one pressable or shootable brush button, including movement endpoints, callbacks, default sounds/timing, and BSP linking.
+ *
+ * Porting notes:
+ * - The original `st.lip` spawn temp is read from the entity property bag; model and sound registration go through the runtime adapters.
  */
 export function SP_func_button(ent: GameEntity, runtime: GameRuntime): void {
   G_SetMovedir(ent.s.angles, ent.movedir);

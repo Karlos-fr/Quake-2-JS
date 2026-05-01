@@ -34,8 +34,10 @@ import {
   spawnGameEntity
 } from "../../packages/game/src/index.js";
 import { ITEM_TARGETS_USED, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
-import { CS_ITEMS, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_ITEMS, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
+import { CONTENTS_SOLID } from "../../packages/qcommon/src/q_shared.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
+import type { trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -49,6 +51,7 @@ function main(): void {
   verifyTouchWeaponPickupUsesWeaponPath();
   verifyTouchCoopStayWeaponRemainsTouchable();
   verifyDropTempTouchAndDeathmatchFree();
+  verifyDropItemPlacementAndTrace();
   verifyArmorAndPowerArmorIndices();
   verifyPickupArmorConversions();
   verifyUsePowerArmorRequiresCells();
@@ -273,6 +276,57 @@ function verifyDropTempTouchAndDeathmatchFree(): void {
   assertNumber(timeoutDrop.freetime, runtime.time, "G_FreeEdict stamps the timed-out dropped item free time");
 }
 
+function verifyDropItemPlacementAndTrace(): void {
+  const runtime = createHarnessRuntime();
+  const shells = requireItem("Shells");
+  const tracedEnd: vec3_t = [111, 222, 333];
+  const traceCalls: Array<{ start: vec3_t; mins: vec3_t; maxs: vec3_t; end: vec3_t; passent: GameEntity | null; mask: number }> = [];
+
+  runtime.collision.trace = (start, mins, maxs, end, passent, mask) => {
+    traceCalls.push({
+      start: [...start],
+      mins: [...mins],
+      maxs: [...maxs],
+      end: [...end],
+      passent,
+      mask
+    });
+    return createTrace(tracedEnd, null);
+  };
+
+  const playerOwner = createPlayer(runtime);
+  playerOwner.s.origin = [10, 20, 30];
+  playerOwner.origin = [10, 20, 30];
+  playerOwner.client!.v_angle = [0, 90, 0];
+
+  const playerDrop = Drop_Item(playerOwner, shells, runtime);
+
+  assertNumber(traceCalls.length, 1, "Drop_Item traces projected client drops once");
+  assertVec3(traceCalls[0].start, [10, 20, 30], "Drop_Item trace starts at the owner origin");
+  assertVec3(traceCalls[0].mins, [-15, -15, -15], "Drop_Item trace uses the dropped item mins");
+  assertVec3(traceCalls[0].maxs, [15, 15, 15], "Drop_Item trace uses the dropped item maxs");
+  assertVec3(traceCalls[0].end, [10, 44, 14], "Drop_Item projects client drops with offset 24,0,-16");
+  assertBoolean(traceCalls[0].passent === playerOwner, true, "Drop_Item trace ignores the owner");
+  assertNumber(traceCalls[0].mask, CONTENTS_SOLID, "Drop_Item trace uses CONTENTS_SOLID like the C source");
+  assertVec3(playerDrop.s.origin, tracedEnd, "Drop_Item copies trace.endpos to dropped.s.origin");
+  assertVec3(playerDrop.origin, tracedEnd, "Drop_Item keeps runtime origin in sync with trace.endpos");
+  assertVec3(playerDrop.velocity, [0, 100, 300], "Drop_Item scales the client forward vector into velocity");
+  assertNumber(playerDrop.s.renderfx, RF_GLOW, "Drop_Item applies RF_GLOW to visible dropped items");
+  assertNumber(playerDrop.s.modelindex > 0 ? 1 : 0, 1, "Drop_Item registers the dropped item world model");
+
+  const nonClientOwner = spawnGameEntity(runtime);
+  nonClientOwner.s.origin = [7, 8, 9];
+  nonClientOwner.origin = [7, 8, 9];
+  nonClientOwner.s.angles = [0, 0, 0];
+  traceCalls.length = 0;
+
+  const nonClientDrop = Drop_Item(nonClientOwner, shells, runtime);
+
+  assertNumber(traceCalls.length, 0, "Drop_Item does not trace non-client owner drops");
+  assertVec3(nonClientDrop.s.origin, [7, 8, 9], "Drop_Item places non-client drops at the owner origin");
+  assertVec3(nonClientDrop.velocity, [100, 0, 300], "Drop_Item uses non-client angles only for velocity");
+}
+
 function verifyArmorAndPowerArmorIndices(): void {
   InitItems();
 
@@ -411,7 +465,13 @@ function verifyInvalidSpawnFlagsAreClearedForNonPowerCube(): void {
 }
 
 function createHarnessRuntime(): GameRuntime {
-  return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+  const runtime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => createTrace(end, null),
+    pointcontents: () => 0
+  };
+  return runtime;
 }
 
 function createPlayer(runtime: GameRuntime): GameEntity {
@@ -454,4 +514,31 @@ function assertBoolean(actual: boolean, expected: boolean, label: string): void 
   if (actual !== expected) {
     throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
   }
+}
+
+function assertVec3(actual: vec3_t, expected: vec3_t, label: string): void {
+  for (let i = 0; i < 3; i++) {
+    if (Math.abs(actual[i] - expected[i]) > 0.0001) {
+      throw new Error(`${label}: attendu [${expected.join(", ")}], recu [${actual.join(", ")}]`);
+    }
+  }
+}
+
+function createTrace(endpos: vec3_t, ent: GameEntity | null): trace_t {
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: ent ? 0.5 : 1,
+    endpos: [...endpos],
+    plane: {
+      normal: [0, 0, 1],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent
+  };
 }

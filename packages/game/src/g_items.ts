@@ -33,6 +33,7 @@ import {
   STAT_PICKUP_STRING,
   STAT_SELECTED_ITEM
 } from "../../qcommon/src/index.js";
+import { CONTENTS_SOLID } from "../../qcommon/src/q_shared.js";
 import { entity_event_t } from "../../qcommon/src/index.js";
 import {
   WEAP_BLASTER,
@@ -1275,6 +1276,19 @@ function drop_temp_touch(ent: GameEntity, other: GameEntity, runtime: GameRuntim
   Touch_Item(ent, other, runtime);
 }
 
+/**
+ * Original name: drop_make_touchable
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Restores the normal item touch callback after the one-second owner grace period.
+ * - In deathmatch, schedules the original delayed `G_FreeEdict` cleanup 29 seconds later.
+ *
+ * Porting notes:
+ * - The direct C function pointer to `G_FreeEdict` is represented by a small runtime adapter preserving argument order.
+ */
 function drop_make_touchable(ent: GameEntity, runtime: GameRuntime): void {
   ent.touch = Touch_Item;
   if (runtime.deathmatch) {
@@ -1287,7 +1301,15 @@ function drop_make_touchable(ent: GameEntity, runtime: GameRuntime): void {
  * Original name: Drop_Item
  * Source: game/g_items.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns a tossed item entity with the original world model, glow, owner guard and delayed touch restoration.
+ * - For client owners, projects the drop point from view angles and clamps it through the gameplay collision trace.
+ * - For non-client owners, starts the drop at the owner's origin while using entity angles only for velocity.
+ *
+ * Porting notes:
+ * - `gi.setmodel` is represented by `registerGameModel`; `gi.trace(..., CONTENTS_SOLID)` is routed through the runtime collision bridge when available.
  */
 export function Drop_Item(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): GameEntity {
   const dropped = spawnGameEntity(runtime);
@@ -1307,10 +1329,16 @@ export function Drop_Item(ent: GameEntity, item: GameItemDefinition, runtime: Ga
     dropped.s.modelindex = registerGameModel(runtime, item.worldModel);
   }
 
-  const angles = ent.client ? ent.client.v_angle : ent.s.angles;
-  const { forward, right } = AngleVectors(angles);
-  const offset: [number, number, number] = [24, 0, -16];
-  const origin = G_ProjectSource(ent.s.origin, offset, forward, right);
+  const { forward, right } = AngleVectors(ent.client ? ent.client.v_angle : ent.s.angles);
+  let origin = ent.s.origin;
+  if (ent.client) {
+    const offset: [number, number, number] = [24, 0, -16];
+    const projectedOrigin = G_ProjectSource(ent.s.origin, offset, forward, right);
+    origin = runtime.collision
+      ? runtime.collision.trace(ent.s.origin, dropped.mins, dropped.maxs, projectedOrigin, ent, CONTENTS_SOLID).endpos
+      : projectedOrigin;
+  }
+
   dropped.origin = [...origin];
   dropped.s.origin = [...origin];
   dropped.velocity = [forward[0] * 100, forward[1] * 100, 300];
