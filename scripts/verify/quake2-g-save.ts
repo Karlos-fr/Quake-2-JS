@@ -94,14 +94,32 @@ assert.equal(levelfields[0]?.name, "changemap", "levelfields must preserve chang
 assert.equal(clientfields[0]?.name, "pers.weapon", "clientfields must preserve weapon item metadata");
 assert.deepEqual(
   fields
-    .filter((field) => ["lip", "distance", "height", "noise", "pausetime"].includes(field.name) && field.flags === FFL_SPAWNTEMP)
+    .filter((field) => [
+      "lip",
+      "distance",
+      "height",
+      "noise",
+      "pausetime",
+      "item",
+      "gravity",
+      "minyaw",
+      "maxyaw",
+      "minpitch",
+      "maxpitch"
+    ].includes(field.name) && field.flags === FFL_SPAWNTEMP)
     .map((field) => [field.name, field.ofs, field.type]),
   [
     ["lip", STOFS("lip"), fieldtype_t.F_INT],
     ["distance", STOFS("distance"), fieldtype_t.F_INT],
     ["height", STOFS("height"), fieldtype_t.F_INT],
     ["noise", STOFS("noise"), fieldtype_t.F_LSTRING],
-    ["pausetime", STOFS("pausetime"), fieldtype_t.F_FLOAT]
+    ["pausetime", STOFS("pausetime"), fieldtype_t.F_FLOAT],
+    ["item", STOFS("item"), fieldtype_t.F_LSTRING],
+    ["gravity", STOFS("gravity"), fieldtype_t.F_LSTRING],
+    ["minyaw", STOFS("minyaw"), fieldtype_t.F_FLOAT],
+    ["maxyaw", STOFS("maxyaw"), fieldtype_t.F_FLOAT],
+    ["minpitch", STOFS("minpitch"), fieldtype_t.F_FLOAT],
+    ["maxpitch", STOFS("maxpitch"), fieldtype_t.F_FLOAT]
   ],
   "fields must preserve spawn_temp movement/audio timing metadata"
 );

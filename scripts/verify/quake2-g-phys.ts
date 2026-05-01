@@ -37,6 +37,7 @@ import {
   MOVETYPE_NONE,
   MOVETYPE_PUSH,
   MOVETYPE_STEP,
+  MOVETYPE_STOP,
   MOVETYPE_TOSS,
   FL_TEAMSLAVE,
   SOLID_BBOX,
@@ -1454,5 +1455,106 @@ badEnt.think = () => {
 };
 G_RunEntity(badEnt, runtime);
 assertEqual("G_RunEntity.step.think", stepReached, true);
+
+const dispatchRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+dispatchRuntime.collision = {
+  world: {} as never,
+  trace(_start, _mins, _maxs, end, _passent, contentmask) {
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: dispatchRuntime.entities[0]
+    };
+  },
+  pointcontents() {
+    return 0;
+  }
+};
+
+const dispatchOrderEnt = spawnGameEntity(dispatchRuntime);
+dispatchOrderEnt.classname = "dispatch-order";
+dispatchOrderEnt.movetype = MOVETYPE_NONE;
+dispatchOrderEnt.nextthink = dispatchRuntime.time + 0.0005;
+const dispatchOrder: string[] = [];
+dispatchOrderEnt.prethink = () => {
+  dispatchOrder.push("prethink");
+};
+dispatchOrderEnt.think = () => {
+  dispatchOrder.push("think");
+};
+G_RunEntity(dispatchOrderEnt, dispatchRuntime);
+assertEqual("G_RunEntity.prethink-before-physics", dispatchOrder.join(","), "prethink,think");
+
+const dispatchFreedEnt = spawnGameEntity(dispatchRuntime);
+dispatchFreedEnt.classname = "dispatch-freed";
+dispatchFreedEnt.movetype = MOVETYPE_STEP;
+dispatchFreedEnt.nextthink = dispatchRuntime.time + 0.0005;
+let dispatchFreedThink = 0;
+dispatchFreedEnt.prethink = (self) => {
+  self.inuse = false;
+};
+dispatchFreedEnt.think = () => {
+  dispatchFreedThink += 1;
+};
+G_RunEntity(dispatchFreedEnt, dispatchRuntime);
+assertEqual("G_RunEntity.prethink-freed-no-physics", dispatchFreedThink, 0);
+
+const dispatchStopEnt = spawnGameEntity(dispatchRuntime);
+dispatchStopEnt.classname = "dispatch-stop";
+dispatchStopEnt.movetype = MOVETYPE_STOP;
+dispatchStopEnt.solid = SOLID_BSP;
+dispatchStopEnt.nextthink = dispatchRuntime.time + 0.0005;
+let dispatchStopThink = 0;
+dispatchStopEnt.think = () => {
+  dispatchStopThink += 1;
+};
+linkGameEntity(dispatchRuntime, dispatchStopEnt);
+G_RunEntity(dispatchStopEnt, dispatchRuntime);
+assertEqual("G_RunEntity.stop", dispatchStopThink, 1);
+
+const dispatchNoclipEnt = spawnGameEntity(dispatchRuntime);
+dispatchNoclipEnt.classname = "dispatch-noclip";
+dispatchNoclipEnt.movetype = MOVETYPE_NOCLIP;
+dispatchNoclipEnt.velocity = [10, 20, 30];
+dispatchNoclipEnt.avelocity = [5, 0, -5];
+G_RunEntity(dispatchNoclipEnt, dispatchRuntime);
+assertVec("G_RunEntity.noclip-origin", dispatchNoclipEnt.origin, [1, 2, 3]);
+assertVec("G_RunEntity.noclip-angles", dispatchNoclipEnt.angles, [0.5, 0, -0.5]);
+
+const dispatchBounceEnt = spawnGameEntity(dispatchRuntime);
+dispatchBounceEnt.classname = "dispatch-bounce";
+dispatchBounceEnt.movetype = MOVETYPE_BOUNCE;
+dispatchBounceEnt.velocity = [10, 0, 20];
+G_RunEntity(dispatchBounceEnt, dispatchRuntime);
+assertVec("G_RunEntity.bounce-origin", dispatchBounceEnt.origin, [1, 0, -6]);
+
+const dispatchFlyMissileEnt = spawnGameEntity(dispatchRuntime);
+dispatchFlyMissileEnt.classname = "dispatch-flymissile";
+dispatchFlyMissileEnt.movetype = MOVETYPE_FLYMISSILE;
+dispatchFlyMissileEnt.velocity = [0, 0, 20];
+G_RunEntity(dispatchFlyMissileEnt, dispatchRuntime);
+assertVec("G_RunEntity.flymissile-origin", dispatchFlyMissileEnt.origin, [0, 0, 2]);
+
+const dispatchBadEnt = spawnGameEntity(dispatchRuntime);
+dispatchBadEnt.classname = "dispatch-bad";
+dispatchBadEnt.movetype = 999;
+let dispatchBadMessage = "";
+try {
+  G_RunEntity(dispatchBadEnt, dispatchRuntime);
+} catch (error) {
+  dispatchBadMessage = error instanceof Error ? error.message : String(error);
+}
+assertEqual("G_RunEntity.bad-movetype", dispatchBadMessage, "SV_Physics: bad movetype 999");
 
 console.log("quake2-g-phys: ok");

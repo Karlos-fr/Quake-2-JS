@@ -187,12 +187,12 @@
 | `Quake-2-master/game/g_local.h` | global | `height` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `noise` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `pausetime` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `item` | `packages/game/src/g_items.ts` | `item` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `gravity` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `minyaw` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `maxyaw` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `minpitch` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `maxpitch` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `item` | `packages/game/src/g_local.ts` | `item` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `gravity` | `packages/game/src/g_local.ts` | `gravity` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `minyaw` | `packages/game/src/g_local.ts` | `minyaw` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `maxyaw` | `packages/game/src/g_local.ts` | `maxyaw` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `minpitch` | `packages/game/src/g_local.ts` | `minpitch` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `maxpitch` | `packages/game/src/g_local.ts` | `maxpitch` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | struct | `moveinfo_t` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `start_origin` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `start_angles` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

@@ -40,6 +40,7 @@ import {
   Pickup_Armor,
   Pickup_Key,
   Pickup_Ammo,
+  Pickup_PowerArmor,
   Pickup_Powerup,
   PowerArmorType,
   PrecacheItem,
@@ -107,6 +108,7 @@ function main(): void {
   verifyPickupArmorConversions();
   verifyPrecacheItemAssetsAndValidation();
   verifyUsePowerArmorRequiresCells();
+  verifyPickupPowerArmorIndexQuantityAndRespawn();
   verifyPickupPowerupLimitsRespawnAndInstantUse();
   verifyUseQuadTimeoutAndDroppedHack();
   verifyUseBreatherTimeout();
@@ -1340,6 +1342,43 @@ function verifyUsePowerArmorRequiresCells(): void {
 
   const events = drainGameSoundEvents(runtime);
   assertBoolean(events.some((event) => event.soundPath === "misc/power1.wav"), true, "Use_PowerArmor queues activation sound");
+}
+
+function verifyPickupPowerArmorIndexQuantityAndRespawn(): void {
+  const powerShield = requireItem("Power Shield");
+  const cells = requireItem("Cells");
+
+  const firstRuntime = createHarnessRuntime();
+  firstRuntime.deathmatch = true;
+  firstRuntime.time = 12;
+  const firstPlayer = createPlayer(firstRuntime);
+  const firstEntity = spawnFreeableEntity(firstRuntime);
+  firstEntity.item = powerShield;
+  firstEntity.svflags = 0;
+  firstEntity.solid = SOLID_TRIGGER;
+  firstPlayer.client!.pers.inventory[cells.index] = 3;
+  firstPlayer.client!.pers.inventory[powerShield.index] = 0;
+
+  assertBoolean(Pickup_PowerArmor(firstEntity, firstPlayer, firstRuntime), true, "Pickup_PowerArmor accepts a deathmatch map power armor");
+  assertNumber(firstPlayer.client!.pers.inventory[powerShield.index], 1, "Pickup_PowerArmor increments inventory through ITEM_INDEX(item)");
+  assertNumber(firstEntity.nextthink, 72, "Pickup_PowerArmor schedules deathmatch respawn using item.quantity");
+  assertNumber(firstEntity.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "Pickup_PowerArmor hides respawning map items");
+  assertNumber(firstEntity.solid, SOLID_NOT, "Pickup_PowerArmor makes respawning map items nonsolid");
+  assertBoolean((firstPlayer.flags & FL_POWER_ARMOR) !== 0, true, "Pickup_PowerArmor auto-uses the first deathmatch pickup from pre-increment quantity");
+
+  const secondRuntime = createHarnessRuntime();
+  secondRuntime.deathmatch = true;
+  const secondPlayer = createPlayer(secondRuntime);
+  const secondEntity = spawnFreeableEntity(secondRuntime);
+  secondEntity.item = powerShield;
+  secondEntity.spawnflags = DROPPED_ITEM;
+  secondPlayer.client!.pers.inventory[cells.index] = 3;
+  secondPlayer.client!.pers.inventory[powerShield.index] = 1;
+
+  assertBoolean(Pickup_PowerArmor(secondEntity, secondPlayer, secondRuntime), true, "Pickup_PowerArmor accepts a dropped power armor");
+  assertNumber(secondPlayer.client!.pers.inventory[powerShield.index], 2, "Pickup_PowerArmor preserves the ITEM_INDEX slot for repeated pickups");
+  assertNumber(secondEntity.nextthink, 0, "Pickup_PowerArmor does not respawn dropped items");
+  assertNumber(secondPlayer.flags & FL_POWER_ARMOR, 0, "Pickup_PowerArmor does not auto-use when pre-increment quantity was nonzero");
 }
 
 function verifyPickupPowerupLimitsRespawnAndInstantUse(): void {

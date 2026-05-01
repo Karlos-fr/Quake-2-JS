@@ -818,7 +818,11 @@ export function SV_Physics_Step(ent: GameEntity, runtime: GameRuntime): void {
  * Fidelity level: Close
  *
  * Behavior:
- * - Dispatches one entity to the physics branch matching its current `movetype`.
+ * - Runs `prethink`, then dispatches one active entity to the physics branch matching its current `movetype`.
+ *
+ * Porting notes:
+ * - The TypeScript port returns early if `prethink` frees the entity; the C code falls through with a cleared edict
+ *   after `G_FreeEdict`, which is behaviorally equivalent for normal runtime frees.
  */
 export function G_RunEntity(ent: GameEntity, runtime: GameRuntime): void {
   ent.prethink?.(ent, runtime);

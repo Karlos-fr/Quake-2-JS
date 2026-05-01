@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- locales `index` et `quantity` de `Pickup_PowerArmor`.
+
+Validation power armor pickup locals du 2026-05-01: comparaison avec `game/g_items.c` confirmee. La locale C `quantity` lit `other->client->pers.inventory[ITEM_INDEX(ent->item)]` avant l'increment; le TS conserve ce comportement via `const index = ITEM_INDEX(item)` puis `const quantity = client.pers.inventory[index]`, avant `client.pers.inventory[index] += 1`. Cette valeur pre-increment pilote l'auto-use deathmatch uniquement quand le joueur ne possedait pas encore l'item. La locale `index` preserve le slot itemlist de `Power Screen` / `Power Shield` pour l'increment d'inventaire. Le commentaire d'en-tete de `Pickup_PowerArmor` etait deja present; le niveau reste `Close` a cause de la garde TS sur `ent.item` mal forme, hors comportement map normale.
+
+Runtime branche via `Touch_Item`/`callItemPickup`, les entrees `item_power_screen` et `item_power_shield` de `itemlist`, `Pickup_PowerArmor`, `SetRespawn`, `Use_PowerArmor`, puis les consommateurs aval `PowerArmorType`, `g_combat.ts`, `p_hud.ts` et `p_view.ts`. `apps/web` doit consommer ce flux via le runtime local/full-game, inventaire/HUD, sons gameplay et snapshots; aucune logique parallele de pickup power armor detectee dans le lot. `renderer-three` doit consommer les sorties visibles generiques: modeles MD2 des items Power Screen/Shield, disparition pendant respawn, reapparition, effets joueur aval (`EF_POWERSCREEN`/shell) via snapshots; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyPickupPowerArmorIndexQuantityAndRespawn` couvre pickup deathmatch de carte avec `Power Shield`, increment du slot `ITEM_INDEX(item)`, respawn a `level.time + item.quantity`, `SVF_NOCLIENT`/`SOLID_NOT`, auto-use au premier exemplaire avec cells, puis pickup d'un item droppe avec inventaire preexistant qui n'auto-use pas et ne programme pas de respawn. Tests lances: `npm run verify:g-items`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon` OK. `npm run typecheck` bloque hors lot sur `packages/game/src/g_misc.ts(1957,17)` (`GameEntity` passe la ou `GameRuntime` est attendu).
+
 - `MegaHealth_think` et `Pickup_Health`.
 
 Validation health/mega health du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `MegaHealth_think` conserve le comportement C: tant que `owner->health > owner->max_health`, l'item se reprogramme a `level.time + 1` et retire 1 point de health; une fois le drain termine, un mega health de carte en deathmatch passe par `SetRespawn(self, 20)`, tandis qu'un item droppe ou hors deathmatch est libere via `G_FreeEdict`. `Pickup_Health` conserve le comportement C: health normale refusee au max, ajout de `ent->count`, clamp au `max_health` hors `HEALTH_IGNORE_MAX`, mega health temporisee avec `MegaHealth_think`, `owner`, `FL_RESPAWN`, `SVF_NOCLIENT`, `SOLID_NOT`, et respawn 30s des health non timed de carte en deathmatch. Headers TS completes en `Strict`; note de portage ajoutee pour la reinstallation du callback `think` apres chaque tick TS.
@@ -325,4 +333,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: locale `index` de `Pickup_PowerArmor`, puis `quantity` si le lot reste petit.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: locale `dropped` de `Drop_Item`.

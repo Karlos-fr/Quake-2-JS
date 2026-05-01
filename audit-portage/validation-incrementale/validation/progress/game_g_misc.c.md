@@ -2,6 +2,27 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: lignes externes restantes `train_use` et `func_train_find`, puis `misc_strogg_ship_use` et `SP_misc_strogg_ship`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts` et `packages/game/src/g_func.ts`: les declarations externes C `train_use`/`func_train_find` sont des callbacks train portes dans `g_func.ts`; `misc_strogg_ship_use` conserve le retrait de `SVF_NOCLIENT`, le remplacement du callback `use` par `train_use` et l'appel immediat a `train_use`; `SP_misc_strogg_ship` conserve le refus sans `target`, le warning source, le free de l'edict, le speed par defaut `300`, `MOVETYPE_PUSH`, `SOLID_NOT`, le modele `models/ships/strogg1/tris.md2`, bbox, think `func_train_find`, premier think `level.time + FRAMETIME`, callback `misc_strogg_ship_use`, `SVF_NOCLIENT`, moveinfo speed/accel/decel et link.
+  - Commentaires d'en-tete verifies/mis a jour: `misc_strogg_ship_use` et `SP_misc_strogg_ship` sont maintenant documentes en fidelite `Strict`; les headers `train_use` et `func_train_find` ont ete verifies dans `g_func.ts`.
+  - Branchement runtime verifie: `misc_strogg_ship` est enregistre dans `g_spawn.ts`, exporte via `index.ts` et dispatchable par `ED_CallSpawn`; le spawn installe `func_train_find` et `misc_strogg_ship_use`; l'activation passe par `useGameEntity`/`G_UseTargets` puis `train_use`; le mouvement continue via le flux train et `G_RunFrame`/`SV_RunThink`.
+  - `apps/web`: integration attendue car le lot produit un modele MD2 visible apres activation, avec origine/interpolation issues du mouvement train. Aucune logique parallele trouvee; le web consomme les sorties runtime par les flux local/full-game, snapshots et refresh frames.
+  - `renderer-three`: integration attendue pour modele MD2, origine, presence initialement masquee par `SVF_NOCLIENT`, apparition et mouvement dans la scene. Les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: `SP_misc_strogg_ship` journalise et libere maintenant l'entite sans target comme le C; commentaires d'en-tete `misc_strogg_ship_use` et `SP_misc_strogg_ship` mis a jour en `Strict`.
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour free/warning sans target, spawn, speed par defaut/explicite, dispatch `ED_CallSpawn`, `func_train_find`, activation visible et delegation `train_use`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:refresh-entity:alias-flags` OK.
+  - `npm run typecheck` OK.
+  - `npm run verify:g-func` bloque sur assertion externe au lot: `SP_func_door_secret health die callback mismatch` (`door_secret_die` obtenu, `door_killed` attendu par le test).
+- Prochain lot recommande: `misc_satellite_dish_think`, `misc_satellite_dish_use` et `SP_misc_satellite_dish` si le lot reste petit.
+
 - 2026-05-01: `diff`, `misc_viper_bomb_use`, `viper` et `SP_misc_viper_bomb`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `diff` conserve le calcul `timestamp - level.time`, le clamp a `-1`, le vecteur de pitch et la sauvegarde du roll courant dans `misc_viper_bomb_prethink`; `misc_viper_bomb_use` conserve `SOLID_BBOX`, retrait de `SVF_NOCLIENT`, `EF_ROCKET`, `use = NULL`, `MOVETYPE_TOSS`, callbacks `prethink`/`touch`, activator, copie `misc_viper.moveinfo.dir * speed`, timestamp et direction; `viper` est porte par la recherche du premier `misc_viper` actif; `SP_misc_viper_bomb` conserve `MOVETYPE_NONE`, `SOLID_NOT`, bbox `[-8,-8,-8]` / `[8,8,8]`, modele `models/objects/bomb/tris.md2`, degats par defaut `1000`, callback use, `SVF_NOCLIENT` et link.

@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `door_secret_die`, `SP_func_door_secret` et locales matricielles `side`, `width`, `length` incluant le doublon `width`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1960-2027` avec `packages/game/src/g_func.ts:2228-2301` apres ajout des commentaires d'en-tete `door_secret_die` et `SP_func_door_secret`.
+- Correction appliquee: commentaires d'en-tete `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `door_secret_die` force `DAMAGE_NO` puis relance `door_secret_use` avec l'attaquant; `SP_func_door_secret` conserve sons `doors/dr1_*`, `MOVETYPE_PUSH`, `SOLID_BSP`, callbacks `blocked/use`, shootability des portes sans `targetname` ou `SECRET_ALWAYS_SHOOT`, defaults `dmg=2`, `wait=5`, vitesse/accel/decel `50`, calculs `side`/`width`/`length`, branches `SECRET_1ST_LEFT` et `SECRET_1ST_DOWN`, santé explicite via `door_killed`, message via `door_touch`/`misc/talk.wav`, rewrite `classname = func_door` et link final.
+- Branchement: `SP_func_door_secret` est referencee par `packages/game/src/g_spawn.ts` pour `func_door_secret` puis atteinte via `ED_CallSpawn`/`SpawnEntities`; `door_secret_die` est installee comme callback `die` des portes shootables et rejoint `door_secret_use`, `Move_Calc`, `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door_secret` dans `apps/web`; le navigateur declenche le runtime porte et consomme snapshots, sons, areabits et temp entities. `packages/renderer-three` ne porte pas la logique gameplay, mais consomme les sorties visibles attendues via brush models, positions/interpolations, scene/areabits et effets runtime; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run verify:g-spawn` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 - 2026-05-01: `door_secret_use` et `door_secret_blocked`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1886-1893,1941-1958` avec `packages/game/src/g_func.ts:2080-2094,2201-2226` apres correction et ajout des commentaires d'en-tete.
 - Correction appliquee: `door_secret_use` ne stocke plus `activator`, comme le C original; `door_secret_blocked` appelle maintenant `BecomeExplosion1` pour les bloqueurs non-monstre/non-client encore presents apres le crush, afin d'emettre `TE_EXPLOSION1` avant liberation; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
@@ -358,7 +366,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `door_secret_die`, puis `SP_func_door_secret` et ses locales matricielles (`side`, `width`, `length`) si le lot reste petit.
+- Continuer avec `VectorMA`, puis `use_killbox` / `SP_func_killbox` si le lot reste petit.
 
 ## Blocages
 

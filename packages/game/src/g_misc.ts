@@ -1800,13 +1800,10 @@ export function SP_misc_viper(ent: GameEntity, runtime: GameRuntime): void {
  * Original name: misc_strogg_ship_use
  * Source: game/g_misc.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Makes the Strogg ship visible when triggered.
- *
- * Porting notes:
- * - Defers the original `train_use` continuation to a later phase.
+ * - Makes the Strogg ship visible when triggered, replaces its use callback with the train callback, and immediately starts/resumes train movement.
  */
 export function misc_strogg_ship_use(
   self: GameEntity,
@@ -1944,13 +1941,20 @@ export function teleporter_touch(self: GameEntity, other: GameEntity, runtime: G
  * Original name: SP_misc_strogg_ship
  * Source: game/g_misc.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Spawns the trigger-activated Strogg ship flyby entity.
+ * - Spawns the trigger-activated Strogg ship flyby entity, including source warnings/freeing when no path target is configured.
  */
 export function SP_misc_strogg_ship(ent: GameEntity, runtime: GameRuntime): void {
   if (!ent.target) {
+    runtime.log({
+      kind: "warning",
+      message: `${ent.classname} without a target at ${vtos(ent.absmin)}`,
+      entityIndex: ent.index,
+      entityClassname: ent.classname
+    });
+    G_FreeEdict(runtime, ent);
     return;
   }
 

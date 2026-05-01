@@ -54,6 +54,7 @@ import {
   door_secret_move5,
   door_secret_move6,
   door_secret_blocked,
+  door_secret_die,
   door_secret_done,
   door_secret_use,
   door_go_down,
@@ -1236,11 +1237,24 @@ const secret = entity("func_door_secret", 15, { angle: "0", wait: "1" });
 secret.size = [32, 64, 16];
 SP_func_door_secret(secret, runtime);
 assert.equal(secret.classname, "func_door", "SP_func_door_secret classname mismatch");
+assert.equal(secret.movetype, MOVETYPE_PUSH, "SP_func_door_secret movetype mismatch");
+assert.equal(secret.solid, SOLID_BSP, "SP_func_door_secret solid mismatch");
+assert.equal(secret.blocked, door_secret_blocked, "SP_func_door_secret blocked callback mismatch");
+assert.equal(secret.use, door_secret_use, "SP_func_door_secret use callback mismatch");
 assert.deepEqual(secret.pos1, [0, -64, 0], "SP_func_door_secret first move mismatch");
 assert.deepEqual(secret.pos2, [32, -64, 0], "SP_func_door_secret second move mismatch");
 assert.equal(secret.health, 0, "SECRET_ALWAYS_SHOOT default shootable health mismatch");
 assert.equal(secret.takedamage, damage_t.DAMAGE_YES, "SECRET_ALWAYS_SHOOT default takedamage mismatch");
 assert.equal(secret.die?.name, "door_secret_die", "SECRET_ALWAYS_SHOOT default die callback mismatch");
+assert.equal(secret.dmg, 2, "SP_func_door_secret default damage mismatch");
+assert.equal(secret.moveinfo.speed, 50, "SP_func_door_secret speed mismatch");
+assert.equal(secret.moveinfo.accel, 50, "SP_func_door_secret accel mismatch");
+assert.equal(secret.moveinfo.decel, 50, "SP_func_door_secret decel mismatch");
+assert.equal(secret.moveinfo.sound_start > 0, true, "SP_func_door_secret start sound registration mismatch");
+assert.equal(runtime.assets.soundPaths[secret.moveinfo.sound_start - 1], "doors/dr1_strt.wav", "SP_func_door_secret start sound path mismatch");
+assert.equal(runtime.assets.soundPaths[secret.moveinfo.sound_middle - 1], "doors/dr1_mid.wav", "SP_func_door_secret middle sound path mismatch");
+assert.equal(runtime.assets.soundPaths[secret.moveinfo.sound_end - 1], "doors/dr1_end.wav", "SP_func_door_secret end sound path mismatch");
+assert.equal(secret.linked, true, "SP_func_door_secret link mismatch");
 const secretUseRuntime = createGameRuntimeFromBspEntities([]);
 secretUseRuntime.time = runtime.time;
 secretUseRuntime.collision = {
@@ -1286,6 +1300,20 @@ door_secret_use(secretUse, secretUseActivator, secretUseActivator, secretUseRunt
 assert.equal(secretUse.moveinfo.remaining_distance, 777, "door_secret_use moving guard must not restart movement");
 assert.equal(secretUse.think, null, "door_secret_use moving guard must not schedule think");
 assert.equal(secretUseRuntime.collision.world.portalopen[1], 0, "door_secret_use moving guard must not open areaportal");
+const secretDieRuntime = createGameRuntimeFromBspEntities([]);
+secretDieRuntime.time = runtime.time;
+const secretDieDoor = createRuntimeEntity({ classname: "func_door_secret" }, 155);
+secretDieDoor.inuse = true;
+secretDieDoor.takedamage = damage_t.DAMAGE_YES;
+secretDieDoor.origin = [0, 0, 0];
+secretDieDoor.s.origin = [0, 0, 0];
+secretDieDoor.pos1 = [0, -32, 0];
+const secretDieAttacker = createRuntimeEntity({ classname: "secret attacker" }, 156);
+door_secret_die(secretDieDoor, secretDieAttacker, secretDieAttacker, 99, secretDieRuntime);
+assert.equal(secretDieDoor.takedamage, damage_t.DAMAGE_NO, "door_secret_die takedamage mismatch");
+assert.equal(secretDieDoor.moveinfo.remaining_distance, 32, "door_secret_die must start secret door movement");
+assert.equal(secretDieDoor.moveinfo.endfunc?.name, "door_secret_move1", "door_secret_die endfunc mismatch");
+assert.equal(secretDieDoor.think?.name, "Move_Begin", "door_secret_die must schedule movement");
 door_secret_move1(secret, runtime);
 assert.equal(secret.nextthink, runtime.time + 1, "door_secret_move1 delay mismatch");
 assert.equal(secret.think?.name, "door_secret_move2", "door_secret_move1 next think mismatch");
@@ -1386,6 +1414,23 @@ SP_func_door_secret(secretAlwaysShoot, runtime);
 assert.equal(secretAlwaysShoot.health, 0, "SECRET_ALWAYS_SHOOT targeted health mismatch");
 assert.equal(secretAlwaysShoot.takedamage, damage_t.DAMAGE_YES, "SECRET_ALWAYS_SHOOT targeted takedamage mismatch");
 assert.equal(secretAlwaysShoot.die?.name, "door_secret_die", "SECRET_ALWAYS_SHOOT targeted die callback mismatch");
+const secretMessage = entity("func_door_secret", 157, { angle: "0", targetname: "secret_message", message: "press me" });
+secretMessage.size = [32, 64, 16];
+SP_func_door_secret(secretMessage, runtime);
+assert.equal(secretMessage.touch, door_touch, "SP_func_door_secret message touch mismatch");
+assert.equal(runtime.assets.soundPaths.includes("misc/talk.wav"), true, "SP_func_door_secret message sound precache mismatch");
+const secretHealth = entity("func_door_secret", 158, { angle: "0", health: "25", targetname: "secret_health" });
+secretHealth.size = [32, 64, 16];
+SP_func_door_secret(secretHealth, runtime);
+assert.equal(secretHealth.takedamage, damage_t.DAMAGE_YES, "SP_func_door_secret health takedamage mismatch");
+assert.equal(secretHealth.die, door_killed, "SP_func_door_secret health die callback mismatch");
+assert.equal(secretHealth.max_health, 25, "SP_func_door_secret max_health mismatch");
+const spawnedSecret = createRuntimeEntity({ classname: "func_door_secret", angle: "0", model: "*16" }, 159);
+spawnedSecret.size = [16, 16, 16];
+runtime.entities[159] = spawnedSecret;
+ED_CallSpawn(spawnedSecret, runtime);
+assert.equal(spawnedSecret.classname, "func_door", "ED_CallSpawn func_door_secret rewrite mismatch");
+assert.equal(spawnedSecret.use, door_secret_use, "ED_CallSpawn func_door_secret use callback mismatch");
 
 const secretBlockerRuntime = createGameRuntimeFromBspEntities([]);
 secretBlockerRuntime.time = runtime.time;

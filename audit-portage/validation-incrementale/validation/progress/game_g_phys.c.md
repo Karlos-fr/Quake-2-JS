@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
-- Statut: En cours
-- Dernier lot valide: `SV_Physics_Step` avec locales `wasonground`, `hitsound`, `vel`, `friction`, `groundentity` et `mask` (incluant les entrees dupliquees par la matrice).
-- Prochain lot recommande: `G_RunEntity`.
+- Statut: Termine
+- Dernier lot valide: `G_RunEntity`.
+- Prochain lot recommande: aucun, matrice `g_phys.c` terminee.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -191,4 +191,15 @@
 - apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace cette physique. Les sorties attendues sont positions/angles/snapshots, sons runtime et callbacks indirects.
 - renderer-three: pas de sortie renderer directe propre; les sorties visibles attendues sont les entites/modeles/frames deja exposes par snapshots/refresh frames et les poses d'entites apres physique. Les particules, beams, dlights, temp entities, areabits, camera ou scene ne sont pas produits directement par `SV_Physics_Step`, mais peuvent venir indirectement des callbacks deja routes.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour `wasonground`, `hitsound`, gravite, friction horizontale `vel`/`friction`, masque monster/solid, relink, triggers, absence de think apres liberation, et branche dead-monster sans bottom.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `G_RunEntity`
+
+- Lot traite: `G_RunEntity`.
+- Comparaison C/TS: le C appelle `prethink` si present, dispatche selon `movetype` vers `SV_Physics_Pusher`, `SV_Physics_None`, `SV_Physics_Noclip`, `SV_Physics_Step` ou `SV_Physics_Toss`, et appelle `gi.error` pour un movetype inconnu. Le TS reprend le meme dispatch avec runtime explicite, lance une erreur JS pour le cas inconnu, et retourne si `prethink` libere l'entite; cette garde defensive est equivalente au cas normal C ou `G_FreeEdict` remet l'edict a zero avant la suite du dispatch.
+- Commentaire d'en-tete: mis a jour pour documenter `prethink`, le dispatch et la garde TS apres liberation.
+- Runtime: integre via `G_RunFrame` dans `packages/game/src/g_main.ts`, qui definit `current_entity`, copie `s.old_origin`, gere les clients separement, puis appelle `G_RunEntity` pour les entites non-client actives.
+- apps/web: le navigateur passe par les flux local/full-game qui avancent le runtime porte (`G_RunFrame`); aucune logique web parallele ne remplace le dispatch physique. Les sorties attendues sont positions/angles/snapshots, sons, temp entities et callbacks produits par les branches physiques.
+- renderer-three: `G_RunEntity` ne produit pas directement de rendu, mais il declenche les branches qui modifient modeles/frames/poses visibles, brush models, sons/evenements et sorties indirectes. Le renderer consomme ces sorties par snapshots/refresh frames, adapters de scene, dlights/particules/beams/temp entities quand les callbacks les produisent; pas de branchement renderer direct requis pour ce dispatcher.
+- Correction: commentaire d'en-tete mis a jour et assertions ciblees ajoutees dans `scripts/verify/quake2-g-phys.ts` pour ordre `prethink`, liberation pendant `prethink`, dispatch `STOP`/`NOCLIP`/`BOUNCE`/`FLYMISSILE`, et erreur `bad movetype`.
 - Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.

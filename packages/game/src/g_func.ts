@@ -2225,11 +2225,35 @@ export function door_secret_blocked(self: GameEntity, other: GameEntity, runtime
   T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], self.dmg, 1, 0, MOD_CRUSH, runtime);
 }
 
+/**
+ * Original name: door_secret_die
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Makes the secret door temporarily non-shootable.
+ * - Reuses the normal secret-door activation path with the attacker as caller.
+ */
 export function door_secret_die(self: GameEntity, _inflictor: GameEntity | null, attacker: GameEntity | null, _damage: number, runtime: GameRuntime): void {
   self.takedamage = damage_t.DAMAGE_NO;
   door_secret_use(self, attacker, attacker, runtime);
 }
 
+/**
+ * Original name: SP_func_door_secret
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns a secret brush door with Quake II's fixed sounds, movement speed, damage and wait defaults.
+ * - Computes the back/side movement positions from `angle`, `SECRET_1ST_LEFT` and `SECRET_1ST_DOWN`.
+ * - Exposes the entity as `func_door` after spawn, matching the original class rewrite.
+ *
+ * Porting notes:
+ * - `setGameEntityModel` and `linkGameEntity` adapt `gi.setmodel`/`gi.linkentity`.
+ */
 export function SP_func_door_secret(ent: GameEntity, runtime: GameRuntime): void {
   ent.moveinfo.sound_start = registerGameSound(runtime, "doors/dr1_strt.wav");
   ent.moveinfo.sound_middle = registerGameSound(runtime, "doors/dr1_mid.wav");

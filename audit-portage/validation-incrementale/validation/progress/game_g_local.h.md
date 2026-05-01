@@ -777,6 +777,24 @@
   - `scripts/verify/quake2-g-save.ts`: assertions metadata `fields` pour `lip`, `distance`, `height`, `noise` et `pausetime`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-func` OK; `npm run verify:g-target` OK; `npm run verify:g-trigger` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `spawn_temp_t` avec champs `item`, `gravity`, `minyaw`, `maxyaw`, `minpitch`, `maxpitch`.
+- Verdict: `Valide` pour les 6 champs apres comparaison H/TS, verification du commentaire de structure, branchements runtime et renforcement des preuves.
+- Source H comparee: `spawn_temp_t` porte les valeurs editeur temporaires absentes de `edict_t`; `item` configure les drops de monstres et les triggers key, `gravity` configure `worldspawn` et `trigger_gravity`, et `minyaw`/`maxyaw`/`minpitch`/`maxpitch` bornent `turret_breach`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `spawn_temp_t` porte les six champs dans l'ordre C attendu; `createSpawnTemp` initialise `item`/`gravity` a `null` et les limites d'angles a `0`; commentaire de portage `spawn_temp_t` verifie.
+  - `packages/game/src/g_save.ts`: `fields` mappe les six champs en `FFL_SPAWNTEMP`, avec types `F_LSTRING` pour `item`/`gravity` et `F_FLOAT` pour les limites d'angles.
+  - `packages/game/src/g_main.ts`: `configureWorldspawn` consomme `gravity` pour `sv_gravity` et le miroir runtime.
+  - `packages/game/src/g_trigger.ts`: `SP_trigger_key` consomme `item`; `SP_trigger_gravity` consomme `gravity` puis `trigger_gravity_touch` remplace la gravite de l'entite touchante.
+  - `packages/game/src/g_monster.ts` et `g_turret.ts`: `monster_start`/`SP_turret_driver` resolvent `item` via `FindItemByClassname`; `SP_turret_breach` consomme les quatre limites d'angles avec les defaults C.
+- Runtime: flux attendu branche depuis `SpawnEntities`/`ED_ParseField` vers worldspawn, triggers, monstres et tourelles. Les effets actifs sont la gravite serveur/entite, le gating key/inventaire, les drops de monstres et les angles de brush turret, puis snapshots/sons/HUD selon les consommateurs.
+- apps/web: integration attendue via host local/full-game qui charge les entites BSP, appelle le runtime game, propage gravite/inputs/snapshots/HUD/sons et ne remplace pas ces champs par une logique parallele. `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: pas de consommation directe de `spawn_temp_t` attendue. Les sorties visibles possibles sont les brush models de tourelles, monstres/items drops, positions affectees par gravite, camera/scene et snapshots produits en aval; `packages/renderer-three` les consomme via le flux refresh/full-game. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `spawn_temp_t` verifie; commentaires d'en-tete verifies pour les fonctions portees impliquees (`configureWorldspawn`, `SP_trigger_key`, `SP_trigger_gravity`, `trigger_gravity_touch`, `monster_start`, `SP_turret_breach`, `SP_turret_driver`).
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions de mutation pour `item`, `gravity`, `minyaw`, `maxyaw`, `minpitch`, `maxpitch`.
+  - `scripts/verify/quake2-g-save.ts`: assertions metadata `fields` pour les six champs.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-spawn` OK; `npm run verify:g-trigger` OK; `npm run verify:g-turret` OK; `npm run verify:g-monster` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -810,7 +828,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les prochains champs `spawn_temp_t`: `item`, puis `gravity`, `minyaw`, `maxyaw`, `minpitch`, `maxpitch` si le lot reste petit.
+- Continuer avec le debut de `moveinfo_t`: structure, puis `start_origin`, `start_angles`, `end_origin`, `end_angles` si le lot reste petit.
 
 ## Blocages
 

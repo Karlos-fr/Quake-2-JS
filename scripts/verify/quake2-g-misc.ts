@@ -40,6 +40,7 @@ import {
   SP_misc_eastertank,
   SP_misc_explobox,
   SP_misc_bigviper,
+  SP_misc_strogg_ship,
   SP_misc_viper,
   SP_misc_viper_bomb,
   SP_misc_teleporter,
@@ -83,6 +84,7 @@ import {
   misc_viper_bomb_prethink,
   misc_viper_bomb_touch,
   misc_viper_bomb_use,
+  misc_strogg_ship_use,
   misc_viper_use,
   path_corner_touch,
   point_combat_touch,
@@ -124,6 +126,7 @@ function main(): void {
   verifyCommanderBodySpawnDropUseAndAnimation();
   verifyMiscDeadsoldierSpawnAndGibDeath();
   verifyMiscViperDelegatesTrainMovement();
+  verifyMiscStroggShipDelegatesTrainMovement();
   verifyBigViperAndViperBombCallbacks();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
@@ -1059,6 +1062,89 @@ function verifyMiscViperDelegatesTrainMovement(): void {
   dispatch.target = "viper_p1";
   ED_CallSpawn(dispatch, runtime);
   assert.equal(dispatch.use, misc_viper_use, "ED_CallSpawn must dispatch misc_viper to SP_misc_viper");
+}
+
+function verifyMiscStroggShipDelegatesTrainMovement(): void {
+  const missingTargetRuntime = createHarnessRuntime();
+  const missingTarget = spawnFreeableEntity(missingTargetRuntime);
+  missingTarget.classname = "misc_strogg_ship";
+  missingTarget.absmin = [4, 5, 6];
+
+  SP_misc_strogg_ship(missingTarget, missingTargetRuntime);
+
+  assert.equal(missingTarget.inuse, false, "misc_strogg_ship without target must be freed like the source");
+  assert.equal(
+    missingTargetRuntime.logEntries.some((entry) => entry.kind === "warning" && entry.message === "misc_strogg_ship without a target at (4 5 6)"),
+    true,
+    "misc_strogg_ship without target warning mismatch"
+  );
+
+  const runtime = createHarnessRuntime();
+  runtime.time = 64;
+
+  const corner1 = spawnGameEntity(runtime);
+  corner1.classname = "path_corner";
+  corner1.targetname = "strogg_p1";
+  corner1.target = "strogg_p2";
+  corner1.origin = [320, 100, 48];
+  corner1.s.origin = [320, 100, 48];
+
+  const corner2 = spawnGameEntity(runtime);
+  corner2.classname = "path_corner";
+  corner2.targetname = "strogg_p2";
+  corner2.target = "strogg_p1";
+  corner2.origin = [512, 128, 96];
+  corner2.s.origin = [512, 128, 96];
+
+  const ship = spawnFreeableEntity(runtime);
+  ship.classname = "misc_strogg_ship";
+  ship.target = "strogg_p1";
+  ship.targetname = "strogg_start";
+  ship.speed = 450;
+
+  SP_misc_strogg_ship(ship, runtime);
+
+  assert.equal(ship.movetype, MOVETYPE_PUSH, "misc_strogg_ship must use MOVETYPE_PUSH");
+  assert.equal(ship.solid, SOLID_NOT, "misc_strogg_ship must be non-solid");
+  assert.equal(runtime.assets.modelPaths[ship.s.modelindex - 1], "models/ships/strogg1/tris.md2", "misc_strogg_ship modelindex mismatch");
+  assert.deepEqual(ship.mins, [-16, -16, 0], "misc_strogg_ship mins mismatch");
+  assert.deepEqual(ship.maxs, [16, 16, 32], "misc_strogg_ship maxs mismatch");
+  assert.equal(ship.think, func_train_find, "misc_strogg_ship must install func_train_find");
+  assert.equal(ship.nextthink, runtime.time + FRAMETIME, "misc_strogg_ship must schedule train path resolution one frame later");
+  assert.equal(ship.use, misc_strogg_ship_use, "misc_strogg_ship must install misc_strogg_ship_use");
+  assert.equal((ship.svflags & SVF_NOCLIENT) !== 0, true, "misc_strogg_ship must start hidden");
+  assert.equal(ship.moveinfo.speed, 450, "misc_strogg_ship explicit speed mismatch");
+  assert.equal(ship.moveinfo.accel, 450, "misc_strogg_ship accel must match speed");
+  assert.equal(ship.moveinfo.decel, 450, "misc_strogg_ship decel must match speed");
+  assert.equal(ship.linked, true, "misc_strogg_ship must link for runtime snapshots");
+
+  ship.think!(ship, runtime);
+  assert.deepEqual(ship.origin, [336, 116, 48], "func_train_find must move misc_strogg_ship to the first path corner minus mins");
+  assert.equal(ship.target, "strogg_p2", "func_train_find must hand off misc_strogg_ship target to the next path corner");
+  assert.equal((ship.spawnflags & 1) === 0, true, "targetnamed misc_strogg_ship must wait for use before START_ON");
+
+  const activator = spawnGameEntity(runtime);
+  activator.classname = "trigger_once";
+  useGameEntity(runtime, ship, null, activator);
+
+  assert.equal((ship.svflags & SVF_NOCLIENT) === 0, true, "misc_strogg_ship_use must make the ship visible");
+  assert.equal(ship.use, train_use, "misc_strogg_ship_use must replace itself with train_use");
+  assert.equal(ship.activator, activator, "misc_strogg_ship_use must pass the activator into train_use");
+  assert.equal(ship.target_ent, corner2, "train_use must resume misc_strogg_ship along the next path corner");
+  assert.deepEqual(ship.moveinfo.end_origin, [528, 144, 96], "train_use must calculate the next misc_strogg_ship train destination");
+  assert.equal((ship.spawnflags & 1) !== 0, true, "train_use must set START_ON for the activated misc_strogg_ship");
+
+  const defaultSpeed = spawnFreeableEntity(runtime);
+  defaultSpeed.classname = "misc_strogg_ship";
+  defaultSpeed.target = "strogg_p1";
+  SP_misc_strogg_ship(defaultSpeed, runtime);
+  assert.equal(defaultSpeed.speed, 300, "misc_strogg_ship must default speed to 300");
+
+  const dispatch = spawnFreeableEntity(runtime);
+  dispatch.classname = "misc_strogg_ship";
+  dispatch.target = "strogg_p1";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(dispatch.use, misc_strogg_ship_use, "ED_CallSpawn must dispatch misc_strogg_ship to SP_misc_strogg_ship");
 }
 
 function verifyBigViperAndViperBombCallbacks(): void {
