@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: spawn de porte lineaire `SP_func_door`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1138-1228` avec `packages/game/src/g_func.ts:775-870`.
+- Correction appliquee: `SP_func_door` appelle maintenant `G_SetMovedir`, applique le doublement de vitesse deathmatch, initialise `takedamage = DAMAGE_YES` pour les portes shootables, precache `misc/talk.wav` pour les portes a message, applique `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, puis expose l'entite par `linkGameEntity` apres l'initialisation complete comme le `gi.linkentity` C; le commentaire d'en-tete documente l'adapter runtime/deathmatch.
+- Effets verifies: sons de porte par defaut sauf `sounds == 1`, direction/angles remis a zero, defaults `speed`/`accel`/`decel`/`wait`/`dmg`, calcul `pos1`/`pos2` et `moveinfo.distance` avec lip, inversion `DOOR_START_OPEN`, copie `moveinfo`, callbacks `blocked`/`use`/`die`/`touch`, `teammaster` pour porte solo, effets d'animation, `nextthink` et choix `Think_CalcMoveSpeed` ou `Think_SpawnDoorTrigger`.
+- Branchement: `SP_func_door` est referencee par `packages/game/src/g_spawn.ts` pour `func_door`, appelee par `ED_CallSpawn` pendant `SpawnEntities`, puis ses thinks/callbacks rejoignent `Think_CalcMoveSpeed`, `Think_SpawnDoorTrigger`, `door_use`, `door_blocked`, `door_killed`, `door_touch`, `Move_Calc` et le flux `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door` dans `apps/web`; le navigateur consomme le runtime serveur/local, les sons, centerprints, areabits et snapshots/interpolations de brush models. `packages/renderer-three` n'a pas a porter le spawn gameplay et consomme les sorties visibles attendues via brush snapshots, inline brush models et areabits; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: message tactile de porte `door_touch`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1125-1136` avec `packages/game/src/g_func.ts:743-780`.
 - Correction appliquee: `door_touch` emet maintenant une sortie `centerprint` runtime ciblee sur le client touche et le son runtime `misc/talk1.wav` avec canal `CHAN_AUTO`, volume 1 et attenuation `ATTN_NORM`, comme les appels C `gi.centerprintf` et `gi.sound`; le commentaire d'en-tete documente les adapters runtime.
@@ -230,7 +238,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `SP_func_door`.
+- Continuer avec `SP_func_door_rotating`.
 
 ## Blocages
 

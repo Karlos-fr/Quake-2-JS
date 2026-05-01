@@ -894,6 +894,7 @@ function applyMainCvarsToRuntime(context: GameMainContext): void {
   context.runtime.skill = context.cvars.skill?.value ?? 1;
   context.runtime.g_select_empty = Boolean(context.cvars.g_select_empty?.value);
   context.runtime.gravity = context.cvars.sv_gravity?.value ?? context.runtime.gravity;
+  context.runtime.maxvelocity = context.cvars.sv_maxvelocity?.value ?? context.runtime.maxvelocity;
   context.runtime.maxclients = Math.max(0, Math.trunc(context.cvars.maxclients?.value ?? context.runtime.maxclients));
   context.runtime.maxentities = Math.max(context.runtime.maxclients + 1, Math.trunc(context.cvars.maxentities?.value ?? context.runtime.maxentities));
   context.game.maxclients = context.runtime.maxclients;

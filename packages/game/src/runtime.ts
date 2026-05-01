@@ -759,6 +759,7 @@ export interface GameRuntime {
   framenum: number;
   helpchanged: number;
   gravity: number;
+  maxvelocity: number;
   mapname: string;
   spawnpoint: string;
   maxclients: number;
@@ -1215,6 +1216,7 @@ export function createGameRuntimeFromBspEntities(entities: BspEntity[]): GameRun
     framenum: 0,
     helpchanged: 0,
     gravity: 800,
+    maxvelocity: 2000,
     mapname: "",
     spawnpoint: "",
     maxclients: 0,

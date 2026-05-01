@@ -110,14 +110,14 @@ export function SV_TestEntityPosition(ent: GameEntity, runtime: GameRuntime): Ga
  * - Clamps one entity velocity to the Quake II maximum speed cvar bounds.
  *
  * Porting notes:
- * - Uses the original default `sv_maxvelocity` value until broader physics cvar plumbing is introduced.
+ * - Runtime physics call sites pass the current `sv_maxvelocity` value through explicitly.
  */
-export function SV_CheckVelocity(ent: GameEntity): void {
+export function SV_CheckVelocity(ent: GameEntity, maxVelocity = SV_MAXVELOCITY): void {
   for (let index = 0; index < 3; index += 1) {
-    if (ent.velocity[index] > SV_MAXVELOCITY) {
-      ent.velocity[index] = SV_MAXVELOCITY;
-    } else if (ent.velocity[index] < -SV_MAXVELOCITY) {
-      ent.velocity[index] = -SV_MAXVELOCITY;
+    if (ent.velocity[index] > maxVelocity) {
+      ent.velocity[index] = maxVelocity;
+    } else if (ent.velocity[index] < -maxVelocity) {
+      ent.velocity[index] = -maxVelocity;
     }
   }
 }
@@ -617,7 +617,7 @@ export function SV_Physics_Toss(ent: GameEntity, runtime: GameRuntime): void {
   }
 
   const old_origin: vec3_t = [...ent.origin];
-  SV_CheckVelocity(ent);
+  SV_CheckVelocity(ent, runtime.maxvelocity);
 
   if (ent.movetype !== MOVETYPE_FLY && ent.movetype !== MOVETYPE_FLYMISSILE) {
     SV_AddGravity(ent);
@@ -710,7 +710,7 @@ export function SV_Physics_Step(ent: GameEntity, runtime: GameRuntime): void {
   }
 
   const groundentity = ent.groundentity;
-  SV_CheckVelocity(ent);
+  SV_CheckVelocity(ent, runtime.maxvelocity);
   const wasonground = groundentity !== null;
   let hitsound = false;
 
