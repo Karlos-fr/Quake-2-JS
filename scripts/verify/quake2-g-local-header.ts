@@ -605,6 +605,15 @@ assert.deepEqual(
   "monsterinfo_t field order mismatch"
 );
 assert.equal(monsterInfoLocals.currentmove, null, "monsterinfo_t currentmove default must match NULL");
+assert.equal(monsterInfoLocals.aiflags, 0, "monsterinfo_t aiflags default must match zeroed C edict memory");
+assert.equal(monsterInfoLocals.nextframe, 0, "monsterinfo_t nextframe default must match zeroed C edict memory");
+assert.equal(monsterInfoLocals.scale, 0, "monsterinfo_t scale default must match zeroed C edict memory before monster_start");
+monsterInfoLocals.aiflags = AI_HOLD_FRAME;
+monsterInfoLocals.nextframe = 12;
+monsterInfoLocals.scale = 1.5;
+assert.equal(monsterInfoLocals.aiflags, AI_HOLD_FRAME, "monsterinfo_t aiflags must be mutable AI state");
+assert.equal(monsterInfoLocals.nextframe, 12, "monsterinfo_t nextframe must be mutable frame override state");
+assert.equal(monsterInfoLocals.scale, 1.5, "monsterinfo_t scale must be mutable movement scale state");
 assert.deepEqual(
   Object.keys({
     aifunc: undefined,

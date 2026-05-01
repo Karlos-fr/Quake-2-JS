@@ -28,10 +28,12 @@ import {
   SFL_CROSS_TRIGGER_1,
   SFL_CROSS_TRIGGER_3,
   SFL_CROSS_TRIGGER_MASK,
+  MOD_EXPLOSIVE,
   svc_temp_entity
 } from "../../packages/game/src/g_local.js";
 import {
   FRAMETIME,
+  SOLID_BBOX,
   SVF_MONSTER,
   SVF_NOCLIENT,
   attachGameClient,
@@ -61,6 +63,7 @@ import {
   SP_target_temp_entity,
   Use_Target_Speaker,
   Use_Target_Tent,
+  target_explosion_explode,
   target_lightramp_use,
   trigger_crosslevel_trigger_use,
   use_target_explosion,
@@ -325,16 +328,62 @@ function verifyTargetExplosionAndSplash(): void {
   const explosion = spawnGameEntity(runtime);
   explosion.classname = "target_explosion";
   explosion.dmg = 0;
-  SP_target_explosion(explosion, runtime);
+  ED_CallSpawn(explosion, runtime);
+  assert.equal(explosion.use, use_target_explosion, "target_explosion spawn table must install use_target_explosion");
+  assert.equal(explosion.svflags, SVF_NOCLIENT, "target_explosion must be hidden from clients");
   use_target_explosion(explosion, null, null, runtime);
-  assert.equal(drainGameTempEntityEvents(runtime).at(-1)?.type, temp_event_t.TE_EXPLOSION1, "target_explosion temp event mismatch");
+  const explosionEvent = drainGameTempEntityEvents(runtime).at(-1);
+  assert.equal(explosionEvent?.type, temp_event_t.TE_EXPLOSION1, "target_explosion temp event mismatch");
+  assert.equal(explosionEvent?.multicast, multicast_t.MULTICAST_PHS, "target_explosion multicast mismatch");
 
   const delayed = spawnGameEntity(runtime);
   delayed.classname = "target_explosion";
   delayed.delay = 0.3;
+  delayed.dmg = 0;
   SP_target_explosion(delayed, runtime);
   delayed.use?.(delayed, null, null, runtime);
   assert.equal(delayed.nextthink, runtime.time + 0.3, "target_explosion delayed think mismatch");
+  assert.equal(delayed.think, target_explosion_explode, "target_explosion delayed think callback mismatch");
+  runPendingThinks(runtime, runtime.time + 0.3);
+  assert.equal(delayed.nextthink, 0, "target_explosion delayed think must clear after running");
+  assert.equal(drainGameTempEntityEvents(runtime).at(-1)?.type, temp_event_t.TE_EXPLOSION1, "target_explosion delayed temp event mismatch");
+
+  const damaging = spawnGameEntity(runtime);
+  damaging.classname = "target_explosion";
+  damaging.dmg = 40;
+  damaging.s.origin = [0, 0, 0];
+  const victim = spawnGameEntity(runtime);
+  victim.classname = "explosion_victim";
+  victim.solid = SOLID_BBOX;
+  victim.takedamage = 1;
+  victim.health = 100;
+  victim.s.origin = [0, 0, 0];
+  const activator = createPlayer(runtime);
+  use_target_explosion(damaging, null, activator, runtime);
+  assert.equal(victim.health, 60, "target_explosion radius damage mismatch");
+  assert.equal(runtime.meansOfDeath, MOD_EXPLOSIVE, "target_explosion damage mod mismatch");
+
+  let receiverActivator: GameEntity | null = null;
+  const chained = spawnGameEntity(runtime);
+  chained.classname = "target_explosion";
+  chained.dmg = 0;
+  chained.delay = 0.7;
+  chained.target = "after_boom";
+  chained.activator = activator;
+  const receiver = spawnGameEntity(runtime);
+  receiver.classname = "target_explosion_receiver";
+  receiver.targetname = "after_boom";
+  receiver.use = (_self, _other, receivedActivator) => {
+    receiverActivator = receivedActivator;
+  };
+  target_explosion_explode(chained, runtime);
+  assert.equal(receiverActivator, activator, "target_explosion must fire targets with saved activator");
+  assert.equal(chained.delay, 0.7, "target_explosion local save must restore delay after firing targets");
+  assert.equal(
+    runtime.entities.some((entity) => entity?.classname === "DelayedUse"),
+    false,
+    "target_explosion local save must prevent delayed G_UseTargets scheduling"
+  );
 
   const splash = spawnGameEntity(runtime);
   splash.classname = "target_splash";

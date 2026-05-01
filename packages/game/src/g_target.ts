@@ -347,6 +347,17 @@ export function SP_target_goal(ent: GameEntity, runtime: GameRuntime): void {
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits `TE_EXPLOSION1` at the target origin to `MULTICAST_PHS`, applies radius damage with
+ *   `MOD_EXPLOSIVE`, then fires this entity's targets with the stored activator.
+ * - Temporarily clears `delay` while firing targets, matching the C local `save`, so the explosion
+ *   target itself can have a delay without forcing `G_UseTargets` through `Think_Delay`.
+ *
+ * Porting notes:
+ * - Uses structured runtime temp-entity events instead of direct `gi.Write*` calls.
+ * - Falls back to `self` as the radius-damage attacker when no activator is available because the
+ *   TypeScript combat path uses a non-null attacker entity.
  */
 export function target_explosion_explode(self: GameEntity, runtime: GameRuntime): void {
   emitGameTempEntity(runtime, temp_event_t.TE_EXPLOSION1, self.s.origin, multicast_t.MULTICAST_PHS);
@@ -363,6 +374,10 @@ export function target_explosion_explode(self: GameEntity, runtime: GameRuntime)
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores the activator, explodes immediately when `delay` is zero, otherwise schedules
+ *   `target_explosion_explode` at `level.time + delay`.
  */
 export function use_target_explosion(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   self.activator = activator;
@@ -380,6 +395,10 @@ export function use_target_explosion(self: GameEntity, _other: GameEntity | null
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Installs `use_target_explosion` and hides the target entity from client snapshots with
+ *   `SVF_NOCLIENT`.
  */
 export function SP_target_explosion(ent: GameEntity, _runtime: GameRuntime): void {
   ent.use = use_target_explosion;

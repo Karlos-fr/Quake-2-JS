@@ -31,7 +31,8 @@ import {
   SPAWNFLAG_NOT_DEATHMATCH,
   SPAWNFLAG_NOT_EASY,
   SPAWNFLAG_NOT_HARD,
-  SPAWNFLAG_NOT_MEDIUM
+  SPAWNFLAG_NOT_MEDIUM,
+  damage_t
 } from "../../packages/game/src/g_local.js";
 import { ED_CallSpawn, G_FindTeams, spawns } from "../../packages/game/src/g_spawn.js";
 import { G_RunFrame, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
@@ -666,6 +667,23 @@ SpawnEntities(
 "mins" "-16 -16 0"
 "maxs" "16 16 32"
 }
+{
+"classname" "func_areaportal"
+"targetname" "test_portal"
+"style" "3"
+}
+{
+"classname" "func_explosive"
+"model" "*22"
+"spawnflags" "${1 | 2 | 4}"
+"mass" "125"
+"dmg" "80"
+}
+{
+"classname" "func_explosive"
+"model" "*23"
+"targetname" "targeted_explosive"
+}
 `,
   ""
 );
@@ -821,6 +839,37 @@ assert.equal(spawnedPlainObject.solid, SOLID_BSP, "plain func_object must start 
 assert.equal(spawnedPlainObject.movetype, MOVETYPE_PUSH, "plain func_object must wait as MOVETYPE_PUSH");
 assert.equal(spawnedPlainObject.nextthink, 2 * FRAMETIME, "plain func_object must schedule release after two frames");
 assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedPlainObject.s.modelindex - 1], "*21", "plain func_object modelindex must resolve to *21");
+
+const spawnedAreaPortal = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_areaportal");
+assert.ok(spawnedAreaPortal, "SpawnEntities must keep func_areaportal in the runtime");
+assert.equal(spawnedAreaPortal.count, 0, "SP_func_areaportal must always start closed");
+assert.equal(typeof spawnedAreaPortal.use, "function", "SP_func_areaportal must expose the use callback");
+spawnedAreaPortal.use?.(spawnedAreaPortal, null, null, funcBrushContext.runtime);
+assert.equal(spawnedAreaPortal.count, 1, "func_areaportal use must toggle the portal state open");
+spawnedAreaPortal.use?.(spawnedAreaPortal, null, null, funcBrushContext.runtime);
+assert.equal(spawnedAreaPortal.count, 0, "func_areaportal use must toggle the portal state closed");
+
+const spawnedTriggerExplosive = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_explosive" && entity.model === "*22");
+assert.ok(spawnedTriggerExplosive, "SpawnEntities must keep trigger-spawn func_explosive in the runtime");
+assert.equal(spawnedTriggerExplosive.movetype, MOVETYPE_PUSH, "func_explosive movetype mismatch");
+assert.equal(spawnedTriggerExplosive.solid, SOLID_NOT, "trigger-spawn func_explosive must start hidden");
+assert.equal((spawnedTriggerExplosive.svflags & SVF_NOCLIENT) !== 0, true, "trigger-spawn func_explosive must set SVF_NOCLIENT");
+assert.equal((spawnedTriggerExplosive.s.effects & EF_ANIM_ALL) !== 0, true, "func_explosive EF_ANIM_ALL mismatch");
+assert.equal((spawnedTriggerExplosive.s.effects & EF_ANIM_ALLFAST) !== 0, true, "func_explosive EF_ANIM_ALLFAST mismatch");
+assert.equal(spawnedTriggerExplosive.takedamage, damage_t.DAMAGE_YES, "trigger-spawn func_explosive must become shootable after reveal path is armed");
+assert.equal(typeof spawnedTriggerExplosive.use, "function", "trigger-spawn func_explosive must expose the spawn callback");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedTriggerExplosive.s.modelindex - 1], "*22", "trigger-spawn func_explosive modelindex must resolve to *22");
+spawnedTriggerExplosive.use?.(spawnedTriggerExplosive, null, null, funcBrushContext.runtime);
+assert.equal(spawnedTriggerExplosive.solid, SOLID_BSP, "func_explosive spawn callback must make the brush solid");
+assert.equal((spawnedTriggerExplosive.svflags & SVF_NOCLIENT) === 0, true, "func_explosive spawn callback must make the brush client-visible");
+
+const spawnedTargetedExplosive = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_explosive" && entity.targetname === "targeted_explosive");
+assert.ok(spawnedTargetedExplosive, "SpawnEntities must keep targeted func_explosive in the runtime");
+assert.equal(spawnedTargetedExplosive.solid, SOLID_BSP, "targeted func_explosive must spawn solid");
+assert.equal(spawnedTargetedExplosive.takedamage, damage_t.DAMAGE_NO, "targeted func_explosive must not be shootable");
+assert.equal(spawnedTargetedExplosive.health, 0, "targeted func_explosive must not install default shootable health");
+assert.equal(typeof spawnedTargetedExplosive.use, "function", "targeted func_explosive must expose trigger use");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedTargetedExplosive.s.modelindex - 1], "*23", "targeted func_explosive modelindex must resolve to *23");
 
 const commandContext = createGameMainContext(imports);
 InitGame(commandContext);

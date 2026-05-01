@@ -2,6 +2,26 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `target_explosion_explode`, local `save`, `use_target_explosion` et `SP_target_explosion`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `target_explosion_explode` conserve l'emission `svc_temp_entity`/`TE_EXPLOSION1`, l'origine `self->s.origin`, `MULTICAST_PHS`, `T_RadiusDamage(self, activator, dmg, NULL, dmg+40, MOD_EXPLOSIVE)`, le `save` local qui neutralise temporairement `delay`, `G_UseTargets(self, activator)` et la restauration du delay. `use_target_explosion` conserve le stockage de l'activator, l'explosion immediate sans delay, et le scheduling `think`/`nextthink` quand `delay` est non nul. `SP_target_explosion` conserve le callback use et `SVF_NOCLIENT`.
+  - Commentaires d'en-tete completes pour les trois fonctions: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage pour le fallback TS d'attacker non nul.
+  - Branchement runtime verifie: `target_explosion` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; le callback est atteint via target use, les thinks differes sont executes par `runPendingThinks`/`G_RunFrame`, les radius damages passent par `T_RadiusDamage`, les targets chainees recoivent l'activator, et `G_RunFrame` draine les temp entities vers `gi.WriteByte`, `gi.WritePosition` et `gi.multicast`.
+  - `apps/web`: integration attendue car l'explosion produit une temp entity visible et possiblement des dlights/sons client. Pas de logique parallele masquante constatee; le flux navigateur consomme le runtime via temp entity parsing et refresh frames. `verify:web-render-order` reste OK.
+  - `renderer-three`: integration attendue car `TE_EXPLOSION1` produit une explosion render-facing et des dlights. La consommation existe via `CL_ParseTEnt`/`CL_ExecuteTempEntityEffects`, `CL_AddTEntPacket`, `CL_BuildTEntRefresh`, `CL_BuildRefreshFrame`, puis `createThreeDlightSync`/refresh entity sync. `verify:full-game:three-renderer` reste OK.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour `target_explosion_explode`, `use_target_explosion` et `SP_target_explosion`.
+  - `scripts/verify/quake2-g-target.ts`: couverture renforcee pour spawn table `ED_CallSpawn`, `SVF_NOCLIENT`, multicast `MULTICAST_PHS`, think differe execute, radius damage/mod, activator transmis, restauration du delay par `save`, et absence de `DelayedUse` parasite.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:g-main` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `use_target_changelevel` et `SP_target_changelevel` si le lot reste petit.
+
 - 2026-05-01: `use_target_goal` et `SP_target_goal`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `use_target_goal` conserve le son `CHAN_VOICE`, l'increment `found_goals`, l'arret du CD track par `CS_CDTRACK = "0"` seulement quand tous les goals sont trouves, `G_UseTargets(ent, activator)` et le free single-use. `SP_target_goal` conserve l'auto-remove deathmatch, l'installation du callback, le default `misc/secret.wav` quand `st.noise` est absent, `soundindex(st.noise)`, `SVF_NOCLIENT` et l'increment `total_goals`.

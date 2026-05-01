@@ -388,6 +388,9 @@ target.moveinfo.endfunc = saveHarnessCallback;
 target.think = target_crosslevel_target_think;
 target.use = use_target_secret;
 target.monsterinfo.currentmove = testMonsterMove;
+target.monsterinfo.aiflags = 0x104;
+target.monsterinfo.nextframe = 12;
+target.monsterinfo.scale = 1.5;
 writeContext.runtime.entities.push(target);
 const unsaved = createRuntimeEntity({ classname: "unsaved_temp_entity" }, 3);
 unsaved.inuse = false;
@@ -486,6 +489,11 @@ const levelSave = JSON.parse(levelJson) as {
         monsterinfo: { currentmove: string | null };
         moveinfo: { endfunc: string | null };
       };
+      monsterinfo: {
+        aiflags: number;
+        nextframe: number;
+        scale: number;
+      };
     };
   }>;
 };
@@ -513,6 +521,9 @@ assert.equal(targetSave.item, ITEM_INDEX(shotgun), "WriteLevel must encode entit
 assert.equal(targetSave.callbacks.think, "target_crosslevel_target_think", "WriteLevel must encode entity think by stable function name");
 assert.equal(targetSave.callbacks.use, "use_target_secret", "WriteLevel must encode entity use by stable function name");
 assert.equal(targetSave.callbacks.monsterinfo.currentmove, "test_move_save_restore", "WriteLevel must encode monster currentmove by stable mmove name");
+assert.equal(targetSave.monsterinfo.aiflags, 0x104, "WriteLevel must persist monsterinfo aiflags");
+assert.equal(targetSave.monsterinfo.nextframe, 12, "WriteLevel must persist monsterinfo nextframe");
+assert.equal(targetSave.monsterinfo.scale, 1.5, "WriteLevel must persist monsterinfo scale");
 assert.equal(targetSave.callbacks.moveinfo.endfunc, "saveHarnessCallback", "WriteLevel must encode moveinfo endfunc by stable function name");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
@@ -528,6 +539,9 @@ assert.equal(readContext.runtime.entities[2]?.item, shotgun, "ReadLevel item ind
 assert.equal(readContext.runtime.entities[2]?.think, target_crosslevel_target_think, "ReadLevel think callback restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.use, use_target_secret, "ReadLevel use callback restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.monsterinfo.currentmove, testMonsterMove, "ReadLevel currentmove restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.monsterinfo.aiflags, 0x104, "ReadLevel monsterinfo aiflags restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.monsterinfo.nextframe, 12, "ReadLevel monsterinfo nextframe restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.monsterinfo.scale, 1.5, "ReadLevel monsterinfo scale restore mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_origin, [16, 24, 32], "ReadLevel moveinfo start_origin mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_angles, [0, 90, 0], "ReadLevel moveinfo start_angles mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.end_origin, [128, 24, 48], "ReadLevel moveinfo end_origin mismatch");

@@ -59,6 +59,18 @@
 - Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
 - Corrections TS portees: aucune. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour couvrir explicitement `SVCmd_AddIP_f`.
 
+## Session 2026-05-01 - SVCmd_RemoveIP_f
+
+- Lot traite: `SVCmd_RemoveIP_f`, centre sur la recherche du filtre, le compactage du tableau et les messages `Removed.` / `Didn't find`.
+- Checklist appliquee: identification matrice/source/cible, comparaison C vs TS de la suppression IP, validation des messages console, effets de bord sur `numipfilters`/`ipfilters`, commentaire d'en-tete, branchement runtime, apps/web, renderer-three, tests, mise a jour matrice/progress/global.
+- Verdict: lot valide apres correction. Le C verifie `gi.argc() < 3`, convertit `gi.argv(2)` avec `StringToFilter`, cherche un match exact `(mask, compare)`, compacte les entrees suivantes vers la gauche, decremente `numipfilters`, emet `Removed.` puis retourne; si aucun match n'est trouve, il emet `Didn't find <ip>.`.
+- Compactage: le TS conserve maintenant le comportement C du slot hors plage active apres decrement: il n'efface plus `ipfilters[numipfilters]`, qui garde la valeur stale issue du compactage. Ce slot reste ignore par `addip`, `listip`, `writeip` et `SV_FilterPacket` tant qu'il est hors `numipfilters`.
+- Runtime: `SVCmd_RemoveIP_f` est atteignable par `ServerCommand` pour `removeip`, puis par la commande serveur `sv` via `SV_ServerCommand_f`; les filtres retires ne sont plus consommes par `SV_FilterPacket` dans `ClientConnect`.
+- apps/web: le host full-game cree l'API game portee avec `GetGameApiFunction`; aucune logique web parallele de filtrage IP n'est attendue pour ce lot, et le flux navigateur doit passer par le runtime serveur porte.
+- renderer-three: non applicable, la suppression d'un filtre IP ne produit ni entite visible, modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene.
+- Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
+- Corrections TS portees: `packages/game/src/g_svcmds.ts` n'efface plus le slot final apres compactage. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour couvrir explicitement `SVCmd_RemoveIP_f`.
+
 ## Prochain lot recommande
 
-- Continuer avec `SVCmd_RemoveIP_f`, centre sur la recherche du filtre, le compactage du tableau et le message `Removed.` / `Didn't find`.
+- Continuer avec `SVCmd_ListIP_f`, puis ses locaux `i` et `b` si le lot reste petit.

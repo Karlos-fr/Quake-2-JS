@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: `SP_func_explosive` et `SP_func_areaportal`.
 - 2026-05-01: `SP_func_conveyor`, `SP_func_wall` et `SP_func_object`.
 - 2026-05-01: `SP_func_door_secret`, `SP_func_door_rotating`, `SP_func_water` et `SP_func_train`.
 - 2026-05-01: `SP_func_plat`, `SP_func_rotating`, `SP_func_button` et `SP_func_door`.
@@ -10,6 +11,8 @@
 
 ## Verdict du lot
 
+- `SP_func_explosive`: valide. Le prototype et l'entree `func_explosive` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_misc.ts`; la fonction conserve le retrait deathmatch, `MOVETYPE_PUSH`, le precache des debris, le modele inline, le mode trigger-spawn cache puis revele, le mode cible non shootable, le mode shootable avec health/die par defaut, les flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, les debris, `T_RadiusDamage`, `G_UseTargets`, `BecomeExplosion1` ou `G_FreeEdict`.
+- `SP_func_areaportal`: valide. Le prototype et l'entree `func_areaportal` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_misc.ts`; la fonction conserve `Use_Areaportal`, `count = 0` au spawn et le toggle open/close applique au monde collision via `CM_SetAreaPortalState` quand disponible.
 - `SP_func_conveyor`: valide. Le prototype et l'entree `func_conveyor` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_func.ts`; la fonction conserve le default speed 100, la sauvegarde dans `count` quand `START_ON` est absent, le callback `func_conveyor_use`, `SOLID_BSP`, le modele inline et le link runtime.
 - `SP_func_wall`: valide. Le prototype et l'entree `func_wall` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_misc.ts`; la fonction conserve `MOVETYPE_PUSH`, le modele inline, les flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, le mode wall simple, le forcage `TRIGGER_SPAWN`, le cas `START_ON` sans `TOGGLE`, le callback `func_wall_use`, `SVF_NOCLIENT`, `KillBox` et le relink.
 - `SP_func_object`: valide. Le prototype et l'entree `func_object` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_misc.ts`; la fonction conserve le modele inline, le shrink des bounds, le default `dmg = 100`, le spawn simple avec release planifiee, le trigger spawn cache, `func_object_use`, les flags d'animation, `MASK_MONSTERSOLID` et le link.
@@ -32,6 +35,12 @@
 
 ## Checklist appliquee
 
+- Identification: lot `SP_func_explosive`/`SP_func_areaportal` dans matrice `game_g_spawn.c.md`, prototypes et entrees `spawns[]` originaux dans `Quake-2-master/game/g_spawn.c`, definitions originales dans `game/g_misc.c`, cible portee `packages/game/src/g_misc.ts` importee par `packages/game/src/g_spawn.ts`.
+- Comparaison C/H vs TS: entrees `edict_t *` vs `GameEntity, GameRuntime`, sorties void, classnames `func_explosive`/`func_areaportal`, flags, defaults, callbacks, modeles inline, solidite/visibilite, deathmatch, damage, debris, temp entity d'explosion, targets, areaportal style/count et collision state verifies.
+- Commentaires d'en-tete: `Use_Areaportal`, `SP_func_areaportal`, `func_explosive_explode`, `func_explosive_use`, `func_explosive_spawn` et `SP_func_explosive` ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level` et `Behavior`; pas d'ajustement necessaire.
+- Runtime: valide. `SpawnEntities` parse le texte map, `ED_CallSpawn` dispatch par `spawns[]`, `func_explosive` produit/cache/revele des brush models inline et ses callbacks sont atteignables par use/die; `func_areaportal` est utilisable par targets/portes et applique l'etat au collision world quand present.
+- apps/web: valide indirectement. Le navigateur doit consommer les sorties du runtime porte; aucune logique parallele de spawn `func_explosive`/`func_areaportal` n'a ete detectee. Les brush models, temp entities d'explosion et etats client passent par refresh frames/snapshots/full-game.
+- renderer-three: valide indirectement. `func_explosive` produit des brush models inline, debris MD2 et temp entity d'explosion deja consommes par le pipeline refresh/renderer; `func_areaportal` n'est pas une entite visible directe mais influence la collision/visibilite serveur via areabits/portal state, sans besoin de rendu propre dans `renderer-three`.
 - Identification: lot `SP_func_conveyor`/`SP_func_wall`/`SP_func_object` dans matrice `game_g_spawn.c.md`, prototypes et entrees `spawns[]` originaux dans `Quake-2-master/game/g_spawn.c`, definitions originales dans `game/g_func.c` et `game/g_misc.c`, cibles portees `packages/game/src/g_func.ts` et `packages/game/src/g_misc.ts` importees par `packages/game/src/g_spawn.ts`.
 - Comparaison C/H vs TS: entrees `edict_t *self` vs `GameEntity, GameRuntime`, sorties void, classnames `func_conveyor`/`func_wall`/`func_object`, flags, defaults, callbacks, modeles inline, solidite, visibilite `SVF_NOCLIENT`, `KillBox`, release/touch toss, `MASK_MONSTERSOLID` et effects verifies.
 - Commentaires d'en-tete: `SP_func_conveyor`, `SP_func_wall`, `func_wall_use`, `SP_func_object`, `func_object_use`, `func_object_release` et `func_object_touch` ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level` et `Behavior`; pas d'ajustement necessaire.
@@ -65,6 +74,7 @@
 
 ## Corrections appliquees
 
+- `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_areaportal` et `func_explosive`, leur presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, le toggle areaportal, les modeles inline, trigger-spawn/reveal, ciblage non shootable, animation flags et callbacks.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_conveyor`, `func_wall` et `func_object`, leur presence dans `spawns[]`, le dispatch `ED_CallSpawn`, le dispatch map `SpawnEntities`, les modeles inline visibles, callbacks, flags d'animation, transitions solid/visible et release planifiee.
 - `packages/game/src/g_func.ts`: ajout du precache `misc/talk.wav` dans `SP_func_door_secret` quand une porte ciblee avec `message` installe `door_touch`, comme dans `game/g_func.c`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_door_secret`, `func_door_rotating`, `func_water` et `func_train`, leur presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, les modeles inline, les callbacks, les sons, le rewrite de classname, le `path_corner` de train et les thinks executes par `G_RunFrame`.
@@ -74,6 +84,12 @@
 
 ## Tests
 
+- `npm run verify:g-spawn`: ok le 2026-05-01.
+- `npm run verify:g-misc`: ok le 2026-05-01.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run verify:web-render-order`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-spawn`: ok le 2026-05-01.
 - `npm run verify:g-func`: ok le 2026-05-01.
 - `npm run verify:g-misc`: bloque le 2026-05-01 hors lot sur `teleporter_touch` (`old_origin` attendu `[100, 200, 300]`, obtenu `[100, 200, 310]`) avant les tests `func_wall`/`func_object`.
@@ -101,4 +117,4 @@
 
 ## Prochain lot recommande
 
-- Valider `SP_func_explosive`, puis `SP_func_areaportal` si le lot reste coherent avec `g_misc.ts`; garder `SP_func_timer`/`SP_func_killbox` pour un lot `g_func.ts` separe.
+- Valider `SP_func_timer`, puis `SP_func_killbox` si le lot reste coherent avec `g_func.ts`; garder `SP_func_clock` pour un lot `g_misc.ts` separe si l'on prefere rester dans le meme fichier cible.

@@ -17,6 +17,7 @@ import {
   MAX_IPFILTERS,
   SV_FilterPacket,
   SVCmd_AddIP_f,
+  SVCmd_RemoveIP_f,
   ServerCommand,
   StringToFilter,
   createGameServerCommandState,
@@ -179,6 +180,37 @@ assert.equal(fullState.numipfilters, MAX_IPFILTERS, "full addip must keep numipf
 assert.deepEqual(fullState.ipfilters[MAX_IPFILTERS - 1], { mask: 0xffffffff, compare: MAX_IPFILTERS - 1 }, "full addip must not overwrite filters");
 assert.equal(prints.pop(), "IP filter list is full\n", "full addip diagnostic mismatch");
 
+const removeUsageState = createGameServerCommandState();
+runRemoveIpDirect(removeUsageState, ["sv", "removeip"]);
+assert.equal(removeUsageState.numipfilters, 0, "removeip without an address must leave the filter list unchanged");
+assert.equal(prints.pop(), "Usage:  sv removeip <ip-mask>\n", "removeip usage diagnostic mismatch");
+
+const compactState = createGameServerCommandState();
+compactState.numipfilters = 3;
+compactState.ipfilters[0] = { mask: 0xffffffff, compare: 0x04030201 };
+compactState.ipfilters[1] = { mask: 0x00ffffff, compare: 0x0028f6c0 };
+compactState.ipfilters[2] = { mask: 0xffffffff, compare: 0x08070605 };
+runRemoveIpDirect(compactState, ["sv", "removeip", "192.246.40"]);
+assert.equal(prints.pop(), "Removed.\n", "removeip must acknowledge an exact mask/compare removal");
+assert.equal(compactState.numipfilters, 2, "removeip must decrement numipfilters after removal");
+assert.deepEqual(compactState.ipfilters[0], { mask: 0xffffffff, compare: 0x04030201 }, "removeip must preserve filters before the removed slot");
+assert.deepEqual(compactState.ipfilters[1], { mask: 0xffffffff, compare: 0x08070605 }, "removeip must compact later filters down one slot");
+assert.deepEqual(
+  compactState.ipfilters[2],
+  { mask: 0xffffffff, compare: 0x08070605 },
+  "removeip must leave the now-unused trailing slot with the original C stale value"
+);
+
+const beforeMissingRemove = compactState.ipfilters.slice(0, compactState.numipfilters).map((filter) => ({ ...filter }));
+runRemoveIpDirect(compactState, ["sv", "removeip", "192.246.40"]);
+assert.equal(prints.pop(), "Didn't find 192.246.40.\n", "removeip must report a missing exact filter");
+assert.equal(compactState.numipfilters, 2, "missing removeip must not change numipfilters");
+assert.deepEqual(
+  compactState.ipfilters.slice(0, compactState.numipfilters),
+  beforeMissingRemove,
+  "missing removeip must not alter active filters"
+);
+
 console.log("quake2-g-svcmds: ok");
 
 function runCommand(argv: string[]): void {
@@ -191,6 +223,12 @@ function runAddIpDirect(targetState: ReturnType<typeof createGameServerCommandSt
   command.argv = argv.slice();
   command.args = argv.slice(1).join(" ");
   SVCmd_AddIP_f(targetState, context);
+}
+
+function runRemoveIpDirect(targetState: ReturnType<typeof createGameServerCommandState>, argv: string[]): void {
+  command.argv = argv.slice();
+  command.args = argv.slice(1).join(" ");
+  SVCmd_RemoveIP_f(targetState, context);
 }
 
 function createCvar(name: string, stringValue: string): cvar_t {

@@ -250,7 +250,6 @@ export function SVCmd_RemoveIP_f(state: GameServerCommandState, context: GameSer
         state.ipfilters[move - 1] = { ...state.ipfilters[move] };
       }
       state.numipfilters -= 1;
-      state.ipfilters[state.numipfilters] = { mask: 0, compare: 0 };
       context.gi.cprintf(null, PRINT_HIGH, "Removed.\n");
       return;
     }

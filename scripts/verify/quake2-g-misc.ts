@@ -10,7 +10,7 @@
  */
 
 import { strict as assert } from "node:assert";
-import { ATTN_NORM, CHAN_BODY, CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, EF_ROCKET, MASK_MONSTERSOLID, RF_FRAMELERP, RF_TRANSLUCENT, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t, type trace_t } from "../../packages/qcommon/src/index.js";
+import { ATTN_NORM, CHAN_BODY, CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, EF_ROCKET, EF_TELEPORTER, MASK_MONSTERSOLID, RF_FRAMELERP, RF_TRANSLUCENT, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t, type trace_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
@@ -184,6 +184,21 @@ function verifyTeleporterMovesPlayerAndSetsTeleportState(): void {
 
   const trigger = runtime.entities.find((entity) => entity.classname === "teleporter_trigger");
   assert.ok(trigger?.touch, "misc_teleporter must spawn one touch trigger");
+  assert.equal(teleporter.model, "models/objects/dmspot/tris.md2", "misc_teleporter model path mismatch");
+  assert.equal(runtime.assets.modelPaths[teleporter.s.modelindex - 1], "models/objects/dmspot/tris.md2", "misc_teleporter modelindex mismatch");
+  assert.equal(runtime.assets.soundPaths[teleporter.s.sound - 1], "world/amb10.wav", "misc_teleporter ambient sound mismatch");
+  assert.equal(teleporter.s.skinnum, 1, "misc_teleporter must use the source teleporter skin");
+  assert.equal(teleporter.s.effects & EF_TELEPORTER, EF_TELEPORTER, "misc_teleporter must set EF_TELEPORTER");
+  assert.equal(teleporter.solid, SOLID_BBOX, "misc_teleporter solid mismatch");
+  assert.deepEqual(teleporter.mins, [-32, -32, -24], "misc_teleporter mins mismatch");
+  assert.deepEqual(teleporter.maxs, [32, 32, -16], "misc_teleporter maxs mismatch");
+  assert.equal(trigger.solid, SOLID_TRIGGER, "misc_teleporter local trigger solid mismatch");
+  assert.equal(trigger.target, "exit", "misc_teleporter local trigger target mismatch");
+  assert.equal(trigger.owner, teleporter, "misc_teleporter local trigger owner mismatch");
+  assert.deepEqual(trigger.s.origin, [0, 0, 0], "misc_teleporter local trigger origin mismatch");
+  assert.deepEqual(trigger.mins, [-8, -8, 8], "misc_teleporter local trigger mins mismatch");
+  assert.deepEqual(trigger.maxs, [8, 8, 24], "misc_teleporter local trigger maxs mismatch");
+  assert.equal(runtime.linkedTriggerEntities.includes(trigger), true, "misc_teleporter local trigger must be linked as a trigger");
 
   const player = spawnGameEntity(runtime);
   player.classname = "player";
@@ -224,6 +239,30 @@ function verifyTeleporterMovesPlayerAndSetsTeleportState(): void {
   missingDestTrigger.touch!(missingDestTrigger, blockedPlayer, runtime);
   assert.deepEqual(blockedPlayer.origin, [7, 8, 9], "teleporter touch must leave the player in place when dest is missing");
   assert.equal(runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message === "Couldn't find destination"), true, "teleporter touch must emit the source destination warning");
+
+  const dispatchTeleporter = spawnGameEntity(runtime);
+  dispatchTeleporter.classname = "misc_teleporter";
+  dispatchTeleporter.target = "exit";
+  ED_CallSpawn(dispatchTeleporter, runtime);
+  assert.equal(dispatchTeleporter.s.effects & EF_TELEPORTER, EF_TELEPORTER, "ED_CallSpawn must dispatch misc_teleporter");
+
+  const dispatchDestination = spawnGameEntity(runtime);
+  dispatchDestination.classname = "misc_teleporter_dest";
+  ED_CallSpawn(dispatchDestination, runtime);
+  assert.equal(dispatchDestination.s.skinnum, 0, "ED_CallSpawn must dispatch misc_teleporter_dest");
+  assert.equal(dispatchDestination.solid, SOLID_BBOX, "misc_teleporter_dest solid mismatch");
+  assert.deepEqual(dispatchDestination.mins, [-32, -32, -24], "misc_teleporter_dest mins mismatch");
+  assert.deepEqual(dispatchDestination.maxs, [32, 32, -16], "misc_teleporter_dest maxs mismatch");
+
+  for (let index = 0; index < 16; index += 1) {
+    spawnGameEntity(runtime);
+  }
+
+  const invalidTeleporter = spawnGameEntity(runtime);
+  invalidTeleporter.classname = "misc_teleporter";
+  SP_misc_teleporter(invalidTeleporter, runtime);
+  assert.equal(invalidTeleporter.inuse, false, "misc_teleporter without target must be freed");
+  assert.equal(runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message === "teleporter without a target."), true, "misc_teleporter without target must emit the source warning");
 }
 
 function verifyPathCornerSpawnSetupAndInvalidFree(): void {

@@ -2,6 +2,23 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `SP_misc_teleporter`, local `trig`, `SP_misc_teleporter_dest` et ligne locale restante `i` de `teleporter_touch`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `SP_misc_teleporter` conserve le warning/free sans `target`, le modele `models/objects/dmspot/tris.md2`, `skinnum = 1`, `EF_TELEPORTER`, le son `world/amb10.wav`, `SOLID_BBOX`, bbox `[-32,-32,-24]` / `[32,32,-16]`, link du pad, puis creation du trigger local. `SP_misc_teleporter_dest` conserve le meme modele, `skinnum = 0`, `SOLID_BBOX`, bbox et link.
+  - Locaux compares: `trig` est porte par `const trig = spawnGameEntity(runtime)` avec `touch = teleporter_touch`, `SOLID_TRIGGER`, target, owner, origine, bbox `[-8,-8,8]` / `[8,8,24]` et link trigger; `i` de `teleporter_touch` est porte par la boucle TS `index` sur les 3 `delta_angles`.
+  - Commentaires d'en-tete verifies/mis a jour: `SP_misc_teleporter` est maintenant documente en fidelite `Strict`; `SP_misc_teleporter_dest` et `teleporter_touch` avaient deja leurs headers Strict.
+  - Corrections appliquees: `packages/game/src/g_misc.ts` journalise maintenant `teleporter without a target.` puis libere l'edict sans target; le trigger local ne force plus `SVF_NOCLIENT`, absent du C.
+  - Branchement runtime verifie: `misc_teleporter` et `misc_teleporter_dest` sont enregistres dans `g_spawn.ts`, exportes via `index.ts` et dispatchables par `ED_CallSpawn`; le trigger est lie dans les listes `SOLID_TRIGGER` et sa callback est atteignable par les touches serveur pendant `G_RunFrame`/collision runtime.
+  - `apps/web`: integration attendue car le lot produit un pad visible, un son ambient, des evenements `EV_PLAYER_TELEPORT`, la position/camera joueur et le freeze pmove. Aucune logique parallele trouvee; le web consomme ces sorties via snapshots, refresh frames et flux full-game/local.
+  - `renderer-three`: integration attendue pour modele MD2 du pad/destination, effet `EF_TELEPORTER`, evenements/particules de teleport et camera joueur. Consommation presente via packet entities, `ClientRefreshFrame`, effets client teleport et adapters Three; aucun manque renderer detecte.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+  - `npm run verify:g-spawn` bloque hors lot: assertion `SP_func_explosive must precache large debris through SpawnEntities` obtient `false`.
+- Prochain lot recommande: aucun lot restant dans `game_g_misc.c.md`; toutes les lignes sont `Valide`.
+
 - 2026-05-01: `SP_func_clock`, `teleporter_touch` et local `dest`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `SP_func_clock` conserve les refus sans `target` / sans `count` pour TIMER_DOWN, les warnings source, le defaut TIMER_UP a `60*60`, `func_clock_reset`, le buffer message de taille `CLOCK_MESSAGE_SIZE`, `think = func_clock_think`, `use = func_clock_use` pour START_OFF et `nextthink = level.time + 1` sinon. `teleporter_touch` conserve la garde non-client, la recherche `dest = G_Find(... targetname ...)`, le warning destination manquante, l'unlink avant deplacer/KillBox, la copie destination/origin/old_origin puis `+10` en Z, velocity clear, hold `pm_time`, flag `PMF_TIME_TELEPORT`, evenements source/joueur, delta angles `ANGLE2SHORT`, clears angles/viewangles/v_angle, `KillBox` et relink.

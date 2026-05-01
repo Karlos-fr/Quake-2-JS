@@ -1994,16 +1994,20 @@ export function SP_misc_strogg_ship(ent: GameEntity, runtime: GameRuntime): void
  * Original name: SP_misc_teleporter
  * Source: game/g_misc.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Spawns the teleporter pad and its local trigger helper volume.
- *
- * Porting notes:
- * - The trigger helper is represented as a runtime entity spawned beside the teleporter pad.
+ * - Spawns the teleporter pad and its local trigger helper volume, or frees malformed pads without a target after the source warning.
  */
 export function SP_misc_teleporter(ent: GameEntity, runtime: GameRuntime): void {
   if (!ent.target) {
+    runtime.log({
+      kind: "warning",
+      message: "teleporter without a target.",
+      entityIndex: ent.index,
+      entityClassname: ent.classname
+    });
+    G_FreeEdict(runtime, ent);
     return;
   }
 
@@ -2027,7 +2031,6 @@ export function SP_misc_teleporter(ent: GameEntity, runtime: GameRuntime): void 
   trig.origin = [...ent.origin];
   trig.mins = [-8, -8, 8];
   trig.maxs = [8, 8, 24];
-  trig.svflags |= SVF_NOCLIENT;
   refreshEntitySpatialState(trig);
   linkGameEntity(runtime, trig);
 }

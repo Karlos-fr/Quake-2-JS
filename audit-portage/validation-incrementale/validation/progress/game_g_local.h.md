@@ -923,6 +923,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `monsterinfo_t` et `currentmove` passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-monster` OK; `npm run verify:g-save` OK; `npm run verify:m-soldier` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `monsterinfo_t` avec champs `aiflags`, `nextframe`, `scale`.
+- Verdict: `Valide` pour les 3 champs apres comparaison H/TS, verification des defaults/mutations, execution `M_MoveFrame`, initialisation `monster_start`, save/load et flux web/renderer.
+- Source H comparee: apres `mmove_t *currentmove`, `monsterinfo_t` porte `int aiflags`, `int nextframe` et `float scale`; `M_MoveFrame` consomme `nextframe`, nettoie `AI_HOLD_FRAME` sur frame hors bornes, passe une distance nulle sous hold, sinon multiplie `mframe_t.dist` par `monsterinfo.scale`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `monsterinfo_t` vers `GameMonsterInfo`.
+  - `packages/game/src/runtime.ts`: `GameMonsterInfo` porte `aiflags`, `nextframe`, `scale` dans l'ordre C; `createMonsterInfo` les initialise a `0`, comme la memoire C zeroee.
+  - `packages/game/src/g_monster.ts`: `M_MoveFrame` porte l'override `nextframe`, le reset a `0`, `AI_HOLD_FRAME` et le produit `dist * scale`; `monster_start` met `scale = 1` si non renseigne pour conserver une distance runtime effective.
+  - `packages/game/src/g_ai.ts`: `aiflags` est l'etat AI partage par les decisions stand/run/search/sound target/pursuit/combat point.
+  - `packages/game/src/g_save.ts`: `snapshotEntity`/`restoreEntity` conservent les champs numeriques de `monsterinfo_t`; les callbacks et `currentmove` restent traites par l'adapter symbolique separe.
+- Runtime: integration attendue et branchee depuis les spawns monstres vers `monster_start`/`monster_start_go`, puis `monster_think` -> `M_MoveFrame` depuis `G_RunFrame`; les preuves couvrent `nextframe`, `AI_HOLD_FRAME`, `scale`, persistance et un harness monstre concret.
+- apps/web: integration attendue via le host local/full-game qui avance le runtime game et consomme snapshots/sons/HUD issus des monstres; aucune logique parallele `monsterinfo_t.aiflags`/`nextframe`/`scale` detectee dans `apps/web`. Tests full-game/web OK.
+- renderer-three: integration indirecte attendue car ces champs influencent frames/modeles visibles des monstres et peuvent declencher sons/temp entities en aval. `packages/renderer-three` ne lit pas `monsterinfo_t` directement; il consomme les entites, modeles et frames via le flux full-game. Test renderer OK.
+- Commentaires/documentation: commentaire de portage `monsterinfo_t` verifie dans `runtime.ts`; commentaires d'en-tete de `M_MoveFrame`, `monster_think`, `monster_start` et `monster_start_go` verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defaults/mutations pour `aiflags`, `nextframe`, `scale`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration save/load pour les trois champs.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `aiflags`, `nextframe`, `scale` passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-monster` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -956,7 +975,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `monsterinfo_t.aiflags`, `nextframe` et `scale` si le lot reste petit, en s'appuyant sur les preuves `M_MoveFrame`, `AI_HOLD_FRAME` et `monster_start`.
+- Continuer avec `monsterinfo_t.pausetime`, `attack_finished` et `saved_goal` si le lot reste petit, en s'appuyant sur les preuves AI/monster et save/load.
 
 ## Blocages
 

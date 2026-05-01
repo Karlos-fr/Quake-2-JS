@@ -2,6 +2,40 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: fonction `ReadField` et temporaires locaux auto-detectes `p`, `len`, `index`.
+
+## Verdict du lot
+
+- `ReadField`: valide. Dans le C, la fonction ignore les champs `FFL_SPAWNTEMP`, laisse les scalaires/vecteurs deja lus en place, rematerialise les `F_LSTRING` depuis leur longueur, resout les `F_EDICT`, `F_CLIENT`, `F_ITEM`, `F_FUNCTION` et `F_MMOVE` depuis les index/offsets de la premiere passe. Dans le port TS, le format binaire est remplace par un snapshot JSON structure: `restoreLevel`, `restoreClient` et `restoreEntity` assignent directement les scalaires/vecteurs/chaines, resout les edicts avec `edictByIndex`, les items avec `GetItemByIndex`, les callbacks avec `findGameSaveFunction` et les moves avec `findGameSaveMove`. `F_CLIENT` n'a pas d'entree active dans les tables `g_save.c` actuelles.
+- `p`: valide. Le pointeur C `base + field->ofs` est remplace par des acces structures et assignations directes sur les objets runtime level/client/entite.
+- `len`: valide. La longueur binaire C des `F_LSTRING` n'existe plus dans l'adaptateur JSON; les chaines sont restaurees comme valeurs deja materialisees.
+- `index`: valide. Les index/offsets C sont portes par les index edict/item et les noms stables callback/mmove, avec resolution pendant la restauration.
+- Commentaires d'en-tete: pas de fonction TS directe `ReadField`; l'en-tete de `packages/game/src/g_save.ts` documente l'adaptateur JSON structure, les pointeurs d'entites/items et les noms stables de callbacks/mmove.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. Le role de `ReadField` est atteint par `ReadGame`/`ReadLevel`, exposes par l'API game via `g_main.ts` et appeles par les flux serveur `SV_ReadServerFile`/`SV_ReadLevelFile` ou la reprise de niveau depuis `SV_InitGame`.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` connecte `ge.ReadLevel` au stockage `web-save-storage`; aucune logique web parallele ne remplace la restauration gameplay.
+- renderer-three: non applicable directement. `ReadField` et ses temporaires restaurent des donnees gameplay mais ne produisent pas directement modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les entites restaurees alimentent ensuite les snapshots visibles consommes par le renderer.
+
+## Corrections appliquees
+
+- Aucune correction TS necessaire pour ce lot.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `ReadField`, `p`, `len` et `index`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: compteur `Validees` et prochain lot mis a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-01.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01.
+- `npm run verify:web-save-storage`: ok le 2026-05-01.
+
+## Prochain lot recommande
+
+- Continuer avec `WriteClient`, puis son temporaire local `field` si le lot reste coherent.
+
+---
+
 - 2026-05-01: temporaires locaux auto-detectes de `WriteField2`: `len` et `p`, rattaches a l'adaptateur JSON structure.
 
 ## Verdict du lot

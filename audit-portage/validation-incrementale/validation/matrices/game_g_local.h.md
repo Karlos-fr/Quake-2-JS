@@ -225,9 +225,9 @@
 | `Quake-2-master/game/g_local.h` | global | `endfunc` | `packages/game/src/g_local.ts` | `mmove_t.endfunc` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | struct | `monsterinfo_t` | `packages/game/src/g_local.ts` | `monsterinfo_t` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `currentmove` | `packages/game/src/g_local.ts` | `monsterinfo_t.currentmove` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `aiflags` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `nextframe` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `scale` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `aiflags` | `packages/game/src/g_local.ts` | `monsterinfo_t.aiflags` | Valide | A redecouper | Champ compare H/TS; defaults/mutations, flags AI, `AI_HOLD_FRAME`, `monster_start` et save/load verifies. Tests: `verify:g-local:header`, `verify:g-monster`, `verify:g-save`, full-game server/three, web render, `typecheck`. |
+| `Quake-2-master/game/g_local.h` | global | `nextframe` | `packages/game/src/g_local.ts` | `monsterinfo_t.nextframe` | Valide | A redecouper | Champ compare H/TS; `M_MoveFrame` consomme l'override dans les bornes du `mmove_t` puis le remet a 0; save/load verifie. Tests: `verify:g-local:header`, `verify:g-monster`, `verify:g-save`, full-game server/three, web render, `typecheck`. |
+| `Quake-2-master/game/g_local.h` | global | `scale` | `packages/game/src/g_local.ts` | `monsterinfo_t.scale` | Valide | A redecouper | Champ compare H/TS; `monster_start` defaut a 1 pour le runtime TS et `M_MoveFrame` multiplie `mframe_t.dist`; save/load verifie. Tests: `verify:g-local:header`, `verify:g-monster`, `verify:g-save`, full-game server/three, web render, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | global | `pausetime` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `attack_finished` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `saved_goal` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
