@@ -16,8 +16,10 @@ import {
   FindItem,
   MOD_CHAINGUN,
   MOD_MACHINEGUN,
+  ANIM_REVERSE,
   Think_Weapon,
   Weapon_Chaingun,
+  Weapon_Grenade,
   Weapon_HyperBlaster,
   Weapon_Machinegun,
   Weapon_RocketLauncher,
@@ -30,7 +32,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_ROCKET } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_ROCKET } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -42,6 +44,7 @@ function main(): void {
   verifyChaingunFireParity();
   verifyRocketLauncherFireParity();
   verifyHyperBlasterFireParity();
+  verifyHandGrenadeParity();
 
   console.log("Verification p_weapon - player weapon gameplay OK");
 }
@@ -429,6 +432,121 @@ function verifyHyperBlasterFireParity(): void {
   assertString(player.client!.newweapon?.pickupName ?? "", "Shotgun", "HyperBlaster no-ammo should select the next available weapon");
 }
 
+function verifyHandGrenadeParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const grenades = requireItem("Grenades");
+  const throws: Array<{ damage: number; speed: number; timer: number; damageRadius: number; held: boolean }> = [];
+  const sounds: Array<{ soundPath: string; channel: number }> = [];
+
+  player.s.modelindex = 255;
+  player.client!.pers.weapon = grenades;
+  player.client!.ammo_index = grenades.index;
+  player.client!.pers.inventory[grenades.index] = 3;
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.latched_buttons = BUTTON_ATTACK;
+
+  Weapon_Grenade(player, runtime);
+
+  assertNumber(player.client!.ps.gunframe, 1, "Hand grenade attack should start at frame 1");
+  assertNumber(player.client!.weaponstate, weaponstate_t.WEAPON_FIRING, "Hand grenade attack should enter firing state");
+  assertNumber(player.client!.grenade_time, 0, "Hand grenade attack should clear grenade_time before cooking");
+  assertNumber(player.client!.latched_buttons, 0, "Hand grenade attack should consume the latched attack bit");
+
+  player.client!.ps.gunframe = 5;
+  Weapon_Grenade(player, runtime, {
+    playWeaponSound: (_ent, soundPath, channel) => {
+      sounds.push({ soundPath, channel });
+    }
+  });
+  assertString(sounds[0]?.soundPath ?? "", "weapons/hgrena1b.wav", "Hand grenade frame 5 should play the arm sound");
+  assertNumber(sounds[0]?.channel ?? -1, CHAN_WEAPON, "Hand grenade arm sound should use CHAN_WEAPON");
+  assertNumber(player.client!.ps.gunframe, 6, "Hand grenade frame 5 should advance");
+
+  player.client!.ps.gunframe = 11;
+  player.client!.buttons = BUTTON_ATTACK;
+  Weapon_Grenade(player, runtime);
+  assertNumber(player.client!.grenade_time, runtime.time + 3.2, "Hand grenade frame 11 should start the original fuse timer");
+  assertBoolean(player.client!.weapon_sound > 0, true, "Hand grenade frame 11 should start the cooking loop sound");
+  assertNumber(player.client!.ps.gunframe, 11, "Holding attack should keep hand grenade on frame 11");
+
+  runtime.time = player.client!.grenade_time;
+  player.client!.grenade_blew_up = false;
+  Weapon_Grenade(player, runtime, {
+    fire_grenade2: (_ent, _start, _dir, damage, speed, timer, damageRadius, held) => {
+      throws.push({ damage, speed, timer, damageRadius, held });
+    }
+  });
+  assertNumber(throws.length, 1, "Overcooked hand grenade should fire in hand once");
+  assertBoolean(throws[0].held, true, "Overcooked hand grenade should use held=true");
+  assertNumber(throws[0].damage, 125, "Hand grenade base damage should match C");
+  assertNumber(throws[0].damageRadius, 165, "Hand grenade radius should be damage + 40");
+  assertNumber(throws[0].timer, 0, "Overcooked hand grenade timer should be exhausted");
+  assertNumber(throws[0].speed, 800, "Overcooked hand grenade speed should reach max speed");
+  assertBoolean(player.client!.grenade_blew_up, true, "Overcooked hand grenade should set grenade_blew_up");
+  assertNumber(player.client!.pers.inventory[grenades.index], 2, "Overcooked hand grenade should consume one grenade");
+
+  player.client!.buttons = 0;
+  runtime.time = player.client!.grenade_time;
+  Weapon_Grenade(player, runtime);
+  assertNumber(player.client!.ps.gunframe, 16, "Post-explosion hand grenade should finish back to ready frame");
+  assertNumber(player.client!.weaponstate, weaponstate_t.WEAPON_READY, "Post-explosion hand grenade should return to ready state");
+  assertNumber(player.client!.grenade_time, 0, "Post-explosion hand grenade should clear grenade_time");
+
+  runtime.time = 10;
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 12;
+  player.client!.grenade_time = runtime.time + 1.5;
+  player.client!.pers.inventory[grenades.index] = 2;
+  player.client!.quad_framenum = runtime.framenum + 1;
+  throws.length = 0;
+
+  Weapon_Grenade(player, runtime, {
+    fire_grenade2: (_ent, _start, _dir, damage, speed, timer, damageRadius, held) => {
+      throws.push({ damage, speed, timer, damageRadius, held });
+    }
+  });
+
+  assertBoolean(throws[0].held, false, "Released hand grenade should use held=false");
+  assertNumber(throws[0].damage, 500, "Hand grenade quad damage should match C");
+  assertNumber(throws[0].damageRadius, 165, "Hand grenade quad should not change damage radius");
+  assertNumber(throws[0].timer, 1.5, "Released hand grenade timer should use remaining fuse");
+  assertNumber(throws[0].speed, 600, "Released hand grenade speed should scale with cooked time");
+  assertNumber(player.client!.pers.inventory[grenades.index], 1, "Released hand grenade should consume one grenade");
+  assertNumber(player.client!.grenade_time, runtime.time + 1.0, "Released hand grenade should debounce grenade_time");
+  assertNumber(player.client!.anim_priority, ANIM_REVERSE, "Released standing hand grenade should use reverse attack animation");
+
+  runtime.dmflags |= DF_INFINITE_AMMO;
+  player.client!.quad_framenum = 0;
+  player.client!.ps.gunframe = 12;
+  player.client!.grenade_time = runtime.time + 1.5;
+  player.client!.pers.inventory[grenades.index] = 1;
+  throws.length = 0;
+
+  Weapon_Grenade(player, runtime, {
+    fire_grenade2: (_ent, _start, _dir, damage, speed, timer, damageRadius, held) => {
+      throws.push({ damage, speed, timer, damageRadius, held });
+    }
+  });
+  assertNumber(throws[0].damage, 125, "Hand grenade non-quad damage should remain base damage");
+  assertNumber(player.client!.pers.inventory[grenades.index], 1, "DF_INFINITE_AMMO should prevent grenade consumption");
+
+  runtime.dmflags = 0;
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.pers.inventory[grenades.index] = 0;
+  sounds.length = 0;
+
+  Weapon_Grenade(player, runtime, {
+    playWeaponSound: (_ent, soundPath, channel) => {
+      sounds.push({ soundPath, channel });
+    }
+  });
+  assertString(sounds[0]?.soundPath ?? "", "weapons/noammo.wav", "Hand grenade no-ammo path should play the original sound");
+  assertNumber(sounds[0]?.channel ?? -1, CHAN_VOICE, "Hand grenade no-ammo path should use CHAN_VOICE");
+  assertString(player.client!.newweapon?.pickupName ?? "", "Shotgun", "Hand grenade no-ammo should select the next available weapon");
+}
+
 function createHarnessRuntime(): GameRuntime {
   return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 }
@@ -451,6 +569,7 @@ function createPlayer(runtime: GameRuntime): GameEntity {
   const bullets = requireItem("Bullets");
   const cells = requireItem("Cells");
   const rockets = requireItem("Rockets");
+  const grenades = requireItem("Grenades");
 
   client.pers.weapon = blaster;
   client.pers.inventory[blaster.index] = 1;
@@ -459,6 +578,7 @@ function createPlayer(runtime: GameRuntime): GameEntity {
   client.pers.inventory[bullets.index] = 50;
   client.pers.inventory[cells.index] = 50;
   client.pers.inventory[rockets.index] = 50;
+  client.pers.inventory[grenades.index] = 50;
 
   return player;
 }

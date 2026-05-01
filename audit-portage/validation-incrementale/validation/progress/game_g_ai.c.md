@@ -121,3 +121,14 @@
 - Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `ai_run_melee`, `ai_run_missile`, puis `ai_run_slide` avec les locales `ofs`.
+
+## Session 2026-05-01 - ai_run_melee / ai_run_missile / ai_run_slide / ofs
+
+- Lot traite: `ai_run_melee`, `ai_run_missile`, `ai_run_slide` et locales generees `ofs`.
+- Verdict: `ai_run_melee`, `ai_run_missile` et `ai_run_slide` valides; `ofs` non applicable comme variable locale portee.
+- Corrections TS: commentaires d'en-tete de `ai_run_melee` et `ai_run_missile` ajustes en fidelite `Close` pour documenter le passage du `runtime` explicite et les gardes defensives de callback; couverture `scripts/verify/quake2-g-ai.ts` etendue pour rotation avant attaque, non-declenchement hors `FacingIdeal`, strafe lateral et fallback oppose.
+- Preuves: comparaison C/TS effectuee; les trois fonctions conservent `ideal_yaw = enemy_yaw`, `M_ChangeYaw`, puis callback melee/missile seulement si `FacingIdeal`, ou strafe `ideal_yaw +/- ofs` avec inversion `lefty` si le premier `M_walkmove` echoue. `ofs` est porte en `const` locale TS.
+- Integration: runtime verifie via `ai_checkattack`/`ai_run` et etats `AS_MELEE`, `AS_MISSILE`, `AS_SLIDING`, atteignables depuis les frames monstres sous `G_RunFrame`; export public verifie dans `packages/game/src/index.ts`. `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` consomme les sorties visibles apres simulation via `ClientRefreshFrame`/`refresh-entity-sync`, sans integration directe attendue pour ces fonctions decisionnelles/deplacement.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `ai_checkattack` avec locales `temp` et `hesDeadJim`, puis `ai_run` par petits sous-lots.

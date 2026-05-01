@@ -43,6 +43,7 @@ import {
   plat_blocked,
   rotating_blocked,
   rotating_touch,
+  rotating_use,
   train_next,
   trigger_elevator_use
 } from "../../packages/game/src/g_func.js";
@@ -97,6 +98,17 @@ runtime.meansOfDeath = 0;
 rotating_touch(rotating, activeRotatingToucher, runtime);
 assert.equal(activeRotatingToucher.health, 26, "rotating_touch damage mismatch");
 assert.equal(runtime.meansOfDeath, MOD_CRUSH, "rotating_touch damage mod mismatch");
+const touchPainRotating = entity("func_rotating", 22, { spawnflags: "16", speed: "25" });
+touchPainRotating.movedir = [1, 0, 0];
+touchPainRotating.moveinfo.sound_middle = 123;
+rotating_use(touchPainRotating, null, null, runtime);
+assert.equal(touchPainRotating.s.sound, 123, "rotating_use must start middle sound");
+assert.deepEqual(touchPainRotating.avelocity, [25, 0, 0], "rotating_use start velocity mismatch");
+assert.equal(touchPainRotating.touch, rotating_touch, "rotating_use must attach TOUCH_PAIN callback");
+rotating_use(touchPainRotating, null, null, runtime);
+assert.equal(touchPainRotating.s.sound, 0, "rotating_use must stop sound when toggled off");
+assert.deepEqual(touchPainRotating.avelocity, [0, 0, 0], "rotating_use stop velocity mismatch");
+assert.equal(touchPainRotating.touch, undefined, "rotating_use must clear touch when toggled off");
 
 const button = entity("func_button", 2, { angle: "0", lip: "4", wait: "2" });
 button.size = [64, 16, 16];

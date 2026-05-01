@@ -28,6 +28,9 @@ import {
   M_CheckAttack,
   ai_checkattack,
   ai_run,
+  ai_run_melee,
+  ai_run_missile,
+  ai_run_slide,
   infront,
   range,
   visible
@@ -671,6 +674,16 @@ ai_run(meleeMonster, 0, runtime);
 assert.equal(meleeCalls, 1, "ai_run must execute selected melee attack callback");
 assert.equal(meleeMonster.monsterinfo.attack_state, AS_STRAIGHT, "ai_run_melee must restore AS_STRAIGHT after firing");
 
+meleeMonster.monsterinfo.attack_state = AS_MELEE;
+meleeMonster.s.angles[1] = 90;
+meleeMonster.angles[1] = 90;
+meleeMonster.yaw_speed = 10;
+ai_run_melee(meleeMonster, runtime);
+assert.ok(Math.abs(meleeMonster.s.angles[1] - 80) < 0.01, "ai_run_melee must turn toward enemy_yaw before checking facing");
+assert.equal(meleeCalls, 1, "ai_run_melee must not fire until FacingIdeal passes");
+assert.equal(meleeMonster.monsterinfo.attack_state, AS_MELEE, "ai_run_melee must keep AS_MELEE while still turning");
+meleeMonster.monsterinfo.attack_state = AS_STRAIGHT;
+
 let attackTraceStart: number[] | null = null;
 let attackTraceMins: number[] | null = null;
 let attackTraceMaxs: number[] | null = null;
@@ -738,6 +751,87 @@ try {
   assert.equal(missileCalls, 1, "ai_run must execute selected missile attack callback");
   assert.equal(missileMonster.monsterinfo.attack_state, AS_STRAIGHT, "ai_run_missile must restore AS_STRAIGHT after firing");
 
+  missileMonster.monsterinfo.attack_state = AS_MISSILE;
+  missileMonster.s.angles[1] = 90;
+  missileMonster.angles[1] = 90;
+  missileMonster.yaw_speed = 10;
+  ai_run_missile(missileMonster, runtime);
+  assert.ok(Math.abs(missileMonster.s.angles[1] - 80) < 0.01, "ai_run_missile must turn toward enemy_yaw before checking facing");
+  assert.equal(missileCalls, 1, "ai_run_missile must not fire until FacingIdeal passes");
+  assert.equal(missileMonster.monsterinfo.attack_state, AS_MISSILE, "ai_run_missile must keep AS_MISSILE while still turning");
+
+  const slidingMonster = createRuntimeEntity({ classname: "monster_slider" }, 77);
+  slidingMonster.inuse = true;
+  slidingMonster.enemy = missileEnemy;
+  slidingMonster.health = 100;
+  slidingMonster.viewheight = 25;
+  slidingMonster.flags |= FL_FLY;
+  slidingMonster.yaw_speed = 360;
+  slidingMonster.monsterinfo.attack_state = AS_SLIDING;
+  slidingMonster.monsterinfo.lefty = 1;
+  runtime.entities[77] = slidingMonster;
+
+  const slideTraceEnds: number[][] = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => {
+      slideTraceEnds.push(cleanVecForAssert(end));
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 1,
+        endpos: [...end],
+        plane: {
+          normal: [0, 0, 1],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: 0,
+        ent: null
+      };
+    },
+    pointcontents: () => 0
+  };
+  ai_run_slide(slidingMonster, 10, runtime);
+  assert.deepEqual(slideTraceEnds, [[0, 10, 0]], "ai_run_slide lefty path must try ideal_yaw + 90 first");
+  assert.equal(slidingMonster.monsterinfo.lefty, 1, "ai_run_slide must keep lefty when the first strafe succeeds");
+
+  slidingMonster.s.origin = [0, 0, 0];
+  slidingMonster.origin = [0, 0, 0];
+  slidingMonster.monsterinfo.lefty = 0;
+  slideTraceEnds.length = 0;
+  let slideTraceCount = 0;
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => {
+      slideTraceCount += 1;
+      slideTraceEnds.push(cleanVecForAssert(end));
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: slideTraceCount <= 2 ? 0 : 1,
+        endpos: [...end],
+        plane: {
+          normal: [0, 0, 1],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: 0,
+        ent: null
+      };
+    },
+    pointcontents: () => 0
+  };
+  ai_run_slide(slidingMonster, 10, runtime);
+  assert.deepEqual(slideTraceEnds, [[0, -10, 0], [0, -10, 0], [0, 10, 0]], "ai_run_slide must retry the opposite strafe after a blocked first move");
+  assert.equal(slidingMonster.monsterinfo.lefty, 1, "ai_run_slide must flip lefty after a blocked first strafe");
+
   missileMonster.monsterinfo.attack_state = AS_STRAIGHT;
   missileMonster.monsterinfo.attack_finished = runtime.time + 1;
   assert.equal(ai_checkattack(missileMonster, 0, runtime), false, "M_CheckAttack must respect attack_finished cooldown");
@@ -753,6 +847,7 @@ try {
   flyingMonster.monsterinfo.attack = () => {};
   runtime.entities[74] = flyingMonster;
 
+  runtime.collision = createClearAttackCollision(missileEnemy);
   Math.random = () => 0.2;
   assert.equal(ai_checkattack(flyingMonster, 0, runtime), false, "flying monsters must keep moving when missile chance fails");
   assert.equal(flyingMonster.monsterinfo.attack_state, AS_SLIDING, "failed flying attack chance may enter AS_SLIDING");
@@ -870,4 +965,8 @@ function makeTraceResult(end: readonly number[], ent: ReturnType<typeof createPo
     contents: 0,
     ent
   };
+}
+
+function cleanVecForAssert(value: readonly number[]) {
+  return value.map((component) => Math.abs(component) < 1e-9 ? 0 : component);
 }

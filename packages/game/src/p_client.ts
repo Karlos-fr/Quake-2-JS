@@ -1341,6 +1341,8 @@ export function CopyToBodyQue(ent: GameEntity, runtime: GameRuntime, hooks: Game
     old_origin: [...ent.s.old_origin]
   };
   body.svflags = ent.svflags;
+  body.origin = [...ent.s.origin];
+  body.angles = [...ent.s.angles];
   body.mins = [...ent.mins];
   body.maxs = [...ent.maxs];
   body.absmin = [...ent.absmin];

@@ -13,6 +13,18 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `T_RadiusDamage` avec locales `points`/`ent`
+  - Source comparee: `Quake-2-master/game/g_combat.c`.
+  - Cible comparee: `packages/game/src/g_combat.ts`; appels runtime controles dans `packages/game/src/g_misc.ts`, `packages/game/src/g_target.ts` et l'adapter `packages/game/src/g_weapon.ts`.
+  - Correction runtime appliquee: aucune. Test cible ajoute dans `scripts/verify/quake2-g-combat.ts`.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`, `Porting notes`.
+  - Comparaison comportementale: la boucle conserve le curseur `ent = findradius(...)`; ignore l'entite `ignore`; saute les entites sans `takedamage`; calcule le centre `origin + 0.5 * (mins + maxs)`; calcule `points = damage - 0.5 * distance`; applique le demi-degat si `ent == attacker`; ne dispatch que si `points > 0` et `CanDamage`; transmet `dir = ent.origin - inflictor.origin`, `point = inflictor.origin`, `normal = vec3_origin`, `damage/knockback = (int)points`, `DAMAGE_RADIUS` et `mod`.
+  - Branchement runtime verifie: appels portes depuis explosions/debris/barrels/bombes dans `g_misc.ts`, explosions/splash dans `g_target.ts`, et adapter armes `fireRadiusDamage` dans `g_weapon.ts`; le chemin par defaut dispatch vers `T_Damage`.
+  - `apps/web`: aucune logique parallele constatee par recherche; le flux navigateur attendu passe indirectement par le runtime game puis les temp entities/client damage deja produits par `T_Damage`/`SpawnDamage`. Tentative `npm run verify:full-game:gameplay` bloquee par `ERR_MODULE_NOT_FOUND` sur `packages/client/src/main.js`, sans correction dans ce lot.
+  - `renderer-three`: aucune integration gameplay directe attendue; les sorties visibles du radius damage sont celles de `T_Damage`/`SpawnDamage` et sont consommees indirectement via temp entities, particules et feedback client.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; `npm run verify:g-misc`; `npm run verify:g-main`; `npm run verify:particle-sync`; `npm run verify:p-view`; `npm run typecheck`. `npm run verify:g-target` echoue hors lot sur `target_goal`/`misc/secret.wav`; `npm run verify:full-game:gameplay` echoue au chargement du module client indique ci-dessus.
+  - Statut matrice: `T_RadiusDamage`, `points` et `ent` passent `Valide`.
+
 - 2026-05-01: fin de `T_Damage`: callbacks pain et accumulation finale `client.damage_*`
   - Source comparee: `Quake-2-master/game/g_combat.c`.
   - Cible comparee: `packages/game/src/g_combat.ts`; integration feedback controlee via `packages/game/src/p_view.ts`, `apps/web` et `packages/renderer-three`.
@@ -134,7 +146,7 @@
 
 ## Prochain lot recommande
 
-- `T_RadiusDamage` et ses locales `points`/`ent`.
+- Reconciliation des locales encore `A verifier` en matrice, en commencant par `trace` de `CanDamage`, puis les locales restantes de `CheckPowerArmor`.
 
 ## Blocages
 

@@ -20,6 +20,7 @@ import {
   Cmd_InvUse_f,
   Cmd_PlayerList_f,
   Cmd_Say_f,
+  Cmd_WeapNext_f,
   Cmd_WeapPrev_f,
   Cmd_Wave_f,
   FindItem,
@@ -52,6 +53,7 @@ verifyDropCommand();
 verifyInventorySerialization();
 verifyInventoryUseCommand();
 verifyWeaponPreviousCommand();
+verifyWeaponNextCommand();
 verifyPlayerListAndWave();
 
 console.log("Verification g_cmds - client commands OK");
@@ -228,6 +230,33 @@ function verifyWeaponPreviousCommand(): void {
   runCommand(localContext, ["weapprev"]);
   GameCommandsClientCommand(localContext, player);
   assert.equal(player.client!.newweapon, superShotgun, "ClientCommand should dispatch weapprev");
+}
+
+function verifyWeaponNextCommand(): void {
+  const runtime = createRuntime();
+  const player = createClient(runtime, 1, "weapon-next");
+  const shells = requireItem("Shells");
+  const blaster = requireItem("Blaster");
+  const shotgun = requireItem("Shotgun");
+  const superShotgun = requireItem("Super Shotgun");
+
+  Cmd_WeapNext_f(player, runtime);
+  assert.equal(player.client!.newweapon, null, "Cmd_WeapNext_f should ignore clients with no current weapon");
+
+  player.client!.pers.weapon = superShotgun;
+  player.client!.pers.inventory[shells.index] = 2;
+  player.client!.pers.inventory[shotgun.index] = 1;
+  player.client!.pers.inventory[superShotgun.index] = 1;
+  player.client!.pers.inventory[blaster.index] = 1;
+
+  Cmd_WeapNext_f(player, runtime);
+  assert.equal(player.client!.newweapon, blaster, "Cmd_WeapNext_f should preserve the C scan and success check when walking backward from selected_weapon");
+
+  player.client!.newweapon = null;
+  const localContext = createContext(runtime);
+  runCommand(localContext, ["weapnext"]);
+  GameCommandsClientCommand(localContext, player);
+  assert.equal(player.client!.newweapon, blaster, "ClientCommand should dispatch weapnext");
 }
 
 function verifyPlayerListAndWave(): void {

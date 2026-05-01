@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: callback d'activation `rotating_use`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:606-621` avec `packages/game/src/g_func.ts:1248-1269`.
+- Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier le demarrage avec `s.sound = moveinfo.sound_middle`, `avelocity = movedir * speed`, branchement `rotating_touch` sous TOUCH_PAIN, puis l'arret avec `s.sound = 0`, `avelocity` nulle et `touch` efface.
+- Effets verifies: le port conserve la branche C `!VectorCompare(avelocity, vec3_origin)` pour stopper le brush, et la branche inverse pour relancer la rotation; les parametres C `other`/`activator` restent inutilises comme dans le comportement original.
+- Branchement: `rotating_use` est affectee a `ent.use` par `SP_func_rotating`, appelee immediatement pour START_ON, et reste atteignable par les triggers/G_UseTargets puis par le flux runtime normal `G_RunFrame`/physique locale.
+- Integration: aucune logique parallele dans `apps/web`; le navigateur consomme les sons runtime et les snapshots/interpolations de brush models. `packages/renderer-three` consomme les angles/origines des brush snapshots via `gl-world-scene-adapter`; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: callback de contact `rotating_touch`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:600-604` avec `packages/game/src/g_func.ts:1233-1245`.
 - Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier que `rotating_touch` ne blesse pas quand `avelocity` est nulle, puis applique `self.dmg` et `MOD_CRUSH` quand le brush tourne.
@@ -78,7 +86,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `rotating_use`.
+- Valider le bloc suivant sans elargir: `SP_func_rotating`.
 
 ## Blocages
 

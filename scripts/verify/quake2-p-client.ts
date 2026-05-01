@@ -12,9 +12,11 @@
 import { strict as assert } from "node:assert";
 
 import { DF_QUAD_DROP } from "../../packages/qcommon/src/index.js";
-import { DEAD_DEAD, DROPPED_PLAYER_ITEM, damage_t } from "../../packages/game/src/g_local.js";
+import { BODY_QUEUE_SIZE, DEAD_DEAD, DROPPED_PLAYER_ITEM, damage_t } from "../../packages/game/src/g_local.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
 import {
+  CopyToBodyQue,
+  InitBodyQue,
   TossClientWeapon,
   player_die
 } from "../../packages/game/src/p_client.js";
@@ -29,10 +31,47 @@ import {
 main();
 
 function main(): void {
+  verifyBodyQueueUsesOriginalSizeAndWraps();
   verifyTossClientWeaponUsesDefaultDropItem();
   verifyPlayerDieUsesDefaultSoundAndGibs();
 
   console.log("Verification p_client - player lifecycle defaults OK");
+}
+
+function verifyBodyQueueUsesOriginalSizeAndWraps(): void {
+  const runtime = createHarnessRuntime();
+  const player = spawnGameEntity(runtime);
+  attachGameClient(player);
+  player.inuse = true;
+  player.classname = "player";
+  player.s.origin = [32, 64, 96];
+  player.origin = [32, 64, 96];
+  player.s.angles = [0, 90, 0];
+  player.angles = [0, 90, 0];
+  player.mins = [-16, -16, -24];
+  player.maxs = [16, 16, 32];
+  player.solid = 1;
+
+  InitBodyQue(runtime);
+
+  const bodies = runtime.entities.filter((entity) => entity.classname === "bodyque");
+  assert.equal(bodies.length, BODY_QUEUE_SIZE, "InitBodyQue should allocate the original body queue size");
+
+  let firstBody = null as (typeof player) | null;
+  CopyToBodyQue(player, runtime, {
+    onBodyQueueCopy: (_source, body) => {
+      firstBody = body;
+    }
+  });
+  assert.ok(firstBody, "CopyToBodyQue should target a queued body");
+  assert.equal(firstBody.s.number, firstBody.index, "CopyToBodyQue should preserve the body edict number");
+  assert.deepEqual(firstBody.s.origin, player.s.origin, "CopyToBodyQue should copy the player origin");
+  assert.equal(runtime.body_que, 1, "CopyToBodyQue should advance the body queue");
+
+  for (let i = 1; i < BODY_QUEUE_SIZE; i += 1) {
+    CopyToBodyQue(player, runtime);
+  }
+  assert.equal(runtime.body_que, 0, "CopyToBodyQue should wrap with BODY_QUEUE_SIZE");
 }
 
 function verifyTossClientWeaponUsesDefaultDropItem(): void {

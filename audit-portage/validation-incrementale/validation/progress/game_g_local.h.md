@@ -8,6 +8,22 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot `MELEE_DISTANCE`, `BODY_QUEUE_SIZE`.
+- Verdict: `Valide` pour les 2 macros apres correction runtime limitee de la copie de corps.
+- Valeurs H/TS comparees et conformes:
+  - `MELEE_DISTANCE = 80`
+  - `BODY_QUEUE_SIZE = 8`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. `BODY_QUEUE_SIZE` reste aussi miroir local dans `packages/game/src/g_utils.ts` pour eviter un cycle `runtime -> g_utils -> g_local -> runtime`, valeur comparee a 8.
+- Runtime:
+  - `MELEE_DISTANCE` est consomme par `g_ai.range` avec le seuil strict C `< MELEE_DISTANCE`, et par les attaques melee de `m_berserk`, `m_brain`, `m_chick`, `m_flipper`, `m_flyer`, `m_float`, `m_gladiator`, `m_infantry` et `m_mutant` pour construire les vecteurs `aim`.
+  - `BODY_QUEUE_SIZE` pilote `InitBodyQue`, le modulo de `CopyToBodyQue`, et le garde `G_FreeEdict` sur les edicts speciaux `maxclients + BODY_QUEUE_SIZE`.
+  - Correction limitee dans `packages/game/src/p_client.ts`: `CopyToBodyQue` copie maintenant aussi `origin` et `angles` runtime depuis `ent.s` avant `linkGameEntity`, sinon le relink resynchronisait `body.s.origin` a `[0,0,0]` malgre la copie C-style de `body.s`.
+- apps/web: aucune reference directe trouvee; pas d'integration web parallele attendue. Le comportement passe par le runtime serveur/game et les snapshots/evenements deja branches.
+- renderer-three: aucune reference directe trouvee; pas d'integration renderer directe attendue. Les effets visibles passent par les entites exposees apres runtime; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; pas de commentaire source specifique sur ces deux macros.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et seuil strict `range`; `npm run verify:g-local:header` OK; `npm run verify:p-client` OK avec couverture `InitBodyQue`/`CopyToBodyQue`; `npm run verify:g-utils` OK; `npm run verify:m-berserk` OK; `npm run verify:m-brain` OK; `npm run verify:m-chick` OK; `npm run verify:m-flipper` OK; `npm run verify:m-flyer` OK; `npm run verify:m-float` OK; `npm run verify:m-gladiator` OK; `npm run verify:m-infantry` OK; `npm run verify:m-mutant` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+- Test bloque non lie au lot: `npm run verify:g-ai` echoue plus loin sur `ai_run_melee must turn toward enemy_yaw before checking facing`, attendu `80`, recu `79.9969482421875`; la preuve `MELEE_DISTANCE` de ce lot a ete isolee par verification ciblee.
+
 - 2026-05-01: lot memoire `TAG_GAME`, `TAG_LEVEL`.
 - Verdict: `Valide` pour les 2 macros, sans correction TS necessaire.
 - Valeurs H/TS comparees et conformes:
@@ -154,7 +170,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les macros simples `MELEE_DISTANCE`, `BODY_QUEUE_SIZE`.
+- Continuer avec les enums simples `damage_t`, `weaponstate_t`, `ammo_t`.
 
 ## Blocages
 

@@ -23,6 +23,7 @@ import {
   DAMAGE_BULLET,
   DAMAGE_NO_KNOCKBACK,
   DAMAGE_NO_PROTECTION,
+  DAMAGE_RADIUS,
   DF_NO_FRIENDLY_FIRE,
   DF_SKINTEAMS,
   FL_GODMODE,
@@ -45,6 +46,7 @@ function main(): void {
   verifyTDamageAccountingAndMeansOfDeath();
   verifyTDamageSparksAndMassKnockback();
   verifyTDamageTakeHealthAndKilled();
+  verifyRadiusDamageFalloffFilteringAndForwarding();
   verifyRadiusDamageUsesDefaultDamageCore();
 
   console.log("Verification g_combat - damage/combat gameplay OK");
@@ -450,6 +452,91 @@ function verifyTDamageTakeHealthAndKilled(): void {
   assertNumber(crate.health, -1, "T_Damage subtracts lethal take from non-client health");
   assertNumber(crate.flags & FL_NO_KNOCKBACK, 0, "T_Damage leaves FL_NO_KNOCKBACK unchanged for non-monster non-client death");
   assertNumber(crateKilledDamage, 13, "T_Damage kills non-client entities with the take value");
+}
+
+function verifyRadiusDamageFalloffFilteringAndForwarding(): void {
+  const runtime = createHarnessRuntime();
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => ({
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 1],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: 0,
+      ent: null
+    }),
+    pointcontents: () => 0
+  };
+
+  const inflictor = createRuntimeEntity({ classname: "rocket" }, 50);
+  inflictor.inuse = true;
+  inflictor.solid = SOLID_BBOX;
+  inflictor.s.origin = [0, 0, 0];
+  runtime.entities[50] = inflictor;
+
+  const attacker = createPlayer(51);
+  attacker.solid = SOLID_BBOX;
+  attacker.s.origin = [20, 0, 0];
+  attacker.mins = [0, 0, 0];
+  attacker.maxs = [0, 0, 0];
+  runtime.entities[51] = attacker;
+
+  const target = createPlayer(52);
+  target.solid = SOLID_BBOX;
+  target.s.origin = [30, 0, 0];
+  target.mins = [0, 0, 0];
+  target.maxs = [0, 0, 0];
+  runtime.entities[52] = target;
+
+  const ignored = createPlayer(53);
+  ignored.solid = SOLID_BBOX;
+  ignored.s.origin = [10, 0, 0];
+  ignored.mins = [0, 0, 0];
+  ignored.maxs = [0, 0, 0];
+  runtime.entities[53] = ignored;
+
+  const noDamage = createPlayer(54);
+  noDamage.solid = SOLID_BBOX;
+  noDamage.s.origin = [12, 0, 0];
+  noDamage.mins = [0, 0, 0];
+  noDamage.maxs = [0, 0, 0];
+  noDamage.takedamage = 0;
+  runtime.entities[54] = noDamage;
+
+  const outside = createPlayer(55);
+  outside.solid = SOLID_BBOX;
+  outside.s.origin = [300, 0, 0];
+  outside.mins = [0, 0, 0];
+  outside.maxs = [0, 0, 0];
+  runtime.entities[55] = outside;
+
+  const calls: Array<{ ent: GameEntity; dir: [number, number, number]; damage: number; knockback: number; dflags: number; mod: number }> = [];
+  T_RadiusDamage(inflictor, attacker, 100, ignored, 128, MOD_BLASTER, runtime, {
+    T_Damage: (ent, _inflictor, _attacker, dir, point, normal, damage, knockback, dflags, mod) => {
+      calls.push({ ent, dir: [...dir], damage, knockback, dflags, mod });
+      assertVec3(point, [0, 0, 0], "T_RadiusDamage forwards the inflictor origin as point");
+      assertVec3(normal, [0, 0, 0], "T_RadiusDamage forwards vec3_origin as normal");
+    }
+  });
+
+  assertNumber(calls.length, 2, "T_RadiusDamage filters ignored, non-damageable and out-of-radius entities");
+  assertEntity(calls[0].ent, attacker, "T_RadiusDamage preserves findradius iteration for the attacker entity");
+  assertNumber(calls[0].damage, 45, "T_RadiusDamage halves radius points when the target is the attacker");
+  assertNumber(calls[0].knockback, 45, "T_RadiusDamage mirrors radius points into knockback");
+  assertVec3(calls[0].dir, [20, 0, 0], "T_RadiusDamage forwards ent origin minus inflictor origin as dir");
+  assertEntity(calls[1].ent, target, "T_RadiusDamage continues with the next eligible entity");
+  assertNumber(calls[1].damage, 85, "T_RadiusDamage applies the original distance falloff before truncation");
+  assertNumber(calls[1].dflags, DAMAGE_RADIUS, "T_RadiusDamage sets DAMAGE_RADIUS");
+  assertNumber(calls[1].mod, MOD_BLASTER, "T_RadiusDamage forwards the damage mod");
 }
 
 function verifyRadiusDamageUsesDefaultDamageCore(): void {

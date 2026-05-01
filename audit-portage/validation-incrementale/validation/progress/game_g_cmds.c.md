@@ -112,3 +112,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:p-weapon`; `npm run verify:refresh-entity:weapon`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `Cmd_WeapNext_f` et temporaires locaux associes (`it`, `selected_weapon`).
+
+## Session 2026-05-01 - Cmd_WeapNext_f
+
+- Lot valide: `Cmd_WeapNext_f` et temporaires C associes (`it`, `selected_weapon`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c`, `Quake-2-master/game/p_weapon.c`, `packages/game/src/g_cmds.ts` et `packages/game/src/p_weapon.ts`; meme retour si `pers.weapon` absent, meme calcul `selected_weapon = ITEM_INDEX(cl->pers.weapon)`, meme scan arriere `(selected_weapon + MAX_ITEMS - i) % MAX_ITEMS`, memes filtres inventaire/callback `use`/`IT_WEAPON`, meme dispatch `it->use` via `callItemUse`, et meme test de succes sur `pers.weapon == it` plutot que sur `newweapon`.
+- Branchement runtime: `ClientCommand` dispatch `weapnext`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes par `createClientSendCmdBridge` et charge l'API game, sans logique parallele pour `weapnext`. `packages/renderer-three` consomme les effets visibles indirects par le chemin arme vue/HUD: le changement d'arme met a jour `client.newweapon`, puis `pers.weapon`, `player_state_t.gunindex` et les refresh entities d'arme.
+- Corrections: commentaire d'en-tete complete pour `Cmd_WeapNext_f`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour absence d'arme, scan arriere depuis `selected_weapon`, subtilite `pers.weapon`/`newweapon`, et dispatch `weapnext`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:refresh-entity:weapon`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: `npm run verify:p-weapon` echoue hors perimetre sur `Hand grenade no-ammo should select the next available weapon: attendu Rocket Launcher, recu Shotgun`; non corrige dans ce lot.
+- Prochain lot recommande: `Cmd_WeapLast_f` et temporaires locaux associes (`index`, `it`).

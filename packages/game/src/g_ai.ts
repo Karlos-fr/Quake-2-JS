@@ -672,10 +672,14 @@ export function M_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
  * Original name: ai_run_melee
  * Source: game/g_ai.c
  * Category: Ported
- * Fidelity level: Strict
+ * Fidelity level: Close
  *
  * Behavior:
  * - Turns toward the enemy until aligned enough to fire the monster melee callback.
+ *
+ * Porting notes:
+ * - Passes the explicit runtime to the callback; the optional callback guard is defensive,
+ *   while normal attack-state selection only enters AS_MELEE when a melee callback exists.
  */
 export function ai_run_melee(self: GameEntity, runtime: GameRuntime): void {
   self.ideal_yaw = enemy_yaw;
@@ -691,10 +695,14 @@ export function ai_run_melee(self: GameEntity, runtime: GameRuntime): void {
  * Original name: ai_run_missile
  * Source: game/g_ai.c
  * Category: Ported
- * Fidelity level: Strict
+ * Fidelity level: Close
  *
  * Behavior:
  * - Turns toward the enemy until aligned enough to fire the missile attack callback.
+ *
+ * Porting notes:
+ * - Passes the explicit runtime to the callback; the optional callback guard is defensive,
+ *   while normal monster attack states install the expected callback before firing.
  */
 export function ai_run_missile(self: GameEntity, runtime: GameRuntime): void {
   self.ideal_yaw = enemy_yaw;

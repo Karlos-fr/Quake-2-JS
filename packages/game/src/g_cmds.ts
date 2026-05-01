@@ -555,6 +555,13 @@ export function Cmd_WeapPrev_f(ent: GameEntity, runtime: GameRuntime): void {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Scans backward from the current `pers.weapon` item index and invokes usable weapons until the scan succeeds.
+ *
+ * Porting notes:
+ * - Preserves Quake II's original `weapnext` scan direction through the shared `scanWeapon` helper.
+ * - The success check intentionally follows C by testing `pers.weapon == it` after `Use_Weapon`, not `newweapon`.
  */
 export function Cmd_WeapNext_f(ent: GameEntity, runtime: GameRuntime): void {
   scanWeapon(ent, runtime, -1);
