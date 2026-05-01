@@ -43,6 +43,7 @@ import {
   button_touch,
   button_use,
   button_wait,
+  door_blocked,
   door_use,
   door_go_down,
   door_go_up,
@@ -416,6 +417,49 @@ triggerDoor.moveinfo.state = STATE_BOTTOM;
 runtime.time += 0.5;
 Touch_DoorTrigger(doorTrigger, liveDoorClient, runtime);
 assert.equal(triggerDoor.moveinfo.state, STATE_BOTTOM, "Touch_DoorTrigger must debounce repeated touches");
+const doorBlocker = entity("door blocker", 56);
+doorBlocker.health = 25;
+doorBlocker.takedamage = damage_t.DAMAGE_YES;
+doorBlocker.s.origin = [4, 5, 6];
+door_blocked(triggerDoor, doorBlocker, runtime);
+assert.equal(doorBlocker.inuse, false, "door_blocked must explode non-monster non-client blockers");
+assert.equal(runtime.tempEntityEvents.at(-1)?.origin[0], 4, "door_blocked explosion origin mismatch");
+const crusherDoor = entity("func_door", 57, { spawnflags: "4", dmg: "12" });
+const crusherClient = entity("crusher door client", 58);
+crusherClient.client = createGameClient();
+crusherClient.health = 40;
+crusherClient.takedamage = damage_t.DAMAGE_YES;
+runtime.meansOfDeath = 0;
+door_blocked(crusherDoor, crusherClient, runtime);
+assert.equal(crusherClient.health, 28, "door_blocked crusher damage mismatch");
+assert.equal(runtime.meansOfDeath, MOD_CRUSH, "door_blocked crusher mod mismatch");
+assert.equal(crusherDoor.moveinfo.state, STATE_BOTTOM, "door_blocked crusher must not reverse");
+const blockedDoorMaster = entity("func_door", 59, { dmg: "10" });
+const blockedDoorSlave = entity("func_door", 60);
+const doorMonsterBlocker = entity("door monster blocker", 61);
+blockedDoorMaster.teammaster = blockedDoorMaster;
+blockedDoorMaster.teamchain = blockedDoorSlave;
+blockedDoorSlave.teammaster = blockedDoorMaster;
+blockedDoorMaster.moveinfo.state = STATE_DOWN;
+blockedDoorSlave.moveinfo.state = STATE_DOWN;
+blockedDoorMaster.moveinfo.end_origin = [16, 0, 0];
+blockedDoorSlave.moveinfo.end_origin = [32, 0, 0];
+doorMonsterBlocker.svflags = SVF_MONSTER;
+doorMonsterBlocker.health = 35;
+doorMonsterBlocker.takedamage = damage_t.DAMAGE_YES;
+door_blocked(blockedDoorMaster, doorMonsterBlocker, runtime);
+assert.equal(doorMonsterBlocker.health, 25, "door_blocked monster damage mismatch");
+assert.equal(blockedDoorMaster.moveinfo.state, STATE_UP, "door_blocked STATE_DOWN master reverse mismatch");
+assert.equal(blockedDoorSlave.moveinfo.state, STATE_UP, "door_blocked STATE_DOWN slave reverse mismatch");
+assert.equal(blockedDoorMaster.moveinfo.endfunc, door_hit_top, "door_blocked master reverse callback mismatch");
+blockedDoorMaster.moveinfo.state = STATE_UP;
+blockedDoorSlave.moveinfo.state = STATE_UP;
+blockedDoorMaster.moveinfo.start_origin = [0, 0, 0];
+blockedDoorSlave.moveinfo.start_origin = [0, 0, 0];
+door_blocked(blockedDoorMaster, doorMonsterBlocker, runtime);
+assert.equal(blockedDoorMaster.moveinfo.state, STATE_DOWN, "door_blocked STATE_UP master reverse mismatch");
+assert.equal(blockedDoorSlave.moveinfo.state, STATE_DOWN, "door_blocked STATE_UP slave reverse mismatch");
+assert.equal(blockedDoorMaster.moveinfo.endfunc, door_hit_bottom, "door_blocked close callback mismatch");
 const speedDoorMaster = entity("func_door", 49);
 const speedDoorSlave = entity("func_door", 50);
 speedDoorMaster.teamchain = speedDoorSlave;

@@ -679,7 +679,7 @@ export function Think_SpawnDoorTrigger(ent: GameEntity, runtime: GameRuntime): v
  * Fidelity level: Close
  *
  * Behavior:
- * - Reacts to an obstruction and reverses the owning door team unless the door is a crusher.
+ * - Damages or explodes a door blocker, then reverses the owning door team unless the door is a crusher.
  */
 export function door_blocked(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   runtime.log({
@@ -690,6 +690,16 @@ export function door_blocked(self: GameEntity, other: GameEntity, runtime: GameR
     otherIndex: other.index,
     otherClassname: other.classname
   });
+
+  if ((other.svflags & SVF_MONSTER) === 0 && !other.client) {
+    T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], 100000, 1, 0, MOD_CRUSH, runtime);
+    if (other.inuse) {
+      BecomeExplosion1(other, runtime);
+    }
+    return;
+  }
+
+  T_Damage(other, self, self, [0, 0, 0], other.s.origin, [0, 0, 0], self.dmg, 1, 0, MOD_CRUSH, runtime);
 
   if ((self.spawnflags & DOOR_CRUSHER) !== 0) {
     return;

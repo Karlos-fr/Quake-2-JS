@@ -630,10 +630,28 @@ export function SP_viewthing(ent: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, ent);
 }
 
+/**
+ * Original name: SP_info_null
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Frees a map-only positional marker after other entities have resolved its spawn data.
+ */
 export function SP_info_null(self: GameEntity, runtime: GameRuntime): void {
   G_FreeEdict(runtime, self);
 }
 
+/**
+ * Original name: SP_info_notnull
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Keeps a non-solid positional marker by collapsing its absolute bounds to its origin.
+ */
 export function SP_info_notnull(self: GameEntity, _runtime: GameRuntime): void {
   self.absmin = [...self.s.origin];
   self.absmax = [...self.s.origin];

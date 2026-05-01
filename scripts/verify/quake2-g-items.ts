@@ -19,6 +19,7 @@ import {
   FL_RESPAWN,
   FRAMETIME,
   FindItem,
+  FindItemByClassname,
   GetGameItems,
   GetItemByIndex,
   InitItems,
@@ -81,6 +82,7 @@ function main(): void {
   verifyPrecacheItemAssetsAndValidation();
   verifyUsePowerArmorRequiresCells();
   verifyUseQuadTimeoutAndDroppedHack();
+  verifyItemLookupHelpers();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
   verifySpawnItemDeathmatchFilters();
@@ -112,6 +114,21 @@ function verifyItemlistShapeAndHealthSentinel(): void {
   const names = SetItemNames();
   assertNumber(names.length, itemCount, "SetItemNames exposes one configstring name per itemlist entry");
   assertBoolean(names[names.length - 1] === "Health", true, "SetItemNames ends with the generic Health pickup name");
+}
+
+function verifyItemLookupHelpers(): void {
+  const machinegun = requireItem("Machinegun");
+
+  assertBoolean(GetItemByIndex(-1) === null, true, "GetItemByIndex rejects negative indices");
+  assertBoolean(GetItemByIndex(0) === null, true, "GetItemByIndex rejects the original C null slot");
+  assertBoolean(GetItemByIndex(machinegun.index) === machinegun, true, "GetItemByIndex translates itemlist indices to TS storage");
+  assertBoolean(GetItemByIndex(InitItems()) === requireItem("Health"), true, "GetItemByIndex accepts the last real C item index");
+  assertBoolean(GetItemByIndex(InitItems() + 1) === null, true, "GetItemByIndex rejects the original C end marker index");
+
+  assertBoolean(FindItemByClassname("weapon_machinegun") === machinegun, true, "FindItemByClassname resolves a direct classname");
+  assertBoolean(FindItemByClassname("WEAPON_MACHINEGUN") === machinegun, true, "FindItemByClassname preserves Q_stricmp case-insensitive matching");
+  assertBoolean(FindItemByClassname("") === null, true, "FindItemByClassname skips the C NULL classname sentinel represented as an empty string");
+  assertBoolean(FindItemByClassname("item_health") === null, true, "FindItemByClassname does not resolve health spawn classnames that are not itemlist classnames");
 }
 
 function verifyHealthSpawnFunctionsUseGenericHealthItem(): void {

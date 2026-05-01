@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: entree `ReadGame`.
 - 2026-05-01: entree `WriteGame`.
 - 2026-05-01: entree `RunEntity`.
 - 2026-05-01: fonction `ClientCommand`.
@@ -20,6 +21,7 @@
 
 ## Verdict du lot
 
+- `ReadGame`: valide. Dans `g_main.c`, `ReadGame` est declare puis branche dans `GetGameAPI` comme slot `globals.ReadGame`; l'implementation originale est dans `g_save.c`. Le port TS conserve cette separation: `GetGameApi().ReadGame` appelle le wrapper `g_main.ts` `ReadGame`, qui delegue a `g_save.ts` `ReadGame`. La comparaison avec le C couvre `FreeTags(TAG_GAME)`, ouverture/lecture par hook host, validation version/format, restauration des donnees cross-level `game`, clients, `maxclients`, `maxentities` et `serverflags`; le format TS reste volontairement JSON via hook `readFile` au lieu du bloc binaire C. Commentaire d'en-tete verifie sur le wrapper `g_main.ts` et l'implementation `g_save.ts`.
 - `WriteGame`: valide. Dans `g_main.c`, `WriteGame` est declare puis branche dans `GetGameAPI` comme slot `globals.WriteGame`; l'implementation originale est dans `g_save.c`. Le port TS conserve cette separation: `GetGameApi().WriteGame` appelle le wrapper `g_main.ts` `WriteGame`, qui delegue a `g_save.ts` `WriteGame`. La comparaison avec le C couvre le chemin `!autosave -> SaveClientData`, l'ecriture des donnees cross-level `game`, le flag temporaire `autosaved`, et les clients; le format TS est volontairement JSON via hook `writeFile` au lieu du bloc binaire C. Commentaire d'en-tete verifie sur le wrapper `g_main.ts` et l'implementation `g_save.ts`.
 - `RunEntity`: non applicable avec justification. Dans `g_main.c`, `RunEntity` n'est pas une implementation ni un export de `game_export_t`: c'est une declaration prototype isolee, tandis que la boucle originale `G_RunFrame` appelle directement `G_RunEntity`. Le port TS n'a donc pas besoin d'un symbole `RunEntity` separe; `packages/game/src/g_main.ts` importe `G_RunEntity` depuis `g_phys.ts` et l'appelle pour les entites non-client apres les memes controles d'inuse, old_origin, groundentity et slot client. Commentaires d'en-tete verifies sur `G_RunFrame` et `G_RunEntity`; preuve ajoutee dans `scripts/verify/quake2-g-main.ts` pour confirmer qu'une entite non-client passe bien par `G_RunEntity`/`SV_RunThink` depuis `G_RunFrame`.
 - `ClientCommand`: valide apres correction documentaire et ajout de preuve ciblee. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientCommand`; le TS `GetGameApi().ClientCommand` appelle `g_main.ts` `ClientCommand`, qui relaie par defaut vers le port Strict `g_cmds.ts` en transmettant `gi`, `runtime`, cvars cheats/flood/dedicated/skill et donnees help. Le hook `onClientCommand` reste un override explicite d'integration, mais le chemin normal conserve le dispatcher original: garde `!ent->client`, lecture `gi.argv(0)`, commandes toujours autorisees avant intermission, gate intermission, dispatch gameplay et fallback chat. Commentaire d'en-tete mis a jour dans `g_main.ts`; commentaire `g_cmds.ts` verifie.
@@ -67,6 +69,13 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().ReadGame`: delegation au port `g_save.ts`, `FreeTags(TAG_GAME)`, restauration `serverflags`, `maxclients` et `maxentities` depuis un savegame produit par le slot exporte.
+- `npm run verify:g-save`: ok le 2026-05-01, confirme `ReadGame` sur donnees cross-level et etats clients.
+- `npx tsx ./scripts/verify/quake2-sv-ccmds.ts`: ok le 2026-05-01, confirme le branchement serveur `SV_ReadServerFile -> ge.ReadGame("current/game.ssv")`.
+- `npm run verify:web-save-storage`: ok le 2026-05-01, confirme le stockage web des fichiers logiques `game.ssv`.
+- `npm run verify:full-game:save-slots`: ok le 2026-05-01, confirme le flux navigateur save slots avec lecture/ecriture `game.ssv`.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-main`: ok le 2026-05-01, confirme la table d'export `GetGameApi` incluant `WriteGame` et les chemins `g_main.c` deja portes.
 - `npm run verify:g-save`: ok le 2026-05-01, confirme `WriteGame` via le wrapper `g_main.ts`, avec `SaveClientData` en sauvegarde manuelle et persistance game/client.
 - `npx tsx ./scripts/verify/quake2-sv-ccmds.ts`: ok le 2026-05-01, confirme le branchement serveur `SV_WriteServerFile -> ge.WriteGame("current/game.ssv", autosave)`.
@@ -152,6 +161,7 @@
 
 ## Blocages / decisions
 
+- `ReadGame`: decision `Valide` limitee au slot `g_main.c` et a sa delegation vers `g_save.ts`. L'implementation fine de la deserialisation reste rattachee a la matrice `game_g_save.c.md`; ici le comportement attendu est le branchement export/runtime. `apps/web` est integre via `full-game-server-host.ts`, qui fournit le hook `readFile` depuis `WebSaveStorage` et le chemin serveur `SV_ReadServerFile`. Aucune logique web parallele ne masque le runtime. `packages/renderer-three` n'a pas d'integration directe attendue: `ReadGame` restaure des donnees persistantes de jeu et ne produit pas directement modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les sorties visibles reprennent ensuite par le flux normal serveur/client.
 - `WriteGame`: decision `Valide` limitee au slot `g_main.c` et a son delegation vers `g_save.ts`. L'implementation fine de la serialisation reste rattachee a la matrice `game_g_save.c.md`; ici le comportement attendu est le branchement export/runtime. `apps/web` est integre via `full-game-server-host.ts`, qui fournit les hooks `readFile`/`writeFile` sur `WebSaveStorage`; aucune logique web parallele ne masque le runtime. `packages/renderer-three` n'a pas d'integration directe attendue: `WriteGame` ne produit ni modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les donnees visibles restent celles du runtime avant/apres sauvegarde.
 - `RunEntity`: decision `Non applicable` limitee a l'entree de matrice generee depuis le prototype `void RunEntity(edict_t *ent);`. Aucun manque runtime n'est masque: le comportement attendu est le dispatch de `G_RunFrame` vers `G_RunEntity`, prouve pendant cette session.
 - `apps/web`: integration jugee presente via `full-game-server-host.ts`, dont la boucle appelle `SV_Frame`, puis `ge.RunFrame`; aucune logique web parallele ne remplace ce flux.
@@ -220,4 +230,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ReadGame`.
+- Continuer avec le prochain symbole `g_main.c` dans la matrice: `WriteLevel`.

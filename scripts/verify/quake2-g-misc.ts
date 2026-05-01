@@ -28,6 +28,8 @@ import {
   MOVETYPE_BOUNCE,
   MOVETYPE_NONE,
   MOVETYPE_TOSS,
+  SP_info_notnull,
+  SP_info_null,
   SP_misc_explobox,
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
@@ -45,6 +47,7 @@ import {
   drainGameConfigstringUpdates,
   drainGameSoundEvents,
   drainGameTempEntityEvents,
+  ED_CallSpawn,
   func_explosive_explode,
   func_explosive_spawn,
   func_explosive_use,
@@ -77,6 +80,7 @@ function main(): void {
   verifyPointCombatSpawnSetupAndDeathmatchFree();
   verifyPointCombatTouchBranches();
   verifyViewthingSpawnAndThinkLoop();
+  verifyInfoNullAndInfoNotnullSpawnMarkers();
   verifyTargetStringMapsFrames();
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
@@ -442,6 +446,39 @@ function verifyViewthingSpawnAndThinkLoop(): void {
   assert.equal(viewthing.s.frame, 0, "TH_viewthing must wrap frames modulo 7");
   assert.equal(viewthing.think, TH_viewthing, "TH_viewthing must keep its think loop installed");
   assert.equal(viewthing.nextthink, 20 + FRAMETIME, "TH_viewthing must schedule the next source frame tick");
+}
+
+function verifyInfoNullAndInfoNotnullSpawnMarkers(): void {
+  const runtime = createHarnessRuntime();
+
+  const infoNull = spawnFreeableEntity(runtime);
+  infoNull.classname = "info_null";
+  infoNull.s.origin = [1, 2, 3];
+  ED_CallSpawn(infoNull, runtime);
+  assert.equal(infoNull.inuse, false, "SP_info_null must immediately free positional marker entities");
+
+  const infoNotnull = spawnGameEntity(runtime);
+  infoNotnull.classname = "info_notnull";
+  infoNotnull.s.origin = [4, 5, 6];
+  ED_CallSpawn(infoNotnull, runtime);
+  assert.deepEqual(infoNotnull.absmin, [4, 5, 6], "SP_info_notnull must copy s.origin to absmin");
+  assert.deepEqual(infoNotnull.absmax, [4, 5, 6], "SP_info_notnull must copy s.origin to absmax");
+  assert.equal(infoNotnull.solid, SOLID_NOT, "SP_info_notnull must remain a non-solid positional marker");
+  assert.equal(infoNotnull.linked, false, "SP_info_notnull must not link a visible or touchable entity");
+
+  const directNull = spawnFreeableEntity(runtime);
+  directNull.classname = "info_null";
+  SP_info_null(directNull, runtime);
+  assert.equal(directNull.inuse, false, "direct SP_info_null calls must free the edict");
+
+  const directNotnull = spawnGameEntity(runtime);
+  directNotnull.classname = "info_notnull";
+  directNotnull.s.origin = [-7, 8, 9];
+  directNotnull.absmin = [0, 0, 0];
+  directNotnull.absmax = [1, 1, 1];
+  SP_info_notnull(directNotnull, runtime);
+  assert.deepEqual(directNotnull.absmin, [-7, 8, 9], "direct SP_info_notnull calls must refresh absmin from s.origin");
+  assert.deepEqual(directNotnull.absmax, [-7, 8, 9], "direct SP_info_notnull calls must refresh absmax from s.origin");
 }
 
 function verifyTargetStringMapsFrames(): void {

@@ -23,6 +23,11 @@ import {
   AI_SOUND_TARGET,
   AI_STAND_GROUND,
   AI_TEMP_STAND_GROUND,
+  ARMOR_BODY,
+  ARMOR_COMBAT,
+  ARMOR_JACKET,
+  ARMOR_NONE,
+  ARMOR_SHARD,
   AS_MELEE,
   AS_MISSILE,
   AS_SLIDING,
@@ -85,7 +90,13 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
+import type { gitem_armor_t } from "../../packages/game/src/g_local.js";
 import {
+  ARMOR_BODY as INDEX_ARMOR_BODY,
+  ARMOR_COMBAT as INDEX_ARMOR_COMBAT,
+  ARMOR_JACKET as INDEX_ARMOR_JACKET,
+  ARMOR_NONE as INDEX_ARMOR_NONE,
+  ARMOR_SHARD as INDEX_ARMOR_SHARD,
   MOVETYPE_BOUNCE as INDEX_MOVETYPE_BOUNCE,
   MOVETYPE_FLY as INDEX_MOVETYPE_FLY,
   MOVETYPE_FLYMISSILE as INDEX_MOVETYPE_FLYMISSILE,
@@ -97,7 +108,7 @@ import {
   MOVETYPE_TOSS as INDEX_MOVETYPE_TOSS,
   MOVETYPE_WALK as INDEX_MOVETYPE_WALK
 } from "../../packages/game/src/index.js";
-import { GetItemByIndex } from "../../packages/game/src/g_items.js";
+import { FindItem, GetArmorInfoByItem, GetItemByIndex } from "../../packages/game/src/g_items.js";
 import { createRuntimeEntity } from "../../packages/game/src/runtime.js";
 
 const client = createGameClient();
@@ -144,6 +155,16 @@ assert.equal(AS_MISSILE, 4, "AS_MISSILE mismatch");
 assert.equal(POWER_ARMOR_NONE, 0, "POWER_ARMOR_NONE mismatch");
 assert.equal(POWER_ARMOR_SCREEN, 1, "POWER_ARMOR_SCREEN mismatch");
 assert.equal(POWER_ARMOR_SHIELD, 2, "POWER_ARMOR_SHIELD mismatch");
+assert.equal(ARMOR_NONE, 0, "ARMOR_NONE mismatch");
+assert.equal(ARMOR_JACKET, 1, "ARMOR_JACKET mismatch");
+assert.equal(ARMOR_COMBAT, 2, "ARMOR_COMBAT mismatch");
+assert.equal(ARMOR_BODY, 3, "ARMOR_BODY mismatch");
+assert.equal(ARMOR_SHARD, 4, "ARMOR_SHARD mismatch");
+assert.equal(INDEX_ARMOR_NONE, ARMOR_NONE, "public ARMOR_NONE export mismatch");
+assert.equal(INDEX_ARMOR_JACKET, ARMOR_JACKET, "public ARMOR_JACKET export mismatch");
+assert.equal(INDEX_ARMOR_COMBAT, ARMOR_COMBAT, "public ARMOR_COMBAT export mismatch");
+assert.equal(INDEX_ARMOR_BODY, ARMOR_BODY, "public ARMOR_BODY export mismatch");
+assert.equal(INDEX_ARMOR_SHARD, ARMOR_SHARD, "public ARMOR_SHARD export mismatch");
 assert.equal(SFL_CROSS_TRIGGER_1, 0x00000001, "SFL_CROSS_TRIGGER_1 mismatch");
 assert.equal(SFL_CROSS_TRIGGER_2, 0x00000002, "SFL_CROSS_TRIGGER_2 mismatch");
 assert.equal(SFL_CROSS_TRIGGER_3, 0x00000004, "SFL_CROSS_TRIGGER_3 mismatch");
@@ -212,5 +233,39 @@ assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");
 assert.equal(FOFS("classname"), "classname", "FOFS selector mismatch");
 assert.equal(world([entity]), entity, "world helper mismatch");
 assert.equal(ITEM_INDEX(shotgun!), 2, "ITEM_INDEX mismatch");
+
+const jacket = FindItem("Jacket Armor");
+const combat = FindItem("Combat Armor");
+const body = FindItem("Body Armor");
+const shard = FindItem("Armor Shard");
+const jacketInfo = GetArmorInfoByItem(jacket) satisfies gitem_armor_t | null;
+const combatInfo = GetArmorInfoByItem(combat) satisfies gitem_armor_t | null;
+const bodyInfo = GetArmorInfoByItem(body) satisfies gitem_armor_t | null;
+assert.deepEqual(jacketInfo, {
+  base_count: 25,
+  max_count: 50,
+  normal_protection: 0.30,
+  energy_protection: 0.00,
+  armor: ARMOR_JACKET
+}, "gitem_armor_t jacketarmor_info mismatch");
+assert.deepEqual(combatInfo, {
+  base_count: 50,
+  max_count: 100,
+  normal_protection: 0.60,
+  energy_protection: 0.30,
+  armor: ARMOR_COMBAT
+}, "gitem_armor_t combatarmor_info mismatch");
+assert.deepEqual(bodyInfo, {
+  base_count: 100,
+  max_count: 200,
+  normal_protection: 0.80,
+  energy_protection: 0.60,
+  armor: ARMOR_BODY
+}, "gitem_armor_t bodyarmor_info mismatch");
+assert.equal(jacket?.tag, ARMOR_JACKET, "Jacket Armor item tag mismatch");
+assert.equal(combat?.tag, ARMOR_COMBAT, "Combat Armor item tag mismatch");
+assert.equal(body?.tag, ARMOR_BODY, "Body Armor item tag mismatch");
+assert.equal(shard?.tag, ARMOR_SHARD, "Armor Shard item tag mismatch");
+assert.equal(GetArmorInfoByItem(shard), null, "Armor Shard must not expose gitem_armor_t info");
 
 console.log("quake2-g-local-header: ok");

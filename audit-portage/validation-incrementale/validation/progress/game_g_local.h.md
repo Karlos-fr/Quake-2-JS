@@ -8,6 +8,24 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot structure armor `gitem_armor_t` et champs `base_count`, `max_count`, `normal_protection`, `energy_protection`, `armor`.
+- Verdict: `Valide` pour la structure et ses 5 champs, sans correction gameplay TS necessaire.
+- Source H comparee: `gitem_armor_t` contient `int base_count`, `int max_count`, `float normal_protection`, `float energy_protection`, `int armor`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_items.ts`: `GameItemArmorInfo` porte les memes champs et le commentaire d'en-tete `Original name: gitem_armor_t`, `Source: game/g_local.h`, `Category: Ported`, `Fidelity level: Strict`.
+  - `packages/game/src/g_local.ts`: `export type gitem_armor_t = GameItemArmorInfo`.
+  - `packages/game/src/index.ts`: export public du type `gitem_armor_t` et de `GameItemArmorInfo` verifie.
+- Tables armor H/TS comparees et conformes:
+  - `jacketarmor_info = { base_count: 25, max_count: 50, normal_protection: 0.30, energy_protection: 0.00, armor: ARMOR_JACKET }`
+  - `combatarmor_info = { base_count: 50, max_count: 100, normal_protection: 0.60, energy_protection: 0.30, armor: ARMOR_COMBAT }`
+  - `bodyarmor_info = { base_count: 100, max_count: 200, normal_protection: 0.80, energy_protection: 0.60, armor: ARMOR_BODY }`
+- Runtime:
+  - Source C: la structure est stockee dans `gitem_t.info` pour Jacket/Combat/Body Armor, lue par `Pickup_Armor` pour base/max/conversion salvage, par `CheckArmor` pour protection normale/energie, et par `G_SetStats` via `ArmorIndex`/`GetItemByIndex` pour le HUD armor.
+  - TS: `FindItem`/`GetArmorInfoByItem`, `Pickup_Armor`, `CheckArmor` et `G_SetStats` conservent ces flux. Les tests existants couvrent pickup shard/base/upgrade/salvage/max/deathmatch, absorption armor normale/energie et stats HUD.
+- apps/web: aucune reference directe aux types/champs armor; pas de logique parallele attendue. Le navigateur declenche et consomme ce comportement via le runtime full-game, les snapshots et les stats HUD.
+- renderer-three: aucune reference directe; pas d'integration gameplay directe attendue. Sorties visibles attendues: modeles d'items armor, entites snapshots generiques et stats HUD produites en amont; `verify:full-game:three-renderer` OK.
+- Tests: `npm run verify:g-local:header` OK avec assertions structure/tables armor; `npm run verify:g-items` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:p-hud` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot `movetype_t`.
 - Verdict: `Valide` apres correction limitee de l'export public et renforcement du harness header.
 - Valeurs H/TS comparees et conformes:
@@ -416,7 +434,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `gitem_armor_t`.
+- Continuer avec les flags `IT_WEAPON`, `IT_AMMO`, `IT_ARMOR`, `IT_STAY_COOP`, `IT_KEY`, `IT_POWERUP`.
 
 ## Blocages
 

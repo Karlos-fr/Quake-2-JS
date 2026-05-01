@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: blocage de porte `door_blocked` et locale matricielle `ent`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1076-1111` avec `packages/game/src/g_func.ts:676-715`.
+- Correction appliquee: `door_blocked` applique maintenant les dommages C avant la garde `DOOR_CRUSHER`, explose les bloqueurs non-monstre/non-client encore `inuse` via `BecomeExplosion1`, puis conserve les dommages `self.dmg` pour monstres/clients et l'inversion de l'equipe selon `STATE_DOWN` ou autre et `moveinfo.wait >= 0`.
+- Effets verifies: appel `T_Damage` 100000/MOD_CRUSH pour objets, explosion temp entity + free si encore present, appel `T_Damage` self.dmg/MOD_CRUSH pour client/monstre, crusher sans inversion, parcours de team par la locale C `ent` portee via `forEachDoorTeam`, `door_go_up` quand l'etat est `STATE_DOWN`, `door_go_down` sinon.
+- Branchement: `door_blocked` est affectee par `SP_func_door` et `SP_func_door_rotating`, referencees par `g_spawn.ts`, puis appelee par `SV_Physics_Pusher` via `part.blocked` pendant `G_RunFrame`/`G_RunEntity`.
+- Integration: aucune logique parallele `func_door` dans `apps/web`; le navigateur consomme le runtime serveur/local, sons, temp entities, areabits et snapshots/interpolations de brush models. `packages/renderer-three` ne porte pas le blocage gameplay et consomme les sorties visibles attendues via brush snapshots/areabits; l'explosion est une temp entity runtime consommee en aval par le flux client/renderer existant.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: spawn de trigger de porte `Think_SpawnDoorTrigger` et locale matricielle `other`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1038-1073` avec `packages/game/src/g_func.ts:630-672` et helper de bounds `packages/game/src/g_func.ts:2087-2115`.
 - Correction appliquee: `Think_SpawnDoorTrigger` teste maintenant le flag `FL_TEAMSLAVE` comme le C, au lieu de se baser seulement sur `teammaster`; le commentaire d'en-tete documente l'adapter `G_Spawn`/`gi.linkentity`.
@@ -206,7 +214,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `door_blocked`, puis locale `ent` si coherent.
+- Continuer avec `door_killed`, puis locale `ent` si coherent.
 
 ## Blocages
 

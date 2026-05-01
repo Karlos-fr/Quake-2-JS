@@ -277,20 +277,19 @@ const bodyarmor_info: GameItemArmorInfo = { base_count: 100, max_count: 200, nor
  * Fidelity level: Close
  *
  * Behavior:
- * - Finds one item definition by its entity classname.
+ * - Finds one item definition by its entity classname, using the original case-insensitive comparison.
+ *
+ * Porting notes:
+ * - The C NULL classname sentinel is represented as an empty string in the TS item table and is skipped here.
  */
 export function FindItemByClassname(classname: string): GameItemDefinition | null {
-  if (
-    classname === "item_health" ||
-    classname === "item_health_small" ||
-    classname === "item_health_large" ||
-    classname === "item_health_mega"
-  ) {
-    return null;
-  }
+  const normalizedClassname = classname.toLowerCase();
 
   for (const item of itemlist) {
-    if (item.classname === classname) {
+    if (!item.classname) {
+      continue;
+    }
+    if (item.classname.toLowerCase() === normalizedClassname) {
       return item;
     }
   }
@@ -306,6 +305,9 @@ export function FindItemByClassname(classname: string): GameItemDefinition | nul
  *
  * Behavior:
  * - Returns one item definition from the stable Quake II itemlist index space.
+ *
+ * Porting notes:
+ * - The C itemlist slot 0 and end marker are hidden from the TS array, so indices are translated by one.
  */
 export function GetItemByIndex(index: number): GameItemDefinition | null {
   if (index <= 0 || index > itemlist.length) {

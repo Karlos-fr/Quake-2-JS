@@ -2,6 +2,22 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `SP_info_null` / `SP_info_notnull`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `SP_info_null` libere le marqueur positionnel avec `G_FreeEdict`; `SP_info_notnull` conserve le marqueur non-solide en copiant `s.origin` vers `absmin` et `absmax`.
+  - Commentaires d'en-tete Strict ajoutes pour `SP_info_null` et `SP_info_notnull`.
+  - Branchement runtime verifie: `info_null` et `info_notnull` sont enregistres dans `g_spawn.ts`, exportes par `index.ts`, et dispatches par `ED_CallSpawn`.
+  - `apps/web`: aucune logique parallele trouvee; ces entites sont des marqueurs serveur de map, sans commande/HUD/son/snapshot visible attendu cote navigateur.
+  - `renderer-three`: pas de sortie visible attendue. `info_null` est libere, `info_notnull` n'est ni lie ni solide et ne produit aucun modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaires d'en-tete de portage ajoutes.
+  - `scripts/verify/quake2-g-misc.ts`: couverture directe et dispatch spawn pour les deux marqueurs.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+
 - 2026-05-01: `TH_viewthing` / `SP_viewthing`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `TH_viewthing` conserve le frame loop `(frame + 1) % 7` et `nextthink = time + FRAMETIME`; `SP_viewthing` conserve le diagnostic `viewthing spawned`, `MOVETYPE_NONE`, `SOLID_BBOX`, `RF_FRAMELERP`, bbox `[-16,-16,-24]` / `[16,16,32]`, modele `models/objects/banner/tris.md2`, link, think `TH_viewthing` et premier `nextthink = time + 0.5`.
@@ -211,4 +227,4 @@
 
 ## Prochain lot recommande
 
-- `SP_info_null` / `SP_info_notnull`.
+- `START_OFF` / `light_use` / `SP_light` si le lot reste coherent.

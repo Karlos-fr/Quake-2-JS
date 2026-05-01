@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `GetItemByIndex` / `FindItemByClassname` et locales `i` / `it` de `FindItemByClassname`.
+
+Validation lookup items du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `GetItemByIndex` conserve le rejet du slot nul C et du marqueur final; le port TS traduit les indices 1-based vers son tableau sans slot nul. `FindItemByClassname` conserve le parcours de l'itemlist, le skip des classnames nulles et la comparaison insensible a la casse de `Q_stricmp`. Correction appliquee dans `packages/game/src/g_items.ts`: skip explicite de la sentinelle C `NULL` representee par `""` et comparaison par nom normalise lowercase; headers `GetItemByIndex` et `FindItemByClassname` completes. Locales C `i` et `it` portees par l'iteration `for...of` et l'item courant.
+
+Runtime branche via `g_spawn.ts`/`ED_CallSpawn`, monstres/turrets/triggers qui resolvent des items par classname, commandes/inventaire/HUD/combat/save qui resolvent les items par index. `apps/web` consomme ces flux via le runtime full-game, commandes, inventaire/HUD, configstrings et snapshots; aucune logique parallele de lookup item detectee. `renderer-three` ne requiert pas de branchement direct: ces helpers ne produisent pas de sortie visible, mais les entites item visibles resolues en amont restent consommees par le pipeline generique snapshots/refresh/Three.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyItemLookupHelpers` couvre les bornes `GetItemByIndex`, le dernier index reel, le rejet du marqueur final, la resolution classname directe, le matching case-insensitive, le skip de la sentinelle vide et l'absence de resolution des classnames health spawn. Tests lances: `npm run verify:g-items`, `npm run verify:g-spawn`, `npm run verify:g-trigger`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck` OK.
+
 - `Use_Quad`, `quad_drop_timeout_hack` et locale `timeout`.
 
 Validation Quad du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Use_Quad` conserve le decrement d'inventaire, `ValidateSelectedItem`, le timeout par defaut 300 frames, l'extension de `quad_framenum` si un Quad est deja actif, et le son `items/damage.wav`. Le global statique C `quad_drop_timeout_hack` reste un etat module TS local: `Pickup_Powerup` le renseigne pour un Quad droppe en deathmatch instantane avec `(nextthink - level.time) / FRAMETIME`, puis `Use_Quad` le consomme et le remet a zero. La locale C `timeout` est portee par le `const timeout` TS.
@@ -173,4 +181,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `GetItemByIndex` / `FindItemByClassname` avec les locales `i` / `it` si le lot reste coherent.
+- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `FindItem` avec ses locales `i` / `it` si le lot reste coherent.

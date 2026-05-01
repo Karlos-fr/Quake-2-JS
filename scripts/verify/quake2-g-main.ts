@@ -241,6 +241,42 @@ assert.equal(api.edicts[1]!.client, preservedClient, "SpawnEntities must preserv
 assert.equal(api.edicts[1]!.client!.pers.health, 37, "SpawnEntities must save entity health into persistent client data");
 assert.equal(api.edicts[1]!.client!.pers.max_health, 151, "SpawnEntities must save entity max_health into persistent client data");
 
+const saveFiles = new Map<string, string>();
+const saveWriteRuntime = createGameRuntimeFromBspEntities([
+  { properties: { classname: "worldspawn" } },
+  { properties: { classname: "player" } }
+]);
+const saveWriteApi = GetGameApi(imports, {
+  runtime: saveWriteRuntime,
+  hooks: {
+    readFile: (path) => saveFiles.get(path) ?? null,
+    writeFile: (path, contents) => {
+      saveFiles.set(path, contents);
+      return true;
+    }
+  }
+});
+saveWriteApi.Init();
+saveWriteRuntime.serverflags = 5;
+saveWriteRuntime.entities[1]!.inuse = true;
+saveWriteRuntime.entities[1]!.health = 64;
+saveWriteRuntime.entities[1]!.max_health = 125;
+saveWriteApi.WriteGame("save/current/game.ssv", false);
+
+const saveReadRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+const saveReadApi = GetGameApi(imports, {
+  runtime: saveReadRuntime,
+  hooks: {
+    readFile: (path) => saveFiles.get(path) ?? null
+  }
+});
+freeTags.length = 0;
+saveReadApi.ReadGame("save/current/game.ssv");
+assert.deepEqual(freeTags, [TAG_GAME], "GetGameApi.ReadGame must free TAG_GAME before restoring game data");
+assert.equal(saveReadRuntime.serverflags, 5, "GetGameApi.ReadGame must restore cross-level serverflags through g_save");
+assert.equal(saveReadRuntime.maxclients, 4, "GetGameApi.ReadGame must restore game.maxclients through g_save");
+assert.equal(saveReadRuntime.maxentities, 1024, "GetGameApi.ReadGame must restore game.maxentities through g_save");
+
 command.argv = ["sv", "test"];
 command.args = "test";
 api.ServerCommand();

@@ -282,6 +282,10 @@ function verifyStateTransitions(): void {
   chick.enemy = farEnemy;
   withMathRandom([0.5], () => chick_rerocket(chick, runtime));
   assert.equal(chick.monsterinfo.currentmove, chick_move_attack1);
+  runtime.collision!.trace = (_start, _mins, _maxs, end) => ({ ...makeTrace(null, end), fraction: 0.5 });
+  withMathRandom([0.5], () => chick_rerocket(chick, runtime));
+  assert.equal(chick.monsterinfo.currentmove, chick_move_end_attack1, "blocked visibility must end the rocket loop");
+  runtime.collision!.trace = (_start, _mins, _maxs, end) => makeTrace(null, end);
   farEnemy.health = 0;
   chick_rerocket(chick, runtime);
   assert.equal(chick.monsterinfo.currentmove, chick_move_end_attack1);
