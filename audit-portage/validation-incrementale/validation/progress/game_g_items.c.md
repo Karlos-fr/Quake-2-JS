@@ -2,6 +2,16 @@
 
 ## Dernier lot valide
 
+- `PrecacheItem` avec locales `data`, `len`, `ammo`, puis `SpawnItem`.
+
+Validation `PrecacheItem` / `SpawnItem` du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `PrecacheItem` conserve le retour sur item nul, le precache `pickup_sound`, `world_model`, `view_model`, `icon`, la recursion ammo via `FindItem` avec garde `ammo != it`, puis le parsing des precaches separes par espaces avec validation `len >= MAX_QPATH || len < 5` et dispatch par extension `md2`/`sp2`/`wav`/`pcx`. Corrections appliquees dans `packages/game/src/g_items.ts`: ajout du `viewModel`, recursion ammo, support null, validation `MAX_QPATH`, et header passe en `Fidelity level: Strict`. Locales validees: `data` portee par le token `assetPath`, `len` par `assetPath.length`, `ammo` par la resolution `FindItem(item.ammo)`.
+
+`SpawnItem` conserve maintenant l'ordre C avec `PrecacheItem` avant les inhibitions, le clear des spawnflags invalides hors `key_power_cube`, les filtres deathmatch `DF_NO_ARMOR`, `DF_NO_ITEMS`, `DF_NO_HEALTH`, `DF_INFINITE_AMMO`, la numerotation coop des power cubes, le drop annule pour `IT_STAY_COOP`, l'affectation item, le think `droptofloor`, les effets/renderfx et le precache de `ent.model`. Correction principale: `DF_NO_ITEMS` ne supprime plus tous les non-keys, seulement les powerups comme le C; `DF_INFINITE_AMMO` respecte le test exact `item->flags == IT_AMMO` plus `weapon_bfg`.
+
+Runtime branche via `g_spawn.ts`/`ED_CallSpawn` pour les items de map, les SP health, les drops commandes dans `g_cmds.ts`, et `g_main.ts` pour le blaster initial. `apps/web` doit consommer ce flux via runtime local, assets/configstrings, commandes et snapshots; aucune logique parallele de spawn item detectee dans `apps/web`. `renderer-three` consomme les sorties visibles generiques des entites item (`modelindex`, `origin`, `effects`, `renderfx`) et les assets precaches; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyPrecacheItemAssetsAndValidation` couvre pickup/world/view/icon, ammo Shells recursif, precache wav, erreurs bad/long precache; `verifySpawnItemDeathmatchFilters` couvre `DF_NO_ARMOR`, `DF_NO_ITEMS`, conservation des armes sous `DF_NO_ITEMS`, `DF_NO_HEALTH`, `DF_INFINITE_AMMO` pour ammo pure, conservation grenades `IT_AMMO|IT_WEAPON`, suppression `weapon_bfg`, et precache avant inhibition. Tests lances: `npm run verify:g-items`, `npm run typecheck`, `npm run verify:refresh-entity:weapon`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer` OK.
+
 - `Use_Item`, `droptofloor` et locales `tr`, `dest`, `v`.
 
 Validation `Use_Item` / `droptofloor` du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Use_Item` conserve le reveal `SVF_NOCLIENT`, clear `use`, branche `ITEM_NO_TOUCH` en `SOLID_BBOX` sans touch, sinon `SOLID_TRIGGER` + `Touch_Item`, puis relink. Header `Use_Item` mis a jour en `Fidelity level: Strict`.
@@ -125,4 +135,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- `PrecacheItem` avec locales `data`, `len`, `ammo`, puis `SpawnItem` si le coordinateur veut continuer le flux spawn/touch.
+- `itemlist` global/table, puis `SP_item_health` / `SP_item_health_small` si coherent.

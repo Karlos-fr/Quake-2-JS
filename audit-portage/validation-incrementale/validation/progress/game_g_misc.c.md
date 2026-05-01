@@ -2,6 +2,22 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `BecomeExplosion1`, `BecomeExplosion2`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: les deux fonctions ecrivent un `svc_temp_entity` equivalent via `emitGameTempEntity`, conservent respectivement `TE_EXPLOSION1` et `TE_EXPLOSION2`, copient `self->s.origin`, utilisent `MULTICAST_PVS`, puis appellent `G_FreeEdict`.
+  - Correction appliquee: les logs `runtime.log` non presents dans le C ont ete retires; commentaires d'en-tete Strict ajoutes pour les deux fonctions.
+  - Branchement runtime verifie: appels directs depuis morts monstres (`m_flyer`, `m_float`, `m_hover`), plateformes bloquantes (`g_func`), explosions de `g_misc` (`func_explosive`, `misc_explobox`, viper bomb/blackhole); les temp entities sont drainees par `G_RunFrame` vers `gi.WriteByte`/`WritePosition`/`multicast` ou par le bridge local.
+  - `apps/web`: aucune logique parallele trouvee; le full-game connecte `onTempEntity`, construit `ClientRefreshFrame` via `full-game-render-source` et passe ce frame a la boucle Three/ref_gl.
+  - `renderer-three`: integration attendue car sorties temp entities visibles; consommation presente via `CL_AddTEntPacket`/`CL_BuildTEntRefresh`, `CL_BuildRefreshFrame` ajoute les explosions comme entites refresh et dlights, puis `renderer-three` consomme `refreshFrame.entities`/`lights`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npx tsx ./scripts/verify/quake2-cl-tent.ts` OK.
+  - `npx tsx ./scripts/verify/quake2-local-gameplay-sync.ts` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+
+## Lot precedent
+
 - 2026-05-01: `debris_die`, `ThrowDebris` et local `chunk`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `debris_die` libere l'edict; `ThrowDebris` cree un `chunk` par `G_Spawn`, copie l'origine, enregistre le modele, calcule `v = [100*crandom, 100*crandom, 100 + 100*crandom]`, applique `self.velocity + speed*v`, configure `MOVETYPE_BOUNCE`, `SOLID_NOT`, avelocity randomisee, cleanup `5 + random()*5`, frame 0, flags 0, classname `debris`, `DAMAGE_YES`, callback `debris_die`, puis link runtime.
@@ -124,4 +140,4 @@
 
 ## Prochain lot recommande
 
-- `debris_die`, puis `ThrowDebris` et local `chunk`.
+- `path_corner_touch`, puis locaux `v`, `next`, `savetarget` si coherent.

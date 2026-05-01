@@ -22,10 +22,12 @@ import {
   CS_ITEMS,
   DF_INFINITE_AMMO,
   DF_INSTANT_ITEMS,
+  DF_NO_ARMOR,
   DF_NO_HEALTH,
   DF_NO_ITEMS,
   EF_GIB,
   EF_ROTATE,
+  MAX_QPATH,
   MASK_SOLID,
   PRINT_HIGH,
   RF_GLOW,
@@ -483,34 +485,62 @@ export function SetItemNames(): string[] {
  * Original name: PrecacheItem
  * Source: game/g_items.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Registers the visible asset references used by one item definition.
+ * - Registers pickup, world, view, icon, ammo and space-separated precache assets for one item definition.
+ *
+ * Porting notes:
+ * - Preserves the original ammo recursion guard and `MAX_QPATH` / minimum token validation.
  */
-export function PrecacheItem(runtime: GameRuntime, item: GameItemDefinition): void {
-  if (item.worldModel) {
-    registerGameModel(runtime, item.worldModel);
+export function PrecacheItem(runtime: GameRuntime, item: GameItemDefinition | null): void {
+  if (!item) {
+    return;
   }
 
   if (item.pickupSound) {
     registerGameSound(runtime, item.pickupSound);
   }
 
+  if (item.worldModel) {
+    registerGameModel(runtime, item.worldModel);
+  }
+
+  if (item.viewModel) {
+    registerGameModel(runtime, item.viewModel);
+  }
+
   if (item.icon) {
     registerGameImage(runtime, item.icon);
   }
 
-  for (const assetPath of item.precaches.split(/\s+/).filter((value) => value.length > 0)) {
-    if (assetPath.endsWith(".md2") || assetPath.endsWith(".sp2")) {
+  if (item.ammo) {
+    const ammo = FindItem(item.ammo);
+    if (ammo !== item) {
+      PrecacheItem(runtime, ammo);
+    }
+  }
+
+  if (!item.precaches) {
+    return;
+  }
+
+  for (const assetPath of item.precaches.split(" ").filter((value) => value.length > 0)) {
+    const len = assetPath.length;
+    if (len >= MAX_QPATH || len < 5) {
+      throw new Error(`PrecacheItem: ${item.classname} has bad precache string`);
+    }
+
+    const extension = assetPath.slice(len - 3);
+    if (extension === "md2" || extension === "sp2") {
       registerGameModel(runtime, assetPath);
       continue;
     }
-    if (assetPath.endsWith(".wav")) {
+    if (extension === "wav") {
       registerGameSound(runtime, assetPath);
       continue;
     }
-    if (assetPath.endsWith(".pcx")) {
+    if (extension === "pcx") {
       registerGameImage(runtime, assetPath);
     }
   }
@@ -1383,25 +1413,47 @@ export function Use_Item(ent: GameEntity, _other: GameEntity | null, _activator:
  * Original name: SpawnItem
  * Source: game/g_items.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Schedules one world item for delayed floor placement and initializes its visible render state.
+ * - Precaches, applies deathmatch/coop spawn rules, then schedules delayed floor placement.
  *
  * Porting notes:
- * - Focuses on the spawn-time visual fields needed by later client/entity rendering phases.
+ * - The original invalid-spawnflags diagnostic is represented only by clearing the flags; see file deviations.
  */
 export function SpawnItem(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
+  PrecacheItem(runtime, item);
+
   if (ent.spawnflags !== 0 && ent.classname !== "key_power_cube") {
     ent.spawnflags = 0;
   }
 
-  if (runtime.deathmatch && (runtime.dmflags & DF_NO_ITEMS) !== 0 && (item.flags & IT_KEY) === 0) {
-    G_FreeEdict(runtime, ent);
-    return;
+  if (runtime.deathmatch) {
+    if ((runtime.dmflags & DF_NO_ARMOR) !== 0) {
+      if (item.pickup === "Pickup_Armor" || item.pickup === "Pickup_PowerArmor") {
+        G_FreeEdict(runtime, ent);
+        return;
+      }
+    }
+    if ((runtime.dmflags & DF_NO_ITEMS) !== 0) {
+      if (item.pickup === "Pickup_Powerup") {
+        G_FreeEdict(runtime, ent);
+        return;
+      }
+    }
+    if ((runtime.dmflags & DF_NO_HEALTH) !== 0) {
+      if (item.pickup === "Pickup_Health" || item.pickup === "Pickup_Adrenaline" || item.pickup === "Pickup_AncientHead") {
+        G_FreeEdict(runtime, ent);
+        return;
+      }
+    }
+    if ((runtime.dmflags & DF_INFINITE_AMMO) !== 0) {
+      if (item.flags === IT_AMMO || ent.classname === "weapon_bfg") {
+        G_FreeEdict(runtime, ent);
+        return;
+      }
+    }
   }
-
-  PrecacheItem(runtime, item);
 
   if (runtime.coop && ent.classname === "key_power_cube") {
     ent.spawnflags |= (1 << (8 + runtime.power_cubes));

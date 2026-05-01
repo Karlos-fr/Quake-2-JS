@@ -34,6 +34,7 @@ import {
   CS_SKYROTATE,
   CS_STATUSBAR,
   DF_SAME_LEVEL,
+  MZ_LOGOUT,
   PRINT_HIGH,
   multicast_t,
   temp_event_t,
@@ -645,13 +646,25 @@ function createClientConnectHooks(context: GameMainContext): GameMainHooks {
 
 /**
  * Category: New
- * Purpose: Reattach the `ClientUserinfoChanged`/disconnect player-skin configstring side effect to `gi.configstring`.
+ * Purpose: Reattach the `ClientUserinfoChanged`/disconnect engine side effects to the original `gi` callbacks.
  */
 function createClientUserinfoHooks(context: GameMainContext): GameMainHooks {
   return {
     ...context.hooks,
+    onPrint: context.hooks.onPrint ?? ((printLevel, message) => {
+      context.gi.bprintf(printLevel, "%s", message);
+    }),
     onConfigstringPlayer: context.hooks.onConfigstringPlayer ?? ((playernum, value) => {
       context.gi.configstring(CS_PLAYERSKINS + playernum, value);
+    }),
+    onDisconnectEffect: context.hooks.onDisconnectEffect ?? ((ent) => {
+      context.gi.WriteByte(svc_muzzleflash);
+      context.gi.WriteShort(ent.index);
+      context.gi.WriteByte(MZ_LOGOUT);
+      context.gi.multicast(ent.s.origin, multicast_t.MULTICAST_PVS);
+    }),
+    onUnlinkEntity: context.hooks.onUnlinkEntity ?? ((ent) => {
+      context.gi.unlinkentity(ent);
     })
   };
 }

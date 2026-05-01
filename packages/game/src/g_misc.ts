@@ -716,25 +716,37 @@ export function SP_func_object(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: BecomeExplosion1
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits a `TE_EXPLOSION1` temp entity at the entity origin, multicasts it to the PVS, then frees the edict.
+ *
+ * Porting notes:
+ * - The original `gi.Write*`/`gi.multicast` side effect is queued through runtime temp-entity events.
+ */
 export function BecomeExplosion1(self: GameEntity, runtime: GameRuntime): void {
   emitGameTempEntity(runtime, temp_event_t.TE_EXPLOSION1, self.s.origin, multicast_t.MULTICAST_PVS);
-  runtime.log({
-    kind: "think",
-    message: `${self.classname} TE_EXPLOSION1`,
-    entityIndex: self.index,
-    entityClassname: self.classname
-  });
   G_FreeEdict(runtime, self);
 }
 
+/**
+ * Original name: BecomeExplosion2
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits a `TE_EXPLOSION2` temp entity at the entity origin, multicasts it to the PVS, then frees the edict.
+ *
+ * Porting notes:
+ * - The original `gi.Write*`/`gi.multicast` side effect is queued through runtime temp-entity events.
+ */
 export function BecomeExplosion2(self: GameEntity, runtime: GameRuntime): void {
   emitGameTempEntity(runtime, temp_event_t.TE_EXPLOSION2, self.s.origin, multicast_t.MULTICAST_PVS);
-  runtime.log({
-    kind: "think",
-    message: `${self.classname} TE_EXPLOSION2`,
-    entityIndex: self.index,
-    entityClassname: self.classname
-  });
   G_FreeEdict(runtime, self);
 }
 

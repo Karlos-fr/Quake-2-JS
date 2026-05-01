@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { BUTTON_ANY, BUTTON_ATTACK, CS_PLAYERSKINS, CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_FIXED_FOV, DF_SAME_LEVEL, MZ_BLASTER, multicast_t, pmtype_t, temp_event_t, type cvar_t, type usercmd_t } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ANY, BUTTON_ATTACK, CS_PLAYERSKINS, CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_FIXED_FOV, DF_SAME_LEVEL, MZ_BLASTER, MZ_LOGOUT, multicast_t, pmtype_t, temp_event_t, type cvar_t, type usercmd_t } from "../../packages/qcommon/src/index.js";
 import { TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, createGameRuntimeFromBspEntities, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
@@ -27,6 +27,7 @@ const writeShorts: number[] = [];
 const writePositions: Array<[number, number, number]> = [];
 const writeDirs: Array<[number, number, number]> = [];
 const multicasts: Array<{ origin: [number, number, number]; to: number }> = [];
+const unlinkedEntities: number[] = [];
 const command = { argv: ["sv"], args: "" };
 const cvars = new Map<string, cvar_t>();
 const forcedCvars: Array<{ name: string; value: string }> = [];
@@ -60,7 +61,9 @@ const imports = {
   SetAreaPortalState: () => {},
   AreasConnected: () => false,
   linkentity: () => {},
-  unlinkentity: () => {},
+  unlinkentity: (ent) => {
+    unlinkedEntities.push(ent.index);
+  },
   BoxEdicts: () => 0,
   Pmove: () => {},
   multicast: (origin, to) => {
@@ -350,6 +353,30 @@ assert.equal(connectRuntime.entities[1]!.client!.ps.fov, 90, "ClientUserinfoChan
 connectApi.ClientUserinfoChanged(connectRuntime.entities[1]!, "\\bad\\info;\\x");
 assert.equal(connectRuntime.entities[1]!.client!.pers.userinfo, "\\name\\badinfo\\skin\\male/grunt", "ClientUserinfoChanged must replace malformed userinfo with the C fallback");
 assert.equal(configstrings.get(CS_PLAYERSKINS), "badinfo\\male/grunt", "ClientUserinfoChanged must publish the fallback skin configstring");
+
+writeBytes.length = 0;
+writeShorts.length = 0;
+multicasts.length = 0;
+unlinkedEntities.length = 0;
+connectRuntime.entities[1]!.s.origin = [7, 8, 9];
+connectRuntime.entities[1]!.s.modelindex = 42;
+connectRuntime.entities[1]!.solid = 3;
+connectRuntime.entities[1]!.classname = "player";
+connectRuntime.entities[1]!.inuse = true;
+connectRuntime.entities[1]!.client!.pers.connected = true;
+connectRuntime.entities[1]!.client!.pers.netname = "rename";
+connectApi.ClientDisconnect(connectRuntime.entities[1]!);
+assert.equal(bprints.pop(), "rename disconnected\n", "ClientDisconnect must broadcast the disconnect message through gi.bprintf");
+assert.deepEqual(writeBytes.slice(0, 2), [svc_muzzleflash, MZ_LOGOUT], "ClientDisconnect must emit the logout muzzleflash bytes");
+assert.deepEqual(writeShorts.slice(0, 1), [1], "ClientDisconnect must write the disconnecting edict index");
+assert.deepEqual(multicasts.at(-1), { origin: [7, 8, 9], to: multicast_t.MULTICAST_PVS }, "ClientDisconnect must multicast the logout effect at player origin");
+assert.deepEqual(unlinkedEntities, [1], "ClientDisconnect must unlink the dropped entity through gi.unlinkentity");
+assert.equal(connectRuntime.entities[1]!.s.modelindex, 0, "ClientDisconnect must clear the entity modelindex");
+assert.equal(connectRuntime.entities[1]!.solid, 0, "ClientDisconnect must make the entity nonsolid");
+assert.equal(connectRuntime.entities[1]!.inuse, false, "ClientDisconnect must clear inuse");
+assert.equal(connectRuntime.entities[1]!.classname, "disconnected", "ClientDisconnect must mark the entity classname");
+assert.equal(connectRuntime.entities[1]!.client!.pers.connected, false, "ClientDisconnect must clear the client connected flag");
+assert.equal(configstrings.get(CS_PLAYERSKINS), "", "ClientDisconnect must clear the player skin configstring");
 
 const dmContext = createGameMainContext(imports);
 dmContext.runtime.maxclients = 2;

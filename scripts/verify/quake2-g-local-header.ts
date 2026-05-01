@@ -40,6 +40,9 @@ import {
   ITEM_INDEX,
   MELEE_DISTANCE,
   MOD_TRIGGER_HURT,
+  POWER_ARMOR_NONE,
+  POWER_ARMOR_SCREEN,
+  POWER_ARMOR_SHIELD,
   RANGE_FAR,
   RANGE_MELEE,
   RANGE_MID,
@@ -99,6 +102,9 @@ assert.equal(AS_STRAIGHT, 1, "AS_STRAIGHT mismatch");
 assert.equal(AS_SLIDING, 2, "AS_SLIDING mismatch");
 assert.equal(AS_MELEE, 3, "AS_MELEE mismatch");
 assert.equal(AS_MISSILE, 4, "AS_MISSILE mismatch");
+assert.equal(POWER_ARMOR_NONE, 0, "POWER_ARMOR_NONE mismatch");
+assert.equal(POWER_ARMOR_SCREEN, 1, "POWER_ARMOR_SCREEN mismatch");
+assert.equal(POWER_ARMOR_SHIELD, 2, "POWER_ARMOR_SHIELD mismatch");
 assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");
 assert.equal(damage_t.DAMAGE_NO, 0, "damage_t DAMAGE_NO mismatch");

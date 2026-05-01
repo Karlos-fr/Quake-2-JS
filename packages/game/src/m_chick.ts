@@ -598,6 +598,18 @@ export function chick_pain(
   }
 }
 
+/**
+ * Original name: chick_dead
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finalizes the Chick corpse bbox, movement type, dead-monster server flag and relinks the entity.
+ *
+ * Porting notes:
+ * - Preserve the original corpse bbox and linkentity side effect because the visible death pose and collision hull depend on it.
+ */
 export function chick_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -16, -16, 0);
   setVec3(self.maxs, 16, 16, 16);
@@ -623,6 +635,19 @@ export const chick_move_death1: GameMonsterMove = {
   endfunc: chick_dead
 };
 
+/**
+ * Original name: chick_die
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Handles gib death, duplicate-death guard, regular death sounds and death animation selection.
+ *
+ * Porting notes:
+ * - Uses runtime sound/entity helpers in place of `gi.*` while preserving branch order and side effects.
+ * - `rand() % 2` is represented by `randomInt(2)` to keep the local death-table choice explicit.
+ */
 export function chick_die(
   self: GameEntity,
   _inflictor: GameEntity | null,

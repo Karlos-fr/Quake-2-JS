@@ -4,8 +4,8 @@
 
 - Matrice: `validation/matrices/game_m_chick.c.md`
 - Statut global: En cours
-- Dernier lot valide: pain tables et `chick_pain`
-- Prochain lot recommande: death setup (`chick_dead`, death tables, `chick_die`, local `n` si necessaire)
+- Dernier lot valide: death setup (`chick_dead`, death tables, `chick_die`, local `n`)
+- Prochain lot recommande: duck/dodge setup (`chick_duck_down`, `chick_duck_hold`, `chick_duck_up`, `chick_frames_duck`, `chick_move_duck`, `chick_dodge`)
 
 ## Lots traites
 
@@ -16,6 +16,7 @@
 | sons, fidget et sight | `sound_*`, `ChickMoan`, `chick_frames_fidget`, `chick_move_fidget`, `chick_fidget`, `chick_sight` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `typecheck` | Headers completes pour `ChickMoan`, `chick_fidget` et `chick_sight`. |
 | stand/start-run/run/walk tables | `chick_frames_stand`, `chick_move_stand`, `chick_frames_start_run`, `chick_move_start_run`, `chick_frames_run`, `chick_move_run`, `chick_frames_walk`, `chick_move_walk` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `typecheck` | Aucune correction TS requise. |
 | pain tables et `chick_pain` | `chick_frames_pain1`, `chick_move_pain1`, `chick_frames_pain2`, `chick_move_pain2`, `chick_frames_pain3`, `chick_move_pain3`, `chick_pain` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `verify:local-gameplay-sync`, `verify:refresh-entity:alias-flags`, `verify:refresh-entity:sprite`, `verify:full-game:three-renderer`, `typecheck` | Header ajoute pour `chick_pain`. `verify:full-game:render-source` et `verify:full-game:audio-routing` bloquent avant execution sur l'import manquant `packages/client/src/types.js`. |
+| death setup | `chick_dead`, `chick_frames_death2`, `chick_move_death2`, `chick_frames_death1`, `chick_move_death1`, `chick_die`, local `n` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `verify:local-gameplay-sync`, `verify:refresh-entity:alias-flags`, `verify:full-game:three-renderer`, `typecheck` | Headers ajoutes pour `chick_dead` et `chick_die`. Renderer-three juge via consommation generique des entites refresh MD2: frames death1/death2 et bbox runtime produits par le serveur, gib models via entites runtime/g_misc; pas de logique gameplay attendue dans renderer. |
 
 ## Passe rapide post-validation
 

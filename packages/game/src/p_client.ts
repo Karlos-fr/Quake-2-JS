@@ -148,6 +148,7 @@ export interface GamePlayerClientHooks extends GameWeaponHooks {
   onLoginEffect?: (ent: GameEntity, runtime: GameRuntime) => void;
   onConfigstringPlayer?: (playernum: number, value: string, runtime: GameRuntime) => void;
   onDisconnectEffect?: (ent: GameEntity, runtime: GameRuntime) => void;
+  onUnlinkEntity?: (ent: GameEntity, runtime: GameRuntime) => void;
   onPrint?: (printLevel: number, message: string, ent: GameEntity | null, runtime: GameRuntime) => void;
   onBodyQueueCopy?: (source: GameEntity, body: GameEntity, runtime: GameRuntime) => void;
   TossClientWeapon?: (self: GameEntity, runtime: GameRuntime) => void;
@@ -1539,7 +1540,10 @@ export function ClientConnect(
  * Fidelity level: Close
  *
  * Behavior:
- * - Marks one client as disconnected and clears the public player skin slot.
+ * - Broadcasts the disconnect, unlinks the entity, clears its server-visible state and clears the public skin slot.
+ *
+ * Porting notes:
+ * - Engine writes/multicast and unlinking are surfaced through hooks so the `g_main.c` export can attach `gi`.
  */
 export function ClientDisconnect(
   ent: GameEntity,
@@ -1553,6 +1557,7 @@ export function ClientDisconnect(
 
   hooks.onPrint?.(PRINT_HIGH, `${client.pers.netname} disconnected\n`, null, runtime);
   hooks.onDisconnectEffect?.(ent, runtime);
+  hooks.onUnlinkEntity?.(ent, runtime);
 
   ent.s.modelindex = 0;
   ent.solid = SOLID_NOT;

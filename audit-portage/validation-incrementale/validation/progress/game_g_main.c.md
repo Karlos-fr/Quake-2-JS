@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: fonction `ClientDisconnect`.
 - 2026-05-01: fonction `ClientUserinfoChanged`.
 - 2026-05-01: fonction `ClientConnect`.
 - 2026-05-01: fonction `ClientThink`.
@@ -15,6 +16,7 @@
 
 ## Verdict du lot
 
+- `ClientDisconnect`: valide apres correction. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientDisconnect`; le TS `GetGameApi().ClientDisconnect` delegue au port `p_client.ts` et rattache maintenant les effets moteur C par defaut: `gi.bprintf`, sequence `svc_muzzleflash`/edict index/`MZ_LOGOUT`, `gi.multicast(..., MULTICAST_PVS)`, `gi.unlinkentity`, clear `s.modelindex`, `SOLID_NOT`, `inuse = false`, classname `disconnected`, `pers.connected = false` et `CS_PLAYERSKINS + playernum` vide. Commentaire d'en-tete mis a jour dans `p_client.ts`; helper d'adapter mis a jour dans `g_main.ts`.
 - `ClientUserinfoChanged`: valide apres correction. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientUserinfoChanged`; l'implementation effective reste le port `p_client.ts` de `p_client.c`. Corrections: `GetGameApi().ClientUserinfoChanged` branche maintenant par defaut l'effet C `gi.configstring(CS_PLAYERSKINS + playernum, "name\\skin")`; `ClientConnect` et `ClientDisconnect` reutilisent le meme hook pour publier/vider le slot joueur. Le port applique userinfo invalide vers `\name\badinfo\skin\male/grunt`, copie le nom meme absent, calcule spectator seulement en deathmatch, publie name/skin, borne/force le fov selon `DF_FIXED_FOV`, parse `hand` avec fallback `atoi(...)=0`, puis sauvegarde `pers.userinfo`. Commentaire d'en-tete verifie dans `p_client.ts`; helper d'adapter documente dans `g_main.ts`.
 - `ClientConnect`: partiel apres correction. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientConnect`; le TS `GetGameApi().ClientConnect` delegue toujours au port `p_client.ts` `ClientConnect`, mais applique maintenant avant delegation la politique C par defaut: IP bannie via `SV_FilterPacket`, mot de passe joueur via `password`, mot de passe spectateur via `spectator_password`, et limite spectateur via `maxspectators`/`maxclients`. Les hooks utilisateurs restent appeles apres cette politique par defaut. Commentaire d'en-tete verifie sur `p_client.ts`; helper de rattachement documente dans `g_main.ts`. Reste partiel: le C ecrit `rejmsg` dans le buffer mutable `userinfo`, alors que l'ABI TS actuelle passe une string immuable et le serveur lit encore `rejmsg` depuis la string originale.
 - `ClientThink`: valide. Dans `g_main.c`, le symbole est l'entree exportee `globals.ClientThink`; le TS `GetGameApi().ClientThink` delegue au port `p_client.ts` `ClientThink`. La comparaison C/TS couvre l'intermission (`PM_FREEZE`, sortie apres 5 secondes + bouton), le passage par `SV_ClientThink`, la mise a jour `current_entity`, boutons/latched buttons, `light_level`, attaque/`weapon_thunk`, chase/spectator followers et la branche pmove quand une collision runtime est disponible. Commentaire d'en-tete verifie dans `p_client.ts`.
@@ -57,6 +59,12 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().ClientDisconnect`: broadcast disconnect, bytes `svc_muzzleflash`/`MZ_LOGOUT`, edict index, multicast PVS a l'origine joueur, `gi.unlinkentity`, cleanup entite/client et clear `CS_PLAYERSKINS`.
+- `npx tsx ./scripts/verify/quake2-sv-main.ts`: ok le 2026-05-01, confirme le chemin serveur `SV_DropClient -> ge.ClientDisconnect` pour clients spawned.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01, confirme le chemin `apps/web` server-backed.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run verify:web-render-order`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour `GetGameApi().ClientUserinfoChanged`: publication `CS_PLAYERSKINS`, nom/skin, spectator, fov borne et `DF_FIXED_FOV`, hand invalide a `0`, fallback badinfo; verifie aussi la publication `CS_PLAYERSKINS` depuis `ClientConnect`.
 - `npm run verify:server:user`: ok le 2026-05-01, confirme le chemin serveur `SV_UserinfoChanged -> ge.ClientUserinfoChanged`.
 - `npm run verify:full-game:server-host`: ok le 2026-05-01, confirme le chemin `apps/web` server-backed et la propagation des configstrings.
@@ -114,6 +122,11 @@
 
 ## Blocages / decisions
 
+- Corrections appliquees dans `packages/game/src/g_main.ts`: `createClientUserinfoHooks` rattache maintenant par defaut `onPrint` a `gi.bprintf`, `onDisconnectEffect` a la sequence C `svc_muzzleflash`/`MZ_LOGOUT`/`multicast`, et `onUnlinkEntity` a `gi.unlinkentity`.
+- Corrections appliquees dans `packages/game/src/p_client.ts`: ajout du hook `onUnlinkEntity` et commentaire `ClientDisconnect` mis a jour pour documenter le broadcast, l'effet, l'unlink et le clear de configstring.
+- Correction appliquee dans `scripts/verify/quake2-g-main.ts`: couverture ciblee de `ClientDisconnect`.
+- `apps/web`: integration jugee presente via `full-game-server-host.ts`, qui utilise le serveur TS et recopie les configstrings joueur; le placeholder `ClientDisconnect` reste limite au bootstrap avant installation de l'API portee et ne remplace pas la logique runtime.
+- `packages/renderer-three`: pas de logique directe attendue dans le port game. Les sorties visibles attendues sont en aval: `svc_muzzleflash`/`MZ_LOGOUT` est parse par `packages/client/src/cl_fx.ts` et les skins vides sont consommes via `CS_PLAYERSKINS`/client refresh.
 - Corrections appliquees dans `packages/game/src/g_main.ts`: ajout du hook par defaut `onConfigstringPlayer -> gi.configstring(CS_PLAYERSKINS + playernum, value)` et reutilisation par `ClientUserinfoChanged`, `ClientConnect` et `ClientDisconnect`.
 - Corrections appliquees dans `packages/game/src/p_client.ts`: `ClientUserinfoChanged` copie maintenant exactement la valeur de `name` retournee par `Info_ValueForKey`, et `hand` invalide retombe a `0`, comme `atoi`.
 - Correction appliquee dans `scripts/verify/quake2-g-main.ts`: couverture ciblee des branches userinfo et de la publication `CS_PLAYERSKINS`.
@@ -165,4 +178,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ClientDisconnect`.
+- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ClientBegin`.

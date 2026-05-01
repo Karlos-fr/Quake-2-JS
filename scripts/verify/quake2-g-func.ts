@@ -40,7 +40,9 @@ import {
   button_touch,
   button_use,
   button_wait,
+  door_go_down,
   door_go_up,
+  door_hit_bottom,
   door_hit_top,
   door_use_areaportals,
   func_conveyor_use,
@@ -290,6 +292,17 @@ assert.equal(door.s.sound, door.moveinfo.sound_middle, "door_go_up loop sound mi
 door_hit_top(door, runtime);
 assert.equal(runtime.soundEvents.at(-1)?.soundPath, "doors/dr1_end.wav", "door_hit_top end sound mismatch");
 assert.equal(door.s.sound, 0, "door_hit_top must clear loop sound");
+assert.equal(door.moveinfo.state, STATE_TOP, "door_hit_top state mismatch");
+assert.equal(door.think, door_go_down, "door_hit_top must schedule door_go_down");
+assert.equal(door.nextthink, runtime.time + door.moveinfo.wait, "door_hit_top wait scheduling mismatch");
+const toggleDoor = entity("func_door", 35, { angle: "0", spawnflags: String(32), wait: "2" });
+toggleDoor.moveinfo.sound_end = door.moveinfo.sound_end;
+toggleDoor.moveinfo.wait = 2;
+toggleDoor.nextthink = 123;
+door_hit_top(toggleDoor, runtime);
+assert.equal(toggleDoor.moveinfo.state, STATE_TOP, "door_hit_top toggle state mismatch");
+assert.equal(toggleDoor.think, undefined, "door_hit_top toggle must not schedule return");
+assert.equal(toggleDoor.nextthink, 123, "door_hit_top toggle must leave nextthink untouched");
 const areaportalRuntime = createGameRuntimeFromBspEntities([]);
 areaportalRuntime.collision = {
   world: {
@@ -321,8 +334,12 @@ areaportalRuntime.entities[37] = portal;
 door_use_areaportals(portalDoor, true, areaportalRuntime);
 assert.equal(areaportalRuntime.collision.world.portalopen[1], 1, "door_use_areaportals must open targeted portal");
 assert.equal(areaportalRuntime.logEntries.at(-1)?.otherIndex, 37, "door_use_areaportals log target mismatch");
-door_use_areaportals(portalDoor, false, areaportalRuntime);
-assert.equal(areaportalRuntime.collision.world.portalopen[1], 0, "door_use_areaportals must close targeted portal");
+portalDoor.s.sound = 99;
+portalDoor.moveinfo.sound_end = door.moveinfo.sound_end;
+door_hit_bottom(portalDoor, areaportalRuntime);
+assert.equal(portalDoor.moveinfo.state, STATE_BOTTOM, "door_hit_bottom state mismatch");
+assert.equal(portalDoor.s.sound, 0, "door_hit_bottom must clear loop sound");
+assert.equal(areaportalRuntime.collision.world.portalopen[1], 0, "door_hit_bottom must close targeted portal");
 
 const plat = entity("func_plat", 18);
 plat.size = [64, 64, 32];

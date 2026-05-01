@@ -10,7 +10,7 @@
  */
 
 import { strict as assert } from "node:assert";
-import { CS_LIGHTS, EF_FLIES, EF_GIB, entity_event_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_LIGHTS, EF_FLIES, EF_GIB, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
@@ -19,6 +19,8 @@ import {
   SOLID_BSP,
   SOLID_NOT,
   ANIM_DEATH,
+  BecomeExplosion1,
+  BecomeExplosion2,
   GIB_METALLIC,
   GIB_ORGANIC,
   MOVETYPE_BOUNCE,
@@ -72,6 +74,7 @@ function main(): void {
   verifyThrowHeadConvertsSourceEntityToGib();
   verifyThrowClientHeadConvertsPlayerOrBodyToClientGib();
   verifyThrowDebrisSpawnsDamageableVisibleChunk();
+  verifyBecomeExplosionEmitsTempEntityAndFreesSource();
 
   console.log("quake2-g-misc: ok");
 }
@@ -494,6 +497,44 @@ function verifyThrowDebrisSpawnsDamageableVisibleChunk(): void {
     chunk.die!(chunk, source, source, 25, runtime);
     assert.equal(chunk.inuse, false, "debris_die must free the debris chunk");
   });
+}
+
+function verifyBecomeExplosionEmitsTempEntityAndFreesSource(): void {
+  const runtime = createHarnessRuntime();
+
+  const explosion1 = spawnFreeableEntity(runtime);
+  explosion1.classname = "explosion1_source";
+  explosion1.s.origin = [10, 20, 30];
+
+  BecomeExplosion1(explosion1, runtime);
+
+  let events = drainGameTempEntityEvents(runtime);
+  assert.equal(events.length, 1, "BecomeExplosion1 must queue exactly one temp entity");
+  assert.equal(events[0]?.type, temp_event_t.TE_EXPLOSION1, "BecomeExplosion1 temp entity type mismatch");
+  assert.deepEqual(events[0]?.origin, [10, 20, 30], "BecomeExplosion1 must write self->s.origin");
+  assert.equal(events[0]?.multicast, multicast_t.MULTICAST_PVS, "BecomeExplosion1 multicast mismatch");
+  assert.equal(explosion1.inuse, false, "BecomeExplosion1 must free the source entity");
+
+  const explosion2 = spawnFreeableEntity(runtime);
+  explosion2.classname = "explosion2_source";
+  explosion2.s.origin = [-5, 6, 7];
+
+  BecomeExplosion2(explosion2, runtime);
+
+  events = drainGameTempEntityEvents(runtime);
+  assert.equal(events.length, 1, "BecomeExplosion2 must queue exactly one temp entity");
+  assert.equal(events[0]?.type, temp_event_t.TE_EXPLOSION2, "BecomeExplosion2 temp entity type mismatch");
+  assert.deepEqual(events[0]?.origin, [-5, 6, 7], "BecomeExplosion2 must write self->s.origin");
+  assert.equal(events[0]?.multicast, multicast_t.MULTICAST_PVS, "BecomeExplosion2 multicast mismatch");
+  assert.equal(explosion2.inuse, false, "BecomeExplosion2 must free the source entity");
+}
+
+function spawnFreeableEntity(runtime: ReturnType<typeof createHarnessRuntime>) {
+  let entity = spawnGameEntity(runtime);
+  while (entity.index <= runtime.maxclients + 8) {
+    entity = spawnGameEntity(runtime);
+  }
+  return entity;
 }
 
 function withMockedRandom(sequence: number[], callback: () => void): void {

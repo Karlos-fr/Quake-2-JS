@@ -8,6 +8,21 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot power armor constants `POWER_ARMOR_NONE`, `POWER_ARMOR_SCREEN`, `POWER_ARMOR_SHIELD`.
+- Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public et ajout d'assertions ciblees dans le harness header.
+- Valeurs H/TS comparees et conformes:
+  - `POWER_ARMOR_NONE = 0`
+  - `POWER_ARMOR_SCREEN = 1`
+  - `POWER_ARMOR_SHIELD = 2`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; constantes miroir runtime verifiees dans `packages/game/src/runtime.ts`; export public corrige dans `packages/game/src/index.ts`. `packages/game/src/g_items.ts` consomme les constantes via `PowerArmorType`.
+- Runtime:
+  - Source C: `PowerArmorType` renvoie `POWER_ARMOR_NONE` sans client, sans `FL_POWER_ARMOR`, ou sans item power armor; il prefere `POWER_ARMOR_SHIELD` si le joueur possede un Power Shield, puis `POWER_ARMOR_SCREEN`. `CheckPowerArmor` applique le test frontal et les sparks screen pour `POWER_ARMOR_SCREEN`, sinon la protection shield, et decompte les cells/power monster. `G_SetStats`, `G_SetClientEffects` et `M_SetEffects` exposent HUD et effets visibles correspondants.
+  - TS: `packages/game/src/g_items.ts`, `g_combat.ts`, `p_hud.ts`, `p_view.ts`, `g_monster.ts` et `m_brain.ts` conservent ces branches. Les commentaires d'en-tete de `PowerArmorType`, `CheckPowerArmor`, `G_SetStats`, `G_SetClientEffects` et `M_SetEffects` ont ete verifies avec `Original name`, `Source`, `Category: Ported` et niveau de fidelite quand applicable.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Les effets navigateur passent par le runtime serveur/game, les stats client/HUD et le host full-game.
+- renderer-three: aucune reference directe aux constantes; pas d'integration gameplay directe attendue. Les sorties visibles attendues sont les effets `EF_POWERSCREEN`, `EF_COLOR_SHELL`/`RF_SHELL_GREEN`, les modeles d'items power armor et les stats HUD produits avant le renderer; `verify:full-game:three-renderer` OK.
+- Influence inventaire/HUD/sortie visible: oui. Le lot pilote la detection Power Screen/Shield, l'absorption de degats, la consommation de cells/power monster, l'icone/valeur HUD power armor et les effets visibles de protection.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs, exports publics et miroir runtime; `npm run verify:g-local:header` OK; `npm run verify:g-items` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:p-hud` OK; `npm run verify:p-view` OK; `npm run verify:g-monster` OK; `npm run verify:m-brain` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot armor constants `ARMOR_NONE`, `ARMOR_JACKET`, `ARMOR_COMBAT`, `ARMOR_BODY`, `ARMOR_SHARD`.
 - Verdict: `Valide` pour les 5 macros, sans correction TS necessaire.
 - Valeurs H/TS comparees et conformes:
@@ -329,7 +344,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les power armor constants: `POWER_ARMOR_NONE`, `POWER_ARMOR_SCREEN`, `POWER_ARMOR_SHIELD`.
+- Continuer avec les handedness values: `RIGHT_HANDED`, `LEFT_HANDED`, `CENTER_HANDED`.
 
 ## Blocages
 

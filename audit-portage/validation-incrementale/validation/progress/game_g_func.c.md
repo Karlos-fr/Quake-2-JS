@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: locale `t` de `door_use_areaportals`, puis callbacks `door_hit_top` / `door_hit_bottom`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:854-866,870-899` avec `packages/game/src/g_func.ts:380-453`.
+- Correction appliquee: couverture ciblee ajoutee dans `scripts/verify/quake2-g-func.ts` pour verifier `door_hit_top` (son de fin, `s.sound = 0`, `STATE_TOP`, programmation `door_go_down`, cas `DOOR_TOGGLE` sans retour) et `door_hit_bottom` (son de fin, `s.sound = 0`, `STATE_BOTTOM`, fermeture areaportal par la recherche locale `t`/`G_Find` de `door_use_areaportals`). Pas de correction runtime necessaire.
+- Effets verifies: `door_use_areaportals` conserve la locale C `t` comme curseur de recherche TS `entity`, filtre uniquement `func_areaportal` et applique le `style`; `door_hit_top` conserve la planification du retour selon `wait` hors toggle; `door_hit_bottom` conserve la fermeture des areaportals apres passage en bas.
+- Branchement: `door_hit_top` est callback de `door_go_up` via `Move_Calc`/`AngleMove_Calc`; `door_hit_bottom` est callback de `door_go_down` via `Move_Calc`/`AngleMove_Calc`; ces flux sont atteignables depuis `SP_func_door`/`SP_func_door_rotating`, `g_spawn.ts`, triggers/use/touch et `G_RunFrame`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door`/`func_areaportal` dans `apps/web`; le navigateur consomme le runtime serveur/local, les sons, snapshots et areabits. `packages/renderer-three` ne remplace pas la logique et consomme les brush snapshots/areabits via les adapters renderer.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: locale `dist` de `SP_func_button`, puis `door_use_areaportals`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:766,792-793,852-866` avec `packages/game/src/g_func.ts:367-398,1483-1485`.
 - Correction appliquee: `door_use_areaportals` appelle maintenant `CM_SetAreaPortalState(runtime.collision.world, entity.style, open)` pour chaque `func_areaportal` cible, comme le `gi.SetAreaPortalState` C; le commentaire d'en-tete documente l'adapter collision et le cas harness sans collision.
@@ -166,7 +174,7 @@
 
 ## Prochain lot recommande
 
-- Continuer au premier `A verifier` apres `door_use_areaportals`: locale `t`, puis `door_hit_top`/`door_hit_bottom` si le lot reste coherent.
+- Continuer avec `door_go_down`, puis `door_go_up` si le lot reste coherent.
 
 ## Blocages
 

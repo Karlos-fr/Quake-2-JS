@@ -26,6 +26,7 @@ import {
   Pickup_Health,
   Pickup_Armor,
   PowerArmorType,
+  PrecacheItem,
   SetRespawn,
   SOLID_BBOX,
   SOLID_NOT,
@@ -44,9 +45,9 @@ import {
   spawnGameEntity
 } from "../../packages/game/src/index.js";
 import { ITEM_TARGETS_USED, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
-import { CS_ITEMS, EF_ROTATE, MASK_SOLID, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_ITEMS, DF_INFINITE_AMMO, DF_NO_ARMOR, DF_NO_HEALTH, DF_NO_ITEMS, EF_ROTATE, MASK_SOLID, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_SOLID } from "../../packages/qcommon/src/q_shared.js";
-import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
+import type { GameEntity, GameItemDefinition, GameRuntime } from "../../packages/game/src/index.js";
 import type { trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
 
 main();
@@ -67,9 +68,11 @@ function main(): void {
   verifyDropToFloorTeamRespawnAndStartSolid();
   verifyArmorAndPowerArmorIndices();
   verifyPickupArmorConversions();
+  verifyPrecacheItemAssetsAndValidation();
   verifyUsePowerArmorRequiresCells();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
+  verifySpawnItemDeathmatchFilters();
 
   console.log("Verification g_items - pickup/drop/respawn gameplay OK");
 }
@@ -567,6 +570,35 @@ function verifyPickupArmorConversions(): void {
   assertNumber(respawningArmor.nextthink, deathmatchRuntime.time + 20, "Pickup_Armor uses the original 20 second armor respawn delay");
 }
 
+function verifyPrecacheItemAssetsAndValidation(): void {
+  const runtime = createHarnessRuntime();
+  const shotgun = requireItem("Shotgun");
+
+  PrecacheItem(runtime, shotgun);
+
+  assertBoolean(runtime.assets.soundPaths.includes("misc/w_pkup.wav"), true, "PrecacheItem registers pickup_sound");
+  assertBoolean(runtime.assets.modelPaths.includes("models/weapons/g_shotg/tris.md2"), true, "PrecacheItem registers world_model");
+  assertBoolean(runtime.assets.modelPaths.includes("models/weapons/v_shotg/tris.md2"), true, "PrecacheItem registers view_model");
+  assertBoolean(runtime.assets.imagePaths.includes("w_shotgun"), true, "PrecacheItem registers icon");
+  assertBoolean(runtime.assets.modelPaths.includes("models/items/ammo/shells/medium/tris.md2"), true, "PrecacheItem recursively precaches the ammo item");
+  assertBoolean(runtime.assets.imagePaths.includes("a_shells"), true, "PrecacheItem recursively registers the ammo icon");
+  assertBoolean(runtime.assets.soundPaths.includes("weapons/shotgf1b.wav"), true, "PrecacheItem parses wav precache tokens");
+
+  const badItem: GameItemDefinition = {
+    ...shotgun,
+    classname: "weapon_bad_precache",
+    precaches: "bad"
+  };
+  assertThrows(() => PrecacheItem(createHarnessRuntime(), badItem), "bad precache string", "PrecacheItem rejects tokens shorter than the original minimum");
+
+  const longItem: GameItemDefinition = {
+    ...shotgun,
+    classname: "weapon_long_precache",
+    precaches: `${"a".repeat(61)}.wav`
+  };
+  assertThrows(() => PrecacheItem(createHarnessRuntime(), longItem), "bad precache string", "PrecacheItem rejects tokens at or beyond MAX_QPATH");
+}
+
 function verifyUsePowerArmorRequiresCells(): void {
   const runtime = createHarnessRuntime();
   const player = createPlayer(runtime);
@@ -611,6 +643,59 @@ function verifyInvalidSpawnFlagsAreClearedForNonPowerCube(): void {
 
   SpawnItem(entity, requireItem("Shells"), runtime);
   assertNumber(entity.spawnflags, 0, "SpawnItem clears invalid spawnflags on non-power-cube items");
+}
+
+function verifySpawnItemDeathmatchFilters(): void {
+  const noArmorRuntime = createHarnessRuntime();
+  noArmorRuntime.deathmatch = true;
+  noArmorRuntime.dmflags = DF_NO_ARMOR;
+  const armorEntity = spawnFreeableEntity(noArmorRuntime);
+  armorEntity.classname = "item_armor_jacket";
+  SpawnItem(armorEntity, requireItem("Jacket Armor"), noArmorRuntime);
+  assertNumber(armorEntity.inuse ? 1 : 0, 0, "SpawnItem frees armor when DF_NO_ARMOR is set");
+  assertBoolean(noArmorRuntime.assets.modelPaths.includes("models/items/armor/jacket/tris.md2"), true, "SpawnItem precaches before deathmatch inhibition");
+
+  const noItemsRuntime = createHarnessRuntime();
+  noItemsRuntime.deathmatch = true;
+  noItemsRuntime.dmflags = DF_NO_ITEMS;
+  const quadEntity = spawnFreeableEntity(noItemsRuntime);
+  quadEntity.classname = "item_quad";
+  SpawnItem(quadEntity, requireItem("Quad Damage"), noItemsRuntime);
+  assertNumber(quadEntity.inuse ? 1 : 0, 0, "SpawnItem frees powerups when DF_NO_ITEMS is set");
+
+  const weaponRuntime = createHarnessRuntime();
+  weaponRuntime.deathmatch = true;
+  weaponRuntime.dmflags = DF_NO_ITEMS;
+  const weaponEntity = spawnGameEntity(weaponRuntime);
+  weaponEntity.classname = "weapon_shotgun";
+  SpawnItem(weaponEntity, requireItem("Shotgun"), weaponRuntime);
+  assertNumber(weaponEntity.inuse ? 1 : 0, 1, "SpawnItem does not treat DF_NO_ITEMS as a blanket non-key filter");
+
+  const noHealthRuntime = createHarnessRuntime();
+  noHealthRuntime.deathmatch = true;
+  noHealthRuntime.dmflags = DF_NO_HEALTH;
+  const healthEntity = spawnFreeableEntity(noHealthRuntime);
+  healthEntity.classname = "item_health";
+  SpawnItem(healthEntity, requireItem("Health"), noHealthRuntime);
+  assertNumber(healthEntity.inuse ? 1 : 0, 0, "SpawnItem frees health when DF_NO_HEALTH is set");
+
+  const infiniteAmmoRuntime = createHarnessRuntime();
+  infiniteAmmoRuntime.deathmatch = true;
+  infiniteAmmoRuntime.dmflags = DF_INFINITE_AMMO;
+  const bulletsEntity = spawnFreeableEntity(infiniteAmmoRuntime);
+  bulletsEntity.classname = "ammo_bullets";
+  SpawnItem(bulletsEntity, requireItem("Bullets"), infiniteAmmoRuntime);
+  assertNumber(bulletsEntity.inuse ? 1 : 0, 0, "SpawnItem frees pure ammo when DF_INFINITE_AMMO is set");
+
+  const grenadesEntity = spawnGameEntity(infiniteAmmoRuntime);
+  grenadesEntity.classname = "ammo_grenades";
+  SpawnItem(grenadesEntity, requireItem("Grenades"), infiniteAmmoRuntime);
+  assertNumber(grenadesEntity.inuse ? 1 : 0, 1, "SpawnItem preserves grenade weapon/ammo because item.flags is not exactly IT_AMMO");
+
+  const bfgEntity = spawnFreeableEntity(infiniteAmmoRuntime);
+  bfgEntity.classname = "weapon_bfg";
+  SpawnItem(bfgEntity, requireItem("BFG10K"), infiniteAmmoRuntime);
+  assertNumber(bfgEntity.inuse ? 1 : 0, 0, "SpawnItem frees weapon_bfg when DF_INFINITE_AMMO is set");
 }
 
 function createHarnessRuntime(): GameRuntime {
@@ -663,6 +748,20 @@ function assertBoolean(actual: boolean, expected: boolean, label: string): void 
   if (actual !== expected) {
     throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
   }
+}
+
+function assertThrows(callback: () => void, expectedMessagePart: string, label: string): void {
+  try {
+    callback();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (message.includes(expectedMessagePart)) {
+      return;
+    }
+    throw new Error(`${label}: message inattendu "${message}"`);
+  }
+
+  throw new Error(`${label}: exception attendue`);
 }
 
 function assertVec3(actual: vec3_t, expected: vec3_t, label: string): void {
