@@ -15,7 +15,7 @@ import { BUTTON_ANY, BUTTON_ATTACK, CS_PLAYERSKINS, CS_STATUSBAR, CVAR_ARCHIVE, 
 import { MOVETYPE_NONE, MOVETYPE_NOCLIP, TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, createGameRuntimeFromBspEntities, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
-import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { CheckDMRules, ClientCommand, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { single_statusbar } from "../../packages/game/src/g_spawn.js";
 
 const dprints: string[] = [];
@@ -547,6 +547,39 @@ assert.equal(helpContext.runtime.helpchanged, 7, "ClientEndServerFrames helpchan
 assert.equal(helpContext.runtime.entities[1].s.angles[2], 24, "ClientEndServerFrames must pass sv_rollangle/sv_rollspeed cvars to p_view");
 assert.deepEqual(helpContext.runtime.entities[1].client!.ps.gunoffset.map((value) => Math.round(value)), [2, 3, -4], "ClientEndServerFrames must pass gun_x/gun_y/gun_z cvars to p_view");
 assert.ok(Math.abs(helpContext.runtime.entities[1].client!.ps.kick_angles[2]) > 40, "ClientEndServerFrames must pass run_roll cvar to p_view");
+
+const runtimeHelpContext = createGameMainContext(imports);
+runtimeHelpContext.runtime.maxclients = 1;
+runtimeHelpContext.runtime.entities = [{ ...api.edicts[0]! }, { ...api.edicts[1]! }];
+runtimeHelpContext.runtime.entities[1].client = runtimeHelpContext.runtime.entities[1].client ?? attachGameClient(runtimeHelpContext.runtime.entities[1]);
+runtimeHelpContext.runtime.entities[1].inuse = true;
+runtimeHelpContext.runtime.helpmessage1 = "runtime help one";
+runtimeHelpContext.runtime.helpmessage2 = "runtime help two";
+runtimeHelpContext.runtime.helpchanged = 8;
+ClientEndServerFrames(runtimeHelpContext);
+assert.equal(runtimeHelpContext.game.helpmessage1, "runtime help one", "ClientEndServerFrames must sync newer runtime helpmessage1 to game locals");
+assert.equal(runtimeHelpContext.game.helpmessage2, "runtime help two", "ClientEndServerFrames must sync newer runtime helpmessage2 to game locals");
+assert.equal(runtimeHelpContext.game.helpchanged, 8, "ClientEndServerFrames must sync newer runtime helpchanged to game locals");
+
+const helpLayouts: string[] = [];
+const commandHelpContext = createGameMainContext(imports, {
+  hooks: {
+    emitLayout: (_ent, layout) => {
+      helpLayouts.push(layout);
+    }
+  }
+});
+commandHelpContext.runtime.entities = [{ ...api.edicts[0]! }, { ...api.edicts[1]! }];
+commandHelpContext.runtime.entities[1].client = commandHelpContext.runtime.entities[1].client ?? attachGameClient(commandHelpContext.runtime.entities[1]);
+commandHelpContext.runtime.entities[1].inuse = true;
+commandHelpContext.runtime.helpmessage1 = "runtime command one";
+commandHelpContext.runtime.helpmessage2 = "runtime command two";
+commandHelpContext.runtime.helpchanged = 9;
+command.argv = ["help"];
+command.args = "";
+ClientCommand(commandHelpContext, commandHelpContext.runtime.entities[1]);
+assert.ok(helpLayouts.at(-1)?.includes('cstring2 "runtime command one"'), "ClientCommand help must use runtime-synced helpmessage1");
+assert.ok(helpLayouts.at(-1)?.includes('cstring2 "runtime command two"'), "ClientCommand help must use runtime-synced helpmessage2");
 
 const bobContext = createGameMainContext(imports);
 bobContext.runtime.maxclients = 1;

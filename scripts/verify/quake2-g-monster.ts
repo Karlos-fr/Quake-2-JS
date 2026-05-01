@@ -31,7 +31,18 @@ import {
   MASK_SHOT
 } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_WATER } from "../../packages/qcommon/src/q_shared.js";
-import { FL_INWATER, FL_NOTARGET, MOD_UNKNOWN } from "../../packages/game/src/g_local.js";
+import {
+  DAMAGE_NO_ARMOR,
+  FL_IMMUNE_LAVA,
+  FL_IMMUNE_SLIME,
+  FL_INWATER,
+  FL_NOTARGET,
+  MOD_LAVA,
+  MOD_SLIME,
+  MOD_UNKNOWN,
+  MOD_WATER,
+  damage_t
+} from "../../packages/game/src/g_local.js";
 import {
   AttackFinished,
   M_CatagorizePosition,
@@ -39,6 +50,7 @@ import {
   M_FliesOff,
   M_FliesOn,
   M_FlyCheck,
+  M_WorldEffects,
   monster_death_use,
   monster_fire_bfg,
   monster_fire_blaster,
@@ -74,6 +86,7 @@ function main(): void {
   verifyMCheckGroundRuntimeReachability();
   verifyMCatagorizePositionWaterLevels();
   verifyMCatagorizePositionRuntimeReachability();
+  verifyMWorldEffectsDamageAndSounds();
 
   console.log("Verification g_monster - shared monster gameplay OK");
 }
@@ -573,6 +586,89 @@ function verifyMCatagorizePositionRuntimeReachability(): void {
   assert.equal(sounds.some((sound) => sound.soundPath === "player/watr_in.wav"), true, "water entry sound should be emitted for apps/web audio consumption");
 }
 
+function verifyMWorldEffectsDamageAndSounds(): void {
+  const runtime = createHarnessRuntime();
+
+  runtime.time = 10;
+  const enteringWater = createMonster(runtime, 31);
+  enteringWater.waterlevel = 2;
+  enteringWater.watertype = CONTENTS_WATER;
+  M_WorldEffects(enteringWater, runtime);
+  assert.equal(enteringWater.air_finished, 22, "M_WorldEffects should reset non-swimmer air timer below full submersion");
+  assert.equal((enteringWater.flags & FL_INWATER) !== 0, true, "M_WorldEffects should mark water entry");
+  assert.equal(
+    drainGameSoundEvents(runtime).some((sound) => sound.soundPath === "player/watr_in.wav"),
+    true,
+    "M_WorldEffects should emit water entry sound events for apps/web audio consumption"
+  );
+
+  enteringWater.waterlevel = 0;
+  M_WorldEffects(enteringWater, runtime);
+  assert.equal((enteringWater.flags & FL_INWATER) === 0, true, "M_WorldEffects should clear FL_INWATER after water exit");
+  assert.equal(
+    drainGameSoundEvents(runtime).some((sound) => sound.soundPath === "player/watr_out.wav"),
+    true,
+    "M_WorldEffects should emit water exit sound events for apps/web audio consumption"
+  );
+
+  runtime.time = 20;
+  const drowning = createDamageableMonster(runtime, 32);
+  drowning.waterlevel = 3;
+  drowning.watertype = CONTENTS_WATER;
+  drowning.air_finished = 12;
+  M_WorldEffects(drowning, runtime);
+  assert.equal(drowning.health, 85, "M_WorldEffects should cap drowning damage at 15");
+  assert.equal(drowning.pain_debounce_time, 21, "M_WorldEffects should debounce drowning pain for one second");
+  assert.equal(runtime.meansOfDeath, MOD_WATER, "M_WorldEffects drowning should use MOD_WATER");
+
+  runtime.time = 20;
+  const suffocating = createDamageableMonster(runtime, 33);
+  suffocating.flags |= FL_SWIM;
+  suffocating.waterlevel = 0;
+  suffocating.air_finished = 16;
+  M_WorldEffects(suffocating, runtime);
+  assert.equal(suffocating.health, 90, "M_WorldEffects should apply original swimmer suffocation damage formula");
+  assert.equal(runtime.meansOfDeath, MOD_WATER, "M_WorldEffects suffocation should use MOD_WATER");
+
+  runtime.time = 30;
+  const lava = createDamageableMonster(runtime, 34);
+  lava.waterlevel = 2;
+  lava.watertype = CONTENTS_LAVA;
+  M_WorldEffects(lava, runtime);
+  assert.equal(lava.health, 80, "M_WorldEffects should apply 10 damage per lava waterlevel");
+  assert.equal(lava.damage_debounce_time, 0, "M_WorldEffects should reset damage debounce after first water entry like the C source");
+  assert.equal(runtime.meansOfDeath, MOD_LAVA, "M_WorldEffects lava damage should use MOD_LAVA");
+  const lavaSounds = drainGameSoundEvents(runtime).map((sound) => sound.soundPath);
+  assert.equal(
+    lavaSounds.some((soundPath) => soundPath === "player/lava1.wav" || soundPath === "player/lava2.wav"),
+    true,
+    "M_WorldEffects should emit one original lava entry sound"
+  );
+
+  runtime.time = 40;
+  const slime = createDamageableMonster(runtime, 35);
+  slime.waterlevel = 3;
+  slime.watertype = CONTENTS_SLIME;
+  slime.air_finished = runtime.time + 12;
+  M_WorldEffects(slime, runtime);
+  assert.equal(slime.health, 88, "M_WorldEffects should apply 4 damage per slime waterlevel");
+  assert.equal(runtime.meansOfDeath, MOD_SLIME, "M_WorldEffects slime damage should use MOD_SLIME");
+  assert.equal(
+    drainGameSoundEvents(runtime).some((sound) => sound.soundPath === "player/watr_in.wav"),
+    true,
+    "M_WorldEffects should emit the original slime entry water sound"
+  );
+
+  const immune = createDamageableMonster(runtime, 36);
+  immune.flags |= FL_IMMUNE_LAVA | FL_IMMUNE_SLIME;
+  immune.waterlevel = 3;
+  immune.watertype = CONTENTS_LAVA | CONTENTS_SLIME;
+  immune.air_finished = runtime.time + 12;
+  M_WorldEffects(immune, runtime);
+  assert.equal(immune.health, 100, "M_WorldEffects should honor lava and slime immunity flags");
+  assert.equal(DAMAGE_NO_ARMOR, 0x00000002, "M_WorldEffects DAMAGE_NO_ARMOR constant should match the C flag value");
+}
+
 function createHarnessRuntime(): GameRuntime {
   return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 }
@@ -594,6 +690,13 @@ function createMonster(runtime: GameRuntime, index: number): GameEntity {
     return;
   };
   runtime.entities[index] = monster;
+  return monster;
+}
+
+function createDamageableMonster(runtime: GameRuntime, index: number): GameEntity {
+  const monster = createMonster(runtime, index);
+  monster.takedamage = damage_t.DAMAGE_AIM;
+  monster.mass = 200;
   return monster;
 }
 

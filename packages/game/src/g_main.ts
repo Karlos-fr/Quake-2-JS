@@ -214,7 +214,7 @@ export function ShutdownGame(context: GameMainContext): void {
  * - Uses a currently reduced `ClientEndServerFrame` implementation until `game/p_view.c` is ported.
  */
 export function ClientEndServerFrames(context: GameMainContext): void {
-  context.runtime.helpchanged = context.game.helpchanged;
+  syncGameHelpState(context);
 
   for (let index = 0; index < context.runtime.maxclients; index += 1) {
     const ent = context.runtime.entities[1 + index] ?? null;
@@ -246,6 +246,27 @@ export function ClientEndServerFrames(context: GameMainContext): void {
     assignCvarValue(viewOptions, "gun_z", context.cvars.gun_z);
     ClientEndServerFrame(ent, context.runtime, viewOptions);
   }
+}
+
+/**
+ * Category: Adapter
+ * Purpose: Keep the split TS game/runtime help fields equivalent to the original `game_locals_t game` global.
+ *
+ * Porting notes:
+ * - Direct runtime helpers such as `target_help` can mutate the runtime mirror, while save/client-command paths still
+ *   own the `game_locals_t` block. The monotonic `helpchanged` counter identifies the newer side.
+ */
+function syncGameHelpState(context: GameMainContext): void {
+  if (context.runtime.helpchanged > context.game.helpchanged) {
+    context.game.helpmessage1 = context.runtime.helpmessage1;
+    context.game.helpmessage2 = context.runtime.helpmessage2;
+    context.game.helpchanged = context.runtime.helpchanged;
+    return;
+  }
+
+  context.runtime.helpmessage1 = context.game.helpmessage1;
+  context.runtime.helpmessage2 = context.game.helpmessage2;
+  context.runtime.helpchanged = context.game.helpchanged;
 }
 
 /**
@@ -766,6 +787,8 @@ export function ClientCommand(context: GameMainContext, ent: edict_t): void {
     return;
   }
 
+  syncGameHelpState(context);
+
   ClientCommand_Cmds({
     gi: context.gi,
     runtime: context.runtime,
@@ -781,8 +804,8 @@ export function ClientCommand(context: GameMainContext, ent: edict_t): void {
     helpData: {
       skill: context.cvars.skill?.value ?? context.runtime.skill,
       level_name: context.level.level_name,
-      helpmessage1: context.game.helpmessage1,
-      helpmessage2: context.game.helpmessage2,
+      helpmessage1: context.runtime.helpmessage1,
+      helpmessage2: context.runtime.helpmessage2,
       killed_monsters: context.level.killed_monsters,
       total_monsters: context.level.total_monsters,
       found_goals: context.level.found_goals,
@@ -803,6 +826,7 @@ export function ClientCommand(context: GameMainContext, ent: edict_t): void {
  * - Delegates the savegame export slot to the `g_save.c` TypeScript attachment point.
  */
 export function WriteGame(context: GameMainContext, filename: string, autosave: qboolean): void {
+  syncGameHelpState(context);
   WriteGame_Save(context, filename, autosave);
 }
 

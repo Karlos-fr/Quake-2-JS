@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Pickup_Adrenaline`.
+
+Validation adrenaline du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_Adrenaline` conserve le comportement C: en non-deathmatch, augmente `other->max_health` de 1; si la sante courante est sous le max, remonte `other->health` a `other->max_health`; en deathmatch, planifie `SetRespawn(ent, ent->item->quantity)` seulement pour les items de carte non droppes; retourne toujours `true`. L'entree `item_adrenaline` de `itemlist` est alignee (`Pickup_Adrenaline`, pickup sound `items/pkup.wav`, modele `models/items/adrenal/tris.md2`, `EF_ROTATE`, icone `p_adrenaline`, pickup name `Adrenaline`, width 2, quantity 60, pas de flags/precache). Header TS complete avec `Behavior` et note runtime deathmatch.
+
+Runtime branche via `SpawnItem`/`droptofloor`, `Touch_Item`, le dispatch `callItemPickup` et l'entree `item_adrenaline`; le test couvre aussi le chemin `Touch_Item` deathmatch. `apps/web` doit consommer ce flux par le runtime local/full-game, les stats HUD health, sons pickup et snapshots; aucune logique parallele d'adrenaline detectee. `renderer-three` doit consommer les sorties visibles generiques: modele item rotatif, disparition pendant pickup/respawn, reapparition apres `SetRespawn`; pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyPickupAdrenalineHealthAndRespawn` couvre l'appel direct single-player, le chemin `Touch_Item` deathmatch avec stats/son/respawn, et l'absence de respawn pour dropped item. Tests lances: `npm run verify:g-items`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `Drop_General`.
 
 Validation drop general du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Drop_General` conserve l'ordre original: creation de l'entite dropee via `Drop_Item`, decrement de `ent->client->pers.inventory[ITEM_INDEX(item)]`, puis `ValidateSelectedItem(ent)`. Le port TS est equivalent avec `requireClient`, `Drop_Item(ent, item, runtime)`, decrement du meme slot `ITEM_INDEX(item)`, puis `ValidateSelectedItem(ent, runtime)`. Header TS verifie (`Fidelity level: Close`, adaptation runtime explicite).
@@ -221,4 +229,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Adrenaline`.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_AncientHead`.

@@ -61,8 +61,8 @@
 | `Quake-2-master/game/g_misc.c` | function | `func_explosive_use` | `packages/game/src/g_misc.ts` | `func_explosive_use` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `func_explosive_spawn` | `packages/game/src/g_misc.ts` | `func_explosive_spawn` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_func_explosive` | `packages/game/src/g_misc.ts` | `SP_func_explosive` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `barrel_touch` | `packages/game/src/g_misc.ts` | `barrel_touch` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | global | `ratio` | `packages/game/src/g_misc.ts` | `ratio` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `barrel_touch` | `packages/game/src/g_misc.ts` | `barrel_touch` | Valide | A redecouper | Header verifie; preuve C/TS du push par acteur grounded, guard `groundentity == self`, vectoyaw et `M_walkmove`. Tests: `npm run verify:g-misc`, `npm run verify:g-spawn`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`. |
+| `Quake-2-master/game/g_misc.c` | global | `ratio` | `packages/game/src/g_misc.ts` | `ratio` | Valide | A redecouper | Local porte par `const ratio = other.mass / self.mass` dans `barrel_touch`; couvert par `verify:g-misc`. |
 | `Quake-2-master/game/g_misc.c` | function | `barrel_explode` | `packages/game/src/g_misc.ts` | `barrel_explode` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | global | `spd` | `packages/game/src/g_misc.ts` | `spd` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `BecomeExplosion1` | `packages/game/src/g_misc.ts` | `BecomeExplosion1` | Valide | A redecouper | Ligne dupliquee generee pour le meme symbole; validee avec la preuve `BecomeExplosion1` ci-dessus. |

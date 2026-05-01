@@ -10,7 +10,7 @@
  */
 
 import { strict as assert } from "node:assert";
-import { CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, MASK_MONSTERSOLID, RF_FRAMELERP, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t } from "../../packages/qcommon/src/index.js";
+import { CS_LIGHTS, EF_ANIM_ALL, EF_ANIM_ALLFAST, EF_FLIES, EF_GIB, MASK_MONSTERSOLID, RF_FRAMELERP, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t, type cplane_t, type trace_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
@@ -43,6 +43,7 @@ import {
   SVF_NOCLIENT,
   attachGameClient,
   barrel_delay,
+  barrel_touch,
   createGameRuntimeFromBspEntities,
   damage_t,
   drainGameConfigstringUpdates,
@@ -68,7 +69,7 @@ import {
   useGameEntity
 } from "../../packages/game/src/index.js";
 import { SP_func_object, SP_func_wall, func_object_touch, func_object_use, func_wall_use } from "../../packages/game/src/g_misc.js";
-import { AI_COMBAT_POINT, AI_STAND_GROUND, FL_FLY, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
+import { AI_COMBAT_POINT, AI_NOSTEP, AI_STAND_GROUND, FL_FLY, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
 import { ThrowClientHead } from "../../packages/game/src/p_client.js";
 import { SVF_MONSTER } from "../../packages/game/src/runtime.js";
 
@@ -86,6 +87,7 @@ function main(): void {
   verifyTargetStringMapsFrames();
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
+  verifyBarrelTouchPushesOnlyFromGroundedActors();
   verifyLightWritesSourceConfigstrings();
   verifyFuncWallSpawnAndUseTogglesVisibility();
   verifyFuncObjectSpawnUseReleaseAndCrush();
@@ -558,6 +560,53 @@ function verifyMiscExploboxSpawnsShootableBarrel(): void {
   assert.equal(barrel.die, barrel_delay, "misc_explobox must use barrel_delay as die callback");
   assert.ok(barrel.touch, "misc_explobox must expose barrel_touch");
   assert.ok(barrel.think, "misc_explobox must schedule M_droptofloor");
+}
+
+function verifyBarrelTouchPushesOnlyFromGroundedActors(): void {
+  const runtime = createHarnessRuntime();
+  const floor = runtime.entities[0]!;
+  let traceCount = 0;
+  runtime.collision = {
+    world: {} as never,
+    trace: () => {
+      traceCount += 1;
+      return makeTrace({ fraction: 0.5, endpos: [101, 0, 16], ent: floor });
+    },
+    pointcontents: () => 1
+  };
+
+  const barrel = spawnGameEntity(runtime);
+  barrel.classname = "misc_explobox";
+  barrel.s.origin = [100, 0, 16];
+  barrel.origin = [100, 0, 16];
+  barrel.mins = [-16, -16, 0];
+  barrel.maxs = [16, 16, 40];
+  barrel.mass = 400;
+  barrel.groundentity = floor;
+  barrel.monsterinfo.aiflags = AI_NOSTEP;
+
+  const pusher = spawnGameEntity(runtime);
+  pusher.classname = "pusher";
+  pusher.s.origin = [0, 0, 16];
+  pusher.origin = [0, 0, 16];
+  pusher.mass = 200;
+  pusher.groundentity = floor;
+
+  barrel_touch(barrel, pusher, runtime);
+
+  assert.equal(traceCount, 1, "barrel_touch must attempt one M_walkmove for grounded pushers");
+  assert.deepEqual(barrel.s.origin, [101, 0, 16], "barrel_touch must move along vectoyaw(self - other)");
+
+  pusher.groundentity = null;
+  barrel.s.origin = [100, 0, 16];
+  barrel.origin = [100, 0, 16];
+  barrel_touch(barrel, pusher, runtime);
+  assert.equal(traceCount, 1, "barrel_touch must ignore actors not standing on ground");
+  assert.deepEqual(barrel.s.origin, [100, 0, 16], "barrel_touch must not move for airborne actors");
+
+  pusher.groundentity = barrel;
+  barrel_touch(barrel, pusher, runtime);
+  assert.equal(traceCount, 1, "barrel_touch must ignore actors standing on the barrel itself");
 }
 
 function verifyLightWritesSourceConfigstrings(): void {
@@ -1169,6 +1218,26 @@ function withMockedRandom(sequence: number[], callback: () => void): void {
   } finally {
     Math.random = originalRandom;
   }
+}
+
+function makeTrace(overrides: Partial<trace_t> = {}): trace_t {
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: 1,
+    endpos: [0, 0, 0],
+    plane: {
+      normal: [0, 0, 0],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent: null,
+    ...overrides
+  };
 }
 
 function createHarnessRuntime() {

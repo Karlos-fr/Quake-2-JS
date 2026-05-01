@@ -115,6 +115,24 @@ const clipBlocked = ClipVelocity([10, 0, -5], [0, 0, 1], clipOut, 1);
 assertEqual("ClipVelocity.blocked", clipBlocked, 1);
 assertVec("ClipVelocity.out", clipOut, [10, 0, 0]);
 
+const clipStepOut: [number, number, number] = [0, 0, 0];
+const clipStepBlocked = ClipVelocity([3, -7, 2], [0, 1, 0], clipStepOut, 1);
+assertEqual("ClipVelocity.step-blocked", clipStepBlocked, 2);
+assertVec("ClipVelocity.step-out", clipStepOut, [3, 0, 2]);
+
+const clipOverbounceOut: [number, number, number] = [0, 0, 0];
+const clipOverbounceBlocked = ClipVelocity([10, 0, 0], [1, 0, 0], clipOverbounceOut, 1.5);
+assertEqual("ClipVelocity.overbounce-blocked", clipOverbounceBlocked, 2);
+assertVec("ClipVelocity.overbounce-out", clipOverbounceOut, [-5, 0, 0]);
+
+const clipStopEpsilonOut: [number, number, number] = [0, 0, 0];
+ClipVelocity([0.05, -0.099, 0.11], [0, 0, 1], clipStopEpsilonOut, 0);
+assertVec("ClipVelocity.stop-epsilon", clipStopEpsilonOut, [0, 0, 0.11]);
+
+const clipAliasVector: [number, number, number] = [2, 4, -1];
+ClipVelocity(clipAliasVector, [0, 0, 1], clipAliasVector, 1);
+assertVec("ClipVelocity.alias-in-out", clipAliasVector, [2, 4, 0]);
+
 const positionEnt = spawnGameEntity(runtime);
 positionEnt.origin = [7, 8, 9];
 positionEnt.s.origin = [7, 8, 9];

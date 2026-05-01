@@ -751,6 +751,13 @@ export function Drop_General(ent: GameEntity, item: GameItemDefinition, runtime:
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - In single-player, raises the player's max health by one.
+ * - Tops current health up to max health, then schedules deathmatch map-item respawn.
+ *
+ * Porting notes:
+ * - Uses the runtime deathmatch flag instead of the original cvar pointer.
  */
 export function Pickup_Adrenaline(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   if (!runtime.deathmatch) {

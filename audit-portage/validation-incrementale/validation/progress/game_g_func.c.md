@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: flags de train `TRAIN_START_ON` / `TRAIN_TOGGLE` / `TRAIN_BLOCK_STOPS`, puis avance `train_next`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1445-1447,1459,1529-1583` avec `packages/game/src/g_func.ts:73-75,1661-1712`.
+- Correction appliquee: ajout du commentaire d'en-tete de `train_next` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: valeurs des trois flags, `func_train_find` qui arme `TRAIN_START_ON` pour train non cible, `train_use` toggle qui efface `TRAIN_START_ON`, stoppe la vitesse et annule `nextthink`, `SP_func_train` avec `TRAIN_BLOCK_STOPS` qui force `dmg = 0`, `train_next` qui suit un `path_corner` teleport unique, recalcule origin/old_origin/event, met a jour target/target_ent/wait, lance le son de boucle, stocke start/end origins, programme `Move_Calc(..., train_wait)` et conserve `TRAIN_START_ON`.
+- Branchement: `func_train` est referencee dans `packages/game/src/g_spawn.ts` et appelee par `ED_CallSpawn`; `SP_func_train` programme `func_train_find`, puis `train_next` est atteint via `G_RunFrame`/`G_RunEntity`/`SV_RunThink` ou via `train_use`/triggers.
+- Integration: aucune logique parallele `func_train` dans `apps/web`; le navigateur consomme les sons runtime et snapshots/interpolations de brush models. `packages/renderer-three` consomme les sorties visibles attendues via brush models/origines des snapshots dans la scene; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: spawn de brush eau mobile `SP_func_water`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1378-1435` avec `packages/game/src/g_func.ts:1568-1618`.
 - Correction appliquee: `SP_func_water` utilise maintenant `G_SetMovedir(self.angles, self.movedir)` afin d'effacer les angles runtime canoniques comme le C efface `self->s.angles`; auparavant `refreshEntitySpatialState` pouvait reexposer les angles non remis a zero dans `s.angles`. Le commentaire d'en-tete documente les adapters `lip`, modele et sons.
@@ -254,7 +262,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `TRAIN_START_ON`, `TRAIN_TOGGLE`, `TRAIN_BLOCK_STOPS`, puis `train_next` si le lot reste petit.
+- Continuer avec `train_blocked`, puis `train_wait` et ses locales `savetarget`/`ent` si le lot reste petit.
 
 ## Blocages
 

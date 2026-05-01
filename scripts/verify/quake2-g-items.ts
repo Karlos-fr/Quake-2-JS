@@ -31,6 +31,7 @@ import {
   ITEM_TRIGGER_SPAWN,
   MOVETYPE_TOSS,
   Pickup_Health,
+  Pickup_Adrenaline,
   Pickup_Armor,
   Pickup_Powerup,
   PowerArmorType,
@@ -72,6 +73,7 @@ function main(): void {
   verifyDoRespawnTeamChoice();
   verifyTouchHealthPickup();
   verifyTouchHealthPickupUsesItemPath();
+  verifyPickupAdrenalineHealthAndRespawn();
   verifyTouchRejectedPickupStillUsesTargets();
   verifyTouchAmmoPickupUsesItemPath();
   verifyTouchWeaponPickupUsesWeaponPath();
@@ -334,6 +336,57 @@ function verifyTouchHealthPickupUsesItemPath(): void {
 
   const events = drainGameSoundEvents(runtime);
   assertBoolean(events.some((event) => event.soundPath === "items/l_health.wav"), true, "Touch_Item plays the count-specific large health sound");
+}
+
+function verifyPickupAdrenalineHealthAndRespawn(): void {
+  const singlePlayerRuntime = createHarnessRuntime();
+  const singlePlayerAdrenaline = spawnFreeableEntity(singlePlayerRuntime);
+  const singlePlayer = createPlayer(singlePlayerRuntime);
+
+  singlePlayer.health = 40;
+  singlePlayer.max_health = 100;
+  singlePlayerAdrenaline.item = requireItem("Adrenaline");
+  singlePlayerAdrenaline.spawnflags = 0;
+
+  assertBoolean(Pickup_Adrenaline(singlePlayerAdrenaline, singlePlayer, singlePlayerRuntime), true, "Pickup_Adrenaline accepts single-player adrenaline");
+  assertNumber(singlePlayer.max_health, 101, "Pickup_Adrenaline increments max_health outside deathmatch");
+  assertNumber(singlePlayer.health, 101, "Pickup_Adrenaline heals the player up to the new max_health");
+  assertNumber(singlePlayerAdrenaline.nextthink, 0, "Pickup_Adrenaline does not respawn single-player adrenaline");
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  deathmatchRuntime.time = 12;
+  const deathmatchAdrenaline = spawnFreeableEntity(deathmatchRuntime);
+  const deathmatchPlayer = createPlayer(deathmatchRuntime);
+  const adrenaline = requireItem("Adrenaline");
+
+  deathmatchPlayer.health = 80;
+  deathmatchPlayer.max_health = 100;
+  deathmatchAdrenaline.item = adrenaline;
+  deathmatchAdrenaline.spawnflags = 0;
+
+  Touch_Item(deathmatchAdrenaline, deathmatchPlayer, deathmatchRuntime);
+
+  assertNumber(deathmatchPlayer.max_health, 100, "Touch_Item routes adrenaline without max_health gain in deathmatch");
+  assertNumber(deathmatchPlayer.health, 100, "Deathmatch adrenaline still tops health up to current max_health");
+  assertNumber(deathmatchAdrenaline.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "Deathmatch adrenaline is hidden for respawn");
+  assertNumber(deathmatchAdrenaline.solid, SOLID_NOT, "Deathmatch adrenaline is made nonsolid while respawning");
+  assertNumber(deathmatchAdrenaline.nextthink, 72, "Deathmatch adrenaline uses item quantity as respawn delay");
+  assertNumber(deathmatchPlayer.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + adrenaline.index, "Touch_Item reports the adrenaline pickup string");
+  assertBoolean(drainGameSoundEvents(deathmatchRuntime).some((event) => event.soundPath === "items/pkup.wav"), true, "Touch_Item queues the adrenaline pickup sound");
+
+  const droppedRuntime = createHarnessRuntime();
+  droppedRuntime.deathmatch = true;
+  const droppedAdrenaline = spawnFreeableEntity(droppedRuntime);
+  const droppedPlayer = createPlayer(droppedRuntime);
+
+  droppedPlayer.health = 25;
+  droppedPlayer.max_health = 100;
+  droppedAdrenaline.item = adrenaline;
+  droppedAdrenaline.spawnflags = DROPPED_ITEM;
+
+  assertBoolean(Pickup_Adrenaline(droppedAdrenaline, droppedPlayer, droppedRuntime), true, "Pickup_Adrenaline accepts dropped adrenaline");
+  assertNumber(droppedAdrenaline.nextthink, 0, "Dropped adrenaline does not schedule map-item respawn");
 }
 
 function verifyTouchRejectedPickupStillUsesTargets(): void {

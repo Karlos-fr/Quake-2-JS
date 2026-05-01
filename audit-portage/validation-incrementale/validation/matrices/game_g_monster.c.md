@@ -27,8 +27,8 @@
 | `Quake-2-master/game/g_monster.c` | function | `M_CatagorizePosition` | `packages/game/src/g_monster.ts` | `M_CatagorizePosition` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | global | `point` | `packages/game/src/g_monster.ts` | `point` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | global | `cont` | `packages/game/src/g_monster.ts` | `cont` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | function | `M_WorldEffects` | `packages/game/src/g_monster.ts` | `M_WorldEffects` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | global | `dmg` | `packages/game/src/g_monster.ts` | `dmg` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | function | `M_WorldEffects` | `packages/game/src/g_monster.ts` | `M_WorldEffects` | Valide | A redecouper | Preuve session: comparaison C/TS, en-tete mis a jour, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; runtime via `G_RunFrame`/`monster_think`, apps/web consomme les sons runtime, pas de sortie renderer directe hors scene/snapshots. |
+| `Quake-2-master/game/g_monster.c` | global | `dmg` | `packages/game/src/g_monster.ts` | `dmg` | Valide | A redecouper | Preuve session: locale comparee avec C, formule noyade/suffocation et plafonnement a 15 verifies par `npm run verify:g-monster`; `DAMAGE_NO_ARMOR` explicite dans `packages/game/src/g_monster.ts`. |
 | `Quake-2-master/game/g_monster.c` | function | `M_droptofloor` | `packages/game/src/g_monster.ts` | `M_droptofloor` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | global | `end` | `packages/game/src/g_monster.ts` | `end` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | global | `trace` | `packages/game/src/g_monster.ts` | `trace` | A verifier | A redecouper |  |

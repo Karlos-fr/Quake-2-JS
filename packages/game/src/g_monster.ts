@@ -61,6 +61,7 @@ import {
   DEAD_NO,
   FL_FLY,
   FRAMETIME,
+  DAMAGE_NO_ARMOR,
   FL_IMMUNE_LAVA,
   FL_IMMUNE_SLIME,
   FL_INWATER,
@@ -447,6 +448,9 @@ export function M_CatagorizePosition(ent: GameEntity, runtime: GameRuntime): voi
  *
  * Behavior:
  * - Applies drowning, suffocation, lava/slime damage and water entry/exit sounds to one monster.
+ *
+ * Porting notes:
+ * - `gi.sound` is represented by runtime sound events so browser/server adapters can consume it.
  */
 export function M_WorldEffects(ent: GameEntity, runtime: GameRuntime): void {
   const world = runtime.entities[0] ?? ent;
@@ -462,7 +466,7 @@ export function M_WorldEffects(ent: GameEntity, runtime: GameRuntime): void {
           if (dmg > 15) {
             dmg = 15;
           }
-          T_Damage(ent, world, world, NULL_VEC3, ent.s.origin, NULL_VEC3, dmg, 0, 0x00000002, MOD_WATER, runtime);
+          T_Damage(ent, world, world, NULL_VEC3, ent.s.origin, NULL_VEC3, dmg, 0, DAMAGE_NO_ARMOR, MOD_WATER, runtime);
           ent.pain_debounce_time = runtime.time + 1;
         }
       }
@@ -475,7 +479,7 @@ export function M_WorldEffects(ent: GameEntity, runtime: GameRuntime): void {
           if (dmg > 15) {
             dmg = 15;
           }
-          T_Damage(ent, world, world, NULL_VEC3, ent.s.origin, NULL_VEC3, dmg, 0, 0x00000002, MOD_WATER, runtime);
+          T_Damage(ent, world, world, NULL_VEC3, ent.s.origin, NULL_VEC3, dmg, 0, DAMAGE_NO_ARMOR, MOD_WATER, runtime);
           ent.pain_debounce_time = runtime.time + 1;
         }
       }

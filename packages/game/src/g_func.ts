@@ -1658,6 +1658,19 @@ export function train_wait(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: train_next
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Advances a `func_train` to the next `path_corner`, handling one teleport corner first.
+ * - Starts mover sound state, records movement endpoints, and schedules `train_wait`.
+ *
+ * Porting notes:
+ * - `G_PickTarget`, logging, linking, and `Move_Calc` are routed through the TypeScript runtime adapter.
+ */
 export function train_next(self: GameEntity, runtime: GameRuntime): void {
   let first = true;
   while (true) {

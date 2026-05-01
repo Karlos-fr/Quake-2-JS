@@ -130,6 +130,15 @@ const gameJson = files.get("save/game.sav") ?? "";
 assert.ok(gameJson.includes("\"helpmessage1\": \"help one\""), "WriteGame must persist game locals");
 assert.ok(gameJson.includes("\"health\": 75"), "WriteGame must call SaveClientData before manual saves");
 
+writeContext.runtime.helpmessage1 = "runtime help one";
+writeContext.runtime.helpmessage2 = "runtime help two";
+writeContext.runtime.helpchanged = 2;
+WriteGame(writeContext, "save/game-runtime.sav", false);
+const runtimeGameJson = files.get("save/game-runtime.sav") ?? "";
+assert.ok(runtimeGameJson.includes("\"helpmessage1\": \"runtime help one\""), "WriteGame must persist newer runtime helpmessage1");
+assert.ok(runtimeGameJson.includes("\"helpmessage2\": \"runtime help two\""), "WriteGame must persist newer runtime helpmessage2");
+assert.ok(runtimeGameJson.includes("\"helpchanged\": 2"), "WriteGame must persist newer runtime helpchanged");
+
 const readContext = createGameMainContext(imports, {
   hooks: {
     readFile: (path) => files.get(path) ?? null,

@@ -8,6 +8,28 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot `game_locals_t` avec champs `helpmessage1`, `helpmessage2`, `helpchanged`.
+- Verdict: `Valide` pour la structure et les 3 champs apres correction du branchement runtime/game.
+- Source H comparee: `game_locals_t` conserve l'etat cross-level persiste dans `server.ssv`; `helpmessage1[512]`, `helpmessage2[512]` et `helpchanged` pilotent le message help/F1, puis `clients`, `spawnpoint`, `maxclients`, `maxentities`, `serverflags`, `num_items`, `autosaved`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `game_locals_t` porte les champs equivalents; les buffers C sont representes par `string`; `createGameLocals` initialise les valeurs zero/vides.
+  - `packages/game/src/g_main.ts`: `GameMainContext.game` porte le bloc `game_locals_t`; `ClientEndServerFrames`, `ClientCommand` et `WriteGame` synchronisent maintenant l'etat help runtime/game.
+  - `packages/game/src/g_save.ts`: `WriteGame`/`ReadGame` persistent et restaurent les champs help avec le reste de `game_locals_t`.
+  - `packages/game/src/g_target.ts`, `p_view.ts`, `p_hud.ts`: `target_help`, clignotement/son F1 et layout help consomment les champs via le runtime synchronise.
+- Runtime:
+  - Source C: `target_help` ecrit `game.helpmessage1/2` et incremente `game.helpchanged`; `G_SetClientSound` detecte le changement et joue au plus trois bips; `Cmd_Help_f`/`HelpComputer` affichent les deux messages; `WriteGame`/`ReadGame` persistent `game_locals_t`.
+  - TS: correction `packages/game/src/g_main.ts` pour eviter que `ClientEndServerFrames` ecrase les modifications `runtime.help*` produites par `target_help`; le compteur monotone choisit le cote le plus recent et `ClientCommand` lit les messages synchronises.
+- apps/web: pas de logique help parallele trouvee; integration attendue via commandes input (`cmd help`), runtime full-game/local, layout HUD et ordre de rendu web. `verify:web-render-order` OK.
+- renderer-three: aucune consommation directe de `game_locals_t` attendue. Les sorties visibles de ce lot sont le layout HUD/help et le signal F1/son, pas des modeles/frames/particules/beams/dlights/areabits/camera/scene propres au renderer; `verify:full-game:three-renderer` OK confirme que le flux full-game reste branche.
+- Commentaires/documentation: commentaire de portage ajoute a `game_locals_t` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level`, comportement et notes; commentaire adapter ajoute a `syncGameHelpState`.
+- Corrections appliquees:
+  - `packages/game/src/g_local.ts`: commentaire de portage `game_locals_t`.
+  - `packages/game/src/g_main.ts`: helper `syncGameHelpState`, synchronisation dans `ClientEndServerFrames`, `ClientCommand` et `WriteGame`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions structure/champs `game_locals_t`.
+  - `scripts/verify/quake2-g-main.ts`: assertions sync game->runtime et runtime->game, puis layout `help` depuis messages runtime.
+  - `scripts/verify/quake2-g-save.ts`: preuve de persistance des messages runtime plus recents.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:g-target` OK; `npm run verify:p-hud` OK; `npm run verify:p-view` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot champs `gitem_s` `flags`, `weapmodel`, `info`, `tag`, `precaches`.
 - Verdict: `Valide` pour les 5 champs apres renforcement du harness header; aucune correction gameplay TS necessaire.
 - Source H comparee: `gitem_s` declare `int flags`, `int weapmodel`, `void *info`, `int tag`, puis `char *precaches`.
@@ -545,10 +567,9 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `game_locals_t`, puis les champs `helpmessage1`, `helpmessage2`, `helpchanged` si le lot reste raisonnable.
+- Continuer avec les champs restants de `game_locals_t`: `spawnpoint`, `maxclients`, `maxentities`, puis `serverflags` si le lot reste raisonnable.
 
 ## Blocages
 
-- `npm run verify:g-target` echoue dans un cas `target_goal`/configstring son avant les assertions `target_laser`; a investiguer dans le lot `g_target` dedie ou avant de s'appuyer sur ce script comme preuve complete de `FL_IMMUNE_LASER`.
 - `npx tsx ./scripts/verify/quake2-g-combat.ts` echoue sur `T_Damage subtracts take from health before Killed: attendu -2, recu -22`; a investiguer dans le lot `g_combat` dedie.
 - Aucun blocage sur le lot `SPAWNFLAG_NOT_*` apres correction coordinateur de `SpawnEntities`.

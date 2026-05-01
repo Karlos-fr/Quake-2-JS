@@ -301,6 +301,19 @@ export type mframe_t = GameMonsterFrame;
 export type mmove_t = GameMonsterMove;
 export type monsterinfo_t = GameMonsterInfo;
 
+/**
+ * Original name: game_locals_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Holds the cross-level game state that survives map changes and is persisted in game save files.
+ *
+ * Porting notes:
+ * - Fixed C buffers such as `helpmessage1`, `helpmessage2` and `spawnpoint` are represented as strings.
+ * - `clients` keeps explicit client records instead of a tagged C allocation.
+ */
 export interface game_locals_t {
   helpmessage1: string;
   helpmessage2: string;

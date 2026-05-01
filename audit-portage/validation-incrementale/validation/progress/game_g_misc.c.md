@@ -2,6 +2,23 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `barrel_touch` et local `ratio`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `barrel_touch` conserve les gardes `!other->groundentity` et `other->groundentity == self`, calcule `ratio = other.mass / self.mass`, soustrait `self->s.origin - other->s.origin`, puis appelle `M_walkmove(self, vectoyaw(v), 20 * ratio * FRAMETIME)`. Le TS ajoute une garde defensive `self.mass === 0`, sans effet sur `misc_explobox` normal car `SP_misc_explobox` force `mass = 400` quand absent.
+  - Commentaire d'en-tete verifie pour `barrel_touch`: original/source/categorie portee/fidelite et comportement documentes.
+  - Branchement runtime verifie: `SP_misc_explobox` installe `self.touch = barrel_touch`, l'entite est liee en `SOLID_BBOX`/`MOVETYPE_STEP`, et `SV_Impact` appelle les touches pendant la physique runtime; le deplacement passe par `M_walkmove` et le collision bridge.
+  - `apps/web`: integration attendue car le push de barrel modifie l'origine d'une entite MD2 visible et shootable. Aucune logique parallele trouvee; les flux local/full-game consomment les snapshots/runtime et modelindices existants.
+  - `renderer-three`: integration attendue pour le modele barrel MD2, son origine/frame et les changements de scene. Le renderer consomme ces sorties via `ClientRefreshFrame.entities` et les adapters Three; pas de manque ouvert pour ce lot.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour push par acteur grounded, ratio de masse, direction `vectoyaw(self - other)`, et gardes airborne / groundentity == self.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `barrel_explode` avec le local `spd` si le lot reste petit.
+
 - 2026-05-01: ligne generee `G_FreeEdict` associee a `func_explosive`, puis `func_explosive_use` / `func_explosive_spawn` / `SP_func_explosive`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `SP_func_explosive` conserve le free deathmatch via `G_FreeEdict`, `MOVETYPE_PUSH`, precache debris1/debris2, `gi.setmodel`, branche trigger-spawn cachee (`SOLID_NOT`, `SVF_NOCLIENT`, `func_explosive_spawn`), branche cible (`func_explosive_use` non shootable), flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, health par defaut 100 et `die = func_explosive_explode` pour les variantes shootables. `func_explosive_spawn` rend le brush solide/visible, efface `use`, applique `KillBox` et relink. `func_explosive_use` appelle l'explosion avec `self` comme inflictor et `other` comme attacker, comme le C.

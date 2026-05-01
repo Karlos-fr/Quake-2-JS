@@ -108,7 +108,7 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { gitem_armor_t, gitem_t } from "../../packages/game/src/g_local.js";
+import type { game_locals_t, gitem_armor_t, gitem_t } from "../../packages/game/src/g_local.js";
 import {
   ARMOR_BODY as INDEX_ARMOR_BODY,
   ARMOR_COMBAT as INDEX_ARMOR_COMBAT,
@@ -295,7 +295,17 @@ assert.equal(client.flood_when.length, 10, "client flood_when inline array misma
 assert.equal(entity.monsterinfo.aiflags, 0, "entity monsterinfo must exist");
 assert.equal(entity.gravity, 1, "entity gravity default mismatch");
 assert.equal(entity.prethink, undefined, "entity prethink default mismatch");
+const gameLocals = game satisfies game_locals_t;
+assert.equal(gameLocals.helpmessage1, "", "game_locals_t helpmessage1 default mismatch");
+assert.equal(gameLocals.helpmessage2, "", "game_locals_t helpmessage2 default mismatch");
+assert.equal(gameLocals.helpchanged, 0, "game_locals_t helpchanged default mismatch");
+assert.deepEqual(gameLocals.clients, [], "game_locals_t clients default mismatch");
+assert.equal(gameLocals.spawnpoint, "", "game_locals_t spawnpoint default mismatch");
 assert.equal(game.maxclients, 0, "game_locals maxclients mismatch");
+assert.equal(gameLocals.maxentities, 0, "game_locals_t maxentities default mismatch");
+assert.equal(gameLocals.serverflags, 0, "game_locals_t serverflags default mismatch");
+assert.equal(gameLocals.num_items, 0, "game_locals_t num_items default mismatch");
+assert.equal(gameLocals.autosaved, false, "game_locals_t autosaved default mismatch");
 assert.equal(level.body_que, 0, "level_locals body_que mismatch");
 assert.equal(st.sky, null, "spawn_temp sky default mismatch");
 assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");
