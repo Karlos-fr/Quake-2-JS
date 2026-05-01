@@ -52,7 +52,7 @@ import {
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
-import { DROPPED_PLAYER_ITEM, ITEM_TARGETS_USED, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
+import { DROPPED_ITEM, DROPPED_PLAYER_ITEM, ITEM_TARGETS_USED, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
 import { CS_ITEMS, DF_INFINITE_AMMO, DF_INSTANT_ITEMS, DF_NO_ARMOR, DF_NO_HEALTH, DF_NO_ITEMS, EF_ROTATE, MASK_SOLID, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_SOLID } from "../../packages/qcommon/src/q_shared.js";
 import type { GameEntity, GameItemDefinition, GameRuntime } from "../../packages/game/src/index.js";
@@ -743,7 +743,7 @@ function verifyUseQuadTimeoutAndDroppedHack(): void {
   const droppedQuad = spawnFreeableEntity(droppedRuntime);
   droppedQuad.classname = "item_quad";
   droppedQuad.item = quad;
-  droppedQuad.spawnflags = DROPPED_PLAYER_ITEM;
+  droppedQuad.spawnflags = DROPPED_ITEM | DROPPED_PLAYER_ITEM;
   droppedQuad.nextthink = 20;
 
   Touch_Item(droppedQuad, droppedPlayer, droppedRuntime);

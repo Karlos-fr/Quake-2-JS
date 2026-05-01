@@ -2,6 +2,21 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `TH_viewthing` / `SP_viewthing`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `TH_viewthing` conserve le frame loop `(frame + 1) % 7` et `nextthink = time + FRAMETIME`; `SP_viewthing` conserve le diagnostic `viewthing spawned`, `MOVETYPE_NONE`, `SOLID_BBOX`, `RF_FRAMELERP`, bbox `[-16,-16,-24]` / `[16,16,32]`, modele `models/objects/banner/tris.md2`, link, think `TH_viewthing` et premier `nextthink = time + 0.5`.
+  - Commentaires d'en-tete Strict verifies pour `TH_viewthing` et `SP_viewthing`.
+  - Branchement runtime verifie: `viewthing` est enregistre dans `g_spawn.ts`, exporte par `index.ts`, cree au spawn map, link comme bbox visible et anime par `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+  - `apps/web`: aucune logique parallele trouvee; le navigateur doit seulement consommer les snapshots/runtime full-game ou local qui contiennent l'entite visible et sa frame.
+  - `renderer-three`: integration attendue car sortie visible MD2 + frame; consommation presente via packet entities -> `CL_BuildRefreshFrame` -> `refresh-entity-sync` -> adapter Three, sans logique gameplay cote renderer.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaire d'en-tete et diagnostic runtime source pour `SP_viewthing`.
+  - `scripts/verify/quake2-g-misc.ts`: couverture directe du spawn, modele, bbox, link runtime, diagnostic et frame loop.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+
 - 2026-05-01: `SP_point_combat`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: en deathmatch, `SP_point_combat` appelle `G_FreeEdict` et s'arrete; hors deathmatch, il configure `SOLID_TRIGGER`, installe `point_combat_touch`, pose les bornes `[-8,-8,-16]` / `[8,8,16]`, force `SVF_NOCLIENT`, rafraichit l'etat spatial et link l'entite.
@@ -196,4 +211,4 @@
 
 ## Prochain lot recommande
 
-- `TH_viewthing` / `SP_viewthing`.
+- `SP_info_null` / `SP_info_notnull`.

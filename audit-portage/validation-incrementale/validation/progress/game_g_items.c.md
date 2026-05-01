@@ -2,6 +2,16 @@
 
 ## Dernier lot valide
 
+- `Use_Quad`, `quad_drop_timeout_hack` et locale `timeout`.
+
+Validation Quad du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Use_Quad` conserve le decrement d'inventaire, `ValidateSelectedItem`, le timeout par defaut 300 frames, l'extension de `quad_framenum` si un Quad est deja actif, et le son `items/damage.wav`. Le global statique C `quad_drop_timeout_hack` reste un etat module TS local: `Pickup_Powerup` le renseigne pour un Quad droppe en deathmatch instantane avec `(nextthink - level.time) / FRAMETIME`, puis `Use_Quad` le consomme et le remet a zero. La locale C `timeout` est portee par le `const timeout` TS.
+
+Correction appliquee dans `packages/game/src/g_items.ts`: commentaire d'en-tete `Use_Quad` complete avec comportement et note de portage pour `quad_drop_timeout_hack`. Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyUseQuadTimeoutAndDroppedHack` couvre l'usage direct, l'extension d'un Quad actif, la revalidation de l'item selectionne, le son d'activation, et le chemin runtime `Touch_Item` -> `Pickup_Powerup` -> `Use_Quad` pour un Quad droppe `DROPPED_ITEM|DROPPED_PLAYER_ITEM` conservant son timeout restant.
+
+Runtime branche via `Touch_Item`/`Pickup_Powerup` pour pickups, via `g_cmds.ts` pour commandes use/inventaire, et via `p_client.ts`/`TossClientWeapon` pour le drop Quad deathmatch. `apps/web` doit consommer ce flux via runtime local, commandes, HUD timer/stat selected item, sons et snapshots; aucune logique Quad parallele masquante detectee. `renderer-three` ne requiert pas de branchement gameplay dedie: les sorties visibles attendues sont les entites item generiques, sons/evenements aval, effets d'armes quadruples deja produits par le runtime/client et consommes par les adapters refresh/renderer.
+
+Tests lances: `npm run verify:g-items`, `npm run verify:p-hud`, `npm run verify:p-view`, `npm run verify:p-weapon`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck` OK.
+
 - `HEALTH_IGNORE_MAX` et `HEALTH_TIMED`.
 
 Validation macros health du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `HEALTH_IGNORE_MAX` conserve la valeur C `1` et pilote les branches qui permettent aux small/mega health de depasser ou ignorer le max; le TS l'utilise dans `SP_item_health_small`, `SP_item_health_mega` et `Pickup_Health`. `HEALTH_TIMED` conserve la valeur C `2`; la combinaison mega-health `HEALTH_IGNORE_MAX|HEALTH_TIMED` donne `style = 3` et declenche dans `Pickup_Health` le think `MegaHealth_think`, `nextthink = runtime.time + 5`, owner, `FL_RESPAWN`, `SVF_NOCLIENT` et `SOLID_NOT` comme le C. Pas de commentaire d'en-tete applicable aux macros; headers consommateurs `Pickup_Health`, `MegaHealth_think` et `SP_item_health_*` verifies.
@@ -163,4 +173,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `Use_Quad` avec `quad_drop_timeout_hack`, puis `GetItemByIndex` / `FindItemByClassname` si le lot reste coherent.
+- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `GetItemByIndex` / `FindItemByClassname` avec les locales `i` / `it` si le lot reste coherent.
