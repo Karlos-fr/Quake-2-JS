@@ -54,6 +54,7 @@ import {
   createPlayerViewFrameState
 } from "../../packages/game/src/p_view.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
+import { damage_t } from "../../packages/game/src/index.js";
 import { attachGameClient, createGameRuntimeFromBspEntities } from "../../packages/game/src/runtime.js";
 
 const runtime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
@@ -77,6 +78,7 @@ const ent = runtime.entities[0]!;
 attachGameClient(ent);
 ent.inuse = true;
 ent.health = 100;
+ent.takedamage = damage_t.DAMAGE_AIM;
 ent.s.modelindex = 255;
 ent.groundentity = ent;
 ent.client!.v_angle = [0, 90, 0];

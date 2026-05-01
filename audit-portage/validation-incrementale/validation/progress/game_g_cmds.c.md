@@ -68,3 +68,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: controle cible inline `npx tsx` pour branches unknown/not usable/out/success; `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:bridge`; `npm run verify:full-game:commands`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `Cmd_Drop_f` et temporaires locaux associes (`index`, `it`, `s`).
+
+## Session 2026-05-01 - Cmd_Drop_f
+
+- Lot valide: `Cmd_Drop_f` et temporaires C associes (`index`, `it`, `s`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme sequence `gi.args`/`FindItem`, rejet item inconnu, rejet item sans callback `drop`, controle inventaire via `ITEM_INDEX`, puis dispatch `it->drop` via `callItemDrop`.
+- Branchement runtime: `ClientCommand` dispatch `drop`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `sv_user`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet `drop` comme commande client forwardee via le pont full-game et ne remplace pas la logique runtime. `packages/renderer-three` consomme les sorties visibles par le chemin snapshot/client refresh: le drop cree une entite item avec `modelindex`, `effects` et `renderfx`, transformee en refresh entity puis synchronisee par `refresh-entity-sync`.
+- Corrections: commentaire d'en-tete complete pour `Cmd_Drop_f`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour branches unknown/not dropable/out/success.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:refresh-entity:alias-flags`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_Inven_f` et temporaire local associe (`i`).

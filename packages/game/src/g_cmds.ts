@@ -453,6 +453,8 @@ export function Cmd_Use_f(ent: GameEntity, context: GameCommandContext): void {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Resolve the requested inventory item, reject missing/non-dropable/out-of-stock cases, then dispatch the item drop callback.
+ * Porting notes: `ITEM_INDEX(it)` remains inline for the inventory check; string-backed item callbacks are routed through `callItemDrop`.
  */
 export function Cmd_Drop_f(ent: GameEntity, context: GameCommandContext): void {
   const s = context.gi.args();

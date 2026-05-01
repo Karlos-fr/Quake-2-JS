@@ -31,6 +31,7 @@ import {
   SP_func_train,
   SP_func_water,
   SP_trigger_elevator,
+  Touch_Plat_Center,
   button_killed,
   button_wait,
   door_go_up,
@@ -43,10 +44,15 @@ import {
 } from "../../packages/game/src/g_func.js";
 import {
   MOVETYPE_PUSH,
+  MOVETYPE_NONE,
   MOVETYPE_STOP,
+  PLAT_LOW_TRIGGER,
   SOLID_BSP,
+  SOLID_TRIGGER,
   STATE_BOTTOM,
   STATE_TOP,
+  STATE_UP,
+  createGameClient,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
   type GameEntity
@@ -112,8 +118,42 @@ plat.size = [64, 64, 32];
 plat.maxs = [64, 64, 32];
 SP_func_plat(plat, runtime);
 assert.equal(plat.moveinfo.sound_start > 0, true, "SP_func_plat start sound registration mismatch");
+const platTrigger = findPlatTrigger(runtime, plat);
+assert.ok(platTrigger, "SP_func_plat must spawn the center trigger");
+assert.equal(platTrigger.touch, Touch_Plat_Center, "plat_spawn_inside_trigger touch mismatch");
+assert.equal(platTrigger.movetype, MOVETYPE_NONE, "plat_spawn_inside_trigger movetype mismatch");
+assert.equal(platTrigger.solid, SOLID_TRIGGER, "plat_spawn_inside_trigger solid mismatch");
+assert.equal(platTrigger.enemy, plat, "plat_spawn_inside_trigger enemy mismatch");
+assert.deepEqual(platTrigger.mins, [25, 25, 8], "plat_spawn_inside_trigger mins mismatch");
+assert.deepEqual(platTrigger.maxs, [39, 39, 40], "plat_spawn_inside_trigger maxs mismatch");
+const nonClient = entity("monster", 30);
+Touch_Plat_Center(platTrigger, nonClient, runtime);
+assert.equal(plat.moveinfo.state, STATE_BOTTOM, "Touch_Plat_Center must ignore non-clients");
+const deadClient = entity("dead-player", 31);
+deadClient.client = createGameClient();
+deadClient.health = 0;
+Touch_Plat_Center(platTrigger, deadClient, runtime);
+assert.equal(plat.moveinfo.state, STATE_BOTTOM, "Touch_Plat_Center must ignore dead clients");
+const liveClient = entity("player", 32);
+liveClient.client = createGameClient();
+liveClient.health = 100;
+Touch_Plat_Center(platTrigger, liveClient, runtime);
+assert.equal(plat.moveinfo.state, STATE_UP, "Touch_Plat_Center must raise a bottomed platform");
+plat.moveinfo.state = STATE_TOP;
+plat.nextthink = 0;
+Touch_Plat_Center(platTrigger, liveClient, runtime);
+assert.equal(plat.nextthink, runtime.time + 1, "Touch_Plat_Center must delay top-platform descent");
 plat_go_down(plat, runtime);
 assert.equal(runtime.soundEvents.at(-1)?.soundPath, "plats/pt1_strt.wav", "plat_go_down start sound mismatch");
+
+const lowPlat = entity("func_plat", 33, { spawnflags: String(PLAT_LOW_TRIGGER) });
+lowPlat.size = [40, 40, 32];
+lowPlat.maxs = [40, 40, 32];
+SP_func_plat(lowPlat, runtime);
+const lowPlatTrigger = findPlatTrigger(runtime, lowPlat);
+assert.ok(lowPlatTrigger, "SP_func_plat must spawn a low center trigger");
+assert.deepEqual(lowPlatTrigger.mins, [20, 20, 8], "PLAT_LOW_TRIGGER collapsed mins mismatch");
+assert.deepEqual(lowPlatTrigger.maxs, [21, 21, 16], "PLAT_LOW_TRIGGER collapsed maxs mismatch");
 
 const conveyor = entity("func_conveyor", 5, { speed: "120" });
 SP_func_conveyor(conveyor, runtime);
@@ -191,4 +231,10 @@ function button_fire_forSound(button: GameEntity): void {
   button.use?.(button, null, button, runtime);
   assert.equal(runtime.soundEvents.length, before + 1, "button_fire must emit default sound");
   assert.equal(runtime.soundEvents.at(-1)?.soundPath, "switches/butn2.wav", "button_fire sound mismatch");
+}
+
+function findPlatTrigger(runtime: ReturnType<typeof createGameRuntimeFromBspEntities>, plat: GameEntity): GameEntity {
+  const trigger = runtime.entities.find((entity) => entity?.inuse && entity.classname === "plat_trigger" && entity.enemy === plat);
+  assert.ok(trigger, "missing plat trigger");
+  return trigger;
 }

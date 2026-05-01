@@ -13,6 +13,19 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: debut de `T_Damage` avec locales `take`/`save`/`asave`/`psave`
+  - Source comparee: `Quake-2-master/game/g_combat.c`.
+  - Cible comparee: `packages/game/src/g_combat.ts`; appels runtime references depuis armes, trigger, fonctions, monstres, world effects et radius damage controles par recherche.
+  - Correction appliquee: `runtime.meansOfDeath = mod` est maintenant execute apres le bloc friendly-fire et apres le retour `!takedamage`, comme le C original; le cas friendly-fire ajoute donc `MOD_FRIENDLY_FIRE` avant stockage.
+  - Test ajuste: `scripts/verify/quake2-p-view.ts` marque l'entite joueur du harness comme damageable avant `P_FallingDamage`, ce qui correspond au flux joueur runtime attendu.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, `Behavior`, `Porting notes`.
+  - Comparaison comportementale: `take = damage` et `save = 0`; godmode/invincibility mettent `take = 0` et conservent `damage` dans `save`; `psave` est retire avant l'appel armor; `asave` est retire puis additionne avec `save`; les compteurs client `damage_parmor`, `damage_armor`, `damage_blood`, `damage_knockback` et `damage_from` consomment ces valeurs comme attendu pour ce lot.
+  - Branchement runtime verifie: `T_Damage` est atteint depuis `T_RadiusDamage`, `g_weapon.ts`, `g_func.ts`, `g_trigger.ts`, `g_target.ts`, `g_turret.ts`, `g_monster.ts`, `g_misc.ts` et `p_view.ts`; pas de manque de branchement ouvert pour ce lot.
+  - `apps/web`: aucune logique parallele constatee; le flux navigateur attendu passe par le runtime game, les temp entities de `SpawnDamage` et les etats client repris par le client full-game.
+  - `renderer-three`: aucune integration gameplay directe attendue pour les seules locales `take`/`save`/`asave`/`psave`; les sorties visibles concernees restent indirectes via `client.damage_*` -> `p_view` et temp entities/particules deja verifiees.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; `npm run verify:p-view`; `npm run verify:particle-sync`; `npm run typecheck`.
+  - Statut matrice: `T_Damage` reste `Partiel` car seule la premiere tranche de la fonction est validee; les locales `take`/`save`/`asave`/`psave` sont `Valide`.
+
 - 2026-04-30: `CheckTeamDamage`
   - Source comparee: `Quake-2-master/game/g_combat.c`.
   - Cible comparee: `packages/game/src/g_combat.ts`.
@@ -85,7 +98,7 @@
 
 ## Prochain lot recommande
 
-- Debut de `T_Damage` avec ses locales `take`/`save`/`asave`/`psave`, en gardant le lot assez petit.
+- Suite de `T_Damage`: `te_sparks`, knockback/momentum avec `mass`, puis emission damage/health/pain si le lot reste raisonnable.
 
 ## Blocages
 

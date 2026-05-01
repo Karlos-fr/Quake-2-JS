@@ -22,6 +22,8 @@ import {
   DAMAGE_NO_PROTECTION,
   DF_NO_FRIENDLY_FIRE,
   DF_SKINTEAMS,
+  FL_GODMODE,
+  MOD_FRIENDLY_FIRE,
   MOD_BLASTER
 } from "../../packages/game/src/runtime.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
@@ -35,6 +37,7 @@ function main(): void {
   verifyReactToClientDamagePreservesVisibleEnemy();
   verifyTDamageAppliesNightmarePainDebounce();
   verifyFriendlyFireUsesSkinTeams();
+  verifyTDamageAccountingAndMeansOfDeath();
   verifyRadiusDamageUsesDefaultDamageCore();
 
   console.log("Verification g_combat - damage/combat gameplay OK");
@@ -170,6 +173,48 @@ function verifyFriendlyFireUsesSkinTeams(): void {
     CheckTeamDamage: () => false
   });
   assertNumber(target.health, 100, "T_Damage keeps friendly-fire cancellation ahead of no-protection handling");
+}
+
+function verifyTDamageAccountingAndMeansOfDeath(): void {
+  const runtime = createHarnessRuntime();
+  runtime.deathmatch = true;
+  runtime.dmflags = DF_SKINTEAMS;
+
+  const target = createPlayer(24);
+  const attacker = createPlayer(25);
+  target.client!.pers.userinfo = "\\skin\\male/grunt";
+  attacker.client!.pers.userinfo = "\\skin\\female/grunt";
+
+  let armorSawDamage = 0;
+  T_Damage(target, attacker, attacker, [1, 0, 0], [4, 5, 6], [0, 0, 1], 20, 7, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 3,
+    CheckArmor: (_ent, _point, _normal, damage) => {
+      armorSawDamage = damage;
+      return 5;
+    },
+    CheckTeamDamage: () => false
+  });
+
+  assertNumber(runtime.meansOfDeath, MOD_BLASTER | MOD_FRIENDLY_FIRE, "T_Damage records the friendly-fire death modifier after team checks");
+  assertNumber(armorSawDamage, 17, "T_Damage feeds CheckArmor with damage remaining after power armor");
+  assertNumber(target.health, 88, "T_Damage subtracts the take value left after protection saves");
+  assertNumber(target.client!.damage_parmor, 3, "T_Damage accumulates psave into client power armor feedback");
+  assertNumber(target.client!.damage_armor, 5, "T_Damage accumulates asave into client armor feedback");
+  assertNumber(target.client!.damage_blood, 12, "T_Damage accumulates take into client blood feedback");
+
+  target.flags |= FL_GODMODE;
+  target.client!.damage_parmor = 0;
+  target.client!.damage_armor = 0;
+  target.client!.damage_blood = 0;
+  T_Damage(target, attacker, attacker, [1, 0, 0], [4, 5, 6], [0, 0, 1], 20, 0, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false
+  });
+
+  assertNumber(target.health, 88, "T_Damage keeps godmode save out of health damage");
+  assertNumber(target.client!.damage_armor, 20, "T_Damage folds godmode save into client armor feedback");
+  assertNumber(target.client!.damage_blood, 0, "T_Damage leaves no take value after godmode save");
 }
 
 function verifyRadiusDamageUsesDefaultDamageCore(): void {

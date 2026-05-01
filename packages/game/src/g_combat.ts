@@ -588,8 +588,6 @@ export function T_Damage(
   runtime: GameRuntime,
   hooks: GameCombatHooks = {}
 ): void {
-  runtime.meansOfDeath = mod;
-
   if (targ.takedamage === 0) {
     return;
   }
@@ -606,6 +604,7 @@ export function T_Damage(
       }
     }
   }
+  runtime.meansOfDeath = mod;
 
   if (runtime.skill === 0 && !runtime.deathmatch && targ.client) {
     damage *= 0.5;

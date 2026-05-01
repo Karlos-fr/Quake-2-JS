@@ -8,6 +8,22 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot flags `FL_IMMUNE_SLIME`, `FL_IMMUNE_LAVA`, `FL_PARTIALGROUND`.
+- Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public et conservation du commentaire source de `FL_PARTIALGROUND`.
+- Valeurs H/TS comparees et conformes:
+  - `FL_IMMUNE_SLIME = 0x00000040`
+  - `FL_IMMUNE_LAVA = 0x00000080`
+  - `FL_PARTIALGROUND = 0x00000100`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public corrige dans `packages/game/src/index.ts`.
+- Runtime:
+  - `FL_IMMUNE_LAVA` est consomme par `g_monster`/`M_WorldEffects` pour inhiber les degats lave.
+  - `FL_IMMUNE_SLIME` est consomme par `g_monster`/`M_WorldEffects` pour inhiber les degats slime.
+  - `FL_PARTIALGROUND` est consomme par `m_move`/`SV_movestep` pour autoriser la correction quand le sol manque partiellement, puis efface quand le check bottom redevient valide; `SV_FixCheckBottom` pose le flag.
+- apps/web: aucune reference directe; pas d'integration web directe attendue pour ces bits `edict->flags`. Les effets navigateur potentiels passent par le runtime game deja branche: degats/sorties sonores pour lava/slime et mouvement/positions d'entites.
+- renderer-three: aucune reference directe; pas d'integration renderer directe attendue. Ces flags ne produisent pas seuls de donnees renderer; les sorties visibles passent par les etats d'entites/evenements produits par le runtime.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source `FL_PARTIALGROUND` conserve; pas de fonction nouvelle dans ce lot.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs, exports publics et branches immunite lava/slime; `npm run verify:g-local:header` OK; `npm run verify:g-monster` OK; `npm run verify:m-move` OK; `npm run typecheck` OK.
+
 - 2026-04-30: lot flags `FL_IMMUNE_LASER`, `FL_GODMODE`, `FL_NOTARGET`.
 - Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public.
 - Valeurs H/TS comparees et conformes:
@@ -90,7 +106,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain petit lot `FL_*`: `FL_IMMUNE_SLIME`, `FL_IMMUNE_LAVA`, `FL_PARTIALGROUND` si coherent.
+- Continuer avec le prochain petit lot `FL_*`: `FL_WATERJUMP`, `FL_TEAMSLAVE`, `FL_NO_KNOCKBACK` si coherent.
 
 ## Blocages
 

@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: trigger interne de plateforme `Touch_Plat_Center`, `plat_spawn_inside_trigger` et locale `trigger`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:436-493` avec `packages/game/src/g_func.ts:1051-1136`.
+- Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour les branches non-client/client mort/client vivant, le delai `STATE_TOP`, la creation du helper `plat_trigger`, les bornes 25px/lip, `PLAT_LOW_TRIGGER` et le collapse X/Y; le code runtime etait conforme.
+- Effets verifies: `Touch_Plat_Center` conserve les gardes joueur vivant, rebascule du trigger vers `enemy`, declenche `plat_go_up` depuis `STATE_BOTTOM` et retarde la descente depuis `STATE_TOP`; `plat_spawn_inside_trigger` alloue un trigger local `MOVETYPE_NONE`/`SOLID_TRIGGER` avec `enemy = ent` et les memes bounds que le C.
+- Branchement: `plat_spawn_inside_trigger` est appelee par `SP_func_plat`; `Touch_Plat_Center` est affectee au helper `touch` puis appelee par le flux trigger (`G_TouchTriggers`/`G_TouchSolids`) pendant l'avancement runtime `G_RunFrame`/physique locale.
+- Integration: aucune compensation gameplay dans `apps/web`; le navigateur consomme les sons runtime et les snapshots/interpolations de brush models. `packages/renderer-three` ne porte pas la logique trigger et consomme les brush snapshots via `gl-world-scene-adapter`; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:render-source` bloque sur import manquant `packages/client/src/types.js` hors lot.
+
 - 2026-04-30: callbacks de plateforme `plat_go_up`, `plat_blocked`, `Use_Plat`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:395-433` avec `packages/game/src/g_func.ts:990-1048`.
 - Correction appliquee: `plat_blocked` ne reduit plus les effets a un log/free local; il appelle `T_Damage` avec 100000 pour les bloqueurs non-monstre/non-client, declenche `BecomeExplosion1` si l'entite est encore `inuse`, applique `T_Damage` avec `self.dmg` aux monstres/clients, puis inverse le mouvement selon `STATE_UP`/`STATE_DOWN`.
@@ -46,7 +54,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `Touch_Plat_Center`, `plat_spawn_inside_trigger`, puis variable locale matrice `trigger` si elle est confirmee comme faux global.
+- Valider le bloc suivant sans elargir: `SP_func_plat`, puis `rotating_blocked`.
 
 ## Blocages
 

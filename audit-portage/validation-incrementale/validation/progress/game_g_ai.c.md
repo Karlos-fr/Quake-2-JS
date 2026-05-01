@@ -77,3 +77,14 @@
 - Tests: harness inline `npx tsx -` OK pour cible devant, derriere, cote, seuil strict `dot == 0.3`, seuil juste au-dessus, yaw 90 et zero-vector; `npm run verify:g-ai` OK; `npm run typecheck` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `HuntTarget` puis `FoundTarget`, ou `FacingIdeal` avec locale `delta` si l'on veut garder un lot tres petit; garder `FindTarget` pour une session dediee.
+
+## Session 2026-05-01 - FacingIdeal / delta
+
+- Lot traite: `FacingIdeal` et locale `delta`.
+- Verdict: `FacingIdeal` valide; `delta` non applicable comme variable locale portee.
+- Corrections TS: aucune correction comportementale; couverture `scripts/verify/quake2-g-ai.ts` etendue pour les seuils 45/46/314/315 et le wrap 0/360.
+- Preuves: comparaison C/TS effectuee; le C calcule `anglemod(self->s.angles[YAW] - self->ideal_yaw)`, retourne `false` seulement si `delta > 45 && delta < 315`, sinon `true`; le TS conserve le meme calcul et le meme test inverse. Commentaire d'en-tete verifie avec fidelite `Strict`.
+- Integration: runtime verifie via `ai_run_melee` et `ai_run_missile`, eux-memes appeles par `ai_run` selon `attack_state`, puis par les fonctions `checkattack`/frames monstres depuis le flux `G_RunFrame`; export public verifie dans `packages/game/src/index.ts`. `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` consomme les sorties visibles via `ClientRefreshFrame`, sans integration directe attendue pour ce helper decisionnel.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `HuntTarget` puis `FoundTarget`, ou `M_CheckAttack` avec locales `chance`/`tr` si l'on veut continuer le bloc attaque.

@@ -20,6 +20,7 @@ import {
   AngleVectors,
   CHAN_AUTO,
   CHAN_ITEM,
+  CHAN_VOICE,
   BUTTON_ATTACK,
   CHAN_WEAPON,
   MZ_BFG,
@@ -646,7 +647,7 @@ export function Weapon_Generic(
         }
       } else {
         if (runtime.time >= ent.pain_debounce_time) {
-          playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
+          playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_VOICE, runtime, hooks);
           ent.pain_debounce_time = runtime.time + 1;
         }
         NoAmmoWeaponChange(ent);
@@ -940,7 +941,7 @@ export function Weapon_HyperBlaster_Fire(ent: GameEntity, runtime: GameRuntime, 
   } else {
     if (client.pers.inventory[client.ammo_index] === 0) {
       if (runtime.time >= ent.pain_debounce_time) {
-        playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
+        playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_VOICE, runtime, hooks);
         ent.pain_debounce_time = runtime.time + 1;
       }
       NoAmmoWeaponChange(ent);
@@ -1018,7 +1019,7 @@ export function Machinegun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Ga
   if (client.pers.inventory[client.ammo_index] < 1) {
     client.ps.gunframe = 6;
     if (runtime.time >= ent.pain_debounce_time) {
-      playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
+      playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_VOICE, runtime, hooks);
       ent.pain_debounce_time = runtime.time + 1;
     }
     NoAmmoWeaponChange(ent);
@@ -1156,7 +1157,7 @@ export function Chaingun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Game
 
   if (!shots) {
     if (runtime.time >= ent.pain_debounce_time) {
-      playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
+      playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_VOICE, runtime, hooks);
       ent.pain_debounce_time = runtime.time + 1;
     }
     NoAmmoWeaponChange(ent);
@@ -1309,7 +1310,7 @@ export function Weapon_Grenade(ent: GameEntity, runtime: GameRuntime, hooks: Gam
         client.grenade_time = 0;
       } else {
         if (runtime.time >= ent.pain_debounce_time) {
-          playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_WEAPON, runtime, hooks);
+          playWeaponOneShot(ent, "weapons/noammo.wav", CHAN_VOICE, runtime, hooks);
           ent.pain_debounce_time = runtime.time + 1;
         }
         NoAmmoWeaponChange(ent);

@@ -14,6 +14,7 @@ import { strict as assert } from "node:assert";
 
 import { DF_MODELTEAMS, PRINT_CHAT, PRINT_HIGH, STAT_FRAGS, type cvar_t } from "../../packages/qcommon/src/index.js";
 import {
+  Cmd_Drop_f,
   Cmd_Give_f,
   Cmd_Inven_f,
   Cmd_PlayerList_f,
@@ -43,6 +44,7 @@ const context = createContext(createRuntime());
 verifyTeamParsing();
 verifyInventorySelection();
 verifyCommandsAndChat();
+verifyDropCommand();
 verifyInventorySerialization();
 verifyPlayerListAndWave();
 
@@ -105,6 +107,32 @@ function verifyCommandsAndChat(): void {
     [player1.index, player2.index],
     "Cmd_Say_f should send chat to all active clients"
   );
+}
+
+function verifyDropCommand(): void {
+  const runtime = createRuntime();
+  const localContext = createContext(runtime);
+  const player = createClient(runtime, 1, "dropper");
+
+  runCommand(localContext, ["drop", "Mystery"], "Mystery");
+  Cmd_Drop_f(player, localContext);
+  assert.equal(lastPrint().message, "unknown item: Mystery\n", "Cmd_Drop_f should reject unknown items");
+
+  runCommand(localContext, ["drop", "Body Armor"], "Body Armor");
+  Cmd_Drop_f(player, localContext);
+  assert.equal(lastPrint().message, "Item is not dropable.\n", "Cmd_Drop_f should reject items without drop callbacks");
+
+  const shells = requireItem("Shells");
+  runCommand(localContext, ["drop", "Shells"], "Shells");
+  Cmd_Drop_f(player, localContext);
+  assert.equal(lastPrint().message, "Out of item: Shells\n", "Cmd_Drop_f should reject absent inventory");
+
+  player.client!.pers.inventory[shells.index] = 25;
+  Cmd_Drop_f(player, localContext);
+  assert.equal(player.client!.pers.inventory[shells.index], 15, "Cmd_Drop_f should dispatch item drop and reduce inventory");
+  const droppedShells = runtime.entities.find((entity) => entity.classname === shells.classname && entity.owner === player);
+  assert.ok(droppedShells, "Cmd_Drop_f should spawn the dropped item entity through the item drop callback");
+  assert.equal(droppedShells.count, 10, "Cmd_Drop_f should preserve the item drop quantity");
 }
 
 function verifyInventorySerialization(): void {
