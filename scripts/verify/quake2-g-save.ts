@@ -114,7 +114,7 @@ writeContext.runtime.maxentities = 64;
 writeContext.game.maxclients = 1;
 writeContext.game.maxentities = 64;
 writeContext.game.helpmessage1 = "help one";
-writeContext.game.serverflags = 3;
+writeContext.runtime.serverflags = 3;
 
 const player = createRuntimeEntity({ classname: "player" }, 1);
 const client = attachGameClient(player);
@@ -142,6 +142,7 @@ const readContext = createGameMainContext(imports, {
 ReadGame(readContext, "save/game.sav");
 assert.equal(readContext.game.helpmessage1, "help one", "ReadGame helpmessage mismatch");
 assert.equal(readContext.game.serverflags, 3, "ReadGame serverflags mismatch");
+assert.equal(readContext.runtime.serverflags, 3, "ReadGame runtime serverflags mismatch");
 assert.equal(readContext.game.clients[0]?.pers.health, 75, "ReadGame client pers health mismatch");
 
 const target = createRuntimeEntity({ classname: "target_crosslevel_target" }, 2);

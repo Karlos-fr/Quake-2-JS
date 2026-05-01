@@ -684,6 +684,18 @@ export function chick_die(
   }
 }
 
+/**
+ * Original name: chick_duck_down
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Enters the Chick duck state, shrinks the bbox height, enables damage and links the entity.
+ *
+ * Porting notes:
+ * - Uses `runtime.time` and `linkGameEntity` in place of `level.time` and `gi.linkentity`.
+ */
 export function chick_duck_down(self: GameEntity, runtime: GameRuntime): void {
   if ((self.monsterinfo.aiflags & AI_DUCKED) !== 0) {
     return;
@@ -695,6 +707,15 @@ export function chick_duck_down(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: chick_duck_hold
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Holds or releases the current animation frame according to the duck pausetime.
+ */
 export function chick_duck_hold(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.time >= self.monsterinfo.pausetime) {
     self.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
@@ -703,6 +724,18 @@ export function chick_duck_hold(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: chick_duck_up
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Leaves the Chick duck state, restores bbox height and aim damage, then links the entity.
+ *
+ * Porting notes:
+ * - Uses `linkGameEntity` in place of `gi.linkentity`.
+ */
 export function chick_duck_up(self: GameEntity, runtime: GameRuntime): void {
   self.monsterinfo.aiflags &= ~AI_DUCKED;
   self.maxs[2] += 32;
@@ -726,6 +759,15 @@ export const chick_move_duck: GameMonsterMove = {
   endfunc: chick_run
 };
 
+/**
+ * Original name: chick_dodge
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Randomly chooses the duck move in response to incoming fire and records the attacker as enemy if needed.
+ */
 export function chick_dodge(self: GameEntity, attacker: GameEntity | null, _eta: number): void {
   if (Math.random() > 0.25) {
     return;
@@ -738,6 +780,18 @@ export function chick_dodge(self: GameEntity, attacker: GameEntity | null, _eta:
   self.monsterinfo.currentmove = chick_move_duck;
 }
 
+/**
+ * Original name: ChickSlash
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the melee swing sound and applies the original slash hit trace/damage.
+ *
+ * Porting notes:
+ * - Uses `emitRegisteredGameSound` and the explicit runtime in place of `gi.sound`.
+ */
 export function ChickSlash(self: GameEntity, runtime: GameRuntime): void {
   const aim: vec3_t = [MELEE_DISTANCE, self.mins[0], 10];
   emitRegisteredGameSound(runtime, self, sound_melee_swing, SOUND_MELEE_SWING, soundOptions(CHAN_WEAPON));
@@ -746,6 +800,19 @@ export function ChickSlash(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: ChickRocket
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Projects the Chick rocket muzzle origin, aims at the enemy view height and fires one rocket.
+ *
+ * Porting notes:
+ * - Preserves `MZ2_CHICK_ROCKET_1`, damage, speed and projectile direction math.
+ * - The TypeScript port guards nullable enemy references before applying the original enemy-origin math.
+ */
 export function ChickRocket(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
@@ -760,10 +827,34 @@ export function ChickRocket(self: GameEntity, runtime: GameRuntime): void {
   monster_fire_rocket(self, start, dir, 50, 500, MZ2_CHICK_ROCKET_1, runtime);
 }
 
+/**
+ * Original name: Chick_PreAttack1
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the missile prelaunch voice sound at the first startup attack frame.
+ *
+ * Porting notes:
+ * - Uses `emitRegisteredGameSound` and the explicit runtime in place of `gi.sound`.
+ */
 export function Chick_PreAttack1(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_missile_prelaunch, SOUND_MISSILE_PRELAUNCH, soundOptions(CHAN_VOICE));
 }
 
+/**
+ * Original name: ChickReload
+ * Source: game/m_chick.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the missile reload voice sound during the rocket attack loop.
+ *
+ * Porting notes:
+ * - Uses `emitRegisteredGameSound` and the explicit runtime in place of `gi.sound`.
+ */
 export function ChickReload(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_missile_reload, SOUND_MISSILE_RELOAD, soundOptions(CHAN_VOICE));
 }

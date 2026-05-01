@@ -21,6 +21,8 @@ Regles :
 - lancer 6 agents en parallele quand au moins 6 fichiers distincts peuvent etre traites;
 - donner a chaque agent un fichier source different;
 - demander a chaque agent de valider seulement le prochain petit lot raisonnable de son fichier;
+- lors d'un lancement avec contexte complet, ne pas forcer le type d'agent;
+- inclure explicitement le contexte de consignes dans chaque mission d'agent, meme si la session principale l'a deja lu;
 - ne pas lancer deux agents sur la meme matrice, le meme progress file ou le meme fichier TS;
 - utiliser `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md` comme point d'entree;
 - utiliser les matrices dans `audit-portage/validation-incrementale/validation/matrices/`;

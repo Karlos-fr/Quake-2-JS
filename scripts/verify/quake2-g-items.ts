@@ -19,6 +19,8 @@ import {
   FL_RESPAWN,
   FRAMETIME,
   FindItem,
+  GetGameItems,
+  GetItemByIndex,
   InitItems,
   ITEM_NO_TOUCH,
   ITEM_TRIGGER_SPAWN,
@@ -27,11 +29,16 @@ import {
   Pickup_Armor,
   PowerArmorType,
   PrecacheItem,
+  SetItemNames,
   SetRespawn,
   SOLID_BBOX,
   SOLID_NOT,
   SOLID_TRIGGER,
   SpawnItem,
+  SP_item_health,
+  SP_item_health_large,
+  SP_item_health_mega,
+  SP_item_health_small,
   Touch_Item,
   Use_Item,
   Use_PowerArmor,
@@ -66,6 +73,8 @@ function main(): void {
   verifyUseItemTriggerSpawnActivation();
   verifyDropToFloorPlacementAndFlags();
   verifyDropToFloorTeamRespawnAndStartSolid();
+  verifyItemlistShapeAndHealthSentinel();
+  verifyHealthSpawnFunctionsUseGenericHealthItem();
   verifyArmorAndPowerArmorIndices();
   verifyPickupArmorConversions();
   verifyPrecacheItemAssetsAndValidation();
@@ -75,6 +84,92 @@ function main(): void {
   verifySpawnItemDeathmatchFilters();
 
   console.log("Verification g_items - pickup/drop/respawn gameplay OK");
+}
+
+function verifyItemlistShapeAndHealthSentinel(): void {
+  const itemCount = InitItems();
+  const items = GetGameItems();
+  const health = requireItem("Health");
+  const airstrike = requireItem("Airstrike Marker");
+
+  assertNumber(itemCount, 41, "InitItems returns the original game.num_items equivalent without the C end marker");
+  assertNumber(items.length, itemCount, "GetGameItems length stays aligned with InitItems");
+  assertNumber(airstrike.index, 40, "Airstrike Marker keeps the original itemlist slot before generic health");
+  assertNumber(health.index, 41, "Generic Health keeps the original final itemlist slot");
+  assertBoolean(GetItemByIndex(0) === null, true, "GetItemByIndex preserves the C null slot 0 as not addressable");
+  assertBoolean(GetItemByIndex(health.index) === health, true, "GetItemByIndex resolves the generic Health slot");
+  assertBoolean(FindItem("Health") === health, true, "FindItem resolves the single generic Health entry");
+  assertBoolean(FindItem("item_health_small") === null, true, "item_health_small is not a pickup name in the C itemlist");
+  assertBoolean(items.filter((item) => item.pickupName === "Health").length === 1, true, "itemlist contains exactly one generic Health pickup");
+
+  assertNumber(health.quantity, 0, "Generic Health quantity is zero like the C table");
+  assertBoolean(health.worldModel === "", true, "Generic Health has no world model in the C table");
+  assertBoolean(health.classname === "", true, "Generic Health keeps the C NULL classname as an empty TS classname");
+  assertBoolean(health.precaches.includes("items/m_health.wav"), true, "Generic Health preserves health sound precaches");
+
+  const names = SetItemNames();
+  assertNumber(names.length, itemCount, "SetItemNames exposes one configstring name per itemlist entry");
+  assertBoolean(names[names.length - 1] === "Health", true, "SetItemNames ends with the generic Health pickup name");
+}
+
+function verifyHealthSpawnFunctionsUseGenericHealthItem(): void {
+  const mediumRuntime = createHarnessRuntime();
+  const medium = spawnGameEntity(mediumRuntime);
+  medium.classname = "item_health";
+
+  SP_item_health(medium, mediumRuntime);
+
+  assertNumber(medium.count, 10, "SP_item_health writes the original medium health count");
+  assertBoolean(medium.item === requireItem("Health"), true, "SP_item_health attaches the generic Health item");
+  assertBoolean(medium.itemWorldModel === "models/items/healing/medium/tris.md2", true, "SP_item_health keeps the map model outside itemlist metadata");
+  assertBoolean(mediumRuntime.assets.soundPaths.includes("items/n_health.wav"), true, "SP_item_health registers the medium health pickup sound");
+  assertBoolean(mediumRuntime.assets.modelPaths.includes("models/items/healing/medium/tris.md2"), true, "SP_item_health registers the medium health model through SpawnItem");
+
+  const smallRuntime = createHarnessRuntime();
+  const small = spawnFreeableEntity(smallRuntime);
+  small.classname = "item_health_small";
+
+  SP_item_health_small(small, smallRuntime);
+
+  assertNumber(small.count, 2, "SP_item_health_small writes the original small health count");
+  assertNumber(small.style, 1, "SP_item_health_small sets HEALTH_IGNORE_MAX after SpawnItem like the C source");
+  assertBoolean(small.item === requireItem("Health"), true, "SP_item_health_small attaches the generic Health item");
+  assertBoolean(small.itemWorldModel === "models/items/healing/stimpack/tris.md2", true, "SP_item_health_small keeps the variant model outside itemlist metadata");
+  assertBoolean(smallRuntime.assets.soundPaths.includes("items/s_health.wav"), true, "SP_item_health_small registers the small health pickup sound");
+
+  const largeRuntime = createHarnessRuntime();
+  const large = spawnFreeableEntity(largeRuntime);
+  large.classname = "item_health_large";
+
+  SP_item_health_large(large, largeRuntime);
+
+  assertNumber(large.count, 25, "SP_item_health_large writes the original large health count");
+  assertNumber(large.style, 0, "SP_item_health_large leaves health style unchanged like the C source");
+  assertBoolean(large.item === requireItem("Health"), true, "SP_item_health_large attaches the generic Health item");
+  assertBoolean(large.itemWorldModel === "models/items/healing/large/tris.md2", true, "SP_item_health_large keeps the variant model outside itemlist metadata");
+  assertBoolean(largeRuntime.assets.soundPaths.includes("items/l_health.wav"), true, "SP_item_health_large registers the large health pickup sound");
+
+  const megaRuntime = createHarnessRuntime();
+  const mega = spawnFreeableEntity(megaRuntime);
+  mega.classname = "item_health_mega";
+
+  SP_item_health_mega(mega, megaRuntime);
+
+  assertNumber(mega.count, 100, "SP_item_health_mega writes the original mega-health count");
+  assertNumber(mega.style, 3, "SP_item_health_mega sets HEALTH_IGNORE_MAX|HEALTH_TIMED after SpawnItem like the C source");
+  assertBoolean(mega.item === requireItem("Health"), true, "SP_item_health_mega attaches the generic Health item");
+  assertBoolean(mega.itemWorldModel === "models/items/mega_h/tris.md2", true, "SP_item_health_mega keeps the variant model outside itemlist metadata");
+  assertBoolean(megaRuntime.assets.soundPaths.includes("items/m_health.wav"), true, "SP_item_health_mega registers the mega-health pickup sound");
+
+  const noHealthRuntime = createHarnessRuntime();
+  noHealthRuntime.deathmatch = true;
+  noHealthRuntime.dmflags = DF_NO_HEALTH;
+  const inhibited = spawnFreeableEntity(noHealthRuntime);
+
+  SP_item_health_mega(inhibited, noHealthRuntime);
+
+  assertNumber(inhibited.inuse ? 1 : 0, 0, "SP_item_health_mega frees health immediately under DF_NO_HEALTH");
+  assertNumber(noHealthRuntime.assets.modelPaths.length, 0, "SP_item_health_mega returns before registering assets under DF_NO_HEALTH");
 }
 
 function verifyAddAmmoCapsToMax(): void {

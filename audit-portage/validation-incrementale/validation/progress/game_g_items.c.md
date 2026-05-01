@@ -2,6 +2,26 @@
 
 ## Dernier lot valide
 
+- `SP_item_health_large`, `SP_item_health_mega`, puis `InitItems` / `SetItemNames` avec locales `i` et `it`.
+
+Validation health large/mega et item names du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `SP_item_health_large` conserve le filtre deathmatch `DF_NO_HEALTH`, `G_FreeEdict`, le modele `models/items/healing/large/tris.md2`, `count = 25`, `SpawnItem(FindItem("Health"))` et le soundindex `items/l_health.wav`, sans style special. `SP_item_health_mega` conserve le filtre, le modele `models/items/mega_h/tris.md2`, `count = 100`, `SpawnItem(FindItem("Health"))`, le soundindex `items/m_health.wav`, puis `style = HEALTH_IGNORE_MAX|HEALTH_TIMED`; correction appliquee dans `packages/game/src/g_items.ts` pour remettre l'ordre soundindex/style comme le C. Les deux fonctions restent rattachees a l'entree itemlist generique `Health`; headers verifies.
+
+`InitItems` conserve l'equivalent de `game.num_items = sizeof(itemlist)/sizeof(itemlist[0]) - 1`: le TS retourne `itemlist.length` sans exposer le slot nul C ni le marqueur final, et `g_main.ts` affecte `context.game.num_items`. `SetItemNames` conserve la generation des pickup names dans l'ordre itemlist et l'initialisation des indices armor/power armor via `cacheItemIndices`; `g_main.ts` ecrit les noms sur `CS_ITEMS + index + 1` pour respecter les indices d'items 1-based du port. Locales C `i` et `it` portees par l'index de boucle et l'item courant du `map`/appelant.
+
+Runtime branche via `g_spawn.ts`/`ED_CallSpawn`, `SpawnItem`, `droptofloor`, `Touch_Item`, `g_main.ts` (`InitItems`, worldspawn/`SetItemNames`) et les configstrings `CS_ITEMS`. `apps/web` consomme ce flux via le host full-game, la synchro client configstrings/inventaire/HUD et les snapshots, sans logique parallele detectee. `renderer-three` n'a pas de branchement gameplay dedie attendu: les health pickups produisent des entites item visibles generiques (`modelindex`, origine, effets/renderfx, disparition/free), consommees par le pipeline de refresh.
+
+Test complete dans `scripts/verify/quake2-g-items.ts`: `verifyHealthSpawnFunctionsUseGenericHealthItem` couvre maintenant `SP_item_health_large`, `SP_item_health_mega`, modeles, counts, styles, sons, entree generique `Health` et inhibition `DF_NO_HEALTH`; `verifyItemlistShapeAndHealthSentinel` couvre toujours `InitItems`/`SetItemNames`, slots Airstrike/Health et config names. Tests lances: `npm run verify:g-items`, `npm run verify:g-spawn`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
+- `itemlist` global/table, puis `SP_item_health` et `SP_item_health_small`.
+
+Validation `itemlist` / health spawn du 2026-05-01: comparaison avec `game/g_items.c` confirmee. La table C contient le slot nul initial, les items armor/weapons/ammo/powerups/keys, puis une seule entree generique `Health` avant le marqueur final; les variantes `item_health`, `item_health_small`, `item_health_large`, `item_health_mega` sont des fonctions de spawn, pas des entrees distinctes de `itemlist`. Correction appliquee dans `packages/game/src/g_items.ts`: suppression des quatre entrees health specifiques dans `rawItemlist`, remplacement par l'entree generique `Health` (`classname` C NULL porte en chaine vide, `worldModel` vide, `quantity` 0, precaches sons health), et ajout d'un header `itemlist` en `Fidelity level: Strict`. `InitItems`, `GetGameItems`, `GetItemByIndex`, `FindItem` et `SetItemNames` restent alignes sur l'indexation TS sans exposer le slot C 0; Airstrike Marker est au slot 40 et Health au slot 41.
+
+`SP_item_health` conserve le filtre `DF_NO_HEALTH`, le modele medium, `count = 10`, `SpawnItem(FindItem("Health"))` et le soundindex `items/n_health.wav`. `SP_item_health_small` conserve le filtre, le modele stimpack, `count = 2`, `SpawnItem(FindItem("Health"))`, puis `style = HEALTH_IGNORE_MAX` et le soundindex `items/s_health.wav`. Les deux headers etaient presents et ont ete verifies.
+
+Runtime branche via `g_spawn.ts`/`ED_CallSpawn`, `SpawnItem`, `droptofloor`, `Touch_Item`, `InitItems` dans `g_main.ts` et `SetItemNames` pour les configstrings. `apps/web` consomme ce flux via runtime local/configstrings/HUD/snapshots sans logique parallele detectee. `renderer-three` consomme uniquement les entites item visibles generiques (`modelindex`, origine, effets/renderfx, disparition/free), pas de branchement gameplay dedie requis.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyItemlistShapeAndHealthSentinel` couvre `InitItems`, `GetGameItems`, `GetItemByIndex(0)`, l'unique entree `Health`, les slots 40/41 et `SetItemNames`; `verifyHealthSpawnFunctionsUseGenericHealthItem` couvre `SP_item_health`, `SP_item_health_small`, les modeles/count/style, sons, assets, et le retour `DF_NO_HEALTH`. Tests lances: `npm run verify:g-items`, `npm run verify:g-spawn`, `npm run verify:p-hud`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run typecheck` OK.
+
 - `PrecacheItem` avec locales `data`, `len`, `ammo`, puis `SpawnItem`.
 
 Validation `PrecacheItem` / `SpawnItem` du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `PrecacheItem` conserve le retour sur item nul, le precache `pickup_sound`, `world_model`, `view_model`, `icon`, la recursion ammo via `FindItem` avec garde `ammo != it`, puis le parsing des precaches separes par espaces avec validation `len >= MAX_QPATH || len < 5` et dispatch par extension `md2`/`sp2`/`wav`/`pcx`. Corrections appliquees dans `packages/game/src/g_items.ts`: ajout du `viewModel`, recursion ammo, support null, validation `MAX_QPATH`, et header passe en `Fidelity level: Strict`. Locales validees: `data` portee par le token `assetPath`, `len` par `assetPath.length`, `ammo` par la resolution `FindItem(item.ammo)`.
@@ -135,4 +155,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- `itemlist` global/table, puis `SP_item_health` / `SP_item_health_small` si coherent.
+- Reprendre apres `SetItemNames`: traiter les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice, en commencant par les doublons/locaux `i` / `it` anterieurs si le coordinateur confirme qu'ils ne sont pas deja couverts par les lots associes.

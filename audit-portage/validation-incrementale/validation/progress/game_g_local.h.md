@@ -8,6 +8,43 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot cross-level trigger flags `SFL_CROSS_TRIGGER_1` a `SFL_CROSS_TRIGGER_MASK`.
+- Verdict: `Valide` pour les 9 macros apres correction limitee de la sauvegarde game et renforcement des harness ciblees.
+- Valeurs H/TS comparees et conformes:
+  - `SFL_CROSS_TRIGGER_1 = 0x00000001`
+  - `SFL_CROSS_TRIGGER_2 = 0x00000002`
+  - `SFL_CROSS_TRIGGER_3 = 0x00000004`
+  - `SFL_CROSS_TRIGGER_4 = 0x00000008`
+  - `SFL_CROSS_TRIGGER_5 = 0x00000010`
+  - `SFL_CROSS_TRIGGER_6 = 0x00000020`
+  - `SFL_CROSS_TRIGGER_7 = 0x00000040`
+  - `SFL_CROSS_TRIGGER_8 = 0x00000080`
+  - `SFL_CROSS_TRIGGER_MASK = 0x000000ff`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de definition directe attendue pour ces macros.
+- Runtime:
+  - Source C: `trigger_crosslevel_trigger_use` OR les spawnflags dans `game.serverflags`; `target_crosslevel_target_think` exige que tous les bits demandes soient presents dans `game.serverflags & SFL_CROSS_TRIGGER_MASK`; `use_target_changelevel` efface les bits cross-level quand la map cible contient `*`; `WriteGame`/`ReadGame` persistent `game.serverflags`; `ReadLevel` rearme les `target_crosslevel_target`.
+  - TS: `packages/game/src/g_target.ts` conserve les branches trigger/target/changelevel sur `runtime.serverflags`; `packages/game/src/g_save.ts` restaure deja `game.serverflags` et `runtime.serverflags`. Correction appliquee: `WriteGame` synchronise `context.game.serverflags` depuis `context.runtime.serverflags` avant snapshot, sinon les flags poses par le runtime pouvaient ne pas etre persistes.
+- apps/web: aucune reference directe aux constantes; pas de logique parallele attendue. Le navigateur declenche ce comportement via le runtime serveur/game et les sauvegardes/chargements du host full-game; `verify:full-game:server-host` OK.
+- renderer-three: aucune reference directe; pas d'integration renderer directe attendue. Ces flags controlent des activations cross-level sans produire directement de donnees visuelles; les sorties visibles eventuelles viennent ensuite des cibles declenchees par le runtime. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source `// game.serverflags values` verifie. Commentaires de `trigger_crosslevel_trigger_use`, `SP_target_crosslevel_trigger`, `target_crosslevel_target_think`, `SP_target_crosslevel_target`, `WriteGame`, `ReadGame` et `ReadLevel` verifies.
+- Tests: `npm run verify:g-local:header` OK avec assertions `SFL_CROSS_TRIGGER_*`; `npm run verify:g-target` OK avec couverture multi-bit et clear nouvelle unite; `npm run verify:g-save` OK avec persistence `runtime.serverflags`/`game.serverflags` et rearmement `target_crosslevel_target`; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+- Note harness: `scripts/verify/quake2-g-target.ts` draine les configstrings apres spawn `target_goal` afin que l'assertion CD track ne soit plus polluee par l'enregistrement son precedent.
+
+- 2026-05-01: lot handedness values `RIGHT_HANDED`, `LEFT_HANDED`, `CENTER_HANDED`.
+- Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public et ajout d'assertions ciblees dans le harness header.
+- Valeurs H/TS comparees et conformes:
+  - `RIGHT_HANDED = 0`
+  - `LEFT_HANDED = 1`
+  - `CENTER_HANDED = 2`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; constantes miroir runtime verifiees dans `packages/game/src/runtime.ts`; export public corrige dans `packages/game/src/index.ts` pour `RIGHT_HANDED` et `LEFT_HANDED`.
+- Runtime:
+  - Source C: `ClientUserinfoChanged` copie `userinfo["hand"]` dans `pers.hand`; `P_ProjectSource` inverse l'offset lateral pour `LEFT_HANDED` et le centre pour `CENTER_HANDED`; `G_SetStats` affiche l'icone d'arme dans le HUD si `CENTER_HANDED` ou FOV > 91.
+  - TS: `packages/game/src/p_client.ts`, `packages/game/src/p_weapon.ts` et `packages/game/src/p_hud.ts` conservent ces branches. Les commentaires d'en-tete de `ClientUserinfoChanged`, `P_ProjectSource` et `G_SetStats` ont ete verifies avec `Original name`, `Source`, `Category: Ported` et niveau de fidelite.
+- apps/web: integration attendue via userinfo/cvar `hand` du host full-game, sans logique parallele de gameplay; `apps/web/src/full-game.ts` enregistre `hand` comme userinfo et `full-game-server-host` utilise `\\hand\\0`. `verify:full-game:authoritative-input` et `verify:full-game:server-host` OK.
+- renderer-three: aucune consommation directe des constantes game attendue. Les sorties visibles sont `ps.gunindex`, l'origine des tirs/muzzle flashes et les stats HUD produits par runtime/client; `verify:full-game:three-renderer` OK. `packages/renderer-three` garde seulement son cvar renderer `hand`/`r_lefthand` issu du renderer original, pas une compensation gameplay.
+- Influence input/HUD/arme/camera: oui pour userinfo input, projection de muzzle/arme et HUD; pas d'effet camera direct dans ce lot.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs, export public, miroir runtime et defaut client; `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:p-weapon` OK; `npm run verify:p-hud` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:authoritative-input` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot power armor constants `POWER_ARMOR_NONE`, `POWER_ARMOR_SCREEN`, `POWER_ARMOR_SHIELD`.
 - Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public et ajout d'assertions ciblees dans le harness header.
 - Valeurs H/TS comparees et conformes:
@@ -344,7 +381,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les handedness values: `RIGHT_HANDED`, `LEFT_HANDED`, `CENTER_HANDED`.
+- Continuer avec les player noise flags: `PNOISE_SELF`, `PNOISE_WEAPON`, `PNOISE_IMPACT`.
 
 ## Blocages
 

@@ -34,6 +34,7 @@ import {
   CS_SKYROTATE,
   CS_STATUSBAR,
   DF_SAME_LEVEL,
+  MZ_LOGIN,
   MZ_LOGOUT,
   PRINT_HIGH,
   multicast_t,
@@ -598,7 +599,7 @@ export function GetGameApi(imports: game_import_t, options: GameMainContextOptio
     WriteLevel: (filename) => WriteLevel(context, filename),
     ReadLevel: (filename) => ReadLevel(context, filename),
     ClientConnect: (ent, userinfo) => ClientConnect(ent, userinfo, context.runtime, createClientConnectHooks(context)),
-    ClientBegin: (ent) => ClientBegin(ent, context.runtime, context.hooks),
+    ClientBegin: (ent) => ClientBegin(ent, context.runtime, createClientUserinfoHooks(context)),
     ClientUserinfoChanged: (ent, userinfo) => {
       ClientUserinfoChanged(ent, userinfo, context.runtime, createClientUserinfoHooks(context));
     },
@@ -657,6 +658,12 @@ function createClientUserinfoHooks(context: GameMainContext): GameMainHooks {
     onConfigstringPlayer: context.hooks.onConfigstringPlayer ?? ((playernum, value) => {
       context.gi.configstring(CS_PLAYERSKINS + playernum, value);
     }),
+    onLoginEffect: context.hooks.onLoginEffect ?? ((ent) => {
+      context.gi.WriteByte(svc_muzzleflash);
+      context.gi.WriteShort(ent.index);
+      context.gi.WriteByte(MZ_LOGIN);
+      context.gi.multicast(ent.s.origin, multicast_t.MULTICAST_PVS);
+    }),
     onDisconnectEffect: context.hooks.onDisconnectEffect ?? ((ent) => {
       context.gi.WriteByte(svc_muzzleflash);
       context.gi.WriteShort(ent.index);
@@ -665,6 +672,9 @@ function createClientUserinfoHooks(context: GameMainContext): GameMainHooks {
     }),
     onUnlinkEntity: context.hooks.onUnlinkEntity ?? ((ent) => {
       context.gi.unlinkentity(ent);
+    }),
+    isIntermission: context.hooks.isIntermission ?? ((runtime) => {
+      return runtime.intermissiontime !== 0;
     })
   };
 }
@@ -743,7 +753,12 @@ export function createGameMainContext(imports: game_import_t, options: GameMainC
  * Fidelity level: Close
  *
  * Behavior:
- * - Preserves the export slot and keeps the still-unported client command dispatch explicit.
+ * - Preserves the `g_main.c` export slot and relays client command dispatch to the `game/g_cmds.c` port.
+ * - Passes the gameplay cvars and help state that the command dispatcher reads through original globals.
+ *
+ * Porting notes:
+ * - Existing integrations may override the slot through `onClientCommand`; the default path stays the ported
+ *   `g_cmds.ts` dispatcher.
  */
 export function ClientCommand(context: GameMainContext, ent: edict_t): void {
   if (context.hooks.onClientCommand) {

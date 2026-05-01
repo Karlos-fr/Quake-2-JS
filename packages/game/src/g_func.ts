@@ -464,6 +464,7 @@ export function door_hit_bottom(self: GameEntity, runtime: GameRuntime): void {
 export function door_go_down(self: GameEntity, runtime: GameRuntime): void {
   startMoverLoop(self, runtime);
   if (self.max_health > 0) {
+    self.takedamage = damage_t.DAMAGE_YES;
     self.health = self.max_health;
   }
 
@@ -498,7 +499,6 @@ export function door_go_up(self: GameEntity, activator: GameEntity | null, runti
 
   startMoverLoop(self, runtime);
   self.moveinfo.state = STATE_UP;
-  self.activator = activator;
   if (self.classname === "func_door") {
     Move_Calc(self, self.moveinfo.end_origin, door_hit_top, runtime);
   } else if (self.classname === "func_door_rotating") {
@@ -518,7 +518,7 @@ export function door_go_up(self: GameEntity, activator: GameEntity | null, runti
  * - Activates one door team, handling toggle semantics and propagating to all team members.
  */
 export function door_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
-  if (self.teammaster && self.teammaster !== self) {
+  if ((self.flags & FL_TEAMSLAVE) !== 0) {
     return;
   }
 

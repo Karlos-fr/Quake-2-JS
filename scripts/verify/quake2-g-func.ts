@@ -40,6 +40,7 @@ import {
   button_touch,
   button_use,
   button_wait,
+  door_use,
   door_go_down,
   door_go_up,
   door_hit_bottom,
@@ -60,6 +61,7 @@ import {
   MOVETYPE_PUSH,
   MOVETYPE_NONE,
   MOVETYPE_STOP,
+  DOOR_TOGGLE,
   FL_TEAMSLAVE,
   PLAT_LOW_TRIGGER,
   SOLID_BSP,
@@ -286,15 +288,40 @@ door.maxs = [64, 16, 16];
 SP_func_door(door, runtime);
 assert.equal(door.s.modelindex, 0, "SP_func_door without model should not invent a modelindex");
 assert.equal(door.moveinfo.sound_start > 0, true, "SP_func_door start sound registration mismatch");
+door.activator = shooter;
 door_go_up(door, button, runtime);
 assert.equal(runtime.soundEvents.at(-1)?.soundPath, "doors/dr1_strt.wav", "door_go_up start sound mismatch");
 assert.equal(door.s.sound, door.moveinfo.sound_middle, "door_go_up loop sound mismatch");
+assert.equal(door.moveinfo.state, STATE_UP, "door_go_up state mismatch");
+assert.equal(door.moveinfo.endfunc, door_hit_top, "door_go_up must move toward top callback");
+assert.equal(door.activator, shooter, "door_go_up must not overwrite activator field");
 door_hit_top(door, runtime);
 assert.equal(runtime.soundEvents.at(-1)?.soundPath, "doors/dr1_end.wav", "door_hit_top end sound mismatch");
 assert.equal(door.s.sound, 0, "door_hit_top must clear loop sound");
 assert.equal(door.moveinfo.state, STATE_TOP, "door_hit_top state mismatch");
 assert.equal(door.think, door_go_down, "door_hit_top must schedule door_go_down");
 assert.equal(door.nextthink, runtime.time + door.moveinfo.wait, "door_hit_top wait scheduling mismatch");
+door.health = 3;
+door.max_health = 40;
+door.takedamage = damage_t.DAMAGE_NO;
+door_go_down(door, runtime);
+assert.equal(runtime.soundEvents.at(-1)?.soundPath, "doors/dr1_strt.wav", "door_go_down start sound mismatch");
+assert.equal(door.s.sound, door.moveinfo.sound_middle, "door_go_down loop sound mismatch");
+assert.equal(door.health, 40, "door_go_down must restore shootable door health");
+assert.equal(door.takedamage, damage_t.DAMAGE_YES, "door_go_down must reactivate shootable door damage");
+assert.equal(door.moveinfo.state, STATE_DOWN, "door_go_down state mismatch");
+assert.equal(door.moveinfo.endfunc, door_hit_bottom, "door_go_down must move toward bottom callback");
+const upwardDoor = entity("func_door", 34);
+upwardDoor.moveinfo.state = STATE_UP;
+upwardDoor.nextthink = 321;
+door_go_up(upwardDoor, button, runtime);
+assert.equal(upwardDoor.nextthink, 321, "door_go_up STATE_UP guard must leave timing untouched");
+const topDoor = entity("func_door", 38);
+topDoor.moveinfo.state = STATE_TOP;
+topDoor.moveinfo.wait = 4;
+topDoor.nextthink = 321;
+door_go_up(topDoor, button, runtime);
+assert.equal(topDoor.nextthink, runtime.time + 4, "door_go_up STATE_TOP must reset wait timing");
 const toggleDoor = entity("func_door", 35, { angle: "0", spawnflags: String(32), wait: "2" });
 toggleDoor.moveinfo.sound_end = door.moveinfo.sound_end;
 toggleDoor.moveinfo.wait = 2;
@@ -303,6 +330,55 @@ door_hit_top(toggleDoor, runtime);
 assert.equal(toggleDoor.moveinfo.state, STATE_TOP, "door_hit_top toggle state mismatch");
 assert.equal(toggleDoor.think, undefined, "door_hit_top toggle must not schedule return");
 assert.equal(toggleDoor.nextthink, 123, "door_hit_top toggle must leave nextthink untouched");
+const rotatingDoor = entity("func_door_rotating", 39);
+rotatingDoor.moveinfo.sound_start = door.moveinfo.sound_start;
+rotatingDoor.moveinfo.sound_middle = door.moveinfo.sound_middle;
+door_go_up(rotatingDoor, button, runtime);
+assert.equal(rotatingDoor.moveinfo.state, STATE_UP, "door_go_up rotating state mismatch");
+assert.equal(rotatingDoor.moveinfo.endfunc, door_hit_top, "door_go_up rotating callback mismatch");
+door_go_down(rotatingDoor, runtime);
+assert.equal(rotatingDoor.moveinfo.state, STATE_DOWN, "door_go_down rotating state mismatch");
+assert.equal(rotatingDoor.moveinfo.endfunc, door_hit_bottom, "door_go_down rotating callback mismatch");
+const slaveOnlyDoor = entity("func_door", 40);
+slaveOnlyDoor.flags |= FL_TEAMSLAVE;
+slaveOnlyDoor.moveinfo.state = STATE_BOTTOM;
+door_use(slaveOnlyDoor, null, button, runtime);
+assert.equal(slaveOnlyDoor.moveinfo.state, STATE_BOTTOM, "door_use must ignore FL_TEAMSLAVE even without teammaster");
+const teamDoorMaster = entity("func_door", 41);
+const teamDoorSlave = entity("func_door", 42);
+teamDoorMaster.teammaster = teamDoorMaster;
+teamDoorMaster.teamchain = teamDoorSlave;
+teamDoorSlave.teammaster = teamDoorMaster;
+teamDoorSlave.flags |= FL_TEAMSLAVE;
+teamDoorMaster.message = "team";
+teamDoorSlave.message = "team";
+teamDoorMaster.touch = Touch_Plat_Center;
+teamDoorSlave.touch = Touch_Plat_Center;
+door_use(teamDoorMaster, null, button, runtime);
+assert.equal(teamDoorMaster.message, undefined, "door_use must clear master message before opening");
+assert.equal(teamDoorSlave.message, undefined, "door_use must clear slave message before opening");
+assert.equal(teamDoorMaster.touch, undefined, "door_use must clear master touch before opening");
+assert.equal(teamDoorSlave.touch, undefined, "door_use must clear slave touch before opening");
+assert.equal(teamDoorMaster.moveinfo.state, STATE_UP, "door_use must open master");
+assert.equal(teamDoorSlave.moveinfo.state, STATE_UP, "door_use must open chained slave");
+assert.equal(teamDoorMaster.moveinfo.endfunc, door_hit_top, "door_use master open callback mismatch");
+assert.equal(teamDoorSlave.moveinfo.endfunc, door_hit_top, "door_use slave open callback mismatch");
+teamDoorMaster.spawnflags |= DOOR_TOGGLE;
+teamDoorMaster.moveinfo.state = STATE_TOP;
+teamDoorSlave.moveinfo.state = STATE_UP;
+teamDoorMaster.message = "team";
+teamDoorSlave.message = "team";
+teamDoorMaster.touch = Touch_Plat_Center;
+teamDoorSlave.touch = Touch_Plat_Center;
+door_use(teamDoorMaster, null, button, runtime);
+assert.equal(teamDoorMaster.message, undefined, "door_use toggle must clear master message before closing");
+assert.equal(teamDoorSlave.message, undefined, "door_use toggle must clear slave message before closing");
+assert.equal(teamDoorMaster.touch, undefined, "door_use toggle must clear master touch before closing");
+assert.equal(teamDoorSlave.touch, undefined, "door_use toggle must clear slave touch before closing");
+assert.equal(teamDoorMaster.moveinfo.state, STATE_DOWN, "door_use toggle must close master");
+assert.equal(teamDoorSlave.moveinfo.state, STATE_DOWN, "door_use toggle must close chained slave");
+assert.equal(teamDoorMaster.moveinfo.endfunc, door_hit_bottom, "door_use master close callback mismatch");
+assert.equal(teamDoorSlave.moveinfo.endfunc, door_hit_bottom, "door_use slave close callback mismatch");
 const areaportalRuntime = createGameRuntimeFromBspEntities([]);
 areaportalRuntime.collision = {
   world: {

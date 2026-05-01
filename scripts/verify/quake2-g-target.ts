@@ -23,7 +23,12 @@ import {
   type trace_t,
   type vec3_t
 } from "../../packages/qcommon/src/index.js";
-import { svc_temp_entity } from "../../packages/game/src/g_local.js";
+import {
+  SFL_CROSS_TRIGGER_1,
+  SFL_CROSS_TRIGGER_3,
+  SFL_CROSS_TRIGGER_MASK,
+  svc_temp_entity
+} from "../../packages/game/src/g_local.js";
 import {
   FRAMETIME,
   SVF_MONSTER,
@@ -129,6 +134,7 @@ function verifyTargetHelpSecretGoal(): void {
   const goal = createHighEntity(runtime, "target_goal");
   SP_target_goal(goal, runtime);
   assert.equal(runtime.total_goals, 1, "target_goal total mismatch");
+  drainGameConfigstringUpdates(runtime);
   use_target_goal(goal, null, null, runtime);
   assert.deepEqual(drainGameConfigstringUpdates(runtime), [{ index: CS_CDTRACK, value: "0" }], "target_goal must stop CD track when all goals found");
 }
@@ -213,18 +219,28 @@ function verifyCrosslevelTargets(): void {
   const runtime = createRuntime();
   const trigger = spawnGameEntity(runtime);
   trigger.classname = "target_crosslevel_trigger";
-  trigger.spawnflags = 4;
+  trigger.spawnflags = SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3;
   SP_target_crosslevel_trigger(trigger, runtime);
   trigger_crosslevel_trigger_use(trigger, null, null, runtime);
-  assert.equal(runtime.serverflags & 4, 4, "crosslevel trigger serverflags mismatch");
+  assert.equal(runtime.serverflags & (SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3), SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3, "crosslevel trigger serverflags mismatch");
   assert.equal(trigger.inuse, false, "crosslevel trigger must free itself");
 
   const target = createHighEntity(runtime, "target_crosslevel_target");
-  target.spawnflags = 4;
+  target.spawnflags = SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3;
   SP_target_crosslevel_target(target, runtime);
   assert.equal(target.nextthink, runtime.time + 1, "crosslevel target default delay mismatch");
   runPendingThinks(runtime, 1);
   assert.equal(target.inuse, false, "crosslevel target must fire and free when flags match");
+
+  runtime.serverflags = SFL_CROSS_TRIGGER_MASK | 0x100;
+  const player = runtime.entities[1] ?? createPlayer(runtime);
+  player.health = 100;
+  const changelevel = spawnGameEntity(runtime);
+  changelevel.classname = "target_changelevel";
+  changelevel.map = "unit2*secret";
+  SP_target_changelevel(changelevel, runtime);
+  changelevel.use?.(changelevel, player, player, runtime);
+  assert.equal(runtime.serverflags, 0x100, "target_changelevel must clear only crosslevel bits when changing unit");
 }
 
 function verifyLaserDamageAndLightramp(): void {

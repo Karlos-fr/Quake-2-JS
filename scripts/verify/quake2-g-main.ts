@@ -11,8 +11,8 @@
 
 import { strict as assert } from "node:assert";
 
-import { BUTTON_ANY, BUTTON_ATTACK, CS_PLAYERSKINS, CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_FIXED_FOV, DF_SAME_LEVEL, MZ_BLASTER, MZ_LOGOUT, multicast_t, pmtype_t, temp_event_t, type cvar_t, type usercmd_t } from "../../packages/qcommon/src/index.js";
-import { TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
+import { BUTTON_ANY, BUTTON_ATTACK, CS_PLAYERSKINS, CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_FIXED_FOV, DF_SAME_LEVEL, MZ_BLASTER, MZ_LOGIN, MZ_LOGOUT, multicast_t, pmtype_t, temp_event_t, type cvar_t, type usercmd_t } from "../../packages/qcommon/src/index.js";
+import { MOVETYPE_NOCLIP, TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, createGameRuntimeFromBspEntities, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
 import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
@@ -271,6 +271,56 @@ assert.equal(clientThinkPlayer.client.buttons, BUTTON_ATTACK, "ClientThink must 
 assert.equal(clientThinkPlayer.client.oldbuttons, 0, "ClientThink must preserve old buttons before latching");
 assert.equal(clientThinkPlayer.client.weapon_thunk, true, "ClientThink must thunk weapon fire from BUTTON_ATTACK");
 assert.equal(clientThinkPlayer.light_level, 42, "ClientThink must copy usercmd lightlevel for AI sighting");
+
+const clientCommandRuntime = createGameRuntimeFromBspEntities([
+  { properties: { classname: "worldspawn" } },
+  { properties: { classname: "player" } }
+]);
+clientCommandRuntime.maxclients = 1;
+const clientCommandPlayer = clientCommandRuntime.entities[1]!;
+clientCommandPlayer.inuse = true;
+clientCommandPlayer.client = attachGameClient(clientCommandPlayer);
+const clientCommandApi = GetGameApi(imports, { runtime: clientCommandRuntime });
+command.argv = ["NoClip"];
+command.args = "";
+clientCommandApi.ClientCommand(clientCommandPlayer);
+assert.equal(clientCommandPlayer.movetype, MOVETYPE_NOCLIP, "GetGameApi.ClientCommand must relay argv(0) to the gameplay command dispatcher");
+
+clientCommandRuntime.intermissiontime = 1;
+command.argv = ["noclip"];
+command.args = "";
+clientCommandApi.ClientCommand(clientCommandPlayer);
+assert.equal(clientCommandPlayer.movetype, MOVETYPE_NOCLIP, "ClientCommand must block gameplay commands during intermission like the C dispatcher");
+
+const clientBeginRuntime = createGameRuntimeFromBspEntities([
+  { properties: { classname: "worldspawn" } },
+  { properties: { classname: "player" } }
+]);
+clientBeginRuntime.maxclients = 2;
+clientBeginRuntime.entities[1]!.client = attachGameClient(clientBeginRuntime.entities[1]!);
+clientBeginRuntime.entities[1]!.client!.pers.netname = "beginner";
+clientBeginRuntime.entities[1]!.s.origin = [11, 12, 13];
+const clientBeginApi = GetGameApi(imports, { runtime: clientBeginRuntime });
+writeBytes.length = 0;
+writeShorts.length = 0;
+multicasts.length = 0;
+clientBeginApi.ClientBegin(clientBeginRuntime.entities[1]!);
+assert.equal(clientBeginRuntime.entities[1]!.inuse, true, "ClientBegin must spawn an inactive connected client");
+assert.equal(clientBeginRuntime.entities[1]!.classname, "player", "ClientBegin must initialize the player classname");
+assert.deepEqual(writeBytes.slice(0, 2), [svc_muzzleflash, MZ_LOGIN], "ClientBegin must emit the login muzzleflash bytes through gi");
+assert.deepEqual(writeShorts.slice(0, 1), [1], "ClientBegin must write the connecting edict index");
+assert.equal(bprints.pop(), "beginner entered the game\n", "ClientBegin must broadcast the enter-game message through gi.bprintf");
+assert.equal(multicasts.at(-1)?.to, multicast_t.MULTICAST_PVS, "ClientBegin must multicast the login effect to the PVS");
+
+clientBeginRuntime.intermissiontime = 10;
+clientBeginRuntime.intermission_origin = [100, 200, 300];
+clientBeginRuntime.intermission_angle = [1, 2, 3];
+clientBeginRuntime.entities[1]!.client!.ps.pmove.pm_type = pmtype_t.PM_NORMAL;
+writeBytes.length = 0;
+clientBeginApi.ClientBegin(clientBeginRuntime.entities[1]!);
+assert.equal(clientBeginRuntime.entities[1]!.client!.ps.pmove.pm_type, pmtype_t.PM_FREEZE, "ClientBegin must move clients to intermission when a level is already intermitting");
+assert.deepEqual(clientBeginRuntime.entities[1]!.s.origin, [100, 200, 300], "ClientBegin intermission path must use the runtime intermission origin");
+assert.deepEqual(writeBytes, [], "ClientBegin must not emit a login effect while moving to intermission");
 
 const connectRuntime = createGameRuntimeFromBspEntities([
   { properties: { classname: "worldspawn" } },

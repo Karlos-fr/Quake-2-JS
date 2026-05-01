@@ -2,6 +2,44 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `SP_path_corner`, `point_combat_touch` et locaux `activator`, `savetarget`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `SP_path_corner` conserve le refus sans `targetname`, le diagnostic source, `SOLID_TRIGGER`, `path_corner_touch`, bbox `[-8,-8,-8]` / `[8,8,8]`, `SVF_NOCLIENT` et link. `point_combat_touch` conserve la garde `movetarget`, le branchement `target`/`G_PickTarget`, le fallback cible manquante, le hold non swim/fly, le cleanup vers `enemy`, l'effacement `AI_COMBAT_POINT`, le `pathtarget` et l'ordre de choix de l'activator.
+  - Commentaires d'en-tete Strict ajoutes pour `SP_path_corner` et `point_combat_touch`.
+  - Correction appliquee: `SP_path_corner` journalise maintenant le warning source `path_corner with no targetname` avant `G_FreeEdict`.
+  - Branchement runtime verifie: `SP_path_corner` et `SP_point_combat` sont enregistres dans `g_spawn.ts` et exportes; les touches sont atteignables via spawn map, mouvement monstre, `SV_Impact`/touch pendant les frames runtime. `point_combat_touch` est valide ici, mais `SP_point_combat` reste le prochain lot documentaire.
+  - `apps/web`: aucune logique parallele trouvee; le web consomme les positions/evenements runtime via snapshots, `full-game-render-source`, `local-client-controller` et `ClientRefreshFrame`.
+  - `renderer-three`: integration attendue car trajectoires, pauses, teleports et combat points changent les entites visibles; consommation presente via packet entities -> `CL_BuildRefreshFrame` -> `refresh-entity-sync`; aucune compensation gameplay dans le renderer.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: import `vtos`, warning source de `SP_path_corner`, headers `SP_path_corner` et `point_combat_touch`.
+  - `scripts/verify/quake2-g-misc.ts`: couverture directe de `SP_path_corner` et des branches `point_combat_touch`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-monster` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+
+## Lot precedent
+
+- 2026-05-01: `path_corner_touch` et locaux `v`, `next`, `savetarget`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: garde initiale `other->movetarget != self` et `other->enemy`, pathtarget avec sauvegarde/restauration du target, `G_UseTargets`, selection `G_PickTarget`, branche TELEPORT `spawnflags & 1`, assignation `goalentity`/`movetarget`, pause `wait`, terminal stand et calcul `ideal_yaw` correspondent.
+  - Locaux compares: `v` est porte par `teleportOrigin` et par `subVec3(...)` pour le yaw; `next` reste un `let` reassigne apres TELEPORT; `savetarget` est porte par `saveTarget` et restaure `self.target` apres usage.
+  - Commentaire d'en-tete Strict ajoute pour `path_corner_touch`.
+  - Branchement runtime verifie: `monster_start_go` choisit les `path_corner`, `M_MoveToGoal`/mouvement monstre atteint `movetarget`, puis `SV_Impact` appelle le touch pendant `G_RunFrame`; `SP_path_corner` est enregistre dans `g_spawn.ts` et exporte.
+  - `apps/web`: aucune logique parallele trouvee; le web consomme les positions/evenements issus des snapshots via `full-game-render-source`, `local-client-controller` et `ClientRefreshFrame`.
+  - `renderer-three`: integration attendue car les trajectoires/teleports de monstres changent les entites visibles; consommation presente via packet entities -> `CL_BuildRefreshFrame` -> `refresh-entity-sync`, avec `EV_OTHER_TELEPORT` parse cote client.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaire d'en-tete `path_corner_touch`.
+  - `scripts/verify/quake2-g-misc.ts`: couverture ajoutee pour pathtarget/restauration, TELEPORT, wait et terminal stand.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-monster` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+
+## Lot precedent
+
 - 2026-05-01: `BecomeExplosion1`, `BecomeExplosion2`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: les deux fonctions ecrivent un `svc_temp_entity` equivalent via `emitGameTempEntity`, conservent respectivement `TE_EXPLOSION1` et `TE_EXPLOSION2`, copient `self->s.origin`, utilisent `MULTICAST_PVS`, puis appellent `G_FreeEdict`.
@@ -140,4 +178,4 @@
 
 ## Prochain lot recommande
 
-- `path_corner_touch`, puis locaux `v`, `next`, `savetarget` si coherent.
+- `SP_point_combat`, puis `TH_viewthing` / `SP_viewthing` si coherent.

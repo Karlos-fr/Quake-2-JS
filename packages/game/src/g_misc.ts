@@ -87,7 +87,7 @@ import { T_Damage, T_RadiusDamage } from "./g_combat.js";
 import { func_train_find, train_use } from "./g_func.js";
 import { M_droptofloor } from "./g_monster.js";
 import { M_walkmove } from "./m_move.js";
-import { G_Find, G_FreeEdict, G_PickTarget, G_Spawn, G_UseTargets, KillBox, vectoyaw, vectoangles } from "./g_utils.js";
+import { G_Find, G_FreeEdict, G_PickTarget, G_Spawn, G_UseTargets, KillBox, vectoyaw, vectoangles, vtos } from "./g_utils.js";
 
 const START_OFF = 1;
 const CLOCK_MESSAGE_SIZE = 16;
@@ -424,6 +424,18 @@ export function misc_deadsoldier_die(
   ThrowHead(self, "models/objects/gibs/head2/tris.md2", damage, GIB_ORGANIC, runtime);
 }
 
+/**
+ * Original name: path_corner_touch
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Advances a monster to the next path corner, optionally firing pathtargets, teleporting through TELEPORT corners and pausing.
+ *
+ * Porting notes:
+ * - Local C variables `v`, `next` and `savetarget` are represented as scoped TS values with the same side effects.
+ */
 export function path_corner_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if (other.movetarget !== self || other.enemy) {
     return;
@@ -464,8 +476,26 @@ export function path_corner_touch(self: GameEntity, other: GameEntity, runtime: 
   other.ideal_yaw = vectoyaw(subVec3(other.goalentity!.s.origin, other.s.origin));
 }
 
+/**
+ * Original name: SP_path_corner
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns one no-client path trigger, or frees path corners missing the required targetname.
+ *
+ * Porting notes:
+ * - Preserves the original warning side effect through the runtime log.
+ */
 export function SP_path_corner(self: GameEntity, runtime: GameRuntime): void {
   if (!self.targetname) {
+    runtime.log({
+      kind: "warning",
+      message: `path_corner with no targetname at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
     G_FreeEdict(runtime, self);
     return;
   }
@@ -479,6 +509,18 @@ export function SP_path_corner(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: point_combat_touch
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Handles monster arrival at a combat point, including chained targets, hold points and pathtarget activation.
+ *
+ * Porting notes:
+ * - Uses the runtime entity references in place of raw edict pointers while preserving branch order.
+ */
 export function point_combat_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if (other.movetarget !== self) {
     return;

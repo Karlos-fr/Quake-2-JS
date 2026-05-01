@@ -204,6 +204,19 @@ export interface GameItemArmorInfo {
 
 interface RawGameItemDefinition extends Omit<GameItemDefinition, "index"> {}
 
+/**
+ * Original name: itemlist
+ * Source: game/g_items.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the original base-game `gitem_t itemlist[]` order after the C null slot 0.
+ * - Keeps health as the single generic `Health` item; the `SP_item_health*` functions provide the map classname, model, count and style variants.
+ *
+ * Porting notes:
+ * - The C null sentinel at slot 0 and end-of-list marker are represented by index translation in `GetItemByIndex` and `InitItems`.
+ */
 const rawItemlist: readonly RawGameItemDefinition[] = [
   { classname: "item_armor_body", pickup: "Pickup_Armor", use: null, drop: null, weaponThink: null, pickupName: "Body Armor", pickupSound: "misc/ar1_pkup.wav", worldModel: "models/items/armor/body/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "i_bodyarmor", countWidth: 3, quantity: 0, ammo: null, flags: IT_ARMOR, weapmodel: 0, tag: ARMOR_BODY, precaches: "" },
   { classname: "item_armor_combat", pickup: "Pickup_Armor", use: null, drop: null, weaponThink: null, pickupName: "Combat Armor", pickupSound: "misc/ar1_pkup.wav", worldModel: "models/items/armor/combat/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "i_combatarmor", countWidth: 3, quantity: 0, ammo: null, flags: IT_ARMOR, weapmodel: 0, tag: ARMOR_COMBAT, precaches: "" },
@@ -245,10 +258,7 @@ const rawItemlist: readonly RawGameItemDefinition[] = [
   { classname: "key_red_key", pickup: "Pickup_Key", use: null, drop: "Drop_General", weaponThink: null, pickupName: "Red Key", pickupSound: "items/pkup.wav", worldModel: "models/items/keys/red_key/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "k_redkey", countWidth: 2, quantity: 0, ammo: null, flags: IT_STAY_COOP | IT_KEY, weapmodel: 0, tag: 0, precaches: "" },
   { classname: "key_commander_head", pickup: "Pickup_Key", use: null, drop: "Drop_General", weaponThink: null, pickupName: "Commander's Head", pickupSound: "items/pkup.wav", worldModel: "models/monsters/commandr/head/tris.md2", worldModelFlags: EF_GIB, viewModel: null, icon: "k_comhead", countWidth: 2, quantity: 0, ammo: null, flags: IT_STAY_COOP | IT_KEY, weapmodel: 0, tag: 0, precaches: "" },
   { classname: "key_airstrike_target", pickup: "Pickup_Key", use: null, drop: "Drop_General", weaponThink: null, pickupName: "Airstrike Marker", pickupSound: "items/pkup.wav", worldModel: "models/items/keys/target/tris.md2", worldModelFlags: EF_ROTATE, viewModel: null, icon: "i_airstrike", countWidth: 2, quantity: 0, ammo: null, flags: IT_STAY_COOP | IT_KEY, weapmodel: 0, tag: 0, precaches: "" },
-  { classname: "item_health", pickup: "Pickup_Health", use: null, drop: null, weaponThink: null, pickupName: "Health", pickupSound: "items/pkup.wav", worldModel: "models/items/healing/medium/tris.md2", worldModelFlags: 0, viewModel: null, icon: "i_health", countWidth: 3, quantity: 10, ammo: null, flags: 0, weapmodel: 0, tag: 0, precaches: "items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav" },
-  { classname: "item_health_small", pickup: "Pickup_Health", use: null, drop: null, weaponThink: null, pickupName: "Health", pickupSound: "items/pkup.wav", worldModel: "models/items/healing/stimpack/tris.md2", worldModelFlags: 0, viewModel: null, icon: "i_health", countWidth: 3, quantity: 2, ammo: null, flags: 0, weapmodel: 0, tag: 0, precaches: "items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav" },
-  { classname: "item_health_large", pickup: "Pickup_Health", use: null, drop: null, weaponThink: null, pickupName: "Health", pickupSound: "items/pkup.wav", worldModel: "models/items/healing/large/tris.md2", worldModelFlags: 0, viewModel: null, icon: "i_health", countWidth: 3, quantity: 25, ammo: null, flags: 0, weapmodel: 0, tag: 0, precaches: "items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav" },
-  { classname: "item_health_mega", pickup: "Pickup_Health", use: null, drop: null, weaponThink: null, pickupName: "Health", pickupSound: "items/pkup.wav", worldModel: "models/items/mega_h/tris.md2", worldModelFlags: 0, viewModel: null, icon: "i_health", countWidth: 3, quantity: 100, ammo: null, flags: 0, weapmodel: 0, tag: 0, precaches: "items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav" }
+  { classname: "", pickup: "Pickup_Health", use: null, drop: null, weaponThink: null, pickupName: "Health", pickupSound: "items/pkup.wav", worldModel: "", worldModelFlags: 0, viewModel: null, icon: "i_health", countWidth: 3, quantity: 0, ammo: null, flags: 0, weapmodel: 0, tag: 0, precaches: "items/s_health.wav items/n_health.wav items/l_health.wav items/m_health.wav" }
 ] as const;
 
 const itemlist: readonly GameItemDefinition[] = rawItemlist.map((item, index) => ({
@@ -1574,8 +1584,8 @@ export function SP_item_health_mega(self: GameEntity, runtime: GameRuntime): voi
   if (item) {
     SpawnItem(self, item, runtime);
   }
-  self.style = HEALTH_IGNORE_MAX | HEALTH_TIMED;
   registerGameSound(runtime, "items/m_health.wav");
+  self.style = HEALTH_IGNORE_MAX | HEALTH_TIMED;
 }
 
 function ITEM_INDEX(item: GameItemDefinition | null): number {

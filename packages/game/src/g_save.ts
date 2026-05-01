@@ -340,6 +340,7 @@ export function WriteGame(context: GameMainContext, filename: string, autosave: 
 
   context.runtime.autosaved = autosave;
   context.game.autosaved = autosave;
+  context.game.serverflags = context.runtime.serverflags;
   const save: GameSaveFile = {
     format: SAVEGAME_FORMAT,
     date: SAVEGAME_DATE,

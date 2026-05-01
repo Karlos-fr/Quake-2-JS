@@ -28,6 +28,7 @@ import {
   AS_SLIDING,
   AS_STRAIGHT,
   BODY_QUEUE_SIZE,
+  CENTER_HANDED,
   DEAD_DEAD,
   DEAD_DYING,
   DEAD_NO,
@@ -38,6 +39,7 @@ import {
   GIB_METALLIC,
   GIB_ORGANIC,
   ITEM_INDEX,
+  LEFT_HANDED,
   MELEE_DISTANCE,
   MOD_TRIGGER_HURT,
   POWER_ARMOR_NONE,
@@ -47,6 +49,15 @@ import {
   RANGE_MELEE,
   RANGE_MID,
   RANGE_NEAR,
+  RIGHT_HANDED,
+  SFL_CROSS_TRIGGER_1,
+  SFL_CROSS_TRIGGER_2,
+  SFL_CROSS_TRIGGER_3,
+  SFL_CROSS_TRIGGER_4,
+  SFL_CROSS_TRIGGER_5,
+  SFL_CROSS_TRIGGER_6,
+  SFL_CROSS_TRIGGER_7,
+  SFL_CROSS_TRIGGER_8,
   SFL_CROSS_TRIGGER_MASK,
   TAG_GAME,
   TAG_LEVEL,
@@ -88,6 +99,9 @@ assert.equal(RANGE_MID, 2, "RANGE_MID mismatch");
 assert.equal(RANGE_FAR, 3, "RANGE_FAR mismatch");
 assert.equal(GIB_ORGANIC, 0, "GIB_ORGANIC mismatch");
 assert.equal(GIB_METALLIC, 1, "GIB_METALLIC mismatch");
+assert.equal(RIGHT_HANDED, 0, "RIGHT_HANDED mismatch");
+assert.equal(LEFT_HANDED, 1, "LEFT_HANDED mismatch");
+assert.equal(CENTER_HANDED, 2, "CENTER_HANDED mismatch");
 assert.equal(AI_STAND_GROUND, 0x00000001, "AI_STAND_GROUND mismatch");
 assert.equal(AI_TEMP_STAND_GROUND, 0x00000002, "AI_TEMP_STAND_GROUND mismatch");
 assert.equal(AI_SOUND_TARGET, 0x00000004, "AI_SOUND_TARGET mismatch");
@@ -105,6 +119,14 @@ assert.equal(AS_MISSILE, 4, "AS_MISSILE mismatch");
 assert.equal(POWER_ARMOR_NONE, 0, "POWER_ARMOR_NONE mismatch");
 assert.equal(POWER_ARMOR_SCREEN, 1, "POWER_ARMOR_SCREEN mismatch");
 assert.equal(POWER_ARMOR_SHIELD, 2, "POWER_ARMOR_SHIELD mismatch");
+assert.equal(SFL_CROSS_TRIGGER_1, 0x00000001, "SFL_CROSS_TRIGGER_1 mismatch");
+assert.equal(SFL_CROSS_TRIGGER_2, 0x00000002, "SFL_CROSS_TRIGGER_2 mismatch");
+assert.equal(SFL_CROSS_TRIGGER_3, 0x00000004, "SFL_CROSS_TRIGGER_3 mismatch");
+assert.equal(SFL_CROSS_TRIGGER_4, 0x00000008, "SFL_CROSS_TRIGGER_4 mismatch");
+assert.equal(SFL_CROSS_TRIGGER_5, 0x00000010, "SFL_CROSS_TRIGGER_5 mismatch");
+assert.equal(SFL_CROSS_TRIGGER_6, 0x00000020, "SFL_CROSS_TRIGGER_6 mismatch");
+assert.equal(SFL_CROSS_TRIGGER_7, 0x00000040, "SFL_CROSS_TRIGGER_7 mismatch");
+assert.equal(SFL_CROSS_TRIGGER_8, 0x00000080, "SFL_CROSS_TRIGGER_8 mismatch");
 assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");
 assert.equal(damage_t.DAMAGE_NO, 0, "damage_t DAMAGE_NO mismatch");

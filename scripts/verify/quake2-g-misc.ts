@@ -31,6 +31,8 @@ import {
   SP_path_corner,
   SP_target_character,
   SP_target_string,
+  SOLID_TRIGGER,
+  SVF_NOCLIENT,
   attachGameClient,
   barrel_delay,
   createGameRuntimeFromBspEntities,
@@ -46,6 +48,7 @@ import {
   gib_touch,
   linkGameEntity,
   path_corner_touch,
+  point_combat_touch,
   runPendingThinks,
   spawnGameEntity,
   target_string_use,
@@ -54,7 +57,7 @@ import {
   ThrowGib,
   useGameEntity
 } from "../../packages/game/src/index.js";
-import { FL_NO_KNOCKBACK } from "../../packages/game/src/g_local.js";
+import { AI_COMBAT_POINT, AI_STAND_GROUND, FL_FLY, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
 import { ThrowClientHead } from "../../packages/game/src/p_client.js";
 import { SVF_MONSTER } from "../../packages/game/src/runtime.js";
 
@@ -62,7 +65,10 @@ main();
 
 function main(): void {
   verifyTeleporterMovesPlayerAndSetsTeleportState();
+  verifyPathCornerSpawnSetupAndInvalidFree();
   verifyPathCornerAdvancesMonsterGoal();
+  verifyPathCornerPathtargetTeleportAndPauseBranches();
+  verifyPointCombatTouchBranches();
   verifyTargetStringMapsFrames();
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
@@ -116,6 +122,38 @@ function verifyTeleporterMovesPlayerAndSetsTeleportState(): void {
   assert.equal(player.s.event, entity_event_t.EV_PLAYER_TELEPORT, "teleporter touch must emit EV_PLAYER_TELEPORT on the player");
 }
 
+function verifyPathCornerSpawnSetupAndInvalidFree(): void {
+  const runtime = createHarnessRuntime();
+
+  for (let i = 0; i < 16; i += 1) {
+    spawnGameEntity(runtime);
+  }
+
+  const invalidCorner = spawnGameEntity(runtime);
+  invalidCorner.classname = "path_corner";
+  invalidCorner.s.origin = [1, 2, 3];
+
+  SP_path_corner(invalidCorner, runtime);
+
+  assert.equal(invalidCorner.inuse, false, "path_corner without targetname must be freed");
+  assert.equal(runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message.includes("path_corner with no targetname at (1 2 3)")), true, "path_corner without targetname must emit the source warning");
+
+  const corner = spawnGameEntity(runtime);
+  corner.classname = "path_corner";
+  corner.targetname = "corner_a";
+  corner.s.origin = [0, 0, 0];
+  corner.origin = [0, 0, 0];
+
+  SP_path_corner(corner, runtime);
+
+  assert.equal(corner.solid, SOLID_TRIGGER, "SP_path_corner must create a trigger");
+  assert.equal(corner.touch, path_corner_touch, "SP_path_corner must install path_corner_touch");
+  assert.deepEqual(corner.mins, [-8, -8, -8], "SP_path_corner must set source mins");
+  assert.deepEqual(corner.maxs, [8, 8, 8], "SP_path_corner must set source maxs");
+  assert.equal((corner.svflags & SVF_NOCLIENT) !== 0, true, "SP_path_corner must hide the trigger from clients");
+  assert.equal(corner.linked, true, "SP_path_corner must link the trigger");
+}
+
 function verifyPathCornerAdvancesMonsterGoal(): void {
   const runtime = createHarnessRuntime();
 
@@ -145,6 +183,199 @@ function verifyPathCornerAdvancesMonsterGoal(): void {
   assert.equal(monster.movetarget, nextCorner, "path_corner touch must advance movetarget to next corner");
   assert.equal(monster.goalentity, nextCorner, "path_corner touch must sync goalentity");
   assert.equal(monster.ideal_yaw, 0, "path_corner touch must compute yaw toward the next goal");
+}
+
+function verifyPathCornerPathtargetTeleportAndPauseBranches(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 42;
+
+  const useTarget = spawnGameEntity(runtime);
+  useTarget.classname = "target_relay";
+  useTarget.targetname = "corner_pathtarget";
+  let usedBy: unknown = null;
+  useTarget.use = (_self, _other, activator) => {
+    usedBy = activator;
+  };
+
+  const afterTeleport = spawnGameEntity(runtime);
+  afterTeleport.classname = "path_corner";
+  afterTeleport.targetname = "after_teleport";
+  afterTeleport.s.origin = [96, 32, 0];
+  afterTeleport.origin = [96, 32, 0];
+  SP_path_corner(afterTeleport, runtime);
+
+  const teleportCorner = spawnGameEntity(runtime);
+  teleportCorner.classname = "path_corner";
+  teleportCorner.targetname = "teleport_corner";
+  teleportCorner.target = "after_teleport";
+  teleportCorner.spawnflags = 1;
+  teleportCorner.mins = [-8, -8, -24];
+  teleportCorner.s.origin = [64, 32, 80];
+  teleportCorner.origin = [64, 32, 80];
+  SP_path_corner(teleportCorner, runtime);
+  teleportCorner.mins = [-8, -8, -24];
+
+  const corner = spawnGameEntity(runtime);
+  corner.classname = "path_corner";
+  corner.targetname = "corner_a";
+  corner.target = "teleport_corner";
+  corner.pathtarget = "corner_pathtarget";
+  corner.s.origin = [0, 0, 0];
+  corner.origin = [0, 0, 0];
+  SP_path_corner(corner, runtime);
+
+  const monster = spawnGameEntity(runtime);
+  monster.classname = "monster";
+  monster.movetarget = corner;
+  monster.s.origin = [0, 0, 0];
+  monster.origin = [0, 0, 0];
+  monster.mins = [-16, -16, -32];
+
+  path_corner_touch(corner, monster, runtime);
+
+  assert.equal(usedBy, monster, "path_corner pathtarget must use targets with the monster as activator");
+  assert.equal(corner.target, "teleport_corner", "path_corner pathtarget must restore the saved target");
+  assert.deepEqual(monster.s.origin, [64, 32, 88], "TELEPORT path_corner must move monster by next mins and monster mins");
+  assert.equal(monster.movetarget, afterTeleport, "TELEPORT path_corner must pick the teleporter corner target afterward");
+  assert.equal(monster.goalentity, afterTeleport, "TELEPORT path_corner must sync goalentity after the second pick");
+  assert.equal(monster.s.event, entity_event_t.EV_OTHER_TELEPORT, "TELEPORT path_corner must emit EV_OTHER_TELEPORT");
+
+  const waitCorner = spawnGameEntity(runtime);
+  waitCorner.classname = "path_corner";
+  waitCorner.targetname = "wait_corner";
+  waitCorner.wait = 3;
+  waitCorner.s.origin = [0, 0, 0];
+  waitCorner.origin = [0, 0, 0];
+  SP_path_corner(waitCorner, runtime);
+
+  const waitingMonster = spawnGameEntity(runtime);
+  waitingMonster.classname = "monster";
+  waitingMonster.movetarget = waitCorner;
+  let standCalls = 0;
+  waitingMonster.monsterinfo.stand = () => {
+    standCalls += 1;
+  };
+
+  path_corner_touch(waitCorner, waitingMonster, runtime);
+
+  assert.equal(waitingMonster.movetarget, null, "path_corner without target must clear movetarget before wait handling");
+  assert.equal(waitingMonster.goalentity, null, "path_corner without target must clear goalentity before wait handling");
+  assert.equal(waitingMonster.monsterinfo.pausetime, 45, "wait path_corner must pause until level time plus wait");
+  assert.equal(standCalls, 1, "wait path_corner must call monster stand exactly once");
+
+  const stopCorner = spawnGameEntity(runtime);
+  stopCorner.classname = "path_corner";
+  stopCorner.targetname = "stop_corner";
+  stopCorner.s.origin = [0, 0, 0];
+  stopCorner.origin = [0, 0, 0];
+  SP_path_corner(stopCorner, runtime);
+
+  const stoppingMonster = spawnGameEntity(runtime);
+  stoppingMonster.classname = "monster";
+  stoppingMonster.movetarget = stopCorner;
+  let stopStandCalls = 0;
+  stoppingMonster.monsterinfo.stand = () => {
+    stopStandCalls += 1;
+  };
+
+  path_corner_touch(stopCorner, stoppingMonster, runtime);
+
+  assert.equal(stoppingMonster.movetarget, null, "terminal path_corner must clear movetarget");
+  assert.equal(stoppingMonster.goalentity, null, "terminal path_corner must clear goalentity");
+  assert.equal(stoppingMonster.monsterinfo.pausetime, 100000042, "terminal path_corner must pause for the original large sentinel");
+  assert.equal(stopStandCalls, 1, "terminal path_corner must call monster stand exactly once");
+}
+
+function verifyPointCombatTouchBranches(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 12;
+
+  const nextCombat = spawnGameEntity(runtime);
+  nextCombat.classname = "point_combat";
+  nextCombat.targetname = "next_combat";
+
+  const combat = spawnGameEntity(runtime);
+  combat.classname = "point_combat";
+  combat.target = "next_combat";
+
+  const monster = spawnGameEntity(runtime);
+  monster.classname = "monster";
+  monster.movetarget = combat;
+  monster.monsterinfo.aiflags = AI_COMBAT_POINT;
+
+  point_combat_touch(combat, monster, runtime);
+
+  assert.equal(monster.target, "next_combat", "point_combat with target must copy target to monster");
+  assert.equal(monster.goalentity, nextCombat, "point_combat with target must pick next goalentity");
+  assert.equal(monster.movetarget, nextCombat, "point_combat with target must pick next movetarget");
+  assert.equal(combat.target, undefined, "point_combat with target must clear self target after picking");
+
+  const missingTarget = spawnGameEntity(runtime);
+  missingTarget.classname = "point_combat";
+  missingTarget.target = "missing";
+  const missingMonster = spawnGameEntity(runtime);
+  missingMonster.classname = "monster";
+  missingMonster.movetarget = missingTarget;
+
+  point_combat_touch(missingTarget, missingMonster, runtime);
+
+  assert.equal(missingMonster.movetarget, null, "point_combat missing target must fall through cleanup after restoring movetarget to self");
+  assert.equal(missingMonster.goalentity, missingMonster.enemy, "point_combat cleanup must restore enemy as goalentity");
+
+  const holdCombat = spawnGameEntity(runtime);
+  holdCombat.classname = "point_combat";
+  holdCombat.spawnflags = 1;
+  const holdMonster = spawnGameEntity(runtime);
+  holdMonster.classname = "monster";
+  holdMonster.movetarget = holdCombat;
+  holdMonster.monsterinfo.aiflags = AI_COMBAT_POINT;
+  let standCalls = 0;
+  holdMonster.monsterinfo.stand = () => {
+    standCalls += 1;
+  };
+
+  point_combat_touch(holdCombat, holdMonster, runtime);
+
+  assert.equal(holdMonster.monsterinfo.pausetime, 100000012, "hold point_combat must pause non-swim/fly monsters indefinitely");
+  assert.equal((holdMonster.monsterinfo.aiflags & AI_STAND_GROUND) !== 0, true, "hold point_combat must set stand ground");
+  assert.equal((holdMonster.monsterinfo.aiflags & AI_COMBAT_POINT) === 0, true, "point_combat cleanup must clear AI_COMBAT_POINT");
+  assert.equal(standCalls, 1, "hold point_combat must call stand");
+
+  const swimCombat = spawnGameEntity(runtime);
+  swimCombat.classname = "point_combat";
+  swimCombat.spawnflags = 1;
+  const swimmingMonster = spawnGameEntity(runtime);
+  swimmingMonster.classname = "monster";
+  swimmingMonster.movetarget = swimCombat;
+  swimmingMonster.flags = FL_SWIM | FL_FLY;
+
+  point_combat_touch(swimCombat, swimmingMonster, runtime);
+
+  assert.equal(swimmingMonster.monsterinfo.pausetime, 0, "hold point_combat must not pause swim/fly monsters");
+
+  const relay = spawnGameEntity(runtime);
+  relay.classname = "target_relay";
+  relay.targetname = "combat_pathtarget";
+  let activator: unknown = null;
+  relay.use = (_self, _other, useActivator) => {
+    activator = useActivator;
+  };
+
+  const pathtargetCombat = spawnGameEntity(runtime);
+  pathtargetCombat.classname = "point_combat";
+  pathtargetCombat.pathtarget = "combat_pathtarget";
+  const clientEnemy = spawnGameEntity(runtime);
+  clientEnemy.classname = "player";
+  attachGameClient(clientEnemy);
+  const pathtargetMonster = spawnGameEntity(runtime);
+  pathtargetMonster.classname = "monster";
+  pathtargetMonster.movetarget = pathtargetCombat;
+  pathtargetMonster.enemy = clientEnemy;
+
+  point_combat_touch(pathtargetCombat, pathtargetMonster, runtime);
+
+  assert.equal(activator, clientEnemy, "point_combat pathtarget must prefer client enemy as activator");
+  assert.equal(pathtargetCombat.target, undefined, "point_combat pathtarget must restore the saved empty target");
 }
 
 function verifyTargetStringMapsFrames(): void {

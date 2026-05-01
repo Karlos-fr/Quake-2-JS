@@ -2,6 +2,22 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: activation de porte `door_use` et locale `ent`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:949-978` avec `packages/game/src/g_func.ts:520-539` et helper de parcours `forEachDoorTeam` `packages/game/src/g_func.ts:2142-2148`.
+- Correction appliquee: `door_use` teste maintenant le flag `FL_TEAMSLAVE` comme le C, au lieu de se baser seulement sur `teammaster`.
+- Effets verifies: retour immediat pour slave, branche `DOOR_TOGGLE` quand l'etat est `STATE_UP`/`STATE_TOP`, parcours de tous les membres `teamchain`, remise a vide de `message`/`touch`, appel `door_go_down` en fermeture toggle et `door_go_up(... activator)` en ouverture.
+- Branchement: `door_use` est affectee par `SP_func_door` et `SP_func_door_rotating`, referencees par `g_spawn.ts` pour `func_door`/`func_door_rotating`, puis appelee par triggers/G_UseTargets et par `door_killed`; les mouvements declenches rejoignent `Move_Calc`/`AngleMove_Calc` puis `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door` dans `apps/web`; le navigateur consomme le runtime serveur/local, les sons et les snapshots/interpolations de brush models. `packages/renderer-three` consomme les poses de brush snapshots et areabits via les adapters existants; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+- 2026-05-01: transitions de porte `door_go_down` et `door_go_up`, plus prototype C `door_go_down`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:868,900-947` avec `packages/game/src/g_func.ts:456-507`.
+- Correction appliquee: `door_go_down` restaure maintenant aussi `takedamage = DAMAGE_YES` quand `max_health` est present, comme le C; `door_go_up` ne modifie plus `self.activator`, ecriture absente du C.
+- Effets verifies: `door_go_down` conserve son start/loop hors team slave, restauration health/max_health, `STATE_DOWN`, branche `func_door` vers `Move_Calc(... start_origin, door_hit_bottom)` et branche `func_door_rotating` vers `AngleMove_Calc(... door_hit_bottom)`; `door_go_up` conserve les gardes `STATE_UP` et `STATE_TOP`, la remise de `nextthink` selon `wait`, son start/loop, `STATE_UP`, les branches lineaire/rotative vers `door_hit_top`, `G_UseTargets` et ouverture areaportals.
+- Branchement: `door_go_down` est programme par `door_hit_top` et appele par `door_use`/`door_blocked`; `door_go_up` est appele par `door_use`, `Touch_DoorTrigger` et `door_blocked`; les mouvements et callbacks passent par `Move_Calc`/`AngleMove_Calc` puis `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door` dans `apps/web`; le navigateur consomme le runtime serveur/local, les sons et les snapshots/interpolations de brush models. `packages/renderer-three` consomme les poses de brush snapshots et areabits via les adapters existants; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: locale `t` de `door_use_areaportals`, puis callbacks `door_hit_top` / `door_hit_bottom`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:854-866,870-899` avec `packages/game/src/g_func.ts:380-453`.
 - Correction appliquee: couverture ciblee ajoutee dans `scripts/verify/quake2-g-func.ts` pour verifier `door_hit_top` (son de fin, `s.sound = 0`, `STATE_TOP`, programmation `door_go_down`, cas `DOOR_TOGGLE` sans retour) et `door_hit_bottom` (son de fin, `s.sound = 0`, `STATE_BOTTOM`, fermeture areaportal par la recherche locale `t`/`G_Find` de `door_use_areaportals`). Pas de correction runtime necessaire.
@@ -174,7 +190,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `door_go_down`, puis `door_go_up` si le lot reste coherent.
+- Continuer avec `Touch_DoorTrigger`, puis `Think_CalcMoveSpeed` si coherent.
 
 ## Blocages
 
