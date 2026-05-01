@@ -32,6 +32,7 @@ import {
   SP_info_notnull,
   SP_info_null,
   SP_misc_blackhole,
+  SP_misc_eastertank,
   SP_misc_explobox,
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
@@ -61,6 +62,7 @@ import {
   linkGameEntity,
   misc_blackhole_think,
   misc_blackhole_use,
+  misc_eastertank_think,
   path_corner_touch,
   point_combat_touch,
   runPendingThinks,
@@ -92,6 +94,7 @@ function main(): void {
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
   verifyMiscBlackholeSpawnsLoopsAndFreesOnUse();
+  verifyMiscEastertankSpawnsAndLoopsStandFrames();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
   verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities();
@@ -647,6 +650,42 @@ function verifyMiscBlackholeSpawnsLoopsAndFreesOnUse(): void {
   useGameEntity(runtime, dispatch, null, blackhole);
   assert.equal(dispatch.inuse, false, "misc_blackhole_use must free the blackhole entity");
   assert.equal(drainGameTempEntityEvents(runtime).length, 0, "misc_blackhole_use must keep the source-commented temp entity omitted");
+}
+
+function verifyMiscEastertankSpawnsAndLoopsStandFrames(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 20;
+
+  const tank = spawnFreeableEntity(runtime);
+  tank.classname = "misc_eastertank";
+  tank.origin = [16, 32, 48];
+  tank.s.origin = [16, 32, 48];
+
+  SP_misc_eastertank(tank, runtime);
+
+  assert.equal(tank.movetype, MOVETYPE_NONE, "misc_eastertank must be stationary");
+  assert.equal(tank.solid, SOLID_BBOX, "misc_eastertank must use a bbox solid");
+  assert.deepEqual(tank.mins, [-32, -32, -16], "misc_eastertank mins mismatch");
+  assert.deepEqual(tank.maxs, [32, 32, 32], "misc_eastertank maxs mismatch");
+  assert.equal(runtime.assets.modelPaths[tank.s.modelindex - 1], "models/monsters/tank/tris.md2", "misc_eastertank modelindex must resolve to tank/tris.md2");
+  assert.equal(tank.s.frame, 254, "misc_eastertank must start at frame 254");
+  assert.equal(tank.think, misc_eastertank_think, "misc_eastertank must install misc_eastertank_think");
+  assert.equal(tank.nextthink, runtime.time + 2 * FRAMETIME, "misc_eastertank must schedule first think two frames later");
+  assert.equal(tank.linked, true, "misc_eastertank must be linked for snapshots");
+
+  runPendingThinks(runtime, runtime.time + 2 * FRAMETIME);
+  assert.equal(tank.s.frame, 255, "misc_eastertank think must advance while below frame 293");
+  assert.equal(tank.nextthink, runtime.time + FRAMETIME, "misc_eastertank think must reschedule every frame");
+
+  tank.s.frame = 292;
+  runPendingThinks(runtime, runtime.time + FRAMETIME);
+  assert.equal(tank.s.frame, 254, "misc_eastertank think must wrap frame 292 back to 254");
+  assert.equal(tank.think, misc_eastertank_think, "misc_eastertank wrap must keep the think callback");
+
+  const dispatch = spawnFreeableEntity(runtime);
+  dispatch.classname = "misc_eastertank";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(dispatch.think, misc_eastertank_think, "ED_CallSpawn must dispatch misc_eastertank to SP_misc_eastertank");
 }
 
 function verifyBarrelDelaySchedulesDelayedExplosion(): void {

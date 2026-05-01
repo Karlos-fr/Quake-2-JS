@@ -1,12 +1,22 @@
 # Progress - Quake-2-master/game/g_monster.c
 
 - Statut: En cours
-- Dernier lot valide: `M_MoveFrame` avec `move` et `index`
-- Prochain lot recommande: `monster_think`
+- Dernier lot valide: `monster_think`
+- Prochain lot recommande: `monster_use`
 - Tests de reference: `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Blocages: aucun pour le lot valide
 
 ## Session courante
+
+- Lot traite: `monster_think`.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS mis a jour, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
+- Runtime: atteignable depuis `G_RunFrame` -> `G_RunEntity` -> `SV_Physics_Step`/`SV_RunThink` -> `monster_think`; ordre C verifie pour `M_MoveFrame`, refresh ground si `linkcount` change, `M_CatagorizePosition`, `M_WorldEffects`, `M_SetEffects`.
+- apps/web: pas de logique parallele attendue; le navigateur consomme le runtime porte via host local/full-game, snapshots, audio events et refresh frames/effects. Tests `verify:local-gameplay-sync`, `verify:full-game:three-renderer` et `verify:web-render-order` OK.
+- renderer-three: sortie visible attendue via frames MD2, origines, angles et render effects des monstres; `packages/client/src/refresh.ts` transmet `frame`/`oldframe`/`effects` et `packages/renderer-three/src/refresh-entity-sync.ts`/`md2-mesh-builder.ts` consomment ces donnees. Pas de correction renderer necessaire.
+- Tests lances: `npm run verify:g-monster` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
+- Prochain lot recommande: `monster_use`.
+
+## Session precedente
 
 - Lot traite: `M_MoveFrame` avec les locales `move` et `index`.
 - Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS mis a jour pour l'adaptation runtime, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.

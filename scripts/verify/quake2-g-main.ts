@@ -536,6 +536,22 @@ CheckDMRules(sameLevelContext);
 assert.equal(bprints.pop(), "Fraglimit hit.\n", "CheckDMRules fraglimit announce mismatch");
 assert.equal(sameLevelContext.runtime.changemap, "fact1", "DF_SAME_LEVEL must keep the current map");
 
+const nextMapContext = createGameMainContext(imports);
+nextMapContext.runtime.maxclients = 1;
+nextMapContext.runtime.entities = [{ ...api.edicts[0]! }, api.edicts[1]!];
+nextMapContext.runtime.entities[1].client!.resp.score = 8;
+nextMapContext.runtime.entities[1].inuse = true;
+nextMapContext.level.mapname = "base1";
+nextMapContext.level.nextmap = "base2";
+nextMapContext.runtime.deathmatch = true;
+nextMapContext.cvars.timelimit = createCvar("timelimit", "0");
+nextMapContext.cvars.fraglimit = createCvar("fraglimit", "5");
+nextMapContext.cvars.dmflags = createCvar("dmflags", "0");
+nextMapContext.cvars.sv_maplist = createCvar("sv_maplist", "");
+CheckDMRules(nextMapContext);
+assert.equal(bprints.pop(), "Fraglimit hit.\n", "CheckDMRules nextmap fraglimit announce mismatch");
+assert.equal(nextMapContext.runtime.changemap, "base2", "EndDMLevel must prefer level.nextmap before searching target_changelevel");
+
 const skillContext = createGameMainContext(imports);
 skillContext.cvars.skill = createCvar("skill", "2.7");
 SpawnEntities(skillContext, "base1", entityString, "");

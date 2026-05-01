@@ -92,6 +92,27 @@
   - `scripts/verify/quake2-g-save.ts`: preuve de persistance des messages runtime plus recents.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:g-target` OK; `npm run verify:p-hud` OK; `npm run verify:p-view` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `level_locals_t` avec champs `level_name`, `mapname`, `nextmap`.
+- Verdict: `Valide` pour les 3 champs apres renforcement des preuves; aucune correction runtime TS necessaire.
+- Source H comparee: `level_name[MAX_QPATH]` porte le nom descriptif affiche, `mapname[MAX_QPATH]` porte le nom serveur de la map, et `nextmap[MAX_QPATH]` force la destination quand fraglimit/timelimit est atteint.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `level_locals_t` porte `level_name`, `mapname`, `nextmap` comme strings; `createLevelLocals` les initialise a `""`; commentaire de portage `level_locals_t` deja present et verifie.
+  - `packages/game/src/g_main.ts`: `SpawnEntities` reset/synchronise `mapname`, `level_name`, `nextmap`; `configureWorldspawn` applique `message`/fallback `mapname`, `nextmap` et `CS_NAME`; `CreateTargetChangeLevel`/`EndDMLevel` consomment `mapname` et `nextmap` avec la precedence C.
+  - `packages/game/src/g_save.ts`: `WriteLevel`/`ReadLevel` persistent et restaurent les 3 champs.
+  - `packages/game/src/p_hud.ts` et `g_cmds.ts`: le layout help consomme `level_name`.
+- Runtime:
+  - Source C: `SpawnEntities` remet le bloc niveau a zero puis copie `mapname`; `SP_worldspawn` copie `st.nextmap`, publie `CS_NAME` depuis `ent->message` ou `level.mapname`, et `EndDMLevel` choisit `level.nextmap` avant le fallback `target_changelevel`.
+  - TS: flux equivalent verifie par harness sur worldspawn avec/sans `message` et `nextmap`, choix deathmatch via `level.nextmap`, HUD help et persistance level save.
+- apps/web: integration attendue via le host local/full-game qui declenche `gamemap`/`map`, charge le BSP, appelle le runtime game et consomme les configstrings/HUD/snapshots; aucune logique parallele `level_name`/`mapname`/`nextmap` ne remplace le runtime. `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: pas de consommation directe de ces champs attendue. `mapname` choisit la map cote serveur/web avant que le renderer consomme world model, entites, frames, images, particules, beams, dlights, camera/scene; `level_name` est une sortie HUD/help, `nextmap` une decision de transition. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `level_locals_t` verifie; `SpawnEntities`, `CreateTargetChangeLevel`, `EndDMLevel`, `WriteLevel`/`ReadLevel` avaient deja des commentaires d'en-tete verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions valeurs par defaut, mutations et `LLOFS` pour `level_name`, `mapname`, `nextmap`.
+  - `scripts/verify/quake2-g-spawn.ts`: assertions `level.mapname`, worldspawn `message`/fallback `mapname` et `nextmap`.
+  - `scripts/verify/quake2-g-main.ts`: assertion precedence `level.nextmap` dans `EndDMLevel`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration des 3 champs.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-spawn` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:p-hud` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot champs `gitem_s` `flags`, `weapmodel`, `info`, `tag`, `precaches`.
 - Verdict: `Valide` pour les 5 champs apres renforcement du harness header; aucune correction gameplay TS necessaire.
 - Source H comparee: `gitem_s` declare `int flags`, `int weapmodel`, `void *info`, `int tag`, puis `char *precaches`.
@@ -629,7 +650,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `level_locals_t.level_name`, `mapname` et `nextmap` si le lot reste raisonnable.
+- Continuer avec `level_locals_t.intermissiontime`, `changemap`, `exitintermission` si le lot reste raisonnable.
 
 ## Blocages
 

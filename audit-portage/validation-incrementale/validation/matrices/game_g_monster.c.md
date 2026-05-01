@@ -36,7 +36,7 @@
 | `Quake-2-master/game/g_monster.c` | function | `M_MoveFrame` | `packages/game/src/g_monster.ts` | `M_MoveFrame` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | global | `move` | `packages/game/src/g_monster.ts` | `move` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | global | `index` | `packages/game/src/g_monster.ts` | `index` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | function | `monster_think` | `packages/game/src/g_monster.ts` | `monster_think` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | function | `monster_think` | `packages/game/src/g_monster.ts` | `monster_think` | Valide | A redecouper | Preuve session: comparaison C/TS, en-tete mis a jour, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`; runtime via `G_RunFrame`/`SV_RunThink`, apps/web et renderer consomment frames/origines/effects via refresh/local sync. |
 | `Quake-2-master/game/g_monster.c` | function | `monster_use` | `packages/game/src/g_monster.ts` | `monster_use` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | function | `monster_start_go` | `packages/game/src/g_monster.ts` | `monster_start_go` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | function | `monster_triggered_spawn` | `packages/game/src/g_monster.ts` | `monster_triggered_spawn` | A verifier | A redecouper |  |

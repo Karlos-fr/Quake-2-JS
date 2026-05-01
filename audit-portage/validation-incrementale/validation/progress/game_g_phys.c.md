@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `SV_AddGravity`.
-- Prochain lot recommande: `SV_PushEntity` avec locales `trace` et `mask` incluant l'entree `mask` dupliquee si le lot reste petit.
+- Dernier lot valide: `SV_PushEntity`, locales `trace` et `mask` incluant l'entree `mask` dupliquee.
+- Prochain lot recommande: `pushed_t`, puis locales `ent`, `deltayaw` et `obstacle` si le lot reste petit.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -92,4 +92,15 @@
 - apps/web: le navigateur utilise le runtime porte en local/full-game; `sv_gravity` et la cle `worldspawn.gravity` synchronisent `runtime.gravity`, puis les positions/origines resultantes sont exposees aux snapshots/refresh frames. Aucune logique web parallele ne remplace ce calcul.
 - renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les positions/origines des entites, brush models et scene/camera apres mouvement physique. Pas de modeles, frames, images, particules, beams, dlights, temp entities ou areabits produits directement par cette fonction.
 - Correction: `packages/game/src/g_phys.ts` utilise `runtime.gravity` pour `SV_AddGravity` dans les flux toss/step et pour le seuil `hitsound`; `scripts/verify/quake2-g-phys.ts` couvre l'appel direct avec gravite non standard et l'appel runtime via `G_RunEntity`.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `SV_PushEntity`
+
+- Lot traite: `SV_PushEntity`, locales `trace` et `mask`, incluant l'entree `mask` dupliquee par la matrice.
+- Comparaison C/TS: le C copie `ent->s.origin` dans `start`, calcule `end = start + push`, choisit `ent->clipmask` ou `MASK_SOLID`, trace, copie `trace.endpos` vers `ent->s.origin`, relink l'entite, appelle `SV_Impact` si `trace.fraction != 1.0`, revient a `start` et retry si `trace.ent` a ete liberee alors que `ent` existe encore, puis appelle `G_TouchTriggers` si `ent->inuse`. Le TS reprend ce flux avec `start`, `end`, `mask`, `runtime.collision.trace`, `setEntityOrigin`, `linkGameEntity`, `SV_Impact`, retry via boucle et `touchTriggerEntities`.
+- Commentaire d'en-tete: present et conforme (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement). Le niveau `Close` reste justifie par le runtime explicite et le bridge collision.
+- Runtime: atteignable depuis `G_RunFrame` / `G_RunEntity` via `SV_Physics_Toss` pour toss/bounce/fly/flymissile et via `SV_Push` pour les pushers; la fonction modifie `origin`/`s.origin`, relink l'entite et peut declencher callbacks touch/triggers.
+- apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace `SV_PushEntity`. Les sorties attendues sont les positions/snapshots/sons/temp entities issus des callbacks.
+- renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les entites, modeles/brush models, camera/scene via positions et refresh frames. Les particules, beams, dlights, temp entities ou sons peuvent venir indirectement des callbacks `SV_Impact`/trigger deja routes par les flux client/renderer existants.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour `trace`, `mask` explicite, fallback `MASK_SOLID`, retry apres entite impactee liberee, relink, conservation de `velocity` et trigger touch.
 - Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.

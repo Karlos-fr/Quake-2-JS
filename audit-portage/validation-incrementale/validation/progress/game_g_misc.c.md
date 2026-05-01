@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `misc_eastertank_think` et `SP_misc_eastertank`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `misc_eastertank_think` conserve le pre-increment de frame, la progression tant que `s.frame < 293`, le wrap a `254` et `nextthink = level.time + FRAMETIME`; `SP_misc_eastertank` conserve `MOVETYPE_NONE`, `SOLID_BBOX`, bbox `[-32,-32,-16]` / `[32,32,32]`, modele `models/monsters/tank/tris.md2`, frame initiale `254`, callback think, premier think a `level.time + 2 * FRAMETIME` et link.
+  - Commentaires d'en-tete verifies pour les deux fonctions: original/source/categorie portee/fidelite `Strict` et comportement documente.
+  - Branchement runtime verifie: `misc_eastertank` est enregistre dans `g_spawn.ts`, exporte via `index.ts`, dispatchable par `ED_CallSpawn`; `SP_misc_eastertank` installe le callback; `misc_eastertank_think` est atteint via `G_RunFrame`/`SV_RunThink` ou `runPendingThinks`.
+  - `apps/web`: integration attendue car le lot produit une entite MD2 visible animee par frames. Aucune logique parallele trouvee; les flux local/full-game consomment les snapshots, modelindices et frames issus du runtime.
+  - `renderer-three`: integration attendue pour modele MD2, frame courante et presence dans la scene. Les sorties passent par `ClientRefreshFrame.entities`, configstrings modeles et adapters Three; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour spawn complet, modelindex, bbox, frame initiale, cadence de think, wrap 292->254, dispatch `ED_CallSpawn` et link visible.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `misc_easterchick_think` et `SP_misc_easterchick` si le lot reste petit.
+
 - 2026-05-01: `misc_blackhole_use`, `misc_blackhole_think` et `SP_misc_blackhole`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `misc_blackhole_use` conserve la liberation immediate par `G_FreeEdict` et garde omis le bloc temp entity commente dans le C; `misc_blackhole_think` conserve l'increment de frame, la boucle 0..18 et le `nextthink = level.time + FRAMETIME`; `SP_misc_blackhole` conserve `MOVETYPE_NONE`, `SOLID_NOT`, bbox `[-64,-64,0]` / `[64,64,8]`, modele `models/objects/black/tris.md2`, `RF_TRANSLUCENT`, callbacks `use`/`think`, premier think a `level.time + 2 * FRAMETIME` et link.

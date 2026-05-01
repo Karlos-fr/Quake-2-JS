@@ -667,6 +667,9 @@ export function M_MoveFrame(self: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Advances one shared monster think frame, refreshing movement, grounding, water and visual effects.
+ *
+ * Porting notes:
+ * - Takes the explicit runtime bridge required by the TypeScript port; otherwise preserves the C call order.
  */
 export function monster_think(self: GameEntity, runtime: GameRuntime): void {
   M_MoveFrame(self, runtime);

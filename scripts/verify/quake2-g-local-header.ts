@@ -352,16 +352,28 @@ assert.deepEqual(
 );
 assert.equal(levelLocals.framenum, 0, "level_locals_t framenum default mismatch");
 assert.equal(levelLocals.time, 0, "level_locals_t time default mismatch");
+assert.equal(levelLocals.level_name, "", "level_locals_t level_name default mismatch");
+assert.equal(levelLocals.mapname, "", "level_locals_t mapname default mismatch");
+assert.equal(levelLocals.nextmap, "", "level_locals_t nextmap default mismatch");
 assert.equal(levelLocals.body_que, 0, "level_locals_t body_que mismatch");
 levelLocals.framenum = 42;
 levelLocals.time = 4.2;
+levelLocals.level_name = "Outer Base";
+levelLocals.mapname = "base1";
+levelLocals.nextmap = "base2";
 assert.equal(level.framenum, 42, "level_locals_t framenum field mismatch");
 assert.equal(level.time, 4.2, "level_locals_t time field mismatch");
+assert.equal(level.level_name, "Outer Base", "level_locals_t level_name field mismatch");
+assert.equal(level.mapname, "base1", "level_locals_t mapname field mismatch");
+assert.equal(level.nextmap, "base2", "level_locals_t nextmap field mismatch");
 assert.equal(st.sky, null, "spawn_temp sky default mismatch");
 assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");
 assert.equal(FOFS("classname"), "classname", "FOFS selector mismatch");
 assert.equal(LLOFS("framenum"), "framenum", "LLOFS framenum selector mismatch");
 assert.equal(LLOFS("time"), "time", "LLOFS time selector mismatch");
+assert.equal(LLOFS("level_name"), "level_name", "LLOFS level_name selector mismatch");
+assert.equal(LLOFS("mapname"), "mapname", "LLOFS mapname selector mismatch");
+assert.equal(LLOFS("nextmap"), "nextmap", "LLOFS nextmap selector mismatch");
 assert.equal(world([entity]), entity, "world helper mismatch");
 assert.equal(ITEM_INDEX(shotgun!), 2, "ITEM_INDEX mismatch");
 

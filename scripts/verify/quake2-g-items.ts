@@ -51,6 +51,7 @@ import {
   SP_item_health_small,
   Touch_Item,
   Use_Item,
+  Use_Breather,
   Use_PowerArmor,
   Use_Quad,
   SVF_NOCLIENT,
@@ -98,6 +99,7 @@ function main(): void {
   verifyUsePowerArmorRequiresCells();
   verifyPickupPowerupLimitsRespawnAndInstantUse();
   verifyUseQuadTimeoutAndDroppedHack();
+  verifyUseBreatherTimeout();
   verifyItemLookupHelpers();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
@@ -1222,6 +1224,32 @@ function verifyUseQuadTimeoutAndDroppedHack(): void {
 
   assertNumber(droppedPlayer.client!.pers.inventory[quad.index], 0, "Dropped instant Quad is used immediately after pickup");
   assertNumber(droppedPlayer.client!.quad_framenum, 200, "Dropped instant Quad keeps its remaining timeout through quad_drop_timeout_hack");
+}
+
+function verifyUseBreatherTimeout(): void {
+  const breather = requireItem("Rebreather");
+  const runtime = createHarnessRuntime();
+  runtime.framenum = 200;
+  const player = createPlayer(runtime);
+  player.client!.pers.inventory[breather.index] = 2;
+  player.client!.pers.selected_item = breather.index;
+
+  Use_Breather(player, breather, runtime);
+
+  assertNumber(player.client!.pers.inventory[breather.index], 1, "Use_Breather consumes one Rebreather inventory slot");
+  assertNumber(player.client!.breather_framenum, 500, "Use_Breather starts the original 300-frame timeout");
+  assertNumber(player.client!.pers.selected_item, breather.index, "Use_Breather keeps a still-owned selected Rebreather valid");
+  assertNumber(drainGameSoundEvents(runtime).length, 0, "Use_Breather preserves the original commented-out activation sound");
+
+  G_SetStats(player, runtime);
+  assertNumber(player.client!.ps.stats[STAT_TIMER], 30, "Use_Breather feeds the HUD timer through breather_framenum");
+  assertNumber(player.client!.ps.stats[STAT_TIMER_ICON] > 0 ? 1 : 0, 1, "Use_Breather feeds the HUD Rebreather timer icon");
+
+  player.client!.pers.inventory[breather.index] = 1;
+  Use_Breather(player, breather, runtime);
+
+  assertNumber(player.client!.breather_framenum, 800, "Use_Breather extends an active Rebreather by the same timeout");
+  assertNumber(player.client!.pers.selected_item, -1, "Use_Breather revalidates selected item after consuming the last Rebreather");
 }
 
 function verifyCoopPowerCubeSpawnFlags(): void {

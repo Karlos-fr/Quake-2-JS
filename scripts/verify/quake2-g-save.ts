@@ -194,8 +194,15 @@ unsaved.inuse = false;
 writeContext.runtime.entities.push(unsaved);
 writeContext.level.time = 12;
 writeContext.level.framenum = 120;
+writeContext.level.level_name = "Saved Unit";
+writeContext.level.mapname = "unit1";
+writeContext.level.nextmap = "unit2";
 writeContext.level.sound_entity = target;
 WriteLevel(writeContext, "save/level.sav");
+const levelJson = files.get("save/level.sav") ?? "";
+assert.ok(levelJson.includes("\"level_name\": \"Saved Unit\""), "WriteLevel must persist level_name");
+assert.ok(levelJson.includes("\"mapname\": \"unit1\""), "WriteLevel must persist mapname");
+assert.ok(levelJson.includes("\"nextmap\": \"unit2\""), "WriteLevel must persist nextmap");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
 readContext.runtime.maxclients = 1;
@@ -211,6 +218,9 @@ assert.equal(readContext.runtime.entities[2]?.monsterinfo.currentmove, testMonst
 assert.equal(readContext.level.sound_entity, readContext.runtime.entities[2], "ReadLevel level edict reference mismatch");
 assert.equal(readContext.runtime.sound_entity, readContext.runtime.entities[2], "ReadLevel runtime level mirror mismatch");
 assert.equal(readContext.runtime.time, 12, "ReadLevel must restore runtime time from level locals");
+assert.equal(readContext.level.level_name, "Saved Unit", "ReadLevel level_name mismatch");
+assert.equal(readContext.level.mapname, "unit1", "ReadLevel mapname mismatch");
+assert.equal(readContext.level.nextmap, "unit2", "ReadLevel nextmap mismatch");
 assert.equal(readContext.runtime.entities[3]?.inuse, undefined, "ReadLevel must wipe entities not present in the save");
 assert.equal(readContext.runtime.entities[2]?.nextthink, 14.5, "ReadLevel cross-level target nextthink mismatch");
 assert.equal(readContext.runtime.entities[1]?.client?.pers.connected, false, "ReadLevel must mark client slots disconnected");

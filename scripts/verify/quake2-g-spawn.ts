@@ -107,6 +107,7 @@ SpawnEntities(
   `{
 "classname" "worldspawn"
 "message" "Unit Test Level"
+"nextmap" "unit_next"
 "sky" "space1"
 "skyrotate" "5"
 "skyaxis" "0 0 1"
@@ -135,8 +136,9 @@ assert.equal(worldspawn.movetype, MOVETYPE_PUSH, "worldspawn movetype mismatch")
 assert.equal(worldspawn.solid, SOLID_BSP, "worldspawn solid mismatch");
 assert.equal(worldspawn.s.modelindex, 1, "worldspawn modelindex mismatch");
 assert.equal(context.runtime.mapname, "base1", "runtime.mapname must follow SpawnEntities");
+assert.equal(context.level.mapname, "base1", "level.mapname must follow SpawnEntities");
 assert.equal(context.level.level_name, "Unit Test Level", "worldspawn message must set level name");
-assert.equal(context.level.nextmap, "", "worldspawn nextmap default mismatch");
+assert.equal(context.level.nextmap, "unit_next", "worldspawn nextmap mismatch");
 assert.equal(context.runtime.gravity, 600, "worldspawn gravity must update runtime gravity");
 assert.equal(cvarValues.get("sv_gravity"), "600", "worldspawn gravity must call cvar_set");
 assert.equal(configstrings.get(CS_NAME), "Unit Test Level", "CS_NAME mismatch");
@@ -153,6 +155,20 @@ assert.equal(context.runtime.assets.soundPaths.includes("*jump1.wav"), true, "wo
 assert.equal(context.runtime.assets.soundPaths.includes("infantry/inflies1.wav"), true, "worldspawn must precache monster idle fly loop");
 assert.equal(soundIndexes.includes("player/fry.wav"), true, "worldspawn must call gi.soundindex for fry sound");
 assert.equal(soundIndexes.includes("weapons/blastf1a.wav"), true, "worldspawn must call gi.soundindex for Blaster sounds");
+
+const unnamedContext = createGameMainContext(imports);
+InitGame(unnamedContext);
+SpawnEntities(
+  unnamedContext,
+  "base2",
+  `{
+"classname" "worldspawn"
+}
+`,
+  ""
+);
+assert.equal(unnamedContext.level.level_name, "base2", "worldspawn without message must use mapname as level_name");
+assert.equal(unnamedContext.level.nextmap, "", "worldspawn without nextmap must leave level.nextmap empty");
 
 const firstDoor = context.runtime.entities[5]!;
 const secondDoor = context.runtime.entities[6]!;

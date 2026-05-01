@@ -36,10 +36,10 @@
 | `Quake-2-master/game/g_phys.c` | global | `time_left` | `packages/game/src/g_phys.ts` | `time_left` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `blocked` | `packages/game/src/g_phys.ts` | `blocked` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | function | `SV_AddGravity` | `packages/game/src/g_phys.ts` | `SV_AddGravity` | Valide | A redecouper | Correction: utilise `runtime.gravity`/`sv_gravity` au lieu de la constante 800 dans les flux runtime; `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`. |
-| `Quake-2-master/game/g_phys.c` | function | `SV_PushEntity` | `packages/game/src/g_phys.ts` | `SV_PushEntity` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | function | `SV_PushEntity` | `packages/game/src/g_phys.ts` | `SV_PushEntity` | Valide | A redecouper | `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`; commentaire d'en-tete verifie; runtime via `SV_Physics_Toss`/`SV_Push`; web/renderer via positions visibles et callbacks touch. |
+| `Quake-2-master/game/g_phys.c` | global | `trace` | `packages/game/src/g_phys.ts` | `trace` | Valide | A redecouper | Locale de `SV_PushEntity`; trace, retry, relink et retour couverts par `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Locale de `SV_PushEntity`; `clipmask` explicite couvert par `npm run verify:g-phys`. |
+| `Quake-2-master/game/g_phys.c` | global | `mask` | `packages/game/src/g_phys.ts` | `mask` | Valide | A redecouper | Entree locale dupliquee par la matrice pour `SV_PushEntity`; fallback `MASK_SOLID` couvert par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | struct | `pushed_t` | `packages/game/src/g_phys.ts` | `pushed_t` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `ent` | `packages/game/src/g_phys.ts` | `ent` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | global | `deltayaw` | `packages/game/src/g_phys.ts` |  | A verifier | A redecouper |  |

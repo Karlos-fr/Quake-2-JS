@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: spawn de train `SP_func_train`, activation elevator `trigger_elevator_use` et locale matricielle `target`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1654-1724` avec `packages/game/src/g_func.ts:1828-1902`.
+- Correction appliquee: ajout des commentaires d'en-tete `SP_func_train` et `trigger_elevator_use` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `SP_func_train` conserve `MOVETYPE_PUSH`, effacement des angles visibles, callback `blocked`, `TRAIN_BLOCK_STOPS`, dommage par defaut, `SOLID_BSP`, modele inline, son `st.noise`, defaults `speed`, `moveinfo.speed/accel/decel`, callback `use`, link runtime et programmation `func_train_find` au frame suivant; `trigger_elevator_use` conserve la garde train occupe, warnings pathtarget absent/invalide, selection locale `target = G_PickTarget(other->pathtarget)`, affectation `movetarget.target_ent` et reprise via `train_resume`.
+- Branchement: `SP_func_train` est referencee par `packages/game/src/g_spawn.ts` pour `func_train`, appelee par `ED_CallSpawn`/`SpawnEntities`, puis ses callbacks rejoignent `G_RunFrame`/`G_RunEntity`/`SV_RunThink`; `trigger_elevator_use` est installee par `trigger_elevator_init`, atteignable via triggers/G_UseTargets et reprend le train par `train_resume`.
+- Integration: aucune logique parallele `func_train`/`trigger_elevator` dans `apps/web`; le navigateur consomme les sons runtime, snapshots et refresh frames. `packages/renderer-three` ne porte pas la logique gameplay, mais consomme les sorties visibles attendues via brush models/origines des refresh frames dans la scene; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: resolution et activation de train `func_train_find`, locale matricielle `ent`, `train_use` et doublon d'appel `train_next`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1601-1652` avec `packages/game/src/g_func.ts:1763-1800` apres ajout des commentaires d'en-tete.
 - Correction appliquee: ajout des commentaires d'en-tete `func_train_find` et `train_use` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee ajoutee dans `scripts/verify/quake2-g-func.ts`.
@@ -286,7 +294,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `SP_func_train`, puis `trigger_elevator_use` avec la locale `target` si le lot reste petit.
+- Continuer avec `trigger_elevator_init` puis `SP_trigger_elevator` si le lot reste petit.
 
 ## Blocages
 

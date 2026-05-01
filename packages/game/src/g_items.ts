@@ -891,6 +891,8 @@ export function Use_Quad(ent: GameEntity, item: GameItemDefinition, runtime: Gam
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Consume one Rebreather inventory slot, validate the selected item, then extend or start `breather_framenum` by the original 300 frames.
+ * Porting notes: The original activation sound call is commented out in C, so the port intentionally emits no use sound here.
  */
 export function Use_Breather(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   const client = requireClient(ent, "Use_Breather");

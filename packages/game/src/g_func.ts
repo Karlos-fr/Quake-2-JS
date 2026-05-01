@@ -1825,6 +1825,19 @@ export function train_use(self: GameEntity, _other: GameEntity | null, activator
   }
 }
 
+/**
+ * Original name: SP_func_train
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns a moving brush train with pusher physics, model, damage, loop sound, use and blocked callbacks.
+ * - Schedules `func_train_find` on the next frame when a first `path_corner` target is configured.
+ *
+ * Porting notes:
+ * - `setGameEntityModel`, `registerGameSound` and `linkGameEntity` adapt the original `gi.*` calls.
+ */
 export function SP_func_train(self: GameEntity, runtime: GameRuntime): void {
   self.movetype = MOVETYPE_PUSH;
   self.angles = [0, 0, 0];
@@ -1856,6 +1869,19 @@ export function SP_func_train(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: trigger_elevator_use
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Uses the caller's `pathtarget` to select a path corner for the elevator train, then resumes that train.
+ * - Ignores use while the target train already has a pending think.
+ *
+ * Porting notes:
+ * - Runtime logs replace `gi.dprintf`; the nullable guards only protect malformed adapter calls.
+ */
 export function trigger_elevator_use(self: GameEntity, other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   if (self.movetarget?.nextthink) {
     return;

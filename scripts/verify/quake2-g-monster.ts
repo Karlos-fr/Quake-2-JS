@@ -103,6 +103,7 @@ function main(): void {
   verifyMDroptofloorTraceAndStateRefresh();
   verifyMSetEffectsShellsAndPowerArmor();
   verifyMMoveFrameSequenceAndCallbacks();
+  verifyMonsterThinkSequenceAndOutputs();
 
   console.log("Verification g_monster - shared monster gameplay OK");
 }
@@ -925,6 +926,76 @@ function verifyMMoveFrameSequenceAndCallbacks(): void {
   M_MoveFrame(monster, runtime);
   assert.equal(deadEndfuncRan, true, "M_MoveFrame should still run endfunc before the dead-monster return");
   assert.equal(monster.s.frame, 30, "SVF_DEADMONSTER after endfunc should stop before selecting a new frame");
+}
+
+function verifyMonsterThinkSequenceAndOutputs(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 12;
+
+  const monster = createMonster(runtime, 46);
+  monster.s.origin = [4, 8, 40];
+  monster.origin = [4, 8, 40];
+  monster.mins = [-16, -16, -24];
+  monster.monsterinfo.scale = 2;
+  monster.monsterinfo.aiflags = AI_RESURRECTING;
+  monster.health = 50;
+  monster.max_health = 100;
+  monster.s.frame = 9;
+  monster.waterlevel = 0;
+  monster.watertype = 0;
+  monster.linkcount = 5;
+  monster.monsterinfo.linkcount = 5;
+
+  const callbackSnapshots: Array<{ phase: string; frame: number; dist?: number; waterlevel: number; renderfx: number }> = [];
+  monster.monsterinfo.currentmove = {
+    firstframe: 10,
+    lastframe: 10,
+    frame: [{
+      aifunc: (self, dist) => {
+        callbackSnapshots.push({
+          phase: "ai",
+          frame: self.s.frame,
+          dist,
+          waterlevel: self.waterlevel,
+          renderfx: self.s.renderfx
+        });
+      },
+      dist: 3,
+      thinkfunc: (self) => {
+        callbackSnapshots.push({
+          phase: "think",
+          frame: self.s.frame,
+          waterlevel: self.waterlevel,
+          renderfx: self.s.renderfx
+        });
+      }
+    }],
+    endfunc: undefined
+  };
+
+  const probes: vec3_t[] = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => createClearTrace(end),
+    pointcontents: (point) => {
+      probes.push([...point]);
+      return probes.length <= 2 ? CONTENTS_WATER : 0;
+    }
+  };
+
+  monster_think(monster, runtime);
+
+  assert.deepEqual(callbackSnapshots, [
+    { phase: "ai", frame: 10, dist: 6, waterlevel: 0, renderfx: 0 },
+    { phase: "think", frame: 10, waterlevel: 0, renderfx: 0 }
+  ], "monster_think should run M_MoveFrame callbacks before water and render effect refresh");
+  assert.equal(monster.nextthink, runtime.time + FRAMETIME, "monster_think should preserve M_MoveFrame nextthink scheduling");
+  assert.deepEqual(probes, [[4, 8, 17], [4, 8, 43], [4, 8, 65]], "monster_think should categorize position after movement callbacks");
+  assert.equal(monster.waterlevel, 2, "monster_think should leave the categorized waterlevel on the monster");
+  assert.equal(monster.air_finished, runtime.time + 12, "monster_think should run world effects after categorization");
+  assert.equal((monster.flags & FL_INWATER) !== 0, true, "monster_think should apply M_WorldEffects water state");
+  assert.equal((monster.s.effects & EF_COLOR_SHELL) !== 0, true, "monster_think should apply M_SetEffects shell effect");
+  assert.equal((monster.s.renderfx & RF_SHELL_RED) !== 0, true, "monster_think should apply M_SetEffects resurrection shell color");
 }
 
 function createHarnessRuntime(): GameRuntime {

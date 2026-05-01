@@ -10,7 +10,7 @@
  * - packages/game/src/runtime.ts
  */
 
-import { MASK_SOLID, multicast_t, temp_event_t, type trace_t } from "../../packages/qcommon/src/index.js";
+import { MASK_MONSTERSOLID, MASK_SOLID, multicast_t, temp_event_t, type trace_t } from "../../packages/qcommon/src/index.js";
 import {
   G_RunFrame,
   ClipVelocity,
@@ -19,6 +19,7 @@ import {
   SV_FlyMove,
   SV_CheckVelocity,
   SV_Impact,
+  SV_PushEntity,
   SV_Physics_Toss,
   SV_RunThink,
   SV_TestEntityPosition
@@ -32,12 +33,14 @@ import {
   SOLID_BBOX,
   SOLID_BSP,
   SOLID_NOT,
+  SOLID_TRIGGER,
   createGameRuntimeFromBspEntities,
   drainGameSoundEvents,
   drainGameTempEntityEvents,
   emitGameSound,
   emitGameTempEntity,
   linkGameEntity,
+  refreshEntitySpatialState,
   spawnGameEntity
 } from "../../packages/game/src/runtime.js";
 
@@ -349,6 +352,150 @@ assertEqual("G_RunEntity.SV_Impact.e2", impactTargetTouches, 1);
 runtime.collision = defaultCollision;
 drainGameSoundEvents(runtime);
 drainGameTempEntityEvents(runtime);
+
+const pushRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+const pushWorld = pushRuntime.entities[0];
+pushWorld.inuse = true;
+pushWorld.solid = SOLID_BSP;
+pushWorld.linked = true;
+const pushActor = spawnGameEntity(pushRuntime);
+pushActor.classname = "push-actor";
+pushActor.solid = SOLID_BBOX;
+pushActor.mins = [-8, -8, -8];
+pushActor.maxs = [8, 8, 8];
+pushActor.origin = [0, 0, 0];
+pushActor.s.origin = [0, 0, 0];
+pushActor.velocity = [123, 0, 0];
+pushActor.clipmask = MASK_MONSTERSOLID;
+const pushBlocker = spawnGameEntity(pushRuntime);
+pushBlocker.classname = "push-blocker";
+pushBlocker.solid = SOLID_BBOX;
+const pushTrigger = spawnGameEntity(pushRuntime);
+pushTrigger.classname = "push-trigger";
+pushTrigger.solid = SOLID_TRIGGER;
+pushTrigger.mins = [8, -12, -12];
+pushTrigger.maxs = [12, 12, 12];
+let pushActorTouches = 0;
+let pushBlockerTouches = 0;
+let pushTriggerTouches = 0;
+let pushActorPlaneX: number | null = null;
+pushActor.touch = (_self, _other, _runtime, plane) => {
+  pushActorTouches += 1;
+  pushActorPlaneX = plane?.normal[0] ?? null;
+};
+pushBlocker.touch = (self) => {
+  pushBlockerTouches += 1;
+  self.inuse = false;
+};
+pushTrigger.touch = (_self, other) => {
+  if (other === pushActor) {
+    pushTriggerTouches += 1;
+  }
+};
+refreshEntitySpatialState(pushTrigger);
+linkGameEntity(pushRuntime, pushTrigger);
+const pushTraceStarts: [number, number, number][] = [];
+const pushTraceEnds: [number, number, number][] = [];
+const pushTraceMasks: number[] = [];
+let pushTraceCount = 0;
+pushRuntime.collision = {
+  world: {} as never,
+  trace(start, mins, maxs, end, passent, contentmask) {
+    pushTraceStarts.push([...start] as [number, number, number]);
+    pushTraceEnds.push([...end] as [number, number, number]);
+    pushTraceMasks.push(contentmask);
+    pushTraceCount += 1;
+
+    if (pushTraceCount === 1) {
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 0.5,
+        endpos: [5, 0, 0],
+        plane: {
+          normal: [-1, 0, 0],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: contentmask,
+        ent: pushBlocker
+      };
+    }
+
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: pushWorld
+    };
+  },
+  pointcontents() {
+    return 0;
+  }
+};
+const pushTrace = SV_PushEntity(pushActor, [10, 0, 0], pushRuntime);
+assertEqual("SV_PushEntity.retry.trace-count", pushTraceCount, 2);
+assertEqual("SV_PushEntity.retry.return-fraction", pushTrace.fraction, 1);
+assertVec("SV_PushEntity.retry.first-start", pushTraceStarts[0], [0, 0, 0]);
+assertVec("SV_PushEntity.retry.first-end", pushTraceEnds[0], [10, 0, 0]);
+assertVec("SV_PushEntity.retry.second-start", pushTraceStarts[1], [0, 0, 0]);
+assertVec("SV_PushEntity.retry.second-end", pushTraceEnds[1], [10, 0, 0]);
+assertEqual("SV_PushEntity.retry.mask", pushTraceMasks[0], MASK_MONSTERSOLID);
+assertEqual("SV_PushEntity.retry.mask-repeat", pushTraceMasks[1], MASK_MONSTERSOLID);
+assertVec("SV_PushEntity.retry.origin", pushActor.origin, [10, 0, 0]);
+assertVec("SV_PushEntity.retry.s-origin", pushActor.s.origin, [10, 0, 0]);
+assertVec("SV_PushEntity.retry.velocity-unchanged", pushActor.velocity, [123, 0, 0]);
+assertEqual("SV_PushEntity.retry.actor-touch", pushActorTouches, 1);
+assertEqual("SV_PushEntity.retry.actor-plane", pushActorPlaneX, -1);
+assertEqual("SV_PushEntity.retry.blocker-touch", pushBlockerTouches, 1);
+assertEqual("SV_PushEntity.retry.blocker-freed", pushBlocker.inuse, false);
+assertEqual("SV_PushEntity.retry.linked", pushActor.linked, true);
+assertEqual("SV_PushEntity.retry.trigger-touch", pushTriggerTouches, 1);
+
+const pushDefaultMaskEnt = spawnGameEntity(pushRuntime);
+pushDefaultMaskEnt.classname = "push-default-mask";
+pushDefaultMaskEnt.solid = SOLID_BBOX;
+pushDefaultMaskEnt.mins = [-4, -4, -4];
+pushDefaultMaskEnt.maxs = [4, 4, 4];
+pushDefaultMaskEnt.origin = [1, 2, 3];
+pushDefaultMaskEnt.s.origin = [1, 2, 3];
+pushDefaultMaskEnt.clipmask = 0;
+let pushDefaultMask = 0;
+pushRuntime.collision.trace = (start, _mins, _maxs, end, _passent, contentmask) => {
+  pushDefaultMask = contentmask;
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: 1,
+    endpos: [...end],
+    plane: {
+      normal: [0, 0, 0],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: contentmask,
+    ent: pushWorld
+  };
+};
+SV_PushEntity(pushDefaultMaskEnt, [0, 0, 4], pushRuntime);
+assertEqual("SV_PushEntity.default-mask", pushDefaultMask, MASK_SOLID);
+assertVec("SV_PushEntity.default-mask.origin", pushDefaultMaskEnt.origin, [1, 2, 7]);
 
 const flyFloor = spawnGameEntity(runtime);
 flyFloor.classname = "fly-floor";
