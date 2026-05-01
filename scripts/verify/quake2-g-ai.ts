@@ -362,13 +362,23 @@ impactNoise.origin = [24, 0, 0];
 runtime.entities[88] = impactNoise;
 const impactMonster = createFindTargetMonster(89);
 runtime.entities[89] = impactMonster;
+runtime.collision.world = {
+  map_planes: [],
+  map_leafs: [{ contents: 0, cluster: 0, area: 0, firstleafbrush: 0, numleafbrushes: 0 }],
+  map_visibility: new Uint8Array([1]),
+  map_vis: { numclusters: 1, bitofs: [[0, 0]] },
+  numclusters: 1
+} as never;
 runtime.sound_entity = null;
-runtime.sound_entity_framenum = 0;
+runtime.sound_entity_framenum = runtime.framenum - 2;
+runtime.sight_entity = null;
+runtime.sight_entity_framenum = runtime.framenum - 2;
 runtime.sound2_entity = impactNoise;
 runtime.sound2_entity_framenum = runtime.framenum;
 assert.equal(FindTarget(impactMonster, runtime), true, "FindTarget must accept fresh secondary impact sound target");
 assert.equal(impactMonster.enemy, impactNoise, "FindTarget secondary sound enemy mismatch");
 assert.equal((impactMonster.monsterinfo.aiflags & AI_SOUND_TARGET) !== 0, true, "FindTarget must set AI_SOUND_TARGET for secondary heard targets");
+runtime.sight_client = null;
 impactMonster.enemy = soundMonster.enemy;
 assert.equal(FindTarget(impactMonster, runtime), false, "FindTarget must ignore secondary sound target while already angry");
 impactMonster.enemy = null;
