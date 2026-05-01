@@ -32,6 +32,7 @@ import {
   SP_info_notnull,
   SP_info_null,
   SP_misc_blackhole,
+  SP_misc_easterchick,
   SP_misc_eastertank,
   SP_misc_explobox,
   SP_misc_teleporter,
@@ -61,6 +62,7 @@ import {
   gib_touch,
   linkGameEntity,
   misc_blackhole_think,
+  misc_easterchick_think,
   misc_blackhole_use,
   misc_eastertank_think,
   path_corner_touch,
@@ -95,6 +97,7 @@ function main(): void {
   verifyMiscExploboxSpawnsShootableBarrel();
   verifyMiscBlackholeSpawnsLoopsAndFreesOnUse();
   verifyMiscEastertankSpawnsAndLoopsStandFrames();
+  verifyMiscEasterchickSpawnsAndLoopsStandFrames();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
   verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities();
@@ -686,6 +689,42 @@ function verifyMiscEastertankSpawnsAndLoopsStandFrames(): void {
   dispatch.classname = "misc_eastertank";
   ED_CallSpawn(dispatch, runtime);
   assert.equal(dispatch.think, misc_eastertank_think, "ED_CallSpawn must dispatch misc_eastertank to SP_misc_eastertank");
+}
+
+function verifyMiscEasterchickSpawnsAndLoopsStandFrames(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 30;
+
+  const chick = spawnFreeableEntity(runtime);
+  chick.classname = "misc_easterchick";
+  chick.origin = [24, 36, 48];
+  chick.s.origin = [24, 36, 48];
+
+  SP_misc_easterchick(chick, runtime);
+
+  assert.equal(chick.movetype, MOVETYPE_NONE, "misc_easterchick must be stationary");
+  assert.equal(chick.solid, SOLID_BBOX, "misc_easterchick must use a bbox solid");
+  assert.deepEqual(chick.mins, [-32, -32, 0], "misc_easterchick mins mismatch");
+  assert.deepEqual(chick.maxs, [32, 32, 32], "misc_easterchick maxs mismatch");
+  assert.equal(runtime.assets.modelPaths[chick.s.modelindex - 1], "models/monsters/bitch/tris.md2", "misc_easterchick modelindex must resolve to bitch/tris.md2");
+  assert.equal(chick.s.frame, 208, "misc_easterchick must start at frame 208");
+  assert.equal(chick.think, misc_easterchick_think, "misc_easterchick must install misc_easterchick_think");
+  assert.equal(chick.nextthink, runtime.time + 2 * FRAMETIME, "misc_easterchick must schedule first think two frames later");
+  assert.equal(chick.linked, true, "misc_easterchick must be linked for snapshots");
+
+  runPendingThinks(runtime, runtime.time + 2 * FRAMETIME);
+  assert.equal(chick.s.frame, 209, "misc_easterchick think must advance while below frame 247");
+  assert.equal(chick.nextthink, runtime.time + FRAMETIME, "misc_easterchick think must reschedule every frame");
+
+  chick.s.frame = 246;
+  runPendingThinks(runtime, runtime.time + FRAMETIME);
+  assert.equal(chick.s.frame, 208, "misc_easterchick think must wrap frame 246 back to 208");
+  assert.equal(chick.think, misc_easterchick_think, "misc_easterchick wrap must keep the think callback");
+
+  const dispatch = spawnFreeableEntity(runtime);
+  dispatch.classname = "misc_easterchick";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(dispatch.think, misc_easterchick_think, "ED_CallSpawn must dispatch misc_easterchick to SP_misc_easterchick");
 }
 
 function verifyBarrelDelaySchedulesDelayedExplosion(): void {

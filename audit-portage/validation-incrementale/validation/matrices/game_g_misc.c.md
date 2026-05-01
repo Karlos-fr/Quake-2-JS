@@ -73,8 +73,8 @@
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_blackhole` | `packages/game/src/g_misc.ts` | `SP_misc_blackhole` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_eastertank_think` | `packages/game/src/g_misc.ts` | `misc_eastertank_think` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_eastertank` | `packages/game/src/g_misc.ts` | `SP_misc_eastertank` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `misc_easterchick_think` | `packages/game/src/g_misc.ts` | `misc_easterchick_think` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_misc_easterchick` | `packages/game/src/g_misc.ts` | `SP_misc_easterchick` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `misc_easterchick_think` | `packages/game/src/g_misc.ts` | `misc_easterchick_think` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `SP_misc_easterchick` | `packages/game/src/g_misc.ts` | `SP_misc_easterchick` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `misc_easterchick2_think` | `packages/game/src/g_misc.ts` | `misc_easterchick2_think` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_easterchick2` | `packages/game/src/g_misc.ts` | `SP_misc_easterchick2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `commander_body_think` | `packages/game/src/g_misc.ts` | `commander_body_think` | A verifier | A redecouper |  |
