@@ -824,6 +824,8 @@ export function Pickup_Pack(ent: GameEntity, other: GameEntity, runtime: GameRun
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Consume one Quad Damage inventory slot, validate the selected item, extend or start `quad_framenum`, then play `items/damage.wav`.
+ * Porting notes: The original `quad_drop_timeout_hack` global is preserved so deathmatch dropped Quads keep their remaining timeout when auto-used.
  */
 export function Use_Quad(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   const client = requireClient(ent, "Use_Quad");

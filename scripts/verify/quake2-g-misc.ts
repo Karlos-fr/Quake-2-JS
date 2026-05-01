@@ -10,12 +10,13 @@
  */
 
 import { strict as assert } from "node:assert";
-import { CS_LIGHTS, EF_FLIES, EF_GIB, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_LIGHTS, EF_FLIES, EF_GIB, RF_FRAMELERP, entity_event_t, multicast_t, PMF_TIME_TELEPORT, temp_event_t } from "../../packages/qcommon/src/index.js";
 
 import {
   SP_func_explosive,
   SP_func_clock,
   SP_light,
+  SOLID_BBOX,
   SOLID_BSP,
   SOLID_NOT,
   ANIM_DEATH,
@@ -23,13 +24,16 @@ import {
   BecomeExplosion2,
   GIB_METALLIC,
   GIB_ORGANIC,
+  FRAMETIME,
   MOVETYPE_BOUNCE,
+  MOVETYPE_NONE,
   MOVETYPE_TOSS,
   SP_misc_explobox,
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
   SP_path_corner,
   SP_point_combat,
+  SP_viewthing,
   SP_target_character,
   SP_target_string,
   SOLID_TRIGGER,
@@ -56,6 +60,7 @@ import {
   ThrowDebris,
   ThrowHead,
   ThrowGib,
+  TH_viewthing,
   useGameEntity
 } from "../../packages/game/src/index.js";
 import { AI_COMBAT_POINT, AI_STAND_GROUND, FL_FLY, FL_NO_KNOCKBACK, FL_SWIM } from "../../packages/game/src/g_local.js";
@@ -71,6 +76,7 @@ function main(): void {
   verifyPathCornerPathtargetTeleportAndPauseBranches();
   verifyPointCombatSpawnSetupAndDeathmatchFree();
   verifyPointCombatTouchBranches();
+  verifyViewthingSpawnAndThinkLoop();
   verifyTargetStringMapsFrames();
   verifyFuncClockBootstrapsTargetStringMessage();
   verifyMiscExploboxSpawnsShootableBarrel();
@@ -405,6 +411,37 @@ function verifyPointCombatSpawnSetupAndDeathmatchFree(): void {
 
   assert.equal(deathmatchCombat.inuse, false, "SP_point_combat must free point_combat in deathmatch");
   assert.equal(deathmatchCombat.linked, false, "deathmatch point_combat must not be linked");
+}
+
+function verifyViewthingSpawnAndThinkLoop(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 12;
+
+  const viewthing = spawnGameEntity(runtime);
+  viewthing.classname = "viewthing";
+
+  SP_viewthing(viewthing, runtime);
+
+  assert.equal(viewthing.movetype, MOVETYPE_NONE, "SP_viewthing must use MOVETYPE_NONE");
+  assert.equal(viewthing.solid, SOLID_BBOX, "SP_viewthing must use SOLID_BBOX");
+  assert.equal(viewthing.s.renderfx, RF_FRAMELERP, "SP_viewthing must enable RF_FRAMELERP");
+  assert.deepEqual(viewthing.mins, [-16, -16, -24], "SP_viewthing mins mismatch");
+  assert.deepEqual(viewthing.maxs, [16, 16, 32], "SP_viewthing maxs mismatch");
+  assert.equal(runtime.assets.modelPaths[viewthing.s.modelindex - 1], "models/objects/banner/tris.md2", "SP_viewthing must register the banner model");
+  assert.equal(viewthing.think, TH_viewthing, "SP_viewthing must install TH_viewthing");
+  assert.equal(viewthing.nextthink, 12.5, "SP_viewthing must schedule the first think at source delay");
+  assert.equal(viewthing.linked, true, "SP_viewthing must link the debug entity");
+  assert.equal(runtime.linkedDynamicBoxEntities.includes(viewthing), true, "SP_viewthing must expose the visible bbox to runtime collision lists");
+  assert.equal(runtime.logEntries.some((entry) => entry.kind === "message" && entry.message === "viewthing spawned"), true, "SP_viewthing must preserve the source diagnostic");
+
+  runtime.time = 20;
+  viewthing.s.frame = 6;
+
+  TH_viewthing(viewthing, runtime);
+
+  assert.equal(viewthing.s.frame, 0, "TH_viewthing must wrap frames modulo 7");
+  assert.equal(viewthing.think, TH_viewthing, "TH_viewthing must keep its think loop installed");
+  assert.equal(viewthing.nextthink, 20 + FRAMETIME, "TH_viewthing must schedule the next source frame tick");
 }
 
 function verifyTargetStringMapsFrames(): void {

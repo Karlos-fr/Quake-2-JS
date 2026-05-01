@@ -4,8 +4,8 @@
 
 - Matrice: `validation/matrices/game_m_chick.c.md`
 - Statut global: En cours
-- Dernier lot valide: slash setup (`chick_frames_slash`, `chick_move_slash`, `chick_frames_end_slash`, `chick_move_end_slash`, `chick_frames_start_slash`, `chick_move_start_slash`)
-- Prochain lot recommande: spawn setup (`SP_monster_chick`)
+- Dernier lot valide: spawn setup (`SP_monster_chick`)
+- Prochain lot recommande: prototype externe `visible`
 
 ## Lots traites
 
@@ -20,6 +20,7 @@
 | duck/dodge setup | `chick_duck_down`, `chick_duck_hold`, `chick_duck_up`, `chick_frames_duck`, `chick_move_duck`, `chick_dodge` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `verify:local-gameplay-sync`, `verify:refresh-entity:alias-flags`, `verify:full-game:three-renderer`, `typecheck` | Headers ajoutes pour les callbacks duck/dodge. `verify:full-game:render-source` et `verify:full-game:audio-routing` bloquent avant execution sur l'import manquant `packages/client/src/types.js`. Renderer-three juge via consommation generique des entites refresh MD2: frames duck01-duck07 et bbox runtime produits par le serveur/client refresh; pas de logique gameplay attendue dans renderer. |
 | attack callbacks/setup | `ChickSlash`, `ChickRocket`, `Chick_PreAttack1`, `ChickReload`, `chick_frames_start_attack1`, `chick_move_start_attack1`, `chick_frames_attack1`, `chick_move_attack1`, `chick_frames_end_attack1`, `chick_move_end_attack1` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `verify:local-gameplay-sync`, `verify:refresh-entity:alias-flags`, `verify:full-game:three-renderer`, `typecheck`; `verify:full-game:render-source` et `verify:full-game:audio-routing` bloques avant execution sur `packages/client/src/types.js` | Headers ajoutes pour les callbacks. `ChickRocket` garde `self.enemy` nul documentee. Renderer-three juge via consommation generique des entites refresh MD2 pour les frames attak101-attak132, du projectile rocket MD2 `models/objects/rocket/tris.md2` avec `EF_ROCKET`, et du flux client `svc_muzzleflash2`/`CL_BuildActionEffects`/`CL_SmokeAndFlash` pour `MZ2_CHICK_ROCKET_1`; pas de logique gameplay attendue dans renderer. |
 | slash setup | `chick_frames_slash`, `chick_move_slash`, `chick_frames_end_slash`, `chick_move_end_slash`, `chick_frames_start_slash`, `chick_move_start_slash` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `verify:local-gameplay-sync`, `verify:refresh-entity:alias-flags`, `verify:full-game:three-renderer`, `verify:web-render-order`, `typecheck`; `verify:full-game:render-source` bloque avant execution sur `packages/client/src/types.js` | Aucune correction TS requise. Runtime atteint via `monsterinfo.melee` -> `chick_melee` -> `chick_move_start_slash` -> `chick_slash` -> `chick_move_slash` -> `chick_reslash`/`chick_move_end_slash` depuis `G_RunFrame`/`M_MoveFrame`. Apps/web consomme le `refreshFrame`; renderer-three consomme generiquement les entites MD2, donc les frames attak201-attak216, sans logique gameplay attendue. |
+| spawn setup | `SP_monster_chick` | Valide | `verify:m-chick`, `verify:m-chick:header`, `verify:m-chick:source-parity`, `verify:local-gameplay-sync`, `verify:refresh-entity:alias-flags`, `verify:full-game:three-renderer`, `verify:web-render-order`, `typecheck` | Header complete pour `SP_monster_chick`; test spawn renforce pour les callbacks `pain`, `die` et `monsterinfo`. Runtime atteint via `g_spawn`/`ED_CallSpawn`, export `index` et save/load `g_save`; apps/web consomme via serveur local et `refreshFrame`; renderer-three consomme le modele MD2 Chick `models/monsters/bitch/tris.md2` et les frames d'entite refresh generiques. |
 
 ## Passe rapide post-validation
 

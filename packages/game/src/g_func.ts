@@ -636,10 +636,10 @@ export function Think_CalcMoveSpeed(self: GameEntity, runtime: GameRuntime): voi
  * - Spawns the touch trigger helper used by untargeted doors.
  *
  * Porting notes:
- * - Uses a simplified trigger entity without the full bounds merge from the original world link step.
+ * - Uses the runtime entity adapter for the C `G_Spawn`/`gi.linkentity` pair.
  */
 export function Think_SpawnDoorTrigger(ent: GameEntity, runtime: GameRuntime): void {
-  if (ent.teammaster && ent.teammaster !== ent) {
+  if ((ent.flags & FL_TEAMSLAVE) !== 0) {
     return;
   }
 

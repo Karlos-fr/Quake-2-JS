@@ -8,6 +8,26 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot `movetype_t`.
+- Verdict: `Valide` apres correction limitee de l'export public et renforcement du harness header.
+- Valeurs H/TS comparees et conformes:
+  - `MOVETYPE_NONE = 0`
+  - `MOVETYPE_NOCLIP = 1`
+  - `MOVETYPE_PUSH = 2`
+  - `MOVETYPE_STOP = 3`
+  - `MOVETYPE_WALK = 4`
+  - `MOVETYPE_STEP = 5`
+  - `MOVETYPE_FLY = 6`
+  - `MOVETYPE_TOSS = 7`
+  - `MOVETYPE_FLYMISSILE = 8`
+  - `MOVETYPE_BOUNCE = 9`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; constantes miroir runtime verifiees dans `packages/game/src/runtime.ts`; export public corrige dans `packages/game/src/index.ts` pour `MOVETYPE_STOP` et `MOVETYPE_FLY`.
+- Runtime: l'enum pilote les affectations de spawn/items/monstres/projectiles et le dispatch `G_RunEntity` vers pusher, none, noclip, step ou toss/fly/flymissile/bounce comme le C `SV_Physics`.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Le navigateur declenche ces mouvements via le runtime full-game et consomme positions/snapshots.
+- renderer-three: aucune reference directe trouvee; pas d'integration gameplay directe attendue. Les sorties visibles attendues sont positions/orientations/modeles/frames d'entites produites par le runtime puis consommees via les snapshots; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire d'en-tete de `movetype_t` dans `packages/game/src/g_local.ts` verifie avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement; commentaire de `G_RunEntity` verifie.
+- Tests: `npm run verify:g-local:header` OK avec assertions des 10 valeurs et exports publics; `npm run verify:g-phys` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot player noise `PNOISE_SELF`, `PNOISE_WEAPON`, `PNOISE_IMPACT`.
 - Verdict: `Valide` pour les 3 macros apres correction limitee de la consommation TS et ajout d'assertions ciblees.
 - Valeurs H/TS comparees et conformes:
@@ -396,7 +416,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `movetype_t`.
+- Continuer avec `gitem_armor_t`.
 
 ## Blocages
 

@@ -146,6 +146,15 @@ function verifySpawnRegistersAssetsAndStartsWalking(): void {
   assert.equal(chick.health, 175);
   assert.equal(chick.gib_health, -70);
   assert.equal(chick.mass, 200);
+  assert.equal(chick.pain, chick_pain);
+  assert.equal(chick.die, chick_die);
+  assert.equal(chick.monsterinfo.stand, chick_stand);
+  assert.equal(chick.monsterinfo.walk, chick_walk);
+  assert.equal(chick.monsterinfo.run, chick_run);
+  assert.equal(chick.monsterinfo.dodge, chick_dodge);
+  assert.equal(chick.monsterinfo.attack, chick_attack);
+  assert.equal(chick.monsterinfo.melee, chick_melee);
+  assert.equal(chick.monsterinfo.sight, chick_sight);
   assert.equal(chick.monsterinfo.currentmove, chick_move_stand);
   assert.equal(chick.monsterinfo.scale, 1);
   assert.equal(runtime.assets.modelPaths[chick.s.modelindex - 1], "models/monsters/bitch/tris.md2");

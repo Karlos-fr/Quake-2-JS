@@ -42,6 +42,7 @@ import {
   Touch_Item,
   Use_Item,
   Use_PowerArmor,
+  Use_Quad,
   SVF_NOCLIENT,
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -51,8 +52,8 @@ import {
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
-import { ITEM_TARGETS_USED, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
-import { CS_ITEMS, DF_INFINITE_AMMO, DF_NO_ARMOR, DF_NO_HEALTH, DF_NO_ITEMS, EF_ROTATE, MASK_SOLID, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
+import { DROPPED_PLAYER_ITEM, ITEM_TARGETS_USED, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
+import { CS_ITEMS, DF_INFINITE_AMMO, DF_INSTANT_ITEMS, DF_NO_ARMOR, DF_NO_HEALTH, DF_NO_ITEMS, EF_ROTATE, MASK_SOLID, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_SOLID } from "../../packages/qcommon/src/q_shared.js";
 import type { GameEntity, GameItemDefinition, GameRuntime } from "../../packages/game/src/index.js";
 import type { trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
@@ -79,6 +80,7 @@ function main(): void {
   verifyPickupArmorConversions();
   verifyPrecacheItemAssetsAndValidation();
   verifyUsePowerArmorRequiresCells();
+  verifyUseQuadTimeoutAndDroppedHack();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
   verifySpawnItemDeathmatchFilters();
@@ -711,6 +713,43 @@ function verifyUsePowerArmorRequiresCells(): void {
 
   const events = drainGameSoundEvents(runtime);
   assertBoolean(events.some((event) => event.soundPath === "misc/power1.wav"), true, "Use_PowerArmor queues activation sound");
+}
+
+function verifyUseQuadTimeoutAndDroppedHack(): void {
+  const quad = requireItem("Quad Damage");
+
+  const directRuntime = createHarnessRuntime();
+  directRuntime.framenum = 100;
+  const directPlayer = createPlayer(directRuntime);
+  directPlayer.client!.pers.inventory[quad.index] = 2;
+  directPlayer.client!.pers.selected_item = quad.index;
+  Use_Quad(directPlayer, quad, directRuntime);
+  assertNumber(directPlayer.client!.pers.inventory[quad.index], 1, "Use_Quad consumes one Quad inventory slot");
+  assertNumber(directPlayer.client!.quad_framenum, 400, "Use_Quad starts the original 300-frame timeout");
+  assertNumber(directPlayer.client!.pers.selected_item, quad.index, "Use_Quad keeps a still-owned selected Quad valid");
+  assertBoolean(drainGameSoundEvents(directRuntime).some((event) => event.soundPath === "items/damage.wav"), true, "Use_Quad queues the original activation sound");
+
+  directPlayer.client!.pers.inventory[quad.index] = 1;
+  Use_Quad(directPlayer, quad, directRuntime);
+  assertNumber(directPlayer.client!.quad_framenum, 700, "Use_Quad extends an active Quad by the same timeout");
+  assertNumber(directPlayer.client!.pers.selected_item, -1, "Use_Quad revalidates selected item after consuming the last Quad");
+
+  const droppedRuntime = createHarnessRuntime();
+  droppedRuntime.deathmatch = true;
+  droppedRuntime.dmflags = DF_INSTANT_ITEMS;
+  droppedRuntime.time = 12;
+  droppedRuntime.framenum = 120;
+  const droppedPlayer = createPlayer(droppedRuntime);
+  const droppedQuad = spawnFreeableEntity(droppedRuntime);
+  droppedQuad.classname = "item_quad";
+  droppedQuad.item = quad;
+  droppedQuad.spawnflags = DROPPED_PLAYER_ITEM;
+  droppedQuad.nextthink = 20;
+
+  Touch_Item(droppedQuad, droppedPlayer, droppedRuntime);
+
+  assertNumber(droppedPlayer.client!.pers.inventory[quad.index], 0, "Dropped instant Quad is used immediately after pickup");
+  assertNumber(droppedPlayer.client!.quad_framenum, 200, "Dropped instant Quad keeps its remaining timeout through quad_drop_timeout_hack");
 }
 
 function verifyCoopPowerCubeSpawnFlags(): void {

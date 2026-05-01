@@ -584,13 +584,40 @@ export function SP_point_combat(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: TH_viewthing
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Advances the debug `viewthing` banner animation frame and schedules the next tick.
+ */
 export function TH_viewthing(ent: GameEntity, runtime: GameRuntime): void {
   ent.s.frame = (ent.s.frame + 1) % 7;
   ent.think = TH_viewthing;
   ent.nextthink = runtime.time + FRAMETIME;
 }
 
+/**
+ * Original name: SP_viewthing
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns the debug `viewthing` banner model with frame interpolation and the `TH_viewthing` think loop.
+ *
+ * Porting notes:
+ * - Preserves the original `gi.dprintf` diagnostic through the runtime log.
+ */
 export function SP_viewthing(ent: GameEntity, runtime: GameRuntime): void {
+  runtime.log({
+    kind: "message",
+    message: "viewthing spawned",
+    entityIndex: ent.index,
+    entityClassname: ent.classname
+  });
   ent.movetype = MOVETYPE_NONE;
   ent.solid = SOLID_BBOX;
   ent.s.renderfx = RF_FRAMELERP;

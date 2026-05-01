@@ -33,6 +33,7 @@ import {
   SP_func_water,
   SP_trigger_elevator,
   Think_CalcMoveSpeed,
+  Think_SpawnDoorTrigger,
   Touch_Plat_Center,
   Touch_DoorTrigger,
   Use_Plat,
@@ -63,6 +64,7 @@ import {
   MOVETYPE_PUSH,
   MOVETYPE_NONE,
   MOVETYPE_STOP,
+  DOOR_START_OPEN,
   DOOR_TOGGLE,
   FL_TEAMSLAVE,
   PLAT_LOW_TRIGGER,
@@ -438,6 +440,57 @@ speedDoorFlagSlave.moveinfo.distance = 64;
 speedDoorFlagSlave.moveinfo.speed = 32;
 Think_CalcMoveSpeed(speedDoorFlagSlave, runtime);
 assert.equal(speedDoorFlagSlave.moveinfo.speed, 32, "Think_CalcMoveSpeed must ignore FL_TEAMSLAVE");
+const triggerSpawnSlave = entity("func_door", 52);
+triggerSpawnSlave.flags |= FL_TEAMSLAVE;
+const entityCountBeforeSlaveTrigger = runtime.entities.filter((candidate) => candidate?.inuse).length;
+Think_SpawnDoorTrigger(triggerSpawnSlave, runtime);
+assert.equal(
+  runtime.entities.filter((candidate) => candidate?.inuse).length,
+  entityCountBeforeSlaveTrigger,
+  "Think_SpawnDoorTrigger must ignore FL_TEAMSLAVE"
+);
+const triggerSpawnMaster = entity("func_door", 53, { spawnflags: String(DOOR_START_OPEN) });
+triggerSpawnMaster.target = "portal_pair";
+triggerSpawnMaster.absmin = [10, 20, 30];
+triggerSpawnMaster.absmax = [30, 40, 50];
+triggerSpawnMaster.mins = [10, 20, 30];
+triggerSpawnMaster.maxs = [30, 40, 50];
+triggerSpawnMaster.moveinfo.distance = 50;
+triggerSpawnMaster.moveinfo.speed = 100;
+const triggerSpawnMember = entity("func_door", 54);
+triggerSpawnMember.absmin = [-20, 15, 25];
+triggerSpawnMember.absmax = [5, 80, 60];
+triggerSpawnMember.mins = [-20, 15, 25];
+triggerSpawnMember.maxs = [5, 80, 60];
+triggerSpawnMember.moveinfo.distance = 100;
+triggerSpawnMember.moveinfo.speed = 50;
+triggerSpawnMaster.teamchain = triggerSpawnMember;
+const triggerPortal = entity("func_areaportal", 55);
+triggerPortal.targetname = "portal_pair";
+triggerPortal.style = 3;
+Think_SpawnDoorTrigger(triggerSpawnMaster, runtime);
+const spawnedDoorTrigger = runtime.entities.find(
+  (candidate) => candidate?.inuse && candidate.classname === "door_trigger" && candidate.owner === triggerSpawnMaster
+);
+assert.ok(spawnedDoorTrigger, "Think_SpawnDoorTrigger must spawn a helper trigger");
+assert.equal(spawnedDoorTrigger.solid, SOLID_TRIGGER, "Think_SpawnDoorTrigger helper solid mismatch");
+assert.equal(spawnedDoorTrigger.movetype, MOVETYPE_NONE, "Think_SpawnDoorTrigger helper movetype mismatch");
+assert.equal(spawnedDoorTrigger.touch, Touch_DoorTrigger, "Think_SpawnDoorTrigger helper touch mismatch");
+assert.deepEqual(spawnedDoorTrigger.mins, [-80, -45, 25], "Think_SpawnDoorTrigger helper mins mismatch");
+assert.deepEqual(spawnedDoorTrigger.maxs, [90, 140, 60], "Think_SpawnDoorTrigger helper maxs mismatch");
+assert.equal(spawnedDoorTrigger.linked, true, "Think_SpawnDoorTrigger must link helper trigger");
+assert.equal(
+  runtime.logEntries.some((entry) => entry.kind === "think" && entry.otherIndex === spawnedDoorTrigger.index),
+  true,
+  "Think_SpawnDoorTrigger log helper mismatch"
+);
+assert.equal(
+  runtime.logEntries.some((entry) => entry.kind === "use" && entry.otherIndex === triggerPortal.index),
+  true,
+  "Think_SpawnDoorTrigger must open START_OPEN areaportal"
+);
+assert.equal(triggerSpawnMaster.moveinfo.speed, 100, "Think_SpawnDoorTrigger must recalc master speed");
+assert.equal(triggerSpawnMember.moveinfo.speed, 200, "Think_SpawnDoorTrigger must recalc team speed");
 const areaportalRuntime = createGameRuntimeFromBspEntities([]);
 areaportalRuntime.collision = {
   world: {

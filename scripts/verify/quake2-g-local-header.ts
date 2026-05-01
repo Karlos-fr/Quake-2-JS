@@ -42,6 +42,16 @@ import {
   LEFT_HANDED,
   MELEE_DISTANCE,
   MOD_TRIGGER_HURT,
+  MOVETYPE_BOUNCE,
+  MOVETYPE_FLY,
+  MOVETYPE_FLYMISSILE,
+  MOVETYPE_NOCLIP,
+  MOVETYPE_NONE,
+  MOVETYPE_PUSH,
+  MOVETYPE_STEP,
+  MOVETYPE_STOP,
+  MOVETYPE_TOSS,
+  MOVETYPE_WALK,
   PNOISE_IMPACT,
   PNOISE_SELF,
   PNOISE_WEAPON,
@@ -75,6 +85,18 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
+import {
+  MOVETYPE_BOUNCE as INDEX_MOVETYPE_BOUNCE,
+  MOVETYPE_FLY as INDEX_MOVETYPE_FLY,
+  MOVETYPE_FLYMISSILE as INDEX_MOVETYPE_FLYMISSILE,
+  MOVETYPE_NOCLIP as INDEX_MOVETYPE_NOCLIP,
+  MOVETYPE_NONE as INDEX_MOVETYPE_NONE,
+  MOVETYPE_PUSH as INDEX_MOVETYPE_PUSH,
+  MOVETYPE_STEP as INDEX_MOVETYPE_STEP,
+  MOVETYPE_STOP as INDEX_MOVETYPE_STOP,
+  MOVETYPE_TOSS as INDEX_MOVETYPE_TOSS,
+  MOVETYPE_WALK as INDEX_MOVETYPE_WALK
+} from "../../packages/game/src/index.js";
 import { GetItemByIndex } from "../../packages/game/src/g_items.js";
 import { createRuntimeEntity } from "../../packages/game/src/runtime.js";
 
@@ -148,7 +170,36 @@ assert.equal(ammo_t.AMMO_ROCKETS, 2, "ammo_t AMMO_ROCKETS mismatch");
 assert.equal(ammo_t.AMMO_GRENADES, 3, "ammo_t AMMO_GRENADES mismatch");
 assert.equal(ammo_t.AMMO_CELLS, 4, "ammo_t AMMO_CELLS mismatch");
 assert.equal(ammo_t.AMMO_SLUGS, 5, "ammo_t AMMO_SLUGS mismatch");
-assert.equal(movetype_t.MOVETYPE_STEP, 5, "movetype_t mismatch");
+assert.equal(movetype_t.MOVETYPE_NONE, 0, "movetype_t MOVETYPE_NONE mismatch");
+assert.equal(movetype_t.MOVETYPE_NOCLIP, 1, "movetype_t MOVETYPE_NOCLIP mismatch");
+assert.equal(movetype_t.MOVETYPE_PUSH, 2, "movetype_t MOVETYPE_PUSH mismatch");
+assert.equal(movetype_t.MOVETYPE_STOP, 3, "movetype_t MOVETYPE_STOP mismatch");
+assert.equal(movetype_t.MOVETYPE_WALK, 4, "movetype_t MOVETYPE_WALK mismatch");
+assert.equal(movetype_t.MOVETYPE_STEP, 5, "movetype_t MOVETYPE_STEP mismatch");
+assert.equal(movetype_t.MOVETYPE_FLY, 6, "movetype_t MOVETYPE_FLY mismatch");
+assert.equal(movetype_t.MOVETYPE_TOSS, 7, "movetype_t MOVETYPE_TOSS mismatch");
+assert.equal(movetype_t.MOVETYPE_FLYMISSILE, 8, "movetype_t MOVETYPE_FLYMISSILE mismatch");
+assert.equal(movetype_t.MOVETYPE_BOUNCE, 9, "movetype_t MOVETYPE_BOUNCE mismatch");
+assert.equal(MOVETYPE_NONE, 0, "MOVETYPE_NONE mismatch");
+assert.equal(MOVETYPE_NOCLIP, 1, "MOVETYPE_NOCLIP mismatch");
+assert.equal(MOVETYPE_PUSH, 2, "MOVETYPE_PUSH mismatch");
+assert.equal(MOVETYPE_STOP, 3, "MOVETYPE_STOP mismatch");
+assert.equal(MOVETYPE_WALK, 4, "MOVETYPE_WALK mismatch");
+assert.equal(MOVETYPE_STEP, 5, "MOVETYPE_STEP mismatch");
+assert.equal(MOVETYPE_FLY, 6, "MOVETYPE_FLY mismatch");
+assert.equal(MOVETYPE_TOSS, 7, "MOVETYPE_TOSS mismatch");
+assert.equal(MOVETYPE_FLYMISSILE, 8, "MOVETYPE_FLYMISSILE mismatch");
+assert.equal(MOVETYPE_BOUNCE, 9, "MOVETYPE_BOUNCE mismatch");
+assert.equal(INDEX_MOVETYPE_NONE, MOVETYPE_NONE, "public MOVETYPE_NONE export mismatch");
+assert.equal(INDEX_MOVETYPE_NOCLIP, MOVETYPE_NOCLIP, "public MOVETYPE_NOCLIP export mismatch");
+assert.equal(INDEX_MOVETYPE_PUSH, MOVETYPE_PUSH, "public MOVETYPE_PUSH export mismatch");
+assert.equal(INDEX_MOVETYPE_STOP, MOVETYPE_STOP, "public MOVETYPE_STOP export mismatch");
+assert.equal(INDEX_MOVETYPE_WALK, MOVETYPE_WALK, "public MOVETYPE_WALK export mismatch");
+assert.equal(INDEX_MOVETYPE_STEP, MOVETYPE_STEP, "public MOVETYPE_STEP export mismatch");
+assert.equal(INDEX_MOVETYPE_FLY, MOVETYPE_FLY, "public MOVETYPE_FLY export mismatch");
+assert.equal(INDEX_MOVETYPE_TOSS, MOVETYPE_TOSS, "public MOVETYPE_TOSS export mismatch");
+assert.equal(INDEX_MOVETYPE_FLYMISSILE, MOVETYPE_FLYMISSILE, "public MOVETYPE_FLYMISSILE export mismatch");
+assert.equal(INDEX_MOVETYPE_BOUNCE, MOVETYPE_BOUNCE, "public MOVETYPE_BOUNCE export mismatch");
 assert.equal(client.pers.netname, "", "client pers netname must exist");
 assert.equal(client.flood_when.length, 10, "client flood_when inline array mismatch");
 assert.equal(entity.monsterinfo.aiflags, 0, "entity monsterinfo must exist");

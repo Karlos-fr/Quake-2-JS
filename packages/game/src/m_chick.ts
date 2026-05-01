@@ -1061,6 +1061,13 @@ export function chick_sight(self: GameEntity, _other: GameEntity | null, runtime
  * Source: game/m_chick.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Frees the spawn in deathmatch, precaches Chick sounds/model, configures bbox, health, mass and monster callbacks.
+ * - Links the entity, starts on the standing move table and delegates delayed monster startup to `walkmonster_start`.
+ *
+ * Porting notes:
+ * - Uses runtime asset registration/link helpers in place of the original `gi.soundindex`, `gi.modelindex` and `gi.linkentity`.
  */
 export function SP_monster_chick(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
