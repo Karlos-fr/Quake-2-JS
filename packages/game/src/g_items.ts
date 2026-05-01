@@ -30,7 +30,8 @@ import {
   PRINT_HIGH,
   RF_GLOW,
   STAT_PICKUP_ICON,
-  STAT_PICKUP_STRING
+  STAT_PICKUP_STRING,
+  STAT_SELECTED_ITEM
 } from "../../qcommon/src/index.js";
 import { entity_event_t } from "../../qcommon/src/index.js";
 import {
@@ -1193,10 +1194,11 @@ export function Drop_PowerArmor(ent: GameEntity, item: GameItemDefinition, runti
  * Original name: Touch_Item
  * Source: game/g_items.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
- * - Executes one item pickup path, including pickup/use side effects, touch disable, target firing and cleanup/respawn.
+ * - Preserves the original item touch gates, pickup dispatch, HUD feedback, target firing, coop-stay handling and cleanup/respawn decisions.
+ * - Uses the count-specific health pickup sounds and changes the selected item only for usable pickups.
  */
 export function Touch_Item(ent: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if (!other.client) {
@@ -1210,18 +1212,32 @@ export function Touch_Item(ent: GameEntity, other: GameEntity, runtime: GameRunt
   }
 
   const taken = callItemPickup(ent, other, runtime);
-  if (!taken) {
-    return;
-  }
 
-  other.client.bonus_alpha = 0.25;
-  other.client.ps.stats[STAT_PICKUP_ICON] = ent.item.icon ? registerGameImage(runtime, ent.item.icon) : 0;
-  other.client.ps.stats[STAT_PICKUP_STRING] = CS_ITEMS + ITEM_INDEX(ent.item);
-  other.client.pers.selected_item = ITEM_INDEX(ent.item);
-  other.client.pickup_msg_time = runtime.time + 3.0;
+  if (taken) {
+    const itemIndex = ITEM_INDEX(ent.item);
+    other.client.bonus_alpha = 0.25;
+    other.client.ps.stats[STAT_PICKUP_ICON] = ent.item.icon ? registerGameImage(runtime, ent.item.icon) : 0;
+    other.client.ps.stats[STAT_PICKUP_STRING] = CS_ITEMS + itemIndex;
+    other.client.pickup_msg_time = runtime.time + 3.0;
 
-  if (ent.item.pickupSound) {
-    emitGameSound(runtime, other, ent.item.pickupSound);
+    if (ent.item.use) {
+      other.client.pers.selected_item = itemIndex;
+      other.client.ps.stats[STAT_SELECTED_ITEM] = itemIndex;
+    }
+
+    if (ent.item.pickup === "Pickup_Health") {
+      if (ent.count === 2) {
+        emitGameSound(runtime, other, "items/s_health.wav");
+      } else if (ent.count === 10) {
+        emitGameSound(runtime, other, "items/n_health.wav");
+      } else if (ent.count === 25) {
+        emitGameSound(runtime, other, "items/l_health.wav");
+      } else {
+        emitGameSound(runtime, other, "items/m_health.wav");
+      }
+    } else if (ent.item.pickupSound) {
+      emitGameSound(runtime, other, ent.item.pickupSound);
+    }
   }
 
   if ((ent.spawnflags & ITEM_TARGETS_USED) === 0) {
@@ -1229,24 +1245,17 @@ export function Touch_Item(ent: GameEntity, other: GameEntity, runtime: GameRunt
     ent.spawnflags |= ITEM_TARGETS_USED;
   }
 
-  if ((ent.spawnflags & DROPPED_ITEM) !== 0) {
-    G_FreeEdict(runtime, ent);
+  if (!taken) {
     return;
   }
 
-  if ((ent.spawnflags & DROPPED_PLAYER_ITEM) !== 0) {
+  if (!((runtime.coop && (ent.item.flags & IT_STAY_COOP) !== 0)) || (ent.spawnflags & (DROPPED_ITEM | DROPPED_PLAYER_ITEM)) !== 0) {
     if ((ent.flags & FL_RESPAWN) !== 0) {
       ent.flags &= ~FL_RESPAWN;
     } else {
       G_FreeEdict(runtime, ent);
     }
-    return;
   }
-
-  ent.svflags |= SVF_NOCLIENT;
-  ent.solid = SOLID_NOT;
-  ent.touch = undefined;
-  linkGameEntity(runtime, ent);
 }
 
 function drop_temp_touch(ent: GameEntity, other: GameEntity, runtime: GameRuntime): void {

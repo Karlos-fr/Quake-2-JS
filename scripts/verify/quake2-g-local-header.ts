@@ -13,7 +13,12 @@
 import { strict as assert } from "node:assert";
 
 import {
+  AI_BRUTAL,
+  AI_COMBAT_POINT,
+  AI_DUCKED,
+  AI_GOOD_GUY,
   AI_MEDIC,
+  AI_NOSTEP,
   AI_SOUND_TARGET,
   AI_STAND_GROUND,
   AI_TEMP_STAND_GROUND,
@@ -78,6 +83,11 @@ assert.equal(GIB_METALLIC, 1, "GIB_METALLIC mismatch");
 assert.equal(AI_STAND_GROUND, 0x00000001, "AI_STAND_GROUND mismatch");
 assert.equal(AI_TEMP_STAND_GROUND, 0x00000002, "AI_TEMP_STAND_GROUND mismatch");
 assert.equal(AI_SOUND_TARGET, 0x00000004, "AI_SOUND_TARGET mismatch");
+assert.equal(AI_GOOD_GUY, 0x00000100, "AI_GOOD_GUY mismatch");
+assert.equal(AI_BRUTAL, 0x00000200, "AI_BRUTAL mismatch");
+assert.equal(AI_NOSTEP, 0x00000400, "AI_NOSTEP mismatch");
+assert.equal(AI_DUCKED, 0x00000800, "AI_DUCKED mismatch");
+assert.equal(AI_COMBAT_POINT, 0x00001000, "AI_COMBAT_POINT mismatch");
 assert.equal(AI_MEDIC, 0x00002000, "AI_MEDIC mismatch");
 assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");

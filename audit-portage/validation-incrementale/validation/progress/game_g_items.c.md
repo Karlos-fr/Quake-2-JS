@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `Touch_Item` et locale associee `taken`.
+
+Validation `Touch_Item` du 2026-05-01: comparaison avec `game/g_items.c` confirmee. Le TS conserve les retours originaux sans client, joueur mort ou item sans `pickup`, puis appelle le dispatch pickup une seule fois via `const taken = callItemPickup(...)`. Corrections appliquees dans `packages/game/src/g_items.ts`: `G_UseTargets` est maintenant appele avant le retour `!taken`, comme le C; le changement de `selected_item` et `STAT_SELECTED_ITEM` ne se fait que pour les items avec `use`; les pickups de sante jouent les sons specifiques `items/s_health.wav`, `items/n_health.wav`, `items/l_health.wav` ou `items/m_health.wav` selon `ent.count`; le cleanup suit la condition C avec `FL_RESPAWN`, `G_FreeEdict`, drops, et maintien des items `IT_STAY_COOP` en coop. Le commentaire d'en-tete `Touch_Item` a ete mis a jour en `Fidelity level: Strict` avec les comportements critiques.
+
+Runtime branche via `droptofloor`/`SpawnItem`, les drops (`Drop_Item`/`drop_make_touchable`), `drop_temp_touch`, et la commande `use` proche (`g_cmds.ts`). `apps/web` doit consommer ce flux via le runtime local, les stats HUD/configstrings, les sons et les snapshots; aucune logique parallele de pickup n'a ete detectee dans `apps/web`. `renderer-three` doit consommer les sorties visibles de ce flux: entites item MD2, disparition/free ou maintien coop stay, et sons/evenements aval via client refresh; les verifications renderer passent sans branchement gameplay dedie.
+
+Tests lances: `npm run verify:g-items`, `npm run verify:p-hud`, `npm run verify:refresh-entity:weapon`, `npm run verify:full-game:three-renderer`, `npm run verify:full-game:bridge`, `npm run typecheck` OK. `npm run verify:full-game:gameplay` bloque toujours sur `ERR_MODULE_NOT_FOUND` pour `packages/client/src/main.js`.
+
 - Power armor `PowerArmorType`, `Use_PowerArmor`, `Pickup_PowerArmor`, `Drop_PowerArmor` et locales associees `index`, `quantity`.
 
 Validation power armor du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `PowerArmorType` conserve le retour `POWER_ARMOR_NONE` sans client ou sans `FL_POWER_ARMOR`, puis la priorite `POWER_ARMOR_SHIELD` avant `POWER_ARMOR_SCREEN`. `Use_PowerArmor` conserve le toggle `FL_POWER_ARMOR`, le refus sans cells avec message `PRINT_HIGH`, et les sons originaux `misc/power1.wav`/`misc/power2.wav`. `Pickup_PowerArmor` conserve la lecture de quantite avant increment, l'increment d'une unite, le respawn deathmatch selon `item->quantity` hors dropped item et l'auto-use DM seulement au premier exemplaire. `Drop_PowerArmor` conserve la desactivation avant drop quand le joueur lache son dernier exemplaire actif, puis delegue a `Drop_General`. Les locales `index` et `quantity` sont portees comme variables TS equivalentes.
@@ -87,8 +95,8 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Blocages
 
-- `npm run verify:full-game:gameplay` a echoue avant le flux gameplay sur `ERR_MODULE_NOT_FOUND` pour `packages/client/src/main.js` importe par `scripts/verify/quake2-full-game-gameplay-commands.ts` (reconfirme le 2026-05-01 pendant les lots `Weapon_Machinegun`, `Weapon_Grenade`, `Weapon_GrenadeLauncher`, `Weapon_Railgun` et power armor).
+- `npm run verify:full-game:gameplay` a echoue avant le flux gameplay sur `ERR_MODULE_NOT_FOUND` pour `packages/client/src/main.js` importe par `scripts/verify/quake2-full-game-gameplay-commands.ts` (reconfirme le 2026-05-01 pendant les lots `Weapon_Machinegun`, `Weapon_Grenade`, `Weapon_GrenadeLauncher`, `Weapon_Railgun`, power armor et `Touch_Item`).
 
 ## Prochain lot recommande
 
-- `Touch_Item` et locale `taken`.
+- `G_FreeEdict` reference par `g_items.c` dans le cleanup pickup, puis `drop_temp_touch` si le coordinateur veut rester dans le flux drop/touch.

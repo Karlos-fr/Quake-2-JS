@@ -8,6 +8,22 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot flags AI comportement `AI_GOOD_GUY`, `AI_BRUTAL`, `AI_NOSTEP`, `AI_DUCKED`, `AI_COMBAT_POINT`.
+- Verdict: `Valide` pour les 5 macros apres ajout d'assertions ciblees dans le harness header.
+- Valeurs H/TS comparees et conformes:
+  - `AI_GOOD_GUY = 0x00000100`
+  - `AI_BRUTAL = 0x00000200`
+  - `AI_NOSTEP = 0x00000400`
+  - `AI_DUCKED = 0x00000800`
+  - `AI_COMBAT_POINT = 0x00001000`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de definition directe attendue pour ces macros.
+- Runtime:
+  - Source C: `AI_GOOD_GUY` protege/filtre les allies dans `FindTarget`, `T_Damage`, `monster_use`, `walkmonster_start_go`, `SP_misc_actor`, `SP_misc_insane`, `SP_misc_deadsoldier` et le medic; `AI_BRUTAL` force certains acteurs/tanks a continuer sur les corps jusqu'au seuil gib; `AI_NOSTEP` reduit le pas dans `SV_movestep` et est pose sur `misc_explobox`; `AI_DUCKED` reduit la boite/degats pendant les esquives monstres et tourelle; `AI_COMBAT_POINT` est pose par `FoundTarget`, consomme par `FindTarget`/`ai_run`, et efface par `point_combat_touch`.
+  - TS: `packages/game/src/g_ai.ts`, `g_combat.ts`, `g_monster.ts`, `g_misc.ts`, `m_move.ts`, `g_turret.ts`, `m_actor.ts`, `m_tank.ts` et les monstres duck conservent ces branches. Les commentaires d'en-tete de `FoundTarget`, `FindTarget`, `ai_run`, `T_Damage`, `M_MoveFrame`, `SV_movestep`, `turret_driver_think` et des spawns/monstres consultes ont ete verifies quand applicables.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Le navigateur declenche ce comportement via le runtime serveur/game et consomme les sorties via le host full-game; `verify:full-game:server-host` OK.
+- renderer-three: aucune reference directe aux flags; pas d'integration renderer directe attendue. Ces flags influencent IA, mouvements, boites et degats avant production des entites/snapshots visibles; `verify:full-game:three-renderer` OK confirme le flux renderer.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK apres ajout des assertions `AI_GOOD_GUY`/`AI_BRUTAL`/`AI_NOSTEP`/`AI_DUCKED`/`AI_COMBAT_POINT`; `npm run verify:g-ai` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:g-monster` OK; `npm run verify:m-move` OK; `npm run verify:g-misc` OK; `npm run verify:g-turret` OK; `npm run verify:m-actor` OK; `npm run verify:m-tank` OK; `npm run verify:m-brain` OK; `npm run verify:m-chick` OK; `npm run verify:m-gunner` OK; `npm run verify:m-infantry` OK; `npm run verify:m-medic` OK; `npm run verify:m-mutant` OK; `npm run verify:m-soldier` OK; `npm run verify:m-insane` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot flags AI poursuite/hold `AI_LOST_SIGHT`, `AI_PURSUIT_LAST_SEEN`, `AI_PURSUE_NEXT`, `AI_PURSUE_TEMP`, `AI_HOLD_FRAME`.
 - Verdict: `Valide` pour les 5 macros, sans correction TS necessaire.
 - Valeurs H/TS comparees et conformes:
@@ -268,7 +284,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les flags AI suivants: `AI_GOOD_GUY`, `AI_BRUTAL`, `AI_NOSTEP`, `AI_DUCKED`, `AI_COMBAT_POINT`.
+- Continuer avec les flags AI medic: `AI_MEDIC`, `AI_RESURRECTING`.
 
 ## Blocages
 

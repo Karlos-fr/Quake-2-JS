@@ -76,7 +76,8 @@ import {
   ClientDisconnect,
   ClientThink,
   ClientUserinfoChanged,
-  InitBodyQue
+  InitBodyQue,
+  SaveClientData
 } from "./p_client.js";
 import { PlayerTrail_Init } from "./p_trail.js";
 import { ClientEndServerFrame } from "./p_view.js";
@@ -305,6 +306,13 @@ export function InitGame(context: GameMainContext): void {
  */
 export function SpawnEntities(context: GameMainContext, mapname: string, entstring: string, spawnpoint: string): void {
   normalizeSkillCvar(context);
+  SaveClientData(context.runtime);
+  context.gi.FreeTags(TAG_LEVEL);
+
+  const savedClients = Array.from(
+    { length: context.runtime.maxclients },
+    (_, index) => context.runtime.entities[index + 1]?.client ?? null
+  );
 
   const parsedEntities = parseEntityLump(entstring);
   const nextRuntime = createGameRuntimeFromBspEntities(buildServerEntityList(parsedEntities, context.runtime.maxclients));
@@ -340,11 +348,11 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
     const player = context.runtime.entities[index]!;
     player.inuse = false;
     player.classname = "player";
-    if (!player.client) {
-      attachGameClient(player);
-    }
+    player.client = savedClients[index - 1] ?? attachGameClient(player);
+    player.s.modelindex = 255;
   }
 
+  let inhibit = 0;
   for (let index = context.runtime.maxclients + 1; index < context.runtime.entities.length; index += 1) {
     const entity = context.runtime.entities[index];
     if (!entity) {
@@ -354,12 +362,15 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
     applySpawnFlagMapHack(context.runtime, entity);
     if (shouldInhibitSpawnEntity(context.runtime, entity)) {
       freeGameEntity(context.runtime, entity);
+      inhibit += 1;
       continue;
     }
     entity.spawnflags &= ~SPAWNFLAG_NOT_MASK;
 
     ED_CallSpawn(entity, context.runtime);
   }
+
+  context.gi.dprintf("%i entities inhibited\n", inhibit);
 
   G_FindTeams(context.runtime);
   InitBodyQue(context.runtime);

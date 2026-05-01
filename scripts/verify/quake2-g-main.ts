@@ -198,6 +198,7 @@ const entityString = `
 
 api.SpawnEntities("base1", entityString, "start");
 assert.equal(api.edicts[0]?.classname, "worldspawn", "worldspawn must stay at edict 0");
+assert.equal(freeTags[0], TAG_LEVEL, "SpawnEntities must release level tags before rebuilding entities");
 assert.equal(configstrings.get(CS_STATUSBAR), single_statusbar, "SpawnEntities must publish the original single-player HUD statusbar");
 assert.equal(configstrings.get(CS_STATUSBAR)?.includes("hnum"), true, "statusbar must include the original health field");
 assert.equal(configstrings.get(CS_STATUSBAR)?.includes("anum"), true, "statusbar must include the original ammo field");
@@ -226,6 +227,16 @@ assert.deepEqual(
   ],
   "SpawnEntities post-map edict bootstrap mismatch"
 );
+assert.ok(dprints.includes("0 entities inhibited\n"), "SpawnEntities must report the inhibited entity count");
+
+const preservedClient = api.edicts[1]!.client!;
+api.edicts[1]!.inuse = true;
+api.edicts[1]!.health = 37;
+api.edicts[1]!.max_health = 151;
+api.SpawnEntities("base1", entityString, "restart");
+assert.equal(api.edicts[1]!.client, preservedClient, "SpawnEntities must preserve the persistent client block across level reloads");
+assert.equal(api.edicts[1]!.client!.pers.health, 37, "SpawnEntities must save entity health into persistent client data");
+assert.equal(api.edicts[1]!.client!.pers.max_health, 151, "SpawnEntities must save entity max_health into persistent client data");
 
 command.argv = ["sv", "test"];
 command.args = "test";
@@ -356,6 +367,7 @@ assert.deepEqual(writeDirs.at(-1), [0, 0, 1], "G_RunFrame must flush damage temp
 assert.deepEqual(multicasts.at(-2)?.origin, [11, 22, 33], "G_RunFrame must multicast player muzzleflash at player origin");
 assert.deepEqual(multicasts.at(-1)?.origin, [44, 55, 66], "G_RunFrame must multicast damage temp entity at event origin");
 
+freeTags.length = 0;
 api.Shutdown();
 assert.ok(dprints.includes("==== ShutdownGame ====\n"), "ShutdownGame banner mismatch");
 assert.deepEqual(freeTags, [TAG_LEVEL, TAG_GAME], "ShutdownGame FreeTags mismatch");
@@ -375,5 +387,5 @@ function createCvar(name: string, stringValue: string, flags = 0): cvar_t {
 
 function formatPrintf(fmt: string, args: unknown[]): string {
   let cursor = 0;
-  return fmt.replace(/%s/g, () => String(args[cursor++]));
+  return fmt.replace(/%[siuf]/g, () => String(args[cursor++]));
 }

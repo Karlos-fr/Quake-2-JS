@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: fonction `SpawnEntities`.
 - 2026-05-01: cvars serveur/commande `sv_cheats`, `flood_msgs`, `flood_persecond`, `flood_waitdelay`, `sv_maplist`.
 - 2026-05-01: cvars de vue/arme `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`.
 - 2026-05-01: cvars `g_select_empty`, `dedicated`, `filterban`, `sv_maxvelocity`, `sv_gravity`, `sv_rollspeed`, `sv_rollangle`.
@@ -11,6 +12,7 @@
 
 ## Verdict du lot
 
+- `SpawnEntities`: valide apres correction. Le port TS normalise `skill`, sauvegarde maintenant les donnees persistantes client avant reconstruction (`SaveClientData`), libere les tags niveau (`FreeTags(TAG_LEVEL)`), reconstruit worldspawn/joueurs/entites BSP, conserve les blocs client persistants sur les slots joueurs, applique les filtres `spawnflags` skill/deathmatch et le hack map `command`/`trigger_once`/`*27`, dispatch les spawners, journalise le nombre d'entites inhibees, puis initialise teams, body queue et player trail. Commentaire d'en-tete verifie. Fidelity `Close`: le bootstrap TS garde l'ordre existant et teste des entites BSP avant body queue/player trail.
 - `sv_cheats`: valide. Cvar init portee avec nom `cheats`, default `0` et flags `CVAR_SERVERINFO | CVAR_LATCH`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou les commandes `give`/`god`/`notarget`/`noclip` gardent le gate original `deathmatch && !sv_cheats`.
 - `flood_msgs`: valide. Cvar init portee avec default `4` et flags `0`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou `Cmd_Say_f` l'utilise comme fenetre de messages pour la protection flood.
 - `flood_persecond`: valide. Cvar init portee avec default `4` et flags `0`; `Cmd_Say_f` compare bien `runtime.time - flood_when[i]` a cette valeur, comme le C compare `level.time` a `flood_persecond->value`.
@@ -49,6 +51,13 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-01, couvre `SpawnEntities` avec `FreeTags(TAG_LEVEL)`, `SaveClientData`, conservation du bloc client persistant, statusbar, slots joueurs, body queue/player trail et `dprintf` inhibit.
+- `npm run verify:g-spawn`: ok le 2026-05-01, couvre worldspawn, configstrings, precaches, filtres de spawnflags skill/deathmatch, hack map `command`, `G_FindTeams`, `PlayerTrail_Init`.
+- `npx tsx ./scripts/verify/quake2-sv-game.ts`: ok le 2026-05-01, confirme le branchement serveur `SV_SpawnServer`/game export et les configstrings gameplay.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01, confirme le chemin `apps/web` server-backed et les brush/model precaches visibles.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run verify:web-render-order`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-main`: ok le 2026-05-01 pour le flux `InitGame`/`EndDMLevel` deja couvert.
 - `npm run verify:g-cmds`: ok le 2026-05-01, confirme les branches client-command incluant cheats et flood protection.
 - Verification inline TS le 2026-05-01: defaults/flags exacts pour `cheats`, `flood_msgs`, `flood_persecond`, `flood_waitdelay`, `sv_maplist`, et choix `sv_maplist` `q2dm1 -> q2dm2` par `EndDMLevel`.
@@ -80,7 +89,11 @@
 
 ## Blocages / decisions
 
-- Aucune correction TS necessaire pour ce lot.
+- Corrections appliquees dans `packages/game/src/g_main.ts`: appel `SaveClientData`, liberation `TAG_LEVEL`, preservation des blocs `client` sur les edicts joueurs reconstruits, et log `%i entities inhibited`.
+- Correction appliquee dans `scripts/verify/quake2-g-main.ts`: couverture ciblee de ces effets et support `%i` dans le formateur du harness.
+- `apps/web`: integration presente via `full-game-server-host.ts`/`SV_SpawnServer`, qui appelle l'export porte `SpawnEntities`; aucune logique web parallele ne remplace le spawn gameplay.
+- `packages/renderer-three`: integration directe non attendue dans `SpawnEntities`, mais ses sorties visibles sont bien consommees en aval via configstrings, packet entities, models, areabits, camera/playerstate et refresh frames.
+- `npm run verify:sv-game` n'existe pas; le harness equivalent `npx tsx ./scripts/verify/quake2-sv-game.ts` a ete lance et passe.
 - Commentaires verifies: `InitGame`, `ClientCommand` et `EndDMLevel` dans `packages/game/src/g_main.ts`, et `ClientCommand`/commandes consommatrices dans `packages/game/src/g_cmds.ts`.
 - `apps/web`: integration jugee presente via `full-game-server-host.ts`, qui instancie le `GetGameApiFunction` porte avec un runtime server-backed; le bridge console/client envoie les commandes au runtime au lieu de dupliquer la logique cheats/flood/maplist. Aucun manque web detecte dans le perimetre de ce lot.
 - `packages/renderer-three`: aucune integration directe attendue. Les cvars cheats/flood ne produisent pas de sortie visible; `sv_maplist` declenche une transition de map serveur, puis le renderer consomme uniquement les donnees normales de chargement/refresh apres changement de carte.
@@ -112,4 +125,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain symbole `g_main.c` dans la matrice: `SpawnEntities`.
+- Continuer avec le prochain symbole `g_main.c` dans la matrice: `ClientThink`.

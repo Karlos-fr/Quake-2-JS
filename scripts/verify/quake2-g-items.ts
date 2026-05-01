@@ -21,6 +21,7 @@ import {
   Pickup_Armor,
   PowerArmorType,
   SetRespawn,
+  SOLID_TRIGGER,
   SpawnItem,
   Touch_Item,
   Use_PowerArmor,
@@ -31,8 +32,8 @@ import {
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
-import { POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
-import { CS_ITEMS, STAT_PICKUP_ICON, STAT_PICKUP_STRING, entity_event_t } from "../../packages/qcommon/src/index.js";
+import { ITEM_TARGETS_USED, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
+import { CS_ITEMS, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 
 main();
@@ -42,8 +43,10 @@ function main(): void {
   verifySetRespawnRoundTrip();
   verifyTouchHealthPickup();
   verifyTouchHealthPickupUsesItemPath();
+  verifyTouchRejectedPickupStillUsesTargets();
   verifyTouchAmmoPickupUsesItemPath();
   verifyTouchWeaponPickupUsesWeaponPath();
+  verifyTouchCoopStayWeaponRemainsTouchable();
   verifyArmorAndPowerArmorIndices();
   verifyPickupArmorConversions();
   verifyUsePowerArmorRequiresCells();
@@ -84,7 +87,7 @@ function verifySetRespawnRoundTrip(): void {
 
 function verifyTouchHealthPickup(): void {
   const runtime = createHarnessRuntime();
-  const itemEntity = spawnGameEntity(runtime);
+  const itemEntity = spawnFreeableEntity(runtime);
   const player = createPlayer(runtime);
 
   player.health = 60;
@@ -101,7 +104,7 @@ function verifyTouchHealthPickup(): void {
 
 function verifyTouchHealthPickupUsesItemPath(): void {
   const runtime = createHarnessRuntime();
-  const itemEntity = spawnGameEntity(runtime);
+  const itemEntity = spawnFreeableEntity(runtime);
   const player = createPlayer(runtime);
   const health = requireItem("Health");
 
@@ -111,19 +114,55 @@ function verifyTouchHealthPickupUsesItemPath(): void {
   itemEntity.spawnflags = 0;
   itemEntity.touch = Touch_Item;
   itemEntity.solid = 1;
+  player.client!.pers.selected_item = 7;
+  player.client!.ps.stats[STAT_SELECTED_ITEM] = 7;
   linkGameEntity(runtime, itemEntity);
 
   Touch_Item(itemEntity, player, runtime);
 
   assertNumber(player.health, 65, "Touch_Item routes health pickups to Pickup_Health");
   assertNumber(itemEntity.solid, 0, "Touch_Item hides a taken health pickup");
+  assertNumber(itemEntity.inuse ? 1 : 0, 0, "Touch_Item frees a taken non-respawning health pickup");
   assertNumber(player.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + health.index, "Touch_Item writes the health pickup string stat");
+  assertNumber(player.client!.pers.selected_item, 7, "Touch_Item does not select health items without a use callback");
+  assertNumber(player.client!.ps.stats[STAT_SELECTED_ITEM], 7, "Touch_Item leaves selected item stat unchanged for health");
+
+  const events = drainGameSoundEvents(runtime);
+  assertBoolean(events.some((event) => event.soundPath === "items/l_health.wav"), true, "Touch_Item plays the count-specific large health sound");
+}
+
+function verifyTouchRejectedPickupStillUsesTargets(): void {
+  const runtime = createHarnessRuntime();
+  const itemEntity = spawnGameEntity(runtime);
+  const target = spawnGameEntity(runtime);
+  const player = createPlayer(runtime);
+  const health = requireItem("Health");
+  let useCount = 0;
+
+  player.health = 100;
+  player.max_health = 100;
+  itemEntity.item = health;
+  itemEntity.count = 25;
+  itemEntity.target = "after_refusal";
+  itemEntity.spawnflags = 0;
+  itemEntity.touch = Touch_Item;
+  target.targetname = "after_refusal";
+  target.use = () => {
+    useCount++;
+  };
+
+  Touch_Item(itemEntity, player, runtime);
+
+  assertNumber(useCount, 1, "Touch_Item fires targets even when the pickup function returns false");
+  assertNumber(itemEntity.spawnflags & ITEM_TARGETS_USED, ITEM_TARGETS_USED, "Touch_Item marks targets as used after firing");
+  assertNumber(itemEntity.inuse ? 1 : 0, 1, "Touch_Item keeps an untaken item in use");
+  assertNumber(player.client!.ps.stats[STAT_PICKUP_STRING], 0, "Touch_Item does not write pickup stats for rejected pickups");
 }
 
 function verifyTouchAmmoPickupUsesItemPath(): void {
   const runtime = createHarnessRuntime();
   const player = createPlayer(runtime);
-  const ammoEntity = spawnGameEntity(runtime);
+  const ammoEntity = spawnFreeableEntity(runtime);
   const shells = requireItem("Shells");
 
   player.client!.pers.inventory[shells.index] = 5;
@@ -138,6 +177,7 @@ function verifyTouchAmmoPickupUsesItemPath(): void {
 
   assertNumber(player.client!.pers.inventory[shells.index], 15, "Touch_Item routes ammo pickups to Pickup_Ammo");
   assertNumber(ammoEntity.solid, 0, "Touch_Item hides a taken ammo pickup");
+  assertNumber(ammoEntity.inuse ? 1 : 0, 0, "Touch_Item frees a taken non-respawning ammo pickup");
   assertNumber(player.client!.ps.stats[STAT_PICKUP_ICON] > 0 ? 1 : 0, 1, "Touch_Item writes the ammo pickup icon stat");
   assertNumber(player.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + shells.index, "Touch_Item writes the ammo pickup string stat");
 }
@@ -145,7 +185,7 @@ function verifyTouchAmmoPickupUsesItemPath(): void {
 function verifyTouchWeaponPickupUsesWeaponPath(): void {
   const runtime = createHarnessRuntime();
   const player = createPlayer(runtime);
-  const weaponEntity = spawnGameEntity(runtime);
+  const weaponEntity = spawnFreeableEntity(runtime);
   const weapon = requireItem("Shotgun");
   const shells = requireItem("Shells");
 
@@ -165,6 +205,32 @@ function verifyTouchWeaponPickupUsesWeaponPath(): void {
   assertNumber(player.client!.pers.inventory[weapon.index], 1, "Touch_Item routes weapon pickups to Pickup_Weapon");
   assertNumber(player.client!.pers.inventory[shells.index], shells.quantity, "Weapon pickup grants default ammo through Add_Ammo");
   assertNumber(weaponEntity.solid, 0, "Touch_Item hides a taken world weapon");
+  assertNumber(weaponEntity.inuse ? 1 : 0, 0, "Touch_Item frees a taken non-respawning world weapon");
+  assertNumber(player.client!.pers.selected_item, weapon.index, "Touch_Item selects usable weapon pickups");
+  assertNumber(player.client!.ps.stats[STAT_SELECTED_ITEM], weapon.index, "Touch_Item writes selected item stat for usable pickups");
+}
+
+function verifyTouchCoopStayWeaponRemainsTouchable(): void {
+  const runtime = createHarnessRuntime();
+  runtime.coop = true;
+  const player = createPlayer(runtime);
+  const weaponEntity = spawnGameEntity(runtime);
+  const weapon = requireItem("Shotgun");
+
+  player.client!.pers.weapon = FindItem("Blaster");
+  player.client!.pers.inventory[weapon.index] = 0;
+  weaponEntity.item = weapon;
+  weaponEntity.spawnflags = 0;
+  weaponEntity.classname = weapon.classname;
+  weaponEntity.touch = Touch_Item;
+  weaponEntity.solid = SOLID_TRIGGER;
+
+  Touch_Item(weaponEntity, player, runtime);
+
+  assertNumber(player.client!.pers.inventory[weapon.index], 1, "Touch_Item grants coop stay weapon inventory");
+  assertNumber(weaponEntity.inuse ? 1 : 0, 1, "Touch_Item keeps coop stay weapons in use");
+  assertNumber(weaponEntity.solid, SOLID_TRIGGER, "Touch_Item leaves coop stay weapons touchable");
+  assertBoolean(weaponEntity.touch === Touch_Item, true, "Touch_Item leaves coop stay weapon touch callback installed");
 }
 
 function verifyArmorAndPowerArmorIndices(): void {
@@ -321,6 +387,13 @@ function createPlayer(runtime: GameRuntime): GameEntity {
   player.health = 100;
   player.max_health = 100;
   return player;
+}
+
+function spawnFreeableEntity(runtime: GameRuntime): GameEntity {
+  while (runtime.entities.length <= runtime.maxclients + 8) {
+    spawnGameEntity(runtime);
+  }
+  return spawnGameEntity(runtime);
 }
 
 function requireItem(name: string) {
