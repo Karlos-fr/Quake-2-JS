@@ -119,7 +119,8 @@ import {
   type GameEntity,
   type GameMonsterFrame,
   type GameMonsterInfo,
-  type GameMonsterMove
+  type GameMonsterMove,
+  weaponstate_t
 } from "./runtime.js";
 
 export const GAMEVERSION = "baseq2";
@@ -630,7 +631,8 @@ export {
   WEAP_RAILGUN,
   WEAP_ROCKETLAUNCHER,
   WEAP_SHOTGUN,
-  WEAP_SUPERSHOTGUN
+  WEAP_SUPERSHOTGUN,
+  weaponstate_t
 };
 
 const AMMO_BULLETS = ammo_t.AMMO_BULLETS;

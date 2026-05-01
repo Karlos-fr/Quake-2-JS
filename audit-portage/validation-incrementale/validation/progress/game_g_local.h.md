@@ -8,6 +8,24 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot enums simples `damage_t`, `weaponstate_t`, `ammo_t`.
+- Verdict: `Valide` pour les 3 enums apres correction limitee du reexport public depuis le point d'attache header.
+- Valeurs H/TS comparees et conformes:
+  - `damage_t`: `DAMAGE_NO = 0`, `DAMAGE_YES = 1`, `DAMAGE_AIM = 2`.
+  - `weaponstate_t`: `WEAPON_READY = 0`, `WEAPON_ACTIVATING = 1`, `WEAPON_DROPPING = 2`, `WEAPON_FIRING = 3`.
+  - `ammo_t`: `AMMO_BULLETS = 0`, `AMMO_SHELLS = 1`, `AMMO_ROCKETS = 2`, `AMMO_GRENADES = 3`, `AMMO_CELLS = 4`, `AMMO_SLUGS = 5`.
+- Cibles declaratives:
+  - `damage_t` est defini dans `packages/game/src/g_local.ts` et exporte par `packages/game/src/index.ts`.
+  - `weaponstate_t` et `ammo_t` sont definis dans `packages/game/src/runtime.ts`; `ammo_t` etait deja reexporte par `packages/game/src/g_local.ts`, et `weaponstate_t` est maintenant reexporte par `packages/game/src/g_local.ts` pour conserver le point d'attache `game/g_local.h`. Les deux restent exportes par `packages/game/src/index.ts`.
+- Runtime:
+  - `damage_t` alimente `edict.takedamage` pour joueurs, corps, monstres, gibs, fonctions et entites misc; les chemins verifies couvrent notamment `p_client` et les harness monstres deja consommateurs.
+  - `weaponstate_t` pilote le cycle d'arme dans `p_weapon` (`ready`, activation, dropping, firing) et l'etat client initialise par `createGameClient`.
+  - `ammo_t` sert de tag canonique aux items arme/munitions dans `g_items`, aux quantites/caps d'inventaire, pickups et HUD via la selection d'item.
+- apps/web: aucune reference directe aux enums; pas de logique parallele attendue. Le navigateur consomme les sorties runtime via le host full-game et, pour l'HUD ammo, via `packages/client/src/local-gameplay-sync.ts`; `verify:local-gameplay-sync` et `verify:full-game:server-host` OK.
+- renderer-three: aucune reference directe; pas d'integration renderer directe attendue. Ces enums ne produisent pas seuls de donnees visibles; les effets passent par etats d'entites, armes, inventaire/HUD et snapshots runtime. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaires d'en-tete existants verifies pour `damage_t`, `weaponstate_t` et `ammo_t` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports `g_local.ts`/`index.ts`; `npm run verify:g-local:header` OK apres ajout des assertions enum completes; `npm run verify:p-weapon` OK; `npm run verify:g-items` OK; `npm run verify:p-client` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot `MELEE_DISTANCE`, `BODY_QUEUE_SIZE`.
 - Verdict: `Valide` pour les 2 macros apres correction runtime limitee de la copie de corps.
 - Valeurs H/TS comparees et conformes:
@@ -170,7 +188,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les enums simples `damage_t`, `weaponstate_t`, `ammo_t`.
+- Continuer avec les macros `DEAD_NO`, `DEAD_DYING`, `DEAD_DEAD`, `DEAD_RESPAWNABLE`.
 
 ## Blocages
 

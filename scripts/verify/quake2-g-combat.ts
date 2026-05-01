@@ -16,9 +16,10 @@ import {
   createGameRuntimeFromBspEntities,
   createRuntimeEntity
 } from "../../packages/game/src/index.js";
-import { CheckPowerArmor, Killed, M_ReactToDamage, T_Damage, T_RadiusDamage } from "../../packages/game/src/g_combat.js";
+import { CanDamage, CheckPowerArmor, Killed, M_ReactToDamage, T_Damage, T_RadiusDamage } from "../../packages/game/src/g_combat.js";
 import { temp_event_t } from "../../packages/qcommon/src/index.js";
-import { MOVETYPE_BOUNCE, MOVETYPE_STEP, MOVETYPE_WALK, POWER_ARMOR_SHIELD, SOLID_BBOX, SVF_MONSTER } from "../../packages/game/src/runtime.js";
+import { FindItem } from "../../packages/game/src/g_items.js";
+import { FL_POWER_ARMOR, MOVETYPE_BOUNCE, MOVETYPE_PUSH, MOVETYPE_STEP, MOVETYPE_WALK, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD, SOLID_BBOX, SVF_MONSTER } from "../../packages/game/src/runtime.js";
 import {
   DAMAGE_BULLET,
   DAMAGE_NO_KNOCKBACK,
@@ -36,7 +37,9 @@ import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 main();
 
 function main(): void {
+  verifyCanDamageTraceLocalSequence();
   verifyMonsterPowerArmorUsesMonsterinfo();
+  verifyClientPowerArmorScreenLocals();
   verifyKilledUpdatesMonsterBookkeeping();
   verifyKilledMarksMedicOwnership();
   verifyReactToClientDamagePreservesVisibleEnemy();
@@ -52,6 +55,69 @@ function main(): void {
   console.log("Verification g_combat - damage/combat gameplay OK");
 }
 
+function verifyCanDamageTraceLocalSequence(): void {
+  const runtime = createHarnessRuntime();
+  const inflictor = createRuntimeEntity({ classname: "rocket" }, 4);
+  inflictor.s.origin = [1, 2, 3];
+
+  const target = createRuntimeEntity({ classname: "target" }, 5);
+  target.s.origin = [10, 20, 30];
+
+  const tracedEnds: Array<[number, number, number]> = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => {
+      tracedEnds.push([...end]);
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: tracedEnds.length === 5 ? 1 : 0.25,
+        endpos: [...end],
+        plane: {
+          normal: [0, 0, 1],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: 0,
+        ent: target
+      };
+    },
+    pointcontents: () => 0
+  };
+
+  assertBool(CanDamage(target, inflictor, runtime), true, "CanDamage retries the five original trace destinations");
+  assertVec3(tracedEnds[0], [10, 20, 30], "CanDamage first traces to the target origin");
+  assertVec3(tracedEnds[1], [25, 35, 30], "CanDamage second trace uses +15/+15");
+  assertVec3(tracedEnds[2], [25, 5, 30], "CanDamage third trace uses +15/-15");
+  assertVec3(tracedEnds[3], [-5, 35, 30], "CanDamage fourth trace uses -15/+15");
+  assertVec3(tracedEnds[4], [-5, 5, 30], "CanDamage fifth trace uses -15/-15");
+
+  target.movetype = MOVETYPE_PUSH;
+  target.absmin = [2, 4, 6];
+  target.absmax = [10, 12, 14];
+  runtime.collision.trace = (_start, _mins, _maxs, end) => ({
+    allsolid: false,
+    startsolid: false,
+    fraction: 0.5,
+    endpos: [...end],
+    plane: {
+      normal: [0, 0, 1],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent: target
+  });
+
+  assertBool(CanDamage(target, inflictor, runtime), true, "CanDamage keeps trace.ent == targ valid only for bmodels");
+}
+
 function verifyMonsterPowerArmorUsesMonsterinfo(): void {
   const runtime = createHarnessRuntime();
   const monster = createMonster(10);
@@ -62,6 +128,48 @@ function verifyMonsterPowerArmorUsesMonsterinfo(): void {
   const saved = CheckPowerArmor(monster, [16, 0, 0], [0, 0, 1], 9, 0, runtime);
   assertNumber(saved, 6, "CheckPowerArmor absorbs the original shield fraction");
   assertNumber(monster.monsterinfo.power_armor_power, 7, "CheckPowerArmor spends monsterinfo cells");
+}
+
+function verifyClientPowerArmorScreenLocals(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 8;
+  const player = createPlayer(6);
+  player.flags |= FL_POWER_ARMOR;
+  player.s.origin = [0, 0, 0];
+  player.s.angles = [0, 0, 0];
+
+  const cells = FindItem("Cells");
+  const screen = FindItem("Power Screen");
+  if (!cells || !screen) {
+    throw new Error("Expected Cells and Power Screen item definitions");
+  }
+
+  player.client!.pers.inventory[cells.index] = 5;
+  player.client!.pers.inventory[screen.index] = 1;
+
+  const emitted: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  const saved = CheckPowerArmor(player, [30, 0, 0], [0, 0, 1], 10, 0, runtime, {
+    emitTempEntity: (type, payload) => {
+      emitted.push({ type, payload });
+    }
+  });
+
+  assertNumber(saved, 3, "CheckPowerArmor uses the screen one-damage-per-cell adjusted save");
+  assertNumber(player.client!.pers.inventory[cells.index], 2, "CheckPowerArmor spends save / damagePerCell cells for clients");
+  assertNumber(emitted[0].type, temp_event_t.TE_SCREEN_SPARKS, "CheckPowerArmor emits screen sparks for POWER_ARMOR_SCREEN");
+  assertVec3(emitted[0].payload.origin as [number, number, number], [30, 0, 0], "CheckPowerArmor forwards the impact point to SpawnDamage");
+  assertVec3(emitted[0].payload.dir as [number, number, number], [0, 0, 1], "CheckPowerArmor forwards the impact normal to SpawnDamage");
+  assertApprox(player.powerarmor_time, 8.2, 0.0001, "CheckPowerArmor sets powerarmor_time from runtime time");
+
+  const rearSaved = CheckPowerArmor(player, [-30, 0, 0], [0, 0, 1], 10, 0, runtime);
+  assertNumber(rearSaved, 0, "CheckPowerArmor rejects screen damage behind the entity using vec/dot/forward");
+
+  player.monsterinfo.power_armor_type = POWER_ARMOR_SCREEN;
+  player.monsterinfo.power_armor_power = 99;
+  const clientSourceSaved = CheckPowerArmor(player, [30, 0, 0], [0, 0, 1], 6, 0, runtime);
+  assertNumber(clientSourceSaved, 2, "CheckPowerArmor keeps client inventory as the power source, not monsterinfo");
+  assertNumber(player.client!.pers.inventory[cells.index], 0, "CheckPowerArmor spends the remaining client cells");
+  assertNumber(player.monsterinfo.power_armor_power, 99, "CheckPowerArmor does not spend monsterinfo power on clients");
 }
 
 function verifyKilledUpdatesMonsterBookkeeping(): void {
@@ -594,6 +702,12 @@ function createPlayer(index: number): GameEntity {
 }
 
 function assertNumber(actual: number, expected: number, label: string): void {
+  if (actual !== expected) {
+    throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
+  }
+}
+
+function assertBool(actual: boolean, expected: boolean, label: string): void {
   if (actual !== expected) {
     throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
   }

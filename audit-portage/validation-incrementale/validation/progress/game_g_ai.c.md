@@ -132,3 +132,14 @@
 - Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `ai_checkattack` avec locales `temp` et `hesDeadJim`, puis `ai_run` par petits sous-lots.
+
+## Session 2026-05-01 - ai_checkattack / temp / hesDeadJim
+
+- Lot traite: `ai_checkattack` avec locales generees `temp` et `hesDeadJim`; `ai_run` laisse au prochain lot.
+- Verdict: `ai_checkattack` valide; `temp` et `hesDeadJim` non applicables comme variables locales portees.
+- Corrections TS: commentaire d'en-tete de `ai_checkattack` complete pour documenter le runtime explicite et les gardes defensives de callback/ennemi; couverture `scripts/verify/quake2-g-ai.ts` etendue pour combat point, sound target frais/expire, branches `AI_MEDIC`, `AI_BRUTAL`, movetarget/stand et seuil de gib.
+- Preuves: comparaison C/TS effectuee; le TS conserve la sortie combat point, l'expiration `AI_SOUND_TARGET`, le reset `enemy_vis`, le calcul `hesDeadJim`, la reprise `oldenemy` via `HuntTarget`, les chemins `movetarget`/`stand`, `show_hostile`, `visible`, `search_time`, `last_sighting`, caches `enemy_infront`/`enemy_range`/`enemy_yaw`, puis delegation `AS_MISSILE`, `AS_MELEE` ou `checkattack`. Les gardes TS restent defensives par rapport au setup runtime normal.
+- Integration: runtime verifie via `ai_stand` et `ai_run`, eux-memes appeles depuis `M_MoveFrame`/frames monstres sous `G_RunFrame`; `monster_start` installe `M_CheckAttack` par defaut et certains monstres specialisent `checkattack`. `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` consomme les sorties visibles apres simulation via `ClientRefreshFrame`/`refresh-entity-sync`, sans integration gameplay directe attendue.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `ai_run` en sous-lots, en commencant par les branches initiales `AI_SOUND_TARGET`, `attack_state == AS_SLIDING` et le retour `ai_checkattack`, puis garder la poursuite `AI_LOST_SIGHT`/`PlayerTrail` pour un lot separe.

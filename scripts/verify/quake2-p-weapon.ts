@@ -20,6 +20,7 @@ import {
   Think_Weapon,
   Weapon_Chaingun,
   Weapon_Grenade,
+  Weapon_GrenadeLauncher,
   Weapon_HyperBlaster,
   Weapon_Machinegun,
   Weapon_RocketLauncher,
@@ -32,7 +33,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_ROCKET } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_ROCKET } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -42,6 +43,7 @@ function main(): void {
   verifyMachinegunFireParity();
   verifyMachinegunNoAmmoUsesVoiceChannel();
   verifyChaingunFireParity();
+  verifyGrenadeLauncherFireParity();
   verifyRocketLauncherFireParity();
   verifyHyperBlasterFireParity();
   verifyHandGrenadeParity();
@@ -324,6 +326,69 @@ function verifyRocketLauncherFireParity(): void {
   assertNumber(shots[0].damage, 119, "Rocket launcher direct damage random range should match C");
   assertNumber(shots[0].radiusDamage, 120, "Rocket launcher non-quad radius damage should match C");
   assertNumber(player.client!.pers.inventory[rockets.index], 2, "DF_INFINITE_AMMO should prevent rocket consumption");
+}
+
+function verifyGrenadeLauncherFireParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const grenadeLauncher = requireItem("Grenade Launcher");
+  const grenades = requireItem("Grenades");
+  const shots: Array<{ start: [number, number, number]; dir: [number, number, number]; damage: number; speed: number; timer: number; damageRadius: number }> = [];
+  const flashes: number[] = [];
+
+  player.s.modelindex = 255;
+  player.client!.pers.weapon = grenadeLauncher;
+  player.client!.ammo_index = grenades.index;
+  player.client!.pers.inventory[grenadeLauncher.index] = 1;
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 6;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.pers.inventory[grenades.index] = 3;
+
+  Weapon_GrenadeLauncher(player, runtime, {
+    fire_grenade: (_ent, start, dir, damage, speed, timer, damageRadius) => {
+      shots.push({ start, dir, damage, speed, timer, damageRadius });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots.length, 1, "Weapon_GrenadeLauncher should fire one grenade on frame 6");
+  assertNumber(shots[0].damage, 480, "Grenade launcher quad direct damage should match C");
+  assertNumber(shots[0].damageRadius, 160, "Grenade launcher radius should be damage + 40 before quad");
+  assertNumber(shots[0].speed, 600, "Grenade launcher projectile speed should match C");
+  assertNumber(shots[0].timer, 2.5, "Grenade launcher timer should match C");
+  assertNumber(shots[0].start[0], 8, "Grenade launcher projectile start should use original forward offset");
+  assertNumber(shots[0].start[2], player.viewheight - 8, "Grenade launcher projectile start should use viewheight offset");
+  assertNumber(shots[0].dir[0], 1, "Grenade launcher should fire along view forward");
+  assertNumber(flashes[0], MZ_GRENADE, "Grenade launcher should emit MZ_GRENADE");
+  assertNumber(player.client!.ps.gunframe, 7, "Grenade launcher firing should advance gunframe");
+  assertNumber(player.client!.kick_origin[0], -2, "Grenade launcher should apply original kick origin");
+  assertNumber(player.client!.kick_angles[0], -1, "Grenade launcher should apply original kick angle");
+  assertNumber(player.client!.pers.inventory[grenades.index], 2, "Grenade launcher should consume one grenade");
+
+  runtime.dmflags |= DF_INFINITE_AMMO;
+  player.client!.quad_framenum = 0;
+  player.client!.ps.gunframe = 6;
+  player.client!.pers.inventory[grenades.index] = 2;
+  shots.length = 0;
+  flashes.length = 0;
+
+  Weapon_GrenadeLauncher(player, runtime, {
+    fire_grenade: (_ent, start, dir, damage, speed, timer, damageRadius) => {
+      shots.push({ start, dir, damage, speed, timer, damageRadius });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots[0].damage, 120, "Grenade launcher non-quad damage should match C");
+  assertNumber(shots[0].damageRadius, 160, "Grenade launcher non-quad radius should match C");
+  assertNumber(flashes[0], MZ_GRENADE, "Grenade launcher infinite-ammo shot should still emit MZ_GRENADE");
+  assertNumber(player.client!.pers.inventory[grenades.index], 2, "DF_INFINITE_AMMO should prevent grenade consumption");
 }
 
 function verifyHyperBlasterFireParity(): void {

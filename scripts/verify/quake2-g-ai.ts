@@ -37,7 +37,9 @@ import {
 } from "../../packages/game/src/g_ai.js";
 import {
   AI_COMBAT_POINT,
+  AI_BRUTAL,
   AI_LOST_SIGHT,
+  AI_MEDIC,
   AI_PURSUE_NEXT,
   AI_PURSUE_TEMP,
   AI_PURSUIT_LAST_SEEN,
@@ -401,6 +403,86 @@ assert.equal(monsterRecovering.enemy, oldEnemy, "ai_checkattack must fall back t
 assert.equal(monsterRecovering.oldenemy, null, "ai_checkattack must clear oldenemy after reuse");
 assert.equal(monsterRecovering.goalentity, oldEnemy, "ai_checkattack must hunt recovered enemy");
 assert.equal(recoveringRunCalls, 1, "ai_checkattack must restart run on recovered enemy");
+
+const combatPointMonster = createRuntimeEntity({ classname: "monster_combat_point" }, 27);
+combatPointMonster.inuse = true;
+combatPointMonster.enemy = oldEnemy;
+combatPointMonster.goalentity = createPointEntity(120, 0, 0, 28);
+combatPointMonster.monsterinfo.aiflags |= AI_COMBAT_POINT;
+runtime.entities[27] = combatPointMonster;
+assert.equal(ai_checkattack(combatPointMonster, 0, runtime), false, "ai_checkattack must not fire while moving to a combat point");
+
+const soundGoal = createPointEntity(20, 20, 0, 29);
+runtime.entities[29] = soundGoal;
+
+const freshSoundMonster = createRuntimeEntity({ classname: "monster_fresh_sound" }, 30);
+freshSoundMonster.inuse = true;
+freshSoundMonster.enemy = noiseTarget;
+freshSoundMonster.goalentity = noiseTarget;
+freshSoundMonster.movetarget = soundGoal;
+freshSoundMonster.monsterinfo.aiflags |= AI_SOUND_TARGET | AI_STAND_GROUND | AI_TEMP_STAND_GROUND;
+noiseTarget.teleport_time = runtime.time - 4;
+runtime.entities[30] = freshSoundMonster;
+assert.equal(ai_checkattack(freshSoundMonster, 0, runtime), false, "ai_checkattack must keep chasing a fresh sound target");
+assert.equal(freshSoundMonster.show_hostile, runtime.time + 1, "fresh sound target must keep monster hostile");
+assert.equal(freshSoundMonster.goalentity, noiseTarget, "fresh sound target must preserve goalentity");
+
+const staleSoundMonster = createRuntimeEntity({ classname: "monster_stale_sound" }, 31);
+staleSoundMonster.inuse = true;
+staleSoundMonster.enemy = noiseTarget;
+staleSoundMonster.goalentity = noiseTarget;
+staleSoundMonster.movetarget = soundGoal;
+staleSoundMonster.monsterinfo.aiflags |= AI_SOUND_TARGET | AI_STAND_GROUND | AI_TEMP_STAND_GROUND;
+noiseTarget.teleport_time = runtime.time - 6;
+runtime.entities[31] = staleSoundMonster;
+assert.equal(ai_checkattack(staleSoundMonster, 0, runtime), true, "ai_checkattack must resolve a stale sound target as dead/no target");
+assert.equal(staleSoundMonster.goalentity, soundGoal, "stale sound target must restore movetarget goal");
+assert.equal((staleSoundMonster.monsterinfo.aiflags & AI_SOUND_TARGET) === 0, true, "stale sound target must clear AI_SOUND_TARGET");
+assert.equal((staleSoundMonster.monsterinfo.aiflags & AI_STAND_GROUND) === 0, true, "stale temp stand ground must clear AI_STAND_GROUND");
+assert.equal((staleSoundMonster.monsterinfo.aiflags & AI_TEMP_STAND_GROUND) === 0, true, "stale temp stand ground must clear AI_TEMP_STAND_GROUND");
+
+const medicRecovered = createRuntimeEntity({ classname: "monster_medic_recovered" }, 36);
+medicRecovered.inuse = true;
+medicRecovered.enemy = oldEnemy;
+medicRecovered.monsterinfo.aiflags |= AI_MEDIC;
+let medicStandCalls = 0;
+medicRecovered.monsterinfo.stand = () => {
+  medicStandCalls += 1;
+};
+runtime.entities[36] = medicRecovered;
+assert.equal(ai_checkattack(medicRecovered, 0, runtime), true, "AI_MEDIC must drop a revived enemy target");
+assert.equal((medicRecovered.monsterinfo.aiflags & AI_MEDIC) === 0, true, "AI_MEDIC must clear when target is alive again");
+assert.equal(medicRecovered.enemy, null, "AI_MEDIC dead-handling must clear the enemy");
+assert.equal(medicStandCalls, 1, "AI_MEDIC dead-handling without movetarget must stand");
+assert.equal(medicRecovered.monsterinfo.pausetime, runtime.time + 100000000, "dead-handling stand path must set pausetime");
+
+const brutalEnemy = createRuntimeEntity({ classname: "brutal_enemy" }, 37);
+brutalEnemy.inuse = true;
+brutalEnemy.health = -79;
+brutalEnemy.s.origin = [80, 0, 0];
+brutalEnemy.origin = [80, 0, 0];
+runtime.entities[37] = brutalEnemy;
+const brutalMonster = createRuntimeEntity({ classname: "monster_brutal" }, 38);
+brutalMonster.inuse = true;
+brutalMonster.enemy = brutalEnemy;
+brutalMonster.monsterinfo.aiflags |= AI_BRUTAL;
+runtime.entities[38] = brutalMonster;
+runtime.collision = createBlockedVisibilityCollision();
+assert.equal(ai_checkattack(brutalMonster, 0, runtime), false, "AI_BRUTAL must keep attacking corpses above the gib threshold");
+assert.equal(brutalMonster.enemy, brutalEnemy, "AI_BRUTAL must preserve a corpse above the gib threshold as enemy");
+
+brutalEnemy.health = -80;
+const brutalRetreatGoal = createPointEntity(10, 30, 0, 39);
+brutalMonster.movetarget = brutalRetreatGoal;
+let brutalWalkCalls = 0;
+brutalMonster.monsterinfo.walk = () => {
+  brutalWalkCalls += 1;
+};
+runtime.entities[39] = brutalRetreatGoal;
+assert.equal(ai_checkattack(brutalMonster, 0, runtime), true, "AI_BRUTAL must drop corpses at the gib threshold");
+assert.equal(brutalMonster.enemy, null, "AI_BRUTAL gib-threshold dead-handling must clear the enemy");
+assert.equal(brutalMonster.goalentity, brutalRetreatGoal, "dead-handling with movetarget must restore goalentity");
+assert.equal(brutalWalkCalls, 1, "dead-handling with movetarget must walk");
 
 const lostSightEnemy = createRuntimeEntity({ classname: "player" }, 24);
 attachGameClient(lostSightEnemy);
@@ -924,6 +1006,29 @@ function createClearVisibilityCollision() {
       allsolid: false,
       startsolid: false,
       fraction: 1,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 1],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: 0,
+      ent: null
+    }),
+    pointcontents: () => 0
+  };
+}
+
+function createBlockedVisibilityCollision() {
+  return {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => ({
+      allsolid: false,
+      startsolid: false,
+      fraction: 0,
       endpos: [...end],
       plane: {
         normal: [0, 0, 1],

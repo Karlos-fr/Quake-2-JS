@@ -29,8 +29,10 @@ import {
   createLevelLocals,
   createMonsterInfo,
   createSpawnTemp,
+  ammo_t,
   damage_t,
   movetype_t,
+  weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
 import { GetItemByIndex } from "../../packages/game/src/g_items.js";
@@ -53,7 +55,19 @@ assert.equal(BODY_QUEUE_SIZE, 8, "BODY_QUEUE_SIZE mismatch");
 assert.equal(AI_MEDIC, 0x00002000, "AI_MEDIC mismatch");
 assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");
+assert.equal(damage_t.DAMAGE_NO, 0, "damage_t DAMAGE_NO mismatch");
+assert.equal(damage_t.DAMAGE_YES, 1, "damage_t DAMAGE_YES mismatch");
 assert.equal(damage_t.DAMAGE_AIM, 2, "damage_t mismatch");
+assert.equal(weaponstate_t.WEAPON_READY, 0, "weaponstate_t WEAPON_READY mismatch");
+assert.equal(weaponstate_t.WEAPON_ACTIVATING, 1, "weaponstate_t WEAPON_ACTIVATING mismatch");
+assert.equal(weaponstate_t.WEAPON_DROPPING, 2, "weaponstate_t WEAPON_DROPPING mismatch");
+assert.equal(weaponstate_t.WEAPON_FIRING, 3, "weaponstate_t WEAPON_FIRING mismatch");
+assert.equal(ammo_t.AMMO_BULLETS, 0, "ammo_t AMMO_BULLETS mismatch");
+assert.equal(ammo_t.AMMO_SHELLS, 1, "ammo_t AMMO_SHELLS mismatch");
+assert.equal(ammo_t.AMMO_ROCKETS, 2, "ammo_t AMMO_ROCKETS mismatch");
+assert.equal(ammo_t.AMMO_GRENADES, 3, "ammo_t AMMO_GRENADES mismatch");
+assert.equal(ammo_t.AMMO_CELLS, 4, "ammo_t AMMO_CELLS mismatch");
+assert.equal(ammo_t.AMMO_SLUGS, 5, "ammo_t AMMO_SLUGS mismatch");
 assert.equal(movetype_t.MOVETYPE_STEP, 5, "movetype_t mismatch");
 assert.equal(client.pers.netname, "", "client pers netname must exist");
 assert.equal(client.flood_when.length, 10, "client flood_when inline array mismatch");

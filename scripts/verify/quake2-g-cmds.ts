@@ -18,6 +18,7 @@ import {
   Cmd_Give_f,
   Cmd_Inven_f,
   Cmd_InvUse_f,
+  Cmd_WeapLast_f,
   Cmd_PlayerList_f,
   Cmd_Say_f,
   Cmd_WeapNext_f,
@@ -54,6 +55,7 @@ verifyInventorySerialization();
 verifyInventoryUseCommand();
 verifyWeaponPreviousCommand();
 verifyWeaponNextCommand();
+verifyWeaponLastCommand();
 verifyPlayerListAndWave();
 
 console.log("Verification g_cmds - client commands OK");
@@ -257,6 +259,47 @@ function verifyWeaponNextCommand(): void {
   runCommand(localContext, ["weapnext"]);
   GameCommandsClientCommand(localContext, player);
   assert.equal(player.client!.newweapon, blaster, "ClientCommand should dispatch weapnext");
+}
+
+function verifyWeaponLastCommand(): void {
+  const runtime = createRuntime();
+  const player = createClient(runtime, 1, "weapon-last");
+  const shells = requireItem("Shells");
+  const quad = requireItem("Quad Damage");
+  const blaster = requireItem("Blaster");
+  const shotgun = requireItem("Shotgun");
+
+  Cmd_WeapLast_f(player, runtime);
+  assert.equal(player.client!.newweapon, null, "Cmd_WeapLast_f should ignore clients with no current weapon");
+
+  player.client!.pers.weapon = blaster;
+  Cmd_WeapLast_f(player, runtime);
+  assert.equal(player.client!.newweapon, null, "Cmd_WeapLast_f should ignore clients with no last weapon");
+
+  player.client!.pers.lastweapon = shotgun;
+  Cmd_WeapLast_f(player, runtime);
+  assert.equal(player.client!.newweapon, null, "Cmd_WeapLast_f should reject missing last weapon inventory");
+
+  player.client!.pers.lastweapon = shells;
+  player.client!.pers.inventory[shells.index] = 5;
+  Cmd_WeapLast_f(player, runtime);
+  assert.equal(player.client!.newweapon, null, "Cmd_WeapLast_f should reject last items without use callbacks");
+
+  player.client!.pers.lastweapon = quad;
+  player.client!.pers.inventory[quad.index] = 1;
+  Cmd_WeapLast_f(player, runtime);
+  assert.equal(player.client!.newweapon, null, "Cmd_WeapLast_f should reject usable non-weapon last items");
+
+  player.client!.pers.lastweapon = shotgun;
+  player.client!.pers.inventory[shotgun.index] = 1;
+  Cmd_WeapLast_f(player, runtime);
+  assert.equal(player.client!.newweapon, shotgun, "Cmd_WeapLast_f should dispatch the last weapon use callback");
+
+  player.client!.newweapon = null;
+  const localContext = createContext(runtime);
+  runCommand(localContext, ["weaplast"]);
+  GameCommandsClientCommand(localContext, player);
+  assert.equal(player.client!.newweapon, shotgun, "ClientCommand should dispatch weaplast");
 }
 
 function verifyPlayerListAndWave(): void {

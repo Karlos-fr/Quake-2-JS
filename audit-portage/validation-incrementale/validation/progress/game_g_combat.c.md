@@ -13,6 +13,19 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: locale `trace` de `CanDamage`, puis locales restantes de `CheckPowerArmor`
+  - Source comparee: `Quake-2-master/game/g_combat.c`.
+  - Cible comparee: `packages/game/src/g_combat.ts`; tests cibles ajoutes dans `scripts/verify/quake2-g-combat.ts`.
+  - Correction runtime appliquee: aucune. Le port existant reste conforme.
+  - Commentaires d'en-tete TS verifies: `CanDamage` et `CheckPowerArmor` conservent `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior` et les notes utiles.
+  - Comparaison `CanDamage`/`trace`: la locale C `trace_t trace` est portee par les retours `runtime.collision.trace`; le cas bmodel conserve le centre `(absmin + absmax) * 0.5` et accepte `trace.fraction == 1.0` ou `trace.ent == targ`; les entites non-bmodel testent strictement la fraction sur l'origine puis les quatre offsets `(+15,+15)`, `(+15,-15)`, `(-15,+15)`, `(-15,-15)`.
+  - Comparaison `CheckPowerArmor`: locales `save`, `power_armor_type`/`powerArmorType`, `index`, `damagePerCell`, `pa_te_type`/`paTeType`, `power`, `power_used`/`powerUsed`, `vec`, `dot` et `forward` verifiees. Le split client/monstre, la source `Cells`, les ratios screen/shield, les temp entities, le seuil frontal `dot <= 0.3`, `powerarmor_time` et les decrements de cellules restent conformes.
+  - Branchement runtime verifie: `CanDamage` reste appele par `T_RadiusDamage` et les armes (`g_weapon.ts`); `CheckPowerArmor` reste appele par `T_Damage`, lui-meme atteint depuis armes, radius damage, triggers/fonctions/monstres/world effects et `p_view`.
+  - `apps/web`: aucune logique parallele constatee; le flux attendu passe par le runtime full-game, puis par les temp entities directionnelles et les etats client deja consommes.
+  - `renderer-three`: aucune integration gameplay directe attendue; les sorties visibles du lot sont indirectes via `SpawnDamage`/temp entities, particules et feedback client.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; `npm run verify:g-main`; `npm run verify:particle-sync`; `npm run verify:p-view`; `npm run typecheck`.
+  - Statut matrice: toutes les lignes restantes du lot passent `Valide`; aucune ligne `A verifier` ne reste dans `game_g_combat.c.md`.
+
 - 2026-05-01: `T_RadiusDamage` avec locales `points`/`ent`
   - Source comparee: `Quake-2-master/game/g_combat.c`.
   - Cible comparee: `packages/game/src/g_combat.ts`; appels runtime controles dans `packages/game/src/g_misc.ts`, `packages/game/src/g_target.ts` et l'adapter `packages/game/src/g_weapon.ts`.
@@ -146,7 +159,7 @@
 
 ## Prochain lot recommande
 
-- Reconciliation des locales encore `A verifier` en matrice, en commencant par `trace` de `CanDamage`, puis les locales restantes de `CheckPowerArmor`.
+- Aucun lot restant dans cette matrice: toutes les lignes sont `Valide`. Laisser le coordinateur mettre a jour `AVANCEMENT_GLOBAL.md`.
 
 ## Blocages
 

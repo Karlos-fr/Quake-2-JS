@@ -572,6 +572,11 @@ export function Cmd_WeapNext_f(ent: GameEntity, runtime: GameRuntime): void {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior:
+ * - Switches back to `pers.lastweapon` only when the current weapon exists, the last weapon is in inventory,
+ *   has a use callback, and is flagged as a weapon.
+ * Porting notes:
+ * - Preserves Quake II's `index` and `it` checks before invoking the item use callback.
  */
 export function Cmd_WeapLast_f(ent: GameEntity, runtime: GameRuntime): void {
   const cl = ent.client;

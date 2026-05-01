@@ -123,3 +123,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:refresh-entity:weapon`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 - Blocages: `npm run verify:p-weapon` echoue hors perimetre sur `Hand grenade no-ammo should select the next available weapon: attendu Rocket Launcher, recu Shotgun`; non corrige dans ce lot.
 - Prochain lot recommande: `Cmd_WeapLast_f` et temporaires locaux associes (`index`, `it`).
+
+## Session 2026-05-01 - Cmd_WeapLast_f
+
+- Lot valide: `Cmd_WeapLast_f` et temporaires C associes (`index`, `it`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme retour si `pers.weapon` ou `pers.lastweapon` absent, meme calcul `index = ITEM_INDEX(lastweapon)`, meme rejet si inventaire absent, callback `use` absent ou item non `IT_WEAPON`, puis dispatch `it->use` via `callItemUse`.
+- Branchement runtime: `ClientCommand` dispatch `weaplast`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes par `createClientSendCmdBridge` et charge l'API game, sans logique parallele pour `weaplast`. `packages/renderer-three` consomme les effets visibles indirects par le chemin arme vue/HUD: le changement d'arme met a jour `client.newweapon`, puis `pers.weapon`, `player_state_t.gunindex` et les refresh entities d'arme.
+- Corrections: commentaire d'en-tete complete pour `Cmd_WeapLast_f`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour absence d'arme courante, absence de derniere arme, inventaire absent, item sans `use`, item utilisable non-weapon, callback d'arme et dispatch `weaplast`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:p-weapon`; `npm run verify:refresh-entity:weapon`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_InvDrop_f` et temporaire local associe (`it`).

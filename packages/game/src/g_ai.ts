@@ -744,6 +744,10 @@ export function ai_run_slide(self: GameEntity, distance: number, runtime: GameRu
  *
  * Behavior:
  * - Resolves dead-enemy handling, visibility state and attack selection for the current enemy.
+ *
+ * Porting notes:
+ * - Uses the explicit runtime for level time and collision-backed visibility.
+ * - Keeps defensive callback and enemy guards where the C path relies on valid monster setup.
  */
 export function ai_checkattack(self: GameEntity, _dist: number, runtime: GameRuntime): boolean {
   if (self.goalentity) {

@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: spawn de brush tournant `SP_func_rotating`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:623-661` avec `packages/game/src/g_func.ts:1272-1312`.
+- Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier `solid = SOLID_BSP`, `MOVETYPE_PUSH` ou `MOVETYPE_STOP`, axes par defaut/X/Y selon les flags C, inversion REVERSE, defaults `speed = 100` et `dmg = 2`, valeurs explicites, callbacks `use`/`blocked`, START_ON via `rotating_use`, flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, enregistrement modele inline et liaison runtime.
+- Effets verifies: le port initialise le brush comme le C, conserve les flags numeriques de `func_rotating`, branche `rotating_use` et `rotating_blocked`, appelle immediatement `rotating_use` sous START_ON, puis applique effets anim et link. Le `setGameEntityModel` TS est appele avant quelques champs mais la liaison finale apres initialisation conserve l'etat expose; aucune divergence runtime observee dans le harness.
+- Branchement: `SP_func_rotating` est referencee dans `packages/game/src/g_spawn.ts` pour `func_rotating`, appelee par `ED_CallSpawn` pendant `SpawnEntities`, puis ses callbacks sont atteignables via triggers/use, touches et pusher physics pendant `G_RunFrame`/`G_RunEntity`.
+- Integration: aucune logique parallele dans `apps/web`; le navigateur consomme les sons runtime et les snapshots/interpolations de brush models. `packages/renderer-three` consomme les origines/angles des brush snapshots via `gl-world-scene-adapter`, donc pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: callback d'activation `rotating_use`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:606-621` avec `packages/game/src/g_func.ts:1248-1269`.
 - Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier le demarrage avec `s.sound = moveinfo.sound_middle`, `avelocity = movedir * speed`, branchement `rotating_touch` sous TOUCH_PAIN, puis l'arret avec `s.sound = 0`, `avelocity` nulle et `touch` efface.
@@ -86,7 +94,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `SP_func_rotating`.
+- Valider le bloc suivant sans elargir: `button_done`.
 
 ## Blocages
 
