@@ -12,7 +12,7 @@
 import { strict as assert } from "node:assert";
 
 import { BUTTON_ANY, BUTTON_ATTACK, CS_PLAYERSKINS, CS_STATUSBAR, CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, DF_FIXED_FOV, DF_SAME_LEVEL, MZ_BLASTER, MZ_LOGIN, MZ_LOGOUT, multicast_t, pmtype_t, temp_event_t, type cvar_t, type usercmd_t } from "../../packages/qcommon/src/index.js";
-import { MOVETYPE_NOCLIP, TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
+import { MOVETYPE_NONE, MOVETYPE_NOCLIP, TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, createGameRuntimeFromBspEntities, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
 import { CheckDMRules, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
@@ -552,6 +552,23 @@ assert.deepEqual(writePositions.at(-1), [44, 55, 66], "G_RunFrame must flush dam
 assert.deepEqual(writeDirs.at(-1), [0, 0, 1], "G_RunFrame must flush damage temp entity direction");
 assert.deepEqual(multicasts.at(-2)?.origin, [11, 22, 33], "G_RunFrame must multicast player muzzleflash at player origin");
 assert.deepEqual(multicasts.at(-1)?.origin, [44, 55, 66], "G_RunFrame must multicast damage temp entity at event origin");
+
+const runEntityContext = createGameMainContext(imports);
+runEntityContext.runtime.maxclients = 1;
+runEntityContext.runtime.entities = [
+  { ...api.edicts[0]! },
+  { ...api.edicts[1]! },
+  { ...api.edicts[5]! }
+];
+runEntityContext.runtime.entities[2].inuse = true;
+runEntityContext.runtime.entities[2].movetype = MOVETYPE_NONE;
+runEntityContext.runtime.entities[2].nextthink = 0.1;
+let runEntityThinkCount = 0;
+runEntityContext.runtime.entities[2].think = () => {
+  runEntityThinkCount += 1;
+};
+G_RunFrame(runEntityContext);
+assert.equal(runEntityThinkCount, 1, "G_RunFrame must dispatch non-client entities through G_RunEntity/SV_RunThink");
 
 freeTags.length = 0;
 api.Shutdown();

@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- `HEALTH_IGNORE_MAX` et `HEALTH_TIMED`.
+
+Validation macros health du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `HEALTH_IGNORE_MAX` conserve la valeur C `1` et pilote les branches qui permettent aux small/mega health de depasser ou ignorer le max; le TS l'utilise dans `SP_item_health_small`, `SP_item_health_mega` et `Pickup_Health`. `HEALTH_TIMED` conserve la valeur C `2`; la combinaison mega-health `HEALTH_IGNORE_MAX|HEALTH_TIMED` donne `style = 3` et declenche dans `Pickup_Health` le think `MegaHealth_think`, `nextthink = runtime.time + 5`, owner, `FL_RESPAWN`, `SVF_NOCLIENT` et `SOLID_NOT` comme le C. Pas de commentaire d'en-tete applicable aux macros; headers consommateurs `Pickup_Health`, `MegaHealth_think` et `SP_item_health_*` verifies.
+
+Runtime branche via `g_spawn.ts`/`ED_CallSpawn`, `SP_item_health_small`, `SP_item_health_mega`, `SpawnItem`, `Touch_Item`, `Pickup_Health`, puis `MegaHealth_think`/`SetRespawn` par le systeme de thinks. `apps/web` consomme ce flux via runtime local, stats HUD, sons et snapshots sans logique health parallele detectee. `renderer-three` ne requiert pas de branchement dedie: ces macros ne produisent pas de sortie visible directe, mais les entites health visibles, leur disparition/respawn et leur origine/modelindex restent consommes par le pipeline generique de snapshots/refresh.
+
+Preuves pendant session: `verifyHealthSpawnFunctionsUseGenericHealthItem` couvre `style = 1` pour small health et `style = 3` pour mega-health; `verifyTouchHealthPickup` et `verifyTouchHealthPickupUsesItemPath` couvrent `Pickup_Health` via le chemin runtime. Tests lances: `npm run verify:g-items`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer` OK.
+
 - `SP_item_health_large`, `SP_item_health_mega`, puis `InitItems` / `SetItemNames` avec locales `i` et `it`.
 
 Validation health large/mega et item names du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `SP_item_health_large` conserve le filtre deathmatch `DF_NO_HEALTH`, `G_FreeEdict`, le modele `models/items/healing/large/tris.md2`, `count = 25`, `SpawnItem(FindItem("Health"))` et le soundindex `items/l_health.wav`, sans style special. `SP_item_health_mega` conserve le filtre, le modele `models/items/mega_h/tris.md2`, `count = 100`, `SpawnItem(FindItem("Health"))`, le soundindex `items/m_health.wav`, puis `style = HEALTH_IGNORE_MAX|HEALTH_TIMED`; correction appliquee dans `packages/game/src/g_items.ts` pour remettre l'ordre soundindex/style comme le C. Les deux fonctions restent rattachees a l'entree itemlist generique `Health`; headers verifies.
@@ -155,4 +163,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre apres `SetItemNames`: traiter les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice, en commencant par les doublons/locaux `i` / `it` anterieurs si le coordinateur confirme qu'ils ne sont pas deja couverts par les lots associes.
+- Reprendre les prochaines entrees `A verifier` restantes de `game_g_items.c.md` dans l'ordre de la matrice: `Use_Quad` avec `quad_drop_timeout_hack`, puis `GetItemByIndex` / `FindItemByClassname` si le lot reste coherent.

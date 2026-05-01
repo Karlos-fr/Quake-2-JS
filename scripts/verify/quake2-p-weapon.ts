@@ -17,6 +17,10 @@ import {
   MOD_CHAINGUN,
   MOD_MACHINEGUN,
   ANIM_REVERSE,
+  PNOISE_IMPACT,
+  PNOISE_SELF,
+  PNOISE_WEAPON,
+  PlayerNoise,
   Think_Weapon,
   Weapon_Chaingun,
   Weapon_Grenade,
@@ -42,6 +46,7 @@ main();
 function main(): void {
   verifyThinkWeaponDispatchesWithoutOverrideHooks();
   verifyNoAmmoQueuesOneShotSound();
+  verifyPlayerNoiseTypes();
   verifyMachinegunFireParity();
   verifyMachinegunNoAmmoUsesVoiceChannel();
   verifyChaingunFireParity();
@@ -104,6 +109,30 @@ function verifyNoAmmoQueuesOneShotSound(): void {
   );
 
   assertString(player.client!.newweapon?.pickupName ?? "", "Blaster", "NoAmmoWeaponChange should still select Blaster fallback");
+}
+
+function verifyPlayerNoiseTypes(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+
+  player.client!.silencer_shots = 1;
+  PlayerNoise(player, [4, 5, 6], PNOISE_WEAPON, runtime);
+  assertNumber(player.client!.silencer_shots, 0, "PNOISE_WEAPON should consume one silencer shot");
+  assertBoolean(player.mynoise === null, true, "Silenced PNOISE_WEAPON should not create a noise entity");
+
+  PlayerNoise(player, [1, 2, 3], PNOISE_SELF, runtime);
+  assertBoolean(runtime.sound_entity === player.mynoise, true, "PNOISE_SELF should update primary sound entity");
+  assertNumber(runtime.sound_entity_framenum, runtime.framenum, "PNOISE_SELF should stamp current framenum");
+  assertNumber(player.mynoise!.s.origin[0], 1, "PNOISE_SELF should copy origin");
+
+  PlayerNoise(player, [7, 8, 9], PNOISE_IMPACT, runtime);
+  assertBoolean(runtime.sound2_entity === player.mynoise2, true, "PNOISE_IMPACT should update secondary sound entity");
+  assertNumber(runtime.sound2_entity_framenum, runtime.framenum, "PNOISE_IMPACT should stamp current framenum");
+  assertNumber(player.mynoise2!.s.origin[0], 7, "PNOISE_IMPACT should copy origin");
+
+  runtime.deathmatch = true;
+  PlayerNoise(player, [10, 11, 12], PNOISE_SELF, runtime);
+  assertNumber(player.mynoise!.s.origin[0], 1, "Deathmatch PlayerNoise should return without updating noise");
 }
 
 function verifyMachinegunFireParity(): void {

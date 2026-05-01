@@ -83,6 +83,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
+import { PNOISE_SELF, PNOISE_WEAPON } from "./g_local.js";
 import { fire_bfg, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_rail, fire_rocket, fire_shotgun } from "./g_weapon.js";
 import { Add_Ammo, Drop_Item, FindItem, SetRespawn, type GameItemDefinition, type GameItemWeaponThinkKind } from "./g_items.js";
 
@@ -98,8 +99,6 @@ const FRAME_crattak3 = 162;
 const FRAME_crattak9 = 168;
 const FRAME_crpain1 = 169;
 const FRAME_crpain4 = 172;
-const PNOISE_SELF = 0;
-const PNOISE_WEAPON = 1;
 const GRENADE_TIMER = 3.0;
 const GRENADE_MINSPEED = 400;
 const GRENADE_MAXSPEED = 800;

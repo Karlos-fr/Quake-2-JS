@@ -8,6 +8,21 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot player noise `PNOISE_SELF`, `PNOISE_WEAPON`, `PNOISE_IMPACT`.
+- Verdict: `Valide` pour les 3 macros apres correction limitee de la consommation TS et ajout d'assertions ciblees.
+- Valeurs H/TS comparees et conformes:
+  - `PNOISE_SELF = 0`
+  - `PNOISE_WEAPON = 1`
+  - `PNOISE_IMPACT = 2`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de definition directe attendue pour ces macros.
+- Runtime:
+  - Source C: `PlayerNoise` consomme `PNOISE_WEAPON` pour appliquer le silencer, route `PNOISE_SELF`/`PNOISE_WEAPON` vers `level.sound_entity`, et route `PNOISE_IMPACT` vers `level.sound2_entity`. Les appels viennent des bruits joueur dans `p_client.c`/`p_view.c`, des tirs dans `p_weapon.c`, et des impacts monde dans `g_weapon.c`.
+  - TS: `packages/game/src/p_client.ts`, `p_view.ts`, `p_weapon.ts` et `g_weapon.ts` conservent ces flux. Corrections appliquees: `p_weapon.ts` importe `PNOISE_SELF`/`PNOISE_WEAPON` depuis `g_local.ts` au lieu de constantes locales, `g_weapon.ts` importe `PNOISE_IMPACT` au lieu de valeurs magiques `2`, et les harness verifient les valeurs et le routage primaire/secondaire.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Le navigateur declenche ces bruits via le runtime serveur/game et consomme les resultats via le host full-game.
+- renderer-three: aucune reference directe aux macros; pas d'integration renderer directe attendue. Ces constantes alimentent l'IA sonore (`sound_entity`/`sound2_entity`) et ne produisent pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene; les consequences visibles passent ensuite par les entites/snapshots du runtime. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source `// noise types for PlayerNoise` verifie. Commentaire d'en-tete de `PlayerNoise` verifie avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement.
+- Tests: `npm run verify:g-local:header` OK avec assertions `PNOISE_*`; `npm run verify:p-weapon` OK avec couverture `PlayerNoise` primaire/secondaire/silencer/deathmatch; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot cross-level trigger flags `SFL_CROSS_TRIGGER_1` a `SFL_CROSS_TRIGGER_MASK`.
 - Verdict: `Valide` pour les 9 macros apres correction limitee de la sauvegarde game et renforcement des harness ciblees.
 - Valeurs H/TS comparees et conformes:
@@ -381,7 +396,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les player noise flags: `PNOISE_SELF`, `PNOISE_WEAPON`, `PNOISE_IMPACT`.
+- Continuer avec `movetype_t`.
 
 ## Blocages
 

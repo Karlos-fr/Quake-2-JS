@@ -583,7 +583,7 @@ export function Touch_DoorTrigger(self: GameEntity, other: GameEntity, runtime: 
  * - Retains the team-speed adjustment logic even though brush movement is still time-simulated.
  */
 export function Think_CalcMoveSpeed(self: GameEntity, runtime: GameRuntime): void {
-  if (self.teammaster && self.teammaster !== self) {
+  if ((self.flags & FL_TEAMSLAVE) !== 0) {
     return;
   }
 
@@ -597,16 +597,25 @@ export function Think_CalcMoveSpeed(self: GameEntity, runtime: GameRuntime): voi
     entity = entity.teamchain;
   }
 
-  const safeSpeed = self.moveinfo.speed > 0 ? self.moveinfo.speed : 100;
-  const time = min > 0 ? min / safeSpeed : FRAMETIME;
+  const time = min / self.moveinfo.speed;
 
   forEachDoorTeam(self, (member) => {
-    const newspeed = time > 0 ? Math.abs(member.moveinfo.distance) / time : member.moveinfo.speed;
-    if (newspeed > 0) {
-      member.moveinfo.speed = newspeed;
+    const newspeed = Math.abs(member.moveinfo.distance) / time;
+    const ratio = newspeed / member.moveinfo.speed;
+
+    if (member.moveinfo.accel === member.moveinfo.speed) {
       member.moveinfo.accel = newspeed;
-      member.moveinfo.decel = newspeed;
+    } else {
+      member.moveinfo.accel *= ratio;
     }
+
+    if (member.moveinfo.decel === member.moveinfo.speed) {
+      member.moveinfo.decel = newspeed;
+    } else {
+      member.moveinfo.decel *= ratio;
+    }
+
+    member.moveinfo.speed = newspeed;
   });
 
   runtime.log({

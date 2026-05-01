@@ -32,7 +32,9 @@ import {
   SP_func_train,
   SP_func_water,
   SP_trigger_elevator,
+  Think_CalcMoveSpeed,
   Touch_Plat_Center,
+  Touch_DoorTrigger,
   Use_Plat,
   button_fire,
   button_killed,
@@ -70,6 +72,7 @@ import {
   STATE_DOWN,
   STATE_TOP,
   STATE_UP,
+  SVF_MONSTER,
   createGameClient,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
@@ -379,6 +382,62 @@ assert.equal(teamDoorMaster.moveinfo.state, STATE_DOWN, "door_use toggle must cl
 assert.equal(teamDoorSlave.moveinfo.state, STATE_DOWN, "door_use toggle must close chained slave");
 assert.equal(teamDoorMaster.moveinfo.endfunc, door_hit_bottom, "door_use master close callback mismatch");
 assert.equal(teamDoorSlave.moveinfo.endfunc, door_hit_bottom, "door_use slave close callback mismatch");
+const triggerDoor = entity("func_door", 43);
+triggerDoor.moveinfo.state = STATE_BOTTOM;
+triggerDoor.moveinfo.end_origin = [16, 0, 0];
+const doorTrigger = entity("door_trigger", 44);
+doorTrigger.owner = triggerDoor;
+const deadDoorToucher = entity("dead door toucher", 45);
+deadDoorToucher.client = createGameClient();
+deadDoorToucher.health = 0;
+Touch_DoorTrigger(doorTrigger, deadDoorToucher, runtime);
+assert.equal(doorTrigger.touch_debounce_time, 0, "Touch_DoorTrigger must ignore dead touchers");
+const nonClientDoorToucher = entity("non-client door toucher", 46);
+nonClientDoorToucher.health = 100;
+Touch_DoorTrigger(doorTrigger, nonClientDoorToucher, runtime);
+assert.equal(doorTrigger.touch_debounce_time, 0, "Touch_DoorTrigger must ignore non-player non-monsters");
+triggerDoor.spawnflags |= 8;
+const monsterDoorToucher = entity("monster door toucher", 47);
+monsterDoorToucher.health = 100;
+monsterDoorToucher.svflags = SVF_MONSTER;
+Touch_DoorTrigger(doorTrigger, monsterDoorToucher, runtime);
+assert.equal(doorTrigger.touch_debounce_time, 0, "Touch_DoorTrigger must honor DOOR_NOMONSTER");
+triggerDoor.spawnflags = 0;
+const liveDoorClient = entity("live door client", 48);
+liveDoorClient.client = createGameClient();
+liveDoorClient.health = 100;
+Touch_DoorTrigger(doorTrigger, liveDoorClient, runtime);
+assert.equal(doorTrigger.touch_debounce_time, runtime.time + 1, "Touch_DoorTrigger debounce mismatch");
+assert.equal(triggerDoor.moveinfo.state, STATE_UP, "Touch_DoorTrigger must open owner door");
+assert.equal(triggerDoor.moveinfo.endfunc, door_hit_top, "Touch_DoorTrigger owner open callback mismatch");
+triggerDoor.moveinfo.state = STATE_BOTTOM;
+runtime.time += 0.5;
+Touch_DoorTrigger(doorTrigger, liveDoorClient, runtime);
+assert.equal(triggerDoor.moveinfo.state, STATE_BOTTOM, "Touch_DoorTrigger must debounce repeated touches");
+const speedDoorMaster = entity("func_door", 49);
+const speedDoorSlave = entity("func_door", 50);
+speedDoorMaster.teamchain = speedDoorSlave;
+speedDoorMaster.moveinfo.distance = 50;
+speedDoorMaster.moveinfo.speed = 100;
+speedDoorMaster.moveinfo.accel = 100;
+speedDoorMaster.moveinfo.decel = 25;
+speedDoorSlave.moveinfo.distance = 100;
+speedDoorSlave.moveinfo.speed = 40;
+speedDoorSlave.moveinfo.accel = 20;
+speedDoorSlave.moveinfo.decel = 40;
+Think_CalcMoveSpeed(speedDoorMaster, runtime);
+assert.equal(speedDoorMaster.moveinfo.speed, 100, "Think_CalcMoveSpeed master speed mismatch");
+assert.equal(speedDoorMaster.moveinfo.accel, 100, "Think_CalcMoveSpeed master accel equality branch mismatch");
+assert.equal(speedDoorMaster.moveinfo.decel, 25, "Think_CalcMoveSpeed master decel ratio branch mismatch");
+assert.equal(speedDoorSlave.moveinfo.speed, 200, "Think_CalcMoveSpeed slave speed mismatch");
+assert.equal(speedDoorSlave.moveinfo.accel, 100, "Think_CalcMoveSpeed slave accel ratio branch mismatch");
+assert.equal(speedDoorSlave.moveinfo.decel, 200, "Think_CalcMoveSpeed slave decel equality branch mismatch");
+const speedDoorFlagSlave = entity("func_door", 51);
+speedDoorFlagSlave.flags |= FL_TEAMSLAVE;
+speedDoorFlagSlave.moveinfo.distance = 64;
+speedDoorFlagSlave.moveinfo.speed = 32;
+Think_CalcMoveSpeed(speedDoorFlagSlave, runtime);
+assert.equal(speedDoorFlagSlave.moveinfo.speed, 32, "Think_CalcMoveSpeed must ignore FL_TEAMSLAVE");
 const areaportalRuntime = createGameRuntimeFromBspEntities([]);
 areaportalRuntime.collision = {
   world: {

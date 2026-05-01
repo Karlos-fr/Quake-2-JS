@@ -29,6 +29,7 @@ import {
   SP_misc_teleporter,
   SP_misc_teleporter_dest,
   SP_path_corner,
+  SP_point_combat,
   SP_target_character,
   SP_target_string,
   SOLID_TRIGGER,
@@ -68,6 +69,7 @@ function main(): void {
   verifyPathCornerSpawnSetupAndInvalidFree();
   verifyPathCornerAdvancesMonsterGoal();
   verifyPathCornerPathtargetTeleportAndPauseBranches();
+  verifyPointCombatSpawnSetupAndDeathmatchFree();
   verifyPointCombatTouchBranches();
   verifyTargetStringMapsFrames();
   verifyFuncClockBootstrapsTargetStringMessage();
@@ -376,6 +378,33 @@ function verifyPointCombatTouchBranches(): void {
 
   assert.equal(activator, clientEnemy, "point_combat pathtarget must prefer client enemy as activator");
   assert.equal(pathtargetCombat.target, undefined, "point_combat pathtarget must restore the saved empty target");
+}
+
+function verifyPointCombatSpawnSetupAndDeathmatchFree(): void {
+  const runtime = createHarnessRuntime();
+
+  const combat = spawnGameEntity(runtime);
+  combat.classname = "point_combat";
+
+  SP_point_combat(combat, runtime);
+
+  assert.equal(combat.solid, SOLID_TRIGGER, "SP_point_combat must create a trigger");
+  assert.equal(combat.touch, point_combat_touch, "SP_point_combat must install point_combat_touch");
+  assert.deepEqual(combat.mins, [-8, -8, -16], "SP_point_combat mins mismatch");
+  assert.deepEqual(combat.maxs, [8, 8, 16], "SP_point_combat maxs mismatch");
+  assert.equal(combat.svflags, SVF_NOCLIENT, "SP_point_combat must hide the trigger from clients");
+  assert.equal(combat.linked, true, "SP_point_combat must link the trigger into runtime");
+  assert.equal(runtime.linkedTriggerEntities.includes(combat), true, "SP_point_combat must expose the trigger to touch queries");
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  const deathmatchCombat = spawnFreeableEntity(deathmatchRuntime);
+  deathmatchCombat.classname = "point_combat";
+
+  SP_point_combat(deathmatchCombat, deathmatchRuntime);
+
+  assert.equal(deathmatchCombat.inuse, false, "SP_point_combat must free point_combat in deathmatch");
+  assert.equal(deathmatchCombat.linked, false, "deathmatch point_combat must not be linked");
 }
 
 function verifyTargetStringMapsFrames(): void {

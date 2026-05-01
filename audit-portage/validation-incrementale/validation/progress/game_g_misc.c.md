@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `SP_point_combat`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: en deathmatch, `SP_point_combat` appelle `G_FreeEdict` et s'arrete; hors deathmatch, il configure `SOLID_TRIGGER`, installe `point_combat_touch`, pose les bornes `[-8,-8,-16]` / `[8,8,16]`, force `SVF_NOCLIENT`, rafraichit l'etat spatial et link l'entite.
+  - Commentaire d'en-tete Strict ajoute pour `SP_point_combat`.
+  - Branchement runtime verifie: `point_combat` est enregistre dans `g_spawn.ts`, exporte par `index.ts`, cree au spawn map, utilise par `monster_start_go` comme `combattarget`, puis atteint via touch/runtime pendant les frames serveur.
+  - `apps/web`: aucune logique parallele trouvee; le web consomme les positions et etats issus du runtime via les flux full-game/local et `ClientRefreshFrame`.
+  - `renderer-three`: integration attendue indirectement car les combat points pilotent les objectifs et pauses de monstres visibles; le renderer consomme les sorties via packet entities -> refresh frame -> adapter Three, sans compensation gameplay.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaire d'en-tete `SP_point_combat`.
+  - `scripts/verify/quake2-g-misc.ts`: couverture directe de la configuration spawn et du free deathmatch.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-monster` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+
+## Lot precedent
+
 - 2026-05-01: `SP_path_corner`, `point_combat_touch` et locaux `activator`, `savetarget`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `SP_path_corner` conserve le refus sans `targetname`, le diagnostic source, `SOLID_TRIGGER`, `path_corner_touch`, bbox `[-8,-8,-8]` / `[8,8,8]`, `SVF_NOCLIENT` et link. `point_combat_touch` conserve la garde `movetarget`, le branchement `target`/`G_PickTarget`, le fallback cible manquante, le hold non swim/fly, le cleanup vers `enemy`, l'effacement `AI_COMBAT_POINT`, le `pathtarget` et l'ordre de choix de l'activator.
@@ -178,4 +196,4 @@
 
 ## Prochain lot recommande
 
-- `SP_point_combat`, puis `TH_viewthing` / `SP_viewthing` si coherent.
+- `TH_viewthing` / `SP_viewthing`.

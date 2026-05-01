@@ -85,6 +85,7 @@ import {
 import { infront } from "./g_ai.js";
 import { CanDamage, T_Damage, T_RadiusDamage } from "./g_combat.js";
 import { findradius } from "./g_utils.js";
+import { PNOISE_IMPACT } from "./g_local.js";
 import { PlayerNoise } from "./p_weapon.js";
 
 /**
@@ -644,7 +645,7 @@ export function fire_rail(
   }
 
   if (self.client) {
-    PlayerNoise(self, lastTrace.endpos, 2, runtime);
+    PlayerNoise(self, lastTrace.endpos, PNOISE_IMPACT, runtime);
   }
 }
 
@@ -678,7 +679,7 @@ export function blaster_touch(
   }
 
   if (self.owner?.client) {
-    PlayerNoise(self.owner, self.s.origin, 2, runtime);
+    PlayerNoise(self.owner, self.s.origin, PNOISE_IMPACT, runtime);
   }
 
   if (isDamageable(other, hooks)) {
@@ -766,7 +767,7 @@ export function rocket_touch(
   }
 
   if (ent.owner?.client) {
-    PlayerNoise(ent.owner, ent.s.origin, 2, runtime);
+    PlayerNoise(ent.owner, ent.s.origin, PNOISE_IMPACT, runtime);
   }
 
   const origin = addVec3(ent.s.origin, scaleVec3(ent.velocity, -0.02));
@@ -802,7 +803,7 @@ export function Grenade_Explode(
   hooks: GameWeaponWorldHooks = {}
 ): void {
   if (ent.owner?.client) {
-    PlayerNoise(ent.owner, ent.s.origin, 2, runtime);
+    PlayerNoise(ent.owner, ent.s.origin, PNOISE_IMPACT, runtime);
   }
 
   if (ent.enemy) {
@@ -932,7 +933,7 @@ export function bfg_touch(
   }
 
   if (self.owner?.client) {
-    PlayerNoise(self.owner, self.s.origin, 2, runtime);
+    PlayerNoise(self.owner, self.s.origin, PNOISE_IMPACT, runtime);
   }
 
   if (isDamageable(other, hooks)) {
@@ -1189,7 +1190,7 @@ function fire_lead(
     } else if (!(trace.surface?.name.startsWith("sky") ?? false)) {
       hooks.emitTempEntity?.(teImpact, { origin: trace.endpos, dir: trace.plane.normal }, runtime);
       if (self.client) {
-        PlayerNoise(self, trace.endpos, 2, runtime);
+        PlayerNoise(self, trace.endpos, PNOISE_IMPACT, runtime);
       }
     }
   }

@@ -42,6 +42,9 @@ import {
   LEFT_HANDED,
   MELEE_DISTANCE,
   MOD_TRIGGER_HURT,
+  PNOISE_IMPACT,
+  PNOISE_SELF,
+  PNOISE_WEAPON,
   POWER_ARMOR_NONE,
   POWER_ARMOR_SCREEN,
   POWER_ARMOR_SHIELD,
@@ -128,6 +131,9 @@ assert.equal(SFL_CROSS_TRIGGER_6, 0x00000020, "SFL_CROSS_TRIGGER_6 mismatch");
 assert.equal(SFL_CROSS_TRIGGER_7, 0x00000040, "SFL_CROSS_TRIGGER_7 mismatch");
 assert.equal(SFL_CROSS_TRIGGER_8, 0x00000080, "SFL_CROSS_TRIGGER_8 mismatch");
 assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatch");
+assert.equal(PNOISE_SELF, 0, "PNOISE_SELF mismatch");
+assert.equal(PNOISE_WEAPON, 1, "PNOISE_WEAPON mismatch");
+assert.equal(PNOISE_IMPACT, 2, "PNOISE_IMPACT mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");
 assert.equal(damage_t.DAMAGE_NO, 0, "damage_t DAMAGE_NO mismatch");
 assert.equal(damage_t.DAMAGE_YES, 1, "damage_t DAMAGE_YES mismatch");

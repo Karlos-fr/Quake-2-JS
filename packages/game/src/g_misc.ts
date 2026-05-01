@@ -557,6 +557,18 @@ export function point_combat_touch(self: GameEntity, other: GameEntity, runtime:
   self.target = saveTarget;
 }
 
+/**
+ * Original name: SP_point_combat
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns a non-client combat-point trigger or removes it from deathmatch games.
+ *
+ * Porting notes:
+ * - Uses the runtime deathmatch flag and link adapter in place of `deathmatch->value` and `gi.linkentity`.
+ */
 export function SP_point_combat(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
     G_FreeEdict(runtime, self);

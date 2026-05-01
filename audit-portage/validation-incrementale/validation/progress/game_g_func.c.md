@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: trigger de porte `Touch_DoorTrigger`, harmonisation de vitesse `Think_CalcMoveSpeed` et locales `ent`/`min`/`time`/`newspeed`/`ratio`/`dist`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:980-1035` avec `packages/game/src/g_func.ts:550-619`.
+- Correction appliquee: `Think_CalcMoveSpeed` teste maintenant `FL_TEAMSLAVE` comme le C et conserve la logique `ratio` pour `accel`/`decel` quand ces valeurs ne sont pas egales a l'ancienne `speed`, au lieu de les forcer toutes a `newspeed`.
+- Effets verifies: `Touch_DoorTrigger` conserve les gardes mort, non-client/non-monstre, `DOOR_NOMONSTER`, le debounce `level.time + 1.0` et l'appel `door_use(owner, other, other)`; `Think_CalcMoveSpeed` conserve la distance minimale de team, le temps commun, l'ajustement de `speed`, et les branches accel/decel egal ou non a `speed`.
+- Branchement: `Touch_DoorTrigger` est affectee au helper cree par `Think_SpawnDoorTrigger`, puis rejoint `door_use`/`door_go_up`/`Move_Calc`/`AngleMove_Calc` et le flux `G_RunFrame`/`G_RunEntity`/`SV_RunThink`; `Think_CalcMoveSpeed` est programme par `SP_func_door` et `SP_func_door_rotating` pour les portes ciblees, shootables ou team members.
+- Integration: aucune logique parallele `func_door` dans `apps/web`; le navigateur consomme le runtime serveur/local, sons, areabits et snapshots/interpolations de brush models. `packages/renderer-three` consomme les sorties visibles attendues via brush snapshots et areabits; pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: activation de porte `door_use` et locale `ent`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:949-978` avec `packages/game/src/g_func.ts:520-539` et helper de parcours `forEachDoorTeam` `packages/game/src/g_func.ts:2142-2148`.
 - Correction appliquee: `door_use` teste maintenant le flag `FL_TEAMSLAVE` comme le C, au lieu de se baser seulement sur `teammaster`.
@@ -190,7 +198,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `Touch_DoorTrigger`, puis `Think_CalcMoveSpeed` si coherent.
+- Continuer avec `Think_SpawnDoorTrigger`, puis `other` local si coherent.
 
 ## Blocages
 
