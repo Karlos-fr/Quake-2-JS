@@ -871,6 +871,87 @@ assert.equal(spawnedTargetedExplosive.health, 0, "targeted func_explosive must n
 assert.equal(typeof spawnedTargetedExplosive.use, "function", "targeted func_explosive must expose trigger use");
 assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedTargetedExplosive.s.modelindex - 1], "*23", "targeted func_explosive modelindex must resolve to *23");
 
+const timerKillboxContext = createGameMainContext(imports);
+InitGame(timerKillboxContext);
+SpawnEntities(
+  timerKillboxContext,
+  "timer_killbox",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "func_timer"
+"spawnflags" "1"
+"wait" "1"
+"random" "0"
+"pausetime" "0.8"
+"target" "timer_map_target"
+}
+{
+"classname" "func_killbox"
+"model" "*24"
+}
+`,
+  ""
+);
+
+const spawnedTimer = timerKillboxContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_timer");
+assert.ok(spawnedTimer, "SpawnEntities must keep func_timer in the runtime");
+assert.equal(spawnedTimer.wait, 1, "SP_func_timer default/parsed wait mismatch");
+assert.equal(spawnedTimer.random, 0, "SP_func_timer random mismatch");
+assert.equal((spawnedTimer.svflags & SVF_NOCLIENT) !== 0, true, "func_timer must be hidden from clients");
+assert.equal(typeof spawnedTimer.use, "function", "func_timer must expose the use callback");
+assert.equal(typeof spawnedTimer.think, "function", "func_timer must expose the think callback");
+assert.equal(spawnedTimer.activator, spawnedTimer, "START_ON func_timer activator mismatch");
+assert.equal(spawnedTimer.nextthink, 2.8, "START_ON func_timer nextthink must include pausetime and wait");
+
+const timerMapTarget = spawnGameEntity(timerKillboxContext.runtime);
+timerMapTarget.classname = "timer_map_target";
+timerMapTarget.targetname = "timer_map_target";
+let timerMapTargetUseCount = 0;
+timerMapTarget.use = (_self, other, activator) => {
+  timerMapTargetUseCount += 1;
+  assert.equal(other, spawnedTimer, "func_timer G_RunFrame target caller mismatch");
+  assert.equal(activator, spawnedTimer, "func_timer G_RunFrame target activator mismatch");
+};
+timerKillboxContext.runtime.framenum = 27;
+G_RunFrame(timerKillboxContext);
+assert.equal(timerMapTargetUseCount, 1, "G_RunFrame must execute START_ON func_timer targets");
+assert.equal(spawnedTimer.nextthink, timerKillboxContext.runtime.time + spawnedTimer.wait, "func_timer_think must reschedule from runtime time");
+
+const spawnedKillbox = timerKillboxContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_killbox");
+assert.ok(spawnedKillbox, "SpawnEntities must keep func_killbox in the runtime");
+assert.equal((spawnedKillbox.svflags & SVF_NOCLIENT) !== 0, true, "func_killbox must be hidden from clients");
+assert.equal(typeof spawnedKillbox.use, "function", "func_killbox must expose the use callback");
+assert.equal(timerKillboxContext.runtime.assets.modelPaths[spawnedKillbox.s.modelindex - 1], "*24", "func_killbox modelindex must resolve to *24");
+const killboxBlocker = spawnGameEntity(timerKillboxContext.runtime);
+killboxBlocker.classname = "killbox blocker";
+killboxBlocker.solid = SOLID_BSP;
+killboxBlocker.health = 100;
+let killboxTraceCalls = 0;
+timerKillboxContext.runtime.collision = {
+  world: {} as never,
+  trace: () => ({
+    allsolid: false,
+    startsolid: false,
+    fraction: 0,
+    endpos: [...spawnedKillbox.s.origin],
+    plane: {
+      normal: [0, 0, 0],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent: killboxTraceCalls++ === 0 ? killboxBlocker : null
+  }),
+  pointcontents: () => 0
+};
+spawnedKillbox.use?.(spawnedKillbox, null, null, timerKillboxContext.runtime);
+assert.equal(killboxBlocker.solid, 0, "func_killbox use must delegate to KillBox telefrag damage");
+
 const commandContext = createGameMainContext(imports);
 InitGame(commandContext);
 commandContext.cvars.skill!.value = 3;

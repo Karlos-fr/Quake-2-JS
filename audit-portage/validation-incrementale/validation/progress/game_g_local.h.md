@@ -942,6 +942,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `aiflags`, `nextframe`, `scale` passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-monster` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `monsterinfo_t` avec champs `pausetime`, `attack_finished`, `saved_goal`.
+- Verdict: `Valide` pour les 3 champs apres comparaison H/TS, verification des defaults/mutations, usages AI/monster, save/load et flux web/renderer.
+- Source H comparee: apres les callbacks `stand`/`idle`/`search`/`walk`/`run`/`dodge`/`attack`/`melee`/`sight`/`checkattack`, `monsterinfo_t` porte `float pausetime`, `float attack_finished`, puis `vec3_t saved_goal`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `monsterinfo_t` vers `GameMonsterInfo`.
+  - `packages/game/src/runtime.ts`: `GameMonsterInfo` porte `pausetime`, `attack_finished`, `saved_goal` dans l'ordre C; `createMonsterInfo` initialise les floats a `0` et le vec3 a `[0, 0, 0]`.
+  - `packages/game/src/g_ai.ts`: `pausetime` pilote la sortie de stand/idle, `attack_finished` bloque les attaques missile jusqu'au cooldown, et `saved_goal` conserve/restaure le but original pendant les detours `AI_PURSUE_TEMP`.
+  - `packages/game/src/g_monster.ts`, `g_misc.ts`, `g_turret.ts` et modules monstres: les pauses path/combat, le sentinel long de stand, `AttackFinished` et les cooldowns specifiques consomment ces champs.
+  - `packages/game/src/g_save.ts`: `snapshotEntity`/`restoreEntity` conservent les champs numeriques et copient `saved_goal` par valeur.
+- Runtime: integration attendue et branchee depuis les spawns monstres vers `monster_start`/`monster_start_go`, puis `monster_think`/`M_MoveFrame` et decisions AI appelees depuis `G_RunFrame`; les preuves couvrent pauses stand/path/combat, cooldown d'attaque, poursuite temporaire et persistance.
+- apps/web: integration attendue via le host local/full-game qui avance le runtime game et consomme snapshots/sons/HUD issus des monstres; aucune logique parallele `monsterinfo_t.pausetime`/`attack_finished`/`saved_goal` detectee dans `apps/web`. Tests full-game/web OK.
+- renderer-three: integration indirecte attendue car ces champs influencent positions, frames/modeles visibles, tirs/sons/temp entities en aval. `packages/renderer-three` ne lit pas `monsterinfo_t` directement; il consomme les entites, modeles et frames via le flux full-game. Test renderer OK.
+- Commentaires/documentation: commentaire de portage `monsterinfo_t` verifie dans `runtime.ts`; commentaires d'en-tete de `AttackFinished`, `M_MoveFrame`, `monster_think`, `monster_start` et `monster_start_go` verifies quand applicables.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defaults/mutations pour `pausetime`, `attack_finished`, `saved_goal`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration save/load pour les trois champs.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `pausetime`, `attack_finished`, `saved_goal` passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-monster` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -975,7 +994,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `monsterinfo_t.pausetime`, `attack_finished` et `saved_goal` si le lot reste petit, en s'appuyant sur les preuves AI/monster et save/load.
+- Continuer avec `monsterinfo_t.search_time`, `trail_time` et `last_sighting` si le lot reste petit, en s'appuyant sur les preuves AI/monster et save/load.
 
 ## Blocages
 

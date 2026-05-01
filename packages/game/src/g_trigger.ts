@@ -47,7 +47,6 @@ import {
   setGameEntityModel
 } from "./runtime.js";
 import { G_SetMovedir, G_UseTargets, vtos } from "./g_utils.js";
-import { G_TouchSolids } from "./touch.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
 const PUSH_ONCE = 1;
@@ -181,7 +180,6 @@ export function trigger_enable(self: GameEntity, _other: GameEntity | null, _act
   self.solid = SOLID_TRIGGER;
   self.use = Use_Multi;
   linkGameEntity(runtime, self);
-  G_TouchSolids(runtime, self);
 }
 
 /**

@@ -29,6 +29,7 @@ import {
   SFL_CROSS_TRIGGER_3,
   SFL_CROSS_TRIGGER_MASK,
   MOD_EXPLOSIVE,
+  MOD_EXIT,
   svc_temp_entity
 } from "../../packages/game/src/g_local.js";
 import {
@@ -406,17 +407,62 @@ function verifyChangelevelAndSpawner(): void {
   const changelevel = spawnGameEntity(runtime);
   changelevel.classname = "target_changelevel";
   changelevel.map = "unit2";
-  SP_target_changelevel(changelevel, runtime);
+  ED_CallSpawn(changelevel, runtime);
+  assert.equal(changelevel.use?.name, "use_target_changelevel", "target_changelevel spawn table must install use_target_changelevel");
+  assert.equal(changelevel.svflags, SVF_NOCLIENT, "target_changelevel must be hidden from clients");
   changelevel.use?.(changelevel, player, player, runtime);
   assert.equal(runtime.intermissiontime, runtime.time, "target_changelevel must enter intermission");
   assert.equal(runtime.changemap, "unit2", "target_changelevel map mismatch");
   assert.equal(runtime.exitintermission, 1, "single-player target_changelevel should request exit");
+
+  const alreadyActiveRuntime = createRuntime();
+  alreadyActiveRuntime.time = 7;
+  alreadyActiveRuntime.intermissiontime = 1;
+  const alreadyActivePlayer = alreadyActiveRuntime.entities[1] ?? createPlayer(alreadyActiveRuntime);
+  const alreadyActive = spawnGameEntity(alreadyActiveRuntime);
+  alreadyActive.classname = "target_changelevel";
+  alreadyActive.map = "unit2";
+  SP_target_changelevel(alreadyActive, alreadyActiveRuntime);
+  alreadyActive.use?.(alreadyActive, alreadyActivePlayer, alreadyActivePlayer, alreadyActiveRuntime);
+  assert.equal(alreadyActiveRuntime.changemap, null, "active intermission must ignore repeated target_changelevel use");
+  assert.equal(alreadyActiveRuntime.intermissiontime, 1, "active intermission timestamp must remain unchanged");
+
+  const deadPlayerRuntime = createRuntime();
+  deadPlayerRuntime.time = 8;
+  const deadPlayer = deadPlayerRuntime.entities[1] ?? createPlayer(deadPlayerRuntime);
+  deadPlayer.health = 0;
+  const deadBlocked = spawnGameEntity(deadPlayerRuntime);
+  deadBlocked.classname = "target_changelevel";
+  deadBlocked.map = "unit2";
+  SP_target_changelevel(deadBlocked, deadPlayerRuntime);
+  deadBlocked.use?.(deadBlocked, deadPlayer, deadPlayer, deadPlayerRuntime);
+  assert.equal(deadPlayerRuntime.intermissiontime, 0, "single-player dead player must not trigger target_changelevel");
+
+  const missingMapRuntime = createRuntime();
+  const missingMap = spawnGameEntity(missingMapRuntime);
+  missingMap.classname = "target_changelevel";
+  missingMap.s.origin = [1, 2, 3];
+  SP_target_changelevel(missingMap, missingMapRuntime);
+  assert.equal(missingMap.inuse, false, "target_changelevel without map must free itself");
+  assert.ok(
+    missingMapRuntime.logEntries.some((entry) => /target_changelevel with no map/.test(entry.message)),
+    "target_changelevel without map warning mismatch"
+  );
+
+  const hackedRuntime = createRuntime();
+  hackedRuntime.mapname = "fact1";
+  const hacked = spawnGameEntity(hackedRuntime);
+  hacked.classname = "target_changelevel";
+  hacked.map = "fact3";
+  SP_target_changelevel(hacked, hackedRuntime);
+  assert.equal(hacked.map, "fact3$secret1", "target_changelevel fact1/fact3 hack mismatch");
 
   const blockedRuntime = createRuntime();
   blockedRuntime.time = 3;
   blockedRuntime.deathmatch = true;
   blockedRuntime.dmflags = 0;
   const victim = createPlayer(blockedRuntime);
+  victim.client!.pers.netname = "player";
   victim.max_health = 10;
   victim.health = 100;
   const noexit = spawnGameEntity(blockedRuntime);
@@ -426,10 +472,12 @@ function verifyChangelevelAndSpawner(): void {
   noexit.use?.(noexit, victim, victim, blockedRuntime);
   assert.equal(blockedRuntime.intermissiontime, 0, "deathmatch noexit must block intermission");
   assert.equal(victim.health < 100, true, "deathmatch noexit must damage activator");
+  assert.equal(blockedRuntime.meansOfDeath, MOD_EXIT, "deathmatch noexit damage mod mismatch");
 
   blockedRuntime.dmflags = DF_ALLOW_EXIT;
   noexit.use?.(noexit, victim, victim, blockedRuntime);
   assert.notEqual(blockedRuntime.intermissiontime, 0, "DF_ALLOW_EXIT must allow changelevel");
+  assert.match(blockedRuntime.logEntries.at(-1)?.message ?? "", /player exited the level\./, "deathmatch changelevel must announce activator");
 
   const spawnerRuntime = createRuntime();
   const spawner = spawnGameEntity(spawnerRuntime);

@@ -10,15 +10,15 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/g_trigger.c` | function | `InitTrigger` | `packages/game/src/g_trigger.ts` | `InitTrigger` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_trigger.c` | function | `multi_wait` | `packages/game/src/g_trigger.ts` | `multi_wait` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_trigger.c` | function | `multi_trigger` | `packages/game/src/g_trigger.ts` | `multi_trigger` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_trigger.c` | function | `Use_Multi` | `packages/game/src/g_trigger.ts` | `Use_Multi` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_trigger.c` | function | `Touch_Multi` | `packages/game/src/g_trigger.ts` | `Touch_Multi` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_trigger.c` | global | `return` | `packages/game/src/g_trigger.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_trigger.c` | function | `trigger_enable` | `packages/game/src/g_trigger.ts` | `trigger_enable` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_trigger.c` | function | `SP_trigger_multiple` | `packages/game/src/g_trigger.ts` | `SP_trigger_multiple` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_trigger.c` | function | `SP_trigger_once` | `packages/game/src/g_trigger.ts` | `SP_trigger_once` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_trigger.c` | function | `InitTrigger` | `packages/game/src/g_trigger.ts` | `InitTrigger` | Valide | A redecouper | Commentaire verifie; C/TS compares; tests `npm run verify:g-trigger`, `npx tsx ./scripts/verify/quake2-collision-phase7.ts`, `npm run typecheck`; runtime via spawns/touches, web/renderer n/a: trigger serveur `SVF_NOCLIENT`. |
+| `Quake-2-master/game/g_trigger.c` | function | `multi_wait` | `packages/game/src/g_trigger.ts` | `multi_wait` | Valide | A redecouper | Commentaire verifie; C/TS compares; tests `npm run verify:g-trigger`, `npm run typecheck`; runtime via `G_RunFrame` think. |
+| `Quake-2-master/game/g_trigger.c` | function | `multi_trigger` | `packages/game/src/g_trigger.ts` | `multi_trigger` | Valide | A redecouper | Commentaire verifie; C/TS compares; tests `npm run verify:g-trigger`, `npm run typecheck`; runtime via touch/use callbacks. |
+| `Quake-2-master/game/g_trigger.c` | function | `Use_Multi` | `packages/game/src/g_trigger.ts` | `Use_Multi` | Valide | A redecouper | Commentaire verifie; C/TS compares; tests `npm run verify:g-trigger`, `npm run typecheck`; runtime via `G_UseTargets` callbacks. |
+| `Quake-2-master/game/g_trigger.c` | function | `Touch_Multi` | `packages/game/src/g_trigger.ts` | `Touch_Multi` | Valide | A redecouper | Commentaire verifie; C/TS compares; tests `npm run verify:g-trigger`, `npx tsx ./scripts/verify/quake2-collision-phase7.ts`, `npm run typecheck`; runtime via `G_TouchTriggers`/pmove. |
+| `Quake-2-master/game/g_trigger.c` | global | `return` | `packages/game/src/g_trigger.ts` |  | Non applicable | A redecouper | Artefact de matrice issu des `return` C, pas une entite portee autonome. |
+| `Quake-2-master/game/g_trigger.c` | function | `trigger_enable` | `packages/game/src/g_trigger.ts` | `trigger_enable` | Valide | A redecouper | Commentaire verifie; C/TS compares; correction `packages/game/src/g_trigger.ts`: suppression du `G_TouchSolids` implicite absent du C; tests `npx tsx ./scripts/verify/quake2-collision-phase7.ts`, `npm run typecheck`. |
+| `Quake-2-master/game/g_trigger.c` | function | `SP_trigger_multiple` | `packages/game/src/g_trigger.ts` | `SP_trigger_multiple` | Valide | A redecouper | Commentaire verifie; C/TS compares; tests `npm run verify:g-trigger`, `npm run typecheck`; runtime via `SpawnEntities` -> `ED_CallSpawn`; web/renderer n/a: volume serveur non visible. |
+| `Quake-2-master/game/g_trigger.c` | function | `SP_trigger_once` | `packages/game/src/g_trigger.ts` | `SP_trigger_once` | Valide | A redecouper | Commentaire verifie; C/TS compares; tests `npm run verify:g-trigger`, `npm run typecheck`; runtime via `SpawnEntities` -> `ED_CallSpawn`; web/renderer n/a: volume serveur non visible. |
 | `Quake-2-master/game/g_trigger.c` | function | `trigger_relay_use` | `packages/game/src/g_trigger.ts` | `trigger_relay_use` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_trigger.c` | function | `SP_trigger_relay` | `packages/game/src/g_trigger.ts` | `SP_trigger_relay` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_trigger.c` | function | `trigger_key_use` | `packages/game/src/g_trigger.ts` | `trigger_key_use` | A verifier | A redecouper |  |

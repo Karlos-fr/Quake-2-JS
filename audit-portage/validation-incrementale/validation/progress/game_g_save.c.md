@@ -2,6 +2,39 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: fonction `WriteClient` et temporaire local auto-detecte `field`.
+
+## Verdict du lot
+
+- `WriteClient`: valide. Dans le C, la fonction copie le `gclient_t` dans `temp`, passe les entrees `clientfields` par `WriteField1`, ecrit le bloc client, puis repasse les memes champs par `WriteField2`. Dans le port TS, le format binaire est remplace par `snapshotClient`: l'etat client est capture dans un objet JSON structure et les pointeurs `F_ITEM` actifs de `clientfields` (`pers.weapon`, `pers.lastweapon`, `newweapon`) sont encodes en index stables via `itemIndex`.
+- `field`: valide. Le pointeur d'iteration C sur `clientfields` est porte par les trois encodages explicites dans `snapshotClient`; la table `clientfields` conserve l'ordre et les types C, et le harness verifie les index JSON produits.
+- Commentaires d'en-tete: commentaire ajoute sur `snapshotClient` dans `packages/game/src/g_save.ts` avec `Original name: WriteClient`, source, categorie, niveau de fidelite, comportement et notes de portage.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. Le role de `WriteClient` est atteint par `WriteGame`, expose par `g_main.ts` dans l'API game et appele par le serveur via `SV_WriteServerFile`/`SV_WriteLevelFile`; `SaveClientData` reste appele avant les saves manuels comme dans le C.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` connecte les slots save/load au `web-save-storage`; aucune logique web parallele ne remplace la serialization client.
+- renderer-three: non applicable directement. `WriteClient` serialize l'etat gameplay client et les pointeurs d'items; il ne produit pas directement modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene. Les armes/items restaures peuvent seulement influencer ensuite HUD/viewmodel/snapshots via le runtime.
+
+## Corrections appliquees
+
+- `packages/game/src/g_save.ts`: ajout du commentaire d'en-tete de `snapshotClient`.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `WriteClient` et `field`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: compteur `Validees` et prochain lot mis a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-01.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01.
+- `npm run verify:web-save-storage`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
+
+## Prochain lot recommande
+
+- Continuer avec `ReadClient`, puis son temporaire local `field` si le lot reste coherent.
+
+---
+
 - 2026-05-01: fonction `ReadField` et temporaires locaux auto-detectes `p`, `len`, `index`.
 
 ## Verdict du lot

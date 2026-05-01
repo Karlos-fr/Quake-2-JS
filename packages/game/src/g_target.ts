@@ -410,6 +410,14 @@ export function SP_target_explosion(ent: GameEntity, _runtime: GameRuntime): voi
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Ignores repeat activations and dead single-player exits.
+ * - Applies the deathmatch `noexit` damage rule unless `DF_ALLOW_EXIT` is set.
+ * - Announces deathmatch exits, clears cross-level trigger bits for unit transitions, then enters intermission.
+ *
+ * Porting notes:
+ * - `gi.bprintf` is represented as a runtime log message until the server bridge drains gameplay logs.
  */
 export function use_target_changelevel(self: GameEntity, other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   if (runtime.intermissiontime) {
@@ -451,6 +459,11 @@ export function use_target_changelevel(self: GameEntity, other: GameEntity | nul
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Requires a `map` key, preserving the original warning/free path when it is absent.
+ * - Preserves the `fact1` to `fact3$secret1` map hack, installs `use_target_changelevel`,
+ *   and hides the trigger entity from client snapshots with `SVF_NOCLIENT`.
  */
 export function SP_target_changelevel(ent: GameEntity, runtime: GameRuntime): void {
   if (!ent.map) {

@@ -608,6 +608,15 @@ assert.equal(monsterInfoLocals.currentmove, null, "monsterinfo_t currentmove def
 assert.equal(monsterInfoLocals.aiflags, 0, "monsterinfo_t aiflags default must match zeroed C edict memory");
 assert.equal(monsterInfoLocals.nextframe, 0, "monsterinfo_t nextframe default must match zeroed C edict memory");
 assert.equal(monsterInfoLocals.scale, 0, "monsterinfo_t scale default must match zeroed C edict memory before monster_start");
+assert.equal(monsterInfoLocals.pausetime, 0, "monsterinfo_t pausetime default must match zeroed C edict memory");
+assert.equal(monsterInfoLocals.attack_finished, 0, "monsterinfo_t attack_finished default must match zeroed C edict memory");
+assert.deepEqual(monsterInfoLocals.saved_goal, [0, 0, 0], "monsterinfo_t saved_goal default must match zeroed C edict memory");
+monsterInfoLocals.pausetime = 12.5;
+monsterInfoLocals.attack_finished = 13.75;
+monsterInfoLocals.saved_goal = [96, -32, 8];
+assert.equal(monsterInfoLocals.pausetime, 12.5, "monsterinfo_t pausetime must be mutable AI state");
+assert.equal(monsterInfoLocals.attack_finished, 13.75, "monsterinfo_t attack_finished must be mutable combat state");
+assert.deepEqual(monsterInfoLocals.saved_goal, [96, -32, 8], "monsterinfo_t saved_goal must be mutable pursuit state");
 monsterInfoLocals.aiflags = AI_HOLD_FRAME;
 monsterInfoLocals.nextframe = 12;
 monsterInfoLocals.scale = 1.5;

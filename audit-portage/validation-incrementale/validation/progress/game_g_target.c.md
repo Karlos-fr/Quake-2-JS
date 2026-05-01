@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `use_target_changelevel` et `SP_target_changelevel`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `use_target_changelevel` conserve l'early return si `level.intermissiontime`, le blocage solo quand `g_edicts[1].health <= 0`, la regle deathmatch noexit quand `DF_ALLOW_EXIT` est absent et `other != world`, le `T_Damage` avec `10 * max_health`, knockback 1000 et `MOD_EXIT`, l'annonce de l'activator en deathmatch, l'effacement de `SFL_CROSS_TRIGGER_MASK` seulement quand `self->map` contient `*`, puis `BeginIntermission(self)`. `SP_target_changelevel` conserve le warning/free sans `map`, le hack `fact1`/`fact3` vers `fact3$secret1`, le callback et `SVF_NOCLIENT`.
+  - Commentaires d'en-tete completes pour les deux fonctions: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et note de portage pour l'annonce `gi.bprintf` representee par log runtime.
+  - Branchement runtime verifie: `target_changelevel` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; le callback est atteint via target use, `BeginIntermission` met a jour `intermissiontime`, `changemap`, `exitintermission`, camera/intermission spot, et `G_RunFrame`/`CheckDMRules`/`ExitLevel` poursuivent la transition.
+  - `apps/web`: integration attendue car la sortie de niveau et l'intermission modifient le flux full-game/local, commandes client et presentation HUD/refresh. Pas de logique parallele masquante constatee; le navigateur consomme l'etat runtime/client via les tests web et full-game.
+  - `renderer-three`: pas de modele, image, particule, beam, dlight, temp entity ni areabits produit par `target_changelevel`; l'effet visible attendu est camera/intermission/HUD depuis l'etat client, pas une consommation renderer-three directe. `verify:full-game:three-renderer` reste OK pour l'absence de regression.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour `use_target_changelevel` et `SP_target_changelevel`.
+  - `scripts/verify/quake2-g-target.ts`: couverture ajoutee pour spawn table `ED_CallSpawn`, `SVF_NOCLIENT`, intermission deja active, joueur solo mort, warning/free sans map, hack `fact1`/`fact3`, noexit `MOD_EXIT`, annonce deathmatch et clear des bits cross-level.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:g-main` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `use_target_splash` et `SP_target_splash` si le lot reste petit.
+
 - 2026-05-01: `target_explosion_explode`, local `save`, `use_target_explosion` et `SP_target_explosion`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `target_explosion_explode` conserve l'emission `svc_temp_entity`/`TE_EXPLOSION1`, l'origine `self->s.origin`, `MULTICAST_PHS`, `T_RadiusDamage(self, activator, dmg, NULL, dmg+40, MOD_EXPLOSIVE)`, le `save` local qui neutralise temporairement `delay`, `G_UseTargets(self, activator)` et la restauration du delay. `use_target_explosion` conserve le stockage de l'activator, l'explosion immediate sans delay, et le scheduling `think`/`nextthink` quand `delay` est non nul. `SP_target_explosion` conserve le callback use et `SVF_NOCLIENT`.

@@ -71,6 +71,18 @@
 - Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
 - Corrections TS portees: `packages/game/src/g_svcmds.ts` n'efface plus le slot final apres compactage. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour couvrir explicitement `SVCmd_RemoveIP_f`.
 
+## Session 2026-05-01 - SVCmd_ListIP_f
+
+- Lot traite: `SVCmd_ListIP_f` et ses locaux `i` et `b`.
+- Checklist appliquee: identification matrice/source/cible, comparaison C vs TS de l'affichage de liste IP, validation du format console, effets de bord absents, commentaire d'en-tete, branchement runtime, apps/web, renderer-three, tests, mise a jour matrice/progress/global.
+- Verdict: lot valide. Le C imprime `Filter list:\n`, parcourt `i=0 ; i<numipfilters ; i++`, caste `ipfilters[i].compare` dans `byte b[4]`, puis imprime `%3i.%3i.%3i.%3i\n`; le TS conserve ce flux avec `index`, `unpackFilterBytes(compare)` et `context.gi.cprintf` au format original.
+- Locaux: le local C `i` est represente par `index`; le test prouve que la boucle s'arrete a `numipfilters` et ignore un slot stale hors plage active. Le local C `b[4]` est represente par `bytes`; le test prouve l'ordre little-endian et le padding `%3i`, y compris un octet `200`.
+- Runtime: `SVCmd_ListIP_f` est atteignable par `ServerCommand` pour `listip`, puis par la commande serveur `sv` via `SV_ServerCommand_f`; elle ne modifie pas les filtres consommes par `SV_FilterPacket`.
+- apps/web: le host full-game cree l'API game portee avec `GetGameApiFunction`; aucune logique web parallele de liste IP n'est attendue pour ce lot, et le flux navigateur doit passer par le runtime serveur porte.
+- renderer-three: non applicable, l'affichage console des filtres IP ne produit ni entite visible, modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene.
+- Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
+- Corrections TS portees: aucune dans le port. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour couvrir explicitement `SVCmd_ListIP_f`, ses locaux `i` et `b`.
+
 ## Prochain lot recommande
 
-- Continuer avec `SVCmd_ListIP_f`, puis ses locaux `i` et `b` si le lot reste petit.
+- Continuer avec `SVCmd_WriteIP_f`, puis ses locaux `name`, `b`, `i`, `game` et l'adaptation `sprintf` si le lot reste coherent.

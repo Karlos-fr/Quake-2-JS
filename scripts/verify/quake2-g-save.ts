@@ -391,6 +391,9 @@ target.monsterinfo.currentmove = testMonsterMove;
 target.monsterinfo.aiflags = 0x104;
 target.monsterinfo.nextframe = 12;
 target.monsterinfo.scale = 1.5;
+target.monsterinfo.pausetime = 44.25;
+target.monsterinfo.attack_finished = 48.5;
+target.monsterinfo.saved_goal = [512, -128, 24];
 writeContext.runtime.entities.push(target);
 const unsaved = createRuntimeEntity({ classname: "unsaved_temp_entity" }, 3);
 unsaved.inuse = false;
@@ -493,6 +496,9 @@ const levelSave = JSON.parse(levelJson) as {
         aiflags: number;
         nextframe: number;
         scale: number;
+        pausetime: number;
+        attack_finished: number;
+        saved_goal: [number, number, number];
       };
     };
   }>;
@@ -524,6 +530,9 @@ assert.equal(targetSave.callbacks.monsterinfo.currentmove, "test_move_save_resto
 assert.equal(targetSave.monsterinfo.aiflags, 0x104, "WriteLevel must persist monsterinfo aiflags");
 assert.equal(targetSave.monsterinfo.nextframe, 12, "WriteLevel must persist monsterinfo nextframe");
 assert.equal(targetSave.monsterinfo.scale, 1.5, "WriteLevel must persist monsterinfo scale");
+assert.equal(targetSave.monsterinfo.pausetime, 44.25, "WriteLevel must persist monsterinfo pausetime");
+assert.equal(targetSave.monsterinfo.attack_finished, 48.5, "WriteLevel must persist monsterinfo attack_finished");
+assert.deepEqual(targetSave.monsterinfo.saved_goal, [512, -128, 24], "WriteLevel must persist monsterinfo saved_goal");
 assert.equal(targetSave.callbacks.moveinfo.endfunc, "saveHarnessCallback", "WriteLevel must encode moveinfo endfunc by stable function name");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
@@ -542,6 +551,9 @@ assert.equal(readContext.runtime.entities[2]?.monsterinfo.currentmove, testMonst
 assert.equal(readContext.runtime.entities[2]?.monsterinfo.aiflags, 0x104, "ReadLevel monsterinfo aiflags restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.monsterinfo.nextframe, 12, "ReadLevel monsterinfo nextframe restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.monsterinfo.scale, 1.5, "ReadLevel monsterinfo scale restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.monsterinfo.pausetime, 44.25, "ReadLevel monsterinfo pausetime restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.monsterinfo.attack_finished, 48.5, "ReadLevel monsterinfo attack_finished restore mismatch");
+assert.deepEqual(readContext.runtime.entities[2]?.monsterinfo.saved_goal, [512, -128, 24], "ReadLevel monsterinfo saved_goal restore mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_origin, [16, 24, 32], "ReadLevel moveinfo start_origin mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_angles, [0, 90, 0], "ReadLevel moveinfo start_angles mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.end_origin, [128, 24, 48], "ReadLevel moveinfo end_origin mismatch");

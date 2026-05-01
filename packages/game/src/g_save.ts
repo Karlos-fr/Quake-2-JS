@@ -596,6 +596,20 @@ function syncRuntimeFromLevel(context: GameMainContext): void {
   context.runtime.sound2_entity_framenum = context.level.sound2_entity_framenum;
 }
 
+/**
+ * Original name: WriteClient
+ * Source: game/g_save.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Snapshots one `gclient_t`, preserving scalar/vector state and encoding the
+ *   original `clientfields` item pointers as stable item indexes.
+ *
+ * Porting notes:
+ * - Replaces the C temporary block plus `field_t` write passes with one
+ *   structured JSON object; `restoreClient` performs the matching item lookup.
+ */
 function snapshotClient(client: GameClient, runtime: GameRuntime) {
   return {
     ...client,

@@ -17,6 +17,7 @@ import {
   MAX_IPFILTERS,
   SV_FilterPacket,
   SVCmd_AddIP_f,
+  SVCmd_ListIP_f,
   SVCmd_RemoveIP_f,
   ServerCommand,
   StringToFilter,
@@ -116,6 +117,22 @@ assert.deepEqual(
   ["Filter list:\n", "192.246. 40.  0\n".replace("192", "192").replace("246", "246")],
   "listip output mismatch"
 );
+
+const listState = createGameServerCommandState();
+listState.numipfilters = 2;
+listState.ipfilters[0] = { mask: 0, compare: 0x04030201 };
+listState.ipfilters[1] = { mask: 0, compare: 0xc8030201 };
+listState.ipfilters[2] = { mask: 0, compare: 0x08070605 };
+runListIpDirect(listState);
+assert.deepEqual(
+  prints.splice(0),
+  ["Filter list:\n", "  1.  2.  3.  4\n", "  1.  2.  3.200\n"],
+  "listip must unpack compare through the original byte order and stop at numipfilters"
+);
+
+const emptyListState = createGameServerCommandState();
+runListIpDirect(emptyListState);
+assert.deepEqual(prints.splice(0), ["Filter list:\n"], "empty listip must only print the header");
 
 runCommand(["sv", "removeip", "192.246.40"]);
 assert.equal(prints.pop(), "Removed.\n", "removeip must acknowledge removal");
@@ -229,6 +246,12 @@ function runRemoveIpDirect(targetState: ReturnType<typeof createGameServerComman
   command.argv = argv.slice();
   command.args = argv.slice(1).join(" ");
   SVCmd_RemoveIP_f(targetState, context);
+}
+
+function runListIpDirect(targetState: ReturnType<typeof createGameServerCommandState>): void {
+  command.argv = ["sv", "listip"];
+  command.args = "listip";
+  SVCmd_ListIP_f(targetState, context);
 }
 
 function createCvar(name: string, stringValue: string): cvar_t {

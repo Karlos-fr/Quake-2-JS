@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: `SP_func_timer` et `SP_func_killbox`.
 - 2026-05-01: `SP_func_explosive` et `SP_func_areaportal`.
 - 2026-05-01: `SP_func_conveyor`, `SP_func_wall` et `SP_func_object`.
 - 2026-05-01: `SP_func_door_secret`, `SP_func_door_rotating`, `SP_func_water` et `SP_func_train`.
@@ -11,6 +12,8 @@
 
 ## Verdict du lot
 
+- `SP_func_timer`: valide. Le prototype et l'entree `func_timer` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_func.ts`; la fonction conserve le default `wait = 1`, les callbacks `func_timer_use`/`func_timer_think`, le clamp `random >= wait`, `SVF_NOCLIENT`, `START_ON`, `st.pausetime`, `delay`, l'activator `self`, `G_UseTargets` et le reschedule `level.time + wait + crandom() * random`.
+- `SP_func_killbox`: valide. Le prototype et l'entree `func_killbox` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_func.ts`; la fonction conserve `gi.setmodel` via `setGameEntityModel`, `use_killbox`, `SVF_NOCLIENT`, et `use_killbox` delegue a `KillBox` pour telefrag les occupants.
 - `SP_func_explosive`: valide. Le prototype et l'entree `func_explosive` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_misc.ts`; la fonction conserve le retrait deathmatch, `MOVETYPE_PUSH`, le precache des debris, le modele inline, le mode trigger-spawn cache puis revele, le mode cible non shootable, le mode shootable avec health/die par defaut, les flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, les debris, `T_RadiusDamage`, `G_UseTargets`, `BecomeExplosion1` ou `G_FreeEdict`.
 - `SP_func_areaportal`: valide. Le prototype et l'entree `func_areaportal` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_misc.ts`; la fonction conserve `Use_Areaportal`, `count = 0` au spawn et le toggle open/close applique au monde collision via `CM_SetAreaPortalState` quand disponible.
 - `SP_func_conveyor`: valide. Le prototype et l'entree `func_conveyor` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_func.ts`; la fonction conserve le default speed 100, la sauvegarde dans `count` quand `START_ON` est absent, le callback `func_conveyor_use`, `SOLID_BSP`, le modele inline et le link runtime.
@@ -35,6 +38,12 @@
 
 ## Checklist appliquee
 
+- Identification: lot `SP_func_timer`/`SP_func_killbox` dans matrice `game_g_spawn.c.md`, prototypes et entrees `spawns[]` originaux dans `Quake-2-master/game/g_spawn.c`, definitions originales dans `game/g_func.c`, cible portee `packages/game/src/g_func.ts` importee par `packages/game/src/g_spawn.ts`.
+- Comparaison C/H vs TS: entrees `edict_t *` vs `GameEntity, GameRuntime`, sorties void, classnames `func_timer`/`func_killbox`, callbacks, `wait`/`random`/`delay`/`pausetime`, `SVF_NOCLIENT`, modele inline et delegation `KillBox` verifies.
+- Commentaires d'en-tete: `func_timer_think`, `func_timer_use`, `SP_func_timer`, `use_killbox` et `SP_func_killbox` ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level` et `Behavior`; pas d'ajustement necessaire.
+- Runtime: valide. `SpawnEntities` parse le texte map, `ED_CallSpawn` dispatch par `spawns[]`; `G_RunFrame` execute le timer `START_ON` et relance son `nextthink`; `func_killbox` expose un callback `use` qui appelle `KillBox` avec le bridge collision.
+- apps/web: valide indirectement. Le navigateur doit declencher ces entites via le runtime porte; aucune logique parallele `func_timer`/`func_killbox` n'a ete detectee dans `apps/web`. `func_timer` ne produit pas de rendu direct; `func_killbox` est volontairement `SVF_NOCLIENT`.
+- renderer-three: non applicable justifie pour le rendu direct. `func_timer` ne produit aucune sortie visible; `func_killbox` est une brush cachee `SVF_NOCLIENT` utilisee pour collision/telefrag, donc aucun modele/particule/dlight/scene visible n'est attendu dans `renderer-three`.
 - Identification: lot `SP_func_explosive`/`SP_func_areaportal` dans matrice `game_g_spawn.c.md`, prototypes et entrees `spawns[]` originaux dans `Quake-2-master/game/g_spawn.c`, definitions originales dans `game/g_misc.c`, cible portee `packages/game/src/g_misc.ts` importee par `packages/game/src/g_spawn.ts`.
 - Comparaison C/H vs TS: entrees `edict_t *` vs `GameEntity, GameRuntime`, sorties void, classnames `func_explosive`/`func_areaportal`, flags, defaults, callbacks, modeles inline, solidite/visibilite, deathmatch, damage, debris, temp entity d'explosion, targets, areaportal style/count et collision state verifies.
 - Commentaires d'en-tete: `Use_Areaportal`, `SP_func_areaportal`, `func_explosive_explode`, `func_explosive_use`, `func_explosive_spawn` et `SP_func_explosive` ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level` et `Behavior`; pas d'ajustement necessaire.
@@ -74,6 +83,7 @@
 
 ## Corrections appliquees
 
+- `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_timer` et `func_killbox`, leur presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, `START_ON` avec `pausetime`, le think execute par `G_RunFrame`, le modele inline du killbox et la delegation `KillBox`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_areaportal` et `func_explosive`, leur presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, le toggle areaportal, les modeles inline, trigger-spawn/reveal, ciblage non shootable, animation flags et callbacks.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_conveyor`, `func_wall` et `func_object`, leur presence dans `spawns[]`, le dispatch `ED_CallSpawn`, le dispatch map `SpawnEntities`, les modeles inline visibles, callbacks, flags d'animation, transitions solid/visible et release planifiee.
 - `packages/game/src/g_func.ts`: ajout du precache `misc/talk.wav` dans `SP_func_door_secret` quand une porte ciblee avec `message` installe `door_touch`, comme dans `game/g_func.c`.
@@ -84,6 +94,12 @@
 
 ## Tests
 
+- `npm run verify:g-spawn`: ok le 2026-05-01.
+- `npm run verify:g-func`: ok le 2026-05-01.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run verify:web-render-order`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
 - `npm run verify:g-spawn`: ok le 2026-05-01.
 - `npm run verify:g-misc`: ok le 2026-05-01.
 - `npm run verify:full-game:server-host`: ok le 2026-05-01.
@@ -117,4 +133,4 @@
 
 ## Prochain lot recommande
 
-- Valider `SP_func_timer`, puis `SP_func_killbox` si le lot reste coherent avec `g_func.ts`; garder `SP_func_clock` pour un lot `g_misc.ts` separe si l'on prefere rester dans le meme fichier cible.
+- Valider `SP_func_clock` dans un lot separe rattache a `packages/game/src/g_misc.ts`.
