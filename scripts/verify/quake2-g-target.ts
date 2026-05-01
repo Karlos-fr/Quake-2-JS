@@ -272,11 +272,52 @@ function verifyTargetHelpSecretGoal(): void {
   assert.equal(secretDeathmatchRuntime.total_secrets, 0, "target_secret deathmatch must not increment totals");
 
   const goal = createHighEntity(runtime, "target_goal");
-  SP_target_goal(goal, runtime);
+  const goalActivator = createPlayer(runtime);
+  const goalTarget = spawnGameEntity(runtime);
+  goalTarget.classname = "target_goal_receiver";
+  goalTarget.targetname = "goal_done";
+  let goalTargetActivator: GameEntity | null = null;
+  goalTarget.use = (_ent, _other, activator) => {
+    goalTargetActivator = activator;
+  };
+  goal.target = "goal_done";
+  ED_CallSpawn(goal, runtime);
+  assert.equal(goal.use?.name, "use_target_goal", "target_goal spawn table must install use_target_goal");
+  assert.equal(runtime.assets.soundPaths[goal.noise_index - 1], "misc/secret.wav", "target_goal default sound mismatch");
+  assert.equal(goal.svflags, SVF_NOCLIENT, "target_goal must be hidden from clients");
   assert.equal(runtime.total_goals, 1, "target_goal total mismatch");
   drainGameConfigstringUpdates(runtime);
-  use_target_goal(goal, null, null, runtime);
+  use_target_goal(goal, null, goalActivator, runtime);
+  assert.equal(runtime.found_goals, 1, "target_goal found mismatch");
+  const goalSound = runtime.soundEvents.at(-1);
+  assert.equal(goalSound?.soundPath, "misc/secret.wav", "target_goal use sound mismatch");
+  assert.equal(goalSound?.channel, CHAN_VOICE, "target_goal sound channel mismatch");
+  assert.equal(goalSound?.volume, 1, "target_goal sound volume mismatch");
+  assert.equal(goalSound?.attenuation, 1, "target_goal sound attenuation mismatch");
+  assert.equal(goalTargetActivator, goalActivator, "target_goal must fire targets with activator");
+  assert.equal(goal.inuse, false, "target_goal must free itself");
   assert.deepEqual(drainGameConfigstringUpdates(runtime), [{ index: CS_CDTRACK, value: "0" }], "target_goal must stop CD track when all goals found");
+
+  const customGoal = createHighEntity(runtime, "target_goal");
+  customGoal.properties.noise = "custom/goal.wav";
+  SP_target_goal(customGoal, runtime);
+  assert.equal(runtime.assets.soundPaths[customGoal.noise_index - 1], "custom/goal.wav", "target_goal custom st.noise mismatch");
+
+  const twoGoalRuntime = createRuntime();
+  const firstGoal = createHighEntity(twoGoalRuntime, "target_goal");
+  const secondGoal = createHighEntity(twoGoalRuntime, "target_goal");
+  SP_target_goal(firstGoal, twoGoalRuntime);
+  SP_target_goal(secondGoal, twoGoalRuntime);
+  drainGameConfigstringUpdates(twoGoalRuntime);
+  use_target_goal(firstGoal, null, null, twoGoalRuntime);
+  assert.deepEqual(drainGameConfigstringUpdates(twoGoalRuntime), [], "target_goal must not stop CD track before all goals are found");
+
+  const goalDeathmatchRuntime = createRuntime();
+  goalDeathmatchRuntime.deathmatch = true;
+  const dmGoal = createHighEntity(goalDeathmatchRuntime, "target_goal");
+  SP_target_goal(dmGoal, goalDeathmatchRuntime);
+  assert.equal(dmGoal.inuse, false, "target_goal must auto-remove in deathmatch");
+  assert.equal(goalDeathmatchRuntime.total_goals, 0, "target_goal deathmatch must not increment totals");
 }
 
 function verifyTargetExplosionAndSplash(): void {

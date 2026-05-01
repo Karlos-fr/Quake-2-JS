@@ -47,6 +47,18 @@
 - Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
 - Corrections TS portees: aucune dans le port. Test renforce dans `scripts/verify/quake2-g-svcmds.ts`.
 
+## Session 2026-05-01 - SVCmd_AddIP_f
+
+- Lot traite: `SVCmd_AddIP_f` et son local `i`.
+- Checklist appliquee: identification matrice/source/cible, comparaison C vs TS de l'ajout IP, validation des messages console, effets de bord sur `numipfilters`/`ipfilters`, commentaire d'en-tete, branchement runtime, apps/web, renderer-three, tests, mise a jour matrice/progress.
+- Verdict: lot valide. Le C verifie `gi.argc() < 3`, scanne `ipfilters[0..numipfilters)` jusqu'au premier `compare == 0xffffffff`, agrandit `numipfilters` si aucun slot libre n'existe, refuse la liste pleine avec le meme message, puis appelle `StringToFilter`; le TS conserve ce flux avec `context.gi.argc()`, le local `index`, `FREE_IPFILTER_COMPARE`, `MAX_IPFILTERS` et le meme fallback sentinel apres parse invalide.
+- Local: le local C `i` est represente par `index`; les tests prouvent le scan du premier slot libre, la croissance quand aucun slot libre n'est disponible, la liste pleine sans ecrasement, et l'absence d'allocation quand l'argument manque.
+- Runtime: `SVCmd_AddIP_f` est atteignable par `ServerCommand` pour `addip`, puis par la commande serveur `sv` via `SV_ServerCommand_f`; les filtres crees sont consommes par `SV_FilterPacket` dans `ClientConnect`.
+- apps/web: le host full-game cree l'API game portee avec `GetGameApiFunction`; aucune logique web parallele de filtrage IP n'est attendue pour ce lot, et le flux navigateur doit passer par le runtime serveur porte.
+- renderer-three: non applicable, l'ajout d'un filtre IP ne produit ni entite visible, modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene.
+- Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
+- Corrections TS portees: aucune. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour couvrir explicitement `SVCmd_AddIP_f`.
+
 ## Prochain lot recommande
 
-- Continuer avec `SVCmd_AddIP_f` et son local `i` si le lot reste centre sur l'ajout d'un filtre et la recherche de slot libre.
+- Continuer avec `SVCmd_RemoveIP_f`, centre sur la recherche du filtre, le compactage du tableau et le message `Removed.` / `Didn't find`.

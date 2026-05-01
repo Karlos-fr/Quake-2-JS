@@ -171,6 +171,8 @@ function verifyTeleporterMovesPlayerAndSetsTeleportState(): void {
   destination.targetname = "exit";
   destination.origin = [100, 200, 300];
   destination.s.origin = [100, 200, 300];
+  destination.angles = [90, 180, -90];
+  destination.s.angles = [90, 180, -90];
   SP_misc_teleporter_dest(destination, runtime);
 
   const teleporter = spawnGameEntity(runtime);
@@ -186,7 +188,7 @@ function verifyTeleporterMovesPlayerAndSetsTeleportState(): void {
   const player = spawnGameEntity(runtime);
   player.classname = "player";
   attachGameClient(player);
-  player.client!.resp.cmd_angles = [0, 0, 0];
+  player.client!.resp.cmd_angles = [10, 20, 30];
   player.origin = [10, 20, 30];
   player.s.origin = [10, 20, 30];
   player.mins = [-16, -16, -24];
@@ -196,8 +198,32 @@ function verifyTeleporterMovesPlayerAndSetsTeleportState(): void {
   trigger.touch!(trigger, player, runtime);
 
   assert.deepEqual(player.origin, [100, 200, 310], "teleporter touch must move player to destination + 10 on Z");
+  assert.deepEqual(player.s.old_origin, [100, 200, 300], "teleporter touch must copy destination to old_origin before the z offset");
+  assert.equal(player.client!.ps.pmove.pm_time, 160 >> 3, "teleporter touch must hold the player briefly like the C code");
   assert.equal((player.client!.ps.pmove.pm_flags & PMF_TIME_TELEPORT) !== 0, true, "teleporter touch must set PMF_TIME_TELEPORT");
+  assert.deepEqual(player.client!.ps.pmove.delta_angles, [14563, 29127, 43691], "teleporter touch must apply ANGLE2SHORT destination deltas");
+  assert.deepEqual(player.s.angles, [0, 0, 0], "teleporter touch must clear entity angles");
+  assert.deepEqual(player.client!.ps.viewangles, [0, 0, 0], "teleporter touch must clear viewangles");
+  assert.deepEqual(player.client!.v_angle, [0, 0, 0], "teleporter touch must clear v_angle");
+  assert.equal(player.linked, true, "teleporter touch must relink the player after unlink/KillBox");
+  assert.equal(teleporter.s.event, entity_event_t.EV_PLAYER_TELEPORT, "teleporter touch must emit EV_PLAYER_TELEPORT on the source pad owner");
   assert.equal(player.s.event, entity_event_t.EV_PLAYER_TELEPORT, "teleporter touch must emit EV_PLAYER_TELEPORT on the player");
+
+  const nonClient = spawnGameEntity(runtime);
+  nonClient.origin = [1, 2, 3];
+  trigger.touch!(trigger, nonClient, runtime);
+  assert.deepEqual(nonClient.origin, [1, 2, 3], "teleporter touch must ignore non-client entities");
+
+  const missingDestTrigger = spawnGameEntity(runtime);
+  missingDestTrigger.classname = "teleporter_trigger";
+  missingDestTrigger.target = "missing";
+  missingDestTrigger.touch = trigger.touch;
+  const blockedPlayer = spawnGameEntity(runtime);
+  attachGameClient(blockedPlayer);
+  blockedPlayer.origin = [7, 8, 9];
+  missingDestTrigger.touch!(missingDestTrigger, blockedPlayer, runtime);
+  assert.deepEqual(blockedPlayer.origin, [7, 8, 9], "teleporter touch must leave the player in place when dest is missing");
+  assert.equal(runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message === "Couldn't find destination"), true, "teleporter touch must emit the source destination warning");
 }
 
 function verifyPathCornerSpawnSetupAndInvalidFree(): void {
@@ -641,6 +667,43 @@ function verifyFuncClockBootstrapsTargetStringMessage(): void {
   assert.equal(clock.health, 0, "SP_func_clock must reset count-up health before scheduling");
   assert.equal(clock.wait, 3, "SP_func_clock must reset count-up wait from count before scheduling");
   assert.equal(clock.use, func_clock_use, "START_OFF func_clock must install func_clock_use");
+  assert.equal(clock.think, func_clock_think, "SP_func_clock must install func_clock_think");
+
+  const spawnedClock = spawnGameEntity(runtime);
+  spawnedClock.classname = "func_clock";
+  spawnedClock.target = "clock_display";
+  spawnedClock.spawnflags = 2;
+  spawnedClock.count = 2;
+  ED_CallSpawn(spawnedClock, runtime);
+  assert.equal(spawnedClock.health, 2, "TIMER_DOWN func_clock must initialize health from count");
+  assert.equal(spawnedClock.wait, 0, "TIMER_DOWN func_clock must initialize wait to zero");
+  assert.equal(spawnedClock.nextthink, runtime.time + 1, "non-START_OFF func_clock must schedule first think at level.time + 1");
+  spawnedClock.nextthink = 0;
+
+  const defaultHourClock = spawnGameEntity(runtime);
+  defaultHourClock.classname = "func_clock";
+  defaultHourClock.target = "clock_display";
+  defaultHourClock.spawnflags = 1;
+  SP_func_clock(defaultHourClock, runtime);
+  assert.equal(defaultHourClock.count, 60 * 60, "TIMER_UP func_clock without count must default to one hour");
+  assert.equal(defaultHourClock.wait, 60 * 60, "TIMER_UP default count must feed func_clock_reset wait");
+  defaultHourClock.nextthink = 0;
+
+  const invalidNoTarget = spawnGameEntity(runtime);
+  invalidNoTarget.classname = "func_clock";
+  invalidNoTarget.s.origin = [1, 2, 3];
+  SP_func_clock(invalidNoTarget, runtime);
+  assert.equal(invalidNoTarget.inuse, false, "func_clock without target must be freed");
+  assert.equal(runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message.includes("func_clock with no target at (1 2 3)")), true, "func_clock without target must emit the source warning");
+
+  const invalidNoCount = spawnGameEntity(runtime);
+  invalidNoCount.classname = "func_clock";
+  invalidNoCount.target = "clock_display";
+  invalidNoCount.spawnflags = 2;
+  invalidNoCount.s.origin = [4, 5, 6];
+  SP_func_clock(invalidNoCount, runtime);
+  assert.equal(invalidNoCount.inuse, false, "TIMER_DOWN func_clock without count must be freed");
+  assert.equal(runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message.includes("func_clock with no count at (4 5 6)")), true, "TIMER_DOWN func_clock without count must emit the source warning");
 
   useGameEntity(runtime, clock, null, clock);
   assert.equal(stringTarget.message, " 0:00", "func_clock_use must immediately push the first formatted message");

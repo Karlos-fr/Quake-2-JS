@@ -16,6 +16,7 @@ import { PRINT_HIGH } from "../../packages/qcommon/src/index.js";
 import {
   MAX_IPFILTERS,
   SV_FilterPacket,
+  SVCmd_AddIP_f,
   ServerCommand,
   StringToFilter,
   createGameServerCommandState,
@@ -149,12 +150,47 @@ runCommand(["sv", "addip", "bad.ip"]);
 assert.equal(state.numipfilters, 3, "failed addip must still consume the newly allocated slot like the original code");
 assert.equal(prints.splice(0).join(""), "Bad filter address: bad.ip\n", "bad addip diagnostic mismatch");
 
+const usageState = createGameServerCommandState();
+runAddIpDirect(usageState, ["sv", "addip"]);
+assert.equal(usageState.numipfilters, 0, "addip without an address must not allocate a filter slot");
+assert.equal(prints.pop(), "Usage:  addip <ip-mask>\n", "addip usage diagnostic mismatch");
+
+const reuseState = createGameServerCommandState();
+reuseState.numipfilters = 3;
+reuseState.ipfilters[0] = { mask: 0xffffffff, compare: 0x04030201 };
+reuseState.ipfilters[1] = { mask: 0, compare: 0xffffffff };
+reuseState.ipfilters[2] = { mask: 0xffffffff, compare: 0x08070605 };
+runAddIpDirect(reuseState, ["sv", "addip", "172.16"]);
+assert.equal(reuseState.numipfilters, 3, "addip must reuse a free sentinel slot before growing numipfilters");
+assert.deepEqual(
+  reuseState.ipfilters[1],
+  { mask: 0x0000ffff, compare: 0x000010ac },
+  "addip must populate the first 0xffffffff free slot"
+);
+assert.deepEqual(reuseState.ipfilters[2], { mask: 0xffffffff, compare: 0x08070605 }, "addip must not disturb later slots");
+
+const fullState = createGameServerCommandState();
+fullState.numipfilters = MAX_IPFILTERS;
+for (let index = 0; index < MAX_IPFILTERS; index += 1) {
+  fullState.ipfilters[index] = { mask: 0xffffffff, compare: index };
+}
+runAddIpDirect(fullState, ["sv", "addip", "8.8.8.8"]);
+assert.equal(fullState.numipfilters, MAX_IPFILTERS, "full addip must keep numipfilters unchanged");
+assert.deepEqual(fullState.ipfilters[MAX_IPFILTERS - 1], { mask: 0xffffffff, compare: MAX_IPFILTERS - 1 }, "full addip must not overwrite filters");
+assert.equal(prints.pop(), "IP filter list is full\n", "full addip diagnostic mismatch");
+
 console.log("quake2-g-svcmds: ok");
 
 function runCommand(argv: string[]): void {
   command.argv = argv.slice();
   command.args = argv.slice(1).join(" ");
   ServerCommand(state, context);
+}
+
+function runAddIpDirect(targetState: ReturnType<typeof createGameServerCommandState>, argv: string[]): void {
+  command.argv = argv.slice();
+  command.args = argv.slice(1).join(" ");
+  SVCmd_AddIP_f(targetState, context);
 }
 
 function createCvar(name: string, stringValue: string): cvar_t {

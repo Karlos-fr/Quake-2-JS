@@ -111,7 +111,7 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, mmove_t, moveinfo_t } from "../../packages/game/src/g_local.js";
+import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, mmove_t, monsterinfo_t, moveinfo_t } from "../../packages/game/src/g_local.js";
 import {
   ARMOR_BODY as INDEX_ARMOR_BODY,
   ARMOR_COMBAT as INDEX_ARMOR_COMBAT,
@@ -571,6 +571,40 @@ assert.equal(st.maxyaw, 120, "spawn_temp maxyaw field mismatch");
 assert.equal(st.minpitch, -20, "spawn_temp minpitch field mismatch");
 assert.equal(st.maxpitch, 35, "spawn_temp maxpitch field mismatch");
 assert.equal(monsterinfo.saved_goal[2], 0, "monsterinfo saved_goal mismatch");
+const monsterInfoLocals = monsterinfo satisfies monsterinfo_t;
+assert.deepEqual(
+  Object.keys(monsterInfoLocals),
+  [
+    "currentmove",
+    "aiflags",
+    "nextframe",
+    "scale",
+    "stand",
+    "idle",
+    "search",
+    "walk",
+    "run",
+    "dodge",
+    "attack",
+    "melee",
+    "sight",
+    "checkattack",
+    "pausetime",
+    "attack_finished",
+    "saved_goal",
+    "search_time",
+    "trail_time",
+    "last_sighting",
+    "attack_state",
+    "lefty",
+    "idle_time",
+    "linkcount",
+    "power_armor_type",
+    "power_armor_power"
+  ],
+  "monsterinfo_t field order mismatch"
+);
+assert.equal(monsterInfoLocals.currentmove, null, "monsterinfo_t currentmove default must match NULL");
 assert.deepEqual(
   Object.keys({
     aifunc: undefined,
@@ -620,6 +654,7 @@ const mframeEntity = createRuntimeEntity({ classname: "mframe_probe" }, 23);
 mframeEntity.s.frame = 4;
 mframeEntity.monsterinfo.scale = 2;
 mframeEntity.monsterinfo.currentmove = { ...monsterMove, endfunc: undefined };
+assert.equal(mframeEntity.monsterinfo.currentmove.frame[0], monsterFrame, "monsterinfo_t currentmove must point at an mmove_t frame table");
 M_MoveFrame(mframeEntity, mframeRuntime);
 assert.equal(mframeEntity.s.frame, 5, "M_MoveFrame must advance into the current mframe_t range");
 assert.equal(mframeEntity.nextthink, 0.1, "M_MoveFrame must schedule the next monster think");

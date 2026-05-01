@@ -26,7 +26,7 @@ import {
   CS_SKYAXIS,
   CS_SKYROTATE
 } from "../../packages/qcommon/src/index.js";
-import { FL_TEAMSLAVE, FRAMETIME, MOVETYPE_PUSH, MOVETYPE_STOP, SOLID_BBOX, SOLID_BSP, SOLID_TRIGGER, STATE_BOTTOM, STATE_UP } from "../../packages/game/src/runtime.js";
+import { FL_TEAMSLAVE, FRAMETIME, MOVETYPE_PUSH, MOVETYPE_STOP, MOVETYPE_TOSS, SOLID_BBOX, SOLID_BSP, SOLID_NOT, SOLID_TRIGGER, STATE_BOTTOM, STATE_UP, SVF_NOCLIENT } from "../../packages/game/src/runtime.js";
 import {
   SPAWNFLAG_NOT_DEATHMATCH,
   SPAWNFLAG_NOT_EASY,
@@ -206,6 +206,15 @@ const objectEntity = spawnGameEntity(context.runtime);
 objectEntity.classname = "func_object";
 ED_CallSpawn(objectEntity, context.runtime);
 assert.equal(objectEntity.solid, SOLID_BSP, "ED_CallSpawn must dispatch func_object");
+
+const conveyorEntity = spawnGameEntity(context.runtime);
+conveyorEntity.classname = "func_conveyor";
+ED_CallSpawn(conveyorEntity, context.runtime);
+assert.equal(conveyorEntity.solid, SOLID_BSP, "ED_CallSpawn must dispatch func_conveyor");
+
+assert.equal(spawns.some((entry) => entry.name === "func_conveyor"), true, "spawns[] must expose func_conveyor");
+assert.equal(spawns.some((entry) => entry.name === "func_wall"), true, "spawns[] must expose func_wall");
+assert.equal(spawns.some((entry) => entry.name === "func_object"), true, "spawns[] must expose func_object");
 
 const teamRuntime = createGameMainContext(imports).runtime;
 const teamMaster = spawnGameEntity(teamRuntime);
@@ -632,6 +641,31 @@ SpawnEntities(
 "speed" "80"
 "noise" "plats/train.wav"
 }
+{
+"classname" "func_conveyor"
+"model" "*18"
+"speed" "120"
+}
+{
+"classname" "func_wall"
+"model" "*19"
+"spawnflags" "${1 | 2 | 8 | 16}"
+}
+{
+"classname" "func_object"
+"model" "*20"
+"origin" "32 48 64"
+"mins" "-16 -16 0"
+"maxs" "16 16 32"
+"spawnflags" "${2 | 4}"
+}
+{
+"classname" "func_object"
+"model" "*21"
+"origin" "64 48 64"
+"mins" "-16 -16 0"
+"maxs" "16 16 32"
+}
 `,
   ""
 );
@@ -741,6 +775,52 @@ assert.equal(spawnedTrain.target, "train_next", "func_train_find must hand off t
 assert.equal((spawnedTrain.spawnflags & 1) !== 0, true, "func_train_find must start untargeted trains");
 assert.equal(spawnedTrain.nextthink, funcBrushContext.runtime.time + FRAMETIME, "func_train_find must schedule train_next for started trains");
 assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedTrain.s.modelindex - 1], "*17", "func_train modelindex must resolve to *17");
+
+const spawnedConveyor = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_conveyor");
+assert.ok(spawnedConveyor, "SpawnEntities must keep func_conveyor in the runtime");
+assert.equal(spawnedConveyor.solid, SOLID_BSP, "SpawnEntities func_conveyor solid mismatch");
+assert.equal(spawnedConveyor.speed, 0, "func_conveyor without START_ON must start stopped");
+assert.equal(spawnedConveyor.count, 120, "func_conveyor must store the parsed speed while stopped");
+assert.equal(typeof spawnedConveyor.use, "function", "func_conveyor must expose the runtime use callback");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedConveyor.s.modelindex - 1], "*18", "func_conveyor modelindex must resolve to *18");
+spawnedConveyor.use?.(spawnedConveyor, null, null, funcBrushContext.runtime);
+assert.equal(spawnedConveyor.speed, 120, "func_conveyor use must restore the stored speed");
+assert.equal((spawnedConveyor.spawnflags & 1) !== 0, true, "func_conveyor use must set START_ON");
+assert.equal(spawnedConveyor.count, 0, "one-shot func_conveyor use must clear stored speed without TOGGLE");
+
+const spawnedWall = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_wall");
+assert.ok(spawnedWall, "SpawnEntities must keep func_wall in the runtime");
+assert.equal(spawnedWall.movetype, MOVETYPE_PUSH, "SpawnEntities func_wall movetype mismatch");
+assert.equal(spawnedWall.solid, SOLID_NOT, "trigger-spawn func_wall must start hidden when START_ON is absent");
+assert.equal((spawnedWall.svflags & SVF_NOCLIENT) !== 0, true, "hidden func_wall must set SVF_NOCLIENT");
+assert.equal((spawnedWall.s.effects & EF_ANIM_ALL) !== 0, true, "func_wall EF_ANIM_ALL mismatch");
+assert.equal((spawnedWall.s.effects & EF_ANIM_ALLFAST) !== 0, true, "func_wall EF_ANIM_ALLFAST mismatch");
+assert.equal(typeof spawnedWall.use, "function", "func_wall must expose the runtime use callback");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedWall.s.modelindex - 1], "*19", "func_wall modelindex must resolve to *19");
+spawnedWall.use?.(spawnedWall, null, null, funcBrushContext.runtime);
+assert.equal(spawnedWall.solid, SOLID_BSP, "func_wall use must make the brush solid");
+assert.equal((spawnedWall.svflags & SVF_NOCLIENT) === 0, true, "func_wall use must make the brush client-visible");
+
+const spawnedTriggerObject = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_object" && entity.model === "*20");
+assert.ok(spawnedTriggerObject, "SpawnEntities must keep trigger-spawn func_object in the runtime");
+assert.equal(spawnedTriggerObject.movetype, MOVETYPE_PUSH, "trigger-spawn func_object movetype mismatch");
+assert.equal(spawnedTriggerObject.solid, SOLID_NOT, "trigger-spawn func_object must start hidden");
+assert.equal((spawnedTriggerObject.svflags & SVF_NOCLIENT) !== 0, true, "trigger-spawn func_object must set SVF_NOCLIENT");
+assert.equal((spawnedTriggerObject.s.effects & EF_ANIM_ALL) !== 0, true, "func_object EF_ANIM_ALL mismatch");
+assert.equal((spawnedTriggerObject.s.effects & EF_ANIM_ALLFAST) !== 0, true, "func_object EF_ANIM_ALLFAST mismatch");
+assert.equal(typeof spawnedTriggerObject.use, "function", "trigger-spawn func_object must expose the runtime use callback");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedTriggerObject.s.modelindex - 1], "*20", "trigger-spawn func_object modelindex must resolve to *20");
+spawnedTriggerObject.use?.(spawnedTriggerObject, null, null, funcBrushContext.runtime);
+assert.equal(spawnedTriggerObject.solid, SOLID_BSP, "func_object use must make the brush solid");
+assert.equal((spawnedTriggerObject.svflags & SVF_NOCLIENT) === 0, true, "func_object use must make the brush client-visible");
+assert.equal(spawnedTriggerObject.movetype, MOVETYPE_TOSS, "func_object use must release the brush into toss physics");
+
+const spawnedPlainObject = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_object" && entity.model === "*21");
+assert.ok(spawnedPlainObject, "SpawnEntities must keep plain func_object in the runtime");
+assert.equal(spawnedPlainObject.solid, SOLID_BSP, "plain func_object must start solid");
+assert.equal(spawnedPlainObject.movetype, MOVETYPE_PUSH, "plain func_object must wait as MOVETYPE_PUSH");
+assert.equal(spawnedPlainObject.nextthink, 2 * FRAMETIME, "plain func_object must schedule release after two frames");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedPlainObject.s.modelindex - 1], "*21", "plain func_object modelindex must resolve to *21");
 
 const commandContext = createGameMainContext(imports);
 InitGame(commandContext);

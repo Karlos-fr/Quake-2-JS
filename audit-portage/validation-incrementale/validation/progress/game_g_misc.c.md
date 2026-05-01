@@ -2,6 +2,23 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `SP_func_clock`, `teleporter_touch` et local `dest`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `SP_func_clock` conserve les refus sans `target` / sans `count` pour TIMER_DOWN, les warnings source, le defaut TIMER_UP a `60*60`, `func_clock_reset`, le buffer message de taille `CLOCK_MESSAGE_SIZE`, `think = func_clock_think`, `use = func_clock_use` pour START_OFF et `nextthink = level.time + 1` sinon. `teleporter_touch` conserve la garde non-client, la recherche `dest = G_Find(... targetname ...)`, le warning destination manquante, l'unlink avant deplacer/KillBox, la copie destination/origin/old_origin puis `+10` en Z, velocity clear, hold `pm_time`, flag `PMF_TIME_TELEPORT`, evenements source/joueur, delta angles `ANGLE2SHORT`, clears angles/viewangles/v_angle, `KillBox` et relink.
+  - Local compare: `dest` est porte par `const dest = self.target ? G_Find(...) : null`, et ses champs `s.origin` / `s.angles` alimentent les memes effets que le C.
+  - Commentaires d'en-tete ajoutes: `SP_func_clock` et `teleporter_touch` documentent original/source/categorie portee/fidelite `Strict` et comportement.
+  - Corrections appliquees: `SP_func_clock` journalise maintenant les warnings source avant `G_FreeEdict`; `teleporter_touch` journalise le warning source destination, appelle `unlinkGameEntity` avant le deplacement/KillBox et preserve `s.old_origin` sur la destination non decalee apres relink.
+  - Branchement runtime verifie: `func_clock` est enregistre dans `g_spawn.ts` et dispatchable via `ED_CallSpawn`; ses callbacks passent par `G_RunFrame`/`SV_RunThink` ou `useGameEntity`. `teleporter_touch` est installe par `SP_misc_teleporter` sur le trigger runtime et atteignable par les touches serveur.
+  - `apps/web`: integration attendue pour `func_clock` car il met a jour les frames de `target_string`, et pour teleporter car il change position joueur, pmove, events et snapshots. Aucune logique parallele trouvee; les flux full-game/local consomment les sorties runtime via snapshots/refresh frames.
+  - `renderer-three`: integration attendue pour frames de brush digits, pad teleporter visible `EF_TELEPORTER`, evenement `EV_PLAYER_TELEPORT`, camera/position joueur et particules client. Consommation presente via packet entities / `ClientRefreshFrame`, effets client teleport et adapters Three; aucun manque renderer detecte.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `SP_misc_teleporter` avec local `trig`, puis `SP_misc_teleporter_dest` si le lot reste petit.
+
 - 2026-05-01: `func_clock_think`, local `gmtime`, locals `savetarget`/`savemessage`, et `func_clock_use`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `func_clock_think` conserve la recherche lazy de `target_string`, les branches TIMER_UP/TIMER_DOWN, la branche horloge locale `time`/`localtime`, la copie du message vers l'ennemi, l'appel du callback `use`, le declenchement `pathtarget`, la sauvegarde/restauration `target`/`message`, la sortie one-shot, le reset multi-use et la replanification a `level.time + 1`. `func_clock_use` conserve l'effacement du callback hors multi-use, la garde `activator`, l'enregistrement de l'activator et l'appel immediat du think.

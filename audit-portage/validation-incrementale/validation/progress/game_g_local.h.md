@@ -905,6 +905,24 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: ligne explicite ajoutee pour `mmove_t.endfunc`, absente de la matrice generee.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-monster` OK; `npm run verify:g-save` OK; `npm run verify:m-soldier` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `monsterinfo_t` limite au champ `currentmove`.
+- Verdict: `Valide` pour la structure et le champ apres comparaison H/TS, correction du commentaire de portage, verification du branchement runtime monster, save/load et flux web/renderer.
+- Source H comparee: `monsterinfo_t` commence par `mmove_t *currentmove`, suivi de l'etat AI `aiflags`, `nextframe`, `scale`, callbacks et champs de combat.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `monsterinfo_t` vers `GameMonsterInfo`.
+  - `packages/game/src/runtime.ts`: `GameMonsterInfo.currentmove` porte `GameMonsterMove | null`, premier champ du bloc, et `createMonsterInfo` l'initialise a `null` comme le `NULL` C.
+  - `packages/game/src/g_monster.ts`: `M_MoveFrame` lit `self.monsterinfo.currentmove`, avance les frames, re-lit `currentmove` apres `endfunc`, et `monster_think` l'appelle depuis le think monstre.
+  - `packages/game/src/g_save.ts`: le field `currentmove` est `F_MMOVE`/`FFL_NOSPAWN`; l'adapter save/load encode et restaure la reference par nom stable.
+- Runtime: integration attendue et branchee depuis les spawns monstres qui posent `monsterinfo.currentmove`, puis `monster_start`/`monster_start_go` arment `monster_think`, appele par `G_RunFrame`. Les preuves couvrent le default `null`, la reference `mmove_t`, l'execution `M_MoveFrame`, le rechargement save/load et un monstre concret.
+- apps/web: integration attendue via le host local/full-game qui avance le runtime game et consomme snapshots/sons/HUD issus des monstres; aucune logique parallele `monsterinfo_t.currentmove` detectee dans `apps/web`. Test web OK.
+- renderer-three: integration indirecte attendue car `currentmove` produit des frames/modeles visibles et peut declencher sons/temp entities en aval. `packages/renderer-three` n'a pas a lire `monsterinfo_t` directement; il consomme les entites, modeles et frames via le flux full-game. Test renderer OK.
+- Commentaires/documentation: commentaire de portage `monsterinfo_t` ajoute dans `runtime.ts`; commentaires d'en-tete de `M_MoveFrame`, `monster_think`, `monster_start` et `monster_start_go` verifies.
+- Corrections appliquees:
+  - `packages/game/src/runtime.ts`: commentaire de portage `GameMonsterInfo` rattache explicitement a `monsterinfo_t`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ordre `monsterinfo_t`, default `currentmove = null`, reference vers table `mmove_t` et execution par `M_MoveFrame`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `monsterinfo_t` et `currentmove` passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-monster` OK; `npm run verify:g-save` OK; `npm run verify:m-soldier` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -938,7 +956,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `monsterinfo_t` et le champ `currentmove` si le lot reste petit, en s'appuyant sur les preuves `mmove_t`/`M_MoveFrame` deja etablies.
+- Continuer avec `monsterinfo_t.aiflags`, `nextframe` et `scale` si le lot reste petit, en s'appuyant sur les preuves `M_MoveFrame`, `AI_HOLD_FRAME` et `monster_start`.
 
 ## Blocages
 

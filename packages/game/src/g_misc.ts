@@ -80,6 +80,7 @@ import {
   emitGameTempEntity,
   emitRegisteredGameSound,
   setGameConfigstring,
+  unlinkGameEntity,
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
@@ -1896,6 +1897,15 @@ export function misc_viper_bomb_use(
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: teleporter_touch
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Moves a touching client to the targeted teleporter destination, applies the teleport hold state, emits player teleport events and relinks the player after `KillBox`.
+ */
 export function teleporter_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if (!other.client) {
     return;
@@ -1905,13 +1915,14 @@ export function teleporter_touch(self: GameEntity, other: GameEntity, runtime: G
   if (!dest) {
     runtime.log({
       kind: "warning",
-      message: "Couldn't find teleporter destination",
+      message: "Couldn't find destination",
       entityIndex: self.index,
       entityClassname: self.classname
     });
     return;
   }
 
+  unlinkGameEntity(runtime, other);
   setEntityOrigin(other, dest.s.origin);
   other.s.old_origin = [...dest.s.origin];
   other.origin[2] += 10;
@@ -1935,6 +1946,7 @@ export function teleporter_touch(self: GameEntity, other: GameEntity, runtime: G
   KillBox(runtime, other);
   refreshEntitySpatialState(other);
   linkGameEntity(runtime, other);
+  other.s.old_origin = [...dest.s.origin];
 }
 
 /**
@@ -2372,12 +2384,33 @@ export function func_clock_use(
   func_clock_think(self, runtime);
 }
 
+/**
+ * Original name: SP_func_clock
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Validates and initializes a map clock, allocates its fixed-size message buffer, resets countdown state and schedules either immediate thinking or start-off use activation.
+ */
 export function SP_func_clock(self: GameEntity, runtime: GameRuntime): void {
   if (!self.target) {
+    runtime.log({
+      kind: "warning",
+      message: `${self.classname} with no target at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
     G_FreeEdict(runtime, self);
     return;
   }
   if ((self.spawnflags & 2) !== 0 && !self.count) {
+    runtime.log({
+      kind: "warning",
+      message: `${self.classname} with no count at ${vtos(self.s.origin)}`,
+      entityIndex: self.index,
+      entityClassname: self.classname
+    });
     G_FreeEdict(runtime, self);
     return;
   }

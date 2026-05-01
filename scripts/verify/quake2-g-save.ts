@@ -467,7 +467,7 @@ assert.ok(levelJson.includes("\"remaining_distance\": 48"), "WriteLevel must per
 assert.ok(levelJson.includes("\"decel_distance\": 24"), "WriteLevel must persist moveinfo decel_distance");
 assert.ok(levelJson.includes("\"endfunc\": \"saveHarnessCallback\""), "WriteLevel must persist moveinfo endfunc callback");
 const levelSave = JSON.parse(levelJson) as {
-  level: { sight_client: number; sight_entity: number; sound_entity: number; sound2_entity: number; current_entity: number };
+  level: { changemap: string; sight_client: number; sight_entity: number; sound_entity: number; sound2_entity: number; current_entity: number };
   entities: Array<{
     entnum: number;
     entity: {
@@ -491,12 +491,17 @@ const levelSave = JSON.parse(levelJson) as {
 };
 const targetSave = levelSave.entities.find((record) => record.entnum === target.index)?.entity;
 assert.ok(targetSave, "WriteLevel must write the in-use target entity");
+assert.equal(typeof targetSave.classname, "string", "WriteField2 len adapter must persist classname as a string payload, not a numeric length");
+assert.equal(typeof targetSave.message, "string", "WriteField2 len adapter must persist message as a string payload, not a numeric length");
 assert.equal(targetSave.classname, "target_crosslevel_target", "WriteLevel must persist entity classname F_LSTRING payload");
 assert.equal(targetSave.target, "after_save_target", "WriteLevel must persist entity target F_LSTRING payload");
 assert.equal(targetSave.targetname, "saved_targetname", "WriteLevel must persist entity targetname F_LSTRING payload");
 assert.equal(targetSave.message, "Saved string payload", "WriteLevel must persist entity message F_LSTRING payload");
 assert.equal(targetSave.team, "saved_team", "WriteLevel must persist entity team F_LSTRING payload");
 assert.equal(targetSave.map, "unit_exit", "WriteLevel must persist entity map F_LSTRING payload");
+assert.equal(levelSave.level.changemap, writeContext.level.changemap, "WriteField2 p adapter must read the level F_LSTRING from the original level field");
+assert.equal(targetSave.target, target.target, "WriteField2 p adapter must read the entity F_LSTRING from the original entity field");
+assert.equal(target.message, "Saved string payload", "WriteField2 structured adapter must not mutate the original entity string into a length");
 assert.equal(levelSave.level.sight_client, player.index, "WriteLevel must encode level sight_client as the C F_EDICT index");
 assert.equal(levelSave.level.sight_entity, target.index, "WriteLevel must encode level sight_entity as the C F_EDICT index");
 assert.equal(levelSave.level.sound_entity, target.index, "WriteLevel must encode level sound_entity as the C F_EDICT index");

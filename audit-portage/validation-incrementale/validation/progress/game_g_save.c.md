@@ -2,6 +2,38 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: temporaires locaux auto-detectes de `WriteField2`: `len` et `p`, rattaches a l'adaptateur JSON structure.
+
+## Verdict du lot
+
+- `len`: valide. Dans le C, `len = strlen(*(char **)p) + 1` determine la taille du payload `F_LSTRING` ecrit par `fwrite`, terminateur inclus. Dans le port TS, il n'y a pas de seconde passe binaire: la chaine est conservee directement comme payload JSON; les preuves verifient que les champs `classname` et `message` restent des chaines, pas des longueurs numeriques.
+- `p`: valide. Dans le C, `p = (void *)(base + field->ofs)` relit le champ original sur `base`, apres que la copie temporaire a ete transformee par `WriteField1`. Dans le port TS, ce role est porte par les acces structures aux champs de `snapshotLevel` et `snapshotEntity`; les preuves verifient `changemap` cote level et `target`/`message` cote entite, et que l'entite source n'est pas mutee en longueur.
+- Commentaires d'en-tete: pas de fonction TS directe pour ces temporaires; l'en-tete de `packages/game/src/g_save.ts` documente l'adaptateur JSON structure qui remplace les passes binaires C.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche via `WriteLevel`, expose par `g_main.ts` puis appele par le flux serveur `SV_WriteLevelFile`; la restauration correspondante passe par `ReadLevel`.
+- apps/web: attendu et branche via `apps/web/src/full-game-server-host.ts`, qui connecte `ge.WriteLevel` au `web-save-storage`; aucune logique web parallele ne remplace ce flux.
+- renderer-three: non applicable directement. `len` et `p` dans `WriteField2` ne produisent ni modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les entites restaurees peuvent seulement alimenter ensuite les snapshots visibles.
+
+## Corrections appliquees
+
+- `scripts/verify/quake2-g-save.ts`: preuves explicites que l'adaptateur `WriteField2` conserve les payloads `F_LSTRING` en chaines JSON et lit les champs source level/entite sans mutation.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `len` et `p` de `WriteField2`.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-01.
+- `npm run verify:full-game:server-host`: ok le 2026-05-01.
+- `npm run verify:web-save-storage`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
+
+## Prochain lot recommande
+
+- Continuer avec `ReadField`, puis ses temporaires locaux `p`, `len`, `index` si le lot reste coherent.
+
+---
+
 - 2026-05-01: fonction `WriteField2`, centree sur l'ecriture des chaines apres la premiere passe.
 
 ## Verdict du lot

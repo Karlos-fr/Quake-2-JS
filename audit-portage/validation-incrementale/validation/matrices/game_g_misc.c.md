@@ -122,9 +122,9 @@
 | `Quake-2-master/game/g_misc.c` | global | `savetarget` | `packages/game/src/g_misc.ts` | `saveTarget` | Valide | A redecouper | Local porte par `const saveTarget`; restauration apres `G_UseTargets` couverte par `verify:g-misc`. |
 | `Quake-2-master/game/g_misc.c` | global | `savemessage` | `packages/game/src/g_misc.ts` | `saveMessage` | Valide | A redecouper | Local porte par `const saveMessage`; message efface pendant pathtarget puis restaure, couvert par `verify:g-misc`. |
 | `Quake-2-master/game/g_misc.c` | function | `func_clock_use` | `packages/game/src/g_misc.ts` | `func_clock_use` | Valide | A redecouper | Header Strict ajoute; preuve C/TS: one-shot use, garde activator, activation immediate du think. Memes tests que `func_clock_think`. |
-| `Quake-2-master/game/g_misc.c` | function | `SP_func_clock` | `packages/game/src/g_misc.ts` | `SP_func_clock` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `teleporter_touch` | `packages/game/src/g_misc.ts` | `teleporter_touch` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | global | `dest` | `packages/game/src/g_misc.ts` | `dest` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `SP_func_clock` | `packages/game/src/g_misc.ts` | `SP_func_clock` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `teleporter_touch` | `packages/game/src/g_misc.ts` | `teleporter_touch` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | global | `dest` | `packages/game/src/g_misc.ts` | `dest` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | global | `i` | `packages/game/src/g_spawn.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_misc_teleporter` | `packages/game/src/g_misc.ts` | `SP_misc_teleporter` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | global | `trig` | `packages/game/src/g_misc.ts` | `trig` | A verifier | A redecouper |  |

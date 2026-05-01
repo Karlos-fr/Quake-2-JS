@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `use_target_goal` et `SP_target_goal`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `use_target_goal` conserve le son `CHAN_VOICE`, l'increment `found_goals`, l'arret du CD track par `CS_CDTRACK = "0"` seulement quand tous les goals sont trouves, `G_UseTargets(ent, activator)` et le free single-use. `SP_target_goal` conserve l'auto-remove deathmatch, l'installation du callback, le default `misc/secret.wav` quand `st.noise` est absent, `soundindex(st.noise)`, `SVF_NOCLIENT` et l'increment `total_goals`.
+  - Commentaires d'en-tete completes pour `use_target_goal` et `SP_target_goal`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et `Porting notes`.
+  - Branchement runtime verifie: `target_goal` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; l'activation appelle le callback, les targets sont fires avec l'activator, les compteurs runtime sont synchronises vers `level_locals_t` par `G_RunFrame`, le son est draine vers `gi.sound` et le configstring CD track vers `gi.configstring`.
+  - `apps/web`: integration attendue car les goals alimentent le help computer/HUD et `CS_CDTRACK` pilote le CD audio navigateur. Pas de logique parallele masquante constatee; les tests web/render-order et full-game renderer confirment que le flux navigateur continue de consommer les sorties runtime/client.
+  - `renderer-three`: aucune sortie visible de scene/camera/modeles/frames/images/particules/beams/dlights/temp entities/areabits n'est produite directement par `target_goal`; l'entite est `SVF_NOCLIENT`. Les effets visibles sont HUD/help layout et audio CD, hors renderer-three. Le test full-game renderer reste OK pour verifier l'absence de regression.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour les deux fonctions du lot.
+  - `scripts/verify/quake2-g-target.ts`: couverture ajoutee pour spawn table `ED_CallSpawn`, son par defaut, son custom `st.noise`, canal/volume/attenuation, target chain avec activator, `SVF_NOCLIENT`, auto-remove deathmatch sans increment total, arret du CD track quand tous les goals sont trouves et absence d'arret avant le dernier goal.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:g-main` OK.
+  - `npm run verify:p-hud` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `target_explosion_explode`, le local `save`, `use_target_explosion` et `SP_target_explosion` si le lot reste petit.
+
 - 2026-05-01: `use_target_secret` et `SP_target_secret`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `use_target_secret` conserve `gi.sound(ent, CHAN_VOICE, ent->noise_index, 1, ATTN_NORM, 0)`, l'increment `level.found_secrets`, `G_UseTargets(ent, activator)` et le free single-use. `SP_target_secret` conserve l'auto-remove deathmatch, l'installation du callback, le default `misc/secret.wav` quand `st.noise` est absent, `soundindex(st.noise)`, `SVF_NOCLIENT`, l'increment `level.total_secrets` et le hack de map `mine3`.

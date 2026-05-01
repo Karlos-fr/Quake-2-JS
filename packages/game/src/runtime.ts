@@ -412,11 +412,16 @@ export interface GameMonsterMove {
 }
 
 /**
- * Category: New
- * Purpose: Preserve the `monsterinfo_t` state block embedded in gameplay entities.
+ * Original name: monsterinfo_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must keep the original field names so later monster ports can map directly onto it.
+ * Behavior:
+ * - Preserves the monster animation, AI callback and combat state block embedded in each edict.
+ *
+ * Porting notes:
+ * - Function pointers and `mmove_t *currentmove` are represented as TypeScript callback and move references.
  */
 export interface GameMonsterInfo {
   currentmove: GameMonsterMove | null;

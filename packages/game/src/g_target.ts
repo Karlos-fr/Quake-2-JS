@@ -295,7 +295,12 @@ export function SP_target_secret(ent: GameEntity, runtime: GameRuntime): void {
  * Original name: use_target_goal
  * Source: game/g_target.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ * Behavior:
+ * - Plays the registered goal sound, increments `found_goals`, stops the CD track once all goals are found,
+ *   fires chained targets with the original activator and frees the single-use entity.
+ * Porting notes:
+ * - Uses `GameRuntime` counters/configstring queues in place of the original `level` global and `gi.configstring`.
  */
 export function use_target_goal(ent: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   emitRegisteredSound(runtime, ent, ent.noise_index, {
@@ -318,7 +323,12 @@ export function use_target_goal(ent: GameEntity, _other: GameEntity | null, acti
  * Original name: SP_target_goal
  * Source: game/g_target.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ * Behavior:
+ * - Removes itself in deathmatch, installs `use_target_goal`, registers `st.noise` or `misc/secret.wav`,
+ *   hides the server entity from clients and increments `total_goals`.
+ * Porting notes:
+ * - Reads the original `st.noise` spawn temp from `ent.properties.noise`.
  */
 export function SP_target_goal(ent: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {

@@ -29,8 +29,8 @@
 | `Quake-2-master/game/g_save.c` | global | `index` | `packages/game/src/g_save.ts` | `index` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_save.c` | global | `index` | `packages/game/src/g_save.ts` | `index` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_save.c` | function | `WriteField2` | `packages/game/src/g_save.ts` | structured JSON string payloads in `snapshotLevel`/`snapshotEntity` | Valide | A redecouper | Fonction C remplacee par l'ecriture directe des chaines dans le snapshot JSON structure: les champs `F_LSTRING` non `FFL_SPAWNTEMP` sont conserves comme payloads de chaines sans seconde passe binaire; commentaire d'en-tete fichier verifie pour cette deviation. Runtime attendu et branche via `WriteLevel`; apps/web attendu via host save storage; renderer-three non direct car serialization sans sortie visible propre. Tests: `npm run verify:g-save`, `npm run typecheck`. |
-| `Quake-2-master/game/g_save.c` | global | `len` | `packages/game/src/g_save.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_save.c` | global | `p` | `packages/game/src/g_save.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_save.c` | global | `len` | `packages/game/src/g_save.ts` | `JSON string payload` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_save.c` | global | `p` | `packages/game/src/g_save.ts` | `structured level/entity field access` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_save.c` | function | `ReadField` | `packages/game/src/g_save.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_save.c` | global | `p` | `packages/game/src/g_save.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_save.c` | global | `len` | `packages/game/src/g_save.ts` |  | A verifier | A redecouper |  |
