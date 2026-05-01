@@ -13,6 +13,18 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: suite de `T_Damage`: `te_sparks`, knockback/momentum avec `mass`
+  - Source comparee: `Quake-2-master/game/g_combat.c`.
+  - Cible comparee: `packages/game/src/g_combat.ts`; integration visible controlee via `packages/game/src/g_main.ts`, `packages/client/src/cl_parse.ts`, `packages/client/src/cl_tent.ts`, `apps/web` et `packages/renderer-three`.
+  - Correction runtime appliquee: aucune. Test cible ajoute dans `scripts/verify/quake2-g-combat.ts`.
+  - Commentaire d'en-tete TS verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, `Behavior`, `Porting notes`.
+  - Comparaison comportementale: `te_sparks` choisit `TE_BULLET_SPARKS` sous `DAMAGE_BULLET`, sinon `TE_SPARKS`; `VectorNormalize(dir)` est porte par `normalizeVec3(dir)` sans mutation du vecteur d'appel; `FL_NO_KNOCKBACK` force `knockback = 0`; `DAMAGE_NO_KNOCKBACK` et les movetypes `NONE`/`BOUNCE`/`PUSH`/`STOP` bloquent le momentum; `mass` est plancher a 50; l'echelle est `500 * knockback / mass`, ou `1600 * knockback / mass` pour le self-knockback client.
+  - Branchement runtime verifie: `T_Damage` est atteint depuis `T_RadiusDamage`, armes, triggers, fonctions, monstres, world effects et `p_view`; le momentum modifie `targ.velocity`, ensuite consommee par la physique/snapshots joueur.
+  - `apps/web`: aucune logique parallele constatee; le flux navigateur attendu passe par le runtime game et les packets temp entities (`TE_SPARKS`/`TE_BULLET_SPARKS`) deja serialises avec direction.
+  - `renderer-three`: integration directe gameplay non attendue; les sorties visibles du lot passent indirectement par `CL_ParseTEnt`/`CL_AddTEntPacket`, `CL_SmokeAndFlash`, `CL_AddParticles` et `particle-sync`.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; `npm run verify:g-main`; `npm run verify:particle-sync`; `npm run verify:p-view`; `npm run typecheck`.
+  - Statut matrice: `T_Damage` reste `Partiel`; les lignes `te_sparks` x2, `mass` x2 et `VectorScale` sont `Valide`.
+
 - 2026-05-01: debut de `T_Damage` avec locales `take`/`save`/`asave`/`psave`
   - Source comparee: `Quake-2-master/game/g_combat.c`.
   - Cible comparee: `packages/game/src/g_combat.ts`; appels runtime references depuis armes, trigger, fonctions, monstres, world effects et radius damage controles par recherche.
@@ -98,7 +110,7 @@
 
 ## Prochain lot recommande
 
-- Suite de `T_Damage`: `te_sparks`, knockback/momentum avec `mass`, puis emission damage/health/pain si le lot reste raisonnable.
+- Suite de `T_Damage`: emission `SpawnDamage` take, retrait de `health`, mort via `Killed`, puis pain callbacks si le lot reste raisonnable.
 
 ## Blocages
 

@@ -79,3 +79,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:refresh-entity:alias-flags`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `Cmd_Inven_f` et temporaire local associe (`i`).
+
+## Session 2026-05-01 - Cmd_Inven_f
+
+- Lot valide: `Cmd_Inven_f` et temporaire C associe (`i`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme remise a false de `showscores`/`showhelp`, meme bascule de `showinventory`, meme emission `svc_inventory` suivie de `MAX_ITEMS` shorts et `unicast(ent, true)` seulement a l'ouverture.
+- Branchement runtime: `ClientCommand` dispatch `inven`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes par le pont client/serveur et ne remplace pas la logique game; le flux visible passe par `svc_inventory`, `CL_ParseInventory`, `STAT_LAYOUTS` et `CL_DrawInventory`. `packages/renderer-three` non applicable directement: l'inventaire est un overlay HUD client, sans entite/modele/particule/beam/dlight/scene 3D produit par cette commande.
+- Corrections: commentaire d'en-tete complete pour `Cmd_Inven_f`; test cible renforce dans `scripts/verify/quake2-g-cmds.ts` pour ouverture, fermeture, `MAX_ITEMS`, `svc_inventory` et `unicast` fiable.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:p-hud`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:demo-cleanup`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: `npm run verify:cl-parse`, `npm run verify:cl-scrn` et `npm run verify:screen:header` echouent avant execution sur imports obsoletes `packages/client/src/parse.js`/`screen.js`; non corrige hors perimetre.
+- Prochain lot recommande: `Cmd_InvUse_f` et temporaire local associe (`it`).

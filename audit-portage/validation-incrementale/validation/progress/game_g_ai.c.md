@@ -88,3 +88,14 @@
 - Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `HuntTarget` puis `FoundTarget`, ou `M_CheckAttack` avec locales `chance`/`tr` si l'on veut continuer le bloc attaque.
+
+## Session 2026-05-01 - HuntTarget / FoundTarget
+
+- Lot traite: `HuntTarget`, `FoundTarget`.
+- Verdict: valide.
+- Corrections TS: commentaires d'en-tete mis a jour pour documenter la fidelite `Close` et la garde defensive `!self.enemy` absente du C; couverture `scripts/verify/quake2-g-ai.ts` etendue pour les branches du lot.
+- Preuves: comparaison C/TS effectuee; `HuntTarget` conserve `goalentity = enemy`, choix `stand`/`run`, calcul `ideal_yaw` et `AttackFinished(self, 1)` hors `AI_STAND_GROUND`. `FoundTarget` conserve la diffusion `sight_entity` pour ennemi client, `show_hostile`, `last_sighting`, `trail_time`, branche sans `combattarget`, selection/fallback `G_PickTarget`, consommation du `combattarget`, reservation du `targetname`, `AI_COMBAT_POINT`, `pausetime = 0` et transition `run`.
+- Integration: runtime verifie via `FindTarget`, `ai_checkattack`/`ai_run`, reactions `g_combat`, `g_monster` et `m_medic`, puis flux `G_RunFrame`/frames monstres. `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` consomme les sorties visibles d'entites apres simulation (`origin`, `angles`, frame/model), sans integration directe attendue pour ces fonctions decisionnelles.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `FindTarget` avec locales `client`, `heardit` et `r`, ou `M_CheckAttack` avec locales `chance`/`tr` si l'on veut eviter le gros bloc acquisition.

@@ -32,6 +32,7 @@ import {
   SP_func_water,
   SP_trigger_elevator,
   Touch_Plat_Center,
+  Use_Plat,
   button_killed,
   button_wait,
   door_go_up,
@@ -39,6 +40,7 @@ import {
   func_conveyor_use,
   func_timer_use,
   plat_go_down,
+  plat_blocked,
   train_next,
   trigger_elevator_use
 } from "../../packages/game/src/g_func.js";
@@ -117,6 +119,28 @@ const plat = entity("func_plat", 18);
 plat.size = [64, 64, 32];
 plat.maxs = [64, 64, 32];
 SP_func_plat(plat, runtime);
+assert.deepEqual(plat.angles, [0, 0, 0], "SP_func_plat must clear angles");
+assert.equal(plat.solid, SOLID_BSP, "SP_func_plat solid mismatch");
+assert.equal(plat.movetype, MOVETYPE_PUSH, "SP_func_plat movetype mismatch");
+assert.equal(plat.blocked, plat_blocked, "SP_func_plat blocked callback mismatch");
+assert.equal(plat.speed, 20, "SP_func_plat default speed mismatch");
+assert.equal(plat.accel, 5, "SP_func_plat default accel mismatch");
+assert.equal(plat.decel, 5, "SP_func_plat default decel mismatch");
+assert.equal(plat.dmg, 2, "SP_func_plat default damage mismatch");
+assert.deepEqual(plat.pos1, [0, 0, 0], "SP_func_plat top position mismatch");
+assert.deepEqual(plat.pos2, [0, 0, -24], "SP_func_plat bottom position mismatch");
+assert.deepEqual(plat.origin, [0, 0, -24], "SP_func_plat untargeted origin mismatch");
+assert.equal(plat.use, Use_Plat, "SP_func_plat use callback mismatch");
+assert.equal(plat.moveinfo.state, STATE_BOTTOM, "SP_func_plat untargeted state mismatch");
+assert.equal(plat.moveinfo.speed, plat.speed, "SP_func_plat moveinfo speed mismatch");
+assert.equal(plat.moveinfo.accel, plat.accel, "SP_func_plat moveinfo accel mismatch");
+assert.equal(plat.moveinfo.decel, plat.decel, "SP_func_plat moveinfo decel mismatch");
+assert.equal(plat.moveinfo.wait, plat.wait, "SP_func_plat moveinfo wait mismatch");
+assert.equal(plat.moveinfo.distance, 24, "SP_func_plat moveinfo distance mismatch");
+assert.deepEqual(plat.moveinfo.start_origin, plat.pos1, "SP_func_plat moveinfo start origin mismatch");
+assert.deepEqual(plat.moveinfo.end_origin, plat.pos2, "SP_func_plat moveinfo end origin mismatch");
+assert.deepEqual(plat.moveinfo.start_angles, [0, 0, 0], "SP_func_plat moveinfo start angles mismatch");
+assert.deepEqual(plat.moveinfo.end_angles, [0, 0, 0], "SP_func_plat moveinfo end angles mismatch");
 assert.equal(plat.moveinfo.sound_start > 0, true, "SP_func_plat start sound registration mismatch");
 const platTrigger = findPlatTrigger(runtime, plat);
 assert.ok(platTrigger, "SP_func_plat must spawn the center trigger");
@@ -154,6 +178,29 @@ const lowPlatTrigger = findPlatTrigger(runtime, lowPlat);
 assert.ok(lowPlatTrigger, "SP_func_plat must spawn a low center trigger");
 assert.deepEqual(lowPlatTrigger.mins, [20, 20, 8], "PLAT_LOW_TRIGGER collapsed mins mismatch");
 assert.deepEqual(lowPlatTrigger.maxs, [21, 21, 16], "PLAT_LOW_TRIGGER collapsed maxs mismatch");
+
+const targetedPlat = entity("func_plat", 34, {
+  targetname: "lift_once",
+  speed: "200",
+  accel: "10",
+  decel: "20",
+  dmg: "7",
+  height: "12",
+  angle: "90"
+});
+targetedPlat.size = [64, 64, 32];
+targetedPlat.maxs = [64, 64, 32];
+SP_func_plat(targetedPlat, runtime);
+assert.equal(targetedPlat.speed, 20, "SP_func_plat scaled speed mismatch");
+assert.equal(targetedPlat.accel, 1, "SP_func_plat scaled accel mismatch");
+assert.equal(targetedPlat.decel, 2, "SP_func_plat scaled decel mismatch");
+assert.equal(targetedPlat.dmg, 7, "SP_func_plat explicit damage mismatch");
+assert.deepEqual(targetedPlat.pos1, [0, 0, 0], "SP_func_plat targeted top position mismatch");
+assert.deepEqual(targetedPlat.pos2, [0, 0, -12], "SP_func_plat height bottom position mismatch");
+assert.deepEqual(targetedPlat.origin, [0, 0, 0], "SP_func_plat targeted origin mismatch");
+assert.equal(targetedPlat.moveinfo.state, STATE_UP, "SP_func_plat targeted state mismatch");
+assert.equal(targetedPlat.moveinfo.distance, 12, "SP_func_plat targeted distance mismatch");
+assert.deepEqual(targetedPlat.moveinfo.end_origin, [0, 0, -12], "SP_func_plat targeted end origin mismatch");
 
 const conveyor = entity("func_conveyor", 5, { speed: "120" });
 SP_func_conveyor(conveyor, runtime);

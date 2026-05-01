@@ -17,12 +17,16 @@ import {
   createRuntimeEntity
 } from "../../packages/game/src/index.js";
 import { CheckPowerArmor, Killed, M_ReactToDamage, T_Damage, T_RadiusDamage } from "../../packages/game/src/g_combat.js";
-import { MOVETYPE_STEP, MOVETYPE_WALK, POWER_ARMOR_SHIELD, SOLID_BBOX, SVF_MONSTER } from "../../packages/game/src/runtime.js";
+import { temp_event_t } from "../../packages/qcommon/src/index.js";
+import { MOVETYPE_BOUNCE, MOVETYPE_STEP, MOVETYPE_WALK, POWER_ARMOR_SHIELD, SOLID_BBOX, SVF_MONSTER } from "../../packages/game/src/runtime.js";
 import {
+  DAMAGE_BULLET,
+  DAMAGE_NO_KNOCKBACK,
   DAMAGE_NO_PROTECTION,
   DF_NO_FRIENDLY_FIRE,
   DF_SKINTEAMS,
   FL_GODMODE,
+  FL_NO_KNOCKBACK,
   MOD_FRIENDLY_FIRE,
   MOD_BLASTER
 } from "../../packages/game/src/runtime.js";
@@ -38,6 +42,7 @@ function main(): void {
   verifyTDamageAppliesNightmarePainDebounce();
   verifyFriendlyFireUsesSkinTeams();
   verifyTDamageAccountingAndMeansOfDeath();
+  verifyTDamageSparksAndMassKnockback();
   verifyRadiusDamageUsesDefaultDamageCore();
 
   console.log("Verification g_combat - damage/combat gameplay OK");
@@ -217,6 +222,92 @@ function verifyTDamageAccountingAndMeansOfDeath(): void {
   assertNumber(target.client!.damage_blood, 0, "T_Damage leaves no take value after godmode save");
 }
 
+function verifyTDamageSparksAndMassKnockback(): void {
+  const runtime = createHarnessRuntime();
+  const target = createPlayer(26);
+  const attacker = createPlayer(27);
+  const emittedTypes: temp_event_t[] = [];
+
+  T_Damage(target, attacker, attacker, [10, 0, 0], [4, 5, 6], [0, 0, 1], 1, 10, DAMAGE_BULLET, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false,
+    emitTempEntity: (type) => {
+      emittedTypes.push(type);
+    }
+  });
+
+  assertNumber(emittedTypes[0], temp_event_t.TE_BLOOD, "T_Damage uses blood temp entities for damaged clients");
+
+  const crate = createRuntimeEntity({ classname: "func_breakable" }, 28);
+  crate.inuse = true;
+  crate.movetype = MOVETYPE_WALK;
+  crate.takedamage = 1;
+  crate.health = 100;
+  crate.mass = 25;
+  crate.velocity = [1, 2, 3];
+
+  emittedTypes.length = 0;
+  T_Damage(crate, attacker, attacker, [10, 0, 0], [4, 5, 6], [0, 0, 1], 6, 10, DAMAGE_BULLET, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false,
+    emitTempEntity: (type) => {
+      emittedTypes.push(type);
+    }
+  });
+
+  assertNumber(emittedTypes[0], temp_event_t.TE_BULLET_SPARKS, "T_Damage selects bullet sparks for DAMAGE_BULLET");
+  assertApprox(crate.velocity[0], 101, 0.0001, "T_Damage clamps mass below 50 before applying knockback");
+  assertApprox(crate.velocity[1], 2, 0.0001, "T_Damage preserves perpendicular velocity during knockback");
+
+  emittedTypes.length = 0;
+  T_Damage(crate, attacker, attacker, [0, 10, 0], [4, 5, 6], [0, 0, 1], 6, 10, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false,
+    emitTempEntity: (type) => {
+      emittedTypes.push(type);
+    }
+  });
+  assertNumber(emittedTypes[0], temp_event_t.TE_SPARKS, "T_Damage selects regular sparks without DAMAGE_BULLET");
+
+  const rocketJumper = createPlayer(29);
+  rocketJumper.mass = 200;
+  T_Damage(rocketJumper, rocketJumper, rocketJumper, [0, 0, 5], [4, 5, 6], [0, 0, 1], 1, 10, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false
+  });
+  assertApprox(rocketJumper.velocity[2], 80, 0.0001, "T_Damage uses the client self-damage rocket jump scale");
+
+  const noKnockback = createPlayer(30);
+  noKnockback.flags |= FL_NO_KNOCKBACK;
+  T_Damage(noKnockback, attacker, attacker, [1, 0, 0], [4, 5, 6], [0, 0, 1], 1, 10, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false
+  });
+  assertApprox(noKnockback.velocity[0], 0, 0.0001, "T_Damage honors FL_NO_KNOCKBACK before momentum add");
+
+  const dflagNoKnockback = createPlayer(31);
+  T_Damage(dflagNoKnockback, attacker, attacker, [1, 0, 0], [4, 5, 6], [0, 0, 1], 1, 10, DAMAGE_NO_KNOCKBACK, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false
+  });
+  assertApprox(dflagNoKnockback.velocity[0], 0, 0.0001, "T_Damage honors DAMAGE_NO_KNOCKBACK");
+
+  const bounce = createPlayer(32);
+  bounce.movetype = MOVETYPE_BOUNCE;
+  T_Damage(bounce, attacker, attacker, [1, 0, 0], [4, 5, 6], [0, 0, 1], 1, 10, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false
+  });
+  assertApprox(bounce.velocity[0], 0, 0.0001, "T_Damage skips momentum for MOVETYPE_BOUNCE");
+}
+
 function verifyRadiusDamageUsesDefaultDamageCore(): void {
   const runtime = createHarnessRuntime();
   const inflictor = createRuntimeEntity({ classname: "explosion" }, 22);
@@ -273,6 +364,12 @@ function createPlayer(index: number): GameEntity {
 
 function assertNumber(actual: number, expected: number, label: string): void {
   if (actual !== expected) {
+    throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
+  }
+}
+
+function assertApprox(actual: number, expected: number, epsilon: number, label: string): void {
+  if (Math.abs(actual - expected) > epsilon) {
     throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
   }
 }

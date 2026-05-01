@@ -12,7 +12,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { DF_MODELTEAMS, PRINT_CHAT, PRINT_HIGH, STAT_FRAGS, type cvar_t } from "../../packages/qcommon/src/index.js";
+import { DF_MODELTEAMS, MAX_ITEMS, PRINT_CHAT, PRINT_HIGH, STAT_FRAGS, type cvar_t } from "../../packages/qcommon/src/index.js";
 import {
   Cmd_Drop_f,
   Cmd_Give_f,
@@ -30,6 +30,7 @@ import {
   SelectPrevItem,
   attachGameClient,
   createGameRuntimeFromBspEntities,
+  svc_inventory,
   type GameCommandContext,
   type GameEntity,
   type GameRuntime
@@ -37,6 +38,7 @@ import {
 
 const prints: Array<{ ent: GameEntity | null; level: number; message: string }> = [];
 const writes: number[] = [];
+const unicasts: Array<{ ent: GameEntity; reliable: boolean }> = [];
 let command = { argv: ["say"], args: "hello" };
 
 const context = createContext(createRuntime());
@@ -141,12 +143,30 @@ function verifyInventorySerialization(): void {
   const player = createClient(runtime, 1, "inventory");
   const cells = requireItem("Cells");
 
+  player.client!.showscores = true;
+  player.client!.showhelp = true;
   player.client!.pers.inventory[cells.index] = 25;
   Cmd_Inven_f(player, localContext);
 
+  assert.equal(player.client!.showscores, false, "Cmd_Inven_f should hide scores");
+  assert.equal(player.client!.showhelp, false, "Cmd_Inven_f should hide help");
   assert.equal(player.client!.showinventory, true, "Cmd_Inven_f should show inventory");
-  assert.equal(writes[0], 5, "Cmd_Inven_f should write svc_inventory");
+  assert.equal(writes[0], svc_inventory, "Cmd_Inven_f should write svc_inventory");
+  assert.equal(writes.length, 1 + MAX_ITEMS, "Cmd_Inven_f should serialize all inventory slots");
   assert.equal(writes[1 + cells.index], 25, "Cmd_Inven_f should serialize inventory shorts");
+  assert.deepEqual(unicasts, [{ ent: player, reliable: true }], "Cmd_Inven_f should reliable-unicast the inventory payload");
+
+  writes.length = 0;
+  unicasts.length = 0;
+  player.client!.showscores = true;
+  player.client!.showhelp = true;
+  Cmd_Inven_f(player, localContext);
+
+  assert.equal(player.client!.showscores, false, "Cmd_Inven_f should hide scores when closing inventory");
+  assert.equal(player.client!.showhelp, false, "Cmd_Inven_f should hide help when closing inventory");
+  assert.equal(player.client!.showinventory, false, "Cmd_Inven_f should close an already visible inventory");
+  assert.equal(writes.length, 0, "Cmd_Inven_f should not write inventory payload when closing");
+  assert.equal(unicasts.length, 0, "Cmd_Inven_f should not unicast when closing inventory");
 }
 
 function verifyPlayerListAndWave(): void {
@@ -198,6 +218,7 @@ function createClient(runtime: GameRuntime, index: number, name: string, userinf
 function createContext(runtime: GameRuntime): GameCommandContext {
   prints.length = 0;
   writes.length = 0;
+  unicasts.length = 0;
   command = { argv: ["say"], args: "hello" };
   return {
     runtime,
@@ -217,7 +238,9 @@ function createContext(runtime: GameRuntime): GameCommandContext {
       },
       WriteByte: (value) => writes.push(value),
       WriteShort: (value) => writes.push(value),
-      unicast: () => {}
+      unicast: (ent, reliable) => {
+        unicasts.push({ ent, reliable });
+      }
     }
   };
 }

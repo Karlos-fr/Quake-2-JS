@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: spawn de plateforme `SP_func_plat`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:513-579` avec `packages/game/src/g_func.ts:1151-1218`.
+- Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour les defaults `speed`/`accel`/`decel`/`dmg`, le scaling des proprietes explicites, `solid`/`movetype`, callbacks `blocked`/`use`, `pos1`/`pos2`, etats `STATE_BOTTOM`/`STATE_UP`, `moveinfo` et sons.
+- Effets verifies: `SP_func_plat` efface les angles, configure un brush pusher, applique les memes valeurs par defaut que le C, calcule la position basse via `height` ou `lip`, cree le trigger interne, relie l'entite, renseigne `moveinfo` et enregistre les sons `plats/pt1_*`.
+- Branchement: `SP_func_plat` est referencee dans la table `g_spawn.ts` pour `func_plat`, appelee par `ED_CallSpawn` pendant `SpawnEntities`, puis ses callbacks sont atteignables par triggers/use/blocked et par le flux `G_RunFrame`/physique locale.
+- Integration: aucune logique parallele dans `apps/web`; le navigateur consomme les sons gameplay et les snapshots/interpolations de brush models. `packages/renderer-three` ne porte pas le spawn gameplay et consomme les entites brush via les snapshots/runtime adapters; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: trigger interne de plateforme `Touch_Plat_Center`, `plat_spawn_inside_trigger` et locale `trigger`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:436-493` avec `packages/game/src/g_func.ts:1051-1136`.
 - Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour les branches non-client/client mort/client vivant, le delai `STATE_TOP`, la creation du helper `plat_trigger`, les bornes 25px/lip, `PLAT_LOW_TRIGGER` et le collapse X/Y; le code runtime etait conforme.
@@ -54,7 +62,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `SP_func_plat`, puis `rotating_blocked`.
+- Valider le bloc suivant sans elargir: `rotating_blocked`.
 
 ## Blocages
 

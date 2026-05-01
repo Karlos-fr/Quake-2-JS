@@ -479,6 +479,12 @@ export function Cmd_Drop_f(ent: GameEntity, context: GameCommandContext): void {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Hides score/help overlays, toggles the inventory overlay, and sends the current inventory counts when opening it.
+ *
+ * Porting notes:
+ * - Keeps the original `MAX_ITEMS` short serialization order; the local C `i` remains a loop index.
  */
 export function Cmd_Inven_f(ent: GameEntity, context: GameCommandContext): void {
   const cl = ent.client;

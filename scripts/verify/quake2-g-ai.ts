@@ -26,6 +26,7 @@ import {
   visible
 } from "../../packages/game/src/g_ai.js";
 import {
+  AI_COMBAT_POINT,
   AI_LOST_SIGHT,
   AI_PURSUE_NEXT,
   AI_PURSUE_TEMP,
@@ -174,6 +175,20 @@ hunter.monsterinfo.run = () => {
 };
 HuntTarget(hunter, runtime);
 assert.equal(hunter.goalentity, player3, "HuntTarget must set goalentity to enemy");
+assert.equal(hunter.monsterinfo.attack_finished, runtime.time + 1, "HuntTarget must delay first attack when pursuing");
+assert.equal(hunter.ideal_yaw, 0, "HuntTarget must face the acquired enemy");
+
+const standHunter = createRuntimeEntity({ classname: "monster_stand_hunter" }, 29);
+standHunter.enemy = player3;
+standHunter.monsterinfo.aiflags |= AI_STAND_GROUND;
+let standHunterCalls = 0;
+standHunter.monsterinfo.stand = () => {
+  standHunterCalls += 1;
+};
+HuntTarget(standHunter, runtime);
+assert.equal(standHunter.goalentity, player3, "HuntTarget stand-ground goalentity mismatch");
+assert.equal(standHunterCalls, 1, "HuntTarget must call stand for stand-ground monsters");
+assert.equal(standHunter.monsterinfo.attack_finished, 0, "HuntTarget must not delay attacks for stand-ground monsters");
 
 const combatPoint = createRuntimeEntity({ classname: "point_combat", targetname: "cp1" }, 17);
 combatPoint.inuse = true;
@@ -192,6 +207,33 @@ FoundTarget(monsterWithCombatTarget, runtime);
 assert.equal(monsterWithCombatTarget.goalentity, combatPoint, "FoundTarget must pick combattarget entity");
 assert.equal(monsterWithCombatTarget.movetarget, combatPoint, "FoundTarget movetarget mismatch");
 assert.equal(combatRunCalls, 1, "FoundTarget must run toward combattarget");
+assert.equal(monsterWithCombatTarget.combattarget, undefined, "FoundTarget must consume combattarget after selecting it");
+assert.equal((monsterWithCombatTarget.monsterinfo.aiflags & AI_COMBAT_POINT) !== 0, true, "FoundTarget must mark combat-point movement");
+assert.equal(combatPoint.targetname, undefined, "FoundTarget must reserve the selected combat point");
+
+const sightMonster = createRuntimeEntity({ classname: "monster_sight_broadcaster" }, 30);
+sightMonster.inuse = true;
+sightMonster.enemy = player3;
+runtime.entities[30] = sightMonster;
+FoundTarget(sightMonster, runtime);
+assert.equal(runtime.sight_entity, sightMonster, "FoundTarget must broadcast sight_entity for client enemies");
+assert.equal(runtime.sight_entity_framenum, runtime.framenum, "FoundTarget must stamp sight_entity_framenum");
+assert.equal(sightMonster.light_level, 128, "FoundTarget must make the broadcaster visible to other monsters");
+assert.deepEqual(sightMonster.monsterinfo.last_sighting, player3.s.origin, "FoundTarget must copy enemy origin into last_sighting");
+assert.equal(sightMonster.monsterinfo.trail_time, runtime.time, "FoundTarget must refresh trail_time");
+
+const missingCombatTarget = createRuntimeEntity({ classname: "monster_missing_combat", combattarget: "missing_cp" }, 31);
+missingCombatTarget.inuse = true;
+missingCombatTarget.enemy = player3;
+let missingRunCalls = 0;
+missingCombatTarget.monsterinfo.run = () => {
+  missingRunCalls += 1;
+};
+runtime.entities[31] = missingCombatTarget;
+FoundTarget(missingCombatTarget, runtime);
+assert.equal(missingCombatTarget.goalentity, player3, "FoundTarget must fall back to enemy when combattarget is missing");
+assert.equal(missingCombatTarget.movetarget, player3, "FoundTarget missing combattarget movetarget mismatch");
+assert.equal(missingRunCalls, 1, "FoundTarget missing combattarget must hunt the enemy");
 
 const soundMonster = createRuntimeEntity({ classname: "monster_guard" }, 27);
 soundMonster.inuse = true;

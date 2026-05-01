@@ -14,8 +14,10 @@ import {
   DEFAULT_BULLET_HSPREAD,
   DEFAULT_BULLET_VSPREAD,
   FindItem,
+  MOD_CHAINGUN,
   MOD_MACHINEGUN,
   Think_Weapon,
+  Weapon_Chaingun,
   Weapon_Machinegun,
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -26,7 +28,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_VOICE, DF_INFINITE_AMMO, MZ_MACHINEGUN } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_VOICE, DF_INFINITE_AMMO, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_MACHINEGUN } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -35,6 +37,7 @@ function main(): void {
   verifyNoAmmoQueuesOneShotSound();
   verifyMachinegunFireParity();
   verifyMachinegunNoAmmoUsesVoiceChannel();
+  verifyChaingunFireParity();
 
   console.log("Verification p_weapon - player weapon gameplay OK");
 }
@@ -172,6 +175,85 @@ function verifyMachinegunNoAmmoUsesVoiceChannel(): void {
   assertString(sounds[0]?.soundPath ?? "", "weapons/noammo.wav", "Machinegun no-ammo path should play the original sound");
   assertNumber(sounds[0]?.channel ?? -1, CHAN_VOICE, "Machinegun no-ammo path should use CHAN_VOICE");
   assertString(player.client!.newweapon?.pickupName ?? "", "Shotgun", "Machinegun no-ammo should select the next available weapon");
+}
+
+function verifyChaingunFireParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const chaingun = requireItem("Chaingun");
+  const bullets = requireItem("Bullets");
+  const shots: Array<{ damage: number; kick: number; hspread: number; vspread: number; mod: number }> = [];
+  const flashes: number[] = [];
+
+  player.s.modelindex = 255;
+  player.client!.pers.weapon = chaingun;
+  player.client!.ammo_index = bullets.index;
+  player.client!.pers.inventory[chaingun.index] = 1;
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 9;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.pers.inventory[bullets.index] = 5;
+
+  Weapon_Chaingun(player, runtime, {
+    fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
+      shots.push({ damage, kick, hspread, vspread, mod });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots.length, 2, "Weapon_Chaingun should fire two bullets after windup frame 9");
+  assertNumber(shots[0].damage, 32, "Chaingun quad damage should match C");
+  assertNumber(shots[0].kick, 8, "Chaingun quad kick should match C");
+  assertNumber(shots[0].hspread, DEFAULT_BULLET_HSPREAD, "Chaingun horizontal spread should match C");
+  assertNumber(shots[0].vspread, DEFAULT_BULLET_VSPREAD, "Chaingun vertical spread should match C");
+  assertNumber(shots[0].mod, MOD_CHAINGUN, "Chaingun means-of-death should match C");
+  assertNumber(flashes[0], MZ_CHAINGUN2, "Chaingun should emit MZ_CHAINGUN2 for two shots");
+  assertNumber(player.client!.ps.gunframe, 10, "Chaingun firing should advance gunframe 9 to 10");
+  assertNumber(player.client!.pers.inventory[bullets.index], 3, "Chaingun should consume two bullets");
+
+  runtime.deathmatch = true;
+  player.client!.quad_framenum = 0;
+  player.client!.ps.gunframe = 20;
+  player.client!.pers.inventory[bullets.index] = 5;
+  shots.length = 0;
+  flashes.length = 0;
+
+  Weapon_Chaingun(player, runtime, {
+    fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
+      shots.push({ damage, kick, hspread, vspread, mod });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots.length, 3, "Weapon_Chaingun should fire three bullets at full spin");
+  assertNumber(shots[0].damage, 6, "Chaingun deathmatch damage should match C");
+  assertNumber(flashes[0], MZ_CHAINGUN3, "Chaingun should emit MZ_CHAINGUN3 for three shots");
+  assertNumber(player.client!.pers.inventory[bullets.index], 2, "Chaingun should consume three bullets");
+
+  player.client!.ps.gunframe = 14;
+  player.client!.buttons = 0;
+  player.client!.weapon_sound = 123;
+  shots.length = 0;
+  flashes.length = 0;
+
+  Weapon_Chaingun(player, runtime, {
+    fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
+      shots.push({ damage, kick, hspread, vspread, mod });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(player.client!.ps.gunframe, 32, "Chaingun should jump to wind-down frame 32 when attack is released at frame 14");
+  assertNumber(player.client!.weapon_sound, 0, "Chaingun wind-down branch should clear looping weapon sound");
+  assertNumber(shots.length, 0, "Chaingun wind-down branch should not fire bullets");
+  assertNumber(flashes.length, 0, "Chaingun wind-down branch should not emit a muzzleflash");
 }
 
 function createHarnessRuntime(): GameRuntime {

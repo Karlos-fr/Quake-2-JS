@@ -8,6 +8,22 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot flags `FL_WATERJUMP`, `FL_TEAMSLAVE`, `FL_NO_KNOCKBACK`.
+- Verdict: `Valide` pour les 3 macros apres correction limitee du commentaire/export public.
+- Valeurs H/TS comparees et conformes:
+  - `FL_WATERJUMP = 0x00000200`
+  - `FL_TEAMSLAVE = 0x00000400`
+  - `FL_NO_KNOCKBACK = 0x00000800`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; constantes miroir runtime verifiees pour `FL_TEAMSLAVE` et `FL_NO_KNOCKBACK`; export public corrige dans `packages/game/src/index.ts` pour `FL_WATERJUMP` et `FL_NO_KNOCKBACK`.
+- Runtime:
+  - `FL_WATERJUMP` est une declaration de flag conservee depuis `game/g_local.h`; aucun branchement game runtime direct trouve dans le source C hors definition ni dans le TS.
+  - `FL_TEAMSLAVE` est pose par `G_FindTeams`, nettoye lors de la reconstruction des liens et par certains spawns, puis consomme par la physique pusher/toss et les entites team movers.
+  - `FL_NO_KNOCKBACK` inhibe le momentum dans `T_Damage` et est pose sur monstres/joueurs morts, gibs, corps, turret driver et misc insane comme dans le C.
+- apps/web: aucune reference directe; pas d'integration web directe attendue pour ces bits `edict->flags`. Les effets navigateur passent par le runtime game: positions/linkage d'entites, degats, sons et evenements deja produits par les flux verifies.
+- renderer-three: aucune reference directe; pas d'integration renderer directe attendue. Ces flags ne produisent pas seuls de donnees renderer; `FL_TEAMSLAVE` influence les movers avant exposition des entites, et `FL_NO_KNOCKBACK` influence les vitesses/positions via le runtime.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source de `FL_WATERJUMP` conserve; pas de fonction nouvelle dans ce lot.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK; `npm run verify:g-spawn` OK; `npm run verify:g-phys` OK; `npm run verify:g-func` OK; `npm run verify:g-items` OK; `npm run verify:g-misc` OK; `npm run verify:g-turret` OK; `npm run verify:m-insane` OK; `npm run verify:p-client` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot flags `FL_IMMUNE_SLIME`, `FL_IMMUNE_LAVA`, `FL_PARTIALGROUND`.
 - Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public et conservation du commentaire source de `FL_PARTIALGROUND`.
 - Valeurs H/TS comparees et conformes:
@@ -106,7 +122,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain petit lot `FL_*`: `FL_WATERJUMP`, `FL_TEAMSLAVE`, `FL_NO_KNOCKBACK` si coherent.
+- Continuer avec le prochain petit lot `FL_*`: `FL_POWER_ARMOR`, `FL_RESPAWN`, puis `FRAMETIME` si coherent.
 
 ## Blocages
 

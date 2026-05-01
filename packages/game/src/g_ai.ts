@@ -332,10 +332,14 @@ export function infront(self: GameEntity, other: GameEntity): boolean {
  * Original name: HuntTarget
  * Source: game/g_ai.c
  * Category: Ported
- * Fidelity level: Strict
+ * Fidelity level: Close
  *
  * Behavior:
  * - Switches the monster into active pursuit of its current enemy.
+ *
+ * Porting notes:
+ * - The C original assumes `self->enemy` is non-null; TypeScript returns early when
+ *   no enemy is attached so partial test/runtime entities cannot throw.
  */
 export function HuntTarget(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
@@ -365,6 +369,10 @@ export function HuntTarget(self: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Records target acquisition state and starts pursuit or combat-point movement.
+ *
+ * Porting notes:
+ * - The C original assumes `self->enemy` is non-null; TypeScript returns early when
+ *   no enemy is attached so partial test/runtime entities cannot throw.
  */
 export function FoundTarget(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
