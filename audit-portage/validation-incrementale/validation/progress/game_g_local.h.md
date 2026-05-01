@@ -113,6 +113,26 @@
   - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration des 3 champs.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-spawn` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:p-hud` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `level_locals_t` avec champs `intermissiontime`, `changemap`, `exitintermission`.
+- Verdict: `Valide` pour les 3 champs apres renforcement des preuves; aucune correction runtime TS necessaire.
+- Source H comparee: `intermissiontime` stocke le temps de debut d'intermission, `changemap` pointe vers la destination `target_changelevel`, et `exitintermission` demande la sortie differee de l'intermission.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `level_locals_t` porte `intermissiontime`, `changemap`, `exitintermission`; `createLevelLocals` initialise `0`, `null`, `0`; commentaire de portage `level_locals_t` deja present et verifie.
+  - `packages/game/src/p_hud.ts`: `BeginIntermission` pose `runtime.intermissiontime = runtime.time`, `runtime.changemap = targ.map`, et `runtime.exitintermission` selon les branches C single-player/deathmatch/unit change.
+  - `packages/game/src/p_client.ts`: `ClientThink` gele le joueur pendant l'intermission et pose `runtime.exitintermission` apres 5 secondes et bouton presse.
+  - `packages/game/src/g_main.ts`: `G_RunFrame` synchronise runtime vers `level_locals_t`, appelle `ExitLevel` quand `level.exitintermission` est pose, et `ExitLevel` envoie `gamemap` puis nettoie les trois champs.
+  - `packages/game/src/g_save.ts`: `WriteLevel`/`ReadLevel` persistent et restaurent les trois champs, puis resynchronisent le runtime.
+- Runtime:
+  - Source C: `BeginIntermission` ecrit les trois champs, `ClientThink` pose `exitintermission`, `G_RunFrame` appelle `ExitLevel`, et `ExitLevel` emet `gamemap` puis remet l'etat d'intermission a zero.
+  - TS: flux equivalent verifie par harness sur transition `target_changelevel`, sortie par bouton, regles deathmatch, persistence save/load et miroir `level_locals_t`.
+- apps/web: integration attendue via host local/full-game qui avance le runtime, declenche les transitions `gamemap`, snapshots/HUD et ordre de rendu; aucune logique parallele `intermissiontime`/`changemap`/`exitintermission` trouvee dans `apps/web`. `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: pas de consommation directe de ces champs attendue. Les sorties visibles attendues sont le gel/camera d'intermission, transitions de map, HUD/scoreboard et entites de scene produites en aval par le runtime/client; le renderer consomme ces sorties via refresh frames et l'adapter full-game. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `level_locals_t` verifie; `BeginIntermission`, `ClientThink`, `G_RunFrame`, `ExitLevel`, `WriteLevel` et `ReadLevel` avaient deja des commentaires d'en-tete verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions valeurs par defaut, mutations et `LLOFS` pour `intermissiontime`, `changemap`, `exitintermission`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration level et miroir runtime pour les 3 champs.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-main` OK; `npm run verify:p-hud` OK; `npm run verify:p-client` OK; `npm run verify:full-game:rules-transitions` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot champs `gitem_s` `flags`, `weapmodel`, `info`, `tag`, `precaches`.
 - Verdict: `Valide` pour les 5 champs apres renforcement du harness header; aucune correction gameplay TS necessaire.
 - Source H comparee: `gitem_s` declare `int flags`, `int weapmodel`, `void *info`, `int tag`, puis `char *precaches`.
@@ -650,7 +670,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `level_locals_t.intermissiontime`, `changemap`, `exitintermission` si le lot reste raisonnable.
+- Continuer avec `level_locals_t.intermission_origin`, `intermission_angle`.
 
 ## Blocages
 

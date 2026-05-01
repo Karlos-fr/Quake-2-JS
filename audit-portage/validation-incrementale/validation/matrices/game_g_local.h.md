@@ -155,9 +155,9 @@
 | `Quake-2-master/game/g_local.h` | global | `level_name` | `packages/game/src/g_local.ts` | `level_locals_t.level_name` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `mapname` | `packages/game/src/g_local.ts` | `level_locals_t.mapname` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `nextmap` | `packages/game/src/g_local.ts` | `level_locals_t.nextmap` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `intermissiontime` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `changemap` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `exitintermission` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `intermissiontime` | `packages/game/src/g_local.ts` | `level_locals_t.intermissiontime` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `changemap` | `packages/game/src/g_local.ts` | `level_locals_t.changemap` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `exitintermission` | `packages/game/src/g_local.ts` | `level_locals_t.exitintermission` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `intermission_origin` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `intermission_angle` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `sight_client` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
