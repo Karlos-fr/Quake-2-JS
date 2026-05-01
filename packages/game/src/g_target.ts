@@ -238,7 +238,13 @@ export function SP_target_help(ent: GameEntity, runtime: GameRuntime): void {
  * Original name: use_target_secret
  * Source: game/g_target.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the registered secret sound on `CHAN_VOICE`, increments the found-secret counter, fires the target chain, then frees the single-use entity.
+ *
+ * Porting notes:
+ * - `gi.sound` is represented by a queued runtime sound event drained by the game main adapter.
  */
 export function use_target_secret(ent: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   emitRegisteredSound(runtime, ent, ent.noise_index, {
@@ -256,7 +262,13 @@ export function use_target_secret(ent: GameEntity, _other: GameEntity | null, ac
  * Original name: SP_target_secret
  * Source: game/g_target.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Auto-removes in deathmatch, installs the single-use callback, precaches `st.noise` or `misc/secret.wav`, hides the entity from clients, increments the total-secret counter, and preserves the original `mine3` map bug hack.
+ *
+ * Porting notes:
+ * - `st.noise` is stored in parsed entity properties before spawn.
  */
 export function SP_target_secret(ent: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {

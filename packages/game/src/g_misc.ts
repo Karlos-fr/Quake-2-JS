@@ -2281,6 +2281,18 @@ export function func_clock_format_countdown(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: func_clock_think
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finds the target string display, formats count-up/count-down/local-time messages, fires the display use callback, and handles completion/reset targets.
+ *
+ * Porting notes:
+ * - JavaScript `Date` supplies the local-time fields used by the original `time`/`localtime` branch.
+ */
 export function func_clock_think(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     self.enemy = self.target ? G_Find(runtime, null, "targetname", self.target) : null;
@@ -2334,6 +2346,15 @@ export function func_clock_think(self: GameEntity, runtime: GameRuntime): void {
   self.nextthink = runtime.time + 1;
 }
 
+/**
+ * Original name: func_clock_use
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts a START_OFF clock once, optionally clears one-shot use, records the activator, and immediately runs the first clock tick.
+ */
 export function func_clock_use(
   self: GameEntity,
   _other: GameEntity | null,

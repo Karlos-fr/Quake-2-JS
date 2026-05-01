@@ -111,7 +111,7 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, moveinfo_t } from "../../packages/game/src/g_local.js";
+import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, mmove_t, moveinfo_t } from "../../packages/game/src/g_local.js";
 import {
   ARMOR_BODY as INDEX_ARMOR_BODY,
   ARMOR_COMBAT as INDEX_ARMOR_COMBAT,
@@ -597,16 +597,29 @@ const monsterFrame = {
 assert.equal(monsterFrame.dist, 7.5, "mframe_t dist field mismatch");
 assert.equal(typeof monsterFrame.aifunc, "function", "mframe_t aifunc callback mismatch");
 assert.equal(typeof monsterFrame.thinkfunc, "function", "mframe_t thinkfunc callback mismatch");
+let mmoveEndCalls = 0;
+const monsterMove = {
+  firstframe: 5,
+  lastframe: 5,
+  frame: [monsterFrame],
+  endfunc: () => {
+    mmoveEndCalls++;
+  }
+} satisfies mmove_t;
+assert.deepEqual(
+  Object.keys(monsterMove),
+  ["firstframe", "lastframe", "frame", "endfunc"],
+  "mmove_t field order mismatch"
+);
+assert.equal(monsterMove.firstframe, 5, "mmove_t firstframe field mismatch");
+assert.equal(monsterMove.lastframe, 5, "mmove_t lastframe field mismatch");
+assert.equal(monsterMove.frame[0], monsterFrame, "mmove_t frame pointer/table mismatch");
+assert.equal(typeof monsterMove.endfunc, "function", "mmove_t endfunc callback mismatch");
 const mframeRuntime = createGameRuntimeFromBspEntities([]);
 const mframeEntity = createRuntimeEntity({ classname: "mframe_probe" }, 23);
 mframeEntity.s.frame = 4;
 mframeEntity.monsterinfo.scale = 2;
-mframeEntity.monsterinfo.currentmove = {
-  firstframe: 5,
-  lastframe: 5,
-  frame: [monsterFrame],
-  endfunc: undefined
-};
+mframeEntity.monsterinfo.currentmove = { ...monsterMove, endfunc: undefined };
 M_MoveFrame(mframeEntity, mframeRuntime);
 assert.equal(mframeEntity.s.frame, 5, "M_MoveFrame must advance into the current mframe_t range");
 assert.equal(mframeEntity.nextthink, 0.1, "M_MoveFrame must schedule the next monster think");
@@ -620,6 +633,12 @@ M_MoveFrame(mframeEntity, mframeRuntime);
 assert.equal(mframeEntity.s.frame, 5, "AI_HOLD_FRAME must keep the current mframe_t frame");
 assert.equal(mframeAiDist, 0, "AI_HOLD_FRAME must pass zero distance to mframe_t.aifunc");
 assert.equal(mframeCallbackOrder, "ai+think", "AI_HOLD_FRAME must still run mframe_t callbacks");
+const mmoveEntity = createRuntimeEntity({ classname: "mmove_probe" }, 24);
+mmoveEntity.s.frame = monsterMove.lastframe;
+mmoveEntity.monsterinfo.currentmove = monsterMove;
+M_MoveFrame(mmoveEntity, mframeRuntime);
+assert.equal(mmoveEndCalls, 1, "M_MoveFrame must invoke mmove_t.endfunc at lastframe");
+assert.equal(mmoveEntity.s.frame, monsterMove.firstframe, "M_MoveFrame must wrap to mmove_t.firstframe after lastframe");
 assert.equal(FOFS("classname"), "classname", "FOFS selector mismatch");
 assert.equal(STOFS("sky"), "sky", "STOFS sky selector mismatch");
 assert.equal(STOFS("skyrotate"), "skyrotate", "STOFS skyrotate selector mismatch");

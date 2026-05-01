@@ -256,7 +256,11 @@ const funcSpawnNames = [
   "func_plat",
   "func_rotating",
   "func_button",
-  "func_door"
+  "func_door",
+  "func_door_secret",
+  "func_door_rotating",
+  "func_water",
+  "func_train"
 ] as const;
 
 for (const name of funcSpawnNames) {
@@ -590,6 +594,44 @@ SpawnEntities(
 "spawnflags" "${16 | 64}"
 "targetname" "remote_door"
 }
+{
+"classname" "func_door_secret"
+"model" "*14"
+"angle" "0"
+"targetname" "secret_door"
+"message" "secret"
+}
+{
+"classname" "func_door_rotating"
+"model" "*15"
+"spawnflags" "${2 | 16 | 64}"
+"distance" "45"
+"targetname" "rotating_remote"
+}
+{
+"classname" "func_water"
+"model" "*16"
+"angle" "-1"
+"sounds" "1"
+}
+{
+"classname" "path_corner"
+"targetname" "train_start"
+"target" "train_next"
+"origin" "96 0 0"
+}
+{
+"classname" "path_corner"
+"targetname" "train_next"
+"origin" "160 0 0"
+}
+{
+"classname" "func_train"
+"model" "*17"
+"target" "train_start"
+"speed" "80"
+"noise" "plats/train.wav"
+}
 `,
   ""
 );
@@ -644,6 +686,61 @@ assert.equal(
   true,
   "G_RunFrame must log func_door move-speed calculation"
 );
+
+const spawnedSecretDoor = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.targetname === "secret_door");
+assert.ok(spawnedSecretDoor, "SpawnEntities must keep func_door_secret in the runtime");
+assert.equal(spawnedSecretDoor.classname, "func_door", "SP_func_door_secret must rewrite classname to func_door");
+assert.equal(spawnedSecretDoor.movetype, MOVETYPE_PUSH, "SpawnEntities func_door_secret movetype mismatch");
+assert.equal(spawnedSecretDoor.solid, SOLID_BSP, "SpawnEntities func_door_secret solid mismatch");
+assert.equal(typeof spawnedSecretDoor.use, "function", "SpawnEntities func_door_secret must expose use callback");
+assert.equal(typeof spawnedSecretDoor.touch, "function", "SpawnEntities func_door_secret target message must expose touch callback");
+assert.equal(spawnedSecretDoor.moveinfo.speed, 50, "SpawnEntities func_door_secret speed mismatch");
+assert.equal(spawnedSecretDoor.moveinfo.sound_start > 0, true, "SpawnEntities func_door_secret start sound mismatch");
+assert.equal(funcBrushContext.runtime.assets.soundPaths.includes("misc/talk.wav"), true, "SP_func_door_secret message must precache talk sound");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedSecretDoor.s.modelindex - 1], "*14", "func_door_secret modelindex must resolve to *14");
+
+const spawnedRotatingDoor = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_door_rotating");
+assert.ok(spawnedRotatingDoor, "SpawnEntities must keep func_door_rotating in the runtime");
+assert.equal(spawnedRotatingDoor.movetype, MOVETYPE_PUSH, "SpawnEntities func_door_rotating movetype mismatch");
+assert.equal(spawnedRotatingDoor.solid, SOLID_BSP, "SpawnEntities func_door_rotating solid mismatch");
+assert.deepEqual(spawnedRotatingDoor.movedir.map((value) => Object.is(value, -0) ? 0 : value), [0, 0, -1], "SpawnEntities func_door_rotating reversed X_AXIS movedir mismatch");
+assert.deepEqual(spawnedRotatingDoor.pos2, [0, 0, -45], "SpawnEntities func_door_rotating distance mismatch");
+assert.equal(spawnedRotatingDoor.moveinfo.state, STATE_BOTTOM, "SpawnEntities func_door_rotating initial state mismatch");
+assert.equal(typeof spawnedRotatingDoor.use, "function", "SpawnEntities func_door_rotating must expose use callback");
+assert.equal(spawnedRotatingDoor.nextthink, 0, "G_RunFrame must execute func_door_rotating scheduled move-speed think");
+assert.equal(
+  funcBrushContext.runtime.logEntries.some((entry) => entry.kind === "think" && entry.entityIndex === spawnedRotatingDoor.index && entry.message.includes("calc move speed")),
+  true,
+  "G_RunFrame must log func_door_rotating move-speed calculation"
+);
+assert.equal((spawnedRotatingDoor.s.effects & EF_ANIM_ALL) !== 0, true, "SpawnEntities func_door_rotating EF_ANIM_ALL mismatch");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedRotatingDoor.s.modelindex - 1], "*15", "func_door_rotating modelindex must resolve to *15");
+
+const spawnedWater = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.model === "*16");
+assert.ok(spawnedWater, "SpawnEntities must keep func_water in the runtime");
+assert.equal(spawnedWater.classname, "func_door", "SP_func_water must rewrite classname to func_door");
+assert.equal(spawnedWater.movetype, MOVETYPE_PUSH, "SpawnEntities func_water movetype mismatch");
+assert.equal(spawnedWater.solid, SOLID_BSP, "SpawnEntities func_water solid mismatch");
+assert.deepEqual(spawnedWater.movedir, [0, 0, 1], "SpawnEntities func_water movedir mismatch");
+assert.equal(spawnedWater.wait, -1, "SpawnEntities func_water default wait mismatch");
+assert.equal((spawnedWater.spawnflags & 32) !== 0, true, "SpawnEntities func_water wait -1 must set DOOR_TOGGLE");
+assert.equal(spawnedWater.moveinfo.sound_start > 0, true, "SpawnEntities func_water start sound mismatch");
+assert.equal(funcBrushContext.runtime.assets.soundPaths[spawnedWater.moveinfo.sound_start - 1], "world/mov_watr.wav", "func_water sound_start path mismatch");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedWater.s.modelindex - 1], "*16", "func_water modelindex must resolve to *16");
+
+const spawnedTrain = funcBrushContext.runtime.entities.find((entity) => entity.inuse && entity.classname === "func_train");
+assert.ok(spawnedTrain, "SpawnEntities must keep func_train in the runtime");
+assert.equal(spawnedTrain.movetype, MOVETYPE_PUSH, "SpawnEntities func_train movetype mismatch");
+assert.equal(spawnedTrain.solid, SOLID_BSP, "SpawnEntities func_train solid mismatch");
+assert.equal(spawnedTrain.moveinfo.speed, 80, "SpawnEntities func_train speed mismatch");
+assert.equal(spawnedTrain.moveinfo.sound_middle > 0, true, "SpawnEntities func_train noise registration mismatch");
+assert.equal(funcBrushContext.runtime.assets.soundPaths[spawnedTrain.moveinfo.sound_middle - 1], "plats/train.wav", "func_train noise path mismatch");
+assert.equal(typeof spawnedTrain.use, "function", "SpawnEntities func_train must expose use callback");
+assert.deepEqual(spawnedTrain.origin, [96, 0, 0], "G_RunFrame must execute func_train_find and move train to first path_corner");
+assert.equal(spawnedTrain.target, "train_next", "func_train_find must hand off target to next path_corner");
+assert.equal((spawnedTrain.spawnflags & 1) !== 0, true, "func_train_find must start untargeted trains");
+assert.equal(spawnedTrain.nextthink, funcBrushContext.runtime.time + FRAMETIME, "func_train_find must schedule train_next for started trains");
+assert.equal(funcBrushContext.runtime.assets.modelPaths[spawnedTrain.s.modelindex - 1], "*17", "func_train modelindex must resolve to *17");
 
 const commandContext = createGameMainContext(imports);
 InitGame(commandContext);

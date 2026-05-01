@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `use_target_secret` et `SP_target_secret`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `use_target_secret` conserve `gi.sound(ent, CHAN_VOICE, ent->noise_index, 1, ATTN_NORM, 0)`, l'increment `level.found_secrets`, `G_UseTargets(ent, activator)` et le free single-use. `SP_target_secret` conserve l'auto-remove deathmatch, l'installation du callback, le default `misc/secret.wav` quand `st.noise` est absent, `soundindex(st.noise)`, `SVF_NOCLIENT`, l'increment `level.total_secrets` et le hack de map `mine3`.
+  - Commentaires d'en-tete completes pour `use_target_secret` et `SP_target_secret`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage.
+  - Branchement runtime verifie: `target_secret` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; l'activation appelle le callback, les targets sont fires avec l'activator, les compteurs runtime sont synchronises vers `level_locals_t` par `G_RunFrame`, et le son est draine vers `gi.sound`.
+  - `apps/web`: integration attendue car les compteurs de secrets apparaissent dans le help computer/HUD et le flux navigateur doit passer par le runtime porte. Pas de logique parallele masquante constatee; les tests web/render-order et HUD confirment la consommation des layouts/cadres runtime.
+  - `renderer-three`: aucune sortie visible de scene/camera/modeles/frames/images/particules/beams/dlights/temp entities/areabits n'est produite par `target_secret`; l'entite est `SVF_NOCLIENT` et son effet visible cote joueur est le HUD/help layout, hors renderer-three. Le test full-game renderer reste OK pour verifier l'absence de regression.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour les deux fonctions du lot.
+  - `scripts/verify/quake2-g-target.ts`: couverture ajoutee pour spawn table `ED_CallSpawn`, son par defaut, son custom `st.noise`, canal/volume/attenuation, target chain avec activator, `SVF_NOCLIENT`, auto-remove deathmatch sans increment total, et hack `mine3`.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:g-main` OK.
+  - `npm run verify:p-hud` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `use_target_goal` et `SP_target_goal` si le lot reste petit.
+
 - 2026-05-01: `buffer`, le premier `strncpy`, `Use_Target_Help`, le second `strncpy`, et `SP_target_help`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: le buffer local `MAX_QPATH` de `SP_target_speaker` est maintenant borne avant `registerGameSound`, avec suffixe `.wav` conserve quand necessaire. `Use_Target_Help` conserve la selection `helpmessage1` quand `spawnflags & 1` sinon `helpmessage2`, la copie bornee `sizeof(game.helpmessage*) - 1` et l'increment `helpchanged`. `SP_target_help` conserve l'auto-remove deathmatch, le warning/free sans message, et l'installation du callback.

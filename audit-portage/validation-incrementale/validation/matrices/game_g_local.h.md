@@ -218,10 +218,11 @@
 | `Quake-2-master/game/g_local.h` | global | `aifunc` | `packages/game/src/g_local.ts` | `mframe_t.aifunc` | Valide | A redecouper | Callback compare H/TS; preuve `M_MoveFrame` appelle `aifunc(self, dist * scale)` et `AI_HOLD_FRAME` force `dist=0`. |
 | `Quake-2-master/game/g_local.h` | global | `dist` | `packages/game/src/g_local.ts` | `mframe_t.dist` | Valide | A redecouper | Champ compare H/TS; preuve mutation et consommation par `M_MoveFrame` avec scale monstre. |
 | `Quake-2-master/game/g_local.h` | global | `thinkfunc` | `packages/game/src/g_local.ts` | `mframe_t.thinkfunc` | Valide | A redecouper | Callback compare H/TS; preuve `M_MoveFrame` execute `thinkfunc` apres `aifunc`, y compris sous `AI_HOLD_FRAME`. |
-| `Quake-2-master/game/g_local.h` | struct | `mmove_t` | `packages/game/src/g_local.ts` | `mmove_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `firstframe` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `lastframe` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `frame` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | struct | `mmove_t` | `packages/game/src/g_local.ts` | `mmove_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `firstframe` | `packages/game/src/g_local.ts` | `mmove_t.firstframe` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `lastframe` | `packages/game/src/g_local.ts` | `mmove_t.lastframe` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `frame` | `packages/game/src/g_local.ts` | `mmove_t.frame` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `endfunc` | `packages/game/src/g_local.ts` | `mmove_t.endfunc` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | struct | `monsterinfo_t` | `packages/game/src/g_local.ts` | `monsterinfo_t` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `currentmove` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `aiflags` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

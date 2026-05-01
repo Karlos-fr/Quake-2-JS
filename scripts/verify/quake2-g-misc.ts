@@ -107,6 +107,8 @@ import {
   useGameEntity,
   func_clock_format_countdown,
   func_clock_reset,
+  func_clock_think,
+  func_clock_use,
   func_train_find,
   train_use
 } from "../../packages/game/src/index.js";
@@ -638,13 +640,78 @@ function verifyFuncClockBootstrapsTargetStringMessage(): void {
   assert.equal(clock.message?.length, 16, "SP_func_clock must allocate a CLOCK_MESSAGE_SIZE-sized message buffer");
   assert.equal(clock.health, 0, "SP_func_clock must reset count-up health before scheduling");
   assert.equal(clock.wait, 3, "SP_func_clock must reset count-up wait from count before scheduling");
-  assert.equal(clock.use !== undefined, true, "START_OFF func_clock must install func_clock_use");
+  assert.equal(clock.use, func_clock_use, "START_OFF func_clock must install func_clock_use");
 
   useGameEntity(runtime, clock, null, clock);
   assert.equal(stringTarget.message, " 0:00", "func_clock_use must immediately push the first formatted message");
   runPendingThinks(runtime, runtime.time + 1);
 
   assert.equal(stringTarget.message, " 0:01", "func_clock think must advance and push the next message through target_string");
+
+  const activator = spawnGameEntity(runtime);
+  const relay = spawnGameEntity(runtime);
+  relay.classname = "target_relay";
+  relay.targetname = "clock_done";
+  let relayActivator: unknown = null;
+  let relayMessage: string | undefined = "untouched";
+  relay.use = (_self, other, usedActivator) => {
+    relayActivator = usedActivator;
+    relayMessage = other?.message;
+  };
+
+  const completed = spawnGameEntity(runtime);
+  completed.classname = "func_clock";
+  completed.target = "clock_display";
+  completed.pathtarget = "clock_done";
+  completed.message = "before";
+  completed.spawnflags = 1 | 8;
+  completed.style = 0;
+  completed.count = 1;
+  SP_func_clock(completed, runtime);
+  completed.activator = activator;
+  func_clock_think(completed, runtime);
+  func_clock_think(completed, runtime);
+  assert.equal(relayActivator, activator, "func_clock_think must fire pathtarget with the stored activator");
+  assert.equal(relayMessage, undefined, "func_clock_think must clear message while firing pathtarget");
+  assert.equal(completed.target, "clock_display", "func_clock_think must restore target after pathtarget fire");
+  assert.equal(completed.message, " 1", "func_clock_think must restore the clock message after pathtarget fire");
+  assert.equal(completed.health, 0, "multi-use count-up clock must reset after crossing wait");
+  assert.equal(completed.wait, 1, "multi-use count-up clock must preserve wait after reset");
+
+  const oneShot = spawnGameEntity(runtime);
+  oneShot.classname = "func_clock";
+  oneShot.target = "clock_display";
+  oneShot.spawnflags = 1 | 4;
+  oneShot.style = 0;
+  oneShot.count = 1;
+  SP_func_clock(oneShot, runtime);
+  useGameEntity(runtime, oneShot, null, activator);
+  assert.equal(oneShot.use, undefined, "non-multi-use START_OFF clock must clear use after first activation");
+  useGameEntity(runtime, oneShot, null, activator);
+  assert.equal(oneShot.activator, activator, "func_clock_use must ignore later activations once activator is set");
+
+  const realtime = spawnGameEntity(runtime);
+  realtime.classname = "func_clock";
+  realtime.target = "clock_display";
+  const RealDate = globalThis.Date;
+  const fixedLocalDate = new RealDate(2026, 4, 1, 3, 4, 5);
+  class FixedDate extends RealDate {
+    constructor() {
+      super(fixedLocalDate.getTime());
+    }
+
+    static now(): number {
+      return fixedLocalDate.getTime();
+    }
+  }
+
+  globalThis.Date = FixedDate as DateConstructor;
+  try {
+    func_clock_think(realtime, runtime);
+  } finally {
+    globalThis.Date = RealDate;
+  }
+  assert.equal(stringTarget.message, " 3:04:05", "func_clock_think must format local time like localtime/gmtime branch");
 }
 
 function verifyMiscExploboxSpawnsShootableBarrel(): void {

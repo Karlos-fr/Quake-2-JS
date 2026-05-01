@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `func_clock_think`, local `gmtime`, locals `savetarget`/`savemessage`, et `func_clock_use`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `func_clock_think` conserve la recherche lazy de `target_string`, les branches TIMER_UP/TIMER_DOWN, la branche horloge locale `time`/`localtime`, la copie du message vers l'ennemi, l'appel du callback `use`, le declenchement `pathtarget`, la sauvegarde/restauration `target`/`message`, la sortie one-shot, le reset multi-use et la replanification a `level.time + 1`. `func_clock_use` conserve l'effacement du callback hors multi-use, la garde `activator`, l'enregistrement de l'activator et l'appel immediat du think.
+  - Locaux compares: `gmtime` est porte par `new Date()` et les getters locaux; `savetarget`/`savemessage` sont portes par `saveTarget`/`saveMessage` et restaures apres `G_UseTargets`.
+  - Commentaires d'en-tete ajoutes: `func_clock_think` et `func_clock_use` documentent original/source/categorie portee/fidelite `Strict`, comportement et note de portage pour la branche local-time.
+  - Branchement runtime verifie: `func_clock` est enregistre dans `g_spawn.ts`, exporte via `index.ts`, installe `func_clock_think` ou `func_clock_use`; les thinks sont atteignables via `runPendingThinks`/`SV_RunThink`/`G_RunFrame`, et les activations via `useGameEntity`/`G_UseTargets`.
+  - `apps/web`: integration attendue car le lot change les messages et frames de brush digits visibles par `target_string`. Aucune logique parallele trouvee; le web consomme les sorties via les flux full-game/local, snapshots, packet entities et refresh frames.
+  - `renderer-three`: integration attendue pour brush models inline visibles et changement de frame des digits; consommation presente via `ClientRefreshFrame.entities`, configstrings modeles et adapters Three. Aucun manque renderer detecte.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaires d'en-tete ajoutes pour `func_clock_think` et `func_clock_use`.
+  - `scripts/verify/quake2-g-misc.ts`: couverture cible ajoutee pour localtime controle, pathtarget, sauvegarde/restauration `target`/`message`, reset multi-use et one-shot `func_clock_use`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+  - `npm run verify:g-spawn` bloque hors lot: assertion `SpawnEntities func_door_rotating reversed X_AXIS movedir mismatch` obtient `[-0, -1, -0]` au lieu de `[0, 0, -1]`.
+- Prochain lot recommande: `SP_func_clock`, puis `teleporter_touch` avec local `dest` si le lot reste petit.
+
 - 2026-05-01: `SP_target_string`, `CLOCK_MESSAGE_SIZE`, `func_clock_reset` et `func_clock_format_countdown`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `SP_target_string` conserve le defaut `message = ""` et l'installation de `target_string_use`; `CLOCK_MESSAGE_SIZE` conserve la valeur `16`; `func_clock_reset` conserve l'effacement de l'activator et l'initialisation TIMER_UP/TIMER_DOWN de `health`/`wait`; `func_clock_format_countdown` conserve les trois formats `xx`, `xx:xx`, `xx:xx:xx` et le zero-padding apres les deux-points.

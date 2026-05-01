@@ -35,6 +35,18 @@
 - Tests lances: `npm run verify:g-svcmds`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
 - Corrections TS portees: `packages/game/src/g_svcmds.ts` refuse maintenant explicitement les octets absents avant `charCodeAt`. Test renforce dans `scripts/verify/quake2-g-svcmds.ts`.
 
+## Session 2026-05-01 - SV_FilterPacket
+
+- Lot traite: `SV_FilterPacket` et ses locaux `i`, `in`, `m`, `p`.
+- Checklist appliquee: identification matrice/source/cible, comparaison C vs TS du filtrage d'adresse entrante, valeurs retour selon `filterban`, effets de bord absents, commentaire d'en-tete, branchement runtime, apps/web, renderer-three, tests, mise a jour matrice/progress/global.
+- Verdict: lot valide. Le C scanne l'adresse textuelle dans `m[4]`, packe `in = *(unsigned *)m`, compare chaque entree `(in & ipfilters[i].mask) == ipfilters[i].compare`, puis retourne `filterban` si une entree matche et `!filterban` sinon; le TS conserve ce flux avec `bytes`, `address`, `state.ipfilters[index]` et `getFilterBanValue`.
+- Locaux: le local C `i` est represente par `octet` pour la phase de parsing et `index` pour la boucle de filtres; `in` par `address`; `m[4]` par `bytes`; `p` par `cursor`. Les tests prouvent le match reseau `192.246.40`, la non-correspondance, l'inversion `filterban=0`, le separateur permissif original et le packing byte avant comparaison.
+- Runtime: `SV_FilterPacket` est consommee par `validateClientConnect` dans `g_main.ts`, appelee par l'export `ClientConnect`; les filtres sont alimentes par `ServerCommand`/`SVCmd_AddIP_f`.
+- apps/web: le host full-game cree l'API game portee via `GetGameApiFunction`; l'adresse IP n'est pas filtree par une logique web parallele. Le flux attendu passe par le runtime serveur porte, verifie par `verify:full-game:server-host`.
+- renderer-three: non applicable, le filtrage d'adresse decide l'acceptation de connexion et ne produit ni entite visible, modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene.
+- Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
+- Corrections TS portees: aucune dans le port. Test renforce dans `scripts/verify/quake2-g-svcmds.ts`.
+
 ## Prochain lot recommande
 
-- Continuer avec `SV_FilterPacket` et ses locaux `i`, `in`, `m`, `p` si le lot reste centre sur le filtrage d'adresse entrante.
+- Continuer avec `SVCmd_AddIP_f` et son local `i` si le lot reste centre sur l'ajout d'un filtre et la recherche de slot libre.

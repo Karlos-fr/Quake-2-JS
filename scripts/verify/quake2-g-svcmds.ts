@@ -75,6 +75,16 @@ assert.deepEqual(
 );
 assert.equal(SV_FilterPacket(state, context, "192.246.40.7:27910"), true, "matching addresses must be filtered when filterban=1");
 assert.equal(SV_FilterPacket(state, context, "192.246.41.7:27910"), false, "non-matching addresses must pass when filterban=1");
+assert.equal(
+  SV_FilterPacket(state, context, "192x246x40x7:27910"),
+  true,
+  "SV_FilterPacket must preserve the original permissive single-separator scan"
+);
+assert.equal(
+  SV_FilterPacket(state, context, "300.246.40.7:27910"),
+  false,
+  "SV_FilterPacket must pack parsed octets as bytes before comparing"
+);
 
 const parsedFilter: ipfilter_t = { mask: 0, compare: 0 };
 assert.equal(StringToFilter(context, "0.0.5.0", parsedFilter), true, "zero octets must parse as wildcard bytes");

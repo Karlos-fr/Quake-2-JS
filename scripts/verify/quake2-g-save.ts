@@ -352,7 +352,14 @@ ReadGame(readContext, "save/game-auto.ssv");
 assert.equal(readContext.game.autosaved, true, "ReadGame game autosaved true mismatch");
 assert.equal(readContext.runtime.autosaved, true, "ReadGame runtime autosaved true mismatch");
 
-const target = createRuntimeEntity({ classname: "target_crosslevel_target" }, 2);
+const target = createRuntimeEntity({
+  classname: "target_crosslevel_target",
+  target: "after_save_target",
+  targetname: "saved_targetname",
+  message: "Saved string payload",
+  team: "saved_team",
+  map: "unit_exit"
+}, 2);
 target.inuse = true;
 target.delay = 2.5;
 target.owner = player;
@@ -464,6 +471,12 @@ const levelSave = JSON.parse(levelJson) as {
   entities: Array<{
     entnum: number;
     entity: {
+      classname: string;
+      target: string;
+      targetname: string;
+      message: string;
+      team: string;
+      map: string;
       owner: number;
       enemy: number;
       item: number;
@@ -478,6 +491,12 @@ const levelSave = JSON.parse(levelJson) as {
 };
 const targetSave = levelSave.entities.find((record) => record.entnum === target.index)?.entity;
 assert.ok(targetSave, "WriteLevel must write the in-use target entity");
+assert.equal(targetSave.classname, "target_crosslevel_target", "WriteLevel must persist entity classname F_LSTRING payload");
+assert.equal(targetSave.target, "after_save_target", "WriteLevel must persist entity target F_LSTRING payload");
+assert.equal(targetSave.targetname, "saved_targetname", "WriteLevel must persist entity targetname F_LSTRING payload");
+assert.equal(targetSave.message, "Saved string payload", "WriteLevel must persist entity message F_LSTRING payload");
+assert.equal(targetSave.team, "saved_team", "WriteLevel must persist entity team F_LSTRING payload");
+assert.equal(targetSave.map, "unit_exit", "WriteLevel must persist entity map F_LSTRING payload");
 assert.equal(levelSave.level.sight_client, player.index, "WriteLevel must encode level sight_client as the C F_EDICT index");
 assert.equal(levelSave.level.sight_entity, target.index, "WriteLevel must encode level sight_entity as the C F_EDICT index");
 assert.equal(levelSave.level.sound_entity, target.index, "WriteLevel must encode level sound_entity as the C F_EDICT index");

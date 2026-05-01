@@ -392,11 +392,17 @@ export interface GameMonsterFrame {
 }
 
 /**
- * Category: New
- * Purpose: Preserve the `mmove_t` frame-range descriptor used by Quake II monster logic.
+ * Original name: mmove_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must keep the original frame bounds and endfunc names for direct source mapping.
+ * Behavior:
+ * - Preserves one monster animation move with first/last frame bounds, frame table pointer and optional end callback.
+ *
+ * Porting notes:
+ * - The C `mframe_t *frame` pointer is represented by a `GameMonsterFrame[]`.
+ * - Function pointers are represented as explicit TypeScript callbacks that receive the runtime adapter.
  */
 export interface GameMonsterMove {
   firstframe: number;

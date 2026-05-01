@@ -2,6 +2,36 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: fonction `WriteField2`, centree sur l'ecriture des chaines apres la premiere passe.
+
+## Verdict du lot
+
+- `WriteField2`: valide. Dans le C, la fonction ignore les champs `FFL_SPAWNTEMP`, relit le pointeur original dans `base + field->ofs`, et ecrit seulement les payloads `F_LSTRING` non nuls avec leur terminateur apres l'ecriture de la copie temporaire par `WriteField1`.
+- Le port TS n'a pas de seconde passe binaire litterale: l'adaptateur de `packages/game/src/g_save.ts` ecrit un snapshot JSON structure ou les chaines `F_LSTRING` de niveau et d'entite sont directement conservees comme valeurs de chaines. La deviation est documentee dans l'en-tete du fichier (`FILE *` binaire remplace par JSON structure).
+- Commentaires d'en-tete: pas de commentaire fonction direct a ajouter pour `WriteField2`, car l'equivalent est l'adaptateur structure prive; l'en-tete de `g_save.ts` documente le remplacement du format binaire.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. Le role de `WriteField2` est atteint par `WriteLevel`, exporte par l'API game via `g_main.ts` et appele par le flux serveur `SV_WriteLevelFile`; les chaines sauvegardees sont restaurees par `ReadLevel`.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` connecte `ge.WriteLevel` au stockage `web-save-storage`; aucune logique web parallele ne remplace la serialization gameplay.
+- renderer-three: non applicable directement. `WriteField2` ne produit ni modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les entites restaurees peuvent seulement alimenter ensuite les snapshots visibles.
+
+## Corrections appliquees
+
+- `scripts/verify/quake2-g-save.ts`: ajout de preuves explicites pour les payloads chaines `F_LSTRING` d'entite (`classname`, `target`, `targetname`, `message`, `team`, `map`) dans le snapshot de niveau.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: ligne `WriteField2` marquee `Valide`.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
+
+## Prochain lot recommande
+
+- Continuer avec les temporaires locaux auto-detectes de `WriteField2`: `len` puis `p`, en les rattachant a l'adaptateur JSON structure.
+
+---
+
 - 2026-05-01: temporaires locaux de `WriteField1`: `p`, `len`, `index`.
 
 ## Verdict du lot

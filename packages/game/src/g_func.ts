@@ -2295,6 +2295,7 @@ export function SP_func_door_secret(ent: GameEntity, runtime: GameRuntime): void
     ent.die = door_killed;
     ent.max_health = ent.health;
   } else if (ent.targetname && ent.message) {
+    registerGameSound(runtime, "misc/talk.wav");
     ent.touch = door_touch;
   }
   ent.classname = "func_door";

@@ -228,11 +228,48 @@ function verifyTargetHelpSecretGoal(): void {
   assert.equal(dmHelp.inuse, false, "target_help must auto-remove in deathmatch");
 
   const secret = createHighEntity(runtime, "target_secret");
-  SP_target_secret(secret, runtime);
+  const secretActivator = createPlayer(runtime);
+  const secretTarget = spawnGameEntity(runtime);
+  secretTarget.classname = "target_secret_receiver";
+  secretTarget.targetname = "secret_done";
+  let secretTargetActivator: GameEntity | null = null;
+  secretTarget.use = (_ent, _other, activator) => {
+    secretTargetActivator = activator;
+  };
+  secret.target = "secret_done";
+  ED_CallSpawn(secret, runtime);
+  assert.equal(secret.use?.name, "use_target_secret", "target_secret spawn table must install use_target_secret");
+  assert.equal(runtime.assets.soundPaths[secret.noise_index - 1], "misc/secret.wav", "target_secret default sound mismatch");
   assert.equal(runtime.total_secrets, 1, "target_secret total mismatch");
-  use_target_secret(secret, null, null, runtime);
+  use_target_secret(secret, null, secretActivator, runtime);
   assert.equal(runtime.found_secrets, 1, "target_secret found mismatch");
+  const secretSound = runtime.soundEvents.at(-1);
+  assert.equal(secretSound?.soundPath, "misc/secret.wav", "target_secret use sound mismatch");
+  assert.equal(secretSound?.channel, CHAN_VOICE, "target_secret sound channel mismatch");
+  assert.equal(secretSound?.volume, 1, "target_secret sound volume mismatch");
+  assert.equal(secretSound?.attenuation, 1, "target_secret sound attenuation mismatch");
+  assert.equal(secretTargetActivator, secretActivator, "target_secret must fire targets with activator");
   assert.equal(secret.inuse, false, "target_secret must free itself");
+
+  const customSecret = createHighEntity(runtime, "target_secret");
+  customSecret.properties.noise = "custom/secret.wav";
+  SP_target_secret(customSecret, runtime);
+  assert.equal(runtime.assets.soundPaths[customSecret.noise_index - 1], "custom/secret.wav", "target_secret custom st.noise mismatch");
+  assert.equal(customSecret.svflags, SVF_NOCLIENT, "target_secret must be hidden from clients");
+
+  const mine3Runtime = createRuntime();
+  mine3Runtime.mapname = "mine3";
+  const mine3Secret = createHighEntity(mine3Runtime, "target_secret");
+  mine3Secret.s.origin = [280, -2048, -624];
+  SP_target_secret(mine3Secret, mine3Runtime);
+  assert.equal(mine3Secret.message, "You have found a secret area.", "target_secret mine3 message hack mismatch");
+
+  const secretDeathmatchRuntime = createRuntime();
+  secretDeathmatchRuntime.deathmatch = true;
+  const dmSecret = createHighEntity(secretDeathmatchRuntime, "target_secret");
+  SP_target_secret(dmSecret, secretDeathmatchRuntime);
+  assert.equal(dmSecret.inuse, false, "target_secret must auto-remove in deathmatch");
+  assert.equal(secretDeathmatchRuntime.total_secrets, 0, "target_secret deathmatch must not increment totals");
 
   const goal = createHighEntity(runtime, "target_goal");
   SP_target_goal(goal, runtime);
