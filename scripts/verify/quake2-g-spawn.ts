@@ -17,12 +17,13 @@ import {
   CS_ITEMS,
   CS_MAXCLIENTS,
   CS_NAME,
+  DF_NO_HEALTH,
   RF_GLOW,
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE
 } from "../../packages/qcommon/src/index.js";
-import { FL_TEAMSLAVE, MOVETYPE_PUSH, SOLID_BSP } from "../../packages/game/src/runtime.js";
+import { FL_TEAMSLAVE, FRAMETIME, MOVETYPE_PUSH, SOLID_BBOX, SOLID_BSP } from "../../packages/game/src/runtime.js";
 import {
   SPAWNFLAG_NOT_DEATHMATCH,
   SPAWNFLAG_NOT_EASY,
@@ -30,7 +31,7 @@ import {
   SPAWNFLAG_NOT_MEDIUM
 } from "../../packages/game/src/g_local.js";
 import { ED_CallSpawn, G_FindTeams, spawns } from "../../packages/game/src/g_spawn.js";
-import { InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { G_RunFrame, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { spawnGameEntity } from "../../packages/game/src/runtime.js";
 
 const configstrings = new Map<number, string>();
@@ -234,6 +235,166 @@ for (const name of healthSpawnNames) {
   assert.equal(typeof entry.spawn, "function", `${name} spawn_t.spawn must be a function`);
 }
 
+const playerSpawnNames = [
+  "info_player_start",
+  "info_player_deathmatch",
+  "info_player_coop",
+  "info_player_intermission"
+] as const;
+
+for (const name of playerSpawnNames) {
+  const entry = spawns.find((spawn) => spawn.name === name);
+  assert.ok(entry, `spawn table must include ${name}`);
+  assert.equal(typeof entry.name, "string", `${name} spawn_t.name must be a string`);
+  assert.equal(typeof entry.spawn, "function", `${name} spawn_t.spawn must be a function`);
+}
+
+const playerSpawnMapContext = createGameMainContext(imports);
+InitGame(playerSpawnMapContext);
+SpawnEntities(
+  playerSpawnMapContext,
+  "player_spawns",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "info_player_start"
+"origin" "10 20 30"
+"angles" "0 90 0"
+}
+{
+"classname" "info_player_deathmatch"
+"origin" "40 50 60"
+}
+{
+"classname" "info_player_coop"
+"origin" "70 80 90"
+}
+{
+"classname" "info_player_intermission"
+"origin" "100 110 120"
+"angles" "15 180 5"
+}
+`,
+  ""
+);
+
+const defaultStart = playerSpawnMapContext.runtime.entities.find((entity) => entity.classname === "info_player_start");
+assert.ok(defaultStart?.inuse, "info_player_start must survive normal map spawning");
+assert.equal(defaultStart.think, undefined, "info_player_start must not schedule the security coop hack outside coop");
+const protectedDeathmatchSpot = playerSpawnMapContext.runtime.entities.find((entity) => entity.classname === "info_player_deathmatch");
+assert.ok(protectedDeathmatchSpot, "info_player_deathmatch map entity should still be present in the protected edict prefix");
+assert.equal(protectedDeathmatchSpot.linked, false, "info_player_deathmatch outside deathmatch must not be linked or visible");
+assert.equal(protectedDeathmatchSpot.s.modelindex, 0, "info_player_deathmatch outside deathmatch must not publish a modelindex");
+const protectedCoopSpot = playerSpawnMapContext.runtime.entities.find((entity) => entity.classname === "info_player_coop");
+assert.ok(protectedCoopSpot, "info_player_coop map entity should still be present in the protected edict prefix");
+assert.equal(protectedCoopSpot.linked, false, "info_player_coop outside coop must not be linked or visible");
+const defaultIntermission = playerSpawnMapContext.runtime.entities.find((entity) => entity.classname === "info_player_intermission");
+assert.ok(defaultIntermission?.inuse, "info_player_intermission must remain available for BeginIntermission");
+assert.deepEqual(defaultIntermission.s.origin, [100, 110, 120], "info_player_intermission origin must be preserved");
+assert.deepEqual(defaultIntermission.s.angles, [15, 180, 5], "info_player_intermission angles must be preserved");
+
+let unprotectedDeathmatchSpot = spawnGameEntity(playerSpawnMapContext.runtime);
+while (unprotectedDeathmatchSpot.index <= playerSpawnMapContext.runtime.maxclients + 8) {
+  unprotectedDeathmatchSpot = spawnGameEntity(playerSpawnMapContext.runtime);
+}
+unprotectedDeathmatchSpot.classname = "info_player_deathmatch";
+ED_CallSpawn(unprotectedDeathmatchSpot, playerSpawnMapContext.runtime);
+assert.equal(unprotectedDeathmatchSpot.inuse, false, "info_player_deathmatch must call G_FreeEdict outside deathmatch");
+
+let unprotectedCoopSpot = spawnGameEntity(playerSpawnMapContext.runtime);
+while (unprotectedCoopSpot.index <= playerSpawnMapContext.runtime.maxclients + 8) {
+  unprotectedCoopSpot = spawnGameEntity(playerSpawnMapContext.runtime);
+}
+unprotectedCoopSpot.classname = "info_player_coop";
+ED_CallSpawn(unprotectedCoopSpot, playerSpawnMapContext.runtime);
+assert.equal(unprotectedCoopSpot.inuse, false, "info_player_coop must call G_FreeEdict outside coop");
+
+const deathmatchSpawnContext = createGameMainContext(imports);
+InitGame(deathmatchSpawnContext);
+deathmatchSpawnContext.cvars.deathmatch!.value = 1;
+deathmatchSpawnContext.cvars.deathmatch!.string = "1";
+SpawnEntities(
+  deathmatchSpawnContext,
+  "deathmatch_spawns",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "info_player_deathmatch"
+"origin" "40 50 60"
+}
+`,
+  ""
+);
+const deathmatchSpot = deathmatchSpawnContext.runtime.entities.find((entity) => entity.classname === "info_player_deathmatch");
+assert.ok(deathmatchSpot?.inuse, "info_player_deathmatch must survive in deathmatch");
+assert.equal(deathmatchSpot.model, "models/objects/dmspot/tris.md2", "info_player_deathmatch must spawn the teleporter destination model");
+assert.equal(deathmatchSpot.solid, SOLID_BBOX, "info_player_deathmatch teleporter destination solid mismatch");
+assert.equal(deathmatchSpot.s.modelindex > 0, true, "info_player_deathmatch must publish a modelindex for the dm spot");
+assert.equal(
+  deathmatchSpawnContext.runtime.assets.modelPaths[deathmatchSpot.s.modelindex - 1],
+  "models/objects/dmspot/tris.md2",
+  "info_player_deathmatch modelindex must resolve to the dm spot model"
+);
+
+const coopSecurityContext = createGameMainContext(imports);
+InitGame(coopSecurityContext);
+coopSecurityContext.cvars.coop!.value = 1;
+coopSecurityContext.cvars.coop!.string = "1";
+SpawnEntities(
+  coopSecurityContext,
+  "security",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "info_player_start"
+"origin" "10 20 30"
+}
+`,
+  ""
+);
+const securityStart = coopSecurityContext.runtime.entities.find((entity) => entity.classname === "info_player_start");
+assert.ok(securityStart?.inuse, "security info_player_start must survive coop spawning");
+assert.equal(typeof securityStart.think, "function", "security info_player_start must schedule SP_CreateCoopSpots in coop");
+assert.equal(securityStart.nextthink, FRAMETIME, "security info_player_start nextthink must match level.time + FRAMETIME");
+G_RunFrame(coopSecurityContext);
+const securityCoopSpots = coopSecurityContext.runtime.entities.filter((entity) => entity.inuse && entity.classname === "info_player_coop");
+assert.equal(securityCoopSpots.length, 3, "security coop hack must create the three original info_player_coop spots");
+assert.deepEqual(securityCoopSpots.map((entity) => entity.s.origin), [[124, -164, 80], [252, -164, 80], [316, -164, 80]], "security coop spot origins mismatch");
+assert.deepEqual(securityCoopSpots.map((entity) => entity.targetname), ["jail3", "jail3", "jail3"], "security coop spot targetnames mismatch");
+assert.deepEqual(securityCoopSpots.map((entity) => entity.s.angles[1]), [90, 90, 90], "security coop spot yaw mismatch");
+
+const coopFixupContext = createGameMainContext(imports);
+InitGame(coopFixupContext);
+coopFixupContext.cvars.coop!.value = 1;
+coopFixupContext.cvars.coop!.string = "1";
+SpawnEntities(
+  coopFixupContext,
+  "jail2",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "info_player_start"
+"origin" "0 0 0"
+"targetname" "entry_a"
+}
+{
+"classname" "info_player_coop"
+"origin" "128 0 0"
+}
+`,
+  ""
+);
+const coopSpot = coopFixupContext.runtime.entities.find((entity) => entity.classname === "info_player_coop");
+assert.ok(coopSpot?.inuse, "info_player_coop must survive in coop");
+assert.equal(typeof coopSpot.think, "function", "jail2 info_player_coop must schedule SP_FixCoopSpots");
+assert.equal(coopSpot.nextthink, FRAMETIME, "jail2 info_player_coop nextthink must match level.time + FRAMETIME");
+G_RunFrame(coopFixupContext);
+assert.equal(coopSpot.targetname, "entry_a", "SP_FixCoopSpots must copy the nearest named info_player_start targetname");
+
 const healthCases = [
   { classname: "item_health", model: "models/items/healing/medium/tris.md2", count: 10, style: 0, sound: "items/n_health.wav" },
   { classname: "item_health_small", model: "models/items/healing/stimpack/tris.md2", count: 2, style: 1, sound: "items/s_health.wav" },
@@ -256,6 +417,68 @@ for (const healthCase of healthCases) {
   assert.equal(healthEntity.s.renderfx, RF_GLOW, `${healthCase.classname} renderfx mismatch`);
   assert.equal(healthContext.runtime.assets.modelPaths.includes(healthCase.model), true, `${healthCase.classname} must register its model`);
   assert.equal(healthContext.runtime.assets.soundPaths.includes(healthCase.sound), true, `${healthCase.classname} must register its sound`);
+}
+
+const healthMapContext = createGameMainContext(imports);
+InitGame(healthMapContext);
+SpawnEntities(
+  healthMapContext,
+  "healthmap",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "item_health"
+"origin" "8 0 24"
+}
+{
+"classname" "item_health_small"
+"origin" "16 0 24"
+}
+{
+"classname" "item_health_large"
+"origin" "24 0 24"
+}
+{
+"classname" "item_health_mega"
+"origin" "32 0 24"
+}
+`,
+  ""
+);
+G_RunFrame(healthMapContext);
+G_RunFrame(healthMapContext);
+
+for (const healthCase of healthCases) {
+  const entity = healthMapContext.runtime.entities.find((candidate) => candidate.inuse && candidate.classname === healthCase.classname);
+  assert.ok(entity, `SpawnEntities must keep ${healthCase.classname} in the runtime`);
+  assert.equal(entity.model, healthCase.model, `SpawnEntities ${healthCase.classname} model mismatch`);
+  assert.equal(entity.count, healthCase.count, `SpawnEntities ${healthCase.classname} count mismatch`);
+  assert.equal(entity.style, healthCase.style, `SpawnEntities ${healthCase.classname} style mismatch`);
+  assert.equal(entity.itemPickupName, "Health", `SpawnEntities ${healthCase.classname} must use Health item`);
+  assert.equal(entity.s.renderfx, RF_GLOW, `SpawnEntities ${healthCase.classname} renderfx mismatch`);
+  assert.equal(entity.s.modelindex > 0, true, `G_RunFrame/droptofloor must publish ${healthCase.classname} modelindex`);
+  assert.equal(
+    healthMapContext.runtime.assets.modelPaths[entity.s.modelindex - 1],
+    healthCase.model,
+    `${healthCase.classname} modelindex must resolve to the spawned health model`
+  );
+}
+
+const noHealthContext = createGameMainContext(imports);
+InitGame(noHealthContext);
+noHealthContext.cvars.deathmatch!.value = 1;
+noHealthContext.cvars.deathmatch!.string = "1";
+noHealthContext.runtime.deathmatch = true;
+noHealthContext.runtime.dmflags = DF_NO_HEALTH;
+for (const healthCase of healthCases) {
+  let healthEntity = spawnGameEntity(noHealthContext.runtime);
+  while (healthEntity.index <= noHealthContext.runtime.maxclients + 8) {
+    healthEntity = spawnGameEntity(noHealthContext.runtime);
+  }
+  healthEntity.classname = healthCase.classname;
+  ED_CallSpawn(healthEntity, noHealthContext.runtime);
+  assert.equal(healthEntity.inuse, false, `${healthCase.classname} must be freed by DF_NO_HEALTH in deathmatch`);
 }
 
 const skillContext = createGameMainContext(imports);

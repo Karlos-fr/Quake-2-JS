@@ -158,6 +158,10 @@ assert.equal(cvars.get("g_select_empty")?.string, "0", "g_select_empty default m
 assert.equal(cvars.get("g_select_empty")?.flags, CVAR_ARCHIVE, "g_select_empty flags mismatch");
 assert.equal(cvars.get("dedicated")?.string, "0", "dedicated default mismatch");
 assert.equal(cvars.get("dedicated")?.flags, CVAR_NOSET, "dedicated flags mismatch");
+assert.equal(cvars.get("gamename")?.string, "baseq2", "gamename default mismatch");
+assert.equal(cvars.get("gamename")?.flags, CVAR_SERVERINFO | CVAR_LATCH, "gamename flags mismatch");
+assert.equal(cvars.get("gamedate")?.string, "TypeScript port", "gamedate default mismatch");
+assert.equal(cvars.get("gamedate")?.flags, CVAR_SERVERINFO | CVAR_LATCH, "gamedate flags mismatch");
 assert.equal(cvars.get("filterban")?.string, "1", "filterban default mismatch");
 assert.equal(cvars.get("filterban")?.flags, 0, "filterban flags mismatch");
 assert.equal(cvars.get("sv_maxvelocity")?.string, "2000", "sv_maxvelocity default mismatch");

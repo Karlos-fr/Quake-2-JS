@@ -205,14 +205,15 @@
 | `Quake-2-master/game/g_local.h` | global | `speed` | `packages/game/src/g_local.ts` | `moveinfo_t.speed` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `decel` | `packages/game/src/g_local.ts` | `moveinfo_t.decel` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `distance` | `packages/game/src/g_local.ts` | `moveinfo_t.distance` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `wait` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `state` | `packages/game/src/runtime.ts` | `state` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `dir` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `current_speed` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `move_speed` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `next_speed` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `remaining_distance` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `decel_distance` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `wait` | `packages/game/src/g_local.ts` | `moveinfo_t.wait` | Valide | A redecouper | Champ `moveinfo_t` compare et verifie en defaults/mutations/persistence; runtime movers via callbacks/snapshots, apps/web full-game/local, renderer brush snapshots. Tests: `verify:g-local:header`, `verify:g-save`, `verify:g-func`, `verify:full-game:three-renderer`, `verify:web-render-order`, `typecheck`. |
+| `Quake-2-master/game/g_local.h` | global | `state` | `packages/game/src/g_local.ts` | `moveinfo_t.state` | Valide | A redecouper | Meme preuve que `wait`; valeurs `STATE_BOTTOM`/`STATE_UP` couvertes par le harness. |
+| `Quake-2-master/game/g_local.h` | global | `dir` | `packages/game/src/g_local.ts` | `moveinfo_t.dir` | Valide | A redecouper | Meme preuve que `wait`; vecteur persiste/restaure via save/load. |
+| `Quake-2-master/game/g_local.h` | global | `current_speed` | `packages/game/src/g_local.ts` | `moveinfo_t.current_speed` | Valide | A redecouper | Meme preuve que `wait`; champ numerique couvert en mutation et save/load. |
+| `Quake-2-master/game/g_local.h` | global | `move_speed` | `packages/game/src/g_local.ts` | `moveinfo_t.move_speed` | Valide | A redecouper | Meme preuve que `wait`; champ numerique couvert en mutation et save/load. |
+| `Quake-2-master/game/g_local.h` | global | `next_speed` | `packages/game/src/g_local.ts` | `moveinfo_t.next_speed` | Valide | A redecouper | Meme preuve que `wait`; champ numerique couvert en mutation et save/load. |
+| `Quake-2-master/game/g_local.h` | global | `remaining_distance` | `packages/game/src/g_local.ts` | `moveinfo_t.remaining_distance` | Valide | A redecouper | Champ `moveinfo_t` compare H/TS, defaut/mutation/persistence save/load et usages movers verifies. Tests: `verify:g-local:header`, `verify:g-save`, `verify:g-func`, `verify:g-misc`, full-game/web/renderer, `typecheck`. |
+| `Quake-2-master/game/g_local.h` | global | `decel_distance` | `packages/game/src/g_local.ts` | `moveinfo_t.decel_distance` | Valide | A redecouper | Meme preuve que `remaining_distance`; champ consomme par acceleration/deceleration plateformes/movers. |
+| `Quake-2-master/game/g_local.h` | global | `endfunc` | `packages/game/src/g_local.ts` | `moveinfo_t.endfunc` | Valide | A redecouper | Ligne ajoutee car le callback `moveinfo_t.endfunc` etait absent de la matrice generee; callback compare H/TS, defaut/mutation, invocation runtime et restore save/load verifies. |
 | `Quake-2-master/game/g_local.h` | struct | `mframe_t` | `packages/game/src/g_local.ts` | `mframe_t` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `dist` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | struct | `mmove_t` | `packages/game/src/g_local.ts` | `mmove_t` | A verifier | A redecouper |  |

@@ -40,6 +40,9 @@ import {
   SP_misc_eastertank,
   SP_misc_explobox,
   SP_misc_bigviper,
+  SP_misc_gib_arm,
+  SP_misc_gib_head,
+  SP_misc_gib_leg,
   SP_light_mine1,
   SP_light_mine2,
   SP_misc_satellite_dish,
@@ -69,6 +72,7 @@ import {
   drainGameSoundEvents,
   drainGameTempEntityEvents,
   ED_CallSpawn,
+  G_FindTeams,
   barrel_explode,
   func_explosive_explode,
   func_explosive_spawn,
@@ -134,6 +138,7 @@ function main(): void {
   verifyMiscStroggShipDelegatesTrainMovement();
   verifyMiscSatelliteDishSpawnsAndAnimatesOnUse();
   verifyLightMineSpawnsVisibleModels();
+  verifyMiscGibSpawnsVisibleTossGibs();
   verifyBigViperAndViperBombCallbacks();
   verifyBarrelDelaySchedulesDelayedExplosion();
   verifyBarrelTouchPushesOnlyFromGroundedActors();
@@ -543,28 +548,43 @@ function verifyTargetStringMapsFrames(): void {
 
   const display = spawnGameEntity(runtime);
   display.classname = "target_string";
-  display.message = "12:-";
-  SP_target_string(display, runtime);
+  display.team = "display";
+  display.message = "9-:x";
+  ED_CallSpawn(display, runtime);
 
-  const char1 = spawnGameEntity(runtime);
-  char1.classname = "target_character";
-  char1.team = "display";
-  char1.count = 1;
-  SP_target_character(char1, runtime);
+  const characters = [1, 2, 3, 4, 5, 0].map((count, index) => {
+    const character = spawnGameEntity(runtime);
+    character.classname = "target_character";
+    character.team = "display";
+    character.count = count;
+    character.model = `*${index + 1}`;
+    ED_CallSpawn(character, runtime);
+    if (count === 0) {
+      character.s.frame = 7;
+    }
+    return character;
+  });
 
-  const char2 = spawnGameEntity(runtime);
-  char2.classname = "target_character";
-  char2.team = "display";
-  char2.count = 2;
-  SP_target_character(char2, runtime);
+  G_FindTeams(runtime);
+  useGameEntity(runtime, display);
 
-  display.teammaster = char1;
-  char1.teamchain = char2;
+  assert.equal(characters[0]?.movetype, MOVETYPE_PUSH, "SP_target_character must create push movers like the C spawn");
+  assert.equal(characters[0]?.solid, SOLID_BSP, "SP_target_character must make character brushes SOLID_BSP");
+  assert.equal(characters[0]?.s.modelindex, 2, "SP_target_character must apply gi.setmodel semantics for inline BSP models");
+  assert.equal(characters[0]?.linked, true, "SP_target_character must link the visible brush digit");
+  assert.equal(display.use, target_string_use, "SP_target_string must install target_string_use");
+  assert.equal(display.teammaster, display, "G_FindTeams must make the target_string the team master in map order");
+  assert.equal(characters[0]?.s.frame, 9, "target_string must map digits to matching frames");
+  assert.equal(characters[1]?.s.frame, 10, "target_string must map '-' to frame 10");
+  assert.equal(characters[2]?.s.frame, 11, "target_string must map ':' to frame 11");
+  assert.equal(characters[3]?.s.frame, 12, "target_string must map unsupported characters to blank frame 12");
+  assert.equal(characters[4]?.s.frame, 12, "target_string must blank counts beyond the message length");
+  assert.equal(characters[5]?.s.frame, 7, "target_string must skip target_character entities with count 0");
 
-  target_string_use(display, null, null, runtime);
-
-  assert.equal(char1.s.frame, 1, "target_string must map first digit");
-  assert.equal(char2.s.frame, 2, "target_string must map second digit");
+  const directDisplay = spawnGameEntity(runtime);
+  directDisplay.classname = "target_string";
+  SP_target_string(directDisplay, runtime);
+  assert.equal(directDisplay.message, "", "SP_target_string must default missing messages to an empty string");
 }
 
 function verifyFuncClockBootstrapsTargetStringMessage(): void {
@@ -1227,6 +1247,50 @@ function verifyLightMineSpawnsVisibleModels(): void {
   dispatchMine2.classname = "light_mine2";
   ED_CallSpawn(dispatchMine2, runtime);
   assert.equal(runtime.assets.modelPaths[dispatchMine2.s.modelindex - 1], "models/objects/minelite/light2/tris.md2", "ED_CallSpawn must dispatch light_mine2");
+}
+
+function verifyMiscGibSpawnsVisibleTossGibs(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 12;
+
+  const cases = [
+    { classname: "misc_gib_arm", spawn: SP_misc_gib_arm, model: "models/objects/gibs/arm/tris.md2", random: [0.1, 0.2, 0.3] },
+    { classname: "misc_gib_leg", spawn: SP_misc_gib_leg, model: "models/objects/gibs/leg/tris.md2", random: [0.4, 0.5, 0.6] },
+    { classname: "misc_gib_head", spawn: SP_misc_gib_head, model: "models/objects/gibs/head/tris.md2", random: [0.7, 0.8, 0.9] }
+  ];
+
+  for (const testCase of cases) {
+    const gib = spawnFreeableEntity(runtime);
+    gib.classname = testCase.classname;
+
+    withMockedRandom(testCase.random, () => {
+      testCase.spawn(gib, runtime);
+    });
+
+    assert.equal(gib.model, testCase.model, `${testCase.classname} model path mismatch`);
+    assert.equal(runtime.assets.modelPaths[gib.s.modelindex - 1], testCase.model, `${testCase.classname} modelindex mismatch`);
+    assert.equal(gib.solid, SOLID_NOT, `${testCase.classname} must be nonsolid`);
+    assert.equal((gib.s.effects & EF_GIB) !== 0, true, `${testCase.classname} must carry EF_GIB`);
+    assert.equal(gib.takedamage, damage_t.DAMAGE_YES, `${testCase.classname} must be damageable`);
+    assert.equal(gib.die, gib_die, `${testCase.classname} must install gib_die`);
+    assert.equal(gib.movetype, MOVETYPE_TOSS, `${testCase.classname} must toss`);
+    assert.equal((gib.svflags & SVF_MONSTER) !== 0, true, `${testCase.classname} must keep SVF_MONSTER`);
+    assert.equal(gib.deadflag, DEAD_DEAD, `${testCase.classname} must spawn dead`);
+    assert.deepEqual(gib.avelocity, testCase.random.map((value) => value * 200), `${testCase.classname} angular velocity mismatch`);
+    assert.equal(gib.think?.name, "freeEdictThink", `${testCase.classname} must schedule G_FreeEdict adapter`);
+    assert.equal(gib.nextthink, runtime.time + 30, `${testCase.classname} cleanup time mismatch`);
+    assert.equal(gib.linked, true, `${testCase.classname} must link for snapshots`);
+    assert.equal(runtime.linkedDynamicBoxEntities.includes(gib), false, `${testCase.classname} must remain nonsolid runtime output`);
+  }
+
+  const dispatch = spawnFreeableEntity(runtime);
+  dispatch.classname = "misc_gib_head";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(runtime.assets.modelPaths[dispatch.s.modelindex - 1], "models/objects/gibs/head/tris.md2", "ED_CallSpawn must dispatch misc_gib_head");
+
+  dispatch.nextthink = runtime.time;
+  runPendingThinks(runtime);
+  assert.equal(dispatch.inuse, false, "misc_gib_head scheduled cleanup must free the entity");
 }
 
 function verifyBigViperAndViperBombCallbacks(): void {

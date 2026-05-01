@@ -112,6 +112,12 @@ export function SP_target_temp_entity(ent: GameEntity, _runtime: GameRuntime): v
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Toggles looped speaker sounds through `s.sound`, or emits a positioned one-shot sound.
+ *
+ * Porting notes:
+ * - Queues the original `gi.positioned_sound` call through the runtime sound-event bridge.
  */
 export function Use_Target_Speaker(ent: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   if ((ent.spawnflags & (TARGET_SPEAKER_LOOPED_ON | TARGET_SPEAKER_LOOPED_OFF)) !== 0) {
@@ -136,6 +142,12 @@ export function Use_Target_Speaker(ent: GameEntity, _other: GameEntity | null, _
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Precaches the configured noise, applies volume/attenuation defaults, prestarts looped sounds, and links the entity.
+ *
+ * Porting notes:
+ * - Uses `ent.properties.noise` for the original map spawn temp value `st.noise`.
  */
 export function SP_target_speaker(ent: GameEntity, runtime: GameRuntime): void {
   const noise = ent.properties.noise;

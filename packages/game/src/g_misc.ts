@@ -2159,10 +2159,22 @@ export function SP_misc_gib_head(ent: GameEntity, runtime: GameRuntime): void {
   initialize_misc_gib(ent, runtime, "models/objects/gibs/head/tris.md2");
 }
 
+/**
+ * Original name: SP_target_character
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns one brush digit cell used by `target_string`, defaulting its displayed frame to blank.
+ *
+ * Porting notes:
+ * - `setGameEntityModel` adapts the original `gi.setmodel` import for inline BSP display brushes.
+ */
 export function SP_target_character(self: GameEntity, runtime: GameRuntime): void {
   self.movetype = MOVETYPE_PUSH;
-  if (self.model && !self.model.startsWith("*")) {
-    self.s.modelindex = registerGameModel(runtime, self.model);
+  if (self.model) {
+    setGameEntityModel(runtime, self, self.model);
   }
   self.solid = SOLID_BSP;
   self.s.frame = 12;
@@ -2170,6 +2182,15 @@ export function SP_target_character(self: GameEntity, runtime: GameRuntime): voi
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: target_string_use
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Updates every teamed `target_character` frame from the current message, mapping digits, `-`, `:` and blanks.
+ */
 export function target_string_use(
   self: GameEntity,
   _other: GameEntity | null,

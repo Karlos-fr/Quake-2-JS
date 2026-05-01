@@ -2,6 +2,42 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: `SP_target_character`, `target_string_use`, local `e` et local `c`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `SP_target_character` conserve `MOVETYPE_PUSH`, l'equivalent `gi.setmodel`, `SOLID_BSP`, la frame initiale 12 et le link; `target_string_use` conserve le parcours `teammaster`/`teamchain`, le skip `count == 0`, l'index `count - 1`, le blank hors longueur, et le mapping chiffres / `-` / `:` / autres caracteres.
+  - Locaux compares: `e` est porte par l'iteration TS `entity` sur la chaine d'equipe construite par `G_FindTeams`; `c` est porte par `const c` avant le mapping de frame.
+  - Commentaires d'en-tete ajoutes: `SP_target_character` et `target_string_use` documentent original/source/categorie portee/fidelite `Strict`, comportement et note de portage pour `gi.setmodel`.
+  - Branchement runtime verifie: `target_character` et `target_string` sont enregistres dans `g_spawn.ts`, exportes via `index.ts`, dispatchables par `ED_CallSpawn`, chaines par `G_FindTeams`; `target_string_use` est atteint par le callback `useGameEntity`/`G_UseTargets` et met a jour les frames des brush digits pendant le runtime.
+  - `apps/web`: integration attendue car le lot produit des brush entities visibles dont les frames changent via le runtime. Aucune logique parallele trouvee; le web consomme les sorties via les flux local/full-game, snapshots, layouts/HUD separes et refresh frames.
+  - `renderer-three`: integration attendue pour brush models inline visibles et changement de frame/skin de chiffres; les sorties passent par packet entities, `ClientRefreshFrame.entities`, model configstrings et `refresh-entity-sync`/world adapters. Pas de compensation gameplay cote renderer.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: `SP_target_character` utilise maintenant `setGameEntityModel` pour restituer `gi.setmodel` sur les inline BSP models; headers de portage ajoutes.
+  - `scripts/verify/quake2-g-misc.ts`: preuve cible renforcee pour `ED_CallSpawn`, `G_FindTeams`, `useGameEntity`, modele inline, link, count 0, hors longueur et mapping complet.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `SP_target_string`, `CLOCK_MESSAGE_SIZE`, `func_clock_reset` et `func_clock_format_countdown` si le lot reste petit.
+
+- 2026-05-01: `SP_misc_gib_arm`, `SP_misc_gib_leg` et `SP_misc_gib_head`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: les trois spawns conservent leur modele MD2 respectif (`arm`, `leg`, `head`), `SOLID_NOT`, `EF_GIB`, `DAMAGE_YES`, callback `gib_die`, `MOVETYPE_TOSS`, `SVF_MONSTER`, `DEAD_DEAD`, avelocity `random() * 200` sur les trois axes, cleanup par equivalent `G_FreeEdict` a `level.time + 30` et `linkentity`.
+  - Commentaires d'en-tete verifies: les trois fonctions sont documentees avec original/source/categorie portee/fidelite `Close`; la factorisation TS par `initialize_misc_gib` est documentee.
+  - Branchement runtime verifie: `misc_gib_arm`, `misc_gib_leg` et `misc_gib_head` sont enregistres dans `g_spawn.ts`, exportes via `index.ts` et dispatchables par `ED_CallSpawn`; ces entites sont destinees au `target_spawner`, deviennent visibles par link runtime, puis sont avancees/nettoyees par les callbacks de frame.
+  - `apps/web`: integration attendue car le lot produit des modeles MD2 visibles avec `EF_GIB`. Aucune logique parallele trouvee; le web consomme les sorties runtime via les flux local/full-game, packet entities, configstrings modeles et refresh frames.
+  - `renderer-three`: integration attendue pour modeles MD2, origine, angles/avelocity via snapshots et effets `EF_GIB`. Les sorties visibles passent par `ClientRefreshFrame.entities`, configstrings `CS_MODELS + modelindex`, `refresh-entity-sync` et les effets client `EF_GIB`; pas de branchement dedie manquant.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: test cible ajoute pour les trois spawns, hasard controle, modelindex, flags/champs runtime, link nonsolid, dispatch `ED_CallSpawn` et cleanup planifie.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `SP_target_character`, `target_string_use`, local `e` et local `c` si le lot reste petit.
+
 - 2026-05-01: `SP_light_mine1` et `SP_light_mine2`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: les deux spawns conservent `MOVETYPE_NONE`, `SOLID_BBOX`, l'enregistrement du modele MD2 respectif (`models/objects/minelite/light1/tris.md2` et `models/objects/minelite/light2/tris.md2`) et le link entity.

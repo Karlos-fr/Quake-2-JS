@@ -295,6 +295,8 @@ export function InitGame(context: GameMainContext): void {
   context.cvars.g_select_empty = context.gi.cvar("g_select_empty", "0", CVAR_ARCHIVE);
   context.cvars.dedicated = context.gi.cvar("dedicated", "0", CVAR_NOSET);
   context.cvars.sv_cheats = context.gi.cvar("cheats", "0", CVAR_SERVERINFO | CVAR_LATCH);
+  context.gi.cvar("gamename", GAMEVERSION, CVAR_SERVERINFO | CVAR_LATCH);
+  context.gi.cvar("gamedate", GAME_BUILD_DATE, CVAR_SERVERINFO | CVAR_LATCH);
   context.cvars.flood_msgs = context.gi.cvar("flood_msgs", "4", 0);
   context.cvars.flood_persecond = context.gi.cvar("flood_persecond", "4", 0);
   context.cvars.flood_waitdelay = context.gi.cvar("flood_waitdelay", "10", 0);
@@ -1178,6 +1180,8 @@ const WORLDSPAWN_SOUND_PRECACHE = [
   "weapons/noammo.wav",
   "infantry/inflies1.wav"
 ] as const;
+
+const GAME_BUILD_DATE = "TypeScript port";
 
 function syncLevelFromRuntime(context: GameMainContext): void {
   context.level.framenum = context.runtime.framenum;

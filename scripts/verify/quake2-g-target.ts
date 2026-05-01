@@ -57,6 +57,7 @@ import {
   SP_target_spawner,
   SP_target_splash,
   SP_target_temp_entity,
+  Use_Target_Speaker,
   Use_Target_Tent,
   target_lightramp_use,
   trigger_crosslevel_trigger_use,
@@ -101,8 +102,34 @@ function verifyTargetSpeaker(): void {
   SP_target_speaker(normal, runtime);
 
   assert.equal(runtime.assets.soundPaths[normal.noise_index - 1], "misc/talk.wav", "target_speaker wav suffix mismatch");
+  assert.equal(normal.volume, 1, "target_speaker default volume mismatch");
+  assert.equal(normal.attenuation, 1, "target_speaker default attenuation mismatch");
+  assert.equal(normal.use, Use_Target_Speaker, "target_speaker use callback mismatch");
+  assert.equal(normal.linked, true, "target_speaker must link after spawn");
   normal.use?.(normal, null, null, runtime);
-  assert.equal(runtime.soundEvents.at(-1)?.soundPath, "misc/talk.wav", "target_speaker sound event mismatch");
+  const normalSound = runtime.soundEvents.at(-1);
+  assert.equal(normalSound?.soundPath, "misc/talk.wav", "target_speaker sound event mismatch");
+  assert.equal(normalSound?.channel, CHAN_VOICE, "target_speaker normal channel mismatch");
+  assert.equal(normalSound?.volume, 1, "target_speaker normal volume mismatch");
+  assert.equal(normalSound?.attenuation, 1, "target_speaker normal attenuation mismatch");
+  assert.deepEqual(normalSound?.origin, normal.s.origin, "target_speaker positioned origin mismatch");
+
+  const reliable = spawnGameEntity(runtime);
+  reliable.classname = "target_speaker";
+  reliable.properties.noise = "misc/alert.wav";
+  reliable.spawnflags = 4;
+  reliable.volume = 0.25;
+  reliable.attenuation = -1;
+  reliable.origin = [4, 5, 6];
+  SP_target_speaker(reliable, runtime);
+  assert.equal(runtime.assets.soundPaths[reliable.noise_index - 1], "misc/alert.wav", "target_speaker must preserve wav suffix");
+  assert.equal(reliable.attenuation, 0, "target_speaker attenuation -1 must map to 0");
+  reliable.use?.(reliable, null, null, runtime);
+  const reliableSound = runtime.soundEvents.at(-1);
+  assert.equal(reliableSound?.channel, CHAN_VOICE | CHAN_RELIABLE, "target_speaker reliable channel mismatch");
+  assert.equal(reliableSound?.volume, 0.25, "target_speaker custom volume mismatch");
+  assert.equal(reliableSound?.attenuation, 0, "target_speaker custom attenuation mismatch");
+  assert.deepEqual(reliableSound?.origin, [4, 5, 6], "target_speaker reliable origin mismatch");
 
   const looped = spawnGameEntity(runtime);
   looped.classname = "target_speaker";
@@ -112,6 +139,25 @@ function verifyTargetSpeaker(): void {
   assert.equal(looped.s.sound, looped.noise_index, "target_speaker prestarted loop mismatch");
   looped.use?.(looped, null, null, runtime);
   assert.equal(looped.s.sound, 0, "target_speaker loop toggle off mismatch");
+
+  const loopedOff = spawnGameEntity(runtime);
+  loopedOff.classname = "target_speaker";
+  loopedOff.properties.noise = "world/machine";
+  loopedOff.spawnflags = 2;
+  SP_target_speaker(loopedOff, runtime);
+  assert.equal(loopedOff.s.sound, 0, "target_speaker looped-off spawn must not prestart");
+  loopedOff.use?.(loopedOff, null, null, runtime);
+  assert.equal(loopedOff.s.sound, loopedOff.noise_index, "target_speaker looped-off use must toggle on");
+
+  const missingNoise = spawnGameEntity(runtime);
+  missingNoise.classname = "target_speaker";
+  SP_target_speaker(missingNoise, runtime);
+  assert.equal(missingNoise.use, undefined, "target_speaker with no noise must not install use callback");
+  assert.equal(missingNoise.linked, false, "target_speaker with no noise must not link");
+  assert.ok(
+    runtime.logEntries.some((entry) => entry.message.includes("target_speaker with no noise set")),
+    "target_speaker with no noise must warn"
+  );
 }
 
 function verifyTargetHelpSecretGoal(): void {

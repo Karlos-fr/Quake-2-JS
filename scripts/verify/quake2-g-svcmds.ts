@@ -26,6 +26,12 @@ const prints: string[] = [];
 const writes = new Map<string, string>();
 const command = { argv: ["sv"], args: "" };
 
+assert.equal(MAX_IPFILTERS, 1024, "MAX_IPFILTERS mismatch");
+assert.equal(state.ipfilters.length, MAX_IPFILTERS, "ipfilters must reserve the original fixed table size");
+assert.equal(state.numipfilters, 0, "numipfilters must start at zero");
+assert.deepEqual(state.ipfilters[0], { mask: 0, compare: 0 }, "ipfilter_t slots must zero-initialize mask/compare");
+assert.notEqual(state.ipfilters[0], state.ipfilters[1], "ipfilter_t slots must be independent mutable objects");
+
 const cvars = new Map<string, cvar_t>([
   ["filterban", createCvar("filterban", "1")],
   ["game", createCvar("game", "baseq2")]
@@ -60,6 +66,11 @@ assert.equal(prints.pop(), "Svcmd_Test_f()\n", "sv test output mismatch");
 
 runCommand(["sv", "addip", "192.246.40"]);
 assert.equal(state.numipfilters, 1, "addip must grow the filter list");
+assert.deepEqual(
+  state.ipfilters[0],
+  { mask: 0x00ffffff, compare: 0x0028f6c0 },
+  "addip must populate the original little-endian mask/compare pair"
+);
 assert.equal(SV_FilterPacket(state, context, "192.246.40.7:27910"), true, "matching addresses must be filtered when filterban=1");
 assert.equal(SV_FilterPacket(state, context, "192.246.41.7:27910"), false, "non-matching addresses must pass when filterban=1");
 
@@ -103,8 +114,6 @@ assert.equal(prints.pop(), "Unknown server command \"bogus\"\n", "unknown comman
 runCommand(["sv", "addip", "bad.ip"]);
 assert.equal(state.numipfilters, 3, "failed addip must still consume the newly allocated slot like the original code");
 assert.equal(prints.splice(0).join(""), "Bad filter address: bad.ip\n", "bad addip diagnostic mismatch");
-
-assert.equal(MAX_IPFILTERS, 1024, "MAX_IPFILTERS mismatch");
 
 console.log("quake2-g-svcmds: ok");
 

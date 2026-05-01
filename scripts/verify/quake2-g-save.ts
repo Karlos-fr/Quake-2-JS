@@ -13,6 +13,7 @@ import { strict as assert } from "node:assert";
 
 import type { cvar_t } from "../../packages/qcommon/src/index.js";
 import { attachGameClient, createRuntimeEntity, type GameMonsterMove } from "../../packages/game/src/runtime.js";
+import { FindItem } from "../../packages/game/src/g_items.js";
 import { target_crosslevel_target_think, use_target_secret } from "../../packages/game/src/g_target.js";
 import {
   ReadGame,
@@ -31,7 +32,7 @@ import {
   registerGameSaveFunction,
   registerGameSaveMove
 } from "../../packages/game/src/g_save.js";
-import { CLOFS, FFL_NOSPAWN, FFL_SPAWNTEMP, LLOFS, STOFS, fieldtype_t } from "../../packages/game/src/g_local.js";
+import { CLOFS, FFL_NOSPAWN, FFL_SPAWNTEMP, ITEM_INDEX, LLOFS, STOFS, fieldtype_t } from "../../packages/game/src/g_local.js";
 
 const files = new Map<string, string>();
 const linked: number[] = [];
@@ -279,9 +280,16 @@ writeContext.runtime.serverflags = 3;
 
 const player = createRuntimeEntity({ classname: "player" }, 1);
 const client = attachGameClient(player);
+const blaster = FindItem("Blaster");
+const shotgun = FindItem("Shotgun");
+assert.ok(blaster, "Save harness requires the Blaster item");
+assert.ok(shotgun, "Save harness requires the Shotgun item");
 player.inuse = true;
 player.health = 75;
 player.max_health = 110;
+client.pers.weapon = blaster;
+client.pers.lastweapon = shotgun;
+client.newweapon = shotgun;
 client.resp.score = 9;
 writeContext.game.clients = [client];
 writeContext.runtime.entities = [createRuntimeEntity({ classname: "worldspawn" }, 0), player];
@@ -296,6 +304,10 @@ assert.ok(gameJson.includes("\"serverflags\": 3"), "WriteGame must persist runti
 assert.ok(gameJson.includes("\"num_items\": 41"), "WriteGame must persist game num_items");
 assert.ok(gameJson.includes("\"autosaved\": false"), "manual WriteGame must persist autosaved false");
 assert.ok(gameJson.includes("\"health\": 75"), "WriteGame must call SaveClientData before manual saves");
+const gameSave = JSON.parse(gameJson) as { clients: Array<{ pers: { weapon: number; lastweapon: number }; newweapon: number }> };
+assert.equal(gameSave.clients[0]?.pers.weapon, ITEM_INDEX(blaster), "WriteGame must encode client pers.weapon as the C F_ITEM index");
+assert.equal(gameSave.clients[0]?.pers.lastweapon, ITEM_INDEX(shotgun), "WriteGame must encode client pers.lastweapon as the C F_ITEM index");
+assert.equal(gameSave.clients[0]?.newweapon, ITEM_INDEX(shotgun), "WriteGame must encode client newweapon as the C F_ITEM index");
 
 WriteGame(writeContext, "save/game-auto.ssv", true);
 const autosaveJson = files.get("save/game-auto.ssv") ?? "";
@@ -344,6 +356,8 @@ const target = createRuntimeEntity({ classname: "target_crosslevel_target" }, 2)
 target.inuse = true;
 target.delay = 2.5;
 target.owner = player;
+target.enemy = player;
+target.item = shotgun;
 target.moveinfo.start_origin = [16, 24, 32];
 target.moveinfo.start_angles = [0, 90, 0];
 target.moveinfo.end_origin = [128, 24, 48];
@@ -355,6 +369,15 @@ target.moveinfo.accel = 14.5;
 target.moveinfo.speed = 80;
 target.moveinfo.decel = 21.25;
 target.moveinfo.distance = 256;
+target.moveinfo.wait = 1.75;
+target.moveinfo.state = 2;
+target.moveinfo.dir = [0, 1, 0];
+target.moveinfo.current_speed = 32;
+target.moveinfo.move_speed = 64;
+target.moveinfo.next_speed = 16;
+target.moveinfo.remaining_distance = 48;
+target.moveinfo.decel_distance = 24;
+target.moveinfo.endfunc = saveHarnessCallback;
 target.think = target_crosslevel_target_think;
 target.use = use_target_secret;
 target.monsterinfo.currentmove = testMonsterMove;
@@ -427,6 +450,46 @@ assert.ok(levelJson.includes("\"accel\": 14.5"), "WriteLevel must persist movein
 assert.ok(levelJson.includes("\"speed\": 80"), "WriteLevel must persist moveinfo speed");
 assert.ok(levelJson.includes("\"decel\": 21.25"), "WriteLevel must persist moveinfo decel");
 assert.ok(levelJson.includes("\"distance\": 256"), "WriteLevel must persist moveinfo distance");
+assert.ok(levelJson.includes("\"wait\": 1.75"), "WriteLevel must persist moveinfo wait");
+assert.ok(levelJson.includes("\"state\": 2"), "WriteLevel must persist moveinfo state");
+assert.ok(levelJson.includes("\"dir\": ["), "WriteLevel must persist moveinfo dir");
+assert.ok(levelJson.includes("\"current_speed\": 32"), "WriteLevel must persist moveinfo current_speed");
+assert.ok(levelJson.includes("\"move_speed\": 64"), "WriteLevel must persist moveinfo move_speed");
+assert.ok(levelJson.includes("\"next_speed\": 16"), "WriteLevel must persist moveinfo next_speed");
+assert.ok(levelJson.includes("\"remaining_distance\": 48"), "WriteLevel must persist moveinfo remaining_distance");
+assert.ok(levelJson.includes("\"decel_distance\": 24"), "WriteLevel must persist moveinfo decel_distance");
+assert.ok(levelJson.includes("\"endfunc\": \"saveHarnessCallback\""), "WriteLevel must persist moveinfo endfunc callback");
+const levelSave = JSON.parse(levelJson) as {
+  level: { sight_client: number; sight_entity: number; sound_entity: number; sound2_entity: number; current_entity: number };
+  entities: Array<{
+    entnum: number;
+    entity: {
+      owner: number;
+      enemy: number;
+      item: number;
+      callbacks: {
+        think: string | null;
+        use: string | null;
+        monsterinfo: { currentmove: string | null };
+        moveinfo: { endfunc: string | null };
+      };
+    };
+  }>;
+};
+const targetSave = levelSave.entities.find((record) => record.entnum === target.index)?.entity;
+assert.ok(targetSave, "WriteLevel must write the in-use target entity");
+assert.equal(levelSave.level.sight_client, player.index, "WriteLevel must encode level sight_client as the C F_EDICT index");
+assert.equal(levelSave.level.sight_entity, target.index, "WriteLevel must encode level sight_entity as the C F_EDICT index");
+assert.equal(levelSave.level.sound_entity, target.index, "WriteLevel must encode level sound_entity as the C F_EDICT index");
+assert.equal(levelSave.level.sound2_entity, player.index, "WriteLevel must encode level sound2_entity as the C F_EDICT index");
+assert.equal(levelSave.level.current_entity, target.index, "WriteLevel must encode level current_entity as the C F_EDICT index");
+assert.equal(targetSave.owner, player.index, "WriteLevel must encode entity owner as the C F_EDICT index");
+assert.equal(targetSave.enemy, player.index, "WriteLevel must encode entity enemy as the C F_EDICT index");
+assert.equal(targetSave.item, ITEM_INDEX(shotgun), "WriteLevel must encode entity item as the C F_ITEM index");
+assert.equal(targetSave.callbacks.think, "target_crosslevel_target_think", "WriteLevel must encode entity think by stable function name");
+assert.equal(targetSave.callbacks.use, "use_target_secret", "WriteLevel must encode entity use by stable function name");
+assert.equal(targetSave.callbacks.monsterinfo.currentmove, "test_move_save_restore", "WriteLevel must encode monster currentmove by stable mmove name");
+assert.equal(targetSave.callbacks.moveinfo.endfunc, "saveHarnessCallback", "WriteLevel must encode moveinfo endfunc by stable function name");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
 readContext.runtime.maxclients = 1;
@@ -436,6 +499,8 @@ readContext.runtime.entities[2] = createRuntimeEntity({ classname: "stale_entity
 ReadLevel(readContext, "save/level.sav");
 assert.equal(readContext.runtime, preservedRuntime, "ReadLevel must preserve the existing runtime object");
 assert.equal(readContext.runtime.entities[2]?.owner, readContext.runtime.entities[1], "ReadLevel edict reference restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.enemy, readContext.runtime.entities[1], "ReadLevel enemy edict reference restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.item, shotgun, "ReadLevel item index restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.think, target_crosslevel_target_think, "ReadLevel think callback restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.use, use_target_secret, "ReadLevel use callback restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.monsterinfo.currentmove, testMonsterMove, "ReadLevel currentmove restore mismatch");
@@ -450,6 +515,15 @@ assert.equal(readContext.runtime.entities[2]?.moveinfo.accel, 14.5, "ReadLevel m
 assert.equal(readContext.runtime.entities[2]?.moveinfo.speed, 80, "ReadLevel moveinfo speed mismatch");
 assert.equal(readContext.runtime.entities[2]?.moveinfo.decel, 21.25, "ReadLevel moveinfo decel mismatch");
 assert.equal(readContext.runtime.entities[2]?.moveinfo.distance, 256, "ReadLevel moveinfo distance mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.wait, 1.75, "ReadLevel moveinfo wait mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.state, 2, "ReadLevel moveinfo state mismatch");
+assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.dir, [0, 1, 0], "ReadLevel moveinfo dir mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.current_speed, 32, "ReadLevel moveinfo current_speed mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.move_speed, 64, "ReadLevel moveinfo move_speed mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.next_speed, 16, "ReadLevel moveinfo next_speed mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.remaining_distance, 48, "ReadLevel moveinfo remaining_distance mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.decel_distance, 24, "ReadLevel moveinfo decel_distance mismatch");
+assert.equal(readContext.runtime.entities[2]?.moveinfo.endfunc, saveHarnessCallback, "ReadLevel moveinfo endfunc restore mismatch");
 assert.equal(readContext.level.sound_entity, readContext.runtime.entities[2], "ReadLevel level edict reference mismatch");
 assert.equal(readContext.runtime.sound_entity, readContext.runtime.entities[2], "ReadLevel runtime level mirror mismatch");
 assert.equal(readContext.level.sound_entity_framenum, 122, "ReadLevel sound_entity_framenum mismatch");

@@ -833,6 +833,42 @@
   - `scripts/verify/quake2-g-save.ts`: assertions de persistance/restauration save/load pour les sept champs.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-func` OK; `npm run verify:g-misc` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
+- 2026-05-01: suite du lot `moveinfo_t` avec `wait`, `state`, `dir`, `current_speed`, `move_speed`, `next_speed`.
+- Verdict: `Valide` pour les 6 champs apres comparaison H/TS, verification de l'ordre de structure, valeurs par defaut, mutations, usages movers, acceleration/deceleration et persistance save/load.
+- Source H comparee: dans `moveinfo_t`, `wait` est le delai de pause des movers, puis les donnees d'etat `state`, `dir`, `current_speed`, `move_speed` et `next_speed` suivent immediatement comme en C.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `moveinfo_t` vers `GameMoveInfo`, point d'attache header pour les six champs.
+  - `packages/game/src/runtime.ts`: `GameMoveInfo` et `createMoveInfo` portent les six champs dans l'ordre C; defaults verifies: `wait = 0`, `state = STATE_BOTTOM`, `dir = [0,0,0]`, vitesses a `0`.
+  - `packages/game/src/g_func.ts`: `wait` et `state` pilotent portes, plateformes, boutons, eau et trains; `dir`, `current_speed`, `move_speed` et `next_speed` alimentent `Move_Calc`, `Think_AccelMove`, `plat_CalcAcceleratedMove` et `plat_Accelerate`.
+  - `packages/game/src/g_misc.ts`: les entites speciales viper/strogg/viper bomb consomment `moveinfo.dir` et `moveinfo.speed`.
+  - `packages/game/src/g_save.ts`: `snapshotMoveInfo` copie `dir` et le spread du bloc conserve les champs numeriques; `ReadLevel` restaure les six champs.
+- Runtime: integration attendue et branchee depuis les spawn/use/touch/think des brush movers vers `edict_t.moveinfo`, puis execution par `G_RunFrame` via callbacks de think, changement de `velocity`/`avelocity`, sons movers, link entity et snapshots serveur. Aucune racine runtime manquante identifiee pour ce lot.
+- apps/web: integration attendue via host local/full-game qui charge les entites BSP, avance le runtime game et consomme snapshots, sons et ordre de rendu. Aucune logique parallele `moveinfo_t` detectee dans `apps/web`; les tests full-game/local/web passent.
+- renderer-three: integration indirecte attendue car ces champs produisent des sorties visibles pour brush models, trains, portes, plateformes, camera/scene et snapshots. `packages/renderer-three` consomme les brush model snapshots et transforms via le flux client/refresh/full-game, sans lecture directe attendue de `moveinfo_t`; test renderer OK.
+- Commentaires/documentation: commentaire de portage `moveinfo_t` verifie dans `runtime.ts`; commentaires d'en-tete des fonctions portees impliquees (`Move_Calc`, `Think_AccelMove`, `plat_CalcAcceleratedMove`, `plat_Accelerate`, `button_wait`, `train_wait`, etc.) verifies quand applicables.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions de defaults et mutations pour `wait`, `state`, `dir`, `current_speed`, `move_speed`, `next_speed`.
+  - `scripts/verify/quake2-g-save.ts`: assertions de persistance/restauration save/load pour les six champs.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-func` OK; `npm run verify:g-misc` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- 2026-05-01: fin du lot `moveinfo_t` avec `remaining_distance`, `decel_distance`, `endfunc`.
+- Verdict: `Valide` pour les 3 champs apres comparaison H/TS, verification de l'ordre de structure, valeurs par defaut, mutations, usages movers, callback de fin de mouvement et persistance save/load.
+- Source H comparee: dans `moveinfo_t`, `remaining_distance` et `decel_distance` terminent les donnees d'acceleration/deceleration, puis `endfunc` est le callback C `void (*endfunc)(edict_t *)` appele quand le mouvement lineaire ou angulaire est termine.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `moveinfo_t` vers `GameMoveInfo`, point d'attache header pour les trois champs.
+  - `packages/game/src/runtime.ts`: `GameMoveInfo` et `createMoveInfo` portent les trois champs dans l'ordre C; defaults verifies: distances a `0`, `endfunc = undefined`; commentaire de portage `moveinfo_t` verifie.
+  - `packages/game/src/g_func.ts`: `Move_Calc`, `Move_Final`, `Move_Begin`, `AngleMove_Calc`, `AngleMove_Final`, `plat_CalcAcceleratedMove`, `plat_Accelerate`, `Think_AccelMove` et les callbacks portes/boutons/trains/secret doors lisent/ecrivent ces champs et appellent `endfunc` comme le C.
+  - `packages/game/src/g_save.ts`: `snapshotMoveInfo` persiste les distances numeriques; `snapshotEntityCallbacks`/`restoreEntityCallbacks` persistent et restaurent `moveinfo.endfunc` via nom de callback.
+- Runtime: integration attendue et branchee depuis les spawn/use/touch/think des brush movers vers `edict_t.moveinfo`, puis execution par `G_RunFrame` via callbacks de think, calcul de vitesse restante/deceleration, invocation du callback terminal, link entity et snapshots serveur. Aucune racine runtime manquante identifiee pour ce lot.
+- apps/web: integration attendue via host local/full-game qui charge les entites BSP, avance le runtime game et consomme snapshots, sons et ordre de rendu. Aucune logique parallele `moveinfo_t` detectee dans `apps/web`; les tests full-game/local/web passent.
+- renderer-three: integration indirecte attendue car ces champs produisent des sorties visibles pour brush models, trains, portes, plateformes, camera/scene et snapshots. `packages/renderer-three` consomme les brush model snapshots et transforms via le flux client/refresh/full-game, sans lecture directe attendue de `moveinfo_t`; test renderer OK.
+- Commentaires/documentation: commentaire de portage `moveinfo_t` verifie dans `runtime.ts`; commentaires d'en-tete des fonctions portees impliquees (`Move_Final`, `Move_Begin`, `Move_Calc`, `AngleMove_Final`, `AngleMove_Begin`, `AngleMove_Calc`, `Think_AccelMove`, `plat_CalcAcceleratedMove`, `plat_Accelerate`) verifies quand applicables.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions de defaults, mutations et invocation pour `remaining_distance`, `decel_distance`, `endfunc`.
+  - `scripts/verify/quake2-g-save.ts`: assertions de persistance/restauration save/load pour les deux distances et le callback `moveinfo.endfunc`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: ligne explicite ajoutee pour `moveinfo_t.endfunc`, absente de la matrice generee.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-func` OK; `npm run verify:g-misc` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -866,7 +902,7 @@
 
 ## Prochain lot recommande
 
-- Continuer `moveinfo_t` avec `wait`, `state`, `dir`, puis `current_speed`, `move_speed`, `next_speed` si le lot reste petit.
+- Continuer avec `mframe_t`, `dist` et les callbacks `aifunc`/`thinkfunc` si le lot reste petit.
 
 ## Blocages
 
