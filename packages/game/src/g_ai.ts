@@ -589,6 +589,11 @@ export function FacingIdeal(self: GameEntity): boolean {
  *
  * Behavior:
  * - Decides whether the monster should begin a melee or missile attack.
+ *
+ * Porting notes:
+ * - Uses the explicit runtime collision adapter instead of `gi.trace`.
+ * - Returns `false` when no collision adapter or enemy is installed; normal monster
+ *   runtime paths provide both before this callback is reached.
  */
 export function M_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
   if (!runtime.collision || !self.enemy) {

@@ -110,3 +110,14 @@
 - Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: `M_CheckAttack` avec locales `chance` et `tr`.
+
+## Session 2026-05-01 - M_CheckAttack / chance / tr
+
+- Lot traite: `M_CheckAttack` avec locales `chance` et `tr`.
+- Verdict: `M_CheckAttack` valide; `chance` et `tr` non applicables comme variables locales portees.
+- Corrections TS: commentaire d'en-tete de `M_CheckAttack` complete pour documenter le runtime collision adapter et la garde defensive `!self.enemy`; couverture `scripts/verify/quake2-g-ai.ts` etendue pour le trace d'attaque et les seuils de chance.
+- Preuves: comparaison C/TS effectuee; le C trace des yeux du monstre aux yeux de l'ennemi avec `CONTENTS_SOLID|CONTENTS_MONSTER|CONTENTS_SLIME|CONTENTS_LAVA|CONTENTS_WINDOW` et refuse si `tr.ent != enemy`; le TS conserve les points, le passant, un extent null-equivalent `[0,0,0]`, le masque et le test `tr.ent !== enemy`. Les branches melee, absence d'attaque missile, cooldown `attack_finished`, refus `RANGE_FAR`, chances `AI_STAND_GROUND`/melee/near/mid, multiplicateurs skill, tirage strict `< chance`, cooldown missile aleatoire et etat `FL_FLY` sont conformes.
+- Integration: runtime verifie via `g_monster.monster_start` qui installe `M_CheckAttack`, puis `ai_checkattack`/`ai_run` depuis les frames monstres et `G_RunFrame`; export public verifie dans `packages/game/src/index.ts`. `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` consomme seulement les sorties visibles de la simulation (`origin`, `angles`, `frame`, `modelindex`) via `ClientRefreshFrame`/`refresh-entity-sync`, sans logique gameplay parallele attendue.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: `ai_run_melee`, `ai_run_missile`, puis `ai_run_slide` avec les locales `ofs`.

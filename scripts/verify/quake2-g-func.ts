@@ -42,6 +42,7 @@ import {
   plat_go_down,
   plat_blocked,
   rotating_blocked,
+  rotating_touch,
   train_next,
   trigger_elevator_use
 } from "../../packages/game/src/g_func.js";
@@ -80,6 +81,22 @@ rotatingBlocker.s.origin = [16, 24, 32];
 rotating_blocked(rotating, rotatingBlocker, runtime);
 assert.equal(rotatingBlocker.health, 16, "rotating_blocked damage mismatch");
 assert.equal(runtime.meansOfDeath, MOD_CRUSH, "rotating_blocked damage mod mismatch");
+const idleRotating = entity("func_rotating", 19, { dmg: "7" });
+const idleRotatingToucher = entity("idle rotating toucher", 20);
+idleRotatingToucher.health = 30;
+idleRotatingToucher.takedamage = damage_t.DAMAGE_YES;
+runtime.meansOfDeath = 0;
+rotating_touch(idleRotating, idleRotatingToucher, runtime);
+assert.equal(idleRotatingToucher.health, 30, "rotating_touch must not damage when idle");
+assert.equal(runtime.meansOfDeath, 0, "rotating_touch idle damage mod mismatch");
+const activeRotatingToucher = entity("active rotating toucher", 21);
+activeRotatingToucher.health = 30;
+activeRotatingToucher.takedamage = damage_t.DAMAGE_YES;
+activeRotatingToucher.s.origin = [4, 8, 12];
+runtime.meansOfDeath = 0;
+rotating_touch(rotating, activeRotatingToucher, runtime);
+assert.equal(activeRotatingToucher.health, 26, "rotating_touch damage mismatch");
+assert.equal(runtime.meansOfDeath, MOD_CRUSH, "rotating_touch damage mod mismatch");
 
 const button = entity("func_button", 2, { angle: "0", lip: "4", wait: "2" });
 button.size = [64, 16, 16];

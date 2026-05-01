@@ -20,6 +20,7 @@ import {
   Weapon_Chaingun,
   Weapon_HyperBlaster,
   Weapon_Machinegun,
+  Weapon_RocketLauncher,
   attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameSoundEvents,
@@ -29,7 +30,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_HYPERBLASTER, MZ_MACHINEGUN } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_ROCKET } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -39,6 +40,7 @@ function main(): void {
   verifyMachinegunFireParity();
   verifyMachinegunNoAmmoUsesVoiceChannel();
   verifyChaingunFireParity();
+  verifyRocketLauncherFireParity();
   verifyHyperBlasterFireParity();
 
   console.log("Verification p_weapon - player weapon gameplay OK");
@@ -258,6 +260,69 @@ function verifyChaingunFireParity(): void {
   assertNumber(flashes.length, 0, "Chaingun wind-down branch should not emit a muzzleflash");
 }
 
+function verifyRocketLauncherFireParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const rocketLauncher = requireItem("Rocket Launcher");
+  const rockets = requireItem("Rockets");
+  const shots: Array<{ damage: number; speed: number; damageRadius: number; radiusDamage: number }> = [];
+  const flashes: number[] = [];
+
+  player.s.modelindex = 255;
+  player.client!.pers.weapon = rocketLauncher;
+  player.client!.ammo_index = rockets.index;
+  player.client!.pers.inventory[rocketLauncher.index] = 1;
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 5;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.pers.inventory[rockets.index] = 3;
+
+  withMathRandom([0.5], () => {
+    Weapon_RocketLauncher(player, runtime, {
+      fire_rocket: (_ent, _start, _dir, damage, speed, damageRadius, radiusDamage) => {
+        shots.push({ damage, speed, damageRadius, radiusDamage });
+      },
+      emitPlayerMuzzleFlash: (_ent, weapon) => {
+        flashes.push(weapon);
+      }
+    });
+  });
+
+  assertNumber(shots.length, 1, "Weapon_RocketLauncher should fire one rocket on frame 5");
+  assertNumber(shots[0].damage, 440, "Rocket launcher quad randomized direct damage should match C");
+  assertNumber(shots[0].speed, 650, "Rocket launcher projectile speed should match C");
+  assertNumber(shots[0].damageRadius, 120, "Rocket launcher damage radius should match C");
+  assertNumber(shots[0].radiusDamage, 480, "Rocket launcher quad radius damage should match C");
+  assertNumber(flashes[0], MZ_ROCKET, "Rocket launcher should emit MZ_ROCKET");
+  assertNumber(player.client!.ps.gunframe, 6, "Rocket launcher firing should advance gunframe");
+  assertNumber(player.client!.kick_origin[0], -2, "Rocket launcher should apply original kick origin");
+  assertNumber(player.client!.kick_angles[0], -1, "Rocket launcher should apply original kick angle");
+  assertNumber(player.client!.pers.inventory[rockets.index], 2, "Rocket launcher should consume one rocket");
+
+  runtime.dmflags |= DF_INFINITE_AMMO;
+  player.client!.quad_framenum = 0;
+  player.client!.ps.gunframe = 5;
+  player.client!.pers.inventory[rockets.index] = 2;
+  shots.length = 0;
+  flashes.length = 0;
+
+  withMathRandom([0.95], () => {
+    Weapon_RocketLauncher(player, runtime, {
+      fire_rocket: (_ent, _start, _dir, damage, speed, damageRadius, radiusDamage) => {
+        shots.push({ damage, speed, damageRadius, radiusDamage });
+      },
+      emitPlayerMuzzleFlash: (_ent, weapon) => {
+        flashes.push(weapon);
+      }
+    });
+  });
+
+  assertNumber(shots[0].damage, 119, "Rocket launcher direct damage random range should match C");
+  assertNumber(shots[0].radiusDamage, 120, "Rocket launcher non-quad radius damage should match C");
+  assertNumber(player.client!.pers.inventory[rockets.index], 2, "DF_INFINITE_AMMO should prevent rocket consumption");
+}
+
 function verifyHyperBlasterFireParity(): void {
   const runtime = createHarnessRuntime();
   const player = createPlayer(runtime);
@@ -385,6 +450,7 @@ function createPlayer(runtime: GameRuntime): GameEntity {
   const shotgun = requireItem("Shotgun");
   const bullets = requireItem("Bullets");
   const cells = requireItem("Cells");
+  const rockets = requireItem("Rockets");
 
   client.pers.weapon = blaster;
   client.pers.inventory[blaster.index] = 1;
@@ -392,8 +458,20 @@ function createPlayer(runtime: GameRuntime): GameEntity {
   client.pers.inventory[shells.index] = 10;
   client.pers.inventory[bullets.index] = 50;
   client.pers.inventory[cells.index] = 50;
+  client.pers.inventory[rockets.index] = 50;
 
   return player;
+}
+
+function withMathRandom(values: number[], callback: () => void): void {
+  const original = Math.random;
+  let index = 0;
+  Math.random = () => values[Math.min(index++, values.length - 1)] ?? 0;
+  try {
+    callback();
+  } finally {
+    Math.random = original;
+  }
 }
 
 function requireItem(name: string) {

@@ -101,3 +101,14 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `Cmd_WeapPrev_f` et temporaires locaux associes (`it`, `selected_weapon`).
+
+## Session 2026-05-01 - Cmd_WeapPrev_f
+
+- Lot valide: `Cmd_WeapPrev_f` et temporaires C associes (`it`, `selected_weapon`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme retour si `pers.weapon` absent, meme calcul `selected_weapon = ITEM_INDEX(cl->pers.weapon)`, meme scan avant `(selected_weapon + i) % MAX_ITEMS`, memes filtres inventaire/callback `use`/`IT_WEAPON`, puis dispatch `it->use` via `callItemUse`.
+- Branchement runtime: `ClientCommand` dispatch `weapprev`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes par `createClientSendCmdBridge` et charge l'API game, sans logique parallele pour `weapprev`. `packages/renderer-three` consomme les effets visibles indirects par le chemin arme vue/HUD: le changement d'arme met a jour `client.newweapon`, puis `pers.weapon`, `player_state_t.gunindex` et les refresh entities d'arme.
+- Corrections: commentaire d'en-tete complete pour `Cmd_WeapPrev_f`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour absence d'arme, scan depuis `selected_weapon` et dispatch `weapprev`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:p-weapon`; `npm run verify:refresh-entity:weapon`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_WeapNext_f` et temporaires locaux associes (`it`, `selected_weapon`).

@@ -8,6 +8,21 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot memoire `TAG_GAME`, `TAG_LEVEL`.
+- Verdict: `Valide` pour les 2 macros, sans correction TS necessaire.
+- Valeurs H/TS comparees et conformes:
+  - `TAG_GAME = 765`
+  - `TAG_LEVEL = 766`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de reference directe attendue pour ces macros.
+- Runtime:
+  - Source C: `TAG_GAME` sert aux allocations persistantes game/clients et est libere a l'unload DLL ou avant `ReadGame`; `TAG_LEVEL` sert aux allocations de strings/level et est libere au chargement de niveau ou a l'unload.
+  - TS: les structures game/level sont des objets JS et les chaines sont immutables; les points de liberation conserves appellent `context.gi.FreeTags(TAG_LEVEL)` puis `context.gi.FreeTags(TAG_GAME)` dans `ShutdownGame`, `FreeTags(TAG_GAME)` dans `ReadGame`, et `FreeTags(TAG_LEVEL)` dans `ReadLevel`. `G_CopyString` conserve l'intention niveau via copie JS equivalente.
+  - Adapter serveur: `packages/server/src/sv_game.ts` implemente `TagMalloc`/`FreeTags` par tag numerique et le harness direct confirme la liberation par tag.
+- apps/web: aucune reference directe a `TAG_GAME`/`TAG_LEVEL`; pas d'integration web parallele attendue. Les effets navigateur passent par le host full-game qui utilise l'import game/server.
+- renderer-three: aucune reference directe; pas d'integration renderer attendue. Ces tags ne produisent aucune donnee visible, ils bornent seulement la duree de vie memoire.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source H "memory tags..." verifie. Pas de fonction nouvelle dans ce lot.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npx tsx ./scripts/verify/quake2-sv-game.ts` OK (`npm run verify:sv-game` absent); `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot `FL_POWER_ARMOR`, `FL_RESPAWN`, `FRAMETIME`.
 - Verdict: `Valide` pour les 3 macros apres correction limitee de l'export public.
 - Valeurs H/TS comparees et conformes:
@@ -139,7 +154,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les macros memoire simples `TAG_GAME`, `TAG_LEVEL`.
+- Continuer avec les macros simples `MELEE_DISTANCE`, `BODY_QUEUE_SIZE`.
 
 ## Blocages
 

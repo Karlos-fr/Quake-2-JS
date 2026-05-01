@@ -539,6 +539,12 @@ export function Cmd_InvUse_f(ent: GameEntity, context: GameCommandContext): void
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Scans forward from the current `pers.weapon` item index and invokes the first usable weapon in inventory.
+ *
+ * Porting notes:
+ * - Preserves Quake II's original `weapprev` scan direction through the shared `scanWeapon` helper.
  */
 export function Cmd_WeapPrev_f(ent: GameEntity, runtime: GameRuntime): void {
   scanWeapon(ent, runtime, 1);

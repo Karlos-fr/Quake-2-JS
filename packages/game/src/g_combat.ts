@@ -572,7 +572,7 @@ export function CheckTeamDamage(targ: GameEntity, attacker: GameEntity, runtime:
  * - Applies one direct damage event, including knockback, godmode/invulnerability checks, damage markers and client damage accumulation.
  *
  * Porting notes:
- * - Armor, power armor, team checks, kill dispatch and monster reaction remain explicit hooks until their source blocks are ported.
+ * - Focused tests can override armor, team, kill, temp-entity and monster-reaction callbacks through hooks; the default path uses the ported helpers.
  */
 export function T_Damage(
   targ: GameEntity,

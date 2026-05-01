@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: callback de contact `rotating_touch`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:600-604` avec `packages/game/src/g_func.ts:1233-1245`.
+- Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier que `rotating_touch` ne blesse pas quand `avelocity` est nulle, puis applique `self.dmg` et `MOD_CRUSH` quand le brush tourne.
+- Effets verifies: le port conserve la garde C sur les trois composantes de `avelocity` et delegue a `T_Damage(other, self, self, vec3_origin, other.s.origin, vec3_origin, self.dmg, 1, 0, MOD_CRUSH)`; les parametres C `plane`/`surf` restent inutilises comme dans le comportement original.
+- Branchement: `rotating_touch` est affectee au callback `touch` par `rotating_use` quand le flag STOP est actif et par `SP_func_rotating` pour les rotating START_ON/STOP; le callback est appele via `SV_Impact` ou les helpers de touch pendant le flux `G_RunFrame`/physique locale.
+- Integration: aucune logique parallele dans `apps/web`; les dommages restent gameplay runtime. Les sorties visibles du brush rotating passent par les snapshots de brush models/angles et sont consommees par `packages/renderer-three/src/gl-world-scene-adapter.ts`.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: callback de blocage `rotating_blocked`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:595-598` avec `packages/game/src/g_func.ts:1220-1230`.
 - Correction appliquee: ajout de couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier que `SP_func_rotating` branche `rotating_blocked`, que le bloqueur perd `self.dmg` PV et que `runtime.meansOfDeath` vaut `MOD_CRUSH`.
@@ -70,7 +78,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `rotating_touch`.
+- Valider le bloc suivant sans elargir: `rotating_use`.
 
 ## Blocages
 

@@ -2,7 +2,11 @@
 
 ## Dernier lot valide
 
-- `Weapon_HyperBlaster` reference par `g_items.c` et porte dans `packages/game/src/p_weapon.ts`, avec entree `weapon_hyperblaster` alignee dans `packages/game/src/g_items.ts`.
+- `Weapon_RocketLauncher` reference par `g_items.c` et porte dans `packages/game/src/p_weapon.ts`, avec entree `weapon_rocketlauncher` alignee dans `packages/game/src/g_items.ts`.
+
+Validation `Weapon_RocketLauncher` du 2026-05-01: comparaison avec `game/p_weapon.c` confirmee (`Weapon_Generic(ent, 4, 12, 50, 54, [25, 33, 42, 50, 0], [5, 0], Weapon_RocketLauncher_Fire)`, degats `100 + (int)(random() * 20.0)`, quad x4 sur direct/radius, radius damage 120, damage radius 120, offset `[8, 8, viewheight-8]`, vitesse 650, `MZ_ROCKET`, recoil `kick_origin = forward * -2` et `kick_angles[0] = -1`, `PlayerNoise`, decrement d'une rocket hors `DF_INFINITE_AMMO`). Entree `weapon_rocketlauncher` de `g_items.c` alignee dans `rawItemlist` (`Pickup_Weapon`, `Use_Weapon`, `Drop_Weapon`, view/world models rocket launcher, icone `w_rlauncher`, quantity 1, ammo `Rockets`, flags `IT_WEAPON|IT_STAY_COOP`, `WEAP_ROCKETLAUNCHER`, precaches `models/objects/rocket/tris.md2 weapons/rockfly.wav weapons/rocklf1a.wav weapons/rocklr1b.wav models/objects/debris2/tris.md2`). Headers TS verifies pour `Weapon_RocketLauncher_Fire` et `Weapon_RocketLauncher`. Test ajoute dans `scripts/verify/quake2-p-weapon.ts`: degats randomises solo/quad, vitesse/rayon/splash, `MZ_ROCKET`, recoil, ammo, `DF_INFINITE_AMMO`. Runtime branche via `Think_Weapon`/`Weapon_Generic` depuis le flux client et depuis `local-game-bootstrap.ts`; `apps/web` attendu via runtime local/commandes et binding demo `Digit7`/HUD; `renderer-three` consomme les sorties visibles generiques (view weapon MD2, projectile `EF_ROCKET`, `MZ_ROCKET`, explosions/dlights/particules/audio client), pas de branchement dedie requis.
+
+- Lot precedent: `Weapon_HyperBlaster` reference par `g_items.c` et porte dans `packages/game/src/p_weapon.ts`, avec entree `weapon_hyperblaster` alignee dans `packages/game/src/g_items.ts`.
 
 Passe rapide post-validation du 2026-04-30: controle limite aux lignes deja `Valide` (`Pickup_Weapon`, `Use_Weapon`). Branchements runtime confirmes (`Touch_Item`/dispatch item pour pickup, commandes et bootstrap local pour use); integration `apps/web` attendue via la synchro gameplay/client et le bootstrap local; pas de branchement dedie `renderer-three` attendu au niveau de ces fonctions, les sorties visibles transitant par les entites refresh MD2 generiques et le HUD client.
 
@@ -33,6 +37,7 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 - Sonde directe `weapon_supershotgun_fire` normal/quad/infinite ammo via `npx tsx` stdin: deux groupes, yaw -5/+5, degats/kick, spreads/count/mod, `MZ_SSHOTGUN`, `gunframe`, ammo.
 - Sonde `Weapon_Machinegun` ajoutee a `npm run verify:p-weapon`: degats/kick quad, spreads/mod, `MZ_MACHINEGUN`, alternance `gunframe`, recoil, ammo normal/`DF_INFINITE_AMMO`, relachement attaque et canal no-ammo `CHAN_VOICE`.
 - Sonde `Weapon_Chaingun` ajoutee a `npm run verify:p-weapon`: tirs 2/3, degats/kick quad, degat deathmatch, spreads/mod, `MZ_CHAINGUN2/3`, ammo, branche wind-down frame 14.
+- Sonde `Weapon_RocketLauncher` ajoutee a `npm run verify:p-weapon`: degats randomises solo/quad, vitesse 650, radius/splash 120, `MZ_ROCKET`, recoil, ammo, `DF_INFINITE_AMMO`.
 - Sonde `Weapon_HyperBlaster` ajoutee a `npm run verify:p-weapon`: degats solo/deathmatch/quad, vitesse, flag hyper, `EF_HYPERBLASTER`, `MZ_HYPERBLASTER`, boucle frame 12, ammo, no-ammo `CHAN_VOICE`, wind-down `CHAN_AUTO`.
 
 ## Blocages
@@ -41,4 +46,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- `Weapon_RocketLauncher`, en gardant la meme attention au rattachement `g_items.c` declarations/table vers le corps original `game/p_weapon.c` et le port `packages/game/src/p_weapon.ts`.
+- `Weapon_Grenade`, en gardant la meme attention au rattachement `g_items.c` declarations/table vers le corps original `game/p_weapon.c` et le port `packages/game/src/p_weapon.ts`.

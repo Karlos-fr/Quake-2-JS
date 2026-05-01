@@ -40,6 +40,7 @@ function main(): void {
   verifyKilledMarksMedicOwnership();
   verifyReactToClientDamagePreservesVisibleEnemy();
   verifyTDamageAppliesNightmarePainDebounce();
+  verifyTDamagePainCallbacksAndFinalClientAccumulation();
   verifyFriendlyFireUsesSkinTeams();
   verifyTDamageAccountingAndMeansOfDeath();
   verifyTDamageSparksAndMassKnockback();
@@ -153,6 +154,84 @@ function verifyTDamageAppliesNightmarePainDebounce(): void {
     }
   });
   assertNumber(painCalls, 0, "T_Damage suppresses pain callbacks for ducked monsters");
+}
+
+function verifyTDamagePainCallbacksAndFinalClientAccumulation(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 21;
+  const attacker = createPlayer(40);
+
+  const monster = createMonster(41);
+  monster.enemy = attacker;
+  const monsterOrder: string[] = [];
+  monster.pain = (_self, _other, knockback, damage) => {
+    monsterOrder.push(`pain:${knockback}:${damage}`);
+  };
+
+  T_Damage(monster, attacker, attacker, [1, 0, 0], [1, 2, 3], [0, 0, 1], 9, 4, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false,
+    M_ReactToDamage: () => {
+      monsterOrder.push("react");
+    }
+  });
+
+  assertString(monsterOrder.join(","), "react,pain:4:9", "T_Damage reacts before monster pain and forwards knockback/take");
+  assertNumber(monster.pain_debounce_time, 0, "T_Damage does not apply the nightmare pain debounce outside nightmare skill");
+
+  const player = createPlayer(42);
+  const playerPainOrder: string[] = [];
+  player.pain = (_self, _other, knockback, damage) => {
+    playerPainOrder.push(`pain:${knockback}:${damage}`);
+    assertNumber(player.client!.damage_parmor, 0, "T_Damage accumulates client power armor feedback after pain");
+    assertNumber(player.client!.damage_armor, 0, "T_Damage accumulates client armor feedback after pain");
+    assertNumber(player.client!.damage_blood, 0, "T_Damage accumulates client blood feedback after pain");
+  };
+
+  T_Damage(player, attacker, attacker, [1, 0, 0], [4, 5, 6], [0, 0, 1], 20, 7, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 2,
+    CheckArmor: () => 3,
+    CheckTeamDamage: () => false
+  });
+
+  assertString(playerPainOrder.join(","), "pain:7:15", "T_Damage calls client pain with final take");
+  assertNumber(player.client!.damage_parmor, 2, "T_Damage accumulates final psave after client pain");
+  assertNumber(player.client!.damage_armor, 3, "T_Damage accumulates final asave after client pain");
+  assertNumber(player.client!.damage_blood, 15, "T_Damage accumulates final take after client pain");
+  assertNumber(player.client!.damage_knockback, 7, "T_Damage accumulates final knockback after client pain");
+  assertVec3(player.client!.damage_from, [4, 5, 6], "T_Damage copies the final damage origin after client pain");
+
+  player.flags |= FL_GODMODE;
+  let godmodePainCalls = 0;
+  player.pain = () => {
+    godmodePainCalls += 1;
+  };
+  T_Damage(player, attacker, attacker, [1, 0, 0], [7, 8, 9], [0, 0, 1], 10, 0, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false
+  });
+  assertNumber(godmodePainCalls, 0, "T_Damage suppresses client pain while godmode saved all damage");
+
+  const crate = createRuntimeEntity({ classname: "func_breakable" }, 43);
+  crate.inuse = true;
+  crate.movetype = MOVETYPE_WALK;
+  crate.takedamage = 1;
+  crate.health = 100;
+  crate.mass = 200;
+  let cratePain = "";
+  crate.pain = (_self, _other, knockback, damage) => {
+    cratePain = `${knockback}:${damage}`;
+  };
+
+  T_Damage(crate, attacker, attacker, [1, 0, 0], [2, 3, 4], [0, 0, 1], 6, 1, 0, MOD_BLASTER, runtime, {
+    CheckPowerArmor: () => 0,
+    CheckArmor: () => 0,
+    CheckTeamDamage: () => false
+  });
+
+  assertString(cratePain, "1:6", "T_Damage calls non-client non-monster pain only when take remains");
 }
 
 function verifyFriendlyFireUsesSkinTeams(): void {
@@ -428,6 +507,12 @@ function createPlayer(index: number): GameEntity {
 }
 
 function assertNumber(actual: number, expected: number, label: string): void {
+  if (actual !== expected) {
+    throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
+  }
+}
+
+function assertString(actual: string, expected: string, label: string): void {
   if (actual !== expected) {
     throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
   }

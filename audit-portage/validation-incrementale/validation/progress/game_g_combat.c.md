@@ -13,6 +13,18 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: fin de `T_Damage`: callbacks pain et accumulation finale `client.damage_*`
+  - Source comparee: `Quake-2-master/game/g_combat.c`.
+  - Cible comparee: `packages/game/src/g_combat.ts`; integration feedback controlee via `packages/game/src/p_view.ts`, `apps/web` et `packages/renderer-three`.
+  - Correction runtime appliquee: aucune. Test cible ajoute dans `scripts/verify/quake2-g-combat.ts`.
+  - Commentaire d'en-tete TS mis a jour: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, `Behavior`, `Porting notes`; les hooks y sont decrits comme points de test/adaptation, le chemin par defaut utilisant les helpers portes.
+  - Comparaison comportementale: pour les monstres survivants, `M_ReactToDamage` precede le callback `pain`; `AI_DUCKED` supprime le callback; le mode nightmare pousse `pain_debounce_time` a `level.time + 5`. Pour les clients, `pain` n'est appele que hors godmode et quand `take` reste non nul. Pour les autres entites, `pain` est appele seulement si `take` reste non nul. L'accumulation finale ajoute `psave`, `asave`, `take`, `knockback` et copie `point` dans `client.damage_from` apres les callbacks pain, comme le C.
+  - Branchement runtime verifie: `T_Damage` reste atteint depuis `T_RadiusDamage`, armes, triggers, fonctions, monstres, world effects et `p_view`; les callbacks `pain` sont les callbacks entite/monstre/joueur portes et enregistres via le runtime.
+  - `apps/web`: aucune logique parallele constatee; le navigateur passe par le runtime game/full-game et consomme ensuite les effets client produits par `P_DamageFeedback`.
+  - `renderer-three`: aucune integration gameplay directe attendue; les sorties visibles du lot sont consommees indirectement via `P_DamageFeedback`/playerstate, view kick/polyblend, particules ou entites visibles selon les callbacks.
+  - Tests lances: `npx tsx ./scripts/verify/quake2-g-combat.ts`; `npm run verify:p-view`; `npm run verify:particle-sync`; `npm run typecheck`.
+  - Statut matrice: `T_Damage` passe `Valide`, ferme par les validations cumulees des lots precedents plus ce lot final.
+
 - 2026-05-01: suite de `T_Damage`: `SpawnDamage` pour `take`, retrait de `health`, mort via `Killed`
   - Source comparee: `Quake-2-master/game/g_combat.c`.
   - Cible comparee: `packages/game/src/g_combat.ts`; integration visible controlee via `packages/game/src/g_main.ts`, `packages/client/src/cl_parse.ts`, `packages/client/src/cl_tent.ts`, `packages/client/src/cl_fx.ts`, `apps/web` et `packages/renderer-three`.
@@ -122,7 +134,7 @@
 
 ## Prochain lot recommande
 
-- Suite de `T_Damage`: callbacks pain et accumulation finale `client.damage_*`.
+- `T_RadiusDamage` et ses locales `points`/`ent`.
 
 ## Blocages
 

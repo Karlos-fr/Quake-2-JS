@@ -13,6 +13,13 @@
 import { strict as assert } from "node:assert";
 
 import {
+  CONTENTS_LAVA,
+  CONTENTS_MONSTER,
+  CONTENTS_SLIME,
+  CONTENTS_SOLID,
+  CONTENTS_WINDOW
+} from "../../packages/qcommon/src/q_shared.js";
+import {
   AI_SetSightClient,
   FindTarget,
   FacingIdeal,
@@ -664,6 +671,47 @@ ai_run(meleeMonster, 0, runtime);
 assert.equal(meleeCalls, 1, "ai_run must execute selected melee attack callback");
 assert.equal(meleeMonster.monsterinfo.attack_state, AS_STRAIGHT, "ai_run_melee must restore AS_STRAIGHT after firing");
 
+let attackTraceStart: number[] | null = null;
+let attackTraceMins: number[] | null = null;
+let attackTraceMaxs: number[] | null = null;
+let attackTraceEnd: number[] | null = null;
+let attackTracePassEntity: unknown = null;
+let attackTraceMask = 0;
+runtime.collision = {
+  world: {} as never,
+  trace: (start, mins, maxs, end, passedict, contentmask) => {
+    attackTraceStart = [...start];
+    attackTraceMins = [...mins];
+    attackTraceMaxs = [...maxs];
+    attackTraceEnd = [...end];
+    attackTracePassEntity = passedict;
+    attackTraceMask = contentmask;
+    return makeTraceResult(end, attackEnemy);
+  },
+  pointcontents: () => 0
+};
+assert.equal(ai_checkattack(meleeMonster, 0, runtime), true, "M_CheckAttack must allow a clear attack trace");
+assert.deepEqual(attackTraceStart, [0, 0, 25], "M_CheckAttack trace must start at monster eye position");
+assert.deepEqual(attackTraceMins, [0, 0, 0], "M_CheckAttack trace must use null-equivalent mins");
+assert.deepEqual(attackTraceMaxs, [0, 0, 0], "M_CheckAttack trace must use null-equivalent maxs");
+assert.deepEqual(attackTraceEnd, [60, 0, 22], "M_CheckAttack trace must end at enemy eye position");
+assert.equal(attackTracePassEntity, meleeMonster, "M_CheckAttack trace must pass the attacker as ignored entity");
+assert.equal(
+  attackTraceMask,
+  CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA | CONTENTS_WINDOW,
+  "M_CheckAttack trace mask mismatch"
+);
+meleeMonster.monsterinfo.attack_state = AS_STRAIGHT;
+
+const blocker = createPointEntity(30, 0, 0, 75);
+runtime.entities[75] = blocker;
+runtime.collision = {
+  world: {} as never,
+  trace: (_start, _mins, _maxs, end) => makeTraceResult(end, blocker),
+  pointcontents: () => 0
+};
+assert.equal(ai_checkattack(meleeMonster, 0, runtime), false, "M_CheckAttack must reject blocked attack traces");
+
 const missileEnemy = createPointEntity(200, 0, 0, 72);
 missileEnemy.viewheight = 22;
 runtime.entities[72] = missileEnemy;
@@ -708,6 +756,40 @@ try {
   Math.random = () => 0.2;
   assert.equal(ai_checkattack(flyingMonster, 0, runtime), false, "flying monsters must keep moving when missile chance fails");
   assert.equal(flyingMonster.monsterinfo.attack_state, AS_SLIDING, "failed flying attack chance may enter AS_SLIDING");
+
+  const chanceMonster = createRuntimeEntity({ classname: "monster_chance" }, 76);
+  chanceMonster.inuse = true;
+  chanceMonster.enemy = missileEnemy;
+  chanceMonster.health = 100;
+  chanceMonster.viewheight = 25;
+  chanceMonster.monsterinfo.checkattack = M_CheckAttack;
+  chanceMonster.monsterinfo.attack = () => {};
+  runtime.entities[76] = chanceMonster;
+  runtime.collision = createClearAttackCollision(missileEnemy);
+  runtime.skill = 1;
+  chanceMonster.monsterinfo.attack_finished = 0;
+  chanceMonster.monsterinfo.attack_state = AS_STRAIGHT;
+
+  Math.random = () => 0.1;
+  assert.equal(ai_checkattack(chanceMonster, 0, runtime), false, "RANGE_NEAR missile chance must use a strict less-than test");
+  assert.equal(chanceMonster.monsterinfo.attack_state, AS_STRAIGHT, "failed grounded missile chance must keep AS_STRAIGHT");
+
+  chanceMonster.monsterinfo.attack_finished = 0;
+  Math.random = () => 0.099;
+  assert.equal(ai_checkattack(chanceMonster, 0, runtime), true, "RANGE_NEAR missile chance must pass below 0.1");
+  assert.equal(chanceMonster.monsterinfo.attack_state, AS_MISSILE, "passed RANGE_NEAR chance must select missile");
+
+  chanceMonster.monsterinfo.attack_state = AS_STRAIGHT;
+  chanceMonster.monsterinfo.attack_finished = 0;
+  chanceMonster.monsterinfo.aiflags |= AI_STAND_GROUND;
+  runtime.skill = 0;
+  Math.random = () => 0.2;
+  assert.equal(ai_checkattack(chanceMonster, 0, runtime), false, "easy stand-ground missile chance must be halved to 0.2");
+
+  chanceMonster.monsterinfo.attack_finished = 0;
+  runtime.skill = 2;
+  Math.random = () => 0.79;
+  assert.equal(ai_checkattack(chanceMonster, 0, runtime), true, "hard stand-ground missile chance must double to 0.8");
 } finally {
   Math.random = originalRandom;
 }
@@ -766,22 +848,26 @@ function createClearVisibilityCollision() {
 function createClearAttackCollision(target: ReturnType<typeof createPointEntity>) {
   return {
     world: {} as never,
-    trace: (_start, _mins, _maxs, end) => ({
-      allsolid: false,
-      startsolid: false,
-      fraction: 1,
-      endpos: [...end],
-      plane: {
-        normal: [0, 0, 1],
-        dist: 0,
-        type: 0,
-        signbits: 0,
-        pad: [0, 0]
-      },
-      surface: null,
-      contents: 0,
-      ent: target
-    }),
+    trace: (_start, _mins, _maxs, end) => makeTraceResult(end, target),
     pointcontents: () => 0
+  };
+}
+
+function makeTraceResult(end: readonly number[], ent: ReturnType<typeof createPointEntity>) {
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: 1,
+    endpos: [...end],
+    plane: {
+      normal: [0, 0, 1],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent
   };
 }
