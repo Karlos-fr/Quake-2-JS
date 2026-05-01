@@ -114,4 +114,4 @@
 - apps/web: le navigateur declenche ce flux par le runtime porte en local/full-game; aucune logique web parallele ne remplace la pile de rollback. Les sorties sont les positions/angles et callbacks `blocked` exposes ensuite par snapshots/evenements.
 - renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les origines/angles des brush models, riders et scene apres rollback ou mouvement pusher. Les modeles/frames/images/particules/beams/dlights/temp entities/areabits/camera ne sont pas produits directement par ce lot, mais les positions finales sont consommees par les refresh frames et adapters renderer existants.
 - Correction: `SV_Push` accepte une pile `pushed_t` optionnelle; `SV_Physics_Pusher` partage une pile unique sur toute la team. Ajout d'assertions ciblees couvrant rollback multi-part, restauration `delta_angles[YAW]`, et routage `obstacle` vers `blocked`.
-- Tests lances: `npm run verify:g-phys` OK.
+- Tests lances: `npm run verify:g-phys` OK; `npm run verify:collision:phase5` OK apres correction du harness de verification qui utilisait un rider `MOVETYPE_PUSH` au lieu d'une boite dynamique poussable.
