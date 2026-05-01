@@ -1,12 +1,22 @@
 # Progress - Quake-2-master/game/g_monster.c
 
 - Statut: En cours
-- Dernier lot valide: `monster_use`
-- Prochain lot recommande: `monster_start_go`
+- Dernier lot valide: `monster_start_go`
+- Prochain lot recommande: `monster_triggered_spawn`
 - Tests de reference: `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Blocages: aucun pour le lot valide
 
 ## Session courante
+
+- Lot traite: `monster_start_go`.
+- Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS mis a jour, test cible renforce dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.
+- Runtime: atteignable depuis les spawn routines de monstres (`walkmonster_start`, `flymonster_start`, `swimmonster_start`) qui arment les callbacks de demarrage, puis `monster_start_go` choisit `stand`/`walk`, cible les `path_corner`, retague les `point_combat`, arme `monster_think` et `nextthink`.
+- apps/web: pas de logique parallele attendue; le navigateur declenche les spawns via le runtime local/full-game et consomme les entites, etats et logs/snapshots produits. Tests `verify:local-gameplay-sync`, `verify:full-game:three-renderer` et `verify:web-render-order` OK.
+- renderer-three: sortie visible attendue indirecte via les monstres demarres, leurs modeles, positions, angles et frames; ces donnees passent par les snapshots/client refresh et sont consommees par les adapters Three. Pas de branchement gameplay renderer requis.
+- Tests lances: `npm run verify:g-monster` OK, `npm run verify:g-ai` OK, `npm run verify:local-gameplay-sync` OK, `npm run verify:full-game:three-renderer` OK, `npm run verify:web-render-order` OK, `npm run typecheck` OK.
+- Prochain lot recommande: `monster_triggered_spawn`.
+
+## Session precedente
 
 - Lot traite: `monster_use`.
 - Preuves: comparaison directe avec `Quake-2-master/game/g_monster.c`, commentaire d'en-tete TS mis a jour, test cible renforce dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster` OK, tests runtime/web/renderer/typecheck OK.

@@ -408,6 +408,9 @@ export function SV_PushEntity(ent: GameEntity, push: vec3_t, runtime: GameRuntim
  *
  * Behavior:
  * - Applies one pusher translation/rotation step and rolls everything back on blockage.
+ *
+ * Porting notes:
+ * - Uses `clampPushAxis` for the C local `temp` rounding and accepts a shared pushed stack for team pushers.
  */
 export function SV_Push(
   pusher: GameEntity,
@@ -497,7 +500,6 @@ export function SV_Push(
       block = SV_TestEntityPosition(check, runtime);
       if (!block) {
         pushed.pop();
-        linkGameEntity(runtime, check);
         continue;
       }
     }

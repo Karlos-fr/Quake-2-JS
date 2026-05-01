@@ -133,6 +133,26 @@
   - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration level et miroir runtime pour les 3 champs.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-main` OK; `npm run verify:p-hud` OK; `npm run verify:p-client` OK; `npm run verify:full-game:rules-transitions` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-01: lot `level_locals_t` avec champs `intermission_origin`, `intermission_angle`.
+- Verdict: `Valide` pour les 2 champs apres renforcement des preuves; aucune correction runtime TS necessaire.
+- Source H comparee: les deux `vec3_t` du bloc d'intermission stockent l'origine et les angles du point `info_player_intermission`, puis `MoveClientToIntermission` les copie vers `ent->s.origin`, `ps.pmove.origin` multiplie par 8, et `ps.viewangles`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `level_locals_t` porte `intermission_origin` et `intermission_angle` comme `vec3_t`; `createLevelLocals` initialise `[0, 0, 0]`; commentaire de portage `level_locals_t` deja present et verifie.
+  - `packages/game/src/runtime.ts`: miroirs runtime `intermission_origin` et `intermission_angle` initialises a `[0, 0, 0]`.
+  - `packages/game/src/p_hud.ts`: `BeginIntermission` choisit le spot d'intermission/fallback et copie `spot.s.origin`/`spot.s.angles`; `MoveClientToIntermission` applique origine, origine pmove * 8, angles, freeze et nettoyage de presentation.
+  - `packages/game/src/g_main.ts`: `G_RunFrame` synchronise les vecteurs runtime vers `level_locals_t`.
+  - `packages/game/src/g_save.ts`: `WriteLevel`/`ReadLevel` persistent et restaurent les deux vecteurs, puis resynchronisent le runtime.
+- Runtime: flux equivalent au C via `target_changelevel`/regles DM -> `BeginIntermission` -> `MoveClientToIntermission`; les preuves de session couvrent structure, selectors `LLOFS`, miroir frame, sauvegarde/restauration et application camera joueur.
+- apps/web: integration attendue via host local/full-game, transitions `gamemap`, snapshots/playerstate et refresh frame; aucune logique parallele `intermission_origin`/`intermission_angle` trouvee dans `apps/web`. `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: sortie visible attendue: camera/scene d'intermission via `playerstate.pmove.origin` et `playerstate.viewangles`, puis `ClientRefreshFrame.view`; `apps/web` synchronise la camera Three depuis ce refresh frame et `renderer-three` consomme les donnees de scene/entites. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage `level_locals_t` verifie; `BeginIntermission`, `MoveClientToIntermission`, `G_RunFrame`, `WriteLevel` et `ReadLevel` avaient deja des commentaires d'en-tete verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions valeurs par defaut, mutations et `LLOFS` pour les deux vecteurs.
+  - `scripts/verify/quake2-p-hud.ts`: assertions application origine/pmove origin/viewangles par `MoveClientToIntermission` et `BeginIntermission`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration level et miroir runtime pour les deux vecteurs.
+  - `scripts/verify/quake2-g-main.ts`: assertions miroir `G_RunFrame -> level_locals_t` pour les deux vecteurs.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-hud` OK; `npm run verify:g-save` OK; `npm run verify:g-main` OK; `npm run verify:p-client` OK; `npm run verify:full-game:rules-transitions` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot champs `gitem_s` `flags`, `weapmodel`, `info`, `tag`, `precaches`.
 - Verdict: `Valide` pour les 5 champs apres renforcement du harness header; aucune correction gameplay TS necessaire.
 - Source H comparee: `gitem_s` declare `int flags`, `int weapmodel`, `void *info`, `int tag`, puis `char *precaches`.
@@ -670,7 +690,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `level_locals_t.intermission_origin`, `intermission_angle`.
+- Continuer avec `level_locals_t.sight_client`, puis `sight_entity` et `sight_entity_framenum` si le lot reste petit.
 
 ## Blocages
 

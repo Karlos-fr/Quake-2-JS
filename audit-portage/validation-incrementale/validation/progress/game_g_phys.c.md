@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `pushed_t`, champs/locales matricielles `ent`, `deltayaw` et global `obstacle`.
-- Prochain lot recommande: `SV_Push`, puis locale `temp` si le lot reste petit.
+- Dernier lot valide: `SV_Push`, locale `temp`.
+- Prochain lot recommande: `SV_Physics_Pusher`.
 - Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
@@ -115,3 +115,14 @@
 - renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les origines/angles des brush models, riders et scene apres rollback ou mouvement pusher. Les modeles/frames/images/particules/beams/dlights/temp entities/areabits/camera ne sont pas produits directement par ce lot, mais les positions finales sont consommees par les refresh frames et adapters renderer existants.
 - Correction: `SV_Push` accepte une pile `pushed_t` optionnelle; `SV_Physics_Pusher` partage une pile unique sur toute la team. Ajout d'assertions ciblees couvrant rollback multi-part, restauration `delta_angles[YAW]`, et routage `obstacle` vers `blocked`.
 - Tests lances: `npm run verify:g-phys` OK; `npm run verify:collision:phase5` OK apres correction du harness de verification qui utilisait un rider `MOVETYPE_PUSH` au lieu d'une boite dynamique poussable.
+
+## Session 2026-05-01 - `SV_Push`
+
+- Lot traite: `SV_Push`, locale `temp`.
+- Comparaison C/TS: le C arrondit chaque composante de `move` sur la grille 1/8 via la locale `temp`, calcule la bbox finale du pusher, deplace le pusher, teste les entites solides liees, deplace les riders ou entites poussees, applique la rotation via `AngleVectors(-amove)`, restaure toute la pile en cas de blocage, puis appelle `G_TouchTriggers` sur les entites poussees en cas de succes. Le TS reprend ce flux avec `clampPushAxis`, `AngleVectors`, `SV_TestEntityPosition`, la pile `pushed_t`, `rollbackPush` et `touchTriggerEntities`.
+- Commentaire d'en-tete: present et mis a jour avec la note de portage sur `clampPushAxis` pour la locale C `temp` et la pile partagee des team pushers.
+- Runtime: integre via `G_RunFrame` / `G_RunEntity` -> `SV_Physics_Pusher` -> `SV_Push`; le test direct couvre aussi la branche rider bloque puis acceptable a son ancienne position.
+- apps/web: le navigateur declenche ce flux via le runtime local/full-game; aucune logique parallele web ne remplace `SV_Push`. Les sorties attendues sont les positions/angles/linking, callbacks `blocked`/touch/trigger et evenements produits indirectement.
+- renderer-three: pas de sortie renderer directe; les sorties visibles attendues sont les origines/angles des entites, brush models, riders et scene apres mouvement ou rollback. Elles sont consommees via snapshots/refresh frames, `refresh-entity-sync` et l'adapter de scene; pas de particules, beams, dlights, images, frames ou areabits produits directement par `SV_Push`.
+- Correction: suppression du `linkGameEntity` TS dans la branche ou une entite riding est bloquee apres push mais peut rester a son ancienne position, pour respecter le C qui decrement seulement `pushed_p`. Ajout d'assertions ciblees pour l'arrondi `temp` positif/negatif, la conservation de l'ancienne position du rider, le `delta_angles[YAW]` conserve comme en C et l'absence de relink dans cette branche.
+- Tests lances: `npm run verify:g-phys` OK; `npm run verify:collision:phase5` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.

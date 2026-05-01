@@ -2,6 +2,14 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: timer de targets `func_timer_think`, `func_timer_use`, doublon matriciel `func_timer_think` et spawn `SP_func_timer`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1771-1816` avec `packages/game/src/g_func.ts:1950-2024` apres ajout des commentaires d'en-tete.
+- Correction appliquee: ajout des commentaires d'en-tete `func_timer_think`, `func_timer_use` et `SP_func_timer` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
+- Effets verifies: `func_timer_think` conserve `G_UseTargets(self, activator)` puis la replanification `level.time + wait + crandom() * random`; `func_timer_use` conserve l'affectation `activator`, le toggle off par `nextthink = 0`, la branche delay et l'appel immediat sans delay; `SP_func_timer` conserve `wait = 1`, callbacks `use`/`think`, clamp `random = wait - FRAMETIME` avec warning, START_ON avec `1 + st.pausetime + delay + wait + crandom() * random`, `activator = self` et `SVF_NOCLIENT`.
+- Branchement: `SP_func_timer` est referencee par `packages/game/src/g_spawn.ts` pour `func_timer`, appelee par `ED_CallSpawn`/`SpawnEntities`; les callbacks sont atteignables via triggers/G_UseTargets puis `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_timer` dans `apps/web`; le navigateur consomme le runtime local/full-game et les effets indirects des targets declenchees. `packages/renderer-three` ne porte pas le timer no-client; les sorties visibles potentielles viennent des targets declenchees et passent par les flux runtime habituels (snapshots, sons, temp entities ou scene selon la cible), donc pas de correction renderer attendue pour ce lot.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:g-spawn` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: initialisation differee de trigger elevator `trigger_elevator_init` et spawn `SP_trigger_elevator`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1726-1754` avec `packages/game/src/g_func.ts:1904-1925` apres ajout des commentaires d'en-tete.
 - Correction appliquee: ajout des commentaires d'en-tete `trigger_elevator_init` et `SP_trigger_elevator` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes d'adapter; couverture ciblee renforcee dans `scripts/verify/quake2-g-func.ts`.
@@ -302,7 +310,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `func_timer_think`, `func_timer_use`, puis `SP_func_timer` si le lot reste petit.
+- Continuer avec `func_conveyor_use`, puis `SP_func_conveyor` si le lot reste petit.
 
 ## Blocages
 

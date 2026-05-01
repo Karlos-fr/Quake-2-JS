@@ -1946,12 +1946,36 @@ export function SP_trigger_elevator(self: GameEntity, runtime: GameRuntime): voi
   self.nextthink = runtime.time + FRAMETIME;
 }
 
+/**
+ * Original name: func_timer_think
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fires the timer targets with the stored activator, then schedules the next
+ *   firing at `wait + crandom() * random`.
+ */
 export function func_timer_think(self: GameEntity, runtime: GameRuntime): void {
   G_UseTargets(runtime, self, self.activator);
   self.nextthink = runtime.time + self.wait + crandom() * self.random;
   self.think = func_timer_think;
 }
 
+/**
+ * Original name: func_timer_use
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores the activator, toggles an active timer off by clearing `nextthink`,
+ *   or starts it with `delay` before the first fire.
+ *
+ * Porting notes:
+ * - The nullable activator type reflects the TypeScript callback adapter; normal
+ *   game use still passes the trigger activator.
+ */
 export function func_timer_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   self.activator = activator;
   if (self.nextthink) {
@@ -1966,6 +1990,20 @@ export function func_timer_use(self: GameEntity, _other: GameEntity | null, acti
   }
 }
 
+/**
+ * Original name: SP_func_timer
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Initializes a no-client timer trigger with default wait, use/think
+ *   callbacks, random clamping, and optional START_ON scheduling.
+ *
+ * Porting notes:
+ * - Runtime warning logs replace `gi.dprintf`; `st.pausetime` is read from the
+ *   parsed spawn properties.
+ */
 export function SP_func_timer(self: GameEntity, runtime: GameRuntime): void {
   if (!self.wait) {
     self.wait = 1;

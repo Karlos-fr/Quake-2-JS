@@ -93,6 +93,7 @@ function main(): void {
   verifyMonsterUseHonorsOriginalFilters();
   verifyMonsterDeathUseDropsItemsAndFiresTargets();
   verifyMonsterStartGoFixesPointCombatTargets();
+  verifyMonsterStartGoTargetBranches();
   verifyTriggeredSpawnStartupPath();
   verifyCorpseFlyScheduling();
   verifyAttackFinishedCooldown();
@@ -335,6 +336,102 @@ function verifyMonsterStartGoFixesPointCombatTargets(): void {
   assert.equal(monster.combattarget, "combat-node", "monster_start_go should retag point_combat targets as combattarget");
   assert.equal(monster.target, undefined, "monster_start_go should clear target after point_combat fixup");
   assert.equal(standCalls, 1, "monster_start_go should enter stand mode when no walk target remains");
+  assert.equal(monster.think, monster_think, "monster_start_go should arm the regular monster think callback");
+  assert.equal(monster.nextthink, runtime.time + FRAMETIME, "monster_start_go should schedule the next monster think");
+
+  const mixedMonster = createMonster(runtime, 16);
+  const mixedPointCombat = createRuntimeEntity({ classname: "point_combat", targetname: "mixed-node" }, 17);
+  mixedPointCombat.inuse = true;
+  runtime.entities[mixedPointCombat.index] = mixedPointCombat;
+  const mixedPath = createRuntimeEntity({ classname: "path_corner", targetname: "mixed-node" }, 18);
+  mixedPath.inuse = true;
+  runtime.entities[mixedPath.index] = mixedPath;
+  mixedMonster.target = "mixed-node";
+
+  monster_start_go(mixedMonster, runtime);
+
+  assert.equal(mixedMonster.combattarget, "mixed-node", "monster_start_go should still retag mixed point_combat targets");
+  assert.ok(
+    runtime.logEntries.some((entry) => entry.message.includes("has target with mixed types")),
+    "monster_start_go should warn when a targetname mixes point_combat and non-combat targets"
+  );
+}
+
+function verifyMonsterStartGoTargetBranches(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 7;
+
+  const missingTargetMonster = createMonster(runtime, 30);
+  let missingStandCalls = 0;
+  missingTargetMonster.target = "missing";
+  missingTargetMonster.monsterinfo.stand = () => {
+    missingStandCalls += 1;
+  };
+
+  monster_start_go(missingTargetMonster, runtime);
+
+  assert.equal(missingTargetMonster.target, undefined, "monster_start_go should clear an unresolved target");
+  assert.equal(missingTargetMonster.monsterinfo.pausetime, 100000000, "monster_start_go should use the original long pause sentinel");
+  assert.equal(missingStandCalls, 1, "monster_start_go should stand when the target cannot be found");
+
+  const pathMonster = createMonster(runtime, 31);
+  const pathCorner = createRuntimeEntity({ classname: "path_corner", targetname: "corner" }, 32);
+  pathCorner.inuse = true;
+  pathCorner.s.origin = [0, 64, 0];
+  runtime.entities[pathCorner.index] = pathCorner;
+  let walkCalls = 0;
+  pathMonster.target = "corner";
+  pathMonster.monsterinfo.walk = () => {
+    walkCalls += 1;
+  };
+
+  monster_start_go(pathMonster, runtime);
+
+  assert.equal(pathMonster.goalentity, pathCorner, "monster_start_go should choose the path_corner as goalentity");
+  assert.equal(pathMonster.movetarget, pathCorner, "monster_start_go should choose the path_corner as movetarget");
+  assert.equal(pathMonster.s.angles[1], 90, "monster_start_go should face the first path_corner");
+  assert.equal(pathMonster.ideal_yaw, 90, "monster_start_go should copy the path_corner yaw to ideal_yaw");
+  assert.equal(walkCalls, 1, "monster_start_go should enter walk mode for a path_corner target");
+  assert.equal(pathMonster.target, undefined, "monster_start_go should clear a consumed path_corner target");
+
+  const nonPathMonster = createMonster(runtime, 33);
+  const nonPathTarget = createRuntimeEntity({ classname: "target_speaker", targetname: "speaker-node" }, 34);
+  nonPathTarget.inuse = true;
+  runtime.entities[nonPathTarget.index] = nonPathTarget;
+  let nonPathStandCalls = 0;
+  nonPathMonster.target = "speaker-node";
+  nonPathMonster.monsterinfo.stand = () => {
+    nonPathStandCalls += 1;
+  };
+
+  monster_start_go(nonPathMonster, runtime);
+
+  assert.equal(nonPathMonster.goalentity, null, "monster_start_go should clear goalentity for non-path targets");
+  assert.equal(nonPathMonster.movetarget, null, "monster_start_go should clear movetarget for non-path targets");
+  assert.equal(nonPathMonster.monsterinfo.pausetime, 100000000, "monster_start_go should stand forever for non-path targets");
+  assert.equal(nonPathStandCalls, 1, "monster_start_go should stand for non-path targets");
+
+  const badCombatMonster = createMonster(runtime, 35);
+  const badCombatTarget = createRuntimeEntity({ classname: "path_corner", targetname: "bad-combat" }, 36);
+  badCombatTarget.inuse = true;
+  badCombatTarget.s.origin = [10, 20, 30];
+  runtime.entities[badCombatTarget.index] = badCombatTarget;
+  badCombatMonster.combattarget = "bad-combat";
+
+  monster_start_go(badCombatMonster, runtime);
+
+  assert.ok(
+    runtime.logEntries.some((entry) => entry.message.includes("has a bad combattarget bad-combat")),
+    "monster_start_go should warn when combattarget resolves to a non-point_combat entity"
+  );
+
+  const deadMonster = createMonster(runtime, 37);
+  deadMonster.health = 0;
+  deadMonster.target = "corner";
+
+  monster_start_go(deadMonster, runtime);
+
+  assert.equal(deadMonster.think, undefined, "monster_start_go should return before arming dead monsters");
 }
 
 function verifyTriggeredSpawnStartupPath(): void {

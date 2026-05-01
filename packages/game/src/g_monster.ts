@@ -909,6 +909,9 @@ export function monster_start(self: GameEntity, runtime: GameRuntime, hooks: Gam
  *
  * Behavior:
  * - Resolves initial targets/combattargets, picks the opening movement state and arms the regular think callback.
+ *
+ * Porting notes:
+ * - Uses `GameRuntime` lookup/logging helpers in place of the original `gi` callbacks and `level.time`.
  */
 export function monster_start_go(self: GameEntity, runtime: GameRuntime, hooks: GameMonsterHooks = {}): void {
   if (self.health <= 0) {

@@ -19,6 +19,7 @@ import {
   SV_FlyMove,
   SV_CheckVelocity,
   SV_Impact,
+  SV_Push,
   SV_PushEntity,
   SV_Physics_Toss,
   SV_RunThink,
@@ -868,6 +869,69 @@ assertVec("SV_Physics_Pusher.team-rollback.rider-ok-origin", teamRiderOk.origin,
 assertVec("SV_Physics_Pusher.team-rollback.rider-blocked-origin", teamRiderBlocked.origin, [200, 0, 80]);
 assertEqual("SV_Physics_Pusher.team-rollback.rider-deltayaw", blockedClient.ps.pmove.delta_angles[1], 900);
 assertEqual("SV_Physics_Pusher.team-rollback.obstacle", teamBlockedOther, "team-rider-blocked");
+
+const pushDirectRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+const pushDirectWorld = pushDirectRuntime.entities[0];
+pushDirectWorld.inuse = true;
+pushDirectWorld.solid = SOLID_BSP;
+pushDirectWorld.movetype = MOVETYPE_NONE;
+pushDirectWorld.linked = true;
+pushDirectRuntime.collision = {
+  world: {} as never,
+  trace(start, _mins, _maxs, _end, passent, contentmask) {
+    const blocked = passent?.classname === "push-direct-rider" && start[0] > 0;
+    return {
+      allsolid: blocked,
+      startsolid: blocked,
+      fraction: blocked ? 0 : 1,
+      endpos: [...start],
+      plane: {
+        normal: blocked ? [-1, 0, 0] : [0, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: pushDirectWorld
+    };
+  },
+  pointcontents() {
+    return 0;
+  }
+};
+
+const pushDirectPusher = spawnGameEntity(pushDirectRuntime);
+pushDirectPusher.classname = "push-direct-pusher";
+pushDirectPusher.movetype = MOVETYPE_PUSH;
+pushDirectPusher.solid = SOLID_BSP;
+pushDirectPusher.mins = [-8, -8, 0];
+pushDirectPusher.maxs = [8, 8, 8];
+refreshEntitySpatialState(pushDirectPusher);
+linkGameEntity(pushDirectRuntime, pushDirectPusher);
+
+const pushDirectRider = spawnGameEntity(pushDirectRuntime);
+pushDirectRider.classname = "push-direct-rider";
+pushDirectRider.movetype = MOVETYPE_STEP;
+pushDirectRider.solid = SOLID_BBOX;
+pushDirectRider.origin = [0, 0, 16];
+pushDirectRider.s.origin = [0, 0, 16];
+pushDirectRider.mins = [-4, -4, -8];
+pushDirectRider.maxs = [4, 4, 8];
+pushDirectRider.groundentity = pushDirectPusher;
+pushDirectRider.groundentity_linkcount = pushDirectPusher.linkcount;
+const pushDirectClient = attachGameClient(pushDirectRider);
+pushDirectClient.ps.pmove.delta_angles[1] = 10;
+refreshEntitySpatialState(pushDirectRider);
+linkGameEntity(pushDirectRuntime, pushDirectRider);
+const pushDirectRiderLinkcount = pushDirectRider.linkcount;
+
+assertEqual("SV_Push.direct-old-position.result", SV_Push(pushDirectPusher, [0.07, -0.07, 0.06], [0, 5, 0], pushDirectRuntime), true);
+assertVec("SV_Push.direct-old-position.pusher-clamped", pushDirectPusher.origin, [0.125, -0.125, 0]);
+assertVec("SV_Push.direct-old-position.rider-origin", pushDirectRider.origin, [0, 0, 16]);
+assertEqual("SV_Push.direct-old-position.rider-linkcount", pushDirectRider.linkcount, pushDirectRiderLinkcount);
+assertEqual("SV_Push.direct-old-position.rider-deltayaw", pushDirectClient.ps.pmove.delta_angles[1], 15);
 
 const badEnt = spawnGameEntity(runtime);
 badEnt.classname = "bad";

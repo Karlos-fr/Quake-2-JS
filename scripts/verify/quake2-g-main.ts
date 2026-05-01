@@ -639,6 +639,8 @@ frameContext.runtime.entities[1].client = frameContext.runtime.entities[1].clien
 frameContext.runtime.entities[1].inuse = true;
 frameContext.runtime.entities[1].s.origin = [11, 22, 33];
 frameContext.runtime.entities[1].s.old_origin = [0, 0, 0];
+frameContext.runtime.intermission_origin = [96, 192, 24];
+frameContext.runtime.intermission_angle = [5, 135, 0];
 writeBytes.length = 0;
 writeShorts.length = 0;
 writePositions.length = 0;
@@ -653,6 +655,8 @@ assert.equal(frameContext.runtime.framenum, 1, "G_RunFrame framenum mismatch");
 assert.equal(frameContext.runtime.time, 0.1, "G_RunFrame must advance using FRAMETIME");
 assert.equal(frameContext.level.framenum, 1, "G_RunFrame must mirror framenum into level_locals_t");
 assert.equal(frameContext.level.time, 0.1, "G_RunFrame must mirror time into level_locals_t");
+assert.deepEqual(frameContext.level.intermission_origin, [96, 192, 24], "G_RunFrame must mirror intermission_origin into level_locals_t");
+assert.deepEqual(frameContext.level.intermission_angle, [5, 135, 0], "G_RunFrame must mirror intermission_angle into level_locals_t");
 assert.deepEqual(frameContext.runtime.entities[1].s.old_origin, [11, 22, 33], "G_RunFrame old_origin copy mismatch");
 assert.equal(frameContext.level.current_entity, null, "G_RunFrame must clear level.current_entity after the entity loop");
 assert.deepEqual(writeBytes.slice(0, 2), [svc_muzzleflash, MZ_BLASTER], "G_RunFrame must flush player weapon muzzleflash bytes");

@@ -44,8 +44,8 @@
 | `Quake-2-master/game/g_phys.c` | global | `ent` | `packages/game/src/g_phys.ts` | `ent` | Valide | A redecouper | Champ de `pushed_t`; rollback reverse couvert par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `deltayaw` | `packages/game/src/g_phys.ts` | `deltaYaw` | Valide | A redecouper | Champ de `pushed_t`, restaure `client.ps.pmove.delta_angles[YAW]`; `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | global | `obstacle` | `packages/game/src/g_phys.ts` | `obstacle` | Valide | A redecouper | Obstacle global route au callback `blocked`; `npm run verify:g-phys`. |
-| `Quake-2-master/game/g_phys.c` | function | `SV_Push` | `packages/game/src/g_phys.ts` | `SV_Push` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_phys.c` | global | `temp` | `packages/game/src/g_phys.ts` | `temp` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_phys.c` | function | `SV_Push` | `packages/game/src/g_phys.ts` | `SV_Push` | Valide | A redecouper | `npm run verify:g-phys`, `npm run verify:collision:phase5`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`; correction branche rider ancienne position sans relink; commentaire d'en-tete mis a jour. |
+| `Quake-2-master/game/g_phys.c` | global | `temp` | `packages/game/src/g_phys.ts` | `temp` | Valide | A redecouper | Locale de clamp de `SV_Push`, portee par `clampPushAxis`; arrondi positif/negatif couvert par `npm run verify:g-phys`. |
 | `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Pusher` | `packages/game/src/g_phys.ts` | `SV_Physics_Pusher` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | function | `SV_Physics_None` | `packages/game/src/g_phys.ts` | `SV_Physics_None` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_phys.c` | function | `SV_Physics_Noclip` | `packages/game/src/g_phys.ts` | `SV_Physics_Noclip` | A verifier | A redecouper |  |

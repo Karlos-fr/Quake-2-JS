@@ -53,6 +53,7 @@ import {
   Use_Item,
   Use_Breather,
   Use_Envirosuit,
+  Use_Invulnerability,
   Use_PowerArmor,
   Use_Quad,
   SVF_NOCLIENT,
@@ -102,6 +103,7 @@ function main(): void {
   verifyUseQuadTimeoutAndDroppedHack();
   verifyUseBreatherTimeout();
   verifyUseEnvirosuitTimeout();
+  verifyUseInvulnerabilityTimeout();
   verifyItemLookupHelpers();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
@@ -1278,6 +1280,35 @@ function verifyUseEnvirosuitTimeout(): void {
 
   assertNumber(player.client!.enviro_framenum, 800, "Use_Envirosuit extends an active Environment Suit by the same timeout");
   assertNumber(player.client!.pers.selected_item, -1, "Use_Envirosuit revalidates selected item after consuming the last Environment Suit");
+}
+
+function verifyUseInvulnerabilityTimeout(): void {
+  const invulnerability = requireItem("Invulnerability");
+  const runtime = createHarnessRuntime();
+  runtime.framenum = 200;
+  const player = createPlayer(runtime);
+  player.client!.pers.inventory[invulnerability.index] = 2;
+  player.client!.pers.selected_item = invulnerability.index;
+
+  Use_Invulnerability(player, invulnerability, runtime);
+
+  assertNumber(player.client!.pers.inventory[invulnerability.index], 1, "Use_Invulnerability consumes one Invulnerability inventory slot");
+  assertNumber(player.client!.invincible_framenum, 500, "Use_Invulnerability starts the original 300-frame timeout");
+  assertNumber(player.client!.pers.selected_item, invulnerability.index, "Use_Invulnerability keeps a still-owned Invulnerability selected");
+  assertBoolean(drainGameSoundEvents(runtime).some((event) => event.soundPath === "items/protect.wav"), true, "Use_Invulnerability queues the original activation sound");
+
+  G_SetStats(player, runtime);
+  assertNumber(player.client!.ps.stats[STAT_TIMER], 30, "Use_Invulnerability feeds the HUD timer through invincible_framenum");
+  assertNumber(player.client!.ps.stats[STAT_TIMER_ICON] > 0 ? 1 : 0, 1, "Use_Invulnerability feeds the HUD Invulnerability timer icon");
+
+  G_SetClientEffects(player, runtime);
+  assertNumber(player.s.effects & EF_PENT, EF_PENT, "Use_Invulnerability produces the visible EF_PENT effect");
+
+  player.client!.pers.inventory[invulnerability.index] = 1;
+  Use_Invulnerability(player, invulnerability, runtime);
+
+  assertNumber(player.client!.invincible_framenum, 800, "Use_Invulnerability extends an active Invulnerability by the same timeout");
+  assertNumber(player.client!.pers.selected_item, -1, "Use_Invulnerability revalidates selected item after consuming the last Invulnerability");
 }
 
 function verifyCoopPowerCubeSpawnFlags(): void {

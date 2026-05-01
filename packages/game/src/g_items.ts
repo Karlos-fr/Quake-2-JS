@@ -920,7 +920,9 @@ export function Use_Envirosuit(ent: GameEntity, item: GameItemDefinition, runtim
  * Original name: Use_Invulnerability
  * Source: game/g_items.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ * Behavior: Consume one Invulnerability inventory slot, validate the selected item, then extend or start `invincible_framenum` by the original 300 frames.
+ * Porting notes: The original `gi.sound` activation call is emitted through the runtime sound queue.
  */
 export function Use_Invulnerability(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   const client = requireClient(ent, "Use_Invulnerability");

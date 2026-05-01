@@ -55,6 +55,7 @@ import {
   door_touch,
   door_use_areaportals,
   func_conveyor_use,
+  func_timer_think,
   func_timer_use,
   func_train_find,
   plat_go_down,
@@ -903,14 +904,57 @@ func_conveyor_use(conveyor, null, null, runtime);
 assert.equal(conveyor.speed, 120, "func_conveyor_use should restore speed");
 
 const timerActivator = entity("activator", 6);
-const timer = entity("func_timer", 7, { wait: "1", random: "0", delay: "0.5" });
+const timer = entity("func_timer", 7, { wait: "1", random: "0", delay: "0.5", target: "timer_delayed_target" });
 SP_func_timer(timer, runtime);
+assert.equal(timer.wait, 1, "SP_func_timer explicit wait mismatch");
+assert.equal(timer.use, func_timer_use, "SP_func_timer use callback mismatch");
+assert.equal(timer.think, func_timer_think, "SP_func_timer think callback mismatch");
+assert.equal((timer.svflags & SVF_NOCLIENT) !== 0, true, "SP_func_timer must hide timers from clients");
 func_timer_use(timer, null, timerActivator, runtime);
 assert.equal(timer.activator, timerActivator, "func_timer_use activator mismatch");
 assert.equal(timer.nextthink, runtime.time + 0.5, "func_timer_use delay mismatch");
-assert.equal(timer.think?.name, "func_timer_think", "func_timer_use think mismatch");
+assert.equal(timer.think, func_timer_think, "func_timer_use think mismatch");
 timer.think!(timer, runtime);
 assert.equal(timer.nextthink, runtime.time + 1, "func_timer_think reschedule mismatch");
+assert.equal(
+  runtime.entities.some((candidate) => candidate?.inuse && candidate.classname === "DelayedUse" && candidate.target === "timer_delayed_target"),
+  true,
+  "func_timer_think must honor G_UseTargets delay scheduling"
+);
+func_timer_use(timer, null, timerActivator, runtime);
+assert.equal(timer.nextthink, 0, "func_timer_use must toggle active timers off");
+const timerTarget = entity("target_relay", 96, { targetname: "timer_target" });
+let timerTargetUseCount = 0;
+timerTarget.use = (_self, other, activator) => {
+  timerTargetUseCount += 1;
+  assert.equal(other, immediateTimer, "func_timer_think target caller mismatch");
+  assert.equal(activator, timerActivator, "func_timer_think target activator mismatch");
+};
+const immediateTimer = entity("func_timer", 97, { wait: "2", random: "0", target: "timer_target" });
+SP_func_timer(immediateTimer, runtime);
+func_timer_use(immediateTimer, null, timerActivator, runtime);
+assert.equal(immediateTimer.nextthink, runtime.time + 2, "func_timer_use without delay must fire immediately then reschedule");
+assert.equal(timerTargetUseCount, 1, "func_timer_think must fire targets once without delay");
+const originalRandom = Math.random;
+try {
+  Math.random = () => 0.5;
+  const clampedTimer = entity("func_timer", 98, { wait: "1", random: "5" });
+  clampedTimer.s.origin = [1, 2, 3];
+  SP_func_timer(clampedTimer, runtime);
+  assert.equal(clampedTimer.random, 0.9, "SP_func_timer must clamp random to wait - FRAMETIME");
+  assert.equal(
+    runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message.includes("func_timer at (1 2 3) has random >= wait")),
+    true,
+    "SP_func_timer random clamp warning mismatch"
+  );
+  const startOnTimer = entity("func_timer", 99, { spawnflags: "1", wait: "3", random: "0", delay: "0.25", pausetime: "0.75" });
+  SP_func_timer(startOnTimer, runtime);
+  assert.equal(startOnTimer.nextthink, runtime.time + 1 + 0.75 + 0.25 + 3, "SP_func_timer START_ON nextthink mismatch");
+  assert.equal(startOnTimer.think, func_timer_think, "SP_func_timer START_ON think mismatch");
+  assert.equal(startOnTimer.activator, startOnTimer, "SP_func_timer START_ON activator mismatch");
+} finally {
+  Math.random = originalRandom;
+}
 
 const path1 = entity("path_corner", 8, { targetname: "p1", target: "p2" });
 path1.s.origin = [100, 0, 0];

@@ -140,6 +140,9 @@ runtime.entities[1]!.client!.quad_framenum = 10;
 runtime.entities[1]!.solid = 3;
 MoveClientToIntermission(runtime.entities[1]!, runtime, hooks);
 assert.equal(runtime.entities[1]!.client!.ps.pmove.pm_type, pmtype_t.PM_FREEZE, "MoveClientToIntermission freeze mismatch");
+assert.deepEqual(runtime.entities[1]!.s.origin, [128, 64, 32], "MoveClientToIntermission origin mismatch");
+assert.deepEqual(runtime.entities[1]!.client!.ps.pmove.origin, [1024, 512, 256], "MoveClientToIntermission pmove origin mismatch");
+assert.deepEqual(runtime.entities[1]!.client!.ps.viewangles, [0, 90, 0], "MoveClientToIntermission viewangles mismatch");
 assert.equal(runtime.entities[1]!.client!.ps.blend[3], 0, "MoveClientToIntermission blend mismatch");
 assert.equal(runtime.entities[1]!.solid, 0, "MoveClientToIntermission solid mismatch");
 assert.ok(layouts.at(-1)?.layout.includes("client"), "MoveClientToIntermission scoreboard emit mismatch");
@@ -182,6 +185,8 @@ runtime.coop = true;
 runtime.deathmatch = false;
 runtime.intermissiontime = 0;
 runtime.autosaved = true;
+runtime.entities[1]!.s.origin = [256, 128, 64];
+runtime.entities[1]!.s.angles = [15, 180, 5];
 BeginIntermission(
   {
     ...runtime.entities[0]!,
@@ -192,6 +197,10 @@ BeginIntermission(
 );
 assert.ok(runtime.intermissiontime > 0, "BeginIntermission time mismatch");
 assert.equal(runtime.autosaved, false, "BeginIntermission autosaved clear mismatch");
+assert.deepEqual(runtime.intermission_origin, [256, 128, 64], "BeginIntermission intermission_origin mismatch");
+assert.deepEqual(runtime.intermission_angle, [15, 180, 5], "BeginIntermission intermission_angle mismatch");
+assert.deepEqual(runtime.entities[1]!.client!.ps.pmove.origin, [2048, 1024, 512], "BeginIntermission must move clients to intermission pmove origin");
+assert.deepEqual(runtime.entities[1]!.client!.ps.viewangles, [15, 180, 5], "BeginIntermission must move clients to intermission angles");
 if (keyItem) {
   assert.equal(runtime.entities[1]!.client!.pers.inventory[keyItem.index], 0, "BeginIntermission coop key strip mismatch");
 }
