@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- Power armor `PowerArmorType`, `Use_PowerArmor`, `Pickup_PowerArmor`, `Drop_PowerArmor` et locales associees `index`, `quantity`.
+
+Validation power armor du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `PowerArmorType` conserve le retour `POWER_ARMOR_NONE` sans client ou sans `FL_POWER_ARMOR`, puis la priorite `POWER_ARMOR_SHIELD` avant `POWER_ARMOR_SCREEN`. `Use_PowerArmor` conserve le toggle `FL_POWER_ARMOR`, le refus sans cells avec message `PRINT_HIGH`, et les sons originaux `misc/power1.wav`/`misc/power2.wav`. `Pickup_PowerArmor` conserve la lecture de quantite avant increment, l'increment d'une unite, le respawn deathmatch selon `item->quantity` hors dropped item et l'auto-use DM seulement au premier exemplaire. `Drop_PowerArmor` conserve la desactivation avant drop quand le joueur lache son dernier exemplaire actif, puis delegue a `Drop_General`. Les locales `index` et `quantity` sont portees comme variables TS equivalentes.
+
+Commentaires: header `PowerArmorType` verifie; headers `Use_PowerArmor`, `Pickup_PowerArmor` et `Drop_PowerArmor` completes dans `packages/game/src/g_items.ts` avec Behavior, et note de portage pour le `gi.cprintf` represente par runtime log.
+
+Runtime branche via `Touch_Item`/dispatch item, `Cmd_Use_f`/`Cmd_InvUse_f`, `Cmd_Drop_f`/`Cmd_InvDrop_f`, `g_combat.ts` (`CheckPowerArmor`), `p_hud.ts` (stats armor/cells) et `p_view.ts` (effets client power armor). `apps/web` consomme ce flux par le runtime local, les commandes, l'inventaire/HUD et les snapshots sans logique power armor parallele directe. `renderer-three` ne requiert pas de branchement gameplay dedie: il consomme les entites item visibles generiques et les sorties client aval (`EF_POWERSCREEN`, shell vert, temp effects/dlights via combat).
+
+Tests lances: `npm run verify:g-items`, sonde directe `npx tsx -e` pour pickup DM/auto-use/respawn et drop dernier exemplaire actif, `npx tsx ./scripts/verify/quake2-g-combat.ts`, `npm run verify:p-hud`, `npm run verify:p-view`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK. `npm run verify:full-game:gameplay` bloque toujours sur `ERR_MODULE_NOT_FOUND` pour `packages/client/src/main.js`.
+
+- Fonctions armure `ArmorIndex`, `Pickup_Armor` et locales associees `old_armor_index`, `newcount`, `salvage`, `salvagecount`, `oldinfo`.
+
+Validation armure du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `ArmorIndex` conserve le retour 0 sans client et la priorite jacket/combat/body sur les indices caches. `Pickup_Armor` conserve les branches C: `newinfo` depuis l'item, shard special (+2 ou seed jacket 2), armure de base sans ancienne armure, conversion vers meilleure armure avec salvage tronque puis clear ancien slot, salvage d'une armure plus faible avec cap et refus si deja max, puis respawn deathmatch 20s hors dropped item. Les locales `old_armor_index`, `oldinfo`, `salvage`, `salvagecount` et `newcount` sont portees comme variables locales TS equivalentes; `Math.trunc` documente la conversion float->int du C. Commentaires: header `ArmorIndex` verifie; header `Pickup_Armor` complete dans `packages/game/src/g_items.ts` avec Behavior et Porting notes.
+
+Runtime branche via `Touch_Item`/dispatch item, `SpawnItem`/itemlist armor, `g_combat.ts` (`CheckArmor`) et `p_hud.ts` (`ArmorIndex` pour stats HUD). `apps/web` consomme indirectement le flux runtime local, inventaire et HUD sans logique armor parallele. `renderer-three` n'a pas de branchement armor dedie attendu: `Pickup_Armor` ne produit pas de sortie visible directe hors entites item generiques et effets clients aval.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyPickupArmorConversions` couvre armure nue, shard sur armure existante, upgrade jacket->combat (`62`), salvage combat sur body (`137`), rejet d'armure plus faible a body max (`200`) et respawn deathmatch 20s. Tests lances: `npm run verify:g-items`, `npx tsx ./scripts/verify/quake2-g-combat.ts`, `npm run verify:p-hud`, `npm run verify:p-view`, `npm run verify:full-game:three-renderer`, `npm run typecheck` OK. `npm run verify:full-game:gameplay` bloque toujours sur `ERR_MODULE_NOT_FOUND` pour `packages/client/src/main.js`.
+
 - Indices globaux d'armure/power armor `jacket_armor_index`, `combat_armor_index`, `body_armor_index`, `power_screen_index`, `power_shield_index` portes dans `packages/game/src/g_items.ts`.
 
 Validation indices armure/power armor du 2026-05-01: comparaison avec `game/g_items.c` confirmee. Le C declare cinq `static int` puis les initialise dans `SetItemNames` via `ITEM_INDEX(FindItem(...))`: `Jacket Armor`, `Combat Armor`, `Body Armor`, `Power Screen`, `Power Shield`. Le TS conserve les cinq variables de module et les renseigne dans `cacheItemIndices`, appele par `InitItems` et `SetItemNames`; les slots itemlist restent alignes (`Body Armor` 1, `Combat Armor` 2, `Jacket Armor` 3, `Power Screen` 5, `Power Shield` 6). Les consommateurs sont coherents avec le C: `Pickup_Armor` utilise `jacket_armor_index` pour les shards sans armure, `getArmorInfoByIndex` discrimine jacket/combat/body, `PowerArmorType` preserve la priorite shield avant screen. Commentaires: non applicable sur les globals; commentaires d'en-tete des consommateurs `ArmorIndex`, `Pickup_Armor` et `PowerArmorType` verifies. Runtime branche via `SpawnEntities` -> `InitItems`/`SetItemNames`, puis `Touch_Item`/`Pickup_Armor`, `Use_PowerArmor`, `PowerArmorType` et `g_combat.ts`; `apps/web` consomme ce flux via runtime local/inventaire/HUD sans logique parallele; `renderer-three` n'a pas de branchement dedie attendu, les globals ne produisent pas de sortie visible directe et les effets en aval transitent par les entites/temp effects generiques. Test ajoute dans `scripts/verify/quake2-g-items.ts`: indices itemlist armure/power armor, priorite `ArmorIndex`, shard vers Jacket Armor, `PowerArmorType` screen puis shield prioritaire.
@@ -65,11 +83,12 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 - Sonde `Weapon_GrenadeLauncher` ajoutee a `npm run verify:p-weapon`: degats quad/non-quad, radius 160, vitesse 600, timer 2.5, offset, direction, `MZ_GRENADE`, recoil, ammo, `DF_INFINITE_AMMO`.
 - Sonde `Weapon_Railgun` ajoutee a `npm run verify:p-weapon`: degats/kick solo quad et deathmatch, offset projete, `MZ_RAILGUN`, recoil, ammo, `DF_INFINITE_AMMO`.
 - Sonde `Weapon_BFG` ajoutee a `npm run verify:p-weapon`: warmup frame 9, lancement frame 17, degats solo quad/deathmatch, vitesse 400, radius 1000, offset, recoil, ammo < 50 pendant windup, consommation 50 cells et `DF_INFINITE_AMMO`.
+- Sonde directe power armor via `npx tsx -e`: pickup DM Power Shield, auto-use au premier exemplaire avec cells, respawn `item.quantity`, drop du dernier exemplaire actif, sons `misc/power1.wav`/`misc/power2.wav`.
 
 ## Blocages
 
-- `npm run verify:full-game:gameplay` a echoue avant le flux gameplay sur `ERR_MODULE_NOT_FOUND` pour `packages/client/src/main.js` importe par `scripts/verify/quake2-full-game-gameplay-commands.ts` (reconfirme le 2026-05-01 pendant les lots `Weapon_Machinegun`, `Weapon_Grenade`, `Weapon_GrenadeLauncher` et `Weapon_Railgun`).
+- `npm run verify:full-game:gameplay` a echoue avant le flux gameplay sur `ERR_MODULE_NOT_FOUND` pour `packages/client/src/main.js` importe par `scripts/verify/quake2-full-game-gameplay-commands.ts` (reconfirme le 2026-05-01 pendant les lots `Weapon_Machinegun`, `Weapon_Grenade`, `Weapon_GrenadeLauncher`, `Weapon_Railgun` et power armor).
 
 ## Prochain lot recommande
 
-- Fonctions armure: `ArmorIndex`, `Pickup_Armor` et leurs locales (`old_armor_index`, `newcount`, `salvage`, `salvagecount`, `oldinfo`) si le lot reste raisonnable.
+- `Touch_Item` et locale `taken`.

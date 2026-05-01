@@ -13,6 +13,7 @@ import {
   Add_Ammo,
   ArmorIndex,
   FL_POWER_ARMOR,
+  FL_RESPAWN,
   FRAMETIME,
   FindItem,
   InitItems,
@@ -44,6 +45,7 @@ function main(): void {
   verifyTouchAmmoPickupUsesItemPath();
   verifyTouchWeaponPickupUsesWeaponPath();
   verifyArmorAndPowerArmorIndices();
+  verifyPickupArmorConversions();
   verifyUsePowerArmorRequiresCells();
   verifyCoopPowerCubeSpawnFlags();
   verifyInvalidSpawnFlagsAreClearedForNonPowerCube();
@@ -199,6 +201,61 @@ function verifyArmorAndPowerArmorIndices(): void {
   assertNumber(PowerArmorType(player), POWER_ARMOR_SCREEN, "PowerArmorType must detect power screen when active");
   player.client!.pers.inventory[powerShield.index] = 1;
   assertNumber(PowerArmorType(player), POWER_ARMOR_SHIELD, "PowerArmorType must prefer power shield over power screen");
+}
+
+function verifyPickupArmorConversions(): void {
+  InitItems();
+
+  const runtime = createHarnessRuntime();
+  const body = requireItem("Body Armor");
+  const combat = requireItem("Combat Armor");
+  const jacket = requireItem("Jacket Armor");
+  const shard = requireItem("Armor Shard");
+
+  const barePlayer = createPlayer(runtime);
+  const jacketEntity = spawnGameEntity(runtime);
+  jacketEntity.item = jacket;
+  assertBoolean(Pickup_Armor(jacketEntity, barePlayer, runtime), true, "Pickup_Armor accepts base armor when no armor is held");
+  assertNumber(barePlayer.client!.pers.inventory[jacket.index], 25, "Pickup_Armor grants jacket base_count to an unarmored player");
+
+  const shardPlayer = createPlayer(runtime);
+  shardPlayer.client!.pers.inventory[combat.index] = 50;
+  const shardEntity = spawnGameEntity(runtime);
+  shardEntity.item = shard;
+  assertBoolean(Pickup_Armor(shardEntity, shardPlayer, runtime), true, "Pickup_Armor accepts armor shards with existing armor");
+  assertNumber(shardPlayer.client!.pers.inventory[combat.index], 52, "Armor shards add two points to the active armor type");
+
+  const upgradePlayer = createPlayer(runtime);
+  upgradePlayer.client!.pers.inventory[jacket.index] = 25;
+  const combatEntity = spawnGameEntity(runtime);
+  combatEntity.item = combat;
+  assertBoolean(Pickup_Armor(combatEntity, upgradePlayer, runtime), true, "Pickup_Armor accepts better armor upgrades");
+  assertNumber(upgradePlayer.client!.pers.inventory[jacket.index], 0, "Better armor pickup clears the old armor slot");
+  assertNumber(upgradePlayer.client!.pers.inventory[combat.index], 62, "Better armor pickup preserves truncated salvage from old armor");
+
+  const salvagePlayer = createPlayer(runtime);
+  salvagePlayer.client!.pers.inventory[body.index] = 100;
+  const weakerCombatEntity = spawnGameEntity(runtime);
+  weakerCombatEntity.item = combat;
+  assertBoolean(Pickup_Armor(weakerCombatEntity, salvagePlayer, runtime), true, "Pickup_Armor accepts weaker armor when it adds salvage");
+  assertNumber(salvagePlayer.client!.pers.inventory[body.index], 137, "Weaker armor pickup adds truncated salvage to current armor");
+  assertNumber(salvagePlayer.client!.pers.inventory[combat.index], 0, "Weaker armor pickup keeps the current better armor slot");
+
+  const maxedPlayer = createPlayer(runtime);
+  maxedPlayer.client!.pers.inventory[body.index] = 200;
+  const weakJacketEntity = spawnGameEntity(runtime);
+  weakJacketEntity.item = jacket;
+  assertBoolean(Pickup_Armor(weakJacketEntity, maxedPlayer, runtime), false, "Pickup_Armor rejects weaker armor when current armor is already maxed");
+  assertNumber(maxedPlayer.client!.pers.inventory[body.index], 200, "Rejected weaker armor leaves current armor unchanged");
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  const deathmatchPlayer = createPlayer(deathmatchRuntime);
+  const respawningArmor = spawnGameEntity(deathmatchRuntime);
+  respawningArmor.item = combat;
+  assertBoolean(Pickup_Armor(respawningArmor, deathmatchPlayer, deathmatchRuntime), true, "Pickup_Armor accepts deathmatch armor pickup");
+  assertBoolean((respawningArmor.flags & FL_RESPAWN) !== 0, true, "Pickup_Armor schedules respawn for non-dropped deathmatch armor");
+  assertNumber(respawningArmor.nextthink, deathmatchRuntime.time + 20, "Pickup_Armor uses the original 20 second armor respawn delay");
 }
 
 function verifyUsePowerArmorRequiresCells(): void {

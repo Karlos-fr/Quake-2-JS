@@ -1,5 +1,21 @@
 # Progress - Quake-2-master/game/g_misc.c
 
+## Dernier lot valide
+
+- 2026-05-01: helpers gib/debris `VelocityForDamage`, `VectorScale` et `ClipGibVelocity`.
+- Checklist appliquee:
+  - Source C comparee aux helpers TS dans `packages/game/src/g_misc.ts`: `VelocityForDamage` conserve les tirages `crandom`/`random`, le seuil `damage < 50` et les facteurs `0.7`/`1.2`; `VectorScale` est porte par le helper local `scaleVec3` avec retour tuple; `ClipGibVelocity` conserve les bornes `[-300, 300]` en X/Y et `[200, 500]` en Z.
+  - Commentaires d'en-tete ajoutes pour les trois helpers dans `packages/game/src/g_misc.ts`.
+  - Branchement runtime verifie: les helpers sont appeles par `ThrowGib`/`ThrowHead`, eux-memes atteignables depuis les morts/gibs de monstres et joueurs; les debris passent par `ThrowDebris` dans les explosions. Les entites dynamiques sont liees au runtime, avancees par `G_RunFrame`/`G_RunEntity`, puis eligibles a `SV_BuildClientFrame` via `modelindex`/`effects`.
+  - `apps/web`: pas de logique parallele trouvee pour ces helpers; le flux web consomme les packet entities via le `refreshFrame` full-game/local.
+  - `renderer-three`: integration attendue car les gibs/debris sont des modeles MD2 visibles; le renderer consomme les sorties via `refresh-entity-sync` (`refreshFrame.entities`, `modelindex`, `origin`, `angles`, `effects`), sans compensation gameplay.
+- Correction appliquee: commentaires de portage ajoutes dans `packages/game/src/g_misc.ts`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:refresh-entity:alias-flags` OK.
+  - `npm run typecheck` OK.
+  - `npm run verify:full-game:render-source` tente mais bloque avant scenario sur import existant manquant `packages/client/src/types.js`.
+
 ## Correction des partielles
 
 - 2026-04-30: correction de l'integration visible areaportals (`Use_Areaportal`, `SP_func_areaportal`).
@@ -33,4 +49,4 @@
 
 ## Prochain lot recommande
 
-- `VelocityForDamage`, `VectorScale` (entite C appelee mais cible vide car helper TS `scaleVec3`) et `ClipGibVelocity`, comme petit groupe coherent de helpers gib/debris.
+- `gib_think`, `gib_touch`, `gib_die` et `ThrowGib`, comme prochain petit groupe coherent de comportements gib.

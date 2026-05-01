@@ -21,6 +21,7 @@ import {
   Cmd_InvDrop_f,
   Cmd_InvUse_f,
   Cmd_Kill_f,
+  Cmd_Players_f,
   Cmd_WeapLast_f,
   Cmd_PlayerList_f,
   Cmd_PutAway_f,
@@ -36,6 +37,7 @@ import {
   MOVETYPE_TOSS,
   MOVETYPE_WALK,
   OnSameTeam,
+  PlayerSort,
   SelectNextItem,
   SelectPrevItem,
   attachGameClient,
@@ -66,6 +68,7 @@ verifyWeaponNextCommand();
 verifyWeaponLastCommand();
 verifyKillCommand();
 verifyPutAwayCommand();
+verifyPlayersCommand();
 verifyPlayerListAndWave();
 
 console.log("Verification g_cmds - client commands OK");
@@ -405,6 +408,35 @@ function verifyPutAwayCommand(): void {
   assert.equal(player.client!.showscores, false, "ClientCommand should dispatch putaway for scores");
   assert.equal(player.client!.showhelp, false, "ClientCommand should dispatch putaway for help");
   assert.equal(player.client!.showinventory, false, "ClientCommand should dispatch putaway for inventory");
+}
+
+function verifyPlayersCommand(): void {
+  const runtime = createRuntime();
+  const localContext = createContext(runtime);
+  const requester = createClient(runtime, 1, "requester");
+  const low = createClient(runtime, 2, "low");
+  const high = createClient(runtime, 3, "high");
+  const disconnected = createClient(runtime, 4, "disconnected");
+  runtime.maxclients = 4;
+
+  requester.client!.ps.stats[STAT_FRAGS] = 5;
+  low.client!.ps.stats[STAT_FRAGS] = -2;
+  high.client!.ps.stats[STAT_FRAGS] = 15;
+  disconnected.client!.ps.stats[STAT_FRAGS] = 99;
+  disconnected.client!.pers.connected = false;
+
+  assert.equal(PlayerSort(1, 2, runtime), -1, "PlayerSort should order lower frag totals first");
+  assert.equal(PlayerSort(2, 1, runtime), 1, "PlayerSort should order higher frag totals last");
+  assert.equal(PlayerSort(1, 1, runtime), 0, "PlayerSort should report equal frag totals");
+
+  Cmd_Players_f(requester, localContext);
+  const direct = lastPrint().message;
+  assert.match(direct, / -2 low\n  5 requester\n 15 high\n\n3 players\n/, "Cmd_Players_f should print connected players sorted by frags");
+  assert.doesNotMatch(direct, /disconnected/, "Cmd_Players_f should ignore disconnected clients");
+
+  runCommand(localContext, ["players"]);
+  GameCommandsClientCommand(localContext, requester);
+  assert.match(lastPrint().message, /3 players/, "ClientCommand should dispatch players before intermission gating");
 }
 
 function verifyPlayerListAndWave(): void {

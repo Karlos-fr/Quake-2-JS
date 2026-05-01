@@ -34,6 +34,7 @@ import {
   SP_trigger_elevator,
   Touch_Plat_Center,
   Use_Plat,
+  button_fire,
   button_killed,
   button_return,
   button_wait,
@@ -54,6 +55,7 @@ import {
   MOVETYPE_PUSH,
   MOVETYPE_NONE,
   MOVETYPE_STOP,
+  FL_TEAMSLAVE,
   PLAT_LOW_TRIGGER,
   SOLID_BSP,
   SOLID_TRIGGER,
@@ -146,6 +148,24 @@ assert.deepEqual(button.moveinfo.end_origin, [60, 0, 0], "SP_func_button end ori
 assert.equal((button.s.effects & EF_ANIM01) !== 0, true, "SP_func_button initial animation mismatch");
 assert.equal(button.moveinfo.sound_start > 0, true, "SP_func_button default sound mismatch");
 button_fire_forSound(button);
+assert.equal(button.moveinfo.state, STATE_UP, "button_fire state mismatch");
+assert.deepEqual(button.moveinfo.dir, [1, 0, 0], "button_fire direction mismatch");
+assert.equal(button.moveinfo.remaining_distance, 60, "button_fire distance mismatch");
+assert.equal(button.moveinfo.endfunc, button_wait, "button_fire endfunc mismatch");
+const firingSoundCount = runtime.soundEvents.length;
+button_fire(button, runtime);
+assert.equal(runtime.soundEvents.length, firingSoundCount, "button_fire must ignore STATE_UP");
+button.moveinfo.state = STATE_TOP;
+button_fire(button, runtime);
+assert.equal(runtime.soundEvents.length, firingSoundCount, "button_fire must ignore STATE_TOP");
+const teamButton = entity("func_button", 28);
+teamButton.moveinfo.state = STATE_BOTTOM;
+teamButton.moveinfo.end_origin = [8, 0, 0];
+teamButton.moveinfo.sound_start = button.moveinfo.sound_start;
+teamButton.flags |= FL_TEAMSLAVE;
+button_fire(teamButton, runtime);
+assert.equal(teamButton.moveinfo.state, STATE_UP, "button_fire team slave state mismatch");
+assert.equal(runtime.soundEvents.length, firingSoundCount, "button_fire team slave must not emit sound");
 const buttonActivator = entity("button activator", 25);
 const buttonTarget = entity("button target", 26, { targetname: "button_target" });
 let buttonTargetUse = 0;

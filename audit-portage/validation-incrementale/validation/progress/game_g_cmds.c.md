@@ -167,3 +167,25 @@ Passe rapide post-validation: controle limite aux lignes deja marquees `Valide` 
 - Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run typecheck`.
 - Blocages: aucun pour le lot.
 - Prochain lot recommande: `PlayerSort`, `Cmd_Players_f` et temporaires locaux associes (`i`, `count`, `small`, `large`, `index`) si le lot reste raisonnable; sinon commencer par `PlayerSort` seul.
+
+## Session 2026-05-01 - PlayerSort / Cmd_Players_f
+
+- Lot valide: `PlayerSort`, `Cmd_Players_f` et temporaires C associes (`i`, `count`, `small`, `large`, `index`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c` et `packages/game/src/g_cmds.ts`; meme collecte des clients connectes, meme tri ascendant par `STAT_FRAGS`, meme format `%3i %s\n`, meme garde de paquet `1280 - 100`, meme suffixe `...\n` et meme resume final `%i players`.
+- Branchement runtime: `ClientCommand` dispatch `players` avant la garde intermission, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`.
+- Integration web/renderer: `apps/web` transmet les commandes client par `createClientSendCmdBridge` et ne remplace pas la logique `players`; la sortie est un `cprintf` console/HUD client. `packages/renderer-three` non applicable directement: aucune entite visible, modele, particule, beam, dlight, camera ou donnee scene 3D n'est produite par cette commande.
+- Corrections: commentaires d'en-tete completes pour `PlayerSort` et `Cmd_Players_f`; test cible ajoute dans `scripts/verify/quake2-g-cmds.ts` pour tri direct, impression `players`, exclusion des clients deconnectes et dispatch `ClientCommand`.
+- Tests de reference: `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_Wave_f` et temporaire local associe (`i`).
+
+## Session 2026-05-01 - Cmd_Wave_f
+
+- Lot valide: `Cmd_Wave_f` et temporaire C associe (`i`).
+- Verification: comparaison C/TS effectuee contre `Quake-2-master/game/g_cmds.c`, `Quake-2-master/game/m_player.h`, `packages/game/src/g_cmds.ts` et `packages/game/src/m_player.ts`; meme lecture `atoi(gi.argv(1))`, meme refus si `PMF_DUCKED`, meme refus si `anim_priority > ANIM_WAVE`, meme passage a `ANIM_WAVE`, memes messages `flipoff`/`salute`/`taunt`/`wave`/`point`, memes frames de depart `FRAME_*01 - 1` et memes `anim_end`.
+- Branchement runtime: `ClientCommand` dispatch `wave`, relaye depuis `g_main.ClientCommand` et `GetGameApiFunction`, atteignable via `SV_ExecuteUserCommand`/`ge.ClientCommand`; cote client, `CL_InitLocal` enregistre `wave` comme commande forwardee au serveur.
+- Integration web/renderer: `apps/web` transmet les commandes par `createClientSendCmdBridge` et charge l'API game, sans logique parallele pour `wave`. `packages/renderer-three` consomme les sorties visibles indirectes: `Cmd_Wave_f` modifie `ent.s.frame`/`anim_end`, `G_SetClientFrame` fait avancer l'animation joueur, puis les frames d'entite passent par snapshots/client refresh vers le renderer.
+- Corrections: commentaire d'en-tete complete pour `Cmd_Wave_f` dans `packages/game/src/g_cmds.ts`; aucune correction comportementale necessaire.
+- Tests de reference: controle cible inline `npx tsx` pour les cinq gestes, valeur non numerique, defaut, refus ducked, refus priorite haute et dispatch `ClientCommand`; `npm run verify:g-cmds`; `npm run verify:server:user`; `npm run verify:full-game:commands`; `npm run verify:full-game:bridge`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+- Blocages: aucun pour le lot.
+- Prochain lot recommande: `Cmd_Say_f` et temporaires locaux associes (`other`, `p`, `text`), avec `Com_sprintf` si le lot reste coherent.

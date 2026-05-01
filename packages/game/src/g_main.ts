@@ -136,6 +136,14 @@ export interface GameMainCvars {
   sv_maxvelocity: cvar_t | null;
   sv_rollspeed: cvar_t | null;
   sv_rollangle: cvar_t | null;
+  gun_x: cvar_t | null;
+  gun_y: cvar_t | null;
+  gun_z: cvar_t | null;
+  run_pitch: cvar_t | null;
+  run_roll: cvar_t | null;
+  bob_up: cvar_t | null;
+  bob_pitch: cvar_t | null;
+  bob_roll: cvar_t | null;
   sv_maplist: cvar_t | null;
 }
 
@@ -208,13 +216,28 @@ export function ClientEndServerFrames(context: GameMainContext): void {
       continue;
     }
 
-    const viewOptions: { sv_rollangle?: number; sv_rollspeed?: number } = {};
-    if (context.cvars.sv_rollangle) {
-      viewOptions.sv_rollangle = context.cvars.sv_rollangle.value;
-    }
-    if (context.cvars.sv_rollspeed) {
-      viewOptions.sv_rollspeed = context.cvars.sv_rollspeed.value;
-    }
+    const viewOptions: {
+      sv_rollangle?: number;
+      sv_rollspeed?: number;
+      run_pitch?: number;
+      run_roll?: number;
+      bob_up?: number;
+      bob_pitch?: number;
+      bob_roll?: number;
+      gun_x?: number;
+      gun_y?: number;
+      gun_z?: number;
+    } = {};
+    assignCvarValue(viewOptions, "sv_rollangle", context.cvars.sv_rollangle);
+    assignCvarValue(viewOptions, "sv_rollspeed", context.cvars.sv_rollspeed);
+    assignCvarValue(viewOptions, "run_pitch", context.cvars.run_pitch);
+    assignCvarValue(viewOptions, "run_roll", context.cvars.run_roll);
+    assignCvarValue(viewOptions, "bob_up", context.cvars.bob_up);
+    assignCvarValue(viewOptions, "bob_pitch", context.cvars.bob_pitch);
+    assignCvarValue(viewOptions, "bob_roll", context.cvars.bob_roll);
+    assignCvarValue(viewOptions, "gun_x", context.cvars.gun_x);
+    assignCvarValue(viewOptions, "gun_y", context.cvars.gun_y);
+    assignCvarValue(viewOptions, "gun_z", context.cvars.gun_z);
     ClientEndServerFrame(ent, context.runtime, viewOptions);
   }
 }
@@ -253,6 +276,14 @@ export function InitGame(context: GameMainContext): void {
   context.cvars.sv_maxvelocity = context.gi.cvar("sv_maxvelocity", "2000", 0);
   context.cvars.sv_rollspeed = context.gi.cvar("sv_rollspeed", "200", 0);
   context.cvars.sv_rollangle = context.gi.cvar("sv_rollangle", "2", 0);
+  context.cvars.gun_x = context.gi.cvar("gun_x", "0", 0);
+  context.cvars.gun_y = context.gi.cvar("gun_y", "0", 0);
+  context.cvars.gun_z = context.gi.cvar("gun_z", "0", 0);
+  context.cvars.run_pitch = context.gi.cvar("run_pitch", "0.002", 0);
+  context.cvars.run_roll = context.gi.cvar("run_roll", "0.005", 0);
+  context.cvars.bob_up = context.gi.cvar("bob_up", "0.005", 0);
+  context.cvars.bob_pitch = context.gi.cvar("bob_pitch", "0.002", 0);
+  context.cvars.bob_roll = context.gi.cvar("bob_roll", "0.002", 0);
   context.cvars.sv_maplist = context.gi.cvar("sv_maplist", "", 0);
 
   context.game.num_items = InitItems();
@@ -713,8 +744,22 @@ function createGameMainCvars(): GameMainCvars {
     sv_maxvelocity: null,
     sv_rollspeed: null,
     sv_rollangle: null,
+    gun_x: null,
+    gun_y: null,
+    gun_z: null,
+    run_pitch: null,
+    run_roll: null,
+    bob_up: null,
+    bob_pitch: null,
+    bob_roll: null,
     sv_maplist: null
   };
+}
+
+function assignCvarValue<T extends Record<string, number | undefined>>(target: T, key: keyof T & string, cvar: cvar_t | null): void {
+  if (cvar) {
+    target[key] = cvar.value as T[keyof T & string];
+  }
 }
 
 function applyMainCvarsToRuntime(context: GameMainContext): void {

@@ -14,6 +14,9 @@ import { strict as assert } from "node:assert";
 
 import {
   AI_MEDIC,
+  AI_SOUND_TARGET,
+  AI_STAND_GROUND,
+  AI_TEMP_STAND_GROUND,
   BODY_QUEUE_SIZE,
   DEAD_DEAD,
   DEAD_DYING,
@@ -72,6 +75,9 @@ assert.equal(RANGE_MID, 2, "RANGE_MID mismatch");
 assert.equal(RANGE_FAR, 3, "RANGE_FAR mismatch");
 assert.equal(GIB_ORGANIC, 0, "GIB_ORGANIC mismatch");
 assert.equal(GIB_METALLIC, 1, "GIB_METALLIC mismatch");
+assert.equal(AI_STAND_GROUND, 0x00000001, "AI_STAND_GROUND mismatch");
+assert.equal(AI_TEMP_STAND_GROUND, 0x00000002, "AI_TEMP_STAND_GROUND mismatch");
+assert.equal(AI_SOUND_TARGET, 0x00000004, "AI_SOUND_TARGET mismatch");
 assert.equal(AI_MEDIC, 0x00002000, "AI_MEDIC mismatch");
 assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");

@@ -1373,6 +1373,16 @@ export function button_wait(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: button_fire
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Ignores buttons already moving up or held at the top.
+ * - Starts the upward press motion, plays the start sound for non-team slaves, and finishes with `button_wait`.
+ */
 export function button_fire(self: GameEntity, runtime: GameRuntime): void {
   if (self.moveinfo.state === STATE_UP || self.moveinfo.state === STATE_TOP) {
     return;
@@ -1384,6 +1394,15 @@ export function button_fire(self: GameEntity, runtime: GameRuntime): void {
   Move_Calc(self, self.moveinfo.end_origin, button_wait, runtime);
 }
 
+/**
+ * Original name: button_use
+ * Source: game/g_func.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Records the triggering activator and delegates the press transition to `button_fire`.
+ */
 export function button_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   self.activator = activator;
   button_fire(self, runtime);

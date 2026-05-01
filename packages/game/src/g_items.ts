@@ -1035,6 +1035,12 @@ export function Pickup_Health(ent: GameEntity, other: GameEntity, runtime: GameR
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies standard armor pickup rules, including armor shards, better-armor conversion, weaker-armor salvage and deathmatch respawn.
+ *
+ * Porting notes:
+ * - Uses `Math.trunc` where the C code assigns float salvage products to integer counters.
  */
 export function Pickup_Armor(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   cacheItemIndices();
@@ -1101,6 +1107,12 @@ export function Pickup_Armor(ent: GameEntity, other: GameEntity, runtime: GameRu
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Toggles `FL_POWER_ARMOR`, requiring at least one cell before activation and emitting the original power on/off sounds.
+ *
+ * Porting notes:
+ * - Engine `gi.cprintf` is represented by a runtime log entry at `PRINT_HIGH` severity.
  */
 export function Use_PowerArmor(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   const client = requireClient(ent, "Use_PowerArmor");
@@ -1133,6 +1145,9 @@ export function Use_PowerArmor(ent: GameEntity, item: GameItemDefinition, runtim
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Adds one power armor item, schedules deathmatch respawn for map items, and auto-uses the first pickup in deathmatch.
  */
 export function Pickup_PowerArmor(ent: GameEntity, other: GameEntity, runtime: GameRuntime): boolean {
   const client = requireClient(other, "Pickup_PowerArmor");
@@ -1162,6 +1177,9 @@ export function Pickup_PowerArmor(ent: GameEntity, other: GameEntity, runtime: G
  * Source: game/g_items.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Turns power armor off before dropping the last carried unit, then delegates to the shared drop path.
  */
 export function Drop_PowerArmor(ent: GameEntity, item: GameItemDefinition, runtime: GameRuntime): void {
   const client = requireClient(ent, "Drop_PowerArmor");

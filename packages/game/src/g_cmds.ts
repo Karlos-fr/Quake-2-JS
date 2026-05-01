@@ -667,6 +667,11 @@ export function Cmd_PutAway_f(ent: GameEntity): void {
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Compare client indexes by STAT_FRAGS in ascending order, matching the original qsort callback.
+ *
+ * Porting notes:
+ * - The C callback receives pointers to int entries in Cmd_Players_f's local index array; the TS port takes
+ *   the indexes directly and reads the same client stat from the runtime entity table.
  */
 export function PlayerSort(left: number, right: number, runtime: GameRuntime): number {
   const anum = runtime.entities[left + 1]?.client?.ps.stats[STAT_FRAGS] ?? 0;
@@ -679,6 +684,10 @@ export function PlayerSort(left: number, right: number, runtime: GameRuntime): n
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Build the connected-player index list, sort it with PlayerSort, and print a bounded frag/name list.
+ *
+ * Porting notes:
+ * - Local C buffers are represented by strings while preserving the 1280-byte packet guard and summary count.
  */
 export function Cmd_Players_f(ent: GameEntity, context: GameCommandContext): void {
   const index: number[] = [];
@@ -711,6 +720,13 @@ export function Cmd_Players_f(ent: GameEntity, context: GameCommandContext): voi
  * Source: game/g_cmds.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Rejects ducked players and higher-priority animations before selecting one player gesture.
+ * - Preserves the original numeric gesture mapping, printed labels, start frames and animation end frames.
+ *
+ * Porting notes:
+ * - Reads `gi.argv(1)` through the explicit command context instead of the global game import table.
  */
 export function Cmd_Wave_f(ent: GameEntity, context: GameCommandContext): void {
   const cl = ent.client;

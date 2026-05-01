@@ -8,6 +8,37 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot flags AI poursuite/hold `AI_LOST_SIGHT`, `AI_PURSUIT_LAST_SEEN`, `AI_PURSUE_NEXT`, `AI_PURSUE_TEMP`, `AI_HOLD_FRAME`.
+- Verdict: `Valide` pour les 5 macros, sans correction TS necessaire.
+- Valeurs H/TS comparees et conformes:
+  - `AI_LOST_SIGHT = 0x00000008`
+  - `AI_PURSUIT_LAST_SEEN = 0x00000010`
+  - `AI_PURSUE_NEXT = 0x00000020`
+  - `AI_PURSUE_TEMP = 0x00000040`
+  - `AI_HOLD_FRAME = 0x00000080`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de definition directe attendue pour ces macros.
+- Runtime:
+  - Source C: `ai_run` efface `AI_LOST_SIGHT` quand l'ennemi est visible, initialise la poursuite perdue avec `AI_LOST_SIGHT | AI_PURSUIT_LAST_SEEN`, consomme `AI_PURSUE_NEXT`, restaure `saved_goal` via `AI_PURSUE_TEMP`, choisit les marqueurs `PlayerTrail`, et pose des objectifs temporaires de correction gauche/droite. `turret_driver_think` pose/efface `AI_LOST_SIGHT` selon la visibilite. `M_MoveFrame` bloque l'avancement et appelle l'AI avec distance 0 quand `AI_HOLD_FRAME` est pose; plusieurs monstres posent/effacent ce flag pendant leurs attaques.
+  - TS: `packages/game/src/g_ai.ts`, `packages/game/src/g_turret.ts`, `packages/game/src/g_monster.ts` et les monstres consommateurs conservent ces branches. Les commentaires d'en-tete de `ai_run`, `turret_driver_think` et `M_MoveFrame` ont ete verifies avec `Original name`, `Source`, `Category: Ported` et niveau de fidelite.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Le navigateur declenche ce comportement via le runtime serveur/game et consomme les sorties via le host full-game; `verify:full-game:server-host` OK.
+- renderer-three: aucune reference directe aux flags; pas d'integration renderer directe attendue. Ces flags modifient l'IA et les frames avant production des entites/snapshots visibles; `verify:full-game:three-renderer` OK confirme le flux renderer.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-monster` OK; `npm run verify:g-turret` OK; `npm run verify:m-actor` OK; `npm run verify:m-brain` OK; `npm run verify:m-chick` OK; `npm run verify:m-gunner` OK; `npm run verify:m-infantry` OK; `npm run verify:m-medic` OK; `npm run verify:m-soldier` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- 2026-05-01: lot premiers flags AI `AI_STAND_GROUND`, `AI_TEMP_STAND_GROUND`, `AI_SOUND_TARGET`.
+- Verdict: `Valide` pour les 3 macros apres ajout d'assertions ciblees dans le harness header.
+- Valeurs H/TS comparees et conformes:
+  - `AI_STAND_GROUND = 0x00000001`
+  - `AI_TEMP_STAND_GROUND = 0x00000002`
+  - `AI_SOUND_TARGET = 0x00000004`
+- Cible declarative verifiee: `packages/game/src/g_local.ts`; export public verifie dans `packages/game/src/index.ts`. Les cibles generees `runtime.ts` et `g_items.ts` n'ont pas de definition directe attendue pour ces macros.
+- Runtime:
+  - Source C: `FindTarget` pose `AI_SOUND_TARGET` quand un bruit devient cible; `ai_run` pose `AI_STAND_GROUND | AI_TEMP_STAND_GROUND` quand le monstre arrive pres de la cible sonore; `ai_stand` et `ai_checkattack` effacent le stand-ground temporaire dans les memes conditions que le C; `T_Damage` efface `AI_SOUND_TARGET` sur attaque directe.
+  - TS: `packages/game/src/g_ai.ts` conserve ces branches dans `FindTarget`, `ai_run`, `ai_stand` et `ai_checkattack`; `packages/game/src/g_combat.ts` nettoie `AI_SOUND_TARGET`; `g_misc`/`g_turret` et les monstres consommateurs conservent les usages `AI_STAND_GROUND`.
+- apps/web: aucune reference directe trouvee; pas de logique parallele attendue. Le comportement est declenche par le runtime serveur/game et expose au navigateur via le host full-game; `verify:full-game:server-host` OK.
+- renderer-three: aucune reference directe aux flags; pas d'integration renderer directe attendue. Ces flags influencent l'IA avant production des entites/snapshots visibles; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: header de module `packages/game/src/g_local.ts` deja present et rattache a `game/g_local.h`; commentaire source `//monster ai flags` verifie. Commentaires de fonctions existants verifies pour `FindTarget`, `ai_run`, `ai_stand` et `ai_checkattack` avec `Original name`, `Source`, `Category: Ported` et niveau de fidelite.
+- Tests: verification ciblee `npx tsx -e ...` OK pour valeurs et exports publics; `npm run verify:g-local:header` OK apres ajout des assertions `AI_STAND_GROUND`/`AI_TEMP_STAND_GROUND`/`AI_SOUND_TARGET`; `npm run verify:g-ai` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:g-misc` OK; `npm run verify:g-turret` OK; `npm run verify:g-monster` OK; `npm run verify:m-actor` OK; `npm run verify:m-berserk` OK; `npm run verify:m-chick` OK; `npm run verify:m-gunner` OK; `npm run verify:m-insane` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 - 2026-05-01: lot types de gib `GIB_ORGANIC`, `GIB_METALLIC`.
 - Verdict: `Valide` pour les 2 macros apres ajout d'assertions ciblees dans les harness header et `g_misc`.
 - Valeurs H/TS comparees et conformes:
@@ -237,7 +268,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les premiers flags AI: `AI_STAND_GROUND`, `AI_TEMP_STAND_GROUND`, `AI_SOUND_TARGET`.
+- Continuer avec les flags AI suivants: `AI_GOOD_GUY`, `AI_BRUTAL`, `AI_NOSTEP`, `AI_DUCKED`, `AI_COMBAT_POINT`.
 
 ## Blocages
 

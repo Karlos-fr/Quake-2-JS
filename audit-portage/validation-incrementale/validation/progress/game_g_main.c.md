@@ -2,6 +2,8 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: cvars serveur/commande `sv_cheats`, `flood_msgs`, `flood_persecond`, `flood_waitdelay`, `sv_maplist`.
+- 2026-05-01: cvars de vue/arme `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`.
 - 2026-05-01: cvars `g_select_empty`, `dedicated`, `filterban`, `sv_maxvelocity`, `sv_gravity`, `sv_rollspeed`, `sv_rollangle`.
 - 2026-05-01: cvars `fraglimit`, `timelimit`, `password`, `spectator_password`, `maxclients`, `maxspectators`, `maxentities`.
 - 2026-05-01: groupe d'etat runtime/cvars `g_edicts`, `deathmatch`, `coop`, `dmflags`, `skill`.
@@ -9,6 +11,19 @@
 
 ## Verdict du lot
 
+- `sv_cheats`: valide. Cvar init portee avec nom `cheats`, default `0` et flags `CVAR_SERVERINFO | CVAR_LATCH`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou les commandes `give`/`god`/`notarget`/`noclip` gardent le gate original `deathmatch && !sv_cheats`.
+- `flood_msgs`: valide. Cvar init portee avec default `4` et flags `0`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou `Cmd_Say_f` l'utilise comme fenetre de messages pour la protection flood.
+- `flood_persecond`: valide. Cvar init portee avec default `4` et flags `0`; `Cmd_Say_f` compare bien `runtime.time - flood_when[i]` a cette valeur, comme le C compare `level.time` a `flood_persecond->value`.
+- `flood_waitdelay`: valide. Cvar init portee avec default `10` et flags `0`; `Cmd_Say_f` applique bien `flood_locktill = runtime.time + flood_waitdelay` et le message de blocage associe.
+- `sv_maplist`: valide. Cvar init portee avec default vide et flags `0`; `EndDMLevel` relit le cvar, tokenise avec les separateurs C equivalents, choisit la carte suivante ou reboucle sur la premiere, puis lance l'intermission.
+- `gun_x`: valide apres correction. Cvar init portee avec default `0` et flags `0`; `ClientEndServerFrames` transmet maintenant la valeur a `p_view.ts`, qui l'applique dans `SV_CalcGunOffset` sur l'axe right.
+- `gun_y`: valide apres correction. Cvar init portee avec default `0` et flags `0`; la valeur est transmise a `SV_CalcGunOffset` pour l'offset forward.
+- `gun_z`: valide apres correction. Cvar init portee avec default `0` et flags `0`; la valeur est transmise a `SV_CalcGunOffset` pour l'offset vertical negatif, comme le C.
+- `run_pitch`: valide apres correction. Cvar init portee avec default `0.002` et flags `0`; `ClientEndServerFrames` la transmet a `SV_CalcViewOffset` pour le pitch lie a la vitesse.
+- `run_roll`: valide apres correction. Cvar init portee avec default `0.005` et flags `0`; `ClientEndServerFrames` la transmet a `SV_CalcViewOffset` pour le roll lie a la vitesse.
+- `bob_up`: valide apres correction. Cvar init portee avec default `0.005` et flags `0`; `ClientEndServerFrames` la transmet a `SV_CalcViewOffset` pour le bob vertical borne.
+- `bob_pitch`: valide apres correction. Cvar init portee avec default `0.002` et flags `0`; `ClientEndServerFrames` la transmet a `SV_CalcViewOffset` pour le bob pitch.
+- `bob_roll`: valide apres correction. Cvar init portee avec default `0.002` et flags `0`; `ClientEndServerFrames` la transmet a `SV_CalcViewOffset` pour le bob roll.
 - `g_select_empty`: valide. Cvar init portee avec default `0` et `CVAR_ARCHIVE`; `applyMainCvarsToRuntime` alimente `runtime.g_select_empty`, consomme par `p_weapon.ts` pour autoriser/refuser la selection d'armes sans munitions.
 - `dedicated`: valide. Cvar init portee avec default `0` et `CVAR_NOSET`; `ClientCommand` transmet le handle a `g_cmds.ts`, ou le chat echo dedie suit la branche originale.
 - `filterban`: valide. Cvar init portee avec default `1` et flags `0`; la commande serveur portee dans `g_svcmds.ts` relit le cvar via `gi.cvar` pour `SV_FilterPacket` et `writeip`.
@@ -34,6 +49,18 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-01 pour le flux `InitGame`/`EndDMLevel` deja couvert.
+- `npm run verify:g-cmds`: ok le 2026-05-01, confirme les branches client-command incluant cheats et flood protection.
+- Verification inline TS le 2026-05-01: defaults/flags exacts pour `cheats`, `flood_msgs`, `flood_persecond`, `flood_waitdelay`, `sv_maplist`, et choix `sv_maplist` `q2dm1 -> q2dm2` par `EndDMLevel`.
+- `npm run verify:full-game:rules-transitions`: ok le 2026-05-01.
+- `npm run verify:full-game:gameplay`: bloque le 2026-05-01 avant execution utile par import manquant `packages/client/src/main.js` dans `scripts/verify/quake2-full-game-gameplay-commands.ts`; non corrige dans ce lot.
+- `npm run typecheck`: ok le 2026-05-01.
+- `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour defaults/flags `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`, et verification que `ClientEndServerFrames` transmet ces cvars a `p_view.ts`.
+- `npm run verify:p-view`: ok le 2026-05-01, confirme les fonctions consommatrices `SV_CalcViewOffset`, `SV_CalcGunOffset` et `ClientEndServerFrame`.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
+- `npm run verify:refresh-entity:weapon`: ok le 2026-05-01.
+- `npm run typecheck`: ok le 2026-05-01.
+- `npm run verify:full-game:render-source`: bloque le 2026-05-01 avant execution utile par import manquant `packages/client/src/types.js` dans `scripts/verify/quake2-full-game-render-source.ts`; non corrige dans ce lot.
 - `npm run verify:g-main`: ok le 2026-05-01, couverture ajoutee pour defaults/flags `g_select_empty`, `dedicated`, `filterban`, `sv_maxvelocity`, `sv_gravity`, `sv_rollspeed`, `sv_rollangle`, mirroring runtime `g_select_empty`/`sv_gravity`, et passage `sv_rollspeed`/`sv_rollangle` a `ClientEndServerFrames`.
 - `npm run verify:g-svcmds`: ok le 2026-05-01, confirme `filterban` dans `SV_FilterPacket` et `writeip`.
 - `npm run verify:g-cmds`: ok le 2026-05-01, confirme les branches client-command dont le chat dedie.
@@ -53,6 +80,16 @@
 
 ## Blocages / decisions
 
+- Aucune correction TS necessaire pour ce lot.
+- Commentaires verifies: `InitGame`, `ClientCommand` et `EndDMLevel` dans `packages/game/src/g_main.ts`, et `ClientCommand`/commandes consommatrices dans `packages/game/src/g_cmds.ts`.
+- `apps/web`: integration jugee presente via `full-game-server-host.ts`, qui instancie le `GetGameApiFunction` porte avec un runtime server-backed; le bridge console/client envoie les commandes au runtime au lieu de dupliquer la logique cheats/flood/maplist. Aucun manque web detecte dans le perimetre de ce lot.
+- `packages/renderer-three`: aucune integration directe attendue. Les cvars cheats/flood ne produisent pas de sortie visible; `sv_maplist` declenche une transition de map serveur, puis le renderer consomme uniquement les donnees normales de chargement/refresh apres changement de carte.
+- Correction appliquee dans `packages/game/src/g_main.ts`: ajout des handles cvars `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`, initialisation C-equivalente, et transmission groupee a `ClientEndServerFrame`.
+- Correction appliquee dans `scripts/verify/quake2-g-main.ts`: assertions defaults/flags du lot et effets runtime sur `gunoffset`, `kick_angles` et `viewoffset`.
+- Commentaires verifies: `InitGame` et `ClientEndServerFrames` dans `g_main.ts`, `SV_CalcViewOffset`/`SV_CalcGunOffset`/`ClientEndServerFrame` dans `p_view.ts`. Pas d'ajout necessaire.
+- `apps/web`: integration jugee presente pour le chemin full-game via le runtime server-backed; le navigateur consomme les `playerstate` produits. Les helpers standalone de demo locale ne remplacent pas cette logique serveur.
+- `packages/renderer-three`: pas de cvar directe attendue; le renderer consomme les sorties client/refresh deja derivees des `playerstate` (`viewoffset`, `gunoffset`, `gunangles`).
+- Blocage hors lot: `verify:full-game:render-source` echoue sur un import `packages/client/src/types.js` absent avant de tester le flux; laisse ouvert pour le fichier/proprietaire concerne.
 - Correction appliquee dans `packages/game/src/g_main.ts`: ajout de `sv_rollspeed`/`sv_rollangle` au contexte cvars, init C-equivalente, et transmission a `ClientEndServerFrame`.
 - Correction appliquee dans `scripts/verify/quake2-g-main.ts`: assertions de defaults/flags du lot, mirroring runtime `g_select_empty`/`sv_gravity`, et verification du roll branche par cvars.
 - Pas de correction appliquee dans `packages/game/src/g_phys.ts`: `sv_maxvelocity` et le reliquat `sv_gravity` dependent du port de `g_phys.c`, fichier potentiellement traite par un autre agent; statuts gardes `Partiel` avec action suivante explicite.
@@ -75,4 +112,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les cvars de vue/arme suivantes de `g_main.c`: `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`.
+- Continuer avec le prochain symbole `g_main.c` dans la matrice: `SpawnEntities`.

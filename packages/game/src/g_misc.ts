@@ -115,6 +115,18 @@ function subVec3(left: vec3_t, right: vec3_t): [number, number, number] {
   return [left[0] - right[0], left[1] - right[1], left[2] - right[2]];
 }
 
+/**
+ * Original name: VectorScale
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Multiplies a vec3 by one scalar, returning the out vector used by the original helper.
+ *
+ * Porting notes:
+ * - The C `out` parameter is represented as a returned tuple for local TS callers.
+ */
 function scaleVec3(vector: vec3_t, scalar: number): [number, number, number] {
   return [vector[0] * scalar, vector[1] * scalar, vector[2] * scalar];
 }
@@ -137,6 +149,18 @@ function setEntityOrigin(self: GameEntity, origin: vec3_t): void {
   self.s.origin = [...origin];
 }
 
+/**
+ * Original name: VelocityForDamage
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds the randomized gib launch velocity and scales it by the source damage threshold.
+ *
+ * Porting notes:
+ * - The C output vector is returned so callers can compose it without mutating an argument.
+ */
 function VelocityForDamage(damage: number): [number, number, number] {
   const v: [number, number, number] = [
     100.0 * crandom(),
@@ -148,6 +172,15 @@ function VelocityForDamage(damage: number): [number, number, number] {
   return scaleVec3(v, scale);
 }
 
+/**
+ * Original name: ClipGibVelocity
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Clamps gib horizontal velocity to +/-300 and vertical velocity to the original 200..500 range.
+ */
 function ClipGibVelocity(ent: GameEntity): void {
   ent.velocity[0] = clamp(ent.velocity[0], -300, 300);
   ent.velocity[1] = clamp(ent.velocity[1], -300, 300);

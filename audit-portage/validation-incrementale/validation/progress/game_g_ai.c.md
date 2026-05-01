@@ -176,3 +176,14 @@
 - Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
 - Blocage: aucun pour le lot traite.
 - Prochain lot recommande: traiter la locale restante `v` de `ai_run` si le coordinateur veut fermer la derniere entree `A verifier` de cette matrice, puis centraliser `AVANCEMENT_GLOBAL.md`.
+
+## Session 2026-05-01 - ai_run locale v
+
+- Lot traite: locale restante `v` de `ai_run`.
+- Verdict: non applicable comme variable locale portee.
+- Corrections TS: aucune.
+- Preuves: comparaison C/TS effectuee; le C declare `vec3_t v` dans `ai_run` et le reutilise pour `VectorSubtract`/`VectorSet` lors de la distance cible sonore, de la distance a `last_sighting`, du yaw de correction de trajectoire et des essais gauche/droite. Le TS conserve ces usages en variables locales `const v` puis `let v` avec `subtractVec3` et tableaux temporaires passes a `G_ProjectSource`; aucun symbole global ni export attendu.
+- Integration: runtime deja verifie via `ai_run` depuis les callbacks `monsterinfo.run`/frames monstres sous `M_MoveFrame` puis `G_RunFrame`, avec exports `packages/game/src/index.ts`. `apps/web` passe par `SV_Frame`/runtime et ne remplace pas cette logique. `renderer-three` consomme seulement les sorties visibles apres simulation via `ClientRefreshFrame`/`refresh-entity-sync`, sans integration directe attendue pour cette locale.
+- Tests: `npm run verify:g-ai` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK.
+- Blocage: aucun pour le lot traite.
+- Prochain lot recommande: aucun dans cette matrice; demander au coordinateur de centraliser `AVANCEMENT_GLOBAL.md` et de passer `game/g_ai.c` a `Termine`.

@@ -2,6 +2,22 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: activation ciblee bouton `button_use`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:737-740` avec `packages/game/src/g_func.ts:1397-1409`.
+- Correction appliquee: ajout du commentaire d'en-tete `button_use`.
+- Effets verifies: le port conserve l'affectation de `self.activator = activator` puis delegue la transition de pression a `button_fire`; controle inline OK pour activator, `STATE_UP`, direction, distance restante et callback `button_wait`.
+- Branchement: `button_use` est affecte a `ent.use` par `SP_func_button`, lui-meme reference par `g_spawn.ts` pour `func_button`; l'appel est atteignable par triggers/G_UseTargets puis `button_fire`/`Move_Calc` passe dans le flux `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele dans `apps/web`; le navigateur passe par le runtime serveur/local et consomme les sons/snapshots/interpolations de brush models. `packages/renderer-three` consomme les poses de brush snapshots via `gl-world-scene-adapter`; pas de correction renderer attendue.
+- Tests: inline `npx tsx -e` OK; `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK. Premier essai inline avec imports `.js` bloque par resolution `tsx -e`, relance avec imports `.ts` OK.
+
+- 2026-05-01: depart de pression bouton `button_fire`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:726-735` avec `packages/game/src/g_func.ts:1376-1394`.
+- Correction appliquee: ajout du commentaire d'en-tete `button_fire` et couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier les gardes `STATE_UP`/`STATE_TOP`, la transition `STATE_UP`, le son start uniquement hors `FL_TEAMSLAVE`, et `Move_Calc` vers `moveinfo.end_origin` avec `button_wait`.
+- Effets verifies: le port conserve le refus de retrigger un bouton deja montant/haut, lance la pression vers la position haute, respecte le silence des team slaves et delegue la fin du mouvement a `button_wait`; `emitMoverSound` garde le cas `sound_start == 0` comme le test indirect via sounds/spawn le couvre deja.
+- Branchement: `button_fire` est appele par `button_use`, `button_touch` et `button_killed`, eux-memes branches par `SP_func_button`; le mouvement et le callback `button_wait` passent par `Move_Calc` puis le flux `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele dans `apps/web`; le navigateur passe par le runtime serveur/local et consomme les sons/snapshots/interpolations de brush models. `packages/renderer-three` consomme les poses de brush snapshots via `gl-world-scene-adapter`; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: attente en position haute bouton `button_wait`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:711-724` avec `packages/game/src/g_func.ts:1355-1373`.
 - Correction appliquee: ajout du commentaire d'en-tete `button_wait` et couverture ciblee dans `scripts/verify/quake2-g-func.ts` pour verifier `STATE_TOP`, retrait de `EF_ANIM01`, ajout de `EF_ANIM23`, appel `G_UseTargets` avec l'activator, `s.frame = 1`, programmation `nextthink = runtime.time + moveinfo.wait`/`think = button_return` quand `wait >= 0`, et absence de programmation quand `wait < 0`.
@@ -118,7 +134,7 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc suivant sans elargir: `button_fire`.
+- Valider le bloc suivant sans elargir: `button_touch`.
 
 ## Blocages
 
