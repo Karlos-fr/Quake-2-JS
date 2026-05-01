@@ -90,6 +90,7 @@ function main(): void {
   verifyFuncWallSpawnAndUseTogglesVisibility();
   verifyFuncObjectSpawnUseReleaseAndCrush();
   verifyFuncExplosiveSpawnsAndExplodesBrushModel();
+  verifyFuncExplosiveExplodeMassLimitsTargetsAndFreeBranches();
   verifyGibTypesSelectMovementAndTouchBehavior();
   verifyGibTouchMatchesPlaneGatedSourceBehavior();
   verifyGibThinkAndDieCallbacks();
@@ -746,9 +747,18 @@ function verifyFuncObjectSpawnUseReleaseAndCrush(): void {
 function verifyFuncExplosiveSpawnsAndExplodesBrushModel(): void {
   const runtime = createHarnessRuntime();
 
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = true;
+  const deathmatchExplosive = spawnFreeableEntity(deathmatchRuntime);
+  deathmatchExplosive.classname = "func_explosive";
+  deathmatchExplosive.model = "*1";
+  SP_func_explosive(deathmatchExplosive, deathmatchRuntime);
+  assert.equal(deathmatchExplosive.inuse, false, "SP_func_explosive must free explosive brushes in deathmatch");
+  assert.equal(deathmatchExplosive.linked, false, "deathmatch func_explosive must not stay linked");
+
   const explosive = spawnGameEntity(runtime);
   explosive.classname = "func_explosive";
-  explosive.model = "*1";
+  explosive.model = "*8";
   explosive.mins = [-16, -16, 0];
   explosive.maxs = [16, 16, 32];
   explosive.mass = 100;
@@ -756,9 +766,14 @@ function verifyFuncExplosiveSpawnsAndExplodesBrushModel(): void {
   SP_func_explosive(explosive, runtime);
 
   assert.equal(explosive.solid, SOLID_BSP, "func_explosive must spawn solid when not trigger-spawned");
-  assert.equal(explosive.s.modelindex, 2, "func_explosive must apply gi.setmodel-style inline modelindex");
+  assert.equal(explosive.s.modelindex, 9, "func_explosive must apply gi.setmodel-style inline modelindex");
+  assert.equal(runtime.assets.modelPaths.includes("models/objects/debris1/tris.md2"), true, "SP_func_explosive must precache large debris");
+  assert.equal(runtime.assets.modelPaths.includes("models/objects/debris2/tris.md2"), true, "SP_func_explosive must precache small debris");
   assert.equal(explosive.takedamage, damage_t.DAMAGE_YES, "untargeted func_explosive must be shootable");
+  assert.equal(explosive.health, 100, "untargeted func_explosive must default health to 100");
   assert.equal(explosive.die, func_explosive_explode, "untargeted func_explosive must use func_explosive_explode");
+  assert.equal(explosive.linked, true, "SP_func_explosive must link visible brush models");
+  assert.equal(runtime.linkedInlineBspEntities.includes(explosive), true, "SP_func_explosive must expose inline BSP brushes to runtime collision");
 
   const attacker = spawnGameEntity(runtime);
   attacker.classname = "attacker";
@@ -771,22 +786,124 @@ function verifyFuncExplosiveSpawnsAndExplodesBrushModel(): void {
 
   const triggerSpawned = spawnGameEntity(runtime);
   triggerSpawned.classname = "func_explosive";
-  triggerSpawned.model = "*2";
+  triggerSpawned.model = "*9";
   triggerSpawned.spawnflags = 1;
   SP_func_explosive(triggerSpawned, runtime);
 
+  assert.equal(triggerSpawned.solid, SOLID_NOT, "trigger-spawned func_explosive must start non-solid");
+  assert.equal((triggerSpawned.svflags & SVF_NOCLIENT) !== 0, true, "trigger-spawned func_explosive must start hidden from clients");
   assert.equal(triggerSpawned.use, func_explosive_spawn, "trigger-spawned func_explosive must first expose func_explosive_spawn");
   useGameEntity(runtime, triggerSpawned, null, triggerSpawned);
   assert.equal(triggerSpawned.solid, SOLID_BSP, "func_explosive_spawn must make the brush solid");
+  assert.equal((triggerSpawned.svflags & SVF_NOCLIENT) === 0, true, "func_explosive_spawn must make the brush client-visible");
+  assert.equal(triggerSpawned.use, undefined, "func_explosive_spawn must clear the one-shot use callback");
+  assert.equal(triggerSpawned.linked, true, "func_explosive_spawn must relink the revealed brush");
+  assert.equal(runtime.linkedInlineBspEntities.includes(triggerSpawned), true, "func_explosive_spawn must expose the revealed inline brush to collision");
 
   const targeted = spawnGameEntity(runtime);
   targeted.classname = "func_explosive";
-  targeted.model = "*3";
+  targeted.model = "*10";
   targeted.targetname = "boom";
+  targeted.target = "explosion_relay";
+  targeted.dmg = 0;
   SP_func_explosive(targeted, runtime);
 
   assert.equal(targeted.use, func_explosive_use, "targeted func_explosive must be trigger-usable instead of shootable");
   assert.equal(targeted.takedamage, damage_t.DAMAGE_NO, "targeted func_explosive must not be shootable");
+  assert.equal(targeted.die, undefined, "targeted func_explosive must not install a shootable die callback");
+  assert.equal(targeted.linked, true, "targeted func_explosive must still link as a visible brush");
+
+  const relay = spawnGameEntity(runtime);
+  relay.classname = "target_relay";
+  relay.targetname = "explosion_relay";
+  const other = spawnGameEntity(runtime);
+  other.classname = "trigger_source";
+  let relayActivator = null as ReturnType<typeof spawnGameEntity> | null;
+  relay.use = (_self, _other, activator) => {
+    relayActivator = activator;
+  };
+
+  func_explosive_use(targeted, other, null, runtime);
+  assert.equal(relayActivator, other, "func_explosive_use must forward other as the explosion attacker/target activator");
+  assert.equal(targeted.inuse, false, "func_explosive_use without dmg must free the brush through G_FreeEdict");
+
+  const dispatch = spawnGameEntity(runtime);
+  dispatch.classname = "func_explosive";
+  dispatch.model = "*11";
+  ED_CallSpawn(dispatch, runtime);
+  assert.equal(dispatch.solid, SOLID_BSP, "ED_CallSpawn must dispatch func_explosive to SP_func_explosive");
+}
+
+function verifyFuncExplosiveExplodeMassLimitsTargetsAndFreeBranches(): void {
+  const runtime = createHarnessRuntime();
+
+  const relay = spawnGameEntity(runtime);
+  relay.classname = "target_relay";
+  relay.targetname = "after_explosion";
+  let relayActivator = null as ReturnType<typeof spawnGameEntity> | null;
+  relay.use = (_self, _other, activator) => {
+    relayActivator = activator;
+  };
+
+  const explosive = spawnFreeableEntity(runtime);
+  explosive.classname = "func_explosive";
+  explosive.absmin = [10, 20, 30];
+  explosive.absmax = [90, 60, 50];
+  explosive.size = [80, 40, 20];
+  explosive.s.origin = [0, 0, 0];
+  explosive.velocity = [0, 0, 0];
+  explosive.mass = 1000;
+  explosive.dmg = 0;
+  explosive.target = "after_explosion";
+  explosive.takedamage = damage_t.DAMAGE_YES;
+
+  const inflictor = spawnGameEntity(runtime);
+  inflictor.classname = "explosion_inflictor";
+  inflictor.s.origin = [50, -60, 40];
+
+  const attacker = spawnGameEntity(runtime);
+  attacker.classname = "explosion_attacker";
+
+  withMockedRandom(Array(200).fill(0.5), () => {
+    func_explosive_explode(explosive, inflictor, attacker, 0, runtime);
+  });
+
+  const debris = runtime.entities.filter((entity) => entity.classname === "debris");
+  assert.equal(debris.length, 24, "mass 1000 must cap func_explosive debris at 8 large and 16 small chunks");
+  assert.equal(debris.filter((entity) => entity.model === "models/objects/debris1/tris.md2").length, 8, "large debris count must cap at 8");
+  assert.equal(debris.filter((entity) => entity.model === "models/objects/debris2/tris.md2").length, 16, "small debris count must cap at 16");
+  assert.deepEqual(debris[0]?.s.origin, [50, 40, 40], "func_explosive_explode must recenter debris around the bmodel origin");
+  assert.deepEqual(debris[0]?.velocity, [0, 150, 100], "func_explosive_explode must launch chunks away from the inflictor before debris speed is added");
+  assert.equal(relayActivator, attacker, "func_explosive_explode must fire targets with the attacker as activator");
+  assert.equal(explosive.inuse, false, "func_explosive_explode without dmg must free the brush entity");
+  assert.equal(drainGameTempEntityEvents(runtime).length, 0, "func_explosive_explode without dmg must not emit an explosion temp entity");
+
+  const defaultMassRuntime = createHarnessRuntime();
+  const defaultMassExplosive = spawnFreeableEntity(defaultMassRuntime);
+  defaultMassExplosive.classname = "func_explosive";
+  defaultMassExplosive.absmin = [0, 0, 0];
+  defaultMassExplosive.absmax = [40, 20, 10];
+  defaultMassExplosive.size = [40, 20, 10];
+  defaultMassExplosive.mass = 0;
+  defaultMassExplosive.dmg = 120;
+  defaultMassExplosive.takedamage = damage_t.DAMAGE_YES;
+
+  const damaged = spawnGameEntity(defaultMassRuntime);
+  damaged.classname = "radius_damage_target";
+  damaged.s.origin = [20, 10, 5];
+  damaged.mins = [0, 0, 0];
+  damaged.maxs = [0, 0, 0];
+  damaged.health = 200;
+  damaged.solid = SOLID_BBOX;
+  damaged.takedamage = damage_t.DAMAGE_YES;
+
+  withMockedRandom(Array(40).fill(0.5), () => {
+    func_explosive_explode(defaultMassExplosive, defaultMassExplosive, attacker, 0, defaultMassRuntime);
+  });
+
+  assert.equal(defaultMassRuntime.entities.filter((entity) => entity.classname === "debris").length, 3, "missing mass must default to 75 and throw three small chunks");
+  assert.equal(damaged.health < 200, true, "func_explosive_explode with dmg must apply radius damage");
+  assert.equal(drainGameTempEntityEvents(defaultMassRuntime).at(-1)?.type, temp_event_t.TE_EXPLOSION1, "func_explosive_explode with dmg must emit TE_EXPLOSION1");
 }
 
 function verifyGibTypesSelectMovementAndTouchBehavior(): void {

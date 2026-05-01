@@ -13,6 +13,7 @@ import {
   Add_Ammo,
   ArmorIndex,
   DoRespawn,
+  Drop_General,
   Drop_Item,
   FL_TEAMSLAVE,
   FL_POWER_ARMOR,
@@ -23,12 +24,15 @@ import {
   G_RunFrame,
   GetGameItems,
   GetItemByIndex,
+  G_SetClientEffects,
+  G_SetStats,
   InitItems,
   ITEM_NO_TOUCH,
   ITEM_TRIGGER_SPAWN,
   MOVETYPE_TOSS,
   Pickup_Health,
   Pickup_Armor,
+  Pickup_Powerup,
   PowerArmorType,
   PrecacheItem,
   SetItemNames,
@@ -55,7 +59,7 @@ import {
   spawnGameEntity
 } from "../../packages/game/src/index.js";
 import { DROPPED_ITEM, DROPPED_PLAYER_ITEM, ITEM_TARGETS_USED, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD } from "../../packages/game/src/g_local.js";
-import { CS_ITEMS, DF_INFINITE_AMMO, DF_INSTANT_ITEMS, DF_NO_ARMOR, DF_NO_HEALTH, DF_NO_ITEMS, EF_ROTATE, MASK_SOLID, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, entity_event_t } from "../../packages/qcommon/src/index.js";
+import { CS_ITEMS, DF_INFINITE_AMMO, DF_INSTANT_ITEMS, DF_NO_ARMOR, DF_NO_HEALTH, DF_NO_ITEMS, EF_PENT, EF_ROTATE, MASK_SOLID, RF_GLOW, STAT_PICKUP_ICON, STAT_PICKUP_STRING, STAT_SELECTED_ITEM, STAT_TIMER, STAT_TIMER_ICON, entity_event_t } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_SOLID } from "../../packages/qcommon/src/q_shared.js";
 import type { GameEntity, GameItemDefinition, GameRuntime } from "../../packages/game/src/index.js";
 import type { trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
@@ -74,6 +78,7 @@ function main(): void {
   verifyTouchCoopStayWeaponRemainsTouchable();
   verifyDropTempTouchAndDeathmatchFree();
   verifyDropItemPlacementAndTrace();
+  verifyDropGeneralInventoryAndSelection();
   verifyUseItemTriggerSpawnActivation();
   verifyDropToFloorPlacementAndFlags();
   verifyDropToFloorTeamRespawnAndStartSolid();
@@ -83,6 +88,7 @@ function main(): void {
   verifyPickupArmorConversions();
   verifyPrecacheItemAssetsAndValidation();
   verifyUsePowerArmorRequiresCells();
+  verifyPickupPowerupLimitsRespawnAndInstantUse();
   verifyUseQuadTimeoutAndDroppedHack();
   verifyItemLookupHelpers();
   verifyCoopPowerCubeSpawnFlags();
@@ -521,6 +527,29 @@ function verifyDropItemPlacementAndTrace(): void {
   assertVec3(nonClientDrop.velocity, [100, 0, 300], "Drop_Item uses non-client angles only for velocity");
 }
 
+function verifyDropGeneralInventoryAndSelection(): void {
+  const runtime = createHarnessRuntime();
+  const quad = requireItem("Quad Damage");
+  const player = createPlayer(runtime);
+  player.s.origin = [2, 4, 6];
+  player.origin = [2, 4, 6];
+  player.client!.v_angle = [0, 0, 0];
+  player.client!.pers.inventory[quad.index] = 1;
+  player.client!.pers.selected_item = quad.index;
+
+  const entityCountBeforeDrop = runtime.entities.length;
+  Drop_General(player, quad, runtime);
+  const dropped = runtime.entities.at(-1);
+
+  assertNumber(player.client!.pers.inventory[quad.index], 0, "Drop_General decrements exactly one inventory slot");
+  assertNumber(player.client!.pers.selected_item, -1, "Drop_General validates away an emptied selected item");
+  assertNumber(runtime.entities.length, entityCountBeforeDrop + 1, "Drop_General creates one visible dropped item entity");
+  assertBoolean(dropped?.item === quad, true, "Drop_General delegates to Drop_Item with the same item definition");
+  assertNumber(dropped?.spawnflags ?? 0, DROPPED_ITEM, "Drop_General produces a dropped item entity");
+  assertNumber(dropped?.solid ?? 0, SOLID_TRIGGER, "Drop_General leaves the dropped item touchable for snapshots/runtime pickup");
+  assertNumber(dropped?.s.modelindex && dropped.s.modelindex > 0 ? 1 : 0, 1, "Drop_General produces a renderer-visible item model");
+}
+
 function verifyUseItemTriggerSpawnActivation(): void {
   const runtime = createHarnessRuntime();
   const normalItem = spawnGameEntity(runtime);
@@ -794,6 +823,86 @@ function verifyUsePowerArmorRequiresCells(): void {
 
   const events = drainGameSoundEvents(runtime);
   assertBoolean(events.some((event) => event.soundPath === "misc/power1.wav"), true, "Use_PowerArmor queues activation sound");
+}
+
+function verifyPickupPowerupLimitsRespawnAndInstantUse(): void {
+  const quad = requireItem("Quad Damage");
+  const invulnerability = requireItem("Invulnerability");
+  const breather = requireItem("Rebreather");
+
+  const normalSkillRuntime = createHarnessRuntime();
+  normalSkillRuntime.skill = 1;
+  const normalSkillPlayer = createPlayer(normalSkillRuntime);
+  normalSkillPlayer.client!.pers.inventory[quad.index] = 2;
+  const normalSkillQuad = spawnFreeableEntity(normalSkillRuntime);
+  normalSkillQuad.item = quad;
+  assertBoolean(Pickup_Powerup(normalSkillQuad, normalSkillPlayer, normalSkillRuntime), false, "Pickup_Powerup rejects a third powerup on skill 1");
+  assertNumber(normalSkillPlayer.client!.pers.inventory[quad.index], 2, "Pickup_Powerup leaves inventory unchanged when skill 1 cap rejects pickup");
+
+  const hardSkillRuntime = createHarnessRuntime();
+  hardSkillRuntime.skill = 2;
+  const hardSkillPlayer = createPlayer(hardSkillRuntime);
+  hardSkillPlayer.client!.pers.inventory[quad.index] = 1;
+  const hardSkillQuad = spawnFreeableEntity(hardSkillRuntime);
+  hardSkillQuad.item = quad;
+  assertBoolean(Pickup_Powerup(hardSkillQuad, hardSkillPlayer, hardSkillRuntime), false, "Pickup_Powerup rejects a second powerup on skill 2+");
+  assertNumber(hardSkillPlayer.client!.pers.inventory[quad.index], 1, "Pickup_Powerup leaves inventory unchanged when skill 2 cap rejects pickup");
+
+  const coopRuntime = createHarnessRuntime();
+  coopRuntime.coop = true;
+  const coopPlayer = createPlayer(coopRuntime);
+  coopPlayer.client!.pers.inventory[breather.index] = 1;
+  const coopBreather = spawnFreeableEntity(coopRuntime);
+  coopBreather.item = breather;
+  assertBoolean(Pickup_Powerup(coopBreather, coopPlayer, coopRuntime), false, "Pickup_Powerup rejects duplicate IT_STAY_COOP powerups in coop");
+  assertNumber(coopPlayer.client!.pers.inventory[breather.index], 1, "Pickup_Powerup leaves coop duplicate inventory unchanged");
+
+  const respawnRuntime = createHarnessRuntime();
+  respawnRuntime.deathmatch = true;
+  respawnRuntime.time = 7;
+  const respawnPlayer = createPlayer(respawnRuntime);
+  const respawnQuad = spawnFreeableEntity(respawnRuntime);
+  respawnQuad.item = quad;
+  respawnQuad.svflags = 0;
+  respawnQuad.solid = SOLID_TRIGGER;
+  assertBoolean(Pickup_Powerup(respawnQuad, respawnPlayer, respawnRuntime), true, "Pickup_Powerup accepts a deathmatch map powerup");
+  assertNumber(respawnPlayer.client!.pers.inventory[quad.index], 1, "Pickup_Powerup grants one stored powerup without instant items");
+  assertNumber(respawnQuad.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "Pickup_Powerup hides map powerups through SetRespawn");
+  assertNumber(respawnQuad.solid, SOLID_NOT, "Pickup_Powerup makes respawning map powerups nonsolid");
+  assertNumber(respawnQuad.nextthink, 67, "Pickup_Powerup schedules deathmatch respawn using item quantity");
+  assertBoolean(respawnQuad.think !== null, true, "Pickup_Powerup installs the respawn think callback");
+
+  const instantRuntime = createHarnessRuntime();
+  instantRuntime.deathmatch = true;
+  instantRuntime.dmflags = DF_INSTANT_ITEMS;
+  instantRuntime.time = 4;
+  instantRuntime.framenum = 50;
+  const instantPlayer = createPlayer(instantRuntime);
+  const instantInvulnerability = spawnFreeableEntity(instantRuntime);
+  instantInvulnerability.item = invulnerability;
+  instantInvulnerability.svflags = 0;
+  instantInvulnerability.solid = SOLID_TRIGGER;
+
+  Touch_Item(instantInvulnerability, instantPlayer, instantRuntime);
+
+  assertNumber(instantPlayer.client!.pers.inventory[invulnerability.index], 0, "Pickup_Powerup auto-use consumes instant deathmatch powerups");
+  assertNumber(instantPlayer.client!.invincible_framenum, 350, "Pickup_Powerup instant use starts the original invulnerability timer");
+  assertNumber(instantInvulnerability.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "Pickup_Powerup instant map item remains hidden for respawn");
+  assertNumber(instantInvulnerability.solid, SOLID_NOT, "Pickup_Powerup instant map item remains nonsolid for respawn");
+  assertNumber(instantInvulnerability.nextthink, 304, "Pickup_Powerup instant map item uses item quantity as respawn delay");
+  assertNumber(instantPlayer.client!.ps.stats[STAT_PICKUP_STRING], CS_ITEMS + invulnerability.index, "Touch_Item reports the powerup pickup string");
+  assertNumber(instantPlayer.client!.ps.stats[STAT_PICKUP_ICON] > 0 ? 1 : 0, 1, "Touch_Item reports the powerup pickup icon");
+
+  const sounds = drainGameSoundEvents(instantRuntime);
+  assertBoolean(sounds.some((event) => event.soundPath === "items/pkup.wav"), true, "Touch_Item queues the powerup pickup sound");
+  assertBoolean(sounds.some((event) => event.soundPath === "items/protect.wav"), true, "Pickup_Powerup instant use queues the use sound");
+
+  G_SetStats(instantPlayer, instantRuntime);
+  assertNumber(instantPlayer.client!.ps.stats[STAT_TIMER], 30, "Pickup_Powerup instant use feeds the HUD timer");
+  assertNumber(instantPlayer.client!.ps.stats[STAT_TIMER_ICON] > 0 ? 1 : 0, 1, "Pickup_Powerup instant use feeds the HUD timer icon");
+
+  G_SetClientEffects(instantPlayer, instantRuntime);
+  assertNumber(instantPlayer.s.effects & EF_PENT, EF_PENT, "Pickup_Powerup instant use produces the visible invulnerability effect");
 }
 
 function verifyUseQuadTimeoutAndDroppedHack(): void {

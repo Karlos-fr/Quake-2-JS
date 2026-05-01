@@ -54,13 +54,13 @@
 | `Quake-2-master/game/g_misc.c` | function | `func_object_release` | `packages/game/src/g_misc.ts` | `func_object_release` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `func_object_use` | `packages/game/src/g_misc.ts` | `func_object_use` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `SP_func_object` | `packages/game/src/g_misc.ts` | `SP_func_object` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `func_explosive_explode` | `packages/game/src/g_misc.ts` | `func_explosive_explode` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | global | `count` | `packages/game/src/g_misc.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | global | `mass` | `packages/game/src/g_misc.ts` | `mass` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `G_FreeEdict` | `packages/game/src/g_misc.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `func_explosive_use` | `packages/game/src/g_misc.ts` | `func_explosive_use` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `func_explosive_spawn` | `packages/game/src/g_misc.ts` | `func_explosive_spawn` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_misc.c` | function | `SP_func_explosive` | `packages/game/src/g_misc.ts` | `SP_func_explosive` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `func_explosive_explode` | `packages/game/src/g_misc.ts` | `func_explosive_explode` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | global | `count` | `packages/game/src/g_misc.ts` | `count` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | global | `mass` | `packages/game/src/g_misc.ts` | `mass` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `G_FreeEdict` | `packages/game/src/g_misc.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `func_explosive_use` | `packages/game/src/g_misc.ts` | `func_explosive_use` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `func_explosive_spawn` | `packages/game/src/g_misc.ts` | `func_explosive_spawn` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_misc.c` | function | `SP_func_explosive` | `packages/game/src/g_misc.ts` | `SP_func_explosive` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `barrel_touch` | `packages/game/src/g_misc.ts` | `barrel_touch` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | global | `ratio` | `packages/game/src/g_misc.ts` | `ratio` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_misc.c` | function | `barrel_explode` | `packages/game/src/g_misc.ts` | `barrel_explode` | A verifier | A redecouper |  |

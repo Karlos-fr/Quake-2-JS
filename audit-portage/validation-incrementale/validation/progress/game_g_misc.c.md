@@ -2,6 +2,49 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: ligne generee `G_FreeEdict` associee a `func_explosive`, puis `func_explosive_use` / `func_explosive_spawn` / `SP_func_explosive`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: `SP_func_explosive` conserve le free deathmatch via `G_FreeEdict`, `MOVETYPE_PUSH`, precache debris1/debris2, `gi.setmodel`, branche trigger-spawn cachee (`SOLID_NOT`, `SVF_NOCLIENT`, `func_explosive_spawn`), branche cible (`func_explosive_use` non shootable), flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, health par defaut 100 et `die = func_explosive_explode` pour les variantes shootables. `func_explosive_spawn` rend le brush solide/visible, efface `use`, applique `KillBox` et relink. `func_explosive_use` appelle l'explosion avec `self` comme inflictor et `other` comme attacker, comme le C.
+  - Ligne generee `G_FreeEdict` validee dans ce secteur: deathmatch `SP_func_explosive` et branche `func_explosive_use` sans `dmg` liberent bien le brush; le helper proprietaire reste `G_FreeEdict` dans `packages/game/src/g_utils.ts`, appele par `g_misc.ts`.
+  - Commentaires d'en-tete verifies et completes pour `func_explosive_use`, `func_explosive_spawn` et `SP_func_explosive`: original/source/categorie/fidelite et comportement du callback documentes.
+  - Branchement runtime verifie: `func_explosive` est enregistre dans `g_spawn.ts` et dispatchable par `ED_CallSpawn`; les variantes shootables passent par `die`, les variantes ciblees par `G_UseTargets`/callback `use`, et les trigger-spawn par le callback one-shot avant collision/frames.
+  - `apps/web`: integration attendue car le lot produit un brush inline visible/cache, debris, dommages, sons/evenements et temp entities. Pas de logique parallele trouvee; les flux local/full-game consomment runtime, snapshots, brush model snapshots, temp entities et sons.
+  - `renderer-three`: integration attendue pour brush inline de scene, debris MD2, explosion temp entity, particules/dlights et frames. Les brushs passent par `local-brush-models`/`full-game-render-source` vers `gl-world-scene-adapter`; debris et explosions passent par `ClientRefreshFrame.entities`/`lights` puis `refresh-entity-sync` et adapters Three.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: commentaires d'en-tete completes pour les callbacks du lot.
+  - `scripts/verify/quake2-g-misc.ts`: assertions ciblees ajoutees pour free deathmatch, precache debris, health par defaut, liens inline BSP, trigger-spawn cache/reveal/relink, targeted non-shootable, transmission de `other` par `func_explosive_use`, free via `G_FreeEdict`, et dispatch `ED_CallSpawn`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npx tsx ./scripts/verify/quake2-cl-tent.ts` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `barrel_touch` avec le local `ratio` si le lot reste petit.
+
+- 2026-05-01: `func_explosive_explode` et locaux `count` / `mass`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_misc.ts`: le port recentre l'origine bmodel via `absmin + size * 0.5`, coupe `takedamage`, applique `T_RadiusDamage` quand `dmg` est defini, calcule la vitesse d'ejection depuis l'inflictor, utilise `mass || 75`, plafonne les gros debris a `min(mass / 100, 8)`, plafonne les petits debris a `min(mass / 25, 16)`, appelle `G_UseTargets` avec l'attaquant, puis emet `BecomeExplosion1` ou libere l'edict comme le C.
+  - Commentaire d'en-tete verifie pour `func_explosive_explode`: `Original name`, source, categorie portee, fidelite `Close`, comportement de rupture du brush en debris et temp entity documentes.
+  - Branchement runtime verifie: `func_explosive_explode` est atteint par `SP_func_explosive` via `die` pour les brushs shootables et par le chemin `func_explosive_use` pour les brushs cibles; dommages, cibles, debris, free et temp entity passent par les callbacks runtime normaux.
+  - `apps/web`: pas de logique parallele trouvee; integration attendue car l'explosion produit sons/effects, temp entities et debris visibles. Le flux full-game consomme `onTempEntity`, les sons d'effets et les snapshots; le flux local draine `drainGameTempEntityEvents` vers `CL_AddTEntPacket`/`CL_ExecuteTempEntityEffects`.
+  - `renderer-three`: integration attendue pour debris MD2 visibles, explosions temp entities, particules/dlights et scene. Les debris sont consommes via packet entities/snapshots et `refresh-entity-sync`; les explosions passent par `CL_AddTEntPacket`, `CL_BuildTEntRefresh`, `ClientRefreshFrame.entities`/`lights`, puis les adapters Three.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-misc.ts`: preuve ciblee ajoutee pour `mass` par defaut, plafonds `count` gros/petits debris, origine recentree, vitesse d'ejection, `G_UseTargets`, free sans `dmg`, radius damage avec `dmg` et `TE_EXPLOSION1`.
+- Tests lances:
+  - `npm run verify:g-misc` OK.
+  - `npm run verify:g-spawn` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npx tsx ./scripts/verify/quake2-cl-tent.ts` OK.
+  - `npm run typecheck` OK.
+
+- Prochain lot recommande: ligne generee `G_FreeEdict` associee a ce secteur, puis `func_explosive_use` / `func_explosive_spawn` / `SP_func_explosive` si le lot reste coherent.
+
 - 2026-05-01: `func_object_touch` / `func_object_release` / `func_object_use` / `SP_func_object`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_misc.ts`: `SP_func_object` conserve `gi.setmodel`, shrink des bornes d'une unite, `dmg` par defaut a 100, branche plain `SOLID_BSP`/`MOVETYPE_PUSH`/think release a `level.time + 2 * FRAMETIME`, branche trigger-spawn cachee avec `use`, flags `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, `MASK_MONSTERSOLID` et link. `func_object_release` conserve `MOVETYPE_TOSS` + `func_object_touch`; `func_object_use` conserve reveal, one-shot use, `KillBox` et release; `func_object_touch` conserve les gardes plan/top-plane/damageable puis `T_Damage` `MOD_CRUSH`.

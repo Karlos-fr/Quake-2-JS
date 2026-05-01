@@ -129,16 +129,16 @@
 | `Quake-2-master/game/g_local.h` | global | `world_model` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `world_model_flags` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `view_model` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `icon` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `pickup_name` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `count_width` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `quantity` | `packages/game/src/g_items.ts` | `quantity` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `ammo` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `flags` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `weapmodel` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `info` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `tag` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `precaches` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `icon` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `pickup_name` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `count_width` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `quantity` | `packages/game/src/g_items.ts` | `quantity` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `ammo` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `flags` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `weapmodel` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `info` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `tag` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `precaches` | `packages/game/src/g_local.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | struct | `game_locals_t` | `packages/game/src/g_local.ts` | `game_locals_t` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `helpmessage1` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `helpmessage2` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

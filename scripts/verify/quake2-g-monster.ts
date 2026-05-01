@@ -14,18 +14,28 @@ import { strict as assert } from "node:assert";
 import {
   AI_GOOD_GUY,
   AI_STAND_GROUND,
+  FL_FLY,
+  FL_SWIM,
   FRAMETIME,
   SOLID_NOT,
   SVF_MONSTER,
   attachGameClient,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
+  drainGameSoundEvents,
   drainMonsterMuzzleFlashEvents
 } from "../../packages/game/src/index.js";
-import { EF_FLIES, MASK_MONSTERSOLID, MASK_SHOT } from "../../packages/qcommon/src/index.js";
-import { FL_NOTARGET, MOD_UNKNOWN } from "../../packages/game/src/g_local.js";
+import {
+  EF_FLIES,
+  MASK_MONSTERSOLID,
+  MASK_SHOT
+} from "../../packages/qcommon/src/index.js";
+import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_WATER } from "../../packages/qcommon/src/q_shared.js";
+import { FL_INWATER, FL_NOTARGET, MOD_UNKNOWN } from "../../packages/game/src/g_local.js";
 import {
   AttackFinished,
+  M_CatagorizePosition,
+  M_CheckGround,
   M_FliesOff,
   M_FliesOn,
   M_FlyCheck,
@@ -39,6 +49,7 @@ import {
   monster_fire_shotgun,
   monster_start,
   monster_start_go,
+  monster_think,
   monster_use,
   type GameMonsterHooks,
   walkmonster_start_go
@@ -59,6 +70,10 @@ function main(): void {
   verifyTriggeredSpawnStartupPath();
   verifyCorpseFlyScheduling();
   verifyAttackFinishedCooldown();
+  verifyMCheckGroundTraceBranches();
+  verifyMCheckGroundRuntimeReachability();
+  verifyMCatagorizePositionWaterLevels();
+  verifyMCatagorizePositionRuntimeReachability();
 
   console.log("Verification g_monster - shared monster gameplay OK");
 }
@@ -349,6 +364,215 @@ function verifyAttackFinishedCooldown(): void {
   );
 }
 
+function verifyMCheckGroundTraceBranches(): void {
+  const runtime = createHarnessRuntime();
+  const ground = createRuntimeEntity({ classname: "ground" }, 19);
+  ground.linkcount = 7;
+  runtime.entities[ground.index] = ground;
+
+  const traced: Array<{ start: vec3_t; end: vec3_t; mask: number; passent: GameEntity | null }> = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (start, _mins, _maxs, end, passent, mask) => {
+      traced.push({ start: [...start], end: [...end], mask, passent });
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 0.5,
+        endpos: [start[0], start[1], start[2] - 0.25],
+        plane: {
+          normal: [0, 0, 1],
+          dist: 0,
+          type: 0,
+          signbits: 0,
+          pad: [0, 0]
+        },
+        surface: null,
+        contents: 0,
+        ent: ground
+      };
+    },
+    pointcontents: () => 0
+  };
+
+  const monster = createMonster(runtime, 20);
+  monster.s.origin = [8, 16, 24];
+  monster.origin = [8, 16, 24];
+  monster.velocity = [12, 0, -80];
+
+  M_CheckGround(monster, runtime);
+
+  assert.deepEqual(traced[0]?.start, [8, 16, 24], "M_CheckGround should trace from the current s.origin");
+  assert.deepEqual(traced[0]?.end, [8, 16, 23.75], "M_CheckGround should trace the original quarter unit down");
+  assert.equal(traced[0]?.mask, MASK_MONSTERSOLID, "M_CheckGround should use MASK_MONSTERSOLID");
+  assert.equal(traced[0]?.passent, monster, "M_CheckGround should pass the monster as the skipped entity");
+  assert.deepEqual(monster.s.origin, [8, 16, 23.75], "M_CheckGround should copy trace.endpos to s.origin");
+  assert.equal(monster.groundentity, ground, "M_CheckGround should store trace.ent as groundentity");
+  assert.equal(monster.groundentity_linkcount, 7, "M_CheckGround should copy the ground entity linkcount");
+  assert.equal(monster.velocity[2], 0, "M_CheckGround should clear vertical velocity when grounded");
+
+  const steep = createMonster(runtime, 21);
+  steep.groundentity = ground;
+  runtime.collision.trace = (start, _mins, _maxs, end, passent, mask) => {
+    traced.push({ start: [...start], end: [...end], mask, passent });
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 0.5,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 0.5],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: 0,
+      ent: ground
+    };
+  };
+
+  M_CheckGround(steep, runtime);
+  assert.equal(steep.groundentity, null, "M_CheckGround should clear groundentity on steep non-solid planes");
+
+  const jumping = createMonster(runtime, 22);
+  jumping.groundentity = ground;
+  jumping.velocity[2] = 101;
+  M_CheckGround(jumping, runtime);
+  assert.equal(jumping.groundentity, null, "M_CheckGround should clear groundentity when upward velocity exceeds the C threshold");
+
+  const swimmer = createMonster(runtime, 23);
+  swimmer.flags |= FL_SWIM;
+  M_CheckGround(swimmer, runtime);
+  const flyer = createMonster(runtime, 24);
+  flyer.flags |= FL_FLY;
+  M_CheckGround(flyer, runtime);
+  assert.equal(traced.length, 2, "M_CheckGround should not trace FL_SWIM or FL_FLY monsters");
+}
+
+function verifyMCheckGroundRuntimeReachability(): void {
+  const runtime = createHarnessRuntime();
+  const ground = createRuntimeEntity({ classname: "ground" }, 25);
+  ground.linkcount = 3;
+  runtime.entities[ground.index] = ground;
+  runtime.collision = createGroundingCollision(ground);
+
+  const monster = createMonster(runtime, 26);
+  monster.s.origin = [32, 48, 64];
+  monster.origin = [32, 48, 64];
+  monster.groundentity = ground;
+  monster.monsterinfo.linkcount = 0;
+  monster.linkcount = 1;
+  monster.monsterinfo.currentmove = {
+    firstframe: 0,
+    lastframe: 0,
+    frame: [{ aifunc: undefined, dist: 0, thinkfunc: undefined }],
+    endfunc: undefined
+  };
+
+  monster_think(monster, runtime);
+
+  assert.deepEqual(monster.s.origin, [32, 48, 63.75], "monster_think should reach M_CheckGround after relink changes");
+  assert.equal(monster.groundentity, ground, "monster_think should preserve the traced groundentity");
+  assert.equal(monster.groundentity_linkcount, 3, "monster_think should refresh groundentity_linkcount through M_CheckGround");
+}
+
+function verifyMCatagorizePositionWaterLevels(): void {
+  const runtime = createHarnessRuntime();
+  const monster = createMonster(runtime, 27);
+  monster.s.origin = [10, 20, 30];
+  monster.mins = [-16, -16, -24];
+  monster.waterlevel = 3;
+  monster.watertype = CONTENTS_LAVA;
+
+  const probes: Array<{ point: vec3_t; passent: GameEntity | null | undefined }> = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => createClearTrace(end),
+    pointcontents: (point, passent) => {
+      probes.push({ point: [...point], passent });
+      return 0;
+    }
+  };
+
+  M_CatagorizePosition(monster, runtime);
+
+  assert.deepEqual(probes.map((probe) => probe.point), [[10, 20, 7]], "M_CatagorizePosition should probe at origin + mins[2] + 1 first");
+  assert.equal(probes[0]?.passent, monster, "M_CatagorizePosition should evaluate contents through the runtime adapter for the monster");
+  assert.equal(monster.waterlevel, 0, "M_CatagorizePosition should clear waterlevel outside MASK_WATER");
+  assert.equal(monster.watertype, 0, "M_CatagorizePosition should clear watertype outside MASK_WATER");
+
+  const levelOne = createMonster(runtime, 28);
+  levelOne.s.origin = [10, 20, 30];
+  levelOne.mins = [-16, -16, -24];
+  const levelOneContents = [CONTENTS_WATER, 0];
+  runtime.collision.pointcontents = (point, passent) => {
+    probes.push({ point: [...point], passent });
+    return levelOneContents.shift() ?? 0;
+  };
+
+  probes.length = 0;
+  M_CatagorizePosition(levelOne, runtime);
+
+  assert.deepEqual(probes.map((probe) => probe.point), [[10, 20, 7], [10, 20, 33]], "M_CatagorizePosition should stop after the second probe when only feet are in water");
+  assert.equal(levelOne.waterlevel, 1, "M_CatagorizePosition should set waterlevel 1 when only the first probe is water");
+  assert.equal(levelOne.watertype, CONTENTS_WATER, "M_CatagorizePosition should preserve the first water contents as watertype");
+
+  const levelThree = createMonster(runtime, 29);
+  levelThree.s.origin = [10, 20, 30];
+  levelThree.mins = [-16, -16, -24];
+  const levelThreeContents = [CONTENTS_SLIME, CONTENTS_WATER, CONTENTS_LAVA];
+  runtime.collision.pointcontents = (point, passent) => {
+    probes.push({ point: [...point], passent });
+    return levelThreeContents.shift() ?? 0;
+  };
+
+  probes.length = 0;
+  M_CatagorizePosition(levelThree, runtime);
+
+  assert.deepEqual(probes.map((probe) => probe.point), [[10, 20, 7], [10, 20, 33], [10, 20, 55]], "M_CatagorizePosition should use the original +26/+22 probe heights");
+  assert.equal(levelThree.waterlevel, 3, "M_CatagorizePosition should set waterlevel 3 when all probes are water");
+  assert.equal(levelThree.watertype, CONTENTS_SLIME, "M_CatagorizePosition should keep the first water contents even if higher probes differ");
+}
+
+function verifyMCatagorizePositionRuntimeReachability(): void {
+  const runtime = createHarnessRuntime();
+  const monster = createMonster(runtime, 30);
+  monster.s.origin = [4, 8, 40];
+  monster.origin = [4, 8, 40];
+  monster.mins = [-16, -16, -24];
+  monster.monsterinfo.linkcount = monster.linkcount;
+  monster.monsterinfo.currentmove = {
+    firstframe: 0,
+    lastframe: 0,
+    frame: [{ aifunc: undefined, dist: 0, thinkfunc: undefined }],
+    endfunc: undefined
+  };
+  monster.air_finished = 0;
+  runtime.time = 2;
+
+  const probes: vec3_t[] = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => createClearTrace(end),
+    pointcontents: (point) => {
+      probes.push([...point]);
+      return probes.length <= 2 ? CONTENTS_WATER : 0;
+    }
+  };
+
+  monster_think(monster, runtime);
+
+  assert.deepEqual(probes, [[4, 8, 17], [4, 8, 43], [4, 8, 65]], "monster_think should reach M_CatagorizePosition before world water effects");
+  assert.equal(monster.waterlevel, 2, "monster_think should refresh monster waterlevel through M_CatagorizePosition");
+  assert.equal(monster.watertype, CONTENTS_WATER, "monster_think should refresh monster watertype through M_CatagorizePosition");
+  assert.equal(monster.air_finished, runtime.time + 12, "M_WorldEffects should consume the categorized waterlevel for non-swimmers");
+  assert.equal((monster.flags & FL_INWATER) !== 0, true, "M_WorldEffects should mark the monster as in water after categorize");
+  const sounds = drainGameSoundEvents(runtime);
+  assert.equal(sounds.some((sound) => sound.soundPath === "player/watr_in.wav"), true, "water entry sound should be emitted for apps/web audio consumption");
+}
+
 function createHarnessRuntime(): GameRuntime {
   return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 }
@@ -427,6 +651,48 @@ function createStraightHitCollision(target: GameEntity): GameRuntime["collision"
       return clearTrace(end);
     },
     pointcontents: () => 0
+  };
+}
+
+function createGroundingCollision(ground: GameEntity): GameRuntime["collision"] {
+  return {
+    world: {} as never,
+    trace: (start, _mins, _maxs, end) => ({
+      allsolid: false,
+      startsolid: false,
+      fraction: 0.5,
+      endpos: [...end],
+      plane: {
+        normal: [0, 0, 1],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: 0,
+      ent: ground
+    }),
+    pointcontents: () => 0
+  };
+}
+
+function createClearTrace(end: vec3_t): trace_t {
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: 1,
+    endpos: [...end],
+    plane: {
+      normal: [0, 0, 1],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent: null
   };
 }
 

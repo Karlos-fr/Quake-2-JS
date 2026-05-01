@@ -24,6 +24,7 @@ import {
   button_done,
   SP_func_conveyor,
   SP_func_door,
+  SP_func_door_rotating,
   SP_func_door_secret,
   SP_func_killbox,
   SP_func_plat,
@@ -67,8 +68,11 @@ import {
   MOVETYPE_PUSH,
   MOVETYPE_NONE,
   MOVETYPE_STOP,
+  DOOR_REVERSE,
   DOOR_START_OPEN,
   DOOR_TOGGLE,
+  DOOR_X_AXIS,
+  DOOR_Y_AXIS,
   FL_TEAMSLAVE,
   PLAT_LOW_TRIGGER,
   SOLID_BSP,
@@ -83,6 +87,7 @@ import {
   createRuntimeEntity,
   type GameEntity
 } from "../../packages/game/src/runtime.js";
+import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 
 const runtime = createGameRuntimeFromBspEntities([]);
 runtime.time = 10;
@@ -282,13 +287,65 @@ assert.equal(shootButton.takedamage, 0, "button_killed must disable damage while
 assert.equal(shootButton.moveinfo.state !== STATE_BOTTOM, true, "button_killed must fire button");
 assert.equal(shootButton.moveinfo.endfunc, button_wait, "button_killed must delegate to button_fire");
 
-const water = entity("func_water", 4, { angle: "-1", sounds: "1", lip: "4", wait: "0" });
+const water = entity("func_water", 4, { angle: "-1", sounds: "1", lip: "4", wait: "0", model: "*4" });
 water.size = [32, 32, 96];
 water.maxs = [32, 32, 96];
 SP_func_water(water, runtime);
 assert.equal(water.classname, "func_door", "SP_func_water must reuse door classname");
+assert.equal(water.movetype, MOVETYPE_PUSH, "SP_func_water movetype mismatch");
+assert.equal(water.solid, SOLID_BSP, "SP_func_water solid mismatch");
+assert.deepEqual(water.movedir, [0, 0, 1], "SP_func_water up movedir mismatch");
+assert.deepEqual(water.angles, [0, 0, 0], "SP_func_water must clear runtime angles");
+assert.deepEqual(water.s.angles, [0, 0, 0], "SP_func_water must expose cleared state angles");
+assert.deepEqual(water.pos1, [0, 0, 0], "SP_func_water pos1 mismatch");
+assert.deepEqual(water.pos2, [0, 0, 92], "SP_func_water pos2 mismatch");
+assert.equal(water.moveinfo.distance, 92, "SP_func_water travel distance mismatch");
+assert.deepEqual(water.moveinfo.start_origin, [0, 0, 0], "SP_func_water start origin mismatch");
+assert.deepEqual(water.moveinfo.end_origin, [0, 0, 92], "SP_func_water end origin mismatch");
+assert.deepEqual(water.moveinfo.start_angles, [0, 0, 0], "SP_func_water start angles mismatch");
+assert.deepEqual(water.moveinfo.end_angles, [0, 0, 0], "SP_func_water end angles mismatch");
+assert.equal(water.moveinfo.state, STATE_BOTTOM, "SP_func_water state mismatch");
+assert.equal(water.speed, 25, "SP_func_water default speed mismatch");
+assert.equal(water.moveinfo.speed, 25, "SP_func_water moveinfo speed mismatch");
+assert.equal(water.moveinfo.accel, 25, "SP_func_water moveinfo accel mismatch");
+assert.equal(water.moveinfo.decel, 25, "SP_func_water moveinfo decel mismatch");
 assert.equal(water.moveinfo.wait, -1, "SP_func_water default wait mismatch");
+assert.equal(water.use, door_use, "SP_func_water use callback mismatch");
+assert.equal((water.spawnflags & DOOR_TOGGLE) !== 0, true, "SP_func_water toggle flag mismatch");
 assert.equal(water.moveinfo.sound_start > 0, true, "SP_func_water sound registration mismatch");
+assert.equal(runtime.assets.soundPaths[water.moveinfo.sound_start - 1], "world/mov_watr.wav", "SP_func_water start sound path mismatch");
+assert.equal(runtime.assets.soundPaths[water.moveinfo.sound_end - 1], "world/stp_watr.wav", "SP_func_water end sound path mismatch");
+assert.equal(water.s.modelindex > 0, true, "SP_func_water model index mismatch");
+assert.equal(water.linked, true, "SP_func_water link mismatch");
+const startOpenWater = entity("func_water", 64, {
+  angle: "-2",
+  spawnflags: String(DOOR_START_OPEN),
+  speed: "40",
+  wait: "5",
+  model: "*5"
+});
+startOpenWater.origin = [10, 20, 30];
+startOpenWater.s.origin = [10, 20, 30];
+startOpenWater.size = [16, 16, 64];
+startOpenWater.maxs = [16, 16, 64];
+SP_func_water(startOpenWater, runtime);
+assert.deepEqual(startOpenWater.movedir, [0, 0, -1], "SP_func_water down movedir mismatch");
+assert.equal(startOpenWater.moveinfo.distance, 64, "SP_func_water START_OPEN distance mismatch");
+assert.deepEqual(startOpenWater.origin, [10, 20, -34], "SP_func_water START_OPEN origin mismatch");
+assert.deepEqual(startOpenWater.pos1, [10, 20, -34], "SP_func_water START_OPEN pos1 mismatch");
+assert.deepEqual(startOpenWater.pos2, [10, 20, 30], "SP_func_water START_OPEN pos2 mismatch");
+assert.deepEqual(startOpenWater.s.origin, [10, 20, -34], "SP_func_water START_OPEN state origin mismatch");
+assert.equal(startOpenWater.moveinfo.wait, 5, "SP_func_water explicit wait mismatch");
+assert.equal((startOpenWater.spawnflags & DOOR_TOGGLE) !== 0, false, "SP_func_water explicit wait must not force toggle");
+door_use(water, null, water, runtime);
+assert.equal(water.moveinfo.state, STATE_UP, "SP_func_water door_use state mismatch");
+assert.equal(water.moveinfo.endfunc, door_hit_top, "SP_func_water door_use movement callback mismatch");
+const spawnedWater = entity("func_water", 65, { angle: "-1" });
+spawnedWater.size = [8, 8, 24];
+spawnedWater.maxs = [8, 8, 24];
+ED_CallSpawn(spawnedWater, runtime);
+assert.equal(spawnedWater.classname, "func_door", "ED_CallSpawn must route func_water to SP_func_water");
+assert.equal(spawnedWater.use, door_use, "ED_CallSpawn func_water use callback mismatch");
 
 const door = entity("func_door", 17, { angle: "0" });
 door.size = [64, 16, 16];
@@ -377,6 +434,69 @@ SP_func_door(targetedMessageDoor, runtime);
 assert.equal(targetedMessageDoor.touch, door_touch, "SP_func_door message touch callback mismatch");
 assert.equal(runtime.assets.soundPaths.includes("misc/talk.wav"), true, "SP_func_door message sound precache mismatch");
 assert.equal(targetedMessageDoor.think, Think_CalcMoveSpeed, "SP_func_door targeted think mismatch");
+
+const rotatingSpawnDoor = entity("func_door_rotating", 66, {
+  angles: "15 30 45",
+  distance: "0",
+  model: "*2",
+  spawnflags: String(16 | DOOR_X_AXIS),
+  speed: "55",
+  accel: "11",
+  decel: "22",
+  wait: "-1",
+  dmg: "7",
+  health: "33",
+  targetname: "spin_door",
+  message: "Locked."
+});
+SP_func_door_rotating(rotatingSpawnDoor, runtime);
+assert.deepEqual(rotatingSpawnDoor.angles, [0, 0, 0], "SP_func_door_rotating must clear spawn angles");
+assert.deepEqual(rotatingSpawnDoor.movedir, [0, 0, 1], "SP_func_door_rotating X axis mismatch");
+assert.deepEqual(rotatingSpawnDoor.pos1, [0, 0, 0], "SP_func_door_rotating pos1 mismatch");
+assert.deepEqual(rotatingSpawnDoor.pos2, [0, 0, 90], "SP_func_door_rotating distance fallback mismatch");
+assert.equal(rotatingSpawnDoor.moveinfo.distance, 90, "SP_func_door_rotating move distance mismatch");
+assert.equal(rotatingSpawnDoor.movetype, MOVETYPE_PUSH, "SP_func_door_rotating movetype mismatch");
+assert.equal(rotatingSpawnDoor.solid, SOLID_BSP, "SP_func_door_rotating solid mismatch");
+assert.equal(rotatingSpawnDoor.s.modelindex, 3, "SP_func_door_rotating inline model index mismatch");
+assert.equal(rotatingSpawnDoor.blocked, door_blocked, "SP_func_door_rotating blocked callback mismatch");
+assert.equal(rotatingSpawnDoor.use, door_use, "SP_func_door_rotating use callback mismatch");
+assert.equal(rotatingSpawnDoor.takedamage, damage_t.DAMAGE_YES, "SP_func_door_rotating shootable damage flag mismatch");
+assert.equal(rotatingSpawnDoor.die, door_killed, "SP_func_door_rotating die callback mismatch");
+assert.equal(rotatingSpawnDoor.max_health, 33, "SP_func_door_rotating max health mismatch");
+assert.equal(rotatingSpawnDoor.touch, door_touch, "SP_func_door_rotating message touch callback mismatch");
+assert.equal(runtime.assets.soundPaths.includes("misc/talk.wav"), true, "SP_func_door_rotating message sound precache mismatch");
+assert.equal(rotatingSpawnDoor.moveinfo.state, STATE_BOTTOM, "SP_func_door_rotating initial state mismatch");
+assert.equal(rotatingSpawnDoor.moveinfo.speed, 55, "SP_func_door_rotating explicit speed mismatch");
+assert.equal(rotatingSpawnDoor.moveinfo.accel, 11, "SP_func_door_rotating explicit accel mismatch");
+assert.equal(rotatingSpawnDoor.moveinfo.decel, 22, "SP_func_door_rotating explicit decel mismatch");
+assert.equal(rotatingSpawnDoor.moveinfo.wait, -1, "SP_func_door_rotating explicit wait mismatch");
+assert.deepEqual(rotatingSpawnDoor.moveinfo.start_origin, [0, 0, 0], "SP_func_door_rotating start origin mismatch");
+assert.deepEqual(rotatingSpawnDoor.moveinfo.end_origin, [0, 0, 0], "SP_func_door_rotating end origin mismatch");
+assert.deepEqual(rotatingSpawnDoor.moveinfo.start_angles, [0, 0, 0], "SP_func_door_rotating start angles mismatch");
+assert.deepEqual(rotatingSpawnDoor.moveinfo.end_angles, [0, 0, 90], "SP_func_door_rotating end angles mismatch");
+assert.equal((rotatingSpawnDoor.s.effects & EF_ANIM_ALL) !== 0, true, "SP_func_door_rotating EF_ANIM_ALL mismatch");
+assert.equal((rotatingSpawnDoor.s.effects & EF_ANIM_ALLFAST) !== 0, false, "SP_func_door_rotating must not treat X_AXIS as ANIM_ALLFAST");
+assert.equal(rotatingSpawnDoor.teammaster, rotatingSpawnDoor, "SP_func_door_rotating non-team master mismatch");
+assert.equal(rotatingSpawnDoor.linked, true, "SP_func_door_rotating link mismatch");
+assert.equal(rotatingSpawnDoor.nextthink, runtime.time + 0.1, "SP_func_door_rotating nextthink mismatch");
+assert.equal(rotatingSpawnDoor.think, Think_CalcMoveSpeed, "SP_func_door_rotating targeted think mismatch");
+
+const startOpenRotatingDoor = entity("func_door_rotating", 67, {
+  distance: "45",
+  spawnflags: String(DOOR_START_OPEN | DOOR_REVERSE | DOOR_Y_AXIS)
+});
+SP_func_door_rotating(startOpenRotatingDoor, runtime);
+assert.deepEqual(startOpenRotatingDoor.movedir, [1, 0, 0], "SP_func_door_rotating START_OPEN reverse movedir mismatch");
+assert.deepEqual(startOpenRotatingDoor.angles, [-45, 0, 0], "SP_func_door_rotating START_OPEN angles mismatch");
+assert.deepEqual(startOpenRotatingDoor.pos1, [-45, 0, 0], "SP_func_door_rotating START_OPEN pos1 mismatch");
+assert.deepEqual(startOpenRotatingDoor.pos2, [0, 0, 0], "SP_func_door_rotating START_OPEN pos2 mismatch");
+assert.equal(startOpenRotatingDoor.speed, 100, "SP_func_door_rotating default speed mismatch");
+assert.equal(startOpenRotatingDoor.accel, 100, "SP_func_door_rotating default accel mismatch");
+assert.equal(startOpenRotatingDoor.decel, 100, "SP_func_door_rotating default decel mismatch");
+assert.equal(startOpenRotatingDoor.wait, 3, "SP_func_door_rotating default wait mismatch");
+assert.equal(startOpenRotatingDoor.dmg, 2, "SP_func_door_rotating default damage mismatch");
+assert.equal(startOpenRotatingDoor.think, Think_SpawnDoorTrigger, "SP_func_door_rotating untargeted think mismatch");
+
 const upwardDoor = entity("func_door", 34);
 upwardDoor.moveinfo.state = STATE_UP;
 upwardDoor.nextthink = 321;

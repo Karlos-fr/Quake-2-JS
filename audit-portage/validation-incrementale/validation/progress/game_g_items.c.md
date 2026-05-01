@@ -2,6 +2,22 @@
 
 ## Dernier lot valide
 
+- `Drop_General`.
+
+Validation drop general du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Drop_General` conserve l'ordre original: creation de l'entite dropee via `Drop_Item`, decrement de `ent->client->pers.inventory[ITEM_INDEX(item)]`, puis `ValidateSelectedItem(ent)`. Le port TS est equivalent avec `requireClient`, `Drop_Item(ent, item, runtime)`, decrement du meme slot `ITEM_INDEX(item)`, puis `ValidateSelectedItem(ent, runtime)`. Header TS verifie (`Fidelity level: Close`, adaptation runtime explicite).
+
+Runtime branche via les callbacks `drop` des powerups/cles dans `itemlist`, `Cmd_Drop_f`, `Cmd_InvDrop_f` et le dispatch `callItemDrop` de `g_cmds.ts`; les commandes verifient item dropable et stock avant d'appeler le callback comme le flux original. `apps/web` doit declencher ce chemin via le command bridge/full-game local server et consommer les sorties inventaire/HUD/snapshots; aucune logique web parallele ne remplace le decrement ou le drop gameplay. `renderer-three` doit consommer la sortie visible attendue: l'entite item MD2 creee par `Drop_Item` (`modelindex`, `RF_GLOW`, origine, solid/touch runtime, puis disparition si pickup/free), via refresh entities et le pipeline Three generique.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyDropGeneralInventoryAndSelection` couvre le decrement d'inventaire, l'invalidation de l'item selectionne vide, la creation d'une entite dropee, la conservation de l'item, `DROPPED_ITEM`, `SOLID_TRIGGER` et le `modelindex` visible. Tests lances: `npm run verify:g-items`, `npm run verify:p-hud`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
+- `Pickup_Powerup`.
+
+Validation powerups du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `Pickup_Powerup` conserve la lecture de la quantite avant increment, les limites originales par skill (`skill == 1` max 2, `skill >= 2` max 1), le refus coop pour les powerups `IT_STAY_COOP` deja possedes, l'increment d'inventaire, le respawn deathmatch uniquement pour les items non droppes, et l'auto-use deathmatch pour `DF_INSTANT_ITEMS` ou Quad droppe par joueur. Le port TS conserve aussi `quad_drop_timeout_hack` avec troncature entiere pour le timeout restant du Quad droppe. Header TS verifie (`Fidelity level: Close`, a cause de l'adaptation TS du dispatch et de l'etat module).
+
+Runtime branche via `Touch_Item`, les entrees powerup de `itemlist`, `Drop_General`/drops joueur pour le Quad, `SetRespawn`/`DoRespawn`, les callbacks `think`, l'inventaire client, `G_SetStats` et `G_SetClientEffects`. `apps/web` consomme ce flux via le runtime local/full-game, les commandes/inventaire, les sons gameplay, les stats HUD et les snapshots; aucune logique parallele de powerup pickup detectee. `renderer-three` doit consommer les sorties visibles attendues: item cache puis respawn visible via snapshots, sons pickup/use, effets joueur `EF_QUAD`/`EF_PENT`, blends/timers HUD et refresh client; les tests d'integration confirment que ces donnees passent par le pipeline client/renderer sans branchement gameplay dedie.
+
+Test ajoute dans `scripts/verify/quake2-g-items.ts`: `verifyPickupPowerupLimitsRespawnAndInstantUse` couvre les caps skill, le refus coop `IT_STAY_COOP`, le respawn deathmatch non-droppe, l'auto-use instant invulnerability via `Touch_Item`, les sons `items/pkup.wav`/`items/protect.wav`, les stats pickup, le timer HUD et l'effet visible `EF_PENT`. Tests lances: `npm run verify:g-items`, `npm run verify:p-hud`, `npm run verify:p-view`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:bridge`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run verify:refresh-entity:weapon`, `npm run typecheck` OK.
+
 - `SetRespawn`.
 
 Validation respawn scheduling du 2026-05-01: comparaison avec `game/g_items.c` confirmee. `SetRespawn` conserve le marquage `FL_RESPAWN`, le masquage `SVF_NOCLIENT`, le passage en `SOLID_NOT`, la planification `nextthink = level.time + delay`, l'installation du callback `DoRespawn`, puis le relink. Le port TS est strictement equivalent avec `runtime.time + delaySeconds` et `linkGameEntity(runtime, ent)`. Le header TS existant a ete verifie (`Fidelity level: Strict`).
@@ -205,4 +221,4 @@ Validation `Weapon_HyperBlaster` du 2026-05-01: comparaison avec `game/p_weapon.
 
 ## Prochain lot recommande
 
-- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Powerup`.
+- Reprendre la prochaine entree `A verifier` restante de `game_g_items.c.md` dans l'ordre de la matrice: `Pickup_Adrenaline`.

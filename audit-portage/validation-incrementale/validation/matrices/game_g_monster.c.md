@@ -21,12 +21,12 @@
 | `Quake-2-master/game/g_monster.c` | function | `M_FliesOn` | `packages/game/src/g_monster.ts` | `M_FliesOn` | Valide | A redecouper | Preuve session: comparaison C/TS, en-tete verifie, `npm run verify:g-monster`, `npm run verify:local-gameplay-sync`, `npm run typecheck`; runtime via `M_FlyCheck` appele par deaths infantry/mutant puis think `M_FliesOn`/`M_FliesOff`; correction `packages/client/src/cl_fx.ts` pour consommer `EF_FLIES` en particules, son loop via `s.sound` consomme par apps/web. |
 | `Quake-2-master/game/g_monster.c` | function | `M_FlyCheck` | `packages/game/src/g_monster.ts` | `M_FlyCheck` | Valide | A redecouper | Preuve session: comparaison C/TS, en-tete verifie, `npm run verify:g-monster`, `npm run verify:local-gameplay-sync`, `npm run typecheck`; runtime via deaths infantry/mutant; correction `packages/client/src/cl_fx.ts` pour consommer `EF_FLIES` en particules, son loop via `s.sound` consomme par apps/web. |
 | `Quake-2-master/game/g_monster.c` | function | `AttackFinished` | `packages/game/src/g_monster.ts` | `AttackFinished` | Valide | A redecouper | Preuve session: comparaison C/TS, en-tete `Strict` verifie, test cible ajoute dans `scripts/verify/quake2-g-monster.ts`, `npm run verify:g-monster`, `npm run verify:g-ai`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; timing gameplay pur via AI/monster attack callbacks, pas de sortie visible directe renderer. |
-| `Quake-2-master/game/g_monster.c` | function | `M_CheckGround` | `packages/game/src/g_monster.ts` | `M_CheckGround` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | global | `point` | `packages/game/src/g_monster.ts` | `point` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | global | `trace` | `packages/game/src/g_monster.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | function | `M_CatagorizePosition` | `packages/game/src/g_monster.ts` | `M_CatagorizePosition` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | global | `point` | `packages/game/src/g_monster.ts` | `point` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_monster.c` | global | `cont` | `packages/game/src/g_monster.ts` | `cont` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | function | `M_CheckGround` | `packages/game/src/g_monster.ts` | `M_CheckGround` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | global | `point` | `packages/game/src/g_monster.ts` | `point` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | global | `trace` | `packages/game/src/g_monster.ts` | `trace` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | function | `M_CatagorizePosition` | `packages/game/src/g_monster.ts` | `M_CatagorizePosition` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | global | `point` | `packages/game/src/g_monster.ts` | `point` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_monster.c` | global | `cont` | `packages/game/src/g_monster.ts` | `cont` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | function | `M_WorldEffects` | `packages/game/src/g_monster.ts` | `M_WorldEffects` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | global | `dmg` | `packages/game/src/g_monster.ts` | `dmg` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_monster.c` | function | `M_droptofloor` | `packages/game/src/g_monster.ts` | `M_droptofloor` | A verifier | A redecouper |  |

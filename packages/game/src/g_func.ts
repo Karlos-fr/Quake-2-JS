@@ -876,15 +876,17 @@ export function SP_func_door(ent: GameEntity, runtime: GameRuntime): void {
  * Original name: SP_func_door_rotating
  * Source: game/g_func.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
  *
  * Behavior:
  * - Initializes one rotating brush door from BSP entity properties.
  *
  * Porting notes:
- * - Tracks angle endpoints and state transitions even though angular movement is still time-simulated.
+ * - Uses runtime sound/model/link adapters for the original `gi.*` calls.
+ * - Angular movement is handled by the shared AngleMove callbacks ported from this file.
  */
 export function SP_func_door_rotating(ent: GameEntity, runtime: GameRuntime): void {
+  ent.angles = [0, 0, 0];
   ent.movetype = MOVETYPE_PUSH;
   ent.solid = SOLID_BSP;
   if (ent.model) {
@@ -915,7 +917,7 @@ export function SP_func_door_rotating(ent: GameEntity, runtime: GameRuntime): vo
     ent.moveinfo.sound_end = registerGameSound(runtime, "doors/dr1_end.wav");
   }
 
-  const distance = parseDistance(ent.properties.distance, 90);
+  const distance = parseDistance(ent.properties.distance, 0) || 90;
   ent.pos1 = [...ent.angles];
 
   if ((ent.spawnflags & DOOR_X_AXIS) !== 0) {
@@ -943,13 +945,14 @@ export function SP_func_door_rotating(ent: GameEntity, runtime: GameRuntime): vo
     ent.pos1 = [...ent.angles];
     ent.movedir = [-ent.movedir[0], -ent.movedir[1], -ent.movedir[2]];
   }
-  refreshEntitySpatialState(ent);
-  linkGameEntity(runtime, ent);
 
   if (ent.health > 0) {
+    ent.takedamage = damage_t.DAMAGE_YES;
     ent.die = door_killed;
     ent.max_health = ent.health;
-  } else if (ent.targetname && ent.message) {
+  }
+  if (ent.targetname && ent.message) {
+    registerGameSound(runtime, "misc/talk.wav");
     ent.touch = door_touch;
   }
 
@@ -963,9 +966,16 @@ export function SP_func_door_rotating(ent: GameEntity, runtime: GameRuntime): vo
   ent.moveinfo.start_angles = [...ent.pos1];
   ent.moveinfo.end_angles = [...ent.pos2];
 
+  if ((ent.spawnflags & 16) !== 0) {
+    ent.s.effects |= EF_ANIM_ALL;
+  }
+
   if (!ent.team) {
     ent.teammaster = ent;
   }
+
+  refreshEntitySpatialState(ent);
+  linkGameEntity(runtime, ent);
 
   ent.nextthink = runtime.time + FRAMETIME;
   ent.think = ent.health > 0 || Boolean(ent.targetname) ? Think_CalcMoveSpeed : Think_SpawnDoorTrigger;
@@ -1554,9 +1564,13 @@ export function SP_func_button(ent: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Initializes one moveable water brush using the same door movement callbacks.
+ *
+ * Porting notes:
+ * - Reads `lip` from the parsed entity properties in place of the original spawn-temp `st.lip`.
+ * - Model and sound registration go through the runtime adapters before the brush is linked.
  */
 export function SP_func_water(self: GameEntity, runtime: GameRuntime): void {
-  G_SetMovedir(self.s.angles, self.movedir);
+  G_SetMovedir(self.angles, self.movedir);
   self.movetype = MOVETYPE_PUSH;
   self.solid = SOLID_BSP;
   if (self.model) {

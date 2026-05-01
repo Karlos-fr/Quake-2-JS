@@ -1052,6 +1052,9 @@ export function func_explosive_explode(
  * Source: game/g_misc.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Uses the triggering entity as the explosion attacker and immediately breaks the brush.
  */
 export function func_explosive_use(
   self: GameEntity,
@@ -1067,6 +1070,9 @@ export function func_explosive_use(
  * Source: game/g_misc.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Reveals a trigger-spawned explosive brush, clears its one-shot use callback and relinks it solid.
  */
 export function func_explosive_spawn(
   self: GameEntity,
@@ -1090,6 +1096,7 @@ export function func_explosive_spawn(
  *
  * Behavior:
  * - Spawns an explosive brush model with trigger-spawn, shootable and animated variants.
+ * - Deathmatch removes these brush entities during spawn like the original game DLL.
  */
 export function SP_func_explosive(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {

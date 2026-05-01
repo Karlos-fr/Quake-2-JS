@@ -8,6 +8,54 @@
 
 ## Dernier lot traite
 
+- 2026-05-01: lot champs `gitem_s` `flags`, `weapmodel`, `info`, `tag`, `precaches`.
+- Verdict: `Valide` pour les 5 champs apres renforcement du harness header; aucune correction gameplay TS necessaire.
+- Source H comparee: `gitem_s` declare `int flags`, `int weapmodel`, `void *info`, `int tag`, puis `char *precaches`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_items.ts`: `GameItemDefinition` porte `flags`, `weapmodel`, `tag`, `precaches`; le champ C `info` est conserve par l'adapter `GetArmorInfoByItem` pour les armures et par `null` logique pour les autres items.
+  - `packages/game/src/g_local.ts`: `export type gitem_t = GameItemDefinition`.
+  - `packages/game/src/index.ts`: export public de `GameItemDefinition` et `gitem_t` conserve et verifie par typecheck/imports existants.
+- Equivalences de champs verifiees sur items representatifs:
+  - armes: `weapon_blaster` a `flags = IT_WEAPON | IT_STAY_COOP`, `weapmodel = WEAP_BLASTER`; les 11 `WEAP_*` restent alignes avec les entrees d'armes.
+  - ammo: `ammo_shells`, `ammo_cells`, `ammo_grenades` portent les flags `IT_AMMO` et tags `AMMO_*` attendus; les grenades conservent aussi `IT_WEAPON`.
+  - armures: `Jacket/Combat/Body/Armor Shard` portent les tags `ARMOR_*`; `GetArmorInfoByItem` retourne les infos C equivalentes pour les armures avec `info != NULL` et `null` pour armes/powerups.
+  - powerups/cles: `Quad Damage`, `Rebreather`, `Data CD` conservent leurs flags/tags.
+  - precaches: chaines representatives comparees pour `Shotgun`, `BFG10K`, `Quad Damage`, `Invulnerability`, `Shells`, `Data CD`.
+- Runtime:
+  - Source C: `flags` pilote pickups/selection/drop/give/coop/deathmatch; `weapmodel` pilote le modele d'arme visible; `info` pointe vers `gitem_armor_t` pour les armures; `tag` pilote ammo/armor; `precaches` est parse par `PrecacheItem` en modeles/sons/images.
+  - TS: `g_items.ts`, `g_cmds.ts`, `p_weapon.ts`, `p_hud.ts`, `p_client.ts` et `g_combat.ts` conservent ces flux via `GameItemDefinition`, `GetArmorInfoByItem`, `PrecacheItem`, inventaire runtime, stats HUD, configstrings item/assets et snapshots.
+- apps/web: aucune logique item parallele attendue; le navigateur declenche le runtime full-game/local et consomme les sorties via HUD, inventaire, commandes/input, configstrings `CS_ITEMS`, assets precaches, sons et snapshots. `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: pas de logique gameplay directe attendue. Les sorties visibles attendues sont les modeles monde/vue d'armes/items, frames, icones/HUD cote client, sons, temp entities, dlights et particules produits en aval par l'usage des flags/tags/precaches; `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage de `GameItemDefinition` verifie avec `Original name: gitem_s`, `Source: game/g_local.h`, `Category: Ported`, `Fidelity level: Close`; commentaire `PrecacheItem` verifie `Strict`.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ciblees sur les 5 champs du lot et preuve runtime `PrecacheItem`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-items` OK; `npm run verify:p-hud` OK; `npm run verify:p-weapon` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
+- 2026-05-01: lot champs `gitem_s` `icon`, `pickup_name`, `count_width`, `quantity`, `ammo`.
+- Verdict: `Valide` pour les 5 champs apres renforcement du harness header; aucune correction gameplay TS necessaire.
+- Source H comparee: `gitem_s` declare, dans le bloc client-side info, `char *icon`, `char *pickup_name`, `int count_width`, puis `int quantity` et `char *ammo`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_items.ts`: `GameItemDefinition` porte `icon`, `pickupName`, `countWidth`, `quantity`, `ammo` avec `null` pour les pointeurs C absents; `rawItemlist` conserve les valeurs itemlist representatives.
+  - `packages/game/src/g_local.ts`: `export type gitem_t = GameItemDefinition`.
+  - `packages/game/src/index.ts`: export public de `GameItemDefinition` et `gitem_t` conserve et verifie par typecheck/imports existants.
+- Equivalences de champs verifiees sur items representatifs:
+  - `weapon_shotgun`: `icon = w_shotgun`, `pickup_name = Shotgun`, `count_width = 0`, `quantity = 1`, `ammo = Shells`.
+  - `weapon_blaster`: `icon = w_blaster`, `count_width = 0`, `quantity = 0`, `ammo = null`.
+  - `ammo_shells`: `icon = a_shells`, `pickup_name = Shells`, `count_width = 3`, `quantity = 10`, `ammo = null`.
+  - `ammo_grenades`: `icon = a_grenades`, `count_width = 3`, `quantity = 5`, `ammo = grenades`.
+  - `item_quad`: `icon = p_quad`, `count_width = 2`, `quantity = 60`, `ammo = null`.
+  - `key_data_cd`: `icon = k_datacd`, `pickup_name = Data CD`, `count_width = 2`, `quantity = 0`, `ammo = null`.
+- Runtime:
+  - Source C: `FindItem` cherche `pickup_name`; `PrecacheItem` enregistre `icon` et recursivement l'item `ammo`; `Touch_Item` expose `STAT_PICKUP_ICON`/`STAT_PICKUP_STRING`; `G_SetStats` expose icones ammo/selected/help; `Pickup_*`, `SetRespawn`, `Drop_Ammo`, `Use_Weapon`, `Weapon_*` et `Cmd_Give_f` consomment `quantity`/`ammo`.
+  - TS: `FindItem`, `PrecacheItem`, `Touch_Item`, `G_SetStats`, `Pickup_*`, `SetRespawn`, `Drop_Ammo`, `Use_Weapon`, les tirs d'armes et `Cmd_Give_f` conservent ces flux via `GameItemDefinition`, inventaire runtime, stats HUD, configstrings item et assets image.
+- apps/web: aucune logique item parallele attendue; le navigateur declenche le runtime full-game/local et consomme les sorties via stats HUD, inventaire, configstrings `CS_ITEMS`, images precachees, commandes/input et snapshots. `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order` OK.
+- renderer-three: aucune logique gameplay directe attendue pour ces champs. Les sorties visibles attendues sont les icones/HUD et noms d'inventaire cote client, plus les consequences de `ammo`/`quantity` sur armes, tirs, sons, modeles, temp entities, dlights et particules; le renderer consomme les frames et refresh produits en aval. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de portage de `GameItemDefinition` deja present avec `Original name: gitem_s`, `Source: game/g_local.h`, `Category: Ported`, `Fidelity level: Close`; pas de fonction nouvelle dans ce lot.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ciblees sur les 5 champs du lot.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-hud` OK; `npm run verify:p-weapon` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+- Blocage hors lot resolu pendant le lot suivant: `npm run verify:g-items` est repasse OK.
+
 - 2026-05-01: lot structure `gitem_s` et champs `classname`, `pickup_sound`, `world_model`, `world_model_flags`, `view_model`.
 - Verdict: `Valide` pour la structure et les 5 champs apres correction du commentaire de portage et renforcement du harness header.
 - Source H comparee: `gitem_s` declare `char *classname`, les callbacks item, puis `char *pickup_sound`, `char *world_model`, `int world_model_flags`, `char *view_model`.
@@ -497,7 +545,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le prochain petit groupe de champs de `gitem_s`: `icon`, `pickup_name`, `count_width`, puis `quantity`/`ammo` si le lot reste raisonnable.
+- Continuer avec `game_locals_t`, puis les champs `helpmessage1`, `helpmessage2`, `helpchanged` si le lot reste raisonnable.
 
 ## Blocages
 

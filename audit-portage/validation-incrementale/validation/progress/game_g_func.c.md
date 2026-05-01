@@ -2,6 +2,22 @@
 
 ## Dernier lot valide
 
+- 2026-05-01: spawn de brush eau mobile `SP_func_water`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1378-1435` avec `packages/game/src/g_func.ts:1568-1618`.
+- Correction appliquee: `SP_func_water` utilise maintenant `G_SetMovedir(self.angles, self.movedir)` afin d'effacer les angles runtime canoniques comme le C efface `self->s.angles`; auparavant `refreshEntitySpatialState` pouvait reexposer les angles non remis a zero dans `s.angles`. Le commentaire d'en-tete documente les adapters `lip`, modele et sons.
+- Effets verifies: `MOVETYPE_PUSH`, `SOLID_BSP`, modele inline, sons `world/mov_watr.wav`/`world/stp_watr.wav` pour water/lava, calcul `pos1`/`pos2` par movedir absolu et `lip`, branche `DOOR_START_OPEN`, `start_origin`/`end_origin`, angles remis a zero, defaults `speed = 25`, `wait = -1`, ajout `DOOR_TOGGLE`, classname remplacee par `func_door`, callback `door_use`, link runtime.
+- Branchement: `SP_func_water` est referencee par `packages/game/src/g_spawn.ts` pour `func_water` et appelee par `ED_CallSpawn` pendant `SpawnEntities`; le brush doit etre cible puis active via `door_use`, et le mouvement rejoint `Move_Calc` puis `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_water` dans `apps/web`; le navigateur consomme les sons runtime et les snapshots/interpolations de brush models. `packages/renderer-three` consomme les sorties visibles attendues via inline brush models dans `gl-world-scene-adapter`, surfaces d'eau/warp du BSP et refdef/scene; pas d'areaportal propre a `func_water`.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:g-spawn` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+- 2026-05-01: spawn de porte rotative `SP_func_door_rotating`.
+- Preuve: comparaison directe `Quake-2-master/game/g_func.c:1261-1329` avec `packages/game/src/g_func.ts:887-977`.
+- Correction appliquee: `SP_func_door_rotating` efface maintenant les angles de spawn comme `VectorClear(ent->s.angles)`, applique le fallback C `distance == 0 -> 90`, initialise `takedamage = DAMAGE_YES` pour les portes shootables, precache `misc/talk.wav` pour les portes a message, applique `EF_ANIM_ALL` sans confondre `X_AXIS` avec un flag anim fast, et relie l'entite apres l'initialisation complete; le commentaire d'en-tete est passe en fidelite `Strict`.
+- Effets verifies: axes Z par defaut, `DOOR_X_AXIS`, `DOOR_Y_AXIS`, `DOOR_REVERSE`, `DOOR_START_OPEN`, defaults `speed`/`accel`/`decel`/`wait`/`dmg`, callbacks `blocked`/`use`/`die`/`touch`, `teammaster` solo, sons de porte, message, `moveinfo` origins/angles, `nextthink` et choix `Think_CalcMoveSpeed` ou `Think_SpawnDoorTrigger`.
+- Branchement: `SP_func_door_rotating` est referencee par `packages/game/src/g_spawn.ts` pour `func_door_rotating`, appelee par `ED_CallSpawn` pendant `SpawnEntities`, puis ses thinks/callbacks rejoignent `Think_CalcMoveSpeed`, `Think_SpawnDoorTrigger`, `door_use`, `door_blocked`, `door_killed`, `door_touch`, `AngleMove_Calc` et le flux `G_RunFrame`/`G_RunEntity`/`SV_RunThink`.
+- Integration: aucune logique parallele `func_door_rotating` dans `apps/web`; le navigateur consomme le runtime serveur/local, les sons, centerprints, areabits et snapshots/interpolations de brush models. `packages/renderer-three` consomme les sorties visibles attendues via brush snapshots, angles de modeles inline rotatifs et areabits; pas de correction renderer attendue.
+- Tests: `npm run verify:g-func` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
 - 2026-05-01: spawn de porte lineaire `SP_func_door`.
 - Preuve: comparaison directe `Quake-2-master/game/g_func.c:1138-1228` avec `packages/game/src/g_func.ts:775-870`.
 - Correction appliquee: `SP_func_door` appelle maintenant `G_SetMovedir`, applique le doublement de vitesse deathmatch, initialise `takedamage = DAMAGE_YES` pour les portes shootables, precache `misc/talk.wav` pour les portes a message, applique `EF_ANIM_ALL`/`EF_ANIM_ALLFAST`, puis expose l'entite par `linkGameEntity` apres l'initialisation complete comme le `gi.linkentity` C; le commentaire d'en-tete documente l'adapter runtime/deathmatch.
@@ -238,7 +254,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `SP_func_door_rotating`.
+- Continuer avec `TRAIN_START_ON`, `TRAIN_TOGGLE`, `TRAIN_BLOCK_STOPS`, puis `train_next` si le lot reste petit.
 
 ## Blocages
 

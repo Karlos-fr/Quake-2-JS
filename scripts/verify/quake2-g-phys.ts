@@ -10,11 +10,13 @@
  * - packages/game/src/runtime.ts
  */
 
-import { MASK_SOLID } from "../../packages/qcommon/src/index.js";
+import { MASK_SOLID, multicast_t, temp_event_t, type trace_t } from "../../packages/qcommon/src/index.js";
 import {
+  G_RunFrame,
   ClipVelocity,
   G_RunEntity,
   SV_CheckVelocity,
+  SV_Impact,
   SV_Physics_Toss,
   SV_RunThink,
   SV_TestEntityPosition
@@ -27,7 +29,12 @@ import {
   MOVETYPE_TOSS,
   SOLID_BBOX,
   SOLID_BSP,
+  SOLID_NOT,
   createGameRuntimeFromBspEntities,
+  drainGameSoundEvents,
+  drainGameTempEntityEvents,
+  emitGameSound,
+  emitGameTempEntity,
   linkGameEntity,
   spawnGameEntity
 } from "../../packages/game/src/runtime.js";
@@ -44,6 +51,19 @@ function assertVec(label: string, actual: number[], expected: number[]): void {
       throw new Error(`${label}[${index}]: expected ${expected[index]}, got ${actual[index]}`);
     }
   }
+}
+
+function assertThrows(label: string, callback: () => void, expected: string): void {
+  try {
+    callback();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (!message.includes(expected)) {
+      throw new Error(`${label}: expected error containing ${expected}, got ${message}`);
+    }
+    return;
+  }
+  throw new Error(`${label}: expected throw`);
 }
 
 const runtime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
@@ -140,6 +160,167 @@ thinkEnt.think = () => {
 assertEqual("SV_RunThink.return", SV_RunThink(thinkEnt, runtime), false);
 assertEqual("SV_RunThink.count", thinkCount, 1);
 assertEqual("SV_RunThink.nextthink", thinkEnt.nextthink, 0);
+
+const noThinkEnt = spawnGameEntity(runtime);
+noThinkEnt.classname = "no-think";
+noThinkEnt.nextthink = 0;
+let noThinkCount = 0;
+noThinkEnt.think = () => {
+  noThinkCount += 1;
+};
+assertEqual("SV_RunThink.no-think.return", SV_RunThink(noThinkEnt, runtime), true);
+assertEqual("SV_RunThink.no-think.count", noThinkCount, 0);
+
+const futureThinkEnt = spawnGameEntity(runtime);
+futureThinkEnt.classname = "future-think";
+futureThinkEnt.nextthink = runtime.time + 0.002;
+let futureThinkCount = 0;
+futureThinkEnt.think = () => {
+  futureThinkCount += 1;
+};
+assertEqual("SV_RunThink.future.return", SV_RunThink(futureThinkEnt, runtime), true);
+assertEqual("SV_RunThink.future.count", futureThinkCount, 0);
+assertEqual("SV_RunThink.future.nextthink", futureThinkEnt.nextthink, runtime.time + 0.002);
+
+const nullThinkEnt = spawnGameEntity(runtime);
+nullThinkEnt.classname = "null-think";
+nullThinkEnt.nextthink = runtime.time + 0.0005;
+assertThrows("SV_RunThink.null-think", () => {
+  SV_RunThink(nullThinkEnt, runtime);
+}, "NULL ent.think");
+
+const impactMover = spawnGameEntity(runtime);
+const impactTarget = spawnGameEntity(runtime);
+impactMover.classname = "impact-mover";
+impactTarget.classname = "impact-target";
+impactMover.solid = SOLID_BBOX;
+impactTarget.solid = SOLID_BBOX;
+let impactMoverTouches = 0;
+let impactTargetTouches = 0;
+let impactMoverOther = "";
+let impactTargetOther = "";
+let impactMoverPlaneZ: number | null = null;
+let impactTargetPlaneIsNull = false;
+let impactMoverSurfaceName = "";
+let impactTargetSurfaceIsNull = false;
+impactMover.touch = (self, other, touchRuntime, plane, surface) => {
+  impactMoverTouches += 1;
+  impactMoverOther = other.classname ?? "";
+  impactMoverPlaneZ = plane?.normal[2] ?? null;
+  impactMoverSurfaceName = surface?.rname ?? "";
+  self.s.event = 77;
+  emitGameSound(touchRuntime, self, "misc/talk1.wav");
+};
+impactTarget.touch = (self, other, touchRuntime, plane, surface) => {
+  impactTargetTouches += 1;
+  impactTargetOther = other.classname ?? "";
+  impactTargetPlaneIsNull = plane === null;
+  impactTargetSurfaceIsNull = surface === null;
+  emitGameTempEntity(touchRuntime, temp_event_t.TE_EXPLOSION1, self.s.origin, multicast_t.MULTICAST_PVS);
+};
+const impactTrace: trace_t = {
+  allsolid: false,
+  startsolid: false,
+  fraction: 0.5,
+  endpos: [4, 0, 0],
+  plane: {
+    normal: [0, 0, 1],
+    dist: 0,
+    type: 0,
+    signbits: 0,
+    pad: [0, 0]
+  },
+  surface: {
+    c: {
+      name: "impact-surface",
+      flags: 0,
+      value: 0
+    },
+    rname: "impact-surface"
+  },
+  contents: MASK_SOLID,
+  ent: impactTarget
+};
+SV_Impact(impactMover, impactTrace, runtime);
+assertEqual("SV_Impact.e1.touch", impactMoverTouches, 1);
+assertEqual("SV_Impact.e1.other", impactMoverOther, "impact-target");
+assertEqual("SV_Impact.e1.plane", impactMoverPlaneZ, 1);
+assertEqual("SV_Impact.e1.surface", impactMoverSurfaceName, "impact-surface");
+assertEqual("SV_Impact.e1.visible-event", impactMover.s.event, 77);
+assertEqual("SV_Impact.e2.touch", impactTargetTouches, 1);
+assertEqual("SV_Impact.e2.other", impactTargetOther, "impact-mover");
+assertEqual("SV_Impact.e2.plane-null", impactTargetPlaneIsNull, true);
+assertEqual("SV_Impact.e2.surface-null", impactTargetSurfaceIsNull, true);
+assertEqual("SV_Impact.sound", drainGameSoundEvents(runtime).some((event) => event.soundPath === "misc/talk1.wav"), true);
+assertEqual("SV_Impact.temp-entity", drainGameTempEntityEvents(runtime).some((event) => event.type === temp_event_t.TE_EXPLOSION1), true);
+
+impactMover.solid = SOLID_NOT;
+SV_Impact(impactMover, impactTrace, runtime);
+assertEqual("SV_Impact.skip-e1-solid-not", impactMoverTouches, 1);
+assertEqual("SV_Impact.keep-e2-when-e1-solid-not", impactTargetTouches, 2);
+drainGameTempEntityEvents(runtime);
+
+impactMover.solid = SOLID_BBOX;
+impactTarget.solid = SOLID_NOT;
+SV_Impact(impactMover, impactTrace, runtime);
+assertEqual("SV_Impact.keep-e1-when-e2-solid-not", impactMoverTouches, 2);
+assertEqual("SV_Impact.skip-e2-solid-not", impactTargetTouches, 2);
+drainGameSoundEvents(runtime);
+
+impactTarget.solid = SOLID_BBOX;
+impactMoverTouches = 0;
+impactTargetTouches = 0;
+impactMover.origin = [0, 0, 0];
+impactMover.s.origin = [0, 0, 0];
+impactMover.velocity = [80, 0, 0];
+impactMover.movetype = MOVETYPE_FLY;
+impactMover.clipmask = MASK_SOLID;
+linkGameEntity(runtime, impactMover);
+const defaultCollision = runtime.collision;
+runtime.collision = {
+  world: {} as never,
+  trace(start, mins, maxs, end, passent, contentmask) {
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 0.5,
+      endpos: [4, 0, 0],
+      plane: {
+        normal: [-1, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: contentmask,
+      ent: impactTarget
+    };
+  },
+  pointcontents(point) {
+    return point[2] < 0 ? MASK_SOLID : 0;
+  }
+};
+G_RunEntity(impactMover, runtime);
+assertEqual("G_RunEntity.SV_Impact.e1", impactMoverTouches, 1);
+assertEqual("G_RunEntity.SV_Impact.e2", impactTargetTouches, 1);
+runtime.collision = defaultCollision;
+drainGameSoundEvents(runtime);
+drainGameTempEntityEvents(runtime);
+
+const frameThinkEnt = spawnGameEntity(runtime);
+frameThinkEnt.classname = "frame-think";
+frameThinkEnt.movetype = MOVETYPE_NONE;
+frameThinkEnt.nextthink = runtime.time + 0.1;
+let frameThinkCount = 0;
+frameThinkEnt.think = (self) => {
+  frameThinkCount += 1;
+  self.s.event = 42;
+};
+G_RunFrame(runtime);
+assertEqual("G_RunFrame.SV_RunThink.count", frameThinkCount, 1);
+assertEqual("G_RunFrame.SV_RunThink.nextthink", frameThinkEnt.nextthink, 0);
+assertEqual("G_RunFrame.SV_RunThink.visible-event", frameThinkEnt.s.event, 42);
 
 const tossEnt = spawnGameEntity(runtime);
 tossEnt.classname = "crate";

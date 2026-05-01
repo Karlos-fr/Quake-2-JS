@@ -1,9 +1,9 @@
 # Progress - Quake-2-master/game/g_phys.c
 
 - Statut: En cours
-- Dernier lot valide: `SV_CheckVelocity` avec sa locale `i`.
-- Prochain lot recommande: `SV_RunThink` avec sa locale `thinktime`.
-- Tests de reference: `npm run verify:g-phys`, `npm run typecheck`
+- Dernier lot valide: `SV_Impact` avec sa locale `e2`.
+- Prochain lot recommande: `STOP_EPSILON` et `ClipVelocity` avec locales `backoff` / `change` si le lot reste petit.
+- Tests de reference: `npm run verify:g-phys`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`
 - Blocages: aucun pour le lot valide.
 
 ## Session 2026-05-01 - `SV_TestEntityPosition`
@@ -26,4 +26,26 @@
 - apps/web: le flux full/local game utilise le runtime porte; aucune logique web parallele ne remplace ce clamp. Le clamp influence les positions visibles synchronisees vers le client.
 - renderer-three: pas de sortie renderer directe; le clamp influence `origin` / `s.origin`, donc camera/scene/entites visibles consomment les positions resultantes via les snapshots et adapters existants.
 - Correction: ajout de `runtime.maxvelocity`, synchronisation depuis `sv_maxvelocity`, passage de la valeur a `SV_CheckVelocity`, et assertions ciblees dans `scripts/verify/quake2-g-phys.ts`.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `SV_RunThink`
+
+- Lot traite: `SV_RunThink`, locale `thinktime`.
+- Comparaison C/TS: le C lit `ent->nextthink`, retourne `true` si `thinktime <= 0` ou si `thinktime > level.time + 0.001`, remet `nextthink` a 0, exige `ent->think`, appelle le callback, puis retourne `false`; le TS reprend les memes seuils avec `runtime.time`, remet `nextthink` a 0, leve une erreur si le callback manque, journalise l'appel pour verification, appelle `think(ent, runtime)` et retourne `false`.
+- Commentaire d'en-tete: present et conforme (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement). Le niveau `Close` reste justifie par le passage explicite du runtime et le log de verification.
+- Runtime: atteignable depuis `G_RunFrame` / `G_RunEntity` par toutes les branches physique qui appellent `SV_RunThink` (`PUSH`/teamchain, `NONE`, `NOCLIP`, `TOSS`/`BOUNCE`/`FLY`/`FLYMISSILE`, `STEP`). Les callbacks think peuvent modifier directement des champs visibles (`s.event`, `s.frame`, `s.effects`, `s.sound`, origine/angles), emettre sons/temp entities, ou liberer l'entite.
+- apps/web: le flux navigateur utilise le runtime porte via local/full-game; les sorties de callbacks sont consommees par snapshots, drains sons/centerprints/temp entities et synchronisation client. Aucune logique web parallele ne remplace `SV_RunThink`.
+- renderer-three: `SV_RunThink` n'a pas de sortie renderer propre, mais les callbacks qu'il declenche peuvent produire modeles/frames/images/particules/beams/dlights/temp entities/areabits/camera/scene indirectement; ces sorties descendent par le client refresh frame et les adapters renderer-three existants.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour les branches `thinktime <= 0`, futur, du, callback nul, et atteignabilite via `G_RunFrame`.
+- Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
+
+## Session 2026-05-01 - `SV_Impact`
+
+- Lot traite: `SV_Impact`, locale `e2`.
+- Comparaison C/TS: le C recupere `e2 = trace->ent`, appelle `e1->touch(e1, e2, &trace->plane, trace->surface)` si `e1->touch` et `e1->solid != SOLID_NOT`, puis appelle `e2->touch(e2, e1, NULL, NULL)` si `e2->touch` et `e2->solid != SOLID_NOT`; le TS reprend ces deux callbacks avec le runtime explicite et `null/null` pour le second. Le garde `asGameEntity(trace.ent)` est une adaptation defensive du port, sans effet sur les traces runtime normales qui portent une entite.
+- Commentaire d'en-tete: present et conforme (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement). Le niveau `Close` reste justifie par le runtime explicite et le garde defensif sur `trace.ent`.
+- Runtime: atteignable depuis `G_RunFrame` / `G_RunEntity` par `SV_FlyMove` et `SV_PushEntity` lors des collisions; les callbacks touch peuvent modifier des champs visibles, liberer des entites, emettre sons/temp entities ou declencher de la logique gameplay.
+- apps/web: le navigateur utilise le runtime porte en local/full-game; les sorties de callbacks sont consommees par snapshots, brush models, drains de sons, centerprints et temp entities. Aucune logique web parallele ne remplace `SV_Impact`.
+- renderer-three: `SV_Impact` n'a pas de sortie renderer propre, mais les callbacks touch qu'il declenche peuvent produire modeles/frames/images/particules/beams/dlights/temp entities/areabits/camera/scene; ces sorties descendent via `ClientRefreshFrame`, `particle-sync`, `three-dlight-sync`, `three-beam-sync` et `gl-world-scene-adapter`.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-g-phys.ts` pour l'ordre/les arguments des callbacks, les gardes `SOLID_NOT`, les emissions son/temp entity, et l'atteignabilite via `G_RunEntity`.
 - Tests lances: `npm run verify:g-phys` OK; `npm run typecheck` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK.
