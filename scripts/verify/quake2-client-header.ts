@@ -7,7 +7,7 @@
  *
  * Dependencies:
  * - packages/client/src/index.ts
- * - packages/client/src/types.ts
+ * - packages/client/src/client.ts
  * - packages/client/src/keys.ts
  */
 

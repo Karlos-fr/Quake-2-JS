@@ -27,7 +27,7 @@ import {
   createClientConsoleContext
 } from "../../packages/client/src/console.js";
 import { createClientKeyContext, keydest_t } from "../../packages/client/src/keys.js";
-import { createClientRuntime, connstate_t } from "../../packages/client/src/types.js";
+import { createClientRuntime, connstate_t } from "../../packages/client/src/client.js";
 import {
   Cbuf_Execute,
   Cmd_ExecuteString,

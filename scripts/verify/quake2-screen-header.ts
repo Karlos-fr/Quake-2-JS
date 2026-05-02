@@ -1,13 +1,13 @@
 /**
  * File: quake2-screen-header.ts
- * Purpose: Verify the currently closed `client/screen.h` declarations ported into `packages/client/src/screen.ts`.
+ * Purpose: Verify the currently closed `client/screen.h` declarations ported into `packages/client/src/cl_scrn.ts`.
  *
  * This file is not a direct source port.
  * It is a targeted verification harness for the currently ported screen header subset.
  *
  * Dependencies:
- * - packages/client/src/screen.ts
- * - packages/client/src/types.ts
+ * - packages/client/src/cl_scrn.ts
+ * - packages/client/src/client.ts
  * - packages/qcommon/src/cmd.ts
  * - packages/qcommon/src/cvar.ts
  */
@@ -35,9 +35,9 @@ import {
   SCR_SizeUp,
   SCR_TouchPics,
   SCR_UpdateScreen
-} from "../../packages/client/src/screen.js";
-import { CL_ParseInventory } from "../../packages/client/src/parse.js";
-import { createClientRuntime, connstate_t } from "../../packages/client/src/types.js";
+} from "../../packages/client/src/cl_scrn.js";
+import { CL_ParseInventory } from "../../packages/client/src/cl_parse.js";
+import { createClientRuntime, connstate_t } from "../../packages/client/src/client.js";
 import { createCommandRuntime } from "../../packages/qcommon/src/cmd.js";
 import { createCvarRuntime } from "../../packages/qcommon/src/cvar.js";
 import { MSG_WriteShort } from "../../packages/qcommon/src/messages.js";

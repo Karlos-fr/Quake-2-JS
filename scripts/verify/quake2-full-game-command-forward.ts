@@ -6,7 +6,7 @@
  * It is a focused verification harness for the command fallback policy used by `apps/web/src/full-game.ts`.
  *
  * Dependencies:
- * - packages/client/src/main.ts
+ * - packages/client/src/cl_main.ts
  * - packages/qcommon/src/cmd.ts
  * - packages/qcommon/src/cvar.ts
  */
@@ -27,11 +27,11 @@ import {
 import {
   Cmd_ForwardToServer as CL_Cmd_ForwardToServer,
   createClientMainContext
-} from "../../packages/client/src/main.js";
+} from "../../packages/client/src/cl_main.js";
 import {
   connstate_t,
   createClientRuntime
-} from "../../packages/client/src/types.js";
+} from "../../packages/client/src/client.js";
 
 const printed: string[] = [];
 const client = createClientRuntime();

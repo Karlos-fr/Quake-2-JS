@@ -7,7 +7,7 @@
  *
  * Dependencies:
  * - packages/client/src/view.ts
- * - packages/client/src/types.ts
+ * - packages/client/src/client.ts
  * - packages/client/src/ref.ts
  * - packages/client/src/console.ts
  * - packages/qcommon/src/cmd.ts

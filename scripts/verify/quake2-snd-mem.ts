@@ -7,7 +7,7 @@
  *
  * Dependencies:
  * - packages/client/src/snd_mem.ts
- * - packages/client/src/sound-local.ts
+ * - packages/client/src/snd_loc.ts
  * - packages/client/src/index.ts
  */
 

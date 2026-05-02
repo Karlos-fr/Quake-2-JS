@@ -8,7 +8,7 @@
  * Dependencies:
  * - packages/server/src/sv_init.ts
  * - packages/server/src/sv_send.ts
- * - packages/client/src/parse.ts
+ * - packages/client/src/cl_parse.ts
  * - packages/game/src/g_target.ts
  */
 
@@ -41,8 +41,8 @@ import {
   client_state_t
 } from "../../packages/server/src/index.js";
 import { createServerInitProcedures } from "../../packages/server/src/sv_init.js";
-import { CL_ParseStartSoundPacket } from "../../packages/client/src/parse.js";
-import { createClientRuntime } from "../../packages/client/src/types.js";
+import { CL_ParseStartSoundPacket } from "../../packages/client/src/cl_parse.js";
+import { createClientRuntime } from "../../packages/client/src/client.js";
 import { createGameRuntimeFromBspEntities, spawnGameEntity } from "../../packages/game/src/runtime.js";
 import { SP_target_speaker } from "../../packages/game/src/g_target.js";
 

@@ -13,7 +13,7 @@ import { join } from "node:path";
 
 import { CS_SOUNDS, MAX_SOUNDS } from "../../packages/qcommon/src/index.js";
 import { CL_RegisterSounds } from "../../packages/client/src/sound.js";
-import { createClientRuntime } from "../../packages/client/src/types.js";
+import { createClientRuntime } from "../../packages/client/src/client.js";
 
 const repoRoot = process.cwd();
 const fullGameSource = readFileSync(join(repoRoot, "apps", "web", "src", "full-game.ts"), "utf8");

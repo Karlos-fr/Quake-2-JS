@@ -7,7 +7,7 @@
  *
  * Dependencies:
  * - apps/web/src/web-config-storage.ts
- * - packages/client/src/main.ts
+ * - packages/client/src/cl_main.ts
  * - packages/filesystem
  * - packages/qcommon
  */
@@ -24,7 +24,7 @@ import {
   CL_InitLocal,
   CL_WriteConfiguration,
   createClientMainContext
-} from "../../packages/client/src/main.js";
+} from "../../packages/client/src/cl_main.js";
 import {
   createVirtualFilesystem
 } from "../../packages/filesystem/src/index.js";

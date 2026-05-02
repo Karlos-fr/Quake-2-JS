@@ -9,8 +9,8 @@ import {
   SCR_DrawCinematic,
   SCR_PlayCinematic,
   SCR_RunCinematic
-} from "../../packages/client/src/screen.js";
-import { createClientRuntime } from "../../packages/client/src/types.js";
+} from "../../packages/client/src/cl_scrn.js";
+import { createClientRuntime } from "../../packages/client/src/client.js";
 
 function createLittleLong(value: number): number[] {
   const normalized = value >>> 0;

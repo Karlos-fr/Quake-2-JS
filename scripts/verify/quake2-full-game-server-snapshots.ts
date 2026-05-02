@@ -10,8 +10,8 @@ import { join } from "node:path";
 import {
   SCR_Init,
   createClientScreenContext
-} from "../../packages/client/src/screen.js";
-import { connstate_t, createClientRuntime } from "../../packages/client/src/types.js";
+} from "../../packages/client/src/cl_scrn.js";
+import { connstate_t, createClientRuntime } from "../../packages/client/src/client.js";
 import {
   createVirtualFilesystem,
   FS_Gamedir,

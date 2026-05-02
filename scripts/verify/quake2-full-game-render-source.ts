@@ -5,8 +5,8 @@
 
 import { strict as assert } from "node:assert";
 
-import { createClientRuntime, connstate_t } from "../../packages/client/src/types.js";
-import { createSfx } from "../../packages/client/src/sound-local.js";
+import { createClientRuntime, connstate_t } from "../../packages/client/src/client.js";
+import { createSfx } from "../../packages/client/src/snd_loc.js";
 import {
   CS_MODELS,
   Cmd_Init,

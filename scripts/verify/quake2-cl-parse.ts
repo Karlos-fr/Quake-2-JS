@@ -1,13 +1,13 @@
 /**
  * File: quake2-cl-parse.ts
- * Purpose: Verify the closed `client/cl_parse.c` behavior anchored in `packages/client/src/parse.ts`.
+ * Purpose: Verify the closed `client/cl_parse.c` behavior anchored in `packages/client/src/cl_parse.ts`.
  *
  * This file is not a direct source port.
  * It is a targeted verification harness for the client parse module.
  *
  * Dependencies:
- * - packages/client/src/parse.ts
- * - packages/client/src/types.ts
+ * - packages/client/src/cl_parse.ts
+ * - packages/client/src/client.ts
  * - packages/qcommon/src/messages.ts
  */
 
@@ -22,8 +22,8 @@ import {
   CL_ParseStartSoundPacket,
   CL_ParseServerMessage,
   CL_WriteStringCmd
-} from "../../packages/client/src/parse.js";
-import { createClientRuntime, connstate_t } from "../../packages/client/src/types.js";
+} from "../../packages/client/src/cl_parse.js";
+import { createClientRuntime, connstate_t } from "../../packages/client/src/client.js";
 import {
   CS_CDTRACK,
   CS_IMAGES,
@@ -56,7 +56,7 @@ function resetOutgoing(runtime: ReturnType<typeof createClientRuntime>): void {
 }
 
 const runtime = createClientRuntime();
-const parseSource = readFileSync(join(process.cwd(), "packages", "client", "src", "parse.ts"), "utf8");
+const parseSource = readFileSync(join(process.cwd(), "packages", "client", "src", "cl_parse.ts"), "utf8");
 assert.ok(
   parseSource.includes("incomingAcknowledged: runtime.cls.netchan.incoming_acknowledged"),
   "CL_ParseFrame should check prediction error against the acknowledged usercmd, not the serverframe"

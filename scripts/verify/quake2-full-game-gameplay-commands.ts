@@ -6,7 +6,7 @@
  * It protects `full-game.html` from growing web-only implementations of player commands such as `god` or `noclip`.
  *
  * Dependencies:
- * - packages/client/src/main.ts
+ * - packages/client/src/cl_main.ts
  * - packages/qcommon/src/cmd.ts
  * - packages/qcommon/src/messages.ts
  */
@@ -27,11 +27,11 @@ import {
   CL_InitLocal,
   Cmd_ForwardToServer as CL_Cmd_ForwardToServer,
   createClientMainContext
-} from "../../packages/client/src/main.js";
+} from "../../packages/client/src/cl_main.js";
 import {
   connstate_t,
   createClientRuntime
-} from "../../packages/client/src/types.js";
+} from "../../packages/client/src/client.js";
 
 const printed: string[] = [];
 const client = createClientRuntime();

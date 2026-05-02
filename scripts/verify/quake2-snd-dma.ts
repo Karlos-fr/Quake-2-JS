@@ -7,8 +7,8 @@
  *
  * Dependencies:
  * - packages/client/src/snd_dma.ts
- * - packages/client/src/sound-local.ts
- * - packages/client/src/types.ts
+ * - packages/client/src/snd_loc.ts
+ * - packages/client/src/client.ts
  */
 
 import { strict as assert } from "node:assert";
@@ -22,8 +22,8 @@ import {
 import {
   connstate_t,
   createClientRuntime
-} from "../../packages/client/src/types.js";
-import { createClientSoundLocalContext, createSfx, createSfxCache } from "../../packages/client/src/sound-local.js";
+} from "../../packages/client/src/client.js";
+import { createClientSoundLocalContext, createSfx, createSfxCache } from "../../packages/client/src/snd_loc.js";
 import {
   createClientSndDmaContext,
   S_AliasName as S_DMA_AliasName,

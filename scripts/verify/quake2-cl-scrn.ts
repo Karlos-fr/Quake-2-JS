@@ -1,13 +1,13 @@
 /**
  * File: quake2-cl-scrn.ts
- * Purpose: Verify the currently closed `client/cl_scrn.c` behavior anchored in `packages/client/src/screen.ts`.
+ * Purpose: Verify the currently closed `client/cl_scrn.c` behavior anchored in `packages/client/src/cl_scrn.ts`.
  *
  * This file is not a direct source port.
  * It is a targeted verification harness for the client screen module.
  *
  * Dependencies:
- * - packages/client/src/screen.ts
- * - packages/client/src/types.ts
+ * - packages/client/src/cl_scrn.ts
+ * - packages/client/src/client.ts
  * - packages/qcommon/src/cmd.ts
  * - packages/qcommon/src/cvar.ts
  */
@@ -21,8 +21,8 @@ import {
   SCR_DrawLoading,
   SCR_Init,
   SCR_UpdateScreen
-} from "../../packages/client/src/screen.js";
-import { createClientRuntime, connstate_t } from "../../packages/client/src/types.js";
+} from "../../packages/client/src/cl_scrn.js";
+import { createClientRuntime, connstate_t } from "../../packages/client/src/client.js";
 import { Cmd_ExecuteString, Cmd_Exists, createCommandRuntime } from "../../packages/qcommon/src/cmd.js";
 import { createCvarRuntime } from "../../packages/qcommon/src/cvar.js";
 

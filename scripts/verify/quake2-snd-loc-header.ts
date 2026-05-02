@@ -6,7 +6,7 @@
  * It is a targeted verification harness for a strict header port.
  *
  * Dependencies:
- * - packages/client/src/sound-local.ts
+ * - packages/client/src/snd_loc.ts
  * - packages/client/src/index.ts
  */
 

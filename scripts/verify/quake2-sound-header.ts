@@ -7,7 +7,7 @@
  *
  * Dependencies:
  * - packages/client/src/sound-public.ts
- * - packages/client/src/sound-local.ts
+ * - packages/client/src/snd_loc.ts
  */
 
 import { strict as assert } from "node:assert";
@@ -29,7 +29,7 @@ import {
   createClientSoundPublicContext,
   createRawSampleBuffer
 } from "../../packages/client/src/sound-public.js";
-import { createSfx } from "../../packages/client/src/sound-local.js";
+import { createSfx } from "../../packages/client/src/snd_loc.js";
 
 const log: string[] = [];
 const registered = createSfx();

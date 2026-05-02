@@ -6,7 +6,7 @@
  * It is a targeted verification harness for `CL_InitLocal`, command registration and `CL_FixUpGender`.
  *
  * Dependencies:
- * - packages/client/src/main.ts
+ * - packages/client/src/cl_main.ts
  * - packages/client/src/input.ts
  * - packages/qcommon/src/cmd.ts
  * - packages/qcommon/src/cvar.ts

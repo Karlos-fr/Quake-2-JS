@@ -7,7 +7,7 @@
  *
  * Dependencies:
  * - packages/client/src/keys.ts
- * - packages/client/src/types.ts
+ * - packages/client/src/client.ts
  * - packages/qcommon/src/cmd.ts
  */
 
@@ -38,7 +38,7 @@ import {
   createClientKeyContext,
   keydest_t
 } from "../../packages/client/src/index.js";
-import { createClientRuntime, connstate_t } from "../../packages/client/src/types.js";
+import { createClientRuntime, connstate_t } from "../../packages/client/src/client.js";
 
 const prints: string[] = [];
 const addedText: string[] = [];
