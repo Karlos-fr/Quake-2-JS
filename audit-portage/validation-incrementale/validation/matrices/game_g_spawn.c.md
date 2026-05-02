@@ -38,4 +38,4 @@
 | `Quake-2-master/game/g_spawn.c` | global | `single_statusbar` | `packages/game/src/g_spawn.ts` | `single_statusbar` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `dm_statusbar` | `packages/game/src/g_spawn.ts` | `dm_statusbar` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `SP_worldspawn` | `packages/game/src/g_spawn.ts` | `SP_worldspawn` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | function | `strncpy` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | function | `strncpy` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Appel libc externe auto-detecte, non proprietaire de `g_spawn.c`; comportements porteurs couverts par `ED_ParseEdict`, `SpawnEntities` et `SP_worldspawn`. |

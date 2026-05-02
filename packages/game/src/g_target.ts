@@ -932,6 +932,15 @@ export function target_lightramp_think(self: GameEntity, runtime: GameRuntime): 
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Lazily resolves the targeted `light`, warning for matching non-light
+ *   entities and freeing the ramp if no light is found.
+ * - Starts the ramp at the current game time and immediately emits the first
+ *   lightstyle update through `target_lightramp_think`.
+ *
+ * Porting notes:
+ * - The C local `e` maps to the loop-local `let e` used by `G_Find`.
  */
 export function target_lightramp_use(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   if (!self.enemy) {
@@ -972,6 +981,12 @@ export function target_lightramp_use(self: GameEntity, _other: GameEntity | null
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rejects invalid two-letter ramps, deathmatch ramps, and ramps without a
+ *   target, freeing the entity like the original spawn function.
+ * - Installs the use/think callbacks, hides the controller from clients, and
+ *   derives the per-frame lightstyle delta from `message` and `speed`.
  */
 export function SP_target_lightramp(self: GameEntity, runtime: GameRuntime): void {
   if (!self.message || self.message.length !== 2 || !isLowercaseLetter(self.message[0]) || !isLowercaseLetter(self.message[1]) || self.message[0] === self.message[1]) {

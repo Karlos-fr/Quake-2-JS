@@ -21,17 +21,25 @@ import {
   MOD_BFG_LASER,
   MOD_BLASTER,
   MOD_CHAINGUN,
+  MOD_CRUSH,
+  MOD_FALLING,
   MOD_G_SPLASH,
   MOD_GRENADE,
   MOD_HANDGRENADE,
+  MOD_HELD_GRENADE,
   MOD_HG_SPLASH,
   MOD_HYPERBLASTER,
+  MOD_LAVA,
   MOD_MACHINEGUN,
   MOD_R_SPLASH,
   MOD_RAILGUN,
   MOD_ROCKET,
   MOD_SHOTGUN,
+  MOD_SLIME,
   MOD_SSHOTGUN,
+  MOD_SUICIDE,
+  MOD_TELEFRAG,
+  MOD_WATER,
   damage_t
 } from "../../packages/game/src/g_local.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
@@ -57,6 +65,7 @@ function main(): void {
   verifyBodyQueueUsesOriginalSizeAndWraps();
   verifyClientConnectRespectsAutosavedPersistentState();
   verifyClientObituaryWeaponMeansOfDeath();
+  verifyClientObituaryWorldMeansOfDeath();
   verifyTossClientWeaponUsesDefaultDropItem();
   verifyPlayerDieUsesDefaultSoundAndGibs();
 
@@ -80,7 +89,9 @@ function verifyClientObituaryWeaponMeansOfDeath(): void {
     [MOD_BFG_BLAST, "victim was disintegrated by attacker's BFG blast\n"],
     [MOD_BFG_EFFECT, "victim couldn't hide from attacker's BFG\n"],
     [MOD_HANDGRENADE, "victim caught attacker's handgrenade\n"],
-    [MOD_HG_SPLASH, "victim didn't see attacker's handgrenade\n"]
+    [MOD_HG_SPLASH, "victim didn't see attacker's handgrenade\n"],
+    [MOD_HELD_GRENADE, "victim feels attacker's pain\n"],
+    [MOD_TELEFRAG, "victim tried to invade attacker's personal space\n"]
   ];
 
   for (const [mod, expected] of cases) {
@@ -105,6 +116,55 @@ function verifyClientObituaryWeaponMeansOfDeath(): void {
     assert.equal(victim.enemy, attacker, `ClientObituary should assign attacker enemy for mod ${mod}`);
     assert.equal(attacker.client!.resp.score, 1, `ClientObituary should credit attacker for mod ${mod}`);
   }
+}
+
+function verifyClientObituaryWorldMeansOfDeath(): void {
+  const worldCases: Array<[number, string]> = [
+    [MOD_SUICIDE, "victim suicides.\n"],
+    [MOD_FALLING, "victim cratered.\n"],
+    [MOD_CRUSH, "victim was squished.\n"],
+    [MOD_WATER, "victim sank like a rock.\n"],
+    [MOD_SLIME, "victim melted.\n"],
+    [MOD_LAVA, "victim does a back flip into the lava.\n"]
+  ];
+
+  for (const [mod, expected] of worldCases) {
+    const runtime = createHarnessRuntime();
+    runtime.deathmatch = true;
+    runtime.meansOfDeath = mod;
+    const victim = spawnGameEntity(runtime);
+    const client = attachGameClient(victim);
+    client.pers.netname = "victim";
+
+    const prints: string[] = [];
+    ClientObituary(victim, null, null, runtime, {
+      onPrint: (_level, message) => {
+        prints.push(message);
+      }
+    });
+
+    assert.deepEqual(prints, [expected], `ClientObituary world message mismatch for mod ${mod}`);
+    assert.equal(victim.enemy, null, `ClientObituary should not assign enemy for world mod ${mod}`);
+    assert.equal(client.resp.score, -1, `ClientObituary should penalize victim for world mod ${mod}`);
+  }
+
+  const runtime = createHarnessRuntime();
+  runtime.deathmatch = true;
+  runtime.meansOfDeath = MOD_HELD_GRENADE;
+  const victim = spawnGameEntity(runtime);
+  const client = attachGameClient(victim);
+  client.pers.netname = "victim";
+
+  const prints: string[] = [];
+  ClientObituary(victim, null, victim, runtime, {
+    onPrint: (_level, message) => {
+      prints.push(message);
+    }
+  });
+
+  assert.deepEqual(prints, ["victim tried to put the pin back in.\n"], "ClientObituary held grenade suicide message mismatch");
+  assert.equal(victim.enemy, null, "ClientObituary held grenade suicide must clear enemy");
+  assert.equal(client.resp.score, -1, "ClientObituary held grenade suicide should penalize victim");
 }
 
 function verifyClientConnectRespectsAutosavedPersistentState(): void {

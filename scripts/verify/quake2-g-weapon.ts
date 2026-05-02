@@ -40,7 +40,7 @@ import {
   type GameRuntime
 } from "../../packages/game/src/runtime.js";
 import { damage_t } from "../../packages/game/src/g_local.js";
-import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_blaster, fire_bullet, fire_grenade, fire_hit, fire_rail, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
+import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_WATER, EF_GRENADE, SURF_SKY } from "../../packages/qcommon/src/q_shared.js";
 
@@ -64,6 +64,7 @@ function main(): void {
   verifyGrenadeExplodeSplashModsAndTempEntityVariants();
   verifyGrenadeTouchOwnerSkyBounceAndDamage();
   verifyFireGrenadeSpawnStateAndRuntimeTouch();
+  verifyFireGrenade2SpawnStateTimerBranchesAndRuntimeTouch();
   verifyRocketTouchDamageSplashAndVisibleExplosion();
   verifyFireRailDamageModAndVisibleTrail();
   verifyBfgDamageModsAndVisibleEffects();
@@ -1145,6 +1146,92 @@ function verifyFireGrenadeSpawnStateAndRuntimeTouch(): void {
   });
   hookedGrenade.touch?.(hookedGrenade, target, hookedRuntime);
   assert.equal(hookedTouchCalled, true, "fire_grenade must preserve explicit Grenade_Touch hook injection");
+}
+
+function verifyFireGrenade2SpawnStateTimerBranchesAndRuntimeTouch(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 20;
+  const owner = createPlayer(runtime, 1);
+  const target = createRuntimeEntity({ classname: "monster_target" }, 2);
+  runtime.entities[2] = target;
+  target.takedamage = damage_t.DAMAGE_AIM;
+
+  const tempEvents: temp_event_t[] = [];
+  const playedSounds: string[] = [];
+  let freed: GameEntity | null = null;
+  let grenade: GameEntity;
+  withMathRandom([0.5, 0.5], () => {
+    grenade = fire_grenade2(owner, [4, 5, 6], [1, 0, 0], 125, 400, 2.25, 165, true, runtime, {
+      T_Damage: () => undefined,
+      T_RadiusDamage: () => undefined,
+      emitTempEntity: (type) => {
+        tempEvents.push(type);
+      },
+      playEntitySound: (_ent, soundPath) => {
+        playedSounds.push(soundPath);
+      },
+      G_FreeEdict: (ent) => {
+        freed = ent;
+        ent.inuse = false;
+      }
+    });
+  });
+
+  assert.equal(grenade!.classname, "hgrenade", "fire_grenade2 classname mismatch");
+  assert.deepEqual(grenade!.s.origin, [4, 5, 6], "fire_grenade2 origin mismatch");
+  assert.deepEqual(grenade!.origin, [4, 5, 6], "fire_grenade2 runtime origin mismatch");
+  assert.deepEqual(grenade!.velocity, [400, 0, 200], "fire_grenade2 velocity must include aim speed and up/right jitter");
+  assert.deepEqual(grenade!.avelocity, [300, 300, 300], "fire_grenade2 angular velocity mismatch");
+  assert.equal(grenade!.movetype, MOVETYPE_BOUNCE, "fire_grenade2 movetype mismatch");
+  assert.equal(grenade!.clipmask, MASK_SHOT, "fire_grenade2 clipmask mismatch");
+  assert.equal(grenade!.solid, SOLID_BBOX, "fire_grenade2 solid mismatch");
+  assert.equal((grenade!.s.effects & EF_GRENADE) !== 0, true, "fire_grenade2 must set EF_GRENADE");
+  assert.deepEqual(grenade!.mins, [0, 0, 0], "fire_grenade2 mins must be cleared");
+  assert.deepEqual(grenade!.maxs, [0, 0, 0], "fire_grenade2 maxs must be cleared");
+  assert.equal(runtime.assets.modelPaths[grenade!.s.modelindex - 1], "models/objects/grenade2/tris.md2", "fire_grenade2 modelindex mismatch");
+  assert.equal(runtime.assets.soundPaths[grenade!.s.sound - 1], "weapons/hgrenc1b.wav", "fire_grenade2 flight sound mismatch");
+  assert.equal(grenade!.owner, owner, "fire_grenade2 owner mismatch");
+  assert.equal(typeof grenade!.touch, "function", "fire_grenade2 must install Grenade_Touch callback");
+  assert.equal(typeof grenade!.think, "function", "fire_grenade2 must install Grenade_Explode think callback");
+  assert.equal(grenade!.nextthink, 22.25, "fire_grenade2 nextthink must use runtime time plus timer");
+  assert.equal(grenade!.dmg, 125, "fire_grenade2 damage mismatch");
+  assert.equal(grenade!.dmg_radius, 165, "fire_grenade2 damage radius mismatch");
+  assert.equal(grenade!.spawnflags, 3, "fire_grenade2 held branch must set spawnflags 3");
+  assert.equal(grenade!.linked, true, "fire_grenade2 positive timer must link the projectile");
+  assert.equal(runtime.linkedSolidEntities.includes(grenade!), true, "fire_grenade2 must be reachable by solid touch runtime");
+  assert.deepEqual(playedSounds, ["weapons/hgrent1a.wav"], "fire_grenade2 positive timer must play the throw sound");
+
+  grenade!.touch?.(grenade!, target, runtime, null, null);
+  assert.equal(freed, grenade!, "fire_grenade2 touch callback must free through Grenade_Explode");
+  assert.equal(tempEvents.at(-1), temp_event_t.TE_ROCKET_EXPLOSION, "fire_grenade2 touch callback must emit the explosion temp entity");
+
+  const immediateRuntime = createHarnessRuntime();
+  immediateRuntime.time = 30;
+  const immediateOwner = createPlayer(immediateRuntime, 1);
+  const immediateTempEvents: temp_event_t[] = [];
+  const immediateSounds: string[] = [];
+  let immediateFreed: GameEntity | null = null;
+  const immediateGrenade = fire_grenade2(immediateOwner, [1, 2, 3], [1, 0, 0], 50, 250, 0, 90, false, immediateRuntime, {
+    T_Damage: () => undefined,
+    T_RadiusDamage: () => undefined,
+    emitTempEntity: (type) => {
+      immediateTempEvents.push(type);
+    },
+    playEntitySound: (_ent, soundPath) => {
+      immediateSounds.push(soundPath);
+    },
+    G_FreeEdict: (ent) => {
+      immediateFreed = ent;
+      ent.inuse = false;
+    }
+  });
+
+  assert.equal(immediateGrenade.spawnflags, 1, "fire_grenade2 non-held branch must set spawnflags 1");
+  assert.equal(immediateGrenade.linked, false, "fire_grenade2 zero timer must explode before linking");
+  assert.equal(immediateRuntime.linkedSolidEntities.includes(immediateGrenade), false, "fire_grenade2 zero timer must not leave a linked projectile");
+  assert.equal(immediateFreed, immediateGrenade, "fire_grenade2 zero timer must call Grenade_Explode immediately");
+  assert.equal(immediateTempEvents.at(-1), temp_event_t.TE_ROCKET_EXPLOSION, "fire_grenade2 zero timer must emit the explosion temp entity");
+  assert.deepEqual(immediateSounds, [], "fire_grenade2 zero timer must skip the throw sound");
 }
 
 function createHarnessRuntime(): GameRuntime {

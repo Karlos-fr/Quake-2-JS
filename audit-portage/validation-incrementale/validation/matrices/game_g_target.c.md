@@ -60,9 +60,9 @@
 | `Quake-2-master/game/g_target.c` | function | `target_lightramp_think` | `packages/game/src/g_target.ts` | `target_lightramp_think` | Valide | A redecouper | C/TS compare: formule lightstyle, `CS_LIGHTS`, reschedule `FRAMETIME`, toggle swap; header complete; runtime via `target_lightramp_use`/think; web/renderer consomment les lightstyles en aval. Tests: `verify:g-target`, `verify:web-render-order`, `verify:full-game:three-renderer`, `typecheck` OK. |
 | `Quake-2-master/game/g_target.c` | global | `style` | `packages/game/src/g_target.ts` |  | Non applicable | A redecouper | Local C `style[2]` mappe a la chaine configstring d'un caractere dans `target_lightramp_think`; preuve couverte par `verify:g-target`. |
 | `Quake-2-master/game/g_target.c` | global | `temp` | `packages/game/src/g_target.ts` | `temp` | Non applicable | A redecouper | Local C de swap toggle mappe au `const temp` TS dans `target_lightramp_think`; preuve couverte par `verify:g-target`. |
-| `Quake-2-master/game/g_target.c` | function | `target_lightramp_use` | `packages/game/src/g_target.ts` | `target_lightramp_use` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_target.c` | global | `e` | `packages/game/src/g_target.ts` | `e` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_target.c` | function | `SP_target_lightramp` | `packages/game/src/g_target.ts` | `SP_target_lightramp` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_target.c` | function | `target_lightramp_use` | `packages/game/src/g_target.ts` | `target_lightramp_use` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_target.c` | global | `e` | `packages/game/src/g_target.ts` | `e` | Non applicable | A redecouper |  |
+| `Quake-2-master/game/g_target.c` | function | `SP_target_lightramp` | `packages/game/src/g_target.ts` | `SP_target_lightramp` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_target.c` | function | `target_earthquake_think` | `packages/game/src/g_target.ts` | `target_earthquake_think` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_target.c` | global | `i` | `packages/game/src/g_target.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_target.c` | global | `e` | `packages/game/src/g_target.ts` | `e` | A verifier | A redecouper |  |

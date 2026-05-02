@@ -51,8 +51,8 @@
 | `Quake-2-master/game/g_weapon.c` | function | `Grenade_Touch` | `packages/game/src/g_weapon.ts` | `Grenade_Touch` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | function | `fire_grenade` | `packages/game/src/g_weapon.ts` | `fire_grenade` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | global | `grenade` | `packages/game/src/g_weapon.ts` | `grenade` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_grenade`, porte comme variable locale TS; etat projectile couvert dans `scripts/verify/quake2-g-weapon.ts`. |
-| `Quake-2-master/game/g_weapon.c` | function | `fire_grenade2` | `packages/game/src/g_weapon.ts` | `fire_grenade2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `grenade` | `packages/game/src/g_weapon.ts` | `grenade` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_weapon.c` | function | `fire_grenade2` | `packages/game/src/g_weapon.ts` | `fire_grenade2` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_weapon.c` | global | `grenade` | `packages/game/src/g_weapon.ts` | `grenade` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_grenade2`, porte comme variable locale TS; etat projectile et branches timer couverts dans `scripts/verify/quake2-g-weapon.ts`. |
 | `Quake-2-master/game/g_weapon.c` | function | `rocket_touch` | `packages/game/src/g_weapon.ts` | `rocket_touch` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | global | `origin` | `packages/game/src/g_weapon.ts` | `origin` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | global | `n` | `packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |

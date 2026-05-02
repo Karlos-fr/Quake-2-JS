@@ -2,6 +2,23 @@
 
 ## Dernier lot valide
 
+- 2026-05-02: `target_lightramp_use` avec le local `e`, puis `SP_target_lightramp`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `target_lightramp_use` conserve la resolution paresseuse de `enemy`, la boucle `G_Find` sur `targetname`, les warnings pour cibles non-light, le free si aucune light n'est trouvee, `timestamp = level.time` et l'appel immediat a `target_lightramp_think`. `SP_target_lightramp` conserve les rejets ramp invalide/deathmatch/sans target, `SVF_NOCLIENT`, l'installation `use`/`think` et le calcul `movedir[0..2]` depuis les deux lettres du message et `speed / FRAMETIME`. Le local C `e` est un temporaire de boucle mappe a `let e`.
+  - Commentaires d'en-tete completes pour `target_lightramp_use` et `SP_target_lightramp`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et note de portage pour le local `e`.
+  - Branchement runtime verifie: `target_lightramp` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; le spawn installe les callbacks, puis `use` resout la light et demarre les updates `CS_LIGHTS`.
+  - `apps/web`: integration attendue car le lot produit des configstrings `CS_LIGHTS` qui doivent atteindre le client navigateur et le rendu. Pas de logique parallele masquante constatee; le flux passe par runtime serveur/client, configstrings, `CL_SetLightstyle`, refresh frames et render loop.
+  - `renderer-three`: integration attendue car les lightstyles modifient la scene/lightmaps/surfaces. La consommation existe via `ClientRefreshFrame`/refdef lightstyles puis `renderer-three` (`gl-world-scene-adapter`, `gl_light`, `gl_rsurf`); aucun manque ouvert pour ce lot.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour `target_lightramp_use` et `SP_target_lightramp`.
+  - `scripts/verify/quake2-g-target.ts`: couverture ajoutee pour resolution de light avec cible non-light intermediaire, warning cible non-light, cible manquante/free, ramp invalide/free, no-target/free, deathmatch/free, spawn table `ED_CallSpawn`, `SVF_NOCLIENT`, callbacks et calcul `movedir`.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `target_earthquake_think` avec les locaux `i` et `e` si le lot reste raisonnable.
+
 - 2026-05-02: `target_lightramp_think` avec les locaux `style` et `temp`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: le calcul de `style[0] = 'a' + movedir[0] + ((time - timestamp) / FRAMETIME) * movedir[2]` est conserve par une chaine d'un caractere, l'ecriture `CS_LIGHTS + enemy->style` est conservee via `setGameConfigstring`, le reschedule `nextthink = time + FRAMETIME` reste limite a la duree `speed`, et le toggle `spawnflags & 1` swap `movedir[0]`/`movedir[1]` puis inverse `movedir[2]`.

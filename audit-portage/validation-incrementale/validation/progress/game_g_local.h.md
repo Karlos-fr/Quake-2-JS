@@ -1080,6 +1080,26 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:g-weapon` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:p-weapon` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
+- 2026-05-02: lot `MOD_WATER`, `MOD_SLIME`, `MOD_LAVA`, `MOD_CRUSH`, `MOD_TELEFRAG`, `MOD_FALLING`, `MOD_SUICIDE`, `MOD_HELD_GRENADE`.
+- Verdict: `Valide` pour les 8 macros apres comparaison H/C vs TS, verification des valeurs, du flux combat/world damage, des messages de mort et des sorties visibles associees.
+- Source H/C comparee:
+  - `g_local.h` definit les macros du lot avec valeurs 17..24.
+  - `p_view.c` propage `MOD_FALLING`, `MOD_WATER`, `MOD_LAVA` et `MOD_SLIME` via `P_FallingDamage`/`P_WorldEffects`.
+  - `g_monster.c` propage `MOD_WATER`, `MOD_LAVA` et `MOD_SLIME` via `M_WorldEffects`; `g_func.c`, `g_misc.c` et `g_turret.c` propagent `MOD_CRUSH`; `g_utils.c` propage `MOD_TELEFRAG`; `g_cmds.c` propage `MOD_SUICIDE`; `g_weapon.c` propage `MOD_HELD_GRENADE`.
+  - `p_client.c` consomme toutes les macros du lot dans `ClientObituary`, avec branches monde/suicide et attacker pour `MOD_TELEFRAG`/`MOD_HELD_GRENADE`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts` et `packages/game/src/runtime.ts`: constantes du lot exportees avec les valeurs C exactes.
+  - `packages/game/src/p_view.ts`, `g_monster.ts`, `g_func.ts`, `g_misc.ts`, `g_turret.ts`, `g_utils.ts`, `g_cmds.ts` et `g_weapon.ts`: propagation runtime des MOD du lot vers `T_Damage`/`T_RadiusDamage` ou `meansOfDeath`.
+  - `packages/game/src/p_client.ts`: messages deathmatch/coop equivalents au C pour monde, suicide, telefrag et held grenade.
+- Runtime: integration attendue et branchee via `ClientEndServerFrame`/`P_WorldEffects`/`P_FallingDamage`, `G_RunFrame`/`M_WorldEffects`, brush blockers/crushers, `KillBox`, `Cmd_Kill_f`, grenade held explosion, `T_Damage`/`T_RadiusDamage`, puis `player_die`/`ClientObituary`. Les preuves couvrent valeurs, damage mods, telefrag, crushers, world hazards, fall damage, suicide/held grenade et messages de mort.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, messages, HUD et render loop; aucune logique parallele `meansOfDeath`/environment MOD detectee dans `apps/web`. `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue. Le lot produit ou conditionne des sorties visibles/audio: sons d'entree/sortie/eau/drown/lava, event de chute, dommages de hazards, telefrag/held grenade avec temp entities d'explosion, crushers/debris, mouvements/scene issus des snapshots; `packages/renderer-three` consomme ces sorties via le flux full-game/refresh et temp entities, sans logique gameplay parallele. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: pas de fonction nouvelle dans ce lot; commentaire de module `g_local.ts` verifie et commentaires d'en-tete de `P_WorldEffects`, `P_FallingDamage`, `M_WorldEffects`, `KillBox`, `Cmd_Kill_f`, `Grenade_Explode`, `T_Damage`, `T_RadiusDamage` et `ClientObituary` verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-p-client.ts`: preuves `ClientObituary` pour messages monde/suicide, `MOD_TELEFRAG` et `MOD_HELD_GRENADE`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:p-view` OK; `npm run verify:g-monster` OK; `npm run verify:g-func` OK; `npm run verify:g-utils` OK; `npm run verify:g-weapon` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -1113,7 +1133,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les macros environnement/monde `MOD_WATER` a `MOD_HELD_GRENADE` si le lot reste petit, avec preuves combat/death messages et sorties visibles associees.
+- Continuer avec les macros monde restantes `MOD_EXPLOSIVE` a `MOD_SPLASH` si le lot reste petit, avec preuves combat/death messages et sorties visibles associees.
 
 ## Blocages
 

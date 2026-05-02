@@ -39,3 +39,15 @@
 - apps/web verifie: flux attendu via `full-game-server-host.ts` (`SV_WriteFrameToClient` puis `CL_ParseServerMessage`) et render loop, sans encodeur delta parallele.
 - renderer-three verifie: les deltas alimentent `ClientRefreshFrame`; les sorties visibles attendues sont consommees via `refresh-entity-sync`, `three-beam-sync`, `three-dlight-sync`, particules, areabits/camera/scene selon les champs.
 - Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cl-parse`, `npm run verify:full-game:server-snapshots`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
+
+## Revalidation session - 2026-05-02
+
+- Lot traite: `MSG_WriteDeltaEntity()` uniquement. `bits`, `MSG_WriteByte` et les autres entites de `qcommon/common.c` n'ont pas ete traitees.
+- Matrice relue: la ligne `MSG_WriteDeltaEntity` reste `Valide`; aucune modification de matrice necessaire, notes laissees vides.
+- Source C relue: rejets `!to->number` et `to->number >= MAX_EDICTS`, flags delta pour origin/angles/skin/frame/effects/renderfx/solid/event/model/sound, `U_OLDORIGIN` sur nouvelle entite ou `RF_BEAM`, cascade `U_MOREBITS*`, puis ordre d'ecriture des champs reseau.
+- Cible TS relue: `packages/qcommon/src/messages.ts` conserve l'ownership attendu, l'en-tete `Original name`/`Source`/`Category`/`Fidelity level`/`Behavior`/`Porting notes`, les deux gardes d'erreur et l'ordre d'encodage equivalent.
+- Runtime verifie: flux serveur `SV_EmitPacketEntities`/`SV_WriteFrameToClient` et baselines, puis consommation client `CL_ParseServerMessage` -> `CL_ParseFrame` -> `CL_ParsePacketEntities` -> `CL_DeltaEntity`/`CL_ParseDelta`.
+- apps/web verifie: `full-game-server-host.ts` declenche le flux porte via `SV_WriteFrameToClient`, copie le message dans `client.net_message`, appelle `CL_ParseServerMessage`, et ne remplace pas l'encodeur delta par une logique parallele.
+- renderer-three verifie: les consequences visibles des deltas alimentent `CL_BuildRefreshFrame` (`entities`, modeles, frames, skins, effets, renderfx, lights, particules, beams, areabits et camera/scene), puis les adapters `refresh-entity-sync`, `three-beam-sync`, `three-dlight-sync`, `particle-sync` et `gl-world-scene-adapter`.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cl-parse`, `npm run verify:full-game:server-snapshots`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
+- `AVANCEMENT_GLOBAL.md`: non modifie; la ligne `qcommon/common.c` reste coherente pour une revalidation sans nouveau statut.

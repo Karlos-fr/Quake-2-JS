@@ -20,6 +20,7 @@
 - 2026-05-02: `ED_ParseEdict`, limite au parse braces/key-value, cles `_` ignorees, erreurs EOF/valeur manquante et anglehack `angle` vers yaw `angles`; temporaires locaux `init`/`keyname`/`com_token` marques non applicables.
 - 2026-05-02: `G_FindTeams`.
 - 2026-05-02: temporaires locaux de `SpawnEntities` (`ent`, `inhibit`, `com_token`, `i`, `skill_level` et doublon `ent`) marques non applicables.
+- 2026-05-02: `strncpy` marque non applicable comme appel libc externe auto-detecte.
 
 ## Verdict du lot
 
@@ -73,6 +74,7 @@
 - `i`: non applicable. La ligne de matrice correspond au compteur local de reservation des slots clients dans `SpawnEntities`; son comportement est couvert par les validations existantes des slots joueurs et du flux `SpawnEntities`.
 - `skill_level`: non applicable. La ligne de matrice correspond au temporaire local de normalisation du cvar `skill`; son comportement est couvert par le test de clamp/floor `4.8 -> 3.000000` et filtrage `SPAWNFLAG_NOT_HARD`.
 - `ent`: non applicable. Doublon de la ligne du temporaire local `edict_t *ent` de `SpawnEntities`, couvert par la validation de `SpawnEntities`.
+- `strncpy`: non applicable. La ligne de matrice correspond a un appel libc externe auto-detecte dans `ED_ParseEdict`, `SpawnEntities` et `SP_worldspawn`, pas a une entite source proprietaire de `game/g_spawn.c`. Le comportement porteur est deja valide par les fonctions proprietaires: copie bornee de `keyname`, affectation TS de `level.mapname`/`game.spawnpoint`, et choix `level.level_name` depuis `message` ou `mapname`.
 
 ## Checklist appliquee
 
@@ -179,6 +181,12 @@
 - Runtime: valide indirectement. Ces temporaires n'ont pas de branchement propre; ils sont atteignables uniquement par `SV_SpawnServer` -> `ge.SpawnEntities` -> `SpawnEntities`, couvert par `verify:g-spawn` et `verify:full-game:server-host`.
 - apps/web: valide indirectement. `apps/web` doit declencher le spawn via le runtime serveur porte et consommer les snapshots/configstrings produits; aucune logique parallele attendue ou constatee pour ces temporaires.
 - renderer-three: valide indirectement. Ces temporaires ne produisent rien de visible eux-memes, mais `SpawnEntities` produit ensuite entites, modeles inline, frames, areabits/camera/scene et configstrings consommes par le flux Three; `verify:full-game:three-renderer` et `verify:web-render-order` passent.
+- Identification: lot `strncpy` dans matrice `game_g_spawn.c.md`, source `Quake-2-master/game/g_spawn.c`, type auto-detecte `function`, cible vide dans `packages/game/src/g_spawn.ts`. C'est un appel libc externe appele par des fonctions de ce fichier, pas une fonction definie par `g_spawn.c` ni une entite proprietaire a porter.
+- Comparaison C/H vs TS: les sites source sont `ED_ParseEdict` (`keyname` borne), `SpawnEntities` (`level.mapname`, `game.spawnpoint`) et `SP_worldspawn` (`level.level_name`). Le port TS conserve le comportement utile via chaines JS et les fonctions porteuses deja validees; aucun helper `strncpy` dedie n'est attendu.
+- Commentaires d'en-tete: non applicable pour l'appel externe `strncpy`; les commentaires des fonctions porteuses `ED_ParseEdict`, `SpawnEntities` et `SP_worldspawn` sont deja presents et ont ete verifies lors de leurs lots.
+- Runtime: non applicable directement. `strncpy` n'a pas de branchement runtime propre; le flux attendu est celui des fonctions porteuses atteignables depuis `SV_SpawnServer` -> `ge.SpawnEntities` -> `SpawnEntities`.
+- apps/web: non applicable directement. Le navigateur doit declencher le spawn via le runtime porte et consommer snapshots/configstrings; aucune integration web dediee a un appel libc de copie de chaine n'est attendue.
+- renderer-three: non applicable directement. `strncpy` ne produit pas de modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les sorties visibles dependent des fonctions porteuses deja validees.
 
 ## Corrections appliquees
 
@@ -204,6 +212,7 @@
 - `packages/game/src/g_spawn.ts`: ajout de `ED_ParseEdict` et branchement de `SpawnEntities` sur `COM_Parse`/`ED_ParseEdict` pour parser worldspawn et les entites map dans l'ownership `g_spawn.c`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `ED_ParseEdict`: paires cle/valeur, cles `_` ignorees, anglehack, reset dictionnaire vide, EOF sans brace fermante et brace fermante sans valeur.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour les temporaires locaux de `SpawnEntities`: compteur `inhibit`, normalisation `skill_level` par `cvar_forceset`, filtrage avec skill normalise et erreur de token d'ouverture non `{`.
+- Aucune correction TS pour `strncpy`; mise a jour de suivi uniquement.
 
 ## Tests
 
@@ -299,7 +308,11 @@
 - `npm run verify:full-game:server-host`: ok le 2026-05-02 pour les temporaires locaux de `SpawnEntities`.
 - `npm run verify:full-game:three-renderer`: ok le 2026-05-02 pour les temporaires locaux de `SpawnEntities`.
 - `npm run verify:web-render-order`: ok le 2026-05-02 pour les temporaires locaux de `SpawnEntities`.
+- `npm run verify:g-spawn`: ok le 2026-05-02 pour `strncpy` non applicable / fonctions porteuses.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02 pour `strncpy` non applicable / flux spawn.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02 pour `strncpy` non applicable / sorties visibles indirectes.
+- `npm run verify:web-render-order`: ok le 2026-05-02 pour `strncpy` non applicable / flux web.
 
 ## Prochain lot recommande
 
-- Examiner la ligne `strncpy` de la matrice: appel libc externe de `SP_worldspawn`/`SpawnEntities`, probablement a retirer de la matrice du fichier courant ou a marquer non applicable avec justification selon la consigne coordinateur.
+- Aucun lot restant dans `game_g_spawn.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.

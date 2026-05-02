@@ -810,8 +810,99 @@ function verifyLaserDamageAndLightramp(): void {
   SP_target_lightramp(ramp, runtime);
   target_lightramp_use(ramp, null, null, runtime);
   assert.deepEqual(drainGameConfigstringUpdates(runtime), [{ index: CS_LIGHTS + light.style, value: "a" }], "target_lightramp initial lightstyle mismatch");
+  assert.equal(ramp.enemy, light, "target_lightramp use must resolve the targeted light");
+  assert.equal(ramp.timestamp, runtime.time, "target_lightramp use timestamp mismatch");
   runPendingThinks(runtime, runtime.time + FRAMETIME);
   assert.equal(drainGameConfigstringUpdates(runtime).length > 0, true, "target_lightramp must keep updating lightstyle");
+
+  const nonLightRuntime = createRuntime();
+  const nonLight = spawnGameEntity(nonLightRuntime);
+  nonLight.classname = "info_notnull";
+  nonLight.targetname = "lamp";
+  nonLight.s.origin = [8, 0, 0];
+  const secondLight = spawnGameEntity(nonLightRuntime);
+  secondLight.classname = "light";
+  secondLight.targetname = "lamp";
+  secondLight.style = 4;
+  const resolvingRamp = spawnGameEntity(nonLightRuntime);
+  resolvingRamp.classname = "target_lightramp";
+  resolvingRamp.target = "lamp";
+  resolvingRamp.message = "ad";
+  resolvingRamp.speed = 0.3;
+  ED_CallSpawn(resolvingRamp, nonLightRuntime);
+  resolvingRamp.use?.(resolvingRamp, null, null, nonLightRuntime);
+  assert.equal(resolvingRamp.enemy, secondLight, "target_lightramp use must keep scanning until a light target is found");
+  assert.equal(
+    nonLightRuntime.logEntries.some((entry) => entry.message.includes("is not a light")),
+    true,
+    "target_lightramp use non-light warning mismatch"
+  );
+  assert.deepEqual(
+    drainGameConfigstringUpdates(nonLightRuntime),
+    [{ index: CS_LIGHTS + secondLight.style, value: "a" }],
+    "target_lightramp use resolved lightstyle mismatch"
+  );
+
+  const missingLightRuntime = createRuntime();
+  const missingRamp = spawnGameEntity(missingLightRuntime);
+  missingRamp.classname = "target_lightramp";
+  missingRamp.target = "missing";
+  missingRamp.message = "ad";
+  missingRamp.speed = 0.3;
+  SP_target_lightramp(missingRamp, missingLightRuntime);
+  missingRamp.use?.(missingRamp, null, null, missingLightRuntime);
+  assert.equal(missingRamp.inuse, false, "target_lightramp use must free ramps with no light target");
+  assert.equal(
+    missingLightRuntime.logEntries.some((entry) => entry.message.includes("target missing not found")),
+    true,
+    "target_lightramp use missing target warning mismatch"
+  );
+
+  const badRampRuntime = createRuntime();
+  const badRamp = spawnGameEntity(badRampRuntime);
+  badRamp.classname = "target_lightramp";
+  badRamp.target = "lamp";
+  badRamp.message = "aa";
+  SP_target_lightramp(badRamp, badRampRuntime);
+  assert.equal(badRamp.inuse, false, "target_lightramp spawn must free invalid ramps");
+  assert.equal(
+    badRampRuntime.logEntries.some((entry) => entry.message.includes("target_lightramp has bad ramp")),
+    true,
+    "target_lightramp bad ramp warning mismatch"
+  );
+
+  const noTargetRuntime = createRuntime();
+  const noTargetRamp = spawnGameEntity(noTargetRuntime);
+  noTargetRamp.classname = "target_lightramp";
+  noTargetRamp.message = "az";
+  SP_target_lightramp(noTargetRamp, noTargetRuntime);
+  assert.equal(noTargetRamp.inuse, false, "target_lightramp spawn must free ramps with no target");
+  assert.equal(
+    noTargetRuntime.logEntries.some((entry) => entry.message.includes("with no target")),
+    true,
+    "target_lightramp no target warning mismatch"
+  );
+
+  const deathmatchRampRuntime = createRuntime();
+  deathmatchRampRuntime.deathmatch = true;
+  const deathmatchRamp = spawnGameEntity(deathmatchRampRuntime);
+  deathmatchRamp.classname = "target_lightramp";
+  deathmatchRamp.target = "lamp";
+  deathmatchRamp.message = "az";
+  SP_target_lightramp(deathmatchRamp, deathmatchRampRuntime);
+  assert.equal(deathmatchRamp.inuse, false, "target_lightramp spawn must auto-remove in deathmatch");
+
+  const spawnTableRuntime = createRuntime();
+  const spawnTableRamp = spawnGameEntity(spawnTableRuntime);
+  spawnTableRamp.classname = "target_lightramp";
+  spawnTableRamp.target = "lamp";
+  spawnTableRamp.message = "az";
+  spawnTableRamp.speed = 1;
+  ED_CallSpawn(spawnTableRamp, spawnTableRuntime);
+  assert.equal(spawnTableRamp.svflags, SVF_NOCLIENT, "target_lightramp spawn must hide the controller");
+  assert.equal(spawnTableRamp.use, target_lightramp_use, "target_lightramp spawn use callback mismatch");
+  assert.equal(spawnTableRamp.think, target_lightramp_think, "target_lightramp spawn think callback mismatch");
+  assertVec3NearlyEqual(spawnTableRamp.movedir, [0, 25, 2.5], "target_lightramp spawn movedir mismatch");
 
   const exactRuntime = createRuntime();
   exactRuntime.time = 4;

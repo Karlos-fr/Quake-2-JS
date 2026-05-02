@@ -258,14 +258,14 @@
 | `Quake-2-master/game/g_local.h` | macro | `MOD_BFG_EFFECT` | `packages/game/src/runtime.ts` | `MOD_BFG_EFFECT` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_HANDGRENADE` | `packages/game/src/runtime.ts` | `MOD_HANDGRENADE` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_HG_SPLASH` | `packages/game/src/runtime.ts` | `MOD_HG_SPLASH` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_WATER` | `packages/game/src/g_local.ts` | `MOD_WATER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_SLIME` | `packages/game/src/g_local.ts` | `MOD_SLIME` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_LAVA` | `packages/game/src/g_local.ts` | `MOD_LAVA` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_CRUSH` | `packages/game/src/g_local.ts` | `MOD_CRUSH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_TELEFRAG` | `packages/game/src/g_local.ts` | `MOD_TELEFRAG` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_FALLING` | `packages/game/src/g_local.ts` | `MOD_FALLING` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_SUICIDE` | `packages/game/src/g_local.ts` | `MOD_SUICIDE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_HELD_GRENADE` | `packages/game/src/runtime.ts` | `MOD_HELD_GRENADE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_WATER` | `packages/game/src/g_local.ts` | `MOD_WATER` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_SLIME` | `packages/game/src/g_local.ts` | `MOD_SLIME` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_LAVA` | `packages/game/src/g_local.ts` | `MOD_LAVA` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_CRUSH` | `packages/game/src/g_local.ts` | `MOD_CRUSH` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_TELEFRAG` | `packages/game/src/g_local.ts` | `MOD_TELEFRAG` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_FALLING` | `packages/game/src/g_local.ts` | `MOD_FALLING` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_SUICIDE` | `packages/game/src/g_local.ts` | `MOD_SUICIDE` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_HELD_GRENADE` | `packages/game/src/runtime.ts` | `MOD_HELD_GRENADE` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_EXPLOSIVE` | `packages/game/src/g_local.ts` | `MOD_EXPLOSIVE` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_BARREL` | `packages/game/src/g_local.ts` | `MOD_BARREL` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_BOMB` | `packages/game/src/g_local.ts` | `MOD_BOMB` | A verifier | A redecouper |  |
