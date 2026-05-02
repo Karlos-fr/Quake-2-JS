@@ -10,8 +10,8 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_LogoutEffect` | `packages/client/src/cl_fx.ts` | `CL_LogoutEffect` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_ItemRespawnParticles` | `packages/client/src/cl_fx.ts` | `CL_ItemRespawnParticles` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_LogoutEffect` | `packages/client/src/cl_fx.ts` | `CL_LogoutEffect` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npx tsx ./scripts/verify/quake2-full-game-three-renderer.ts`, `npm run typecheck`; en-tete adapter `appendLogoutEffect` corrige. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_ItemRespawnParticles` | `packages/client/src/cl_fx.ts` | `CL_ItemRespawnParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npx tsx ./scripts/verify/quake2-full-game-three-renderer.ts`, `npm run typecheck`; branchement `apps/web` EV_ITEM_RESPAWN corrige. |
 | `Quake-2-master/client/cl_fx.c` | struct | `clightstyle_t` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `length` | `packages/client/src/cl_fx.ts` | `length` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `value` | `packages/client/src/cl_fx.ts` | `value` | A verifier | A redecouper |  |
@@ -54,8 +54,8 @@
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ParticleEffect3` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect3` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_TeleporterParticles` | `packages/client/src/cl_fx.ts` | `CL_TeleporterParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_LogoutEffect` | `packages/client/src/cl_fx.ts` | `CL_LogoutEffect` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_ItemRespawnParticles` | `packages/client/src/cl_fx.ts` | `CL_ItemRespawnParticles` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_LogoutEffect` | `packages/client/src/cl_fx.ts` | `CL_LogoutEffect` | Valide | A redecouper | Doublon de matrice prototype/definition; meme preuve que la premiere ligne. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_ItemRespawnParticles` | `packages/client/src/cl_fx.ts` | `CL_ItemRespawnParticles` | Valide | A redecouper | Doublon de matrice prototype/definition; meme preuve que la premiere ligne. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ExplosionParticles` | `packages/client/src/cl_fx.ts` | `CL_ExplosionParticles` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_BigTeleportParticles` | `packages/client/src/cl_fx.ts` | `CL_BigTeleportParticles` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |

@@ -69,6 +69,10 @@ const context: GameServerCommandContext = {
 
 runCommand(["sv", "test"]);
 assert.equal(prints.pop(), "Svcmd_Test_f()\n", "sv test output mismatch");
+runCommand(["sv", "TEST"]);
+assert.equal(prints.pop(), "Svcmd_Test_f()\n", "ServerCommand must dispatch through Q_stricmp-style case folding");
+runCommand(["sv", "telefrag"]);
+assert.equal(prints.pop(), "Unknown server command \"telefrag\"\n", "ServerCommand unknown fallback must print argv(1)");
 
 runCommand(["sv", "addip", "192.246.40"]);
 assert.equal(state.numipfilters, 1, "addip must grow the filter list");

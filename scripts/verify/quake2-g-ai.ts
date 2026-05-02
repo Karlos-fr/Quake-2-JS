@@ -31,6 +31,8 @@ import {
   ai_run_melee,
   ai_run_missile,
   ai_run_slide,
+  ai_stand,
+  ai_walk,
   infront,
   range,
   visible
@@ -146,6 +148,53 @@ assert.equal(infront(monster, player3), true, "infront must detect forward targe
 
 const behind = createPointEntity(-100, 0, 0, 15);
 assert.equal(infront(monster, behind), false, "infront must reject target behind monster");
+
+runtime.sight_client = null;
+runtime.sight_entity = null;
+runtime.sight_entity_framenum = 0;
+runtime.sound_entity = null;
+runtime.sound_entity_framenum = 0;
+runtime.sound2_entity = null;
+runtime.sound2_entity_framenum = 0;
+
+const idleMonster = createRuntimeEntity({ classname: "monster_idle_timer" }, 88);
+idleMonster.inuse = true;
+idleMonster.monsterinfo.pausetime = runtime.time + 30;
+let idleCalls = 0;
+idleMonster.monsterinfo.idle = () => {
+  idleCalls += 1;
+};
+runtime.entities[88] = idleMonster;
+
+const savedRandomForIdleTimer = Math.random;
+try {
+  Math.random = () => 0.5;
+  ai_stand(idleMonster, 0, runtime);
+  assert.equal(idleCalls, 0, "ai_stand must seed idle_time before calling the idle callback");
+  assert.equal(idleMonster.monsterinfo.idle_time, runtime.time + 7.5, "ai_stand first idle_time schedule mismatch");
+  runtime.time = idleMonster.monsterinfo.idle_time + 0.5;
+  ai_stand(idleMonster, 0, runtime);
+  assert.equal(idleCalls, 1, "ai_stand must call idle after the seeded idle_time expires");
+  assert.equal(idleMonster.monsterinfo.idle_time, runtime.time + 22.5, "ai_stand repeat idle_time schedule mismatch");
+
+  const searchMonster = createRuntimeEntity({ classname: "monster_search_timer" }, 89);
+  searchMonster.inuse = true;
+  let searchCalls = 0;
+  searchMonster.monsterinfo.search = () => {
+    searchCalls += 1;
+  };
+  runtime.entities[89] = searchMonster;
+  ai_walk(searchMonster, 0, runtime);
+  assert.equal(searchCalls, 0, "ai_walk must seed idle_time before calling the search callback");
+  assert.equal(searchMonster.monsterinfo.idle_time, runtime.time + 7.5, "ai_walk first idle_time schedule mismatch");
+  runtime.time = searchMonster.monsterinfo.idle_time + 0.5;
+  ai_walk(searchMonster, 0, runtime);
+  assert.equal(searchCalls, 1, "ai_walk must call search after the seeded idle_time expires");
+  assert.equal(searchMonster.monsterinfo.idle_time, runtime.time + 22.5, "ai_walk repeat idle_time schedule mismatch");
+} finally {
+  Math.random = savedRandomForIdleTimer;
+  runtime.time = 10;
+}
 
 runtime.sight_client = player3;
 const found = FindTarget(monster, runtime);

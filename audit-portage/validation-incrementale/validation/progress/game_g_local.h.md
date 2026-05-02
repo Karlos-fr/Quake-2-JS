@@ -979,6 +979,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `search_time`, `trail_time`, `last_sighting` passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-monster` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-02: lot `monsterinfo_t` avec champs `attack_state`, `lefty`, `idle_time`.
+- Verdict: `Valide` pour les 3 champs apres comparaison H/TS, renforcement des preuves structure/defaults/mutations, AI attack/sliding/idle-search, save/load et flux web/renderer.
+- Source H comparee: apres `last_sighting`, `monsterinfo_t` porte `int attack_state`, `int lefty`, puis `float idle_time`; `M_CheckAttack` selectionne les modes d'attaque, `ai_run_melee`/`ai_run_missile` les remettent a `AS_STRAIGHT`, `ai_run_slide` consomme/inverse `lefty`, et `ai_stand`/`ai_walk` utilisent `idle_time` pour cadencer idle/search.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `monsterinfo_t` vers `GameMonsterInfo`; constantes `AS_STRAIGHT`, `AS_SLIDING`, `AS_MELEE`, `AS_MISSILE` deja comparees.
+  - `packages/game/src/runtime.ts`: `GameMonsterInfo` porte `attack_state`, `lefty`, `idle_time` dans l'ordre C; `createMonsterInfo` les initialise a `0` comme la memoire C zeroee; commentaire de portage `monsterinfo_t` verifie.
+  - `packages/game/src/g_ai.ts`: les branches `M_CheckAttack`, `ai_run`, `ai_run_melee`, `ai_run_missile`, `ai_run_slide`, `ai_stand` et `ai_walk` consomment/mutent ces champs conformement au C.
+  - `packages/game/src/g_save.ts`: `snapshotEntity`/`restoreEntity` conservent les trois champs dans le bloc `monsterinfo`.
+- Runtime: integration attendue et branchee depuis les spawns monstres vers `monster_start`/`monster_start_go`, puis `monster_think`/`M_MoveFrame` et decisions AI appelees depuis `G_RunFrame`; les preuves couvrent melee, missile, cooldown, sliding volant, direction `lefty`, cadencement idle/search et persistance.
+- apps/web: integration attendue via le host local/full-game qui avance le runtime game et consomme snapshots/sons/HUD issus des monstres; aucune logique parallele `monsterinfo_t.attack_state`/`lefty`/`idle_time` detectee dans `apps/web`. Tests full-game/web OK.
+- renderer-three: integration indirecte attendue car ces champs influencent positions, frames/modeles visibles, tirs/sons/temp entities en aval. `packages/renderer-three` ne lit pas `monsterinfo_t` directement; il consomme les entites, modeles, frames et sorties runtime via le flux full-game. Test renderer OK.
+- Commentaires/documentation: commentaire de portage `monsterinfo_t` verifie dans `runtime.ts`; commentaires d'en-tete de `M_CheckAttack`, `ai_run`, `ai_run_melee`, `ai_run_missile`, `ai_run_slide`, `ai_stand` et `ai_walk` verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defaults/mutations pour `attack_state`, `lefty`, `idle_time`.
+  - `scripts/verify/quake2-g-ai.ts`: assertions idle/search `ai_stand`/`ai_walk`; les preuves attack/sliding existantes couvrent `attack_state` et `lefty`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration save/load pour les trois champs.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `attack_state`, `lefty`, `idle_time` passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -1012,7 +1031,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `monsterinfo_t.attack_state`, `lefty` et `idle_time` si le lot reste petit, en s'appuyant sur les preuves AI attack/sliding/idle-search et save/load.
+- Continuer avec `monsterinfo_t.linkcount`, puis `power_armor_type` et `power_armor_power` si le lot reste petit, avec preuves monster link/save et power armor runtime.
 
 ## Blocages
 

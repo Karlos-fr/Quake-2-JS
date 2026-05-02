@@ -4,15 +4,15 @@
 
 - Source: `Quake-2-master/game/g_weapon.c`
 - Cibles TS connues: `packages/game/src/g_weapon.ts`, `packages/game/src/g_combat.ts`, `packages/game/src/g_utils.ts`, `packages/game/src/g_items.ts`, `packages/game/src/runtime.ts`
-- Tests connus: aucun
+- Tests connus: `npm run verify:g-weapon`, `scripts/verify/quake2-g-weapon.ts`
 - Verdict Phase 03: A redecouper
 - Findings Phase 03: `basename-collision`, `missing-linked-test-for-some-symbols`, `missing-ts-symbols:4`, `multiple-declared-ts-targets`, `phase02-structural-status:split-undocumented`, `unreachable-functions:16`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/g_weapon.c` | function | `check_dodge` | `packages/game/src/g_weapon.ts` | `check_dodge` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `eta` | `packages/game/src/g_weapon.ts` | `eta` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_weapon.c` | function | `check_dodge` | `packages/game/src/g_weapon.ts` | `check_dodge` | Valide | A redecouper | Commentaire verifie; C/TS compares; test ajoute dans `scripts/verify/quake2-g-weapon.ts`; tests `npm run verify:g-weapon`, `npm run typecheck`; runtime via `fire_blaster`/`fire_rocket`/`fire_bfg` pour tireur client; web via runtime serveur; renderer n/a: decision AI sans sortie visible directe. |
+| `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `check_dodge`, porte comme variable locale TS `trace`. |
+| `Quake-2-master/game/g_weapon.c` | global | `eta` | `packages/game/src/g_weapon.ts` | `eta` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `check_dodge`, porte comme variable locale TS. |
 | `Quake-2-master/game/g_weapon.c` | function | `fire_hit` | `packages/game/src/g_weapon.ts` | `fire_hit` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | global | `v` | `packages/game/src/g_weapon.ts` | `v` | A verifier | A redecouper |  |

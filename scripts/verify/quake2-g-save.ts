@@ -309,6 +309,31 @@ assert.equal(gameSave.clients[0]?.pers.weapon, ITEM_INDEX(blaster), "WriteGame m
 assert.equal(gameSave.clients[0]?.pers.lastweapon, ITEM_INDEX(shotgun), "WriteGame must encode client pers.lastweapon as the C F_ITEM index");
 assert.equal(gameSave.clients[0]?.newweapon, ITEM_INDEX(shotgun), "WriteGame must encode client newweapon as the C F_ITEM index");
 
+const maxClientContext = createGameMainContext(imports, {
+  hooks: {
+    readFile: (path) => files.get(path) ?? null,
+    writeFile: (path, contents) => {
+      files.set(path, contents);
+      return true;
+    }
+  }
+});
+maxClientContext.runtime.maxclients = 2;
+maxClientContext.runtime.maxentities = 64;
+maxClientContext.game.maxclients = 2;
+maxClientContext.game.maxentities = 64;
+const maxClientPlayer = createRuntimeEntity({ classname: "player" }, 1);
+const maxClient = attachGameClient(maxClientPlayer);
+maxClientPlayer.inuse = true;
+maxClientPlayer.health = 66;
+maxClientPlayer.max_health = 99;
+maxClientContext.runtime.entities = [createRuntimeEntity({ classname: "worldspawn" }, 0), maxClientPlayer];
+WriteGame(maxClientContext, "save/game-maxclients.sav", false);
+const maxClientSave = JSON.parse(files.get("save/game-maxclients.sav") ?? "") as { clients: Array<{ pers: { health: number; max_health: number } }> };
+assert.equal(maxClientSave.clients.length, 2, "WriteGame must write exactly game.maxclients client slots like the C loop over i");
+assert.equal(maxClientSave.clients[0]?.pers.health, 66, "WriteGame must save the runtime edict client when game.clients is not pre-populated");
+assert.equal(maxClientSave.clients[0]?.pers.max_health, 99, "WriteGame must call SaveClientData before snapshotting edict-backed clients");
+
 WriteGame(writeContext, "save/game-auto.ssv", true);
 const autosaveJson = files.get("save/game-auto.ssv") ?? "";
 assert.ok(autosaveJson.includes("\"autosaved\": true"), "autosave WriteGame must snapshot autosaved true");
@@ -400,6 +425,9 @@ target.monsterinfo.saved_goal = [512, -128, 24];
 target.monsterinfo.search_time = 63.5;
 target.monsterinfo.trail_time = 61.25;
 target.monsterinfo.last_sighting = [256, 64, -32];
+target.monsterinfo.attack_state = 2;
+target.monsterinfo.lefty = 1;
+target.monsterinfo.idle_time = 74.75;
 writeContext.runtime.entities.push(target);
 const unsaved = createRuntimeEntity({ classname: "unsaved_temp_entity" }, 3);
 unsaved.inuse = false;
@@ -508,6 +536,9 @@ const levelSave = JSON.parse(levelJson) as {
         search_time: number;
         trail_time: number;
         last_sighting: [number, number, number];
+        attack_state: number;
+        lefty: number;
+        idle_time: number;
       };
     };
   }>;
@@ -545,6 +576,9 @@ assert.deepEqual(targetSave.monsterinfo.saved_goal, [512, -128, 24], "WriteLevel
 assert.equal(targetSave.monsterinfo.search_time, 63.5, "WriteLevel must persist monsterinfo search_time");
 assert.equal(targetSave.monsterinfo.trail_time, 61.25, "WriteLevel must persist monsterinfo trail_time");
 assert.deepEqual(targetSave.monsterinfo.last_sighting, [256, 64, -32], "WriteLevel must persist monsterinfo last_sighting");
+assert.equal(targetSave.monsterinfo.attack_state, 2, "WriteLevel must persist monsterinfo attack_state");
+assert.equal(targetSave.monsterinfo.lefty, 1, "WriteLevel must persist monsterinfo lefty");
+assert.equal(targetSave.monsterinfo.idle_time, 74.75, "WriteLevel must persist monsterinfo idle_time");
 assert.equal(targetSave.callbacks.moveinfo.endfunc, "saveHarnessCallback", "WriteLevel must encode moveinfo endfunc by stable function name");
 
 readContext.game.clients = [readContext.game.clients[0] ?? client];
@@ -569,6 +603,9 @@ assert.deepEqual(readContext.runtime.entities[2]?.monsterinfo.saved_goal, [512, 
 assert.equal(readContext.runtime.entities[2]?.monsterinfo.search_time, 63.5, "ReadLevel monsterinfo search_time restore mismatch");
 assert.equal(readContext.runtime.entities[2]?.monsterinfo.trail_time, 61.25, "ReadLevel monsterinfo trail_time restore mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.monsterinfo.last_sighting, [256, 64, -32], "ReadLevel monsterinfo last_sighting restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.monsterinfo.attack_state, 2, "ReadLevel monsterinfo attack_state restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.monsterinfo.lefty, 1, "ReadLevel monsterinfo lefty restore mismatch");
+assert.equal(readContext.runtime.entities[2]?.monsterinfo.idle_time, 74.75, "ReadLevel monsterinfo idle_time restore mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_origin, [16, 24, 32], "ReadLevel moveinfo start_origin mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.start_angles, [0, 90, 0], "ReadLevel moveinfo start_angles mismatch");
 assert.deepEqual(readContext.runtime.entities[2]?.moveinfo.end_origin, [128, 24, 48], "ReadLevel moveinfo end_origin mismatch");

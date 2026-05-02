@@ -346,13 +346,24 @@ export function WriteGame(context: GameMainContext, filename: string, autosave: 
     date: SAVEGAME_DATE,
     autosave,
     game: snapshotGame(context),
-    clients: context.game.clients.map((client) => snapshotClient(client, context.runtime)),
+    clients: Array.from(
+      { length: Math.max(0, Math.trunc(context.game.maxclients)) },
+      (_, i) => snapshotClient(clientSlotForSave(context, i), context.runtime)
+    ),
     notes: [UNRESTORED_CALLBACK_NOTE]
   };
   context.game.autosaved = false;
   context.runtime.autosaved = false;
 
   writeSaveFile(context, filename, save);
+}
+
+function clientSlotForSave(context: GameMainContext, index: number): GameClient {
+  const client = context.game.clients[index]
+    ?? context.runtime.entities[index + 1]?.client
+    ?? attachGameClient(createRuntimeEntity({ classname: "player" }, index + 1));
+  context.game.clients[index] = client;
+  return client;
 }
 
 /**

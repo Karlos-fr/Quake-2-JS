@@ -10,6 +10,7 @@
 - 2026-05-01: `SP_func_plat`, `SP_func_rotating`, `SP_func_button` et `SP_func_door`.
 - 2026-05-01: `SP_info_player_start`, `SP_info_player_deathmatch`, `SP_info_player_coop` et `SP_info_player_intermission`.
 - 2026-05-01: `SP_item_health`, `SP_item_health_small`, `SP_item_health_large` et `SP_item_health_mega`.
+- 2026-05-02: verification de dispatch `light` sans validation d'entite proprietaire `g_spawn.c`.
 
 ## Verdict du lot
 
@@ -37,6 +38,7 @@
 - `SP_item_health_small`: valide. Meme branchement `spawns[]`; la cible conserve le modele `models/items/healing/stimpack/tris.md2`, `count = 2`, `style = HEALTH_IGNORE_MAX`, `SpawnItem(FindItem("Health"))` et precache `items/s_health.wav`.
 - `SP_item_health_large`: valide. Meme branchement `spawns[]`; la cible conserve le modele `models/items/healing/large/tris.md2`, `count = 25`, `SpawnItem(FindItem("Health"))` et precache `items/l_health.wav`.
 - `SP_item_health_mega`: valide. Meme branchement `spawns[]`; la cible conserve le modele `models/items/mega_h/tris.md2`, `count = 100`, `style = HEALTH_IGNORE_MAX | HEALTH_TIMED`, `SpawnItem(FindItem("Health"))` et precache `items/m_health.wav`.
+- `SP_light`: preuve de dispatch conservee, mais pas comptee comme entite proprietaire de `g_spawn.c`. La definition originale est dans `game/g_misc.c` et la matrice `game_g_misc.c.md` valide deja `SP_light`; pour `g_spawn.c`, seule l'entree `spawns[]`/`light` releve du fichier courant.
 
 ## Checklist appliquee
 
@@ -82,6 +84,12 @@
 - Runtime: valide. `SpawnEntities` parse les classnames de map, `ED_CallSpawn` parcourt `spawns[]`, appelle les callbacks health, puis `G_RunFrame` declenche `droptofloor` et publie un `s.modelindex` visible.
 - apps/web: valide indirectement. Le flux navigateur doit declencher le runtime porte et consommer ses sorties via local/full-game; aucune table de spawn parallele n'est attendue dans `apps/web`.
 - renderer-three: valide indirectement. Ces items produisent des entites MD2 visibles avec `RF_GLOW`; les sorties passent par snapshots/model configstrings vers `ClientRefreshFrame.entities`, puis `createThreeRefreshEntitySync` consomme `modelindex`, flags et modeles MD2.
+- Identification: verification de l'entree `light` dans `spawns[]`; `SP_light` n'est pas une entite proprietaire de `game_g_spawn.c.md` car sa definition originale est dans `game/g_misc.c`.
+- Comparaison C/H vs TS: entree `edict_t *self` vs `GameEntity, GameRuntime`, sortie void, branches `!targetname`/`deathmatch`, style custom `>= 32`, callback `light_use`, `START_OFF`, configstrings `CS_LIGHTS + style` et toggles `"a"`/`"m"` verifies.
+- Commentaires d'en-tete: `light_use` et `SP_light` ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et note de portage pour `START_OFF`; pas d'ajustement necessaire.
+- Runtime: valide. `ED_CallSpawn` dispatch `light` via `spawns[]`; `SP_light` ecrit les lightstyles dans les configstrings du runtime; `useGameEntity`/callback `light_use` propage ensuite les toggles visibles.
+- apps/web: valide indirectement. Le navigateur doit consommer les lightstyles issus du runtime porte; aucune logique parallele de spawn `light` n'a ete detectee dans `apps/web`, et le flux local gameplay synchronise les configstrings vers `ClientRefreshFrame.lightStyles`.
+- renderer-three: valide indirectement. `SP_light` ne produit pas de modele, particule, beam, dlight, temp entity, areabits, camera ou scene propre; sa sortie visible attendue est le lightstyle BSP, consomme par le world adapter via `frame.lightStyles`.
 - Identification: lot player/intermission dans matrice `game_g_spawn.c.md`, prototypes et `spawns[]` originaux dans `Quake-2-master/game/g_spawn.c`, definitions originales dans `game/p_client.c`, cible portee `packages/game/src/p_client.ts` importee par `packages/game/src/g_spawn.ts`.
 - Comparaison C/H vs TS: entrees `edict_t *self` vs `GameEntity, GameRuntime`, sorties void, branches `coop`, `deathmatch`, map `security`, liste des maps coop fixup, appels `SP_CreateCoopSpots`, `SP_FixCoopSpots`, `G_FreeEdict`, `SP_misc_teleporter_dest`, no-op intermission et preservation origin/angles verifies.
 - Commentaires d'en-tete: les quatre fonctions TS ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level`; pas d'ajustement necessaire.
@@ -100,6 +108,7 @@
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour les quatre classnames brush `func_plat`, `func_rotating`, `func_button` et `func_door`, leur presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, les modeles inline, le trigger interne de plat, les effects, callbacks et le think door execute par `G_RunFrame`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour les quatre classnames player/intermission, le dispatch `spawns[]`, le spot deathmatch visible, les hacks coop `security`/fixup, et le flux intermission/camera.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour le flux map normal `SpawnEntities` -> `ED_CallSpawn` -> callbacks health -> `G_RunFrame`/`droptofloor`, et pour le rejet `DF_NO_HEALTH` en deathmatch sur les quatre variantes.
+- `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `SP_light`, sa presence dans `spawns[]`, le dispatch `ED_CallSpawn`, l'installation de `light_use`, les configstrings runtime `CS_LIGHTS`, le toggle `START_OFF`, le style 0 sans callback et le rejet deathmatch.
 
 ## Tests
 
@@ -145,7 +154,11 @@
 - `npm run verify:full-game:three-renderer`: ok le 2026-05-01.
 - `npm run verify:web-render-order`: ok le 2026-05-01.
 - `npm run typecheck`: ok le 2026-05-01.
+- `npm run verify:g-spawn`: ok le 2026-05-02.
+- `npm run verify:g-misc`: ok le 2026-05-02.
+- `npm run verify:local-gameplay-sync`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
 
 ## Prochain lot recommande
 
-- Valider `SP_light` dans un lot separe rattache a `packages/game/src/g_misc.ts`.
+- Continuer avec `SP_worldspawn` ou un sous-lot explicite de `spawns`; ne pas valider ici les fonctions externes deja proprietaires de `g_misc.c`, `g_func.c`, `p_client.c` ou `g_items.c`.

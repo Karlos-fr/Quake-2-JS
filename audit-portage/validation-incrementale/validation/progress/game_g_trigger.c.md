@@ -3,16 +3,16 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `trigger_relay_use`, `SP_trigger_relay`, `trigger_key_use`, artefacts locaux `index`/`player`/`ent`/`cube`, `SP_trigger_key`.
-- Verdict du lot: valide pour les fonctions; artefacts locaux marques non applicables.
+- Dernier lot traite: `trigger_counter_use`, `SP_trigger_counter`, `SP_trigger_always`.
+- Verdict du lot: valide.
 
 ## Preuves session
 
 - C source compare: `Quake-2-master/game/g_trigger.c`
 - TS cible compare: `packages/game/src/g_trigger.ts`
-- Runtime verifie: `SpawnEntities` -> `ED_CallSpawn` pour `trigger_relay`/`trigger_key`, callback `use`, propagation par `G_UseTargets`.
-- `apps/web`: non applicable directement pour ce lot; le navigateur lance le flux serveur via `SV_Frame`/runtime, pas de logique parallele attendue pour ces relais.
-- `packages/renderer-three`: non applicable pour ce lot; `trigger_relay` et `trigger_key` ne produisent ni modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ni scene visible.
+- Runtime verifie: `trigger_counter_use` branche comme callback `use`; `SP_trigger_counter` est dans `ED_CallSpawn`; `SP_trigger_always` est dans `ED_CallSpawn` et passe par `G_UseTargets` avec delai minimum 0.2.
+- `apps/web`: pas de branchement direct attendu dans ce lot; `apps/web` declenche le runtime serveur via `SV_Frame`, et ces triggers ne remplacent pas la logique runtime principale.
+- `packages/renderer-three`: non applicable pour ce lot; `trigger_counter` et `trigger_always` ne produisent ni modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ni scene visible.
 
 ## Tests lances
 
@@ -21,11 +21,11 @@
 
 ## Corrections
 
-- `scripts/verify/quake2-g-trigger.ts`: ajout d'une verification `trigger_relay` couvrant `SP_trigger_relay`, le callback `use` et la propagation de l'activator vers la cible.
+- `scripts/verify/quake2-g-trigger.ts`: renforcement de `verifyTriggerCounter` pour couvrir messages/sons et `spawnflags & 1`; ajout de `verifyTriggerAlways` pour couvrir le delai minimum et le dispatch differe.
 
 ## Prochain lot recommande
 
-- Continuer avec `trigger_counter_use` et `SP_trigger_counter`, puis `SP_trigger_always` si le lot reste petit.
+- Continuer avec `PUSH_ONCE`, `windsound`, `trigger_push_touch` et `SP_trigger_push` si le lot reste petit.
 
 ## Blocages
 

@@ -32,6 +32,7 @@ assert.ok(source.includes("onMuzzleFlash2:"), "full-game should connect monster 
 assert.ok(source.includes("applyAuthoritativeVisualEffects"), "full-game should apply muzzleflash dlights and particles from the client parser");
 assert.ok(source.includes("CL_SmokeAndFlash"), "full-game should render monster muzzleflash smoke/flash effects");
 assert.ok(source.includes("CL_ParticleEffect"), "full-game should render monster muzzleflash particle bursts");
+assert.ok(source.includes("CL_ItemRespawnParticles"), "full-game should render entity item-respawn particles");
 assert.ok(source.includes("onTempEntity:"), "full-game should connect temp-entity sounds from the client parser");
 assert.ok(source.includes("onEntityEvent:"), "full-game should connect frame entity event sounds from the client parser");
 assert.ok(source.includes("SCR_DrawLoading"), "full-game should use the ported Quake II loading plaque state");

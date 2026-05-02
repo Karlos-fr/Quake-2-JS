@@ -144,6 +144,7 @@ import {
   CL_BuildActionEffects,
   CL_BuildEntityEventEffects,
   CL_AllocDlight,
+  CL_ItemRespawnParticles,
   CL_LogoutEffect,
   CL_ParticleEffect,
   type ClientActionEffect
@@ -760,6 +761,8 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
 
       if (effect.kind === "particle-effect" && effect.position) {
         CL_ParticleEffect(client, effect.position, [0, 0, 0], effect.color ?? 0, effect.count ?? 0);
+      } else if (effect.kind === "item-respawn-particles" && effect.position) {
+        CL_ItemRespawnParticles(client, effect.position);
       } else if (effect.kind === "smoke-and-flash" && effect.position) {
         CL_SmokeAndFlash(client, effect.position);
       } else if (
@@ -896,7 +899,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
       startAuthoritativeEffectSounds(CL_BuildActionEffects(packet, client));
     },
     onEntityEvent: (event: ClientEntityEvent) => {
-      startAuthoritativeEffectSounds(CL_BuildEntityEventEffects(event, {
+      applyAuthoritativeActionEffects(CL_BuildEntityEventEffects(event, {
         clFootsteps: client.cl.cl_footsteps
       }));
     },

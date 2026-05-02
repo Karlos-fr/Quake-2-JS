@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-02: `use_target_spawner`, le local `ent` associe et `SP_target_spawner`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `use_target_spawner` conserve l'allocation `G_Spawn`, le classname pris depuis `self->target`, la copie `s.origin`/`s.angles`, l'appel `ED_CallSpawn`, puis `KillBox`, relink et copie de `movedir` vers `velocity` quand `speed` est non nul. `SP_target_spawner` conserve l'installation du callback, `SVF_NOCLIENT`, `G_SetMovedir` et le scale de `movedir` par `speed`; le test confirme aussi que `G_SetMovedir` efface `s.angles` avant le spawn, comme en C.
+  - Commentaires d'en-tete completes pour `use_target_spawner` et `SP_target_spawner`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et note de portage pour la branche `target` absent.
+  - Branchement runtime verifie: `target_spawner` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; l'activation via `use` alloue l'entite cible, appelle son spawn normal, puis relie l'entite dans les listes runtime.
+  - `apps/web`: integration attendue car `target_spawner` peut creer des monstres, gibs, items ou autres entites visibles/solides dans un flux full-game. Pas de logique parallele masquante constatee; le navigateur consomme les sorties via runtime serveur/client, snapshots et refresh frames.
+  - `renderer-three`: integration attendue seulement selon le type d'entite spawnee. Si elle produit modeles, frames, images, particules, beams, dlights ou scene, la consommation passe par les snapshots/client refresh et les adapters `refresh-entity-sync`, `particle-sync`, `three-beam-sync` et `three-dlight-sync`; aucun manque specifique au spawner n'a ete constate dans ce lot.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes et branche `self.target` absent mappee vers classname vide pour prendre le warning `ED_CallSpawn: NULL classname`, equivalent au `NULL classname` C.
+  - `scripts/verify/quake2-g-target.ts`: couverture renforcee pour spawn table `ED_CallSpawn`, `SVF_NOCLIENT`, `G_SetMovedir`/scale par `speed`, copie origin/angles apres clear C, `ED_CallSpawn` de l'entite creee, `KillBox`/relink, velocity et branche sans target.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:g-main` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `use_target_blaster`, les locaux `effect` associes et `SP_target_blaster` si le lot reste petit.
+
 - 2026-05-01: `use_target_splash` et `SP_target_splash`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `use_target_splash` conserve l'emission `svc_temp_entity`/`TE_SPLASH`, `count`, `s.origin`, `movedir`, `sounds`, `MULTICAST_PVS`, puis le `T_RadiusDamage(self, activator, dmg, NULL, dmg+40, MOD_SPLASH)` conditionnel. `SP_target_splash` conserve l'installation du callback, `G_SetMovedir(self->s.angles, self->movedir)`, le default `count = 32` et `SVF_NOCLIENT`.

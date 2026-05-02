@@ -2,6 +2,42 @@
 
 ## Dernier lot traite
 
+- 2026-05-02: fonction `WriteGame` et temporaires locaux auto-detectes `i`, `str`.
+
+## Verdict du lot
+
+- `WriteGame`: valide. Dans le C, la fonction appelle `SaveClientData` pour les sauvegardes manuelles, ouvre le fichier, ecrit un tampon date fixe de 16 octets, positionne `game.autosaved`, ecrit le bloc `game`, remet `game.autosaved` a faux, puis ecrit exactement `game.maxclients` clients avec `WriteClient`.
+- Dans le port TS, le fichier binaire est remplace par un snapshot JSON structure avec `format`, `date`, `autosave`, `game` et `clients`. Correction appliquee: `WriteGame` construit maintenant les clients via une boucle de longueur `game.maxclients`, en recuperant les clients attaches aux edicts runtime quand `game.clients` n'est pas pre-rempli, ce qui preserve l'intention de la boucle C.
+- `i`: valide. Le compteur C `for (i=0 ; i<game.maxclients ; i++)` est porte par l'index de `Array.from({ length: game.maxclients }, (_, i) => ...)`; le harness verifie deux slots ecrits pour `maxclients = 2`.
+- `str`: valide. Le tampon C `str[16]` contenant `__DATE__` est porte par `SAVEGAME_DATE` dans le payload structure et controle par `validateSaveFile` cote lecture; l'ecart de format est documente dans l'en-tete de `packages/game/src/g_save.ts`.
+- Commentaires d'en-tete: commentaire de `WriteGame` verifie avec `Original name`, source, categorie, niveau de fidelite et comportement; l'en-tete fichier documente le remplacement du `FILE *` binaire par JSON structure.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. `WriteGame` est expose par `packages/game/src/g_main.ts` dans `GetGameApi`, appele par `SV_WriteServerFile` dans `packages/server/src/sv_ccmds.ts`, et reste atteignable depuis les commandes save/changement de niveau serveur.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` injecte les hooks `readFile`/`writeFile` vers `web-save-storage` et utilise le meme export runtime; aucune logique web parallele ne remplace `WriteGame`.
+- renderer-three: non applicable directement. `WriteGame`, `i` et `str` ne produisent pas de modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene. Les clients et items sauvegardes peuvent seulement influencer ulterieurement les snapshots/HUD/viewmodel apres restauration.
+
+## Corrections appliquees
+
+- `packages/game/src/g_save.ts`: `WriteGame` ecrit exactement `game.maxclients` snapshots clients et synchronise les slots manquants depuis les edicts runtime.
+- `scripts/verify/quake2-g-save.ts`: ajout d'une preuve `maxclients = 2` couvrant la boucle client, la recuperation d'un client edict-backed et l'appel `SaveClientData`.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `WriteGame`, `i`, `str`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: compteur `Validees` et prochain lot mis a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:web-save-storage`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
+
+## Prochain lot recommande
+
+- Continuer avec `ReadGame`, puis ses temporaires locaux `i` et `str` si le lot reste coherent.
+
+---
+
 - 2026-05-01: fonction `ReadClient` et temporaire local auto-detecte `field`.
 
 ## Verdict du lot

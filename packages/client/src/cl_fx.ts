@@ -2872,13 +2872,14 @@ function crossProduct(a: vec3_t, b: vec3_t): vec3_t {
 /**
  * Original name: CL_LogoutEffect
  * Source: client/cl_fx.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Adapter
  *
  * Behavior:
- * - Emits the logical particle burst metadata for login/logout/respawn muzzle-flash specials.
+ * - Appends the logical `CL_LogoutEffect` particle burst metadata for login/logout/respawn muzzle-flash specials.
  *
  * Porting notes:
+ * - Adapter for the `CL_ParseMuzzleFlash` cases that call the separately ported `CL_LogoutEffect`.
  * - Preserves the original trigger conditions and palette bases without hard-coding any renderer behavior here.
  */
 function appendLogoutEffect(

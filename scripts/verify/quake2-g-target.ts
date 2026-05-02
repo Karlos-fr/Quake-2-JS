@@ -511,12 +511,30 @@ function verifyChangelevelAndSpawner(): void {
   spawner.target = "target_temp_entity";
   spawner.s.origin = [9, 8, 7];
   spawner.s.angles = [0, 90, 0];
-  SP_target_spawner(spawner, spawnerRuntime);
+  spawner.speed = 120;
+  ED_CallSpawn(spawner, spawnerRuntime);
+  assert.equal(spawner.use?.name, "use_target_spawner", "target_spawner spawn table must install use_target_spawner");
+  assert.equal(spawner.svflags, SVF_NOCLIENT, "target_spawner must be hidden from clients");
+  assertVec3NearlyEqual(spawner.movedir, [0, 120, 0], "target_spawner movedir must be scaled by speed");
   spawner.use?.(spawner, null, null, spawnerRuntime);
   const spawned = spawnerRuntime.entities.at(-1);
   assert.equal(spawned?.classname, "target_temp_entity", "target_spawner classname mismatch");
   assert.ok(spawned?.use, "target_spawner must call spawned entity spawn function");
   assert.deepEqual(spawned?.s.origin, [9, 8, 7], "target_spawner origin mismatch");
+  assert.deepEqual(spawned?.s.angles, [0, 0, 0], "target_spawner speed branch must copy angles after G_SetMovedir clears them");
+  assertVec3NearlyEqual(spawned?.velocity ?? [NaN, NaN, NaN], [0, 120, 0], "target_spawner velocity mismatch");
+  assert.equal(spawned?.linked, true, "target_spawner must relink spawned entity after KillBox");
+
+  const missingTargetRuntime = createRuntime();
+  const missingTargetSpawner = spawnGameEntity(missingTargetRuntime);
+  missingTargetSpawner.classname = "target_spawner";
+  SP_target_spawner(missingTargetSpawner, missingTargetRuntime);
+  missingTargetSpawner.use?.(missingTargetSpawner, null, null, missingTargetRuntime);
+  assert.equal(missingTargetRuntime.entities.at(-1)?.classname, "", "target_spawner missing target must keep null-classname branch");
+  assert.ok(
+    missingTargetRuntime.logEntries.some((entry) => entry.message === "ED_CallSpawn: NULL classname"),
+    "target_spawner missing target must take ED_CallSpawn NULL classname warning branch"
+  );
 }
 
 function verifyCrosslevelTargets(): void {

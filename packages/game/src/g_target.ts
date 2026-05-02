@@ -535,10 +535,19 @@ export function SP_target_splash(self: GameEntity, _runtime: GameRuntime): void 
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Allocates one edict, assigns the requested target classname, copies the spawner origin and angles,
+ *   calls the normal spawn dispatcher, then telefrags/link-refreshes the spawned entity.
+ * - Applies the precomputed launch velocity when the spawner has a non-zero speed.
+ *
+ * Porting notes:
+ * - Uses an empty classname when the original `self->target` is null so `ED_CallSpawn` takes its
+ *   `NULL classname` warning branch instead of silently treating it as `noclass`.
  */
 export function use_target_spawner(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   const ent = G_Spawn(runtime);
-  ent.classname = self.target ?? "noclass";
+  ent.classname = self.target ?? "";
   ent.s.origin = [...self.s.origin];
   ent.origin = [...self.s.origin];
   ent.s.angles = [...self.s.angles];
@@ -559,6 +568,10 @@ export function use_target_spawner(self: GameEntity, _other: GameEntity | null, 
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Installs `use_target_spawner`, hides the controller entity from clients, and precomputes a
+ *   scaled movedir vector from `s.angles` when `speed` is provided for launched gibs.
  */
 export function SP_target_spawner(self: GameEntity, _runtime: GameRuntime): void {
   self.use = use_target_spawner;

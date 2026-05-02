@@ -30,6 +30,7 @@ import {
   SP_trigger_gravity,
   SP_trigger_hurt,
   SP_trigger_key,
+  SP_trigger_always,
   SP_trigger_monsterjump,
   SP_trigger_multiple,
   SP_trigger_once,
@@ -47,6 +48,7 @@ verifyTriggerOnceRemoval();
 verifyTriggerRelay();
 verifyTriggerKey();
 verifyTriggerCounter();
+verifyTriggerAlways();
 verifyTriggerPush();
 verifyTriggerHurt();
 verifyTriggerGravity();
@@ -155,10 +157,45 @@ function verifyTriggerCounter(): void {
   const activator = createPlayer(runtime);
   trigger_counter_use(trigger, null, activator, runtime);
   assert.equal(trigger.count, 1, "trigger_counter first decrement mismatch");
+  assert.equal(runtime.logEntries.at(-1)?.message, "1 more to go...", "trigger_counter countdown message mismatch");
+  assert.equal(runtime.soundEvents.at(-1)?.soundPath, "misc/talk1.wav", "trigger_counter countdown sound mismatch");
 
   trigger_counter_use(trigger, null, activator, runtime);
   assert.equal(trigger.count, 0, "trigger_counter final decrement mismatch");
+  assert.equal(runtime.logEntries.at(-2)?.message, "Sequence completed!", "trigger_counter completion message mismatch");
+  assert.equal(runtime.soundEvents.at(-1)?.soundPath, "misc/talk1.wav", "trigger_counter completion sound mismatch");
   assert.equal(trigger.nextthink, runtime.time + FRAMETIME, "trigger_counter should schedule deferred removal");
+
+  const silent = spawnGameEntity(runtime);
+  silent.classname = "trigger_counter";
+  silent.spawnflags = 1;
+  SP_trigger_counter(silent, runtime);
+  const logCount = runtime.logEntries.length;
+  const soundCount = runtime.soundEvents.length;
+  trigger_counter_use(silent, null, activator, runtime);
+  assert.equal(runtime.logEntries.length, logCount, "trigger_counter nomessage must suppress countdown log");
+  assert.equal(runtime.soundEvents.length, soundCount, "trigger_counter nomessage must suppress countdown sound");
+}
+
+function verifyTriggerAlways(): void {
+  const runtime = createRuntime();
+  const trigger = spawnGameEntity(runtime);
+  trigger.classname = "trigger_always";
+  trigger.target = "always_target";
+
+  const target = spawnGameEntity(runtime);
+  target.classname = "target_test";
+  target.targetname = "always_target";
+  let used = false;
+  target.use = (_self, other, activator) => {
+    used = other?.classname === "DelayedUse" && activator === trigger;
+  };
+
+  SP_trigger_always(trigger, runtime);
+  assert.equal(trigger.delay, 0.2, "trigger_always must enforce the original minimum delay");
+  assert.equal(used, false, "trigger_always must delay target firing until the next think window");
+  runPendingThinks(runtime, runtime.time + 0.2);
+  assert.equal(used, true, "trigger_always must fire targets with itself as activator");
 }
 
 function verifyTriggerPush(): void {

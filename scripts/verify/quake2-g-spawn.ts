@@ -15,6 +15,7 @@ import { strict as assert } from "node:assert";
 import {
   CS_CDTRACK,
   CS_ITEMS,
+  CS_LIGHTS,
   CS_MAXCLIENTS,
   CS_NAME,
   DF_NO_HEALTH,
@@ -216,6 +217,44 @@ assert.equal(conveyorEntity.solid, SOLID_BSP, "ED_CallSpawn must dispatch func_c
 assert.equal(spawns.some((entry) => entry.name === "func_conveyor"), true, "spawns[] must expose func_conveyor");
 assert.equal(spawns.some((entry) => entry.name === "func_wall"), true, "spawns[] must expose func_wall");
 assert.equal(spawns.some((entry) => entry.name === "func_object"), true, "spawns[] must expose func_object");
+
+const lightSpawnEntry = spawns.find((spawn) => spawn.name === "light");
+assert.ok(lightSpawnEntry, "spawn table must include light");
+assert.equal(typeof lightSpawnEntry.spawn, "function", "light spawn_t.spawn must be a function");
+
+const lightEntity = spawnGameEntity(context.runtime);
+lightEntity.classname = "light";
+lightEntity.targetname = "toggle_light";
+lightEntity.style = 33;
+lightEntity.spawnflags = 1;
+ED_CallSpawn(lightEntity, context.runtime);
+assert.equal(typeof lightEntity.use, "function", "SP_light must install light_use for targeted custom styles");
+assert.equal(context.runtime.configstrings.get(CS_LIGHTS + 33), "a", "START_OFF SP_light must publish the off lightstyle");
+lightEntity.use?.(lightEntity, null, lightEntity, context.runtime);
+assert.equal((lightEntity.spawnflags & 1) === 0, true, "light_use must clear START_OFF when turning on");
+assert.equal(context.runtime.configstrings.get(CS_LIGHTS + 33), "m", "light_use must publish the on lightstyle");
+lightEntity.use?.(lightEntity, null, lightEntity, context.runtime);
+assert.equal((lightEntity.spawnflags & 1) !== 0, true, "light_use must restore START_OFF when turning off");
+assert.equal(context.runtime.configstrings.get(CS_LIGHTS + 33), "a", "light_use must publish the off lightstyle again");
+
+const styleZeroLight = spawnGameEntity(context.runtime);
+styleZeroLight.classname = "light";
+styleZeroLight.targetname = "ambient_light";
+styleZeroLight.style = 0;
+ED_CallSpawn(styleZeroLight, context.runtime);
+assert.equal(styleZeroLight.use, undefined, "SP_light must leave non-custom style lights without a use callback");
+
+while (context.runtime.entities.length <= context.runtime.maxclients + 8) {
+  spawnGameEntity(context.runtime);
+}
+const deathmatchLight = spawnGameEntity(context.runtime);
+deathmatchLight.classname = "light";
+deathmatchLight.targetname = "dm_toggle_light";
+deathmatchLight.style = 34;
+context.runtime.deathmatch = true;
+ED_CallSpawn(deathmatchLight, context.runtime);
+context.runtime.deathmatch = false;
+assert.equal(deathmatchLight.inuse, false, "SP_light must free targeted lights in deathmatch");
 
 const teamRuntime = createGameMainContext(imports).runtime;
 const teamMaster = spawnGameEntity(teamRuntime);

@@ -96,6 +96,18 @@
 - Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
 - Corrections TS portees: aucune dans le port. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour couvrir le fallback `GAMEVERSION`, `filterban`, le format des filtres ecrits et le diagnostic d'echec d'ouverture.
 
+## Session 2026-05-02 - ServerCommand
+
+- Lot traite: `ServerCommand` et son local `cmd`.
+- Checklist appliquee: identification matrice/source/cible, comparaison C vs TS du dispatch `sv`, validation de `gi.argv(1)`, branches `test`/`addip`/`removeip`/`listip`/`writeip`, fallback inconnu, commentaire d'en-tete, ownership/doublons, branchement runtime, apps/web, renderer-three, tests, mise a jour matrice/progress/global.
+- Verdict: lot valide. Le C affecte `cmd = gi.argv(1)`, compare avec `Q_stricmp` contre la table de commandes, appelle le sous-handler correspondant, sinon imprime `Unknown server command "%s"\n`; le TS conserve ce flux avec `const cmd = context.gi.argv(1)`, `stringsEqualIgnoreCase`, les memes handlers portes et le meme diagnostic.
+- Local: le local C `cmd` est represente par `const cmd`; le test prouve que le fallback inconnu imprime la valeur `argv(1)` et que la casse est ignoree comme avec `Q_stricmp`.
+- Runtime: `ServerCommand` est expose par `GetGameAPI` dans `g_main.ts`; le serveur l'appelle via `SV_ServerCommand_f` pour la commande console `sv`. Les sous-commandes IP restent connectees a `SV_FilterPacket`/`ClientConnect` et `writeip` recoit le hook `writeFile`.
+- apps/web: le host full-game installe l'API game portee via `GetGameApiFunction` et injecte `saveStorage.writeText` pour `writeip`; le placeholder web n'est qu'un bootstrap avant installation et ne remplace pas le flux runtime attendu.
+- renderer-three: non applicable, le dispatch de commandes serveur ne produit ni modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene.
+- Tests lances: `npm run verify:g-svcmds`, `npm run verify:g-main`, `npm run verify:server:ccmds`, `npm run verify:full-game:server-host`, `npm run typecheck` OK.
+- Corrections TS portees: aucune dans le port. Test renforce dans `scripts/verify/quake2-g-svcmds.ts` pour couvrir explicitement la casse `Q_stricmp` et le fallback inconnu de `ServerCommand`.
+
 ## Prochain lot recommande
 
-- Continuer avec `ServerCommand`, puis son local `cmd`.
+- Aucun lot restant dans `game_g_svcmds.c.md`: toutes les lignes sont `Valide`.
