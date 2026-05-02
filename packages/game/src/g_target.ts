@@ -823,6 +823,11 @@ export function target_laser_use(self: GameEntity, _other: GameEntity | null, ac
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Finalizes the delayed laser spawn by configuring the beam entity,
+ *   resolving an optional target entity or editor movedir, installing the use
+ *   and think callbacks, linking the entity, and starting it on or off.
+ * Porting notes: The local C `ent` is represented by a scoped `const ent` from
+ *   `G_Find`; runtime warning logs replace `gi.dprintf`.
  */
 export function target_laser_start(self: GameEntity, runtime: GameRuntime): void {
   self.movetype = MOVETYPE_NONE;
@@ -881,6 +886,8 @@ export function target_laser_start(self: GameEntity, runtime: GameRuntime): void
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Defers laser initialization for one second so all map entities can
+ *   spawn before the laser resolves its optional target.
  */
 export function SP_target_laser(self: GameEntity, runtime: GameRuntime): void {
   self.think = target_laser_start;

@@ -2,6 +2,42 @@
 
 ## Dernier lot traite
 
+- 2026-05-02: fonction `WriteLevel` et temporaires locaux auto-detectes `i`, `ent`.
+
+## Verdict du lot
+
+- `WriteLevel`: valide. Dans le C, la fonction ouvre le fichier, ecrit la taille d'edict, ecrit une base de fonction `InitGame`, appelle `WriteLevelLocals`, puis parcourt `g_edicts[0..globals.num_edicts)` pour ecrire chaque edict `inuse` avec son `entnum`, avant le sentinel `-1`.
+- Dans le port TS, le format binaire est remplace par un snapshot JSON structure: `edict_size`, `function_base: "InitGame"`, `level: snapshotLevel(context)` et les records `{ entnum, entity }` produits par `snapshotEntity` pour les entites `inuse`. Le sentinel binaire `-1` est remplace par la fin du tableau JSON.
+- `i`: valide. Le compteur C de boucle sur `globals.num_edicts` est porte par l'ordre naturel de `context.runtime.entities`; le harness verifie maintenant la sequence d'`entnum` sauvegardee `[0, player, target]` et l'exclusion d'un edict hors flux `inuse`.
+- `ent`: valide. Le pointeur C `ent = &g_edicts[i]` est porte par chaque record JSON `{ entnum, entity: snapshotEntity(...) }`; les preuves couvrent l'edict cible sauvegarde et l'edict non `inuse` ignore.
+- Commentaires d'en-tete: commentaire de `WriteLevel` verifie avec `Original name`, source, categorie, niveau de fidelite et comportement; l'en-tete fichier documente le remplacement du `FILE *` binaire par JSON structure.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. `WriteLevel` est expose par `packages/game/src/g_main.ts` dans `GetGameApi`, appele par `SV_WriteLevelFile` dans `packages/server/src/sv_ccmds.ts`, et atteignable depuis les flux serveur de sauvegarde/changement de niveau.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` connecte `SV_WriteLevelFile` au stockage navigateur, ecrit les configstrings/portal state, puis appelle `ge.WriteLevel`; aucune logique web parallele ne remplace la serialization niveau.
+- renderer-three: pas de consommation directe attendue. `WriteLevel`, `i` et `ent` ne produisent pas directement modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les entites sauvegardees/restaurees alimentent ensuite les snapshots visibles consommes par le renderer.
+
+## Corrections appliquees
+
+- `scripts/verify/quake2-g-save.ts`: ajout de preuves pour les marqueurs `format`/`date`/`function_base`/`edict_size`, l'ordre des `entnum` sauvegardes et l'exclusion des edicts non `inuse`.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `WriteLevel`, `i`, `ent`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: ligne `g_save.c` mise a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:web-save-storage`: ok le 2026-05-02.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
+
+## Prochain lot recommande
+
+- Continuer avec `ReadLevel`, puis ses temporaires locaux `entnum`, `i` et `ent` si le lot reste coherent.
+
+---
+
 - 2026-05-02: fonction `ReadLevelLocals` et temporaire local auto-detecte `field`.
 
 ## Verdict du lot

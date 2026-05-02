@@ -240,15 +240,15 @@
 | `Quake-2-master/game/g_local.h` | global | `snd_fry` | `packages/game/src/p_view.ts` | `player/fry.wav` sound index | Valide | A redecouper | Global C remplace par index de son runtime; precache worldspawn et boucle `G_SetClientSound` lava/slime verifies. Tests: `verify:g-spawn`, `verify:p-view`, full-game three, web render, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | global | `jacket_armor_index` | `packages/game/src/g_items.ts` | `jacket_armor_index` | Valide | A redecouper | Cache initialise par `InitItems`/`cacheItemIndices`; priorite `ArmorIndex` et shard/pickup verifies. Tests: `verify:g-local:header`, `verify:g-items`, full-game three, web render, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | global | `combat_armor_index` | `packages/game/src/g_items.ts` | `combat_armor_index` | Valide | A redecouper | Cache initialise par `InitItems`/`cacheItemIndices`; priorite `ArmorIndex` et conversions d'armure verifies. Tests: `verify:g-local:header`, `verify:g-items`, full-game three, web render, `typecheck`. |
-| `Quake-2-master/game/g_local.h` | global | `body_armor_index` | `packages/game/src/g_items.ts` | `body_armor_index` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_UNKNOWN` | `packages/game/src/g_local.ts` | `MOD_UNKNOWN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_BLASTER` | `packages/game/src/runtime.ts` | `MOD_BLASTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_SHOTGUN` | `packages/game/src/runtime.ts` | `MOD_SHOTGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_SSHOTGUN` | `packages/game/src/runtime.ts` | `MOD_SSHOTGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_MACHINEGUN` | `packages/game/src/runtime.ts` | `MOD_MACHINEGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_CHAINGUN` | `packages/game/src/runtime.ts` | `MOD_CHAINGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_GRENADE` | `packages/game/src/runtime.ts` | `MOD_GRENADE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_G_SPLASH` | `packages/game/src/runtime.ts` | `MOD_G_SPLASH` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `body_armor_index` | `packages/game/src/g_items.ts` | `body_armor_index` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_UNKNOWN` | `packages/game/src/g_local.ts` | `MOD_UNKNOWN` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_BLASTER` | `packages/game/src/runtime.ts` | `MOD_BLASTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_SHOTGUN` | `packages/game/src/runtime.ts` | `MOD_SHOTGUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_SSHOTGUN` | `packages/game/src/runtime.ts` | `MOD_SSHOTGUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_MACHINEGUN` | `packages/game/src/runtime.ts` | `MOD_MACHINEGUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_CHAINGUN` | `packages/game/src/runtime.ts` | `MOD_CHAINGUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_GRENADE` | `packages/game/src/runtime.ts` | `MOD_GRENADE` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_G_SPLASH` | `packages/game/src/runtime.ts` | `MOD_G_SPLASH` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_ROCKET` | `packages/game/src/runtime.ts` | `MOD_ROCKET` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_R_SPLASH` | `packages/game/src/runtime.ts` | `MOD_R_SPLASH` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_HYPERBLASTER` | `packages/game/src/runtime.ts` | `MOD_HYPERBLASTER` | A verifier | A redecouper |  |

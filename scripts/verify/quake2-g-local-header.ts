@@ -55,7 +55,15 @@ import {
   LEFT_HANDED,
   LLOFS,
   MELEE_DISTANCE,
+  MOD_BLASTER,
+  MOD_CHAINGUN,
+  MOD_G_SPLASH,
+  MOD_GRENADE,
+  MOD_MACHINEGUN,
+  MOD_SHOTGUN,
+  MOD_SSHOTGUN,
   MOD_TRIGGER_HURT,
+  MOD_UNKNOWN,
   MOVETYPE_BOUNCE,
   MOVETYPE_FLY,
   MOVETYPE_FLYMISSILE,
@@ -251,6 +259,14 @@ assert.equal(SFL_CROSS_TRIGGER_MASK, 0x000000ff, "SFL_CROSS_TRIGGER_MASK mismatc
 assert.equal(PNOISE_SELF, 0, "PNOISE_SELF mismatch");
 assert.equal(PNOISE_WEAPON, 1, "PNOISE_WEAPON mismatch");
 assert.equal(PNOISE_IMPACT, 2, "PNOISE_IMPACT mismatch");
+assert.equal(MOD_UNKNOWN, 0, "MOD_UNKNOWN mismatch");
+assert.equal(MOD_BLASTER, 1, "MOD_BLASTER mismatch");
+assert.equal(MOD_SHOTGUN, 2, "MOD_SHOTGUN mismatch");
+assert.equal(MOD_SSHOTGUN, 3, "MOD_SSHOTGUN mismatch");
+assert.equal(MOD_MACHINEGUN, 4, "MOD_MACHINEGUN mismatch");
+assert.equal(MOD_CHAINGUN, 5, "MOD_CHAINGUN mismatch");
+assert.equal(MOD_GRENADE, 6, "MOD_GRENADE mismatch");
+assert.equal(MOD_G_SPLASH, 7, "MOD_G_SPLASH mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");
 assert.equal(damage_t.DAMAGE_NO, 0, "damage_t DAMAGE_NO mismatch");
 assert.equal(damage_t.DAMAGE_YES, 1, "damage_t DAMAGE_YES mismatch");

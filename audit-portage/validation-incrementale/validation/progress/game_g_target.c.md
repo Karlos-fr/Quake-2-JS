@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- 2026-05-02: `target_laser_start`, le local `ent`, la ligne dupliquee `target_laser_off` et `SP_target_laser`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `target_laser_start` conserve `MOVETYPE_NONE`, `SOLID_NOT`, `RF_BEAM | RF_TRANSLUCENT`, `modelindex = 1`, la largeur de beam `frame` 16 quand `spawnflags & 64` sinon 4, la table de couleurs `skinnum`, la resolution optionnelle de `target` via `G_Find`, le warning cible invalide, le fallback `G_SetMovedir`, l'installation de `use = target_laser_use` et `think = target_laser_think`, le default `dmg = 1`, les bounds `[-8,8]`, le link entity puis le depart on/off selon `START_ON`. `SP_target_laser` conserve le think differe et `nextthink = level.time + 1`. La ligne dupliquee `target_laser_off` renvoie a l'entite proprietaire deja comparee; le local C `ent` est un temporaire de resolution de cible.
+  - Commentaires d'en-tete completes pour `target_laser_start` et `SP_target_laser`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes utiles sur le local `ent` et le warning runtime.
+  - Branchement runtime verifie: `target_laser` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; `SP_target_laser` programme `target_laser_start`, qui installe les callbacks, link l'entite beam et demarre le flux `target_laser_think` ou cache le beam.
+  - `apps/web`: integration attendue car ce lot configure une entite beam visible et peut produire des sparks via le think quand le laser demarre. Pas de logique parallele masquante constatee; le navigateur consomme via runtime serveur/client, snapshots, refresh frames et render loop partagee.
+  - `renderer-three`: integration attendue car les sorties visibles sont `RF_BEAM | RF_TRANSLUCENT`, `modelindex`, `frame`, `skinnum`, `old_origin` apres think et `TE_LASER_SPARKS`. La consommation existe via refresh beams, `createThreeBeamSync`/`R_DrawBeam` et temp entities/particules; aucun manque ouvert pour ce lot.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour `target_laser_start` et `SP_target_laser`.
+  - `scripts/verify/quake2-g-target.ts`: couverture ajoutee pour largeur/couleur orange fat, resolution `target`, callback `use`/`think`, default/preservation de `dmg`, bounds, depart off, `G_SetMovedir`, target manquant et warning.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:beam-sync` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `target_lightramp_think` avec les locaux `style` et `temp` si le lot reste raisonnable; garder `target_lightramp_use` et `SP_target_lightramp` pour un lot suivant si besoin.
+
 - 2026-05-02: `target_laser_on`, `target_laser_off`, `target_laser_use` et la ligne dupliquee `target_laser_on`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `target_laser_on` conserve l'activator par defaut sur `self`, le OR `0x80000001` mappe sur `TARGET_LASER_SPARKS | TARGET_LASER_START_ON`, le clear de `SVF_NOCLIENT` et l'appel immediat a `target_laser_think`. `target_laser_off` conserve le clear du seul bit actif `~1`, le set `SVF_NOCLIENT` et `nextthink = 0`. `target_laser_use` conserve l'ecriture de `activator`, y compris `NULL`, puis le toggle vers off/on selon le bit actif.

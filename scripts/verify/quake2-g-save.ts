@@ -548,6 +548,10 @@ assert.ok(levelJson.includes("\"remaining_distance\": 48"), "WriteLevel must per
 assert.ok(levelJson.includes("\"decel_distance\": 24"), "WriteLevel must persist moveinfo decel_distance");
 assert.ok(levelJson.includes("\"endfunc\": \"saveHarnessCallback\""), "WriteLevel must persist moveinfo endfunc callback");
 const levelSave = JSON.parse(levelJson) as {
+  format: string;
+  date: string;
+  edict_size: number;
+  function_base: string;
   level: { changemap: string; sight_client: number; sight_entity: number; sound_entity: number; sound2_entity: number; current_entity: number };
   entities: Array<{
     entnum: number;
@@ -600,6 +604,15 @@ const levelSave = JSON.parse(levelJson) as {
 };
 const targetSave = levelSave.entities.find((record) => record.entnum === target.index)?.entity;
 assert.ok(targetSave, "WriteLevel must write the in-use target entity");
+assert.equal(levelSave.format, "quake2js.g_save.structured.v1", "WriteLevel must write the structured save format marker");
+assert.equal(levelSave.date, "Quake2JS g_save phase1", "WriteLevel must write the version/date marker");
+assert.equal(levelSave.function_base, "InitGame", "WriteLevel must write the original InitGame function-base marker");
+assert.equal(typeof levelSave.edict_size, "number", "WriteLevel must write an edict-size compatibility marker");
+assert.deepEqual(
+  levelSave.entities.map((record) => record.entnum),
+  [0, player.index, target.index],
+  "WriteLevel must preserve the C globals.num_edicts iteration order and write only in-use edicts"
+);
 assert.equal(levelSave.entities.some((record) => record.entnum === unsaved.index), false, "WriteLevel must skip edicts that are not in use");
 assert.equal(typeof targetSave.classname, "string", "WriteField2 len adapter must persist classname as a string payload, not a numeric length");
 assert.equal(typeof targetSave.message, "string", "WriteField2 len adapter must persist message as a string payload, not a numeric length");

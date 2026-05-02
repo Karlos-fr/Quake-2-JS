@@ -18,6 +18,7 @@
 - 2026-05-02: `ED_CallSpawn`, limite au chemin itemlist/table/warning et au branchement depuis `SpawnEntities`; temporaires locaux `item`/`i` marques non applicables.
 - 2026-05-02: `ED_NewString` et `ED_ParseField`; temporaires locaux `b`/`v`/`b` marques non applicables.
 - 2026-05-02: `ED_ParseEdict`, limite au parse braces/key-value, cles `_` ignorees, erreurs EOF/valeur manquante et anglehack `angle` vers yaw `angles`; temporaires locaux `init`/`keyname`/`com_token` marques non applicables.
+- 2026-05-02: `G_FindTeams`.
 
 ## Verdict du lot
 
@@ -64,6 +65,7 @@
 - `init`: non applicable. La ligne de matrice correspond au booleen local `init` de `ED_ParseEdict`; son effet est couvert par le test de dictionnaire vide qui remet l'edict a zero.
 - `keyname`: non applicable. La ligne de matrice correspond au buffer local `keyname[256]` de `ED_ParseEdict`; son comportement est couvert par la copie de cle, l'ignore des cles `_` et le dispatch vers `ED_ParseField`.
 - `com_token`: non applicable. La ligne de matrice correspond au pointeur local `com_token` de `ED_ParseEdict`; son comportement est couvert par les tests de tokens braces/key/value et erreurs EOF/valeur manquante.
+- `G_FindTeams`: valide. Le port conserve le nom original, le commentaire d'en-tete, le parcours depuis l'edict 1, le filtrage `inuse`/`team`/`FL_TEAMSLAVE`, le choix du premier edict non slave comme `teammaster`, l'ordre `teamchain`, le flag `FL_TEAMSLAVE` sur les suivants et les compteurs equipes/entites. Le test cible prouve aussi l'absence de reset prealable des liens/flags, afin de respecter le comportement C qui ignore les entites deja `FL_TEAMSLAVE`.
 
 ## Checklist appliquee
 
@@ -158,6 +160,12 @@
 - Runtime: valide. `SV_SpawnServer` -> `ge.SpawnEntities` -> `SpawnEntities` parse maintenant chaque entite par `COM_Parse`/`ED_ParseEdict`, appelle `ED_CallSpawn`, puis `G_FindTeams`/`InitBodyQue`/`PlayerTrail_Init`.
 - apps/web: valide indirectement. Le navigateur full-game declenche ce flux via le runtime serveur porte; aucune logique parallele de parse edict dans `apps/web` ne remplace `SpawnEntities`.
 - renderer-three: valide indirectement. `ED_ParseEdict` ne produit pas directement de rendu, mais alimente les champs qui peuvent devenir modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene via les spawners; `verify:full-game:three-renderer` et `verify:web-render-order` prouvent la consommation des sorties runtime.
+- Identification: lot `G_FindTeams` dans matrice `game_g_spawn.c.md`, source `Quake-2-master/game/g_spawn.c`, cible proprietaire `packages/game/src/g_spawn.ts`, nom cible `G_FindTeams`.
+- Comparaison C/H vs TS: entree globale C `g_edicts/globals.num_edicts` vs runtime TS, sortie void adaptee en compteurs de test, branches `!inuse`, `!team`, `FL_TEAMSLAVE`, match exact `team`, `teammaster`, `teamchain`, compteurs et absence de reset prealable verifies.
+- Commentaires d'en-tete: commentaire `G_FindTeams` verifie avec `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et note de portage.
+- Runtime: valide. `SV_SpawnServer` -> `ge.SpawnEntities` -> `SpawnEntities` appelle `G_FindTeams` apres tous les spawners, avant `InitBodyQue` et `PlayerTrail_Init`; les consommateurs runtime `g_func`, `g_phys`, `g_misc`, `g_turret` utilisent ensuite `teammaster`/`teamchain`.
+- apps/web: valide indirectement. Le navigateur declenche le spawn map via le runtime serveur porte et consomme ensuite les snapshots/refresh frames; aucune logique parallele de team linking dans `apps/web` ne masque ce flux.
+- renderer-three: valide indirectement. `G_FindTeams` ne produit pas directement de rendu, mais il synchronise les brush/team entities qui peuvent produire modeles inline, frames, scene/camera ou mouvements visibles via les snapshots; `verify:full-game:three-renderer` et `verify:web-render-order` prouvent la consommation des sorties runtime.
 
 ## Corrections appliquees
 
@@ -267,7 +275,12 @@
 - `npm run verify:full-game:server-host`: ok le 2026-05-02 apres branchement `ED_ParseEdict`.
 - `npm run verify:full-game:three-renderer`: ok le 2026-05-02 apres branchement `ED_ParseEdict`.
 - `npm run verify:web-render-order`: ok le 2026-05-02 apres branchement `ED_ParseEdict`.
+- `npm run verify:g-spawn`: ok le 2026-05-02 pour `G_FindTeams`.
+- `npm run typecheck`: ok le 2026-05-02 pour `G_FindTeams`.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02 pour `G_FindTeams`.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02 pour `G_FindTeams`.
+- `npm run verify:web-render-order`: ok le 2026-05-02 pour `G_FindTeams`.
 
 ## Prochain lot recommande
 
-- Continuer avec `G_FindTeams`.
+- Continuer avec les temporaires locaux de `SpawnEntities` (`ent`, `inhibit`, `com_token`, `i`, `skill_level`) si le lot reste coherent.

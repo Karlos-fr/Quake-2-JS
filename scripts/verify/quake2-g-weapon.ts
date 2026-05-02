@@ -15,7 +15,13 @@ import {
   DAMAGE_BULLET,
   DAMAGE_ENERGY,
   DAMAGE_NO_KNOCKBACK,
+  DAMAGE_RADIUS,
   MOD_BLASTER,
+  MOD_GRENADE,
+  MOD_G_SPLASH,
+  MOD_HANDGRENADE,
+  MOD_HELD_GRENADE,
+  MOD_HG_SPLASH,
   MOD_HIT,
   MOD_HYPERBLASTER,
   MOVETYPE_FLYMISSILE,
@@ -27,7 +33,7 @@ import {
   type GameRuntime
 } from "../../packages/game/src/runtime.js";
 import { damage_t } from "../../packages/game/src/g_local.js";
-import { blaster_touch, fire_blaster, fire_bullet, fire_hit, fire_shotgun } from "../../packages/game/src/g_weapon.js";
+import { blaster_touch, fire_blaster, fire_bullet, fire_hit, fire_shotgun, Grenade_Explode } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_WATER, SURF_SKY } from "../../packages/qcommon/src/q_shared.js";
 
@@ -47,8 +53,10 @@ function main(): void {
   verifyFireBlasterTouchCallbackForwardsPlane();
   verifyBlasterTouchDamageAndHyperMod();
   verifyBlasterTouchOwnerSkyAndWorldImpact();
+  verifyGrenadeExplodeDirectDamageSplashAndTempEntity();
+  verifyGrenadeExplodeSplashModsAndTempEntityVariants();
 
-  console.log("Verification g_weapon - check_dodge, fire_hit, fire_lead, fire_bullet, fire_shotgun, fire_blaster and blaster_touch lots OK");
+  console.log("Verification g_weapon - check_dodge, fire_hit, fire_lead, fire_bullet, fire_shotgun, fire_blaster, blaster_touch and Grenade_Explode lots OK");
 }
 
 function verifyCheckDodgeRuntimeBranch(): void {
@@ -644,6 +652,189 @@ function verifyBlasterTouchOwnerSkyAndWorldImpact(): void {
     G_FreeEdict: () => undefined
   }, plane, null);
   assert.equal(mod, MOD_BLASTER, "missing spawnflag 1 must select MOD_BLASTER");
+}
+
+function verifyGrenadeExplodeDirectDamageSplashAndTempEntity(): void {
+  const runtime = createHarnessRuntime();
+  const owner = createPlayer(runtime, 1);
+  const grenade = createRuntimeEntity({ classname: "grenade" }, 2);
+  const enemy = createRuntimeEntity({ classname: "monster_target" }, 3);
+  const ground = createRuntimeEntity({ classname: "ground" }, 4);
+  runtime.entities[2] = grenade;
+  runtime.entities[3] = enemy;
+  runtime.entities[4] = ground;
+
+  grenade.owner = owner;
+  grenade.enemy = enemy;
+  grenade.s.origin = [100, 50, 20];
+  grenade.origin = [...grenade.s.origin];
+  grenade.velocity = [10, -20, 30];
+  grenade.dmg = 120;
+  grenade.dmg_radius = 160;
+  grenade.spawnflags = 1;
+  grenade.waterlevel = 0;
+  grenade.groundentity = ground;
+
+  enemy.s.origin = [90, 50, 0];
+  enemy.origin = [...enemy.s.origin];
+  enemy.mins = [-10, -20, -5];
+  enemy.maxs = [10, 20, 35];
+
+  const damageCalls: Array<{
+    target: GameEntity;
+    inflictor: GameEntity;
+    attacker: GameEntity;
+    dir: vec3_t;
+    point: vec3_t;
+    normal: vec3_t;
+    damage: number;
+    knockback: number;
+    dflags: number;
+    mod: number;
+  }> = [];
+  const radiusCalls: Array<{
+    inflictor: GameEntity;
+    attacker: GameEntity;
+    damage: number;
+    ignore: GameEntity | null;
+    radius: number;
+    mod: number;
+  }> = [];
+  const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  const freed: GameEntity[] = [];
+
+  Grenade_Explode(grenade, runtime, {
+    T_Damage: (target, inflictor, attacker, dir, point, normal, damage, knockback, dflags, mod) => {
+      damageCalls.push({
+        target,
+        inflictor,
+        attacker,
+        dir: [...dir],
+        point: [...point],
+        normal: [...normal],
+        damage,
+        knockback,
+        dflags,
+        mod
+      });
+    },
+    T_RadiusDamage: (inflictor, attacker, damage, ignore, radius, mod) => {
+      radiusCalls.push({ inflictor, attacker, damage, ignore, radius, mod });
+    },
+    emitTempEntity: (type, payload) => {
+      tempEvents.push({ type, payload });
+    },
+    G_FreeEdict: (ent) => {
+      freed.push(ent);
+    }
+  });
+
+  assert.equal(damageCalls.length, 1, "Grenade_Explode must apply direct impact damage when enemy is set");
+  assert.equal(damageCalls[0]?.target, enemy, "Grenade_Explode direct damage target must be ent.enemy");
+  assert.equal(damageCalls[0]?.inflictor, grenade, "Grenade_Explode direct damage inflictor must be the grenade");
+  assert.equal(damageCalls[0]?.attacker, owner, "Grenade_Explode direct damage attacker must be the grenade owner");
+  assert.deepEqual(damageCalls[0]?.dir, [-10, 0, -20], "Grenade_Explode direct damage dir must be enemy origin minus grenade origin");
+  assert.deepEqual(damageCalls[0]?.point, [100, 50, 20], "Grenade_Explode direct damage point must be grenade origin");
+  assert.deepEqual(damageCalls[0]?.normal, [0, 0, 0], "Grenade_Explode direct damage normal must be vec3_origin");
+  assert.equal(damageCalls[0]?.damage, 114, "Grenade_Explode must truncate original points calculation for damage");
+  assert.equal(damageCalls[0]?.knockback, 114, "Grenade_Explode must reuse points as knockback");
+  assert.equal(damageCalls[0]?.dflags, DAMAGE_RADIUS, "Grenade_Explode direct damage must use DAMAGE_RADIUS");
+  assert.equal(damageCalls[0]?.mod, MOD_HANDGRENADE, "spawnflag 1 must select MOD_HANDGRENADE for direct damage");
+
+  assert.equal(radiusCalls.length, 1, "Grenade_Explode must apply splash damage exactly once");
+  assert.equal(radiusCalls[0]?.inflictor, grenade, "Grenade_Explode splash inflictor must be the grenade");
+  assert.equal(radiusCalls[0]?.attacker, owner, "Grenade_Explode splash attacker must be the grenade owner");
+  assert.equal(radiusCalls[0]?.damage, 120, "Grenade_Explode splash damage must use ent.dmg");
+  assert.equal(radiusCalls[0]?.ignore, enemy, "Grenade_Explode splash ignore must be ent.enemy");
+  assert.equal(radiusCalls[0]?.radius, 160, "Grenade_Explode splash radius must use ent.dmg_radius");
+  assert.equal(radiusCalls[0]?.mod, MOD_HG_SPLASH, "spawnflag 1 must select MOD_HG_SPLASH for splash damage");
+
+  assert.equal(tempEvents[0]?.type, temp_event_t.TE_GRENADE_EXPLOSION, "grounded dry grenades must emit TE_GRENADE_EXPLOSION");
+  assert.deepEqual(tempEvents[0]?.payload.origin, [99.8, 50.4, 19.4], "Grenade_Explode temp origin must be origin - velocity * 0.02");
+  assert.equal(freed[0], grenade, "Grenade_Explode must free the grenade");
+  assert.equal(runtime.sound2_entity, owner.mynoise2, "client-owned grenade explosions must emit PNOISE_IMPACT");
+  assert.deepEqual(owner.mynoise2?.s.origin, [100, 50, 20], "PNOISE_IMPACT origin must be grenade origin");
+}
+
+function verifyGrenadeExplodeSplashModsAndTempEntityVariants(): void {
+  const cases: Array<{
+    spawnflags: number;
+    waterlevel: number;
+    grounded: boolean;
+    expectedMod: number;
+    expectedType: temp_event_t;
+  }> = [
+    { spawnflags: 0, waterlevel: 0, grounded: false, expectedMod: MOD_G_SPLASH, expectedType: temp_event_t.TE_ROCKET_EXPLOSION },
+    { spawnflags: 2, waterlevel: 0, grounded: false, expectedMod: MOD_HELD_GRENADE, expectedType: temp_event_t.TE_ROCKET_EXPLOSION },
+    { spawnflags: 0, waterlevel: 1, grounded: false, expectedMod: MOD_G_SPLASH, expectedType: temp_event_t.TE_ROCKET_EXPLOSION_WATER },
+    { spawnflags: 0, waterlevel: 1, grounded: true, expectedMod: MOD_G_SPLASH, expectedType: temp_event_t.TE_GRENADE_EXPLOSION_WATER }
+  ];
+
+  for (const [index, testCase] of cases.entries()) {
+    const runtime = createHarnessRuntime();
+    const owner = createRuntimeEntity({ classname: "monster_owner" }, 1);
+    const grenade = createRuntimeEntity({ classname: "grenade" }, 2);
+    const ground = createRuntimeEntity({ classname: "ground" }, 3);
+    runtime.entities[1] = owner;
+    runtime.entities[2] = grenade;
+    runtime.entities[3] = ground;
+
+    grenade.owner = owner;
+    grenade.s.origin = [index, index + 1, index + 2];
+    grenade.origin = [...grenade.s.origin];
+    grenade.velocity = [0, 0, 50];
+    grenade.dmg = 80;
+    grenade.dmg_radius = 120;
+    grenade.spawnflags = testCase.spawnflags;
+    grenade.waterlevel = testCase.waterlevel;
+    grenade.groundentity = testCase.grounded ? ground : null;
+
+    let directDamageCalled = false;
+    let splashMod = -1;
+    let tempType: temp_event_t | null = null;
+
+    Grenade_Explode(grenade, runtime, {
+      T_Damage: () => {
+        directDamageCalled = true;
+      },
+      T_RadiusDamage: (_inflictor, _attacker, _damage, _ignore, _radius, mod) => {
+        splashMod = mod;
+      },
+      emitTempEntity: (type) => {
+        tempType = type;
+      },
+      G_FreeEdict: () => undefined
+    });
+
+    assert.equal(directDamageCalled, false, "Grenade_Explode must skip direct damage when enemy is absent");
+    assert.equal(splashMod, testCase.expectedMod, "Grenade_Explode splash mod variant mismatch");
+    assert.equal(tempType, testCase.expectedType, "Grenade_Explode temp entity variant mismatch");
+  }
+
+  const runtime = createHarnessRuntime();
+  const owner = createRuntimeEntity({ classname: "monster_owner" }, 1);
+  const enemy = createRuntimeEntity({ classname: "monster_target" }, 2);
+  const grenade = createRuntimeEntity({ classname: "grenade" }, 3);
+  runtime.entities[1] = owner;
+  runtime.entities[2] = enemy;
+  runtime.entities[3] = grenade;
+  grenade.owner = owner;
+  grenade.enemy = enemy;
+  grenade.s.origin = [0, 0, 0];
+  grenade.origin = [...grenade.s.origin];
+  grenade.dmg = 10;
+  grenade.dmg_radius = 20;
+
+  let directMod = -1;
+  Grenade_Explode(grenade, runtime, {
+    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
+      directMod = mod;
+    },
+    T_RadiusDamage: () => undefined,
+    emitTempEntity: () => undefined,
+    G_FreeEdict: () => undefined
+  });
+  assert.equal(directMod, MOD_GRENADE, "missing spawnflag 1 must select MOD_GRENADE for direct damage");
 }
 
 function createHarnessRuntime(): GameRuntime {

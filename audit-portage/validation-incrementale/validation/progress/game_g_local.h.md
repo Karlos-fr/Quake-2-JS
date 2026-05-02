@@ -1036,6 +1036,28 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `sm_meat_index`, `snd_fry`, `jacket_armor_index`, `combat_armor_index` passees a `Valide`; cibles des deux globals d'assets documentees.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-spawn` OK; `npm run verify:g-misc` OK; `npm run verify:p-view` OK; `npm run verify:g-items` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-02: lot `body_armor_index`, `MOD_UNKNOWN`, `MOD_BLASTER`, `MOD_SHOTGUN`, `MOD_SSHOTGUN`, `MOD_MACHINEGUN`, `MOD_CHAINGUN`, `MOD_GRENADE`, `MOD_G_SPLASH`.
+- Verdict: `Valide` pour les 9 entites apres comparaison H/C vs TS, verification des caches armor et du flux means-of-death runtime.
+- Source H/C comparee:
+  - `g_local.h` declare `body_armor_index` et definit les macros `MOD_UNKNOWN` a `MOD_G_SPLASH` avec valeurs 0..7.
+  - `g_items.c` initialise `body_armor_index = ITEM_INDEX(FindItem("Body Armor"))`; `ArmorIndex`, `Pickup_Armor` et `CheckArmor` consomment le slot body armor.
+  - `g_weapon.c`, `p_weapon.c`, `g_combat.c` et `p_client.c` propagent ces moyens de mort via tirs, explosions, `T_Damage`, `T_RadiusDamage` et `ClientObituary`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_items.ts`: `body_armor_index` est cache par `cacheItemIndices`, preserve l'index itemlist original de Body Armor, participe a `ArmorIndex`, `Pickup_Armor` et `GetArmorInfoByItem`.
+  - `packages/game/src/runtime.ts` et `packages/game/src/g_local.ts`: les macros du lot gardent les valeurs C, avec `MOD_UNKNOWN` porte dans `g_local.ts` et les MOD weapon/grenade portes dans le runtime puis reexportes par `g_local.ts`.
+  - `packages/game/src/g_combat.ts`: `T_Damage` ecrit `runtime.meansOfDeath = mod`; `CheckArmor` consomme Body Armor avec protections normale/energie.
+  - `packages/game/src/p_client.ts`: `ClientObituary` consomme `runtime.meansOfDeath` pour les messages et scores deathmatch des armes/grenade du lot.
+- Runtime: integration attendue et branchee via `InitItems`/pickups/HUD/combat pour Body Armor, et via `Weapon_*`/`fire_*`/`T_Damage`/`T_RadiusDamage`/`ClientObituary` pour les MOD. Les preuves couvrent valeurs, index, conversions armor, absorption combat, transmission du mod et messages deathmatch.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, HUD/inventaire, sons/temp entities et messages runtime; aucune logique parallele `body_armor_index` ou means-of-death detectee dans `apps/web`.
+- renderer-three: integration indirecte attendue. Body Armor produit un modele/item visible et modifie HUD/stats; les MOD weapon/grenade produisent tirs, impacts, temp entities, dlights/particules ou beams en amont selon l'arme, consommes via snapshots/refresh par `renderer-three`. Pas de consommation directe de ces constantes attendue dans le renderer.
+- Commentaires/documentation: pas de fonction nouvelle dans ce lot; commentaires d'en-tete de `ArmorIndex`, `Pickup_Armor`, `CheckArmor`, `T_Damage`, `T_RadiusDamage`, `ClientObituary` et fonctions weapon pertinentes verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions `MOD_UNKNOWN` a `MOD_G_SPLASH`.
+  - `scripts/verify/quake2-g-combat.ts`: preuve `CheckArmor` avec Body Armor normale/energie.
+  - `scripts/verify/quake2-p-client.ts`: preuve `ClientObituary` pour `MOD_BLASTER`, `MOD_SHOTGUN`, `MOD_SSHOTGUN`, `MOD_MACHINEGUN`, `MOD_CHAINGUN`, `MOD_GRENADE`, `MOD_G_SPLASH`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-items` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:p-client` OK; `npm run verify:p-weapon` OK; `npm run verify:g-weapon` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -1069,7 +1091,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `body_armor_index`, puis les macros MOD a partir de `MOD_UNKNOWN` si le lot reste petit, avec preuves de consommation armor/combat et means-of-death runtime.
+- Continuer avec les macros MOD a partir de `MOD_ROCKET` si le lot reste petit, avec preuves weapon/combat/death messages et sorties visibles associees.
 
 ## Blocages
 

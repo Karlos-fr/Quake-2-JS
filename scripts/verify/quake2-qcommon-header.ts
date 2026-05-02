@@ -126,24 +126,38 @@ import {
   DEFAULT_SOUND_PACKET_ATTENUATION,
   DEFAULT_SOUND_PACKET_VOLUME,
   PROTOCOL_VERSION,
+  U_ANGLE1,
+  U_ANGLE2,
+  U_ANGLE3,
+  U_EFFECTS16,
+  U_EFFECTS8,
   U_EVENT,
+  U_FRAME16,
   U_FRAME8,
   U_MODEL,
+  U_MODEL2,
+  U_MODEL3,
+  U_MODEL4,
   U_MOREBITS1,
   U_MOREBITS2,
   U_MOREBITS3,
   U_NUMBER16,
   U_OLDORIGIN,
   U_ORIGIN1,
+  U_ORIGIN2,
+  U_ORIGIN3,
+  U_RENDERFX16,
   U_RENDERFX8,
+  U_SKIN16,
   U_SKIN8,
+  U_SOLID,
   U_SOUND,
   UPDATE_BACKUP,
   UPDATE_MASK,
   clc_ops_e,
   svc_ops_e
 } from "../../packages/qcommon/src/protocol.js";
-import { createEntityState, type usercmd_t } from "../../packages/qcommon/src/q_shared.js";
+import { MAX_EDICTS, createEntityState, type usercmd_t } from "../../packages/qcommon/src/q_shared.js";
 
 assert.equal(VERSION, 3.19, "VERSION mismatch");
 assert.equal(PORT_MASTER, 27900, "PORT_MASTER mismatch");
@@ -485,6 +499,106 @@ assert.equal(MSG_ReadShort(entityBuffer), 16, "MSG delta entity old_origin[1] mi
 assert.equal(MSG_ReadShort(entityBuffer), 24, "MSG delta entity old_origin[2] mismatch");
 assert.equal(MSG_ReadByte(entityBuffer), 6, "MSG delta entity sound mismatch");
 assert.equal(MSG_ReadByte(entityBuffer), 3, "MSG delta entity event mismatch");
+
+const forcedEntity = createEntityState();
+forcedEntity.number = 42;
+const forcedBuffer = createSizeBuffer(8);
+MSG_WriteDeltaEntity(forcedEntity, forcedEntity, forcedBuffer, false, false);
+assert.equal(forcedBuffer.cursize, 0, "MSG delta entity should skip unchanged unforced states");
+MSG_WriteDeltaEntity(forcedEntity, forcedEntity, forcedBuffer, true, false);
+forcedBuffer.readcount = 0;
+assert.equal(MSG_ReadByte(forcedBuffer), 0, "MSG delta entity forced bits mismatch");
+assert.equal(MSG_ReadByte(forcedBuffer), 42, "MSG delta entity forced number mismatch");
+
+const fullBase = createEntityState();
+fullBase.number = 12;
+const fullDelta = createEntityState();
+fullDelta.number = 12;
+fullDelta.modelindex = 1;
+fullDelta.modelindex2 = 2;
+fullDelta.modelindex3 = 3;
+fullDelta.modelindex4 = 4;
+fullDelta.frame = 300;
+fullDelta.skinnum = 0x12345;
+fullDelta.effects = 0x9000;
+fullDelta.renderfx = 0x9000;
+fullDelta.origin = [1, 2, 3];
+fullDelta.angles = [90, 180, 270];
+fullDelta.old_origin = [4, 5, 6];
+fullDelta.sound = 7;
+fullDelta.event = 8;
+fullDelta.solid = 0x1234;
+const fullBuffer = createSizeBuffer(128);
+MSG_WriteDeltaEntity(fullBase, fullDelta, fullBuffer, false, true);
+fullBuffer.readcount = 0;
+const fullBits =
+  MSG_ReadByte(fullBuffer) |
+  (MSG_ReadByte(fullBuffer) << 8) |
+  (MSG_ReadByte(fullBuffer) << 16) |
+  (MSG_ReadByte(fullBuffer) << 24);
+assert.equal(
+  fullBits,
+  U_MODEL |
+    U_MODEL2 |
+    U_MODEL3 |
+    U_MODEL4 |
+    U_FRAME16 |
+    U_SKIN8 |
+    U_SKIN16 |
+    U_EFFECTS8 |
+    U_EFFECTS16 |
+    U_RENDERFX8 |
+    U_RENDERFX16 |
+    U_ORIGIN1 |
+    U_ORIGIN2 |
+    U_ORIGIN3 |
+    U_ANGLE1 |
+    U_ANGLE2 |
+    U_ANGLE3 |
+    U_OLDORIGIN |
+    U_SOUND |
+    U_EVENT |
+    U_SOLID |
+    U_MOREBITS1 |
+    U_MOREBITS2 |
+    U_MOREBITS3,
+  "MSG delta entity full bits mismatch"
+);
+assert.equal(MSG_ReadByte(fullBuffer), 12, "MSG delta entity full number mismatch");
+assert.equal(MSG_ReadByte(fullBuffer), 1, "MSG delta entity modelindex mismatch");
+assert.equal(MSG_ReadByte(fullBuffer), 2, "MSG delta entity modelindex2 mismatch");
+assert.equal(MSG_ReadByte(fullBuffer), 3, "MSG delta entity modelindex3 mismatch");
+assert.equal(MSG_ReadByte(fullBuffer), 4, "MSG delta entity modelindex4 mismatch");
+assert.equal(MSG_ReadShort(fullBuffer), 300, "MSG delta entity frame16 mismatch");
+assert.equal(MSG_ReadLong(fullBuffer), 0x12345, "MSG delta entity skin long mismatch");
+assert.equal(MSG_ReadLong(fullBuffer), 0x9000, "MSG delta entity effects long mismatch");
+assert.equal(MSG_ReadLong(fullBuffer), 0x9000, "MSG delta entity renderfx long mismatch");
+assert.deepEqual(
+  [MSG_ReadShort(fullBuffer), MSG_ReadShort(fullBuffer), MSG_ReadShort(fullBuffer)],
+  [8, 16, 24],
+  "MSG delta entity origin coords mismatch"
+);
+assert.deepEqual(
+  [MSG_ReadByte(fullBuffer), MSG_ReadByte(fullBuffer), MSG_ReadByte(fullBuffer)],
+  [64, 128, 192],
+  "MSG delta entity angle bytes mismatch"
+);
+assert.deepEqual(
+  [MSG_ReadShort(fullBuffer), MSG_ReadShort(fullBuffer), MSG_ReadShort(fullBuffer)],
+  [32, 40, 48],
+  "MSG delta entity old origin coords mismatch"
+);
+assert.equal(MSG_ReadByte(fullBuffer), 7, "MSG delta entity full sound mismatch");
+assert.equal(MSG_ReadByte(fullBuffer), 8, "MSG delta entity full event mismatch");
+assert.equal(MSG_ReadShort(fullBuffer), 0x1234, "MSG delta entity solid mismatch");
+
+const invalidEntity = createEntityState();
+invalidEntity.number = MAX_EDICTS;
+assert.throws(
+  () => MSG_WriteDeltaEntity(createEntityState(), invalidEntity, createSizeBuffer(8), true, true),
+  /entity number >= MAX_EDICTS/,
+  "MSG delta entity must reject numbers outside MAX_EDICTS"
+);
 
 const printBuffer = createSizeBuffer(16);
 SZ_Print(printBuffer, "a");

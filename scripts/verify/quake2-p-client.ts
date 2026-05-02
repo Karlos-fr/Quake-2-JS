@@ -12,10 +12,23 @@
 import { strict as assert } from "node:assert";
 
 import { DF_QUAD_DROP } from "../../packages/qcommon/src/index.js";
-import { BODY_QUEUE_SIZE, DEAD_DEAD, DROPPED_PLAYER_ITEM, damage_t } from "../../packages/game/src/g_local.js";
+import {
+  BODY_QUEUE_SIZE,
+  DEAD_DEAD,
+  DROPPED_PLAYER_ITEM,
+  MOD_BLASTER,
+  MOD_CHAINGUN,
+  MOD_G_SPLASH,
+  MOD_GRENADE,
+  MOD_MACHINEGUN,
+  MOD_SHOTGUN,
+  MOD_SSHOTGUN,
+  damage_t
+} from "../../packages/game/src/g_local.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
 import {
   ClientConnect,
+  ClientObituary,
   CopyToBodyQue,
   InitBodyQue,
   TossClientWeapon,
@@ -34,10 +47,46 @@ main();
 function main(): void {
   verifyBodyQueueUsesOriginalSizeAndWraps();
   verifyClientConnectRespectsAutosavedPersistentState();
+  verifyClientObituaryWeaponMeansOfDeath();
   verifyTossClientWeaponUsesDefaultDropItem();
   verifyPlayerDieUsesDefaultSoundAndGibs();
 
   console.log("Verification p_client - player lifecycle defaults OK");
+}
+
+function verifyClientObituaryWeaponMeansOfDeath(): void {
+  const cases: Array<[number, string]> = [
+    [MOD_BLASTER, "victim was blasted by attacker\n"],
+    [MOD_SHOTGUN, "victim was gunned down by attacker\n"],
+    [MOD_SSHOTGUN, "victim was blown away by attacker's super shotgun\n"],
+    [MOD_MACHINEGUN, "victim was machinegunned by attacker\n"],
+    [MOD_CHAINGUN, "victim was cut in half by attacker's chaingun\n"],
+    [MOD_GRENADE, "victim was popped by attacker's grenade\n"],
+    [MOD_G_SPLASH, "victim was shredded by attacker's shrapnel\n"]
+  ];
+
+  for (const [mod, expected] of cases) {
+    const runtime = createHarnessRuntime();
+    runtime.deathmatch = true;
+    runtime.meansOfDeath = mod;
+    const victim = spawnGameEntity(runtime);
+    attachGameClient(victim);
+    victim.client!.pers.netname = "victim";
+    const attacker = spawnGameEntity(runtime);
+    attachGameClient(attacker);
+    attacker.client!.pers.netname = "attacker";
+
+    const prints: string[] = [];
+    ClientObituary(victim, null, attacker, runtime, {
+      onPrint: (_level, message) => {
+        prints.push(message);
+      }
+    });
+
+    assert.deepEqual(prints, [expected], `ClientObituary message mismatch for mod ${mod}`);
+    assert.equal(victim.enemy, attacker, `ClientObituary should assign attacker enemy for mod ${mod}`);
+    assert.equal(attacker.client!.resp.score, 1, `ClientObituary should credit attacker for mod ${mod}`);
+  }
 }
 
 function verifyClientConnectRespectsAutosavedPersistentState(): void {

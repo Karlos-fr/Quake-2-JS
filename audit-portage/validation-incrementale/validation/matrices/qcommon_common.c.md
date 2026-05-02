@@ -71,7 +71,7 @@
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDir` | `packages/qcommon/src/messages.ts` | `MSG_WriteDir` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_ReadDir` | `packages/qcommon/src/messages.ts` | `MSG_ReadDir` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `b` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDeltaEntity` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaEntity` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDeltaEntity` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaEntity` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `bits` | `packages/qcommon/src/messages.ts` | `bits` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteByte` | `packages/qcommon/src/messages.ts` | `MSG_WriteByte` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_BeginReading` | `packages/memory/src/sizebuf.ts` | `MSG_BeginReading` | A verifier | A redecouper |  |

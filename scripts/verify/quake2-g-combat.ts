@@ -16,12 +16,13 @@ import {
   createGameRuntimeFromBspEntities,
   createRuntimeEntity
 } from "../../packages/game/src/index.js";
-import { CanDamage, CheckPowerArmor, Killed, M_ReactToDamage, T_Damage, T_RadiusDamage } from "../../packages/game/src/g_combat.js";
+import { CanDamage, CheckArmor, CheckPowerArmor, Killed, M_ReactToDamage, T_Damage, T_RadiusDamage } from "../../packages/game/src/g_combat.js";
 import { temp_event_t } from "../../packages/qcommon/src/index.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
 import { FL_POWER_ARMOR, MOVETYPE_BOUNCE, MOVETYPE_PUSH, MOVETYPE_STEP, MOVETYPE_WALK, POWER_ARMOR_SCREEN, POWER_ARMOR_SHIELD, SOLID_BBOX, SVF_MONSTER } from "../../packages/game/src/runtime.js";
 import {
   DAMAGE_BULLET,
+  DAMAGE_ENERGY,
   DAMAGE_NO_KNOCKBACK,
   DAMAGE_NO_PROTECTION,
   DAMAGE_RADIUS,
@@ -38,6 +39,7 @@ main();
 
 function main(): void {
   verifyCanDamageTraceLocalSequence();
+  verifyBodyArmorConsumption();
   verifyMonsterPowerArmorUsesMonsterinfo();
   verifyClientPowerArmorScreenLocals();
   verifyKilledUpdatesMonsterBookkeeping();
@@ -53,6 +55,24 @@ function main(): void {
   verifyRadiusDamageUsesDefaultDamageCore();
 
   console.log("Verification g_combat - damage/combat gameplay OK");
+}
+
+function verifyBodyArmorConsumption(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(6);
+  const bodyArmor = FindItem("Body Armor");
+  if (!bodyArmor) {
+    throw new Error("Body Armor item must exist");
+  }
+
+  player.client!.pers.inventory[bodyArmor.index] = 100;
+  const normalSave = CheckArmor(player, [4, 5, 6], [0, 0, 1], 10, temp_event_t.TE_SPARKS, 0, runtime);
+  assertNumber(normalSave, 8, "CheckArmor should use Body Armor normal_protection");
+  assertNumber(player.client!.pers.inventory[bodyArmor.index], 92, "CheckArmor should subtract normal Body Armor savings");
+
+  const energySave = CheckArmor(player, [4, 5, 6], [0, 0, 1], 10, temp_event_t.TE_SCREEN_SPARKS, DAMAGE_ENERGY, runtime);
+  assertNumber(energySave, 6, "CheckArmor should use Body Armor energy_protection");
+  assertNumber(player.client!.pers.inventory[bodyArmor.index], 86, "CheckArmor should subtract energy Body Armor savings");
 }
 
 function verifyCanDamageTraceLocalSequence(): void {

@@ -54,6 +54,7 @@ import {
 } from "./protocol.js";
 import {
   ANGLE2SHORT,
+  MAX_EDICTS,
   RF_BEAM,
   SHORT2ANGLE,
   type entity_state_t,
@@ -377,6 +378,9 @@ export function MSG_WriteDeltaEntity(
 ): void {
   if (!to.number) {
     throw new Error("MSG_WriteDeltaEntity: unset entity number");
+  }
+  if (to.number >= MAX_EDICTS) {
+    throw new Error("MSG_WriteDeltaEntity: entity number >= MAX_EDICTS");
   }
 
   let bits = 0;

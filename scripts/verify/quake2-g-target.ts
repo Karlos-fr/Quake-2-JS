@@ -75,6 +75,7 @@ import {
   target_crosslevel_target_think,
   target_laser_off,
   target_laser_on,
+  target_laser_start,
   target_laser_think,
   target_laser_use,
   target_lightramp_use,
@@ -626,6 +627,51 @@ function verifyLaserDamageAndLightramp(): void {
   assert.equal(laser.nextthink, runtime.time + FRAMETIME, "target_laser think cadence mismatch");
   laser.use?.(laser, null, null, runtime);
   assert.equal((laser.svflags & SVF_NOCLIENT) !== 0, true, "target_laser use must toggle off");
+
+  const startRuntime = createRuntime();
+  const trackedTarget = spawnGameEntity(startRuntime);
+  trackedTarget.classname = "target_position";
+  trackedTarget.targetname = "beam_end";
+  const targetedLaser = spawnGameEntity(startRuntime);
+  targetedLaser.classname = "target_laser";
+  targetedLaser.target = "beam_end";
+  targetedLaser.spawnflags = 64 | 32;
+  target_laser_start(targetedLaser, startRuntime);
+  assert.equal(targetedLaser.movetype, 0, "target_laser_start movetype mismatch");
+  assert.equal(targetedLaser.solid, 0, "target_laser_start solid mismatch");
+  assert.equal((targetedLaser.s.renderfx & (RF_BEAM | RF_TRANSLUCENT)), RF_BEAM | RF_TRANSLUCENT, "target_laser_start renderfx mismatch");
+  assert.equal(targetedLaser.s.modelindex, 1, "target_laser_start modelindex mismatch");
+  assert.equal(targetedLaser.s.frame, 16, "target_laser_start fat beam width mismatch");
+  assert.equal(targetedLaser.s.skinnum, 0xe0e1e2e3, "target_laser_start orange skinnum mismatch");
+  assert.equal(targetedLaser.enemy, trackedTarget, "target_laser_start must resolve target entity");
+  assert.equal(targetedLaser.use, target_laser_use, "target_laser_start must install use callback");
+  assert.equal(targetedLaser.think, target_laser_think, "target_laser_start must install think callback");
+  assert.equal(targetedLaser.dmg, 1, "target_laser_start must default damage");
+  assert.deepEqual(targetedLaser.mins, [-8, -8, -8], "target_laser_start mins mismatch");
+  assert.deepEqual(targetedLaser.maxs, [8, 8, 8], "target_laser_start maxs mismatch");
+  assert.equal((targetedLaser.svflags & SVF_NOCLIENT) !== 0, true, "target_laser_start without START_ON must hide beam");
+  assert.equal(targetedLaser.nextthink, 0, "target_laser_start without START_ON must cancel think");
+
+  const movedirRuntime = createRuntime();
+  const movedirLaser = spawnGameEntity(movedirRuntime);
+  movedirLaser.classname = "target_laser";
+  movedirLaser.s.angles = [0, 90, 0];
+  movedirLaser.dmg = 7;
+  target_laser_start(movedirLaser, movedirRuntime);
+  assertVec3NearlyEqual(movedirLaser.movedir, [0, 1, 0], "target_laser_start must derive movedir when no target is set");
+  assert.deepEqual(movedirLaser.s.angles, [0, 0, 0], "target_laser_start must clear source angles through G_SetMovedir");
+  assert.equal(movedirLaser.dmg, 7, "target_laser_start must preserve explicit damage");
+
+  const badTargetRuntime = createRuntime();
+  const badTargetLaser = spawnGameEntity(badTargetRuntime);
+  badTargetLaser.classname = "target_laser";
+  badTargetLaser.target = "missing";
+  target_laser_start(badTargetLaser, badTargetRuntime);
+  assert.equal(badTargetLaser.enemy, null, "target_laser_start missing target must leave enemy null");
+  assert.ok(
+    badTargetRuntime.logEntries.some((entry) => entry.message.includes("target_laser") && entry.message.includes("missing is a bad target")),
+    "target_laser_start missing target warning mismatch"
+  );
 
   const toggleRuntime = createRuntime();
   const toggleLaser = spawnGameEntity(toggleRuntime);
