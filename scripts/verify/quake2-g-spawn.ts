@@ -27,7 +27,8 @@ import {
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE,
-  CS_STATUSBAR
+  CS_STATUSBAR,
+  MAX_EDICTS
 } from "../../packages/qcommon/src/index.js";
 import { FL_TEAMSLAVE, FRAMETIME, MOVETYPE_PUSH, MOVETYPE_STOP, MOVETYPE_TOSS, SOLID_BBOX, SOLID_BSP, SOLID_NOT, SOLID_TRIGGER, STATE_BOTTOM, STATE_UP, SVF_NOCLIENT } from "../../packages/game/src/runtime.js";
 import {
@@ -37,8 +38,8 @@ import {
   SPAWNFLAG_NOT_MEDIUM,
   damage_t
 } from "../../packages/game/src/g_local.js";
-import { ED_CallSpawn, G_FindTeams, dm_statusbar, single_statusbar, spawns } from "../../packages/game/src/g_spawn.js";
-import { G_RunFrame, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { ED_CallSpawn, G_FindTeams, SpawnEntities, dm_statusbar, single_statusbar, spawns } from "../../packages/game/src/g_spawn.js";
+import { G_RunFrame, InitGame, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { spawnGameEntity } from "../../packages/game/src/runtime.js";
 
 const configstrings = new Map<number, string>();
@@ -635,6 +636,40 @@ assert.equal(
   deathmatchContext.runtime.entities.some((entity) => entity.inuse && entity.targetname === "dm_filtered"),
   false,
   "SPAWNFLAG_NOT_DEATHMATCH must inhibit entities in deathmatch"
+);
+
+const allocationContext = createGameMainContext(imports);
+InitGame(allocationContext);
+const manyUntargetedLights = Array.from({ length: 1100 }, (_, index) => `{
+"classname" "light"
+"style" "${32 + index}"
+}`).join("\n");
+SpawnEntities(
+  allocationContext,
+  "allocation_reuse",
+  `{
+"classname" "worldspawn"
+}
+${manyUntargetedLights}
+{
+"classname" "func_door"
+"model" "*30"
+"targetname" "late_visible_door"
+}
+`,
+  ""
+);
+assert.equal(
+  allocationContext.runtime.entities.length < MAX_EDICTS,
+  true,
+  "SpawnEntities must reuse freed edicts instead of prebuilding every BSP entity"
+);
+const lateVisibleDoor = allocationContext.runtime.entities.find((entity) => entity.inuse && entity.targetname === "late_visible_door");
+assert.ok(lateVisibleDoor, "late visible brush entity should survive after many freed spawns");
+assert.equal(
+  lateVisibleDoor.index < MAX_EDICTS,
+  true,
+  "visible entities emitted by SpawnEntities must stay inside the server baseline range"
 );
 
 const funcBrushContext = createGameMainContext(imports);

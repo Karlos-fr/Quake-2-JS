@@ -13,6 +13,8 @@
 - 2026-05-02: verification de dispatch `light` sans validation d'entite proprietaire `g_spawn.c`.
 - 2026-05-02: `SP_worldspawn`, `single_statusbar` et `dm_statusbar`.
 - 2026-05-02: table `spawns`/ownership uniquement.
+- 2026-05-02: deplacement ownership `SpawnEntities` de `g_main.ts` vers `g_spawn.ts`; verdict provisoire `Non conforme` pour le bug city1.
+- 2026-05-02: `SpawnEntities` valide apres correction allocation sequentielle `G_Spawn` et repro city1.
 
 ## Verdict du lot
 
@@ -45,6 +47,8 @@
 - `SP_item_health_mega`: valide. Meme branchement `spawns[]`; la cible conserve le modele `models/items/mega_h/tris.md2`, `count = 100`, `style = HEALTH_IGNORE_MAX | HEALTH_TIMED`, `SpawnItem(FindItem("Health"))` et precache `items/m_health.wav`.
 - `SP_light`: preuve de dispatch conservee, mais pas comptee comme entite proprietaire de `g_spawn.c`. La definition originale est dans `game/g_misc.c` et la matrice `game_g_misc.c.md` valide deja `SP_light`; pour `g_spawn.c`, seule l'entree `spawns[]`/`light` releve du fichier courant.
 - `spawns`: valide pour le lot table/ownership. La table TS conserve les 108 couples classname/callback de `game/g_spawn.c`, sans traiter les callbacks externes comme entites proprietaires de `g_spawn.c`. Correction appliquee: ajout de l'alias original `func_group -> SP_info_null`, retrait de l'entree TS extra `monster_makron -> SP_monster_makron` absente de la table source de ce fichier. Les deux lignes declaratives dupliquees `spawns` ont ete retirees de la matrice pour ne garder qu'une entite table proprietaire.
+
+- `SpawnEntities`: valide. La cible proprietaire est `packages/game/src/g_spawn.ts` avec branchement `GetGameApi.SpawnEntities` conserve depuis `g_main.ts`. Le port ne preconstruit plus toute la lump BSP: il initialise seulement worldspawn et les slots clients, puis alloue chaque entite map via `G_Spawn`, charge les proprietes parsees dans l'edict obtenu, applique le hack `command`/spawnflags, appelle `ED_CallSpawn`, puis `G_FindTeams`, `InitBodyQue` et `PlayerTrail_Init`. La repro city1 confirme 1091 entites BSP -> 528 edicts runtime pour `maxentities=1024`, sans entite visible hors plage baseline.
 
 ## Checklist appliquee
 
@@ -116,6 +120,12 @@
 - apps/web: valide indirectement. Le flux navigateur full-game/newgame utilise le runtime porte pour creer la session, generer les snapshots et propager `playerstate`/refresh frame; aucune logique parallele de spawn player/intermission masquante n'a ete constatee.
 - renderer-three: valide indirectement. `info_player_deathmatch` peut produire le modele visible `dmspot`; les cameras player/intermission passent par `ClientRefreshFrame.view.vieworg/viewangles`, puis `apps/web` synchronise la camera Three et `renderer-three` consomme ces vues dans `refresh-entity-sync`, dlights/particles et world adapter.
 
+- Identification: lot `SpawnEntities` dans matrice `game_g_spawn.c.md`, source `Quake-2-master/game/g_spawn.c`, cible proprietaire `packages/game/src/g_spawn.ts`, nom cible `SpawnEntities`. Ownership corrige depuis `g_main.ts`; `g_main.ts` reste seulement l'adapter export `GetGameApi.SpawnEntities`. Commentaire d'en-tete verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior`, `Porting notes`.
+- Comparaison C/H vs TS: le C parse la lump, utilise `g_edicts` pour worldspawn puis `G_Spawn` pour les entites suivantes, applique inhibition skill/deathmatch, dispatch `ED_CallSpawn`, puis `G_FindTeams` et `PlayerTrail_Init`. Le TS conserve worldspawn, slots clients, normalisation skill, sauvegarde clients, `TAG_LEVEL`, `level/game` locals, `configureWorldspawn`, `ED_CallSpawn`, `G_FindTeams`, `InitBodyQue` et `PlayerTrail_Init`; correction appliquee pour utiliser `G_Spawn` sequentiellement au lieu de preconstruire toutes les entites BSP.
+- Runtime: valide. Le flux attendu est `SV_SpawnServer` -> `ge.SpawnEntities` -> `SV_CreateBaseline` -> snapshots; la repro city1 prouve que `SpawnEntities` ne produit plus d'edicts visibles au-dela de `MAX_EDICTS`, ce qui etait la cause du `sv.baselines[newnum]` undefined.
+- apps/web: valide. `full-game-server-host` passe par le runtime serveur porte et ne masque pas le bug; `verify:full-game:server-host` passe apres correction.
+- renderer-three: valide indirectement. `SpawnEntities` produit des entites visibles, modeles inline, monstres et etats camera/scene uniquement via snapshots/configstrings; le manque etait en amont serveur/baselines, pas dans `renderer-three`. `verify:full-game:three-renderer` et `verify:web-render-order` passent apres correction.
+
 ## Corrections appliquees
 
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `func_clock`, sa presence dans `spawns[]`, le dispatch map `SpawnEntities`/`ED_CallSpawn`, l'activation `START_OFF`, le tick `G_RunFrame`, la mise a jour `target_string` et les frames/modelindex visibles des `target_character`.
@@ -130,6 +140,9 @@
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `SP_light`, sa presence dans `spawns[]`, le dispatch `ED_CallSpawn`, l'installation de `light_use`, les configstrings runtime `CS_LIGHTS`, le toggle `START_OFF`, le style 0 sans callback et le rejet deathmatch.
 - `packages/game/src/g_spawn.ts`: ajout de `func_group -> SP_info_null`, retrait de l'entree extra `monster_makron -> SP_monster_makron`, ajout du commentaire d'en-tete `spawns` et mise a jour des notes de portage fichier/`ED_CallSpawn`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout d'une preuve de parite entre la table C `spawns[]` et la table TS `spawns`, avec verification des callbacks et de l'absence de doublons.
+- `packages/game/src/g_spawn.ts`: deplacement de `SpawnEntities` et de ses helpers directs depuis `g_main.ts` vers le fichier proprietaire `g_spawn.ts`; `packages/game/src/index.ts`, `scripts/verify/quake2-g-main.ts` et `scripts/verify/quake2-g-spawn.ts` importent maintenant `SpawnEntities` depuis `g_spawn.ts`.
+- `packages/game/src/g_spawn.ts`: correction de `SpawnEntities` pour construire seulement worldspawn/clients puis allouer les entites map via `G_Spawn`, en reutilisant les edicts liberes par les spawners comme dans le C.
+- `scripts/verify/quake2-g-spawn.ts`: ajout d'une preuve anti-regression avec 1100 lights liberees avant une porte visible tardive; la porte reste dans la plage `MAX_EDICTS`.
 
 ## Tests
 
@@ -189,7 +202,17 @@
 - `npm run verify:full-game:server-host`: ok le 2026-05-02.
 - `npm run verify:full-game:three-renderer`: ok le 2026-05-02.
 - `npm run verify:web-render-order`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02 apres deplacement `SpawnEntities`.
+- `npm run verify:g-main`: ok le 2026-05-02 apres deplacement `SpawnEntities`.
+- `npm run verify:g-spawn`: ok le 2026-05-02 apres deplacement `SpawnEntities`.
+- `npm run verify:g-spawn`: ok le 2026-05-02 apres correction allocation sequentielle `SpawnEntities`.
+- `npm run verify:g-main`: ok le 2026-05-02 apres correction allocation sequentielle `SpawnEntities`.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02 apres correction allocation sequentielle `SpawnEntities`.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02 apres correction allocation sequentielle `SpawnEntities`.
+- `npm run verify:web-render-order`: ok le 2026-05-02 apres correction allocation sequentielle `SpawnEntities`.
+- `npm run typecheck`: ok le 2026-05-02 apres correction allocation sequentielle `SpawnEntities`.
+- Script inline city1: ok le 2026-05-02, `1091` entites BSP, `528` edicts runtime, `0` entite visible hors `MAX_EDICTS`.
 
 ## Prochain lot recommande
 
-- Continuer avec `ED_CallSpawn`, en limitant le lot au chemin itemlist/table/warning et au branchement depuis `SpawnEntities`.
+- Reprendre `ED_CallSpawn`, limite au chemin itemlist/table/warning et au branchement depuis `SpawnEntities`.

@@ -15,8 +15,8 @@ import { BUTTON_ANY, BUTTON_ATTACK, CS_PLAYERSKINS, CS_STATUSBAR, CVAR_ARCHIVE, 
 import { MOVETYPE_NONE, MOVETYPE_NOCLIP, TAG_GAME, TAG_LEVEL, svc_muzzleflash, svc_temp_entity } from "../../packages/game/src/g_local.js";
 import { GAME_API_VERSION } from "../../packages/game/src/game.js";
 import { attachGameClient, createGameRuntimeFromBspEntities, emitGameTempEntity, emitPlayerMuzzleFlash } from "../../packages/game/src/runtime.js";
-import { CheckDMRules, ClientCommand, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
-import { single_statusbar } from "../../packages/game/src/g_spawn.js";
+import { CheckDMRules, ClientCommand, ClientEndServerFrames, ExitLevel, G_RunFrame, GetGameApi, InitGame, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { SpawnEntities, single_statusbar } from "../../packages/game/src/g_spawn.js";
 
 const dprints: string[] = [];
 const bprints: string[] = [];

@@ -11,29 +11,19 @@
  * Deviations:
  * - The original file-scope globals are grouped into an explicit `GameMainContext`.
  * - Persistence entry points are delegated to the `game/g_save.c` port in `g_save.ts`.
- * - `SpawnEntities` uses the existing entity-lump parser and an explicit runtime rebuild step.
+ * - `SpawnEntities` is owned by the split `game/g_spawn.c` port in `g_spawn.ts`.
  *
  * Notes:
  * - This file is intended to stay close to the original C source.
  */
 
-import { parseEntityLump, type BspEntity } from "../../formats/src/qfiles.js";
 import {
   CVAR_ARCHIVE,
   CVAR_LATCH,
   CVAR_NOSET,
   CVAR_SERVERINFO,
   CVAR_USERINFO,
-  CS_CDTRACK,
-  CS_ITEMS,
-  CS_LIGHTS,
-  CS_MAXCLIENTS,
-  CS_NAME,
   CS_PLAYERSKINS,
-  CS_SKY,
-  CS_SKYAXIS,
-  CS_SKYROTATE,
-  CS_STATUSBAR,
   DF_SAME_LEVEL,
   MZ_LOGIN,
   MZ_LOGOUT,
@@ -51,11 +41,6 @@ import {
   FL_SWIM,
   FRAMETIME,
   GAMEVERSION,
-  SPAWNFLAG_NOT_COOP,
-  SPAWNFLAG_NOT_DEATHMATCH,
-  SPAWNFLAG_NOT_EASY,
-  SPAWNFLAG_NOT_HARD,
-  SPAWNFLAG_NOT_MEDIUM,
   SVF_MONSTER,
   svc_muzzleflash,
   svc_muzzleflash2,
@@ -68,7 +53,7 @@ import {
   type level_locals_t
 } from "./g_local.js";
 import { AI_SetSightClient } from "./g_ai.js";
-import { FindItem, InitItems, PrecacheItem, SetItemNames } from "./g_items.js";
+import { InitItems } from "./g_items.js";
 import { G_RunEntity } from "./g_phys.js";
 import { M_CheckGround } from "./g_monster.js";
 import type { GameHudHooks } from "./p_hud.js";
@@ -80,17 +65,13 @@ import {
   ClientConnect,
   ClientDisconnect,
   ClientThink,
-  ClientUserinfoChanged,
-  InitBodyQue,
-  SaveClientData
+  ClientUserinfoChanged
 } from "./p_client.js";
-import { PlayerTrail_Init } from "./p_trail.js";
 import { ClientEndServerFrame } from "./p_view.js";
 import { ClientCommand as ClientCommand_Cmds } from "./g_cmds.js";
-import { ED_CallSpawn, G_FindTeams, dm_statusbar, single_statusbar } from "./g_spawn.js";
+import { SpawnEntities } from "./g_spawn.js";
 import { G_Find, G_Spawn } from "./g_utils.js";
 import {
-  attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameConfigstringUpdates,
   drainGameCprintfEvents,
@@ -98,8 +79,6 @@ import {
   drainPlayerMuzzleFlashEvents,
   drainGameSoundEvents,
   drainGameTempEntityEvents,
-  freeGameEntity,
-  registerGameSound,
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
@@ -318,92 +297,6 @@ export function InitGame(context: GameMainContext): void {
 
   context.game.num_items = InitItems();
   applyMainCvarsToRuntime(context);
-}
-
-/**
- * Original name: SpawnEntities
- * Source: game/g_main.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Rebuilds the gameplay runtime from one textual entity lump and reserves the canonical player-edict prefix.
- *
- * Porting notes:
- * - Keeps player edicts at slots `1..maxclients`, then appends BSP entities after the worldspawn.
- * - Applies the original skill/deathmatch spawnflag inhibition before dispatching entity spawners.
- */
-export function SpawnEntities(context: GameMainContext, mapname: string, entstring: string, spawnpoint: string): void {
-  normalizeSkillCvar(context);
-  SaveClientData(context.runtime);
-  context.gi.FreeTags(TAG_LEVEL);
-
-  const savedClients = Array.from(
-    { length: context.runtime.maxclients },
-    (_, index) => context.runtime.entities[index + 1]?.client ?? null
-  );
-
-  const parsedEntities = parseEntityLump(entstring);
-  const nextRuntime = createGameRuntimeFromBspEntities(buildServerEntityList(parsedEntities, context.runtime.maxclients));
-  nextRuntime.collision = context.runtime.collision;
-  if (context.runtime.engineLinkEntity) {
-    nextRuntime.engineLinkEntity = context.runtime.engineLinkEntity;
-  }
-  if (context.runtime.engineUnlinkEntity) {
-    nextRuntime.engineUnlinkEntity = context.runtime.engineUnlinkEntity;
-  }
-
-  syncMainRuntimeState(context.runtime, nextRuntime);
-  applyMainCvarsToRuntime(context);
-
-  context.runtime.spawnpoint = spawnpoint;
-  context.runtime.mapname = mapname;
-  context.runtime.power_cubes = 0;
-  context.game.spawnpoint = spawnpoint;
-  context.level.mapname = mapname;
-  context.level.framenum = 0;
-  context.level.time = 0;
-  context.level.nextmap = "";
-  context.level.level_name = "";
-  context.level.power_cubes = 0;
-
-  const worldspawn = context.runtime.entities[0] ?? null;
-  if (worldspawn) {
-    ED_CallSpawn(worldspawn, context.runtime);
-    configureWorldspawn(context, worldspawn, mapname);
-  }
-
-  for (let index = 1; index <= context.runtime.maxclients; index += 1) {
-    const player = context.runtime.entities[index]!;
-    player.inuse = false;
-    player.classname = "player";
-    player.client = savedClients[index - 1] ?? attachGameClient(player);
-    player.s.modelindex = 255;
-  }
-
-  let inhibit = 0;
-  for (let index = context.runtime.maxclients + 1; index < context.runtime.entities.length; index += 1) {
-    const entity = context.runtime.entities[index];
-    if (!entity) {
-      continue;
-    }
-
-    applySpawnFlagMapHack(context.runtime, entity);
-    if (shouldInhibitSpawnEntity(context.runtime, entity)) {
-      freeGameEntity(context.runtime, entity);
-      inhibit += 1;
-      continue;
-    }
-    entity.spawnflags &= ~SPAWNFLAG_NOT_MASK;
-
-    ED_CallSpawn(entity, context.runtime);
-  }
-
-  context.gi.dprintf("%i entities inhibited\n", inhibit);
-
-  G_FindTeams(context.runtime);
-  InitBodyQue(context.runtime);
-  PlayerTrail_Init(context.runtime);
 }
 
 /**
@@ -928,103 +821,6 @@ function applyMainCvarsToRuntime(context: GameMainContext): void {
   context.game.maxentities = context.runtime.maxentities;
 }
 
-function normalizeSkillCvar(context: GameMainContext): void {
-  const skill = context.cvars.skill;
-  if (!skill) {
-    return;
-  }
-
-  const skillLevel = Math.max(0, Math.min(3, Math.floor(skill.value)));
-  if (skill.value === skillLevel) {
-    return;
-  }
-
-  const skillString = skillLevel.toFixed(6);
-  const forced = context.gi.cvar_forceset("skill", skillString);
-  context.cvars.skill = forced ?? skill;
-  context.cvars.skill.string = skillString;
-  context.cvars.skill.value = skillLevel;
-}
-
-function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, mapname: string): void {
-  context.level.level_name = worldspawn.message && worldspawn.message.length > 0
-    ? worldspawn.message
-    : mapname;
-  context.level.nextmap = worldspawn.properties.nextmap ?? "";
-
-  context.gi.configstring(CS_NAME, context.level.level_name);
-  context.gi.configstring(CS_SKY, worldspawn.properties.sky ?? "unit1_");
-  context.gi.configstring(CS_SKYROTATE, worldspawn.properties.skyrotate ?? "0");
-  context.gi.configstring(CS_SKYAXIS, worldspawn.properties.skyaxis ?? "0 0 0");
-  context.gi.configstring(CS_CDTRACK, String(worldspawn.sounds));
-  context.gi.configstring(CS_MAXCLIENTS, String(context.runtime.maxclients));
-  context.gi.configstring(CS_STATUSBAR, context.runtime.deathmatch ? dm_statusbar : single_statusbar);
-  for (const [style, pattern] of WORLDSPAWN_LIGHTSTYLES) {
-    context.gi.configstring(CS_LIGHTS + style, pattern);
-  }
-
-  context.gi.imageindex("i_help");
-  context.level.pic_health = context.gi.imageindex("i_health");
-  context.runtime.pic_health = context.level.pic_health;
-  context.gi.imageindex("help");
-  context.gi.imageindex("field_3");
-
-  const itemNames = SetItemNames();
-  for (let index = 0; index < itemNames.length; index += 1) {
-    context.gi.configstring(CS_ITEMS + index + 1, itemNames[index]);
-  }
-
-  const gravity = worldspawn.properties.gravity;
-  if (gravity && gravity.length > 0) {
-    context.gi.cvar_set("sv_gravity", gravity);
-    const parsedGravity = Number.parseFloat(gravity);
-    if (Number.isFinite(parsedGravity)) {
-      context.runtime.gravity = parsedGravity;
-    }
-  } else {
-    context.gi.cvar_set("sv_gravity", "800");
-    context.runtime.gravity = 800;
-  }
-
-  precacheWorldspawnSounds(context);
-}
-
-/**
- * Original name: SP_worldspawn sound precache block
- * Source: game/g_spawn.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Registers the global player/world/item sounds made available by worldspawn.
- *
- * Porting notes:
- * - The local gameplay runtime owns stable sound indices; `gi.soundindex` is also called so server-backed integrations can populate `CS_SOUNDS`.
- */
-function precacheWorldspawnSounds(context: GameMainContext): void {
-  precacheGameSound(context, "player/fry.wav");
-
-  const blaster = FindItem("Blaster");
-  if (blaster) {
-    PrecacheItem(context.runtime, blaster);
-    if (blaster.pickupSound) {
-      context.gi.soundindex(blaster.pickupSound);
-    }
-    for (const assetPath of blaster.precaches.split(/\s+/).filter((value) => value.endsWith(".wav"))) {
-      context.gi.soundindex(assetPath);
-    }
-  }
-
-  for (const soundPath of WORLDSPAWN_SOUND_PRECACHE) {
-    precacheGameSound(context, soundPath);
-  }
-}
-
-function precacheGameSound(context: GameMainContext, path: string): void {
-  registerGameSound(context.runtime, path);
-  context.gi.soundindex(path);
-}
-
 /**
  * Category: New
  * Purpose: Flush gameplay-runtime engine side effects through the original game import surface.
@@ -1152,63 +948,6 @@ function vectorPayload(payload: Record<string, unknown>, key: string): [number, 
   return [0, 0, 0];
 }
 
-const WORLDSPAWN_SOUND_PRECACHE = [
-  "player/lava1.wav",
-  "player/lava2.wav",
-  "misc/pc_up.wav",
-  "misc/talk1.wav",
-  "misc/udeath.wav",
-  "items/respawn1.wav",
-  "*death1.wav",
-  "*death2.wav",
-  "*death3.wav",
-  "*death4.wav",
-  "*fall1.wav",
-  "*fall2.wav",
-  "*gurp1.wav",
-  "*gurp2.wav",
-  "*jump1.wav",
-  "*pain25_1.wav",
-  "*pain25_2.wav",
-  "*pain50_1.wav",
-  "*pain50_2.wav",
-  "*pain75_1.wav",
-  "*pain75_2.wav",
-  "*pain100_1.wav",
-  "*pain100_2.wav",
-  "player/gasp1.wav",
-  "player/gasp2.wav",
-  "player/watr_in.wav",
-  "player/watr_out.wav",
-  "player/watr_un.wav",
-  "player/u_breath1.wav",
-  "player/u_breath2.wav",
-  "items/pkup.wav",
-  "world/land.wav",
-  "misc/h2ohit1.wav",
-  "items/damage.wav",
-  "items/protect.wav",
-  "items/protect4.wav",
-  "weapons/noammo.wav",
-  "infantry/inflies1.wav"
-] as const;
-
-const WORLDSPAWN_LIGHTSTYLES = [
-  [0, "m"],
-  [1, "mmnmmommommnonmmonqnmmo"],
-  [2, "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba"],
-  [3, "mmmmmaaaaammmmmaaaaaabcdefgabcdefg"],
-  [4, "mamamamamama"],
-  [5, "jklmnopqrstuvwxyzyxwvutsrqponmlkj"],
-  [6, "nmonqnmomnmomomno"],
-  [7, "mmmaaaabcdefgmmmmaaaammmaamm"],
-  [8, "mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa"],
-  [9, "aaaaaaaazzzzzzzz"],
-  [10, "mmamammmmammamamaaamammma"],
-  [11, "abcdefghijklmnopqrrqponmlkjihgfedcba"],
-  [63, "a"]
-] as const;
-
 const GAME_BUILD_DATE = "TypeScript port";
 
 function syncLevelFromRuntime(context: GameMainContext): void {
@@ -1236,48 +975,6 @@ function syncLevelFromRuntime(context: GameMainContext): void {
   context.level.current_entity = context.runtime.current_entity;
   context.level.body_que = context.runtime.body_que;
   context.level.power_cubes = context.runtime.power_cubes;
-}
-
-function buildServerEntityList(parsedEntities: BspEntity[], maxclients: number): BspEntity[] {
-  const worldspawn = parsedEntities[0] ?? { properties: { classname: "worldspawn" } };
-  const reservedClients = Array.from({ length: maxclients }, () => ({ properties: { classname: "player" } }));
-  return [worldspawn, ...reservedClients, ...parsedEntities.slice(1)];
-}
-
-const SPAWNFLAG_NOT_MASK =
-  SPAWNFLAG_NOT_EASY |
-  SPAWNFLAG_NOT_MEDIUM |
-  SPAWNFLAG_NOT_HARD |
-  SPAWNFLAG_NOT_DEATHMATCH |
-  SPAWNFLAG_NOT_COOP;
-
-function applySpawnFlagMapHack(runtime: GameRuntime, entity: GameEntity): void {
-  if (
-    stringsEqualIgnoreCase(runtime.mapname, "command") &&
-    stringsEqualIgnoreCase(entity.classname, "trigger_once") &&
-    stringsEqualIgnoreCase(entity.model ?? "", "*27")
-  ) {
-    entity.spawnflags &= ~SPAWNFLAG_NOT_HARD;
-  }
-}
-
-function shouldInhibitSpawnEntity(runtime: GameRuntime, entity: GameEntity): boolean {
-  if (runtime.deathmatch) {
-    return (entity.spawnflags & SPAWNFLAG_NOT_DEATHMATCH) !== 0;
-  }
-
-  const skill = Math.max(0, Math.min(3, Math.trunc(runtime.skill)));
-  return (
-    (skill === 0 && (entity.spawnflags & SPAWNFLAG_NOT_EASY) !== 0) ||
-    (skill === 1 && (entity.spawnflags & SPAWNFLAG_NOT_MEDIUM) !== 0) ||
-    ((skill === 2 || skill === 3) && (entity.spawnflags & SPAWNFLAG_NOT_HARD) !== 0)
-  );
-}
-
-function syncMainRuntimeState(target: GameRuntime, source: GameRuntime): void {
-  for (const key of Object.keys(source) as Array<keyof GameRuntime>) {
-    (target as Record<keyof GameRuntime, unknown>)[key] = source[key];
-  }
 }
 
 function tokenizeMapList(maplist: string): string[] {

@@ -446,6 +446,7 @@ export {
 export {
   ED_CallSpawn,
   G_FindTeams,
+  SpawnEntities,
   SP_worldspawn,
   initializeDoorPlanEntities
 } from "./g_spawn.js";
@@ -673,7 +674,6 @@ export {
   ReadGame,
   ReadLevel,
   ShutdownGame,
-  SpawnEntities,
   WriteGame,
   WriteLevel,
   createGameMainContext

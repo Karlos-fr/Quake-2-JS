@@ -10,12 +10,35 @@
  *
  * Deviations:
  * - Spawn callbacks remain owned by their source modules; this registry only mirrors `game/g_spawn.c` dispatch.
+ * - The server-facing `SpawnEntities` entry point receives the split `g_main.ts` context as an adapter boundary.
  *
  * Notes:
  * - This file is intended to stay close to the original spawn and team-linking flow.
  */
 
-import { MOVETYPE_PUSH, SOLID_BSP } from "./g_local.js";
+import { parseEntityLump, type BspEntity } from "../../formats/src/qfiles.js";
+import {
+  CS_CDTRACK,
+  CS_ITEMS,
+  CS_LIGHTS,
+  CS_MAXCLIENTS,
+  CS_NAME,
+  CS_SKY,
+  CS_SKYAXIS,
+  CS_SKYROTATE,
+  CS_STATUSBAR
+} from "../../qcommon/src/index.js";
+import type { GameMainContext } from "./g_main.js";
+import {
+  MOVETYPE_PUSH,
+  SOLID_BSP,
+  SPAWNFLAG_NOT_COOP,
+  SPAWNFLAG_NOT_DEATHMATCH,
+  SPAWNFLAG_NOT_EASY,
+  SPAWNFLAG_NOT_HARD,
+  SPAWNFLAG_NOT_MEDIUM,
+  TAG_LEVEL
+} from "./g_local.js";
 import {
   SP_func_button,
   SP_func_conveyor,
@@ -30,7 +53,17 @@ import {
   SP_func_water,
   SP_trigger_elevator
 } from "./g_func.js";
-import { FindItemByClassname, SP_item_health, SP_item_health_large, SP_item_health_mega, SP_item_health_small, SpawnItem } from "./g_items.js";
+import {
+  FindItem,
+  FindItemByClassname,
+  PrecacheItem,
+  SetItemNames,
+  SP_item_health,
+  SP_item_health_large,
+  SP_item_health_mega,
+  SP_item_health_small,
+  SpawnItem
+} from "./g_items.js";
 import {
   SP_func_areaportal,
   SP_func_clock,
@@ -121,10 +154,21 @@ import {
   SP_info_player_coop,
   SP_info_player_deathmatch,
   SP_info_player_intermission,
-  SP_info_player_start
+  SP_info_player_start,
+  InitBodyQue,
+  SaveClientData
 } from "./p_client.js";
-import { FL_TEAMSLAVE } from "./runtime.js";
+import { PlayerTrail_Init } from "./p_trail.js";
+import {
+  FL_TEAMSLAVE,
+  attachGameClient,
+  createRuntimeEntity,
+  createGameRuntimeFromBspEntities,
+  freeGameEntity,
+  registerGameSound
+} from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
+import { G_Spawn } from "./g_utils.js";
 
 type SpawnFunction = (entity: GameEntity, runtime: GameRuntime) => void;
 
@@ -386,6 +430,92 @@ export const spawns: SpawnEntry[] = [
 ];
 
 /**
+ * Original name: SpawnEntities
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Rebuilds the gameplay runtime from one textual entity lump and reserves the canonical player-edict prefix.
+ *
+ * Porting notes:
+ * - Keeps player edicts at slots `1..maxclients`, then allocates each BSP entity through `G_Spawn`.
+ * - Applies the original skill/deathmatch spawnflag inhibition before dispatching entity spawners.
+ * - Uses a direct pre-spawn free for inhibited entities so filtered map entities do not occupy protected body-queue slots.
+ * - Receives `GameMainContext` from `g_main.ts` because the split TS port keeps cvars, level locals and game locals there.
+ */
+export function SpawnEntities(context: GameMainContext, mapname: string, entstring: string, spawnpoint: string): void {
+  normalizeSkillCvar(context);
+  SaveClientData(context.runtime);
+  context.gi.FreeTags(TAG_LEVEL);
+
+  const savedClients = Array.from(
+    { length: context.runtime.maxclients },
+    (_, index) => context.runtime.entities[index + 1]?.client ?? null
+  );
+
+  const parsedEntities = parseEntityLump(entstring);
+  const nextRuntime = createGameRuntimeFromBspEntities(buildInitialServerEntityList(parsedEntities, context.runtime.maxclients));
+  nextRuntime.collision = context.runtime.collision;
+  if (context.runtime.engineLinkEntity) {
+    nextRuntime.engineLinkEntity = context.runtime.engineLinkEntity;
+  }
+  if (context.runtime.engineUnlinkEntity) {
+    nextRuntime.engineUnlinkEntity = context.runtime.engineUnlinkEntity;
+  }
+
+  syncMainRuntimeState(context.runtime, nextRuntime);
+  applyMainCvarsToRuntime(context);
+
+  context.runtime.spawnpoint = spawnpoint;
+  context.runtime.mapname = mapname;
+  context.runtime.power_cubes = 0;
+  context.game.spawnpoint = spawnpoint;
+  context.level.mapname = mapname;
+  context.level.framenum = 0;
+  context.level.time = 0;
+  context.level.nextmap = "";
+  context.level.level_name = "";
+  context.level.power_cubes = 0;
+
+  const worldspawn = context.runtime.entities[0] ?? null;
+  if (worldspawn) {
+    ED_CallSpawn(worldspawn, context.runtime);
+    configureWorldspawn(context, worldspawn, mapname);
+  }
+
+  for (let index = 1; index <= context.runtime.maxclients; index += 1) {
+    const player = context.runtime.entities[index]!;
+    player.inuse = false;
+    player.classname = "player";
+    player.client = savedClients[index - 1] ?? attachGameClient(player);
+    player.s.modelindex = 255;
+  }
+
+  let inhibit = 0;
+  for (const parsedEntity of parsedEntities.slice(1)) {
+    const entity = G_Spawn(context.runtime);
+    loadParsedEntityIntoEdict(entity, parsedEntity);
+
+    applySpawnFlagMapHack(context.runtime, entity);
+    if (shouldInhibitSpawnEntity(context.runtime, entity)) {
+      freeGameEntity(context.runtime, entity);
+      inhibit += 1;
+      continue;
+    }
+    entity.spawnflags &= ~SPAWNFLAG_NOT_MASK;
+
+    ED_CallSpawn(entity, context.runtime);
+  }
+
+  context.gi.dprintf("%i entities inhibited\n", inhibit);
+
+  G_FindTeams(context.runtime);
+  InitBodyQue(context.runtime);
+  PlayerTrail_Init(context.runtime);
+}
+
+/**
  * Original name: SP_worldspawn
  * Source: game/g_spawn.c
  * Category: Ported
@@ -532,4 +662,223 @@ function clearTeamLinks(runtime: GameRuntime): void {
     entity.teamchain = null;
     entity.flags &= ~FL_TEAMSLAVE;
   }
+}
+
+function applyMainCvarsToRuntime(context: GameMainContext): void {
+  context.runtime.deathmatch = Boolean(context.cvars.deathmatch?.value);
+  context.runtime.coop = Boolean(context.cvars.coop?.value);
+  context.runtime.dmflags = context.cvars.dmflags?.value ?? 0;
+  context.runtime.skill = context.cvars.skill?.value ?? 1;
+  context.runtime.g_select_empty = Boolean(context.cvars.g_select_empty?.value);
+  context.runtime.gravity = context.cvars.sv_gravity?.value ?? context.runtime.gravity;
+  context.runtime.maxvelocity = context.cvars.sv_maxvelocity?.value ?? context.runtime.maxvelocity;
+  context.runtime.maxclients = Math.max(0, Math.trunc(context.cvars.maxclients?.value ?? context.runtime.maxclients));
+  context.runtime.maxentities = Math.max(context.runtime.maxclients + 1, Math.trunc(context.cvars.maxentities?.value ?? context.runtime.maxentities));
+  context.game.maxclients = context.runtime.maxclients;
+  context.game.maxentities = context.runtime.maxentities;
+}
+
+function normalizeSkillCvar(context: GameMainContext): void {
+  const skill = context.cvars.skill;
+  if (!skill) {
+    return;
+  }
+
+  const skillLevel = Math.max(0, Math.min(3, Math.floor(skill.value)));
+  if (skill.value === skillLevel) {
+    return;
+  }
+
+  const skillString = skillLevel.toFixed(6);
+  const forced = context.gi.cvar_forceset("skill", skillString);
+  context.cvars.skill = forced ?? skill;
+  context.cvars.skill.string = skillString;
+  context.cvars.skill.value = skillLevel;
+}
+
+function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, mapname: string): void {
+  context.level.level_name = worldspawn.message && worldspawn.message.length > 0
+    ? worldspawn.message
+    : mapname;
+  context.level.nextmap = worldspawn.properties.nextmap ?? "";
+
+  context.gi.configstring(CS_NAME, context.level.level_name);
+  context.gi.configstring(CS_SKY, worldspawn.properties.sky ?? "unit1_");
+  context.gi.configstring(CS_SKYROTATE, worldspawn.properties.skyrotate ?? "0");
+  context.gi.configstring(CS_SKYAXIS, worldspawn.properties.skyaxis ?? "0 0 0");
+  context.gi.configstring(CS_CDTRACK, String(worldspawn.sounds));
+  context.gi.configstring(CS_MAXCLIENTS, String(context.runtime.maxclients));
+  context.gi.configstring(CS_STATUSBAR, context.runtime.deathmatch ? dm_statusbar : single_statusbar);
+  for (const [style, pattern] of WORLDSPAWN_LIGHTSTYLES) {
+    context.gi.configstring(CS_LIGHTS + style, pattern);
+  }
+
+  context.gi.imageindex("i_help");
+  context.level.pic_health = context.gi.imageindex("i_health");
+  context.runtime.pic_health = context.level.pic_health;
+  context.gi.imageindex("help");
+  context.gi.imageindex("field_3");
+
+  const itemNames = SetItemNames();
+  for (let index = 0; index < itemNames.length; index += 1) {
+    context.gi.configstring(CS_ITEMS + index + 1, itemNames[index]);
+  }
+
+  const gravity = worldspawn.properties.gravity;
+  if (gravity && gravity.length > 0) {
+    context.gi.cvar_set("sv_gravity", gravity);
+    const parsedGravity = Number.parseFloat(gravity);
+    if (Number.isFinite(parsedGravity)) {
+      context.runtime.gravity = parsedGravity;
+    }
+  } else {
+    context.gi.cvar_set("sv_gravity", "800");
+    context.runtime.gravity = 800;
+  }
+
+  precacheWorldspawnSounds(context);
+}
+
+/**
+ * Original name: SP_worldspawn sound precache block
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the global player/world/item sounds made available by worldspawn.
+ *
+ * Porting notes:
+ * - The local gameplay runtime owns stable sound indices; `gi.soundindex` is also called so server-backed integrations can populate `CS_SOUNDS`.
+ */
+function precacheWorldspawnSounds(context: GameMainContext): void {
+  precacheGameSound(context, "player/fry.wav");
+
+  const blaster = FindItem("Blaster");
+  if (blaster) {
+    PrecacheItem(context.runtime, blaster);
+    if (blaster.pickupSound) {
+      context.gi.soundindex(blaster.pickupSound);
+    }
+    for (const assetPath of blaster.precaches.split(/\s+/).filter((value) => value.endsWith(".wav"))) {
+      context.gi.soundindex(assetPath);
+    }
+  }
+
+  for (const soundPath of WORLDSPAWN_SOUND_PRECACHE) {
+    precacheGameSound(context, soundPath);
+  }
+}
+
+function precacheGameSound(context: GameMainContext, path: string): void {
+  registerGameSound(context.runtime, path);
+  context.gi.soundindex(path);
+}
+
+function buildInitialServerEntityList(parsedEntities: BspEntity[], maxclients: number): BspEntity[] {
+  const worldspawn = parsedEntities[0] ?? { properties: { classname: "worldspawn" } };
+  const reservedClients = Array.from({ length: maxclients }, () => ({ properties: { classname: "player" } }));
+  return [worldspawn, ...reservedClients];
+}
+
+function loadParsedEntityIntoEdict(entity: GameEntity, parsedEntity: BspEntity): void {
+  const parsed = createRuntimeEntity(parsedEntity.properties, entity.index);
+  Object.assign(entity, parsed);
+}
+
+const SPAWNFLAG_NOT_MASK =
+  SPAWNFLAG_NOT_EASY |
+  SPAWNFLAG_NOT_MEDIUM |
+  SPAWNFLAG_NOT_HARD |
+  SPAWNFLAG_NOT_DEATHMATCH |
+  SPAWNFLAG_NOT_COOP;
+
+function applySpawnFlagMapHack(runtime: GameRuntime, entity: GameEntity): void {
+  if (
+    stringsEqualIgnoreCase(runtime.mapname, "command") &&
+    stringsEqualIgnoreCase(entity.classname, "trigger_once") &&
+    stringsEqualIgnoreCase(entity.model ?? "", "*27")
+  ) {
+    entity.spawnflags &= ~SPAWNFLAG_NOT_HARD;
+  }
+}
+
+function shouldInhibitSpawnEntity(runtime: GameRuntime, entity: GameEntity): boolean {
+  if (runtime.deathmatch) {
+    return (entity.spawnflags & SPAWNFLAG_NOT_DEATHMATCH) !== 0;
+  }
+
+  const skill = Math.max(0, Math.min(3, Math.trunc(runtime.skill)));
+  return (
+    (skill === 0 && (entity.spawnflags & SPAWNFLAG_NOT_EASY) !== 0) ||
+    (skill === 1 && (entity.spawnflags & SPAWNFLAG_NOT_MEDIUM) !== 0) ||
+    ((skill === 2 || skill === 3) && (entity.spawnflags & SPAWNFLAG_NOT_HARD) !== 0)
+  );
+}
+
+function syncMainRuntimeState(target: GameRuntime, source: GameRuntime): void {
+  for (const key of Object.keys(source) as Array<keyof GameRuntime>) {
+    (target as Record<keyof GameRuntime, unknown>)[key] = source[key];
+  }
+}
+
+const WORLDSPAWN_SOUND_PRECACHE = [
+  "player/lava1.wav",
+  "player/lava2.wav",
+  "misc/pc_up.wav",
+  "misc/talk1.wav",
+  "misc/udeath.wav",
+  "items/respawn1.wav",
+  "*death1.wav",
+  "*death2.wav",
+  "*death3.wav",
+  "*death4.wav",
+  "*fall1.wav",
+  "*fall2.wav",
+  "*gurp1.wav",
+  "*gurp2.wav",
+  "*jump1.wav",
+  "*pain25_1.wav",
+  "*pain25_2.wav",
+  "*pain50_1.wav",
+  "*pain50_2.wav",
+  "*pain75_1.wav",
+  "*pain75_2.wav",
+  "*pain100_1.wav",
+  "*pain100_2.wav",
+  "player/gasp1.wav",
+  "player/gasp2.wav",
+  "player/watr_in.wav",
+  "player/watr_out.wav",
+  "player/watr_un.wav",
+  "player/u_breath1.wav",
+  "player/u_breath2.wav",
+  "items/pkup.wav",
+  "world/land.wav",
+  "misc/h2ohit1.wav",
+  "items/damage.wav",
+  "items/protect.wav",
+  "items/protect4.wav",
+  "weapons/noammo.wav",
+  "infantry/inflies1.wav"
+] as const;
+
+const WORLDSPAWN_LIGHTSTYLES = [
+  [0, "m"],
+  [1, "mmnmmommommnonmmonqnmmo"],
+  [2, "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba"],
+  [3, "mmmmmaaaaammmmmaaaaaabcdefgabcdefg"],
+  [4, "mamamamamama"],
+  [5, "jklmnopqrstuvwxyzyxwvutsrqponmlkj"],
+  [6, "nmonqnmomnmomomno"],
+  [7, "mmmaaaabcdefgmmmmaaaammmaamm"],
+  [8, "mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa"],
+  [9, "aaaaaaaazzzzzzzz"],
+  [10, "mmamammmmammamamaaamammma"],
+  [11, "abcdefghijklmnopqrrqponmlkjihgfedcba"],
+  [63, "a"]
+] as const;
+
+function stringsEqualIgnoreCase(left: string, right: string): boolean {
+  return left.localeCompare(right, undefined, { sensitivity: "accent", usage: "search" }) === 0;
 }
