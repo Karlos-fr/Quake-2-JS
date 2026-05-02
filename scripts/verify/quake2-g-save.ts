@@ -32,7 +32,7 @@ import {
   registerGameSaveFunction,
   registerGameSaveMove
 } from "../../packages/game/src/g_save.js";
-import { CLOFS, FFL_NOSPAWN, FFL_SPAWNTEMP, ITEM_INDEX, LLOFS, STOFS, TAG_GAME, fieldtype_t } from "../../packages/game/src/g_local.js";
+import { CLOFS, FFL_NOSPAWN, FFL_SPAWNTEMP, ITEM_INDEX, LLOFS, STOFS, TAG_GAME, TAG_LEVEL, fieldtype_t } from "../../packages/game/src/g_local.js";
 
 const files = new Map<string, string>();
 const linked: number[] = [];
@@ -674,8 +674,12 @@ readContext.runtime.maxclients = 1;
 readContext.runtime.maxentities = 64;
 const preservedRuntime = readContext.runtime;
 readContext.runtime.entities[2] = createRuntimeEntity({ classname: "stale_entity" }, 2);
+freedTags.length = 0;
+linked.length = 0;
 ReadLevel(readContext, "save/level.sav");
 assert.equal(readContext.runtime, preservedRuntime, "ReadLevel must preserve the existing runtime object");
+assert.deepEqual(freedTags, [TAG_LEVEL], "ReadLevel must free TAG_LEVEL before restoring the level state");
+assert.equal(readContext.runtime.entities.length, 3, "ReadLevel must grow num_edicts from entnum records like the C loop");
 assert.equal(readContext.runtime.entities[2]?.classname, "target_crosslevel_target", "ReadEdict must restore classname string payload");
 assert.equal(readContext.runtime.entities[2]?.target, "after_save_target", "ReadEdict must restore target string payload");
 assert.equal(readContext.runtime.entities[2]?.targetname, "saved_targetname", "ReadEdict must restore targetname string payload");
@@ -785,7 +789,22 @@ assert.equal(readContext.runtime.power_cubes, 4, "ReadLevel runtime power_cubes 
 assert.equal(readContext.runtime.entities[3]?.inuse, undefined, "ReadLevel must wipe entities not present in the save");
 assert.equal(readContext.runtime.entities[2]?.nextthink, 14.5, "ReadLevel cross-level target nextthink mismatch");
 assert.equal(readContext.runtime.entities[1]?.client?.pers.connected, false, "ReadLevel must mark client slots disconnected");
+assert.equal(readContext.runtime.entities[1]?.client, readContext.game.clients[0], "ReadLevel must attach game client slots to player edicts like ent = &g_edicts[i+1]");
 assert.ok(linked.includes(2), "ReadLevel must relink restored in-use entities");
+
+files.set("save/level-bad-edict.sav", levelJson.replace(/"edict_size":\s*\d+/, "\"edict_size\": -1"));
+assert.throws(
+  () => ReadLevel(createGameMainContext(imports, { hooks: { readFile: (path) => files.get(path) ?? null } }), "save/level-bad-edict.sav"),
+  /ReadLevel: mismatched edict size/,
+  "ReadLevel must reject level saves with a mismatched edict-size marker"
+);
+
+files.set("save/level-bad-function.sav", levelJson.replace("\"function_base\": \"InitGame\"", "\"function_base\": \"MovedInitGame\""));
+assert.throws(
+  () => ReadLevel(createGameMainContext(imports, { hooks: { readFile: (path) => files.get(path) ?? null } }), "save/level-bad-function.sav"),
+  /ReadLevel: function pointers have moved/,
+  "ReadLevel must reject level saves with a mismatched function-base marker"
+);
 
 console.log("quake2-g-save: ok");
 

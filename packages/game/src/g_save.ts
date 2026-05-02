@@ -433,11 +433,15 @@ export function WriteLevel(context: GameMainContext, filename: string): void {
  *
  * Behavior:
  * - Restores level locals and in-use edicts, then relinks restored entities through the engine import.
+ *
+ * Porting notes:
+ * - The binary edict-size and function-base guards are represented by structured compatibility markers.
  */
 export function ReadLevel(context: GameMainContext, filename: string): void {
   context.gi.FreeTags(TAG_LEVEL);
   const save = readSaveFile<LevelSaveFile>(context, filename);
   validateSaveFile(context, save);
+  validateLevelSaveFile(context, save);
 
   resetRuntimeEntitiesForLevelLoad(context.runtime);
 
@@ -951,6 +955,17 @@ function readSaveFile<T>(context: GameMainContext, filename: string): T {
 function validateSaveFile(context: GameMainContext, save: { format?: string; date?: string }): void {
   if (save.format !== SAVEGAME_FORMAT || save.date !== SAVEGAME_DATE) {
     context.gi.error("Savegame from an older version.\n");
+  }
+}
+
+function validateLevelSaveFile(context: GameMainContext, save: LevelSaveFile): void {
+  const expectedEdictSize = Object.keys(context.runtime.entities[0] ?? createClearedRuntimeEntity(0)).length;
+  if (save.edict_size !== expectedEdictSize) {
+    context.gi.error("ReadLevel: mismatched edict size");
+  }
+
+  if (save.function_base !== "InitGame") {
+    context.gi.error("ReadLevel: function pointers have moved");
   }
 }
 

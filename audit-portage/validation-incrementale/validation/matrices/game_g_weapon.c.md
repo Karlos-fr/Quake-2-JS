@@ -48,9 +48,9 @@
 | `Quake-2-master/game/g_weapon.c` | global | `points` | `packages/game/src/g_weapon.ts` | `points` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `Grenade_Explode`, porte comme variable locale TS; calcul/troncature couverts dans `scripts/verify/quake2-g-weapon.ts`. |
 | `Quake-2-master/game/g_weapon.c` | global | `mod` | `packages/game/src/g_weapon.ts` | `mod` | Non applicable | A redecouper | Artefact de matrice: seconde extraction du meme temporaire local C de `Grenade_Explode`; branches `MOD_HELD_GRENADE`/`MOD_HG_SPLASH`/`MOD_G_SPLASH` couvertes. |
 | `Quake-2-master/game/g_weapon.c` | global | `mod` | `packages/game/src/g_weapon.ts` | `mod` | Non applicable | A redecouper | Artefact de matrice: troisieme extraction du meme temporaire local C de `Grenade_Explode`; branches splash couvertes. |
-| `Quake-2-master/game/g_weapon.c` | function | `Grenade_Touch` | `packages/game/src/g_weapon.ts` | `Grenade_Touch` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | function | `fire_grenade` | `packages/game/src/g_weapon.ts` | `fire_grenade` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `grenade` | `packages/game/src/g_weapon.ts` | `grenade` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_weapon.c` | function | `Grenade_Touch` | `packages/game/src/g_weapon.ts` | `Grenade_Touch` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_weapon.c` | function | `fire_grenade` | `packages/game/src/g_weapon.ts` | `fire_grenade` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_weapon.c` | global | `grenade` | `packages/game/src/g_weapon.ts` | `grenade` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_grenade`, porte comme variable locale TS; etat projectile couvert dans `scripts/verify/quake2-g-weapon.ts`. |
 | `Quake-2-master/game/g_weapon.c` | function | `fire_grenade2` | `packages/game/src/g_weapon.ts` | `fire_grenade2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | global | `grenade` | `packages/game/src/g_weapon.ts` | `grenade` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | function | `rocket_touch` | `packages/game/src/g_weapon.ts` | `rocket_touch` | A verifier | A redecouper |  |

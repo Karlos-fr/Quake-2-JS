@@ -19,6 +19,7 @@
 - 2026-05-02: `ED_NewString` et `ED_ParseField`; temporaires locaux `b`/`v`/`b` marques non applicables.
 - 2026-05-02: `ED_ParseEdict`, limite au parse braces/key-value, cles `_` ignorees, erreurs EOF/valeur manquante et anglehack `angle` vers yaw `angles`; temporaires locaux `init`/`keyname`/`com_token` marques non applicables.
 - 2026-05-02: `G_FindTeams`.
+- 2026-05-02: temporaires locaux de `SpawnEntities` (`ent`, `inhibit`, `com_token`, `i`, `skill_level` et doublon `ent`) marques non applicables.
 
 ## Verdict du lot
 
@@ -66,6 +67,12 @@
 - `keyname`: non applicable. La ligne de matrice correspond au buffer local `keyname[256]` de `ED_ParseEdict`; son comportement est couvert par la copie de cle, l'ignore des cles `_` et le dispatch vers `ED_ParseField`.
 - `com_token`: non applicable. La ligne de matrice correspond au pointeur local `com_token` de `ED_ParseEdict`; son comportement est couvert par les tests de tokens braces/key/value et erreurs EOF/valeur manquante.
 - `G_FindTeams`: valide. Le port conserve le nom original, le commentaire d'en-tete, le parcours depuis l'edict 1, le filtrage `inuse`/`team`/`FL_TEAMSLAVE`, le choix du premier edict non slave comme `teammaster`, l'ordre `teamchain`, le flag `FL_TEAMSLAVE` sur les suivants et les compteurs equipes/entites. Le test cible prouve aussi l'absence de reset prealable des liens/flags, afin de respecter le comportement C qui ignore les entites deja `FL_TEAMSLAVE`.
+- `ent`: non applicable. La ligne de matrice correspond au pointeur local `edict_t *ent` de `SpawnEntities`, pas a une entite source proprietaire exportee; son comportement est couvert par la validation de `SpawnEntities`, y compris worldspawn puis allocation `G_Spawn` des entites map.
+- `inhibit`: non applicable. La ligne de matrice correspond au compteur local d'entites filtrees dans `SpawnEntities`; son comportement est couvert par le test du compteur `1 entities inhibited`.
+- `com_token`: non applicable. La ligne de matrice correspond au token local d'ouverture de dictionnaire dans `SpawnEntities`; son comportement est couvert par le test d'erreur `ED_LoadFromFile: found ... when expecting {`.
+- `i`: non applicable. La ligne de matrice correspond au compteur local de reservation des slots clients dans `SpawnEntities`; son comportement est couvert par les validations existantes des slots joueurs et du flux `SpawnEntities`.
+- `skill_level`: non applicable. La ligne de matrice correspond au temporaire local de normalisation du cvar `skill`; son comportement est couvert par le test de clamp/floor `4.8 -> 3.000000` et filtrage `SPAWNFLAG_NOT_HARD`.
+- `ent`: non applicable. Doublon de la ligne du temporaire local `edict_t *ent` de `SpawnEntities`, couvert par la validation de `SpawnEntities`.
 
 ## Checklist appliquee
 
@@ -166,6 +173,12 @@
 - Runtime: valide. `SV_SpawnServer` -> `ge.SpawnEntities` -> `SpawnEntities` appelle `G_FindTeams` apres tous les spawners, avant `InitBodyQue` et `PlayerTrail_Init`; les consommateurs runtime `g_func`, `g_phys`, `g_misc`, `g_turret` utilisent ensuite `teammaster`/`teamchain`.
 - apps/web: valide indirectement. Le navigateur declenche le spawn map via le runtime serveur porte et consomme ensuite les snapshots/refresh frames; aucune logique parallele de team linking dans `apps/web` ne masque ce flux.
 - renderer-three: valide indirectement. `G_FindTeams` ne produit pas directement de rendu, mais il synchronise les brush/team entities qui peuvent produire modeles inline, frames, scene/camera ou mouvements visibles via les snapshots; `verify:full-game:three-renderer` et `verify:web-render-order` prouvent la consommation des sorties runtime.
+- Identification: lot temporaires locaux de `SpawnEntities` dans matrice `game_g_spawn.c.md`, source `Quake-2-master/game/g_spawn.c`, cible proprietaire `packages/game/src/g_spawn.ts`; lignes `ent`, `inhibit`, `com_token`, `i`, `skill_level` et doublon `ent`.
+- Comparaison C/H vs TS: le C utilise ces locaux pour worldspawn/`G_Spawn`, compteur d'inhibition, token `{`, boucle des clients et normalisation `skill`; le TS conserve les comportements via `entity`, `inhibit`, `opening`, la boucle `index` des slots clients et `normalizeSkillCvar`.
+- Commentaires d'en-tete: non applicable pour ces temporaires locaux; le commentaire de la fonction porteuse `SpawnEntities` etait deja present et verifie.
+- Runtime: valide indirectement. Ces temporaires n'ont pas de branchement propre; ils sont atteignables uniquement par `SV_SpawnServer` -> `ge.SpawnEntities` -> `SpawnEntities`, couvert par `verify:g-spawn` et `verify:full-game:server-host`.
+- apps/web: valide indirectement. `apps/web` doit declencher le spawn via le runtime serveur porte et consommer les snapshots/configstrings produits; aucune logique parallele attendue ou constatee pour ces temporaires.
+- renderer-three: valide indirectement. Ces temporaires ne produisent rien de visible eux-memes, mais `SpawnEntities` produit ensuite entites, modeles inline, frames, areabits/camera/scene et configstrings consommes par le flux Three; `verify:full-game:three-renderer` et `verify:web-render-order` passent.
 
 ## Corrections appliquees
 
@@ -190,6 +203,7 @@
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `ED_NewString`, `ED_ParseField`, cle de champ insensible a la casse, `FFL_NOSPAWN`, spawn-temp, `F_IGNORE`, champ inconnu, et propagation runtime depuis `SpawnEntities`.
 - `packages/game/src/g_spawn.ts`: ajout de `ED_ParseEdict` et branchement de `SpawnEntities` sur `COM_Parse`/`ED_ParseEdict` pour parser worldspawn et les entites map dans l'ownership `g_spawn.c`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `ED_ParseEdict`: paires cle/valeur, cles `_` ignorees, anglehack, reset dictionnaire vide, EOF sans brace fermante et brace fermante sans valeur.
+- `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour les temporaires locaux de `SpawnEntities`: compteur `inhibit`, normalisation `skill_level` par `cvar_forceset`, filtrage avec skill normalise et erreur de token d'ouverture non `{`.
 
 ## Tests
 
@@ -280,7 +294,12 @@
 - `npm run verify:full-game:server-host`: ok le 2026-05-02 pour `G_FindTeams`.
 - `npm run verify:full-game:three-renderer`: ok le 2026-05-02 pour `G_FindTeams`.
 - `npm run verify:web-render-order`: ok le 2026-05-02 pour `G_FindTeams`.
+- `npm run verify:g-spawn`: ok le 2026-05-02 pour les temporaires locaux de `SpawnEntities`.
+- `npm run typecheck`: ok le 2026-05-02 pour les temporaires locaux de `SpawnEntities`.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02 pour les temporaires locaux de `SpawnEntities`.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02 pour les temporaires locaux de `SpawnEntities`.
+- `npm run verify:web-render-order`: ok le 2026-05-02 pour les temporaires locaux de `SpawnEntities`.
 
 ## Prochain lot recommande
 
-- Continuer avec les temporaires locaux de `SpawnEntities` (`ent`, `inhibit`, `com_token`, `i`, `skill_level`) si le lot reste coherent.
+- Examiner la ligne `strncpy` de la matrice: appel libc externe de `SP_worldspawn`/`SpawnEntities`, probablement a retirer de la matrice du fichier courant ou a marquer non applicable avec justification selon la consigne coordinateur.

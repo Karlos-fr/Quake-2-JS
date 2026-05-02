@@ -16,11 +16,20 @@ import {
   BODY_QUEUE_SIZE,
   DEAD_DEAD,
   DROPPED_PLAYER_ITEM,
+  MOD_BFG_BLAST,
+  MOD_BFG_EFFECT,
+  MOD_BFG_LASER,
   MOD_BLASTER,
   MOD_CHAINGUN,
   MOD_G_SPLASH,
   MOD_GRENADE,
+  MOD_HANDGRENADE,
+  MOD_HG_SPLASH,
+  MOD_HYPERBLASTER,
   MOD_MACHINEGUN,
+  MOD_R_SPLASH,
+  MOD_RAILGUN,
+  MOD_ROCKET,
   MOD_SHOTGUN,
   MOD_SSHOTGUN,
   damage_t
@@ -62,7 +71,16 @@ function verifyClientObituaryWeaponMeansOfDeath(): void {
     [MOD_MACHINEGUN, "victim was machinegunned by attacker\n"],
     [MOD_CHAINGUN, "victim was cut in half by attacker's chaingun\n"],
     [MOD_GRENADE, "victim was popped by attacker's grenade\n"],
-    [MOD_G_SPLASH, "victim was shredded by attacker's shrapnel\n"]
+    [MOD_G_SPLASH, "victim was shredded by attacker's shrapnel\n"],
+    [MOD_ROCKET, "victim ate attacker's rocket\n"],
+    [MOD_R_SPLASH, "victim almost dodged attacker's rocket\n"],
+    [MOD_HYPERBLASTER, "victim was melted by attacker's hyperblaster\n"],
+    [MOD_RAILGUN, "victim was railed by attacker\n"],
+    [MOD_BFG_LASER, "victim saw the pretty lights from attacker's BFG\n"],
+    [MOD_BFG_BLAST, "victim was disintegrated by attacker's BFG blast\n"],
+    [MOD_BFG_EFFECT, "victim couldn't hide from attacker's BFG\n"],
+    [MOD_HANDGRENADE, "victim caught attacker's handgrenade\n"],
+    [MOD_HG_SPLASH, "victim didn't see attacker's handgrenade\n"]
   ];
 
   for (const [mod, expected] of cases) {

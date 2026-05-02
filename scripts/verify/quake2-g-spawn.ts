@@ -765,6 +765,83 @@ assert.equal(
   "SPAWNFLAG_NOT_DEATHMATCH must inhibit entities in deathmatch"
 );
 
+const inhibitMessages: string[] = [];
+const inhibitCountContext = createGameMainContext({
+  ...imports,
+  dprintf: (fmt: string, ...args: unknown[]) => {
+    inhibitMessages.push(formatPrintf(fmt, args));
+  }
+});
+InitGame(inhibitCountContext);
+inhibitCountContext.cvars.skill!.value = 0;
+inhibitCountContext.cvars.skill!.string = "0";
+SpawnEntities(
+  inhibitCountContext,
+  "inhibit_count",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "func_door"
+"model" "*1"
+"spawnflags" "${SPAWNFLAG_NOT_EASY}"
+}
+{
+"classname" "func_door"
+"model" "*2"
+}
+`,
+  ""
+);
+assert.ok(
+  inhibitMessages.includes("1 entities inhibited\n"),
+  "SpawnEntities must report the C inhibit counter after skill filtering"
+);
+
+const forcedSkillValues: string[] = [];
+const skillNormalizeContext = createGameMainContext({
+  ...imports,
+  cvar_forceset: (name: string, value: string) => {
+    if (name === "skill") {
+      forcedSkillValues.push(value);
+    }
+    return createCvar(name, value);
+  }
+});
+InitGame(skillNormalizeContext);
+skillNormalizeContext.cvars.skill!.value = 4.8;
+skillNormalizeContext.cvars.skill!.string = "4.8";
+SpawnEntities(
+  skillNormalizeContext,
+  "skill_normalize",
+  `{
+"classname" "worldspawn"
+}
+{
+"classname" "func_door"
+"model" "*1"
+"targetname" "hard_filtered_after_clamp"
+"spawnflags" "${SPAWNFLAG_NOT_HARD}"
+}
+`,
+  ""
+);
+assert.deepEqual(forcedSkillValues, ["3.000000"], "SpawnEntities must force skill cvar to the clamped floor value");
+assert.equal(skillNormalizeContext.cvars.skill!.value, 3, "SpawnEntities must store the normalized skill value");
+assert.equal(
+  skillNormalizeContext.runtime.entities.some((entity) => entity.inuse && entity.targetname === "hard_filtered_after_clamp"),
+  false,
+  "SpawnEntities must apply filtering with the normalized skill value"
+);
+
+const badTokenContext = createGameMainContext(imports);
+InitGame(badTokenContext);
+assert.throws(
+  () => SpawnEntities(badTokenContext, "bad_token", `"classname" "worldspawn"`, ""),
+  /ED_LoadFromFile: found classname when expecting \{/,
+  "SpawnEntities must reject entity lumps whose next COM token is not an opening brace"
+);
+
 const allocationContext = createGameMainContext(imports);
 InitGame(allocationContext);
 const manyUntargetedLights = Array.from({ length: 1100 }, (_, index) => `{

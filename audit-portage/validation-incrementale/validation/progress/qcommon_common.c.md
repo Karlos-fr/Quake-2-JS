@@ -29,3 +29,13 @@
 
 - Correction appliquee: ajout du rejet TypeScript pour `to.number >= MAX_EDICTS`, equivalent au `Com_Error(ERR_FATAL, "Entity number >= MAX_EDICTS")` original.
 - Tests renforces: encodage complet des champs entity delta, skip sans `force`, ecriture forcee et garde-fou `MAX_EDICTS`.
+
+## Complement session - 2026-05-02
+
+- Lot limite a `MSG_WriteDeltaEntity()` uniquement; aucun temporaire local, `MSG_WriteByte` ou autre entite de `qcommon/common.c` traite.
+- Source C relue: garde `number`, calcul des bits delta, `U_OLDORIGIN` pour nouvelle entite ou `RF_BEAM`, cascade `U_MOREBITS*`, ordre d'ecriture des champs reseau.
+- Cible TS relue: commentaire d'en-tete complet, ownership `packages/qcommon/src/messages.ts`, garde `MAX_EDICTS`, branches et ordre d'ecriture equivalents au C.
+- Runtime verifie: appelee par `SV_EmitPacketEntities`, baselines client et demo serveur; consommee par `CL_ParseServerMessage` -> `CL_ParsePacketEntities` -> `CL_DeltaEntity`.
+- apps/web verifie: flux attendu via `full-game-server-host.ts` (`SV_WriteFrameToClient` puis `CL_ParseServerMessage`) et render loop, sans encodeur delta parallele.
+- renderer-three verifie: les deltas alimentent `ClientRefreshFrame`; les sorties visibles attendues sont consommees via `refresh-entity-sync`, `three-beam-sync`, `three-dlight-sync`, particules, areabits/camera/scene selon les champs.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cl-parse`, `npm run verify:full-game:server-snapshots`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.

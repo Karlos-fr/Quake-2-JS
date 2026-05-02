@@ -898,7 +898,16 @@ export function SP_target_laser(self: GameEntity, runtime: GameRuntime): void {
  * Original name: target_lightramp_think
  * Source: game/g_target.c
  * Category: Ported
- * Fidelity level: Strict
+ * Fidelity level: Close
+ * Behavior: Writes the next single-character `CS_LIGHTS` style for the targeted
+ *   light, reschedules while the ramp is in progress, and swaps direction for
+ *   toggle ramps when the ramp completes.
+ *
+ * Porting notes:
+ * - The C locals `style[2]` and `temp` map to a one-character string and a
+ *   block-local swap variable.
+ * - A defensive missing-enemy guard is retained; normal runtime use resolves
+ *   the light target before invoking this think callback.
  */
 export function target_lightramp_think(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {

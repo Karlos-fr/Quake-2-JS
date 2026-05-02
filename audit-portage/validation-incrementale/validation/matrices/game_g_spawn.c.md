@@ -29,12 +29,12 @@
 | `Quake-2-master/game/g_spawn.c` | global | `com_token` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `ED_ParseEdict`, couvert par la validation de `ED_ParseEdict`. |
 | `Quake-2-master/game/g_spawn.c` | function | `G_FindTeams` | `packages/game/src/g_spawn.ts` | `G_FindTeams` | Valide | A redecouper | Tests `verify:g-spawn`, `typecheck`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`. |
 | `Quake-2-master/game/g_spawn.c` | function | `SpawnEntities` | `packages/game/src/g_spawn.ts` | `SpawnEntities` | Valide | A redecouper | Correction allocation sequentielle via `G_Spawn`; repro city1: 1091 entites BSP -> 528 edicts runtime, aucune entite visible hors `MAX_EDICTS`. |
-| `Quake-2-master/game/g_spawn.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `inhibit` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `com_token` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `i` | `packages/game/src/g_spawn.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `skill_level` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | Non applicable | A redecouper | Temporaire local de `SpawnEntities`, couvert par la validation de `SpawnEntities`. |
+| `Quake-2-master/game/g_spawn.c` | global | `inhibit` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `SpawnEntities`, couvert par la validation du compteur d'inhibition. |
+| `Quake-2-master/game/g_spawn.c` | global | `com_token` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `SpawnEntities`, couvert par la validation du token `{`. |
+| `Quake-2-master/game/g_spawn.c` | global | `i` | `packages/game/src/g_spawn.ts` | `i` | Non applicable | A redecouper | Temporaire local de `SpawnEntities`, couvert par la validation des slots clients. |
+| `Quake-2-master/game/g_spawn.c` | global | `skill_level` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `SpawnEntities`, couvert par la validation de la normalisation skill. |
+| `Quake-2-master/game/g_spawn.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | Non applicable | A redecouper | Doublon du temporaire local `ent` de `SpawnEntities`, couvert par la validation de `SpawnEntities`. |
 | `Quake-2-master/game/g_spawn.c` | global | `single_statusbar` | `packages/game/src/g_spawn.ts` | `single_statusbar` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `dm_statusbar` | `packages/game/src/g_spawn.ts` | `dm_statusbar` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `SP_worldspawn` | `packages/game/src/g_spawn.ts` | `SP_worldspawn` | Valide | A redecouper |  |

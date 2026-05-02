@@ -249,15 +249,15 @@
 | `Quake-2-master/game/g_local.h` | macro | `MOD_CHAINGUN` | `packages/game/src/runtime.ts` | `MOD_CHAINGUN` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_GRENADE` | `packages/game/src/runtime.ts` | `MOD_GRENADE` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_G_SPLASH` | `packages/game/src/runtime.ts` | `MOD_G_SPLASH` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_ROCKET` | `packages/game/src/runtime.ts` | `MOD_ROCKET` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_R_SPLASH` | `packages/game/src/runtime.ts` | `MOD_R_SPLASH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_HYPERBLASTER` | `packages/game/src/runtime.ts` | `MOD_HYPERBLASTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_RAILGUN` | `packages/game/src/runtime.ts` | `MOD_RAILGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_BFG_LASER` | `packages/game/src/runtime.ts` | `MOD_BFG_LASER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_BFG_BLAST` | `packages/game/src/runtime.ts` | `MOD_BFG_BLAST` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_BFG_EFFECT` | `packages/game/src/runtime.ts` | `MOD_BFG_EFFECT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_HANDGRENADE` | `packages/game/src/runtime.ts` | `MOD_HANDGRENADE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_HG_SPLASH` | `packages/game/src/runtime.ts` | `MOD_HG_SPLASH` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_ROCKET` | `packages/game/src/runtime.ts` | `MOD_ROCKET` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_R_SPLASH` | `packages/game/src/runtime.ts` | `MOD_R_SPLASH` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_HYPERBLASTER` | `packages/game/src/runtime.ts` | `MOD_HYPERBLASTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_RAILGUN` | `packages/game/src/runtime.ts` | `MOD_RAILGUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_BFG_LASER` | `packages/game/src/runtime.ts` | `MOD_BFG_LASER` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_BFG_BLAST` | `packages/game/src/runtime.ts` | `MOD_BFG_BLAST` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_BFG_EFFECT` | `packages/game/src/runtime.ts` | `MOD_BFG_EFFECT` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_HANDGRENADE` | `packages/game/src/runtime.ts` | `MOD_HANDGRENADE` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_HG_SPLASH` | `packages/game/src/runtime.ts` | `MOD_HG_SPLASH` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_WATER` | `packages/game/src/g_local.ts` | `MOD_WATER` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_SLIME` | `packages/game/src/g_local.ts` | `MOD_SLIME` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_LAVA` | `packages/game/src/g_local.ts` | `MOD_LAVA` | A verifier | A redecouper |  |

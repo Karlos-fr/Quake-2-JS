@@ -2,6 +2,23 @@
 
 ## Dernier lot valide
 
+- 2026-05-02: `target_lightramp_think` avec les locaux `style` et `temp`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: le calcul de `style[0] = 'a' + movedir[0] + ((time - timestamp) / FRAMETIME) * movedir[2]` est conserve par une chaine d'un caractere, l'ecriture `CS_LIGHTS + enemy->style` est conservee via `setGameConfigstring`, le reschedule `nextthink = time + FRAMETIME` reste limite a la duree `speed`, et le toggle `spawnflags & 1` swap `movedir[0]`/`movedir[1]` puis inverse `movedir[2]`.
+  - Commentaire d'en-tete complete pour `target_lightramp_think`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes sur les locaux C `style`/`temp` et le garde defensif `enemy`.
+  - Branchement runtime verifie: `target_lightramp` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; `target_lightramp_use` resout la light cible, pose `timestamp`, puis appelle `target_lightramp_think`, qui planifie les thinks suivants.
+  - `apps/web`: integration attendue car le lot publie des `CS_LIGHTS` qui changent l'eclairage client. Pas de logique parallele masquante constatee; le flux web consomme les configstrings serveur/client et conserve l'ordre de rendu.
+  - `renderer-three`: integration attendue car les lightstyles affectent la scene et les lightmaps/surfaces rendues. La consommation existe via `ClientRefreshFrame`/refdef lightstyles puis `renderer-three` (`gl-world-scene-adapter`, `gl_light`, `gl_rsurf`); aucun manque ouvert pour ce lot.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: header de `target_lightramp_think` complete.
+  - `scripts/verify/quake2-g-target.ts`: couverture renforcee pour style initial/interpole/final, cadence `FRAMETIME`, swap toggle et absence de swap sans `TOGGLE`.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `target_lightramp_use` avec le local `e`, puis `SP_target_lightramp` si le lot reste raisonnable.
+
 - 2026-05-02: `target_laser_start`, le local `ent`, la ligne dupliquee `target_laser_off` et `SP_target_laser`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `target_laser_start` conserve `MOVETYPE_NONE`, `SOLID_NOT`, `RF_BEAM | RF_TRANSLUCENT`, `modelindex = 1`, la largeur de beam `frame` 16 quand `spawnflags & 64` sinon 4, la table de couleurs `skinnum`, la resolution optionnelle de `target` via `G_Find`, le warning cible invalide, le fallback `G_SetMovedir`, l'installation de `use = target_laser_use` et `think = target_laser_think`, le default `dmg = 1`, les bounds `[-8,8]`, le link entity puis le depart on/off selon `START_ON`. `SP_target_laser` conserve le think differe et `nextthink = level.time + 1`. La ligne dupliquee `target_laser_off` renvoie a l'entite proprietaire deja comparee; le local C `ent` est un temporaire de resolution de cible.

@@ -2,6 +2,44 @@
 
 ## Dernier lot traite
 
+- 2026-05-02: fonction `ReadLevel` et temporaires locaux auto-detectes `entnum`, `i`, `ent`.
+
+## Verdict du lot
+
+- `ReadLevel`: valide. Dans le C, la fonction libere `TAG_LEVEL`, remet les edicts a zero, ramene `globals.num_edicts` a `maxclients + 1`, verifie la taille d'edict et la base de fonctions, restaure les level locals, lit chaque `entnum`, restaure l'edict correspondant, relink chaque entite, marque les clients deconnectes, puis planifie les `target_crosslevel_target`.
+- Dans le port TS, le format binaire est remplace par le snapshot JSON structure: `ReadLevel` libere `TAG_LEVEL`, valide `format`/`date`, verifie maintenant les marqueurs `edict_size` et `function_base`, reconstruit les entites depuis les records `{ entnum, entity }`, resout les references, restaure les level locals, synchronise le runtime, relink les entites `inuse`, rattache les slots clients et planifie les cross-level targets.
+- `entnum`: valide. Le temporaire C lu dans la boucle est porte par `record.entnum`; le harness verifie la croissance de `runtime.entities.length` a partir du plus grand `entnum`, comme `globals.num_edicts = entnum + 1`.
+- `i`: valide. Le compteur C des boucles de fin est porte par les iterations TS sur `runtime.maxclients` et `runtime.entities`; les preuves couvrent clients marques deconnectes, cross-level targets et conservation de l'objet runtime.
+- `ent`: valide. Le pointeur C `ent = &g_edicts[entnum]` puis `&g_edicts[i+1]` est porte par les entites restaurees et les slots clients; les preuves couvrent relink, attachement du client et nettoyage des entites absentes.
+- Commentaires d'en-tete: commentaire de `ReadLevel` verifie et complete avec les notes de portage sur les marqueurs de compatibilite structures.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. `ReadLevel` est expose par `packages/game/src/g_main.ts` dans l'API game, appele par `SV_ReadLevelFile` dans `packages/server/src/sv_ccmds.ts`, et atteignable depuis l'initialisation/changement de niveau serveur.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` restaure les configstrings/portal state puis appelle `ge.ReadLevel` via le stockage `web-save-storage`; aucune logique web parallele ne remplace la restauration niveau.
+- renderer-three: pas de consommation directe attendue par `ReadLevel`. La fonction ne produit pas directement modele, frame, image, particule, beam, dlight, temp entity ou areabit; elle restaure cependant entites, level locals, camera/intermission et scene qui alimentent ensuite les snapshots et `ClientRefreshFrame` consommes par `renderer-three`.
+
+## Corrections appliquees
+
+- `packages/game/src/g_save.ts`: ajout de `validateLevelSaveFile` pour rejeter les marqueurs `edict_size` et `function_base` incompatibles; commentaire d'en-tete de `ReadLevel` complete.
+- `scripts/verify/quake2-g-save.ts`: preuves ajoutees pour `TAG_LEVEL`, croissance `num_edicts`, attachement client, relink/nettoyage, et rejet des marqueurs niveau incompatibles.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `ReadLevel`, `entnum`, `i`, `ent`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: ligne `g_save.c` mise a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:web-save-storage`: ok le 2026-05-02.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
+
+## Prochain lot recommande
+
+- Continuer avec les lignes auto-detectees restantes autour des temporaires `index` de `WriteField1`/`ReadField`, en les regroupant par fonction d'origine pour eviter de valider des doublons sans contexte.
+
+---
+
 - 2026-05-02: fonction `WriteLevel` et temporaires locaux auto-detectes `i`, `ent`.
 
 ## Verdict du lot

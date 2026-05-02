@@ -1058,6 +1058,28 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-items` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:p-client` OK; `npm run verify:p-weapon` OK; `npm run verify:g-weapon` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-02: lot `MOD_ROCKET`, `MOD_R_SPLASH`, `MOD_HYPERBLASTER`, `MOD_RAILGUN`, `MOD_BFG_LASER`, `MOD_BFG_BLAST`, `MOD_BFG_EFFECT`, `MOD_HANDGRENADE`, `MOD_HG_SPLASH`.
+- Verdict: `Valide` pour les 9 entites apres comparaison H/C vs TS, verification des valeurs runtime, du flux weapon/combat, des messages de mort et des sorties visibles associees.
+- Source H/C comparee:
+  - `g_local.h` definit les macros du lot avec valeurs 8..16.
+  - `g_weapon.c` propage `MOD_ROCKET`/`MOD_R_SPLASH` via `rocket_touch`, `MOD_HYPERBLASTER` via `blaster_touch`, `MOD_RAILGUN` via `fire_rail`, `MOD_BFG_LASER` via `bfg_think`, `MOD_BFG_BLAST` via `bfg_touch`, `MOD_BFG_EFFECT` via `bfg_explode`, et `MOD_HANDGRENADE`/`MOD_HG_SPLASH` via `Grenade_Explode`.
+  - `p_client.c` consomme ces moyens de mort dans `ClientObituary`, y compris les branches suicide/splash.
+- Cibles TS verifiees:
+  - `packages/game/src/runtime.ts` et `packages/game/src/g_local.ts`: constantes du lot exportees avec les valeurs C exactes.
+  - `packages/game/src/g_weapon.ts`: propagation des MOD dans les callbacks projectile/rail/BFG/grenade et emission des temp entities visibles correspondantes.
+  - `packages/game/src/g_combat.ts`: `T_Damage`/`T_RadiusDamage` propagent `runtime.meansOfDeath`.
+  - `packages/game/src/p_client.ts`: `ClientObituary` produit les messages deathmatch attendus pour les MOD du lot.
+- Runtime: integration attendue et branchee via `Weapon_RocketLauncher_Fire`, `Weapon_HyperBlaster_Fire`, `Weapon_Railgun_Fire`, `Weapon_BFG_Fire`, grenades, callbacks `touch/think`, `T_Damage`/`T_RadiusDamage`, puis `player_die`/`ClientObituary`. Les preuves couvrent valeurs, direct/splash/effect/laser mods et messages de mort.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons/temp entities, HUD/messages et render loop; aucune logique parallele `meansOfDeath`/weapon MOD detectee dans `apps/web`. `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue. Le lot produit ou conditionne des rockets, explosions, rail trails, BFG laser/effects, impacts, dlights/particules/temp entities et modeles/frames de projectiles en aval; `packages/renderer-three` consomme ces sorties via le flux full-game/refresh, sans logique gameplay parallele. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: pas de fonction nouvelle dans ce lot; commentaires d'en-tete de `rocket_touch`, `fire_rail`, `blaster_touch`, `Grenade_Explode`, `bfg_touch`, `bfg_explode`, `bfg_think`, `T_Damage`, `T_RadiusDamage` et `ClientObituary` verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions `MOD_ROCKET` a `MOD_HG_SPLASH`.
+  - `scripts/verify/quake2-p-client.ts`: preuves `ClientObituary` pour les MOD weapon/BFG/handgrenade du lot.
+  - `scripts/verify/quake2-g-weapon.ts`: preuves projectile/rail/BFG pour mods de degats et temp entities visibles.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:g-weapon` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:p-weapon` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -1091,7 +1113,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les macros MOD a partir de `MOD_ROCKET` si le lot reste petit, avec preuves weapon/combat/death messages et sorties visibles associees.
+- Continuer avec les macros environnement/monde `MOD_WATER` a `MOD_HELD_GRENADE` si le lot reste petit, avec preuves combat/death messages et sorties visibles associees.
 
 ## Blocages
 

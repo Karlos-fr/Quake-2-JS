@@ -78,6 +78,7 @@ import {
   target_laser_start,
   target_laser_think,
   target_laser_use,
+  target_lightramp_think,
   target_lightramp_use,
   trigger_crosslevel_trigger_use,
   use_target_explosion,
@@ -811,6 +812,59 @@ function verifyLaserDamageAndLightramp(): void {
   assert.deepEqual(drainGameConfigstringUpdates(runtime), [{ index: CS_LIGHTS + light.style, value: "a" }], "target_lightramp initial lightstyle mismatch");
   runPendingThinks(runtime, runtime.time + FRAMETIME);
   assert.equal(drainGameConfigstringUpdates(runtime).length > 0, true, "target_lightramp must keep updating lightstyle");
+
+  const exactRuntime = createRuntime();
+  exactRuntime.time = 4;
+  const exactLight = spawnGameEntity(exactRuntime);
+  exactLight.classname = "light";
+  exactLight.style = 11;
+  const exactRamp = spawnGameEntity(exactRuntime);
+  exactRamp.classname = "target_lightramp";
+  exactRamp.enemy = exactLight;
+  exactRamp.timestamp = exactRuntime.time;
+  exactRamp.speed = 0.3;
+  exactRamp.movedir = [0, 3, 1];
+  exactRamp.think = target_lightramp_think;
+  target_lightramp_think(exactRamp, exactRuntime);
+  assert.deepEqual(drainGameConfigstringUpdates(exactRuntime), [{ index: CS_LIGHTS + exactLight.style, value: "a" }], "target_lightramp think start style mismatch");
+  assert.equal(exactRamp.nextthink, exactRuntime.time + FRAMETIME, "target_lightramp think cadence mismatch");
+  exactRuntime.time = 4 + 2 * FRAMETIME;
+  target_lightramp_think(exactRamp, exactRuntime);
+  assert.deepEqual(drainGameConfigstringUpdates(exactRuntime), [{ index: CS_LIGHTS + exactLight.style, value: "c" }], "target_lightramp think interpolated style mismatch");
+  assert.equal(exactRamp.nextthink, exactRuntime.time + FRAMETIME, "target_lightramp think must keep scheduling before speed elapses");
+
+  const rampToggleRuntime = createRuntime();
+  rampToggleRuntime.time = 0;
+  const toggleLight = spawnGameEntity(rampToggleRuntime);
+  toggleLight.classname = "light";
+  toggleLight.style = 12;
+  const toggleRamp = spawnGameEntity(rampToggleRuntime);
+  toggleRamp.classname = "target_lightramp";
+  toggleRamp.enemy = toggleLight;
+  toggleRamp.timestamp = 0;
+  toggleRamp.speed = 0.2;
+  toggleRamp.spawnflags = 1;
+  toggleRamp.movedir = [0, 2, 1];
+  rampToggleRuntime.time = 2 * FRAMETIME;
+  target_lightramp_think(toggleRamp, rampToggleRuntime);
+  assert.deepEqual(drainGameConfigstringUpdates(rampToggleRuntime), [{ index: CS_LIGHTS + toggleLight.style, value: "c" }], "target_lightramp toggle final style mismatch");
+  assertVec3NearlyEqual(toggleRamp.movedir, [2, 0, -1], "target_lightramp toggle swap mismatch");
+
+  const oneShotRuntime = createRuntime();
+  oneShotRuntime.time = 2;
+  const oneShotLight = spawnGameEntity(oneShotRuntime);
+  oneShotLight.classname = "light";
+  oneShotLight.style = 13;
+  const oneShotRamp = spawnGameEntity(oneShotRuntime);
+  oneShotRamp.classname = "target_lightramp";
+  oneShotRamp.enemy = oneShotLight;
+  oneShotRamp.timestamp = 2;
+  oneShotRamp.speed = 0.1;
+  oneShotRamp.movedir = [1, 4, 3];
+  oneShotRuntime.time = 2 + FRAMETIME;
+  target_lightramp_think(oneShotRamp, oneShotRuntime);
+  assert.deepEqual(drainGameConfigstringUpdates(oneShotRuntime), [{ index: CS_LIGHTS + oneShotLight.style, value: "e" }], "target_lightramp one-shot final style mismatch");
+  assertVec3NearlyEqual(oneShotRamp.movedir, [1, 4, 3], "target_lightramp one-shot must not swap without TOGGLE");
 }
 
 function verifyBlasterAndEarthquake(): void {

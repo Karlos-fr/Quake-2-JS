@@ -16,6 +16,9 @@ import {
   DAMAGE_ENERGY,
   DAMAGE_NO_KNOCKBACK,
   DAMAGE_RADIUS,
+  MOD_BFG_BLAST,
+  MOD_BFG_EFFECT,
+  MOD_BFG_LASER,
   MOD_BLASTER,
   MOD_GRENADE,
   MOD_G_SPLASH,
@@ -24,6 +27,10 @@ import {
   MOD_HG_SPLASH,
   MOD_HIT,
   MOD_HYPERBLASTER,
+  MOD_R_SPLASH,
+  MOD_RAILGUN,
+  MOD_ROCKET,
+  MOVETYPE_BOUNCE,
   MOVETYPE_FLYMISSILE,
   SOLID_BBOX,
   SPLASH_BROWN_WATER,
@@ -33,9 +40,9 @@ import {
   type GameRuntime
 } from "../../packages/game/src/runtime.js";
 import { damage_t } from "../../packages/game/src/g_local.js";
-import { blaster_touch, fire_blaster, fire_bullet, fire_hit, fire_shotgun, Grenade_Explode } from "../../packages/game/src/g_weapon.js";
+import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_blaster, fire_bullet, fire_grenade, fire_hit, fire_rail, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_WATER, SURF_SKY } from "../../packages/qcommon/src/q_shared.js";
+import { CONTENTS_WATER, EF_GRENADE, SURF_SKY } from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -55,8 +62,13 @@ function main(): void {
   verifyBlasterTouchOwnerSkyAndWorldImpact();
   verifyGrenadeExplodeDirectDamageSplashAndTempEntity();
   verifyGrenadeExplodeSplashModsAndTempEntityVariants();
+  verifyGrenadeTouchOwnerSkyBounceAndDamage();
+  verifyFireGrenadeSpawnStateAndRuntimeTouch();
+  verifyRocketTouchDamageSplashAndVisibleExplosion();
+  verifyFireRailDamageModAndVisibleTrail();
+  verifyBfgDamageModsAndVisibleEffects();
 
-  console.log("Verification g_weapon - check_dodge, fire_hit, fire_lead, fire_bullet, fire_shotgun, fire_blaster, blaster_touch and Grenade_Explode lots OK");
+  console.log("Verification g_weapon - check_dodge, lead weapons, projectile impacts, grenades and MOD weapon lots OK");
 }
 
 function verifyCheckDodgeRuntimeBranch(): void {
@@ -835,6 +847,304 @@ function verifyGrenadeExplodeSplashModsAndTempEntityVariants(): void {
     G_FreeEdict: () => undefined
   });
   assert.equal(directMod, MOD_GRENADE, "missing spawnflag 1 must select MOD_GRENADE for direct damage");
+}
+
+function verifyRocketTouchDamageSplashAndVisibleExplosion(): void {
+  const runtime = createHarnessRuntime();
+  const owner = createPlayer(runtime, 1);
+  const rocket = createRuntimeEntity({ classname: "rocket" }, 2);
+  const target = createRuntimeEntity({ classname: "monster_target" }, 3);
+  const plane = makePlane([0, 0, 1]);
+  runtime.entities[2] = rocket;
+  runtime.entities[3] = target;
+  rocket.owner = owner;
+  rocket.velocity = [100, 0, 0];
+  rocket.s.origin = [10, 20, 30];
+  rocket.origin = [...rocket.s.origin];
+  rocket.dmg = 120;
+  rocket.radius_dmg = 90;
+  rocket.dmg_radius = 140;
+  target.takedamage = damage_t.DAMAGE_AIM;
+
+  const damageMods: number[] = [];
+  const radiusMods: number[] = [];
+  const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  rocket_touch(rocket, target, runtime, {
+    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
+      damageMods.push(mod);
+    },
+    T_RadiusDamage: (_inflictor, _attacker, _damage, _ignore, _radius, mod) => {
+      radiusMods.push(mod);
+    },
+    emitTempEntity: (type, payload) => {
+      tempEvents.push({ type, payload });
+    },
+    G_FreeEdict: () => undefined
+  }, plane, null);
+
+  assert.deepEqual(damageMods, [MOD_ROCKET], "rocket_touch direct damage must use MOD_ROCKET");
+  assert.deepEqual(radiusMods, [MOD_R_SPLASH], "rocket_touch splash damage must use MOD_R_SPLASH");
+  assert.equal(tempEvents[0]?.type, temp_event_t.TE_ROCKET_EXPLOSION, "dry rocket impacts must emit TE_ROCKET_EXPLOSION");
+  assert.deepEqual(tempEvents[0]?.payload.origin, [8, 20, 30], "rocket explosion origin must be origin - velocity * 0.02");
+}
+
+function verifyFireRailDamageModAndVisibleTrail(): void {
+  const runtime = createHarnessRuntime();
+  const shooter = createPlayer(runtime, 1);
+  const monster = createRuntimeEntity({ classname: "monster_target" }, 2);
+  const wall = createRuntimeEntity({ classname: "func_wall" }, 3);
+  monster.svflags = SVF_MONSTER;
+  monster.takedamage = damage_t.DAMAGE_AIM;
+  runtime.entities[2] = monster;
+  runtime.entities[3] = wall;
+
+  let traceIndex = 0;
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => {
+      traceIndex += 1;
+      return traceIndex === 1 ? makeTrace(0.25, [64, 0, 0], monster) : makeTrace(0.5, [128, 0, 0], wall);
+    },
+    pointcontents: () => 0
+  };
+
+  const damageMods: number[] = [];
+  const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  fire_rail(shooter, [0, 0, 0], [1, 0, 0], 100, 200, runtime, {
+    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
+      damageMods.push(mod);
+    },
+    emitTempEntity: (type, payload) => {
+      tempEvents.push({ type, payload });
+    }
+  });
+
+  assert.deepEqual(damageMods, [MOD_RAILGUN], "fire_rail damage must use MOD_RAILGUN");
+  assert.equal(tempEvents[0]?.type, temp_event_t.TE_RAILTRAIL, "fire_rail must emit a rail trail temp entity");
+  assert.deepEqual(tempEvents[0]?.payload.start, [0, 0, 0], "rail trail start mismatch");
+  assert.deepEqual(tempEvents[0]?.payload.end, [128, 0, 0], "rail trail end must use the last trace end");
+}
+
+function verifyBfgDamageModsAndVisibleEffects(): void {
+  const runtime = createHarnessRuntime();
+  const owner = createPlayer(runtime, 1);
+  const bfg = createRuntimeEntity({ classname: "bfg blast" }, 2);
+  const target = createRuntimeEntity({ classname: "monster_target" }, 3);
+  const wall = createRuntimeEntity({ classname: "func_wall" }, 4);
+  runtime.entities[2] = bfg;
+  runtime.entities[3] = target;
+  runtime.entities[4] = wall;
+  bfg.owner = owner;
+  bfg.velocity = [50, 0, 0];
+  bfg.s.origin = [100, 0, 0];
+  bfg.origin = [...bfg.s.origin];
+  bfg.radius_dmg = 200;
+  bfg.dmg_radius = 256;
+  bfg.inuse = true;
+  bfg.solid = SOLID_BBOX;
+  target.takedamage = damage_t.DAMAGE_AIM;
+  target.inuse = true;
+  target.solid = SOLID_BBOX;
+  target.svflags = SVF_MONSTER;
+  target.s.origin = [120, 0, 0];
+  target.origin = [...target.s.origin];
+  target.mins = [-16, -16, -16];
+  target.maxs = [16, 16, 16];
+  target.absmin = [104, -16, -16];
+  target.size = [32, 32, 32];
+
+  const damageMods: number[] = [];
+  const radiusMods: number[] = [];
+  const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  bfg_touch(bfg, target, runtime, {
+    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
+      damageMods.push(mod);
+    },
+    T_RadiusDamage: (_inflictor, _attacker, _damage, _ignore, _radius, mod) => {
+      radiusMods.push(mod);
+    },
+    emitTempEntity: (type, payload) => {
+      tempEvents.push({ type, payload });
+    },
+    G_FreeEdict: () => undefined
+  }, makePlane([0, 1, 0]), null);
+  assert.equal(damageMods[0], MOD_BFG_BLAST, "bfg_touch direct damage must use MOD_BFG_BLAST");
+  assert.equal(radiusMods[0], MOD_BFG_BLAST, "bfg_touch splash damage must use MOD_BFG_BLAST");
+  assert.equal(tempEvents[0]?.type, temp_event_t.TE_BFG_BIGEXPLOSION, "bfg_touch must emit the visible big explosion");
+
+  bfg.s.frame = 0;
+  bfg.s.origin = [100, 0, 0];
+  bfg.origin = [...bfg.s.origin];
+  damageMods.length = 0;
+  tempEvents.length = 0;
+  bfg_explode(bfg, runtime, {
+    canDamage: () => true,
+    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
+      damageMods.push(mod);
+    },
+    emitTempEntity: (type, payload) => {
+      tempEvents.push({ type, payload });
+    },
+    G_FreeEdict: () => undefined
+  });
+  assert.deepEqual(damageMods, [MOD_BFG_EFFECT], "bfg_explode effect damage must use MOD_BFG_EFFECT");
+  assert.equal(tempEvents[0]?.type, temp_event_t.TE_BFG_EXPLOSION, "bfg_explode must emit visible BFG explosion sprites");
+
+  damageMods.length = 0;
+  tempEvents.length = 0;
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, _end, ignore) => {
+      return ignore === bfg ? makeTrace(0.2, [120, 0, 0], target) : makeTrace(0.4, [160, 0, 0], wall);
+    },
+    pointcontents: () => 0
+  };
+  bfg_think(bfg, runtime, {
+    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
+      damageMods.push(mod);
+    },
+    emitTempEntity: (type, payload) => {
+      tempEvents.push({ type, payload });
+    }
+  });
+  assert.deepEqual(damageMods, [MOD_BFG_LASER], "bfg_think laser damage must use MOD_BFG_LASER");
+  assert.equal(tempEvents.some((event) => event.type === temp_event_t.TE_BFG_LASER), true, "bfg_think must emit visible BFG laser beams");
+}
+
+function verifyGrenadeTouchOwnerSkyBounceAndDamage(): void {
+  const runtime = createHarnessRuntime();
+  const owner = createPlayer(runtime, 1);
+  const grenade = createRuntimeEntity({ classname: "grenade" }, 2);
+  const wall = createRuntimeEntity({ classname: "func_wall" }, 3);
+  const target = createRuntimeEntity({ classname: "monster_target" }, 4);
+  runtime.entities[2] = grenade;
+  runtime.entities[3] = wall;
+  runtime.entities[4] = target;
+  grenade.owner = owner;
+  grenade.s.origin = [12, 8, 4];
+  grenade.origin = [...grenade.s.origin];
+  grenade.velocity = [10, 0, 0];
+  grenade.dmg = 80;
+  grenade.dmg_radius = 120;
+  target.takedamage = damage_t.DAMAGE_AIM;
+
+  let freed: GameEntity | null = null;
+  let exploded = false;
+  Grenade_Touch(grenade, owner, runtime, {
+    G_FreeEdict: (ent) => {
+      freed = ent;
+    },
+    T_RadiusDamage: () => {
+      exploded = true;
+    }
+  });
+  assert.equal(freed, null, "Grenade_Touch must ignore the owner");
+  assert.equal(exploded, false, "Grenade_Touch owner branch must not explode");
+
+  Grenade_Touch(grenade, wall, runtime, {
+    G_FreeEdict: (ent) => {
+      freed = ent;
+    }
+  }, null, { name: "sky", flags: SURF_SKY, value: 0 });
+  assert.equal(freed, grenade, "Grenade_Touch must free grenades touching sky surfaces");
+
+  const playedSounds: string[] = [];
+  grenade.spawnflags = 1;
+  withMathRandom([0.75], () => {
+    Grenade_Touch(grenade, wall, runtime, {
+      playEntitySound: (_ent, soundPath) => {
+        playedSounds.push(soundPath);
+      }
+    });
+  });
+  assert.equal(playedSounds.at(-1), "weapons/hgrenb1a.wav", "held grenade bounce sound high random branch mismatch");
+
+  grenade.spawnflags = 0;
+  Grenade_Touch(grenade, wall, runtime, {
+    playEntitySound: (_ent, soundPath) => {
+      playedSounds.push(soundPath);
+    }
+  });
+  assert.equal(playedSounds.at(-1), "weapons/grenlb1b.wav", "launched grenade bounce sound mismatch");
+
+  const tempEvents: temp_event_t[] = [];
+  freed = null;
+  Grenade_Touch(grenade, target, runtime, {
+    T_Damage: () => undefined,
+    T_RadiusDamage: () => undefined,
+    emitTempEntity: (type) => {
+      tempEvents.push(type);
+    },
+    G_FreeEdict: (ent) => {
+      freed = ent;
+    }
+  });
+  assert.equal(grenade.enemy, target, "Grenade_Touch must arm ent.enemy with the damageable impact target");
+  assert.equal(tempEvents[0], temp_event_t.TE_ROCKET_EXPLOSION, "Grenade_Touch damageable impact must route to Grenade_Explode visible temp entity");
+  assert.equal(freed, grenade, "Grenade_Touch damageable impact must free through Grenade_Explode");
+}
+
+function verifyFireGrenadeSpawnStateAndRuntimeTouch(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 10.5;
+  const owner = createPlayer(runtime, 1);
+  const target = createRuntimeEntity({ classname: "monster_target" }, 2);
+  runtime.entities[2] = target;
+  target.takedamage = damage_t.DAMAGE_AIM;
+
+  let grenade: GameEntity;
+  const tempEvents: temp_event_t[] = [];
+  let freed: GameEntity | null = null;
+  withMathRandom([0.5, 0.5], () => {
+    grenade = fire_grenade(owner, [10, 20, 30], [1, 0, 0], 100, 600, 2.5, 140, runtime, {
+      T_Damage: () => undefined,
+      T_RadiusDamage: () => undefined,
+      emitTempEntity: (type) => {
+        tempEvents.push(type);
+      },
+      G_FreeEdict: (ent) => {
+        freed = ent;
+        ent.inuse = false;
+      }
+    });
+  });
+
+  assert.equal(grenade!.classname, "grenade", "fire_grenade classname mismatch");
+  assert.deepEqual(grenade!.s.origin, [10, 20, 30], "fire_grenade origin mismatch");
+  assert.deepEqual(grenade!.origin, [10, 20, 30], "fire_grenade runtime origin mismatch");
+  assert.deepEqual(grenade!.velocity, [600, 0, 200], "fire_grenade velocity must include aim speed and up jitter");
+  assert.deepEqual(grenade!.avelocity, [300, 300, 300], "fire_grenade angular velocity mismatch");
+  assert.equal(grenade!.movetype, MOVETYPE_BOUNCE, "fire_grenade movetype mismatch");
+  assert.equal(grenade!.clipmask, MASK_SHOT, "fire_grenade clipmask mismatch");
+  assert.equal(grenade!.solid, SOLID_BBOX, "fire_grenade solid mismatch");
+  assert.equal((grenade!.s.effects & EF_GRENADE) !== 0, true, "fire_grenade must set EF_GRENADE");
+  assert.deepEqual(grenade!.mins, [0, 0, 0], "fire_grenade mins must be cleared");
+  assert.deepEqual(grenade!.maxs, [0, 0, 0], "fire_grenade maxs must be cleared");
+  assert.equal(runtime.assets.modelPaths[grenade!.s.modelindex - 1], "models/objects/grenade/tris.md2", "fire_grenade modelindex mismatch");
+  assert.equal(grenade!.owner, owner, "fire_grenade owner mismatch");
+  assert.equal(typeof grenade!.touch, "function", "fire_grenade must install Grenade_Touch callback");
+  assert.equal(typeof grenade!.think, "function", "fire_grenade must install Grenade_Explode think callback");
+  assert.equal(grenade!.nextthink, 13, "fire_grenade nextthink must use runtime time plus timer");
+  assert.equal(grenade!.dmg, 100, "fire_grenade damage mismatch");
+  assert.equal(grenade!.dmg_radius, 140, "fire_grenade damage radius mismatch");
+  assert.equal(grenade!.linked, true, "fire_grenade must link the projectile");
+  assert.equal(runtime.linkedSolidEntities.includes(grenade!), true, "fire_grenade must be reachable by solid touch runtime");
+
+  grenade!.touch?.(grenade!, target, runtime, null, null);
+  assert.equal(freed, grenade!, "fire_grenade touch callback must free through Grenade_Explode");
+  assert.equal(grenade!.inuse, false, "fire_grenade touch callback must reach Grenade_Explode and free the projectile");
+  assert.equal(tempEvents.at(-1), temp_event_t.TE_ROCKET_EXPLOSION, "fire_grenade touch callback must emit the explosion temp entity");
+
+  const hookedRuntime = createHarnessRuntime();
+  const hookedOwner = createPlayer(hookedRuntime, 1);
+  let hookedTouchCalled = false;
+  const hookedGrenade = fire_grenade(hookedOwner, [0, 0, 0], [1, 0, 0], 1, 1, 1, 1, hookedRuntime, {
+    Grenade_Touch: () => {
+      hookedTouchCalled = true;
+    }
+  });
+  hookedGrenade.touch?.(hookedGrenade, target, hookedRuntime);
+  assert.equal(hookedTouchCalled, true, "fire_grenade must preserve explicit Grenade_Touch hook injection");
 }
 
 function createHarnessRuntime(): GameRuntime {
