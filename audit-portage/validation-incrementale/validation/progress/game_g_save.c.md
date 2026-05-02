@@ -2,6 +2,41 @@
 
 ## Dernier lot traite
 
+- 2026-05-02: lignes auto-detectees restantes autour des temporaires `index` de `WriteField1` et `ReadField`, plus `len` restant de `ReadField`.
+
+## Verdict du lot
+
+- Les quatre lignes `index` consecutives apres le premier `ReadField`/`WriteField1` deja validees sont des occurrences auto-detectees du meme temporaire C local `index`, correspondant aux branches `F_CLIENT`, `F_ITEM`, `F_FUNCTION` et `F_MMOVE` de `WriteField1`/`ReadField`, pas des entites proprietaires supplementaires.
+- La ligne `len` restante de `ReadField` est aussi une occurrence auto-detectee du meme temporaire local deja valide dans le lot `ReadField`.
+- Verdict: `Non applicable` pour ces six lignes, car les entites porteuses `WriteField1` et `ReadField` ainsi que leurs temporaires reels `p`, `len` et `index` avaient deja ete compares et valides. Les preuves de cette session confirment que le port TS encode/restaure les edicts par `entityIndex`/`edictByIndex`, les items par `itemIndex`/`GetItemByIndex`, les callbacks par noms stables `callbackName`/`findGameSaveFunction`, les `mmove_t` par noms stables `moveName`/`findGameSaveMove`, et que `F_CLIENT` n'a pas d'entree active dans les tables `g_save.c` actuelles.
+- Commentaires d'en-tete: aucun commentaire fonction nouveau attendu pour ces artefacts locaux. Les commentaires/en-tetes de l'adaptateur JSON structure et des fonctions porteuses restent suffisants.
+
+## Branchement et integrations
+
+- Runtime: pas de branchement propre attendu pour ces occurrences du temporaire local. Le comportement porteur reste branche via `WriteGame`/`WriteLevel` et `ReadGame`/`ReadLevel`, exposes par `g_main.ts` puis appeles par les flux serveur `SV_WriteServerFile`/`SV_WriteLevelFile` et `SV_ReadServerFile`/`SV_ReadLevelFile`.
+- apps/web: pas d'integration propre attendue pour ces artefacts. Le navigateur doit seulement declencher les flux save/load portes via `full-game-server-host.ts` et `web-save-storage`, ce qui reste couvert par les tests.
+- renderer-three: pas de consommation directe attendue. Ces temporaires ne produisent ni modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les entites restaurees par les flux porteurs alimentent ensuite les snapshots visibles.
+
+## Corrections appliquees
+
+- Aucune correction TS necessaire.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: les six lignes auto-detectees restantes sont marquees `Non applicable`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: ligne `g_save.c` mise a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:web-save-storage`: ok le 2026-05-02.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
+
+## Prochain lot recommande
+
+- Aucun lot restant dans `game_g_save.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.
+
+---
+
 - 2026-05-02: fonction `ReadLevel` et temporaires locaux auto-detectes `entnum`, `i`, `ent`.
 
 ## Verdict du lot

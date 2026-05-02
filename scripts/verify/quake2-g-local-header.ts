@@ -65,14 +65,22 @@ import {
   MOD_HANDGRENADE,
   MOD_HG_SPLASH,
   MOD_HYPERBLASTER,
+  MOD_CRUSH,
+  MOD_FALLING,
+  MOD_HELD_GRENADE,
+  MOD_LAVA,
   MOD_MACHINEGUN,
   MOD_R_SPLASH,
   MOD_RAILGUN,
   MOD_ROCKET,
   MOD_SHOTGUN,
+  MOD_SLIME,
   MOD_SSHOTGUN,
+  MOD_SUICIDE,
+  MOD_TELEFRAG,
   MOD_TRIGGER_HURT,
   MOD_UNKNOWN,
+  MOD_WATER,
   MOVETYPE_BOUNCE,
   MOVETYPE_FLY,
   MOVETYPE_FLYMISSILE,
@@ -285,6 +293,14 @@ assert.equal(MOD_BFG_BLAST, 13, "MOD_BFG_BLAST mismatch");
 assert.equal(MOD_BFG_EFFECT, 14, "MOD_BFG_EFFECT mismatch");
 assert.equal(MOD_HANDGRENADE, 15, "MOD_HANDGRENADE mismatch");
 assert.equal(MOD_HG_SPLASH, 16, "MOD_HG_SPLASH mismatch");
+assert.equal(MOD_WATER, 17, "MOD_WATER mismatch");
+assert.equal(MOD_SLIME, 18, "MOD_SLIME mismatch");
+assert.equal(MOD_LAVA, 19, "MOD_LAVA mismatch");
+assert.equal(MOD_CRUSH, 20, "MOD_CRUSH mismatch");
+assert.equal(MOD_TELEFRAG, 21, "MOD_TELEFRAG mismatch");
+assert.equal(MOD_FALLING, 22, "MOD_FALLING mismatch");
+assert.equal(MOD_SUICIDE, 23, "MOD_SUICIDE mismatch");
+assert.equal(MOD_HELD_GRENADE, 24, "MOD_HELD_GRENADE mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");
 assert.equal(damage_t.DAMAGE_NO, 0, "damage_t DAMAGE_NO mismatch");
 assert.equal(damage_t.DAMAGE_YES, 1, "damage_t DAMAGE_YES mismatch");
