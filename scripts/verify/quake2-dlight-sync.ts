@@ -12,7 +12,7 @@
  */
 
 import assert from "node:assert/strict";
-import { Group, Mesh, PointLight } from "three";
+import { Group, Mesh } from "three";
 import type { ClientRefreshFrame } from "../../packages/client/src/refresh.js";
 import { createThreeDlightSync } from "../../packages/renderer-three/src/index.js";
 
@@ -39,13 +39,10 @@ function main(): void {
   assert.equal(group.userData.refGl.intensity, 200, "dlight intensity metadata mismatch");
 
   const flashblend = group.children.find((child) => child instanceof Mesh);
-  const pointLight = group.children.find((child) => child instanceof PointLight);
   assert.ok(flashblend instanceof Mesh, "dlight flashblend mesh missing");
-  assert.ok(pointLight instanceof PointLight, "dlight point light missing");
+  assert.equal(group.children.length, 1, "dlight should only emit the ref_gl flashblend mesh");
   assert.equal(flashblend.userData.refGl, undefined, "flashblend metadata should live on group");
   assert.equal(flashblend.geometry.getAttribute("position").count, 18, "flashblend fan vertex count mismatch");
-  assert.equal(pointLight.position.z, 32, "dlight point position mismatch");
-  assert.equal(pointLight.distance, 400, "dlight point distance mismatch");
 
   frame.lights = [];
   assert.equal(sync.apply(frame), 0, "cleared dlight sync count mismatch");

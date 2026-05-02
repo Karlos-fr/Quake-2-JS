@@ -39,6 +39,28 @@ function main(): void {
   const baseMesh = sync.root.children[0].children[0] as Mesh;
   const basePositions = readPositions(baseMesh);
 
+  const firstEntity = createFrame().entities[0];
+  const sharedSkinStats = sync.apply(runtime, {
+    ...createFrame(),
+    entities: [
+      firstEntity,
+      {
+        ...firstEntity,
+        entityNumber: 2,
+        origin: [48, 0, 0],
+        oldorigin: [48, 0, 0]
+      }
+    ]
+  });
+  assert.equal(sharedSkinStats.renderedEntities, 2, "shared skin aliases renderedEntities mismatch");
+  const firstSharedMesh = sync.root.children[0].children[0] as Mesh;
+  const secondSharedMesh = sync.root.children[1].children[0] as Mesh;
+  assert.equal(
+    (firstSharedMesh.material as MeshBasicMaterial).map,
+    (secondSharedMesh.material as MeshBasicMaterial).map,
+    "MD2 instances using the same skin must share the cached texture"
+  );
+
   const shellStats = sync.apply(runtime, createFrame({ flags: RF_SHELL_RED }));
   assert.equal(shellStats.renderedEntities, 1, "shell alias renderedEntities mismatch");
   const shellMesh = sync.root.children[0].children[0] as Mesh;

@@ -47,7 +47,7 @@ import {
 } from "../../qcommon/src/index.js";
 import { readMountedFile, type VirtualFilesystem } from "../../filesystem/src/index.js";
 import { parsePcx, parseSp2, type dsprite_t } from "../../formats/src/index.js";
-import { applyMd2AliasFrameLerp, applyMd2Frame, buildMd2Mesh, loadMd2Model, type Md2MeshInstance } from "./md2-mesh-builder.js";
+import { applyMd2AliasFrameLerp, applyMd2Frame, buildMd2Mesh, loadMd2Model, loadMd2SkinTexture, type Md2MeshInstance } from "./md2-mesh-builder.js";
 import {
   R_DrawEntitiesOnList,
   R_DrawSpriteModel,
@@ -155,6 +155,7 @@ export interface ThreeRefreshEntitySync {
   setAliasShadowsEnabled: (enabled: boolean) => void;
   setShadowReceiverRoot: (root: Object3D | null) => void;
   apply: (runtime: ClientRuntime, refreshFrame: ClientRefreshFrame | null) => RefreshEntitySyncStats;
+  dispose: () => void;
 }
 
 /**
@@ -177,6 +178,7 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
   const shadowRaycaster = new Raycaster();
 
   const modelCache = new Map<string, ReturnType<typeof loadMd2Model>>();
+  const md2SkinTextureCache = new Map<string, Texture | null>();
   const spriteCache = new Map<string, model_t | null>();
   const spriteTextureCache = new Map<string, Texture | null>();
   const instances = new Map<string, RefreshEntityInstance>();
@@ -291,7 +293,7 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
         }
 
         if (!instance) {
-          instance = createRefreshEntityInstance(filesystem, modelCache, spriteCache, spriteTextureCache, key, modelPath, entity.skinnum);
+          instance = createRefreshEntityInstance(filesystem, modelCache, md2SkinTextureCache, spriteCache, spriteTextureCache, key, modelPath, entity.skinnum);
           if (!instance) {
             missingMd2AssetCount += 1;
             continue;
@@ -364,6 +366,21 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
         skippedInlineOrBrushModel,
         missingMd2AssetCount
       };
+    },
+    dispose: () => {
+      for (const [key] of instances) {
+        removeRefreshEntityInstance(instances, key);
+      }
+      for (const texture of md2SkinTextureCache.values()) {
+        texture?.dispose();
+      }
+      for (const texture of spriteTextureCache.values()) {
+        texture?.dispose();
+      }
+      modelCache.clear();
+      md2SkinTextureCache.clear();
+      spriteCache.clear();
+      spriteTextureCache.clear();
     }
   };
 }
@@ -535,6 +552,7 @@ function buildRefreshEntityKey(entity: ClientRenderEntity): string {
 function createRefreshEntityInstance(
   filesystem: VirtualFilesystem,
   modelCache: Map<string, ReturnType<typeof loadMd2Model>>,
+  md2SkinTextureCache: Map<string, Texture | null>,
   spriteCache: Map<string, model_t | null>,
   spriteTextureCache: Map<string, Texture | null>,
   key: string,
@@ -560,8 +578,11 @@ function createRefreshEntityInstance(
   }
 
   const skinPath = resolveMd2SkinPath(model, skinnum);
+  const skinTexture = skinPath
+    ? getCachedMd2SkinTexture(filesystem, md2SkinTextureCache, skinPath)
+    : null;
   const md2 = skinPath
-    ? buildMd2Mesh(filesystem, model, { skinPath })
+    ? buildMd2Mesh(filesystem, model, { skinPath, skinTexture })
     : buildMd2Mesh(filesystem, model);
   const shadowMesh = createMd2ShadowMesh(md2);
   const root = new Group();
@@ -647,19 +668,28 @@ function updateRefreshEntityInstance(
     baseShadeLight: computeRefreshAliasLight(refreshFrame, entity.origin)
   });
   if (shell) {
-    instance.md2.mesh.material.vertexColors = false;
+    if (instance.md2.mesh.material.vertexColors !== false) {
+      instance.md2.mesh.material.vertexColors = false;
+      instance.md2.mesh.material.needsUpdate = true;
+    }
     instance.md2.mesh.material.color.setRGB(shadelight[0], shadelight[1], shadelight[2]);
   } else {
     applyAliasVertexColorAttribute(instance, frame, entity.angles[1], shadelight);
-    instance.md2.mesh.material.vertexColors = true;
+    if (instance.md2.mesh.material.vertexColors !== true) {
+      instance.md2.mesh.material.vertexColors = true;
+      instance.md2.mesh.material.needsUpdate = true;
+    }
     instance.md2.mesh.material.color.setRGB(1, 1, 1);
   }
-  instance.md2.mesh.material.transparent = entity.alpha < 1 || (entity.flags & RF_TRANSLUCENT) !== 0;
+  const transparent = entity.alpha < 1 || (entity.flags & RF_TRANSLUCENT) !== 0;
+  if (instance.md2.mesh.material.transparent !== transparent) {
+    instance.md2.mesh.material.transparent = transparent;
+    instance.md2.mesh.material.needsUpdate = true;
+  }
   instance.md2.mesh.material.opacity = entity.alpha;
   instance.md2.mesh.material.depthTest = (entity.flags & RF_DEPTHHACK) === 0;
   instance.md2.mesh.material.depthWrite = (entity.flags & RF_DEPTHHACK) === 0;
   instance.md2.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
-  instance.md2.mesh.material.needsUpdate = true;
   updateRefreshAliasShadow(instance, entity, aliasShadowsEnabled, shadowReceiverRoot, shadowRaycaster);
 }
 
@@ -796,6 +826,21 @@ function resolveMd2SkinPath(
   return model.skins[skinnum] ?? model.skins[0];
 }
 
+function getCachedMd2SkinTexture(
+  filesystem: VirtualFilesystem,
+  cache: Map<string, Texture | null>,
+  skinPath: string
+): Texture | null {
+  const cached = cache.get(skinPath);
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  const texture = loadMd2SkinTexture(filesystem, skinPath);
+  cache.set(skinPath, texture);
+  return texture;
+}
+
 /**
  * Category: New
  * Purpose: Remove one scene instance that is no longer referenced by the current refresh frame.
@@ -915,10 +960,17 @@ function applySpriteQuad(
   uv.needsUpdate = true;
   mesh.geometry.computeBoundingSphere();
 
-  mesh.material.map = asSpriteTexture(texture);
+  const nextMap = asSpriteTexture(texture);
+  if (mesh.material.map !== nextMap) {
+    mesh.material.map = nextMap;
+    mesh.material.needsUpdate = true;
+  }
   mesh.material.opacity = alpha;
-  mesh.material.transparent = alpha < 1 || Boolean(mesh.userData.refGl?.translucent);
-  mesh.material.needsUpdate = true;
+  const transparent = alpha < 1 || Boolean(mesh.userData.refGl?.translucent);
+  if (mesh.material.transparent !== transparent) {
+    mesh.material.transparent = transparent;
+    mesh.material.needsUpdate = true;
+  }
 }
 
 function loadSpriteModel(

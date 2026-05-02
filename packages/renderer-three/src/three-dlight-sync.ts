@@ -22,7 +22,6 @@ import {
   Group,
   Mesh,
   MeshBasicMaterial,
-  PointLight,
   type Object3D
 } from "three";
 import {
@@ -62,7 +61,6 @@ export function createThreeDlightSync(): ThreeDlightSync {
         color: [...light.color]
       };
       group.add(createFlashblendMesh(light, center, ring));
-      group.add(createPointLight(light));
       root.add(group);
     },
     endFlashblendDlights: () => {}
@@ -145,13 +143,6 @@ function createFlashblendMesh(
   mesh.frustumCulled = false;
   mesh.renderOrder = 25;
   return mesh;
-}
-
-function createPointLight(light: dlight_t): PointLight {
-  const pointLight = new PointLight(createThreeColor(light.color), Math.max(0.2, light.intensity / 120), Math.max(64, light.intensity * 2), 2);
-  pointLight.name = "ref-gl-dlight-point";
-  pointLight.position.set(light.origin[0], light.origin[1], light.origin[2]);
-  return pointLight;
 }
 
 function createThreeColor(color: readonly [number, number, number]): Color {

@@ -194,12 +194,9 @@ function createTexturedQuad(
   alphaTestEnabled: boolean,
   blendEnabled: boolean
 ): Mesh<BufferGeometry, MeshBasicMaterial> {
-  const texture = sourceTexture.clone();
-  texture.needsUpdate = true;
-
   const geometry = createQuadGeometry(quad.width, quad.height, quad.sl, quad.tl, quad.sh, quad.th);
   const material = new MeshBasicMaterial({
-    map: texture,
+    map: sourceTexture,
     transparent: true,
     alphaTest: alphaTestEnabled ? 0.5 : 0,
     depthTest: false,
@@ -381,8 +378,6 @@ function clearGroup(root: Group): void {
       child.geometry.dispose();
       const materials = Array.isArray(child.material) ? child.material : [child.material];
       for (const material of materials) {
-        const maybeMap = material instanceof MeshBasicMaterial ? material.map : null;
-        maybeMap?.dispose();
         material.dispose();
       }
     }

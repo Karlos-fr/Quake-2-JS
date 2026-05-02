@@ -45,6 +45,7 @@ assert.deepEqual(textured.position.toArray(), [25, 160, 0], "textured quad posit
 const texturedMaterial = textured.material;
 assert.ok(texturedMaterial instanceof MeshBasicMaterial, "textured material mismatch");
 assert.equal(texturedMaterial.map !== null, true, "textured material map missing");
+assert.equal(texturedMaterial.map, texture, "textured quad must reuse cached texture");
 const uv = textured.geometry.getAttribute("uv") as BufferAttribute;
 assert.deepEqual(Array.from(uv.array as Float32Array), [
   0.25, 0.875,
@@ -95,6 +96,7 @@ assert.deepEqual(Array.from(scrap.image.data as Uint8Array), [
 
 adapter.clear();
 assert.equal(adapter.root.children.length, 0, "adapter clear mismatch");
+assert.equal(adapter.getTexture(7), texture, "adapter clear must keep cached textures alive");
 adapter.dispose();
 
 console.log("quake2-three-gl-draw-adapter: ok");

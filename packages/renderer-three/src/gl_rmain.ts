@@ -136,6 +136,12 @@ export interface GlRmainHooks {
   onDrawNullModel?: (entity: entity_t, shadelight: vec3_t, topFan: vec3_t[], bottomFan: vec3_t[]) => void;
   onDrawParticles?: (texture: image_t | null, triangles: GlRmainParticleTriangle[]) => void;
   onDrawPointParticles?: (particles: Array<{ position: vec3_t; color: [number, number, number, number]; size: number }>) => void;
+  onDrawPointParticleBatch?: (
+    particles: readonly particle_t[],
+    count: number,
+    colortable: Uint32Array,
+    pointSize: number
+  ) => void;
   onDrawStereoPattern?: (pattern: GlRmainStereoPattern) => void;
   onDepthMaskChange?: (enabled: boolean) => void;
   drawAliasModel?: (entity: entity_t) => void;
@@ -1053,6 +1059,17 @@ export function R_DrawParticles(runtime: GlRmainRuntime): void {
   }
 
   if (runtime.gl_ext_pointparameters?.value && runtime.qglPointParameterfEXT) {
+    if (runtime.hooks.onDrawPointParticleBatch) {
+      runtime.hooks.onDrawPointParticleBatch(
+        refdef.particles,
+        refdef.num_particles,
+        runtime.d_8to24table,
+        runtime.gl_particle_size?.value ?? 1
+      );
+      runtime.hooks.drawParticles?.();
+      return;
+    }
+
     const points = refdef.particles.slice(0, refdef.num_particles).map((particle) => {
       const packed = runtime.d_8to24table[particle.color] ?? 0;
       return {

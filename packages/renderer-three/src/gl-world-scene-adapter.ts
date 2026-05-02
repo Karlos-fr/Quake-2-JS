@@ -172,6 +172,7 @@ export function createThreeGlWorldSceneAdapter(
   // ref_gl reuses dynamic texture 0 immediately; Three renders later, so isolate those uploads per surface.
   const immediateDynamicLightmapTextures = new Map<msurface_t, DataTexture>();
   const surfaceMeshes = new Map<msurface_t, SurfaceMeshBinding>();
+  const visibleSurfaceBindings = new Set<SurfaceMeshBinding>();
   const inlineModels = new Map<number, InlineModelBinding>();
   const inlineModelsByModel = new Map<model_t, InlineModelBinding>();
   const skyState: SkyState = { queuedSurfaceCount: 0, faces: [] };
@@ -226,17 +227,17 @@ export function createThreeGlWorldSceneAdapter(
       texture.needsUpdate = true;
     },
     renderBrushPoly: (surface) => {
-      surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface);
+      surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, visibleSurfaceBindings);
     },
     renderFlowingPoly: (surface) => {
-      surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface);
+      surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, visibleSurfaceBindings);
     },
     renderWaterPoly: (surface) => {
-      surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface);
+      surfaceMeshes.get(surface)?.mesh && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, visibleSurfaceBindings);
     },
     renderAlphaSurface: (surface, _image, alpha) => {
       surfaceMeshes.get(surface)?.mesh
-        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, alphaDrawState.nextRenderOrder++, undefined, alpha);
+        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, visibleSurfaceBindings, alphaDrawState.nextRenderOrder++, undefined, alpha);
     },
     renderLightmappedPolyChain: (surface, _image, lightmapTextureIndex) => {
       const dynamicTexture = lightmapTextureIndex === 0
@@ -251,11 +252,11 @@ export function createThreeGlWorldSceneAdapter(
         lightmap.texture = dynamicTexture;
       }
       surfaceMeshes.get(surface)?.mesh
-        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, undefined, lightmap);
+        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, visibleSurfaceBindings, undefined, lightmap);
     },
     renderLightmapChainSurface: (surface, lightmapTextureIndex, sOffset, tOffset) => {
       surfaceMeshes.get(surface)?.mesh
-        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, undefined, {
+        && markSurfaceVisible(glRsurfRuntime, surfaceMeshes, surface, visibleSurfaceBindings, undefined, {
           textureIndex: lightmapTextureIndex,
           sOffset,
           tOffset
@@ -384,7 +385,7 @@ export function createThreeGlWorldSceneAdapter(
       setWarpRefdefTime(glWarpRuntime, timeSeconds);
       updateWarpSurfaceUvs(glWarpRuntime, surfaceMeshes);
 
-      hideAllSurfaces(surfaceMeshes);
+      hideVisibleSurfaces(visibleSurfaceBindings);
 
       if (vieworg) {
         setCurrentTime(glRsurfRuntime, timeSeconds);
@@ -963,10 +964,11 @@ function collectImageHandles(worldmodel: model_t): image_t[] {
   return images;
 }
 
-function hideAllSurfaces(surfaceMeshes: Map<msurface_t, SurfaceMeshBinding>): void {
-  for (const binding of surfaceMeshes.values()) {
+function hideVisibleSurfaces(visibleSurfaceBindings: Set<SurfaceMeshBinding>): void {
+  for (const binding of visibleSurfaceBindings) {
     binding.mesh.visible = false;
   }
+  visibleSurfaceBindings.clear();
 }
 
 function updateWarpSurfaceUvs(
@@ -997,6 +999,7 @@ function markSurfaceVisible(
   runtime: GlRsurfRuntime,
   surfaceMeshes: Map<msurface_t, SurfaceMeshBinding>,
   surface: msurface_t,
+  visibleSurfaceBindings?: Set<SurfaceMeshBinding>,
   renderOrder?: number,
   lightmapOverride?: SurfaceLightmapBinding,
   alphaOverride?: number
@@ -1020,6 +1023,7 @@ function markSurfaceVisible(
   binding.mesh.material.depthWrite = opacity >= 1;
   binding.mesh.renderOrder = renderOrder ?? (opacity < 1 ? 1 : 0);
   binding.mesh.visible = true;
+  visibleSurfaceBindings?.add(binding);
 }
 
 function syncSurfaceLightmap(

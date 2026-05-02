@@ -110,13 +110,13 @@ export function createThreeParticleSync(filesystem: VirtualFilesystem, options: 
 
   let capturedCount = 0;
 
-  runtime.hooks.onDrawPointParticles = (particles) => {
+  runtime.hooks.onDrawPointParticleBatch = (particles, count, colortable, pointSize) => {
     const positions = positionAttribute.array as Float32Array;
     const sizes = sizeAttribute.array as Float32Array;
     const colors = colorAttribute.array as Float32Array;
     const alphas = alphaAttribute.array as Float32Array;
 
-    capturedCount = Math.min(particles.length, MAX_PARTICLES);
+    capturedCount = Math.min(count, particles.length, MAX_PARTICLES);
     for (let index = 0; index < capturedCount; index += 1) {
       const particle = particles[index];
       if (!particle) {
@@ -124,26 +124,27 @@ export function createThreeParticleSync(filesystem: VirtualFilesystem, options: 
       }
 
       let distance =
-        (particle.position[0] - runtime.r_origin[0]) * runtime.vpn[0] +
-        (particle.position[1] - runtime.r_origin[1]) * runtime.vpn[1] +
-        (particle.position[2] - runtime.r_origin[2]) * runtime.vpn[2];
+        (particle.origin[0] - runtime.r_origin[0]) * runtime.vpn[0] +
+        (particle.origin[1] - runtime.r_origin[1]) * runtime.vpn[1] +
+        (particle.origin[2] - runtime.r_origin[2]) * runtime.vpn[2];
       distance = Math.max(1, distance);
 
       const positionOffset = index * 3;
-      positions[positionOffset] = particle.position[0];
-      positions[positionOffset + 1] = particle.position[1];
-      positions[positionOffset + 2] = particle.position[2];
+      positions[positionOffset] = particle.origin[0];
+      positions[positionOffset + 1] = particle.origin[1];
+      positions[positionOffset + 2] = particle.origin[2];
 
-      const attenuatedSize = computePointParameterSize(runtime, particle.size, distance);
+      const attenuatedSize = computePointParameterSize(runtime, pointSize, distance);
       const sizeOffset = index * 2;
       sizes[sizeOffset] = attenuatedSize;
       sizes[sizeOffset + 1] = attenuatedSize;
 
+      const packed = colortable[particle.color] ?? 0;
       const colorOffset = index * 3;
-      colors[colorOffset] = clamp01(particle.color[0]);
-      colors[colorOffset + 1] = clamp01(particle.color[1]);
-      colors[colorOffset + 2] = clamp01(particle.color[2]);
-      alphas[index] = clamp01(particle.color[3]);
+      colors[colorOffset] = (packed & 0xff) / 255.0;
+      colors[colorOffset + 1] = ((packed >> 8) & 0xff) / 255.0;
+      colors[colorOffset + 2] = ((packed >> 16) & 0xff) / 255.0;
+      alphas[index] = clamp01(particle.alpha);
     }
 
     particleSprite.count = capturedCount;
@@ -173,11 +174,7 @@ export function createThreeParticleSync(filesystem: VirtualFilesystem, options: 
       const refdef = createRefDef();
       refdef.fov_x = refreshFrame.view.fov_x;
       refdef.num_particles = refreshFrame.particles.length;
-      refdef.particles = refreshFrame.particles.map((particle) => ({
-        origin: [...particle.origin],
-        color: particle.color,
-        alpha: particle.alpha
-      }));
+      refdef.particles = refreshFrame.particles;
       runtime.r_newrefdef = refdef;
 
       R_DrawParticles(runtime);

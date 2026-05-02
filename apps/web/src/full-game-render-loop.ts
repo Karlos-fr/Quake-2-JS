@@ -305,6 +305,7 @@ export function createFullGameRenderLoop(options: FullGameRenderLoopOptions): Fu
     }
     glDrawAdapter.dispose();
     polyblendOverlay.dispose();
+    refreshEntitySync.dispose();
     beamSync.dispose();
     dlightSync.dispose();
     refreshDebug.update(null);

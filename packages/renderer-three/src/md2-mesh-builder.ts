@@ -63,6 +63,7 @@ export interface Md2MeshInstance {
  */
 export interface Md2MeshBuildOptions {
   skinPath?: string;
+  skinTexture?: Texture | null;
 }
 
 /**
@@ -97,7 +98,11 @@ export function buildMd2Mesh(
 ): Md2MeshInstance {
   const md2Geometry = createMd2Geometry(model);
   const skinPath = options.skinPath ?? model.skins[0] ?? null;
-  const skinTexture = skinPath ? loadMd2SkinTexture(filesystem, skinPath) : null;
+  const skinTexture = options.skinTexture !== undefined
+    ? options.skinTexture
+    : skinPath
+      ? loadMd2SkinTexture(filesystem, skinPath)
+      : null;
   const material = skinTexture
     ? new MeshBasicMaterial({
         map: skinTexture,
@@ -459,7 +464,7 @@ function decodeMd2GlFloat(value: number): number {
  * Constraints:
  * - Must return null when the skin asset is missing or invalid.
  */
-function loadMd2SkinTexture(filesystem: VirtualFilesystem, path: string): Texture | null {
+export function loadMd2SkinTexture(filesystem: VirtualFilesystem, path: string): Texture | null {
   const file = readMountedFile(filesystem, path);
   if (!file) {
     return null;
