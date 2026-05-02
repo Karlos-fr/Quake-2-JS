@@ -13,13 +13,13 @@
 | `Quake-2-master/game/g_weapon.c` | function | `check_dodge` | `packages/game/src/g_weapon.ts` | `check_dodge` | Valide | A redecouper | Commentaire verifie; C/TS compares; test ajoute dans `scripts/verify/quake2-g-weapon.ts`; tests `npm run verify:g-weapon`, `npm run typecheck`; runtime via `fire_blaster`/`fire_rocket`/`fire_bfg` pour tireur client; web via runtime serveur; renderer n/a: decision AI sans sortie visible directe. |
 | `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `check_dodge`, porte comme variable locale TS `trace`. |
 | `Quake-2-master/game/g_weapon.c` | global | `eta` | `packages/game/src/g_weapon.ts` | `eta` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `check_dodge`, porte comme variable locale TS. |
-| `Quake-2-master/game/g_weapon.c` | function | `fire_hit` | `packages/game/src/g_weapon.ts` | `fire_hit` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `v` | `packages/game/src/g_weapon.ts` | `v` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `point` | `packages/game/src/g_weapon.ts` | `point` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `range` | `packages/game/src/g_weapon.ts` | `range` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `dir` | `packages/game/src/g_weapon.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `aim` | `packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_weapon.c` | function | `fire_hit` | `packages/game/src/g_weapon.ts` | `fire_hit` | Valide | A redecouper | Commentaire verifie; C/TS compares; correction range frontal et mutation `aim[1]`; tests `npm run verify:g-weapon`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; runtime via callbacks melee monstres; web via runtime serveur; renderer indirect via etat/velocity entites, pas de temp entity propre. |
+| `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_hit`, porte comme variable locale TS `trace`. |
+| `Quake-2-master/game/g_weapon.c` | global | `v` | `packages/game/src/g_weapon.ts` | `v` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_hit`, porte comme variable locale TS `pushDir`. |
+| `Quake-2-master/game/g_weapon.c` | global | `point` | `packages/game/src/g_weapon.ts` | `point` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_hit`, porte comme variable locale TS. |
+| `Quake-2-master/game/g_weapon.c` | global | `range` | `packages/game/src/g_weapon.ts` | `range` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_hit`, porte comme variable locale TS. |
+| `Quake-2-master/game/g_weapon.c` | global | `dir` | `packages/game/src/g_weapon.ts` | `dir` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_hit`, porte comme variable locale TS. |
+| `Quake-2-master/game/g_weapon.c` | global | `aim` | `packages/game/src/g_weapon.ts` |  | Non applicable | A redecouper | Parametre local de `fire_hit`; mutation `aim[1]` verifiee dans `scripts/verify/quake2-g-weapon.ts`. |
 | `Quake-2-master/game/g_weapon.c` | function | `fire_lead` | `packages/game/src/g_weapon.ts` | `fire_lead` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | global | `dir` | `packages/game/src/g_weapon.ts` | `dir` | A verifier | A redecouper |  |

@@ -3,29 +3,33 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `trigger_counter_use`, `SP_trigger_counter`, `SP_trigger_always`.
+- Dernier lot traite: `PUSH_ONCE`, `windsound`, `trigger_push_touch`, `SP_trigger_push`.
 - Verdict du lot: valide.
 
 ## Preuves session
 
 - C source compare: `Quake-2-master/game/g_trigger.c`
 - TS cible compare: `packages/game/src/g_trigger.ts`
-- Runtime verifie: `trigger_counter_use` branche comme callback `use`; `SP_trigger_counter` est dans `ED_CallSpawn`; `SP_trigger_always` est dans `ED_CallSpawn` et passe par `G_UseTargets` avec delai minimum 0.2.
-- `apps/web`: pas de branchement direct attendu dans ce lot; `apps/web` declenche le runtime serveur via `SV_Frame`, et ces triggers ne remplacent pas la logique runtime principale.
-- `packages/renderer-three`: non applicable pour ce lot; `trigger_counter` et `trigger_always` ne produisent ni modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ni scene visible.
+- Runtime verifie: `SP_trigger_push` branche `trigger_push_touch` via `ED_CallSpawn`; callback `touch` couvert pour grenade, acteur vivant, acteur mort ignore, son `misc/windfly.wav`, debounce strict, copie `oldvelocity`, vitesse `movedir * speed * 10` et `PUSH_ONCE`.
+- `apps/web`: integration attendue indirecte via runtime serveur/full-game; le trigger modifie vitesse/snapshots joueur et ne doit pas etre reimplemente dans `apps/web`.
+- `packages/renderer-three`: integration attendue indirecte via trajectoire/camera issue des snapshots full-game; pas de modele, particule, beam, dlight, temp entity ou areabit propre au trigger, mais la camera visible depend de la vitesse appliquee.
 
 ## Tests lances
 
 - `npm run verify:g-trigger`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:full-game:three-renderer`
+- `npm run verify:web-render-order`
 - `npm run typecheck`
 
 ## Corrections
 
-- `scripts/verify/quake2-g-trigger.ts`: renforcement de `verifyTriggerCounter` pour couvrir messages/sons et `spawnflags & 1`; ajout de `verifyTriggerAlways` pour couvrir le delai minimum et le dispatch differe.
+- `scripts/verify/quake2-g-trigger.ts`: renforcement de `verifyTriggerPush` pour couvrir spawn, soundindex, grenade, joueur vivant, debounce sonore, acteur mort ignore et `PUSH_ONCE`.
 
 ## Prochain lot recommande
 
-- Continuer avec `PUSH_ONCE`, `windsound`, `trigger_push_touch` et `SP_trigger_push` si le lot reste petit.
+- Continuer avec `hurt_use`, `hurt_touch`, les temporaires locaux `dflags` et `SP_trigger_hurt` si le lot reste petit.
 
 ## Blocages
 

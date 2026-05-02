@@ -6,14 +6,19 @@
 import { strict as assert } from "node:assert";
 
 import {
+  CL_AddLightStyles,
   CL_AddParticles,
   CL_BuildEntityEventEffects,
+  CL_ClearLightStyles,
   CL_ItemRespawnParticles,
-  CL_LogoutEffect
+  CL_LogoutEffect,
+  CL_RunLightStyles,
+  CL_SetLightstyle
 } from "../../packages/client/src/cl_fx.js";
-import { entity_event_t, MZ_LOGIN, MZ_LOGOUT, MZ_RESPAWN, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { CS_LIGHTS, entity_event_t, MAX_LIGHTSTYLES, MAX_QPATH, MZ_LOGIN, MZ_LOGOUT, MZ_RESPAWN, type vec3_t } from "../../packages/qcommon/src/index.js";
 import { createClientRuntime as createRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
 import type { ClientEntityEvent } from "../../packages/client/src/cl_ents.js";
+import { CL_BuildRefreshFrame } from "../../packages/client/src/refresh.js";
 
 main();
 
@@ -21,7 +26,55 @@ function main(): void {
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyItemRespawnEntityEventMetadata();
+  verifyLightstyleManagement();
   console.log("quake2-cl-fx: ok");
+}
+
+function verifyLightstyleManagement(): void {
+  const runtime = createRuntime();
+
+  assert.equal(runtime.cl.lightstyles.length, MAX_LIGHTSTYLES, "clightstyle_t array length mismatch");
+  assert.equal(runtime.cl.lightstyles[0].length, 0, "clightstyle_t default length mismatch");
+  assert.deepEqual(runtime.cl.lightstyles[0].value, [0, 0, 0], "clightstyle_t default value mismatch");
+  assert.equal(runtime.cl.lightstyles[0].map.length, MAX_QPATH, "clightstyle_t default map buffer mismatch");
+  assert.equal(runtime.cl.last_lightstyle_ofs, -1, "lastofs default mismatch");
+
+  runtime.cl.configstrings[CS_LIGHTS + 7] = "amc";
+  CL_SetLightstyle(runtime, 7);
+  assert.equal(runtime.cl.lightstyles[7].length, 3, "CL_SetLightstyle length mismatch");
+  assert.deepEqual(
+    runtime.cl.lightstyles[7].map,
+    [0, 1, 2 / 12],
+    "CL_SetLightstyle map conversion mismatch"
+  );
+
+  runtime.cl.time = 0;
+  CL_RunLightStyles(runtime);
+  assert.deepEqual(runtime.cl.lightstyles[1].value, [1, 1, 1], "CL_RunLightStyles empty style fallback mismatch");
+  assert.deepEqual(runtime.cl.lightstyles[7].value, [0, 0, 0], "CL_RunLightStyles offset 0 mismatch");
+
+  runtime.cl.lightstyles[7].value = [0.25, 0.25, 0.25];
+  CL_RunLightStyles(runtime);
+  assert.deepEqual(runtime.cl.lightstyles[7].value, [0.25, 0.25, 0.25], "CL_RunLightStyles should skip duplicate offsets");
+
+  runtime.cl.time = 200;
+  CL_RunLightStyles(runtime);
+  assert.deepEqual(runtime.cl.lightstyles[7].value, [2 / 12, 2 / 12, 2 / 12], "CL_RunLightStyles animated sample mismatch");
+
+  const lightStyles = CL_AddLightStyles(runtime);
+  assert.equal(lightStyles.length, MAX_LIGHTSTYLES, "CL_AddLightStyles output count mismatch");
+  assert.deepEqual(lightStyles[7], { style: 7, rgb: [2 / 12, 2 / 12, 2 / 12] }, "CL_AddLightStyles output mismatch");
+
+  const refreshFrame = CL_BuildRefreshFrame(runtime, { predictMovement: false });
+  assert.deepEqual(refreshFrame.lightStyles[7], lightStyles[7], "lightstyles should reach the refresh frame");
+
+  CL_ClearLightStyles(runtime);
+  assert.equal(runtime.cl.last_lightstyle_ofs, -1, "CL_ClearLightStyles lastofs reset mismatch");
+  assert.ok(runtime.cl.lightstyles.every((style) => style.length === 0), "CL_ClearLightStyles length reset mismatch");
+  assert.ok(runtime.cl.lightstyles.every((style) => style.value.every((component) => component === 0)), "CL_ClearLightStyles value reset mismatch");
+
+  runtime.cl.configstrings[CS_LIGHTS + 3] = "x".repeat(MAX_QPATH);
+  assert.throws(() => CL_SetLightstyle(runtime, 3), /svc_lightstyle length=64/, "CL_SetLightstyle overlong configstring mismatch");
 }
 
 function verifyLogoutEffectRuntimeParticles(): void {

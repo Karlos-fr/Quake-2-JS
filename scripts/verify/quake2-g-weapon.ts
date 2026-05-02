@@ -12,11 +12,14 @@ import {
   attachGameClient,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
+  DAMAGE_NO_KNOCKBACK,
+  damage_t,
+  MOD_HIT,
   SVF_MONSTER,
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { fire_blaster } from "../../packages/game/src/g_weapon.js";
+import { fire_blaster, fire_hit } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 
 main();
@@ -25,8 +28,11 @@ function main(): void {
   verifyCheckDodgeRuntimeBranch();
   verifyCheckDodgeEasySkillGate();
   verifyCheckDodgeRequiresClientProjectile();
+  verifyFireHitFrontRangeDamageAndKnockback();
+  verifyFireHitSideAimAdjustmentAndRangeGate();
+  verifyFireHitBlocksOnNonDamageableTrace();
 
-  console.log("Verification g_weapon - check_dodge lot OK");
+  console.log("Verification g_weapon - check_dodge and fire_hit lots OK");
 }
 
 function verifyCheckDodgeRuntimeBranch(): void {
@@ -134,6 +140,122 @@ function verifyCheckDodgeRequiresClientProjectile(): void {
   assert.equal(traceCount, 1, "check_dodge must be reached only for client-fired non-instant attacks");
 }
 
+function verifyFireHitFrontRangeDamageAndKnockback(): void {
+  const runtime = createHarnessRuntime();
+  const attacker = createMeleeMonster(runtime, 1);
+  const enemy = createMeleeMonster(runtime, 2);
+  attacker.s.origin = [0, 0, 0];
+  attacker.origin = [...attacker.s.origin];
+  attacker.s.angles = [0, 0, 0];
+  attacker.mins = [-16, -16, -24];
+  attacker.maxs = [16, 16, 32];
+  attacker.enemy = enemy;
+  enemy.s.origin = [50, 0, 0];
+  enemy.origin = [...enemy.s.origin];
+  enemy.mins = [-16, -16, -24];
+  enemy.maxs = [16, 16, 32];
+  enemy.absmin = [34, -16, -24];
+  enemy.size = [32, 32, 56];
+  enemy.groundentity = createRuntimeEntity({ classname: "ground" }, 3);
+
+  const traces: Array<{ start: vec3_t; end: vec3_t; passent: GameEntity | null; mask: number }> = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (start, _mins, _maxs, end, passent, mask) => {
+      traces.push({ start: [...start], end: [...end], passent: passent as GameEntity | null, mask });
+      return makeTrace(0.5, end, enemy);
+    },
+    pointcontents: () => 0
+  };
+
+  const damageCalls: Array<{
+    target: GameEntity;
+    dir: vec3_t;
+    point: vec3_t;
+    damage: number;
+    knockback: number;
+    dflags: number;
+    mod: number;
+  }> = [];
+  const hit = fire_hit(attacker, [80, 0, 0], 20, 100, runtime, {
+    T_Damage: (target, _inflictor, _attacker, dir, point, _normal, damage, knockback, dflags, mod) => {
+      damageCalls.push({ target, dir: [...dir], point: [...point], damage, knockback, dflags, mod });
+    }
+  });
+
+  assert.equal(hit, true, "fire_hit must report true after damaging a client/monster target");
+  assert.deepEqual(traces[0]?.start, [0, 0, 0], "fire_hit trace must start at attacker origin");
+  assert.deepEqual(traces[0]?.end, [1700, 0, 0], "front fire_hit trace must use range backed up by enemy bbox");
+  assert.equal(traces[0]?.passent, attacker, "fire_hit trace must ignore the attacker");
+  assert.equal(traces[0]?.mask, MASK_SHOT, "fire_hit trace mask must be MASK_SHOT");
+  assert.equal(damageCalls.length, 1, "fire_hit must call T_Damage exactly once");
+  assert.equal(damageCalls[0]?.target, enemy, "fire_hit must damage the traced enemy");
+  assert.deepEqual(damageCalls[0]?.point, [34, 0, 0], "front fire_hit damage point must use backed-up range");
+  assert.deepEqual(damageCalls[0]?.dir, [-16, 0, 0], "fire_hit damage dir must point from enemy origin to impact point");
+  assert.equal(damageCalls[0]?.damage, 20, "fire_hit must preserve damage");
+  assert.equal(damageCalls[0]?.knockback, 50, "fire_hit must pass kick / 2 to T_Damage");
+  assert.equal(damageCalls[0]?.dflags, DAMAGE_NO_KNOCKBACK, "fire_hit must suppress normal T_Damage knockback");
+  assert.equal(damageCalls[0]?.mod, MOD_HIT, "fire_hit damage mode must be MOD_HIT");
+  assert.ok(enemy.velocity[0] > 0, "fire_hit must apply its special knockback to the intended enemy");
+  assert.equal(enemy.groundentity, null, "upward special knockback must clear groundentity");
+}
+
+function verifyFireHitSideAimAdjustmentAndRangeGate(): void {
+  const runtime = createHarnessRuntime();
+  const attacker = createMeleeMonster(runtime, 1);
+  const enemy = createMeleeMonster(runtime, 2);
+  attacker.enemy = enemy;
+  attacker.s.origin = [0, 0, 0];
+  attacker.origin = [...attacker.s.origin];
+  attacker.s.angles = [0, 0, 0];
+  attacker.mins = [-16, -16, -24];
+  attacker.maxs = [16, 16, 32];
+  enemy.s.origin = [50, 0, 0];
+  enemy.origin = [...enemy.s.origin];
+  enemy.mins = [-24, -24, -24];
+  enemy.maxs = [24, 24, 32];
+  enemy.absmin = [26, -24, -24];
+  enemy.size = [48, 48, 56];
+
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => makeTrace(0.5, end, enemy),
+    pointcontents: () => 0
+  };
+
+  const sideAim: vec3_t = [80, -20, 8];
+  assert.equal(fire_hit(attacker, sideAim, 10, 0, runtime, { T_Damage: () => undefined }), true);
+  assert.equal(sideAim[1], enemy.mins[0], "side fire_hit must mutate aim[1] to the enemy bbox edge like the C source");
+
+  const farAim: vec3_t = [40, 0, 0];
+  assert.equal(fire_hit(attacker, farAim, 10, 0, runtime, { T_Damage: () => undefined }), false, "fire_hit must fail before tracing when enemy is out of range");
+}
+
+function verifyFireHitBlocksOnNonDamageableTrace(): void {
+  const runtime = createHarnessRuntime();
+  const attacker = createMeleeMonster(runtime, 1);
+  const enemy = createMeleeMonster(runtime, 2);
+  const wall = createRuntimeEntity({ classname: "func_wall" }, 3);
+  attacker.enemy = enemy;
+  enemy.s.origin = [20, 0, 0];
+  enemy.origin = [...enemy.s.origin];
+  wall.takedamage = damage_t.DAMAGE_NO;
+
+  runtime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => makeTrace(0.25, end, wall),
+    pointcontents: () => 0
+  };
+
+  let damageCount = 0;
+  assert.equal(
+    fire_hit(attacker, [80, 0, 0], 10, 50, runtime, { T_Damage: () => { damageCount += 1; } }),
+    false,
+    "fire_hit must fail when the melee trace hits a non-damageable blocker"
+  );
+  assert.equal(damageCount, 0, "fire_hit must not damage through non-damageable blockers");
+}
+
 function createHarnessRuntime(): GameRuntime {
   return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 }
@@ -157,6 +279,21 @@ function createDodgingMonster(runtime: GameRuntime, index: number): GameEntity {
   monster.svflags |= SVF_MONSTER;
   monster.health = 100;
   monster.maxs = [16, 16, 32];
+  runtime.entities[index] = monster;
+  return monster;
+}
+
+function createMeleeMonster(runtime: GameRuntime, index: number): GameEntity {
+  const monster = createRuntimeEntity({ classname: "monster_melee" }, index);
+  monster.inuse = true;
+  monster.classname = "monster_melee";
+  monster.svflags |= SVF_MONSTER;
+  monster.health = 100;
+  monster.takedamage = damage_t.DAMAGE_AIM;
+  monster.mins = [-16, -16, -24];
+  monster.maxs = [16, 16, 32];
+  monster.absmin = [-16, -16, -24];
+  monster.size = [32, 32, 56];
   runtime.entities[index] = monster;
   return monster;
 }

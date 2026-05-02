@@ -2,6 +2,43 @@
 
 ## Dernier lot traite
 
+- 2026-05-02: fonction `ReadGame` et temporaires locaux auto-detectes `i`, `str`.
+
+## Verdict du lot
+
+- `ReadGame`: valide. Dans le C, la fonction libere `TAG_GAME`, ouvre le fichier, lit le tampon `str[16]`, rejette les versions dont `str` differe de `__DATE__`, restaure les donnees `game`, alloue les clients puis lit exactement `game.maxclients` blocs avec `ReadClient`.
+- Dans le port TS, le fichier binaire est remplace par un snapshot JSON structure. `ReadGame` appelle `FreeTags(TAG_GAME)`, lit via le hook host, valide `format`/`date`, restaure les champs cross-level (`helpmessage*`, `spawnpoint`, `maxclients`, `maxentities`, `serverflags`, `num_items`, `autosaved`), synchronise le miroir runtime, puis reconstruit les clients via `restoreClient`.
+- `i`: valide. Le compteur C de boucle sur `game.maxclients` est porte par les entrées de `save.clients` ecrites par `WriteGame`; le harness verifie un fichier a deux slots, la longueur restauree et le miroir `runtime.maxclients`.
+- `str`: valide. Le tampon C fixe contenant `__DATE__` est porte par `SAVEGAME_DATE` dans le payload structure et controle par `validateSaveFile`; le harness verifie qu'une date incorrecte declenche l'erreur `Savegame from an older version.`.
+- Commentaires d'en-tete: commentaire de `ReadGame` verifie avec `Original name`, source, categorie, niveau de fidelite et comportement; l'en-tete fichier documente le remplacement du `FILE *` binaire par JSON structure.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. `ReadGame` est expose par `packages/game/src/g_main.ts` dans `GetGameApi`, appele par `SV_ReadServerFile` dans `packages/server/src/sv_ccmds.ts`, et reste atteignable depuis les commandes serveur de chargement.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` injecte les hooks `readFile`/`writeFile` vers `web-save-storage` et utilise le meme export runtime; aucune logique web parallele ne remplace `ReadGame`.
+- renderer-three: non applicable directement. `ReadGame`, `i` et `str` ne produisent pas de modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene. Les clients/items restaures peuvent seulement influencer ulterieurement les snapshots/HUD/viewmodel apres reprise runtime.
+
+## Corrections appliquees
+
+- Aucune correction TS proprietaire necessaire pour ce lot.
+- `scripts/verify/quake2-g-save.ts`: ajout de preuves `ReadGame` pour `FreeTags(TAG_GAME)`, restauration de deux slots clients, miroir `runtime.maxclients` et rejet d'une date de sauvegarde incorrecte.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `ReadGame`, `i`, `str`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: compteur `Validees` et prochain lot mis a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:web-save-storage`: ok le 2026-05-02.
+- `npm run verify:full-game:save-slots`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
+
+## Prochain lot recommande
+
+- Continuer avec `WriteEdict`, puis ses temporaires locaux `field` et `temp` si le lot reste coherent.
+
+---
+
 - 2026-05-02: fonction `WriteGame` et temporaires locaux auto-detectes `i`, `str`.
 
 ## Verdict du lot

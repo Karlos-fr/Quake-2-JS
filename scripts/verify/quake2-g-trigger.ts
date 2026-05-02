@@ -39,6 +39,7 @@ import {
   Touch_Multi,
   trigger_counter_use,
   trigger_key_use,
+  trigger_push_touch,
   trigger_relay_use
 } from "../../packages/game/src/g_trigger.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
@@ -205,13 +206,54 @@ function verifyTriggerPush(): void {
   trigger.s.angles = [0, -1, 0];
   trigger.angles = [0, -1, 0];
   SP_trigger_push(trigger, runtime);
+  assert.equal(trigger.touch, trigger_push_touch, "trigger_push touch callback mismatch");
+  assert.equal(trigger.speed, 1000, "trigger_push default speed mismatch");
+  assert.equal(trigger.solid, SOLID_TRIGGER, "trigger_push solid mismatch");
+  assert.ok(trigger.linked, "trigger_push must relink after spawn");
+  assert.equal(runtime.assets.soundPaths[trigger.noise_index - 1], "misc/windfly.wav", "trigger_push wind sound registration mismatch");
+
+  const grenade = spawnGameEntity(runtime);
+  grenade.classname = "grenade";
+  grenade.health = 0;
+  trigger.touch?.(trigger, grenade, runtime);
+  assert.deepEqual(grenade.velocity, [0, 0, 10000], "trigger_push must push grenades regardless of health");
+  assert.equal(runtime.soundEvents.length, 0, "trigger_push grenade branch must not play wind sound");
 
   const actor = createPlayer(runtime);
   actor.health = 100;
 
   trigger.touch?.(trigger, actor, runtime);
-  assert.equal(actor.velocity[2] > 0, true, "trigger_push must apply velocity");
-  assert.equal(actor.client?.oldvelocity[2] === actor.velocity[2], true, "trigger_push must copy oldvelocity");
+  assert.deepEqual(actor.velocity, [0, 0, 10000], "trigger_push must apply movedir * speed * 10");
+  assert.deepEqual(actor.client?.oldvelocity, actor.velocity, "trigger_push must copy oldvelocity");
+  assert.equal(runtime.soundEvents.length, 0, "trigger_push must require fly_sound_debounce_time < level.time");
+
+  runtime.time = 0.1;
+  trigger.touch?.(trigger, actor, runtime);
+  assert.equal(actor.fly_sound_debounce_time, runtime.time + 1.5, "trigger_push sound debounce time mismatch");
+  assert.equal(runtime.soundEvents.at(-1)?.soundPath, "misc/windfly.wav", "trigger_push wind sound mismatch");
+  const soundCount = runtime.soundEvents.length;
+  trigger.touch?.(trigger, actor, runtime);
+  assert.equal(runtime.soundEvents.length, soundCount, "trigger_push must debounce repeated wind sounds");
+
+  runtime.time += 1.6;
+  trigger.touch?.(trigger, actor, runtime);
+  assert.equal(runtime.soundEvents.length, soundCount + 1, "trigger_push must play wind sound after debounce expires");
+
+  const corpse = spawnGameEntity(runtime);
+  corpse.classname = "corpse";
+  corpse.health = 0;
+  trigger.touch?.(trigger, corpse, runtime);
+  assert.deepEqual(corpse.velocity, [0, 0, 0], "trigger_push must ignore non-grenade dead entities");
+
+  const once = spawnGameEntity(runtime);
+  once.classname = "trigger_push";
+  once.spawnflags = 1;
+  once.s.angles = [0, -1, 0];
+  once.angles = [0, -1, 0];
+  SP_trigger_push(once, runtime);
+  const pushed = createPlayer(runtime);
+  once.touch?.(once, pushed, runtime);
+  assert.equal(once.inuse, false, "trigger_push PUSH_ONCE must free itself after touch");
 }
 
 function verifyTriggerHurt(): void {

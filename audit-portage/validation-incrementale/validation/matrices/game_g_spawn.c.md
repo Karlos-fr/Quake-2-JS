@@ -12,7 +12,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/game/g_spawn.c` | struct | `spawn_t` | `packages/game/src/g_spawn.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `name` | `packages/game/src/g_spawn.ts` |  | Valide | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | function | `SP_worldspawn` | `packages/game/src/g_spawn.ts` | `SP_worldspawn` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | function | `SP_worldspawn` | `packages/game/src/g_spawn.ts` | `SP_worldspawn` | Valide | A redecouper | Correction lightstyles standards `CS_LIGHTS`; tests `verify:g-spawn`, `verify:local-gameplay-sync`, `verify:full-game:three-renderer`, `verify:full-game:server-host`, `typecheck`. |
 | `Quake-2-master/game/g_spawn.c` | function | `SP_func_clock` | `packages/game/src/g_misc.ts` | `SP_func_clock` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | table | `spawns` | `packages/game/src/g_spawn.ts` | `spawns` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `ED_CallSpawn` | `packages/game/src/g_spawn.ts` | `ED_CallSpawn` | A verifier | A redecouper |  |
@@ -35,9 +35,9 @@
 | `Quake-2-master/game/g_spawn.c` | global | `i` | `packages/game/src/g_spawn.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `skill_level` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `single_statusbar` | `packages/game/src/g_spawn.ts` | `single_statusbar` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `dm_statusbar` | `packages/game/src/g_spawn.ts` | `dm_statusbar` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | function | `SP_worldspawn` | `packages/game/src/g_spawn.ts` | `SP_worldspawn` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | global | `single_statusbar` | `packages/game/src/g_spawn.ts` | `single_statusbar` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | global | `dm_statusbar` | `packages/game/src/g_spawn.ts` | `dm_statusbar` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | function | `SP_worldspawn` | `packages/game/src/g_spawn.ts` | `SP_worldspawn` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `strncpy` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | declarative:spawn-functions | `spawns` | `packages/game/src/g_spawn.ts` | `spawns` | A verifier | matched |  |
 | `Quake-2-master/game/g_spawn.c` | declarative:spawn-functions | `spawns` | `packages/game/src/g_spawn.ts` | `spawns` | A verifier | matched |  |

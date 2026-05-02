@@ -26,6 +26,7 @@ import {
   CVAR_USERINFO,
   CS_CDTRACK,
   CS_ITEMS,
+  CS_LIGHTS,
   CS_MAXCLIENTS,
   CS_NAME,
   CS_PLAYERSKINS,
@@ -958,6 +959,9 @@ function configureWorldspawn(context: GameMainContext, worldspawn: GameEntity, m
   context.gi.configstring(CS_CDTRACK, String(worldspawn.sounds));
   context.gi.configstring(CS_MAXCLIENTS, String(context.runtime.maxclients));
   context.gi.configstring(CS_STATUSBAR, context.runtime.deathmatch ? dm_statusbar : single_statusbar);
+  for (const [style, pattern] of WORLDSPAWN_LIGHTSTYLES) {
+    context.gi.configstring(CS_LIGHTS + style, pattern);
+  }
 
   context.gi.imageindex("i_help");
   context.level.pic_health = context.gi.imageindex("i_health");
@@ -1179,6 +1183,22 @@ const WORLDSPAWN_SOUND_PRECACHE = [
   "items/protect4.wav",
   "weapons/noammo.wav",
   "infantry/inflies1.wav"
+] as const;
+
+const WORLDSPAWN_LIGHTSTYLES = [
+  [0, "m"],
+  [1, "mmnmmommommnonmmonqnmmo"],
+  [2, "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba"],
+  [3, "mmmmmaaaaammmmmaaaaaabcdefgabcdefg"],
+  [4, "mamamamamama"],
+  [5, "jklmnopqrstuvwxyzyxwvutsrqponmlkj"],
+  [6, "nmonqnmomnmomomno"],
+  [7, "mmmaaaabcdefgmmmmaaaammmaamm"],
+  [8, "mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa"],
+  [9, "aaaaaaaazzzzzzzz"],
+  [10, "mmamammmmammamamaaamammma"],
+  [11, "abcdefghijklmnopqrrqponmlkjihgfedcba"],
+  [63, "a"]
 ] as const;
 
 const GAME_BUILD_DATE = "TypeScript port";

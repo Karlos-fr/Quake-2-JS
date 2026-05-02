@@ -32,11 +32,12 @@ import {
   registerGameSaveFunction,
   registerGameSaveMove
 } from "../../packages/game/src/g_save.js";
-import { CLOFS, FFL_NOSPAWN, FFL_SPAWNTEMP, ITEM_INDEX, LLOFS, STOFS, fieldtype_t } from "../../packages/game/src/g_local.js";
+import { CLOFS, FFL_NOSPAWN, FFL_SPAWNTEMP, ITEM_INDEX, LLOFS, STOFS, TAG_GAME, fieldtype_t } from "../../packages/game/src/g_local.js";
 
 const files = new Map<string, string>();
 const linked: number[] = [];
 const cvars = new Map<string, cvar_t>();
+const freedTags: number[] = [];
 
 const imports = {
   bprintf: () => {},
@@ -80,7 +81,9 @@ const imports = {
   WriteAngle: () => {},
   TagMalloc: () => ({}),
   TagFree: () => {},
-  FreeTags: () => {},
+  FreeTags: (tag: number) => {
+    freedTags.push(tag);
+  },
   cvar: (name: string, value: string) => {
     let variable = cvars.get(name);
     if (!variable) {
@@ -334,6 +337,24 @@ assert.equal(maxClientSave.clients.length, 2, "WriteGame must write exactly game
 assert.equal(maxClientSave.clients[0]?.pers.health, 66, "WriteGame must save the runtime edict client when game.clients is not pre-populated");
 assert.equal(maxClientSave.clients[0]?.pers.max_health, 99, "WriteGame must call SaveClientData before snapshotting edict-backed clients");
 
+const maxReadContext = createGameMainContext(imports, {
+  hooks: {
+    readFile: (path) => files.get(path) ?? null,
+    writeFile: (path, contents) => {
+      files.set(path, contents);
+      return true;
+    }
+  }
+});
+freedTags.length = 0;
+ReadGame(maxReadContext, "save/game-maxclients.sav");
+assert.deepEqual(freedTags, [TAG_GAME], "ReadGame must free TAG_GAME before restoring game state");
+assert.equal(maxReadContext.game.maxclients, 2, "ReadGame must restore game.maxclients before rebuilding client slots");
+assert.equal(maxReadContext.runtime.maxclients, 2, "ReadGame must mirror restored maxclients into runtime");
+assert.equal(maxReadContext.game.clients.length, 2, "ReadGame must rebuild one client slot per saved game.maxclients entry like the C loop over i");
+assert.equal(maxReadContext.game.clients[0]?.pers.health, 66, "ReadGame must restore the first saved client slot");
+assert.equal(maxReadContext.game.clients[0]?.pers.max_health, 99, "ReadGame must restore SaveClientData-updated max health");
+
 WriteGame(writeContext, "save/game-auto.ssv", true);
 const autosaveJson = files.get("save/game-auto.ssv") ?? "";
 assert.ok(autosaveJson.includes("\"autosaved\": true"), "autosave WriteGame must snapshot autosaved true");
@@ -379,6 +400,13 @@ assert.equal(readContext.game.clients[0]?.newweapon, shotgun, "ReadGame must res
 ReadGame(readContext, "save/game-auto.ssv");
 assert.equal(readContext.game.autosaved, true, "ReadGame game autosaved true mismatch");
 assert.equal(readContext.runtime.autosaved, true, "ReadGame runtime autosaved true mismatch");
+
+files.set("save/game-old.ssv", gameJson.replace("\"date\": \"Quake2JS g_save phase1\"", "\"date\": \"older build\""));
+assert.throws(
+  () => ReadGame(createGameMainContext(imports, { hooks: { readFile: (path) => files.get(path) ?? null } }), "save/game-old.ssv"),
+  /Savegame from an older version/,
+  "ReadGame must reject save files whose fixed date/version marker does not match"
+);
 
 const target = createRuntimeEntity({
   classname: "target_crosslevel_target",

@@ -47,7 +47,6 @@ import {
   MOD_EXIT,
   MOD_EXPLOSIVE,
   MOD_SPLASH,
-  MOD_TARGET_BLASTER,
   MOD_TARGET_LASER,
   SFL_CROSS_TRIGGER_MASK
 } from "./g_local.js";
@@ -586,18 +585,26 @@ export function SP_target_spawner(self: GameEntity, _runtime: GameRuntime): void
  * Original name: use_target_blaster
  * Source: game/g_target.c
  * Category: Ported
- * Fidelity level: Close
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Computes the original local `effect`, fires a blaster bolt from `s.origin` along `movedir`,
+ *   and plays the target blaster sound.
+ *
+ * Porting notes:
+ * - The C source computes `effect` from `NOTRAIL` / `NOEFFECTS` but still passes `EF_BLASTER`
+ *   and a truthy final argument to `fire_blaster`; this preserves that behavior exactly.
  */
 export function use_target_blaster(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   const effect = (self.spawnflags & 2) !== 0 ? 0 : ((self.spawnflags & 1) !== 0 ? EF_HYPERBLASTER : EF_BLASTER);
-  fire_blaster(self, self.s.origin, self.movedir, self.dmg, self.speed, effect, false, runtime);
+  void effect;
+  fire_blaster(self, self.s.origin, self.movedir, self.dmg, self.speed, EF_BLASTER, true, runtime);
   emitRegisteredSound(runtime, self, self.noise_index, {
     channel: CHAN_VOICE,
     volume: 1,
     attenuation: ATTN_NORM,
     timeofs: 0
   });
-  void MOD_TARGET_BLASTER;
 }
 
 /**
@@ -605,6 +612,10 @@ export function use_target_blaster(self: GameEntity, _other: GameEntity | null, 
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Installs `use_target_blaster`, derives `movedir` from `s.angles`, registers the fire sound,
+ *   applies default damage and speed, and hides the controller entity from clients.
  */
 export function SP_target_blaster(self: GameEntity, runtime: GameRuntime): void {
   self.use = use_target_blaster;

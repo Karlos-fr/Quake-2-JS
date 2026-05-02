@@ -12,19 +12,19 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_LogoutEffect` | `packages/client/src/cl_fx.ts` | `CL_LogoutEffect` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npx tsx ./scripts/verify/quake2-full-game-three-renderer.ts`, `npm run typecheck`; en-tete adapter `appendLogoutEffect` corrige. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ItemRespawnParticles` | `packages/client/src/cl_fx.ts` | `CL_ItemRespawnParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npx tsx ./scripts/verify/quake2-full-game-three-renderer.ts`, `npm run typecheck`; branchement `apps/web` EV_ITEM_RESPAWN corrige. |
-| `Quake-2-master/client/cl_fx.c` | struct | `clightstyle_t` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `length` | `packages/client/src/cl_fx.ts` | `length` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `value` | `packages/client/src/cl_fx.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `map` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `lastofs` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_ClearLightStyles` | `packages/client/src/cl_fx.ts` | `CL_ClearLightStyles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_RunLightStyles` | `packages/client/src/cl_fx.ts` | `CL_RunLightStyles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `ofs` | `packages/client/src/cl_fx.ts` | `ofs` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_SetLightstyle` | `packages/client/src/cl_fx.ts` | `CL_SetLightstyle` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `s` | `packages/client/src/cl_fx.ts` | `s` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_AddLightStyles` | `packages/client/src/cl_fx.ts` | `CL_AddLightStyles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | struct | `clightstyle_t` | `packages/client/src/client.ts` | `client_lightstyle_t` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | global | `length` | `packages/client/src/client.ts` | `client_lightstyle_t.length` | Valide | A redecouper | Champ de `clightstyle_t`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `value` | `packages/client/src/client.ts` | `client_lightstyle_t.value` | Valide | A redecouper | Champ de `clightstyle_t`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `map` | `packages/client/src/client.ts` | `client_lightstyle_t.map` | Valide | A redecouper | Champ de `clightstyle_t`; tableau dynamique TS justifie dans l'en-tete; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `lastofs` | `packages/client/src/client.ts` | `last_lightstyle_ofs` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:local-gameplay-sync`. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_ClearLightStyles` | `packages/client/src/cl_fx.ts` | `CL_ClearLightStyles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_RunLightStyles` | `packages/client/src/cl_fx.ts` | `CL_RunLightStyles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:local-gameplay-sync`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | global | `ofs` | `packages/client/src/cl_fx.ts` | `ofs` | Non applicable | A redecouper | Variable locale de `CL_RunLightStyles`, portee dans le corps TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_RunLightStyles`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_SetLightstyle` | `packages/client/src/cl_fx.ts` | `CL_SetLightstyle` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:local-gameplay-sync`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | global | `s` | `packages/client/src/cl_fx.ts` | `s` | Non applicable | A redecouper | Variable locale de `CL_SetLightstyle`, portee dans le corps TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_AddLightStyles` | `packages/client/src/cl_fx.ts` | `CL_AddLightStyles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_AddLightStyles`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `cl_dlights` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ClearDlights` | `packages/client/src/cl_fx.ts` | `CL_ClearDlights` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_AllocDlight` | `packages/client/src/cl_fx.ts` | `CL_AllocDlight` | A verifier | A redecouper |  |

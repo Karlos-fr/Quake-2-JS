@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- 2026-05-02: `use_target_blaster`, les deux locaux `effect` associes et `SP_target_blaster`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `use_target_blaster` conserve le calcul local `effect` depuis `spawnflags & 2` puis `spawnflags & 1`, mais l'appel effectif C a `fire_blaster` passe toujours `EF_BLASTER` et un dernier argument truthy; le TS a ete corrige pour preserver ce comportement exact. Le son `gi.sound(self, CHAN_VOICE, noise_index, 1, ATTN_NORM, 0)` est conserve via `emitRegisteredSound`. `SP_target_blaster` conserve l'installation du callback, `G_SetMovedir`, le `soundindex("weapons/laser2.wav")`, les defaults `dmg = 15` et `speed = 1000`, puis `SVF_NOCLIENT`.
+  - Commentaires d'en-tete completes pour `use_target_blaster` et `SP_target_blaster`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et note de portage sur le local `effect` calcule mais non utilise par l'appel C.
+  - Branchement runtime verifie: `target_blaster` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; le callback `use` cree un projectile `bolt` via `fire_blaster`, le lie au runtime et conserve modele, son de vol, vitesse, damage et flags.
+  - `apps/web`: integration attendue car le projectile est une entite visible et produit des sons/impacts ensuite; pas de logique parallele masquante constatee. Le flux passe par runtime serveur/client, snapshots et refresh frames.
+  - `renderer-three`: integration attendue car le bolt porte `EF_BLASTER` et un modele visible, avec dlight/trail/impact possibles en aval. La consommation existe via snapshots/client refresh, lights et trail/particules; `verify:full-game:three-renderer` reste OK.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: `use_target_blaster` passe maintenant `EF_BLASTER` et `true` a `fire_blaster`, tout en conservant le local `effect` calcule pour correspondre au C.
+  - `scripts/verify/quake2-g-target.ts`: couverture renforcee pour spawn table `ED_CallSpawn`, `SVF_NOCLIENT`, `G_SetMovedir`, son, defaults, projectile, modele, son de vol, vitesse, `EF_BLASTER`, argument hyper truthy, et spawnflags `NOTRAIL`/`NOEFFECTS` sans effet sur l'appel C.
+- Tests lances:
+  - `npm run verify:g-target` OK apres ajustement des assertions de vecteur `-0`.
+  - `npm run verify:full-game:server-host` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `trigger_crosslevel_trigger_use` et `SP_target_crosslevel_trigger`, puis les entites `target_crosslevel_target_*` dans un lot separe si necessaire.
+
 - 2026-05-02: `use_target_spawner`, le local `ent` associe et `SP_target_spawner`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `use_target_spawner` conserve l'allocation `G_Spawn`, le classname pris depuis `self->target`, la copie `s.origin`/`s.angles`, l'appel `ED_CallSpawn`, puis `KillBox`, relink et copie de `movedir` vers `velocity` quand `speed` est non nul. `SP_target_spawner` conserve l'installation du callback, `SVF_NOCLIENT`, `G_SetMovedir` et le scale de `movedir` par `speed`; le test confirme aussi que `G_SetMovedir` efface `s.angles` avant le spawn, comme en C.

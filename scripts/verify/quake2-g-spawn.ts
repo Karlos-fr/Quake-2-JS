@@ -25,7 +25,8 @@ import {
   RF_GLOW,
   CS_SKY,
   CS_SKYAXIS,
-  CS_SKYROTATE
+  CS_SKYROTATE,
+  CS_STATUSBAR
 } from "../../packages/qcommon/src/index.js";
 import { FL_TEAMSLAVE, FRAMETIME, MOVETYPE_PUSH, MOVETYPE_STOP, MOVETYPE_TOSS, SOLID_BBOX, SOLID_BSP, SOLID_NOT, SOLID_TRIGGER, STATE_BOTTOM, STATE_UP, SVF_NOCLIENT } from "../../packages/game/src/runtime.js";
 import {
@@ -35,7 +36,7 @@ import {
   SPAWNFLAG_NOT_MEDIUM,
   damage_t
 } from "../../packages/game/src/g_local.js";
-import { ED_CallSpawn, G_FindTeams, spawns } from "../../packages/game/src/g_spawn.js";
+import { ED_CallSpawn, G_FindTeams, dm_statusbar, single_statusbar, spawns } from "../../packages/game/src/g_spawn.js";
 import { G_RunFrame, InitGame, SpawnEntities, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { spawnGameEntity } from "../../packages/game/src/runtime.js";
 
@@ -154,6 +155,16 @@ assert.equal(configstrings.get(CS_SKYROTATE), "5", "CS_SKYROTATE mismatch");
 assert.equal(configstrings.get(CS_SKYAXIS), "0 0 1", "CS_SKYAXIS mismatch");
 assert.equal(configstrings.get(CS_CDTRACK), "7", "CS_CDTRACK mismatch");
 assert.equal(configstrings.get(CS_MAXCLIENTS), "4", "CS_MAXCLIENTS mismatch");
+assert.equal(configstrings.get(CS_STATUSBAR), single_statusbar, "single-player CS_STATUSBAR mismatch");
+assert.equal(configstrings.get(CS_LIGHTS + 0), "m", "worldspawn lightstyle 0 mismatch");
+assert.equal(configstrings.get(CS_LIGHTS + 1), "mmnmmommommnonmmonqnmmo", "worldspawn lightstyle 1 mismatch");
+assert.equal(
+  configstrings.get(CS_LIGHTS + 2),
+  "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba",
+  "worldspawn lightstyle 2 mismatch"
+);
+assert.equal(configstrings.get(CS_LIGHTS + 4), "mamamamamama", "worldspawn lightstyle 4 mismatch");
+assert.equal(configstrings.get(CS_LIGHTS + 63), "a", "worldspawn lightstyle 63 mismatch");
 assert.equal(configstrings.get(CS_ITEMS + 1), "Body Armor", "first item configstring mismatch");
 assert.equal(context.runtime.playerTrail.trail_active, true, "PlayerTrail_Init should run after SpawnEntities");
 assert.equal(context.runtime.assets.soundPaths[0], "player/fry.wav", "worldspawn must precache fry sound first");
@@ -179,6 +190,20 @@ assert.equal(unnamedContext.level.nextmap, "", "worldspawn without nextmap must 
 assert.equal(configstrings.get(CS_SKY), "unit1_", "worldspawn without sky must publish the original default sky");
 assert.equal(configstrings.get(CS_SKYROTATE), "0", "worldspawn without skyrotate must publish the original default rotation");
 assert.equal(configstrings.get(CS_SKYAXIS), "0 0 0", "worldspawn without skyaxis must publish the original default axis");
+
+const deathmatchStatusContext = createGameMainContext(imports);
+InitGame(deathmatchStatusContext);
+deathmatchStatusContext.cvars.deathmatch = createCvar("deathmatch", "1");
+SpawnEntities(
+  deathmatchStatusContext,
+  "dm1",
+  `{
+"classname" "worldspawn"
+}
+`,
+  ""
+);
+assert.equal(configstrings.get(CS_STATUSBAR), dm_statusbar, "deathmatch CS_STATUSBAR mismatch");
 
 const firstDoor = context.runtime.entities[5]!;
 const secondDoor = context.runtime.entities[6]!;

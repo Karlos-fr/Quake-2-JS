@@ -11,9 +11,13 @@
 - 2026-05-01: `SP_info_player_start`, `SP_info_player_deathmatch`, `SP_info_player_coop` et `SP_info_player_intermission`.
 - 2026-05-01: `SP_item_health`, `SP_item_health_small`, `SP_item_health_large` et `SP_item_health_mega`.
 - 2026-05-02: verification de dispatch `light` sans validation d'entite proprietaire `g_spawn.c`.
+- 2026-05-02: `SP_worldspawn`, `single_statusbar` et `dm_statusbar`.
 
 ## Verdict du lot
 
+- `SP_worldspawn`: valide. Le port conserve l'initialisation world edict `MOVETYPE_PUSH`, `SOLID_BSP`, `inuse`, `s.modelindex = 1`, et le reste des effets C est coordonne par `SpawnEntities`/`configureWorldspawn`: `InitBodyQue`, `SetItemNames`, `level.nextmap`, `CS_NAME`, `CS_SKY`, `CS_SKYROTATE`, `CS_SKYAXIS`, `CS_CDTRACK`, `CS_MAXCLIENTS`, `CS_STATUSBAR`, images HUD, `sv_gravity`, sons globaux, precache `Blaster` et lightstyles standards `CS_LIGHTS + 0..11` et `CS_LIGHTS + 63`. Correction appliquee pendant la session: publication des lightstyles standards manquants.
+- `single_statusbar`: valide. La constante TS reprend le programme statusbar solo original et le branchement `CS_STATUSBAR` solo a ete prouve par `verify:g-spawn`.
+- `dm_statusbar`: valide. La constante TS reprend le programme deathmatch original et le branchement `CS_STATUSBAR` deathmatch a ete prouve par `verify:g-spawn`.
 - `SP_func_clock`: valide. Le prototype et l'entree `func_clock` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_misc.ts`; la fonction conserve les rejets no-target/no-count avec warning et `G_FreeEdict`, le default `TIMER_UP` a une heure, `CLOCK_MESSAGE_SIZE`, `func_clock_reset`, le callback `func_clock_use` pour `START_OFF`, le scheduling `level.time + 1`, les formats `xx`/`xx:xx`/`xx:xx:xx`, la branche heure locale, la mise a jour `target_string`, le `pathtarget`, le reset multi-use et le one-shot non multi-use.
 - `SP_func_timer`: valide. Le prototype et l'entree `func_timer` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_func.ts`; la fonction conserve le default `wait = 1`, les callbacks `func_timer_use`/`func_timer_think`, le clamp `random >= wait`, `SVF_NOCLIENT`, `START_ON`, `st.pausetime`, `delay`, l'activator `self`, `G_UseTargets` et le reschedule `level.time + wait + crandom() * random`.
 - `SP_func_killbox`: valide. Le prototype et l'entree `func_killbox` de `game/g_spawn.c` sont portes via `spawns[]` vers `packages/game/src/g_func.ts`; la fonction conserve `gi.setmodel` via `setGameEntityModel`, `use_killbox`, `SVF_NOCLIENT`, et `use_killbox` delegue a `KillBox` pour telefrag les occupants.
@@ -42,6 +46,13 @@
 
 ## Checklist appliquee
 
+- Identification: lot `SP_worldspawn` dans matrice `game_g_spawn.c.md`, definition originale dans `Quake-2-master/game/g_spawn.c`, cible portee `packages/game/src/g_spawn.ts` avec effets larges coordonnes par `packages/game/src/g_main.ts`; constantes associees `single_statusbar` et `dm_statusbar` dans le meme fichier source/cible.
+- Comparaison C/H vs TS: entrees `edict_t *ent` vs `GameEntity, GameRuntime`, sortie void, world edict, configstrings, statusbars, images HUD, items, gravity, sons, precaches et lightstyles standards verifies.
+- Commentaires d'en-tete: `SP_worldspawn`, `single_statusbar`, `dm_statusbar` et le bloc `SP_worldspawn sound precache block` ont les metadonnees de portage; `SP_worldspawn` documente le partage des effets avec `g_main.ts`.
+- Runtime: valide. `SpawnEntities` appelle `ED_CallSpawn(worldspawn)` puis `configureWorldspawn`; `InitBodyQue`, `PlayerTrail_Init`, configstrings et precaches sont atteignables depuis l'export `GetGameApi.SpawnEntities`.
+- apps/web: valide. Le flux serveur/web appelle `SpawnEntities` via l'API game portee et consomme les configstrings/snapshots; aucune logique parallele worldspawn masquante n'a ete constatee. Les tests full-game couvrent le host.
+- renderer-three: valide. Les sorties visibles attendues sont les sky configstrings, statusbar cote client et surtout lightstyles BSP; le renderer consomme `ClientRefreshFrame.lightStyles`, verifie par les tests local gameplay et Three.
+- Tests/correction: `packages/game/src/g_main.ts` publie maintenant les lightstyles standards `CS_LIGHTS + 0..11` et `+63`; `scripts/verify/quake2-g-spawn.ts` couvre statusbars solo/deathmatch et lightstyles worldspawn.
 - Identification: lot `SP_func_clock` dans matrice `game_g_spawn.c.md`, prototype et entree `func_clock` originaux dans `Quake-2-master/game/g_spawn.c`, definition originale dans `game/g_misc.c`, cible portee `packages/game/src/g_misc.ts` importee par `packages/game/src/g_spawn.ts`. La matrice n'avait pas de ligne directe pour ce prototype; une ligne explicite `SP_func_clock` a ete ajoutee.
 - Comparaison C/H vs TS: entrees `edict_t *self` vs `GameEntity, GameRuntime`, sorties void, classnames, flags `TIMER_UP`/`TIMER_DOWN`/`START_OFF`/`MULTI_USE`, `count`/`health`/`wait`, `message`, `target`/`pathtarget`, callbacks, warnings, allocation message et formats de temps verifies.
 - Commentaires d'en-tete: `func_clock_reset`, `func_clock_format_countdown`, `func_clock_think`, `func_clock_use` et `SP_func_clock` ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage pour l'heure locale; pas d'ajustement necessaire.
@@ -158,7 +169,12 @@
 - `npm run verify:g-misc`: ok le 2026-05-02.
 - `npm run verify:local-gameplay-sync`: ok le 2026-05-02.
 - `npm run typecheck`: ok le 2026-05-02.
+- `npm run verify:g-spawn`: ok le 2026-05-02 pour `SP_worldspawn`/statusbars/lightstyles.
+- `npm run typecheck`: ok le 2026-05-02.
+- `npm run verify:local-gameplay-sync`: ok le 2026-05-02.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
 
 ## Prochain lot recommande
 
-- Continuer avec `SP_worldspawn` ou un sous-lot explicite de `spawns`; ne pas valider ici les fonctions externes deja proprietaires de `g_misc.c`, `g_func.c`, `p_client.c` ou `g_items.c`.
+- Continuer avec un sous-lot explicite de `spawns` centre sur la table/ownership, sans valider les fonctions externes deja proprietaires de `g_misc.c`, `g_func.c`, `p_client.c` ou `g_items.c`; sinon passer a `ED_CallSpawn`.

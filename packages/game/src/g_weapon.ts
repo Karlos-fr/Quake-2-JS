@@ -160,18 +160,21 @@ export function fire_hit(
 
   const enemy = self.enemy;
   const enemyOffset = subtractVec3(enemy.s.origin, self.s.origin);
-  const range = vec3Length(enemyOffset);
+  let range = vec3Length(enemyOffset);
   if (range > aim[0]) {
     return false;
   }
 
   let adjustedAimY = aim[1];
-  if (!(adjustedAimY > self.mins[0] && adjustedAimY < self.maxs[0])) {
+  if (adjustedAimY > self.mins[0] && adjustedAimY < self.maxs[0]) {
+    range -= enemy.maxs[0];
+  } else {
     if (adjustedAimY < 0) {
       adjustedAimY = enemy.mins[0];
     } else {
       adjustedAimY = enemy.maxs[0];
     }
+    aim[1] = adjustedAimY;
   }
 
   let point = addVec3(self.s.origin, scaleVec3(enemyOffset, range));

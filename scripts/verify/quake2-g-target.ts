@@ -13,11 +13,13 @@
 import { strict as assert } from "node:assert";
 
 import {
+  ATTN_NORM,
   CHAN_RELIABLE,
   CHAN_VOICE,
   CS_CDTRACK,
   CS_LIGHTS,
   DF_ALLOW_EXIT,
+  EF_BLASTER,
   MAX_QPATH,
   multicast_t,
   temp_event_t,
@@ -632,11 +634,42 @@ function verifyBlasterAndEarthquake(): void {
   blaster.classname = "target_blaster";
   blaster.s.angles = [0, 0, 0];
   blaster.angles = [0, 0, 0];
-  SP_target_blaster(blaster, runtime);
+  ED_CallSpawn(blaster, runtime);
   assert.equal(blaster.dmg, 15, "target_blaster default damage mismatch");
   assert.equal(blaster.speed, 1000, "target_blaster default speed mismatch");
+  assert.equal(blaster.svflags, SVF_NOCLIENT, "target_blaster should be hidden from clients");
+  assertVec3NearlyEqual(blaster.movedir, [1, 0, 0], "target_blaster movedir mismatch");
   blaster.use?.(blaster, null, null, runtime);
-  assert.equal(runtime.soundEvents.at(-1)?.soundPath, "weapons/laser2.wav", "target_blaster fire sound mismatch");
+  const bolt = runtime.entities.find((entity) => entity.classname === "bolt");
+  assert.ok(bolt, "target_blaster must spawn one blaster bolt");
+  assert.equal(bolt.dmg, 15, "target_blaster bolt damage mismatch");
+  assertVec3NearlyEqual(bolt.velocity, [1000, 0, 0], "target_blaster bolt velocity mismatch");
+  assert.equal(bolt.s.effects, EF_BLASTER, "target_blaster must pass EF_BLASTER like the C source");
+  assert.equal(bolt.spawnflags, 1, "target_blaster must pass the C truthy final fire_blaster argument");
+  assert.equal(bolt.solid, SOLID_BBOX, "target_blaster bolt solid mismatch");
+  assert.equal(bolt.s.modelindex, runtime.assets.modelIndexByPath.get("models/objects/laser/tris.md2"), "target_blaster bolt model mismatch");
+  assert.equal(bolt.s.sound, runtime.assets.soundIndexByPath.get("misc/lasfly.wav"), "target_blaster bolt flight sound mismatch");
+  const fireSound = runtime.soundEvents.at(-1);
+  assert.equal(fireSound?.soundPath, "weapons/laser2.wav", "target_blaster fire sound mismatch");
+  assert.equal(fireSound?.channel, CHAN_VOICE, "target_blaster fire sound channel mismatch");
+  assert.equal(fireSound?.volume, 1, "target_blaster fire sound volume mismatch");
+  assert.equal(fireSound?.attenuation, ATTN_NORM, "target_blaster fire sound attenuation mismatch");
+
+  const flaggedRuntime = createRuntime();
+  const flagged = spawnGameEntity(flaggedRuntime);
+  flagged.classname = "target_blaster";
+  flagged.s.angles = [0, 0, 0];
+  flagged.spawnflags = 1 | 2;
+  flagged.dmg = 23;
+  flagged.speed = 777;
+  SP_target_blaster(flagged, flaggedRuntime);
+  flagged.use?.(flagged, null, null, flaggedRuntime);
+  const flaggedBolt = flaggedRuntime.entities.find((entity) => entity.classname === "bolt");
+  assert.ok(flaggedBolt, "target_blaster flagged variant must spawn one blaster bolt");
+  assert.equal(flaggedBolt.s.effects, EF_BLASTER, "target_blaster spawnflags must not change the C fire_blaster effect");
+  assert.equal(flaggedBolt.spawnflags, 1, "target_blaster spawnflags must not change the C hyper argument");
+  assert.equal(flaggedBolt.dmg, 23, "target_blaster explicit damage mismatch");
+  assertVec3NearlyEqual(flaggedBolt.velocity, [777, 0, 0], "target_blaster explicit speed mismatch");
 
   const quake = spawnGameEntity(runtime);
   quake.classname = "target_earthquake";
