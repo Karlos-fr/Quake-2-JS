@@ -22,6 +22,8 @@ import {
   EF_BLASTER,
   MAX_QPATH,
   multicast_t,
+  RF_BEAM,
+  RF_TRANSLUCENT,
   temp_event_t,
   type trace_t,
   type vec3_t
@@ -32,11 +34,13 @@ import {
   SFL_CROSS_TRIGGER_MASK,
   MOD_EXPLOSIVE,
   MOD_EXIT,
+  MOD_TARGET_LASER,
   MOD_SPLASH,
   svc_temp_entity
 } from "../../packages/game/src/g_local.js";
 import {
   FRAMETIME,
+  FL_IMMUNE_LASER,
   SOLID_BBOX,
   SVF_MONSTER,
   SVF_NOCLIENT,
@@ -69,6 +73,7 @@ import {
   Use_Target_Tent,
   target_explosion_explode,
   target_crosslevel_target_think,
+  target_laser_think,
   target_lightramp_use,
   trigger_crosslevel_trigger_use,
   use_target_explosion,
@@ -608,6 +613,11 @@ function verifyLaserDamageAndLightramp(): void {
   SP_target_laser(laser, runtime);
   runPendingThinks(runtime, 1);
   assert.equal((laser.svflags & SVF_NOCLIENT) === 0, true, "target_laser START_ON visibility mismatch");
+  assert.equal((laser.s.renderfx & (RF_BEAM | RF_TRANSLUCENT)), RF_BEAM | RF_TRANSLUCENT, "target_laser beam renderfx mismatch");
+  assert.equal(laser.s.modelindex, 1, "target_laser must keep non-zero beam modelindex");
+  assert.equal(laser.s.frame, 4, "target_laser default beam width mismatch");
+  assert.equal(laser.s.skinnum, 0xf2f2f0f0, "target_laser red skinnum mismatch");
+  assert.equal(laser.nextthink, runtime.time + FRAMETIME, "target_laser think cadence mismatch");
   laser.use?.(laser, null, null, runtime);
   assert.equal((laser.svflags & SVF_NOCLIENT) !== 0, true, "target_laser use must toggle off");
 
@@ -639,8 +649,70 @@ function verifyLaserDamageAndLightramp(): void {
   SP_target_laser(tracedLaser, tracedRuntime);
   runPendingThinks(tracedRuntime, 1);
   assert.equal(target.health < 25, true, "target_laser must damage trace hit targets");
+  assert.equal(tracedRuntime.meansOfDeath, MOD_TARGET_LASER, "target_laser damage mod mismatch");
   assert.equal(tracedLaser.s.old_origin[0], 128, "target_laser beam endpoint mismatch");
-  assert.equal(drainGameTempEntityEvents(tracedRuntime).some((event) => event.type === temp_event_t.TE_LASER_SPARKS), true, "target_laser wall spark mismatch");
+  const laserSparks = drainGameTempEntityEvents(tracedRuntime).find((event) => event.type === temp_event_t.TE_LASER_SPARKS);
+  assert.ok(laserSparks, "target_laser wall spark mismatch");
+  assert.deepEqual(laserSparks.origin, [128, 0, 0], "target_laser spark origin mismatch");
+  assert.equal(laserSparks.multicast, multicast_t.MULTICAST_PVS, "target_laser spark multicast mismatch");
+  assert.deepEqual(laserSparks.payload, { count: 8, dir: [0, 0, 1], color: 0 }, "target_laser spark payload mismatch");
+
+  const immuneRuntime = createRuntime();
+  const immuneLaser = spawnGameEntity(immuneRuntime);
+  immuneLaser.classname = "target_laser";
+  immuneLaser.spawnflags = 1;
+  immuneLaser.s.origin = [0, 0, 0];
+  immuneLaser.s.angles = [0, 0, 0];
+  immuneLaser.angles = [0, 0, 0];
+  const immuneTarget = spawnGameEntity(immuneRuntime);
+  immuneTarget.classname = "laser_immune_monster";
+  immuneTarget.svflags |= SVF_MONSTER;
+  immuneTarget.takedamage = 1;
+  immuneTarget.flags |= FL_IMMUNE_LASER;
+  immuneTarget.health = 25;
+  const immuneWall = spawnGameEntity(immuneRuntime);
+  immuneWall.classname = "wall";
+  let immuneTraceCount = 0;
+  immuneRuntime.collision = {
+    world: {} as never,
+    trace: () => {
+      immuneTraceCount += 1;
+      return immuneTraceCount === 1
+        ? createTrace([32, 0, 0], immuneTarget)
+        : createTrace([96, 0, 0], immuneWall);
+    },
+    pointcontents: () => 0
+  };
+  SP_target_laser(immuneLaser, immuneRuntime);
+  runPendingThinks(immuneRuntime, 1);
+  assert.equal(immuneTarget.health, 25, "target_laser must not damage FL_IMMUNE_LASER entities");
+  assert.equal(immuneTraceCount, 2, "target_laser must continue tracing through immune monsters");
+
+  const trackingRuntime = createRuntime();
+  const trackingLaser = spawnGameEntity(trackingRuntime);
+  trackingLaser.classname = "target_laser";
+  trackingLaser.s.origin = [0, 0, 0];
+  trackingLaser.movedir = [1, 0, 0];
+  const trackingEnemy = spawnGameEntity(trackingRuntime);
+  trackingEnemy.classname = "info_target";
+  trackingEnemy.absmin = [0, 128, 0];
+  trackingEnemy.size = [0, 0, 0];
+  trackingLaser.enemy = trackingEnemy;
+  const trackingWall = spawnGameEntity(trackingRuntime);
+  trackingWall.classname = "wall";
+  trackingRuntime.collision = {
+    world: {} as never,
+    trace: (_start, _mins, _maxs, end) => {
+      assertVec3NearlyEqual(end, [0, 2048, 0], "target_laser enemy retarget trace end");
+      return createTrace([0, 96, 0], trackingWall);
+    },
+    pointcontents: () => 0
+  };
+  target_laser_think(trackingLaser, trackingRuntime);
+  assertVec3NearlyEqual(trackingLaser.movedir, [0, 1, 0], "target_laser enemy retarget movedir");
+  const trackingSparks = drainGameTempEntityEvents(trackingRuntime).find((event) => event.type === temp_event_t.TE_LASER_SPARKS);
+  assert.ok(trackingSparks, "target_laser retarget spark mismatch");
+  assert.equal(trackingSparks.payload.count, 4, "target_laser count must be computed before retarget spark flag");
 
   const light = spawnGameEntity(runtime);
   light.classname = "light";

@@ -11,6 +11,7 @@ import {
   CL_AddParticles,
   CL_AllocDlight,
   CL_BuildEntityEventEffects,
+  CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
   CL_ClearDlights,
   CL_ClearLightStyles,
@@ -53,7 +54,71 @@ function main(): void {
   verifyLightstyleManagement();
   verifyDlightManagement();
   verifyPlayerMuzzleFlashEffects();
+  verifyMonsterMuzzleFlash2Effects();
   console.log("quake2-cl-fx: ok");
+}
+
+function verifyMonsterMuzzleFlash2Effects(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 2000;
+  runtime.cl_entities[12].current.origin = [100, 200, 300];
+  runtime.cl_entities[12].current.angles = [0, 0, 0];
+
+  withMockRandom(0, () => {
+    const infantry = CL_BuildMuzzleFlash2Effects({
+      entity: 12,
+      flashNumber: 26
+    }, runtime);
+
+    assert.equal(infantry[0]?.kind, "infantry-machinegun", "CL_ParseMuzzleFlash2 infantry kind mismatch");
+    assert.equal(infantry[0]?.light?.radius, 200, "CL_ParseMuzzleFlash2 default radius mismatch");
+    assert.equal(infantry[0]?.light?.durationMs, 0, "CL_ParseMuzzleFlash2 default die mismatch");
+    assert.equal(infantry[0]?.light?.minlight, 32, "CL_ParseMuzzleFlash2 minlight mismatch");
+    assert.deepEqual(infantry[0]?.light?.color, [1, 1, 0], "CL_ParseMuzzleFlash2 infantry color mismatch");
+    assert.deepEqual(infantry[0]?.position, [126.6, 192.9, 313.1], "CL_ParseMuzzleFlash2 monster_flash_offset origin mismatch");
+    assert.deepEqual(
+      infantry.slice(1).map((effect) => effect.kind),
+      ["particle-effect", "smoke-and-flash", "infantry-machinegun"],
+      "CL_ParseMuzzleFlash2 infantry side-effect sequence mismatch"
+    );
+    assert.deepEqual(infantry[1], {
+      category: "muzzleflash2",
+      kind: "particle-effect",
+      entity: 12,
+      position: [126.6, 192.9, 313.1],
+      color: 0,
+      count: 40,
+      packet: { entity: 12, flashNumber: 26 }
+    }, "CL_ParseMuzzleFlash2 particle-effect metadata mismatch");
+    assert.equal(infantry[3]?.sound?.name, "infantry/infatck1.wav", "CL_ParseMuzzleFlash2 soundname mismatch");
+    assert.equal(infantry[3]?.sound?.attenuation, ATTN_NORM, "CL_ParseMuzzleFlash2 sound attenuation mismatch");
+
+    const dlight = CL_AllocDlight(runtime, 12);
+    dlight.origin = [...infantry[0]!.position!];
+    dlight.radius = infantry[0]!.light!.radius;
+    dlight.minlight = infantry[0]!.light!.minlight ?? 0;
+    dlight.die = runtime.cl.time + infantry[0]!.light!.durationMs;
+    dlight.color = [...infantry[0]!.light!.color];
+    const refreshFrame = CL_BuildRefreshFrame(runtime, { predictMovement: false });
+    assert.ok(
+      refreshFrame.lights.some((light) => light.sourceEntity === 12 && light.intensity === 200 && light.kind === "dlight"),
+      "CL_ParseMuzzleFlash2 dlight should reach ClientRefreshFrame.lights"
+    );
+
+    const tank = CL_BuildMuzzleFlash2Effects({
+      entity: 12,
+      flashNumber: 4
+    }, runtime);
+    assert.equal(tank.at(-1)?.sound?.name, "tank/tnkatk2a.wav", "CL_ParseMuzzleFlash2 random tank soundname mismatch");
+
+    const widowBeam = CL_BuildMuzzleFlash2Effects({
+      entity: 12,
+      flashNumber: 195
+    }, runtime);
+    assert.equal(widowBeam[0]?.light?.radius, 300, "CL_ParseMuzzleFlash2 long beam radius mismatch");
+    assert.equal(widowBeam[0]?.light?.durationMs, 200, "CL_ParseMuzzleFlash2 long beam die mismatch");
+    assert.equal(widowBeam.length, 1, "CL_ParseMuzzleFlash2 widow beam should not emit sound or smoke metadata");
+  });
 }
 
 function verifyPlayerMuzzleFlashEffects(): void {

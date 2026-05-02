@@ -783,6 +783,18 @@ function snapshotEntity(entity: GameEntity, runtime: GameRuntime) {
   };
 }
 
+/**
+ * Original name: ReadEdict
+ * Source: game/g_save.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Restores one edict for `ReadLevel`, rebuilding scalar/vector fields and resolving saved pointers, items, callbacks and moves.
+ *
+ * Porting notes:
+ * - Replaces the C `fread` plus `fields`/`ReadField` pass with a structured JSON entity payload.
+ */
 function restoreEntity(snapshot: ReturnType<typeof snapshotEntity>, runtime: GameRuntime): GameEntity {
   const entity = createRuntimeEntity(snapshot.properties, snapshot.index);
   const { callbacks, ...entitySnapshot } = snapshot;

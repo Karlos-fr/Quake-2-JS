@@ -18,11 +18,11 @@
 | `Quake-2-master/game/g_spawn.c` | function | `ED_CallSpawn` | `packages/game/src/g_spawn.ts` | `ED_CallSpawn` | Valide | A redecouper | Correction itemlist `strcmp` sensible a la casse; tests `verify:g-spawn`, `verify:g-items`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`, `typecheck`. |
 | `Quake-2-master/game/g_spawn.c` | global | `item` | `packages/game/src/g_spawn.ts` | `item` | Non applicable | A redecouper | Temporaire local de `ED_CallSpawn`, couvert par la validation de `ED_CallSpawn`. |
 | `Quake-2-master/game/g_spawn.c` | global | `i` | `packages/game/src/g_spawn.ts` | `i` | Non applicable | A redecouper | Temporaire local de `ED_CallSpawn`, couvert par la validation de `ED_CallSpawn`. |
-| `Quake-2-master/game/g_spawn.c` | function | `ED_NewString` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | function | `ED_ParseField` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `b` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `v` | `packages/game/src/g_misc.ts` | `v` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `b` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | function | `ED_NewString` | `packages/game/src/g_spawn.ts` | `ED_NewString` | Valide | A redecouper | Ajout port strict; tests `verify:g-spawn`, `typecheck`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`. |
+| `Quake-2-master/game/g_spawn.c` | function | `ED_ParseField` | `packages/game/src/g_spawn.ts` | `ED_ParseField` | Valide | A redecouper | Ajout port branche dans `SpawnEntities`; tests `verify:g-spawn`, `typecheck`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`. |
+| `Quake-2-master/game/g_spawn.c` | global | `b` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `ED_ParseField`, couvert par la validation de `ED_ParseField`. |
+| `Quake-2-master/game/g_spawn.c` | global | `v` | `packages/game/src/g_misc.ts` | `v` | Non applicable | A redecouper | Temporaire local de `ED_ParseField`, couvert par la validation de `ED_ParseField`; ownership cible auto ignore. |
+| `Quake-2-master/game/g_spawn.c` | global | `b` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `ED_ParseField`, couvert par la validation de `ED_ParseField`. |
 | `Quake-2-master/game/g_spawn.c` | function | `ED_ParseEdict` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `init` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `keyname` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |

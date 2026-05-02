@@ -30,6 +30,8 @@ import {
 } from "../../qcommon/src/index.js";
 import type { GameMainContext } from "./g_main.js";
 import {
+  FFL_NOSPAWN,
+  FFL_SPAWNTEMP,
   MOVETYPE_PUSH,
   SOLID_BSP,
   SPAWNFLAG_NOT_COOP,
@@ -37,7 +39,10 @@ import {
   SPAWNFLAG_NOT_EASY,
   SPAWNFLAG_NOT_HARD,
   SPAWNFLAG_NOT_MEDIUM,
-  TAG_LEVEL
+  TAG_LEVEL,
+  fieldtype_t,
+  type field_t,
+  type spawn_temp_t
 } from "./g_local.js";
 import {
   SP_func_button,
@@ -171,6 +176,88 @@ import type { GameEntity, GameRuntime } from "./runtime.js";
 import { G_Spawn } from "./g_utils.js";
 
 type SpawnFunction = (entity: GameEntity, runtime: GameRuntime) => void;
+
+const spawnFields: field_t[] = [
+  { name: "classname", ofs: "classname", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "model", ofs: "model", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "spawnflags", ofs: "spawnflags", type: fieldtype_t.F_INT, flags: 0 },
+  { name: "speed", ofs: "speed", type: fieldtype_t.F_FLOAT, flags: 0 },
+  { name: "accel", ofs: "accel", type: fieldtype_t.F_FLOAT, flags: 0 },
+  { name: "decel", ofs: "decel", type: fieldtype_t.F_FLOAT, flags: 0 },
+  { name: "target", ofs: "target", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "targetname", ofs: "targetname", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "pathtarget", ofs: "pathtarget", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "deathtarget", ofs: "deathtarget", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "killtarget", ofs: "killtarget", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "combattarget", ofs: "combattarget", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "message", ofs: "message", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "team", ofs: "team", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "wait", ofs: "wait", type: fieldtype_t.F_FLOAT, flags: 0 },
+  { name: "delay", ofs: "delay", type: fieldtype_t.F_FLOAT, flags: 0 },
+  { name: "random", ofs: "random", type: fieldtype_t.F_FLOAT, flags: 0 },
+  { name: "move_origin", ofs: "move_origin", type: fieldtype_t.F_VECTOR, flags: 0 },
+  { name: "move_angles", ofs: "move_angles", type: fieldtype_t.F_VECTOR, flags: 0 },
+  { name: "style", ofs: "style", type: fieldtype_t.F_INT, flags: 0 },
+  { name: "count", ofs: "count", type: fieldtype_t.F_INT, flags: 0 },
+  { name: "health", ofs: "health", type: fieldtype_t.F_INT, flags: 0 },
+  { name: "sounds", ofs: "sounds", type: fieldtype_t.F_INT, flags: 0 },
+  { name: "light", ofs: "", type: fieldtype_t.F_IGNORE, flags: 0 },
+  { name: "dmg", ofs: "dmg", type: fieldtype_t.F_INT, flags: 0 },
+  { name: "mass", ofs: "mass", type: fieldtype_t.F_INT, flags: 0 },
+  { name: "volume", ofs: "volume", type: fieldtype_t.F_FLOAT, flags: 0 },
+  { name: "attenuation", ofs: "attenuation", type: fieldtype_t.F_FLOAT, flags: 0 },
+  { name: "map", ofs: "map", type: fieldtype_t.F_LSTRING, flags: 0 },
+  { name: "origin", ofs: "s.origin", type: fieldtype_t.F_VECTOR, flags: 0 },
+  { name: "angles", ofs: "s.angles", type: fieldtype_t.F_VECTOR, flags: 0 },
+  { name: "angle", ofs: "s.angles", type: fieldtype_t.F_ANGLEHACK, flags: 0 },
+  { name: "goalentity", ofs: "goalentity", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "movetarget", ofs: "movetarget", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "enemy", ofs: "enemy", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "oldenemy", ofs: "oldenemy", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "activator", ofs: "activator", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "groundentity", ofs: "groundentity", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "teamchain", ofs: "teamchain", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "teammaster", ofs: "teammaster", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "owner", ofs: "owner", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "mynoise", ofs: "mynoise", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "mynoise2", ofs: "mynoise2", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "target_ent", ofs: "target_ent", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "chain", ofs: "chain", type: fieldtype_t.F_EDICT, flags: FFL_NOSPAWN },
+  { name: "prethink", ofs: "prethink", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "think", ofs: "think", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "blocked", ofs: "blocked", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "touch", ofs: "touch", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "use", ofs: "use", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "pain", ofs: "pain", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "die", ofs: "die", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "stand", ofs: "monsterinfo.stand", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "idle", ofs: "monsterinfo.idle", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "search", ofs: "monsterinfo.search", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "walk", ofs: "monsterinfo.walk", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "run", ofs: "monsterinfo.run", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "dodge", ofs: "monsterinfo.dodge", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "attack", ofs: "monsterinfo.attack", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "melee", ofs: "monsterinfo.melee", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "sight", ofs: "monsterinfo.sight", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "checkattack", ofs: "monsterinfo.checkattack", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "currentmove", ofs: "monsterinfo.currentmove", type: fieldtype_t.F_MMOVE, flags: FFL_NOSPAWN },
+  { name: "endfunc", ofs: "moveinfo.endfunc", type: fieldtype_t.F_FUNCTION, flags: FFL_NOSPAWN },
+  { name: "lip", ofs: "lip", type: fieldtype_t.F_INT, flags: FFL_SPAWNTEMP },
+  { name: "distance", ofs: "distance", type: fieldtype_t.F_INT, flags: FFL_SPAWNTEMP },
+  { name: "height", ofs: "height", type: fieldtype_t.F_INT, flags: FFL_SPAWNTEMP },
+  { name: "noise", ofs: "noise", type: fieldtype_t.F_LSTRING, flags: FFL_SPAWNTEMP },
+  { name: "pausetime", ofs: "pausetime", type: fieldtype_t.F_FLOAT, flags: FFL_SPAWNTEMP },
+  { name: "item", ofs: "item", type: fieldtype_t.F_LSTRING, flags: FFL_SPAWNTEMP },
+  { name: "gravity", ofs: "gravity", type: fieldtype_t.F_LSTRING, flags: FFL_SPAWNTEMP },
+  { name: "sky", ofs: "sky", type: fieldtype_t.F_LSTRING, flags: FFL_SPAWNTEMP },
+  { name: "skyrotate", ofs: "skyrotate", type: fieldtype_t.F_FLOAT, flags: FFL_SPAWNTEMP },
+  { name: "skyaxis", ofs: "skyaxis", type: fieldtype_t.F_VECTOR, flags: FFL_SPAWNTEMP },
+  { name: "minyaw", ofs: "minyaw", type: fieldtype_t.F_FLOAT, flags: FFL_SPAWNTEMP },
+  { name: "maxyaw", ofs: "maxyaw", type: fieldtype_t.F_FLOAT, flags: FFL_SPAWNTEMP },
+  { name: "minpitch", ofs: "minpitch", type: fieldtype_t.F_FLOAT, flags: FFL_SPAWNTEMP },
+  { name: "maxpitch", ofs: "maxpitch", type: fieldtype_t.F_FLOAT, flags: FFL_SPAWNTEMP },
+  { name: "nextmap", ofs: "nextmap", type: fieldtype_t.F_LSTRING, flags: FFL_SPAWNTEMP }
+];
 
 /**
  * Original name: spawn_t
@@ -480,6 +567,7 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
 
   const worldspawn = context.runtime.entities[0] ?? null;
   if (worldspawn) {
+    loadParsedEntityIntoEdict(worldspawn, parsedEntities[0] ?? { properties: { classname: "worldspawn" } }, context.runtime);
     ED_CallSpawn(worldspawn, context.runtime);
     configureWorldspawn(context, worldspawn, mapname);
   }
@@ -495,7 +583,7 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
   let inhibit = 0;
   for (const parsedEntity of parsedEntities.slice(1)) {
     const entity = G_Spawn(context.runtime);
-    loadParsedEntityIntoEdict(entity, parsedEntity);
+    loadParsedEntityIntoEdict(entity, parsedEntity, context.runtime);
 
     applySpawnFlagMapHack(context.runtime, entity);
     if (shouldInhibitSpawnEntity(context.runtime, entity)) {
@@ -581,6 +669,71 @@ export function ED_CallSpawn(ent: GameEntity, runtime: GameRuntime): void {
     entityIndex: ent.index,
     entityClassname: ent.classname
   });
+}
+
+/**
+ * Original name: ED_NewString
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Allocates one level string and translates Quake map `\n` escape sequences into newlines.
+ *
+ * Porting notes:
+ * - JavaScript strings replace `gi.TagMalloc(TAG_LEVEL)` storage; the escape loop intentionally keeps the C behavior where unknown backslash escapes become a single backslash.
+ */
+export function ED_NewString(string: string): string {
+  let newString = "";
+
+  for (let i = 0; i < string.length; i += 1) {
+    if (string[i] === "\\" && i < string.length - 1) {
+      i += 1;
+      newString += string[i] === "n" ? "\n" : "\\";
+    } else {
+      newString += string[i];
+    }
+  }
+
+  return newString;
+}
+
+/**
+ * Original name: ED_ParseField
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies one entity-lump key/value pair to either the edict or the temporary spawn field block.
+ *
+ * Porting notes:
+ * - The split TS runtime keeps spawn-temp values in `entity.properties` for spawn callbacks; an optional `spawnTemp` object is also updated for direct parity tests.
+ * - Save-only pointer/callback fields flagged `FFL_NOSPAWN` are ignored during spawn parsing as in the original.
+ */
+export function ED_ParseField(
+  key: string,
+  value: string,
+  ent: GameEntity,
+  runtime: GameRuntime,
+  spawnTemp?: spawn_temp_t
+): boolean {
+  for (const field of spawnFields) {
+    if ((field.flags & FFL_NOSPAWN) !== 0 || !stringsEqualIgnoreCase(field.name, key)) {
+      continue;
+    }
+
+    applyParsedField(field, value, ent, spawnTemp);
+    return true;
+  }
+
+  runtime.log({
+    kind: "warning",
+    message: `${key} is not a field`,
+    entityIndex: ent.index,
+    entityClassname: ent.classname
+  });
+  return false;
 }
 
 /**
@@ -780,14 +933,137 @@ function precacheGameSound(context: GameMainContext, path: string): void {
 }
 
 function buildInitialServerEntityList(parsedEntities: BspEntity[], maxclients: number): BspEntity[] {
-  const worldspawn = parsedEntities[0] ?? { properties: { classname: "worldspawn" } };
+  const worldspawn = parsedEntities[0] ? { properties: {} } : { properties: { classname: "worldspawn" } };
   const reservedClients = Array.from({ length: maxclients }, () => ({ properties: { classname: "player" } }));
   return [worldspawn, ...reservedClients];
 }
 
-function loadParsedEntityIntoEdict(entity: GameEntity, parsedEntity: BspEntity): void {
-  const parsed = createRuntimeEntity(parsedEntity.properties, entity.index);
+function loadParsedEntityIntoEdict(entity: GameEntity, parsedEntity: BspEntity, runtime: GameRuntime): void {
+  const parsed = createRuntimeEntity({}, entity.index);
   Object.assign(entity, parsed);
+  for (const [key, value] of Object.entries(parsedEntity.properties)) {
+    ED_ParseField(key, value, entity, runtime);
+  }
+}
+
+function applyParsedField(field: field_t, value: string, ent: GameEntity, spawnTemp?: spawn_temp_t): void {
+  if ((field.flags & FFL_SPAWNTEMP) !== 0) {
+    applySpawnTempField(field, value, ent, spawnTemp);
+    return;
+  }
+
+  switch (field.type) {
+    case fieldtype_t.F_LSTRING:
+      setEntityField(ent, field.ofs, ED_NewString(value));
+      ent.properties[field.name] = ED_NewString(value);
+      break;
+    case fieldtype_t.F_VECTOR:
+      setEntityVectorField(ent, field.ofs, parseFieldVector(value));
+      ent.properties[field.name] = value;
+      break;
+    case fieldtype_t.F_INT:
+      setEntityField(ent, field.ofs, parseFieldInteger(value));
+      ent.properties[field.name] = value;
+      break;
+    case fieldtype_t.F_FLOAT:
+      setEntityField(ent, field.ofs, parseFieldFloat(value));
+      ent.properties[field.name] = value;
+      break;
+    case fieldtype_t.F_ANGLEHACK:
+      setEntityVectorField(ent, field.ofs, [0, parseFieldFloat(value), 0]);
+      ent.angle = parseFieldFloat(value);
+      ent.properties[field.name] = value;
+      break;
+    case fieldtype_t.F_IGNORE:
+      ent.properties[field.name] = value;
+      break;
+    default:
+      break;
+  }
+}
+
+function applySpawnTempField(field: field_t, value: string, ent: GameEntity, spawnTemp?: spawn_temp_t): void {
+  switch (field.type) {
+    case fieldtype_t.F_LSTRING: {
+      const parsed = ED_NewString(value);
+      ent.properties[field.name] = parsed;
+      if (spawnTemp) {
+        (spawnTemp as unknown as Record<string, unknown>)[field.ofs] = parsed;
+      }
+      break;
+    }
+    case fieldtype_t.F_VECTOR: {
+      ent.properties[field.name] = value;
+      if (spawnTemp) {
+        (spawnTemp as unknown as Record<string, unknown>)[field.ofs] = parseFieldVector(value);
+      }
+      break;
+    }
+    case fieldtype_t.F_INT: {
+      ent.properties[field.name] = value;
+      if (spawnTemp) {
+        (spawnTemp as unknown as Record<string, unknown>)[field.ofs] = parseFieldInteger(value);
+      }
+      break;
+    }
+    case fieldtype_t.F_FLOAT: {
+      ent.properties[field.name] = value;
+      if (spawnTemp) {
+        (spawnTemp as unknown as Record<string, unknown>)[field.ofs] = parseFieldFloat(value);
+      }
+      break;
+    }
+    default:
+      break;
+  }
+}
+
+function setEntityVectorField(entity: GameEntity, path: string, value: [number, number, number]): void {
+  setEntityField(entity, path, [...value]);
+  if (path === "s.origin") {
+    entity.origin = [...value];
+    entity.pos1 = [...value];
+    entity.pos2 = [...value];
+  } else if (path === "s.angles") {
+    entity.angles = [...value];
+  }
+}
+
+function setEntityField(entity: GameEntity, path: string, value: unknown): void {
+  if (!path) {
+    return;
+  }
+
+  const parts = path.split(".");
+  let target = entity as unknown as Record<string, unknown>;
+  for (const part of parts.slice(0, -1)) {
+    const next = target[part];
+    if (typeof next !== "object" || next === null) {
+      return;
+    }
+    target = next as Record<string, unknown>;
+  }
+
+  target[parts[parts.length - 1]] = value;
+}
+
+function parseFieldVector(value: string): [number, number, number] {
+  const parts = value.trim().split(/\s+/);
+  return [
+    parseFieldFloat(parts[0]),
+    parseFieldFloat(parts[1]),
+    parseFieldFloat(parts[2])
+  ];
+}
+
+function parseFieldFloat(value: string | undefined): number {
+  const parsed = Number.parseFloat(value ?? "");
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function parseFieldInteger(value: string): number {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : 0;
 }
 
 const SPAWNFLAG_NOT_MASK =

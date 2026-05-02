@@ -16,6 +16,7 @@
 - 2026-05-02: deplacement ownership `SpawnEntities` de `g_main.ts` vers `g_spawn.ts`; verdict provisoire `Non conforme` pour le bug city1.
 - 2026-05-02: `SpawnEntities` valide apres correction allocation sequentielle `G_Spawn` et repro city1.
 - 2026-05-02: `ED_CallSpawn`, limite au chemin itemlist/table/warning et au branchement depuis `SpawnEntities`; temporaires locaux `item`/`i` marques non applicables.
+- 2026-05-02: `ED_NewString` et `ED_ParseField`; temporaires locaux `b`/`v`/`b` marques non applicables.
 
 ## Verdict du lot
 
@@ -53,6 +54,11 @@
 - `ED_CallSpawn`: valide pour le lot itemlist/table/warning et branchement `SpawnEntities`. Le C verifie `!classname`, parcourt `itemlist` avant `spawns[]` avec `strcmp`, appelle `SpawnItem` ou le callback de table, puis emet le warning inconnu. La cible conserve ces branches; correction appliquee pendant la session pour que le chemin `itemlist` utilise une comparaison exacte sensible a la casse au lieu de `FindItemByClassname` insensible a la casse. `SpawnEntities` appelle `ED_CallSpawn` pour worldspawn puis pour chaque entite map non inhibee. Les sorties visibles possibles dependent du spawner appele: items MD2 via `SpawnItem`/`droptofloor`, brush models via callbacks `spawns[]`, lightstyles/temp entities/camera selon callback proprietaire.
 - `item`: non applicable. La ligne de matrice correspond au pointeur local `gitem_t *item` de `ED_CallSpawn`, pas a une entite source proprietaire exportee; son comportement est couvert par la validation du chemin `itemlist` de `ED_CallSpawn`.
 - `i`: non applicable pour ce lot. La ligne de matrice adjacente correspond au compteur local `int i` de `ED_CallSpawn`, pas a une entite source proprietaire exportee; son comportement est couvert par la validation du chemin `itemlist` de `ED_CallSpawn`.
+- `ED_NewString`: valide. Le port `packages/game/src/g_spawn.ts` conserve le nom original, le commentaire d'en-tete et la boucle d'echappement C: `\n` devient un retour ligne et les autres sequences backslash inconnues deviennent un backslash seul. L'allocation `gi.TagMalloc(TAG_LEVEL)` est remplacee par une chaine JS, sans changement de duree utile dans le runtime de niveau.
+- `ED_ParseField`: valide. Le port conserve le parcours de champs, le match insensible a la casse, le rejet `FFL_NOSPAWN`, le choix edict/spawn-temp, `F_LSTRING` via `ED_NewString`, `F_VECTOR`, `F_INT`, `F_FLOAT`, `F_ANGLEHACK`, `F_IGNORE` et le warning champ inconnu. Correction appliquee: `SpawnEntities` charge maintenant worldspawn et les entites map via `ED_ParseField`, ce qui branche explicitement le parse champ C-equivalent dans le flux serveur.
+- `b`: non applicable. La ligne de matrice correspond au temporaire local `byte *b` de `ED_ParseField`; son comportement est couvert par les tests edict vs spawn-temp de `ED_ParseField`.
+- `v`: non applicable. La ligne de matrice correspond au temporaire local `float v` de `ED_ParseField`; son comportement est couvert par le test `F_ANGLEHACK`.
+- `b`: non applicable. Doublon de temporaire local `byte *b` de `ED_ParseField`, couvert par la validation de `ED_ParseField`.
 
 ## Checklist appliquee
 
@@ -135,6 +141,12 @@
 - Runtime: valide. `SV_SpawnServer` appelle `ge.SpawnEntities`; `SpawnEntities` appelle `ED_CallSpawn` pour worldspawn puis pour chaque entite map non inhibee. Les appels directs depuis `target_spawner`, `medic_finish_spawn` et les harness restent compatibles.
 - apps/web: valide indirectement. Le navigateur doit declencher ce flux via le runtime porte ou consommer ses sorties; le host full-game passe par `SV_SpawnServer`/`SpawnEntities`, et les sources render web lisent les snapshots/configstrings produits plutot qu'une table de spawn parallele.
 - renderer-three: valide indirectement. `ED_CallSpawn` ne rend rien directement, mais peut declencher des spawners produisant modeles MD2, brush models, lightstyles, temp entities, areabits ou camera selon callback proprietaire. Les items visibles du chemin `itemlist` passent par `SpawnItem`/`droptofloor`, snapshots/configstrings, `ClientRefreshFrame.entities`, puis `refresh-entity-sync`; les brush models passent par les snapshots `BrushModelSnapshot`.
+- Identification: lot `ED_NewString`/`ED_ParseField` dans matrice `game_g_spawn.c.md`, source `Quake-2-master/game/g_spawn.c`, cible proprietaire `packages/game/src/g_spawn.ts`; les lignes adjacentes `b`/`v`/`b` sont des temporaires locaux de `ED_ParseField`.
+- Comparaison C/H vs TS: `ED_NewString` conserve les entrees/sorties et l'echappement `\n`; `ED_ParseField` conserve les branches `FFL_NOSPAWN`, `FFL_SPAWNTEMP`, `F_LSTRING`, `F_VECTOR`, `F_INT`, `F_FLOAT`, `F_ANGLEHACK`, `F_IGNORE` et warning champ inconnu. Le port utilise une table locale de champs de spawn pour eviter un cycle ESM avec `g_save.ts`.
+- Commentaires d'en-tete: commentaires ajoutes pour `ED_NewString` et `ED_ParseField` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage.
+- Runtime: valide. `SV_SpawnServer` -> `ge.SpawnEntities` -> `SpawnEntities` charge worldspawn et les entites map avec `ED_ParseField`, puis appelle `ED_CallSpawn`; le test prouve aussi une cle `ClassName` insensible a la casse et un message worldspawn `\n`.
+- apps/web: valide indirectement. Le navigateur full-game declenche le spawn via le runtime serveur porte et consomme les configstrings/snapshots produits; aucune logique parallele de parse spawn dans `apps/web` ne masque ce flux.
+- renderer-three: valide indirectement. `ED_ParseField` ne rend rien directement, mais alimente les champs qui produisent ensuite modeles, frames, lightstyles, temp entities, areabits, camera ou scene selon le spawner; les tests full-game Three et web render order passent.
 
 ## Corrections appliquees
 
@@ -155,6 +167,8 @@
 - `scripts/verify/quake2-g-spawn.ts`: ajout d'une preuve anti-regression avec 1100 lights liberees avant une porte visible tardive; la porte reste dans la plage `MAX_EDICTS`.
 - `packages/game/src/g_spawn.ts`: correction du chemin `ED_CallSpawn` itemlist pour iterer `GetGameItems()` et comparer `item.classname === ent.classname`, comme le `strcmp` du C.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour le dispatch itemlist avant `spawns[]`, l'appel `SpawnItem` et la chute en warning d'un classname item en casse differente.
+- `packages/game/src/g_spawn.ts`: ajout de `ED_NewString`, `ED_ParseField` et branchement de `SpawnEntities` sur `ED_ParseField` pour worldspawn et entites map; table locale de champs de spawn pour eviter un cycle avec `g_save.ts`.
+- `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `ED_NewString`, `ED_ParseField`, cle de champ insensible a la casse, `FFL_NOSPAWN`, spawn-temp, `F_IGNORE`, champ inconnu, et propagation runtime depuis `SpawnEntities`.
 
 ## Tests
 
@@ -230,7 +244,12 @@
 - `npm run verify:full-game:server-host`: ok le 2026-05-02 apres correction `ED_CallSpawn`.
 - `npm run verify:full-game:three-renderer`: ok le 2026-05-02 apres correction `ED_CallSpawn`.
 - `npm run verify:web-render-order`: ok le 2026-05-02 apres correction `ED_CallSpawn`.
+- `npm run verify:g-spawn`: ok le 2026-05-02 pour `ED_NewString`/`ED_ParseField`.
+- `npm run typecheck`: ok le 2026-05-02 apres ajout `ED_NewString`/`ED_ParseField`.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02 apres branchement `ED_ParseField`.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02 apres branchement `ED_ParseField`.
+- `npm run verify:web-render-order`: ok le 2026-05-02 apres branchement `ED_ParseField`.
 
 ## Prochain lot recommande
 
-- Continuer avec `ED_NewString`, puis `ED_ParseField` si le lot reste petit.
+- Continuer avec `ED_ParseEdict` et ses temporaires locaux `init`, `keyname` et `com_token`, en limitant le lot au parse braces/key-value et au warning `angle` -> `angles`.

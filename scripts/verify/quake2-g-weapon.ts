@@ -13,17 +13,20 @@ import {
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
   DAMAGE_BULLET,
+  DAMAGE_ENERGY,
   DAMAGE_NO_KNOCKBACK,
-  damage_t,
+  MOD_BLASTER,
   MOD_HIT,
+  MOD_HYPERBLASTER,
   SPLASH_BROWN_WATER,
   SVF_MONSTER,
   type GameEntity,
   type GameRuntime
-} from "../../packages/game/src/index.js";
-import { fire_blaster, fire_bullet, fire_hit, fire_shotgun } from "../../packages/game/src/g_weapon.js";
-import { MASK_SHOT, MASK_WATER, temp_event_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_WATER } from "../../packages/qcommon/src/q_shared.js";
+} from "../../packages/game/src/runtime.js";
+import { damage_t } from "../../packages/game/src/g_local.js";
+import { blaster_touch, fire_blaster, fire_bullet, fire_hit, fire_shotgun } from "../../packages/game/src/g_weapon.js";
+import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { CONTENTS_WATER, SURF_SKY } from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -37,8 +40,11 @@ function main(): void {
   verifyFireLeadBulletImpactAndDamage();
   verifyFireLeadWaterSplashAndBubbleTrail();
   verifyFireShotgunWrapperPelletCount();
+  verifyFireBlasterTouchCallbackForwardsPlane();
+  verifyBlasterTouchDamageAndHyperMod();
+  verifyBlasterTouchOwnerSkyAndWorldImpact();
 
-  console.log("Verification g_weapon - check_dodge, fire_hit, fire_lead, fire_bullet and fire_shotgun lots OK");
+  console.log("Verification g_weapon - check_dodge, fire_hit, fire_lead, fire_bullet, fire_shotgun and blaster_touch lots OK");
 }
 
 function verifyCheckDodgeRuntimeBranch(): void {
@@ -404,6 +410,174 @@ function verifyFireShotgunWrapperPelletCount(): void {
   assert.deepEqual(tempEvents[0]?.payload.origin, [64, 0, 0], "fire_shotgun impact origin must come from fire_lead");
 }
 
+function verifyFireBlasterTouchCallbackForwardsPlane(): void {
+  const runtime = createHarnessRuntime();
+  const shooter = createPlayer(runtime, 1);
+  const wall = createRuntimeEntity({ classname: "func_wall" }, 2);
+  const plane = makePlane([0, -1, 0]);
+  wall.takedamage = damage_t.DAMAGE_NO;
+  wall.health = 0;
+  runtime.entities[2] = wall;
+
+  const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  const bolt = fire_blaster(shooter, [10, 0, 0], [1, 0, 0], 15, 200, 0, false, runtime, {
+    emitTempEntity: (type, payload) => {
+      tempEvents.push({ type, payload });
+    }
+  });
+  bolt.s.origin = [32, 0, 0];
+  bolt.origin = [...bolt.s.origin];
+  bolt.touch?.(bolt, wall, runtime, plane, null);
+
+  assert.equal(tempEvents[0]?.type, temp_event_t.TE_BLASTER, "fire_blaster must wire blaster_touch as the bolt touch callback");
+  assert.deepEqual(tempEvents[0]?.payload.dir, [0, -1, 0], "fire_blaster touch callback must forward physics plane normals");
+}
+
+function verifyBlasterTouchDamageAndHyperMod(): void {
+  const runtime = createHarnessRuntime();
+  const owner = createPlayer(runtime, 1);
+  const bolt = createRuntimeEntity({ classname: "bolt" }, 2);
+  const target = createRuntimeEntity({ classname: "monster_target" }, 3);
+  const plane = makePlane([0, 0, 1]);
+  bolt.owner = owner;
+  bolt.velocity = [900, 0, 0];
+  bolt.s.origin = [40, 8, 16];
+  bolt.origin = [...bolt.s.origin];
+  bolt.dmg = 15;
+  bolt.spawnflags = 1;
+  target.takedamage = damage_t.DAMAGE_AIM;
+  runtime.entities[2] = bolt;
+  runtime.entities[3] = target;
+
+  const damageCalls: Array<{
+    target: GameEntity;
+    inflictor: GameEntity;
+    attacker: GameEntity;
+    dir: vec3_t;
+    point: vec3_t;
+    normal: vec3_t;
+    damage: number;
+    knockback: number;
+    dflags: number;
+    mod: number;
+  }> = [];
+  const freed: GameEntity[] = [];
+
+  blaster_touch(bolt, target, runtime, {
+    T_Damage: (ent, inflictor, attacker, dir, point, normal, damage, knockback, dflags, mod) => {
+      damageCalls.push({
+        target: ent,
+        inflictor,
+        attacker,
+        dir: [...dir],
+        point: [...point],
+        normal: [...normal],
+        damage,
+        knockback,
+        dflags,
+        mod
+      });
+    },
+    G_FreeEdict: (ent) => {
+      freed.push(ent);
+    }
+  }, plane, null);
+
+  assert.equal(damageCalls.length, 1, "blaster_touch must damage a damageable target exactly once");
+  assert.equal(damageCalls[0]?.target, target, "blaster_touch must damage the touched entity");
+  assert.equal(damageCalls[0]?.inflictor, bolt, "blaster_touch must use the bolt as inflictor");
+  assert.equal(damageCalls[0]?.attacker, owner, "blaster_touch must use the bolt owner as attacker");
+  assert.deepEqual(damageCalls[0]?.dir, [900, 0, 0], "blaster_touch damage dir must be the bolt velocity");
+  assert.deepEqual(damageCalls[0]?.point, [40, 8, 16], "blaster_touch damage point must be the bolt origin");
+  assert.deepEqual(damageCalls[0]?.normal, [0, 0, 1], "blaster_touch must forward the impact plane normal");
+  assert.equal(damageCalls[0]?.damage, 15, "blaster_touch must preserve bolt damage");
+  assert.equal(damageCalls[0]?.knockback, 1, "blaster_touch must preserve the C knockback value");
+  assert.equal(damageCalls[0]?.dflags, DAMAGE_ENERGY, "blaster_touch must mark blaster damage as energy damage");
+  assert.equal(damageCalls[0]?.mod, MOD_HYPERBLASTER, "spawnflag 1 must select MOD_HYPERBLASTER");
+  assert.equal(freed[0], bolt, "blaster_touch must free the bolt after damage");
+  assert.equal(runtime.sound2_entity, owner.mynoise2, "client-owned blaster impacts must emit PNOISE_IMPACT");
+  assert.deepEqual(owner.mynoise2?.s.origin, [40, 8, 16], "PNOISE_IMPACT origin must be the bolt origin");
+}
+
+function verifyBlasterTouchOwnerSkyAndWorldImpact(): void {
+  const runtime = createHarnessRuntime();
+  const owner = createPlayer(runtime, 1);
+  const wall = createRuntimeEntity({ classname: "func_wall" }, 2);
+  const plane = makePlane([0, 1, 0]);
+  wall.takedamage = damage_t.DAMAGE_NO;
+  wall.health = 0;
+  runtime.entities[2] = wall;
+
+  const ownerBolt = createRuntimeEntity({ classname: "bolt" }, 3);
+  ownerBolt.owner = owner;
+  let ownerBranchFreed = false;
+  let ownerBranchDamaged = false;
+  let ownerBranchTempEvent = false;
+  blaster_touch(ownerBolt, owner, runtime, {
+    G_FreeEdict: () => {
+      ownerBranchFreed = true;
+    },
+    T_Damage: () => {
+      ownerBranchDamaged = true;
+    },
+    emitTempEntity: () => {
+      ownerBranchTempEvent = true;
+    }
+  }, plane, null);
+  assert.equal(ownerBranchFreed, false, "blaster_touch must ignore impacts on the owner without freeing");
+  assert.equal(ownerBranchDamaged, false, "blaster_touch must ignore impacts on the owner without damage");
+  assert.equal(ownerBranchTempEvent, false, "blaster_touch must ignore impacts on the owner without temp entities");
+
+  const skyBolt = createRuntimeEntity({ classname: "bolt" }, 4);
+  skyBolt.owner = owner;
+  const freed: GameEntity[] = [];
+  const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  blaster_touch(skyBolt, wall, runtime, {
+    emitTempEntity: (type, payload) => {
+      tempEvents.push({ type, payload });
+    },
+    G_FreeEdict: (ent) => {
+      freed.push(ent);
+    }
+  }, plane, { name: "sky", flags: SURF_SKY, value: 0 });
+  assert.equal(freed[0], skyBolt, "blaster_touch must free sky impacts");
+  assert.equal(tempEvents.length, 0, "blaster_touch must not emit TE_BLASTER for sky surfaces");
+
+  const worldBolt = createRuntimeEntity({ classname: "bolt" }, 5);
+  worldBolt.owner = owner;
+  worldBolt.spawnflags = 0;
+  worldBolt.s.origin = [12, 24, 36];
+  worldBolt.origin = [...worldBolt.s.origin];
+  blaster_touch(worldBolt, wall, runtime, {
+    emitTempEntity: (type, payload) => {
+      tempEvents.push({ type, payload });
+    },
+    T_Damage: () => assert.fail("blaster_touch must not damage non-damageable world geometry"),
+    G_FreeEdict: (ent) => {
+      freed.push(ent);
+    }
+  }, plane, null);
+  assert.equal(tempEvents.at(-1)?.type, temp_event_t.TE_BLASTER, "blaster_touch must emit TE_BLASTER on non-damageable impacts");
+  assert.deepEqual(tempEvents.at(-1)?.payload.origin, [12, 24, 36], "TE_BLASTER origin must be the bolt origin");
+  assert.deepEqual(tempEvents.at(-1)?.payload.dir, [0, 1, 0], "TE_BLASTER dir must be the impact plane normal");
+  assert.equal(freed.at(-1), worldBolt, "blaster_touch must free the bolt after world impact");
+
+  const normalBolt = createRuntimeEntity({ classname: "bolt" }, 6);
+  const target = createRuntimeEntity({ classname: "monster_target" }, 7);
+  normalBolt.owner = owner;
+  normalBolt.velocity = [1, 0, 0];
+  normalBolt.dmg = 1;
+  target.takedamage = damage_t.DAMAGE_AIM;
+  let mod = 0;
+  blaster_touch(normalBolt, target, runtime, {
+    T_Damage: (_ent, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, damageMod) => {
+      mod = damageMod;
+    },
+    G_FreeEdict: () => undefined
+  }, plane, null);
+  assert.equal(mod, MOD_BLASTER, "missing spawnflag 1 must select MOD_BLASTER");
+}
+
 function createHarnessRuntime(): GameRuntime {
   return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 }
@@ -468,6 +642,16 @@ function makeTrace(
     surface,
     contents,
     ent
+  };
+}
+
+function makePlane(normal: vec3_t): cplane_t {
+  return {
+    normal: [...normal],
+    dist: 0,
+    type: 0,
+    signbits: 0,
+    pad: [0, 0]
   };
 }
 

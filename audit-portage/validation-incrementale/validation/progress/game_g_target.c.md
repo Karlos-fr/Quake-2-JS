@@ -2,6 +2,24 @@
 
 ## Dernier lot valide
 
+- 2026-05-02: `target_laser_think` avec les locaux `ignore`, `tr` et les deux entrees `count`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `target_laser_think` conserve le calcul de `count` avant retarget enemy, le recalcul de `movedir` vers `enemy`, le flag spark quand la direction change, la boucle `gi.trace` avec `ignore`, le `T_Damage` energy `MOD_TARGET_LASER` sauf `FL_IMMUNE_LASER`, la continuation a travers monstres/joueurs, l'emission `TE_LASER_SPARKS` sur endpoint solide avec count/origin/normal/skinnum, la copie `tr.endpos` vers `s.old_origin` et `nextthink = level.time + FRAMETIME`.
+  - Commentaire d'en-tete complete pour `target_laser_think`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage pour les locaux `ignore`, `tr`, `count`.
+  - Branchement runtime verifie: `target_laser` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; `SP_target_laser` planifie `target_laser_start`, qui installe `target_laser_think`, link l'entite beam et lance/arrete le think selon `START_ON`.
+  - `apps/web`: integration attendue via le runtime full-game et les snapshots client, car `target_laser_think` produit un beam visible (`RF_BEAM | RF_TRANSLUCENT`, `modelindex=1`, `old_origin`) et des temp entities `TE_LASER_SPARKS`. Pas de logique parallele masquante constatee; les tests full-game/web restent OK.
+  - `renderer-three`: integration attendue car le beam visible est consomme comme entite refresh `RF_BEAM` avec `oldorigin`, frame, skinnum et alpha, et les sparks passent par les temp entities/particules. Les chemins `refresh-entity-sync`, `R_DrawBeam`/beam sync et particules restent couverts.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: header de `target_laser_think` complete.
+  - `scripts/verify/quake2-g-target.ts`: couverture renforcee pour renderfx beam, modelindex, frame/skinnum, cadence `FRAMETIME`, `MOD_TARGET_LASER`, payload `TE_LASER_SPARKS`, skip `FL_IMMUNE_LASER`, continuation du trace et ordre de calcul de `count` avant retarget enemy.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run verify:beam-sync` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `target_laser_on`, `target_laser_off` et `target_laser_use`; inclure la ligne dupliquée `target_laser_on` seulement si le lot reste petit et sans traiter `target_laser_start`.
+
 - 2026-05-02: `target_crosslevel_target_think` et `SP_target_crosslevel_target`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `target_crosslevel_target_think` conserve la condition exacte `spawnflags == (serverflags & SFL_CROSS_TRIGGER_MASK & spawnflags)`, puis `G_UseTargets(self, self)` et `G_FreeEdict(self)` quand tous les bits requis sont presents. `SP_target_crosslevel_target` conserve le default `delay = 1`, `SVF_NOCLIENT`, l'installation du think et `nextthink = level.time + delay`.

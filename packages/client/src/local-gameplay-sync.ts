@@ -75,10 +75,11 @@ import {
   CL_BuildMuzzleFlashEffects,
   CL_BuildTempEntityEffects,
   CL_LogoutEffect,
+  CL_ParticleEffect,
   type ClientActionEffect
 } from "./cl_fx.js";
 import { CL_ExecuteTempEntityEffects } from "./cl_fx.js";
-import { CL_AddTEntPacket } from "./cl_tent.js";
+import { CL_AddTEntPacket, CL_SmokeAndFlash } from "./cl_tent.js";
 import { getPredictedViewheight } from "./local-loop.js";
 import type { ClientTempEntityPacket } from "./cl_parse.js";
 import type { ClientRuntime } from "./client.js";
@@ -624,6 +625,10 @@ function applyLocalGameplayActionEffects(runtime: ClientRuntime, effects: Client
       (effect.kind === "login" || effect.kind === "logout" || effect.kind === "respawn")
     ) {
       CL_LogoutEffect(runtime, effect.position, effect.packet.weapon & ~MZ_SILENCED);
+    } else if (effect.kind === "particle-effect" && effect.position) {
+      CL_ParticleEffect(runtime, effect.position, [0, 0, 0], effect.color ?? 0, effect.count ?? 0);
+    } else if (effect.kind === "smoke-and-flash" && effect.position) {
+      CL_SmokeAndFlash(runtime, effect.position);
     }
   }
 }

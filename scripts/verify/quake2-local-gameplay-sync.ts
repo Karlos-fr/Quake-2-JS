@@ -138,6 +138,7 @@ function verifyLocalMonsterMuzzleFlashReachesRefreshLights(): void {
 
   assertNumber(gameplay.monsterMuzzleFlashEvents.length, 0, "monster muzzle flash event must be drained by sync");
   assertBoolean(Boolean(muzzleLight), true, "local monster muzzle flash must become a refresh dynamic light");
+  assertBoolean(refresh.particles.length > 0, true, "local monster muzzle flash must emit refresh particles for renderer-three");
   assertBoolean(sounds.some((event) => event.soundPath === "infantry/infatck1.wav"), true, "actor monster muzzle flash must queue machinegun sound");
 }
 

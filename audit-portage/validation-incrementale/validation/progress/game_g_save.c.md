@@ -2,6 +2,42 @@
 
 ## Dernier lot traite
 
+- 2026-05-02: fonction `ReadEdict` et temporaire local auto-detecte `field`.
+
+## Verdict du lot
+
+- `ReadEdict`: valide. Dans le C, la fonction lit le bloc `edict_t` avec `fread`, puis parcourt `fields` et applique `ReadField` pour rematerialiser les champs pointeurs/specialises apres la lecture brute.
+- Dans le port TS, le format binaire est remplace par `restoreEntity`: l'edict est reconstruit depuis un payload JSON structure, les scalaires/vecteurs/chaines sont remis sur l'entite runtime, les references edict sont resolues par index, les items par `GetItemByIndex`, les callbacks par `findGameSaveFunction`, les moves par `findGameSaveMove`, et `clusternums` redevient un `Int32Array`.
+- `field`: valide. Le pointeur d'iteration C sur `fields` est porte par `restoreEntity`, `restoreEntityCallbacks` et `resolveEntityReferences`; le harness couvre les chaines `F_LSTRING`, scalaires, vecteurs, references edict, item, callbacks, mmove, `moveinfo`, `monsterinfo`, donnees area/cluster et relink des entites restaurees.
+- Commentaires d'en-tete: commentaire ajoute sur `restoreEntity` avec `Original name: ReadEdict`, source, categorie, niveau de fidelite, comportement et notes de portage.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. Le role de `ReadEdict` est atteint par `ReadLevel`, expose via `packages/game/src/g_main.ts` dans l'API game puis appele par `SV_ReadLevelFile` dans `packages/server/src/sv_ccmds.ts` et par le host web.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` connecte `ge.ReadLevel` au `web-save-storage`; aucune logique web parallele ne remplace la restauration des edicts.
+- renderer-three: pas de consommation directe par `restoreEntity`; l'entite restauree peut toutefois produire ensuite des modeles/frames/images/scene via snapshots runtime. Le branchement indirect est couvert par le test full-game renderer.
+
+## Corrections appliquees
+
+- `packages/game/src/g_save.ts`: ajout du commentaire d'en-tete de `restoreEntity`.
+- `scripts/verify/quake2-g-save.ts`: ajout de preuves pour la restauration `ReadEdict` des chaines, scalaires, vecteurs, `clusternums`, `areanum` et `areanum2`.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `ReadEdict` et `field`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: non modifie dans cette session; delta propose dans le rapport final.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:web-save-storage`: ok le 2026-05-02.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
+
+## Prochain lot recommande
+
+- Continuer avec `ReadLevelLocals`, puis son temporaire local `field` si le lot reste coherent.
+
+---
+
 - 2026-05-02: fonction `WriteLevelLocals` et temporaires locaux auto-detectes `field`, `temp`.
 
 ## Verdict du lot

@@ -708,6 +708,16 @@ export function SP_target_crosslevel_target(self: GameEntity, runtime: GameRunti
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Retargets at `enemy` when present, traces the laser beam through damageable actors,
+ *   applies energy damage to non-immune hits, emits one `TE_LASER_SPARKS` impact when
+ *   the beam endpoint changes, stores the beam endpoint in `s.old_origin`, and schedules
+ *   the next frame.
+ *
+ * Porting notes:
+ * - Local C variables `ignore`, `tr` and `count` are represented as scoped values; the
+ *   spark `count` is intentionally computed before enemy retargeting, matching the C order.
  */
 export function target_laser_think(self: GameEntity, runtime: GameRuntime): void {
   const count = (self.spawnflags & TARGET_LASER_SPARKS) !== 0 ? 8 : 4;

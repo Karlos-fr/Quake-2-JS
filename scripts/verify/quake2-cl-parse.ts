@@ -19,6 +19,7 @@ import {
   CL_ParseConfigString,
   CL_ParseDownload,
   CL_ParseMuzzleFlash,
+  CL_ParseMuzzleFlash2,
   CL_ParseServerData,
   CL_ParseStartSoundPacket,
   CL_ParseServerMessage,
@@ -39,6 +40,7 @@ import {
   MSG_WriteString,
   MZ_BLASTER,
   MZ_SILENCED,
+  MAX_EDICTS,
   PRINT_CHAT,
   SND_ATTENUATION,
   SND_ENT,
@@ -110,6 +112,28 @@ MSG_WriteShort(runtime.net_message, 0);
 MSG_WriteByte(runtime.net_message, MZ_BLASTER);
 runtime.net_message.readcount = 0;
 assert.throws(() => CL_ParseMuzzleFlash(runtime), /bad entity 0/, "CL_ParseMuzzleFlash bad entity guard mismatch");
+
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, 12);
+MSG_WriteByte(runtime.net_message, 26);
+runtime.net_message.readcount = 0;
+let parsedMonsterMuzzleFlash: unknown = null;
+const monsterMuzzleFlashPacket = CL_ParseMuzzleFlash2(runtime, {
+  onMuzzleFlash2: (packet) => {
+    parsedMonsterMuzzleFlash = packet;
+  }
+});
+assert.deepEqual(monsterMuzzleFlashPacket, {
+  entity: 12,
+  flashNumber: 26
+}, "CL_ParseMuzzleFlash2 packet mismatch");
+assert.deepEqual(parsedMonsterMuzzleFlash, monsterMuzzleFlashPacket, "CL_ParseMuzzleFlash2 hook mismatch");
+
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, MAX_EDICTS);
+MSG_WriteByte(runtime.net_message, 26);
+runtime.net_message.readcount = 0;
+assert.throws(() => CL_ParseMuzzleFlash2(runtime), /bad entity 1024/, "CL_ParseMuzzleFlash2 bad entity guard mismatch");
 
 resetIncoming(runtime);
 let cinematicName = "";

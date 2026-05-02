@@ -1,7 +1,7 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot valide: `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; variables locales generees `i` marquees non applicables.
+- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; variables locales generees `i` marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -26,5 +26,11 @@
   - Les temporaires C `silenced`, `volume` et `soundname` sont portes sous forme structuree: `ClientMuzzleFlashPacket.silenced`, `volume` dans le builder, et noms de sons fixes/aleatoires dans les definitions de muzzle flash.
   - Les dlights de muzzle flash sont attendus dans le runtime navigateur: `apps/web/src/full-game.ts` applique `CL_AllocDlight`, puis `CL_BuildRefreshFrame` expose `ClientRefreshFrame.lights`; `packages/renderer-three` les consomme via le flux dlight deja valide.
   - Les sons de muzzle flash sont attendus dans `apps/web`: `startAuthoritativeEffectSounds` les route vers `S_DMA_StartSound`; `renderer-three` n'a pas de consommation sonore directe attendue.
-- Blocages: aucun.
-- Prochain lot recommande: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`, en limitant au premier sous-ensemble monster muzzle flashes si le lot devient trop large.
+  - `CL_ParseMuzzleFlash2` lit `svc_muzzleflash2` dans `CL_ParseServerMessage`, conserve `ent` et `flash_number` dans `ClientMuzzleFlash2Packet`, puis delegue les effets a `CL_BuildMuzzleFlash2Effects`.
+  - Le temporaire C `origin` est porte par `buildMonsterMuzzleFlashOrigin`, qui reconstruit la position depuis `cl_entities[ent].current.origin`, `AngleVectors`, `monster_flash_offset[flash_number]`, `forward` et `right`.
+  - Les effets visibles de `CL_ParseMuzzleFlash2` sont attendus dans le runtime navigateur: dlight, `CL_ParticleEffect` et `CL_SmokeAndFlash` sont appliques par `apps/web/src/full-game.ts`; le flux local `packages/client/src/local-gameplay-sync.ts` applique maintenant aussi `particle-effect` et `smoke-and-flash`.
+  - `renderer-three` consomme les dlights via `ClientRefreshFrame.lights` -> `createThreeDlightSync` / `R_RenderDlights` et les particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync`; les sons restent hors renderer.
+  - `npm run verify:local-gameplay-sync` n'a pas pu etre utilise comme preuve finale pendant cette session: blocage hors lot avant execution du test, `ReferenceError: FRAME_attack1 is not defined` dans `packages/game/src/g_save.ts`.
+  - `npm run typecheck` n'a pas pu etre utilise comme preuve finale pendant cette session: blocage hors lot `packages/game/src/g_spawn.ts(645,5): Cannot find name 'applyParsedField'`.
+- Blocages: deux verifications larges bloquees par des changements hors lot (`g_save.ts`, `g_spawn.ts`); tests cibles `cl_fx`/`cl_parse`/web/renderer OK.
+- Prochain lot recommande: `cl_numparticles`, `CL_ClearParticles` et le temporaire local `i` si le lot reste coherent.

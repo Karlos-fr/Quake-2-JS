@@ -114,7 +114,13 @@ export interface GameWeaponWorldHooks {
   Grenade_Touch?: (self: GameEntity, other: GameEntity, runtime: GameRuntime) => void;
   bfg_think?: (ent: GameEntity, runtime: GameRuntime) => void;
   bfg_touch?: (self: GameEntity, other: GameEntity, runtime: GameRuntime) => void;
-  blaster_touch?: (self: GameEntity, other: GameEntity, runtime: GameRuntime) => void;
+  blaster_touch?: (
+    self: GameEntity,
+    other: GameEntity,
+    runtime: GameRuntime,
+    plane?: cplane_t | null,
+    surf?: csurface_t | null
+  ) => void;
   check_dodge?: (self: GameEntity, start: vec3_t, dir: vec3_t, speed: number, runtime: GameRuntime) => void;
   emitTempEntity?: (event: temp_event_t, payload: Record<string, unknown>, runtime: GameRuntime) => void;
   findRadiusEntities?: (origin: vec3_t, radius: number, runtime: GameRuntime) => GameEntity[];
@@ -271,7 +277,9 @@ export function fire_blaster(
   bolt.s.modelindex = registerGameModel(runtime, "models/objects/laser/tris.md2");
   bolt.s.sound = registerGameSound(runtime, "misc/lasfly.wav");
   bolt.owner = self;
-  bolt.touch = hooks.blaster_touch ?? ((touchSelf, other, localRuntime) => blaster_touch(touchSelf, other, localRuntime, hooks));
+  bolt.touch = hooks.blaster_touch ?? (
+    (touchSelf, other, localRuntime, plane, surf) => blaster_touch(touchSelf, other, localRuntime, hooks, plane ?? null, surf ?? null)
+  );
   bolt.nextthink = runtime.time + 2;
   bolt.think = (thinkSelf, localRuntime) => freeEdict(thinkSelf, localRuntime, hooks);
   bolt.dmg = damage;

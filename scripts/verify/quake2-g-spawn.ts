@@ -36,9 +36,10 @@ import {
   SPAWNFLAG_NOT_EASY,
   SPAWNFLAG_NOT_HARD,
   SPAWNFLAG_NOT_MEDIUM,
+  createSpawnTemp,
   damage_t
 } from "../../packages/game/src/g_local.js";
-import { ED_CallSpawn, G_FindTeams, SpawnEntities, dm_statusbar, single_statusbar, spawns } from "../../packages/game/src/g_spawn.js";
+import { ED_CallSpawn, ED_NewString, ED_ParseField, G_FindTeams, SpawnEntities, dm_statusbar, single_statusbar, spawns } from "../../packages/game/src/g_spawn.js";
 import { G_RunFrame, InitGame, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { spawnGameEntity } from "../../packages/game/src/runtime.js";
 
@@ -117,7 +118,7 @@ SpawnEntities(
   "base1",
   `{
 "classname" "worldspawn"
-"message" "Unit Test Level"
+"message" "Unit\\nTest Level"
 "nextmap" "unit_next"
 "sky" "space1"
 "skyrotate" "5"
@@ -138,6 +139,9 @@ SpawnEntities(
 {
 "classname" "mystery_thing"
 }
+{
+"ClassName" "mystery_case"
+}
 `,
   "start"
 );
@@ -148,11 +152,11 @@ assert.equal(worldspawn.solid, SOLID_BSP, "worldspawn solid mismatch");
 assert.equal(worldspawn.s.modelindex, 1, "worldspawn modelindex mismatch");
 assert.equal(context.runtime.mapname, "base1", "runtime.mapname must follow SpawnEntities");
 assert.equal(context.level.mapname, "base1", "level.mapname must follow SpawnEntities");
-assert.equal(context.level.level_name, "Unit Test Level", "worldspawn message must set level name");
+assert.equal(context.level.level_name, "Unit\nTest Level", "worldspawn message must set level name through ED_NewString");
 assert.equal(context.level.nextmap, "unit_next", "worldspawn nextmap mismatch");
 assert.equal(context.runtime.gravity, 600, "worldspawn gravity must update runtime gravity");
 assert.equal(cvarValues.get("sv_gravity"), "600", "worldspawn gravity must call cvar_set");
-assert.equal(configstrings.get(CS_NAME), "Unit Test Level", "CS_NAME mismatch");
+assert.equal(configstrings.get(CS_NAME), "Unit\nTest Level", "CS_NAME mismatch");
 assert.equal(configstrings.get(CS_SKY), "space1", "CS_SKY mismatch");
 assert.equal(configstrings.get(CS_SKYROTATE), "5", "CS_SKYROTATE mismatch");
 assert.equal(configstrings.get(CS_SKYAXIS), "0 0 1", "CS_SKYAXIS mismatch");
@@ -218,6 +222,10 @@ const warnedUnknown = context.runtime.logEntries.some(
   (entry) => entry.kind === "warning" && entry.message.includes("mystery_thing doesn't have a spawn function")
 );
 assert.equal(warnedUnknown, true, "ED_CallSpawn must warn on unknown classnames");
+const warnedCaseInsensitiveField = context.runtime.logEntries.some(
+  (entry) => entry.kind === "warning" && entry.message.includes("mystery_case doesn't have a spawn function")
+);
+assert.equal(warnedCaseInsensitiveField, true, "SpawnEntities must reach ED_ParseField case-insensitive key parsing");
 
 const nullClassEntity = spawnGameEntity(context.runtime);
 nullClassEntity.classname = "";
@@ -226,6 +234,42 @@ const warnedNull = context.runtime.logEntries.some(
   (entry) => entry.kind === "warning" && entry.message.includes("ED_CallSpawn: NULL classname")
 );
 assert.equal(warnedNull, true, "ED_CallSpawn must warn on null classname");
+
+assert.equal(ED_NewString("line\\nnext"), "line\nnext", "ED_NewString must translate newline escapes");
+assert.equal(ED_NewString("sound\\xname"), "sound\\name", "ED_NewString must preserve C unknown backslash escape behavior");
+
+const parsedFieldEntity = spawnGameEntity(context.runtime);
+const parsedSpawnTemp = createSpawnTemp();
+ED_ParseField("ClassName", "func_door", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("message", "hello\\nmarine", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("origin", "1 2 3", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("angles", "4 5 6", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("angle", "90", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("spawnflags", "12", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("speed", "123.5", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("light", "ignored", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("enemy", "7", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("noise", "plats\\ntrain.wav", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("skyaxis", "0 0 1", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+ED_ParseField("unknown_field", "value", parsedFieldEntity, context.runtime, parsedSpawnTemp);
+assert.equal(parsedFieldEntity.classname, "func_door", "ED_ParseField must match keys case-insensitively");
+assert.equal(parsedFieldEntity.message, "hello\nmarine", "ED_ParseField must apply ED_NewString to entity strings");
+assert.deepEqual(parsedFieldEntity.s.origin, [1, 2, 3], "ED_ParseField must parse origin vectors into entity_state");
+assert.deepEqual(parsedFieldEntity.origin, [1, 2, 3], "ED_ParseField must keep runtime origin in sync");
+assert.deepEqual(parsedFieldEntity.s.angles, [0, 90, 0], "ED_ParseField anglehack must write yaw-only angles");
+assert.deepEqual(parsedFieldEntity.angles, [0, 90, 0], "ED_ParseField anglehack must keep runtime angles in sync");
+assert.equal(parsedFieldEntity.spawnflags, 12, "ED_ParseField must parse integer fields");
+assert.equal(parsedFieldEntity.speed, 123.5, "ED_ParseField must parse float fields");
+assert.equal(parsedFieldEntity.enemy, null, "ED_ParseField must skip FFL_NOSPAWN fields during spawn parsing");
+assert.equal(parsedFieldEntity.properties.light, "ignored", "ED_ParseField F_IGNORE must preserve the source property without mutating gameplay fields");
+assert.equal(parsedFieldEntity.properties.noise, "plats\ntrain.wav", "ED_ParseField must preserve spawn-temp string fields for TS spawn callbacks");
+assert.equal(parsedSpawnTemp.noise, "plats\ntrain.wav", "ED_ParseField must fill optional spawn_temp_t string fields");
+assert.deepEqual(parsedSpawnTemp.skyaxis, [0, 0, 1], "ED_ParseField must fill optional spawn_temp_t vector fields");
+assert.equal(
+  context.runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message.includes("unknown_field is not a field")),
+  true,
+  "ED_ParseField must warn on unknown fields"
+);
 
 const itemSpawnEntity = spawnGameEntity(context.runtime);
 itemSpawnEntity.classname = "weapon_machinegun";

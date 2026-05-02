@@ -15,9 +15,13 @@ import { strict as assert } from "node:assert";
 import {
   FRAMETIME,
   FL_GODMODE,
+  ED_CallSpawn,
+  G_TouchTriggers,
   ITEM_INDEX,
+  MOVETYPE_NONE,
   SOLID_NOT,
   SOLID_TRIGGER,
+  SVF_NOCLIENT,
   SVF_MONSTER,
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -38,6 +42,7 @@ import {
   SP_trigger_push,
   SP_trigger_relay,
   Touch_Multi,
+  trigger_gravity_touch,
   trigger_counter_use,
   trigger_key_use,
   trigger_push_touch,
@@ -334,12 +339,46 @@ function verifyTriggerGravity(): void {
   trigger.classname = "trigger_gravity";
   trigger.properties.gravity = "300";
   SP_trigger_gravity(trigger, runtime);
+  assert.equal(trigger.inuse, true, "trigger_gravity with gravity must remain in use");
+  assert.equal(trigger.solid, SOLID_TRIGGER, "trigger_gravity solid mismatch");
+  assert.equal(trigger.movetype, MOVETYPE_NONE, "trigger_gravity movetype mismatch");
+  assert.equal((trigger.svflags & SVF_NOCLIENT) !== 0, true, "trigger_gravity must be hidden from client snapshots");
+  assert.equal(trigger.gravity, 300, "trigger_gravity parsed gravity mismatch");
+  assert.equal(trigger.touch, trigger_gravity_touch, "SP_trigger_gravity must install trigger_gravity_touch");
 
   const actor = createPlayer(runtime);
   actor.gravity = 1;
 
   trigger.touch?.(trigger, actor, runtime);
   assert.equal(actor.gravity, 300, "trigger_gravity must override entity gravity");
+
+  const dispatch = spawnGameEntity(runtime);
+  dispatch.classname = "trigger_gravity";
+  dispatch.properties.gravity = "450";
+  ED_CallSpawn(dispatch, runtime);
+  const touchedByRuntime = createPlayer(runtime);
+  touchedByRuntime.health = 100;
+  touchedByRuntime.origin = [0, 0, 0];
+  touchedByRuntime.mins = [-8, -8, -8];
+  touchedByRuntime.maxs = [8, 8, 8];
+  touchedByRuntime.gravity = 1;
+  dispatch.mins = [-16, -16, -16];
+  dispatch.maxs = [16, 16, 16];
+  linkGameEntity(runtime, dispatch);
+  linkGameEntity(runtime, touchedByRuntime);
+  G_TouchTriggers(runtime, touchedByRuntime);
+  assert.equal(touchedByRuntime.gravity, 450, "trigger_gravity must be reachable through ED_CallSpawn and G_TouchTriggers");
+
+  const missingGravity = spawnGameEntity(runtime);
+  missingGravity.classname = "trigger_gravity";
+  missingGravity.s.origin = [1, 2, 3];
+  SP_trigger_gravity(missingGravity, runtime);
+  assert.equal(missingGravity.inuse, false, "trigger_gravity without gravity must be freed");
+  assert.equal(
+    runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message.includes("trigger_gravity without gravity set at (1 2 3)")),
+    true,
+    "trigger_gravity without gravity must emit the source warning"
+  );
 }
 
 function verifyTriggerMonsterJump(): void {
