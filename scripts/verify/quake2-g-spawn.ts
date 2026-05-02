@@ -227,6 +227,22 @@ const warnedNull = context.runtime.logEntries.some(
 );
 assert.equal(warnedNull, true, "ED_CallSpawn must warn on null classname");
 
+const itemSpawnEntity = spawnGameEntity(context.runtime);
+itemSpawnEntity.classname = "weapon_machinegun";
+ED_CallSpawn(itemSpawnEntity, context.runtime);
+assert.equal(itemSpawnEntity.itemPickupName, "Machinegun", "ED_CallSpawn must check itemlist before spawns[]");
+assert.equal(itemSpawnEntity.think?.name, "droptofloor", "ED_CallSpawn item path must call SpawnItem");
+
+const uppercaseItemClassEntity = spawnGameEntity(context.runtime);
+uppercaseItemClassEntity.classname = "WEAPON_MACHINEGUN";
+ED_CallSpawn(uppercaseItemClassEntity, context.runtime);
+assert.equal(uppercaseItemClassEntity.itemPickupName ?? null, null, "ED_CallSpawn itemlist path must preserve strcmp case sensitivity");
+assert.equal(
+  context.runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message.includes("WEAPON_MACHINEGUN doesn't have a spawn function")),
+  true,
+  "ED_CallSpawn uppercase item classname must fall through to the warning path"
+);
+
 const wallEntity = spawnGameEntity(context.runtime);
 wallEntity.classname = "func_wall";
 ED_CallSpawn(wallEntity, context.runtime);

@@ -68,6 +68,7 @@ import {
   Use_Target_Speaker,
   Use_Target_Tent,
   target_explosion_explode,
+  target_crosslevel_target_think,
   target_lightramp_use,
   trigger_crosslevel_trigger_use,
   use_target_explosion,
@@ -552,12 +553,39 @@ function verifyCrosslevelTargets(): void {
   assert.equal(runtime.serverflags & (SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3), SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3, "crosslevel trigger serverflags mismatch");
   assert.equal(trigger.inuse, false, "crosslevel trigger must free itself");
 
+  const receiver = spawnGameEntity(runtime);
+  receiver.classname = "crosslevel_receiver";
+  receiver.targetname = "crosslevel_done";
+  let receiverActivator: GameEntity | null = null;
+  receiver.use = (_ent, _other, activator) => {
+    receiverActivator = activator;
+  };
+
   const target = createHighEntity(runtime, "target_crosslevel_target");
   target.spawnflags = SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3;
-  SP_target_crosslevel_target(target, runtime);
+  target.target = "crosslevel_done";
+  ED_CallSpawn(target, runtime);
+  assert.equal(target.think, target_crosslevel_target_think, "target_crosslevel_target spawn table must install target_crosslevel_target_think");
+  assert.equal(target.svflags, SVF_NOCLIENT, "target_crosslevel_target must be hidden from clients");
   assert.equal(target.nextthink, runtime.time + 1, "crosslevel target default delay mismatch");
   runPendingThinks(runtime, 1);
   assert.equal(target.inuse, false, "crosslevel target must fire and free when flags match");
+  assert.equal(receiverActivator, null, "target_crosslevel_target must honor its default delayed target use");
+  runPendingThinks(runtime, 2);
+  assert.equal(receiverActivator, target, "target_crosslevel_target must use itself as activator after delay");
+
+  const partialRuntime = createRuntime();
+  partialRuntime.serverflags = SFL_CROSS_TRIGGER_1;
+  const partialTarget = createHighEntity(partialRuntime, "target_crosslevel_target");
+  partialTarget.spawnflags = SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3;
+  SP_target_crosslevel_target(partialTarget, partialRuntime);
+  runPendingThinks(partialRuntime, 1);
+  assert.equal(partialTarget.inuse, true, "target_crosslevel_target must remain when not all requested bits match");
+  assert.equal(
+    partialRuntime.entities.some((entity) => entity?.classname === "DelayedUse"),
+    false,
+    "target_crosslevel_target must not schedule target use when flags do not match"
+  );
 
   runtime.serverflags = SFL_CROSS_TRIGGER_MASK | 0x100;
   const player = runtime.entities[1] ?? createPlayer(runtime);

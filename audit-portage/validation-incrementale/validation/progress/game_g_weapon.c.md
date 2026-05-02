@@ -3,37 +3,35 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `fire_lead` et temporaires locaux `tr`, `dir`, `end`, `r`, `u`, `water_start`, `water`, `content_mask`, `color`.
-- Verdict du lot: valide pour `fire_lead`; temporaires non applicables comme entites autonomes.
+- Dernier lot traite: `fire_bullet`, `fire_shotgun` et temporaire local `i`.
+- Verdict du lot: valide pour `fire_bullet` et `fire_shotgun`; `i` non applicable comme entite autonome.
 
 ## Preuves session
 
 - C source compare: `Quake-2-master/game/g_weapon.c`
 - TS cible compare: `packages/game/src/g_weapon.ts`
-- Commentaire d'en-tete verifie sur `fire_lead` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`).
-- Runtime verifie: `fire_lead` est interne et atteint via `fire_bullet`/`fire_shotgun`, eux-memes appeles par `p_weapon.c` porte (`Weapon_Machinegun`, `Weapon_Chaingun`, `weapon_shotgun_fire`, `weapon_supershotgun_fire`) et par les tirs monstres (`monster_fire_bullet`, `monster_fire_shotgun`). Le harness couvre le trace initial depuis `self.s.origin`, le trace `MASK_SHOT | MASK_WATER`, `DAMAGE_BULLET`, l'impact non damageable, l'entree dans l'eau, `TE_SPLASH` et `TE_BUBBLETRAIL`.
-- `apps/web`: pas de logique parallele attendue; le navigateur declenche les tirs via le runtime local/serveur porte et `local-gameplay-sync` consomme les temp entities du runtime pour le client.
-- `packages/renderer-three`: integration indirecte attendue et verifiee via les sorties client temp entities/particules (`TE_GUNSHOT`, `TE_SHOTGUN`, `TE_SPLASH`, `TE_BUBBLETRAIL`) consommees par la chaine client puis renderer; pas de branchement direct `renderer-three` attendu depuis `g_weapon.ts`.
+- Commentaires d'en-tete verifies sur `fire_bullet` et `fire_shotgun` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`).
+- Comparaison C/TS: `fire_bullet` appelle strictement `fire_lead` avec `TE_GUNSHOT`; `fire_shotgun` boucle `count` fois et appelle `fire_lead` avec `TE_SHOTGUN`. Le temporaire C `i` est porte comme compteur de boucle local TS.
+- Runtime verifie: chemins joueur via `p_weapon.ts` (`Weapon_Machinegun`, `Weapon_Chaingun`, `weapon_shotgun_fire`, `weapon_supershotgun_fire`) et chemins monstres via `g_monster.ts` (`monster_fire_bullet`, `monster_fire_shotgun`). Les wrappers restent atteignables depuis le runtime local/serveur par les tables d'armes et callbacks monstres.
+- `apps/web`: pas de logique parallele attendue dans `apps/web`; le navigateur doit declencher ces tirs via le runtime local/serveur porte. `verify:local-gameplay-sync` confirme la consommation du flux runtime cote client.
+- `packages/renderer-three`: sortie visible indirecte attendue par les temp entities produites par `fire_lead` (`TE_GUNSHOT`, `TE_SHOTGUN`, et effets eau deja couverts par le lot precedent). Pas de branchement direct `renderer-three` attendu depuis `g_weapon.ts`; `verify:full-game:three-renderer` confirme que la chaine renderer reste branchee.
 
 ## Tests lances
 
 - `npm run verify:g-weapon`
-- `npm run verify:g-main`
-- `npm run verify:g-target`
+- `npm run verify:p-weapon`
+- `npm run verify:g-monster`
 - `npm run verify:local-gameplay-sync`
-- `npm run verify:full-game:server-host`
 - `npm run verify:full-game:three-renderer`
 - `npm run typecheck`
 
 ## Corrections
 
-- `scripts/verify/quake2-g-weapon.ts`: extension du harness cible pour `fire_lead` via `fire_bullet` (impact sec, damage, eau, splash, bubble trail).
-- `packages/game/src/g_main.ts`: correction du flush runtime `TE_SPLASH` pour ecrire `payload.color` quand il est produit par `fire_lead`, avec fallback `sounds` pour `target_splash`.
-- `scripts/verify/quake2-g-main.ts`: assertion serveur dediee au flush `TE_SPLASH.color`.
+- `scripts/verify/quake2-g-weapon.ts`: ajout d'une preuve ciblee `fire_shotgun` validant que la boucle appelle `fire_lead` une fois par pellet et emet `TE_SHOTGUN`.
 
 ## Prochain lot recommande
 
-- Continuer avec `fire_bullet` et `fire_shotgun`; valider leurs wrappers vers `fire_lead`, leurs commentaires, les chemins `p_weapon`/monstres et les tests existants.
+- Continuer avec `blaster_touch` et ses temporaires locaux `mod` si le lot reste coherent.
 
 ## Blocages
 

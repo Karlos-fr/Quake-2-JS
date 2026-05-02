@@ -3,16 +3,16 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `PUSH_ONCE`, `windsound`, `trigger_push_touch`, `SP_trigger_push`.
+- Dernier lot traite: `hurt_use`, `hurt_touch`, les temporaires locaux `dflags`, `SP_trigger_hurt`.
 - Verdict du lot: valide.
 
 ## Preuves session
 
 - C source compare: `Quake-2-master/game/g_trigger.c`
 - TS cible compare: `packages/game/src/g_trigger.ts`
-- Runtime verifie: `SP_trigger_push` branche `trigger_push_touch` via `ED_CallSpawn`; callback `touch` couvert pour grenade, acteur vivant, acteur mort ignore, son `misc/windfly.wav`, debounce strict, copie `oldvelocity`, vitesse `movedir * speed * 10` et `PUSH_ONCE`.
-- `apps/web`: integration attendue indirecte via runtime serveur/full-game; le trigger modifie vitesse/snapshots joueur et ne doit pas etre reimplemente dans `apps/web`.
-- `packages/renderer-three`: integration attendue indirecte via trajectoire/camera issue des snapshots full-game; pas de modele, particule, beam, dlight, temp entity ou areabit propre au trigger, mais la camera visible depend de la vitesse appliquee.
+- Runtime verifie: `SP_trigger_hurt` branche `hurt_touch` via `ED_CallSpawn`; `hurt_use` toggle `solid` et supprime `use` hors `TOGGLE`; `hurt_touch` couvre `takedamage`, timestamp `FRAMETIME`, `SLOW`, `SILENT`, son `world/electro.wav`, `dflags` avec/sans `NO_PROTECTION`, `T_Damage` et `MOD_TRIGGER_HURT`.
+- `apps/web`: integration attendue indirecte via runtime serveur/full-game; le trigger produit degats, son serveur et etat joueur/HUD via snapshots/runtime, sans logique parallele attendue dans `apps/web`.
+- `packages/renderer-three`: integration attendue indirecte via snapshots/camera/HUD damage consommes par le flux full-game; pas de modele, frame, image, particule, beam, dlight, temp entity ou areabit propre a `trigger_hurt`.
 
 ## Tests lances
 
@@ -25,11 +25,11 @@
 
 ## Corrections
 
-- `scripts/verify/quake2-g-trigger.ts`: renforcement de `verifyTriggerPush` pour couvrir spawn, soundindex, grenade, joueur vivant, debounce sonore, acteur mort ignore et `PUSH_ONCE`.
+- `scripts/verify/quake2-g-trigger.ts`: renforcement de `verifyTriggerHurt` pour couvrir spawn/defaults, soundindex, dommage, `MOD_TRIGGER_HURT`, cadence, debounce, `SLOW`, `SILENT`, `NO_PROTECTION`/godmode et `hurt_use` hors `TOGGLE`.
 
 ## Prochain lot recommande
 
-- Continuer avec `hurt_use`, `hurt_touch`, les temporaires locaux `dflags` et `SP_trigger_hurt` si le lot reste petit.
+- Continuer avec `trigger_gravity_touch` et `SP_trigger_gravity`.
 
 ## Blocages
 

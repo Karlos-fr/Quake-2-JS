@@ -2,6 +2,42 @@
 
 ## Dernier lot traite
 
+- 2026-05-02: fonction `WriteLevelLocals` et temporaires locaux auto-detectes `field`, `temp`.
+
+## Verdict du lot
+
+- `WriteLevelLocals`: valide. Dans le C, la fonction copie `level` dans `temp`, passe les entrees `levelfields` par `WriteField1`, ecrit le bloc `level_locals_t`, puis repasse les champs sur `level` avec `WriteField2` pour ecrire les payloads alloues.
+- Dans le port TS, le format binaire est remplace par `snapshotLevel`: l'etat level est capture dans un payload JSON structure, les scalaires/vecteurs restent des valeurs directes, `changemap` reste une chaine JSON, et les references `sight_client`, `sight_entity`, `sound_entity`, `sound2_entity` deviennent des index edict stables.
+- `field`: valide. Le pointeur d'iteration C sur `levelfields` est porte par les encodages explicites de `snapshotLevel`; le harness couvre `changemap` comme payload chaine et les quatre references edict.
+- `temp`: valide. La copie locale C est portee par un snapshot structure sans mutation du `context.level` source; le harness verifie que `changemap` et `intermission_origin` restent intacts apres ecriture.
+- Commentaires d'en-tete: commentaire ajoute sur `snapshotLevel` avec `Original name: WriteLevelLocals`, source, categorie, niveau de fidelite, comportement et notes de portage.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. Le role de `WriteLevelLocals` est atteint par `WriteLevel`, expose via `packages/game/src/g_main.ts` dans l'API game puis appele par `SV_WriteLevelFile` dans `packages/server/src/sv_ccmds.ts`.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` connecte `ge.WriteLevel` au stockage `web-save-storage`; aucune logique web parallele ne remplace la serialization level.
+- renderer-three: non applicable directement. `WriteLevelLocals`, `field` et `temp` ne produisent pas directement modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les entites sauvegardees/restaurees alimentent ensuite les snapshots visibles.
+
+## Corrections appliquees
+
+- `packages/game/src/g_save.ts`: ajout du commentaire d'en-tete de `snapshotLevel`.
+- `scripts/verify/quake2-g-save.ts`: ajout de preuves pour `changemap` payload chaine, absence de mutation du level source et conservation de vecteur.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `WriteLevelLocals`, `field`, `temp`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: non modifie dans cette session; delta propose dans le rapport final.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:web-save-storage`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
+
+## Prochain lot recommande
+
+- Continuer avec `ReadEdict`, puis son temporaire local `field` si le lot reste coherent.
+
+---
+
 - 2026-05-02: fonction `WriteEdict` et temporaires locaux auto-detectes `field`, `temp`.
 
 ## Verdict du lot

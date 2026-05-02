@@ -32,11 +32,11 @@
 | `Quake-2-master/client/cl_fx.c` | function | `CL_NewDlight` | `packages/client/src/cl_fx.ts` | `CL_NewDlight` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run typecheck`; en-tete verifie. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_RunDLights` | `packages/client/src/cl_fx.ts` | `CL_RunDLights` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:local-gameplay-sync`, `npm run typecheck`; en-tete verifie. |
 | `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_RunDLights`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_ParseMuzzleFlash` | `packages/client/src/cl_parse.ts` | `CL_ParseMuzzleFlash` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `silenced` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `volume` | `packages/client/src/cl_fx.ts` | `volume` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `soundname` | `packages/client/src/cl_fx.ts` | `soundName` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `volume` | `packages/client/src/cl_fx.ts` | `volume` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_ParseMuzzleFlash` | `packages/client/src/cl_parse.ts` | `CL_ParseMuzzleFlash` | Valide | A redecouper | Preuves: `npm run verify:cl-parse`, `npm run verify:cl-fx`, `npm run verify:dlight-sync`, `npx tsx ./scripts/verify/quake2-full-game-three-renderer.ts`, `npm run typecheck`; en-tetes verifies; sorties dlight/sons branchees via `apps/web` puis `ClientRefreshFrame.lights`/DMA. |
+| `Quake-2-master/client/cl_fx.c` | global | `silenced` | `packages/client/src/cl_parse.ts` | `ClientMuzzleFlashPacket.silenced` | Valide | A redecouper | Preuves: `npm run verify:cl-parse`, `npm run verify:cl-fx`; bit `MZ_SILENCED` conserve et applique au rayon/volume. |
+| `Quake-2-master/client/cl_fx.c` | global | `volume` | `packages/client/src/cl_fx.ts` | `volume` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`; volume 1/0.2 et exceptions login/logout/respawn verifies. |
+| `Quake-2-master/client/cl_fx.c` | global | `soundname` | `packages/client/src/cl_fx.ts` | `soundName` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`; noms fixes, machinegun aleatoire et sequences shotgun/chaingun verifies. |
+| `Quake-2-master/client/cl_fx.c` | global | `volume` | `packages/client/src/cl_fx.ts` | `volume` | Valide | A redecouper | Doublon de matrice pour le temporaire local `volume`; meme preuve que la ligne precedente `volume`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ParseMuzzleFlash2` | `packages/client/src/cl_parse.ts` | `CL_ParseMuzzleFlash2` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `ent` | `packages/client/src/cl_fx.ts` | `ent` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `origin` | `packages/client/src/cl_fx.ts` | `origin` | A verifier | A redecouper |  |

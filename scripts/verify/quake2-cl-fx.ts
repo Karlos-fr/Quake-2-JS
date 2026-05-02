@@ -11,6 +11,7 @@ import {
   CL_AddParticles,
   CL_AllocDlight,
   CL_BuildEntityEventEffects,
+  CL_BuildMuzzleFlashEffects,
   CL_ClearDlights,
   CL_ClearLightStyles,
   CL_ItemRespawnParticles,
@@ -20,7 +21,24 @@ import {
   CL_RunLightStyles,
   CL_SetLightstyle
 } from "../../packages/client/src/cl_fx.js";
-import { CS_LIGHTS, entity_event_t, MAX_LIGHTSTYLES, MAX_QPATH, MZ_LOGIN, MZ_LOGOUT, MZ_RESPAWN, type vec3_t } from "../../packages/qcommon/src/index.js";
+import {
+  ATTN_NORM,
+  CHAN_AUTO,
+  CHAN_WEAPON,
+  CS_LIGHTS,
+  entity_event_t,
+  MAX_LIGHTSTYLES,
+  MAX_QPATH,
+  MZ_BLASTER,
+  MZ_CHAINGUN2,
+  MZ_LOGIN,
+  MZ_LOGOUT,
+  MZ_MACHINEGUN,
+  MZ_RESPAWN,
+  MZ_SHOTGUN,
+  MZ_SILENCED,
+  type vec3_t
+} from "../../packages/qcommon/src/index.js";
 import { createClientRuntime as createRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
 import { MAX_DLIGHTS } from "../../packages/client/src/client.js";
 import type { ClientEntityEvent } from "../../packages/client/src/cl_ents.js";
@@ -34,7 +52,84 @@ function main(): void {
   verifyItemRespawnEntityEventMetadata();
   verifyLightstyleManagement();
   verifyDlightManagement();
+  verifyPlayerMuzzleFlashEffects();
   console.log("quake2-cl-fx: ok");
+}
+
+function verifyPlayerMuzzleFlashEffects(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 1000;
+  runtime.cl_entities[4].current.origin = [10, 20, 30];
+  runtime.cl_entities[4].current.angles = [0, 0, 0];
+
+  withMockRandom(0, () => {
+    const blaster = CL_BuildMuzzleFlashEffects({
+      entity: 4,
+      weapon: MZ_BLASTER,
+      silenced: false
+    }, runtime);
+    assert.equal(blaster[0]?.kind, "blaster", "CL_ParseMuzzleFlash MZ_BLASTER kind mismatch");
+    assert.equal(blaster[0]?.light?.radius, 200, "CL_ParseMuzzleFlash unsilenced radius mismatch");
+    assert.deepEqual(blaster[0]?.light?.color, [1, 1, 0], "CL_ParseMuzzleFlash blaster color mismatch");
+    assert.equal(blaster[0]?.light?.minlight, 32, "CL_ParseMuzzleFlash minlight mismatch");
+    assert.equal(blaster[1]?.sound?.name, "weapons/blastf1a.wav", "CL_ParseMuzzleFlash blaster sound mismatch");
+    assert.equal(blaster[1]?.sound?.volume, 1, "CL_ParseMuzzleFlash unsilenced volume mismatch");
+
+    const dlight = CL_AllocDlight(runtime, 4);
+    dlight.origin = [...blaster[0]!.position!];
+    dlight.radius = blaster[0]!.light!.radius;
+    dlight.minlight = blaster[0]!.light!.minlight ?? 0;
+    dlight.die = runtime.cl.time + blaster[0]!.light!.durationMs;
+    dlight.color = [...blaster[0]!.light!.color];
+    const refreshFrame = CL_BuildRefreshFrame(runtime, { predictMovement: false });
+    assert.ok(
+      refreshFrame.lights.some((light) => light.sourceEntity === 4 && light.intensity === 200 && light.kind === "dlight"),
+      "CL_ParseMuzzleFlash dlight should reach ClientRefreshFrame.lights"
+    );
+
+    const silenced = CL_BuildMuzzleFlashEffects({
+      entity: 4,
+      weapon: MZ_BLASTER | MZ_SILENCED,
+      silenced: true
+    }, runtime);
+    assert.equal(silenced[0]?.light?.radius, 100, "CL_ParseMuzzleFlash silenced radius mismatch");
+    assert.equal(silenced[1]?.sound?.volume, 0.2, "CL_ParseMuzzleFlash silenced volume mismatch");
+
+    const machinegun = CL_BuildMuzzleFlashEffects({
+      entity: 4,
+      weapon: MZ_MACHINEGUN,
+      silenced: false
+    }, runtime);
+    assert.equal(machinegun[1]?.sound?.name, "weapons/machgf1b.wav", "CL_ParseMuzzleFlash machinegun soundname mismatch");
+
+    const shotgun = CL_BuildMuzzleFlashEffects({
+      entity: 4,
+      weapon: MZ_SHOTGUN,
+      silenced: false
+    }, runtime);
+    assert.deepEqual(shotgun.slice(1).map((effect) => effect.sound), [
+      { name: "weapons/shotgf1b.wav", channel: CHAN_WEAPON, attenuation: ATTN_NORM, volume: 1 },
+      { name: "weapons/shotgr1b.wav", channel: CHAN_AUTO, attenuation: ATTN_NORM, volume: 1, delayMs: 100 }
+    ], "CL_ParseMuzzleFlash shotgun sound sequence mismatch");
+
+    const chaingun2 = CL_BuildMuzzleFlashEffects({
+      entity: 4,
+      weapon: MZ_CHAINGUN2,
+      silenced: false
+    }, runtime);
+    assert.equal(chaingun2[0]?.light?.radius, 225, "CL_ParseMuzzleFlash chaingun2 radius mismatch");
+    assert.equal(chaingun2[0]?.light?.durationMs, 100, "CL_ParseMuzzleFlash chaingun2 long die mismatch");
+    assert.deepEqual(chaingun2.slice(1).map((effect) => effect.sound?.delayMs ?? 0), [0, 50], "CL_ParseMuzzleFlash chaingun2 delays mismatch");
+
+    const login = CL_BuildMuzzleFlashEffects({
+      entity: 4,
+      weapon: MZ_LOGIN,
+      silenced: false
+    }, runtime);
+    assert.equal(login[0]?.light?.durationMs, 1000, "CL_ParseMuzzleFlash login die mismatch");
+    assert.ok(login.some((effect) => effect.kind === "logout-effect"), "CL_ParseMuzzleFlash login should append CL_LogoutEffect particles");
+    assert.equal(login.at(-1)?.sound?.volume, 1, "CL_ParseMuzzleFlash login sound ignores silenced volume");
+  });
 }
 
 function verifyDlightManagement(): void {
@@ -277,4 +372,14 @@ function collectActiveParticles(runtime: ClientRuntime): ClientRuntime["cl"]["pa
   }
 
   return particles;
+}
+
+function withMockRandom<T>(value: number, callback: () => T): T {
+  const originalRandom = Math.random;
+  Math.random = () => value;
+  try {
+    return callback();
+  } finally {
+    Math.random = originalRandom;
+  }
 }

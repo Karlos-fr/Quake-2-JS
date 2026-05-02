@@ -14,6 +14,7 @@ import { strict as assert } from "node:assert";
 
 import {
   FRAMETIME,
+  FL_GODMODE,
   ITEM_INDEX,
   SOLID_NOT,
   SOLID_TRIGGER,
@@ -42,6 +43,7 @@ import {
   trigger_push_touch,
   trigger_relay_use
 } from "../../packages/game/src/g_trigger.js";
+import { MOD_TRIGGER_HURT } from "../../packages/game/src/g_local.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
 
 verifyTriggerMultipleDirectionalTouch();
@@ -261,6 +263,10 @@ function verifyTriggerHurt(): void {
   const trigger = spawnGameEntity(runtime);
   trigger.classname = "trigger_hurt";
   SP_trigger_hurt(trigger, runtime);
+  assert.equal(trigger.dmg, 5, "trigger_hurt default damage mismatch");
+  assert.equal(trigger.solid, SOLID_TRIGGER, "trigger_hurt default solid mismatch");
+  assert.ok(trigger.linked, "trigger_hurt must relink after spawn");
+  assert.equal(runtime.assets.soundPaths[trigger.noise_index - 1], "world/electro.wav", "trigger_hurt sound index mismatch");
 
   const victim = createPlayer(runtime);
   victim.health = 100;
@@ -268,6 +274,43 @@ function verifyTriggerHurt(): void {
 
   trigger.touch?.(trigger, victim, runtime);
   assert.equal(victim.health < 100, true, "trigger_hurt must damage touching targets");
+  assert.equal(runtime.meansOfDeath, MOD_TRIGGER_HURT, "trigger_hurt damage mod mismatch");
+  assert.equal(runtime.soundEvents.at(-1)?.soundPath, "world/electro.wav", "trigger_hurt sound mismatch");
+  assert.equal(trigger.timestamp, runtime.time + FRAMETIME, "trigger_hurt FRAMETIME cadence mismatch");
+  const healthAfterFirstTouch = victim.health;
+  trigger.touch?.(trigger, victim, runtime);
+  assert.equal(victim.health, healthAfterFirstTouch, "trigger_hurt must debounce repeated touches until timestamp expires");
+
+  const slow = spawnGameEntity(runtime);
+  slow.classname = "trigger_hurt";
+  slow.spawnflags = 16;
+  SP_trigger_hurt(slow, runtime);
+  slow.touch?.(slow, victim, runtime);
+  assert.equal(slow.timestamp, runtime.time + 1, "trigger_hurt SLOW cadence mismatch");
+
+  const silent = spawnGameEntity(runtime);
+  silent.classname = "trigger_hurt";
+  silent.spawnflags = 4;
+  SP_trigger_hurt(silent, runtime);
+  const soundsBeforeSilentTouch = runtime.soundEvents.length;
+  silent.touch?.(silent, victim, runtime);
+  assert.equal(runtime.soundEvents.length, soundsBeforeSilentTouch, "trigger_hurt SILENT must suppress touch sound");
+
+  const protectedVictim = createPlayer(runtime);
+  protectedVictim.flags |= FL_GODMODE;
+  protectedVictim.health = 100;
+  const protectedTrigger = spawnGameEntity(runtime);
+  protectedTrigger.classname = "trigger_hurt";
+  SP_trigger_hurt(protectedTrigger, runtime);
+  protectedTrigger.touch?.(protectedTrigger, protectedVictim, runtime);
+  assert.equal(protectedVictim.health, 100, "trigger_hurt without NO_PROTECTION must respect godmode");
+
+  const noProtectionTrigger = spawnGameEntity(runtime);
+  noProtectionTrigger.classname = "trigger_hurt";
+  noProtectionTrigger.spawnflags = 8;
+  SP_trigger_hurt(noProtectionTrigger, runtime);
+  noProtectionTrigger.touch?.(noProtectionTrigger, protectedVictim, runtime);
+  assert.equal(protectedVictim.health < 100, true, "trigger_hurt NO_PROTECTION must bypass godmode");
 
   const toggled = spawnGameEntity(runtime);
   toggled.classname = "trigger_hurt";
@@ -276,6 +319,13 @@ function verifyTriggerHurt(): void {
   assert.equal(toggled.solid, SOLID_NOT, "trigger_hurt START_OFF mismatch");
   toggled.use?.(toggled, null, victim, runtime);
   assert.equal(toggled.solid, SOLID_TRIGGER, "trigger_hurt toggle mismatch");
+
+  const oneShotUse = spawnGameEntity(runtime);
+  oneShotUse.classname = "trigger_hurt";
+  SP_trigger_hurt(oneShotUse, runtime);
+  oneShotUse.use = toggled.use;
+  oneShotUse.use?.(oneShotUse, null, victim, runtime);
+  assert.equal(oneShotUse.use, undefined, "hurt_use must clear use when TOGGLE is absent");
 }
 
 function verifyTriggerGravity(): void {

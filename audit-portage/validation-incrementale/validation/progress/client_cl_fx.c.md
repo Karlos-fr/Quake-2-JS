@@ -1,7 +1,7 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot valide: `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; variables locales generees `i` marquees non applicables.
+- Dernier lot valide: `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; variables locales generees `i` marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -9,6 +9,8 @@
   - `npm run verify:local-gameplay-sync`
   - `npm run verify:dlight-sync`
   - `npm run verify:web-render-order`
+  - `npm run verify:cl-parse`
+  - `npx tsx ./scripts/verify/quake2-full-game-three-renderer.ts`
   - `npm run typecheck`
 - Decisions:
   - `CL_LogoutEffect` et `CL_ItemRespawnParticles` restent proprietaires de `packages/client/src/cl_fx.ts`.
@@ -20,5 +22,9 @@
   - `apps/web` consomme les dlights via `full-game-render-loop.ts` avec `dlightSync.apply(source.refreshFrame)`; `verify:web-render-order` couvre que ce flux ne masque pas une logique parallele.
   - `renderer-three` consomme les dlights via `createThreeDlightSync` -> `R_RenderDlights`; `verify:dlight-sync` couvre la projection Three.js flashblend/PointLight.
   - `CL_AddDLights` conserve les couleurs signees du chemin GL/ref_gl; la mutation negative-light du rendu software C n'est pas appliquee dans ce port renderer-three.
+  - `CL_ParseMuzzleFlash` lit `svc_muzzleflash` dans `CL_ParseServerMessage`, conserve l'entite et le byte arme original avec `MZ_SILENCED`, puis delegue les effets a `CL_BuildMuzzleFlashEffects`.
+  - Les temporaires C `silenced`, `volume` et `soundname` sont portes sous forme structuree: `ClientMuzzleFlashPacket.silenced`, `volume` dans le builder, et noms de sons fixes/aleatoires dans les definitions de muzzle flash.
+  - Les dlights de muzzle flash sont attendus dans le runtime navigateur: `apps/web/src/full-game.ts` applique `CL_AllocDlight`, puis `CL_BuildRefreshFrame` expose `ClientRefreshFrame.lights`; `packages/renderer-three` les consomme via le flux dlight deja valide.
+  - Les sons de muzzle flash sont attendus dans `apps/web`: `startAuthoritativeEffectSounds` les route vers `S_DMA_StartSound`; `renderer-three` n'a pas de consommation sonore directe attendue.
 - Blocages: aucun.
-- Prochain lot recommande: `CL_ParseMuzzleFlash` avec ses temporaires `silenced`, `volume`, `soundname` si le lot reste raisonnable; sinon limiter au branchement dlight/sound du premier sous-ensemble de muzzle flashes.
+- Prochain lot recommande: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`, en limitant au premier sous-ensemble monster muzzle flashes si le lot devient trop large.

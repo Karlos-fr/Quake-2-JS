@@ -15,6 +15,7 @@
 - 2026-05-02: table `spawns`/ownership uniquement.
 - 2026-05-02: deplacement ownership `SpawnEntities` de `g_main.ts` vers `g_spawn.ts`; verdict provisoire `Non conforme` pour le bug city1.
 - 2026-05-02: `SpawnEntities` valide apres correction allocation sequentielle `G_Spawn` et repro city1.
+- 2026-05-02: `ED_CallSpawn`, limite au chemin itemlist/table/warning et au branchement depuis `SpawnEntities`; temporaires locaux `item`/`i` marques non applicables.
 
 ## Verdict du lot
 
@@ -49,6 +50,9 @@
 - `spawns`: valide pour le lot table/ownership. La table TS conserve les 108 couples classname/callback de `game/g_spawn.c`, sans traiter les callbacks externes comme entites proprietaires de `g_spawn.c`. Correction appliquee: ajout de l'alias original `func_group -> SP_info_null`, retrait de l'entree TS extra `monster_makron -> SP_monster_makron` absente de la table source de ce fichier. Les deux lignes declaratives dupliquees `spawns` ont ete retirees de la matrice pour ne garder qu'une entite table proprietaire.
 
 - `SpawnEntities`: valide. La cible proprietaire est `packages/game/src/g_spawn.ts` avec branchement `GetGameApi.SpawnEntities` conserve depuis `g_main.ts`. Le port ne preconstruit plus toute la lump BSP: il initialise seulement worldspawn et les slots clients, puis alloue chaque entite map via `G_Spawn`, charge les proprietes parsees dans l'edict obtenu, applique le hack `command`/spawnflags, appelle `ED_CallSpawn`, puis `G_FindTeams`, `InitBodyQue` et `PlayerTrail_Init`. La repro city1 confirme 1091 entites BSP -> 528 edicts runtime pour `maxentities=1024`, sans entite visible hors plage baseline.
+- `ED_CallSpawn`: valide pour le lot itemlist/table/warning et branchement `SpawnEntities`. Le C verifie `!classname`, parcourt `itemlist` avant `spawns[]` avec `strcmp`, appelle `SpawnItem` ou le callback de table, puis emet le warning inconnu. La cible conserve ces branches; correction appliquee pendant la session pour que le chemin `itemlist` utilise une comparaison exacte sensible a la casse au lieu de `FindItemByClassname` insensible a la casse. `SpawnEntities` appelle `ED_CallSpawn` pour worldspawn puis pour chaque entite map non inhibee. Les sorties visibles possibles dependent du spawner appele: items MD2 via `SpawnItem`/`droptofloor`, brush models via callbacks `spawns[]`, lightstyles/temp entities/camera selon callback proprietaire.
+- `item`: non applicable. La ligne de matrice correspond au pointeur local `gitem_t *item` de `ED_CallSpawn`, pas a une entite source proprietaire exportee; son comportement est couvert par la validation du chemin `itemlist` de `ED_CallSpawn`.
+- `i`: non applicable pour ce lot. La ligne de matrice adjacente correspond au compteur local `int i` de `ED_CallSpawn`, pas a une entite source proprietaire exportee; son comportement est couvert par la validation du chemin `itemlist` de `ED_CallSpawn`.
 
 ## Checklist appliquee
 
@@ -125,6 +129,12 @@
 - Runtime: valide. Le flux attendu est `SV_SpawnServer` -> `ge.SpawnEntities` -> `SV_CreateBaseline` -> snapshots; la repro city1 prouve que `SpawnEntities` ne produit plus d'edicts visibles au-dela de `MAX_EDICTS`, ce qui etait la cause du `sv.baselines[newnum]` undefined.
 - apps/web: valide. `full-game-server-host` passe par le runtime serveur porte et ne masque pas le bug; `verify:full-game:server-host` passe apres correction.
 - renderer-three: valide indirectement. `SpawnEntities` produit des entites visibles, modeles inline, monstres et etats camera/scene uniquement via snapshots/configstrings; le manque etait en amont serveur/baselines, pas dans `renderer-three`. `verify:full-game:three-renderer` et `verify:web-render-order` passent apres correction.
+- Identification: lot `ED_CallSpawn` dans matrice `game_g_spawn.c.md`, source `Quake-2-master/game/g_spawn.c`, cible proprietaire `packages/game/src/g_spawn.ts`, nom cible `ED_CallSpawn`; les lignes adjacentes `item` et `i` sont les temporaires locaux du chemin `itemlist`.
+- Comparaison C/H vs TS: entrees `edict_t *ent` vs `GameEntity, GameRuntime`, sortie void, warning classname nul, parcours `itemlist` avant `spawns[]`, appel `SpawnItem`, appel callback de table et warning classname inconnu verifies. Ecart corrige: le chemin TS `itemlist` utilisait `FindItemByClassname` insensible a la casse, alors que `ED_CallSpawn` C utilise `strcmp`.
+- Commentaires d'en-tete: le commentaire `ED_CallSpawn` existe avec `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior`; la note de portage a ete mise a jour pour documenter la comparaison `strcmp` sensible a la casse.
+- Runtime: valide. `SV_SpawnServer` appelle `ge.SpawnEntities`; `SpawnEntities` appelle `ED_CallSpawn` pour worldspawn puis pour chaque entite map non inhibee. Les appels directs depuis `target_spawner`, `medic_finish_spawn` et les harness restent compatibles.
+- apps/web: valide indirectement. Le navigateur doit declencher ce flux via le runtime porte ou consommer ses sorties; le host full-game passe par `SV_SpawnServer`/`SpawnEntities`, et les sources render web lisent les snapshots/configstrings produits plutot qu'une table de spawn parallele.
+- renderer-three: valide indirectement. `ED_CallSpawn` ne rend rien directement, mais peut declencher des spawners produisant modeles MD2, brush models, lightstyles, temp entities, areabits ou camera selon callback proprietaire. Les items visibles du chemin `itemlist` passent par `SpawnItem`/`droptofloor`, snapshots/configstrings, `ClientRefreshFrame.entities`, puis `refresh-entity-sync`; les brush models passent par les snapshots `BrushModelSnapshot`.
 
 ## Corrections appliquees
 
@@ -143,6 +153,8 @@
 - `packages/game/src/g_spawn.ts`: deplacement de `SpawnEntities` et de ses helpers directs depuis `g_main.ts` vers le fichier proprietaire `g_spawn.ts`; `packages/game/src/index.ts`, `scripts/verify/quake2-g-main.ts` et `scripts/verify/quake2-g-spawn.ts` importent maintenant `SpawnEntities` depuis `g_spawn.ts`.
 - `packages/game/src/g_spawn.ts`: correction de `SpawnEntities` pour construire seulement worldspawn/clients puis allouer les entites map via `G_Spawn`, en reutilisant les edicts liberes par les spawners comme dans le C.
 - `scripts/verify/quake2-g-spawn.ts`: ajout d'une preuve anti-regression avec 1100 lights liberees avant une porte visible tardive; la porte reste dans la plage `MAX_EDICTS`.
+- `packages/game/src/g_spawn.ts`: correction du chemin `ED_CallSpawn` itemlist pour iterer `GetGameItems()` et comparer `item.classname === ent.classname`, comme le `strcmp` du C.
+- `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour le dispatch itemlist avant `spawns[]`, l'appel `SpawnItem` et la chute en warning d'un classname item en casse differente.
 
 ## Tests
 
@@ -212,7 +224,13 @@
 - `npm run verify:web-render-order`: ok le 2026-05-02 apres correction allocation sequentielle `SpawnEntities`.
 - `npm run typecheck`: ok le 2026-05-02 apres correction allocation sequentielle `SpawnEntities`.
 - Script inline city1: ok le 2026-05-02, `1091` entites BSP, `528` edicts runtime, `0` entite visible hors `MAX_EDICTS`.
+- `npm run verify:g-spawn`: ok le 2026-05-02 pour `ED_CallSpawn` itemlist/table/warning.
+- `npm run verify:g-items`: ok le 2026-05-02 apres correction `ED_CallSpawn`.
+- `npm run typecheck`: ok le 2026-05-02 apres correction `ED_CallSpawn`.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02 apres correction `ED_CallSpawn`.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02 apres correction `ED_CallSpawn`.
+- `npm run verify:web-render-order`: ok le 2026-05-02 apres correction `ED_CallSpawn`.
 
 ## Prochain lot recommande
 
-- Reprendre `ED_CallSpawn`, limite au chemin itemlist/table/warning et au branchement depuis `SpawnEntities`.
+- Continuer avec `ED_NewString`, puis `ED_ParseField` si le lot reste petit.

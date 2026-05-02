@@ -518,6 +518,20 @@ function snapshotGame(context: GameMainContext) {
   };
 }
 
+/**
+ * Original name: WriteLevelLocals
+ * Source: game/g_save.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Snapshots `level_locals_t`, preserving scalar/vector state and encoding the
+ *   original `levelfields` pointers as stable string payloads or edict indexes.
+ *
+ * Porting notes:
+ * - Replaces the C temporary block plus `field_t` write passes with one
+ *   structured JSON object; `restoreLevel` performs the matching edict lookups.
+ */
 function snapshotLevel(context: GameMainContext) {
   return {
     framenum: context.level.framenum,

@@ -668,6 +668,14 @@ export function SP_target_crosslevel_trigger(self: GameEntity, _runtime: GameRun
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Checks whether every requested cross-level trigger bit is present in the persistent serverflags.
+ * - When all requested bits match, fires this entity's targets with itself as activator, then frees it.
+ *
+ * Porting notes:
+ * - Uses `runtime.serverflags` for the original `game.serverflags` field, masked by
+ *   `SFL_CROSS_TRIGGER_MASK` exactly like the C condition.
  */
 export function target_crosslevel_target_think(self: GameEntity, runtime: GameRuntime): void {
   if (self.spawnflags === (runtime.serverflags & SFL_CROSS_TRIGGER_MASK & self.spawnflags)) {
@@ -681,6 +689,10 @@ export function target_crosslevel_target_think(self: GameEntity, runtime: GameRu
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defaults `delay` to 1 second, hides the controller from clients, and schedules
+ *   `target_crosslevel_target_think` at `level.time + delay`.
  */
 export function SP_target_crosslevel_target(self: GameEntity, runtime: GameRuntime): void {
   if (!self.delay) {

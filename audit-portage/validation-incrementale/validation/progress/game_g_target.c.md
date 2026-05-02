@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-02: `target_crosslevel_target_think` et `SP_target_crosslevel_target`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `target_crosslevel_target_think` conserve la condition exacte `spawnflags == (serverflags & SFL_CROSS_TRIGGER_MASK & spawnflags)`, puis `G_UseTargets(self, self)` et `G_FreeEdict(self)` quand tous les bits requis sont presents. `SP_target_crosslevel_target` conserve le default `delay = 1`, `SVF_NOCLIENT`, l'installation du think et `nextthink = level.time + delay`.
+  - Commentaires d'en-tete completes pour les deux fonctions: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et note de portage sur `runtime.serverflags`.
+  - Branchement runtime verifie: `target_crosslevel_target` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; son think est execute par les pending thinks/G_RunFrame apres spawn, et `ReadLevel` rearme `nextthink` pour les entites sauvegardees. Le test couvre le cas tous bits presents, le delai par defaut de `G_UseTargets`, l'activator `self`, le free single-use, et le cas bits incomplets sans `DelayedUse`.
+  - `apps/web`: integration attendue seulement indirectement via le runtime full-game, la sauvegarde/restauration de `serverflags` et les transitions de niveau. Aucune logique parallele masquante constatee dans `apps/web`; pas de sortie navigateur directe de type HUD, audio, input, temp entity ou snapshot visible pour cette entite no-client.
+  - `renderer-three`: non applicable justifie pour ce lot, car `target_crosslevel_target` est `SVF_NOCLIENT` et ne produit ni modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene. Le renderer ne doit rien consommer directement; `verify:full-game:three-renderer` reste OK.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour `target_crosslevel_target_think` et `SP_target_crosslevel_target`.
+  - `scripts/verify/quake2-g-target.ts`: couverture renforcee pour `ED_CallSpawn`, callback think installe, `SVF_NOCLIENT`, default delay, activation retardee des targets avec activator `self`, free single-use et non-match multi-bit.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:g-save` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `target_laser_think` avec les locaux `ignore`, `tr` et `count` associes si le lot reste raisonnable; sinon limiter au premier sous-ensemble du trace/damage laser.
+
 - 2026-05-02: `trigger_crosslevel_trigger_use` et `SP_target_crosslevel_trigger`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `trigger_crosslevel_trigger_use` conserve le OR de `self->spawnflags` dans `game.serverflags`, mappe sur `runtime.serverflags`, puis `G_FreeEdict(self)`. `SP_target_crosslevel_trigger` conserve `SVF_NOCLIENT` et l'installation du callback `trigger_crosslevel_trigger_use`.

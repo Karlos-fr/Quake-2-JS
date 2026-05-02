@@ -15,9 +15,9 @@
 | `Quake-2-master/game/g_spawn.c` | function | `SP_worldspawn` | `packages/game/src/g_spawn.ts` | `SP_worldspawn` | Valide | A redecouper | Correction lightstyles standards `CS_LIGHTS`; tests `verify:g-spawn`, `verify:local-gameplay-sync`, `verify:full-game:three-renderer`, `verify:full-game:server-host`, `typecheck`. |
 | `Quake-2-master/game/g_spawn.c` | function | `SP_func_clock` | `packages/game/src/g_misc.ts` | `SP_func_clock` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | table | `spawns` | `packages/game/src/g_spawn.ts` | `spawns` | Valide | A redecouper | Correction table: ajout alias `func_group`, retrait de l'entree TS extra `monster_makron`; commentaire d'en-tete ajoute; tests `verify:g-spawn`, `typecheck`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`. |
-| `Quake-2-master/game/g_spawn.c` | function | `ED_CallSpawn` | `packages/game/src/g_spawn.ts` | `ED_CallSpawn` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `item` | `packages/game/src/g_spawn.ts` | `item` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `i` | `packages/game/src/g_spawn.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | function | `ED_CallSpawn` | `packages/game/src/g_spawn.ts` | `ED_CallSpawn` | Valide | A redecouper | Correction itemlist `strcmp` sensible a la casse; tests `verify:g-spawn`, `verify:g-items`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`, `typecheck`. |
+| `Quake-2-master/game/g_spawn.c` | global | `item` | `packages/game/src/g_spawn.ts` | `item` | Non applicable | A redecouper | Temporaire local de `ED_CallSpawn`, couvert par la validation de `ED_CallSpawn`. |
+| `Quake-2-master/game/g_spawn.c` | global | `i` | `packages/game/src/g_spawn.ts` | `i` | Non applicable | A redecouper | Temporaire local de `ED_CallSpawn`, couvert par la validation de `ED_CallSpawn`. |
 | `Quake-2-master/game/g_spawn.c` | function | `ED_NewString` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `ED_ParseField` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | global | `b` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |

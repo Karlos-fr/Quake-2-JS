@@ -18,6 +18,7 @@ import { join } from "node:path";
 import {
   CL_ParseConfigString,
   CL_ParseDownload,
+  CL_ParseMuzzleFlash,
   CL_ParseServerData,
   CL_ParseStartSoundPacket,
   CL_ParseServerMessage,
@@ -36,6 +37,8 @@ import {
   MSG_WritePos,
   MSG_WriteShort,
   MSG_WriteString,
+  MZ_BLASTER,
+  MZ_SILENCED,
   PRINT_CHAT,
   SND_ATTENUATION,
   SND_ENT,
@@ -84,6 +87,29 @@ assert.equal(runtime.cl.attractloop, true, "CL_ParseServerData attractloop misma
 assert.equal(runtime.cl.gamedir, "baseq2", "CL_ParseServerData gamedir mismatch");
 assert.equal(runtime.cl.playernum, 3, "CL_ParseServerData playernum mismatch");
 assert.equal(runtime.cl.refresh_prepped, false, "CL_ParseServerData should clear refresh_prepped for level loads");
+
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, 7);
+MSG_WriteByte(runtime.net_message, MZ_BLASTER | MZ_SILENCED);
+runtime.net_message.readcount = 0;
+let parsedMuzzleFlash: unknown = null;
+const muzzleFlashPacket = CL_ParseMuzzleFlash(runtime, {
+  onMuzzleFlash: (packet) => {
+    parsedMuzzleFlash = packet;
+  }
+});
+assert.deepEqual(muzzleFlashPacket, {
+  entity: 7,
+  weapon: MZ_BLASTER | MZ_SILENCED,
+  silenced: true
+}, "CL_ParseMuzzleFlash packet mismatch");
+assert.deepEqual(parsedMuzzleFlash, muzzleFlashPacket, "CL_ParseMuzzleFlash hook mismatch");
+
+resetIncoming(runtime);
+MSG_WriteShort(runtime.net_message, 0);
+MSG_WriteByte(runtime.net_message, MZ_BLASTER);
+runtime.net_message.readcount = 0;
+assert.throws(() => CL_ParseMuzzleFlash(runtime), /bad entity 0/, "CL_ParseMuzzleFlash bad entity guard mismatch");
 
 resetIncoming(runtime);
 let cinematicName = "";

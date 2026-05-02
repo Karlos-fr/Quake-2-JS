@@ -21,7 +21,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { fire_blaster, fire_bullet, fire_hit } from "../../packages/game/src/g_weapon.js";
+import { fire_blaster, fire_bullet, fire_hit, fire_shotgun } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_WATER } from "../../packages/qcommon/src/q_shared.js";
 
@@ -36,8 +36,9 @@ function main(): void {
   verifyFireHitBlocksOnNonDamageableTrace();
   verifyFireLeadBulletImpactAndDamage();
   verifyFireLeadWaterSplashAndBubbleTrail();
+  verifyFireShotgunWrapperPelletCount();
 
-  console.log("Verification g_weapon - check_dodge, fire_hit and fire_lead lots OK");
+  console.log("Verification g_weapon - check_dodge, fire_hit, fire_lead, fire_bullet and fire_shotgun lots OK");
 }
 
 function verifyCheckDodgeRuntimeBranch(): void {
@@ -366,6 +367,41 @@ function verifyFireLeadWaterSplashAndBubbleTrail(): void {
   assert.equal(tempEvents[1]?.type, temp_event_t.TE_BUBBLETRAIL, "fire_lead must emit a bubble trail after passing through water");
   assert.deepEqual(tempEvents[1]?.payload.start, [64, 0, 0], "fire_lead bubble trail start mismatch");
   assert.deepEqual(tempEvents[1]?.payload.end, [198, 0, 0], "fire_lead bubble trail end must be backed up two units in water");
+}
+
+function verifyFireShotgunWrapperPelletCount(): void {
+  const runtime = createHarnessRuntime();
+  const shooter = createPlayer(runtime, 1);
+  const wall = createRuntimeEntity({ classname: "wall" }, 2);
+  runtime.entities[2] = wall;
+
+  const traces: Array<{ start: vec3_t; end: vec3_t; passent: GameEntity | null; mask: number }> = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (start, _mins, _maxs, end, passent, mask) => {
+      traces.push({ start: [...start], end: [...end], passent: passent as GameEntity | null, mask });
+      if ((traces.length % 2) === 1) {
+        return makeTrace(1, end, null);
+      }
+      return makeTrace(0.25, [64, 0, 0], wall, { name: "stone", flags: 0 });
+    },
+    pointcontents: () => 0
+  };
+
+  const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  withMathRandom([0.5, 0.5, 0.5, 0.5, 0.5, 0.5], () => {
+    fire_shotgun(shooter, [0, 0, 0], [1, 0, 0], 4, 8, 500, 500, 3, 7, runtime, {
+      emitTempEntity: (type, payload) => {
+        tempEvents.push({ type, payload });
+      },
+      isDamageable: () => false
+    });
+  });
+
+  assert.equal(tempEvents.length, 3, "fire_shotgun must call fire_lead once per pellet");
+  assert.equal(traces.length, 6, "fire_shotgun must run the fire_lead trace pair for each pellet");
+  assert.ok(tempEvents.every((event) => event.type === temp_event_t.TE_SHOTGUN), "fire_shotgun must use TE_SHOTGUN impacts");
+  assert.deepEqual(tempEvents[0]?.payload.origin, [64, 0, 0], "fire_shotgun impact origin must come from fire_lead");
 }
 
 function createHarnessRuntime(): GameRuntime {

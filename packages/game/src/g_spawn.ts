@@ -55,7 +55,7 @@ import {
 } from "./g_func.js";
 import {
   FindItem,
-  FindItemByClassname,
+  GetGameItems,
   PrecacheItem,
   SetItemNames,
   SP_item_health,
@@ -544,7 +544,7 @@ export function SP_worldspawn(ent: GameEntity, _runtime: GameRuntime): void {
  * - Finds the registered spawn function for one entity classname and calls it.
  *
  * Porting notes:
- * - Item classnames are checked before this table, matching the original `itemlist` path.
+ * - Item classnames are checked before this table with the original case-sensitive `strcmp` semantics.
  */
 export function ED_CallSpawn(ent: GameEntity, runtime: GameRuntime): void {
   if (!ent.classname) {
@@ -556,10 +556,14 @@ export function ED_CallSpawn(ent: GameEntity, runtime: GameRuntime): void {
     return;
   }
 
-  const item = FindItemByClassname(ent.classname);
-  if (item) {
-    SpawnItem(ent, item, runtime);
-    return;
+  for (const item of GetGameItems()) {
+    if (!item.classname) {
+      continue;
+    }
+    if (item.classname === ent.classname) {
+      SpawnItem(ent, item, runtime);
+      return;
+    }
   }
 
   for (const entry of spawns) {

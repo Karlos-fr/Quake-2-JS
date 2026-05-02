@@ -609,6 +609,10 @@ assert.deepEqual(targetSave.angles, [0, 45, 0], "WriteEdict temp adapter must pr
 assert.deepEqual(targetSave.move_origin, [7, 8, 9], "WriteEdict temp adapter must preserve move_origin vector");
 assert.deepEqual(targetSave.move_angles, [10, 20, 30], "WriteEdict temp adapter must preserve move_angles vector");
 assert.equal(levelSave.level.changemap, writeContext.level.changemap, "WriteField2 p adapter must read the level F_LSTRING from the original level field");
+assert.equal(typeof levelSave.level.changemap, "string", "WriteLevelLocals field adapter must persist changemap as a string payload, not a numeric length");
+assert.equal(writeContext.level.changemap, "unit3", "WriteLevelLocals structured adapter must not mutate the original level changemap into a length");
+assert.deepEqual(writeContext.level.intermission_origin, [320, -128, 48], "WriteLevelLocals temp adapter must not mutate the original level vector fields");
+assert.deepEqual(levelSave.level.intermission_origin, [320, -128, 48], "WriteLevelLocals temp adapter must preserve level vector fields");
 assert.equal(targetSave.target, target.target, "WriteField2 p adapter must read the entity F_LSTRING from the original entity field");
 assert.equal(target.message, "Saved string payload", "WriteField2 structured adapter must not mutate the original entity string into a length");
 assert.deepEqual(target.origin, [64, -32, 16], "WriteEdict structured adapter must not mutate the original entity vector fields");
