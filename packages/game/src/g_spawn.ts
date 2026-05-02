@@ -9,8 +9,7 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - Only the currently ported classnames are registered in the spawn table.
- * - Unsupported classnames are ignored quietly by the local runtime instead of printing through `gi.dprintf`.
+ * - Spawn callbacks remain owned by their source modules; this registry only mirrors `game/g_spawn.c` dispatch.
  *
  * Notes:
  * - This file is intended to stay close to the original spawn and team-linking flow.
@@ -72,7 +71,6 @@ import { SP_monster_berserk } from "./m_berserk.js";
 import { SP_monster_boss2 } from "./m_boss2.js";
 import { SP_monster_boss3_stand } from "./m_boss3.js";
 import { SP_monster_jorg } from "./m_boss31.js";
-import { SP_monster_makron } from "./m_boss32.js";
 import { SP_monster_brain } from "./m_brain.js";
 import { SP_monster_chick } from "./m_chick.js";
 import { SP_monster_flipper } from "./m_flipper.js";
@@ -264,6 +262,18 @@ export const dm_statusbar =
   + "stat_string 16 "
   + "endif ";
 
+/**
+ * Original name: spawns
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Lists the original classname-to-spawn-function dispatch table used by `ED_CallSpawn`.
+ *
+ * Porting notes:
+ * - Callback functions are imported from their owning TS modules; this table does not claim ownership of them.
+ */
 export const spawns: SpawnEntry[] = [
   { name: "worldspawn", spawn: SP_worldspawn },
   { name: "info_player_start", spawn: SP_info_player_start },
@@ -314,6 +324,7 @@ export const spawns: SpawnEntry[] = [
   { name: "target_actor", spawn: SP_target_actor },
   { name: "viewthing", spawn: SP_viewthing },
   { name: "info_null", spawn: SP_info_null },
+  { name: "func_group", spawn: SP_info_null },
   { name: "info_notnull", spawn: SP_info_notnull },
   { name: "trigger_once", spawn: SP_trigger_once },
   { name: "trigger_multiple", spawn: SP_trigger_multiple },
@@ -341,7 +352,6 @@ export const spawns: SpawnEntry[] = [
   { name: "monster_boss2", spawn: SP_monster_boss2 },
   { name: "monster_boss3_stand", spawn: SP_monster_boss3_stand },
   { name: "monster_jorg", spawn: SP_monster_jorg },
-  { name: "monster_makron", spawn: SP_monster_makron },
   { name: "monster_brain", spawn: SP_monster_brain },
   { name: "monster_chick", spawn: SP_monster_chick },
   { name: "monster_flipper", spawn: SP_monster_flipper },
@@ -404,7 +414,7 @@ export function SP_worldspawn(ent: GameEntity, _runtime: GameRuntime): void {
  * - Finds the registered spawn function for one entity classname and calls it.
  *
  * Porting notes:
- * - The current port only registers the subset already needed by the door/plat plan.
+ * - Item classnames are checked before this table, matching the original `itemlist` path.
  */
 export function ED_CallSpawn(ent: GameEntity, runtime: GameRuntime): void {
   if (!ent.classname) {

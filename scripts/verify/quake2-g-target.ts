@@ -544,7 +544,10 @@ function verifyCrosslevelTargets(): void {
   const trigger = spawnGameEntity(runtime);
   trigger.classname = "target_crosslevel_trigger";
   trigger.spawnflags = SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3;
-  SP_target_crosslevel_trigger(trigger, runtime);
+  ED_CallSpawn(trigger, runtime);
+  assert.equal(trigger.use, trigger_crosslevel_trigger_use, "target_crosslevel_trigger spawn table must install trigger_crosslevel_trigger_use");
+  assert.equal(trigger.svflags, SVF_NOCLIENT, "target_crosslevel_trigger must be hidden from clients");
+  runtime.serverflags = SFL_CROSS_TRIGGER_1;
   trigger_crosslevel_trigger_use(trigger, null, null, runtime);
   assert.equal(runtime.serverflags & (SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3), SFL_CROSS_TRIGGER_1 | SFL_CROSS_TRIGGER_3, "crosslevel trigger serverflags mismatch");
   assert.equal(trigger.inuse, false, "crosslevel trigger must free itself");

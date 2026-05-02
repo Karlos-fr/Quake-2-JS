@@ -2,6 +2,42 @@
 
 ## Dernier lot traite
 
+- 2026-05-02: fonction `WriteEdict` et temporaires locaux auto-detectes `field`, `temp`.
+
+## Verdict du lot
+
+- `WriteEdict`: valide. Dans le C, la fonction copie l'edict dans `temp`, passe tous les `fields` par `WriteField1`, ecrit le bloc `edict_t`, puis repasse les `fields` sur l'edict original avec `WriteField2` pour ecrire les payloads alloues.
+- Dans le port TS, le format binaire est remplace par `snapshotEntity`: l'edict est capture dans un payload JSON structure, les scalaires/vecteurs restent des valeurs directes, les pointeurs edict/item deviennent des index, les callbacks et `monsterinfo.currentmove`/`moveinfo.endfunc` deviennent des noms stables, et les chaines `F_LSTRING` restent des chaines JSON.
+- `field`: valide. Le pointeur d'iteration C sur `fields` est porte par les encodeurs explicites de `snapshotEntity`; le harness couvre les chaines, scalaires/vecteurs, references edict/item, callbacks, mmove, et verifie que seuls les edicts `inuse` sont ecrits par le chemin `WriteLevel`.
+- `temp`: valide. La copie locale C est portee par un snapshot structure sans mutation de l'entite source; le harness verifie que les chaines et vecteurs originaux ne sont pas transformes par l'ecriture.
+- Commentaires d'en-tete: commentaire ajoute sur `snapshotEntity` avec `Original name: WriteEdict`, source, categorie, niveau de fidelite, comportement et notes de portage.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. Le role de `WriteEdict` est atteint par `WriteLevel`, expose via `packages/game/src/g_main.ts` dans l'API game puis appele par `SV_WriteLevelFile` dans `packages/server/src/sv_ccmds.ts`.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` connecte `ge.WriteLevel` au stockage `web-save-storage`; aucune logique web parallele ne remplace la serialization d'edicts.
+- renderer-three: non applicable directement. `WriteEdict`, `field` et `temp` ne produisent pas directement modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene; les entites sauvegardees/restaurees alimentent ensuite les snapshots visibles.
+
+## Corrections appliquees
+
+- `packages/game/src/g_save.ts`: ajout du commentaire d'en-tete de `snapshotEntity`.
+- `scripts/verify/quake2-g-save.ts`: ajout de preuves pour conservation de scalaires/vecteurs, absence de mutation de l'entite source et exclusion des edicts non `inuse`.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `WriteEdict`, `field`, `temp`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: compteur `Validees` et prochain lot mis a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:web-save-storage`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
+
+## Prochain lot recommande
+
+- Continuer avec `WriteLevelLocals`, puis ses temporaires locaux `field` et `temp` si le lot reste coherent.
+
+---
+
 - 2026-05-02: fonction `ReadGame` et temporaires locaux auto-detectes `i`, `str`.
 
 ## Verdict du lot

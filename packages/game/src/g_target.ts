@@ -636,6 +636,13 @@ export function SP_target_blaster(self: GameEntity, runtime: GameRuntime): void 
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - ORs this cross-level trigger's spawnflag bits into the persistent game serverflags, then frees
+ *   the single-use trigger entity.
+ *
+ * Porting notes:
+ * - Uses `runtime.serverflags` for the original `game.serverflags` field persisted by the save layer.
  */
 export function trigger_crosslevel_trigger_use(self: GameEntity, _other: GameEntity | null, _activator: GameEntity | null, runtime: GameRuntime): void {
   runtime.serverflags |= self.spawnflags;
@@ -647,6 +654,9 @@ export function trigger_crosslevel_trigger_use(self: GameEntity, _other: GameEnt
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Hides the controller entity from client snapshots and installs `trigger_crosslevel_trigger_use`.
  */
 export function SP_target_crosslevel_trigger(self: GameEntity, _runtime: GameRuntime): void {
   self.svflags = SVF_NOCLIENT;

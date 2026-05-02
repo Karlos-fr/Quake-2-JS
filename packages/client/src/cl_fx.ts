@@ -530,11 +530,17 @@ export function CL_RunDLights(runtime: ClientRuntime): void {
 }
 
 /**
- * Category: New
- * Purpose: Emit active client dynamic lights in refresh-facing form.
+ * Original name: CL_AddDLights
+ * Source: client/cl_fx.c
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must preserve signed Quake II colors and minimum-light metadata.
+ * Behavior:
+ * - Emits every active client dynamic light in refresh-facing form.
+ *
+ * Porting notes:
+ * - Preserves signed Quake II colors for the GL-style renderer path instead of mutating software negative lights.
+ * - Returns structured data instead of calling `V_AddLight`.
  */
 export function CL_AddDLights(runtime: ClientRuntime): ClientDynamicLight[] {
   return runtime.cl.dlights

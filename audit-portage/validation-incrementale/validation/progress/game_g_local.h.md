@@ -998,6 +998,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `attack_state`, `lefty`, `idle_time` passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-02: lot `monsterinfo_t` avec champs `linkcount`, `power_armor_type`, `power_armor_power`.
+- Verdict: `Valide` pour les 3 champs apres comparaison H/TS, renforcement des preuves structure/defaults/mutations, monster relink/save et power armor runtime.
+- Source H comparee: apres `idle_time`, `monsterinfo_t` porte `int linkcount`, puis `int power_armor_type` et `int power_armor_power`; `monster_think` utilise `linkcount` pour detecter un relink et relancer `M_CheckGround`, tandis que `CheckPowerArmor` et `M_SetEffects` utilisent les champs power armor des monstres.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: alias public `monsterinfo_t` vers `GameMonsterInfo`.
+  - `packages/game/src/runtime.ts`: `GameMonsterInfo` porte `linkcount`, `power_armor_type`, `power_armor_power` dans l'ordre C; `createMonsterInfo` les initialise a `0`; commentaire de portage `monsterinfo_t` verifie.
+  - `packages/game/src/g_monster.ts`: `monster_think` compare `self.linkcount` a `self.monsterinfo.linkcount`, synchronise le champ et appelle `M_CheckGround`; `M_SetEffects` consomme `power_armor_type` pour produire `EF_POWERSCREEN` ou shell verte quand `powerarmor_time` est actif.
+  - `packages/game/src/g_combat.ts`: `CheckPowerArmor` lit `monsterinfo.power_armor_type`/`power_armor_power` pour les monstres, calcule l'absorption originale et decremente `power_armor_power`.
+  - `packages/game/src/g_save.ts`: `snapshotEntity`/`restoreEntity` conservent les trois champs du bloc `monsterinfo`.
+- Runtime: integration attendue et branchee depuis les spawns monstres vers `monster_start`/`monster_start_go`, puis `monster_think` depuis `G_RunFrame`; les preuves couvrent relink -> `M_CheckGround`, persistance save/load, consommation power armor dans `CheckPowerArmor`, effets visibles `M_SetEffects`, et un monstre concret `m_brain` pour l'initialisation power screen.
+- apps/web: integration attendue via le host local/full-game qui avance le runtime game et consomme snapshots/sons/HUD issus des monstres; aucune logique parallele `monsterinfo_t.linkcount`/power armor detectee dans `apps/web`. Test web OK.
+- renderer-three: integration indirecte attendue pour `power_armor_type` parce que `M_SetEffects` produit `EF_POWERSCREEN`, `EF_COLOR_SHELL` et `RF_SHELL_GREEN`, sorties visibles consommees via snapshots/renderer; `linkcount` ne produit rien de visible directement mais peut changer grounding/position avant snapshot. Test renderer OK.
+- Commentaires/documentation: commentaire de portage `monsterinfo_t` verifie dans `runtime.ts`; commentaires d'en-tete de `monster_think`, `M_CheckGround`, `M_SetEffects` et `CheckPowerArmor` verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defaults/mutations pour `linkcount`, `power_armor_type`, `power_armor_power`.
+  - `scripts/verify/quake2-g-save.ts`: assertions persistance/restauration save/load pour les trois champs.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `linkcount`, `power_armor_type`, `power_armor_power` passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-monster` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -1031,9 +1050,9 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `monsterinfo_t.linkcount`, puis `power_armor_type` et `power_armor_power` si le lot reste petit, avec preuves monster link/save et power armor runtime.
+- Continuer avec `sm_meat_index` et `snd_fry`, puis `jacket_armor_index` et `combat_armor_index` si le lot reste petit, avec preuves d'initialisation precache/items et consommation runtime.
 
 ## Blocages
 
-- `npx tsx ./scripts/verify/quake2-g-combat.ts` echoue sur `T_Damage subtracts take from health before Killed: attendu -2, recu -22`; a investiguer dans le lot `g_combat` dedie.
+- Aucun blocage actif sur ce fichier; `npx tsx ./scripts/verify/quake2-g-combat.ts` est OK pendant le lot du 2026-05-02.
 - Aucun blocage sur le lot `SPAWNFLAG_NOT_*` apres correction coordinateur de `SpawnEntities`.

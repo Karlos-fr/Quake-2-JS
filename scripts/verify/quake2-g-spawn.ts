@@ -11,6 +11,7 @@
  */
 
 import { strict as assert } from "node:assert";
+import { readFileSync } from "node:fs";
 
 import {
   CS_CDTRACK,
@@ -108,6 +109,7 @@ const imports = {
 
 const context = createGameMainContext(imports);
 InitGame(context);
+verifySpawnTableParity();
 
 SpawnEntities(
   context,
@@ -1119,4 +1121,19 @@ function createCvar(name: string, value: string) {
 function formatPrintf(fmt: string, args: unknown[]): string {
   let cursor = 0;
   return fmt.replace(/%[siuf]/g, () => String(args[cursor++]));
+}
+
+function verifySpawnTableParity(): void {
+  const source = readFileSync("Quake-2-master/game/g_spawn.c", "utf8");
+  const tableMatch = /spawn_t\s+spawns\[\]\s*=\s*\{(?<body>[\s\S]*?)\{NULL, NULL\}/.exec(source);
+  assert.ok(tableMatch?.groups?.body, "source g_spawn.c spawns[] table must be parseable");
+
+  const expected = Array.from(
+    tableMatch.groups.body.matchAll(/\{"([^"]+)",\s*([A-Za-z0-9_]+)\}/g),
+    (match) => `${match[1]}=>${match[2]}`
+  ).sort();
+  const actual = spawns.map((entry) => `${entry.name}=>${entry.spawn.name}`);
+
+  assert.deepEqual(actual.toSorted(), expected, "TS spawns[] must mirror game/g_spawn.c classnames and callback ownership");
+  assert.equal(new Set(spawns.map((entry) => entry.name)).size, spawns.length, "spawns[] must not contain duplicate classnames");
 }

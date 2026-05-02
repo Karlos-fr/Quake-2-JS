@@ -3,32 +3,37 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `fire_hit` et temporaires locaux `tr`, `v`, `point`, `range`, `dir`, `aim`.
-- Verdict du lot: valide pour `fire_hit`; temporaires non applicables comme entites autonomes.
+- Dernier lot traite: `fire_lead` et temporaires locaux `tr`, `dir`, `end`, `r`, `u`, `water_start`, `water`, `content_mask`, `color`.
+- Verdict du lot: valide pour `fire_lead`; temporaires non applicables comme entites autonomes.
 
 ## Preuves session
 
 - C source compare: `Quake-2-master/game/g_weapon.c`
 - TS cible compare: `packages/game/src/g_weapon.ts`
-- Runtime verifie: `fire_hit` est appele depuis les callbacks melee des monstres portes (`m_berserk`, `m_chick`, `m_brain`, `m_flipper`, `m_float`, `m_flyer`, `m_gladiator`, `m_infantry`, `m_mutant`). Le test couvre le range frontal reduit par bbox enemy, le trace `MASK_SHOT`, le retarget client/monster, `T_Damage`, la mutation laterale de `aim[1]`, le blocage non damageable et le knockback special.
-- `apps/web`: pas de branchement direct attendu pour ce lot; le navigateur passe par le runtime serveur/jeu porte et consomme ensuite les etats d'entites produits.
-- `packages/renderer-three`: integration indirecte attendue via les entites runtime; `fire_hit` ne produit pas de temp entity, particule, beam, dlight, image ou modele propre, mais peut modifier damage/velocity/groundentity visibles par les snapshots.
+- Commentaire d'en-tete verifie sur `fire_lead` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`).
+- Runtime verifie: `fire_lead` est interne et atteint via `fire_bullet`/`fire_shotgun`, eux-memes appeles par `p_weapon.c` porte (`Weapon_Machinegun`, `Weapon_Chaingun`, `weapon_shotgun_fire`, `weapon_supershotgun_fire`) et par les tirs monstres (`monster_fire_bullet`, `monster_fire_shotgun`). Le harness couvre le trace initial depuis `self.s.origin`, le trace `MASK_SHOT | MASK_WATER`, `DAMAGE_BULLET`, l'impact non damageable, l'entree dans l'eau, `TE_SPLASH` et `TE_BUBBLETRAIL`.
+- `apps/web`: pas de logique parallele attendue; le navigateur declenche les tirs via le runtime local/serveur porte et `local-gameplay-sync` consomme les temp entities du runtime pour le client.
+- `packages/renderer-three`: integration indirecte attendue et verifiee via les sorties client temp entities/particules (`TE_GUNSHOT`, `TE_SHOTGUN`, `TE_SPLASH`, `TE_BUBBLETRAIL`) consommees par la chaine client puis renderer; pas de branchement direct `renderer-three` attendu depuis `g_weapon.ts`.
 
 ## Tests lances
 
 - `npm run verify:g-weapon`
+- `npm run verify:g-main`
+- `npm run verify:g-target`
+- `npm run verify:local-gameplay-sync`
 - `npm run verify:full-game:server-host`
 - `npm run verify:full-game:three-renderer`
 - `npm run typecheck`
 
 ## Corrections
 
-- `packages/game/src/g_weapon.ts`: correction du range frontal `fire_hit` et de la mutation `aim[1]` pour le coup lateral, conformement au C.
-- `scripts/verify/quake2-g-weapon.ts`: extension du harness cible pour `fire_hit`.
+- `scripts/verify/quake2-g-weapon.ts`: extension du harness cible pour `fire_lead` via `fire_bullet` (impact sec, damage, eau, splash, bubble trail).
+- `packages/game/src/g_main.ts`: correction du flush runtime `TE_SPLASH` pour ecrire `payload.color` quand il est produit par `fire_lead`, avec fallback `sounds` pour `target_splash`.
+- `scripts/verify/quake2-g-main.ts`: assertion serveur dediee au flush `TE_SPLASH.color`.
 
 ## Prochain lot recommande
 
-- Continuer avec `fire_lead` et ses temporaires locaux (`tr`, `dir`, `end`, `r`, `u`, `water_start`, `water`, `content_mask`, `color`) si le lot reste petit; sinon limiter aux branches trace/impact sans eau.
+- Continuer avec `fire_bullet` et `fire_shotgun`; valider leurs wrappers vers `fire_lead`, leurs commentaires, les chemins `p_weapon`/monstres et les tests existants.
 
 ## Blocages
 

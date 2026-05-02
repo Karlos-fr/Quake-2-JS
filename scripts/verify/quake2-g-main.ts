@@ -703,6 +703,25 @@ assert.deepEqual(writeDirs.at(-1), [0, 0, 1], "G_RunFrame must flush damage temp
 assert.deepEqual(multicasts.at(-2)?.origin, [11, 22, 33], "G_RunFrame must multicast player muzzleflash at player origin");
 assert.deepEqual(multicasts.at(-1)?.origin, [44, 55, 66], "G_RunFrame must multicast damage temp entity at event origin");
 
+writeBytes.length = 0;
+writePositions.length = 0;
+writeDirs.length = 0;
+multicasts.length = 0;
+emitGameTempEntity(frameContext.runtime, temp_event_t.TE_SPLASH, [7, 8, 9], multicast_t.MULTICAST_PVS, {
+  count: 8,
+  dir: [0, 1, 0],
+  color: 3
+});
+G_RunFrame(frameContext);
+assert.deepEqual(
+  writeBytes,
+  [svc_temp_entity, temp_event_t.TE_SPLASH, 8, 3],
+  "G_RunFrame must flush TE_SPLASH color payloads for fire_lead-style water impacts"
+);
+assert.deepEqual(writePositions.at(-1), [7, 8, 9], "G_RunFrame must flush TE_SPLASH origin");
+assert.deepEqual(writeDirs.at(-1), [0, 1, 0], "G_RunFrame must flush TE_SPLASH direction");
+assert.deepEqual(multicasts.at(-1)?.origin, [7, 8, 9], "G_RunFrame must multicast TE_SPLASH at event origin");
+
 const runEntityContext = createGameMainContext(imports);
 runEntityContext.runtime.maxclients = 1;
 runEntityContext.runtime.entities = [

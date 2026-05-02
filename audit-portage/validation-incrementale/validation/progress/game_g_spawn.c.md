@@ -12,6 +12,7 @@
 - 2026-05-01: `SP_item_health`, `SP_item_health_small`, `SP_item_health_large` et `SP_item_health_mega`.
 - 2026-05-02: verification de dispatch `light` sans validation d'entite proprietaire `g_spawn.c`.
 - 2026-05-02: `SP_worldspawn`, `single_statusbar` et `dm_statusbar`.
+- 2026-05-02: table `spawns`/ownership uniquement.
 
 ## Verdict du lot
 
@@ -43,6 +44,7 @@
 - `SP_item_health_large`: valide. Meme branchement `spawns[]`; la cible conserve le modele `models/items/healing/large/tris.md2`, `count = 25`, `SpawnItem(FindItem("Health"))` et precache `items/l_health.wav`.
 - `SP_item_health_mega`: valide. Meme branchement `spawns[]`; la cible conserve le modele `models/items/mega_h/tris.md2`, `count = 100`, `style = HEALTH_IGNORE_MAX | HEALTH_TIMED`, `SpawnItem(FindItem("Health"))` et precache `items/m_health.wav`.
 - `SP_light`: preuve de dispatch conservee, mais pas comptee comme entite proprietaire de `g_spawn.c`. La definition originale est dans `game/g_misc.c` et la matrice `game_g_misc.c.md` valide deja `SP_light`; pour `g_spawn.c`, seule l'entree `spawns[]`/`light` releve du fichier courant.
+- `spawns`: valide pour le lot table/ownership. La table TS conserve les 108 couples classname/callback de `game/g_spawn.c`, sans traiter les callbacks externes comme entites proprietaires de `g_spawn.c`. Correction appliquee: ajout de l'alias original `func_group -> SP_info_null`, retrait de l'entree TS extra `monster_makron -> SP_monster_makron` absente de la table source de ce fichier. Les deux lignes declaratives dupliquees `spawns` ont ete retirees de la matrice pour ne garder qu'une entite table proprietaire.
 
 ## Checklist appliquee
 
@@ -101,6 +103,12 @@
 - Runtime: valide. `ED_CallSpawn` dispatch `light` via `spawns[]`; `SP_light` ecrit les lightstyles dans les configstrings du runtime; `useGameEntity`/callback `light_use` propage ensuite les toggles visibles.
 - apps/web: valide indirectement. Le navigateur doit consommer les lightstyles issus du runtime porte; aucune logique parallele de spawn `light` n'a ete detectee dans `apps/web`, et le flux local gameplay synchronise les configstrings vers `ClientRefreshFrame.lightStyles`.
 - renderer-three: valide indirectement. `SP_light` ne produit pas de modele, particule, beam, dlight, temp entity, areabits, camera ou scene propre; sa sortie visible attendue est le lightstyle BSP, consomme par le world adapter via `frame.lightStyles`.
+- Identification: lot table `spawns` dans matrice `game_g_spawn.c.md`, source `Quake-2-master/game/g_spawn.c`, cible proprietaire `packages/game/src/g_spawn.ts`. Les callbacks externes restent proprietaires de leurs fichiers (`g_misc.c`, `g_func.c`, `p_client.c`, `g_items.c`, monstres, triggers, targets, turrets) et n'ont pas ete revalides comme entites de `g_spawn.c`.
+- Comparaison C/H vs TS: extraction des couples `{"classname", callback}` de la table C et comparaison avec `spawns`; classnames, callbacks et absence de doublons verifies par test. Ecart corrige: `func_group` manquait et `monster_makron` etait une entree TS supplementaire non presente dans la table `g_spawn.c` courante.
+- Commentaires d'en-tete: ajout du commentaire `Original name: spawns`, `Source: game/g_spawn.c`, `Category: Ported`, `Fidelity level: Strict`, `Behavior` et notes de portage ownership; commentaire fichier mis a jour pour ne plus annoncer un sous-ensemble.
+- Runtime: valide. `SpawnEntities` appelle `ED_CallSpawn` sur `worldspawn` puis sur les entites parsees; `ED_CallSpawn` parcourt `spawns` apres le chemin `FindItemByClassname`/`SpawnItem`.
+- apps/web: valide indirectement. Le navigateur declenche le spawn map via les exports game/serveur (`SV_SpawnServer`/`SpawnEntities`) et ne possede pas de table parallele `spawns` masquant le runtime.
+- renderer-three: valide indirectement. La table ne produit pas elle-meme de rendu, mais elle dispatch des entites visibles ou non visibles; les sorties visibles attendues (modeles, frames, temp entities, dlights, areabits, camera/scene selon callback proprietaire) transitent par le runtime et restent a valider dans les fichiers proprietaires des callbacks.
 - Identification: lot player/intermission dans matrice `game_g_spawn.c.md`, prototypes et `spawns[]` originaux dans `Quake-2-master/game/g_spawn.c`, definitions originales dans `game/p_client.c`, cible portee `packages/game/src/p_client.ts` importee par `packages/game/src/g_spawn.ts`.
 - Comparaison C/H vs TS: entrees `edict_t *self` vs `GameEntity, GameRuntime`, sorties void, branches `coop`, `deathmatch`, map `security`, liste des maps coop fixup, appels `SP_CreateCoopSpots`, `SP_FixCoopSpots`, `G_FreeEdict`, `SP_misc_teleporter_dest`, no-op intermission et preservation origin/angles verifies.
 - Commentaires d'en-tete: les quatre fonctions TS ont un commentaire `Original name`, `Source`, `Category: Ported`, `Fidelity level`; pas d'ajustement necessaire.
@@ -120,6 +128,8 @@
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour les quatre classnames player/intermission, le dispatch `spawns[]`, le spot deathmatch visible, les hacks coop `security`/fixup, et le flux intermission/camera.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour le flux map normal `SpawnEntities` -> `ED_CallSpawn` -> callbacks health -> `G_RunFrame`/`droptofloor`, et pour le rejet `DF_NO_HEALTH` en deathmatch sur les quatre variantes.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `SP_light`, sa presence dans `spawns[]`, le dispatch `ED_CallSpawn`, l'installation de `light_use`, les configstrings runtime `CS_LIGHTS`, le toggle `START_OFF`, le style 0 sans callback et le rejet deathmatch.
+- `packages/game/src/g_spawn.ts`: ajout de `func_group -> SP_info_null`, retrait de l'entree extra `monster_makron -> SP_monster_makron`, ajout du commentaire d'en-tete `spawns` et mise a jour des notes de portage fichier/`ED_CallSpawn`.
+- `scripts/verify/quake2-g-spawn.ts`: ajout d'une preuve de parite entre la table C `spawns[]` et la table TS `spawns`, avec verification des callbacks et de l'absence de doublons.
 
 ## Tests
 
@@ -174,7 +184,12 @@
 - `npm run verify:local-gameplay-sync`: ok le 2026-05-02.
 - `npm run verify:full-game:three-renderer`: ok le 2026-05-02.
 - `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:g-spawn`: ok le 2026-05-02 pour la parite de table `spawns`.
+- `npm run typecheck`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02.
+- `npm run verify:web-render-order`: ok le 2026-05-02.
 
 ## Prochain lot recommande
 
-- Continuer avec un sous-lot explicite de `spawns` centre sur la table/ownership, sans valider les fonctions externes deja proprietaires de `g_misc.c`, `g_func.c`, `p_client.c` ou `g_items.c`; sinon passer a `ED_CallSpawn`.
+- Continuer avec `ED_CallSpawn`, en limitant le lot au chemin itemlist/table/warning et au branchement depuis `SpawnEntities`.

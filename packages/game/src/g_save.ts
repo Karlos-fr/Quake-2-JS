@@ -693,6 +693,18 @@ function restoreClient(snapshot: ReturnType<typeof snapshotClient>): GameClient 
   return client;
 }
 
+/**
+ * Original name: WriteEdict
+ * Source: game/g_save.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Captures one edict for `WriteLevel`, preserving scalar/vector fields while encoding pointers and callbacks as stable values.
+ *
+ * Porting notes:
+ * - Replaces the C temporary `edict_t temp` and `WriteField1`/`WriteField2` binary passes with one structured JSON payload.
+ */
 function snapshotEntity(entity: GameEntity, runtime: GameRuntime) {
   return {
     ...entity,

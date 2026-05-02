@@ -12,15 +12,18 @@ import {
   attachGameClient,
   createGameRuntimeFromBspEntities,
   createRuntimeEntity,
+  DAMAGE_BULLET,
   DAMAGE_NO_KNOCKBACK,
   damage_t,
   MOD_HIT,
+  SPLASH_BROWN_WATER,
   SVF_MONSTER,
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { fire_blaster, fire_hit } from "../../packages/game/src/g_weapon.js";
-import { MASK_SHOT, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { fire_blaster, fire_bullet, fire_hit } from "../../packages/game/src/g_weapon.js";
+import { MASK_SHOT, MASK_WATER, temp_event_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { CONTENTS_WATER } from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -31,8 +34,10 @@ function main(): void {
   verifyFireHitFrontRangeDamageAndKnockback();
   verifyFireHitSideAimAdjustmentAndRangeGate();
   verifyFireHitBlocksOnNonDamageableTrace();
+  verifyFireLeadBulletImpactAndDamage();
+  verifyFireLeadWaterSplashAndBubbleTrail();
 
-  console.log("Verification g_weapon - check_dodge and fire_hit lots OK");
+  console.log("Verification g_weapon - check_dodge, fire_hit and fire_lead lots OK");
 }
 
 function verifyCheckDodgeRuntimeBranch(): void {
@@ -256,6 +261,113 @@ function verifyFireHitBlocksOnNonDamageableTrace(): void {
   assert.equal(damageCount, 0, "fire_hit must not damage through non-damageable blockers");
 }
 
+function verifyFireLeadBulletImpactAndDamage(): void {
+  const runtime = createHarnessRuntime();
+  const shooter = createPlayer(runtime, 1);
+  const target = createRuntimeEntity({ classname: "monster_target" }, 2);
+  const wall = createRuntimeEntity({ classname: "wall" }, 3);
+  target.takedamage = damage_t.DAMAGE_AIM;
+  target.health = 100;
+  runtime.entities[2] = target;
+  runtime.entities[3] = wall;
+
+  const traces: Array<{ start: vec3_t; end: vec3_t; passent: GameEntity | null; mask: number }> = [];
+  runtime.collision = {
+    world: {} as never,
+    trace: (start, _mins, _maxs, end, passent, mask) => {
+      traces.push({ start: [...start], end: [...end], passent: passent as GameEntity | null, mask });
+      if (traces.length === 1) {
+        return makeTrace(1, end, null);
+      }
+      return makeTrace(0.5, [128, 0, 0], target);
+    },
+    pointcontents: () => 0
+  };
+
+  const damageCalls: Array<{ target: GameEntity; point: vec3_t; dflags: number; mod: number }> = [];
+  withMathRandom([0.5, 0.5], () => {
+    fire_bullet(shooter, [0, 0, 0], [1, 0, 0], 7, 3, 100, 50, 42, runtime, {
+      T_Damage: (ent, _inflictor, _attacker, _dir, point, _normal, _damage, _kick, dflags, mod) => {
+        damageCalls.push({ target: ent, point: [...point], dflags, mod });
+      }
+    });
+  });
+
+  assert.deepEqual(traces[0]?.start, shooter.s.origin, "fire_lead must first trace from shooter origin to muzzle start");
+  assert.equal(traces[0]?.mask, MASK_SHOT, "fire_lead muzzle trace must use MASK_SHOT");
+  assert.equal(traces[1]?.mask, MASK_SHOT | MASK_WATER, "fire_lead dry bullet trace must include water");
+  assert.deepEqual(traces[1]?.end, [8192, 0, 0], "fire_lead must extend the lead trace 8192 units with zero spread");
+  assert.equal(damageCalls.length, 1, "fire_lead must damage a damageable traced entity");
+  assert.equal(damageCalls[0]?.target, target, "fire_lead must damage the traced target");
+  assert.deepEqual(damageCalls[0]?.point, [128, 0, 0], "fire_lead damage point must be trace endpos");
+  assert.equal(damageCalls[0]?.dflags, DAMAGE_BULLET, "fire_lead must pass DAMAGE_BULLET");
+  assert.equal(damageCalls[0]?.mod, 42, "fire_lead must preserve the damage mode");
+
+  runtime.collision.trace = (start, _mins, _maxs, end, passent, mask) => {
+    traces.push({ start: [...start], end: [...end], passent: passent as GameEntity | null, mask });
+    if (traces.length === 3) {
+      return makeTrace(1, end, null);
+    }
+    return makeTrace(0.25, [64, 0, 0], wall, { name: "stone", flags: 0 });
+  };
+
+  const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  withMathRandom([0.5, 0.5], () => {
+    fire_bullet(shooter, [0, 0, 0], [1, 0, 0], 7, 3, 100, 50, 42, runtime, {
+      emitTempEntity: (type, payload) => {
+        tempEvents.push({ type, payload });
+      },
+      isDamageable: (ent) => ent.takedamage !== damage_t.DAMAGE_NO
+    });
+  });
+
+  assert.equal(tempEvents.length, 1, "fire_lead must emit one impact temp entity for a non-damageable non-sky hit");
+  assert.equal(tempEvents[0]?.type, temp_event_t.TE_GUNSHOT, "fire_bullet must use TE_GUNSHOT impacts");
+  assert.deepEqual(tempEvents[0]?.payload.origin, [64, 0, 0], "fire_lead impact temp entity origin mismatch");
+  assert.deepEqual(tempEvents[0]?.payload.dir, [0, 0, 1], "fire_lead impact temp entity direction mismatch");
+}
+
+function verifyFireLeadWaterSplashAndBubbleTrail(): void {
+  const runtime = createHarnessRuntime();
+  const shooter = createPlayer(runtime, 1);
+  const traces: Array<{ start: vec3_t; end: vec3_t; passent: GameEntity | null; mask: number }> = [];
+
+  runtime.collision = {
+    world: {} as never,
+    trace: (start, _mins, _maxs, end, passent, mask) => {
+      traces.push({ start: [...start], end: [...end], passent: passent as GameEntity | null, mask });
+      if (traces.length === 1) {
+        return makeTrace(1, end, null);
+      }
+      if (traces.length === 2) {
+        return makeTrace(0.25, [64, 0, 0], null, { name: "*brwater", flags: 0 }, CONTENTS_WATER);
+      }
+      return makeTrace(1, [200, 0, 0], null);
+    },
+    pointcontents: (point) => point[0] > 100 ? CONTENTS_WATER : 0
+  };
+
+  const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
+  withMathRandom([0.5, 0.5, 0.5, 0.5], () => {
+    fire_bullet(shooter, [0, 0, 0], [1, 0, 0], 7, 3, 100, 50, 42, runtime, {
+      emitTempEntity: (type, payload) => {
+        tempEvents.push({ type, payload });
+      }
+    });
+  });
+
+  assert.equal(traces[1]?.mask, MASK_SHOT | MASK_WATER, "fire_lead first water trace must include MASK_WATER");
+  assert.deepEqual(traces[2]?.start, [64, 0, 0], "fire_lead must retrace from water_start after water entry");
+  assert.equal(traces[2]?.mask, MASK_SHOT, "fire_lead water retrace must ignore water");
+  assert.equal(tempEvents[0]?.type, temp_event_t.TE_SPLASH, "fire_lead must emit TE_SPLASH when entering known water");
+  assert.equal(tempEvents[0]?.payload.count, 8, "fire_lead water splash count mismatch");
+  assert.equal(tempEvents[0]?.payload.color, SPLASH_BROWN_WATER, "fire_lead must map *brwater to brown splash");
+  assert.deepEqual(tempEvents[0]?.payload.origin, [64, 0, 0], "fire_lead water splash origin mismatch");
+  assert.equal(tempEvents[1]?.type, temp_event_t.TE_BUBBLETRAIL, "fire_lead must emit a bubble trail after passing through water");
+  assert.deepEqual(tempEvents[1]?.payload.start, [64, 0, 0], "fire_lead bubble trail start mismatch");
+  assert.deepEqual(tempEvents[1]?.payload.end, [198, 0, 0], "fire_lead bubble trail end must be backed up two units in water");
+}
+
 function createHarnessRuntime(): GameRuntime {
   return createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
 }
@@ -298,7 +410,13 @@ function createMeleeMonster(runtime: GameRuntime, index: number): GameEntity {
   return monster;
 }
 
-function makeTrace(fraction: number, endpos: vec3_t, ent: GameEntity | null): trace_t {
+function makeTrace(
+  fraction: number,
+  endpos: vec3_t,
+  ent: GameEntity | null,
+  surface: trace_t["surface"] = null,
+  contents = 0
+): trace_t {
   return {
     allsolid: false,
     startsolid: false,
@@ -311,8 +429,8 @@ function makeTrace(fraction: number, endpos: vec3_t, ent: GameEntity | null): tr
       signbits: 0,
       pad: [0, 0]
     },
-    surface: null,
-    contents: 0,
+    surface,
+    contents,
     ent
   };
 }

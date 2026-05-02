@@ -6,17 +6,23 @@
 import { strict as assert } from "node:assert";
 
 import {
+  CL_AddDLights,
   CL_AddLightStyles,
   CL_AddParticles,
+  CL_AllocDlight,
   CL_BuildEntityEventEffects,
+  CL_ClearDlights,
   CL_ClearLightStyles,
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
+  CL_NewDlight,
+  CL_RunDLights,
   CL_RunLightStyles,
   CL_SetLightstyle
 } from "../../packages/client/src/cl_fx.js";
 import { CS_LIGHTS, entity_event_t, MAX_LIGHTSTYLES, MAX_QPATH, MZ_LOGIN, MZ_LOGOUT, MZ_RESPAWN, type vec3_t } from "../../packages/qcommon/src/index.js";
 import { createClientRuntime as createRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
+import { MAX_DLIGHTS } from "../../packages/client/src/client.js";
 import type { ClientEntityEvent } from "../../packages/client/src/cl_ents.js";
 import { CL_BuildRefreshFrame } from "../../packages/client/src/refresh.js";
 
@@ -27,7 +33,95 @@ function main(): void {
   verifyItemRespawnRuntimeParticles();
   verifyItemRespawnEntityEventMetadata();
   verifyLightstyleManagement();
+  verifyDlightManagement();
   console.log("quake2-cl-fx: ok");
+}
+
+function verifyDlightManagement(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 1000;
+  runtime.cls.frametime = 0.1;
+
+  assert.equal(runtime.cl.dlights.length, MAX_DLIGHTS, "cl_dlights array length mismatch");
+
+  const first = CL_AllocDlight(runtime, 7);
+  first.origin = [1, 2, 3];
+  first.color = [0.2, 0.4, 0.6];
+  first.radius = 120;
+  first.die = 2000;
+  first.decay = 50;
+  first.minlight = 12;
+
+  const sameKey = CL_AllocDlight(runtime, 7);
+  assert.equal(sameKey, first, "CL_AllocDlight should reuse an exact key slot first");
+  assert.equal(sameKey.key, 7, "CL_AllocDlight reused key mismatch");
+  assert.deepEqual(sameKey.origin, [0, 0, 0], "CL_AllocDlight should clear reused slots");
+  assert.equal(sameKey.radius, 0, "CL_AllocDlight should zero reused radius");
+
+  sameKey.die = 1500;
+  sameKey.radius = 80;
+  const expired = runtime.cl.dlights[1]!;
+  expired.key = 99;
+  expired.die = 999;
+  expired.radius = 40;
+
+  const reusedExpired = CL_AllocDlight(runtime, 0);
+  assert.equal(reusedExpired, expired, "CL_AllocDlight should reuse the first expired slot for key 0");
+  assert.equal(reusedExpired.key, 0, "CL_AllocDlight expired slot key mismatch");
+  assert.equal(reusedExpired.radius, 0, "CL_AllocDlight should clear expired slot radius");
+
+  for (const dlight of runtime.cl.dlights) {
+    dlight.die = runtime.cl.time + 1000;
+    dlight.radius = 10;
+  }
+  const fallback = CL_AllocDlight(runtime, 0);
+  assert.equal(fallback, runtime.cl.dlights[0], "CL_AllocDlight should fall back to slot 0 when none are free");
+
+  CL_NewDlight(runtime, 11, 4, 5, 6, 90, 250);
+  const created = runtime.cl.dlights.find((dlight) => dlight.key === 11);
+  assert.ok(created, "CL_NewDlight should allocate a keyed light");
+  assert.deepEqual(created.origin, [4, 5, 6], "CL_NewDlight origin mismatch");
+  assert.equal(created.radius, 90, "CL_NewDlight radius mismatch");
+  assert.equal(created.die, 1250, "CL_NewDlight die time mismatch");
+
+  CL_ClearDlights(runtime);
+  assert.equal(runtime.cl.dlights.length, MAX_DLIGHTS, "CL_ClearDlights length mismatch");
+  assert.ok(runtime.cl.dlights.every((dlight) => dlight.radius === 0), "CL_ClearDlights radius reset mismatch");
+  assert.ok(runtime.cl.dlights.every((dlight) => dlight.key === 0), "CL_ClearDlights key reset mismatch");
+
+  const expiredFirst = runtime.cl.dlights[0]!;
+  const laterLive = runtime.cl.dlights[1]!;
+  expiredFirst.radius = 20;
+  expiredFirst.die = runtime.cl.time - 1;
+  laterLive.radius = 70;
+  laterLive.die = runtime.cl.time + 1000;
+  laterLive.decay = 100;
+  CL_RunDLights(runtime);
+  assert.equal(expiredFirst.radius, 0, "CL_RunDLights should expire the first dead light");
+  assert.equal(laterLive.radius, 70, "CL_RunDLights should preserve later lights after the original early return");
+
+  laterLive.decay = 100;
+  CL_RunDLights(runtime);
+  assert.equal(laterLive.radius, 60, "CL_RunDLights decay mismatch");
+
+  laterLive.color = [-1, -1, -1];
+  laterLive.minlight = 4;
+  const lights = CL_AddDLights(runtime);
+  assert.equal(lights.length, 1, "CL_AddDLights active count mismatch");
+  assert.deepEqual(lights[0], {
+    origin: [0, 0, 0],
+    intensity: 60,
+    color: [-1, -1, -1],
+    minlight: 4,
+    sourceEntity: 0,
+    kind: "dlight"
+  }, "CL_AddDLights output mismatch");
+
+  const refreshFrame = CL_BuildRefreshFrame(runtime, { predictMovement: false });
+  assert.ok(
+    refreshFrame.lights.some((light) => light.kind === "dlight" && light.intensity === 50),
+    "CL_AddDLights should reach the refresh frame after runtime decay"
+  );
 }
 
 function verifyLightstyleManagement(): void {

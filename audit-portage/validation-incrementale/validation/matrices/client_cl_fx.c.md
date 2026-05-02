@@ -25,13 +25,13 @@
 | `Quake-2-master/client/cl_fx.c` | global | `s` | `packages/client/src/cl_fx.ts` | `s` | Non applicable | A redecouper | Variable locale de `CL_SetLightstyle`, portee dans le corps TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_AddLightStyles` | `packages/client/src/cl_fx.ts` | `CL_AddLightStyles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`; en-tete verifie. |
 | `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_AddLightStyles`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | global | `cl_dlights` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_ClearDlights` | `packages/client/src/cl_fx.ts` | `CL_ClearDlights` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_AllocDlight` | `packages/client/src/cl_fx.ts` | `CL_AllocDlight` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_NewDlight` | `packages/client/src/cl_fx.ts` | `CL_NewDlight` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_RunDLights` | `packages/client/src/cl_fx.ts` | `CL_RunDLights` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | global | `cl_dlights` | `packages/client/src/client.ts` | `ClientRuntime.cl.dlights` | Valide | A redecouper | Portage en state runtime; preuves: `npm run verify:cl-fx`, `npm run verify:local-gameplay-sync`, `npm run verify:dlight-sync`, `npm run verify:web-render-order`, `npm run typecheck`. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_ClearDlights` | `packages/client/src/cl_fx.ts` | `CL_ClearDlights` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run typecheck`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_AllocDlight` | `packages/client/src/cl_fx.ts` | `CL_AllocDlight` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:local-gameplay-sync`, `npm run typecheck`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_AllocDlight`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_NewDlight` | `packages/client/src/cl_fx.ts` | `CL_NewDlight` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run typecheck`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_RunDLights` | `packages/client/src/cl_fx.ts` | `CL_RunDLights` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:local-gameplay-sync`, `npm run typecheck`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_RunDLights`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ParseMuzzleFlash` | `packages/client/src/cl_parse.ts` | `CL_ParseMuzzleFlash` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `silenced` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `volume` | `packages/client/src/cl_fx.ts` | `volume` | A verifier | A redecouper |  |
@@ -42,8 +42,8 @@
 | `Quake-2-master/client/cl_fx.c` | global | `origin` | `packages/client/src/cl_fx.ts` | `origin` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `flash_number` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `soundname` | `packages/client/src/cl_fx.ts` | `soundName` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_AddDLights` | `packages/client/src/cl_fx.ts` | `CL_AddDLights` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_AddDLights` | `packages/client/src/cl_fx.ts` | `CL_AddDLights` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:dlight-sync`, `npm run verify:web-render-order`, `npm run typecheck`; en-tete corrige en `Category: Ported`. |
+| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_AddDLights`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `cl_numparticles` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ClearParticles` | `packages/client/src/cl_fx.ts` | `CL_ClearParticles` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |

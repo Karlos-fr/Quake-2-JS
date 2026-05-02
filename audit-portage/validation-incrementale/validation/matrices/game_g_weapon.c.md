@@ -20,19 +20,19 @@
 | `Quake-2-master/game/g_weapon.c` | global | `range` | `packages/game/src/g_weapon.ts` | `range` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_hit`, porte comme variable locale TS. |
 | `Quake-2-master/game/g_weapon.c` | global | `dir` | `packages/game/src/g_weapon.ts` | `dir` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_hit`, porte comme variable locale TS. |
 | `Quake-2-master/game/g_weapon.c` | global | `aim` | `packages/game/src/g_weapon.ts` |  | Non applicable | A redecouper | Parametre local de `fire_hit`; mutation `aim[1]` verifiee dans `scripts/verify/quake2-g-weapon.ts`. |
-| `Quake-2-master/game/g_weapon.c` | function | `fire_lead` | `packages/game/src/g_weapon.ts` | `fire_lead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `dir` | `packages/game/src/g_weapon.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `end` | `packages/game/src/g_weapon.ts` | `end` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `r` | `packages/game/src/g_weapon.ts` | `r` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `u` | `packages/game/src/g_weapon.ts` | `u` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `water_start` | `packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `water` | `packages/game/src/g_weapon.ts` | `water` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `content_mask` | `packages/game/src/g_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `color` | `packages/game/src/g_weapon.ts` | `color` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `color` | `packages/game/src/g_weapon.ts` | `color` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `color` | `packages/game/src/g_weapon.ts` | `color` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_weapon.c` | function | `fire_lead` | `packages/game/src/g_weapon.ts` | `fire_lead` | Valide | A redecouper | Commentaire verifie; C/TS compares; tests ajoutes dans `scripts/verify/quake2-g-weapon.ts`; correction `packages/game/src/g_main.ts` pour flush `TE_SPLASH.color`; tests `npm run verify:g-weapon`, `npm run verify:g-main`, `npm run verify:g-target`, `npm run verify:full-game:server-host`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; runtime via `fire_bullet`/`fire_shotgun` et hooks `p_weapon`/monstres; web via sync locale/runtime serveur; renderer indirect via temp entities client (`TE_GUNSHOT`, `TE_SHOTGUN`, `TE_SPLASH`, `TE_BUBBLETRAIL`). |
+| `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte comme variable locale TS `trace`/`startTrace`. |
+| `Quake-2-master/game/g_weapon.c` | global | `dir` | `packages/game/src/g_weapon.ts` | `dir` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte comme variable locale TS `dirAngles`/`dir`. |
+| `Quake-2-master/game/g_weapon.c` | global | `end` | `packages/game/src/g_weapon.ts` | `end` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte comme variable locale TS. |
+| `Quake-2-master/game/g_weapon.c` | global | `r` | `packages/game/src/g_weapon.ts` | `r` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte comme variable locale TS. |
+| `Quake-2-master/game/g_weapon.c` | global | `u` | `packages/game/src/g_weapon.ts` | `u` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte comme variable locale TS. |
+| `Quake-2-master/game/g_weapon.c` | global | `water_start` | `packages/game/src/g_weapon.ts` |  | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte comme variable locale TS `waterStart`. |
+| `Quake-2-master/game/g_weapon.c` | global | `water` | `packages/game/src/g_weapon.ts` | `water` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte comme variable locale TS. |
+| `Quake-2-master/game/g_weapon.c` | global | `content_mask` | `packages/game/src/g_weapon.ts` |  | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte comme variable locale TS `contentMask`. |
+| `Quake-2-master/game/g_weapon.c` | global | `color` | `packages/game/src/g_weapon.ts` | `color` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte par helper TS `getSplashColor`. |
+| `Quake-2-master/game/g_weapon.c` | global | `color` | `packages/game/src/g_weapon.ts` | `color` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte par helper TS `getSplashColor`. |
+| `Quake-2-master/game/g_weapon.c` | global | `color` | `packages/game/src/g_weapon.ts` | `color` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte par helper TS `getSplashColor`. |
+| `Quake-2-master/game/g_weapon.c` | global | `tr` | `packages/game/src/g_weapon.ts` | `tr` | Non applicable | A redecouper | Artefact de matrice: temporaire local C de `fire_lead`, porte comme variable locale TS `trace`. |
 | `Quake-2-master/game/g_weapon.c` | function | `fire_bullet` | `packages/game/src/g_weapon.ts` | `fire_bullet` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | function | `fire_shotgun` | `packages/game/src/g_weapon.ts` | `fire_shotgun` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_weapon.c` | global | `i` | `packages/game/src/g_weapon.ts` | `i` | A verifier | A redecouper |  |

@@ -1087,7 +1087,7 @@ function flushRuntimeEngineEvents(context: GameMainContext): void {
       context.gi.WriteByte(numberPayload(event.payload, "count"));
       context.gi.WritePosition(event.origin);
       context.gi.WriteDir(vectorPayload(event.payload, "dir"));
-      context.gi.WriteByte(numberPayload(event.payload, "sounds"));
+      context.gi.WriteByte(numberPayloadWithFallback(event.payload, "color", "sounds"));
     } else if (event.type === temp_event_t.TE_LASER_SPARKS) {
       context.gi.WriteByte(numberPayload(event.payload, "count"));
       context.gi.WritePosition(event.origin);
@@ -1129,6 +1129,14 @@ function tempEntityWritesDirection(type: temp_event_t): boolean {
 function numberPayload(payload: Record<string, unknown>, key: string): number {
   const value = payload[key];
   return Number.isFinite(value) ? Number(value) : 0;
+}
+
+function numberPayloadWithFallback(payload: Record<string, unknown>, key: string, fallbackKey: string): number {
+  const value = payload[key];
+  if (Number.isFinite(value)) {
+    return Number(value);
+  }
+  return numberPayload(payload, fallbackKey);
 }
 
 function vectorPayload(payload: Record<string, unknown>, key: string): [number, number, number] {

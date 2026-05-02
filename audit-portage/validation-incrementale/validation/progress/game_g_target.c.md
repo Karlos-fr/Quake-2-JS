@@ -2,6 +2,23 @@
 
 ## Dernier lot valide
 
+- 2026-05-02: `trigger_crosslevel_trigger_use` et `SP_target_crosslevel_trigger`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `trigger_crosslevel_trigger_use` conserve le OR de `self->spawnflags` dans `game.serverflags`, mappe sur `runtime.serverflags`, puis `G_FreeEdict(self)`. `SP_target_crosslevel_trigger` conserve `SVF_NOCLIENT` et l'installation du callback `trigger_crosslevel_trigger_use`.
+  - Commentaires d'en-tete completes pour les deux fonctions: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et note de portage sur `runtime.serverflags`.
+  - Branchement runtime verifie: `target_crosslevel_trigger` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; l'activation via target/use chains met a jour les bits persistants de runtime, puis l'entite est liberee. La persistence de `serverflags` est presente dans `g_save.ts`, et la consommation par `target_crosslevel_target_*` reste le prochain lot separe.
+  - `apps/web`: integration attendue seulement indirectement via le runtime full-game et la sauvegarde/transition de niveau; pas de logique parallele masquante constatee. Aucun flux navigateur direct, HUD, audio, temp entity ou input n'est produit par le trigger lui-meme.
+  - `renderer-three`: non applicable justifie pour ce lot, car `target_crosslevel_trigger` est `SVF_NOCLIENT` et ne produit ni modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene. Le renderer ne doit rien consommer directement; `verify:full-game:three-renderer` reste OK.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour `trigger_crosslevel_trigger_use` et `SP_target_crosslevel_trigger`.
+  - `scripts/verify/quake2-g-target.ts`: couverture renforcee pour `ED_CallSpawn`, `SVF_NOCLIENT`, callback installe, OR de `serverflags` et free single-use.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `target_crosslevel_target_think` et `SP_target_crosslevel_target`.
+
 - 2026-05-02: `use_target_blaster`, les deux locaux `effect` associes et `SP_target_blaster`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `use_target_blaster` conserve le calcul local `effect` depuis `spawnflags & 2` puis `spawnflags & 1`, mais l'appel effectif C a `fire_blaster` passe toujours `EF_BLASTER` et un dernier argument truthy; le TS a ete corrige pour preserver ce comportement exact. Le son `gi.sound(self, CHAN_VOICE, noise_index, 1, ATTN_NORM, 0)` est conserve via `emitRegisteredSound`. `SP_target_blaster` conserve l'installation du callback, `G_SetMovedir`, le `soundindex("weapons/laser2.wav")`, les defaults `dmg = 15` et `speed = 1000`, puis `SVF_NOCLIENT`.

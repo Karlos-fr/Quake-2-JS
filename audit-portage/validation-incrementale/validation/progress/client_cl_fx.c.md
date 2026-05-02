@@ -1,12 +1,14 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot valide: `clightstyle_t`, ses champs `length`/`value`/`map`, `lastofs`, `CL_ClearLightStyles`, `CL_RunLightStyles`, `CL_SetLightstyle`, `CL_AddLightStyles`; variables locales generees `ofs`, `i`, `s` marquees non applicables.
+- Dernier lot valide: `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; variables locales generees `i` marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
   - `npx tsx ./scripts/verify/quake2-full-game-three-renderer.ts`
   - `npm run verify:local-gameplay-sync`
+  - `npm run verify:dlight-sync`
+  - `npm run verify:web-render-order`
   - `npm run typecheck`
 - Decisions:
   - `CL_LogoutEffect` et `CL_ItemRespawnParticles` restent proprietaires de `packages/client/src/cl_fx.ts`.
@@ -14,5 +16,9 @@
   - `CL_ItemRespawnParticles` doit etre applique depuis `apps/web` pour `EV_ITEM_RESPAWN`, car l'evenement produit des particules visibles consommees ensuite par `ClientRefreshFrame.particles` puis `packages/renderer-three/src/particle-sync.ts`.
   - `renderer-three` est integre indirectement via `CL_AddParticles` -> `ClientRefreshFrame.particles` -> `createThreeParticleSync`; aucun branchement renderer specifique supplementaire n'est requis pour ce lot.
   - Les lightstyles sont visuels: la source C appelle `CL_SetLightstyle` depuis les configstrings, avance les styles par `cl.time / 100`, puis appelle `V_AddLightStyle`. Le port TS conserve ce flux via `CL_ParseConfigString`/`syncLocalGameplayFrame` -> `CL_SetLightstyle` -> `CL_BuildRefreshFrame` -> `ClientRefreshFrame.lightStyles` -> `V_AddLightStyle`/`gl-world-scene-adapter` -> `gl_rsurf` lightmap styles.
+  - Les dynamic lights sont visuels: la source C stocke `cl_dlights[MAX_DLIGHTS]`, avance `CL_RunDLights` depuis `CL_Frame` et emet via `CL_AddDLights` -> `V_AddLight`. Le port TS conserve l'etat dans `ClientRuntime.cl.dlights`, appelle `CL_RunDLights` et `CL_AddDLights` dans `CL_BuildRefreshFrame`, puis expose `ClientRefreshFrame.lights`.
+  - `apps/web` consomme les dlights via `full-game-render-loop.ts` avec `dlightSync.apply(source.refreshFrame)`; `verify:web-render-order` couvre que ce flux ne masque pas une logique parallele.
+  - `renderer-three` consomme les dlights via `createThreeDlightSync` -> `R_RenderDlights`; `verify:dlight-sync` couvre la projection Three.js flashblend/PointLight.
+  - `CL_AddDLights` conserve les couleurs signees du chemin GL/ref_gl; la mutation negative-light du rendu software C n'est pas appliquee dans ce port renderer-three.
 - Blocages: aucun.
-- Prochain lot recommande: `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights` si le lot reste raisonnable; reduire a clear/alloc si besoin.
+- Prochain lot recommande: `CL_ParseMuzzleFlash` avec ses temporaires `silenced`, `volume`, `soundname` si le lot reste raisonnable; sinon limiter au branchement dlight/sound du premier sous-ensemble de muzzle flashes.
