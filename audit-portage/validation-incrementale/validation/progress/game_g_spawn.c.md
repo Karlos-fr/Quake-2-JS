@@ -17,6 +17,7 @@
 - 2026-05-02: `SpawnEntities` valide apres correction allocation sequentielle `G_Spawn` et repro city1.
 - 2026-05-02: `ED_CallSpawn`, limite au chemin itemlist/table/warning et au branchement depuis `SpawnEntities`; temporaires locaux `item`/`i` marques non applicables.
 - 2026-05-02: `ED_NewString` et `ED_ParseField`; temporaires locaux `b`/`v`/`b` marques non applicables.
+- 2026-05-02: `ED_ParseEdict`, limite au parse braces/key-value, cles `_` ignorees, erreurs EOF/valeur manquante et anglehack `angle` vers yaw `angles`; temporaires locaux `init`/`keyname`/`com_token` marques non applicables.
 
 ## Verdict du lot
 
@@ -59,6 +60,10 @@
 - `b`: non applicable. La ligne de matrice correspond au temporaire local `byte *b` de `ED_ParseField`; son comportement est couvert par les tests edict vs spawn-temp de `ED_ParseField`.
 - `v`: non applicable. La ligne de matrice correspond au temporaire local `float v` de `ED_ParseField`; son comportement est couvert par le test `F_ANGLEHACK`.
 - `b`: non applicable. Doublon de temporaire local `byte *b` de `ED_ParseField`, couvert par la validation de `ED_ParseField`.
+- `ED_ParseEdict`: valide. Le port `packages/game/src/g_spawn.ts` conserve le nom original, le commentaire d'en-tete, le parcours de dictionnaire deja ouvert, les erreurs `EOF without closing brace` et `closing brace without data`, l'ignore des cles commencant par `_`, le reset d'un edict sans champs et l'appel `ED_ParseField` pour chaque paire cle/valeur. `SpawnEntities` utilise maintenant `COM_Parse`/`ED_ParseEdict` pour worldspawn puis les entites map, au lieu du parseur permissif `formats/qfiles`.
+- `init`: non applicable. La ligne de matrice correspond au booleen local `init` de `ED_ParseEdict`; son effet est couvert par le test de dictionnaire vide qui remet l'edict a zero.
+- `keyname`: non applicable. La ligne de matrice correspond au buffer local `keyname[256]` de `ED_ParseEdict`; son comportement est couvert par la copie de cle, l'ignore des cles `_` et le dispatch vers `ED_ParseField`.
+- `com_token`: non applicable. La ligne de matrice correspond au pointeur local `com_token` de `ED_ParseEdict`; son comportement est couvert par les tests de tokens braces/key/value et erreurs EOF/valeur manquante.
 
 ## Checklist appliquee
 
@@ -147,6 +152,12 @@
 - Runtime: valide. `SV_SpawnServer` -> `ge.SpawnEntities` -> `SpawnEntities` charge worldspawn et les entites map avec `ED_ParseField`, puis appelle `ED_CallSpawn`; le test prouve aussi une cle `ClassName` insensible a la casse et un message worldspawn `\n`.
 - apps/web: valide indirectement. Le navigateur full-game declenche le spawn via le runtime serveur porte et consomme les configstrings/snapshots produits; aucune logique parallele de parse spawn dans `apps/web` ne masque ce flux.
 - renderer-three: valide indirectement. `ED_ParseField` ne rend rien directement, mais alimente les champs qui produisent ensuite modeles, frames, lightstyles, temp entities, areabits, camera ou scene selon le spawner; les tests full-game Three et web render order passent.
+- Identification: lot `ED_ParseEdict` dans matrice `game_g_spawn.c.md`, source `Quake-2-master/game/g_spawn.c`, cible proprietaire `packages/game/src/g_spawn.ts`; les lignes adjacentes `init`/`keyname`/`com_token` sont des temporaires locaux de cette fonction.
+- Comparaison C/H vs TS: entree C `char *data, edict_t *ent` vs TS `data/startIndex/GameEntity/GameRuntime`, sortie curseur suivant, parsing via `COM_Parse`, stop sur `}`, erreurs EOF/valeur manquante, `keyname` borne a 255 caracteres, flag `initialized`, ignore des cles `_` et appel `ED_ParseField` verifies. Le champ source `angle` reste route vers `F_ANGLEHACK`, donc yaw `s.angles[1]`, sans warning supplementaire dans le C local.
+- Commentaires d'en-tete: commentaire `ED_ParseEdict` ajoute avec `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage.
+- Runtime: valide. `SV_SpawnServer` -> `ge.SpawnEntities` -> `SpawnEntities` parse maintenant chaque entite par `COM_Parse`/`ED_ParseEdict`, appelle `ED_CallSpawn`, puis `G_FindTeams`/`InitBodyQue`/`PlayerTrail_Init`.
+- apps/web: valide indirectement. Le navigateur full-game declenche ce flux via le runtime serveur porte; aucune logique parallele de parse edict dans `apps/web` ne remplace `SpawnEntities`.
+- renderer-three: valide indirectement. `ED_ParseEdict` ne produit pas directement de rendu, mais alimente les champs qui peuvent devenir modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene via les spawners; `verify:full-game:three-renderer` et `verify:web-render-order` prouvent la consommation des sorties runtime.
 
 ## Corrections appliquees
 
@@ -169,6 +180,8 @@
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour le dispatch itemlist avant `spawns[]`, l'appel `SpawnItem` et la chute en warning d'un classname item en casse differente.
 - `packages/game/src/g_spawn.ts`: ajout de `ED_NewString`, `ED_ParseField` et branchement de `SpawnEntities` sur `ED_ParseField` pour worldspawn et entites map; table locale de champs de spawn pour eviter un cycle avec `g_save.ts`.
 - `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `ED_NewString`, `ED_ParseField`, cle de champ insensible a la casse, `FFL_NOSPAWN`, spawn-temp, `F_IGNORE`, champ inconnu, et propagation runtime depuis `SpawnEntities`.
+- `packages/game/src/g_spawn.ts`: ajout de `ED_ParseEdict` et branchement de `SpawnEntities` sur `COM_Parse`/`ED_ParseEdict` pour parser worldspawn et les entites map dans l'ownership `g_spawn.c`.
+- `scripts/verify/quake2-g-spawn.ts`: ajout de preuves pour `ED_ParseEdict`: paires cle/valeur, cles `_` ignorees, anglehack, reset dictionnaire vide, EOF sans brace fermante et brace fermante sans valeur.
 
 ## Tests
 
@@ -249,7 +262,12 @@
 - `npm run verify:full-game:server-host`: ok le 2026-05-02 apres branchement `ED_ParseField`.
 - `npm run verify:full-game:three-renderer`: ok le 2026-05-02 apres branchement `ED_ParseField`.
 - `npm run verify:web-render-order`: ok le 2026-05-02 apres branchement `ED_ParseField`.
+- `npm run verify:g-spawn`: ok le 2026-05-02 pour `ED_ParseEdict`.
+- `npm run typecheck`: ok le 2026-05-02 apres ajout `ED_ParseEdict`.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02 apres branchement `ED_ParseEdict`.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02 apres branchement `ED_ParseEdict`.
+- `npm run verify:web-render-order`: ok le 2026-05-02 apres branchement `ED_ParseEdict`.
 
 ## Prochain lot recommande
 
-- Continuer avec `ED_ParseEdict` et ses temporaires locaux `init`, `keyname` et `com_token`, en limitant le lot au parse braces/key-value et au warning `angle` -> `angles`.
+- Continuer avec `G_FindTeams`.

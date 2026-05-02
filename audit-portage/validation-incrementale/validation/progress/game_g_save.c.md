@@ -2,6 +2,41 @@
 
 ## Dernier lot traite
 
+- 2026-05-02: fonction `ReadLevelLocals` et temporaire local auto-detecte `field`.
+
+## Verdict du lot
+
+- `ReadLevelLocals`: valide. Dans le C, la fonction lit le bloc `level_locals_t` par `fread`, puis parcourt `levelfields` et applique `ReadField` pour rematerialiser `changemap` et les pointeurs edict niveau.
+- Dans le port TS, le format binaire est remplace par `restoreLevel`: les scalaires et vecteurs du niveau sont assignes depuis le snapshot JSON structure, `changemap` reste une chaine, et `sight_client`, `sight_entity`, `sound_entity`, `sound2_entity` et `current_entity` sont resolus par index d'edict. `syncRuntimeFromLevel` met ensuite a jour le miroir runtime.
+- `field`: valide. Le pointeur d'iteration C sur `levelfields` est porte par les assignations explicites de `restoreLevel`; le harness couvre `changemap`, les scalaires/vecteurs, les quatre references edict de `levelfields`, `current_entity` et la synchronisation runtime.
+- Commentaires d'en-tete: commentaire ajoute sur `restoreLevel` avec `Original name: ReadLevelLocals`, source, categorie, niveau de fidelite, comportement et notes de portage.
+
+## Branchement et integrations
+
+- Runtime: attendu et branche. Le role de `ReadLevelLocals` est atteint par `ReadLevel`, expose via `packages/game/src/g_main.ts` dans l'API game puis appele par `SV_ReadLevelFile` dans `packages/server/src/sv_ccmds.ts` et par l'initialisation/changement de niveau serveur.
+- apps/web: attendu et branche. `apps/web/src/full-game-server-host.ts` connecte `ge.ReadLevel` au `web-save-storage` et restaure aussi les configstrings/portal state; aucune logique web parallele ne remplace la restauration des level locals.
+- renderer-three: pas de consommation directe par `restoreLevel`. Les level locals restaures peuvent influencer ensuite les snapshots visibles, la camera/intermission et la scene via le runtime; l'absence d'appel direct renderer est acceptable car `renderer-three` consomme les sorties client/refresh posterieures, couvertes par le test full-game renderer.
+
+## Corrections appliquees
+
+- `packages/game/src/g_save.ts`: ajout du commentaire d'en-tete de `restoreLevel`.
+- `audit-portage/validation-incrementale/validation/matrices/game_g_save.c.md`: validation des lignes `ReadLevelLocals` et `field`.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md`: compteur `Validees` et prochain lot mis a jour.
+
+## Tests
+
+- `npm run verify:g-save`: ok le 2026-05-02.
+- `npm run verify:full-game:server-host`: ok le 2026-05-02.
+- `npm run verify:web-save-storage`: ok le 2026-05-02.
+- `npm run verify:full-game:three-renderer`: ok le 2026-05-02.
+- `npm run typecheck`: ok le 2026-05-02.
+
+## Prochain lot recommande
+
+- Continuer avec `WriteLevel`, puis ses temporaires locaux `i` et `ent` si le lot reste coherent.
+
+---
+
 - 2026-05-02: fonction `ReadEdict` et temporaire local auto-detecte `field`.
 
 ## Verdict du lot

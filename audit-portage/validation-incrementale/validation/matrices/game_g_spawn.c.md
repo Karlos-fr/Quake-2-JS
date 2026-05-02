@@ -23,10 +23,10 @@
 | `Quake-2-master/game/g_spawn.c` | global | `b` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `ED_ParseField`, couvert par la validation de `ED_ParseField`. |
 | `Quake-2-master/game/g_spawn.c` | global | `v` | `packages/game/src/g_misc.ts` | `v` | Non applicable | A redecouper | Temporaire local de `ED_ParseField`, couvert par la validation de `ED_ParseField`; ownership cible auto ignore. |
 | `Quake-2-master/game/g_spawn.c` | global | `b` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `ED_ParseField`, couvert par la validation de `ED_ParseField`. |
-| `Quake-2-master/game/g_spawn.c` | function | `ED_ParseEdict` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `init` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `keyname` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_spawn.c` | global | `com_token` | `packages/game/src/g_spawn.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_spawn.c` | function | `ED_ParseEdict` | `packages/game/src/g_spawn.ts` | `ED_ParseEdict` | Valide | A redecouper | Ajout port branche dans `SpawnEntities`; tests `verify:g-spawn`, `typecheck`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:web-render-order`. |
+| `Quake-2-master/game/g_spawn.c` | global | `init` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `ED_ParseEdict`, couvert par la validation de `ED_ParseEdict`. |
+| `Quake-2-master/game/g_spawn.c` | global | `keyname` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `ED_ParseEdict`, couvert par la validation de `ED_ParseEdict`. |
+| `Quake-2-master/game/g_spawn.c` | global | `com_token` | `packages/game/src/g_spawn.ts` |  | Non applicable | A redecouper | Temporaire local de `ED_ParseEdict`, couvert par la validation de `ED_ParseEdict`. |
 | `Quake-2-master/game/g_spawn.c` | function | `G_FindTeams` | `packages/game/src/g_spawn.ts` | `G_FindTeams` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_spawn.c` | function | `SpawnEntities` | `packages/game/src/g_spawn.ts` | `SpawnEntities` | Valide | A redecouper | Correction allocation sequentielle via `G_Spawn`; repro city1: 1091 entites BSP -> 528 edicts runtime, aucune entite visible hors `MAX_EDICTS`. |
 | `Quake-2-master/game/g_spawn.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | A verifier | A redecouper |  |

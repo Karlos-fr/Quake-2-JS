@@ -14,13 +14,16 @@ import { strict as assert } from "node:assert";
 
 import {
   FRAMETIME,
+  FL_FLY,
   FL_GODMODE,
+  FL_SWIM,
   ED_CallSpawn,
   G_TouchTriggers,
   ITEM_INDEX,
   MOVETYPE_NONE,
   SOLID_NOT,
   SOLID_TRIGGER,
+  SVF_DEADMONSTER,
   SVF_NOCLIENT,
   SVF_MONSTER,
   attachGameClient,
@@ -45,6 +48,7 @@ import {
   trigger_gravity_touch,
   trigger_counter_use,
   trigger_key_use,
+  trigger_monsterjump_touch,
   trigger_push_touch,
   trigger_relay_use
 } from "../../packages/game/src/g_trigger.js";
@@ -385,8 +389,15 @@ function verifyTriggerMonsterJump(): void {
   const runtime = createRuntime();
   const trigger = spawnGameEntity(runtime);
   trigger.classname = "trigger_monsterjump";
+  trigger.s.angles[1] = 90;
   trigger.properties.height = "260";
   SP_trigger_monsterjump(trigger, runtime);
+  assert.equal(trigger.speed, 200, "trigger_monsterjump default speed mismatch");
+  assert.equal(trigger.solid, SOLID_TRIGGER, "trigger_monsterjump solid mismatch");
+  assert.equal(trigger.movetype, MOVETYPE_NONE, "trigger_monsterjump movetype mismatch");
+  assert.equal((trigger.svflags & SVF_NOCLIENT) !== 0, true, "trigger_monsterjump must be hidden from client snapshots");
+  assert.equal(trigger.touch, trigger_monsterjump_touch, "SP_trigger_monsterjump must install trigger_monsterjump_touch");
+  assert.equal(trigger.movedir[2], 260, "trigger_monsterjump parsed height mismatch");
 
   const monster = spawnGameEntity(runtime);
   monster.classname = "monster_soldier";
@@ -396,8 +407,58 @@ function verifyTriggerMonsterJump(): void {
   linkGameEntity(runtime, monster);
 
   trigger.touch?.(trigger, monster, runtime);
+  assert.ok(Math.abs(monster.velocity[0]) < 0.000001, "trigger_monsterjump yaw 90 X velocity mismatch");
+  assert.ok(Math.abs(monster.velocity[1] - 200) < 0.000001, "trigger_monsterjump yaw 90 Y velocity mismatch");
   assert.equal(monster.velocity[2], 260, "trigger_monsterjump vertical velocity mismatch");
   assert.equal(monster.groundentity, null, "trigger_monsterjump must clear groundentity");
+
+  const airborne = spawnGameEntity(runtime);
+  airborne.svflags |= SVF_MONSTER;
+  airborne.velocity = [1, 2, 3];
+  trigger.touch?.(trigger, airborne, runtime);
+  assert.ok(Math.abs(airborne.velocity[0]) < 0.000001, "airborne trigger_monsterjump must still set X velocity");
+  assert.ok(Math.abs(airborne.velocity[1] - 200) < 0.000001, "airborne trigger_monsterjump must still set Y velocity");
+  assert.equal(airborne.velocity[2], 3, "airborne trigger_monsterjump must not set vertical velocity");
+
+  const ignoredCases: Array<[string, Partial<GameEntity>]> = [
+    ["flying monster", { flags: FL_FLY, svflags: SVF_MONSTER }],
+    ["swimming monster", { flags: FL_SWIM, svflags: SVF_MONSTER }],
+    ["dead monster", { svflags: SVF_MONSTER | SVF_DEADMONSTER }],
+    ["non monster", { svflags: 0 }]
+  ];
+  for (const [label, partial] of ignoredCases) {
+    const ignored = spawnGameEntity(runtime);
+    ignored.flags = partial.flags ?? 0;
+    ignored.svflags = partial.svflags ?? 0;
+    ignored.velocity = [7, 8, 9];
+    ignored.groundentity = runtime.entities[0] ?? null;
+    trigger.touch?.(trigger, ignored, runtime);
+    assert.deepEqual(ignored.velocity, [7, 8, 9], `trigger_monsterjump must ignore ${label}`);
+  }
+
+  const dispatchRuntime = createRuntime();
+  const dispatch = spawnGameEntity(dispatchRuntime);
+  dispatch.classname = "trigger_monsterjump";
+  dispatch.speed = 300;
+  dispatch.properties.height = "175";
+  dispatch.s.angles[1] = 90;
+  ED_CallSpawn(dispatch, dispatchRuntime);
+  dispatch.mins = [-16, -16, -16];
+  dispatch.maxs = [16, 16, 16];
+  linkGameEntity(dispatchRuntime, dispatch);
+
+  const touchedByRuntime = spawnGameEntity(dispatchRuntime);
+  touchedByRuntime.classname = "monster_soldier";
+  touchedByRuntime.health = 100;
+  touchedByRuntime.svflags |= SVF_MONSTER;
+  touchedByRuntime.origin = [0, 0, 0];
+  touchedByRuntime.mins = [-8, -8, -8];
+  touchedByRuntime.maxs = [8, 8, 8];
+  touchedByRuntime.groundentity = dispatchRuntime.entities[0] ?? null;
+  linkGameEntity(dispatchRuntime, touchedByRuntime);
+  G_TouchTriggers(dispatchRuntime, touchedByRuntime);
+  assert.ok(Math.abs(touchedByRuntime.velocity[1] - 300) < 0.000001, "trigger_monsterjump must be reachable through ED_CallSpawn and G_TouchTriggers");
+  assert.equal(touchedByRuntime.velocity[2], 175, "runtime trigger_monsterjump vertical velocity mismatch");
 }
 
 function createRuntime(): GameRuntime {

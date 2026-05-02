@@ -73,7 +73,10 @@ import {
   Use_Target_Tent,
   target_explosion_explode,
   target_crosslevel_target_think,
+  target_laser_off,
+  target_laser_on,
   target_laser_think,
+  target_laser_use,
   target_lightramp_use,
   trigger_crosslevel_trigger_use,
   use_target_explosion,
@@ -82,6 +85,9 @@ import {
 } from "../../packages/game/src/g_target.js";
 import type { game_import_t } from "../../packages/game/src/game.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
+
+const TARGET_LASER_START_ON = 1;
+const TARGET_LASER_SPARKS = 0x80000000;
 
 verifyTargetTempEntity();
 verifyTargetSpeaker();
@@ -620,6 +626,36 @@ function verifyLaserDamageAndLightramp(): void {
   assert.equal(laser.nextthink, runtime.time + FRAMETIME, "target_laser think cadence mismatch");
   laser.use?.(laser, null, null, runtime);
   assert.equal((laser.svflags & SVF_NOCLIENT) !== 0, true, "target_laser use must toggle off");
+
+  const toggleRuntime = createRuntime();
+  const toggleLaser = spawnGameEntity(toggleRuntime);
+  toggleLaser.classname = "target_laser";
+  toggleLaser.s.origin = [0, 0, 0];
+  toggleLaser.movedir = [1, 0, 0];
+  toggleRuntime.collision = {
+    world: {} as never,
+    trace: () => createTrace([48, 0, 0], null),
+    pointcontents: () => 0
+  };
+  target_laser_on(toggleLaser, toggleRuntime);
+  assert.equal(toggleLaser.activator, toggleLaser, "target_laser_on must default activator to self");
+  assert.equal((toggleLaser.spawnflags & TARGET_LASER_START_ON) !== 0, true, "target_laser_on must set start-on bit");
+  assert.equal((toggleLaser.spawnflags & TARGET_LASER_SPARKS) !== 0, true, "target_laser_on must set spark bit");
+  assert.equal((toggleLaser.svflags & SVF_NOCLIENT) === 0, true, "target_laser_on must make beam visible");
+  assertVec3NearlyEqual(toggleLaser.s.old_origin, [48, 0, 0], "target_laser_on must run immediate think");
+  target_laser_off(toggleLaser, toggleRuntime);
+  assert.equal((toggleLaser.spawnflags & TARGET_LASER_START_ON) === 0, true, "target_laser_off must clear only start-on bit");
+  assert.equal((toggleLaser.spawnflags & TARGET_LASER_SPARKS) !== 0, true, "target_laser_off must preserve spark bit");
+  assert.equal((toggleLaser.svflags & SVF_NOCLIENT) !== 0, true, "target_laser_off must hide beam");
+  assert.equal(toggleLaser.nextthink, 0, "target_laser_off must cancel pending think");
+  const toggleActivator = spawnGameEntity(toggleRuntime);
+  toggleActivator.classname = "player";
+  target_laser_use(toggleLaser, null, toggleActivator, toggleRuntime);
+  assert.equal(toggleLaser.activator, toggleActivator, "target_laser_use must store activator before toggling on");
+  assert.equal((toggleLaser.spawnflags & TARGET_LASER_START_ON) !== 0, true, "target_laser_use must toggle on");
+  target_laser_use(toggleLaser, null, null, toggleRuntime);
+  assert.equal(toggleLaser.activator, null, "target_laser_use must preserve explicit null activator like C");
+  assert.equal((toggleLaser.spawnflags & TARGET_LASER_START_ON) === 0, true, "target_laser_use must toggle off");
 
   const tracedRuntime = createRuntime();
   const tracedLaser = spawnGameEntity(tracedRuntime);

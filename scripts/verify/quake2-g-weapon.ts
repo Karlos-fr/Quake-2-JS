@@ -18,7 +18,10 @@ import {
   MOD_BLASTER,
   MOD_HIT,
   MOD_HYPERBLASTER,
+  MOVETYPE_FLYMISSILE,
+  SOLID_BBOX,
   SPLASH_BROWN_WATER,
+  SVF_DEADMONSTER,
   SVF_MONSTER,
   type GameEntity,
   type GameRuntime
@@ -40,11 +43,12 @@ function main(): void {
   verifyFireLeadBulletImpactAndDamage();
   verifyFireLeadWaterSplashAndBubbleTrail();
   verifyFireShotgunWrapperPelletCount();
+  verifyFireBlasterSpawnStateAndImmediateBacktrace();
   verifyFireBlasterTouchCallbackForwardsPlane();
   verifyBlasterTouchDamageAndHyperMod();
   verifyBlasterTouchOwnerSkyAndWorldImpact();
 
-  console.log("Verification g_weapon - check_dodge, fire_hit, fire_lead, fire_bullet, fire_shotgun and blaster_touch lots OK");
+  console.log("Verification g_weapon - check_dodge, fire_hit, fire_lead, fire_bullet, fire_shotgun, fire_blaster and blaster_touch lots OK");
 }
 
 function verifyCheckDodgeRuntimeBranch(): void {
@@ -431,6 +435,70 @@ function verifyFireBlasterTouchCallbackForwardsPlane(): void {
 
   assert.equal(tempEvents[0]?.type, temp_event_t.TE_BLASTER, "fire_blaster must wire blaster_touch as the bolt touch callback");
   assert.deepEqual(tempEvents[0]?.payload.dir, [0, -1, 0], "fire_blaster touch callback must forward physics plane normals");
+}
+
+function verifyFireBlasterSpawnStateAndImmediateBacktrace(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 12.5;
+  const shooter = createPlayer(runtime, 1);
+  shooter.s.origin = [0, 0, 0];
+  shooter.origin = [...shooter.s.origin];
+  const blocker = createRuntimeEntity({ classname: "func_door" }, 2);
+  runtime.entities[2] = blocker;
+
+  const traces: Array<{ start: vec3_t; end: vec3_t; passent: GameEntity | null; mask: number }> = [];
+  const touched: Array<{ self: GameEntity; other: GameEntity; origin: vec3_t; plane: cplane_t | null; surface: trace_t["surface"] | null }> = [];
+  runtime.collision = {
+    trace: (start, _mins, _maxs, end, passent, mask) => {
+      traces.push({ start: [...start], end: [...end], passent: passent as GameEntity | null, mask });
+      return makeTrace(0.5, [5, 0, 0], blocker);
+    },
+    pointcontents: () => 0
+  };
+
+  const bolt = fire_blaster(shooter, [10, 0, 0], [2, 0, 0], 15, 600, 0x40, true, runtime, {
+    check_dodge: () => undefined,
+    blaster_touch: (touchSelf, other, _localRuntime, plane, surface) => {
+      touched.push({
+        self: touchSelf,
+        other,
+        origin: [...touchSelf.s.origin],
+        plane: plane ?? null,
+        surface: surface ?? null
+      });
+    }
+  });
+
+  assert.equal(bolt.svflags, SVF_DEADMONSTER, "fire_blaster must mark the projectile SVF_DEADMONSTER");
+  assert.deepEqual(bolt.s.origin, [0, 0, 0], "immediate collision must move the bolt back 10 units along normalized dir");
+  assert.deepEqual(bolt.origin, [0, 0, 0], "runtime origin mirror must follow the backed-up projectile origin");
+  assert.deepEqual(bolt.s.old_origin, [10, 0, 0], "fire_blaster must preserve start as old_origin");
+  assert.deepEqual(bolt.velocity, [600, 0, 0], "fire_blaster must normalize dir before applying speed");
+  assert.equal(bolt.movetype, MOVETYPE_FLYMISSILE, "fire_blaster must use MOVETYPE_FLYMISSILE");
+  assert.equal(bolt.clipmask, MASK_SHOT, "fire_blaster must use MASK_SHOT clipmask");
+  assert.equal(bolt.solid, SOLID_BBOX, "fire_blaster must use SOLID_BBOX");
+  assert.equal(bolt.s.effects & 0x40, 0x40, "fire_blaster must OR the requested effect into entity state");
+  assert.deepEqual(bolt.mins, [0, 0, 0], "fire_blaster must clear projectile mins");
+  assert.deepEqual(bolt.maxs, [0, 0, 0], "fire_blaster must clear projectile maxs");
+  assert.equal(runtime.assets.modelPaths[bolt.s.modelindex - 1], "models/objects/laser/tris.md2", "fire_blaster must register the laser model");
+  assert.equal(runtime.assets.soundPaths[bolt.s.sound - 1], "misc/lasfly.wav", "fire_blaster must register the flight sound");
+  assert.equal(bolt.owner, shooter, "fire_blaster must retain the firing entity as owner");
+  assert.equal(bolt.nextthink, 14.5, "fire_blaster must schedule projectile cleanup two seconds later");
+  assert.equal(bolt.dmg, 15, "fire_blaster must preserve damage");
+  assert.equal(bolt.classname, "bolt", "fire_blaster must name the projectile bolt");
+  assert.equal(bolt.spawnflags, 1, "hyper blaster projectiles must set spawnflag 1");
+  assert.equal(bolt.linked, true, "fire_blaster must link the projectile into the runtime world");
+  assert.equal(traces.length, 1, "fire_blaster must run one immediate backtrace when dodge is hooked out");
+  assert.deepEqual(traces[0]?.start, [0, 0, 0], "fire_blaster backtrace must start at the shooter origin");
+  assert.deepEqual(traces[0]?.end, [10, 0, 0], "fire_blaster backtrace must end at the projectile origin");
+  assert.equal(traces[0]?.passent, bolt, "fire_blaster backtrace must ignore the projectile");
+  assert.equal(traces[0]?.mask, MASK_SHOT, "fire_blaster backtrace must use MASK_SHOT");
+  assert.equal(touched.length, 1, "fire_blaster must immediately touch a blocker found by the backtrace");
+  assert.equal(touched[0]?.self, bolt, "fire_blaster immediate touch must use the bolt as self");
+  assert.equal(touched[0]?.other, blocker, "fire_blaster immediate touch must pass the traced entity");
+  assert.deepEqual(touched[0]?.origin, [0, 0, 0], "fire_blaster immediate touch must see the backed-up origin");
+  assert.equal(touched[0]?.plane, null, "fire_blaster immediate touch must match the C NULL plane argument");
+  assert.equal(touched[0]?.surface, null, "fire_blaster immediate touch must match the C NULL surface argument");
 }
 
 function verifyBlasterTouchDamageAndHyperMod(): void {

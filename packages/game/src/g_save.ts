@@ -564,6 +564,20 @@ function snapshotLevel(context: GameMainContext) {
   };
 }
 
+/**
+ * Original name: ReadLevelLocals
+ * Source: game/g_save.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Restores `level_locals_t` state from the structured level snapshot and rematerializes the original `levelfields`
+ *   edict pointers through saved edict indexes.
+ *
+ * Porting notes:
+ * - Replaces the C raw `fread` plus `ReadField` pass with assignments from the JSON save payload; `ReadLevel`
+ *   restores the edict array first so level-local edict references can resolve to runtime objects.
+ */
 function restoreLevel(context: GameMainContext, snapshot: ReturnType<typeof snapshotLevel>): void {
   context.level.framenum = snapshot.framenum;
   context.level.time = snapshot.time;

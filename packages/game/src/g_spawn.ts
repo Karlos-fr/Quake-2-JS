@@ -16,8 +16,9 @@
  * - This file is intended to stay close to the original spawn and team-linking flow.
  */
 
-import { parseEntityLump, type BspEntity } from "../../formats/src/qfiles.js";
+import type { BspEntity } from "../../formats/src/qfiles.js";
 import {
+  COM_Parse,
   CS_CDTRACK,
   CS_ITEMS,
   CS_LIGHTS,
@@ -541,8 +542,7 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
     (_, index) => context.runtime.entities[index + 1]?.client ?? null
   );
 
-  const parsedEntities = parseEntityLump(entstring);
-  const nextRuntime = createGameRuntimeFromBspEntities(buildInitialServerEntityList(parsedEntities, context.runtime.maxclients));
+  const nextRuntime = createGameRuntimeFromBspEntities(buildInitialServerEntityList(context.runtime.maxclients));
   nextRuntime.collision = context.runtime.collision;
   if (context.runtime.engineLinkEntity) {
     nextRuntime.engineLinkEntity = context.runtime.engineLinkEntity;
@@ -565,13 +565,6 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
   context.level.level_name = "";
   context.level.power_cubes = 0;
 
-  const worldspawn = context.runtime.entities[0] ?? null;
-  if (worldspawn) {
-    loadParsedEntityIntoEdict(worldspawn, parsedEntities[0] ?? { properties: { classname: "worldspawn" } }, context.runtime);
-    ED_CallSpawn(worldspawn, context.runtime);
-    configureWorldspawn(context, worldspawn, mapname);
-  }
-
   for (let index = 1; index <= context.runtime.maxclients; index += 1) {
     const player = context.runtime.entities[index]!;
     player.inuse = false;
@@ -581,9 +574,33 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
   }
 
   let inhibit = 0;
-  for (const parsedEntity of parsedEntities.slice(1)) {
-    const entity = G_Spawn(context.runtime);
-    loadParsedEntityIntoEdict(entity, parsedEntity, context.runtime);
+  let parsedIndex: number | null = 0;
+  let parsedEntityIndex = 0;
+  let parsedWorldspawn = false;
+
+  while (parsedIndex !== null) {
+    const opening = COM_Parse(entstring, parsedIndex);
+    if (opening.token.length === 0 && opening.nextIndex === null) {
+      break;
+    }
+    if (opening.token[0] !== "{") {
+      context.gi.error("ED_LoadFromFile: found %s when expecting {", opening.token);
+    }
+
+    const entity = parsedEntityIndex === 0 ? context.runtime.entities[0]! : G_Spawn(context.runtime);
+    parsedIndex = ED_ParseEdict(entstring, opening.nextIndex ?? entstring.length, entity, context.runtime, (message) => {
+      context.gi.error("%s", message);
+      throw new Error(message);
+    });
+
+    if (parsedEntityIndex === 0) {
+      ED_CallSpawn(entity, context.runtime);
+      configureWorldspawn(context, entity, mapname);
+      parsedWorldspawn = true;
+      parsedEntityIndex += 1;
+      continue;
+    }
+    parsedEntityIndex += 1;
 
     applySpawnFlagMapHack(context.runtime, entity);
     if (shouldInhibitSpawnEntity(context.runtime, entity)) {
@@ -594,6 +611,13 @@ export function SpawnEntities(context: GameMainContext, mapname: string, entstri
     entity.spawnflags &= ~SPAWNFLAG_NOT_MASK;
 
     ED_CallSpawn(entity, context.runtime);
+  }
+
+  if (!parsedWorldspawn) {
+    const worldspawn = context.runtime.entities[0]!;
+    loadParsedEntityIntoEdict(worldspawn, { properties: { classname: "worldspawn" } }, context.runtime);
+    ED_CallSpawn(worldspawn, context.runtime);
+    configureWorldspawn(context, worldspawn, mapname);
   }
 
   context.gi.dprintf("%i entities inhibited\n", inhibit);
@@ -734,6 +758,66 @@ export function ED_ParseField(
     entityClassname: ent.classname
   });
   return false;
+}
+
+/**
+ * Original name: ED_ParseEdict
+ * Source: game/g_spawn.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Parses one already-opened entity dictionary from the textual BSP entity lump and applies key/value pairs to one edict.
+ *
+ * Porting notes:
+ * - `startIndex` replaces the original mutable `char **data` cursor and the returned index is the next scan position.
+ * - Uses `COM_Parse` so braces, quoted key/value tokens, comments and EOF errors follow the same tokenizer as the C path.
+ */
+export function ED_ParseEdict(
+  data: string,
+  startIndex: number,
+  ent: GameEntity,
+  runtime: GameRuntime,
+  onError: (message: string) => never = (message) => {
+    throw new Error(message);
+  },
+  spawnTemp?: spawn_temp_t
+): number | null {
+  let index: number | null = startIndex;
+  let initialized = false;
+
+  while (index !== null) {
+    const keyParse = COM_Parse(data, index);
+    const com_token = keyParse.token;
+    if (com_token[0] === "}") {
+      break;
+    }
+    if (keyParse.nextIndex === null) {
+      return onError("ED_ParseEntity: EOF without closing brace");
+    }
+
+    const keyname = com_token.slice(0, 255);
+    const valueParse = COM_Parse(data, keyParse.nextIndex);
+    if (valueParse.nextIndex === null) {
+      return onError("ED_ParseEntity: EOF without closing brace");
+    }
+    if (valueParse.token[0] === "}") {
+      return onError("ED_ParseEntity: closing brace without data");
+    }
+
+    initialized = true;
+    if (keyname[0] !== "_") {
+      ED_ParseField(keyname, valueParse.token, ent, runtime, spawnTemp);
+    }
+
+    index = valueParse.nextIndex;
+  }
+
+  if (!initialized) {
+    resetParsedEdict(ent);
+  }
+
+  return index === null ? null : COM_Parse(data, index).nextIndex;
 }
 
 /**
@@ -932,8 +1016,8 @@ function precacheGameSound(context: GameMainContext, path: string): void {
   context.gi.soundindex(path);
 }
 
-function buildInitialServerEntityList(parsedEntities: BspEntity[], maxclients: number): BspEntity[] {
-  const worldspawn = parsedEntities[0] ? { properties: {} } : { properties: { classname: "worldspawn" } };
+function buildInitialServerEntityList(maxclients: number): BspEntity[] {
+  const worldspawn = { properties: {} };
   const reservedClients = Array.from({ length: maxclients }, () => ({ properties: { classname: "player" } }));
   return [worldspawn, ...reservedClients];
 }
@@ -944,6 +1028,14 @@ function loadParsedEntityIntoEdict(entity: GameEntity, parsedEntity: BspEntity, 
   for (const [key, value] of Object.entries(parsedEntity.properties)) {
     ED_ParseField(key, value, entity, runtime);
   }
+}
+
+function resetParsedEdict(entity: GameEntity): void {
+  const parsed = createRuntimeEntity({}, entity.index);
+  Object.assign(entity, parsed);
+  entity.inuse = false;
+  entity.classname = "";
+  entity.properties = {};
 }
 
 function applyParsedField(field: field_t, value: string, ent: GameEntity, spawnTemp?: spawn_temp_t): void {

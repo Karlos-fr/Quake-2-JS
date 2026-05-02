@@ -39,7 +39,7 @@ import {
   createSpawnTemp,
   damage_t
 } from "../../packages/game/src/g_local.js";
-import { ED_CallSpawn, ED_NewString, ED_ParseField, G_FindTeams, SpawnEntities, dm_statusbar, single_statusbar, spawns } from "../../packages/game/src/g_spawn.js";
+import { ED_CallSpawn, ED_NewString, ED_ParseEdict, ED_ParseField, G_FindTeams, SpawnEntities, dm_statusbar, single_statusbar, spawns } from "../../packages/game/src/g_spawn.js";
 import { G_RunFrame, InitGame, createGameMainContext } from "../../packages/game/src/g_main.js";
 import { spawnGameEntity } from "../../packages/game/src/runtime.js";
 
@@ -269,6 +269,50 @@ assert.equal(
   context.runtime.logEntries.some((entry) => entry.kind === "warning" && entry.message.includes("unknown_field is not a field")),
   true,
   "ED_ParseField must warn on unknown fields"
+);
+
+const parsedEdictEntity = spawnGameEntity(context.runtime);
+const parsedEdictEnd = ED_ParseEdict(
+  `{
+"_comment" "discarded"
+"classname" "info_player_intermission"
+"angle" "270"
+"message" "edict\\nmessage"
+}
+{
+"classname" "info_null"
+}
+`,
+  1,
+  parsedEdictEntity,
+  context.runtime
+);
+assert.notEqual(parsedEdictEnd, null, "ED_ParseEdict must return the next scan position after the closing brace");
+assert.equal(parsedEdictEntity.classname, "info_player_intermission", "ED_ParseEdict must parse key/value pairs into the edict");
+assert.equal(parsedEdictEntity.message, "edict\nmessage", "ED_ParseEdict must route string fields through ED_ParseField");
+assert.deepEqual(parsedEdictEntity.s.angles, [0, 270, 0], "ED_ParseEdict must preserve the C anglehack path from angle to yaw angles");
+assert.equal(parsedEdictEntity.properties._comment, undefined, "ED_ParseEdict must discard utility keys with a leading underscore");
+
+const emptyParsedEdict = spawnGameEntity(context.runtime);
+emptyParsedEdict.classname = "before_empty_parse";
+ED_ParseEdict(`{
+}
+`, 1, emptyParsedEdict, context.runtime);
+assert.equal(emptyParsedEdict.inuse, false, "ED_ParseEdict must clear an edict with no parsed fields");
+assert.equal(emptyParsedEdict.classname, "", "ED_ParseEdict empty dictionaries must clear classname state");
+
+assert.throws(
+  () => ED_ParseEdict(`{
+"classname"`, 1, spawnGameEntity(context.runtime), context.runtime),
+  /EOF without closing brace/,
+  "ED_ParseEdict must error on EOF before a closing brace"
+);
+assert.throws(
+  () => ED_ParseEdict(`{
+"classname" }
+`, 1, spawnGameEntity(context.runtime), context.runtime),
+  /closing brace without data/,
+  "ED_ParseEdict must error on a closing brace where a value is expected"
 );
 
 const itemSpawnEntity = spawnGameEntity(context.runtime);

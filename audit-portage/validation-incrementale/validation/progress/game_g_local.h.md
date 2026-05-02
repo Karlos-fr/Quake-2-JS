@@ -1017,6 +1017,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `linkcount`, `power_armor_type`, `power_armor_power` passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-monster` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
 
+- 2026-05-02: lot globals header `sm_meat_index`, `snd_fry`, `jacket_armor_index`, `combat_armor_index`.
+- Verdict: `Valide` pour les 4 globals apres comparaison H/C vs TS, verification des exceptions de nommage par assets runtime et preuves d'initialisation/consommation.
+- Source H/C comparee:
+  - `g_local.h` declare `extern int sm_meat_index`, `snd_fry`, `jacket_armor_index`, `combat_armor_index`.
+  - `g_main.c` definit `sm_meat_index` et `snd_fry`; `SP_worldspawn` dans `g_spawn.c` affecte `snd_fry = gi.soundindex("player/fry.wav")` et `sm_meat_index = gi.modelindex("models/objects/gibs/sm_meat/tris.md2")`.
+  - `g_items.c` garde `jacket_armor_index`/`combat_armor_index` comme statics initialises par `SetItemNames`, puis consommes par `ArmorIndex`, `Pickup_Armor` et les conversions d'armure.
+- Cibles TS verifiees:
+  - `packages/game/src/g_spawn.ts`: `configureWorldspawn`/`precacheWorldspawnSounds` enregistrent `player/fry.wav`; le modele small meat est enregistre par les flux gib via `registerGameModel`.
+  - `packages/game/src/p_view.ts`: `G_SetClientSound` utilise `registerGameSound(runtime, "player/fry.wav")` pour le son boucle lava/slime, equivalent a l'index `snd_fry`.
+  - `packages/game/src/g_misc.ts`: `gib_touch` compare l'index modele via `runtime.assets.modelPaths[self.s.modelindex - 1] === "models/objects/gibs/sm_meat/tris.md2"` avant d'avancer l'animation small meat.
+  - `packages/game/src/g_items.ts`: `jacket_armor_index` et `combat_armor_index` sont caches par `cacheItemIndices`, appele par `InitItems`; `ArmorIndex` preserve l'ordre jacket/combat/body et `Pickup_Armor` reutilise les caches pour shards/conversions.
+- Runtime: integration attendue et branchee. `snd_fry` est atteint par `SpawnEntities`/worldspawn puis `G_RunFrame` -> `ClientEndServerFrames` -> `ClientEndServerFrame` -> `G_SetClientSound`; `sm_meat_index` est atteint via worldspawn/gib spawn puis `gib_touch`; les index d'armure sont atteints via `InitGame` -> `InitItems`, pickups items, `ArmorIndex`, `CheckArmor` et HUD.
+- apps/web: integration attendue indirectement via le host full-game/local qui consomme les snapshots, sons/configstrings et HUD; aucune logique parallele dans `apps/web` ne remplace ces flux. `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue. `sm_meat_index` produit un modele/frame visible de gib, `snd_fry` produit un loop sound sur `ent.s.sound`, et les armures alimentent HUD/stats et effets de gameplay; `packages/renderer-three` consomme les entites/modeles/frames via le flux full-game, sans logique gameplay parallele. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: pas de fonction nouvelle dans ce lot; commentaires d'en-tete de `G_SetClientSound`, `gib_touch`, `ArmorIndex`, `Pickup_Armor`, `InitGame` et du bloc worldspawn sound precache verifies.
+- Corrections appliquees:
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `sm_meat_index`, `snd_fry`, `jacket_armor_index`, `combat_armor_index` passees a `Valide`; cibles des deux globals d'assets documentees.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-spawn` OK; `npm run verify:g-misc` OK; `npm run verify:p-view` OK; `npm run verify:g-items` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -1050,7 +1069,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `sm_meat_index` et `snd_fry`, puis `jacket_armor_index` et `combat_armor_index` si le lot reste petit, avec preuves d'initialisation precache/items et consommation runtime.
+- Continuer avec `body_armor_index`, puis les macros MOD a partir de `MOD_UNKNOWN` si le lot reste petit, avec preuves de consommation armor/combat et means-of-death runtime.
 
 ## Blocages
 

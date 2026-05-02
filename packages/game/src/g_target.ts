@@ -773,6 +773,10 @@ export function target_laser_think(self: GameEntity, runtime: GameRuntime): void
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Ensures an activator exists, marks the laser as active/sparking,
+ *   makes the beam server-visible, then immediately runs the laser think.
+ * Porting notes: The C bitmask `0x80000001` is represented by the spark and
+ *   start-on constants.
  */
 export function target_laser_on(self: GameEntity, runtime: GameRuntime): void {
   if (!self.activator) {
@@ -788,6 +792,8 @@ export function target_laser_on(self: GameEntity, runtime: GameRuntime): void {
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Clears only the active/start-on bit, hides the laser entity from
+ *   clients with `SVF_NOCLIENT`, and cancels the pending think.
  */
 export function target_laser_off(self: GameEntity, _runtime: GameRuntime): void {
   self.spawnflags &= ~TARGET_LASER_START_ON;
@@ -800,6 +806,8 @@ export function target_laser_off(self: GameEntity, _runtime: GameRuntime): void 
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Records the triggering activator and toggles the laser through
+ *   `target_laser_on` or `target_laser_off` based on the active bit.
  */
 export function target_laser_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   self.activator = activator;
