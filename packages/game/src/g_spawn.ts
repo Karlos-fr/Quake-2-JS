@@ -836,8 +836,6 @@ export function G_FindTeams(runtime: GameRuntime): { teamCount: number; entityCo
   let c = 0;
   let c2 = 0;
 
-  clearTeamLinks(runtime);
-
   for (let i = 1; i < runtime.entities.length; i += 1) {
     const e = runtime.entities[i];
     if (!e.inuse || !e.team || (e.flags & FL_TEAMSLAVE) !== 0) {

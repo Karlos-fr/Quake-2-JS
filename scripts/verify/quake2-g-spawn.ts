@@ -395,15 +395,38 @@ teamMaster.team = "beta";
 const teamSlave = spawnGameEntity(teamRuntime);
 teamSlave.classname = "func_door";
 teamSlave.team = "beta";
+const teamTail = spawnGameEntity(teamRuntime);
+teamTail.classname = "func_door";
+teamTail.team = "beta";
 const unrelated = spawnGameEntity(teamRuntime);
 unrelated.classname = "func_door";
 unrelated.team = "gamma";
 
 const teamResult = G_FindTeams(teamRuntime);
-assert.deepEqual(teamResult, { teamCount: 2, entityCount: 3 }, "G_FindTeams count mismatch");
+assert.deepEqual(teamResult, { teamCount: 2, entityCount: 4 }, "G_FindTeams count mismatch");
 assert.equal(teamMaster.teamchain, teamSlave, "G_FindTeams must chain team members in entity order");
 assert.equal(teamSlave.teammaster, teamMaster, "G_FindTeams teammaster mismatch");
+assert.equal(teamSlave.teamchain, teamTail, "G_FindTeams must append later team members");
+assert.equal(teamTail.teammaster, teamMaster, "G_FindTeams tail teammaster mismatch");
+assert.equal(teamTail.teamchain, null, "G_FindTeams must leave the final team member unchained");
 assert.equal((teamSlave.flags & FL_TEAMSLAVE) !== 0, true, "G_FindTeams team slave flag mismatch");
+assert.equal((teamTail.flags & FL_TEAMSLAVE) !== 0, true, "G_FindTeams tail slave flag mismatch");
+assert.equal(unrelated.teammaster, unrelated, "G_FindTeams must make a single-member team its own master");
+
+const preflaggedRuntime = createGameMainContext(imports).runtime;
+const preflaggedSlave = spawnGameEntity(preflaggedRuntime);
+preflaggedSlave.classname = "func_door";
+preflaggedSlave.team = "delta";
+preflaggedSlave.flags |= FL_TEAMSLAVE;
+const preflaggedMaster = spawnGameEntity(preflaggedRuntime);
+preflaggedMaster.classname = "func_door";
+preflaggedMaster.team = "delta";
+const preflaggedResult = G_FindTeams(preflaggedRuntime);
+assert.deepEqual(preflaggedResult, { teamCount: 1, entityCount: 1 }, "G_FindTeams must skip pre-existing FL_TEAMSLAVE entities");
+assert.equal((preflaggedSlave.flags & FL_TEAMSLAVE) !== 0, true, "G_FindTeams must preserve pre-existing FL_TEAMSLAVE");
+assert.equal(preflaggedSlave.teammaster, null, "G_FindTeams must not promote a pre-existing team slave");
+assert.equal(preflaggedMaster.teammaster, preflaggedMaster, "G_FindTeams must master the first non-slave entity");
+assert.equal(preflaggedMaster.teamchain, null, "G_FindTeams must not chain skipped pre-existing team slaves");
 
 const healthSpawnNames = [
   "item_health",
