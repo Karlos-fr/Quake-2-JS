@@ -167,10 +167,6 @@ export function CL_BuildFrameEntityEventEffects(
   const effects: ClientActionEffect[] = [];
 
   for (const event of events) {
-    if (event.event === 0 && (event.effects & EF_TELEPORTER) !== 0) {
-      continue;
-    }
-
     effects.push(...CL_BuildEntityEventEffects(event, {
       clFootsteps: options.clFootsteps ?? runtime.cl.cl_footsteps
     }));

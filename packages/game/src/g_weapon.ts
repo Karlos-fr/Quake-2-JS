@@ -118,7 +118,13 @@ export interface GameWeaponWorldHooks {
   Grenade_Explode?: (ent: GameEntity, runtime: GameRuntime) => void;
   Grenade_Touch?: (self: GameEntity, other: GameEntity, runtime: GameRuntime) => void;
   bfg_think?: (ent: GameEntity, runtime: GameRuntime) => void;
-  bfg_touch?: (self: GameEntity, other: GameEntity, runtime: GameRuntime) => void;
+  bfg_touch?: (
+    self: GameEntity,
+    other: GameEntity,
+    runtime: GameRuntime,
+    plane?: cplane_t | null,
+    surf?: csurface_t | null
+  ) => void;
   blaster_touch?: (
     self: GameEntity,
     other: GameEntity,
@@ -534,7 +540,9 @@ export function fire_bfg(
   bfg.maxs = [0, 0, 0];
   bfg.s.modelindex = registerGameModel(runtime, "sprites/s_bfg1.sp2");
   bfg.owner = self;
-  bfg.touch = hooks.bfg_touch ?? ((touchSelf, other, localRuntime) => bfg_touch(touchSelf, other, localRuntime, hooks));
+  bfg.touch = hooks.bfg_touch ?? (
+    (touchSelf, other, localRuntime, plane, surf) => bfg_touch(touchSelf, other, localRuntime, hooks, plane ?? null, surf ?? null)
+  );
   bfg.nextthink = runtime.time + 0.1;
   bfg.think = hooks.bfg_think ?? ((thinkSelf, localRuntime) => bfg_think(thinkSelf, localRuntime, hooks));
   bfg.count = damage;

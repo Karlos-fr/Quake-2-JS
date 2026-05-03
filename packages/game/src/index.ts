@@ -93,6 +93,8 @@ export {
   RANGE_MID,
   RANGE_NEAR,
   RIGHT_HANDED,
+  crandom,
+  random,
   SFL_CROSS_TRIGGER_1,
   SFL_CROSS_TRIGGER_2,
   SFL_CROSS_TRIGGER_3,

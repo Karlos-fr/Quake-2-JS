@@ -25,13 +25,15 @@ import {
   CL_ParticleEffect3,
   CL_RunDLights,
   CL_RunLightStyles,
-  CL_SetLightstyle
+  CL_SetLightstyle,
+  CL_TeleporterParticles
 } from "../../packages/client/src/cl_fx.js";
 import {
   ATTN_NORM,
   CHAN_AUTO,
   CHAN_WEAPON,
   CS_LIGHTS,
+  EF_TELEPORTER,
   entity_event_t,
   MAX_LIGHTSTYLES,
   MAX_QPATH,
@@ -59,8 +61,10 @@ function main(): void {
   verifyParticleEffect2RuntimeParticles();
   verifyParticleEffect3RuntimeParticles();
   verifyParticleEffect3TempEntityRuntimeBranch();
+  verifyTeleporterRuntimeParticles();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
+  verifyTeleporterEntityEventMetadata();
   verifyItemRespawnEntityEventMetadata();
   verifyLightstyleManagement();
   verifyDlightManagement();
@@ -244,6 +248,32 @@ function verifyParticleEffect3TempEntityRuntimeBranch(): void {
   assert.equal(particles.length, 5, "TE_TUNNEL_SPARKS should dispatch to CL_ParticleEffect3");
   assert.ok(particles.every((particle) => particle.color === 0x44), "TE_TUNNEL_SPARKS should preserve packet color");
   assert.ok(particles.every((particle) => particle.accel[2] === 40), "TE_TUNNEL_SPARKS should use CL_ParticleEffect3 positive gravity");
+}
+
+function verifyTeleporterRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 6789;
+  const origin: vec3_t = [96, 48, 24];
+
+  withMockRandom(0, () => {
+    CL_TeleporterParticles(runtime, origin);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 8, "CL_TeleporterParticles should allocate the original 8 particles");
+  assert.equal(runtime.cl.free_particles, 8, "CL_TeleporterParticles free list should advance by 8");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "teleporter particles should preserve cl.time");
+  assert.ok(particles.every((particle) => particle.color === 0xdb), "teleporter particle color mismatch");
+  assert.ok(particles.every((particle) => particle.org[0] === origin[0] - 16), "teleporter x jitter mismatch");
+  assert.ok(particles.every((particle) => particle.org[1] === origin[1] - 16), "teleporter y jitter mismatch");
+  assert.ok(particles.every((particle) => particle.org[2] === origin[2] - 8), "teleporter z jitter mismatch");
+  assert.ok(particles.every((particle) => particle.vel[0] === -14 && particle.vel[1] === -14), "teleporter horizontal velocity mismatch");
+  assert.ok(particles.every((particle) => particle.vel[2] === 80), "teleporter upward velocity mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === -40), "teleporter gravity mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && particle.alphavel === -0.5), "teleporter alpha decay mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 8, "CL_TeleporterParticles particles should reach the refresh particle list");
 }
 
 function verifyMonsterMuzzleFlash2Effects(): void {
@@ -574,6 +604,40 @@ function verifyItemRespawnRuntimeParticles(): void {
 
   const renderParticles = CL_AddParticles(runtime);
   assert.equal(renderParticles.length, 64, "CL_ItemRespawnParticles particles should reach the refresh particle list");
+}
+
+function verifyTeleporterEntityEventMetadata(): void {
+  const origin: vec3_t = [11, 22, 33];
+  const event: ClientEntityEvent = {
+    number: 9,
+    event: 0,
+    effects: EF_TELEPORTER,
+    state: {
+      number: 9,
+      origin,
+      angles: [0, 0, 0],
+      old_origin: [0, 0, 0],
+      modelindex: 1,
+      modelindex2: 0,
+      modelindex3: 0,
+      modelindex4: 0,
+      frame: 0,
+      skinnum: 0,
+      effects: EF_TELEPORTER,
+      renderfx: 0,
+      solid: 0,
+      sound: 0,
+      event: 0
+    }
+  };
+
+  const effects = CL_BuildEntityEventEffects(event);
+  const particles = effects.find((effect) => effect.kind === "teleporter-particles");
+  assert.ok(particles, "EF_TELEPORTER should expose teleporter particles to apps/web");
+  assert.equal(particles.category, "entity-event", "teleporter particles should remain tagged as an entity event");
+  assert.deepEqual(particles.position, origin, "teleporter particles should preserve entity origin");
+  assert.equal(particles.count, 8, "teleporter metadata should preserve particle count");
+  assert.equal(particles.color, 0xdb, "teleporter metadata should preserve color");
 }
 
 function verifyItemRespawnEntityEventMetadata(): void {

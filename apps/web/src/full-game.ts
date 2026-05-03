@@ -147,6 +147,7 @@ import {
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
   CL_ParticleEffect,
+  CL_TeleporterParticles,
   type ClientActionEffect
 } from "../../../packages/client/src/cl_fx.js";
 import { CL_SmokeAndFlash } from "../../../packages/client/src/cl_tent.js";
@@ -763,6 +764,8 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
         CL_ParticleEffect(client, effect.position, [0, 0, 0], effect.color ?? 0, effect.count ?? 0);
       } else if (effect.kind === "item-respawn-particles" && effect.position) {
         CL_ItemRespawnParticles(client, effect.position);
+      } else if (effect.kind === "teleporter-particles" && effect.position) {
+        CL_TeleporterParticles(client, effect.position);
       } else if (effect.kind === "smoke-and-flash" && effect.position) {
         CL_SmokeAndFlash(client, effect.position);
       } else if (

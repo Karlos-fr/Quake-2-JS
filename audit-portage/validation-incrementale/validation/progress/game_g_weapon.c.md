@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: confirmation du deuxieme `ignore` de matrice, puis `bfg_explode` avec les temporaires locaux `ent`, `points`, `dist` et `v`.
-- Verdict du lot: valide pour `bfg_explode`; les temporaires locaux du lot sont non applicables comme entites autonomes.
+- Dernier lot traite: `bfg_touch` seul.
+- Verdict du lot: valide pour `bfg_touch`.
 
 ## Preuves session
 
@@ -50,12 +50,31 @@
 - `apps/web`: integration attendue indirecte via runtime full-game/local, transport des temp entities, sons/snapshots et refresh client; aucune logique web parallele ne remplace l'effet BFG.
 - `packages/renderer-three`: sorties visibles attendues = entite projectile `EF_BFG`, sprite d'explosion `TE_BFG_EXPLOSION`, big explosion et lasers BFG en aval; elles passent par `CL_ParseTEnt`/`CL_ExecuteTempEntityEffects`, particules et beams exposes dans `ClientRefreshFrame`, puis consommes par les adapters Three; aucun manque ouvert observe.
 
+## Preuves session - `bfg_touch`
+
+- C source compare: `Quake-2-master/game/g_weapon.c`, fonction `bfg_touch`.
+- TS cible compare: `packages/game/src/g_weapon.ts`, fonction `bfg_touch`.
+- Commentaire d'en-tete verifie sur `bfg_touch` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`).
+- Comparaison C/TS `bfg_touch`: retour si `other == self->owner`, liberation sans effet si surface `SURF_SKY`, `PlayerNoise` pour owner client, degat direct `T_Damage` avec `plane->normal` et `MOD_BFG_BLAST`, splash `T_RadiusDamage` avec ignore `other`, son `weapons/bfg__x1b.wav`, passage `SOLID_NOT`, suppression `touch`, recul origine par `-FRAMETIME * velocity`, arret velocity, modele `sprites/s_bfg3.sp2`, reset frame/sound, suppression `EF_ANIM_ALLFAST`, installation `bfg_explode`, `nextthink = level.time + FRAMETIME`, `enemy = other`, emission `TE_BFG_BIGEXPLOSION`.
+- Correction TS: le callback runtime installe par `fire_bfg` transmet maintenant `plane`/`surf` a `bfg_touch`, comme les callbacks `blaster_touch` et `rocket_touch`; cela preserve la branche ciel et la normale de collision du chemin `SV_Impact`/`G_RunFrame`.
+- Runtime verifie: `bfg_touch` est atteignable via `fire_bfg` -> projectile `MOVETYPE_FLYMISSILE` -> `SV_Physics_Toss`/`SV_Impact`/`G_RunFrame`; le callback forwarde bien plane/surface, puis programme `bfg_explode`.
+- `apps/web`: integration attendue indirecte via runtime serveur/local, snapshots et temp entities; aucune logique web parallele ne remplace l'impact BFG.
+- `packages/renderer-three`: sorties visibles attendues = `TE_BFG_BIGEXPLOSION`, sprite `sprites/s_bfg3.sp2` et particules BFG client; elles passent par `CL_ParseTEnt`/`CL_ExecuteTempEntityEffects` et les adapters Three (`ClientRefreshFrame`, explosions/particules). Aucun manque ouvert observe.
+
 ## Tests lances
 
 - `npm run verify:g-weapon`
 - `npm run verify:p-weapon`
 - `npm run verify:g-monster`
 - `npm run verify:g-turret`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+- `npm run verify:g-weapon` (session `bfg_touch`)
+- `npm run verify:p-weapon`
+- `npm run verify:g-monster`
 - `npm run verify:full-game:server-host`
 - `npm run verify:local-gameplay-sync`
 - `npm run verify:web-render-order`
@@ -84,10 +103,12 @@
 - `scripts/verify/quake2-g-weapon.ts`: renforcement de `verifyFireRailDamageModAndVisibleTrail` pour couvrir les locaux `from`, `end`, `tr`, premier `ignore`, `mask`, `water`, la branche slime/lava, le monstre perce, `MOD_RAILGUN` et le double `TE_RAILTRAIL`.
 - `packages/game/src/g_weapon.ts`: `fire_bfg` renseigne maintenant `radius_dmg = damage`, champ lu par `bfg_explode` comme dans le C.
 - `scripts/verify/quake2-g-weapon.ts`: renforcement de `verifyBfgDamageModsAndVisibleEffects` pour couvrir l'initialisation runtime `fire_bfg` -> `bfg_explode`, les filtres `bfg_explode`, les locaux `ent`, `v`, `dist`, `points`, le montant tronque, `TE_BFG_EXPLOSION`, `DAMAGE_ENERGY`, `MOD_BFG_EFFECT`, reschedule et cleanup frame 5.
+- `packages/game/src/g_weapon.ts`: `fire_bfg` forwarde maintenant `plane`/`surf` depuis le callback touch runtime vers `bfg_touch`.
+- `scripts/verify/quake2-g-weapon.ts`: renforcement de `verifyBfgDamageModsAndVisibleEffects` pour couvrir `bfg_touch` (`plane->normal`, branche ciel, transition d'etat, sprite/son/effect, `bfg_explode` programme) et le forwarding runtime `fire_bfg`.
 
 ## Prochain lot recommande
 
-- Continuer avec `bfg_touch` comme prochain petit lot, sans inclure `bfg_think` sauf si le lot reste strictement compact.
+- Continuer avec `bfg_think` seul, en gardant ses temporaires locaux (`ent`, `ignore`, `dmg`, `tr`, second `dmg`) pour une session compacte si possible.
 
 ## Blocages
 

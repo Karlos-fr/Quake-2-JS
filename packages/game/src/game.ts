@@ -99,15 +99,26 @@ export type link_s = GameAreaLink;
 export type link_t = link_s;
 
 /**
+ * Original name: gclient_s
+ * Source: game/game.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Represents the server-visible `struct gclient_s` prefix, whose leading `ps` and `ping` fields match `game.h`.
+ */
+export type gclient_s = GameClient;
+
+/**
  * Original name: gclient_t
  * Source: game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
  * Behavior:
- * - Reuses the gameplay runtime client shape, whose leading `ps` and `ping` fields match `game.h`.
+ * - Preserves the `typedef struct gclient_s gclient_t` alias used by `edict_t.client`.
  */
-export type gclient_t = GameClient;
+export type gclient_t = gclient_s;
 
 /**
  * Original name: edict_t

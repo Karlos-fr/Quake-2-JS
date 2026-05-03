@@ -282,8 +282,8 @@
 | `Quake-2-master/game/g_local.h` | macro | `STOFS` | `packages/game/src/g_local.ts` | `STOFS` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `LLOFS` | `packages/game/src/g_local.ts` | `LLOFS` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `CLOFS` | `packages/game/src/g_local.ts` | `CLOFS` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `random` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `crandom` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `random` | `packages/game/src/g_local.ts` | `random` | Partiel | A redecouper | Helper proprietaire ajoute et teste; usages runtime restent disperses via `Math.random()`. Action suivante: migrer ou justifier les consommateurs runtime. |
+| `Quake-2-master/game/g_local.h` | macro | `crandom` | `packages/game/src/g_local.ts` | `crandom` | Partiel | A redecouper | Helper proprietaire ajoute et teste; plusieurs helpers locaux `crandom()` restent dans les modules runtime. Action suivante: migrer ou justifier les adaptateurs locaux. |
 | `Quake-2-master/game/g_local.h` | global | `maxentities` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `deathmatch` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `coop` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

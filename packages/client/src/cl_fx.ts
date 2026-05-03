@@ -70,6 +70,7 @@ import {
   EF_GRENADE,
   EF_HYPERBLASTER,
   EF_PLASMA,
+  EF_TELEPORTER,
   EF_TRACKER,
   type entity_state_t,
   entity_event_t,
@@ -1401,10 +1402,10 @@ export function CL_BuildParticleEffects(packet: ClientParticleEffectPacket): Cli
  * - Emits the short upward teleporter puff attached to one entity state origin.
  */
 export function CL_TeleporterParticles(ent: entity_state_t): ClientActionEffect[];
-export function CL_TeleporterParticles(runtime: ClientRuntime, ent: entity_state_t): void;
+export function CL_TeleporterParticles(runtime: ClientRuntime, ent: entity_state_t | vec3_t): void;
 export function CL_TeleporterParticles(
   runtimeOrEnt: ClientRuntime | entity_state_t,
-  maybeEnt?: entity_state_t
+  maybeEnt?: entity_state_t | vec3_t
 ): ClientActionEffect[] | void {
   if ("origin" in runtimeOrEnt) {
     return [{
@@ -1420,6 +1421,7 @@ export function CL_TeleporterParticles(
 
   const runtime = runtimeOrEnt;
   const ent = maybeEnt as entity_state_t;
+  const origin = Array.isArray(maybeEnt) ? maybeEnt : ent.origin;
   for (let index = 0; index < 8; index += 1) {
     const particle = allocParticle(runtime);
     if (!particle) {
@@ -1428,9 +1430,9 @@ export function CL_TeleporterParticles(
 
     particle.time = runtime.cl.time;
     particle.color = 0xdb;
-    particle.org[0] = ent.origin[0] - 16 + (Math.floor(Math.random() * 32));
-    particle.org[1] = ent.origin[1] - 16 + (Math.floor(Math.random() * 32));
-    particle.org[2] = ent.origin[2] - 8 + (Math.floor(Math.random() * 8));
+    particle.org[0] = origin[0] - 16 + (Math.floor(Math.random() * 32));
+    particle.org[1] = origin[1] - 16 + (Math.floor(Math.random() * 32));
+    particle.org[2] = origin[2] - 8 + (Math.floor(Math.random() * 8));
     particle.vel[0] = crand() * 14;
     particle.vel[1] = crand() * 14;
     particle.vel[2] = 80 + (Math.floor(Math.random() * 8));
@@ -2246,6 +2248,11 @@ export function CL_BuildEntityEventEffects(
 ): ClientActionEffect[] {
   const effects: ClientActionEffect[] = [];
   const footstepsEnabled = options.clFootsteps ?? true;
+
+  if (event.event === 0 && (event.effects & EF_TELEPORTER) !== 0) {
+    effects.push(...CL_TeleporterParticles(event.state).map(promoteToEntityEvent));
+    return effects;
+  }
 
   switch (event.event) {
     case entity_event_t.EV_ITEM_RESPAWN:

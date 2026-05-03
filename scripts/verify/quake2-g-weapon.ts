@@ -33,6 +33,7 @@ import {
   MOVETYPE_BOUNCE,
   MOVETYPE_FLYMISSILE,
   SOLID_BBOX,
+  SOLID_NOT,
   SPLASH_BROWN_WATER,
   SVF_DEADMONSTER,
   SVF_MONSTER,
@@ -42,7 +43,7 @@ import {
 import { damage_t } from "../../packages/game/src/g_local.js";
 import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_bfg, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_rocket, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_WATER, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
+import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_WATER, EF_ANIM_ALLFAST, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -1161,10 +1162,12 @@ function verifyBfgDamageModsAndVisibleEffects(): void {
 
   const damageMods: number[] = [];
   const radiusMods: number[] = [];
+  const directNormals: vec3_t[] = [];
   const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
   bfg_touch(bfg, target, runtime, {
-    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
+    T_Damage: (_target, _inflictor, _attacker, _dir, _point, normal, _damage, _knockback, _dflags, mod) => {
       damageMods.push(mod);
+      directNormals.push([...normal]);
     },
     T_RadiusDamage: (_inflictor, _attacker, _damage, _ignore, _radius, mod) => {
       radiusMods.push(mod);
@@ -1175,15 +1178,59 @@ function verifyBfgDamageModsAndVisibleEffects(): void {
     G_FreeEdict: () => undefined
   }, makePlane([0, 1, 0]), null);
   assert.equal(damageMods[0], MOD_BFG_BLAST, "bfg_touch direct damage must use MOD_BFG_BLAST");
+  assert.deepEqual(directNormals[0], [0, 1, 0], "bfg_touch direct damage must use the impact plane normal");
   assert.equal(radiusMods[0], MOD_BFG_BLAST, "bfg_touch splash damage must use MOD_BFG_BLAST");
   assert.equal(tempEvents[0]?.type, temp_event_t.TE_BFG_BIGEXPLOSION, "bfg_touch must emit the visible big explosion");
+  assert.equal(bfg.solid, SOLID_NOT, "bfg_touch must make the projectile non-solid before staged explosion frames");
+  assert.equal(bfg.touch, undefined, "bfg_touch must clear the touch callback after impact");
+  assert.deepEqual(bfg.s.origin, [95, 0, 0], "bfg_touch must back up the explosion origin by one FRAMETIME of velocity");
+  assert.deepEqual(bfg.velocity, [0, 0, 0], "bfg_touch must stop the projectile after impact");
+  assert.equal(runtime.assets.modelPaths[bfg.s.modelindex - 1], "sprites/s_bfg3.sp2", "bfg_touch must switch to the BFG explosion sprite model");
+  assert.equal(bfg.s.frame, 0, "bfg_touch must reset the staged explosion frame");
+  assert.equal(bfg.s.sound, 0, "bfg_touch must stop the flight sound");
+  assert.equal((bfg.s.effects & EF_ANIM_ALLFAST), 0, "bfg_touch must clear EF_ANIM_ALLFAST");
+  assert.equal(typeof bfg.think, "function", "bfg_touch must install bfg_explode as the next thinker");
+  assert.equal(bfg.nextthink, runtime.time + 0.1, "bfg_touch must schedule bfg_explode after FRAMETIME");
+  assert.equal(bfg.enemy, target, "bfg_touch must retain the touched entity as enemy");
 
+  const skyBfg = createRuntimeEntity({ classname: "bfg blast" }, 5);
+  skyBfg.owner = owner;
+  skyBfg.inuse = true;
+  let freedSky = false;
+  const skyEvents: temp_event_t[] = [];
+  bfg_touch(skyBfg, wall, runtime, {
+    G_FreeEdict: (ent) => {
+      freedSky = ent === skyBfg;
+    },
+    emitTempEntity: (type) => {
+      skyEvents.push(type);
+    }
+  }, makePlane([0, 0, 1]), { name: "sky", flags: SURF_SKY, value: 0 });
+  assert.equal(freedSky, true, "bfg_touch must free BFG projectiles touching sky surfaces");
+  assert.equal(skyEvents.length, 0, "bfg_touch sky branch must not emit the big explosion temp entity");
+
+  const collisionPlane = makePlane([-1, 0, 0]);
+  const collisionSurface = { name: "stone", flags: 0, value: 0 };
+  const callbackNormals: vec3_t[] = [];
+  const callbackEvents: temp_event_t[] = [];
   const spawnedBfg = fire_bfg(owner, [8, 9, 10], [1, 0, 0], 175, 400, 300, runtime, {
+    T_Damage: (_target, _inflictor, _attacker, _dir, _point, normal) => {
+      callbackNormals.push([...normal]);
+    },
+    T_RadiusDamage: () => undefined,
+    emitTempEntity: (type) => {
+      callbackEvents.push(type);
+    },
     check_dodge: () => undefined
   });
   assert.equal(spawnedBfg.radius_dmg, 175, "fire_bfg must initialize radius_dmg for the later bfg_explode frame-0 effect");
   assert.equal(spawnedBfg.dmg_radius, 300, "fire_bfg must preserve the radius searched by bfg_explode");
   assert.equal(typeof spawnedBfg.think, "function", "fire_bfg must install the BFG thinker runtime branch");
+  wall.takedamage = damage_t.DAMAGE_AIM;
+  spawnedBfg.touch?.(spawnedBfg, wall, runtime, collisionPlane, collisionSurface);
+  assert.deepEqual(callbackNormals[0], [-1, 0, 0], "fire_bfg default runtime touch callback must forward collision plane to bfg_touch");
+  assert.equal(callbackEvents[0], temp_event_t.TE_BFG_BIGEXPLOSION, "fire_bfg default runtime touch callback must forward non-sky surfaces to bfg_touch");
+  wall.takedamage = damage_t.DAMAGE_NO;
 
   bfg.s.frame = 0;
   bfg.s.origin = [100, 0, 0];

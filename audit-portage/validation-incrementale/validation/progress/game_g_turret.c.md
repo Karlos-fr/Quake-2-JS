@@ -46,6 +46,18 @@
 - renderer-three: sorties visibles attendues indirectes via angles/origins/vitesses des brushes de tourelle et driver, entite rocket `EF_ROCKET`, puis temp entities/dlights/scene apres impact; `verify:full-game:three-renderer` confirme la consommation du flux renderer.
 - Tests lances: `npm run verify:g-turret`; harnais inline `npx tsx -` exact-locals; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 
+## Session 2026-05-03 - `turret_breach_finish_init` / `SP_turret_breach`
+
+- Lot traite: `turret_breach_finish_init`, puis `SP_turret_breach`.
+- Statut: valide pour ces deux entites.
+- Comparaison C/H vs TS: ownership confirme dans `packages/game/src/g_turret.ts`; noms conserves; `turret_breach_finish_init` conserve l'avertissement sans target, la resolution `G_PickTarget`, le calcul `move_origin = target_ent.s.origin - self.s.origin`, la liberation du target temporaire, la copie `dmg` vers le teammaster et l'appel immediat du think regulier. `SP_turret_breach` conserve `SOLID_BSP`, `MOVETYPE_PUSH`, `gi.setmodel` via `setGameEntityModel`, defaults `speed=50` et `dmg=10`, defaults pitch/yaw, `pos1`/`pos2`, `ideal_yaw`, `move_angles[YAW]`, `blocked`, `think`, `nextthink` et `linkentity`.
+- Commentaires d'en-tete: verifies pour les deux fonctions avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement.
+- Runtime: `SP_turret_breach` est declare dans `g_spawn.ts` pour classname `turret_breach`, donc atteignable via `ED_CallSpawn`; `turret_breach_finish_init` est arme comme think differe puis execute par `runPendingThinks`/`G_RunFrame`, et bascule ensuite vers `turret_breach_think`.
+- apps/web: pas d'appel direct attendu; l'integration attendue passe par le runtime full-game/local, avec spawn de brush turret, snapshots serveur et ordre de rendu web existants. Aucune logique parallele web ne remplace ce spawn.
+- renderer-three: sorties visibles attendues indirectes via entite brush `SOLID_BSP`/modele inline, angles et etat serveur de la tourelle; la consommation se fait via packet entities et l'adapter renderer Three. Aucun branchement renderer direct supplementaire n'est attendu pour ces fonctions serveur.
+- Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`.
+- Typecheck: non lance, aucun fichier TS modifie pendant cette session.
+
 ## Prochain lot recommande
 
-Continuer avec `turret_breach_finish_init`, puis `SP_turret_breach` si le lot reste petit.
+Continuer avec `SP_turret_base`, puis `turret_driver_die` si le lot reste petit.

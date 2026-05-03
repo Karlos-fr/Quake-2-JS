@@ -42,11 +42,13 @@ inactiveMatch.inuse = false;
 const nonStringField = createRuntimeEntity({ classname: "target_non_string", targetname: "skip_me" }, 4);
 nonStringField.message = undefined;
 const caseMatch = createRuntimeEntity({ classname: "target_case", targetname: "PICK_CASE" }, 5);
+const emptyTargetname = createRuntimeEntity({ classname: "target_empty", targetname: "" }, 6);
 runtime.entities[1] = targetA;
 runtime.entities[2] = targetB;
 runtime.entities[3] = inactiveMatch;
 runtime.entities[4] = nonStringField;
 runtime.entities[5] = caseMatch;
+runtime.entities[6] = emptyTargetname;
 
 assert.equal(G_Find(runtime, null, "targetname", "pick_me"), targetA, "G_Find first match mismatch");
 assert.equal(G_Find(runtime, targetA, "targetname", "pick_me"), targetB, "G_Find next match mismatch");
@@ -54,10 +56,45 @@ assert.equal(G_Find(runtime, targetB, "targetname", "pick_me"), null, "G_Find mu
 assert.equal(G_Find(runtime, targetB, "targetname", "pick_case"), caseMatch, "G_Find must compare strings like Q_stricmp");
 assert.equal(G_Find(runtime, nonStringField, "message", "missing"), null, "G_Find must skip null string fields and return null at list end");
 
-const originalRandom = Math.random;
-Math.random = () => 0.9;
-assert.equal(G_PickTarget(runtime, "pick_me"), targetB, "G_PickTarget mismatch");
-Math.random = originalRandom;
+function withRandom<T>(value: number, callback: () => T): T {
+  const originalRandom = Math.random;
+  Math.random = () => value;
+  try {
+    return callback();
+  } finally {
+    Math.random = originalRandom;
+  }
+}
+
+assert.equal(withRandom(0.9, () => G_PickTarget(runtime, "pick_me")), targetB, "G_PickTarget mismatch");
+assert.equal(withRandom(0, () => G_PickTarget(runtime, "")), emptyTargetname, "G_PickTarget must treat an empty string as a non-NULL C string");
+
+const missingBefore = runtime.logEntries.length;
+assert.equal(G_PickTarget(runtime, "missing_target"), null, "G_PickTarget must return null when no choices exist");
+assert.equal(
+  runtime.logEntries.slice(missingBefore).some((entry) => entry.kind === "warning" && entry.message === "G_PickTarget: target missing_target not found"),
+  true,
+  "G_PickTarget missing-target warning mismatch"
+);
+const nullBefore = runtime.logEntries.length;
+assert.equal(G_PickTarget(runtime, null), null, "G_PickTarget must return null for NULL targetname");
+assert.equal(
+  runtime.logEntries.slice(nullBefore).some((entry) => entry.kind === "warning" && entry.message === "G_PickTarget called with NULL targetname"),
+  true,
+  "G_PickTarget NULL-target warning mismatch"
+);
+
+const cappedRuntime = createGameRuntimeFromBspEntities([]);
+cappedRuntime.maxentities = 16;
+const cappedChoices = Array.from({ length: 10 }, (_, index) => createRuntimeEntity({ classname: `capped_${index + 1}`, targetname: "capped" }, index + 1));
+for (const choice of cappedChoices) {
+  cappedRuntime.entities[choice.index] = choice;
+}
+assert.equal(
+  withRandom(0.99, () => G_PickTarget(cappedRuntime, "capped")),
+  cappedChoices[7],
+  "G_PickTarget must cap the local choice buffer at MAXCHOICES"
+);
 
 assert.deepEqual(
   G_ProjectSource([10, 20, 30], [2, 3, 4], [1, 0, 0], [0, 1, 0]),

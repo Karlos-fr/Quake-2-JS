@@ -139,9 +139,11 @@ import {
   createLevelLocals,
   createMonsterInfo,
   createSpawnTemp,
+  crandom,
   ammo_t,
   damage_t,
   movetype_t,
+  random,
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
@@ -168,6 +170,8 @@ import {
   MOVETYPE_STOP as INDEX_MOVETYPE_STOP,
   MOVETYPE_TOSS as INDEX_MOVETYPE_TOSS,
   MOVETYPE_WALK as INDEX_MOVETYPE_WALK,
+  crandom as INDEX_crandom,
+  random as INDEX_random,
   WEAP_BFG as INDEX_WEAP_BFG,
   WEAP_BLASTER as INDEX_WEAP_BLASTER,
   WEAP_CHAINGUN as INDEX_WEAP_CHAINGUN,
@@ -199,6 +203,22 @@ assert.equal(TAG_GAME, 765, "TAG_GAME mismatch");
 assert.equal(TAG_LEVEL, 766, "TAG_LEVEL mismatch");
 assert.equal(MELEE_DISTANCE, 80, "MELEE_DISTANCE mismatch");
 assert.equal(BODY_QUEUE_SIZE, 8, "BODY_QUEUE_SIZE mismatch");
+assert.equal(INDEX_random, random, "public random export mismatch");
+assert.equal(INDEX_crandom, crandom, "public crandom export mismatch");
+const originalMathRandomForHeaderMacros = Math.random;
+try {
+  Math.random = () => 0;
+  assert.equal(random(), 0, "random lower bound mismatch");
+  assert.equal(crandom(), -1, "crandom lower bound mismatch");
+  Math.random = () => 0.999999999;
+  assert.equal(random(), 1, "random upper 15-bit bucket mismatch");
+  assert.equal(crandom(), 1, "crandom upper 15-bit bucket mismatch");
+  Math.random = () => 0.5;
+  assert.equal(random(), 0x4000 / 0x7fff, "random midpoint 15-bit bucket mismatch");
+  assert.equal(crandom(), (2 * (0x4000 / 0x7fff)) - 1, "crandom midpoint formula mismatch");
+} finally {
+  Math.random = originalMathRandomForHeaderMacros;
+}
 assert.equal(DEAD_NO, 0, "DEAD_NO mismatch");
 assert.equal(DEAD_DYING, 1, "DEAD_DYING mismatch");
 assert.equal(DEAD_DEAD, 2, "DEAD_DEAD mismatch");

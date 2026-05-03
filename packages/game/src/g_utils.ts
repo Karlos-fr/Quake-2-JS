@@ -43,6 +43,7 @@ let vtosIndex = 0;
 const BODY_QUEUE_SIZE = 8;
 const TAG_LEVEL = 766;
 const MOD_TELEFRAG = 21;
+const MAXCHOICES = 8;
 const VEC_UP: vec3_t = [0, -1, 0];
 const MOVEDIR_UP: vec3_t = [0, 0, 1];
 const VEC_DOWN: vec3_t = [0, -2, 0];
@@ -118,9 +119,13 @@ export function G_Find(
  *
  * Behavior:
  * - Chooses one matching target entity by `targetname`, limited to the original maximum choice buffer size.
+ *
+ * Porting notes:
+ * - `MAXCHOICES` preserves the C fixed-size local choice buffer.
+ * - Uses `Math.random()` for the final random index in place of C `rand()`.
  */
 export function G_PickTarget(runtime: GameRuntime, targetname: string | undefined | null): GameEntity | null {
-  if (!targetname) {
+  if (targetname === undefined || targetname === null) {
     runtime.log({
       kind: "warning",
       message: "G_PickTarget called with NULL targetname"
@@ -133,7 +138,7 @@ export function G_PickTarget(runtime: GameRuntime, targetname: string | undefine
 
   while ((ent = G_Find(runtime, ent, "targetname", targetname)) !== null) {
     choices.push(ent);
-    if (choices.length === 8) {
+    if (choices.length === MAXCHOICES) {
       break;
     }
   }

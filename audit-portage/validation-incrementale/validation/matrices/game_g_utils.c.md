@@ -15,11 +15,11 @@
 | `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `G_Find`, porte comme `value` local TS et couvert par test. |
 | `Quake-2-master/game/g_utils.c` | function | `findradius` | `packages/game/src/g_utils.ts` | `findradius` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `j` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `findradius`, porte par construction directe du vecteur `eorg` TS et couvert par test. |
-| `Quake-2-master/game/g_utils.c` | macro | `MAXCHOICES` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_PickTarget` | `packages/game/src/g_utils.ts` | `G_PickTarget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `ent` | `packages/game/src/g_utils.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `num_choices` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `choice` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | macro | `MAXCHOICES` | `packages/game/src/g_utils.ts` | `MAXCHOICES` | Valide | A redecouper | Constante TS ajoutee et couverte par `npm run verify:g-utils`; `npm run typecheck` OK en consolidation. |
+| `Quake-2-master/game/g_utils.c` | function | `G_PickTarget` | `packages/game/src/g_utils.ts` | `G_PickTarget` | Valide | A redecouper | Correction TS: chaine vide distinguee de NULL; tests `verify:g-utils`, `verify:full-game:server-host`, `verify:local-gameplay-sync`, `verify:web-render-order`, `verify:full-game:three-renderer`; `npm run typecheck` OK en consolidation. |
+| `Quake-2-master/game/g_utils.c` | global | `ent` | `packages/game/src/g_utils.ts` | `ent` | Non applicable | A redecouper | Local C de `G_PickTarget`, porte comme local TS `ent` et couvert par `npm run verify:g-utils`. |
+| `Quake-2-master/game/g_utils.c` | global | `num_choices` | `packages/game/src/g_utils.ts` | `choices.length` | Non applicable | A redecouper | Local C de `G_PickTarget`, porte par `choices.length` TS et couvert par `npm run verify:g-utils`. |
+| `Quake-2-master/game/g_utils.c` | global | `choice` | `packages/game/src/g_utils.ts` | `choices` | Non applicable | A redecouper | Tableau local C de `G_PickTarget`, porte comme tableau local TS `choices` limite par `MAXCHOICES` et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | function | `Think_Delay` | `packages/game/src/runtime.ts` | `Think_Delay` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `G_UseTargets` | `packages/game/src/g_utils.ts` | `G_UseTargets` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `t` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |

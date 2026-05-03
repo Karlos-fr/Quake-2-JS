@@ -20,7 +20,7 @@ import {
   SVF_NOCLIENT,
   solid_t
 } from "../../packages/game/src/game.js";
-import type { link_s, link_t } from "../../packages/game/src/game.js";
+import type { GameClientServerFields, gclient_s, gclient_t, link_s, link_t } from "../../packages/game/src/game.js";
 import { createGameClient, createRuntimeEntity } from "../../packages/game/src/runtime.js";
 
 const client = createGameClient();
@@ -38,7 +38,13 @@ assert.equal(SVF_NOCLIENT, 0x00000001, "SVF_NOCLIENT mismatch");
 assert.equal(SVF_DEADMONSTER, 0x00000002, "SVF_DEADMONSTER mismatch");
 assert.equal(SVF_MONSTER, 0x00000004, "SVF_MONSTER mismatch");
 
+const sourceNamedClient: gclient_s = client;
+const typedefClient: gclient_t = sourceNamedClient;
+const serverFields: GameClientServerFields = typedefClient;
+assert.equal(serverFields.ps, client.ps, "gclient_s.ps must be the first server-visible player_state_t field");
 assert.equal(client.ping, 0, "gclient_t server-visible ping field must be present");
+serverFields.ping = 42;
+assert.equal(client.ping, 42, "gclient_s/gclient_t ping aliases must reference the same runtime field");
 assert.equal(entity.num_clusters, 0, "edict_t num_clusters must be initialized");
 assert.equal(entity.clusternums.length, MAX_ENT_CLUSTERS, "edict_t clusternums must keep fixed inline capacity");
 assert.equal(entity.area.prev, null, "edict_t area link must start detached");

@@ -581,6 +581,35 @@ export function CLOFS(field: keyof gclient_t): keyof gclient_t {
   return field;
 }
 
+/**
+ * Original name: random
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Mirrors `((rand() & 0x7fff) / ((float)0x7fff))` as a floating value in [0, 1].
+ *
+ * Porting notes:
+ * - JavaScript has no C `rand`; this derives the same 15-bit range from `Math.random`.
+ */
+export function random(): number {
+  return Math.floor(Math.random() * 0x8000) / 0x7fff;
+}
+
+/**
+ * Original name: crandom
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Mirrors `2.0 * (random() - 0.5)` as a centered floating value in [-1, 1].
+ */
+export function crandom(): number {
+  return 2.0 * (random() - 0.5);
+}
+
 export {
   AMMO_BULLETS,
   AMMO_CELLS,

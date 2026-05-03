@@ -1236,7 +1236,28 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `FOFS`, `STOFS`, `LLOFS`, `CLOFS` passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-spawn` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec `random`, puis `crandom` si le lot reste coherent.
+- 2026-05-03: lot macros `random`, `crandom`.
+- Verdict: `Partiel` pour les 2 macros apres comparaison H vs TS, ajout du point d'attache proprietaire et verification ciblee; le runtime reste a harmoniser car les consommateurs existants utilisent encore `Math.random()` directement et plusieurs helpers locaux `crandom()`.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))`.
+  - `g_local.h` definit `crandom()` comme `2.0 * (random() - 0.5)`.
+  - Les macros sont consommees largement par AI, monstres, armes, fonctions, gibs/debris, target push, timers et feedback joueur; le champ edict `random` est une entree distincte et reste pour un lot ulterieur.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers exportes `random` et `crandom` ajoutes avec commentaires d'en-tete `Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement et note de portage.
+  - `packages/game/src/index.ts`: export public ajoute pour les deux helpers.
+  - `scripts/verify/quake2-g-local-header.ts`: preuves ajoutees pour export public, bornes `random` et formule `crandom` en mockant `Math.random`.
+- Runtime: integration attendue dans les flux `G_RunFrame`, AI/monstres, armes, timers, gibs/debris et effets visibles. Les flux representatifs restent fonctionnels, mais le branchement n'est pas encore centralise sur les helpers proprietaires: usages directs `Math.random()` et helpers locaux `crandom()` restent ouverts.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, messages, entites et ordre de rendu; aucune logique parallele web remplacant les macros game detectee. `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue pour les consequences visibles des tirages runtime: modeles/frames de monstres, tirs, projectiles, gibs/debris, particules/temp entities, camera/kick et scene. `verify:full-game:three-renderer` OK, mais la migration des consommateurs runtime vers les helpers communs reste l'action suivante.
+- Commentaires/documentation: commentaires d'en-tete des deux helpers ajoutes; commentaires des consommateurs representatifs `func_timer`, `g_misc`/gibs, `g_weapon` et AI verifies par lecture/tests existants.
+- Corrections appliquees:
+  - `packages/game/src/g_local.ts`: ajout de `random` et `crandom`.
+  - `packages/game/src/index.ts`: reexport public des deux helpers.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions de comportement/export.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `random` et `crandom` passees a `Partiel` avec action suivante.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-func` OK; `npm run verify:g-misc` OK; `npm run verify:g-weapon` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec la migration/justification des consommateurs runtime de `random`/`crandom`, ou passer au prochain lot distinct `teleport_time` si le coordinateur prefere garder la migration globale pour une session separee.
 
 ## Blocages
 

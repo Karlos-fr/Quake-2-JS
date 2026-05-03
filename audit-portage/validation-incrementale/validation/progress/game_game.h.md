@@ -81,3 +81,40 @@ Corrections:
 
 Prochain lot recommande:
 - `gclient_s`, puis ses champs `ps` et `ping` si le lot reste petit.
+
+## Session 2026-05-03 - gclient_s / ps / ping
+
+Lot traite:
+- `gclient_s`
+- `ps`
+- `ping`
+
+Verdict:
+- `Valide` pour les 3 entites.
+
+Preuves:
+- Source C/H lue dans `Quake-2-master/game/game.h`: `struct gclient_s` expose le prefixe serveur `player_state_t ps`, puis `int ping`, avant l'extension libre du game DLL.
+- Port TS proprietaire lu dans `packages/game/src/game.ts` et `packages/game/src/runtime.ts`.
+- `packages/game/src/game.ts` expose maintenant `gclient_s = GameClient` et conserve `gclient_t = gclient_s`, ce qui represente le tag struct C et son typedef.
+- `GameClientServerFields.ps` et `GameClientServerFields.ping` exposent explicitement le prefixe serveur; `createGameClient()` initialise `ps` avec `createPlayerState()` et `ping` a `0`.
+- Commentaires d'en-tete verifies et mis a jour dans `packages/game/src/game.ts` pour `gclient_s` et `gclient_t`. `ps` et `ping` sont des champs de struct, pas des fonctions; pas de commentaire de fonction applicable.
+
+Integration:
+- Runtime: OK. `gclient_s.ps` est modifie par les flux gameplay `ClientThink`, `ClientBeginServerFrame`, HUD, armes et chase, puis clone et serialize par `SV_BuildClientFrame`/`SV_WritePlayerstateToClient`; `ping` est utilise par les scoreboards et commandes serveur.
+- `apps/web`: OK indirectement. `apps/web/src/full-game-server-host.ts` cree le client runtime avec `createGameClient()` et transmet les commandes utilisateur au game API porte; le rendu web consomme ensuite les snapshots/playerstate produits, sans remplacer la logique runtime principale.
+- `renderer-three`: OK indirectement. `ps` produit des sorties visibles de camera, view blend, HUD stats et weapon model via playerstate/refdef; ces sorties sont consommees par le pipeline client puis `packages/renderer-three` (`refreshFrame.view`, view weapon, polyblend). `ping` ne produit aucune sortie renderer directe.
+
+Tests lances:
+- `npm run verify:game:header` OK
+- `npm run verify:server:game` OK
+- `npm run verify:full-game:server-host` OK
+- `npm run verify:full-game:three-renderer` OK
+- `npm run typecheck` OK
+
+Corrections:
+- `packages/game/src/game.ts`: ajout de l'alias exporte `gclient_s` et conservation de `gclient_t` comme alias du tag source.
+- `scripts/verify/quake2-game-header.ts`: preuves ajoutees pour l'alias `gclient_s`, le typedef `gclient_t`, et les champs serveur `ps`/`ping`.
+- Matrice `audit-portage/validation-incrementale/validation/matrices/game_game.h.md` mise a jour pour le lot.
+
+Prochain lot recommande:
+- `edict_s`, puis `s`, `client` et `inuse` si le lot reste petit.
