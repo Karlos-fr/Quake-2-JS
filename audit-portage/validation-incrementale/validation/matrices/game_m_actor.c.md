@@ -10,8 +10,8 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_actor.c` | macro | `MAX_ACTOR_NAMES` | `packages/game/src/m_actor.ts` | `MAX_ACTOR_NAMES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.c` | global | `actor_names` | `packages/game/src/m_actor.ts` | `actor_names` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_actor.c` | macro | `MAX_ACTOR_NAMES` | `packages/game/src/m_actor.ts` | `MAX_ACTOR_NAMES` | Valide | A redecouper | Preuves: `npm run verify:m-actor`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`. |
+| `Quake-2-master/game/m_actor.c` | global | `actor_names` | `packages/game/src/m_actor.ts` | `actor_names` | Valide | A redecouper | Preuves: liste C/TS et usage chat runtime verifies par `npm run verify:m-actor`; integrations couvertes par `npm run verify:local-gameplay-sync`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`. |
 | `Quake-2-master/game/m_actor.c` | global | `actor_frames_stand` | `packages/game/src/m_actor.ts` | `actor_frames_stand` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | table | `actor_frames_stand` | `packages/game/src/m_actor.ts` | `actor_frames_stand` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | global | `actor_move_stand` | `packages/game/src/m_actor.ts` | `actor_move_stand` | A verifier | A redecouper |  |

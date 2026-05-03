@@ -82,6 +82,18 @@
 - renderer-three: sorties visibles attendues indirectes via angles de breach, etat du driver, entite rocket `EF_ROCKET`, trail/dlight rocket et scene; consommation via packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` confirme le flux renderer.
 - Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 
+## Session 2026-05-03 - `turret_driver_link` / `ent`
+
+- Lot traite: `turret_driver_link` et le local C `ent`.
+- Statut: `turret_driver_link` valide; `ent` marque `Non applicable` comme artefact de matrice pour une variable locale portee en curseur local TS.
+- Comparaison C/H vs TS: ownership confirme dans `packages/game/src/g_turret.ts`; nom conserve; installation `think = turret_driver_think`, `nextthink = level.time + FRAMETIME`, resolution `G_PickTarget`, ownership breach/teammaster, copie des angles, calcul `move_origin[0..2]` et ajout du driver en fin de teamchain conserves. Le retour TS avec warning quand `G_PickTarget` echoue est defensif; le C dereference la cible et suppose une map valide.
+- Commentaire d'en-tete: complete pour documenter le local C `ent` porte comme curseur local de teamchain.
+- Correction test: `scripts/verify/quake2-g-turret.ts` renforce les preuves sur `think`, `nextthink`, copie des angles, valeurs exactes `move_origin`, ownership et ajout en fin de teamchain via `ent`.
+- Runtime: `turret_driver_link` est installe par `SP_turret_driver` comme think differe, puis atteint par `runPendingThinks`/`G_RunFrame`; il branche ensuite `turret_driver_think` pour le flux normal de tir.
+- apps/web: pas d'appel direct attendu; le navigateur consomme ce comportement via le runtime full-game/local, les snapshots du driver et des brushes de tourelle. `verify:full-game:server-host` et `verify:web-render-order` confirment que le web ne remplace pas cette logique.
+- renderer-three: sorties visibles attendues indirectes via angles/origins, linkage brush/driver et futurs projectiles/sons; consommation par packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` confirme le flux renderer.
+- Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+
 ## Prochain lot recommande
 
-Continuer avec `turret_driver_link` et le local `ent` si le lot reste petit.
+Continuer avec `SP_turret_driver`.

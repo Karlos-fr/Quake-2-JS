@@ -26,9 +26,9 @@
 | `Quake-2-master/game/g_utils.c` | function | `tv` | `packages/game/src/g_utils.ts` | `tv` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | Non applicable | A redecouper | Local statique C de `tv`, porte comme `tvIndex` TS et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | global | `v` | `packages/game/src/g_weapon.ts` | `v` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `vtos` | `packages/game/src/g_utils.ts` | `vtos` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `vtos` | `packages/game/src/g_utils.ts` | `vtos` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | Non applicable | A redecouper | Local statique C de `vtos`, porte comme `vtosIndex` TS et couvert par `npm run verify:g-utils`. |
+| `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `vtos`, porte comme `value` local TS et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | function | `G_SetMovedir` | `packages/game/src/g_utils.ts` | `G_SetMovedir` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `vectoyaw` | `packages/game/src/g_utils.ts` | `vectoyaw` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `yaw` | `packages/game/src/g_utils.ts` | `yaw` | A verifier | A redecouper |  |

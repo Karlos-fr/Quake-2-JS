@@ -11,6 +11,7 @@ import {
   CL_AddParticles,
   CL_AllocDlight,
   CL_BigTeleportParticles,
+  CL_BlasterParticles,
   CL_BuildEntityEventEffects,
   CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
@@ -69,6 +70,8 @@ function main(): void {
   verifyExplosionTempEntityRuntimeBranch();
   verifyBigTeleportRuntimeParticles();
   verifyBigTeleportTempEntityRuntimeBranch();
+  verifyBlasterRuntimeParticles();
+  verifyBlasterTempEntityRuntimeBranch();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyTeleporterEntityEventMetadata();
@@ -620,6 +623,83 @@ function verifyBigTeleportTempEntityRuntimeBranch(): void {
   assert.deepEqual(burst.position, origin, "big teleport particle metadata should preserve origin");
   assert.equal(burst.count, 4096, "big teleport particle metadata should preserve particle count");
   assert.ok(effects.some((effect) => effect.sound?.name === "misc/bigtele.wav"), "TE_BOSSTPORT should preserve the original big teleport sound");
+}
+
+function verifyBlasterRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 7531;
+  const origin: vec3_t = [12, -8, 64];
+  const direction: vec3_t = [1, -2, 0.5];
+  const randomUnit = 9 / 0x7fffffff;
+
+  withMockRandom(randomUnit, () => {
+    CL_BlasterParticles(runtime, origin, direction);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 40, "CL_BlasterParticles should allocate the original local count = 40 particles");
+  assert.equal(runtime.cl.free_particles, 40, "CL_BlasterParticles free list should advance by count");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_BlasterParticles should preserve cl.time");
+  assert.ok(particles.every((particle) => particle.color === 0xe1), "CL_BlasterParticles color should preserve 0xe0 + (rand&7)");
+  assert.ok(
+    particles.every((particle) => (
+      particle.org[0] === origin[0] - 3 + (9 * direction[0])
+      && particle.org[1] === origin[1] - 3 + (9 * direction[1])
+      && particle.org[2] === origin[2] - 3 + (9 * direction[2])
+    )),
+    "CL_BlasterParticles should apply jitter and local d = rand&15 displacement"
+  );
+  const expectedCrand = (randomUnit * 2) - 1;
+  assert.ok(
+    particles.every((particle) => (
+      almostEqual(particle.vel[0], (direction[0] * 30) + (expectedCrand * 40))
+      && almostEqual(particle.vel[1], (direction[1] * 30) + (expectedCrand * 40))
+      && almostEqual(particle.vel[2], (direction[2] * 30) + (expectedCrand * 40))
+    )),
+    "CL_BlasterParticles velocity should preserve dir * 30 + crand() * 40"
+  );
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === -40), "CL_BlasterParticles gravity mismatch");
+  const expectedAlphavel = -1.0 / (0.5 + (randomUnit * 0.3));
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, expectedAlphavel)), "CL_BlasterParticles alpha decay mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 40, "CL_BlasterParticles particles should reach the refresh particle list");
+}
+
+function verifyBlasterTempEntityRuntimeBranch(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 8640;
+  const origin: vec3_t = [16, 24, 32];
+
+  withMockRandom(9 / 0x7fffffff, () => {
+    CL_ExecuteTempEntityEffects(runtime, {
+      type: temp_event_t.TE_BLASTER,
+      position: origin,
+      directionByte: 0
+    });
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 40, "TE_BLASTER should dispatch to CL_BlasterParticles");
+  assert.ok(particles.every((particle) => particle.color === 0xe1), "TE_BLASTER blaster particle color mismatch");
+  assert.equal(runtime.cl.dlights[0].radius, 150, "TE_BLASTER should keep the original impact dlight radius");
+  assert.deepEqual(runtime.cl.dlights[0].origin, origin, "TE_BLASTER dlight origin mismatch");
+  assert.deepEqual(runtime.cl.dlights[0].color, [1, 1, 0], "TE_BLASTER dlight color mismatch");
+  assert.equal(runtime.cl.dlights[0].die, runtime.cl.time + 100, "TE_BLASTER dlight die mismatch");
+
+  const effects = CL_BuildTempEntityEffects({
+    type: temp_event_t.TE_BLASTER,
+    position: origin,
+    directionByte: 0
+  });
+  const burst = effects.find((effect) => effect.kind === "blaster-particles");
+  assert.ok(burst, "TE_BLASTER should expose blaster particles to apps/web metadata");
+  assert.equal(burst.category, "particle", "blaster particles should remain tagged as particles");
+  assert.deepEqual(burst.position, origin, "blaster particle metadata should preserve origin");
+  assert.equal(burst.count, 40, "blaster particle metadata should preserve local count");
+  assert.equal(burst.color, 0xe0, "blaster particle metadata should preserve color base");
+  assert.ok(effects.some((effect) => effect.sound?.name === "weapons/lashit.wav"), "TE_BLASTER should preserve the original impact sound");
+  assert.ok(effects.some((effect) => effect.light?.radius === 150), "TE_BLASTER should expose impact light metadata");
 }
 
 function verifyLightstyleManagement(): void {

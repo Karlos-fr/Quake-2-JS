@@ -35,6 +35,13 @@ player.classname = "player";
 player.inuse = true;
 attachGameClient(player);
 
+assert.equal(actorFrames.MAX_ACTOR_NAMES, 8, "MAX_ACTOR_NAMES matches m_actor.c");
+assert.deepEqual(
+  [...actorFrames.actor_names],
+  ["Hellrot", "Tokay", "Killme", "Disruptor", "Adrianator", "Rambear", "Titus", "Bitterman"],
+  "actor_names matches m_actor.c"
+);
+
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";
 path.targetname = "actor_path";
@@ -78,6 +85,11 @@ path.touch?.(path, actor, runtime);
 const prints = drainGameCprintfEvents(runtime);
 assert.equal(prints.length, 1, "target_actor message emits one cprintf for one client");
 assert.equal(prints[0].entityIndex, player.index, "target_actor message target client");
+assert.equal(
+  prints[0].message,
+  `${actorFrames.actor_names[actor.index % actorFrames.MAX_ACTOR_NAMES]}: move out\n`,
+  "target_actor message uses actor_names indexed by entity number modulo MAX_ACTOR_NAMES"
+);
 assert.equal(prints[0].message.endsWith(": move out\n"), true, "target_actor message text");
 
 assert.equal(actor.groundentity, null, "target_actor jump clears ground entity when absent");

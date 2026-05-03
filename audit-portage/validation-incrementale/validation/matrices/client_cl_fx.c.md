@@ -60,9 +60,9 @@
 | `Quake-2-master/client/cl_fx.c` | function | `CL_BigTeleportParticles` | `packages/client/src/cl_fx.ts` | `CL_BigTeleportParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; test cible ajoute dans `scripts/verify/quake2-cl-fx.ts`; en-tete verifie. |
 | `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_BigTeleportParticles`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `colortable` | `packages/client/src/cl_fx.ts` | `colortable` | Non applicable | A redecouper | Table locale statique de `CL_BigTeleportParticles`, portee par `const colortable`; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_BlasterParticles` | `packages/client/src/cl_fx.ts` | `CL_BlasterParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `count` | `packages/client/src/cl_fx.ts` | `count` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_BlasterParticles` | `packages/client/src/cl_fx.ts` | `CL_BlasterParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; test cible ajoute dans `scripts/verify/quake2-cl-fx.ts`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | Non applicable | A redecouper | Variable locale de `CL_BlasterParticles`, portee par `const d`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `count` | `packages/client/src/cl_fx.ts` | `count` | Non applicable | A redecouper | Constante locale C `count = 40`, portee par la boucle TS et la metadata `count`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_BlasterTrail` | `packages/client/src/cl_fx.ts` | `CL_BlasterTrail` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | A verifier | A redecouper |  |

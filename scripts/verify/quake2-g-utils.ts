@@ -267,6 +267,19 @@ assert.equal(wrappedTvSlot, tvSlots[0], "tv must rotate through the original 8-v
 assert.deepEqual(tvSlots[0], [99, 100, 101], "tv wrapped slot contents mismatch");
 assert.deepEqual(tvSlots[1], [1, 11, 21], "tv must leave non-wrapped temporary vectors intact");
 assert.equal(vtos([1.8, -2.2, 3.9]), "(1 -2 3)", "vtos mismatch");
+const vtosSlots = Array.from({ length: 8 }, (_, index) => vtos([index + 0.9, -(index + 0.9), index + 20.9]));
+const wrappedVtosSlot = vtos([99.9, -100.9, 101.9]);
+assert.deepEqual(vtosSlots, [
+  "(0 0 20)",
+  "(1 -1 21)",
+  "(2 -2 22)",
+  "(3 -3 23)",
+  "(4 -4 24)",
+  "(5 -5 25)",
+  "(6 -6 26)",
+  "(7 -7 27)"
+], "vtos must truncate components toward zero like C integer casts");
+assert.equal(wrappedVtosSlot, "(99 -100 101)", "vtos must keep rotating through the original 8-string static pool");
 assert.equal(G_CopyString("quake"), "quake", "G_CopyString mismatch");
 
 const reusable = createRuntimeEntity({}, 3);

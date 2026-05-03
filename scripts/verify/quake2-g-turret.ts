@@ -199,14 +199,20 @@ function verifyTurretDriverLinkAndThink(): void {
 
   runPendingThinks(runtime, runtime.time + FRAMETIME);
 
+  assert.equal(driver.think, turret_driver_think, "turret_driver_link must install turret_driver_think");
+  assert.equal(driver.nextthink, runtime.time + FRAMETIME, "turret_driver_link nextthink mismatch");
   assert.equal(driver.target_ent, breach, "turret_driver_link target_ent mismatch");
   assert.equal(breach.owner, driver, "turret_driver_link must own the breach");
   assert.equal(base.owner, driver, "turret_driver_link must own the teammaster");
+  assert.deepEqual(driver.s.angles, [0, 45, 0], "turret_driver_link must copy breach server angles");
+  assert.deepEqual(driver.angles, [0, 45, 0], "turret_driver_link must copy breach gameplay angles");
   assert.equal(base.teamchain, breach, "turret team chain head mismatch");
   assert.equal(breach.teamchain, driver, "turret_driver_link must append driver to team chain");
   assert.equal(driver.teammaster, base, "turret_driver_link teammaster mismatch");
   assert.equal((driver.flags & FL_TEAMSLAVE) !== 0, true, "turret_driver_link must set FL_TEAMSLAVE");
-  assert.equal(driver.move_origin[0] > 0, true, "turret_driver_link mount distance mismatch");
+  assert.equal(driver.move_origin[0], Math.hypot(64, 64), "turret_driver_link mount distance mismatch");
+  assert.equal(driver.move_origin[1], 225, "turret_driver_link mount yaw mismatch");
+  assert.equal(driver.move_origin[2], 16, "turret_driver_link mount height mismatch");
 
   const enemy = spawnGameEntity(runtime);
   enemy.classname = "player";

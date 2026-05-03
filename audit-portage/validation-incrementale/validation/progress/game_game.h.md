@@ -201,3 +201,44 @@ Corrections:
 
 Prochain lot recommande:
 - `headnode`, puis `svflags`, `solid`, `clipmask` et `owner` si le lot reste coherent.
+
+## Session 2026-05-03 - headnode / svflags / solid / clipmask / owner
+
+Lot traite:
+- `headnode`
+- `svflags`
+- `solid`
+- `clipmask`
+- `owner`
+
+Verdict:
+- `Valide` pour les 5 entites.
+
+Preuves:
+- Source C/H lue dans `Quake-2-master/game/game.h`: `struct edict_s` expose `int headnode`, `int svflags`, `solid_t solid`, `int clipmask` et `edict_t *owner` dans le prefixe serveur.
+- Port TS proprietaire lu dans `packages/game/src/game.ts` et `packages/game/src/runtime.ts`.
+- `GameEdictServerFields.headnode`, `svflags`, `solid`, `clipmask` et `owner` exposent explicitement le prefixe serveur de `edict_s`; `GameEntity` conserve les memes champs runtime.
+- `createRuntimeEntity()` initialise `headnode` a `0`, `svflags` a `0`, `solid` a `SOLID_NOT`, `clipmask` a `0` et `owner` a `null`, comme le stockage C zero-initialise.
+- `SV_LinkEdict` ecrit `headnode` quand `num_clusters` passe a `-1`, encode `solid` vers `entity_state_t.solid`, filtre `SVF_DEADMONSTER` et insere les entites selon leur solidite. `SV_BuildClientFrame` filtre `SVF_NOCLIENT`, utilise `headnode` via `CM_HeadnodeVisible`, et masque `state.solid` pour les projectiles appartenant au client courant. `SV_ClipMoveToEntities` applique les exclusions `owner`/`passedict->owner`, `SVF_DEADMONSTER`, `SVF_MONSTER`, `solid` et `clipmask` est consomme par les mouvements gameplay via `SV_Trace`/`gi.trace`.
+- Commentaires d'en-tete verifies dans `packages/game/src/game.ts` pour `edict_s`, `edict_t` et `GameEdictServerFields`. Le lot contient des champs de struct, pas des fonctions; pas de commentaire de fonction applicable.
+
+Integration:
+- Runtime: OK. Les champs sont atteignables depuis `SV_Frame`/snapshots serveur et depuis `G_RunFrame` via les callbacks `gi.linkentity`, `gi.trace`, mouvements gameplay, projectiles, monstres, triggers et ownership.
+- `apps/web`: OK indirectement. `apps/web/src/full-game-server-host.ts` instancie le serveur full-game et consomme les snapshots/resultats produits par le runtime porte; aucune logique web parallele ne remplace ces champs.
+- `renderer-three`: OK indirectement. `svflags`/`solid`/`owner` conditionnent la presence, la prediction et la solidite des entites dans les snapshots; `headnode` conditionne la visibilite PVS/PHS. Les sorties visibles produites (`refdef.entities`, modeles brush, solidite de prediction, scene) sont consommees par le pipeline client puis `packages/renderer-three`. `clipmask` ne produit pas de sortie renderer directe mais influence les traces runtime qui produisent positions/evenements visibles.
+
+Tests lances:
+- `npm run verify:game:header` OK
+- `npm run verify:server:world` OK
+- `npm run verify:server:ents` OK
+- `npm run verify:server:send` OK
+- `npm run verify:full-game:server-host` OK
+- `npm run verify:full-game:three-renderer` OK
+- `npm run typecheck` OK
+
+Corrections:
+- `scripts/verify/quake2-game-header.ts`: assertions ajoutees pour l'aliasing et les valeurs initiales de `headnode`, `svflags`, `solid`, `clipmask` et `owner`.
+- Matrice `audit-portage/validation-incrementale/validation/matrices/game_game.h.md` mise a jour pour le lot.
+
+Prochain lot recommande:
+- `game_import_t`, a traiter seul ou avec une petite famille de callbacks si le lot reste lisible.

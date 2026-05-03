@@ -376,6 +376,9 @@ export function tv(x: number, y: number, z: number): vec3_t {
  *
  * Behavior:
  * - Returns one temporary formatted string from the original rotating static pool.
+ *
+ * Porting notes:
+ * - `vtosIndex` models the original function-local static `index`; `value` is the TS equivalent of local `s`.
  */
 export function vtos(v: vec3_t): string {
   const value = `(${Math.trunc(v[0])} ${Math.trunc(v[1])} ${Math.trunc(v[2])})`;

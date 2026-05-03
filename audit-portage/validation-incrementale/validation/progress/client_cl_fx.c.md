@@ -1,7 +1,7 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; variables locales generees `i` marquees non applicables.
+- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; variables locales generees `i` marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -15,6 +15,11 @@
   - `npm run verify:full-game:three-renderer`
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+  - `npm run verify:cl-fx`
+  - `npm run verify:particle-sync`
+  - `npm run verify:web-render-order`
   - `npm run verify:full-game:three-renderer`
   - `npm run typecheck`
   - `npm run verify:cl-fx`
@@ -69,6 +74,11 @@
   - `CL_BigTeleportParticles` est atteignable depuis le runtime client normal via `CL_ParseTEnt` / `CL_ParseServerMessage` pour `TE_BOSSTPORT`; le port TS lit la position dans `CL_ParseTEnt` puis appelle `CL_ExecuteTempEntityEffects` qui dispatch vers `CL_BigTeleportParticles`.
   - `apps/web` doit consommer ce flux parce qu'il produit des particules visibles et le son `misc/bigtele.wav`; `CL_BuildTempEntityEffects` expose `big-teleport-particles` et le son original, tandis que le flux full-game consomme les particules runtime via `source.refreshFrame.particles`, sans logique particule parallele detectee.
   - `renderer-three` doit consommer la sortie visible particules; le flux reste `CL_AddParticles` -> `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`, couvert par `npm run verify:particle-sync` et `npm run verify:full-game:three-renderer`.
+  - `CL_BlasterParticles` conserve le flux C des 40 particules d'impact blaster: allocation depuis `free_particles`, insertion en tete de `active_particles`, `time = cl.time`, couleur `0xe0 + (rand()&7)`, local `d = rand()&15`, jitter `((rand()&7)-4) + d*dir[j]`, vitesse `dir[j]*30 + crand()*40`, gravite `-PARTICLE_GRAVITY`, alpha `1.0` et decay `-1/(0.5+frand()*0.3)`.
+  - Les temporaires C `d` et `count` de `CL_BlasterParticles` sont des artefacts locaux: `d` est porte par `const d`; `count = 40` est porte par la boucle TS et la metadata `count`. Ils ne necessitent pas d'entites TS publiques separees.
+  - `CL_BlasterParticles` est atteignable depuis le runtime client normal via `CL_ParseTEnt` / `CL_ParseServerMessage` pour `TE_BLASTER`; le port TS lit position/direction puis `CL_ExecuteTempEntityEffects` dispatch vers `CL_BlasterParticles` et cree la dlight d'impact.
+  - `apps/web` doit consommer ce flux parce qu'il produit des particules visibles, une dlight et le son `weapons/lashit.wav`; `CL_BuildTempEntityEffects` expose `blaster-particles`, light et son, et le flux full-game consomme ensuite `source.refreshFrame.particles`, sans logique particule parallele detectee.
+  - `renderer-three` doit consommer la sortie visible particules/dlights; le flux reste `CL_AddParticles`/`CL_AddDLights` -> `ClientRefreshFrame.particles/lights` -> `createThreeParticleSync` / `createThreeDlightSync`, couvert par `npm run verify:particle-sync` et `npm run verify:full-game:three-renderer`.
   - `CL_TeleporterParticles` conserve le flux C des 8 particules teleporter: allocation depuis `free_particles`, insertion dans `active_particles`, `time = cl.time`, couleur `0xdb`, jitter XY `origin - 16 + rand&31`, jitter Z `origin - 8 + rand&7`, vitesses XY `crand()*14`, vitesse Z `80 + rand&7`, gravite `-PARTICLE_GRAVITY`, alpha `1.0` et `alphavel = -0.5`.
   - Les temporaires C `i`, `j` et `p` de `CL_TeleporterParticles` sont portes comme index de boucles et allocation locale via `allocParticle`; ils ne necessitent pas d'entites TS publiques separees.
   - `CL_TeleporterParticles` est atteignable depuis le runtime client normal via `CL_FireEntityEvents` pour les entites portant `EF_TELEPORTER`, appele depuis `CL_ParseFrame` / `CL_ParseServerMessage`; le builder `CL_BuildFrameEntityEventEffects` ne saute plus ce cas.
@@ -94,4 +104,4 @@
   - `renderer-three` consomme les dlights via `ClientRefreshFrame.lights` -> `createThreeDlightSync` / `R_RenderDlights` et les particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync`; les sons restent hors renderer.
   - `npm run verify:local-gameplay-sync` n'a pas pu etre utilise comme preuve finale pendant une session precedente: blocage hors lot avant execution du test, `ReferenceError: FRAME_attack1 is not defined` dans `packages/game/src/g_save.ts`.
 - Blocages: `npm run verify:local-gameplay-sync` reste a relancer lors d'un lot qui en depend; tests cibles `cl_fx`/`cl_parse`/web/renderer et `typecheck` OK pour les derniers lots particules.
-- Prochain lot recommande: `CL_BlasterParticles`, puis les locaux `d` et `count` si le lot reste coherent.
+- Prochain lot recommande: `CL_BlasterTrail`, puis les locaux `move`, `vec`, `len`, `j` et `dec` si le lot reste coherent.

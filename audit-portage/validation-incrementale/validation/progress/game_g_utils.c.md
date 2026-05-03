@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `tv` avec son local statique C `index`.
+- Dernier lot traite: `vtos` avec ses locaux C `index` et `s`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `vtos`, puis ses locaux `index` et `s` si le lot reste coherent.
+- Continuer avec `G_SetMovedir` si le coordinateur garde le lot dans `g_utils.ts`; la ligne globale `v` restante pointe vers `g_weapon.ts` et doit etre clarifiee dans un lot separe sans melanger les ownerships.
 
 ## Session - findradius / j
 
@@ -143,6 +143,28 @@ Session `Think_Delay` / `G_UseTargets` / `t`:
 - Corrections appliquees: `packages/game/src/g_utils.ts` documente le lien `index` -> `tvIndex`; `scripts/verify/quake2-g-utils.ts` verifie la rotation/reutilisation du pool de 8 vecteurs et la conservation des slots non reutilises.
 
 Session `tv` / `index`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+
+## Session - vtos / index / s
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete mis a jour sur `vtos` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`).
+- Comparaison C/TS `vtos`: signature vectorielle equivalente, format `(%i %i %i)`, cast entier C represente par `Math.trunc`, pool statique de 8 chaines, incrementation circulaire `(index + 1) & 7`, puis retour de la chaine formatee.
+- Local statique C `index`: non applicable comme entite autonome; il correspond a `vtosIndex` module-scope TS et sa rotation est couverte par test.
+- Local C `s`: non applicable comme entite autonome; il correspond a `value` local TS, la chaine formatee stockee dans le slot courant.
+- Runtime verifie: `vtos` est atteint depuis des flux gameplay normaux de logs/diagnostics portes (`g_ai`, `g_func`, `g_misc`, `g_monster`, `g_target`, `g_trigger`, `g_turret`, `m_actor`) eux-memes appeles par spawns, uses, touches, thinks et frames gameplay.
+- `apps/web`: integration attendue indirecte via les hosts full-game/local qui executent le runtime porte et consomment les logs; aucune logique web parallele ne remplace le formatage `vtos`.
+- `packages/renderer-three`: pas de sortie visible directe produite par `vtos`; les sorties renderer attendues des entites concernees passent par snapshots, temp entities, sons, particules, areabits ou frames client, pas par cette chaine de diagnostic.
+- Corrections appliquees: `packages/game/src/g_utils.ts` documente le mapping `index` -> `vtosIndex` et `s` -> `value`; `scripts/verify/quake2-g-utils.ts` verifie la troncature entiere et la rotation du pool de 8 chaines.
+
+Session `vtos` / `index` / `s`:
 
 - `npm run verify:g-utils`
 - `npm run typecheck`

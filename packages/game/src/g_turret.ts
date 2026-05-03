@@ -466,6 +466,9 @@ export function turret_driver_think(self: GameEntity, runtime: GameRuntime): voi
  *
  * Behavior:
  * - Links the infantry driver to its turret breach, computes its local mount offset and appends it to the turret team chain.
+ *
+ * Porting notes:
+ * - The C local `ent` is kept as a local cursor over the turret team chain.
  */
 export function turret_driver_link(self: GameEntity, runtime: GameRuntime): void {
   self.think = turret_driver_think;

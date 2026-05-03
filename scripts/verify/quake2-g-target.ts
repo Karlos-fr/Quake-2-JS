@@ -1076,7 +1076,14 @@ function verifyBlasterAndEarthquake(): void {
   nonClient.groundentity = quakeRuntime.entities[0] ?? null;
   nonClient.mass = 100;
 
-  target_earthquake_think(directQuake, quakeRuntime);
+  const originalRandom = Math.random;
+  const quakeRandoms = [0, 0.999999];
+  Math.random = () => quakeRandoms.shift() ?? 0.5;
+  try {
+    target_earthquake_think(directQuake, quakeRuntime);
+  } finally {
+    Math.random = originalRandom;
+  }
   const quakeSound = quakeRuntime.soundEvents.at(-1);
   assert.equal(quakeSound?.soundPath, "world/quake.wav", "target_earthquake sound path mismatch");
   assert.equal(quakeSound?.channel, CHAN_AUTO, "target_earthquake sound channel mismatch");
@@ -1084,6 +1091,8 @@ function verifyBlasterAndEarthquake(): void {
   assert.deepEqual(quakeSound?.origin, [9, 8, 7], "target_earthquake positioned sound origin mismatch");
   assert.equal(directQuake.last_move_time, 10.5, "target_earthquake sound cadence timestamp mismatch");
   assert.equal(groundedPlayer.groundentity, null, "target_earthquake loop must clear grounded clients");
+  assert.equal(groundedPlayer.velocity[0], -150, "target_earthquake must use g_local crandom for x jitter");
+  assert.equal(groundedPlayer.velocity[1], 150, "target_earthquake must use g_local crandom for y jitter");
   assert.equal(groundedPlayer.velocity[2], 200, "target_earthquake loop must scale vertical velocity by mass");
   assert.deepEqual(airbornePlayer.velocity, [0, 0, 0], "target_earthquake must skip airborne clients");
   assert.equal(nonClient.groundentity, quakeRuntime.entities[0], "target_earthquake must skip non-client entities");

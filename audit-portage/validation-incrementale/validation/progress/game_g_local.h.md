@@ -1296,7 +1296,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-func` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_ai.ts`, `g_misc.ts` ou `g_target.ts`), puis reprendre `g_turret.ts`, `g_utils.ts` et `g_weapon.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, migration non reservee `packages/game/src/g_target.ts` pour `target_earthquake_think`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `g_target.ts` est harmonise, mais d'autres consommateurs runtime restent disperses dans les modules game, player et monstres.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `g_target.c` consomme `crandom()` dans `target_earthquake_think` pour appliquer les jitter horizontaux aux clients au sol avant la vitesse verticale dependante de `speed`/`mass`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `crandom` depend de `random` comme la macro C.
+  - `packages/game/src/g_target.ts`: suppression du helper local `crandom`; `target_earthquake_think` consomme maintenant le helper proprietaire importe depuis `g_local.ts`.
+- Runtime: integration attendue et branchee pour ce sous-lot via spawn/use/think `target_earthquake`, atteignable depuis `G_RunFrame` par `G_RunEntity` quand `nextthink` est planifie. Le flux conserve son son positionne, le filtrage clients au sol, le clear de `groundentity`, les jitter X/Y et la reschedule tant que `runtime.time < timestamp`.
+- apps/web: integration attendue indirectement via host full-game/local, ordre de rendu, entites runtime et sons; aucune logique parallele web `target_earthquake`/`crandom` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. `target_earthquake` affecte des sorties visibles via mouvement/camera des clients et scene en aval; le helper lui-meme n'est pas consomme directement par `renderer-three`, et les sorties passent par snapshots/client/refresh/Three.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `target_earthquake_think`, `target_earthquake_use` et `SP_target_earthquake` verifies; aucun nouveau commentaire requis apres suppression du helper local.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: import de `crandom` depuis `g_local.ts` et suppression du helper local duplicatif.
+  - `scripts/verify/quake2-g-target.ts`: preuve deterministe ajoutee pour les jitter horizontaux `target_earthquake_think` issus de `g_local.crandom`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:g-target` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_ai.ts`, `g_misc.ts`, `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_turret.ts`, `g_utils.ts` et `g_weapon.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

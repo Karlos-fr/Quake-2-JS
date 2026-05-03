@@ -48,7 +48,8 @@ import {
   MOD_EXPLOSIVE,
   MOD_SPLASH,
   MOD_TARGET_LASER,
-  SFL_CROSS_TRIGGER_MASK
+  SFL_CROSS_TRIGGER_MASK,
+  crandom
 } from "./g_local.js";
 import {
   FRAMETIME,
@@ -1142,10 +1143,6 @@ function isLowercaseLetter(value: string): boolean {
 
 function truncateCString(value: string, maxLength: number): string {
   return value.length > maxLength ? value.slice(0, maxLength) : value;
-}
-
-function crandom(): number {
-  return (Math.random() * 2) - 1;
 }
 
 function vec3Equal(left: vec3_t, right: vec3_t): boolean {
