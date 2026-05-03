@@ -153,13 +153,15 @@ function verifyMachinegunFireParity(): void {
   player.client!.quad_framenum = runtime.framenum + 1;
   player.client!.pers.inventory[bullets.index] = 3;
 
-  Weapon_Machinegun(player, runtime, {
-    fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
-      shots.push({ damage, kick, hspread, vspread, mod });
-    },
-    emitPlayerMuzzleFlash: (_ent, weapon) => {
-      flashes.push(weapon);
-    }
+  withMathRandom([0.5, 0.5, 0.5, 0.5, 0.5, 0.5], () => {
+    Weapon_Machinegun(player, runtime, {
+      fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ damage, kick, hspread, vspread, mod });
+      },
+      emitPlayerMuzzleFlash: (_ent, weapon) => {
+        flashes.push(weapon);
+      }
+    });
   });
 
   assertNumber(shots.length, 1, "Weapon_Machinegun should fire one bullet on frame 4");
@@ -172,15 +174,21 @@ function verifyMachinegunFireParity(): void {
   assertNumber(player.client!.ps.gunframe, 5, "Machinegun firing should toggle gunframe 4 to 5");
   assertNumber(player.client!.machinegun_shots, 1, "Machinegun should accumulate recoil shots outside deathmatch");
   assertNumber(player.client!.pers.inventory[bullets.index], 2, "Machinegun should consume one bullet");
+  assertNumber(player.client!.kick_origin[1], cCrandom(0.5) * 0.35, "Machinegun side kick origin should use g_local.crandom");
+  assertNumber(player.client!.kick_angles[1], cCrandom(0.5) * 0.7, "Machinegun side kick angle should use g_local.crandom");
+  assertNumber(player.client!.kick_origin[0], cCrandom(0.5) * 0.35, "Machinegun forward kick origin should use g_local.crandom");
+  assertNumber(player.s.frame, 46, "Machinegun attack frame should use g_local.random for original frame expression");
 
   runtime.dmflags |= DF_INFINITE_AMMO;
-  Weapon_Machinegun(player, runtime, {
-    fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
-      shots.push({ damage, kick, hspread, vspread, mod });
-    },
-    emitPlayerMuzzleFlash: (_ent, weapon) => {
-      flashes.push(weapon);
-    }
+  withMathRandom([0.5, 0.5, 0.5, 0.5, 0.5, 0.5], () => {
+    Weapon_Machinegun(player, runtime, {
+      fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ damage, kick, hspread, vspread, mod });
+      },
+      emitPlayerMuzzleFlash: (_ent, weapon) => {
+        flashes.push(weapon);
+      }
+    });
   });
 
   assertNumber(player.client!.ps.gunframe, 4, "Machinegun firing should toggle gunframe 5 to 4");
@@ -237,13 +245,15 @@ function verifyChaingunFireParity(): void {
   player.client!.quad_framenum = runtime.framenum + 1;
   player.client!.pers.inventory[bullets.index] = 5;
 
-  Weapon_Chaingun(player, runtime, {
-    fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
-      shots.push({ damage, kick, hspread, vspread, mod });
-    },
-    emitPlayerMuzzleFlash: (_ent, weapon) => {
-      flashes.push(weapon);
-    }
+  withMathRandom(Array(10).fill(0.5), () => {
+    Weapon_Chaingun(player, runtime, {
+      fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ damage, kick, hspread, vspread, mod });
+      },
+      emitPlayerMuzzleFlash: (_ent, weapon) => {
+        flashes.push(weapon);
+      }
+    });
   });
 
   assertNumber(shots.length, 2, "Weapon_Chaingun should fire two bullets after windup frame 9");
@@ -255,6 +265,8 @@ function verifyChaingunFireParity(): void {
   assertNumber(flashes[0], MZ_CHAINGUN2, "Chaingun should emit MZ_CHAINGUN2 for two shots");
   assertNumber(player.client!.ps.gunframe, 10, "Chaingun firing should advance gunframe 9 to 10");
   assertNumber(player.client!.pers.inventory[bullets.index], 3, "Chaingun should consume two bullets");
+  assertNumber(player.client!.kick_origin[0], cCrandom(0.5) * 0.35, "Chaingun kick origin should use g_local.crandom");
+  assertNumber(player.client!.kick_angles[0], cCrandom(0.5) * 0.7, "Chaingun kick angle should use g_local.crandom");
 
   runtime.deathmatch = true;
   player.client!.quad_framenum = 0;
@@ -263,13 +275,15 @@ function verifyChaingunFireParity(): void {
   shots.length = 0;
   flashes.length = 0;
 
-  Weapon_Chaingun(player, runtime, {
-    fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
-      shots.push({ damage, kick, hspread, vspread, mod });
-    },
-    emitPlayerMuzzleFlash: (_ent, weapon) => {
-      flashes.push(weapon);
-    }
+  withMathRandom(Array(12).fill(0.5), () => {
+    Weapon_Chaingun(player, runtime, {
+      fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ damage, kick, hspread, vspread, mod });
+      },
+      emitPlayerMuzzleFlash: (_ent, weapon) => {
+        flashes.push(weapon);
+      }
+    });
   });
 
   assertNumber(shots.length, 3, "Weapon_Chaingun should fire three bullets at full spin");
@@ -648,7 +662,7 @@ function verifyBfgFireParity(): void {
   assertNumber(player.client!.ps.gunframe, 18, "BFG firing should advance gunframe");
   assertNumber(player.client!.kick_origin[0], -2, "BFG should apply original kick origin");
   assertNumber(player.client!.v_dmg_pitch, -40, "BFG should apply original damage pitch");
-  assertNumber(player.client!.v_dmg_roll, 4, "BFG should apply original random damage roll");
+  assertNumber(player.client!.v_dmg_roll, cCrandom(0.75) * 8, "BFG should apply original random damage roll");
   assertNumber(player.client!.v_dmg_time, runtime.time + 0.5, "BFG should set the original damage kick time");
   assertNumber(player.client!.pers.inventory[cells.index], 0, "BFG should consume fifty cells");
 
@@ -846,6 +860,14 @@ function withMathRandom(values: number[], callback: () => void): void {
   } finally {
     Math.random = original;
   }
+}
+
+function cRandom(value: number): number {
+  return Math.floor(value * 0x8000) / 0x7fff;
+}
+
+function cCrandom(value: number): number {
+  return 2.0 * (cRandom(value) - 0.5);
 }
 
 function requireItem(name: string) {

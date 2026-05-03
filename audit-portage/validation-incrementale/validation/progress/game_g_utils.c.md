@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `G_InitEdict`.
+- Dernier lot traite: `G_Spawn`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `G_Spawn` seul. Garder les lignes locales `i`/`e`, la ligne globale `v`, `vectoyaw` et `vectoangles` pour des lots separes sans melanger les ownerships.
+- Continuer avec `G_FreeEdict` seul. Garder les lignes locales `i`/`e`, la ligne globale `v`, `vectoyaw` et `vectoangles` pour des lots separes sans melanger les ownerships.
 
 ## Session - findradius / j
 
@@ -271,6 +271,28 @@ Session `G_CopyString` / `out`:
 - `packages/renderer-three`: pas de sortie renderer directe produite par `G_InitEdict`; les sorties visibles attendues sont indirectes via les entites initialisees ensuite (modeles, frames, projectiles, temp entities, sons/scene selon le spawn), consommees par snapshots/refresh frame/adapters renderer existants.
 
 Session `G_InitEdict`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+
+## Session - G_Spawn
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- Declaration H comparee: `Quake-2-master/game/g_local.h`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete mis a jour sur `G_Spawn` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`) pour documenter le mapping `globals.num_edicts` -> `runtime.entities.length` et l'append via `spawnGameEntity`.
+- Comparaison C/TS `G_Spawn`: scan depuis `maxclients + 1`, skip des slots absents ou `inuse`, reuse seulement si `freetime < 2` ou `level.time - freetime > 0.5`, appel `G_InitEdict` sur reuse, erreur `ED_Alloc: no free edicts` si la limite `maxentities` est atteinte, sinon allocation d'un nouveau slot et initialisation.
+- Locaux C `i`/`e`: non traites dans cette session conformement au lot demande.
+- Correction appliquee: `packages/game/src/g_utils.ts` precise les notes de portage; `scripts/verify/quake2-g-utils.ts` ajoute des preuves pour slots clients proteges, delai de reutilisation, append de nouveau slot, avancee de `globals.num_edicts` et erreur `maxentities`.
+- Runtime verifie: `G_Spawn` est atteint depuis les flux normaux portes (`G_UseTargets` delayed, `ED_ParseEdict`/`ED_CallSpawn`, AI combat points, `TossClientWeapon`, gibs/debris, `target_spawner`, boss projectiles temporaires et `SelectSpawnPoint`) appeles par spawns, uses, thinks, tirs, morts et frames gameplay.
+- `apps/web`: integration attendue indirecte via `apps/web/src/full-game-server-host.ts` et le host full-game/local qui executent le runtime serveur porte; aucune logique web parallele ne remplace l'allocation d'edicts.
+- `packages/renderer-three`: pas de sortie renderer directe propre a l'allocation, mais les entites allouees peuvent produire modeles, frames, projectiles, gibs, sons, temp entities, particules, dlights ou scene via snapshots/refresh frame; le flux client/renderer existant consomme ces sorties, tests full-game renderer OK.
+
+Session `G_Spawn`:
 
 - `npm run verify:g-utils`
 - `npm run typecheck`

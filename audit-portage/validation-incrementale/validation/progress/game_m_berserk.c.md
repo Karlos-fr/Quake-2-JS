@@ -34,6 +34,27 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout d'assertions dans `scripts/verify/quake2-m-berserk.ts` pour prouver le branchement `monsterinfo.sight` / `monsterinfo.search` et les sons emis par ces callbacks.
 
+## Session 2026-05-03 - `berserk_fidget`
+
+- Lot traite: fonction `berserk_fidget` seule, avec emission `sound_idle`, branches `AI_STAND_GROUND` / `random()` et effet `currentmove = berserk_move_stand_fidget`.
+- Verdict: Valide pour la definition; la ligne de declaration forward C homonyme est marquee `Non applicable`.
+- Comparaison C/TS: la branche `AI_STAND_GROUND` retourne sans effet; la branche aleatoire retourne quand `random() > 0.15`; le passage en fidget assigne `berserk_move_stand_fidget` et emet `sound_idle` sur `CHAN_WEAPON`, volume `1`, attenuation `ATTN_IDLE`, `timeofs` 0.
+- Commentaires d'en-tete: commentaire TS de `berserk_fidget` verifie et mis a jour pour documenter l'usage de `g_local.random()`.
+- Runtime: integre. `berserk_move_stand.frame[0].thinkfunc` pointe vers `berserk_fidget`; le test prouve l'appel via cette frame et l'appel direct de la fonction.
+- apps/web: integre. La fonction produit un `soundEvent` gameplay et change un `currentmove` qui alimente les frames visibles via le runtime serveur/client; le flux full-game/web consomme ces sorties sans logique parallele berserk.
+- renderer-three: integre indirectement. Le son n'est pas une sortie visible, mais le changement `currentmove` doit produire des frames MD2 visibles dans les snapshots/refresh; le renderer Three consomme ces entites/frames via le flux full-game existant.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `packages/game/src/m_berserk.ts`: `berserk_fidget` utilise `g_local.random()` au lieu de `Math.random()` direct.
+  - `scripts/verify/quake2-m-berserk.ts`: assertions renforcees pour le seuil C 15-bit, la branche `AI_STAND_GROUND`, le callback de frame et le son idle.
+
 ## Prochain lot recommande
 
-- Valider `berserk_fidget` seul, avec son emission `sound_idle`, ses branches `AI_STAND_GROUND` / `random()`, et son effet `currentmove = berserk_move_stand_fidget`; garder les tables/frames/moves `stand` et `stand_fidget` pour une session separee si le lot devient trop large.
+- Valider le bloc stand: `berserk_frames_stand` global/table/declarative, `berserk_move_stand` et `berserk_stand`; garder `berserk_frames_stand_fidget` / `berserk_move_stand_fidget` pour une session separee si le lot devient trop large.

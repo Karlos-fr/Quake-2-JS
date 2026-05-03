@@ -337,6 +337,47 @@ assert.equal(spawned, reusable, "G_Spawn must reuse eligible freed entity");
 assert.equal(spawned.classname, "noclass", "G_InitEdict must reset classname");
 assert.equal(spawned.gravity, 1, "G_InitEdict must reset gravity");
 
+const spawnRuntime = createGameRuntimeFromBspEntities([]);
+spawnRuntime.maxclients = 2;
+spawnRuntime.maxentities = 6;
+spawnRuntime.time = 4;
+const clientSlot = createRuntimeEntity({ classname: "client_slot" }, 1);
+clientSlot.inuse = false;
+clientSlot.freetime = 0;
+const recentFree = createRuntimeEntity({ classname: "recent_free" }, 3);
+recentFree.inuse = false;
+recentFree.freetime = 3.75;
+const staleFree = createRuntimeEntity({ classname: "stale_free" }, 4);
+staleFree.inuse = false;
+staleFree.freetime = 3.25;
+spawnRuntime.entities[1] = clientSlot;
+spawnRuntime.entities[3] = recentFree;
+spawnRuntime.entities[4] = staleFree;
+const reusedStale = G_Spawn(spawnRuntime);
+assert.equal(reusedStale, staleFree, "G_Spawn must start after maxclients and skip recently freed edicts");
+assert.equal(clientSlot.inuse, false, "G_Spawn must not scan protected client slots");
+assert.equal(recentFree.inuse, false, "G_Spawn must preserve freed edicts inside the 0.5s reuse delay");
+assert.equal(reusedStale.inuse, true, "G_Spawn must initialize the reused stale edict");
+
+const appendRuntime = createGameRuntimeFromBspEntities([]);
+appendRuntime.maxclients = 1;
+appendRuntime.maxentities = 4;
+appendRuntime.time = 3;
+const recentOnly = createRuntimeEntity({ classname: "recent_only" }, 2);
+recentOnly.inuse = false;
+recentOnly.freetime = 2.75;
+appendRuntime.entities[2] = recentOnly;
+const appended = G_Spawn(appendRuntime);
+assert.equal(appended.index, 3, "G_Spawn must append at globals.num_edicts when no free edict is eligible");
+assert.equal(appended.s.number, 3, "G_Spawn must initialize the appended edict number");
+assert.equal(appendRuntime.entities.length, 4, "G_Spawn must advance globals.num_edicts after appending");
+assert.equal(recentOnly.inuse, false, "G_Spawn must not reuse a recent free edict before the C delay expires");
+assert.throws(
+  () => G_Spawn(appendRuntime),
+  /ED_Alloc: no free edicts/,
+  "G_Spawn must error when globals.num_edicts reaches game.maxentities"
+);
+
 const protectedEntity = createRuntimeEntity({}, 4);
 runtime.entities[4] = protectedEntity;
 G_InitEdict(protectedEntity);

@@ -105,6 +105,18 @@ assert.equal(actorFrames.actor_move_pain2.lastframe, actorFrames.FRAME_pain203, 
 assert.equal(actorFrames.actor_move_pain2.frame, actorFrames.actor_frames_pain2, "actor_move_pain2 frame table");
 assert.equal(actorFrames.actor_move_pain2.endfunc, actorFrames.actor_run, "actor_move_pain2 endfunc");
 
+const expectedPain3Distances = [-1, 1, 0];
+assert.equal(actorFrames.actor_frames_pain3.length, expectedPain3Distances.length, "actor_frames_pain3 has 3 C frames");
+for (const [index, frame] of actorFrames.actor_frames_pain3.entries()) {
+  assert.equal(frame.aifunc, ai_move, `actor_frames_pain3[${index}] uses ai_move`);
+  assert.equal(frame.dist, expectedPain3Distances[index], `actor_frames_pain3[${index}] distance`);
+  assert.equal(frame.thinkfunc, undefined, `actor_frames_pain3[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_pain3.firstframe, actorFrames.FRAME_pain301, "actor_move_pain3 firstframe");
+assert.equal(actorFrames.actor_move_pain3.lastframe, actorFrames.FRAME_pain303, "actor_move_pain3 lastframe");
+assert.equal(actorFrames.actor_move_pain3.frame, actorFrames.actor_frames_pain3, "actor_move_pain3 frame table");
+assert.equal(actorFrames.actor_move_pain3.endfunc, actorFrames.actor_run, "actor_move_pain3 endfunc");
+
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";
 path.targetname = "actor_path";

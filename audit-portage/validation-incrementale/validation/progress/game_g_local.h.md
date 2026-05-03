@@ -1404,7 +1404,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:g-monster` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `p_weapon.ts`, `p_client.ts`, `p_hud.ts`, `g_items.ts` ou une petite famille `m_*`), puis reprendre `g_utils.ts` quand il ne sera plus reserve. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/p_weapon.ts` pour les consommateurs armes joueur.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `p_weapon.ts` est harmonise pour les usages macro C `random()`/`crandom()`, mais d'autres consommateurs runtime restent disperses dans `g_items.ts`, `p_client.ts`, `p_hud.ts`, `m_*`, `m_move.ts` et `g_utils.ts`.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `p_weapon.c` consomme `random()` dans `Weapon_RocketLauncher_Fire` et les expressions d'animation `Machinegun_Fire`, et `crandom()` dans `Machinegun_Fire`, `Chaingun_Fire` et `Weapon_BFG`. Les usages `rand() & 15` de `Weapon_Generic`/grenade restent hors macro et hors lot.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/p_weapon.ts`: import des helpers proprietaires `random`/`crandom`; suppression du helper local `crandom`; `randomIntFromFloat` passe par `g_local.random`; `randomPause` reste separe car il porte `rand() & 15`, pas la macro `random()`.
+- Runtime: integration attendue et branchee pour ce sous-lot via `Think_Weapon`/`ClientThink`/`G_RunFrame`, tirs machinegun/chaingun/rocket/BFG, hooks projectile, sons/muzzleflashes, recoil et frames joueur.
+- apps/web: integration attendue indirectement via host full-game/local, inputs armes, snapshots, sons, muzzleflashes/temp entities et ordre de rendu; aucune logique parallele web `p_weapon`/`random`/`crandom` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages `p_weapon.ts` affectent sorties visibles via projectiles, muzzleflashes, frames/animations joueur, recoil/camera et scene en aval; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `Machinegun_Fire`, `Chaingun_Fire`, `Weapon_RocketLauncher_Fire`, `Weapon_BFG` verifies; commentaire adapter `randomIntFromFloat` mis a jour.
+- Corrections appliquees:
+  - `packages/game/src/p_weapon.ts`: import de `random`/`crandom` depuis `g_local.ts`, remplacement des usages macro C et suppression du helper local `crandom`.
+  - `scripts/verify/quake2-p-weapon.ts`: preuves deterministes ajoutees/ajustees pour le recoil machinegun/chaingun, l'expression frame machinegun, le damage rocket et le roll BFG avec la formule C-style 15 bits.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:p-weapon` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `p_client.ts`, `p_hud.ts`, `g_items.ts` ou une petite famille `m_*`), puis reprendre `g_utils.ts` quand il ne sera plus reserve. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

@@ -60,6 +60,7 @@ import {
   SP_monster_berserk,
   berserk_dead,
   berserk_die,
+  berserk_fidget,
   berserk_melee,
   berserk_move_attack_club,
   berserk_move_attack_spike,
@@ -331,12 +332,19 @@ function verifyFidgetBranches(): void {
 
   berserk.monsterinfo.currentmove = berserk_move_stand;
   berserk.monsterinfo.aiflags |= AI_STAND_GROUND;
-  withMathRandom([0.1], () => berserk_move_stand.frame[0].thinkfunc!(berserk, runtime));
+  withMathRandom([0.1], () => berserk_fidget(berserk, runtime));
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand, "AI_STAND_GROUND should suppress fidget");
 
   berserk.monsterinfo.aiflags &= ~AI_STAND_GROUND;
-  withMathRandom([0.2], () => berserk_move_stand.frame[0].thinkfunc!(berserk, runtime));
-  assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand, "random > 0.15 should suppress fidget");
+  withMathRandom([0.2], () => berserk_fidget(berserk, runtime));
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand, "g_local.random() > 0.15 should suppress fidget");
+
+  withMathRandom([0.15001], () => berserk_fidget(berserk, runtime));
+  assert.equal(
+    berserk.monsterinfo.currentmove,
+    berserk_move_stand_fidget,
+    "berserk_fidget should use the C 15-bit random() threshold, not raw Math.random()"
+  );
 }
 
 function verifyAttackCallbacks(): void {

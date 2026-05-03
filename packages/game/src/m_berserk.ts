@@ -25,6 +25,7 @@ import {
   MOVETYPE_TOSS,
   SOLID_BBOX,
   SVF_DEADMONSTER,
+  random,
   damage_t
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk } from "./g_ai.js";
@@ -382,12 +383,15 @@ export const berserk_move_stand_fidget: GameMonsterMove = {
  *
  * Behavior:
  * - Randomly switches from stand to the fidget animation unless standing ground.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` to preserve the C macro's 15-bit quantization.
  */
 export function berserk_fidget(self: GameEntity, runtime: GameRuntime): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     return;
   }
-  if (Math.random() > 0.15) {
+  if (random() > 0.15) {
     return;
   }
 

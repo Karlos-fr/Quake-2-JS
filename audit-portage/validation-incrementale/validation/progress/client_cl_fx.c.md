@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot traite: `MakeNormalVectors` avec le local `d`; `MakeNormalVectors` reste `Partiel` tant que le clone prive `MakeNormalVectors` de `packages/client/src/cl_newfx.ts` n'est pas corrige ou justifie, `d` est `Non applicable`.
-- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; `CL_BlasterTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_QuadTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_FlagTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_DiminishingTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `orgscale` et `velscale`; variables locales generees `i` marquees non applicables.
+- Dernier lot traite: `MakeNormalVectors` avec le local `d`; clone prive `MakeNormalVectors` de `packages/client/src/cl_newfx.ts` corrige pour reutiliser le port proprietaire `packages/client/src/cl_fx.ts`; `d` est `Non applicable`.
+- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; `CL_BlasterTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_QuadTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_FlagTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_DiminishingTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `orgscale` et `velscale`; `MakeNormalVectors` avec le local `d`; variables locales generees `i` marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -17,6 +17,12 @@
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
   - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+  - `npm run verify:cl-fx`
+  - `npm run verify:particle-sync`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npx tsx ./scripts/verify/quake2-cl-tent.ts`
   - `npm run typecheck`
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -81,7 +87,7 @@
   - `MakeNormalVectors` est atteignable dans le runtime client `cl_fx.ts` via `CL_RailTrail` / `spawnRailTrailParticles`, qui produit des particules visibles. Le lot ne valide pas encore `CL_RailTrail` en entier.
   - `apps/web` doit consommer les sorties visibles produites par les callers de `MakeNormalVectors`; pour le flux particules client, le navigateur consomme `ClientRefreshFrame.particles` via la boucle full-game/render, sans logique parallele attendue dans ce helper.
   - `renderer-three` doit consommer ces particules visibles via `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`, couvert par `npm run verify:particle-sync` et `npm run verify:full-game:three-renderer`.
-  - Ecart d'ownership: `Quake-2-master/client/cl_newfx.c` declare `extern void MakeNormalVectors(...)`, mais `packages/client/src/cl_newfx.ts` contient encore un clone prive `MakeNormalVectors` au lieu de reutiliser le port proprietaire `packages/client/src/cl_fx.ts`. Ce manque est marque `Partiel` sur la ligne `MakeNormalVectors`; correction/justification a traiter hors de ce petit lot avant de valider totalement l'entite.
+  - Ecart d'ownership corrige: `Quake-2-master/client/cl_newfx.c` declare `extern void MakeNormalVectors(...)`; `packages/client/src/cl_newfx.ts` importe maintenant `MakeNormalVectors` depuis `packages/client/src/cl_fx.ts` au lieu de garder un clone prive homonyme.
   - `CL_DiminishingTrail` conserve le flux C: copie de `start` dans `move`, vecteur `end - start` normalise dans `vec`, `dec = 0.5`, deplacement `move += vec * dec`, emission conditionnelle par `(rand()&1023) < old->trailcount`, puis decrement `trailcount -= 5` avec plancher `100` a chaque pas.
   - Les seuils `trailcount` sont conserves: `>900` donne `orgscale = 4` et `velscale = 15`, `>800` donne `2` et `10`, sinon `1` et `5`.
   - Les variantes `EF_GIB`, `EF_GREENGIB` et grenade/rocket standard conservent les palettes, alpha, vitesses et acceleration du C: gib rouge `0xe8 + rand&7`, gib vert `0xdb + rand&7`, standard `4 + rand&7`, gravite appliquee aux gibs via `vel[2] -= PARTICLE_GRAVITY`, acceleration standard `accel[2] = 20`.
@@ -162,5 +168,5 @@
   - Les effets visibles de `CL_ParseMuzzleFlash2` sont attendus dans le runtime navigateur: dlight, `CL_ParticleEffect` et `CL_SmokeAndFlash` sont appliques par `apps/web/src/full-game.ts`; le flux local `packages/client/src/local-gameplay-sync.ts` applique maintenant aussi `particle-effect` et `smoke-and-flash`.
   - `renderer-three` consomme les dlights via `ClientRefreshFrame.lights` -> `createThreeDlightSync` / `R_RenderDlights` et les particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync`; les sons restent hors renderer.
   - `npm run verify:local-gameplay-sync` n'a pas pu etre utilise comme preuve finale pendant une session precedente: blocage hors lot avant execution du test, `ReferenceError: FRAME_attack1 is not defined` dans `packages/game/src/g_save.ts`.
-- Blocages: `MakeNormalVectors` reste partiel pour ownership externe: clone prive homonyme dans `packages/client/src/cl_newfx.ts` alors que le C original y reference l'extern.
-- Prochain lot recommande: corriger ou justifier le clone prive `MakeNormalVectors` de `packages/client/src/cl_newfx.ts`, puis revalider `MakeNormalVectors`; garder `CL_RocketTrail` pour une session separee.
+- Blocages: aucun blocage restant pour `MakeNormalVectors`.
+- Prochain lot recommande: `CL_RocketTrail` seul, avec ses locaux `move`, `vec`, `len`, `j` et `dec`, en gardant `CL_RailTrail` pour une session separee si le lot grossit.

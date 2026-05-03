@@ -83,7 +83,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
-import { IT_AMMO, PNOISE_SELF, PNOISE_WEAPON } from "./g_local.js";
+import { IT_AMMO, PNOISE_SELF, PNOISE_WEAPON, crandom, random } from "./g_local.js";
 import { fire_bfg, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_rail, fire_rocket, fire_shotgun } from "./g_weapon.js";
 import { Add_Ammo, Drop_Item, FindItem, SetRespawn, type GameItemDefinition, type GameItemWeaponThinkKind } from "./g_items.js";
 
@@ -1433,7 +1433,7 @@ export function Weapon_GrenadeLauncher(ent: GameEntity, runtime: GameRuntime, ho
  */
 export function Weapon_RocketLauncher_Fire(ent: GameEntity, runtime: GameRuntime, hooks: GameWeaponHooks = {}): void {
   const client = requireClient(ent, "Weapon_RocketLauncher_Fire");
-  let damage = 100 + Math.trunc(Math.random() * 20.0);
+  let damage = 100 + Math.trunc(random() * 20.0);
   let radiusDamage = 120;
   const damageRadius = 120;
 
@@ -1694,19 +1694,11 @@ function createPlayerNoiseEntity(owner: GameEntity, runtime: GameRuntime): GameE
 }
 
 /**
- * Category: New
- * Purpose: Mirror Quake II `crandom()` with a symmetric `[-1, 1)` floating distribution.
- */
-function crandom(): number {
-  return (Math.random() * 2) - 1;
-}
-
-/**
- * Category: New
- * Purpose: Mirror the original `(int)(random() + 0.25)` animation-frame expression.
+ * Category: Adapter
+ * Purpose: Mirror the original `(int)(random() + 0.25)` animation-frame expression through `g_local.random`.
  */
 function randomIntFromFloat(): number {
-  return Math.trunc(Math.random() + 0.25);
+  return Math.trunc(random() + 0.25);
 }
 
 /**

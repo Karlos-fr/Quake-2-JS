@@ -17,7 +17,7 @@
 
 import { AngleVectors, type vec3_t } from "../../qcommon/src/index.js";
 import { INSTANT_PARTICLE, type ClientRuntime, type centity_t, type cparticle_t, type client_sustain_t } from "./client.js";
-import type { ClientActionEffect } from "./cl_fx.js";
+import { MakeNormalVectors, type ClientActionEffect } from "./cl_fx.js";
 
 const PARTICLE_GRAVITY = 40;
 
@@ -1107,34 +1107,6 @@ function createTrailEffect(kind: string, start: vec3_t, end: vec3_t, color: numb
     color,
     spacing
   };
-}
-
-function MakeNormalVectors(forward: vec3_t): { right: vec3_t; up: vec3_t } {
-  const right: vec3_t = [forward[2], -forward[0], forward[1]];
-  const dot = dotProduct(right, forward);
-  right[0] -= dot * forward[0];
-  right[1] -= dot * forward[1];
-  right[2] -= dot * forward[2];
-  normalizeVector(right);
-  return { right, up: crossProduct(right, forward) };
-}
-
-function normalizeVector(vector: vec3_t): void {
-  const length = Math.sqrt((vector[0] * vector[0]) + (vector[1] * vector[1]) + (vector[2] * vector[2]));
-  if (length === 0) {
-    return;
-  }
-  vector[0] /= length;
-  vector[1] /= length;
-  vector[2] /= length;
-}
-
-function crossProduct(a: vec3_t, b: vec3_t): vec3_t {
-  return [
-    (a[1] * b[2]) - (a[2] * b[1]),
-    (a[2] * b[0]) - (a[0] * b[2]),
-    (a[0] * b[1]) - (a[1] * b[0])
-  ];
 }
 
 function dotProduct(a: vec3_t, b: vec3_t): number {

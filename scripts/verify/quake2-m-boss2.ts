@@ -99,6 +99,9 @@ function verifySpawnRegistersAssetsAndStartsFlying(): void {
   assert.equal(boss.flags & FL_IMMUNE_LASER, FL_IMMUNE_LASER);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_stand);
   assert.equal(boss.monsterinfo.scale, 1);
+  assert.equal(boss.pain, boss2_pain);
+  assert.equal(boss.die, boss2_die);
+  assert.equal(boss.monsterinfo.search, boss2_search);
   assert.equal(runtime.assets.modelPaths[boss.s.modelindex - 1], "models/monsters/boss2/tris.md2");
   assert.deepEqual(runtime.assets.soundPaths, [
     "bosshovr/bhvpain1.wav",

@@ -541,6 +541,10 @@ export function G_InitEdict(entity: GameEntity): void {
  *
  * Behavior:
  * - Reuses one eligible freed edict when possible, otherwise allocates a new runtime entity.
+ *
+ * Porting notes:
+ * - `runtime.entities.length` is the ported `globals.num_edicts`; new slots are appended through
+ *   `spawnGameEntity` only after the C reuse scan fails.
  */
 export function G_Spawn(runtime: GameRuntime): GameEntity {
   const startIndex = runtime.maxclients + 1;
