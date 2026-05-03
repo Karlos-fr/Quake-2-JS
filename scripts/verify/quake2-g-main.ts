@@ -303,6 +303,12 @@ assert.deepEqual(freeTags, [TAG_GAME], "GetGameApi.ReadGame must free TAG_GAME b
 assert.equal(saveReadRuntime.serverflags, 5, "GetGameApi.ReadGame must restore cross-level serverflags through g_save");
 assert.equal(saveReadRuntime.maxclients, 4, "GetGameApi.ReadGame must restore game.maxclients through g_save");
 assert.equal(saveReadRuntime.maxentities, 1024, "GetGameApi.ReadGame must restore game.maxentities through g_save");
+freeTags.length = 0;
+saveReadApi.ReadLevel("save/current/unit1.sav");
+assert.deepEqual(freeTags, [TAG_LEVEL], "GetGameApi.ReadLevel must free TAG_LEVEL before restoring level data");
+assert.equal(saveReadRuntime.time, 12.5, "GetGameApi.ReadLevel must restore level time through g_save");
+assert.equal(saveReadRuntime.entities[1]?.inuse, true, "GetGameApi.ReadLevel must restore in-use edicts through g_save");
+assert.equal(saveReadRuntime.entities[1]?.health, 64, "GetGameApi.ReadLevel must restore edict fields through g_save");
 
 command.argv = ["sv", "test"];
 command.args = "test";

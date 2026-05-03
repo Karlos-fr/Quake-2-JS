@@ -67,6 +67,8 @@ import {
   CHAN_WEAPON,
   EF_ANIM_ALLFAST,
   EF_BLASTER,
+  EF_FLAG1,
+  EF_FLAG2,
   EF_GRENADE,
   EF_HYPERBLASTER,
   EF_PLASMA,
@@ -158,6 +160,8 @@ export interface ClientPacketEntityEffectSource {
   number: number;
   effects: number;
   origin: vec3_t;
+  modelindex?: number;
+  viewerEntity?: boolean;
 }
 
 /**
@@ -1365,6 +1369,10 @@ export function CL_ExecutePacketEntityEffects(
       CL_FlyEffectRuntime(runtime, centity, entity.origin);
     } else if ((effects & EF_PLASMA) !== 0 && (effects & EF_ANIM_ALLFAST) !== 0) {
       CL_BlasterTrail(runtime, centity.lerp_origin, entity.origin);
+    } else if (!entity.viewerEntity && (entity.modelindex ?? 0) !== 0 && (effects & EF_FLAG1) !== 0) {
+      CL_FlagTrail(runtime, centity.lerp_origin, entity.origin, 242);
+    } else if (!entity.viewerEntity && (entity.modelindex ?? 0) !== 0 && (effects & EF_FLAG2) !== 0) {
+      CL_FlagTrail(runtime, centity.lerp_origin, entity.origin, 115);
     }
   }
 }
@@ -1768,10 +1776,33 @@ export function CL_QuadTrail(
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits the logical CTF flag trail metadata between two points.
+ * - Emits the original CTF flag trail particles between two points.
+ *
+ * Porting notes:
+ * - The no-runtime overload only exposes structured metadata for browser adapters.
  */
-export function CL_FlagTrail(start: vec3_t, end: vec3_t, color: number): ClientActionEffect[] {
-  return [createTrailEffect("flag-trail", start, end, color, 5)];
+export function CL_FlagTrail(start: vec3_t, end: vec3_t, color: number): ClientActionEffect[];
+export function CL_FlagTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t, color: number): void;
+export function CL_FlagTrail(
+  runtimeOrStart: ClientRuntime | vec3_t,
+  startOrEnd: vec3_t,
+  endOrColor: vec3_t | number,
+  maybeColor?: number
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrStart)) {
+    return [createTrailEffect("flag-trail", runtimeOrStart, startOrEnd, endOrColor as number, 5)];
+  }
+
+  spawnSimpleTrailParticles(runtimeOrStart, startOrEnd, endOrColor as vec3_t, {
+    spacing: 5,
+    colorBase: maybeColor as number,
+    colorMask: 0,
+    alphaVelocityBase: 0.8,
+    alphaVelocityRandom: 0.2,
+    originJitter: 16,
+    velocityJitter: 5,
+    gravity: false
+  });
 }
 
 /**

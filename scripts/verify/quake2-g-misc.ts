@@ -1482,7 +1482,7 @@ function verifyMiscGibSpawnsVisibleTossGibs(): void {
     assert.equal(gib.movetype, MOVETYPE_TOSS, `${testCase.classname} must toss`);
     assert.equal((gib.svflags & SVF_MONSTER) !== 0, true, `${testCase.classname} must keep SVF_MONSTER`);
     assert.equal(gib.deadflag, DEAD_DEAD, `${testCase.classname} must spawn dead`);
-    assert.deepEqual(gib.avelocity, testCase.random.map((value) => value * 200), `${testCase.classname} angular velocity mismatch`);
+    assert.deepEqual(gib.avelocity, testCase.random.map((value) => cRandom(value) * 200), `${testCase.classname} angular velocity mismatch`);
     assert.equal(gib.think?.name, "freeEdictThink", `${testCase.classname} must schedule G_FreeEdict adapter`);
     assert.equal(gib.nextthink, runtime.time + 30, `${testCase.classname} cleanup time mismatch`);
     assert.equal(gib.linked, true, `${testCase.classname} must link for snapshots`);
@@ -1722,12 +1722,17 @@ function verifyBarrelExplodeThrowsDebrisAndExplosionTempEntities(): void {
   assert.equal(debris.filter((entity) => entity.model === "models/objects/debris1/tris.md2").length, 2, "barrel_explode must throw two debris1 chunks");
   assert.equal(debris.filter((entity) => entity.model === "models/objects/debris3/tris.md2").length, 4, "barrel_explode must throw four debris3 bottom-corner chunks");
   assert.equal(debris.filter((entity) => entity.model === "models/objects/debris2/tris.md2").length, 8, "barrel_explode must throw eight debris2 chunks");
-  assert.deepEqual(debris[0]?.s.origin, [20, 32, 32], "random barrel debris must use the centered barrel origin");
+  const centeredRandomOrigin = [
+    20 + cCrandom(0.5) * 32,
+    32 + cCrandom(0.5) * 48,
+    32 + cCrandom(0.5) * 40
+  ];
+  assert.deepEqual(debris[0]?.s.origin, centeredRandomOrigin, "random barrel debris must use the centered barrel origin");
   assert.deepEqual(debris[2]?.s.origin, [4, 8, 12], "first corner debris must start at absmin");
   assert.deepEqual(debris[5]?.s.origin, [36, 56, 12], "last corner debris must start at the opposite bottom corner");
-  assert.equal(debris[0]?.velocity[2], 112.5, "debris1 speed must use spd = 1.5 * dmg / 200");
-  assert.equal(debris[2]?.velocity[2], 131.25, "debris3 speed must use spd = 1.75 * dmg / 200");
-  assert.equal(debris[6]?.velocity[2], 150, "debris2 speed must use spd = 2 * dmg / 200");
+  assert.equal(debris[0]?.velocity[2], (100 + 100 * cCrandom(0.5)) * 1.125, "debris1 speed must use spd = 1.5 * dmg / 200");
+  assert.equal(debris[2]?.velocity[2], (100 + 100 * cCrandom(0.5)) * 1.3125, "debris3 speed must use spd = 1.75 * dmg / 200");
+  assert.equal(debris[6]?.velocity[2], (100 + 100 * cCrandom(0.5)) * 1.5, "debris2 speed must use spd = 2 * dmg / 200");
   assert.equal(damaged.health < 200, true, "barrel_explode must apply MOD_BARREL radius damage");
 
   let events = drainGameTempEntityEvents(runtime);
@@ -2067,8 +2072,16 @@ function verifyFuncExplosiveExplodeMassLimitsTargetsAndFreeBranches(): void {
   assert.equal(debris.length, 24, "mass 1000 must cap func_explosive debris at 8 large and 16 small chunks");
   assert.equal(debris.filter((entity) => entity.model === "models/objects/debris1/tris.md2").length, 8, "large debris count must cap at 8");
   assert.equal(debris.filter((entity) => entity.model === "models/objects/debris2/tris.md2").length, 16, "small debris count must cap at 16");
-  assert.deepEqual(debris[0]?.s.origin, [50, 40, 40], "func_explosive_explode must recenter debris around the bmodel origin");
-  assert.deepEqual(debris[0]?.velocity, [0, 150, 100], "func_explosive_explode must launch chunks away from the inflictor before debris speed is added");
+  assert.deepEqual(debris[0]?.s.origin, [
+    50 + cCrandom(0.5) * 20,
+    40 + cCrandom(0.5) * 10,
+    40 + cCrandom(0.5) * 5
+  ], "func_explosive_explode must recenter debris around the bmodel origin");
+  assert.deepEqual(debris[0]?.velocity, [
+    100 * cCrandom(0.5),
+    150 + (100 * cCrandom(0.5)),
+    100 + (100 * cCrandom(0.5))
+  ], "func_explosive_explode must launch chunks away from the inflictor before debris speed is added");
   assert.equal(relayActivator, attacker, "func_explosive_explode must fire targets with the attacker as activator");
   assert.equal(explosive.inuse, false, "func_explosive_explode without dmg must free the brush entity");
   assert.equal(drainGameTempEntityEvents(runtime).length, 0, "func_explosive_explode without dmg must not emit an explosion temp entity");
@@ -2220,9 +2233,14 @@ function verifyThrowHeadConvertsSourceEntityToGib(): void {
     assert.equal(organicHead.die, gib_die, "ThrowHead must install gib_die");
     assert.equal(organicHead.movetype, MOVETYPE_TOSS, "organic ThrowHead must use MOVETYPE_TOSS");
     assert.equal(organicHead.touch, gib_touch, "organic ThrowHead must install gib_touch");
-    assert.deepEqual(organicHead.velocity, [40, 50, 465], "organic ThrowHead must apply vscale 0.5 before clipping");
-    assert.equal(organicHead.avelocity[1], 300, "ThrowHead must randomize yaw angular velocity with crandom()*600");
-    assert.equal(organicHead.nextthink, 17.5, "ThrowHead must schedule free after 10 + random()*10 seconds");
+    const organicVd = velocityForDamageExpected(100, [0.75, 0.75, 0.75]);
+    assert.deepEqual(organicHead.velocity, [
+      10 + organicVd[0] * 0.5,
+      20 + organicVd[1] * 0.5,
+      300 + organicVd[2] * 0.5
+    ], "organic ThrowHead must apply vscale 0.5 before clipping");
+    assert.equal(organicHead.avelocity[1], cCrandom(0.75) * 600, "ThrowHead must randomize yaw angular velocity with crandom()*600");
+    assert.equal(organicHead.nextthink, 5 + 10 + (cRandom(0.25) * 10), "ThrowHead must schedule free after 10 + random()*10 seconds");
   });
 
   withMockedRandom([0.75, 0.75, 0.75, 0.75, 0.25], () => {
@@ -2233,7 +2251,12 @@ function verifyThrowHeadConvertsSourceEntityToGib(): void {
 
     assert.equal(metallicHead.movetype, MOVETYPE_BOUNCE, "metallic ThrowHead must use MOVETYPE_BOUNCE");
     assert.equal(metallicHead.touch, undefined, "metallic ThrowHead must not install gib_touch");
-    assert.deepEqual(metallicHead.velocity, [70, 80, 500], "metallic ThrowHead must apply vscale 1.0 before clipping");
+    const metallicVd = velocityForDamageExpected(100, [0.75, 0.75, 0.75]);
+    assert.deepEqual(metallicHead.velocity, [
+      10 + metallicVd[0],
+      20 + metallicVd[1],
+      500
+    ], "metallic ThrowHead must apply vscale 1.0 before clipping");
   });
 }
 
@@ -2302,11 +2325,15 @@ function verifyThrowDebrisSpawnsDamageableVisibleChunk(): void {
     assert.deepEqual(chunk.s.origin, [1, 2, 3], "ThrowDebris must copy the requested origin into entity_state");
     assert.equal(chunk.model, "models/objects/debris1/tris.md2", "ThrowDebris model mismatch");
     assert.equal(runtime.assets.modelPaths[chunk.s.modelindex - 1], "models/objects/debris1/tris.md2", "ThrowDebris must register the visible debris model");
-    assert.deepEqual(chunk.velocity, [110, -80, 430], "ThrowDebris must apply self velocity plus speed-scaled random vector");
+    assert.deepEqual(chunk.velocity, [
+      10 + 2 * (100 * cCrandom(0.75)),
+      20 + 2 * (100 * cCrandom(0.25)),
+      30 + 2 * (100 + 100 * cCrandom(1.0))
+    ], "ThrowDebris must apply self velocity plus speed-scaled random vector");
     assert.equal(chunk.movetype, MOVETYPE_BOUNCE, "ThrowDebris chunks must bounce");
     assert.equal(chunk.solid, SOLID_NOT, "ThrowDebris chunks must be non-solid");
-    assert.deepEqual(chunk.avelocity, [300, 150, 450], "ThrowDebris must randomize angular velocity on all axes");
-    assert.equal(chunk.nextthink, 27, "ThrowDebris must schedule cleanup after 5 + random()*5 seconds");
+    assert.deepEqual(chunk.avelocity, [cRandom(0.5) * 600, cRandom(0.25) * 600, cRandom(0.75) * 600], "ThrowDebris must randomize angular velocity on all axes");
+    assert.equal(chunk.nextthink, 20 + 5 + (cRandom(0.4) * 5), "ThrowDebris must schedule cleanup after 5 + random()*5 seconds");
     assert.equal(chunk.s.frame, 0, "ThrowDebris must initialize frame 0");
     assert.equal(chunk.flags, 0, "ThrowDebris must clear flags");
     assert.equal(chunk.takedamage, damage_t.DAMAGE_YES, "ThrowDebris chunks must be damageable");
@@ -2364,6 +2391,23 @@ function withMockedRandom(sequence: number[], callback: () => void): void {
   } finally {
     Math.random = originalRandom;
   }
+}
+
+function cRandom(value: number): number {
+  return Math.floor(value * 0x8000) / 0x7fff;
+}
+
+function cCrandom(value: number): number {
+  return 2.0 * (cRandom(value) - 0.5);
+}
+
+function velocityForDamageExpected(damage: number, values: [number, number, number]): [number, number, number] {
+  const scale = damage < 50 ? 0.7 : 1.2;
+  return [
+    100 * cCrandom(values[0]) * scale,
+    100 * cCrandom(values[1]) * scale,
+    (200 + 100 * cRandom(values[2])) * scale
+  ];
 }
 
 function makeTrace(overrides: Partial<trace_t> = {}): trace_t {

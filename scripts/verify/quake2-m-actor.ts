@@ -20,6 +20,7 @@ import {
   SOLID_BBOX,
   SOLID_TRIGGER,
   SVF_NOCLIENT,
+  ai_run,
   ai_walk,
   ai_stand,
   actorFrames,
@@ -66,6 +67,18 @@ assert.equal(actorFrames.actor_move_walk.firstframe, actorFrames.FRAME_walk01, "
 assert.equal(actorFrames.actor_move_walk.lastframe, actorFrames.FRAME_walk08, "actor_move_walk lastframe");
 assert.equal(actorFrames.actor_move_walk.frame, actorFrames.actor_frames_walk, "actor_move_walk frame table");
 assert.equal(actorFrames.actor_move_walk.endfunc, undefined, "actor_move_walk endfunc");
+
+const expectedRunDistances = [4, 15, 15, 8, 20, 15, 8, 17, 12, -2, -2, -1];
+assert.equal(actorFrames.actor_frames_run.length, expectedRunDistances.length, "actor_frames_run has 12 C frames");
+for (const [index, frame] of actorFrames.actor_frames_run.entries()) {
+  assert.equal(frame.aifunc, ai_run, `actor_frames_run[${index}] uses ai_run`);
+  assert.equal(frame.dist, expectedRunDistances[index], `actor_frames_run[${index}] distance`);
+  assert.equal(frame.thinkfunc, undefined, `actor_frames_run[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_run.firstframe, actorFrames.FRAME_run02, "actor_move_run firstframe");
+assert.equal(actorFrames.actor_move_run.lastframe, actorFrames.FRAME_run07, "actor_move_run lastframe");
+assert.equal(actorFrames.actor_move_run.frame, actorFrames.actor_frames_run, "actor_move_run frame table");
+assert.equal(actorFrames.actor_move_run.endfunc, undefined, "actor_move_run endfunc");
 
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";
@@ -114,6 +127,27 @@ try {
 
 actorFrames.actor_walk(actor);
 assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_walk, "actor_walk selects walk move");
+
+runtime.time = actor.pain_debounce_time - 0.1;
+actor.enemy = null;
+actor.movetarget = path;
+actorFrames.actor_run(actor, runtime);
+assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_walk, "actor_run walks during pain debounce when movetarget exists");
+
+actor.movetarget = null;
+actorFrames.actor_run(actor, runtime);
+assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_stand, "actor_run stands during pain debounce without enemy or movetarget");
+
+runtime.time = actor.pain_debounce_time + 0.1;
+actor.monsterinfo.aiflags |= AI_STAND_GROUND;
+actorFrames.actor_run(actor, runtime);
+assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_stand, "actor_run stands when AI_STAND_GROUND is set");
+
+actor.monsterinfo.aiflags &= ~AI_STAND_GROUND;
+actor.enemy = player;
+actorFrames.actor_run(actor, runtime);
+assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_run, "actor_run selects run move outside debounce and stand-ground");
+actor.enemy = null;
 
 actor.use?.(actor, player, player, runtime);
 assert.equal(actor.movetarget, path, "actor_use picks target_actor");

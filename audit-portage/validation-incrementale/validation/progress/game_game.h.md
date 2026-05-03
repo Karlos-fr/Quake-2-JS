@@ -313,3 +313,38 @@ Corrections:
 
 Prochain lot recommande:
 - `apiversion` seul, puis `edict_size`, `num_edicts` et `max_edicts` dans un lot separe si coherent.
+
+## Session 2026-05-03 - apiversion
+
+Lot traite:
+- `apiversion`
+
+Verdict:
+- `Valide` pour `apiversion`.
+
+Preuves:
+- Source C/H lue dans `Quake-2-master/game/game.h`: `game_export_t` expose le champ `int apiversion`, attendu comme version de table exportee par le serveur; la constante associee `GAME_API_VERSION` vaut `3`.
+- Port TS proprietaire lu dans `packages/game/src/game.ts`: `game_export_t.apiversion` est declare comme `number`, et `GAME_API_VERSION` conserve la valeur C `3`.
+- Branchement lu dans `packages/game/src/g_main.ts`: `GetGameApi()` remplit `apiversion: GAME_API_VERSION`.
+- Branchement serveur lu dans `packages/server/src/sv_game.ts`: `SV_InitGameProgs` appelle `GetGameApiFunction`, compare `nextGe.apiversion` a `GAME_API_VERSION`, puis refuse la table si la version diverge.
+- Commentaire d'en-tete verifie pour `GAME_API_VERSION` et pour l'interface `game_export_t` dans `packages/game/src/game.ts`. `apiversion` est un champ de struct, pas une fonction; pas de commentaire de fonction applicable.
+
+Integration:
+- Runtime: OK. `apiversion` est atteint pendant l'initialisation serveur normale via `SV_InitGameProgs`; `scripts/verify/quake2-g-main.ts` prouve que `GetGameApi` exporte `GAME_API_VERSION`, et `scripts/verify/quake2-sv-game.ts` couvre le controle serveur.
+- `apps/web`: OK indirectement. `apps/web/src/full-game-server-host.ts` fournit le `GetGameApiFunction` porte au host full-game; le flux web declenche l'initialisation serveur et ne remplace pas le controle de version runtime.
+- `renderer-three`: OK indirectement. `apiversion` ne produit pas directement de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene; il conditionne l'acceptation de la table gameplay qui produit ensuite les sorties visibles consommees par le client et `packages/renderer-three`.
+
+Tests lances:
+- `npm run verify:game:header` OK
+- `npm run verify:g-main` OK
+- `npm run verify:server:game` OK
+- `npm run verify:full-game:server-host` OK
+- `npm run verify:full-game:three-renderer` OK
+- `npm run typecheck` OK
+
+Corrections:
+- `scripts/verify/quake2-game-header.ts`: assertion ajoutee pour prouver explicitement que `game_export_t.apiversion` porte la valeur `GAME_API_VERSION` de `game/game.h`.
+- Matrice `audit-portage/validation-incrementale/validation/matrices/game_game.h.md` mise a jour pour le lot.
+
+Prochain lot recommande:
+- `edict_size`, `num_edicts` et `max_edicts` dans un lot separe si coherent.

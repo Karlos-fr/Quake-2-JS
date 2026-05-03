@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `vectoyaw` / `yaw`.
-- Verdict du lot: partiel (`vectoyaw` proprietaire valide, mais consommateur `p_trail.ts` encore duplique hors perimetre).
+- Dernier lot traite: `vectoangles` / `forward` / `pitch` / `yaw`.
+- Verdict du lot: partiel (`vectoangles` proprietaire valide, mais consommateur `g_weapon.ts` encore duplique hors perimetre).
 
 ## Preuves session
 
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `vectoangles` et ses locaux `forward`, `pitch` et `yaw` si le lot reste petit. La ligne globale `v` restante pointe vers `g_weapon.ts`; elle doit etre clarifiee dans un lot separe sans melanger les ownerships.
+- Continuer avec `G_CopyString` et son local `out` si le lot reste petit. La ligne globale `v` restante pointe vers `g_weapon.ts`; elle doit etre clarifiee dans un lot separe sans melanger les ownerships.
 
 ## Session - findradius / j
 
@@ -206,6 +206,27 @@ Session `G_SetMovedir`:
 - Correction appliquee: `packages/game/src/g_utils.ts` documente le local `yaw`; `scripts/verify/quake2-g-utils.ts` couvre les branches 0, +Y, -Y, diagonale, wrap negatif et troncature C.
 
 Session `vectoyaw` / `yaw`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+
+## Session - vectoangles / forward / pitch / yaw
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete mis a jour sur `vectoangles` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`) pour documenter les locaux C `forward`, `pitch`, `yaw` et la troncature du cast C via `Math.trunc`.
+- Comparaison C/TS `vectoangles`: branche verticale `value1[1] == 0 && value1[0] == 0`, `yaw = 0`, `pitch = 90` ou `270`; sinon branches yaw `atan2(Y, X)`, axe Y positif/negatif, wrap positif, calcul `forward = sqrt(X*X + Y*Y)`, pitch `atan2(Z, forward)`, troncature entiere, wrap positif, puis sortie `[-pitch, yaw, 0]`.
+- Locaux C `forward`, `pitch`, `yaw`: non applicables comme entites autonomes; ils correspondent aux locaux TS de meme nom, couverts par les tests ajoutes.
+- Runtime verifie: l'export officiel `g_utils.vectoangles` est atteint depuis des flux gameplay normaux (`g_misc`, `g_turret`, `m_boss32`, `m_medic`, `m_parasite`, `m_soldier`, `m_tank`) appeles par spawns, callbacks, tirs, thinks et frames gameplay. Manque ouvert hors perimetre: `packages/game/src/g_weapon.ts` conserve un helper local `vectoangles` au lieu de consommer l'export officiel.
+- `apps/web`: integration attendue indirecte via les hosts full-game/local qui executent le runtime porte; aucune logique web parallele ne remplace la conversion angles. Le manque `g_weapon.ts` reste runtime package, pas une compensation web.
+- `packages/renderer-three`: pas de sortie renderer directe propre a `vectoangles`; ses consommateurs produisent des orientations de projectiles/entites, tourelles, monstres et impacts visibles via snapshots, modeles/frames, temp entities, dlights, particules, camera ou scene selon le flux. Les tests renderer passent, mais le consommateur `g_weapon.ts` doit etre aligne dans un lot separe.
+- Correction appliquee: `packages/game/src/g_utils.ts` documente les locaux `forward`/`pitch`/`yaw`; `scripts/verify/quake2-g-utils.ts` couvre les branches verticales, axes, diagonale, wrap yaw, wrap pitch et troncature C.
+
+Session `vectoangles` / `forward` / `pitch` / `yaw`:
 
 - `npm run verify:g-utils`
 - `npm run typecheck`

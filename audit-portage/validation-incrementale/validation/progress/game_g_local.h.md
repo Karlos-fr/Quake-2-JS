@@ -1350,7 +1350,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:g-ai` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_misc.ts`, `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_turret.ts` et `g_utils.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/g_misc.ts` pour les consommateurs gibs/debris/explosifs.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `g_misc.ts` est harmonise, mais d'autres consommateurs runtime restent disperses dans les modules game, player et monstres.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `g_misc.c` consomme les macros dans `VelocityForDamage`, `gib_think`, `ThrowGib`, `ThrowHead`, `ThrowDebris`, `func_explosive_explode`, `barrel_explode` et les spawns `misc_gib_*`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15-bit et `crandom` depend de `random`.
+  - `packages/game/src/g_misc.ts`: suppression des helpers locaux `crandom`/`randomFloat`; les consommateurs macro C du fichier utilisent maintenant les helpers proprietaires importes depuis `g_local.ts`. Le `Math.random()` restant dans `SP_misc_banner` correspond au `rand() % 16` C, pas aux macros `random`/`crandom`.
+- Runtime: integration attendue et branchee pour ce sous-lot via gibs, debris, barrels, func_explosive et spawns `misc_gib_*`, atteignables depuis `G_RunFrame`, callbacks de mort/damage/spawn et think/touch. Les autres consommateurs runtime de `random`/`crandom` restent `Partiel`.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, temp entities, entites visibles et ordre de rendu; aucune logique parallele web `g_misc`/`random`/`crandom` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages `g_misc.ts` produisent des sorties visibles via modeles/frames de gibs/debris/barrels, temp entities d'explosion, scene et snapshots; elles restent consommees par le flux client/refresh/Three.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `VelocityForDamage`, `gib_think`, `ThrowGib`, `ThrowHead`, `ThrowDebris`, `func_explosive_explode`, `barrel_explode` et `initialize_misc_gib` verifies; aucun nouveau commentaire requis apres suppression des helpers locaux.
+- Corrections appliquees:
+  - `packages/game/src/g_misc.ts`: import de `random`/`crandom` depuis `g_local.ts`, remplacement des usages macro C et suppression des helpers locaux duplicatifs.
+  - `scripts/verify/quake2-g-misc.ts`: attentes deterministes ajustees pour la formule C-style 15-bit de `g_local.random`/`g_local.crandom`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:g-misc` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_turret.ts` et `g_utils.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

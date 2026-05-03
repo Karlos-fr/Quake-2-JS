@@ -22,6 +22,8 @@ import {
   CL_ClearParticles,
   CL_ExecuteTempEntityEffects,
   CL_ExplosionParticles,
+  CL_ExecutePacketEntityEffects,
+  CL_FlagTrail,
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
   CL_NewDlight,
@@ -40,6 +42,8 @@ import {
   CHAN_WEAPON,
   CS_LIGHTS,
   EF_TELEPORTER,
+  EF_FLAG1,
+  EF_FLAG2,
   entity_event_t,
   MAX_LIGHTSTYLES,
   MAX_QPATH,
@@ -76,6 +80,7 @@ function main(): void {
   verifyBlasterTempEntityRuntimeBranch();
   verifyBlasterTrailRuntimeParticles();
   verifyQuadTrailRuntimeParticles();
+  verifyFlagTrailRuntimeParticles();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyTeleporterEntityEventMetadata();
@@ -784,6 +789,81 @@ function verifyQuadTrailRuntimeParticles(): void {
 
   const renderParticles = CL_AddParticles(runtime);
   assert.equal(renderParticles.length, 3, "CL_QuadTrail particles should reach the refresh particle list");
+}
+
+function verifyFlagTrailRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 9970;
+  const start: vec3_t = [0, 0, 0];
+  const end: vec3_t = [13, 0, 0];
+  const randomUnit = 0.75;
+  const expectedCrand = (randomUnit * 2) - 1;
+
+  withMockRandom(randomUnit, () => {
+    CL_FlagTrail(runtime, start, end, 242);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_FlagTrail should emit one particle per 5-unit step while len > 0");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_FlagTrail particle time mismatch");
+  assert.ok(particles.every((particle) => particle.color === 242), "CL_FlagTrail color mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0), "CL_FlagTrail alpha mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_FlagTrail acceleration mismatch");
+  assert.ok(
+    particles.every((particle) => particle.vel[0] === expectedCrand * 5 && particle.vel[1] === expectedCrand * 5 && particle.vel[2] === expectedCrand * 5),
+    "CL_FlagTrail velocity jitter mismatch"
+  );
+  const expectedAlphavel = -1.0 / (0.8 + (randomUnit * 0.2));
+  assert.ok(particles.every((particle) => almostEqual(particle.alphavel, expectedAlphavel)), "CL_FlagTrail alpha decay mismatch");
+
+  const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
+  assert.deepEqual(emittedX, [8, 13, 18], "CL_FlagTrail should advance move by the normalized vec * dec");
+  assert.ok(particles.every((particle) => particle.org[1] === 8 && particle.org[2] === 8), "CL_FlagTrail origin jitter mismatch");
+
+  const metadata = CL_FlagTrail(start, end, 115);
+  assert.equal(metadata[0]?.kind, "flag-trail", "CL_FlagTrail metadata kind mismatch");
+  assert.deepEqual(metadata[0]?.position, start, "CL_FlagTrail metadata start mismatch");
+  assert.deepEqual(metadata[0]?.position2, end, "CL_FlagTrail metadata end mismatch");
+  assert.equal(metadata[0]?.color, 115, "CL_FlagTrail metadata color mismatch");
+  assert.equal(metadata[0]?.spacing, 5, "CL_FlagTrail metadata spacing mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 3, "CL_FlagTrail particles should reach the refresh particle list");
+
+  const runtimeBranch = createRuntime();
+  runtimeBranch.cl.time = 10010;
+  runtimeBranch.cl_entities[7].lerp_origin = [0, 0, 0];
+  withMockRandom(randomUnit, () => {
+    CL_ExecutePacketEntityEffects(runtimeBranch, [{
+      number: 7,
+      effects: EF_FLAG2,
+      origin: end,
+      modelindex: 1,
+      viewerEntity: false
+    }]);
+  });
+  assert.equal(collectActiveParticles(runtimeBranch).length, 3, "EF_FLAG2 should dispatch to CL_FlagTrail for non-viewer modeled entities");
+  assert.ok(collectActiveParticles(runtimeBranch).every((particle) => particle.color === 115), "EF_FLAG2 should use blue flag color 115");
+
+  const noModelRuntime = createRuntime();
+  noModelRuntime.cl_entities[7].lerp_origin = [0, 0, 0];
+  CL_ExecutePacketEntityEffects(noModelRuntime, [{
+    number: 7,
+    effects: EF_FLAG1,
+    origin: end
+  }]);
+  assert.equal(collectActiveParticles(noModelRuntime).length, 0, "EF_FLAG1 without a model must not emit flag particles");
+
+  const viewerRuntime = createRuntime();
+  viewerRuntime.cl_entities[7].lerp_origin = [0, 0, 0];
+  CL_ExecutePacketEntityEffects(viewerRuntime, [{
+    number: 7,
+    effects: EF_FLAG1,
+    origin: end,
+    modelindex: 1,
+    viewerEntity: true
+  }]);
+  assert.equal(collectActiveParticles(viewerRuntime).length, 0, "viewer EF_FLAG1 should preserve the C path with light only and no flag particles");
 }
 
 function verifyLightstyleManagement(): void {

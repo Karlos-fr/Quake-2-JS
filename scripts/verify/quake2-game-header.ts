@@ -122,6 +122,8 @@ const gameExportKeys = [
 ] satisfies Array<keyof game_export_t>;
 
 assert.equal(gameExportKeys.length, 20, "game_export_t must expose every field declared in game/game.h");
+const apiVersionExport: Pick<game_export_t, "apiversion"> = { apiversion: GAME_API_VERSION };
+assert.equal(apiVersionExport.apiversion, 3, "game_export_t.apiversion must carry GAME_API_VERSION from game/game.h");
 
 const sourceNamedClient: gclient_s = client;
 const typedefClient: gclient_t = sourceNamedClient;

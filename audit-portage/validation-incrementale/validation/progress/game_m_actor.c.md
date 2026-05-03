@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: bloc walk `actor_frames_walk`, `actor_move_walk`, `actor_walk`
+- Dernier lot traite: bloc run `actor_frames_run`, `actor_move_run`, `actor_run`
 - Verdict: `Valide` pour les cinq entrees de matrice du lot
 
 ## Checklist appliquee au lot
@@ -25,6 +25,16 @@
 - renderer-three: le bloc walk produit une sortie visible indirecte (`s.modelindex`/`s.frame` de `misc_actor` en deplacement); consommation attendue via snapshots client, refresh entities, puis alias MD2 frame dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert dans ce lot.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts`.
 
+## Session 2026-05-03 - bloc run
+
+- Identification: `actor_frames_run` global/table/declarative, `actor_move_run`, et `actor_run` sont proprietaires de `game/m_actor.c`, cibles dans `packages/game/src/m_actor.ts`, exports accessibles via `actorFrames`.
+- Comparaison C vs TS: les 12 frames C `ai_run` conservent les distances `[4, 15, 15, 8, 20, 15, 8, 17, 12, -2, -2, -1]` et `NULL`/`undefined` pour `thinkfunc`; `actor_move_run` conserve `FRAME_run02` a `FRAME_run07`, la table run et `NULL`/`undefined` en `endfunc`; `actor_run` conserve les branches C pain debounce sans ennemi (`actor_walk` si `movetarget`, sinon `actor_stand`), `AI_STAND_GROUND` vers `actor_stand`, puis `currentmove = actor_move_run`.
+- Commentaires d'en-tete: commentaire de `actor_run` verifie (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement); pas de commentaire de fonction requis pour les donnees declaratives, le commentaire de fichier documente le port.
+- Runtime: branchement verifie depuis `SP_misc_actor` (`monsterinfo.run = actor_run`), depuis les `endfunc` des mouvements pain/flipoff/taunt/attack, et depuis `target_actor_touch`; atteignable par spawn `misc_actor`, callbacks runtime et frame serveur.
+- apps/web: pas de logique parallele attendue pour ce bloc gameplay; `apps/web` doit declencher le flux via le host full-game/local et consommer les snapshots/refresh issus du runtime, couvert par `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order`.
+- renderer-three: le bloc run produit une sortie visible indirecte (`s.modelindex`/`s.frame` de `misc_actor` en course/attaque); consommation attendue via snapshots client, refresh entities, puis alias MD2 frame dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert dans ce lot.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts`.
+
 ## Tests de reference
 
 - `npm run verify:m-actor`
@@ -36,7 +46,7 @@
 
 ## Prochain lot recommande
 
-Valider le bloc run: `actor_frames_run` (lignes global/table/declarative), `actor_move_run`, puis `actor_run` si le lot reste petit.
+Valider le bloc pain1: `actor_frames_pain1` (lignes global/table/declarative) et `actor_move_pain1`, en gardant `actor_pain` pour un lot separe si le bloc devient trop large.
 
 ## Blocages / decisions
 

@@ -58,7 +58,9 @@ import {
   MOVETYPE_STEP,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  crandom,
+  damage_t,
+  random
 } from "./g_local.js";
 import {
   FRAMETIME,
@@ -92,14 +94,6 @@ import { G_Find, G_FreeEdict, G_PickTarget, G_Spawn, G_UseTargets, KillBox, vect
 
 const START_OFF = 1;
 const CLOCK_MESSAGE_SIZE = 16;
-
-function crandom(): number {
-  return (Math.random() * 2) - 1;
-}
-
-function randomFloat(): number {
-  return Math.random();
-}
 
 function freeEdictThink(self: GameEntity, runtime: GameRuntime): void {
   G_FreeEdict(runtime, self);
@@ -168,7 +162,7 @@ function VelocityForDamage(damage: number): [number, number, number] {
   const v: [number, number, number] = [
     100.0 * crandom(),
     100.0 * crandom(),
-    200.0 + 100.0 * randomFloat()
+    200.0 + 100.0 * random()
   ];
 
   const scale = damage < 50 ? 0.7 : 1.2;
@@ -257,7 +251,7 @@ export function gib_think(self: GameEntity, runtime: GameRuntime): void {
   self.nextthink = runtime.time + FRAMETIME;
   if (self.s.frame === 10) {
     self.think = freeEdictThink;
-    self.nextthink = runtime.time + 8 + (randomFloat() * 10);
+    self.nextthink = runtime.time + 8 + (random() * 10);
   } else {
     self.think = gib_think;
   }
@@ -315,10 +309,10 @@ export function ThrowGib(self: GameEntity, gibname: string, damage: number, type
   const vscale = type === GIB_ORGANIC ? 0.5 : 1.0;
   const vd = VelocityForDamage(damage);
   gib.velocity = addVec3(self.velocity, scaleVec3(vd, vscale));
-  gib.avelocity = [randomFloat() * 600, randomFloat() * 600, randomFloat() * 600];
+  gib.avelocity = [random() * 600, random() * 600, random() * 600];
   ClipGibVelocity(gib);
   gib.think = freeEdictThink;
-  gib.nextthink = runtime.time + 10 + (randomFloat() * 10);
+  gib.nextthink = runtime.time + 10 + (random() * 10);
   refreshEntitySpatialState(gib);
   linkGameEntity(runtime, gib);
 }
@@ -399,7 +393,7 @@ export function ThrowHead(self: GameEntity, gibname: string, damage: number, typ
   self.avelocity[1] = crandom() * 600;
   ClipGibVelocity(self);
   self.think = freeEdictThink;
-  self.nextthink = runtime.time + 10 + (randomFloat() * 10);
+  self.nextthink = runtime.time + 10 + (random() * 10);
   refreshEntitySpatialState(self);
   linkGameEntity(runtime, self);
 }
@@ -989,9 +983,9 @@ export function ThrowDebris(self: GameEntity, modelname: string, speed: number, 
   chunk.velocity = addVec3(self.velocity, scaleVec3(randomVelocity, speed));
   chunk.movetype = MOVETYPE_BOUNCE;
   chunk.solid = SOLID_NOT;
-  chunk.avelocity = [randomFloat() * 600, randomFloat() * 600, randomFloat() * 600];
+  chunk.avelocity = [random() * 600, random() * 600, random() * 600];
   chunk.think = freeEdictThink;
-  chunk.nextthink = runtime.time + 5 + (randomFloat() * 5);
+  chunk.nextthink = runtime.time + 5 + (random() * 5);
   chunk.flags = 0;
   chunk.classname = "debris";
   chunk.takedamage = damage_t.DAMAGE_YES;
@@ -2120,7 +2114,7 @@ function initialize_misc_gib(ent: GameEntity, runtime: GameRuntime, modelPath: s
   ent.movetype = MOVETYPE_TOSS;
   ent.svflags |= SVF_MONSTER;
   ent.deadflag = DEAD_DEAD;
-  ent.avelocity = [Math.random() * 200, Math.random() * 200, Math.random() * 200];
+  ent.avelocity = [random() * 200, random() * 200, random() * 200];
   ent.think = freeEdictThink;
   ent.nextthink = runtime.time + 30;
   refreshEntitySpatialState(ent);

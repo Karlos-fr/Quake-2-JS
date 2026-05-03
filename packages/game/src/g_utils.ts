@@ -459,6 +459,11 @@ export function vectoyaw(vec: vec3_t): number {
  *
  * Behavior:
  * - Converts one direction vector into Quake II pitch/yaw/roll angles.
+ *
+ * Porting notes:
+ * - The C locals `forward`, `pitch`, and `yaw` are represented by the local
+ *   variables below.
+ * - Uses `Math.trunc` to match the original C casts to `int` before wrapping.
  */
 export function vectoangles(value1: vec3_t): vec3_t {
   let forward: number;
