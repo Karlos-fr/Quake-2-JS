@@ -19,6 +19,7 @@ import {
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
   CL_NewDlight,
+  CL_ParticleEffect,
   CL_RunDLights,
   CL_RunLightStyles,
   CL_SetLightstyle
@@ -50,6 +51,7 @@ main();
 
 function main(): void {
   verifyClearParticles();
+  verifyParticleEffectRuntimeParticles();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyItemRespawnEntityEventMetadata();
@@ -92,6 +94,47 @@ function verifyClearParticles(): void {
   }
 
   assert.equal(count, runtime.cl.cl_numparticles, "CL_ClearParticles should expose cl_numparticles free slots");
+}
+
+function verifyParticleEffectRuntimeParticles(): void {
+  const runtime = createRuntime();
+  const origin: vec3_t = [10, 20, 30];
+  const direction: vec3_t = [1, 2, -1];
+  runtime.cl.time = 2468;
+  const randomUnit = 9 / 0x7fffffff;
+
+  withMockRandom(randomUnit, () => {
+    CL_ParticleEffect(runtime, origin, direction, 0x70, 3);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_ParticleEffect should allocate the requested particle count");
+  assert.equal(runtime.cl.free_particles, 3, "CL_ParticleEffect free list should advance by count");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_ParticleEffect should preserve cl.time");
+  assert.ok(particles.every((particle) => particle.color === 0x71), "CL_ParticleEffect color should preserve color + (rand&7)");
+  assert.ok(
+    particles.every((particle) => (
+      particle.org[0] === origin[0] - 3 + (9 * direction[0])
+      && particle.org[1] === origin[1] - 3 + (9 * direction[1])
+      && particle.org[2] === origin[2] - 3 + (9 * direction[2])
+    )),
+    "CL_ParticleEffect should apply jitter and local d * dir displacement"
+  );
+  const expectedVelocity = ((randomUnit * 2) - 1) * 20;
+  assert.ok(
+    particles.every((particle) => (
+      almostEqual(particle.vel[0], expectedVelocity)
+      && almostEqual(particle.vel[1], expectedVelocity)
+      && almostEqual(particle.vel[2], expectedVelocity)
+    )),
+    "CL_ParticleEffect velocity crand scale mismatch"
+  );
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === -40), "CL_ParticleEffect gravity mismatch");
+  const expectedAlphavel = -1.0 / (0.5 + (randomUnit * 0.3));
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, expectedAlphavel)), "CL_ParticleEffect alpha decay mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 3, "CL_ParticleEffect particles should reach the refresh particle list");
 }
 
 function verifyMonsterMuzzleFlash2Effects(): void {
@@ -483,4 +526,8 @@ function withMockRandom<T>(value: number, callback: () => T): T {
   } finally {
     Math.random = originalRandom;
   }
+}
+
+function almostEqual(actual: number, expected: number, epsilon = 1e-12): boolean {
+  return Math.abs(actual - expected) <= epsilon;
 }

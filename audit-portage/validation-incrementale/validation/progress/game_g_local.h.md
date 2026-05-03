@@ -1155,7 +1155,32 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les macros monde restantes `MOD_TARGET_LASER`, `MOD_TRIGGER_HURT`, `MOD_HIT`, `MOD_TARGET_BLASTER`, `MOD_FRIENDLY_FIRE` si le lot reste coherent, avec preuves combat/death messages et sorties visibles associees.
+- 2026-05-03: lot macros restantes means-of-death `MOD_TARGET_LASER`, `MOD_TRIGGER_HURT`, `MOD_HIT`, `MOD_TARGET_BLASTER`, `MOD_FRIENDLY_FIRE`.
+- Verdict: `Valide` pour les 5 macros apres comparaison H/C vs TS, verification des valeurs, des producteurs runtime et des messages/score `ClientObituary`.
+- Source H/C comparee:
+  - `g_local.h` definit les macros du lot avec valeurs `30`, `31`, `32`, `33` et `0x8000000`.
+  - `g_target.c` propage `MOD_TARGET_LASER` via `target_laser_think`; `target_blaster` passe `MOD_TARGET_BLASTER` comme argument final truthy a `fire_blaster`, dont le C traite ce parametre comme `qboolean hyper`.
+  - `g_trigger.c` propage `MOD_TRIGGER_HURT` via `hurt_touch`.
+  - `g_weapon.c` propage `MOD_HIT` via `fire_hit`.
+  - `g_combat.c` ajoute `MOD_FRIENDLY_FIRE` apres verification des teams, et `p_client.c` masque ce bit pour choisir le message puis penalise le score attacker si `ff`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts` et `packages/game/src/runtime.ts`: constantes exportees avec les valeurs C exactes, puis reexportees via `g_local.ts`.
+  - `packages/game/src/g_target.ts`: `target_laser_think` utilise `MOD_TARGET_LASER`; `use_target_blaster` preserve le comportement C en passant un dernier argument truthy a `fire_blaster`.
+  - `packages/game/src/g_trigger.ts`: `trigger_hurt` appelle `T_Damage` avec `MOD_TRIGGER_HURT`.
+  - `packages/game/src/g_weapon.ts`: `fire_hit` appelle `T_Damage` avec `MOD_HIT`.
+  - `packages/game/src/g_combat.ts`: `T_Damage` ajoute le flag `MOD_FRIENDLY_FIRE` quand les regles de team l'exigent.
+  - `packages/game/src/p_client.ts`: `ClientObituary` produit les messages C pour `MOD_TARGET_LASER`, `MOD_TARGET_BLASTER`, `MOD_TRIGGER_HURT`, garde `MOD_HIT` en fallback `died`, et applique la penalite friendly-fire.
+- Runtime: integration attendue et branchee via `G_RunFrame`/spawn/use/think/touch des entites `target_laser`, `target_blaster`, `trigger_hurt`, melee `fire_hit`, `T_Damage`, puis `player_die`/`ClientObituary`. Le cas `MOD_TARGET_BLASTER` preserve le comportement source C: la constante existe et le message est porte, mais le projectile target_blaster C-compatible reste un bolt blaster/hyper via l'argument final truthy de `fire_blaster`.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, messages, temp entities, beams et ordre de rendu; aucune logique parallele `meansOfDeath` detectee dans `apps/web`. `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue. Le lot produit/conditionne beam laser `RF_BEAM`, endpoint `old_origin`, sparks `TE_LASER_SPARKS`, bolts blaster visibles, trigger damage sans sortie directe, melee impact/fallback obituary et sorties combat/score; `packages/renderer-three` consomme les sorties visibles via le flux full-game/refresh, sans logique gameplay parallele. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: pas de fonction nouvelle dans ce lot; commentaire de module `g_local.ts` verifie et commentaires d'en-tete de `target_laser_think`, `use_target_blaster`, `SP_target_blaster`, `SP_trigger_hurt`, `fire_hit`, `T_Damage` et `ClientObituary` verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ajoutees pour `MOD_TARGET_LASER`, `MOD_HIT`, `MOD_TARGET_BLASTER` et `MOD_FRIENDLY_FIRE`.
+  - `scripts/verify/quake2-p-client.ts`: preuves `ClientObituary` ajoutees pour `MOD_TARGET_LASER`, `MOD_TARGET_BLASTER`, `MOD_TRIGGER_HURT`, fallback `MOD_HIT` et penalite `MOD_FRIENDLY_FIRE`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:g-target` OK; `npm run verify:g-trigger` OK; `npm run verify:g-weapon` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK (`npm run verify:g-combat` absent du package); `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec `meansOfDeath`, puis `g_edicts` si le lot reste coherent.
 
 ## Blocages
 

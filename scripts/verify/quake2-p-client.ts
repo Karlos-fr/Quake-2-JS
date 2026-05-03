@@ -27,11 +27,13 @@ import {
   MOD_EXIT,
   MOD_EXPLOSIVE,
   MOD_FALLING,
+  MOD_FRIENDLY_FIRE,
   MOD_G_SPLASH,
   MOD_GRENADE,
   MOD_HANDGRENADE,
   MOD_HELD_GRENADE,
   MOD_HG_SPLASH,
+  MOD_HIT,
   MOD_HYPERBLASTER,
   MOD_LAVA,
   MOD_MACHINEGUN,
@@ -43,7 +45,10 @@ import {
   MOD_SPLASH,
   MOD_SSHOTGUN,
   MOD_SUICIDE,
+  MOD_TARGET_BLASTER,
+  MOD_TARGET_LASER,
   MOD_TELEFRAG,
+  MOD_TRIGGER_HURT,
   MOD_WATER,
   damage_t
 } from "../../packages/game/src/g_local.js";
@@ -134,8 +139,11 @@ function verifyClientObituaryWorldMeansOfDeath(): void {
     [MOD_EXPLOSIVE, "victim blew up.\n"],
     [MOD_BARREL, "victim blew up.\n"],
     [MOD_EXIT, "victim found a way out.\n"],
+    [MOD_TARGET_LASER, "victim saw the light.\n"],
+    [MOD_TARGET_BLASTER, "victim got blasted.\n"],
     [MOD_BOMB, "victim was in the wrong place.\n"],
-    [MOD_SPLASH, "victim was in the wrong place.\n"]
+    [MOD_SPLASH, "victim was in the wrong place.\n"],
+    [MOD_TRIGGER_HURT, "victim was in the wrong place.\n"]
   ];
 
   for (const [mod, expected] of worldCases) {
@@ -175,6 +183,36 @@ function verifyClientObituaryWorldMeansOfDeath(): void {
   assert.deepEqual(prints, ["victim tried to put the pin back in.\n"], "ClientObituary held grenade suicide message mismatch");
   assert.equal(victim.enemy, null, "ClientObituary held grenade suicide must clear enemy");
   assert.equal(client.resp.score, -1, "ClientObituary held grenade suicide should penalize victim");
+
+  const defaultRuntime = createHarnessRuntime();
+  defaultRuntime.deathmatch = true;
+  defaultRuntime.meansOfDeath = MOD_HIT;
+  const defaultVictim = spawnGameEntity(defaultRuntime);
+  attachGameClient(defaultVictim).pers.netname = "victim";
+  const defaultPrints: string[] = [];
+  ClientObituary(defaultVictim, null, null, defaultRuntime, {
+    onPrint: (_level, message) => {
+      defaultPrints.push(message);
+    }
+  });
+  assert.deepEqual(defaultPrints, ["victim died.\n"], "ClientObituary MOD_HIT world fallback mismatch");
+
+  const friendlyRuntime = createHarnessRuntime();
+  friendlyRuntime.deathmatch = true;
+  friendlyRuntime.meansOfDeath = MOD_BLASTER | MOD_FRIENDLY_FIRE;
+  const friendlyVictim = spawnGameEntity(friendlyRuntime);
+  attachGameClient(friendlyVictim).pers.netname = "victim";
+  const friendlyAttacker = spawnGameEntity(friendlyRuntime);
+  const friendlyAttackerClient = attachGameClient(friendlyAttacker);
+  friendlyAttackerClient.pers.netname = "attacker";
+  const friendlyPrints: string[] = [];
+  ClientObituary(friendlyVictim, null, friendlyAttacker, friendlyRuntime, {
+    onPrint: (_level, message) => {
+      friendlyPrints.push(message);
+    }
+  });
+  assert.deepEqual(friendlyPrints, ["victim was blasted by attacker\n"], "ClientObituary friendly-fire message mismatch");
+  assert.equal(friendlyAttackerClient.resp.score, -1, "ClientObituary friendly fire should penalize attacker");
 }
 
 function verifyClientConnectRespectsAutosavedPersistentState(): void {

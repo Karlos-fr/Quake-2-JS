@@ -52,6 +52,11 @@ assert.deepEqual(
   [12, 23, 34],
   "G_ProjectSource mismatch"
 );
+assert.deepEqual(
+  G_ProjectSource([5, -2, 7], [3, -4, 6], [0.5, 1, -2], [-1, 2, 0.25]),
+  [10.5, -7, 6],
+  "G_ProjectSource must match the C projection formula for mixed basis vectors"
+);
 
 const movedir: [number, number, number] = [0, 0, 0];
 const angles: [number, number, number] = [0, -1, 0];

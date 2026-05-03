@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-03: `target_earthquake_use` et `SP_target_earthquake`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `target_earthquake_use` conserve `timestamp = level.time + count`, `nextthink = level.time + FRAMETIME`, le stockage exact de `activator` y compris `NULL`, et le reset `last_move_time = 0`. `SP_target_earthquake` conserve le warning `untargeted`, les defaults `count = 5` et `speed = 200`, `SVF_NOCLIENT`, les callbacks `think = target_earthquake_think` et `use = target_earthquake_use`, puis le precache `world/quake.wav`.
+  - Commentaires d'en-tete completes pour `target_earthquake_use` et `SP_target_earthquake`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et notes de portage utiles.
+  - Branchement runtime verifie: `target_earthquake` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; le spawn installe les callbacks, le `use` programme le prochain think, et `SV_RunThink`/`runPendingThinks` execute ensuite `target_earthquake_think`.
+  - `apps/web`: integration attendue car l'activation produit son quake et mouvement/camera client via le think deja branche. Pas de logique parallele masquante constatee; le flux passe par runtime serveur/client, precache sons, audio web, snapshots et refresh frame/camera.
+  - `renderer-three`: pas de modele, frame, image, particule, beam, dlight, temp entity ou areabits produit directement par le spawn/use. La sortie visible attendue est indirecte apres think via mouvement/camera client et refdef, consommee par `ClientRefreshFrame`/`syncThreeCameraToRefresh`; aucun manque ouvert pour ce lot.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: headers completes pour `target_earthquake_use` et `SP_target_earthquake`.
+  - `scripts/verify/quake2-g-target.ts`: couverture ajoutee pour defaults, warning untargeted, `SVF_NOCLIENT`, callbacks installes, precache son, dispatch `ED_CallSpawn`, preservation `count`/`speed`, timestamp/nextthink, activator nul/non nul et reset `last_move_time`.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: aucun lot restant pour `g_target.c` apres verification de la matrice; laisser le coordinateur mettre a jour `AVANCEMENT_GLOBAL.md`.
+
 - 2026-05-03: `target_earthquake_think` avec les locaux `i` et `e`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `target_earthquake_think` conserve le son positionne `world/quake.wav` via `noise_index`, canal `CHAN_AUTO`, volume 1, attenuation `ATTN_NONE`, cadence `last_move_time = level.time + 0.5`, la boucle `for (i=1, e=g_edicts+i; i < globals.num_edicts; i++, e++)`, les filtres `inuse`, `client` et `groundentity`, le clear de `groundentity`, les accelerations horizontales `crandom() * 150`, la velocite verticale `speed * (100.0 / mass)` et le reschedule `nextthink = level.time + FRAMETIME` tant que `level.time < timestamp`. Les locaux C `i` et `e` sont representes par l'index de boucle TS et le `const e` par iteration.

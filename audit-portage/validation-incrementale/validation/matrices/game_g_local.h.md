@@ -271,11 +271,11 @@
 | `Quake-2-master/game/g_local.h` | macro | `MOD_BOMB` | `packages/game/src/g_local.ts` | `MOD_BOMB` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_EXIT` | `packages/game/src/g_local.ts` | `MOD_EXIT` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_SPLASH` | `packages/game/src/g_local.ts` | `MOD_SPLASH` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_TARGET_LASER` | `packages/game/src/g_local.ts` | `MOD_TARGET_LASER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_TRIGGER_HURT` | `packages/game/src/g_local.ts` | `MOD_TRIGGER_HURT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_HIT` | `packages/game/src/runtime.ts` | `MOD_HIT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_TARGET_BLASTER` | `packages/game/src/g_local.ts` | `MOD_TARGET_BLASTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_FRIENDLY_FIRE` | `packages/game/src/runtime.ts` | `MOD_FRIENDLY_FIRE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_TARGET_LASER` | `packages/game/src/g_local.ts` | `MOD_TARGET_LASER` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_TRIGGER_HURT` | `packages/game/src/g_local.ts` | `MOD_TRIGGER_HURT` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_HIT` | `packages/game/src/runtime.ts` | `MOD_HIT` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_TARGET_BLASTER` | `packages/game/src/g_local.ts` | `MOD_TARGET_BLASTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_FRIENDLY_FIRE` | `packages/game/src/runtime.ts` | `MOD_FRIENDLY_FIRE` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `meansOfDeath` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `g_edicts` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `FOFS` | `packages/game/src/g_local.ts` | `FOFS` | A verifier | A redecouper |  |

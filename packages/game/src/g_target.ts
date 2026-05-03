@@ -1069,6 +1069,10 @@ export function target_earthquake_think(self: GameEntity, runtime: GameRuntime):
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Starts an earthquake by recording its end timestamp, scheduling the first think,
+ * preserving the activator and resetting the sound cadence.
+ * Porting notes: The unused C `other` callback argument is kept as `_other` to preserve the
+ * target/use callback shape.
  */
 export function target_earthquake_use(self: GameEntity, _other: GameEntity | null, activator: GameEntity | null, runtime: GameRuntime): void {
   self.timestamp = runtime.time + self.count;
@@ -1082,6 +1086,10 @@ export function target_earthquake_use(self: GameEntity, _other: GameEntity | nul
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Initializes an invisible earthquake target with default duration/speed, installs the
+ * think/use callbacks and precaches `world/quake.wav`.
+ * Porting notes: `gi.dprintf` is represented by a warning log entry with the same trigger
+ * condition as the C source.
  */
 export function SP_target_earthquake(self: GameEntity, runtime: GameRuntime): void {
   if (!self.targetname) {

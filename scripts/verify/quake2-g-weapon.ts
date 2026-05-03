@@ -42,7 +42,7 @@ import {
 import { damage_t } from "../../packages/game/src/g_local.js";
 import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_rocket, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_WATER, EF_GRENADE, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
+import { CONTENTS_WATER, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -67,6 +67,7 @@ function main(): void {
   verifyFireGrenade2SpawnStateTimerBranchesAndRuntimeTouch();
   verifyRocketTouchDamageSplashAndVisibleExplosion();
   verifyRocketTouchSkyAndDebrisBranches();
+  verifyFireRocketSpawnStateAndDodgeOrder();
   verifyFireRocketRuntimeTouchForwardsCollisionContext();
   verifyFireRailDamageModAndVisibleTrail();
   verifyBfgDamageModsAndVisibleEffects();
@@ -988,6 +989,59 @@ function verifyFireRocketRuntimeTouchForwardsCollisionContext(): void {
   rocket.touch?.(rocket, wall, runtime, plane, surface);
   assert.equal(forwardedPlane, plane, "fire_rocket runtime touch callback must forward collision plane to rocket_touch");
   assert.equal(forwardedSurface, surface, "fire_rocket runtime touch callback must forward collision surface to rocket_touch");
+}
+
+function verifyFireRocketSpawnStateAndDodgeOrder(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 3;
+  const owner = createPlayer(runtime, 1);
+  const order: string[] = [];
+  runtime.engineLinkEntity = (entity) => {
+    if (entity.classname === "rocket") {
+      order.push("link");
+    }
+  };
+
+  let dodgeStart: vec3_t | null = null;
+  let dodgeDir: vec3_t | null = null;
+  let dodgeSpeed = 0;
+  let dodgeSawLinked = true;
+  const rocket = fire_rocket(owner, [10, 20, 30], [0, 2, 0], 90, 500, 140, 80, runtime, {
+    check_dodge: (_self, start, dir, speed) => {
+      order.push("check_dodge");
+      dodgeStart = [...start];
+      dodgeDir = [...dir];
+      dodgeSpeed = speed;
+      dodgeSawLinked = runtime.linkedSolidEntities.some((entity) => entity.classname === "rocket");
+    }
+  });
+
+  assert.equal(rocket.classname, "rocket", "fire_rocket must name the projectile rocket");
+  assert.deepEqual(rocket.s.origin, [10, 20, 30], "fire_rocket must copy start into s.origin");
+  assert.deepEqual(rocket.origin, [10, 20, 30], "fire_rocket must mirror start into runtime origin");
+  assert.deepEqual(rocket.movedir, [0, 2, 0], "fire_rocket must preserve raw dir in movedir like VectorCopy");
+  assert.deepEqual(rocket.velocity, [0, 1000, 0], "fire_rocket must scale the raw dir by speed like VectorScale");
+  assert.deepEqual(rocket.s.angles.map((value) => Object.is(value, -0) ? 0 : value), [0, 90, 0], "fire_rocket must derive projectile angles from dir");
+  assert.equal(rocket.movetype, MOVETYPE_FLYMISSILE, "fire_rocket movetype mismatch");
+  assert.equal(rocket.clipmask, MASK_SHOT, "fire_rocket clipmask mismatch");
+  assert.equal(rocket.solid, SOLID_BBOX, "fire_rocket solid mismatch");
+  assert.equal(rocket.s.effects & EF_ROCKET, EF_ROCKET, "fire_rocket must set EF_ROCKET");
+  assert.deepEqual(rocket.mins, [0, 0, 0], "fire_rocket must clear mins");
+  assert.deepEqual(rocket.maxs, [0, 0, 0], "fire_rocket must clear maxs");
+  assert.equal(runtime.assets.modelPaths[rocket.s.modelindex - 1], "models/objects/rocket/tris.md2", "fire_rocket modelindex mismatch");
+  assert.equal(runtime.assets.soundPaths[rocket.s.sound - 1], "weapons/rockfly.wav", "fire_rocket soundindex mismatch");
+  assert.equal(rocket.owner, owner, "fire_rocket must retain owner");
+  assert.equal(rocket.nextthink, 19, "fire_rocket must schedule cleanup at level.time + 8000/speed");
+  assert.equal(rocket.dmg, 90, "fire_rocket damage mismatch");
+  assert.equal(rocket.radius_dmg, 80, "fire_rocket radius damage mismatch");
+  assert.equal(rocket.dmg_radius, 140, "fire_rocket damage radius mismatch");
+  assert.equal(rocket.linked, true, "fire_rocket must link the projectile");
+  assert.equal(runtime.linkedSolidEntities.includes(rocket), true, "fire_rocket must expose the rocket to solid touch runtime");
+  assert.deepEqual(dodgeStart, [10, 20, 30], "fire_rocket must pass rocket origin to check_dodge");
+  assert.deepEqual(dodgeDir, [0, 2, 0], "fire_rocket must pass raw dir to check_dodge");
+  assert.equal(dodgeSpeed, 500, "fire_rocket must pass speed to check_dodge");
+  assert.equal(dodgeSawLinked, false, "fire_rocket must run check_dodge before linkentity");
+  assert.deepEqual(order, ["check_dodge", "link"], "fire_rocket must preserve check_dodge/linkentity order");
 }
 
 function verifyFireRailDamageModAndVisibleTrail(): void {

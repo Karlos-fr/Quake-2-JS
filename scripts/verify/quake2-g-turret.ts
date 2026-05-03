@@ -20,11 +20,12 @@ import {
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
-import { AI_DUCKED, AI_STAND_GROUND, FL_NO_KNOCKBACK, FL_TEAMSLAVE, SVF_MONSTER, damage_t } from "../../packages/game/src/g_local.js";
+import { AI_DUCKED, AI_STAND_GROUND, FL_NO_KNOCKBACK, FL_TEAMSLAVE, MOD_CRUSH, SVF_MONSTER, damage_t } from "../../packages/game/src/g_local.js";
 import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import {
   SP_turret_base,
   SP_turret_breach,
+  turret_blocked,
   SP_turret_driver,
   turret_breach_think,
   turret_driver_die,
@@ -36,6 +37,7 @@ main();
 
 function main(): void {
   verifyTurretBreachFinishInitAndSpawnRegistry();
+  verifyTurretBlocked();
   verifyTurretDriverLinkAndThink();
   verifyTurretBreachThinkFiresRocket();
 
@@ -74,6 +76,8 @@ function verifyTurretBreachFinishInitAndSpawnRegistry(): void {
 
   ED_CallSpawn(breach, runtime);
   assert.equal(breach.solid !== 0, true, "SP_turret_breach must initialize brush solidity");
+  assert.equal(base.blocked, turret_blocked, "SP_turret_base must arm turret_blocked");
+  assert.equal(breach.blocked, turret_blocked, "SP_turret_breach must arm turret_blocked");
   assert.equal(base.s.modelindex, 2, "SP_turret_base must apply gi.setmodel-style inline modelindex");
   assert.equal(breach.s.modelindex, 3, "SP_turret_breach must apply gi.setmodel-style inline modelindex");
   assert.equal(breach.speed, 50, "SP_turret_breach default speed mismatch");
@@ -88,6 +92,56 @@ function verifyTurretBreachFinishInitAndSpawnRegistry(): void {
   assert.deepEqual(breach.move_origin, [64, 16, 8], "turret_breach_finish_init muzzle offset mismatch");
   assert.equal(base.dmg, breach.dmg, "turret_breach_finish_init must copy damage to teammaster");
   assert.equal(typeof breach.think, "function", "turret_breach_finish_init must arm the regular think loop");
+}
+
+function verifyTurretBlocked(): void {
+  const runtime = createRuntime();
+
+  const base = spawnGameEntity(runtime);
+  base.classname = "turret_base";
+  base.dmg = 7;
+  const breach = spawnGameEntity(runtime);
+  breach.classname = "turret_breach";
+  breach.teammaster = base;
+
+  const driver = spawnGameEntity(runtime);
+  driver.classname = "turret_driver";
+  attachGameClient(driver);
+  base.owner = driver;
+
+  const monsterBlocker = spawnGameEntity(runtime);
+  monsterBlocker.classname = "monster_blocker";
+  monsterBlocker.takedamage = damage_t.DAMAGE_YES;
+  monsterBlocker.svflags |= SVF_MONSTER;
+  monsterBlocker.health = 100;
+
+  turret_blocked(breach, monsterBlocker, runtime);
+
+  assert.equal(monsterBlocker.health, 86, "turret_blocked must use teammaster damage and owner attacker");
+  assert.equal(monsterBlocker.enemy, driver, "turret_blocked must credit the turret owner as attacker");
+  assert.equal(runtime.meansOfDeath, MOD_CRUSH, "turret_blocked damage mod mismatch");
+
+  base.owner = null;
+  const crateBlocker = spawnGameEntity(runtime);
+  crateBlocker.classname = "crate_blocker";
+  crateBlocker.takedamage = damage_t.DAMAGE_YES;
+  crateBlocker.health = 50;
+
+  turret_blocked(breach, crateBlocker, runtime);
+
+  assert.equal(crateBlocker.health, 43, "turret_blocked must fall back to teammaster attacker");
+  assert.equal(runtime.meansOfDeath, MOD_CRUSH, "turret_blocked fallback damage mod mismatch");
+
+  const inertBlocker = spawnGameEntity(runtime);
+  inertBlocker.classname = "inert_blocker";
+  inertBlocker.takedamage = damage_t.DAMAGE_NO;
+  inertBlocker.health = 25;
+  runtime.meansOfDeath = 0;
+
+  turret_blocked(breach, inertBlocker, runtime);
+
+  assert.equal(inertBlocker.health, 25, "turret_blocked must ignore non-damageable blockers");
+  assert.equal(runtime.meansOfDeath, 0, "turret_blocked must not emit damage for non-damageable blockers");
 }
 
 function verifyTurretDriverLinkAndThink(): void {

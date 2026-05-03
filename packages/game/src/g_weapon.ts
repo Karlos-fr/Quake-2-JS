@@ -447,7 +447,7 @@ export function fire_grenade2(
  * - Spawns one rocket projectile with original movement, sound and splash metadata.
  *
  * Porting notes:
- * - Touch and free callbacks are delegated through hooks until the full impact path is ported.
+ * - Touch and free callbacks are delegated through hooks while preserving the original projectile entity contract.
  */
 export function fire_rocket(
   self: GameEntity,
@@ -461,14 +461,13 @@ export function fire_rocket(
   hooks: GameWeaponWorldHooks = {}
 ): GameEntity {
   const rocket = spawnGameEntity(runtime);
-  const normalizedDir = normalizeVec3(dir);
 
   rocket.origin = [...start];
   rocket.s.origin = [...start];
-  rocket.movedir = [...normalizedDir];
-  rocket.angles = vectoangles(normalizedDir);
+  rocket.movedir = [...dir];
+  rocket.angles = vectoangles(dir);
   rocket.s.angles = [...rocket.angles];
-  rocket.velocity = scaleVec3(normalizedDir, speed);
+  rocket.velocity = scaleVec3(dir, speed);
   rocket.movetype = MOVETYPE_FLYMISSILE;
   rocket.clipmask = MASK_SHOT;
   rocket.solid = SOLID_BBOX;
@@ -489,10 +488,10 @@ export function fire_rocket(
   rocket.classname = "rocket";
 
   refreshEntitySpatialState(rocket);
-  linkGameEntity(runtime, rocket);
   if (self.client) {
-    (hooks.check_dodge ?? check_dodge)(self, rocket.s.origin, normalizedDir, speed, runtime);
+    (hooks.check_dodge ?? check_dodge)(self, rocket.s.origin, dir, speed, runtime);
   }
+  linkGameEntity(runtime, rocket);
   return rocket;
 }
 

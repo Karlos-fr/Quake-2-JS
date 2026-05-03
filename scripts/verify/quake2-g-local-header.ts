@@ -71,7 +71,9 @@ import {
   MOD_EXIT,
   MOD_EXPLOSIVE,
   MOD_FALLING,
+  MOD_FRIENDLY_FIRE,
   MOD_HELD_GRENADE,
+  MOD_HIT,
   MOD_LAVA,
   MOD_MACHINEGUN,
   MOD_R_SPLASH,
@@ -82,6 +84,8 @@ import {
   MOD_SPLASH,
   MOD_SSHOTGUN,
   MOD_SUICIDE,
+  MOD_TARGET_BLASTER,
+  MOD_TARGET_LASER,
   MOD_TELEFRAG,
   MOD_TRIGGER_HURT,
   MOD_UNKNOWN,
@@ -311,7 +315,11 @@ assert.equal(MOD_BARREL, 26, "MOD_BARREL mismatch");
 assert.equal(MOD_BOMB, 27, "MOD_BOMB mismatch");
 assert.equal(MOD_EXIT, 28, "MOD_EXIT mismatch");
 assert.equal(MOD_SPLASH, 29, "MOD_SPLASH mismatch");
+assert.equal(MOD_TARGET_LASER, 30, "MOD_TARGET_LASER mismatch");
 assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");
+assert.equal(MOD_HIT, 32, "MOD_HIT mismatch");
+assert.equal(MOD_TARGET_BLASTER, 33, "MOD_TARGET_BLASTER mismatch");
+assert.equal(MOD_FRIENDLY_FIRE, 0x8000000, "MOD_FRIENDLY_FIRE mismatch");
 assert.equal(damage_t.DAMAGE_NO, 0, "damage_t DAMAGE_NO mismatch");
 assert.equal(damage_t.DAMAGE_YES, 1, "damage_t DAMAGE_YES mismatch");
 assert.equal(damage_t.DAMAGE_AIM, 2, "damage_t mismatch");

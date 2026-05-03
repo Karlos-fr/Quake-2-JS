@@ -56,6 +56,9 @@ const MOVEDIR_DOWN: vec3_t = [0, 0, -1];
  *
  * Behavior:
  * - Projects a local weapon/effect offset onto world space using forward/right basis vectors.
+ *
+ * Porting notes:
+ * - Returns the projected vector instead of mutating the C `result` output parameter.
  */
 export function G_ProjectSource(point: vec3_t, distance: vec3_t, forward: vec3_t, right: vec3_t): vec3_t {
   return [

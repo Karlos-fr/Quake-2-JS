@@ -77,6 +77,7 @@ import {
   target_explosion_explode,
   target_crosslevel_target_think,
   target_earthquake_think,
+  target_earthquake_use,
   target_laser_off,
   target_laser_on,
   target_laser_start,
@@ -1007,17 +1008,53 @@ function verifyBlasterAndEarthquake(): void {
 
   const quake = spawnGameEntity(runtime);
   quake.classname = "target_earthquake";
+  quake.targetname = "shake";
   SP_target_earthquake(quake, runtime);
   assert.equal(quake.count, 5, "target_earthquake default count mismatch");
   assert.equal(quake.speed, 200, "target_earthquake default speed mismatch");
+  assert.equal(quake.svflags & SVF_NOCLIENT, SVF_NOCLIENT, "target_earthquake must be no-client");
+  assert.equal(quake.think, target_earthquake_think, "target_earthquake think callback mismatch");
+  assert.equal(quake.use, target_earthquake_use, "target_earthquake use callback mismatch");
+  assert.equal(runtime.assets.soundPaths[quake.noise_index - 1], "world/quake.wav", "target_earthquake precache mismatch");
 
   const player = createPlayer(runtime);
   player.groundentity = runtime.entities[0] ?? null;
   player.mass = 100;
   quake.use?.(quake, null, player, runtime);
+  assert.equal(quake.timestamp, runtime.time + 5, "target_earthquake use timestamp mismatch");
+  assert.equal(quake.nextthink, runtime.time + FRAMETIME, "target_earthquake use nextthink mismatch");
+  assert.equal(quake.activator, player, "target_earthquake use activator mismatch");
+  assert.equal(quake.last_move_time, 0, "target_earthquake use must reset sound cadence");
   runPendingThinks(runtime, runtime.time + FRAMETIME);
   assert.equal(player.groundentity, null, "target_earthquake must clear player groundentity");
   assert.equal(player.velocity[2], 200, "target_earthquake vertical velocity mismatch");
+
+  const explicitQuakeRuntime = createRuntime();
+  explicitQuakeRuntime.time = 12;
+  const explicitQuake = spawnGameEntity(explicitQuakeRuntime);
+  explicitQuake.classname = "target_earthquake";
+  explicitQuake.targetname = "explicit-shake";
+  explicitQuake.count = 2;
+  explicitQuake.speed = 400;
+  explicitQuake.last_move_time = 99;
+  ED_CallSpawn(explicitQuake, explicitQuakeRuntime);
+  assert.equal(explicitQuake.count, 2, "target_earthquake must preserve explicit count");
+  assert.equal(explicitQuake.speed, 400, "target_earthquake must preserve explicit speed");
+  target_earthquake_use(explicitQuake, null, null, explicitQuakeRuntime);
+  assert.equal(explicitQuake.timestamp, 14, "target_earthquake explicit use timestamp mismatch");
+  assert.equal(explicitQuake.nextthink, 12 + FRAMETIME, "target_earthquake explicit use nextthink mismatch");
+  assert.equal(explicitQuake.activator, null, "target_earthquake must preserve null activator");
+  assert.equal(explicitQuake.last_move_time, 0, "target_earthquake explicit use must reset sound cadence");
+
+  const untargetedRuntime = createRuntime();
+  const untargetedQuake = spawnGameEntity(untargetedRuntime);
+  untargetedQuake.classname = "target_earthquake";
+  untargetedQuake.s.origin = [3, 4, 5];
+  SP_target_earthquake(untargetedQuake, untargetedRuntime);
+  assert.ok(
+    untargetedRuntime.logEntries.some((entry) => entry.message === "untargeted target_earthquake at (3 4 5)"),
+    "target_earthquake untargeted warning mismatch"
+  );
 
   const quakeRuntime = createRuntime();
   quakeRuntime.time = 10;

@@ -10,7 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/g_utils.c` | function | `G_ProjectSource` | `packages/game/src/g_utils.ts` | `G_ProjectSource` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_ProjectSource` | `packages/game/src/g_utils.ts` | `G_ProjectSource` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `G_Find` | `packages/game/src/g_utils.ts` | `G_Find` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `findradius` | `packages/game/src/g_utils.ts` | `findradius` | A verifier | A redecouper |  |
