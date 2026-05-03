@@ -267,7 +267,12 @@ assert.equal(Math.abs(forwardMovedir[1] - 1) < 1e-12, true, "G_SetMovedir AngleV
 assert.equal(Math.abs(forwardMovedir[2]) < 1e-12, true, "G_SetMovedir AngleVectors forward Z mismatch");
 assert.deepEqual(forwardAngles, [0, 0, 0], "G_SetMovedir must clear non-sentinel angles");
 
-assert.equal(vectoyaw([1, 1, 0]), 45, "vectoyaw mismatch");
+assert.equal(vectoyaw([0, 0, 4]), 0, "vectoyaw zero horizontal vector must return 0");
+assert.equal(vectoyaw([0, 5, 0]), 90, "vectoyaw positive Y axis mismatch");
+assert.equal(vectoyaw([0, -5, 0]), -90, "vectoyaw negative Y axis keeps C sentinel value");
+assert.equal(vectoyaw([1, 1, 0]), 45, "vectoyaw diagonal mismatch");
+assert.equal(vectoyaw([1, -1, 0]), 315, "vectoyaw negative atan2 result must wrap to positive degrees");
+assert.equal(vectoyaw([2, 1, 0]), 26, "vectoyaw must truncate like the C int cast");
 const convertedAngles = vectoangles([0, 1, 0]);
 assert.equal(Math.abs(convertedAngles[0]), 0, "vectoangles pitch mismatch");
 assert.equal(convertedAngles[1], 90, "vectoangles yaw mismatch");

@@ -106,6 +106,17 @@
 - renderer-three: sortie visible attendue via le modele MD2 infantry (`RF_FRAMELERP`) du driver, les entites brush associees et les futurs projectiles/sons du flux tourelle; consommation par packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` confirme le flux renderer.
 - Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 
+## Session 2026-05-03 - seconde ligne `attacker`
+
+- Lot traite: seconde ligne `attacker` encore `A verifier` dans la matrice.
+- Statut: `Non applicable` comme artefact de matrice pour le parametre C `attacker` de `turret_driver_die`, conserve comme parametre TS puis transmis a `infantry_die`.
+- Comparaison C/H vs TS: le C declare `turret_driver_die(edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, vec3_t point)` et appelle `infantry_die(self, inflictor, attacker, damage)`. Le TS conserve `turret_driver_die(self, inflictor, attacker, damage, runtime)` et appelle `infantry_die(self, inflictor, attacker, damage, runtime)`. `infantry_die` ignore ce parametre cote C comme cote TS, donc il ne s'agit pas d'une entite source autonome a valider.
+- Commentaire d'en-tete: celui de `turret_driver_die` est deja present et verifie; pas de commentaire separe attendu pour un parametre de callback.
+- Runtime: le parametre est alimente par le callback `die` installe dans `SP_turret_driver`, appele depuis le flux de degats runtime (`T_Damage`/`Killed`), puis transmis a la mort infantry sans effet propre.
+- apps/web: pas de declenchement direct attendu pour un parametre de callback serveur; le navigateur consomme l'etat serveur resultant via le runtime full-game/local.
+- renderer-three: pas de sortie renderer directe propre a ce parametre; les sorties visibles de la mort du driver (modele/frame/sons et etat serveur) restent celles de `turret_driver_die`, deja consommees via snapshots et renderer Three.
+- Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`.
+
 ## Prochain lot recommande
 
-Clarifier la seconde ligne `attacker` encore `A verifier` dans la matrice.
+Aucun lot restant dans `game_g_turret.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.

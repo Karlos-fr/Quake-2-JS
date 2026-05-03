@@ -1733,10 +1733,32 @@ export function CL_BlasterTrail(
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits the logical quad trail metadata between two points.
+ * - Emits the original quad trail particles between two points.
+ *
+ * Porting notes:
+ * - The no-runtime overload only exposes structured metadata for browser adapters.
  */
-export function CL_QuadTrail(start: vec3_t, end: vec3_t): ClientActionEffect[] {
-  return [createTrailEffect("quad-trail", start, end, 115, 5)];
+export function CL_QuadTrail(start: vec3_t, end: vec3_t): ClientActionEffect[];
+export function CL_QuadTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;
+export function CL_QuadTrail(
+  runtimeOrStart: ClientRuntime | vec3_t,
+  startOrEnd: vec3_t,
+  maybeEnd?: vec3_t
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrStart)) {
+    return [createTrailEffect("quad-trail", runtimeOrStart, startOrEnd, 115, 5)];
+  }
+
+  spawnSimpleTrailParticles(runtimeOrStart, startOrEnd, maybeEnd as vec3_t, {
+    spacing: 5,
+    colorBase: 115,
+    colorMask: 0,
+    alphaVelocityBase: 0.8,
+    alphaVelocityRandom: 0.2,
+    originJitter: 16,
+    velocityJitter: 5,
+    gravity: false
+  });
 }
 
 /**

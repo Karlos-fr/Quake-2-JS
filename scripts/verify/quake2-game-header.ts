@@ -25,6 +25,7 @@ import type {
   edict_t,
   GameClientServerFields,
   GameEdictServerFields,
+  game_export_t,
   game_import_t,
   gclient_s,
   gclient_t,
@@ -96,6 +97,31 @@ const gameImportKeys = [
 ] satisfies Array<keyof game_import_t>;
 
 assert.equal(gameImportKeys.length, 44, "game_import_t must expose every callback declared in game/game.h");
+
+const gameExportKeys = [
+  "apiversion",
+  "Init",
+  "Shutdown",
+  "SpawnEntities",
+  "WriteGame",
+  "ReadGame",
+  "WriteLevel",
+  "ReadLevel",
+  "ClientConnect",
+  "ClientBegin",
+  "ClientUserinfoChanged",
+  "ClientDisconnect",
+  "ClientCommand",
+  "ClientThink",
+  "RunFrame",
+  "ServerCommand",
+  "edicts",
+  "edict_size",
+  "num_edicts",
+  "max_edicts"
+] satisfies Array<keyof game_export_t>;
+
+assert.equal(gameExportKeys.length, 20, "game_export_t must expose every field declared in game/game.h");
 
 const sourceNamedClient: gclient_s = client;
 const typedefClient: gclient_t = sourceNamedClient;

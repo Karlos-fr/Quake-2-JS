@@ -59,7 +59,8 @@ import {
   RANGE_MELEE,
   RANGE_MID,
   RANGE_NEAR,
-  SVF_MONSTER
+  SVF_MONSTER,
+  random
 } from "./g_local.js";
 import { AttackFinished } from "./g_monster.js";
 import { G_FreeEdict, G_PickTarget, G_ProjectSource, G_Spawn, vectoyaw, vtos } from "./g_utils.js";
@@ -178,9 +179,9 @@ export function ai_stand(self: GameEntity, dist: number, runtime: GameRuntime): 
   if ((self.spawnflags & 1) === 0 && self.monsterinfo.idle && runtime.time > self.monsterinfo.idle_time) {
     if (self.monsterinfo.idle_time !== 0) {
       self.monsterinfo.idle(self, runtime);
-      self.monsterinfo.idle_time = runtime.time + 15 + (Math.random() * 15);
+      self.monsterinfo.idle_time = runtime.time + 15 + (random() * 15);
     } else {
-      self.monsterinfo.idle_time = runtime.time + (Math.random() * 15);
+      self.monsterinfo.idle_time = runtime.time + (random() * 15);
     }
   }
 }
@@ -204,9 +205,9 @@ export function ai_walk(self: GameEntity, dist: number, runtime: GameRuntime): v
   if (self.monsterinfo.search && runtime.time > self.monsterinfo.idle_time) {
     if (self.monsterinfo.idle_time !== 0) {
       self.monsterinfo.search(self, runtime);
-      self.monsterinfo.idle_time = runtime.time + 15 + (Math.random() * 15);
+      self.monsterinfo.idle_time = runtime.time + 15 + (random() * 15);
     } else {
-      self.monsterinfo.idle_time = runtime.time + (Math.random() * 15);
+      self.monsterinfo.idle_time = runtime.time + (random() * 15);
     }
   }
 }
@@ -655,14 +656,14 @@ export function M_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
     chance *= 2;
   }
 
-  if (Math.random() < chance) {
+  if (random() < chance) {
     self.monsterinfo.attack_state = AS_MISSILE;
-    self.monsterinfo.attack_finished = runtime.time + (2 * Math.random());
+    self.monsterinfo.attack_finished = runtime.time + (2 * random());
     return true;
   }
 
   if ((self.flags & FL_FLY) !== 0) {
-    self.monsterinfo.attack_state = Math.random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
+    self.monsterinfo.attack_state = random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
   }
 
   return false;

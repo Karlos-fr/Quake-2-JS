@@ -169,13 +169,14 @@ runtime.entities[88] = idleMonster;
 const savedRandomForIdleTimer = Math.random;
 try {
   Math.random = () => 0.5;
+  const halfRand15 = Math.floor(0.5 * 0x8000) / 0x7fff;
   ai_stand(idleMonster, 0, runtime);
   assert.equal(idleCalls, 0, "ai_stand must seed idle_time before calling the idle callback");
-  assert.equal(idleMonster.monsterinfo.idle_time, runtime.time + 7.5, "ai_stand first idle_time schedule mismatch");
+  assert.equal(idleMonster.monsterinfo.idle_time, runtime.time + (halfRand15 * 15), "ai_stand first idle_time schedule mismatch");
   runtime.time = idleMonster.monsterinfo.idle_time + 0.5;
   ai_stand(idleMonster, 0, runtime);
   assert.equal(idleCalls, 1, "ai_stand must call idle after the seeded idle_time expires");
-  assert.equal(idleMonster.monsterinfo.idle_time, runtime.time + 22.5, "ai_stand repeat idle_time schedule mismatch");
+  assert.equal(idleMonster.monsterinfo.idle_time, runtime.time + 15 + (halfRand15 * 15), "ai_stand repeat idle_time schedule mismatch");
 
   const searchMonster = createRuntimeEntity({ classname: "monster_search_timer" }, 89);
   searchMonster.inuse = true;
@@ -186,11 +187,11 @@ try {
   runtime.entities[89] = searchMonster;
   ai_walk(searchMonster, 0, runtime);
   assert.equal(searchCalls, 0, "ai_walk must seed idle_time before calling the search callback");
-  assert.equal(searchMonster.monsterinfo.idle_time, runtime.time + 7.5, "ai_walk first idle_time schedule mismatch");
+  assert.equal(searchMonster.monsterinfo.idle_time, runtime.time + (halfRand15 * 15), "ai_walk first idle_time schedule mismatch");
   runtime.time = searchMonster.monsterinfo.idle_time + 0.5;
   ai_walk(searchMonster, 0, runtime);
   assert.equal(searchCalls, 1, "ai_walk must call search after the seeded idle_time expires");
-  assert.equal(searchMonster.monsterinfo.idle_time, runtime.time + 22.5, "ai_walk repeat idle_time schedule mismatch");
+  assert.equal(searchMonster.monsterinfo.idle_time, runtime.time + 15 + (halfRand15 * 15), "ai_walk repeat idle_time schedule mismatch");
 } finally {
   Math.random = savedRandomForIdleTimer;
   runtime.time = 10;
@@ -1248,7 +1249,7 @@ try {
   chanceMonster.monsterinfo.attack_finished = 0;
   chanceMonster.monsterinfo.attack_state = AS_STRAIGHT;
 
-  Math.random = () => 0.1;
+  Math.random = () => 0.10004;
   assert.equal(ai_checkattack(chanceMonster, 0, runtime), false, "RANGE_NEAR missile chance must use a strict less-than test");
   assert.equal(chanceMonster.monsterinfo.attack_state, AS_STRAIGHT, "failed grounded missile chance must keep AS_STRAIGHT");
 
@@ -1261,7 +1262,7 @@ try {
   chanceMonster.monsterinfo.attack_finished = 0;
   chanceMonster.monsterinfo.aiflags |= AI_STAND_GROUND;
   runtime.skill = 0;
-  Math.random = () => 0.2;
+  Math.random = () => 0.20004;
   assert.equal(ai_checkattack(chanceMonster, 0, runtime), false, "easy stand-ground missile chance must be halved to 0.2");
 
   chanceMonster.monsterinfo.attack_finished = 0;

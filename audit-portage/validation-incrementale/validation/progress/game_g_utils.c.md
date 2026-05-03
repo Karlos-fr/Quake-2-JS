@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `G_SetMovedir`.
-- Verdict du lot: valide.
+- Dernier lot traite: `vectoyaw` / `yaw`.
+- Verdict du lot: partiel (`vectoyaw` proprietaire valide, mais consommateur `p_trail.ts` encore duplique hors perimetre).
 
 ## Preuves session
 
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `vectoyaw` et son local `yaw` si le lot reste petit. La ligne globale `v` restante pointe vers `g_weapon.ts`; elle doit etre clarifiee dans un lot separe sans melanger les ownerships.
+- Continuer avec `vectoangles` et ses locaux `forward`, `pitch` et `yaw` si le lot reste petit. La ligne globale `v` restante pointe vers `g_weapon.ts`; elle doit etre clarifiee dans un lot separe sans melanger les ownerships.
 
 ## Session - findradius / j
 
@@ -185,6 +185,27 @@ Session `vtos` / `index` / `s`:
 - Correction appliquee: `scripts/verify/quake2-g-utils.ts` couvre maintenant les branches haut, bas et `AngleVectors`, ainsi que l'effacement de `angles`.
 
 Session `G_SetMovedir`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+
+## Session - vectoyaw / yaw
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete mis a jour sur `vectoyaw` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`) pour documenter le local C `yaw` et la troncature du cast C via `Math.trunc`.
+- Comparaison C/TS `vectoyaw`: branche `vec[PITCH] == 0` portee par `vec[0] === 0`, retour 0 pour vecteur horizontal nul, 90 pour Y positif, -90 pour Y negatif, sinon `atan2(Y, X) * 180 / PI`, troncature entiere puis ajout de 360 si negatif.
+- Local C `yaw`: non applicable comme entite autonome; il correspond au local TS `yaw`, couvert par les tests ajoutes.
+- Runtime verifie: l'export officiel `g_utils.vectoyaw` est atteint depuis des flux gameplay normaux (`g_ai`, `g_monster`, `g_misc`, `m_actor`, `m_boss*`) appeles par spawns, AI, thinks et frames gameplay. Manque ouvert hors perimetre: `packages/game/src/p_trail.ts` conserve un helper prive `vectoyaw` declare comme port de `game/g_utils.c` au lieu de consommer l'export officiel.
+- `apps/web`: integration attendue indirecte via les hosts full-game/local qui executent le runtime porte; aucune logique web parallele ne remplace le calcul yaw. Le manque `p_trail.ts` reste runtime package, pas une compensation web.
+- `packages/renderer-three`: pas de sortie renderer directe propre a `vectoyaw`; ses consommateurs produisent des orientations d'entites, mouvements de monstres/acteurs/boss, projectiles ou markers de poursuite qui deviennent visibles via snapshots, frames/modeles/camera/scene selon le flux. Les tests renderer passent, mais le consommateur `p_trail.ts` doit etre aligne dans un lot separe.
+- Correction appliquee: `packages/game/src/g_utils.ts` documente le local `yaw`; `scripts/verify/quake2-g-utils.ts` couvre les branches 0, +Y, -Y, diagonale, wrap negatif et troncature C.
+
+Session `vectoyaw` / `yaw`:
 
 - `npm run verify:g-utils`
 - `npm run typecheck`

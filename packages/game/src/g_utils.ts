@@ -426,6 +426,10 @@ export function G_SetMovedir(angles: vec3_t, movedir: vec3_t): void {
  *
  * Behavior:
  * - Converts one direction vector into the original Quake II yaw-only angle.
+ *
+ * Porting notes:
+ * - The C local `yaw` is represented by the local `yaw` variable below.
+ * - Uses `Math.trunc` to match the original C cast to `int` before returning.
  */
 export function vectoyaw(vec: vec3_t): number {
   let yaw: number;

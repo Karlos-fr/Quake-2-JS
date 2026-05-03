@@ -277,3 +277,39 @@ Corrections:
 
 Prochain lot recommande:
 - `game_export_t`, puis `apiversion` si le lot reste petit.
+
+## Session 2026-05-03 - game_export_t
+
+Lot traite:
+- `game_export_t`
+
+Verdict:
+- `Valide` pour `game_export_t`.
+
+Preuves:
+- Source C/H lue dans `Quake-2-master/game/game.h`: le `typedef struct game_export_t` declare `apiversion`, les callbacks `Init`, `Shutdown`, `SpawnEntities`, `WriteGame`, `ReadGame`, `WriteLevel`, `ReadLevel`, `ClientConnect`, `ClientBegin`, `ClientUserinfoChanged`, `ClientDisconnect`, `ClientCommand`, `ClientThink`, `RunFrame`, `ServerCommand`, puis les globals partages `edicts`, `edict_size`, `num_edicts` et `max_edicts`.
+- Port TS proprietaire lu dans `packages/game/src/game.ts`: `interface game_export_t` expose les 20 noms originaux, avec pointeurs de fonctions C modelises en callbacks TS, `edict_t[]` pour le tableau `edicts`, et getters runtime acceptes par le contrat pour `num_edicts`/`max_edicts`.
+- Commentaire d'en-tete verifie dans `packages/game/src/game.ts` pour `game_export_t`: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement presents.
+- `scripts/verify/quake2-game-header.ts` complete avec une preuve typee exhaustive des 20 cles `keyof game_export_t`.
+- `scripts/verify/quake2-g-main.ts` exerce la table produite par `GetGameApi`: version API, callbacks d'init/spawn/save/client/server/frame, `edicts`, `num_edicts` et `max_edicts`.
+- `scripts/verify/quake2-sv-game.ts` exerce le branchement serveur: `SV_InitGameProgs` recupere la table exportee, verifie `apiversion`, copie les descripteurs/getters et appelle `Init`.
+
+Integration:
+- Runtime: OK. `game_export_t` est atteint depuis `SV_InitGameProgs`, puis ses callbacks sont appeles par les flux serveur normaux: init/shutdown, map loading, saves, connexions client, commandes, `SV_Frame`/`RunFrame`, snapshots et edict helpers.
+- `apps/web`: OK. `apps/web/src/full-game-server-host.ts` cree un placeholder compatible puis remplace/encapsule la table via `GetGameApiFunction`; le host full-game declenche les callbacks serveur et consomme les sorties runtime sans logique parallele masquant le game export principal.
+- `renderer-three`: OK indirectement. `game_export_t` ne rend rien directement, mais ses callbacks produisent les sorties visibles attendues: edicts/snapshots, modeles, frames, configstrings images/sons, temp entities, sons, areabits, camera/playerstate et scene. Le pipeline full-game les transmet au client puis `packages/renderer-three` les consomme.
+
+Tests lances:
+- `npm run verify:game:header` OK
+- `npm run verify:g-main` OK
+- `npm run verify:server:game` OK
+- `npm run verify:full-game:server-host` OK
+- `npm run verify:full-game:three-renderer` OK
+- `npm run typecheck` OK
+
+Corrections:
+- `scripts/verify/quake2-game-header.ts`: ajout d'une preuve typee des 20 champs/callbacks de `game_export_t`.
+- Matrice `audit-portage/validation-incrementale/validation/matrices/game_game.h.md` mise a jour pour le lot.
+
+Prochain lot recommande:
+- `apiversion` seul, puis `edict_size`, `num_edicts` et `max_edicts` dans un lot separe si coherent.

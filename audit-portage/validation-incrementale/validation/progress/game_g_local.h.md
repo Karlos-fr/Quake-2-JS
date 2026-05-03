@@ -1332,7 +1332,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:g-weapon` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_ai.ts`, `g_misc.ts`, `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_turret.ts` et `g_utils.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/g_ai.ts` pour les consommateurs AI.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `g_ai.ts` est harmonise, mais d'autres consommateurs runtime restent disperses dans les modules game, player et monstres.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `g_ai.c` consomme `random()` dans `ai_stand`, `ai_walk` et `M_CheckAttack` pour les timers idle/search, la chance missile, le delai `attack_finished` et le choix flying `AS_SLIDING`/`AS_STRAIGHT`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15-bit.
+  - `packages/game/src/g_ai.ts`: `ai_stand`, `ai_walk` et `M_CheckAttack` consomment maintenant le helper proprietaire `random` importe depuis `g_local.ts`; le helper local `randomInt()` reste hors lot car il correspond aux usages C `rand() % n`, pas aux macros `random`/`crandom`.
+- Runtime: integration attendue et branchee pour ce sous-lot via AI normale atteignable depuis `G_RunFrame`/`G_RunEntity` et callbacks monstres: timers idle/search, decisions d'attaque missile et de strafe volant. Les autres consommateurs runtime de `random`/`crandom` restent `Partiel`.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres et ordre de rendu; aucune logique parallele web `g_ai`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages AI affectent modeles/frames de monstres, attaque/projectiles et scene en aval; le helper lui-meme n'est pas consomme directement par `renderer-three`, et les sorties visibles passent par snapshots/client/refresh/Three.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `ai_stand`, `ai_walk` et `M_CheckAttack` verifies; aucun nouveau commentaire requis.
+- Corrections appliquees:
+  - `packages/game/src/g_ai.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant aux macros C `random()`.
+  - `scripts/verify/quake2-g-ai.ts`: attentes deterministes ajustees pour la formule C-style 15-bit de `g_local.random`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:g-ai` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_misc.ts`, `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_turret.ts` et `g_utils.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

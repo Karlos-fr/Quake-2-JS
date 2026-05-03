@@ -20,6 +20,7 @@ import {
   SOLID_BBOX,
   SOLID_TRIGGER,
   SVF_NOCLIENT,
+  ai_walk,
   ai_stand,
   actorFrames,
   attachGameClient,
@@ -53,6 +54,18 @@ assert.equal(actorFrames.actor_move_stand.firstframe, actorFrames.FRAME_stand101
 assert.equal(actorFrames.actor_move_stand.lastframe, actorFrames.FRAME_stand140, "actor_move_stand lastframe");
 assert.equal(actorFrames.actor_move_stand.frame, actorFrames.actor_frames_stand, "actor_move_stand frame table");
 assert.equal(actorFrames.actor_move_stand.endfunc, undefined, "actor_move_stand endfunc");
+
+const expectedWalkDistances = [0, 6, 10, 3, 2, 7, 10, 1, 4, 0, 0];
+assert.equal(actorFrames.actor_frames_walk.length, expectedWalkDistances.length, "actor_frames_walk has 11 C frames");
+for (const [index, frame] of actorFrames.actor_frames_walk.entries()) {
+  assert.equal(frame.aifunc, ai_walk, `actor_frames_walk[${index}] uses ai_walk`);
+  assert.equal(frame.dist, expectedWalkDistances[index], `actor_frames_walk[${index}] distance`);
+  assert.equal(frame.thinkfunc, undefined, `actor_frames_walk[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_walk.firstframe, actorFrames.FRAME_walk01, "actor_move_walk firstframe");
+assert.equal(actorFrames.actor_move_walk.lastframe, actorFrames.FRAME_walk08, "actor_move_walk lastframe");
+assert.equal(actorFrames.actor_move_walk.frame, actorFrames.actor_frames_walk, "actor_move_walk frame table");
+assert.equal(actorFrames.actor_move_walk.endfunc, undefined, "actor_move_walk endfunc");
 
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";
@@ -98,6 +111,9 @@ try {
 } finally {
   Math.random = originalRandom;
 }
+
+actorFrames.actor_walk(actor);
+assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_walk, "actor_walk selects walk move");
 
 actor.use?.(actor, player, player, runtime);
 assert.equal(actor.movetarget, path, "actor_use picks target_actor");

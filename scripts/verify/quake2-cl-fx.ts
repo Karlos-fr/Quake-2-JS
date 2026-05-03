@@ -28,6 +28,7 @@ import {
   CL_ParticleEffect,
   CL_ParticleEffect2,
   CL_ParticleEffect3,
+  CL_QuadTrail,
   CL_RunDLights,
   CL_RunLightStyles,
   CL_SetLightstyle,
@@ -74,6 +75,7 @@ function main(): void {
   verifyBlasterRuntimeParticles();
   verifyBlasterTempEntityRuntimeBranch();
   verifyBlasterTrailRuntimeParticles();
+  verifyQuadTrailRuntimeParticles();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyTeleporterEntityEventMetadata();
@@ -742,6 +744,46 @@ function verifyBlasterTrailRuntimeParticles(): void {
 
   const renderParticles = CL_AddParticles(runtime);
   assert.equal(renderParticles.length, 3, "CL_BlasterTrail particles should reach the refresh particle list");
+}
+
+function verifyQuadTrailRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 9860;
+  const start: vec3_t = [0, 0, 0];
+  const end: vec3_t = [13, 0, 0];
+  const randomUnit = 0.75;
+  const expectedCrand = (randomUnit * 2) - 1;
+
+  withMockRandom(randomUnit, () => {
+    CL_QuadTrail(runtime, start, end);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_QuadTrail should emit one particle per 5-unit step while len > 0");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_QuadTrail particle time mismatch");
+  assert.ok(particles.every((particle) => particle.color === 115), "CL_QuadTrail color mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0), "CL_QuadTrail alpha mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_QuadTrail acceleration mismatch");
+  assert.ok(
+    particles.every((particle) => particle.vel[0] === expectedCrand * 5 && particle.vel[1] === expectedCrand * 5 && particle.vel[2] === expectedCrand * 5),
+    "CL_QuadTrail velocity jitter mismatch"
+  );
+  const expectedAlphavel = -1.0 / (0.8 + (randomUnit * 0.2));
+  assert.ok(particles.every((particle) => almostEqual(particle.alphavel, expectedAlphavel)), "CL_QuadTrail alpha decay mismatch");
+
+  const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
+  assert.deepEqual(emittedX, [8, 13, 18], "CL_QuadTrail should advance move by the normalized vec * dec");
+  assert.ok(particles.every((particle) => particle.org[1] === 8 && particle.org[2] === 8), "CL_QuadTrail origin jitter mismatch");
+
+  const metadata = CL_QuadTrail(start, end);
+  assert.equal(metadata[0]?.kind, "quad-trail", "CL_QuadTrail metadata kind mismatch");
+  assert.deepEqual(metadata[0]?.position, start, "CL_QuadTrail metadata start mismatch");
+  assert.deepEqual(metadata[0]?.position2, end, "CL_QuadTrail metadata end mismatch");
+  assert.equal(metadata[0]?.color, 115, "CL_QuadTrail metadata color mismatch");
+  assert.equal(metadata[0]?.spacing, 5, "CL_QuadTrail metadata spacing mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 3, "CL_QuadTrail particles should reach the refresh particle list");
 }
 
 function verifyLightstyleManagement(): void {
