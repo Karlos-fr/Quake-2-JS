@@ -1180,7 +1180,46 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:g-target` OK; `npm run verify:g-trigger` OK; `npm run verify:g-weapon` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK (`npm run verify:g-combat` absent du package); `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec `meansOfDeath`, puis `g_edicts` si le lot reste coherent.
+- 2026-05-03: lot global `meansOfDeath`.
+- Verdict: `Valide` pour le global apres comparaison H/C vs TS, verification de l'ownership runtime explicite, des producteurs combat/commande et du consommateur obituary.
+- Source H/C comparee:
+  - `g_local.h` declare `extern int meansOfDeath` apres les macros `MOD_*`.
+  - `g_main.c` definit `int meansOfDeath`, donc initialisation statique C a zero.
+  - `g_combat.c` ecrit `meansOfDeath = mod`, ajoute `MOD_FRIENDLY_FIRE` selon les regles team, puis reecrit le mod avant `Killed`.
+  - `g_cmds.c` ecrit `MOD_SUICIDE` pour `Cmd_Kill_f`; `p_client.c` lit `meansOfDeath`, ajoute le bit friendly-fire en coop et masque ce bit pour choisir les messages/score.
+- Cibles TS verifiees:
+  - `packages/game/src/runtime.ts`: `GameRuntime.meansOfDeath` porte le global mutable, initialise a `0` dans `createGameRuntimeFromBspEntities`.
+  - `packages/game/src/g_combat.ts`: `T_Damage` ecrit `runtime.meansOfDeath` avec le mod et le bit `MOD_FRIENDLY_FIRE` comme le C.
+  - `packages/game/src/g_cmds.ts`: `Cmd_Kill_f` ecrit `runtime.meansOfDeath = MOD_SUICIDE`.
+  - `packages/game/src/p_client.ts`: `ClientObituary` consomme `runtime.meansOfDeath`, avec note d'en-tete documentant l'ecart volontaire au global module C.
+- Runtime: integration attendue et branchee via les flux normaux `T_Damage`/`T_RadiusDamage`, `Cmd_Kill_f`, `Killed`/`player_die` puis `ClientObituary`; les preuves couvrent initialisation, mutation, friendly-fire, suicide et plusieurs producteurs deja valides.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots/messages/score/HUD et boucle client; aucune logique parallele `meansOfDeath` detectee dans `apps/web`. `verify:web-render-order` OK.
+- renderer-three: aucune consommation directe attendue pour ce global de cause de mort; ses effets visibles sont indirects via dommages/deaths/temp entities/messages deja produits par le runtime et consommes par le flux full-game/refresh. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de module `g_local.ts`, interface runtime `GameRuntime`, commentaire `Cmd_Kill_f`, `T_Damage` et `ClientObituary` verifies; `ClientObituary` documente explicitement l'usage `runtime.meansOfDeath` au lieu du global C.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: preuve ajoutee pour initialisation zero et mutation de `runtime.meansOfDeath`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: ligne `meansOfDeath` passee a `Valide` avec cible `runtime.meansOfDeath`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-combat` non disponible, `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:g-cmds` OK; `npm run verify:p-client` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- 2026-05-03: lot global `g_edicts`.
+- Verdict: `Valide` pour le global apres comparaison H/C vs TS, verification de l'ownership runtime, de l'exposition API et du flux spawn/frame.
+- Source H/C comparee:
+  - `g_local.h` declare `extern edict_t *g_edicts` et `#define world (&g_edicts[0])`.
+  - `g_main.c` definit `edict_t *g_edicts`, parcourt `&g_edicts[0]` dans `G_RunFrame`, reserve les clients a partir de `g_edicts[1]` et expose le tableau via `globals.edicts`.
+  - Les autres modules C s'appuient sur l'index stable des edicts pour clients, monde, spawn, sauvegarde et physique.
+- Cibles TS verifiees:
+  - `packages/game/src/runtime.ts`: `GameRuntime.entities` porte le tableau mutable et stable d'edicts; `createGameRuntimeFromBspEntities` preserve l'ordre BSP avec `worldspawn` en index 0.
+  - `packages/game/src/g_main.ts`: l'export game API `edicts` retourne `context.runtime.entities`, `num_edicts` retourne sa longueur et `max_edicts` retourne `runtime.maxentities`.
+  - `packages/game/src/g_local.ts`: `world(g_edicts)` conserve le raccourci du macro C vers l'edict 0.
+- Runtime: integration attendue et branchee via `SpawnEntities`, `G_RunFrame`, `ClientBeginServerFrame`, `G_RunEntity`, sauvegarde/restauration et callbacks gameplay; les tests prouvent `worldspawn` en edict 0, slots clients reserves et exposition `api.edicts`.
+- apps/web: integration attendue indirectement via les hosts full-game/local qui consomment l'API serveur/game et les snapshots issus des edicts; aucune logique parallele de tableau `g_edicts` detectee dans `apps/web`. `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue: les edicts runtime produisent les packet entities, modeles, frames, temp entities, beams, dlights, camera/scene ensuite consommes par le client et `packages/renderer-three`; pas de consommation directe du tableau serveur attendue cote renderer. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaire de module `g_local.ts`, `runtime.ts`, `g_main.ts`, `createGameRuntimeFromBspEntities` et API `createGameExport` verifies; pas de fonction portee nouvelle dans ce lot.
+- Corrections appliquees:
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: ligne `g_edicts` passee a `Valide` avec cible `runtime.entities`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:full-game:server-host` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec `FOFS`, puis `STOFS`/`LLOFS`/`CLOFS` si le lot reste coherent.
 
 ## Blocages
 

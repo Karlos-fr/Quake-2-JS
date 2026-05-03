@@ -36,11 +36,22 @@ runtime.maxentities = 64;
 
 const targetA = createRuntimeEntity({ classname: "target_a", targetname: "pick_me" }, 1);
 const targetB = createRuntimeEntity({ classname: "target_b", targetname: "pick_me" }, 2);
+const inactiveMatch = createRuntimeEntity({ classname: "target_inactive", targetname: "pick_me" }, 3);
+inactiveMatch.inuse = false;
+const nonStringField = createRuntimeEntity({ classname: "target_non_string", targetname: "skip_me" }, 4);
+nonStringField.message = undefined;
+const caseMatch = createRuntimeEntity({ classname: "target_case", targetname: "PICK_CASE" }, 5);
 runtime.entities[1] = targetA;
 runtime.entities[2] = targetB;
+runtime.entities[3] = inactiveMatch;
+runtime.entities[4] = nonStringField;
+runtime.entities[5] = caseMatch;
 
 assert.equal(G_Find(runtime, null, "targetname", "pick_me"), targetA, "G_Find first match mismatch");
 assert.equal(G_Find(runtime, targetA, "targetname", "pick_me"), targetB, "G_Find next match mismatch");
+assert.equal(G_Find(runtime, targetB, "targetname", "pick_me"), null, "G_Find must skip inactive entities and return null at list end");
+assert.equal(G_Find(runtime, targetB, "targetname", "pick_case"), caseMatch, "G_Find must compare strings like Q_stricmp");
+assert.equal(G_Find(runtime, nonStringField, "message", "missing"), null, "G_Find must skip null string fields and return null at list end");
 
 const originalRandom = Math.random;
 Math.random = () => 0.9;

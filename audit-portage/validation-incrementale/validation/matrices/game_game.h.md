@@ -10,11 +10,11 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/game.h` | macro | `GAME_API_VERSION` | `packages/game/src/game.ts` | `GAME_API_VERSION` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | macro | `SVF_NOCLIENT` | `packages/game/src/runtime.ts` | `SVF_NOCLIENT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | macro | `SVF_DEADMONSTER` | `packages/game/src/runtime.ts` | `SVF_DEADMONSTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | macro | `SVF_MONSTER` | `packages/game/src/runtime.ts` | `SVF_MONSTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | enum | `solid_t` | `packages/game/src/game.ts` | `solid_t` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | macro | `GAME_API_VERSION` | `packages/game/src/game.ts` | `GAME_API_VERSION` | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | macro | `SVF_NOCLIENT` | `packages/game/src/runtime.ts` | `SVF_NOCLIENT` | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | macro | `SVF_DEADMONSTER` | `packages/game/src/runtime.ts` | `SVF_DEADMONSTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | macro | `SVF_MONSTER` | `packages/game/src/runtime.ts` | `SVF_MONSTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | enum | `solid_t` | `packages/game/src/game.ts` | `solid_t` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | struct | `link_s` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/game.h` | macro | `MAX_ENT_CLUSTERS` | `packages/game/src/game.ts` | `MAX_ENT_CLUSTERS` | A verifier | A redecouper |  |
 | `Quake-2-master/game/game.h` | struct | `gclient_s` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |

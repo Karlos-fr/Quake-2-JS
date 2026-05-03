@@ -1,7 +1,7 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; variables locales generees `i` marquees non applicables.
+- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; variables locales generees `i` marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -13,6 +13,10 @@
   - `npx tsx ./scripts/verify/quake2-full-game-three-renderer.ts`
   - `npm run typecheck`
   - `npm run verify:full-game:three-renderer`
+  - `npm run verify:cl-fx`
+  - `npm run verify:particle-sync`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
   - `npm run verify:full-game:three-renderer`
@@ -36,6 +40,11 @@
   - `CL_ParticleEffect` est atteignable depuis le runtime client normal via `CL_ParseParticles`/`CL_ParseServerMessage`, `CL_ExecuteTempEntityEffects`, les effets muzzle flash monster et les effets appliques par `apps/web`.
   - `apps/web` doit consommer ce flux car il produit des particules visibles; `apps/web/src/full-game.ts` applique les effets `particle-effect` avec `CL_ParticleEffect` et ne remplace pas la logique particule par une implementation parallele.
   - `renderer-three` doit consommer la sortie visible particules; le flux reste `CL_AddParticles` -> `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`, couvert par `npm run verify:particle-sync` et `npm run verify:full-game:three-renderer`.
+  - `CL_ParticleEffect2` conserve le flux C des particules a couleur fixe: allocation depuis `free_particles`, insertion en tete de `active_particles`, `time = cl.time`, `color = color` sans `rand&7`, local `d = rand()&7`, jitter `((rand()&7)-4) + d*dir[j]`, vitesse `crand()*20`, gravite `-PARTICLE_GRAVITY`, alpha `1.0` et decay `-1/(0.5 + frand()*0.3)`.
+  - Le temporaire C `d` de `CL_ParticleEffect2` est un artefact local: il est porte par `const d`, teste avec un tirage controle et ne necessite pas d'entite TS publique separee.
+  - `CL_ParticleEffect2` est atteignable depuis le runtime client normal via `CL_ExecuteTempEntityEffects` pour `TE_LASER_SPARKS`, `TE_WELDING_SPARKS` et `TE_GREENBLOOD`, lui-meme appele depuis `CL_ParseServerMessage` / `CL_ParseTEnt` et `local-gameplay-sync`.
+  - `apps/web` doit consommer ce flux parce qu'il produit des particules visibles; le flux web full-game utilise le runtime client et `full-game-render-loop.ts` consomme ensuite `source.refreshFrame.particles` via `particleSync.apply`, sans logique particule parallele pour ce lot.
+  - `renderer-three` doit consommer la sortie visible particules; le flux reste `CL_AddParticles` -> `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`, couvert par `npm run verify:particle-sync` et `npm run verify:full-game:three-renderer`.
   - `CL_ParseMuzzleFlash` lit `svc_muzzleflash` dans `CL_ParseServerMessage`, conserve l'entite et le byte arme original avec `MZ_SILENCED`, puis delegue les effets a `CL_BuildMuzzleFlashEffects`.
   - Les temporaires C `silenced`, `volume` et `soundname` sont portes sous forme structuree: `ClientMuzzleFlashPacket.silenced`, `volume` dans le builder, et noms de sons fixes/aleatoires dans les definitions de muzzle flash.
   - Les dlights de muzzle flash sont attendus dans le runtime navigateur: `apps/web/src/full-game.ts` applique `CL_AllocDlight`, puis `CL_BuildRefreshFrame` expose `ClientRefreshFrame.lights`; `packages/renderer-three` les consomme via le flux dlight deja valide.
@@ -46,4 +55,4 @@
   - `renderer-three` consomme les dlights via `ClientRefreshFrame.lights` -> `createThreeDlightSync` / `R_RenderDlights` et les particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync`; les sons restent hors renderer.
   - `npm run verify:local-gameplay-sync` n'a pas pu etre utilise comme preuve finale pendant une session precedente: blocage hors lot avant execution du test, `ReferenceError: FRAME_attack1 is not defined` dans `packages/game/src/g_save.ts`.
 - Blocages: `npm run verify:local-gameplay-sync` reste a relancer lors d'un lot qui en depend; tests cibles `cl_fx`/`cl_parse`/web/renderer et `typecheck` OK pour le lot `CL_ClearParticles`.
-- Prochain lot recommande: `CL_ParticleEffect2` avec le temporaire local `d` si le lot reste coherent.
+- Prochain lot recommande: `CL_ParticleEffect3` avec le temporaire local `d` si le lot reste coherent.

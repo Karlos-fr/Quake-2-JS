@@ -42,7 +42,7 @@ import {
 import { damage_t } from "../../packages/game/src/g_local.js";
 import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_rocket, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_WATER, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
+import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_WATER, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -1054,31 +1054,81 @@ function verifyFireRailDamageModAndVisibleTrail(): void {
   runtime.entities[2] = monster;
   runtime.entities[3] = wall;
 
+  const traces: Array<{ start: vec3_t; end: vec3_t; passent: GameEntity | null; mask: number }> = [];
   let traceIndex = 0;
   runtime.collision = {
     world: {} as never,
-    trace: (_start, _mins, _maxs, end) => {
+    trace: (start, _mins, _maxs, end, passent, mask) => {
+      traces.push({ start: [...start], end: [...end], passent: passent as GameEntity | null, mask });
       traceIndex += 1;
-      return traceIndex === 1 ? makeTrace(0.25, [64, 0, 0], monster) : makeTrace(0.5, [128, 0, 0], wall);
+      if (traceIndex === 1) {
+        return makeTrace(0.1, [16, 0, 0], null, null, CONTENTS_SLIME);
+      }
+      return traceIndex === 2 ? makeTrace(0.25, [64, 0, 0], monster) : makeTrace(0.5, [128, 0, 0], wall);
     },
     pointcontents: () => 0
   };
 
-  const damageMods: number[] = [];
+  const damages: Array<{
+    target: GameEntity;
+    inflictor: GameEntity;
+    attacker: GameEntity;
+    dir: vec3_t;
+    point: vec3_t;
+    normal: vec3_t;
+    damage: number;
+    knockback: number;
+    mod: number;
+  }> = [];
   const tempEvents: Array<{ type: temp_event_t; payload: Record<string, unknown> }> = [];
-  fire_rail(shooter, [0, 0, 0], [1, 0, 0], 100, 200, runtime, {
-    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
-      damageMods.push(mod);
+  fire_rail(shooter, [4, 5, 6], [1, 0, 0], 100, 200, runtime, {
+    T_Damage: (target, inflictor, attacker, dir, point, normal, damage, knockback, _dflags, mod) => {
+      damages.push({
+        target,
+        inflictor,
+        attacker,
+        dir: [...dir],
+        point: [...point],
+        normal: [...normal],
+        damage,
+        knockback,
+        mod
+      });
     },
     emitTempEntity: (type, payload) => {
       tempEvents.push({ type, payload });
     }
   });
 
-  assert.deepEqual(damageMods, [MOD_RAILGUN], "fire_rail damage must use MOD_RAILGUN");
+  const initialMask = MASK_SHOT | CONTENTS_SLIME | CONTENTS_LAVA;
+  assert.equal(traces.length, 3, "fire_rail must keep tracing through slime/lava and one pierceable monster");
+  assert.deepEqual(traces[0]?.start, [4, 5, 6], "fire_rail local from must start as a copy of start");
+  assert.deepEqual(traces[0]?.end, [8196, 5, 6], "fire_rail local end must be start + 8192 * aimdir");
+  assert.equal(traces[0]?.passent, shooter, "fire_rail first ignore must be self");
+  assert.equal(traces[0]?.mask, initialMask, "fire_rail initial mask must include MASK_SHOT, CONTENTS_SLIME and CONTENTS_LAVA");
+  assert.deepEqual(traces[1]?.start, [16, 0, 0], "fire_rail must advance local from to tr.endpos after water/slime trace");
+  assert.equal(traces[1]?.passent, shooter, "fire_rail must keep ignoring self when the trace only hit slime/lava contents");
+  assert.equal(traces[1]?.mask, MASK_SHOT, "fire_rail must drop slime/lava from mask after detecting those contents");
+  assert.deepEqual(traces[2]?.start, [64, 0, 0], "fire_rail must advance local from to the pierced monster endpos");
+  assert.equal(traces[2]?.passent, monster, "fire_rail must ignore the pierced monster on the next trace");
+  assert.equal(traces[2]?.mask, MASK_SHOT, "fire_rail must keep the reduced mask after water/slime detection");
+  assert.equal(damages.length, 1, "fire_rail must damage the pierceable monster once");
+  assert.equal(damages[0]?.target, monster, "fire_rail damage target mismatch");
+  assert.equal(damages[0]?.inflictor, shooter, "fire_rail damage inflictor must be self");
+  assert.equal(damages[0]?.attacker, shooter, "fire_rail damage attacker must be self");
+  assert.deepEqual(damages[0]?.dir, [1, 0, 0], "fire_rail damage direction must use aimdir");
+  assert.deepEqual(damages[0]?.point, [64, 0, 0], "fire_rail damage point must use tr.endpos");
+  assert.deepEqual(damages[0]?.normal, [0, 0, 1], "fire_rail damage normal must use tr.plane.normal");
+  assert.equal(damages[0]?.damage, 100, "fire_rail damage amount mismatch");
+  assert.equal(damages[0]?.knockback, 200, "fire_rail kick mismatch");
+  assert.equal(damages[0]?.mod, MOD_RAILGUN, "fire_rail damage must use MOD_RAILGUN");
+  assert.equal(tempEvents.length, 2, "fire_rail must emit a second rail trail after passing through slime/lava");
   assert.equal(tempEvents[0]?.type, temp_event_t.TE_RAILTRAIL, "fire_rail must emit a rail trail temp entity");
-  assert.deepEqual(tempEvents[0]?.payload.start, [0, 0, 0], "rail trail start mismatch");
+  assert.equal(tempEvents[1]?.type, temp_event_t.TE_RAILTRAIL, "fire_rail water/slime branch must emit a rail trail temp entity");
+  assert.deepEqual(tempEvents[0]?.payload.start, [4, 5, 6], "rail trail start mismatch");
   assert.deepEqual(tempEvents[0]?.payload.end, [128, 0, 0], "rail trail end must use the last trace end");
+  assert.deepEqual(tempEvents[1]?.payload.start, [4, 5, 6], "water/slime rail trail start mismatch");
+  assert.deepEqual(tempEvents[1]?.payload.end, [128, 0, 0], "water/slime rail trail end must use the last trace end");
 }
 
 function verifyBfgDamageModsAndVisibleEffects(): void {

@@ -22,6 +22,18 @@
 - renderer-three: pas de sortie renderer directe produite par `turret_blocked`; les effets visibles attendus sont indirects via etat serveur apres crush damage/death, entites/snapshots et scene existante. `verify:full-game:three-renderer` couvre la consommation du flux full-game renderer.
 - Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 
+## Session 2026-05-03 - `turret_breach_fire`
+
+- Lot traite: `turret_breach_fire` et les locaux C `damage` / `speed`.
+- Statut: `turret_breach_fire` valide; `damage` et `speed` marques `Non applicable` comme artefacts de matrice pour des variables locales portees en constantes locales TS.
+- Comparaison C/H vs TS: ownership confirme dans `packages/game/src/g_turret.ts`; nom conserve dans le port proprietaire; calcul du muzzle par `AngleVectors` puis trois `VectorMA` conserve; attaquant `self->teammaster->owner` conserve dans le flux normal; `fire_rocket` appele avec `damage`, `speed`, rayon `150` et radius damage `damage`; son `weapons/rocklf1a.wav` conserve.
+- Correction TS: `damage` et `speed` sont maintenant tronques avec `Math.trunc` pour correspondre aux `int` C; le son de tir est desormais emis avec origine positionnee au muzzle `start`, canal `CHAN_WEAPON`, volume `1`, attenuation `ATTN_NORM` et `timeofs` `0`, au lieu d'un son seulement attache a l'entite.
+- Commentaire d'en-tete: verifie et complete pour documenter la troncature C et le son positionne.
+- Runtime: atteint par `turret_breach_think` quand le flag `TURRET_BREACH_FIRE` est arme par `turret_driver_think`; les spawns `turret_breach`, `turret_base`, `turret_driver` restent branches via `ED_CallSpawn`, puis `G_RunFrame`/thinks et callback projectile `fire_rocket`.
+- apps/web: integration attendue indirecte via runtime full-game/local; le navigateur doit consommer le projectile rocket, les sons serveur et les snapshots issus du runtime, sans logique parallele pour ce tir. `verify:full-game:server-host`, `verify:web-render-order` et `verify:full-game:audio-routing` couvrent ce flux.
+- renderer-three: sortie visible attendue via entite rocket `EF_ROCKET`, modele/sound de projectile, trail/dlight rocket, puis temp entities d'impact gerees par `fire_rocket`/`rocket_touch`; la consommation passe par packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` couvre l'adapter renderer.
+- Tests lances: `npm run verify:g-turret`; harnais inline `npx tsx -` ciblant `turret_breach_fire` avec `Math.random` controle, origine du son positionne, attaquant, `damage`, `speed`, rayon et metadata son; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run verify:full-game:audio-routing`; `npm run typecheck`.
+
 ## Prochain lot recommande
 
-Continuer avec `turret_breach_fire` puis les locaux `damage` et `speed` si le lot reste petit, en verifiant l'attaquant owner, le calcul du muzzle, `fire_rocket`, le son de tir, et les sorties visibles rocket/temp entities cote web/renderer.
+Continuer avec `turret_breach_think` et le premier petit sous-lot de locaux associes (`ent`, `angle`, `target_z`, `diff`) si le lot reste coherent; verifier en priorite le clamping pitch/yaw, le flag de tir, les vitesses angulaires et la mise a jour du driver.

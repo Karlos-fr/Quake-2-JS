@@ -49,8 +49,8 @@
 | `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_ClearParticles`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ParticleEffect` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; en-tete verifie; test cible ajoute dans `scripts/verify/quake2-cl-fx.ts`. |
 | `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | Non applicable | A redecouper | Variable locale de `CL_ParticleEffect`, portee par `const d`; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_ParticleEffect2` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect2` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_ParticleEffect2` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect2` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; en-tete verifie; test cible ajoute dans `scripts/verify/quake2-cl-fx.ts`. |
+| `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | Non applicable | A redecouper | Variable locale de `CL_ParticleEffect2`, portee par `const d`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ParticleEffect3` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect3` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_TeleporterParticles` | `packages/client/src/cl_fx.ts` | `CL_TeleporterParticles` | A verifier | A redecouper |  |

@@ -10,7 +10,7 @@
  *
  * Deviations:
  * - Spawn-temp fields are read from parsed entity properties instead of the original global `st`.
- * - `turret_breach_fire` queues a gameplay sound event instead of calling `gi.positioned_sound` directly.
+ * - `turret_breach_fire` queues a positioned gameplay sound event instead of calling `gi.positioned_sound` directly.
  * - `turret_driver_die` keeps the turret-specific unlink semantics explicit before calling the ported infantry death handler.
  *
  * Notes:
@@ -51,7 +51,9 @@ import {
   SOLID_BBOX,
   SOLID_BSP,
   emitGameSound,
+  emitRegisteredGameSound,
   linkGameEntity,
+  registerGameSound,
   refreshEntitySpatialState,
   registerGameModel,
   setGameEntityModel,
@@ -144,6 +146,7 @@ export function turret_blocked(self: GameEntity, other: GameEntity, runtime: Gam
  *
  * Behavior:
  * - Fires one rocket from the breach muzzle target offset using the owning driver as attacker.
+ * - Preserves the original integer damage/speed truncation and positioned fire sound.
  */
 export function turret_breach_fire(self: GameEntity, runtime: GameRuntime): void {
   const teammaster = self.teammaster ?? self;
@@ -158,13 +161,16 @@ export function turret_breach_fire(self: GameEntity, runtime: GameRuntime): void
   start = vectorMA(start, self.move_origin[1], right);
   start = vectorMA(start, self.move_origin[2], up);
 
-  const damage = 100 + (Math.random() * 50);
-  const speed = 550 + 50 * runtime.skill;
+  const damage = Math.trunc(100 + (Math.random() * 50));
+  const speed = Math.trunc(550 + 50 * runtime.skill);
   fire_rocket(attacker, start, forward, damage, speed, 150, damage, runtime);
-  emitGameSound(runtime, self, "weapons/rocklf1a.wav");
-
-  void CHAN_WEAPON;
-  void ATTN_NORM;
+  emitRegisteredGameSound(runtime, self, registerGameSound(runtime, "weapons/rocklf1a.wav"), "weapons/rocklf1a.wav", {
+    origin: start,
+    channel: CHAN_WEAPON,
+    volume: 1,
+    attenuation: ATTN_NORM,
+    timeofs: 0
+  });
 }
 
 /**
