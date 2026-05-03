@@ -127,6 +127,8 @@ assert.equal(api.apiversion, GAME_API_VERSION, "GetGameApi apiversion mismatch")
 
 api.Init();
 assert.ok(dprints.includes("==== InitGame ====\n"), "InitGame banner mismatch");
+assert.equal(api.edict_size, Object.keys(api.edicts[0] ?? {}).length, "GetGameApi edict_size must expose the runtime edict shape marker");
+assert.ok(api.edict_size > 0, "GetGameApi edict_size must not be the C-incompatible zero placeholder");
 assert.equal(api.max_edicts, 1024, "InitGame maxentities cvar mismatch");
 assert.equal(cvars.get("deathmatch")?.string, "0", "deathmatch default mismatch");
 assert.equal(cvars.get("deathmatch")?.flags, CVAR_LATCH, "deathmatch flags mismatch");
@@ -220,6 +222,7 @@ assert.equal(configstrings.get(CS_STATUSBAR)?.includes("anum"), true, "statusbar
 assert.ok(api.edicts[1]?.client, "first reserved client slot must have a client block");
 assert.equal(api.edicts[5]?.classname, "func_door", "map entities must be shifted behind reserved player slots");
 assert.equal(api.num_edicts, 22, "SpawnEntities must include reserved body queue and player trail edicts");
+assert.equal(api.max_edicts, 1024, "SpawnEntities must keep max_edicts synced with game.maxentities");
 assert.deepEqual(
   api.edicts.slice(6).map((ent) => ent?.classname),
   [

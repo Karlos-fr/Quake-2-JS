@@ -348,3 +348,43 @@ Corrections:
 
 Prochain lot recommande:
 - `edict_size`, `num_edicts` et `max_edicts` dans un lot separe si coherent.
+
+## Session 2026-05-03 - edict_size / num_edicts / max_edicts
+
+Lot traite:
+- `edict_size`
+- `num_edicts`
+- `max_edicts`
+
+Verdict:
+- `Valide` pour les 3 entites.
+
+Preuves:
+- Source C/H lue dans `Quake-2-master/game/game.h`: `game_export_t` expose `struct edict_s *edicts`, puis `int edict_size`, `int num_edicts` et `int max_edicts`; `num_edicts` est le nombre courant et doit rester `<= max_edicts`.
+- Source C lue dans `Quake-2-master/game/g_main.c`: `GetGameAPI` remplit `globals.edict_size = sizeof(edict_t)`.
+- Source C lue dans `Quake-2-master/game/g_save.c`: `InitGame` alloue `game.maxentities`, remplit `globals.max_edicts`, initialise `globals.num_edicts = game.maxclients + 1`, puis les saves/loads iterent et restaurent selon `globals.num_edicts`.
+- Port TS proprietaire lu dans `packages/game/src/game.ts`: `game_export_t.edict_size`, `num_edicts` et `max_edicts` sont declares avec les noms source originaux.
+- Branchement lu et corrige dans `packages/game/src/g_main.ts`: `GetGameApi()` expose maintenant `edict_size` comme marqueur non nul de forme edict runtime, `num_edicts` comme getter sur `context.runtime.entities.length`, et `max_edicts` comme getter sur `context.runtime.maxentities`.
+- `scripts/verify/quake2-g-main.ts` prouve que `edict_size` n'est plus le placeholder `0`, qu'il correspond a la forme runtime exportee, que `num_edicts` suit `SpawnEntities`, et que `max_edicts` reste synchronise avec `maxentities`.
+- Commentaire d'en-tete verifie pour `game_export_t` dans `packages/game/src/game.ts`; le lot contient des champs de struct, pas des fonctions.
+
+Integration:
+- Runtime: OK. `num_edicts` et `max_edicts` sont atteignables depuis `SV_InitGameProgs`/`GetGameApi`, puis consommes par les boucles serveur normales (`SV_CreateBaseline`, `SV_BuildClientFrame`, `SV_RunGameFrame`, helpers edict) et par `G_RunFrame` via le runtime gameplay. `edict_size` n'est plus utilise pour pointer arithmetic cote TS, mais reste un marqueur d'ABI/export et de compatibilite save comme dans le contrat C.
+- `apps/web`: OK indirectement. `apps/web/src/full-game-server-host.ts` instancie le game API porte via `GetGameApiFunction`, declenche le serveur local, puis consomme les snapshots/playerstate; le placeholder web est remplace par la table runtime et ne masque pas le flux principal.
+- `renderer-three`: OK indirectement. Ces champs ne produisent pas directement modeles, frames, images, particules, beams, dlights, temp entities, camera ou scene. `num_edicts`/`max_edicts` bornent toutefois les edicts envoyes en snapshots; ces sorties visibles (`refdef.entities`, camera/playerstate, areabits, scene) sont consommees par le client puis `packages/renderer-three`.
+
+Tests lances:
+- `npm run verify:game:header` OK
+- `npm run verify:g-main` OK
+- `npm run verify:server:game` OK
+- `npm run verify:full-game:server-host` OK
+- `npm run verify:full-game:three-renderer` OK
+- `npm run typecheck` OK
+
+Corrections:
+- `packages/game/src/g_main.ts`: `edict_size` passe du placeholder `0` a un getter base sur la forme de l'edict runtime exporte.
+- `scripts/verify/quake2-g-main.ts`: assertions ajoutees pour `edict_size`, `num_edicts` et `max_edicts`.
+- Matrice `audit-portage/validation-incrementale/validation/matrices/game_game.h.md` mise a jour pour le lot.
+
+Prochain lot recommande:
+- `GetGameApi` seul.

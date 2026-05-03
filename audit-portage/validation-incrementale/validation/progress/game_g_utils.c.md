@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `vectoangles` / `forward` / `pitch` / `yaw`.
-- Verdict du lot: partiel (`vectoangles` proprietaire valide, mais consommateur `g_weapon.ts` encore duplique hors perimetre).
+- Dernier lot traite: `G_CopyString` / `out`.
+- Verdict du lot: valide (`out` est un local C non applicable comme entite autonome).
 
 ## Preuves session
 
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `G_CopyString` et son local `out` si le lot reste petit. La ligne globale `v` restante pointe vers `g_weapon.ts`; elle doit etre clarifiee dans un lot separe sans melanger les ownerships.
+- Continuer avec `G_InitEdict`. La ligne globale `v` restante pointe vers `g_weapon.ts`; elle doit etre clarifiee dans un lot separe sans melanger les ownerships.
 
 ## Session - findradius / j
 
@@ -227,6 +227,28 @@ Session `vectoyaw` / `yaw`:
 - Correction appliquee: `packages/game/src/g_utils.ts` documente les locaux `forward`/`pitch`/`yaw`; `scripts/verify/quake2-g-utils.ts` couvre les branches verticales, axes, diagonale, wrap yaw, wrap pitch et troncature C.
 
 Session `vectoangles` / `forward` / `pitch` / `yaw`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+
+## Session - G_CopyString / out
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- Declaration H comparee: `Quake-2-master/game/g_local.h`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete mis a jour sur `G_CopyString` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`) pour documenter le local C `out` et l'equivalence `TAG_LEVEL`.
+- Comparaison C/TS `G_CopyString`: le C alloue `strlen(in)+1` avec `gi.TagMalloc(..., TAG_LEVEL)`, copie par `strcpy`, puis retourne `out`; le port TS retourne une chaine equivalente nouvelle via expression de copie, les chaines JS etant immutables.
+- Local C `out`: non applicable comme entite autonome; il correspond a l'expression de retour TS, couverte par les tests ajoutes.
+- Runtime verifie: aucune reference directe C ou TS hors declaration/export/test n'appelle `G_CopyString` dans le port courant; le comportement runtime attendu est conserve par les consommateurs modernes qui stockent directement des chaines JS immutables ou utilisent `ED_NewString` pour les champs map alloues niveau.
+- `apps/web`: non applicable justifie pour `G_CopyString` en direct; le web execute le runtime porte et ne doit pas declencher ce helper de copie memoire sans consommateur gameplay.
+- `packages/renderer-three`: non applicable justifie; `G_CopyString` ne produit ni modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ni scene. Aucune sortie visible renderer n'est attendue.
+- Correction appliquee: `packages/game/src/g_utils.ts` documente `out`/`TAG_LEVEL`; `scripts/verify/quake2-g-utils.ts` couvre la preservation de chaine normale, vide et avec nouvelle ligne.
+
+Session `G_CopyString` / `out`:
 
 - `npm run verify:g-utils`
 - `npm run typecheck`

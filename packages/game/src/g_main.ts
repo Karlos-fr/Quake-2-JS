@@ -533,7 +533,9 @@ export function GetGameApi(imports: game_import_t, options: GameMainContextOptio
     get edicts() {
       return context.runtime.entities;
     },
-    edict_size: 0,
+    get edict_size() {
+      return Object.keys(context.runtime.entities[0] ?? {}).length;
+    },
     get num_edicts() {
       return context.runtime.entities.length;
     },

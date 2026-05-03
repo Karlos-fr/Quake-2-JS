@@ -502,10 +502,12 @@ export function vectoangles(value1: vec3_t): vec3_t {
  * Fidelity level: Close
  *
  * Behavior:
- * - Returns one level-tagged copy of the provided string.
+ * - Allocates and returns one level-tagged copy of the provided string.
  *
  * Porting notes:
  * - Strings are immutable in JS, so the copy is modeled as a new equivalent string value.
+ * - The C local `out` is represented by the returned string expression; `TAG_LEVEL`
+ *   is kept referenced to document the original allocation tag.
  */
 export function G_CopyString(inValue: string): string {
   void TAG_LEVEL;

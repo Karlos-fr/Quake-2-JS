@@ -356,10 +356,14 @@ function verifyTurretBreachThinkFiresRocket(): void {
   driver.velocity = [0, 0, 0];
   driver.avelocity = [0, 0, 0];
 
-  turret_breach_think(breach, runtime);
+  withMockedRandom([0.5], () => {
+    turret_breach_think(breach, runtime);
+  });
 
   const rocket = runtime.entities.find((entity) => entity.classname === "rocket");
   assert.ok(rocket, "turret_breach_think must spawn a rocket when the fire flag is armed");
+  assert.equal(rocket.dmg, Math.trunc(100 + (Math.floor(0.5 * 0x8000) / 0x7fff) * 50), "turret_breach_fire must use g_local.random damage");
+  assert.equal(rocket.radius_dmg, rocket.dmg, "turret_breach_fire must reuse randomized damage as radius damage");
   assert.equal((breach.spawnflags & 65536) === 0, true, "turret_breach_think must clear the fire flag after firing");
   assert.equal(base.avelocity[1], breach.avelocity[1], "turret_breach_think must propagate yaw angular velocity to the base");
   assert.equal(driver.velocity.some((value) => value !== 0), true, "turret_breach_think must update driver mount velocity");
@@ -382,4 +386,15 @@ function createDriver(runtime: GameRuntime): GameEntity {
   driver.monsterinfo.aiflags |= AI_STAND_GROUND | AI_DUCKED;
   driver.s.renderfx |= RF_FRAMELERP;
   return driver;
+}
+
+function withMockedRandom(sequence: number[], callback: () => void): void {
+  const originalRandom = Math.random;
+  let index = 0;
+  Math.random = () => sequence[index++] ?? sequence.at(-1) ?? 0;
+  try {
+    callback();
+  } finally {
+    Math.random = originalRandom;
+  }
 }

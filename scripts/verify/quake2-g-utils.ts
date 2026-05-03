@@ -310,6 +310,8 @@ assert.deepEqual(vtosSlots, [
 ], "vtos must truncate components toward zero like C integer casts");
 assert.equal(wrappedVtosSlot, "(99 -100 101)", "vtos must keep rotating through the original 8-string static pool");
 assert.equal(G_CopyString("quake"), "quake", "G_CopyString mismatch");
+assert.equal(G_CopyString(""), "", "G_CopyString must preserve empty strings like strcpy");
+assert.equal(G_CopyString("line\nbreak"), "line\nbreak", "G_CopyString must preserve copied string contents exactly");
 
 const reusable = createRuntimeEntity({}, 3);
 reusable.inuse = false;

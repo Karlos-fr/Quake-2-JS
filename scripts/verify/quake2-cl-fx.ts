@@ -20,6 +20,7 @@ import {
   CL_ClearDlights,
   CL_ClearLightStyles,
   CL_ClearParticles,
+  CL_DiminishingTrail,
   CL_ExecuteTempEntityEffects,
   CL_ExplosionParticles,
   CL_ExecutePacketEntityEffects,
@@ -41,6 +42,9 @@ import {
   CHAN_AUTO,
   CHAN_WEAPON,
   CS_LIGHTS,
+  EF_GIB,
+  EF_GREENGIB,
+  EF_GRENADE,
   EF_TELEPORTER,
   EF_FLAG1,
   EF_FLAG2,
@@ -81,6 +85,7 @@ function main(): void {
   verifyBlasterTrailRuntimeParticles();
   verifyQuadTrailRuntimeParticles();
   verifyFlagTrailRuntimeParticles();
+  verifyDiminishingTrailRuntimeParticles();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyTeleporterEntityEventMetadata();
@@ -864,6 +869,82 @@ function verifyFlagTrailRuntimeParticles(): void {
     viewerEntity: true
   }]);
   assert.equal(collectActiveParticles(viewerRuntime).length, 0, "viewer EF_FLAG1 should preserve the C path with light only and no flag particles");
+}
+
+function verifyDiminishingTrailRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 10080;
+  const start: vec3_t = [0, 0, 0];
+  const end: vec3_t = [1.3, 0, 0];
+  const old = runtime.cl_entities[7];
+  old.trailcount = 950;
+  const randomUnit = 0;
+  const expectedCrand = (randomUnit * 2) - 1;
+
+  withMockRandom(randomUnit, () => {
+    CL_DiminishingTrail(runtime, start, end, old, EF_GIB);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_DiminishingTrail should emit one particle per 0.5-unit step while len > 0");
+  assert.equal(runtime.cl.free_particles, 3, "CL_DiminishingTrail free list should advance by emitted particles");
+  assert.equal(old.trailcount, 935, "CL_DiminishingTrail should decay trailcount by 5 per step down to the C floor");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_DiminishingTrail particle time mismatch");
+  assert.ok(particles.every((particle) => particle.color >= 0xe8 && particle.color <= 0xef), "CL_DiminishingTrail gib color family mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0), "CL_DiminishingTrail alpha mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_DiminishingTrail gib acceleration mismatch");
+  assert.ok(
+    particles.every((particle) => particle.vel[0] === expectedCrand * 15 && particle.vel[1] === expectedCrand * 15 && particle.vel[2] === (expectedCrand * 15) - 40),
+    "CL_DiminishingTrail gib velocity scale/gravity mismatch"
+  );
+  const expectedAlphavel = -1.0 / (1 + (randomUnit * 0.4));
+  assert.ok(particles.every((particle) => almostEqual(particle.alphavel, expectedAlphavel)), "CL_DiminishingTrail gib alpha decay mismatch");
+
+  const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
+  assert.deepEqual(emittedX, [-4, -3.5, -3], "CL_DiminishingTrail should advance move by the normalized vec * dec");
+  assert.ok(particles.every((particle) => particle.org[1] === -4 && particle.org[2] === -4), "CL_DiminishingTrail gib origin scale mismatch");
+
+  const metadataOld = createRuntime().cl_entities[7];
+  metadataOld.trailcount = 950;
+  const metadata = CL_DiminishingTrail(start, end, metadataOld, EF_GREENGIB);
+  assert.equal(metadata[0]?.kind, "diminishing-trail-greengib", "CL_DiminishingTrail metadata kind mismatch");
+  assert.deepEqual(metadata[0]?.position, start, "CL_DiminishingTrail metadata start mismatch");
+  assert.deepEqual(metadata[0]?.position2, end, "CL_DiminishingTrail metadata end mismatch");
+  assert.equal(metadata[0]?.color, 0xdb, "CL_DiminishingTrail metadata color mismatch");
+  assert.equal(metadata[0]?.spacing, 0.5, "CL_DiminishingTrail metadata spacing mismatch");
+  assert.equal(metadataOld.trailcount, 935, "CL_DiminishingTrail metadata should mirror C trailcount decay per step");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 3, "CL_DiminishingTrail particles should reach the refresh particle list");
+
+  const grenadeRuntime = createRuntime();
+  grenadeRuntime.cl.time = 10120;
+  grenadeRuntime.cl_entities[9].lerp_origin = [0, 0, 0];
+  grenadeRuntime.cl_entities[9].trailcount = 850;
+  withMockRandom(randomUnit, () => {
+    CL_ExecutePacketEntityEffects(grenadeRuntime, [{
+      number: 9,
+      effects: EF_GRENADE,
+      origin: end
+    }]);
+  });
+  const grenadeParticles = collectActiveParticles(grenadeRuntime);
+  assert.equal(grenadeParticles.length, 3, "EF_GRENADE should dispatch to CL_DiminishingTrail");
+  assert.ok(grenadeParticles.every((particle) => particle.color >= 4 && particle.color <= 11), "EF_GRENADE should use the regular diminishing trail palette");
+  assert.ok(grenadeParticles.every((particle) => particle.accel[2] === 20), "EF_GRENADE should use upward diminishing trail acceleration");
+
+  const greengibRuntime = createRuntime();
+  greengibRuntime.cl.time = 10160;
+  greengibRuntime.cl_entities[10].lerp_origin = [0, 0, 0];
+  greengibRuntime.cl_entities[10].trailcount = 850;
+  withMockRandom(randomUnit, () => {
+    CL_ExecutePacketEntityEffects(greengibRuntime, [{
+      number: 10,
+      effects: EF_GREENGIB,
+      origin: end
+    }]);
+  });
+  assert.ok(collectActiveParticles(greengibRuntime).every((particle) => particle.color >= 0xdb && particle.color <= 0xe2), "EF_GREENGIB should use the green gib palette");
 }
 
 function verifyLightstyleManagement(): void {

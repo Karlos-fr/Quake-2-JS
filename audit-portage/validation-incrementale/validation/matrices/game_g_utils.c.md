@@ -36,8 +36,8 @@
 | `Quake-2-master/game/g_utils.c` | global | `forward` | `packages/game/src/g_utils.ts` | `forward` | Non applicable | A redecouper | Local C de `vectoangles`, porte comme local TS `forward` et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | global | `pitch` | `packages/game/src/g_utils.ts` | `pitch` | Non applicable | A redecouper | Local C de `vectoangles`, porte comme local TS `pitch` et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | global | `yaw` | `packages/game/src/g_utils.ts` | `yaw` | Non applicable | A redecouper | Local C de `vectoangles`, porte comme local TS `yaw` et couvert par `npm run verify:g-utils`. |
-| `Quake-2-master/game/g_utils.c` | function | `G_CopyString` | `packages/game/src/g_utils.ts` | `G_CopyString` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `out` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_CopyString` | `packages/game/src/g_utils.ts` | `G_CopyString` | Valide | A redecouper | Commentaire mis a jour; tests `verify:g-utils`, `typecheck`, `verify:full-game:server-host`, `verify:local-gameplay-sync`, `verify:web-render-order`, `verify:full-game:three-renderer`. |
+| `Quake-2-master/game/g_utils.c` | global | `out` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local C de `G_CopyString`, porte par l'expression de retour TS et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | function | `G_InitEdict` | `packages/game/src/g_utils.ts` | `G_InitEdict` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `G_Spawn` | `packages/game/src/g_utils.ts` | `G_Spawn` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `i` | `packages/game/src/g_weapon.ts` | `i` | A verifier | A redecouper |  |

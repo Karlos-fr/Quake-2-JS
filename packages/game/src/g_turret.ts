@@ -37,7 +37,8 @@ import {
   FRAMETIME,
   MOD_CRUSH,
   SVF_MONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { FindTarget, visible } from "./g_ai.js";
 import { T_Damage } from "./g_combat.js";
@@ -161,7 +162,7 @@ export function turret_breach_fire(self: GameEntity, runtime: GameRuntime): void
   start = vectorMA(start, self.move_origin[1], right);
   start = vectorMA(start, self.move_origin[2], up);
 
-  const damage = Math.trunc(100 + (Math.random() * 50));
+  const damage = Math.trunc(100 + (random() * 50));
   const speed = Math.trunc(550 + 50 * runtime.skill);
   fire_rocket(attacker, start, forward, damage, speed, 150, damage, runtime);
   emitRegisteredGameSound(runtime, self, registerGameSound(runtime, "weapons/rocklf1a.wav"), "weapons/rocklf1a.wav", {

@@ -1839,7 +1839,11 @@ export function CL_DiminishingTrail(
         : "diminishing-trail";
     const color = (flags & EF_GIB) !== 0 ? 0xe8 : (flags & EF_GREENGIB) !== 0 ? 0xdb : 4;
     effects.push(createTrailEffect(kind, start, end, color, 0.5));
-    old.trailcount = Math.max(100, old.trailcount - 5);
+    let len = normalizeVectorCopy(subtractVec3(end, start));
+    while (len > 0) {
+      len -= 0.5;
+      old.trailcount = Math.max(100, old.trailcount - 5);
+    }
     return effects;
   }
 

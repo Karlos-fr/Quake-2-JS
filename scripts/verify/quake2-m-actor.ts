@@ -20,6 +20,7 @@ import {
   SOLID_BBOX,
   SOLID_TRIGGER,
   SVF_NOCLIENT,
+  ai_move,
   ai_run,
   ai_walk,
   ai_stand,
@@ -79,6 +80,18 @@ assert.equal(actorFrames.actor_move_run.firstframe, actorFrames.FRAME_run02, "ac
 assert.equal(actorFrames.actor_move_run.lastframe, actorFrames.FRAME_run07, "actor_move_run lastframe");
 assert.equal(actorFrames.actor_move_run.frame, actorFrames.actor_frames_run, "actor_move_run frame table");
 assert.equal(actorFrames.actor_move_run.endfunc, undefined, "actor_move_run endfunc");
+
+const expectedPain1Distances = [-5, 4, 1];
+assert.equal(actorFrames.actor_frames_pain1.length, expectedPain1Distances.length, "actor_frames_pain1 has 3 C frames");
+for (const [index, frame] of actorFrames.actor_frames_pain1.entries()) {
+  assert.equal(frame.aifunc, ai_move, `actor_frames_pain1[${index}] uses ai_move`);
+  assert.equal(frame.dist, expectedPain1Distances[index], `actor_frames_pain1[${index}] distance`);
+  assert.equal(frame.thinkfunc, undefined, `actor_frames_pain1[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_pain1.firstframe, actorFrames.FRAME_pain101, "actor_move_pain1 firstframe");
+assert.equal(actorFrames.actor_move_pain1.lastframe, actorFrames.FRAME_pain103, "actor_move_pain1 lastframe");
+assert.equal(actorFrames.actor_move_pain1.frame, actorFrames.actor_frames_pain1, "actor_move_pain1 frame table");
+assert.equal(actorFrames.actor_move_pain1.endfunc, actorFrames.actor_run, "actor_move_pain1 endfunc");
 
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";

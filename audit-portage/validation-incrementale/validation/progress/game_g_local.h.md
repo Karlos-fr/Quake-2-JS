@@ -1368,7 +1368,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:g-misc` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_turret.ts` et `g_utils.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/g_turret.ts` pour `turret_breach_fire`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `g_turret.ts` est harmonise pour `random`, aucun consommateur `crandom` n'existe dans `g_turret.c`/`g_turret.ts`, mais d'autres consommateurs runtime restent disperses dans les modules game, player et monstres.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `g_turret.c` consomme `random()` dans `turret_breach_fire` pour `damage = 100 + random() * 50`; aucun appel `crandom()` dans ce fichier.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15-bit et `crandom` depend de `random`.
+  - `packages/game/src/g_turret.ts`: `turret_breach_fire` consomme maintenant le helper proprietaire `random` importe depuis `g_local.ts` au lieu de `Math.random()`.
+- Runtime: integration attendue et branchee pour ce sous-lot via `turret_breach_think` appele depuis `G_RunFrame`/`G_RunEntity`, quand le driver arme le flag de tir; le rocket produit conserve degats directs/radius et son positionne.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, projectiles et ordre de rendu; aucune logique parallele web `g_turret`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages `g_turret.ts` produisent une sortie visible via projectile rocket, son/evenement et scene en aval; ces sorties passent par snapshots/client/refresh/Three, pas par une consommation directe du helper.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `turret_breach_fire` et `turret_breach_think` verifies; aucun nouveau commentaire requis.
+- Corrections appliquees:
+  - `packages/game/src/g_turret.ts`: import de `random` depuis `g_local.ts`, remplacement de l'usage direct `Math.random()` correspondant au macro C `random()`.
+  - `scripts/verify/quake2-g-turret.ts`: preuve deterministe ajoutee pour les degats `turret_breach_fire` issus de `g_local.random`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:g-turret` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_utils.ts` quand il ne sera plus reserve. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

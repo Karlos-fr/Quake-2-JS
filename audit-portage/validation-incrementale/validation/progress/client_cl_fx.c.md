@@ -1,7 +1,7 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; `CL_BlasterTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_QuadTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_FlagTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; variables locales generees `i` marquees non applicables.
+- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; `CL_BlasterTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_QuadTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_FlagTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_DiminishingTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `orgscale` et `velscale`; variables locales generees `i` marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -63,7 +63,21 @@
   - `npm run verify:full-game:three-renderer`
   - `npm run verify:local-gameplay-sync`
   - `npm run typecheck`
+  - `npm run verify:cl-fx`
+  - `npm run verify:particle-sync`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run verify:local-gameplay-sync`
+  - `npm run typecheck`
 - Decisions:
+  - `CL_DiminishingTrail` conserve le flux C: copie de `start` dans `move`, vecteur `end - start` normalise dans `vec`, `dec = 0.5`, deplacement `move += vec * dec`, emission conditionnelle par `(rand()&1023) < old->trailcount`, puis decrement `trailcount -= 5` avec plancher `100` a chaque pas.
+  - Les seuils `trailcount` sont conserves: `>900` donne `orgscale = 4` et `velscale = 15`, `>800` donne `2` et `10`, sinon `1` et `5`.
+  - Les variantes `EF_GIB`, `EF_GREENGIB` et grenade/rocket standard conservent les palettes, alpha, vitesses et acceleration du C: gib rouge `0xe8 + rand&7`, gib vert `0xdb + rand&7`, standard `4 + rand&7`, gravite appliquee aux gibs via `vel[2] -= PARTICLE_GRAVITY`, acceleration standard `accel[2] = 20`.
+  - La mutation metadata de `CL_DiminishingTrail` dans `packages/client/src/cl_fx.ts` a ete corrigee pour appliquer la decroissance `trailcount` par pas de `0.5`, comme la boucle C, au lieu d'un seul decrement.
+  - Les temporaires C `move`, `vec`, `len`, `j`, `dec`, `orgscale` et `velscale` sont des artefacts locaux: ils sont portes dans `spawnDiminishingTrailParticles` et l'iteration TS par composant remplace `j`; aucune entite TS publique separee n'est attendue.
+  - `CL_DiminishingTrail` est atteignable depuis le runtime client normal via `CL_BuildRefreshFrame` -> `CL_BuildPacketEntitySnapshots` -> `CL_ExecutePacketEntityEffects` pour les entites `EF_GIB`, `EF_GRENADE` et `EF_GREENGIB`. `EF_ROCKET` est aussi route via `CL_RocketTrail`, a valider dans le lot suivant.
+  - `apps/web` doit consommer ce flux parce qu'il produit des particules visibles de gibs/grenades: le flux full-game/local-game construit un `ClientRefreshFrame` depuis le runtime client et `full-game-render-loop.ts` consomme `source.refreshFrame.particles` via `particleSync.apply`, sans logique particule parallele pour ce trail.
+  - `renderer-three` doit consommer la sortie visible particules; le flux reste `CL_AddParticles` -> `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`, couvert par `npm run verify:particle-sync` et `npm run verify:full-game:three-renderer`.
   - `CL_FlagTrail` conserve le flux C de trail flag CTF: copie de `start` dans `move`, vecteur `end - start` normalise dans `vec`, `len` decrementee par `dec = 5`, emission tant que `len > 0`, couleur parametree (`242` pour `EF_FLAG1`, `115` pour `EF_FLAG2`), alpha `1.0`, `alphavel = -1/(0.8 + frand()*0.2)`, origine `move + crand()*16`, vitesse `crand()*5` et acceleration nulle.
   - Les temporaires C `move`, `vec`, `len`, `j` et `dec` sont des artefacts locaux: ils sont portes dans `spawnSimpleTrailParticles` (`move`, `vec`, `len`, `dec`) et l'iteration TS par composant remplace `j`; aucune entite TS publique separee n'est attendue.
   - `CL_FlagTrail` est atteignable depuis le runtime client normal via `CL_BuildRefreshFrame` -> `CL_BuildPacketEntitySnapshots` -> `CL_ExecutePacketEntityEffects` pour les entites non viewer avec `modelindex != 0` et `EF_FLAG1`/`EF_FLAG2`, comme dans le chemin C de `CL_AddPacketEntities`. Les entites viewer restent light-only, sans particules flag.
@@ -137,4 +151,4 @@
   - `renderer-three` consomme les dlights via `ClientRefreshFrame.lights` -> `createThreeDlightSync` / `R_RenderDlights` et les particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync`; les sons restent hors renderer.
   - `npm run verify:local-gameplay-sync` n'a pas pu etre utilise comme preuve finale pendant une session precedente: blocage hors lot avant execution du test, `ReferenceError: FRAME_attack1 is not defined` dans `packages/game/src/g_save.ts`.
 - Blocages: Aucun blocage actif pour le dernier lot; `npm run verify:local-gameplay-sync` passe maintenant pour le chemin blaster trail.
-- Prochain lot recommande: `CL_DiminishingTrail`, puis les locaux `move`, `vec`, `len`, `j`, `dec`, `orgscale` et `velscale` si le lot reste coherent.
+- Prochain lot recommande: `MakeNormalVectors` avec le local `d` si le lot reste coherent; garder `CL_RocketTrail` pour une session separee.
