@@ -44,7 +44,7 @@ import {
 import { damage_t } from "../../packages/game/src/g_local.js";
 import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_bfg, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_rocket, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_DEADMONSTER, CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID, CONTENTS_WATER, EF_ANIM_ALLFAST, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
+import { CONTENTS_DEADMONSTER, CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID, CONTENTS_WATER, EF_ANIM_ALLFAST, EF_BFG, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -1214,7 +1214,17 @@ function verifyBfgDamageModsAndVisibleEffects(): void {
   const collisionSurface = { name: "stone", flags: 0, value: 0 };
   const callbackNormals: vec3_t[] = [];
   const callbackEvents: temp_event_t[] = [];
-  const spawnedBfg = fire_bfg(owner, [8, 9, 10], [1, 0, 0], 175, 400, 300, runtime, {
+  const bfgOrder: string[] = [];
+  runtime.engineLinkEntity = (entity) => {
+    if (entity.classname === "bfg blast") {
+      bfgOrder.push("link");
+    }
+  };
+  let bfgDodgeStart: vec3_t | null = null;
+  let bfgDodgeDir: vec3_t | null = null;
+  let bfgDodgeSpeed = 0;
+  let bfgDodgeSawLinked = true;
+  const spawnedBfg = fire_bfg(owner, [8, 9, 10], [0, 2, 0], 175, 400, 300, runtime, {
     T_Damage: (_target, _inflictor, _attacker, _dir, _point, normal) => {
       callbackNormals.push([...normal]);
     },
@@ -1222,10 +1232,41 @@ function verifyBfgDamageModsAndVisibleEffects(): void {
     emitTempEntity: (type) => {
       callbackEvents.push(type);
     },
-    check_dodge: () => undefined
+    check_dodge: (_self, start, dir, speed) => {
+      bfgOrder.push("check_dodge");
+      bfgDodgeStart = [...start];
+      bfgDodgeDir = [...dir];
+      bfgDodgeSpeed = speed;
+      bfgDodgeSawLinked = runtime.linkedSolidEntities.some((entity) => entity.classname === "bfg blast");
+    }
   });
+  assert.equal(spawnedBfg.classname, "bfg blast", "fire_bfg must name the projectile bfg blast");
+  assert.deepEqual(spawnedBfg.s.origin, [8, 9, 10], "fire_bfg local bfg must copy start into s.origin");
+  assert.deepEqual(spawnedBfg.origin, [8, 9, 10], "fire_bfg local bfg must mirror start into runtime origin");
+  assert.deepEqual(spawnedBfg.movedir, [0, 2, 0], "fire_bfg must preserve raw dir in movedir like VectorCopy");
+  assert.deepEqual(spawnedBfg.velocity, [0, 800, 0], "fire_bfg must scale raw dir by speed like VectorScale");
+  assert.deepEqual(spawnedBfg.s.angles.map((value) => Object.is(value, -0) ? 0 : value), [0, 90, 0], "fire_bfg must derive projectile angles from raw dir");
+  assert.equal(spawnedBfg.movetype, MOVETYPE_FLYMISSILE, "fire_bfg movetype mismatch");
+  assert.equal(spawnedBfg.clipmask, MASK_SHOT, "fire_bfg clipmask mismatch");
+  assert.equal(spawnedBfg.solid, SOLID_BBOX, "fire_bfg solid mismatch");
+  assert.equal(spawnedBfg.s.effects & EF_BFG, EF_BFG, "fire_bfg must set EF_BFG");
+  assert.equal(spawnedBfg.s.effects & EF_ANIM_ALLFAST, EF_ANIM_ALLFAST, "fire_bfg must set EF_ANIM_ALLFAST");
+  assert.deepEqual(spawnedBfg.mins, [0, 0, 0], "fire_bfg must clear mins");
+  assert.deepEqual(spawnedBfg.maxs, [0, 0, 0], "fire_bfg must clear maxs");
+  assert.equal(runtime.assets.modelPaths[spawnedBfg.s.modelindex - 1], "sprites/s_bfg1.sp2", "fire_bfg modelindex mismatch");
+  assert.equal(runtime.assets.soundPaths[spawnedBfg.s.sound - 1], "weapons/bfg__l1a.wav", "fire_bfg soundindex mismatch");
+  assert.equal(spawnedBfg.owner, owner, "fire_bfg must retain owner");
   assert.equal(spawnedBfg.radius_dmg, 175, "fire_bfg must initialize radius_dmg for the later bfg_explode frame-0 effect");
   assert.equal(spawnedBfg.dmg_radius, 300, "fire_bfg must preserve the radius searched by bfg_explode");
+  assert.equal(spawnedBfg.teammaster, spawnedBfg, "fire_bfg must set teammaster to the local bfg projectile");
+  assert.equal(spawnedBfg.teamchain, null, "fire_bfg must clear teamchain");
+  assert.equal(spawnedBfg.linked, true, "fire_bfg must link the projectile");
+  assert.equal(runtime.linkedSolidEntities.includes(spawnedBfg), true, "fire_bfg must expose the BFG projectile to solid touch runtime");
+  assert.deepEqual(bfgDodgeStart, [8, 9, 10], "fire_bfg must pass bfg origin to check_dodge");
+  assert.deepEqual(bfgDodgeDir, [0, 2, 0], "fire_bfg must pass raw dir to check_dodge");
+  assert.equal(bfgDodgeSpeed, 400, "fire_bfg must pass speed to check_dodge");
+  assert.equal(bfgDodgeSawLinked, false, "fire_bfg must run check_dodge before linkentity");
+  assert.deepEqual(bfgOrder, ["check_dodge", "link"], "fire_bfg must preserve check_dodge/linkentity order");
   assert.equal(typeof spawnedBfg.think, "function", "fire_bfg must install the BFG thinker runtime branch");
   wall.takedamage = damage_t.DAMAGE_AIM;
   spawnedBfg.touch?.(spawnedBfg, wall, runtime, collisionPlane, collisionSurface);

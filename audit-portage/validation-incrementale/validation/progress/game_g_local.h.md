@@ -1279,7 +1279,24 @@
   - `audit-portage/validation-incrementale/validation/progress/game_g_local.h.md`: present sous-lot ajoute.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK. `npm run typecheck` non relance: aucun fichier TS modifie.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_ai.ts` ou les helpers locaux `g_func.ts`/`g_misc.ts`/`g_target.ts`), puis reprendre `g_turret.ts`, `g_utils.ts` et `g_weapon.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, migration non reservee `packages/game/src/g_func.ts` pour `func_timer`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `g_func.ts` est harmonise, mais d'autres consommateurs runtime restent disperses dans les modules game et monstres.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `g_func.c` consomme `crandom()` dans `func_timer_think` et dans la planification `START_ON` de `SP_func_timer`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `crandom` depend de `random` comme la macro C.
+  - `packages/game/src/g_func.ts`: suppression du helper local `crandom`; `func_timer_think` et `SP_func_timer` consomment maintenant le helper proprietaire importe depuis `g_local.ts`.
+- Runtime: integration attendue et branchee pour ce sous-lot via spawn/use/think `func_timer`, atteignable depuis `G_RunFrame` par `G_RunEntity` quand `nextthink` est planifie. Les autres consommateurs runtime de `random`/`crandom` restent `Partiel`.
+- apps/web: integration attendue indirectement via host full-game/local, ordre de rendu, timers map et sorties runtime; aucune logique parallele web `func_timer`/`crandom` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. `func_timer` peut declencher des entites visibles, sons ou effets en aval; les sorties visibles restent consommees par le flux snapshots/client/refresh/Three. Pas de consommation directe `renderer-three` attendue pour le helper lui-meme.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `func_timer_think` et `SP_func_timer` verifies; aucun nouveau commentaire requis apres suppression du helper local.
+- Corrections appliquees:
+  - `packages/game/src/g_func.ts`: import de `crandom` depuis `g_local.ts` et suppression du helper local duplicatif.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-func` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_ai.ts`, `g_misc.ts` ou `g_target.ts`), puis reprendre `g_turret.ts`, `g_utils.ts` et `g_weapon.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

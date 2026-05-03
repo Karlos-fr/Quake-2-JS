@@ -10,6 +10,7 @@ import {
   CL_AddLightStyles,
   CL_AddParticles,
   CL_AllocDlight,
+  CL_BigTeleportParticles,
   CL_BuildEntityEventEffects,
   CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
@@ -66,6 +67,8 @@ function main(): void {
   verifyTeleporterRuntimeParticles();
   verifyExplosionRuntimeParticles();
   verifyExplosionTempEntityRuntimeBranch();
+  verifyBigTeleportRuntimeParticles();
+  verifyBigTeleportTempEntityRuntimeBranch();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyTeleporterEntityEventMetadata();
@@ -562,6 +565,61 @@ function verifyDlightManagement(): void {
     refreshFrame.lights.some((light) => light.kind === "dlight" && light.intensity === 50),
     "CL_AddDLights should reach the refresh frame after runtime decay"
   );
+}
+
+function verifyBigTeleportRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 8642;
+  const origin: vec3_t = [128, -64, 32];
+
+  withMockRandom(0, () => {
+    CL_BigTeleportParticles(runtime, origin);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 4096, "CL_BigTeleportParticles should allocate the original 4096 particles");
+  assert.equal(runtime.cl.free_particles, -1, "CL_BigTeleportParticles should exhaust the original particle pool");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "big teleport particles should preserve cl.time");
+  assert.ok(particles.every((particle) => particle.color === 16), "big teleport colortable index mismatch");
+  assert.ok(particles.every((particle) => particle.org[0] === origin[0]), "big teleport x origin mismatch");
+  assert.ok(particles.every((particle) => particle.org[1] === origin[1]), "big teleport y origin mismatch");
+  assert.ok(particles.every((particle) => particle.org[2] === origin[2] + 8), "big teleport z origin mismatch");
+  assert.ok(particles.every((particle) => particle.vel[0] === 70 && particle.vel[1] === 0), "big teleport horizontal velocity mismatch");
+  assert.ok(particles.every((particle) => particle.vel[2] === -100), "big teleport vertical velocity mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === -100 && particle.accel[1] === 0 && particle.accel[2] === 160), "big teleport acceleration mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && particle.alphavel === -0.6), "big teleport alpha decay mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 4096, "CL_BigTeleportParticles particles should reach the refresh particle list");
+}
+
+function verifyBigTeleportTempEntityRuntimeBranch(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 9753;
+  const origin: vec3_t = [4, 5, 6];
+
+  withMockRandom(0, () => {
+    CL_ExecuteTempEntityEffects(runtime, {
+      type: temp_event_t.TE_BOSSTPORT,
+      position: origin
+    });
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 4096, "TE_BOSSTPORT should dispatch to CL_BigTeleportParticles");
+  assert.ok(particles.every((particle) => particle.color === 16), "TE_BOSSTPORT particle color mismatch");
+  assert.ok(particles.every((particle) => particle.org[2] === origin[2] + 8), "TE_BOSSTPORT particle origin mismatch");
+
+  const effects = CL_BuildTempEntityEffects({
+    type: temp_event_t.TE_BOSSTPORT,
+    position: origin
+  });
+  const burst = effects.find((effect) => effect.kind === "big-teleport-particles");
+  assert.ok(burst, "TE_BOSSTPORT should expose big teleport particles to apps/web metadata");
+  assert.equal(burst.category, "particle", "big teleport particles should remain tagged as particles");
+  assert.deepEqual(burst.position, origin, "big teleport particle metadata should preserve origin");
+  assert.equal(burst.count, 4096, "big teleport particle metadata should preserve particle count");
+  assert.ok(effects.some((effect) => effect.sound?.name === "misc/bigtele.wav"), "TE_BOSSTPORT should preserve the original big teleport sound");
 }
 
 function verifyLightstyleManagement(): void {

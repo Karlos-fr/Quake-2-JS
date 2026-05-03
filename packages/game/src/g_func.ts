@@ -32,7 +32,7 @@ import {
   type vec3_t
 } from "../../qcommon/src/index.js";
 import { T_Damage } from "./g_combat.js";
-import { damage_t, MOD_CRUSH } from "./g_local.js";
+import { crandom, damage_t, MOD_CRUSH } from "./g_local.js";
 import { BecomeExplosion1 } from "./g_misc.js";
 import { G_Find, G_PickTarget, G_SetMovedir, G_UseTargets, KillBox, vtos } from "./g_utils.js";
 import {
@@ -2420,10 +2420,6 @@ function parseDoorMovedir(properties: Record<string, string>): [number, number, 
 function parseDistance(value: string | undefined, fallback: number): number {
   const parsed = Number.parseFloat(value ?? "");
   return Number.isFinite(parsed) ? parsed : fallback;
-}
-
-function crandom(): number {
-  return (Math.random() * 2) - 1;
 }
 
 function addVec3(left: vec3_t, right: vec3_t): [number, number, number] {

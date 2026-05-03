@@ -24,10 +24,10 @@
 | `Quake-2-master/game/game.h` | global | `s` | `packages/game/src/game.ts` | `GameEdictServerFields.s` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `client` | `packages/game/src/game.ts` | `GameEdictServerFields.client` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `inuse` | `packages/game/src/game.ts` | `GameEdictServerFields.inuse` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `linkcount` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `area` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `num_clusters` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | global | `clusternums` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `linkcount` | `packages/game/src/game.ts` | `GameEdictServerFields.linkcount` | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `area` | `packages/game/src/game.ts` | `GameEdictServerFields.area` | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `num_clusters` | `packages/game/src/game.ts` | `GameEdictServerFields.num_clusters` | Valide | A redecouper |  |
+| `Quake-2-master/game/game.h` | global | `clusternums` | `packages/game/src/game.ts` | `GameEdictServerFields.clusternums` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `headnode` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `svflags` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `solid` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |

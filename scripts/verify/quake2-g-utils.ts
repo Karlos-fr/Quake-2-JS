@@ -261,6 +261,11 @@ assert.equal(Math.abs(convertedAngles[0]), 0, "vectoangles pitch mismatch");
 assert.equal(convertedAngles[1], 90, "vectoangles yaw mismatch");
 assert.equal(convertedAngles[2], 0, "vectoangles roll mismatch");
 assert.deepEqual(tv(1, 2, 3), [1, 2, 3], "tv mismatch");
+const tvSlots = Array.from({ length: 8 }, (_, index) => tv(index, index + 10, index + 20));
+const wrappedTvSlot = tv(99, 100, 101);
+assert.equal(wrappedTvSlot, tvSlots[0], "tv must rotate through the original 8-vector static pool");
+assert.deepEqual(tvSlots[0], [99, 100, 101], "tv wrapped slot contents mismatch");
+assert.deepEqual(tvSlots[1], [1, 11, 21], "tv must leave non-wrapped temporary vectors intact");
 assert.equal(vtos([1.8, -2.2, 3.9]), "(1 -2 3)", "vtos mismatch");
 assert.equal(G_CopyString("quake"), "quake", "G_CopyString mismatch");
 

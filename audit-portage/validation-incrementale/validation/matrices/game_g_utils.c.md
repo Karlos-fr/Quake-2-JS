@@ -23,8 +23,8 @@
 | `Quake-2-master/game/g_utils.c` | function | `Think_Delay` | `packages/game/src/runtime.ts` | `Think_Delay` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `G_UseTargets` | `packages/game/src/g_utils.ts` | `G_UseTargets` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `t` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `G_UseTargets`, porte par `delayed`/`target` locaux TS et couvert par `npm run verify:g-utils`. |
-| `Quake-2-master/game/g_utils.c` | function | `tv` | `packages/game/src/g_utils.ts` | `tv` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `tv` | `packages/game/src/g_utils.ts` | `tv` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | Non applicable | A redecouper | Local statique C de `tv`, porte comme `tvIndex` TS et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | global | `v` | `packages/game/src/g_weapon.ts` | `v` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `vtos` | `packages/game/src/g_utils.ts` | `vtos` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | A verifier | A redecouper |  |

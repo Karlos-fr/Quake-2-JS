@@ -22,6 +22,7 @@ import {
 } from "../../packages/game/src/index.js";
 import {
   AI_DUCKED,
+  AI_LOST_SIGHT,
   AI_STAND_GROUND,
   DEAD_DEAD,
   FL_NO_KNOCKBACK,
@@ -225,7 +226,40 @@ function verifyTurretDriverLinkAndThink(): void {
 
   assert.notDeepEqual(breach.move_angles, [0, 0, 0], "turret_driver_think must steer the breach");
   assert.equal((breach.spawnflags & 65536) !== 0, true, "turret_driver_think must arm the fire flag");
-  assert.equal(driver.monsterinfo.attack_finished > runtime.time, true, "turret_driver_think attack cooldown mismatch");
+  assert.equal(driver.monsterinfo.attack_finished, 8, "turret_driver_think attack cooldown must include reaction_time + 1");
+
+  breach.spawnflags &= ~65536;
+  driver.monsterinfo.trail_time = runtime.time - 1.5;
+  driver.monsterinfo.attack_finished = 0;
+  turret_driver_think(driver, runtime);
+  assert.equal((breach.spawnflags & 65536) === 0, true, "turret_driver_think must wait for reaction_time before firing");
+  assert.equal(driver.monsterinfo.attack_finished, 0, "turret_driver_think must not start cooldown before reaction_time");
+
+  driver.monsterinfo.trail_time = 0;
+  driver.monsterinfo.attack_finished = runtime.time + 1;
+  turret_driver_think(driver, runtime);
+  assert.equal((breach.spawnflags & 65536) === 0, true, "turret_driver_think must honor existing attack cooldown");
+
+  runtime.collision.trace = () => ({
+    allsolid: false,
+    startsolid: false,
+    fraction: 0.5,
+    endpos: [0, 0, 0],
+    plane: { normal: [0, 0, 0], dist: 0, type: 0, signbits: 0, pad: [0, 0] },
+    surface: null,
+    contents: 0,
+    ent: null
+  });
+  driver.monsterinfo.aiflags &= ~AI_LOST_SIGHT;
+  driver.monsterinfo.attack_finished = 0;
+  breach.spawnflags &= ~65536;
+  turret_driver_think(driver, runtime);
+  assert.equal((driver.monsterinfo.aiflags & AI_LOST_SIGHT) !== 0, true, "turret_driver_think must mark lost sight and return");
+  assert.equal((breach.spawnflags & 65536) === 0, true, "turret_driver_think must not fire when enemy is not visible");
+
+  enemy.health = 0;
+  turret_driver_think(driver, runtime);
+  assert.equal(driver.enemy, null, "turret_driver_think must clear dead enemies");
 
   breach.move_angles[0] = 25;
   turret_driver_die(driver, null, enemy, 25, runtime);

@@ -178,7 +178,7 @@ function verifyMonsterWeaponWrappers(): void {
   assert.equal(rocket?.dmg, 50, "monster_fire_rocket should pass direct damage through");
   assert.equal(rocket?.radius_dmg, 50, "monster_fire_rocket should pass damage as radius damage");
   assert.equal(rocket?.dmg_radius, 70, "monster_fire_rocket should pass damage + 20 as damage radius");
-  assert.equal(bfg?.count, 70, "monster_fire_bfg should pass damage through to fire_bfg");
+  assert.equal(bfg?.radius_dmg, 70, "monster_fire_bfg should pass damage through to fire_bfg radius_dmg like the C helper");
   assert.equal(bfg?.dmg_radius, 240, "monster_fire_bfg should pass damage_radius and ignore kick like the C helper");
 
   const flashes = drainMonsterMuzzleFlashEvents(runtime);

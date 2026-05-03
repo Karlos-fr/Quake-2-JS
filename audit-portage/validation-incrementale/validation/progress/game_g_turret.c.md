@@ -70,6 +70,18 @@
 - renderer-three: sorties visibles attendues via entites brush de base/breach, etat serveur apres retrait du driver, animation de mort infantry et sons/evenements associes; consommation indirecte par packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` confirme le flux renderer.
 - Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 
+## Session 2026-05-03 - `turret_driver_think` / `reaction_time`
+
+- Lot traite: `turret_driver_think` et le local C `reaction_time`.
+- Statut: `turret_driver_think` valide; `reaction_time` marque `Non applicable` comme artefact de matrice pour une variable locale portee en constante locale TS.
+- Comparaison C/H vs TS: ownership confirme dans `packages/game/src/g_turret.ts`; nom conserve; `nextthink = level.time + FRAMETIME`, nettoyage de l'ennemi mort, acquisition `FindTarget`, remise a jour de `trail_time`, gestion `AI_LOST_SIGHT`, calcul cible avec `viewheight`, `vectoangles`, cooldown `attack_finished`, calcul `(3 - skill) * 1.0` et armement du flag de tir `65536` conserves. L'ajout TS defensif `if (!self.target_ent || !self.enemy) return` ne change pas le flux normal C ou `target_ent` est impose par `turret_driver_link`.
+- Commentaire d'en-tete: complete pour documenter le local C `reaction_time` porte comme constante locale et derive de `skill->value`.
+- Correction test: `scripts/verify/quake2-g-turret.ts` renforce les preuves sur le delai `reaction_time`, le cooldown, le retour sans tir en perte de visibilite et le nettoyage d'un ennemi mort.
+- Runtime: `turret_driver_think` est installe par `turret_driver_link`, lui-meme arme comme think differe par `SP_turret_driver`; le flux normal est `ED_CallSpawn` puis thinks executes depuis `G_RunFrame`/`runPendingThinks`. Le flag de tir est consomme par `turret_breach_think`.
+- apps/web: pas d'appel direct attendu; le navigateur doit declencher/consommer ce comportement via le runtime full-game/local, avec snapshots des brushes/driver et sons/projectiles serveur. `verify:full-game:server-host` et `verify:web-render-order` confirment que le web ne remplace pas cette logique.
+- renderer-three: sorties visibles attendues indirectes via angles de breach, etat du driver, entite rocket `EF_ROCKET`, trail/dlight rocket et scene; consommation via packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` confirme le flux renderer.
+- Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+
 ## Prochain lot recommande
 
-Continuer avec `turret_driver_think` et le local `reaction_time` si le lot reste petit.
+Continuer avec `turret_driver_link` et le local `ent` si le lot reste petit.

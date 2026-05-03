@@ -2,9 +2,9 @@
 
 ## Etat courant
 
-- Statut: En cours
-- Dernier lot traite: `bfg_think` seul avec ses temporaires locaux de matrice (`ent`, `ignore`, `dmg`, `tr`, second `dmg`).
-- Verdict du lot: valide pour `bfg_think`; temporaires locaux marques `Non applicable`.
+- Statut: Termine
+- Dernier lot traite: `fire_bfg` seul avec son temporaire local de matrice `bfg`.
+- Verdict du lot: valide pour `fire_bfg`; temporaire local `bfg` marque `Non applicable`.
 
 ## Preuves session
 
@@ -77,12 +77,33 @@
 - `apps/web`: integration attendue indirecte via runtime full-game/local, transport des temp entities et refresh client; aucune logique web parallele ne remplace les lasers BFG.
 - `packages/renderer-three`: sorties visibles attendues = lasers `TE_BFG_LASER` et sparks `TE_LASER_SPARKS`; `TE_BFG_LASER` est parse cote client comme laser, stocke dans les temp lasers, expose dans `ClientRefreshFrame.beams`, puis consomme par `createThreeBeamSync`; `TE_LASER_SPARKS` passe par les temp effects/particules client. Aucun manque ouvert observe.
 
+## Preuves session - `fire_bfg`
+
+- C source compare: `Quake-2-master/game/g_weapon.c`, fonction `fire_bfg`.
+- TS cible compare: `packages/game/src/g_weapon.ts`, fonction `fire_bfg`.
+- Commentaire d'en-tete mis a jour sur `fire_bfg` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`), avec mention explicite du `dir` brut conserve.
+- Comparaison C/TS `fire_bfg`: `G_Spawn`, copie `start` vers `s.origin`, copie `dir` vers `movedir`, `vectoangles(dir)`, `VectorScale(dir, speed)`, `MOVETYPE_FLYMISSILE`, `MASK_SHOT`, `SOLID_BBOX`, effets `EF_BFG | EF_ANIM_ALLFAST`, bbox vide, modele `sprites/s_bfg1.sp2`, owner, touch `bfg_touch`, `radius_dmg = damage`, `dmg_radius = damage_radius`, classname `bfg blast`, son `weapons/bfg__l1a.wav`, think `bfg_think`, `nextthink = level.time + FRAMETIME`, `teammaster = bfg`, `teamchain = NULL`, `check_dodge` pour owner client avant `linkentity`.
+- Temporaire local `bfg`: porte comme constante locale TS; preuve du spawn projectile, des champs visibles/runtime, de `teammaster`, du linkage solide, du forwarding touch, et de l'ordre `check_dodge` puis `linkGameEntity` dans `scripts/verify/quake2-g-weapon.ts`.
+- Corrections TS: `fire_bfg` conserve maintenant le `dir` brut comme le C pour `movedir`, angles, `velocity` et `check_dodge`; `check_dodge` est execute avant `linkGameEntity`; suppression du champ TS `count` non renseigne par le C; commentaire `fire_bfg` ajuste.
+- Correction test adjacente: `scripts/verify/quake2-g-monster.ts` verifie maintenant le champ C reel `radius_dmg` pour `monster_fire_bfg` au lieu du champ TS non source `count`.
+- Runtime verifie: `fire_bfg` est atteignable via `weapon_bfg_fire`, `monster_fire_bfg`, Jorg/Makron, et le hook `LOCAL_GAME_WORLD_WEAPON_HOOKS`; le projectile est lie comme solide et son `touch`/`think` menent vers `bfg_touch`, `bfg_think` puis `bfg_explode`.
+- `apps/web`: integration attendue indirecte via runtime full-game/local, snapshots serveur, sons/temp entities et refresh client; aucune logique web parallele ne remplace le tir BFG.
+- `packages/renderer-three`: sorties visibles attendues = projectile `EF_BFG` avec sprite/son BFG, puis `TE_BFG_BIGEXPLOSION`, `TE_BFG_EXPLOSION`, `TE_BFG_LASER`, sparks et particules BFG via les fonctions aval deja validees; le pipeline client/refresh expose particules/beams/lights et les adapters Three les consomment. Aucun manque ouvert observe.
+
 ## Tests lances
 
 - `npm run verify:g-weapon`
 - `npm run verify:p-weapon`
 - `npm run verify:g-monster`
 - `npm run verify:g-turret`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+- `npm run verify:g-weapon` (session `fire_bfg`)
+- `npm run verify:p-weapon`
+- `npm run verify:g-monster` (premiere relance en echec sur attente obsolete `count`, puis relance OK apres correction du harness)
 - `npm run verify:full-game:server-host`
 - `npm run verify:local-gameplay-sync`
 - `npm run verify:web-render-order`
@@ -130,10 +151,13 @@
 - `packages/game/src/g_weapon.ts`: `fire_bfg` forwarde maintenant `plane`/`surf` depuis le callback touch runtime vers `bfg_touch`.
 - `scripts/verify/quake2-g-weapon.ts`: renforcement de `verifyBfgDamageModsAndVisibleEffects` pour couvrir `bfg_touch` (`plane->normal`, branche ciel, transition d'etat, sprite/son/effect, `bfg_explode` programme) et le forwarding runtime `fire_bfg`.
 - `scripts/verify/quake2-g-weapon.ts`: renforcement de `verifyBfgDamageModsAndVisibleEffects` pour couvrir `bfg_think`, ses temporaires locaux, les filtres de rayon, la trace laser, `FL_IMMUNE_LASER`, `misc_explobox`, `TE_LASER_SPARKS`, `TE_BFG_LASER`, les payloads visibles et le reschedule `FRAMETIME`.
+- `packages/game/src/g_weapon.ts`: `fire_bfg` conserve maintenant le `dir` brut comme le C pour `movedir`, angles, `velocity` et `check_dodge`; `check_dodge` est appele avant `linkGameEntity`; le champ non source `count` est supprime; commentaire `fire_bfg` ajuste.
+- `scripts/verify/quake2-g-weapon.ts`: renforcement de `verifyBfgDamageModsAndVisibleEffects` pour couvrir le local `bfg`, l'etat spawn, les assets, effets, linkage solide, forwarding touch, raw `dir`, `teammaster`, `teamchain`, et l'ordre `check_dodge` puis `linkentity`.
+- `scripts/verify/quake2-g-monster.ts`: l'assertion BFG verifie maintenant `radius_dmg`, champ C utilise par `fire_bfg`, au lieu de `count`.
 
 ## Prochain lot recommande
 
-- Continuer avec `fire_bfg` seul et son temporaire local `bfg`.
+- Aucun lot restant dans `game_g_weapon.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.
 
 ## Blocages
 

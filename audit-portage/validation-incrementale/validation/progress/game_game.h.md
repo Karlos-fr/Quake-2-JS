@@ -160,3 +160,44 @@ Corrections:
 
 Prochain lot recommande:
 - `linkcount`, puis `area`, `num_clusters` et `clusternums` si le lot reste coherent.
+
+## Session 2026-05-03 - linkcount / area / num_clusters / clusternums
+
+Lot traite:
+- `linkcount`
+- `area`
+- `num_clusters`
+- `clusternums`
+
+Verdict:
+- `Valide` pour les 4 entites.
+
+Preuves:
+- Source C/H lue dans `Quake-2-master/game/game.h`: `struct edict_s` expose `int linkcount`, `link_t area`, `int num_clusters` et `int clusternums[MAX_ENT_CLUSTERS]`.
+- Port TS proprietaire lu dans `packages/game/src/game.ts` et `packages/game/src/runtime.ts`.
+- `GameEdictServerFields.linkcount`, `area`, `num_clusters` et `clusternums` exposent explicitement le prefixe serveur de `edict_s`; `GameEntity` conserve les memes champs runtime.
+- `createRuntimeEntity()` initialise `linkcount` a `0`, `area` comme lien detache `{ prev: null, next: null }`, `num_clusters` a `0` et `clusternums` en `Int32Array(16)`.
+- `SV_LinkEdict` cote serveur TS recalcule les leafs/areas/clusters, ecrit `clusternums`, passe `num_clusters` a `-1` quand il faut utiliser `headnode`, incremente `linkcount`, puis insere `area` dans les listes solid/trigger. Le helper gameplay `linkGameEntity()` conserve aussi l'increment Quake II de `linkcount`.
+- `SV_BuildClientFrame` consomme `num_clusters` et `clusternums` pour le filtrage PVS/PHS des entites visibles; `SV_AreaEdicts` consomme les liens `area`.
+- Commentaires d'en-tete verifies dans `packages/game/src/game.ts` pour `edict_s`, `edict_t` et `GameEdictServerFields`. Le lot contient des champs de struct, pas des fonctions; pas de commentaire de fonction applicable.
+
+Integration:
+- Runtime: OK. Les champs sont atteignables via `SV_Frame`/snapshots serveur et les callbacks game `gi.linkentity`/`gi.unlinkentity`; ils sont aussi utilises par `G_RunFrame` indirectement via les appels gameplay a `linkGameEntity` et les comparaisons `groundentity_linkcount`.
+- `apps/web`: OK indirectement. `apps/web/src/full-game-server-host.ts` instancie le serveur full-game et appelle le game API porte; les snapshots produits par `SV_BuildClientFrame` sont consommes par le flux web sans logique parallele pour ces champs.
+- `renderer-three`: OK indirectement. `linkcount` et `area` ne produisent pas directement une sortie visible. `num_clusters`/`clusternums` conditionnent les entites visibles et les areabits transmis au client; le pipeline client place `areabits`/`refdef.entities` dans la refdef, puis `packages/renderer-three` les consomme pour les entites de scene et la visibilite world/leaf.
+
+Tests lances:
+- `npm run verify:game:header` OK
+- `npm run verify:server:world` OK
+- `npm run verify:server:ents` OK
+- `npm run verify:server:send` OK
+- `npm run verify:full-game:server-host` OK
+- `npm run verify:full-game:three-renderer` OK
+- `npm run typecheck` OK
+
+Corrections:
+- `scripts/verify/quake2-game-header.ts`: assertions ajoutees pour `linkcount`, le stockage mutable `area`, `num_clusters` et l'ecriture dans `clusternums`.
+- Matrice `audit-portage/validation-incrementale/validation/matrices/game_game.h.md` mise a jour pour le lot.
+
+Prochain lot recommande:
+- `headnode`, puis `svflags`, `solid`, `clipmask` et `owner` si le lot reste coherent.

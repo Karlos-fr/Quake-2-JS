@@ -511,7 +511,8 @@ export function fire_rocket(
  * - Spawns one BFG projectile with original model, sound and thinker chain.
  *
  * Porting notes:
- * - Touch/think behavior remains explicit through hooks until `g_combat.c` and BFG effect logic are ported.
+ * - Touch/think behavior remains explicit through hooks for runtime adapter boundaries.
+ * - Preserves the original raw `dir` vector for `movedir`, angles, velocity and `check_dodge`.
  */
 export function fire_bfg(
   self: GameEntity,
@@ -524,14 +525,13 @@ export function fire_bfg(
   hooks: GameWeaponWorldHooks = {}
 ): GameEntity {
   const bfg = spawnGameEntity(runtime);
-  const normalizedDir = normalizeVec3(dir);
 
   bfg.origin = [...start];
   bfg.s.origin = [...start];
-  bfg.movedir = [...normalizedDir];
-  bfg.angles = vectoangles(normalizedDir);
+  bfg.movedir = [...dir];
+  bfg.angles = vectoangles(dir);
   bfg.s.angles = [...bfg.angles];
-  bfg.velocity = scaleVec3(normalizedDir, speed);
+  bfg.velocity = scaleVec3(dir, speed);
   bfg.movetype = MOVETYPE_FLYMISSILE;
   bfg.clipmask = MASK_SHOT;
   bfg.solid = SOLID_BBOX;
@@ -545,7 +545,6 @@ export function fire_bfg(
   );
   bfg.nextthink = runtime.time + 0.1;
   bfg.think = hooks.bfg_think ?? ((thinkSelf, localRuntime) => bfg_think(thinkSelf, localRuntime, hooks));
-  bfg.count = damage;
   bfg.radius_dmg = damage;
   bfg.dmg_radius = damageRadius;
   bfg.classname = "bfg blast";
@@ -554,10 +553,10 @@ export function fire_bfg(
   bfg.teamchain = null;
 
   refreshEntitySpatialState(bfg);
-  linkGameEntity(runtime, bfg);
   if (self.client) {
-    (hooks.check_dodge ?? check_dodge)(self, bfg.s.origin, normalizedDir, speed, runtime);
+    (hooks.check_dodge ?? check_dodge)(self, bfg.s.origin, dir, speed, runtime);
   }
+  linkGameEntity(runtime, bfg);
   return bfg;
 }
 

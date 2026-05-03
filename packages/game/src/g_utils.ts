@@ -355,6 +355,9 @@ export function findradius(
  *
  * Behavior:
  * - Returns one temporary vector from the original rotating static pool.
+ *
+ * Porting notes:
+ * - `tvIndex` models the original function-local static `index`; vector objects are reused after 8 calls.
  */
 export function tv(x: number, y: number, z: number): vec3_t {
   const value = tvPool[tvIndex];

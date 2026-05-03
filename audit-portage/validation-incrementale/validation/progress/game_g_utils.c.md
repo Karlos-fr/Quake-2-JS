@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `Think_Delay`, `G_UseTargets` avec le local C `t`.
+- Dernier lot traite: `tv` avec son local statique C `index`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `tv`, puis le local `index` si le lot reste coherent.
+- Continuer avec `vtos`, puis ses locaux `index` et `s` si le lot reste coherent.
 
 ## Session - findradius / j
 
@@ -129,3 +129,24 @@ Session `Think_Delay` / `G_UseTargets` / `t`:
 - `npm run verify:web-render-order`
 - `npm run verify:full-game:three-renderer`
 - `npm run typecheck`
+
+## Session - tv / index
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete mis a jour sur `tv` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`).
+- Comparaison C/TS `tv`: signature a trois flottants/nombres, retour d'un vecteur temporaire mutable, pool de 8 vecteurs, incrementation circulaire `(index + 1) & 7`, ecriture des composantes `x/y/z`, puis retour du slot courant.
+- Local statique C `index`: non applicable comme entite autonome; il correspond au `tvIndex` module-scope TS et sa rotation est couverte par test.
+- Runtime verifie: en C `tv` sert de helper convenience aux vecteurs temporaires de `droptofloor`; le port TS de `droptofloor` utilise des littéraux de vecteurs equivalentes pour `mins`, `maxs` et la destination de trace, donc aucun branchement runtime direct de `tv` n'est requis pour conserver le comportement. Le helper exporte reste disponible et teste pour les futurs consommateurs portes.
+- `apps/web`: non applicable justifie pour `tv` en direct; le web ne doit pas declencher ce helper, il execute les flux gameplay portes via le host full-game/local. Les preuves web confirment que le chemin navigateur ne remplace pas ce flux.
+- `packages/renderer-three`: pas de sortie visible directe produite par `tv`; les sorties visibles attendues des anciens consommateurs C passent par entites/items/snapshots et sont consommees par le renderer via les adapters existants.
+- Corrections appliquees: `packages/game/src/g_utils.ts` documente le lien `index` -> `tvIndex`; `scripts/verify/quake2-g-utils.ts` verifie la rotation/reutilisation du pool de 8 vecteurs et la conservation des slots non reutilises.
+
+Session `tv` / `index`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`

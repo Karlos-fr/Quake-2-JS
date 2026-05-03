@@ -409,6 +409,9 @@ export function turret_driver_die(
  *
  * Behavior:
  * - Acquires enemies, steers the breach toward them and arms the deferred firing flag after the original reaction time.
+ *
+ * Porting notes:
+ * - The C local `reaction_time` is kept as a local constant derived from `skill->value`.
  */
 export function turret_driver_think(self: GameEntity, runtime: GameRuntime): void {
   self.nextthink = runtime.time + FRAMETIME;
