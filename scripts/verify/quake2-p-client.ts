@@ -20,8 +20,12 @@ import {
   MOD_BFG_EFFECT,
   MOD_BFG_LASER,
   MOD_BLASTER,
+  MOD_BARREL,
+  MOD_BOMB,
   MOD_CHAINGUN,
   MOD_CRUSH,
+  MOD_EXIT,
+  MOD_EXPLOSIVE,
   MOD_FALLING,
   MOD_G_SPLASH,
   MOD_GRENADE,
@@ -36,6 +40,7 @@ import {
   MOD_ROCKET,
   MOD_SHOTGUN,
   MOD_SLIME,
+  MOD_SPLASH,
   MOD_SSHOTGUN,
   MOD_SUICIDE,
   MOD_TELEFRAG,
@@ -125,7 +130,12 @@ function verifyClientObituaryWorldMeansOfDeath(): void {
     [MOD_CRUSH, "victim was squished.\n"],
     [MOD_WATER, "victim sank like a rock.\n"],
     [MOD_SLIME, "victim melted.\n"],
-    [MOD_LAVA, "victim does a back flip into the lava.\n"]
+    [MOD_LAVA, "victim does a back flip into the lava.\n"],
+    [MOD_EXPLOSIVE, "victim blew up.\n"],
+    [MOD_BARREL, "victim blew up.\n"],
+    [MOD_EXIT, "victim found a way out.\n"],
+    [MOD_BOMB, "victim was in the wrong place.\n"],
+    [MOD_SPLASH, "victim was in the wrong place.\n"]
   ];
 
   for (const [mod, expected] of worldCases) {

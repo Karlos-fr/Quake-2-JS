@@ -38,7 +38,11 @@ import {
   CONTENTS_MONSTER,
   CONTENTS_SOLID,
   CONTENTS_SLIME,
-  SURF_SKY
+  SURF_FLOWING,
+  SURF_SKY,
+  SURF_TRANS33,
+  SURF_TRANS66,
+  SURF_WARP
 } from "../../qcommon/src/q_shared.js";
 import {
   freeGameEntity,
@@ -85,6 +89,7 @@ import {
 import { infront } from "./g_ai.js";
 import { CanDamage, T_Damage, T_RadiusDamage } from "./g_combat.js";
 import { findradius } from "./g_utils.js";
+import { ThrowDebris } from "./g_misc.js";
 import { PNOISE_IMPACT } from "./g_local.js";
 import { PlayerNoise } from "./p_weapon.js";
 
@@ -137,7 +142,13 @@ export interface GameWeaponWorldHooks {
     mod: number,
     runtime: GameRuntime
   ) => void;
-  rocket_touch?: (self: GameEntity, other: GameEntity, runtime: GameRuntime) => void;
+  rocket_touch?: (
+    self: GameEntity,
+    other: GameEntity,
+    runtime: GameRuntime,
+    plane?: cplane_t | null,
+    surf?: csurface_t | null
+  ) => void;
 }
 
 /**
@@ -466,7 +477,9 @@ export function fire_rocket(
   rocket.maxs = [0, 0, 0];
   rocket.s.modelindex = registerGameModel(runtime, "models/objects/rocket/tris.md2");
   rocket.owner = self;
-  rocket.touch = hooks.rocket_touch ?? ((touchSelf, other, localRuntime) => rocket_touch(touchSelf, other, localRuntime, hooks));
+  rocket.touch = hooks.rocket_touch ?? (
+    (touchSelf, other, localRuntime, plane, surf) => rocket_touch(touchSelf, other, localRuntime, hooks, plane ?? null, surf ?? null)
+  );
   rocket.nextthink = runtime.time + (8000 / speed);
   rocket.think = (thinkSelf, localRuntime) => freeEdict(thinkSelf, localRuntime, hooks);
   rocket.dmg = damage;
@@ -758,7 +771,7 @@ export function Grenade_Touch(
  * - Resolves one rocket impact, direct damage, splash damage and explosion temp entity.
  *
  * Porting notes:
- * - Debris throwing remains intentionally deferred until the supporting misc/combat helpers are ported.
+ * - Debris throwing uses the ported `ThrowDebris` helper from `g_misc.c`.
  */
 export function rocket_touch(
   ent: GameEntity,
@@ -785,6 +798,12 @@ export function rocket_touch(
 
   if (isDamageable(other, hooks)) {
     directDamage(other, ent, ent.owner ?? ent, ent.velocity, ent.s.origin, plane?.normal ?? [0, 0, 0], ent.dmg, 0, 0, MOD_ROCKET, runtime, hooks);
+  } else if (!runtime.deathmatch && !runtime.coop && surf && (surf.flags & (SURF_WARP | SURF_TRANS33 | SURF_TRANS66 | SURF_FLOWING)) === 0) {
+    let n = randomInt(5);
+    while (n > 0) {
+      ThrowDebris(ent, "models/objects/debris2/tris.md2", 2, ent.s.origin, runtime);
+      n -= 1;
+    }
   }
 
   radiusDamage(ent, ent.owner ?? ent, ent.radius_dmg, other, ent.dmg_radius, MOD_R_SPLASH, runtime, hooks);
@@ -1247,6 +1266,14 @@ function angleVectorsFromDir(direction: vec3_t): { forward: vec3_t; right: vec3_
  */
 function crandom(): number {
   return (Math.random() * 2) - 1;
+}
+
+/**
+ * Category: New
+ * Purpose: Mirror Quake II `rand() % maxExclusive` for small projectile/debris counts.
+ */
+function randomInt(maxExclusive: number): number {
+  return Math.floor(Math.random() * maxExclusive);
 }
 
 /**

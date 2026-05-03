@@ -51,3 +51,18 @@
 - renderer-three verifie: les consequences visibles des deltas alimentent `CL_BuildRefreshFrame` (`entities`, modeles, frames, skins, effets, renderfx, lights, particules, beams, areabits et camera/scene), puis les adapters `refresh-entity-sync`, `three-beam-sync`, `three-dlight-sync`, `particle-sync` et `gl-world-scene-adapter`.
 - Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cl-parse`, `npm run verify:full-game:server-snapshots`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
 - `AVANCEMENT_GLOBAL.md`: non modifie; la ligne `qcommon/common.c` reste coherente pour une revalidation sans nouveau statut.
+
+## Revalidation session - 2026-05-03
+
+- Lot traite: `MSG_WriteDeltaEntity()` uniquement. Les temporaires locaux et autres entites de `qcommon/common.c` n'ont pas ete traites.
+- Matrice mise a jour: ligne `MSG_WriteDeltaEntity` passee de `Valide` a `Non conforme`.
+- Source C/H relue: `common.c` calcule les flags delta puis encode les octets `U_MOREBITS*`; `qcommon.h` definit `U_EFFECTS8 = 1<<14`, `U_MOREBITS2 = 1<<15`, `U_SKIN8 = 1<<16`, `U_OLDORIGIN = 1<<24`, `U_SKIN16 = 1<<25`, `U_SOUND = 1<<26`, `U_SOLID = 1<<27`.
+- Cible TS relue: `packages/qcommon/src/messages.ts` conserve l'ownership et l'en-tete requis, mais depend de `packages/qcommon/src/protocol.ts`, ou les masques `U_EFFECTS8` a `U_SOLID` sont decales d'un bit vers le bas par rapport au C.
+- Preuve de non-conformite: harnais inline `npx tsx -` sur un delta `MSG_WriteDeltaEntity` representatif; bits emis TS `0x2c0d9b1`, bits attendus d'apres `qcommon.h` `0x58199b1`.
+- Runtime: la fonction est bien atteignable depuis `SV_EmitPacketEntities`, baselines client et demo serveur; consommation client via `CL_ParseServerMessage` -> `CL_ParseFrame` -> `CL_ParsePacketEntities` -> `CL_DeltaEntity`. Le branchement existe, mais il transporte un protocole TS non strict tant que `protocol.ts` reste decale.
+- apps/web: le flux attendu est branche via `full-game-server-host.ts` (`SV_WriteFrameToClient` puis `CL_ParseServerMessage`) et ne remplace pas l'encodeur delta par une logique parallele. Impact ouvert: le navigateur consomme le meme protocole TS non strict.
+- renderer-three: les sorties visibles attendues (entites, modeles, frames, skins, renderfx, beams, dlights, particules, areabits et camera/scene via `ClientRefreshFrame`) sont consommees par les adapters renderer; impact ouvert uniquement si compatibilite binaire C attendue en entree ou sortie.
+- Tests session OK mais insuffisants pour la stricte parite C: `npm run verify:qcommon:header`, `npm run verify:cl-parse`. Ces tests comparent les bits attendus avec les constantes TS et ne detectent pas le decalage vs `qcommon.h`.
+- Correction non appliquee dans cette mission: modifier `packages/qcommon/src/protocol.ts` releve de la matrice `qcommon_qcommon.h.md`, pas du port proprietaire `packages/qcommon/src/messages.ts` autorise ici.
+- Prochain lot recommande: corriger/valider les masques `U_*` dans `Quake-2-master/qcommon/qcommon.h` / `packages/qcommon/src/protocol.ts`, ajuster les tests avec valeurs numeriques C, puis revalider `MSG_WriteDeltaEntity()`.
+- `AVANCEMENT_GLOBAL.md`: non modifie; le coordinateur doit mettre la ligne `qcommon/common.c` en `A revoir` ou `Partiel/Non conforme` selon sa politique globale.

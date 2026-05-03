@@ -71,7 +71,7 @@
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDir` | `packages/qcommon/src/messages.ts` | `MSG_WriteDir` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_ReadDir` | `packages/qcommon/src/messages.ts` | `MSG_ReadDir` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `b` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDeltaEntity` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaEntity` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDeltaEntity` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaEntity` | Non conforme | A redecouper | Encodage binaire non strict: `protocol.ts` decale les masques `U_EFFECTS8` a `U_SOLID` d'un bit vs `qcommon.h`; preuve session `0x2c0d9b1` TS vs `0x58199b1` C. |
 | `Quake-2-master/qcommon/common.c` | global | `bits` | `packages/qcommon/src/messages.ts` | `bits` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteByte` | `packages/qcommon/src/messages.ts` | `MSG_WriteByte` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_BeginReading` | `packages/memory/src/sizebuf.ts` | `MSG_BeginReading` | A verifier | A redecouper |  |

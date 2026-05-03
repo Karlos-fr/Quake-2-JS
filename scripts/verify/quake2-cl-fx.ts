@@ -15,6 +15,7 @@ import {
   CL_BuildMuzzleFlashEffects,
   CL_ClearDlights,
   CL_ClearLightStyles,
+  CL_ClearParticles,
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
   CL_NewDlight,
@@ -41,13 +42,14 @@ import {
   type vec3_t
 } from "../../packages/qcommon/src/index.js";
 import { createClientRuntime as createRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
-import { MAX_DLIGHTS } from "../../packages/client/src/client.js";
+import { MAX_DLIGHTS, MAX_PARTICLES } from "../../packages/client/src/client.js";
 import type { ClientEntityEvent } from "../../packages/client/src/cl_ents.js";
 import { CL_BuildRefreshFrame } from "../../packages/client/src/refresh.js";
 
 main();
 
 function main(): void {
+  verifyClearParticles();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyItemRespawnEntityEventMetadata();
@@ -56,6 +58,40 @@ function main(): void {
   verifyPlayerMuzzleFlashEffects();
   verifyMonsterMuzzleFlash2Effects();
   console.log("quake2-cl-fx: ok");
+}
+
+function verifyClearParticles(): void {
+  const runtime = createRuntime();
+  assert.equal(runtime.cl.cl_numparticles, MAX_PARTICLES, "cl_numparticles should preserve MAX_PARTICLES");
+
+  runtime.cl.active_particles = 7;
+  runtime.cl.free_particles = 13;
+  runtime.cl.particles[0].next = 42;
+  runtime.cl.particles[0].org = [1, 2, 3];
+  runtime.cl.particles[MAX_PARTICLES - 1].next = 123;
+
+  CL_ClearParticles(runtime);
+
+  assert.equal(runtime.cl.active_particles, -1, "CL_ClearParticles should clear active_particles");
+  assert.equal(runtime.cl.free_particles, 0, "CL_ClearParticles should reset free_particles to particles[0]");
+  assert.equal(runtime.cl.particles[0].next, 1, "CL_ClearParticles should link particles[0] to particles[1]");
+  assert.equal(
+    runtime.cl.particles[MAX_PARTICLES - 1].next,
+    -1,
+    "CL_ClearParticles should terminate the free particle list"
+  );
+
+  let count = 0;
+  let current = runtime.cl.free_particles;
+  const visited = new Set<number>();
+  while (current >= 0) {
+    assert.equal(visited.has(current), false, "CL_ClearParticles free list should not cycle");
+    visited.add(current);
+    count += 1;
+    current = runtime.cl.particles[current].next;
+  }
+
+  assert.equal(count, runtime.cl.cl_numparticles, "CL_ClearParticles should expose cl_numparticles free slots");
 }
 
 function verifyMonsterMuzzleFlash2Effects(): void {

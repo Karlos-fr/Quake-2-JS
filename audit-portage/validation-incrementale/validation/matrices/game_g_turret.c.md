@@ -10,8 +10,8 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/g_turret.c` | function | `AnglesNormalize` | `packages/game/src/g_turret.ts` | `AnglesNormalize` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_turret.c` | function | `SnapToEights` | `packages/game/src/g_turret.ts` | `SnapToEights` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_turret.c` | function | `AnglesNormalize` | `packages/game/src/g_turret.ts` | `AnglesNormalize` | Valide | A redecouper | Header verifie; preuves session: `npm run verify:g-turret` et `npx tsx -e` helpers; runtime via `turret_breach_think`/`turret_driver_link`, web/renderer via flux entites serveur existant. |
+| `Quake-2-master/game/g_turret.c` | function | `SnapToEights` | `packages/game/src/g_turret.ts` | `SnapToEights` | Valide | A redecouper | Header verifie; preuves session: `npm run verify:g-turret` et `npx tsx -e` helpers; runtime via positionnement driver dans `turret_breach_think`, web/renderer via flux entites serveur existant. |
 | `Quake-2-master/game/g_turret.c` | function | `turret_blocked` | `packages/game/src/g_turret.ts` | `turret_blocked` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_turret.c` | global | `attacker` | `packages/game/src/g_turret.ts` | `attacker` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_turret.c` | global | `attacker` | `packages/game/src/g_turret.ts` | `attacker` | A verifier | A redecouper |  |

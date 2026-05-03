@@ -63,8 +63,8 @@
 | `Quake-2-master/game/g_target.c` | function | `target_lightramp_use` | `packages/game/src/g_target.ts` | `target_lightramp_use` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_target.c` | global | `e` | `packages/game/src/g_target.ts` | `e` | Non applicable | A redecouper |  |
 | `Quake-2-master/game/g_target.c` | function | `SP_target_lightramp` | `packages/game/src/g_target.ts` | `SP_target_lightramp` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_target.c` | function | `target_earthquake_think` | `packages/game/src/g_target.ts` | `target_earthquake_think` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_target.c` | global | `i` | `packages/game/src/g_target.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_target.c` | global | `e` | `packages/game/src/g_target.ts` | `e` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_target.c` | function | `target_earthquake_think` | `packages/game/src/g_target.ts` | `target_earthquake_think` | Valide | A redecouper | C/TS compare: son quake cadence 0.5s, boucle clients in-use au sol, clear groundentity, velocites, reschedule FRAMETIME jusqu'a timestamp; header complete; runtime via use/think et `SV_RunThink`; apps/web consomme audio + camera/mouvement via runtime/client; renderer-three indirect camera/refdef, aucune sortie scene directe. Tests: `npm run verify:g-target`, `npm run verify:full-game:server-host`, `npm run verify:local-gameplay-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck` OK. |
+| `Quake-2-master/game/g_target.c` | global | `i` | `packages/game/src/g_target.ts` | `i` | Valide | A redecouper | Local C mappe a l'index de boucle TS; preuve clients/non-clients et airborne couverts par `verify:g-target`. |
+| `Quake-2-master/game/g_target.c` | global | `e` | `packages/game/src/g_target.ts` | `e` | Valide | A redecouper | Local C mappe au `const e` TS par iteration; preuve entity courant, filtre `client` et `groundentity` couverts par `verify:g-target`. |
 | `Quake-2-master/game/g_target.c` | function | `target_earthquake_use` | `packages/game/src/g_target.ts` | `target_earthquake_use` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_target.c` | function | `SP_target_earthquake` | `packages/game/src/g_target.ts` | `SP_target_earthquake` | A verifier | A redecouper |  |

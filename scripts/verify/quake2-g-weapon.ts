@@ -40,9 +40,9 @@ import {
   type GameRuntime
 } from "../../packages/game/src/runtime.js";
 import { damage_t } from "../../packages/game/src/g_local.js";
-import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
+import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_rocket, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_WATER, EF_GRENADE, SURF_SKY } from "../../packages/qcommon/src/q_shared.js";
+import { CONTENTS_WATER, EF_GRENADE, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -66,6 +66,8 @@ function main(): void {
   verifyFireGrenadeSpawnStateAndRuntimeTouch();
   verifyFireGrenade2SpawnStateTimerBranchesAndRuntimeTouch();
   verifyRocketTouchDamageSplashAndVisibleExplosion();
+  verifyRocketTouchSkyAndDebrisBranches();
+  verifyFireRocketRuntimeTouchForwardsCollisionContext();
   verifyFireRailDamageModAndVisibleTrail();
   verifyBfgDamageModsAndVisibleEffects();
 
@@ -887,6 +889,105 @@ function verifyRocketTouchDamageSplashAndVisibleExplosion(): void {
   assert.deepEqual(radiusMods, [MOD_R_SPLASH], "rocket_touch splash damage must use MOD_R_SPLASH");
   assert.equal(tempEvents[0]?.type, temp_event_t.TE_ROCKET_EXPLOSION, "dry rocket impacts must emit TE_ROCKET_EXPLOSION");
   assert.deepEqual(tempEvents[0]?.payload.origin, [8, 20, 30], "rocket explosion origin must be origin - velocity * 0.02");
+}
+
+function verifyRocketTouchSkyAndDebrisBranches(): void {
+  const skyRuntime = createHarnessRuntime();
+  const skyOwner = createRuntimeEntity({ classname: "rocket_owner" }, 1);
+  const skyRocket = createRuntimeEntity({ classname: "rocket" }, 2);
+  const skyWall = createRuntimeEntity({ classname: "world_wall" }, 3);
+  skyRocket.owner = skyOwner;
+
+  let freedSky = false;
+  let skyTempEvents = 0;
+  rocket_touch(skyRocket, skyWall, skyRuntime, {
+    emitTempEntity: () => {
+      skyTempEvents += 1;
+    },
+    G_FreeEdict: () => {
+      freedSky = true;
+    }
+  }, makePlane([0, 0, 1]), { name: "sky", flags: SURF_SKY, value: 0 });
+  assert.equal(freedSky, true, "rocket_touch must free rockets touching sky surfaces");
+  assert.equal(skyTempEvents, 0, "rocket_touch must not emit visible explosions on sky surfaces");
+
+  const debrisRuntime = createHarnessRuntime();
+  const owner = createRuntimeEntity({ classname: "rocket_owner" }, 1);
+  const rocket = createRuntimeEntity({ classname: "rocket" }, 2);
+  const wall = createRuntimeEntity({ classname: "world_wall" }, 3);
+  debrisRuntime.entities[1] = owner;
+  debrisRuntime.entities[2] = rocket;
+  debrisRuntime.entities[3] = wall;
+  rocket.owner = owner;
+  rocket.velocity = [100, 0, 0];
+  rocket.s.origin = [10, 20, 30];
+  rocket.origin = [...rocket.s.origin];
+  rocket.dmg = 120;
+  rocket.radius_dmg = 90;
+  rocket.dmg_radius = 140;
+
+  const originalRandom = Math.random;
+  Math.random = () => 0.9;
+  try {
+    rocket_touch(rocket, wall, debrisRuntime, {
+      T_RadiusDamage: () => undefined,
+      emitTempEntity: () => undefined,
+      G_FreeEdict: () => undefined
+    }, makePlane([0, 0, 1]), { name: "stone", flags: 0, value: 0 });
+  } finally {
+    Math.random = originalRandom;
+  }
+  const debris = debrisRuntime.entities.filter((entity) => entity?.classname === "debris");
+  assert.equal(debris.length, 4, "rocket_touch must mirror rand()%5 debris count for plain non-damageable surfaces");
+  assert.ok(debris.every((entity) => entity?.model === "models/objects/debris2/tris.md2"), "rocket debris must use debris2/tris.md2");
+
+  const suppressedRuntime = createHarnessRuntime();
+  const suppressedOwner = createRuntimeEntity({ classname: "rocket_owner" }, 1);
+  const suppressedRocket = createRuntimeEntity({ classname: "rocket" }, 2);
+  const suppressedWall = createRuntimeEntity({ classname: "warp_wall" }, 3);
+  suppressedRuntime.entities[1] = suppressedOwner;
+  suppressedRuntime.entities[2] = suppressedRocket;
+  suppressedRuntime.entities[3] = suppressedWall;
+  suppressedRocket.owner = suppressedOwner;
+  suppressedRocket.velocity = [100, 0, 0];
+  suppressedRocket.s.origin = [10, 20, 30];
+  suppressedRocket.origin = [...suppressedRocket.s.origin];
+  suppressedRocket.dmg = 120;
+  suppressedRocket.radius_dmg = 90;
+  suppressedRocket.dmg_radius = 140;
+  rocket_touch(suppressedRocket, suppressedWall, suppressedRuntime, {
+    T_RadiusDamage: () => undefined,
+    emitTempEntity: () => undefined,
+    G_FreeEdict: () => undefined
+  }, makePlane([0, 0, 1]), { name: "warp", flags: SURF_WARP, value: 0 });
+  assert.equal(
+    suppressedRuntime.entities.filter((entity) => entity?.classname === "debris").length,
+    0,
+    "rocket_touch must suppress debris on warp/translucent/flowing surfaces"
+  );
+}
+
+function verifyFireRocketRuntimeTouchForwardsCollisionContext(): void {
+  const runtime = createHarnessRuntime();
+  const owner = createRuntimeEntity({ classname: "rocket_owner" }, 1);
+  const wall = createRuntimeEntity({ classname: "world_wall" }, 2);
+  runtime.entities[1] = owner;
+  runtime.entities[2] = wall;
+
+  const plane = makePlane([0, 1, 0]);
+  const surface = { name: "stone", flags: 0, value: 0 };
+  let forwardedPlane: cplane_t | null = null;
+  let forwardedSurface: trace_t["surface"] = null;
+  const rocket = fire_rocket(owner, [0, 0, 0], [1, 0, 0], 100, 650, 120, 100, runtime, {
+    rocket_touch: (_self, _other, _runtime, touchPlane, touchSurface) => {
+      forwardedPlane = touchPlane ?? null;
+      forwardedSurface = touchSurface ?? null;
+    }
+  });
+
+  rocket.touch?.(rocket, wall, runtime, plane, surface);
+  assert.equal(forwardedPlane, plane, "fire_rocket runtime touch callback must forward collision plane to rocket_touch");
+  assert.equal(forwardedSurface, surface, "fire_rocket runtime touch callback must forward collision surface to rocket_touch");
 }
 
 function verifyFireRailDamageModAndVisibleTrail(): void {

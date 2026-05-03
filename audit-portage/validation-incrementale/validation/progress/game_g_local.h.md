@@ -1100,6 +1100,28 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot passees a `Valide`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:p-view` OK; `npm run verify:g-monster` OK; `npm run verify:g-func` OK; `npm run verify:g-utils` OK; `npm run verify:g-weapon` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
+- 2026-05-03: lot macros monde `MOD_EXPLOSIVE`, `MOD_BARREL`, `MOD_BOMB`, `MOD_EXIT`, `MOD_SPLASH`.
+- Verdict: `Valide` pour les 5 macros apres comparaison H/C vs TS, verification des valeurs, du flux combat/world targets, des messages de mort et des sorties visibles associees.
+- Source H/C comparee:
+  - `g_local.h` definit les macros du lot avec valeurs 25..29.
+  - `g_misc.c` propage `MOD_EXPLOSIVE` via `func_explosive_explode`, `MOD_BARREL` via `barrel_explode`, et `MOD_BOMB` via `misc_viper_bomb_touch`.
+  - `g_target.c` propage `MOD_EXPLOSIVE` via `target_explosion_explode`, `MOD_EXIT` via la regle deathmatch `noexit` de `use_target_changelevel`, et `MOD_SPLASH` via `use_target_splash`.
+  - `p_client.c` consomme ces moyens de mort dans `ClientObituary`: `MOD_EXPLOSIVE`/`MOD_BARREL` -> `blew up`, `MOD_EXIT` -> `found a way out`, `MOD_BOMB`/`MOD_SPLASH` -> `was in the wrong place`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: constantes exportees avec les valeurs C exactes.
+  - `packages/game/src/g_misc.ts`: propagation de `MOD_EXPLOSIVE`, `MOD_BARREL` et `MOD_BOMB` vers `T_RadiusDamage`, avec debris/explosions visibles.
+  - `packages/game/src/g_target.ts`: propagation de `MOD_EXPLOSIVE`, `MOD_EXIT` et `MOD_SPLASH`, avec temp entities `TE_EXPLOSION1`/`TE_SPLASH` quand applicable.
+  - `packages/game/src/p_client.ts`: messages deathmatch/coop equivalents au C pour les 5 macros.
+- Runtime: integration attendue et branchee via `G_RunFrame`/use/touch/die callbacks des entites `func_explosive`, `misc_explobox`, `misc_viper_bomb`, `target_explosion`, `target_changelevel` et `target_splash`, puis `T_Damage`/`T_RadiusDamage`, `player_die`/`ClientObituary`.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, messages, temp entities, sons et ordre de rendu; aucune logique parallele `meansOfDeath`/world target MOD detectee dans `apps/web`. `verify:web-render-order` OK.
+- renderer-three: integration indirecte attendue. Le lot produit ou conditionne debris/modeles visibles, explosions `TE_EXPLOSION1`/`TE_EXPLOSION2`, splash particules, dommages de sortie/intermission et messages; `packages/renderer-three` consomme ces sorties via le flux full-game/refresh et temp entities. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: pas de fonction nouvelle dans ce lot; commentaire de module `g_local.ts` verifie et commentaires d'en-tete de `func_explosive_explode`, `barrel_explode`, `misc_viper_bomb_touch`, `target_explosion_explode`, `use_target_changelevel`, `use_target_splash`, `T_Damage`, `T_RadiusDamage` et `ClientObituary` verifies.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions `MOD_EXPLOSIVE` a `MOD_SPLASH`.
+  - `scripts/verify/quake2-p-client.ts`: preuves `ClientObituary` pour `MOD_EXPLOSIVE`, `MOD_BARREL`, `MOD_BOMB`, `MOD_EXIT` et `MOD_SPLASH`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:g-target` OK; `npm run verify:g-misc` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
 ## Preuves de session
 
 - Source H lue: `Quake-2-master/game/g_local.h` lignes du debut du fichier.
@@ -1133,7 +1155,7 @@
 
 ## Prochain lot recommande
 
-- Continuer avec les macros monde restantes `MOD_EXPLOSIVE` a `MOD_SPLASH` si le lot reste petit, avec preuves combat/death messages et sorties visibles associees.
+- Continuer avec les macros monde restantes `MOD_TARGET_LASER`, `MOD_TRIGGER_HURT`, `MOD_HIT`, `MOD_TARGET_BLASTER`, `MOD_FRIENDLY_FIRE` si le lot reste coherent, avec preuves combat/death messages et sorties visibles associees.
 
 ## Blocages
 

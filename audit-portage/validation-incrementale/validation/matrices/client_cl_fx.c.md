@@ -44,9 +44,9 @@
 | `Quake-2-master/client/cl_fx.c` | global | `soundname` | `packages/client/src/cl_fx.ts` | `soundName` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`; sons fixes et tank aleatoire `tank/tnkatk2[a-e].wav` verifies. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_AddDLights` | `packages/client/src/cl_fx.ts` | `CL_AddDLights` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:dlight-sync`, `npm run verify:web-render-order`, `npm run typecheck`; en-tete corrige en `Category: Ported`. |
 | `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_AddDLights`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | global | `cl_numparticles` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_ClearParticles` | `packages/client/src/cl_fx.ts` | `CL_ClearParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | global | `cl_numparticles` | `packages/client/src/cl_fx.ts` | `ClientRuntime.cl.cl_numparticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; initialise a `MAX_PARTICLES` et borne la liste libre. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_ClearParticles` | `packages/client/src/cl_fx.ts` | `CL_ClearParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; en-tete verifie. |
+| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Variable locale de `CL_ClearParticles`, remplacee par iteration TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ParticleEffect` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_ParticleEffect2` | `packages/client/src/cl_fx.ts` | `CL_ParticleEffect2` | A verifier | A redecouper |  |

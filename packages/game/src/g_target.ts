@@ -1029,6 +1029,12 @@ export function SP_target_lightramp(self: GameEntity, runtime: GameRuntime): voi
  * Source: game/g_target.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays the quake sound every half-second while the quake is active, shakes every in-use grounded client entity, and reschedules itself at `FRAMETIME` until `timestamp`.
+ *
+ * Porting notes:
+ * - The C locals `i` and `e` are represented by the indexed `for` loop and per-iteration `const e`.
  */
 export function target_earthquake_think(self: GameEntity, runtime: GameRuntime): void {
   if (self.last_move_time < runtime.time) {

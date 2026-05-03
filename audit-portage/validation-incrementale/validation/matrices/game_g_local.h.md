@@ -266,11 +266,11 @@
 | `Quake-2-master/game/g_local.h` | macro | `MOD_FALLING` | `packages/game/src/g_local.ts` | `MOD_FALLING` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_SUICIDE` | `packages/game/src/g_local.ts` | `MOD_SUICIDE` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_HELD_GRENADE` | `packages/game/src/runtime.ts` | `MOD_HELD_GRENADE` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_EXPLOSIVE` | `packages/game/src/g_local.ts` | `MOD_EXPLOSIVE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_BARREL` | `packages/game/src/g_local.ts` | `MOD_BARREL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_BOMB` | `packages/game/src/g_local.ts` | `MOD_BOMB` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_EXIT` | `packages/game/src/g_local.ts` | `MOD_EXIT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `MOD_SPLASH` | `packages/game/src/g_local.ts` | `MOD_SPLASH` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_EXPLOSIVE` | `packages/game/src/g_local.ts` | `MOD_EXPLOSIVE` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_BARREL` | `packages/game/src/g_local.ts` | `MOD_BARREL` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_BOMB` | `packages/game/src/g_local.ts` | `MOD_BOMB` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_EXIT` | `packages/game/src/g_local.ts` | `MOD_EXIT` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `MOD_SPLASH` | `packages/game/src/g_local.ts` | `MOD_SPLASH` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_TARGET_LASER` | `packages/game/src/g_local.ts` | `MOD_TARGET_LASER` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_TRIGGER_HURT` | `packages/game/src/g_local.ts` | `MOD_TRIGGER_HURT` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `MOD_HIT` | `packages/game/src/runtime.ts` | `MOD_HIT` | A verifier | A redecouper |  |

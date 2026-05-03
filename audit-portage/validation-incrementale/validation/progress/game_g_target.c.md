@@ -2,6 +2,25 @@
 
 ## Dernier lot valide
 
+- 2026-05-03: `target_earthquake_think` avec les locaux `i` et `e`.
+- Checklist appliquee:
+  - Source C comparee a `packages/game/src/g_target.ts`: `target_earthquake_think` conserve le son positionne `world/quake.wav` via `noise_index`, canal `CHAN_AUTO`, volume 1, attenuation `ATTN_NONE`, cadence `last_move_time = level.time + 0.5`, la boucle `for (i=1, e=g_edicts+i; i < globals.num_edicts; i++, e++)`, les filtres `inuse`, `client` et `groundentity`, le clear de `groundentity`, les accelerations horizontales `crandom() * 150`, la velocite verticale `speed * (100.0 / mass)` et le reschedule `nextthink = level.time + FRAMETIME` tant que `level.time < timestamp`. Les locaux C `i` et `e` sont representes par l'index de boucle TS et le `const e` par iteration.
+  - Commentaire d'en-tete complete pour `target_earthquake_think`: `Original name`, `Source`, `Category: Ported`, `Fidelity level`, `Behavior` et note de portage pour les locaux `i`/`e`.
+  - Branchement runtime verifie: `target_earthquake` est dans `packages/game/src/g_spawn.ts`, exporte via `packages/game/src/index.ts`, dispatchable par `ED_CallSpawn`; `SP_target_earthquake` installe `think = target_earthquake_think` et `use = target_earthquake_use`, `target_earthquake_use` programme `nextthink`, puis le runtime normal `SV_RunThink` execute le think sans effacer le callback.
+  - `apps/web`: integration attendue car le lot produit un son quake et modifie la velocite/camera des clients. Pas de logique parallele masquante constatee; le flux passe par runtime serveur/client, precache sons, audio web et refresh frame/camera.
+  - `renderer-three`: pas de modele, frame, image, particule, beam, dlight, temp entity ou areabits produit directement par le think. L'effet visible attendu est indirect via le mouvement/camera du client, consomme par `ClientRefreshFrame`, `syncThreeCameraToRefresh` et le refdef du renderer; aucun manque ouvert pour ce lot.
+- Corrections appliquees:
+  - `packages/game/src/g_target.ts`: header de `target_earthquake_think` complete.
+  - `scripts/verify/quake2-g-target.ts`: couverture renforcee pour son/cadence, filtres `inuse`/`client`/`groundentity`, locaux de boucle `i`/`e`, velocite verticale, reschedule actif et arret apres `timestamp`.
+- Tests lances:
+  - `npm run verify:g-target` OK.
+  - `npm run verify:full-game:server-host` OK.
+  - `npm run verify:local-gameplay-sync` OK.
+  - `npm run verify:web-render-order` OK.
+  - `npm run verify:full-game:three-renderer` OK.
+  - `npm run typecheck` OK.
+- Prochain lot recommande: `target_earthquake_use` puis `SP_target_earthquake` si le lot reste petit.
+
 - 2026-05-02: `target_lightramp_use` avec le local `e`, puis `SP_target_lightramp`.
 - Checklist appliquee:
   - Source C comparee a `packages/game/src/g_target.ts`: `target_lightramp_use` conserve la resolution paresseuse de `enemy`, la boucle `G_Find` sur `targetname`, les warnings pour cibles non-light, le free si aucune light n'est trouvee, `timestamp = level.time` et l'appel immediat a `target_lightramp_think`. `SP_target_lightramp` conserve les rejets ramp invalide/deathmatch/sans target, `SVF_NOCLIENT`, l'installation `use`/`think` et le calcul `movedir[0..2]` depuis les deux lettres du message et `speed / FRAMETIME`. Le local C `e` est un temporaire de boucle mappe a `let e`.

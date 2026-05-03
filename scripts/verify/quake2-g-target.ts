@@ -13,7 +13,9 @@
 import { strict as assert } from "node:assert";
 
 import {
+  ATTN_NONE,
   ATTN_NORM,
+  CHAN_AUTO,
   CHAN_RELIABLE,
   CHAN_VOICE,
   CS_CDTRACK,
@@ -48,6 +50,7 @@ import {
   createGameRuntimeFromBspEntities,
   drainGameConfigstringUpdates,
   drainGameTempEntityEvents,
+  registerGameSound,
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
@@ -73,6 +76,7 @@ import {
   Use_Target_Tent,
   target_explosion_explode,
   target_crosslevel_target_think,
+  target_earthquake_think,
   target_laser_off,
   target_laser_on,
   target_laser_start,
@@ -1014,6 +1018,46 @@ function verifyBlasterAndEarthquake(): void {
   runPendingThinks(runtime, runtime.time + FRAMETIME);
   assert.equal(player.groundentity, null, "target_earthquake must clear player groundentity");
   assert.equal(player.velocity[2], 200, "target_earthquake vertical velocity mismatch");
+
+  const quakeRuntime = createRuntime();
+  quakeRuntime.time = 10;
+  const directQuake = spawnGameEntity(quakeRuntime);
+  directQuake.classname = "target_earthquake";
+  directQuake.s.origin = [9, 8, 7];
+  directQuake.noise_index = registerGameSound(quakeRuntime, "world/quake.wav");
+  directQuake.speed = 300;
+  directQuake.timestamp = quakeRuntime.time + FRAMETIME;
+  directQuake.last_move_time = 9;
+
+  const groundedPlayer = createPlayer(quakeRuntime);
+  groundedPlayer.groundentity = quakeRuntime.entities[0] ?? null;
+  groundedPlayer.mass = 150;
+  const airbornePlayer = createPlayer(quakeRuntime);
+  airbornePlayer.groundentity = null;
+  airbornePlayer.mass = 75;
+  const nonClient = spawnGameEntity(quakeRuntime);
+  nonClient.groundentity = quakeRuntime.entities[0] ?? null;
+  nonClient.mass = 100;
+
+  target_earthquake_think(directQuake, quakeRuntime);
+  const quakeSound = quakeRuntime.soundEvents.at(-1);
+  assert.equal(quakeSound?.soundPath, "world/quake.wav", "target_earthquake sound path mismatch");
+  assert.equal(quakeSound?.channel, CHAN_AUTO, "target_earthquake sound channel mismatch");
+  assert.equal(quakeSound?.attenuation, ATTN_NONE, "target_earthquake sound attenuation mismatch");
+  assert.deepEqual(quakeSound?.origin, [9, 8, 7], "target_earthquake positioned sound origin mismatch");
+  assert.equal(directQuake.last_move_time, 10.5, "target_earthquake sound cadence timestamp mismatch");
+  assert.equal(groundedPlayer.groundentity, null, "target_earthquake loop must clear grounded clients");
+  assert.equal(groundedPlayer.velocity[2], 200, "target_earthquake loop must scale vertical velocity by mass");
+  assert.deepEqual(airbornePlayer.velocity, [0, 0, 0], "target_earthquake must skip airborne clients");
+  assert.equal(nonClient.groundentity, quakeRuntime.entities[0], "target_earthquake must skip non-client entities");
+  assert.equal(directQuake.nextthink, 10 + FRAMETIME, "target_earthquake active duration reschedule mismatch");
+
+  quakeRuntime.time = directQuake.last_move_time;
+  directQuake.timestamp = quakeRuntime.time;
+  directQuake.nextthink = 0;
+  target_earthquake_think(directQuake, quakeRuntime);
+  assert.equal(quakeRuntime.soundEvents.length, 1, "target_earthquake sound must wait for last_move_time");
+  assert.equal(directQuake.nextthink, 0, "target_earthquake must stop rescheduling after timestamp");
 }
 
 function verifyRuntimeEngineFlush(): void {
