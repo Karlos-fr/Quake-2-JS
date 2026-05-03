@@ -33,6 +33,7 @@ import {
   CL_ParticleEffect2,
   CL_ParticleEffect3,
   CL_QuadTrail,
+  CL_RailTrail,
   CL_RocketTrail,
   CL_RunDLights,
   CL_RunLightStyles,
@@ -90,6 +91,7 @@ function main(): void {
   verifyFlagTrailRuntimeParticles();
   verifyDiminishingTrailRuntimeParticles();
   verifyRocketTrailRuntimeParticles();
+  verifyRailTrailRuntimeParticles();
   verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
@@ -1022,6 +1024,79 @@ function verifyRocketTrailRuntimeParticles(): void {
   refreshRuntime.cl_entities[11].current.origin = [...end] as vec3_t;
   const frame = CL_BuildRefreshFrame(refreshRuntime, { viewerEntity: 0 });
   assert.ok(frame.lights.some((light) => light.kind === "rocket" && light.intensity === 200), "EF_ROCKET should expose the original rocket dlight to refresh");
+}
+
+function verifyRailTrailRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 10340;
+  const start: vec3_t = [0, 0, 0];
+  const end: vec3_t = [2.5, 0, 0];
+  const randomUnit = 0;
+  const expectedCrand = (randomUnit * 2) - 1;
+
+  withMockRandom(randomUnit, () => {
+    CL_RailTrail(runtime, start, end);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 7, "CL_RailTrail should emit the core spiral plus 0.75-unit spark trail");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_RailTrail particle time mismatch");
+
+  const coreParticles = particles.filter((particle) => particle.color >= 0x74 && particle.color <= 0x7b);
+  const sparkParticles = particles.filter((particle) => particle.color >= 0 && particle.color <= 15);
+  assert.equal(coreParticles.length, 3, "CL_RailTrail should preserve the one-particle-per-unit rail core");
+  assert.equal(sparkParticles.length, 4, "CL_RailTrail should preserve the 0.75-unit spark pass");
+  assert.ok(coreParticles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_RailTrail core acceleration mismatch");
+  assert.ok(sparkParticles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_RailTrail spark acceleration mismatch");
+  assert.ok(coreParticles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, -1.0)), "CL_RailTrail core alpha decay mismatch");
+  assert.ok(sparkParticles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, -1.0 / 0.6)), "CL_RailTrail spark alpha decay mismatch");
+
+  const coreX = coreParticles.map((particle) => Number(particle.org[0].toFixed(12))).sort((left, right) => left - right);
+  assert.deepEqual(coreX, [0, 1, 2], "CL_RailTrail core should advance move by the normalized vec");
+  assert.ok(coreParticles.some((particle) => particle.org[1] === -3 && particle.org[2] === 0), "CL_RailTrail core should use MakeNormalVectors right/up spiral");
+  assert.ok(coreParticles.every((particle) => almostEqual(vectorLength(particle.vel), 6)), "CL_RailTrail core velocity should follow dir * 6");
+
+  const sparkX = sparkParticles.map((particle) => Number(particle.org[0].toFixed(12))).sort((left, right) => left - right);
+  assert.deepEqual(sparkX, [-3, -2.25, -1.5, -0.75], "CL_RailTrail spark pass should advance by vec * dec");
+  assert.ok(
+    sparkParticles.every((particle) => particle.org[1] === -3 && particle.org[2] === -3),
+    "CL_RailTrail spark origin jitter mismatch"
+  );
+  assert.ok(
+    sparkParticles.every((particle) => particle.vel[0] === expectedCrand * 3 && particle.vel[1] === expectedCrand * 3 && particle.vel[2] === expectedCrand * 3),
+    "CL_RailTrail spark velocity jitter mismatch"
+  );
+
+  const metadata = CL_RailTrail(start, end);
+  assert.equal(metadata[0]?.kind, "rail-core-trail", "CL_RailTrail core metadata kind mismatch");
+  assert.equal(metadata[0]?.color, 0x74, "CL_RailTrail core metadata color mismatch");
+  assert.equal(metadata[0]?.spacing, 1, "CL_RailTrail core metadata spacing mismatch");
+  assert.equal(metadata[1]?.kind, "rail-spark-trail", "CL_RailTrail spark metadata kind mismatch");
+  assert.equal(metadata[1]?.color, 0, "CL_RailTrail spark metadata color mismatch");
+  assert.equal(metadata[1]?.spacing, 0.75, "CL_RailTrail spark metadata spacing mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 7, "CL_RailTrail particles should reach the refresh particle list");
+
+  const tempRuntime = createRuntime();
+  tempRuntime.cl.time = 10380;
+  withMockRandom(randomUnit, () => {
+    CL_ExecuteTempEntityEffects(tempRuntime, {
+      type: temp_event_t.TE_RAILTRAIL,
+      position: start,
+      position2: end
+    });
+  });
+  assert.equal(collectActiveParticles(tempRuntime).length, 7, "TE_RAILTRAIL should dispatch to CL_RailTrail");
+
+  const effects = CL_BuildTempEntityEffects({
+    type: temp_event_t.TE_RAILTRAIL,
+    position: start,
+    position2: end
+  });
+  assert.ok(effects.some((effect) => effect.kind === "rail-core-trail"), "TE_RAILTRAIL should expose rail core metadata");
+  assert.ok(effects.some((effect) => effect.kind === "rail-spark-trail"), "TE_RAILTRAIL should expose rail spark metadata");
+  assert.ok(effects.some((effect) => effect.sound?.name === "weapons/railgf1a.wav"), "TE_RAILTRAIL should preserve railgun sound metadata");
 }
 
 function verifyMakeNormalVectors(): void {

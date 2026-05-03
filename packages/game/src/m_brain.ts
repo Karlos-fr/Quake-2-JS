@@ -29,7 +29,8 @@ import {
   POWER_ARMOR_SCREEN,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk } from "./g_ai.js";
 import { walkmonster_start } from "./g_monster.js";
@@ -453,8 +454,14 @@ export const brain_move_duck: GameMonsterMove = {
   endfunc: brain_run
 };
 
+/**
+ * Original name: brain_dodge
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 export function brain_dodge(self: GameEntity, attacker: GameEntity | null, eta: number, runtime: GameRuntime): void {
-  if (Math.random() > 0.25) {
+  if (random() > 0.25) {
     return;
   }
 
@@ -559,8 +566,14 @@ export const brain_move_attack2: GameMonsterMove = {
   endfunc: brain_run
 };
 
+/**
+ * Original name: brain_melee
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Close
+ */
 export function brain_melee(self: GameEntity): void {
-  if (Math.random() <= 0.5) {
+  if (random() <= 0.5) {
     self.monsterinfo.currentmove = brain_move_attack1;
   } else {
     self.monsterinfo.currentmove = brain_move_attack2;
@@ -616,7 +629,7 @@ export function brain_pain(
     return;
   }
 
-  const r = Math.random();
+  const r = random();
   if (r < 0.33) {
     emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, soundOptions(CHAN_VOICE));
     self.monsterinfo.currentmove = brain_move_pain1;
@@ -680,7 +693,7 @@ export function brain_die(
   emitRegisteredGameSound(runtime, self, sound_death, SOUND_DEATH, soundOptions(CHAN_VOICE));
   self.deadflag = DEAD_DEAD;
   self.takedamage = damage_t.DAMAGE_YES;
-  if (Math.random() <= 0.5) {
+  if (random() <= 0.5) {
     self.monsterinfo.currentmove = brain_move_death1;
   } else {
     self.monsterinfo.currentmove = brain_move_death2;

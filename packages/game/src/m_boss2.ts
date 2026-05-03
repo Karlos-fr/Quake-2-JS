@@ -420,6 +420,15 @@ export function boss2_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = boss2_move_stand;
 }
 
+/**
+ * Original name: boss2_run
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the standing move when `AI_STAND_GROUND` is set, otherwise selects the running move.
+ */
 export function boss2_run(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     self.monsterinfo.currentmove = boss2_move_stand;

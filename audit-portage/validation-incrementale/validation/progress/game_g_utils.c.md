@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `G_FreeEdict`.
+- Dernier lot traite: `G_TouchTriggers`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `G_TouchTriggers` seul, sans melanger `G_TouchSolids`, `KillBox` ni les lignes locales restantes.
+- Continuer avec `G_TouchSolids` seul, sans melanger `KillBox` ni les lignes locales restantes.
 
 ## Session - G_FreeEdict
 
@@ -126,6 +126,28 @@ Session `G_FreeEdict`:
 ## Blocages
 
 - Aucun blocage courant pour la derniere session. `npm run typecheck` passe.
+
+## Session - G_TouchTriggers
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- Declaration H comparee: `Quake-2-master/game/g_local.h`.
+- TS cible compare: `packages/game/src/touch.ts`.
+- Commentaire d'en-tete verifie sur `G_TouchTriggers` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Constraints`).
+- Comparaison C/TS `G_TouchTriggers`: rejet des clients/monstres morts, requete `AREA_TRIGGERS` sur les bounds absolues de l'acteur, iteration dans l'ordre retourne par `BoxEdicts`, skip des triggers liberes avant leur tour, skip des triggers sans callback `touch`, appel du callback du trigger avec l'acteur.
+- Correction appliquee: `scripts/verify/quake2-g-utils.ts` ajoute des preuves ciblees pour les skips `!inuse`/sans `touch`, les acteurs clients morts et les monstres morts. Pas de correction gameplay necessaire dans `packages/game/src/touch.ts`.
+- Runtime verifie: `G_TouchTriggers` est branche via `touchTriggerEntities` depuis les flux normaux portes de physique et mouvement (`g_phys.ts`, `m_move.ts`, `p_client.ts`), atteignables par les frames serveur/gameplay et les mouvements joueur/monstres/pushers.
+- `apps/web`: integration attendue indirecte via les hosts full-game/local qui executent le runtime porte; aucune logique web parallele ne remplace la detection de triggers. Les effets touches attendus (portes, plats, trigger_* et sons/messages) passent par le runtime, events et snapshots.
+- `packages/renderer-three`: pas de sortie renderer directe propre a `G_TouchTriggers`, mais des sorties visibles peuvent etre produites par les callbacks touches (portes/plats/brush models, changements de solidite, sons, temp entities, particules/dlights selon trigger). Le flux snapshots/refresh frame/adapters Three consomme ces sorties; tests renderer OK.
+
+Session `G_TouchTriggers`:
+
+- `npm run verify:g-utils`
+- `npm run verify:collision:phase7`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
 
 ## Session - Think_Delay / G_UseTargets / t
 

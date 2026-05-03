@@ -180,6 +180,12 @@ function verifyStateTransitions(): void {
 
   withMathRandom([0.25], () => brain_melee(brain));
   assert.equal(brain.monsterinfo.currentmove, brain_move_attack1);
+  withMathRandom([0.5], () => brain_melee(brain));
+  assert.equal(
+    brain.monsterinfo.currentmove,
+    brain_move_attack2,
+    "brain_melee should use the C 15-bit random() bucket at the 0.5 threshold"
+  );
   withMathRandom([0.75], () => brain_melee(brain));
   assert.equal(brain.monsterinfo.currentmove, brain_move_attack2);
 }
@@ -227,6 +233,12 @@ function verifyDuckAndDodgeBranches(): void {
 
   withMathRandom([0.5], () => brain_dodge(brain, attacker, 0.25, runtime));
   assert.notEqual(brain.monsterinfo.currentmove, brain_move_duck);
+  withMathRandom([0.25], () => brain_dodge(brain, attacker, 0.25, runtime));
+  assert.notEqual(
+    brain.monsterinfo.currentmove,
+    brain_move_duck,
+    "brain_dodge should use the C 15-bit random() bucket at the 0.25 threshold"
+  );
   withMathRandom([0.1], () => brain_dodge(brain, attacker, 0.25, runtime));
   assert.equal(brain.enemy, attacker);
   assert.equal(brain.monsterinfo.currentmove, brain_move_duck);
@@ -321,14 +333,23 @@ function verifyDeathBranches(): void {
 
   const second = createBrain(runtime, 14);
   SP_monster_brain(second, runtime);
-  withMathRandom([0.75], () => brain_die(second, null, null, 60, runtime));
-  assert.equal(second.monsterinfo.currentmove, brain_move_death2);
+  withMathRandom([0.5], () => brain_die(second, null, null, 60, runtime));
+  assert.equal(
+    second.monsterinfo.currentmove,
+    brain_move_death2,
+    "brain_die should use the C 15-bit random() bucket at the 0.5 threshold"
+  );
 
-  brain_dead(second, runtime);
-  assert.deepEqual(second.mins, [-16, -16, -24]);
-  assert.deepEqual(second.maxs, [16, 16, -8]);
-  assert.equal(second.movetype, MOVETYPE_TOSS);
-  assert.equal(second.svflags & SVF_DEADMONSTER, SVF_DEADMONSTER);
+  const third = createBrain(runtime, 17);
+  SP_monster_brain(third, runtime);
+  withMathRandom([0.75], () => brain_die(third, null, null, 60, runtime));
+  assert.equal(third.monsterinfo.currentmove, brain_move_death2);
+
+  brain_dead(third, runtime);
+  assert.deepEqual(third.mins, [-16, -16, -24]);
+  assert.deepEqual(third.maxs, [16, 16, -8]);
+  assert.equal(third.movetype, MOVETYPE_TOSS);
+  assert.equal(third.svflags & SVF_DEADMONSTER, SVF_DEADMONSTER);
 
   const gibBrain = createBrain(runtime, 15);
   SP_monster_brain(gibBrain, runtime);

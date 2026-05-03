@@ -161,6 +161,13 @@ function verifyStateTransitions(): void {
   boss2_run(boss);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_stand);
   boss.monsterinfo.aiflags &= ~AI_STAND_GROUND;
+  assert.equal(boss.monsterinfo.run, boss2_run);
+  boss.monsterinfo.run?.(boss, runtime);
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_run);
+  boss.monsterinfo.aiflags |= AI_STAND_GROUND;
+  boss.monsterinfo.run?.(boss, runtime);
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_stand);
+  boss.monsterinfo.aiflags &= ~AI_STAND_GROUND;
 
   boss.enemy = nearEnemy;
   boss2_attack(boss);

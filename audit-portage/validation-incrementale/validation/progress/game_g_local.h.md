@@ -1440,7 +1440,27 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:p-client` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple une petite famille `m_*` ou `m_move.ts`), puis reprendre `g_utils.ts` quand il ne sera plus reserve. `g_items.ts` et `p_hud.ts` n'ont montre que des usages `rand()` hors macros pendant la verification de ce lot. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, verification `packages/game/src/m_move.ts` puis migration `packages/game/src/m_brain.ts`.
+- Verdict: `Partiel` maintenu pour les 2 macros: `m_move.ts` n'a pas de consommateur direct pertinent des macros flottantes, et les consommateurs actifs `random()` de `m_brain.ts` sont harmonises; d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_move.c` utilise seulement des tirages `rand() & 3`, `rand() & 1` et `(rand() & 3) == 1` dans les decisions de deplacement; ces usages ne sont pas les macros `random()`/`crandom()`.
+  - `m_brain.c` consomme `random()` dans `brain_dodge`, `brain_melee`, `brain_pain` et `brain_die`; les `rand() % 5` de `brain_hit_*` et `brain_tentacle_attack` restent hors macro.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_move.ts`: helper local `randomInt()` conserve car il porte les usages C `rand() & n`, pas les macros flottantes de `g_local.h`.
+  - `packages/game/src/m_brain.ts`: `brain_dodge`, `brain_melee`, `brain_pain` et `brain_die` consomment maintenant le helper proprietaire `random`; aucun consommateur `crandom` actif dans `m_brain.c`/`m_brain.ts`.
+- Runtime: integration attendue et branchee pour ce sous-lot via `SP_monster_brain`, callbacks dodge/melee/pain/die, `monster_think`/`M_MoveFrame`, degats et morts; les decisions affectent esquive, attaques melee, animations de douleur et de mort. Les autres consommateurs runtime de `random`/`crandom` restent `Partiel`.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres et ordre de rendu; aucune logique parallele web `m_brain`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages `m_brain.ts` affectent sorties visibles via modeles/frames du monstre brain, animation duck/melee/pain/death, gibs en aval et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `brain_pain` et `brain_die` verifies; commentaires d'en-tete ajoutes pour `brain_dodge` et `brain_melee`; `m_move.ts` documente comme hors macros dans ce sous-lot.
+- Corrections appliquees:
+  - `packages/game/src/m_brain.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C `random()`, commentaires d'en-tete ajoutes pour `brain_dodge` et `brain_melee`.
+  - `scripts/verify/quake2-m-brain.ts`: preuves deterministes ajoutees pour les seuils C-style 15 bits dans `brain_dodge`, `brain_melee` et `brain_die`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-move` OK; `npm run verify:m-brain` OK; `npm run verify:m-brain:header` OK; `npm run verify:m-brain:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une petite famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

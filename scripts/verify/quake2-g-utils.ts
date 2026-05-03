@@ -30,6 +30,7 @@ import {
   vectoangles,
   vtos
 } from "../../packages/game/src/g_utils.js";
+import { G_TouchTriggers } from "../../packages/game/src/touch.js";
 import {
   SVF_MONSTER,
   Think_Delay,
@@ -41,7 +42,11 @@ import {
   refreshEntitySpatialState,
   registerGameSound,
   runPendingThinks,
-  SOLID_BBOX
+  SOLID_BBOX,
+  SOLID_TRIGGER,
+  spawnGameEntity,
+  type GameEntity,
+  type GameRuntime
 } from "../../packages/game/src/runtime.js";
 
 const runtime = createGameRuntimeFromBspEntities([]);
@@ -77,6 +82,40 @@ function withRandom<T>(value: number, callback: () => T): T {
   } finally {
     Math.random = originalRandom;
   }
+}
+
+function spawnTouchTrigger(
+  triggerRuntime: GameRuntime,
+  classname: string,
+  origin: [number, number, number],
+  touches: string[]
+): GameEntity {
+  const trigger = spawnGameEntity(triggerRuntime);
+  trigger.classname = classname;
+  trigger.solid = SOLID_TRIGGER;
+  trigger.origin = [...origin];
+  trigger.mins = [-32, -32, -32];
+  trigger.maxs = [32, 32, 32];
+  trigger.touch = (self, other) => {
+    touches.push(`${self.classname}:${other.classname}`);
+  };
+  refreshEntitySpatialState(trigger);
+  linkGameEntity(triggerRuntime, trigger);
+  return trigger;
+}
+
+function spawnTouchActor(triggerRuntime: GameRuntime, classname: string, origin: [number, number, number]): GameEntity {
+  const actor = spawnGameEntity(triggerRuntime);
+  actor.classname = classname;
+  actor.client = true;
+  actor.health = 100;
+  actor.solid = SOLID_BBOX;
+  actor.origin = [...origin];
+  actor.mins = [-16, -16, -24];
+  actor.maxs = [16, 16, 32];
+  refreshEntitySpatialState(actor);
+  linkGameEntity(triggerRuntime, actor);
+  return actor;
 }
 
 assert.equal(withRandom(0.9, () => G_PickTarget(runtime, "pick_me")), targetB, "G_PickTarget mismatch");
@@ -402,6 +441,43 @@ assert.equal(freeable.inuse, false, "G_FreeEdict must free normal edicts");
 assert.equal(freeable.linked, false, "G_FreeEdict must unlink normal edicts");
 assert.equal(freeable.classname, "freed", "G_FreeEdict must mark normal edicts as freed");
 assert.equal(freeable.freetime, runtime.time, "G_FreeEdict must stamp freetime from level time");
+
+const touchRuntime = createGameRuntimeFromBspEntities([]);
+const triggerTouches: string[] = [];
+const touchActor = spawnTouchActor(touchRuntime, "touch_actor", [0, 0, 0]);
+const firstTrigger = spawnTouchTrigger(touchRuntime, "first_trigger", [0, 0, 0], triggerTouches);
+const removedBeforeTouch = spawnTouchTrigger(touchRuntime, "removed_before_touch", [0, 0, 0], triggerTouches);
+const noTouchTrigger = spawnTouchTrigger(touchRuntime, "no_touch_trigger", [0, 0, 0], triggerTouches);
+noTouchTrigger.touch = undefined;
+firstTrigger.touch = (self, other) => {
+  triggerTouches.push(`${self.classname}:${other.classname}`);
+  removedBeforeTouch.inuse = false;
+};
+G_TouchTriggers(touchRuntime, touchActor);
+assert.deepEqual(
+  triggerTouches,
+  ["first_trigger:touch_actor"],
+  "G_TouchTriggers must skip triggers removed or missing touch callbacks after BoxEdicts"
+);
+
+const deadClientRuntime = createGameRuntimeFromBspEntities([]);
+const deadClientTouches: string[] = [];
+spawnTouchTrigger(deadClientRuntime, "dead_client_trigger", [0, 0, 0], deadClientTouches);
+const deadClient = spawnTouchActor(deadClientRuntime, "dead_client", [0, 0, 0]);
+deadClient.client = true;
+deadClient.health = 0;
+G_TouchTriggers(deadClientRuntime, deadClient);
+assert.equal(deadClientTouches.length, 0, "G_TouchTriggers must ignore dead clients");
+
+const deadMonsterRuntime = createGameRuntimeFromBspEntities([]);
+const deadMonsterTouches: string[] = [];
+spawnTouchTrigger(deadMonsterRuntime, "dead_monster_trigger", [0, 0, 0], deadMonsterTouches);
+const deadMonster = spawnTouchActor(deadMonsterRuntime, "dead_monster", [0, 0, 0]);
+deadMonster.client = false;
+deadMonster.svflags |= SVF_MONSTER;
+deadMonster.health = 0;
+G_TouchTriggers(deadMonsterRuntime, deadMonster);
+assert.equal(deadMonsterTouches.length, 0, "G_TouchTriggers must ignore dead monsters");
 
 const blocker = createRuntimeEntity({}, 21);
 blocker.solid = 1;

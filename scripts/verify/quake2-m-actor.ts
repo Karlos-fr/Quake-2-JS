@@ -129,6 +129,17 @@ assert.equal(actorFrames.actor_move_flipoff.lastframe, actorFrames.FRAME_flip14,
 assert.equal(actorFrames.actor_move_flipoff.frame, actorFrames.actor_frames_flipoff, "actor_move_flipoff frame table");
 assert.equal(actorFrames.actor_move_flipoff.endfunc, actorFrames.actor_run, "actor_move_flipoff endfunc");
 
+assert.equal(actorFrames.actor_frames_taunt.length, 17, "actor_frames_taunt has 17 C frames");
+for (const [index, frame] of actorFrames.actor_frames_taunt.entries()) {
+  assert.equal(frame.aifunc, ai_turn, `actor_frames_taunt[${index}] uses ai_turn`);
+  assert.equal(frame.dist, 0, `actor_frames_taunt[${index}] distance`);
+  assert.equal(frame.thinkfunc, undefined, `actor_frames_taunt[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_taunt.firstframe, actorFrames.FRAME_taunt01, "actor_move_taunt firstframe");
+assert.equal(actorFrames.actor_move_taunt.lastframe, actorFrames.FRAME_taunt17, "actor_move_taunt lastframe");
+assert.equal(actorFrames.actor_move_taunt.frame, actorFrames.actor_frames_taunt, "actor_move_taunt frame table");
+assert.equal(actorFrames.actor_move_taunt.endfunc, actorFrames.actor_run, "actor_move_taunt endfunc");
+
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";
 path.targetname = "actor_path";

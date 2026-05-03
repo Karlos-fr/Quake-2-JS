@@ -36,6 +36,23 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout d'assertions dans `scripts/verify/quake2-m-boss2.ts` pour prouver le branchement runtime des callbacks `pain`, `die` et `monsterinfo.search`.
 
+- Lot traite: `boss2_run` seul, branche `AI_STAND_GROUND`, affectations `boss2_move_stand` / `boss2_move_run`, branchement `monsterinfo.run`.
+- Verdict: Valide.
+- Comparaison C/TS: `void boss2_run(edict_t *self)` est porte comme `boss2_run(self)`; la branche `self->monsterinfo.aiflags & AI_STAND_GROUND` correspond au test TypeScript `(self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0`, avec affectation vers `boss2_move_stand` quand le flag est present et `boss2_move_run` sinon.
+- Commentaires d'en-tete: commentaire de fonction ajoute dans `packages/game/src/m_boss2.ts` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement.
+- Runtime: integre. `SP_monster_boss2` assigne `self.monsterinfo.run = boss2_run`; le callback est appelable depuis les flux AI `ai_stand` / `ai_walk` / `ai_run` puis `G_RunFrame` / `monster_think` / `M_MoveFrame`. Le harness verifie l'appel direct et l'appel via `monsterinfo.run`.
+- apps/web: integre. `apps/web` ne remplace pas la logique boss2; le comportement passe par le host full-game/local et les snapshots runtime.
+- renderer-three: integre. `boss2_run` selectionne des moves qui produisent des frames visibles `s.frame`; elles sont propagees par snapshots client et consommees par le renderer Three via le flux entites/modeles/frames.
+- Tests lances:
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees: ajout du commentaire d'en-tete de `boss2_run`; ajout d'assertions de branchement `monsterinfo.run` dans `scripts/verify/quake2-m-boss2.ts`.
+
 ## Prochain lot recommande
 
-- Valider `boss2_run` seul, avec la branche `AI_STAND_GROUND`, les affectations `boss2_move_stand` / `boss2_move_run`, et le branchement `monsterinfo.run`; garder attaques, frames et moves pour des sessions separees.
+- Valider `boss2_stand` seul, avec l'affectation `boss2_move_stand` et le branchement `monsterinfo.stand`; garder les tables `boss2_frames_stand` / `boss2_move_stand` pour un lot declaratif separe si la session doit rester minimale.

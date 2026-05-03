@@ -43,7 +43,7 @@
 | `Quake-2-master/game/g_utils.c` | global | `i` | `packages/game/src/g_weapon.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `e` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `G_FreeEdict` | `packages/game/src/g_utils.ts` | `G_FreeEdict` | Valide | A redecouper | Correction TS: unlink avant garde edicts proteges; commentaire verifie; tests `verify:g-utils`, `typecheck`, `verify:full-game:server-host`, `verify:local-gameplay-sync`, `verify:web-render-order`, `verify:full-game:three-renderer`. |
-| `Quake-2-master/game/g_utils.c` | function | `G_TouchTriggers` | `packages/game/src/touch.ts` | `G_TouchTriggers` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_TouchTriggers` | `packages/game/src/touch.ts` | `G_TouchTriggers` | Valide | A redecouper | Commentaire verifie; tests `verify:g-utils`, `verify:collision:phase7`, `typecheck`, `verify:full-game:server-host`, `verify:local-gameplay-sync`, `verify:web-render-order`, `verify:full-game:three-renderer`; ajout tests skip `!inuse`/sans `touch`/morts. |
 | `Quake-2-master/game/g_utils.c` | function | `G_TouchSolids` | `packages/game/src/touch.ts` | `G_TouchSolids` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `KillBox` | `packages/game/src/g_utils.ts` | `KillBox` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `tr` | `packages/game/src/g_utils.ts` | `tr` | A verifier | A redecouper |  |

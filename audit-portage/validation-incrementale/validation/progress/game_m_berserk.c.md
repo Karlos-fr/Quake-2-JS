@@ -75,6 +75,26 @@
 - Corrections appliquees:
   - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant `monsterinfo.stand`, le move stand et le passage `G_RunFrame`/`monster_think`.
 
+## Session 2026-05-03 - bloc stand fidget declaratif
+
+- Lot traite: `berserk_frames_stand_fidget` global/table/declarative et `berserk_move_stand_fidget`.
+- Verdict: Valide.
+- Comparaison C/TS: la table stand fidget conserve 20 frames `ai_stand`, toutes avec distance 0 et sans `thinkfunc`; `berserk_move_stand_fidget` conserve `FRAME_standb1`, `FRAME_standb20`, la table fidget et `endfunc = berserk_stand`.
+- Commentaires d'en-tete: lot declaratif/global, pas de commentaire de fonction requis; `berserk_stand` et `berserk_fidget`, fonctions rattachees au branchement du lot, avaient deja leurs commentaires verifies.
+- Runtime: integre. `berserk_fidget` assigne `currentmove = berserk_move_stand_fidget`; le test ajoute prouve le passage par `G_RunFrame`/`monster_think`, l'entree dans les frames visibles `FRAME_standb1`, puis le retour `endfunc` vers `berserk_move_stand`/`FRAME_stand1`.
+- apps/web: integre. Le flux web utilise le serveur local porte et consomme les snapshots/runtime; aucune logique parallele berserk constatee pour remplacer ce fidget.
+- renderer-three: integre. Le lot produit des frames MD2 visibles (`s.frame`) pour le modele berserk; les snapshots client conservent `frame/oldframe/backlerp` et `packages/renderer-three` les consomme via `refresh-entity-sync` / `applyMd2AliasFrameLerp`.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant le flux runtime du move stand fidget et son enregistrement de sauvegarde.
+
 ## Prochain lot recommande
 
-- Valider le bloc stand fidget declaratif: `berserk_frames_stand_fidget` global/table/declarative et `berserk_move_stand_fidget`; garder les transitions walk/run pour une session separee si le lot devient trop large.
+- Valider le bloc walk declaratif: `berserk_frames_walk` global/table/declarative et `berserk_move_walk`; garder `berserk_walk` / run pour une session separee si le lot devient trop large.
