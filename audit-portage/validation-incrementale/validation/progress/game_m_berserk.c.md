@@ -55,6 +55,26 @@
   - `packages/game/src/m_berserk.ts`: `berserk_fidget` utilise `g_local.random()` au lieu de `Math.random()` direct.
   - `scripts/verify/quake2-m-berserk.ts`: assertions renforcees pour le seuil C 15-bit, la branche `AI_STAND_GROUND`, le callback de frame et le son idle.
 
+## Session 2026-05-03 - bloc stand
+
+- Lot traite: `berserk_frames_stand` global/table/declarative, `berserk_move_stand` et `berserk_stand`.
+- Verdict: Valide.
+- Comparaison C/TS: la table stand conserve 5 frames `ai_stand`, distances 0, callback `berserk_fidget` uniquement sur la premiere frame; `berserk_move_stand` conserve `FRAME_stand1`, `FRAME_stand5`, la table stand et aucun `endfunc`; `berserk_stand` assigne `self.monsterinfo.currentmove = berserk_move_stand`.
+- Commentaires d'en-tete: commentaire TS de `berserk_stand` verifie avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement; table/global declaratifs sans commentaire de fonction requis.
+- Runtime: integre. `SP_monster_berserk` assigne `monsterinfo.stand = berserk_stand` et initialise `currentmove = berserk_move_stand`; le test ajoute prouve le callback `monsterinfo.stand` et un tick `G_RunFrame` qui passe par `monster_think`/`M_MoveFrame` et boucle la frame visible `FRAME_stand5` -> `FRAME_stand1`.
+- apps/web: integre. Le flux web utilise le serveur local porte et consomme les snapshots/runtime; aucune logique parallele berserk constatee pour remplacer ce stand.
+- renderer-three: integre. Le lot produit des frames MD2 visibles (`s.frame`) pour le modele berserk; les snapshots client conservent `frame/oldframe/backlerp` et `packages/renderer-three` les consomme via `refresh-entity-sync` / `applyMd2AliasFrameLerp`.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant `monsterinfo.stand`, le move stand et le passage `G_RunFrame`/`monster_think`.
+
 ## Prochain lot recommande
 
-- Valider le bloc stand: `berserk_frames_stand` global/table/declarative, `berserk_move_stand` et `berserk_stand`; garder `berserk_frames_stand_fidget` / `berserk_move_stand_fidget` pour une session separee si le lot devient trop large.
+- Valider le bloc stand fidget declaratif: `berserk_frames_stand_fidget` global/table/declarative et `berserk_move_stand_fidget`; garder les transitions walk/run pour une session separee si le lot devient trop large.

@@ -24,6 +24,7 @@ import {
   ai_run,
   ai_walk,
   ai_stand,
+  ai_turn,
   actorFrames,
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -116,6 +117,17 @@ assert.equal(actorFrames.actor_move_pain3.firstframe, actorFrames.FRAME_pain301,
 assert.equal(actorFrames.actor_move_pain3.lastframe, actorFrames.FRAME_pain303, "actor_move_pain3 lastframe");
 assert.equal(actorFrames.actor_move_pain3.frame, actorFrames.actor_frames_pain3, "actor_move_pain3 frame table");
 assert.equal(actorFrames.actor_move_pain3.endfunc, actorFrames.actor_run, "actor_move_pain3 endfunc");
+
+assert.equal(actorFrames.actor_frames_flipoff.length, 14, "actor_frames_flipoff has 14 C frames");
+for (const [index, frame] of actorFrames.actor_frames_flipoff.entries()) {
+  assert.equal(frame.aifunc, ai_turn, `actor_frames_flipoff[${index}] uses ai_turn`);
+  assert.equal(frame.dist, 0, `actor_frames_flipoff[${index}] distance`);
+  assert.equal(frame.thinkfunc, undefined, `actor_frames_flipoff[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_flipoff.firstframe, actorFrames.FRAME_flip01, "actor_move_flipoff firstframe");
+assert.equal(actorFrames.actor_move_flipoff.lastframe, actorFrames.FRAME_flip14, "actor_move_flipoff lastframe");
+assert.equal(actorFrames.actor_move_flipoff.frame, actorFrames.actor_frames_flipoff, "actor_move_flipoff frame table");
+assert.equal(actorFrames.actor_move_flipoff.endfunc, actorFrames.actor_run, "actor_move_flipoff endfunc");
 
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";

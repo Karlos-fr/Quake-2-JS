@@ -184,6 +184,8 @@ function verifySoundsAndPainBranches(): void {
 
   withMathRandom([0.25], () => boss2_search(boss, runtime));
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "bosshovr/bhvunqv1.wav");
+  withMathRandom([0.5], () => boss2_search(boss, runtime));
+  assert.equal(drainGameSoundEvents(runtime).length, 0);
 
   boss.max_health = 2000;
   boss.health = 900;

@@ -91,12 +91,12 @@
 | `Quake-2-master/client/cl_fx.c` | global | `velscale` | `packages/client/src/cl_fx.ts` | `velscale` | Non applicable | A redecouper | Variable locale de `CL_DiminishingTrail`, portee par `spawnDiminishingTrailParticles`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `MakeNormalVectors` | `packages/client/src/cl_fx.ts` | `MakeNormalVectors` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npx tsx ./scripts/verify/quake2-cl-tent.ts`, `npm run typecheck`; clone prive `cl_newfx.ts` supprime au profit de l'extern/port proprietaire `cl_fx.ts`; en-tete verifie. |
 | `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | Non applicable | A redecouper | Local C de `MakeNormalVectors`, porte par le `dot` TS et documente dans l'en-tete; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_RocketTrail` | `packages/client/src/cl_fx.ts` | `CL_RocketTrail` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `len` | `packages/client/src/cl_fx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `dec` | `packages/client/src/cl_fx.ts` | `dec` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_RocketTrail` | `packages/client/src/cl_fx.ts` | `CL_RocketTrail` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; en-tete verifie; test cible ajoute dans `scripts/verify/quake2-cl-fx.ts`. |
+| `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | Non applicable | A redecouper | Variable locale de `CL_RocketTrail`, portee par `spawnSimpleTrailParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | Non applicable | A redecouper | Variable locale de `CL_RocketTrail`, portee par `spawnSimpleTrailParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `len` | `packages/client/src/cl_fx.ts` | `len` | Non applicable | A redecouper | Variable locale de `CL_RocketTrail`, portee par `spawnSimpleTrailParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | Non applicable | A redecouper | Index local de `CL_RocketTrail`, remplace par iteration TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `dec` | `packages/client/src/cl_fx.ts` | `dec` | Non applicable | A redecouper | Constante locale `dec = 1`, portee par `spacing: 1`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_RailTrail` | `packages/client/src/cl_fx.ts` | `CL_RailTrail` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | A verifier | A redecouper |  |

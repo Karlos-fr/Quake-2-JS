@@ -32,7 +32,7 @@ import {
   type GameRuntime
 } from "../../packages/game/src/index.js";
 import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
-import { createGameMainContext, ReadLevel, WriteLevel } from "../../packages/game/src/g_main.js";
+import { G_RunFrame, createGameMainContext, ReadLevel, WriteLevel } from "../../packages/game/src/g_main.js";
 import { findGameSaveFunction, findGameSaveMove } from "../../packages/game/src/g_save.js";
 import {
   FRAME_att_c1,
@@ -88,6 +88,7 @@ function main(): void {
   verifyStartupThinkCompletesWalkingMonsterSetup();
   verifySpawnRegistryCallsMonsterBerserk();
   verifyMoveTablesMatchSourceFrames();
+  verifyStandRuntimeFlow();
   verifySaveRegistryRestoresCallbacksAndMoves();
   verifySaveRestoreAfterStartup();
   verifyStateTransitions();
@@ -177,6 +178,31 @@ function verifyMoveTablesMatchSourceFrames(): void {
   assertMove("pain2", berserk_move_pain2, FRAME_painb1, FRAME_painb20, new Array<number>(20).fill(0));
   assertMove("death1", berserk_move_death1, FRAME_death1, FRAME_death13, new Array<number>(13).fill(0));
   assertMove("death2", berserk_move_death2, FRAME_deathc1, FRAME_deathc8, new Array<number>(8).fill(0));
+}
+
+function verifyStandRuntimeFlow(): void {
+  const runtime = createHarnessRuntime();
+  const context = createGameMainContext(createGameImports(), { runtime });
+  const berserk = createBerserk(runtime, 16);
+
+  SP_monster_berserk(berserk, runtime);
+
+  assert.equal(berserk.monsterinfo.stand, berserk_stand);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand);
+  assert.equal(berserk_move_stand.endfunc, undefined);
+
+  berserk.monsterinfo.currentmove = berserk_move_walk;
+  berserk.monsterinfo.stand!(berserk, runtime);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand, "monsterinfo.stand should restore the stand move");
+
+  berserk.think!(berserk, runtime);
+  berserk.s.frame = FRAME_stand5;
+  withMathRandom([0.99], () => G_RunFrame(context));
+
+  assert.equal(berserk.think?.name, "monster_think");
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand);
+  assert.equal(berserk.s.frame, FRAME_stand1, "G_RunFrame should loop the visible stand frames through monster_think");
+  assert.equal(berserk.nextthink, runtime.time + FRAMETIME, "monster_think should schedule the next stand tick");
 }
 
 function verifySaveRegistryRestoresCallbacksAndMoves(): void {

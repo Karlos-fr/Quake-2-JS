@@ -106,7 +106,9 @@ import {
   SOLID_NOT,
   SVF_DEADMONSTER,
   SVF_NOCLIENT,
-  damage_t
+  damage_t,
+  crandom,
+  random
 } from "./g_local.js";
 import {
   FRAME_crdeath1,
@@ -1906,12 +1908,23 @@ function throwPlayerGibs(self: GameEntity, damage: number, runtime: GameRuntime)
   ThrowClientHead(self, damage, runtime);
 }
 
+/**
+ * Original name: VelocityForDamage
+ * Source: game/g_misc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds the randomized client-head launch velocity and scales it by the source damage threshold.
+ *
+ * Porting notes:
+ * - Duplicated locally because `ThrowClientHead` remains in the `p_client.ts` player lifecycle path.
+ */
 function velocityForDamage(damage: number): [number, number, number] {
-  const random = (): number => (Math.random() * 2) - 1;
   const velocity: [number, number, number] = [
-    100 * random(),
-    100 * random(),
-    200 + (100 * Math.random())
+    100 * crandom(),
+    100 * crandom(),
+    200 + (100 * random())
   ];
   const scale = damage < 50 ? 0.7 : 1.2;
   return [velocity[0] * scale, velocity[1] * scale, velocity[2] * scale];

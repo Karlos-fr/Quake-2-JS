@@ -33,6 +33,7 @@ import {
   CL_ParticleEffect2,
   CL_ParticleEffect3,
   CL_QuadTrail,
+  CL_RocketTrail,
   CL_RunDLights,
   CL_RunLightStyles,
   CL_SetLightstyle,
@@ -46,6 +47,7 @@ import {
   EF_GIB,
   EF_GREENGIB,
   EF_GRENADE,
+  EF_ROCKET,
   EF_TELEPORTER,
   EF_FLAG1,
   EF_FLAG2,
@@ -87,6 +89,7 @@ function main(): void {
   verifyQuadTrailRuntimeParticles();
   verifyFlagTrailRuntimeParticles();
   verifyDiminishingTrailRuntimeParticles();
+  verifyRocketTrailRuntimeParticles();
   verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
@@ -947,6 +950,78 @@ function verifyDiminishingTrailRuntimeParticles(): void {
     }]);
   });
   assert.ok(collectActiveParticles(greengibRuntime).every((particle) => particle.color >= 0xdb && particle.color <= 0xe2), "EF_GREENGIB should use the green gib palette");
+}
+
+function verifyRocketTrailRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 10220;
+  const start: vec3_t = [0, 0, 0];
+  const end: vec3_t = [1.3, 0, 0];
+  const old = runtime.cl_entities[7];
+  old.trailcount = 950;
+  const randomUnit = 0;
+  const expectedCrand = (randomUnit * 2) - 1;
+
+  withMockRandom(randomUnit, () => {
+    CL_RocketTrail(runtime, start, end, old);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 5, "CL_RocketTrail should emit smoke plus fire particles while len > 0");
+  assert.equal(old.trailcount, 935, "CL_RocketTrail smoke phase should decay trailcount through CL_DiminishingTrail");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_RocketTrail particle time mismatch");
+
+  const smokeParticles = particles.filter((particle) => particle.color >= 4 && particle.color <= 11);
+  const fireParticles = particles.filter((particle) => particle.color >= 0xdc && particle.color <= 0xdf);
+  assert.equal(smokeParticles.length, 3, "CL_RocketTrail should preserve the EF_ROCKET smoke trail");
+  assert.equal(fireParticles.length, 2, "CL_RocketTrail should preserve the one-unit fire trail");
+  assert.ok(smokeParticles.every((particle) => particle.accel[2] === 20), "CL_RocketTrail smoke acceleration mismatch");
+  assert.ok(fireParticles.every((particle) => particle.accel[2] === -40), "CL_RocketTrail fire gravity mismatch");
+  assert.ok(
+    fireParticles.every((particle) => particle.vel[0] === expectedCrand * 20 && particle.vel[1] === expectedCrand * 20 && particle.vel[2] === expectedCrand * 20),
+    "CL_RocketTrail fire velocity jitter mismatch"
+  );
+  assert.ok(fireParticles.every((particle) => almostEqual(particle.alphavel, -1.0)), "CL_RocketTrail fire alpha decay mismatch");
+
+  const fireX = fireParticles.map((particle) => particle.org[0]).sort((left, right) => left - right);
+  assert.deepEqual(fireX, [-5, -4], "CL_RocketTrail fire should advance move by the normalized vec * dec");
+
+  const metadataOld = createRuntime().cl_entities[7];
+  metadataOld.trailcount = 950;
+  const metadata = CL_RocketTrail(start, end, metadataOld);
+  assert.equal(metadata[0]?.kind, "diminishing-trail", "CL_RocketTrail metadata smoke kind mismatch");
+  assert.equal(metadata[1]?.kind, "rocket-fire-trail", "CL_RocketTrail metadata fire kind mismatch");
+  assert.deepEqual(metadata[1]?.position, start, "CL_RocketTrail fire metadata start mismatch");
+  assert.deepEqual(metadata[1]?.position2, end, "CL_RocketTrail fire metadata end mismatch");
+  assert.equal(metadata[1]?.color, 0xdc, "CL_RocketTrail fire metadata color mismatch");
+  assert.equal(metadata[1]?.spacing, 1, "CL_RocketTrail fire metadata spacing mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 5, "CL_RocketTrail particles should reach the refresh particle list");
+
+  const runtimeBranch = createRuntime();
+  runtimeBranch.cl.time = 10280;
+  runtimeBranch.cl_entities[9].lerp_origin = [0, 0, 0];
+  runtimeBranch.cl_entities[9].trailcount = 950;
+  withMockRandom(randomUnit, () => {
+    CL_ExecutePacketEntityEffects(runtimeBranch, [{
+      number: 9,
+      effects: EF_ROCKET,
+      origin: end
+    }]);
+  });
+  assert.equal(collectActiveParticles(runtimeBranch).length, 5, "EF_ROCKET should dispatch to CL_RocketTrail");
+
+  const refreshRuntime = createRuntime();
+  refreshRuntime.cl.frame.num_entities = 1;
+  refreshRuntime.cl.frame.parse_entities = 0;
+  refreshRuntime.cl_parse_entities[0].number = 11;
+  refreshRuntime.cl_parse_entities[0].effects = EF_ROCKET;
+  refreshRuntime.cl_parse_entities[0].origin = [...end] as vec3_t;
+  refreshRuntime.cl_entities[11].current.number = 11;
+  refreshRuntime.cl_entities[11].current.origin = [...end] as vec3_t;
+  const frame = CL_BuildRefreshFrame(refreshRuntime, { viewerEntity: 0 });
+  assert.ok(frame.lights.some((light) => light.kind === "rocket" && light.intensity === 200), "EF_ROCKET should expose the original rocket dlight to refresh");
 }
 
 function verifyMakeNormalVectors(): void {

@@ -272,6 +272,15 @@ let sound_pain3 = 0;
 let sound_death = 0;
 let sound_search1 = 0;
 
+/**
+ * Original name: boss2_search
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Randomly plays the boss2 search voice on the same 50 percent branch as the original.
+ */
 export function boss2_search(self: GameEntity, runtime: GameRuntime): void {
   if (Math.random() < 0.5) {
     emitRegisteredGameSound(runtime, self, sound_search1, SOUND_SEARCH1, soundOptions(CHAN_VOICE, ATTN_NONE));

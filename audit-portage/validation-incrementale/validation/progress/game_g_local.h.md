@@ -1422,7 +1422,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:p-weapon` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `p_client.ts`, `p_hud.ts`, `g_items.ts` ou une petite famille `m_*`), puis reprendre `g_utils.ts` quand il ne sera plus reserve. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/p_client.ts` pour `ThrowClientHead`/`VelocityForDamage`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `p_client.ts` lie au client-head gib est harmonise pour les usages macro C `random()`/`crandom()`, mais d'autres consommateurs runtime restent disperses dans `m_*`, `m_move.ts` et `g_utils.ts`.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `g_misc.c` consomme ces macros dans `VelocityForDamage`; `ThrowClientHead` est appele depuis `p_client.c` et porte localement dans `p_client.ts`. Les usages `rand() % count`/`rand() & n` de `g_items.c`, `p_hud.c` et `p_client.c` ont ete verifies hors macro et non migres dans ce lot.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/p_client.ts`: `velocityForDamage` consomme maintenant les helpers proprietaires `random`/`crandom`; commentaire d'en-tete ajoute au helper local conserve car `ThrowClientHead` reste dans le flux player lifecycle.
+- Runtime: integration attendue et branchee pour ce sous-lot via `player_die` et `body_die`, atteignables depuis les callbacks de degats/mort et les corps de respawn; les sorties sont le modele head/skull, `EF_GIB`, velocite de gib et relink entite.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons de mort, modeles de gib et ordre de rendu; aucune logique parallele web `ThrowClientHead`/`random`/`crandom` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Le lot produit une entite visible de gib client avec modele, effet et velocite; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `ThrowClientHead`, `player_die` et `body_die` verifies; commentaire de portage ajoute a `velocityForDamage`.
+- Corrections appliquees:
+  - `packages/game/src/p_client.ts`: import de `random`/`crandom` depuis `g_local.ts`, remplacement des usages macro C dans `velocityForDamage`, commentaire d'en-tete ajoute.
+  - `scripts/verify/quake2-p-client.ts`: preuve deterministe ajoutee pour `ThrowClientHead` avec selection head/skull et velocite issue de `g_local.random`/`g_local.crandom`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:p-client` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple une petite famille `m_*` ou `m_move.ts`), puis reprendre `g_utils.ts` quand il ne sera plus reserve. `g_items.ts` et `p_hud.ts` n'ont montre que des usages `rand()` hors macros pendant la verification de ce lot. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

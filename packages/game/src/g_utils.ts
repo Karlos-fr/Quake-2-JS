@@ -25,6 +25,7 @@ import {
   emitRegisteredGameSound,
   freeGameEntity,
   getRuntimeEntityLabel,
+  unlinkGameEntity,
   registerGameSound,
   refreshEntitySpatialState,
   spawnGameEntity
@@ -582,8 +583,11 @@ export function G_Spawn(runtime: GameRuntime): GameEntity {
  *
  * Behavior:
  * - Frees one gameplay edict unless it is part of the protected special-edict prefix.
+ * - Always unlinks the edict from the runtime world before applying the protected-slot guard.
  */
 export function G_FreeEdict(runtime: GameRuntime, entity: GameEntity): void {
+  unlinkGameEntity(runtime, entity);
+
   if (entity.index <= (runtime.maxclients + BODY_QUEUE_SIZE)) {
     return;
   }

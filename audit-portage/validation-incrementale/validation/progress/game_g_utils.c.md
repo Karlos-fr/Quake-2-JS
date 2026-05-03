@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `G_Spawn`.
+- Dernier lot traite: `G_FreeEdict`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -77,7 +77,28 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `G_FreeEdict` seul. Garder les lignes locales `i`/`e`, la ligne globale `v`, `vectoyaw` et `vectoangles` pour des lots separes sans melanger les ownerships.
+- Continuer avec `G_TouchTriggers` seul, sans melanger `G_TouchSolids`, `KillBox` ni les lignes locales restantes.
+
+## Session - G_FreeEdict
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- Declaration H comparee: `Quake-2-master/game/g_local.h`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete verifie et complete sur `G_FreeEdict` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`).
+- Comparaison C/TS `G_FreeEdict`: le C appelle toujours `gi.unlinkentity(ed)`, retourne sans liberer les edicts proteges `ed - g_edicts <= maxclients + BODY_QUEUE_SIZE`, puis remet l'edict normal a zero, `classname = "freed"`, `freetime = level.time`, `inuse = false`; le port TS appelle maintenant `unlinkGameEntity` avant la garde, conserve les slots proteges en `inuse`, et delegue la remise a zero runtime des slots normaux a `freeGameEntity`.
+- Correction appliquee: `packages/game/src/g_utils.ts` deplace l'unlink avant la garde des edicts proteges; `scripts/verify/quake2-g-utils.ts` verifie l'unlink des slots proteges, la liberation des slots normaux, `classname = "freed"` et `freetime = runtime.time`.
+- Runtime verifie: `G_FreeEdict` est atteint depuis les flux gameplay normaux portes (`G_UseTargets` delayed/killtarget, items/drop, AI tempgoal, gibs/debris, monstres, boss, projectiles, tourelles, triggers/targets et client/body queue) appeles par spawns, uses, thinks, tirs, morts et frames serveur.
+- `apps/web`: integration attendue indirecte via `apps/web/src/full-game-server-host.ts` et le host local/full-game qui executent le runtime serveur porte; aucune logique web parallele ne remplace la liberation d'edicts.
+- `packages/renderer-three`: pas de sortie renderer directe propre a la liberation, mais l'effet attendu est visible indirectement par disparition d'entites/modeles/projectiles/gibs et arret de collisions/refresh via snapshots et adapters renderer; tests full-game renderer OK.
+
+Session `G_FreeEdict`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
 
 ## Session - findradius / j
 

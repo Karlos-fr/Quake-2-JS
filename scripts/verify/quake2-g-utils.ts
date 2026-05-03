@@ -37,9 +37,11 @@ import {
   createRuntimeEntity,
   drainGameCenterprintEvents,
   drainGameSoundEvents,
+  linkGameEntity,
   refreshEntitySpatialState,
   registerGameSound,
-  runPendingThinks
+  runPendingThinks,
+  SOLID_BBOX
 } from "../../packages/game/src/runtime.js";
 
 const runtime = createGameRuntimeFromBspEntities([]);
@@ -381,14 +383,25 @@ assert.throws(
 const protectedEntity = createRuntimeEntity({}, 4);
 runtime.entities[4] = protectedEntity;
 G_InitEdict(protectedEntity);
+protectedEntity.solid = SOLID_BBOX;
+refreshEntitySpatialState(protectedEntity);
+linkGameEntity(runtime, protectedEntity);
+assert.equal(protectedEntity.linked, true, "test setup must link the protected edict before freeing");
 G_FreeEdict(runtime, protectedEntity);
 assert.equal(protectedEntity.inuse, true, "G_FreeEdict must not free protected edicts");
+assert.equal(protectedEntity.linked, false, "G_FreeEdict must unlink protected edicts before returning");
 
 const freeable = createRuntimeEntity({}, 20);
 runtime.entities[20] = freeable;
 G_InitEdict(freeable);
+freeable.solid = SOLID_BBOX;
+refreshEntitySpatialState(freeable);
+linkGameEntity(runtime, freeable);
 G_FreeEdict(runtime, freeable);
 assert.equal(freeable.inuse, false, "G_FreeEdict must free normal edicts");
+assert.equal(freeable.linked, false, "G_FreeEdict must unlink normal edicts");
+assert.equal(freeable.classname, "freed", "G_FreeEdict must mark normal edicts as freed");
+assert.equal(freeable.freetime, runtime.time, "G_FreeEdict must stamp freetime from level time");
 
 const blocker = createRuntimeEntity({}, 21);
 blocker.solid = 1;

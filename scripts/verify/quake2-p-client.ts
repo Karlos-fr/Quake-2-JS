@@ -59,6 +59,7 @@ import {
   CopyToBodyQue,
   InitBodyQue,
   TossClientWeapon,
+  ThrowClientHead,
   player_die
 } from "../../packages/game/src/p_client.js";
 import {
@@ -78,6 +79,7 @@ function main(): void {
   verifyClientObituaryWorldMeansOfDeath();
   verifyTossClientWeaponUsesDefaultDropItem();
   verifyPlayerDieUsesDefaultSoundAndGibs();
+  verifyThrowClientHeadUsesGLocalRandomHelpers();
 
   console.log("Verification p_client - player lifecycle defaults OK");
 }
@@ -329,6 +331,38 @@ function verifyPlayerDieUsesDefaultSoundAndGibs(): void {
     sounds.some((event) => event.soundPath === "misc/udeath.wav"),
     "player_die should queue the default universal death sound"
   );
+}
+
+function verifyThrowClientHeadUsesGLocalRandomHelpers(): void {
+  const runtime = createHarnessRuntime();
+  const player = spawnGameEntity(runtime);
+  attachGameClient(player);
+  player.velocity = [0, 0, 0];
+
+  withMockedMathRandom([0.75, 0, 0.99999, 0], () => {
+    ThrowClientHead(player, 80, runtime);
+  });
+
+  assert.equal(player.model, "models/objects/gibs/head2/tris.md2", "ThrowClientHead keeps rand()&1 head selection");
+  assert.equal(player.s.skinnum, 1, "ThrowClientHead applies the player-head skin branch");
+  assertAlmostEqual(player.velocity[0], -120, "ThrowClientHead x velocity uses g_local.crandom");
+  assertAlmostEqual(player.velocity[1], 120, "ThrowClientHead y velocity uses g_local.crandom");
+  assertAlmostEqual(player.velocity[2], 240, "ThrowClientHead z velocity uses g_local.random");
+}
+
+function withMockedMathRandom(values: number[], callback: () => void): void {
+  const originalRandom = Math.random;
+  let index = 0;
+  Math.random = () => values[Math.min(index++, values.length - 1)];
+  try {
+    callback();
+  } finally {
+    Math.random = originalRandom;
+  }
+}
+
+function assertAlmostEqual(actual: number, expected: number, message: string): void {
+  assert.ok(Math.abs(actual - expected) < 0.0001, `${message}: expected ${expected}, got ${actual}`);
 }
 
 function createHarnessRuntime(): GameRuntime {

@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: bloc pain3 `actor_frames_pain3`, `actor_move_pain3`
+- Dernier lot traite: bloc flipoff `actor_frames_flipoff`, `actor_move_flipoff`
 - Verdict: `Valide` pour les quatre entrees de matrice du lot
 
 ## Checklist appliquee au lot
@@ -65,6 +65,16 @@
 - renderer-three: le bloc pain3 produit une sortie visible indirecte (`s.modelindex`/`s.frame` de `misc_actor` pendant l'animation de douleur); consommation attendue via snapshots client, refresh entities, puis alias MD2 frame dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert dans ce lot.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts`.
 
+## Session 2026-05-03 - bloc flipoff
+
+- Identification: `actor_frames_flipoff` global/table/declarative et `actor_move_flipoff` sont proprietaires de `game/m_actor.c`, cibles dans `packages/game/src/m_actor.ts`, exports accessibles via `actorFrames`; aucun doublon TS concurrent trouve.
+- Comparaison C vs TS: les 14 frames C `ai_turn, 0, NULL` correspondent a `makeFrames(ai_turn, new Array<number>(14).fill(0))`; `actor_move_flipoff` conserve `FRAME_flip01` a `FRAME_flip14`, la table flipoff et `actor_run` en `endfunc`.
+- Commentaires d'en-tete: pas de commentaire de fonction requis pour les donnees declaratives; le commentaire de fichier documente le port, et `actor_run` a deja un commentaire d'en-tete verifie comme endfunc cible.
+- Runtime: branchement attendu et verifie depuis `actor_pain` quand l'attaquant est un client et que la branche de raillerie est choisie, puis progression par `M_MoveFrame`, qui execute `actor_run` en fin de mouvement; atteignable via spawn `misc_actor`, callback `self.pain = actor_pain`, degats runtime et `G_RunFrame`.
+- apps/web: pas de logique parallele attendue pour ce bloc gameplay; `apps/web` doit declencher le flux via le host full-game/local et consommer les snapshots/refresh issus du runtime, couvert par `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order`.
+- renderer-three: le bloc flipoff produit une sortie visible indirecte (`s.modelindex`/`s.frame` de `misc_actor` pendant l'animation); consommation attendue via snapshots client, refresh entities, puis alias MD2 frame dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert dans ce lot.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts`.
+
 ## Tests de reference
 
 - `npm run verify:m-actor`
@@ -77,7 +87,7 @@
 
 ## Prochain lot recommande
 
-Valider le bloc flipoff: `actor_frames_flipoff` (lignes global/table/declarative) et `actor_move_flipoff`, en gardant `actor_pain` pour un lot separe si le lot devient trop large.
+Valider le bloc taunt: `actor_frames_taunt` (lignes global/table/declarative) et `actor_move_taunt`, en gardant `messages` et `actor_pain` pour un lot separe si le lot devient trop large.
 
 ## Blocages / decisions
 
