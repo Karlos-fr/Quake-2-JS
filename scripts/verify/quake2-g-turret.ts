@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { RF_FRAMELERP } from "../../packages/qcommon/src/index.js";
+import { MASK_MONSTERSOLID, RF_FRAMELERP } from "../../packages/qcommon/src/index.js";
 import {
   FRAMETIME,
   attachGameClient,
@@ -29,6 +29,7 @@ import {
   FL_TEAMSLAVE,
   MOD_CRUSH,
   MOVETYPE_PUSH,
+  SOLID_BBOX,
   SOLID_BSP,
   SVF_MONSTER,
   damage_t
@@ -41,6 +42,7 @@ import {
   SP_turret_driver,
   turret_breach_think,
   turret_driver_die,
+  turret_driver_link,
   turret_driver_think
 } from "../../packages/game/src/g_turret.js";
 import type { GameEntity, GameRuntime } from "../../packages/game/src/index.js";
@@ -195,7 +197,50 @@ function verifyTurretDriverLinkAndThink(): void {
   driver.target = "breach_target";
   driver.s.origin = [64, -64, 48];
   driver.origin = [64, -64, 48];
+  driver.properties.item = "weapon_blaster";
   SP_turret_driver(driver, runtime);
+
+  assert.equal(driver.movetype, MOVETYPE_PUSH, "SP_turret_driver must use pusher movement");
+  assert.equal(driver.solid, SOLID_BBOX, "SP_turret_driver must use bbox solidity");
+  assert.equal(driver.model, "models/monsters/infantry/tris.md2", "SP_turret_driver model path mismatch");
+  assert.equal(driver.s.modelindex > 0, true, "SP_turret_driver must register the infantry model");
+  assert.deepEqual(driver.mins, [-16, -16, -24], "SP_turret_driver mins mismatch");
+  assert.deepEqual(driver.maxs, [16, 16, 32], "SP_turret_driver maxs mismatch");
+  assert.equal(driver.health, 100, "SP_turret_driver health mismatch");
+  assert.equal(driver.gib_health, 0, "SP_turret_driver gib health mismatch");
+  assert.equal(driver.mass, 200, "SP_turret_driver mass mismatch");
+  assert.equal(driver.viewheight, 24, "SP_turret_driver viewheight mismatch");
+  assert.equal(driver.die, turret_driver_die, "SP_turret_driver must install turret_driver_die");
+  assert.equal(typeof driver.monsterinfo.stand, "function", "SP_turret_driver must install infantry_stand");
+  assert.equal((driver.flags & FL_NO_KNOCKBACK) !== 0, true, "SP_turret_driver must set FL_NO_KNOCKBACK");
+  assert.equal(runtime.total_monsters, 1, "SP_turret_driver must increment total_monsters");
+  assert.equal((driver.svflags & SVF_MONSTER) !== 0, true, "SP_turret_driver must set SVF_MONSTER");
+  assert.equal((driver.s.renderfx & RF_FRAMELERP) !== 0, true, "SP_turret_driver must set RF_FRAMELERP");
+  assert.equal(driver.takedamage, damage_t.DAMAGE_AIM, "SP_turret_driver takedamage mismatch");
+  assert.equal(typeof driver.use, "function", "SP_turret_driver must install monster_use");
+  assert.equal(driver.clipmask, MASK_MONSTERSOLID, "SP_turret_driver clipmask mismatch");
+  assert.deepEqual(driver.s.old_origin, [64, -64, 48], "SP_turret_driver must copy old_origin");
+  assert.equal((driver.monsterinfo.aiflags & (AI_STAND_GROUND | AI_DUCKED)), AI_STAND_GROUND | AI_DUCKED, "SP_turret_driver aiflags mismatch");
+  assert.equal(driver.item?.classname, "weapon_blaster", "SP_turret_driver must resolve spawn-temp item");
+  assert.equal(driver.think, turret_driver_link, "SP_turret_driver must defer turret_driver_link");
+  assert.equal(driver.nextthink, runtime.time + FRAMETIME, "SP_turret_driver nextthink mismatch");
+
+  const badItemDriver = spawnGameEntity(runtime);
+  badItemDriver.classname = "turret_driver";
+  badItemDriver.properties.item = "item_not_real";
+  SP_turret_driver(badItemDriver, runtime);
+  assert.equal(badItemDriver.item, null, "SP_turret_driver must leave bad spawn item unset");
+  assert.equal(runtime.logEntries.at(-1)?.kind, "warning", "SP_turret_driver must warn for bad spawn item");
+
+  const deathmatchRuntime = createRuntime();
+  deathmatchRuntime.deathmatch = true;
+  for (let index = 0; index < 16; index += 1) {
+    spawnGameEntity(deathmatchRuntime);
+  }
+  const deathmatchDriver = spawnGameEntity(deathmatchRuntime);
+  deathmatchDriver.classname = "turret_driver";
+  SP_turret_driver(deathmatchDriver, deathmatchRuntime);
+  assert.equal(deathmatchDriver.inuse, false, "SP_turret_driver must free itself in deathmatch");
 
   runPendingThinks(runtime, runtime.time + FRAMETIME);
 

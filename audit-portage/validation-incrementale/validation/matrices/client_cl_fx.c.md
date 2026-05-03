@@ -63,12 +63,12 @@
 | `Quake-2-master/client/cl_fx.c` | function | `CL_BlasterParticles` | `packages/client/src/cl_fx.ts` | `CL_BlasterParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; test cible ajoute dans `scripts/verify/quake2-cl-fx.ts`; en-tete verifie. |
 | `Quake-2-master/client/cl_fx.c` | global | `d` | `packages/client/src/cl_fx.ts` | `d` | Non applicable | A redecouper | Variable locale de `CL_BlasterParticles`, portee par `const d`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `count` | `packages/client/src/cl_fx.ts` | `count` | Non applicable | A redecouper | Constante locale C `count = 40`, portee par la boucle TS et la metadata `count`; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_BlasterTrail` | `packages/client/src/cl_fx.ts` | `CL_BlasterTrail` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `len` | `packages/client/src/cl_fx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `dec` | `packages/client/src/cl_fx.ts` | `dec` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_BlasterTrail` | `packages/client/src/cl_fx.ts` | `CL_BlasterTrail` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run verify:local-gameplay-sync`, `npm run typecheck`; en-tete mis a jour dans `packages/client/src/cl_fx.ts`, test cible ajoute dans `scripts/verify/quake2-cl-fx.ts`. |
+| `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | Non applicable | A redecouper | Variable locale de `CL_BlasterTrail`, portee par `spawnSimpleTrailParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | Non applicable | A redecouper | Variable locale de `CL_BlasterTrail`, portee par `spawnSimpleTrailParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `len` | `packages/client/src/cl_fx.ts` | `len` | Non applicable | A redecouper | Variable locale de `CL_BlasterTrail`, portee par `spawnSimpleTrailParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | Non applicable | A redecouper | Index local de `CL_BlasterTrail`, remplace par iteration TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `dec` | `packages/client/src/cl_fx.ts` | `dec` | Non applicable | A redecouper | Constante locale `dec = 5`, portee par `spacing: 5`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_QuadTrail` | `packages/client/src/cl_fx.ts` | `CL_QuadTrail` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | A verifier | A redecouper |  |

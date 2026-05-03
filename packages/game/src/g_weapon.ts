@@ -90,7 +90,7 @@ import { infront } from "./g_ai.js";
 import { CanDamage, T_Damage, T_RadiusDamage } from "./g_combat.js";
 import { findradius } from "./g_utils.js";
 import { ThrowDebris } from "./g_misc.js";
-import { PNOISE_IMPACT } from "./g_local.js";
+import { PNOISE_IMPACT, crandom, random } from "./g_local.js";
 import { PlayerNoise } from "./p_weapon.js";
 
 /**
@@ -757,7 +757,7 @@ export function Grenade_Touch(
 
   if (!isDamageable(other, hooks)) {
     if ((ent.spawnflags & 1) !== 0) {
-      playEntitySound(ent, Math.random() > 0.5 ? "weapons/hgrenb1a.wav" : "weapons/hgrenb2a.wav", runtime, hooks);
+      playEntitySound(ent, random() > 0.5 ? "weapons/hgrenb1a.wav" : "weapons/hgrenb2a.wav", runtime, hooks);
     } else {
       playEntitySound(ent, "weapons/grenlb1b.wav", runtime, hooks);
     }
@@ -1119,7 +1119,7 @@ function check_dodge(
     return;
   }
 
-  if (runtime.skill === 0 && Math.random() > 0.25) {
+  if (runtime.skill === 0 && random() > 0.25) {
     return;
   }
 
@@ -1265,14 +1265,6 @@ function vectoangles(direction: vec3_t): vec3_t {
  */
 function angleVectorsFromDir(direction: vec3_t): { forward: vec3_t; right: vec3_t; up: vec3_t } {
   return AngleVectors(vectoangles(direction));
-}
-
-/**
- * Category: New
- * Purpose: Mirror Quake II `crandom()` for grenade launch jitter.
- */
-function crandom(): number {
-  return (Math.random() * 2) - 1;
 }
 
 /**

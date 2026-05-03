@@ -25,6 +25,7 @@ import type {
   edict_t,
   GameClientServerFields,
   GameEdictServerFields,
+  game_import_t,
   gclient_s,
   gclient_t,
   link_s,
@@ -46,6 +47,55 @@ assert.equal(solid_t.SOLID_BSP, 3, "solid_t.SOLID_BSP mismatch");
 assert.equal(SVF_NOCLIENT, 0x00000001, "SVF_NOCLIENT mismatch");
 assert.equal(SVF_DEADMONSTER, 0x00000002, "SVF_DEADMONSTER mismatch");
 assert.equal(SVF_MONSTER, 0x00000004, "SVF_MONSTER mismatch");
+
+const gameImportKeys = [
+  "bprintf",
+  "dprintf",
+  "cprintf",
+  "centerprintf",
+  "sound",
+  "positioned_sound",
+  "configstring",
+  "error",
+  "modelindex",
+  "soundindex",
+  "imageindex",
+  "setmodel",
+  "trace",
+  "pointcontents",
+  "inPVS",
+  "inPHS",
+  "SetAreaPortalState",
+  "AreasConnected",
+  "linkentity",
+  "unlinkentity",
+  "BoxEdicts",
+  "Pmove",
+  "multicast",
+  "unicast",
+  "WriteChar",
+  "WriteByte",
+  "WriteShort",
+  "WriteLong",
+  "WriteFloat",
+  "WriteString",
+  "WritePosition",
+  "WriteDir",
+  "WriteAngle",
+  "TagMalloc",
+  "TagFree",
+  "FreeTags",
+  "cvar",
+  "cvar_set",
+  "cvar_forceset",
+  "argc",
+  "argv",
+  "args",
+  "AddCommandString",
+  "DebugGraph"
+] satisfies Array<keyof game_import_t>;
+
+assert.equal(gameImportKeys.length, 44, "game_import_t must expose every callback declared in game/game.h");
 
 const sourceNamedClient: gclient_s = client;
 const typedefClient: gclient_t = sourceNamedClient;

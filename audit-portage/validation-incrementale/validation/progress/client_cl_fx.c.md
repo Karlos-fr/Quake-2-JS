@@ -1,7 +1,7 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; variables locales generees `i` marquees non applicables.
+- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; `CL_BlasterTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; variables locales generees `i` marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -45,7 +45,18 @@
   - `npm run verify:particle-sync`
   - `npm run verify:full-game:three-renderer`
   - `npm run typecheck`
+  - `npm run verify:cl-fx`
+  - `npm run verify:particle-sync`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run verify:local-gameplay-sync`
+  - `npm run typecheck`
 - Decisions:
+  - `CL_BlasterTrail` conserve le flux C de trail blaster: copie de `start` dans `move`, vecteur `end - start` normalise dans `vec`, `len` decrementee par `dec = 5`, emission tant que `len > 0`, couleur `0xe0`, alpha `1.0`, `alphavel = -1/(0.3 + frand()*0.2)`, origine `move + crand()`, vitesse `crand()*5` et acceleration nulle.
+  - Les temporaires C `move`, `vec`, `len`, `j` et `dec` sont des artefacts locaux: ils sont portes dans `spawnSimpleTrailParticles` (`move`, `vec`, `len`, `dec`) et l'iteration TS par composant remplace `j`; aucune entite TS publique separee n'est attendue.
+  - `CL_BlasterTrail` est atteignable depuis le runtime client normal via `CL_BuildRefreshFrame` -> `CL_BuildPacketEntitySnapshots` -> `CL_ExecutePacketEntityEffects` pour les entites `EF_BLASTER` et le cas `EF_PLASMA | EF_ANIM_ALLFAST`; `EF_BLASTER | EF_TRACKER` reste route vers `CL_BlasterTrail2`.
+  - `apps/web` doit consommer ce flux parce qu'il produit des particules visibles de projectile: le flux full-game/local-game construit un `ClientRefreshFrame` depuis le runtime client et `full-game-render-loop.ts` consomme `source.refreshFrame.particles` via `particleSync.apply`, sans logique particule parallele pour ce trail.
+  - `renderer-three` doit consommer la sortie visible particules; le flux reste `CL_AddParticles` -> `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`, couvert par `npm run verify:particle-sync` et `npm run verify:full-game:three-renderer`.
   - `CL_LogoutEffect` et `CL_ItemRespawnParticles` restent proprietaires de `packages/client/src/cl_fx.ts`.
   - `appendLogoutEffect` est un adapter de `CL_ParseMuzzleFlash`, pas un second port proprietaire de `CL_LogoutEffect`; son en-tete a ete corrige en `Category: Adapter`.
   - `CL_ItemRespawnParticles` doit etre applique depuis `apps/web` pour `EV_ITEM_RESPAWN`, car l'evenement produit des particules visibles consommees ensuite par `ClientRefreshFrame.particles` puis `packages/renderer-three/src/particle-sync.ts`.
@@ -103,5 +114,5 @@
   - Les effets visibles de `CL_ParseMuzzleFlash2` sont attendus dans le runtime navigateur: dlight, `CL_ParticleEffect` et `CL_SmokeAndFlash` sont appliques par `apps/web/src/full-game.ts`; le flux local `packages/client/src/local-gameplay-sync.ts` applique maintenant aussi `particle-effect` et `smoke-and-flash`.
   - `renderer-three` consomme les dlights via `ClientRefreshFrame.lights` -> `createThreeDlightSync` / `R_RenderDlights` et les particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync`; les sons restent hors renderer.
   - `npm run verify:local-gameplay-sync` n'a pas pu etre utilise comme preuve finale pendant une session precedente: blocage hors lot avant execution du test, `ReferenceError: FRAME_attack1 is not defined` dans `packages/game/src/g_save.ts`.
-- Blocages: `npm run verify:local-gameplay-sync` reste a relancer lors d'un lot qui en depend; tests cibles `cl_fx`/`cl_parse`/web/renderer et `typecheck` OK pour les derniers lots particules.
-- Prochain lot recommande: `CL_BlasterTrail`, puis les locaux `move`, `vec`, `len`, `j` et `dec` si le lot reste coherent.
+- Blocages: Aucun blocage actif pour le dernier lot; `npm run verify:local-gameplay-sync` passe maintenant pour le chemin blaster trail.
+- Prochain lot recommande: `CL_QuadTrail`, puis les locaux `move`, `vec`, `len`, `j` et `dec` si le lot reste coherent.

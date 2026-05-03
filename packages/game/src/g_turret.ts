@@ -520,6 +520,9 @@ export function turret_driver_link(self: GameEntity, runtime: GameRuntime): void
  *
  * Behavior:
  * - Initializes the infantry driver entity that targets and fires the turret breach.
+ *
+ * Porting notes:
+ * - Reads the original spawn-temp `st.item` value from parsed entity `properties.item`.
  */
 export function SP_turret_driver(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {

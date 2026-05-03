@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `vtos` avec ses locaux C `index` et `s`.
+- Dernier lot traite: `G_SetMovedir`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `G_SetMovedir` si le coordinateur garde le lot dans `g_utils.ts`; la ligne globale `v` restante pointe vers `g_weapon.ts` et doit etre clarifiee dans un lot separe sans melanger les ownerships.
+- Continuer avec `vectoyaw` et son local `yaw` si le lot reste petit. La ligne globale `v` restante pointe vers `g_weapon.ts`; elle doit etre clarifiee dans un lot separe sans melanger les ownerships.
 
 ## Session - findradius / j
 
@@ -165,6 +165,26 @@ Session `tv` / `index`:
 - Corrections appliquees: `packages/game/src/g_utils.ts` documente le mapping `index` -> `vtosIndex` et `s` -> `value`; `scripts/verify/quake2-g-utils.ts` verifie la troncature entiere et la rotation du pool de 8 chaines.
 
 Session `vtos` / `index` / `s`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+
+## Session - G_SetMovedir
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete verifie sur `G_SetMovedir` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`).
+- Comparaison C/TS: sentinelle `VEC_UP` -> `MOVEDIR_UP`, sentinelle `VEC_DOWN` -> `MOVEDIR_DOWN`, sinon `AngleVectors(angles).forward` dans `movedir`, puis remise a zero des trois composantes de `angles`.
+- Runtime verifie: `G_SetMovedir` est atteint depuis les flux normaux portes de spawn/use/think (`g_func`, `g_trigger`, `g_target`, `m_actor`) via `ED_CallSpawn`, callbacks gameplay et frames serveur.
+- `apps/web`: integration attendue indirecte via les hosts full-game/local qui executent le runtime porte; aucune logique web parallele ne remplace la conversion `angles` -> `movedir`.
+- `packages/renderer-three`: pas de sortie renderer directe propre a la fonction, mais ses consommateurs produisent des sorties visibles indirectes (brush models mouvants, triggers, target_splash particules, target_blaster projectiles, target_laser beams, gibs/spawns). Les snapshots, refresh frames, particules, beams, dlights et brush model snapshots sont consommes par le flux web/renderer existant.
+- Correction appliquee: `scripts/verify/quake2-g-utils.ts` couvre maintenant les branches haut, bas et `AngleVectors`, ainsi que l'effacement de `angles`.
+
+Session `G_SetMovedir`:
 
 - `npm run verify:g-utils`
 - `npm run typecheck`

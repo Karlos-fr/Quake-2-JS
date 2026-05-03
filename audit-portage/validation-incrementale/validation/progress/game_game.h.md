@@ -242,3 +242,38 @@ Corrections:
 
 Prochain lot recommande:
 - `game_import_t`, a traiter seul ou avec une petite famille de callbacks si le lot reste lisible.
+
+## Session 2026-05-03 - game_import_t
+
+Lot traite:
+- `game_import_t`
+
+Verdict:
+- `Valide` pour `game_import_t`.
+
+Preuves:
+- Source C/H lue dans `Quake-2-master/game/game.h`: le `typedef struct game_import_t` declare 44 callbacks engine vers gameplay, couvrant messages, configstrings, indices assets, collision/visibility, linking, Pmove, messages reseau, allocation zone, cvars, arguments de commande, injection console et DebugGraph.
+- Port TS proprietaire lu dans `packages/game/src/game.ts`: `interface game_import_t` expose les 44 noms originaux avec types alignes sur les entrees/sorties C; les pointeurs C deviennent callbacks TS, les pointeurs nullable vers `edict_t` sont representes par `edict_t | null`, les buffers/listes C par tableaux TS, et `TagMalloc` retourne `unknown` cote contrat.
+- Commentaire d'en-tete verifie dans `packages/game/src/game.ts` pour `game_import_t`: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement presents.
+- Branchement runtime verifie dans `packages/server/src/sv_game.ts`: `SV_InitGameProgs` construit la table `imports: game_import_t`, branche chaque callback sur les procedures serveur/engine correspondantes, appelle `GetGameApiFunction(imports)`, controle `GAME_API_VERSION`, assigne `ge`, puis appelle `ge.Init()`.
+- Harness `scripts/verify/quake2-sv-game.ts` exerce la table capturee pendant cette session: print, center/unicast, configstring loading/game, sound/positioned_sound, link/unlink, BoxEdicts, trace, pointcontents, Write*, allocation, cvars, argc/argv/args, AddCommandString, DebugGraph, AreasConnected, SetAreaPortalState, inPVS/inPHS et error.
+- Harness `scripts/verify/quake2-game-header.ts` complete avec une preuve typee de la liste exhaustive des 44 cles `keyof game_import_t`.
+
+Integration:
+- Runtime: OK. `game_import_t` est atteignable depuis le flux serveur normal via `SV_InitGameProgs`, puis consomme par `GetGameApi`/`G_RunFrame`/callbacks gameplay pour ecrire configstrings, snapshots, sons, temp entities, collisions, Pmove, commandes et prints.
+- `apps/web`: OK. `apps/web/src/full-game-server-host.ts` instancie le runtime serveur porte, fournit `getGameApi: (imports) => GetGameApiFunction(imports, ...)`, et cree un runtime gameplay backe par `imports.trace`, `imports.pointcontents`, `imports.linkentity`, `imports.unlinkentity` et `imports.imageindex`; aucune logique web parallele ne remplace la table d'import principale.
+- `renderer-three`: OK indirectement. `game_import_t` ne rend rien directement, mais ses callbacks produisent des sorties visibles attendues: configstrings de modeles/images/sons, entites linkees, sounds, temp entities, muzzleflashes, areabits et snapshots. Ces sorties passent par le client full-game puis sont consommees par `packages/renderer-three` via `refreshFrame.entities`, brush models/configstrings, particules, beams, dlights, areabits, camera et scene.
+
+Tests lances:
+- `npm run verify:game:header` OK
+- `npm run verify:server:game` OK
+- `npm run verify:full-game:server-host` OK
+- `npm run verify:full-game:three-renderer` OK
+- `npm run typecheck` OK
+
+Corrections:
+- `scripts/verify/quake2-game-header.ts`: ajout d'une preuve typee des 44 callbacks de `game_import_t`.
+- Matrice `audit-portage/validation-incrementale/validation/matrices/game_game.h.md` mise a jour pour le lot.
+
+Prochain lot recommande:
+- `game_export_t`, puis `apiversion` si le lot reste petit.

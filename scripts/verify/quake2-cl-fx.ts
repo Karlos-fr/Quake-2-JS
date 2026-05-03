@@ -12,6 +12,7 @@ import {
   CL_AllocDlight,
   CL_BigTeleportParticles,
   CL_BlasterParticles,
+  CL_BlasterTrail,
   CL_BuildEntityEventEffects,
   CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
@@ -72,6 +73,7 @@ function main(): void {
   verifyBigTeleportTempEntityRuntimeBranch();
   verifyBlasterRuntimeParticles();
   verifyBlasterTempEntityRuntimeBranch();
+  verifyBlasterTrailRuntimeParticles();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyTeleporterEntityEventMetadata();
@@ -700,6 +702,46 @@ function verifyBlasterTempEntityRuntimeBranch(): void {
   assert.equal(burst.color, 0xe0, "blaster particle metadata should preserve color base");
   assert.ok(effects.some((effect) => effect.sound?.name === "weapons/lashit.wav"), "TE_BLASTER should preserve the original impact sound");
   assert.ok(effects.some((effect) => effect.light?.radius === 150), "TE_BLASTER should expose impact light metadata");
+}
+
+function verifyBlasterTrailRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 9750;
+  const start: vec3_t = [0, 0, 0];
+  const end: vec3_t = [13, 0, 0];
+  const randomUnit = 0.75;
+  const expectedCrand = (randomUnit * 2) - 1;
+
+  withMockRandom(randomUnit, () => {
+    CL_BlasterTrail(runtime, start, end);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_BlasterTrail should emit one particle per 5-unit step while len > 0");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_BlasterTrail particle time mismatch");
+  assert.ok(particles.every((particle) => particle.color === 0xe0), "CL_BlasterTrail color mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0), "CL_BlasterTrail alpha mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_BlasterTrail acceleration mismatch");
+  assert.ok(
+    particles.every((particle) => particle.vel[0] === expectedCrand * 5 && particle.vel[1] === expectedCrand * 5 && particle.vel[2] === expectedCrand * 5),
+    "CL_BlasterTrail velocity jitter mismatch"
+  );
+  const expectedAlphavel = -1.0 / (0.3 + (randomUnit * 0.2));
+  assert.ok(particles.every((particle) => almostEqual(particle.alphavel, expectedAlphavel)), "CL_BlasterTrail alpha decay mismatch");
+
+  const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
+  assert.deepEqual(emittedX, [0.5, 5.5, 10.5], "CL_BlasterTrail should advance move by the normalized vec * dec");
+  assert.ok(particles.every((particle) => particle.org[1] === 0.5 && particle.org[2] === 0.5), "CL_BlasterTrail origin jitter mismatch");
+
+  const metadata = CL_BlasterTrail(start, end);
+  assert.equal(metadata[0]?.kind, "blaster-trail", "CL_BlasterTrail metadata kind mismatch");
+  assert.deepEqual(metadata[0]?.position, start, "CL_BlasterTrail metadata start mismatch");
+  assert.deepEqual(metadata[0]?.position2, end, "CL_BlasterTrail metadata end mismatch");
+  assert.equal(metadata[0]?.color, 0xe0, "CL_BlasterTrail metadata color mismatch");
+  assert.equal(metadata[0]?.spacing, 5, "CL_BlasterTrail metadata spacing mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 3, "CL_BlasterTrail particles should reach the refresh particle list");
 }
 
 function verifyLightstyleManagement(): void {

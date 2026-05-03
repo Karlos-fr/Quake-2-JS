@@ -254,6 +254,18 @@ const angles: [number, number, number] = [0, -1, 0];
 G_SetMovedir(angles, movedir);
 assert.deepEqual(movedir, [0, 0, 1], "G_SetMovedir up mismatch");
 assert.deepEqual(angles, [0, 0, 0], "G_SetMovedir must clear source angles");
+const downMovedir: [number, number, number] = [0, 0, 0];
+const downAngles: [number, number, number] = [0, -2, 0];
+G_SetMovedir(downAngles, downMovedir);
+assert.deepEqual(downMovedir, [0, 0, -1], "G_SetMovedir down mismatch");
+assert.deepEqual(downAngles, [0, 0, 0], "G_SetMovedir must clear down sentinel angles");
+const forwardMovedir: [number, number, number] = [0, 0, 0];
+const forwardAngles: [number, number, number] = [0, 90, 0];
+G_SetMovedir(forwardAngles, forwardMovedir);
+assert.equal(Math.abs(forwardMovedir[0]) < 1e-12, true, "G_SetMovedir AngleVectors forward X mismatch");
+assert.equal(Math.abs(forwardMovedir[1] - 1) < 1e-12, true, "G_SetMovedir AngleVectors forward Y mismatch");
+assert.equal(Math.abs(forwardMovedir[2]) < 1e-12, true, "G_SetMovedir AngleVectors forward Z mismatch");
+assert.deepEqual(forwardAngles, [0, 0, 0], "G_SetMovedir must clear non-sentinel angles");
 
 assert.equal(vectoyaw([1, 1, 0]), 45, "vectoyaw mismatch");
 const convertedAngles = vectoangles([0, 1, 0]);

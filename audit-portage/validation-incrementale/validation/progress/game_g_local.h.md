@@ -1314,7 +1314,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:g-target` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_ai.ts`, `g_misc.ts`, `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_turret.ts`, `g_utils.ts` et `g_weapon.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/g_weapon.ts` pour les consommateurs armes non reserves.
+- Verdict: `Partiel` maintenu pour les 2 macros: les consommateurs `g_weapon.ts` du lot sont harmonises, mais d'autres consommateurs runtime restent disperses dans les modules game, player et monstres.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `g_weapon.c` consomme `random()` dans `check_dodge` et `Grenade_Touch`, et `crandom()` dans `fire_lead`, `fire_grenade` et `fire_grenade2`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `crandom` depend de `random` comme la macro C.
+  - `packages/game/src/g_weapon.ts`: `check_dodge`, `Grenade_Touch`, `fire_lead`, `fire_grenade` et `fire_grenade2` consomment maintenant les helpers proprietaires importes depuis `g_local.ts`; le helper local `crandom()` a ete supprime. Le helper `randomInt()` restant correspond aux `rand() % n` C, pas aux macros `random`/`crandom`.
+- Runtime: integration attendue et branchee pour ce sous-lot via les flux normaux armes/projectiles atteignables par `G_RunFrame`, touches projectiles et traces collision: esquive monstre easy-skill, sons de rebond grenade, dispersion balle/shotgun, jitter grenades. Les autres consommateurs runtime de `random`/`crandom` restent `Partiel`.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, temp entities, projectiles et ordre de rendu; aucune logique parallele web `g_weapon`/`random`/`crandom` detectee hors `randomInt` serveur distinct.
+- renderer-three: integration indirecte attendue. Les tirs, projectiles, impacts, temp entities, particules/debris et camera/scene produits en aval par `g_weapon.ts` restent consommes par le flux snapshots/client/refresh/Three; pas de consommation directe du helper par `renderer-three` attendue.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `check_dodge`, `Grenade_Touch`, `fire_lead`, `fire_grenade` et `fire_grenade2` verifies; aucun nouveau commentaire requis apres suppression du helper local.
+- Corrections appliquees:
+  - `packages/game/src/g_weapon.ts`: import de `random`/`crandom` depuis `g_local.ts`, remplacement des usages directs `Math.random()` du macro C et suppression du helper local `crandom()`.
+  - `scripts/verify/quake2-g-weapon.ts`: attentes deterministes ajustees pour la formule C-style 15-bit de `g_local.crandom`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:g-weapon` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_ai.ts`, `g_misc.ts`, `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_turret.ts` et `g_utils.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

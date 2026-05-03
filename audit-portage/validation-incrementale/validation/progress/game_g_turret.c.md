@@ -94,6 +94,18 @@
 - renderer-three: sorties visibles attendues indirectes via angles/origins, linkage brush/driver et futurs projectiles/sons; consommation par packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` confirme le flux renderer.
 - Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
 
+## Session 2026-05-03 - `SP_turret_driver`
+
+- Lot traite: `SP_turret_driver` uniquement.
+- Statut: valide.
+- Comparaison C/H vs TS: ownership confirme dans `packages/game/src/g_turret.ts`; nom conserve; branche deathmatch `G_FreeEdict`, `MOVETYPE_PUSH`, `SOLID_BBOX`, modele infantry, bbox, `health`, `gib_health`, `mass`, `viewheight`, callback `die`, `monsterinfo.stand`, `FL_NO_KNOCKBACK`, increment `total_monsters`, `SVF_MONSTER`, `RF_FRAMELERP`, `DAMAGE_AIM`, `monster_use`, `MASK_MONSTERSOLID`, copie `old_origin`, flags `AI_STAND_GROUND|AI_DUCKED`, item optionnel et think differe `turret_driver_link` conserves.
+- Commentaire d'en-tete: complete dans `packages/game/src/g_turret.ts` pour documenter l'adaptation du spawn-temp C `st.item` vers `properties.item`.
+- Correction test: `scripts/verify/quake2-g-turret.ts` couvre maintenant les champs du spawn, l'item valide/invalide, le warning bad item et la liberation en deathmatch hors zone d'edicts protegee.
+- Runtime: `SP_turret_driver` est declare dans `g_spawn.ts` pour classname `turret_driver`, donc atteignable via `ED_CallSpawn`; il installe `turret_driver_link` puis le flux continue via thinks executes depuis `G_RunFrame`/`runPendingThinks`.
+- apps/web: pas d'appel direct attendu; l'integration attendue passe par le runtime full-game/local, les snapshots serveur du driver et des brushes de tourelle, sans logique parallele web. `verify:full-game:server-host` et `verify:web-render-order` confirment ce flux.
+- renderer-three: sortie visible attendue via le modele MD2 infantry (`RF_FRAMELERP`) du driver, les entites brush associees et les futurs projectiles/sons du flux tourelle; consommation par packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` confirme le flux renderer.
+- Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+
 ## Prochain lot recommande
 
-Continuer avec `SP_turret_driver`.
+Clarifier la seconde ligne `attacker` encore `A verifier` dans la matrice.

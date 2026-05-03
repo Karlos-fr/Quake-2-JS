@@ -20,6 +20,7 @@ import {
   SOLID_BBOX,
   SOLID_TRIGGER,
   SVF_NOCLIENT,
+  ai_stand,
   actorFrames,
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -41,6 +42,17 @@ assert.deepEqual(
   ["Hellrot", "Tokay", "Killme", "Disruptor", "Adrianator", "Rambear", "Titus", "Bitterman"],
   "actor_names matches m_actor.c"
 );
+
+assert.equal(actorFrames.actor_frames_stand.length, 40, "actor_frames_stand has 40 C frames");
+for (const [index, frame] of actorFrames.actor_frames_stand.entries()) {
+  assert.equal(frame.aifunc, ai_stand, `actor_frames_stand[${index}] uses ai_stand`);
+  assert.equal(frame.dist, 0, `actor_frames_stand[${index}] distance`);
+  assert.equal(frame.thinkfunc, undefined, `actor_frames_stand[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_stand.firstframe, actorFrames.FRAME_stand101, "actor_move_stand firstframe");
+assert.equal(actorFrames.actor_move_stand.lastframe, actorFrames.FRAME_stand140, "actor_move_stand lastframe");
+assert.equal(actorFrames.actor_move_stand.frame, actorFrames.actor_frames_stand, "actor_move_stand frame table");
+assert.equal(actorFrames.actor_move_stand.endfunc, undefined, "actor_move_stand endfunc");
 
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";
@@ -69,6 +81,23 @@ assert.equal((actor.monsterinfo.aiflags & AI_GOOD_GUY) !== 0, true, "misc_actor 
 assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_stand, "misc_actor stand move");
 assert.equal(actor.monsterinfo.scale, actorFrames.MODEL_SCALE, "misc_actor scale");
 assert.equal(typeof actor.use, "function", "misc_actor use callback");
+
+const originalRandom = Math.random;
+try {
+  Math.random = () => 0.5;
+  runtime.time = 0;
+  actor.s.frame = 0;
+  actorFrames.actor_stand(actor, runtime);
+  assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_stand, "actor_stand selects stand move");
+  assert.equal(actor.s.frame, actorFrames.FRAME_stand101 + 20, "actor_stand randomizes startup frame inside stand span");
+
+  runtime.time = 1;
+  actor.s.frame = 1234;
+  actorFrames.actor_stand(actor, runtime);
+  assert.equal(actor.s.frame, 1234, "actor_stand preserves frame after startup window");
+} finally {
+  Math.random = originalRandom;
+}
 
 actor.use?.(actor, player, player, runtime);
 assert.equal(actor.movetarget, path, "actor_use picks target_actor");

@@ -33,7 +33,7 @@
 | `Quake-2-master/game/game.h` | global | `solid` | `packages/game/src/game.ts` | `GameEdictServerFields.solid` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `clipmask` | `packages/game/src/game.ts` | `GameEdictServerFields.clipmask` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `owner` | `packages/game/src/game.ts` | `GameEdictServerFields.owner` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `game_import_t` | `packages/game/src/game.ts` | `game_import_t` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `game_import_t` | `packages/game/src/game.ts` | `game_import_t` | Valide | A redecouper | Preuves session: callbacks C compares, entete verifie, branchement `SV_InitGameProgs`/`GetGameApi` exerce; tests `verify:game:header`, `verify:server:game`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck` OK. Correction: `scripts/verify/quake2-game-header.ts`. |
 | `Quake-2-master/game/game.h` | struct | `game_export_t` | `packages/game/src/game.ts` | `game_export_t` | A verifier | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `apiversion` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `edict_size` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |

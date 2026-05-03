@@ -3,17 +3,17 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `MAX_ACTOR_NAMES` et `actor_names`
-- Verdict: `Valide` pour les deux entrees
+- Dernier lot traite: bloc stand `actor_frames_stand`, `actor_move_stand`, `actor_stand`
+- Verdict: `Valide` pour les six entrees de matrice du lot
 
 ## Checklist appliquee au lot
 
-- Identification: macro et global proprietaires de `game/m_actor.c`, cibles dans `packages/game/src/m_actor.ts`, exports accessibles via `actorFrames`.
-- Comparaison C vs TS: `MAX_ACTOR_NAMES` vaut `8`; `actor_names` conserve les huit noms C dans le meme ordre.
-- Commentaires d'en-tete: pas de commentaire de fonction requis pour ce lot declaratif; le commentaire de fichier `m_actor.ts` documente le port et les deviations runtime.
-- Runtime: usage verifie via `actorNameForEntity`, appele par `actor_pain` et `target_actor_touch`; flux atteignable par spawn `misc_actor`/`target_actor`, callbacks `use`/`touch`, `G_RunFrame` et le runtime full-game/local.
-- apps/web: pas de logique parallele attendue pour la table; le web consomme les sorties chat et entites via le host full-game/local.
-- renderer-three: la table ne produit pas directement de modele/frame/particule/dlight; les sorties visibles de l'acteur passent par l'entite `misc_actor` et les snapshots, couverts par le test renderer full-game.
+- Identification: `actor_frames_stand` global/table/declarative, `actor_move_stand`, et les deux lignes dupliquees `actor_stand` sont proprietaires de `game/m_actor.c`, cibles dans `packages/game/src/m_actor.ts`, exports accessibles via `actorFrames`.
+- Comparaison C vs TS: les 40 frames C `ai_stand, 0, NULL` correspondent a `makeFrames(ai_stand, new Array<number>(40).fill(0))`; `actor_move_stand` conserve `FRAME_stand101` a `FRAME_stand140`, la table stand et `NULL`/`undefined` en `endfunc`; `actor_stand` affecte `currentmove` puis randomise `s.frame` pendant `runtime.time < 1.0` dans le meme intervalle inclusif que le C.
+- Commentaires d'en-tete: commentaire de `actor_stand` verifie (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement); pas de commentaire de fonction requis pour les donnees declaratives, le commentaire de fichier documente le port.
+- Runtime: branchement verifie depuis `SP_misc_actor` (`monsterinfo.stand = actor_stand`, `currentmove = actor_move_stand`) et depuis `walkmonster_start`/`g_monster.ts` via `monsterinfo.stand?.(self, runtime)`, atteignable par spawn `misc_actor`, host full-game et frame runtime.
+- apps/web: pas de logique parallele attendue pour ce bloc gameplay; `apps/web` doit declencher le flux via le host full-game/local et consommer les snapshots/refresh issus du runtime, couvert par `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order`.
+- renderer-three: le bloc stand produit une sortie visible indirecte (`s.modelindex`/`s.frame` de `misc_actor`); consommation attendue via snapshots client, `V_AddPacketEntities`/refresh entities, puis alias MD2 frame dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert dans ce lot.
 
 ## Tests de reference
 
@@ -26,8 +26,9 @@
 
 ## Prochain lot recommande
 
-Valider le bloc stand: `actor_frames_stand` (lignes global/table dupliquees), `actor_move_stand`, puis `actor_stand` si le lot reste petit.
+Valider le bloc walk: `actor_frames_walk` (lignes global/table/declarative), `actor_move_walk`, puis `actor_walk` si le lot reste petit.
 
 ## Blocages / decisions
 
 - La matrice contient des doublons `global`/`table` pour les tableaux de frames; les traiter ensemble par bloc d'animation.
+- La matrice contient aussi une ligne dupliquee `actor_stand`; les deux lignes ont ete validees ensemble avec la meme preuve.

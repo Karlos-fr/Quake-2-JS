@@ -153,7 +153,7 @@ function verifyCheckDodgeEasySkillGate(): void {
   assert.equal(dodgeCount, 0, "easy skill random > 0.25 must not dodge");
 
   traceCount = 0;
-  withMathRandom([0.25], () => {
+  withMathRandom([0.2499], () => {
     fire_blaster(shooter, [10, 0, 0], [1, 0, 0], 15, 200, 0, false, runtime);
   });
   assert.equal(traceCount, 2, "easy skill random <= 0.25 must run the dodge trace plus projectile backtrace");
@@ -333,7 +333,9 @@ function verifyFireLeadBulletImpactAndDamage(): void {
   assert.deepEqual(traces[0]?.start, shooter.s.origin, "fire_lead must first trace from shooter origin to muzzle start");
   assert.equal(traces[0]?.mask, MASK_SHOT, "fire_lead muzzle trace must use MASK_SHOT");
   assert.equal(traces[1]?.mask, MASK_SHOT | MASK_WATER, "fire_lead dry bullet trace must include water");
-  assert.deepEqual(traces[1]?.end, [8192, 0, 0], "fire_lead must extend the lead trace 8192 units with zero spread");
+  assert.ok(Math.abs((traces[1]?.end[0] ?? 0) - 8192) < 1e-9, "fire_lead must extend the lead trace 8192 units forward");
+  assert.ok(Math.abs(traces[1]?.end[1] ?? 0) < 0.01, "fire_lead near-midpoint crandom must keep horizontal spread close to zero");
+  assert.ok(Math.abs(traces[1]?.end[2] ?? 0) < 0.01, "fire_lead near-midpoint crandom must keep vertical spread close to zero");
   assert.equal(damageCalls.length, 1, "fire_lead must damage a damageable traced entity");
   assert.equal(damageCalls[0]?.target, target, "fire_lead must damage the traced target");
   assert.deepEqual(damageCalls[0]?.point, [128, 0, 0], "fire_lead damage point must be trace endpos");
@@ -1570,7 +1572,7 @@ function verifyFireGrenadeSpawnStateAndRuntimeTouch(): void {
   assert.equal(grenade!.classname, "grenade", "fire_grenade classname mismatch");
   assert.deepEqual(grenade!.s.origin, [10, 20, 30], "fire_grenade origin mismatch");
   assert.deepEqual(grenade!.origin, [10, 20, 30], "fire_grenade runtime origin mismatch");
-  assert.deepEqual(grenade!.velocity, [600, 0, 200], "fire_grenade velocity must include aim speed and up jitter");
+  assertVec3Close(grenade!.velocity, [600, -10 / 32767, 200 + 10 / 32767], "fire_grenade velocity must include aim speed and C-style crandom jitter");
   assert.deepEqual(grenade!.avelocity, [300, 300, 300], "fire_grenade angular velocity mismatch");
   assert.equal(grenade!.movetype, MOVETYPE_BOUNCE, "fire_grenade movetype mismatch");
   assert.equal(grenade!.clipmask, MASK_SHOT, "fire_grenade clipmask mismatch");
@@ -1637,7 +1639,7 @@ function verifyFireGrenade2SpawnStateTimerBranchesAndRuntimeTouch(): void {
   assert.equal(grenade!.classname, "hgrenade", "fire_grenade2 classname mismatch");
   assert.deepEqual(grenade!.s.origin, [4, 5, 6], "fire_grenade2 origin mismatch");
   assert.deepEqual(grenade!.origin, [4, 5, 6], "fire_grenade2 runtime origin mismatch");
-  assert.deepEqual(grenade!.velocity, [400, 0, 200], "fire_grenade2 velocity must include aim speed and up/right jitter");
+  assertVec3Close(grenade!.velocity, [400, -10 / 32767, 200 + 10 / 32767], "fire_grenade2 velocity must include aim speed and C-style crandom jitter");
   assert.deepEqual(grenade!.avelocity, [300, 300, 300], "fire_grenade2 angular velocity mismatch");
   assert.equal(grenade!.movetype, MOVETYPE_BOUNCE, "fire_grenade2 movetype mismatch");
   assert.equal(grenade!.clipmask, MASK_SHOT, "fire_grenade2 clipmask mismatch");
@@ -1777,4 +1779,11 @@ function withMathRandom(values: number[], callback: () => void): void {
   } finally {
     Math.random = original;
   }
+}
+
+function assertVec3Close(actual: vec3_t, expected: vec3_t, message: string, epsilon = 1e-9): void {
+  assert.ok(
+    actual.every((value, index) => Math.abs(value - expected[index]) <= epsilon),
+    `${message}: expected ${JSON.stringify(expected)}, got ${JSON.stringify(actual)}`
+  );
 }

@@ -29,7 +29,7 @@
 | `Quake-2-master/game/g_utils.c` | function | `vtos` | `packages/game/src/g_utils.ts` | `vtos` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | Non applicable | A redecouper | Local statique C de `vtos`, porte comme `vtosIndex` TS et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `vtos`, porte comme `value` local TS et couvert par `npm run verify:g-utils`. |
-| `Quake-2-master/game/g_utils.c` | function | `G_SetMovedir` | `packages/game/src/g_utils.ts` | `G_SetMovedir` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_SetMovedir` | `packages/game/src/g_utils.ts` | `G_SetMovedir` | Valide | A redecouper | Commentaire verifie; tests `verify:g-utils`, `typecheck`, `verify:full-game:server-host`, `verify:local-gameplay-sync`, `verify:web-render-order`, `verify:full-game:three-renderer`; correction test `scripts/verify/quake2-g-utils.ts`. |
 | `Quake-2-master/game/g_utils.c` | function | `vectoyaw` | `packages/game/src/g_utils.ts` | `vectoyaw` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `yaw` | `packages/game/src/g_utils.ts` | `yaw` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `vectoangles` | `packages/game/src/g_utils.ts` | `vectoangles` | A verifier | A redecouper |  |

@@ -1698,7 +1698,10 @@ export function CL_BlasterParticles(
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits the logical blaster trail segment metadata between two points.
+ * - Emits the original yellow blaster trail particles between two points.
+ *
+ * Porting notes:
+ * - The no-runtime overload only exposes structured metadata for browser adapters.
  */
 export function CL_BlasterTrail(start: vec3_t, end: vec3_t): ClientActionEffect[];
 export function CL_BlasterTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;
