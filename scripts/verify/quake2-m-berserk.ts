@@ -304,10 +304,19 @@ function verifySightSearchSounds(): void {
   const berserk = createBerserk(runtime, 5);
   SP_monster_berserk(berserk, runtime);
 
+  assert.equal(berserk.monsterinfo.sight, berserk_sight);
+  assert.equal(berserk.monsterinfo.search, berserk_search);
+
   berserk_sight(berserk, null, runtime);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "berserk/sight.wav");
 
   berserk_search(berserk, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "berserk/bersrch1.wav");
+
+  berserk.monsterinfo.sight!(berserk, null, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "berserk/sight.wav");
+
+  berserk.monsterinfo.search!(berserk, runtime);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "berserk/bersrch1.wav");
 }
 

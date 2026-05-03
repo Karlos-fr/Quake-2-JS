@@ -388,3 +388,42 @@ Corrections:
 
 Prochain lot recommande:
 - `GetGameApi` seul.
+
+## Session 2026-05-03 - GetGameApi
+
+Lot traite:
+- `GetGameApi`
+
+Verdict:
+- `Valide` pour `GetGameApi`.
+
+Preuves:
+- Source H lue dans `Quake-2-master/game/game.h`: declaration serveur-visible `game_export_t *GetGameApi (game_import_t *import)`.
+- Source C lue dans `Quake-2-master/game/g_main.c`: implementation historique `GetGameAPI` copie `*import` dans `gi`, remplit la table `globals` avec `GAME_API_VERSION`, callbacks init/save/client/frame/commande, `edict_size`, puis retourne `&globals`.
+- Port TS proprietaire lu dans `packages/game/src/game.ts`: `GetGameApi` est le contrat callable `(imports: game_import_t) => game_export_t`.
+- Implementation TS lue dans `packages/game/src/g_main.ts`: `GetGameApi(imports, options)` cree un contexte explicite avec les imports, retourne la table `game_export_t`, branche les callbacks portes, et expose `edicts`, `edict_size`, `num_edicts` et `max_edicts` via le runtime.
+- Commentaires d'en-tete verifies et enrichis dans `packages/game/src/game.ts` et `packages/game/src/g_main.ts` pour documenter le split contrat `game.h` / implementation `g_main.c` et la difference de casse `GetGameApi` / `GetGameAPI`.
+- `scripts/verify/quake2-game-header.ts` prouve maintenant explicitement que `GetGameApi` reste un contrat callable `game_import_t -> game_export_t`; `scripts/verify/quake2-g-main.ts` exerce la table runtime produite par l'implementation.
+
+Integration:
+- Runtime: OK. `GetGameApi` est atteint depuis `SV_InitGameProgs`, qui construit `game_import_t`, appelle `GetGameApiFunction`, verifie `apiversion`, installe `ge`, puis appelle `ge.Init()`. Les callbacks exportes sont ensuite consommes par les flux serveur normaux (`SV_Frame`, chargement de map, saves, connexions client, commandes, snapshots).
+- `apps/web`: OK. `apps/web/src/full-game-server-host.ts` fournit `getGameApi: (imports) => GetGameApiFunction(imports, ...)` au runtime serveur full-game; le flux navigateur declenche donc la table portee et ne remplace pas cette logique par un chemin parallele.
+- `renderer-three`: OK indirectement. `GetGameApi` ne produit pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene, mais ses callbacks gameplay produisent les edicts, configstrings, sons/temp entities, playerstate et snapshots consommes par le client puis par `packages/renderer-three`.
+
+Tests lances:
+- `npm run verify:game:header` OK
+- `npm run verify:g-main` OK
+- `npm run verify:server:game` OK
+- `npm run verify:full-game:server-host` OK
+- `npm run verify:full-game:three-renderer` OK
+- `npm run typecheck` OK
+
+Corrections:
+- `packages/game/src/game.ts`: commentaire du type `GetGameApi` enrichi pour préciser le contrat header et l'implementation `g_main.ts`.
+- `packages/game/src/g_main.ts`: commentaire de `GetGameApi` enrichi pour préciser le nom C `GetGameAPI` et le symbole TS aligné sur `game.h`.
+- `scripts/verify/quake2-game-header.ts`: preuve typee ajoutee pour le contrat callable `GetGameApi`.
+- Matrice `audit-portage/validation-incrementale/validation/matrices/game_game.h.md` mise a jour pour le lot.
+- `audit-portage/validation-incrementale/validation/AVANCEMENT_GLOBAL.md` marque `game.h` termine.
+
+Prochain lot recommande:
+- Aucun lot restant dans `game_game.h.md`: toutes les lignes sont `Valide`. Reprendre le prochain fichier prioritaire depuis `AVANCEMENT_GLOBAL.md`.

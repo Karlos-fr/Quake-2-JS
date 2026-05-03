@@ -275,6 +275,9 @@ export interface game_export_t {
  *
  * Behavior:
  * - Names the gameplay factory function expected by the Quake II server.
+ *
+ * Porting notes:
+ * - `game.h` declares this server-visible contract; the owning implementation is the `g_main.c` port in `g_main.ts`.
  */
 export type GetGameApi = (imports: game_import_t) => game_export_t;
 

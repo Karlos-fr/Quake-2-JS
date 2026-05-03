@@ -1386,7 +1386,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:g-turret` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_items.ts`, `g_monster.ts` ou les modules `p_*`), puis reprendre `g_utils.ts` quand il ne sera plus reserve. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/g_monster.ts` pour les consommateurs monstres partages.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `g_monster.ts` est harmonise pour `random`, aucun consommateur `crandom` n'existe dans `g_monster.c`/`g_monster.ts`, mais d'autres consommateurs runtime restent disperses dans `g_items.ts`, `p_*`, `m_*`, `m_move.ts` et `g_utils.ts`.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `g_monster.c` consomme `random()` dans `M_FlyCheck` pour le choix et le delai des mouches de cadavre, et dans `M_WorldEffects` pour le choix `lava1`/`lava2`; aucun appel `crandom()` dans ce fichier. Le tirage `rand() % span` de `monster_start` est hors macro et reste hors lot.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15-bit et `crandom` depend de `random`.
+  - `packages/game/src/g_monster.ts`: `M_FlyCheck` et `M_WorldEffects` consomment maintenant le helper proprietaire `random` importe depuis `g_local.ts`; le tirage frame `monster_start` reste un equivalent `rand() % span`, non traite comme macro `random`.
+- Runtime: integration attendue et branchee pour ce sous-lot via `monster_think`/`G_RunEntity` et les callbacks de cadavres/effets monde: planification `M_FliesOn`, son de boucle de mouches, degats lave/slime/eau et son d'entree lave. Les autres consommateurs runtime de `random`/`crandom` restent `Partiel`.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons gameplay et ordre de rendu; aucune logique parallele web `g_monster`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages `g_monster.ts` produisent des sorties visibles/audibles via effets `EF_FLIES`, sons de monde, et etats monstres consommes en aval par snapshots/client/refresh/Three; pas de consommation directe du helper par `renderer-three` attendue.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom`, `M_FlyCheck`, `M_WorldEffects`, `M_FliesOn`, `M_FliesOff` et `monster_start` verifies; aucun nouveau commentaire requis.
+- Corrections appliquees:
+  - `packages/game/src/g_monster.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C `random()`.
+  - `scripts/verify/quake2-g-monster.ts`: attentes deterministes ajustees pour la formule C-style 15-bit de `g_local.random`, y compris delai `M_FlyCheck` et choix son lave.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:g-monster` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `p_weapon.ts`, `p_client.ts`, `p_hud.ts`, `g_items.ts` ou une petite famille `m_*`), puis reprendre `g_utils.ts` quand il ne sera plus reserve. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: bloc pain1 `actor_frames_pain1`, `actor_move_pain1`
+- Dernier lot traite: bloc pain2 `actor_frames_pain2`, `actor_move_pain2`
 - Verdict: `Valide` pour les quatre entrees de matrice du lot
 
 ## Checklist appliquee au lot
@@ -45,9 +45,20 @@
 - renderer-three: le bloc pain1 produit une sortie visible indirecte (`s.modelindex`/`s.frame` de `misc_actor` pendant l'animation de douleur); consommation attendue via snapshots client, refresh entities, puis alias MD2 frame dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert dans ce lot.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts`.
 
+## Session 2026-05-03 - bloc pain2
+
+- Identification: `actor_frames_pain2` global/table/declarative et `actor_move_pain2` sont proprietaires de `game/m_actor.c`, cibles dans `packages/game/src/m_actor.ts`, exports accessibles via `actorFrames`.
+- Comparaison C vs TS: les 3 frames C `ai_move` conservent les distances `[-4, 4, 0]` et `NULL`/`undefined` pour `thinkfunc`; `actor_move_pain2` conserve `FRAME_pain201` a `FRAME_pain203`, la table pain2 et `actor_run` en `endfunc`.
+- Commentaires d'en-tete: pas de commentaire de fonction requis pour les donnees declaratives; le commentaire de fichier documente le port, et `actor_run` a deja un commentaire d'en-tete verifie comme endfunc cible.
+- Runtime: branchement attendu et verifie depuis `actor_pain` (`n == 1` selectionne `actor_move_pain2`) puis progression par `M_MoveFrame`, qui execute `actor_run` en fin de mouvement; atteignable par spawn `misc_actor`, callback `self.pain = actor_pain`, degats runtime et frame serveur.
+- apps/web: pas de logique parallele attendue pour ce bloc gameplay; `apps/web` doit declencher le flux via le host full-game/local et consommer les snapshots/refresh issus du runtime, couvert par `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order`.
+- renderer-three: le bloc pain2 produit une sortie visible indirecte (`s.modelindex`/`s.frame` de `misc_actor` pendant l'animation de douleur); consommation attendue via snapshots client, refresh entities, puis alias MD2 frame dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert dans ce lot.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts`.
+
 ## Tests de reference
 
 - `npm run verify:m-actor`
+- `npm run verify:m-actor:header`
 - `npm run verify:local-gameplay-sync`
 - `npm run verify:full-game:server-host`
 - `npm run verify:web-render-order`
@@ -56,7 +67,7 @@
 
 ## Prochain lot recommande
 
-Valider le bloc pain2: `actor_frames_pain2` (lignes global/table/declarative) et `actor_move_pain2`, en gardant `actor_pain` pour un lot separe si le bloc devient trop large.
+Valider le bloc pain3: `actor_frames_pain3` (lignes global/table/declarative) et `actor_move_pain3`, en gardant `actor_pain` pour un lot separe.
 
 ## Blocages / decisions
 

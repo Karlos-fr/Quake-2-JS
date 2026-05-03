@@ -71,6 +71,7 @@ import {
   MOD_SLIME,
   MOD_UNKNOWN,
   MOD_WATER,
+  random,
   damage_t
 } from "./g_local.js";
 import { FoundTarget, M_CheckAttack } from "./g_ai.js";
@@ -338,12 +339,12 @@ export function M_FlyCheck(self: GameEntity, runtime: GameRuntime): void {
     return;
   }
 
-  if (Math.random() > 0.5) {
+  if (random() > 0.5) {
     return;
   }
 
   self.think = M_FliesOn;
-  self.nextthink = runtime.time + 5 + (10 * Math.random());
+  self.nextthink = runtime.time + 5 + (10 * random());
 }
 
 /**
@@ -511,7 +512,7 @@ export function M_WorldEffects(ent: GameEntity, runtime: GameRuntime): void {
   if ((ent.flags & FL_INWATER) === 0) {
     if ((ent.svflags & SVF_DEADMONSTER) === 0) {
       if ((ent.watertype & CONTENTS_LAVA) !== 0) {
-        emitGameSound(runtime, ent, Math.random() <= 0.5 ? "player/lava1.wav" : "player/lava2.wav");
+        emitGameSound(runtime, ent, random() <= 0.5 ? "player/lava1.wav" : "player/lava2.wav");
       } else if ((ent.watertype & CONTENTS_SLIME) !== 0) {
         emitGameSound(runtime, ent, "player/watr_in.wav");
       } else if ((ent.watertype & CONTENTS_WATER) !== 0) {

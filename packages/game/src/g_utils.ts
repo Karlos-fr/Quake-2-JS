@@ -21,7 +21,6 @@ import {
   DEAD_DEAD,
   SVF_MONSTER,
   Think_Delay,
-  createMonsterInfo,
   emitGameCenterprint,
   emitRegisteredGameSound,
   freeGameEntity,
@@ -522,14 +521,16 @@ export function G_CopyString(inValue: string): string {
  *
  * Behavior:
  * - Reinitializes one edict slot to the gameplay defaults expected by later allocation paths.
+ *
+ * Porting notes:
+ * - Matches the original narrow mutation set; full slot clearing is handled by
+ *   `freeGameEntity`/allocation before this initializer is called.
  */
 export function G_InitEdict(entity: GameEntity): void {
   entity.inuse = true;
   entity.classname = "noclass";
   entity.gravity = 1.0;
   entity.s.number = entity.index;
-  entity.freetime = -1;
-  entity.monsterinfo = createMonsterInfo();
 }
 
 /**

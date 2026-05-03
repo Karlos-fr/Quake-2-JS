@@ -502,6 +502,9 @@ export function ExitLevel(context: GameMainContext): void {
  *
  * Behavior:
  * - Builds the gameplay export table expected by the Quake II server and closes it over one explicit TS context.
+ *
+ * Porting notes:
+ * - The original C implementation is named `GetGameAPI`; the exported TS symbol matches the `game.h` declaration spelling.
  */
 export function GetGameApi(imports: game_import_t, options: GameMainContextOptions = {}): game_export_t {
   const context = createGameMainContext(imports, options);

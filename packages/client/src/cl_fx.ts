@@ -1864,6 +1864,9 @@ export function CL_DiminishingTrail(
  *
  * Behavior:
  * - Builds orthogonal right/up vectors from one normalized forward vector.
+ *
+ * Porting notes:
+ * - The C local `d` is the dot product used to remove the forward projection from `right`.
  */
 export function MakeNormalVectors(forward: vec3_t): { right: vec3_t; up: vec3_t } {
   const right: vec3_t = [forward[2], -forward[0], forward[1]];

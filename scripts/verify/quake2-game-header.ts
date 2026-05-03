@@ -23,6 +23,7 @@ import {
 import type {
   edict_s,
   edict_t,
+  GetGameApi,
   GameClientServerFields,
   GameEdictServerFields,
   game_export_t,
@@ -124,6 +125,10 @@ const gameExportKeys = [
 assert.equal(gameExportKeys.length, 20, "game_export_t must expose every field declared in game/game.h");
 const apiVersionExport: Pick<game_export_t, "apiversion"> = { apiversion: GAME_API_VERSION };
 assert.equal(apiVersionExport.apiversion, 3, "game_export_t.apiversion must carry GAME_API_VERSION from game/game.h");
+const getGameApiContract: GetGameApi = (_imports: game_import_t): game_export_t => {
+  throw new Error("contract-only GetGameApi harness should not be invoked");
+};
+assert.equal(typeof getGameApiContract, "function", "GetGameApi must remain a game_import_t -> game_export_t callable contract");
 
 const sourceNamedClient: gclient_s = client;
 const typedefClient: gclient_t = sourceNamedClient;

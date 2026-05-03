@@ -313,6 +313,21 @@ assert.equal(G_CopyString("quake"), "quake", "G_CopyString mismatch");
 assert.equal(G_CopyString(""), "", "G_CopyString must preserve empty strings like strcpy");
 assert.equal(G_CopyString("line\nbreak"), "line\nbreak", "G_CopyString must preserve copied string contents exactly");
 
+const initProbe = createRuntimeEntity({ classname: "oldclass", gravity: "0.25" }, 17);
+initProbe.inuse = false;
+initProbe.freetime = 12.25;
+initProbe.s.number = 999;
+initProbe.monsterinfo.aiflags = 123;
+const initMonsterInfo = initProbe.monsterinfo;
+G_InitEdict(initProbe);
+assert.equal(initProbe.inuse, true, "G_InitEdict must mark the edict in use");
+assert.equal(initProbe.classname, "noclass", "G_InitEdict must set classname to noclass");
+assert.equal(initProbe.gravity, 1, "G_InitEdict must reset gravity to 1.0");
+assert.equal(initProbe.s.number, 17, "G_InitEdict must derive s.number from the edict slot index");
+assert.equal(initProbe.freetime, 12.25, "G_InitEdict must not clear freetime; G_FreeEdict owns that field");
+assert.equal(initProbe.monsterinfo, initMonsterInfo, "G_InitEdict must not replace embedded monsterinfo");
+assert.equal(initProbe.monsterinfo.aiflags, 123, "G_InitEdict must preserve non-owned edict fields");
+
 const reusable = createRuntimeEntity({}, 3);
 reusable.inuse = false;
 reusable.freetime = 0;

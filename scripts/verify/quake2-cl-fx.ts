@@ -27,6 +27,7 @@ import {
   CL_FlagTrail,
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
+  MakeNormalVectors,
   CL_NewDlight,
   CL_ParticleEffect,
   CL_ParticleEffect2,
@@ -86,6 +87,7 @@ function main(): void {
   verifyQuadTrailRuntimeParticles();
   verifyFlagTrailRuntimeParticles();
   verifyDiminishingTrailRuntimeParticles();
+  verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyTeleporterEntityEventMetadata();
@@ -947,6 +949,26 @@ function verifyDiminishingTrailRuntimeParticles(): void {
   assert.ok(collectActiveParticles(greengibRuntime).every((particle) => particle.color >= 0xdb && particle.color <= 0xe2), "EF_GREENGIB should use the green gib palette");
 }
 
+function verifyMakeNormalVectors(): void {
+  const forward: vec3_t = [3 / 13, 4 / 13, 12 / 13];
+  const { right, up } = MakeNormalVectors(forward);
+
+  assert.ok(almostEqual(vectorLength(right), 1), "MakeNormalVectors should normalize the projected right vector");
+  assert.ok(almostEqual(dotProduct(right, forward), 0), "MakeNormalVectors right vector should be orthogonal to forward");
+  assert.ok(almostEqual(dotProduct(up, forward), 0), "MakeNormalVectors up vector should be orthogonal to forward");
+  assert.ok(almostEqual(dotProduct(up, right), 0), "MakeNormalVectors up vector should be orthogonal to right");
+  assert.deepEqual(
+    right.map((component) => Number(component.toFixed(12))),
+    [0.911633870904, -0.399971814221, -0.094584529652],
+    "MakeNormalVectors should preserve the C rotate/project/normalize calculation"
+  );
+  assert.deepEqual(
+    up.map((component) => Number(component.toFixed(12))),
+    [-0.340101819388, -0.863335387677, 0.372803917406],
+    "MakeNormalVectors should preserve CrossProduct(right, forward, up)"
+  );
+}
+
 function verifyLightstyleManagement(): void {
   const runtime = createRuntime();
 
@@ -1148,4 +1170,12 @@ function withMockRandom<T>(value: number, callback: () => T): T {
 
 function almostEqual(actual: number, expected: number, epsilon = 1e-12): boolean {
   return Math.abs(actual - expected) <= epsilon;
+}
+
+function dotProduct(a: vec3_t, b: vec3_t): number {
+  return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
+}
+
+function vectorLength(vector: vec3_t): number {
+  return Math.sqrt(dotProduct(vector, vector));
 }

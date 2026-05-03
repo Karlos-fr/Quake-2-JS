@@ -871,7 +871,11 @@ function verifyCorpseFlyScheduling(): void {
   }
 
   assert.equal(monster.think, M_FliesOn, "M_FlyCheck should schedule M_FliesOn when random allows it");
-  assert.equal(monster.nextthink, 24.5, "M_FlyCheck should delay flies by 5 + 10 * random seconds");
+  assert.equal(
+    monster.nextthink,
+    12 + 5 + (10 * quake2RandomFromMathRandom(0.75)),
+    "M_FlyCheck should delay flies by 5 + 10 * g_local.random seconds"
+  );
 
   M_FliesOn(monster, runtime);
   assert.equal((monster.s.effects & EF_FLIES) !== 0, true, "M_FliesOn should set EF_FLIES");
@@ -1162,16 +1166,17 @@ function verifyMWorldEffectsDamageAndSounds(): void {
   const lava = createDamageableMonster(runtime, 34);
   lava.waterlevel = 2;
   lava.watertype = CONTENTS_LAVA;
-  M_WorldEffects(lava, runtime);
+  const restoreLavaRandom = replaceMathRandom([0.25]);
+  try {
+    M_WorldEffects(lava, runtime);
+  } finally {
+    restoreLavaRandom();
+  }
   assert.equal(lava.health, 80, "M_WorldEffects should apply 10 damage per lava waterlevel");
   assert.equal(lava.damage_debounce_time, 0, "M_WorldEffects should reset damage debounce after first water entry like the C source");
   assert.equal(runtime.meansOfDeath, MOD_LAVA, "M_WorldEffects lava damage should use MOD_LAVA");
   const lavaSounds = drainGameSoundEvents(runtime).map((sound) => sound.soundPath);
-  assert.equal(
-    lavaSounds.some((soundPath) => soundPath === "player/lava1.wav" || soundPath === "player/lava2.wav"),
-    true,
-    "M_WorldEffects should emit one original lava entry sound"
-  );
+  assert.equal(lavaSounds.at(-1), "player/lava1.wav", "M_WorldEffects lava sound should use g_local.random and preserve the C threshold");
 
   runtime.time = 40;
   const slime = createDamageableMonster(runtime, 35);
@@ -1646,4 +1651,8 @@ function replaceMathRandom(values: number[]): () => void {
   return () => {
     Math.random = original;
   };
+}
+
+function quake2RandomFromMathRandom(value: number): number {
+  return Math.floor(value * 0x8000) / 0x7fff;
 }

@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `G_CopyString` / `out`.
-- Verdict du lot: valide (`out` est un local C non applicable comme entite autonome).
+- Dernier lot traite: `G_InitEdict`.
+- Verdict du lot: valide.
 
 ## Preuves session
 
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `G_InitEdict`. La ligne globale `v` restante pointe vers `g_weapon.ts`; elle doit etre clarifiee dans un lot separe sans melanger les ownerships.
+- Continuer avec `G_Spawn` seul. Garder les lignes locales `i`/`e`, la ligne globale `v`, `vectoyaw` et `vectoangles` pour des lots separes sans melanger les ownerships.
 
 ## Session - findradius / j
 
@@ -249,6 +249,28 @@ Session `vectoangles` / `forward` / `pitch` / `yaw`:
 - Correction appliquee: `packages/game/src/g_utils.ts` documente `out`/`TAG_LEVEL`; `scripts/verify/quake2-g-utils.ts` couvre la preservation de chaine normale, vide et avec nouvelle ligne.
 
 Session `G_CopyString` / `out`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+
+## Session - G_InitEdict
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- Declaration H comparee: `Quake-2-master/game/g_local.h`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete verifie et complete sur `G_InitEdict` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`).
+- Comparaison C/TS `G_InitEdict`: le C pose uniquement `inuse = true`, `classname = "noclass"`, `gravity = 1.0` et `s.number = e - g_edicts`; le port TS pose maintenant uniquement `inuse`, `classname`, `gravity` et `s.number = entity.index`.
+- Correction appliquee: `packages/game/src/g_utils.ts` ne remet plus `freetime` a `-1` et ne remplace plus `monsterinfo`; ces nettoyages appartiennent a `G_FreeEdict`/`freeGameEntity` et a l'allocation du slot, pas a `G_InitEdict`.
+- Tests ajoutes: `scripts/verify/quake2-g-utils.ts` couvre les quatre champs modifies par `G_InitEdict` et prouve que `freetime`/`monsterinfo` restent preserves.
+- Runtime verifie: `G_InitEdict` est atteint depuis les flux normaux portes `G_Spawn`, `ClientBeginDeathmatch`, `ClientBegin`, `player_die`/body queue et les allocations appelees depuis spawns, target_spawner, projectiles/temporaires et connexions client.
+- `apps/web`: integration attendue indirecte via `apps/web/src/full-game-server-host.ts` et le host local/full-game qui executent les flux serveur/runtime portes; aucune logique web parallele ne remplace l'initialisation d'edict.
+- `packages/renderer-three`: pas de sortie renderer directe produite par `G_InitEdict`; les sorties visibles attendues sont indirectes via les entites initialisees ensuite (modeles, frames, projectiles, temp entities, sons/scene selon le spawn), consommees par snapshots/refresh frame/adapters renderer existants.
+
+Session `G_InitEdict`:
 
 - `npm run verify:g-utils`
 - `npm run typecheck`
