@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `MAXCHOICES`, `G_PickTarget` avec les locaux C `ent`, `num_choices`, `choice`.
+- Dernier lot traite: `Think_Delay`, `G_UseTargets` avec le local C `t`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `Think_Delay`, puis `G_UseTargets` et le local `t` si le lot reste coherent.
+- Continuer avec `tv`, puis le local `index` si le lot reste coherent.
 
 ## Session - findradius / j
 
@@ -104,4 +104,28 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Blocages
 
-- `npm run typecheck` echoue sur `apps/web/src/full-game.ts:768` (`unknown` non assignable a `entity_state_t`), hors fichiers modifies par ce lot. Les tests cibles runtime/web/renderer listent ci-dessus passent.
+- Aucun blocage courant pour la derniere session. `npm run typecheck` passe.
+
+## Session - Think_Delay / G_UseTargets / t
+
+- C source compare: `Quake-2-master/game/g_utils.c`
+- TS cible compare: `packages/game/src/runtime.ts` pour `Think_Delay`, `packages/game/src/g_utils.ts` pour `G_UseTargets`.
+- Commentaire d'en-tete corrige sur `Think_Delay`: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes de portage explicites.
+- Commentaire d'en-tete verifie et mis a jour sur `G_UseTargets`: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, emission via adapters runtime documentee.
+- Comparaison C/TS `Think_Delay`: appel a `G_UseTargets` avec `ent.activator`, puis liberation de l'entite temporaire; le port TS conserve l'ordre avec runtime explicite.
+- Comparaison C/TS `G_UseTargets`: branche `delay` avec spawn `DelayedUse`, `nextthink = time + delay`, callback `Think_Delay`, copie `activator`/`message`/`target`/`killtarget`, warning sans activator, puis retour. Branche immediate: message vers activator non-monstre, son `noise_index` ou `misc/talk1.wav`, liberation des `killtarget`, firing des `target`, skip door -> `func_areaportal`, warning self-use, retour si l'entite source a ete liberee.
+- Local C `t`: non applicable comme entite autonome; il correspond aux locaux TS `delayed` dans la branche delay et `target` dans les boucles kill/fire targets.
+- Corrections appliquees: `packages/game/src/g_utils.ts` emet maintenant `centerprint` et son runtime pour les messages de `G_UseTargets`, respecte le filtre `SVF_MONSTER`, journalise le warning `Think_Delay with no activator`, et utilise les metadonnees son Quake (`CHAN_AUTO`, `ATTN_NORM`). `packages/game/src/runtime.ts` documente `Think_Delay` comme fonction portee et rend `runPendingThinks` tolerant aux slots vides pendant la recherche de thinkers.
+- Tests ajoutes: `scripts/verify/quake2-g-utils.ts` couvre la branche delay, la copie des champs, l'execution de `Think_Delay`, la liberation de l'entite temporaire, le warning sans activator, centerprint/son message, activator monstre, killtarget, target.use, self-use et skip `func_areaportal`.
+- Runtime verifie: `G_UseTargets` est atteint depuis les flux normaux portes (`g_func`, `g_items`, `g_monster`, `g_misc`, `g_target`, `g_trigger`, `m_actor`), eux-memes appeles par spawns, touches, thinks et frames gameplay; `Think_Delay` est atteint via `runPendingThinks` depuis les entites temporaires schedulees.
+- `apps/web`: integration attendue indirecte via le runtime local/full-game. Les centerprints et sons ajoutes sont consommes par `local-client-controller.ts` / `full-game-render-loop.ts`; aucune logique web parallele ne remplace `G_UseTargets`.
+- `packages/renderer-three`: pas de sortie renderer directe propre a ces fonctions. Les sorties visibles attendues sont indirectes: entites activees/liberees, portes/triggers, sons, centerprints, changements de scene/areaportals potentiels et snapshots; le flux renderer Three consomme les entites/snapshots/sons via les adapters existants, tests full-game renderer OK.
+
+Session `Think_Delay` / `G_UseTargets` / `t`:
+
+- `npm run verify:g-utils`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`

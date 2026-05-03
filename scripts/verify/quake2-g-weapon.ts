@@ -16,6 +16,7 @@ import {
   DAMAGE_ENERGY,
   DAMAGE_NO_KNOCKBACK,
   DAMAGE_RADIUS,
+  FL_IMMUNE_LASER,
   MOD_BFG_BLAST,
   MOD_BFG_EFFECT,
   MOD_BFG_LASER,
@@ -43,7 +44,7 @@ import {
 import { damage_t } from "../../packages/game/src/g_local.js";
 import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_bfg, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_rocket, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
-import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_WATER, EF_ANIM_ALLFAST, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
+import { CONTENTS_DEADMONSTER, CONTENTS_LAVA, CONTENTS_MONSTER, CONTENTS_SLIME, CONTENTS_SOLID, CONTENTS_WATER, EF_ANIM_ALLFAST, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
 
 main();
 
@@ -1318,23 +1319,113 @@ function verifyBfgDamageModsAndVisibleEffects(): void {
   tempEvents.length = 0;
   filtered.inuse = false;
   spawnedBfg.inuse = false;
+  runtime.deathmatch = true;
+  bfg.s.skinnum = 0xd2;
+  target.s.origin = [148, 0, 0];
+  target.origin = [...target.s.origin];
+  target.absmin = [132, -16, -16];
+  target.size = [32, 32, 32];
+  const immuneMonster = createRuntimeEntity({ classname: "monster_immune" }, 6);
+  runtime.entities[6] = immuneMonster;
+  immuneMonster.inuse = true;
+  immuneMonster.solid = SOLID_BBOX;
+  immuneMonster.takedamage = damage_t.DAMAGE_AIM;
+  immuneMonster.svflags = SVF_MONSTER;
+  immuneMonster.flags = FL_IMMUNE_LASER;
+  immuneMonster.s.origin = [152, 0, 0];
+  immuneMonster.origin = [...immuneMonster.s.origin];
+  immuneMonster.mins = [-16, -16, -16];
+  immuneMonster.maxs = [16, 16, 16];
+  immuneMonster.absmin = [136, -16, -16];
+  immuneMonster.size = [32, 32, 32];
+  const explobox = createRuntimeEntity({ classname: "misc_explobox" }, 7);
+  runtime.entities[7] = explobox;
+  explobox.inuse = true;
+  explobox.solid = SOLID_BBOX;
+  explobox.takedamage = damage_t.DAMAGE_AIM;
+  explobox.s.origin = [156, 0, 0];
+  explobox.origin = [...explobox.s.origin];
+  explobox.mins = [-16, -16, -16];
+  explobox.maxs = [16, 16, 16];
+  explobox.absmin = [140, -16, -16];
+  explobox.size = [32, 32, 32];
+  const ignoredCrate = createRuntimeEntity({ classname: "crate" }, 8);
+  runtime.entities[8] = ignoredCrate;
+  ignoredCrate.inuse = true;
+  ignoredCrate.solid = SOLID_BBOX;
+  ignoredCrate.takedamage = damage_t.DAMAGE_AIM;
+  ignoredCrate.s.origin = [160, 0, 0];
+  ignoredCrate.origin = [...ignoredCrate.s.origin];
+  ignoredCrate.mins = [-16, -16, -16];
+  ignoredCrate.maxs = [16, 16, 16];
+  ignoredCrate.absmin = [144, -16, -16];
+  ignoredCrate.size = [32, 32, 32];
+  const traceCalls: Array<{ start: vec3_t; end: vec3_t; ignore: GameEntity | null; mask: number }> = [];
+  const bfgThinkDamages: Array<{ target: GameEntity; damage: number; dir: vec3_t; point: vec3_t; normal: vec3_t; mod: number }> = [];
   runtime.collision = {
     world: {} as never,
-    trace: (_start, _mins, _maxs, _end, ignore) => {
-      return ignore === bfg ? makeTrace(0.2, [120, 0, 0], target) : makeTrace(0.4, [160, 0, 0], wall);
+    trace: (start, _mins, _maxs, end, ignore, mask) => {
+      traceCalls.push({ start: [...start], end: [...end], ignore: ignore as GameEntity | null, mask });
+      if (traceCalls.length === 1) {
+        return makeTrace(0.2, [120, 0, 0], target);
+      }
+      if (traceCalls.length === 2) {
+        return makeTrace(0.4, [160, 0, 0], wall);
+      }
+      if (traceCalls.length === 3) {
+        return makeTrace(0.3, [132, 0, 0], immuneMonster);
+      }
+      if (traceCalls.length === 4) {
+        return makeTrace(1, [180, 0, 0], null);
+      }
+      if (traceCalls.length === 5) {
+        return makeTrace(0.25, [136, 0, 0], explobox);
+      }
+      return makeTrace(1, end, null);
     },
     pointcontents: () => 0
   };
   bfg_think(bfg, runtime, {
-    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
+    T_Damage: (damageTarget, _inflictor, _attacker, dir, point, normal, damage, _knockback, _dflags, mod) => {
       damageMods.push(mod);
+      bfgThinkDamages.push({
+        target: damageTarget,
+        damage,
+        dir: [...dir],
+        point: [...point],
+        normal: [...normal],
+        mod
+      });
     },
     emitTempEntity: (type, payload) => {
       tempEvents.push({ type, payload });
     }
   });
-  assert.deepEqual(damageMods, [MOD_BFG_LASER], "bfg_think laser damage must use MOD_BFG_LASER");
-  assert.equal(tempEvents.some((event) => event.type === temp_event_t.TE_BFG_LASER), true, "bfg_think must emit visible BFG laser beams");
+  assert.deepEqual(damageMods, [MOD_BFG_LASER, MOD_BFG_LASER], "bfg_think laser damage must use MOD_BFG_LASER for damageable non-immune hits");
+  assert.equal(bfgThinkDamages[0]?.target, target, "bfg_think local ent/ignore trace must damage the first monster candidate");
+  assert.equal(bfgThinkDamages[0]?.damage, 5, "bfg_think deathmatch branch must use 5 laser damage");
+  assert.deepEqual(bfgThinkDamages[0]?.dir, [1, 0, 0], "bfg_think local point/dir must aim from BFG origin toward target center");
+  assert.deepEqual(bfgThinkDamages[0]?.point, [120, 0, 0], "bfg_think damage point must use tr.endpos");
+  assert.deepEqual(bfgThinkDamages[0]?.normal, [0, 0, 0], "bfg_think laser damage normal must be vec3_origin");
+  assert.equal(bfgThinkDamages[1]?.target, explobox, "bfg_think must include misc_explobox despite it not being a monster/client");
+  assert.equal(traceCalls[0]?.ignore, bfg, "bfg_think first trace must ignore the BFG projectile itself");
+  assert.equal(traceCalls[1]?.ignore, target, "bfg_think must continue tracing through monsters/clients by updating ignore");
+  assert.equal(traceCalls[0]?.mask, CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_DEADMONSTER, "bfg_think trace mask must match the C CONTENTS mask");
+  assert.deepEqual(traceCalls[0]?.start, bfg.s.origin, "bfg_think local start must begin at self->s.origin");
+  assert.deepEqual(traceCalls[0]?.end, [2148, 0, 0], "bfg_think local end must extend 2048 units along dir");
+  assert.deepEqual(traceCalls[1]?.start, [120, 0, 0], "bfg_think must copy tr.endpos back into start after a monster hit");
+  const sparks = tempEvents.find((event) => event.type === temp_event_t.TE_LASER_SPARKS);
+  assert.equal(sparks?.payload.count, 4, "bfg_think wall hit must emit four laser sparks");
+  assert.deepEqual(sparks?.payload.origin, [160, 0, 0], "bfg_think laser sparks must use wall trace endpos");
+  assert.deepEqual(sparks?.payload.dir, [0, 0, 1], "bfg_think laser sparks must use tr.plane.normal");
+  assert.equal(sparks?.payload.color, 0xd2, "bfg_think laser sparks must use self->s.skinnum color");
+  const lasers = tempEvents.filter((event) => event.type === temp_event_t.TE_BFG_LASER);
+  assert.equal(lasers.length, 3, "bfg_think must emit one visible BFG laser per accepted radius candidate");
+  assert.deepEqual(lasers[0]?.payload.start, bfg.s.origin, "bfg_think BFG laser must start at self->s.origin");
+  assert.deepEqual(lasers[0]?.payload.end, [160, 0, 0], "bfg_think BFG laser must end at the last trace endpos");
+  assert.deepEqual(lasers[1]?.payload.end, [180, 0, 0], "bfg_think immune monster branch must still emit the visible beam without damage");
+  assert.deepEqual(lasers[2]?.payload.end, [136, 0, 0], "bfg_think misc_explobox beam must use its final trace endpos");
+  assert.equal(bfg.nextthink, runtime.time + 0.1, "bfg_think must reschedule itself by FRAMETIME");
 }
 
 function verifyGrenadeTouchOwnerSkyBounceAndDamage(): void {

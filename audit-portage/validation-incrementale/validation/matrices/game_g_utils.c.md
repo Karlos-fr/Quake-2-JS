@@ -20,9 +20,9 @@
 | `Quake-2-master/game/g_utils.c` | global | `ent` | `packages/game/src/g_utils.ts` | `ent` | Non applicable | A redecouper | Local C de `G_PickTarget`, porte comme local TS `ent` et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | global | `num_choices` | `packages/game/src/g_utils.ts` | `choices.length` | Non applicable | A redecouper | Local C de `G_PickTarget`, porte par `choices.length` TS et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | global | `choice` | `packages/game/src/g_utils.ts` | `choices` | Non applicable | A redecouper | Tableau local C de `G_PickTarget`, porte comme tableau local TS `choices` limite par `MAXCHOICES` et couvert par `npm run verify:g-utils`. |
-| `Quake-2-master/game/g_utils.c` | function | `Think_Delay` | `packages/game/src/runtime.ts` | `Think_Delay` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | function | `G_UseTargets` | `packages/game/src/g_utils.ts` | `G_UseTargets` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `t` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `Think_Delay` | `packages/game/src/runtime.ts` | `Think_Delay` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `G_UseTargets` | `packages/game/src/g_utils.ts` | `G_UseTargets` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `t` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `G_UseTargets`, porte par `delayed`/`target` locaux TS et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | function | `tv` | `packages/game/src/g_utils.ts` | `tv` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `v` | `packages/game/src/g_weapon.ts` | `v` | A verifier | A redecouper |  |

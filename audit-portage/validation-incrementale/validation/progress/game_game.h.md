@@ -118,3 +118,45 @@ Corrections:
 
 Prochain lot recommande:
 - `edict_s`, puis `s`, `client` et `inuse` si le lot reste petit.
+
+## Session 2026-05-03 - edict_s / s / client / inuse
+
+Lot traite:
+- `edict_s`
+- `s`
+- `client`
+- `inuse`
+
+Verdict:
+- `Valide` pour les 4 entites.
+
+Preuves:
+- Source C/H lue dans `Quake-2-master/game/game.h`: `typedef struct edict_s edict_t`, puis `struct edict_s` commence par `entity_state_t s`, `struct gclient_s *client` et `qboolean inuse`.
+- Port TS proprietaire lu dans `packages/game/src/game.ts` et `packages/game/src/runtime.ts`.
+- `packages/game/src/game.ts` expose maintenant `edict_s = GameEntity` et conserve `edict_t = edict_s`, ce qui represente le tag struct C et son typedef.
+- `GameEdictServerFields.s`, `GameEdictServerFields.client` et `GameEdictServerFields.inuse` exposent explicitement le prefixe serveur.
+- `createRuntimeEntity()` initialise `s` avec `entity_state_t` numerote et positionne, `client` a `null`, et `inuse` a `true`; `attachGameClient()` remplit le pointeur client runtime.
+- Commentaires d'en-tete verifies et mis a jour dans `packages/game/src/game.ts` pour `edict_s` et `edict_t`. `s`, `client` et `inuse` sont des champs de struct, pas des fonctions; pas de commentaire de fonction applicable.
+
+Integration:
+- Runtime: OK. `edict_s.s` est alimente par les spawn/runtime/linking, puis clone et serialize par `SV_CreateBaseline`, `SV_BuildClientFrame` et `MSG_WriteDeltaEntity`; `client` est attache aux edicts joueurs par le serveur et consomme par les callbacks game/client; `inuse` filtre frames, traces, BoxEdicts, commandes serveur, free/spawn et snapshots.
+- `apps/web`: OK indirectement. Le host full-game instancie le game API porte et consomme les snapshots/playerstate/resultats serveur produits par les edicts; aucune logique web parallele ne remplace `s`, `client` ou `inuse`.
+- `renderer-three`: OK indirectement. `s` produit des sorties visibles d'entites, modeles, frames, sons/evenements et positions via les snapshots; `client` alimente playerstate/camera/HUD; `inuse` controle la presence des entites dans les frames. Ces sorties sont consommees par le pipeline client puis `packages/renderer-three` pour `refdef.entities`, camera et scene.
+
+Tests lances:
+- `npm run verify:game:header` OK
+- `npm run verify:server:game` OK
+- `npm run verify:server:ents` OK
+- `npm run verify:server:world` OK
+- `npm run verify:server:send` OK
+- `npm run verify:full-game:server-host` OK
+- `npm run verify:full-game:three-renderer` OK
+- `npm run typecheck` OK
+
+Corrections:
+- `packages/game/src/game.ts`: ajout de l'alias exporte `edict_s` et conservation de `edict_t` comme alias du tag source.
+- `scripts/verify/quake2-game-header.ts`: preuves ajoutees pour `edict_s`, `edict_t`, `GameEdictServerFields.s`, `client` et `inuse`.
+- Matrice `audit-portage/validation-incrementale/validation/matrices/game_game.h.md` mise a jour pour le lot, avec ajout de la ligne `client` manquante.
+
+Prochain lot recommande:
+- `linkcount`, puis `area`, `num_clusters` et `clusternums` si le lot reste coherent.

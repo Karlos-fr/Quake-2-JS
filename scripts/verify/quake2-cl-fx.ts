@@ -13,10 +13,12 @@ import {
   CL_BuildEntityEventEffects,
   CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
+  CL_BuildTempEntityEffects,
   CL_ClearDlights,
   CL_ClearLightStyles,
   CL_ClearParticles,
   CL_ExecuteTempEntityEffects,
+  CL_ExplosionParticles,
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
   CL_NewDlight,
@@ -62,6 +64,8 @@ function main(): void {
   verifyParticleEffect3RuntimeParticles();
   verifyParticleEffect3TempEntityRuntimeBranch();
   verifyTeleporterRuntimeParticles();
+  verifyExplosionRuntimeParticles();
+  verifyExplosionTempEntityRuntimeBranch();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyTeleporterEntityEventMetadata();
@@ -274,6 +278,64 @@ function verifyTeleporterRuntimeParticles(): void {
 
   const renderParticles = CL_AddParticles(runtime);
   assert.equal(renderParticles.length, 8, "CL_TeleporterParticles particles should reach the refresh particle list");
+}
+
+function verifyExplosionRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 2468;
+  const origin: vec3_t = [40, -8, 120];
+
+  withMockRandom(0, () => {
+    CL_ExplosionParticles(runtime, origin);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 256, "CL_ExplosionParticles should allocate the original 256 particles");
+  assert.equal(runtime.cl.free_particles, 256, "CL_ExplosionParticles free list should advance by 256");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "explosion particles should preserve cl.time");
+  assert.ok(particles.every((particle) => particle.color === 0xe0), "explosion particle color mismatch");
+  assert.ok(particles.every((particle) => particle.org[0] === origin[0] - 16), "explosion x jitter mismatch");
+  assert.ok(particles.every((particle) => particle.org[1] === origin[1] - 16), "explosion y jitter mismatch");
+  assert.ok(particles.every((particle) => particle.org[2] === origin[2] - 16), "explosion z jitter mismatch");
+  assert.ok(particles.every((particle) => particle.vel[0] === -192), "explosion x velocity mismatch");
+  assert.ok(particles.every((particle) => particle.vel[1] === -192), "explosion y velocity mismatch");
+  assert.ok(particles.every((particle) => particle.vel[2] === -192), "explosion z velocity mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === -40), "explosion gravity mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && particle.alphavel === -1.6), "explosion alpha decay mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 256, "CL_ExplosionParticles particles should reach the refresh particle list");
+}
+
+function verifyExplosionTempEntityRuntimeBranch(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 1357;
+  const origin: vec3_t = [1, 2, 3];
+
+  withMockRandom(0, () => {
+    CL_ExecuteTempEntityEffects(runtime, {
+      type: temp_event_t.TE_ROCKET_EXPLOSION,
+      position: origin
+    });
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 256, "TE_ROCKET_EXPLOSION should dispatch to CL_ExplosionParticles");
+  assert.ok(particles.every((particle) => particle.color === 0xe0), "TE_ROCKET_EXPLOSION particle color mismatch");
+  assert.ok(particles.every((particle) => particle.org[0] === origin[0] - 16), "TE_ROCKET_EXPLOSION particle origin mismatch");
+
+  const effects = CL_BuildTempEntityEffects({
+    type: temp_event_t.TE_ROCKET_EXPLOSION,
+    position: origin
+  });
+  const burst = effects.find((effect) => effect.kind === "explosion-particles");
+  assert.ok(burst, "TE_ROCKET_EXPLOSION should expose explosion particles to apps/web metadata");
+  assert.equal(burst.category, "particle", "explosion particles should remain tagged as particles");
+  assert.deepEqual(burst.position, origin, "explosion particle metadata should preserve origin");
+  assert.equal(burst.count, 256, "explosion particle metadata should preserve particle count");
+  assert.equal(burst.color, 0xe0, "explosion particle metadata should preserve color base");
+  assert.equal(burst.magnitude, 16, "explosion particle metadata should preserve origin jitter");
+  assert.equal(burst.spacing, 192, "explosion particle metadata should preserve velocity span");
 }
 
 function verifyMonsterMuzzleFlash2Effects(): void {

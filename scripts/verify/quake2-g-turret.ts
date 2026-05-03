@@ -20,7 +20,18 @@ import {
   runPendingThinks,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
-import { AI_DUCKED, AI_STAND_GROUND, FL_NO_KNOCKBACK, FL_TEAMSLAVE, MOD_CRUSH, SVF_MONSTER, damage_t } from "../../packages/game/src/g_local.js";
+import {
+  AI_DUCKED,
+  AI_STAND_GROUND,
+  DEAD_DEAD,
+  FL_NO_KNOCKBACK,
+  FL_TEAMSLAVE,
+  MOD_CRUSH,
+  MOVETYPE_PUSH,
+  SOLID_BSP,
+  SVF_MONSTER,
+  damage_t
+} from "../../packages/game/src/g_local.js";
 import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import {
   SP_turret_base,
@@ -75,6 +86,8 @@ function verifyTurretBreachFinishInitAndSpawnRegistry(): void {
   base.teamchain = breach;
 
   ED_CallSpawn(breach, runtime);
+  assert.equal(base.solid, SOLID_BSP, "SP_turret_base must use brush solidity");
+  assert.equal(base.movetype, MOVETYPE_PUSH, "SP_turret_base must use pusher movement");
   assert.equal(breach.solid !== 0, true, "SP_turret_breach must initialize brush solidity");
   assert.equal(base.blocked, turret_blocked, "SP_turret_base must arm turret_blocked");
   assert.equal(breach.blocked, turret_blocked, "SP_turret_breach must arm turret_blocked");
@@ -221,6 +234,9 @@ function verifyTurretDriverLinkAndThink(): void {
   assert.equal(base.owner, null, "turret_driver_die must clear teammaster owner");
   assert.equal(breach.teamchain, null, "turret_driver_die must unlink driver from team chain");
   assert.equal((driver.flags & FL_TEAMSLAVE) === 0, true, "turret_driver_die must clear FL_TEAMSLAVE");
+  assert.equal(driver.deadflag, DEAD_DEAD, "turret_driver_die must delegate to infantry_die");
+  assert.ok(driver.monsterinfo.currentmove, "turret_driver_die must select an infantry death move");
+  assert.equal(runtime.soundEvents.at(-1)?.soundPath.startsWith("infantry/inf"), true, "turret_driver_die infantry death sound mismatch");
 }
 
 function verifyTurretBreachThinkFiresRocket(): void {

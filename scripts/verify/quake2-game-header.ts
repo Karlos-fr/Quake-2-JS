@@ -20,8 +20,17 @@ import {
   SVF_NOCLIENT,
   solid_t
 } from "../../packages/game/src/game.js";
-import type { GameClientServerFields, gclient_s, gclient_t, link_s, link_t } from "../../packages/game/src/game.js";
-import { createGameClient, createRuntimeEntity } from "../../packages/game/src/runtime.js";
+import type {
+  edict_s,
+  edict_t,
+  GameClientServerFields,
+  GameEdictServerFields,
+  gclient_s,
+  gclient_t,
+  link_s,
+  link_t
+} from "../../packages/game/src/game.js";
+import { attachGameClient, createGameClient, createRuntimeEntity } from "../../packages/game/src/runtime.js";
 
 const client = createGameClient();
 const entity = createRuntimeEntity({}, 1);
@@ -45,6 +54,20 @@ assert.equal(serverFields.ps, client.ps, "gclient_s.ps must be the first server-
 assert.equal(client.ping, 0, "gclient_t server-visible ping field must be present");
 serverFields.ping = 42;
 assert.equal(client.ping, 42, "gclient_s/gclient_t ping aliases must reference the same runtime field");
+
+const sourceNamedEntity: edict_s = entity;
+const typedefEntity: edict_t = sourceNamedEntity;
+const edictServerFields: GameEdictServerFields = typedefEntity;
+assert.equal(edictServerFields.s.number, 1, "edict_s.s must be the leading server-visible entity_state_t field");
+assert.deepEqual(edictServerFields.s.origin, [0, 0, 0], "edict_s.s must preserve entity_state_t origin storage");
+assert.equal(edictServerFields.client, null, "edict_s.client must start as a nullable gclient_s pointer");
+const attachedClient = attachGameClient(entity);
+assert.equal(edictServerFields.client, attachedClient, "edict_s.client must reference the attached runtime gclient_s");
+assert.equal(edictServerFields.inuse, true, "edict_s.inuse must default to active for allocated runtime entities");
+edictServerFields.inuse = false;
+assert.equal(entity.inuse, false, "edict_s.inuse must alias the runtime entity inuse field");
+edictServerFields.inuse = true;
+
 assert.equal(entity.num_clusters, 0, "edict_t num_clusters must be initialized");
 assert.equal(entity.clusternums.length, MAX_ENT_CLUSTERS, "edict_t clusternums must keep fixed inline capacity");
 assert.equal(entity.area.prev, null, "edict_t area link must start detached");

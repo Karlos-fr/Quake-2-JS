@@ -58,6 +58,18 @@
 - Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`.
 - Typecheck: non lance, aucun fichier TS modifie pendant cette session.
 
+## Session 2026-05-03 - `SP_turret_base` / `turret_driver_die`
+
+- Lot traite: `SP_turret_base`, `turret_driver_die` et le local C `ent` de `turret_driver_die`.
+- Statut: `SP_turret_base` et `turret_driver_die` valides; `ent` marque `Non applicable` comme artefact de matrice pour une variable locale portee en variable locale TS.
+- Comparaison C/H vs TS: ownership confirme dans `packages/game/src/g_turret.ts`; noms conserves; `SP_turret_base` conserve `SOLID_BSP`, `MOVETYPE_PUSH`, `gi.setmodel` via `setGameEntityModel`, `blocked = turret_blocked` et `linkentity`. `turret_driver_die` conserve la remise a niveau du pitch, le parcours de teamchain depuis le teammaster, le retrait du driver, l'effacement `teammaster`/`FL_TEAMSLAVE`, l'effacement des owners breach/base et la delegation a `infantry_die`.
+- Commentaires d'en-tete: verifies pour les deux fonctions avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement.
+- Correction test: `scripts/verify/quake2-g-turret.ts` renforce les preuves pour `SP_turret_base` (`SOLID_BSP`, `MOVETYPE_PUSH`) et pour `turret_driver_die` (delegation a `infantry_die`, `deadflag`, move de mort et son infantry).
+- Runtime: `SP_turret_base` est declare dans `g_spawn.ts` pour classname `turret_base`, donc atteignable via `ED_CallSpawn`; `turret_driver_die` est installe par `SP_turret_driver` comme callback `die`, atteint par les degats/runtime monster normaux, puis met a jour la team chain de tourelle.
+- apps/web: pas d'appel direct attendu; le navigateur doit consommer le runtime full-game/local, les snapshots de brush/base/breach/driver, les changements de mort et sons serveur. `verify:full-game:server-host` et `verify:web-render-order` confirment que le flux web ne remplace pas cette logique.
+- renderer-three: sorties visibles attendues via entites brush de base/breach, etat serveur apres retrait du driver, animation de mort infantry et sons/evenements associes; consommation indirecte par packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` confirme le flux renderer.
+- Tests lances: `npm run verify:g-turret`; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+
 ## Prochain lot recommande
 
-Continuer avec `SP_turret_base`, puis `turret_driver_die` si le lot reste petit.
+Continuer avec `turret_driver_think` et le local `reaction_time` si le lot reste petit.

@@ -14,6 +14,7 @@ import { strict as assert } from "node:assert";
 
 import { MOD_TELEFRAG } from "../../packages/game/src/g_local.js";
 import {
+  G_UseTargets,
   G_CopyString,
   G_Find,
   G_FreeEdict,
@@ -29,7 +30,17 @@ import {
   vectoangles,
   vtos
 } from "../../packages/game/src/g_utils.js";
-import { createGameRuntimeFromBspEntities, createRuntimeEntity, refreshEntitySpatialState } from "../../packages/game/src/runtime.js";
+import {
+  SVF_MONSTER,
+  Think_Delay,
+  createGameRuntimeFromBspEntities,
+  createRuntimeEntity,
+  drainGameCenterprintEvents,
+  drainGameSoundEvents,
+  refreshEntitySpatialState,
+  registerGameSound,
+  runPendingThinks
+} from "../../packages/game/src/runtime.js";
 
 const runtime = createGameRuntimeFromBspEntities([]);
 runtime.maxclients = 1;
@@ -148,6 +159,95 @@ assert.equal(findradius(radiusRuntime, null, [0, 0, 0], 10), centeredInside, "fi
 assert.equal(findradius(radiusRuntime, centeredInside, [0, 0, 0], 10), edgeInside, "findradius must resume after the previous entity and accept distance equal to radius");
 assert.equal(findradius(radiusRuntime, edgeInside, [0, 0, 0], 10), afterEdge, "findradius must continue iteration after an accepted entity");
 assert.equal(findradius(radiusRuntime, afterEdge, [0, 0, 0], 10), null, "findradius must return null after the final candidate");
+
+const useRuntime = createGameRuntimeFromBspEntities([]);
+useRuntime.maxentities = 32;
+useRuntime.time = 10;
+const activator = createRuntimeEntity({ classname: "player" }, 1);
+const delayedSource = createRuntimeEntity({ classname: "trigger_once", target: "delayed_target", killtarget: "delayed_kill", message: "wait for it", delay: "2.5" }, 2);
+useRuntime.entities[1] = activator;
+useRuntime.entities[2] = delayedSource;
+G_UseTargets(useRuntime, delayedSource, activator);
+const delayed = useRuntime.entities.find((entity) => entity?.classname === "DelayedUse");
+assert.ok(delayed, "G_UseTargets must spawn a DelayedUse entity when delay is set");
+assert.equal(delayed.nextthink, 12.5, "G_UseTargets delayed nextthink mismatch");
+assert.equal(delayed.think, Think_Delay, "G_UseTargets delayed think callback mismatch");
+assert.equal(delayed.activator, activator, "G_UseTargets must copy activator into the delayed entity");
+assert.equal(delayed.message, "wait for it", "G_UseTargets must copy message into the delayed entity");
+assert.equal(delayed.target, "delayed_target", "G_UseTargets must copy target into the delayed entity");
+assert.equal(delayed.killtarget, "delayed_kill", "G_UseTargets must copy killtarget into the delayed entity");
+
+const delayedKilled = createRuntimeEntity({ classname: "delayed_killed", targetname: "delayed_kill" }, 4);
+let delayedUseCalls = 0;
+const delayedTarget = createRuntimeEntity({ classname: "delayed_target", targetname: "delayed_target" }, 5);
+delayedTarget.use = (self, other, usedActivator) => {
+  delayedUseCalls += 1;
+  assert.equal(self, delayedTarget, "Think_Delay target self mismatch");
+  assert.equal(other, delayed, "Think_Delay must use the temporary entity as other");
+  assert.equal(usedActivator, activator, "Think_Delay activator mismatch");
+};
+useRuntime.entities[4] = delayedKilled;
+useRuntime.entities[5] = delayedTarget;
+runPendingThinks(useRuntime, 12.5);
+assert.equal(delayedKilled.inuse, false, "Think_Delay/G_UseTargets must free copied killtargets");
+assert.equal(delayedUseCalls, 1, "Think_Delay must dispatch copied targets exactly once");
+assert.equal(delayed.inuse, false, "Think_Delay must free the temporary entity after dispatch");
+
+const noActivatorRuntime = createGameRuntimeFromBspEntities([]);
+const noActivatorSource = createRuntimeEntity({ classname: "trigger_once", target: "later", delay: "1" }, 1);
+noActivatorRuntime.entities[1] = noActivatorSource;
+G_UseTargets(noActivatorRuntime, noActivatorSource, null);
+assert.equal(
+  noActivatorRuntime.logEntries.some((entry) => entry.kind === "warning" && entry.message === "Think_Delay with no activator"),
+  true,
+  "G_UseTargets must warn when scheduling Think_Delay without an activator"
+);
+
+const immediateRuntime = createGameRuntimeFromBspEntities([]);
+immediateRuntime.maxentities = 32;
+const immediateActivator = createRuntimeEntity({ classname: "player" }, 1);
+const messageSoundIndex = registerGameSound(immediateRuntime, "world/custom.wav");
+const immediateSource = createRuntimeEntity({ classname: "trigger_multiple", target: "fire_me", killtarget: "kill_me", message: "hello", noise: "world/custom.wav" }, 2);
+immediateSource.noise_index = messageSoundIndex;
+const killMe = createRuntimeEntity({ classname: "target_remove", targetname: "kill_me" }, 3);
+let usedFireTarget = false;
+const fireMe = createRuntimeEntity({ classname: "target_relay", targetname: "fire_me" }, 4);
+fireMe.use = (self, other, usedActivator) => {
+  usedFireTarget = true;
+  assert.equal(self, fireMe, "G_UseTargets fire target self mismatch");
+  assert.equal(other, immediateSource, "G_UseTargets must pass source entity as other");
+  assert.equal(usedActivator, immediateActivator, "G_UseTargets fire target activator mismatch");
+};
+const skippedAreaPortal = createRuntimeEntity({ classname: "func_areaportal", targetname: "fire_me" }, 5);
+skippedAreaPortal.use = () => assert.fail("G_UseTargets must skip door-fired func_areaportal targets");
+const selfUse = immediateSource;
+selfUse.targetname = "fire_me";
+immediateSource.classname = "func_door";
+immediateRuntime.entities[1] = immediateActivator;
+immediateRuntime.entities[2] = immediateSource;
+immediateRuntime.entities[3] = killMe;
+immediateRuntime.entities[4] = fireMe;
+immediateRuntime.entities[5] = skippedAreaPortal;
+G_UseTargets(immediateRuntime, immediateSource, immediateActivator);
+assert.equal(drainGameCenterprintEvents(immediateRuntime).at(-1)?.message, "hello", "G_UseTargets must centerprint messages to non-monster activators");
+assert.equal(drainGameSoundEvents(immediateRuntime).at(-1)?.soundPath, "world/custom.wav", "G_UseTargets must play noise_index sound when present");
+assert.equal(killMe.inuse, false, "G_UseTargets must free killtargets");
+assert.equal(usedFireTarget, true, "G_UseTargets must call target use callbacks");
+assert.equal(
+  immediateRuntime.logEntries.some((entry) => entry.kind === "warning" && entry.message === "WARNING: Entity used itself."),
+  true,
+  "G_UseTargets must warn on self-use targets"
+);
+
+const monsterRuntime = createGameRuntimeFromBspEntities([]);
+const monsterActivator = createRuntimeEntity({ classname: "monster_soldier" }, 1);
+monsterActivator.svflags |= SVF_MONSTER;
+const monsterMessage = createRuntimeEntity({ classname: "trigger_multiple", message: "not for monsters" }, 2);
+monsterRuntime.entities[1] = monsterActivator;
+monsterRuntime.entities[2] = monsterMessage;
+G_UseTargets(monsterRuntime, monsterMessage, monsterActivator);
+assert.equal(drainGameCenterprintEvents(monsterRuntime).length, 0, "G_UseTargets must not centerprint messages to monster activators");
+assert.equal(drainGameSoundEvents(monsterRuntime).length, 0, "G_UseTargets must not play message sounds to monster activators");
 
 const movedir: [number, number, number] = [0, 0, 0];
 const angles: [number, number, number] = [0, -1, 0];

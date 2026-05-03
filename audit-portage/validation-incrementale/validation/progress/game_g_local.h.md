@@ -1257,7 +1257,29 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `random` et `crandom` passees a `Partiel` avec action suivante.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-ai` OK; `npm run verify:g-func` OK; `npm run verify:g-misc` OK; `npm run verify:g-weapon` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec la migration/justification des consommateurs runtime de `random`/`crandom`, ou passer au prochain lot distinct `teleport_time` si le coordinateur prefere garder la migration globale pour une session separee.
+- 2026-05-03: sous-lot de reprise `random`/`crandom`, inventaire/justification des consommateurs runtime sans migration TS.
+- Verdict: `Partiel` maintenu pour les 2 macros. Le point d'attache proprietaire `packages/game/src/g_local.ts` et le reexport public restent corrects; les commentaires d'en-tete et le harness existant couvrent la formule H.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - Les appels game C couvrent AI, timers, gibs/debris, target push, tourelles, armes, monstres et feedback joueur.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes.
+  - `packages/game/src/index.ts`: reexports publics presents.
+  - `scripts/verify/quake2-g-local-header.ts`: preuves borne basse/haute/milieu et formule `crandom` en mockant `Math.random`.
+- Runtime:
+  - Integration attendue dans les flux normaux `G_RunFrame`, AI/monstres, armes, timers, gibs/debris, target push et feedback joueur.
+  - Inventaire obtenu pendant la session: consommateurs encore disperses dans `g_ai.ts`, `g_func.ts`, `g_items.ts`, `g_misc.ts`, `g_monster.ts`, `g_target.ts`, `g_turret.ts`, `g_utils.ts`, `g_weapon.ts`, les modules `m_*`, `p_client.ts`, `p_hud.ts`, `p_weapon.ts` et `m_move.ts`.
+  - Conflit multi-agents explicite: `packages/game/src/g_turret.ts`, `packages/game/src/g_utils.ts` et `packages/game/src/g_weapon.ts` sont reserves par d'autres agents de cette vague; ils ont ete inspectes seulement. `packages/game/src/game.ts` ne contient pas de consommateur direct trouve.
+  - Les autres migrations toucheraient des fichiers TS non autorises par cette mission fichier unique; aucune correction runtime n'a donc ete appliquee.
+- apps/web: aucune logique parallele `random`/`crandom` game detectee dans `apps/web/src/full-game.ts`; `apps/web/src/full-game-server-host.ts` expose un `randomInt` serveur distinct, pas le macro game. Integration attendue indirectement via host full-game/local et sorties runtime.
+- renderer-three: aucune reference directe attendue au macro game. Les sorties visibles dependantes des tirages runtime restent indirectes: modeles/frames de monstres, tirs, projectiles, gibs/debris, particules/temp entities, camera/kick et scene; elles doivent rester consommees par le flux snapshots/client/refresh/Three une fois les consommateurs game harmonises.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; aucun nouveau commentaire TS requis.
+- Corrections appliquees:
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` precisees pour documenter l'inventaire et les conflits de fichiers reserves; verdicts maintenus `Partiel`.
+  - `audit-portage/validation-incrementale/validation/progress/game_g_local.h.md`: present sous-lot ajoute.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK. `npm run typecheck` non relance: aucun fichier TS modifie.
+
+- Continuer avec une migration par famille non reservee des consommateurs runtime de `random`/`crandom` (par exemple `g_ai.ts` ou les helpers locaux `g_func.ts`/`g_misc.ts`/`g_target.ts`), puis reprendre `g_turret.ts`, `g_utils.ts` et `g_weapon.ts` quand ils ne seront plus reserves. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

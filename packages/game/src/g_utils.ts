@@ -16,13 +16,17 @@
  * - This file is intended to stay close to the original C source.
  */
 
-import { AngleVectors, MASK_PLAYERSOLID, VectorCompare, vec3_origin, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
+import { AngleVectors, ATTN_NORM, CHAN_AUTO, MASK_PLAYERSOLID, VectorCompare, vec3_origin, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
 import {
   DEAD_DEAD,
+  SVF_MONSTER,
   Think_Delay,
   createMonsterInfo,
+  emitGameCenterprint,
+  emitRegisteredGameSound,
   freeGameEntity,
   getRuntimeEntityLabel,
+  registerGameSound,
   refreshEntitySpatialState,
   spawnGameEntity
 } from "./runtime.js";
@@ -164,8 +168,8 @@ export function G_PickTarget(runtime: GameRuntime, targetname: string | undefine
  * - Fires `message`, `killtarget` and `target` chains from one activating entity.
  *
  * Porting notes:
- * - Logs the message branch instead of driving centerprint/sound side effects.
- * - Keeps delayed use through a temporary entity so later phases can reuse the same shape.
+ * - Uses runtime adapters for `gi.centerprintf`, `gi.sound` and `gi.soundindex`.
+ * - Keeps delayed use through a temporary entity matching the original `DelayedUse` shape.
  */
 export function G_UseTargets(runtime: GameRuntime, ent: GameEntity, activator: GameEntity | null): void {
   runtime.log({
@@ -187,6 +191,15 @@ export function G_UseTargets(runtime: GameRuntime, ent: GameEntity, activator: G
     delayed.target = ent.target;
     delayed.killtarget = ent.killtarget;
 
+    if (!activator) {
+      runtime.log({
+        kind: "warning",
+        message: "Think_Delay with no activator",
+        entityIndex: ent.index,
+        entityClassname: ent.classname
+      });
+    }
+
     runtime.log({
       kind: "delay-scheduled",
       message: `${getRuntimeEntityLabel(ent)} scheduled delayed use at ${delayed.nextthink.toFixed(3)}`,
@@ -196,7 +209,7 @@ export function G_UseTargets(runtime: GameRuntime, ent: GameEntity, activator: G
     return;
   }
 
-  if (ent.message && activator) {
+  if (ent.message && activator && (activator.svflags & SVF_MONSTER) === 0) {
     runtime.log({
       kind: "message",
       message: `${getRuntimeEntityLabel(ent)} message -> ${getRuntimeEntityLabel(activator)} :: ${ent.message}`,
@@ -204,6 +217,15 @@ export function G_UseTargets(runtime: GameRuntime, ent: GameEntity, activator: G
       entityClassname: ent.classname,
       otherIndex: activator.index,
       otherClassname: activator.classname
+    });
+    emitGameCenterprint(runtime, activator, ent.message);
+    const soundIndex = ent.noise_index || registerGameSound(runtime, "misc/talk1.wav");
+    const soundPath = runtime.assets.soundPaths[soundIndex - 1] ?? "misc/talk1.wav";
+    emitRegisteredGameSound(runtime, activator, soundIndex, soundPath, {
+      channel: CHAN_AUTO,
+      volume: 1,
+      attenuation: ATTN_NORM,
+      timeofs: 0
     });
   }
 

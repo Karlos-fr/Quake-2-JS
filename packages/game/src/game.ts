@@ -121,15 +121,26 @@ export type gclient_s = GameClient;
 export type gclient_t = gclient_s;
 
 /**
+ * Original name: edict_s
+ * Source: game/game.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Represents the server-visible `struct edict_s` prefix while reusing the fuller gameplay runtime entity shape.
+ */
+export type edict_s = GameEntity;
+
+/**
  * Original name: edict_t
  * Source: game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
  * Behavior:
- * - Reuses the gameplay runtime entity shape, including the server-visible prefix fields from `game.h`.
+ * - Preserves the `typedef struct edict_s edict_t` alias used by the game/server API.
  */
-export type edict_t = GameEntity;
+export type edict_t = edict_s;
 
 /**
  * Category: New

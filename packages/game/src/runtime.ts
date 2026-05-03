@@ -1427,11 +1427,17 @@ export function findRuntimeEntitiesByTargetname(runtime: GameRuntime, targetname
 }
 
 /**
- * Category: New
- * Purpose: Build the delayed `think` helper used by `G_UseTargets`.
+ * Original name: Think_Delay
+ * Source: game/g_utils.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must free the temporary entity after the delayed dispatch runs.
+ * Behavior:
+ * - Dispatches the delayed entity's copied targets through `G_UseTargets`.
+ * - Frees the temporary delayed entity immediately after dispatch.
+ *
+ * Porting notes:
+ * - Receives the runtime explicitly instead of relying on Quake II game globals.
  */
 export function Think_Delay(ent: GameEntity, runtime: GameRuntime): void {
   G_UseTargets(runtime, ent, ent.activator);
@@ -1722,7 +1728,7 @@ function findNextThinkEntity(runtime: GameRuntime, upToTime: number): GameEntity
   let nextEntity: GameEntity | null = null;
 
   for (const entity of runtime.entities) {
-    if (!entity.inuse || !entity.think || entity.nextthink <= 0 || entity.nextthink > upToTime) {
+    if (!entity || !entity.inuse || !entity.think || entity.nextthink <= 0 || entity.nextthink > upToTime) {
       continue;
     }
 
