@@ -40,7 +40,7 @@ import {
   type GameRuntime
 } from "../../packages/game/src/runtime.js";
 import { damage_t } from "../../packages/game/src/g_local.js";
-import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_rocket, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
+import { bfg_explode, bfg_think, bfg_touch, blaster_touch, fire_bfg, fire_blaster, fire_bullet, fire_grenade, fire_grenade2, fire_hit, fire_rail, fire_rocket, fire_shotgun, Grenade_Explode, Grenade_Touch, rocket_touch } from "../../packages/game/src/g_weapon.js";
 import { MASK_SHOT, MASK_WATER, temp_event_t, type cplane_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import { CONTENTS_LAVA, CONTENTS_SLIME, CONTENTS_WATER, EF_GRENADE, EF_ROCKET, SURF_SKY, SURF_WARP } from "../../packages/qcommon/src/q_shared.js";
 
@@ -1178,15 +1178,64 @@ function verifyBfgDamageModsAndVisibleEffects(): void {
   assert.equal(radiusMods[0], MOD_BFG_BLAST, "bfg_touch splash damage must use MOD_BFG_BLAST");
   assert.equal(tempEvents[0]?.type, temp_event_t.TE_BFG_BIGEXPLOSION, "bfg_touch must emit the visible big explosion");
 
+  const spawnedBfg = fire_bfg(owner, [8, 9, 10], [1, 0, 0], 175, 400, 300, runtime, {
+    check_dodge: () => undefined
+  });
+  assert.equal(spawnedBfg.radius_dmg, 175, "fire_bfg must initialize radius_dmg for the later bfg_explode frame-0 effect");
+  assert.equal(spawnedBfg.dmg_radius, 300, "fire_bfg must preserve the radius searched by bfg_explode");
+  assert.equal(typeof spawnedBfg.think, "function", "fire_bfg must install the BFG thinker runtime branch");
+
   bfg.s.frame = 0;
   bfg.s.origin = [100, 0, 0];
   bfg.origin = [...bfg.s.origin];
+  bfg.velocity = [50, 0, 0];
+  bfg.radius_dmg = 175;
+  target.s.origin = [132, 0, 0];
+  target.origin = [...target.s.origin];
+  target.mins = [-16, -16, -16];
+  target.maxs = [16, 16, 16];
+  const filtered = createRuntimeEntity({ classname: "monster_filtered" }, 5);
+  runtime.entities[5] = filtered;
+  filtered.takedamage = damage_t.DAMAGE_AIM;
+  filtered.inuse = true;
+  filtered.solid = SOLID_BBOX;
+  filtered.svflags = SVF_MONSTER;
+  filtered.s.origin = [140, 0, 0];
+  filtered.origin = [...filtered.s.origin];
+  filtered.mins = [-16, -16, -16];
+  filtered.maxs = [16, 16, 16];
   damageMods.length = 0;
   tempEvents.length = 0;
+  const bfgEffectDamages: Array<{
+    target: GameEntity;
+    attacker: GameEntity;
+    dir: vec3_t;
+    point: vec3_t;
+    normal: vec3_t;
+    damage: number;
+    knockback: number;
+    dflags: number;
+    mod: number;
+  }> = [];
+  const canDamageChecks: Array<{ target: GameEntity; inflictor: GameEntity }> = [];
   bfg_explode(bfg, runtime, {
-    canDamage: () => true,
-    T_Damage: (_target, _inflictor, _attacker, _dir, _point, _normal, _damage, _knockback, _dflags, mod) => {
+    canDamage: (checkTarget, checkInflictor) => {
+      canDamageChecks.push({ target: checkTarget, inflictor: checkInflictor });
+      return checkTarget !== filtered;
+    },
+    T_Damage: (damageTarget, _inflictor, attacker, dir, point, normal, damage, knockback, dflags, mod) => {
       damageMods.push(mod);
+      bfgEffectDamages.push({
+        target: damageTarget,
+        attacker,
+        dir: [...dir],
+        point: [...point],
+        normal: [...normal],
+        damage,
+        knockback,
+        dflags,
+        mod
+      });
     },
     emitTempEntity: (type, payload) => {
       tempEvents.push({ type, payload });
@@ -1195,9 +1244,33 @@ function verifyBfgDamageModsAndVisibleEffects(): void {
   });
   assert.deepEqual(damageMods, [MOD_BFG_EFFECT], "bfg_explode effect damage must use MOD_BFG_EFFECT");
   assert.equal(tempEvents[0]?.type, temp_event_t.TE_BFG_EXPLOSION, "bfg_explode must emit visible BFG explosion sprites");
+  assert.equal(bfgEffectDamages.length, 1, "bfg_explode must damage only entities passing takedamage, owner and CanDamage filters");
+  assert.equal(bfgEffectDamages[0]?.target, target, "bfg_explode local ent must be the findradius target that passed filters");
+  assert.equal(bfgEffectDamages[0]?.attacker, owner, "bfg_explode attacker must be self->owner");
+  assert.deepEqual(bfgEffectDamages[0]?.dir, [50, 0, 0], "bfg_explode damage direction must use self->velocity");
+  assert.deepEqual(bfgEffectDamages[0]?.point, target.s.origin, "bfg_explode damage point must use ent->s.origin");
+  assert.deepEqual(bfgEffectDamages[0]?.normal, [0, 0, 0], "bfg_explode damage normal must be vec3_origin");
+  assert.equal(bfgEffectDamages[0]?.damage, 113, "bfg_explode local v/dist/points calculation must match truncated C damage");
+  assert.equal(bfgEffectDamages[0]?.knockback, 0, "bfg_explode knockback must be zero");
+  assert.equal(bfgEffectDamages[0]?.dflags, DAMAGE_ENERGY, "bfg_explode must apply DAMAGE_ENERGY");
+  assert.deepEqual(tempEvents[0]?.payload.origin, target.s.origin, "bfg_explode TE_BFG_EXPLOSION origin must use ent->s.origin");
+  assert.equal(canDamageChecks.some((check) => check.target === target && check.inflictor === bfg), true, "bfg_explode must check CanDamage(ent, self)");
+  assert.equal(canDamageChecks.some((check) => check.target === target && check.inflictor === owner), true, "bfg_explode must check CanDamage(ent, self->owner)");
+  assert.equal(canDamageChecks.some((check) => check.target === filtered), true, "bfg_explode must evaluate CanDamage filters for radius candidates");
+  assert.equal(bfg.s.frame, 1, "bfg_explode must advance frame after the frame-0 area effect");
+  assert.equal(bfg.nextthink, runtime.time + 0.1, "bfg_explode must reschedule by FRAMETIME");
+
+  bfg.s.frame = 4;
+  bfg_explode(bfg, runtime, {
+    G_FreeEdict: () => undefined
+  });
+  assert.equal(bfg.s.frame, 5, "bfg_explode must advance to frame 5");
+  assert.equal(typeof bfg.think, "function", "bfg_explode frame 5 must install G_FreeEdict for cleanup");
 
   damageMods.length = 0;
   tempEvents.length = 0;
+  filtered.inuse = false;
+  spawnedBfg.inuse = false;
   runtime.collision = {
     world: {} as never,
     trace: (_start, _mins, _maxs, _end, ignore) => {

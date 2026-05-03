@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `fire_rail` avec les temporaires locaux `from`, `end`, `tr`, premier `ignore`, `mask`, `water`.
-- Verdict du lot: valide pour `fire_rail`; les temporaires locaux du lot sont non applicables comme entites autonomes.
+- Dernier lot traite: confirmation du deuxieme `ignore` de matrice, puis `bfg_explode` avec les temporaires locaux `ent`, `points`, `dist` et `v`.
+- Verdict du lot: valide pour `bfg_explode`; les temporaires locaux du lot sont non applicables comme entites autonomes.
 
 ## Preuves session
 
@@ -34,12 +34,36 @@
 - `apps/web`: integration attendue indirecte via runtime full-game/local, transport des temp entities et refresh client; aucune logique web parallele ne remplace le tir railgun.
 - `packages/renderer-three`: sortie visible attendue = `TE_RAILTRAIL`; elle est parse cote client, convertie en rail trail particulaire par `CL_ExecuteTempEntityEffects`/`CL_RailTrail`, exposee dans `ClientRefreshFrame.particles`, puis consommee par `createThreeParticleSync`/`R_DrawParticles`; aucun manque ouvert observe.
 
+## Preuves session - `bfg_explode`
+
+- C source compare: `Quake-2-master/game/g_weapon.c`, fonction `bfg_explode`.
+- TS cible compare: `packages/game/src/g_weapon.ts`, fonction `bfg_explode`.
+- Commentaire d'en-tete verifie sur `bfg_explode` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`).
+- Deuxieme `ignore` de matrice confirme comme doublon du temporaire local C de `fire_rail`, deja couvert par la session precedente.
+- Comparaison C/TS `bfg_explode`: effet applique uniquement sur `s.frame == 0`, iteration `findradius`, filtres `takedamage`, owner, `CanDamage(ent,self)`, `CanDamage(ent,self->owner)`, calcul du centre par `ent->s.origin + 0.5 * (mins + maxs)`, distance, `points = radius_dmg * (1 - sqrt(dist / dmg_radius))`, emission `TE_BFG_EXPLOSION`, `T_Damage` avec `DAMAGE_ENERGY` et `MOD_BFG_EFFECT`, `nextthink = level.time + FRAMETIME`, increment frame, installation de `G_FreeEdict` a la frame 5.
+- Temporaire local `ent`: porte comme variable locale TS; preuve de la cible issue de `findradius`, des skips owner/non-damageable/CanDamage et de la cible transmise a `T_Damage`.
+- Temporaire local `v`: absent de la matrice mais traite avec le lot; porte par `center`/`offset` TS, preuve du calcul centre puis vecteur projectile-centre.
+- Temporaire local `dist`: porte comme variable locale TS, preuve de la distance utilisee dans le calcul de `points`.
+- Temporaire local `points`: porte comme variable locale TS, preuve du montant tronque C transmis a `T_Damage`.
+- Correction TS: `fire_bfg` initialise maintenant `radius_dmg = damage`, afin que le chemin runtime normal fournisse a `bfg_explode` le champ C lu par l'effet de frame 0.
+- Runtime verifie: `bfg_explode` est atteignable via `fire_bfg` -> `bfg_touch` -> `think = bfg_explode`, et `fire_bfg` est atteignable via `Weapon_BFG`, `monster_fire_bfg`, Jorg/Makron et le hook `LOCAL_GAME_WORLD_WEAPON_HOOKS`.
+- `apps/web`: integration attendue indirecte via runtime full-game/local, transport des temp entities, sons/snapshots et refresh client; aucune logique web parallele ne remplace l'effet BFG.
+- `packages/renderer-three`: sorties visibles attendues = entite projectile `EF_BFG`, sprite d'explosion `TE_BFG_EXPLOSION`, big explosion et lasers BFG en aval; elles passent par `CL_ParseTEnt`/`CL_ExecuteTempEntityEffects`, particules et beams exposes dans `ClientRefreshFrame`, puis consommes par les adapters Three; aucun manque ouvert observe.
+
 ## Tests lances
 
 - `npm run verify:g-weapon`
 - `npm run verify:p-weapon`
 - `npm run verify:g-monster`
 - `npm run verify:g-turret`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+- `npm run verify:g-weapon` (relance session `bfg_explode`)
+- `npm run verify:p-weapon`
+- `npm run verify:g-monster`
 - `npm run verify:full-game:server-host`
 - `npm run verify:local-gameplay-sync`
 - `npm run verify:web-render-order`
@@ -58,10 +82,12 @@
 - `packages/game/src/g_weapon.ts`: `fire_rocket` conserve maintenant le `dir` brut comme le C pour `movedir`, `velocity` et `check_dodge`; `check_dodge` est appele avant `linkGameEntity`; commentaire `fire_rocket` ajuste.
 - `scripts/verify/quake2-g-weapon.ts`: ajout de `verifyFireRocketSpawnStateAndDodgeOrder` pour prouver l'etat du projectile, le modele/son/effect, le local `rocket`, l'ordre `check_dodge` puis `linkentity`, et l'exposition au runtime touch.
 - `scripts/verify/quake2-g-weapon.ts`: renforcement de `verifyFireRailDamageModAndVisibleTrail` pour couvrir les locaux `from`, `end`, `tr`, premier `ignore`, `mask`, `water`, la branche slime/lava, le monstre perce, `MOD_RAILGUN` et le double `TE_RAILTRAIL`.
+- `packages/game/src/g_weapon.ts`: `fire_bfg` renseigne maintenant `radius_dmg = damage`, champ lu par `bfg_explode` comme dans le C.
+- `scripts/verify/quake2-g-weapon.ts`: renforcement de `verifyBfgDamageModsAndVisibleEffects` pour couvrir l'initialisation runtime `fire_bfg` -> `bfg_explode`, les filtres `bfg_explode`, les locaux `ent`, `v`, `dist`, `points`, le montant tronque, `TE_BFG_EXPLOSION`, `DAMAGE_ENERGY`, `MOD_BFG_EFFECT`, reschedule et cleanup frame 5.
 
 ## Prochain lot recommande
 
-- Continuer avec le deuxieme `ignore` de la matrice si confirme comme artefact de `fire_rail`, puis `bfg_explode` et ses temporaires locaux (`ent`, `points`, `dist`, `v`) si le lot reste coherent.
+- Continuer avec `bfg_touch` comme prochain petit lot, sans inclure `bfg_think` sauf si le lot reste strictement compact.
 
 ## Blocages
 

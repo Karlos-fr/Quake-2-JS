@@ -181,6 +181,9 @@ export function turret_breach_fire(self: GameEntity, runtime: GameRuntime): void
  *
  * Behavior:
  * - Clamps requested turret angles, rotates toward them and keeps all team parts plus optional driver in sync.
+ *
+ * Porting notes:
+ * - C locals `ent`, `angle`, `target_z` and `diff` are preserved as block-scoped TypeScript locals.
  */
 export function turret_breach_think(self: GameEntity, runtime: GameRuntime): void {
   const current_angles: vec3_t = [...self.s.angles];

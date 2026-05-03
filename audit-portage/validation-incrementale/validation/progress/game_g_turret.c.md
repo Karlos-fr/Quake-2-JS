@@ -34,6 +34,18 @@
 - renderer-three: sortie visible attendue via entite rocket `EF_ROCKET`, modele/sound de projectile, trail/dlight rocket, puis temp entities d'impact gerees par `fire_rocket`/`rocket_touch`; la consommation passe par packet entities, refresh client et renderer Three. `verify:full-game:three-renderer` couvre l'adapter renderer.
 - Tests lances: `npm run verify:g-turret`; harnais inline `npx tsx -` ciblant `turret_breach_fire` avec `Math.random` controle, origine du son positionne, attaquant, `damage`, `speed`, rayon et metadata son; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run verify:full-game:audio-routing`; `npm run typecheck`.
 
+## Session 2026-05-03 - `turret_breach_think` sous-lot `ent`/`angle`/`target_z`/`diff`
+
+- Lot traite: `turret_breach_think` avec les locaux C `ent`, `angle`, `target_z` et `diff`.
+- Statut: `turret_breach_think` valide pour ce sous-lot; les quatre locaux sont marques `Non applicable` comme artefacts de matrice portes en variables/constantes locales TS.
+- Comparaison C/H vs TS: ownership confirme dans `packages/game/src/g_turret.ts`; nom conserve; normalisation/clamp pitch-yaw, calcul `delta`, limitation par `speed * FRAMETIME`, `avelocity`, `nextthink`, propagation `ent = self->teammaster; ent = ent->teamchain`, copie des vitesses angulaires driver, calculs `angle`, `target_z` par `SnapToEights`, `diff`, declenchement et effacement du flag de tir conserves.
+- Commentaire d'en-tete: complete pour documenter les locaux C du sous-lot portes en locaux TypeScript.
+- Preuve ciblee: harnais inline `npx tsx -` pour verifier les valeurs exactes de `avelocity`, `nextthink`, parcours complet de teamchain via `ent`, vitesses angulaires du driver, vitesse driver `[30, 370, -80]` issue de `angle`, `target_z` et `diff`, et tir rocket.
+- Runtime: atteint normalement via `SP_turret_breach`, `turret_breach_finish_init`, `self.think = turret_breach_think`, puis `G_RunFrame`/`runPendingThinks`; le tir reste arme par `turret_driver_think` via `TURRET_BREACH_FIRE`.
+- apps/web: pas d'appel direct attendu; l'integration attendue est indirecte via le runtime full-game/local, les snapshots d'entites pusher/driver, sons et projectiles. `verify:full-game:server-host` et `verify:web-render-order` confirment que le flux web consomme le runtime porte sans logique parallele.
+- renderer-three: sorties visibles attendues indirectes via angles/origins/vitesses des brushes de tourelle et driver, entite rocket `EF_ROCKET`, puis temp entities/dlights/scene apres impact; `verify:full-game:three-renderer` confirme la consommation du flux renderer.
+- Tests lances: `npm run verify:g-turret`; harnais inline `npx tsx -` exact-locals; `npm run verify:full-game:server-host`; `npm run verify:web-render-order`; `npm run verify:full-game:three-renderer`; `npm run typecheck`.
+
 ## Prochain lot recommande
 
-Continuer avec `turret_breach_think` et le premier petit sous-lot de locaux associes (`ent`, `angle`, `target_z`, `diff`) si le lot reste coherent; verifier en priorite le clamping pitch/yaw, le flag de tir, les vitesses angulaires et la mise a jour du driver.
+Continuer avec `turret_breach_finish_init`, puis `SP_turret_breach` si le lot reste petit.

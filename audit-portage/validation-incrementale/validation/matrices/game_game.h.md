@@ -15,8 +15,8 @@
 | `Quake-2-master/game/game.h` | macro | `SVF_DEADMONSTER` | `packages/game/src/runtime.ts` | `SVF_DEADMONSTER` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | macro | `SVF_MONSTER` | `packages/game/src/runtime.ts` | `SVF_MONSTER` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | enum | `solid_t` | `packages/game/src/game.ts` | `solid_t` | Valide | A redecouper |  |
-| `Quake-2-master/game/game.h` | struct | `link_s` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/game.h` | macro | `MAX_ENT_CLUSTERS` | `packages/game/src/game.ts` | `MAX_ENT_CLUSTERS` | A verifier | A redecouper |  |
+| `Quake-2-master/game/game.h` | struct | `link_s` | `packages/game/src/game.ts` | `link_s` | Valide | A redecouper | Alias `link_s` ajoute dans `game.ts`; `link_t` reste le typedef C. |
+| `Quake-2-master/game/game.h` | macro | `MAX_ENT_CLUSTERS` | `packages/game/src/game.ts` | `MAX_ENT_CLUSTERS` | Valide | A redecouper |  |
 | `Quake-2-master/game/game.h` | struct | `gclient_s` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `ps` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/game.h` | global | `ping` | `packages/game/src/game.ts` |  | A verifier | A redecouper |  |

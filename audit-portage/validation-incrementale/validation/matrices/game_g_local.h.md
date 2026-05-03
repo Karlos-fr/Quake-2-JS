@@ -278,10 +278,10 @@
 | `Quake-2-master/game/g_local.h` | macro | `MOD_FRIENDLY_FIRE` | `packages/game/src/runtime.ts` | `MOD_FRIENDLY_FIRE` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `meansOfDeath` | `packages/game/src/runtime.ts` | `runtime.meansOfDeath` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `g_edicts` | `packages/game/src/runtime.ts` | `runtime.entities` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `FOFS` | `packages/game/src/g_local.ts` | `FOFS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `STOFS` | `packages/game/src/g_local.ts` | `STOFS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `LLOFS` | `packages/game/src/g_local.ts` | `LLOFS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `CLOFS` | `packages/game/src/g_local.ts` | `CLOFS` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `FOFS` | `packages/game/src/g_local.ts` | `FOFS` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `STOFS` | `packages/game/src/g_local.ts` | `STOFS` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `LLOFS` | `packages/game/src/g_local.ts` | `LLOFS` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `CLOFS` | `packages/game/src/g_local.ts` | `CLOFS` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `random` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `crandom` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `maxentities` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

@@ -16,11 +16,13 @@ import {
   CL_ClearDlights,
   CL_ClearLightStyles,
   CL_ClearParticles,
+  CL_ExecuteTempEntityEffects,
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
   CL_NewDlight,
   CL_ParticleEffect,
   CL_ParticleEffect2,
+  CL_ParticleEffect3,
   CL_RunDLights,
   CL_RunLightStyles,
   CL_SetLightstyle
@@ -41,6 +43,7 @@ import {
   MZ_RESPAWN,
   MZ_SHOTGUN,
   MZ_SILENCED,
+  temp_event_t,
   type vec3_t
 } from "../../packages/qcommon/src/index.js";
 import { createClientRuntime as createRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
@@ -54,6 +57,8 @@ function main(): void {
   verifyClearParticles();
   verifyParticleEffectRuntimeParticles();
   verifyParticleEffect2RuntimeParticles();
+  verifyParticleEffect3RuntimeParticles();
+  verifyParticleEffect3TempEntityRuntimeBranch();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
   verifyItemRespawnEntityEventMetadata();
@@ -178,6 +183,67 @@ function verifyParticleEffect2RuntimeParticles(): void {
 
   const renderParticles = CL_AddParticles(runtime);
   assert.equal(renderParticles.length, 4, "CL_ParticleEffect2 particles should reach the refresh particle list");
+}
+
+function verifyParticleEffect3RuntimeParticles(): void {
+  const runtime = createRuntime();
+  const origin: vec3_t = [32, -16, 8];
+  const direction: vec3_t = [-2, 1, 3];
+  runtime.cl.time = 4680;
+  const randomUnit = 9 / 0x7fffffff;
+
+  withMockRandom(randomUnit, () => {
+    CL_ParticleEffect3(runtime, origin, direction, 0x6f, 2);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 2, "CL_ParticleEffect3 should allocate the requested particle count");
+  assert.equal(runtime.cl.free_particles, 2, "CL_ParticleEffect3 free list should advance by count");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_ParticleEffect3 should preserve cl.time");
+  assert.ok(particles.every((particle) => particle.color === 0x6f), "CL_ParticleEffect3 should preserve the fixed color");
+  assert.ok(
+    particles.every((particle) => (
+      particle.org[0] === origin[0] - 3 + (1 * direction[0])
+      && particle.org[1] === origin[1] - 3 + (1 * direction[1])
+      && particle.org[2] === origin[2] - 3 + (1 * direction[2])
+    )),
+    "CL_ParticleEffect3 should apply jitter and local d = rand&7 displacement"
+  );
+  const expectedVelocity = ((randomUnit * 2) - 1) * 20;
+  assert.ok(
+    particles.every((particle) => (
+      almostEqual(particle.vel[0], expectedVelocity)
+      && almostEqual(particle.vel[1], expectedVelocity)
+      && almostEqual(particle.vel[2], expectedVelocity)
+    )),
+    "CL_ParticleEffect3 velocity crand scale mismatch"
+  );
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 40), "CL_ParticleEffect3 positive gravity mismatch");
+  const expectedAlphavel = -1.0 / (0.5 + (randomUnit * 0.3));
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, expectedAlphavel)), "CL_ParticleEffect3 alpha decay mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 2, "CL_ParticleEffect3 particles should reach the refresh particle list");
+}
+
+function verifyParticleEffect3TempEntityRuntimeBranch(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 9753;
+
+  withMockRandom(9 / 0x7fffffff, () => {
+    CL_ExecuteTempEntityEffects(runtime, {
+      type: temp_event_t.TE_TUNNEL_SPARKS,
+      position: [1, 2, 3],
+      directionByte: 0,
+      color: 0x44,
+      count: 5
+    });
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 5, "TE_TUNNEL_SPARKS should dispatch to CL_ParticleEffect3");
+  assert.ok(particles.every((particle) => particle.color === 0x44), "TE_TUNNEL_SPARKS should preserve packet color");
+  assert.ok(particles.every((particle) => particle.accel[2] === 40), "TE_TUNNEL_SPARKS should use CL_ParticleEffect3 positive gravity");
 }
 
 function verifyMonsterMuzzleFlash2Effects(): void {

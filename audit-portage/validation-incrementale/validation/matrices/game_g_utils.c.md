@@ -13,8 +13,8 @@
 | `Quake-2-master/game/g_utils.c` | function | `G_ProjectSource` | `packages/game/src/g_utils.ts` | `G_ProjectSource` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `G_Find` | `packages/game/src/g_utils.ts` | `G_Find` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `G_Find`, porte comme `value` local TS et couvert par test. |
-| `Quake-2-master/game/g_utils.c` | function | `findradius` | `packages/game/src/g_utils.ts` | `findradius` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_utils.c` | global | `j` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | function | `findradius` | `packages/game/src/g_utils.ts` | `findradius` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `j` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `findradius`, porte par construction directe du vecteur `eorg` TS et couvert par test. |
 | `Quake-2-master/game/g_utils.c` | macro | `MAXCHOICES` | `packages/game/src/g_utils.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | function | `G_PickTarget` | `packages/game/src/g_utils.ts` | `G_PickTarget` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `ent` | `packages/game/src/g_utils.ts` | `ent` | A verifier | A redecouper |  |

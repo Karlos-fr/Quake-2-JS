@@ -20,6 +20,7 @@ import {
   SVF_NOCLIENT,
   solid_t
 } from "../../packages/game/src/game.js";
+import type { link_s, link_t } from "../../packages/game/src/game.js";
 import { createGameClient, createRuntimeEntity } from "../../packages/game/src/runtime.js";
 
 const client = createGameClient();
@@ -42,5 +43,12 @@ assert.equal(entity.num_clusters, 0, "edict_t num_clusters must be initialized")
 assert.equal(entity.clusternums.length, MAX_ENT_CLUSTERS, "edict_t clusternums must keep fixed inline capacity");
 assert.equal(entity.area.prev, null, "edict_t area link must start detached");
 assert.equal(entity.area.next, null, "edict_t area link must start detached");
+
+const detachedLink: link_s = { prev: entity.area, next: null };
+const typedefLink: link_t = detachedLink;
+entity.area.next = typedefLink;
+assert.equal(entity.area.next, detachedLink, "link_s/link_t must preserve the double-linked node shape");
+assert.equal(entity.area.next.prev, entity.area, "link_s.prev must be able to reference another link_s node");
+assert.ok(entity.clusternums instanceof Int32Array, "edict_t clusternums must keep integer inline storage");
 
 console.log("quake2-game-header: ok");

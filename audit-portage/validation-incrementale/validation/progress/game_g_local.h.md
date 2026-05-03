@@ -1219,7 +1219,24 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: ligne `g_edicts` passee a `Valide` avec cible `runtime.entities`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-main` OK; `npm run verify:full-game:server-host` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec `FOFS`, puis `STOFS`/`LLOFS`/`CLOFS` si le lot reste coherent.
+- 2026-05-03: lot macros offset/selecteurs `FOFS`, `STOFS`, `LLOFS`, `CLOFS`.
+- Verdict: `Valide` pour les 4 macros apres comparaison H/C vs TS, verification de l'ownership dans `packages/game/src/g_local.ts`, des commentaires d'en-tete et des usages runtime dans les tables de spawn/save.
+- Source H/C comparee:
+  - `g_local.h` definit `FOFS(x)`, `STOFS(x)`, `LLOFS(x)` et `CLOFS(x)` comme casts d'adresse de champ sur pointeur nul vers `edict_t`, `spawn_temp_t`, `level_locals_t` et `gclient_t`.
+  - `g_save.c` consomme ces macros dans `fields`, `levelfields` et `clientfields`; `g_spawn.c` utilise `fields` pour appliquer les donnees BSP soit a l'edict, soit au bloc temporaire `st` quand `FFL_SPAWNTEMP` est pose.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `FOFS`, `STOFS`, `LLOFS` et `CLOFS` conservent les noms originaux et modelisent les offsets C par des selecteurs `keyof` typés, avec commentaires d'en-tete `Original name`, `Source`, `Category: New`, `Fidelity level: Close` et comportement.
+  - `packages/game/src/g_save.ts`: les tables `fields`, `levelfields` et `clientfields` utilisent ces selecteurs pour conserver l'ordre, les noms, les types et flags C; les offsets imbriques C `s.origin`, `s.angles`, `monsterinfo.*`, `moveinfo.endfunc` et `pers.*` sont representes par chemins string quand le selecteur direct TS ne peut pas porter le chemin.
+  - `packages/game/src/g_spawn.ts`: `ED_ParseField` applique les champs edict et spawn-temp depuis ces tables, ignore `FFL_NOSPAWN` et route `FFL_SPAWNTEMP` vers `spawn_temp_t`/`properties` comme le C route vers `st`.
+- Runtime: integration attendue et branchee via `SpawnEntities`/`ED_ParseEdict`/`ED_ParseField`, puis `WriteGame`/`ReadGame` et `WriteLevel`/`ReadLevel`; les preuves couvrent les selecteurs eux-memes, l'ordre des tables, les flags `FFL_SPAWNTEMP`/`FFL_NOSPAWN`, les champs level/client et le flux spawn/save.
+- apps/web: integration attendue indirectement via host full-game/local qui charge les BSP entities, appelle le runtime game et consomme snapshots/HUD/sons; aucune logique parallele de parsing de champs game detectee dans `apps/web`. `verify:web-render-order` OK.
+- renderer-three: aucune consommation directe des macros/selecteurs attendue. Elles ne produisent pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene; les sorties visibles issues des entites parsees/sauvegardees passent en aval par snapshots/refresh. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaires d'en-tete de `FOFS`, `STOFS`, `LLOFS`, `CLOFS`, `ED_ParseField`, `WriteGame`, `ReadGame`, `WriteLevel` et `ReadLevel` verifies.
+- Corrections appliquees:
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes `FOFS`, `STOFS`, `LLOFS`, `CLOFS` passees a `Valide`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-save` OK; `npm run verify:g-spawn` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec `random`, puis `crandom` si le lot reste coherent.
 
 ## Blocages
 

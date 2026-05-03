@@ -23,6 +23,7 @@ import {
   G_SetMovedir,
   G_Spawn,
   KillBox,
+  findradius,
   tv,
   vectoyaw,
   vectoangles,
@@ -68,6 +69,48 @@ assert.deepEqual(
   [10.5, -7, 6],
   "G_ProjectSource must match the C projection formula for mixed basis vectors"
 );
+
+const radiusRuntime = createGameRuntimeFromBspEntities([]);
+radiusRuntime.maxentities = 16;
+const solidMiss = createRuntimeEntity({ classname: "radius_miss" }, 1);
+solidMiss.s.origin = [40, 0, 0];
+solidMiss.origin = [...solidMiss.s.origin];
+solidMiss.mins = [-4, -4, -4];
+solidMiss.maxs = [4, 4, 4];
+solidMiss.solid = 1;
+const inactiveInside = createRuntimeEntity({ classname: "radius_inactive" }, 2);
+inactiveInside.s.origin = [2, 0, 0];
+inactiveInside.origin = [...inactiveInside.s.origin];
+inactiveInside.solid = 1;
+inactiveInside.inuse = false;
+const nonsolidInside = createRuntimeEntity({ classname: "radius_nonsolid" }, 3);
+nonsolidInside.s.origin = [3, 0, 0];
+nonsolidInside.origin = [...nonsolidInside.s.origin];
+nonsolidInside.solid = 0;
+const centeredInside = createRuntimeEntity({ classname: "radius_centered" }, 4);
+centeredInside.s.origin = [14, 0, 0];
+centeredInside.origin = [...centeredInside.s.origin];
+centeredInside.mins = [-12, -2, -2];
+centeredInside.maxs = [0, 2, 2];
+centeredInside.solid = 1;
+const edgeInside = createRuntimeEntity({ classname: "radius_edge" }, 5);
+edgeInside.s.origin = [0, 10, 0];
+edgeInside.origin = [...edgeInside.s.origin];
+edgeInside.solid = 1;
+const afterEdge = createRuntimeEntity({ classname: "radius_after_edge" }, 6);
+afterEdge.s.origin = [0, 8, 0];
+afterEdge.origin = [...afterEdge.s.origin];
+afterEdge.solid = 1;
+radiusRuntime.entities[1] = solidMiss;
+radiusRuntime.entities[2] = inactiveInside;
+radiusRuntime.entities[3] = nonsolidInside;
+radiusRuntime.entities[4] = centeredInside;
+radiusRuntime.entities[5] = edgeInside;
+radiusRuntime.entities[6] = afterEdge;
+assert.equal(findradius(radiusRuntime, null, [0, 0, 0], 10), centeredInside, "findradius must skip inactive/non-solid/out-of-radius entities and use bbox center");
+assert.equal(findradius(radiusRuntime, centeredInside, [0, 0, 0], 10), edgeInside, "findradius must resume after the previous entity and accept distance equal to radius");
+assert.equal(findradius(radiusRuntime, edgeInside, [0, 0, 0], 10), afterEdge, "findradius must continue iteration after an accepted entity");
+assert.equal(findradius(radiusRuntime, afterEdge, [0, 0, 0], 10), null, "findradius must return null after the final candidate");
 
 const movedir: [number, number, number] = [0, 0, 0];
 const angles: [number, number, number] = [0, -1, 0];

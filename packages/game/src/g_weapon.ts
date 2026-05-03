@@ -538,6 +538,7 @@ export function fire_bfg(
   bfg.nextthink = runtime.time + 0.1;
   bfg.think = hooks.bfg_think ?? ((thinkSelf, localRuntime) => bfg_think(thinkSelf, localRuntime, hooks));
   bfg.count = damage;
+  bfg.radius_dmg = damage;
   bfg.dmg_radius = damageRadius;
   bfg.classname = "bfg blast";
   bfg.s.sound = registerGameSound(runtime, "weapons/bfg__l1a.wav");

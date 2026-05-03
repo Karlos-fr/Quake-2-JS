@@ -77,15 +77,26 @@ export enum solid_t {
 }
 
 /**
+ * Original name: link_s
+ * Source: game/game.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Represents the `struct link_s` doubly linked area-link node embedded in server-visible edicts.
+ */
+export type link_s = GameAreaLink;
+
+/**
  * Original name: link_t
  * Source: game/game.h
  * Category: Ported
  * Fidelity level: Strict
  *
  * Behavior:
- * - Represents the doubly linked area-link node embedded in server-visible edicts.
+ * - Preserves the `typedef struct link_s link_t` alias used by `edict_t.area`.
  */
-export type link_t = GameAreaLink;
+export type link_t = link_s;
 
 /**
  * Original name: gclient_t
