@@ -10,56 +10,56 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak101` | `packages/game/src/m_soldier.ts` | `FRAME_attak101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak102` | `packages/game/src/m_soldier.ts` | `FRAME_attak102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak103` | `packages/game/src/m_soldier.ts` | `FRAME_attak103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak104` | `packages/game/src/m_soldier.ts` | `FRAME_attak104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak105` | `packages/game/src/m_soldier.ts` | `FRAME_attak105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak106` | `packages/game/src/m_soldier.ts` | `FRAME_attak106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak107` | `packages/game/src/m_soldier.ts` | `FRAME_attak107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak108` | `packages/game/src/m_soldier.ts` | `FRAME_attak108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak109` | `packages/game/src/m_soldier.ts` | `FRAME_attak109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak110` | `packages/game/src/m_soldier.ts` | `FRAME_attak110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak111` | `packages/game/src/m_soldier.ts` | `FRAME_attak111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak112` | `packages/game/src/m_soldier.ts` | `FRAME_attak112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak201` | `packages/game/src/m_soldier.ts` | `FRAME_attak201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak202` | `packages/game/src/m_soldier.ts` | `FRAME_attak202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak203` | `packages/game/src/m_soldier.ts` | `FRAME_attak203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak204` | `packages/game/src/m_soldier.ts` | `FRAME_attak204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak205` | `packages/game/src/m_soldier.ts` | `FRAME_attak205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak206` | `packages/game/src/m_soldier.ts` | `FRAME_attak206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak207` | `packages/game/src/m_soldier.ts` | `FRAME_attak207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak208` | `packages/game/src/m_soldier.ts` | `FRAME_attak208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak209` | `packages/game/src/m_soldier.ts` | `FRAME_attak209` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak210` | `packages/game/src/m_soldier.ts` | `FRAME_attak210` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak211` | `packages/game/src/m_soldier.ts` | `FRAME_attak211` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak212` | `packages/game/src/m_soldier.ts` | `FRAME_attak212` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak213` | `packages/game/src/m_soldier.ts` | `FRAME_attak213` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak214` | `packages/game/src/m_soldier.ts` | `FRAME_attak214` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak215` | `packages/game/src/m_soldier.ts` | `FRAME_attak215` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak216` | `packages/game/src/m_soldier.ts` | `FRAME_attak216` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak217` | `packages/game/src/m_soldier.ts` | `FRAME_attak217` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak218` | `packages/game/src/m_soldier.ts` | `FRAME_attak218` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak301` | `packages/game/src/m_soldier.ts` | `FRAME_attak301` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak302` | `packages/game/src/m_soldier.ts` | `FRAME_attak302` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak303` | `packages/game/src/m_soldier.ts` | `FRAME_attak303` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak304` | `packages/game/src/m_soldier.ts` | `FRAME_attak304` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak305` | `packages/game/src/m_soldier.ts` | `FRAME_attak305` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak306` | `packages/game/src/m_soldier.ts` | `FRAME_attak306` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak307` | `packages/game/src/m_soldier.ts` | `FRAME_attak307` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak308` | `packages/game/src/m_soldier.ts` | `FRAME_attak308` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak309` | `packages/game/src/m_soldier.ts` | `FRAME_attak309` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak401` | `packages/game/src/m_soldier.ts` | `FRAME_attak401` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak402` | `packages/game/src/m_soldier.ts` | `FRAME_attak402` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak403` | `packages/game/src/m_soldier.ts` | `FRAME_attak403` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak404` | `packages/game/src/m_soldier.ts` | `FRAME_attak404` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak405` | `packages/game/src/m_soldier.ts` | `FRAME_attak405` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak406` | `packages/game/src/m_soldier.ts` | `FRAME_attak406` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck01` | `packages/game/src/m_soldier.ts` | `FRAME_duck01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck02` | `packages/game/src/m_soldier.ts` | `FRAME_duck02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck03` | `packages/game/src/m_soldier.ts` | `FRAME_duck03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck04` | `packages/game/src/m_soldier.ts` | `FRAME_duck04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck05` | `packages/game/src/m_soldier.ts` | `FRAME_duck05` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak101` | `packages/game/src/m_soldier.ts` | `FRAME_attak101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak102` | `packages/game/src/m_soldier.ts` | `FRAME_attak102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak103` | `packages/game/src/m_soldier.ts` | `FRAME_attak103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak104` | `packages/game/src/m_soldier.ts` | `FRAME_attak104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak105` | `packages/game/src/m_soldier.ts` | `FRAME_attak105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak106` | `packages/game/src/m_soldier.ts` | `FRAME_attak106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak107` | `packages/game/src/m_soldier.ts` | `FRAME_attak107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak108` | `packages/game/src/m_soldier.ts` | `FRAME_attak108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak109` | `packages/game/src/m_soldier.ts` | `FRAME_attak109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak110` | `packages/game/src/m_soldier.ts` | `FRAME_attak110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak111` | `packages/game/src/m_soldier.ts` | `FRAME_attak111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak112` | `packages/game/src/m_soldier.ts` | `FRAME_attak112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak201` | `packages/game/src/m_soldier.ts` | `FRAME_attak201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak202` | `packages/game/src/m_soldier.ts` | `FRAME_attak202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak203` | `packages/game/src/m_soldier.ts` | `FRAME_attak203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak204` | `packages/game/src/m_soldier.ts` | `FRAME_attak204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak205` | `packages/game/src/m_soldier.ts` | `FRAME_attak205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak206` | `packages/game/src/m_soldier.ts` | `FRAME_attak206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak207` | `packages/game/src/m_soldier.ts` | `FRAME_attak207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak208` | `packages/game/src/m_soldier.ts` | `FRAME_attak208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak209` | `packages/game/src/m_soldier.ts` | `FRAME_attak209` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak210` | `packages/game/src/m_soldier.ts` | `FRAME_attak210` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak211` | `packages/game/src/m_soldier.ts` | `FRAME_attak211` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak212` | `packages/game/src/m_soldier.ts` | `FRAME_attak212` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak213` | `packages/game/src/m_soldier.ts` | `FRAME_attak213` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak214` | `packages/game/src/m_soldier.ts` | `FRAME_attak214` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak215` | `packages/game/src/m_soldier.ts` | `FRAME_attak215` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak216` | `packages/game/src/m_soldier.ts` | `FRAME_attak216` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak217` | `packages/game/src/m_soldier.ts` | `FRAME_attak217` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak218` | `packages/game/src/m_soldier.ts` | `FRAME_attak218` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak301` | `packages/game/src/m_soldier.ts` | `FRAME_attak301` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak302` | `packages/game/src/m_soldier.ts` | `FRAME_attak302` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak303` | `packages/game/src/m_soldier.ts` | `FRAME_attak303` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak304` | `packages/game/src/m_soldier.ts` | `FRAME_attak304` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak305` | `packages/game/src/m_soldier.ts` | `FRAME_attak305` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak306` | `packages/game/src/m_soldier.ts` | `FRAME_attak306` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak307` | `packages/game/src/m_soldier.ts` | `FRAME_attak307` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak308` | `packages/game/src/m_soldier.ts` | `FRAME_attak308` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak309` | `packages/game/src/m_soldier.ts` | `FRAME_attak309` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak401` | `packages/game/src/m_soldier.ts` | `FRAME_attak401` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak402` | `packages/game/src/m_soldier.ts` | `FRAME_attak402` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak403` | `packages/game/src/m_soldier.ts` | `FRAME_attak403` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak404` | `packages/game/src/m_soldier.ts` | `FRAME_attak404` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak405` | `packages/game/src/m_soldier.ts` | `FRAME_attak405` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_attak406` | `packages/game/src/m_soldier.ts` | `FRAME_attak406` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck01` | `packages/game/src/m_soldier.ts` | `FRAME_duck01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck02` | `packages/game/src/m_soldier.ts` | `FRAME_duck02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck03` | `packages/game/src/m_soldier.ts` | `FRAME_duck03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck04` | `packages/game/src/m_soldier.ts` | `FRAME_duck04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.h` | macro | `FRAME_duck05` | `packages/game/src/m_soldier.ts` | `FRAME_duck05` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_soldier.h` | macro | `FRAME_pain101` | `packages/game/src/m_soldier.ts` | `FRAME_pain101` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.h` | macro | `FRAME_pain102` | `packages/game/src/m_soldier.ts` | `FRAME_pain102` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.h` | macro | `FRAME_pain103` | `packages/game/src/m_soldier.ts` | `FRAME_pain103` | A verifier | A redecouper |  |

@@ -46,6 +46,7 @@ import {
   tank_attack,
   tank_dead,
   tank_die,
+  tank_footstep,
   tank_idle,
   tank_move_attack_blast,
   tank_move_attack_chain,
@@ -66,7 +67,9 @@ import {
   tank_run,
   tank_sight,
   tank_stand,
-  tank_walk
+  tank_thud,
+  tank_walk,
+  tank_windup
 } from "../../packages/game/src/m_tank.js";
 
 main();
@@ -78,6 +81,7 @@ function main(): void {
   verifyStateTransitions();
   verifyAttackBranches();
   verifyWeaponCallbacks();
+  verifyBaseSoundCallbacks();
   verifyPainBranches();
   verifyDeathBranches();
   verifyDeathmatchSpawnFreesEntity();
@@ -171,6 +175,9 @@ function verifyStateTransitions(): void {
   tank_run(tank);
   assert.equal(tank.monsterinfo.currentmove, tank_move_run);
   assert.equal(tank.monsterinfo.aiflags & AI_BRUTAL, AI_BRUTAL);
+  tank.enemy = null;
+  tank_run(tank);
+  assert.equal(tank.monsterinfo.aiflags & AI_BRUTAL, 0);
   tank.monsterinfo.aiflags |= AI_STAND_GROUND;
   tank_run(tank);
   assert.equal(tank.monsterinfo.currentmove, tank_move_stand);
@@ -230,6 +237,23 @@ function verifyWeaponCallbacks(): void {
   tank.s.frame = FRAME_attak110 - 1;
   M_MoveFrame(tank, runtime);
   assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_TANK_BLASTER_1);
+}
+
+function verifyBaseSoundCallbacks(): void {
+  const runtime = createHarnessRuntime();
+  const tank = createTank(runtime, 14, "monster_tank");
+  SP_monster_tank(tank, runtime);
+
+  tank_footstep(tank, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "tank/step.wav");
+  tank_thud(tank, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "tank/tnkdeth2.wav");
+  tank_windup(tank, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "tank/tnkatck4.wav");
+  tank_idle(tank, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "tank/tnkidle1.wav");
+  tank_sight(tank, null, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "tank/sight1.wav");
 }
 
 function verifyPainBranches(): void {

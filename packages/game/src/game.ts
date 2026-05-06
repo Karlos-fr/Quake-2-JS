@@ -122,7 +122,7 @@ export type gclient_t = gclient_s;
 
 /**
  * Original name: edict_s
- * Source: game/game.h
+ * Source: game/g_local.h
  * Category: Ported
  * Fidelity level: Strict
  *

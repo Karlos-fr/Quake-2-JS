@@ -1932,7 +1932,28 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 33 lignes de `killer_yaw` a `update_chase` passees a `Valide`, noms cibles renseignes.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:p-view` OK; `npm run verify:p-weapon` OK; `npm run verify:g-chase` OK; `npm run verify:g-cmds` OK; `npm run typecheck` OK.
 
-- Prochain lot recommande: commencer `edict_s` dans un lot separe avec `edict_s`, `s`, `inuse`, `linkcount`, `area`, `num_clusters`, `clusternums`, `headnode`, `svflags`, `solid`, `clipmask`, `owner`, `movetype`, `flags`, `model` si le lot reste coherent.
+- 2026-05-06: lot elargi debut de `edict_s`: structure `edict_s`, prefixe serveur `s`, `inuse`, `linkcount`, `area`, `num_clusters`, `clusternums`, `headnode`, `svflags`, `solid`, `clipmask`, `owner`, puis champs gameplay immediats `movetype`, `flags`, `model`, `freetime`, `message`, `classname`, `spawnflags`, `timestamp`, `angle`, `target`, `targetname`, `killtarget`, `team`, `pathtarget`, `deathtarget`, `combattarget`, `target_ent`.
+- Verdict: `Valide` pour les 29 lignes du lot apres comparaison H/C vs TS, correction des commentaires d'ownership et ajout de preuves header/runtime.
+- Source H/C comparee:
+  - `g_local.h` definit le debut de `struct edict_s` avec l'ordre serveur obligatoire jusque `owner`, puis les champs gameplay de mouvement, model/free-list, spawn strings et ciblage.
+  - Les consommateurs C principaux sont le serveur (`linkentity`, `unlinkentity`, traces/PVS, snapshots), `g_main.c` (`G_RunFrame`, allocation/free edicts, spawn parsing), `g_phys.c` (movetype/solid/clipmask/owner/headnode), `g_spawn.c`/`g_target.c`/`g_utils.c` (spawn fields, targets, teams) et les modules gameplay qui exposent `s.modelindex`/`model` aux snapshots.
+- Cibles TS verifiees:
+  - `packages/game/src/runtime.ts`: `GameEntity` porte tous les champs du lot; `createRuntimeEntity` initialise les champs depuis les properties BSP ou des defaults equivalents; reset/reuse remet le bloc dans un etat equivalent; commentaire `GameEntity` corrige en `Original name: edict_s`, `Source: game/g_local.h`, `Category: Ported`.
+  - `packages/game/src/game.ts`: alias `edict_s`/`edict_t` et prefixe serveur `GameEdictServerFields` verifies; source du commentaire `edict_s` corrigee vers `game/g_local.h`.
+  - `packages/game/src/g_local.ts`: point d'attache header qui reexporte les constantes/types partages.
+  - `packages/game/src/g_phys.ts`, `g_main.ts`, `g_save.ts`, runtime collision/linking et asset/model registration verifies par harness.
+- Runtime: integre via `GetGameApi`/`RunFrame`, allocation et reuse d'edicts, parsing BSP, `gi.linkentity`/`unlinkentity`, traces collision monde/inline BSP/boites dynamiques, spawn/targeting et publication de `entity_state_t`/`modelindex` vers snapshots. `num_clusters`/`clusternums`/`headnode` ont le meme role de vis/collision; `headnode` est consomme pour les inline BSP traces quand `num_clusters` ne suffit pas.
+- apps/web: integration attendue indirectement via host full-game/local, chargement BSP, commandes serveur, snapshots/configstrings/model paths et ordre de rendu. Aucune logique parallele web ne remplace ces champs; `web-render-bootstrap` ne fait que resoudre l'origine de brush inline pour le rendu.
+- renderer-three: integration attendue via sorties visibles `s`, `model`, `solid`, `svflags`, `headnode` et snapshots/configstrings. Les modeles alias/sprites et brush inline sont consommes par le flux client/refresh et `packages/renderer-three` (`refresh-entity-sync`, model loader, world/brush render path); les entites `SVF_NOCLIENT`/sans `modelindex` restent filtrees en amont comme attendu.
+- Commentaires/documentation: commentaire proprietaire `GameEntity` corrige/verifie; commentaire alias `edict_s` dans `game.ts` corrige/verifie; fonctions nouvelles/adapters conservees comme telles.
+- Corrections appliquees:
+  - `packages/game/src/runtime.ts`: commentaire `GameEntity` passe de `Category: New` a port `edict_s`.
+  - `packages/game/src/game.ts`: commentaire `edict_s` corrige vers `Source: game/g_local.h`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ajoutees pour defaults, parsing spawn, mutabilite, longueur `MAX_ENT_CLUSTERS`, pointeurs et non-aliasing de `s`/`area`/`clusternums`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 29 lignes du lot passees a `Valide`, noms cibles renseignes.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-phys` OK; `npm run verify:g-main` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: continuer `edict_s` avec le bloc mouvement/physique `movedir`, `velocity`, `avelocity`, `mass`, `air_finished`, `gravity`, `goalentity`, `movetarget`, `yaw_speed`, `ideal_yaw`, `nextthink`, puis callbacks/timers si le lot reste coherent.
 
 ## Blocages
 

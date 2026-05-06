@@ -498,11 +498,18 @@ export interface GameAssetRegistry {
 export type GameEntityThink = (self: GameEntity, runtime: GameRuntime) => void;
 
 /**
- * Category: New
- * Purpose: Represent one BSP-spawned gameplay entity in a Quake-like mutable runtime shape.
+ * Original name: edict_s
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must preserve the original BSP property bag for later spawn-field expansion.
+ * Behavior:
+ * - Represents one mutable gameplay edict, including the server-visible prefix and gameplay-private fields.
+ *
+ * Porting notes:
+ * - C pointers are modeled as nullable object references.
+ * - C strings are modeled as strings or `undefined` for NULL-like fields.
+ * - The original BSP property bag is retained for spawn-field expansion.
  */
 export interface GameEntity {
   index: number;

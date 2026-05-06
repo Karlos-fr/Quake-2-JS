@@ -390,22 +390,67 @@ let sound_sight = 0;
 let sound_windup = 0;
 let sound_strike = 0;
 
+/**
+ * Original name: tank_sight
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the tank sight voice sound on `CHAN_VOICE` with normal attenuation.
+ */
 export function tank_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, soundOptions(CHAN_VOICE));
 }
 
+/**
+ * Original name: tank_footstep
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays one tank step sound on `CHAN_BODY`.
+ */
 export function tank_footstep(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_step, SOUND_STEP, soundOptions(CHAN_BODY));
 }
 
+/**
+ * Original name: tank_thud
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the tank death thud sound on `CHAN_BODY`.
+ */
 export function tank_thud(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_thud, SOUND_THUD, soundOptions(CHAN_BODY));
 }
 
+/**
+ * Original name: tank_windup
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the tank weapon windup sound on `CHAN_WEAPON`.
+ */
 export function tank_windup(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_windup, SOUND_WINDUP, soundOptions(CHAN_WEAPON));
 }
 
+/**
+ * Original name: tank_idle
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the idle voice sound on `CHAN_VOICE` with idle attenuation.
+ */
 export function tank_idle(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_idle, SOUND_IDLE, soundOptions(CHAN_VOICE, ATTN_IDLE));
 }
@@ -418,6 +463,15 @@ export const tank_move_stand: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: tank_stand
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects `tank_move_stand` as the current monster move.
+ */
 export function tank_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = tank_move_stand;
 }
@@ -450,6 +504,15 @@ export const tank_move_stop_walk: GameMonsterMove = {
   endfunc: tank_stand
 };
 
+/**
+ * Original name: tank_walk
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the continuous walk move after the tank walk start frames.
+ */
 export function tank_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = tank_move_walk;
 }
@@ -482,6 +545,15 @@ export const tank_move_stop_run: GameMonsterMove = {
   endfunc: tank_walk
 };
 
+/**
+ * Original name: tank_run
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Toggles `AI_BRUTAL` for client enemies, honors `AI_STAND_GROUND`, and selects the start/run move.
+ */
 export function tank_run(self: GameEntity): void {
   if (self.enemy?.client) {
     self.monsterinfo.aiflags |= AI_BRUTAL;

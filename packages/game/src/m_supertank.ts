@@ -331,10 +331,34 @@ let sound_search1 = 0;
 let sound_search2 = 0;
 let tread_sound = 0;
 
+/**
+ * Original name: TreadSound
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the registered supertank tread/engine sound on CHAN_VOICE.
+ *
+ * Porting notes:
+ * - Uses the structured game sound event queue instead of direct `gi.sound`.
+ */
 export function TreadSound(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, tread_sound, SOUND_TREAD, soundOptions(CHAN_VOICE));
 }
 
+/**
+ * Original name: supertank_search
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Randomly plays one of the two original supertank search sounds.
+ *
+ * Porting notes:
+ * - Preserves `random() < 0.5` through `g_local.random`.
+ */
 export function supertank_search(self: GameEntity, runtime: GameRuntime): void {
   if (random() < 0.5) {
     emitRegisteredGameSound(runtime, self, sound_search1, SOUND_SEARCH1, soundOptions(CHAN_VOICE));
@@ -351,6 +375,15 @@ export const supertank_move_stand: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: supertank_stand
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects `supertank_move_stand` as the current monster move.
+ */
 export function supertank_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = supertank_move_stand;
 }
@@ -379,14 +412,41 @@ export const supertank_move_forward: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: supertank_forward
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects `supertank_move_forward` as the current monster move.
+ */
 export function supertank_forward(self: GameEntity): void {
   self.monsterinfo.currentmove = supertank_move_forward;
 }
 
+/**
+ * Original name: supertank_walk
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects `supertank_move_forward`, matching the original walk callback.
+ */
 export function supertank_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = supertank_move_forward;
 }
 
+/**
+ * Original name: supertank_run
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Uses the stand move while `AI_STAND_GROUND` is set; otherwise uses the run move.
+ */
 export function supertank_run(self: GameEntity): void {
   if (self.monsterinfo.aiflags & AI_STAND_GROUND) {
     self.monsterinfo.currentmove = supertank_move_stand;
@@ -514,6 +574,19 @@ export const supertank_move_end_attack1: GameMonsterMove = {
   endfunc: supertank_run
 };
 
+/**
+ * Original name: supertank_reattack1
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Continues chaingun fire 90% of the time while the enemy remains visible.
+ * - Otherwise transitions to the end-attack move.
+ *
+ * Porting notes:
+ * - Guards the nullable TS `enemy` reference before the original visibility check.
+ */
 export function supertank_reattack1(self: GameEntity, runtime: GameRuntime): void {
   if (self.enemy && visible(self, self.enemy, runtime)) {
     if (random() < 0.9) {
@@ -567,6 +640,19 @@ export function supertank_pain(
   }
 }
 
+/**
+ * Original name: supertankRocket
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Selects the rocket muzzle flash from the current attack frame.
+ * - Projects the muzzle start and fires a monster rocket at the enemy view height.
+ *
+ * Porting notes:
+ * - Guards the nullable TS `enemy` reference; source runtime only calls this while an enemy exists.
+ */
 export function supertankRocket(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
@@ -591,6 +677,19 @@ export function supertankRocket(self: GameEntity, runtime: GameRuntime): void {
   monster_fire_rocket(self, start, dir, 50, 500, flash_number, runtime);
 }
 
+/**
+ * Original name: supertankMachineGun
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Derives the supertank machinegun muzzle flash from the current attack frame.
+ * - Fires a monster bullet with the original damage, kick and spread values.
+ *
+ * Porting notes:
+ * - Keeps the original yaw-only FIXME aiming base and falls back to it when no enemy is attached.
+ */
 export function supertankMachineGun(self: GameEntity, runtime: GameRuntime): void {
   const flash_number = MZ2_SUPERTANK_MACHINEGUN_1 + (self.s.frame - FRAME_attak1_1);
   const dirAngles: vec3_t = [0, self.s.angles[1], 0];
@@ -634,6 +733,16 @@ export function supertank_attack(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: supertank_dead
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Shrinks the dead monster bounds, switches to toss movement, marks `SVF_DEADMONSTER`,
+ *   clears future thinking and relinks the entity.
+ */
 export function supertank_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -60, -60, 0);
   setVec3(self.maxs, 60, 60, 72);
@@ -643,6 +752,19 @@ export function supertank_dead(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: BossExplode
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the staged `TE_EXPLOSION1` boss death explosions.
+ * - On the final stage clears looping sound, throws original gib models and marks the boss dead.
+ *
+ * Porting notes:
+ * - Emits structured temp-entity events and game gibs instead of direct `gi.Write*`/`gi.multicast`.
+ */
 export function BossExplode(self: GameEntity, runtime: GameRuntime): void {
   const org: vec3_t = [...self.s.origin];
   let n: number;

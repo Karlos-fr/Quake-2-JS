@@ -18,6 +18,15 @@ import {
   FRAME_walk1,
   MODEL_SCALE
 } from "../../packages/game/src/m_medic.js";
+import * as medic from "../../packages/game/src/m_medic.js";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const HEADER_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../Quake-2-master/game/m_medic.h"
+);
 
 /**
  * Category: New
@@ -40,4 +49,15 @@ assertEqual("FRAME_death30", FRAME_death30, 176);
 assertEqual("FRAME_attack60", FRAME_attack60, 236);
 assertEqual("MODEL_SCALE", MODEL_SCALE, 1.0);
 
+for (const [name, expected] of parseHeaderDefines(readFileSync(HEADER_PATH, "utf8"))) {
+  assertEqual(name, (medic as Record<string, unknown>)[name], expected);
+}
+
 console.log("quake2-m-medic-header: ok");
+
+function parseHeaderDefines(source: string): Array<[name: string, value: number]> {
+  return Array.from(
+    source.matchAll(/^#define\s+([A-Z0-9_]+)\s+([0-9]+(?:\.[0-9]+)?)/gm),
+    (match) => [match[1], Number(match[2])]
+  );
+}

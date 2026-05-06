@@ -145,6 +145,8 @@ import {
   SFL_CROSS_TRIGGER_7,
   SFL_CROSS_TRIGGER_8,
   SFL_CROSS_TRIGGER_MASK,
+  SOLID_BSP,
+  SOLID_NOT,
   STOFS,
   TAG_GAME,
   TAG_LEVEL,
@@ -200,6 +202,7 @@ import {
   ITEM_NO_TOUCH as INDEX_ITEM_NO_TOUCH,
   ITEM_TARGETS_USED as INDEX_ITEM_TARGETS_USED,
   ITEM_TRIGGER_SPAWN as INDEX_ITEM_TRIGGER_SPAWN,
+  MAX_ENT_CLUSTERS,
   MOVETYPE_BOUNCE as INDEX_MOVETYPE_BOUNCE,
   MOVETYPE_FLY as INDEX_MOVETYPE_FLY,
   MOVETYPE_FLYMISSILE as INDEX_MOVETYPE_FLYMISSILE,
@@ -768,6 +771,112 @@ assert.deepEqual(secondClient.oldviewangles, [0, 0, 0], "gclient_s.oldviewangles
 assert.deepEqual(secondClient.oldvelocity, [0, 0, 0], "gclient_s.oldvelocity instances must not alias");
 assert.equal(secondClient.flood_when[3], 0, "gclient_s.flood_when instances must not alias");
 assert.equal(client.flood_when.length, 10, "client flood_when inline array mismatch");
+
+assert.equal(MAX_ENT_CLUSTERS, 16, "MAX_ENT_CLUSTERS mismatch");
+assert.equal(entity.s.number, 0, "edict_s.s.number default/index mismatch");
+assert.deepEqual(entity.s.origin, [0, 0, 0], "edict_s.s origin default mismatch");
+assert.deepEqual(entity.s.angles, [0, 0, 0], "edict_s.s angles default mismatch");
+assert.equal(entity.client, null, "edict_s.client default mismatch");
+assert.equal(entity.inuse, true, "edict_s.inuse default mismatch");
+assert.equal(entity.linkcount, 0, "edict_s.linkcount default mismatch");
+assert.equal(entity.area.prev, null, "edict_s.area.prev default mismatch");
+assert.equal(entity.area.next, null, "edict_s.area.next default mismatch");
+assert.equal(entity.num_clusters, 0, "edict_s.num_clusters default mismatch");
+assert.equal(entity.clusternums.length, MAX_ENT_CLUSTERS, "edict_s.clusternums fixed length mismatch");
+assert.equal(entity.headnode, 0, "edict_s.headnode default mismatch");
+assert.equal(entity.areanum, 0, "edict_s.areanum default mismatch");
+assert.equal(entity.areanum2, 0, "edict_s.areanum2 default mismatch");
+assert.equal(entity.svflags, 0, "edict_s.svflags default mismatch");
+assert.deepEqual(entity.mins, [0, 0, 0], "edict_s.mins default mismatch");
+assert.deepEqual(entity.maxs, [0, 0, 0], "edict_s.maxs default mismatch");
+assert.deepEqual(entity.absmin, [0, 0, 0], "edict_s.absmin default mismatch");
+assert.deepEqual(entity.absmax, [0, 0, 0], "edict_s.absmax default mismatch");
+assert.deepEqual(entity.size, [0, 0, 0], "edict_s.size default mismatch");
+assert.equal(entity.solid, SOLID_NOT, "edict_s.solid default mismatch");
+assert.equal(entity.clipmask, 0, "edict_s.clipmask default mismatch");
+assert.equal(entity.owner, null, "edict_s.owner default mismatch");
+assert.equal(entity.movetype, MOVETYPE_NONE, "edict_s.movetype default mismatch");
+assert.equal(entity.flags, 0, "edict_s.flags default mismatch");
+assert.equal(entity.model, undefined, "edict_s.model default mismatch");
+assert.equal(entity.freetime, -1, "edict_s.freetime runtime sentinel mismatch");
+assert.equal(entity.message, undefined, "edict_s.message default mismatch");
+assert.equal(entity.classname, "noclass", "edict_s.classname default mismatch");
+assert.equal(entity.spawnflags, 0, "edict_s.spawnflags default mismatch");
+assert.equal(entity.timestamp, 0, "edict_s.timestamp default mismatch");
+assert.equal(entity.angle, 0, "edict_s.angle default mismatch");
+assert.equal(entity.target, undefined, "edict_s.target default mismatch");
+assert.equal(entity.targetname, undefined, "edict_s.targetname default mismatch");
+assert.equal(entity.killtarget, undefined, "edict_s.killtarget default mismatch");
+assert.equal(entity.team, undefined, "edict_s.team default mismatch");
+assert.equal(entity.pathtarget, undefined, "edict_s.pathtarget default mismatch");
+assert.equal(entity.deathtarget, undefined, "edict_s.deathtarget default mismatch");
+assert.equal(entity.combattarget, undefined, "edict_s.combattarget default mismatch");
+assert.equal(entity.target_ent, null, "edict_s.target_ent default mismatch");
+const edictProbe = createRuntimeEntity({
+  classname: "target_relay",
+  message: "go",
+  model: "*2",
+  spawnflags: "5",
+  angle: "-1",
+  target: "next",
+  targetname: "relay",
+  killtarget: "old",
+  team: "alpha",
+  pathtarget: "path",
+  deathtarget: "dead",
+  combattarget: "combat"
+}, 7);
+const edictOwner = createRuntimeEntity({ classname: "owner_probe" }, 8);
+edictProbe.s.modelindex = 3;
+edictProbe.inuse = false;
+edictProbe.linkcount = 2;
+edictProbe.area.next = edictOwner.area;
+edictProbe.num_clusters = -1;
+edictProbe.clusternums[0] = 42;
+edictProbe.headnode = 99;
+edictProbe.svflags = 0x8000000;
+edictProbe.solid = SOLID_BSP;
+edictProbe.clipmask = 0x2000001;
+edictProbe.owner = edictOwner;
+edictProbe.movetype = MOVETYPE_PUSH;
+edictProbe.flags = 0x100;
+edictProbe.model = "models/objects/barrels/tris.md2";
+edictProbe.freetime = 12.5;
+edictProbe.timestamp = 6.25;
+edictProbe.target_ent = edictOwner;
+assert.equal(edictProbe.s.number, 7, "edict_s.s.number mutable/index field mismatch");
+assert.equal(edictProbe.s.modelindex, 3, "edict_s.s mutable state field mismatch");
+assert.equal(edictProbe.inuse, false, "edict_s.inuse mutable field mismatch");
+assert.equal(edictProbe.linkcount, 2, "edict_s.linkcount mutable field mismatch");
+assert.equal(edictProbe.area.next, edictOwner.area, "edict_s.area mutable link mismatch");
+assert.equal(edictProbe.num_clusters, -1, "edict_s.num_clusters mutable/headnode sentinel mismatch");
+assert.equal(edictProbe.clusternums[0], 42, "edict_s.clusternums mutable field mismatch");
+assert.equal(edictProbe.headnode, 99, "edict_s.headnode mutable field mismatch");
+assert.equal(edictProbe.svflags, 0x8000000, "edict_s.svflags mutable field mismatch");
+assert.equal(edictProbe.solid, SOLID_BSP, "edict_s.solid mutable field mismatch");
+assert.equal(edictProbe.clipmask, 0x2000001, "edict_s.clipmask mutable field mismatch");
+assert.equal(edictProbe.owner, edictOwner, "edict_s.owner mutable pointer mismatch");
+assert.equal(edictProbe.movetype, MOVETYPE_PUSH, "edict_s.movetype mutable field mismatch");
+assert.equal(edictProbe.flags, 0x100, "edict_s.flags mutable field mismatch");
+assert.equal(edictProbe.model, "models/objects/barrels/tris.md2", "edict_s.model mutable field mismatch");
+assert.equal(edictProbe.freetime, 12.5, "edict_s.freetime mutable field mismatch");
+assert.equal(edictProbe.message, "go", "edict_s.message spawn field mismatch");
+assert.equal(edictProbe.classname, "target_relay", "edict_s.classname spawn field mismatch");
+assert.equal(edictProbe.spawnflags, 5, "edict_s.spawnflags spawn field mismatch");
+assert.equal(edictProbe.timestamp, 6.25, "edict_s.timestamp mutable field mismatch");
+assert.equal(edictProbe.angle, -1, "edict_s.angle spawn field mismatch");
+assert.equal(edictProbe.target, "next", "edict_s.target spawn field mismatch");
+assert.equal(edictProbe.targetname, "relay", "edict_s.targetname spawn field mismatch");
+assert.equal(edictProbe.killtarget, "old", "edict_s.killtarget spawn field mismatch");
+assert.equal(edictProbe.team, "alpha", "edict_s.team spawn field mismatch");
+assert.equal(edictProbe.pathtarget, "path", "edict_s.pathtarget spawn field mismatch");
+assert.equal(edictProbe.deathtarget, "dead", "edict_s.deathtarget spawn field mismatch");
+assert.equal(edictProbe.combattarget, "combat", "edict_s.combattarget spawn field mismatch");
+assert.equal(edictProbe.target_ent, edictOwner, "edict_s.target_ent mutable pointer mismatch");
+assert.notEqual(edictProbe.s, entity.s, "edict_s.s instances must not alias");
+assert.notEqual(edictProbe.area, entity.area, "edict_s.area instances must not alias");
+assert.notEqual(edictProbe.clusternums, entity.clusternums, "edict_s.clusternums instances must not alias");
+
 assert.equal(entity.monsterinfo.aiflags, 0, "entity monsterinfo must exist");
 assert.equal(entity.gravity, 1, "entity gravity default mismatch");
 assert.equal(entity.prethink, undefined, "entity prethink default mismatch");

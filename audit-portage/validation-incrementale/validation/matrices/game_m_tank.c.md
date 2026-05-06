@@ -10,48 +10,43 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_tank.c` | function | `tank_refire_rocket` | `packages/game/src/m_tank.ts` | `tank_refire_rocket` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_doattack_rocket` | `packages/game/src/m_tank.ts` | `tank_doattack_rocket` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_reattack_blaster` | `packages/game/src/m_tank.ts` | `tank_reattack_blaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `sound_thud` | `packages/game/src/m_tank.ts` | `SOUND_THUD` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `sound_pain` | `packages/game/src/m_tank.ts` | `SOUND_PAIN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `sound_idle` | `packages/game/src/m_tank.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `sound_die` | `packages/game/src/m_tank.ts` | `SOUND_DIE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `sound_step` | `packages/game/src/m_tank.ts` | `SOUND_STEP` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `sound_sight` | `packages/game/src/m_tank.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `sound_windup` | `packages/game/src/m_tank.ts` | `SOUND_WINDUP` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `sound_strike` | `packages/game/src/m_tank.ts` | `SOUND_STRIKE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_sight` | `packages/game/src/m_tank.ts` | `tank_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_footstep` | `packages/game/src/m_tank.ts` | `tank_footstep` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_thud` | `packages/game/src/m_tank.ts` | `tank_thud` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_windup` | `packages/game/src/m_tank.ts` | `tank_windup` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_idle` | `packages/game/src/m_tank.ts` | `tank_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_frames_stand` | `packages/game/src/m_tank.ts` | `tank_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | table | `tank_frames_stand` | `packages/game/src/m_tank.ts` | `tank_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_move_stand` | `packages/game/src/m_tank.ts` | `tank_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_stand` | `packages/game/src/m_tank.ts` | `tank_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_walk` | `packages/game/src/m_tank.ts` | `tank_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_frames_start_walk` | `packages/game/src/m_tank.ts` | `tank_frames_start_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | table | `tank_frames_start_walk` | `packages/game/src/m_tank.ts` | `tank_frames_start_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_move_start_walk` | `packages/game/src/m_tank.ts` | `tank_move_start_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_frames_walk` | `packages/game/src/m_tank.ts` | `tank_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | table | `tank_frames_walk` | `packages/game/src/m_tank.ts` | `tank_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_move_walk` | `packages/game/src/m_tank.ts` | `tank_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_frames_stop_walk` | `packages/game/src/m_tank.ts` | `tank_frames_stop_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | table | `tank_frames_stop_walk` | `packages/game/src/m_tank.ts` | `tank_frames_stop_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_move_stop_walk` | `packages/game/src/m_tank.ts` | `tank_move_stop_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_walk` | `packages/game/src/m_tank.ts` | `tank_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_run` | `packages/game/src/m_tank.ts` | `tank_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_frames_start_run` | `packages/game/src/m_tank.ts` | `tank_frames_start_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | table | `tank_frames_start_run` | `packages/game/src/m_tank.ts` | `tank_frames_start_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_move_start_run` | `packages/game/src/m_tank.ts` | `tank_move_start_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_frames_run` | `packages/game/src/m_tank.ts` | `tank_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | table | `tank_frames_run` | `packages/game/src/m_tank.ts` | `tank_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_move_run` | `packages/game/src/m_tank.ts` | `tank_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_frames_stop_run` | `packages/game/src/m_tank.ts` | `tank_frames_stop_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | table | `tank_frames_stop_run` | `packages/game/src/m_tank.ts` | `tank_frames_stop_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | global | `tank_move_stop_run` | `packages/game/src/m_tank.ts` | `tank_move_stop_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | function | `tank_run` | `packages/game/src/m_tank.ts` | `tank_run` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `sound_thud` | `packages/game/src/m_tank.ts` | `SOUND_THUD` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `sound_pain` | `packages/game/src/m_tank.ts` | `SOUND_PAIN` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `sound_idle` | `packages/game/src/m_tank.ts` | `SOUND_IDLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `sound_die` | `packages/game/src/m_tank.ts` | `SOUND_DIE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `sound_step` | `packages/game/src/m_tank.ts` | `SOUND_STEP` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `sound_sight` | `packages/game/src/m_tank.ts` | `SOUND_SIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `sound_windup` | `packages/game/src/m_tank.ts` | `SOUND_WINDUP` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `sound_strike` | `packages/game/src/m_tank.ts` | `SOUND_STRIKE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | function | `tank_sight` | `packages/game/src/m_tank.ts` | `tank_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | function | `tank_footstep` | `packages/game/src/m_tank.ts` | `tank_footstep` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | function | `tank_thud` | `packages/game/src/m_tank.ts` | `tank_thud` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | function | `tank_windup` | `packages/game/src/m_tank.ts` | `tank_windup` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | function | `tank_idle` | `packages/game/src/m_tank.ts` | `tank_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_frames_stand` | `packages/game/src/m_tank.ts` | `tank_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | table | `tank_frames_stand` | `packages/game/src/m_tank.ts` | `tank_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_move_stand` | `packages/game/src/m_tank.ts` | `tank_move_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | function | `tank_stand` | `packages/game/src/m_tank.ts` | `tank_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_frames_start_walk` | `packages/game/src/m_tank.ts` | `tank_frames_start_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | table | `tank_frames_start_walk` | `packages/game/src/m_tank.ts` | `tank_frames_start_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_move_start_walk` | `packages/game/src/m_tank.ts` | `tank_move_start_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_frames_walk` | `packages/game/src/m_tank.ts` | `tank_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | table | `tank_frames_walk` | `packages/game/src/m_tank.ts` | `tank_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_move_walk` | `packages/game/src/m_tank.ts` | `tank_move_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_frames_stop_walk` | `packages/game/src/m_tank.ts` | `tank_frames_stop_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | table | `tank_frames_stop_walk` | `packages/game/src/m_tank.ts` | `tank_frames_stop_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_move_stop_walk` | `packages/game/src/m_tank.ts` | `tank_move_stop_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | function | `tank_walk` | `packages/game/src/m_tank.ts` | `tank_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_frames_start_run` | `packages/game/src/m_tank.ts` | `tank_frames_start_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | table | `tank_frames_start_run` | `packages/game/src/m_tank.ts` | `tank_frames_start_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_move_start_run` | `packages/game/src/m_tank.ts` | `tank_move_start_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_frames_run` | `packages/game/src/m_tank.ts` | `tank_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | table | `tank_frames_run` | `packages/game/src/m_tank.ts` | `tank_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_move_run` | `packages/game/src/m_tank.ts` | `tank_move_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_frames_stop_run` | `packages/game/src/m_tank.ts` | `tank_frames_stop_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | table | `tank_frames_stop_run` | `packages/game/src/m_tank.ts` | `tank_frames_stop_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | global | `tank_move_stop_run` | `packages/game/src/m_tank.ts` | `tank_move_stop_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_tank.c` | function | `tank_run` | `packages/game/src/m_tank.ts` | `tank_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_tank.c` | global | `tank_frames_pain1` | `packages/game/src/m_tank.ts` | `tank_frames_pain1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_tank.c` | table | `tank_frames_pain1` | `packages/game/src/m_tank.ts` | `tank_frames_pain1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_tank.c` | global | `tank_move_pain1` | `packages/game/src/m_tank.ts` | `tank_move_pain1` | A verifier | A redecouper |  |
@@ -110,13 +105,13 @@
 | `Quake-2-master/game/m_tank.c` | function | `tank_die` | `packages/game/src/m_tank.ts` | `tank_die` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_tank.c` | global | `n` | `packages/game/src/m_tank.ts` | `n` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_tank.c` | function | `SP_monster_tank` | `packages/game/src/m_tank.ts` | `SP_monster_tank` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_stand` | `packages/game/src/m_tank.ts` | `tank_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_start_walk` | `packages/game/src/m_tank.ts` | `tank_frames_start_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_walk` | `packages/game/src/m_tank.ts` | `tank_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_stop_walk` | `packages/game/src/m_tank.ts` | `tank_frames_stop_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_start_run` | `packages/game/src/m_tank.ts` | `tank_frames_start_run` | A verifier | matched |  |
-| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_run` | `packages/game/src/m_tank.ts` | `tank_frames_run` | A verifier | matched |  |
-| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_stop_run` | `packages/game/src/m_tank.ts` | `tank_frames_stop_run` | A verifier | matched |  |
+| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_stand` | `packages/game/src/m_tank.ts` | `tank_frames_stand` | Valide | matched |  |
+| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_start_walk` | `packages/game/src/m_tank.ts` | `tank_frames_start_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_walk` | `packages/game/src/m_tank.ts` | `tank_frames_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_stop_walk` | `packages/game/src/m_tank.ts` | `tank_frames_stop_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_start_run` | `packages/game/src/m_tank.ts` | `tank_frames_start_run` | Valide | matched |  |
+| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_run` | `packages/game/src/m_tank.ts` | `tank_frames_run` | Valide | matched |  |
+| `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_stop_run` | `packages/game/src/m_tank.ts` | `tank_frames_stop_run` | Valide | matched |  |
 | `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_pain1` | `packages/game/src/m_tank.ts` | `tank_frames_pain1` | A verifier | matched |  |
 | `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_pain2` | `packages/game/src/m_tank.ts` | `tank_frames_pain2` | A verifier | matched |  |
 | `Quake-2-master/game/m_tank.c` | declarative:monster-tables | `tank_frames_pain3` | `packages/game/src/m_tank.ts` | `tank_frames_pain3` | A verifier | matched |  |
