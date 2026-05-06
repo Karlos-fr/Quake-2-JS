@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: debut de `cmd.c` jusqu'a `Cbuf_Execute` inclus, avec constantes/etat associes (`MAX_ALIAS_NAME`, `ALIAS_LOOP_COUNT`, `cmd_wait`, `alias_count`, `cmd_text`, buffers defer) et reclassification des variables locales generees par erreur.
+- Dernier lot traite: `Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, commandes scripts simples (`Cmd_Exec_f`, `Cmd_Echo_f`, `Cmd_Alias_f`), registre `cmd_function_s`/`CommandRegistration`, et accesseurs `Cmd_Argc`, `Cmd_Argv`, `Cmd_Args`, avec reclassification des variables locales associees.
 - Verdict du lot: Valide pour les entites portees; `Non applicable` pour les variables locales C extraites comme pseudo-globals.
 
 ## Preuves session
@@ -13,6 +13,7 @@
 - Runtime verifie: `packages/qcommon/src/runtime.ts`, `packages/client/src/cl_main.ts`, `packages/server/src/sv_user.ts`, `apps/web/src/full-game.ts`, `apps/web/src/full-game-server-host.ts`
 - `npm run verify:cmd`
 - `npm run typecheck`
+- `npm run verify:qcommon:header`
 
 ## Corrections appliquees
 
@@ -22,13 +23,17 @@
   - `Cmd_Alias_f` refuse les alias dont le nom atteint `MAX_ALIAS_NAME`, comme le C.
 - `scripts/verify/quake2-cmd.ts`
   - Ajout de tests pour overflow `Cbuf_AddText` et garde `MAX_ALIAS_NAME`.
+- `packages/qcommon/src/cmd.ts`
+  - `Cbuf_AddLateCommands` ignore maintenant un `+` final sans commande, comme la boucle C `i < s - 1`.
+- `scripts/verify/quake2-cmd.ts`
+  - Ajout de tests pour `Cbuf_AddEarlyCommands` avec/sans clear, `Cbuf_AddLateCommands` sans commande et avec `+` terminal, `Cmd_Argv` hors bornes, remplacement d'alias, `Cmd_Exec_f` usage/fichier absent, et `Cmd_Echo_f` sans argument.
 
 ## Decisions runtime / web / renderer
 
-- Runtime: integre. `Cmd_Init` est appele par `createQcommonRuntime` et par `apps/web/src/full-game.ts`; `Cbuf_Execute` est appele dans le flux client normal (`CL_Frame`/full-game) et les commandes/defer sont consommees par client/serveur.
-- apps/web: integre. `apps/web/src/full-game.ts` initialise et execute le runtime de commandes; `full-game-server-host.ts` branche `Cbuf_CopyToDefer` pour les transitions serveur.
-- renderer-three: non applicable pour ce lot. Le buffer de commandes ne produit pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene; le renderer enregistre seulement ses propres callbacks via l'interface `Cmd_AddCommand`, hors lot `Cbuf_*`.
+- Runtime: integre. `Cmd_Init` est appele par `createQcommonRuntime` et par `apps/web/src/full-game.ts`; les commandes `exec`, `echo`, `alias`, les buffers early/late et les accesseurs argv sont le chemin normal des callbacks client/serveur (`CL_Frame`, commandes serveur et cvars).
+- apps/web: integre. Le host web initialise le runtime de commandes, charge les scripts via `loadTextFile`, execute les commandes console/runtime et ajoute seulement des bridges de host (`newgame`, `map`, `gamemap`) sans remplacer le port qcommon.
+- renderer-three: non applicable pour ce lot. Ces entites ne produisent pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene; le renderer consomme seulement l'interface de commandes pour enregistrer ses callbacks (`imagelist`, `screenshot`, `modellist`, `gl_strings`).
 
 ## Prochain lot recommande
 
-Continuer avec `Cbuf_AddEarlyCommands` et `Cbuf_AddLateCommands`, puis les temporaires locaux associes (`i`, `s`) dans la matrice.
+Continuer avec `Cmd_MacroExpandString`, variables locales associees (`inquote`, `scan`, `expanded`, `temporary`) puis `Cmd_TokenizeString` si le lot reste coherent.

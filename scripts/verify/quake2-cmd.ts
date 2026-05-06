@@ -131,9 +131,36 @@ function verifyStartupCommandInjection(): void {
   assert.equal(readBuffer(earlyRuntime), "set game rogue\n", "Cbuf_AddEarlyCommands mismatch");
   assert.equal(COM_Argv(common, 1), "", "Cbuf_AddEarlyCommands clear mismatch");
 
+  const keepCommon = createCommonRuntime();
+  COM_InitArgv(keepCommon, ["quake2", "+set", "skill", "2"]);
+  const keepRuntime = createCommandRuntime();
+  Cbuf_AddEarlyCommands(keepRuntime, keepCommon, false);
+  assert.equal(readBuffer(keepRuntime), "set skill 2\n", "Cbuf_AddEarlyCommands non-clear mismatch");
+  assert.equal(COM_Argv(keepCommon, 1), "+set", "Cbuf_AddEarlyCommands should preserve argv when clear is false");
+
   const lateRuntime = createCommandRuntime();
   assert.equal(Cbuf_AddLateCommands(lateRuntime, common), true, "Cbuf_AddLateCommands return mismatch");
   assert.equal(readBuffer(lateRuntime), "map base1 \nexec autoexec.cfg\n", "Cbuf_AddLateCommands payload mismatch");
+
+  const trailingPlusCommon = createCommonRuntime();
+  COM_InitArgv(trailingPlusCommon, ["quake2", "+map", "base1", "+"]);
+  const trailingPlusRuntime = createCommandRuntime();
+  assert.equal(
+    Cbuf_AddLateCommands(trailingPlusRuntime, trailingPlusCommon),
+    true,
+    "Cbuf_AddLateCommands trailing plus return mismatch"
+  );
+  assert.equal(
+    readBuffer(trailingPlusRuntime),
+    "map base1 \n",
+    "Cbuf_AddLateCommands should ignore a trailing empty + command"
+  );
+
+  const noLateCommon = createCommonRuntime();
+  COM_InitArgv(noLateCommon, ["quake2", "-dedicated"]);
+  const noLateRuntime = createCommandRuntime();
+  assert.equal(Cbuf_AddLateCommands(noLateRuntime, noLateCommon), false, "Cbuf_AddLateCommands no-command return mismatch");
+  assert.equal(readBuffer(noLateRuntime), "", "Cbuf_AddLateCommands should not append without late commands");
 }
 
 function verifyTokenizationAndMacroExpansion(): void {
@@ -155,6 +182,8 @@ function verifyTokenizationAndMacroExpansion(): void {
   Cmd_TokenizeString(runtime, "echo $nested tail", true);
   assert.equal(Cmd_Argc(runtime), 3, "Cmd_TokenizeString argc mismatch");
   assert.equal(Cmd_Argv(runtime, 1), "quake2", "recursive macro expansion mismatch");
+  assert.equal(Cmd_Argv(runtime, -1), "", "Cmd_Argv negative fallback mismatch");
+  assert.equal(Cmd_Argv(runtime, 99), "", "Cmd_Argv out-of-range fallback mismatch");
   assert.equal(Cmd_Args(runtime), "quake2 tail", "Cmd_Args mismatch");
 
   Cmd_TokenizeString(runtime, "echo \"$name\" tail", true);
@@ -204,13 +233,19 @@ function verifyAliasExecution(): void {
   assert.deepEqual(printed, ["hello world"], "Cmd_Alias_f execution mismatch");
 
   printed.length = 0;
+  Cmd_ExecuteString(runtime, "alias hi echo replaced");
+  Cmd_ExecuteString(runtime, "hi");
+  Cbuf_Execute(runtime);
+  assert.deepEqual(printed, ["replaced"], "Cmd_Alias_f replacement mismatch");
+
+  printed.length = 0;
   Cmd_ExecuteString(runtime, `alias ${"a".repeat(MAX_ALIAS_NAME)} echo no`);
   assert.equal(printed[0], "Alias name is too long", "Cmd_Alias_f MAX_ALIAS_NAME guard mismatch");
   assert.equal(runtime.cmd_aliases.some((alias) => alias.name.length >= MAX_ALIAS_NAME), false, "oversized alias should not register");
 
   printed.length = 0;
   Cmd_ExecuteString(runtime, "alias");
-  assert.equal(printed[0], "hi : echo hello world\n", "Cmd_Alias_f listing mismatch");
+  assert.equal(printed[0], "hi : echo replaced\n", "Cmd_Alias_f listing mismatch");
 
   const loopRuntime = createCommandRuntime();
   Cmd_Init(loopRuntime);
@@ -249,9 +284,25 @@ function verifyBuiltinCommandsAndForwarding(): void {
   Cbuf_Execute(runtime);
   assert.equal(printed.at(-1), "fromexec", "Cmd_Exec_f insertion mismatch");
 
+  const missingExecPrinted: string[] = [];
+  const missingExecRuntime = createCommandRuntime({
+    loadTextFile: () => null,
+    onPrint: (line) => missingExecPrinted.push(line)
+  });
+  Cmd_Init(missingExecRuntime);
+  Cmd_ExecuteString(missingExecRuntime, "exec");
+  assert.equal(missingExecPrinted[0], "exec <filename> : execute a script file", "Cmd_Exec_f usage mismatch");
+  missingExecPrinted.length = 0;
+  Cmd_ExecuteString(missingExecRuntime, "exec missing.cfg");
+  assert.equal(missingExecPrinted[0], "couldn't exec missing.cfg", "Cmd_Exec_f missing file mismatch");
+
   printed.length = 0;
   Cmd_ExecuteString(runtime, "echo alpha beta");
   assert.equal(printed[0], "alpha beta", "Cmd_Echo_f mismatch");
+
+  printed.length = 0;
+  Cmd_ExecuteString(runtime, "echo");
+  assert.equal(printed[0], "", "Cmd_Echo_f empty output mismatch");
 
   Cmd_TokenizeString(runtime, "god", true);
   forwarded = "";

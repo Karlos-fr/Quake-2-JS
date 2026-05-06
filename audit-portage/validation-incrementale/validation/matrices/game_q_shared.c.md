@@ -55,34 +55,34 @@
 | `Quake-2-master/game/q_shared.c` | function | `VectorScale` | `packages/math/src/q_shared.ts` | `VectorScale` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.c` | function | `Q_log2` | `packages/math/src/q_shared.ts` | `Q_log2` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.c` | global | `answer` | `packages/math/src/q_shared.ts` | `answer` | Non applicable | A redecouper | Variable locale C, pas une entite portee. |
-| `Quake-2-master/game/q_shared.c` | function | `COM_SkipPath` | `packages/qcommon/src/common.ts` | `COM_SkipPath` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `last` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `COM_StripExtension` | `packages/qcommon/src/common.ts` | `COM_StripExtension` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `COM_FileExtension` | `packages/qcommon/src/common.ts` | `COM_FileExtension` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `exten` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `i` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `COM_FileBase` | `packages/qcommon/src/common.ts` | `COM_FileBase` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `COM_FilePath` | `packages/qcommon/src/common.ts` | `COM_FilePath` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `s` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `COM_DefaultExtension` | `packages/qcommon/src/common.ts` | `COM_DefaultExtension` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `src` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `bigendien` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `BigShort` | `packages/qcommon/src/common.ts` | `BigShort` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `LittleShort` | `packages/qcommon/src/common.ts` | `LittleShort` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `BigLong` | `packages/qcommon/src/common.ts` | `BigLong` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `LittleLong` | `packages/qcommon/src/common.ts` | `LittleLong` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `BigFloat` | `packages/qcommon/src/common.ts` | `BigFloat` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `LittleFloat` | `packages/qcommon/src/common.ts` | `LittleFloat` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `ShortSwap` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `ShortNoSwap` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `LongSwap` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `LongNoSwap` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `FloatSwap` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `f` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `b` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `FloatNoSwap` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `Swap_Init` | `packages/qcommon/src/common.ts` | `Swap_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `swaptest` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `COM_SkipPath` | `packages/qcommon/src/common.ts` | `COM_SkipPath` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | global | `last` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | function | `COM_StripExtension` | `packages/qcommon/src/common.ts` | `COM_StripExtension` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `COM_FileExtension` | `packages/qcommon/src/common.ts` | `COM_FileExtension` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | global | `exten` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Static buffer C remplace par une chaine retournee en TS. |
+| `Quake-2-master/game/q_shared.c` | global | `i` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | function | `COM_FileBase` | `packages/qcommon/src/common.ts` | `COM_FileBase` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `COM_FilePath` | `packages/qcommon/src/common.ts` | `COM_FilePath` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | global | `s` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | function | `COM_DefaultExtension` | `packages/qcommon/src/common.ts` | `COM_DefaultExtension` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | global | `src` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | global | `bigendien` | `packages/qcommon/src/common.ts` | `Swap_Init().bigendien` | Valide | A redecouper | Represente par le resultat explicite de `Swap_Init`, sans global mutable TS. |
+| `Quake-2-master/game/q_shared.c` | function | `BigShort` | `packages/qcommon/src/common.ts` | `BigShort` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `LittleShort` | `packages/qcommon/src/common.ts` | `LittleShort` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `BigLong` | `packages/qcommon/src/common.ts` | `BigLong` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `LittleLong` | `packages/qcommon/src/common.ts` | `LittleLong` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `BigFloat` | `packages/qcommon/src/common.ts` | `BigFloat` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `LittleFloat` | `packages/qcommon/src/common.ts` | `LittleFloat` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `ShortSwap` | `packages/qcommon/src/common.ts` | `ShortSwap` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `ShortNoSwap` | `packages/qcommon/src/common.ts` | `ShortNoSwap` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `LongSwap` | `packages/qcommon/src/common.ts` | `LongSwap` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `LongNoSwap` | `packages/qcommon/src/common.ts` | `LongNoSwap` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `FloatSwap` | `packages/qcommon/src/common.ts` | `FloatSwap` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | global | `f` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Union locale C, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | global | `b` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Union locale C, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | function | `FloatNoSwap` | `packages/qcommon/src/common.ts` | `FloatNoSwap` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `Swap_Init` | `packages/qcommon/src/common.ts` | `Swap_Init` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | global | `swaptest` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C de detection endian, pas une entite portee. |
 | `Quake-2-master/game/q_shared.c` | function | `va` | `packages/qcommon/src/common.ts` | `va` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.c` | global | `argptr` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.c` | global | `string` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |

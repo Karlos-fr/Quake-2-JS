@@ -19,7 +19,9 @@ import {
   LEFT_HANDED,
   MOD_CHAINGUN,
   MOD_MACHINEGUN,
+  ANIM_ATTACK,
   ANIM_REVERSE,
+  DEAD_DYING,
   P_ProjectSource,
   PNOISE_IMPACT,
   PNOISE_SELF,
@@ -40,12 +42,14 @@ import {
   createGameRuntimeFromBspEntities,
   drainGameSoundEvents,
   drainPlayerMuzzleFlashEvents,
+  playerFrames,
   spawnGameEntity,
+  weapon_grenade_fire,
   weaponstate_t,
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, DF_WEAPONS_STAY, EF_HYPERBLASTER, MZ_BFG, MZ_BLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET, MZ_SILENCED } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, DF_WEAPONS_STAY, EF_HYPERBLASTER, MZ_BFG, MZ_BLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET, MZ_SILENCED, PMF_DUCKED } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -64,6 +68,7 @@ function main(): void {
   verifyHyperBlasterFireParity();
   verifyRailgunFireParity();
   verifyBfgFireParity();
+  verifyHandGrenadeFireDirectParity();
   verifyHandGrenadeParity();
 
   console.log("Verification p_weapon - player weapon gameplay OK");
@@ -926,6 +931,81 @@ function verifyHandGrenadeParity(): void {
   assertString(sounds[0]?.soundPath ?? "", "weapons/noammo.wav", "Hand grenade no-ammo path should play the original sound");
   assertNumber(sounds[0]?.channel ?? -1, CHAN_VOICE, "Hand grenade no-ammo path should use CHAN_VOICE");
   assertString(player.client!.newweapon?.pickupName ?? "", "Shotgun", "Hand grenade no-ammo should select the next available weapon");
+}
+
+function verifyHandGrenadeFireDirectParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const grenades = requireItem("Grenades");
+  const throws: Array<{ start: readonly number[]; dir: readonly number[]; damage: number; speed: number; timer: number; damageRadius: number; held: boolean }> = [];
+
+  runtime.time = 20;
+  player.s.origin = [100, 200, 300];
+  player.origin = [100, 200, 300];
+  player.viewheight = 22;
+  player.s.modelindex = 255;
+  player.client!.v_angle = [0, 0, 0];
+  player.client!.pers.weapon = grenades;
+  player.client!.ammo_index = grenades.index;
+  player.client!.pers.inventory[grenades.index] = 4;
+  player.client!.grenade_time = runtime.time + 2.25;
+  player.client!.ps.pmove.pm_flags = PMF_DUCKED;
+
+  weapon_grenade_fire(player, false, runtime, {
+    fire_grenade2: (_ent, start, dir, damage, speed, timer, damageRadius, held) => {
+      throws.push({ start, dir, damage, speed, timer, damageRadius, held });
+    }
+  });
+
+  assertNumber(throws.length, 1, "weapon_grenade_fire should spawn one hand grenade");
+  assertVec3(throws[0].start, [108, 192, 314], "weapon_grenade_fire should project the original hand grenade muzzle");
+  assertVec3(throws[0].dir, [1, 0, 0], "weapon_grenade_fire should throw along AngleVectors forward");
+  assertNumber(throws[0].damage, 125, "weapon_grenade_fire base damage mismatch");
+  assertNumber(throws[0].damageRadius, 165, "weapon_grenade_fire damage radius mismatch");
+  assertNumber(throws[0].timer, 2.25, "weapon_grenade_fire fuse timer mismatch");
+  assertNumber(throws[0].speed, 500, "weapon_grenade_fire cooked speed mismatch");
+  assertBoolean(throws[0].held, false, "weapon_grenade_fire held flag mismatch");
+  assertNumber(player.client!.pers.inventory[grenades.index], 3, "weapon_grenade_fire should consume one grenade");
+  assertNumber(player.client!.grenade_time, runtime.time + 1.0, "weapon_grenade_fire should debounce grenade_time");
+  assertNumber(player.client!.anim_priority, ANIM_ATTACK, "weapon_grenade_fire ducked animation priority mismatch");
+  assertNumber(player.s.frame, playerFrames.FRAME_crattak1 - 1, "weapon_grenade_fire ducked animation start frame mismatch");
+  assertNumber(player.client!.anim_end, playerFrames.FRAME_crattak3, "weapon_grenade_fire ducked animation end frame mismatch");
+
+  runtime.dmflags |= DF_INFINITE_AMMO;
+  player.client!.ps.pmove.pm_flags = 0;
+  player.client!.grenade_time = runtime.time + 1.5;
+  player.client!.pers.inventory[grenades.index] = 3;
+  throws.length = 0;
+
+  weapon_grenade_fire(player, true, runtime, {
+    fire_grenade2: (_ent, start, dir, damage, speed, timer, damageRadius, held) => {
+      throws.push({ start, dir, damage, speed, timer, damageRadius, held });
+    }
+  });
+
+  assertNumber(throws[0].speed, 600, "weapon_grenade_fire released speed at half fuse mismatch");
+  assertNumber(player.client!.pers.inventory[grenades.index], 3, "weapon_grenade_fire should honor DF_INFINITE_AMMO");
+  assertNumber(player.client!.anim_priority, ANIM_REVERSE, "weapon_grenade_fire standing animation priority mismatch");
+  assertNumber(player.s.frame, playerFrames.FRAME_wave08, "weapon_grenade_fire standing animation start frame mismatch");
+  assertNumber(player.client!.anim_end, playerFrames.FRAME_wave01, "weapon_grenade_fire standing animation end frame mismatch");
+
+  player.deadflag = DEAD_DYING;
+  player.client!.anim_priority = 0;
+  player.s.frame = 0;
+  player.client!.anim_end = 0;
+  player.client!.grenade_time = runtime.time + 1.5;
+  throws.length = 0;
+
+  weapon_grenade_fire(player, false, runtime, {
+    fire_grenade2: (_ent, start, dir, damage, speed, timer, damageRadius, held) => {
+      throws.push({ start, dir, damage, speed, timer, damageRadius, held });
+    }
+  });
+
+  assertNumber(throws.length, 1, "weapon_grenade_fire corpse guard should still throw before animation guard");
+  assertNumber(player.client!.anim_priority, 0, "weapon_grenade_fire should skip corpse animation priority");
+  assertNumber(player.s.frame, 0, "weapon_grenade_fire should skip corpse animation frame");
+  assertNumber(player.client!.anim_end, 0, "weapon_grenade_fire should skip corpse animation end");
 }
 
 function createHarnessRuntime(): GameRuntime {

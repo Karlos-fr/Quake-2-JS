@@ -12,6 +12,18 @@
 - Tests lances: `npm run verify:q-shared:header` OK; `npm run typecheck` a d'abord echoue pendant les runs concurrents sur `packages/qcommon/src/cmd.ts(611,5)`, puis repasse OK au controle central apres consolidation.
 - Decision matrice: 26 entites `Valide`; 19 entrees generees `Non applicable` car macro locale inlined, variables locales/temporaires C, declaration libc `sqrt`, ou reliquat i386 non runtime TS.
 
+## Session 2026-05-06 - chemins et endianess
+
+- Lot traite: helpers de chemins/extensions de `COM_SkipPath` a `COM_DefaultExtension`, puis byte order de `bigendien`/`BigShort` a `Swap_Init`, incluant `ShortSwap`, `ShortNoSwap`, `LongSwap`, `LongNoSwap`, `FloatSwap` et `FloatNoSwap`.
+- Comparaison C/H vs TS: bloc compare dans `Quake-2-master/game/q_shared.c` et `packages/qcommon/src/common.ts`; les helpers TS gardent les noms C, avec retours string explicites a la place des out-buffers C pour les `COM_*`.
+- Commentaires d'en-tete: commentaires existants verifies pour `COM_*`, `Big*`, `Little*` et `Swap_Init`; commentaires ajoutes pour `ShortSwap`, `ShortNoSwap`, `LongSwap`, `LongNoSwap`, `FloatSwap` et `FloatNoSwap`.
+- Runtime: helpers exportes par `packages/qcommon/src/index.ts`; `LittleLong` est atteint par le flux client demo, les helpers de byte order servent au chargement/serialization bas niveau et `Swap_Init().bigendien` remplace le global C sans setup de pointeurs mutable.
+- apps/web: pas de logique web parallele attendue; ces helpers sont consommes via le runtime/fichiers/assets quand le navigateur charge ou manipule les donnees Quake II.
+- renderer-three: pas de sortie visible directe produite par ces helpers; les sorties visibles de modeles/images/scene passent par les loaders `memory/binary-io` et renderer existants, pas par un manque renderer de ce lot.
+- Corrections appliquees: `COM_FileBase` preserve le cas C de basename d'un seul caractere; helpers endian explicites ajoutes dans `packages/qcommon/src/common.ts`; exports ajoutes dans `packages/qcommon/src/index.ts`; tests ciblees ajoutes dans `scripts/verify/quake2-q-shared-header.ts`.
+- Tests lances: `npm run verify:q-shared:header` OK; `npm run typecheck` OK.
+- Decision matrice: 20 entrees `Valide`; 8 entrees generees `Non applicable` car variables locales, static buffer C remplace par string TS ou union locale C.
+
 ## Prochain lot recommande
 
-Traiter les helpers de chemins et extensions de `COM_SkipPath` a `COM_DefaultExtension`, puis commencer les fonctions d'endianess (`BigShort` a `Swap_Init`) si le lot reste coherent.
+Traiter `va`, `COM_Parse` et `Com_PageInMemory`, avec les temporaires locaux associes, si le lot reste coherent.

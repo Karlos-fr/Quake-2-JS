@@ -10,6 +10,17 @@
 - Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour handedness de `P_ProjectSource`, pickup/use/drop/change weapon et bit `MZ_SILENCED`.
 - Tests lances: `npm run verify:p-weapon`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:refresh-entity:weapon`.
 
+## Session 2026-05-06 - bloc grenade
+
+- Lot traite: `GRENADE_TIMER`, `GRENADE_MINSPEED`, `GRENADE_MAXSPEED`, `weapon_grenade_fire`, variables locales `damage`/`timer`/`speed`/`radius`, et `Weapon_Grenade`.
+- Comparaison C/TS: timers `3.0`, vitesses `400`/`800`, degats `125`, rayon `damage + 40`, quad, projection `[8, 8, viewheight - 8]`, fuse restant, vitesse cookee, `fire_grenade2`, consommation ammo, debounce `grenade_time`, animations debout/accroupi, gardes cadavre/modele, et etat `WEAPON_READY`/`WEAPON_ACTIVATING`/`WEAPON_FIRING` compares contre le C.
+- Commentaires d'en-tete: `weapon_grenade_fire` et `Weapon_Grenade` ont ete verifies avec `Original name`, `Source: game/p_weapon.c`, `Category: Ported`, niveau de fidelite et comportement.
+- Runtime: integre via `g_items` (`ammo_grenades` -> `Weapon_Grenade`), `Think_Weapon`, `ClientThink`/`ClientBeginServerFrame` et `local-game-bootstrap`; `weapon_grenade_fire` produit bien le projectile via `fire_grenade2`.
+- apps/web: le navigateur passe par le runtime serveur/local et la boucle full-game; aucune logique web parallele ne remplace ce bloc.
+- renderer-three: sortie visible attendue = projectile `hgrenade` avec modele `models/objects/grenade2/tris.md2`, effet `EF_GRENADE`, son de vol et explosion/temp entity via `g_weapon`/client effects; elle est consommee par le flux snapshot/client/refresh puis renderer.
+- Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `weapon_grenade_fire` direct, projection, timers/vitesse, ammo infini, animations et garde cadavre.
+- Tests lances: `npm run verify:p-weapon`.
+
 ## Prochain lot recommande
 
-Valider le bloc grenade: `GRENADE_TIMER`, `GRENADE_MINSPEED`, `GRENADE_MAXSPEED`, l'implementation `weapon_grenade_fire`, ses variables locales, puis `Weapon_Grenade`.
+Valider le bloc grenade launcher: `weapon_grenadelauncher_fire`, ses variables locales `damage`/`radius`, puis `Weapon_GrenadeLauncher` avec `pause_frames` et `fire_frames`.

@@ -49,4 +49,4 @@
 | `Quake-2-master/game/p_client.c` | function | `CheckBlock` | `packages/game/src/p_client.ts` | `CheckBlock` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `PrintPmove` | `packages/game/src/p_client.ts` | `PrintPmove` | Valide | A redecouper | `packages/game/src/p_client.ts` corrige pour conserver le `\n` final du `Com_Printf` C. |
 | `Quake-2-master/game/p_client.c` | function | `ClientThink` | `packages/game/src/p_client.ts` | `ClientThink` | Valide | A redecouper |  |
-| `Quake-2-master/game/p_client.c` | function | `ClientBeginServerFrame` | `packages/game/src/p_client.ts` | `ClientBeginServerFrame` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | function | `ClientBeginServerFrame` | `packages/game/src/p_client.ts` | `ClientBeginServerFrame` | Valide | A redecouper |  |

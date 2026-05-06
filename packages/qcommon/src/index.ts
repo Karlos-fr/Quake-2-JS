@@ -205,9 +205,11 @@ export {
   VectorInverse,
   VectorLength,
   VectorMA,
+  VectorNegate,
   VectorNormalize,
   VectorNormalize2,
   VectorScale,
+  VectorSet,
   VectorSubtract,
   vec3_origin
 } from "../../math/src/q_shared.js";
@@ -291,6 +293,8 @@ export {
   Com_Printf,
   Com_sprintf,
   createCommonRuntime,
+  FloatNoSwap,
+  FloatSwap,
   Info_RemoveKey,
   Info_SetValueForKey,
   Info_Validate,
@@ -299,9 +303,13 @@ export {
   LittleFloat,
   LittleLong,
   LittleShort,
+  LongNoSwap,
+  LongSwap,
   Q_strcasecmp,
   Q_stricmp,
   Q_strncasecmp,
+  ShortNoSwap,
+  ShortSwap,
   Swap_Init,
   va
 } from "./common.js";

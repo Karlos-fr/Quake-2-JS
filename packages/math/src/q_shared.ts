@@ -41,6 +41,47 @@ export function VectorClear(vector: [number, number, number]): void {
 }
 
 /**
+ * Original name: VectorNegate
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Negates three vector components from `input` into `output`.
+ *
+ * Porting notes:
+ * - Mutates the explicit output tuple to mirror the original macro.
+ */
+export function VectorNegate(
+  input: [number, number, number],
+  output: [number, number, number]
+): void {
+  output[0] = -input[0];
+  output[1] = -input[1];
+  output[2] = -input[2];
+}
+
+/**
+ * Original name: VectorSet
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Assigns three scalar components into one vector tuple.
+ */
+export function VectorSet(
+  vector: [number, number, number],
+  x: number,
+  y: number,
+  z: number
+): void {
+  vector[0] = x;
+  vector[1] = y;
+  vector[2] = z;
+}
+
+/**
  * Original name: VectorCopy
  * Source: game/q_shared.h
  * Category: Ported

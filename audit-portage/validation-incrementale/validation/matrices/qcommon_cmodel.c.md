@@ -110,28 +110,28 @@
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_LeafContents` | `packages/qcommon/src/cmodel.ts` | `CM_LeafContents` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_LeafCluster` | `packages/qcommon/src/cmodel.ts` | `CM_LeafCluster` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_LeafArea` | `packages/qcommon/src/cmodel.ts` | `CM_LeafArea` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
-| `Quake-2-master/qcommon/cmodel.c` | global | `box_headnode` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `box_leaf` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_InitBoxHull` | `packages/qcommon/src/cmodel.ts` | `CM_InitBoxHull` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `side` | `packages/qcommon/src/cmodel.ts` | `side` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `c` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_HeadnodeForBox` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeForBox` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_PointLeafnum_r` | `packages/qcommon/src/cmodel.ts` | `CM_PointLeafnum_r` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `d` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `node` | `packages/qcommon/src/cmodel.ts` | `node` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `d` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `num` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_PointLeafnum` | `packages/qcommon/src/cmodel.ts` | `CM_PointLeafnum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_PointLeafnum_r` | `packages/qcommon/src/cmodel.ts` | `CM_PointLeafnum_r` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `leaf_list` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `leaf_topnode` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums_r` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums_r` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `node` | `packages/qcommon/src/cmodel.ts` | `node` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `s` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums_headnode` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums_headnode` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums_headnode` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums_headnode` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmodel.c` | global | `box_headnode` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Remplace par `CollisionWorld.box_headnode`; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `box_leaf` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Remplace par `CollisionWorld.box_leaf`; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_InitBoxHull` | `packages/qcommon/src/cmodel.ts` | `CM_InitBoxHull` | Valide | A redecouper | Box hull compare C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `side` | `packages/qcommon/src/cmodel.ts` | `side` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `c` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_HeadnodeForBox` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeForBox` | Valide | A redecouper | Distances de plans box hull comparees C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_PointLeafnum_r` | `packages/qcommon/src/cmodel.ts` | `CM_PointLeafnum_r` | Valide | A redecouper | Parcours BSP compare C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `d` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `node` | `packages/qcommon/src/cmodel.ts` | `node` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `d` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `num` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_PointLeafnum` | `packages/qcommon/src/cmodel.ts` | `CM_PointLeafnum` | Valide | A redecouper | Wrapper world headnode et fallback sans planes compares C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_PointLeafnum_r` | `packages/qcommon/src/cmodel.ts` | `CM_PointLeafnum_r` | Valide | A redecouper | Doublon de detection couvert avec le port `CM_PointLeafnum_r`; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `leaf_list` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Etat temporaire C remplace par parametres explicites de `CM_BoxLeafnums_r`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `leaf_topnode` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Etat temporaire C remplace par `state.topnode` retourne par `CM_BoxLeafnums_headnode`. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums_r` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums_r` | Valide | A redecouper | Recursion leafs/topnode comparee C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `node` | `packages/qcommon/src/cmodel.ts` | `node` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `s` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums_headnode` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums_headnode` | Valide | A redecouper | Liste leafs/topnode comparee C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums` | Valide | A redecouper | Wrapper world model compare C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums_headnode` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums_headnode` | Valide | A redecouper | Doublon de detection couvert avec le port `CM_BoxLeafnums_headnode`; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_PointContents` | `packages/qcommon/src/cmodel.ts` | `CM_PointContents` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | global | `l` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_TransformedPointContents` | `packages/qcommon/src/cmodel.ts` | `CM_TransformedPointContents` | A verifier | A redecouper |  |

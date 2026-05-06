@@ -19,6 +19,7 @@ import {
   CM_LoadMap,
   CM_AreasConnected,
   CM_BoxLeafnums,
+  CM_BoxLeafnums_headnode,
   CM_ClusterPHS,
   CM_ClusterPVS,
   CM_EntityString,
@@ -84,6 +85,15 @@ function main(): void {
 
   const touchedLeafs: number[] = [];
   const { count: boxLeafCount, topnode } = CM_BoxLeafnums(world, [-16, -16, -16], [16, 16, 16], touchedLeafs, 64);
+  const syntheticBoxLeafs: number[] = [];
+  const { count: syntheticBoxLeafCount, topnode: syntheticBoxTopnode } = CM_BoxLeafnums_headnode(
+    world,
+    [-2, -2, -2],
+    [2, 2, 2],
+    syntheticBoxLeafs,
+    8,
+    boxHeadnode
+  );
 
   const pvs = CM_ClusterPVS(world, worldCluster);
   const phs = CM_ClusterPHS(world, worldCluster);
@@ -100,6 +110,7 @@ function main(): void {
   console.log(`leaf0 contents: ${worldContents}`);
   console.log(`box hull contents inside/outside: ${boxContentsInside}/${boxContentsOutside}`);
   console.log(`box leaf count: ${boxLeafCount} topnode=${topnode}`);
+  console.log(`synthetic box leafs: ${syntheticBoxLeafs.join(",")} topnode=${syntheticBoxTopnode}`);
   console.log(`pvs/phs bytes: ${pvs.length}/${phs.length}`);
   console.log(`area bytes: ${areaBytes}`);
   console.log(`headnode visible in own pvs: ${headnodeVisible}`);
@@ -112,6 +123,9 @@ function main(): void {
   assert(boxContentsInside === CONTENTS_MONSTER, "box hull should report monster contents inside");
   assert(boxContentsOutside !== CONTENTS_MONSTER, "box hull should not report monster contents outside");
   assert(boxLeafCount >= 1, "expected at least one touched leaf");
+  assert(syntheticBoxLeafCount === 1, "synthetic box hull should expose exactly one content leaf");
+  assert(syntheticBoxLeafs[0] === world.box_leaf, "synthetic box hull should route inside bounds to box_leaf");
+  assert(syntheticBoxTopnode === -1, "contained synthetic box query should not cross a topnode");
   assert(pvs.length === ((numClusters + 7) >> 3), "unexpected PVS size");
   assert(phs.length === ((numClusters + 7) >> 3), "unexpected PHS size");
   assert(areaBytes === ((world.numareas + 7) >> 3), "unexpected area bit size");

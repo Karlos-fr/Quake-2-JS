@@ -12,6 +12,7 @@
 import { strict as assert } from "node:assert";
 
 import {
+  DF_FORCE_RESPAWN,
   DF_QUAD_DROP,
   DF_SPAWN_FARTHEST,
   MASK_DEADSOLID,
@@ -68,6 +69,7 @@ import {
 } from "../../packages/game/src/g_local.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
 import {
+  ClientBeginServerFrame,
   ClientConnect,
   ClientBegin,
   ClientDisconnect,
@@ -103,6 +105,7 @@ import {
   player_die,
   respawn
 } from "../../packages/game/src/p_client.js";
+import { PlayerTrail_Init, PlayerTrail_LastSpot } from "../../packages/game/src/p_trail.js";
 import {
   attachGameClient,
   createGameRuntimeFromBspEntities,
@@ -128,6 +131,7 @@ function main(): void {
   verifyThrowClientHeadUsesGLocalRandomHelpers();
   verifyPmoveTraceAndDebugHelpers();
   verifyClientThinkIntermissionChaseAndButtons();
+  verifyClientBeginServerFrameBranches();
 
   console.log("Verification p_client - player lifecycle defaults OK");
 }
@@ -763,6 +767,88 @@ function verifyClientThinkIntermissionChaseAndButtons(): void {
   assert.equal(entLightLevel(player), 47, "ClientThink should copy the command light level");
   assert.equal(client.chase_target, null, "spectator attack should leave chase target");
   assert.equal((client.ps.pmove.pm_flags & PMF_NO_PREDICTION) === 0, true, "leaving chase should clear PMF_NO_PREDICTION");
+}
+
+function verifyClientBeginServerFrameBranches(): void {
+  const runtime = createHarnessRuntime();
+  runtime.time = 10;
+  const player = spawnGameEntity(runtime);
+  const client = attachGameClient(player);
+  InitClientPersistant(client);
+  player.inuse = true;
+  player.health = 100;
+
+  let blasterThinkCount = 0;
+  ClientBeginServerFrame(player, runtime, {
+    weaponThink: {
+      Weapon_Blaster: () => {
+        blasterThinkCount += 1;
+      }
+    }
+  });
+  assert.equal(blasterThinkCount, 1, "ClientBeginServerFrame should run Think_Weapon when no usercmd thunk has fired");
+
+  client.weapon_thunk = true;
+  ClientBeginServerFrame(player, runtime, {
+    weaponThink: {
+      Weapon_Blaster: () => {
+        blasterThinkCount += 1;
+      }
+    }
+  });
+  assert.equal(blasterThinkCount, 1, "ClientBeginServerFrame should not run Think_Weapon after ClientThink already thunked weapons");
+  assert.equal(client.weapon_thunk, false, "ClientBeginServerFrame should clear weapon_thunk after skipping the frame weapon think");
+
+  runtime.intermissiontime = 1;
+  client.latched_buttons = 7;
+  ClientBeginServerFrame(player, runtime);
+  assert.equal(client.latched_buttons, 7, "ClientBeginServerFrame should early-out during intermission");
+  runtime.intermissiontime = 0;
+
+  client.resp.spectator = true;
+  client.pers.spectator = true;
+  ClientBeginServerFrame(player, runtime, {
+    weaponThink: {
+      Weapon_Blaster: () => {
+        blasterThinkCount += 1;
+      }
+    }
+  });
+  assert.equal(blasterThinkCount, 1, "ClientBeginServerFrame should not run weapons for spectators");
+  assert.equal(client.latched_buttons, 0, "ClientBeginServerFrame should clear live-player latches at frame end");
+
+  const trailRuntime = createHarnessRuntime();
+  trailRuntime.time = 3;
+  PlayerTrail_Init(trailRuntime);
+  const trailPlayer = spawnGameEntity(trailRuntime);
+  attachGameClient(trailPlayer);
+  trailPlayer.inuse = true;
+  trailPlayer.s.old_origin = [9, 8, 7];
+  ClientBeginServerFrame(trailPlayer, trailRuntime);
+  assert.deepEqual(PlayerTrail_LastSpot(trailRuntime)?.s.origin, [9, 8, 7], "ClientBeginServerFrame should add invisible solo players to the player trail");
+
+  const respawnRuntime = createHarnessRuntime();
+  respawnRuntime.deathmatch = true;
+  respawnRuntime.dmflags = DF_FORCE_RESPAWN;
+  respawnRuntime.time = 20;
+  InitBodyQue(respawnRuntime);
+  const deadPlayer = spawnGameEntity(respawnRuntime);
+  attachGameClient(deadPlayer);
+  PutClientInServer(deadPlayer, respawnRuntime, {
+    SelectSpawnPoint: () => ({ origin: [1, 2, 3], angles: [0, 0, 0] }),
+    KillBox: () => true
+  });
+  deadPlayer.deadflag = DEAD_DEAD;
+  deadPlayer.health = -10;
+  deadPlayer.client!.respawn_time = 19;
+  deadPlayer.client!.latched_buttons = 0;
+  ClientBeginServerFrame(deadPlayer, respawnRuntime, {
+    SelectSpawnPoint: () => ({ origin: [4, 5, 6], angles: [0, 90, 0] }),
+    KillBox: () => true
+  });
+  assert.equal(deadPlayer.deadflag, 0, "ClientBeginServerFrame should force respawn in deathmatch when DF_FORCE_RESPAWN is set");
+  assert.equal(deadPlayer.client!.latched_buttons, 0, "ClientBeginServerFrame should clear latches after deathmatch respawn");
+  assert.deepEqual(deadPlayer.s.origin, [4, 5, 7], "ClientBeginServerFrame forced respawn should use the selected spawn point");
 }
 
 function createTrace(endpos: [number, number, number]): trace_t {

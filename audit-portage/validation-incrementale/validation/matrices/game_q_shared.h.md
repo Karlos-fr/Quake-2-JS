@@ -50,38 +50,38 @@
 | `Quake-2-master/game/q_shared.h` | macro | `nanmask` | `packages/qcommon/src/q_shared.ts` | `nanmask` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
 | `Quake-2-master/game/q_shared.h` | macro | `IS_NAN` | `packages/qcommon/src/q_shared.ts` | `IS_NAN` | Valide | A redecouper | Ajout avec commentaire d'en-tete dans `packages/qcommon/src/q_shared.ts`. |
 | `Quake-2-master/game/q_shared.h` | function | `Q_ftol` | `packages/qcommon/src/q_shared.ts` | `Q_ftol` | Valide | A redecouper | Ajout avec commentaire d'en-tete dans `packages/qcommon/src/q_shared.ts`. |
-| `Quake-2-master/game/q_shared.h` | macro | `DotProduct` | `packages/math/src/q_shared.ts` | `DotProduct` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `VectorSubtract` | `packages/math/src/q_shared.ts` | `VectorSubtract` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `VectorAdd` | `packages/math/src/q_shared.ts` | `VectorAdd` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `VectorCopy` | `packages/math/src/q_shared.ts` | `VectorCopy` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `VectorClear` | `packages/math/src/q_shared.ts` | `VectorClear` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `VectorNegate` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `VectorSet` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `VectorMA` | `packages/math/src/q_shared.ts` | `VectorMA` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `_DotProduct` | `packages/math/src/q_shared.ts` | `_DotProduct` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `_VectorSubtract` | `packages/math/src/q_shared.ts` | `_VectorSubtract` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `_VectorAdd` | `packages/math/src/q_shared.ts` | `_VectorAdd` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `_VectorCopy` | `packages/math/src/q_shared.ts` | `_VectorCopy` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `ClearBounds` | `packages/math/src/q_shared.ts` | `ClearBounds` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `AddPointToBounds` | `packages/math/src/q_shared.ts` | `AddPointToBounds` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `VectorCompare` | `packages/math/src/q_shared.ts` | `VectorCompare` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `VectorLength` | `packages/math/src/q_shared.ts` | `VectorLength` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `CrossProduct` | `packages/math/src/q_shared.ts` | `CrossProduct` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `VectorNormalize` | `packages/math/src/q_shared.ts` | `VectorNormalize` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `VectorNormalize2` | `packages/math/src/q_shared.ts` | `VectorNormalize2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `VectorInverse` | `packages/math/src/q_shared.ts` | `VectorInverse` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `VectorScale` | `packages/math/src/q_shared.ts` | `VectorScale` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Q_log2` | `packages/math/src/q_shared.ts` | `Q_log2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `R_ConcatRotations` | `packages/math/src/q_shared.ts` | `R_ConcatRotations` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `R_ConcatTransforms` | `packages/math/src/q_shared.ts` | `R_ConcatTransforms` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `AngleVectors` | `packages/qcommon/src/q_shared.ts` | `AngleVectors` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `BoxOnPlaneSide` | `packages/math/src/q_shared.ts` | `BoxOnPlaneSide` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `anglemod` | `packages/math/src/q_shared.ts` | `anglemod` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `LerpAngle` | `packages/qcommon/src/q_shared.ts` | `LerpAngle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `BOX_ON_PLANE_SIDE` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `ProjectPointOnPlane` | `packages/math/src/q_shared.ts` | `ProjectPointOnPlane` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `PerpendicularVector` | `packages/math/src/q_shared.ts` | `PerpendicularVector` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `RotatePointAroundVector` | `packages/math/src/q_shared.ts` | `RotatePointAroundVector` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DotProduct` | `packages/math/src/q_shared.ts` | `DotProduct` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `VectorSubtract` | `packages/math/src/q_shared.ts` | `VectorSubtract` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `VectorAdd` | `packages/math/src/q_shared.ts` | `VectorAdd` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `VectorCopy` | `packages/math/src/q_shared.ts` | `VectorCopy` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `VectorClear` | `packages/math/src/q_shared.ts` | `VectorClear` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `VectorNegate` | `packages/math/src/q_shared.ts` | `VectorNegate` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `VectorSet` | `packages/math/src/q_shared.ts` | `VectorSet` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `VectorMA` | `packages/math/src/q_shared.ts` | `VectorMA` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `_DotProduct` | `packages/math/src/q_shared.ts` | `_DotProduct` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `_VectorSubtract` | `packages/math/src/q_shared.ts` | `_VectorSubtract` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `_VectorAdd` | `packages/math/src/q_shared.ts` | `_VectorAdd` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `_VectorCopy` | `packages/math/src/q_shared.ts` | `_VectorCopy` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `ClearBounds` | `packages/math/src/q_shared.ts` | `ClearBounds` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `AddPointToBounds` | `packages/math/src/q_shared.ts` | `AddPointToBounds` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `VectorCompare` | `packages/math/src/q_shared.ts` | `VectorCompare` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `VectorLength` | `packages/math/src/q_shared.ts` | `VectorLength` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `CrossProduct` | `packages/math/src/q_shared.ts` | `CrossProduct` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `VectorNormalize` | `packages/math/src/q_shared.ts` | `VectorNormalize` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `VectorNormalize2` | `packages/math/src/q_shared.ts` | `VectorNormalize2` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `VectorInverse` | `packages/math/src/q_shared.ts` | `VectorInverse` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `VectorScale` | `packages/math/src/q_shared.ts` | `VectorScale` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Q_log2` | `packages/math/src/q_shared.ts` | `Q_log2` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `R_ConcatRotations` | `packages/math/src/q_shared.ts` | `R_ConcatRotations` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `R_ConcatTransforms` | `packages/math/src/q_shared.ts` | `R_ConcatTransforms` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `AngleVectors` | `packages/qcommon/src/q_shared.ts` | `AngleVectors` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `BoxOnPlaneSide` | `packages/math/src/q_shared.ts` | `BoxOnPlaneSide` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `anglemod` | `packages/math/src/q_shared.ts` | `anglemod` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `LerpAngle` | `packages/qcommon/src/q_shared.ts` | `LerpAngle` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `BOX_ON_PLANE_SIDE` | `packages/math/src/q_shared.ts` | `BoxOnPlaneSide` | Non applicable | A redecouper | Macro C d'optimisation inlinée par le helper TS `BoxOnPlaneSide`; pas de symbole runtime séparé attendu. |
+| `Quake-2-master/game/q_shared.h` | function | `ProjectPointOnPlane` | `packages/math/src/q_shared.ts` | `ProjectPointOnPlane` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `PerpendicularVector` | `packages/math/src/q_shared.ts` | `PerpendicularVector` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `RotatePointAroundVector` | `packages/math/src/q_shared.ts` | `RotatePointAroundVector` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `COM_SkipPath` | `packages/qcommon/src/common.ts` | `COM_SkipPath` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `COM_StripExtension` | `packages/qcommon/src/common.ts` | `COM_StripExtension` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `COM_FileBase` | `packages/qcommon/src/common.ts` | `COM_FileBase` | A verifier | A redecouper |  |

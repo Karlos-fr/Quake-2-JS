@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/game/p_client.c
 
-- Statut: En cours
-- Dernier lot valide: `pm_passent`, `PM_trace`, `CheckBlock`, `PrintPmove`, `ClientThink`.
-- Entites validees: 39 / 40
+- Statut: Termine
+- Dernier lot valide: `ClientBeginServerFrame`.
+- Entites validees: 40 / 40
 - Tests de reference:
   - `npm run verify:p-client`
   - `npm run typecheck`
@@ -17,5 +17,6 @@
   - `ClientThink` est atteint par `SV_ClientThink`/`game_export.ClientThink` cote serveur, et par `local-gameplay-sync` cote client local; `apps/web` branche la collision via `createServerBackedGameRuntime`.
   - `renderer-three` n'a pas de consommation directe attendue pour ce lot: pas de modeles, frames, images, particules, beams, dlights, temp entities ni areabits produits directement; les sorties joueur/camera passent par le pipeline snapshot/client existant.
   - Correction appliquee: `PrintPmove` conserve maintenant le `\n` final du `Com_Printf` original.
-- Prochain lot recommande: `ClientBeginServerFrame`.
+- `ClientBeginServerFrame` est atteint par `G_RunFrame`, `GetGameApi().RunFrame`, le serveur full-game web et `local-gameplay-sync`; son effet visible passe par les etats joueur, armes, respawn et player trail consommes par les snapshots/renderer.
+- Prochain lot recommande: aucun, fichier termine.
 - Blocages: aucun.

@@ -1260,11 +1260,16 @@ function CM_TestInLeafs(world: CollisionWorld, headnode: number, start: vec3_t, 
 }
 
 /**
- * Category: New
- * Purpose: Recursively collect leaf numbers intersected by an axis-aligned bounds box.
+ * Original name: CM_BoxLeafnums_r
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must preserve BSP child numbering where negative child ids reference leafs.
+ * Behavior:
+ * - Recursively collects leaf numbers intersected by an axis-aligned bounds box.
+ *
+ * Porting notes:
+ * - Replaces the original file-static traversal state with explicit parameters.
  */
 function CM_BoxLeafnums_r(
   world: CollisionWorld,

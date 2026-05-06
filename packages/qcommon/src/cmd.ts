@@ -295,7 +295,7 @@ export function Cbuf_AddLateCommands(runtime: CommandRuntime, common: CommonRunt
   }
 
   let build = "";
-  for (let index = 0; index < text.length; index += 1) {
+  for (let index = 0; index < text.length - 1; index += 1) {
     if (text[index] !== "+") {
       continue;
     }

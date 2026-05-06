@@ -330,7 +330,7 @@ export function COM_FileBase(input: string): string {
   const start = lastSlash >= 0 ? lastSlash + 1 : 0;
   const lastDot = input.lastIndexOf(".");
 
-  if (lastDot <= start) {
+  if (lastDot - start < 2) {
     return "";
   }
 
@@ -496,10 +496,7 @@ export function va(...parts: Array<string | number>): string {
  * - Reinterprets one 16-bit integer as big-endian input and returns host-order numeric value.
  */
 export function BigShort(value: number): number {
-  const buffer = new ArrayBuffer(2);
-  const view = new DataView(buffer);
-  view.setInt16(0, value, false);
-  return view.getInt16(0, isLittleEndianHost());
+  return isLittleEndianHost() ? ShortSwap(value) : ShortNoSwap(value);
 }
 
 /**
@@ -512,10 +509,7 @@ export function BigShort(value: number): number {
  * - Reinterprets one 16-bit integer as little-endian input and returns host-order numeric value.
  */
 export function LittleShort(value: number): number {
-  const buffer = new ArrayBuffer(2);
-  const view = new DataView(buffer);
-  view.setInt16(0, value, true);
-  return view.getInt16(0, isLittleEndianHost());
+  return isLittleEndianHost() ? ShortNoSwap(value) : ShortSwap(value);
 }
 
 /**
@@ -528,10 +522,7 @@ export function LittleShort(value: number): number {
  * - Reinterprets one 32-bit integer as big-endian input and returns host-order numeric value.
  */
 export function BigLong(value: number): number {
-  const buffer = new ArrayBuffer(4);
-  const view = new DataView(buffer);
-  view.setInt32(0, value, false);
-  return view.getInt32(0, isLittleEndianHost());
+  return isLittleEndianHost() ? LongSwap(value) : LongNoSwap(value);
 }
 
 /**
@@ -544,10 +535,7 @@ export function BigLong(value: number): number {
  * - Reinterprets one 32-bit integer as little-endian input and returns host-order numeric value.
  */
 export function LittleLong(value: number): number {
-  const buffer = new ArrayBuffer(4);
-  const view = new DataView(buffer);
-  view.setInt32(0, value, true);
-  return view.getInt32(0, isLittleEndianHost());
+  return isLittleEndianHost() ? LongNoSwap(value) : LongSwap(value);
 }
 
 /**
@@ -560,10 +548,7 @@ export function LittleLong(value: number): number {
  * - Reinterprets one 32-bit float as big-endian input and returns host-order numeric value.
  */
 export function BigFloat(value: number): number {
-  const buffer = new ArrayBuffer(4);
-  const view = new DataView(buffer);
-  view.setFloat32(0, value, false);
-  return view.getFloat32(0, isLittleEndianHost());
+  return isLittleEndianHost() ? FloatSwap(value) : FloatNoSwap(value);
 }
 
 /**
@@ -576,10 +561,102 @@ export function BigFloat(value: number): number {
  * - Reinterprets one 32-bit float as little-endian input and returns host-order numeric value.
  */
 export function LittleFloat(value: number): number {
+  return isLittleEndianHost() ? FloatNoSwap(value) : FloatSwap(value);
+}
+
+/**
+ * Original name: ShortSwap
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Swaps the two bytes of one signed 16-bit integer and returns a signed 16-bit result.
+ */
+export function ShortSwap(value: number): number {
+  const b1 = value & 255;
+  const b2 = (value >> 8) & 255;
+  return toSigned16((b1 << 8) + b2);
+}
+
+/**
+ * Original name: ShortNoSwap
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns one signed 16-bit integer unchanged.
+ */
+export function ShortNoSwap(value: number): number {
+  return toSigned16(value);
+}
+
+/**
+ * Original name: LongSwap
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Swaps the four bytes of one signed 32-bit integer and returns a signed 32-bit result.
+ */
+export function LongSwap(value: number): number {
+  const b1 = value & 255;
+  const b2 = (value >> 8) & 255;
+  const b3 = (value >> 16) & 255;
+  const b4 = (value >> 24) & 255;
+  return ((b1 << 24) | (b2 << 16) | (b3 << 8) | b4) | 0;
+}
+
+/**
+ * Original name: LongNoSwap
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns one signed 32-bit integer unchanged.
+ */
+export function LongNoSwap(value: number): number {
+  return value | 0;
+}
+
+/**
+ * Original name: FloatSwap
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Reverses the four raw bytes of one 32-bit float and returns the reinterpreted float.
+ */
+export function FloatSwap(value: number): number {
   const buffer = new ArrayBuffer(4);
   const view = new DataView(buffer);
   view.setFloat32(0, value, true);
-  return view.getFloat32(0, isLittleEndianHost());
+  const b0 = view.getUint8(0);
+  const b1 = view.getUint8(1);
+  const b2 = view.getUint8(2);
+  const b3 = view.getUint8(3);
+  view.setUint8(0, b3);
+  view.setUint8(1, b2);
+  view.setUint8(2, b1);
+  view.setUint8(3, b0);
+  return view.getFloat32(0, true);
+}
+
+/**
+ * Original name: FloatNoSwap
+ * Source: game/q_shared.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Returns one float unchanged.
+ */
+export function FloatNoSwap(value: number): number {
+  return value;
 }
 
 /**
@@ -820,11 +897,15 @@ function parseInfoString(info: string): Array<{ key: string; value: string }> {
  */
 function isLittleEndianHost(): boolean {
   const buffer = new ArrayBuffer(2);
-  const view = new DataView(buffer);
-  view.setUint16(0, 1, true);
-  return view.getUint16(0, true) === 1;
+  new DataView(buffer).setUint16(0, 1, true);
+  return new Uint16Array(buffer)[0] === 1;
 }
 
 function foldAsciiUpper(code: number): number {
   return code >= 97 && code <= 122 ? code - 32 : code;
+}
+
+function toSigned16(value: number): number {
+  const truncated = value & 0xffff;
+  return truncated & 0x8000 ? truncated - 0x10000 : truncated;
 }

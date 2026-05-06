@@ -32,13 +32,17 @@ import {
   R_ConcatRotations,
   R_ConcatTransforms,
   RotatePointAroundVector,
+  VectorClear,
   VectorCompare,
+  VectorCopy,
   VectorInverse,
   VectorLength,
   VectorMA,
+  VectorNegate,
   VectorNormalize,
   VectorNormalize2,
   VectorScale,
+  VectorSet,
   vec3_origin
 } from "../../packages/math/src/q_shared.js";
 import { monster_flash_offset } from "../../packages/game/src/m_flash.js";
@@ -57,12 +61,18 @@ import {
   Info_SetValueForKey,
   Info_Validate,
   Info_ValueForKey,
+  FloatNoSwap,
+  FloatSwap,
   LittleFloat,
   LittleLong,
   LittleShort,
+  LongNoSwap,
+  LongSwap,
   Q_strcasecmp,
   Q_stricmp,
   Q_strncasecmp,
+  ShortNoSwap,
+  ShortSwap,
   Swap_Init,
   va
 } from "../../packages/qcommon/src/common.js";
@@ -179,6 +189,7 @@ assert.equal(COM_StripExtension("maps/base1.bsp"), "maps/base1", "COM_StripExten
 assert.equal(COM_FileExtension("maps/base1.bsp"), "bsp", "COM_FileExtension mismatch");
 assert.equal(COM_FileExtension("archive.tar.longext"), "tar.lon", "COM_FileExtension static buffer width mismatch");
 assert.equal(COM_FileBase("maps/base1.bsp"), "base1", "COM_FileBase mismatch");
+assert.equal(COM_FileBase("maps/a.bsp"), "", "COM_FileBase single-character base mismatch");
 assert.equal(COM_FilePath("maps/base1.bsp"), "maps", "COM_FilePath mismatch");
 assert.equal(COM_DefaultExtension("maps/base1", ".bsp"), "maps/base1.bsp", "COM_DefaultExtension mismatch");
 assert.equal(COM_DefaultExtension("maps/base1.bsp", ".wal"), "maps/base1.bsp", "COM_DefaultExtension existing ext mismatch");
@@ -202,6 +213,12 @@ assert.equal(BigLong(0x12345678), 0x78563412, "BigLong mismatch on little-endian
 assert.equal(LittleLong(0x12345678), 0x12345678, "LittleLong mismatch");
 assert.ok(Math.abs(BigFloat(1.0) - 4.600602988224807e-41) < 1e-45, "BigFloat mismatch");
 assert.equal(LittleFloat(1.0), 1.0, "LittleFloat mismatch");
+assert.equal(ShortSwap(0x0080), -32768, "ShortSwap signed result mismatch");
+assert.equal(ShortNoSwap(0x8000), -32768, "ShortNoSwap signed result mismatch");
+assert.equal(LongSwap(0x12345678), 0x78563412, "LongSwap mismatch");
+assert.equal(LongNoSwap(-1), -1, "LongNoSwap mismatch");
+assert.ok(Math.abs(FloatSwap(1.0) - 4.600602988224807e-41) < 1e-45, "FloatSwap mismatch");
+assert.equal(FloatNoSwap(1.0), 1.0, "FloatNoSwap mismatch");
 assert.equal(Swap_Init().bigendien, false, "Swap_Init host-endian detection mismatch");
 assert.equal(va("a", 1, "b"), "a1b", "va mismatch");
 assert.equal(Q_stricmp("Blaster", "blaster"), 0, "Q_stricmp mismatch");
@@ -279,6 +296,18 @@ const inverse: [number, number, number] = [1, -2, 3];
 VectorInverse(inverse);
 assert.deepEqual(inverse, [-1, 2, -3], "VectorInverse mismatch");
 assert.equal(VectorLength([2, 3, 6]), 7, "VectorLength mismatch");
+const copiedByMacro: [number, number, number] = [0, 0, 0];
+VectorCopy([9, 8, 7], copiedByMacro);
+assert.deepEqual(copiedByMacro, [9, 8, 7], "VectorCopy macro mismatch");
+const clearedByMacro: [number, number, number] = [1, 2, 3];
+VectorClear(clearedByMacro);
+assert.deepEqual(clearedByMacro, [0, 0, 0], "VectorClear macro mismatch");
+const negatedByMacro: [number, number, number] = [0, 0, 0];
+VectorNegate([1, -2, 3], negatedByMacro);
+assert.deepEqual(negatedByMacro, [-1, 2, -3], "VectorNegate macro mismatch");
+const setByMacro: [number, number, number] = [0, 0, 0];
+VectorSet(setByMacro, 4, -5, 6);
+assert.deepEqual(setByMacro, [4, -5, 6], "VectorSet macro mismatch");
 const scaled: [number, number, number] = [0, 0, 0];
 VectorScale([2, -3, 4], 2.5, scaled);
 assert.deepEqual(scaled, [5, -7.5, 10], "VectorScale mismatch");
@@ -289,6 +318,7 @@ const cross: [number, number, number] = [0, 0, 0];
 CrossProduct([1, 0, 0], [0, 1, 0], cross);
 assert.deepEqual(cross, [0, 0, 1], "CrossProduct mismatch");
 assert.equal(Q_log2(8), 3, "Q_log2 mismatch");
+assert.equal(Q_log2(1), 0, "Q_log2 one mismatch");
 assert.equal(_DotProduct([1, 2, 3], [4, 5, 6]), 32, "_DotProduct mismatch");
 
 const added: [number, number, number] = [0, 0, 0];
@@ -359,6 +389,24 @@ assert.equal(BoxOnPlaneSide([-1, -1, -1], [1, 1, 1], {
   type: 0,
   signbits: 0
 }), 3, "BoxOnPlaneSide mismatch");
+assert.equal(BoxOnPlaneSide([-1, -1, -1], [1, 1, 1], {
+  normal: [0, 1, 0],
+  dist: -2,
+  type: 1,
+  signbits: 0
+}), 1, "BoxOnPlaneSide axial front mismatch");
+assert.equal(BoxOnPlaneSide([-1, -1, -1], [1, 1, 1], {
+  normal: [0, 0, 1],
+  dist: 2,
+  type: 2,
+  signbits: 0
+}), 2, "BoxOnPlaneSide axial back mismatch");
+assert.equal(BoxOnPlaneSide([-1, -1, -1], [1, 1, 1], {
+  normal: [-1, 2, -3],
+  dist: 0,
+  type: 3,
+  signbits: 5
+}), 3, "BoxOnPlaneSide signbits mismatch");
 assert.equal(BoxOnPlaneSide2([-1, -1, -1], [1, 1, 1], {
   normal: [1, 0, 0],
   dist: 0,
