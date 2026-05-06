@@ -15,7 +15,7 @@
  * - This file keeps the header constants and C behavior together as the principal attachment point for `m_flyer`.
  */
 
-import { AngleVectors, ATTN_IDLE, ATTN_NORM, CHAN_VOICE, CHAN_WEAPON, EF_HYPERBLASTER, type vec3_t } from "../../qcommon/src/index.js";
+import { AngleVectors, ATTN_IDLE, ATTN_NORM, CHAN_VOICE, CHAN_WEAPON, EF_HYPERBLASTER, Q_stricmp, type vec3_t } from "../../qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
   MELEE_DISTANCE,
@@ -887,5 +887,5 @@ function randomInt(maxExclusive: number): number {
 }
 
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
-  return left.localeCompare(right, undefined, { sensitivity: "accent" }) === 0;
+  return Q_stricmp(left, right) === 0;
 }

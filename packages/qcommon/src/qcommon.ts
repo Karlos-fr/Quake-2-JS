@@ -1094,12 +1094,15 @@ export function crand(): number {
 
 /**
  * Original name: CRC_Init
- * Source: qcommon/crc.c
+ * Source: qcommon/crc.h / qcommon/crc.c
  * Category: Ported
  * Fidelity level: Strict
  *
  * Behavior:
  * - Initializes one CCITT CRC value with the Quake II seed.
+ *
+ * Porting notes:
+ * - Returns the new CRC value instead of mutating an `unsigned short *` argument.
  */
 export function CRC_Init(): number {
   return CRC_INIT_VALUE;
@@ -1107,12 +1110,15 @@ export function CRC_Init(): number {
 
 /**
  * Original name: CRC_ProcessByte
- * Source: qcommon/crc.c
+ * Source: qcommon/crc.h / qcommon/crc.c
  * Category: Ported
  * Fidelity level: Strict
  *
  * Behavior:
  * - Folds one byte into the current CCITT CRC value.
+ *
+ * Porting notes:
+ * - Returns the updated CRC value instead of mutating an `unsigned short *` argument.
  */
 export function CRC_ProcessByte(crcvalue: number, data: byte): number {
   return ((crcvalue << 8) ^ crcTable[((crcvalue >> 8) ^ data) & 0xff]) & 0xffff;
@@ -1120,7 +1126,7 @@ export function CRC_ProcessByte(crcvalue: number, data: byte): number {
 
 /**
  * Original name: CRC_Value
- * Source: qcommon/crc.c
+ * Source: qcommon/crc.h / qcommon/crc.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -1133,7 +1139,7 @@ export function CRC_Value(crcvalue: number): number {
 
 /**
  * Original name: CRC_Block
- * Source: qcommon/crc.c
+ * Source: qcommon/crc.h / qcommon/crc.c
  * Category: Ported
  * Fidelity level: Strict
  *

@@ -27,7 +27,8 @@ import {
   CS_SKY,
   CS_SKYAXIS,
   CS_SKYROTATE,
-  CS_STATUSBAR
+  CS_STATUSBAR,
+  Q_stricmp
 } from "../../qcommon/src/index.js";
 import type { GameMainContext } from "./g_main.js";
 import {
@@ -1250,5 +1251,5 @@ const WORLDSPAWN_LIGHTSTYLES = [
 ] as const;
 
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
-  return left.localeCompare(right, undefined, { sensitivity: "accent", usage: "search" }) === 0;
+  return Q_stricmp(left, right) === 0;
 }

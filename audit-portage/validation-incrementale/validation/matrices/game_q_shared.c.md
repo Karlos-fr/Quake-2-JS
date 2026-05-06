@@ -94,15 +94,14 @@
 | `Quake-2-master/game/q_shared.c` | global | `paged_total` | `packages/qcommon/src/system.ts` | `SystemRuntime.paged_total` | Valide | A redecouper | Etat mutable C represente par le runtime system explicite. |
 | `Quake-2-master/game/q_shared.c` | function | `Com_PageInMemory` | `packages/qcommon/src/system.ts` | `Com_PageInMemory` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.c` | global | `i` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C, pas une entite portee. |
-| `Quake-2-master/game/q_shared.c` | function | `Q_stricmp` | `packages/qcommon/src/common.ts` | `Q_stricmp` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `_stricmp` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `Q_strncasecmp` | `packages/qcommon/src/common.ts` | `Q_strncasecmp` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `Q_strcasecmp` | `packages/qcommon/src/common.ts` | `Q_strcasecmp` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `Q_strncasecmp` | `packages/qcommon/src/common.ts` | `Q_strncasecmp` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `Com_sprintf` | `packages/qcommon/src/common.ts` | `Com_sprintf` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `len` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `argptr` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `bigbuffer` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `Q_stricmp` | `packages/qcommon/src/common.ts` | `Q_stricmp` | Valide | A redecouper | Test `npm run verify:q-shared:header`; commentaire verifie; alias portable vers `Q_strcasecmp`. |
+| `Quake-2-master/game/q_shared.c` | function | `Q_strncasecmp` | `packages/qcommon/src/common.ts` | `Q_strncasecmp` | Valide | A redecouper | Test `npm run verify:q-shared:header`; commentaire verifie; correction du cas `count < 0`. |
+| `Quake-2-master/game/q_shared.c` | function | `Q_strcasecmp` | `packages/qcommon/src/common.ts` | `Q_strcasecmp` | Valide | A redecouper | Test `npm run verify:q-shared:header`; commentaire verifie; borne C `99999` conservee. |
+| `Quake-2-master/game/q_shared.c` | function | `Q_strncasecmp` | `packages/qcommon/src/common.ts` | `Q_strncasecmp` | Non applicable | A redecouper | Doublon genere de la definition `Q_strncasecmp` deja validee dans ce lot. |
+| `Quake-2-master/game/q_shared.c` | function | `Com_sprintf` | `packages/qcommon/src/common.ts` | `Com_sprintf` | Valide | A redecouper | Test `npm run verify:q-shared:header`; commentaire verifie; varargs C materialises en string TS. |
+| `Quake-2-master/game/q_shared.c` | global | `len` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C de `Com_sprintf`, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | global | `argptr` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C varargs de `Com_sprintf`, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | global | `bigbuffer` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Buffer local C remplace par une chaine retournee et bornee en TS. |
 | `Quake-2-master/game/q_shared.c` | function | `Info_ValueForKey` | `packages/qcommon/src/common.ts` | `Info_ValueForKey` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.c` | global | `pkey` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.c` | global | `valueindex` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |

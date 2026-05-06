@@ -32,6 +32,17 @@
 - Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `weapon_grenadelauncher_fire` direct, frames `pause_frames`/`fire_frames`, ammo infini et parametres projectile.
 - Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
 
+## Session 2026-05-06 - bloc rocket launcher
+
+- Lot traite: `Weapon_RocketLauncher_Fire`, variables locales `damage`/`damage_radius`/`radius_damage`, `Weapon_RocketLauncher`, tables locales `pause_frames` et `fire_frames`.
+- Comparaison C/TS: degats `100 + (int)(random() * 20.0)`, `radius_damage = 120`, `damage_radius = 120`, quad applique aux degats directs et splash seulement, projection `[8, 8, viewheight - 8]`, kick origin/angle, `fire_rocket` avec vitesse `650`, muzzleflash `MZ_ROCKET | is_silenced`, `PlayerNoise`, consommation ammo et `DF_INFINITE_AMMO` compares contre le C. `Weapon_RocketLauncher` appelle `Weapon_Generic(ent, 4, 12, 50, 54, {25, 33, 42, 50, 0}, {5, 0}, Weapon_RocketLauncher_Fire)`.
+- Commentaires d'en-tete: `Weapon_RocketLauncher_Fire` et `Weapon_RocketLauncher` verifies avec `Original name`, `Source: game/p_weapon.c`, `Category: Ported`, niveau de fidelite et comportement.
+- Runtime: integre via `g_items` (`weapon_rocketlauncher` -> `Weapon_RocketLauncher`), `Think_Weapon`, `ClientThink`/`ClientBeginServerFrame`, `local-game-bootstrap` et hooks `fire_rocket`.
+- apps/web: le navigateur selectionne l'arme via les bindings full-game/local et consomme le runtime porte; aucune logique web parallele ne remplace ce bloc.
+- renderer-three: sortie visible attendue = projectile `rocket` avec modele `models/objects/rocket/tris.md2`, `EF_ROCKET`, muzzleflash/dlight `MZ_ROCKET`, son de vol, trail rocket et explosion/temp entity; elle est consommee par snapshots, `cl_fx`, refresh entity/dlights et renderer-three.
+- Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `Weapon_RocketLauncher_Fire` direct, projection, bit silencieux, parametres projectile, ammo infini et tables `pause_frames`/`fire_frames`.
+- Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
+
 ## Prochain lot recommande
 
-Valider le bloc rocket launcher: `Weapon_RocketLauncher_Fire`, variables locales `damage`/`damage_radius`/`radius_damage`, puis `Weapon_RocketLauncher` avec `pause_frames` et `fire_frames`.
+Valider le bloc blaster: `Blaster_Fire`, `Weapon_Blaster_Fire`, variables locales `damage`, puis `Weapon_Blaster` avec `pause_frames` et `fire_frames`.

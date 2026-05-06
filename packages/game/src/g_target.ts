@@ -27,6 +27,7 @@ import {
   CS_LIGHTS,
   DF_ALLOW_EXIT,
   MAX_QPATH,
+  Q_stricmp,
   EF_BLASTER,
   EF_HYPERBLASTER,
   RF_BEAM,
@@ -1134,7 +1135,7 @@ function emitRegisteredSound(
 }
 
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
-  return left.localeCompare(right, undefined, { sensitivity: "accent", usage: "search" }) === 0;
+  return Q_stricmp(left, right) === 0;
 }
 
 function isLowercaseLetter(value: string): boolean {

@@ -57,7 +57,7 @@ import {
   setRmainWorldModel
 } from "../../packages/renderer-three/src/index.js";
 import { createModel, modtype_t } from "../../packages/renderer-three/src/gl-model.js";
-import { rserr_t } from "../../packages/renderer-three/src/gl-local.js";
+import { rserr_t } from "../../packages/renderer-three/src/gl_local.js";
 import type { dsprite_t } from "../../packages/formats/src/index.js";
 
 const cvarRuntime = createCvarRuntime();

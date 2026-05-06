@@ -178,16 +178,16 @@
 | `Quake-2-master/qcommon/cmodel.c` | global | `temp` | `packages/qcommon/src/cmodel.ts` | `temp` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `rotated` | `packages/qcommon/src/cmodel.ts` | `rotated` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `rotated` | `packages/qcommon/src/cmodel.ts` | `rotated` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_DecompressVis` | `packages/qcommon/src/cmodel.ts` | `CM_DecompressVis` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `c` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `out_p` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `row` | `packages/qcommon/src/cmodel.ts` | `row` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `pvsrow` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `phsrow` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_ClusterPVS` | `packages/qcommon/src/cmodel.ts` | `CM_ClusterPVS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_DecompressVis` | `packages/qcommon/src/cmodel.ts` | `CM_DecompressVis` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_ClusterPHS` | `packages/qcommon/src/cmodel.ts` | `CM_ClusterPHS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_DecompressVis` | `packages/qcommon/src/cmodel.ts` | `CM_DecompressVis` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_DecompressVis` | `packages/qcommon/src/cmodel.ts` | `CM_DecompressVis` | Valide | A redecouper | RLE literals/zero-runs/no-vis fallback compares C vs TS; commentaire verifie; correction fallback PVS/PHS sans vis; preuves `quake2-cmodel.ts`, serveur, web, renderer, typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `c` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `out_p` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `row` | `packages/qcommon/src/cmodel.ts` | `row` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `pvsrow` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Scratch buffer C remplace par une ligne `Uint8Array` retournee par appel. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `phsrow` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Scratch buffer C remplace par une ligne `Uint8Array` retournee par appel. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_ClusterPVS` | `packages/qcommon/src/cmodel.ts` | `CM_ClusterPVS` | Valide | A redecouper | PVS cluster/-1/no-vis compare C vs TS; commentaire complete; correction `getClusterVis`; preuves serveur, web, renderer, typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_DecompressVis` | `packages/qcommon/src/cmodel.ts` | `CM_DecompressVis` | Valide | A redecouper | Doublon de detection couvert avec le port `CM_DecompressVis`; preuves `quake2-cmodel.ts`, serveur, web, renderer, typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_ClusterPHS` | `packages/qcommon/src/cmodel.ts` | `CM_ClusterPHS` | Valide | A redecouper | PHS cluster/-1/no-vis compare C vs TS; commentaire complete; correction `getClusterVis`; preuves serveur, web, renderer, typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_DecompressVis` | `packages/qcommon/src/cmodel.ts` | `CM_DecompressVis` | Valide | A redecouper | Doublon de detection couvert avec le port `CM_DecompressVis`; preuves `quake2-cmodel.ts`, serveur, web, renderer, typecheck. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `FloodArea_r` | `packages/qcommon/src/cmodel.ts` | `FloodArea_r` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | function | `FloodAreaConnections` | `packages/qcommon/src/cmodel.ts` | `FloodAreaConnections` | A verifier | A redecouper |  |

@@ -36,6 +36,19 @@
 - Tests lances: `npm run verify:q-shared:header` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:server:ents` OK; `npm run verify:snd-dma` OK.
 - Decision matrice: 4 entrees `Valide`; 7 entrees generees `Non applicable` car variables locales, buffers statiques C remplaces par retours explicites TS ou variable d'iteration locale.
 
+## Session 2026-05-06 - comparateurs et Com_sprintf
+
+- Lot traite: `Q_stricmp`, `_stricmp`, `Q_strncasecmp`, `Q_strcasecmp`, la seconde entree generee `Q_strncasecmp`, `Com_sprintf`, et les temporaires `len`, `argptr`, `bigbuffer`.
+- Comparaison C/H vs TS: bloc compare dans `Quake-2-master/game/q_shared.c`, declarations dans `Quake-2-master/game/q_shared.h`, cible `packages/qcommon/src/common.ts`; `Q_strncasecmp` garde le pliage ASCII C et le retour `-1`/`0`, `Q_strcasecmp` conserve la borne `99999`, `Q_stricmp` reste un alias portable, et `Com_sprintf` represente le couple `vsprintf`/`strncpy(dest, size - 1)` par une chaine deja materialisee bornee a `size - 1`.
+- Commentaires d'en-tete: commentaires verifies pour `Q_stricmp`, `Q_strncasecmp`, `Q_strcasecmp` et `Com_sprintf`; ils indiquent `Original name`, `Source: game/q_shared.c`, `Category: Ported`, `Fidelity level` et les notes de portage utiles.
+- Ownership et doublons: ownership conserve dans `packages/qcommon/src/common.ts`; `_stricmp` retire de la matrice car c'est un appel externe WIN32/libc, pas une entite definie dans `q_shared.c`; la seconde entree `Q_strncasecmp` est classee `Non applicable` comme doublon genere.
+- Runtime: `Q_stricmp` est maintenant consomme par les comparateurs runtime de `packages/qcommon/src/cmd.ts`, `packages/game/src/g_cmds.ts`, `g_items.ts`, `g_main.ts`, `g_spawn.ts`, `g_svcmds.ts`, `g_target.ts`, `g_utils.ts`, `m_flyer.ts` et `p_client.ts`; `Com_sprintf` reste exporte et utilise par le chargement modele/texture du renderer.
+- apps/web: pas de logique web parallele attendue pour ces helpers; les flux web les atteignent via les commandes/full-game runtime et via la source de rendu full-game.
+- renderer-three: `Com_sprintf` est consomme par `packages/renderer-three/src/gl-model-loader.ts` pour produire les chemins `maps/*.bsp` et `textures/*.wal`, donc les sorties visibles modeles/images restent branchees; les comparateurs `Q_str*` ne produisent pas de sortie visible directe.
+- Corrections appliquees: `Q_strncasecmp` corrige pour ne traiter que `count === 0` comme borne, ce qui preserve le comportement C pour `count < 0`; tests ajoutes pour `Q_strncasecmp` zero/negatif et `Com_sprintf`; comparateurs runtime locaux raccordes a `Q_stricmp`.
+- Tests lances: `npm run verify:q-shared:header` OK; `npm run verify:cmd` OK; `npm run verify:g-cmds` OK; `npm run verify:g-items` OK; `npm run verify:g-svcmds` OK; `npm run verify:g-main` OK; `npm run verify:g-spawn` OK; `npm run verify:g-target` OK; `npm run verify:g-utils` OK; `npm run verify:p-client` OK; `npm run verify:m-flyer` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:gameplay` OK; `npm run typecheck` OK.
+- Decision matrice: 4 entrees `Valide`, 4 entrees `Non applicable`, et 1 ligne externe `_stricmp` retiree de la matrice du fichier courant.
+
 ## Prochain lot recommande
 
-Traiter `Q_stricmp`, `_stricmp`, `Q_strncasecmp`, `Q_strcasecmp`, la seconde entree `Q_strncasecmp`, puis `Com_sprintf` et ses temporaires si le lot reste coherent.
+Traiter `Info_ValueForKey`, `Info_RemoveKey`, `Info_Validate`, `Info_SetValueForKey` et leurs temporaires/faux positifs (`pkey`, `valueindex`, `o`, `start`, `value`, `c`, `maxsize`) en gardant `Info_Print` pour une session separee si le lot devient trop large.

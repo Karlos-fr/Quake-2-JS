@@ -30,6 +30,7 @@ import {
   MAX_QPATH,
   MASK_SOLID,
   PRINT_HIGH,
+  Q_stricmp,
   RF_GLOW,
   STAT_PICKUP_ICON,
   STAT_PICKUP_STRING,
@@ -295,13 +296,11 @@ const bodyarmor_info: GameItemArmorInfo = { base_count: 100, max_count: 200, nor
  * - The C NULL classname sentinel is represented as an empty string in the TS item table and is skipped here.
  */
 export function FindItemByClassname(classname: string): GameItemDefinition | null {
-  const normalizedClassname = classname.toLowerCase();
-
   for (const item of itemlist) {
     if (!item.classname) {
       continue;
     }
-    if (item.classname.toLowerCase() === normalizedClassname) {
+    if (Q_stricmp(item.classname, classname) === 0) {
       return item;
     }
   }
@@ -342,9 +341,8 @@ export function GetItemByIndex(index: number): GameItemDefinition | null {
  * - The C null slot and end marker are hidden from the TS item table, so the loop visits only real items.
  */
 export function FindItem(pickupName: string): GameItemDefinition | null {
-  const normalizedPickupName = pickupName.toLowerCase();
   for (const item of itemlist) {
-    if (item.pickupName.toLowerCase() === normalizedPickupName) {
+    if (Q_stricmp(item.pickupName, pickupName) === 0) {
       return item;
     }
   }

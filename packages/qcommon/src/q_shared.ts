@@ -100,6 +100,12 @@ export const MAX_INFO_KEY = 64;
 export const MAX_INFO_VALUE = 64;
 export const MAX_INFO_STRING = 512;
 
+export const SFF_ARCH = 0x01;
+export const SFF_HIDDEN = 0x02;
+export const SFF_RDONLY = 0x04;
+export const SFF_SUBDIR = 0x08;
+export const SFF_SYSTEM = 0x10;
+
 export const CONTENTS_SOLID = 1;
 export const CONTENTS_WINDOW = 2;
 export const CONTENTS_AUX = 4;

@@ -864,6 +864,9 @@ export function CM_DecompressVis(world: CollisionWorld, input: Uint8Array | null
  *
  * Behavior:
  * - Returns the decompressed PVS row for one cluster.
+ *
+ * Porting notes:
+ * - Uses a fresh typed-array row instead of the original static `pvsrow` buffer.
  */
 export function CM_ClusterPVS(world: CollisionWorld, cluster: number): Uint8Array {
   return getClusterVis(world, cluster, DVIS_PVS);
@@ -877,6 +880,9 @@ export function CM_ClusterPVS(world: CollisionWorld, cluster: number): Uint8Arra
  *
  * Behavior:
  * - Returns the decompressed PHS row for one cluster.
+ *
+ * Porting notes:
+ * - Uses a fresh typed-array row instead of the original static `phsrow` buffer.
  */
 export function CM_ClusterPHS(world: CollisionWorld, cluster: number): Uint8Array {
   return getClusterVis(world, cluster, DVIS_PHS);
@@ -1645,6 +1651,8 @@ function CM_InitBoxHull(world: CollisionWorld): void {
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source declaree: N/A (local visibility adapter)
  * Purpose: Decode the BSP visibility lump header into a structured offset table.
  */
 function parseVisibilityLump(bytes: Uint8Array): dvis_t | null {
@@ -1669,13 +1677,20 @@ function parseVisibilityLump(bytes: Uint8Array): dvis_t | null {
 
 /**
  * Category: New
+ * Original name: N/A
+ * Source declaree: N/A (local PVS/PHS adapter)
  * Purpose: Return one decompressed PVS/PHS row for the selected cluster and visibility kind.
  */
 function getClusterVis(world: CollisionWorld, cluster: number, kind: 0 | 1): Uint8Array {
   const row = (world.numclusters + 7) >> 3;
   const output = new Uint8Array(row);
 
-  if (cluster === -1 || !world.map_vis) {
+  if (cluster === -1) {
+    return output;
+  }
+
+  if (!world.map_vis) {
+    CM_DecompressVis(world, null, output);
     return output;
   }
 

@@ -24,6 +24,7 @@ import {
   PMF_DUCKED,
   PRINT_CHAT,
   PRINT_HIGH,
+  Q_stricmp,
   STAT_FRAGS
 } from "../../qcommon/src/index.js";
 import { Info_ValueForKey } from "../../qcommon/src/common.js";
@@ -1095,7 +1096,7 @@ function cprintf(context: GameCommandContext, ent: GameEntity | null, printlevel
 }
 
 function qstricmp(left: string, right: string): boolean {
-  return left.toLowerCase() === right.toLowerCase();
+  return Q_stricmp(left, right) === 0;
 }
 
 function atoi(value: string): number {

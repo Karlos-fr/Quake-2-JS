@@ -6,7 +6,7 @@
  * It is a targeted verification harness for a mixed renderer header port.
  *
  * Dependencies:
- * - packages/renderer-three/src/gl-local.ts
+ * - packages/renderer-three/src/gl_local.ts
  * - packages/renderer-three/src/index.ts
  */
 

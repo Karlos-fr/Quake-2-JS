@@ -38,6 +38,7 @@ import {
   Weapon_Machinegun,
   Weapon_Railgun,
   Weapon_RocketLauncher,
+  Weapon_RocketLauncher_Fire,
   attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameSoundEvents,
@@ -438,10 +439,11 @@ function verifyRocketLauncherFireParity(): void {
   const player = createPlayer(runtime);
   const rocketLauncher = requireItem("Rocket Launcher");
   const rockets = requireItem("Rockets");
-  const shots: Array<{ damage: number; speed: number; damageRadius: number; radiusDamage: number }> = [];
+  const shots: Array<{ start: [number, number, number]; dir: [number, number, number]; damage: number; speed: number; damageRadius: number; radiusDamage: number }> = [];
   const flashes: number[] = [];
 
   player.s.modelindex = 255;
+  player.s.origin = [0, 0, 0];
   player.client!.pers.weapon = rocketLauncher;
   player.client!.ammo_index = rockets.index;
   player.client!.pers.inventory[rocketLauncher.index] = 1;
@@ -449,12 +451,13 @@ function verifyRocketLauncherFireParity(): void {
   player.client!.ps.gunframe = 5;
   player.client!.buttons = BUTTON_ATTACK;
   player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.silencer_shots = 1;
   player.client!.pers.inventory[rockets.index] = 3;
 
   withMathRandom([0.5], () => {
-    Weapon_RocketLauncher(player, runtime, {
-      fire_rocket: (_ent, _start, _dir, damage, speed, damageRadius, radiusDamage) => {
-        shots.push({ damage, speed, damageRadius, radiusDamage });
+    Weapon_RocketLauncher_Fire(player, runtime, {
+      fire_rocket: (_ent, start, dir, damage, speed, damageRadius, radiusDamage) => {
+        shots.push({ start, dir, damage, speed, damageRadius, radiusDamage });
       },
       emitPlayerMuzzleFlash: (_ent, weapon) => {
         flashes.push(weapon);
@@ -462,28 +465,31 @@ function verifyRocketLauncherFireParity(): void {
     });
   });
 
-  assertNumber(shots.length, 1, "Weapon_RocketLauncher should fire one rocket on frame 5");
-  assertNumber(shots[0].damage, 440, "Rocket launcher quad randomized direct damage should match C");
-  assertNumber(shots[0].speed, 650, "Rocket launcher projectile speed should match C");
-  assertNumber(shots[0].damageRadius, 120, "Rocket launcher damage radius should match C");
-  assertNumber(shots[0].radiusDamage, 480, "Rocket launcher quad radius damage should match C");
-  assertNumber(flashes[0], MZ_ROCKET, "Rocket launcher should emit MZ_ROCKET");
-  assertNumber(player.client!.ps.gunframe, 6, "Rocket launcher firing should advance gunframe");
-  assertNumber(player.client!.kick_origin[0], -2, "Rocket launcher should apply original kick origin");
-  assertNumber(player.client!.kick_angles[0], -1, "Rocket launcher should apply original kick angle");
-  assertNumber(player.client!.pers.inventory[rockets.index], 2, "Rocket launcher should consume one rocket");
+  assertNumber(shots.length, 1, "Weapon_RocketLauncher_Fire should spawn one rocket");
+  assertNumber(shots[0].damage, 440, "Weapon_RocketLauncher_Fire quad randomized direct damage should match C");
+  assertNumber(shots[0].speed, 650, "Weapon_RocketLauncher_Fire projectile speed should match C");
+  assertNumber(shots[0].damageRadius, 120, "Weapon_RocketLauncher_Fire damage radius should match C");
+  assertNumber(shots[0].radiusDamage, 480, "Weapon_RocketLauncher_Fire quad radius damage should match C");
+  assertVec3(shots[0].start, [8, -8, player.viewheight - 8], "Weapon_RocketLauncher_Fire should project the original right-handed muzzle");
+  assertVec3(shots[0].dir, [1, 0, 0], "Weapon_RocketLauncher_Fire should fire along AngleVectors forward");
+  assertNumber(flashes[0], MZ_ROCKET | MZ_SILENCED, "Weapon_RocketLauncher_Fire should emit MZ_ROCKET plus silenced bit");
+  assertNumber(player.client!.ps.gunframe, 6, "Weapon_RocketLauncher_Fire should advance gunframe");
+  assertNumber(player.client!.kick_origin[0], -2, "Weapon_RocketLauncher_Fire should apply original kick origin");
+  assertNumber(player.client!.kick_angles[0], -1, "Weapon_RocketLauncher_Fire should apply original kick angle");
+  assertNumber(player.client!.pers.inventory[rockets.index], 2, "Weapon_RocketLauncher_Fire should consume one rocket");
 
   runtime.dmflags |= DF_INFINITE_AMMO;
   player.client!.quad_framenum = 0;
   player.client!.ps.gunframe = 5;
+  player.client!.silencer_shots = 0;
   player.client!.pers.inventory[rockets.index] = 2;
   shots.length = 0;
   flashes.length = 0;
 
   withMathRandom([0.95], () => {
     Weapon_RocketLauncher(player, runtime, {
-      fire_rocket: (_ent, _start, _dir, damage, speed, damageRadius, radiusDamage) => {
-        shots.push({ damage, speed, damageRadius, radiusDamage });
+      fire_rocket: (_ent, start, dir, damage, speed, damageRadius, radiusDamage) => {
+        shots.push({ start, dir, damage, speed, damageRadius, radiusDamage });
       },
       emitPlayerMuzzleFlash: (_ent, weapon) => {
         flashes.push(weapon);
@@ -493,7 +499,37 @@ function verifyRocketLauncherFireParity(): void {
 
   assertNumber(shots[0].damage, 119, "Rocket launcher direct damage random range should match C");
   assertNumber(shots[0].radiusDamage, 120, "Rocket launcher non-quad radius damage should match C");
+  assertVec3(shots[0].start, [8, -8, player.viewheight - 8], "Rocket launcher projectile start should use the original offset");
+  assertVec3(shots[0].dir, [1, 0, 0], "Rocket launcher should fire along view forward");
+  assertNumber(flashes[0], MZ_ROCKET, "Rocket launcher should emit MZ_ROCKET without silencer bit");
+  assertNumber(player.client!.ps.gunframe, 6, "Rocket launcher firing frame should advance through Weapon_Generic");
   assertNumber(player.client!.pers.inventory[rockets.index], 2, "DF_INFINITE_AMMO should prevent rocket consumption");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.ps.gunframe = 25;
+  player.client!.buttons = 0;
+  player.client!.latched_buttons = 0;
+  shots.length = 0;
+  withMathRandom([0.1], () => {
+    Weapon_RocketLauncher(player, runtime, {
+      fire_rocket: (_ent, start, dir, damage, speed, damageRadius, radiusDamage) => {
+        shots.push({ start, dir, damage, speed, damageRadius, radiusDamage });
+      }
+    });
+  });
+  assertNumber(player.client!.ps.gunframe, 25, "Rocket launcher pause_frames should include frame 25");
+  assertNumber(shots.length, 0, "Rocket launcher pause_frames should not fire while idling");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 6;
+  shots.length = 0;
+  Weapon_RocketLauncher(player, runtime, {
+    fire_rocket: (_ent, start, dir, damage, speed, damageRadius, radiusDamage) => {
+      shots.push({ start, dir, damage, speed, damageRadius, radiusDamage });
+    }
+  });
+  assertNumber(shots.length, 0, "Rocket launcher fire_frames should only include frame 5");
+  assertNumber(player.client!.ps.gunframe, 7, "Rocket launcher non-fire frame should advance without firing");
 }
 
 function verifyGrenadeLauncherFireParity(): void {

@@ -50,6 +50,7 @@ import {
   BigFloat,
   BigLong,
   BigShort,
+  Com_sprintf,
   COM_DefaultExtension,
   COM_FileBase,
   COM_FileExtension,
@@ -133,6 +134,11 @@ import {
   Q_ftol,
   ROGUE_VERSION_ID,
   ROGUE_VERSION_STRING,
+  SFF_ARCH,
+  SFF_HIDDEN,
+  SFF_RDONLY,
+  SFF_SUBDIR,
+  SFF_SYSTEM,
   SHORT2ANGLE,
   SPLASH_BLOOD,
   VIDREF_GL,
@@ -177,6 +183,11 @@ assert.equal(MAX_GENERAL, MAX_CLIENTS * 2, "MAX_GENERAL mismatch");
 assert.equal(MAX_INFO_KEY, 64, "MAX_INFO_KEY mismatch");
 assert.equal(MAX_INFO_VALUE, 64, "MAX_INFO_VALUE mismatch");
 assert.equal(MAX_INFO_STRING, 512, "MAX_INFO_STRING mismatch");
+assert.equal(SFF_ARCH, 0x01, "SFF_ARCH mismatch");
+assert.equal(SFF_HIDDEN, 0x02, "SFF_HIDDEN mismatch");
+assert.equal(SFF_RDONLY, 0x04, "SFF_RDONLY mismatch");
+assert.equal(SFF_SUBDIR, 0x08, "SFF_SUBDIR mismatch");
+assert.equal(SFF_SYSTEM, 0x10, "SFF_SYSTEM mismatch");
 
 assert.equal(VIDREF_GL, 1, "VIDREF_GL mismatch");
 assert.equal(VIDREF_SOFT, 2, "VIDREF_SOFT mismatch");
@@ -241,6 +252,11 @@ assert.equal(Q_stricmp("Blaster", "blaster"), 0, "Q_stricmp mismatch");
 assert.equal(Q_strcasecmp("Rocket", "rocket"), 0, "Q_strcasecmp mismatch");
 assert.equal(Q_strncasecmp("Machinegun", "machine", 7), 0, "Q_strncasecmp prefix mismatch");
 assert.equal(Q_strncasecmp("Rocket", "Rail", 3), -1, "Q_strncasecmp mismatch");
+assert.equal(Q_strncasecmp("a", "b", 0), 0, "Q_strncasecmp zero-count mismatch");
+assert.equal(Q_strncasecmp("a", "b", -1), -1, "Q_strncasecmp negative-count mismatch");
+assert.equal(Com_sprintf(64, "maps/base1.bsp"), "maps/base1.bsp", "Com_sprintf in-bounds mismatch");
+assert.equal(Com_sprintf(8, "0123456789"), "0123456", "Com_sprintf clamp mismatch");
+assert.equal(Com_sprintf(0, "ignored"), "", "Com_sprintf zero-size mismatch");
 
 const systemCalls: string[] = [];
 const systemRuntime = createSystemRuntime({
@@ -260,13 +276,18 @@ assert.equal(get_curtime(systemRuntime), 1234, "curtime mismatch");
 Sys_Mkdir(systemRuntime, "baseq2/save");
 assert.deepEqual(systemCalls, ["mkdir:baseq2/save"], "Sys_Mkdir mismatch");
 
-const hunk = Hunk_Begin(systemRuntime, 16);
-assert.equal(hunk.length, 16, "Hunk_Begin mismatch");
+const hunk = Hunk_Begin(systemRuntime, 64);
+assert.equal(hunk.length, 64, "Hunk_Begin mismatch");
 const chunk = Hunk_Alloc(systemRuntime, 4);
+assert.equal(chunk.length, 4, "Hunk_Alloc returned slice mismatch");
 chunk[0] = 7;
-assert.equal(Hunk_End(systemRuntime), 4, "Hunk_End mismatch");
+assert.equal(Hunk_End(systemRuntime), 32, "Hunk_End aligned size mismatch");
 Hunk_Free(systemRuntime, hunk);
 assert.equal(Hunk_End(systemRuntime), 0, "Hunk_Free mismatch");
+assert.throws(() => Hunk_Alloc(systemRuntime, 1), /Hunk_Alloc called before Hunk_Begin/, "Hunk_Alloc pre-begin guard mismatch");
+Hunk_Begin(systemRuntime, 16);
+assert.throws(() => Hunk_Alloc(systemRuntime, 17), /Hunk_Alloc overflow/, "Hunk_Alloc aligned overflow mismatch");
+Hunk_Free(systemRuntime, systemRuntime.activeHunk);
 
 assert.equal(Sys_FindFirst(systemRuntime, "maps", 0, 0), "maps/first", "Sys_FindFirst mismatch");
 assert.equal(Sys_FindNext(systemRuntime, 0, 0), "maps/second", "Sys_FindNext mismatch");

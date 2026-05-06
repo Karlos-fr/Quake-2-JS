@@ -18,7 +18,7 @@
 
 import { createSizeBuffer, SZ_Clear, SZ_Write, type sizebuf_t } from "../../memory/src/index.js";
 import { MAX_STRING_CHARS, MAX_STRING_TOKENS } from "./q_shared.js";
-import { COM_Argc, COM_Argv, COM_ClearArgv, COM_Parse, type CommonRuntime } from "./common.js";
+import { COM_Argc, COM_Argv, COM_ClearArgv, COM_Parse, Q_stricmp, type CommonRuntime } from "./common.js";
 
 export const EXEC_NOW = 0;
 export const EXEC_INSERT = 1;
@@ -431,15 +431,17 @@ export function Cmd_TokenizeString(runtime: CommandRuntime, text: string, macroE
  * - Registers a named command callback.
  *
  * Porting notes:
- * - Throws on duplicate commands instead of printing and returning.
+ * - Emits through the runtime print hook instead of Com_Printf.
  */
 export function Cmd_AddCommand(runtime: CommandRuntime, cmd_name: string, fn: xcommand_t | null): void {
   if (runtime.hooks.isKnownVariable?.(cmd_name) === true) {
-    throw new Error(`Cmd_AddCommand: ${cmd_name} already defined as a var`);
+    runtime.hooks.onPrint?.(`Cmd_AddCommand: ${cmd_name} already defined as a var\n`);
+    return;
   }
 
   if (runtime.cmd_functions.some((cmd) => cmd.name === cmd_name)) {
-    throw new Error(`Cmd_AddCommand: ${cmd_name} already defined`);
+    runtime.hooks.onPrint?.(`Cmd_AddCommand: ${cmd_name} already defined\n`);
+    return;
   }
 
   runtime.cmd_functions.unshift({ name: cmd_name, fn });
@@ -455,12 +457,13 @@ export function Cmd_AddCommand(runtime: CommandRuntime, cmd_name: string, fn: xc
  * - Removes a previously registered command.
  *
  * Porting notes:
- * - Throws if the command does not exist.
+ * - Emits through the runtime print hook instead of Com_Printf.
  */
 export function Cmd_RemoveCommand(runtime: CommandRuntime, cmd_name: string): void {
   const index = runtime.cmd_functions.findIndex((cmd) => cmd.name === cmd_name);
   if (index === -1) {
-    throw new Error(`Cmd_RemoveCommand: ${cmd_name} not added`);
+    runtime.hooks.onPrint?.(`Cmd_RemoveCommand: ${cmd_name} not added\n`);
+    return;
   }
 
   runtime.cmd_functions.splice(index, 1);
@@ -899,7 +902,7 @@ function buildAliasValue(runtime: CommandRuntime): string {
  * - Must not depend on locale-sensitive comparisons.
  */
 function equalsIgnoreCase(left: string, right: string): boolean {
-  return left.toLowerCase() === right.toLowerCase();
+  return Q_stricmp(left, right) === 0;
 }
 
 /**

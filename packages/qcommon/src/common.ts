@@ -736,9 +736,10 @@ export function Q_strncasecmp(left: string, right: string, count: number): numbe
     const c2 = index < right.length ? right.charCodeAt(index) : 0;
     index += 1;
 
-    if (count-- <= 0) {
+    if (count === 0) {
       return 0;
     }
+    count -= 1;
 
     if (c1 !== c2) {
       const folded1 = foldAsciiUpper(c1);

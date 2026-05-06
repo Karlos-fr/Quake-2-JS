@@ -70,12 +70,12 @@
 | `Quake-2-master/qcommon/cmd.c` | global | `com_token` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cmd_TokenizeString`, pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmd.c` | global | `l` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cmd_TokenizeString`, pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmd.c` | global | `break` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Mot-cle C de controle de flux extrait a tort, pas une entite proprietaire. |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_AddCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_AddCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_RemoveCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_RemoveCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Exists` | `packages/qcommon/src/cmd.ts` | `Cmd_Exists` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_CompleteCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_CompleteCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `len` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `a` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_AddCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_AddCommand` | Valide | A redecouper | Corrige: doublon/cvar impriment via hook puis retournent comme le C; commentaire mis a jour; `verify:cmd`, `verify:qcommon:header`, `verify:full-game:commands`, `verify:ref-gl-host`, `typecheck`. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_RemoveCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_RemoveCommand` | Valide | A redecouper | Corrige: commande absente imprime via hook puis retourne comme le C; commentaire mis a jour; `verify:cmd`, `verify:full-game:commands`, `verify:ref-gl-host`, `typecheck`; `verify:gl-rmain` bloque sur import `gl-local.js` manquant. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Exists` | `packages/qcommon/src/cmd.ts` | `Cmd_Exists` | Valide | A redecouper | Commentaire verifie; recherche case-sensitive testee; runtime/web/renderer command registration verifies. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_CompleteCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_CompleteCommand` | Valide | A redecouper | Commentaire verifie; exact/partial, commande avant alias et entree vide testes. |
+| `Quake-2-master/qcommon/cmd.c` | global | `len` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cmd_CompleteCommand`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `a` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cmd_CompleteCommand`, pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmd.c` | function | `Cmd_ExecuteString` | `packages/qcommon/src/cmd.ts` | `Cmd_ExecuteString` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | global | `a` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | function | `Cmd_List_f` | `packages/qcommon/src/cmd.ts` | `Cmd_List_f` | A verifier | A redecouper |  |

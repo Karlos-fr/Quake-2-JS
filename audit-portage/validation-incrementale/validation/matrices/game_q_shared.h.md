@@ -108,21 +108,21 @@
 | `Quake-2-master/game/q_shared.h` | function | `Info_RemoveKey` | `packages/qcommon/src/common.ts` | `Info_RemoveKey` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `Info_SetValueForKey` | `packages/qcommon/src/common.ts` | `Info_SetValueForKey` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `Info_Validate` | `packages/qcommon/src/common.ts` | `Info_Validate` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `curtime` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Sys_Milliseconds` | `packages/qcommon/src/system.ts` | `Sys_Milliseconds` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Sys_Mkdir` | `packages/qcommon/src/system.ts` | `Sys_Mkdir` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Hunk_Begin` | `packages/qcommon/src/system.ts` | `Hunk_Begin` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Hunk_Alloc` | `packages/qcommon/src/system.ts` | `Hunk_Alloc` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Hunk_Free` | `packages/qcommon/src/system.ts` | `Hunk_Free` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Hunk_End` | `packages/qcommon/src/system.ts` | `Hunk_End` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SFF_ARCH` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SFF_HIDDEN` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SFF_RDONLY` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SFF_SUBDIR` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SFF_SYSTEM` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Sys_FindFirst` | `packages/qcommon/src/system.ts` | `Sys_FindFirst` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Sys_FindNext` | `packages/qcommon/src/system.ts` | `Sys_FindNext` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Sys_FindClose` | `packages/qcommon/src/system.ts` | `Sys_FindClose` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `curtime` | `packages/qcommon/src/system.ts` | `get_curtime` | Valide | A redecouper | Accesseur TS explicite pour le global C; commentaire d'en-tete verifie. |
+| `Quake-2-master/game/q_shared.h` | function | `Sys_Milliseconds` | `packages/qcommon/src/system.ts` | `Sys_Milliseconds` | Valide | A redecouper | Commentaire d'en-tete verifie. |
+| `Quake-2-master/game/q_shared.h` | function | `Sys_Mkdir` | `packages/qcommon/src/system.ts` | `Sys_Mkdir` | Valide | A redecouper | Commentaire d'en-tete verifie. |
+| `Quake-2-master/game/q_shared.h` | function | `Hunk_Begin` | `packages/qcommon/src/system.ts` | `Hunk_Begin` | Valide | A redecouper | Commentaire d'en-tete verifie. |
+| `Quake-2-master/game/q_shared.h` | function | `Hunk_Alloc` | `packages/qcommon/src/system.ts` | `Hunk_Alloc` | Valide | A redecouper | Correction alignement 32 octets dans `packages/qcommon/src/system.ts`; commentaire d'en-tete mis a jour. |
+| `Quake-2-master/game/q_shared.h` | function | `Hunk_Free` | `packages/qcommon/src/system.ts` | `Hunk_Free` | Valide | A redecouper | Commentaire d'en-tete verifie. |
+| `Quake-2-master/game/q_shared.h` | function | `Hunk_End` | `packages/qcommon/src/system.ts` | `Hunk_End` | Valide | A redecouper | Commentaire d'en-tete verifie. |
+| `Quake-2-master/game/q_shared.h` | macro | `SFF_ARCH` | `packages/qcommon/src/q_shared.ts` | `SFF_ARCH` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `SFF_HIDDEN` | `packages/qcommon/src/q_shared.ts` | `SFF_HIDDEN` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `SFF_RDONLY` | `packages/qcommon/src/q_shared.ts` | `SFF_RDONLY` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `SFF_SUBDIR` | `packages/qcommon/src/q_shared.ts` | `SFF_SUBDIR` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `SFF_SYSTEM` | `packages/qcommon/src/q_shared.ts` | `SFF_SYSTEM` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | function | `Sys_FindFirst` | `packages/qcommon/src/system.ts` | `Sys_FindFirst` | Valide | A redecouper | Commentaire d'en-tete verifie. |
+| `Quake-2-master/game/q_shared.h` | function | `Sys_FindNext` | `packages/qcommon/src/system.ts` | `Sys_FindNext` | Valide | A redecouper | Commentaire d'en-tete verifie. |
+| `Quake-2-master/game/q_shared.h` | function | `Sys_FindClose` | `packages/qcommon/src/system.ts` | `Sys_FindClose` | Valide | A redecouper | Commentaire d'en-tete verifie. |
 | `Quake-2-master/game/q_shared.h` | function | `Sys_Error` | `packages/qcommon/src/system.ts` | `Sys_Error` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `Com_Printf` | `packages/qcommon/src/common.ts` | `Com_Printf` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CVAR` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |

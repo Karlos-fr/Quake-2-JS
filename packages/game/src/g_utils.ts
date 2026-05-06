@@ -16,7 +16,7 @@
  * - This file is intended to stay close to the original C source.
  */
 
-import { AngleVectors, ATTN_NORM, CHAN_AUTO, MASK_PLAYERSOLID, VectorCompare, vec3_origin, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
+import { AngleVectors, ATTN_NORM, CHAN_AUTO, MASK_PLAYERSOLID, Q_stricmp, VectorCompare, vec3_origin, type trace_t, type vec3_t } from "../../qcommon/src/index.js";
 import {
   DEAD_DEAD,
   SVF_MONSTER,
@@ -639,7 +639,7 @@ export function KillBox(runtime: GameRuntime, ent: GameEntity): boolean {
 }
 
 function equalsIgnoreCase(left: string, right: string): boolean {
-  return left.localeCompare(right, undefined, { sensitivity: "accent", usage: "search" }) === 0;
+  return Q_stricmp(left, right) === 0;
 }
 
 /**

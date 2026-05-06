@@ -146,19 +146,23 @@ export function Hunk_Begin(runtime: SystemRuntime, maxsize: number): Uint8Array 
  *
  * Behavior:
  * - Returns one contiguous slice from the active linear hunk block.
+ *
+ * Porting notes:
+ * - Preserves Quake II's 32-byte cacheline rounding for consumed hunk size.
  */
 export function Hunk_Alloc(runtime: SystemRuntime, size: number): Uint8Array {
   if (!runtime.activeHunk) {
     throw new Error("Hunk_Alloc called before Hunk_Begin");
   }
 
-  const allocationSize = Math.max(0, size | 0);
+  const requestedSize = Math.max(0, size | 0);
+  const allocationSize = (requestedSize + 31) & ~31;
   const nextUsed = runtime.hunkUsed + allocationSize;
   if (nextUsed > runtime.activeHunk.length) {
     throw new Error("Hunk_Alloc overflow");
   }
 
-  const slice = runtime.activeHunk.subarray(runtime.hunkUsed, nextUsed);
+  const slice = runtime.activeHunk.subarray(runtime.hunkUsed, runtime.hunkUsed + requestedSize);
   runtime.hunkUsed = nextUsed;
   return slice;
 }

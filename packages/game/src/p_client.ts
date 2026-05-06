@@ -37,6 +37,7 @@ import {
   PITCH,
   PRINT_HIGH,
   PRINT_MEDIUM,
+  Q_stricmp,
   ROLL,
   YAW,
   Pmove,
@@ -2242,5 +2243,5 @@ function readUserinfoNumber(userinfo: string, key: string, fallback: number): nu
 }
 
 function equalsIgnoreCase(left: string, right: string): boolean {
-  return left.localeCompare(right, undefined, { sensitivity: "accent" }) === 0;
+  return Q_stricmp(left, right) === 0;
 }

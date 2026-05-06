@@ -18,7 +18,7 @@
 
 import { GAMEVERSION } from "./g_local.js";
 import type { game_import_t } from "./game.js";
-import { PRINT_HIGH } from "../../qcommon/src/index.js";
+import { PRINT_HIGH, Q_stricmp } from "../../qcommon/src/index.js";
 
 /**
  * Original name: ipfilter_t
@@ -353,7 +353,7 @@ function getFilterBanValue(context: GameServerCommandContext): number {
 }
 
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
-  return left.toLowerCase() === right.toLowerCase();
+  return Q_stricmp(left, right) === 0;
 }
 
 function packFilterBytes(bytes: number[]): number {

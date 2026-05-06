@@ -28,6 +28,7 @@ import {
   MZ_LOGIN,
   MZ_LOGOUT,
   PRINT_HIGH,
+  Q_stricmp,
   multicast_t,
   temp_event_t,
   type cvar_t,
@@ -998,5 +999,5 @@ function tokenizeMapList(maplist: string): string[] {
 }
 
 function stringsEqualIgnoreCase(left: string, right: string): boolean {
-  return left.localeCompare(right, undefined, { sensitivity: "accent", usage: "search" }) === 0;
+  return Q_stricmp(left, right) === 0;
 }

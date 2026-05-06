@@ -227,25 +227,38 @@ function verifyTokenizationAndMacroExpansion(): void {
 }
 
 function verifyCommandRegistryAndCompletion(): void {
+  const printed: string[] = [];
   const runtime = createCommandRuntime({
-    isKnownVariable: (name) => name === "name"
+    isKnownVariable: (name) => name === "name",
+    onPrint: (line) => printed.push(line)
   });
 
   Cmd_AddCommand(runtime, "god", () => {});
   Cmd_AddCommand(runtime, "give", () => {});
+  runtime.cmd_aliases.unshift({ name: "gimme", value: "give all\n" });
+  runtime.cmd_aliases.unshift({ name: "gamma", value: "echo alias\n" });
 
   assert.equal(Cmd_Exists(runtime, "god"), true, "Cmd_Exists mismatch");
+  assert.equal(Cmd_Exists(runtime, "God"), false, "Cmd_Exists should be case-sensitive");
+  assert.equal(Cmd_CompleteCommand(runtime, ""), null, "Cmd_CompleteCommand empty mismatch");
   assert.equal(Cmd_CompleteCommand(runtime, "god"), "god", "Cmd_CompleteCommand exact mismatch");
   assert.equal(Cmd_CompleteCommand(runtime, "gi"), "give", "Cmd_CompleteCommand partial mismatch");
+  assert.equal(Cmd_CompleteCommand(runtime, "gimme"), "gimme", "Cmd_CompleteCommand exact alias mismatch");
+  assert.equal(Cmd_CompleteCommand(runtime, "gam"), "gamma", "Cmd_CompleteCommand partial alias mismatch");
+  assert.equal(Cmd_CompleteCommand(runtime, "g"), "give", "Cmd_CompleteCommand command-first partial mismatch");
 
-  assert.throws(
-    () => Cmd_AddCommand(runtime, "name", () => {}),
-    /already defined as a var/,
-    "Cmd_AddCommand cvar guard mismatch"
-  );
+  Cmd_AddCommand(runtime, "name", () => {});
+  assert.equal(printed.at(-1), "Cmd_AddCommand: name already defined as a var\n", "Cmd_AddCommand cvar print mismatch");
+  assert.equal(Cmd_Exists(runtime, "name"), false, "Cmd_AddCommand should reject cvar names");
+
+  Cmd_AddCommand(runtime, "give", () => {});
+  assert.equal(printed.at(-1), "Cmd_AddCommand: give already defined\n", "Cmd_AddCommand duplicate print mismatch");
+  assert.equal(runtime.cmd_functions.filter((cmd) => cmd.name === "give").length, 1, "Cmd_AddCommand should reject duplicates");
 
   Cmd_RemoveCommand(runtime, "god");
   assert.equal(Cmd_Exists(runtime, "god"), false, "Cmd_RemoveCommand mismatch");
+  Cmd_RemoveCommand(runtime, "god");
+  assert.equal(printed.at(-1), "Cmd_RemoveCommand: god not added\n", "Cmd_RemoveCommand missing print mismatch");
 }
 
 function verifyAliasExecution(): void {

@@ -14,7 +14,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { findPakEntry, parsePak, readPakEntryData } from "../../packages/formats/src/pak.js";
 import { CONTENTS_MONSTER, CONTENTS_SOLID } from "../../packages/qcommon/src/q_shared.js";
-import { parseBsp, type darea_t } from "../../packages/formats/src/bsp.js";
+import { parseBsp, type BspMap, type darea_t } from "../../packages/formats/src/bsp.js";
 import {
   CM_LoadMap,
   CM_AreasConnected,
@@ -23,6 +23,7 @@ import {
   CM_BoxLeafnums_headnode,
   CM_ClusterPHS,
   CM_ClusterPVS,
+  CM_DecompressVis,
   CM_EntityString,
   CM_HeadnodeForBox,
   CM_HeadnodeVisible,
@@ -104,6 +105,15 @@ function main(): void {
 
   const pvs = CM_ClusterPVS(world, worldCluster);
   const phs = CM_ClusterPHS(world, worldCluster);
+  const visRowBytes = (numClusters + 7) >> 3;
+  const directVis = new Uint8Array(visRowBytes);
+  CM_DecompressVis(world, new Uint8Array([0x7f, 0x00, 0xff]), directVis);
+  const missingVis = new Uint8Array(visRowBytes);
+  CM_DecompressVis(world, null, missingVis);
+  const noVisWorld = createCollisionWorld({ ...map, visibility: new Uint8Array(0) } satisfies BspMap);
+  const noVisPvs = CM_ClusterPVS(noVisWorld, worldCluster);
+  const noVisPhs = CM_ClusterPHS(noVisWorld, worldCluster);
+  const noVisNegativeCluster = CM_ClusterPVS(noVisWorld, -1);
   const areaBits = new Uint8Array((world.numareas + 7) >> 3);
   const areaBytes = CM_WriteAreaBits(world, areaBits, worldArea);
   const headnodeVisible = worldModel ? CM_HeadnodeVisible(world, worldModel.headnode, pvs) : false;
@@ -122,6 +132,7 @@ function main(): void {
   console.log(`box leaf count: ${boxLeafCount} topnode=${topnode}`);
   console.log(`synthetic box leafs: ${syntheticBoxLeafs.join(",")} topnode=${syntheticBoxTopnode}`);
   console.log(`pvs/phs bytes: ${pvs.length}/${phs.length}`);
+  console.log(`direct/no-vis first bytes: ${directVis[0]}/${missingVis[0]}/${noVisPvs[0]}`);
   console.log(`area bytes: ${areaBytes}`);
   console.log(`headnode visible in own pvs: ${headnodeVisible}`);
 
@@ -149,6 +160,14 @@ function main(): void {
   assert(syntheticBoxTopnode === -1, "contained synthetic box query should not cross a topnode");
   assert(pvs.length === ((numClusters + 7) >> 3), "unexpected PVS size");
   assert(phs.length === ((numClusters + 7) >> 3), "unexpected PHS size");
+  assert(directVis[0] === 0x7f, "CM_DecompressVis should copy literal visibility bytes");
+  assert(directVis.slice(1).every((value) => value === 0), "CM_DecompressVis should clamp oversized zero runs to row size");
+  assert(missingVis.every((value) => value === 0xff), "CM_DecompressVis should mark every cluster visible when vis data is missing");
+  assert(noVisPvs.length === visRowBytes, "no-vis PVS row size mismatch");
+  assert(noVisPhs.length === visRowBytes, "no-vis PHS row size mismatch");
+  assert(noVisPvs.every((value) => value === 0xff), "CM_ClusterPVS should expose all clusters when map vis is absent");
+  assert(noVisPhs.every((value) => value === 0xff), "CM_ClusterPHS should expose all clusters when map vis is absent");
+  assert(noVisNegativeCluster.every((value) => value === 0), "cluster -1 should remain a zero visibility row");
   assert(areaBytes === ((world.numareas + 7) >> 3), "unexpected area bit size");
   assert(headnodeVisible, "world headnode should be visible in its own pvs");
   assert(loadResult.world !== null, "CM_LoadMap should return a loaded world");

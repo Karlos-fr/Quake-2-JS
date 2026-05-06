@@ -51,6 +51,25 @@
   - `npm run typecheck` passe.
 - Matrice: 86 `Valide`, 82 `Non applicable`, 27 `A verifier`.
 
+## Session 2026-05-06 - bloc vis/PVS/PHS
+
+- Lot traite: `CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS`, doublons de detection `CM_DecompressVis`, et faux positifs locaux/statics associes (`c`, `out_p`, `row`, `pvsrow`, `phsrow`).
+- Corrections: `getClusterVis` corrige pour conserver le comportement C sans lump VIS: les clusters valides retournent une ligne tout-visible via `CM_DecompressVis`, tandis que `cluster == -1` reste une ligne zero. Commentaires `CM_ClusterPVS`/`CM_ClusterPHS` completes pour documenter le remplacement des buffers statiques C par des `Uint8Array` par appel; metadonnees `Category: New` completees sur les helpers locaux.
+- Validation C vs TS: `CM_DecompressVis` conserve la taille `(numclusters + 7) >> 3`, les literals RLE, les runs zero bornes a la ligne, et le fallback `0xff` quand les donnees VIS sont absentes. `CM_ClusterPVS`/`CM_ClusterPHS` conservent le choix PVS/PHS et le cas `cluster == -1`; ecart volontaire: pas de `pvsrow`/`phsrow` file-static partage, la ligne est retournee comme buffer neuf pour eviter un etat global mutable.
+- Runtime: branche depuis `SV_FatPVS`/`SV_BuildClientFrame`, `SV_Multicast`, `SV_StartSound`, imports game `inPVS`/`inPHS`, et `g_ai` PHS; les flux serveur normaux atteignent `CM_ClusterPVS`/`CM_ClusterPHS`.
+- apps/web: le host full-game web utilise le runtime serveur/client porte; pas de logique PVS/PHS parallele dans `apps/web` qui masquerait ce lot. Flux valide par `verify:full-game:server-host`.
+- renderer-three: pas de consommation directe attendue de `CM_ClusterPVS`/`CM_ClusterPHS` cote qcommon; les sorties visibles serveur sont les snapshots/temp entities/sounds filtres par PVS/PHS, puis consommes par le client et `renderer-three`. Le renderer a son propre port `Mod_ClusterPVS` pour le marquage BSP visible (`R_MarkLeaves`), verifie separement par le test three.
+- Tests lances:
+  - `npx tsx ./scripts/verify/quake2-cmodel.ts` passe avec preuves directes RLE/no-vis/PVS/PHS.
+  - `npm run typecheck` passe.
+  - `npm run verify:server:ents` passe.
+  - `npm run verify:server:world` passe.
+  - `npm run verify:cl-pred` passe.
+  - `npm run verify:full-game:server-host` passe.
+  - `npm run verify:full-game:three-renderer` passe.
+  - `npx tsx ./scripts/verify/quake2-sv-send.ts` passe.
+- Matrice: 91 `Valide`, 87 `Non applicable`, 17 `A verifier`.
+
 ## Prochain lot recommande
 
-Reprendre a `CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS` et doublons/faux positifs associes.
+Reprendre a `FloodArea_r`, second `FloodAreaConnections`, `CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, et faux positifs locaux associes si le lot reste coherent.
