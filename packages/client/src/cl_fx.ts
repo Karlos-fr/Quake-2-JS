@@ -1985,7 +1985,12 @@ export function CL_IonripperTrail(
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits the underwater bubble trail metadata.
+ * - Emits underwater bubble trail particles between two parsed temp-entity positions.
+ *
+ * Porting notes:
+ * - Preserves the C loop step `dec = 32`, palette base `4`, origin jitter `crand() * 2`,
+ *   velocity jitter `crand() * 5`, and upward velocity boost `vel[2] += 6`.
+ * - Descriptor overload is used by web/audio adapters; runtime overload mutates the client particle pool.
  */
 export function CL_BubbleTrail(start: vec3_t, end: vec3_t): ClientActionEffect[];
 export function CL_BubbleTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;

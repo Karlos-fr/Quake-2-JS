@@ -13,6 +13,7 @@
 import { strict as assert } from "node:assert";
 
 import { MOD_TELEFRAG } from "../../packages/game/src/g_local.js";
+import { MASK_PLAYERSOLID } from "../../packages/qcommon/src/index.js";
 import {
   G_UseTargets,
   G_CopyString,
@@ -527,24 +528,35 @@ telefragger.mins = [-16, -16, -16];
 telefragger.maxs = [16, 16, 16];
 
 let damageCalls = 0;
+const killBoxTraceCalls: Array<{
+  start: readonly number[];
+  mins: readonly number[];
+  maxs: readonly number[];
+  end: readonly number[];
+  pass: unknown;
+  mask: number;
+}> = [];
 runtime.collision = {
   world: {} as never,
-  trace: () => ({
-    allsolid: false,
-    startsolid: false,
-    fraction: 0,
-    endpos: [0, 0, 0],
-    plane: {
-      normal: [0, 0, 0],
-      dist: 0,
-      type: 0,
-      signbits: 0,
-      pad: [0, 0]
-    },
-    surface: null,
-    contents: 0,
-    ent: damageCalls === 0 ? blocker : null
-  }),
+  trace: (start, mins, maxs, end, pass, mask) => {
+    killBoxTraceCalls.push({ start, mins, maxs, end, pass, mask });
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 0,
+      endpos: [0, 0, 0],
+      plane: {
+        normal: [0, 0, 0],
+        dist: 0,
+        type: 0,
+        signbits: 0,
+        pad: [0, 0]
+      },
+      surface: null,
+      contents: 0,
+      ent: damageCalls === 0 ? blocker : null
+    };
+  },
   pointcontents: () => 0
 };
 blocker.pain = (_self, _attacker, _knockback, damage) => {
@@ -554,6 +566,68 @@ blocker.pain = (_self, _attacker, _knockback, damage) => {
 };
 assert.equal(KillBox(runtime, telefragger), true, "KillBox must clear blocker");
 assert.equal(damageCalls > 0, true, "KillBox must apply telefrag damage");
+assert.deepEqual(killBoxTraceCalls[0]?.start, telefragger.s.origin, "KillBox trace start must use ent.s.origin");
+assert.deepEqual(killBoxTraceCalls[0]?.mins, telefragger.mins, "KillBox trace mins mismatch");
+assert.deepEqual(killBoxTraceCalls[0]?.maxs, telefragger.maxs, "KillBox trace maxs mismatch");
+assert.deepEqual(killBoxTraceCalls[0]?.end, telefragger.s.origin, "KillBox trace end must use ent.s.origin");
+assert.equal(killBoxTraceCalls[0]?.pass, null, "KillBox trace pass entity must match C NULL");
+assert.equal(killBoxTraceCalls[0]?.mask, MASK_PLAYERSOLID, "KillBox trace mask mismatch");
+
+const secondBlocker = createRuntimeEntity({ classname: "second_blocker" }, 23);
+secondBlocker.solid = 1;
+secondBlocker.health = 50;
+let multiTraceIndex = 0;
+const multiBlockers = [blocker, secondBlocker, null];
+blocker.solid = 1;
+blocker.health = 100;
+blocker.pain = (_self, _attacker, _knockback, damage) => {
+  blocker.health -= damage;
+  blocker.solid = 0;
+};
+secondBlocker.pain = (_self, _attacker, _knockback, damage) => {
+  secondBlocker.health -= damage;
+  secondBlocker.solid = 0;
+};
+runtime.collision.trace = () => ({
+  allsolid: false,
+  startsolid: false,
+  fraction: 0,
+  endpos: [0, 0, 0],
+  plane: {
+    normal: [0, 0, 0],
+    dist: 0,
+    type: 0,
+    signbits: 0,
+    pad: [0, 0]
+  },
+  surface: null,
+  contents: 0,
+  ent: multiBlockers[multiTraceIndex++] ?? null
+});
+assert.equal(KillBox(runtime, telefragger), true, "KillBox must loop until all blockers are cleared");
+assert.equal(multiTraceIndex, 3, "KillBox must retrace after each cleared blocker");
+
+const survivor = createRuntimeEntity({ classname: "survivor" }, 24);
+survivor.solid = 1;
+survivor.health = 200000;
+runtime.collision.trace = () => ({
+  allsolid: false,
+  startsolid: false,
+  fraction: 0,
+  endpos: [0, 0, 0],
+  plane: {
+    normal: [0, 0, 0],
+    dist: 0,
+    type: 0,
+    signbits: 0,
+    pad: [0, 0]
+  },
+  surface: null,
+  contents: 0,
+  ent: survivor
+});
+assert.equal(KillBox(runtime, telefragger), false, "KillBox must fail when a blocker survives and stays solid");
+assert.equal(survivor.solid, 1, "KillBox must leave a surviving blocker solid");
 
 let repeatedTraceCalls = 0;
 blocker.solid = 0;

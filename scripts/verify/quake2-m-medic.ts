@@ -45,11 +45,17 @@ import {
   medic_checkattack,
   medic_dead,
   medic_die,
+  medic_dodge,
   medic_fire_blaster,
   medic_idle,
+  medic_continue,
   medic_move_attackBlaster,
   medic_move_attackCable,
   medic_move_death,
+  medic_move_duck,
+  medic_move_pain1,
+  medic_move_pain2,
+  medic_move_attackHyperBlaster,
   medic_move_stand,
   medic_pain,
   medic_run,
@@ -68,6 +74,7 @@ function main(): void {
   verifyBlasterAttack();
   verifyCableAttackEventsAndResurrectionFlags();
   verifyPainAndDeathBranches();
+  verifyRandomMacroDrivenBranches();
   verifyDeathmatchSpawnFreesEntity();
 
   console.log("quake2-m-medic: ok");
@@ -224,6 +231,57 @@ function verifyPainAndDeathBranches(): void {
   assert.equal((medic.svflags & SVF_DEADMONSTER) !== 0, true);
 }
 
+function verifyRandomMacroDrivenBranches(): void {
+  const painLowRuntime = createHarnessRuntime();
+  const painLowMedic = createMedic(painLowRuntime, 1);
+  painLowMedic.health = 200;
+  withMathRandom([0.49], () => {
+    medic_pain(painLowMedic, null, 0, 10, painLowRuntime);
+  });
+  assert.equal(painLowMedic.monsterinfo.currentmove, medic_move_pain1);
+  assert.equal(drainGameSoundEvents(painLowRuntime).at(-1)?.soundPath, "medic/medpain1.wav");
+
+  const painHighRuntime = createHarnessRuntime();
+  const painHighMedic = createMedic(painHighRuntime, 1);
+  painHighMedic.health = 200;
+  withMathRandom([0.75], () => {
+    medic_pain(painHighMedic, null, 0, 10, painHighRuntime);
+  });
+  assert.equal(painHighMedic.monsterinfo.currentmove, medic_move_pain2);
+  assert.equal(drainGameSoundEvents(painHighRuntime).at(-1)?.soundPath, "medic/medpain2.wav");
+
+  const dodgeRuntime = createHarnessRuntime();
+  const dodgingMedic = createMedic(dodgeRuntime, 1);
+  const attacker = createRuntimeEntity(2, {}, dodgeRuntime);
+  withMathRandom([0.249], () => {
+    medic_dodge(dodgingMedic, attacker, 0);
+  });
+  assert.equal(dodgingMedic.enemy, attacker);
+  assert.equal(dodgingMedic.monsterinfo.currentmove, medic_move_duck);
+
+  const standingMedic = createMedic(createHarnessRuntime(), 1);
+  withMathRandom([0.26], () => {
+    medic_dodge(standingMedic, attacker, 0);
+  });
+  assert.equal(standingMedic.monsterinfo.currentmove, null);
+
+  const continueRuntime = createHarnessRuntime();
+  const continuingMedic = createMedic(continueRuntime, 1);
+  const visibleEnemy = createRuntimeEntity(2, {}, continueRuntime);
+  visibleEnemy.s.origin = [64, 0, 0];
+  continuingMedic.enemy = visibleEnemy;
+  withMathRandom([0.949], () => {
+    medic_continue(continuingMedic, continueRuntime);
+  });
+  assert.equal(continuingMedic.monsterinfo.currentmove, medic_move_attackHyperBlaster);
+
+  continuingMedic.monsterinfo.currentmove = null;
+  withMathRandom([0.951], () => {
+    medic_continue(continuingMedic, continueRuntime);
+  });
+  assert.equal(continuingMedic.monsterinfo.currentmove, null);
+}
+
 function verifyDeathmatchSpawnFreesEntity(): void {
   const runtime = createHarnessRuntime();
   runtime.deathmatch = true;
@@ -232,6 +290,17 @@ function verifyDeathmatchSpawnFreesEntity(): void {
   SP_monster_medic(medic, runtime);
 
   assert.equal(medic.inuse, false);
+}
+
+function withMathRandom(values: number[], run: () => void): void {
+  const original = Math.random;
+  let index = 0;
+  Math.random = () => values[Math.min(index++, values.length - 1)] ?? 0;
+  try {
+    run();
+  } finally {
+    Math.random = original;
+  }
 }
 
 function createHarnessRuntime(): GameRuntime {

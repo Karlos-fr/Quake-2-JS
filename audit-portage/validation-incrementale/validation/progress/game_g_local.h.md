@@ -1477,7 +1477,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-parasite` OK; `npm run verify:m-parasite:header` OK; `npm run verify:m-parasite:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une petite famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_medic.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/m_medic.ts` pour `medic_pain`, `medic_dodge` et `medic_continue`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `m_medic.ts` est harmonise pour les usages macro C `random()`, aucun consommateur `crandom()` n'existe dans `m_medic.c`/`m_medic.ts`, mais d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_medic.c` consomme `random()` dans `medic_pain` (`< 0.5`), `medic_dodge` (`> 0.25`) et `medic_continue` (`<= 0.95`); aucun appel `crandom()` dans ce fichier.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_medic.ts`: `medic_pain`, `medic_dodge` et `medic_continue` consomment maintenant le helper proprietaire `random`; commentaires d'en-tete ajoutes aux trois fonctions.
+- Runtime: integration attendue et branchee via `SP_monster_medic`, callbacks `pain`/`dodge`, tables d'attaque blaster/hyperblaster, `monster_think`/`M_MoveFrame`, degats et decisions d'attaque atteignables depuis `G_RunFrame`.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres, attaques et ordre de rendu; aucune logique parallele web `m_medic`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages `m_medic.ts` affectent frames de douleur/duck/hyperblaster, sons et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaires d'en-tete ajoutes pour `medic_pain`, `medic_dodge` et `medic_continue`.
+- Corrections appliquees:
+  - `packages/game/src/m_medic.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C `random()`, commentaires d'en-tete ajoutes.
+  - `scripts/verify/quake2-m-medic.ts`: preuves deterministes ajoutees pour les branches macro `random`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-medic` OK; `npm run verify:m-medic:header` OK; `npm run verify:m-medic:source-parity` OK; `npm run verify:g-local:header` OK.
+
+- Continuer avec une petite famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_float.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

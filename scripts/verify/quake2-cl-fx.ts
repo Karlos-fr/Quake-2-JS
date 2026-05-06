@@ -13,6 +13,7 @@ import {
   CL_BigTeleportParticles,
   CL_BlasterParticles,
   CL_BlasterTrail,
+  CL_BubbleTrail,
   CL_BuildEntityEventEffects,
   CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
@@ -95,6 +96,7 @@ function main(): void {
   verifyRocketTrailRuntimeParticles();
   verifyRailTrailRuntimeParticles();
   verifyIonripperTrailRuntimeParticles();
+  verifyBubbleTrailRuntimeParticles();
   verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
@@ -1161,6 +1163,72 @@ function verifyIonripperTrailRuntimeParticles(): void {
     assert.equal(frame.particles.length, 3, "EF_IONRIPPER particles should reach ClientRefreshFrame.particles");
     assert.ok(frame.lights.some((light) => light.kind === "ionripper" && light.intensity === 100), "EF_IONRIPPER should expose the original dlight to refresh");
   });
+}
+
+function verifyBubbleTrailRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 10520;
+  const start: vec3_t = [0, 0, 0];
+  const end: vec3_t = [65, 0, 0];
+  const randomUnit = 0;
+  const expectedCrand = (randomUnit * 2) - 1;
+
+  withMockRandom(randomUnit, () => {
+    CL_BubbleTrail(runtime, start, end);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_BubbleTrail should emit one bubble every 32 units while i < len");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_BubbleTrail particle time mismatch");
+  assert.ok(particles.every((particle) => particle.color === 4), "CL_BubbleTrail color base mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, -1.0)), "CL_BubbleTrail alpha decay mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_BubbleTrail acceleration mismatch");
+  assert.ok(
+    particles.every((particle) => (
+      particle.vel[0] === expectedCrand * 5
+      && particle.vel[1] === expectedCrand * 5
+      && particle.vel[2] === (expectedCrand * 5) + 6
+    )),
+    "CL_BubbleTrail velocity jitter and upward boost mismatch"
+  );
+
+  const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
+  assert.deepEqual(emittedX, [-2, 30, 62], "CL_BubbleTrail should advance move by the normalized vec * 32");
+  assert.ok(particles.every((particle) => particle.org[1] === -2 && particle.org[2] === -2), "CL_BubbleTrail origin jitter mismatch");
+
+  const metadata = CL_BubbleTrail(start, end);
+  assert.equal(metadata[0]?.kind, "bubble-trail", "CL_BubbleTrail metadata kind mismatch");
+  assert.deepEqual(metadata[0]?.position, start, "CL_BubbleTrail metadata start mismatch");
+  assert.deepEqual(metadata[0]?.position2, end, "CL_BubbleTrail metadata end mismatch");
+  assert.equal(metadata[0]?.color, 4, "CL_BubbleTrail metadata color mismatch");
+  assert.equal(metadata[0]?.spacing, 32, "CL_BubbleTrail metadata spacing mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 3, "CL_BubbleTrail particles should reach the refresh particle list");
+
+  const tempRuntime = createRuntime();
+  tempRuntime.cl.time = 10560;
+  withMockRandom(randomUnit, () => {
+    CL_ExecuteTempEntityEffects(tempRuntime, {
+      type: temp_event_t.TE_BUBBLETRAIL,
+      position: start,
+      position2: end
+    });
+  });
+  assert.equal(collectActiveParticles(tempRuntime).length, 3, "TE_BUBBLETRAIL should dispatch to CL_BubbleTrail");
+
+  const effects = CL_BuildTempEntityEffects({
+    type: temp_event_t.TE_BUBBLETRAIL,
+    position: start,
+    position2: end
+  });
+  const trail = effects.find((effect) => effect.kind === "bubble-trail");
+  assert.ok(trail, "TE_BUBBLETRAIL should expose bubble trail metadata");
+  assert.equal(trail.category, "particle", "bubble trail should remain tagged as particles");
+  assert.deepEqual(trail.position, start, "bubble trail metadata should preserve start");
+  assert.deepEqual(trail.position2, end, "bubble trail metadata should preserve end");
+  assert.equal(trail.color, 4, "bubble trail metadata should preserve color base");
+  assert.equal(trail.spacing, 32, "bubble trail metadata should preserve spacing");
 }
 
 function verifyMakeNormalVectors(): void {

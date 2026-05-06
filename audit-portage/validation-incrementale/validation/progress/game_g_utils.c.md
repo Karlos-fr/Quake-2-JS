@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `G_TouchSolids`.
+- Dernier lot traite: `KillBox` / `tr`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `KillBox` seul, sans melanger les lignes locales restantes.
+- Clarifier les lignes locales restantes `v`, `i` et `e` dans la matrice sans traiter les blocages `vectoyaw`/`vectoangles` au-dela du rappel; commencer par la ligne globale `v` pointee vers `g_weapon.ts` si aucun agent ne reserve `g_weapon.ts`.
 
 ## Session - G_FreeEdict
 
@@ -365,3 +365,32 @@ Session `G_Spawn`:
 - `npm run verify:local-gameplay-sync`
 - `npm run verify:web-render-order`
 - `npm run verify:full-game:three-renderer`
+
+## Session - KillBox / tr
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- Declaration H comparee: `Quake-2-master/game/g_local.h`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Commentaire d'en-tete mis a jour sur `KillBox` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`) pour documenter la trace `ent.s.origin` -> `ent.s.origin`, les bounds, le passant `NULL`, `MASK_PLAYERSOLID` et l'adapter local de telefrag.
+- Comparaison C/TS `KillBox`: boucle de traces jusqu'a absence de `tr.ent`, trace avec origin/bounds du candidat, application d'un telefrag 100000 sur chaque blocker, retour `false` si le blocker reste solide, retour `true` quand l'espace est libre. Le port TS garde une garde anti-boucle infinie si l'adapter collision renvoie le meme blocker deja vide, sans changer le contrat C visible.
+- Local C `tr`: non applicable comme entite autonome; il correspond au `const tr` local TS dans la boucle `KillBox`, couvert par les tests ajoutes.
+- Correction appliquee: `packages/game/src/g_utils.ts` documente l'appel de trace et l'adapter de degats local; `scripts/verify/quake2-g-utils.ts` verifie les parametres de trace, la boucle multi-blockers, l'echec quand un blocker survit, la reussite quand les blockers sont clears, et le garde-fou de blocker repete.
+- Runtime verifie: `KillBox` est atteint depuis des flux normaux portes de spawn/gameplay et telefrag (`func_wall_use`, spawns de murs/objets visibles, `SP_CreateCoopSpots`, `SP_FixCoopSpots`, `monster_start_go`, `SP_monster_start`, `SP_target_teleporter`, `teleporter_touch`, `SP_func_door_secret`, `PutClientInServer`) eux-memes atteignables par `ED_CallSpawn`, callbacks `use`/`touch`, spawns client et frames serveur `G_RunFrame`.
+- `apps/web`: integration attendue indirecte via `apps/web/src/full-game-server-host.ts` et le host full-game/local qui execute le runtime serveur porte. Aucune logique web parallele ne remplace `KillBox`; les effets attendus passent par teleports, entites serveur, sons/evenements et snapshots.
+- `packages/renderer-three`: pas de sortie renderer directe propre a `KillBox`, mais ses effets visibles attendus sont indirects: suppression/disparition d'entites telefraggees, repositionnement de joueurs/monstres/brush models, updates de `solid`, temp entities/sons produits par les flux appelants et snapshots client. Le flux refresh frame / `refresh-entity-sync` / renderer Three consomme ces sorties; tests renderer OK.
+- Blocages rappeles hors lot: `vectoyaw` reste partiel tant que `p_trail.ts` garde son doublon prive; `vectoangles` reste partiel tant que `g_weapon.ts` garde son helper local.
+
+Session `KillBox` / `tr`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+
+## Etat apres session KillBox
+
+- Dernier lot traite: `KillBox` / `tr`.
+- Verdict du lot: valide.
+- Prochain lot recommande: clarifier les lignes locales restantes `v`, `i` et `e` dans la matrice sans traiter les blocages `vectoyaw`/`vectoangles` au-dela du rappel; commencer par la ligne globale `v` pointee vers `g_weapon.ts` si aucun agent ne reserve `g_weapon.ts`.

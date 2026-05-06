@@ -603,9 +603,11 @@ export function G_FreeEdict(runtime: GameRuntime, entity: GameEntity): void {
  *
  * Behavior:
  * - Repeatedly telefrags blocking entities at the proposed destination until the space is clear or one blocker survives.
+ * - Traces from `ent.s.origin` to itself with the entity bounds, no pass entity, and `MASK_PLAYERSOLID`.
  *
  * Porting notes:
- * - Applies the telefrag damage path locally to avoid a runtime import cycle with the wider combat module.
+ * - Applies the telefrag damage path locally to avoid a runtime import cycle with `g_combat.ts`.
+ * - The local damage adapter preserves the `KillBox` contract used by callers: killed blockers clear `solid`; surviving blockers fail the placement.
  */
 export function KillBox(runtime: GameRuntime, ent: GameEntity): boolean {
   if (!runtime.collision) {
@@ -653,6 +655,7 @@ function vectorLength(vector: [number, number, number]): number {
  *
  * Constraints:
  * - Must preserve the practical `KillBox` contract: blockers that survive keep `solid`, blockers that die clear it.
+ * - Mirrors the original call shape `T_Damage(blocker, ent, ent, vec3_origin, ent.s.origin, vec3_origin, 100000, 0, DAMAGE_NO_PROTECTION, MOD_TELEFRAG)` at the level required by `KillBox`.
  */
 function applyTelefragDamage(target: GameEntity, attacker: GameEntity, runtime: GameRuntime): void {
   target.pain?.(target, attacker, 0, 100000, runtime);

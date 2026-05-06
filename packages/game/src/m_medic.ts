@@ -45,7 +45,8 @@ import {
   SOLID_BBOX,
   SVF_DEADMONSTER,
   SVF_MONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, FoundTarget, M_CheckAttack, visible } from "./g_ai.js";
 import { monster_fire_blaster, walkmonster_start } from "./g_monster.js";
@@ -468,6 +469,14 @@ export const medic_move_pain2: GameMonsterMove = {
   endfunc: medic_run
 };
 
+/**
+ * Original name: medic_pain
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Applies medic pain skin/debounce, skips pain animations in nightmare, then chooses pain animation and sound with `random() < 0.5`.
+ * Porting notes: Uses the shared `g_local.random()` helper so the macro C 15-bit float semantics stay centralized.
+ */
 export function medic_pain(
   self: GameEntity,
   _other: GameEntity | null,
@@ -489,7 +498,7 @@ export function medic_pain(
     return;
   }
 
-  if (Math.random() < 0.5) {
+  if (random() < 0.5) {
     self.monsterinfo.currentmove = medic_move_pain1;
     emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, soundOptions(CHAN_VOICE));
   } else {
@@ -617,8 +626,16 @@ export const medic_move_duck: GameMonsterMove = {
   endfunc: medic_run
 };
 
+/**
+ * Original name: medic_dodge
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Gives the medic a 25% chance to duck, adopting the attacker as enemy when needed.
+ * Porting notes: Uses the shared `g_local.random()` helper for the original macro threshold.
+ */
 export function medic_dodge(self: GameEntity, attacker: GameEntity | null, _eta: number): void {
-  if (Math.random() > 0.25) {
+  if (random() > 0.25) {
     return;
   }
 
@@ -654,8 +671,16 @@ export const medic_move_attackHyperBlaster: GameMonsterMove = {
   endfunc: medic_run
 };
 
+/**
+ * Original name: medic_continue
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Continues a visible blaster attack into the hyperblaster move with the original 95% random chance.
+ * Porting notes: Keeps the C visibility gate and centralizes the macro `random()` call through `g_local.random()`.
+ */
 export function medic_continue(self: GameEntity, runtime: GameRuntime): void {
-  if (self.enemy && visible(self, self.enemy, runtime) && Math.random() <= 0.95) {
+  if (self.enemy && visible(self, self.enemy, runtime) && random() <= 0.95) {
     self.monsterinfo.currentmove = medic_move_attackHyperBlaster;
   }
 }
