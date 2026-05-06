@@ -184,8 +184,14 @@ export interface GameClientPersistant {
 }
 
 /**
- * Category: New
- * Purpose: Preserve the minimal respawn client state needed before the full `gclient_t` port exists.
+ * Original name: client_respawn_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the respawn-state block that survives deathmatch respawns.
+ * - Carries the coop persistent snapshot, entry frame, score, latest command angles and spectator state.
  */
 export interface GameClientRespawn {
   spectator: boolean;
@@ -952,8 +958,13 @@ export function createGameClientPersistant(): GameClientPersistant {
 }
 
 /**
- * Category: New
- * Purpose: Create the minimal respawn client state required by the first weapon-system port.
+ * Original name: client_respawn_t zero initialization
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Mirrors C zero initialization of the respawn block and allocates an independent coop snapshot.
  */
 export function createGameClientRespawn(): GameClientRespawn {
   return {

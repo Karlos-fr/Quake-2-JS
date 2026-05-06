@@ -1871,7 +1871,27 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 13 lignes du lot passees a `Valide`, noms cibles renseignes et ownership `weapon` corrige vers `GameClientPersistant.weapon`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:g-items` OK; `npm run verify:g-save` OK; `npm run verify:p-view` OK; `npm run verify:p-hud` OK; `npm run verify:p-weapon` OK; `npm run verify:g-cmds` OK; `npm run verify:g-main` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Prochain lot recommande: continuer avec `client_respawn_t`, puis champs `enterframe`, `score`, `cmd_angles`, `spectator`, en gardant `gclient_s` pour une session separee si le lot devient trop large.
+- 2026-05-06: lot `client_respawn_t` complet: structure `client_respawn_t`, champs `enterframe`, `score`, `cmd_angles`, `spectator`, avec verification du champ inclus `coop_respawn`.
+- Verdict: `Valide` pour les 5 lignes de matrice du lot apres comparaison H/C vs TS, correction des commentaires d'en-tete runtime et ajout de preuves header.
+- Source H/C comparee:
+  - `g_local.h` definit `client_respawn_t` comme le bloc conserve entre respawns deathmatch, avec `coop_respawn`, `enterframe`, `score`, `cmd_angles` et `spectator`.
+  - `p_client.c` remet le bloc a zero dans `InitClientResp`, pose `enterframe = level.framenum`, copie `pers` vers `coop_respawn`, preserve `resp` dans `PutClientInServer`, restaure le score coop via `FetchClientEntData`, met a jour `cmd_angles` dans `ClientThink`, et bascule `spectator` via `spectator_respawn`/`PutClientInServer`.
+  - `g_cmds.c`, `p_hud.c`, `g_main.c`, `g_chase.c`, `g_misc.c`, `g_combat.c` et `g_save.c` consomment respectivement scoreboards, HUD frags, fraglimit, chase camera, teleport delta angles, score kill et persistance.
+- Cibles TS verifiees:
+  - `packages/game/src/runtime.ts`: `GameClientRespawn`, `createGameClientRespawn`, `GameClient.resp`; commentaires de portage corriges vers `Original name: client_respawn_t`, `Source: game/g_local.h`, `Category: Ported`, fidelity stricte.
+  - `packages/game/src/g_local.ts`: alias public `client_respawn_t` et reexports du bloc client.
+  - `packages/game/src/p_client.ts`, `g_cmds.ts`, `p_hud.ts`, `g_main.ts`, `g_chase.ts`, `g_misc.ts`, `g_combat.ts`, `g_save.ts`: consommateurs runtime verifies.
+- Runtime: integre via `ClientBegin`/`ClientBeginDeathmatch`, `InitClientResp`, `PutClientInServer`, `ClientThink`, `ClientBeginServerFrame`, `spectator_respawn`, `SaveClientData`/`FetchClientEntData`, scoreboards, HUD, fraglimit, chase camera, teleports et save/load. Les champs pilotent des decisions runtime actives et ne sont pas seulement declaratifs.
+- apps/web: integration attendue indirectement via host full-game/local, commandes client, usercmd angles, scoreboards/HUD, spectateur/chase, save/load et snapshots; aucune logique parallele web ne remplace le runtime porte. `verify:web-render-order`, `verify:local-gameplay-sync` et `verify:full-game:server-host` OK.
+- renderer-three: integration indirecte attendue. `cmd_angles` influence camera/delta angles et teleports/chase, `spectator` influence camera/visibilite/chase, `score`/`enterframe` alimentent HUD/scoreboard; les sorties visibles passent par playerstate, snapshots, camera et refresh entities. Pas de consommation directe du type header attendue. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaires de `GameClientRespawn` et `createGameClientRespawn` corriges; commentaires de `InitClientResp`, `PutClientInServer`, `ClientThink`, `spectator_respawn`, `DeathmatchScoreboardMessage`, `Cmd_Players_f`, `UpdateChaseCam`, `misc_teleporter_dest`, `CheckDMRules` et save client verifies.
+- Corrections appliquees:
+  - `packages/game/src/runtime.ts`: commentaires de portage de `GameClientRespawn` et `createGameClientRespawn`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ajoutees pour defaults, mutabilite, alias `client_respawn_t` et non-aliasing de `coop_respawn`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 5 lignes du lot passees a `Valide`, noms cibles renseignes.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:g-cmds` OK; `npm run verify:p-hud` OK; `npm run verify:g-chase` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: traiter `gclient_s` comme structure proprietaire, puis son debut `ps`, `ping`, `old_pmove`, `showscores`, `showinventory`, `showhelp`, `showhelpicon`, `ammo_index`, `buttons`, `oldbuttons`, `latched_buttons` si le lot reste coherent.
 
 ## Blocages
 

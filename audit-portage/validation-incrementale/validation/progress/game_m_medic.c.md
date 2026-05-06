@@ -25,3 +25,16 @@
 - `packages/renderer-three`: sorties visibles attendues = frames/modeles medic via entity state, projectile blaster avec `effects`, et muzzleflash/temp output cote runtime; renderer-three consomme les entites visibles et effets via le chemin render source/three renderer, pas de branchement gameplay local manquant identifie.
 - Tests lances OK: `npm run verify:m-medic`, `npm run verify:m-medic:source-parity`, `npm run verify:m-medic:header`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
 - Prochain lot recommande: `medic_dead`, `medic_frames_death`, `medic_move_death`, `medic_die`, variable locale `n`, puis `medic_duck_down`/`medic_duck_hold`/`medic_duck_up` si le lot reste coherent.
+
+## 2026-05-06 - Lot mort et esquive accroupie
+
+- Lot traite: `medic_dead`, `medic_frames_death`, `medic_move_death`, `medic_die`, variable locale `n`, `medic_duck_down`, `medic_duck_hold`, `medic_duck_up`, `medic_frames_duck`, `medic_move_duck`, `medic_dodge`, et entrees declaratives `medic_frames_death`/`medic_frames_duck`.
+- Verdict: `Valide` pour 14 lignes, `Non applicable` pour la variable locale `n`.
+- Ownership: `packages/game/src/m_medic.ts` reste le fichier proprietaire; callbacks et moves du lot sont exportes par `packages/game/src/index.ts` et couverts par le registre save.
+- Source C vs TS: `medic_dead` compare sur bounds, `MOVETYPE_TOSS`, `SVF_DEADMONSTER`, `nextthink` et relink; `medic_die` compare sur liberation du patient, gib death, counts/modeles gibs, son `misc/udeath.wav`, retour si deja mort, son de mort et `medic_move_death`; tables death/duck comparees via source-parity; duck/dodge compares sur `AI_DUCKED`, `AI_HOLD_FRAME`, `pausetime`, `maxs[2]`, `takedamage`, chance `random() > 0.25`, adoption attacker et `medic_move_duck`.
+- Commentaires d'en-tete: ajoutes pour `medic_dead`, `medic_die`, `medic_duck_down`, `medic_duck_hold`, `medic_duck_up`; `medic_dodge` verifie.
+- Runtime: atteignable depuis `SP_monster_medic`, callbacks `die`/`dodge`, `T_Damage`/monster dodge, puis `G_RunFrame`/`M_MoveFrame`; corpse/gibs et changements de bbox sont relies via `linkGameEntity`.
+- `apps/web`: le flux web consomme le runtime porte via full-game/snapshots/render source; aucune logique medic death/duck parallele detectee.
+- `packages/renderer-three`: sorties visibles attendues = frames death/duck du modele medic, corpse bbox via entity state, gibs/head models et effets `EF_GIB`; consommation assuree par render source/three renderer pour entites visibles/modeles/frames/effects, sans branche gameplay medic specifique requise.
+- Tests lances OK: `npm run verify:m-medic`, `npm run verify:m-medic:source-parity`, `npm run verify:m-medic:header`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`, `git diff --check`.
+- Prochain lot recommande: `medic_frames_attackHyperBlaster`, `medic_move_attackHyperBlaster`, `medic_continue`, puis `medic_frames_attackBlaster`/`medic_move_attackBlaster` si le lot reste coherent.

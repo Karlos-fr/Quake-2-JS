@@ -160,6 +160,7 @@ import {
   WEAP_SHOTGUN,
   WEAP_SUPERSHOTGUN,
   createGameClient,
+  createGameClientRespawn,
   createGameClientPersistant,
   createGameLocals,
   createLevelLocals,
@@ -174,7 +175,7 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { client_persistant_t, game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, mmove_t, monsterinfo_t, moveinfo_t } from "../../packages/game/src/g_local.js";
+import type { client_persistant_t, client_respawn_t, game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, mmove_t, monsterinfo_t, moveinfo_t } from "../../packages/game/src/g_local.js";
 import {
   ANIM_ATTACK as INDEX_ANIM_ATTACK,
   ANIM_BASIC as INDEX_ANIM_BASIC,
@@ -563,6 +564,24 @@ assert.equal(secondPers.game_helpchanged, 5, "client_persistant_t game_helpchang
 assert.equal(secondPers.helpchanged, 2, "client_persistant_t helpchanged mutable field mismatch");
 assert.equal(secondPers.spectator, true, "client_persistant_t spectator mutable field mismatch");
 assert.equal(client.resp.coop_respawn.inventory[7], 0, "client_persistant_t inventory instances must not alias");
+const resp = createGameClientRespawn() satisfies client_respawn_t;
+assert.equal(resp.spectator, false, "client_respawn_t spectator default mismatch");
+assert.equal(resp.score, 0, "client_respawn_t score default mismatch");
+assert.equal(resp.enterframe, 0, "client_respawn_t enterframe default mismatch");
+assert.deepEqual(resp.cmd_angles, [0, 0, 0], "client_respawn_t cmd_angles default mismatch");
+assert.deepEqual(resp.coop_respawn.inventory, new Array<number>(256).fill(0), "client_respawn_t coop_respawn inventory default mismatch");
+resp.spectator = true;
+resp.score = 17;
+resp.enterframe = 1234;
+resp.cmd_angles = [10, 20, 30];
+resp.coop_respawn.inventory[11] = 6;
+assert.equal(resp.spectator, true, "client_respawn_t spectator mutable field mismatch");
+assert.equal(resp.score, 17, "client_respawn_t score mutable field mismatch");
+assert.equal(resp.enterframe, 1234, "client_respawn_t enterframe mutable field mismatch");
+assert.deepEqual(resp.cmd_angles, [10, 20, 30], "client_respawn_t cmd_angles mutable field mismatch");
+assert.equal(resp.coop_respawn.inventory[11], 6, "client_respawn_t coop_respawn mutable field mismatch");
+const secondResp = createGameClientRespawn();
+assert.equal(secondResp.coop_respawn.inventory[11], 0, "client_respawn_t coop_respawn instances must not alias");
 assert.equal(client.flood_when.length, 10, "client flood_when inline array mismatch");
 assert.equal(entity.monsterinfo.aiflags, 0, "entity monsterinfo must exist");
 assert.equal(entity.gravity, 1, "entity gravity default mismatch");

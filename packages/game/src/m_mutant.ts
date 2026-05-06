@@ -430,6 +430,18 @@ export function mutant_run(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: mutant_hit_left
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Performs the left melee trace with the original aim vector, damage range and hit/swing sounds.
+ *
+ * Porting notes:
+ * - Uses `randomInt(5)` for the C `rand() % 5` integer damage branch.
+ */
 export function mutant_hit_left(self: GameEntity, runtime: GameRuntime): void {
   const aim: vec3_t = [MELEE_DISTANCE, self.mins[0], 8];
   if (fire_hit(self, aim, 10 + randomInt(5), 100, runtime)) {
@@ -439,6 +451,18 @@ export function mutant_hit_left(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: mutant_hit_right
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Performs the right melee trace with the original aim vector, damage range and hit/swing sounds.
+ *
+ * Porting notes:
+ * - Uses `randomInt(5)` for the C `rand() % 5` integer damage branch.
+ */
 export function mutant_hit_right(self: GameEntity, runtime: GameRuntime): void {
   const aim: vec3_t = [MELEE_DISTANCE, self.maxs[0], 8];
   if (fire_hit(self, aim, 10 + randomInt(5), 100, runtime)) {
@@ -482,6 +506,15 @@ export const mutant_move_attack: GameMonsterMove = {
   endfunc: mutant_run
 };
 
+/**
+ * Original name: mutant_melee
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to the original melee attack move.
+ */
 export function mutant_melee(self: GameEntity): void {
   self.monsterinfo.currentmove = mutant_move_attack;
 }
@@ -522,6 +555,15 @@ export function mutant_jump_touch(self: GameEntity, other: GameEntity, runtime: 
   self.touch = undefined;
 }
 
+/**
+ * Original name: mutant_jump_takeoff
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the sight sound, launches the mutant forward/upward, starts the ducked airborne state and arms touch damage.
+ */
 export function mutant_jump_takeoff(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, soundOptions(CHAN_VOICE));
   const { forward } = AngleVectors(self.s.angles);
@@ -535,6 +577,15 @@ export function mutant_jump_takeoff(self: GameEntity, runtime: GameRuntime): voi
   self.touch = mutant_jump_touch;
 }
 
+/**
+ * Original name: mutant_check_landing
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Clears the airborne duck state on landing, or loops the jump frames while still airborne.
+ */
 export function mutant_check_landing(self: GameEntity, runtime: GameRuntime): void {
   if (self.groundentity) {
     emitRegisteredGameSound(runtime, self, sound_thud, SOUND_THUD, soundOptions(CHAN_WEAPON));
@@ -561,10 +612,28 @@ export const mutant_move_jump: GameMonsterMove = {
   endfunc: mutant_run
 };
 
+/**
+ * Original name: mutant_jump
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to the original jump attack move.
+ */
 export function mutant_jump(self: GameEntity): void {
   self.monsterinfo.currentmove = mutant_move_jump;
 }
 
+/**
+ * Original name: mutant_check_melee
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Allows melee attacks only when the enemy is in the original melee range.
+ */
 export function mutant_check_melee(self: GameEntity): boolean {
   return !!self.enemy && range(self, self.enemy) === RANGE_MELEE;
 }
@@ -611,6 +680,15 @@ export function mutant_check_jump(self: GameEntity): boolean {
   return true;
 }
 
+/**
+ * Original name: mutant_checkattack
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects melee or missile attack state through the original mutant melee and jump checks.
+ */
 export function mutant_checkattack(self: GameEntity): boolean {
   if (!self.enemy || self.enemy.health <= 0) {
     return false;

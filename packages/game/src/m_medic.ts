@@ -591,6 +591,13 @@ export function medic_fire_blaster(self: GameEntity, runtime: GameRuntime): void
   monster_fire_blaster(self, start, dir, 2, 1000, MZ2_MEDIC_BLASTER_1, effect, runtime);
 }
 
+/**
+ * Original name: medic_dead
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Shrinks the medic corpse bounds, switches to toss movement, marks it as a dead monster, clears thinking and relinks it.
+ */
 export function medic_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -16, -16, -24);
   setVec3(self.maxs, 16, 16, -8);
@@ -608,6 +615,14 @@ export const medic_move_death: GameMonsterMove = {
   endfunc: medic_dead
 };
 
+/**
+ * Original name: medic_die
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Releases a pending patient, handles gib death with the original gib counts/models, otherwise starts the regular death move.
+ * Porting notes: The local C loop counter `n` is represented by scoped TypeScript loop variables.
+ */
 export function medic_die(
   self: GameEntity,
   _inflictor: GameEntity | null,
@@ -642,6 +657,13 @@ export function medic_die(
   self.monsterinfo.currentmove = medic_move_death;
 }
 
+/**
+ * Original name: medic_duck_down
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Enters ducked state once, lowers the collision top by 32 units, enables damage, sets pause time and relinks.
+ */
 export function medic_duck_down(self: GameEntity, runtime: GameRuntime): void {
   if ((self.monsterinfo.aiflags & AI_DUCKED) !== 0) {
     return;
@@ -653,6 +675,13 @@ export function medic_duck_down(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: medic_duck_hold
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Holds or releases the current animation frame according to the duck pause time.
+ */
 export function medic_duck_hold(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.time >= self.monsterinfo.pausetime) {
     self.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
@@ -661,6 +690,13 @@ export function medic_duck_hold(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: medic_duck_up
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Leaves ducked state, restores the collision top by 32 units, restores aim damage and relinks.
+ */
 export function medic_duck_up(self: GameEntity, runtime: GameRuntime): void {
   self.monsterinfo.aiflags &= ~AI_DUCKED;
   self.maxs[2] += 32;

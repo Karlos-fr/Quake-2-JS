@@ -1,5 +1,14 @@
 # Progress - Quake-2-master/game/m_insane.c
 
+## Session 2026-05-06 - lot death/crawl/cross et cloture fichier
+
+- Lot traite: `insane_frames_stand_death`, `insane_move_stand_death`, `insane_frames_crawl`, `insane_move_crawl`, `insane_move_runcrawl`, `insane_frames_crawl_pain`, `insane_move_crawl_pain`, `insane_frames_crawl_death`, `insane_move_crawl_death`, puis extension coherent au reste du fichier: `insane_frames_cross`, `insane_move_cross`, `insane_frames_struggle_cross`, `insane_move_struggle_cross`, `insane_cross`, `insane_walk`, `insane_run`, `insane_pain`, `insane_onground`, `insane_checkdown`, `insane_checkup`, `insane_stand`, `insane_dead`, `insane_die`, `SP_misc_insane`, et les lignes declaratives croisees correspondantes.
+- Verdict: lot valide; aucune correction TS necessaire. Les entrees `l` et `n` sont reclassees `Non applicable`, car ce sont des variables locales C dans `insane_pain` et `insane_die`, pas des entites proprietaires.
+- Checklist appliquee: ownership confirme dans `packages/game/src/m_insane.ts`; comparaison C vs TS des distances, bornes de frames, callbacks `insane_scream`/`insane_moan`, `endfunc` `insane_dead`/`insane_cross`/`insane_run`, selections de douleur et mort, flags de spawn, bbox/flags de cadavre, sons, gibs, precache et spawn `misc_insane`; commentaires d'en-tete des fonctions portees verifies; runtime atteignable via `SP_misc_insane` dans `g_spawn.ts`, callbacks `monsterinfo`, `pain`/`die`, `walkmonster_start`/`flymonster_start`, puis `M_MoveFrame`; `apps/web` consomme le flux full-game/server-host/runtime sans logique parallele `misc_insane`; `renderer-three` doit consommer les sorties visibles `modelindex`, `frame`, `oldframe`, `skinnum`, bbox/mouvement et sons/gibs via les adapters existants, sans branchement specifique `insane` requis pour ce fichier.
+- Tests lances et OK: `npm run verify:m-insane`, `npm run verify:m-insane:header`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`.
+- Prochain lot recommande: aucun pour `m_insane.c`; matrice terminee. Reprendre `m_insane.h` dans une session separee si le coordinateur le demande.
+- Blocages: aucun. Le worktree contenait deja des modifications non liees dans `packages/game/src/runtime.ts` et `scripts/verify/quake2-g-local-header.ts`, laissees intactes.
+
 ## Session 2026-05-06 - lot marche/course et douleur debout
 
 - Lot traite: `insane_frames_walk_normal`, `insane_move_walk_normal`, `insane_move_run_normal`, `insane_frames_walk_insane`, `insane_move_walk_insane`, `insane_move_run_insane`, `insane_frames_stand_pain`, `insane_move_stand_pain`, et les lignes declaratives croisees `insane_frames_walk_normal`, `insane_frames_walk_insane`, `insane_frames_stand_pain`.

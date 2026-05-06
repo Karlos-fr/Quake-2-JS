@@ -74,28 +74,28 @@
 | `Quake-2-master/game/m_parasite.c` | global | `parasite_move_stop_walk` | `packages/game/src/m_parasite.ts` | `parasite_move_stop_walk` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_parasite.c` | function | `parasite_start_walk` | `packages/game/src/m_parasite.ts` | `parasite_start_walk` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_parasite.c` | function | `parasite_walk` | `packages/game/src/m_parasite.ts` | `parasite_walk` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `parasite_frames_pain1` | `packages/game/src/m_parasite.ts` | `parasite_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | table | `parasite_frames_pain1` | `packages/game/src/m_parasite.ts` | `parasite_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `parasite_move_pain1` | `packages/game/src/m_parasite.ts` | `parasite_move_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | function | `parasite_pain` | `packages/game/src/m_parasite.ts` | `parasite_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | function | `parasite_drain_attack_ok` | `packages/game/src/m_parasite.ts` | `parasite_drain_attack_ok` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | function | `parasite_drain_attack` | `packages/game/src/m_parasite.ts` | `parasite_drain_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `tr` | `packages/game/src/m_parasite.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `damage` | `packages/game/src/m_parasite.ts` | `damage` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `parasite_frames_drain` | `packages/game/src/m_parasite.ts` | `parasite_frames_drain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | table | `parasite_frames_drain` | `packages/game/src/m_parasite.ts` | `parasite_frames_drain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `parasite_move_drain` | `packages/game/src/m_parasite.ts` | `parasite_move_drain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `parasite_frames_break` | `packages/game/src/m_parasite.ts` | `parasite_frames_break` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | table | `parasite_frames_break` | `packages/game/src/m_parasite.ts` | `parasite_frames_break` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `parasite_move_break` | `packages/game/src/m_parasite.ts` | `parasite_move_break` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | function | `parasite_attack` | `packages/game/src/m_parasite.ts` | `parasite_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | function | `parasite_dead` | `packages/game/src/m_parasite.ts` | `parasite_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `parasite_frames_death` | `packages/game/src/m_parasite.ts` | `parasite_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | table | `parasite_frames_death` | `packages/game/src/m_parasite.ts` | `parasite_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `parasite_move_death` | `packages/game/src/m_parasite.ts` | `parasite_move_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | function | `parasite_die` | `packages/game/src/m_parasite.ts` | `parasite_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | global | `n` | `packages/game/src/m_parasite.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.c` | function | `SP_monster_parasite` | `packages/game/src/m_parasite.ts` | `SP_monster_parasite` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `parasite_frames_pain1` | `packages/game/src/m_parasite.ts` | `parasite_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | table | `parasite_frames_pain1` | `packages/game/src/m_parasite.ts` | `parasite_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `parasite_move_pain1` | `packages/game/src/m_parasite.ts` | `parasite_move_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | function | `parasite_pain` | `packages/game/src/m_parasite.ts` | `parasite_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | function | `parasite_drain_attack_ok` | `packages/game/src/m_parasite.ts` | `parasite_drain_attack_ok` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | function | `parasite_drain_attack` | `packages/game/src/m_parasite.ts` | `parasite_drain_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `tr` | `packages/game/src/m_parasite.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `damage` | `packages/game/src/m_parasite.ts` | `damage` | Non applicable | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `parasite_frames_drain` | `packages/game/src/m_parasite.ts` | `parasite_frames_drain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | table | `parasite_frames_drain` | `packages/game/src/m_parasite.ts` | `parasite_frames_drain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `parasite_move_drain` | `packages/game/src/m_parasite.ts` | `parasite_move_drain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `parasite_frames_break` | `packages/game/src/m_parasite.ts` | `parasite_frames_break` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | table | `parasite_frames_break` | `packages/game/src/m_parasite.ts` | `parasite_frames_break` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `parasite_move_break` | `packages/game/src/m_parasite.ts` | `parasite_move_break` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | function | `parasite_attack` | `packages/game/src/m_parasite.ts` | `parasite_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | function | `parasite_dead` | `packages/game/src/m_parasite.ts` | `parasite_dead` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `parasite_frames_death` | `packages/game/src/m_parasite.ts` | `parasite_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | table | `parasite_frames_death` | `packages/game/src/m_parasite.ts` | `parasite_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `parasite_move_death` | `packages/game/src/m_parasite.ts` | `parasite_move_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | function | `parasite_die` | `packages/game/src/m_parasite.ts` | `parasite_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | global | `n` | `packages/game/src/m_parasite.ts` | `n` | Non applicable | A redecouper |  |
+| `Quake-2-master/game/m_parasite.c` | function | `SP_monster_parasite` | `packages/game/src/m_parasite.ts` | `SP_monster_parasite` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_start_fidget` | `packages/game/src/m_parasite.ts` | `parasite_frames_start_fidget` | Valide | matched |  |
 | `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_fidget` | `packages/game/src/m_parasite.ts` | `parasite_frames_fidget` | Valide | matched |  |
 | `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_end_fidget` | `packages/game/src/m_parasite.ts` | `parasite_frames_end_fidget` | Valide | matched |  |
@@ -106,7 +106,7 @@
 | `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_walk` | `packages/game/src/m_parasite.ts` | `parasite_frames_walk` | Valide | matched |  |
 | `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_start_walk` | `packages/game/src/m_parasite.ts` | `parasite_frames_start_walk` | Valide | matched |  |
 | `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_stop_walk` | `packages/game/src/m_parasite.ts` | `parasite_frames_stop_walk` | Valide | matched |  |
-| `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_pain1` | `packages/game/src/m_parasite.ts` | `parasite_frames_pain1` | A verifier | matched |  |
-| `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_drain` | `packages/game/src/m_parasite.ts` | `parasite_frames_drain` | A verifier | matched |  |
-| `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_break` | `packages/game/src/m_parasite.ts` | `parasite_frames_break` | A verifier | matched |  |
-| `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_death` | `packages/game/src/m_parasite.ts` | `parasite_frames_death` | A verifier | matched |  |
+| `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_pain1` | `packages/game/src/m_parasite.ts` | `parasite_frames_pain1` | Valide | matched |  |
+| `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_drain` | `packages/game/src/m_parasite.ts` | `parasite_frames_drain` | Valide | matched |  |
+| `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_break` | `packages/game/src/m_parasite.ts` | `parasite_frames_break` | Valide | matched |  |
+| `Quake-2-master/game/m_parasite.c` | declarative:monster-tables | `parasite_frames_death` | `packages/game/src/m_parasite.ts` | `parasite_frames_death` | Valide | matched |  |

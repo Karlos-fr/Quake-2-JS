@@ -55,38 +55,38 @@
 | `Quake-2-master/game/m_insane.c` | global | `insane_frames_stand_pain` | `packages/game/src/m_insane.ts` | `insane_frames_stand_pain` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_insane.c` | table | `insane_frames_stand_pain` | `packages/game/src/m_insane.ts` | `insane_frames_stand_pain` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_insane.c` | global | `insane_move_stand_pain` | `packages/game/src/m_insane.ts` | `insane_move_stand_pain` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_frames_stand_death` | `packages/game/src/m_insane.ts` | `insane_frames_stand_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | table | `insane_frames_stand_death` | `packages/game/src/m_insane.ts` | `insane_frames_stand_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_move_stand_death` | `packages/game/src/m_insane.ts` | `insane_move_stand_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_frames_crawl` | `packages/game/src/m_insane.ts` | `insane_frames_crawl` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | table | `insane_frames_crawl` | `packages/game/src/m_insane.ts` | `insane_frames_crawl` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_move_crawl` | `packages/game/src/m_insane.ts` | `insane_move_crawl` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_move_runcrawl` | `packages/game/src/m_insane.ts` | `insane_move_runcrawl` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_frames_crawl_pain` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | table | `insane_frames_crawl_pain` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_move_crawl_pain` | `packages/game/src/m_insane.ts` | `insane_move_crawl_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_frames_crawl_death` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | table | `insane_frames_crawl_death` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_move_crawl_death` | `packages/game/src/m_insane.ts` | `insane_move_crawl_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_frames_cross` | `packages/game/src/m_insane.ts` | `insane_frames_cross` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | table | `insane_frames_cross` | `packages/game/src/m_insane.ts` | `insane_frames_cross` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_move_cross` | `packages/game/src/m_insane.ts` | `insane_move_cross` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_frames_struggle_cross` | `packages/game/src/m_insane.ts` | `insane_frames_struggle_cross` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | table | `insane_frames_struggle_cross` | `packages/game/src/m_insane.ts` | `insane_frames_struggle_cross` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `insane_move_struggle_cross` | `packages/game/src/m_insane.ts` | `insane_move_struggle_cross` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_cross` | `packages/game/src/m_insane.ts` | `insane_cross` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_walk` | `packages/game/src/m_insane.ts` | `insane_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_run` | `packages/game/src/m_insane.ts` | `insane_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_pain` | `packages/game/src/m_insane.ts` | `insane_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `l` | `packages/game/src/m_insane.ts` | `l` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_onground` | `packages/game/src/m_insane.ts` | `insane_onground` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_checkdown` | `packages/game/src/m_insane.ts` | `insane_checkdown` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_checkup` | `packages/game/src/m_insane.ts` | `insane_checkup` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_stand` | `packages/game/src/m_insane.ts` | `insane_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_dead` | `packages/game/src/m_insane.ts` | `insane_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `insane_die` | `packages/game/src/m_insane.ts` | `insane_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | global | `n` | `packages/game/src/m_insane.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.c` | function | `SP_misc_insane` | `packages/game/src/m_insane.ts` | `SP_misc_insane` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_frames_stand_death` | `packages/game/src/m_insane.ts` | `insane_frames_stand_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | table | `insane_frames_stand_death` | `packages/game/src/m_insane.ts` | `insane_frames_stand_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_move_stand_death` | `packages/game/src/m_insane.ts` | `insane_move_stand_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_frames_crawl` | `packages/game/src/m_insane.ts` | `insane_frames_crawl` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | table | `insane_frames_crawl` | `packages/game/src/m_insane.ts` | `insane_frames_crawl` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_move_crawl` | `packages/game/src/m_insane.ts` | `insane_move_crawl` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_move_runcrawl` | `packages/game/src/m_insane.ts` | `insane_move_runcrawl` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_frames_crawl_pain` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | table | `insane_frames_crawl_pain` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_move_crawl_pain` | `packages/game/src/m_insane.ts` | `insane_move_crawl_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_frames_crawl_death` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | table | `insane_frames_crawl_death` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_move_crawl_death` | `packages/game/src/m_insane.ts` | `insane_move_crawl_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_frames_cross` | `packages/game/src/m_insane.ts` | `insane_frames_cross` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | table | `insane_frames_cross` | `packages/game/src/m_insane.ts` | `insane_frames_cross` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_move_cross` | `packages/game/src/m_insane.ts` | `insane_move_cross` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_frames_struggle_cross` | `packages/game/src/m_insane.ts` | `insane_frames_struggle_cross` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | table | `insane_frames_struggle_cross` | `packages/game/src/m_insane.ts` | `insane_frames_struggle_cross` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `insane_move_struggle_cross` | `packages/game/src/m_insane.ts` | `insane_move_struggle_cross` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | function | `insane_cross` | `packages/game/src/m_insane.ts` | `insane_cross` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | function | `insane_walk` | `packages/game/src/m_insane.ts` | `insane_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | function | `insane_run` | `packages/game/src/m_insane.ts` | `insane_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | function | `insane_pain` | `packages/game/src/m_insane.ts` | `insane_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `l` | `packages/game/src/m_insane.ts` | `l` | Non applicable | A redecouper | Variable locale C de `insane_pain`; aucune entite TS proprietaire. |
+| `Quake-2-master/game/m_insane.c` | function | `insane_onground` | `packages/game/src/m_insane.ts` | `insane_onground` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | function | `insane_checkdown` | `packages/game/src/m_insane.ts` | `insane_checkdown` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | function | `insane_checkup` | `packages/game/src/m_insane.ts` | `insane_checkup` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | function | `insane_stand` | `packages/game/src/m_insane.ts` | `insane_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | function | `insane_dead` | `packages/game/src/m_insane.ts` | `insane_dead` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | function | `insane_die` | `packages/game/src/m_insane.ts` | `insane_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.c` | global | `n` | `packages/game/src/m_insane.ts` | `n` | Non applicable | A redecouper | Variable locale C de `insane_die`; aucune entite TS proprietaire. |
+| `Quake-2-master/game/m_insane.c` | function | `SP_misc_insane` | `packages/game/src/m_insane.ts` | `SP_misc_insane` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_stand_normal` | `packages/game/src/m_insane.ts` | `insane_frames_stand_normal` | Valide | matched |  |
 | `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_stand_insane` | `packages/game/src/m_insane.ts` | `insane_frames_stand_insane` | Valide | matched |  |
 | `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_uptodown` | `packages/game/src/m_insane.ts` | `insane_frames_uptodown` | Valide | matched |  |
@@ -96,9 +96,9 @@
 | `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_walk_normal` | `packages/game/src/m_insane.ts` | `insane_frames_walk_normal` | Valide | matched |  |
 | `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_walk_insane` | `packages/game/src/m_insane.ts` | `insane_frames_walk_insane` | Valide | matched |  |
 | `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_stand_pain` | `packages/game/src/m_insane.ts` | `insane_frames_stand_pain` | Valide | matched |  |
-| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_stand_death` | `packages/game/src/m_insane.ts` | `insane_frames_stand_death` | A verifier | matched |  |
-| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_crawl` | `packages/game/src/m_insane.ts` | `insane_frames_crawl` | A verifier | matched |  |
-| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_crawl_pain` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_pain` | A verifier | matched |  |
-| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_crawl_death` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_death` | A verifier | matched |  |
-| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_cross` | `packages/game/src/m_insane.ts` | `insane_frames_cross` | A verifier | matched |  |
-| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_struggle_cross` | `packages/game/src/m_insane.ts` | `insane_frames_struggle_cross` | A verifier | matched |  |
+| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_stand_death` | `packages/game/src/m_insane.ts` | `insane_frames_stand_death` | Valide | matched |  |
+| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_crawl` | `packages/game/src/m_insane.ts` | `insane_frames_crawl` | Valide | matched |  |
+| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_crawl_pain` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_pain` | Valide | matched |  |
+| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_crawl_death` | `packages/game/src/m_insane.ts` | `insane_frames_crawl_death` | Valide | matched |  |
+| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_cross` | `packages/game/src/m_insane.ts` | `insane_frames_cross` | Valide | matched |  |
+| `Quake-2-master/game/m_insane.c` | declarative:monster-tables | `insane_frames_struggle_cross` | `packages/game/src/m_insane.ts` | `insane_frames_struggle_cross` | Valide | matched |  |

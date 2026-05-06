@@ -7,6 +7,44 @@
 
 ## Dernier lot valide
 
+Lot attaque/saut elargi:
+
+- bloc melee/attack: `mutant_hit_left`, `mutant_hit_right`, `mutant_check_refire`, `mutant_frames_attack`, `mutant_move_attack`, `mutant_melee`;
+- bloc jump/checkattack coherent: `mutant_jump_touch`, `mutant_jump_takeoff`, `mutant_check_landing`, `mutant_frames_jump`, `mutant_move_jump`, `mutant_jump`, `mutant_check_melee`, `mutant_check_jump`, `mutant_checkattack`;
+- lignes declaratives correspondantes pour `mutant_frames_attack` et `mutant_frames_jump`.
+
+Validation:
+
+- comparaison C vs TS effectuee pour les vecteurs d'attaque melee, les degats aleatoires `rand() % 5`, les sons hit/swing, la branche refire nightmare/melee, les distances/thinkfunc/endfunc des moves attack/jump, les etats `AS_MELEE`/`AS_MISSILE`, `AI_DUCKED`, `attack_finished`, `touch`, `groundentity`, `nextframe`, et le degat d'impact de saut;
+- commentaires d'en-tete ajoutes/verifies pour les fonctions portees du lot dans `packages/game/src/m_mutant.ts`;
+- runtime verifie: `SP_monster_mutant` branche `monsterinfo.attack = mutant_jump`, `monsterinfo.melee = mutant_melee`, `monsterinfo.checkattack = mutant_checkattack`; `M_MoveFrame` atteint les thinkfunc `mutant_hit_left`, `mutant_hit_right`, `mutant_check_refire`, `mutant_jump_takeoff` et `mutant_check_landing`; `g_save.ts` retrouve les callbacks/moves exportes;
+- `apps/web` verifie via le flux full-game: le navigateur declenche le runtime porte et consomme snapshots/sons sans logique parallele mutant;
+- `renderer-three` verifie via le flux full-game/Three: les sorties visibles attendues du lot sont modele/frames/oldframe du mutant, sons et effet gameplay du saut via snapshots client; elles sont consommees par les adapters refresh/MD2 generiques, sans branche specifique mutant attendue.
+
+Artefacts matrice:
+
+- `damage` marque `Non applicable`: variable locale de `mutant_jump_touch`, pas une entite proprietaire.
+- `distance` marque `Non applicable`: variable locale de `mutant_check_jump`, pas une entite proprietaire.
+
+## Tests lances
+
+- `npm run verify:m-mutant`
+- `npm run verify:m-mutant:source-parity`
+- `npm run verify:m-mutant:header`
+- `npm run verify:full-game:render-source`
+- `npm run verify:full-game:three-renderer`
+- `npm run verify:web-render-order`
+- `npm run typecheck`
+- `git diff --check`
+
+## Prochain lot recommande
+
+Continuer avec le bloc pain: `mutant_frames_pain1`, `mutant_move_pain1`, `mutant_frames_pain2`, `mutant_move_pain2`, `mutant_frames_pain3`, `mutant_move_pain3`, `mutant_pain`, puis la variable locale `r`.
+
+## Historique
+
+### Lot initial
+
 Lot initial elargi:
 
 - sons/precache initiaux `sound_swing` a `sound_thud` / `SOUND_*`;
@@ -33,7 +71,7 @@ Artefacts matrice:
 - `npm run verify:m-mutant:header`
 - `npm run typecheck`
 
-## Prochain lot recommande
+### Prochain lot recommande precedent
 
 Continuer avec le bloc melee/attack: `mutant_hit_left`, `mutant_hit_right`, `mutant_check_refire`, `mutant_frames_attack`, `mutant_move_attack`, `mutant_melee`, puis seulement inclure le debut du jump si le lot reste coherent.
 

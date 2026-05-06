@@ -491,11 +491,11 @@
 | `Quake-2-master/game/g_local.h` | global | `game_helpchanged` | `packages/game/src/g_local.ts` | `GameClientPersistant.game_helpchanged` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `helpchanged` | `packages/game/src/g_local.ts` | `GameClientPersistant.helpchanged` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `spectator` | `packages/game/src/g_local.ts` | `GameClientPersistant.spectator` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | struct | `client_respawn_t` | `packages/game/src/g_local.ts` | `client_respawn_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `enterframe` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `score` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `cmd_angles` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `spectator` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | struct | `client_respawn_t` | `packages/game/src/g_local.ts` | `client_respawn_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `enterframe` | `packages/game/src/g_local.ts` | `GameClientRespawn.enterframe` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `score` | `packages/game/src/g_local.ts` | `GameClientRespawn.score` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `cmd_angles` | `packages/game/src/g_local.ts` | `GameClientRespawn.cmd_angles` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `spectator` | `packages/game/src/g_local.ts` | `GameClientRespawn.spectator` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | struct | `gclient_s` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `ps` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `ping` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

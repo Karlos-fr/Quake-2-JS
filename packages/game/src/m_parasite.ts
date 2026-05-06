@@ -543,6 +543,15 @@ export function parasite_pain(
   self.monsterinfo.currentmove = parasite_move_pain1;
 }
 
+/**
+ * Original name: parasite_drain_attack_ok
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the original parasite tongue distance and pitch acceptance checks.
+ */
 export function parasite_drain_attack_ok(start: vec3_t, end: vec3_t): boolean {
   const dir = subtractVec3(start, end);
   if (vec3Length(dir) > 256) {
@@ -560,6 +569,18 @@ export function parasite_drain_attack_ok(start: vec3_t, end: vec3_t): boolean {
   return true;
 }
 
+/**
+ * Original name: parasite_drain_attack
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Projects the attack start point, validates enemy aim points, traces line of sight, emits the parasite temp entity and applies drain damage.
+ *
+ * Porting notes:
+ * - Uses the structured temp-entity queue instead of direct `gi.Write*`/`gi.multicast` calls.
+ */
 export function parasite_drain_attack(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
@@ -642,10 +663,28 @@ export const parasite_move_break: GameMonsterMove = {
   endfunc: parasite_start_run
 };
 
+/**
+ * Original name: parasite_attack
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the active parasite attack move; the random break branch remains source-commented in the original.
+ */
 export function parasite_attack(self: GameEntity): void {
   self.monsterinfo.currentmove = parasite_move_drain;
 }
 
+/**
+ * Original name: parasite_dead
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Shrinks the corpse bounds, switches to toss movement, marks the entity as a dead monster and relinks it.
+ */
 export function parasite_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -16, -16, -24);
   setVec3(self.maxs, 16, 16, -8);
@@ -663,6 +702,15 @@ export const parasite_move_death: GameMonsterMove = {
   endfunc: parasite_dead
 };
 
+/**
+ * Original name: parasite_die
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves gib death, repeat-death guard and regular death transition behavior.
+ */
 export function parasite_die(
   self: GameEntity,
   _inflictor: GameEntity | null,
@@ -693,6 +741,15 @@ export function parasite_die(
   self.monsterinfo.currentmove = parasite_move_death;
 }
 
+/**
+ * Original name: SP_monster_parasite
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Precaches parasite assets, initializes bbox/health/callbacks/current move and starts the walking monster runtime.
+ */
 export function SP_monster_parasite(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
     G_FreeEdict(runtime, self);

@@ -13,6 +13,8 @@ import { strict as assert } from "node:assert";
 
 import { EF_BLASTER, EF_HYPERBLASTER, temp_event_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
+  AI_DUCKED,
+  AI_HOLD_FRAME,
   AI_MEDIC,
   AI_RESURRECTING,
   DEAD_DEAD,
@@ -47,6 +49,9 @@ import {
   medic_dead,
   medic_die,
   medic_dodge,
+  medic_duck_down,
+  medic_duck_hold,
+  medic_duck_up,
   medic_fire_blaster,
   medic_idle,
   medic_continue,
@@ -75,6 +80,7 @@ function main(): void {
   verifyBlasterAttack();
   verifyCableAttackEventsAndResurrectionFlags();
   verifyPainAndDeathBranches();
+  verifyDuckAndDodgeBranches();
   verifyRandomMacroDrivenBranches();
   verifyDeathmatchSpawnFreesEntity();
 
@@ -236,8 +242,65 @@ function verifyPainAndDeathBranches(): void {
   assert.equal(medic.monsterinfo.currentmove, medic_move_death);
 
   medic_dead(medic, runtime);
+  assert.deepEqual(medic.mins, [-16, -16, -24]);
+  assert.deepEqual(medic.maxs, [16, 16, -8]);
   assert.equal(medic.movetype, MOVETYPE_TOSS);
   assert.equal((medic.svflags & SVF_DEADMONSTER) !== 0, true);
+  assert.equal(medic.nextthink, 0);
+
+  const gibRuntime = createHarnessRuntime();
+  const gibMedic = createMedic(gibRuntime, 1);
+  gibMedic.health = -130;
+  gibMedic.gib_health = -130;
+
+  medic_die(gibMedic, null, null, 50, gibRuntime);
+
+  assert.equal(drainGameSoundEvents(gibRuntime).at(-1)?.soundPath, "misc/udeath.wav");
+  assert.equal(gibMedic.deadflag, DEAD_DEAD);
+  assert.equal(gibMedic.model, "models/objects/gibs/head2/tris.md2");
+  assert.equal(gibRuntime.entities.filter((entity) => entity.model === "models/objects/gibs/bone/tris.md2").length, 2);
+  assert.equal(gibRuntime.entities.filter((entity) => entity.model === "models/objects/gibs/sm_meat/tris.md2").length, 4);
+
+  const repeatedRuntime = createHarnessRuntime();
+  const repeatedDeath = createMedic(repeatedRuntime, 1);
+  repeatedDeath.deadflag = DEAD_DEAD;
+  repeatedDeath.monsterinfo.currentmove = null;
+  medic_die(repeatedDeath, null, null, 10, repeatedRuntime);
+  assert.equal(repeatedDeath.monsterinfo.currentmove, null);
+}
+
+function verifyDuckAndDodgeBranches(): void {
+  const runtime = createHarnessRuntime();
+  const medic = createMedic(runtime, 1);
+  const attacker = createRuntimeEntity(2, {}, runtime);
+  SP_monster_medic(medic, runtime);
+
+  medic_duck_down(medic, runtime);
+  assert.equal(medic.monsterinfo.aiflags & AI_DUCKED, AI_DUCKED);
+  assert.equal(medic.maxs[2], 0);
+  assert.equal(medic.takedamage, damage_t.DAMAGE_YES);
+  assert.equal(medic.monsterinfo.pausetime, runtime.time + 1);
+
+  medic_duck_down(medic, runtime);
+  assert.equal(medic.maxs[2], 0);
+
+  medic_duck_hold(medic, runtime);
+  assert.equal(medic.monsterinfo.aiflags & AI_HOLD_FRAME, AI_HOLD_FRAME);
+
+  runtime.time = medic.monsterinfo.pausetime;
+  medic_duck_hold(medic, runtime);
+  assert.equal(medic.monsterinfo.aiflags & AI_HOLD_FRAME, 0);
+
+  medic_duck_up(medic, runtime);
+  assert.equal(medic.monsterinfo.aiflags & AI_DUCKED, 0);
+  assert.equal(medic.maxs[2], 32);
+  assert.equal(medic.takedamage, damage_t.DAMAGE_AIM);
+
+  withMathRandom([0.26], () => medic_dodge(medic, attacker, 0));
+  assert.notEqual(medic.monsterinfo.currentmove, medic_move_duck);
+  withMathRandom([0.249], () => medic_dodge(medic, attacker, 0));
+  assert.equal(medic.enemy, attacker);
+  assert.equal(medic.monsterinfo.currentmove, medic_move_duck);
 }
 
 function verifyRandomMacroDrivenBranches(): void {
