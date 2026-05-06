@@ -9,6 +9,15 @@
 - Tests lances: `npm run verify:gl-image` OK; `npm run typecheck` OK.
 - Etat matrice apres session: 86 entrees, 37 `Valide`, 1 `Non applicable`, 48 `A verifier`.
 
+## Session 2026-05-06 - suite
+
+- Lot traite: loaders `LoadPCX` et `LoadTGA`, `R_FloodFillSkin`, constantes/macros flood fill, conversion/upload image (`GL_ResampleTexture`, `GL_LightScaleTexture`, `GL_MipMap`, `GL_BuildPalettedTexture`, `GL_Upload32`, `GL_Upload8`), gestion image (`GL_FreeUnusedImages`, `Draw_GetPalette`, `GL_InitImages`, `GL_ShutdownImages`) et faux positifs locaux adjacents.
+- Checklist appliquee: comparaison C `ref_gl/gl_image.c` vs TS `packages/renderer-three/src/gl_image.ts` et parseurs `packages/formats/src/pcx.ts` / `packages/formats/src/tga.ts`; ownership confirme dans `renderer-three` avec parsing PCX/TGA partage dans `packages/formats`; doublons non trouves; en-tetes de fonctions portees enrichis; branchement runtime verifie via `ref-gl-host`, `gl_rmisc`, `gl_draw`, `gl_warp`, `gl-model-loader`; `apps/web` verifie via `createGlImageRuntime` et `loadFile` dans `apps/web/src/main.ts` et `apps/web/src/full-game.ts`; `renderer-three` consomme les pixels via `three-gl-draw-adapter`, uploads texture, scrap, skins, sky, WAL/PCX/TGA.
+- Decisions: les lignes generees depuis variables locales, labels ou champs deja couverts par `TargaHeader` sont marquees `Non applicable`; `_TargaHeader` est valide via `packages/formats/src/tga.ts`.
+- Corrections: en-tetes du bloc image enrichis dans `packages/renderer-three/src/gl_image.ts`; preuves ciblees ajoutees dans `scripts/verify/quake2-gl-image.ts` pour PCX, TGA 24 bits, TGA RLE, upload paletted sky et erreur de chargement PCX.
+- Tests lances: `npm run verify:gl-image` OK; `npm run verify:three-gl-draw-adapter` OK; `npm run verify:ref-gl-host` OK; `npm run verify:gl-rmisc` OK; `npm run verify:gl-draw` OK; `npm run verify:gl-warp` OK; `npm run verify:gl-model:phase9` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+- Etat matrice apres session: 86 entrees, 55 `Valide`, 31 `Non applicable`, aucun reliquat `A verifier`.
+
 ## Prochain lot recommande
 
-Continuer avec les loaders image `LoadPCX` et `LoadTGA`, puis `R_FloodFillSkin` si le lot reste coherent. Verifier explicitement les parseurs `packages/formats`, les chemins `loadFile` web, et la consommation renderer des pixels charges.
+Aucun lot restant dans `ref_gl/gl_image.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.

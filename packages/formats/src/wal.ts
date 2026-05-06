@@ -18,13 +18,13 @@
 
 import { getLittleLong } from "../../memory/src/binary-io.js";
 
-const MIPLEVELS = 4;
+export const MIPLEVELS = 4;
 const MIPTEX_NAME_SIZE = 32;
 const MIPTEX_HEADER_SIZE = 100;
 const MIP_DIVISORS = [1, 2, 4, 8] as const;
 
 /**
- * Original name: miptex_t
+ * Original name: miptex_s / miptex_t
  * Source: qcommon/qfiles.h
  * Category: Ported
  * Fidelity level: Close
@@ -33,6 +33,7 @@ const MIP_DIVISORS = [1, 2, 4, 8] as const;
  * - Represents the metadata header of a Quake II WAL texture.
  *
  * Porting notes:
+ * - The C source declares `struct miptex_s` and aliases it as `miptex_t`; this port exposes the typedef name.
  * - Expands the offset array to a fixed tuple for easier TypeScript use.
  */
 export interface miptex_t {

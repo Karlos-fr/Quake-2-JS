@@ -47,8 +47,8 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WritePos` | `packages/qcommon/src/messages.ts` | `MSG_WritePos` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:net-chan`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`; en-tete/verif runtime web renderer OK. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteAngle` | `packages/qcommon/src/messages.ts` | `MSG_WriteAngle` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:net-chan`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`; en-tete/verif runtime web renderer OK. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteAngle16` | `packages/qcommon/src/messages.ts` | `MSG_WriteAngle16` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:net-chan`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`; en-tete/verif runtime web renderer OK. |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaUsercmd` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDeltaEntity` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaEntity` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaUsercmd` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDeltaEntity` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaEntity` | Valide | A redecouper | Correction `protocol.ts`: `U_*` realignes sur le header C a partir de `U_EFFECTS8`. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDir` | `packages/qcommon/src/messages.ts` | `MSG_WriteDir` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:net-chan`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`; en-tete/verif runtime web renderer OK. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_BeginReading` | `packages/memory/src/sizebuf.ts` | `MSG_BeginReading` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadChar` | `packages/qcommon/src/messages.ts` | `MSG_ReadChar` | A verifier | A redecouper |  |
@@ -108,14 +108,14 @@
 | `Quake-2-master/qcommon/qcommon.h` | macro | `PS_WEAPONINDEX` | `packages/qcommon/src/protocol.ts` | `PS_WEAPONINDEX` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `PS_WEAPONFRAME` | `packages/qcommon/src/protocol.ts` | `PS_WEAPONFRAME` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `PS_RDFLAGS` | `packages/qcommon/src/protocol.ts` | `PS_RDFLAGS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_ANGLE1` | `packages/qcommon/src/qcommon.ts` | `CM_ANGLE1` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_ANGLE2` | `packages/qcommon/src/qcommon.ts` | `CM_ANGLE2` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_ANGLE3` | `packages/qcommon/src/qcommon.ts` | `CM_ANGLE3` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_FORWARD` | `packages/qcommon/src/qcommon.ts` | `CM_FORWARD` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_SIDE` | `packages/qcommon/src/qcommon.ts` | `CM_SIDE` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_UP` | `packages/qcommon/src/qcommon.ts` | `CM_UP` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_BUTTONS` | `packages/qcommon/src/qcommon.ts` | `CM_BUTTONS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_IMPULSE` | `packages/qcommon/src/qcommon.ts` | `CM_IMPULSE` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_ANGLE1` | `packages/qcommon/src/qcommon.ts` | `CM_ANGLE1` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_ANGLE2` | `packages/qcommon/src/qcommon.ts` | `CM_ANGLE2` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_ANGLE3` | `packages/qcommon/src/qcommon.ts` | `CM_ANGLE3` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_FORWARD` | `packages/qcommon/src/qcommon.ts` | `CM_FORWARD` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_SIDE` | `packages/qcommon/src/qcommon.ts` | `CM_SIDE` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_UP` | `packages/qcommon/src/qcommon.ts` | `CM_UP` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_BUTTONS` | `packages/qcommon/src/qcommon.ts` | `CM_BUTTONS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CM_IMPULSE` | `packages/qcommon/src/qcommon.ts` | `CM_IMPULSE` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `SND_VOLUME` | `packages/qcommon/src/protocol.ts` | `SND_VOLUME` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `SND_ATTENUATION` | `packages/qcommon/src/protocol.ts` | `SND_ATTENUATION` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `SND_POS` | `packages/qcommon/src/protocol.ts` | `SND_POS` | A verifier | A redecouper |  |
@@ -123,33 +123,33 @@
 | `Quake-2-master/qcommon/qcommon.h` | macro | `SND_OFFSET` | `packages/qcommon/src/protocol.ts` | `SND_OFFSET` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `DEFAULT_SOUND_PACKET_VOLUME` | `packages/qcommon/src/protocol.ts` | `DEFAULT_SOUND_PACKET_VOLUME` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `DEFAULT_SOUND_PACKET_ATTENUATION` | `packages/qcommon/src/protocol.ts` | `DEFAULT_SOUND_PACKET_ATTENUATION` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ORIGIN1` | `packages/qcommon/src/protocol.ts` | `U_ORIGIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ORIGIN2` | `packages/qcommon/src/protocol.ts` | `U_ORIGIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ANGLE2` | `packages/qcommon/src/protocol.ts` | `U_ANGLE2` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ANGLE3` | `packages/qcommon/src/protocol.ts` | `U_ANGLE3` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_FRAME8` | `packages/qcommon/src/protocol.ts` | `U_FRAME8` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_EVENT` | `packages/qcommon/src/protocol.ts` | `U_EVENT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_REMOVE` | `packages/qcommon/src/protocol.ts` | `U_REMOVE` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MOREBITS1` | `packages/qcommon/src/protocol.ts` | `U_MOREBITS1` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_NUMBER16` | `packages/qcommon/src/protocol.ts` | `U_NUMBER16` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ORIGIN3` | `packages/qcommon/src/protocol.ts` | `U_ORIGIN3` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ANGLE1` | `packages/qcommon/src/protocol.ts` | `U_ANGLE1` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MODEL` | `packages/qcommon/src/protocol.ts` | `U_MODEL` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_RENDERFX8` | `packages/qcommon/src/protocol.ts` | `U_RENDERFX8` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_EFFECTS8` | `packages/qcommon/src/protocol.ts` | `U_EFFECTS8` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MOREBITS2` | `packages/qcommon/src/protocol.ts` | `U_MOREBITS2` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_SKIN8` | `packages/qcommon/src/protocol.ts` | `U_SKIN8` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_FRAME16` | `packages/qcommon/src/protocol.ts` | `U_FRAME16` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_RENDERFX16` | `packages/qcommon/src/protocol.ts` | `U_RENDERFX16` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_EFFECTS16` | `packages/qcommon/src/protocol.ts` | `U_EFFECTS16` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MODEL2` | `packages/qcommon/src/protocol.ts` | `U_MODEL2` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MODEL3` | `packages/qcommon/src/protocol.ts` | `U_MODEL3` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MODEL4` | `packages/qcommon/src/protocol.ts` | `U_MODEL4` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MOREBITS3` | `packages/qcommon/src/protocol.ts` | `U_MOREBITS3` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_OLDORIGIN` | `packages/qcommon/src/protocol.ts` | `U_OLDORIGIN` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_SKIN16` | `packages/qcommon/src/protocol.ts` | `U_SKIN16` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_SOUND` | `packages/qcommon/src/protocol.ts` | `U_SOUND` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `U_SOLID` | `packages/qcommon/src/protocol.ts` | `U_SOLID` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ORIGIN1` | `packages/qcommon/src/protocol.ts` | `U_ORIGIN1` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ORIGIN2` | `packages/qcommon/src/protocol.ts` | `U_ORIGIN2` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ANGLE2` | `packages/qcommon/src/protocol.ts` | `U_ANGLE2` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ANGLE3` | `packages/qcommon/src/protocol.ts` | `U_ANGLE3` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_FRAME8` | `packages/qcommon/src/protocol.ts` | `U_FRAME8` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_EVENT` | `packages/qcommon/src/protocol.ts` | `U_EVENT` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_REMOVE` | `packages/qcommon/src/protocol.ts` | `U_REMOVE` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MOREBITS1` | `packages/qcommon/src/protocol.ts` | `U_MOREBITS1` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_NUMBER16` | `packages/qcommon/src/protocol.ts` | `U_NUMBER16` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ORIGIN3` | `packages/qcommon/src/protocol.ts` | `U_ORIGIN3` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_ANGLE1` | `packages/qcommon/src/protocol.ts` | `U_ANGLE1` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MODEL` | `packages/qcommon/src/protocol.ts` | `U_MODEL` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_RENDERFX8` | `packages/qcommon/src/protocol.ts` | `U_RENDERFX8` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_EFFECTS8` | `packages/qcommon/src/protocol.ts` | `U_EFFECTS8` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MOREBITS2` | `packages/qcommon/src/protocol.ts` | `U_MOREBITS2` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_SKIN8` | `packages/qcommon/src/protocol.ts` | `U_SKIN8` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_FRAME16` | `packages/qcommon/src/protocol.ts` | `U_FRAME16` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_RENDERFX16` | `packages/qcommon/src/protocol.ts` | `U_RENDERFX16` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_EFFECTS16` | `packages/qcommon/src/protocol.ts` | `U_EFFECTS16` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MODEL2` | `packages/qcommon/src/protocol.ts` | `U_MODEL2` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MODEL3` | `packages/qcommon/src/protocol.ts` | `U_MODEL3` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MODEL4` | `packages/qcommon/src/protocol.ts` | `U_MODEL4` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_MOREBITS3` | `packages/qcommon/src/protocol.ts` | `U_MOREBITS3` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_OLDORIGIN` | `packages/qcommon/src/protocol.ts` | `U_OLDORIGIN` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_SKIN16` | `packages/qcommon/src/protocol.ts` | `U_SKIN16` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_SOUND` | `packages/qcommon/src/protocol.ts` | `U_SOUND` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `U_SOLID` | `packages/qcommon/src/protocol.ts` | `U_SOLID` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_NOW` | `packages/qcommon/src/cmd.ts` | `EXEC_NOW` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_INSERT` | `packages/qcommon/src/cmd.ts` | `EXEC_INSERT` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_APPEND` | `packages/qcommon/src/cmd.ts` | `EXEC_APPEND` | A verifier | A redecouper |  |

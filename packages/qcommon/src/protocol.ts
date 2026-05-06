@@ -99,20 +99,20 @@ export const U_ORIGIN3 = 1 << 9;
 export const U_ANGLE1 = 1 << 10;
 export const U_MODEL = 1 << 11;
 export const U_RENDERFX8 = 1 << 12;
-export const U_EFFECTS8 = 1 << 13;
-export const U_MOREBITS2 = 1 << 14;
-export const U_SKIN8 = 1 << 15;
-export const U_FRAME16 = 1 << 16;
-export const U_RENDERFX16 = 1 << 17;
-export const U_EFFECTS16 = 1 << 18;
-export const U_MODEL2 = 1 << 19;
-export const U_MODEL3 = 1 << 20;
-export const U_MODEL4 = 1 << 21;
-export const U_MOREBITS3 = 1 << 22;
-export const U_OLDORIGIN = 1 << 23;
-export const U_SKIN16 = 1 << 24;
-export const U_SOUND = 1 << 25;
-export const U_SOLID = 1 << 26;
+export const U_EFFECTS8 = 1 << 14;
+export const U_MOREBITS2 = 1 << 15;
+export const U_SKIN8 = 1 << 16;
+export const U_FRAME16 = 1 << 17;
+export const U_RENDERFX16 = 1 << 18;
+export const U_EFFECTS16 = 1 << 19;
+export const U_MODEL2 = 1 << 20;
+export const U_MODEL3 = 1 << 21;
+export const U_MODEL4 = 1 << 22;
+export const U_MOREBITS3 = 1 << 23;
+export const U_OLDORIGIN = 1 << 24;
+export const U_SKIN16 = 1 << 25;
+export const U_SOUND = 1 << 26;
+export const U_SOLID = 1 << 27;
 
 /**
  * Category: New

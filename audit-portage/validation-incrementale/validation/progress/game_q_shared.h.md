@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: bloc visible `entity_state_t->renderfx` complet `RF_*`, puis bloc protocole/configstrings `CS_*` / `MAX_CONFIGSTRINGS`.
+- Entites validees: `RF_MINLIGHT`, `RF_VIEWERMODEL`, `RF_WEAPONMODEL`, `RF_FULLBRIGHT`, `RF_DEPTHHACK`, `RF_TRANSLUCENT`, `RF_FRAMELERP`, `RF_BEAM`, `RF_CUSTOMSKIN`, `RF_GLOW`, `RF_SHELL_RED`, `RF_SHELL_GREEN`, `RF_SHELL_BLUE`, `RF_IR_VISIBLE`, `RF_SHELL_DOUBLE`, `RF_SHELL_HALF_DAM`, `RF_USE_DISGUISE`, `CS_NAME`, `CS_CDTRACK`, `CS_SKY`, `CS_SKYAXIS`, `CS_SKYROTATE`, `CS_STATUSBAR`, `CS_AIRACCEL`, `CS_MAXCLIENTS`, `CS_MAPCHECKSUM`, `CS_MODELS`, `CS_SOUNDS`, `CS_IMAGES`, `CS_LIGHTS`, `CS_ITEMS`, `CS_PLAYERSKINS`, `CS_GENERAL`, `MAX_CONFIGSTRINGS`.
+- Ownership: constantes proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportees via `packages/qcommon/src/index.ts`; aucun doublon proprietaire ni renommage detecte pour le lot.
+- Preuves: comparaison numerique C/H vs TS ajoutee dans `scripts/verify/quake2-q-shared-header.ts`; runtime verifie via delta entity `renderfx`, snapshots serveur/client, `CL_BuildPacketEntitySnapshots`, `CL_BuildRefreshFrame`, temp entities et configstrings de modele/son/image/light/items/skins.
+- Commentaires d'en-tete: non applicable, lot compose de macros/constantes sans fonction portee.
 - 2026-05-06: bloc visible complet `entity_state_t->effects`, de `EF_ROTATE` a `EF_TRACKERTRAIL`.
 - Entites validees: `EF_ROTATE`, `EF_GIB`, `EF_BLASTER`, `EF_ROCKET`, `EF_GRENADE`, `EF_HYPERBLASTER`, `EF_BFG`, `EF_COLOR_SHELL`, `EF_POWERSCREEN`, `EF_ANIM01`, `EF_ANIM23`, `EF_ANIM_ALL`, `EF_ANIM_ALLFAST`, `EF_FLIES`, `EF_QUAD`, `EF_PENT`, `EF_TELEPORTER`, `EF_FLAG1`, `EF_FLAG2`, `EF_IONRIPPER`, `EF_GREENGIB`, `EF_BLUEHYPERBLASTER`, `EF_SPINNINGLIGHTS`, `EF_PLASMA`, `EF_TRAP`, `EF_TRACKER`, `EF_DOUBLE`, `EF_SPHERETRANS`, `EF_TAGTRAIL`, `EF_HALF_DAMAGE`, `EF_TRACKERTRAIL`.
 - Ownership: constantes proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportees via `packages/qcommon/src/index.ts`; aucun doublon proprietaire ou renommage detecte.
@@ -62,6 +67,7 @@
 
 ## Corrections
 
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `RF_*` de `RF_MINLIGHT` a `RF_USE_DISGUISE`, puis pour `CS_*` et `MAX_CONFIGSTRINGS`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `EF_*` de `EF_ROTATE` a `EF_TRACKERTRAIL`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `trace_t`, `pmtype_t`, `PMF_*`, `pmove_state_t`, `BUTTON_*`, `usercmd_t`, `MAXTOUCH` et `pmove_t`; la matrice a ete completee pour les champs directs absents du decoupage genere (`plane`, `surface`, `ent`, mouvements directionnels, `s`, `touchents`, bbox, `groundentity`, callbacks).
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour la forme `cmodel_t`, `csurface_t` et `mapsurface_t`.
@@ -84,6 +90,14 @@
 
 ## Tests de reference
 
+- `npm run verify:q-shared:header` OK pour `RF_*` et `CS_*`/`MAX_CONFIGSTRINGS`.
+- `npm run verify:qcommon:header` OK pour l'encodage delta `renderfx`.
+- `npm run verify:server:ents` OK pour les snapshots serveur et le cas `RF_BEAM`.
+- `npm run verify:cl-parse` OK pour le parsing client des deltas `renderfx`.
+- `npm run verify:refresh-entity:weapon` OK pour `RF_MINLIGHT`/`RF_DEPTHHACK`/`RF_WEAPONMODEL` et transparence alias.
+- `npm run verify:refresh-entity:alias-flags` OK pour shells et `RF_IR_VISIBLE`.
+- `npm run verify:entities:phase8`, `verify:entities:phase9`, `verify:g-items`, `verify:p-view`, `verify:beam-sync`, `verify:gl-mesh`, `verify:gl-rmain`, `verify:refresh-entity:sprite`, `verify:full-game:render-source`, `verify:full-game:server-snapshots`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:cl-fx`, `verify:local-gameplay-sync` et `typecheck` OK pour l'integration runtime/web/renderer du lot.
+- `npm run verify:entities:phase5` a ete lance mais non retenu comme preuve: echec preexistant/probabiliste sur `EF_TRAP light intensity` (`101 != 150`) lie a `rand()%100 + 100`, hors lot `RF_*`/`CS_*`.
 - `npm run verify:q-shared:header` OK pour le bloc `EF_*`.
 - `npm run verify:cl-fx` OK.
 - `npm run verify:local-gameplay-sync` OK.
@@ -155,6 +169,14 @@
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `RF_*` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; ces flags sont des sorties visibles de `entity_state_t.renderfx`, transportees par delta entity (`MSG_WriteDeltaEntity`/`CL_ParseDelta`) et par les snapshots serveur/client.
+- Runtime: integration attendue et presente. Les producteurs gameplay couvrent items (`RF_GLOW`), joueur/power armor/shells, lasers/beams, monstres/frames, arme vue (`RF_MINLIGHT | RF_DEPTHHACK | RF_WEAPONMODEL`) et cas Rogue (`RF_IR_VISIBLE`, `RF_USE_DISGUISE`, `RF_SHELL_DOUBLE`, `RF_SHELL_HALF_DAM`); les consommateurs client couvrent interpolation, beams, alpha, viewer model, custom player/weapon skin et disguise.
+- `apps/web`: integration attendue et presente via les flux full-game/server-host/local-gameplay qui synchronisent `entity_state_t.renderfx`, construisent les `ClientRefreshFrame` et exposent les brush snapshots avec `flags: entity.renderfx`; aucune logique parallele masquante detectee.
+- `renderer-three`: sortie visible attendue et presente. Les modeles/frames/skins, view weapon/camera root, alpha/depth, beams, shell colors, glow, minlight/fullbright, IR visible, sprite/brush translucence et shadows sont consommes via `refresh-entity-sync`, `gl_mesh`, `gl_rmain`, `three-beam-sync` et le render loop web; aucun manque de branchement renderer detecte pour ce lot.
+- Le bloc `CS_*`/`MAX_CONFIGSTRINGS` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par l'entrypoint qcommon; il structure le protocole configstring pour noms, sky, statusbar, airaccelerate, maxclients, checksum, modeles, sons, images, lights, items, skins joueurs et general.
+- Runtime: integration attendue et presente dans l'initialisation serveur, les mises a jour configstrings, le parsing client et la resolution des ressources runtime.
+- `apps/web`: integration attendue et presente via `full-game-render-source`, full-game/server-host et les adapters assets qui lisent les configstrings client au lieu de reconstituer un protocole parallele.
+- `renderer-three`: sortie visible attendue et presente pour modeles, images/skins, sky, lights et scene; `CS_MODELS` nourrit les entites MD2/SP2/inline brush, `CS_IMAGES`/skins et les chemins web alimentent les textures, `CS_LIGHTS` et sky sont consommes par le rendu. Aucun manque de branchement renderer detecte pour ce lot.
 - Le bloc `EF_*` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; ces flags sont des sorties visibles de `entity_state_t.effects` transportees par snapshots serveur/client et par le pont local gameplay.
 - Runtime: integration attendue et presente. Les producteurs gameplay incluent items, armes, monstres, joueur, missiles, gibs, power armor/shells et temp-like entity states; les consommateurs client couvrent rotation/animation (`CL_BuildPacketEntitySnapshots`), trails/particules (`CL_ExecutePacketEntityEffects`), lights/shells/powerscreen (`CL_BuildRefreshFrame`) et events persistants comme `EF_TELEPORTER`.
 - `apps/web`: integration attendue et presente via les flux full-game/server-host/local-gameplay qui synchronisent `entity_state_t.effects` vers le runtime client, appliquent les effets d'action et exposent les `ClientRefreshFrame` au rendu sans logique parallele masquante.
@@ -211,4 +233,4 @@
 
 ## Prochain lot recommande
 
-- Traiter le prochain bloc visible `entity_state_t->renderfx`, en commencant par `RF_MINLIGHT`, `RF_VIEWERMODEL`, `RF_WEAPONMODEL`, `RF_FULLBRIGHT`, `RF_DEPTHHACK`, `RF_TRANSLUCENT`, puis la suite `RF_*` coherente avec le runtime client/renderer-three.
+- Traiter le bloc `RDF_*` (`RDF_UNDERWATER`, `RDF_NOWORLDMODEL`, `RDF_IRGOGGLES`, `RDF_UVGOGGLES`), puis poursuivre avec le bloc muzzle flash `MZ_*` si le lot reste coherent.

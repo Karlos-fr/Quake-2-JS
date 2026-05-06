@@ -39,6 +39,7 @@ export {
   DVIS_PVS,
   HEADER_LUMPS,
   IDBSPHEADER,
+  LAST_VISIBLE_CONTENTS,
   LUMP_AREAPORTALS,
   LUMP_AREAS,
   LUMP_BRUSHES,
@@ -129,7 +130,7 @@ export {
   parseMd2
 } from "./md2.js";
 export { IDSPRITEHEADER, SPRITE_VERSION, parseSp2 } from "./sp2.js";
-export { parseWal } from "./wal.js";
+export { MIPLEVELS, parseWal } from "./wal.js";
 
 export type {
   BspMap,

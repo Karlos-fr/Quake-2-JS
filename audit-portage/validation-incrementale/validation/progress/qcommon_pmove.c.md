@@ -220,3 +220,44 @@ Corrections appliquees:
 
 Prochain lot recommande:
 - `PM_CheckJump`, puis `PM_CheckSpecialMovement` et ses locaux directs (`cont`, `trace`) si le lot reste coherent.
+
+## Session 2026-05-06 - fin PM_CheckJump a Pmove
+
+Lot traite:
+- `PM_CheckJump`
+- `PM_CheckSpecialMovement` et locaux directs `cont`, `trace`
+- `PM_FlyMove` et locaux directs `i`, `wishvel`, `wishdir`, `wishspeed`, `end`, `trace`
+- `PM_CheckDuck` et local direct `trace`
+- `PM_DeadMove` et local direct `forward`
+- `PM_GoodPosition` et locaux directs `trace`, `i`
+- `PM_SnapPosition` et locaux directs `sign`, `base`, `jitterbits`
+- `PM_InitialSnapPosition` et locaux directs `base`, `offset`
+- `PM_ClampAngles` et locaux directs `temp`, `i`
+- `Pmove` et local direct `msec`
+
+Verdict:
+- Lot valide, fin de fichier validee.
+- Les fonctions TS conservent le flux C pour jump/swim-up, ladder/waterjump, fly/spectator, duck/gib/dead hulls, dead friction, position validity, snap jitter/fallback, initial snap offsets, angle clamp et orchestration `Pmove`.
+- Les renommages locaux idiomatiques restent confines a `packages/qcommon/src/pmove.ts`: `i` vers `index`, `jitterbits` vers `PM_SNAP_JITTER_BITS`, `offset` vers `PM_INITIAL_SNAP_OFFSET`.
+- Entetes verifies pour toutes les fonctions portees du lot: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`; `Pmove` documente les gates optionnels comme instrumentation/staged verification.
+
+Preuves:
+- Comparaison directe C vs TS sur `Quake-2-master/qcommon/pmove.c` et `packages/qcommon/src/pmove.ts`.
+- Tests cibles ajoutes dans `scripts/verify/quake2-pmove.ts`: ladder/waterjump direct, early returns `PM_CheckSpecialMovement`, gib/dead/command duck, `PM_GoodPosition`, jitterbits de `PM_SnapPosition`, offset order de `PM_InitialSnapPosition`, clamp angles teleport/pitch, branches haut niveau spectator/freeze/waterjump de `Pmove`.
+- Runtime: flux attendu oui; `Pmove` est appele depuis le gameplay serveur, la prediction client et le loop local via `createPmoveContext`.
+- `apps/web`: flux attendu oui; le navigateur declenche/consomme les sorties pmove via le controller local et le full-game runtime. Pas de logique web parallele masquant ce lot.
+- `renderer-three`: sortie visible indirecte attendue oui, car le lot produit origine/velocity/viewheight/viewangles/camera et scene derivee; le renderer consomme ces sorties via les refresh frames et adapters Three. Pas de sortie propre a ce lot pour modeles, frames, images, particules, beams, dlights, temp entities ou areabits hors camera/scene derivee.
+
+Tests lances:
+- `npm run verify:pmove`
+- `npm run verify:client:pmove:viewheight`
+- `npm run verify:pmove:local-bmodel`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Corrections appliquees:
+- `scripts/verify/quake2-pmove.ts`: assertions ciblees ajoutees pour le lot final.
+- `audit-portage/validation-incrementale/validation/matrices/qcommon_pmove.c.md`: toutes les lignes restantes marquees `Valide`; cibles des locaux/tableaux renommes renseignees.
+
+Prochain lot recommande:
+- Aucun pour `qcommon/pmove.c`: toutes les entrees de la matrice sont validees.

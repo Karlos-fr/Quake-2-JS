@@ -20,79 +20,79 @@
 | `Quake-2-master/ref_gl/gl_image.c` | table | `gl_solid_modes` | `packages/renderer-three/src/gl_image.ts` | `gl_solid_modes` | Valide | ajoute-session |  |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `scrap_allocated` | `packages/renderer-three/src/gl_image.ts` | `scrap_allocated` | Valide | ajoute-session |  |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `scrap_texels` | `packages/renderer-three/src/gl_image.ts` | `scrap_texels` | Valide | ajoute-session |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `Draw_GetPalette` | `packages/renderer-three/src/gl_image.ts` | `Draw_GetPalette` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `Draw_GetPalette` | `packages/renderer-three/src/gl_image.ts` | `Draw_GetPalette` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_Bind` | `packages/renderer-three/src/gl_image.ts` | `GL_Bind` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_BuildPalettedTexture` | `packages/renderer-three/src/gl_image.ts` | `GL_BuildPalettedTexture` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_BuildPalettedTexture` | `packages/renderer-three/src/gl_image.ts` | `GL_BuildPalettedTexture` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_EnableMultitexture` | `packages/renderer-three/src/gl_image.ts` | `GL_EnableMultitexture` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_FreeUnusedImages` | `packages/renderer-three/src/gl_image.ts` | `GL_FreeUnusedImages` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_FreeUnusedImages` | `packages/renderer-three/src/gl_image.ts` | `GL_FreeUnusedImages` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_ImageList_f` | `packages/renderer-three/src/gl_image.ts` | `GL_ImageList_f` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_InitImages` | `packages/renderer-three/src/gl_image.ts` | `GL_InitImages` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_LightScaleTexture` | `packages/renderer-three/src/gl_image.ts` | `GL_LightScaleTexture` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_InitImages` | `packages/renderer-three/src/gl_image.ts` | `GL_InitImages` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_LightScaleTexture` | `packages/renderer-three/src/gl_image.ts` | `GL_LightScaleTexture` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_MBind` | `packages/renderer-three/src/gl_image.ts` | `GL_MBind` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_MipMap` | `packages/renderer-three/src/gl_image.ts` | `GL_MipMap` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_ResampleTexture` | `packages/renderer-three/src/gl_image.ts` | `GL_ResampleTexture` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_MipMap` | `packages/renderer-three/src/gl_image.ts` | `GL_MipMap` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_ResampleTexture` | `packages/renderer-three/src/gl_image.ts` | `GL_ResampleTexture` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_SelectTexture` | `packages/renderer-three/src/gl_image.ts` | `GL_SelectTexture` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_SetTexturePalette` | `packages/renderer-three/src/gl_image.ts` | `GL_SetTexturePalette` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_ShutdownImages` | `packages/renderer-three/src/gl_image.ts` | `GL_ShutdownImages` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_ShutdownImages` | `packages/renderer-three/src/gl_image.ts` | `GL_ShutdownImages` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_TexEnv` | `packages/renderer-three/src/gl_image.ts` | `GL_TexEnv` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_TextureAlphaMode` | `packages/renderer-three/src/gl_image.ts` | `GL_TextureAlphaMode` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_TextureMode` | `packages/renderer-three/src/gl_image.ts` | `GL_TextureMode` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `GL_TextureSolidMode` | `packages/renderer-three/src/gl_image.ts` | `GL_TextureSolidMode` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_Upload32` | `packages/renderer-three/src/gl_image.ts` | `GL_Upload32` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_Upload8` | `packages/renderer-three/src/gl_image.ts` | `GL_Upload8` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `LoadPCX` | `packages/renderer-three/src/gl_image.ts` | `LoadPCX` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `LoadTGA` | `packages/renderer-three/src/gl_image.ts` | `LoadTGA` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | function | `R_FloodFillSkin` | `packages/renderer-three/src/gl_image.ts` | `R_FloodFillSkin` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_Upload32` | `packages/renderer-three/src/gl_image.ts` | `GL_Upload32` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `GL_Upload8` | `packages/renderer-three/src/gl_image.ts` | `GL_Upload8` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `LoadPCX` | `packages/renderer-three/src/gl_image.ts` | `LoadPCX` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `LoadTGA` | `packages/renderer-three/src/gl_image.ts` | `LoadTGA` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | function | `R_FloodFillSkin` | `packages/renderer-three/src/gl_image.ts` | `R_FloodFillSkin` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `Scrap_AllocBlock` | `packages/renderer-three/src/gl_image.ts` | `Scrap_AllocBlock` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | function | `Scrap_Upload` | `packages/renderer-three/src/gl_image.ts` | `Scrap_Upload` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | macro | `BLOCK_HEIGHT` | `packages/renderer-three/src/gl_image.ts` | `BLOCK_HEIGHT` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | macro | `BLOCK_WIDTH` | `packages/renderer-three/src/gl_image.ts` | `BLOCK_WIDTH` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | macro | `FLOODFILL_FIFO_MASK` | `packages/renderer-three/src/gl_image.ts` | `FLOODFILL_FIFO_MASK` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | macro | `FLOODFILL_FIFO_SIZE` | `packages/renderer-three/src/gl_image.ts` | `FLOODFILL_FIFO_SIZE` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | macro | `FLOODFILL_STEP` | `packages/renderer-three/src/gl_image.ts` | `FLOODFILL_STEP` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | macro | `FLOODFILL_FIFO_MASK` | `packages/renderer-three/src/gl_image.ts` | `FLOODFILL_FIFO_MASK` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | macro | `FLOODFILL_FIFO_SIZE` | `packages/renderer-three/src/gl_image.ts` | `FLOODFILL_FIFO_SIZE` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | macro | `FLOODFILL_STEP` | `packages/renderer-three/src/gl_image.ts` | `FLOODFILL_STEP` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | macro | `MAX_SCRAPS` | `packages/renderer-three/src/gl_image.ts` | `MAX_SCRAPS` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | macro | `NUM_GL_ALPHA_MODES` | `packages/renderer-three/src/gl_image.ts` | `NUM_GL_ALPHA_MODES` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | macro | `NUM_GL_MODES` | `packages/renderer-three/src/gl_image.ts` | `NUM_GL_MODES` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | macro | `NUM_GL_SOLID_MODES` | `packages/renderer-three/src/gl_image.ts` | `NUM_GL_SOLID_MODES` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | typedef | `image_type` | `packages/renderer-three/src/gl_image.ts` | `image_type` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | typedef | `name` | `packages/renderer-three/src/gl_image.ts` | `name` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | typedef | `y` | `packages/renderer-three/src/gl_image.ts` | `y` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | struct | `_TargaHeader` | `packages/renderer-three/src/gl_image.ts` | `_TargaHeader` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | struct | `image_s` | `packages/renderer-three/src/gl_image.ts` | `image_s` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | typedef | `image_type` | `packages/renderer-three/src/gl_image.ts` | `image_type` | Non applicable | split-undocumented | Generated from TGA header field, covered by `_TargaHeader`. |
+| `Quake-2-master/ref_gl/gl_image.c` | typedef | `name` | `packages/renderer-three/src/gl_image.ts` | `name` | Non applicable | split-undocumented | Generated from local/parameter token, not a source-owned entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | typedef | `y` | `packages/renderer-three/src/gl_image.ts` | `y` | Non applicable | split-undocumented | Generated from local token, not a source-owned entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | struct | `_TargaHeader` | `packages/formats/src/tga.ts` | `TargaHeader` | Valide | split-undocumented | Parser ownership moved to shared formats package. |
+| `Quake-2-master/ref_gl/gl_image.c` | struct | `image_s` | `packages/renderer-three/src/gl-model.ts` | `image_t` | Non applicable | split-undocumented | Struct is defined in `gl_local.h`; validate in that source matrix. |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `base_textureid` | `packages/renderer-three/src/gl_image.ts` | `TEXNUM_IMAGES` | Non applicable | split-undocumented | Legacy global not read by the C runtime; the port uses the source `TEXNUM_IMAGES` expression directly when assigning image texnums. |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `breakOut` | `packages/renderer-three/src/gl_image.ts` | `breakOut` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `colormap_size` | `packages/renderer-three/src/gl_image.ts` | `colormap_size` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `comp` | `packages/renderer-three/src/gl_image.ts` | `comp` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `done` | `packages/renderer-three/src/gl_image.ts` | `done` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `fdc` | `packages/renderer-three/src/gl_image.ts` | `fdc` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `fillcolor` | `packages/renderer-three/src/gl_image.ts` | `fillcolor` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `filledcolor` | `packages/renderer-three/src/gl_image.ts` | `filledcolor` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `g` | `packages/renderer-three/src/gl_image.ts` | `g` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `breakOut` | `packages/renderer-three/src/gl_image.ts` | `breakOut` | Non applicable | split-undocumented | Generated from local label, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `colormap_size` | `packages/renderer-three/src/gl_image.ts` | `colormap_size` | Non applicable | split-undocumented | Generated from `_TargaHeader` field, covered by `TargaHeader`. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `comp` | `packages/renderer-three/src/gl_image.ts` | `comp` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `done` | `packages/renderer-three/src/gl_image.ts` | `done` | Non applicable | split-undocumented | Generated from local label, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `fdc` | `packages/renderer-three/src/gl_image.ts` | `fdc` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `fillcolor` | `packages/renderer-three/src/gl_image.ts` | `fillcolor` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `filledcolor` | `packages/renderer-three/src/gl_image.ts` | `filledcolor` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `g` | `packages/renderer-three/src/gl_image.ts` | `g` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `gl_alpha_format` | `packages/renderer-three/src/gl_image.ts` | `gl_alpha_format` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `gl_filter_max` | `packages/renderer-three/src/gl_image.ts` | `gl_filter_max` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `gl_filter_min` | `packages/renderer-three/src/gl_image.ts` | `gl_filter_min` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `gl_solid_format` | `packages/renderer-three/src/gl_image.ts` | `gl_solid_format` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `gl_tex_alpha_format` | `packages/renderer-three/src/gl_image.ts` | `gl_tex_alpha_format` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `gl_tex_solid_format` | `packages/renderer-three/src/gl_image.ts` | `gl_tex_solid_format` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `i` | `packages/renderer-three/src/gl_image.ts` | `i` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `inf` | `packages/renderer-three/src/gl_image.ts` | `inf` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `inpt` | `packages/renderer-three/src/gl_image.ts` | `inpt` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `len` | `packages/renderer-three/src/gl_image.ts` | `len` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `length` | `packages/renderer-three/src/gl_image.ts` | `length` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `miplevel` | `packages/renderer-three/src/gl_image.ts` | `miplevel` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `mode` | `packages/renderer-three/src/gl_image.ts` | `mode` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `nonscrap` | `packages/renderer-three/src/gl_image.ts` | `nonscrap` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `NULL` | `packages/renderer-three/src/gl_image.ts` | `NULL` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `i` | `packages/renderer-three/src/gl_image.ts` | `i` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `inf` | `packages/renderer-three/src/gl_image.ts` | `inf` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `inpt` | `packages/renderer-three/src/gl_image.ts` | `inpt` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `len` | `packages/renderer-three/src/gl_image.ts` | `len` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `length` | `packages/renderer-three/src/gl_image.ts` | `length` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `miplevel` | `packages/renderer-three/src/gl_image.ts` | `miplevel` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `mode` | `packages/renderer-three/src/gl_image.ts` | `mode` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `nonscrap` | `packages/renderer-three/src/gl_image.ts` | `nonscrap` | Non applicable | split-undocumented | Generated from local label, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `NULL` | `packages/renderer-three/src/gl_image.ts` | `NULL` | Non applicable | split-undocumented | Generated from null sentinel usage, not a source-owned entity. |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `numgltextures` | `packages/renderer-three/src/gl_image.ts` | `numgltextures` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `p` | `packages/renderer-three/src/gl_image.ts` | `p` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `runLength` | `packages/renderer-three/src/gl_image.ts` | `runLength` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `samples` | `packages/renderer-three/src/gl_image.ts` | `samples` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `p` | `packages/renderer-three/src/gl_image.ts` | `p` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `runLength` | `packages/renderer-three/src/gl_image.ts` | `runLength` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `samples` | `packages/renderer-three/src/gl_image.ts` | `samples` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `scrap_dirty` | `packages/renderer-three/src/gl_image.ts` | `scrap_dirty` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_image.c` | global | `scrap_uploads` | `packages/renderer-three/src/gl_image.ts` | `scrap_uploads` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `targa_header` | `packages/renderer-three/src/gl_image.ts` | `targa_header` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `texels` | `packages/renderer-three/src/gl_image.ts` | `texels` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `texnum` | `packages/renderer-three/src/gl_image.ts` | `texnum` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `tmu` | `packages/renderer-three/src/gl_image.ts` | `tmu` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `uploaded_paletted` | `packages/renderer-three/src/gl_image.ts` | `uploaded_paletted` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `v` | `packages/renderer-three/src/gl_image.ts` | `v` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_image.c` | global | `x` | `packages/renderer-three/src/gl_image.ts` | `x` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `targa_header` | `packages/renderer-three/src/gl_image.ts` | `targa_header` | Non applicable | split-undocumented | Generated from local variable; struct covered by `TargaHeader`. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `texels` | `packages/renderer-three/src/gl_image.ts` | `texels` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `texnum` | `packages/renderer-three/src/gl_image.ts` | `texnum` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `tmu` | `packages/renderer-three/src/gl_image.ts` | `tmu` | Non applicable | split-undocumented | Generated from parameter/local token, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `uploaded_paletted` | `packages/renderer-three/src/gl_image.ts` | `uploaded_paletted` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `v` | `packages/renderer-three/src/gl_image.ts` | `v` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |
+| `Quake-2-master/ref_gl/gl_image.c` | global | `x` | `packages/renderer-three/src/gl_image.ts` | `x` | Non applicable | split-undocumented | Generated from local variable, not a global entity. |

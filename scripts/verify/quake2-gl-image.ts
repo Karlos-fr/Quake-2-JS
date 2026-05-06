@@ -33,6 +33,8 @@ import {
   GL_TextureAlphaMode,
   GL_TextureMode,
   GL_TextureSolidMode,
+  LoadPCX,
+  LoadTGA,
   GL_FreeUnusedImages,
   GL_ImageList_f,
   GL_LoadPic,
@@ -112,6 +114,8 @@ fileMap.set("pics/colormap.pcx", createPcxFile(1, 1, Uint8Array.from([0]), creat
 fileMap.set("pics/test.pcx", createPcxFile(2, 2, Uint8Array.from([0, 1, 2, 255]), createTestPalette()));
 fileMap.set("textures/test.wal", createWalFile("test", 2, 2, Uint8Array.from([0, 1, 2, 3])));
 fileMap.set("pics/test.tga", createTgaFile(1, 1, Uint8Array.from([10, 20, 30, 255])));
+fileMap.set("pics/test24.tga", createTga24File(1, 2, Uint8Array.from([10, 20, 30, 40, 50, 60])));
+fileMap.set("pics/test-rle.tga", createTgaRleFile(2, 1, Uint8Array.from([70, 80, 90, 255])));
 fileMap.set("pics/16to8.dat", Uint8Array.from({ length: 65536 }, (_, index) => index & 0xff));
 
 setVidGammaValue(runtime, 1.4);
@@ -188,6 +192,16 @@ assert.equal(foundWal?.type, imagetype_t.it_wall, "GL_FindImage wal mismatch");
 
 const foundTga = GL_FindImage(runtime, "pics/test.tga", imagetype_t.it_pic);
 assert.equal(foundTga?.width, 1, "GL_FindImage tga mismatch");
+
+const loadedPcx = LoadPCX(runtime, "pics/test.pcx");
+assert.deepEqual(Array.from(loadedPcx?.pic ?? []), [0, 1, 2, 255], "LoadPCX index decode mismatch");
+assert.deepEqual(Array.from(loadedPcx?.palette.slice(3, 6) ?? []), [1, 2, 3], "LoadPCX palette mismatch");
+
+const loadedTga24 = LoadTGA(runtime, "pics/test24.tga");
+assert.deepEqual(Array.from(loadedTga24?.pic.slice(0, 8) ?? []), [40, 50, 60, 255, 10, 20, 30, 255], "LoadTGA 24-bit row order mismatch");
+
+const loadedTgaRle = LoadTGA(runtime, "pics/test-rle.tga");
+assert.deepEqual(Array.from(loadedTgaRle?.pic ?? []), [70, 80, 90, 255, 70, 80, 90, 255], "LoadTGA RLE decode mismatch");
 
 const registeredSkin = R_RegisterSkin(runtime, "pics/test.pcx");
 assert.equal(registeredSkin, foundPcx, "R_RegisterSkin mismatch");
@@ -267,6 +281,13 @@ assert.equal(uploadRuntime.upload_height, 2, "GL_Upload8 upload height mismatch"
 assert.equal(uploadEvents.at(-1)?.level, 0, "GL_Upload8 level mismatch");
 assert.equal(uploadEvents.at(-1)?.bytes, 4, "GL_Upload8 payload size mismatch");
 
+uploadEvents.length = 0;
+setPaletteExtensionState(uploadRuntime, true, true);
+const palettedSkyAlpha = GL_Upload8(uploadRuntime, Uint8Array.from([1, 2, 3, 4]), 2, 2, true, true);
+assert.equal(palettedSkyAlpha, false, "GL_Upload8 sky alpha mismatch");
+assert.equal(uploadRuntime.uploaded_paletted, true, "GL_Upload8 sky paletted flag mismatch");
+assert.equal(uploadEvents.at(-1)?.format, 0x1900, "GL_Upload8 sky upload format mismatch");
+
 const upload32HasAlpha = GL_Upload32(
   uploadRuntime,
   Uint32Array.from([0xff0000ff, 0xff00ff00, 0xffff0000, 0xff112233]),
@@ -319,6 +340,16 @@ assert.equal(
   null,
   "GL_FindImage short-name guard mismatch"
 );
+
+const missingMessages: string[] = [];
+const missingRuntime = createGlImageRuntime({
+  loadFile: () => null,
+  Con_Printf: (_level, message) => {
+    missingMessages.push(message);
+  }
+});
+assert.equal(LoadPCX(missingRuntime, "missing.pcx"), null, "LoadPCX missing file mismatch");
+assert.equal(missingMessages.at(-1), "Bad pcx file missing.pcx\n", "LoadPCX missing message mismatch");
 
 console.log("quake2-gl-image: ok");
 
@@ -394,6 +425,36 @@ function createTgaFile(width: number, height: number, rgba: Uint8Array): Uint8Ar
     bytes[dst + 2] = rgba[src];
     bytes[dst + 3] = rgba[src + 3];
   }
+  return bytes;
+}
+
+function createTga24File(width: number, height: number, rgb: Uint8Array): Uint8Array {
+  const bytes = new Uint8Array(18 + width * height * 3);
+  bytes[2] = 2;
+  writeShort(bytes, 12, width);
+  writeShort(bytes, 14, height);
+  bytes[16] = 24;
+  for (let index = 0; index < width * height; index += 1) {
+    const src = index * 3;
+    const dst = 18 + src;
+    bytes[dst] = rgb[src + 2];
+    bytes[dst + 1] = rgb[src + 1];
+    bytes[dst + 2] = rgb[src];
+  }
+  return bytes;
+}
+
+function createTgaRleFile(width: number, height: number, rgba: Uint8Array): Uint8Array {
+  const bytes = new Uint8Array(18 + 1 + 4);
+  bytes[2] = 10;
+  writeShort(bytes, 12, width);
+  writeShort(bytes, 14, height);
+  bytes[16] = 32;
+  bytes[18] = 0x80 | ((width * height - 1) & 0x7f);
+  bytes[19] = rgba[2];
+  bytes[20] = rgba[1];
+  bytes[21] = rgba[0];
+  bytes[22] = rgba[3];
   return bytes;
 }
 

@@ -94,34 +94,34 @@
 | `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `sample1` | `packages/qcommon/src/pmove.ts` | `sample1` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `sample2` | `packages/qcommon/src/pmove.ts` | `sample2` | Valide | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_CheckJump` | `packages/qcommon/src/pmove.ts` | `PM_CheckJump` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_CheckSpecialMovement` | `packages/qcommon/src/pmove.ts` | `PM_CheckSpecialMovement` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `cont` | `packages/qcommon/src/pmove.ts` | `cont` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_FlyMove` | `packages/qcommon/src/pmove.ts` | `PM_FlyMove` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `wishvel` | `packages/qcommon/src/pmove.ts` | `wishvel` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `wishdir` | `packages/qcommon/src/pmove.ts` | `wishdir` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `wishspeed` | `packages/qcommon/src/pmove.ts` | `wishspeed` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `end` | `packages/qcommon/src/pmove.ts` | `end` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_CheckDuck` | `packages/qcommon/src/pmove.ts` | `PM_CheckDuck` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_DeadMove` | `packages/qcommon/src/pmove.ts` | `PM_DeadMove` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `forward` | `packages/qcommon/src/pmove.ts` | `forward` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_GoodPosition` | `packages/qcommon/src/pmove.ts` | `PM_GoodPosition` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_SnapPosition` | `packages/qcommon/src/pmove.ts` | `PM_SnapPosition` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `sign` | `packages/qcommon/src/pmove.ts` | `sign` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `base` | `packages/qcommon/src/pmove.ts` | `base` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `jitterbits` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `sign` | `packages/qcommon/src/pmove.ts` | `sign` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_InitialSnapPosition` | `packages/qcommon/src/pmove.ts` | `PM_InitialSnapPosition` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `base` | `packages/qcommon/src/pmove.ts` | `base` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `offset` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_ClampAngles` | `packages/qcommon/src/pmove.ts` | `PM_ClampAngles` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `temp` | `packages/qcommon/src/pmove.ts` | `temp` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `Pmove` | `packages/qcommon/src/pmove.ts` | `Pmove` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `msec` | `packages/qcommon/src/pmove.ts` | `msec` | A verifier | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_CheckJump` | `packages/qcommon/src/pmove.ts` | `PM_CheckJump` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_CheckSpecialMovement` | `packages/qcommon/src/pmove.ts` | `PM_CheckSpecialMovement` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `cont` | `packages/qcommon/src/pmove.ts` | `cont` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_FlyMove` | `packages/qcommon/src/pmove.ts` | `PM_FlyMove` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` | `index` | Valide | Partiel | Renommage local de `i` en `index` dans `PM_FlyMove`. |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishvel` | `packages/qcommon/src/pmove.ts` | `wishvel` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishdir` | `packages/qcommon/src/pmove.ts` | `wishdir` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishspeed` | `packages/qcommon/src/pmove.ts` | `wishspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `end` | `packages/qcommon/src/pmove.ts` | `end` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_CheckDuck` | `packages/qcommon/src/pmove.ts` | `PM_CheckDuck` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_DeadMove` | `packages/qcommon/src/pmove.ts` | `PM_DeadMove` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `forward` | `packages/qcommon/src/pmove.ts` | `forward` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_GoodPosition` | `packages/qcommon/src/pmove.ts` | `PM_GoodPosition` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` | `index` | Valide | Partiel | Renommage local de `i` en `index` dans `PM_GoodPosition`. |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_SnapPosition` | `packages/qcommon/src/pmove.ts` | `PM_SnapPosition` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `sign` | `packages/qcommon/src/pmove.ts` | `sign` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `base` | `packages/qcommon/src/pmove.ts` | `base` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `jitterbits` | `packages/qcommon/src/pmove.ts` | `PM_SNAP_JITTER_BITS` | Valide | Partiel | Renommage de la table statique `jitterbits` en `PM_SNAP_JITTER_BITS`. |
+| `Quake-2-master/qcommon/pmove.c` | global | `sign` | `packages/qcommon/src/pmove.ts` | `sign` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_InitialSnapPosition` | `packages/qcommon/src/pmove.ts` | `PM_InitialSnapPosition` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `base` | `packages/qcommon/src/pmove.ts` | `base` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `offset` | `packages/qcommon/src/pmove.ts` | `PM_INITIAL_SNAP_OFFSET` | Valide | Partiel | Renommage de la table statique `offset` en `PM_INITIAL_SNAP_OFFSET`. |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_ClampAngles` | `packages/qcommon/src/pmove.ts` | `PM_ClampAngles` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `temp` | `packages/qcommon/src/pmove.ts` | `temp` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` | `index` | Valide | Partiel | Renommage local de `i` en `index` dans `PM_ClampAngles`. |
+| `Quake-2-master/qcommon/pmove.c` | function | `Pmove` | `packages/qcommon/src/pmove.ts` | `Pmove` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `msec` | `packages/qcommon/src/pmove.ts` | `msec` | Valide | A tester |  |

@@ -34,7 +34,13 @@ import {
 import {
   BUILDSTRING,
   CM_ANGLE1,
+  CM_ANGLE2,
+  CM_ANGLE3,
   CM_BUTTONS,
+  CM_FORWARD,
+  CM_IMPULSE,
+  CM_SIDE,
+  CM_UP,
   COM_BlockSequenceCRCByte,
   CPUSTRING,
   CRC_Block,
@@ -168,6 +174,7 @@ import {
   U_ORIGIN3,
   U_RENDERFX16,
   U_RENDERFX8,
+  U_REMOVE,
   U_SKIN16,
   U_SKIN8,
   U_SOLID,
@@ -198,7 +205,40 @@ assert.equal(UPDATE_MASK, 15, "UPDATE_MASK mismatch");
 assert.equal(DEFAULT_SOUND_PACKET_VOLUME, 1.0, "DEFAULT_SOUND_PACKET_VOLUME mismatch");
 assert.equal(DEFAULT_SOUND_PACKET_ATTENUATION, 1.0, "DEFAULT_SOUND_PACKET_ATTENUATION mismatch");
 assert.equal(CM_ANGLE1, 1 << 0, "CM_ANGLE1 mismatch");
+assert.equal(CM_ANGLE2, 1 << 1, "CM_ANGLE2 mismatch");
+assert.equal(CM_ANGLE3, 1 << 2, "CM_ANGLE3 mismatch");
+assert.equal(CM_FORWARD, 1 << 3, "CM_FORWARD mismatch");
+assert.equal(CM_SIDE, 1 << 4, "CM_SIDE mismatch");
+assert.equal(CM_UP, 1 << 5, "CM_UP mismatch");
 assert.equal(CM_BUTTONS, 1 << 6, "CM_BUTTONS mismatch");
+assert.equal(CM_IMPULSE, 1 << 7, "CM_IMPULSE mismatch");
+assert.equal(U_ORIGIN1, 1 << 0, "U_ORIGIN1 mismatch");
+assert.equal(U_ORIGIN2, 1 << 1, "U_ORIGIN2 mismatch");
+assert.equal(U_ANGLE2, 1 << 2, "U_ANGLE2 mismatch");
+assert.equal(U_ANGLE3, 1 << 3, "U_ANGLE3 mismatch");
+assert.equal(U_FRAME8, 1 << 4, "U_FRAME8 mismatch");
+assert.equal(U_EVENT, 1 << 5, "U_EVENT mismatch");
+assert.equal(U_REMOVE, 1 << 6, "U_REMOVE mismatch");
+assert.equal(U_MOREBITS1, 1 << 7, "U_MOREBITS1 mismatch");
+assert.equal(U_NUMBER16, 1 << 8, "U_NUMBER16 mismatch");
+assert.equal(U_ORIGIN3, 1 << 9, "U_ORIGIN3 mismatch");
+assert.equal(U_ANGLE1, 1 << 10, "U_ANGLE1 mismatch");
+assert.equal(U_MODEL, 1 << 11, "U_MODEL mismatch");
+assert.equal(U_RENDERFX8, 1 << 12, "U_RENDERFX8 mismatch");
+assert.equal(U_EFFECTS8, 1 << 14, "U_EFFECTS8 mismatch");
+assert.equal(U_MOREBITS2, 1 << 15, "U_MOREBITS2 mismatch");
+assert.equal(U_SKIN8, 1 << 16, "U_SKIN8 mismatch");
+assert.equal(U_FRAME16, 1 << 17, "U_FRAME16 mismatch");
+assert.equal(U_RENDERFX16, 1 << 18, "U_RENDERFX16 mismatch");
+assert.equal(U_EFFECTS16, 1 << 19, "U_EFFECTS16 mismatch");
+assert.equal(U_MODEL2, 1 << 20, "U_MODEL2 mismatch");
+assert.equal(U_MODEL3, 1 << 21, "U_MODEL3 mismatch");
+assert.equal(U_MODEL4, 1 << 22, "U_MODEL4 mismatch");
+assert.equal(U_MOREBITS3, 1 << 23, "U_MOREBITS3 mismatch");
+assert.equal(U_OLDORIGIN, 1 << 24, "U_OLDORIGIN mismatch");
+assert.equal(U_SKIN16, 1 << 25, "U_SKIN16 mismatch");
+assert.equal(U_SOUND, 1 << 26, "U_SOUND mismatch");
+assert.equal(U_SOLID, 1 << 27, "U_SOLID mismatch");
 assert.equal(BUILDSTRING, "TypeScript", "BUILDSTRING mismatch");
 assert.equal(CPUSTRING, "portable", "CPUSTRING mismatch");
 assert.equal(BASEDIRNAME, "baseq2", "BASEDIRNAME mismatch");
@@ -594,6 +634,11 @@ const nextCmd: usercmd_t = {
 };
 const cmdBuffer = createSizeBuffer(64);
 MSG_WriteDeltaUsercmd(cmdBuffer, fromCmd, nextCmd);
+assert.deepEqual(
+  Array.from(cmdBuffer.data.subarray(0, cmdBuffer.cursize)),
+  [CM_ANGLE2 | CM_SIDE | CM_BUTTONS | CM_IMPULSE, 222, 0, 244, 255, 5, 9, 16, 77],
+  "MSG delta usercmd byte layout mismatch"
+);
 cmdBuffer.readcount = 0;
 assert.deepEqual(MSG_ReadDeltaUsercmd(cmdBuffer, fromCmd), nextCmd, "MSG delta usercmd mismatch");
 
@@ -618,6 +663,11 @@ deltaEntity.event = 3;
 deltaEntity.old_origin = [1, 2, 3];
 const entityBuffer = createSizeBuffer(128);
 MSG_WriteDeltaEntity(baseEntity, deltaEntity, entityBuffer, false, true);
+assert.deepEqual(
+  Array.from(entityBuffer.data.subarray(0, 4)),
+  [177, 153, 129, 5],
+  "MSG delta entity header bytes mismatch"
+);
 entityBuffer.readcount = 0;
 const entityBits =
   MSG_ReadByte(entityBuffer) |
@@ -682,6 +732,11 @@ fullDelta.event = 8;
 fullDelta.solid = 0x1234;
 const fullBuffer = createSizeBuffer(128);
 MSG_WriteDeltaEntity(fullBase, fullDelta, fullBuffer, false, true);
+assert.deepEqual(
+  Array.from(fullBuffer.data.subarray(0, 4)),
+  [175, 222, 255, 15],
+  "MSG delta entity full header bytes mismatch"
+);
 fullBuffer.readcount = 0;
 const fullBits =
   MSG_ReadByte(fullBuffer) |

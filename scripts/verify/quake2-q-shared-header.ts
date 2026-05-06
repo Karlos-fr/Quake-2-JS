@@ -109,13 +109,22 @@ import {
   CPLANE_PAD1,
   CPLANE_SIGNBITS,
   CPLANE_TYPE,
+  CS_AIRACCEL,
+  CS_CDTRACK,
   CS_GENERAL,
   CS_IMAGES,
   CS_ITEMS,
   CS_LIGHTS,
+  CS_MAPCHECKSUM,
+  CS_MAXCLIENTS,
   CS_MODELS,
+  CS_NAME,
   CS_PLAYERSKINS,
+  CS_SKY,
+  CS_SKYAXIS,
+  CS_SKYROTATE,
   CS_SOUNDS,
+  CS_STATUSBAR,
   CONTENTS_AREAPORTAL,
   CONTENTS_AUX,
   CONTENTS_CURRENT_0,
@@ -187,6 +196,7 @@ import {
   MASK_SOLID,
   MASK_WATER,
   MAX_CLIENTS,
+  MAX_CONFIGSTRINGS,
   MAX_GENERAL,
   MAX_IMAGES,
   MAX_INFO_KEY,
@@ -199,6 +209,23 @@ import {
   MZ_SILENCED,
   nanmask,
   Q_ftol,
+  RF_BEAM,
+  RF_CUSTOMSKIN,
+  RF_DEPTHHACK,
+  RF_FRAMELERP,
+  RF_FULLBRIGHT,
+  RF_GLOW,
+  RF_IR_VISIBLE,
+  RF_MINLIGHT,
+  RF_SHELL_BLUE,
+  RF_SHELL_DOUBLE,
+  RF_SHELL_GREEN,
+  RF_SHELL_HALF_DAM,
+  RF_SHELL_RED,
+  RF_TRANSLUCENT,
+  RF_USE_DISGUISE,
+  RF_VIEWERMODEL,
+  RF_WEAPONMODEL,
   ROGUE_VERSION_ID,
   ROGUE_VERSION_STRING,
   SFF_ARCH,
@@ -280,6 +307,23 @@ assert.equal(EF_SPHERETRANS, 0x10000000, "EF_SPHERETRANS mismatch");
 assert.equal(EF_TAGTRAIL, 0x20000000, "EF_TAGTRAIL mismatch");
 assert.equal(EF_HALF_DAMAGE, 0x40000000, "EF_HALF_DAMAGE mismatch");
 assert.equal(EF_TRACKERTRAIL, 0x80000000, "EF_TRACKERTRAIL mismatch");
+assert.equal(RF_MINLIGHT, 1, "RF_MINLIGHT mismatch");
+assert.equal(RF_VIEWERMODEL, 2, "RF_VIEWERMODEL mismatch");
+assert.equal(RF_WEAPONMODEL, 4, "RF_WEAPONMODEL mismatch");
+assert.equal(RF_FULLBRIGHT, 8, "RF_FULLBRIGHT mismatch");
+assert.equal(RF_DEPTHHACK, 16, "RF_DEPTHHACK mismatch");
+assert.equal(RF_TRANSLUCENT, 32, "RF_TRANSLUCENT mismatch");
+assert.equal(RF_FRAMELERP, 64, "RF_FRAMELERP mismatch");
+assert.equal(RF_BEAM, 128, "RF_BEAM mismatch");
+assert.equal(RF_CUSTOMSKIN, 256, "RF_CUSTOMSKIN mismatch");
+assert.equal(RF_GLOW, 512, "RF_GLOW mismatch");
+assert.equal(RF_SHELL_RED, 1024, "RF_SHELL_RED mismatch");
+assert.equal(RF_SHELL_GREEN, 2048, "RF_SHELL_GREEN mismatch");
+assert.equal(RF_SHELL_BLUE, 4096, "RF_SHELL_BLUE mismatch");
+assert.equal(RF_IR_VISIBLE, 0x00008000, "RF_IR_VISIBLE mismatch");
+assert.equal(RF_SHELL_DOUBLE, 0x00010000, "RF_SHELL_DOUBLE mismatch");
+assert.equal(RF_SHELL_HALF_DAM, 0x00020000, "RF_SHELL_HALF_DAM mismatch");
+assert.equal(RF_USE_DISGUISE, 0x00040000, "RF_USE_DISGUISE mismatch");
 assert.equal(SPLASH_BLOOD, 6, "SPLASH_BLOOD mismatch");
 assert.equal(MZ_SILENCED, 128, "MZ_SILENCED mismatch");
 assert.equal(ERR_FATAL, 0, "ERR_FATAL mismatch");
@@ -297,12 +341,23 @@ assert.equal(CVAR_SERVERINFO, 4, "CVAR_SERVERINFO mismatch");
 assert.equal(CVAR_NOSET, 8, "CVAR_NOSET mismatch");
 assert.equal(CVAR_LATCH, 16, "CVAR_LATCH mismatch");
 
+assert.equal(CS_NAME, 0, "CS_NAME mismatch");
+assert.equal(CS_CDTRACK, 1, "CS_CDTRACK mismatch");
+assert.equal(CS_SKY, 2, "CS_SKY mismatch");
+assert.equal(CS_SKYAXIS, 3, "CS_SKYAXIS mismatch");
+assert.equal(CS_SKYROTATE, 4, "CS_SKYROTATE mismatch");
+assert.equal(CS_STATUSBAR, 5, "CS_STATUSBAR mismatch");
+assert.equal(CS_AIRACCEL, 29, "CS_AIRACCEL mismatch");
+assert.equal(CS_MAXCLIENTS, 30, "CS_MAXCLIENTS mismatch");
+assert.equal(CS_MAPCHECKSUM, 31, "CS_MAPCHECKSUM mismatch");
+assert.equal(CS_MODELS, 32, "CS_MODELS mismatch");
 assert.equal(CS_SOUNDS, CS_MODELS + MAX_MODELS, "CS_SOUNDS chain mismatch");
 assert.equal(CS_IMAGES, CS_SOUNDS + MAX_SOUNDS, "CS_IMAGES chain mismatch");
 assert.equal(CS_LIGHTS, CS_IMAGES + MAX_IMAGES, "CS_LIGHTS chain mismatch");
 assert.equal(CS_ITEMS, CS_LIGHTS + MAX_LIGHTSTYLES, "CS_ITEMS chain mismatch");
 assert.equal(CS_PLAYERSKINS, CS_ITEMS + MAX_ITEMS, "CS_PLAYERSKINS chain mismatch");
 assert.equal(CS_GENERAL, CS_PLAYERSKINS + MAX_CLIENTS, "CS_GENERAL chain mismatch");
+assert.equal(MAX_CONFIGSTRINGS, CS_GENERAL + MAX_GENERAL, "MAX_CONFIGSTRINGS mismatch");
 assert.equal(MAX_GENERAL, MAX_CLIENTS * 2, "MAX_GENERAL mismatch");
 assert.equal(MAX_INFO_KEY, 64, "MAX_INFO_KEY mismatch");
 assert.equal(MAX_INFO_VALUE, 64, "MAX_INFO_VALUE mismatch");

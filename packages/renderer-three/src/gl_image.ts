@@ -653,6 +653,12 @@ export function Scrap_Upload(runtime: GlImageRuntime): void {
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Loads a PCX through the renderer filesystem hook and returns decoded palette indices, palette bytes and dimensions.
+ *
+ * Porting notes:
+ * - Delegates byte parsing to `parsePcx`, the shared Quake PCX parser, instead of duplicating the C out-parameter loader.
  */
 export function LoadPCX(runtime: GlImageRuntime, filename: string): { pic: Uint8Array; palette: Uint8Array; width: number; height: number } | null {
   const bytes = runtime.hooks.loadFile?.(filename) ?? null;
@@ -680,6 +686,12 @@ export function LoadPCX(runtime: GlImageRuntime, filename: string): { pic: Uint8
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Loads uncompressed or RLE 24/32-bit TGA pixels and exposes RGBA data for the GL image upload path.
+ *
+ * Porting notes:
+ * - Delegates byte parsing to `parseTga`; unsupported TGA variants still route through the renderer fatal error hook.
  */
 export function LoadTGA(runtime: GlImageRuntime, name: string): { pic: Uint8Array; width: number; height: number } | null {
   const bytes = runtime.hooks.loadFile?.(name) ?? null;
@@ -705,6 +717,12 @@ export function LoadTGA(runtime: GlImageRuntime, name: string): { pic: Uint8Arra
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Flood-fills the top-left skin background color so mipmapped skins do not bleed transparent halos.
+ *
+ * Porting notes:
+ * - Keeps the original FIFO size, mask and neighbor update order while using typed arrays for the queue.
  */
 export function R_FloodFillSkin(runtime: GlImageRuntime, skin: Uint8Array, skinwidth: number, skinheight: number): void {
   const fillcolor = skin[0] ?? 0;
@@ -773,6 +791,9 @@ export function R_FloodFillSkin(runtime: GlImageRuntime, skin: Uint8Array, skinw
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resamples RGBA texels with the same four-tap sampling pattern used before upload.
  */
 export function GL_ResampleTexture(
   input: Uint32Array,
@@ -853,6 +874,12 @@ export function GL_LightScaleTexture(
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Operates in place, averaging 2x2 RGBA texels into the next mip level.
+ *
+ * Porting notes:
+ * - Handles one-pixel edges explicitly so the browser-side typed array path remains bounded.
  */
 export function GL_MipMap(texture: Uint32Array, width: number, height: number): void {
   const src = texture.slice(0, width * height);
@@ -910,6 +937,12 @@ export function GL_BuildPalettedTexture(
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Computes power-of-two upload dimensions, alpha format, optional paletted data, light scaling, mip levels and filters.
+ *
+ * Porting notes:
+ * - GPU calls are emitted through hooks so the Three.js adapter can consume the same upload decisions.
  */
 export function GL_Upload32(runtime: GlImageRuntime, data: Uint32Array, width: number, height: number, mipmap: boolean): boolean {
   const maxPixels = 256 * 256;
@@ -1088,6 +1121,12 @@ export function GL_Upload32(runtime: GlImageRuntime, data: Uint32Array, width: n
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Converts indexed pixels through `d_8to24table`, fixes transparent fringe colors and delegates RGBA upload.
+ *
+ * Porting notes:
+ * - Preserves the original paletted sky fast path when the color-table extension is enabled.
  */
 export function GL_Upload8(
   runtime: GlImageRuntime,
@@ -1319,6 +1358,9 @@ export function R_RegisterSkin(runtime: GlImageRuntime, name: string): GlImage |
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Deletes registered non-pic textures that were not touched by the current registration sequence.
  */
 export function GL_FreeUnusedImages(runtime: GlImageRuntime): void {
   if (runtime.r_notexture) {
@@ -1352,6 +1394,9 @@ export function GL_FreeUnusedImages(runtime: GlImageRuntime): void {
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Loads `pics/colormap.pcx`, builds `d_8to24table` and clears alpha for palette index 255.
  */
 export function Draw_GetPalette(runtime: GlImageRuntime): number {
   const loaded = LoadPCX(runtime, "pics/colormap.pcx");
@@ -1375,6 +1420,9 @@ export function Draw_GetPalette(runtime: GlImageRuntime): number {
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Initializes registration state, palette, optional 16-to-8 table, gamma table and intensity table.
  */
 export function GL_InitImages(runtime: GlImageRuntime): void {
   runtime.registration_sequence = 1;
@@ -1428,6 +1476,9 @@ export function GL_InitImages(runtime: GlImageRuntime): void {
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Deletes every registered image texture and clears each image slot.
  */
 export function GL_ShutdownImages(runtime: GlImageRuntime): void {
   for (let i = 0; i < runtime.numgltextures; i += 1) {

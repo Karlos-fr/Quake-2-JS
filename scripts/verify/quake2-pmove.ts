@@ -25,10 +25,14 @@ import {
   PM_CatagorizePosition,
   PM_AirMove,
   PM_CheckJump,
+  PM_CheckSpecialMovement,
   PM_CheckDuck,
+  PM_ClampAngles,
   PM_DeadMove,
   PM_Friction,
   PM_FlyMove,
+  PM_GoodPosition,
+  PM_InitialSnapPosition,
   PM_ClipVelocity,
   PM_InitLocalState,
   PM_SnapPosition,
@@ -36,6 +40,9 @@ import {
   PM_StepSlideMove_,
   PM_WaterMove,
   PITCH,
+  ROLL,
+  SHORT2ANGLE,
+  YAW,
   Pmove,
   createPmlState,
   createPmoveContext,
@@ -86,6 +93,8 @@ function main(): void {
   verifyGroundJumpSetsHeldFlagAndMinimumVerticalSpeed();
   verifyJumpHeldPreventsRepeatJump();
   verifyWaterJumpUsesWatertypeSpecificVerticalSpeed();
+  verifySpecialMovementDetectsLadderAndWaterjumpDirectly();
+  verifySpecialMovementSkipsWhenTimerOrWrongWaterlevel();
   verifyStepSlideMoveStopsWhenStepUpIsSolid();
   verifyStepSlideMovePrefersStepUpWhenFlatMoveIsBlocked();
   verifyStepSlideMoveKeepsDownMoveWhenStepIsSteepOrShorter();
@@ -101,10 +110,16 @@ function main(): void {
   verifyAirMoveUsesAirAccelerateWhenEnabled();
   verifyFlyMoveIntegratesFreelyWithoutClip();
   verifyFlyMoveUsesTraceEndposWhenClipIsEnabled();
+  verifyCheckDuckGibDeadAndCommandDuckBranches();
   verifyFrictionStopsTinyHorizontalVelocityOnly();
   verifyFrictionAppliesGroundDeceleration();
   verifyFrictionSkipsSlickGroundButAppliesWaterAndLadderRules();
   verifyDeadMoveAppliesExtraGroundFriction();
+  verifyGoodPositionSpectatorBypassesTraceAndSolidTraceFails();
+  verifySnapPositionUsesJitterbitsBeforePreviousOriginFallback();
+  verifyInitialSnapPositionUsesCurrentOffsetSearchOrder();
+  verifyClampAnglesTeleportAndPitchLimits();
+  verifyPmoveSpectatorFreezeAndTimedWaterjumpBranches();
   console.log("Verification pmove: OK");
 }
 
@@ -588,6 +603,61 @@ function verifyWaterJumpUsesWatertypeSpecificVerticalSpeed(): void {
 
 /**
  * Category: New
+ * Purpose: Assert direct `PM_CheckSpecialMovement` ladder and waterjump branches, including `cont` and `trace` locals.
+ */
+function verifySpecialMovementDetectsLadderAndWaterjumpDirectly(): void {
+  const pm = createBasePmove();
+  pm.waterlevel = 2;
+  pm.trace = createLadderTrace;
+  pm.pointcontents = createWaterjumpPointContents;
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.016);
+  context.pml.forward = [1, 0, 0];
+
+  PM_CheckSpecialMovement(context);
+
+  assertBoolean(context.pml.ladder, true, "special movement detects ladder trace contents");
+  assertVector(context.pml.velocity, [50, 0, 350], "special movement waterjump velocity");
+  assertEqual(pm.s.pm_flags & PMF_TIME_WATERJUMP, PMF_TIME_WATERJUMP, "special movement sets waterjump flag");
+  assertEqual(pm.s.pm_time, 255, "special movement sets waterjump timer");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert timer and waterlevel early returns in `PM_CheckSpecialMovement`.
+ */
+function verifySpecialMovementSkipsWhenTimerOrWrongWaterlevel(): void {
+  const timed = createBasePmove();
+  timed.s.pm_time = 1;
+  timed.waterlevel = 2;
+  timed.trace = createLadderTrace;
+  timed.pointcontents = createWaterjumpPointContents;
+  const timedContext = createPmoveContext(timed);
+  PM_InitLocalState(timedContext, 0.016);
+  timedContext.pml.ladder = true;
+
+  PM_CheckSpecialMovement(timedContext);
+
+  assertBoolean(timedContext.pml.ladder, true, "special movement pm_time return preserves prior ladder state");
+  assertEqual(timed.s.pm_flags & PMF_TIME_WATERJUMP, 0, "special movement pm_time return skips waterjump");
+
+  const shallow = createBasePmove();
+  shallow.waterlevel = 1;
+  shallow.trace = createLadderTrace;
+  shallow.pointcontents = createWaterjumpPointContents;
+  const shallowContext = createPmoveContext(shallow);
+  PM_InitLocalState(shallowContext, 0.016);
+  shallowContext.pml.forward = [1, 0, 0];
+
+  PM_CheckSpecialMovement(shallowContext);
+
+  assertBoolean(shallowContext.pml.ladder, true, "special movement still detects ladder before waterlevel return");
+  assertEqual(shallow.s.pm_flags & PMF_TIME_WATERJUMP, 0, "special movement waterlevel return skips waterjump");
+}
+
+/**
+ * Category: New
  * Purpose: Assert that `PM_StepSlideMove` returns after the first up probe when the step space is solid.
  */
 function verifyStepSlideMoveStopsWhenStepUpIsSolid(): void {
@@ -945,6 +1015,45 @@ function verifyFlyMoveUsesTraceEndposWhenClipIsEnabled(): void {
 
 /**
  * Category: New
+ * Purpose: Assert `PM_CheckDuck` gib, dead and command-duck branches update hull and viewheight like C.
+ */
+function verifyCheckDuckGibDeadAndCommandDuckBranches(): void {
+  const gib = createBasePmove();
+  gib.s.pm_type = pmtype_t.PM_GIB;
+  const gibContext = createPmoveContext(gib);
+  PM_InitLocalState(gibContext, 0.016);
+
+  PM_CheckDuck(gibContext);
+
+  assertVector(gib.mins, [-16, -16, 0], "gib duck mins");
+  assertVector(gib.maxs, [16, 16, 16], "gib duck maxs");
+  assertEqual(gib.viewheight, 8, "gib duck viewheight");
+
+  const dead = createBasePmove();
+  dead.s.pm_type = pmtype_t.PM_DEAD;
+  const deadContext = createPmoveContext(dead);
+  PM_InitLocalState(deadContext, 0.016);
+
+  PM_CheckDuck(deadContext);
+
+  assertEqual(dead.s.pm_flags & PMF_DUCKED, PMF_DUCKED, "dead duck forces duck flag");
+  assertEqual(dead.viewheight, -2, "dead duck uses crouched viewheight");
+  assertEqual(dead.maxs[2], 4, "dead duck uses crouched hull");
+
+  const commandDuck = createBasePmove();
+  commandDuck.s.pm_flags = PMF_ON_GROUND;
+  commandDuck.cmd.upmove = -1;
+  const commandContext = createPmoveContext(commandDuck);
+  PM_InitLocalState(commandContext, 0.016);
+
+  PM_CheckDuck(commandContext);
+
+  assertEqual(commandDuck.s.pm_flags & PMF_DUCKED, PMF_DUCKED, "negative upmove on ground sets duck flag");
+  assertEqual(commandDuck.viewheight, -2, "command duck uses crouched viewheight");
+}
+
+/**
+ * Category: New
  * Purpose: Assert the original `speed < 1` branch zeros only X/Y and leaves Z unchanged.
  */
 function verifyFrictionStopsTinyHorizontalVelocityOnly(): void {
@@ -1035,6 +1144,148 @@ function verifyDeadMoveAppliesExtraGroundFriction(): void {
   assertApprox(context.pml.velocity[0], 18, 0.0001, "dead move scales X velocity after subtracting 20 speed");
   assertApprox(context.pml.velocity[1], 24, 0.0001, "dead move scales Y velocity after subtracting 20 speed");
   assertApprox(context.pml.velocity[2], 0, 0.0001, "dead move preserves zero vertical speed");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert `PM_GoodPosition` spectator bypass and solid trace rejection.
+ */
+function verifyGoodPositionSpectatorBypassesTraceAndSolidTraceFails(): void {
+  const spectator = createBasePmove();
+  spectator.s.pm_type = pmtype_t.PM_SPECTATOR;
+  let spectatorTraceCalls = 0;
+  spectator.trace = () => {
+    spectatorTraceCalls += 1;
+    return createAlwaysSolidTrace([0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]);
+  };
+
+  assertBoolean(PM_GoodPosition(createPmoveContext(spectator)), true, "spectator good position bypasses collision");
+  assertEqual(spectatorTraceCalls, 0, "spectator good position does not call trace");
+
+  const blocked = createBasePmove();
+  blocked.s.origin = [8, 16, 24];
+  blocked.trace = createAlwaysSolidTrace;
+
+  assertBoolean(PM_GoodPosition(createPmoveContext(blocked)), false, "solid trace rejects good position");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert `PM_SnapPosition` tries C jitterbits before falling back to previous origin.
+ */
+function verifySnapPositionUsesJitterbitsBeforePreviousOriginFallback(): void {
+  const pm = createBasePmove();
+  pm.trace = (start, mins, maxs, end) => {
+    const goodJitter = start[0] === 1 && start[1] === 2 && start[2] === 3.125;
+    return goodJitter ? createPassThroughTrace(start, mins, maxs, end) : createAlwaysSolidTrace(start, mins, maxs, end);
+  };
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.016);
+  context.pml.origin = [1.01, 2.01, 3.01];
+  context.pml.velocity = [1.4, -1.4, 0.125];
+
+  PM_SnapPosition(context);
+
+  assertVector(pm.s.velocity, [11, -11, 1], "snap position truncates velocity to eighths");
+  assertVector(pm.s.origin, [8, 16, 25], "snap position accepts jitterbits[1] Z adjustment");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert `PM_InitialSnapPosition` uses the active C offset order and updates float origin/previous_origin.
+ */
+function verifyInitialSnapPositionUsesCurrentOffsetSearchOrder(): void {
+  const pm = createBasePmove();
+  pm.s.origin = [80, 80, 80];
+  const tried: number[][] = [];
+  pm.trace = (start, mins, maxs, end) => {
+    tried.push([start[0] * 8, start[1] * 8, start[2] * 8]);
+    const goodOffset = start[0] === 10.125 && start[1] === 9.875 && start[2] === 10;
+    return goodOffset ? createPassThroughTrace(start, mins, maxs, end) : createAlwaysSolidTrace(start, mins, maxs, end);
+  };
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.016);
+
+  PM_InitialSnapPosition(context);
+
+  assertVector(pm.s.origin, [81, 79, 80], "initial snap accepts offset [1,-1,0]");
+  assertVector(context.pml.origin, [10.125, 9.875, 10], "initial snap updates local float origin");
+  assertVector(context.pml.previous_origin, [81, 79, 80], "initial snap updates previous packed origin");
+  assertVector(tried[0], [80, 80, 80], "initial snap tries zero offset first");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert `PM_ClampAngles` teleport and non-teleport pitch-limit paths.
+ */
+function verifyClampAnglesTeleportAndPitchLimits(): void {
+  const teleport = createBasePmove();
+  teleport.s.pm_flags = PMF_TIME_TELEPORT;
+  teleport.cmd.angles[YAW] = 1000;
+  teleport.s.delta_angles[YAW] = 2000;
+  const teleportContext = createPmoveContext(teleport);
+
+  PM_ClampAngles(teleportContext);
+
+  assertApprox(teleport.viewangles[YAW], SHORT2ANGLE(3000), 0.0001, "teleport clamp applies yaw delta");
+  assertEqual(teleport.viewangles[PITCH], 0, "teleport clamp zeros pitch");
+  assertEqual(teleport.viewangles[ROLL], 0, "teleport clamp zeros roll");
+
+  const pitchHigh = createBasePmove();
+  pitchHigh.cmd.angles[PITCH] = 16384;
+  const highContext = createPmoveContext(pitchHigh);
+  PM_ClampAngles(highContext);
+  assertEqual(pitchHigh.viewangles[PITCH], 89, "clamp angles caps upward pitch at 89");
+
+  const pitchLow = createBasePmove();
+  pitchLow.cmd.angles[PITCH] = 49152;
+  const lowContext = createPmoveContext(pitchLow);
+  PM_ClampAngles(lowContext);
+  assertEqual(pitchLow.viewangles[PITCH], 271, "clamp angles caps downward pitch at 271");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert high-level `Pmove` spectator, freeze and timed waterjump orchestration branches.
+ */
+function verifyPmoveSpectatorFreezeAndTimedWaterjumpBranches(): void {
+  const spectator = createBasePmove();
+  spectator.s.pm_type = pmtype_t.PM_SPECTATOR;
+  spectator.cmd.msec = 100;
+  spectator.cmd.forwardmove = 100;
+  const spectatorContext = createPmoveContext(spectator);
+
+  Pmove(spectatorContext);
+
+  assertEqual(spectator.viewheight, 22, "spectator pmove runs fly move viewheight");
+  assertEqual(spectator.s.origin[0], 80, "spectator pmove snaps moved origin");
+
+  const freeze = createBasePmove();
+  freeze.s.pm_type = pmtype_t.PM_FREEZE;
+  freeze.s.origin = [8, 16, 24];
+  freeze.s.velocity = [80, 0, 0];
+  freeze.cmd.forwardmove = 200;
+  const freezeContext = createPmoveContext(freeze);
+
+  Pmove(freezeContext);
+
+  assertVector(freeze.s.origin, [8, 16, 24], "freeze pmove leaves packed origin unchanged");
+  assertVector(freeze.s.velocity, [80, 0, 0], "freeze pmove leaves packed velocity unchanged");
+
+  const waterjump = createBasePmove();
+  waterjump.s.pm_flags = PMF_TIME_WATERJUMP;
+  waterjump.s.pm_time = 5;
+  waterjump.s.velocity = [0, 0, 4000];
+  waterjump.cmd.msec = 8;
+  waterjump.trace = createPassThroughTrace;
+  const waterjumpContext = createPmoveContext(waterjump);
+
+  Pmove(waterjumpContext, { allowSnapPosition: false });
+
+  assertEqual(waterjump.s.pm_time, 4, "waterjump pmove drops timer before movement");
+  assertApprox(waterjumpContext.pml.velocity[2], 493.6, 0.0001, "waterjump pmove applies gravity to local velocity");
 }
 
 /**

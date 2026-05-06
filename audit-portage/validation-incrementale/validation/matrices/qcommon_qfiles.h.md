@@ -73,129 +73,129 @@
 | `Quake-2-master/qcommon/qfiles.h` | global | `ofs_frames` | `packages/formats/src/md2.ts` | `ofs_frames` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | global | `ofs_glcmds` | `packages/formats/src/md2.ts` | `ofs_glcmds` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | global | `ofs_end` | `packages/formats/src/md2.ts` | `ofs_end` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `IDSPRITEHEADER` | `packages/formats/src/sp2.ts` | `IDSPRITEHEADER` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `SPRITE_VERSION` | `packages/formats/src/sp2.ts` | `SPRITE_VERSION` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dsprframe_t` | `packages/formats/src/sp2.ts` | `dsprframe_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `name` | `packages/formats/src/qfiles.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dsprite_t` | `packages/formats/src/sp2.ts` | `dsprite_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ident` | `packages/formats/src/qfiles.ts` | `ident` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `version` | `packages/formats/src/sp2.ts` | `version` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `numframes` | `packages/formats/src/sp2.ts` | `numframes` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MIPLEVELS` | `packages/formats/src/wal.ts` | `MIPLEVELS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `miptex_s` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `name` | `packages/formats/src/qfiles.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `offsets` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `animname` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `flags` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `contents` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `value` | `packages/formats/src/qfiles.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `IDBSPHEADER` | `packages/formats/src/qfiles.ts` | `IDBSPHEADER` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `BSPVERSION` | `packages/formats/src/qfiles.ts` | `BSPVERSION` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_MODELS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_MODELS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_BRUSHES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_BRUSHES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_ENTITIES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_ENTITIES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_ENTSTRING` | `packages/formats/src/qfiles.ts` | `MAX_MAP_ENTSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_TEXINFO` | `packages/formats/src/qfiles.ts` | `MAX_MAP_TEXINFO` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_AREAS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_AREAS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_AREAPORTALS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_AREAPORTALS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_PLANES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_PLANES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_NODES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_NODES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_BRUSHSIDES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_BRUSHSIDES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_LEAFS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_LEAFS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_VERTS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_VERTS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_FACES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_FACES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_LEAFFACES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_LEAFFACES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_LEAFBRUSHES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_LEAFBRUSHES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_PORTALS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_PORTALS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_EDGES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_EDGES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_SURFEDGES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_SURFEDGES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_LIGHTING` | `packages/formats/src/qfiles.ts` | `MAX_MAP_LIGHTING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_VISIBILITY` | `packages/formats/src/qfiles.ts` | `MAX_MAP_VISIBILITY` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_KEY` | `packages/formats/src/qfiles.ts` | `MAX_KEY` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_VALUE` | `packages/formats/src/qfiles.ts` | `MAX_VALUE` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `lump_t` | `packages/formats/src/qfiles.ts` | `lump_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_ENTITIES` | `packages/formats/src/qfiles.ts` | `LUMP_ENTITIES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_PLANES` | `packages/formats/src/qfiles.ts` | `LUMP_PLANES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_VERTEXES` | `packages/formats/src/qfiles.ts` | `LUMP_VERTEXES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_VISIBILITY` | `packages/formats/src/qfiles.ts` | `LUMP_VISIBILITY` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_NODES` | `packages/formats/src/qfiles.ts` | `LUMP_NODES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_TEXINFO` | `packages/formats/src/qfiles.ts` | `LUMP_TEXINFO` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_FACES` | `packages/formats/src/qfiles.ts` | `LUMP_FACES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_LIGHTING` | `packages/formats/src/qfiles.ts` | `LUMP_LIGHTING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_LEAFS` | `packages/formats/src/qfiles.ts` | `LUMP_LEAFS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_LEAFFACES` | `packages/formats/src/qfiles.ts` | `LUMP_LEAFFACES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_LEAFBRUSHES` | `packages/formats/src/qfiles.ts` | `LUMP_LEAFBRUSHES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_EDGES` | `packages/formats/src/qfiles.ts` | `LUMP_EDGES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_SURFEDGES` | `packages/formats/src/qfiles.ts` | `LUMP_SURFEDGES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_MODELS` | `packages/formats/src/qfiles.ts` | `LUMP_MODELS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_BRUSHES` | `packages/formats/src/qfiles.ts` | `LUMP_BRUSHES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_BRUSHSIDES` | `packages/formats/src/qfiles.ts` | `LUMP_BRUSHSIDES` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_POP` | `packages/formats/src/qfiles.ts` | `LUMP_POP` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_AREAS` | `packages/formats/src/qfiles.ts` | `LUMP_AREAS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_AREAPORTALS` | `packages/formats/src/qfiles.ts` | `LUMP_AREAPORTALS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `HEADER_LUMPS` | `packages/formats/src/qfiles.ts` | `HEADER_LUMPS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dheader_t` | `packages/formats/src/qfiles.ts` | `dheader_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ident` | `packages/formats/src/qfiles.ts` | `ident` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `version` | `packages/formats/src/sp2.ts` | `version` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `lumps` | `packages/formats/src/qfiles.ts` | `lumps` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dmodel_t` | `packages/formats/src/qfiles.ts` | `dmodel_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `origin` | `packages/formats/src/qfiles.ts` | `origin` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `headnode` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dvertex_t` | `packages/formats/src/qfiles.ts` | `dvertex_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `point` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_X` | `packages/formats/src/qfiles.ts` | `PLANE_X` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_Y` | `packages/formats/src/qfiles.ts` | `PLANE_Y` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_Z` | `packages/formats/src/qfiles.ts` | `PLANE_Z` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_ANYX` | `packages/formats/src/qfiles.ts` | `PLANE_ANYX` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_ANYY` | `packages/formats/src/qfiles.ts` | `PLANE_ANYY` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_ANYZ` | `packages/formats/src/qfiles.ts` | `PLANE_ANYZ` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dplane_t` | `packages/formats/src/qfiles.ts` | `dplane_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `normal` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `dist` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `type` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_SOLID` | `packages/formats/src/qfiles.ts` | `CONTENTS_SOLID` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_WINDOW` | `packages/formats/src/qfiles.ts` | `CONTENTS_WINDOW` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_AUX` | `packages/formats/src/qfiles.ts` | `CONTENTS_AUX` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_LAVA` | `packages/formats/src/qfiles.ts` | `CONTENTS_LAVA` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_SLIME` | `packages/formats/src/qfiles.ts` | `CONTENTS_SLIME` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_WATER` | `packages/formats/src/qfiles.ts` | `CONTENTS_WATER` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_MIST` | `packages/formats/src/qfiles.ts` | `CONTENTS_MIST` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `LAST_VISIBLE_CONTENTS` | `packages/formats/src/qfiles.ts` | `LAST_VISIBLE_CONTENTS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_AREAPORTAL` | `packages/formats/src/qfiles.ts` | `CONTENTS_AREAPORTAL` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_PLAYERCLIP` | `packages/formats/src/qfiles.ts` | `CONTENTS_PLAYERCLIP` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_MONSTERCLIP` | `packages/formats/src/qfiles.ts` | `CONTENTS_MONSTERCLIP` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_0` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_0` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_90` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_90` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_180` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_180` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_270` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_270` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_UP` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_UP` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_DOWN` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_DOWN` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_ORIGIN` | `packages/formats/src/qfiles.ts` | `CONTENTS_ORIGIN` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_MONSTER` | `packages/formats/src/qfiles.ts` | `CONTENTS_MONSTER` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_DEADMONSTER` | `packages/formats/src/qfiles.ts` | `CONTENTS_DEADMONSTER` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_DETAIL` | `packages/formats/src/qfiles.ts` | `CONTENTS_DETAIL` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_TRANSLUCENT` | `packages/formats/src/qfiles.ts` | `CONTENTS_TRANSLUCENT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_LADDER` | `packages/formats/src/qfiles.ts` | `CONTENTS_LADDER` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_LIGHT` | `packages/formats/src/qfiles.ts` | `SURF_LIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_SLICK` | `packages/formats/src/qfiles.ts` | `SURF_SLICK` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_SKY` | `packages/formats/src/qfiles.ts` | `SURF_SKY` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_WARP` | `packages/formats/src/qfiles.ts` | `SURF_WARP` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_TRANS33` | `packages/formats/src/qfiles.ts` | `SURF_TRANS33` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_TRANS66` | `packages/formats/src/qfiles.ts` | `SURF_TRANS66` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_FLOWING` | `packages/formats/src/qfiles.ts` | `SURF_FLOWING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_NODRAW` | `packages/formats/src/qfiles.ts` | `SURF_NODRAW` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dnode_t` | `packages/formats/src/qfiles.ts` | `dnode_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `planenum` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `children` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `mins` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `maxs` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `firstface` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `numfaces` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `texinfo_s` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `flags` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `value` | `packages/formats/src/qfiles.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `texture` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `nexttexinfo` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `IDSPRITEHEADER` | `packages/formats/src/sp2.ts` | `IDSPRITEHEADER` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `SPRITE_VERSION` | `packages/formats/src/sp2.ts` | `SPRITE_VERSION` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dsprframe_t` | `packages/formats/src/sp2.ts` | `dsprframe_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `name` | `packages/formats/src/sp2.ts` | `name` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dsprite_t` | `packages/formats/src/sp2.ts` | `dsprite_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ident` | `packages/formats/src/sp2.ts` | `ident` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `version` | `packages/formats/src/sp2.ts` | `version` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `numframes` | `packages/formats/src/sp2.ts` | `numframes` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MIPLEVELS` | `packages/formats/src/wal.ts` | `MIPLEVELS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `miptex_s` | `packages/formats/src/wal.ts` | `miptex_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `name` | `packages/formats/src/wal.ts` | `name` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `offsets` | `packages/formats/src/wal.ts` | `offsets` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `animname` | `packages/formats/src/wal.ts` | `animname` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `flags` | `packages/formats/src/wal.ts` | `flags` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `contents` | `packages/formats/src/wal.ts` | `contents` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `value` | `packages/formats/src/wal.ts` | `value` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `IDBSPHEADER` | `packages/formats/src/qfiles.ts` | `IDBSPHEADER` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `BSPVERSION` | `packages/formats/src/qfiles.ts` | `BSPVERSION` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_MODELS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_MODELS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_BRUSHES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_BRUSHES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_ENTITIES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_ENTITIES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_ENTSTRING` | `packages/formats/src/qfiles.ts` | `MAX_MAP_ENTSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_TEXINFO` | `packages/formats/src/qfiles.ts` | `MAX_MAP_TEXINFO` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_AREAS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_AREAS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_AREAPORTALS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_AREAPORTALS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_PLANES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_PLANES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_NODES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_NODES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_BRUSHSIDES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_BRUSHSIDES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_LEAFS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_LEAFS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_VERTS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_VERTS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_FACES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_FACES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_LEAFFACES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_LEAFFACES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_LEAFBRUSHES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_LEAFBRUSHES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_PORTALS` | `packages/formats/src/qfiles.ts` | `MAX_MAP_PORTALS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_EDGES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_EDGES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_SURFEDGES` | `packages/formats/src/qfiles.ts` | `MAX_MAP_SURFEDGES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_LIGHTING` | `packages/formats/src/qfiles.ts` | `MAX_MAP_LIGHTING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MAP_VISIBILITY` | `packages/formats/src/qfiles.ts` | `MAX_MAP_VISIBILITY` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_KEY` | `packages/formats/src/qfiles.ts` | `MAX_KEY` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_VALUE` | `packages/formats/src/qfiles.ts` | `MAX_VALUE` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `lump_t` | `packages/formats/src/qfiles.ts` | `lump_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_ENTITIES` | `packages/formats/src/qfiles.ts` | `LUMP_ENTITIES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_PLANES` | `packages/formats/src/qfiles.ts` | `LUMP_PLANES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_VERTEXES` | `packages/formats/src/qfiles.ts` | `LUMP_VERTEXES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_VISIBILITY` | `packages/formats/src/qfiles.ts` | `LUMP_VISIBILITY` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_NODES` | `packages/formats/src/qfiles.ts` | `LUMP_NODES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_TEXINFO` | `packages/formats/src/qfiles.ts` | `LUMP_TEXINFO` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_FACES` | `packages/formats/src/qfiles.ts` | `LUMP_FACES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_LIGHTING` | `packages/formats/src/qfiles.ts` | `LUMP_LIGHTING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_LEAFS` | `packages/formats/src/qfiles.ts` | `LUMP_LEAFS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_LEAFFACES` | `packages/formats/src/qfiles.ts` | `LUMP_LEAFFACES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_LEAFBRUSHES` | `packages/formats/src/qfiles.ts` | `LUMP_LEAFBRUSHES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_EDGES` | `packages/formats/src/qfiles.ts` | `LUMP_EDGES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_SURFEDGES` | `packages/formats/src/qfiles.ts` | `LUMP_SURFEDGES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_MODELS` | `packages/formats/src/qfiles.ts` | `LUMP_MODELS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_BRUSHES` | `packages/formats/src/qfiles.ts` | `LUMP_BRUSHES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_BRUSHSIDES` | `packages/formats/src/qfiles.ts` | `LUMP_BRUSHSIDES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_POP` | `packages/formats/src/qfiles.ts` | `LUMP_POP` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_AREAS` | `packages/formats/src/qfiles.ts` | `LUMP_AREAS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LUMP_AREAPORTALS` | `packages/formats/src/qfiles.ts` | `LUMP_AREAPORTALS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `HEADER_LUMPS` | `packages/formats/src/qfiles.ts` | `HEADER_LUMPS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dheader_t` | `packages/formats/src/qfiles.ts` | `dheader_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ident` | `packages/formats/src/qfiles.ts` | `ident` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `version` | `packages/formats/src/qfiles.ts` | `version` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `lumps` | `packages/formats/src/qfiles.ts` | `lumps` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dmodel_t` | `packages/formats/src/qfiles.ts` | `dmodel_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `origin` | `packages/formats/src/qfiles.ts` | `origin` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `headnode` | `packages/formats/src/qfiles.ts` | `headnode` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dvertex_t` | `packages/formats/src/qfiles.ts` | `dvertex_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `point` | `packages/formats/src/qfiles.ts` | `point` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_X` | `packages/formats/src/qfiles.ts` | `PLANE_X` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_Y` | `packages/formats/src/qfiles.ts` | `PLANE_Y` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_Z` | `packages/formats/src/qfiles.ts` | `PLANE_Z` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_ANYX` | `packages/formats/src/qfiles.ts` | `PLANE_ANYX` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_ANYY` | `packages/formats/src/qfiles.ts` | `PLANE_ANYY` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `PLANE_ANYZ` | `packages/formats/src/qfiles.ts` | `PLANE_ANYZ` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dplane_t` | `packages/formats/src/qfiles.ts` | `dplane_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `normal` | `packages/formats/src/qfiles.ts` | `normal` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `dist` | `packages/formats/src/qfiles.ts` | `dist` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `type` | `packages/formats/src/qfiles.ts` | `type` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_SOLID` | `packages/formats/src/qfiles.ts` | `CONTENTS_SOLID` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_WINDOW` | `packages/formats/src/qfiles.ts` | `CONTENTS_WINDOW` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_AUX` | `packages/formats/src/qfiles.ts` | `CONTENTS_AUX` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_LAVA` | `packages/formats/src/qfiles.ts` | `CONTENTS_LAVA` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_SLIME` | `packages/formats/src/qfiles.ts` | `CONTENTS_SLIME` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_WATER` | `packages/formats/src/qfiles.ts` | `CONTENTS_WATER` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_MIST` | `packages/formats/src/qfiles.ts` | `CONTENTS_MIST` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `LAST_VISIBLE_CONTENTS` | `packages/formats/src/qfiles.ts` | `LAST_VISIBLE_CONTENTS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_AREAPORTAL` | `packages/formats/src/qfiles.ts` | `CONTENTS_AREAPORTAL` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_PLAYERCLIP` | `packages/formats/src/qfiles.ts` | `CONTENTS_PLAYERCLIP` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_MONSTERCLIP` | `packages/formats/src/qfiles.ts` | `CONTENTS_MONSTERCLIP` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_0` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_0` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_90` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_90` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_180` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_180` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_270` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_270` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_UP` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_UP` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_CURRENT_DOWN` | `packages/formats/src/qfiles.ts` | `CONTENTS_CURRENT_DOWN` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_ORIGIN` | `packages/formats/src/qfiles.ts` | `CONTENTS_ORIGIN` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_MONSTER` | `packages/formats/src/qfiles.ts` | `CONTENTS_MONSTER` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_DEADMONSTER` | `packages/formats/src/qfiles.ts` | `CONTENTS_DEADMONSTER` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_DETAIL` | `packages/formats/src/qfiles.ts` | `CONTENTS_DETAIL` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_TRANSLUCENT` | `packages/formats/src/qfiles.ts` | `CONTENTS_TRANSLUCENT` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `CONTENTS_LADDER` | `packages/formats/src/qfiles.ts` | `CONTENTS_LADDER` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_LIGHT` | `packages/formats/src/qfiles.ts` | `SURF_LIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_SLICK` | `packages/formats/src/qfiles.ts` | `SURF_SLICK` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_SKY` | `packages/formats/src/qfiles.ts` | `SURF_SKY` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_WARP` | `packages/formats/src/qfiles.ts` | `SURF_WARP` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_TRANS33` | `packages/formats/src/qfiles.ts` | `SURF_TRANS33` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_TRANS66` | `packages/formats/src/qfiles.ts` | `SURF_TRANS66` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_FLOWING` | `packages/formats/src/qfiles.ts` | `SURF_FLOWING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `SURF_NODRAW` | `packages/formats/src/qfiles.ts` | `SURF_NODRAW` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dnode_t` | `packages/formats/src/qfiles.ts` | `dnode_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `planenum` | `packages/formats/src/qfiles.ts` | `planenum` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `children` | `packages/formats/src/qfiles.ts` | `children` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `mins` | `packages/formats/src/qfiles.ts` | `mins` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `maxs` | `packages/formats/src/qfiles.ts` | `maxs` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `firstface` | `packages/formats/src/qfiles.ts` | `firstface` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `numfaces` | `packages/formats/src/qfiles.ts` | `numfaces` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `texinfo_s` | `packages/formats/src/qfiles.ts` | `texinfo_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `flags` | `packages/formats/src/qfiles.ts` | `flags` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `value` | `packages/formats/src/qfiles.ts` | `value` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `texture` | `packages/formats/src/qfiles.ts` | `texture` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `nexttexinfo` | `packages/formats/src/qfiles.ts` | `nexttexinfo` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | struct | `dedge_t` | `packages/formats/src/qfiles.ts` | `dedge_t` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | global | `v` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | macro | `MAXLIGHTMAPS` | `packages/formats/src/qfiles.ts` | `MAXLIGHTMAPS` | A verifier | A redecouper |  |

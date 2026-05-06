@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16`, `MSG_WriteDir`.
+- Dernier lot valide: `MSG_WriteDeltaUsercmd`, `MSG_WriteDeltaEntity`, constantes `CM_*` et `U_*` associees.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: `MSG_WriteDeltaUsercmd`, `MSG_WriteDeltaEntity`, constantes `CM_ANGLE1` a `CM_IMPULSE`, et constantes `U_ORIGIN1` a `U_SOLID`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementations `Quake-2-master/qcommon/common.c`.
+- Cible comparee: `packages/qcommon/src/messages.ts`, `packages/qcommon/src/protocol.ts`, constantes `CM_*` exportees par `packages/qcommon/src/qcommon.ts`.
+- Decision: portage valide apres correction des constantes `U_*` dans `packages/qcommon/src/protocol.ts`. Les valeurs `U_EFFECTS8`, `U_MOREBITS2`, `U_SKIN8`, `U_FRAME16`, `U_RENDERFX16`, `U_EFFECTS16`, `U_MODEL2`, `U_MODEL3`, `U_MODEL4`, `U_MOREBITS3`, `U_OLDORIGIN`, `U_SKIN16`, `U_SOUND` et `U_SOLID` sont maintenant strictement alignees sur le header C, avec le bit 13 volontairement inutilise. `MSG_WriteDeltaUsercmd` conserve le masque et l'ordre d'ecriture C, y compris `msec` et `lightlevel` toujours emis. `MSG_WriteDeltaEntity` conserve les choix byte/short/long pour number, model indices, frame, skin, effects, renderfx, origin, angles, old_origin, sound, event et solid.
+- Runtime: attendu et verifie. `MSG_WriteDeltaUsercmd` est appelee par `CL_SendCmd` et `SV_UserMove` via les flux client/server/netchan. `MSG_WriteDeltaEntity` est appelee par `SV_WriteFrameToClient`, `SV_EmitPacketEntities`, baselines client et server, puis lue par `CL_ParsePacketEntities`/`CL_ParseFrame`.
+- apps/web: attendu et verifie. `apps/web/src/full-game-server-host.ts` declenche `SV_WriteFrameToClient`; le host full-game et les snapshots serveur consomment le flux porte sans logique parallele masquant `messages.ts`.
+- renderer-three: attendu pour `MSG_WriteDeltaEntity`, car les deltas produisent des sorties visibles: modeles, frames, skins, renderfx, effects, beams, old_origin, sons et positions d'entites. Verifie via parse client, snapshots full-game, refresh entity alias flags et renderer three.
+- Commentaires: en-tetes de `MSG_WriteDeltaUsercmd` et `MSG_WriteDeltaEntity` verifies dans `packages/qcommon/src/messages.ts`.
+- Tests ajoutes: assertions numeriques `CM_*` et `U_*`, byte layout `MSG_WriteDeltaUsercmd`, headers delta entity normal et complet dans `scripts/verify/quake2-qcommon-header.ts`.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:cl-input`, `npm run verify:cl-parse`, `npm run verify:server:user`, `npm run verify:server:ents`, `npm run verify:server:send`, `npm run verify:net-chan`, `npm run verify:full-game:server-host`, `npm run verify:full-game:server-snapshots`, `npm run verify:full-game:authoritative-input`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:alias-flags`.
+
+## Session precedente
 
 - Lot traite: bloc `MSG_Write*` simple dans `packages/qcommon/src/messages.ts`: `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16`, `MSG_WriteDir`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementations `Quake-2-master/qcommon/common.c`.
@@ -46,7 +59,7 @@
 
 ## Prochain lot recommande
 
-- `MSG_WriteDeltaUsercmd` dans `packages/qcommon/src/messages.ts`, puis `MSG_WriteDeltaEntity` dans une session separee si le coordinateur veut garder le delta entity et les constantes `U_*` associees isoles.
+- Bloc lecture simple dans `packages/qcommon/src/messages.ts`: `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, `MSG_ReadString`, `MSG_ReadStringLine`, `MSG_ReadCoord`, `MSG_ReadPos`, `MSG_ReadAngle`, `MSG_ReadAngle16`, puis `MSG_ReadDeltaUsercmd` si le lot reste coherent.
 
 ## Blocages
 
