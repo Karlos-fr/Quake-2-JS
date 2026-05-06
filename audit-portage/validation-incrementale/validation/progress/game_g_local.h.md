@@ -1666,7 +1666,31 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-soldier` OK; `npm run verify:m-soldier:source-parity` OK; `npm run verify:m-soldier:header` OK; `npm run verify:m-tank` OK; `npm run verify:m-tank:source-parity` OK; `npm run verify:m-tank:header` OK; `npm run verify:m-supertank` OK; `npm run verify:m-supertank:source-parity` OK; `npm run verify:m-supertank:header` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, ou reprendre `g_utils.ts` quand il ne sera plus reserve. `m_soldier.ts`, `m_tank.ts`, `m_supertank.ts`, `m_move.ts`, `g_items.ts`, `p_hud.ts`, `m_gunner.ts`, `m_chick.ts`, `m_hover.ts`, `m_infantry.ts`, `m_insane.ts` et `m_mutant.ts` ont montre les usages entiers ou absences de `crandom` pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot encore 3x plus gros de reprise `random`/`crandom`, verification/renforcement des familles `packages/game/src/m_brain.ts`, `m_float.ts`, `m_flyer.ts`, `m_gladiator.ts`, `m_medic.ts`, `m_parasite.ts` et `m_flipper.ts`.
+- Verdict: `Partiel` maintenu pour les 2 macros: les consommateurs actifs du lot sont harmonises vers `g_local.random()` quand le C utilise la macro flottante; `m_flipper.ts` est confirme hors macros flottantes et conserve son `rand()` entier sur `randomInt`. Aucun consommateur `crandom()` actif dans ces familles.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_brain.c` consomme `random()` dans `brain_dodge`, `brain_melee`, `brain_pain` et `brain_die`; `brain_hit_right`, `brain_hit_left` et `brain_tentacle_attack` utilisent `rand() % 5`; `brain_walk2_cycle` reste non branche par le C (`walk2 is FUBAR, do not use`).
+  - `m_float.c` consomme `random()` dans `floater_stand`, `floater_melee` et `SP_monster_floater`; `floater_wham`, `floater_zap` et `floater_pain` utilisent `rand()` entier.
+  - `m_flyer.c` consomme `random()` dans `flyer_check_melee`; les branches `flyer_loop_melee`/`flyer_attack` sont commentees dans le C; `flyer_pain` utilise `rand() % 3`.
+  - `m_gladiator.c` consomme `random()` dans `gladiator_pain`; `GaldiatorMelee` utilise `rand() % 5`.
+  - `m_medic.c` consomme `random()` dans `medic_pain`, `medic_dodge` et `medic_continue`.
+  - `m_parasite.c` consomme `random()` dans `parasite_refidget` et `parasite_pain`; la branche `parasite_attack` est commentee dans le C.
+  - `m_flipper.c` n'a aucun appel actif a `random()`/`crandom()`; `flipper_pain` utilise `(rand() + 1) % 2`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes.
+  - Les consommateurs macro actifs du lot appellent `random` importe de `g_local.ts`; les consommateurs entiers restent sur les helpers `randomInt` locaux.
+  - Aucun remplacement gameplay necessaire dans les fichiers TS de ce lot; les modifications portent sur les harness source-parity.
+- Runtime: integration attendue et branchee via les spawns monstres, `g_spawn.ts`, callbacks `stand`/`pain`/`dodge`/`attack`/`melee`/`die`, `monster_think`/`M_MoveFrame`, `G_RunEntity` et `G_RunFrame`; les tirages affectent sons, choix de moves, projectiles/melee, corpses/gibs et frames visibles.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres, projectiles/temp entities et ordre de rendu; aucune logique parallele web detectee pour ces familles.
+- renderer-three: integration indirecte attendue. Les tirages affectent modeles, frames, sons, projectiles/melee, corpses/gibs et scene; le renderer consomme les sorties via snapshots/client/refresh/Three, sans appel direct attendu vers les helpers RNG.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaires des fonctions TS consommatrices verifies quand presents. Pas de commentaire runtime ajoute dans ce lot car aucun code gameplay n'a change.
+- Corrections appliquees:
+  - `scripts/verify/quake2-m-brain-source-parity.ts`, `quake2-m-float-source-parity.ts`, `quake2-m-flyer-source-parity.ts`, `quake2-m-gladiator-source-parity.ts`, `quake2-m-medic-source-parity.ts`, `quake2-m-parasite-source-parity.ts`, `quake2-m-flipper-source-parity.ts`: assertions explicites sur consommateurs `random()` actifs, absence locale de `crandom()` quand applicable, branches C commentees, et maintien de `rand()` entier sur `randomInt`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-brain` OK; `npm run verify:m-brain:header` OK; `npm run verify:m-brain:source-parity` OK; `npm run verify:m-float` OK; `npm run verify:m-float:header` OK; `npm run verify:m-float:source-parity` OK; `npm run verify:m-flyer` OK; `npm run verify:m-flyer:header` OK; `npm run verify:m-flyer:source-parity` OK; `npm run verify:m-gladiator` OK; `npm run verify:m-gladiator:header` OK; `npm run verify:m-gladiator:source-parity` OK; `npm run verify:m-medic` OK; `npm run verify:m-medic:header` OK; `npm run verify:m-medic:source-parity` OK; `npm run verify:m-parasite` OK; `npm run verify:m-parasite:header` OK; `npm run verify:m-parasite:source-parity` OK; `npm run verify:m-flipper` OK; `npm run verify:m-flipper:header` OK; `npm run verify:m-flipper:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec un lot non reserve des consommateurs restants de `random`/`crandom`, en priorisant `g_utils.ts` si libre et les lignes `Math.random()` encore visibles dans `m_actor.ts`, `m_boss2.ts` ou `m_boss32.ts` seulement quand ces fichiers ne sont pas reserves par leurs agents proprietaires. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

@@ -16,7 +16,11 @@ import { type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
   AS_MISSILE,
+  AS_MELEE,
+  AS_SLIDING,
+  AS_STRAIGHT,
   DEAD_DEAD,
+  FL_FLY,
   FRAMETIME,
   M_MoveFrame,
   MOVETYPE_STEP,
@@ -41,6 +45,7 @@ import {
   MZ2_JORG_MACHINEGUN_L1,
   MZ2_JORG_MACHINEGUN_R1,
   SP_monster_jorg,
+  jorg_frames_attack1,
   jorg_frames_pain1,
   jorg_frames_pain2,
   jorg_frames_pain3,
@@ -48,16 +53,21 @@ import {
   jorg_frames_stand,
   jorg_frames_attack2,
   jorg_frames_death1,
+  jorg_frames_end_attack1,
   jorg_frames_end_walk,
+  jorg_frames_start_attack1,
   jorg_frames_start_walk,
   jorg_frames_walk,
   jorgBFG,
+  jorgMachineGun,
   jorg_attack,
   jorg_attack1,
   jorg_dead,
   jorg_death_hit,
   jorg_die,
   jorg_firebullet,
+  jorg_firebullet_left,
+  jorg_firebullet_right,
   jorg_idle,
   jorg_move_attack1,
   jorg_move_attack2,
@@ -92,6 +102,7 @@ function main(): void {
   verifyWalkTables();
   verifyPainTables();
   verifyDeathAndAttack2Tables();
+  verifyAttack1Tables();
   verifyStateTransitions();
   verifySoundsAndPainBranches();
   verifyWeaponCallbacks();
@@ -299,6 +310,35 @@ function verifyDeathAndAttack2Tables(): void {
   assert.ok(jorg_frames_attack2.slice(7).every((frame) => frame.thinkfunc === undefined));
 }
 
+function verifyAttack1Tables(): void {
+  assert.equal(jorg_frames_start_attack1.length, 8);
+  assert.equal(jorg_move_start_attack1.firstframe, 0);
+  assert.equal(jorg_move_start_attack1.lastframe, 7);
+  assert.equal(jorg_move_start_attack1.frame, jorg_frames_start_attack1);
+  assert.equal(jorg_move_start_attack1.endfunc, jorg_attack1);
+  assert.ok(jorg_frames_start_attack1.every((frame) => frame.aifunc?.name === "ai_charge"));
+  assert.ok(jorg_frames_start_attack1.every((frame) => frame.dist === 0));
+  assert.ok(jorg_frames_start_attack1.every((frame) => frame.thinkfunc === undefined));
+
+  assert.equal(jorg_frames_attack1.length, 6);
+  assert.equal(jorg_move_attack1.firstframe, 8);
+  assert.equal(jorg_move_attack1.lastframe, 13);
+  assert.equal(jorg_move_attack1.frame, jorg_frames_attack1);
+  assert.equal(jorg_move_attack1.endfunc, jorg_reattack1);
+  assert.ok(jorg_frames_attack1.every((frame) => frame.aifunc?.name === "ai_charge"));
+  assert.ok(jorg_frames_attack1.every((frame) => frame.dist === 0));
+  assert.ok(jorg_frames_attack1.every((frame) => frame.thinkfunc === jorg_firebullet));
+
+  assert.equal(jorg_frames_end_attack1.length, 4);
+  assert.equal(jorg_move_end_attack1.firstframe, 14);
+  assert.equal(jorg_move_end_attack1.lastframe, 17);
+  assert.equal(jorg_move_end_attack1.frame, jorg_frames_end_attack1);
+  assert.equal(jorg_move_end_attack1.endfunc, jorg_run);
+  assert.ok(jorg_frames_end_attack1.every((frame) => frame.aifunc?.name === "ai_move"));
+  assert.ok(jorg_frames_end_attack1.every((frame) => frame.dist === 0));
+  assert.ok(jorg_frames_end_attack1.every((frame) => frame.thinkfunc === undefined));
+}
+
 function verifyStateTransitions(): void {
   const runtime = createHarnessRuntime();
   const jorg = createJorg(runtime, 3);
@@ -334,6 +374,14 @@ function verifyStateTransitions(): void {
   assert.equal(jorg.s.sound, 0);
   jorg_attack1(jorg);
   assert.equal(jorg.monsterinfo.currentmove, jorg_move_attack1);
+
+  runtime.collision!.trace = (_start, _mins, _maxs, end) => makeTrace(enemy, end);
+  jorg.s.frame = FRAME_attak109 - 1;
+  M_MoveFrame(jorg, runtime);
+  assert.deepEqual(drainMonsterMuzzleFlashEvents(runtime).map((event) => event.flashNumber), [
+    MZ2_JORG_MACHINEGUN_L1,
+    MZ2_JORG_MACHINEGUN_R1
+  ]);
 }
 
 function verifySoundsAndPainBranches(): void {
@@ -398,6 +446,16 @@ function verifyWeaponCallbacks(): void {
     MZ2_JORG_MACHINEGUN_R1
   ]);
 
+  jorg_firebullet_left(jorg, runtime);
+  assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_JORG_MACHINEGUN_L1);
+  jorg_firebullet_right(jorg, runtime);
+  assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_JORG_MACHINEGUN_R1);
+  jorgMachineGun(jorg, runtime);
+  assert.deepEqual(drainMonsterMuzzleFlashEvents(runtime).map((event) => event.flashNumber), [
+    MZ2_JORG_MACHINEGUN_L1,
+    MZ2_JORG_MACHINEGUN_R1
+  ]);
+
   jorgBFG(jorg, runtime);
   assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_JORG_BFG_1);
   assert.ok(runtime.entities.some((entity) => entity.classname === "bfg blast"));
@@ -430,6 +488,31 @@ function verifyCheckAttack(): void {
   runtime.time = 1;
   jorg.monsterinfo.attack_finished = 4;
   assert.equal(Jorg_CheckAttack(jorg, runtime), false);
+
+  runtime.time = 5;
+  jorg.monsterinfo.attack_finished = 0;
+  runtime.collision!.trace = (_start, _mins, _maxs, end) => makeTrace(null, end);
+  assert.equal(Jorg_CheckAttack(jorg, runtime), false, "blocked trace should reject active enemies");
+
+  enemy.health = 0;
+  jorg.monsterinfo.melee = (_self, _runtime) => undefined;
+  enemy.s.origin = [16, 0, 24];
+  enemy.origin = [...enemy.s.origin];
+  assert.equal(Jorg_CheckAttack(jorg, runtime), true, "melee range should bypass missile chance");
+  assert.equal(jorg.monsterinfo.attack_state, AS_MELEE);
+
+  enemy.s.origin = [4096, 0, 24];
+  enemy.origin = [...enemy.s.origin];
+  jorg.monsterinfo.melee = undefined;
+  assert.equal(Jorg_CheckAttack(jorg, runtime), false, "far range should reject missile attack");
+
+  enemy.s.origin = [256, 0, 24];
+  enemy.origin = [...enemy.s.origin];
+  jorg.flags |= FL_FLY;
+  withMathRandom([0.9, 0.2], () => assert.equal(Jorg_CheckAttack(jorg, runtime), false));
+  assert.equal(jorg.monsterinfo.attack_state, AS_SLIDING);
+  withMathRandom([0.9, 0.8], () => assert.equal(Jorg_CheckAttack(jorg, runtime), false));
+  assert.equal(jorg.monsterinfo.attack_state, AS_STRAIGHT);
 }
 
 function verifyDeathAndMakronHandoff(): void {

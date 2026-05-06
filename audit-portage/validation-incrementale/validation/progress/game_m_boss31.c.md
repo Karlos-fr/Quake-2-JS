@@ -2,6 +2,27 @@
 
 ## Session 2026-05-06
 
+- Lot traite: gros bloc attack1 `jorg_frames_start_attack1` global/table/declarative, `jorg_move_start_attack1`, `jorg_frames_attack1` global/table/declarative, `jorg_move_attack1`, `jorg_frames_end_attack1` global/table/declarative, `jorg_move_end_attack1`, `jorg_reattack1`, `jorg_attack1`, puis `jorg_firebullet_right`, `jorg_firebullet_left`, `jorg_firebullet`, `jorg_attack`, `Jorg_CheckAttack` et temporaires associes. Declarations forward C `jorgMachineGun`, `jorg_firebullet`, `jorg_reattack1`, `jorg_attack1` marquees `Non applicable`; `range` et `enemy_infront` marques `Non applicable`.
+- Verdict: Valide pour les entites portees du lot; `Non applicable` pour les declarations forward seules et les variables locales sans effet autonome.
+- Comparaison C/TS: `jorg_frames_start_attack1` conserve 8 frames `ai_charge` a distance 0 sans callback, et `jorg_move_start_attack1` conserve `FRAME_attak101..FRAME_attak108` avec `endfunc jorg_attack1`. `jorg_frames_attack1` conserve 6 frames `ai_charge` a distance 0 avec `jorg_firebullet` a chaque frame, et `jorg_move_attack1` conserve `FRAME_attak109..FRAME_attak114` avec `endfunc jorg_reattack1`. `jorg_frames_end_attack1` conserve 4 frames `ai_move` a distance 0 sans callback, et `jorg_move_end_attack1` conserve `FRAME_attak115..FRAME_attak118` avec `endfunc jorg_run`. `jorg_reattack1` conserve le test `visible`, la boucle `random() < 0.9`, et le reset `s.sound = 0` quand l'attaque se termine. `jorg_attack1` conserve l'entree directe dans `jorg_move_attack1`. Les tirs gauche/droite conservent les muzzle offsets `MZ2_JORG_MACHINEGUN_L1/R1`, la prediction `VectorMA(enemy origin, -0.2, enemy velocity)`, `viewheight`, `monster_fire_bullet` avec `6, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD` et l'ordre gauche puis droite dans `jorg_firebullet`. `jorg_attack` conserve le choix `random() <= 0.75`, les sons attaque 1/2, le loop `boss3/w_loop.wav`, et les moves machinegun/BFG. `Jorg_CheckAttack` conserve trace LOS, range, `ideal_yaw`, melee, cooldown `attack_finished`, rejet `RANGE_FAR`, chances `0.4/0.8/0.4/0.2`, mise a jour missile `level.time + 2*random()` et branches `FL_FLY` sliding/straight.
+- Commentaires d'en-tete: commentaires verifies pour `jorg_reattack1`, `jorg_attack1`, `jorg_attack`, `Jorg_CheckAttack`; commentaires ajoutes pour `jorg_firebullet_right`, `jorg_firebullet_left`, `jorg_firebullet` et l'adapter `jorgMachineGun`.
+- Runtime: integre. `SP_monster_jorg` assigne `monsterinfo.attack = jorg_attack` et `monsterinfo.checkattack = Jorg_CheckAttack`; `jorg_attack` selectionne les moves, `M_MoveFrame` execute les frames attack1 et callbacks de tir depuis `G_RunFrame`/`monster_think`; les tirs emettent les muzzle flashes runtime et les impacts/projectiles via `monster_fire_bullet`/`monster_fire_bfg`.
+- apps/web: integre. `apps/web` ne remplace pas la logique Jorg; les flux full-game/local host consomment les snapshots, sons runtime et messages serveur issus des muzzle flashes/temp entities.
+- renderer-three: integre. Ce lot produit frames visibles de modele Jorg, muzzle flashes de monstre et projectile BFG; `packages/renderer-three` consomme les frames modele via `refresh-entity-sync`/MD2, tandis que les sorties muzzle/temp entity sont produites par le runtime et couvertes par les tests full-game/web/renderer disponibles.
+- Tests lances:
+  - `npm run verify:m-boss31`
+  - `npm run verify:m-boss31:source-parity`
+  - `npm run verify:m-boss31:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `packages/game/src/m_boss31.ts`: ajout des commentaires d'en-tete de `jorg_firebullet_right`, `jorg_firebullet_left`, `jorg_firebullet` et de l'adapter `jorgMachineGun`; pas de changement gameplay.
+  - `scripts/verify/quake2-m-boss31.ts`: assertions ciblees pour tables/moves attack1, callbacks de tir gauche/droite/double, adapter `jorgMachineGun`, boucle `M_MoveFrame` attack1, et branches supplementaires de `Jorg_CheckAttack`.
+
+## Session 2026-05-06
+
 - Lot traite: bloc death `jorg_frames_death1` global/table/declarative, `jorg_move_death`, `jorg_dead`, `jorg_die`, plus premier sous-bloc attack suivant `jorg_frames_attack2` global/table/declarative, `jorg_move_attack2`, `jorgBFG`; declarations forward C `jorg_dead` et `jorgBFG` marquees `Non applicable`.
 - Verdict: Valide pour les entites portees du lot; `Non applicable` pour les declarations forward seules.
 - Comparaison C/TS: `jorg_frames_death1` conserve 50 frames `ai_move` a distance 0, callbacks `MakronToss` et `BossExplode` aux indices 48 et 49, et `jorg_move_death` conserve `FRAME_death01..FRAME_death50` avec `endfunc jorg_dead`. `jorg_dead` conserve le comportement no-op car le corps C reel est compile hors build par `#if 0`. `jorg_die` conserve le son death, `DEAD_DEAD`, `DAMAGE_NO`, `s.sound = 0`, `count = 0` et l'entree dans `jorg_move_death`. `jorg_frames_attack2` conserve 13 frames: 7 `ai_charge` puis 6 `ai_move`, distances 0, callback `jorgBFG` a l'indice 6; `jorg_move_attack2` conserve `FRAME_attak201..FRAME_attak213` avec `endfunc jorg_run`. `jorgBFG` conserve le muzzle `MZ2_JORG_BFG_1`, le son attaque 2, le calcul directionnel et les parametres `monster_fire_bfg` `50, 300, 100, 200`.
@@ -108,4 +129,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec le bloc attack1 `jorg_frames_start_attack1` global/table/declarative, `jorg_move_start_attack1`, `jorg_frames_attack1` global/table/declarative, `jorg_move_attack1`, `jorg_frames_end_attack1` global/table/declarative, `jorg_move_end_attack1`, puis `jorg_reattack1`/`jorg_attack1` si coherent.
+- Terminer avec `SP_monster_jorg`, seule entree restante `A verifier` dans la matrice.

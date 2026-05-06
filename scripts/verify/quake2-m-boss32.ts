@@ -11,13 +11,14 @@
 
 import { strict as assert } from "node:assert";
 
-import { ATTN_NONE, ATTN_NORM, CHAN_AUTO, CHAN_BODY, CHAN_VOICE, CHAN_WEAPON, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { AngleVectors, ATTN_NONE, ATTN_NORM, CHAN_AUTO, CHAN_BODY, CHAN_VOICE, CHAN_WEAPON, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
   AS_MISSILE,
   AS_SLIDING,
   DEAD_DEAD,
   FRAMETIME,
+  G_ProjectSource,
   M_MoveFrame,
   MOVETYPE_STEP,
   MOVETYPE_TOSS,
@@ -30,6 +31,7 @@ import {
   damage_t,
   drainGameSoundEvents,
   drainMonsterMuzzleFlashEvents,
+  getMonsterFlashOffset,
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
@@ -49,7 +51,15 @@ import {
   SP_monster_makron,
   FRAME_active01,
   FRAME_active13,
+  FRAME_attak301,
+  FRAME_attak308,
+  FRAME_attak401,
   FRAME_attak405,
+  FRAME_attak413,
+  FRAME_attak421,
+  FRAME_attak426,
+  FRAME_attak501,
+  FRAME_attak516,
   FRAME_death201,
   FRAME_death295,
   FRAME_death301,
@@ -68,6 +78,9 @@ import {
   makron_brainsplorch,
   makron_dead,
   makron_attack,
+  makron_frames_attack3,
+  makron_frames_attack4,
+  makron_frames_attack5,
   makron_frames_death2,
   makron_frames_death3,
   makron_frames_pain4,
@@ -110,6 +123,7 @@ function main(): void {
   verifyStandRunTablesAndCallbacks();
   verifyPainTablesAndMoves();
   verifyDeathSightTablesAndMoves();
+  verifyAttackTablesAndMoves();
   verifyStateTransitions();
   verifySoundCallbacks();
   verifyPainBranchesPreserveSourceDanglingElse();
@@ -327,6 +341,65 @@ function verifyDeathSightTablesAndMoves(): void {
   assert.equal(makron.monsterinfo.currentmove, makron_move_sight);
 }
 
+function verifyAttackTablesAndMoves(): void {
+  assert.equal(makron_move_attack3.firstframe, FRAME_attak301);
+  assert.equal(makron_move_attack3.lastframe, FRAME_attak308);
+  assert.equal(makron_move_attack3.frame, makron_frames_attack3);
+  assert.equal(makron_move_attack3.endfunc, makron_run);
+  assert.equal(makron_frames_attack3.length, 8);
+  assert.deepEqual(
+    makron_frames_attack3.map((frame) => frame.aifunc?.name),
+    ["ai_charge", "ai_charge", "ai_charge", "ai_charge", "ai_move", "ai_move", "ai_move", "ai_move"]
+  );
+  assert.deepEqual(makron_frames_attack3.map((frame) => frame.dist), new Array<number>(8).fill(0));
+  assert.deepEqual(makron_frames_attack3.map((frame) => frame.thinkfunc?.name), indexedNames(8, [[3, "makronBFG"]]));
+
+  assert.equal(makron_move_attack4.firstframe, FRAME_attak401);
+  assert.equal(makron_move_attack4.lastframe, FRAME_attak426);
+  assert.equal(makron_move_attack4.frame, makron_frames_attack4);
+  assert.equal(makron_move_attack4.endfunc, makron_run);
+  assert.equal(makron_frames_attack4.length, 26);
+  assert.deepEqual(
+    makron_frames_attack4.map((frame) => frame.aifunc?.name),
+    [
+      "ai_charge", "ai_charge", "ai_charge", "ai_charge",
+      "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move",
+      "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move",
+      "ai_move", "ai_move", "ai_move", "ai_move", "ai_move"
+    ]
+  );
+  assert.deepEqual(makron_frames_attack4.map((frame) => frame.dist), new Array<number>(26).fill(0));
+  assert.deepEqual(
+    makron_frames_attack4.map((frame) => frame.thinkfunc?.name),
+    [
+      undefined, undefined, undefined, undefined,
+      "MakronHyperblaster", "MakronHyperblaster", "MakronHyperblaster", "MakronHyperblaster",
+      "MakronHyperblaster", "MakronHyperblaster", "MakronHyperblaster", "MakronHyperblaster",
+      "MakronHyperblaster", "MakronHyperblaster", "MakronHyperblaster", "MakronHyperblaster",
+      "MakronHyperblaster", "MakronHyperblaster", "MakronHyperblaster", "MakronHyperblaster",
+      "MakronHyperblaster", undefined, undefined, undefined, undefined, undefined
+    ]
+  );
+
+  assert.equal(makron_move_attack5.firstframe, FRAME_attak501);
+  assert.equal(makron_move_attack5.lastframe, FRAME_attak516);
+  assert.equal(makron_move_attack5.frame, makron_frames_attack5);
+  assert.equal(makron_move_attack5.endfunc, makron_run);
+  assert.equal(makron_frames_attack5.length, 16);
+  assert.deepEqual(
+    makron_frames_attack5.map((frame) => frame.aifunc?.name),
+    [
+      "ai_charge", "ai_charge", "ai_charge", "ai_charge", "ai_charge", "ai_charge", "ai_charge", "ai_charge",
+      "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move", "ai_move"
+    ]
+  );
+  assert.deepEqual(makron_frames_attack5.map((frame) => frame.dist), new Array<number>(16).fill(0));
+  assert.deepEqual(
+    makron_frames_attack5.map((frame) => frame.thinkfunc?.name),
+    indexedNames(16, [[0, "makron_prerailgun"], [7, "MakronSaveloc"], [8, "MakronRailgun"]])
+  );
+}
+
 function verifyStateTransitions(): void {
   const runtime = createHarnessRuntime();
   const makron = createMakron(runtime, 3);
@@ -425,8 +498,27 @@ function verifyWeaponCallbacks(): void {
 
   makron.s.frame = FRAME_attak405;
   MakronHyperblaster(makron, runtime);
-  assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_MAKRON_BLASTER_1);
+  let flashEvent = drainMonsterMuzzleFlashEvents(runtime).at(-1);
+  assert.equal(flashEvent?.flashNumber, MZ2_MAKRON_BLASTER_1);
   assert.ok(runtime.entities.some((entity) => entity.classname === "bolt"));
+
+  makron.s.frame = FRAME_attak413;
+  MakronHyperblaster(makron, runtime);
+  flashEvent = drainMonsterMuzzleFlashEvents(runtime).at(-1);
+  assert.equal(flashEvent?.flashNumber, MZ2_MAKRON_BLASTER_1);
+  assert.deepEqual(
+    flashEvent?.origin,
+    G_ProjectSource(makron.s.origin, getMonsterFlashOffset(MZ2_MAKRON_BLASTER_1 + (FRAME_attak413 - FRAME_attak405)), AngleVectors(makron.s.angles).forward, AngleVectors(makron.s.angles).right)
+  );
+
+  makron.s.frame = FRAME_attak421;
+  MakronHyperblaster(makron, runtime);
+  flashEvent = drainMonsterMuzzleFlashEvents(runtime).at(-1);
+  assert.equal(flashEvent?.flashNumber, MZ2_MAKRON_BLASTER_1);
+  assert.deepEqual(
+    flashEvent?.origin,
+    G_ProjectSource(makron.s.origin, getMonsterFlashOffset(MZ2_MAKRON_BLASTER_1 + (FRAME_attak421 - FRAME_attak405)), AngleVectors(makron.s.angles).forward, AngleVectors(makron.s.angles).right)
+  );
 
   MakronSaveloc(makron);
   assert.deepEqual(makron.pos1, [256, 0, 48]);

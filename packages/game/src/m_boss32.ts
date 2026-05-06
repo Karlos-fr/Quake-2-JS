@@ -854,6 +854,19 @@ export const makron_move_sight: GameMonsterMove = {
   endfunc: makron_run
 };
 
+/**
+ * Original name: makronBFG
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Projects the Makron BFG muzzle, aims at the enemy view height, plays the attack voice sound,
+ *   and fires the original monster BFG payload.
+ *
+ * Porting notes:
+ * - Keeps the source damage, speed, kick, splash radius and `MZ2_MAKRON_BFG` muzzle id.
+ */
 export function makronBFG(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
@@ -903,6 +916,18 @@ export const makron_move_attack5: GameMonsterMove = {
   endfunc: makron_run
 };
 
+/**
+ * Original name: MakronSaveloc
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Captures the enemy origin plus view height in `self->pos1` for the delayed railgun shot.
+ *
+ * Porting notes:
+ * - Adds a defensive enemy guard; normal runtime reaches this from attack5 only while Makron has an enemy.
+ */
 export function MakronSaveloc(self: GameEntity): void {
   if (!self.enemy) {
     return;
@@ -912,6 +937,18 @@ export function MakronSaveloc(self: GameEntity): void {
   self.pos1[2] += self.enemy.viewheight;
 }
 
+/**
+ * Original name: MakronRailgun
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fires the delayed Makron railgun from the original muzzle id toward the saved `pos1` target.
+ *
+ * Porting notes:
+ * - Preserves the source FIXME behavior: the shot uses the original muzzle Z handling.
+ */
 export function MakronRailgun(self: GameEntity, runtime: GameRuntime): void {
   const { forward, right } = AngleVectors(self.s.angles);
   const start = G_ProjectSource(self.s.origin, makronFlashOffset(MZ2_MAKRON_RAILGUN_1), forward, right);
@@ -920,6 +957,18 @@ export function MakronRailgun(self: GameEntity, runtime: GameRuntime): void {
   monster_fire_railgun(self, start, dir, 50, 100, MZ2_MAKRON_RAILGUN_1, runtime);
 }
 
+/**
+ * Original name: MakronHyperblaster
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Sweeps the Makron blaster muzzle sequence and fires one blaster bolt per attack4 firing frame.
+ *
+ * Porting notes:
+ * - Preserves the source FIXME behavior and the yaw sweep around frames `FRAME_attak413`/`FRAME_attak421`.
+ */
 export function MakronHyperblaster(self: GameEntity, runtime: GameRuntime): void {
   const flash_number = MZ2_MAKRON_BLASTER_1 + (self.s.frame - FRAME_attak405);
   const { forward, right } = AngleVectors(self.s.angles);
@@ -1014,12 +1063,25 @@ export function makron_sight(self: GameEntity): void {
   self.monsterinfo.currentmove = makron_move_sight;
 }
 
+/**
+ * Original name: makron_attack
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects Makron BFG, hyperblaster or railgun attack moves using the original random thresholds.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the original `random()` macro.
+ * - The C computes distance to the enemy in a local `range` variable but never uses it; TS omits that dead local.
+ */
 export function makron_attack(self: GameEntity): void {
   if (!self.enemy) {
     return;
   }
 
-  const r = Math.random();
+  const r = random();
   if (r <= 0.3) {
     self.monsterinfo.currentmove = makron_move_attack3;
   } else if (r <= 0.6) {

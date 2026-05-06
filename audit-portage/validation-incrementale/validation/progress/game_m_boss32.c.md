@@ -3,9 +3,44 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: blocs mort/sight `makron_frames_death2`, `makron_move_death2`, `makron_frames_death3`, `makron_move_death3`, `makron_frames_sight`, `makron_move_sight`, plus `makron_sight`.
-- Verdict du dernier lot: Valide pour les tables/moves mort/sight et `makron_sight`.
+- Dernier lot traite: gros bloc attaque `makronBFG`, `makron_frames_attack3`, `makron_move_attack3`, `makron_frames_attack4`, `makron_move_attack4`, `makron_frames_attack5`, `makron_move_attack5`, callbacks railgun/hyperblaster et `makron_attack`.
+- Verdict du dernier lot: Valide pour les tables/moves attaque, callbacks BFG/railgun/hyperblaster et selection d'attaque.
 - Fichier TS proprietaire: `packages/game/src/m_boss32.ts`
+
+## Session 2026-05-06 - lot attaque BFG/railgun/hyperblaster
+
+Lot encore 3x plus gros traite:
+
+- `makronBFG`.
+- `makron_frames_attack3`, `makron_move_attack3`.
+- `makron_frames_attack4`, `makron_move_attack4`.
+- `makron_frames_attack5`, `makron_move_attack5`.
+- Lignes declaratives `makron_frames_attack3`, `makron_frames_attack4`, `makron_frames_attack5`.
+- `MakronSaveloc`, `MakronRailgun`, `MakronHyperblaster`.
+- `makron_attack`.
+- Temporaires locaux `flash_number`, `dir`, `range`, `r` marques `Non applicable` avec justification.
+
+Corrections:
+
+- `m_boss32.ts`: `makron_attack` utilise maintenant `g_local.random()` pour la macro C `random()`.
+- `m_boss32.ts`: commentaires d'en-tete ajoutes pour `makronBFG`, `MakronSaveloc`, `MakronRailgun`, `MakronHyperblaster` et `makron_attack`.
+- `quake2-m-boss32.ts`: preuves ciblees ajoutees pour les trois tables/moves d'attaque, callbacks, sequence de muzzle offsets hyperblaster, sons BFG, projectiles BFG/blaster, railgun et registre save deja couvre.
+
+Tests lances:
+
+- `npm run verify:m-boss32`
+- `npm run verify:m-boss32:source-parity`
+- `npm run verify:m-boss32:header`
+- `npm run verify:full-game:audio-routing`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Integration:
+
+- Runtime: valide. `SP_monster_makron` branche `monsterinfo.attack = makron_attack`; `makron_attack` selectionne `makron_move_attack3/4/5`, ensuite `M_MoveFrame` appelle `makronBFG`, `MakronHyperblaster`, `makron_prerailgun`, `MakronSaveloc` et `MakronRailgun` aux frames source.
+- apps/web: valide. Les sons BFG transitent par les `soundEvents` runtime; les projectiles, muzzle flashes et snapshots restent produits par le runtime et consommes par le flux full-game, sans logique Makron parallele detectee.
+- renderer-three: valide. Les sorties visibles attendues sont frames du modele Makron, projectile BFG, bolts blaster, rail trail/temp entities et muzzle flashes; elles passent par les entites/snapshots, temp entities et evenements runtime generiques consommes par `renderer-three`. Aucun adapter Makron specifique n'est requis.
 
 ## Session 2026-05-06 - lot death/sight
 
@@ -107,13 +142,11 @@ Integration:
 
 ## Prochain lot recommande
 
-Continuer avec le bloc attaque BFG:
+Continuer avec le bloc torso/death:
 
-- `makronBFG`.
-- `makron_frames_attack3`, `makron_move_attack3`.
-- `makron_frames_attack4`, `makron_move_attack4`.
-- `makron_frames_attack5`, `makron_move_attack5`.
-- Inclure les lignes declaratives associees si le lot reste coherent.
+- `makron_torso_think`, `makron_torso`.
+- `makron_dead`, `makron_die`.
+- Temporaires associes `tempent`, `n` si le lot reste coherent.
 
 ## Session 2026-05-06 - lot callbacks/walk
 
@@ -149,6 +182,6 @@ Integration:
 
 - `Quake-2-master/game/m_boss32.c`: passer a `En cours`.
 - Progress: `progress/game_m_boss32.c.md`.
-- Validees: 63.
-- Non applicables: 8.
-- Prochain lot: `makronBFG`, `makron_frames_attack3`, `makron_move_attack3`, `makron_frames_attack4`, `makron_move_attack4`, `makron_frames_attack5`, `makron_move_attack5`, avec les lignes declaratives associees si coherent.
+- Validees: 80.
+- Non applicables: 12.
+- Prochain lot: `makron_torso_think`, `makron_torso`, `makron_dead`, `makron_die`, avec `tempent`/`n` si coherent.

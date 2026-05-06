@@ -26,9 +26,15 @@ const SOURCE_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../Quake-2-master/game/m_gladiator.c"
 );
+const TS_SOURCE_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../packages/game/src/m_gladiator.ts"
+);
 
 const source = readFileSync(SOURCE_PATH, "utf8");
+const tsSource = readFileSync(TS_SOURCE_PATH, "utf8");
 const sourceWithoutComments = stripComments(source);
+const tsSourceWithoutComments = stripComments(tsSource);
 
 main();
 
@@ -36,8 +42,19 @@ function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifyRandomMacroConsumers();
 
   console.log("quake2-m-gladiator-source-parity: ok");
+}
+
+function verifyRandomMacroConsumers(): void {
+  assert.ok(getFunctionBlock("gladiator_pain").includes("random()"), "gladiator_pain source should use random() macro");
+  const painBlock = getTsFunctionBlock("gladiator_pain");
+  assert.ok(painBlock.includes("random()"), "gladiator_pain TS should use g_local.random()");
+  assert.ok(!painBlock.includes("Math.random"), "gladiator_pain TS should not call Math.random directly");
+
+  assert.ok(getFunctionBlock("GaldiatorMelee").includes("rand() %5"), "GaldiatorMelee source should use integer rand()");
+  assert.ok(getTsFunctionBlock("GaldiatorMelee").includes("randomInt(5)"), "GaldiatorMelee TS should keep integer rand() on randomInt");
 }
 
 function verifySourceFunctionsAreExported(): void {
@@ -164,6 +181,29 @@ function getFunctionBlock(functionName: string): string {
   }
 
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const start = tsSourceWithoutComments.search(new RegExp(`(?:export\\s+)?function\\s+${functionName}\\b`));
+  assert.notEqual(start, -1, `${functionName} should exist in TS source`);
+
+  const bodyStart = tsSourceWithoutComments.indexOf("{", start);
+  assert.notEqual(bodyStart, -1, `${functionName} TS should have a body`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < tsSourceWithoutComments.length; i += 1) {
+    const char = tsSourceWithoutComments[i];
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsSourceWithoutComments.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} TS body was not closed`);
 }
 
 function getFrameConstant(name: string): number {

@@ -28,10 +28,10 @@
 | `Quake-2-master/game/m_boss31.c` | global | `r` | `packages/game/src/m_boss31.ts` | `r` | Non applicable | A redecouper | Variable locale de `jorg_search`, couverte par la validation de `jorg_search`; pas d'entite TS autonome attendue. |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_dead` | `packages/game/src/m_boss31.ts` | `jorg_dead` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_dead` validee sur la ligne fonction plus bas. |
 | `Quake-2-master/game/m_boss31.c` | function | `jorgBFG` | `packages/game/src/m_boss31.ts` | `jorgBFG` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorgBFG` validee sur la ligne fonction plus bas. |
-| `Quake-2-master/game/m_boss31.c` | function | `jorgMachineGun` | `packages/game/src/m_boss31.ts` | `jorgMachineGun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_firebullet` | `packages/game/src/m_boss31.ts` | `jorg_firebullet` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_reattack1` | `packages/game/src/m_boss31.ts` | `jorg_reattack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_attack1` | `packages/game/src/m_boss31.ts` | `jorg_attack1` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `jorgMachineGun` | `packages/game/src/m_boss31.ts` | `jorgMachineGun` | Non applicable | A redecouper | Declaration forward C uniquement; pas de definition source, l'adapter TS delegue au port valide `jorg_firebullet`. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_firebullet` | `packages/game/src/m_boss31.ts` | `jorg_firebullet` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_firebullet` validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_reattack1` | `packages/game/src/m_boss31.ts` | `jorg_reattack1` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_reattack1` validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_attack1` | `packages/game/src/m_boss31.ts` | `jorg_attack1` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_attack1` validee sur la ligne fonction plus bas. |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_idle` | `packages/game/src/m_boss31.ts` | `jorg_idle` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_idle` validee sur la ligne fonction plus bas. |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_step_left` | `packages/game/src/m_boss31.ts` | `jorg_step_left` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_step_left` validee sur la ligne fonction plus bas. |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_step_right` | `packages/game/src/m_boss31.ts` | `jorg_step_right` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_step_right` validee sur la ligne fonction plus bas. |
@@ -73,32 +73,32 @@
 | `Quake-2-master/game/m_boss31.c` | global | `jorg_frames_attack2` | `packages/game/src/m_boss31.ts` | `jorg_frames_attack2` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | table | `jorg_frames_attack2` | `packages/game/src/m_boss31.ts` | `jorg_frames_attack2` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `jorg_move_attack2` | `packages/game/src/m_boss31.ts` | `jorg_move_attack2` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `jorg_frames_start_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_start_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | table | `jorg_frames_start_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_start_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `jorg_move_start_attack1` | `packages/game/src/m_boss31.ts` | `jorg_move_start_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `jorg_frames_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | table | `jorg_frames_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `jorg_move_attack1` | `packages/game/src/m_boss31.ts` | `jorg_move_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `jorg_frames_end_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_end_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | table | `jorg_frames_end_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_end_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `jorg_move_end_attack1` | `packages/game/src/m_boss31.ts` | `jorg_move_end_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_reattack1` | `packages/game/src/m_boss31.ts` | `jorg_reattack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_attack1` | `packages/game/src/m_boss31.ts` | `jorg_attack1` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `jorg_frames_start_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_start_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | table | `jorg_frames_start_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_start_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `jorg_move_start_attack1` | `packages/game/src/m_boss31.ts` | `jorg_move_start_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `jorg_frames_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | table | `jorg_frames_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `jorg_move_attack1` | `packages/game/src/m_boss31.ts` | `jorg_move_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `jorg_frames_end_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_end_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | table | `jorg_frames_end_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_end_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `jorg_move_end_attack1` | `packages/game/src/m_boss31.ts` | `jorg_move_end_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_reattack1` | `packages/game/src/m_boss31.ts` | `jorg_reattack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_attack1` | `packages/game/src/m_boss31.ts` | `jorg_attack1` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_pain` | `packages/game/src/m_boss31.ts` | `jorg_pain` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorgBFG` | `packages/game/src/m_boss31.ts` | `jorgBFG` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_firebullet_right` | `packages/game/src/m_boss31.ts` | `jorg_firebullet_right` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_firebullet_left` | `packages/game/src/m_boss31.ts` | `jorg_firebullet_left` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_firebullet` | `packages/game/src/m_boss31.ts` | `jorg_firebullet` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_attack` | `packages/game/src/m_boss31.ts` | `jorg_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `range` | `packages/game/src/m_boss31.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_firebullet_right` | `packages/game/src/m_boss31.ts` | `jorg_firebullet_right` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_firebullet_left` | `packages/game/src/m_boss31.ts` | `jorg_firebullet_left` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_firebullet` | `packages/game/src/m_boss31.ts` | `jorg_firebullet` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_attack` | `packages/game/src/m_boss31.ts` | `jorg_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `range` | `packages/game/src/m_boss31.ts` |  | Non applicable | A redecouper | Variable locale calculee mais non utilisee dans le C; aucune entite TS autonome attendue. |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_dead` | `packages/game/src/m_boss31.ts` | `jorg_dead` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_die` | `packages/game/src/m_boss31.ts` | `jorg_die` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `Jorg_CheckAttack` | `packages/game/src/m_boss31.ts` | `Jorg_CheckAttack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `chance` | `packages/game/src/m_boss31.ts` | `chance` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `tr` | `packages/game/src/m_boss31.ts` | `tr` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `enemy_infront` | `packages/game/src/m_boss31.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `enemy_range` | `packages/game/src/m_boss31.ts` | `enemy_range` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `enemy_yaw` | `packages/game/src/m_boss31.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `Jorg_CheckAttack` | `packages/game/src/m_boss31.ts` | `Jorg_CheckAttack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `chance` | `packages/game/src/m_boss31.ts` | `chance` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `tr` | `packages/game/src/m_boss31.ts` | `tr` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `enemy_infront` | `packages/game/src/m_boss31.ts` |  | Non applicable | A redecouper | Variable locale assignee mais jamais utilisee par le C; pas d'effet de portage attendu. |
+| `Quake-2-master/game/m_boss31.c` | global | `enemy_range` | `packages/game/src/m_boss31.ts` | `enemy_range` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `enemy_yaw` | `packages/game/src/m_boss31.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `SP_monster_jorg` | `packages/game/src/m_boss31.ts` | `SP_monster_jorg` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_stand` | `packages/game/src/m_boss31.ts` | `jorg_frames_stand` | Valide | matched | Preuves session: source-parity plus assertions ciblees sur longueurs, distances et callbacks. |
 | `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_run` | `packages/game/src/m_boss31.ts` | `jorg_frames_run` | Valide | matched | Preuves session: source-parity plus assertions ciblees sur longueurs, distances et callbacks. |
@@ -110,6 +110,6 @@
 | `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_pain1` | `packages/game/src/m_boss31.ts` | `jorg_frames_pain1` | Valide | matched |  |
 | `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_death1` | `packages/game/src/m_boss31.ts` | `jorg_frames_death1` | Valide | matched |  |
 | `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_attack2` | `packages/game/src/m_boss31.ts` | `jorg_frames_attack2` | Valide | matched |  |
-| `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_start_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_start_attack1` | A verifier | matched |  |
-| `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_attack1` | A verifier | matched |  |
-| `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_end_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_end_attack1` | A verifier | matched |  |
+| `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_start_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_start_attack1` | Valide | matched |  |
+| `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_attack1` | Valide | matched |  |
+| `Quake-2-master/game/m_boss31.c` | declarative:monster-tables | `jorg_frames_end_attack1` | `packages/game/src/m_boss31.ts` | `jorg_frames_end_attack1` | Valide | matched |  |

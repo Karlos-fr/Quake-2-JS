@@ -26,9 +26,15 @@ const SOURCE_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../Quake-2-master/game/m_medic.c"
 );
+const TS_SOURCE_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../packages/game/src/m_medic.ts"
+);
 
 const source = readFileSync(SOURCE_PATH, "utf8");
+const tsSource = readFileSync(TS_SOURCE_PATH, "utf8");
 const sourceWithoutComments = stripComments(source);
+const tsSourceWithoutComments = stripComments(tsSource);
 
 main();
 
@@ -36,8 +42,20 @@ function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifyRandomMacroConsumers();
 
   console.log("quake2-m-medic-source-parity: ok");
+}
+
+function verifyRandomMacroConsumers(): void {
+  for (const functionName of ["medic_pain", "medic_dodge", "medic_continue"]) {
+    assert.ok(getFunctionBlock(functionName).includes("random()"), `${functionName} source should use random() macro`);
+    const tsBlock = getTsFunctionBlock(functionName);
+    assert.ok(tsBlock.includes("random()"), `${functionName} TS should use g_local.random()`);
+    assert.ok(!tsBlock.includes("Math.random"), `${functionName} TS should not call Math.random directly`);
+  }
+
+  assert.ok(!sourceWithoutComments.includes("crandom()"), "m_medic.c should have no active crandom() consumers");
 }
 
 function verifySourceFunctionsAreExported(): void {
@@ -164,6 +182,29 @@ function getFunctionBlock(functionName: string): string {
   }
 
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const start = tsSourceWithoutComments.search(new RegExp(`(?:export\\s+)?function\\s+${functionName}\\b`));
+  assert.notEqual(start, -1, `${functionName} should exist in TS source`);
+
+  const bodyStart = tsSourceWithoutComments.indexOf("{", start);
+  assert.notEqual(bodyStart, -1, `${functionName} TS should have a body`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < tsSourceWithoutComments.length; i += 1) {
+    const char = tsSourceWithoutComments[i];
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsSourceWithoutComments.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} TS body was not closed`);
 }
 
 function getFrameConstant(name: string): number {

@@ -120,138 +120,138 @@
 | `Quake-2-master/game/m_berserk.h` | macro | `FRAME_att_c32` | `packages/game/src/m_berserk.ts` | `FRAME_att_c32` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_berserk.h` | macro | `FRAME_att_c33` | `packages/game/src/m_berserk.ts` | `FRAME_att_c33` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_berserk.h` | macro | `FRAME_att_c34` | `packages/game/src/m_berserk.ts` | `FRAME_att_c34` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att1` | `packages/game/src/m_berserk.ts` | `FRAME_r_att1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att2` | `packages/game/src/m_berserk.ts` | `FRAME_r_att2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att3` | `packages/game/src/m_berserk.ts` | `FRAME_r_att3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att4` | `packages/game/src/m_berserk.ts` | `FRAME_r_att4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att5` | `packages/game/src/m_berserk.ts` | `FRAME_r_att5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att6` | `packages/game/src/m_berserk.ts` | `FRAME_r_att6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att7` | `packages/game/src/m_berserk.ts` | `FRAME_r_att7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att8` | `packages/game/src/m_berserk.ts` | `FRAME_r_att8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att9` | `packages/game/src/m_berserk.ts` | `FRAME_r_att9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att10` | `packages/game/src/m_berserk.ts` | `FRAME_r_att10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att11` | `packages/game/src/m_berserk.ts` | `FRAME_r_att11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att12` | `packages/game/src/m_berserk.ts` | `FRAME_r_att12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att13` | `packages/game/src/m_berserk.ts` | `FRAME_r_att13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att14` | `packages/game/src/m_berserk.ts` | `FRAME_r_att14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att15` | `packages/game/src/m_berserk.ts` | `FRAME_r_att15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att16` | `packages/game/src/m_berserk.ts` | `FRAME_r_att16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att17` | `packages/game/src/m_berserk.ts` | `FRAME_r_att17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att18` | `packages/game/src/m_berserk.ts` | `FRAME_r_att18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb1` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb2` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb3` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb4` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb5` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb6` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb7` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb8` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb9` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb10` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb11` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb12` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb13` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb14` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb15` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb16` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb17` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb18` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam1` | `packages/game/src/m_berserk.ts` | `FRAME_slam1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam2` | `packages/game/src/m_berserk.ts` | `FRAME_slam2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam3` | `packages/game/src/m_berserk.ts` | `FRAME_slam3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam4` | `packages/game/src/m_berserk.ts` | `FRAME_slam4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam5` | `packages/game/src/m_berserk.ts` | `FRAME_slam5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam6` | `packages/game/src/m_berserk.ts` | `FRAME_slam6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam7` | `packages/game/src/m_berserk.ts` | `FRAME_slam7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam8` | `packages/game/src/m_berserk.ts` | `FRAME_slam8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam9` | `packages/game/src/m_berserk.ts` | `FRAME_slam9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam10` | `packages/game/src/m_berserk.ts` | `FRAME_slam10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam11` | `packages/game/src/m_berserk.ts` | `FRAME_slam11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam12` | `packages/game/src/m_berserk.ts` | `FRAME_slam12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam13` | `packages/game/src/m_berserk.ts` | `FRAME_slam13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam14` | `packages/game/src/m_berserk.ts` | `FRAME_slam14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam15` | `packages/game/src/m_berserk.ts` | `FRAME_slam15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam16` | `packages/game/src/m_berserk.ts` | `FRAME_slam16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam17` | `packages/game/src/m_berserk.ts` | `FRAME_slam17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam18` | `packages/game/src/m_berserk.ts` | `FRAME_slam18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam19` | `packages/game/src/m_berserk.ts` | `FRAME_slam19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam20` | `packages/game/src/m_berserk.ts` | `FRAME_slam20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam21` | `packages/game/src/m_berserk.ts` | `FRAME_slam21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam22` | `packages/game/src/m_berserk.ts` | `FRAME_slam22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam23` | `packages/game/src/m_berserk.ts` | `FRAME_slam23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck1` | `packages/game/src/m_berserk.ts` | `FRAME_duck1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck2` | `packages/game/src/m_berserk.ts` | `FRAME_duck2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck3` | `packages/game/src/m_berserk.ts` | `FRAME_duck3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck4` | `packages/game/src/m_berserk.ts` | `FRAME_duck4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck5` | `packages/game/src/m_berserk.ts` | `FRAME_duck5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck6` | `packages/game/src/m_berserk.ts` | `FRAME_duck6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck7` | `packages/game/src/m_berserk.ts` | `FRAME_duck7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck8` | `packages/game/src/m_berserk.ts` | `FRAME_duck8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck9` | `packages/game/src/m_berserk.ts` | `FRAME_duck9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck10` | `packages/game/src/m_berserk.ts` | `FRAME_duck10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall1` | `packages/game/src/m_berserk.ts` | `FRAME_fall1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall2` | `packages/game/src/m_berserk.ts` | `FRAME_fall2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall3` | `packages/game/src/m_berserk.ts` | `FRAME_fall3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall4` | `packages/game/src/m_berserk.ts` | `FRAME_fall4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall5` | `packages/game/src/m_berserk.ts` | `FRAME_fall5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall6` | `packages/game/src/m_berserk.ts` | `FRAME_fall6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall7` | `packages/game/src/m_berserk.ts` | `FRAME_fall7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall8` | `packages/game/src/m_berserk.ts` | `FRAME_fall8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall9` | `packages/game/src/m_berserk.ts` | `FRAME_fall9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall10` | `packages/game/src/m_berserk.ts` | `FRAME_fall10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall11` | `packages/game/src/m_berserk.ts` | `FRAME_fall11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall12` | `packages/game/src/m_berserk.ts` | `FRAME_fall12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall13` | `packages/game/src/m_berserk.ts` | `FRAME_fall13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall14` | `packages/game/src/m_berserk.ts` | `FRAME_fall14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall15` | `packages/game/src/m_berserk.ts` | `FRAME_fall15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall16` | `packages/game/src/m_berserk.ts` | `FRAME_fall16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall17` | `packages/game/src/m_berserk.ts` | `FRAME_fall17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall18` | `packages/game/src/m_berserk.ts` | `FRAME_fall18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall19` | `packages/game/src/m_berserk.ts` | `FRAME_fall19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall20` | `packages/game/src/m_berserk.ts` | `FRAME_fall20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painc1` | `packages/game/src/m_berserk.ts` | `FRAME_painc1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painc2` | `packages/game/src/m_berserk.ts` | `FRAME_painc2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painc3` | `packages/game/src/m_berserk.ts` | `FRAME_painc3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painc4` | `packages/game/src/m_berserk.ts` | `FRAME_painc4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb1` | `packages/game/src/m_berserk.ts` | `FRAME_painb1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb2` | `packages/game/src/m_berserk.ts` | `FRAME_painb2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb3` | `packages/game/src/m_berserk.ts` | `FRAME_painb3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb4` | `packages/game/src/m_berserk.ts` | `FRAME_painb4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb5` | `packages/game/src/m_berserk.ts` | `FRAME_painb5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb6` | `packages/game/src/m_berserk.ts` | `FRAME_painb6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb7` | `packages/game/src/m_berserk.ts` | `FRAME_painb7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb8` | `packages/game/src/m_berserk.ts` | `FRAME_painb8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb9` | `packages/game/src/m_berserk.ts` | `FRAME_painb9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb10` | `packages/game/src/m_berserk.ts` | `FRAME_painb10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb11` | `packages/game/src/m_berserk.ts` | `FRAME_painb11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb12` | `packages/game/src/m_berserk.ts` | `FRAME_painb12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb13` | `packages/game/src/m_berserk.ts` | `FRAME_painb13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb14` | `packages/game/src/m_berserk.ts` | `FRAME_painb14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb15` | `packages/game/src/m_berserk.ts` | `FRAME_painb15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb16` | `packages/game/src/m_berserk.ts` | `FRAME_painb16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb17` | `packages/game/src/m_berserk.ts` | `FRAME_painb17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb18` | `packages/game/src/m_berserk.ts` | `FRAME_painb18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb19` | `packages/game/src/m_berserk.ts` | `FRAME_painb19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb20` | `packages/game/src/m_berserk.ts` | `FRAME_painb20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death1` | `packages/game/src/m_berserk.ts` | `FRAME_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death2` | `packages/game/src/m_berserk.ts` | `FRAME_death2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death3` | `packages/game/src/m_berserk.ts` | `FRAME_death3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death4` | `packages/game/src/m_berserk.ts` | `FRAME_death4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death5` | `packages/game/src/m_berserk.ts` | `FRAME_death5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death6` | `packages/game/src/m_berserk.ts` | `FRAME_death6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death7` | `packages/game/src/m_berserk.ts` | `FRAME_death7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death8` | `packages/game/src/m_berserk.ts` | `FRAME_death8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death9` | `packages/game/src/m_berserk.ts` | `FRAME_death9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death10` | `packages/game/src/m_berserk.ts` | `FRAME_death10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death11` | `packages/game/src/m_berserk.ts` | `FRAME_death11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death12` | `packages/game/src/m_berserk.ts` | `FRAME_death12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death13` | `packages/game/src/m_berserk.ts` | `FRAME_death13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc1` | `packages/game/src/m_berserk.ts` | `FRAME_deathc1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc2` | `packages/game/src/m_berserk.ts` | `FRAME_deathc2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc3` | `packages/game/src/m_berserk.ts` | `FRAME_deathc3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc4` | `packages/game/src/m_berserk.ts` | `FRAME_deathc4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc5` | `packages/game/src/m_berserk.ts` | `FRAME_deathc5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc6` | `packages/game/src/m_berserk.ts` | `FRAME_deathc6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc7` | `packages/game/src/m_berserk.ts` | `FRAME_deathc7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc8` | `packages/game/src/m_berserk.ts` | `FRAME_deathc8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.h` | macro | `MODEL_SCALE` | `packages/game/src/m_berserk.ts` | `MODEL_SCALE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att1` | `packages/game/src/m_berserk.ts` | `FRAME_r_att1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att2` | `packages/game/src/m_berserk.ts` | `FRAME_r_att2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att3` | `packages/game/src/m_berserk.ts` | `FRAME_r_att3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att4` | `packages/game/src/m_berserk.ts` | `FRAME_r_att4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att5` | `packages/game/src/m_berserk.ts` | `FRAME_r_att5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att6` | `packages/game/src/m_berserk.ts` | `FRAME_r_att6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att7` | `packages/game/src/m_berserk.ts` | `FRAME_r_att7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att8` | `packages/game/src/m_berserk.ts` | `FRAME_r_att8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att9` | `packages/game/src/m_berserk.ts` | `FRAME_r_att9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att10` | `packages/game/src/m_berserk.ts` | `FRAME_r_att10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att11` | `packages/game/src/m_berserk.ts` | `FRAME_r_att11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att12` | `packages/game/src/m_berserk.ts` | `FRAME_r_att12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att13` | `packages/game/src/m_berserk.ts` | `FRAME_r_att13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att14` | `packages/game/src/m_berserk.ts` | `FRAME_r_att14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att15` | `packages/game/src/m_berserk.ts` | `FRAME_r_att15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att16` | `packages/game/src/m_berserk.ts` | `FRAME_r_att16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att17` | `packages/game/src/m_berserk.ts` | `FRAME_r_att17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_att18` | `packages/game/src/m_berserk.ts` | `FRAME_r_att18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb1` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb2` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb3` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb4` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb5` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb6` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb7` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb8` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb9` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb10` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb11` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb12` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb13` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb14` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb15` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb16` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb17` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_r_attb18` | `packages/game/src/m_berserk.ts` | `FRAME_r_attb18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam1` | `packages/game/src/m_berserk.ts` | `FRAME_slam1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam2` | `packages/game/src/m_berserk.ts` | `FRAME_slam2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam3` | `packages/game/src/m_berserk.ts` | `FRAME_slam3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam4` | `packages/game/src/m_berserk.ts` | `FRAME_slam4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam5` | `packages/game/src/m_berserk.ts` | `FRAME_slam5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam6` | `packages/game/src/m_berserk.ts` | `FRAME_slam6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam7` | `packages/game/src/m_berserk.ts` | `FRAME_slam7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam8` | `packages/game/src/m_berserk.ts` | `FRAME_slam8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam9` | `packages/game/src/m_berserk.ts` | `FRAME_slam9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam10` | `packages/game/src/m_berserk.ts` | `FRAME_slam10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam11` | `packages/game/src/m_berserk.ts` | `FRAME_slam11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam12` | `packages/game/src/m_berserk.ts` | `FRAME_slam12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam13` | `packages/game/src/m_berserk.ts` | `FRAME_slam13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam14` | `packages/game/src/m_berserk.ts` | `FRAME_slam14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam15` | `packages/game/src/m_berserk.ts` | `FRAME_slam15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam16` | `packages/game/src/m_berserk.ts` | `FRAME_slam16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam17` | `packages/game/src/m_berserk.ts` | `FRAME_slam17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam18` | `packages/game/src/m_berserk.ts` | `FRAME_slam18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam19` | `packages/game/src/m_berserk.ts` | `FRAME_slam19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam20` | `packages/game/src/m_berserk.ts` | `FRAME_slam20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam21` | `packages/game/src/m_berserk.ts` | `FRAME_slam21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam22` | `packages/game/src/m_berserk.ts` | `FRAME_slam22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_slam23` | `packages/game/src/m_berserk.ts` | `FRAME_slam23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck1` | `packages/game/src/m_berserk.ts` | `FRAME_duck1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck2` | `packages/game/src/m_berserk.ts` | `FRAME_duck2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck3` | `packages/game/src/m_berserk.ts` | `FRAME_duck3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck4` | `packages/game/src/m_berserk.ts` | `FRAME_duck4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck5` | `packages/game/src/m_berserk.ts` | `FRAME_duck5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck6` | `packages/game/src/m_berserk.ts` | `FRAME_duck6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck7` | `packages/game/src/m_berserk.ts` | `FRAME_duck7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck8` | `packages/game/src/m_berserk.ts` | `FRAME_duck8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck9` | `packages/game/src/m_berserk.ts` | `FRAME_duck9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_duck10` | `packages/game/src/m_berserk.ts` | `FRAME_duck10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall1` | `packages/game/src/m_berserk.ts` | `FRAME_fall1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall2` | `packages/game/src/m_berserk.ts` | `FRAME_fall2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall3` | `packages/game/src/m_berserk.ts` | `FRAME_fall3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall4` | `packages/game/src/m_berserk.ts` | `FRAME_fall4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall5` | `packages/game/src/m_berserk.ts` | `FRAME_fall5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall6` | `packages/game/src/m_berserk.ts` | `FRAME_fall6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall7` | `packages/game/src/m_berserk.ts` | `FRAME_fall7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall8` | `packages/game/src/m_berserk.ts` | `FRAME_fall8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall9` | `packages/game/src/m_berserk.ts` | `FRAME_fall9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall10` | `packages/game/src/m_berserk.ts` | `FRAME_fall10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall11` | `packages/game/src/m_berserk.ts` | `FRAME_fall11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall12` | `packages/game/src/m_berserk.ts` | `FRAME_fall12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall13` | `packages/game/src/m_berserk.ts` | `FRAME_fall13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall14` | `packages/game/src/m_berserk.ts` | `FRAME_fall14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall15` | `packages/game/src/m_berserk.ts` | `FRAME_fall15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall16` | `packages/game/src/m_berserk.ts` | `FRAME_fall16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall17` | `packages/game/src/m_berserk.ts` | `FRAME_fall17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall18` | `packages/game/src/m_berserk.ts` | `FRAME_fall18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall19` | `packages/game/src/m_berserk.ts` | `FRAME_fall19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_fall20` | `packages/game/src/m_berserk.ts` | `FRAME_fall20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painc1` | `packages/game/src/m_berserk.ts` | `FRAME_painc1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painc2` | `packages/game/src/m_berserk.ts` | `FRAME_painc2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painc3` | `packages/game/src/m_berserk.ts` | `FRAME_painc3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painc4` | `packages/game/src/m_berserk.ts` | `FRAME_painc4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb1` | `packages/game/src/m_berserk.ts` | `FRAME_painb1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb2` | `packages/game/src/m_berserk.ts` | `FRAME_painb2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb3` | `packages/game/src/m_berserk.ts` | `FRAME_painb3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb4` | `packages/game/src/m_berserk.ts` | `FRAME_painb4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb5` | `packages/game/src/m_berserk.ts` | `FRAME_painb5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb6` | `packages/game/src/m_berserk.ts` | `FRAME_painb6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb7` | `packages/game/src/m_berserk.ts` | `FRAME_painb7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb8` | `packages/game/src/m_berserk.ts` | `FRAME_painb8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb9` | `packages/game/src/m_berserk.ts` | `FRAME_painb9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb10` | `packages/game/src/m_berserk.ts` | `FRAME_painb10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb11` | `packages/game/src/m_berserk.ts` | `FRAME_painb11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb12` | `packages/game/src/m_berserk.ts` | `FRAME_painb12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb13` | `packages/game/src/m_berserk.ts` | `FRAME_painb13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb14` | `packages/game/src/m_berserk.ts` | `FRAME_painb14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb15` | `packages/game/src/m_berserk.ts` | `FRAME_painb15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb16` | `packages/game/src/m_berserk.ts` | `FRAME_painb16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb17` | `packages/game/src/m_berserk.ts` | `FRAME_painb17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb18` | `packages/game/src/m_berserk.ts` | `FRAME_painb18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb19` | `packages/game/src/m_berserk.ts` | `FRAME_painb19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_painb20` | `packages/game/src/m_berserk.ts` | `FRAME_painb20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death1` | `packages/game/src/m_berserk.ts` | `FRAME_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death2` | `packages/game/src/m_berserk.ts` | `FRAME_death2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death3` | `packages/game/src/m_berserk.ts` | `FRAME_death3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death4` | `packages/game/src/m_berserk.ts` | `FRAME_death4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death5` | `packages/game/src/m_berserk.ts` | `FRAME_death5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death6` | `packages/game/src/m_berserk.ts` | `FRAME_death6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death7` | `packages/game/src/m_berserk.ts` | `FRAME_death7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death8` | `packages/game/src/m_berserk.ts` | `FRAME_death8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death9` | `packages/game/src/m_berserk.ts` | `FRAME_death9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death10` | `packages/game/src/m_berserk.ts` | `FRAME_death10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death11` | `packages/game/src/m_berserk.ts` | `FRAME_death11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death12` | `packages/game/src/m_berserk.ts` | `FRAME_death12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_death13` | `packages/game/src/m_berserk.ts` | `FRAME_death13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc1` | `packages/game/src/m_berserk.ts` | `FRAME_deathc1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc2` | `packages/game/src/m_berserk.ts` | `FRAME_deathc2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc3` | `packages/game/src/m_berserk.ts` | `FRAME_deathc3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc4` | `packages/game/src/m_berserk.ts` | `FRAME_deathc4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc5` | `packages/game/src/m_berserk.ts` | `FRAME_deathc5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc6` | `packages/game/src/m_berserk.ts` | `FRAME_deathc6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc7` | `packages/game/src/m_berserk.ts` | `FRAME_deathc7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `FRAME_deathc8` | `packages/game/src/m_berserk.ts` | `FRAME_deathc8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.h` | macro | `MODEL_SCALE` | `packages/game/src/m_berserk.ts` | `MODEL_SCALE` | Valide | A redecouper |  |

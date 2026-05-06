@@ -34,10 +34,10 @@ function assertFrameRange(prefix: string, first: number, last: number, expectedS
 assertFrameRange("stand", 30, 50, 0);
 assertFrameRange("stand", 1, 29, 21);
 assertFrameRange("walk", 1, 20, 50);
+assertFrameRange("attack", 1, 40, 70);
+assertFrameRange("pain", 2, 23, 110);
+assertFrameRange("death", 2, 50, 132);
 
-assertEqual("FRAME_attack1", boss2.FRAME_attack1, 70);
-assertEqual("FRAME_pain2", boss2.FRAME_pain2, 110);
-assertEqual("FRAME_death50", boss2.FRAME_death50, 180);
 assertEqual("MODEL_SCALE", boss2.MODEL_SCALE, 1.0);
 
 console.log("quake2-m-boss2-header: ok");

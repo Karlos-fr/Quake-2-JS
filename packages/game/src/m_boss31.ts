@@ -650,19 +650,54 @@ export function jorgBFG(self: GameEntity, runtime: GameRuntime): void {
   monster_fire_bfg(self, start, dir, 50, 300, 100, 200, MZ2_JORG_BFG_1, runtime);
 }
 
+/**
+ * Original name: jorg_firebullet_right
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Fires one right-side machinegun bullet from `MZ2_JORG_MACHINEGUN_R1` toward the predicted enemy position.
+ */
 export function jorg_firebullet_right(self: GameEntity, runtime: GameRuntime): void {
   fireJorgMachinegun(self, MZ2_JORG_MACHINEGUN_R1, runtime);
 }
 
+/**
+ * Original name: jorg_firebullet_left
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Fires one left-side machinegun bullet from `MZ2_JORG_MACHINEGUN_L1` toward the predicted enemy position.
+ */
 export function jorg_firebullet_left(self: GameEntity, runtime: GameRuntime): void {
   fireJorgMachinegun(self, MZ2_JORG_MACHINEGUN_L1, runtime);
 }
 
+/**
+ * Original name: jorg_firebullet
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fires the left machinegun muzzle first, then the right muzzle, matching the source call order.
+ */
 export function jorg_firebullet(self: GameEntity, runtime: GameRuntime): void {
   jorg_firebullet_left(self, runtime);
   jorg_firebullet_right(self, runtime);
 }
 
+/**
+ * Original name: N/A
+ * Source: N/A (compatibility adapter for the forward-only `jorgMachineGun` declaration in game/m_boss31.c)
+ * Category: Adapter
+ *
+ * Purpose:
+ * - Preserve an exported callback name used by older audit/save surfaces while delegating to the validated machinegun port.
+ */
 export function jorgMachineGun(self: GameEntity, runtime: GameRuntime): void {
   jorg_firebullet(self, runtime);
 }

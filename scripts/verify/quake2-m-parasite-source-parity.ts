@@ -26,9 +26,15 @@ const SOURCE_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../Quake-2-master/game/m_parasite.c"
 );
+const TS_SOURCE_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../packages/game/src/m_parasite.ts"
+);
 
 const source = readFileSync(SOURCE_PATH, "utf8");
+const tsSource = readFileSync(TS_SOURCE_PATH, "utf8");
 const sourceWithoutComments = stripComments(source);
+const tsSourceWithoutComments = stripComments(tsSource);
 
 main();
 
@@ -36,8 +42,21 @@ function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifyRandomMacroConsumers();
 
   console.log("quake2-m-parasite-source-parity: ok");
+}
+
+function verifyRandomMacroConsumers(): void {
+  for (const functionName of ["parasite_refidget", "parasite_pain"]) {
+    assert.ok(/\brandom\s*\(/.test(getFunctionBlock(functionName)), `${functionName} source should use random() macro`);
+    const tsBlock = getTsFunctionBlock(functionName);
+    assert.ok(tsBlock.includes("random()"), `${functionName} TS should use g_local.random()`);
+    assert.ok(!tsBlock.includes("Math.random"), `${functionName} TS should not call Math.random directly`);
+  }
+
+  assert.ok(!stripComments(getFunctionBlock("parasite_attack")).includes("random()"), "parasite_attack random branch is source-commented");
+  assert.ok(!sourceWithoutComments.includes("crandom()"), "m_parasite.c should have no active crandom() consumers");
 }
 
 function verifySourceFunctionsAreExported(): void {
@@ -144,7 +163,7 @@ function parseMoves(cSource: string): Map<string, SourceMove> {
 }
 
 function getFunctionBlock(functionName: string): string {
-  const start = source.indexOf(`void ${functionName}`);
+  const start = source.search(new RegExp(`(?:void|qboolean)\\s+${functionName}\\b\\s*\\([^;{}]*\\)\\s*\\{`));
   assert.notEqual(start, -1, `${functionName} should exist in source`);
 
   const bodyStart = source.indexOf("{", start);
@@ -164,6 +183,29 @@ function getFunctionBlock(functionName: string): string {
   }
 
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const start = tsSourceWithoutComments.search(new RegExp(`(?:export\\s+)?function\\s+${functionName}\\b`));
+  assert.notEqual(start, -1, `${functionName} should exist in TS source`);
+
+  const bodyStart = tsSourceWithoutComments.indexOf("{", start);
+  assert.notEqual(bodyStart, -1, `${functionName} TS should have a body`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < tsSourceWithoutComments.length; i += 1) {
+    const char = tsSourceWithoutComments[i];
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsSourceWithoutComments.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} TS body was not closed`);
 }
 
 function getFrameConstant(name: string): number {
