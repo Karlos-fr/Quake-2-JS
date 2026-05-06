@@ -60,16 +60,16 @@
 | `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Argc` | `packages/qcommon/src/cmd.ts` | `Cmd_Argc` | Valide | A redecouper | Commentaire verifie; resultat teste apres tokenization. |
 | `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Argv` | `packages/qcommon/src/cmd.ts` | `Cmd_Argv` | Valide | A redecouper | Commentaire verifie; bornes negative/hors plage testees. |
 | `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Args` | `packages/qcommon/src/cmd.ts` | `Cmd_Args` | Valide | A redecouper | Commentaire verifie; queue d'arguments testee. |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_MacroExpandString` | `packages/qcommon/src/cmd.ts` | `Cmd_MacroExpandString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `inquote` | `packages/qcommon/src/cmd.ts` | `inQuote` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `scan` | `packages/qcommon/src/cmd.ts` | `scan` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `expanded` | `packages/qcommon/src/cmd.ts` | `expanded` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `temporary` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_TokenizeString` | `packages/qcommon/src/cmd.ts` | `Cmd_TokenizeString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `com_token` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `l` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `break` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_MacroExpandString` | `packages/qcommon/src/cmd.ts` | `Cmd_MacroExpandString` | Valide | A redecouper | Corrige: commentaire portage, erreurs taille/quotes/boucle et parsing `COM_Parse`; tests ajoutes. |
+| `Quake-2-master/qcommon/cmd.c` | global | `inquote` | `packages/qcommon/src/cmd.ts` | `inQuote` | Non applicable | A redecouper | Variable locale de `Cmd_MacroExpandString`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `scan` | `packages/qcommon/src/cmd.ts` | `scan` | Non applicable | A redecouper | Variable locale de `Cmd_MacroExpandString`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `expanded` | `packages/qcommon/src/cmd.ts` | `expanded` | Non applicable | A redecouper | Variable locale de `Cmd_MacroExpandString`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `temporary` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cmd_MacroExpandString`, pas une entite proprietaire; construction TS directe. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_TokenizeString` | `packages/qcommon/src/cmd.ts` | `Cmd_TokenizeString` | Valide | A redecouper | Commentaire verifie; macro expansion, quotes, newline, `cmd_args`, bornes tokens et erreurs testees. |
+| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cmd_TokenizeString`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `com_token` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cmd_TokenizeString`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `l` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cmd_TokenizeString`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `break` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Mot-cle C de controle de flux extrait a tort, pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmd.c` | function | `Cmd_AddCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_AddCommand` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | function | `Cmd_RemoveCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_RemoveCommand` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Exists` | `packages/qcommon/src/cmd.ts` | `Cmd_Exists` | A verifier | A redecouper |  |

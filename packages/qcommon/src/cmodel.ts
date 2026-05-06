@@ -444,7 +444,7 @@ export function CM_TransformedPointContents(
  *
  * Porting notes:
  * - Covers the core world/submodel brush tracing path needed by `pmove`.
- * - Does not yet port rotated transformed traces.
+ * - Rotated and translated submodel traces are handled by `CM_TransformedBoxTrace`.
  */
 export function CM_BoxTrace(
   world: CollisionWorld,

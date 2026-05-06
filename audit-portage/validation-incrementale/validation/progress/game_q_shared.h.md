@@ -2,6 +2,9 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: utilitaires partages declares par `q_shared.h` de `COM_SkipPath` a `Info_Validate`.
+- Entites validees: `COM_SkipPath`, `COM_StripExtension`, `COM_FileBase`, `COM_FilePath`, `COM_DefaultExtension`, `COM_Parse`, `Com_sprintf`, `Com_PageInMemory`, `Q_stricmp`, `Q_strcasecmp`, `Q_strncasecmp`, `BigShort`, `LittleShort`, `BigLong`, `LittleLong`, `BigFloat`, `LittleFloat`, `Swap_Init`, `va`, `MAX_INFO_KEY`, `MAX_INFO_VALUE`, `MAX_INFO_STRING`, `Info_ValueForKey`, `Info_RemoveKey`, `Info_SetValueForKey`, `Info_Validate`.
+- Ownership: ces lignes sont des declarations/API de `q_shared.h`; les corps C proprietaires sont dans `game/q_shared.c`, et les commentaires TS pointent bien vers `Source: game/q_shared.c`.
 - 2026-05-06: macros/fonctions math de `DotProduct` a `RotatePointAroundVector`.
 - Entites validees: `DotProduct`, `VectorSubtract`, `VectorAdd`, `VectorCopy`, `VectorClear`, `VectorNegate`, `VectorSet`, `VectorMA`, `_DotProduct`, `_VectorSubtract`, `_VectorAdd`, `_VectorCopy`, `ClearBounds`, `AddPointToBounds`, `VectorCompare`, `VectorLength`, `CrossProduct`, `VectorNormalize`, `VectorNormalize2`, `VectorInverse`, `VectorScale`, `Q_log2`, `R_ConcatRotations`, `R_ConcatTransforms`, `AngleVectors`, `BoxOnPlaneSide`, `anglemod`, `LerpAngle`, `ProjectPointOnPlane`, `PerpendicularVector`, `RotatePointAroundVector`.
 - Entites non applicables: `BOX_ON_PLANE_SIDE`, macro C d'optimisation inlinee par `BoxOnPlaneSide` en TS.
@@ -11,6 +14,8 @@
 
 ## Corrections
 
+- `Info_SetValueForKey` dans `packages/qcommon/src/common.ts` accepte maintenant les points-virgules dans les valeurs, comme le C; seuls les points-virgules de cle restent rejetes.
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `MAX_INFO_*` et les cas limites de `Info_SetValueForKey`.
 - Ajout de `VectorNegate` et `VectorSet` dans `packages/math/src/q_shared.ts`, avec reexport depuis `packages/qcommon/src/index.ts`.
 - Ajout de couvertures dans `scripts/verify/quake2-q-shared-header.ts` pour les macros vectorielles, `Q_log2` et les chemins axial/signbits de `BoxOnPlaneSide`.
 - Ajout de `ERR_FATAL`, `ERR_DROP`, `ERR_DISCONNECT`, `nanmask`, `IS_NAN` et `Q_ftol` dans `packages/qcommon/src/q_shared.ts`.
@@ -20,11 +25,17 @@
 
 - `npm run verify:q-shared:header` OK.
 - `npm run typecheck` OK.
+- `npm run verify:cvar` OK.
+- `npm run verify:full-game:server-host` OK.
 - `npm run verify:full-game:three-renderer` OK.
 - Controle central: `npm run verify:q-shared:header`, `npm run typecheck` et `npm run verify:full-game:three-renderer` OK apres consolidation.
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `COM_*`, endian, compare ASCII et info strings est expose par `packages/qcommon/src/index.ts`; les fonctions avec corps C restent documentees comme portees depuis `game/q_shared.c`.
+- Runtime: `COM_Parse` est atteint par le spawn d'entites, `Info_*` par userinfo/client connect/server/game, `MAX_INFO_STRING` par les flux serveur, `Com_PageInMemory` par le son client, et `Com_sprintf` par les loaders/adapters.
+- `apps/web`: integration via les runtimes full-game/server-host qui declenchent userinfo, spawn parsing et chargements d'assets sans logique parallele masquante.
+- `renderer-three`: pas de sortie visible directe pour `Info_*`/endian/compare; `Com_sprintf` est consomme dans le chargement visible des BSP/WAL par `gl-model-loader`, verifie via `verify:full-game:three-renderer`.
 - Le bloc math est integre via l'entrypoint `packages/qcommon/src/index.ts` et utilise par PMove, collision, client/server/game, refresh client et renderer.
 - `apps/web` consomme ce bloc via le runtime full-game et des adapters de vue/input (`AngleVectors`), sans logique parallele qui masque un manque runtime.
 - `renderer-three` consomme directement les sorties math attendues pour camera/frustum, models/frames, surfaces, beams, dlights, world lighting et particules. `RotatePointAroundVector`, `PerpendicularVector`, `BoxOnPlaneSide`, `DotProduct`, `VectorMA` et familles vectorielles sont branches dans les chemins visibles.
@@ -34,4 +45,4 @@
 
 ## Prochain lot recommande
 
-- Reprendre `COM_SkipPath` a `COM_DefaultExtension`, puis `COM_Parse`/`Com_sprintf` si le lot reste coherent.
+- Reprendre `curtime`, `Sys_Milliseconds`, `Sys_Mkdir`, `Hunk_Begin`, `Hunk_Alloc`, `Hunk_Free`, `Hunk_End`, puis les flags `SFF_*`/`Sys_Find*` si le lot reste coherent.

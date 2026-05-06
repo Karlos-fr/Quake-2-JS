@@ -18,7 +18,7 @@
 
 import { createSizeBuffer, SZ_Clear, SZ_Write, type sizebuf_t } from "../../memory/src/index.js";
 import { MAX_STRING_CHARS, MAX_STRING_TOKENS } from "./q_shared.js";
-import { COM_Argc, COM_Argv, COM_ClearArgv, type CommonRuntime } from "./common.js";
+import { COM_Argc, COM_Argv, COM_ClearArgv, COM_Parse, type CommonRuntime } from "./common.js";
 
 export const EXEC_NOW = 0;
 export const EXEC_INSERT = 1;
@@ -730,33 +730,67 @@ export function Cmd_List_f(runtime: CommandRuntime): string[] {
 }
 
 /**
- * Category: New
- * Purpose: Expand `$token` macros using the optional runtime hook while respecting quoted regions.
+ * Original name: Cmd_MacroExpandString
+ * Source: qcommon/cmd.c
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must stop expansion when unmatched quotes are detected.
+ * Behavior:
+ * - Expands `$cvar` tokens outside quoted regions.
+ * - Discards lines that exceed MAX_STRING_CHARS, loop during expansion, or have unmatched quotes.
+ *
+ * Porting notes:
+ * - Uses the runtime macro hook in place of direct Cvar_VariableString calls.
+ * - Emits C Com_Printf messages through the optional print hook.
  */
 function Cmd_MacroExpandString(runtime: CommandRuntime, text: string): string | null {
-  if (!runtime.hooks.expandMacroToken) {
-    return text;
+  let scan = text;
+  let inQuote = false;
+
+  if (scan.length >= MAX_STRING_CHARS) {
+    runtime.hooks.onPrint?.(`Line exceeded ${MAX_STRING_CHARS} chars, discarded.\n`);
+    return null;
   }
 
-  let scan = text;
+  let count = 0;
+  for (let index = 0; index < scan.length; index += 1) {
+    if (scan[index] === "\"") {
+      inQuote = !inQuote;
+    }
 
-  for (let expansionCount = 0; expansionCount < 100; expansionCount += 1) {
-    const pass = expandMacroPass(runtime, scan);
-    if (pass === null) {
+    if (inQuote || scan[index] !== "$") {
+      continue;
+    }
+
+    const parsed = COM_Parse(scan, index + 1);
+    if (parsed.nextIndex === null && parsed.token.length === 0) {
+      continue;
+    }
+
+    const tokenValue = runtime.hooks.expandMacroToken?.(parsed.token) ?? "";
+    const nextIndex = parsed.nextIndex ?? scan.length;
+    const expanded = `${scan.slice(0, index)}${tokenValue}${scan.slice(nextIndex)}`;
+    if (expanded.length >= MAX_STRING_CHARS) {
+      runtime.hooks.onPrint?.(`Expanded line exceeded ${MAX_STRING_CHARS} chars, discarded.\n`);
       return null;
     }
 
-    if (!pass.changed) {
-      return scan;
-    }
+    scan = expanded;
+    index -= 1;
 
-    scan = pass.text;
+    count += 1;
+    if (count === 100) {
+      runtime.hooks.onPrint?.("Macro expansion loop, discarded.\n");
+      return null;
+    }
   }
 
-  return null;
+  if (inQuote) {
+    runtime.hooks.onPrint?.("Line has unmatched quote, discarded.\n");
+    return null;
+  }
+
+  return scan;
 }
 
 /**
@@ -889,57 +923,4 @@ function emitCommandOutput(runtime: CommandRuntime, output: string | string[] | 
   }
 
   runtime.hooks.onPrint?.(output);
-}
-
-/**
- * Category: New
- * Purpose: Perform one macro-expansion pass while respecting quoted regions and command-line size limits.
- *
- * Constraints:
- * - Must preserve the original "do not expand inside quotes" behavior.
- * - Must return the input unchanged when no macro expansion occurs during the pass.
- */
-function expandMacroPass(runtime: CommandRuntime, text: string): { text: string; changed: boolean } | null {
-  let expanded = "";
-  let inQuote = false;
-  let changed = false;
-
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-    if (char === "\"") {
-      inQuote = !inQuote;
-      expanded += char;
-      continue;
-    }
-
-    if (!inQuote && char === "$") {
-      const parsed = parseCommandToken(text, index + 1);
-      if (parsed.token.length === 0) {
-        expanded += char;
-        continue;
-      }
-
-      expanded += runtime.hooks.expandMacroToken?.(parsed.token) ?? "";
-      changed = true;
-      index = parsed.nextIndex - 1;
-      if (expanded.length >= MAX_STRING_CHARS) {
-        return null;
-      }
-      continue;
-    }
-
-    expanded += char;
-    if (expanded.length >= MAX_STRING_CHARS) {
-      return null;
-    }
-  }
-
-  if (inQuote) {
-    return null;
-  }
-
-  return {
-    text: changed ? expanded : text,
-    changed
-  };
 }

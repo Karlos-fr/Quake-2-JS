@@ -164,7 +164,9 @@ function verifyStartupCommandInjection(): void {
 }
 
 function verifyTokenizationAndMacroExpansion(): void {
+  const macroPrints: string[] = [];
   const runtime = createCommandRuntime({
+    onPrint: (line) => macroPrints.push(line),
     expandMacroToken: (token) => {
       if (token === "name") {
         return "quake2";
@@ -174,6 +176,9 @@ function verifyTokenizationAndMacroExpansion(): void {
       }
       if (token === "loop") {
         return "$loop";
+      }
+      if (token === "huge") {
+        return "x".repeat(1024);
       }
       return "";
     }
@@ -189,11 +194,36 @@ function verifyTokenizationAndMacroExpansion(): void {
   Cmd_TokenizeString(runtime, "echo \"$name\" tail", true);
   assert.equal(Cmd_Argv(runtime, 1), "$name", "quoted macro should not expand");
 
+  Cmd_TokenizeString(runtime, "echo $ name tail", true);
+  assert.equal(Cmd_Argv(runtime, 1), "quake2", "macro parse should skip whitespace like COM_Parse");
+  assert.equal(Cmd_Args(runtime), "quake2 tail", "macro whitespace replacement args mismatch");
+
   Cmd_TokenizeString(runtime, "echo $loop", true);
   assert.equal(Cmd_Argc(runtime), 0, "macro loop should discard line");
+  assert.equal(macroPrints.at(-1), "Macro expansion loop, discarded.\n", "macro loop print mismatch");
 
   Cmd_TokenizeString(runtime, "echo \"unterminated", true);
   assert.equal(Cmd_Argc(runtime), 0, "unmatched quote should discard line");
+  assert.equal(macroPrints.at(-1), "Line has unmatched quote, discarded.\n", "unmatched quote print mismatch");
+
+  Cmd_TokenizeString(runtime, "echo $huge", true);
+  assert.equal(Cmd_Argc(runtime), 0, "oversized macro expansion should discard line");
+  assert.equal(macroPrints.at(-1), "Expanded line exceeded 1024 chars, discarded.\n", "expanded line print mismatch");
+
+  Cmd_TokenizeString(runtime, "x".repeat(1024), true);
+  assert.equal(Cmd_Argc(runtime), 0, "oversized input line should discard line");
+  assert.equal(macroPrints.at(-1), "Line exceeded 1024 chars, discarded.\n", "line length print mismatch");
+
+  const noHookPrints: string[] = [];
+  const noHookRuntime = createCommandRuntime({
+    onPrint: (line) => noHookPrints.push(line)
+  });
+  Cmd_TokenizeString(noHookRuntime, "echo $missing tail", true);
+  assert.deepEqual(noHookRuntime.cmd_argv, ["echo", "tail"], "missing macro hook should mirror empty cvar replacement");
+
+  Cmd_TokenizeString(noHookRuntime, "echo \"unterminated", true);
+  assert.equal(Cmd_Argc(noHookRuntime), 0, "unmatched quote should be checked without macro hook");
+  assert.equal(noHookPrints.at(-1), "Line has unmatched quote, discarded.\n", "no-hook unmatched quote print mismatch");
 }
 
 function verifyCommandRegistryAndCompletion(): void {

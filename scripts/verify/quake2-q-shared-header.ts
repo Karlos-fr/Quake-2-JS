@@ -121,6 +121,9 @@ import {
   MAX_CLIENTS,
   MAX_GENERAL,
   MAX_IMAGES,
+  MAX_INFO_KEY,
+  MAX_INFO_STRING,
+  MAX_INFO_VALUE,
   MAX_ITEMS,
   MAX_LIGHTSTYLES,
   MAX_MODELS,
@@ -171,6 +174,9 @@ assert.equal(CS_ITEMS, CS_LIGHTS + MAX_LIGHTSTYLES, "CS_ITEMS chain mismatch");
 assert.equal(CS_PLAYERSKINS, CS_ITEMS + MAX_ITEMS, "CS_PLAYERSKINS chain mismatch");
 assert.equal(CS_GENERAL, CS_PLAYERSKINS + MAX_CLIENTS, "CS_GENERAL chain mismatch");
 assert.equal(MAX_GENERAL, MAX_CLIENTS * 2, "MAX_GENERAL mismatch");
+assert.equal(MAX_INFO_KEY, 64, "MAX_INFO_KEY mismatch");
+assert.equal(MAX_INFO_VALUE, 64, "MAX_INFO_VALUE mismatch");
+assert.equal(MAX_INFO_STRING, 512, "MAX_INFO_STRING mismatch");
 
 assert.equal(VIDREF_GL, 1, "VIDREF_GL mismatch");
 assert.equal(VIDREF_SOFT, 2, "VIDREF_SOFT mismatch");
@@ -198,12 +204,21 @@ const parseSource = "   // comment\n\"hello world\" next";
 const parseResult = COM_Parse(parseSource);
 assert.equal(parseResult.token, "hello world", "COM_Parse quoted token mismatch");
 assert.equal(COM_Parse(parseSource, parseResult.nextIndex ?? 0).token, "next", "COM_Parse next token mismatch");
+assert.deepEqual(COM_Parse(null), { token: "", nextIndex: null }, "COM_Parse null input mismatch");
+assert.deepEqual(COM_Parse("   \t\n"), { token: "", nextIndex: null }, "COM_Parse whitespace EOF mismatch");
+assert.equal(COM_Parse("// only comment\nword").token, "word", "COM_Parse comment skip mismatch");
+assert.equal(COM_Parse("unterminated").nextIndex, null, "COM_Parse terminal word pointer mismatch");
+assert.equal(COM_Parse("x".repeat(128)).token, "", "COM_Parse overlong regular token discard mismatch");
+assert.equal(COM_Parse(`"${"q".repeat(128)}"`).token.length, 128, "COM_Parse quoted token length mismatch");
 
 let info = "";
 info = Info_SetValueForKey(info, "name", "player");
 info = Info_SetValueForKey(info, "skin", "male/grunt");
 assert.equal(Info_ValueForKey(info, "name"), "player", "Info_ValueForKey mismatch");
 assert.equal(Info_RemoveKey(info, "name"), "\\skin\\male/grunt", "Info_RemoveKey mismatch");
+assert.equal(Info_SetValueForKey("", "motd", "hello;world"), "\\motd\\hello;world", "Info_SetValueForKey value semicolon mismatch");
+assert.equal(Info_SetValueForKey("\\name\\player", "name", ""), "", "Info_SetValueForKey empty value removal mismatch");
+assert.equal(Info_SetValueForKey("\\name\\player", "bad;key", "value"), "\\name\\player", "Info_SetValueForKey key semicolon guard mismatch");
 assert.equal(Info_Validate("\\name\\ok"), true, "Info_Validate valid mismatch");
 assert.equal(Info_Validate("\\name\\bad;value"), false, "Info_Validate invalid mismatch");
 
@@ -220,7 +235,8 @@ assert.equal(LongNoSwap(-1), -1, "LongNoSwap mismatch");
 assert.ok(Math.abs(FloatSwap(1.0) - 4.600602988224807e-41) < 1e-45, "FloatSwap mismatch");
 assert.equal(FloatNoSwap(1.0), 1.0, "FloatNoSwap mismatch");
 assert.equal(Swap_Init().bigendien, false, "Swap_Init host-endian detection mismatch");
-assert.equal(va("a", 1, "b"), "a1b", "va mismatch");
+assert.equal(va("%s%i%s", "a", 1, "b"), "a1b", "va string/integer format mismatch");
+assert.equal(va("%04i %.2f %% %X", 7, 1.25, 255), "0007 1.25 % FF", "va numeric format mismatch");
 assert.equal(Q_stricmp("Blaster", "blaster"), 0, "Q_stricmp mismatch");
 assert.equal(Q_strcasecmp("Rocket", "rocket"), 0, "Q_strcasecmp mismatch");
 assert.equal(Q_strncasecmp("Machinegun", "machine", 7), 0, "Q_strncasecmp prefix mismatch");
@@ -259,6 +275,11 @@ assert.equal(Sys_FindNext(systemRuntime, 0, 0), null, "Sys_FindClose mismatch");
 
 Com_PageInMemory(systemRuntime, new Uint8Array([1, 2, 3, 4]), 4);
 assert.equal(systemRuntime.paged_total, 4, "Com_PageInMemory mismatch");
+const pagedBuffer = new Uint8Array(8193);
+pagedBuffer[4096] = 5;
+pagedBuffer[8192] = 7;
+Com_PageInMemory(systemRuntime, pagedBuffer, pagedBuffer.length);
+assert.equal(systemRuntime.paged_total, 16, "Com_PageInMemory page stride mismatch");
 
 assert.throws(() => Sys_Error(systemRuntime, "boom"), /fatal:boom/, "Sys_Error mismatch");
 

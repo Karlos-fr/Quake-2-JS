@@ -18,6 +18,7 @@ import { parseBsp, type darea_t } from "../../packages/formats/src/bsp.js";
 import {
   CM_LoadMap,
   CM_AreasConnected,
+  CM_BoxTrace,
   CM_BoxLeafnums,
   CM_BoxLeafnums_headnode,
   CM_ClusterPHS,
@@ -35,6 +36,7 @@ import {
   CM_PointContents,
   CM_ReadPortalState,
   CM_SetAreaPortalState,
+  CM_TransformedPointContents,
   CM_WriteAreaBits,
   CM_WritePortalState,
   createCollisionModelRuntime,
@@ -82,6 +84,11 @@ function main(): void {
   const boxHeadnode = CM_HeadnodeForBox(world, [-16, -16, -16], [16, 16, 16]);
   const boxContentsInside = CM_PointContents(world, [0, 0, 0], boxHeadnode);
   const boxContentsOutside = CM_PointContents(world, [64, 64, 64], boxHeadnode);
+  const translatedBoxContentsInside = CM_TransformedPointContents(world, [128, 0, 0], boxHeadnode, [128, 0, 0], [0, 90, 0]);
+  const translatedBoxContentsOutside = CM_TransformedPointContents(world, [192, 64, 64], boxHeadnode, [128, 0, 0], [0, 90, 0]);
+  const boxPointTrace = CM_BoxTrace(world, [64, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0], boxHeadnode, CONTENTS_MONSTER);
+  const boxSweepTrace = CM_BoxTrace(world, [64, 0, 0], [0, 0, 0], [-8, -8, -8], [8, 8, 8], boxHeadnode, CONTENTS_MONSTER);
+  const boxStationaryTrace = CM_BoxTrace(world, [0, 0, 0], [0, 0, 0], [-8, -8, -8], [8, 8, 8], boxHeadnode, CONTENTS_MONSTER);
 
   const touchedLeafs: number[] = [];
   const { count: boxLeafCount, topnode } = CM_BoxLeafnums(world, [-16, -16, -16], [16, 16, 16], touchedLeafs, 64);
@@ -109,6 +116,9 @@ function main(): void {
   console.log(`leaf at origin: ${worldLeaf} cluster=${worldCluster} area=${worldArea}`);
   console.log(`leaf0 contents: ${worldContents}`);
   console.log(`box hull contents inside/outside: ${boxContentsInside}/${boxContentsOutside}`);
+  console.log(`box point trace fraction/end: ${boxPointTrace.fraction.toFixed(9)} / ${boxPointTrace.endpos.join(",")}`);
+  console.log(`box sweep trace fraction/end: ${boxSweepTrace.fraction.toFixed(9)} / ${boxSweepTrace.endpos.join(",")}`);
+  console.log(`box stationary flags: startsolid=${boxStationaryTrace.startsolid} allsolid=${boxStationaryTrace.allsolid}`);
   console.log(`box leaf count: ${boxLeafCount} topnode=${topnode}`);
   console.log(`synthetic box leafs: ${syntheticBoxLeafs.join(",")} topnode=${syntheticBoxTopnode}`);
   console.log(`pvs/phs bytes: ${pvs.length}/${phs.length}`);
@@ -122,6 +132,17 @@ function main(): void {
   assert(boxHeadnode === world.box_headnode, "box headnode mismatch");
   assert(boxContentsInside === CONTENTS_MONSTER, "box hull should report monster contents inside");
   assert(boxContentsOutside !== CONTENTS_MONSTER, "box hull should not report monster contents outside");
+  assert(translatedBoxContentsInside === CONTENTS_MONSTER, "transformed box hull should subtract origin before contents lookup");
+  assert(translatedBoxContentsOutside !== CONTENTS_MONSTER, "transformed box hull should report empty contents outside translated bounds");
+  assertAlmostEqual(boxPointTrace.fraction, 0.74951171875, "point trace should apply DIST_EPSILON at the brush face");
+  assertAlmostEqual(boxSweepTrace.fraction, 0.62451171875, "swept box trace should expand planes by mins/maxs and DIST_EPSILON");
+  assertVecAlmostEqual(boxPointTrace.endpos, [16.03125, 0, 0], "point trace endpos should match epsilon-adjusted fraction");
+  assertVecAlmostEqual(boxSweepTrace.endpos, [24.03125, 0, 0], "swept box trace endpos should match expanded brush face");
+  assert(boxPointTrace.contents === CONTENTS_MONSTER, "point trace should carry brush contents");
+  assert(boxSweepTrace.contents === CONTENTS_MONSTER, "swept box trace should carry brush contents");
+  assert(boxStationaryTrace.startsolid, "stationary box trace should start solid inside box hull");
+  assert(boxStationaryTrace.allsolid, "stationary box trace should be allsolid inside box hull");
+  assert(boxStationaryTrace.fraction === 0, "stationary box trace should have zero fraction inside box hull");
   assert(boxLeafCount >= 1, "expected at least one touched leaf");
   assert(syntheticBoxLeafCount === 1, "synthetic box hull should expose exactly one content leaf");
   assert(syntheticBoxLeafs[0] === world.box_leaf, "synthetic box hull should route inside bounds to box_leaf");
@@ -172,5 +193,17 @@ function findAreaReferencingPortal(areas: darea_t[], portalIndex: number): numbe
 function assert(condition: boolean, message: string): void {
   if (!condition) {
     throw new Error(message);
+  }
+}
+
+function assertAlmostEqual(actual: number, expected: number, message: string, epsilon = 0.000001): void {
+  if (Math.abs(actual - expected) > epsilon) {
+    throw new Error(`${message}: expected ${expected}, got ${actual}`);
+  }
+}
+
+function assertVecAlmostEqual(actual: readonly number[], expected: readonly number[], message: string, epsilon = 0.000001): void {
+  for (let index = 0; index < expected.length; index += 1) {
+    assertAlmostEqual(actual[index], expected[index], `${message}[${index}]`, epsilon);
   }
 }

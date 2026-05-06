@@ -132,52 +132,52 @@
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums_headnode` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums_headnode` | Valide | A redecouper | Liste leafs/topnode comparee C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums` | Valide | A redecouper | Wrapper world model compare C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxLeafnums_headnode` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums_headnode` | Valide | A redecouper | Doublon de detection couvert avec le port `CM_BoxLeafnums_headnode`; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_PointContents` | `packages/qcommon/src/cmodel.ts` | `CM_PointContents` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `l` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TransformedPointContents` | `packages/qcommon/src/cmodel.ts` | `CM_TransformedPointContents` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `p_l` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `temp` | `packages/qcommon/src/cmodel.ts` | `temp` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `l` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | macro | `DIST_EPSILON` | `packages/qcommon/src/cmodel.ts` | `DIST_EPSILON` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `trace_trace` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `trace_contents` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `trace_ispoint` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_ClipBoxToBrush` | `packages/qcommon/src/cmodel.ts` | `CM_ClipBoxToBrush` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `dist` | `packages/qcommon/src/cmodel.ts` | `dist` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `ofs` | `packages/qcommon/src/cmodel.ts` | `ofs` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `f` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `ofs` | `packages/qcommon/src/cmodel.ts` | `ofs` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TestBoxInBrush` | `packages/qcommon/src/cmodel.ts` | `CM_TestBoxInBrush` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `dist` | `packages/qcommon/src/cmodel.ts` | `dist` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `ofs` | `packages/qcommon/src/cmodel.ts` | `ofs` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `d1` | `packages/qcommon/src/cmodel.ts` | `d1` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `ofs` | `packages/qcommon/src/cmodel.ts` | `ofs` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TraceToLeaf` | `packages/qcommon/src/cmodel.ts` | `CM_TraceToLeaf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `k` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `brushnum` | `packages/qcommon/src/cmodel.ts` | `brushnum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `leaf` | `packages/qcommon/src/cmodel.ts` | `leaf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TestInLeaf` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `k` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `brushnum` | `packages/qcommon/src/cmodel.ts` | `brushnum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `leaf` | `packages/qcommon/src/cmodel.ts` | `leaf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_RecursiveHullCheck` | `packages/qcommon/src/cmodel.ts` | `CM_RecursiveHullCheck` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `node` | `packages/qcommon/src/cmodel.ts` | `node` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `idist` | `packages/qcommon/src/cmodel.ts` | `idist` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `mid` | `packages/qcommon/src/cmodel.ts` | `mid` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `side` | `packages/qcommon/src/cmodel.ts` | `side` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `midf` | `packages/qcommon/src/cmodel.ts` | `midf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `offset` | `packages/qcommon/src/cmodel.ts` | `offset` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxTrace` | `packages/qcommon/src/cmodel.ts` | `CM_BoxTrace` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `leafs` | `packages/qcommon/src/cmodel.ts` | `leafs` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `topnode` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TransformedBoxTrace` | `packages/qcommon/src/cmodel.ts` | `CM_TransformedBoxTrace` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `trace` | `packages/qcommon/src/cmodel.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `a` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `temp` | `packages/qcommon/src/cmodel.ts` | `temp` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `rotated` | `packages/qcommon/src/cmodel.ts` | `rotated` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `rotated` | `packages/qcommon/src/cmodel.ts` | `rotated` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_PointContents` | `packages/qcommon/src/cmodel.ts` | `CM_PointContents` | Valide | A redecouper | Contents compare C vs TS; preuve `npx tsx ./scripts/verify/quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `l` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TransformedPointContents` | `packages/qcommon/src/cmodel.ts` | `CM_TransformedPointContents` | Valide | A redecouper | Translation/rotation comparees C vs TS; preuves `quake2-cmodel.ts` et `quake2-collision-phase1.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `p_l` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `temp` | `packages/qcommon/src/cmodel.ts` | `temp` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `l` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | macro | `DIST_EPSILON` | `packages/qcommon/src/cmodel.ts` | `DIST_EPSILON` | Valide | A redecouper | Valeur 0.03125 verifiee via fractions de trace epsilon dans `quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `trace_trace` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Etat file-static C remplace par l'objet `TraceWork` par trace. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `trace_contents` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Etat file-static C remplace par l'objet `TraceWork` par trace. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `trace_ispoint` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Etat file-static C remplace par l'objet `TraceWork` par trace. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_ClipBoxToBrush` | `packages/qcommon/src/cmodel.ts` | `CM_ClipBoxToBrush` | Valide | A redecouper | Clip brush point/AABB compare C vs TS; preuve fractions/endpos/contents dans `quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `dist` | `packages/qcommon/src/cmodel.ts` | `dist` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `ofs` | `packages/qcommon/src/cmodel.ts` | `ofs` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `f` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `ofs` | `packages/qcommon/src/cmodel.ts` | `ofs` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TestBoxInBrush` | `packages/qcommon/src/cmodel.ts` | `CM_TestBoxInBrush` | Valide | A redecouper | Stationary AABB startsolid/allsolid compare C vs TS; preuve `quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `dist` | `packages/qcommon/src/cmodel.ts` | `dist` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `ofs` | `packages/qcommon/src/cmodel.ts` | `ofs` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `d1` | `packages/qcommon/src/cmodel.ts` | `d1` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `ofs` | `packages/qcommon/src/cmodel.ts` | `ofs` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TraceToLeaf` | `packages/qcommon/src/cmodel.ts` | `CM_TraceToLeaf` | Valide | A redecouper | Leaf brush filtering/dedup compare C vs TS; preuves trace world/server/client. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `k` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `brushnum` | `packages/qcommon/src/cmodel.ts` | `brushnum` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `leaf` | `packages/qcommon/src/cmodel.ts` | `leaf` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TestInLeaf` | `packages/qcommon/src/cmodel.ts` | `CM_TestInLeafs` | Valide | A redecouper | Renomme en adapter explicite pour remplacer les globals temporaires; preuve stationary trace dans `quake2-cmodel.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `k` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `brushnum` | `packages/qcommon/src/cmodel.ts` | `brushnum` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `leaf` | `packages/qcommon/src/cmodel.ts` | `leaf` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_RecursiveHullCheck` | `packages/qcommon/src/cmodel.ts` | `CM_RecursiveHullCheck` | Valide | A redecouper | BSP recursion/epsilon split compare C vs TS; preuves `quake2-cmodel.ts` et `quake2-collision-phase1.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `node` | `packages/qcommon/src/cmodel.ts` | `node` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `idist` | `packages/qcommon/src/cmodel.ts` | `idist` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `mid` | `packages/qcommon/src/cmodel.ts` | `mid` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `side` | `packages/qcommon/src/cmodel.ts` | `side` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `midf` | `packages/qcommon/src/cmodel.ts` | `midf` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `offset` | `packages/qcommon/src/cmodel.ts` | `offset` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_BoxTrace` | `packages/qcommon/src/cmodel.ts` | `CM_BoxTrace` | Valide | A redecouper | Sweep/stationary/point traces comparees C vs TS; preuves `quake2-cmodel.ts`, `verify:cl-pred`, `verify:server:world`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `leafs` | `packages/qcommon/src/cmodel.ts` | `leafs` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `topnode` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_TransformedBoxTrace` | `packages/qcommon/src/cmodel.ts` | `CM_TransformedBoxTrace` | Valide | A redecouper | Translation/rotation/endpos/plane normal comparees C vs TS; preuve `quake2-collision-phase1.ts`. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `trace` | `packages/qcommon/src/cmodel.ts` | `trace` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `a` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `temp` | `packages/qcommon/src/cmodel.ts` | `temp` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `rotated` | `packages/qcommon/src/cmodel.ts` | `rotated` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `rotated` | `packages/qcommon/src/cmodel.ts` | `rotated` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_DecompressVis` | `packages/qcommon/src/cmodel.ts` | `CM_DecompressVis` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | global | `c` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | global | `out_p` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |

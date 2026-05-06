@@ -82,32 +82,32 @@
 | `Quake-2-master/game/q_shared.h` | function | `ProjectPointOnPlane` | `packages/math/src/q_shared.ts` | `ProjectPointOnPlane` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `PerpendicularVector` | `packages/math/src/q_shared.ts` | `PerpendicularVector` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `RotatePointAroundVector` | `packages/math/src/q_shared.ts` | `RotatePointAroundVector` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `COM_SkipPath` | `packages/qcommon/src/common.ts` | `COM_SkipPath` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `COM_StripExtension` | `packages/qcommon/src/common.ts` | `COM_StripExtension` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `COM_FileBase` | `packages/qcommon/src/common.ts` | `COM_FileBase` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `COM_FilePath` | `packages/qcommon/src/common.ts` | `COM_FilePath` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `COM_DefaultExtension` | `packages/qcommon/src/common.ts` | `COM_DefaultExtension` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `COM_Parse` | `packages/qcommon/src/common.ts` | `COM_Parse` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Com_sprintf` | `packages/qcommon/src/common.ts` | `Com_sprintf` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Com_PageInMemory` | `packages/qcommon/src/system.ts` | `Com_PageInMemory` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Q_stricmp` | `packages/qcommon/src/common.ts` | `Q_stricmp` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Q_strcasecmp` | `packages/qcommon/src/common.ts` | `Q_strcasecmp` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Q_strncasecmp` | `packages/qcommon/src/common.ts` | `Q_strncasecmp` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `BigShort` | `packages/qcommon/src/common.ts` | `BigShort` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `LittleShort` | `packages/qcommon/src/common.ts` | `LittleShort` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `BigLong` | `packages/qcommon/src/common.ts` | `BigLong` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `LittleLong` | `packages/qcommon/src/common.ts` | `LittleLong` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `BigFloat` | `packages/qcommon/src/common.ts` | `BigFloat` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `LittleFloat` | `packages/qcommon/src/common.ts` | `LittleFloat` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Swap_Init` | `packages/qcommon/src/common.ts` | `Swap_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `va` | `packages/qcommon/src/common.ts` | `va` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_INFO_KEY` | `packages/qcommon/src/q_shared.ts` | `MAX_INFO_KEY` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_INFO_VALUE` | `packages/qcommon/src/q_shared.ts` | `MAX_INFO_VALUE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_INFO_STRING` | `packages/qcommon/src/q_shared.ts` | `MAX_INFO_STRING` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Info_ValueForKey` | `packages/qcommon/src/common.ts` | `Info_ValueForKey` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Info_RemoveKey` | `packages/qcommon/src/common.ts` | `Info_RemoveKey` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Info_SetValueForKey` | `packages/qcommon/src/common.ts` | `Info_SetValueForKey` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Info_Validate` | `packages/qcommon/src/common.ts` | `Info_Validate` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `COM_SkipPath` | `packages/qcommon/src/common.ts` | `COM_SkipPath` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `COM_StripExtension` | `packages/qcommon/src/common.ts` | `COM_StripExtension` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `COM_FileBase` | `packages/qcommon/src/common.ts` | `COM_FileBase` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `COM_FilePath` | `packages/qcommon/src/common.ts` | `COM_FilePath` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `COM_DefaultExtension` | `packages/qcommon/src/common.ts` | `COM_DefaultExtension` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `COM_Parse` | `packages/qcommon/src/common.ts` | `COM_Parse` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Com_sprintf` | `packages/qcommon/src/common.ts` | `Com_sprintf` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Com_PageInMemory` | `packages/qcommon/src/system.ts` | `Com_PageInMemory` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Q_stricmp` | `packages/qcommon/src/common.ts` | `Q_stricmp` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Q_strcasecmp` | `packages/qcommon/src/common.ts` | `Q_strcasecmp` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Q_strncasecmp` | `packages/qcommon/src/common.ts` | `Q_strncasecmp` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `BigShort` | `packages/qcommon/src/common.ts` | `BigShort` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `LittleShort` | `packages/qcommon/src/common.ts` | `LittleShort` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `BigLong` | `packages/qcommon/src/common.ts` | `BigLong` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `LittleLong` | `packages/qcommon/src/common.ts` | `LittleLong` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `BigFloat` | `packages/qcommon/src/common.ts` | `BigFloat` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `LittleFloat` | `packages/qcommon/src/common.ts` | `LittleFloat` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Swap_Init` | `packages/qcommon/src/common.ts` | `Swap_Init` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `va` | `packages/qcommon/src/common.ts` | `va` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_INFO_KEY` | `packages/qcommon/src/q_shared.ts` | `MAX_INFO_KEY` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_INFO_VALUE` | `packages/qcommon/src/q_shared.ts` | `MAX_INFO_VALUE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_INFO_STRING` | `packages/qcommon/src/q_shared.ts` | `MAX_INFO_STRING` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Info_ValueForKey` | `packages/qcommon/src/common.ts` | `Info_ValueForKey` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Info_RemoveKey` | `packages/qcommon/src/common.ts` | `Info_RemoveKey` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Info_SetValueForKey` | `packages/qcommon/src/common.ts` | `Info_SetValueForKey` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Info_Validate` | `packages/qcommon/src/common.ts` | `Info_Validate` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | global | `curtime` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `Sys_Milliseconds` | `packages/qcommon/src/system.ts` | `Sys_Milliseconds` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | function | `Sys_Mkdir` | `packages/qcommon/src/system.ts` | `Sys_Mkdir` | A verifier | A redecouper |  |

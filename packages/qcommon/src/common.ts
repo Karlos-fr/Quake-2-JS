@@ -480,10 +480,52 @@ export function Com_sprintf(size: number, message: string): string {
  * - Provides the convenience formatting helper used throughout Quake II utility code.
  *
  * Porting notes:
- * - Concatenates already-rendered string fragments instead of emulating C printf varargs.
+ * - Emulates the printf specifiers used by the port instead of exposing a reusable static buffer.
  */
-export function va(...parts: Array<string | number>): string {
-  return parts.join("");
+export function va(format: string, ...args: Array<string | number>): string {
+  let argIndex = 0;
+
+  return format.replace(/%([0 +#-]*)(\d+)?(?:\.(\d+))?([%sdifuxXc])/g, (match, flags, width, precision, type) => {
+    if (type === "%") {
+      return "%";
+    }
+
+    const value = args[argIndex++];
+    let rendered: string;
+
+    switch (type) {
+      case "d":
+      case "i":
+        rendered = Math.trunc(Number(value)).toString(10);
+        break;
+      case "u":
+        rendered = (Math.trunc(Number(value)) >>> 0).toString(10);
+        break;
+      case "x":
+        rendered = (Math.trunc(Number(value)) >>> 0).toString(16);
+        break;
+      case "X":
+        rendered = (Math.trunc(Number(value)) >>> 0).toString(16).toUpperCase();
+        break;
+      case "f": {
+        const digits = precision === undefined ? 6 : Number(precision);
+        rendered = Number(value).toFixed(digits);
+        break;
+      }
+      case "c":
+        rendered = typeof value === "number" ? String.fromCharCode(value) : String(value)[0] ?? "";
+        break;
+      case "s":
+        rendered = String(value);
+        break;
+      default:
+        return match;
+    }
+
+    const minWidth = width === undefined ? 0 : Number(width);
+    const pad = flags.includes("0") && ["d", "i", "u", "x", "X", "f"].includes(type) ? "0" : " ";
+    return minWidth > rendered.length ? `${pad.repeat(minWidth - rendered.length)}${rendered}` : rendered;
+  });
 }
 
 /**
@@ -803,7 +845,7 @@ export function Info_Validate(info: string): boolean {
 export function Info_SetValueForKey(info: string, key: string, value: string): string {
   if (
     key.includes("\\") || value.includes("\\") ||
-    key.includes(";") || value.includes(";") ||
+    key.includes(";") ||
     key.includes("\"") || value.includes("\"")
   ) {
     return info;

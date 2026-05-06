@@ -32,6 +32,25 @@
   - Tentatives de scripts inexistants: `verify:sv-world`, `verify:sv-ents`, `verify:server:entities`; remplacees par les noms ci-dessus.
 - Matrice: 76 `Valide`, 46 `Non applicable`, 73 `A verifier`.
 
+## Session 2026-05-06 - bloc contents/trace
+
+- Lot traite: `CM_PointContents`, `CM_TransformedPointContents`, `DIST_EPSILON`, et bloc trace complet jusqu'a `CM_TransformedBoxTrace`: `CM_ClipBoxToBrush`, `CM_TestBoxInBrush`, `CM_TraceToLeaf`, `CM_TestInLeaf`, `CM_RecursiveHullCheck`, `CM_BoxTrace`, plus les faux positifs locaux et etats file-static C associes (`l`, `p_l`, `temp`, `trace_trace`, `trace_contents`, `trace_ispoint`, `dist`, `ofs`, `f`, `d1`, `k`, `brushnum`, `leaf`, `node`, `idist`, `i`, `mid`, `side`, `midf`, `offset`, `leafs`, `topnode`, `trace`, `a`, `rotated`).
+- Corrections: commentaire `CM_BoxTrace` corrige pour ne plus indiquer que les traces transformees/rotatives ne sont pas portees; harness `quake2-cmodel.ts` renforce avec preuves directes pour contents transformes, `DIST_EPSILON`, trace point, trace AABB avec expansion mins/maxs, contents de brush et position test `startsolid/allsolid`.
+- Validation C vs TS: les file-static C `trace_trace`, `trace_contents` et `trace_ispoint` sont remplaces par `TraceWork` et un `trace_t` par appel; `checkcount`/`brush->checkcount` est remplace par `checkedBrushes`. `CM_TestInLeaf` est porte comme adapter explicite `CM_TestInLeafs` pour eviter les globals temporaires tout en conservant la collecte leafs puis tests brushs.
+- Runtime: branche via `SV_PointContents`, `SV_Trace`, game imports `pointcontents`/`trace`, client view/prediction et adapters PMove; les traces world et bmodels atteignent `CM_BoxTrace`/`CM_TransformedBoxTrace`.
+- apps/web: le full-game host web utilise le runtime serveur/client porte; pas de logique collision parallele attendue ni observee pour masquer ces fonctions.
+- renderer-three: pas d'appel direct attendu; les sorties visibles dependantes de ce lot sont camera/prediction, collision avec brush models et areabits/PVS produits en amont, consommes via le flux client/refdef et verifies par le test three.
+- Tests lances:
+  - `npx tsx ./scripts/verify/quake2-cmodel.ts` passe avec `Quake 2/baseq2/pak0.pak` et `maps/base1.bsp`.
+  - `npx tsx ./scripts/verify/quake2-collision-phase1.ts` passe avec `maps/base2.bsp`.
+  - `npm run verify:cl-pred` passe.
+  - `npm run verify:server:world` passe.
+  - `npm run verify:server:ents` passe.
+  - `npm run verify:full-game:server-host` passe.
+  - `npm run verify:full-game:three-renderer` passe.
+  - `npm run typecheck` passe.
+- Matrice: 86 `Valide`, 82 `Non applicable`, 27 `A verifier`.
+
 ## Prochain lot recommande
 
-Reprendre a `CM_PointContents`, `CM_TransformedPointContents`, puis `DIST_EPSILON`, `CM_ClipBoxToBrush` et l'etat de trace associe si le lot reste coherent.
+Reprendre a `CM_DecompressVis`, `CM_ClusterPVS`, `CM_ClusterPHS` et doublons/faux positifs associes.

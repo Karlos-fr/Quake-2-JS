@@ -24,6 +24,18 @@
 - Tests lances: `npm run verify:q-shared:header` OK; `npm run typecheck` OK.
 - Decision matrice: 20 entrees `Valide`; 8 entrees generees `Non applicable` car variables locales, static buffer C remplace par string TS ou union locale C.
 
+## Session 2026-05-06 - parse et page-in
+
+- Lot traite: `va`, `COM_Parse`, `Com_PageInMemory`, le global `paged_total`, et les temporaires associes `argptr`, `string`, `com_token`, `c`, `len`, `data`, `i`.
+- Comparaison C/H vs TS: bloc compare dans `Quake-2-master/game/q_shared.c`, `packages/qcommon/src/common.ts` et `packages/qcommon/src/system.ts`; `COM_Parse` garde le tokenizer C via un couple `{ token, nextIndex }`, et `Com_PageInMemory` garde le pas `size - 1`, puis `-4096`, avec accumulation dans `SystemRuntime.paged_total`.
+- Commentaires d'en-tete: commentaires verifies pour `COM_Parse`, `va`, `Com_PageInMemory`; `va` documente l'ecart volontaire d'absence de buffer statique reusable.
+- Runtime: `COM_Parse` est atteint par le chargement d'entites `g_spawn`; `Com_PageInMemory` est atteint par `snd_dma` lors du chargement cache son; `va` reste un helper exporte sans racine obligatoire tant qu'aucun appel runtime ne l'exige.
+- apps/web: les flux web full-game consomment le parsing d'entites via le runtime serveur; `Com_PageInMemory` est disponible via le contexte system/audio client, sans logique web parallele attendue.
+- renderer-three: pas de sortie visible directe produite par `va` ou `Com_PageInMemory`; `COM_Parse` peut conditionner les entites map chargees en amont, et les sorties visibles restent relayees par le pipeline serveur/client/renderer existant.
+- Corrections appliquees: `va` emule maintenant les formats `printf` courants du port au lieu de concatener les fragments; tests limites ajoutes pour `COM_Parse` et le pas de page de `Com_PageInMemory`.
+- Tests lances: `npm run verify:q-shared:header` OK; `npm run typecheck` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:server:ents` OK; `npm run verify:snd-dma` OK.
+- Decision matrice: 4 entrees `Valide`; 7 entrees generees `Non applicable` car variables locales, buffers statiques C remplaces par retours explicites TS ou variable d'iteration locale.
+
 ## Prochain lot recommande
 
-Traiter `va`, `COM_Parse` et `Com_PageInMemory`, avec les temporaires locaux associes, si le lot reste coherent.
+Traiter `Q_stricmp`, `_stricmp`, `Q_strncasecmp`, `Q_strcasecmp`, la seconde entree `Q_strncasecmp`, puis `Com_sprintf` et ses temporaires si le lot reste coherent.

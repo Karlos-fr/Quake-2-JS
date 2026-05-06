@@ -44,14 +44,14 @@
 | `Quake-2-master/game/p_weapon.c` | global | `speed` | `packages/game/src/p_weapon.ts` | `speed` | Non applicable | A redecouper | Variable locale de `weapon_grenade_fire`; couverte par `weapon_grenade_fire`. |
 | `Quake-2-master/game/p_weapon.c` | global | `radius` | `packages/game/src/p_weapon.ts` | `radius` | Non applicable | A redecouper | Variable locale de `weapon_grenade_fire`; couverte par `weapon_grenade_fire`. |
 | `Quake-2-master/game/p_weapon.c` | function | `Weapon_Grenade` | `packages/game/src/p_weapon.ts` | `Weapon_Grenade` | Valide | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `weapon_grenadelauncher_fire` | `packages/game/src/p_weapon.ts` | `weapon_grenadelauncher_fire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `radius` | `packages/game/src/p_weapon.ts` | `radius` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Weapon_GrenadeLauncher` | `packages/game/src/p_weapon.ts` | `Weapon_GrenadeLauncher` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | function | `weapon_grenadelauncher_fire` | `packages/game/src/p_weapon.ts` | `weapon_grenadelauncher_fire` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | Non applicable | A redecouper | Variable locale de `weapon_grenadelauncher_fire`; couverte par `weapon_grenadelauncher_fire`. |
+| `Quake-2-master/game/p_weapon.c` | global | `radius` | `packages/game/src/p_weapon.ts` | `radius` | Non applicable | A redecouper | Variable locale de `weapon_grenadelauncher_fire`; couverte par `weapon_grenadelauncher_fire`. |
+| `Quake-2-master/game/p_weapon.c` | function | `Weapon_GrenadeLauncher` | `packages/game/src/p_weapon.ts` | `Weapon_GrenadeLauncher` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Table statique locale de `Weapon_GrenadeLauncher`; couverte par l'entree table `pause_frames`. |
+| `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Table statique locale de `Weapon_GrenadeLauncher`; couverte par l'entree table `fire_frames`. |
+| `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | function | `Weapon_RocketLauncher_Fire` | `packages/game/src/p_weapon.ts` | `Weapon_RocketLauncher_Fire` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `damage_radius` | `packages/game/src/runtime.ts` | `DAMAGE_RADIUS` | A verifier | A redecouper |  |

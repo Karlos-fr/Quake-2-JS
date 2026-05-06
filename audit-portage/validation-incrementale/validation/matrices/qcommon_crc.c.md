@@ -10,11 +10,11 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/crc.c` | macro | `CRC_INIT_VALUE` | `packages/qcommon/src/qcommon.ts` | `CRC_INIT_VALUE` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.c` | macro | `CRC_XOR_VALUE` | `packages/qcommon/src/qcommon.ts` | `CRC_XOR_VALUE` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.c` | global | `crctable` | `packages/qcommon/src/qcommon.ts` | `crcTable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.c` | function | `CRC_Init` | `packages/qcommon/src/qcommon.ts` | `CRC_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.c` | function | `CRC_ProcessByte` | `packages/qcommon/src/qcommon.ts` | `CRC_ProcessByte` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.c` | function | `CRC_Value` | `packages/qcommon/src/qcommon.ts` | `CRC_Value` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.c` | function | `CRC_Block` | `packages/qcommon/src/qcommon.ts` | `CRC_Block` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/crc.c` | global | `crc` | `packages/qcommon/src/qcommon.ts` | `crc` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/crc.c` | macro | `CRC_INIT_VALUE` | `packages/qcommon/src/qcommon.ts` | `CRC_INIT_VALUE` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/crc.c` | macro | `CRC_XOR_VALUE` | `packages/qcommon/src/qcommon.ts` | `CRC_XOR_VALUE` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/crc.c` | global | `crctable` | `packages/qcommon/src/qcommon.ts` | `crcTable` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/crc.c` | function | `CRC_Init` | `packages/qcommon/src/qcommon.ts` | `CRC_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/crc.c` | function | `CRC_ProcessByte` | `packages/qcommon/src/qcommon.ts` | `CRC_ProcessByte` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/crc.c` | function | `CRC_Value` | `packages/qcommon/src/qcommon.ts` | `CRC_Value` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/crc.c` | function | `CRC_Block` | `packages/qcommon/src/qcommon.ts` | `CRC_Block` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/crc.c` | global | `crc` | `packages/qcommon/src/qcommon.ts` | `crc` | Non applicable | A redecouper | Variable locale de `CRC_Block`, pas une entite proprietaire exportee. |

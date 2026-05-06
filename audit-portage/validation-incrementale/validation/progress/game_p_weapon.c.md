@@ -21,6 +21,17 @@
 - Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `weapon_grenade_fire` direct, projection, timers/vitesse, ammo infini, animations et garde cadavre.
 - Tests lances: `npm run verify:p-weapon`.
 
+## Session 2026-05-06 - bloc grenade launcher
+
+- Lot traite: `weapon_grenadelauncher_fire`, variables locales `damage`/`radius`, `Weapon_GrenadeLauncher`, tables locales `pause_frames` et `fire_frames`.
+- Comparaison C/TS: degats `120`, rayon `damage + 40` calcule avant quad, quad damage, projection `[8, 8, viewheight - 8]` via `P_ProjectSource`, kick origin/angle, `fire_grenade` avec vitesse `600` et timer `2.5`, muzzleflash `MZ_GRENADE | is_silenced`, `PlayerNoise`, consommation ammo et `DF_INFINITE_AMMO` compares contre le C. `Weapon_GrenadeLauncher` appelle `Weapon_Generic(ent, 5, 16, 59, 64, {34, 51, 59, 0}, {6, 0}, weapon_grenadelauncher_fire)`.
+- Commentaires d'en-tete: `weapon_grenadelauncher_fire` et `Weapon_GrenadeLauncher` verifies avec `Original name`, `Source: game/p_weapon.c`, `Category: Ported`, niveau de fidelite et comportement.
+- Runtime: integre via `g_items` (`weapon_grenadelauncher` -> `Weapon_GrenadeLauncher`), `Think_Weapon`, `ClientThink`/`ClientBeginServerFrame`, `local-game-bootstrap` et hooks `fire_grenade`.
+- apps/web: le navigateur selectionne l'arme via les bindings full-game/local et consomme le runtime porte; aucune logique web parallele ne remplace ce bloc.
+- renderer-three: sortie visible attendue = projectile `grenade` avec modele `models/objects/grenade/tris.md2`, `EF_GRENADE`, muzzleflash/dlight `MZ_GRENADE`, sons et explosion/temp entity; elle est consommee par snapshots, `cl_fx`, refresh entity, dlights et renderer-three.
+- Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `weapon_grenadelauncher_fire` direct, frames `pause_frames`/`fire_frames`, ammo infini et parametres projectile.
+- Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
+
 ## Prochain lot recommande
 
-Valider le bloc grenade launcher: `weapon_grenadelauncher_fire`, ses variables locales `damage`/`radius`, puis `Weapon_GrenadeLauncher` avec `pause_frames` et `fire_frames`.
+Valider le bloc rocket launcher: `Weapon_RocketLauncher_Fire`, variables locales `damage`/`damage_radius`/`radius_damage`, puis `Weapon_RocketLauncher` avec `pause_frames` et `fire_frames`.

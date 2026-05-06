@@ -84,6 +84,19 @@ export const ERR_FATAL = 0;
 export const ERR_DROP = 1;
 export const ERR_QUIT = 2;
 export const NUMVERTEXNORMALS = 162;
+
+/**
+ * Original names: CRC_INIT_VALUE, CRC_XOR_VALUE, crctable
+ * Source: qcommon/crc.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the CCITT/XMODEM CRC seed, final XOR value and 256-entry lookup table.
+ *
+ * Porting notes:
+ * - Kept file-local like the C macros/static table; public access goes through the CRC_* API.
+ */
 const CRC_INIT_VALUE = 0xffff;
 const CRC_XOR_VALUE = 0x0000;
 
