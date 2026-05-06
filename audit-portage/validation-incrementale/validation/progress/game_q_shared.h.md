@@ -2,6 +2,12 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: bloc monster muzzle flash Rogue `MZ2_*` de `MZ2_CARRIER_MACHINEGUN_L1` a `MZ2_WIDOW2_BEAM_SWEEP_11`, soit la plage numerique complete 138 a 210.
+- Entites traitees: `MZ2_CARRIER_MACHINEGUN_L1`, `MZ2_CARRIER_MACHINEGUN_R1`, `MZ2_CARRIER_GRENADE`, `MZ2_TURRET_MACHINEGUN`, `MZ2_TURRET_ROCKET`, `MZ2_TURRET_BLASTER`, `MZ2_STALKER_BLASTER`, `MZ2_DAEDALUS_BLASTER`, `MZ2_MEDIC_BLASTER_2`, `MZ2_CARRIER_RAILGUN`, `MZ2_WIDOW_DISRUPTOR`, `MZ2_WIDOW_BLASTER`, `MZ2_WIDOW_RAIL`, `MZ2_WIDOW_PLASMABEAM`, `MZ2_CARRIER_MACHINEGUN_L2`, `MZ2_CARRIER_MACHINEGUN_R2`, `MZ2_WIDOW_RAIL_LEFT`, `MZ2_WIDOW_RAIL_RIGHT`, `MZ2_WIDOW_BLASTER_SWEEP1` a `MZ2_WIDOW_BLASTER_SWEEP9`, `MZ2_WIDOW_BLASTER_100` a `MZ2_WIDOW_BLASTER_0`, `MZ2_WIDOW_BLASTER_10L` a `MZ2_WIDOW_BLASTER_70L`, `MZ2_WIDOW_RUN_1` a `MZ2_WIDOW_RUN_8`, `MZ2_CARRIER_ROCKET_1` a `MZ2_CARRIER_ROCKET_4`, `MZ2_WIDOW2_BEAMER_1` a `MZ2_WIDOW2_BEAMER_5`, puis `MZ2_WIDOW2_BEAM_SWEEP_1` a `MZ2_WIDOW2_BEAM_SWEEP_11`.
+- Verdict: `Partiel` pour les 73 entrees. Les ids numeriques, offsets `monster_flash_offset`, consommation client `CL_ParseMuzzleFlash2`/`CL_BuildMuzzleFlash2Effects`, `apps/web` et sorties renderer dlights/particules sont verifies; les producteurs gameplay Rogue carrier/widow/stalker/daedalus correspondants sont absents du port courant, donc le lot ne peut pas etre marque `Valide` sans decision ou portage Rogue.
+- Ownership: les noms de macros `q_shared.h` sont ajoutes comme exports dans `packages/game/src/m_flash.ts`, proprietaire naturel de la table offset partagee quand aucun producteur gameplay TS n'existe. Les producteurs de base existants ne sont pas modifies.
+- Preuves: comparaison numerique C/H vs TS et offsets sentinelles ajoutees dans `scripts/verify/quake2-q-shared-header.ts`; table offset complete verifiee par `verify:m-flash`; consommation client/effets Rogue verifiee par `verify:cl-fx`; branchement web/renderer verifie par `verify:full-game:server-host` et `verify:full-game:three-renderer`.
+- Commentaires d'en-tete: non applicable pour les constantes; commentaires existants verifies sur `monster_flash_offset`, `getMonsterFlashOffset`, `CL_ParseMuzzleFlash2`/`CL_BuildMuzzleFlash2Effects`, `buildMonsterMuzzleFlashOrigin` et les chemins Widow temp/newfx.
 - 2026-05-06: bloc monster muzzle flash `MZ2_*` de `MZ2_MAKRON_BFG` a `MZ2_BOSS2_MACHINEGUN_R5`, soit la plage numerique complete 101 a 137.
 - Entites validees: `MZ2_MAKRON_BFG`, `MZ2_MAKRON_BLASTER_1` a `MZ2_MAKRON_BLASTER_17`, `MZ2_MAKRON_RAILGUN_1`, `MZ2_JORG_MACHINEGUN_L1` a `MZ2_JORG_MACHINEGUN_L6`, `MZ2_JORG_MACHINEGUN_R1` a `MZ2_JORG_MACHINEGUN_R6`, `MZ2_JORG_BFG_1`, puis `MZ2_BOSS2_MACHINEGUN_R1` a `MZ2_BOSS2_MACHINEGUN_R5`.
 - Ownership: les macros `q_shared.h` sont portees comme constantes locales dans les modules producteurs `packages/game/src/m_boss32.ts`, `m_boss31.ts` et `m_boss2.ts`; `monster_flash_offset` reste proprietaire de `packages/game/src/m_flash.ts`. Les constantes manquantes des sequences Makron/Jorg ont ete ajoutees comme exports nommes sans changer les calculs runtime existants.
@@ -87,6 +93,8 @@
 
 ## Corrections
 
+- Ajout des constantes nommees `MZ2_CARRIER_*`, `MZ2_TURRET_*`, `MZ2_STALKER_BLASTER`, `MZ2_DAEDALUS_BLASTER`, `MZ2_MEDIC_BLASTER_2`, `MZ2_WIDOW_*` et `MZ2_WIDOW2_*` dans `packages/game/src/m_flash.ts`, avec exports publics dans `packages/game/src/index.ts`.
+- Ajout des assertions numeriques et offsets sentinelles 138..210 dans `scripts/verify/quake2-q-shared-header.ts`.
 - Ajout des constantes nommees `MZ2_MAKRON_BLASTER_2` a `MZ2_MAKRON_BLASTER_17` dans `packages/game/src/m_boss32.ts`.
 - Ajout des constantes nommees `MZ2_JORG_MACHINEGUN_L2` a `MZ2_JORG_MACHINEGUN_L6` et `MZ2_JORG_MACHINEGUN_R2` a `MZ2_JORG_MACHINEGUN_R6` dans `packages/game/src/m_boss31.ts`.
 - Exports publics completes dans `packages/game/src/index.ts` pour les constantes `MZ2_MAKRON_*` et `MZ2_JORG_*` ajoutees.
@@ -297,7 +305,11 @@
 - Runtime: integration attendue et presente. Makron, Jorg et Boss2 produisent ces ids via `monster_fire_bfg`, `monster_fire_blaster`, `monster_fire_railgun` ou `monster_fire_bullet`; `G_RunFrame` transporte les evenements `svc_muzzleflash2`, puis le client les parse via `CL_ParseMuzzleFlash2`.
 - `apps/web`: integration attendue et presente via les flux full-game/server-host qui transportent les messages serveur et declenchent le runtime client; aucune logique web parallele masquant ces ids n'a ete detectee.
 - `renderer-three`: sortie visible attendue et presente pour dlights, particules et scene. Les ids reconstruisent l'origine via `monster_flash_offset`, produisent les effets client Makron/Jorg/Boss2, puis les adapters dlights/particules et le render loop Three les consomment; aucun manque ouvert pour ce lot.
+- Le bloc Rogue `MZ2_CARRIER_*`/`MZ2_TURRET_*`/`MZ2_STALKER_*`/`MZ2_DAEDALUS_*`/`MZ2_MEDIC_BLASTER_2`/`MZ2_WIDOW*` est expose comme noms d'offsets dans `packages/game/src/m_flash.ts`; cela preserve les ids client/offsets mais ne constitue pas un port producteur gameplay.
+- Runtime: partiel. Les offsets, `CL_ParseMuzzleFlash2`, `CL_BuildMuzzleFlash2Effects` et les effets Widow sont integres cote client; les producteurs gameplay Rogue carrier/widow/stalker/daedalus ne sont pas presents dans `packages/game/src`. Les ids `MZ2_TURRET_*` sont egalement seulement consommes comme flash ids client; le port `g_turret.ts` tire une roquette brush comme le C de base et n'emet pas `svc_muzzleflash2`.
+- `apps/web`: partiel par heritage runtime. Le web consomme correctement les messages/effects si un serveur les produit, via full-game/server-host et le runtime client; il ne contient pas de logique parallele masquante. Le manque ouvert reste la production gameplay Rogue.
+- `renderer-three`: consommation visible presente pour dlights, particules, sustains Widow et scene quand les ids arrivent au client; pas de manque renderer direct detecte. Le lot reste `Partiel` car la source runtime de ces ids Rogue est absente.
 
 ## Prochain lot recommande
 
-- Traiter le bloc adjacent a partir de `MZ2_CARRIER_MACHINEGUN_L1`, en separant clairement les ids seulement consommes cote client/offsets (`MZ2_CARRIER_*`, `MZ2_WIDOW_*`, `MZ2_WIDOW2_*`) des ids dont le producteur gameplay Rogue est absent du port courant; marquer `Partiel` ou `Manquant` si l'integration producteur attendue n'existe pas.
+- Traiter le bloc `temp_event_t`, puis `SPLASH_*`, `CHAN_*` et `ATTN_*` si le lot reste coherent. Reprendre ensuite une decision explicite sur les producteurs gameplay Rogue absents avant de fermer les `MZ2_*` partiels.

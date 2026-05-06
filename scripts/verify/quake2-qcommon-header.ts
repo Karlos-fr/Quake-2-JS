@@ -68,6 +68,28 @@ import {
   EXEC_NOW
 } from "../../packages/qcommon/src/cmd.js";
 import {
+  CVAR_ARCHIVE,
+  CVAR_LATCH,
+  CVAR_SERVERINFO,
+  CVAR_USERINFO,
+  Cvar_Command,
+  Cvar_CompleteVariable,
+  Cvar_ForceSet,
+  Cvar_FullSet,
+  Cvar_Get,
+  Cvar_GetLatchedVars,
+  Cvar_Init,
+  Cvar_Serverinfo,
+  Cvar_Set,
+  Cvar_SetServerState,
+  Cvar_SetValue,
+  Cvar_Userinfo,
+  Cvar_VariableString,
+  Cvar_VariableValue,
+  Cvar_WriteVariables,
+  createCvarRuntime
+} from "../../packages/qcommon/src/cvar.js";
+import {
   BUILDSTRING,
   CM_ANGLE1,
   CM_ANGLE2,
@@ -1098,5 +1120,57 @@ const initProofRuntime = createCommandRuntime();
 Cmd_Init(initProofRuntime);
 assert.equal(Cmd_Exists(initProofRuntime, "exec"), true, "Cmd_Init exec registration mismatch");
 assert.equal(Cmd_Exists(initProofRuntime, "wait"), true, "Cmd_Init wait registration mismatch");
+
+const cvarPrinted: string[] = [];
+const cvarGameDirs: string[] = [];
+let cvarAutoexecs = 0;
+const cvarProofRuntime = createCvarRuntime({
+  onPrint: (line) => cvarPrinted.push(line),
+  onGameDirChange: (value) => cvarGameDirs.push(value),
+  onExecAutoexec: () => {
+    cvarAutoexecs += 1;
+  }
+});
+assert.deepEqual(cvarProofRuntime.cvar_vars, [], "cvar_vars should start empty");
+const cvarSkill = Cvar_Get(cvarProofRuntime, "skill", "1", CVAR_SERVERINFO | CVAR_ARCHIVE);
+assert.ok(cvarSkill, "Cvar_Get should create a missing cvar");
+assert.equal(cvarProofRuntime.cvar_vars[0], cvarSkill, "Cvar_Get should link cvar_vars at the head");
+assert.equal(Cvar_Get(cvarProofRuntime, "skill", "2", CVAR_USERINFO), cvarSkill, "Cvar_Get should return existing cvar");
+assert.equal(Cvar_VariableString(cvarProofRuntime, "skill"), "1", "Cvar_VariableString mismatch");
+assert.equal(Cvar_VariableValue(cvarProofRuntime, "skill"), 1, "Cvar_VariableValue mismatch");
+assert.equal(Cvar_CompleteVariable(cvarProofRuntime, "ski"), "skill", "Cvar_CompleteVariable mismatch");
+Cvar_FullSet(cvarProofRuntime, "rate", "25000", CVAR_USERINFO | CVAR_ARCHIVE);
+Cvar_Set(cvarProofRuntime, "rate", "30000");
+assert.equal(Cvar_VariableString(cvarProofRuntime, "rate"), "30000", "Cvar_Set mismatch");
+assert.equal(cvarProofRuntime.userinfo_modified, true, "Cvar_Set userinfo_modified mismatch");
+Cvar_SetValue(cvarProofRuntime, "fraglimit", 2.5);
+assert.equal(Cvar_VariableString(cvarProofRuntime, "fraglimit"), "2.500000", "Cvar_SetValue float formatting mismatch");
+const cvarGame = Cvar_Get(cvarProofRuntime, "game", "baseq2", CVAR_LATCH);
+assert.ok(cvarGame, "latched game cvar should be created");
+Cvar_SetServerState(cvarProofRuntime, 1);
+Cvar_Set(cvarProofRuntime, "game", "rogue");
+assert.equal(cvarGame.latched_string, "rogue", "Cvar_Set should defer latched cvars while running");
+Cvar_GetLatchedVars(cvarProofRuntime);
+assert.equal(Cvar_VariableString(cvarProofRuntime, "game"), "rogue", "Cvar_GetLatchedVars should apply pending value");
+assert.deepEqual(cvarGameDirs, ["rogue"], "Cvar_GetLatchedVars game dir hook mismatch");
+assert.equal(cvarAutoexecs, 1, "Cvar_GetLatchedVars autoexec hook mismatch");
+Cvar_ForceSet(cvarProofRuntime, "game", "baseq2");
+assert.equal(Cvar_VariableString(cvarProofRuntime, "game"), "baseq2", "Cvar_ForceSet mismatch");
+assert.equal(Cvar_Userinfo(cvarProofRuntime), "\\rate\\30000\\skill\\1", "Cvar_Userinfo mismatch");
+assert.equal(Cvar_Serverinfo(cvarProofRuntime), "\\skill\\1", "Cvar_Serverinfo mismatch");
+assert.deepEqual(
+  Cvar_WriteVariables(cvarProofRuntime).split("\n").filter(Boolean),
+  ['set rate "30000"', 'set skill "1"'],
+  "Cvar_WriteVariables mismatch"
+);
+const cvarCommandRuntime = createCommandRuntime();
+Cvar_Init(cvarProofRuntime, cvarCommandRuntime);
+assert.equal(Cmd_Exists(cvarCommandRuntime, "set"), true, "Cvar_Init set registration mismatch");
+assert.equal(Cmd_Exists(cvarCommandRuntime, "cvarlist"), true, "Cvar_Init cvarlist registration mismatch");
+Cmd_TokenizeString(cvarCommandRuntime, "rate", true);
+assert.deepEqual(Cvar_Command(cvarProofRuntime, cvarCommandRuntime), { handled: true, output: "\"rate\" is \"30000\"" }, "Cvar_Command inspect mismatch");
+Cmd_TokenizeString(cvarCommandRuntime, "rate 32000", true);
+assert.deepEqual(Cvar_Command(cvarProofRuntime, cvarCommandRuntime), { handled: true }, "Cvar_Command set mismatch");
+assert.equal(Cvar_VariableString(cvarProofRuntime, "rate"), "32000", "Cvar_Command mutation mismatch");
 
 console.log("quake2-qcommon-header: ok");

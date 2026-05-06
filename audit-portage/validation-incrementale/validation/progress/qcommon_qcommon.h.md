@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: bloc commandes header dans `packages/qcommon/src/cmd.ts`: `EXEC_NOW`, `EXEC_INSERT`, `EXEC_APPEND` (deux declarations header generees), `Cbuf_Init`, `Cbuf_AddText`, `Cbuf_InsertText`, `Cbuf_ExecuteText`, `Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cbuf_Execute`, `Cbuf_CopyToDefer`, `Cbuf_InsertFromDefer`, `Cmd_Init`, `Cmd_AddCommand`, `Cmd_RemoveCommand`, `Cmd_Exists`, `Cmd_CompleteCommand`, `Cmd_Argc`, `Cmd_Argv`, `Cmd_Args`, `Cmd_TokenizeString`, `Cmd_ExecuteString`, `Cmd_ForwardToServer`.
+- Dernier lot valide: bloc cvar header dans `packages/qcommon/src/cvar.ts`: `cvar_vars`, `Cvar_Get`, `Cvar_Set`, `Cvar_ForceSet`, `Cvar_FullSet`, `Cvar_SetValue`, `Cvar_VariableValue`, `Cvar_VariableString`, `Cvar_CompleteVariable`, `Cvar_GetLatchedVars`, `Cvar_Command`, `Cvar_WriteVariables`, `Cvar_Init`, `Cvar_Userinfo`, `Cvar_Serverinfo`, plus le global adjacent `userinfo_modified`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc cvar header dans `packages/qcommon/src/cvar.ts`: `cvar_vars`, `Cvar_Get`, `Cvar_Set`, `Cvar_ForceSet`, `Cvar_FullSet`, `Cvar_SetValue`, `Cvar_VariableValue`, `Cvar_VariableString`, `Cvar_CompleteVariable`, `Cvar_GetLatchedVars`, `Cvar_Command`, `Cvar_WriteVariables`, `Cvar_Init`, `Cvar_Userinfo`, `Cvar_Serverinfo`, et `userinfo_modified`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations `Quake-2-master/qcommon/cvar.c`.
+- Cible comparee: `packages/qcommon/src/cvar.ts`, exports publics `packages/qcommon/src/index.ts`, usages client/server/web, harnais `scripts/verify/quake2-cvar.ts` et `scripts/verify/quake2-qcommon-header.ts`.
+- Decision: portage valide pour 16 entrees de matrice. Le global C `cvar_vars` et `userinfo_modified` sont portes comme etat explicite de `CvarRuntime`. Les fonctions conservent creation en tete de liste, OR des flags sur variable existante, validation info name/value, restrictions `NOSET`, latch selon etat serveur, `ForceSet`, formatage `SetValue`, completion exacte puis prefixe, serialisation archive, commandes `set`/`cvarlist`, et info strings user/server. Les ecarts TS sont documentes: runtime explicite, hooks pour `Com_Printf`/gamedir/autoexec, `Cvar_Command` retourne un resultat structure au lieu d'imprimer directement, `Cvar_WriteVariables` retourne le texte au lieu d'ecrire dans un fichier.
+- Runtime: attendu et verifie. Ce bloc est atteignable depuis `Qcommon_Init`/`Cvar_Init`, les commandes console via `Cmd_ExecuteString`/fallback `Cvar_Command`, les flux client/server (`CL_Frame`, `SV_Frame`, `SV_InitGame`, `SV_SpawnServer`, game import cvar/cvar_set/cvar_forceset), userinfo/serverinfo et ecriture config/archive.
+- apps/web: attendu et verifie. `apps/web` declenche ces flux via les hosts full-game/server-host et les tests config/gamedir; aucune logique parallele ne remplace `cvar.ts`.
+- renderer-three: pas de consommation directe attendue pour les primitives cvar elles-memes; elles ne produisent pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene. Elles configurent indirectement serveur/client/renderer, et le flux full-game three-renderer a ete verifie.
+- Commentaires: en-tetes des fonctions portees du lot verifies dans `packages/qcommon/src/cvar.ts`; commentaires de fichier documentent les deviations runtime-state/hooks.
+- Tests ajoutes: assertions directes dans `scripts/verify/quake2-qcommon-header.ts` pour `cvar_vars`, `userinfo_modified`, `Cvar_Get`, `Cvar_Set`, `Cvar_ForceSet`, `Cvar_FullSet`, `Cvar_SetValue`, `Cvar_VariableValue`, `Cvar_VariableString`, `Cvar_CompleteVariable`, `Cvar_GetLatchedVars`, `Cvar_Command`, `Cvar_WriteVariables`, `Cvar_Init`, `Cvar_Userinfo`, `Cvar_Serverinfo`.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:cvar`.
+
+## Session precedente
 
 - Lot traite: bloc commandes header dans `packages/qcommon/src/cmd.ts`: `EXEC_NOW`, `EXEC_INSERT`, `EXEC_APPEND` (premier bloc commande et doublon genere plus bas dans le header), `Cbuf_Init`, `Cbuf_AddText`, `Cbuf_InsertText`, `Cbuf_ExecuteText`, `Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cbuf_Execute`, `Cbuf_CopyToDefer`, `Cbuf_InsertFromDefer`, `Cmd_Init`, `Cmd_AddCommand`, `Cmd_RemoveCommand`, `Cmd_Exists`, `Cmd_CompleteCommand`, `Cmd_Argc`, `Cmd_Argv`, `Cmd_Args`, `Cmd_TokenizeString`, `Cmd_ExecuteString`, `Cmd_ForwardToServer`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations `Quake-2-master/qcommon/cmd.c`.
@@ -111,7 +124,7 @@
 
 ## Prochain lot recommande
 
-- Bloc cvar header dans `packages/qcommon/src/cvar.ts`: `cvar_vars`, `Cvar_Get`, `Cvar_Set`, `Cvar_ForceSet`, `Cvar_FullSet`, `Cvar_SetValue`, `Cvar_VariableValue`, `Cvar_VariableString`, `Cvar_CompleteVariable`, `Cvar_GetLatchedVars`, `Cvar_Command`, `Cvar_WriteVariables`, `Cvar_Init`, `Cvar_Userinfo`, `Cvar_Serverinfo`.
+- Bloc net/qcommon header dans `packages/qcommon/src/qcommon.ts`: `PORT_ANY`, `MAX_MSGLEN`, `PACKET_HEADER`, `netadrtype_t`, `netsrc_t`, `netadr_t`, puis `NET_*` si le lot reste coherent.
 
 ## Blocages
 

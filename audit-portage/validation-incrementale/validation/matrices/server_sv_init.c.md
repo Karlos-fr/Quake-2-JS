@@ -10,33 +10,33 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_init.c` | global | `sv` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_FindIndex` | `packages/server/src/sv_init.ts` | `SV_FindIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `i` | `packages/server/src/sv_init.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_ModelIndex` | `packages/server/src/sv_init.ts` | `SV_ModelIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_FindIndex` | `packages/server/src/sv_init.ts` | `SV_FindIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_SoundIndex` | `packages/server/src/sv_init.ts` | `SV_SoundIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_FindIndex` | `packages/server/src/sv_init.ts` | `SV_FindIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_ImageIndex` | `packages/server/src/sv_init.ts` | `SV_ImageIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_FindIndex` | `packages/server/src/sv_init.ts` | `SV_FindIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_CreateBaseline` | `packages/server/src/sv_init.ts` | `SV_CreateBaseline` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `svent` | `packages/server/src/sv_init.ts` | `svent` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `entnum` | `packages/server/src/sv_init.ts` | `entnum` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_CheckForSavegame` | `packages/server/src/sv_init.ts` | `SV_CheckForSavegame` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `name` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `f` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `i` | `packages/server/src/sv_init.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `previousState` | `packages/server/src/sv_init.ts` | `previousState` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_SpawnServer` | `packages/server/src/sv_init.ts` | `SV_SpawnServer` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `i` | `packages/server/src/sv_init.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `checksum` | `packages/server/src/sv_init.ts` | `checksum` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_InitGame` | `packages/server/src/sv_init.ts` | `SV_InitGame` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `i` | `packages/server/src/sv_init.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `ent` | `packages/server/src/sv_init.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `idmaster` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | function | `SV_Map` | `packages/server/src/sv_init.ts` | `SV_Map` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `level` | `packages/server/src/sv_init.ts` | `level` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `ch` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `l` | `packages/server/src/sv_init.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `spawnpoint` | `packages/server/src/sv_init.ts` | `spawnpoint` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_init.c` | global | `spawnpoint` | `packages/server/src/sv_init.ts` | `spawnpoint` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `sv` | `packages/server/src/sv_init.ts` | `ServerInitContext.sv` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_FindIndex` | `packages/server/src/sv_init.ts` | `SV_FindIndex` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `i` | `packages/server/src/sv_init.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_ModelIndex` | `packages/server/src/sv_init.ts` | `SV_ModelIndex` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_FindIndex` | `packages/server/src/sv_init.ts` | `SV_FindIndex` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_SoundIndex` | `packages/server/src/sv_init.ts` | `SV_SoundIndex` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_FindIndex` | `packages/server/src/sv_init.ts` | `SV_FindIndex` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_ImageIndex` | `packages/server/src/sv_init.ts` | `SV_ImageIndex` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_FindIndex` | `packages/server/src/sv_init.ts` | `SV_FindIndex` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_CreateBaseline` | `packages/server/src/sv_init.ts` | `SV_CreateBaseline` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `svent` | `packages/server/src/sv_init.ts` | `svent` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `entnum` | `packages/server/src/sv_init.ts` | `entnum` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_CheckForSavegame` | `packages/server/src/sv_init.ts` | `SV_CheckForSavegame` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `name` | `packages/server/src/sv_init.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `f` | `packages/server/src/sv_init.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `i` | `packages/server/src/sv_init.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `previousState` | `packages/server/src/sv_init.ts` | `previousState` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_SpawnServer` | `packages/server/src/sv_init.ts` | `SV_SpawnServer` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `i` | `packages/server/src/sv_init.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `checksum` | `packages/server/src/sv_init.ts` | `checksum` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_InitGame` | `packages/server/src/sv_init.ts` | `SV_InitGame` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `i` | `packages/server/src/sv_init.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `ent` | `packages/server/src/sv_init.ts` | `ent` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `idmaster` | `packages/server/src/sv_init.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | function | `SV_Map` | `packages/server/src/sv_init.ts` | `SV_Map` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `level` | `packages/server/src/sv_init.ts` | `level` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `ch` | `packages/server/src/sv_init.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `l` | `packages/server/src/sv_init.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `spawnpoint` | `packages/server/src/sv_init.ts` | `spawnpoint` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_init.c` | global | `spawnpoint` | `packages/server/src/sv_init.ts` | `spawnpoint` | Non applicable | A redecouper |  |

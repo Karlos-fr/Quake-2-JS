@@ -16,6 +16,7 @@ import { createGameClient } from "../../packages/game/src/runtime.js";
 import type { game_export_t } from "../../packages/game/src/index.js";
 import {
   CVAR_LATCH,
+  CVAR_SERVERINFO,
   Cmd_ExecuteString,
   CS_NAME,
   Cvar_ForceSet,
@@ -60,8 +61,22 @@ playerEdict.inuse = true;
 const client = createServerClient();
 client.state = client_state_t.cs_spawned;
 client.name = "PlayerOne";
+client.userinfo = "\\name\\PlayerOne\\skin\\male/grunt";
 client.edict = playerEdict;
-svs.clients = [client];
+
+const connectedClient = createServerClient();
+connectedClient.state = client_state_t.cs_connected;
+connectedClient.name = "Connecting";
+connectedClient.lastmessage = 4500;
+connectedClient.netchan.qport = 12345;
+
+const zombieClient = createServerClient();
+zombieClient.state = client_state_t.cs_zombie;
+zombieClient.name = "Zombie";
+zombieClient.lastmessage = 4000;
+zombieClient.netchan.qport = 54321;
+
+svs.clients = [client, connectedClient, zombieClient];
 svs.initialized = true;
 svs.realtime = 5000;
 sv.name = "base1";
@@ -163,8 +178,24 @@ const procedures = createServerConsoleProcedures({
 
 procedures.SV_InitOperatorCommands();
 
+Cvar_Get(cvar, "hostname", "unit-host", CVAR_SERVERINFO);
+
+svs.last_heartbeat = 12345;
+Cmd_ExecuteString(cmd, "heartbeat");
+assert.equal(svs.last_heartbeat, -9999999, "SV_Heartbeat_f should force the next heartbeat tick");
+
 Cmd_ExecuteString(cmd, "status");
 assert.ok(printed.some((line) => line.includes("map              : base1")), "SV_Status_f should print current map");
+assert.ok(printed.some((line) => line.includes("CNCT") && line.includes("Connecting")), "SV_Status_f should show connecting clients");
+assert.ok(printed.some((line) => line.includes("ZMBI") && line.includes("Zombie")), "SV_Status_f should show zombie clients");
+
+Cmd_ExecuteString(cmd, "serverinfo");
+assert.ok(printed.some((line) => line.includes("Server info settings:")), "SV_Serverinfo_f should print its header");
+assert.ok(printed.some((line) => line.includes("hostname") && line.includes("unit-host")), "SV_Serverinfo_f should print serverinfo cvars");
+
+Cmd_ExecuteString(cmd, "dumpuser 0");
+assert.ok(printed.some((line) => line.includes("userinfo")), "SV_DumpUser_f should print its header");
+assert.ok(printed.some((line) => line.includes("skin") && line.includes("male/grunt")), "SV_DumpUser_f should print selected userinfo");
 
 Cmd_ExecuteString(cmd, "say \"hello\"");
 assert.equal(chats, 1, "SV_ConSay_f should forward one chat message to spawned clients");
@@ -223,9 +254,17 @@ const signonLength = new DataView(signon.buffer, signon.byteOffset, signon.byteL
 assert.equal(signonLength, signon.length - 4, "SV_ServerRecord_f should prefix payload with little-endian byte length");
 assert.equal(signon[4], svc_ops_e.svc_serverdata, "SV_ServerRecord_f signon should start with svc_serverdata");
 
+Cmd_ExecuteString(cmd, "serverrecord duplicate");
+assert.equal(openedDemos, 1, "SV_ServerRecord_f should reject duplicate recordings");
+assert.ok(printed.some((line) => line.includes("Already recording.")), "SV_ServerRecord_f should report duplicate recordings");
+
 Cmd_ExecuteString(cmd, "serverstop");
 assert.equal(closedDemos, 1, "SV_ServerStop_f should close active server demo");
 assert.equal(svs.demofile, null, "SV_ServerStop_f should clear server demo handle");
+
+Cmd_ExecuteString(cmd, "serverstop");
+assert.equal(closedDemos, 1, "SV_ServerStop_f should not close when no demo is active");
+assert.ok(printed.some((line) => line.includes("Not doing a serverrecord.")), "SV_ServerStop_f should report inactive demo state");
 
 Cmd_ExecuteString(cmd, "sv");
 assert.ok(printed.some((line) => line.includes("No game loaded.")), "SV_ServerCommand_f should reject when game dll is absent");

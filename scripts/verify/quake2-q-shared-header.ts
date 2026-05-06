@@ -45,6 +45,7 @@ import {
   VectorSet,
   vec3_origin
 } from "../../packages/math/src/q_shared.js";
+import * as RogueMuzzle from "../../packages/game/src/m_flash.js";
 import { monster_flash_offset } from "../../packages/game/src/m_flash.js";
 import {
   MZ2_TANK_BLASTER_1,
@@ -789,6 +790,90 @@ assert.deepEqual(monster_flash_offset[Boss31Muzzle.MZ2_JORG_MACHINEGUN_L6], [78.
 assert.deepEqual(monster_flash_offset[Boss31Muzzle.MZ2_JORG_MACHINEGUN_R6], [78.5, 46.7, 96], "MZ2_JORG_MACHINEGUN_R6 offset mismatch");
 assert.deepEqual(monster_flash_offset[Boss31Muzzle.MZ2_JORG_BFG_1], [6.3, -9, 111.2], "MZ2_JORG_BFG_1 offset mismatch");
 assert.deepEqual(monster_flash_offset[Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_R5], [32, 40, 70], "MZ2_BOSS2_MACHINEGUN_R5 offset mismatch");
+assert.deepEqual([
+  RogueMuzzle.MZ2_CARRIER_MACHINEGUN_L1,
+  RogueMuzzle.MZ2_CARRIER_MACHINEGUN_R1,
+  RogueMuzzle.MZ2_CARRIER_GRENADE,
+  RogueMuzzle.MZ2_TURRET_MACHINEGUN,
+  RogueMuzzle.MZ2_TURRET_ROCKET,
+  RogueMuzzle.MZ2_TURRET_BLASTER,
+  RogueMuzzle.MZ2_STALKER_BLASTER,
+  RogueMuzzle.MZ2_DAEDALUS_BLASTER,
+  RogueMuzzle.MZ2_MEDIC_BLASTER_2,
+  RogueMuzzle.MZ2_CARRIER_RAILGUN,
+  RogueMuzzle.MZ2_WIDOW_DISRUPTOR,
+  RogueMuzzle.MZ2_WIDOW_BLASTER,
+  RogueMuzzle.MZ2_WIDOW_RAIL,
+  RogueMuzzle.MZ2_WIDOW_PLASMABEAM,
+  RogueMuzzle.MZ2_CARRIER_MACHINEGUN_L2,
+  RogueMuzzle.MZ2_CARRIER_MACHINEGUN_R2,
+  RogueMuzzle.MZ2_WIDOW_RAIL_LEFT,
+  RogueMuzzle.MZ2_WIDOW_RAIL_RIGHT,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP1,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP2,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP3,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP4,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP5,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP6,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP7,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP8,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP9,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_100,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_90,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_80,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_70,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_60,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_50,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_40,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_30,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_20,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_10,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_0,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_10L,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_20L,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_30L,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_40L,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_50L,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_60L,
+  RogueMuzzle.MZ2_WIDOW_BLASTER_70L,
+  RogueMuzzle.MZ2_WIDOW_RUN_1,
+  RogueMuzzle.MZ2_WIDOW_RUN_2,
+  RogueMuzzle.MZ2_WIDOW_RUN_3,
+  RogueMuzzle.MZ2_WIDOW_RUN_4,
+  RogueMuzzle.MZ2_WIDOW_RUN_5,
+  RogueMuzzle.MZ2_WIDOW_RUN_6,
+  RogueMuzzle.MZ2_WIDOW_RUN_7,
+  RogueMuzzle.MZ2_WIDOW_RUN_8,
+  RogueMuzzle.MZ2_CARRIER_ROCKET_1,
+  RogueMuzzle.MZ2_CARRIER_ROCKET_2,
+  RogueMuzzle.MZ2_CARRIER_ROCKET_3,
+  RogueMuzzle.MZ2_CARRIER_ROCKET_4,
+  RogueMuzzle.MZ2_WIDOW2_BEAMER_1,
+  RogueMuzzle.MZ2_WIDOW2_BEAMER_2,
+  RogueMuzzle.MZ2_WIDOW2_BEAMER_3,
+  RogueMuzzle.MZ2_WIDOW2_BEAMER_4,
+  RogueMuzzle.MZ2_WIDOW2_BEAMER_5,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_1,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_2,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_3,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_4,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_5,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_6,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_7,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_8,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_9,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_10,
+  RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_11
+], Array.from({ length: 73 }, (_, index) => index + 138), "MZ2 Rogue q_shared.h numeric range mismatch");
+assert.deepEqual(monster_flash_offset[RogueMuzzle.MZ2_CARRIER_MACHINEGUN_L1], [56, -32, 32], "MZ2_CARRIER_MACHINEGUN_L1 offset mismatch");
+assert.deepEqual(monster_flash_offset[RogueMuzzle.MZ2_TURRET_MACHINEGUN], [16, 0, 0], "MZ2_TURRET_MACHINEGUN offset mismatch");
+assert.deepEqual(monster_flash_offset[RogueMuzzle.MZ2_STALKER_BLASTER], [24, 0, 6], "MZ2_STALKER_BLASTER offset mismatch");
+assert.deepEqual(monster_flash_offset[RogueMuzzle.MZ2_WIDOW_DISRUPTOR], [57.72, 14.50, 88.81], "MZ2_WIDOW_DISRUPTOR offset mismatch");
+assert.deepEqual(monster_flash_offset[RogueMuzzle.MZ2_WIDOW_BLASTER_SWEEP9], [67, -20, 90], "MZ2_WIDOW_BLASTER_SWEEP9 offset mismatch");
+assert.deepEqual(monster_flash_offset[RogueMuzzle.MZ2_WIDOW_RUN_8], [68.55, 9.54, 87.36], "MZ2_WIDOW_RUN_8 offset mismatch");
+assert.deepEqual(monster_flash_offset[RogueMuzzle.MZ2_CARRIER_ROCKET_4], [0, 0, -5], "MZ2_CARRIER_ROCKET_4 offset mismatch");
+assert.deepEqual(monster_flash_offset[RogueMuzzle.MZ2_WIDOW2_BEAMER_1], [69.00, -17.63, 93.77], "MZ2_WIDOW2_BEAMER_1 offset mismatch");
+assert.deepEqual(monster_flash_offset[RogueMuzzle.MZ2_WIDOW2_BEAM_SWEEP_11], [58.29, 27.11, 92], "MZ2_WIDOW2_BEAM_SWEEP_11 offset mismatch");
 assert.equal(COM_SkipPath("textures/e1u1/wall.wal"), "wall.wal", "COM_SkipPath mismatch");
 assert.equal(COM_StripExtension("maps/base1.bsp"), "maps/base1", "COM_StripExtension mismatch");
 assert.equal(COM_FileExtension("maps/base1.bsp"), "bsp", "COM_FileExtension mismatch");

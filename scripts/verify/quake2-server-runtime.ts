@@ -28,6 +28,9 @@ import {
 import { client_state_t, server_state_t } from "../../packages/server/src/server.js";
 import {
   Cvar_Get,
+  CS_IMAGES,
+  CS_MODELS,
+  CS_SOUNDS,
   MSG_WriteByte,
   MSG_WriteString,
   clc_ops_e,
@@ -107,6 +110,21 @@ assert.ok(facade.user, "createServerRuntimeFacade should expose sv_user procedur
 assert.ok(facade.send, "createServerRuntimeFacade should expose sv_send procedures");
 assert.ok(facade.ents, "createServerRuntimeFacade should expose sv_ents procedures");
 assert.ok(facade.world, "createServerRuntimeFacade should expose sv_world procedures");
+assert.equal(typeof facade.main.SV_FinalMessage, "function", "facade should expose SV_FinalMessage from server.h");
+assert.equal(typeof facade.main.SV_DropClient, "function", "facade should expose SV_DropClient from server.h");
+assert.equal(typeof facade.init.SV_ModelIndex, "function", "facade should expose SV_ModelIndex from server.h");
+assert.equal(typeof facade.init.SV_SoundIndex, "function", "facade should expose SV_SoundIndex from server.h");
+assert.equal(typeof facade.init.SV_ImageIndex, "function", "facade should expose SV_ImageIndex from server.h");
+
+sv.state = server_state_t.ss_loading;
+assert.equal(facade.init.SV_ModelIndex("models/items/armor/body/tris.md2"), 1, "SV_ModelIndex should allocate model configstrings");
+assert.equal(facade.init.SV_ModelIndex("models/items/armor/body/tris.md2"), 1, "SV_ModelIndex should reuse existing model configstrings");
+assert.equal(facade.init.SV_SoundIndex("misc/secret.wav"), 1, "SV_SoundIndex should allocate sound configstrings");
+assert.equal(facade.init.SV_ImageIndex("i_health"), 1, "SV_ImageIndex should allocate image configstrings");
+assert.equal(sv.configstrings[CS_MODELS + 1], "models/items/armor/body/tris.md2", "SV_ModelIndex configstring slot mismatch");
+assert.equal(sv.configstrings[CS_SOUNDS + 1], "misc/secret.wav", "SV_SoundIndex configstring slot mismatch");
+assert.equal(sv.configstrings[CS_IMAGES + 1], "i_health", "SV_ImageIndex configstring slot mismatch");
+sv.state = server_state_t.ss_game;
 
 facade.procedures.SV_Frame(100);
 assert.equal(sv.framenum, 1, "facade.procedures.SV_Frame should route to the integrated sv_main frame loop");

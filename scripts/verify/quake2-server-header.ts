@@ -147,9 +147,17 @@ assert.equal(svs.demo_multicast_buf.length, 1400, "createServerStatic demo multi
 assert.equal(computeServerClientEntityCapacity(4), 4096, "computeServerClientEntityCapacity mismatch");
 
 const globals = createServerHeaderState();
+assert.equal(globals.net_message.maxsize, 1400, "createServerHeaderState net_message maxsize mismatch");
+assert.equal(globals.net_message.allowoverflow, true, "createServerHeaderState net_message overflow flag mismatch");
 assert.equal(globals.master_adr.length, MAX_MASTERS, "createServerHeaderState master address count mismatch");
 assert.equal(globals.sv.state, server_state_t.ss_dead, "createServerHeaderState sv state mismatch");
 assert.equal(globals.svs.challenges.length, MAX_CHALLENGES, "createServerHeaderState challenge count mismatch");
+assert.equal(globals.sv_paused, null, "createServerHeaderState sv_paused default mismatch");
+assert.equal(globals.maxclients, null, "createServerHeaderState maxclients default mismatch");
+assert.equal(globals.sv_noreload, null, "createServerHeaderState sv_noreload default mismatch");
+assert.equal(globals.sv_airaccelerate, null, "createServerHeaderState sv_airaccelerate default mismatch");
+assert.equal(globals.sv_enforcetime, null, "createServerHeaderState sv_enforcetime default mismatch");
+assert.equal(globals.sv_player, null, "createServerHeaderState sv_player default mismatch");
 
 const edict0 = createRuntimeEntity({}, 0);
 const edict1 = createRuntimeEntity({}, 1);

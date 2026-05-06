@@ -25,8 +25,10 @@ import {
 import { server_state_t } from "../../packages/server/src/server.js";
 import {
   CS_AIRACCEL,
+  CS_IMAGES,
   CS_MAPCHECKSUM,
   CS_MODELS,
+  CS_SOUNDS,
   Cvar_Get,
   Cvar_Set,
   createCommandRuntime,
@@ -127,6 +129,16 @@ const procedures = createServerInitProcedures({
 assert.equal(procedures.SV_FindIndex("", CS_MODELS, 256, true), 0, "SV_FindIndex should reject empty names");
 assert.equal(procedures.SV_ModelIndex("models/weapon.md2"), 1, "SV_ModelIndex should allocate a model slot");
 assert.equal(procedures.SV_ModelIndex("models/weapon.md2"), 1, "SV_ModelIndex should reuse an existing slot");
+assert.equal(procedures.SV_FindIndex("models/missing.md2", CS_MODELS, 256, false), 0, "SV_FindIndex should not allocate when create is false");
+assert.equal(procedures.SV_SoundIndex("world/ambience.wav"), 1, "SV_SoundIndex should allocate a sound slot");
+assert.equal(procedures.SV_ImageIndex("pics/status.pcx"), 1, "SV_ImageIndex should allocate an image slot");
+assert.equal(sv.configstrings[CS_SOUNDS + 1], "world/ambience.wav", "SV_SoundIndex should publish into CS_SOUNDS");
+assert.equal(sv.configstrings[CS_IMAGES + 1], "pics/status.pcx", "SV_ImageIndex should publish into CS_IMAGES");
+assert.throws(
+  () => procedures.SV_FindIndex("models/overflow.md2", CS_MODELS, 2, true),
+  /overflow/,
+  "SV_FindIndex should reject full configstring ranges"
+);
 assert.ok(multicastSnapshots.length >= 1, "SV_FindIndex should multicast configstring changes outside loading");
 
 ge.edicts[1]!.s.modelindex = 7;
@@ -167,11 +179,23 @@ assert.equal(loadRequests.length, 0, "SV_SpawnServer should not request external
 
 sv.loadgame = false;
 sv.name = "unit1";
+sv.state = server_state_t.ss_game;
 savegameReads.length = 0;
+runFrameCalls = 0;
 procedures.SV_CheckForSavegame();
 assert.deepEqual(savegameReads, ["unit1"], "SV_CheckForSavegame should read level data when a save exists");
+assert.equal(runFrameCalls, 100, "SV_CheckForSavegame should pump ten seconds of game frames");
+assert.equal(sv.state, server_state_t.ss_game, "SV_CheckForSavegame should restore the previous server state");
 
 assert.equal(deferCalls, 0, "SV_Map should not defer command buffers for demo states");
+
+broadcasts.length = 0;
+procedures.SV_Map(true, "unit.cin", false);
+assert.equal(sv.state, server_state_t.ss_cinematic, "SV_Map should pick cinematic state for .cin");
+assert.ok(broadcasts.includes("reconnect\n"), "SV_Map should reconnect after cinematic spawns");
+
+procedures.SV_Map(false, "victory.pcx", false);
+assert.equal(sv.state, server_state_t.ss_pic, "SV_Map should pick picture state for .pcx");
 
 Cvar_Set(cvar, "deathmatch", "1");
 Cvar_Set(cvar, "maxclients", "2");

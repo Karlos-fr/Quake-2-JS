@@ -142,6 +142,12 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
    * Source: server/sv_init.c
    * Category: Ported
    * Fidelity level: Close
+   *
+   * Behavior:
+   * - Finds or allocates one configstring resource index and multicasts live updates outside `ss_loading`.
+   *
+   * Porting notes:
+   * - Uses the explicit `ServerInitContext.sv` object instead of the file-global `sv`.
    */
   function SV_FindIndex(name: string, start: number, max: number, create: qboolean): number {
     if (!name.length) {
@@ -181,6 +187,9 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
    * Source: server/sv_init.c
    * Category: Ported
    * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Allocates model configstrings in the original `CS_MODELS` range.
    */
   function SV_ModelIndex(name: string): number {
     return SV_FindIndex(name, CS_MODELS, MAX_MODELS, true);
@@ -191,6 +200,9 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
    * Source: server/sv_init.c
    * Category: Ported
    * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Allocates sound configstrings in the original `CS_SOUNDS` range.
    */
   function SV_SoundIndex(name: string): number {
     return SV_FindIndex(name, CS_SOUNDS, MAX_SOUNDS, true);
@@ -201,6 +213,9 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
    * Source: server/sv_init.c
    * Category: Ported
    * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Allocates image configstrings in the original `CS_IMAGES` range.
    */
   function SV_ImageIndex(name: string): number {
     return SV_FindIndex(name, CS_IMAGES, MAX_IMAGES, true);
@@ -211,6 +226,12 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
    * Source: server/sv_init.c
    * Category: Ported
    * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Snapshots active entities with model, sound or effect state into `sv.baselines`.
+   *
+   * Porting notes:
+   * - Replaces pointer access through `EDICT_NUM` with the shared TypeScript edict-array helper.
    */
   function SV_CreateBaseline(): void {
     for (let entnum = 1; entnum < context.ge.num_edicts; entnum += 1) {
@@ -235,6 +256,12 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
    * Source: server/sv_init.c
    * Category: Ported
    * Fidelity level: Close
+   *
+   * Behavior:
+   * - Restores current-level save data when available and pumps 100 frames for non-loadgame returns.
+   *
+   * Porting notes:
+   * - File probing and level-file IO are delegated to host callbacks so browser storage can provide the same flow.
    */
   function SV_CheckForSavegame(): void {
     if ((context.sv_noreload?.value ?? 0) !== 0) {
@@ -269,6 +296,12 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
    * Source: server/sv_init.c
    * Category: Ported
    * Fidelity level: Close
+   *
+   * Behavior:
+   * - Clears per-level server state, loads the map or media placeholder state, spawns entities and builds baselines.
+   *
+   * Porting notes:
+   * - Mutates the shared `sv` object from a fresh `createServerState()` result to preserve references held by other subsystems.
    */
   function SV_SpawnServer(
     server: string,
@@ -368,6 +401,12 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
    * Source: server/sv_init.c
    * Category: Ported
    * Fidelity level: Close
+   *
+   * Behavior:
+   * - Starts a fresh game, applies maxclient rules, allocates client rings and initializes the game DLL facade.
+   *
+   * Porting notes:
+   * - Uses arrays and factory helpers in place of `Z_Malloc` while preserving sizes and zero defaults.
    */
   function SV_InitGame(): void {
     if (context.svs.initialized) {
@@ -434,6 +473,12 @@ export function createServerInitProcedures(context: ServerInitContext): ServerIn
    * Source: server/sv_init.c
    * Category: Ported
    * Fidelity level: Close
+   *
+   * Behavior:
+   * - Parses Quake II map strings, selects cinematic/demo/pic/game state, then broadcasts reconnect.
+   *
+   * Porting notes:
+   * - Host-only UI side effects such as the loading plaque remain callback-driven.
    */
   function SV_Map(attractloop: qboolean, levelstring: string, loadgame: qboolean): void {
     let level = levelstring.slice(0, MAX_QPATH - 1);

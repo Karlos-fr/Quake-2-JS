@@ -173,22 +173,22 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_TokenizeString` | `packages/qcommon/src/cmd.ts` | `Cmd_TokenizeString` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_ExecuteString` | `packages/qcommon/src/cmd.ts` | `Cmd_ExecuteString` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_ForwardToServer` | `packages/qcommon/src/cmd.ts` | `Cmd_ForwardToServer` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `cvar_vars` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Get` | `packages/qcommon/src/cvar.ts` | `Cvar_Get` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Set` | `packages/qcommon/src/cvar.ts` | `Cvar_Set` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_ForceSet` | `packages/qcommon/src/cvar.ts` | `Cvar_ForceSet` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_FullSet` | `packages/qcommon/src/cvar.ts` | `Cvar_FullSet` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_SetValue` | `packages/qcommon/src/cvar.ts` | `Cvar_SetValue` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_VariableValue` | `packages/qcommon/src/cvar.ts` | `Cvar_VariableValue` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_VariableString` | `packages/qcommon/src/cvar.ts` | `Cvar_VariableString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_CompleteVariable` | `packages/qcommon/src/cvar.ts` | `Cvar_CompleteVariable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_GetLatchedVars` | `packages/qcommon/src/cvar.ts` | `Cvar_GetLatchedVars` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Command` | `packages/qcommon/src/cvar.ts` | `Cvar_Command` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_WriteVariables` | `packages/qcommon/src/cvar.ts` | `Cvar_WriteVariables` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Init` | `packages/qcommon/src/cvar.ts` | `Cvar_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Userinfo` | `packages/qcommon/src/cvar.ts` | `CVAR_USERINFO` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Serverinfo` | `packages/qcommon/src/cvar.ts` | `CVAR_SERVERINFO` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `userinfo_modified` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `cvar_vars` | `packages/qcommon/src/cvar.ts` | `cvar_vars` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Get` | `packages/qcommon/src/cvar.ts` | `Cvar_Get` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Set` | `packages/qcommon/src/cvar.ts` | `Cvar_Set` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_ForceSet` | `packages/qcommon/src/cvar.ts` | `Cvar_ForceSet` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_FullSet` | `packages/qcommon/src/cvar.ts` | `Cvar_FullSet` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_SetValue` | `packages/qcommon/src/cvar.ts` | `Cvar_SetValue` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_VariableValue` | `packages/qcommon/src/cvar.ts` | `Cvar_VariableValue` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_VariableString` | `packages/qcommon/src/cvar.ts` | `Cvar_VariableString` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_CompleteVariable` | `packages/qcommon/src/cvar.ts` | `Cvar_CompleteVariable` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_GetLatchedVars` | `packages/qcommon/src/cvar.ts` | `Cvar_GetLatchedVars` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Command` | `packages/qcommon/src/cvar.ts` | `Cvar_Command` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_WriteVariables` | `packages/qcommon/src/cvar.ts` | `Cvar_WriteVariables` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Init` | `packages/qcommon/src/cvar.ts` | `Cvar_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Userinfo` | `packages/qcommon/src/cvar.ts` | `Cvar_Userinfo` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Serverinfo` | `packages/qcommon/src/cvar.ts` | `Cvar_Serverinfo` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `userinfo_modified` | `packages/qcommon/src/cvar.ts` | `userinfo_modified` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `PORT_ANY` | `packages/qcommon/src/qcommon.ts` | `PORT_ANY` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `MAX_MSGLEN` | `packages/qcommon/src/qcommon.ts` | `MAX_MSGLEN` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `PACKET_HEADER` | `packages/qcommon/src/qcommon.ts` | `PACKET_HEADER` | A verifier | A redecouper |  |

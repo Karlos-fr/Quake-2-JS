@@ -146,6 +146,8 @@ function verifyImportTable(collisionWorld: ReturnType<typeof createCollisionWorl
   let pointContentsCalls = 0;
   let debugGraphCalls = 0;
   let printfText = "";
+  let svErrorText = "";
+  let modelIndexLookup = "";
 
   const procedures = createServerGameProcedures({
     sv,
@@ -222,7 +224,7 @@ function verifyImportTable(collisionWorld: ReturnType<typeof createCollisionWorl
       return 0;
     },
     SV_ModelIndex: (name) => {
-      assert.equal(name, "models/test.md2");
+      modelIndexLookup = name;
       return 7;
     },
     SV_SoundIndex: (name) => name.length,
@@ -234,6 +236,7 @@ function verifyImportTable(collisionWorld: ReturnType<typeof createCollisionWorl
       printfText += message;
     },
     SV_Error: (error, ...args) => {
+      svErrorText = `${error}:${args.join(",")}`;
       throw new Error(`${error}:${args.join(",")}`);
     }
   });
@@ -251,9 +254,20 @@ function verifyImportTable(collisionWorld: ReturnType<typeof createCollisionWorl
 
   imports.cprintf(player, 2, "direct %s", "message");
   assert.equal(clientPrintfCalls, 1, "cprintf should forward valid clients to SV_ClientPrintf");
+  assert.throws(
+    () => imports.cprintf(createRuntimeEntity({}, 99), 2, "bad"),
+    /cprintf to a non-client/,
+    "cprintf should reject non-client edicts like the C Com_Error path"
+  );
 
   imports.centerprintf(player, "center");
   assert.ok(client.netchan.message.cursize > 0, "centerprintf should unicast reliable centerprint bytes");
+
+  const beforeInvalidUnicast = sv.multicast.cursize;
+  imports.unicast(null, true);
+  assert.equal(sv.multicast.cursize, beforeInvalidUnicast, "unicast with NULL edict should return without clearing multicast");
+  imports.unicast(createRuntimeEntity({}, 99), true);
+  assert.equal(sv.multicast.cursize, beforeInvalidUnicast, "unicast with non-client edict should return without clearing multicast");
 
   SZ_Clear(client.netchan.message);
   imports.WriteByte(svc_ops_e.svc_nop);
@@ -266,7 +280,11 @@ function verifyImportTable(collisionWorld: ReturnType<typeof createCollisionWorl
   assert.ok(client.datagram.cursize > 0, "unicast unreliable should write to datagram");
 
   imports.setmodel(player, "models/test.md2");
+  assert.equal(modelIndexLookup, "models/test.md2", "setmodel should request the exact model name from SV_ModelIndex");
   assert.equal(player.s.modelindex, 7, "setmodel should update entity modelindex");
+  imports.setmodel(player, "*1");
+  assert.equal(modelIndexLookup, "*1", "setmodel should also index inline models before loading bounds");
+  assert.equal(linkCalls, 1, "setmodel should link inline brush models after copying bounds");
 
   sv.state = server_state_t.ss_loading;
   imports.configstring(5, "loading-value");
@@ -276,6 +294,7 @@ function verifyImportTable(collisionWorld: ReturnType<typeof createCollisionWorl
   assert.equal(multicastCalls, 1, "configstring should multicast while server is active");
 
   imports.sound(player, 2, 3, 1, 0, 0);
+  imports.sound(null, 2, 3, 1, 0, 0);
   imports.positioned_sound([1, 2, 3], player, 2, 3, 1, 0, 0);
   assert.equal(startSoundCalls, 2, "sound imports should forward to SV_StartSound");
 
@@ -284,7 +303,7 @@ function verifyImportTable(collisionWorld: ReturnType<typeof createCollisionWorl
   imports.BoxEdicts([0, 0, 0], [1, 1, 1], [], 0, 0);
   imports.trace([0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1], null, 0);
   imports.pointcontents([0, 0, 0]);
-  assert.equal(linkCalls, 1, "linkentity should forward to SV_LinkEdict");
+  assert.equal(linkCalls, 2, "linkentity should forward to SV_LinkEdict after the inline setmodel link");
   assert.equal(unlinkCalls, 1, "unlinkentity should forward to SV_UnlinkEdict");
   assert.equal(areaEdictCalls, 1, "BoxEdicts should forward to SV_AreaEdicts");
   assert.equal(traceCalls, 1, "trace should forward to SV_Trace");
@@ -328,12 +347,53 @@ function verifyImportTable(collisionWorld: ReturnType<typeof createCollisionWorl
   assert.equal(imports.inPHS([0, 0, 0], [0, 0, 0]), true, "inPHS should answer hearability for same point");
 
   assert.throws(() => imports.error("fatal %i", 7), /Game Error: fatal 7/, "error should route through SV_Error");
+  assert.equal(svErrorText, "Game Error: fatal 7:", "error should prefix game errors like the C bridge");
 
   procedures.SV_InitGameProgs();
   assert.equal(shutdownCalls, 1, "SV_InitGameProgs should shutdown an already loaded game before replacing it");
   assert.equal(initCalls, 2, "SV_InitGameProgs should initialize the replacement game");
   procedures.SV_ShutdownGameProgs();
   assert.equal(shutdownCalls, 2, "SV_ShutdownGameProgs should call game Shutdown once");
+
+  const badVersionProcedures = createServerGameProcedures({
+    sv,
+    svs,
+    ge,
+    cmd,
+    cvar,
+    collisionWorld,
+    maxclients,
+    getGameApi: () => ({ ...createPlaceholderGe(), apiversion: GAME_API_VERSION + 1 }),
+    SV_Multicast: () => {},
+    SV_ClientPrintf: () => {},
+    SV_BroadcastPrintf: () => {},
+    SV_StartSound: () => {},
+    SV_LinkEdict: () => {},
+    SV_UnlinkEdict: () => {},
+    SV_AreaEdicts: () => 0,
+    SV_Trace: () => ({
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [0, 0, 0],
+      plane: { normal: [0, 0, 0], dist: 0, type: 0, signbits: 0 },
+      surface: null,
+      contents: 0,
+      ent: null
+    }),
+    SV_PointContents: () => 0,
+    SV_ModelIndex: () => 0,
+    SV_SoundIndex: () => 0,
+    SV_ImageIndex: () => 0,
+    SV_Error: (error, ...args) => {
+      throw new Error(`${error}:${args.join(",")}`);
+    }
+  });
+  assert.throws(
+    () => badVersionProcedures.SV_InitGameProgs(),
+    /game is version/,
+    "SV_InitGameProgs should reject incompatible GAME_API_VERSION"
+  );
 }
 
 function createPlaceholderGe(): game_export_t {
