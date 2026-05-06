@@ -7,6 +7,42 @@
 
 ## Dernier lot valide
 
+Lot pain elargi:
+
+- bloc pain: `mutant_frames_pain1`, `mutant_move_pain1`, `mutant_frames_pain2`, `mutant_move_pain2`, `mutant_frames_pain3`, `mutant_move_pain3`, `mutant_pain`;
+- lignes declaratives correspondantes pour `mutant_frames_pain1`, `mutant_frames_pain2`, `mutant_frames_pain3`;
+- variable locale `r` de `mutant_pain`.
+
+Validation:
+
+- comparaison C vs TS effectuee pour les distances `ai_move`, bornes `FRAME_pain101..105`, `FRAME_pain201..206`, `FRAME_pain301..311`, `endfunc = mutant_run`, skin low-health, `pain_debounce_time = level.time + 3`, branche nightmare sans animation, selection `random()` `< 0.33` / `< 0.66` / else, sons `sound_pain1`/`sound_pain2`, et affectation `currentmove`;
+- commentaire d'en-tete de `mutant_pain` verifie dans `packages/game/src/m_mutant.ts` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level`, comportement et note de portage RNG;
+- runtime verifie: `SP_monster_mutant` branche `self.pain = mutant_pain`; `T_Damage` appelle `targ.pain` quand applicable; les moves pain exportes sont retrouves par `g_save.ts`; `M_MoveFrame` consomme les frames pain et revient a `mutant_run` via `endfunc`;
+- `apps/web` verifie via le flux full-game: le navigateur declenche le runtime porte et consomme snapshots/sons sans logique parallele mutant; aucune integration web specifique mutant n'est attendue pour ce callback gameplay;
+- `renderer-three` verifie via le flux full-game/Three: les sorties visibles attendues du lot sont le modele mutant, `s.frame`/`oldframe`, `skinnum` pain et sons via snapshots client; elles sont consommees par les adapters refresh/MD2 generiques, sans branche specifique mutant attendue.
+
+Artefacts matrice:
+
+- `r` marque `Non applicable`: variable locale de `mutant_pain`, pas une entite proprietaire.
+
+## Tests lances
+
+- `npm run verify:m-mutant`
+- `npm run verify:m-mutant:source-parity`
+- `npm run verify:m-mutant:header`
+- `npm run verify:full-game:render-source`
+- `npm run verify:full-game:three-renderer`
+- `npm run verify:web-render-order`
+- `npm run typecheck`
+
+## Prochain lot recommande
+
+Continuer avec le bloc death: `mutant_dead`, `mutant_frames_death1`, `mutant_move_death1`, `mutant_frames_death2`, `mutant_move_death2`, `mutant_die`, puis la variable locale `n` si le lot reste coherent.
+
+## Historique
+
+### Lot attaque/saut elargi
+
 Lot attaque/saut elargi:
 
 - bloc melee/attack: `mutant_hit_left`, `mutant_hit_right`, `mutant_check_refire`, `mutant_frames_attack`, `mutant_move_attack`, `mutant_melee`;
@@ -26,7 +62,7 @@ Artefacts matrice:
 - `damage` marque `Non applicable`: variable locale de `mutant_jump_touch`, pas une entite proprietaire.
 - `distance` marque `Non applicable`: variable locale de `mutant_check_jump`, pas une entite proprietaire.
 
-## Tests lances
+Tests lances:
 
 - `npm run verify:m-mutant`
 - `npm run verify:m-mutant:source-parity`
@@ -36,12 +72,6 @@ Artefacts matrice:
 - `npm run verify:web-render-order`
 - `npm run typecheck`
 - `git diff --check`
-
-## Prochain lot recommande
-
-Continuer avec le bloc pain: `mutant_frames_pain1`, `mutant_move_pain1`, `mutant_frames_pain2`, `mutant_move_pain2`, `mutant_frames_pain3`, `mutant_move_pain3`, `mutant_pain`, puis la variable locale `r`.
-
-## Historique
 
 ### Lot initial
 

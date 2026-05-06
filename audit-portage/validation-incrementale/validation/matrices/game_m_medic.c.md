@@ -64,13 +64,13 @@
 | `Quake-2-master/game/m_medic.c` | table | `medic_frames_duck` | `packages/game/src/m_medic.ts` | `medic_frames_duck` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_medic.c` | global | `medic_move_duck` | `packages/game/src/m_medic.ts` | `medic_move_duck` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_medic.c` | function | `medic_dodge` | `packages/game/src/m_medic.ts` | `medic_dodge` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_frames_attackHyperBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackHyperBlaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | table | `medic_frames_attackHyperBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackHyperBlaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_move_attackHyperBlaster` | `packages/game/src/m_medic.ts` | `medic_move_attackHyperBlaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_continue` | `packages/game/src/m_medic.ts` | `medic_continue` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_frames_attackBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackBlaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | table | `medic_frames_attackBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackBlaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_move_attackBlaster` | `packages/game/src/m_medic.ts` | `medic_move_attackBlaster` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_frames_attackHyperBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackHyperBlaster` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | table | `medic_frames_attackHyperBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackHyperBlaster` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_move_attackHyperBlaster` | `packages/game/src/m_medic.ts` | `medic_move_attackHyperBlaster` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | function | `medic_continue` | `packages/game/src/m_medic.ts` | `medic_continue` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_frames_attackBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackBlaster` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | table | `medic_frames_attackBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackBlaster` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_move_attackBlaster` | `packages/game/src/m_medic.ts` | `medic_move_attackBlaster` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_medic.c` | function | `medic_hook_launch` | `packages/game/src/m_medic.ts` | `medic_hook_launch` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_medic.c` | table | `medic_cable_offsets` | `packages/game/src/m_medic.ts` | `medic_cable_offsets` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_medic.c` | function | `medic_cable_attack` | `packages/game/src/m_medic.ts` | `medic_cable_attack` | A verifier | A redecouper |  |
@@ -90,6 +90,6 @@
 | `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_pain2` | `packages/game/src/m_medic.ts` | `medic_frames_pain2` | Valide | matched |  |
 | `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_death` | `packages/game/src/m_medic.ts` | `medic_frames_death` | Valide | matched |  |
 | `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_duck` | `packages/game/src/m_medic.ts` | `medic_frames_duck` | Valide | matched |  |
-| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_attackHyperBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackHyperBlaster` | A verifier | matched |  |
-| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_attackBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackBlaster` | A verifier | matched |  |
+| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_attackHyperBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackHyperBlaster` | Valide | matched |  |
+| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_attackBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackBlaster` | Valide | matched |  |
 | `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_attackCable` | `packages/game/src/m_medic.ts` | `medic_frames_attackCable` | A verifier | matched |  |

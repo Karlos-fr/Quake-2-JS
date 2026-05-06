@@ -1891,7 +1891,26 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 5 lignes du lot passees a `Valide`, noms cibles renseignes.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:g-cmds` OK; `npm run verify:p-hud` OK; `npm run verify:g-chase` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Prochain lot recommande: traiter `gclient_s` comme structure proprietaire, puis son debut `ps`, `ping`, `old_pmove`, `showscores`, `showinventory`, `showhelp`, `showhelpicon`, `ammo_index`, `buttons`, `oldbuttons`, `latched_buttons` si le lot reste coherent.
+- 2026-05-06: lot elargi `gclient_s` initial: structure `gclient_s`, champs `ps`, `ping`, `old_pmove`, `showscores`, `showinventory`, `showhelp`, `showhelpicon`, `ammo_index`, `buttons`, `oldbuttons`, `latched_buttons`, puis voisins coherents `weapon_thunk`, `newweapon`, `damage_armor`, `damage_parmor`, `damage_blood`, `damage_knockback`, `damage_from`.
+- Verdict: `Valide` pour les 19 lignes du lot apres comparaison H/C vs TS, correction des commentaires d'en-tete runtime et ajout de preuves header.
+- Source H/C comparee:
+  - `g_local.h` definit `gclient_s` avec prefixe serveur `player_state_t ps`/`ping`, blocs `pers`/`resp`, `old_pmove`, flags de layout, index ammo, etat de boutons, thunk d'arme, `newweapon`, puis accumulation de degats sur une frame.
+  - `p_client.c` branche `ps`/`old_pmove` dans `ClientThink`/`PMove`, met a jour `buttons`/`oldbuttons`/`latched_buttons`, gere `weapon_thunk`, respawn/intermission et layout; `g_cmds.c`/`p_hud.c` pilotent scores/inventaire/help; `p_weapon.c` consomme `ammo_index`, boutons et `newweapon`; `g_combat.c` accumule les degats; `p_view.c` consomme puis remet a zero le feedback degats.
+- Cibles TS verifiees:
+  - `packages/game/src/runtime.ts`: `GameClient` porte tous les champs du lot et `createGameClient` initialise des valeurs equivalentes; commentaire de portage `gclient_s` corrige avec `Original name`, `Source`, `Category`, fidelity, comportement et notes.
+  - `packages/game/src/g_local.ts`: expose `GameClient`/`createGameClient` via le point d'attache header.
+  - `packages/game/src/p_client.ts`, `g_cmds.ts`, `p_hud.ts`, `p_weapon.ts`, `g_combat.ts`, `p_view.ts`, `g_save.ts`: consommateurs runtime verifies.
+- Runtime: integre via `GetGameApi.ClientThink`, `ClientBegin`/`PutClientInServer`, `ClientBeginServerFrame`, `ClientEndServerFrame`, commandes client, HUD/layouts, changement/tir d'arme, save/load, degats et feedback view. Le lot n'est pas seulement declaratif: ses champs pilotent input, prediction/pmove, HUD, armes, dégâts et playerstate.
+- apps/web: integration attendue indirectement via host full-game/local, usercmd/buttons, commandes layout/inventaire/help, snapshots/playerstate et ordre de rendu; aucune logique parallele web ne remplace ces champs runtime. `verify:web-render-order`, `verify:local-gameplay-sync` et `verify:full-game:server-host` OK.
+- renderer-three: integration indirecte attendue. `ps` produit playerstate/camera/gun frame, `buttons`/`newweapon` influencent armes, muzzle/temp entities et frames, les flags layout alimentent HUD, et les champs de degats produisent kick/blend visibles via playerstate. Three consomme les sorties via snapshots/client/refresh/scene, sans consommation directe du type header. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaires de `GameClient` et `createGameClient` corriges; commentaires de `ClientThink`, `ClientBeginServerFrame`, `Cmd_Inven_f`, `Cmd_Score_f`, `HelpComputer`, `ChangeWeapon`, `Weapon_Generic`, `T_Damage`, `P_DamageFeedback` et save client verifies.
+- Corrections appliquees:
+  - `packages/game/src/runtime.ts`: commentaires de portage de `GameClient` et `createGameClient`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ajoutees pour defaults, mutabilite, non-aliasing `ps`/`old_pmove` et champs du lot.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 19 lignes du lot passees a `Valide`, noms cibles renseignes.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:p-hud` OK; `npm run verify:p-weapon` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:p-view` OK; `npm run verify:g-save` OK; `npm run verify:g-cmds` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: continuer `gclient_s` avec le bloc vue/arme directement suivant: `killer_yaw`, `weaponstate`, `kick_angles`, `kick_origin`, `v_dmg_roll`, `v_dmg_pitch`, `v_dmg_time`, `fall_time`, `fall_value`, `damage_alpha`, `bonus_alpha`, `damage_blend`, `v_angle`, `bobtime`, `oldviewangles`, `oldvelocity`.
 
 ## Blocages
 

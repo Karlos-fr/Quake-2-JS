@@ -10,63 +10,63 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break01` | `packages/game/src/m_parasite.ts` | `FRAME_break01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break02` | `packages/game/src/m_parasite.ts` | `FRAME_break02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break03` | `packages/game/src/m_parasite.ts` | `FRAME_break03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break04` | `packages/game/src/m_parasite.ts` | `FRAME_break04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break05` | `packages/game/src/m_parasite.ts` | `FRAME_break05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break06` | `packages/game/src/m_parasite.ts` | `FRAME_break06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break07` | `packages/game/src/m_parasite.ts` | `FRAME_break07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break08` | `packages/game/src/m_parasite.ts` | `FRAME_break08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break09` | `packages/game/src/m_parasite.ts` | `FRAME_break09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break10` | `packages/game/src/m_parasite.ts` | `FRAME_break10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break11` | `packages/game/src/m_parasite.ts` | `FRAME_break11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break12` | `packages/game/src/m_parasite.ts` | `FRAME_break12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break13` | `packages/game/src/m_parasite.ts` | `FRAME_break13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break14` | `packages/game/src/m_parasite.ts` | `FRAME_break14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break15` | `packages/game/src/m_parasite.ts` | `FRAME_break15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break16` | `packages/game/src/m_parasite.ts` | `FRAME_break16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break17` | `packages/game/src/m_parasite.ts` | `FRAME_break17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break18` | `packages/game/src/m_parasite.ts` | `FRAME_break18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break19` | `packages/game/src/m_parasite.ts` | `FRAME_break19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break20` | `packages/game/src/m_parasite.ts` | `FRAME_break20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break21` | `packages/game/src/m_parasite.ts` | `FRAME_break21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break22` | `packages/game/src/m_parasite.ts` | `FRAME_break22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break23` | `packages/game/src/m_parasite.ts` | `FRAME_break23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break24` | `packages/game/src/m_parasite.ts` | `FRAME_break24` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break25` | `packages/game/src/m_parasite.ts` | `FRAME_break25` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break26` | `packages/game/src/m_parasite.ts` | `FRAME_break26` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break27` | `packages/game/src/m_parasite.ts` | `FRAME_break27` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break28` | `packages/game/src/m_parasite.ts` | `FRAME_break28` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break29` | `packages/game/src/m_parasite.ts` | `FRAME_break29` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break30` | `packages/game/src/m_parasite.ts` | `FRAME_break30` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break31` | `packages/game/src/m_parasite.ts` | `FRAME_break31` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break32` | `packages/game/src/m_parasite.ts` | `FRAME_break32` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death101` | `packages/game/src/m_parasite.ts` | `FRAME_death101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death102` | `packages/game/src/m_parasite.ts` | `FRAME_death102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death103` | `packages/game/src/m_parasite.ts` | `FRAME_death103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death104` | `packages/game/src/m_parasite.ts` | `FRAME_death104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death105` | `packages/game/src/m_parasite.ts` | `FRAME_death105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death106` | `packages/game/src/m_parasite.ts` | `FRAME_death106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death107` | `packages/game/src/m_parasite.ts` | `FRAME_death107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain01` | `packages/game/src/m_parasite.ts` | `FRAME_drain01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain02` | `packages/game/src/m_parasite.ts` | `FRAME_drain02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain03` | `packages/game/src/m_parasite.ts` | `FRAME_drain03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain04` | `packages/game/src/m_parasite.ts` | `FRAME_drain04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain05` | `packages/game/src/m_parasite.ts` | `FRAME_drain05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain06` | `packages/game/src/m_parasite.ts` | `FRAME_drain06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain07` | `packages/game/src/m_parasite.ts` | `FRAME_drain07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain08` | `packages/game/src/m_parasite.ts` | `FRAME_drain08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain09` | `packages/game/src/m_parasite.ts` | `FRAME_drain09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain10` | `packages/game/src/m_parasite.ts` | `FRAME_drain10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain11` | `packages/game/src/m_parasite.ts` | `FRAME_drain11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain12` | `packages/game/src/m_parasite.ts` | `FRAME_drain12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain13` | `packages/game/src/m_parasite.ts` | `FRAME_drain13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain14` | `packages/game/src/m_parasite.ts` | `FRAME_drain14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain15` | `packages/game/src/m_parasite.ts` | `FRAME_drain15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain16` | `packages/game/src/m_parasite.ts` | `FRAME_drain16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain17` | `packages/game/src/m_parasite.ts` | `FRAME_drain17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain18` | `packages/game/src/m_parasite.ts` | `FRAME_drain18` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break01` | `packages/game/src/m_parasite.ts` | `FRAME_break01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break02` | `packages/game/src/m_parasite.ts` | `FRAME_break02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break03` | `packages/game/src/m_parasite.ts` | `FRAME_break03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break04` | `packages/game/src/m_parasite.ts` | `FRAME_break04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break05` | `packages/game/src/m_parasite.ts` | `FRAME_break05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break06` | `packages/game/src/m_parasite.ts` | `FRAME_break06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break07` | `packages/game/src/m_parasite.ts` | `FRAME_break07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break08` | `packages/game/src/m_parasite.ts` | `FRAME_break08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break09` | `packages/game/src/m_parasite.ts` | `FRAME_break09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break10` | `packages/game/src/m_parasite.ts` | `FRAME_break10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break11` | `packages/game/src/m_parasite.ts` | `FRAME_break11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break12` | `packages/game/src/m_parasite.ts` | `FRAME_break12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break13` | `packages/game/src/m_parasite.ts` | `FRAME_break13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break14` | `packages/game/src/m_parasite.ts` | `FRAME_break14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break15` | `packages/game/src/m_parasite.ts` | `FRAME_break15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break16` | `packages/game/src/m_parasite.ts` | `FRAME_break16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break17` | `packages/game/src/m_parasite.ts` | `FRAME_break17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break18` | `packages/game/src/m_parasite.ts` | `FRAME_break18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break19` | `packages/game/src/m_parasite.ts` | `FRAME_break19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break20` | `packages/game/src/m_parasite.ts` | `FRAME_break20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break21` | `packages/game/src/m_parasite.ts` | `FRAME_break21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break22` | `packages/game/src/m_parasite.ts` | `FRAME_break22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break23` | `packages/game/src/m_parasite.ts` | `FRAME_break23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break24` | `packages/game/src/m_parasite.ts` | `FRAME_break24` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break25` | `packages/game/src/m_parasite.ts` | `FRAME_break25` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break26` | `packages/game/src/m_parasite.ts` | `FRAME_break26` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break27` | `packages/game/src/m_parasite.ts` | `FRAME_break27` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break28` | `packages/game/src/m_parasite.ts` | `FRAME_break28` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break29` | `packages/game/src/m_parasite.ts` | `FRAME_break29` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break30` | `packages/game/src/m_parasite.ts` | `FRAME_break30` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break31` | `packages/game/src/m_parasite.ts` | `FRAME_break31` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_break32` | `packages/game/src/m_parasite.ts` | `FRAME_break32` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death101` | `packages/game/src/m_parasite.ts` | `FRAME_death101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death102` | `packages/game/src/m_parasite.ts` | `FRAME_death102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death103` | `packages/game/src/m_parasite.ts` | `FRAME_death103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death104` | `packages/game/src/m_parasite.ts` | `FRAME_death104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death105` | `packages/game/src/m_parasite.ts` | `FRAME_death105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death106` | `packages/game/src/m_parasite.ts` | `FRAME_death106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_death107` | `packages/game/src/m_parasite.ts` | `FRAME_death107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain01` | `packages/game/src/m_parasite.ts` | `FRAME_drain01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain02` | `packages/game/src/m_parasite.ts` | `FRAME_drain02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain03` | `packages/game/src/m_parasite.ts` | `FRAME_drain03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain04` | `packages/game/src/m_parasite.ts` | `FRAME_drain04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain05` | `packages/game/src/m_parasite.ts` | `FRAME_drain05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain06` | `packages/game/src/m_parasite.ts` | `FRAME_drain06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain07` | `packages/game/src/m_parasite.ts` | `FRAME_drain07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain08` | `packages/game/src/m_parasite.ts` | `FRAME_drain08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain09` | `packages/game/src/m_parasite.ts` | `FRAME_drain09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain10` | `packages/game/src/m_parasite.ts` | `FRAME_drain10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain11` | `packages/game/src/m_parasite.ts` | `FRAME_drain11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain12` | `packages/game/src/m_parasite.ts` | `FRAME_drain12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain13` | `packages/game/src/m_parasite.ts` | `FRAME_drain13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain14` | `packages/game/src/m_parasite.ts` | `FRAME_drain14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain15` | `packages/game/src/m_parasite.ts` | `FRAME_drain15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain16` | `packages/game/src/m_parasite.ts` | `FRAME_drain16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain17` | `packages/game/src/m_parasite.ts` | `FRAME_drain17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `FRAME_drain18` | `packages/game/src/m_parasite.ts` | `FRAME_drain18` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_parasite.h` | macro | `FRAME_pain101` | `packages/game/src/m_parasite.ts` | `FRAME_pain101` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_parasite.h` | macro | `FRAME_pain102` | `packages/game/src/m_parasite.ts` | `FRAME_pain102` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_parasite.h` | macro | `FRAME_pain103` | `packages/game/src/m_parasite.ts` | `FRAME_pain103` | A verifier | A redecouper |  |
@@ -128,4 +128,4 @@
 | `Quake-2-master/game/m_parasite.h` | macro | `FRAME_stand33` | `packages/game/src/m_parasite.ts` | `FRAME_stand33` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_parasite.h` | macro | `FRAME_stand34` | `packages/game/src/m_parasite.ts` | `FRAME_stand34` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_parasite.h` | macro | `FRAME_stand35` | `packages/game/src/m_parasite.ts` | `FRAME_stand35` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_parasite.h` | macro | `MODEL_SCALE` | `packages/game/src/m_parasite.ts` | `MODEL_SCALE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_parasite.h` | macro | `MODEL_SCALE` | `packages/game/src/m_parasite.ts` | `MODEL_SCALE` | Valide | A redecouper |  |

@@ -9,22 +9,18 @@
  * - packages/game/src/m_insane.ts
  */
 
-import {
-  FRAME_crawl1,
-  FRAME_cr_death16,
-  FRAME_cross30,
-  FRAME_stand1,
-  FRAME_st_death18,
-  FRAME_walk1,
-  MODEL_SCALE
-} from "../../packages/game/src/m_insane.js";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import * as insaneHeader from "../../packages/game/src/m_insane.js";
 
 /**
  * Category: New
  * Purpose: Fail fast when a declarative frame constant differs from the original header values.
  *
  * Constraints:
- * - Keep the checks sparse but representative across the generated table.
+ * - Parse the generated header directly so every frame macro and `MODEL_SCALE` remains covered.
  */
 function assertEqual<T>(label: string, actual: T, expected: T): void {
   if (actual !== expected) {
@@ -32,12 +28,20 @@ function assertEqual<T>(label: string, actual: T, expected: T): void {
   }
 }
 
-assertEqual("FRAME_stand1", FRAME_stand1, 0);
-assertEqual("FRAME_walk1", FRAME_walk1, 173);
-assertEqual("FRAME_st_death18", FRAME_st_death18, 226);
-assertEqual("FRAME_crawl1", FRAME_crawl1, 227);
-assertEqual("FRAME_cr_death16", FRAME_cr_death16, 251);
-assertEqual("FRAME_cross30", FRAME_cross30, 281);
-assertEqual("MODEL_SCALE", MODEL_SCALE, 1.0);
+const HEADER_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../Quake-2-master/game/m_insane.h"
+);
+const source = readFileSync(HEADER_PATH, "utf8");
+const exportsByName = insaneHeader as Record<string, unknown>;
+
+let checked = 0;
+for (const match of source.matchAll(/^#define\s+(FRAME_\w+|MODEL_SCALE)\s+([0-9.]+)$/gm)) {
+  const [, name, rawExpected] = match;
+  assertEqual(name, exportsByName[name], Number.parseFloat(rawExpected));
+  checked += 1;
+}
+
+assertEqual("macro count", checked, 283);
 
 console.log("quake2-m-insane-header: ok");

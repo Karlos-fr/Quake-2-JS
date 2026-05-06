@@ -202,11 +202,18 @@ export interface GameClientRespawn {
 }
 
 /**
- * Category: New
- * Purpose: Preserve the first weapon-related subset of `gclient_t` required by `p_weapon.c`.
+ * Original name: gclient_s
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must retain original names for inventory, weapon switching and gun animation flow.
+ * Behavior:
+ * - Preserves the per-client gameplay block embedded behind `edict_t.client`, including the server-visible
+ *   `player_state_t`/`ping` prefix, persistent/respawn state, input latches, HUD toggles, weapon state and
+ *   frame-accumulated damage feedback.
+ *
+ * Porting notes:
+ * - C pointers such as `gitem_t *newweapon` are represented as nullable item definitions.
  */
 export interface GameClient {
   ps: player_state_t;
@@ -1013,8 +1020,13 @@ export function cloneGameClientPersistant(source: GameClientPersistant): GameCli
 }
 
 /**
- * Category: New
- * Purpose: Create the minimal `gclient_t` subset required by the first `p_weapon.c` port.
+ * Original name: gclient_s initialization
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Creates the zero/default-initialized TypeScript equivalent of a freshly allocated `gclient_s` block.
  */
 export function createGameClient(): GameClient {
   return {

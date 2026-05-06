@@ -175,7 +175,7 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { client_persistant_t, client_respawn_t, game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, mmove_t, monsterinfo_t, moveinfo_t } from "../../packages/game/src/g_local.js";
+import type { client_persistant_t, client_respawn_t, game_locals_t, GameClient, gitem_armor_t, gitem_t, level_locals_t, mframe_t, mmove_t, monsterinfo_t, moveinfo_t } from "../../packages/game/src/g_local.js";
 import {
   ANIM_ATTACK as INDEX_ANIM_ATTACK,
   ANIM_BASIC as INDEX_ANIM_BASIC,
@@ -582,6 +582,67 @@ assert.deepEqual(resp.cmd_angles, [10, 20, 30], "client_respawn_t cmd_angles mut
 assert.equal(resp.coop_respawn.inventory[11], 6, "client_respawn_t coop_respawn mutable field mismatch");
 const secondResp = createGameClientRespawn();
 assert.equal(secondResp.coop_respawn.inventory[11], 0, "client_respawn_t coop_respawn instances must not alias");
+const gameClient = client satisfies GameClient;
+assert.equal(gameClient.ps.pmove.origin.length, 3, "gclient_s.ps must carry player_state_t pmove storage");
+assert.equal(gameClient.ping, 0, "gclient_s.ping default mismatch");
+assert.notEqual(gameClient.old_pmove, gameClient.ps.pmove, "gclient_s.old_pmove must not alias ps.pmove storage");
+assert.deepEqual(gameClient.old_pmove.origin, [0, 0, 0], "gclient_s.old_pmove default origin mismatch");
+assert.equal(gameClient.showscores, false, "gclient_s.showscores default mismatch");
+assert.equal(gameClient.showinventory, false, "gclient_s.showinventory default mismatch");
+assert.equal(gameClient.showhelp, false, "gclient_s.showhelp default mismatch");
+assert.equal(gameClient.showhelpicon, false, "gclient_s.showhelpicon default mismatch");
+assert.equal(gameClient.ammo_index, 0, "gclient_s.ammo_index default mismatch");
+assert.equal(gameClient.buttons, 0, "gclient_s.buttons default mismatch");
+assert.equal(gameClient.oldbuttons, 0, "gclient_s.oldbuttons default mismatch");
+assert.equal(gameClient.latched_buttons, 0, "gclient_s.latched_buttons default mismatch");
+assert.equal(gameClient.weapon_thunk, false, "gclient_s.weapon_thunk default mismatch");
+assert.equal(gameClient.newweapon, null, "gclient_s.newweapon default mismatch");
+assert.equal(gameClient.damage_armor, 0, "gclient_s.damage_armor default mismatch");
+assert.equal(gameClient.damage_parmor, 0, "gclient_s.damage_parmor default mismatch");
+assert.equal(gameClient.damage_blood, 0, "gclient_s.damage_blood default mismatch");
+assert.equal(gameClient.damage_knockback, 0, "gclient_s.damage_knockback default mismatch");
+assert.deepEqual(gameClient.damage_from, [0, 0, 0], "gclient_s.damage_from default mismatch");
+gameClient.ps.viewangles = [1, 2, 3];
+gameClient.ping = 88;
+gameClient.old_pmove.origin = [8, 16, 24];
+gameClient.showscores = true;
+gameClient.showinventory = true;
+gameClient.showhelp = true;
+gameClient.showhelpicon = true;
+gameClient.ammo_index = 3;
+gameClient.buttons = 1;
+gameClient.oldbuttons = 2;
+gameClient.latched_buttons = 4;
+gameClient.weapon_thunk = true;
+gameClient.newweapon = persBlaster;
+gameClient.damage_armor = 5;
+gameClient.damage_parmor = 6;
+gameClient.damage_blood = 7;
+gameClient.damage_knockback = 8;
+gameClient.damage_from = [9, 10, 11];
+assert.deepEqual(gameClient.ps.viewangles, [1, 2, 3], "gclient_s.ps mutable field mismatch");
+assert.equal(gameClient.ping, 88, "gclient_s.ping mutable field mismatch");
+assert.deepEqual(gameClient.old_pmove.origin, [8, 16, 24], "gclient_s.old_pmove mutable field mismatch");
+assert.deepEqual(gameClient.ps.pmove.origin, [0, 0, 0], "gclient_s.old_pmove mutation must not alter ps.pmove");
+assert.equal(gameClient.showscores, true, "gclient_s.showscores mutable field mismatch");
+assert.equal(gameClient.showinventory, true, "gclient_s.showinventory mutable field mismatch");
+assert.equal(gameClient.showhelp, true, "gclient_s.showhelp mutable field mismatch");
+assert.equal(gameClient.showhelpicon, true, "gclient_s.showhelpicon mutable field mismatch");
+assert.equal(gameClient.ammo_index, 3, "gclient_s.ammo_index mutable field mismatch");
+assert.equal(gameClient.buttons, 1, "gclient_s.buttons mutable field mismatch");
+assert.equal(gameClient.oldbuttons, 2, "gclient_s.oldbuttons mutable field mismatch");
+assert.equal(gameClient.latched_buttons, 4, "gclient_s.latched_buttons mutable field mismatch");
+assert.equal(gameClient.weapon_thunk, true, "gclient_s.weapon_thunk mutable field mismatch");
+assert.equal(gameClient.newweapon, persBlaster, "gclient_s.newweapon pointer field mismatch");
+assert.equal(gameClient.damage_armor, 5, "gclient_s.damage_armor mutable field mismatch");
+assert.equal(gameClient.damage_parmor, 6, "gclient_s.damage_parmor mutable field mismatch");
+assert.equal(gameClient.damage_blood, 7, "gclient_s.damage_blood mutable field mismatch");
+assert.equal(gameClient.damage_knockback, 8, "gclient_s.damage_knockback mutable field mismatch");
+assert.deepEqual(gameClient.damage_from, [9, 10, 11], "gclient_s.damage_from mutable field mismatch");
+const secondClient = createGameClient();
+assert.deepEqual(secondClient.ps.viewangles, [0, 0, 0], "gclient_s.ps instances must not alias");
+assert.deepEqual(secondClient.old_pmove.origin, [0, 0, 0], "gclient_s.old_pmove instances must not alias");
+assert.deepEqual(secondClient.damage_from, [0, 0, 0], "gclient_s.damage_from instances must not alias");
 assert.equal(client.flood_when.length, 10, "client flood_when inline array mismatch");
 assert.equal(entity.monsterinfo.aiflags, 0, "entity monsterinfo must exist");
 assert.equal(entity.gravity, 1, "entity gravity default mismatch");

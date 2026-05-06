@@ -203,8 +203,11 @@ function verifyMoveTablesMatchSourceFrames(): void {
     [4, "mutant_check_landing"]
   ]);
   assertMove("pain1", mutant_move_pain1, FRAME_pain101, FRAME_pain105, [4, -3, -8, 2, 5]);
+  assert.equal(mutant_move_pain1.endfunc?.name, "mutant_run");
   assertMove("pain2", mutant_move_pain2, FRAME_pain201, FRAME_pain206, [-24, 11, 5, -2, 6, 4]);
+  assert.equal(mutant_move_pain2.endfunc?.name, "mutant_run");
   assertMove("pain3", mutant_move_pain3, FRAME_pain301, FRAME_pain311, [-22, 3, 3, 2, 1, 1, 6, 3, 2, 0, 1]);
+  assert.equal(mutant_move_pain3.endfunc?.name, "mutant_run");
   assertMove("death1", mutant_move_death1, FRAME_death101, FRAME_death109, new Array<number>(9).fill(0));
   assertMove("death2", mutant_move_death2, FRAME_death201, FRAME_death210, new Array<number>(10).fill(0));
 }
@@ -217,6 +220,9 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("mutant_move_stand"), mutant_move_stand);
   assert.equal(findGameSaveMove("mutant_move_attack"), mutant_move_attack);
   assert.equal(findGameSaveMove("mutant_move_jump"), mutant_move_jump);
+  assert.equal(findGameSaveMove("mutant_move_pain1"), mutant_move_pain1);
+  assert.equal(findGameSaveMove("mutant_move_pain2"), mutant_move_pain2);
+  assert.equal(findGameSaveMove("mutant_move_pain3"), mutant_move_pain3);
   assert.equal(findGameSaveMove("mutant_move_death2"), mutant_move_death2);
 }
 
@@ -359,8 +365,15 @@ function verifyPainBranches(): void {
 
   withMathRandom([0.2], () => mutant_pain(mutant, null, 0, 10, runtime));
   assert.equal(mutant.s.skinnum, 1);
+  assert.equal(mutant.pain_debounce_time, 3);
   assert.equal(mutant.monsterinfo.currentmove, mutant_move_pain1);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "mutant/mutpain1.wav");
+
+  mutant.monsterinfo.currentmove = mutant_move_stand;
+  runtime.time = 2;
+  withMathRandom([0.5], () => mutant_pain(mutant, null, 0, 10, runtime));
+  assert.equal(mutant.monsterinfo.currentmove, mutant_move_stand, "pain debounce should suppress repeated pain moves");
+  assert.equal(drainGameSoundEvents(runtime).length, 0, "pain debounce should suppress repeated pain sounds");
 
   runtime.time = 4;
   withMathRandom([0.5], () => mutant_pain(mutant, null, 0, 10, runtime));
@@ -374,8 +387,10 @@ function verifyPainBranches(): void {
   runtime.skill = 3;
   runtime.time = 12;
   mutant.monsterinfo.currentmove = mutant_move_stand;
+  drainGameSoundEvents(runtime);
   mutant_pain(mutant, null, 0, 10, runtime);
   assert.equal(mutant.monsterinfo.currentmove, mutant_move_stand, "nightmare pain should not start a pain animation");
+  assert.equal(drainGameSoundEvents(runtime).length, 0, "nightmare pain should not emit pain sounds");
 }
 
 function verifyDeathBranches(): void {

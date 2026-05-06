@@ -10,26 +10,26 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_idle` | `packages/game/src/m_soldier.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_sight1` | `packages/game/src/m_soldier.ts` | `SOUND_SIGHT1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_sight2` | `packages/game/src/m_soldier.ts` | `SOUND_SIGHT2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_pain_light` | `packages/game/src/m_soldier.ts` | `SOUND_PAIN_LIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_pain` | `packages/game/src/m_soldier.ts` | `SOUND_PAIN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_pain_ss` | `packages/game/src/m_soldier.ts` | `SOUND_PAIN_SS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_death_light` | `packages/game/src/m_soldier.ts` | `SOUND_DEATH_LIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_death` | `packages/game/src/m_soldier.ts` | `SOUND_DEATH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_death_ss` | `packages/game/src/m_soldier.ts` | `SOUND_DEATH_SS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `sound_cock` | `packages/game/src/m_soldier.ts` | `SOUND_COCK` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | function | `soldier_idle` | `packages/game/src/m_soldier.ts` | `soldier_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | function | `soldier_cock` | `packages/game/src/m_soldier.ts` | `soldier_cock` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | function | `soldier_stand` | `packages/game/src/m_soldier.ts` | `soldier_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `soldier_frames_stand1` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | table | `soldier_frames_stand1` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `soldier_move_stand1` | `packages/game/src/m_soldier.ts` | `soldier_move_stand1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `soldier_frames_stand3` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | table | `soldier_frames_stand3` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | global | `soldier_move_stand3` | `packages/game/src/m_soldier.ts` | `soldier_move_stand3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | function | `soldier_stand` | `packages/game/src/m_soldier.ts` | `soldier_stand` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_idle` | `packages/game/src/m_soldier.ts` | `SOUND_IDLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_sight1` | `packages/game/src/m_soldier.ts` | `SOUND_SIGHT1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_sight2` | `packages/game/src/m_soldier.ts` | `SOUND_SIGHT2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_pain_light` | `packages/game/src/m_soldier.ts` | `SOUND_PAIN_LIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_pain` | `packages/game/src/m_soldier.ts` | `SOUND_PAIN` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_pain_ss` | `packages/game/src/m_soldier.ts` | `SOUND_PAIN_SS` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_death_light` | `packages/game/src/m_soldier.ts` | `SOUND_DEATH_LIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_death` | `packages/game/src/m_soldier.ts` | `SOUND_DEATH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_death_ss` | `packages/game/src/m_soldier.ts` | `SOUND_DEATH_SS` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `sound_cock` | `packages/game/src/m_soldier.ts` | `SOUND_COCK` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | function | `soldier_idle` | `packages/game/src/m_soldier.ts` | `soldier_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | function | `soldier_cock` | `packages/game/src/m_soldier.ts` | `soldier_cock` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | function | `soldier_stand` | `packages/game/src/m_soldier.ts` | `soldier_stand` | Non applicable | A redecouper | Prototype C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_soldier.c` | global | `soldier_frames_stand1` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | table | `soldier_frames_stand1` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `soldier_move_stand1` | `packages/game/src/m_soldier.ts` | `soldier_move_stand1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `soldier_frames_stand3` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | table | `soldier_frames_stand3` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | global | `soldier_move_stand3` | `packages/game/src/m_soldier.ts` | `soldier_move_stand3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | function | `soldier_stand` | `packages/game/src/m_soldier.ts` | `soldier_stand` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | function | `soldier_walk1_random` | `packages/game/src/m_soldier.ts` | `soldier_walk1_random` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | global | `soldier_frames_walk1` | `packages/game/src/m_soldier.ts` | `soldier_frames_walk1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | table | `soldier_frames_walk1` | `packages/game/src/m_soldier.ts` | `soldier_frames_walk1` | A verifier | A redecouper |  |
@@ -99,7 +99,7 @@
 | `Quake-2-master/game/m_soldier.c` | table | `soldier_frames_attack6` | `packages/game/src/m_soldier.ts` | `soldier_frames_attack6` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | global | `soldier_move_attack6` | `packages/game/src/m_soldier.ts` | `soldier_move_attack6` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | function | `soldier_attack` | `packages/game/src/m_soldier.ts` | `soldier_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | function | `soldier_sight` | `packages/game/src/m_soldier.ts` | `soldier_sight` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_soldier.c` | function | `soldier_sight` | `packages/game/src/m_soldier.ts` | `soldier_sight` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | function | `soldier_duck_hold` | `packages/game/src/m_soldier.ts` | `soldier_duck_hold` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | global | `soldier_frames_duck` | `packages/game/src/m_soldier.ts` | `soldier_frames_duck` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | table | `soldier_frames_duck` | `packages/game/src/m_soldier.ts` | `soldier_frames_duck` | A verifier | A redecouper |  |
@@ -133,8 +133,8 @@
 | `Quake-2-master/game/m_soldier.c` | function | `SP_monster_soldier_light` | `packages/game/src/m_soldier.ts` | `SP_monster_soldier_light` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | function | `SP_monster_soldier` | `packages/game/src/m_soldier.ts` | `SP_monster_soldier` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_soldier.c` | function | `SP_monster_soldier_ss` | `packages/game/src/m_soldier.ts` | `SP_monster_soldier_ss` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_soldier.c` | declarative:monster-tables | `soldier_frames_stand1` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand1` | A verifier | matched |  |
-| `Quake-2-master/game/m_soldier.c` | declarative:monster-tables | `soldier_frames_stand3` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand3` | A verifier | matched |  |
+| `Quake-2-master/game/m_soldier.c` | declarative:monster-tables | `soldier_frames_stand1` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand1` | Valide | matched |  |
+| `Quake-2-master/game/m_soldier.c` | declarative:monster-tables | `soldier_frames_stand3` | `packages/game/src/m_soldier.ts` | `soldier_frames_stand3` | Valide | matched |  |
 | `Quake-2-master/game/m_soldier.c` | declarative:monster-tables | `soldier_frames_walk1` | `packages/game/src/m_soldier.ts` | `soldier_frames_walk1` | A verifier | matched |  |
 | `Quake-2-master/game/m_soldier.c` | declarative:monster-tables | `soldier_frames_walk2` | `packages/game/src/m_soldier.ts` | `soldier_frames_walk2` | A verifier | matched |  |
 | `Quake-2-master/game/m_soldier.c` | declarative:monster-tables | `soldier_frames_start_run` | `packages/game/src/m_soldier.ts` | `soldier_frames_start_run` | A verifier | matched |  |

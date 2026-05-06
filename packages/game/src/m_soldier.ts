@@ -599,6 +599,8 @@ const machinegun_flash = [
  * Source: game/m_soldier.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Randomly plays the soldier idle voice sound on the original idle channel/attenuation.
+ * Porting notes: Uses the gameplay runtime sound event bridge instead of direct `gi.sound`.
  */
 export function soldier_idle(self: GameEntity, runtime: GameRuntime): void {
   if (random() > 0.8) {
@@ -606,6 +608,14 @@ export function soldier_idle(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: soldier_cock
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Close
+ * Behavior: Plays the cocking sound with idle attenuation on FRAME_stand322 and normal attenuation otherwise.
+ * Porting notes: Uses the gameplay runtime sound event bridge instead of direct `gi.sound`.
+ */
 export function soldier_cock(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(
     runtime,
@@ -632,6 +642,14 @@ export const soldier_move_stand3: GameMonsterMove = {
   endfunc: soldier_stand
 };
 
+/**
+ * Original name: soldier_stand
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Alternates between the short and long stand loops with the original random threshold.
+ * Porting notes: C move pointers are represented by shared `GameMonsterMove` object identity.
+ */
 export function soldier_stand(self: GameEntity): void {
   if (self.monsterinfo.currentmove === soldier_move_stand3 || random() < 0.8) {
     self.monsterinfo.currentmove = soldier_move_stand1;
@@ -988,6 +1006,14 @@ export function soldier_attack(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: soldier_sight
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Close
+ * Behavior: Plays one of the two sight sounds and may switch to attack6 at nonzero skill and mid-or-far range.
+ * Porting notes: Uses the runtime skill value and sound event bridge; requires `self.enemy` before range checks.
+ */
 export function soldier_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
   if (random() < 0.5) {
     emitRegisteredGameSound(runtime, self, sound_sight1, SOUND_SIGHT1, soundOptions(CHAN_VOICE));
