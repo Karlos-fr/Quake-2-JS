@@ -311,6 +311,8 @@ let sound_melee3 = 0;
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Plays the brain sight voice sound on the monster entity.
+ * Porting notes: Uses the runtime sound-event adapter instead of direct `gi.sound`.
  */
 export function brain_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, soundOptions(CHAN_VOICE));
@@ -321,6 +323,8 @@ export function brain_sight(self: GameEntity, _other: GameEntity | null, runtime
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Plays the brain search voice sound on the monster entity.
+ * Porting notes: Uses the runtime sound-event adapter instead of direct `gi.sound`.
  */
 export function brain_search(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_search, SOUND_SEARCH, soundOptions(CHAN_VOICE));
@@ -339,6 +343,8 @@ export const brain_move_stand: GameMonsterMove = {
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Switches the monster to the standing animation move.
+ * Porting notes: Preserves the original currentmove assignment.
  */
 export function brain_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = brain_move_stand;
@@ -357,6 +363,8 @@ export const brain_move_idle: GameMonsterMove = {
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Plays the idle lens sound and switches to the idle animation move.
+ * Porting notes: Uses registered runtime sound output in place of direct `gi.sound`.
  */
 export function brain_idle(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_idle3, SOUND_IDLE3, {
@@ -376,6 +384,14 @@ export const brain_move_walk1: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: brain_walk
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Selects the first walk animation move; the disabled C walk2 branch remains omitted.
+ * Porting notes: Preserves the active C path and keeps the `#if 0` walk2 code out of runtime.
+ */
 export function brain_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = brain_move_walk1;
 }
@@ -593,6 +609,8 @@ export const brain_move_run: GameMonsterMove = {
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Restores brain power armor and selects stand-ground or run movement.
+ * Porting notes: Preserves the original AI_STAND_GROUND branch.
  */
 export function brain_run(self: GameEntity): void {
   self.monsterinfo.power_armor_type = POWER_ARMOR_SCREEN;

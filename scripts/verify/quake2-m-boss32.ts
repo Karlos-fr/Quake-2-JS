@@ -20,6 +20,7 @@ import {
   FRAMETIME,
   G_ProjectSource,
   M_MoveFrame,
+  MOVETYPE_NONE,
   MOVETYPE_STEP,
   MOVETYPE_TOSS,
   SOLID_NOT,
@@ -110,6 +111,8 @@ import {
   makron_stand,
   makron_step_left,
   makron_step_right,
+  makron_torso,
+  makron_torso_think,
   makron_taunt,
   makron_walk
 } from "../../packages/game/src/m_boss32.js";
@@ -577,14 +580,33 @@ function verifyDeathBranchesAndTorso(): void {
   assert.ok(torso, "makron_die should spawn the cycling torso entity");
   assert.deepEqual(torso.s.origin, [64, -52, 12]);
   assert.deepEqual(torso.origin, [64, -52, 12]);
+  assert.deepEqual(torso.s.angles, [0, 90, 0]);
+  assert.deepEqual(torso.angles, [0, 90, 0]);
+  assert.equal(torso.movetype, MOVETYPE_NONE);
   assert.equal(torso.solid, SOLID_NOT);
+  assert.deepEqual(torso.mins, [-8, -8, 0]);
+  assert.deepEqual(torso.maxs, [8, 8, 8]);
   assert.equal(torso.s.frame, 346);
+  assert.equal(runtime.assets.modelPaths[torso.s.modelindex - 1], "models/monsters/boss3/rider/tris.md2");
+  assert.equal(torso.think, makron_torso_think);
+  assert.equal(torso.nextthink, runtime.time + 2 * FRAMETIME);
   assert.equal(runtime.assets.soundPaths[torso.s.sound - 1], "makron/spine.wav");
+
+  torso.s.frame = 346;
+  torso.think!(torso, runtime);
+  assert.equal(torso.s.frame, 347);
+  assert.equal(torso.nextthink, runtime.time + FRAMETIME);
 
   torso.s.frame = 364;
   torso.think!(torso, runtime);
   assert.equal(torso.s.frame, 346);
   assert.equal(torso.nextthink, runtime.time + FRAMETIME);
+
+  const standaloneTorso = createRuntimeEntity({ classname: "makron_torso_test" }, 20);
+  runtime.entities[20] = standaloneTorso;
+  runtime.time = 7;
+  makron_torso(standaloneTorso, runtime);
+  assert.equal(standaloneTorso.nextthink, 7 + 2 * FRAMETIME);
 
   makron.s.frame = FRAME_death295;
   M_MoveFrame(makron, runtime);
@@ -596,10 +618,15 @@ function verifyDeathBranchesAndTorso(): void {
   const gibRuntime = createHarnessRuntime();
   const gibMakron = createMakron(gibRuntime, 11);
   SP_monster_makron(gibMakron, gibRuntime);
+  gibMakron.s.sound = 123;
   gibMakron.health = gibMakron.gib_health;
   makron_die(gibMakron, null, null, 120, gibRuntime);
   assert.equal(gibMakron.deadflag, DEAD_DEAD);
+  assert.equal(gibMakron.s.sound, 0);
   assert.equal(drainGameSoundEvents(gibRuntime).at(-1)?.soundPath, "misc/udeath.wav");
+  assert.equal(countRuntimeModels(gibRuntime, "models/objects/gibs/sm_meat/tris.md2"), 1);
+  assert.equal(countRuntimeModels(gibRuntime, "models/objects/gibs/sm_metal/tris.md2"), 4);
+  assert.equal(gibRuntime.assets.modelPaths[gibMakron.s.modelindex - 1], "models/objects/gibs/gear/tris.md2");
 
   makron_dead(gibMakron, gibRuntime);
   assert.equal(gibMakron.movetype, MOVETYPE_TOSS);
@@ -707,6 +734,15 @@ function indexedNames(count: number, entries: Array<[index: number, name: string
     names[index] = name;
   }
   return names;
+}
+
+function countRuntimeModels(runtime: GameRuntime, modelPath: string): number {
+  return runtime.entities.filter((entity) => {
+    if (!entity) {
+      return false;
+    }
+    return runtime.assets.modelPaths[entity.s.modelindex - 1] === modelPath;
+  }).length;
 }
 
 function withMathRandom(values: number[], callback: () => void): void {

@@ -10,36 +10,36 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_brain.c` | global | `sound_chest_open` | `packages/game/src/m_brain.ts` | `SOUND_CHEST_OPEN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_tentacles_extend` | `packages/game/src/m_brain.ts` | `SOUND_TENTACLES_EXTEND` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_tentacles_retract` | `packages/game/src/m_brain.ts` | `SOUND_TENTACLES_RETRACT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_death` | `packages/game/src/m_brain.ts` | `SOUND_DEATH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_idle1` | `packages/game/src/m_brain.ts` | `SOUND_IDLE1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_idle2` | `packages/game/src/m_brain.ts` | `SOUND_IDLE2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_idle3` | `packages/game/src/m_brain.ts` | `SOUND_IDLE3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_pain1` | `packages/game/src/m_brain.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_pain2` | `packages/game/src/m_brain.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_sight` | `packages/game/src/m_brain.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_search` | `packages/game/src/m_brain.ts` | `SOUND_SEARCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_melee1` | `packages/game/src/m_brain.ts` | `SOUND_MELEE1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_melee2` | `packages/game/src/m_brain.ts` | `SOUND_MELEE2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `sound_melee3` | `packages/game/src/m_brain.ts` | `SOUND_MELEE3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | function | `brain_sight` | `packages/game/src/m_brain.ts` | `brain_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | function | `brain_search` | `packages/game/src/m_brain.ts` | `brain_search` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | function | `brain_run` | `packages/game/src/m_brain.ts` | `brain_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | function | `brain_dead` | `packages/game/src/m_brain.ts` | `brain_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `brain_frames_stand` | `packages/game/src/m_brain.ts` | `brain_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | table | `brain_frames_stand` | `packages/game/src/m_brain.ts` | `brain_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `brain_move_stand` | `packages/game/src/m_brain.ts` | `brain_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | function | `brain_stand` | `packages/game/src/m_brain.ts` | `brain_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `brain_frames_idle` | `packages/game/src/m_brain.ts` | `brain_frames_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | table | `brain_frames_idle` | `packages/game/src/m_brain.ts` | `brain_frames_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `brain_move_idle` | `packages/game/src/m_brain.ts` | `brain_move_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | function | `brain_idle` | `packages/game/src/m_brain.ts` | `brain_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `brain_frames_walk1` | `packages/game/src/m_brain.ts` | `brain_frames_walk1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | table | `brain_frames_walk1` | `packages/game/src/m_brain.ts` | `brain_frames_walk1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `brain_move_walk1` | `packages/game/src/m_brain.ts` | `brain_move_walk1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | function | `brain_walk` | `packages/game/src/m_brain.ts` | `brain_walk` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_chest_open` | `packages/game/src/m_brain.ts` | `SOUND_CHEST_OPEN` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_tentacles_extend` | `packages/game/src/m_brain.ts` | `SOUND_TENTACLES_EXTEND` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_tentacles_retract` | `packages/game/src/m_brain.ts` | `SOUND_TENTACLES_RETRACT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_death` | `packages/game/src/m_brain.ts` | `SOUND_DEATH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_idle1` | `packages/game/src/m_brain.ts` | `SOUND_IDLE1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_idle2` | `packages/game/src/m_brain.ts` | `SOUND_IDLE2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_idle3` | `packages/game/src/m_brain.ts` | `SOUND_IDLE3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_pain1` | `packages/game/src/m_brain.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_pain2` | `packages/game/src/m_brain.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_sight` | `packages/game/src/m_brain.ts` | `SOUND_SIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_search` | `packages/game/src/m_brain.ts` | `SOUND_SEARCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_melee1` | `packages/game/src/m_brain.ts` | `SOUND_MELEE1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_melee2` | `packages/game/src/m_brain.ts` | `SOUND_MELEE2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `sound_melee3` | `packages/game/src/m_brain.ts` | `SOUND_MELEE3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | function | `brain_sight` | `packages/game/src/m_brain.ts` | `brain_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | function | `brain_search` | `packages/game/src/m_brain.ts` | `brain_search` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | function | `brain_run` | `packages/game/src/m_brain.ts` | `brain_run` | Non applicable | A redecouper | Prototype forward; definition validated on its own row. |
+| `Quake-2-master/game/m_brain.c` | function | `brain_dead` | `packages/game/src/m_brain.ts` | `brain_dead` | Non applicable | A redecouper | Prototype forward; definition remains for a later lot. |
+| `Quake-2-master/game/m_brain.c` | global | `brain_frames_stand` | `packages/game/src/m_brain.ts` | `brain_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | table | `brain_frames_stand` | `packages/game/src/m_brain.ts` | `brain_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `brain_move_stand` | `packages/game/src/m_brain.ts` | `brain_move_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | function | `brain_stand` | `packages/game/src/m_brain.ts` | `brain_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `brain_frames_idle` | `packages/game/src/m_brain.ts` | `brain_frames_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | table | `brain_frames_idle` | `packages/game/src/m_brain.ts` | `brain_frames_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `brain_move_idle` | `packages/game/src/m_brain.ts` | `brain_move_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | function | `brain_idle` | `packages/game/src/m_brain.ts` | `brain_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `brain_frames_walk1` | `packages/game/src/m_brain.ts` | `brain_frames_walk1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | table | `brain_frames_walk1` | `packages/game/src/m_brain.ts` | `brain_frames_walk1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `brain_move_walk1` | `packages/game/src/m_brain.ts` | `brain_move_walk1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | function | `brain_walk` | `packages/game/src/m_brain.ts` | `brain_walk` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | global | `brain_frames_defense` | `packages/game/src/m_brain.ts` | `brain_frames_defense` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | table | `brain_frames_defense` | `packages/game/src/m_brain.ts` | `brain_frames_defense` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | global | `brain_move_defense` | `packages/game/src/m_brain.ts` | `brain_move_defense` | A verifier | A redecouper |  |
@@ -79,19 +79,19 @@
 | `Quake-2-master/game/m_brain.c` | table | `brain_frames_attack2` | `packages/game/src/m_brain.ts` | `brain_frames_attack2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | global | `brain_move_attack2` | `packages/game/src/m_brain.ts` | `brain_move_attack2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | function | `brain_melee` | `packages/game/src/m_brain.ts` | `brain_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `brain_frames_run` | `packages/game/src/m_brain.ts` | `brain_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | table | `brain_frames_run` | `packages/game/src/m_brain.ts` | `brain_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | global | `brain_move_run` | `packages/game/src/m_brain.ts` | `brain_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | function | `brain_run` | `packages/game/src/m_brain.ts` | `brain_run` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `brain_frames_run` | `packages/game/src/m_brain.ts` | `brain_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | table | `brain_frames_run` | `packages/game/src/m_brain.ts` | `brain_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | global | `brain_move_run` | `packages/game/src/m_brain.ts` | `brain_move_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.c` | function | `brain_run` | `packages/game/src/m_brain.ts` | `brain_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | function | `brain_pain` | `packages/game/src/m_brain.ts` | `brain_pain` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | global | `r` | `packages/game/src/m_brain.ts` | `r` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | function | `brain_dead` | `packages/game/src/m_brain.ts` | `brain_dead` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | function | `brain_die` | `packages/game/src/m_brain.ts` | `brain_die` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | global | `n` | `packages/game/src/m_brain.ts` | `n` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_brain.c` | function | `SP_monster_brain` | `packages/game/src/m_brain.ts` | `SP_monster_brain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_stand` | `packages/game/src/m_brain.ts` | `brain_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_idle` | `packages/game/src/m_brain.ts` | `brain_frames_idle` | A verifier | matched |  |
-| `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_walk1` | `packages/game/src/m_brain.ts` | `brain_frames_walk1` | A verifier | matched |  |
+| `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_stand` | `packages/game/src/m_brain.ts` | `brain_frames_stand` | Valide | matched |  |
+| `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_idle` | `packages/game/src/m_brain.ts` | `brain_frames_idle` | Valide | matched |  |
+| `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_walk1` | `packages/game/src/m_brain.ts` | `brain_frames_walk1` | Valide | matched |  |
 | `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_defense` | `packages/game/src/m_brain.ts` | `brain_frames_defense` | A verifier | matched |  |
 | `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_pain3` | `packages/game/src/m_brain.ts` | `brain_frames_pain3` | A verifier | matched |  |
 | `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_pain2` | `packages/game/src/m_brain.ts` | `brain_frames_pain2` | A verifier | matched |  |
@@ -101,4 +101,4 @@
 | `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_death1` | `packages/game/src/m_brain.ts` | `brain_frames_death1` | A verifier | matched |  |
 | `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_attack1` | `packages/game/src/m_brain.ts` | `brain_frames_attack1` | A verifier | matched |  |
 | `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_attack2` | `packages/game/src/m_brain.ts` | `brain_frames_attack2` | A verifier | matched |  |
-| `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_run` | `packages/game/src/m_brain.ts` | `brain_frames_run` | A verifier | matched |  |
+| `Quake-2-master/game/m_brain.c` | declarative:monster-tables | `brain_frames_run` | `packages/game/src/m_brain.ts` | `brain_frames_run` | Valide | matched |  |

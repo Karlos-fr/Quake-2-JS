@@ -89,12 +89,12 @@
 | `Quake-2-master/game/m_boss32.c` | function | `makron_attack` | `packages/game/src/m_boss32.ts` | `makron_attack` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | global | `range` | `packages/game/src/m_boss32.ts` |  | Non applicable | A redecouper | Local variable computed by C but never used; behavior covered by `makron_attack`. |
 | `Quake-2-master/game/m_boss32.c` | global | `r` | `packages/game/src/m_boss32.ts` | `r` | Non applicable | A redecouper | Local random selector covered by `makron_attack`. |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_torso_think` | `packages/game/src/m_boss32.ts` | `makron_torso_think` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_torso` | `packages/game/src/m_boss32.ts` | `makron_torso` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_dead` | `packages/game/src/m_boss32.ts` | `makron_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_die` | `packages/game/src/m_boss32.ts` | `makron_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `tempent` | `packages/game/src/m_boss32.ts` | `tempent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `n` | `packages/game/src/m_boss32.ts` | `n` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_torso_think` | `packages/game/src/m_boss32.ts` | `makron_torso_think` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_torso` | `packages/game/src/m_boss32.ts` | `makron_torso` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_dead` | `packages/game/src/m_boss32.ts` | `makron_dead` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_die` | `packages/game/src/m_boss32.ts` | `makron_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | global | `tempent` | `packages/game/src/m_boss32.ts` | `tempent` | Non applicable | A redecouper | Local entity covered by `makron_die`. |
+| `Quake-2-master/game/m_boss32.c` | global | `n` | `packages/game/src/m_boss32.ts` | `n` | Non applicable | A redecouper | Local loop counter covered by `makron_die`. |
 | `Quake-2-master/game/m_boss32.c` | function | `Makron_CheckAttack` | `packages/game/src/m_boss32.ts` | `Makron_CheckAttack` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | global | `chance` | `packages/game/src/m_boss32.ts` | `chance` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | global | `tr` | `packages/game/src/m_boss32.ts` | `tr` | A verifier | A redecouper |  |

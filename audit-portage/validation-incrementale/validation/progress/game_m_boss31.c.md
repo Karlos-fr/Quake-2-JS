@@ -2,6 +2,28 @@
 
 ## Session 2026-05-06
 
+- Lot traite: `SP_monster_jorg`, derniere entree `A verifier` de `game_m_boss31.c.md`.
+- Verdict: Valide; fichier `m_boss31.c` termine cote matrice.
+- Comparaison C/TS: le port conserve la branche deathmatch qui libere l'edict et retourne; le precache direct des 14 sons dans l'ordre C; `MakronPrecache`; `MOVETYPE_STEP`, `SOLID_BBOX`, modeles rider/Jorg en `modelindex`/`modelindex2`, bbox `[-80,-80,0]` / `[80,80,140]`, `health 3000`, `gib_health -2000`, `mass 1000`; callbacks `pain`, `die`, `stand`, `walk`, `run`, `attack`, `search`, `checkattack`; slots `dodge`, `melee`, `sight` nuls; `linkentity`, `currentmove = jorg_move_stand`, `scale = MODEL_SCALE`, puis `walkmonster_start`.
+- Commentaires d'en-tete: commentaire de `SP_monster_jorg` verifie et complete avec une note de portage sur la branche deathmatch et l'enregistrement explicite des assets runtime.
+- Runtime: integre. `g_spawn.ts` importe `SP_monster_jorg` et mappe `monster_jorg`; `ED_CallSpawn` atteint le spawn, `walkmonster_start` arme le flux `monster_think`/`G_RunFrame`, et les callbacks Jorg valides sont branches sur `monsterinfo`.
+- apps/web: integre. `apps/web` ne remplace pas la logique Jorg; le flux full-game utilise le serveur/runtime pour generer snapshots, sons et muzzle/temp entities, puis consomme ces sorties via le client et le render loop web.
+- renderer-three: integre. Le spawn produit une entite visible avec modeles rider/Jorg et frames animees; `packages/renderer-three` consomme les `modelindex`/frames via les entites refresh, `refresh-entity-sync` et les helpers MD2, couvert par le test three-renderer.
+- Save/index: integre. `packages/game/src/index.ts` exporte `SP_monster_jorg`; `g_save.ts` importe `m_boss31.ts` et enregistre automatiquement les fonctions/moves exportes, avec assertion `findGameSaveFunction("SP_monster_jorg")`.
+- Tests lances:
+  - `npm run verify:m-boss31`
+  - `npm run verify:m-boss31:source-parity`
+  - `npm run verify:m-boss31:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `packages/game/src/m_boss31.ts`: commentaire d'en-tete de `SP_monster_jorg` complete.
+  - `scripts/verify/quake2-m-boss31.ts`: assertions de spawn ajoutees pour callbacks `pain/die/stand/walk/run/attack/search/checkattack` et slots `dodge/melee/sight` nuls.
+
+## Session 2026-05-06
+
 - Lot traite: gros bloc attack1 `jorg_frames_start_attack1` global/table/declarative, `jorg_move_start_attack1`, `jorg_frames_attack1` global/table/declarative, `jorg_move_attack1`, `jorg_frames_end_attack1` global/table/declarative, `jorg_move_end_attack1`, `jorg_reattack1`, `jorg_attack1`, puis `jorg_firebullet_right`, `jorg_firebullet_left`, `jorg_firebullet`, `jorg_attack`, `Jorg_CheckAttack` et temporaires associes. Declarations forward C `jorgMachineGun`, `jorg_firebullet`, `jorg_reattack1`, `jorg_attack1` marquees `Non applicable`; `range` et `enemy_infront` marques `Non applicable`.
 - Verdict: Valide pour les entites portees du lot; `Non applicable` pour les declarations forward seules et les variables locales sans effet autonome.
 - Comparaison C/TS: `jorg_frames_start_attack1` conserve 8 frames `ai_charge` a distance 0 sans callback, et `jorg_move_start_attack1` conserve `FRAME_attak101..FRAME_attak108` avec `endfunc jorg_attack1`. `jorg_frames_attack1` conserve 6 frames `ai_charge` a distance 0 avec `jorg_firebullet` a chaque frame, et `jorg_move_attack1` conserve `FRAME_attak109..FRAME_attak114` avec `endfunc jorg_reattack1`. `jorg_frames_end_attack1` conserve 4 frames `ai_move` a distance 0 sans callback, et `jorg_move_end_attack1` conserve `FRAME_attak115..FRAME_attak118` avec `endfunc jorg_run`. `jorg_reattack1` conserve le test `visible`, la boucle `random() < 0.9`, et le reset `s.sound = 0` quand l'attaque se termine. `jorg_attack1` conserve l'entree directe dans `jorg_move_attack1`. Les tirs gauche/droite conservent les muzzle offsets `MZ2_JORG_MACHINEGUN_L1/R1`, la prediction `VectorMA(enemy origin, -0.2, enemy velocity)`, `viewheight`, `monster_fire_bullet` avec `6, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD` et l'ordre gauche puis droite dans `jorg_firebullet`. `jorg_attack` conserve le choix `random() <= 0.75`, les sons attaque 1/2, le loop `boss3/w_loop.wav`, et les moves machinegun/BFG. `Jorg_CheckAttack` conserve trace LOS, range, `ideal_yaw`, melee, cooldown `attack_finished`, rejet `RANGE_FAR`, chances `0.4/0.8/0.4/0.2`, mise a jour missile `level.time + 2*random()` et branches `FL_FLY` sliding/straight.
@@ -129,4 +151,4 @@
 
 ## Prochain lot recommande
 
-- Terminer avec `SP_monster_jorg`, seule entree restante `A verifier` dans la matrice.
+- Aucun lot restant dans `game_m_boss31.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.

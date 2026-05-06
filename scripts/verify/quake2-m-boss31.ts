@@ -126,6 +126,17 @@ function verifySpawnRegistersAssetsAndStartsWalking(): void {
   assert.equal(jorg.health, 3000);
   assert.equal(jorg.gib_health, -2000);
   assert.equal(jorg.mass, 1000);
+  assert.equal(jorg.pain, jorg_pain);
+  assert.equal(jorg.die, jorg_die);
+  assert.equal(jorg.monsterinfo.stand, jorg_stand);
+  assert.equal(jorg.monsterinfo.walk, jorg_walk);
+  assert.equal(jorg.monsterinfo.run, jorg_run);
+  assert.equal(jorg.monsterinfo.dodge, undefined);
+  assert.equal(jorg.monsterinfo.attack, jorg_attack);
+  assert.equal(jorg.monsterinfo.search, jorg_search);
+  assert.equal(jorg.monsterinfo.melee, undefined);
+  assert.equal(jorg.monsterinfo.sight, undefined);
+  assert.equal(jorg.monsterinfo.checkattack, Jorg_CheckAttack);
   assert.equal(jorg.monsterinfo.currentmove, jorg_move_stand);
   assert.equal(jorg.monsterinfo.scale, 1);
   assert.equal(runtime.assets.modelPaths[jorg.s.modelindex - 1], "models/monsters/boss3/rider/tris.md2");

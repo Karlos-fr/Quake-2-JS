@@ -126,7 +126,8 @@ export function G_Find(
  *
  * Porting notes:
  * - `MAXCHOICES` preserves the C fixed-size local choice buffer.
- * - Uses `Math.random()` for the final random index in place of C `rand()`.
+ * - Uses a bounded JS random index for C `rand() % num_choices`; this is an integer
+ *   RNG use, not the `g_local.h` floating `random()`/`crandom()` macros.
  */
 export function G_PickTarget(runtime: GameRuntime, targetname: string | undefined | null): GameEntity | null {
   if (targetname === undefined || targetname === null) {

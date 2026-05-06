@@ -161,6 +161,7 @@
     "verify:g-items": "npx tsx ./scripts/verify/quake2-g-items.ts",
     "verify:g-phys": "npx tsx ./scripts/verify/quake2-g-phys.ts",
     "verify:g-utils": "npx tsx ./scripts/verify/quake2-g-utils.ts",
+    "verify:g-utils:source-parity": "npx tsx ./scripts/verify/quake2-g-utils-source-parity.ts",
     "verify:p-weapon": "npx tsx ./scripts/verify/quake2-p-weapon.ts",
     "verify:m-actor:header": "npx tsx ./scripts/verify/quake2-m-actor-header.ts",
     "verify:m-actor": "npx tsx ./scripts/verify/quake2-m-actor.ts",

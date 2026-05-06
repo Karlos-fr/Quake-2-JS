@@ -845,6 +845,8 @@ export function Jorg_CheckAttack(self: GameEntity, runtime: GameRuntime): boolea
  * Behavior:
  * - Spawns monster_jorg, precaches Jorg assets and initializes walking monster callbacks.
  *
+ * Porting notes:
+ * - Keeps the original deathmatch early-free branch and uses explicit runtime asset registration.
  */
 export function SP_monster_jorg(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {

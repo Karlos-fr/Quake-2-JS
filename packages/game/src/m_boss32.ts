@@ -1091,6 +1091,18 @@ export function makron_attack(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: makron_torso_think
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Advances the spawned Makron torso model through frames 346..364 and loops it back to 346.
+ *
+ * Porting notes:
+ * - Uses the explicit gameplay runtime time in place of `level.time`.
+ */
 export function makron_torso_think(self: GameEntity, runtime: GameRuntime): void {
   self.s.frame += 1;
   if (self.s.frame < 365) {
@@ -1101,6 +1113,18 @@ export function makron_torso_think(self: GameEntity, runtime: GameRuntime): void
   }
 }
 
+/**
+ * Original name: makron_torso
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Initializes the detached rider torso as a non-solid looping model with the spine sound.
+ *
+ * Porting notes:
+ * - Routes `gi.modelindex`, `gi.soundindex` and `gi.linkentity` through runtime adapters.
+ */
 export function makron_torso(ent: GameEntity, runtime: GameRuntime): void {
   ent.movetype = MOVETYPE_NONE;
   ent.solid = SOLID_NOT;
@@ -1114,6 +1138,18 @@ export function makron_torso(ent: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, ent);
 }
 
+/**
+ * Original name: makron_dead
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts the finished Makron death animation into a tossable dead-monster bbox and relinks it.
+ *
+ * Porting notes:
+ * - Routes `gi.linkentity` through the gameplay runtime.
+ */
 export function makron_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -60, -60, 0);
   setVec3(self.maxs, 60, 60, 72);
@@ -1123,6 +1159,19 @@ export function makron_dead(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: makron_die
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Handles Makron gib death or regular death, spawns the detached torso, and starts `makron_move_death2`.
+ *
+ * Porting notes:
+ * - Keeps the source's single organic meat gib plus four metallic gibs before the gear head.
+ * - Routes sound, gib and entity allocation side effects through the gameplay runtime.
+ */
 export function makron_die(
   self: GameEntity,
   _inflictor: GameEntity | null,

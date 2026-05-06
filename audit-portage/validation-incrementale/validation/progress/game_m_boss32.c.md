@@ -3,9 +3,38 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: gros bloc attaque `makronBFG`, `makron_frames_attack3`, `makron_move_attack3`, `makron_frames_attack4`, `makron_move_attack4`, `makron_frames_attack5`, `makron_move_attack5`, callbacks railgun/hyperblaster et `makron_attack`.
-- Verdict du dernier lot: Valide pour les tables/moves attaque, callbacks BFG/railgun/hyperblaster et selection d'attaque.
+- Dernier lot traite: bloc torso/death `makron_torso_think`, `makron_torso`, `makron_dead`, `makron_die`, avec temporaires locaux `tempent` et `n`.
+- Verdict du dernier lot: Valide pour le torso detache, la mort reguliere, la mort gib, les callbacks de fin de death move et les temporaires locaux justifies.
 - Fichier TS proprietaire: `packages/game/src/m_boss32.ts`
+
+## Session 2026-05-06 - lot torso/death
+
+Lot 10x traite:
+
+- `makron_torso_think`, `makron_torso`.
+- `makron_dead`, `makron_die`.
+- Temporaires locaux `tempent`, `n`.
+
+Corrections:
+
+- `m_boss32.ts`: commentaires d'en-tete ajoutes pour `makron_torso_think`, `makron_torso`, `makron_dead` et `makron_die`.
+- `quake2-m-boss32.ts`: preuves ciblees renforcees pour les champs du torso detache, le modele rider, le son spine, le bouclage des frames 346..364, le delai `2 * FRAMETIME`, la mort reguliere, la mort gib et les quantites source de gibs.
+
+Tests lances:
+
+- `npm run verify:m-boss32`
+- `npm run verify:m-boss32:source-parity`
+- `npm run verify:m-boss32:header`
+- `npm run verify:full-game:audio-routing`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Integration:
+
+- Runtime: valide. `SP_monster_makron` branche `self.die = makron_die`; `makron_die` declenche la mort reguliere ou gib, spawn le torso avec `G_Spawn`, et `makron_move_death2` appelle `makron_dead` via `M_MoveFrame`.
+- apps/web: valide. Les sons death/udeath/spine et les entites visibles viennent du runtime; le flux web consomme les sound events et snapshots/client refresh sans logique Makron parallele.
+- renderer-three: valide. Les sorties visibles attendues sont le modele rider Makron, le torso detache, les frames de death, les gibs et le corps deadmonster; elles transitent par les entites/snapshots generiques `modelindex`, `frame`, `oldframe`, `backlerp` et les modeles de gibs. Aucun adapter Makron specifique n'est requis.
 
 ## Session 2026-05-06 - lot attaque BFG/railgun/hyperblaster
 
@@ -142,11 +171,11 @@ Integration:
 
 ## Prochain lot recommande
 
-Continuer avec le bloc torso/death:
+Continuer avec le bloc attaque decisionnelle:
 
-- `makron_torso_think`, `makron_torso`.
-- `makron_dead`, `makron_die`.
-- Temporaires associes `tempent`, `n` si le lot reste coherent.
+- `Makron_CheckAttack`.
+- Temporaires associes `chance`, `tr`, `enemy_infront`, `enemy_range`, `enemy_yaw`.
+- Garder spawn/MakronToss pour une session separee sauf correction mineure indispensable.
 
 ## Session 2026-05-06 - lot callbacks/walk
 
@@ -182,6 +211,6 @@ Integration:
 
 - `Quake-2-master/game/m_boss32.c`: passer a `En cours`.
 - Progress: `progress/game_m_boss32.c.md`.
-- Validees: 80.
-- Non applicables: 12.
-- Prochain lot: `makron_torso_think`, `makron_torso`, `makron_dead`, `makron_die`, avec `tempent`/`n` si coherent.
+- Validees: 84.
+- Non applicables: 14.
+- Prochain lot: `Makron_CheckAttack`, avec `chance`/`tr`/`enemy_infront`/`enemy_range`/`enemy_yaw` si coherent.

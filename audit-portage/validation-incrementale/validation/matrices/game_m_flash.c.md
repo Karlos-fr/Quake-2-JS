@@ -10,5 +10,5 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_flash.c` | table | `monster_flash_offset` | `packages/game/src/m_flash.ts` | `monster_flash_offset` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flash.c` | declarative:muzzle-flashes | `monster_flash_offset` | `packages/game/src/m_flash.ts` | `monster_flash_offset` | A verifier | matched |  |
+| `Quake-2-master/game/m_flash.c` | table | `monster_flash_offset` | `packages/game/src/m_flash.ts` | `monster_flash_offset` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flash.c` | declarative:muzzle-flashes | `monster_flash_offset` | `packages/game/src/m_flash.ts` | `monster_flash_offset` | Valide | matched |  |

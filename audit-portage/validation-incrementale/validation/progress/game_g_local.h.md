@@ -1690,7 +1690,26 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-brain` OK; `npm run verify:m-brain:header` OK; `npm run verify:m-brain:source-parity` OK; `npm run verify:m-float` OK; `npm run verify:m-float:header` OK; `npm run verify:m-float:source-parity` OK; `npm run verify:m-flyer` OK; `npm run verify:m-flyer:header` OK; `npm run verify:m-flyer:source-parity` OK; `npm run verify:m-gladiator` OK; `npm run verify:m-gladiator:header` OK; `npm run verify:m-gladiator:source-parity` OK; `npm run verify:m-medic` OK; `npm run verify:m-medic:header` OK; `npm run verify:m-medic:source-parity` OK; `npm run verify:m-parasite` OK; `npm run verify:m-parasite:header` OK; `npm run verify:m-parasite:source-parity` OK; `npm run verify:m-flipper` OK; `npm run verify:m-flipper:header` OK; `npm run verify:m-flipper:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec un lot non reserve des consommateurs restants de `random`/`crandom`, en priorisant `g_utils.ts` si libre et les lignes `Math.random()` encore visibles dans `m_actor.ts`, `m_boss2.ts` ou `m_boss32.ts` seulement quand ces fichiers ne sont pas reserves par leurs agents proprietaires. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot de reprise `random`/`crandom`, verification de `packages/game/src/g_utils.ts`.
+- Verdict: `Partiel` maintenu pour les 2 macros: `g_utils.c` n'a aucun consommateur actif de `random()`/`crandom()`. Le seul tirage du fichier est `G_PickTarget` avec `rand() % num_choices`, confirme comme RNG entier hors macros flottantes; d'autres familles runtime restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `g_utils.c` utilise `rand() % num_choices` dans `G_PickTarget`; aucun appel actif aux macros flottantes.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; exports publics verifies.
+  - `packages/game/src/g_utils.ts`: `G_PickTarget` conserve un index entier borne, ne depend pas de `g_local.random`/`g_local.crandom`, et son commentaire d'en-tete documente explicitement l'ecart `rand()` entier vs macros flottantes.
+- Runtime: integration attendue et branchee via `G_UseTargets`/targets, spawns et callbacks d'entites qui appellent `G_PickTarget`, eux-memes atteignables depuis `G_RunFrame`/`G_RunEntity` selon les entites mappees. Le tirage choisit une cible logique, pas une sortie renderer directe.
+- apps/web: integration attendue indirectement via host full-game/local qui execute le runtime game et consomme les effets/snapshots des targets; aucune logique parallele web `G_PickTarget`/`g_utils` detectee.
+- renderer-three: aucune consommation directe attendue pour le tirage lui-meme. Les effets visibles eventuels d'une cible choisie (entites, sons, temp entities, camera/scene) passent par le runtime client/snapshots et sont consommes en aval par Three; le helper RNG n'a pas a etre appele par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random`, `crandom` et `G_PickTarget` verifies; commentaire `G_PickTarget` precise maintenant que `rand() % num_choices` est hors macros `random`/`crandom`.
+- Corrections appliquees:
+  - `packages/game/src/g_utils.ts`: clarification du commentaire d'en-tete de `G_PickTarget`.
+  - `scripts/verify/quake2-g-utils-source-parity.ts`: nouveau harness prouvant absence de consommateurs `random()`/`crandom()` dans `g_utils.c`, maintien du `rand() % num_choices` entier et absence d'import `g_local` dans `g_utils.ts`.
+  - `package.json`: script `verify:g-utils:source-parity`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:g-utils:source-parity` OK; `npm run verify:g-utils` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Continuer avec un lot non reserve des consommateurs restants de `random`/`crandom`, en priorisant les lignes `Math.random()` encore visibles dans `m_actor.ts`, `m_boss2.ts` ou `m_boss32.ts` seulement quand ces fichiers ne sont pas reserves par leurs agents proprietaires. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 
