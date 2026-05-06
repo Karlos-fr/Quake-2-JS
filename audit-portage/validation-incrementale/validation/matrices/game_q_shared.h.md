@@ -256,37 +256,37 @@
 | `Quake-2-master/game/q_shared.h` | global | `waterlevel` | `packages/qcommon/src/q_shared.ts` | `pmove_t.waterlevel` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | global | `trace` | `packages/qcommon/src/q_shared.ts` | `pmove_t.trace` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | global | `pointcontents` | `packages/qcommon/src/q_shared.ts` | `pmove_t.pointcontents` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_ROTATE` | `packages/qcommon/src/q_shared.ts` | `EF_ROTATE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_GIB` | `packages/qcommon/src/q_shared.ts` | `EF_GIB` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_BLASTER` | `packages/qcommon/src/q_shared.ts` | `EF_BLASTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_ROCKET` | `packages/qcommon/src/q_shared.ts` | `EF_ROCKET` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_GRENADE` | `packages/qcommon/src/q_shared.ts` | `EF_GRENADE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_HYPERBLASTER` | `packages/qcommon/src/q_shared.ts` | `EF_HYPERBLASTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_BFG` | `packages/qcommon/src/q_shared.ts` | `EF_BFG` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_COLOR_SHELL` | `packages/qcommon/src/q_shared.ts` | `EF_COLOR_SHELL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_POWERSCREEN` | `packages/qcommon/src/q_shared.ts` | `EF_POWERSCREEN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_ANIM01` | `packages/qcommon/src/q_shared.ts` | `EF_ANIM01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_ANIM23` | `packages/qcommon/src/q_shared.ts` | `EF_ANIM23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_ANIM_ALL` | `packages/qcommon/src/q_shared.ts` | `EF_ANIM_ALL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_ANIM_ALLFAST` | `packages/qcommon/src/q_shared.ts` | `EF_ANIM_ALLFAST` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_FLIES` | `packages/qcommon/src/q_shared.ts` | `EF_FLIES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_QUAD` | `packages/qcommon/src/q_shared.ts` | `EF_QUAD` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_PENT` | `packages/qcommon/src/q_shared.ts` | `EF_PENT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_TELEPORTER` | `packages/qcommon/src/q_shared.ts` | `EF_TELEPORTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_FLAG1` | `packages/qcommon/src/q_shared.ts` | `EF_FLAG1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_FLAG2` | `packages/qcommon/src/q_shared.ts` | `EF_FLAG2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_IONRIPPER` | `packages/qcommon/src/q_shared.ts` | `EF_IONRIPPER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_GREENGIB` | `packages/qcommon/src/q_shared.ts` | `EF_GREENGIB` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_BLUEHYPERBLASTER` | `packages/qcommon/src/q_shared.ts` | `EF_BLUEHYPERBLASTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_SPINNINGLIGHTS` | `packages/qcommon/src/q_shared.ts` | `EF_SPINNINGLIGHTS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_PLASMA` | `packages/qcommon/src/q_shared.ts` | `EF_PLASMA` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_TRAP` | `packages/qcommon/src/q_shared.ts` | `EF_TRAP` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_TRACKER` | `packages/qcommon/src/q_shared.ts` | `EF_TRACKER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_DOUBLE` | `packages/qcommon/src/q_shared.ts` | `EF_DOUBLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_SPHERETRANS` | `packages/qcommon/src/q_shared.ts` | `EF_SPHERETRANS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_TAGTRAIL` | `packages/qcommon/src/q_shared.ts` | `EF_TAGTRAIL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_HALF_DAMAGE` | `packages/qcommon/src/q_shared.ts` | `EF_HALF_DAMAGE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `EF_TRACKERTRAIL` | `packages/qcommon/src/q_shared.ts` | `EF_TRACKERTRAIL` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_ROTATE` | `packages/qcommon/src/q_shared.ts` | `EF_ROTATE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_GIB` | `packages/qcommon/src/q_shared.ts` | `EF_GIB` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_BLASTER` | `packages/qcommon/src/q_shared.ts` | `EF_BLASTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_ROCKET` | `packages/qcommon/src/q_shared.ts` | `EF_ROCKET` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_GRENADE` | `packages/qcommon/src/q_shared.ts` | `EF_GRENADE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_HYPERBLASTER` | `packages/qcommon/src/q_shared.ts` | `EF_HYPERBLASTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_BFG` | `packages/qcommon/src/q_shared.ts` | `EF_BFG` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_COLOR_SHELL` | `packages/qcommon/src/q_shared.ts` | `EF_COLOR_SHELL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_POWERSCREEN` | `packages/qcommon/src/q_shared.ts` | `EF_POWERSCREEN` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_ANIM01` | `packages/qcommon/src/q_shared.ts` | `EF_ANIM01` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_ANIM23` | `packages/qcommon/src/q_shared.ts` | `EF_ANIM23` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_ANIM_ALL` | `packages/qcommon/src/q_shared.ts` | `EF_ANIM_ALL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_ANIM_ALLFAST` | `packages/qcommon/src/q_shared.ts` | `EF_ANIM_ALLFAST` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_FLIES` | `packages/qcommon/src/q_shared.ts` | `EF_FLIES` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_QUAD` | `packages/qcommon/src/q_shared.ts` | `EF_QUAD` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_PENT` | `packages/qcommon/src/q_shared.ts` | `EF_PENT` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_TELEPORTER` | `packages/qcommon/src/q_shared.ts` | `EF_TELEPORTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_FLAG1` | `packages/qcommon/src/q_shared.ts` | `EF_FLAG1` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_FLAG2` | `packages/qcommon/src/q_shared.ts` | `EF_FLAG2` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_IONRIPPER` | `packages/qcommon/src/q_shared.ts` | `EF_IONRIPPER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_GREENGIB` | `packages/qcommon/src/q_shared.ts` | `EF_GREENGIB` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_BLUEHYPERBLASTER` | `packages/qcommon/src/q_shared.ts` | `EF_BLUEHYPERBLASTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_SPINNINGLIGHTS` | `packages/qcommon/src/q_shared.ts` | `EF_SPINNINGLIGHTS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_PLASMA` | `packages/qcommon/src/q_shared.ts` | `EF_PLASMA` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_TRAP` | `packages/qcommon/src/q_shared.ts` | `EF_TRAP` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_TRACKER` | `packages/qcommon/src/q_shared.ts` | `EF_TRACKER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_DOUBLE` | `packages/qcommon/src/q_shared.ts` | `EF_DOUBLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_SPHERETRANS` | `packages/qcommon/src/q_shared.ts` | `EF_SPHERETRANS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_TAGTRAIL` | `packages/qcommon/src/q_shared.ts` | `EF_TAGTRAIL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_HALF_DAMAGE` | `packages/qcommon/src/q_shared.ts` | `EF_HALF_DAMAGE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `EF_TRACKERTRAIL` | `packages/qcommon/src/q_shared.ts` | `EF_TRACKERTRAIL` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `RF_MINLIGHT` | `packages/qcommon/src/q_shared.ts` | `RF_MINLIGHT` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `RF_VIEWERMODEL` | `packages/qcommon/src/q_shared.ts` | `RF_VIEWERMODEL` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `RF_WEAPONMODEL` | `packages/qcommon/src/q_shared.ts` | `RF_WEAPONMODEL` | A verifier | A redecouper |  |

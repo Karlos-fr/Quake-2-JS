@@ -30,49 +30,49 @@
 | `Quake-2-master/qcommon/qfiles.h` | global | `palette_type` | `packages/formats/src/pcx.ts` | `palette_type` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | global | `filler` | `packages/formats/src/pcx.ts` | `filler` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | global | `data` | `packages/formats/src/pcx.ts` | `data` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `IDALIASHEADER` | `packages/formats/src/md2.ts` | `IDALIASHEADER` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `ALIAS_VERSION` | `packages/formats/src/md2.ts` | `ALIAS_VERSION` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_TRIANGLES` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_VERTS` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_FRAMES` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MD2SKINS` | `packages/formats/src/md2.ts` | `MAX_MD2SKINS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_SKINNAME` | `packages/formats/src/qfiles.ts` | `MAX_SKINNAME` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dstvert_t` | `packages/formats/src/md2.ts` | `dstvert_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `s` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `t` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dtriangle_t` | `packages/formats/src/md2.ts` | `dtriangle_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `index_xyz` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `index_st` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dtrivertx_t` | `packages/formats/src/md2.ts` | `dtrivertx_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `v` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `lightnormalindex` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_V0` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_V1` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_V2` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_LNI` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_SIZE` | `packages/formats/src/md2.ts` | `DTRIVERTX_SIZE` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `daliasframe_t` | `packages/formats/src/md2.ts` | `daliasframe_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `scale` | `packages/formats/src/md2.ts` | `scale` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `translate` | `packages/formats/src/md2.ts` | `translate` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `name` | `packages/formats/src/qfiles.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dmdl_t` | `packages/formats/src/md2.ts` | `dmdl_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ident` | `packages/formats/src/qfiles.ts` | `ident` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `version` | `packages/formats/src/sp2.ts` | `version` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `skinwidth` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `skinheight` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `framesize` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `num_skins` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `num_xyz` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `num_st` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `num_tris` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `num_glcmds` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `num_frames` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_skins` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_st` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_tris` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_frames` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_glcmds` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_end` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `IDALIASHEADER` | `packages/formats/src/md2.ts` | `IDALIASHEADER` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `ALIAS_VERSION` | `packages/formats/src/md2.ts` | `ALIAS_VERSION` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_TRIANGLES` | `packages/formats/src/md2.ts` | `MAX_TRIANGLES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_VERTS` | `packages/formats/src/md2.ts` | `MAX_VERTS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_FRAMES` | `packages/formats/src/md2.ts` | `MAX_FRAMES` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_MD2SKINS` | `packages/formats/src/md2.ts` | `MAX_MD2SKINS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_SKINNAME` | `packages/formats/src/md2.ts` | `MAX_SKINNAME` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dstvert_t` | `packages/formats/src/md2.ts` | `dstvert_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `s` | `packages/formats/src/md2.ts` | `s` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `t` | `packages/formats/src/md2.ts` | `t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dtriangle_t` | `packages/formats/src/md2.ts` | `dtriangle_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `index_xyz` | `packages/formats/src/md2.ts` | `index_xyz` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `index_st` | `packages/formats/src/md2.ts` | `index_st` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dtrivertx_t` | `packages/formats/src/md2.ts` | `dtrivertx_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `v` | `packages/formats/src/md2.ts` | `v` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `lightnormalindex` | `packages/formats/src/md2.ts` | `lightnormalindex` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_V0` | `packages/formats/src/md2.ts` | `DTRIVERTX_V0` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_V1` | `packages/formats/src/md2.ts` | `DTRIVERTX_V1` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_V2` | `packages/formats/src/md2.ts` | `DTRIVERTX_V2` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_LNI` | `packages/formats/src/md2.ts` | `DTRIVERTX_LNI` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `DTRIVERTX_SIZE` | `packages/formats/src/md2.ts` | `DTRIVERTX_SIZE` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `daliasframe_t` | `packages/formats/src/md2.ts` | `daliasframe_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `scale` | `packages/formats/src/md2.ts` | `scale` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `translate` | `packages/formats/src/md2.ts` | `translate` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `name` | `packages/formats/src/md2.ts` | `name` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dmdl_t` | `packages/formats/src/md2.ts` | `dmdl_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ident` | `packages/formats/src/md2.ts` | `ident` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `version` | `packages/formats/src/md2.ts` | `version` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `skinwidth` | `packages/formats/src/md2.ts` | `skinwidth` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `skinheight` | `packages/formats/src/md2.ts` | `skinheight` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `framesize` | `packages/formats/src/md2.ts` | `framesize` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `num_skins` | `packages/formats/src/md2.ts` | `num_skins` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `num_xyz` | `packages/formats/src/md2.ts` | `num_xyz` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `num_st` | `packages/formats/src/md2.ts` | `num_st` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `num_tris` | `packages/formats/src/md2.ts` | `num_tris` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `num_glcmds` | `packages/formats/src/md2.ts` | `num_glcmds` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `num_frames` | `packages/formats/src/md2.ts` | `num_frames` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_skins` | `packages/formats/src/md2.ts` | `ofs_skins` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_st` | `packages/formats/src/md2.ts` | `ofs_st` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_tris` | `packages/formats/src/md2.ts` | `ofs_tris` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_frames` | `packages/formats/src/md2.ts` | `ofs_frames` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_glcmds` | `packages/formats/src/md2.ts` | `ofs_glcmds` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ofs_end` | `packages/formats/src/md2.ts` | `ofs_end` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | macro | `IDSPRITEHEADER` | `packages/formats/src/sp2.ts` | `IDSPRITEHEADER` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | macro | `SPRITE_VERSION` | `packages/formats/src/sp2.ts` | `SPRITE_VERSION` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | struct | `dsprframe_t` | `packages/formats/src/sp2.ts` | `dsprframe_t` | A verifier | A redecouper |  |

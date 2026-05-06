@@ -10,36 +10,36 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/gl_light.c` | function | `R_AddDynamicLights` | `packages/renderer-three/src/gl_light.ts` | `R_AddDynamicLights` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | function | `R_BuildLightMap` | `packages/renderer-three/src/gl_light.ts` | `R_BuildLightMap` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | function | `R_LightPoint` | `packages/renderer-three/src/gl_light.ts` | `R_LightPoint` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | function | `R_MarkLights` | `packages/renderer-three/src/gl_light.ts` | `R_MarkLights` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | function | `R_PushDlights` | `packages/renderer-three/src/gl_light.ts` | `R_PushDlights` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | function | `R_RenderDlight` | `packages/renderer-three/src/gl_light.ts` | `R_RenderDlight` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | function | `R_RenderDlights` | `packages/renderer-three/src/gl_light.ts` | `R_RenderDlights` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | function | `R_SetCacheState` | `packages/renderer-three/src/gl_light.ts` | `R_SetCacheState` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | function | `RecursiveLightPoint` | `packages/renderer-three/src/gl_light.ts` | `RecursiveLightPoint` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | macro | `DLIGHT_CUTOFF` | `packages/renderer-three/src/gl_light.ts` | `DLIGHT_CUTOFF` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `a` | `packages/renderer-three/src/gl_light.ts` | `a` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `add` | `packages/renderer-three/src/gl_light.ts` | `add` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `dist` | `packages/renderer-three/src/gl_light.ts` | `dist` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `end` | `packages/renderer-three/src/gl_light.ts` | `end` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `fdist` | `packages/renderer-three/src/gl_light.ts` | `fdist` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `i` | `packages/renderer-three/src/gl_light.ts` | `i` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `light` | `packages/renderer-three/src/gl_light.ts` | `light` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `lightspot` | `packages/renderer-three/src/gl_light.ts` | `lightspot` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `lnum` | `packages/renderer-three/src/gl_light.ts` | `lnum` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `maps` | `packages/renderer-three/src/gl_light.ts` | `maps` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `max` | `packages/renderer-three/src/gl_light.ts` | `max` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `mid` | `packages/renderer-three/src/gl_light.ts` | `mid` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `monolightmap` | `packages/renderer-three/src/gl_light.ts` | `monolightmap` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `nummaps` | `packages/renderer-three/src/gl_light.ts` | `nummaps` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `pointcolor` | `packages/renderer-three/src/gl_light.ts` | `pointcolor` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `r` | `packages/renderer-three/src/gl_light.ts` | `r` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `r_dlightframecount` | `packages/renderer-three/src/gl_light.ts` | `r_dlightframecount` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `rad` | `packages/renderer-three/src/gl_light.ts` | `rad` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `scale` | `packages/renderer-three/src/gl_light.ts` | `scale` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `side` | `packages/renderer-three/src/gl_light.ts` | `side` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `store` | `packages/renderer-three/src/gl_light.ts` | `store` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `t` | `packages/renderer-three/src/gl_light.ts` | `t` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_light.c` | global | `v` | `packages/renderer-three/src/gl_light.ts` | `v` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | function | `R_AddDynamicLights` | `packages/renderer-three/src/gl_light.ts` | `R_AddDynamicLights` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | function | `R_BuildLightMap` | `packages/renderer-three/src/gl_light.ts` | `R_BuildLightMap` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | function | `R_LightPoint` | `packages/renderer-three/src/gl_light.ts` | `R_LightPoint` | Valide | split-undocumented | Deviation adaptee: fallback `p` quand aucun `currententity` n'est lie, necessaire aux hooks `R_SetLightLevel`/adapter. |
+| `Quake-2-master/ref_gl/gl_light.c` | function | `R_MarkLights` | `packages/renderer-three/src/gl_light.ts` | `R_MarkLights` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | function | `R_PushDlights` | `packages/renderer-three/src/gl_light.ts` | `R_PushDlights` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | function | `R_RenderDlight` | `packages/renderer-three/src/gl_light.ts` | `R_RenderDlight` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | function | `R_RenderDlights` | `packages/renderer-three/src/gl_light.ts` | `R_RenderDlights` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | function | `R_SetCacheState` | `packages/renderer-three/src/gl_light.ts` | `R_SetCacheState` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | function | `RecursiveLightPoint` | `packages/renderer-three/src/gl_light.ts` | `RecursiveLightPoint` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | macro | `DLIGHT_CUTOFF` | `packages/renderer-three/src/gl_light.ts` | `DLIGHT_CUTOFF` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `a` | `packages/renderer-three/src/gl_light.ts` | `a` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `add` | `packages/renderer-three/src/gl_light.ts` | `add` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `dist` | `packages/renderer-three/src/gl_light.ts` | `dist` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `end` | `packages/renderer-three/src/gl_light.ts` | `end` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `fdist` | `packages/renderer-three/src/gl_light.ts` | `fdist` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `i` | `packages/renderer-three/src/gl_light.ts` | `i` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `light` | `packages/renderer-three/src/gl_light.ts` | `light` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `lightspot` | `packages/renderer-three/src/gl_light.ts` | `lightspot` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `lnum` | `packages/renderer-three/src/gl_light.ts` | `lnum` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `maps` | `packages/renderer-three/src/gl_light.ts` | `maps` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `max` | `packages/renderer-three/src/gl_light.ts` | `max` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `mid` | `packages/renderer-three/src/gl_light.ts` | `mid` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `monolightmap` | `packages/renderer-three/src/gl_light.ts` | `monolightmap` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `nummaps` | `packages/renderer-three/src/gl_light.ts` | `nummaps` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `pointcolor` | `packages/renderer-three/src/gl_light.ts` | `pointcolor` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `r` | `packages/renderer-three/src/gl_light.ts` | `r` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `r_dlightframecount` | `packages/renderer-three/src/gl_light.ts` | `r_dlightframecount` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `rad` | `packages/renderer-three/src/gl_light.ts` | `rad` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `scale` | `packages/renderer-three/src/gl_light.ts` | `scale` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `side` | `packages/renderer-three/src/gl_light.ts` | `side` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `store` | `packages/renderer-three/src/gl_light.ts` | `store` | Non applicable | split-undocumented | Faux positif generateur: label local C couvert par `R_BuildLightMap`. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `t` | `packages/renderer-three/src/gl_light.ts` | `t` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_light.c` | global | `v` | `packages/renderer-three/src/gl_light.ts` | `v` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |

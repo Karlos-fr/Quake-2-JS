@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: bloc visible complet `entity_state_t->effects`, de `EF_ROTATE` a `EF_TRACKERTRAIL`.
+- Entites validees: `EF_ROTATE`, `EF_GIB`, `EF_BLASTER`, `EF_ROCKET`, `EF_GRENADE`, `EF_HYPERBLASTER`, `EF_BFG`, `EF_COLOR_SHELL`, `EF_POWERSCREEN`, `EF_ANIM01`, `EF_ANIM23`, `EF_ANIM_ALL`, `EF_ANIM_ALLFAST`, `EF_FLIES`, `EF_QUAD`, `EF_PENT`, `EF_TELEPORTER`, `EF_FLAG1`, `EF_FLAG2`, `EF_IONRIPPER`, `EF_GREENGIB`, `EF_BLUEHYPERBLASTER`, `EF_SPINNINGLIGHTS`, `EF_PLASMA`, `EF_TRAP`, `EF_TRACKER`, `EF_DOUBLE`, `EF_SPHERETRANS`, `EF_TAGTRAIL`, `EF_HALF_DAMAGE`, `EF_TRACKERTRAIL`.
+- Ownership: constantes proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportees via `packages/qcommon/src/index.ts`; aucun doublon proprietaire ou renommage detecte.
+- Preuves: comparaison numerique C/H vs TS ajoutee dans `scripts/verify/quake2-q-shared-header.ts`; runtime client verifie via `CL_BuildPacketEntitySnapshots`, `CL_ExecutePacketEntityEffects`, `CL_BuildRefreshFrame` et les tests `verify:cl-fx`/`verify:local-gameplay-sync`; consommation renderer verifiee par `verify:particle-sync`, `verify:dlight-sync` et `verify:full-game:three-renderer`.
+- Commentaires d'en-tete: non applicable, lot compose de macros/constantes sans fonction portee.
 - 2026-05-06: `trace_t` et tous ses champs directs, puis bloc PMove partage `pmtype_t`, `PMF_*`, `pmove_state_t`, `BUTTON_*`, `usercmd_s`/`usercmd_t`, `MAXTOUCH` et `pmove_t`.
 - Entites validees: `trace_t`, `allsolid`, `startsolid`, `fraction`, `endpos`, `plane`, `surface`, `contents`, `ent`, `pmtype_t`, `PMF_DUCKED`, `PMF_JUMP_HELD`, `PMF_ON_GROUND`, `PMF_TIME_WATERJUMP`, `PMF_TIME_LAND`, `PMF_TIME_TELEPORT`, `PMF_NO_PREDICTION`, `pmove_state_t`, `origin`, `velocity`, `pm_flags`, `pm_time`, `gravity`, `delta_angles`, `BUTTON_ATTACK`, `BUTTON_USE`, `BUTTON_ANY`, `usercmd_s` porte par `usercmd_t`, `msec`, `buttons`, `angles`, `forwardmove`, `sidemove`, `upmove`, `impulse`, `lightlevel`, `MAXTOUCH`, `pmove_t`, `s`, `cmd`, `snapinitial`, `numtouch`, `touchents`, `viewangles`, `viewheight`, `mins`, `maxs`, `groundentity`, `watertype`, `waterlevel`, `trace`, `pointcontents`.
 - Ownership: types, constantes et champs proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportes par `packages/qcommon/src/index.ts`; le lot inclut `usercmd_t`/`pmove_t` parce que la matrice les place dans `q_shared.ts`, sans modifier `packages/qcommon/src/pmove.ts`.
@@ -57,6 +62,7 @@
 
 ## Corrections
 
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `EF_*` de `EF_ROTATE` a `EF_TRACKERTRAIL`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `trace_t`, `pmtype_t`, `PMF_*`, `pmove_state_t`, `BUTTON_*`, `usercmd_t`, `MAXTOUCH` et `pmove_t`; la matrice a ete completee pour les champs directs absents du decoupage genere (`plane`, `surface`, `ent`, mouvements directionnels, `s`, `touchents`, bbox, `groundentity`, callbacks).
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour la forme `cmodel_t`, `csurface_t` et `mapsurface_t`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `AREA_SOLID`, `AREA_TRIGGERS`, la forme `cplane_t` et les offsets `CPLANE_*`.
@@ -78,6 +84,13 @@
 
 ## Tests de reference
 
+- `npm run verify:q-shared:header` OK pour le bloc `EF_*`.
+- `npm run verify:cl-fx` OK.
+- `npm run verify:local-gameplay-sync` OK.
+- `npm run verify:particle-sync` OK.
+- `npm run verify:dlight-sync` OK.
+- `npm run verify:full-game:three-renderer` OK.
+- `npm run typecheck` OK.
 - `npm run verify:q-shared:header` OK pour `trace_t`/PMove shared.
 - `npm run verify:pmove` OK.
 - `npm run verify:client:pmove:viewheight` OK.
@@ -142,6 +155,10 @@
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `EF_*` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; ces flags sont des sorties visibles de `entity_state_t.effects` transportees par snapshots serveur/client et par le pont local gameplay.
+- Runtime: integration attendue et presente. Les producteurs gameplay incluent items, armes, monstres, joueur, missiles, gibs, power armor/shells et temp-like entity states; les consommateurs client couvrent rotation/animation (`CL_BuildPacketEntitySnapshots`), trails/particules (`CL_ExecutePacketEntityEffects`), lights/shells/powerscreen (`CL_BuildRefreshFrame`) et events persistants comme `EF_TELEPORTER`.
+- `apps/web`: integration attendue et presente via les flux full-game/server-host/local-gameplay qui synchronisent `entity_state_t.effects` vers le runtime client, appliquent les effets d'action et exposent les `ClientRefreshFrame` au rendu sans logique parallele masquante.
+- `renderer-three`: sortie visible attendue et presente. Les modeles/frames/angles/alpha/shells/powerscreen, particules, trails et dlights issus des `EF_*` sont consommes via `refresh-entity-sync`, `particle-sync`, `three-dlight-sync` et le render loop web; aucun manque de branchement renderer detecte pour ce lot.
 - Le bloc `trace_t` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; ses champs directs reprennent les declarations C, avec `surface` nullable pour le cas C `NULL` et `ent` type en `unknown` parce que `struct edict_s*` appartient aux couches game/server.
 - Runtime: integration attendue et presente. `trace_t` circule dans collision (`CM_BoxTrace`, `CM_TransformedBoxTrace`), server world (`SV_Trace`, `SV_ClipMoveToEntities`), gameplay `gi.trace`, armes/touches et PMove; les champs `allsolid`, `startsolid`, `fraction`, `endpos`, `plane`, `surface`, `contents` et `ent` sont consommes par les chemins normaux.
 - Le bloc PMove partage (`pmtype_t`, `PMF_*`, `pmove_state_t`, `BUTTON_*`, `usercmd_t`, `MAXTOUCH`, `pmove_t`) est integre via `Pmove`, prediction client, `ClientThink`, server usercmd et snapshots player state. Les champs restent bit-accuracy oriented comme le H: nombres entiers TS pour `short`/`byte`, tuples de 3 nombres pour les vecteurs short.
@@ -194,4 +211,4 @@
 
 ## Prochain lot recommande
 
-- Traiter le prochain bloc visible `entity_state_t->effects`, en commencant par `EF_ROTATE`, `EF_GIB`, `EF_BLASTER`, `EF_ROCKET`, `EF_GRENADE`, `EF_HYPERBLASTER`, `EF_BFG`, `EF_COLOR_SHELL`, `EF_POWERSCREEN` et la suite `EF_*` coherente avec le runtime client/renderer-three.
+- Traiter le prochain bloc visible `entity_state_t->renderfx`, en commencant par `RF_MINLIGHT`, `RF_VIEWERMODEL`, `RF_WEAPONMODEL`, `RF_FULLBRIGHT`, `RF_DEPTHHACK`, `RF_TRANSLUCENT`, puis la suite `RF_*` coherente avec le runtime client/renderer-three.

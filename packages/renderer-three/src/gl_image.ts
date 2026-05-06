@@ -208,8 +208,13 @@ const gl_solid_modes: TextureFormatModeRecord[] = [
 ];
 
 /**
+ * Original name: N/A
+ * Source: N/A (explicit runtime container for ref_gl/gl_image.c globals)
  * Category: New
  * Purpose: Create the explicit runtime replacing the mutable `gl_image.c` globals.
+ *
+ * Porting notes:
+ * - Keeps the original global state fields grouped per renderer instance.
  */
 export function createGlImageRuntime(hooks: GlImageHooks = {}): GlImageRuntime {
   return {
@@ -253,8 +258,13 @@ export function createGlImageRuntime(hooks: GlImageHooks = {}): GlImageRuntime {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (image slot factory for ref_gl/gl_image.c runtime state)
  * Category: New
  * Purpose: Create one empty image slot matching the `image_t` fields consumed by the renderer.
+ *
+ * Porting notes:
+ * - Initializes the fields that `gl_image.c` clears before reusing a texture slot.
  */
 export function createGlImage(overrides: Partial<GlImage> = {}): GlImage {
   return {
@@ -321,6 +331,12 @@ export function setProtectedImages(runtime: GlImageRuntime, notexture: GlImage |
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Builds the 768-byte RGB palette table and forwards it to the backend palette hook.
+ *
+ * Porting notes:
+ * - The OpenGL extension guard is represented by the presence of the backend hook.
  */
 export function GL_SetTexturePalette(runtime: GlImageRuntime, palette: Uint32Array | readonly number[]): void {
   const values = palette instanceof Uint32Array ? palette : Uint32Array.from(palette);
@@ -341,6 +357,12 @@ export function GL_SetTexturePalette(runtime: GlImageRuntime, palette: Uint32Arr
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Switches to TMU 1, toggles 2D texturing, restores replace mode, then returns to TMU 0.
+ *
+ * Porting notes:
+ * - Direct qgl calls are backend hooks, preserving state changes and call order.
  */
 export function GL_EnableMultitexture(runtime: GlImageRuntime, enable: boolean): void {
   if (!hasSelectTextureHook(runtime)) {
@@ -366,6 +388,12 @@ export function GL_EnableMultitexture(runtime: GlImageRuntime, enable: boolean):
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Updates the active TMU only when the target differs from the cached state.
+ *
+ * Porting notes:
+ * - Missing multitexture support is represented by an absent selectTexture hook.
  */
 export function GL_SelectTexture(runtime: GlImageRuntime, texture: number): void {
   if (!hasSelectTextureHook(runtime)) {
@@ -386,6 +414,12 @@ export function GL_SelectTexture(runtime: GlImageRuntime, texture: number): void
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Caches texture environment modes per TMU and skips duplicate backend calls.
+ *
+ * Porting notes:
+ * - Mirrors the original static `lastmodes[2]` with runtime-owned `texEnvModes`.
  */
 export function GL_TexEnv(runtime: GlImageRuntime, mode: number): void {
   if (runtime.texEnvModes[runtime.currenttmu] === mode) {
@@ -401,6 +435,12 @@ export function GL_TexEnv(runtime: GlImageRuntime, mode: number): void {
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies the no-bind draw character override, updates the current texture cache and binds when changed.
+ *
+ * Porting notes:
+ * - Direct `qglBindTexture` is represented by the backend bindTexture hook.
  */
 export function GL_Bind(runtime: GlImageRuntime, texnum: number): void {
   if (runtime.gl_nobind_value && runtime.draw_chars) {
@@ -420,6 +460,12 @@ export function GL_Bind(runtime: GlImageRuntime, texnum: number): void {
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Selects the requested TMU and binds only when that TMU is not already using the texture.
+ *
+ * Porting notes:
+ * - Uses the ported GL_SelectTexture and GL_Bind paths to share cache behavior.
  */
 export function GL_MBind(runtime: GlImageRuntime, target: number, texnum: number): void {
   GL_SelectTexture(runtime, target);
@@ -436,6 +482,12 @@ export function GL_MBind(runtime: GlImageRuntime, target: number, texnum: number
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resolves a filter mode by name, updates min/mag globals and reapplies filters to existing mipmapped images.
+ *
+ * Porting notes:
+ * - qgl texture parameter calls are routed through setTextureFilter.
  */
 export function GL_TextureMode(runtime: GlImageRuntime, string: string): void {
   const mode = modes.find((entry) => entry.name === string);
@@ -463,6 +515,9 @@ export function GL_TextureMode(runtime: GlImageRuntime, string: string): void {
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resolves the named alpha internal format and stores it for later uploads.
  */
 export function GL_TextureAlphaMode(runtime: GlImageRuntime, string: string): void {
   const mode = gl_alpha_modes.find((entry) => entry.name === string);
@@ -479,6 +534,9 @@ export function GL_TextureAlphaMode(runtime: GlImageRuntime, string: string): vo
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Resolves the named solid internal format and stores it for later uploads.
  */
 export function GL_TextureSolidMode(runtime: GlImageRuntime, string: string): void {
   const mode = gl_solid_modes.find((entry) => entry.name === string);
@@ -495,6 +553,9 @@ export function GL_TextureSolidMode(runtime: GlImageRuntime, string: string): vo
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Prints the registered image list with type prefix, dimensions, palette mode and texel total.
  */
 export function GL_ImageList_f(runtime: GlImageRuntime): void {
   const palstrings = ["RGB", "PAL"] as const;
@@ -522,6 +583,9 @@ export function GL_ImageList_f(runtime: GlImageRuntime): void {
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finds and reserves a rectangle in the scrap atlas using the original column-height algorithm.
  */
 export function Scrap_AllocBlock(runtime: GlImageRuntime, w: number, h: number): { texnum: number; x: number; y: number } | null {
   for (let texnum = 0; texnum < MAX_SCRAPS; texnum += 1) {
@@ -566,6 +630,12 @@ export function Scrap_AllocBlock(runtime: GlImageRuntime, w: number, h: number):
  * Source: ref_gl/gl_image.c
  * Category: Ported
  * Fidelity level: Close
+ *
+ * Behavior:
+ * - Increments the upload counter, binds the scrap texture, uploads atlas texels and clears the dirty flag.
+ *
+ * Porting notes:
+ * - A backend scrap upload hook is preferred; otherwise the ported GL_Upload8 path is used.
  */
 export function Scrap_Upload(runtime: GlImageRuntime): void {
   runtime.scrap_uploads += 1;

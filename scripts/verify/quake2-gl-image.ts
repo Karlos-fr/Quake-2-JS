@@ -6,7 +6,7 @@
  * It is a targeted verification harness for a close renderer port.
  *
  * Dependencies:
- * - packages/renderer-three/src/gl-image.ts
+ * - packages/renderer-three/src/gl_image.ts
  * - packages/renderer-three/src/index.ts
  */
 
@@ -54,7 +54,7 @@ import {
   setRoundDownEnabled,
   setVidGammaValue
 } from "../../packages/renderer-three/src/index.js";
-import { BLOCK_HEIGHT, BLOCK_WIDTH, GL_RENDERER_VOODOO, setPicmipValue } from "../../packages/renderer-three/src/gl-image.js";
+import { BLOCK_HEIGHT, BLOCK_WIDTH, GL_RENDERER_VOODOO, setPicmipValue } from "../../packages/renderer-three/src/gl_image.js";
 
 const calls: string[] = [];
 const deleted: number[] = [];

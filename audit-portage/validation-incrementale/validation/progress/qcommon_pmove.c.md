@@ -187,3 +187,36 @@ Corrections appliquees:
 
 Prochain lot recommande:
 - `PM_CatagorizePosition` et ses locaux directs (`point`, `cont`, `trace`, `sample1`, `sample2`).
+
+## Session 2026-05-06 - PM_CatagorizePosition
+
+Lot traite:
+- `PM_CatagorizePosition`
+- locaux directs: `point`, `cont`, `trace`, `sample1`, `sample2`
+
+Verdict:
+- Lot valide.
+- `PM_CatagorizePosition` conserve le flux C: point de probe sol a `origin.z - 0.25`, bypass sol si `velocity.z > 180`, copie de `trace.plane`/`surface`/`contents`, rejet sans `trace.ent` ou avec normale Z `< 0.7` hors `startsolid`, stockage `groundentity`, fin de `PMF_TIME_WATERJUMP`, timer de landing a `18` ou `25`, enregistrement `touchents`, puis remise a zero et detection `watertype`/`waterlevel`.
+- Les locaux C sont preserves en TS: `point` mutable reutilise pour les probes, `cont` comme contenu courant, `trace` comme resultat du callback, `sample1 = sample2 / 2`, `sample2 = viewheight - mins[2]`.
+- Entete de `PM_CatagorizePosition` verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`, `Porting notes`.
+
+Preuves:
+- Comparaison directe C vs TS sur `Quake-2-master/qcommon/pmove.c` et `packages/qcommon/src/pmove.ts`.
+- Tests cibles ajoutes dans `scripts/verify/quake2-pmove.ts`: contact sol avec timer de landing, mouvement ascendant `> 180`, copie trace/surface/contents, nettoyage waterjump, rejection de plan trop raide, enregistrement touch entity, et sequence des trois probes eau `origin + mins + 1/sample1/sample2`.
+- Runtime: flux attendu oui; `PM_CatagorizePosition` est appele deux fois depuis `Pmove`, avant le choix special/jump/move puis apres le mouvement. Racines confirmees via `packages/game/src/p_client.ts`, `packages/server/src/sv_game.ts`, `packages/client/src/view.ts` et `packages/client/src/local-loop.ts`.
+- `apps/web`: flux attendu oui; le navigateur declenche/consomme ce flux via `apps/web/src/local-client-controller.ts`, `apps/web/src/full-game.ts`, `apps/web/src/full-game-render-source.ts` et `apps/web/src/full-game-render-loop.ts`. Pas de logique web parallele masquant ground/water/runtime pmove.
+- `renderer-three`: sortie visible indirecte attendue oui, car le lot influence `groundentity`, waterlevel/watertype, origine packed, viewheight et donc camera/vieworg/scene derivee. Consommation verifiee via `ClientRefreshFrame.view.vieworg`, `R_RenderFrame`, `gl-world-scene-adapter`, `gl_rmain`, `gl_rsurf`, `particle-sync`, `three-dlight-sync`, `three-beam-sync` et `refresh-entity-sync`. Pas de sortie propre a ce lot pour modeles, frames, images, particules, beams, dlights, temp entities ou areabits hors camera/scene derivee.
+
+Tests lances:
+- `npm run verify:pmove`
+- `npm run verify:client:pmove:viewheight`
+- `npm run verify:pmove:local-bmodel`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Corrections appliquees:
+- `scripts/verify/quake2-pmove.ts`: assertions ciblees ajoutees pour `PM_CatagorizePosition` et ses locaux directs.
+- `audit-portage/validation-incrementale/validation/matrices/qcommon_pmove.c.md`: lot marque `Valide`.
+
+Prochain lot recommande:
+- `PM_CheckJump`, puis `PM_CheckSpecialMovement` et ses locaux directs (`cont`, `trace`) si le lot reste coherent.

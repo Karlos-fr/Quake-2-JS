@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: `sizebuf_s` / `sizebuf_t`, champs directs (`allowoverflow`, `overflowed`, `data`, `maxsize`, `cursize`, `readcount`), `SZ_Init`, `SZ_Clear`, `SZ_GetSpace`, `SZ_Write`, `SZ_Print`, `MSG_BeginReading`.
+- Dernier lot valide: `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16`, `MSG_WriteDir`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc `MSG_Write*` simple dans `packages/qcommon/src/messages.ts`: `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16`, `MSG_WriteDir`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementations `Quake-2-master/qcommon/common.c`.
+- Cible comparee: `packages/qcommon/src/messages.ts`, avec helpers `SZ_GetSpace` / `SZ_Write`, `ANGLE2SHORT`, `BYTE_DIRS` et `DotProduct`.
+- Decision: portage valide. Les fonctions conservent les noms originaux, l'ownership `packages/qcommon/src/messages.ts` est coherent, aucun doublon proprietaire concurrent trouve. Les ecritures conservent l'ordre little-endian C, la troncature vers zero pour coord/angle, la chaine nullish comme chaine vide terminee par NUL, et la quantification `bytedirs` pour `MSG_WriteDir`. Les appels `Com_Error` conditionnels `PARANOID` du C ne sont pas actifs dans le port courant; les fonctions TS preservent la troncature effective.
+- Runtime: attendu et verifie. Le bloc est appele depuis les flux normaux client/serveur/netchan: `Netchan_Transmit` / out-of-band, `CL_SendCmd` / commandes client, `SV_Frame` puis `SV_SendClientMessages`, `SV_WriteFrameToClient`, `PF_Write*`, `SV_StartSound` et messages de connexion/configstrings.
+- apps/web: attendu et verifie. `apps/web/src/full-game-server-host.ts` et le host full-game declenchent les flux server/client portes qui produisent et consomment ces messages, sans logique parallele remplacant `messages.ts`.
+- renderer-three: pas de consommation directe attendue par ces primitives seules; elles encodent des donnees qui peuvent ensuite devenir visibles (entites, sons, positions, camera, dlights, beams), mais la production/consommation visible appartient aux lots delta entity/client parse/renderer. Le test three-renderer confirme que le flux full-game renderer reste branche.
+- Commentaires: en-tetes de `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16`, `MSG_WriteDir` verifies dans `packages/qcommon/src/messages.ts`.
+- Tests ajoutes: assertions byte-a-byte et roundtrip dans `scripts/verify/quake2-qcommon-header.ts` pour char/byte/short/long/float/string/coord/pos/angle/angle16/dir.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:net-chan`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: bloc `sizebuf_s` et fonctions de buffer dans `packages/memory/src/sizebuf.ts`.
 - Source comparee: `Quake-2-master/qcommon/qcommon.h` declarations et `Quake-2-master/qcommon/common.c` implementations de `MSG_BeginReading` / `SZ_*`.
@@ -33,7 +46,7 @@
 
 ## Prochain lot recommande
 
-- `MSG_WriteChar`, `MSG_WriteByte`, `MSG_WriteShort`, `MSG_WriteLong`, `MSG_WriteFloat`, `MSG_WriteString`, `MSG_WriteCoord`, `MSG_WritePos`, `MSG_WriteAngle`, `MSG_WriteAngle16`, `MSG_WriteDir` dans `packages/qcommon/src/messages.ts`. Garder `MSG_WriteDeltaUsercmd` / `MSG_WriteDeltaEntity` pour un lot separe si besoin.
+- `MSG_WriteDeltaUsercmd` dans `packages/qcommon/src/messages.ts`, puis `MSG_WriteDeltaEntity` dans une session separee si le coordinateur veut garder le delta entity et les constantes `U_*` associees isoles.
 
 ## Blocages
 

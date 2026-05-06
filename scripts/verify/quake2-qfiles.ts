@@ -22,6 +22,11 @@ import {
   ANGLE_UP,
   BSPVERSION,
   CONTENTS_SOLID,
+  DTRIVERTX_LNI,
+  DTRIVERTX_SIZE,
+  DTRIVERTX_V0,
+  DTRIVERTX_V1,
+  DTRIVERTX_V2,
   DVIS_PHS,
   DVIS_PVS,
   HEADER_LUMPS,
@@ -31,7 +36,12 @@ import {
   IDSPRITEHEADER,
   LUMP_MODELS,
   LUMP_PLANES,
+  MAX_FRAMES,
   MAX_FILES_IN_PACK,
+  MAX_MD2SKINS,
+  MAX_SKINNAME,
+  MAX_TRIANGLES,
+  MAX_VERTS,
   parseMd2,
   parsePak,
   parsePcx,
@@ -75,6 +85,16 @@ assert.equal(BSPVERSION, 38, "BSPVERSION mismatch");
 assert.equal(ALIAS_VERSION, 8, "ALIAS_VERSION mismatch");
 assert.equal(SPRITE_VERSION, 2, "SPRITE_VERSION mismatch");
 assert.equal(MAX_FILES_IN_PACK, 4096, "MAX_FILES_IN_PACK mismatch");
+assert.equal(MAX_TRIANGLES, 4096, "MAX_TRIANGLES mismatch");
+assert.equal(MAX_VERTS, 2048, "MAX_VERTS mismatch");
+assert.equal(MAX_FRAMES, 512, "MAX_FRAMES mismatch");
+assert.equal(MAX_MD2SKINS, 32, "MAX_MD2SKINS mismatch");
+assert.equal(MAX_SKINNAME, 64, "MAX_SKINNAME mismatch");
+assert.equal(DTRIVERTX_V0, 0, "DTRIVERTX_V0 mismatch");
+assert.equal(DTRIVERTX_V1, 1, "DTRIVERTX_V1 mismatch");
+assert.equal(DTRIVERTX_V2, 2, "DTRIVERTX_V2 mismatch");
+assert.equal(DTRIVERTX_LNI, 3, "DTRIVERTX_LNI mismatch");
+assert.equal(DTRIVERTX_SIZE, 4, "DTRIVERTX_SIZE mismatch");
 assert.equal(HEADER_LUMPS, 19, "HEADER_LUMPS mismatch");
 assert.equal(LUMP_PLANES, 1, "LUMP_PLANES mismatch");
 assert.equal(LUMP_MODELS, 13, "LUMP_MODELS mismatch");
@@ -210,6 +230,25 @@ md2Bytes[190] = 6;
 md2Bytes[191] = 7;
 md2Bytes.set(createLittleLong(0), 192);
 const md2 = parseMd2(md2Bytes, "test.md2");
+assert.deepEqual(md2.header, {
+  ident: IDALIASHEADER,
+  version: ALIAS_VERSION,
+  skinwidth: 64,
+  skinheight: 64,
+  framesize: 44,
+  num_skins: 1,
+  num_xyz: 1,
+  num_st: 1,
+  num_tris: 1,
+  num_glcmds: 1,
+  num_frames: 1,
+  ofs_skins: 68,
+  ofs_st: 132,
+  ofs_tris: 136,
+  ofs_frames: 148,
+  ofs_glcmds: 192,
+  ofs_end: 196
+}, "parseMd2 dmdl_t header mismatch");
 assert.equal(md2.skins[0], "players/test.pcx", "parseMd2 skin mismatch");
 assert.deepEqual(md2.st[0], { s: 2, t: 3 }, "parseMd2 st mismatch");
 assert.deepEqual(md2.triangles[0], { index_xyz: [0, 0, 0], index_st: [0, 0, 0] }, "parseMd2 triangle mismatch");

@@ -113,7 +113,21 @@ export {
 
 export { parsePcx } from "./pcx.js";
 export { parseTga } from "./tga.js";
-export { ALIAS_VERSION, IDALIASHEADER, MAX_MD2SKINS, parseMd2 } from "./md2.js";
+export {
+  ALIAS_VERSION,
+  DTRIVERTX_LNI,
+  DTRIVERTX_SIZE,
+  DTRIVERTX_V0,
+  DTRIVERTX_V1,
+  DTRIVERTX_V2,
+  IDALIASHEADER,
+  MAX_FRAMES,
+  MAX_MD2SKINS,
+  MAX_SKINNAME,
+  MAX_TRIANGLES,
+  MAX_VERTS,
+  parseMd2
+} from "./md2.js";
 export { IDSPRITEHEADER, SPRITE_VERSION, parseSp2 } from "./sp2.js";
 export { parseWal } from "./wal.js";
 

@@ -12,6 +12,7 @@
 import {
   PMF_TIME_TELEPORT,
   PMF_TIME_WATERJUMP,
+  PMF_TIME_LAND,
   PMF_DUCKED,
   PMF_JUMP_HELD,
   PMF_ON_GROUND,
@@ -48,6 +49,7 @@ import {
 } from "../../packages/qcommon/src/index.js";
 import {
   CONTENTS_LADDER,
+  CONTENTS_LAVA,
   CONTENTS_SLIME,
   CONTENTS_SOLID,
   CONTENTS_WATER,
@@ -78,6 +80,9 @@ function main(): void {
   verifyDuckCanStandWhenClear();
   verifyCategorizePositionSetsLandingTimerOnHardGroundContact();
   verifyCategorizePositionClearsGroundWhenMovingUpFast();
+  verifyCategorizePositionRecordsTraceStateTouchAndClearsWaterjump();
+  verifyCategorizePositionRejectsSteepGroundButStillRecordsTouch();
+  verifyCategorizePositionSamplesWaterLevelsFromViewheightAndMins();
   verifyGroundJumpSetsHeldFlagAndMinimumVerticalSpeed();
   verifyJumpHeldPreventsRepeatJump();
   verifyWaterJumpUsesWatertypeSpecificVerticalSpeed();
@@ -432,6 +437,87 @@ function verifyCategorizePositionClearsGroundWhenMovingUpFast(): void {
 
   assertEqual(pm.s.pm_flags & PMF_ON_GROUND, 0, "fast upward movement clears on-ground flag");
   assertBoolean(pm.groundentity === null, true, "fast upward movement clears ground entity");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert `PM_CatagorizePosition` copies trace outputs, records touches and ends waterjump timers on solid ground.
+ */
+function verifyCategorizePositionRecordsTraceStateTouchAndClearsWaterjump(): void {
+  const pm = createBasePmove();
+  pm.s.pm_flags = PMF_TIME_WATERJUMP | PMF_TIME_LAND | PMF_TIME_TELEPORT;
+  pm.s.pm_time = 9;
+  pm.trace = createCurrentGroundContactTrace;
+  pm.pointcontents = () => 0;
+  pm.mins = [-16, -16, -24];
+  pm.maxs = [16, 16, 32];
+  pm.viewheight = 22;
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.016);
+
+  PM_CatagorizePosition(context);
+
+  assertEqual(pm.s.pm_flags & PMF_TIME_WATERJUMP, 0, "ground contact clears waterjump timer flag");
+  assertEqual(pm.s.pm_flags & PMF_TIME_LAND, 0, "ground contact clears land timer flag while ending waterjump");
+  assertEqual(pm.s.pm_flags & PMF_TIME_TELEPORT, 0, "ground contact clears teleport timer flag while ending waterjump");
+  assertEqual(pm.s.pm_time, 0, "ground contact clears waterjump pm_time");
+  assertEqual(pm.numtouch, 1, "ground trace entity is recorded as a touch");
+  assertBoolean(pm.touchents[0] === pm.groundentity, true, "touch entity matches ground entity");
+  assertEqual(context.pml.groundplane.normal[2], 1, "ground plane is copied from trace");
+  assertEqual(context.pml.groundsurface?.flags ?? -1, SURF_SLICK, "ground surface is copied from trace");
+  assertEqual(context.pml.groundcontents, CONTENTS_CURRENT_90, "ground contents are copied from trace");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert steep non-startsolid traces clear ground state but still follow the original touch-entity recording.
+ */
+function verifyCategorizePositionRejectsSteepGroundButStillRecordsTouch(): void {
+  const pm = createBasePmove();
+  pm.s.pm_flags = PMF_ON_GROUND;
+  pm.groundentity = { kind: "old-ground" };
+  pm.trace = createSteepGroundTrace;
+  pm.pointcontents = () => 0;
+  pm.mins = [-16, -16, -24];
+  pm.maxs = [16, 16, 32];
+  pm.viewheight = 22;
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.016);
+
+  PM_CatagorizePosition(context);
+
+  assertEqual(pm.s.pm_flags & PMF_ON_GROUND, 0, "steep non-startsolid trace clears on-ground flag");
+  assertBoolean(pm.groundentity === null, true, "steep non-startsolid trace clears ground entity");
+  assertEqual(pm.numtouch, 1, "steep trace entity remains a touch entity like the C path");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert waterlevel probes use the original `point`, `cont`, `sample1` and `sample2` calculations.
+ */
+function verifyCategorizePositionSamplesWaterLevelsFromViewheightAndMins(): void {
+  const pm = createBasePmove();
+  const queriedZ: number[] = [];
+  pm.trace = createPassThroughTrace;
+  pm.pointcontents = (point) => {
+    queriedZ.push(point[2]);
+    return point[2] <= 99 ? CONTENTS_LAVA : 0;
+  };
+  pm.mins = [-16, -16, -24];
+  pm.maxs = [16, 16, 32];
+  pm.viewheight = 22;
+  pm.s.origin = [0, 0, 800];
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.016);
+
+  PM_CatagorizePosition(context);
+
+  assertEqual(pm.watertype, CONTENTS_LAVA, "first water sample stores original contents as watertype");
+  assertEqual(pm.waterlevel, 2, "water samples stop at level 2 when top sample is dry");
+  assertVector(queriedZ, [77, 99, 122], "water samples use origin + mins + 1/sample1/sample2");
 }
 
 /**
@@ -1057,6 +1143,49 @@ function createGroundContactTrace(_start: vec3_t, _mins: vec3_t, _maxs: vec3_t, 
     surface: createDefaultSurface(),
     contents: 0,
     ent: { kind: "ground" }
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Return a solid floor trace with non-zero surface and contents metadata for categorization assertions.
+ */
+function createCurrentGroundContactTrace(_start: vec3_t, _mins: vec3_t, _maxs: vec3_t, end: vec3_t): trace_t {
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: 0,
+    endpos: [...end],
+    plane: {
+      ...createDefaultPlane(),
+      normal: [0, 0, 1]
+    },
+    surface: {
+      ...createDefaultSurface(),
+      flags: SURF_SLICK
+    },
+    contents: CONTENTS_CURRENT_90,
+    ent: { kind: "current-ground" }
+  };
+}
+
+/**
+ * Category: New
+ * Purpose: Return a touchable steep plane that is not accepted as ground.
+ */
+function createSteepGroundTrace(_start: vec3_t, _mins: vec3_t, _maxs: vec3_t, end: vec3_t): trace_t {
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: 0,
+    endpos: [...end],
+    plane: {
+      ...createDefaultPlane(),
+      normal: [0, 0, 0.5]
+    },
+    surface: createDefaultSurface(),
+    contents: CONTENTS_SOLID,
+    ent: { kind: "steep-ground" }
   };
 }
 

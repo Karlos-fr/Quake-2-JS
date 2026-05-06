@@ -144,7 +144,36 @@ import {
   DF_FIXED_FOV,
   DF_NO_HEALTH,
   DF_QUADFIRE_DROP,
+  EF_ANIM01,
+  EF_ANIM23,
+  EF_ANIM_ALL,
+  EF_ANIM_ALLFAST,
+  EF_BFG,
+  EF_BLASTER,
+  EF_BLUEHYPERBLASTER,
+  EF_COLOR_SHELL,
   EF_DOUBLE,
+  EF_FLAG1,
+  EF_FLAG2,
+  EF_FLIES,
+  EF_GIB,
+  EF_GREENGIB,
+  EF_GRENADE,
+  EF_HALF_DAMAGE,
+  EF_HYPERBLASTER,
+  EF_IONRIPPER,
+  EF_PENT,
+  EF_PLASMA,
+  EF_POWERSCREEN,
+  EF_QUAD,
+  EF_ROCKET,
+  EF_ROTATE,
+  EF_SPHERETRANS,
+  EF_SPINNINGLIGHTS,
+  EF_TAGTRAIL,
+  EF_TELEPORTER,
+  EF_TRACKER,
+  EF_TRACKERTRAIL,
   EF_TRAP,
   IS_NAN,
   LAST_VISIBLE_CONTENTS,
@@ -220,8 +249,37 @@ assert.equal(LAST_VISIBLE_CONTENTS, 64, "LAST_VISIBLE_CONTENTS mismatch");
 assert.equal(DF_NO_HEALTH, 0x00000001, "DF_NO_HEALTH mismatch");
 assert.equal(DF_FIXED_FOV, 0x00008000, "DF_FIXED_FOV mismatch");
 assert.equal(DF_QUADFIRE_DROP, 0x00010000, "DF_QUADFIRE_DROP mismatch");
+assert.equal(EF_ROTATE, 0x00000001, "EF_ROTATE mismatch");
+assert.equal(EF_GIB, 0x00000002, "EF_GIB mismatch");
+assert.equal(EF_BLASTER, 0x00000008, "EF_BLASTER mismatch");
+assert.equal(EF_ROCKET, 0x00000010, "EF_ROCKET mismatch");
+assert.equal(EF_GRENADE, 0x00000020, "EF_GRENADE mismatch");
+assert.equal(EF_HYPERBLASTER, 0x00000040, "EF_HYPERBLASTER mismatch");
+assert.equal(EF_BFG, 0x00000080, "EF_BFG mismatch");
+assert.equal(EF_COLOR_SHELL, 0x00000100, "EF_COLOR_SHELL mismatch");
+assert.equal(EF_POWERSCREEN, 0x00000200, "EF_POWERSCREEN mismatch");
+assert.equal(EF_ANIM01, 0x00000400, "EF_ANIM01 mismatch");
+assert.equal(EF_ANIM23, 0x00000800, "EF_ANIM23 mismatch");
+assert.equal(EF_ANIM_ALL, 0x00001000, "EF_ANIM_ALL mismatch");
+assert.equal(EF_ANIM_ALLFAST, 0x00002000, "EF_ANIM_ALLFAST mismatch");
+assert.equal(EF_FLIES, 0x00004000, "EF_FLIES mismatch");
+assert.equal(EF_QUAD, 0x00008000, "EF_QUAD mismatch");
+assert.equal(EF_PENT, 0x00010000, "EF_PENT mismatch");
+assert.equal(EF_TELEPORTER, 0x00020000, "EF_TELEPORTER mismatch");
+assert.equal(EF_FLAG1, 0x00040000, "EF_FLAG1 mismatch");
+assert.equal(EF_FLAG2, 0x00080000, "EF_FLAG2 mismatch");
+assert.equal(EF_IONRIPPER, 0x00100000, "EF_IONRIPPER mismatch");
+assert.equal(EF_GREENGIB, 0x00200000, "EF_GREENGIB mismatch");
+assert.equal(EF_BLUEHYPERBLASTER, 0x00400000, "EF_BLUEHYPERBLASTER mismatch");
+assert.equal(EF_SPINNINGLIGHTS, 0x00800000, "EF_SPINNINGLIGHTS mismatch");
+assert.equal(EF_PLASMA, 0x01000000, "EF_PLASMA mismatch");
 assert.equal(EF_TRAP, 0x02000000, "EF_TRAP mismatch");
+assert.equal(EF_TRACKER, 0x04000000, "EF_TRACKER mismatch");
 assert.equal(EF_DOUBLE, 0x08000000, "EF_DOUBLE mismatch");
+assert.equal(EF_SPHERETRANS, 0x10000000, "EF_SPHERETRANS mismatch");
+assert.equal(EF_TAGTRAIL, 0x20000000, "EF_TAGTRAIL mismatch");
+assert.equal(EF_HALF_DAMAGE, 0x40000000, "EF_HALF_DAMAGE mismatch");
+assert.equal(EF_TRACKERTRAIL, 0x80000000, "EF_TRACKERTRAIL mismatch");
 assert.equal(SPLASH_BLOOD, 6, "SPLASH_BLOOD mismatch");
 assert.equal(MZ_SILENCED, 128, "MZ_SILENCED mismatch");
 assert.equal(ERR_FATAL, 0, "ERR_FATAL mismatch");

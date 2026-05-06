@@ -20,9 +20,16 @@ import { getLittleFloat, getLittleLong, getLittleShort, getUnsignedByte } from "
 
 export const IDALIASHEADER = (("2".charCodeAt(0) << 24) + ("P".charCodeAt(0) << 16) + ("D".charCodeAt(0) << 8) + "I".charCodeAt(0)) | 0;
 export const ALIAS_VERSION = 8;
+export const MAX_TRIANGLES = 4096;
+export const MAX_VERTS = 2048;
+export const MAX_FRAMES = 512;
 export const MAX_MD2SKINS = 32;
-const MAX_SKINNAME = 64;
-const DTRIVERTX_SIZE = 4;
+export const MAX_SKINNAME = 64;
+export const DTRIVERTX_V0 = 0;
+export const DTRIVERTX_V1 = 1;
+export const DTRIVERTX_V2 = 2;
+export const DTRIVERTX_LNI = 3;
+export const DTRIVERTX_SIZE = 4;
 const DSTVERT_SIZE = 4;
 const DTRIANGLE_SIZE = 12;
 const DGLCMD_SIZE = 4;

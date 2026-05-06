@@ -115,17 +115,29 @@ import {
   Z_TagMalloc
 } from "../../packages/qcommon/src/qcommon.js";
 import {
+  MSG_ReadAngle,
+  MSG_ReadAngle16,
   MSG_ReadByte,
+  MSG_ReadChar,
+  MSG_ReadCoord,
   MSG_ReadDeltaUsercmd,
   MSG_ReadDir,
+  MSG_ReadFloat,
   MSG_ReadLong,
+  MSG_ReadPos,
   MSG_ReadShort,
   MSG_ReadString,
+  MSG_WriteAngle,
+  MSG_WriteAngle16,
   MSG_WriteByte,
+  MSG_WriteChar,
+  MSG_WriteCoord,
   MSG_WriteDeltaEntity,
   MSG_WriteDeltaUsercmd,
   MSG_WriteDir,
+  MSG_WriteFloat,
   MSG_WriteLong,
+  MSG_WritePos,
   MSG_WriteShort,
   MSG_WriteString
 } from "../../packages/qcommon/src/messages.js";
@@ -498,6 +510,68 @@ sb.readcount = 0;
 assert.equal(MSG_ReadByte(sb), 123, "message byte mismatch");
 assert.equal(MSG_ReadString(sb), "quake", "message string mismatch");
 
+const primitiveBuffer = createSizeBuffer(128);
+MSG_WriteChar(primitiveBuffer, -1);
+MSG_WriteByte(primitiveBuffer, 255);
+MSG_WriteShort(primitiveBuffer, -12345);
+MSG_WriteLong(primitiveBuffer, -123456789);
+MSG_WriteFloat(primitiveBuffer, 123.5);
+MSG_WriteString(primitiveBuffer, null);
+MSG_WriteString(primitiveBuffer, "idtail");
+MSG_WriteCoord(primitiveBuffer, -12.75);
+MSG_WritePos(primitiveBuffer, [1.25, -2.5, 3.875]);
+MSG_WriteAngle(primitiveBuffer, 450);
+MSG_WriteAngle16(primitiveBuffer, -90);
+assert.deepEqual(
+  Array.from(primitiveBuffer.data.subarray(0, primitiveBuffer.cursize)),
+  [
+    255,
+    255,
+    199,
+    207,
+    235,
+    50,
+    164,
+    248,
+    0,
+    0,
+    247,
+    66,
+    0,
+    105,
+    100,
+    116,
+    97,
+    105,
+    108,
+    0,
+    154,
+    255,
+    10,
+    0,
+    236,
+    255,
+    31,
+    0,
+    64,
+    0,
+    192
+  ],
+  "MSG primitive write byte layout mismatch"
+);
+primitiveBuffer.readcount = 0;
+assert.equal(MSG_ReadChar(primitiveBuffer), -1, "MSG_WriteChar roundtrip mismatch");
+assert.equal(MSG_ReadByte(primitiveBuffer), 255, "MSG_WriteByte roundtrip mismatch");
+assert.equal(MSG_ReadShort(primitiveBuffer), -12345, "MSG_WriteShort roundtrip mismatch");
+assert.equal(MSG_ReadLong(primitiveBuffer), -123456789, "MSG_WriteLong roundtrip mismatch");
+assert.equal(MSG_ReadFloat(primitiveBuffer), 123.5, "MSG_WriteFloat roundtrip mismatch");
+assert.equal(MSG_ReadString(primitiveBuffer), "", "MSG_WriteString null roundtrip mismatch");
+assert.equal(MSG_ReadString(primitiveBuffer), "idtail", "MSG_WriteString roundtrip mismatch");
+assert.equal(MSG_ReadCoord(primitiveBuffer), -12.75, "MSG_WriteCoord roundtrip mismatch");
+assert.deepEqual(MSG_ReadPos(primitiveBuffer), [1.25, -2.5, 3.875], "MSG_WritePos roundtrip mismatch");
+assert.equal(MSG_ReadAngle(primitiveBuffer), 90, "MSG_WriteAngle roundtrip mismatch");
+assert.equal(MSG_ReadAngle16(primitiveBuffer), -90, "MSG_WriteAngle16 roundtrip mismatch");
+
 const fromCmd: usercmd_t = {
   msec: 10,
   buttons: 1,
@@ -525,8 +599,10 @@ assert.deepEqual(MSG_ReadDeltaUsercmd(cmdBuffer, fromCmd), nextCmd, "MSG delta u
 
 const dirBuffer = createSizeBuffer(8);
 MSG_WriteDir(dirBuffer, [0, 0, 1]);
+MSG_WriteDir(dirBuffer, null);
 dirBuffer.readcount = 0;
 assert.deepEqual(MSG_ReadDir(dirBuffer), [0, 0, 1], "MSG dir roundtrip mismatch");
+assert.deepEqual(MSG_ReadDir(dirBuffer), [-0.525731, 0, 0.850651], "MSG dir null fallback mismatch");
 
 const baseEntity = createEntityState();
 baseEntity.number = 300;

@@ -88,12 +88,12 @@
 | `Quake-2-master/qcommon/pmove.c` | global | `wishspeed` | `packages/qcommon/src/pmove.ts` | `wishspeed` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `maxspeed` | `packages/qcommon/src/pmove.ts` | `maxspeed` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_Accelerate` | `packages/qcommon/src/pmove.ts` | `PM_Accelerate` | Valide | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_CatagorizePosition` | `packages/qcommon/src/pmove.ts` | `PM_CatagorizePosition` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `point` | `packages/qcommon/src/pmove.ts` | `point` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `cont` | `packages/qcommon/src/pmove.ts` | `cont` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `sample1` | `packages/qcommon/src/pmove.ts` | `sample1` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `sample2` | `packages/qcommon/src/pmove.ts` | `sample2` | A verifier | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_CatagorizePosition` | `packages/qcommon/src/pmove.ts` | `PM_CatagorizePosition` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `point` | `packages/qcommon/src/pmove.ts` | `point` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `cont` | `packages/qcommon/src/pmove.ts` | `cont` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `sample1` | `packages/qcommon/src/pmove.ts` | `sample1` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `sample2` | `packages/qcommon/src/pmove.ts` | `sample2` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_CheckJump` | `packages/qcommon/src/pmove.ts` | `PM_CheckJump` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_CheckSpecialMovement` | `packages/qcommon/src/pmove.ts` | `PM_CheckSpecialMovement` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `cont` | `packages/qcommon/src/pmove.ts` | `cont` | A verifier | A tester |  |
