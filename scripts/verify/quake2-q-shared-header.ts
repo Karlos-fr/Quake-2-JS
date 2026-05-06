@@ -191,7 +191,10 @@ import {
   VIDREF_OTHER,
   VIDREF_SOFT,
   AngleVectors,
+  type cmodel_t,
   type cplane_t,
+  type csurface_t,
+  type mapsurface_t,
   createEntityState,
   createPlayerState
 } from "../../packages/qcommon/src/q_shared.js";
@@ -697,6 +700,21 @@ assert.deepEqual({
   CPLANE_PAD0: 18,
   CPLANE_PAD1: 19
 }, "cplane offset constants mismatch");
+
+const cmodelShape: cmodel_t = { mins: [-16, -24, -32], maxs: [16, 24, 32], origin: [8, 9, 10], headnode: 42 };
+assert.deepEqual(cmodelShape.mins, [-16, -24, -32], "cmodel_t mins field mismatch");
+assert.deepEqual(cmodelShape.maxs, [16, 24, 32], "cmodel_t maxs field mismatch");
+assert.deepEqual(cmodelShape.origin, [8, 9, 10], "cmodel_t origin field mismatch");
+assert.equal(cmodelShape.headnode, 42, "cmodel_t headnode field mismatch");
+
+const csurfaceShape: csurface_t = { name: "e1u1/metal", flags: SURF_SLICK, value: 7 };
+assert.equal(csurfaceShape.name, "e1u1/metal", "csurface_t name field mismatch");
+assert.equal(csurfaceShape.flags, SURF_SLICK, "csurface_t flags field mismatch");
+assert.equal(csurfaceShape.value, 7, "csurface_t value field mismatch");
+
+const mapsurfaceShape: mapsurface_t = { c: csurfaceShape, rname: "e1u1/metal_long_material_name" };
+assert.equal(mapsurfaceShape.c, csurfaceShape, "mapsurface_t c field mismatch");
+assert.equal(mapsurfaceShape.rname, "e1u1/metal_long_material_name", "mapsurface_t rname field mismatch");
 
 const entityState = createEntityState();
 assert.equal(entityState.number, 0, "createEntityState default number mismatch");

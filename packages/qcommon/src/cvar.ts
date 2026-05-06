@@ -405,11 +405,17 @@ export function Cvar_WriteVariables(runtime: CvarRuntime): string {
 }
 
 /**
- * Category: New
- * Purpose: Register the built-in cvar console commands in the command runtime.
+ * Original name: Cvar_Init
+ * Source: qcommon/cvar.c
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must preserve the original command names.
+ * Behavior:
+ * - Registers the built-in `set` and `cvarlist` console commands in the command runtime.
+ *
+ * Porting notes:
+ * - Captures explicit cvar and command runtimes instead of using file-static globals.
+ * - Routes command output through the runtime print hook.
  */
 export function Cvar_Init(cvarRuntime: CvarRuntime, cmdRuntime: CommandRuntime): void {
   Cmd_AddCommand(cmdRuntime, "set", () => {

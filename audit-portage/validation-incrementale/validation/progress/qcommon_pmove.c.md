@@ -112,3 +112,39 @@ Corrections appliquees:
 
 Prochain lot recommande:
 - `PM_StepSlideMove`, son `trace` local et ses locaux de comparaison/step (`start_o`, `start_v`, `down_o`, `down_v`, `up`, `down`, `down_dist`, `up_dist`) dans une session separee.
+
+## Session 2026-05-06 - PM_StepSlideMove et PM_Friction
+
+Lot traite:
+- `PM_StepSlideMove`
+- locaux directs de `PM_StepSlideMove`: `trace`, `start_o`, `start_v`, `down_o`, `down_v`, `up`, `down`, `down_dist`, `up_dist`
+- `PM_Friction`
+- locaux directs de `PM_Friction`: `vel`, `friction`, `drop`
+
+Verdict:
+- Lot valide.
+- `PM_StepSlideMove` conserve le flux C: sauvegarde origine/velocite, slide bas, sauvegarde `down_o`/`down_v`, probe `up = start_o + STEPSIZE`, retour si `trace.allsolid`, retry depuis `up` avec `start_v`, push-down final, comparaison XY `down_dist`/`up_dist`, restauration du chemin bas si plus long ou si la normale de pose est sous `MIN_STEP_NORMAL`, puis copie du Z de `down_v`.
+- Le `trace` C local est scinde en TS entre `initialTrace` pour le probe vertical immobile et `trace` pour le push-down final; le comportement reste strict et le renommage evite de reutiliser deux resultats de trace differents sous le meme binding `const`.
+- `PM_Friction` conserve le pointeur local C `vel` comme alias de `pml.velocity`, le calcul `speed`, le branchement `speed < 1`, l'accumulation `drop`, la friction sol non-slick/ladder, la friction eau hors ladder, puis le scaling final.
+- Entetes verifies pour `PM_StepSlideMove` et `PM_Friction`: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`.
+
+Preuves:
+- Comparaison directe C vs TS sur `qcommon/pmove.c` et `packages/qcommon/src/pmove.ts`.
+- Tests cibles ajoutes dans `scripts/verify/quake2-pmove.ts`: `PM_StepSlideMove` step-up allsolid, step-up accepte, step plus court, step sur plan trop raide, `PM_Friction` vitesse < 1, friction sol, sol slick, eau et ladder.
+- Runtime: `PM_StepSlideMove` est appele par `PM_WaterMove`, `PM_AirMove`, `PM_FlyMove` et `Pmove`; `PM_Friction` est appele depuis `Pmove`. Racines confirmees via `packages/game/src/p_client.ts`, `packages/server/src/sv_game.ts`, `packages/client/src/view.ts` et `packages/client/src/local-loop.ts`.
+- `apps/web`: applicable et integre via `apps/web/src/local-client-controller.ts`, `apps/web/src/full-game-render-source.ts`, `apps/web/src/full-game-render-loop.ts` et `apps/web/src/full-game.ts`; pas de logique web parallele qui remplace ce lot.
+- `renderer-three`: sortie visible indirecte attendue oui, car origine/velocite de prediction alimentent camera/vieworg et step smoothing. Consommation confirmee via `ClientRefreshFrame.view.vieworg`, `R_RenderFrame`, `gl-world-scene-adapter`, `particle-sync`, `three-dlight-sync` et `refresh-entity-sync`. Pas de sortie propre a ce lot pour modeles, frames, images, particules, beams, dlights, temp entities ou areabits hors camera/scene derivee.
+
+Tests lances:
+- `npm run verify:pmove`
+- `npm run verify:client:pmove:viewheight`
+- `npm run verify:pmove:local-bmodel`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Corrections appliquees:
+- `scripts/verify/quake2-pmove.ts`: assertions ciblees ajoutees pour `PM_StepSlideMove`, ses locaux de comparaison/step et les branches directes de `PM_Friction`.
+- `audit-portage/validation-incrementale/validation/matrices/qcommon_pmove.c.md`: lot marque `Valide`; lignes ajoutees pour les locaux `start_o`, `start_v`, `down_o`, `down_v`, `up`, `down`, `down_dist`, `up_dist` demandes mais absents de la matrice.
+
+Prochain lot recommande:
+- `PM_Accelerate` et son local `i`, puis `PM_AirAccelerate` et son local `i` si le lot reste coherent.

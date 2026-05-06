@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/qcommon/files.c
 
 - Statut: En cours
-- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`, puis `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile`, `FS_LoadPackFile`, `FS_AddGameDirectory`, `FS_Gamedir`, `FS_ExecAutoexec`, `FS_SetGamedir`, `FS_Link_f` et la liste de liens via `FS_Path_f`.
-- Prochain lot recommande: `FS_ListFiles` et ses locaux directs (`s`, `nfiles`, `list`, puis les boucles d'allocation/copie/liberation), sans demarrer `FS_Dir_f` si le lot devient trop large.
+- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`, puis `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile`, `FS_LoadPackFile`, `FS_AddGameDirectory`, `FS_Gamedir`, `FS_ExecAutoexec`, `FS_SetGamedir`, `FS_Link_f`, la liste de liens via `FS_Path_f`, `FS_ListFiles` et `FS_Dir_f`.
+- Prochain lot recommande: `FS_NextPath` et son local `prev`, puis commencer `FS_InitFilesystem` seulement dans un lot separe.
 - Tests de reference:
   - `npm run verify:files`
   - `npm run verify:web-config-gamedir`
@@ -37,6 +37,15 @@
   - `apps/web`: aucune logique parallele de liens observee; le flux web consomme le VFS via `readMountedFile`/`FS_LoadFile`, donc les liens montes affectent les assets/configs sans adapter specifique.
   - `renderer-three`: aucune sortie visible directe produite; impact indirect attendu via resolution VFS des BSP, modeles, images, palettes, sky, particules/beams et scene, couvert par le test full-game renderer.
   - Tests lances: `npm run verify:files`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+- Lot du 2026-05-06 - `FS_ListFiles` / `FS_Dir_f`:
+  - Comparaison C vs TS: `FS_ListFiles` conserve le scan loose-file, le filtrage des entrees finissant par `.`, la normalisation lowercase type Windows, les wildcards `*`/`?` sans traverser `/`, et retourne un tableau JS au lieu de l'allocation `char **` avec garde `NULL`.
+  - Correction: `packages/filesystem/src/files.ts` accepte maintenant les parametres `musthave`/`canthave` et couvre `SFF_SUBDIR` pour les sous-repertoires montes, necessaire au flux original de scan des modeles joueur.
+  - Locaux `s`, `nfiles`, `list`, `path`, `findname`, `wildcard`, `ndirs`, `tmp` et `i`: pas d'entite TS proprietaire; ils sont representes par les iterables VFS, tableaux JS et constantes locales.
+  - `FS_Dir_f`: `FS_NextPath`, construction `path/wildcard`, conversion `\` vers `/`, en-tetes `Directory of`/`----`, affichage du basename et ligne vide finale verifies.
+  - Runtime: `FS_Dir_f` reste une commande console a enregistrer avec `FS_InitFilesystem`; `FS_ListFiles` est disponible pour les adapters client qui doivent lister les modeles/skins sans doublonner le VFS.
+  - `apps/web`: aucune logique parallele de `dir`; le web consomme le VFS via `readMountedFile`/`FS_LoadFile`. L'integration liste de fichiers n'a pas de sortie navigateur obligatoire hors commande console/adapters menu.
+  - `renderer-three`: aucune sortie visible directe; impact indirect attendu sur ressources visibles (modeles, skins/images, BSP, sky, particules/beams via palettes) par le VFS, verifie par le test renderer.
+  - Tests lances: `npm run verify:files`, `npm run verify:web-config-gamedir`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
 - Lot du 2026-05-06 - `FS_AddGameDirectory`:
   - `FS_AddGameDirectory` ajoute comme port officiel dans `packages/filesystem/src/files.ts`; `mountDirectory` est desormais documente comme adapter de montage loose manuel.
   - Comparaison C vs TS: `fs_gamedir` mis a jour, repertoire ajoute en tete, puis `pak0.pak` a `pak9.pak` scannes depuis le contenu in-memory et inseres en tete via `FS_LoadPackFile`; ordre source prouve par `pak1 > pak0 > repertoire`.

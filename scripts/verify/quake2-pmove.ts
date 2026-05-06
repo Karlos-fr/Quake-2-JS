@@ -47,7 +47,8 @@ import {
   CONTENTS_LADDER,
   CONTENTS_SLIME,
   CONTENTS_SOLID,
-  CONTENTS_WATER
+  CONTENTS_WATER,
+  SURF_SLICK
 } from "../../packages/qcommon/src/q_shared.js";
 
 main();
@@ -73,14 +74,18 @@ function main(): void {
   verifyGroundJumpSetsHeldFlagAndMinimumVerticalSpeed();
   verifyJumpHeldPreventsRepeatJump();
   verifyWaterJumpUsesWatertypeSpecificVerticalSpeed();
+  verifyStepSlideMoveStopsWhenStepUpIsSolid();
   verifyStepSlideMovePrefersStepUpWhenFlatMoveIsBlocked();
+  verifyStepSlideMoveKeepsDownMoveWhenStepIsSteepOrShorter();
   verifyWaterMoveAcceleratesAndAdvancesWithNoCollision();
   verifyPmoveKeepsFullPitchVectorsForWaterMove();
   verifyAirMoveAcceleratesAndAppliesGravityOffGround();
   verifyAirMoveAcceleratesAndPreservesZeroVerticalSpeedOnGround();
   verifyFlyMoveIntegratesFreelyWithoutClip();
   verifyFlyMoveUsesTraceEndposWhenClipIsEnabled();
+  verifyFrictionStopsTinyHorizontalVelocityOnly();
   verifyFrictionAppliesGroundDeceleration();
+  verifyFrictionSkipsSlickGroundButAppliesWaterAndLadderRules();
   verifyDeadMoveAppliesExtraGroundFriction();
   console.log("Verification pmove: OK");
 }
@@ -484,6 +489,34 @@ function verifyWaterJumpUsesWatertypeSpecificVerticalSpeed(): void {
 
 /**
  * Category: New
+ * Purpose: Assert that `PM_StepSlideMove` returns after the first up probe when the step space is solid.
+ */
+function verifyStepSlideMoveStopsWhenStepUpIsSolid(): void {
+  const pm = createBasePmove();
+  let traceCalls = 0;
+  pm.trace = (start, mins, maxs, end) => {
+    traceCalls += 1;
+    if (traceCalls === 1) {
+      return createPassThroughTrace(start, mins, maxs, end);
+    }
+
+    return createAlwaysSolidTrace(start, mins, maxs, end);
+  };
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.1);
+  context.pml.origin = [0, 0, 0];
+  context.pml.velocity = [100, 0, 20];
+
+  PM_StepSlideMove(context);
+
+  assertEqual(traceCalls, 2, "solid step-up stops after the up probe");
+  assertVector(context.pml.origin, [10, 0, 2], "solid step-up keeps the first slide result");
+  assertVector(context.pml.velocity, [100, 0, 20], "solid step-up keeps the first slide velocity");
+}
+
+/**
+ * Category: New
  * Purpose: Assert that `PM_StepSlideMove` prefers the stepped path when a low obstacle blocks the flat move.
  */
 function verifyStepSlideMovePrefersStepUpWhenFlatMoveIsBlocked(): void {
@@ -499,6 +532,34 @@ function verifyStepSlideMovePrefersStepUpWhenFlatMoveIsBlocked(): void {
 
   assertEqual(Math.round(context.pml.origin[0]), 10, "step slide move keeps forward progress by stepping up");
   assertEqual(Math.round(context.pml.origin[2]), 0, "step slide move lands back down after stepping");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert that `PM_StepSlideMove` restores `down_o`/`down_v` when the stepped retry is shorter or lands on a steep plane.
+ */
+function verifyStepSlideMoveKeepsDownMoveWhenStepIsSteepOrShorter(): void {
+  const shorterStep = createPmoveContext(createBasePmove());
+  shorterStep.pm.trace = createShorterStepTrace;
+  PM_InitLocalState(shorterStep, 0.1);
+  shorterStep.pml.origin = [0, 0, 0];
+  shorterStep.pml.velocity = [100, 0, 30];
+
+  PM_StepSlideMove(shorterStep);
+
+  assertVector(shorterStep.pml.origin, [10, 0, 3], "shorter step restores down_o");
+  assertVector(shorterStep.pml.velocity, [100, 0, 30], "shorter step restores down_v");
+
+  const steepStep = createPmoveContext(createBasePmove());
+  steepStep.pm.trace = createSteepStepTrace;
+  PM_InitLocalState(steepStep, 0.1);
+  steepStep.pml.origin = [0, 0, 0];
+  steepStep.pml.velocity = [100, 0, 30];
+
+  PM_StepSlideMove(steepStep);
+
+  assertVector(steepStep.pml.origin, [10, 0, 3], "steep step restores down_o");
+  assertVector(steepStep.pml.velocity, [100, 0, 30], "steep step restores down_v");
 }
 
 /**
@@ -643,6 +704,20 @@ function verifyFlyMoveUsesTraceEndposWhenClipIsEnabled(): void {
 
 /**
  * Category: New
+ * Purpose: Assert the original `speed < 1` branch zeros only X/Y and leaves Z unchanged.
+ */
+function verifyFrictionStopsTinyHorizontalVelocityOnly(): void {
+  const context = createPmoveContext(createBasePmove());
+  PM_InitLocalState(context, 0.1);
+  context.pml.velocity = [0.5, 0.25, 0.25];
+
+  PM_Friction(context);
+
+  assertVector(context.pml.velocity, [0, 0, 0.25], "tiny friction branch zeros only horizontal axes");
+}
+
+/**
+ * Category: New
  * Purpose: Assert that `PM_Friction` applies the original ground deceleration when standing on non-slick ground.
  */
 function verifyFrictionAppliesGroundDeceleration(): void {
@@ -662,6 +737,44 @@ function verifyFrictionAppliesGroundDeceleration(): void {
   assertApprox(context.pml.velocity[0], 40, 0.0001, "ground friction decelerates horizontal speed");
   assertApprox(context.pml.velocity[1], 0, 0.0001, "ground friction preserves zero lateral Y speed");
   assertApprox(context.pml.velocity[2], 0, 0.0001, "ground friction preserves zero vertical speed");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert water, slick-ground and ladder friction branches match the original `PM_Friction` conditions.
+ */
+function verifyFrictionSkipsSlickGroundButAppliesWaterAndLadderRules(): void {
+  const slick = createPmoveContext(createBasePmove());
+  slick.pm.groundentity = { kind: "slick-ground" };
+  PM_InitLocalState(slick, 0.1);
+  slick.pml.velocity = [100, 0, 0];
+  slick.pml.groundsurface = {
+    ...createDefaultSurface(),
+    flags: SURF_SLICK
+  };
+
+  PM_Friction(slick);
+
+  assertApprox(slick.pml.velocity[0], 100, 0.0001, "slick ground skips ground friction");
+
+  const water = createPmoveContext(createBasePmove());
+  water.pm.waterlevel = 2;
+  PM_InitLocalState(water, 0.1);
+  water.pml.velocity = [100, 0, 0];
+
+  PM_Friction(water);
+
+  assertApprox(water.pml.velocity[0], 80, 0.0001, "water friction scales by waterlevel");
+
+  const ladder = createPmoveContext(createBasePmove());
+  ladder.pm.waterlevel = 3;
+  PM_InitLocalState(ladder, 0.1);
+  ladder.pml.velocity = [100, 0, 0];
+  ladder.pml.ladder = true;
+
+  PM_Friction(ladder);
+
+  assertApprox(ladder.pml.velocity[0], 40, 0.0001, "ladder uses ground friction and suppresses water friction");
 }
 
 /**
@@ -854,6 +967,80 @@ function createStepObstacleTrace(start: vec3_t, _mins: vec3_t, _maxs: vec3_t, en
   }
 
   return createPassThroughTrace(start, [0, 0, 0], [0, 0, 0], end);
+}
+
+/**
+ * Category: New
+ * Purpose: Return traces where the flat slide travels farther than the stepped retry.
+ */
+function createShorterStepTrace(start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t): trace_t {
+  if (start[2] === 18 && end[2] === 18 && end[0] > start[0]) {
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [5, 0, 21],
+      plane: createDefaultPlane(),
+      surface: createDefaultSurface(),
+      contents: 0,
+      ent: null
+    };
+  }
+
+  if (start[2] === 21 && end[2] === 3) {
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [5, 0, 3],
+      plane: {
+        ...createDefaultPlane(),
+        normal: [0, 0, 1]
+      },
+      surface: createDefaultSurface(),
+      contents: 0,
+      ent: { kind: "short-step-floor" }
+    };
+  }
+
+  return createPassThroughTrace(start, mins, maxs, end);
+}
+
+/**
+ * Category: New
+ * Purpose: Return traces where the step travels farther but the landing plane is too steep to accept.
+ */
+function createSteepStepTrace(start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t): trace_t {
+  if (start[2] === 18 && end[2] === 18 && end[0] > start[0]) {
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [20, 0, 21],
+      plane: createDefaultPlane(),
+      surface: createDefaultSurface(),
+      contents: 0,
+      ent: null
+    };
+  }
+
+  if (start[2] === 21 && end[2] === 3) {
+    return {
+      allsolid: false,
+      startsolid: false,
+      fraction: 1,
+      endpos: [20, 0, 3],
+      plane: {
+        ...createDefaultPlane(),
+        normal: [0, 0, 0.69]
+      },
+      surface: createDefaultSurface(),
+      contents: 0,
+      ent: { kind: "steep-step-floor" }
+    };
+  }
+
+  return createPassThroughTrace(start, mins, maxs, end);
 }
 
 /**

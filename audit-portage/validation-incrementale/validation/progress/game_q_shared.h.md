@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: `cmodel_s`/`cmodel_t`, champs directs `mins`, `maxs`, `origin`, `headnode`, puis `csurface_s`/`csurface_t`, champs directs `name`, `flags`, `value`, et wrapper adjacent `mapsurface_s`/`mapsurface_t` avec `rname`.
+- Entites validees: `cmodel_s` porte par `cmodel_t`, `mins`, `maxs`, `origin`, `headnode`, `csurface_s` porte par `csurface_t`, `name`, `flags`, `value`, `mapsurface_s` porte par `mapsurface_t`, `rname`.
+- Ownership: types proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportes via `packages/qcommon/src/index.ts`; `cmodel.c` consomme ces types pour `CollisionWorld.map_cmodels`, `CM_LoadMap`, `CM_InlineModel`, traces et surfaces.
+- Preuves: comparaison C/H vs TS ajoutee dans `scripts/verify/quake2-q-shared-header.ts` pour la forme `cmodel_t`, `csurface_t` et `mapsurface_t`; integration collision/runtime verifiee par `verify:collision:phase1`, `quake2-cmodel.ts`, `verify:pmove`, `verify:full-game:server-host`, `verify:full-game:three-renderer` et `typecheck`.
+- Commentaires d'en-tete: non applicable, lot compose de types/interfaces et champs sans fonction portee.
 - 2026-05-06: bloc `AREA_*` et `cplane_s`/`cplane_t`.
 - Entites validees: `AREA_SOLID`, `AREA_TRIGGERS`, `cplane_s` porte par `cplane_t`, champs directs `dist`, `type`, `signbits`, `pad`, et constantes d'offset `CPLANE_NORMAL_X`, `CPLANE_NORMAL_Y`, `CPLANE_NORMAL_Z`, `CPLANE_DIST`, `CPLANE_TYPE`, `CPLANE_SIGNBITS`, `CPLANE_PAD0`, `CPLANE_PAD1`.
 - Ownership: constantes et type proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportes via `packages/qcommon/src/index.ts`; `packages/game/src/runtime.ts` ne garde plus de copie numerique locale de `AREA_SOLID`/`AREA_TRIGGERS` et reexporte les bindings qcommon.
@@ -47,6 +52,7 @@
 
 ## Corrections
 
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour la forme `cmodel_t`, `csurface_t` et `mapsurface_t`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `AREA_SOLID`, `AREA_TRIGGERS`, la forme `cplane_t` et les offsets `CPLANE_*`.
 - `packages/game/src/runtime.ts` importe et reexporte maintenant `AREA_SOLID` et `AREA_TRIGGERS` depuis `packages/qcommon/src/index.ts`, supprimant le doublon numerique local.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `MASK_ALL`, `MASK_SOLID`, `MASK_PLAYERSOLID`, `MASK_DEADSOLID`, `MASK_MONSTERSOLID`, `MASK_WATER`, `MASK_OPAQUE`, `MASK_SHOT` et `MASK_CURRENT`.
@@ -66,6 +72,13 @@
 
 ## Tests de reference
 
+- `npm run verify:q-shared:header` OK pour `cmodel_t`/`csurface_t`/`mapsurface_t`.
+- `npm run verify:collision:phase1` OK.
+- `npx tsx ./scripts/verify/quake2-cmodel.ts` OK.
+- `npm run verify:pmove` OK.
+- `npm run verify:full-game:server-host` OK.
+- `npm run verify:full-game:three-renderer` OK.
+- `npm run typecheck` OK.
 - `npm run verify:q-shared:header` OK pour `AREA_*`/`cplane_t`/`CPLANE_*`.
 - `npm run verify:collision:phase3` OK.
 - `npm run verify:server:world` OK.
@@ -116,6 +129,10 @@
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `cmodel_t`/`csurface_t`/`mapsurface_t` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; les champs directs reprennent les declarations C `vec3_t mins, maxs`, `vec3_t origin`, `int headnode`, `char name[16]`, `int flags`, `int value` et `char rname[32]`, avec les chaines C representees par des `string` TS.
+- Runtime: integration attendue et presente. `createCollisionWorld` construit les `map_cmodels` depuis les submodels BSP avec extension de bbox Quake II, `CM_LoadMap` expose le world model, `CM_InlineModel` expose les submodels, `SV_HullForEntity`/`SV_Trace` et `applyInlineModelBoundsFromCollision` consomment `headnode`, `mins` et `maxs`; `csurface_t` circule dans `trace_t.surface`, PMove, weapons et touch callbacks.
+- `apps/web`: integration attendue via `apps/web/src/full-game.ts`, qui fournit `inlineModel` depuis `CM_InlineModel`, et via les flux server-host/full-game qui declenchent collision, traces et PMove sans logique parallele masquante.
+- `renderer-three`: sortie visible attendue et presente pour les inline brush models et surfaces BSP. Le renderer consomme ses propres `gl_model`/`msurface_t` pour la scene, mais les memes donnees BSP `headnode`, surfaces, flags et valeurs sont chargees et rendues via `gl-model-loader`, `gl_rsurf` et `gl-world-scene-adapter`; le flux `verify:full-game:three-renderer` confirme l'absence de manque de branchement visible dans ce lot.
 - Le bloc `AREA_*`/`cplane_t` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; les champs de `cplane_s` sont portes par l'interface `cplane_t`, avec `normal` inclus dans la structure et les offsets ASM C preserves comme constantes.
 - Runtime: integration attendue et presente. `AREA_SOLID`/`AREA_TRIGGERS` pilotent les listes solid/trigger dans `SV_AreaEdicts`, `SV_ClipMoveToEntities`, `G_TouchTriggers`/`G_TouchSolids` et le runtime gameplay; `cplane_t` transporte les plans de trace collision/PMove/weapon touch et les plans BSP.
 - `apps/web`: integration attendue via les flux full-game/server-host/local-collision qui declenchent `BoxEdicts`, traces et touches; aucune logique web parallele masquant ces constantes ou plans n'a ete detectee.
@@ -159,4 +176,4 @@
 
 ## Prochain lot recommande
 
-- Traiter `cmodel_s`/`cmodel_t` et ses champs directs (`mins`, `maxs`, `origin`, `headnode`), puis `csurface_s`/`csurface_t` si le lot reste coherent.
+- Traiter `trace_t` et ses champs directs (`allsolid`, `startsolid`, `fraction`, `endpos`, `plane`, `surface`, `contents`, `ent`), puis `pmtype_t`/`pmove_state_t` si le lot reste coherent.

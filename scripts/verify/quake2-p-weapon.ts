@@ -60,8 +60,10 @@ import {
   drainPlayerMuzzleFlashEvents,
   playerFrames,
   spawnGameEntity,
+  weapon_bfg_fire,
   weapon_grenade_fire,
   weapon_grenadelauncher_fire,
+  weapon_railgun_fire,
   weapon_shotgun_fire,
   weapon_supershotgun_fire,
   weaponstate_t,
@@ -1428,10 +1430,37 @@ function verifyRailgunFireParity(): void {
   assertNumber(player.client!.kick_angles[0], -3, "Railgun should apply original kick angle");
   assertNumber(player.client!.pers.inventory[slugs.index], 2, "Railgun should consume one slug");
 
+  player.s.origin = [100, 200, 300];
+  player.origin = [100, 200, 300];
+  player.client!.v_angle = [0, 0, 0];
+  player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.ps.gunframe = 4;
+  player.client!.silencer_shots = 1;
+  player.client!.pers.inventory[slugs.index] = 3;
+  shots.length = 0;
+  flashes.length = 0;
+
+  weapon_railgun_fire(player, runtime, {
+    fire_rail: (_ent, start, dir, damage, kick) => {
+      shots.push({ start, dir, damage, kick });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertVec3(shots[0].start, [100, 193, 314], "weapon_railgun_fire direct start should match the C offset");
+  assertVec3(shots[0].dir, [1, 0, 0], "weapon_railgun_fire direct direction should use AngleVectors forward");
+  assertNumber(shots[0].damage, 600, "weapon_railgun_fire direct quad damage should match C");
+  assertNumber(shots[0].kick, 1000, "weapon_railgun_fire direct quad kick should match C");
+  assertNumber(flashes[0], MZ_RAILGUN | MZ_SILENCED, "weapon_railgun_fire direct muzzleflash should include the silenced bit");
+  assertNumber(player.client!.silencer_shots, 0, "weapon_railgun_fire should consume one silencer shot through PlayerNoise");
+
   runtime.deathmatch = true;
   runtime.dmflags |= DF_INFINITE_AMMO;
   player.client!.quad_framenum = 0;
   player.client!.ps.gunframe = 4;
+  player.client!.silencer_shots = 0;
   player.client!.pers.inventory[slugs.index] = 2;
   shots.length = 0;
   flashes.length = 0;
@@ -1449,6 +1478,32 @@ function verifyRailgunFireParity(): void {
   assertNumber(shots[0].kick, 200, "Railgun deathmatch kick should match C");
   assertNumber(flashes[0], MZ_RAILGUN, "Railgun infinite-ammo shot should still emit MZ_RAILGUN");
   assertNumber(player.client!.pers.inventory[slugs.index], 2, "DF_INFINITE_AMMO should prevent slug consumption");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.ps.gunframe = 56;
+  player.client!.buttons = 0;
+  player.client!.latched_buttons = 0;
+  shots.length = 0;
+  withMathRandom([0.1], () => {
+    Weapon_Railgun(player, runtime, {
+      fire_rail: (_ent, start, dir, damage, kick) => {
+        shots.push({ start, dir, damage, kick });
+      }
+    });
+  });
+  assertNumber(player.client!.ps.gunframe, 19, "Weapon_Railgun idle-last pause frame 56 should wrap to the C idle first frame");
+  assertNumber(shots.length, 0, "Weapon_Railgun idle-last pause frame should not fire while idling");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 5;
+  shots.length = 0;
+  Weapon_Railgun(player, runtime, {
+    fire_rail: (_ent, start, dir, damage, kick) => {
+      shots.push({ start, dir, damage, kick });
+    }
+  });
+  assertNumber(shots.length, 0, "Weapon_Railgun fire_frames should only include frame 4");
+  assertNumber(player.client!.ps.gunframe, 6, "Weapon_Railgun non-fire frame should advance without firing");
 }
 
 function verifyBfgFireParity(): void {
@@ -1467,6 +1522,7 @@ function verifyBfgFireParity(): void {
   player.client!.ps.gunframe = 9;
   player.client!.buttons = BUTTON_ATTACK;
   player.client!.pers.inventory[cells.index] = 50;
+  player.client!.silencer_shots = 1;
 
   Weapon_BFG(player, runtime, {
     emitPlayerMuzzleFlash: (_ent, weapon) => {
@@ -1477,10 +1533,25 @@ function verifyBfgFireParity(): void {
     }
   });
 
-  assertNumber(flashes[0], MZ_BFG, "BFG frame 9 should emit the warmup muzzleflash");
+  assertNumber(flashes[0], MZ_BFG | MZ_SILENCED, "BFG frame 9 should emit the warmup muzzleflash with the silenced bit");
   assertNumber(shots.length, 0, "BFG frame 9 should not launch the projectile yet");
   assertNumber(player.client!.ps.gunframe, 10, "BFG frame 9 should advance after the muzzleflash");
+  assertNumber(player.client!.silencer_shots, 0, "BFG frame 9 should consume one silencer shot through PlayerNoise");
   assertBoolean(runtime.sound_entity === player.mynoise, true, "BFG frame 9 should emit weapon noise at player origin");
+
+  player.client!.ps.gunframe = 9;
+  player.client!.silencer_shots = 0;
+  flashes.length = 0;
+  weapon_bfg_fire(player, runtime, {
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    },
+    fire_bfg: (_ent, start, dir, damage, speed, damageRadius) => {
+      shots.push({ start, dir, damage, speed, damageRadius });
+    }
+  });
+  assertNumber(flashes[0], MZ_BFG, "weapon_bfg_fire direct warmup should emit MZ_BFG");
+  assertNumber(player.client!.ps.gunframe, 10, "weapon_bfg_fire direct warmup should advance gunframe");
 
   player.client!.ps.gunframe = 17;
   player.client!.quad_framenum = runtime.framenum + 1;
@@ -1501,6 +1572,7 @@ function verifyBfgFireParity(): void {
   assertNumber(shots[0].speed, 400, "BFG projectile speed should match C");
   assertNumber(shots[0].damageRadius, 1000, "BFG damage radius should match C");
   assertNumber(shots[0].start[0], 8, "BFG projectile start should use original forward offset");
+  assertNumber(shots[0].start[1], -8, "BFG projectile start should project the original right offset");
   assertNumber(shots[0].start[2], player.viewheight - 8, "BFG projectile start should use viewheight offset");
   assertNumber(shots[0].dir[0], 1, "BFG should fire along view forward");
   assertNumber(player.client!.ps.gunframe, 18, "BFG firing should advance gunframe");
@@ -1540,6 +1612,33 @@ function verifyBfgFireParity(): void {
   assertNumber(shots.length, 0, "BFG should abort the launch if cells dropped below fifty during windup");
   assertNumber(player.client!.ps.gunframe, 18, "BFG aborted launch should still advance gunframe");
   assertNumber(player.client!.pers.inventory[cells.index], 49, "BFG aborted launch should not consume cells");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.ps.gunframe = 39;
+  player.client!.buttons = 0;
+  player.client!.latched_buttons = 0;
+  shots.length = 0;
+  withMathRandom([0.1], () => {
+    Weapon_BFG(player, runtime, {
+      fire_bfg: (_ent, start, dir, damage, speed, damageRadius) => {
+        shots.push({ start, dir, damage, speed, damageRadius });
+      }
+    });
+  });
+  assertNumber(player.client!.ps.gunframe, 39, "Weapon_BFG pause_frames should include frame 39");
+  assertNumber(shots.length, 0, "Weapon_BFG pause frame should not fire while idling");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 10;
+  player.client!.pers.inventory[cells.index] = 50;
+  shots.length = 0;
+  Weapon_BFG(player, runtime, {
+    fire_bfg: (_ent, start, dir, damage, speed, damageRadius) => {
+      shots.push({ start, dir, damage, speed, damageRadius });
+    }
+  });
+  assertNumber(shots.length, 0, "Weapon_BFG fire_frames should only include frames 9 and 17");
+  assertNumber(player.client!.ps.gunframe, 11, "Weapon_BFG non-fire frame should advance without firing");
 }
 
 function verifyHandGrenadeParity(): void {

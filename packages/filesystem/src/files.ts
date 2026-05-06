@@ -19,6 +19,8 @@
 import { findPakEntry, parsePak, readPakEntryData } from "../../formats/src/pak.js";
 import type { PakArchive, PakEntry } from "../../formats/src/pak.js";
 
+const FS_SFF_SUBDIR = 0x08;
+
 /**
  * Original name: MAX_READ
  * Source: qcommon/files.c
@@ -633,23 +635,33 @@ export function FS_NextPath(filesystem: VirtualFilesystem, prevpath: string | nu
  * Fidelity level: Close
  *
  * Behavior:
- * - Lists visible loose files matching one Quake-style wildcard.
+ * - Lists visible loose files or mounted subdirectories matching one Quake-style wildcard.
  *
  * Porting notes:
  * - Operates on mounted in-memory directories only.
  * - Deduplicates filenames across search paths by normalized result path.
+ * - Returns a JavaScript array instead of the original NULL-guarded allocation.
  */
-export function FS_ListFiles(filesystem: VirtualFilesystem, findname: string): string[] {
+export function FS_ListFiles(filesystem: VirtualFilesystem, findname: string, musthave = 0, canthave = 0): string[] {
   const normalizedPattern = normalizeVirtualPath(findname);
   const matches = new Set<string>();
+  const wantsSubdirectories = (musthave & FS_SFF_SUBDIR) !== 0;
+  const rejectsSubdirectories = (canthave & FS_SFF_SUBDIR) !== 0;
+
+  if (wantsSubdirectories && rejectsSubdirectories) {
+    return [];
+  }
 
   for (const search of filesystem.searchPaths) {
     if (!search.directory) {
       continue;
     }
 
-    for (const directoryFile of search.directory.files.values()) {
-      const candidate = `${search.directory.path}/${normalizeVirtualPath(directoryFile.path)}`;
+    const candidates = wantsSubdirectories
+      ? listMountedSubdirectories(search.directory)
+      : listMountedLooseFiles(search.directory);
+
+    for (const candidate of candidates) {
       if (wildcardMatches(candidate, normalizedPattern)) {
         matches.add(candidate);
       }
@@ -733,6 +745,40 @@ function createMountedDirectory(path: string, files?: MountedDirectoryInput): Mo
     path: normalizeDirectoryPath(path),
     files: mountedFiles
   };
+}
+
+/**
+ * Category: New
+ * Purpose: Enumerate loose file paths with the mounted directory prefix used by `FS_ListFiles`.
+ *
+ * Constraints:
+ * - Must not include synthetic directory names; `SFF_SUBDIR` handles those separately.
+ */
+function listMountedLooseFiles(directory: MountedDirectory): string[] {
+  return [...directory.files.values()].map((directoryFile) => `${directory.path}/${normalizeVirtualPath(directoryFile.path)}`);
+}
+
+/**
+ * Category: New
+ * Purpose: Derive mounted subdirectory names for `FS_ListFiles(..., SFF_SUBDIR, ...)`.
+ *
+ * Constraints:
+ * - Must return immediate directory paths rather than files inside them.
+ */
+function listMountedSubdirectories(directory: MountedDirectory): string[] {
+  const subdirectories = new Set<string>();
+
+  for (const directoryFile of directory.files.values()) {
+    const normalizedPath = normalizeVirtualPath(directoryFile.path);
+    const slashIndex = normalizedPath.lastIndexOf("/");
+    if (slashIndex <= 0) {
+      continue;
+    }
+
+    subdirectories.add(`${directory.path}/${normalizedPath.slice(0, slashIndex)}`);
+  }
+
+  return [...subdirectories];
 }
 
 /**
@@ -825,7 +871,19 @@ function normalizeDirectoryPath(value: string): string {
  * - Must remain case-insensitive after normalization.
  */
 function wildcardMatches(value: string, pattern: string): boolean {
-  const escapedPattern = pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&");
-  const regexPattern = `^${escapedPattern.replaceAll("*", ".*").replaceAll("?", ".")}$`;
+  const effectivePattern = pattern.endsWith("/*.*") ? `${pattern.slice(0, -3)}*` : pattern;
+  let regexPattern = "^";
+
+  for (const char of effectivePattern) {
+    if (char === "*") {
+      regexPattern += "[^/]*";
+    } else if (char === "?") {
+      regexPattern += "[^/]";
+    } else {
+      regexPattern += char.replace(/[.+^${}()|[\]\\]/g, "\\$&");
+    }
+  }
+
+  regexPattern += "$";
   return new RegExp(regexPattern, "i").test(value);
 }

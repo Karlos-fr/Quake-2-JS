@@ -193,15 +193,17 @@
 | `Quake-2-master/game/q_shared.h` | macro | `CPLANE_SIGNBITS` | `packages/qcommon/src/q_shared.ts` | `CPLANE_SIGNBITS` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CPLANE_PAD0` | `packages/qcommon/src/q_shared.ts` | `CPLANE_PAD0` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CPLANE_PAD1` | `packages/qcommon/src/q_shared.ts` | `CPLANE_PAD1` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | struct | `cmodel_s` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `origin` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `headnode` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | struct | `csurface_s` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `name` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `flags` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `value` | `packages/qcommon/src/q_shared.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | struct | `mapsurface_s` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `rname` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | struct | `cmodel_s` | `packages/qcommon/src/q_shared.ts` | `cmodel_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `mins` | `packages/qcommon/src/q_shared.ts` | `cmodel_t.mins` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `maxs` | `packages/qcommon/src/q_shared.ts` | `cmodel_t.maxs` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `origin` | `packages/qcommon/src/q_shared.ts` | `cmodel_t.origin` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `headnode` | `packages/qcommon/src/q_shared.ts` | `cmodel_t.headnode` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | struct | `csurface_s` | `packages/qcommon/src/q_shared.ts` | `csurface_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `name` | `packages/qcommon/src/q_shared.ts` | `csurface_t.name` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `flags` | `packages/qcommon/src/q_shared.ts` | `csurface_t.flags` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `value` | `packages/qcommon/src/q_shared.ts` | `csurface_t.value` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | struct | `mapsurface_s` | `packages/qcommon/src/q_shared.ts` | `mapsurface_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `rname` | `packages/qcommon/src/q_shared.ts` | `mapsurface_t.rname` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | struct | `trace_t` | `packages/qcommon/src/q_shared.ts` | `trace_t` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | global | `allsolid` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | global | `startsolid` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |

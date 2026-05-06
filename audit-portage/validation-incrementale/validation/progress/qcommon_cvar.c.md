@@ -2,6 +2,9 @@
 
 ## Dernier lot valide
 
+- Lot du 2026-05-06: `Cvar_Init` avec enregistrement des commandes `set` et `cvarlist`.
+- Corrections: commentaire d'en-tete de `packages/qcommon/src/cvar.ts` corrige de `Category: New` vers portage explicite `Original name: Cvar_Init`, `Source: qcommon/cvar.c`, `Category: Ported`, `Fidelity level: Close`, avec notes d'adaptation runtime.
+- Preuves ajoutees: comparaison C vs TS de l'enregistrement `Cmd_AddCommand("set", Cvar_Set_f)` et `Cmd_AddCommand("cvarlist", Cvar_List_f)`, execution des commandes via `Cmd_ExecuteString`, couverture full-game des commandes enregistrees, flux web/gamedir et cvars de rendu `gl_rmain`.
 - Lot du 2026-05-06: `userinfo_modified`, `Cvar_BitInfo`, `Cvar_Userinfo`, `Cvar_Serverinfo`.
 - Faux positifs locaux/appels internes traites: `info` et `var` de `Cvar_BitInfo`, appels internes `Cvar_BitInfo` depuis `Cvar_Userinfo`/`Cvar_Serverinfo`.
 - Corrections: aucune correction du port TS proprietaire requise; renforcement de `scripts/verify/quake2-cvar.ts` pour couvrir default `userinfo_modified`, selection par bit, ordre `cvar_vars`, exclusion des flags non retenus, valeurs vides et delegation user/server.
@@ -50,6 +53,9 @@
 - `Cvar_Serverinfo`: runtime integre dans les commandes serveur `serverinfo` (`SV_ShowServerinfo_f`/`SV_Serverinfo_f`) et alimente les cvars `CVAR_SERVERINFO` creees par server/game.
 - `apps/web`: integre via les flux full-game/console qui pilotent le runtime client/serveur; pas de logique parallele masquant la construction des info strings. `full-game-server-host.ts` garde un userinfo initial d'adapter pour creer un client serveur local, mais les mutations runtime passent par `Cvar_Userinfo` et `clc_userinfo`.
 - `renderer-three`: aucune sortie visible directe produite par ce lot (pas de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene). Impact indirect confirme sur la cvar userinfo `hand` consommee par `renderer-three` via `ri.Cvar_Get`; aucun branchement renderer direct attendu pour `Cvar_BitInfo`.
+- `Cvar_Init`: runtime integre via `createQcommonRuntime` et `apps/web/src/full-game.ts` apres `Cmd_Init`; `set` et `cvarlist` sont atteignables par `Cmd_ExecuteString`/console, puis routent vers `Cvar_Set_f` et `Cvar_List_f` avec sortie `onPrint`.
+- `apps/web`: integre via la console full-game et les commandes web/config; `verify:full-game:commands` prouve que `set` et `cvarlist` sont enregistrees dans l'ensemble de commandes web runtime.
+- `renderer-three`: pas de sortie visible directe de `Cvar_Init` (aucun modele, frame, image, particule, beam, dlight, temp entity, areabit, camera ou scene produit). L'impact attendu est indirect: les commandes peuvent modifier des cvars de rendu, et `renderer-three` consomme ces cvars via `ri.Cvar_Get`/`ri.Cvar_Set`/`ri.Cvar_SetValue`; `verify:gl-rmain` couvre ce branchement.
 
 ## Tests de reference
 
@@ -64,7 +70,7 @@
 
 ## Prochain lot recommande
 
-- `Cvar_Init` avec enregistrement des commandes `set` et `cvarlist`; verifier aussi les flux console runtime/apps-web qui appellent ces commandes.
+- Aucun lot restant dans `qcommon/cvar.c`: toutes les lignes sont `Valide` ou `Non applicable`.
 
 ## Blocages
 

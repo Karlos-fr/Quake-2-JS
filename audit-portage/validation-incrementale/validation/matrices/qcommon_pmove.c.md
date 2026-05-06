@@ -45,12 +45,20 @@
 | `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `end` | `packages/qcommon/src/pmove.ts` | `end` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `time_left` | `packages/qcommon/src/pmove.ts` | `time_left` | Valide | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_StepSlideMove` | `packages/qcommon/src/pmove.ts` | `PM_StepSlideMove` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_Friction` | `packages/qcommon/src/pmove.ts` | `PM_Friction` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `vel` | `packages/qcommon/src/pmove.ts` | `vel` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `friction` | `packages/qcommon/src/pmove.ts` | `friction` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `drop` | `packages/qcommon/src/pmove.ts` | `drop` | A verifier | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_StepSlideMove` | `packages/qcommon/src/pmove.ts` | `PM_StepSlideMove` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `initialTrace` / `trace` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `start_o` | `packages/qcommon/src/pmove.ts` | `start_o` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `start_v` | `packages/qcommon/src/pmove.ts` | `start_v` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `down_o` | `packages/qcommon/src/pmove.ts` | `down_o` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `down_v` | `packages/qcommon/src/pmove.ts` | `down_v` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `up` | `packages/qcommon/src/pmove.ts` | `up` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `down` | `packages/qcommon/src/pmove.ts` | `down` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `down_dist` | `packages/qcommon/src/pmove.ts` | `down_dist` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `up_dist` | `packages/qcommon/src/pmove.ts` | `up_dist` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_Friction` | `packages/qcommon/src/pmove.ts` | `PM_Friction` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `vel` | `packages/qcommon/src/pmove.ts` | `vel` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `friction` | `packages/qcommon/src/pmove.ts` | `friction` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `drop` | `packages/qcommon/src/pmove.ts` | `drop` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_Accelerate` | `packages/qcommon/src/pmove.ts` | `PM_Accelerate` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_AirAccelerate` | `packages/qcommon/src/pmove.ts` | `PM_AirAccelerate` | A verifier | A tester |  |

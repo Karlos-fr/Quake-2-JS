@@ -15,7 +15,17 @@
  * - This file is intended to stay close to the original C source.
  */
 
+/**
+ * Original name: BASEDIRNAME
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Exposes the default base game directory shared by client, server and filesystem flows.
+ */
 export const BASEDIRNAME = "baseq2";
+
 export const PROTOCOL_VERSION = 34;
 export const UPDATE_BACKUP = 16;
 export const UPDATE_MASK = UPDATE_BACKUP - 1;

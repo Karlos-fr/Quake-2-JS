@@ -12,6 +12,8 @@
 
 import { strict as assert } from "node:assert";
 
+const SFF_SUBDIR = 0x08;
+
 import {
   Developer_searchpath,
   FS_AddGameDirectory,
@@ -50,9 +52,13 @@ const xatrixPakBytes = createPakBytes([
 
 const addedBase = FS_AddGameDirectory(filesystem, "baseq2", {
   "maps/base1.bsp": encodeAscii("base-map"),
+  "maps/sub/deep.bsp": encodeAscii("deep-map"),
   "configs/default.cfg": encodeAscii("seta skill 1"),
   "autoexec.cfg": encodeAscii("echo base"),
   "pics/colormap.pcx": encodeAscii("pcx"),
+  "players/male/tris.md2": encodeAscii("md2"),
+  "players/male/grunt.pcx": encodeAscii("skin"),
+  "players/male/grunt_i.pcx": encodeAscii("icon"),
   "pak0.pak": basePakBytes,
   "pak1.pak": basePak1Bytes
 });
@@ -128,6 +134,12 @@ assert.equal(readMountedFile(filesystem, "maps/base1.bsp")?.bytes.byteLength, 14
 
 const listed = FS_ListFiles(filesystem, "baseq2/maps/*.bsp");
 assert.deepEqual(listed, ["baseq2/maps/base1.bsp"], "FS_ListFiles base wildcard mismatch");
+assert.deepEqual(FS_ListFiles(filesystem, "BASEQ2/MAPS/*.BSP"), ["baseq2/maps/base1.bsp"], "FS_ListFiles should lower normalized matches");
+assert.deepEqual(FS_ListFiles(filesystem, "baseq2/players/*.*", SFF_SUBDIR), ["baseq2/players/male"], "FS_ListFiles SFF_SUBDIR mismatch");
+assert.deepEqual(FS_ListFiles(filesystem, "baseq2/players/male/*.pcx"), [
+  "baseq2/players/male/grunt.pcx",
+  "baseq2/players/male/grunt_i.pcx"
+], "FS_ListFiles skin wildcard mismatch");
 
 const pathLines = FS_Path_f(filesystem);
 assert.equal(pathLines.includes("Current search path:"), true, "FS_Path_f header mismatch");
@@ -142,8 +154,8 @@ assert.equal(FS_NextPath(filesystem, null), "rogue", "FS_NextPath first path mis
 assert.equal(FS_NextPath(filesystem, "rogue"), "baseq2", "FS_NextPath second path mismatch");
 assert.equal(FS_NextPath(filesystem, "baseq2"), null, "FS_NextPath end mismatch");
 
-const dirLines = FS_Dir_f(filesystem, "*.bsp");
-assert.equal(dirLines.includes("Directory of rogue/*.bsp"), true, "FS_Dir_f rogue header mismatch");
+const dirLines = FS_Dir_f(filesystem, "maps/*.bsp");
+assert.equal(dirLines.includes("Directory of rogue/maps/*.bsp"), true, "FS_Dir_f rogue header mismatch");
 assert.equal(dirLines.includes("base1.bsp"), true, "FS_Dir_f loose file mismatch");
 assert.equal(dirLines.includes("rogue1.bsp"), true, "FS_Dir_f second loose file mismatch");
 

@@ -10,21 +10,21 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `VERSION` | `packages/qcommon/src/qcommon.ts` | `VERSION` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `BASEDIRNAME` | `packages/qcommon/src/protocol.ts` | `BASEDIRNAME` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `VERSION` | `packages/qcommon/src/qcommon.ts` | `VERSION` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `BASEDIRNAME` | `packages/qcommon/src/protocol.ts` | `BASEDIRNAME` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | struct | `sizebuf_s` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | global | `allowoverflow` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | global | `overflowed` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |

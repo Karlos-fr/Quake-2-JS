@@ -123,6 +123,7 @@ import {
   MSG_WriteString
 } from "../../packages/qcommon/src/messages.js";
 import {
+  BASEDIRNAME,
   DEFAULT_SOUND_PACKET_ATTENUATION,
   DEFAULT_SOUND_PACKET_VOLUME,
   PROTOCOL_VERSION,
@@ -181,6 +182,7 @@ assert.equal(CM_ANGLE1, 1 << 0, "CM_ANGLE1 mismatch");
 assert.equal(CM_BUTTONS, 1 << 6, "CM_BUTTONS mismatch");
 assert.equal(BUILDSTRING, "TypeScript", "BUILDSTRING mismatch");
 assert.equal(CPUSTRING, "portable", "CPUSTRING mismatch");
+assert.equal(BASEDIRNAME, "baseq2", "BASEDIRNAME mismatch");
 
 let crc = CRC_Init();
 for (const byte of new Uint8Array([49, 50, 51, 52, 53, 54, 55, 56, 57])) {
