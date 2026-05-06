@@ -22,8 +22,8 @@
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_CompleteVariable` | `packages/qcommon/src/cvar.ts` | `Cvar_CompleteVariable` | Valide | A tester | Commentaire d'en-tete verifie; vide, exact avant partial et ordre de completion couverts par `npm run verify:cvar`. |
 | `Quake-2-master/qcommon/cvar.c` | global | `cvar` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_CompleteVariable`, non entite proprietaire; comportement couvert avec `Cvar_CompleteVariable`. |
 | `Quake-2-master/qcommon/cvar.c` | global | `len` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_CompleteVariable`, non entite proprietaire; comportement couvert avec `Cvar_CompleteVariable`. |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Get` | `packages/qcommon/src/cvar.ts` | `Cvar_Get` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Get` | `packages/qcommon/src/cvar.ts` | `Cvar_Get` | Valide | A tester | Commentaire d'en-tete verifie; creation, valeur par defaut NULL, validation userinfo/serverinfo, flags OR sur existant, ordre de liste et diagnostics `Com_Printf` couverts par `npm run verify:cvar`; `packages/qcommon/src/cvar.ts` corrige les prints invalid info. |
+| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_Get`, non entite proprietaire; comportement couvert avec `Cvar_Get`. |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Set2` | `packages/qcommon/src/cvar.ts` | `Cvar_Set2` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Get` | `packages/qcommon/src/cvar.ts` | `Cvar_Get` | A verifier | A tester |  |

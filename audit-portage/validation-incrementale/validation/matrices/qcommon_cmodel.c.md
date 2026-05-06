@@ -199,9 +199,9 @@
 | `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `floodnum` | `packages/qcommon/src/cmodel.ts` | `floodnum` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `bytes` | `packages/qcommon/src/cmodel.ts` | `bytes` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_WritePortalState` | `packages/qcommon/src/cmodel.ts` | `CM_WritePortalState` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_ReadPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_ReadPortalState` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_HeadnodeVisible` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeVisible` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `leafnum` | `packages/qcommon/src/cmodel.ts` | `leafnum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `cluster` | `packages/qcommon/src/cmodel.ts` | `cluster` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_HeadnodeVisible` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeVisible` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_WritePortalState` | `packages/qcommon/src/cmodel.ts` | `CM_WritePortalState` | Valide | A redecouper | Savegame `portalopen` qboolean 1024*4 compare C vs TS; commentaire verifie; preuves serveur/web/typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_ReadPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_ReadPortalState` | Valide | A redecouper | Restauration `portalopen`, qboolean non nul et reflood compares C vs TS; commentaire verifie; preuves serveur/web/typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_HeadnodeVisible` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeVisible` | Valide | A redecouper | Recursion node/leaf, cluster visible, invisible et `-1` compares C vs TS; commentaire verifie; preuves `sv_ents`, renderer/full-game/typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `leafnum` | `packages/qcommon/src/cmodel.ts` | `leafnum` | Non applicable | A redecouper | Variable locale C de `CM_HeadnodeVisible` generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `cluster` | `packages/qcommon/src/cmodel.ts` | `cluster` | Non applicable | A redecouper | Variable locale C de `CM_HeadnodeVisible` generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_HeadnodeVisible` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeVisible` | Valide | A redecouper | Doublon de detection couvert avec le port `CM_HeadnodeVisible`; preuves `quake2-cmodel.ts`, serveur, web, renderer, typecheck. |

@@ -158,9 +158,9 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
     loadMapFile: (name) => readMountedFile(options.filesystem, name)?.bytes,
     loadDownloadFile: (path) => {
       const file = readMountedFile(options.filesystem, path);
-      return file ? { data: file.bytes, fromPak: true } : null;
+      return file ? { data: file.bytes, fromPak: file.pak !== undefined } : null;
     },
-    fileFromPak: () => true,
+    fileFromPak: () => false,
     FS_Gamedir: options.getGameDir,
     Cbuf_CopyToDefer: () => {
       Cbuf_CopyToDefer(options.cmd);

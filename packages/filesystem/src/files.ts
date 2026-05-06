@@ -307,16 +307,15 @@ export function markBaseSearchPaths(filesystem: VirtualFilesystem): void {
  *
  * Porting notes:
  * - Returns an in-memory file descriptor object instead of an open FILE pointer.
+ * - Preserves the original link short-circuit: a matching link whose target is
+ *   missing stops the lookup instead of falling back to normal search paths.
  */
 export function readMountedFile(filesystem: VirtualFilesystem, filename: string): MountedVirtualFile | undefined {
   const normalizedFilename = normalizeVirtualPath(filename);
   const linked = resolveLinkedFilename(filesystem, normalizedFilename);
 
   if (linked) {
-    const linkedFile = readDirectoryLinkedFile(filesystem, linked);
-    if (linkedFile) {
-      return linkedFile;
-    }
+    return readDirectoryLinkedFile(filesystem, linked);
   }
 
   for (const search of filesystem.searchPaths) {

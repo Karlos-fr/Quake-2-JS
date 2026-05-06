@@ -163,32 +163,95 @@ export function Com_BlockChecksum(buffer: Uint8Array, length = buffer.length): n
   return (digest[0] ^ digest[1] ^ digest[2] ^ digest[3]) >>> 0;
 }
 
+/**
+ * Original name: F
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Implements the first MD4 boolean function with unsigned 32-bit wrapping.
+ */
 function F(x: UINT4, y: UINT4, z: UINT4): UINT4 {
   return (((x & y) | (~x & z)) >>> 0);
 }
 
+/**
+ * Original name: G
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Implements the second MD4 majority function with unsigned 32-bit wrapping.
+ */
 function G(x: UINT4, y: UINT4, z: UINT4): UINT4 {
   return (((x & y) | (x & z) | (y & z)) >>> 0);
 }
 
+/**
+ * Original name: H
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Implements the third MD4 xor function with unsigned 32-bit wrapping.
+ */
 function H(x: UINT4, y: UINT4, z: UINT4): UINT4 {
   return ((x ^ y ^ z) >>> 0);
 }
 
+/**
+ * Original name: ROTATE_LEFT
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Rotates one unsigned 32-bit word left by the requested bit count.
+ */
 function ROTATE_LEFT(x: UINT4, n: number): UINT4 {
   return (((x << n) | (x >>> (32 - n))) >>> 0);
 }
 
+/**
+ * Original name: FF
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies one round-1 MD4 transformation step.
+ */
 function FF(a: UINT4, b: UINT4, c: UINT4, d: UINT4, x: UINT4, s: number): UINT4 {
   a = (a + F(b, c, d) + x) >>> 0;
   return ROTATE_LEFT(a, s);
 }
 
+/**
+ * Original name: GG
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies one round-2 MD4 transformation step, including the C constant 0x5a827999.
+ */
 function GG(a: UINT4, b: UINT4, c: UINT4, d: UINT4, x: UINT4, s: number): UINT4 {
   a = (a + G(b, c, d) + x + 0x5a827999) >>> 0;
   return ROTATE_LEFT(a, s);
 }
 
+/**
+ * Original name: HH
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies one round-3 MD4 transformation step, including the C constant 0x6ed9eba1.
+ */
 function HH(a: UINT4, b: UINT4, c: UINT4, d: UINT4, x: UINT4, s: number): UINT4 {
   a = (a + H(b, c, d) + x + 0x6ed9eba1) >>> 0;
   return ROTATE_LEFT(a, s);

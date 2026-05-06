@@ -10,44 +10,44 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/md4.c` | global | `POINTER` | `packages/qcommon/src/md4.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `UINT2` | `packages/qcommon/src/md4.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `UINT4` | `packages/qcommon/src/md4.ts` | `UINT4` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `UINT4` | `packages/qcommon/src/md4.ts` | `UINT4` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | struct | `MD4_CTX` | `packages/qcommon/src/md4.ts` | `MD4_CTX` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `buffer` | `packages/qcommon/src/md4.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts` | `MD4Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts` | `MD4Update` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `POINTER` | `packages/qcommon/src/md4.ts` |  | Non applicable | A redecouper | C pointer typedef replaced by typed-array parameters/views; no runtime entity to port. |
+| `Quake-2-master/qcommon/md4.c` | global | `UINT2` | `packages/qcommon/src/md4.ts` |  | Non applicable | A redecouper | C-only typedef unused by the MD4 TS port. |
+| `Quake-2-master/qcommon/md4.c` | global | `UINT4` | `packages/qcommon/src/md4.ts` | `UINT4` | Valide | A redecouper | Private TS alias plus Uint32Array arithmetic verified by `npm run verify:md4`; header/file comments checked. |
+| `Quake-2-master/qcommon/md4.c` | global | `UINT4` | `packages/qcommon/src/md4.ts` | `UINT4` | Non applicable | A redecouper | Duplicate generated typedef row; covered by the first `UINT4` row. |
+| `Quake-2-master/qcommon/md4.c` | struct | `MD4_CTX` | `packages/qcommon/src/md4.ts` | `MD4_CTX` | Valide | A redecouper | Context state/count/buffer layout verified by `npm run verify:md4`; header comment checked. |
+| `Quake-2-master/qcommon/md4.c` | global | `buffer` | `packages/qcommon/src/md4.ts` |  | Non applicable | A redecouper | Struct field misdetected as global; represented by `MD4_CTX.buffer`. |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts` | `MD4Init` | Valide | A redecouper | Seed/count/buffer initialization verified by `npm run verify:md4`; header comment checked. |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts` | `MD4Update` | Valide | A redecouper | Count update, exact 64-byte block, partial buffering and split updates verified by `npm run verify:md4`; header comment checked. |
 | `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts` | `MD4Final` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S11` | `packages/qcommon/src/md4.ts` | `S11` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S12` | `packages/qcommon/src/md4.ts` | `S12` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S13` | `packages/qcommon/src/md4.ts` | `S13` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S14` | `packages/qcommon/src/md4.ts` | `S14` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S21` | `packages/qcommon/src/md4.ts` | `S21` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S22` | `packages/qcommon/src/md4.ts` | `S22` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S23` | `packages/qcommon/src/md4.ts` | `S23` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S24` | `packages/qcommon/src/md4.ts` | `S24` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S31` | `packages/qcommon/src/md4.ts` | `S31` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S32` | `packages/qcommon/src/md4.ts` | `S32` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S33` | `packages/qcommon/src/md4.ts` | `S33` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `S34` | `packages/qcommon/src/md4.ts` | `S34` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts` | `MD4Transform` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | macro | `S11` | `packages/qcommon/src/md4.ts` | `S11` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S12` | `packages/qcommon/src/md4.ts` | `S12` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S13` | `packages/qcommon/src/md4.ts` | `S13` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S14` | `packages/qcommon/src/md4.ts` | `S14` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S21` | `packages/qcommon/src/md4.ts` | `S21` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S22` | `packages/qcommon/src/md4.ts` | `S22` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S23` | `packages/qcommon/src/md4.ts` | `S23` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S24` | `packages/qcommon/src/md4.ts` | `S24` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S31` | `packages/qcommon/src/md4.ts` | `S31` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S32` | `packages/qcommon/src/md4.ts` | `S32` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S33` | `packages/qcommon/src/md4.ts` | `S33` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `S34` | `packages/qcommon/src/md4.ts` | `S34` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts` | `MD4Transform` | Valide | A redecouper | Private transform and all three rounds verified through MD4 vectors/full-block tests in `npm run verify:md4`; helper comments added for round macros. |
 | `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts` | `Encode` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts` | `Decode` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `PADDING` | `packages/qcommon/src/md4.ts` | `PADDING` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `F` | `packages/qcommon/src/md4.ts` | `F` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `G` | `packages/qcommon/src/md4.ts` | `G` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `H` | `packages/qcommon/src/md4.ts` | `H` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `ROTATE_LEFT` | `packages/qcommon/src/md4.ts` | `ROTATE_LEFT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `FF` | `packages/qcommon/src/md4.ts` | `FF` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `GG` | `packages/qcommon/src/md4.ts` | `GG` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | macro | `HH` | `packages/qcommon/src/md4.ts` | `HH` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts` | `MD4Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts` | `MD4Update` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `i` | `packages/qcommon/src/md4.ts` | `i` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | global | `PADDING` | `packages/qcommon/src/md4.ts` | `PADDING` | Valide | A redecouper | Padding behavior verified by finalization vectors and exact-block test in `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `F` | `packages/qcommon/src/md4.ts` | `F` | Valide | A redecouper | Private helper compared to C macro; comment added; covered by `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `G` | `packages/qcommon/src/md4.ts` | `G` | Valide | A redecouper | Private helper compared to C macro; comment added; covered by `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `H` | `packages/qcommon/src/md4.ts` | `H` | Valide | A redecouper | Private helper compared to C macro; comment added; covered by `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `ROTATE_LEFT` | `packages/qcommon/src/md4.ts` | `ROTATE_LEFT` | Valide | A redecouper | Private helper compared to C macro; comment added; covered by `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `FF` | `packages/qcommon/src/md4.ts` | `FF` | Valide | A redecouper | Round-1 helper compared to C macro; comment added; covered by `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `GG` | `packages/qcommon/src/md4.ts` | `GG` | Valide | A redecouper | Round-2 helper compared to C macro; comment added; covered by `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | macro | `HH` | `packages/qcommon/src/md4.ts` | `HH` | Valide | A redecouper | Round-3 helper compared to C macro; comment added; covered by `npm run verify:md4`. |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts` | `MD4Init` | Non applicable | A redecouper | Duplicate generated function row; covered by the first `MD4Init` row. |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts` | `MD4Update` | Non applicable | A redecouper | Duplicate generated function row; covered by the first `MD4Update` row. |
+| `Quake-2-master/qcommon/md4.c` | global | `i` | `packages/qcommon/src/md4.ts` | `i` | Non applicable | A redecouper | Local loop variable from `MD4Update`, not a source-owned global entity. |
 | `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts` | `MD4Final` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/md4.c` | global | `bits` | `packages/qcommon/src/md4.ts` | `bits` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts` | `MD4Transform` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts` | `MD4Transform` | Non applicable | A redecouper | Duplicate generated function row; covered by the first `MD4Transform` row. |
 | `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts` | `Encode` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts` | `Decode` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/md4.c` | function | `Com_BlockChecksum` | `packages/qcommon/src/md4.ts` | `Com_BlockChecksum` | A verifier | A redecouper |  |

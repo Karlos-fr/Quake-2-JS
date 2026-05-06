@@ -38,6 +38,7 @@ import {
   Weapon_Blaster,
   Weapon_Blaster_Fire,
   Weapon_HyperBlaster,
+  Weapon_HyperBlaster_Fire,
   Weapon_Machinegun,
   Weapon_Railgun,
   Weapon_RocketLauncher,
@@ -871,6 +872,64 @@ function verifyHyperBlasterFireParity(): void {
   assertString(sounds[0]?.soundPath ?? "", "weapons/noammo.wav", "HyperBlaster no-ammo path should play the original sound");
   assertNumber(sounds[0]?.channel ?? -1, CHAN_VOICE, "HyperBlaster no-ammo path should use CHAN_VOICE");
   assertString(player.client!.newweapon?.pickupName ?? "", "Shotgun", "HyperBlaster no-ammo should select the next available weapon");
+
+  const directRuntime = createHarnessRuntime();
+  const directPlayer = createPlayer(directRuntime);
+  const directCells = requireItem("Cells");
+  const directShots: Array<{ start: [number, number, number]; dir: [number, number, number]; damage: number; speed: number; effect: number; hyper: boolean }> = [];
+  const directFlashes: number[] = [];
+
+  directPlayer.s.origin = [100, 200, 300];
+  directPlayer.client!.v_angle = [0, 0, 0];
+  directPlayer.client!.pers.weapon = hyperblaster;
+  directPlayer.client!.ammo_index = directCells.index;
+  directPlayer.client!.ps.gunframe = 6;
+  directPlayer.client!.buttons = BUTTON_ATTACK;
+  directPlayer.client!.ps.pmove.pm_flags = PMF_DUCKED;
+  directPlayer.client!.silencer_shots = 1;
+  directPlayer.client!.pers.inventory[directCells.index] = 2;
+
+  Weapon_HyperBlaster_Fire(directPlayer, directRuntime, {
+    fire_blaster: (_ent, start, dir, damage, speed, effect, hyper) => {
+      directShots.push({ start, dir, damage, speed, effect, hyper });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      directFlashes.push(weapon);
+    }
+  });
+
+  assertNumber(directShots.length, 1, "Weapon_HyperBlaster_Fire direct call should spawn one bolt");
+  assertVec3Close(directShots[0].start, [120.53589838486225, 192, 316], "Weapon_HyperBlaster_Fire frame 6 should use the original circular muzzle offset");
+  assertVec3(directShots[0].dir, [1, 0, 0], "Weapon_HyperBlaster_Fire should fire along AngleVectors forward");
+  assertNumber(directShots[0].damage, 20, "Weapon_HyperBlaster_Fire direct solo damage should match C");
+  assertNumber(directShots[0].speed, 1000, "Weapon_HyperBlaster_Fire direct projectile speed should match C");
+  assertNumber(directShots[0].effect, EF_HYPERBLASTER, "Weapon_HyperBlaster_Fire frame 6 should set EF_HYPERBLASTER directly");
+  assertBoolean(directShots[0].hyper, true, "Weapon_HyperBlaster_Fire should pass the hyper flag to Blaster_Fire");
+  assertNumber(directFlashes[0], MZ_HYPERBLASTER | MZ_SILENCED, "Weapon_HyperBlaster_Fire should emit hyperblaster muzzleflash plus silenced bit");
+  assertNumber(directPlayer.client!.silencer_shots, 0, "Weapon_HyperBlaster_Fire should consume one silencer shot through PlayerNoise");
+  assertNumber(directPlayer.client!.anim_priority, ANIM_ATTACK, "Weapon_HyperBlaster_Fire should set attack animation priority");
+  assertNumber(directPlayer.s.frame, playerFrames.FRAME_crattak1 - 1, "Weapon_HyperBlaster_Fire ducked animation start frame mismatch");
+  assertNumber(directPlayer.client!.anim_end, playerFrames.FRAME_crattak9, "Weapon_HyperBlaster_Fire ducked animation end frame mismatch");
+
+  directRuntime.dmflags |= DF_INFINITE_AMMO;
+  directPlayer.client!.ps.gunframe = 8;
+  directPlayer.client!.buttons = BUTTON_ATTACK;
+  directPlayer.client!.ps.pmove.pm_flags = 0;
+  directPlayer.client!.pers.inventory[directCells.index] = 2;
+  directShots.length = 0;
+  directFlashes.length = 0;
+
+  Weapon_HyperBlaster_Fire(directPlayer, directRuntime, {
+    fire_blaster: (_ent, start, dir, damage, speed, effect, hyper) => {
+      directShots.push({ start, dir, damage, speed, effect, hyper });
+    }
+  });
+
+  assertVec3Close(directShots[0].start, [124, 192, 310], "Weapon_HyperBlaster_Fire frame 8 should rotate the muzzle offset below center");
+  assertNumber(directShots[0].effect, 0, "Weapon_HyperBlaster_Fire frame 8 should not set EF_HYPERBLASTER");
+  assertNumber(directPlayer.client!.pers.inventory[directCells.index], 2, "Weapon_HyperBlaster_Fire should honor DF_INFINITE_AMMO");
+  assertNumber(directPlayer.s.frame, playerFrames.FRAME_attack1 - 1, "Weapon_HyperBlaster_Fire standing animation start frame mismatch");
+  assertNumber(directPlayer.client!.anim_end, playerFrames.FRAME_attack8, "Weapon_HyperBlaster_Fire standing animation end frame mismatch");
 }
 
 function verifyRailgunFireParity(): void {
@@ -1303,5 +1362,17 @@ function assertNumber(actual: number, expected: number, label: string): void {
 function assertVec3(actual: readonly number[], expected: readonly number[], label: string): void {
   for (let index = 0; index < 3; index += 1) {
     assertNumber(actual[index] ?? NaN, expected[index] ?? NaN, `${label}[${index}]`);
+  }
+}
+
+function assertNumberClose(actual: number, expected: number, label: string, epsilon = 1e-9): void {
+  if (Math.abs(actual - expected) > epsilon) {
+    throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
+  }
+}
+
+function assertVec3Close(actual: readonly number[], expected: readonly number[], label: string): void {
+  for (let index = 0; index < 3; index += 1) {
+    assertNumberClose(actual[index] ?? NaN, expected[index] ?? NaN, `${label}[${index}]`);
   }
 }

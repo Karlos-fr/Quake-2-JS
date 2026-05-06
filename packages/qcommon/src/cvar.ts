@@ -150,6 +150,7 @@ export function Cvar_CompleteVariable(runtime: CvarRuntime, partial: string): st
  */
 export function Cvar_Get(runtime: CvarRuntime, var_name: string, var_value: string | null, flags: number): cvar_t | null {
   if ((flags & (CVAR_USERINFO | CVAR_SERVERINFO)) !== 0 && !Cvar_InfoValidate(var_name)) {
+    runtime.hooks.onPrint?.("invalid info cvar name\n");
     runtime.hooks.onInfoValidationError?.("name");
     return null;
   }
@@ -165,6 +166,7 @@ export function Cvar_Get(runtime: CvarRuntime, var_name: string, var_value: stri
   }
 
   if ((flags & (CVAR_USERINFO | CVAR_SERVERINFO)) !== 0 && !Cvar_InfoValidate(var_value)) {
+    runtime.hooks.onPrint?.("invalid info cvar value\n");
     runtime.hooks.onInfoValidationError?.("value");
     return null;
   }

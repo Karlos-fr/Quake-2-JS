@@ -171,6 +171,7 @@ function main(): void {
   assert(noVisNegativeCluster.every((value) => value === 0), "cluster -1 should remain a zero visibility row");
   assert(areaBytes === ((world.numareas + 7) >> 3), "unexpected area bit size");
   assert(headnodeVisible, "world headnode should be visible in its own pvs");
+  verifyHeadnodeVisibility(map);
   assert(loadResult.world !== null, "CM_LoadMap should return a loaded world");
   assert(loadResult.cmodel.headnode === (worldModel?.headnode ?? 0), "CM_LoadMap should expose world model 0");
   assert(cachedResult.reused, "second CM_LoadMap should reuse the cached world");
@@ -249,11 +250,95 @@ function verifyAreaPortalFlooding(map: BspMap): void {
   CM_ReadPortalState(world, openState);
   assert(CM_AreasConnected(world, 1, 2), "read portal state should reflood restored connections");
 
+  const nonCanonicalState = new Uint8Array(1024 * 4);
+  new DataView(nonCanonicalState.buffer).setInt32(4, -7, true);
+  CM_SetAreaPortalState(world, 1, false);
+  CM_ReadPortalState(world, nonCanonicalState);
+  assert(CM_AreasConnected(world, 1, 2), "read portal state should treat any non-zero qboolean as open");
+
+  let rejectedShortPortalState = false;
+  try {
+    CM_ReadPortalState(world, nonCanonicalState.subarray(0, nonCanonicalState.byteLength - 1));
+  } catch {
+    rejectedShortPortalState = true;
+  }
+  assert(rejectedShortPortalState, "read portal state should reject truncated savegame bytes");
+
   world.map_noareas = true;
   assert(CM_AreasConnected(world, 1, 3), "map_noareas should force areas connected");
   bits.fill(0);
   CM_WriteAreaBits(world, bits, 1);
   assert(bits[0] === 0xff, "map_noareas should force all area bits visible");
+}
+
+function verifyHeadnodeVisibility(map: BspMap): void {
+  const world = createCollisionWorld({
+    ...map,
+    nodes: [
+      {
+        planenum: 0,
+        children: [-2, -3],
+        mins: [-64, -64, -64],
+        maxs: [64, 64, 64],
+        firstface: 0,
+        numfaces: 0
+      }
+    ],
+    leafs: [
+      {
+        contents: CONTENTS_SOLID,
+        cluster: -1,
+        area: 0,
+        mins: [0, 0, 0],
+        maxs: [0, 0, 0],
+        firstleafface: 0,
+        numleaffaces: 0,
+        firstleafbrush: 0,
+        numleafbrushes: 0
+      },
+      {
+        contents: 0,
+        cluster: 3,
+        area: 1,
+        mins: [-64, -64, -64],
+        maxs: [0, 64, 64],
+        firstleafface: 0,
+        numleaffaces: 0,
+        firstleafbrush: 0,
+        numleafbrushes: 0
+      },
+      {
+        contents: 0,
+        cluster: -1,
+        area: 1,
+        mins: [0, -64, -64],
+        maxs: [64, 64, 64],
+        firstleafface: 0,
+        numleaffaces: 0,
+        firstleafbrush: 0,
+        numleafbrushes: 0
+      }
+    ],
+    models: [
+      {
+        mins: [-64, -64, -64],
+        maxs: [64, 64, 64],
+        origin: [0, 0, 0],
+        headnode: 0,
+        firstface: 0,
+        numfaces: 0
+      }
+    ]
+  });
+  const visbits = new Uint8Array(1);
+
+  visbits[0] = 1 << 3;
+  assert(CM_HeadnodeVisible(world, 0, visbits), "headnode visible should recurse into visible leaf clusters");
+  assert(CM_HeadnodeVisible(world, -2, visbits), "negative leaf node should test its cluster bit directly");
+  assert(!CM_HeadnodeVisible(world, -3, visbits), "cluster -1 leaf should never be visible");
+
+  visbits[0] = 0;
+  assert(!CM_HeadnodeVisible(world, 0, visbits), "headnode visible should reject subtrees with no visible cluster bits");
 }
 
 function assert(condition: boolean, message: string): void {

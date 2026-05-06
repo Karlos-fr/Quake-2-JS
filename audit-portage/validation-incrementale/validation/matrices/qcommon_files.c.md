@@ -10,42 +10,42 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/files.c` | macro | `PAK0_CHECKSUM` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | struct | `packfile_t` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `name` | `packages/formats/src/pak.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | struct | `pack_s` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `filename` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `numfiles` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `fs_gamedir` | `packages/filesystem/src/files.ts` | `FS_Gamedir` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `fs_basedir` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `fs_cddir` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `fs_gamedirvar` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | struct | `filelink_s` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `from` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `fromlength` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `to` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | struct | `searchpath_s` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `filename` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_filelength` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `pos` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `end` | `packages/formats/src/pak.ts` | `end` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_CreatePath` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `ofs` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_FCloseFile` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `Developer_searchpath` | `packages/filesystem/src/files.ts` | `Developer_searchpath` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `ch` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `file_from_pak` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_FOpenFile` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `netpath` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `pak` | `packages/filesystem/src/files.ts` | `pak` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `i` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `link` | `packages/filesystem/src/files.ts` | `link` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_filelength` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_filelength` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_FOpenFile` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `netpath` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `pak` | `packages/filesystem/src/files.ts` | `pak` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `i` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/files.c` | macro | `PAK0_CHECKSUM` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Demo/OEM `NO_ADDONS` checksum guard not compiled in the normal source path; `parsePak` documents checksum omission. |
+| `Quake-2-master/qcommon/files.c` | struct | `packfile_t` | `packages/formats/src/pak.ts` | `PakEntry` | Valide | A redecouper | Header comment verified; `verify:files` covers name/filepos/filelen lookup through PAK entries. |
+| `Quake-2-master/qcommon/files.c` | global | `name` | `packages/formats/src/pak.ts` | `name` | Non applicable | A redecouper | Auto-detected struct field; covered by `PakEntry.name`. |
+| `Quake-2-master/qcommon/files.c` | struct | `pack_s` | `packages/filesystem/src/files.ts` | `MountedPak` | Valide | A redecouper | Ownership split with `PakArchive`; in-memory archive replaces C `FILE *handle`, comments verified. |
+| `Quake-2-master/qcommon/files.c` | global | `filename` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `pack_s`/`searchpath_s` field; covered by `SearchPath.filename` and `PakArchive.path`. |
+| `Quake-2-master/qcommon/files.c` | global | `numfiles` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `pack_s` field; covered by `PakArchive.entries.length`. |
+| `Quake-2-master/qcommon/files.c` | global | `fs_gamedir` | `packages/filesystem/src/files.ts` | `FS_Gamedir` | Valide | A redecouper | `verify:files` and `verify:web-config-gamedir` cover create/mount/set/gamedir reads. |
+| `Quake-2-master/qcommon/files.c` | global | `fs_basedir` | `packages/filesystem/src/files.ts` |  | Partiel | A redecouper | Host basedir cvar is replaced by explicit web/in-memory mounts; validate `FS_InitFilesystem` policy before closing. |
+| `Quake-2-master/qcommon/files.c` | global | `fs_cddir` | `packages/filesystem/src/files.ts` |  | Partiel | A redecouper | CD directory probing is intentionally absent in browser mounts; validate with `FS_InitFilesystem` policy before closing. |
+| `Quake-2-master/qcommon/files.c` | global | `fs_gamedirvar` | `packages/filesystem/src/files.ts` |  | Partiel | A redecouper | `apps/web` bridges game cvar to `FS_SetGamedir`; full cvar ownership should be closed with `FS_InitFilesystem`. |
+| `Quake-2-master/qcommon/files.c` | struct | `filelink_s` | `packages/filesystem/src/files.ts` | `FileLink` | Valide | A redecouper | Header comment verified; link add/replace/delete and lookup covered by `verify:files`. |
+| `Quake-2-master/qcommon/files.c` | global | `from` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `filelink_s` field; covered by `FileLink.from`. |
+| `Quake-2-master/qcommon/files.c` | global | `fromlength` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `filelink_s` field; covered by `FileLink.fromlength`. |
+| `Quake-2-master/qcommon/files.c` | global | `to` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `filelink_s` field; covered by `FileLink.to`. |
+| `Quake-2-master/qcommon/files.c` | struct | `searchpath_s` | `packages/filesystem/src/files.ts` | `SearchPath` | Valide | A redecouper | Header comment verified; directory/pack search order covered by `verify:files` and full-game renderer tests. |
+| `Quake-2-master/qcommon/files.c` | global | `filename` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `searchpath_s` field; covered by `SearchPath.filename`. |
+| `Quake-2-master/qcommon/files.c` | function | `FS_filelength` | `packages/filesystem/src/files.ts` | `readMountedFile` | Valide | A redecouper | In-memory equivalent is `bytes.byteLength`; proof added in `verify:files`. |
+| `Quake-2-master/qcommon/files.c` | global | `pos` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local variable in C `FS_filelength`; no TS entity. |
+| `Quake-2-master/qcommon/files.c` | global | `end` | `packages/formats/src/pak.ts` | `end` | Non applicable | A redecouper | Local scan variable in PAK name decoding; no source-owned global. |
+| `Quake-2-master/qcommon/files.c` | function | `FS_CreatePath` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Host directory creation is replaced by browser storage/in-memory mounts; no renderer-visible output. |
+| `Quake-2-master/qcommon/files.c` | global | `ofs` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local variable in C `FS_CreatePath`; no TS entity. |
+| `Quake-2-master/qcommon/files.c` | function | `FS_FCloseFile` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | No open `FILE *` handles in the in-memory filesystem; consumers use loaded byte arrays/no-op free hooks. |
+| `Quake-2-master/qcommon/files.c` | function | `Developer_searchpath` | `packages/filesystem/src/files.ts` | `Developer_searchpath` | Valide | A redecouper | Header comment verified; xatrix/rogue search path behavior covered by `verify:files`. |
+| `Quake-2-master/qcommon/files.c` | global | `ch` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Unused local in C `Developer_searchpath`; no TS entity. |
+| `Quake-2-master/qcommon/files.c` | global | `file_from_pak` | `packages/filesystem/src/files.ts` | `MountedVirtualFile.pak` | Valide | A redecouper | `readMountedFile` exposes PAK origin; apps/web server host corrected to pass `fromPak: file.pak !== undefined`. |
+| `Quake-2-master/qcommon/files.c` | function | `FS_FOpenFile` | `packages/filesystem/src/files.ts` | `readMountedFile` | Valide | A redecouper | Link short-circuit and `apps/web` file existence corrected; directory/PAK/case-insensitive lookup covered by `verify:files`. |
+| `Quake-2-master/qcommon/files.c` | global | `netpath` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local C path buffer inside `FS_FOpenFile`; TS uses normalized strings. |
+| `Quake-2-master/qcommon/files.c` | global | `pak` | `packages/filesystem/src/files.ts` | `pak` | Non applicable | A redecouper | Local C variable; represented by `MountedVirtualFile.pak` when present. |
+| `Quake-2-master/qcommon/files.c` | global | `i` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local C loop variable in `FS_FOpenFile`; no TS entity. |
+| `Quake-2-master/qcommon/files.c` | global | `link` | `packages/filesystem/src/files.ts` | `link` | Non applicable | A redecouper | Local C variable; link state is covered by `FileLink`/`fs_links`. |
+| `Quake-2-master/qcommon/files.c` | function | `FS_filelength` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Duplicate generated occurrence from C call sites; canonical `FS_filelength` row validated above. |
+| `Quake-2-master/qcommon/files.c` | function | `FS_filelength` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Duplicate generated occurrence from C call sites; canonical `FS_filelength` row validated above. |
+| `Quake-2-master/qcommon/files.c` | function | `FS_FOpenFile` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Duplicate conditional `NO_ADDONS` branch; normal port row validated above. |
+| `Quake-2-master/qcommon/files.c` | global | `netpath` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local C path buffer in duplicate conditional branch; no TS entity. |
+| `Quake-2-master/qcommon/files.c` | global | `pak` | `packages/filesystem/src/files.ts` | `pak` | Non applicable | A redecouper | Local C variable in duplicate conditional branch; represented by `MountedVirtualFile.pak` when present. |
+| `Quake-2-master/qcommon/files.c` | global | `i` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local C loop variable in duplicate conditional branch; no TS entity. |
 | `Quake-2-master/qcommon/files.c` | function | `FS_filelength` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | function | `CDAudio_Stop` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | macro | `MAX_READ` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |

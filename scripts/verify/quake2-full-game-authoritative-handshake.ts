@@ -100,7 +100,7 @@ CL_InitLocal(mainContext, {
   qnet: transport.clientQnet,
   serverRunning: () => serverHost.hasActiveGameMap(),
   allowDownload: false,
-  fileExists: (path) => readMountedFile(filesystem, path) !== null,
+  fileExists: (path) => readMountedFile(filesystem, path) !== undefined,
   loadBinaryFile: (path) => readMountedFile(filesystem, path)?.bytes ?? null,
   onPrepRefresh: prepRefresh,
   onRegisterSounds: () => undefined,

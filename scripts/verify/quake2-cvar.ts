@@ -72,13 +72,25 @@ assert.equal(Cvar_InfoValidate("name=value"), true, "equals should not invalidat
 assert.equal(Cvar_Get(cvar, "name\\bad", "1", CVAR_USERINFO), null, "invalid info cvar name should be rejected");
 assert.equal(Cvar_Get(cvar, "good", "1;2", CVAR_USERINFO), null, "invalid info cvar value should be rejected");
 assert.deepEqual(validationErrors, ["name", "value"], "info validation hooks mismatch");
+assert.deepEqual(
+  printed,
+  ["invalid info cvar name\n", "invalid info cvar value\n"],
+  "Cvar_Get invalid info diagnostics should match Com_Printf paths"
+);
+assert.equal(cvar.cvar_vars.length, 0, "invalid info cvars should not be linked");
 
 assert.equal(Cvar_FindVar(cvar, "missing"), null, "FindVar should return null before creation");
 assert.equal(Cvar_VariableString(cvar, "missing"), "", "VariableString should return empty string for missing cvars");
 assert.equal(Cvar_VariableValue(cvar, "missing"), 0, "VariableValue should return zero for missing cvars");
+assert.equal(Cvar_Get(cvar, "missing_default", null, 0), null, "Cvar_Get should reject null defaults after lookup miss");
 
 const skill = Cvar_Get(cvar, "skill", "1", CVAR_ARCHIVE);
 assert.ok(skill, "skill cvar should be created");
+assert.equal(skill.name, "skill", "created cvar name mismatch");
+assert.equal(skill.string, "1", "created cvar string mismatch");
+assert.equal(skill.modified, true, "created cvar should start modified like the C port");
+assert.equal(skill.value, 1, "created cvar numeric value mismatch");
+assert.equal(skill.flags, CVAR_ARCHIVE, "created cvar flags mismatch");
 assert.equal(Cvar_VariableString(cvar, "skill"), "1", "VariableString mismatch");
 assert.equal(Cvar_VariableValue(cvar, "skill"), 1, "VariableValue mismatch");
 assert.equal(Cvar_CompleteVariable(cvar, "ski"), "skill", "CompleteVariable prefix mismatch");
@@ -98,6 +110,7 @@ assert.equal(Cvar_VariableValue(cvar, "skill_label"), 0, "non-numeric cvar value
 
 const skillAgain = Cvar_Get(cvar, "skill", "2", CVAR_SERVERINFO);
 assert.equal(skillAgain, skill, "existing cvar lookup should return same object");
+assert.equal(skill?.string, "1", "existing cvar lookup should not replace the current value");
 assert.equal((skill?.flags ?? 0) & CVAR_SERVERINFO, CVAR_SERVERINFO, "existing flags should be ORed");
 
 const rate = Cvar_FullSet(cvar, "rate", "25000", CVAR_USERINFO | CVAR_ARCHIVE);

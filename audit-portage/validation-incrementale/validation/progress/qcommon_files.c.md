@@ -1,0 +1,22 @@
+# Progress - Quake-2-master/qcommon/files.c
+
+- Statut: En cours
+- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`.
+- Prochain lot recommande: `CDAudio_Stop`, `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile`, puis `FS_LoadPackFile` si le lot reste coherent.
+- Tests de reference:
+  - `npm run verify:files`
+  - `npm run verify:web-config-gamedir`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Decisions:
+  - Le port proprietaire reel de `qcommon/files.c` vit dans `packages/filesystem/src/files.ts`; `packages/qcommon/src/files.ts` n'existe pas.
+  - Les structures C `pack_t`, `filelink_t` et `searchpath_t` sont adaptees en objets explicites `MountedPak`/`PakArchive`, `FileLink` et `SearchPath`.
+  - `FS_CreatePath` et `FS_FCloseFile` sont non applicables au VFS navigateur/in-memory: les ecritures passent par les adapters de stockage web et il n'existe pas de `FILE *` a fermer.
+  - `fs_basedir`, `fs_cddir` et `fs_gamedirvar` restent `Partiel` jusqu'a validation du bloc `FS_InitFilesystem` et de la politique de montage/cvar.
+- Corrections:
+  - `readMountedFile` preserve maintenant le court-circuit de lien du C: un prefixe `link` qui correspond mais ne resout aucun fichier ne retombe pas sur la recherche normale.
+  - `apps/web/src/full-game.ts` utilise maintenant `readMountedFile(...) !== undefined` pour le test d'existence, afin de ne pas considerer un miss VFS comme present.
+  - `apps/web/src/full-game-server-host.ts` propage maintenant `fromPak` depuis `MountedVirtualFile.pak` au lieu de forcer tous les downloads en provenance de PAK.
+- Blocages:
+  - Aucun blocage de test connu apres ce lot.

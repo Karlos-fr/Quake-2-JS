@@ -631,7 +631,7 @@ function createFullGameRuntime(filesystem: VirtualFilesystem, page: FullGamePage
     now: () => client.cls.realtime,
     onPrint: printToConsole
   });
-  const fileExists = (path: string): boolean => readMountedFile(filesystem, path) !== null;
+  const fileExists = (path: string): boolean => readMountedFile(filesystem, path) !== undefined;
   const loadBinaryFile = (path: string): Uint8Array | null => readMountedFile(filesystem, path)?.bytes ?? null;
   const prepClientRefresh = (): void => {
     const options = {

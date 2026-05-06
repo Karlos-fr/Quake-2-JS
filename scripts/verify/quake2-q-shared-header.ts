@@ -50,6 +50,9 @@ import {
   BigFloat,
   BigLong,
   BigShort,
+  Com_BeginRedirect,
+  Com_EndRedirect,
+  Com_Printf,
   Com_sprintf,
   COM_DefaultExtension,
   COM_FileBase,
@@ -58,6 +61,7 @@ import {
   COM_Parse,
   COM_SkipPath,
   COM_StripExtension,
+  createCommonRuntime,
   Info_RemoveKey,
   Info_SetValueForKey,
   Info_Validate,
@@ -263,6 +267,25 @@ assert.equal(Q_strncasecmp("a", "b", -1), -1, "Q_strncasecmp negative-count mism
 assert.equal(Com_sprintf(64, "maps/base1.bsp"), "maps/base1.bsp", "Com_sprintf in-bounds mismatch");
 assert.equal(Com_sprintf(8, "0123456789"), "0123456", "Com_sprintf clamp mismatch");
 assert.equal(Com_sprintf(0, "ignored"), "", "Com_sprintf zero-size mismatch");
+const commonPrintRuntime = createCommonRuntime();
+const printed: string[] = [];
+Com_Printf(commonPrintRuntime, "hello %s %04i %.1f %%\n", (line) => printed.push(line), "quake", 2, 3.25);
+assert.deepEqual(printed, ["hello quake 0002 3.3 %\n"], "Com_Printf sink/format mismatch");
+const redirected: Array<{ target: number; buffer: string }> = [];
+Com_BeginRedirect(commonPrintRuntime, 7, 11, (target, buffer) => redirected.push({ target, buffer }));
+Com_Printf(commonPrintRuntime, "abc");
+Com_Printf(commonPrintRuntime, "defghi");
+Com_Printf(commonPrintRuntime, "Z%s", "Z");
+assert.deepEqual(redirected, [{ target: 7, buffer: "abcdefghi" }], "Com_Printf redirect overflow flush mismatch");
+Com_EndRedirect(commonPrintRuntime);
+assert.deepEqual(
+  redirected,
+  [
+    { target: 7, buffer: "abcdefghi" },
+    { target: 7, buffer: "ZZ" }
+  ],
+  "Com_Printf redirect final flush mismatch"
+);
 
 const systemCalls: string[] = [];
 const systemRuntime = createSystemRuntime({

@@ -88,6 +88,24 @@
   - `npx tsx ./scripts/verify/quake2-sv-send.ts` passe.
 - Matrice: 96 `Valide`, 93 `Non applicable`, 6 `A verifier`.
 
+## Session 2026-05-06 - bloc sauvegarde portails/headnode visible
+
+- Lot traite: `CM_WritePortalState`, `CM_ReadPortalState`, `CM_HeadnodeVisible`, doublon de detection `CM_HeadnodeVisible`, et faux positifs locaux associes (`leafnum`, `cluster`).
+- Corrections: aucune correction fonctionnelle de `packages/qcommon/src/cmodel.ts` necessaire. Harness `quake2-cmodel.ts` renforce avec un monde synthetique pour prouver recursion de headnode, leaf visible, leaf invisible, cluster `-1`, plus restauration de portail depuis qboolean non canonique non nul et rejet de bytes tronques.
+- Validation C vs TS: `CM_WritePortalState` conserve la disposition savegame `portalopen` de 1024 `qboolean` int32 little-endian; `CM_ReadPortalState` restaure tous les qboolean et relance `FloodAreaConnections`; `CM_HeadnodeVisible` conserve la recursion BSP, la conversion leaf negative `-1 - nodenum`, l'ignorance des clusters `-1` et le test de bit PVS.
+- Runtime: branche via sauvegarde/chargement serveur (`sv_ccmds`), host web full-game, culling serveur `SV_BuildClientFrame`/`SV_WriteFrameToClient` et envoi de snapshots.
+- apps/web: `apps/web/src/full-game-server-host.ts` sauvegarde/restaure explicitement l'etat portail via `CM_WritePortalState`/`CM_ReadPortalState`; pas de logique web parallele masquant ce lot.
+- renderer-three: pas d'appel direct a `CM_HeadnodeVisible` attendu cote renderer; la sortie visible est le filtrage serveur des entites/snapshots, puis `areabits`/entites sont consommes par le client et `renderer-three`. Le flux renderer full-game passe.
+- Tests lances:
+  - `npx tsx ./scripts/verify/quake2-cmodel.ts` passe avec preuves save/read portal state et headnode visible.
+  - `npm run typecheck` passe.
+  - `npm run verify:server:ents` passe.
+  - `npm run verify:server:world` passe.
+  - `npm run verify:full-game:server-host` passe.
+  - `npm run verify:full-game:three-renderer` passe.
+  - `npx tsx ./scripts/verify/quake2-sv-send.ts` passe.
+- Matrice: 100 `Valide`, 95 `Non applicable`, 0 `A verifier`.
+
 ## Prochain lot recommande
 
-Reprendre a `CM_WritePortalState`, `CM_ReadPortalState`, `CM_HeadnodeVisible` et faux positifs locaux associes (`leafnum`, `cluster`), en revalidant les commentaires et le branchement sauvegarde/runtime/renderer si applicable.
+Aucun lot restant dans `qcommon_cmodel.c.md`: toutes les lignes sont `Valide` ou `Non applicable`. Laisser le coordinateur centraliser `AVANCEMENT_GLOBAL.md`.

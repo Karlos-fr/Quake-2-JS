@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: `Com_Printf` uniquement, en evitant `cvar.ts` possede par un autre agent.
+- Entite validee: `Com_Printf`.
+- Ownership: declaration dans `game/q_shared.h` pour liaison des helpers partages/systeme; corps proprietaire dans `qcommon/common.c`, port runtime dans `packages/qcommon/src/common.ts`.
+- Commentaire d'en-tete de `Com_Printf` corrige de `Category: New` vers `Original name: Com_Printf`, `Source: qcommon/common.c`, `Category: Ported`, avec notes sur l'adaptation sink/runtime TS.
+- Preuves ajoutees pour formatage variadique, sink host, redirection, flush sur seuil `rd_buffersize - 1` et flush final.
 - 2026-05-06: `Sys_Error` uniquement, en evitant `common.ts` et `cvar.ts` possedes par d'autres agents.
 - Entite validee: `Sys_Error`.
 - Ownership: declaration dans `game/q_shared.h`, port runtime proprietaire dans `packages/qcommon/src/system.ts`; les implementations C formatent `char *error, ...` par `vsprintf` avant erreur fatale.
@@ -22,6 +27,8 @@
 
 ## Corrections
 
+- `Com_Printf` dans `packages/qcommon/src/common.ts` est maintenant documente comme port de `qcommon/common.c` declare par `game/q_shared.h`, accepte les arguments variadiques via `va`, conserve le chemin redirect et delegue l'affichage normal au sink host.
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `Com_Printf` sink/format et redirection/flush.
 - `Sys_Error` dans `packages/qcommon/src/system.ts` accepte maintenant les arguments variadiques `%s`, `%d`, `%i` et `%f` avant de deleguer au hook fatal, comme les implementations C passent par `vsprintf`.
 - `Hunk_Alloc` dans `packages/qcommon/src/system.ts` consomme maintenant une taille alignee sur 32 octets comme les ports C `q_shwin.c`/`q_shlinux.c`, tout en retournant une vue de la taille demandee.
 - Ajout de `SFF_ARCH`, `SFF_HIDDEN`, `SFF_RDONLY`, `SFF_SUBDIR` et `SFF_SYSTEM` dans `packages/qcommon/src/q_shared.ts`.
@@ -42,6 +49,11 @@
 - `npm run verify:ref-gl-host` OK.
 - `npm run verify:q-shared:header` OK.
 - `npm run typecheck` OK.
+- `npm run verify:full-game:server-host` OK.
+- `npm run verify:full-game:three-renderer` OK.
+- `npm run verify:ref-gl-host` OK.
+- `npm run verify:q-shared:header` OK.
+- `npm run typecheck` OK.
 - `npm run verify:files` OK.
 - `npm run verify:full-game:three-renderer` OK.
 - `npm run verify:q-shared:header` OK.
@@ -53,6 +65,10 @@
 
 ## Decisions runtime/web/renderer-three
 
+- `Com_Printf` est un point de sortie console commun declare par `q_shared.h` et implemente dans `qcommon/common.c`; le port TS l'expose via `packages/qcommon/src/index.ts` et conserve le redirect buffer dans `CommonRuntime`.
+- Runtime: integre pour les flux qui utilisent le runtime common ou ses adapters; le chemin normal delegue a un sink host parce que `Con_Print`, `Sys_ConsoleOutput` et le logfile C sont des effets host/UI distincts dans le port TS.
+- `apps/web`: integration attendue via les sinks `onPrint` des flux full-game/server-host/local-transport; `verify:full-game:server-host` confirme que le flux web-host ne masque pas ce lot.
+- `renderer-three`: aucune sortie visible de scene n'est produite par `Com_Printf`; les messages renderer passent par `refimport_t.Con_Printf`/`ref-gl-host` et sont verifies par `verify:ref-gl-host` et `verify:full-game:three-renderer`.
 - `Sys_Error` est un point de delegation fatal declare par `q_shared.h` pour permettre aux helpers partages et systeme de lier; le port TS l'expose via `packages/qcommon/src/index.ts` et un `SystemRuntime` explicite.
 - Runtime: integre comme hook fatal injectable; le message variadique est maintenant formate avant delegation, et le fallback lance une exception JS.
 - `apps/web`: pas de branchement direct supplementaire attendu pour `packages/qcommon/src/system.ts`; les flux web/full-game deleguent deja les erreurs fatales host/ref via exceptions et ne masquent pas un manque de gameplay ou de rendu.
@@ -76,4 +92,4 @@
 
 ## Prochain lot recommande
 
-- Reprendre `Com_Printf` quand `packages/qcommon/src/common.ts` est disponible, puis `CVAR`/`CVAR_*` et `cvar_s` quand `packages/qcommon/src/cvar.ts` est disponible.
+- Reprendre `CVAR`/`CVAR_*` et `cvar_s` quand `packages/qcommon/src/cvar.ts` est disponible.

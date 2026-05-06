@@ -54,6 +54,17 @@
 - Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `Blaster_Fire` direct, projection avec `g_offset`, damage quad, bit silencieux, `Weapon_Blaster_Fire`, degats deathmatch, bruit joueur et tables `pause_frames`/`fire_frames`.
 - Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
 
+## Session 2026-05-06 - bloc hyperblaster
+
+- Lot traite: `Weapon_HyperBlaster_Fire`, variables locales `rotation`/`effect`/`damage`, `Weapon_HyperBlaster`, tables locales `pause_frames` et `fire_frames`.
+- Comparaison C/TS: son loop `weapons/hyprbl1a.wav`, relache attaque, chemin no-ammo avec `CHAN_VOICE` et `NoAmmoWeaponChange`, rotation `(gunframe - 5) * 2*pi/6`, offset circulaire `[-4*sin(rotation), 0, 4*cos(rotation)]`, `EF_HYPERBLASTER` seulement aux frames 6 et 9, degats solo/deathmatch `20`/`15`, delegation `Blaster_Fire(..., hyper=true)`, consommation cells sauf `DF_INFINITE_AMMO`, animations debout/accroupi, boucle frame 12 vers 6 quand il reste des cells, wind-down `weapons/hyprbd1a.wav`, et `Weapon_Generic(ent, 5, 20, 49, 53, {0}, {6, 7, 8, 9, 10, 11, 0}, Weapon_HyperBlaster_Fire)` compares contre le C.
+- Commentaires d'en-tete: `Weapon_HyperBlaster_Fire` et `Weapon_HyperBlaster` verifies avec `Original name`, `Source: game/p_weapon.c`, `Category: Ported`, niveau de fidelite et comportement.
+- Runtime: integre via `g_items` (`weapon_hyperblaster` -> `Weapon_HyperBlaster`), `Think_Weapon`, `ClientThink`/`ClientBeginServerFrame`, `local-game-bootstrap` et hook `fire_blaster`.
+- apps/web: le navigateur declenche le tir via les flux serveur/local/full-game et consomme le runtime porte; aucune logique web parallele ne remplace ce bloc.
+- renderer-three: sorties visibles attendues = bolt hyperblaster, modele laser, `EF_HYPERBLASTER`, muzzleflash/dlight `MZ_HYPERBLASTER`, son loop/wind-down, trail et impact `TE_BLASTER`; elles sont consommees par snapshots, `cl_fx`, refresh entity/particles/dlights et renderer-three.
+- Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour appel direct `Weapon_HyperBlaster_Fire`, offset circulaire, bit silencieux, animations debout/accroupi, ammo infini et tables `pause_frames`/`fire_frames`.
+- Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
+
 ## Prochain lot recommande
 
-Valider le bloc hyperblaster: `Weapon_HyperBlaster_Fire`, variables locales `rotation`/`effect`/`damage`, puis `Weapon_HyperBlaster` avec `pause_frames` et `fire_frames`.
+Valider le bloc machinegun: `Machinegun_Fire`, variables locales `i`/`start`/`angles`/`damage`/`kick`/`offset`, puis `Weapon_Machinegun` avec `pause_frames` et `fire_frames`.

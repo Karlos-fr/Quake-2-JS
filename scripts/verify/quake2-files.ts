@@ -28,6 +28,7 @@ import {
   createVirtualFilesystem,
   markBaseSearchPaths,
   mountDirectory,
+  readMountedFile,
   readMountedTextFile
 } from "../../packages/filesystem/src/index.js";
 
@@ -67,6 +68,13 @@ assert.equal(
   "seta skill 1",
   "FS_Link linked lookup mismatch"
 );
+FS_Link(filesystem, "missing-link", "baseq2/missing");
+assert.equal(
+  FS_LoadFile(filesystem, "missing-link/base1.bsp"),
+  undefined,
+  "FS_FOpenFile link miss must not fall back to normal search paths"
+);
+assert.equal(readMountedFile(filesystem, "maps/base1.bsp")?.bytes.byteLength, 14, "FS_filelength equivalent mismatch");
 
 const listed = FS_ListFiles(filesystem, "baseq2/maps/*.bsp");
 assert.deepEqual(listed, ["baseq2/maps/base1.bsp"], "FS_ListFiles base wildcard mismatch");

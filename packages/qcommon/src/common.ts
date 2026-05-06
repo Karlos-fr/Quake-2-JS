@@ -243,17 +243,32 @@ export function Com_EndRedirect(runtime: CommonRuntime): void {
 }
 
 /**
- * Category: New
- * Purpose: Emit one common output string either to the redirect buffer or to a provided sink.
+ * Original name: Com_Printf
+ * Source: qcommon/common.c
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must flush before overflow just like the original redirect path.
+ * Behavior:
+ * - Formats one common output string, appends it to the active redirect buffer when present,
+ *   otherwise emits it through the provided host sink.
+ *
+ * Porting notes:
+ * - `game/q_shared.h` declares this function only so shared/system code can link to the
+ *   `qcommon/common.c` implementation.
+ * - Console and logfile side effects are delegated to the host sink/runtime adapters.
  */
+export function Com_Printf(runtime: CommonRuntime, format: string, sink: (line: string) => void, ...args: Array<string | number>): void;
+export function Com_Printf(runtime: CommonRuntime, format: string, ...args: Array<string | number>): void;
 export function Com_Printf(
   runtime: CommonRuntime,
-  message: string,
-  sink?: (line: string) => void
+  format: string,
+  sinkOrArg?: ((line: string) => void) | string | number,
+  ...remainingArgs: Array<string | number>
 ): void {
+  const sink = typeof sinkOrArg === "function" ? sinkOrArg : undefined;
+  const args = typeof sinkOrArg === "function" || sinkOrArg === undefined ? remainingArgs : [sinkOrArg, ...remainingArgs];
+  const message = args.length > 0 ? va(format, ...args) : format;
+
   if (runtime.rd_target && runtime.rd_flush) {
     if (message.length + runtime.rd_buffer.length > runtime.rd_buffersize - 1) {
       runtime.rd_flush(runtime.rd_target, runtime.rd_buffer);
