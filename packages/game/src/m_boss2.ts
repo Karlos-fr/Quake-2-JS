@@ -287,6 +287,18 @@ export function boss2_search(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: Boss2Rocket
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fires the four boss2 rockets from the original muzzle offsets toward the enemy view origin.
+ *
+ * Porting notes:
+ * - Uses a local helper to avoid duplicating the four identical C blocks while preserving their flash ids.
+ */
 export function Boss2Rocket(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;

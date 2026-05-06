@@ -78,6 +78,7 @@ import {
   gunner_duck_down,
   gunner_duck_hold,
   gunner_duck_up,
+  gunner_fidget,
   gunner_fire_chain,
   gunner_move_attack_chain,
   gunner_move_attack_grenade,
@@ -249,12 +250,25 @@ function verifyStateTransitions(): void {
   gunner_runandshoot(gunner);
   assert.equal(gunner.monsterinfo.currentmove, gunner_move_runandshoot);
 
+  gunner.monsterinfo.currentmove = gunner_move_stand;
+  withMathRandom([0.051], () => gunner_fidget(gunner));
+  assert.equal(gunner.monsterinfo.currentmove, gunner_move_stand);
+  withMathRandom([0.05], () => gunner_fidget(gunner));
+  assert.equal(gunner.monsterinfo.currentmove, gunner_move_fidget);
+  gunner.monsterinfo.currentmove = gunner_move_stand;
+  gunner.monsterinfo.aiflags |= AI_STAND_GROUND;
+  withMathRandom([0], () => gunner_fidget(gunner));
+  assert.equal(gunner.monsterinfo.currentmove, gunner_move_stand);
+  gunner.monsterinfo.aiflags &= ~AI_STAND_GROUND;
+
   gunner.enemy = nearEnemy;
   gunner_attack(gunner);
   assert.equal(gunner.monsterinfo.currentmove, gunner_move_attack_chain);
   gunner.enemy = farEnemy;
   withMathRandom([0.25], () => gunner_attack(gunner));
   assert.equal(gunner.monsterinfo.currentmove, gunner_move_attack_grenade);
+  withMathRandom([0.5], () => gunner_attack(gunner));
+  assert.equal(gunner.monsterinfo.currentmove, gunner_move_attack_chain);
   withMathRandom([0.75], () => gunner_attack(gunner));
   assert.equal(gunner.monsterinfo.currentmove, gunner_move_attack_chain);
 
@@ -262,6 +276,8 @@ function verifyStateTransitions(): void {
   assert.equal(gunner.monsterinfo.currentmove, gunner_move_fire_chain);
   withMathRandom([0.25], () => gunner_refire_chain(gunner, createVisibleRuntime()));
   assert.equal(gunner.monsterinfo.currentmove, gunner_move_fire_chain);
+  withMathRandom([0.5], () => gunner_refire_chain(gunner, createVisibleRuntime()));
+  assert.equal(gunner.monsterinfo.currentmove, gunner_move_endfire_chain);
   farEnemy.health = 0;
   gunner_refire_chain(gunner, runtime);
   assert.equal(gunner.monsterinfo.currentmove, gunner_move_endfire_chain);
@@ -307,6 +323,9 @@ function verifyDuckAndDodgeBranches(): void {
 
   withMathRandom([0.5], () => gunner_dodge(gunner, attacker, 0));
   assert.notEqual(gunner.monsterinfo.currentmove, gunner_move_duck);
+  withMathRandom([0.249], () => gunner_dodge(gunner, attacker, 0));
+  assert.equal(gunner.monsterinfo.currentmove, gunner_move_duck);
+  gunner.monsterinfo.currentmove = gunner_move_stand;
   withMathRandom([0.1], () => gunner_dodge(gunner, attacker, 0));
   assert.equal(gunner.enemy, attacker);
   assert.equal(gunner.monsterinfo.currentmove, gunner_move_duck);
@@ -316,6 +335,11 @@ function verifyDuckAndDodgeBranches(): void {
   SP_monster_gunner(duckGrenadier, runtime);
   duckGrenadier.s.frame = FRAME_attak105;
   duckGrenadier.s.angles = [0, 0, 0];
+  drainMonsterMuzzleFlashEvents(runtime);
+  withMathRandom([0.499], () => gunner_duck_down(duckGrenadier, runtime));
+  assert.equal(drainMonsterMuzzleFlashEvents(runtime).length, 0);
+  duckGrenadier.monsterinfo.aiflags &= ~AI_DUCKED;
+  duckGrenadier.maxs[2] = 32;
   withMathRandom([0.75, 0.5, 0.5], () => gunner_duck_down(duckGrenadier, runtime));
   assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_GUNNER_GRENADE_1);
 }

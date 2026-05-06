@@ -2,9 +2,9 @@
 
 ## Etat courant
 
-- Statut: En cours
-- Dernier lot traite: bloc mort `actor_dead`, `actor_frames_death1`/`actor_move_death1`, `actor_frames_death2`/`actor_move_death2`, `actor_die` et temporaire local `n`
-- Verdict: `Valide` pour les lignes du bloc mort
+- Statut: Termine
+- Dernier lot traite: bloc scripted actor `actor_use`, local `v`, `SP_misc_actor`, `target_actor_touch`, locaux `n`, `ent`, `savetarget`, et `SP_target_actor`
+- Verdict: `Valide` pour toutes les lignes restantes de `game_m_actor.c.md`
 
 ## Checklist appliquee au lot
 
@@ -125,6 +125,16 @@
 - renderer-three: le bloc produit des frames de mort visibles, une bbox/etat corpse, et en gib death des modeles gib/head visibles (`models/objects/gibs/...`) exposes par snapshots/refresh entities; consommation attendue via refresh entities puis alias MD2 dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts` pour les tables death, `actor_die` via `T_Damage`, les branches RNG death1/death2, le retour deja mort, la branche gib et ses boucles locales `n`, l'absence de son attendu, et le chemin `M_MoveFrame -> actor_dead` avec relink/bbox/flags.
 
+## Session 2026-05-06 - bloc scripted actor final
+
+- Identification: `actor_use`, le local `v`, `SP_misc_actor`, `target_actor_touch`, les locaux `n`, `ent`, `savetarget`, et `SP_target_actor` sont proprietaires de `game/m_actor.c`, cibles dans `packages/game/src/m_actor.ts`. Aucun doublon TS concurrent trouve; l'export runtime passe par `g_spawn.ts` pour `misc_actor` et `target_actor`.
+- Comparaison C vs TS: `actor_use` conserve `G_PickTarget`, le rejet des cibles non `target_actor`, la pause longue, `stand`, le calcul yaw par vecteur local `v`, le passage en `walk` et l'effacement de `target`. `SP_misc_actor` conserve deathmatch/free, controles `targetname`/`target`, bbox, model `players/male/tris.md2`, health/mass, callbacks, `AI_GOOD_GUY`, link, stand/scale, `walkmonster_start` et dormant `use`. `target_actor_touch` conserve les retours `movetarget`/`enemy`, broadcast message via les locaux `n`/`ent`, jump et son, branche SHOOT vide, attaque HOLD/BRUTAL, `savetarget` autour de `G_UseTargets`, prochain `movetarget`, pause finale et yaw vers le prochain point. `SP_target_actor` conserve warning targetname, trigger/no-client, bbox, defaults jump speed/height, yaw 360, `G_SetMovedir`, hauteur z et link.
+- Commentaires d'en-tete: commentaires de `actor_use`, `SP_misc_actor`, `target_actor_touch` et `SP_target_actor` verifies (`Original name`, `Source`, `Category: Ported`, fidelite et comportement). Les locaux `v`, `n`, `ent`, `savetarget` sont couverts par les assertions de comportement.
+- Runtime: branchement attendu et verifie depuis `g_spawn.ts` (`misc_actor`/`target_actor`), `ED_CallSpawn`, `actor.use`, `G_TouchTriggers`, puis `target_actor_touch`; les sorties gameplay sont drenees par le runtime normal et atteignables depuis les frames serveur.
+- apps/web: pas de logique gameplay parallele attendue dans `apps/web`; le navigateur doit declencher le host/runtime porte et consommer snapshots, cprintf et sons issus du runtime. Couvert par `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order`.
+- renderer-three: le bloc produit des sorties visibles indirectes (`misc_actor` model `players/male/tris.md2`, frames/angles/yaw, sauts/deplacements) et une sortie audible jump; `target_actor` reste `SVF_NOCLIENT`. La consommation attendue passe par snapshots/refresh entities puis alias MD2 dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts`; pas de correction necessaire dans `packages/game/src/m_actor.ts`.
+
 ## Tests de reference
 
 - `npm run verify:m-actor`
@@ -137,7 +147,7 @@
 
 ## Prochain lot recommande
 
-Valider le bloc scripted actor restant `actor_use` avec le local `v`, puis `target_actor_touch` avec les locaux `n`, `ent`, `savetarget`, et `SP_target_actor`; inclure `SP_misc_actor` si le lot reste coherent avec le spawn/ownership restant.
+Aucun lot restant dans `game_m_actor.c.md`: toutes les lignes sont `Valide`. Reprendre le prochain fichier prioritaire dans `AVANCEMENT_GLOBAL.md`.
 
 ## Blocages / decisions
 

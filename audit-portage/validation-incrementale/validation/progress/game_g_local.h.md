@@ -1548,7 +1548,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-gladiator` OK; `npm run verify:m-gladiator:header` OK; `npm run verify:m-gladiator:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_chick.ts` ou `m_gunner.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/m_gunner.ts` pour `gunner_fidget`, `gunner_duck_down`, `gunner_dodge`, `gunner_attack` et `gunner_refire_chain`; verification immediate de `gunner_pain`/`randomInt`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `m_gunner.ts` est harmonise pour tous les usages macro C `random()` actifs, aucun consommateur `crandom()` n'existe dans `m_gunner.c`/`m_gunner.ts`, mais d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_gunner.c` consomme `random()` dans `gunner_fidget` (`<= 0.05`), `gunner_duck_down` (`> 0.5` quand skill >= 2), `gunner_dodge` (`> 0.25`), `gunner_attack` (`<= 0.5`) et `gunner_refire_chain` (`<= 0.5`); aucun appel `crandom()` dans ce fichier. `gunner_pain` utilise `rand()&1`, hors macro flottante, et reste porte par le helper entier local `randomInt`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_gunner.ts`: les cinq fonctions consomment maintenant le helper proprietaire `random`; `randomInt` reste limite a `gunner_pain` pour porter `rand()&1`.
+- Runtime: integration attendue et branchee via `SP_monster_gunner`, `g_spawn.ts`, callbacks `stand`/`dodge`/`attack`, `monster_think`/`M_MoveFrame`, `G_RunEntity` et `G_RunFrame`; les tirages affectent fidget, duck/grenade, choix d'attaque, boucle chaingun, sons, muzzle flashes, grenades et frames visibles.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres, muzzle flashes, projectiles et ordre de rendu; aucune logique parallele web `m_gunner`/`random` detectee dans ce sous-lot, hormis le `randomInt` host generique.
+- renderer-three: integration indirecte attendue. Les tirages `m_gunner.ts` affectent sorties visibles/audibles via modele gunner, frames fidget/duck/attack/refire, grenades, muzzle flashes et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaires d'en-tete ajoutes pour `gunner_fidget`, `gunner_duck_down`, `gunner_dodge`, `gunner_attack` et `gunner_refire_chain`; `gunner_pain` verifie comme usage `rand()&1` hors macro.
+- Corrections appliquees:
+  - `packages/game/src/m_gunner.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C `random()`, commentaires d'en-tete ajoutes.
+  - `scripts/verify/quake2-m-gunner.ts`: preuves deterministes ajoutees pour les seuils C-style 15 bits dans `gunner_fidget`, `gunner_duck_down`, `gunner_dodge`, `gunner_attack` et `gunner_refire_chain`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-gunner` OK; `npm run verify:m-gunner:header` OK; `npm run verify:m-gunner:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_chick.ts`, `m_infantry.ts` ou `m_hover.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts`, `p_hud.ts` et `m_gunner.ts` ont montre les usages entiers hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

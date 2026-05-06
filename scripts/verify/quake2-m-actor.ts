@@ -18,6 +18,7 @@ import {
   AI_STAND_GROUND,
   DEAD_DEAD,
   ED_CallSpawn,
+  G_TouchTriggers,
   M_MoveFrame,
   MOVETYPE_STEP,
   MOVETYPE_TOSS,
@@ -38,6 +39,7 @@ import {
   drainGameCprintfEvents,
   drainGameSoundEvents,
   drainMonsterMuzzleFlashEvents,
+  linkGameEntity,
   ai_charge,
   damage_t,
   T_Damage,
@@ -204,6 +206,9 @@ assert.equal(path.solid, SOLID_TRIGGER, "target_actor solid");
 assert.equal(path.svflags, SVF_NOCLIENT, "target_actor svflags");
 assert.equal(path.speed, 200, "target_actor default speed");
 assert.equal(path.movedir[2], 240, "target_actor jump height");
+assert.deepEqual(path.mins, [-8, -8, -8], "target_actor mins");
+assert.deepEqual(path.maxs, [8, 8, 8], "target_actor maxs");
+assert.equal(path.linked, true, "target_actor is linked as trigger");
 
 const actor = spawnGameEntity(runtime);
 actor.classname = "misc_actor";
@@ -218,7 +223,40 @@ assert.equal(actor.mass, 200, "misc_actor mass");
 assert.equal((actor.monsterinfo.aiflags & AI_GOOD_GUY) !== 0, true, "misc_actor good guy");
 assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_stand, "misc_actor stand move");
 assert.equal(actor.monsterinfo.scale, actorFrames.MODEL_SCALE, "misc_actor scale");
+assert.equal(runtime.assets.modelPaths[actor.s.modelindex - 1], "players/male/tris.md2", "misc_actor model");
+assert.equal(typeof actor.pain, "function", "misc_actor pain callback");
+assert.equal(typeof actor.die, "function", "misc_actor die callback");
 assert.equal(typeof actor.use, "function", "misc_actor use callback");
+
+const dmRuntime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
+dmRuntime.deathmatch = true;
+dmRuntime.maxclients = 1;
+for (let n = 0; n < 10; n += 1) {
+  const filler = spawnGameEntity(dmRuntime);
+  filler.classname = "reserved_test_slot";
+}
+const dmActor = spawnGameEntity(dmRuntime);
+dmActor.classname = "misc_actor";
+dmActor.targetname = "dm_actor";
+dmActor.target = "actor_path";
+ED_CallSpawn(dmActor, dmRuntime);
+assert.equal(dmActor.inuse, false, "SP_misc_actor frees actors in deathmatch");
+
+while (runtime.entities.length <= runtime.maxclients + 9) {
+  const filler = spawnGameEntity(runtime);
+  filler.classname = "reserved_test_slot";
+}
+const untargetedActor = spawnGameEntity(runtime);
+untargetedActor.classname = "misc_actor";
+untargetedActor.target = "actor_path";
+ED_CallSpawn(untargetedActor, runtime);
+assert.equal(untargetedActor.inuse, false, "SP_misc_actor frees untargeted actors");
+
+const noTargetActor = spawnGameEntity(runtime);
+noTargetActor.classname = "misc_actor";
+noTargetActor.targetname = "no_target_actor";
+ED_CallSpawn(noTargetActor, runtime);
+assert.equal(noTargetActor.inuse, false, "SP_misc_actor frees actors with no target");
 
 const originalRandom = Math.random;
 try {
@@ -351,6 +389,45 @@ try {
 actor.use?.(actor, player, player, runtime);
 assert.equal(actor.movetarget, path, "actor_use picks target_actor");
 assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_walk, "actor_use starts walking");
+assert.equal(actor.target, undefined, "actor_use clears actor target after starting path");
+
+const yawPath = spawnGameEntity(runtime);
+yawPath.classname = "target_actor";
+yawPath.targetname = "actor_path_yaw";
+yawPath.origin = [0, 64, 0];
+yawPath.s.origin = [0, 64, 0];
+ED_CallSpawn(yawPath, runtime);
+const yawActor = spawnGameEntity(runtime);
+yawActor.classname = "misc_actor";
+yawActor.targetname = "yaw_actor";
+yawActor.target = "actor_path_yaw";
+yawActor.origin = [0, 0, 0];
+yawActor.s.origin = [0, 0, 0];
+ED_CallSpawn(yawActor, runtime);
+yawActor.use?.(yawActor, player, player, runtime);
+assert.equal(yawActor.ideal_yaw, 90, "actor_use computes yaw toward selected target_actor");
+assert.equal(yawActor.s.angles[1], 90, "actor_use stores yaw in entity state angles");
+assert.equal(yawActor.monsterinfo.currentmove, actorFrames.actor_move_walk, "actor_use starts yaw actor walking");
+
+const wrongTarget = spawnGameEntity(runtime);
+wrongTarget.classname = "info_not_actor";
+wrongTarget.targetname = "wrong_actor_target";
+const badActor = spawnGameEntity(runtime);
+badActor.classname = "misc_actor";
+badActor.targetname = "bad_actor";
+badActor.target = "wrong_actor_target";
+badActor.monsterinfo.stand = actorFrames.actor_stand;
+runtime.logEntries.length = 0;
+badActor.use = actorFrames.actor_use;
+badActor.use(badActor, player, player, runtime);
+assert.equal(badActor.target, undefined, "actor_use bad target clears target");
+assert.equal(badActor.monsterinfo.pausetime, 100000000, "actor_use bad target pauses forever");
+assert.equal(badActor.monsterinfo.currentmove, actorFrames.actor_move_stand, "actor_use bad target returns to stand");
+assert.equal(
+  runtime.logEntries.some((entry) => entry.message.includes("misc_actor has bad target wrong_actor_target")),
+  true,
+  "actor_use bad target emits warning"
+);
 
 actorFrames.actorMachineGun(actor, runtime);
 const flashes = drainMonsterMuzzleFlashEvents(runtime);
@@ -477,14 +554,16 @@ gibActor.target = "actor_path";
 ED_CallSpawn(gibActor, runtime);
 gibActor.takedamage = damage_t.DAMAGE_YES;
 gibActor.health = -90;
-const gibEntityCountBefore = runtime.entities.length;
+const existingEntityIndexesBeforeGibs = new Set(runtime.entities.filter((entity) => entity?.inuse).map((entity) => entity.index));
 try {
   Math.random = () => 0;
   actorFrames.actor_die(gibActor, player, player, 120, runtime);
 } finally {
   Math.random = originalRandom;
 }
-const spawnedGibs = runtime.entities.slice(gibEntityCountBefore);
+const spawnedGibs = runtime.entities.filter(
+  (entity) => entity?.inuse && !existingEntityIndexesBeforeGibs.has(entity.index)
+);
 const spawnedGibModels = spawnedGibs.map((entity) => runtime.assets.modelPaths[entity.s.modelindex - 1]);
 assert.equal(gibActor.deadflag, DEAD_DEAD, "actor_die gib branch marks DEAD_DEAD");
 assert.equal(spawnedGibs.length, 6, "actor_die gib branch spawns two bone and four meat gibs");
@@ -518,6 +597,22 @@ assert.equal(prints[0].message.endsWith(": move out\n"), true, "target_actor mes
 
 assert.equal(actor.groundentity, null, "target_actor jump clears ground entity when absent");
 
+path.message = undefined;
+path.spawnflags = 1;
+path.speed = 250;
+path.movedir = [0.5, 0.25, 300];
+actor.movetarget = path;
+actor.enemy = null;
+actor.velocity = [0, 0, 0];
+actor.groundentity = player;
+path.touch?.(path, actor, runtime);
+const jumpSounds = drainGameSoundEvents(runtime);
+assert.deepEqual(actor.velocity, [125, 62.5, 300], "target_actor jump applies movedir speed and height");
+assert.equal(actor.groundentity, null, "target_actor jump clears groundentity");
+assert.equal(jumpSounds.at(-1)?.soundPath, "player/male/jump1.wav", "target_actor grounded jump emits jump sound");
+assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_stand, "target_actor terminal jump returns actor to stand");
+assert.equal(actor.monsterinfo.pausetime, runtime.time + 100000000, "target_actor terminal jump pauses actor forever");
+
 path.spawnflags = 4 | 16 | 32;
 path.pathtarget = "enemy_target";
 const enemy = spawnGameEntity(runtime);
@@ -529,5 +624,80 @@ path.touch?.(path, actor, runtime);
 assert.equal(actor.enemy, enemy, "target_actor attack picks pathtarget enemy");
 assert.equal((actor.monsterinfo.aiflags & AI_STAND_GROUND) !== 0, true, "target_actor hold sets stand ground");
 assert.equal((actor.monsterinfo.aiflags & AI_BRUTAL) !== 0, true, "target_actor brutal flag");
+
+path.spawnflags = 4;
+actor.movetarget = path;
+actor.enemy = null;
+actor.monsterinfo.aiflags &= ~AI_STAND_GROUND;
+path.touch?.(path, actor, runtime);
+assert.equal(actor.enemy, enemy, "target_actor attack without hold picks enemy");
+assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_run, "target_actor attack without hold starts actor_run");
+
+path.spawnflags = 2 | 4;
+actor.movetarget = path;
+actor.enemy = null;
+path.touch?.(path, actor, runtime);
+assert.equal(actor.enemy, null, "target_actor SHOOT branch stays empty and suppresses ATTACK branch like C");
+
+const nextPath = spawnGameEntity(runtime);
+nextPath.classname = "target_actor";
+nextPath.targetname = "next_actor_path";
+nextPath.origin = [128, 0, 0];
+nextPath.s.origin = [128, 0, 0];
+ED_CallSpawn(nextPath, runtime);
+path.spawnflags = 0;
+path.pathtarget = undefined;
+path.target = "next_actor_path";
+actor.origin = [0, 0, 0];
+actor.s.origin = [0, 0, 0];
+actor.movetarget = path;
+actor.enemy = null;
+actor.goalentity = null;
+path.touch?.(path, actor, runtime);
+assert.equal(actor.movetarget, nextPath, "target_actor selects next path target");
+assert.equal(actor.goalentity, nextPath, "target_actor uses next path as goal when no goalentity exists");
+assert.equal(actor.ideal_yaw, 0, "target_actor faces the next path target");
+
+const pathtargetTrigger = spawnGameEntity(runtime);
+pathtargetTrigger.classname = "target_actor";
+pathtargetTrigger.targetname = "pathtarget_trigger";
+pathtargetTrigger.target = "restore_target";
+pathtargetTrigger.pathtarget = "script_action";
+ED_CallSpawn(pathtargetTrigger, runtime);
+actor.movetarget = pathtargetTrigger;
+actor.enemy = null;
+runtime.logEntries.length = 0;
+pathtargetTrigger.touch?.(pathtargetTrigger, actor, runtime);
+assert.equal(pathtargetTrigger.target, "restore_target", "target_actor restores target after pathtarget G_UseTargets");
+assert.equal(
+  runtime.logEntries.some((entry) => entry.kind === "use-targets" && entry.entityIndex === pathtargetTrigger.index),
+  true,
+  "target_actor pathtarget dispatches G_UseTargets"
+);
+
+path.message = "runtime touch";
+path.spawnflags = 0;
+path.target = undefined;
+path.pathtarget = undefined;
+path.origin = [...actor.origin];
+path.s.origin = [...actor.s.origin];
+actor.movetarget = path;
+actor.enemy = null;
+linkGameEntity(runtime, path);
+linkGameEntity(runtime, actor);
+G_TouchTriggers(runtime, actor);
+const runtimeTouchPrints = drainGameCprintfEvents(runtime);
+assert.equal(runtimeTouchPrints.at(-1)?.message.endsWith(": runtime touch\n"), true, "G_TouchTriggers reaches target_actor_touch");
+
+const namelessTarget = spawnGameEntity(runtime);
+namelessTarget.classname = "target_actor";
+runtime.logEntries.length = 0;
+ED_CallSpawn(namelessTarget, runtime);
+assert.equal(namelessTarget.solid, SOLID_TRIGGER, "SP_target_actor without targetname still spawns trigger");
+assert.equal(
+  runtime.logEntries.some((entry) => entry.message.includes("target_actor with no targetname")),
+  true,
+  "SP_target_actor logs missing targetname"
+);
 
 console.log("quake2-m-actor: ok");

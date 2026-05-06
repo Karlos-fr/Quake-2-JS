@@ -2224,7 +2224,8 @@ export function CL_BFGExplosionParticles(runtimeOrOrg: ClientRuntime | vec3_t, m
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits the teleport particle lattice metadata.
+ * - Emits the teleport particle lattice metadata or spawns the original runtime lattice.
+ * - Preserves the local `vel` scalar and normalized `dir` vector used for radial velocity.
  */
 export function CL_TeleportParticles(org: vec3_t): ClientActionEffect[];
 export function CL_TeleportParticles(runtime: ClientRuntime, org: vec3_t): void;
@@ -2235,7 +2236,7 @@ export function CL_TeleportParticles(runtimeOrOrg: ClientRuntime | vec3_t, maybe
       kind: "teleport-particles",
       position: [...runtimeOrOrg],
       color: 7,
-      count: 409
+      count: 1053
     }];
   }
 

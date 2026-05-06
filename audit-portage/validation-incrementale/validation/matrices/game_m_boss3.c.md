@@ -10,6 +10,6 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_boss3.c` | function | `Use_Boss3` | `packages/game/src/m_boss3.ts` | `Use_Boss3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss3.c` | function | `Think_Boss3Stand` | `packages/game/src/m_boss3.ts` | `Think_Boss3Stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss3.c` | function | `SP_monster_boss3_stand` | `packages/game/src/m_boss3.ts` | `SP_monster_boss3_stand` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss3.c` | function | `Use_Boss3` | `packages/game/src/m_boss3.ts` | `Use_Boss3` | Valide | A redecouper | En-tete OK; preuves session: `verify:m-boss3`, `verify:m-boss3:source-parity`, `verify:cl-fx`, `verify:local-gameplay-sync`, `verify:particle-sync`, `verify:full-game:three-renderer`, `typecheck`. Runtime OK via `useGameEntity`/temp entity flush; web/renderer OK via client temp entities -> particules refresh. |
+| `Quake-2-master/game/m_boss3.c` | function | `Think_Boss3Stand` | `packages/game/src/m_boss3.ts` | `Think_Boss3Stand` | Valide | A redecouper | En-tete OK; preuves session: `verify:m-boss3`, `verify:m-boss3:source-parity`, `typecheck`. Runtime OK via callback `think` pose par le spawn; web/renderer OK via frame d'entite refresh generique. |
+| `Quake-2-master/game/m_boss3.c` | function | `SP_monster_boss3_stand` | `packages/game/src/m_boss3.ts` | `SP_monster_boss3_stand` | Valide | A redecouper | En-tete OK; preuves session: `verify:m-boss3`, `verify:m-boss3:source-parity`, `verify:local-gameplay-sync`, `verify:particle-sync`, `verify:full-game:three-renderer`, `typecheck`. Runtime OK via `ED_CallSpawn`/`g_spawn` et `g_save`; web/renderer OK via modele MD2 et refresh frame generiques. |

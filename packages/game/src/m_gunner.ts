@@ -30,7 +30,8 @@ import {
   RANGE_MELEE,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range, visible } from "./g_ai.js";
 import { monster_fire_bullet, monster_fire_grenade, walkmonster_start } from "./g_monster.js";
@@ -314,11 +315,19 @@ export const gunner_move_fidget: GameMonsterMove = {
   endfunc: gunner_stand
 };
 
+/**
+ * Original name: gunner_fidget
+ * Source: Quake-2-master/game/m_gunner.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Occasionally switches a non-stand-ground gunner into the fidget move.
+ * Porting notes: Uses `g_local.random` for the source `random()` macro.
+ */
 export function gunner_fidget(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     return;
   }
-  if (Math.random() <= 0.05) {
+  if (random() <= 0.05) {
     self.monsterinfo.currentmove = gunner_move_fidget;
   }
 }
@@ -490,12 +499,20 @@ export function gunner_die(
   self.monsterinfo.currentmove = gunner_move_death;
 }
 
+/**
+ * Original name: gunner_duck_down
+ * Source: Quake-2-master/game/m_gunner.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Enters the duck state and, on hard/nightmare skill, may fire a grenade while ducking.
+ * Porting notes: Uses `g_local.random` for the source `random()` macro.
+ */
 export function gunner_duck_down(self: GameEntity, runtime: GameRuntime): void {
   if ((self.monsterinfo.aiflags & AI_DUCKED) !== 0) {
     return;
   }
   self.monsterinfo.aiflags |= AI_DUCKED;
-  if (runtime.skill >= 2 && Math.random() > 0.5) {
+  if (runtime.skill >= 2 && random() > 0.5) {
     GunnerGrenade(self, runtime);
   }
 
@@ -537,8 +554,16 @@ export const gunner_move_duck: GameMonsterMove = {
   endfunc: gunner_run
 };
 
+/**
+ * Original name: gunner_dodge
+ * Source: Quake-2-master/game/m_gunner.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Randomly chooses whether the gunner ducks in response to incoming fire.
+ * Porting notes: Uses `g_local.random` for the source `random()` macro.
+ */
 export function gunner_dodge(self: GameEntity, attacker: GameEntity | null, _eta: number): void {
-  if (Math.random() > 0.25) {
+  if (random() > 0.25) {
     return;
   }
 
@@ -646,10 +671,18 @@ export const gunner_move_attack_grenade: GameMonsterMove = {
   endfunc: gunner_run
 };
 
+/**
+ * Original name: gunner_attack
+ * Source: Quake-2-master/game/m_gunner.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Chooses melee-range chaingun directly, otherwise randomly selects grenade or chaingun attack.
+ * Porting notes: Uses `g_local.random` for the source `random()` macro.
+ */
 export function gunner_attack(self: GameEntity): void {
   if (self.enemy && range(self, self.enemy) === RANGE_MELEE) {
     self.monsterinfo.currentmove = gunner_move_attack_chain;
-  } else if (Math.random() <= 0.5) {
+  } else if (random() <= 0.5) {
     self.monsterinfo.currentmove = gunner_move_attack_grenade;
   } else {
     self.monsterinfo.currentmove = gunner_move_attack_chain;
@@ -660,8 +693,16 @@ export function gunner_fire_chain(self: GameEntity): void {
   self.monsterinfo.currentmove = gunner_move_fire_chain;
 }
 
+/**
+ * Original name: gunner_refire_chain
+ * Source: Quake-2-master/game/m_gunner.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Continues the chaingun loop when the enemy is alive, visible, and the random retry succeeds.
+ * Porting notes: Uses `g_local.random` for the source `random()` macro.
+ */
 export function gunner_refire_chain(self: GameEntity, runtime: GameRuntime): void {
-  if (self.enemy && self.enemy.health > 0 && visible(self, self.enemy, runtime) && Math.random() <= 0.5) {
+  if (self.enemy && self.enemy.health > 0 && visible(self, self.enemy, runtime) && random() <= 0.5) {
     self.monsterinfo.currentmove = gunner_move_fire_chain;
     return;
   }

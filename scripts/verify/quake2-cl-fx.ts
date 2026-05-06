@@ -19,6 +19,7 @@ import {
   CL_BuildMuzzleFlash2Effects,
   CL_BuildMuzzleFlashEffects,
   CL_BuildTempEntityEffects,
+  CL_ClearEffects,
   CL_ClearDlights,
   CL_ClearLightStyles,
   CL_ClearParticles,
@@ -45,6 +46,7 @@ import {
   CL_RunLightStyles,
   CL_SetLightstyle,
   CL_TrapParticles,
+  CL_TeleportParticles,
   CL_TeleporterParticles
 } from "../../packages/client/src/cl_fx.js";
 import {
@@ -80,7 +82,7 @@ import {
   type vec3_t
 } from "../../packages/qcommon/src/index.js";
 import { createClientRuntime as createRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
-import { MAX_DLIGHTS, MAX_PARTICLES } from "../../packages/client/src/client.js";
+import { INSTANT_PARTICLE, MAX_DLIGHTS, MAX_PARTICLES } from "../../packages/client/src/client.js";
 import type { ClientEntityEvent } from "../../packages/client/src/cl_ents.js";
 import { CL_BuildRefreshFrame } from "../../packages/client/src/refresh.js";
 
@@ -116,6 +118,10 @@ function main(): void {
   verifyTrapParticlesPacketEntityRuntimeBranch();
   verifyBfgExplosionParticlesRuntimeParticles();
   verifyBfgExplosionTempEntityRuntimeBranch();
+  verifyTeleportParticlesRuntimeParticles();
+  verifyTeleportParticlesEntityEventMetadata();
+  verifyAddParticlesLifetimeAndInstantParticles();
+  verifyClearEffects();
   verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
@@ -668,6 +674,49 @@ function verifyBigTeleportTempEntityRuntimeBranch(): void {
   assert.deepEqual(burst.position, origin, "big teleport particle metadata should preserve origin");
   assert.equal(burst.count, 4096, "big teleport particle metadata should preserve particle count");
   assert.ok(effects.some((effect) => effect.sound?.name === "misc/bigtele.wav"), "TE_BOSSTPORT should preserve the original big teleport sound");
+}
+
+function verifyTeleportParticlesRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 2468;
+  const origin: vec3_t = [32, -16, 48];
+
+  withMockRandom(0, () => {
+    CL_TeleportParticles(runtime, origin);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 1053, "CL_TeleportParticles should allocate the original teleport lattice");
+  assert.equal(runtime.cl.free_particles, 1053, "CL_TeleportParticles free list should advance by the lattice count");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "teleport particles should preserve cl.time");
+  assert.ok(particles.every((particle) => particle.color === 7), "teleport particle color mismatch");
+  assert.ok(particles.every((particle) => particle.org[0] >= origin[0] - 16 && particle.org[0] <= origin[0] + 16), "teleport x lattice mismatch");
+  assert.ok(particles.every((particle) => particle.org[1] >= origin[1] - 16 && particle.org[1] <= origin[1] + 16), "teleport y lattice mismatch");
+  assert.ok(particles.every((particle) => particle.org[2] >= origin[2] - 16 && particle.org[2] <= origin[2] + 32), "teleport z lattice mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === -40), "teleport gravity mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && particle.alphavel <= -1 / 0.44 && particle.alphavel >= -1 / 0.3), "teleport alpha decay mismatch");
+
+  const firstAllocated = particles.at(-1);
+  assert.ok(firstAllocated, "CL_TeleportParticles should allocate a first particle");
+  assert.deepEqual(firstAllocated.org, [origin[0] - 16, origin[1] - 16, origin[2] - 16], "teleport first lattice origin mismatch");
+  const firstDir = -1 / Math.sqrt(3);
+  assert.ok(firstAllocated.vel.every((component) => almostEqual(component, firstDir * 50)), "teleport first normalized dir/vel mismatch");
+
+  const lastAllocated = particles[0]!;
+  assert.deepEqual(lastAllocated.org, [origin[0] + 16, origin[1] + 16, origin[2] + 32], "teleport last lattice origin mismatch");
+  const lastLength = Math.sqrt((128 * 128) + (128 * 128) + (256 * 256));
+  assert.deepEqual(
+    lastAllocated.vel.map((component) => Number(component.toFixed(12))),
+    [128 / lastLength * 50, 128 / lastLength * 50, 256 / lastLength * 50].map((component) => Number(component.toFixed(12))),
+    "teleport last normalized dir/vel mismatch"
+  );
+
+  const metadata = CL_TeleportParticles(origin);
+  assert.equal(metadata[0]?.kind, "teleport-particles", "CL_TeleportParticles metadata kind mismatch");
+  assert.equal(metadata[0]?.count, 1053, "CL_TeleportParticles metadata count should preserve the full C lattice");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 1053, "CL_TeleportParticles particles should reach the refresh particle list");
 }
 
 function verifyBlasterRuntimeParticles(): void {
@@ -1561,6 +1610,75 @@ function verifyBfgExplosionTempEntityRuntimeBranch(): void {
   assert.ok(effects.some((effect) => effect.kind === "bfg-explosion-particles"), "TE_BFG_BIGEXPLOSION should expose BFG explosion particle metadata to apps/web");
 }
 
+function verifyAddParticlesLifetimeAndInstantParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 1200;
+  runtime.cl.active_particles = 0;
+  runtime.cl.free_particles = 3;
+
+  const expired = runtime.cl.particles[0]!;
+  expired.next = 1;
+  expired.time = 0;
+  expired.alpha = 0.5;
+  expired.alphavel = -1.0;
+
+  const instant = runtime.cl.particles[1]!;
+  instant.next = 2;
+  instant.time = 0;
+  instant.org = [1, 2, 3];
+  instant.vel = [100, 100, 100];
+  instant.accel = [100, 100, 100];
+  instant.color = 42;
+  instant.alpha = 0.25;
+  instant.alphavel = INSTANT_PARTICLE;
+
+  const live = runtime.cl.particles[2]!;
+  live.next = -1;
+  live.time = 1000;
+  live.org = [4, 5, 6];
+  live.vel = [10, 20, 30];
+  live.accel = [1, 2, 3];
+  live.color = 84;
+  live.alpha = 1.2;
+  live.alphavel = 0.1;
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 2, "CL_AddParticles should skip faded particles and render live particles");
+  assert.equal(runtime.cl.free_particles, 0, "CL_AddParticles should return faded particles to the free list");
+  assert.equal(runtime.cl.particles[0]!.next, 3, "CL_AddParticles faded particle next mismatch");
+  assert.equal(runtime.cl.active_particles, 1, "CL_AddParticles active head should preserve surviving order");
+  assert.equal(runtime.cl.particles[1]!.next, 2, "CL_AddParticles active linked list mismatch");
+  assert.equal(runtime.cl.particles[2]!.next, -1, "CL_AddParticles active tail mismatch");
+  assert.deepEqual(renderParticles[0], { origin: [1, 2, 3], color: 42, alpha: 0.25 }, "INSTANT_PARTICLE render output mismatch");
+  assert.equal(instant.alphavel, 0, "CL_AddParticles should clear INSTANT_PARTICLE alphavel after one frame");
+  assert.equal(instant.alpha, 0, "CL_AddParticles should clear INSTANT_PARTICLE alpha after one frame");
+  assert.deepEqual(renderParticles[1], {
+    origin: [6.04, 9.08, 12.12],
+    color: 84,
+    alpha: 1.0
+  }, "CL_AddParticles live particle integration/clamp mismatch");
+}
+
+function verifyClearEffects(): void {
+  const runtime = createRuntime();
+  runtime.cl.active_particles = 7;
+  runtime.cl.free_particles = 13;
+  runtime.cl.dlights[0]!.key = 99;
+  runtime.cl.dlights[0]!.radius = 64;
+  runtime.cl.configstrings[CS_LIGHTS + 2] = "abc";
+  CL_SetLightstyle(runtime, 2);
+  runtime.cl.last_lightstyle_ofs = 3;
+
+  CL_ClearEffects(runtime);
+
+  assert.equal(runtime.cl.active_particles, -1, "CL_ClearEffects should clear active particles");
+  assert.equal(runtime.cl.free_particles, 0, "CL_ClearEffects should rebuild the free particle head");
+  assert.equal(runtime.cl.particles[0]!.next, 1, "CL_ClearEffects should preserve CL_ClearParticles ordering");
+  assert.ok(runtime.cl.dlights.every((dlight) => dlight.radius === 0 && dlight.key === 0), "CL_ClearEffects should clear dlights");
+  assert.equal(runtime.cl.last_lightstyle_ofs, -1, "CL_ClearEffects should reset lightstyle offset");
+  assert.ok(runtime.cl.lightstyles.every((style) => style.length === 0), "CL_ClearEffects should clear lightstyle lengths");
+}
+
 function verifyMakeNormalVectors(): void {
   const forward: vec3_t = [3 / 13, 4 / 13, 12 / 13];
   const { right, up } = MakeNormalVectors(forward);
@@ -1683,6 +1801,41 @@ function verifyItemRespawnRuntimeParticles(): void {
 
   const renderParticles = CL_AddParticles(runtime);
   assert.equal(renderParticles.length, 64, "CL_ItemRespawnParticles particles should reach the refresh particle list");
+}
+
+function verifyTeleportParticlesEntityEventMetadata(): void {
+  const origin: vec3_t = [21, 34, 55];
+  const event: ClientEntityEvent = {
+    number: 7,
+    event: entity_event_t.EV_PLAYER_TELEPORT,
+    effects: 0,
+    state: {
+      number: 7,
+      origin,
+      angles: [0, 0, 0],
+      old_origin: [0, 0, 0],
+      modelindex: 1,
+      modelindex2: 0,
+      modelindex3: 0,
+      modelindex4: 0,
+      frame: 0,
+      skinnum: 0,
+      effects: 0,
+      renderfx: 0,
+      solid: 0,
+      sound: 0,
+      event: entity_event_t.EV_PLAYER_TELEPORT
+    }
+  };
+
+  const effects = CL_BuildEntityEventEffects(event);
+  const particles = effects.find((effect) => effect.kind === "teleport-particles");
+  assert.ok(particles, "EV_PLAYER_TELEPORT should expose teleport particles to apps/web");
+  assert.equal(particles.category, "entity-event", "teleport particles should remain tagged as an entity event");
+  assert.deepEqual(particles.position, origin, "teleport particles should preserve entity origin");
+  assert.equal(particles.count, 1053, "teleport metadata should preserve particle count");
+  assert.equal(particles.color, 7, "teleport metadata should preserve color");
+  assert.ok(effects.some((effect) => effect.sound?.name === "misc/tele1.wav"), "EV_PLAYER_TELEPORT should preserve teleport sound");
 }
 
 function verifyTeleporterEntityEventMetadata(): void {

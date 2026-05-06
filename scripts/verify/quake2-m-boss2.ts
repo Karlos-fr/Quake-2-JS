@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { temp_event_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { EF_ROCKET, temp_event_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
   AS_MISSILE,
@@ -19,6 +19,7 @@ import {
   FL_IMMUNE_LASER,
   FRAMETIME,
   M_MoveFrame,
+  MOVETYPE_FLYMISSILE,
   MOVETYPE_STEP,
   MOVETYPE_TOSS,
   SOLID_BBOX,
@@ -44,6 +45,8 @@ import {
   FRAME_attack15,
   FRAME_attack16,
   FRAME_attack19,
+  FRAME_attack20,
+  FRAME_attack40,
   FRAME_death50,
   FRAME_stand30,
   FRAME_stand50,
@@ -58,6 +61,7 @@ import {
   boss2_dead,
   boss2_die,
   boss2_frames_death,
+  boss2_frames_attack_rocket,
   boss2_frames_attack_mg,
   boss2_frames_attack_post_mg,
   boss2_frames_attack_pre_mg,
@@ -89,6 +93,7 @@ function main(): void {
   verifySaveRegistryRestoresCallbacksAndMoves();
   verifyStandingMoveTable();
   verifyMachinegunAttackMoveTables();
+  verifyRocketAttackMoveTable();
   verifyDeathMoveTable();
   verifyStateTransitions();
   verifySoundsAndPainBranches();
@@ -166,6 +171,7 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("boss2_move_attack_pre_mg"), boss2_move_attack_pre_mg);
   assert.equal(findGameSaveMove("boss2_move_attack_mg"), boss2_move_attack_mg);
   assert.equal(findGameSaveMove("boss2_move_attack_post_mg"), boss2_move_attack_post_mg);
+  assert.equal(findGameSaveMove("boss2_move_attack_rocket"), boss2_move_attack_rocket);
   assert.equal(findGameSaveMove("boss2_move_death"), boss2_move_death);
 }
 
@@ -226,6 +232,28 @@ function verifyMachinegunAttackMoveTables(): void {
     assert.equal(frame.aifunc?.name, "ai_charge", `boss2_frames_attack_post_mg[${index}].aifunc`);
     assert.equal(frame.dist, 1, `boss2_frames_attack_post_mg[${index}].dist`);
     assert.equal(frame.thinkfunc, undefined, `boss2_frames_attack_post_mg[${index}].thinkfunc`);
+  }
+}
+
+function verifyRocketAttackMoveTable(): void {
+  assert.equal(boss2_frames_attack_rocket.length, 21);
+  assert.equal(boss2_move_attack_rocket.firstframe, FRAME_attack20);
+  assert.equal(boss2_move_attack_rocket.lastframe, FRAME_attack40);
+  assert.equal(boss2_move_attack_rocket.frame, boss2_frames_attack_rocket);
+  assert.equal(boss2_move_attack_rocket.endfunc, boss2_run);
+
+  for (const [index, frame] of boss2_frames_attack_rocket.entries()) {
+    assert.equal(
+      frame.aifunc?.name,
+      index === 12 ? "ai_move" : "ai_charge",
+      `boss2_frames_attack_rocket[${index}].aifunc`
+    );
+    assert.equal(frame.dist, index === 12 ? -20 : 1, `boss2_frames_attack_rocket[${index}].dist`);
+    assert.equal(
+      frame.thinkfunc?.name,
+      index === 12 ? "Boss2Rocket" : undefined,
+      `boss2_frames_attack_rocket[${index}].thinkfunc`
+    );
   }
 }
 
@@ -318,6 +346,21 @@ function verifyStateTransitions(): void {
   boss.monsterinfo.aiflags = 0;
   M_MoveFrame(boss, runtime);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_run);
+
+  boss.enemy = farEnemy;
+  boss.monsterinfo.currentmove = boss2_move_attack_rocket;
+  boss.s.frame = FRAME_attack20 + 11;
+  M_MoveFrame(boss, runtime);
+  assert.deepEqual(drainMonsterMuzzleFlashEvents(runtime).map((event) => event.flashNumber), [
+    MZ2_BOSS2_ROCKET_1,
+    MZ2_BOSS2_ROCKET_2,
+    MZ2_BOSS2_ROCKET_3,
+    MZ2_BOSS2_ROCKET_4
+  ]);
+
+  boss.s.frame = FRAME_attack40;
+  M_MoveFrame(boss, runtime);
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_run);
 }
 
 function verifySoundsAndPainBranches(): void {
@@ -372,7 +415,20 @@ function verifyWeaponCallbacks(): void {
     MZ2_BOSS2_ROCKET_3,
     MZ2_BOSS2_ROCKET_4
   ]);
-  assert.equal(runtime.entities.filter((entity) => entity.classname === "rocket").length, 4);
+  const rockets = runtime.entities.filter((entity) => entity.classname === "rocket");
+  assert.equal(rockets.length, 4);
+  for (const [index, rocket] of rockets.entries()) {
+    assert.equal(rocket.owner, boss, `rocket ${index} owner`);
+    assert.equal(rocket.movetype, MOVETYPE_FLYMISSILE, `rocket ${index} movetype`);
+    assert.equal(rocket.s.effects & EF_ROCKET, EF_ROCKET, `rocket ${index} EF_ROCKET`);
+    assert.equal(rocket.dmg, 50, `rocket ${index} direct damage`);
+    assert.equal(rocket.radius_dmg, 50, `rocket ${index} radius damage`);
+    assert.equal(rocket.dmg_radius, 70, `rocket ${index} damage radius`);
+    assert.equal(rocket.s.sound, runtime.assets.soundPaths.indexOf("weapons/rockfly.wav") + 1, `rocket ${index} flight sound`);
+    assert.equal(runtime.assets.modelPaths[rocket.s.modelindex - 1], "models/objects/rocket/tris.md2", `rocket ${index} model`);
+    assert.ok(Math.abs(vectorLength(rocket.velocity) - 500) < 0.000001, `rocket ${index} velocity magnitude`);
+    assert.ok(rocket.nextthink > runtime.time, `rocket ${index} lifetime think`);
+  }
 
   boss.monsterinfo.currentmove = boss2_move_attack_mg;
   boss.s.frame = FRAME_attack10 - 1;
@@ -500,6 +556,10 @@ function makeTrace(entity: GameEntity | null, endpos: vec3_t | null = null): tra
     contents: 0,
     ent: entity
   };
+}
+
+function vectorLength(value: vec3_t): number {
+  return Math.hypot(value[0], value[1], value[2]);
 }
 
 function withMathRandom(values: number[], callback: () => void): void {

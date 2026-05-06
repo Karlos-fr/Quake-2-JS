@@ -123,6 +123,23 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout des commentaires d'en-tete des trois fonctions MG; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour les tables/moves MG, `monsterinfo.attack`, les seuils `0.6`/`0.7`, le callback de windup via `M_MoveFrame`, la sortie post-MG vers `boss2_run`, les muzzleflash et le save registry.
 
+- Lot traite: bloc roquettes `Boss2Rocket`, `boss2_frames_attack_rocket`, `boss2_move_attack_rocket`, avec le helper local TS `fireBoss2Rocket`.
+- Verdict: Valide.
+- Comparaison C/TS: `Boss2Rocket` conserve les quatre tirs successifs `MZ2_BOSS2_ROCKET_1..4`, le calcul `AngleVectors`, `G_ProjectSource`, la cible `enemy->s.origin + enemy->viewheight`, la normalisation de direction et `monster_fire_rocket(self, start, dir, 50, 500, flash)`. Le port utilise `fireBoss2Rocket` pour factoriser les quatre blocs identiques sans changer les flash ids ni les paramètres projectile. `boss2_frames_attack_rocket` conserve 21 frames, `ai_charge` distance 1 sauf l'index 12 en `ai_move` distance -20 avec `Boss2Rocket`. `boss2_move_attack_rocket` conserve `FRAME_attack20` -> `FRAME_attack40` et l'endfunc `boss2_run`.
+- Commentaires d'en-tete: commentaire de fonction ajoute pour `Boss2Rocket` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et note de factorisation locale. Les tables/moves declaratifs ne demandent pas de commentaire de fonction.
+- Runtime: integre. `boss2_attack` selectionne `boss2_move_attack_rocket` pour les cibles lointaines selon la branche C, puis `M_MoveFrame` appele depuis `monster_think` / `G_RunFrame` execute `Boss2Rocket` sur la treizieme frame et revient a `boss2_run` a la fin. `monster_fire_rocket` cree quatre entites `rocket` avec `EF_ROCKET`, modele `models/objects/rocket/tris.md2`, son `weapons/rockfly.wav`, degats/radius C et muzzleflash monster.
+- apps/web: integre. `apps/web` ne remplace pas la logique boss2; le host full-game/local consomme les snapshots, sons et packets muzzleflash/temp/runtime produits par le runtime porte.
+- renderer-three: integre. Le lot produit des sorties visibles attendues: frames d'attaque du modele boss2, quatre projectiles rocket avec modele/effects `EF_ROCKET`, dlight/trail rocket cote client et muzzleflash monster. Les projectiles et frames passent par snapshots/refresh entities vers `renderer-three`; les effets rocket sont consommes par le flux client/refresh verifie.
+- Tests lances:
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees: ajout du commentaire d'en-tete de `Boss2Rocket`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour la table/move rocket, le save registry, l'execution `M_MoveFrame`, les quatre muzzleflashes et les proprietes visibles/runtime des projectiles.
+
 ## Prochain lot recommande
 
-- Valider le bloc roquettes separe: `Boss2Rocket`, `boss2_frames_attack_rocket`, `boss2_move_attack_rocket`, et seulement ensuite les helpers de tir rocket si le lot reste borne.
+- Valider le bloc douleur restant `boss2_pain`, `boss2_frames_pain_heavy`, `boss2_move_pain_heavy`, `boss2_frames_pain_light`, `boss2_move_pain_light`, avec sons, skin, `pain_debounce_time`, nightmare-skip et retour `boss2_run`.

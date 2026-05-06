@@ -59,6 +59,7 @@ import {
   FRAME_walkc1,
   FRAME_walkc11,
   SP_monster_berserk,
+  berserk_attack_club,
   berserk_attack_spike,
   berserk_dead,
   berserk_die,
@@ -102,6 +103,7 @@ function main(): void {
   verifyStateTransitions();
   verifyMoveFrameCallbacks();
   verifyAttackSpikeRuntimeFlow();
+  verifyAttackClubRuntimeFlow();
   verifyFidgetBranches();
   verifySightSearchSounds();
   verifyAttackCallbacks();
@@ -233,7 +235,7 @@ function verifyStandFidgetRuntimeFlow(): void {
   assert.equal(berserk.nextthink, runtime.time + FRAMETIME, "stand fidget should schedule the next monster tick");
 
   berserk.s.frame = FRAME_standb20;
-  G_RunFrame(context);
+  withMathRandom([0.99], () => G_RunFrame(context));
 
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand, "stand fidget endfunc should restore the stand move");
   assert.equal(berserk.s.frame, FRAME_stand1, "stand fidget should return to the visible stand frame range");
@@ -345,6 +347,7 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("berserk_move_walk"), berserk_move_walk);
   assert.equal(findGameSaveMove("berserk_move_run1"), berserk_move_run1);
   assert.equal(findGameSaveMove("berserk_move_attack_spike"), berserk_move_attack_spike);
+  assert.equal(findGameSaveMove("berserk_move_attack_club"), berserk_move_attack_club);
   assert.equal(findGameSaveMove("berserk_move_death1"), berserk_move_death1);
 }
 
@@ -512,6 +515,61 @@ function verifyAttackSpikeRuntimeFlow(): void {
   G_RunFrame(context);
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1, "spike move endfunc should return through berserk_run");
   assert.equal(berserk.s.frame, FRAME_run1, "spike endfunc should feed visible run frames after the attack");
+}
+
+function verifyAttackClubRuntimeFlow(): void {
+  const runtime = createHarnessRuntime();
+  const soundCalls: Array<{ entity: GameEntity | null; channel: number; soundIndex: number; volume: number; attenuation: number; timeofs: number }> = [];
+  const context = createGameMainContext(createGameImports([], soundCalls), { runtime });
+  const berserk = createBerserk(runtime, 24);
+  const enemy = createRuntimeEntity({ classname: "target_dummy" }, 25);
+  enemy.inuse = true;
+  enemy.health = 100;
+  enemy.takedamage = 1;
+  enemy.s.origin = [40, 0, 0];
+  enemy.origin = [40, 0, 0];
+  enemy.mins = [-16, -16, -24];
+  enemy.maxs = [16, 16, 32];
+  enemy.size = [32, 32, 56];
+  runtime.entities[25] = enemy;
+
+  SP_monster_berserk(berserk, runtime);
+  berserk.think!(berserk, runtime);
+  berserk.enemy = enemy;
+  berserk.groundentity = runtime.entities[0] ?? null;
+  runtime.collision = {
+    world: {} as never,
+    trace: () => makeTrace(enemy),
+    pointcontents: () => 0
+  };
+
+  assert.equal(berserk.monsterinfo.melee, berserk_melee);
+  withMathRandom([0.75], () => berserk.monsterinfo.melee!(berserk, runtime));
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_attack_club, "monsterinfo.melee should select club on rand % 2 != 0");
+
+  assert.equal(berserk_move_attack_club.endfunc, berserk_run);
+  assert.equal(berserk_move_attack_club.frame[4].thinkfunc, berserk_swing);
+  assert.equal(berserk_move_attack_club.frame[8].thinkfunc, berserk_attack_club);
+
+  berserk.s.frame = FRAME_att_c9 + 3;
+  G_RunFrame(context);
+  const swing = soundCalls.at(-1);
+  assert.equal(berserk.s.frame, FRAME_att_c9 + 4, "G_RunFrame should reach the visible club swing frame");
+  assert.equal(runtime.assets.soundPaths[(swing?.soundIndex ?? 0) - 1], "berserk/attack.wav");
+  assert.equal(swing?.channel, CHAN_WEAPON);
+  assert.equal(swing?.attenuation, ATTN_NORM);
+  assert.equal(swing?.volume, 1);
+  assert.equal(swing?.timeofs, 0);
+
+  berserk.s.frame = FRAME_att_c9 + 7;
+  withMathRandom([0.99], () => G_RunFrame(context));
+  assert.equal(berserk.s.frame, FRAME_att_c9 + 8, "G_RunFrame should reach the visible club hit frame");
+  assert.equal(enemy.health, 90, "berserk_attack_club should call fire_hit with 5 + rand % 6 damage");
+
+  berserk.s.frame = FRAME_att_c20;
+  G_RunFrame(context);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1, "club move endfunc should return through berserk_run");
+  assert.equal(berserk.s.frame, FRAME_run1, "club endfunc should feed visible run frames after the attack");
 }
 
 function verifySightSearchSounds(): void {
