@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: bloc endian et arguments communs `bigendien`, `BigShort`, `LittleShort`, `BigLong`, `LittleLong`, `BigFloat`, `LittleFloat`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_CheckParm`, `COM_AddParm`, `COM_InitArgv`.
+- Dernier lot valide: bloc utilitaires/protocole `COM_Init` (non applicable), `CopyString`, `Info_Print`, `CRC_Init`, `CRC_ProcessByte`, `CRC_Value`, `CRC_Block`, `PROTOCOL_VERSION`, `PORT_MASTER`, `PORT_CLIENT`, `PORT_SERVER`, `UPDATE_BACKUP`, `UPDATE_MASK`, `svc_ops_e`, `clc_ops_e`, flags `PS_*` et flags/defaults `SND_*`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc utilitaires/protocole dans `packages/qcommon/src/qcommon.ts`, `packages/qcommon/src/common.ts` et `packages/qcommon/src/protocol.ts`: `COM_Init`, `CopyString`, `Info_Print`, `CRC_Init`, `CRC_ProcessByte`, `CRC_Value`, `CRC_Block`, `PROTOCOL_VERSION`, `PORT_MASTER`, `PORT_CLIENT`, `PORT_SERVER`, `UPDATE_BACKUP`, `UPDATE_MASK`, `svc_ops_e`, `clc_ops_e`, `PS_M_TYPE`, `PS_M_ORIGIN`, `PS_M_VELOCITY`, `PS_M_TIME`, `PS_M_FLAGS`, `PS_M_GRAVITY`, `PS_M_DELTA_ANGLES`, `PS_VIEWOFFSET`, `PS_VIEWANGLES`, `PS_KICKANGLES`, `PS_BLEND`, `PS_FOV`, `PS_WEAPONINDEX`, `PS_WEAPONFRAME`, `PS_RDFLAGS`, `SND_VOLUME`, `SND_ATTENUATION`, `SND_POS`, `SND_ENT`, `SND_OFFSET`, `DEFAULT_SOUND_PACKET_VOLUME`, `DEFAULT_SOUND_PACKET_ATTENUATION`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations `Quake-2-master/qcommon/common.c` pour `CopyString`/`Info_Print`, implementations `Quake-2-master/qcommon/crc.c` et `crc.h` pour CRC, et constantes/enums protocole du header.
+- Cible comparee: `packages/qcommon/src/qcommon.ts`, `packages/qcommon/src/common.ts`, `packages/qcommon/src/protocol.ts`, exports publics `packages/qcommon/src/index.ts`, harnais `scripts/verify/quake2-qcommon-header.ts`, plus usages client/server/web.
+- Decision: portage valide pour 36 entrees et `COM_Init` marque `Non applicable`. `COM_Init` est seulement un prototype dans `qcommon.h`, sans definition C ni appel source; le flux d'initialisation reel est `Qcommon_Init`. `CopyString` conserve le contenu exact sous forme de chaine possedee JS. `Info_Print` conserve le decoupage info string, l'alignement a 20 caracteres, les cles longues et le cas `MISSING VALUE`, en retournant des lignes au lieu d'appeler `Com_Printf`. CRC conserve la table, la seed `0xffff`, le process byte et le final xor. Les ports, protocol version, update mask, opcodes `svc`/`clc`, flags playerstate et flags son sont strictement alignes sur les valeurs C.
+- Runtime: attendu et verifie. Les constantes protocole sont atteignables depuis les racines client/server/netchan (`CL_Frame`, `SV_Frame`, parse serveur/client, snapshots). `Info_Print` est appele par les commandes client/serveur d'affichage userinfo/serverinfo. CRC est utilise par le checksum de sequence qcommon et expose par les tests CRC dedies. `CopyString` est une primitive commune sans sortie visible propre.
+- apps/web: attendu pour `PROTOCOL_VERSION` et les flux full-game serveur/client; verifie via `full-game-server-host` et `full-game-three-renderer`. Pas de logique web parallele remplacant le protocole `qcommon`.
+- renderer-three: attendu indirectement pour `PS_*`, `svc_ops_e`, `SND_*` et `UPDATE_*`, car les messages serveur/client alimentent camera/refdef, entites visibles, frames, sons, temp entities, dlights/particules et snapshots consommes ensuite par le renderer. Verifie via parse client et full-game three renderer. `CopyString`, `Info_Print`, ports et CRC ne produisent pas directement de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene.
+- Commentaires: en-tetes de `CopyString`, `Info_Print`, `CRC_Init`, `CRC_ProcessByte`, `CRC_Value`, `CRC_Block` verifies; commentaires de groupe ajoutes pour `PORT_*`, `PROTOCOL_VERSION`/`UPDATE_*`, `svc_ops_e`, `clc_ops_e`, `PS_*` et `SND_*`.
+- Tests ajoutes: assertions ciblees dans `scripts/verify/quake2-qcommon-header.ts` pour tous les opcodes `svc_ops_e`/`clc_ops_e`, tous les flags `PS_*`, tous les flags/defaults `SND_*`, cas CRC init/process/partial/empty, `CopyString` vide/contenu multi-ligne et `Info_Print` normal/missing/cle longue.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:crc`, `npm run verify:crc:header`, `npm run verify:server:ents`, `npm run verify:cl-parse`, `npm run verify:cl-main`, `npm run verify:server:send`, `npm run verify:server:user`, `npm run verify:audio:phase11`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: bloc endian et arguments communs dans `packages/qcommon/src/common.ts`: `bigendien`, `BigShort`, `LittleShort`, `BigLong`, `LittleLong`, `BigFloat`, `LittleFloat`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_CheckParm`, `COM_AddParm`, `COM_InitArgv`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations argv `Quake-2-master/qcommon/common.c`, implementations endian `Quake-2-master/game/q_shared.c` reutilisees par `qcommon/common.c` via `Swap_Init`.
@@ -85,7 +98,7 @@
 
 ## Prochain lot recommande
 
-- `COM_Init`, puis `CopyString`, `Info_Print` et le bloc CRC header `CRC_Init`, `CRC_ProcessByte`, `CRC_Value`, `CRC_Block` si le lot reste coherent.
+- Bloc commandes header dans `packages/qcommon/src/cmd.ts`: `EXEC_NOW`, `EXEC_INSERT`, `EXEC_APPEND`, puis `Cbuf_Init`, `Cbuf_AddText`, `Cbuf_InsertText`, `Cbuf_ExecuteText`, `Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cbuf_Execute`, `Cbuf_CopyToDefer`, `Cbuf_InsertFromDefer`, et poursuivre vers `Cmd_*` si le lot reste coherent.
 
 ## Blocages
 

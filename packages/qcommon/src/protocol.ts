@@ -26,10 +26,28 @@
  */
 export const BASEDIRNAME = "baseq2";
 
+/**
+ * Original names: PROTOCOL_VERSION, UPDATE_BACKUP, UPDATE_MASK
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the stock Quake II network protocol id and circular snapshot history size.
+ */
 export const PROTOCOL_VERSION = 34;
 export const UPDATE_BACKUP = 16;
 export const UPDATE_MASK = UPDATE_BACKUP - 1;
 
+/**
+ * Original name: svc_ops_e
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the server-to-client opcode order used by message parsing and writing.
+ */
 export enum svc_ops_e {
   svc_bad,
   svc_muzzleflash,
@@ -54,6 +72,15 @@ export enum svc_ops_e {
   svc_frame
 }
 
+/**
+ * Original name: clc_ops_e
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the client-to-server opcode order used by command/message flows.
+ */
 export enum clc_ops_e {
   clc_bad,
   clc_nop,
@@ -62,6 +89,15 @@ export enum clc_ops_e {
   clc_stringcmd
 }
 
+/**
+ * Original names: PS_M_TYPE through PS_RDFLAGS
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the player_state_t delta bit flags shared by server write and client parse.
+ */
 export const PS_M_TYPE = 1 << 0;
 export const PS_M_ORIGIN = 1 << 1;
 export const PS_M_VELOCITY = 1 << 2;
@@ -78,6 +114,15 @@ export const PS_WEAPONINDEX = 1 << 12;
 export const PS_WEAPONFRAME = 1 << 13;
 export const PS_RDFLAGS = 1 << 14;
 
+/**
+ * Original names: SND_VOLUME through DEFAULT_SOUND_PACKET_ATTENUATION
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the sound packet optional-field flags and stock default values.
+ */
 export const SND_VOLUME = 1 << 0;
 export const SND_ATTENUATION = 1 << 1;
 export const SND_POS = 1 << 2;

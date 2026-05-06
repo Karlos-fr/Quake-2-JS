@@ -10,24 +10,24 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/qgl.h` | function | `BOOL` | `packages/renderer-three/src/qgl.ts` | `BOOL` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `GLboolean` | `packages/renderer-three/src/qgl.ts` | `GLboolean` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `GLenum` | `packages/renderer-three/src/qgl.ts` | `GLenum` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `GLint` | `packages/renderer-three/src/qgl.ts` | `GLint` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `GLuint` | `packages/renderer-three/src/qgl.ts` | `GLuint` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `HDC` | `packages/renderer-three/src/qgl.ts` | `HDC` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `HGLRC` | `packages/renderer-three/src/qgl.ts` | `HGLRC` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `int` | `packages/renderer-three/src/qgl.ts` | `int` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `PROC` | `packages/renderer-three/src/qgl.ts` | `PROC` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `QGL_Init` | `packages/renderer-three/src/qgl.ts` | `QGL_Init` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `QGL_Shutdown` | `packages/renderer-three/src/qgl.ts` | `QGL_Shutdown` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | function | `void` | `packages/renderer-three/src/qgl.ts` | `void` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | macro | `__QGL_H__` | `packages/renderer-three/src/qgl.ts` | `__QGL_H__` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | macro | `APIENTRY` | `packages/renderer-three/src/qgl.ts` | `APIENTRY` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_DISTANCE_ATTENUATION_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_DISTANCE_ATTENUATION_EXT` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_POINT_FADE_THRESHOLD_SIZE_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_POINT_FADE_THRESHOLD_SIZE_EXT` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_POINT_SIZE_MAX_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_POINT_SIZE_MAX_EXT` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_POINT_SIZE_MIN_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_POINT_SIZE_MIN_EXT` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_SHARED_TEXTURE_PALETTE_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_SHARED_TEXTURE_PALETTE_EXT` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_TEXTURE0_SGIS` | `packages/renderer-three/src/qgl.ts` | `GL_TEXTURE0_SGIS` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_TEXTURE1_SGIS` | `packages/renderer-three/src/qgl.ts` | `GL_TEXTURE1_SGIS` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/qgl.h` | function | `BOOL` | `packages/renderer-three/src/qgl.ts` | `BOOL` | Non applicable | split-undocumented | Type/retour Win32 genere depuis les prototypes `qwgl*`, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | function | `GLboolean` | `packages/renderer-three/src/qgl.ts` | `GLboolean` | Non applicable | split-undocumented | Type/retour GL genere depuis les prototypes `qgl*`, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | function | `GLenum` | `packages/renderer-three/src/qgl.ts` | `GLenum` | Non applicable | split-undocumented | Type/retour GL genere depuis les prototypes `qgl*`, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | function | `GLint` | `packages/renderer-three/src/qgl.ts` | `GLint` | Non applicable | split-undocumented | Type/retour GL genere depuis les prototypes `qgl*`, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | function | `GLuint` | `packages/renderer-three/src/qgl.ts` | `GLuint` | Non applicable | split-undocumented | Type/retour GL genere depuis les prototypes `qgl*`, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | function | `HDC` | `packages/renderer-three/src/qgl.ts` | `HDC` | Non applicable | split-undocumented | Type/retour Win32 genere depuis les prototypes `qwgl*`, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | function | `HGLRC` | `packages/renderer-three/src/qgl.ts` | `HGLRC` | Non applicable | split-undocumented | Type/retour Win32 genere depuis les prototypes `qwgl*`, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | function | `int` | `packages/renderer-three/src/qgl.ts` | `int` | Non applicable | split-undocumented | Type/retour C genere depuis les prototypes `qwgl*`/extensions, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | function | `PROC` | `packages/renderer-three/src/qgl.ts` | `PROC` | Non applicable | split-undocumented | Type/retour Win32 genere depuis `qwglGetProcAddress`, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | function | `QGL_Init` | `packages/renderer-three/src/qgl.ts` | `QGL_Init` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/qgl.h` | function | `QGL_Shutdown` | `packages/renderer-three/src/qgl.ts` | `QGL_Shutdown` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/qgl.h` | function | `void` | `packages/renderer-three/src/qgl.ts` | `void` | Non applicable | split-undocumented | Type/retour C genere depuis les prototypes `qgl*`, pas une entite proprietaire. |
+| `Quake-2-master/ref_gl/qgl.h` | macro | `__QGL_H__` | `packages/renderer-three/src/qgl.ts` | `__QGL_H__` | Non applicable | split-undocumented | Garde d'inclusion C sans equivalent runtime TypeScript attendu. |
+| `Quake-2-master/ref_gl/qgl.h` | macro | `APIENTRY` | `packages/renderer-three/src/qgl.ts` | `APIENTRY` | Non applicable | split-undocumented | Macro de convention d'appel C remplacee par l'adapter de dispatch TS. |
+| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_DISTANCE_ATTENUATION_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_DISTANCE_ATTENUATION_EXT` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_POINT_FADE_THRESHOLD_SIZE_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_POINT_FADE_THRESHOLD_SIZE_EXT` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_POINT_SIZE_MAX_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_POINT_SIZE_MAX_EXT` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_POINT_SIZE_MIN_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_POINT_SIZE_MIN_EXT` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_SHARED_TEXTURE_PALETTE_EXT` | `packages/renderer-three/src/qgl.ts` | `GL_SHARED_TEXTURE_PALETTE_EXT` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_TEXTURE0_SGIS` | `packages/renderer-three/src/qgl.ts` | `GL_TEXTURE0_SGIS` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/qgl.h` | macro | `GL_TEXTURE1_SGIS` | `packages/renderer-three/src/qgl.ts` | `GL_TEXTURE1_SGIS` | Valide | split-undocumented |  |

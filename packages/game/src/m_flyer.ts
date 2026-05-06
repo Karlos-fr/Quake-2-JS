@@ -201,8 +201,8 @@ export const FRAME_pain304 = 150;
 
 export const MODEL_SCALE = 1.0;
 
-const MZ2_FLYER_BLASTER_1 = 58;
-const MZ2_FLYER_BLASTER_2 = 59;
+export const MZ2_FLYER_BLASTER_1 = 58;
+export const MZ2_FLYER_BLASTER_2 = 59;
 
 const SOUND_SIGHT = "flyer/flysght1.wav";
 const SOUND_IDLE = "flyer/flysrch1.wav";

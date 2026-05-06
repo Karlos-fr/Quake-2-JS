@@ -265,6 +265,17 @@ export const MODEL_SCALE = 1.0;
 
 export const MZ2_INFANTRY_MACHINEGUN_1 = 26;
 export const MZ2_INFANTRY_MACHINEGUN_2 = 27;
+export const MZ2_INFANTRY_MACHINEGUN_3 = 28;
+export const MZ2_INFANTRY_MACHINEGUN_4 = 29;
+export const MZ2_INFANTRY_MACHINEGUN_5 = 30;
+export const MZ2_INFANTRY_MACHINEGUN_6 = 31;
+export const MZ2_INFANTRY_MACHINEGUN_7 = 32;
+export const MZ2_INFANTRY_MACHINEGUN_8 = 33;
+export const MZ2_INFANTRY_MACHINEGUN_9 = 34;
+export const MZ2_INFANTRY_MACHINEGUN_10 = 35;
+export const MZ2_INFANTRY_MACHINEGUN_11 = 36;
+export const MZ2_INFANTRY_MACHINEGUN_12 = 37;
+export const MZ2_INFANTRY_MACHINEGUN_13 = 38;
 
 const aimangles: readonly vec3_t[] = [
   [0.0, 5.0, 0.0],

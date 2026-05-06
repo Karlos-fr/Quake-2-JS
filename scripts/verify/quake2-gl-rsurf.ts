@@ -13,6 +13,11 @@
 import { strict as assert } from "node:assert";
 
 import {
+  DrawGLFlowingPoly,
+  DrawGLPoly,
+  DrawGLWaterPoly,
+  DrawGLWaterPolyLightmap,
+  DrawTextureChains,
   GL_BuildPolygonFromSurface,
   GL_CreateSurfaceLightmap,
   GL_LIGHTMAP_FORMAT,
@@ -26,10 +31,12 @@ import {
   createGlRsurfRuntime,
   setCurrentEntity,
   setCurrentModel,
+  setCurrentTime,
   setDynamicLightmapsEnabled,
   setFullbrightEnabled,
   setFrameCount,
   setLightstyles,
+  setMultitextureEnabled,
   syncRsurfMultitextureFromRmain,
   setWorldModel
 } from "../../packages/renderer-three/src/index.js";
@@ -43,7 +50,11 @@ const hookLog = {
   uploadLightmapBlockCalls: [] as Array<{ dynamic: boolean; textureIndex: number }>,
   uploadSurfaceLightmapCalls: [] as Array<{ textureIndex: number; smax: number; tmax: number }>,
   renderLightmappedPolyChainCalls: [] as Array<{ textureIndex: number }>,
-  renderBrushPolyCalls: 0
+  renderBrushPolyCalls: 0,
+  renderFlowingPolyCalls: [] as number[],
+  renderWaterPolyCalls: 0,
+  suspendMultitextureCalls: 0,
+  resumeMultitextureCalls: 0
 };
 const cvarRuntime = createCvarRuntime();
 
@@ -68,11 +79,23 @@ const runtime = createGlRsurfRuntime({
   renderBrushPoly: () => {
     hookLog.renderBrushPolyCalls += 1;
   },
+  renderFlowingPoly: (_surface, _image, scroll) => {
+    hookLog.renderFlowingPolyCalls.push(scroll);
+  },
+  renderWaterPoly: () => {
+    hookLog.renderWaterPolyCalls += 1;
+  },
   renderLightmappedPolyChain: (_surface, _image, lightmapTextureIndex) => {
     hookLog.renderLightmappedPolyChainCalls.push({ textureIndex: lightmapTextureIndex });
   },
   renderLightmapChainSurface: (_surface, textureIndex, sOffset, tOffset) => {
     hookLog.renderLightmapChainSurfaceCalls.push({ textureIndex, sOffset, tOffset });
+  },
+  suspendMultitexture: () => {
+    hookLog.suspendMultitextureCalls += 1;
+  },
+  resumeMultitexture: () => {
+    hookLog.resumeMultitextureCalls += 1;
   }
 });
 
@@ -149,8 +172,11 @@ setDynamicLightmapsEnabled(runtime, true);
 setFrameCount(runtime, 9);
 setLightstyles(runtime, [{ white: 3 }]);
 hookLog.uploadSurfaceLightmapCalls.length = 0;
+hookLog.renderBrushPolyCalls = 0;
+DrawGLPoly(runtime, dynamicSurface, dynamicSurface.texinfo.image);
+assert.equal(hookLog.renderBrushPolyCalls, 1, "DrawGLPoly base render hook mismatch");
 R_RenderBrushPoly(runtime, dynamicSurface);
-assert.equal(hookLog.renderBrushPolyCalls, 1, "R_RenderBrushPoly base render hook mismatch");
+assert.equal(hookLog.renderBrushPolyCalls, 2, "R_RenderBrushPoly base render hook mismatch");
 assert.deepEqual(
   hookLog.uploadSurfaceLightmapCalls.at(-1),
   { textureIndex: 3, smax: 2, tmax: 2 },
@@ -168,6 +194,38 @@ dynamicFrameSurface.lightmaptexturenum = 4;
 dynamicFrameSurface.dlightframe = 9;
 R_RenderBrushPoly(runtime, dynamicFrameSurface);
 assert.equal(runtime.gl_lms.lightmap_surfaces[0], dynamicFrameSurface, "R_RenderBrushPoly dynamic block chain mismatch");
+
+const flowingSurface = createMSurface();
+flowingSurface.texinfo = createMTexinfo();
+flowingSurface.texinfo.flags = 0x40;
+flowingSurface.texinfo.image = { name: "flowing", width: 64, height: 64 } as never;
+setCurrentTime(runtime, 0);
+DrawGLFlowingPoly(runtime, flowingSurface, flowingSurface.texinfo.image);
+assert.equal(hookLog.renderFlowingPolyCalls.at(-1), -64, "DrawGLFlowingPoly zero-time scroll mismatch");
+setCurrentTime(runtime, 20);
+R_RenderBrushPoly(runtime, flowingSurface);
+assert.equal(hookLog.renderFlowingPolyCalls.at(-1), -32, "R_RenderBrushPoly flowing scroll mismatch");
+
+const waterSurface = createMSurface();
+waterSurface.flags = SURF_DRAWTURB;
+waterSurface.texinfo = createMTexinfo();
+waterSurface.texinfo.image = { name: "water", width: 64, height: 64 } as never;
+DrawGLWaterPoly(runtime, waterSurface, waterSurface.texinfo.image);
+R_RenderBrushPoly(runtime, waterSurface);
+assert.equal(hookLog.renderWaterPolyCalls, 2, "DrawGLWaterPoly/R_RenderBrushPoly water dispatch mismatch");
+dynamicFrameSurface.polys = {
+  next: null,
+  chain: null,
+  numverts: 3,
+  flags: 0,
+  verts: [
+    [0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0]
+  ]
+};
+DrawGLWaterPolyLightmap(runtime, dynamicFrameSurface, 5);
+assert.equal(hookLog.renderLightmapChainSurfaceCalls.at(-1)?.textureIndex, 5, "DrawGLWaterPolyLightmap dispatch mismatch");
 
 hookLog.uploadSurfaceLightmapCalls.length = 0;
 hookLog.renderLightmappedPolyChainCalls.length = 0;
@@ -228,9 +286,11 @@ blendSurface.polys = {
     [0, 1, 0, 0, 0, 0, 0]
   ]
 };
+runtime.gl_lms.lightmap_surfaces.fill(null);
 runtime.gl_lms.lightmap_surfaces[1] = blendSurface;
 setWorldModel(runtime, blendWorld);
 setCurrentModel(runtime, blendWorld);
+hookLog.renderLightmapChainSurfaceCalls.length = 0;
 
 setFullbrightEnabled(runtime, true);
 R_BlendLightmaps(runtime);
@@ -259,5 +319,34 @@ assert.deepEqual(
   { textureIndex: 0, sOffset: 12 / 128, tOffset: 20 / 128 },
   "R_BlendLightmaps dynamic lightmap offset mismatch"
 );
+
+runtime.gl_lms.lightmap_surfaces.fill(null);
+hookLog.renderLightmappedPolyChainCalls.length = 0;
+hookLog.renderWaterPolyCalls = 0;
+hookLog.suspendMultitextureCalls = 0;
+hookLog.resumeMultitextureCalls = 0;
+const chainStatic = createMSurface();
+chainStatic.texinfo = createMTexinfo();
+chainStatic.texinfo.image = { name: "chain-static", width: 64, height: 64 } as never;
+chainStatic.extents = [16, 16];
+chainStatic.styles = [255, 255, 255, 255];
+chainStatic.lightmaptexturenum = 7;
+const chainWater = createMSurface();
+chainWater.flags = SURF_DRAWTURB;
+chainWater.texinfo = createMTexinfo();
+chainWater.texinfo.image = { name: "chain-water", width: 64, height: 64 } as never;
+chainStatic.texturechain = chainWater;
+const chainImage = { name: "chain", registration_sequence: 1, texturechain: chainStatic } as never;
+setMultitextureEnabled(runtime, true);
+DrawTextureChains(runtime, [chainImage]);
+assert.deepEqual(
+  hookLog.renderLightmappedPolyChainCalls.at(-1),
+  { textureIndex: 7 },
+  "DrawTextureChains multitexture non-turb pass mismatch"
+);
+assert.equal(hookLog.renderWaterPolyCalls, 1, "DrawTextureChains multitexture turb pass mismatch");
+assert.equal(hookLog.suspendMultitextureCalls, 1, "DrawTextureChains suspend point mismatch");
+assert.equal(hookLog.resumeMultitextureCalls, 1, "DrawTextureChains resume point mismatch");
+assert.equal((chainImage as { texturechain?: unknown }).texturechain, null, "DrawTextureChains chain clear mismatch");
 
 console.log("quake2-gl-rsurf: ok");

@@ -253,7 +253,7 @@ export const FRAME_attak108 = 204;
 
 export const MODEL_SCALE = 1.0;
 
-const MZ2_HOVER_BLASTER_1 = 62;
+export const MZ2_HOVER_BLASTER_1 = 62;
 
 const SOUND_PAIN1 = "hover/hovpain1.wav";
 const SOUND_PAIN2 = "hover/hovpain2.wav";

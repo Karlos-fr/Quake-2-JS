@@ -452,6 +452,76 @@ export function GL_RenderLightmappedPoly(runtime: GlRsurfRuntime, surf: msurface
 }
 
 /**
+ * Original name: DrawGLWaterPoly
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits a warped water polygon through the renderer backend.
+ *
+ * Porting notes:
+ * - `gl_warp.c` owns the vertex warp update; this routine keeps the original surface dispatch point.
+ */
+export function DrawGLWaterPoly(runtime: GlRsurfRuntime, surface: msurface_t, image: image_t | null = null): image_t | null {
+  runtime.hooks.renderWaterPoly?.(surface, image);
+  return image;
+}
+
+/**
+ * Original name: DrawGLWaterPolyLightmap
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ * Fidelity level: Adapter
+ *
+ * Behavior:
+ * - Dispatches the lightmap coordinate pass for a water polygon.
+ *
+ * Porting notes:
+ * - The stock Quake II GL path keeps this helper behind a disabled compile-time block; the TS adapter exposes
+ *   it for parity and routes it through the same lightmap-chain hook used by `DrawGLPolyChain`.
+ */
+export function DrawGLWaterPolyLightmap(
+  runtime: GlRsurfRuntime,
+  surface: msurface_t,
+  lightmapTextureIndex: number = surface.lightmaptexturenum
+): void {
+  DrawGLPolyChain(runtime, surface, lightmapTextureIndex, 0, 0);
+}
+
+/**
+ * Original name: DrawGLPoly
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits one non-flowing brush polygon with base texture coordinates.
+ *
+ * Porting notes:
+ * - Immediate-mode vertex emission is represented by a surface-level hook because polygon buffers live in
+ *   `gl-world-scene-adapter`.
+ */
+export function DrawGLPoly(runtime: GlRsurfRuntime, surface: msurface_t, image: image_t | null = null): image_t | null {
+  runtime.hooks.renderBrushPoly?.(surface, image);
+  return image;
+}
+
+/**
+ * Original name: DrawGLFlowingPoly
+ * Source: ref_gl/gl_rsurf.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits one brush polygon with the original scrolling texture offset.
+ */
+export function DrawGLFlowingPoly(runtime: GlRsurfRuntime, surface: msurface_t, image: image_t | null = null): image_t | null {
+  runtime.hooks.renderFlowingPoly?.(surface, image, computeFlowingScroll(runtime.currentTime));
+  return image;
+}
+
+/**
  * Original name: R_RenderBrushPoly
  * Source: ref_gl/gl_rsurf.c
  * Category: Ported
@@ -471,14 +541,14 @@ export function R_RenderBrushPoly(runtime: GlRsurfRuntime, fa: msurface_t): imag
   const image = R_TextureAnimation(runtime, fa.texinfo);
 
   if ((fa.flags & SURF_DRAWTURB) !== 0) {
-    runtime.hooks.renderWaterPoly?.(fa, image);
+    DrawGLWaterPoly(runtime, fa, image);
     return image;
   }
 
   if ((fa.texinfo.flags & SURF_FLOWING) !== 0) {
-    runtime.hooks.renderFlowingPoly?.(fa, image, computeFlowingScroll(runtime.currentTime));
+    DrawGLFlowingPoly(runtime, fa, image);
   } else {
-    runtime.hooks.renderBrushPoly?.(fa, image);
+    DrawGLPoly(runtime, fa, image);
   }
 
   const dynamicState = evaluateDynamicLightmapState(runtime, fa);
@@ -860,7 +930,6 @@ export function DrawTextureChains(runtime: GlRsurfRuntime, images: image_t[]): v
     return;
   }
 
-  runtime.hooks.suspendMultitexture?.();
   for (const image of images) {
     if (!getImageRegistrationSequence(image)) {
       continue;
@@ -884,6 +953,7 @@ export function DrawTextureChains(runtime: GlRsurfRuntime, images: image_t[]): v
     }
   }
 
+  runtime.hooks.suspendMultitexture?.();
   for (const image of images) {
     if (!getImageRegistrationSequence(image)) {
       continue;

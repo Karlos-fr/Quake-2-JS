@@ -956,6 +956,7 @@ export {
 } from "./m_flipper.js";
 
 export {
+  MZ2_FLOAT_BLASTER_1,
   SP_monster_floater,
   floater_attack,
   floater_dead,
@@ -985,6 +986,8 @@ export {
 } from "./m_float.js";
 
 export {
+  MZ2_FLYER_BLASTER_1,
+  MZ2_FLYER_BLASTER_2,
   SP_monster_flyer,
   flyer_attack,
   flyer_check_melee,
@@ -1028,6 +1031,7 @@ export {
 export {
   GaldiatorMelee,
   GladiatorGun,
+  MZ2_GLADIATOR_RAILGUN_1,
   SP_monster_gladiator,
   gladiator_attack,
   gladiator_cleaver_swing,
@@ -1053,6 +1057,19 @@ export {
 
 export {
   InfantryMachineGun,
+  MZ2_INFANTRY_MACHINEGUN_1,
+  MZ2_INFANTRY_MACHINEGUN_2,
+  MZ2_INFANTRY_MACHINEGUN_3,
+  MZ2_INFANTRY_MACHINEGUN_4,
+  MZ2_INFANTRY_MACHINEGUN_5,
+  MZ2_INFANTRY_MACHINEGUN_6,
+  MZ2_INFANTRY_MACHINEGUN_7,
+  MZ2_INFANTRY_MACHINEGUN_8,
+  MZ2_INFANTRY_MACHINEGUN_9,
+  MZ2_INFANTRY_MACHINEGUN_10,
+  MZ2_INFANTRY_MACHINEGUN_11,
+  MZ2_INFANTRY_MACHINEGUN_12,
+  MZ2_INFANTRY_MACHINEGUN_13,
   SP_monster_infantry,
   infantry_attack,
   infantry_cock_gun,
@@ -1170,6 +1187,12 @@ export {
   MZ2_GUNNER_GRENADE_4,
   MZ2_GUNNER_MACHINEGUN_1,
   MZ2_GUNNER_MACHINEGUN_2,
+  MZ2_GUNNER_MACHINEGUN_3,
+  MZ2_GUNNER_MACHINEGUN_4,
+  MZ2_GUNNER_MACHINEGUN_5,
+  MZ2_GUNNER_MACHINEGUN_6,
+  MZ2_GUNNER_MACHINEGUN_7,
+  MZ2_GUNNER_MACHINEGUN_8,
   SP_monster_gunner,
   gunner_attack,
   gunner_dead,
@@ -1210,6 +1233,10 @@ export {
   BossExplode,
   MZ2_SUPERTANK_MACHINEGUN_1,
   MZ2_SUPERTANK_MACHINEGUN_2,
+  MZ2_SUPERTANK_MACHINEGUN_3,
+  MZ2_SUPERTANK_MACHINEGUN_4,
+  MZ2_SUPERTANK_MACHINEGUN_5,
+  MZ2_SUPERTANK_MACHINEGUN_6,
   MZ2_SUPERTANK_ROCKET_1,
   MZ2_SUPERTANK_ROCKET_2,
   MZ2_SUPERTANK_ROCKET_3,
@@ -1292,6 +1319,7 @@ export {
 } from "./m_tank.js";
 
 export {
+  MZ2_HOVER_BLASTER_1,
   SP_monster_hover,
   hover_attack,
   hover_dead,

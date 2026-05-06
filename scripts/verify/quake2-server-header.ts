@@ -17,6 +17,7 @@ import type { game_export_t } from "../../packages/game/src/index.js";
 import {
   client_state_t,
   computeServerClientEntityCapacity,
+  createClientFrame,
   createServerClient,
   createServerHeaderState,
   createServerState,
@@ -41,17 +42,43 @@ assert.equal(MAX_PACKET_ENTITIES, 64, "MAX_PACKET_ENTITIES mismatch");
 assert.equal(SV_OUTPUTBUF_LENGTH, 1384, "SV_OUTPUTBUF_LENGTH mismatch");
 
 assert.equal(server_state_t.ss_dead, 0, "server_state_t ss_dead mismatch");
+assert.equal(server_state_t.ss_loading, 1, "server_state_t ss_loading mismatch");
+assert.equal(server_state_t.ss_game, 2, "server_state_t ss_game mismatch");
+assert.equal(server_state_t.ss_cinematic, 3, "server_state_t ss_cinematic mismatch");
+assert.equal(server_state_t.ss_demo, 4, "server_state_t ss_demo mismatch");
 assert.equal(server_state_t.ss_pic, 5, "server_state_t ss_pic mismatch");
 assert.equal(client_state_t.cs_free, 0, "client_state_t cs_free mismatch");
+assert.equal(client_state_t.cs_zombie, 1, "client_state_t cs_zombie mismatch");
+assert.equal(client_state_t.cs_connected, 2, "client_state_t cs_connected mismatch");
 assert.equal(client_state_t.cs_spawned, 3, "client_state_t cs_spawned mismatch");
 assert.equal(redirect_t.RD_NONE, 0, "redirect_t RD_NONE mismatch");
 assert.equal(redirect_t.RD_PACKET, 2, "redirect_t RD_PACKET mismatch");
 
 const sv = createServerState();
+assert.equal(sv.state, server_state_t.ss_dead, "createServerState default state mismatch");
+assert.equal(sv.attractloop, false, "createServerState attractloop default mismatch");
+assert.equal(sv.loadgame, false, "createServerState loadgame default mismatch");
+assert.equal(sv.time, 0, "createServerState time default mismatch");
+assert.equal(sv.framenum, 0, "createServerState framenum default mismatch");
+assert.equal(sv.name, "", "createServerState name default mismatch");
 assert.equal(sv.models.length, 256, "createServerState models length mismatch");
+assert.equal(sv.models.every((model) => model === null), true, "createServerState models default mismatch");
 assert.equal(sv.configstrings.length, 2080, "createServerState configstrings length mismatch");
+assert.equal(sv.configstrings.every((value) => value === ""), true, "createServerState configstrings default mismatch");
 assert.equal(sv.baselines.length, 1024, "createServerState baselines length mismatch");
+assert.notEqual(sv.baselines[0], sv.baselines[1], "createServerState baselines should be independent states");
+assert.equal(sv.multicast.maxsize, 1400, "createServerState multicast maxsize mismatch");
 assert.equal(sv.multicast_buf.length, 1400, "createServerState multicast buffer mismatch");
+assert.equal(sv.demofile, null, "createServerState demofile default mismatch");
+assert.equal(sv.timedemo, false, "createServerState timedemo default mismatch");
+
+const frame = createClientFrame();
+assert.equal(frame.areabytes, 0, "createClientFrame areabytes default mismatch");
+assert.equal(frame.areabits.length, 32, "createClientFrame areabits length mismatch");
+assert.equal(frame.areabits.every((value) => value === 0), true, "createClientFrame areabits default mismatch");
+assert.equal(frame.num_entities, 0, "createClientFrame num_entities default mismatch");
+assert.equal(frame.first_entity, 0, "createClientFrame first_entity default mismatch");
+assert.equal(frame.senttime, 0, "createClientFrame senttime default mismatch");
 
 const client = createServerClient();
 assert.equal(client.frame_latency.length, LATENCY_COUNTS, "createServerClient frame latency length mismatch");

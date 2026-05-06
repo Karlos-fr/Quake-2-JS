@@ -308,7 +308,7 @@ export const FRAME_stand252 = 247;
 
 export const MODEL_SCALE = 1.0;
 
-const MZ2_FLOAT_BLASTER_1 = 82;
+export const MZ2_FLOAT_BLASTER_1 = 82;
 const FLOAT_ZAP_OFFSET: vec3_t = [18.5, -0.9, 10];
 
 const SOUND_ATTACK1 = "floater/fltatck1.wav";

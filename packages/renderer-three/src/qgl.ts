@@ -608,9 +608,12 @@ export function QGL_Shutdown(runtime: QglRuntime): void {
 }
 
 /**
- * Original name: QGL_Init
+ * Category: Adapter
  * Source: ref_gl/qgl.h
- * Category: Ported
+ *
+ * Purpose:
+ * - Resolve the Win32 `qwgl*` procedure-pointer inventory declared by `qgl.h`.
+ *
  * Fidelity level: Close
  *
  * Behavior:
@@ -654,9 +657,12 @@ export function QWGL_Init(runtime: QwglRuntime, provider: QglSymbolProvider): qb
 }
 
 /**
- * Original name: QGL_Shutdown
+ * Category: Adapter
  * Source: ref_gl/qgl.h
- * Category: Ported
+ *
+ * Purpose:
+ * - Clear the Win32 `qwgl*` procedure-pointer inventory declared by `qgl.h`.
+ *
  * Fidelity level: Close
  *
  * Behavior:

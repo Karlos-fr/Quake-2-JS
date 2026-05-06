@@ -15,7 +15,7 @@ import { strict as assert } from "node:assert";
 
 import { createEntity, createParticle, createRefDef, createRefImport } from "../../packages/client/src/ref.js";
 import { createCvarRuntime, Cvar_Get } from "../../packages/qcommon/src/cvar.js";
-import { RF_TRANSLUCENT } from "../../packages/qcommon/src/index.js";
+import { RDF_NOWORLDMODEL, RF_FULLBRIGHT, RF_TRANSLUCENT } from "../../packages/qcommon/src/index.js";
 import {
   createRefGlBootstrap,
   GetRefAPI,
@@ -40,6 +40,7 @@ import {
   R_RenderFrame,
   R_DrawSpriteModel,
   R_RenderView,
+  R_RotateForEntity,
   R_SetGL2D,
   R_SetFrustum,
   R_SetLightLevel,
@@ -295,6 +296,18 @@ const plane = runtime.frustum[0];
 plane.normal = [-1, 2, -3];
 assert.equal(SignbitsForPlane(plane), 0b101, "SignbitsForPlane mismatch");
 
+const rotateEntity = createEntity();
+rotateEntity.origin = [7, 8, 9];
+rotateEntity.angles = [10, 20, 30];
+assert.deepEqual(R_RotateForEntity(rotateEntity), {
+  translate: [7, 8, 9],
+  rotate: [
+    { angle: 20, axis: [0, 0, 1] },
+    { angle: -10, axis: [0, 1, 0] },
+    { angle: -30, axis: [1, 0, 0] }
+  ]
+}, "R_RotateForEntity transform order mismatch");
+
 const blend: [number, number, number, number] = [0, 0, 0, 0];
 V_AddBlend(1, 0.5, 0.25, 0.4, blend);
 assert.deepEqual(blend, [1, 0.5, 0.25, 0.4], "V_AddBlend initial mismatch");
@@ -321,6 +334,20 @@ assert.deepEqual(runtime.r_origin, [10, 20, 30], "R_SetupFrame origin mismatch")
 assert.equal(runtime.r_viewcluster, 1, "R_SetupFrame cluster mismatch");
 assert.equal(runtime.r_viewcluster2, 1, "R_SetupFrame cluster2 mismatch");
 
+const noworldRefdef = createRefDef();
+noworldRefdef.rdflags = RDF_NOWORLDMODEL;
+noworldRefdef.x = 3;
+noworldRefdef.y = 4;
+noworldRefdef.width = 160;
+noworldRefdef.height = 120;
+noworldRefdef.vieworg = [1, 2, 3];
+noworldRefdef.viewangles = [0, 90, 0];
+runtime.r_newrefdef = noworldRefdef;
+runtimeLog.length = 0;
+R_SetupFrame(runtime);
+assert.equal(runtimeLog.includes("noworld:160x120"), true, "R_SetupFrame noworld clear mismatch");
+
+runtime.r_newrefdef = refdef;
 R_SetFrustum(runtime);
 assert.equal(runtime.frustum[0].dist !== 0, true, "R_SetFrustum dist mismatch");
 assert.equal(runtime.frustum[0].signbits >= 0, true, "R_SetFrustum signbits mismatch");
@@ -344,6 +371,10 @@ runtime.frustum[1].dist = -100;
 runtime.frustum[2].dist = -100;
 runtime.frustum[3].dist = -1000;
 assert.equal(R_CullBox(runtime, [120, 120, 120], [130, 130, 130]), false, "R_CullBox inside mismatch");
+runtime.r_nocull!.value = 1;
+runtime.frustum[0].dist = 100;
+assert.equal(R_CullBox(runtime, [-10, -10, -10], [10, 10, 10]), false, "R_CullBox r_nocull mismatch");
+runtime.r_nocull!.value = 0;
 
 R_Clear(runtime);
 assert.deepEqual(clearCall, {
@@ -390,6 +421,12 @@ runtime.gl_state.stereo_enabled = false;
 R_SetPalette(runtime, null);
 assert.equal(paletteCall?.length, 256, "R_SetPalette palette length mismatch");
 assert.equal((paletteCall?.[3] >>> 24), 0xff, "R_SetPalette alpha mismatch");
+const customPalette = new Uint8Array(256 * 3);
+customPalette[0] = 11;
+customPalette[1] = 22;
+customPalette[2] = 33;
+R_SetPalette(runtime, customPalette);
+assert.equal(paletteCall?.[0], 0xff21160b, "R_SetPalette custom RGB packing mismatch");
 
 const beamEntity = createEntity();
 beamEntity.origin = [0, 0, 0];
@@ -457,6 +494,9 @@ R_DrawNullModel(runtime, nullEntity);
 assert.deepEqual(nullModelCall?.shadelight, [0.25, 0.5, 0.75], "R_DrawNullModel shadelight mismatch");
 assert.equal(nullModelCall?.topFanCount, 6, "R_DrawNullModel top fan mismatch");
 assert.equal(nullModelCall?.bottomFanCount, 6, "R_DrawNullModel bottom fan mismatch");
+nullEntity.flags = RF_FULLBRIGHT;
+R_DrawNullModel(runtime, nullEntity);
+assert.deepEqual(nullModelCall?.shadelight, [1, 1, 1], "R_DrawNullModel fullbright mismatch");
 
 runtime.r_origin = [0, 0, 0];
 runtime.vpn = [0, 0, 1];

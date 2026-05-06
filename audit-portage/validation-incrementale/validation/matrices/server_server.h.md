@@ -10,32 +10,32 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/server.h` | macro | `MAX_MASTERS` | `packages/server/src/server.ts` | `MAX_MASTERS` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | enum | `server_state_t` | `packages/server/src/server.ts` | `server_state_t` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | struct | `server_t` | `packages/server/src/server.ts` | `server_t` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `attractloop` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `loadgame` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `time` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `framenum` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `name` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `models` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `baselines` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `multicast` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `multicast_buf` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `demofile` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `timedemo` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | macro | `EDICT_NUM` | `packages/server/src/server.ts` | `EDICT_NUM` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | macro | `NUM_FOR_EDICT` | `packages/server/src/server.ts` | `NUM_FOR_EDICT` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | enum | `client_state_t` | `packages/server/src/server.ts` | `client_state_t` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | struct | `client_frame_t` | `packages/server/src/server.ts` | `client_frame_t` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `areabytes` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `areabits` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `ps` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `num_entities` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `first_entity` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `senttime` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | macro | `LATENCY_COUNTS` | `packages/server/src/server.ts` | `LATENCY_COUNTS` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | macro | `RATE_MESSAGES` | `packages/server/src/server.ts` | `RATE_MESSAGES` | A verifier | A redecouper |  |
+| `Quake-2-master/server/server.h` | macro | `MAX_MASTERS` | `packages/server/src/server.ts` | `MAX_MASTERS` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | enum | `server_state_t` | `packages/server/src/server.ts` | `server_state_t` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | struct | `server_t` | `packages/server/src/server.ts` | `server_t` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `attractloop` | `packages/server/src/server.ts` | `server_t.attractloop` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `loadgame` | `packages/server/src/server.ts` | `server_t.loadgame` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `time` | `packages/server/src/server.ts` | `server_t.time` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `framenum` | `packages/server/src/server.ts` | `server_t.framenum` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `name` | `packages/server/src/server.ts` | `server_t.name` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `models` | `packages/server/src/server.ts` | `server_t.models` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `baselines` | `packages/server/src/server.ts` | `server_t.baselines` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `multicast` | `packages/server/src/server.ts` | `server_t.multicast` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `multicast_buf` | `packages/server/src/server.ts` | `server_t.multicast_buf` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `demofile` | `packages/server/src/server.ts` | `server_t.demofile` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `timedemo` | `packages/server/src/server.ts` | `server_t.timedemo` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | macro | `EDICT_NUM` | `packages/server/src/server.ts` | `EDICT_NUM` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | macro | `NUM_FOR_EDICT` | `packages/server/src/server.ts` | `NUM_FOR_EDICT` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | enum | `client_state_t` | `packages/server/src/server.ts` | `client_state_t` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | struct | `client_frame_t` | `packages/server/src/server.ts` | `client_frame_t` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `areabytes` | `packages/server/src/server.ts` | `client_frame_t.areabytes` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `areabits` | `packages/server/src/server.ts` | `client_frame_t.areabits` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `ps` | `packages/server/src/server.ts` | `client_frame_t.ps` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `num_entities` | `packages/server/src/server.ts` | `client_frame_t.num_entities` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `first_entity` | `packages/server/src/server.ts` | `client_frame_t.first_entity` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `senttime` | `packages/server/src/server.ts` | `client_frame_t.senttime` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | macro | `LATENCY_COUNTS` | `packages/server/src/server.ts` | `LATENCY_COUNTS` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | macro | `RATE_MESSAGES` | `packages/server/src/server.ts` | `RATE_MESSAGES` | Valide | A redecouper |  |
 | `Quake-2-master/server/server.h` | struct | `client_s` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/server.h` | global | `userinfo` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/server.h` | global | `lastframe` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |

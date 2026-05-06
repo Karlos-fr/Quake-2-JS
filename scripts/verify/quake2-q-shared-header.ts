@@ -73,6 +73,18 @@ import {
   MZ2_TANK_ROCKET_2,
   MZ2_TANK_ROCKET_3
 } from "../../packages/game/src/m_tank.js";
+import * as ActorMuzzle from "../../packages/game/src/m_actor.js";
+import * as Boss2Muzzle from "../../packages/game/src/m_boss2.js";
+import * as ChickMuzzle from "../../packages/game/src/m_chick.js";
+import * as FloatMuzzle from "../../packages/game/src/m_float.js";
+import * as FlyerMuzzle from "../../packages/game/src/m_flyer.js";
+import * as GladiatorMuzzle from "../../packages/game/src/m_gladiator.js";
+import * as GunnerMuzzle from "../../packages/game/src/m_gunner.js";
+import * as HoverMuzzle from "../../packages/game/src/m_hover.js";
+import * as InfantryMuzzle from "../../packages/game/src/m_infantry.js";
+import * as MedicMuzzle from "../../packages/game/src/m_medic.js";
+import * as SoldierMuzzle from "../../packages/game/src/m_soldier.js";
+import * as SupertankMuzzle from "../../packages/game/src/m_supertank.js";
 import * as FormatQfiles from "../../packages/formats/src/qfiles.js";
 import {
   BigFloat,
@@ -635,6 +647,100 @@ assert.deepEqual([
 assert.deepEqual(monster_flash_offset[MZ2_TANK_BLASTER_1], [20.7, -18.5, 28.7], "MZ2_TANK_BLASTER_1 offset mismatch");
 assert.deepEqual(monster_flash_offset[MZ2_TANK_MACHINEGUN_19], [21.6, -7.0, 26.4], "MZ2_TANK_MACHINEGUN_19 offset mismatch");
 assert.deepEqual(monster_flash_offset[MZ2_TANK_ROCKET_3], [8.3, 17.8, 49.5], "MZ2_TANK_ROCKET_3 offset mismatch");
+assert.deepEqual([
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_1,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_2,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_3,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_4,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_5,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_6,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_7,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_8,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_9,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_10,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_11,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_12,
+  InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_13
+], Array.from({ length: 13 }, (_, index) => index + 26), "MZ2_INFANTRY_MACHINEGUN_* q_shared.h numeric range mismatch");
+assert.deepEqual([
+  SoldierMuzzle.MZ2_SOLDIER_BLASTER_1,
+  SoldierMuzzle.MZ2_SOLDIER_BLASTER_2,
+  SoldierMuzzle.MZ2_SOLDIER_SHOTGUN_1,
+  SoldierMuzzle.MZ2_SOLDIER_SHOTGUN_2,
+  SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_1,
+  SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_2
+], [39, 40, 41, 42, 43, 44], "MZ2_SOLDIER first q_shared.h range mismatch");
+assert.deepEqual([
+  GunnerMuzzle.MZ2_GUNNER_MACHINEGUN_1,
+  GunnerMuzzle.MZ2_GUNNER_MACHINEGUN_2,
+  GunnerMuzzle.MZ2_GUNNER_MACHINEGUN_3,
+  GunnerMuzzle.MZ2_GUNNER_MACHINEGUN_4,
+  GunnerMuzzle.MZ2_GUNNER_MACHINEGUN_5,
+  GunnerMuzzle.MZ2_GUNNER_MACHINEGUN_6,
+  GunnerMuzzle.MZ2_GUNNER_MACHINEGUN_7,
+  GunnerMuzzle.MZ2_GUNNER_MACHINEGUN_8,
+  GunnerMuzzle.MZ2_GUNNER_GRENADE_1,
+  GunnerMuzzle.MZ2_GUNNER_GRENADE_2,
+  GunnerMuzzle.MZ2_GUNNER_GRENADE_3,
+  GunnerMuzzle.MZ2_GUNNER_GRENADE_4
+], Array.from({ length: 12 }, (_, index) => index + 45), "MZ2_GUNNER_* q_shared.h numeric range mismatch");
+assert.deepEqual([
+  ChickMuzzle.MZ2_CHICK_ROCKET_1,
+  FlyerMuzzle.MZ2_FLYER_BLASTER_1,
+  FlyerMuzzle.MZ2_FLYER_BLASTER_2,
+  MedicMuzzle.MZ2_MEDIC_BLASTER_1,
+  GladiatorMuzzle.MZ2_GLADIATOR_RAILGUN_1,
+  HoverMuzzle.MZ2_HOVER_BLASTER_1,
+  ActorMuzzle.MZ2_ACTOR_MACHINEGUN_1
+], [57, 58, 59, 60, 61, 62, 63], "MZ2 single-monster q_shared.h numeric range mismatch");
+assert.deepEqual([
+  SupertankMuzzle.MZ2_SUPERTANK_MACHINEGUN_1,
+  SupertankMuzzle.MZ2_SUPERTANK_MACHINEGUN_2,
+  SupertankMuzzle.MZ2_SUPERTANK_MACHINEGUN_3,
+  SupertankMuzzle.MZ2_SUPERTANK_MACHINEGUN_4,
+  SupertankMuzzle.MZ2_SUPERTANK_MACHINEGUN_5,
+  SupertankMuzzle.MZ2_SUPERTANK_MACHINEGUN_6,
+  SupertankMuzzle.MZ2_SUPERTANK_ROCKET_1,
+  SupertankMuzzle.MZ2_SUPERTANK_ROCKET_2,
+  SupertankMuzzle.MZ2_SUPERTANK_ROCKET_3
+], Array.from({ length: 9 }, (_, index) => index + 64), "MZ2_SUPERTANK_* q_shared.h numeric range mismatch");
+assert.deepEqual([
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_L1,
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_L2,
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_L3,
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_L4,
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_L5,
+  Boss2Muzzle.MZ2_BOSS2_ROCKET_1,
+  Boss2Muzzle.MZ2_BOSS2_ROCKET_2,
+  Boss2Muzzle.MZ2_BOSS2_ROCKET_3,
+  Boss2Muzzle.MZ2_BOSS2_ROCKET_4,
+  FloatMuzzle.MZ2_FLOAT_BLASTER_1
+], Array.from({ length: 10 }, (_, index) => index + 73), "MZ2_BOSS2/FLOAT q_shared.h numeric range mismatch");
+assert.deepEqual([
+  SoldierMuzzle.MZ2_SOLDIER_BLASTER_3,
+  SoldierMuzzle.MZ2_SOLDIER_SHOTGUN_3,
+  SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_3,
+  SoldierMuzzle.MZ2_SOLDIER_BLASTER_4,
+  SoldierMuzzle.MZ2_SOLDIER_SHOTGUN_4,
+  SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_4,
+  SoldierMuzzle.MZ2_SOLDIER_BLASTER_5,
+  SoldierMuzzle.MZ2_SOLDIER_SHOTGUN_5,
+  SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_5,
+  SoldierMuzzle.MZ2_SOLDIER_BLASTER_6,
+  SoldierMuzzle.MZ2_SOLDIER_SHOTGUN_6,
+  SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_6,
+  SoldierMuzzle.MZ2_SOLDIER_BLASTER_7,
+  SoldierMuzzle.MZ2_SOLDIER_SHOTGUN_7,
+  SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_7,
+  SoldierMuzzle.MZ2_SOLDIER_BLASTER_8,
+  SoldierMuzzle.MZ2_SOLDIER_SHOTGUN_8,
+  SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_8
+], Array.from({ length: 18 }, (_, index) => index + 83), "MZ2_SOLDIER later q_shared.h range mismatch");
+assert.deepEqual(monster_flash_offset[InfantryMuzzle.MZ2_INFANTRY_MACHINEGUN_13], [-12.4, 13.0, 20.2], "MZ2_INFANTRY_MACHINEGUN_13 offset mismatch");
+assert.deepEqual(monster_flash_offset[GunnerMuzzle.MZ2_GUNNER_GRENADE_4], [4.6 * 1.15, -16.8 * 1.15, 7.3 * 1.15], "MZ2_GUNNER_GRENADE_4 offset mismatch");
+assert.deepEqual(monster_flash_offset[SupertankMuzzle.MZ2_SUPERTANK_ROCKET_3], [16.0, -42.8, 83.3], "MZ2_SUPERTANK_ROCKET_3 offset mismatch");
+assert.deepEqual(monster_flash_offset[Boss2Muzzle.MZ2_BOSS2_ROCKET_4], [22.0, -16.0, 10.0], "MZ2_BOSS2_ROCKET_4 offset mismatch");
+assert.deepEqual(monster_flash_offset[SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_8], [34.5 * 1.2, 9.6 * 1.2, 6.1 * 1.2], "MZ2_SOLDIER_MACHINEGUN_8 offset mismatch");
 assert.equal(COM_SkipPath("textures/e1u1/wall.wal"), "wall.wal", "COM_SkipPath mismatch");
 assert.equal(COM_StripExtension("maps/base1.bsp"), "maps/base1", "COM_StripExtension mismatch");
 assert.equal(COM_FileExtension("maps/base1.bsp"), "bsp", "COM_FileExtension mismatch");

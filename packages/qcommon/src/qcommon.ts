@@ -62,6 +62,15 @@ export const BUILDSTRING = "TypeScript";
  */
 export const CPUSTRING = "portable";
 
+/**
+ * Original names: PORT_MASTER, PORT_CLIENT, PORT_SERVER
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the stock Quake II UDP ports for master, client and server traffic.
+ */
 export const PORT_MASTER = 27900;
 export const PORT_CLIENT = 27901;
 export const PORT_SERVER = 27910;

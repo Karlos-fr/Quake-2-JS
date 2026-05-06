@@ -33,6 +33,7 @@ import {
   COM_CheckParm,
   COM_ClearArgv,
   COM_InitArgv,
+  Info_Print,
   LittleFloat,
   LittleLong,
   LittleShort,
@@ -170,6 +171,26 @@ import {
   DEFAULT_SOUND_PACKET_ATTENUATION,
   DEFAULT_SOUND_PACKET_VOLUME,
   PROTOCOL_VERSION,
+  PS_BLEND,
+  PS_FOV,
+  PS_KICKANGLES,
+  PS_M_DELTA_ANGLES,
+  PS_M_FLAGS,
+  PS_M_GRAVITY,
+  PS_M_ORIGIN,
+  PS_M_TIME,
+  PS_M_TYPE,
+  PS_M_VELOCITY,
+  PS_RDFLAGS,
+  PS_VIEWANGLES,
+  PS_VIEWOFFSET,
+  PS_WEAPONFRAME,
+  PS_WEAPONINDEX,
+  SND_ATTENUATION,
+  SND_ENT,
+  SND_OFFSET,
+  SND_POS,
+  SND_VOLUME,
   U_ANGLE1,
   U_ANGLE2,
   U_ANGLE3,
@@ -220,6 +241,52 @@ assert.equal(NUMVERTEXNORMALS, 162, "NUMVERTEXNORMALS mismatch");
 assert.equal(PROTOCOL_VERSION, 34, "PROTOCOL_VERSION mismatch");
 assert.equal(UPDATE_BACKUP, 16, "UPDATE_BACKUP mismatch");
 assert.equal(UPDATE_MASK, 15, "UPDATE_MASK mismatch");
+assert.equal(svc_ops_e.svc_bad, 0, "svc_ops_e.svc_bad mismatch");
+assert.equal(svc_ops_e.svc_muzzleflash, 1, "svc_ops_e.svc_muzzleflash mismatch");
+assert.equal(svc_ops_e.svc_muzzleflash2, 2, "svc_ops_e.svc_muzzleflash2 mismatch");
+assert.equal(svc_ops_e.svc_temp_entity, 3, "svc_ops_e.svc_temp_entity mismatch");
+assert.equal(svc_ops_e.svc_layout, 4, "svc_ops_e.svc_layout mismatch");
+assert.equal(svc_ops_e.svc_inventory, 5, "svc_ops_e.svc_inventory mismatch");
+assert.equal(svc_ops_e.svc_nop, 6, "svc_ops_e.svc_nop mismatch");
+assert.equal(svc_ops_e.svc_disconnect, 7, "svc_ops_e.svc_disconnect mismatch");
+assert.equal(svc_ops_e.svc_reconnect, 8, "svc_ops_e.svc_reconnect mismatch");
+assert.equal(svc_ops_e.svc_sound, 9, "svc_ops_e.svc_sound mismatch");
+assert.equal(svc_ops_e.svc_print, 10, "svc_ops_e.svc_print mismatch");
+assert.equal(svc_ops_e.svc_stufftext, 11, "svc_ops_e.svc_stufftext mismatch");
+assert.equal(svc_ops_e.svc_serverdata, 12, "svc_ops_e.svc_serverdata mismatch");
+assert.equal(svc_ops_e.svc_configstring, 13, "svc_ops_e.svc_configstring mismatch");
+assert.equal(svc_ops_e.svc_spawnbaseline, 14, "svc_ops_e.svc_spawnbaseline mismatch");
+assert.equal(svc_ops_e.svc_centerprint, 15, "svc_ops_e.svc_centerprint mismatch");
+assert.equal(svc_ops_e.svc_download, 16, "svc_ops_e.svc_download mismatch");
+assert.equal(svc_ops_e.svc_playerinfo, 17, "svc_ops_e.svc_playerinfo mismatch");
+assert.equal(svc_ops_e.svc_packetentities, 18, "svc_ops_e.svc_packetentities mismatch");
+assert.equal(svc_ops_e.svc_deltapacketentities, 19, "svc_ops_e.svc_deltapacketentities mismatch");
+assert.equal(svc_ops_e.svc_frame, 20, "svc_ops_e.svc_frame mismatch");
+assert.equal(clc_ops_e.clc_bad, 0, "clc_ops_e.clc_bad mismatch");
+assert.equal(clc_ops_e.clc_nop, 1, "clc_ops_e.clc_nop mismatch");
+assert.equal(clc_ops_e.clc_move, 2, "clc_ops_e.clc_move mismatch");
+assert.equal(clc_ops_e.clc_userinfo, 3, "clc_ops_e.clc_userinfo mismatch");
+assert.equal(clc_ops_e.clc_stringcmd, 4, "clc_ops_e.clc_stringcmd mismatch");
+assert.equal(PS_M_TYPE, 1 << 0, "PS_M_TYPE mismatch");
+assert.equal(PS_M_ORIGIN, 1 << 1, "PS_M_ORIGIN mismatch");
+assert.equal(PS_M_VELOCITY, 1 << 2, "PS_M_VELOCITY mismatch");
+assert.equal(PS_M_TIME, 1 << 3, "PS_M_TIME mismatch");
+assert.equal(PS_M_FLAGS, 1 << 4, "PS_M_FLAGS mismatch");
+assert.equal(PS_M_GRAVITY, 1 << 5, "PS_M_GRAVITY mismatch");
+assert.equal(PS_M_DELTA_ANGLES, 1 << 6, "PS_M_DELTA_ANGLES mismatch");
+assert.equal(PS_VIEWOFFSET, 1 << 7, "PS_VIEWOFFSET mismatch");
+assert.equal(PS_VIEWANGLES, 1 << 8, "PS_VIEWANGLES mismatch");
+assert.equal(PS_KICKANGLES, 1 << 9, "PS_KICKANGLES mismatch");
+assert.equal(PS_BLEND, 1 << 10, "PS_BLEND mismatch");
+assert.equal(PS_FOV, 1 << 11, "PS_FOV mismatch");
+assert.equal(PS_WEAPONINDEX, 1 << 12, "PS_WEAPONINDEX mismatch");
+assert.equal(PS_WEAPONFRAME, 1 << 13, "PS_WEAPONFRAME mismatch");
+assert.equal(PS_RDFLAGS, 1 << 14, "PS_RDFLAGS mismatch");
+assert.equal(SND_VOLUME, 1 << 0, "SND_VOLUME mismatch");
+assert.equal(SND_ATTENUATION, 1 << 1, "SND_ATTENUATION mismatch");
+assert.equal(SND_POS, 1 << 2, "SND_POS mismatch");
+assert.equal(SND_ENT, 1 << 3, "SND_ENT mismatch");
+assert.equal(SND_OFFSET, 1 << 4, "SND_OFFSET mismatch");
 assert.equal(DEFAULT_SOUND_PACKET_VOLUME, 1.0, "DEFAULT_SOUND_PACKET_VOLUME mismatch");
 assert.equal(DEFAULT_SOUND_PACKET_ATTENUATION, 1.0, "DEFAULT_SOUND_PACKET_ATTENUATION mismatch");
 assert.equal(CM_ANGLE1, 1 << 0, "CM_ANGLE1 mismatch");
@@ -350,6 +417,11 @@ for (const byte of new Uint8Array([49, 50, 51, 52, 53, 54, 55, 56, 57])) {
 }
 assert.equal(CRC_Value(crc), 0x29b1, "CRC iterative mismatch");
 assert.equal(CRC_Block(new Uint8Array([49, 50, 51, 52, 53, 54, 55, 56, 57])), 0x29b1, "CRC block mismatch");
+assert.equal(CRC_Init(), 0xffff, "CRC_Init seed mismatch");
+assert.equal(CRC_Value(CRC_Init()), 0xffff, "CRC_Value seed mismatch");
+assert.equal(CRC_ProcessByte(0xffff, 49), 0xc782, "CRC_ProcessByte first-step mismatch");
+assert.equal(CRC_Block(new Uint8Array([1, 2, 3, 4, 5]), 3), 0xadad, "CRC_Block partial-count mismatch");
+assert.equal(CRC_Block(new Uint8Array()), 0xffff, "CRC_Block empty mismatch");
 assert.equal(COM_BlockSequenceCRCByte(new Uint8Array([1, 2, 3, 4, 5]), 5, 7), 201, "COM_BlockSequenceCRCByte mismatch");
 assert.equal(Com_BlockChecksum(new Uint8Array([97, 98, 99])), 1570836014, "Com_BlockChecksum mismatch");
 
@@ -358,6 +430,11 @@ assert.equal(Com_ServerState(globals), 0, "Com_ServerState default mismatch");
 Com_SetServerState(globals, 2);
 assert.equal(Com_ServerState(globals), 2, "Com_SetServerState mismatch");
 assert.equal(CopyString("baseq2"), "baseq2", "CopyString mismatch");
+assert.equal(CopyString(""), "", "CopyString empty mismatch");
+assert.equal(CopyString("line\nbreak"), "line\nbreak", "CopyString content preservation mismatch");
+assert.deepEqual(Info_Print("\\name\\quake\\skill\\2"), ["name                quake", "skill               2"], "Info_Print basic alignment mismatch");
+assert.deepEqual(Info_Print("missing"), ["missing             MISSING VALUE"], "Info_Print missing value mismatch");
+assert.deepEqual(Info_Print("\\abcdefghijklmnopqrstuv\\value"), ["abcdefghijklmnopqrstuvvalue"], "Info_Print long key mismatch");
 
 const printed: string[] = [];
 const misc = createQcommonMiscRuntime({

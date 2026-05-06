@@ -140,7 +140,7 @@ export const FRAME_painup7 = 89;
 
 export const MODEL_SCALE = 1.0;
 
-const MZ2_GLADIATOR_RAILGUN_1 = 61;
+export const MZ2_GLADIATOR_RAILGUN_1 = 61;
 
 const SOUND_PAIN1 = "gladiator/pain.wav";
 const SOUND_PAIN2 = "gladiator/gldpain2.wav";

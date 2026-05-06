@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: bloc monster muzzle flash `MZ2_*` de `MZ2_INFANTRY_MACHINEGUN_1` a `MZ2_SOLDIER_MACHINEGUN_8`, soit la plage numerique complete 26 a 100.
+- Entites validees: `MZ2_INFANTRY_MACHINEGUN_1` a `MZ2_INFANTRY_MACHINEGUN_13`, `MZ2_SOLDIER_BLASTER_1`, `MZ2_SOLDIER_BLASTER_2`, `MZ2_SOLDIER_SHOTGUN_1`, `MZ2_SOLDIER_SHOTGUN_2`, `MZ2_SOLDIER_MACHINEGUN_1`, `MZ2_SOLDIER_MACHINEGUN_2`, `MZ2_GUNNER_MACHINEGUN_1` a `MZ2_GUNNER_MACHINEGUN_8`, `MZ2_GUNNER_GRENADE_1` a `MZ2_GUNNER_GRENADE_4`, `MZ2_CHICK_ROCKET_1`, `MZ2_FLYER_BLASTER_1`, `MZ2_FLYER_BLASTER_2`, `MZ2_MEDIC_BLASTER_1`, `MZ2_GLADIATOR_RAILGUN_1`, `MZ2_HOVER_BLASTER_1`, `MZ2_ACTOR_MACHINEGUN_1`, `MZ2_SUPERTANK_MACHINEGUN_1` a `MZ2_SUPERTANK_MACHINEGUN_6`, `MZ2_SUPERTANK_ROCKET_1` a `MZ2_SUPERTANK_ROCKET_3`, `MZ2_BOSS2_MACHINEGUN_L1` a `MZ2_BOSS2_MACHINEGUN_L5`, `MZ2_BOSS2_ROCKET_1` a `MZ2_BOSS2_ROCKET_4`, `MZ2_FLOAT_BLASTER_1`, puis `MZ2_SOLDIER_BLASTER_3`/`SHOTGUN_3`/`MACHINEGUN_3` a `MZ2_SOLDIER_BLASTER_8`/`SHOTGUN_8`/`MACHINEGUN_8`.
+- Ownership: les macros `q_shared.h` restent portees comme constantes locales dans les modules producteurs `packages/game/src/m_infantry.ts`, `m_soldier.ts`, `m_gunner.ts`, `m_chick.ts`, `m_flyer.ts`, `m_medic.ts`, `m_gladiator.ts`, `m_hover.ts`, `m_actor.ts`, `m_supertank.ts`, `m_boss2.ts` et `m_float.ts`; `monster_flash_offset` reste proprietaire de `packages/game/src/m_flash.ts`.
+- Preuves: comparaison numerique C/H vs TS et offsets sentinelles ajoutes dans `scripts/verify/quake2-q-shared-header.ts`; production gameplay verifiee par les tests monstres dedies; parsing/effets client et consommation renderer verifiees par les tests client/full-game.
+- Commentaires d'en-tete: non applicable pour les constantes; commentaires existants verifies sur les fonctions productrices de tirs monstres, `monster_flash_offset`, `getMonsterFlashOffset` et les chemins client d'effets.
 - 2026-05-06: bloc monster muzzle flash tank `MZ2_TANK_*` de `MZ2_TANK_BLASTER_1` a `MZ2_TANK_ROCKET_3`.
 - Entites validees: `MZ2_TANK_BLASTER_1`, `MZ2_TANK_BLASTER_2`, `MZ2_TANK_BLASTER_3`, `MZ2_TANK_MACHINEGUN_1`, `MZ2_TANK_MACHINEGUN_2`, `MZ2_TANK_MACHINEGUN_3`, `MZ2_TANK_MACHINEGUN_4`, `MZ2_TANK_MACHINEGUN_5`, `MZ2_TANK_MACHINEGUN_6`, `MZ2_TANK_MACHINEGUN_7`, `MZ2_TANK_MACHINEGUN_8`, `MZ2_TANK_MACHINEGUN_9`, `MZ2_TANK_MACHINEGUN_10`, `MZ2_TANK_MACHINEGUN_11`, `MZ2_TANK_MACHINEGUN_12`, `MZ2_TANK_MACHINEGUN_13`, `MZ2_TANK_MACHINEGUN_14`, `MZ2_TANK_MACHINEGUN_15`, `MZ2_TANK_MACHINEGUN_16`, `MZ2_TANK_MACHINEGUN_17`, `MZ2_TANK_MACHINEGUN_18`, `MZ2_TANK_MACHINEGUN_19`, `MZ2_TANK_ROCKET_1`, `MZ2_TANK_ROCKET_2`, `MZ2_TANK_ROCKET_3`.
 - Ownership: ces macros de `q_shared.h` sont portees comme constantes locales dans `packages/game/src/m_tank.ts`, parce que le port tank les utilise comme ids producteurs de `svc_muzzleflash2`; la table partagee `monster_flash_offset` reste proprietaire de `packages/game/src/m_flash.ts` et le client/renderer consomment les ids numeriques via le flux runtime, sans copie proprietaire dans `packages/qcommon/src/q_shared.ts`.
@@ -77,6 +82,10 @@
 
 ## Corrections
 
+- Ajout des constantes nommees `MZ2_INFANTRY_MACHINEGUN_3` a `MZ2_INFANTRY_MACHINEGUN_13` dans `packages/game/src/m_infantry.ts`.
+- Export des constantes locales `MZ2_FLYER_BLASTER_1`, `MZ2_FLYER_BLASTER_2`, `MZ2_GLADIATOR_RAILGUN_1`, `MZ2_HOVER_BLASTER_1` et `MZ2_FLOAT_BLASTER_1` depuis leurs modules producteurs.
+- Exports publics completes dans `packages/game/src/index.ts` pour les constantes `MZ2_*` du lot deja exposees par leurs modules producteurs.
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `MZ2_*` de 26 a 100 et pour les offsets sentinelles infantry, gunner, supertank, boss2 et soldier.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour les valeurs `MZ2_TANK_*` de 1 a 25 et pour les offsets sentinelles `MZ2_TANK_BLASTER_1`, `MZ2_TANK_MACHINEGUN_19` et `MZ2_TANK_ROCKET_3`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `RDF_*` et toutes les valeurs `MZ_*` joueur de `MZ_BLASTER` a `MZ_NUKE8`, incluant les trous reserves et le bit `MZ_SILENCED`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `RF_*` de `RF_MINLIGHT` a `RF_USE_DISGUISE`, puis pour `CS_*` et `MAX_CONFIGSTRINGS`.
@@ -102,6 +111,9 @@
 
 ## Tests de reference
 
+- `npm run verify:q-shared:header` OK pour `MZ2_*` 26..100.
+- `npm run verify:m-infantry`, `verify:m-soldier`, `verify:m-gunner`, `verify:m-chick`, `verify:m-flyer`, `verify:m-medic`, `verify:m-gladiator`, `verify:m-hover`, `verify:m-actor`, `verify:m-supertank`, `verify:m-boss2`, `verify:m-float` OK pour les producteurs gameplay du lot.
+- `npm run verify:m-flash`, `verify:cl-parse`, `verify:cl-fx`, `verify:full-game:server-host`, `verify:full-game:three-renderer` et `typecheck` OK pour table offset, parsing client, effets, web/server-host et renderer-three.
 - `npm run verify:q-shared:header` OK pour `MZ2_TANK_*`.
 - `npm run verify:m-tank` OK pour les producteurs gameplay tank.
 - `npm run verify:m-flash` OK pour la table `monster_flash_offset`.
@@ -195,6 +207,10 @@
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `MZ2_*` 26..100 est expose par les ports monstres comme ids numeriques de `svc_muzzleflash2`; ces constantes ne sont pas deplacees vers `packages/qcommon/src/q_shared.ts` parce que les producteurs runtime actuels sont les modules monstres et que la table partagee `monster_flash_offset` est deja centralisee dans `packages/game/src/m_flash.ts`.
+- Runtime: integration attendue et presente. Les attaques infantry, soldier, gunner, chick, flyer, medic, gladiator, hover, actor, supertank, boss2 et float produisent les ids du lot, `G_RunFrame` draine les evenements en `svc_muzzleflash2`, puis le client les parse via `CL_ParseServerMessage`/`CL_ParseMuzzleFlash2`.
+- `apps/web`: integration attendue et presente via les flux full-game/server-host/local-gameplay, qui transportent les evenements serveur ou les effets client autoritaires sans logique web parallele masquant les ids.
+- `renderer-three`: sortie visible attendue et presente. Les ids du lot reconstruisent l'origine via `monster_flash_offset`, produisent sons/dlights/particules cote client, puis sont consommes par les adapters dlights/particules et le render loop Three; aucun manque ouvert pour ce lot.
 - Le bloc `MZ2_TANK_*` est expose par le port tank comme ids numeriques de `svc_muzzleflash2`, avec offsets partages par `monster_flash_offset`; la matrice pointe donc les constantes vers `packages/game/src/m_tank.ts` plutot que vers `packages/qcommon/src/q_shared.ts`, car aucune racine runtime actuelle ne consomme ces noms via qcommon.
 - Runtime: integration attendue et presente. Les attaques tank produisent les ids `MZ2_TANK_BLASTER_*`, `MZ2_TANK_MACHINEGUN_*` et `MZ2_TANK_ROCKET_*`; `G_RunFrame` draine les evenements et ecrit `svc_muzzleflash2`; `CL_ParseServerMessage`/`CL_ParseMuzzleFlash2` les parse ensuite cote client.
 - `apps/web`: integration attendue et presente via les flux full-game/server-host qui transportent les messages serveur et declenchent le runtime client; aucune logique web parallele masquant les ids tank n'a ete detectee.
@@ -271,4 +287,4 @@
 
 ## Prochain lot recommande
 
-- Traiter le bloc adjacent `MZ2_INFANTRY_MACHINEGUN_1` a `MZ2_INFANTRY_MACHINEGUN_13`, puis poursuivre vers `MZ2_SOLDIER_*` et `MZ2_GUNNER_*` si le meme ownership local producteur + `monster_flash_offset` partagee reste confirme.
+- Traiter le bloc adjacent `MZ2_MAKRON_*` a partir de `MZ2_MAKRON_BFG`, puis poursuivre les familles Rogue suivantes si le meme ownership local producteur + `monster_flash_offset` partagee reste confirme.

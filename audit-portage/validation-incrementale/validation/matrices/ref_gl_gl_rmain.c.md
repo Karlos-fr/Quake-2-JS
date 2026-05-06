@@ -11,58 +11,58 @@
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `GetRefAPI` | `packages/renderer-three/src/gl_rmain.ts` | `GetRefAPI` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `GL_DrawColoredStereoLinePair` | `packages/renderer-three/src/gl_rmain.ts` | `GL_DrawColoredStereoLinePair` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `GL_DrawParticles` | `packages/renderer-three/src/gl_rmain.ts` | `GL_DrawParticles` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `GL_DrawStereoPattern` | `packages/renderer-three/src/gl_rmain.ts` | `GL_DrawStereoPattern` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `MYgluPerspective` | `packages/renderer-three/src/gl_rmain.ts` | `MYgluPerspective` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `GL_DrawColoredStereoLinePair` | `packages/renderer-three/src/gl_rmain.ts` | `GL_DrawColoredStereoLinePair` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `GL_DrawParticles` | `packages/renderer-three/src/gl_rmain.ts` | `GL_DrawParticles` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `GL_DrawStereoPattern` | `packages/renderer-three/src/gl_rmain.ts` | `GL_DrawStereoPattern` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `MYgluPerspective` | `packages/renderer-three/src/gl_rmain.ts` | `MYgluPerspective` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_BeginFrame` | `packages/renderer-three/src/gl_rmain.ts` | `R_BeginFrame` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_Clear` | `packages/renderer-three/src/gl_rmain.ts` | `R_Clear` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_CullBox` | `packages/renderer-three/src/gl_rmain.ts` | `R_CullBox` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawBeam` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawBeam` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawEntitiesOnList` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawEntitiesOnList` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawNullModel` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawNullModel` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawParticles` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawParticles` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawSpriteModel` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawSpriteModel` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_Flash` | `packages/renderer-three/src/gl_rmain.ts` | `R_Flash` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_CullBox` | `packages/renderer-three/src/gl_rmain.ts` | `R_CullBox` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawBeam` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawBeam` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawEntitiesOnList` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawEntitiesOnList` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawNullModel` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawNullModel` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawParticles` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawParticles` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_DrawSpriteModel` | `packages/renderer-three/src/gl_rmain.ts` | `R_DrawSpriteModel` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_Flash` | `packages/renderer-three/src/gl_rmain.ts` | `R_Flash` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_Init` | `packages/renderer-three/src/gl_rmain.ts` | `R_Init` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_PolyBlend` | `packages/renderer-three/src/gl_rmain.ts` | `R_PolyBlend` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_PolyBlend` | `packages/renderer-three/src/gl_rmain.ts` | `R_PolyBlend` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_Register` | `packages/renderer-three/src/gl_rmain.ts` | `R_Register` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_RenderFrame` | `packages/renderer-three/src/gl_rmain.ts` | `R_RenderFrame` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_RenderView` | `packages/renderer-three/src/gl_rmain.ts` | `R_RenderView` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_RotateForEntity` | `packages/renderer-three/src/gl_rmain.ts` | `R_RotateForEntity` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetFrustum` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetFrustum` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_RotateForEntity` | `packages/renderer-three/src/gl_rmain.ts` | `R_RotateForEntity` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetFrustum` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetFrustum` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetGL2D` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetGL2D` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetLightLevel` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetLightLevel` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetMode` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetMode` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetPalette` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetPalette` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetupFrame` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetupFrame` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetupGL` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetupGL` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetPalette` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetPalette` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetupFrame` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetupFrame` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_SetupGL` | `packages/renderer-three/src/gl_rmain.ts` | `R_SetupGL` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | function | `R_Shutdown` | `packages/renderer-three/src/gl_rmain.ts` | `R_Shutdown` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | function | `SignbitsForPlane` | `packages/renderer-three/src/gl_rmain.ts` | `SignbitsForPlane` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | macro | `NUM_BEAM_SEGS` | `packages/renderer-three/src/gl_rmain.ts` | `NUM_BEAM_SEGS` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | struct | `image_s` | `packages/renderer-three/src/gl_rmain.ts` | `image_s` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | struct | `model_s` | `packages/renderer-three/src/gl_rmain.ts` | `model_s` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `alpha` | `packages/renderer-three/src/gl_rmain.ts` | `alpha` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `argptr` | `packages/renderer-three/src/gl_rmain.ts` | `argptr` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `err` | `packages/renderer-three/src/gl_rmain.ts` | `err` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `fullscreen` | `packages/renderer-three/src/gl_rmain.ts` | `fullscreen` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `g` | `packages/renderer-three/src/gl_rmain.ts` | `g` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | function | `SignbitsForPlane` | `packages/renderer-three/src/gl_rmain.ts` | `SignbitsForPlane` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | macro | `NUM_BEAM_SEGS` | `packages/renderer-three/src/gl_rmain.ts` | `NUM_BEAM_SEGS` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | struct | `image_s` | `packages/renderer-three/src/gl_rmain.ts` | `image_s` | Non applicable | split-undocumented | Type externe seulement reference par prototypes dans `gl_rmain.c`. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | struct | `model_s` | `packages/renderer-three/src/gl_rmain.ts` | `model_s` | Non applicable | split-undocumented | Type externe seulement reference par prototypes dans `gl_rmain.c`. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `alpha` | `packages/renderer-three/src/gl_rmain.ts` | `alpha` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `argptr` | `packages/renderer-three/src/gl_rmain.ts` | `argptr` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `err` | `packages/renderer-three/src/gl_rmain.ts` | `err` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `fullscreen` | `packages/renderer-three/src/gl_rmain.ts` | `fullscreen` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `g` | `packages/renderer-three/src/gl_rmain.ts` | `g` | Non applicable | split-undocumented | Variable locale generee comme globale. |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `gl_config` | `packages/renderer-three/src/gl_rmain.ts` | `gl_config` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `gl_state` | `packages/renderer-three/src/gl_rmain.ts` | `gl_state` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `i` | `packages/renderer-three/src/gl_rmain.ts` | `i` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `j` | `packages/renderer-three/src/gl_rmain.ts` | `j` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `perpvec` | `packages/renderer-three/src/gl_rmain.ts` | `perpvec` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `point` | `packages/renderer-three/src/gl_rmain.ts` | `point` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `i` | `packages/renderer-three/src/gl_rmain.ts` | `i` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `j` | `packages/renderer-three/src/gl_rmain.ts` | `j` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `perpvec` | `packages/renderer-three/src/gl_rmain.ts` | `perpvec` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `point` | `packages/renderer-three/src/gl_rmain.ts` | `point` | Non applicable | split-undocumented | Variable locale generee comme globale. |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `r_framecount` | `packages/renderer-three/src/gl_rmain.ts` | `r_framecount` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `r_newrefdef` | `packages/renderer-three/src/gl_rmain.ts` | `r_newrefdef` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `r_origin` | `packages/renderer-three/src/gl_rmain.ts` | `r_origin` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `r_visframecount` | `packages/renderer-three/src/gl_rmain.ts` | `r_visframecount` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `re` | `packages/renderer-three/src/gl_rmain.ts` | `re` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `re` | `packages/renderer-three/src/gl_rmain.ts` | `re` | Non applicable | split-undocumented | Variable locale generee comme globale. |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `ri` | `packages/renderer-three/src/gl_rmain.ts` | `ri` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `scale` | `packages/renderer-three/src/gl_rmain.ts` | `scale` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `screenaspect` | `packages/renderer-three/src/gl_rmain.ts` | `screenaspect` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `shadelight` | `packages/renderer-three/src/gl_rmain.ts` | `shadelight` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rmain.c` | global | `temp` | `packages/renderer-three/src/gl_rmain.ts` | `temp` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `scale` | `packages/renderer-three/src/gl_rmain.ts` | `scale` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `screenaspect` | `packages/renderer-three/src/gl_rmain.ts` | `screenaspect` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `shadelight` | `packages/renderer-three/src/gl_rmain.ts` | `shadelight` | Non applicable | split-undocumented | Variable locale generee comme globale. |
+| `Quake-2-master/ref_gl/gl_rmain.c` | global | `temp` | `packages/renderer-three/src/gl_rmain.ts` | `temp` | Non applicable | split-undocumented | Variable locale generee comme globale. |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `trickframe` | `packages/renderer-three/src/gl_rmain.ts` | `trickframe` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `vid` | `packages/renderer-three/src/gl_rmain.ts` | `vid` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rmain.c` | global | `vpn` | `packages/renderer-three/src/gl_rmain.ts` | `vpn` | Valide | split-undocumented |  |
