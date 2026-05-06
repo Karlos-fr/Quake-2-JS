@@ -20,6 +20,7 @@ import {
   FS_FreeFile,
   FS_Gamedir,
   FS_Link,
+  FS_Link_f,
   FS_ListFiles,
   FS_LoadFile,
   FS_NextPath,
@@ -95,18 +96,34 @@ assert.equal(
 const pakFile = FS_LoadFile(filesystem, "maps/pakmap.bsp");
 assert.equal(decodeAscii(pakFile ?? new Uint8Array()), "pak-map", "FS_LoadPackFile pak lookup mismatch");
 
-FS_Link(filesystem, "alias", "baseq2/configs");
+assert.equal(FS_Link_f(filesystem), "USAGE: link <from> <to>", "FS_Link_f usage mismatch");
+FS_Link_f(filesystem, "alias", "baseq2/configs");
 assert.equal(
   readMountedTextFile(filesystem, "alias/default.cfg"),
   "seta skill 1",
   "FS_Link linked lookup mismatch"
 );
-FS_Link(filesystem, "missing-link", "baseq2/missing");
+FS_Link_f(filesystem, "alias", "baseq2");
+assert.equal(
+  readMountedTextFile(filesystem, "alias/autoexec.cfg"),
+  "echo base",
+  "FS_Link_f replacement mismatch"
+);
+FS_Link(filesystem, "alias", "baseq2/configs");
+FS_Link_f(filesystem, "slash/", "baseq2/configs/");
+assert.equal(
+  readMountedTextFile(filesystem, "slash/default.cfg"),
+  "seta skill 1",
+  "FS_Link_f slash-preserving concat mismatch"
+);
+FS_Link_f(filesystem, "missing-link", "baseq2/missing");
 assert.equal(
   FS_LoadFile(filesystem, "missing-link/base1.bsp"),
   undefined,
   "FS_FOpenFile link miss must not fall back to normal search paths"
 );
+FS_Link_f(filesystem, "slash/", "");
+assert.equal(readMountedTextFile(filesystem, "slash/default.cfg"), undefined, "FS_Link_f deletion mismatch");
 assert.equal(readMountedFile(filesystem, "maps/base1.bsp")?.bytes.byteLength, 14, "FS_filelength equivalent mismatch");
 
 const listed = FS_ListFiles(filesystem, "baseq2/maps/*.bsp");
@@ -119,6 +136,7 @@ assert.equal(pathLines.includes("rogue"), true, "FS_Path_f rogue directory misma
 assert.equal(pathLines.includes("baseq2/pak1.pak (1 files)"), true, "FS_Path_f pak1 listing mismatch");
 assert.equal(pathLines.includes("baseq2/pak0.pak (3 files)"), true, "FS_Path_f pak listing mismatch");
 assert.equal(pathLines.includes("alias : baseq2/configs"), true, "FS_Path_f link listing mismatch");
+assert.equal(pathLines.includes("slash/ : baseq2/configs/"), false, "FS_Path_f deleted link listing mismatch");
 
 assert.equal(FS_NextPath(filesystem, null), "rogue", "FS_NextPath first path mismatch");
 assert.equal(FS_NextPath(filesystem, "rogue"), "baseq2", "FS_NextPath second path mismatch");

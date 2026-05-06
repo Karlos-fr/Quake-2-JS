@@ -75,3 +75,40 @@ Corrections appliquees:
 
 Prochain lot recommande:
 - `MIN_STEP_NORMAL`, `MAX_CLIP_PLANES`, `PM_StepSlideMove_`, et locaux directs `dir`, `d`, `numplanes`, `planes`, `primal_velocity`, `trace`, `end`, `time_left`.
+
+## Session 2026-05-06 - PM_StepSlideMove_ interne
+
+Lot traite:
+- `MIN_STEP_NORMAL`
+- `MAX_CLIP_PLANES`
+- `PM_StepSlideMove_`
+- locaux directs: `dir`, `d`, `numplanes`, `planes`, `primal_velocity`, `trace`, `end`, `time_left`
+
+Verdict:
+- Lot valide.
+- `MIN_STEP_NORMAL` conserve la valeur C `0.7`.
+- `MAX_CLIP_PLANES` conserve la valeur C `5`.
+- `PM_StepSlideMove_` conserve le coeur C: `numbumps = 4`, copie de `primal_velocity`, `time_left = pml.frametime`, calcul de `end`, appel `pm.trace`, branche `allsolid`, copie `trace.endpos` quand `fraction > 0`, sauvegarde `touchents`, reduction de `time_left`, accumulation des plans, clipping par `PM_ClipVelocity`, projection sur crease via `CrossProduct`/`DotProduct`/`VectorScale`, arret si la velocite s'oppose a `primal_velocity`, restauration de `primal_velocity` quand `pm.s.pm_time` est actif.
+- Le local C `d` est renomme en `distance` en TS pour expliciter le scalaire de projection; ownership inchangé dans `packages/qcommon/src/pmove.ts`.
+- Entete de `PM_StepSlideMove_` verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`, `Porting notes`.
+
+Preuves:
+- Comparaison directe C vs TS sur `qcommon/pmove.c` et `packages/qcommon/src/pmove.ts`.
+- Tests cibles ajoutes dans `scripts/verify/quake2-pmove.ts`: constantes, branche `allsolid`, trace partielle avec contact et second trace par `time_left`, clipping sur plan, restauration `pm_time`.
+- Runtime: integre via `PM_StepSlideMove`, `PM_WaterMove`, `PM_AirMove` et le flux `Pmove`; racines confirmees via `packages/game/src/p_client.ts`, `packages/server/src/sv_game.ts`, `packages/client/src/view.ts` et `packages/client/src/local-loop.ts`.
+- `apps/web`: applicable et integre via `apps/web/src/local-client-controller.ts` et `apps/web/src/full-game.ts`; le navigateur declenche ce flux par prediction/jeu local et ne contient pas de logique parallele masquant ce lot.
+- `renderer-three`: sortie visible indirecte attendue oui, car le slide move influence origine/camera et step smoothing; consommation confirmee via `ClientRefreshFrame.view.vieworg`, `refdef.vieworg`, puis `R_RenderFrame`/adapters Three. Pas de sortie propre a ce helper pour modeles, frames, images, particules, beams, dlights, temp entities ou areabits.
+
+Tests lances:
+- `npm run verify:pmove`
+- `npm run verify:client:pmove:viewheight`
+- `npm run verify:pmove:local-bmodel`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Corrections appliquees:
+- `scripts/verify/quake2-pmove.ts`: assertions ciblees ajoutees pour le lot interne `PM_StepSlideMove_`.
+- `audit-portage/validation-incrementale/validation/matrices/qcommon_pmove.c.md`: lot marque `Valide`, cible locale `d` renseignee comme `distance`.
+
+Prochain lot recommande:
+- `PM_StepSlideMove`, son `trace` local et ses locaux de comparaison/step (`start_o`, `start_v`, `down_o`, `down_v`, `up`, `down`, `down_dist`, `up_dist`) dans une session separee.

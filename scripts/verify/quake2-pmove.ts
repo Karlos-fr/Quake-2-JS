@@ -16,6 +16,8 @@ import {
   PMF_JUMP_HELD,
   PMF_ON_GROUND,
   STEPSIZE,
+  MIN_STEP_NORMAL,
+  MAX_CLIP_PLANES,
   PM_CatagorizePosition,
   PM_AirMove,
   PM_CheckJump,
@@ -27,6 +29,7 @@ import {
   PM_InitLocalState,
   PM_SnapPosition,
   PM_StepSlideMove,
+  PM_StepSlideMove_,
   PM_WaterMove,
   PITCH,
   Pmove,
@@ -56,6 +59,9 @@ main();
 function main(): void {
   verifyPmoveFileScopeStateOwnershipAndDefaults();
   verifyClipVelocityStopEpsilonAndInPlaceOutput();
+  verifyStepSlideMoveInternalConstantsAndAllSolidStop();
+  verifyStepSlideMoveInternalFractionTouchAndPlaneSlide();
+  verifyStepSlideMoveInternalTimedMoveRestoresPrimalVelocity();
   verifyTeleportTimerDecrements();
   verifyExpiredWaterjumpTimerClearsFlags();
   verifySnapFallbackUsesPackedPreviousOrigin();
@@ -151,6 +157,94 @@ function verifyClipVelocityStopEpsilonAndInPlaceOutput(): void {
   const aliasVector: vec3_t = [2, 4, -5];
   PM_ClipVelocity(aliasVector, [0, 0, 1], aliasVector, 1);
   assertVector(aliasVector, [2, 4, 0], "PM_ClipVelocity supports in/out aliasing used by slide move");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert the `PM_StepSlideMove_` constants and trapped-solid branch match the original C helper.
+ */
+function verifyStepSlideMoveInternalConstantsAndAllSolidStop(): void {
+  assertEqual(MIN_STEP_NORMAL, 0.7, "MIN_STEP_NORMAL constant mismatch");
+  assertEqual(MAX_CLIP_PLANES, 5, "MAX_CLIP_PLANES constant mismatch");
+
+  const pm = createBasePmove();
+  pm.trace = createAlwaysSolidTrace;
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.1);
+  context.pml.velocity = [20, 30, -400];
+
+  PM_StepSlideMove_(context);
+
+  assertVector(context.pml.origin, [0, 0, 0], "allsolid step-slide keeps origin trapped");
+  assertVector(context.pml.velocity, [20, 30, 0], "allsolid step-slide clears only falling velocity");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert `PM_StepSlideMove_` copies partial trace endpos, records touches, shrinks time_left and slides along the clip plane.
+ */
+function verifyStepSlideMoveInternalFractionTouchAndPlaneSlide(): void {
+  const pm = createBasePmove();
+  const touched = { kind: "slide-wall" };
+  let traceCalls = 0;
+  pm.trace = (start, mins, maxs, end) => {
+    traceCalls += 1;
+    if (traceCalls === 1) {
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 0.5,
+        endpos: [5, 0, 0],
+        plane: {
+          ...createDefaultPlane(),
+          normal: [0, 1, 0]
+        },
+        surface: createDefaultSurface(),
+        contents: 0,
+        ent: touched
+      };
+    }
+
+    return createPassThroughTrace(start, mins, maxs, end);
+  };
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.1);
+  context.pml.velocity = [100, 20, 0];
+
+  PM_StepSlideMove_(context);
+
+  assertEqual(traceCalls, 2, "partial slide consumes remaining time in a second trace");
+  assertApprox(context.pml.origin[0], 10, 0.0000001, "partial slide advances copied X endpos");
+  assertApprox(context.pml.origin[1], -0.01, 0.0000001, "partial slide advances reduced time_left on clipped Y");
+  assertApprox(context.pml.origin[2], 0, 0.0000001, "partial slide preserves Z origin");
+  assertApprox(context.pml.velocity[0], 100, 0.0000001, "partial slide preserves tangential X velocity");
+  assertApprox(context.pml.velocity[1], -0.2, 0.0000001, "partial slide clips velocity along stored plane");
+  assertApprox(context.pml.velocity[2], 0, 0.0000001, "partial slide preserves neutral Z velocity");
+  assertEqual(pm.numtouch, 1, "partial slide records one touch entity");
+  if (pm.touchents[0] !== touched) {
+    throw new Error("partial slide stores the touched entity reference");
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Assert active `pm_time` restores `primal_velocity` after the internal slide loop.
+ */
+function verifyStepSlideMoveInternalTimedMoveRestoresPrimalVelocity(): void {
+  const pm = createBasePmove();
+  pm.s.pm_time = 3;
+  pm.trace = createSinglePlaneThenPassTrace([0, 1, 0]);
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.1);
+  context.pml.velocity = [100, 10, 0];
+
+  PM_StepSlideMove_(context);
+
+  assertVector(context.pml.velocity, [100, 10, 0], "timed step-slide restores primal_velocity");
+  assertApprox(context.pml.origin[0], 10, 0.0001, "timed step-slide still advances origin before restoring velocity");
 }
 
 /**
@@ -760,6 +854,34 @@ function createStepObstacleTrace(start: vec3_t, _mins: vec3_t, _maxs: vec3_t, en
   }
 
   return createPassThroughTrace(start, [0, 0, 0], [0, 0, 0], end);
+}
+
+/**
+ * Category: New
+ * Purpose: Return one blocking plane followed by pass-through traces for internal slide-loop assertions.
+ */
+function createSinglePlaneThenPassTrace(normal: vec3_t): (start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t) => trace_t {
+  let calls = 0;
+  return (start: vec3_t, mins: vec3_t, maxs: vec3_t, end: vec3_t): trace_t => {
+    calls += 1;
+    if (calls === 1) {
+      return {
+        allsolid: false,
+        startsolid: false,
+        fraction: 0,
+        endpos: [...start],
+        plane: {
+          ...createDefaultPlane(),
+          normal: [...normal]
+        },
+        surface: createDefaultSurface(),
+        contents: 0,
+        ent: { kind: "single-plane" }
+      };
+    }
+
+    return createPassThroughTrace(start, mins, maxs, end);
+  };
 }
 
 /**

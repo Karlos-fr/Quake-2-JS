@@ -20,6 +20,8 @@ import {
   CS_IMAGES,
   CS_MODELS,
   CS_SOUNDS,
+  AREA_SOLID,
+  AREA_TRIGGERS,
   MASK_SOLID,
   MAX_ITEMS,
   createEntityState,
@@ -36,6 +38,8 @@ import {
 } from "../../qcommon/src/index.js";
 import { G_UseTargets } from "./g_utils.js";
 import type { GameItemDefinition } from "./g_items.js";
+
+export { AREA_SOLID, AREA_TRIGGERS };
 
 /**
  * Original name: weaponstate_t
@@ -888,8 +892,6 @@ export const SOLID_NOT = 0;
 export const SOLID_TRIGGER = 1;
 export const SOLID_BBOX = 2;
 export const SOLID_BSP = 3;
-export const AREA_SOLID = 1;
-export const AREA_TRIGGERS = 2;
 export const MOVETYPE_NONE = 0;
 export const MOVETYPE_NOCLIP = 1;
 export const MOVETYPE_PUSH = 2;

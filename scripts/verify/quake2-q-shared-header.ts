@@ -99,6 +99,8 @@ import {
 } from "../../packages/qcommon/src/system.js";
 import {
   ANGLE2SHORT,
+  AREA_SOLID,
+  AREA_TRIGGERS,
   CPLANE_DIST,
   CPLANE_NORMAL_X,
   CPLANE_NORMAL_Y,
@@ -189,6 +191,7 @@ import {
   VIDREF_OTHER,
   VIDREF_SOFT,
   AngleVectors,
+  type cplane_t,
   createEntityState,
   createPlayerState
 } from "../../packages/qcommon/src/q_shared.js";
@@ -667,15 +670,14 @@ assert.deepEqual(forwardOut, angleVectors.forward, "AngleVectors return/out forw
 assert.deepEqual(rightOut, angleVectors.right, "AngleVectors return/out right mismatch");
 assert.deepEqual(upOut, angleVectors.up, "AngleVectors return/out up mismatch");
 
-const entityState = createEntityState();
-assert.equal(entityState.number, 0, "createEntityState default number mismatch");
-assert.equal(entityState.event, 0, "createEntityState default event mismatch");
-
-const playerState = createPlayerState();
-assert.equal(playerState.stats.length, 32, "createPlayerState stats width mismatch");
-assert.deepEqual(playerState.viewangles, [0, 0, 0], "createPlayerState default viewangles mismatch");
-
-console.log("quake2-q-shared-header: ok");
+assert.equal(AREA_SOLID, 1, "AREA_SOLID mismatch");
+assert.equal(AREA_TRIGGERS, 2, "AREA_TRIGGERS mismatch");
+const planeShape: cplane_t = { normal: [1, -2, 3], dist: 12.5, type: 4, signbits: 2, pad: [0, 0] };
+assert.deepEqual(planeShape.normal, [1, -2, 3], "cplane_t normal field mismatch");
+assert.equal(planeShape.dist, 12.5, "cplane_t dist field mismatch");
+assert.equal(planeShape.type, 4, "cplane_t type field mismatch");
+assert.equal(planeShape.signbits, 2, "cplane_t signbits field mismatch");
+assert.deepEqual(planeShape.pad, [0, 0], "cplane_t pad field mismatch");
 assert.deepEqual({
   CPLANE_NORMAL_X,
   CPLANE_NORMAL_Y,
@@ -695,3 +697,13 @@ assert.deepEqual({
   CPLANE_PAD0: 18,
   CPLANE_PAD1: 19
 }, "cplane offset constants mismatch");
+
+const entityState = createEntityState();
+assert.equal(entityState.number, 0, "createEntityState default number mismatch");
+assert.equal(entityState.event, 0, "createEntityState default event mismatch");
+
+const playerState = createPlayerState();
+assert.equal(playerState.stats.length, 32, "createPlayerState stats width mismatch");
+assert.deepEqual(playerState.viewangles, [0, 0, 0], "createPlayerState default viewangles mismatch");
+
+console.log("quake2-q-shared-header: ok");

@@ -26,6 +26,7 @@ import {
   NET_StringToAdr,
   NET_AdrToString,
   NET_IsLocalAddress,
+  Netchan_Init,
   Netchan_OutOfBandPrint,
   Netchan_Process,
   Netchan_Setup,
@@ -1479,6 +1480,9 @@ export function CL_InitLocal(context: ClientMainContext, hooks: ClientMainHooks 
   context.client.cls.state = connstate_t.ca_disconnected;
   if (hooks.getMilliseconds) {
     context.client.cls.realtime = hooks.getMilliseconds();
+  }
+  if (hooks.qnet) {
+    Netchan_Init(hooks.qnet, context.cvar);
   }
 
   for (let index = 0; index < context.adr.length; index += 1) {

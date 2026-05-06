@@ -2,6 +2,10 @@
 
 ## Dernier lot valide
 
+- Lot du 2026-05-06: `userinfo_modified`, `Cvar_BitInfo`, `Cvar_Userinfo`, `Cvar_Serverinfo`.
+- Faux positifs locaux/appels internes traites: `info` et `var` de `Cvar_BitInfo`, appels internes `Cvar_BitInfo` depuis `Cvar_Userinfo`/`Cvar_Serverinfo`.
+- Corrections: aucune correction du port TS proprietaire requise; renforcement de `scripts/verify/quake2-cvar.ts` pour couvrir default `userinfo_modified`, selection par bit, ordre `cvar_vars`, exclusion des flags non retenus, valeurs vides et delegation user/server.
+- Preuves ajoutees: info-string user/server exact, wrappers `Cvar_Userinfo`/`Cvar_Serverinfo`, mutation `userinfo_modified`, emission `clc_userinfo` client et commande serveur `serverinfo`.
 - Lot du 2026-05-06: `Cvar_WriteVariables`, `Cvar_List_f`.
 - Faux positifs locaux traites: `var`/`buffer` de `Cvar_WriteVariables`, `var`/`i` de `Cvar_List_f`.
 - Corrections: aucune correction du port TS proprietaire requise; renforcement de `scripts/verify/quake2-cvar.ts` pour couvrir ordre exact `cvar_vars`, exclusion des cvars non archivees, format `set name "value"`, marqueurs `cvarlist` (`*`, `U`, `S`, `-`, `L`) et compteur total.
@@ -41,10 +45,18 @@
 - `Cvar_List_f`: runtime integre via `Cvar_Init` qui enregistre `cvarlist`; la sortie passe par le hook `onPrint` de `emitCvarOutput`.
 - `apps/web`: `writeconfig` delegue a `CL_WriteConfiguration`, donc consomme le port `Cvar_WriteVariables`; la console full-game expose `cvarlist` via `Cvar_Init`. Pas de logique parallele observee pour ce lot.
 - `renderer-three`: pas de sortie visible directe (modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene); impact indirect attendu et verifie sur les cvars de rendu archivees (`gl_*`, `vid_*`, `hand`) creees par `ri.Cvar_Get` puis serialisables par `Cvar_WriteVariables`.
+- `userinfo_modified`: runtime integre via `Cvar_Set2`/`Cvar_FullSet`, puis consomme par `CL_SendCmd` qui appelle `CL_FixUpGender`, remet le flag a false et ecrit `clc_userinfo`.
+- `Cvar_Userinfo`: runtime integre dans le paquet de connexion client (`CL_SendConnectPacket`), la commande client `userinfo`, et la transmission fiable `clc_userinfo`.
+- `Cvar_Serverinfo`: runtime integre dans les commandes serveur `serverinfo` (`SV_ShowServerinfo_f`/`SV_Serverinfo_f`) et alimente les cvars `CVAR_SERVERINFO` creees par server/game.
+- `apps/web`: integre via les flux full-game/console qui pilotent le runtime client/serveur; pas de logique parallele masquant la construction des info strings. `full-game-server-host.ts` garde un userinfo initial d'adapter pour creer un client serveur local, mais les mutations runtime passent par `Cvar_Userinfo` et `clc_userinfo`.
+- `renderer-three`: aucune sortie visible directe produite par ce lot (pas de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene). Impact indirect confirme sur la cvar userinfo `hand` consommee par `renderer-three` via `ri.Cvar_Get`; aucun branchement renderer direct attendu pour `Cvar_BitInfo`.
 
 ## Tests de reference
 
 - `npm run verify:cvar`
+- `npm run verify:cl-input`
+- `npm run verify:cl-main`
+- `npm run verify:server:user`
 - `npm run verify:full-game:commands`
 - `npm run verify:full-game:render-source`
 - `npm run verify:gl-rmain`
@@ -52,8 +64,7 @@
 
 ## Prochain lot recommande
 
-- `userinfo_modified`, puis `Cvar_BitInfo` avec locaux `info`/`var`; si coherent, inclure `Cvar_Userinfo` et `Cvar_Serverinfo` avec leurs appels internes a `Cvar_BitInfo`.
-- Verifier explicitement l'info-string user/server, `userinfo_modified` cote client/server, propagation runtime vers les snapshots/handshake si applicable, et confirmer l'absence de sortie renderer directe.
+- `Cvar_Init` avec enregistrement des commandes `set` et `cvarlist`; verifier aussi les flux console runtime/apps-web qui appellent ces commandes.
 
 ## Blocages
 

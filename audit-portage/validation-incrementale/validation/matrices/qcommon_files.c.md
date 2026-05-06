@@ -73,9 +73,9 @@
 | `Quake-2-master/qcommon/files.c` | global | `dir` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local de `FS_ExecAutoexec`; TS resout via le gamedir VFS courant. |
 | `Quake-2-master/qcommon/files.c` | global | `name` | `packages/formats/src/pak.ts` | `name` | Non applicable | A redecouper | Local de chemin `autoexec.cfg`; ne pas confondre avec `PakEntry.name`. |
 | `Quake-2-master/qcommon/files.c` | function | `FS_SetGamedir` | `packages/filesystem/src/files.ts` | `FS_SetGamedir` | Valide | A redecouper | Header comment updated; `verify:files`, `verify:web-config-gamedir`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`. |
-| `Quake-2-master/qcommon/files.c` | function | `FS_Link_f` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `s` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `nfiles` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/files.c` | function | `FS_Link_f` | `packages/filesystem/src/files.ts` | `FS_Link_f` | Valide | A redecouper | `FS_Link` conserve la compatibilite adapter; tests ajout/replacement/delete/list via `verify:files`. |
+| `Quake-2-master/qcommon/files.c` | global | `s` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local de `FS_ListFiles`, pas de `FS_Link_f`; laisse `FS_ListFiles` au prochain lot dedie. |
+| `Quake-2-master/qcommon/files.c` | global | `nfiles` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local de `FS_ListFiles`, pas de `FS_Link_f`; laisse `FS_ListFiles` au prochain lot dedie. |
 | `Quake-2-master/qcommon/files.c` | function | `FS_Dir_f` | `packages/filesystem/src/files.ts` | `FS_Dir_f` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `path` | `packages/filesystem/src/files.ts` | `path` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `findname` | `packages/filesystem/src/files.ts` | `findname` | A verifier | A redecouper |  |
@@ -83,8 +83,8 @@
 | `Quake-2-master/qcommon/files.c` | global | `ndirs` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `tmp` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `i` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_Path_f` | `packages/filesystem/src/files.ts` | `FS_Path_f` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `l` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/files.c` | function | `FS_Path_f` | `packages/filesystem/src/files.ts` | `FS_Path_f` | Valide | A redecouper | Link listing and search path formatting covered by `verify:files`. |
+| `Quake-2-master/qcommon/files.c` | global | `l` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local de boucle; couvert par `FS_Path_f`. |
 | `Quake-2-master/qcommon/files.c` | function | `FS_NextPath` | `packages/filesystem/src/files.ts` | `FS_NextPath` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `prev` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | function | `FS_InitFilesystem` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |

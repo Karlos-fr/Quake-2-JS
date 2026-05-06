@@ -66,6 +66,10 @@ Tests lances:
 - `npm run verify:full-game:local-transport` (OK).
 - `npm run verify:full-game:server-host` (OK).
 - `npm run verify:full-game:three-renderer` (OK).
+- `npm run verify:cl-main` (OK).
+- `npm run verify:server:main` (OK).
+- `npm run verify:full-game:authoritative-handshake` (OK).
+- `npm run verify:full-game:commands` (OK).
 
 Corrections appliquees:
 - `packages/qcommon/src/qcommon.ts`: les exports `Netchan_CanReliable`, `Netchan_NeedReliable` et `Netchan_Transmit` sont maintenant des reexports vers `packages/qcommon/src/net_chan.ts`, ce qui retire le doublon de portage pour le lot.
@@ -114,3 +118,43 @@ Decisions / blocages:
 
 Prochain lot recommande:
 - Fermer le reliquat cvar du fichier: brancher/documenter `showpackets`, `showdrop` et `qport` dans le runtime cvar autour de `Netchan_Init`, puis revalider les trois lignes `Partiel`.
+
+## Session 2026-05-06 - reliquat cvar Netchan_Init
+
+Lot traite:
+- Fermeture du reliquat cvar `showpackets`, `showdrop`, `qport`.
+- Revalidation de `Netchan_Init` complet et des globals associes du fichier.
+
+Comparaison C/TS:
+- Le C calcule `port = Sys_Milliseconds() & 0xffff`, puis cree `showpackets = Cvar_Get("showpackets", "0", 0)`, `showdrop = Cvar_Get("showdrop", "0", 0)` et `qport = Cvar_Get("qport", va("%i", port), CVAR_NOSET)`.
+- `packages/qcommon/src/net_chan.ts` reproduit maintenant ce flux quand `Netchan_Init` recoit un `CvarRuntime`: les trois cvars sont creees via `Cvar_Get`, `qport` garde `CVAR_NOSET`, et `Netchan_Transmit` / `Netchan_Process` relisent les valeurs cvar courantes comme les pointeurs C.
+- Le mode booleen/runtime reste seulement un fallback d'adapter pour les harness ou runtimes qui ne fournissent pas encore de cvars.
+
+Commentaires d'en-tete:
+- Commentaire de `Netchan_Init` mis a jour: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement et notes de portage couvrent le branchement cvar.
+
+Runtime / apps-web / renderer-three:
+- Runtime: integre via `CL_InitLocal` pour le qnet client et via `createFullGameServerHost` pour le qnet serveur; les deux flux disposent du meme runtime cvar et n'utilisent plus un simple etat booleen masque.
+- `apps/web`: integre dans le full-game local/server-host; les cvars netchan sont creees dans le flux navigateur et les paquets restent traites par le runtime porte.
+- `packages/renderer-three`: non applicable justifie; ce lot produit et consomme seulement des cvars de trace/qport et des paquets reseau. Il ne produit pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene.
+
+Tests lances:
+- `npm run verify:net-chan` (OK).
+- `npm run verify:qcommon:header` (OK).
+- `npm run typecheck` (OK).
+- `npm run verify:full-game:local-transport` (OK).
+- `npm run verify:full-game:server-host` (OK).
+- `npm run verify:full-game:three-renderer` (OK).
+
+Corrections appliquees:
+- `packages/qcommon/src/qcommon.ts`: ajout des references optionnelles aux cvars netchan dans `QcommonNetRuntime`.
+- `packages/qcommon/src/net_chan.ts`: `Netchan_Init` cree `showpackets`, `showdrop`, `qport`; les lectures de trace et de qport passent par les cvars quand elles sont branchees.
+- `packages/client/src/cl_main.ts`: `CL_InitLocal` initialise le qnet avec le runtime cvar quand il est fourni.
+- `apps/web/src/full-game-server-host.ts`: le host serveur initialise son qnet avec le runtime cvar.
+- `scripts/verify/quake2-net-chan.ts`: assertions ajoutees pour creation cvar, flag `CVAR_NOSET`, protection `qport`, traces `showpackets`/`showdrop` via cvars et lecture dynamique de qport.
+
+Decisions / blocages:
+- Aucun blocage restant dans `qcommon/net_chan.c`.
+
+Prochain lot recommande:
+- Aucun lot restant dans `qcommon_net_chan.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.

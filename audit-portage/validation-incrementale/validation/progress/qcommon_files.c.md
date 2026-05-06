@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/qcommon/files.c
 
 - Statut: En cours
-- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`, puis `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile`, `FS_LoadPackFile`, `FS_AddGameDirectory`, `FS_Gamedir`, `FS_ExecAutoexec` et `FS_SetGamedir`.
-- Prochain lot recommande: `FS_Link_f` et ses locaux directs (`s`, `nfiles`) dans une session separee.
+- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`, puis `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile`, `FS_LoadPackFile`, `FS_AddGameDirectory`, `FS_Gamedir`, `FS_ExecAutoexec`, `FS_SetGamedir`, `FS_Link_f` et la liste de liens via `FS_Path_f`.
+- Prochain lot recommande: `FS_ListFiles` et ses locaux directs (`s`, `nfiles`, `list`, puis les boucles d'allocation/copie/liberation), sans demarrer `FS_Dir_f` si le lot devient trop large.
 - Tests de reference:
   - `npm run verify:files`
   - `npm run verify:web-config-gamedir`
@@ -28,6 +28,15 @@
   - `apps/web`: `full-game.ts` appelle `FS_SetGamedir` lors du changement de cvar `game`, recharge `config.cfg`, puis `autoexec.cfg` via le hook cvar; `web-config-gamedir` couvre la separation des configs par gamedir.
   - `renderer-three`: aucune sortie visible directe, mais integration indirecte attendue et verifiee car le renderer consomme les assets VFS (`BSP`, modeles, images, palettes, sky, particules/beams) via `readMountedFile`.
   - Tests lances: `npm run verify:files`, `npm run verify:web-config-gamedir`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+- Lot du 2026-05-06 - `FS_Link_f`:
+  - Comparaison C vs TS: usage `link <from> <to>`, recherche du lien existant, suppression quand `to` est vide, remplacement de `to`, creation en tete de `fs_links`, conservation de `fromlength` et resolution par concatenation de prefixe verifies.
+  - Correction: `packages/filesystem/src/files.ts` expose maintenant le nom porte `FS_Link_f`; `FS_Link` reste un adapter de compatibilite. La cible de lien conserve le slash final normalise pour respecter la concatenation C.
+  - Locaux `s` et `nfiles`: lignes generees apres `FS_Link_f` mais appartenant a `FS_ListFiles`; marques `Non applicable` pour ce lot et repris avec `FS_ListFiles`.
+  - `FS_Path_f`: inclus pour le comportement de listage des liens; sortie recherche + liens verifiee sans demarrer `FS_Dir_f`.
+  - Runtime: le comportement est disponible dans le module proprietaire; l'enregistrement console original `Cmd_AddCommand("link", FS_Link_f)` reste a fermer avec `FS_InitFilesystem`.
+  - `apps/web`: aucune logique parallele de liens observee; le flux web consomme le VFS via `readMountedFile`/`FS_LoadFile`, donc les liens montes affectent les assets/configs sans adapter specifique.
+  - `renderer-three`: aucune sortie visible directe produite; impact indirect attendu via resolution VFS des BSP, modeles, images, palettes, sky, particules/beams et scene, couvert par le test full-game renderer.
+  - Tests lances: `npm run verify:files`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
 - Lot du 2026-05-06 - `FS_AddGameDirectory`:
   - `FS_AddGameDirectory` ajoute comme port officiel dans `packages/filesystem/src/files.ts`; `mountDirectory` est desormais documente comme adapter de montage loose manuel.
   - Comparaison C vs TS: `fs_gamedir` mis a jour, repertoire ajoute en tete, puis `pak0.pak` a `pak9.pak` scannes depuis le contenu in-memory et inseres en tete via `FS_LoadPackFile`; ordre source prouve par `pak1 > pak0 > repertoire`.

@@ -175,6 +175,35 @@ assert.equal(Cvar_BitInfo(cvar, CVAR_USERINFO), "\\rate\\30000", "userinfo BitIn
 assert.equal(Cvar_Userinfo(cvar), "\\rate\\30000", "Userinfo mismatch");
 assert.equal(Cvar_Serverinfo(cvar), "\\skill\\1", "Serverinfo mismatch");
 
+const infoCvars = createCvarRuntime();
+assert.equal(infoCvars.userinfo_modified, false, "userinfo_modified should default to false like the C global");
+Cvar_Get(infoCvars, "archive_only", "ignored", CVAR_ARCHIVE);
+Cvar_Get(infoCvars, "hostname", "quake2js", CVAR_SERVERINFO);
+Cvar_Get(infoCvars, "name", "Player", CVAR_USERINFO);
+Cvar_Get(infoCvars, "hand", "2", CVAR_USERINFO | CVAR_ARCHIVE);
+Cvar_Get(infoCvars, "protocol", "34", CVAR_SERVERINFO | CVAR_NOSET);
+Cvar_Get(infoCvars, "empty", "", CVAR_USERINFO);
+assert.equal(
+  Cvar_BitInfo(infoCvars, CVAR_USERINFO),
+  "\\hand\\2\\name\\Player",
+  "Cvar_BitInfo should include only matching userinfo cvars in cvar_vars order and skip empty values"
+);
+assert.equal(Cvar_Userinfo(infoCvars), "\\hand\\2\\name\\Player", "Cvar_Userinfo should delegate to Cvar_BitInfo(CVAR_USERINFO)");
+assert.equal(
+  Cvar_BitInfo(infoCvars, CVAR_SERVERINFO),
+  "\\protocol\\34\\hostname\\quake2js",
+  "Cvar_BitInfo should include only matching serverinfo cvars in cvar_vars order"
+);
+assert.equal(
+  Cvar_Serverinfo(infoCvars),
+  "\\protocol\\34\\hostname\\quake2js",
+  "Cvar_Serverinfo should delegate to Cvar_BitInfo(CVAR_SERVERINFO)"
+);
+assert.equal(Cvar_BitInfo(infoCvars, CVAR_LATCH), "", "Cvar_BitInfo should return an empty info string when no cvar matches");
+Cvar_Set(infoCvars, "hand", "1");
+assert.equal(infoCvars.userinfo_modified, true, "userinfo_modified should be raised when an existing userinfo cvar changes");
+assert.equal(Cvar_Userinfo(infoCvars), "\\hand\\1\\name\\Player", "Cvar_Userinfo should reflect later userinfo mutations");
+
 const archiveOutput = Cvar_WriteVariables(cvar);
 assert.equal(
   archiveOutput.includes('set skill "1"\n') && archiveOutput.includes('set rate "30000"\n'),

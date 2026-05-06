@@ -10,12 +10,12 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/net_chan.c` | global | `showpackets` | `packages/qcommon/src/net_chan.ts` | `QcommonNetRuntime.showpackets` | Partiel | A redecouper | Porte comme bool runtime et teste via `verify:net-chan`; manque l'enregistrement Cvar_Get d'origine/action: brancher au runtime cvar ou documenter l'adapter. |
-| `Quake-2-master/qcommon/net_chan.c` | global | `showdrop` | `packages/qcommon/src/net_chan.ts` | `QcommonNetRuntime.showdrop` | Partiel | A redecouper | Porte comme bool runtime et teste via `verify:net-chan`; manque l'enregistrement Cvar_Get d'origine/action: brancher au runtime cvar ou documenter l'adapter. |
+| `Quake-2-master/qcommon/net_chan.c` | global | `showpackets` | `packages/qcommon/src/net_chan.ts` | `QcommonNetRuntime.showpackets` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `showdrop` | `packages/qcommon/src/net_chan.ts` | `QcommonNetRuntime.showdrop` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | global | `qport` | `packages/qcommon/src/net_chan.ts` | `QcommonNetRuntime.qport` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | global | `net_message` | `packages/qcommon/src/qcommon.ts` | `QcommonNetRuntime.net_message` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | global | `net_message_buffer` | `packages/qcommon/src/qcommon.ts` | `net_message_buffer` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Init` | `packages/qcommon/src/net_chan.ts` | `Netchan_Init` | Partiel | A redecouper | Comportement qport teste via `verify:net-chan`; `qcommon.ts` est facade vers `net_chan.ts`, mais `showpackets`/`showdrop` et `qport` ne sont pas crees via `Cvar_Get`. |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Init` | `packages/qcommon/src/net_chan.ts` | `Netchan_Init` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | global | `port` | `packages/qcommon/src/net_chan.ts` |  | Non applicable | A redecouper | Variable locale de `Netchan_Init`, pas une entite proprietaire a valider separement. |
 | `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_OutOfBand` | `packages/qcommon/src/net_chan.ts` | `Netchan_OutOfBand` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | global | `send` | `packages/qcommon/src/net_chan.ts` | `send` | Non applicable | A redecouper | Variable locale de `Netchan_OutOfBand`, pas une entite proprietaire a valider separement. |

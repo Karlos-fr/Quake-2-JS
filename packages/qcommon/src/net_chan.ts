@@ -9,7 +9,7 @@
  * - Avoid structural refactors unless documented.
  *
  * Deviations:
- * - Reads `showpackets`, `showdrop` and `qport` from the explicit `QcommonNetRuntime`.
+ * - Reads `showpackets`, `showdrop` and `qport` from cvars when `Netchan_Init` receives a cvar runtime.
  * - Uses injectable transport hooks instead of the native socket layer.
  *
  * Notes:
@@ -19,6 +19,7 @@
 import type { qboolean } from "./q_shared.js";
 import type { sizebuf_t } from "../../memory/src/index.js";
 import { createSizeBuffer, SZ_Init, SZ_Write } from "../../memory/src/index.js";
+import { CVAR_NOSET, Cvar_Get, type CvarRuntime } from "./cvar.js";
 import { MSG_BeginReading, MSG_ReadLong, MSG_ReadShort, MSG_WriteLong, MSG_WriteShort } from "./messages.js";
 import {
   MAX_MSGLEN,
@@ -39,12 +40,23 @@ import {
  *
  * Behavior:
  * - Initializes the runtime qport used by client packets.
+ * - Registers the original `showpackets`, `showdrop` and `qport` cvars when cvar runtime is supplied.
  *
  * Porting notes:
- * - Keeps `showpackets` and `showdrop` as runtime booleans rather than qvars.
+ * - Retains runtime booleans as an adapter fallback for harnesses that do not wire cvars yet.
  */
-export function Netchan_Init(runtime: QcommonNetRuntime): void {
-  runtime.qport = (runtime.hooks.now?.() ?? Date.now()) & 0xffff;
+export function Netchan_Init(runtime: QcommonNetRuntime, cvarRuntime?: CvarRuntime): void {
+  const port = (runtime.hooks.now?.() ?? Date.now()) & 0xffff;
+  runtime.qport = port;
+
+  if (cvarRuntime) {
+    runtime.showpacketsCvar = Cvar_Get(cvarRuntime, "showpackets", "0", 0);
+    runtime.showdropCvar = Cvar_Get(cvarRuntime, "showdrop", "0", 0);
+    runtime.qportCvar = Cvar_Get(cvarRuntime, "qport", `${port}`, CVAR_NOSET);
+    runtime.showpackets = (runtime.showpacketsCvar?.value ?? 0) !== 0;
+    runtime.showdrop = (runtime.showdropCvar?.value ?? 0) !== 0;
+    runtime.qport = runtime.qportCvar?.value ?? port;
+  }
 }
 
 /**
@@ -202,7 +214,7 @@ export function Netchan_Transmit(
   MSG_WriteLong(send, w2);
 
   if (chan.sock === netsrc_t.NS_CLIENT) {
-    MSG_WriteShort(send, runtime.qport);
+    MSG_WriteShort(send, getRuntimeQport(runtime));
   }
 
   if (send_reliable) {
@@ -218,7 +230,7 @@ export function Netchan_Transmit(
 
   NET_SendPacket(runtime, chan.sock, send.cursize, send.data, chan.remote_address);
 
-  if (runtime.showpackets) {
+  if (getShowPackets(runtime)) {
     runtime.hooks.onPrintf?.(
       send_reliable
         ? `send ${padPacketSize(send.cursize)} : s=${chan.outgoing_sequence - 1} reliable=${chan.reliable_sequence} ack=${chan.incoming_sequence} rack=${chan.incoming_reliable_sequence}\n`
@@ -251,7 +263,7 @@ export function Netchan_Process(runtime: QcommonNetRuntime, chan: netchan_t, msg
   sequence &= ~(1 << 31);
   sequence_ack &= ~(1 << 31);
 
-  if (runtime.showpackets) {
+  if (getShowPackets(runtime)) {
     runtime.hooks.onPrintf?.(
       reliable_message
         ? `recv ${padPacketSize(msg.cursize)} : s=${sequence} reliable=${chan.incoming_reliable_sequence ^ 1} ack=${sequence_ack} rack=${reliable_ack}\n`
@@ -260,7 +272,7 @@ export function Netchan_Process(runtime: QcommonNetRuntime, chan: netchan_t, msg
   }
 
   if (sequence <= chan.incoming_sequence) {
-    if (runtime.showdrop) {
+    if (getShowDrop(runtime)) {
       runtime.hooks.onPrintf?.(
         `${NET_AdrToString(chan.remote_address)}:Out of order packet ${sequence} at ${chan.incoming_sequence}\n`
       );
@@ -269,7 +281,7 @@ export function Netchan_Process(runtime: QcommonNetRuntime, chan: netchan_t, msg
   }
 
   chan.dropped = sequence - (chan.incoming_sequence + 1);
-  if (chan.dropped > 0 && runtime.showdrop) {
+  if (chan.dropped > 0 && getShowDrop(runtime)) {
     runtime.hooks.onPrintf?.(
       `${NET_AdrToString(chan.remote_address)}:Dropped ${chan.dropped} packets at ${sequence}\n`
     );
@@ -321,4 +333,30 @@ function encodeAscii(value: string): Uint8Array {
  */
 function padPacketSize(size: number): string {
   return String(size).padStart(4, " ");
+}
+
+/**
+ * Category: New
+ * Purpose: Read `showpackets` through the original cvar pointer when it is wired.
+ */
+function getShowPackets(runtime: QcommonNetRuntime): qboolean {
+  return runtime.showpacketsCvar ? runtime.showpacketsCvar.value !== 0 : runtime.showpackets;
+}
+
+/**
+ * Category: New
+ * Purpose: Read `showdrop` through the original cvar pointer when it is wired.
+ */
+function getShowDrop(runtime: QcommonNetRuntime): qboolean {
+  return runtime.showdropCvar ? runtime.showdropCvar.value !== 0 : runtime.showdrop;
+}
+
+/**
+ * Category: New
+ * Purpose: Read `qport` through the original no-set cvar when it is wired.
+ */
+function getRuntimeQport(runtime: QcommonNetRuntime): number {
+  const qport = runtime.qportCvar ? runtime.qportCvar.value : runtime.qport;
+  runtime.qport = qport;
+  return qport;
 }

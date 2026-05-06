@@ -28,6 +28,7 @@ import { createGameClient } from "../../../packages/game/src/runtime.js";
 import {
   Cbuf_CopyToDefer,
   Cvar_Get,
+  Netchan_Init,
   CM_ReadPortalState,
   CM_WritePortalState,
   CS_IMAGES,
@@ -108,6 +109,7 @@ export function createFullGameServerHost(options: FullGameServerHostOptions): Fu
   const svs = createServerStatic();
   const ge = createPlaceholderGameExports();
   const qnet = options.qnet ?? createQcommonNetRuntime();
+  Netchan_Init(qnet, options.cvar);
   const collision = createCollisionModelRuntime();
   const collisionWorld = createDynamicCollisionWorld(collision);
   const saveStorage = options.saveStorage ?? createWebSaveStorage(null);

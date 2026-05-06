@@ -18,6 +18,8 @@ import {
   DEFAULT_BULLET_VSPREAD,
   DEFAULT_DEATHMATCH_SHOTGUN_COUNT,
   DEFAULT_SHOTGUN_COUNT,
+  DEFAULT_SHOTGUN_HSPREAD,
+  DEFAULT_SSHOTGUN_COUNT,
   DEFAULT_SHOTGUN_VSPREAD,
   Drop_Weapon,
   FindItem,
@@ -25,6 +27,7 @@ import {
   MOD_CHAINGUN,
   MOD_MACHINEGUN,
   MOD_SHOTGUN,
+  MOD_SSHOTGUN,
   Machinegun_Fire,
   ANIM_ATTACK,
   ANIM_REVERSE,
@@ -50,6 +53,7 @@ import {
   Weapon_RocketLauncher,
   Weapon_RocketLauncher_Fire,
   Weapon_Shotgun,
+  Weapon_SuperShotgun,
   attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameSoundEvents,
@@ -59,11 +63,12 @@ import {
   weapon_grenade_fire,
   weapon_grenadelauncher_fire,
   weapon_shotgun_fire,
+  weapon_supershotgun_fire,
   weaponstate_t,
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, CS_SOUNDS, DF_INFINITE_AMMO, DF_WEAPONS_STAY, EF_BLASTER, EF_HYPERBLASTER, MZ_BFG, MZ_BLASTER, MZ_CHAINGUN1, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET, MZ_SHOTGUN, MZ_SILENCED, PMF_DUCKED } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, CS_SOUNDS, DF_INFINITE_AMMO, DF_WEAPONS_STAY, EF_BLASTER, EF_HYPERBLASTER, MZ_BFG, MZ_BLASTER, MZ_CHAINGUN1, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET, MZ_SHOTGUN, MZ_SILENCED, MZ_SSHOTGUN, PMF_DUCKED } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -78,6 +83,7 @@ function main(): void {
   verifyMachinegunNoAmmoUsesVoiceChannel();
   verifyChaingunFireParity();
   verifyShotgunFireParity();
+  verifySuperShotgunFireParity();
   verifyGrenadeLauncherFireParity();
   verifyRocketLauncherFireParity();
   verifyBlasterFireParity();
@@ -770,6 +776,123 @@ function verifyShotgunFireParity(): void {
   });
   assertNumber(shots.length, 0, "Weapon_Shotgun fire_frames should only include frames 8 and 9");
   assertNumber(player.client!.ps.gunframe, 11, "Weapon_Shotgun non-fire frame should advance without firing");
+}
+
+function verifySuperShotgunFireParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const superShotgun = requireItem("Super Shotgun");
+  const shells = requireItem("Shells");
+  const shots: Array<{ start: readonly number[]; aimdir: readonly number[]; damage: number; kick: number; hspread: number; vspread: number; count: number; mod: number }> = [];
+  const flashes: number[] = [];
+
+  player.s.modelindex = 255;
+  player.s.origin = [100, 200, 300];
+  player.origin = [100, 200, 300];
+  player.client!.pers.weapon = superShotgun;
+  player.client!.ammo_index = shells.index;
+  player.client!.pers.inventory[superShotgun.index] = 1;
+  player.client!.pers.inventory[shells.index] = 6;
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 7;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.v_angle = [0, 0, 0];
+  player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.silencer_shots = 1;
+
+  Weapon_SuperShotgun(player, runtime, {
+    fire_shotgun: (_ent, start, aimdir, damage, kick, hspread, vspread, count, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, count, mod });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots.length, 2, "Weapon_SuperShotgun should fire two half-spread shotgun traces on frame 7");
+  assertVec3(shots[0].start, [100, 192, 314], "Weapon_SuperShotgun first trace start should use original muzzle offset");
+  assertVec3(shots[1].start, [100, 192, 314], "Weapon_SuperShotgun second trace start should reuse original muzzle offset");
+  assertVec3Close(shots[0].aimdir, [0.9961946980917455, -0.08715574274765817, 0], "Weapon_SuperShotgun first trace should yaw -5 degrees");
+  assertVec3Close(shots[1].aimdir, [0.9961946980917455, 0.08715574274765817, 0], "Weapon_SuperShotgun second trace should yaw +5 degrees");
+  for (const shot of shots) {
+    assertNumber(shot.damage, 24, "Weapon_SuperShotgun quad damage should match C");
+    assertNumber(shot.kick, 48, "Weapon_SuperShotgun quad kick should match C");
+    assertNumber(shot.hspread, DEFAULT_SHOTGUN_HSPREAD, "Weapon_SuperShotgun horizontal spread should match C");
+    assertNumber(shot.vspread, DEFAULT_SHOTGUN_VSPREAD, "Weapon_SuperShotgun vertical spread should match C");
+    assertNumber(shot.count, DEFAULT_SSHOTGUN_COUNT / 2, "Weapon_SuperShotgun should split pellet count in two");
+    assertNumber(shot.mod, MOD_SSHOTGUN, "Weapon_SuperShotgun means-of-death should match C");
+  }
+  assertNumber(flashes[0], MZ_SSHOTGUN | MZ_SILENCED, "Weapon_SuperShotgun should emit MZ_SSHOTGUN plus silenced bit");
+  assertNumber(player.client!.ps.gunframe, 8, "Weapon_SuperShotgun fire frame should advance once");
+  assertNumber(player.client!.kick_origin[0], -2, "Weapon_SuperShotgun should apply original kick origin");
+  assertNumber(player.client!.kick_angles[0], -2, "Weapon_SuperShotgun should apply original kick angle");
+  assertNumber(player.client!.pers.inventory[shells.index], 4, "Weapon_SuperShotgun should consume two shells");
+  assertNumber(player.client!.silencer_shots, 0, "Weapon_SuperShotgun PlayerNoise should consume one silencer shot");
+  assertBoolean(player.mynoise === null, true, "Weapon_SuperShotgun silenced PlayerNoise should suppress noise entity");
+
+  runtime.dmflags |= DF_INFINITE_AMMO;
+  player.client!.quad_framenum = 0;
+  player.client!.silencer_shots = 0;
+  player.client!.ps.gunframe = 7;
+  player.client!.pers.inventory[shells.index] = 4;
+  shots.length = 0;
+  flashes.length = 0;
+
+  Weapon_SuperShotgun(player, runtime, {
+    fire_shotgun: (_ent, start, aimdir, damage, kick, hspread, vspread, count, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, count, mod });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots.length, 2, "Weapon_SuperShotgun should still fire two traces without quad");
+  assertNumber(shots[0].damage, 6, "Weapon_SuperShotgun base damage should match C");
+  assertNumber(shots[0].kick, 12, "Weapon_SuperShotgun base kick should match C");
+  assertNumber(flashes[0], MZ_SSHOTGUN, "Weapon_SuperShotgun should emit unsilenced MZ_SSHOTGUN");
+  assertNumber(player.client!.pers.inventory[shells.index], 4, "DF_INFINITE_AMMO should prevent super-shotgun shell consumption");
+
+  runtime.dmflags = 0;
+  player.client!.ps.gunframe = 7;
+  shots.length = 0;
+  flashes.length = 0;
+  weapon_supershotgun_fire(player, runtime, {
+    fire_shotgun: (_ent, start, aimdir, damage, kick, hspread, vspread, count, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, count, mod });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+  assertBoolean(runtime.sound_entity === player.mynoise, true, "weapon_supershotgun_fire should emit weapon noise when not silenced");
+  assertVec3(player.mynoise!.s.origin, [100, 192, 314], "weapon_supershotgun_fire weapon noise should use shotgun muzzle start");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.ps.gunframe = 29;
+  player.client!.buttons = 0;
+  player.client!.latched_buttons = 0;
+  shots.length = 0;
+  withMathRandom([0.1], () => {
+    Weapon_SuperShotgun(player, runtime, {
+      fire_shotgun: (_ent, start, aimdir, damage, kick, hspread, vspread, count, mod) => {
+        shots.push({ start, aimdir, damage, kick, hspread, vspread, count, mod });
+      }
+    });
+  });
+  assertNumber(player.client!.ps.gunframe, 29, "Weapon_SuperShotgun pause_frames should include frame 29");
+  assertNumber(shots.length, 0, "Weapon_SuperShotgun pause frame should not fire while idling");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 8;
+  shots.length = 0;
+  Weapon_SuperShotgun(player, runtime, {
+    fire_shotgun: (_ent, start, aimdir, damage, kick, hspread, vspread, count, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, count, mod });
+    }
+  });
+  assertNumber(shots.length, 0, "Weapon_SuperShotgun fire_frames should only include frame 7");
+  assertNumber(player.client!.ps.gunframe, 9, "Weapon_SuperShotgun non-fire frame should advance without firing");
 }
 
 function verifyRocketLauncherFireParity(): void {

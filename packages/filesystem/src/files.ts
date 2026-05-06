@@ -255,11 +255,16 @@ export function FS_LoadPackFile(filesystem: VirtualFilesystem, bytes: Uint8Array
  *
  * Behavior:
  * - Adds, replaces or removes one prefix link entry.
+ * - Returns the original usage string when the command arguments are missing.
  *
  * Porting notes:
- * - Accepts normalized string arguments directly instead of reading command argv.
+ * - Accepts normalized string arguments directly instead of reading command argv; filesystem command registration is owned by `FS_InitFilesystem`.
  */
-export function FS_Link(filesystem: VirtualFilesystem, from: string, to: string): void {
+export function FS_Link_f(filesystem: VirtualFilesystem, from?: string, to?: string): string | void {
+  if (from === undefined || to === undefined) {
+    return "USAGE: link <from> <to>";
+  }
+
   const normalizedFrom = normalizeVirtualPath(from);
   const existing = filesystem.fs_links.find((link) => link.from === normalizedFrom);
 
@@ -269,15 +274,28 @@ export function FS_Link(filesystem: VirtualFilesystem, from: string, to: string)
       return;
     }
 
-    existing.to = normalizeDirectoryPath(to);
+    existing.to = normalizeVirtualPath(to);
     return;
   }
 
   filesystem.fs_links.unshift({
     from: normalizedFrom,
     fromlength: normalizedFrom.length,
-    to: normalizeDirectoryPath(to)
+    to: normalizeVirtualPath(to)
   });
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (compatibility adapter for the ported `FS_Link_f`)
+ * Category: Adapter
+ * Fidelity level: Adapter
+ *
+ * Purpose:
+ * - Preserve the earlier TypeScript helper name while the official source entity keeps `FS_Link_f`.
+ */
+export function FS_Link(filesystem: VirtualFilesystem, from: string, to: string): void {
+  FS_Link_f(filesystem, from, to);
 }
 
 /**
@@ -730,7 +748,7 @@ function resolveLinkedFilename(filesystem: VirtualFilesystem, filename: string):
       continue;
     }
 
-    return `${link.to}/${filename.slice(link.fromlength)}`.replaceAll("//", "/");
+    return `${link.to}${filename.slice(link.fromlength)}`.replaceAll("//", "/");
   }
 
   return null;

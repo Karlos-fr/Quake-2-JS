@@ -434,6 +434,9 @@ export interface QcommonNetRuntime {
   showpackets: qboolean;
   showdrop: qboolean;
   qport: number;
+  showpacketsCvar: cvar_t | null;
+  showdropCvar: cvar_t | null;
+  qportCvar: cvar_t | null;
   multiplayer: qboolean;
   net_from: netadr_t;
   net_message: sizebuf_t;
@@ -498,6 +501,9 @@ export function createQcommonNetRuntime(hooks: QcommonNetHooks = {}): QcommonNet
     showpackets: false,
     showdrop: false,
     qport: 0,
+    showpacketsCvar: null,
+    showdropCvar: null,
+    qportCvar: null,
     multiplayer: false,
     net_from: createNetAdr(),
     net_message: createSizeBuffer(net_message_buffer),

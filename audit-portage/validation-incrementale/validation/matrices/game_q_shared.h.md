@@ -178,21 +178,21 @@
 | `Quake-2-master/game/q_shared.h` | macro | `MASK_OPAQUE` | `packages/qcommon/src/q_shared.ts` | `MASK_OPAQUE` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MASK_SHOT` | `packages/qcommon/src/q_shared.ts` | `MASK_SHOT` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MASK_CURRENT` | `packages/qcommon/src/q_shared.ts` | `MASK_CURRENT` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `AREA_SOLID` | `packages/qcommon/src/q_shared.ts` | `AREA_SOLID` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `AREA_TRIGGERS` | `packages/qcommon/src/q_shared.ts` | `AREA_TRIGGERS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | struct | `cplane_s` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `dist` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `type` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `signbits` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `pad` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_NORMAL_X` | `packages/qcommon/src/q_shared.ts` | `CPLANE_NORMAL_X` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_NORMAL_Y` | `packages/qcommon/src/q_shared.ts` | `CPLANE_NORMAL_Y` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_NORMAL_Z` | `packages/qcommon/src/q_shared.ts` | `CPLANE_NORMAL_Z` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_DIST` | `packages/qcommon/src/q_shared.ts` | `CPLANE_DIST` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_TYPE` | `packages/qcommon/src/q_shared.ts` | `CPLANE_TYPE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_SIGNBITS` | `packages/qcommon/src/q_shared.ts` | `CPLANE_SIGNBITS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_PAD0` | `packages/qcommon/src/q_shared.ts` | `CPLANE_PAD0` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_PAD1` | `packages/qcommon/src/q_shared.ts` | `CPLANE_PAD1` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `AREA_SOLID` | `packages/qcommon/src/q_shared.ts` | `AREA_SOLID` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `AREA_TRIGGERS` | `packages/qcommon/src/q_shared.ts` | `AREA_TRIGGERS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | struct | `cplane_s` | `packages/qcommon/src/q_shared.ts` | `cplane_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `dist` | `packages/qcommon/src/q_shared.ts` | `cplane_t.dist` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `type` | `packages/qcommon/src/q_shared.ts` | `cplane_t.type` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `signbits` | `packages/qcommon/src/q_shared.ts` | `cplane_t.signbits` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `pad` | `packages/qcommon/src/q_shared.ts` | `cplane_t.pad` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_NORMAL_X` | `packages/qcommon/src/q_shared.ts` | `CPLANE_NORMAL_X` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_NORMAL_Y` | `packages/qcommon/src/q_shared.ts` | `CPLANE_NORMAL_Y` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_NORMAL_Z` | `packages/qcommon/src/q_shared.ts` | `CPLANE_NORMAL_Z` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_DIST` | `packages/qcommon/src/q_shared.ts` | `CPLANE_DIST` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_TYPE` | `packages/qcommon/src/q_shared.ts` | `CPLANE_TYPE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_SIGNBITS` | `packages/qcommon/src/q_shared.ts` | `CPLANE_SIGNBITS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_PAD0` | `packages/qcommon/src/q_shared.ts` | `CPLANE_PAD0` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CPLANE_PAD1` | `packages/qcommon/src/q_shared.ts` | `CPLANE_PAD1` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | struct | `cmodel_s` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | global | `origin` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | global | `headnode` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |

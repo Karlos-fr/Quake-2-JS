@@ -27,6 +27,13 @@ import {
   Netchan_Transmit
 } from "../../packages/qcommon/src/net_chan.js";
 import {
+  CVAR_NOSET,
+  Cvar_FindVar,
+  Cvar_ForceSet,
+  Cvar_Set,
+  createCvarRuntime
+} from "../../packages/qcommon/src/cvar.js";
+import {
   MAX_MSGLEN,
   NET_AdrToString,
   createNetAdr,
@@ -49,13 +56,18 @@ const runtime = createQcommonNetRuntime({
     printed.push(message);
   }
 });
+const cvar = createCvarRuntime();
 
 const remote = createNetAdr(netadrtype_t.NA_IP);
 remote.ip.set([127, 0, 0, 1]);
 remote.port = 27910;
 
-Netchan_Init(runtime);
+Netchan_Init(runtime, cvar);
 assert.equal(runtime.qport, 1234 & 0xffff, "Netchan_Init qport mismatch");
+assert.equal(Cvar_FindVar(cvar, "showpackets")?.value, 0, "Netchan_Init showpackets cvar default mismatch");
+assert.equal(Cvar_FindVar(cvar, "showdrop")?.value, 0, "Netchan_Init showdrop cvar default mismatch");
+assert.equal(Cvar_FindVar(cvar, "qport")?.flags, CVAR_NOSET, "Netchan_Init qport cvar flags mismatch");
+assert.equal(Cvar_Set(cvar, "qport", "7777")?.value, runtime.qport, "qport should be protected like CVAR_NOSET");
 
 const clientChan = createNetchan(netsrc_t.NS_CLIENT);
 Netchan_Setup(runtime, netsrc_t.NS_CLIENT, clientChan, remote, 55);
@@ -68,7 +80,7 @@ clientChan.message_buf[0] = 42;
 clientChan.message.cursize = 1;
 assert.equal(Netchan_NeedReliable(clientChan), true, "Netchan_NeedReliable mismatch");
 
-runtime.showpackets = true;
+Cvar_Set(cvar, "showpackets", "1");
 Netchan_Transmit(runtime, clientChan, 2, new Uint8Array([1, 2]));
 assert.equal(sentPackets.length, 1, "Netchan_Transmit send mismatch");
 assert.equal(
@@ -83,7 +95,7 @@ transmittedMessage.cursize = transmitted.data.length;
 MSG_BeginReading(transmittedMessage);
 assert.equal(MSG_ReadLong(transmittedMessage), -2147483647, "Netchan_Transmit w1 mismatch");
 assert.equal(MSG_ReadLong(transmittedMessage), 0, "Netchan_Transmit w2 mismatch");
-assert.equal(MSG_ReadShort(transmittedMessage), runtime.qport, "Netchan_Transmit qport mismatch");
+assert.equal(MSG_ReadShort(transmittedMessage), runtime.qport, "Netchan_Transmit qport cvar mismatch");
 assert.equal(MSG_ReadByte(transmittedMessage), 42, "Netchan_Transmit reliable payload mismatch");
 assert.equal(MSG_ReadByte(transmittedMessage), 1, "Netchan_Transmit unreliable payload first byte mismatch");
 assert.equal(MSG_ReadByte(transmittedMessage), 2, "Netchan_Transmit unreliable payload second byte mismatch");
@@ -105,6 +117,17 @@ assert.equal(MSG_ReadLong(retransmittedMessage), -2147483646, "Netchan_Transmit 
 assert.equal(MSG_ReadLong(retransmittedMessage), 0, "Netchan_Transmit retransmit w2 mismatch");
 assert.equal(MSG_ReadShort(retransmittedMessage), runtime.qport, "Netchan_Transmit retransmit qport mismatch");
 assert.equal(MSG_ReadByte(retransmittedMessage), 42, "Netchan_Transmit retransmit reliable payload mismatch");
+
+Cvar_ForceSet(cvar, "qport", "22222");
+clientChan.incoming_acknowledged = clientChan.last_reliable_sequence + 1;
+clientChan.incoming_reliable_acknowledged = 0;
+Netchan_Transmit(runtime, clientChan, 0, new Uint8Array(0));
+const forcedQportMessage = createSizeBuffer(new Uint8Array(sentPackets[2]!.data));
+forcedQportMessage.cursize = sentPackets[2]!.data.length;
+MSG_BeginReading(forcedQportMessage);
+MSG_ReadLong(forcedQportMessage);
+MSG_ReadLong(forcedQportMessage);
+assert.equal(MSG_ReadShort(forcedQportMessage), 22222, "Netchan_Transmit should read qport through cvar");
 
 const overflowChan = createNetchan(netsrc_t.NS_CLIENT);
 Netchan_Setup(runtime, netsrc_t.NS_CLIENT, overflowChan, remote, 55);
@@ -140,7 +163,7 @@ assert.equal(
 );
 assert.equal(MSG_ReadByte(incomingMessage), 99, "Netchan_Process payload offset mismatch");
 
-runtime.showdrop = true;
+Cvar_Set(cvar, "showdrop", "1");
 const staleMessage = createSizeBuffer(MAX_MSGLEN);
 MSG_WriteLong(staleMessage, 1);
 MSG_WriteLong(staleMessage, 0);
@@ -172,16 +195,16 @@ assert.equal(
 
 Netchan_OutOfBand(runtime, netsrc_t.NS_CLIENT, remote, 3, new Uint8Array([5, 6, 7]));
 Netchan_OutOfBandPrint(runtime, netsrc_t.NS_CLIENT, remote, "ping");
-assert.equal(sentPackets.length, 5, "out-of-band packet count mismatch");
+assert.equal(sentPackets.length, 6, "out-of-band packet count mismatch");
 
-const binaryMessage = createSizeBuffer(new Uint8Array(sentPackets[3]!.data));
-binaryMessage.cursize = sentPackets[3]!.data.length;
+const binaryMessage = createSizeBuffer(new Uint8Array(sentPackets[4]!.data));
+binaryMessage.cursize = sentPackets[4]!.data.length;
 MSG_BeginReading(binaryMessage);
 assert.equal(MSG_ReadLong(binaryMessage), -1, "Netchan_OutOfBand header mismatch");
 assert.deepEqual(Array.from(binaryMessage.data.subarray(binaryMessage.readcount, binaryMessage.cursize)), [5, 6, 7], "Netchan_OutOfBand payload mismatch");
 
-const printMessage = createSizeBuffer(new Uint8Array(sentPackets[4]!.data));
-printMessage.cursize = sentPackets[4]!.data.length;
+const printMessage = createSizeBuffer(new Uint8Array(sentPackets[5]!.data));
+printMessage.cursize = sentPackets[5]!.data.length;
 MSG_BeginReading(printMessage);
 assert.equal(MSG_ReadLong(printMessage), -1, "Netchan_OutOfBandPrint header mismatch");
 assert.equal(MSG_ReadString(printMessage), "ping", "Netchan_OutOfBandPrint payload mismatch");

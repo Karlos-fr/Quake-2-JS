@@ -18,6 +18,7 @@ export {
   FS_FreeFile,
   FS_Gamedir,
   FS_Link,
+  FS_Link_f,
   FS_ListFiles,
   FS_LoadFile,
   FS_LoadPackFile,

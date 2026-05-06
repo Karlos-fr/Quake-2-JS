@@ -118,17 +118,17 @@
 | `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{22, 28, 34, 0}` verifiees via `verify:p-weapon`. |
 | `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Table statique locale de `Weapon_Shotgun`; couverte par l'entree table `fire_frames`. |
 | `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{8, 9, 0}` verifiees via `verify:p-weapon`. |
-| `Quake-2-master/game/p_weapon.c` | function | `weapon_supershotgun_fire` | `packages/game/src/p_weapon.ts` | `weapon_supershotgun_fire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `start` | `packages/game/src/p_weapon.ts` | `start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `offset` | `packages/game/src/p_weapon.ts` | `offset` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `v` | `packages/game/src/p_weapon.ts` | `v` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `kick` | `packages/game/src/p_weapon.ts` | `kick` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Weapon_SuperShotgun` | `packages/game/src/p_weapon.ts` | `Weapon_SuperShotgun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | function | `weapon_supershotgun_fire` | `packages/game/src/p_weapon.ts` | `weapon_supershotgun_fire` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `start` | `packages/game/src/p_weapon.ts` | `start` | Non applicable | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `offset` | `packages/game/src/p_weapon.ts` | `offset` | Non applicable | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `v` | `packages/game/src/p_weapon.ts` | `v` | Non applicable | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | Non applicable | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `kick` | `packages/game/src/p_weapon.ts` | `kick` | Non applicable | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | function | `Weapon_SuperShotgun` | `packages/game/src/p_weapon.ts` | `Weapon_SuperShotgun` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | function | `weapon_railgun_fire` | `packages/game/src/p_weapon.ts` | `weapon_railgun_fire` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `start` | `packages/game/src/p_weapon.ts` | `start` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `offset` | `packages/game/src/p_weapon.ts` | `offset` | A verifier | A redecouper |  |

@@ -34,17 +34,17 @@
 | `Quake-2-master/qcommon/pmove.c` | global | `backoff` | `packages/qcommon/src/pmove.ts` | `backoff` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `change` | `packages/qcommon/src/pmove.ts` | `change` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` | `index` | Valide | Partiel | Renommage local de `i` en `index` dans `PM_ClipVelocity`. |
-| `Quake-2-master/qcommon/pmove.c` | macro | `MIN_STEP_NORMAL` | `packages/qcommon/src/pmove.ts` | `MIN_STEP_NORMAL` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | macro | `MAX_CLIP_PLANES` | `packages/qcommon/src/pmove.ts` | `MAX_CLIP_PLANES` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_StepSlideMove_` | `packages/qcommon/src/pmove.ts` | `PM_StepSlideMove_` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `dir` | `packages/qcommon/src/pmove.ts` | `dir` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `d` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `numplanes` | `packages/qcommon/src/pmove.ts` | `numplanes` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `planes` | `packages/qcommon/src/pmove.ts` | `planes` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `primal_velocity` | `packages/qcommon/src/pmove.ts` | `primal_velocity` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `end` | `packages/qcommon/src/pmove.ts` | `end` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `time_left` | `packages/qcommon/src/pmove.ts` | `time_left` | A verifier | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | macro | `MIN_STEP_NORMAL` | `packages/qcommon/src/pmove.ts` | `MIN_STEP_NORMAL` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | macro | `MAX_CLIP_PLANES` | `packages/qcommon/src/pmove.ts` | `MAX_CLIP_PLANES` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_StepSlideMove_` | `packages/qcommon/src/pmove.ts` | `PM_StepSlideMove_` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `dir` | `packages/qcommon/src/pmove.ts` | `dir` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `d` | `packages/qcommon/src/pmove.ts` | `distance` | Valide | Partiel | Renommage local de `d` en `distance` dans `PM_StepSlideMove_`. |
+| `Quake-2-master/qcommon/pmove.c` | global | `numplanes` | `packages/qcommon/src/pmove.ts` | `numplanes` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `planes` | `packages/qcommon/src/pmove.ts` | `planes` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `primal_velocity` | `packages/qcommon/src/pmove.ts` | `primal_velocity` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `end` | `packages/qcommon/src/pmove.ts` | `end` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `time_left` | `packages/qcommon/src/pmove.ts` | `time_left` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_StepSlideMove` | `packages/qcommon/src/pmove.ts` | `PM_StepSlideMove` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `trace` | `packages/qcommon/src/pmove.ts` | `trace` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_Friction` | `packages/qcommon/src/pmove.ts` | `PM_Friction` | A verifier | A tester |  |
