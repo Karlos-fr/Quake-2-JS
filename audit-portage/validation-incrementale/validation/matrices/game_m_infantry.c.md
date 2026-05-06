@@ -11,33 +11,33 @@
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `Quake-2-master/game/m_infantry.c` | function | `InfantryMachineGun` | `packages/game/src/m_infantry.ts` | `InfantryMachineGun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_pain1` | `packages/game/src/m_infantry.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_pain2` | `packages/game/src/m_infantry.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_die1` | `packages/game/src/m_infantry.ts` | `SOUND_DIE1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_die2` | `packages/game/src/m_infantry.ts` | `SOUND_DIE2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_gunshot` | `packages/game/src/m_infantry.ts` | `SOUND_GUNSHOT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_weapon_cock` | `packages/game/src/m_infantry.ts` | `SOUND_WEAPON_COCK` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_punch_swing` | `packages/game/src/m_infantry.ts` | `SOUND_PUNCH_SWING` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_punch_hit` | `packages/game/src/m_infantry.ts` | `SOUND_PUNCH_HIT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_sight` | `packages/game/src/m_infantry.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_search` | `packages/game/src/m_infantry.ts` | `SOUND_SEARCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `sound_idle` | `packages/game/src/m_infantry.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_stand` | `packages/game/src/m_infantry.ts` | `infantry_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_stand` | `packages/game/src/m_infantry.ts` | `infantry_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_stand` | `packages/game/src/m_infantry.ts` | `infantry_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_stand` | `packages/game/src/m_infantry.ts` | `infantry_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_fidget` | `packages/game/src/m_infantry.ts` | `infantry_frames_fidget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_fidget` | `packages/game/src/m_infantry.ts` | `infantry_frames_fidget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_fidget` | `packages/game/src/m_infantry.ts` | `infantry_move_fidget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_fidget` | `packages/game/src/m_infantry.ts` | `infantry_fidget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_walk` | `packages/game/src/m_infantry.ts` | `infantry_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_walk` | `packages/game/src/m_infantry.ts` | `infantry_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_walk` | `packages/game/src/m_infantry.ts` | `infantry_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_walk` | `packages/game/src/m_infantry.ts` | `infantry_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_run` | `packages/game/src/m_infantry.ts` | `infantry_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_run` | `packages/game/src/m_infantry.ts` | `infantry_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_run` | `packages/game/src/m_infantry.ts` | `infantry_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_run` | `packages/game/src/m_infantry.ts` | `infantry_run` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_pain1` | `packages/game/src/m_infantry.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_pain2` | `packages/game/src/m_infantry.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_die1` | `packages/game/src/m_infantry.ts` | `SOUND_DIE1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_die2` | `packages/game/src/m_infantry.ts` | `SOUND_DIE2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_gunshot` | `packages/game/src/m_infantry.ts` | `SOUND_GUNSHOT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_weapon_cock` | `packages/game/src/m_infantry.ts` | `SOUND_WEAPON_COCK` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_punch_swing` | `packages/game/src/m_infantry.ts` | `SOUND_PUNCH_SWING` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_punch_hit` | `packages/game/src/m_infantry.ts` | `SOUND_PUNCH_HIT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_sight` | `packages/game/src/m_infantry.ts` | `SOUND_SIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_search` | `packages/game/src/m_infantry.ts` | `SOUND_SEARCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `sound_idle` | `packages/game/src/m_infantry.ts` | `SOUND_IDLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_stand` | `packages/game/src/m_infantry.ts` | `infantry_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_stand` | `packages/game/src/m_infantry.ts` | `infantry_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_stand` | `packages/game/src/m_infantry.ts` | `infantry_move_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_stand` | `packages/game/src/m_infantry.ts` | `infantry_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_fidget` | `packages/game/src/m_infantry.ts` | `infantry_frames_fidget` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_fidget` | `packages/game/src/m_infantry.ts` | `infantry_frames_fidget` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_fidget` | `packages/game/src/m_infantry.ts` | `infantry_move_fidget` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_fidget` | `packages/game/src/m_infantry.ts` | `infantry_fidget` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_walk` | `packages/game/src/m_infantry.ts` | `infantry_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_walk` | `packages/game/src/m_infantry.ts` | `infantry_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_walk` | `packages/game/src/m_infantry.ts` | `infantry_move_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_walk` | `packages/game/src/m_infantry.ts` | `infantry_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_run` | `packages/game/src/m_infantry.ts` | `infantry_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_run` | `packages/game/src/m_infantry.ts` | `infantry_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_run` | `packages/game/src/m_infantry.ts` | `infantry_move_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_run` | `packages/game/src/m_infantry.ts` | `infantry_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_pain1` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_pain1` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | global | `infantry_move_pain1` | `packages/game/src/m_infantry.ts` | `infantry_move_pain1` | A verifier | A redecouper |  |
@@ -82,10 +82,10 @@
 | `Quake-2-master/game/m_infantry.c` | global | `infantry_move_attack2` | `packages/game/src/m_infantry.ts` | `infantry_move_attack2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | function | `infantry_attack` | `packages/game/src/m_infantry.ts` | `infantry_attack` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | function | `SP_monster_infantry` | `packages/game/src/m_infantry.ts` | `SP_monster_infantry` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_stand` | `packages/game/src/m_infantry.ts` | `infantry_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_fidget` | `packages/game/src/m_infantry.ts` | `infantry_frames_fidget` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_walk` | `packages/game/src/m_infantry.ts` | `infantry_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_run` | `packages/game/src/m_infantry.ts` | `infantry_frames_run` | A verifier | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_stand` | `packages/game/src/m_infantry.ts` | `infantry_frames_stand` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_fidget` | `packages/game/src/m_infantry.ts` | `infantry_frames_fidget` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_walk` | `packages/game/src/m_infantry.ts` | `infantry_frames_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_run` | `packages/game/src/m_infantry.ts` | `infantry_frames_run` | Valide | matched |  |
 | `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_pain1` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain1` | A verifier | matched |  |
 | `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_pain2` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain2` | A verifier | matched |  |
 | `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_death1` | `packages/game/src/m_infantry.ts` | `infantry_frames_death1` | A verifier | matched |  |

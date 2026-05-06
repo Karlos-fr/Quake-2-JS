@@ -381,24 +381,24 @@
 | `Quake-2-master/game/g_local.h` | macro | `DEFAULT_DEATHMATCH_SHOTGUN_COUNT` | `packages/game/src/runtime.ts` | `DEFAULT_DEATHMATCH_SHOTGUN_COUNT` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SHOTGUN_COUNT` | `packages/game/src/runtime.ts` | `DEFAULT_SHOTGUN_COUNT` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SSHOTGUN_COUNT` | `packages/game/src/runtime.ts` | `DEFAULT_SSHOTGUN_COUNT` | Valide | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `monster_fire_bullet` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `monster_fire_shotgun` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `monster_fire_blaster` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `monster_fire_grenade` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `monster_fire_rocket` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `monster_fire_railgun` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `monster_fire_bfg` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `M_droptofloor` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `monster_think` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `walkmonster_start` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `swimmonster_start` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `flymonster_start` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `AttackFinished` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `monster_death_use` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `M_CatagorizePosition` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `M_CheckAttack` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `M_FlyCheck` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `M_CheckGround` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | function | `monster_fire_bullet` | `packages/game/src/g_monster.ts` | `monster_fire_bullet` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `monster_fire_shotgun` | `packages/game/src/g_monster.ts` | `monster_fire_shotgun` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `monster_fire_blaster` | `packages/game/src/g_monster.ts` | `monster_fire_blaster` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `monster_fire_grenade` | `packages/game/src/g_monster.ts` | `monster_fire_grenade` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `monster_fire_rocket` | `packages/game/src/g_monster.ts` | `monster_fire_rocket` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `monster_fire_railgun` | `packages/game/src/g_monster.ts` | `monster_fire_railgun` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `monster_fire_bfg` | `packages/game/src/g_monster.ts` | `monster_fire_bfg` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `M_droptofloor` | `packages/game/src/g_monster.ts` | `M_droptofloor` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `monster_think` | `packages/game/src/g_monster.ts` | `monster_think` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `walkmonster_start` | `packages/game/src/g_monster.ts` | `walkmonster_start` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `swimmonster_start` | `packages/game/src/g_monster.ts` | `swimmonster_start` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `flymonster_start` | `packages/game/src/g_monster.ts` | `flymonster_start` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `AttackFinished` | `packages/game/src/g_monster.ts` | `AttackFinished` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `monster_death_use` | `packages/game/src/g_monster.ts` | `monster_death_use` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `M_CatagorizePosition` | `packages/game/src/g_monster.ts` | `M_CatagorizePosition` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `M_CheckAttack` | `packages/game/src/g_monster.ts` | `M_CheckAttack` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `M_FlyCheck` | `packages/game/src/g_monster.ts` | `M_FlyCheck` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `M_CheckGround` | `packages/game/src/g_monster.ts` | `M_CheckGround` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
 | `Quake-2-master/game/g_local.h` | function | `ThrowHead` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | function | `ThrowClientHead` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | function | `ThrowGib` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

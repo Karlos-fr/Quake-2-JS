@@ -318,6 +318,8 @@ export const infantry_move_stand: GameMonsterMove = {
  * Source: game/m_infantry.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Selects `infantry_move_stand` as the active monster move.
+ * Porting notes: The C move pointer assignment is represented by the explicit `GameMonsterMove` object.
  */
 export function infantry_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = infantry_move_stand;
@@ -339,6 +341,8 @@ export const infantry_move_fidget: GameMonsterMove = {
  * Source: game/m_infantry.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Selects `infantry_move_fidget` and emits the idle voice sound.
+ * Porting notes: `gi.sound` is routed through the gameplay runtime sound queue with the precached sound index.
  */
 export function infantry_fidget(self: GameEntity, runtime: GameRuntime): void {
   self.monsterinfo.currentmove = infantry_move_fidget;
@@ -358,6 +362,14 @@ export const infantry_move_walk: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: infantry_walk
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Selects `infantry_move_walk` as the active monster move.
+ * Porting notes: The C move pointer assignment is represented by the explicit `GameMonsterMove` object.
+ */
 export function infantry_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = infantry_move_walk;
 }
@@ -370,6 +382,14 @@ export const infantry_move_run: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: infantry_run
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Keeps standing when `AI_STAND_GROUND` is set, otherwise selects `infantry_move_run`.
+ * Porting notes: The original bit test is preserved against `monsterinfo.aiflags`.
+ */
 export function infantry_run(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     self.monsterinfo.currentmove = infantry_move_stand;

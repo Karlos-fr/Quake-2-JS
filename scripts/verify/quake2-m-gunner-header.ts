@@ -13,7 +13,11 @@ import {
   FRAME_attak101,
   FRAME_death11,
   FRAME_duck08,
+  FRAME_run08,
+  FRAME_runs06,
   FRAME_stand01,
+  FRAME_stand70,
+  FRAME_walk01,
   FRAME_walk24,
   MODEL_SCALE
 } from "../../packages/game/src/m_gunner.js";
@@ -32,7 +36,11 @@ function assertEqual<T>(label: string, actual: T, expected: T): void {
 }
 
 assertEqual("FRAME_stand01", FRAME_stand01, 0);
+assertEqual("FRAME_stand70", FRAME_stand70, 69);
+assertEqual("FRAME_walk01", FRAME_walk01, 70);
 assertEqual("FRAME_walk24", FRAME_walk24, 93);
+assertEqual("FRAME_run08", FRAME_run08, 101);
+assertEqual("FRAME_runs06", FRAME_runs06, 107);
 assertEqual("FRAME_attak101", FRAME_attak101, 108);
 assertEqual("FRAME_death11", FRAME_death11, 200);
 assertEqual("FRAME_duck08", FRAME_duck08, 208);

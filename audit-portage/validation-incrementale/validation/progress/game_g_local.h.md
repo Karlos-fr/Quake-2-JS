@@ -1796,7 +1796,24 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot mises a jour; prototypes marques `Non applicable` avec ownership du fichier de definition.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-spawn` OK; `npm run verify:g-save` OK; `npm run verify:g-items` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Prochain lot recommande: reprendre au bloc declarations `g_monster.c` de `monster_fire_bullet` a `M_CheckGround` comme prototypes non proprietaires si le coordinateur veut nettoyer les declarations header, puis valider les prochains macros/globals proprietaires apres ce bloc.
+- 2026-05-06: lot declarations `g_monster.c` de `monster_fire_bullet` a `M_CheckGround`.
+- Verdict: `Non applicable` pour les 18 declarations du bloc dans la matrice `g_local.h`: ce sont des prototypes header, non proprietaires de `g_local.h`; les fonctions sont proprietaires de `Quake-2-master/game/g_monster.c` et deja validees dans `game_g_monster.c.md`.
+- Source H/C comparee:
+  - `g_local.h` declare les prototypes `monster_fire_bullet`, `monster_fire_shotgun`, `monster_fire_blaster`, `monster_fire_grenade`, `monster_fire_rocket`, `monster_fire_railgun`, `monster_fire_bfg`, `M_droptofloor`, `monster_think`, `walkmonster_start`, `swimmonster_start`, `flymonster_start`, `AttackFinished`, `monster_death_use`, `M_CatagorizePosition`, `M_CheckAttack`, `M_FlyCheck`, `M_CheckGround`.
+  - `g_monster.c` contient les definitions reelles: armes monstres avec `svc_muzzleflash2`, drop/start/think monstres, eau/sol/effets monde et attack timing.
+- Cibles TS verifiees:
+  - `packages/game/src/g_monster.ts`: fonctions portees avec commentaires d'en-tete `Original name`, `Source: game/g_monster.c`, `Category: Ported`, fidelity explicite et exports publics via `packages/game/src/index.ts`.
+  - `packages/game/src/g_main.ts`: drainage runtime des `monsterMuzzleFlashEvents` vers `svc_muzzleflash2` et `MULTICAST_PVS`; appels `M_CheckGround` depuis le flux frame/physique.
+  - `packages/game/src/runtime.ts`: file d'evenements `emitMonsterMuzzleFlash`/`drainMonsterMuzzleFlashEvents` conserve index entite, frame, origine et numero `MZ2_*`.
+- Runtime: les fonctions proprietaires sont branchees via les spawns `m_*.ts`, callbacks de monstres, `G_RunFrame`/`G_RunEntity`/`SV_RunThink`, armes/projets, collision, water/world effects et drainage messages serveur. Aucun branchement runtime attendu depuis `g_local.h` lui-meme au-dela de la declaration.
+- apps/web: integration attendue indirectement via le host full-game/local, snapshots/messages serveur, sons, projectiles/temp entities, HUD et ordre de rendu; aucune logique parallele web ne remplace ces declarations header.
+- renderer-three: sorties visibles attendues (modeles, frames, projectiles, muzzle flashes/temp entities, sons de scene, effets, camera/scene via snapshots) sont produites par le runtime proprietaire et consommees en aval par le client/refresh/Three. Le renderer ne doit pas consommer les prototypes `g_local.h` directement.
+- Commentaires/documentation: commentaires d'en-tete des fonctions TS proprietaires verifies dans `packages/game/src/g_monster.ts`; les declarations header C ne portent pas de commentaires de fonction.
+- Corrections appliquees:
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: ownership corrige vers `packages/game/src/g_monster.ts`, noms cibles renseignes, lignes marquees `Non applicable` comme declarations non proprietaires.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-monster` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: continuer les declarations non proprietaires immediatement apres, bloc `g_misc.c` de `ThrowHead` a `ClockExplosion`, puis reprendre les prochains macros/globals proprietaires qui suivent.
 
 ## Blocages
 

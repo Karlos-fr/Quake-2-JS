@@ -10,22 +10,22 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_hover.c` | global | `sound_pain1` | `packages/game/src/m_hover.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `sound_pain2` | `packages/game/src/m_hover.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `sound_death1` | `packages/game/src/m_hover.ts` | `SOUND_DEATH1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `sound_death2` | `packages/game/src/m_hover.ts` | `SOUND_DEATH2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `sound_sight` | `packages/game/src/m_hover.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `sound_search1` | `packages/game/src/m_hover.ts` | `SOUND_SEARCH1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `sound_search2` | `packages/game/src/m_hover.ts` | `SOUND_SEARCH2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_sight` | `packages/game/src/m_hover.ts` | `hover_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_search` | `packages/game/src/m_hover.ts` | `hover_search` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_run` | `packages/game/src/m_hover.ts` | `hover_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_stand` | `packages/game/src/m_hover.ts` | `hover_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_dead` | `packages/game/src/m_hover.ts` | `hover_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_attack` | `packages/game/src/m_hover.ts` | `hover_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_reattack` | `packages/game/src/m_hover.ts` | `hover_reattack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_fire_blaster` | `packages/game/src/m_hover.ts` | `hover_fire_blaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_die` | `packages/game/src/m_hover.ts` | `hover_die` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `sound_pain1` | `packages/game/src/m_hover.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `sound_pain2` | `packages/game/src/m_hover.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `sound_death1` | `packages/game/src/m_hover.ts` | `SOUND_DEATH1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `sound_death2` | `packages/game/src/m_hover.ts` | `SOUND_DEATH2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `sound_sight` | `packages/game/src/m_hover.ts` | `SOUND_SIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `sound_search1` | `packages/game/src/m_hover.ts` | `SOUND_SEARCH1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `sound_search2` | `packages/game/src/m_hover.ts` | `SOUND_SEARCH2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_sight` | `packages/game/src/m_hover.ts` | `hover_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_search` | `packages/game/src/m_hover.ts` | `hover_search` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_run` | `packages/game/src/m_hover.ts` | `hover_run` | Non applicable | A redecouper | Prototype C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_hover.c` | function | `hover_stand` | `packages/game/src/m_hover.ts` | `hover_stand` | Non applicable | A redecouper | Prototype C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_hover.c` | function | `hover_dead` | `packages/game/src/m_hover.ts` | `hover_dead` | Non applicable | A redecouper | Prototype C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_hover.c` | function | `hover_attack` | `packages/game/src/m_hover.ts` | `hover_attack` | Non applicable | A redecouper | Prototype C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_hover.c` | function | `hover_reattack` | `packages/game/src/m_hover.ts` | `hover_reattack` | Non applicable | A redecouper | Prototype C; definition a valider sur la ligne dediee. |
+| `Quake-2-master/game/m_hover.c` | function | `hover_fire_blaster` | `packages/game/src/m_hover.ts` | `hover_fire_blaster` | Non applicable | A redecouper | Prototype C; definition a valider sur la ligne dediee. |
+| `Quake-2-master/game/m_hover.c` | function | `hover_die` | `packages/game/src/m_hover.ts` | `hover_die` | Non applicable | A redecouper | Prototype C; definition a valider sur la ligne dediee. |
 | `Quake-2-master/game/m_hover.c` | global | `hover_frames_stand` | `packages/game/src/m_hover.ts` | `hover_frames_stand` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | table | `hover_frames_stand` | `packages/game/src/m_hover.ts` | `hover_frames_stand` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | global | `hover_move_stand` | `packages/game/src/m_hover.ts` | `hover_move_stand` | A verifier | A redecouper |  |
@@ -78,14 +78,14 @@
 | `Quake-2-master/game/m_hover.c` | function | `hover_fire_blaster` | `packages/game/src/m_hover.ts` | `hover_fire_blaster` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | global | `effect` | `packages/game/src/m_hover.ts` | `effect` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | global | `effect` | `packages/game/src/m_hover.ts` | `effect` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_stand` | `packages/game/src/m_hover.ts` | `hover_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_run` | `packages/game/src/m_hover.ts` | `hover_run` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_stand` | `packages/game/src/m_hover.ts` | `hover_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_run` | `packages/game/src/m_hover.ts` | `hover_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | function | `hover_walk` | `packages/game/src/m_hover.ts` | `hover_walk` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | function | `hover_start_attack` | `packages/game/src/m_hover.ts` | `hover_start_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_attack` | `packages/game/src/m_hover.ts` | `hover_attack` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_attack` | `packages/game/src/m_hover.ts` | `hover_attack` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | function | `hover_pain` | `packages/game/src/m_hover.ts` | `hover_pain` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | function | `hover_deadthink` | `packages/game/src/m_hover.ts` | `hover_deadthink` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_dead` | `packages/game/src/m_hover.ts` | `hover_dead` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_dead` | `packages/game/src/m_hover.ts` | `hover_dead` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | function | `hover_die` | `packages/game/src/m_hover.ts` | `hover_die` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | global | `n` | `packages/game/src/m_hover.ts` | `n` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | function | `SP_monster_hover` | `packages/game/src/m_hover.ts` | `SP_monster_hover` | A verifier | A redecouper |  |

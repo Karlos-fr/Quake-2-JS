@@ -10,52 +10,52 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand1` | `packages/game/src/m_gladiator.ts` | `FRAME_stand1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand2` | `packages/game/src/m_gladiator.ts` | `FRAME_stand2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand3` | `packages/game/src/m_gladiator.ts` | `FRAME_stand3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand4` | `packages/game/src/m_gladiator.ts` | `FRAME_stand4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand5` | `packages/game/src/m_gladiator.ts` | `FRAME_stand5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand6` | `packages/game/src/m_gladiator.ts` | `FRAME_stand6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand7` | `packages/game/src/m_gladiator.ts` | `FRAME_stand7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk1` | `packages/game/src/m_gladiator.ts` | `FRAME_walk1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk2` | `packages/game/src/m_gladiator.ts` | `FRAME_walk2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk3` | `packages/game/src/m_gladiator.ts` | `FRAME_walk3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk4` | `packages/game/src/m_gladiator.ts` | `FRAME_walk4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk5` | `packages/game/src/m_gladiator.ts` | `FRAME_walk5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk6` | `packages/game/src/m_gladiator.ts` | `FRAME_walk6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk7` | `packages/game/src/m_gladiator.ts` | `FRAME_walk7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk8` | `packages/game/src/m_gladiator.ts` | `FRAME_walk8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk9` | `packages/game/src/m_gladiator.ts` | `FRAME_walk9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk10` | `packages/game/src/m_gladiator.ts` | `FRAME_walk10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk11` | `packages/game/src/m_gladiator.ts` | `FRAME_walk11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk12` | `packages/game/src/m_gladiator.ts` | `FRAME_walk12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk13` | `packages/game/src/m_gladiator.ts` | `FRAME_walk13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk14` | `packages/game/src/m_gladiator.ts` | `FRAME_walk14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk15` | `packages/game/src/m_gladiator.ts` | `FRAME_walk15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk16` | `packages/game/src/m_gladiator.ts` | `FRAME_walk16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run1` | `packages/game/src/m_gladiator.ts` | `FRAME_run1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run2` | `packages/game/src/m_gladiator.ts` | `FRAME_run2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run3` | `packages/game/src/m_gladiator.ts` | `FRAME_run3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run4` | `packages/game/src/m_gladiator.ts` | `FRAME_run4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run5` | `packages/game/src/m_gladiator.ts` | `FRAME_run5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run6` | `packages/game/src/m_gladiator.ts` | `FRAME_run6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee1` | `packages/game/src/m_gladiator.ts` | `FRAME_melee1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee2` | `packages/game/src/m_gladiator.ts` | `FRAME_melee2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee3` | `packages/game/src/m_gladiator.ts` | `FRAME_melee3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee4` | `packages/game/src/m_gladiator.ts` | `FRAME_melee4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee5` | `packages/game/src/m_gladiator.ts` | `FRAME_melee5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee6` | `packages/game/src/m_gladiator.ts` | `FRAME_melee6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee7` | `packages/game/src/m_gladiator.ts` | `FRAME_melee7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee8` | `packages/game/src/m_gladiator.ts` | `FRAME_melee8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee9` | `packages/game/src/m_gladiator.ts` | `FRAME_melee9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee10` | `packages/game/src/m_gladiator.ts` | `FRAME_melee10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee11` | `packages/game/src/m_gladiator.ts` | `FRAME_melee11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee12` | `packages/game/src/m_gladiator.ts` | `FRAME_melee12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee13` | `packages/game/src/m_gladiator.ts` | `FRAME_melee13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee14` | `packages/game/src/m_gladiator.ts` | `FRAME_melee14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee15` | `packages/game/src/m_gladiator.ts` | `FRAME_melee15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee16` | `packages/game/src/m_gladiator.ts` | `FRAME_melee16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee17` | `packages/game/src/m_gladiator.ts` | `FRAME_melee17` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand1` | `packages/game/src/m_gladiator.ts` | `FRAME_stand1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand2` | `packages/game/src/m_gladiator.ts` | `FRAME_stand2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand3` | `packages/game/src/m_gladiator.ts` | `FRAME_stand3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand4` | `packages/game/src/m_gladiator.ts` | `FRAME_stand4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand5` | `packages/game/src/m_gladiator.ts` | `FRAME_stand5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand6` | `packages/game/src/m_gladiator.ts` | `FRAME_stand6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_stand7` | `packages/game/src/m_gladiator.ts` | `FRAME_stand7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk1` | `packages/game/src/m_gladiator.ts` | `FRAME_walk1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk2` | `packages/game/src/m_gladiator.ts` | `FRAME_walk2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk3` | `packages/game/src/m_gladiator.ts` | `FRAME_walk3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk4` | `packages/game/src/m_gladiator.ts` | `FRAME_walk4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk5` | `packages/game/src/m_gladiator.ts` | `FRAME_walk5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk6` | `packages/game/src/m_gladiator.ts` | `FRAME_walk6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk7` | `packages/game/src/m_gladiator.ts` | `FRAME_walk7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk8` | `packages/game/src/m_gladiator.ts` | `FRAME_walk8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk9` | `packages/game/src/m_gladiator.ts` | `FRAME_walk9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk10` | `packages/game/src/m_gladiator.ts` | `FRAME_walk10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk11` | `packages/game/src/m_gladiator.ts` | `FRAME_walk11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk12` | `packages/game/src/m_gladiator.ts` | `FRAME_walk12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk13` | `packages/game/src/m_gladiator.ts` | `FRAME_walk13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk14` | `packages/game/src/m_gladiator.ts` | `FRAME_walk14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk15` | `packages/game/src/m_gladiator.ts` | `FRAME_walk15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_walk16` | `packages/game/src/m_gladiator.ts` | `FRAME_walk16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run1` | `packages/game/src/m_gladiator.ts` | `FRAME_run1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run2` | `packages/game/src/m_gladiator.ts` | `FRAME_run2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run3` | `packages/game/src/m_gladiator.ts` | `FRAME_run3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run4` | `packages/game/src/m_gladiator.ts` | `FRAME_run4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run5` | `packages/game/src/m_gladiator.ts` | `FRAME_run5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_run6` | `packages/game/src/m_gladiator.ts` | `FRAME_run6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee1` | `packages/game/src/m_gladiator.ts` | `FRAME_melee1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee2` | `packages/game/src/m_gladiator.ts` | `FRAME_melee2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee3` | `packages/game/src/m_gladiator.ts` | `FRAME_melee3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee4` | `packages/game/src/m_gladiator.ts` | `FRAME_melee4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee5` | `packages/game/src/m_gladiator.ts` | `FRAME_melee5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee6` | `packages/game/src/m_gladiator.ts` | `FRAME_melee6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee7` | `packages/game/src/m_gladiator.ts` | `FRAME_melee7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee8` | `packages/game/src/m_gladiator.ts` | `FRAME_melee8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee9` | `packages/game/src/m_gladiator.ts` | `FRAME_melee9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee10` | `packages/game/src/m_gladiator.ts` | `FRAME_melee10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee11` | `packages/game/src/m_gladiator.ts` | `FRAME_melee11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee12` | `packages/game/src/m_gladiator.ts` | `FRAME_melee12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee13` | `packages/game/src/m_gladiator.ts` | `FRAME_melee13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee14` | `packages/game/src/m_gladiator.ts` | `FRAME_melee14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee15` | `packages/game/src/m_gladiator.ts` | `FRAME_melee15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee16` | `packages/game/src/m_gladiator.ts` | `FRAME_melee16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee17` | `packages/game/src/m_gladiator.ts` | `FRAME_melee17` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack1` | `packages/game/src/m_gladiator.ts` | `FRAME_attack1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack2` | `packages/game/src/m_gladiator.ts` | `FRAME_attack2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack3` | `packages/game/src/m_gladiator.ts` | `FRAME_attack3` | A verifier | A redecouper |  |
