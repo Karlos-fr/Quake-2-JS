@@ -17,6 +17,7 @@ import {
   Draw_GetPalette,
   GL_Bind,
   GL_FindImage,
+  GL_FreeUnusedImages,
   GL_InitImages,
   GL_LoadPic,
   GL_ShutdownImages,
@@ -74,6 +75,16 @@ import {
   type GlDrawHooks,
   type GlDrawRuntime
 } from "./gl_draw.js";
+import {
+  Mod_FreeAll,
+  Mod_Init,
+  Mod_Modellist_f,
+  R_BeginRegistration,
+  R_EndRegistration,
+  R_RegisterModel,
+  createGlModelRuntime,
+  type GlModelRuntime
+} from "./gl-model-loader.js";
 import { createRefGlBootstrap, type RefGlBootstrap, type RefGlBootstrapOptions } from "./ref-gl-bootstrap.js";
 import type { QglProcedure } from "./qgl.js";
 
@@ -81,6 +92,7 @@ export interface RefGlHostOptions extends RefGlBootstrapOptions {
   imports?: Partial<refimport_t>;
   apiHooks?: GlRmainRefApiHooks;
   imageRuntime?: GlImageRuntime | null;
+  glModelRuntime?: GlModelRuntime;
   drawRuntime?: GlDrawRuntime | null;
   drawHooks?: GlDrawHooks;
   warpRuntime?: GlWarpRuntime | null;
@@ -92,6 +104,7 @@ export interface RefGlHost extends RefGlBootstrap {
   refImport: refimport_t;
   rmiscRuntime: GlRmiscRuntime;
   imageRuntime: GlImageRuntime | null;
+  glModelRuntime: GlModelRuntime;
   drawRuntime: GlDrawRuntime | null;
   api: refexport_t;
   init: (hinstance?: unknown, wndproc?: unknown) => boolean;
@@ -133,6 +146,7 @@ export function createRefGlHost(options: RefGlHostOptions): RefGlHost {
     ...options.rmiscHooks
   };
   const rmiscRuntime = options.rmiscRuntime ?? createGlRmiscRuntime(rmiscHooks);
+  const glModelRuntime = options.glModelRuntime ?? createDefaultGlModelRuntime(refImport, imageRuntime);
   const userRuntimeHooks = options.hooks ?? {};
 
   bootstrap = createRefGlBootstrap({
@@ -151,6 +165,10 @@ export function createRefGlHost(options: RefGlHostOptions): RefGlHost {
           GL_InitImages(imageRuntime);
         }
         userRuntimeHooks.glInitImages?.();
+      },
+      modInit: () => {
+        Mod_Init(glModelRuntime);
+        userRuntimeHooks.modInit?.();
       },
       glShutdownImages: () => {
         if (imageRuntime) {
@@ -180,6 +198,10 @@ export function createRefGlHost(options: RefGlHostOptions): RefGlHost {
         syncRmiscFromRmain(rmiscRuntime, bootstrap, imageRuntime);
         GL_UpdateSwapInterval(rmiscRuntime);
         userRuntimeHooks.updateSwapInterval?.();
+      },
+      modFreeAll: () => {
+        Mod_FreeAll(glModelRuntime);
+        userRuntimeHooks.modFreeAll?.();
       },
       textureMode: (mode) => {
         if (imageRuntime) {
@@ -214,6 +236,16 @@ export function createRefGlHost(options: RefGlHostOptions): RefGlHost {
       syncRmiscFromRmain(rmiscRuntime, bootstrap, imageRuntime);
       GL_ScreenShot_f(rmiscRuntime, refImport.FS_Gamedir());
     },
+    modellistCommand: () => {
+      Mod_Modellist_f(glModelRuntime);
+    },
+    beginRegistration: (map) => {
+      R_BeginRegistration(glModelRuntime, map);
+    },
+    registerModel: (name) => R_RegisterModel(glModelRuntime, name),
+    endRegistration: () => {
+      R_EndRegistration(glModelRuntime);
+    },
     glStringsCommand: () => {
       syncRmiscFromRmain(rmiscRuntime, bootstrap, imageRuntime);
       GL_Strings_f(rmiscRuntime);
@@ -230,6 +262,7 @@ export function createRefGlHost(options: RefGlHostOptions): RefGlHost {
     refImport,
     rmiscRuntime,
     imageRuntime,
+    glModelRuntime,
     drawRuntime,
     api,
     init: (hinstance?: unknown, wndproc?: unknown) => api.Init(hinstance ?? null, wndproc ?? null),
@@ -237,6 +270,48 @@ export function createRefGlHost(options: RefGlHostOptions): RefGlHost {
       api.Shutdown();
     }
   };
+}
+
+function createDefaultGlModelRuntime(refImport: refimport_t, imageRuntime: GlImageRuntime | null): GlModelRuntime {
+  return createGlModelRuntime({
+    loadFile: (path) => refImport.FS_LoadFile(path),
+    freeFile: (buffer) => {
+      refImport.FS_FreeFile(buffer);
+    },
+    findImage: (name, type) => {
+      if (!imageRuntime) {
+        return null;
+      }
+
+      return GL_FindImage(imageRuntime, name, toImageType(type));
+    },
+    notextureImage: imageRuntime?.r_notexture ?? null,
+    print: (message) => {
+      refImport.Con_Printf(0, message);
+    },
+    getFlushMap: () => Boolean(refImport.Cvar_Get("flushmap", "0", 0)?.value ?? 0),
+    setImageRegistration: (image, registrationSequence) => {
+      if (image && typeof image === "object" && "registration_sequence" in image) {
+        (image as { registration_sequence: number }).registration_sequence = registrationSequence;
+      }
+    },
+    freeUnusedImages: () => {
+      if (imageRuntime) {
+        GL_FreeUnusedImages(imageRuntime);
+      }
+    }
+  });
+}
+
+function toImageType(type: "wall" | "sprite" | "skin"): imagetype_t {
+  switch (type) {
+    case "skin":
+      return imagetype_t.it_skin;
+    case "sprite":
+      return imagetype_t.it_sprite;
+    case "wall":
+      return imagetype_t.it_wall;
+  }
 }
 
 function createDefaultDrawRuntime(

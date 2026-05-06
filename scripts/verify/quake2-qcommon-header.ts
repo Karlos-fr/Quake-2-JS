@@ -126,6 +126,7 @@ import {
   MSG_ReadByte,
   MSG_ReadChar,
   MSG_ReadCoord,
+  MSG_ReadData,
   MSG_ReadDeltaUsercmd,
   MSG_ReadDir,
   MSG_ReadFloat,
@@ -133,6 +134,7 @@ import {
   MSG_ReadPos,
   MSG_ReadShort,
   MSG_ReadString,
+  MSG_ReadStringLine,
   MSG_WriteAngle,
   MSG_WriteAngle16,
   MSG_WriteByte,
@@ -612,6 +614,37 @@ assert.deepEqual(MSG_ReadPos(primitiveBuffer), [1.25, -2.5, 3.875], "MSG_WritePo
 assert.equal(MSG_ReadAngle(primitiveBuffer), 90, "MSG_WriteAngle roundtrip mismatch");
 assert.equal(MSG_ReadAngle16(primitiveBuffer), -90, "MSG_WriteAngle16 roundtrip mismatch");
 
+const lineBuffer = createSizeBuffer(new Uint8Array([97, 108, 112, 104, 97, 10, 98, 101, 116, 97, 0]));
+lineBuffer.cursize = lineBuffer.data.length;
+assert.equal(MSG_ReadStringLine(lineBuffer), "alpha", "MSG_ReadStringLine newline stop mismatch");
+assert.equal(MSG_ReadString(lineBuffer), "beta", "MSG_ReadString after line mismatch");
+
+const rawDataBuffer = createSizeBuffer(new Uint8Array([1, 2, 3, 4]));
+rawDataBuffer.cursize = rawDataBuffer.data.length;
+assert.deepEqual(Array.from(MSG_ReadData(rawDataBuffer, 3)), [1, 2, 3], "MSG_ReadData bytes mismatch");
+assert.equal(rawDataBuffer.readcount, 3, "MSG_ReadData readcount mismatch");
+
+const overflowByteBuffer = createSizeBuffer(new Uint8Array([0xaa]));
+overflowByteBuffer.cursize = 0;
+assert.equal(MSG_ReadChar(overflowByteBuffer), -1, "MSG_ReadChar overflow value mismatch");
+assert.equal(overflowByteBuffer.readcount, 1, "MSG_ReadChar overflow readcount mismatch");
+const overflowShortBuffer = createSizeBuffer(new Uint8Array([0xaa]));
+overflowShortBuffer.cursize = 1;
+assert.equal(MSG_ReadShort(overflowShortBuffer), -1, "MSG_ReadShort overflow value mismatch");
+assert.equal(overflowShortBuffer.readcount, 2, "MSG_ReadShort overflow readcount mismatch");
+const overflowLongBuffer = createSizeBuffer(new Uint8Array([0xaa, 0xbb, 0xcc]));
+overflowLongBuffer.cursize = 3;
+assert.equal(MSG_ReadLong(overflowLongBuffer), -1, "MSG_ReadLong overflow value mismatch");
+assert.equal(overflowLongBuffer.readcount, 4, "MSG_ReadLong overflow readcount mismatch");
+const overflowFloatBuffer = createSizeBuffer(new Uint8Array([0xaa, 0xbb, 0xcc]));
+overflowFloatBuffer.cursize = 3;
+assert.equal(MSG_ReadFloat(overflowFloatBuffer), -1, "MSG_ReadFloat overflow value mismatch");
+assert.equal(overflowFloatBuffer.readcount, 4, "MSG_ReadFloat overflow readcount mismatch");
+const overflowDataBuffer = createSizeBuffer(new Uint8Array([9]));
+overflowDataBuffer.cursize = 1;
+assert.deepEqual(Array.from(MSG_ReadData(overflowDataBuffer, 3)), [9, 255, 255], "MSG_ReadData overflow byte coercion mismatch");
+assert.equal(overflowDataBuffer.readcount, 3, "MSG_ReadData overflow readcount mismatch");
+
 const fromCmd: usercmd_t = {
   msec: 10,
   buttons: 1,
@@ -642,12 +675,26 @@ assert.deepEqual(
 cmdBuffer.readcount = 0;
 assert.deepEqual(MSG_ReadDeltaUsercmd(cmdBuffer, fromCmd), nextCmd, "MSG delta usercmd mismatch");
 
+const unchangedCmdBuffer = createSizeBuffer(new Uint8Array([0, 20, 33]));
+unchangedCmdBuffer.cursize = unchangedCmdBuffer.data.length;
+const unchangedCmd = MSG_ReadDeltaUsercmd(unchangedCmdBuffer, fromCmd);
+assert.deepEqual(
+  unchangedCmd,
+  { ...fromCmd, angles: [...fromCmd.angles], msec: 20, lightlevel: 33 },
+  "MSG_ReadDeltaUsercmd unchanged fields mismatch"
+);
+unchangedCmd.angles[0] = 999;
+assert.equal(fromCmd.angles[0], 100, "MSG_ReadDeltaUsercmd must clone angle array");
+
 const dirBuffer = createSizeBuffer(8);
 MSG_WriteDir(dirBuffer, [0, 0, 1]);
 MSG_WriteDir(dirBuffer, null);
 dirBuffer.readcount = 0;
 assert.deepEqual(MSG_ReadDir(dirBuffer), [0, 0, 1], "MSG dir roundtrip mismatch");
 assert.deepEqual(MSG_ReadDir(dirBuffer), [-0.525731, 0, 0.850651], "MSG dir null fallback mismatch");
+const invalidDirBuffer = createSizeBuffer(new Uint8Array([255]));
+invalidDirBuffer.cursize = 1;
+assert.throws(() => MSG_ReadDir(invalidDirBuffer), /out of range/, "MSG_ReadDir invalid index mismatch");
 
 const baseEntity = createEntityState();
 baseEntity.number = 300;

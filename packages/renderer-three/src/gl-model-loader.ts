@@ -232,8 +232,7 @@ export function R_BeginRegistration(runtime: GlModelRuntime, model: string): mod
  * - Resolves one renderer model and marks it live for the current registration sequence.
  *
  * Porting notes:
- * - Brush-model image registration is implemented now; alias and sprite image re-registration stays deferred
- *   until those payload branches are ported.
+ * - Brush, alias and sprite image re-registration are implemented through runtime hooks.
  */
 export function R_RegisterModel(runtime: GlModelRuntime, name: string): model_t | null {
   const mod = Mod_ForName(runtime, name, false, runtime.r_worldmodel);
@@ -1158,7 +1157,7 @@ export function Mod_LoadSpriteModel(runtime: GlModelRuntime, mod: model_t, buffe
  * - Resolves one model by name through inline lookup, cache lookup or filesystem loading.
  *
  * Porting notes:
- * - Alias and sprite dispatch are exposed through hooks until those branches are fully ported.
+ * - Alias and sprite dispatch can be overridden by hooks, with the ported loaders used by default.
  */
 export function Mod_ForName(runtime: GlModelRuntime, name: string, crash: boolean, worldModel: model_t | null): model_t | null {
   if (!name.length) {

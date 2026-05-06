@@ -144,6 +144,15 @@ export interface msurface_t {
   samples: Uint8Array | null;
 }
 
+/**
+ * Original name: mnode_t
+ * Source: ref_gl/gl_model.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Child pointers accept either another node or a leaf, matching the shared node/leaf header in the source.
+ */
 export interface mnode_t {
   contents: number;
   visframe: number;

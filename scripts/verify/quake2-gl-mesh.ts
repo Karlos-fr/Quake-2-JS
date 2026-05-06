@@ -13,17 +13,34 @@
 
 import { strict as assert } from "node:assert";
 import { BufferAttribute, BufferGeometry, Mesh, MeshBasicMaterial } from "three";
-import { RF_GLOW, RF_IR_VISIBLE, RF_SHELL_RED, RDF_IRGOGGLES } from "../../packages/qcommon/src/index.js";
+import {
+  BYTE_DIRS,
+  NUMVERTEXNORMALS as QCOMMON_NUMVERTEXNORMALS,
+  RDF_IRGOGGLES,
+  RF_FULLBRIGHT,
+  RF_GLOW,
+  RF_IR_VISIBLE,
+  RF_MINLIGHT,
+  RF_SHELL_BLUE,
+  RF_SHELL_DOUBLE,
+  RF_SHELL_GREEN,
+  RF_SHELL_HALF_DAM,
+  RF_SHELL_RED
+} from "../../packages/qcommon/src/index.js";
 import type { cplane_t } from "../../packages/qcommon/src/index.js";
 import type { Md2Model, dmdl_t, daliasframe_t } from "../../packages/formats/src/index.js";
 import {
   GL_DrawAliasShadow,
+  NUMVERTEXNORMALS,
   R_CullAliasModel,
   applyMd2AliasFrameLerp,
+  buildAliasShadeVector,
+  buildAliasShellShadeLight,
   buildAliasVertexColors,
   computeAliasShadeLight,
   computeAliasWeaponLightLevel,
   getAliasShadedotsForYaw,
+  SHADEDOT_QUANT,
   sanitizeAliasFramePair,
   type Md2MeshInstance
 } from "../../packages/renderer-three/src/index.js";
@@ -31,15 +48,28 @@ import {
 main();
 
 function main(): void {
+  verifyAliasConstantsAndTables();
   verifyAliasLerpWithoutShell();
   verifyAliasLerpWithShellOffset();
+  verifyAliasShellShadeLightCombinations();
   verifyAliasShadeLightGlowAndIr();
+  verifyAliasShadeLightFullbrightAndMinlight();
   verifyAliasShadeLightMonolightmapAndWeaponLevel();
+  verifyAliasShadeVector();
   verifyAliasVertexColorsFromShadedots();
   verifyAliasFramePairSanitization();
   verifyAliasCullModel();
   verifyAliasShadowProjection();
   console.log("quake2-gl-mesh: ok");
+}
+
+function verifyAliasConstantsAndTables(): void {
+  assert.equal(NUMVERTEXNORMALS, 162, "NUMVERTEXNORMALS mismatch");
+  assert.equal(NUMVERTEXNORMALS, QCOMMON_NUMVERTEXNORMALS, "NUMVERTEXNORMALS shared alias normal count mismatch");
+  assert.equal(BYTE_DIRS.length, NUMVERTEXNORMALS, "r_avertexnormals length mismatch");
+  assert.equal(SHADEDOT_QUANT, 16, "SHADEDOT_QUANT mismatch");
+  assert.equal(getAliasShadedotsForYaw(0), getAliasShadedotsForYaw(360), "shadedots yaw wrap mismatch");
+  assert.equal(getAliasShadedotsForYaw(90), getAliasShadedotsForYaw(90 + 360), "shadedots positive yaw wrap mismatch");
 }
 
 function verifyAliasLerpWithoutShell(): void {
@@ -78,6 +108,15 @@ function verifyAliasLerpWithShellOffset(): void {
   assert.ok(Math.abs(position[2] - 41.5) < 0.0001, `unexpected shell z: ${position[2]}`);
 }
 
+function verifyAliasShellShadeLightCombinations(): void {
+  assert.deepEqual(buildAliasShellShadeLight(RF_SHELL_RED | RF_SHELL_GREEN | RF_SHELL_BLUE), [1, 1, 1], "godmode shell color mismatch");
+  assert.deepEqual(buildAliasShellShadeLight(RF_SHELL_RED | RF_SHELL_DOUBLE), [1, 0, 1], "red double shell color mismatch");
+  assert.deepEqual(buildAliasShellShadeLight(RF_SHELL_BLUE | RF_SHELL_DOUBLE), [0, 1, 1], "blue double shell color mismatch");
+  assert.deepEqual(buildAliasShellShadeLight(RF_SHELL_DOUBLE), [0.9, 0.7, 0], "double shell color mismatch");
+  assert.deepEqual(buildAliasShellShadeLight(RF_SHELL_HALF_DAM), [0.56, 0.59, 0.45], "half-damage shell color mismatch");
+  assert.deepEqual(buildAliasShellShadeLight(RF_SHELL_HALF_DAM | RF_SHELL_GREEN), [0.56, 1, 0.45], "half-damage green shell color mismatch");
+}
+
 function verifyAliasShadeLightGlowAndIr(): void {
   const shade = computeAliasShadeLight({
     flags: RF_GLOW,
@@ -98,6 +137,39 @@ function verifyAliasShadeLightGlowAndIr(): void {
   assert.deepEqual(irShade, [1, 0, 0], "IR goggles override mismatch");
 }
 
+function verifyAliasShadeLightFullbrightAndMinlight(): void {
+  assert.deepEqual(
+    computeAliasShadeLight({
+      flags: RF_FULLBRIGHT,
+      rdflags: 0,
+      timeSeconds: 0,
+      baseShadeLight: [0.2, 0.3, 0.4]
+    }),
+    [1, 1, 1],
+    "RF_FULLBRIGHT mismatch"
+  );
+  assert.deepEqual(
+    computeAliasShadeLight({
+      flags: RF_MINLIGHT,
+      rdflags: 0,
+      timeSeconds: 0,
+      baseShadeLight: [0.02, 0.03, 0.04]
+    }),
+    [0.1, 0.1, 0.1],
+    "RF_MINLIGHT floor mismatch"
+  );
+  assert.deepEqual(
+    computeAliasShadeLight({
+      flags: RF_MINLIGHT,
+      rdflags: 0,
+      timeSeconds: 0,
+      baseShadeLight: [0.02, 0.3, 0.04]
+    }),
+    [0.02, 0.3, 0.04],
+    "RF_MINLIGHT should not override a lit component"
+  );
+}
+
 function verifyAliasShadeLightMonolightmapAndWeaponLevel(): void {
   const shade = computeAliasShadeLight({
     flags: 0,
@@ -108,6 +180,14 @@ function verifyAliasShadeLightMonolightmapAndWeaponLevel(): void {
   });
   assert.deepEqual(shade, [0.6, 0.6, 0.6], "gl_monolightmap grayscale mismatch");
   assert.equal(computeAliasWeaponLightLevel(shade), 90, "weapon r_lightlevel mismatch");
+}
+
+function verifyAliasShadeVector(): void {
+  const shadevector = buildAliasShadeVector(90);
+  const invSqrt2 = 1 / Math.sqrt(2);
+  assert.ok(Math.abs(shadevector[0]) < 0.0001, "shadevector x mismatch");
+  assert.ok(Math.abs(shadevector[1] + invSqrt2) < 0.0001, "shadevector y mismatch");
+  assert.ok(Math.abs(shadevector[2] - invSqrt2) < 0.0001, "shadevector z mismatch");
 }
 
 function verifyAliasVertexColorsFromShadedots(): void {

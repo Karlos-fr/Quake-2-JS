@@ -37,7 +37,16 @@ import {
   hasValidModelSkinCount,
   isModelNameWithinQPath,
   isValidGlPoly,
-  modtype_t
+  modtype_t,
+  type glpoly_t,
+  type medge_t,
+  type mleaf_t,
+  type mmodel_t,
+  type mnode_t,
+  type model_t,
+  type msurface_t,
+  type mtexinfo_t,
+  type mvertex_t
 } from "../../packages/renderer-three/src/index.js";
 
 assert.equal(SIDE_FRONT, 0, "SIDE_FRONT mismatch");
@@ -51,6 +60,11 @@ assert.equal(SURF_UNDERWATER, 0x80, "SURF_UNDERWATER mismatch");
 assert.equal(VERTEXSIZE, 7, "VERTEXSIZE mismatch");
 assert.equal(MAX_MD2SKINS, 32, "MAX_MD2SKINS mismatch");
 assert.equal(getSurfaceStyleCapacity(), 4, "MAXLIGHTMAPS mismatch");
+
+assert.equal(modtype_t.mod_bad, 0, "mod_bad mismatch");
+assert.equal(modtype_t.mod_brush, 1, "mod_brush mismatch");
+assert.equal(modtype_t.mod_sprite, 2, "mod_sprite mismatch");
+assert.equal(modtype_t.mod_alias, 3, "mod_alias mismatch");
 
 assert.deepEqual(createMVertex().position, [0, 0, 0], "createMVertex mismatch");
 assert.deepEqual(createMModel().origin, [0, 0, 0], "createMModel mismatch");
@@ -81,5 +95,185 @@ assert.equal(hasValidModelSkinCount(model), true, "hasValidModelSkinCount mismat
 
 assert.equal(isModelNameWithinQPath("maps/base1.bsp"), true, "short model name mismatch");
 assert.equal(isModelNameWithinQPath("x".repeat(64)), false, "MAX_QPATH overflow mismatch");
+
+const vertexShape = ["position"] satisfies Array<keyof mvertex_t>;
+assert.deepEqual(vertexShape, ["position"], "mvertex_t keys mismatch");
+
+const submodelShape = [
+  "mins",
+  "maxs",
+  "origin",
+  "radius",
+  "headnode",
+  "visleafs",
+  "firstface",
+  "numfaces"
+] satisfies Array<keyof mmodel_t>;
+assert.deepEqual(submodelShape, ["mins", "maxs", "origin", "radius", "headnode", "visleafs", "firstface", "numfaces"], "mmodel_t keys mismatch");
+
+const edgeShape = ["v", "cachededgeoffset"] satisfies Array<keyof medge_t>;
+assert.deepEqual(edgeShape, ["v", "cachededgeoffset"], "medge_t keys mismatch");
+
+const texinfoShape = ["vecs", "flags", "numframes", "next", "image"] satisfies Array<keyof mtexinfo_t>;
+assert.deepEqual(texinfoShape, ["vecs", "flags", "numframes", "next", "image"], "mtexinfo_t keys mismatch");
+
+const polyShape = ["next", "chain", "numverts", "flags", "verts"] satisfies Array<keyof glpoly_t>;
+assert.deepEqual(polyShape, ["next", "chain", "numverts", "flags", "verts"], "glpoly_t keys mismatch");
+
+const surfaceShape = [
+  "visframe",
+  "plane",
+  "flags",
+  "firstedge",
+  "numedges",
+  "texturemins",
+  "extents",
+  "light_s",
+  "light_t",
+  "dlight_s",
+  "dlight_t",
+  "polys",
+  "texturechain",
+  "lightmapchain",
+  "texinfo",
+  "dlightframe",
+  "dlightbits",
+  "lightmaptexturenum",
+  "styles",
+  "cached_light",
+  "samples"
+] satisfies Array<keyof msurface_t>;
+assert.deepEqual(surfaceShape, [
+  "visframe",
+  "plane",
+  "flags",
+  "firstedge",
+  "numedges",
+  "texturemins",
+  "extents",
+  "light_s",
+  "light_t",
+  "dlight_s",
+  "dlight_t",
+  "polys",
+  "texturechain",
+  "lightmapchain",
+  "texinfo",
+  "dlightframe",
+  "dlightbits",
+  "lightmaptexturenum",
+  "styles",
+  "cached_light",
+  "samples"
+], "msurface_t keys mismatch");
+
+const nodeShape = [
+  "contents",
+  "visframe",
+  "minmaxs",
+  "parent",
+  "plane",
+  "children",
+  "firstsurface",
+  "numsurfaces"
+] satisfies Array<keyof mnode_t>;
+assert.deepEqual(nodeShape, ["contents", "visframe", "minmaxs", "parent", "plane", "children", "firstsurface", "numsurfaces"], "mnode_t keys mismatch");
+
+const leafShape = [
+  "contents",
+  "visframe",
+  "minmaxs",
+  "parent",
+  "cluster",
+  "area",
+  "firstmarksurface",
+  "nummarksurfaces"
+] satisfies Array<keyof mleaf_t>;
+assert.deepEqual(leafShape, ["contents", "visframe", "minmaxs", "parent", "cluster", "area", "firstmarksurface", "nummarksurfaces"], "mleaf_t keys mismatch");
+
+const modelShape = [
+  "name",
+  "registration_sequence",
+  "type",
+  "numframes",
+  "flags",
+  "mins",
+  "maxs",
+  "radius",
+  "clipbox",
+  "clipmins",
+  "clipmaxs",
+  "firstmodelsurface",
+  "nummodelsurfaces",
+  "lightmap",
+  "numsubmodels",
+  "submodels",
+  "numplanes",
+  "planes",
+  "numleafs",
+  "leafs",
+  "numvertexes",
+  "vertexes",
+  "numedges",
+  "edges",
+  "numnodes",
+  "firstnode",
+  "nodes",
+  "numtexinfo",
+  "texinfo",
+  "numsurfaces",
+  "surfaces",
+  "numsurfedges",
+  "surfedges",
+  "nummarksurfaces",
+  "marksurfaces",
+  "vis",
+  "lightdata",
+  "skins",
+  "extradatasize",
+  "extradata"
+] satisfies Array<keyof model_t>;
+assert.deepEqual(modelShape, [
+  "name",
+  "registration_sequence",
+  "type",
+  "numframes",
+  "flags",
+  "mins",
+  "maxs",
+  "radius",
+  "clipbox",
+  "clipmins",
+  "clipmaxs",
+  "firstmodelsurface",
+  "nummodelsurfaces",
+  "lightmap",
+  "numsubmodels",
+  "submodels",
+  "numplanes",
+  "planes",
+  "numleafs",
+  "leafs",
+  "numvertexes",
+  "vertexes",
+  "numedges",
+  "edges",
+  "numnodes",
+  "firstnode",
+  "nodes",
+  "numtexinfo",
+  "texinfo",
+  "numsurfaces",
+  "surfaces",
+  "numsurfedges",
+  "surfedges",
+  "nummarksurfaces",
+  "marksurfaces",
+  "vis",
+  "lightdata",
+  "skins",
+  "extradatasize",
+  "extradata"
+], "model_t keys mismatch");
 
 console.log("quake2-gl-model-header: ok");

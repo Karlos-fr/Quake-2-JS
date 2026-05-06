@@ -10,28 +10,28 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/gl_mesh.c` | function | `GL_DrawAliasFrameLerp` | `packages/renderer-three/src/gl_mesh.ts` | `GL_DrawAliasFrameLerp` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | function | `GL_DrawAliasShadow` | `packages/renderer-three/src/gl_mesh.ts` | `GL_DrawAliasShadow` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | function | `GL_LerpVerts` | `packages/renderer-three/src/gl_mesh.ts` | `GL_LerpVerts` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | function | `R_CullAliasModel` | `packages/renderer-three/src/gl_mesh.ts` | `R_CullAliasModel` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | function | `R_DrawAliasModel` | `packages/renderer-three/src/gl_mesh.ts` | `R_DrawAliasModel` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | macro | `NUMVERTEXNORMALS` | `packages/renderer-three/src/gl_mesh.ts` | `NUMVERTEXNORMALS` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | macro | `SHADEDOT_QUANT` | `packages/renderer-three/src/gl_mesh.ts` | `SHADEDOT_QUANT` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | typedef | `shadevector` | `packages/renderer-three/src/gl_mesh.ts` | `shadevector` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `alpha` | `packages/renderer-three/src/gl_mesh.ts` | `alpha` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `an` | `packages/renderer-three/src/gl_mesh.ts` | `an` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `angles` | `packages/renderer-three/src/gl_mesh.ts` | `angles` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `count` | `packages/renderer-three/src/gl_mesh.ts` | `count` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `dp` | `packages/renderer-three/src/gl_mesh.ts` | `dp` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `frontlerp` | `packages/renderer-three/src/gl_mesh.ts` | `frontlerp` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `i` | `packages/renderer-three/src/gl_mesh.ts` | `i` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `index_xyz` | `packages/renderer-three/src/gl_mesh.ts` | `index_xyz` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `l` | `packages/renderer-three/src/gl_mesh.ts` | `l` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `lightspot` | `packages/renderer-three/src/gl_mesh.ts` | `lightspot` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `mask` | `packages/renderer-three/src/gl_mesh.ts` | `mask` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `min` | `packages/renderer-three/src/gl_mesh.ts` | `min` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `point` | `packages/renderer-three/src/gl_mesh.ts` | `point` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `s` | `packages/renderer-three/src/gl_mesh.ts` | `s` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `scale` | `packages/renderer-three/src/gl_mesh.ts` | `scale` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `shadevector` | `packages/renderer-three/src/gl_mesh.ts` | `shadevector` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_mesh.c` | global | `tmp` | `packages/renderer-three/src/gl_mesh.ts` | `tmp` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_mesh.c` | function | `GL_DrawAliasFrameLerp` | `packages/renderer-three/src/gl_mesh.ts` | `GL_DrawAliasFrameLerp` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_mesh.c` | function | `GL_DrawAliasShadow` | `packages/renderer-three/src/gl_mesh.ts` | `GL_DrawAliasShadow` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_mesh.c` | function | `GL_LerpVerts` | `packages/renderer-three/src/gl_mesh.ts` | `GL_LerpVerts` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_mesh.c` | function | `R_CullAliasModel` | `packages/renderer-three/src/gl_mesh.ts` | `R_CullAliasModel` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_mesh.c` | function | `R_DrawAliasModel` | `packages/renderer-three/src/gl_mesh.ts` | `R_DrawAliasModel` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_mesh.c` | macro | `NUMVERTEXNORMALS` | `packages/renderer-three/src/gl_mesh.ts` | `NUMVERTEXNORMALS` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_mesh.c` | macro | `SHADEDOT_QUANT` | `packages/renderer-three/src/gl_mesh.ts` | `SHADEDOT_QUANT` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_mesh.c` | typedef | `shadevector` | `packages/renderer-three/src/gl_mesh.ts` | `shadevector` | Non applicable | split-undocumented | Faux positif generateur: `shadevector` est le global valide plus bas, pas un typedef dans `gl_mesh.c`. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `alpha` | `packages/renderer-three/src/gl_mesh.ts` | `alpha` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `an` | `packages/renderer-three/src/gl_mesh.ts` | `an` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `angles` | `packages/renderer-three/src/gl_mesh.ts` | `angles` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `count` | `packages/renderer-three/src/gl_mesh.ts` | `count` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `dp` | `packages/renderer-three/src/gl_mesh.ts` | `dp` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `frontlerp` | `packages/renderer-three/src/gl_mesh.ts` | `frontlerp` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `i` | `packages/renderer-three/src/gl_mesh.ts` | `i` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `index_xyz` | `packages/renderer-three/src/gl_mesh.ts` | `index_xyz` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `l` | `packages/renderer-three/src/gl_mesh.ts` | `l` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `lightspot` | `packages/renderer-three/src/gl_mesh.ts` | `lightspot` | Non applicable | split-undocumented | Extern proprietaire de `gl_light.c`; l'ombre alias consomme `lheight` via l'adapter renderer. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `mask` | `packages/renderer-three/src/gl_mesh.ts` | `mask` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `min` | `packages/renderer-three/src/gl_mesh.ts` | `min` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `point` | `packages/renderer-three/src/gl_mesh.ts` | `point` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `s` | `packages/renderer-three/src/gl_mesh.ts` | `s` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `scale` | `packages/renderer-three/src/gl_mesh.ts` | `scale` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `shadevector` | `packages/renderer-three/src/gl_mesh.ts` | `shadevector` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_mesh.c` | global | `tmp` | `packages/renderer-three/src/gl_mesh.ts` | `tmp` | Non applicable | split-undocumented | Faux positif generateur: variable locale couverte par les fonctions validees. |

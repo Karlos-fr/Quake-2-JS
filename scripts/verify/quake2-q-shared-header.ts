@@ -206,9 +206,42 @@ import {
   MAX_LIGHTSTYLES,
   MAX_MODELS,
   MAX_SOUNDS,
+  MZ_BFG,
+  MZ_BLASTER,
+  MZ_BLASTER2,
+  MZ_BLUEHYPERBLASTER,
+  MZ_CHAINGUN1,
+  MZ_CHAINGUN2,
+  MZ_CHAINGUN3,
+  MZ_ETF_RIFLE,
+  MZ_GRENADE,
+  MZ_HEATBEAM,
+  MZ_HYPERBLASTER,
+  MZ_IONRIPPER,
+  MZ_ITEMRESPAWN,
+  MZ_LOGIN,
+  MZ_LOGOUT,
+  MZ_MACHINEGUN,
+  MZ_NUKE1,
+  MZ_NUKE2,
+  MZ_NUKE4,
+  MZ_NUKE8,
+  MZ_PHALANX,
+  MZ_RAILGUN,
+  MZ_RESPAWN,
+  MZ_ROCKET,
+  MZ_SHOTGUN,
+  MZ_SHOTGUN2,
   MZ_SILENCED,
+  MZ_SSHOTGUN,
+  MZ_TRACKER,
+  MZ_UNUSED,
   nanmask,
   Q_ftol,
+  RDF_IRGOGGLES,
+  RDF_NOWORLDMODEL,
+  RDF_UNDERWATER,
+  RDF_UVGOGGLES,
   RF_BEAM,
   RF_CUSTOMSKIN,
   RF_DEPTHHACK,
@@ -324,7 +357,40 @@ assert.equal(RF_IR_VISIBLE, 0x00008000, "RF_IR_VISIBLE mismatch");
 assert.equal(RF_SHELL_DOUBLE, 0x00010000, "RF_SHELL_DOUBLE mismatch");
 assert.equal(RF_SHELL_HALF_DAM, 0x00020000, "RF_SHELL_HALF_DAM mismatch");
 assert.equal(RF_USE_DISGUISE, 0x00040000, "RF_USE_DISGUISE mismatch");
+assert.equal(RDF_UNDERWATER, 1, "RDF_UNDERWATER mismatch");
+assert.equal(RDF_NOWORLDMODEL, 2, "RDF_NOWORLDMODEL mismatch");
+assert.equal(RDF_IRGOGGLES, 4, "RDF_IRGOGGLES mismatch");
+assert.equal(RDF_UVGOGGLES, 8, "RDF_UVGOGGLES mismatch");
 assert.equal(SPLASH_BLOOD, 6, "SPLASH_BLOOD mismatch");
+assert.equal(MZ_BLASTER, 0, "MZ_BLASTER mismatch");
+assert.equal(MZ_MACHINEGUN, 1, "MZ_MACHINEGUN mismatch");
+assert.equal(MZ_SHOTGUN, 2, "MZ_SHOTGUN mismatch");
+assert.equal(MZ_CHAINGUN1, 3, "MZ_CHAINGUN1 mismatch");
+assert.equal(MZ_CHAINGUN2, 4, "MZ_CHAINGUN2 mismatch");
+assert.equal(MZ_CHAINGUN3, 5, "MZ_CHAINGUN3 mismatch");
+assert.equal(MZ_RAILGUN, 6, "MZ_RAILGUN mismatch");
+assert.equal(MZ_ROCKET, 7, "MZ_ROCKET mismatch");
+assert.equal(MZ_GRENADE, 8, "MZ_GRENADE mismatch");
+assert.equal(MZ_LOGIN, 9, "MZ_LOGIN mismatch");
+assert.equal(MZ_LOGOUT, 10, "MZ_LOGOUT mismatch");
+assert.equal(MZ_RESPAWN, 11, "MZ_RESPAWN mismatch");
+assert.equal(MZ_BFG, 12, "MZ_BFG mismatch");
+assert.equal(MZ_SSHOTGUN, 13, "MZ_SSHOTGUN mismatch");
+assert.equal(MZ_HYPERBLASTER, 14, "MZ_HYPERBLASTER mismatch");
+assert.equal(MZ_ITEMRESPAWN, 15, "MZ_ITEMRESPAWN mismatch");
+assert.equal(MZ_IONRIPPER, 16, "MZ_IONRIPPER mismatch");
+assert.equal(MZ_BLUEHYPERBLASTER, 17, "MZ_BLUEHYPERBLASTER mismatch");
+assert.equal(MZ_PHALANX, 18, "MZ_PHALANX mismatch");
+assert.equal(MZ_ETF_RIFLE, 30, "MZ_ETF_RIFLE mismatch");
+assert.equal(MZ_UNUSED, 31, "MZ_UNUSED mismatch");
+assert.equal(MZ_SHOTGUN2, 32, "MZ_SHOTGUN2 mismatch");
+assert.equal(MZ_HEATBEAM, 33, "MZ_HEATBEAM mismatch");
+assert.equal(MZ_BLASTER2, 34, "MZ_BLASTER2 mismatch");
+assert.equal(MZ_TRACKER, 35, "MZ_TRACKER mismatch");
+assert.equal(MZ_NUKE1, 36, "MZ_NUKE1 mismatch");
+assert.equal(MZ_NUKE2, 37, "MZ_NUKE2 mismatch");
+assert.equal(MZ_NUKE4, 38, "MZ_NUKE4 mismatch");
+assert.equal(MZ_NUKE8, 39, "MZ_NUKE8 mismatch");
 assert.equal(MZ_SILENCED, 128, "MZ_SILENCED mismatch");
 assert.equal(ERR_FATAL, 0, "ERR_FATAL mismatch");
 assert.equal(ERR_DROP, 1, "ERR_DROP mismatch");

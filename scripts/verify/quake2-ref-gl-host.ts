@@ -16,6 +16,8 @@ import { strict as assert } from "node:assert";
 import { createCvarRuntime, Cvar_Get } from "../../packages/qcommon/src/cvar.js";
 import { RDF_NOWORLDMODEL } from "../../packages/qcommon/src/index.js";
 import { createRefDef } from "../../packages/client/src/ref.js";
+import { IDSPRITEHEADER, SPRITE_VERSION } from "../../packages/formats/src/index.js";
+import { setLittleLong } from "../../packages/memory/src/binary-io.js";
 import {
   QGL_REQUIRED_PROCEDURES,
   QWGL_WIN32_PROCEDURES,
@@ -69,7 +71,8 @@ const palette = createTestPalette();
 const fileMap = new Map<string, Uint8Array>([
   ["pics/colormap.pcx", createPcxFile(1, 1, Uint8Array.from([0]), palette)],
   ["pics/conchars.pcx", createPcxFile(128, 128, new Uint8Array(128 * 128), palette)],
-  ["pics/test.pcx", createPcxFile(16, 8, new Uint8Array(16 * 8), palette)]
+  ["pics/test.pcx", createPcxFile(16, 8, new Uint8Array(16 * 8), palette)],
+  ["sprites/test.sp2", createSpriteFile("pics/test.pcx")]
 ]);
 const imageRuntime = createGlImageRuntime({
   loadFile: (path) => fileMap.get(path) ?? null,
@@ -139,6 +142,8 @@ const host = createRefGlHost({
       log.push(message.trimEnd());
     },
     FS_Gamedir: () => "baseq2",
+    FS_LoadFile: (name) => fileMap.get(name) ?? null,
+    FS_FreeFile: () => undefined,
     Cvar_Get: (name, value, flags) => {
       const existing = cvarByName.get(name);
       if (existing) {
@@ -183,6 +188,7 @@ assert.equal(host.init(), true, "createRefGlHost init helper mismatch");
 assert.equal(host.qglRuntime.initialized, true, "createRefGlHost qgl runtime init mismatch");
 assert.equal(host.qwglRuntime?.initialized, true, "createRefGlHost qwgl runtime init mismatch");
 assert.equal(addedCommands.includes("imagelist"), true, "createRefGlHost command registration mismatch");
+assert.equal(addedCommands.includes("modellist"), true, "createRefGlHost model command registration mismatch");
 assert.equal(log.includes("clearColor:1,0,0.5,0.5"), true, "createRefGlHost GL_SetDefaultState wiring mismatch");
 assert.equal(host.imageRuntime?.r_particletexture?.name, "***particle***", "createRefGlHost particle texture wiring mismatch");
 assert.equal(host.imageRuntime?.r_notexture?.name, "***r_notexture***", "createRefGlHost no-texture wiring mismatch");
@@ -194,6 +200,15 @@ host.api.DrawChar(4, 6, 65);
 host.api.DrawFill(0, 0, 3, 5, 12);
 assert.equal(texturedQuadCount, 2, "createRefGlHost textured draw wiring mismatch");
 assert.equal(solidQuadCount, 1, "createRefGlHost solid draw wiring mismatch");
+
+const spriteModel = host.api.RegisterModel("sprites/test.sp2") as { name?: string } | null;
+assert.equal(spriteModel?.name, "sprites/test.sp2", "createRefGlHost RegisterModel gl_model wiring mismatch");
+assert.throws(
+  () => host.api.BeginRegistration("missing_map"),
+  /not found/,
+  "createRefGlHost BeginRegistration gl_model wiring mismatch"
+);
+host.api.EndRegistration();
 
 commandCallbacks.get("gl_strings")?.();
 assert.equal(log.includes("GL_VENDOR: HostVendor"), true, "createRefGlHost gl_strings command wiring mismatch");
@@ -269,6 +284,21 @@ function createTestPalette(): Uint8Array {
     paletteRgb[i * 3 + 2] = (i * 3) & 0xff;
   }
   return paletteRgb;
+}
+
+function createSpriteFile(frameName: string): Uint8Array {
+  const buffer = new Uint8Array(92);
+  setLittleLong(buffer, 0, IDSPRITEHEADER);
+  setLittleLong(buffer, 4, SPRITE_VERSION);
+  setLittleLong(buffer, 8, 1);
+  setLittleLong(buffer, 12, 16);
+  setLittleLong(buffer, 16, 8);
+  setLittleLong(buffer, 20, 0);
+  setLittleLong(buffer, 24, 0);
+  for (let index = 0; index < frameName.length && index < 63; index += 1) {
+    buffer[28 + index] = frameName.charCodeAt(index);
+  }
+  return buffer;
 }
 
 function writeShort(target: Uint8Array, offset: number, value: number): void {

@@ -99,6 +99,7 @@ import {
   MAX_MAP_VERTS,
   MAX_MAP_VISIBILITY,
   MAX_VALUE,
+  MAXLIGHTMAPS,
   MAX_MD2SKINS,
   MAX_SKINNAME,
   MAX_TRIANGLES,
@@ -210,6 +211,7 @@ assert.equal(MAX_MAP_LIGHTING, 0x200000, "MAX_MAP_LIGHTING mismatch");
 assert.equal(MAX_MAP_VISIBILITY, 0x100000, "MAX_MAP_VISIBILITY mismatch");
 assert.equal(MAX_KEY, 32, "MAX_KEY mismatch");
 assert.equal(MAX_VALUE, 1024, "MAX_VALUE mismatch");
+assert.equal(MAXLIGHTMAPS, 4, "MAXLIGHTMAPS mismatch");
 assert.equal(HEADER_LUMPS, 19, "HEADER_LUMPS mismatch");
 assert.equal(LUMP_ENTITIES, 0, "LUMP_ENTITIES mismatch");
 assert.equal(LUMP_PLANES, 1, "LUMP_PLANES mismatch");
@@ -441,16 +443,27 @@ assert.deepEqual(sp2.frames[0], {
   name: "sprites/test.pcx"
 }, "parseSp2 frame mismatch");
 
-const bspBytes = new Uint8Array(512);
+const bspBytes = new Uint8Array(640);
 writeLittleLong(bspBytes, 0, IDBSPHEADER);
 writeLittleLong(bspBytes, 4, BSPVERSION);
 writeLump(bspBytes, LUMP_ENTITIES, 160, 29);
 writeLump(bspBytes, LUMP_PLANES, 192, 20);
 writeLump(bspBytes, LUMP_VERTEXES, 212, 12);
-writeLump(bspBytes, LUMP_VISIBILITY, 224, 4);
+writeLump(bspBytes, LUMP_VISIBILITY, 480, 20);
 writeLump(bspBytes, LUMP_NODES, 228, 28);
 writeLump(bspBytes, LUMP_TEXINFO, 256, 76);
+writeLump(bspBytes, LUMP_FACES, 380, 20);
+writeLump(bspBytes, LUMP_LIGHTING, 472, 4);
+writeLump(bspBytes, LUMP_LEAFS, 400, 28);
+writeLump(bspBytes, LUMP_LEAFFACES, 436, 2);
+writeLump(bspBytes, LUMP_LEAFBRUSHES, 438, 2);
+writeLump(bspBytes, LUMP_EDGES, 428, 4);
+writeLump(bspBytes, LUMP_SURFEDGES, 432, 4);
 writeLump(bspBytes, LUMP_MODELS, 332, 48);
+writeLump(bspBytes, LUMP_BRUSHES, 440, 12);
+writeLump(bspBytes, LUMP_BRUSHSIDES, 452, 4);
+writeLump(bspBytes, LUMP_AREAS, 456, 8);
+writeLump(bspBytes, LUMP_AREAPORTALS, 464, 8);
 writeAscii(bspBytes, 160, "{\"classname\" \"worldspawn\"}\0");
 writeLittleFloat(bspBytes, 192, 1);
 writeLittleFloat(bspBytes, 196, 0);
@@ -460,8 +473,6 @@ writeLittleLong(bspBytes, 208, PLANE_X);
 writeLittleFloat(bspBytes, 212, 10);
 writeLittleFloat(bspBytes, 216, 20);
 writeLittleFloat(bspBytes, 220, 30);
-bspBytes[224] = 0x55;
-bspBytes[225] = 0xaa;
 writeLittleLong(bspBytes, 228, 0);
 writeLittleLong(bspBytes, 232, -1);
 writeLittleLong(bspBytes, 236, -2);
@@ -497,6 +508,48 @@ writeLittleFloat(bspBytes, 364, 3);
 writeLittleLong(bspBytes, 368, 7);
 writeLittleLong(bspBytes, 372, 11);
 writeLittleLong(bspBytes, 376, 13);
+writeLittleShort(bspBytes, 380, 1);
+writeLittleShort(bspBytes, 382, -1);
+writeLittleLong(bspBytes, 384, 9);
+writeLittleShort(bspBytes, 388, 3);
+writeLittleShort(bspBytes, 390, 0);
+bspBytes.set([11, 22, 33, 44], 392);
+writeLittleLong(bspBytes, 396, 472);
+writeLittleLong(bspBytes, 400, CONTENTS_WATER | CONTENTS_TRANSLUCENT);
+writeLittleShort(bspBytes, 404, 2);
+writeLittleShort(bspBytes, 406, 3);
+writeLittleShort(bspBytes, 408, -7);
+writeLittleShort(bspBytes, 410, -8);
+writeLittleShort(bspBytes, 412, -9);
+writeLittleShort(bspBytes, 414, 7);
+writeLittleShort(bspBytes, 416, 8);
+writeLittleShort(bspBytes, 418, 9);
+writeLittleShort(bspBytes, 420, 0);
+writeLittleShort(bspBytes, 422, 1);
+writeLittleShort(bspBytes, 424, 0);
+writeLittleShort(bspBytes, 426, 1);
+writeLittleShort(bspBytes, 428, 0);
+writeLittleShort(bspBytes, 430, 1);
+writeLittleLong(bspBytes, 432, -1);
+writeLittleShort(bspBytes, 436, 0);
+writeLittleShort(bspBytes, 438, 0);
+writeLittleLong(bspBytes, 440, 0);
+writeLittleLong(bspBytes, 444, 1);
+writeLittleLong(bspBytes, 448, CONTENTS_SOLID);
+writeLittleShort(bspBytes, 452, 0);
+writeLittleShort(bspBytes, 454, 0);
+writeLittleLong(bspBytes, 456, 1);
+writeLittleLong(bspBytes, 460, 0);
+writeLittleLong(bspBytes, 464, 17);
+writeLittleLong(bspBytes, 468, 2);
+bspBytes.set([0x10, 0x20, 0x30, 0x40], 472);
+writeLittleLong(bspBytes, 480, 1);
+writeLittleLong(bspBytes, 484, 12);
+writeLittleLong(bspBytes, 488, 14);
+bspBytes[492] = 0x55;
+bspBytes[493] = 0;
+bspBytes[494] = 0xaa;
+bspBytes[495] = 0;
 const bsp = parseBsp(bspBytes, "test.bsp");
 assert.equal(bsp.header.ident, IDBSPHEADER, "parseBsp dheader_t ident mismatch");
 assert.equal(bsp.header.version, BSPVERSION, "parseBsp dheader_t version mismatch");
@@ -506,7 +559,7 @@ assert.equal(bsp.entities, "{\"classname\" \"worldspawn\"}", "parseBsp entity lu
 assert.equal(bsp.parsedEntities[0].properties.classname, "worldspawn", "parseBsp parsed entity mismatch");
 assert.deepEqual(bsp.planes[0], { normal: [1, 0, 0], dist: 64, type: PLANE_X }, "parseBsp dplane_t mismatch");
 assert.deepEqual(bsp.vertexes[0], { point: [10, 20, 30] }, "parseBsp dvertex_t mismatch");
-assert.deepEqual(Array.from(bsp.visibility), [0x55, 0xaa, 0, 0], "parseBsp visibility lump mismatch");
+assert.deepEqual(Array.from(bsp.visibility.slice(0, 16)), [1, 0, 0, 0, 12, 0, 0, 0, 14, 0, 0, 0, 0x55, 0, 0xaa, 0], "parseBsp visibility lump/dvis_t bytes mismatch");
 assert.deepEqual(bsp.nodes[0], {
   planenum: 0,
   children: [-1, -2],
@@ -530,5 +583,47 @@ assert.deepEqual(bsp.models[0], {
   firstface: 11,
   numfaces: 13
 }, "parseBsp dmodel_t mismatch");
+assert.deepEqual(bsp.faces[0], {
+  planenum: 1,
+  side: -1,
+  firstedge: 9,
+  numedges: 3,
+  texinfo: 0,
+  styles: [11, 22, 33, 44],
+  lightofs: 472
+}, "parseBsp dface_t mismatch");
+assert.deepEqual(Array.from(bsp.lighting), [0x10, 0x20, 0x30, 0x40], "parseBsp lighting lump mismatch");
+assert.deepEqual(bsp.leafs[0], {
+  contents: CONTENTS_WATER | CONTENTS_TRANSLUCENT,
+  cluster: 2,
+  area: 3,
+  mins: [-7, -8, -9],
+  maxs: [7, 8, 9],
+  firstleafface: 0,
+  numleaffaces: 1,
+  firstleafbrush: 0,
+  numleafbrushes: 1
+}, "parseBsp dleaf_t mismatch");
+assert.deepEqual(bsp.edges[0], { v: [0, 1] }, "parseBsp dedge_t mismatch");
+assert.deepEqual(Array.from(bsp.surfedges), [-1], "parseBsp surfedge lump mismatch");
+assert.deepEqual(Array.from(bsp.leaffaces), [0], "parseBsp leafface lump mismatch");
+assert.deepEqual(Array.from(bsp.leafbrushes), [0], "parseBsp leafbrush lump mismatch");
+assert.deepEqual(bsp.brushes[0], {
+  firstside: 0,
+  numsides: 1,
+  contents: CONTENTS_SOLID
+}, "parseBsp dbrush_t mismatch");
+assert.deepEqual(bsp.brushsides[0], {
+  planenum: 0,
+  texinfo: 0
+}, "parseBsp dbrushside_t mismatch");
+assert.deepEqual(bsp.areas[0], {
+  numareaportals: 1,
+  firstareaportal: 0
+}, "parseBsp darea_t mismatch");
+assert.deepEqual(bsp.areaportals[0], {
+  portalnum: 17,
+  otherarea: 2
+}, "parseBsp dareaportal_t mismatch");
 
 console.log("quake2-qfiles: ok");

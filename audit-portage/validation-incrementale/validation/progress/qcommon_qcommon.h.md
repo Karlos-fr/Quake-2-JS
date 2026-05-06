@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: `MSG_WriteDeltaUsercmd`, `MSG_WriteDeltaEntity`, constantes `CM_*` et `U_*` associees.
+- Dernier lot valide: bloc lecture simple `MSG_ReadChar` a `MSG_ReadData`, incluant `MSG_ReadDeltaUsercmd` et `MSG_ReadDir`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc lecture simple dans `packages/qcommon/src/messages.ts`: `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, `MSG_ReadString`, `MSG_ReadStringLine`, `MSG_ReadCoord`, `MSG_ReadPos`, `MSG_ReadAngle`, `MSG_ReadAngle16`, `MSG_ReadDeltaUsercmd`, `MSG_ReadDir`, `MSG_ReadData`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementations `Quake-2-master/qcommon/common.c`.
+- Cible comparee: `packages/qcommon/src/messages.ts`, avec `MSG_BeginReading` deja valide dans `packages/memory/src/sizebuf.ts`.
+- Decision: portage valide. Les lectures conservent les noms originaux, l'ownership `messages.ts` est coherent et aucun doublon proprietaire concurrent n'a ete trouve. Les fonctions preservent les valeurs de depassement `-1`, l'increment de `readcount` meme en depassement, l'endianness little-endian, les conversions signed/unsigned, les limites de chaine 2048, l'arret newline de `MSG_ReadStringLine`, les echelles coord/angle, la copie delta usercmd depuis `from`, et l'extension `MSG_ReadDir` via `bytedirs`. Les ecarts TS restent documentes: retours `vec3_t`/`Uint8Array`/`string` au lieu de pointeurs de sortie C, et exception JS pour l'index dir invalide au lieu de `Com_Error(ERR_DROP)`.
+- Runtime: attendu et verifie. Les lectures sont atteignables depuis les flux normaux qcommon/client/server/netchan: `Netchan_Process`, `CL_ParseServerMessage`/`CL_ParseFrame`, `CL_ParsePacketEntities`, `SV_ReadPackets`/`SV_ExecuteClientMessage` et `SV_UserMove`.
+- apps/web: attendu et verifie. Le host full-game web declenche les flux client/serveur portes et consomme les messages reseau sans logique parallele remplacant `messages.ts`.
+- renderer-three: attendu indirectement pour les lectures qui produisent des sorties visibles: positions, angles camera/refdef, playerstate, entites visibles, modeles, frames, skins, areabits, temp entities, beams, dlights et particules. Verifie via parse client et flux full-game three renderer.
+- Commentaires: en-tetes de `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, `MSG_ReadString`, `MSG_ReadStringLine`, `MSG_ReadCoord`, `MSG_ReadPos`, `MSG_ReadAngle`, `MSG_ReadAngle16`, `MSG_ReadDeltaUsercmd`, `MSG_ReadDir`, `MSG_ReadData` verifies dans `packages/qcommon/src/messages.ts`.
+- Tests ajoutes: assertions ciblees dans `scripts/verify/quake2-qcommon-header.ts` pour `MSG_ReadStringLine`, `MSG_ReadData`, depassements de lecture, `MSG_ReadDeltaUsercmd` sans bits modifies et `MSG_ReadDir` invalide.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:cl-input`, `npm run verify:cl-parse`, `npm run verify:server:user`, `npm run verify:server:main`, `npm run verify:net-chan`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: `MSG_WriteDeltaUsercmd`, `MSG_WriteDeltaEntity`, constantes `CM_ANGLE1` a `CM_IMPULSE`, et constantes `U_ORIGIN1` a `U_SOLID`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementations `Quake-2-master/qcommon/common.c`.
@@ -59,7 +72,7 @@
 
 ## Prochain lot recommande
 
-- Bloc lecture simple dans `packages/qcommon/src/messages.ts`: `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, `MSG_ReadString`, `MSG_ReadStringLine`, `MSG_ReadCoord`, `MSG_ReadPos`, `MSG_ReadAngle`, `MSG_ReadAngle16`, puis `MSG_ReadDeltaUsercmd` si le lot reste coherent.
+- Bloc endian et arguments communs: `bigendien`, `BigShort`, `LittleShort`, `BigLong`, `LittleLong`, `BigFloat`, `LittleFloat`, puis `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_CheckParm`, `COM_AddParm`, `COM_InitArgv` si le lot reste coherent.
 
 ## Blocages
 

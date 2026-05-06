@@ -51,20 +51,20 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDeltaEntity` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaEntity` | Valide | A redecouper | Correction `protocol.ts`: `U_*` realignes sur le header C a partir de `U_EFFECTS8`. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDir` | `packages/qcommon/src/messages.ts` | `MSG_WriteDir` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:net-chan`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`; en-tete/verif runtime web renderer OK. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_BeginReading` | `packages/memory/src/sizebuf.ts` | `MSG_BeginReading` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadChar` | `packages/qcommon/src/messages.ts` | `MSG_ReadChar` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadByte` | `packages/qcommon/src/messages.ts` | `MSG_ReadByte` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadShort` | `packages/qcommon/src/messages.ts` | `MSG_ReadShort` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadLong` | `packages/qcommon/src/messages.ts` | `MSG_ReadLong` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadFloat` | `packages/qcommon/src/messages.ts` | `MSG_ReadFloat` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadString` | `packages/qcommon/src/messages.ts` | `MSG_ReadString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadStringLine` | `packages/qcommon/src/messages.ts` | `MSG_ReadStringLine` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadCoord` | `packages/qcommon/src/messages.ts` | `MSG_ReadCoord` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadPos` | `packages/qcommon/src/messages.ts` | `MSG_ReadPos` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadAngle` | `packages/qcommon/src/messages.ts` | `MSG_ReadAngle` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadAngle16` | `packages/qcommon/src/messages.ts` | `MSG_ReadAngle16` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_ReadDeltaUsercmd` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadDir` | `packages/qcommon/src/messages.ts` | `MSG_ReadDir` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadData` | `packages/qcommon/src/messages.ts` | `MSG_ReadData` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadChar` | `packages/qcommon/src/messages.ts` | `MSG_ReadChar` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadByte` | `packages/qcommon/src/messages.ts` | `MSG_ReadByte` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadShort` | `packages/qcommon/src/messages.ts` | `MSG_ReadShort` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadLong` | `packages/qcommon/src/messages.ts` | `MSG_ReadLong` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadFloat` | `packages/qcommon/src/messages.ts` | `MSG_ReadFloat` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadString` | `packages/qcommon/src/messages.ts` | `MSG_ReadString` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadStringLine` | `packages/qcommon/src/messages.ts` | `MSG_ReadStringLine` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadCoord` | `packages/qcommon/src/messages.ts` | `MSG_ReadCoord` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadPos` | `packages/qcommon/src/messages.ts` | `MSG_ReadPos` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadAngle` | `packages/qcommon/src/messages.ts` | `MSG_ReadAngle` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadAngle16` | `packages/qcommon/src/messages.ts` | `MSG_ReadAngle16` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_ReadDeltaUsercmd` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadDir` | `packages/qcommon/src/messages.ts` | `MSG_ReadDir` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadData` | `packages/qcommon/src/messages.ts` | `MSG_ReadData` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | global | `bigendien` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `BigShort` | `packages/qcommon/src/common.ts` | `BigShort` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `LittleShort` | `packages/qcommon/src/common.ts` | `LittleShort` | A verifier | A redecouper |  |

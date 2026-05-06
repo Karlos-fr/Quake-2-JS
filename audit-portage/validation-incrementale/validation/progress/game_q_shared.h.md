@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: bloc rendu joueur `RDF_*`, puis bloc muzzle flash joueur complet `MZ_*` de `MZ_BLASTER` a `MZ_NUKE8` avec `MZ_SILENCED`.
+- Entites validees: `RDF_UNDERWATER`, `RDF_NOWORLDMODEL`, `RDF_IRGOGGLES`, `RDF_UVGOGGLES`, `MZ_BLASTER`, `MZ_MACHINEGUN`, `MZ_SHOTGUN`, `MZ_CHAINGUN1`, `MZ_CHAINGUN2`, `MZ_CHAINGUN3`, `MZ_RAILGUN`, `MZ_ROCKET`, `MZ_GRENADE`, `MZ_LOGIN`, `MZ_LOGOUT`, `MZ_RESPAWN`, `MZ_BFG`, `MZ_SSHOTGUN`, `MZ_HYPERBLASTER`, `MZ_ITEMRESPAWN`, `MZ_IONRIPPER`, `MZ_BLUEHYPERBLASTER`, `MZ_PHALANX`, `MZ_SILENCED`, `MZ_ETF_RIFLE`, `MZ_UNUSED`, `MZ_SHOTGUN2`, `MZ_HEATBEAM`, `MZ_BLASTER2`, `MZ_TRACKER`, `MZ_NUKE1`, `MZ_NUKE2`, `MZ_NUKE4`, `MZ_NUKE8`.
+- Ownership: constantes proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportees via `packages/qcommon/src/index.ts`; aucun doublon proprietaire detecte pour `RDF_*`/`MZ_*`. Les `MZ2_*` restent hors de ce lot car leur ownership/runtime effectif est reparti entre les ports monstres et `game/m_flash.c`.
+- Preuves: comparaison numerique C/H vs TS ajoutee dans `scripts/verify/quake2-q-shared-header.ts`; runtime verifie via `player_state_t.rdflags`, `SV_CalcBlend`, `CL_ParsePlayerstate`, `V_RenderView`, menu player config, armes joueur, `svc_muzzleflash`, `CL_ParseMuzzleFlash`, `CL_BuildMuzzleFlashEffects` et `G_RunFrame`.
+- Commentaires d'en-tete: non applicable pour `RDF_*`; le commentaire de bloc `MZ_*` dans `packages/qcommon/src/q_shared.ts` et les commentaires runtime consommateurs ont ete verifies.
 - 2026-05-06: bloc visible `entity_state_t->renderfx` complet `RF_*`, puis bloc protocole/configstrings `CS_*` / `MAX_CONFIGSTRINGS`.
 - Entites validees: `RF_MINLIGHT`, `RF_VIEWERMODEL`, `RF_WEAPONMODEL`, `RF_FULLBRIGHT`, `RF_DEPTHHACK`, `RF_TRANSLUCENT`, `RF_FRAMELERP`, `RF_BEAM`, `RF_CUSTOMSKIN`, `RF_GLOW`, `RF_SHELL_RED`, `RF_SHELL_GREEN`, `RF_SHELL_BLUE`, `RF_IR_VISIBLE`, `RF_SHELL_DOUBLE`, `RF_SHELL_HALF_DAM`, `RF_USE_DISGUISE`, `CS_NAME`, `CS_CDTRACK`, `CS_SKY`, `CS_SKYAXIS`, `CS_SKYROTATE`, `CS_STATUSBAR`, `CS_AIRACCEL`, `CS_MAXCLIENTS`, `CS_MAPCHECKSUM`, `CS_MODELS`, `CS_SOUNDS`, `CS_IMAGES`, `CS_LIGHTS`, `CS_ITEMS`, `CS_PLAYERSKINS`, `CS_GENERAL`, `MAX_CONFIGSTRINGS`.
 - Ownership: constantes proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportees via `packages/qcommon/src/index.ts`; aucun doublon proprietaire ni renommage detecte pour le lot.
@@ -67,6 +72,7 @@
 
 ## Corrections
 
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `RDF_*` et toutes les valeurs `MZ_*` joueur de `MZ_BLASTER` a `MZ_NUKE8`, incluant les trous reserves et le bit `MZ_SILENCED`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `RF_*` de `RF_MINLIGHT` a `RF_USE_DISGUISE`, puis pour `CS_*` et `MAX_CONFIGSTRINGS`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `EF_*` de `EF_ROTATE` a `EF_TRACKERTRAIL`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `trace_t`, `pmtype_t`, `PMF_*`, `pmove_state_t`, `BUTTON_*`, `usercmd_t`, `MAXTOUCH` et `pmove_t`; la matrice a ete completee pour les champs directs absents du decoupage genere (`plane`, `surface`, `ent`, mouvements directionnels, `s`, `touchents`, bbox, `groundentity`, callbacks).
@@ -90,6 +96,14 @@
 
 ## Tests de reference
 
+- `npm run verify:q-shared:header` OK pour `RDF_*` et `MZ_*`.
+- `npm run verify:p-view` OK pour `RDF_UNDERWATER` dans `SV_CalcBlend`.
+- `npm run verify:p-hud` OK pour l'initialisation/reset `RDF_UNDERWATER`.
+- `npm run verify:cl-parse` OK pour le parsing `player_state_t.rdflags` et `svc_muzzleflash`.
+- `npm run verify:cl-fx` OK pour les effets, sons, particules et dlights de `MZ_*`.
+- `npm run verify:p-weapon` OK pour les producteurs gameplay des muzzle flashes joueur et `MZ_SILENCED`.
+- `npm run verify:g-main` OK pour le flush serveur `svc_muzzleflash`, notamment login/logout/blaster.
+- `npm run verify:ref-gl-host`, `verify:refresh-entity:alias-flags`, `verify:full-game:server-host`, `verify:full-game:three-renderer` et `typecheck` OK pour l'integration runtime/web/renderer du lot.
 - `npm run verify:q-shared:header` OK pour `RF_*` et `CS_*`/`MAX_CONFIGSTRINGS`.
 - `npm run verify:qcommon:header` OK pour l'encodage delta `renderfx`.
 - `npm run verify:server:ents` OK pour les snapshots serveur et le cas `RF_BEAM`.
@@ -169,6 +183,14 @@
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `RDF_*` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par l'entrypoint qcommon; ces flags sont des sorties de `player_state_t.rdflags`, transportees par `PS_RDFLAGS`, consommees par le client et transmises au refdef renderer.
+- Runtime: integration attendue et presente. `RDF_UNDERWATER` est produit par `SV_CalcBlend`, `RDF_NOWORLDMODEL` par le menu de configuration joueur/refdef host, `RDF_IRGOGGLES` affecte la visibilite `RF_IR_VISIBLE`, et `RDF_UVGOGGLES` reste expose comme flag Rogue compatible meme sans chemin visible specialise dans le port courant.
+- `apps/web`: integration attendue et presente via les flux full-game/server-host et renderer host qui propagent `player_state_t.rdflags` vers `ClientRefreshFrame`/refdef sans logique parallele masquante.
+- `renderer-three`: sortie visible attendue et presente pour la scene/camera/refdef. `RDF_NOWORLDMODEL` coupe le world model dans `gl_rmain`/`gl_rsurf`; `RDF_IRGOGGLES` est consomme par `gl_mesh` avec `RF_IR_VISIBLE`; `RDF_UNDERWATER` influence le blend/camera via l'etat joueur transmis. Aucun manque ouvert pour ce lot.
+- Le bloc `MZ_*` joueur est expose par `packages/qcommon/src/q_shared.ts` et reexporte par l'entrypoint qcommon; ces ids sont les payloads `svc_muzzleflash` produits par gameplay/server et consommes par le client.
+- Runtime: integration attendue et presente. Les armes joueur et evenements login/logout/respawn produisent les `MZ_*`, `G_RunFrame` les ecrit en `svc_muzzleflash`, `CL_ParseServerMessage` les parse, puis `CL_BuildMuzzleFlashEffects` produit sons, dlights et particules avec preservation de `MZ_SILENCED`.
+- `apps/web`: integration attendue et presente via `full-game`/`server-host`, les callbacks `onMuzzleFlash` et `applyAuthoritativeVisualEffects`; aucune reconstruction web parallele ne masque le parsing client.
+- `renderer-three`: sortie visible attendue et presente pour dlights, particules/temp-like action effects et scene. Les muzzle flashes joueur sont convertis en effets client puis consommes par les adapters particules/dlights et le render loop web; `verify:full-game:three-renderer` confirme que ces effets restent branches.
 - Le bloc `RF_*` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; ces flags sont des sorties visibles de `entity_state_t.renderfx`, transportees par delta entity (`MSG_WriteDeltaEntity`/`CL_ParseDelta`) et par les snapshots serveur/client.
 - Runtime: integration attendue et presente. Les producteurs gameplay couvrent items (`RF_GLOW`), joueur/power armor/shells, lasers/beams, monstres/frames, arme vue (`RF_MINLIGHT | RF_DEPTHHACK | RF_WEAPONMODEL`) et cas Rogue (`RF_IR_VISIBLE`, `RF_USE_DISGUISE`, `RF_SHELL_DOUBLE`, `RF_SHELL_HALF_DAM`); les consommateurs client couvrent interpolation, beams, alpha, viewer model, custom player/weapon skin et disguise.
 - `apps/web`: integration attendue et presente via les flux full-game/server-host/local-gameplay qui synchronisent `entity_state_t.renderfx`, construisent les `ClientRefreshFrame` et exposent les brush snapshots avec `flags: entity.renderfx`; aucune logique parallele masquante detectee.
@@ -233,4 +255,4 @@
 
 ## Prochain lot recommande
 
-- Traiter le bloc `RDF_*` (`RDF_UNDERWATER`, `RDF_NOWORLDMODEL`, `RDF_IRGOGGLES`, `RDF_UVGOGGLES`), puis poursuivre avec le bloc muzzle flash `MZ_*` si le lot reste coherent.
+- Traiter le bloc `MZ2_*` en commencant par `MZ2_TANK_BLASTER_1` a `MZ2_TANK_ROCKET_3`, puis poursuivre vers les familles monstres adjacentes seulement si l'ownership centralise vs constantes locales de monstres peut etre tranche proprement.

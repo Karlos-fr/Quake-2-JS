@@ -35,6 +35,7 @@ import {
 import { SHADEDOT_QUANT, getAliasShadedots } from "./anormtab.js";
 import type { Md2Model } from "../../formats/src/index.js";
 
+export const NUMVERTEXNORMALS = 162;
 const RF_GLOW_SCALE = 0.1;
 const RF_GLOW_RATE = 7;
 

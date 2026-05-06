@@ -28,6 +28,7 @@ export {
   computeAliasShadeLight,
   computeAliasWeaponLightLevel,
   getAliasShadedotsForYaw,
+  NUMVERTEXNORMALS,
   sanitizeAliasFramePair
 } from "./gl_mesh.js";
 export {

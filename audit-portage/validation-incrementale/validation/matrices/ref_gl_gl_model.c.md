@@ -4,51 +4,61 @@
 
 - Source: `Quake-2-master/ref_gl/gl_model.c`
 - Cibles TS connues: `packages/renderer-three/src/gl-model-loader.ts`
-- Tests connus: `npm run verify:gl-model:phase1`, `npm run verify:gl-model:phase2`, `npm run verify:gl-model:phase3`, `npm run verify:gl-model:phase4`, `npm run verify:gl-model:phase5`, `npm run verify:gl-model:phase6`, `npm run verify:gl-model:phase7`, `npm run verify:gl-model:phase8`, `npm run verify:gl-model:phase9`, `npm run verify:three-world-alpha`, `npm run verify:three-world-warp-sky`
+- Tests connus: `npm run verify:gl-model:phase1`, `npm run verify:gl-model:phase2`, `npm run verify:gl-model:phase3`, `npm run verify:gl-model:phase4`, `npm run verify:gl-model:phase5`, `npm run verify:gl-model:phase6`, `npm run verify:gl-model:phase7`, `npm run verify:gl-model:phase8`, `npm run verify:gl-model:phase9`, `npm run verify:ref-gl-host`, `npm run verify:gl-rsurf`, `npm run verify:three-world-alpha`, `npm run verify:three-world-warp-sky`, `npm run verify:full-game:three-renderer`, `npm run typecheck`
 - Verdict Phase 03: wrong-name
 - Findings Phase 03: `phase02-structural-status:wrong-name`, `expected-map-status:missing`, `stub marker detected`, `primary-basename 'gl-model-loader' differs from source basename 'gl_model'`
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `CalcSurfaceExtents` | `packages/renderer-three/src/gl-model-loader.ts` | `CalcSurfaceExtents` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_Free` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_Free` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_FreeAll` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_FreeAll` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_Init` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_Init` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadAliasModel` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadAliasModel` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadBrushModel` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadBrushModel` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadEdges` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadEdges` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadFaces` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadFaces` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadLeafs` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadLeafs` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadLighting` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadLighting` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadMarksurfaces` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadMarksurfaces` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadNodes` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadNodes` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadPlanes` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadPlanes` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadSpriteModel` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadSpriteModel` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadSubmodels` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadSubmodels` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadSurfedges` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadSurfedges` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadTexinfo` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadTexinfo` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadVertexes` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadVertexes` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadVisibility` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadVisibility` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_Modellist_f` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_Modellist_f` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_SetParent` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_SetParent` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `R_BeginRegistration` | `packages/renderer-three/src/gl-model-loader.ts` | `R_BeginRegistration` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `R_EndRegistration` | `packages/renderer-three/src/gl-model-loader.ts` | `R_EndRegistration` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | function | `RadiusFromBounds` | `packages/renderer-three/src/gl-model-loader.ts` | `RadiusFromBounds` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | macro | `MAX_MOD_KNOWN` | `packages/renderer-three/src/gl-model-loader.ts` | `MAX_MOD_KNOWN` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | struct | `model_s` | `packages/renderer-three/src/gl-model-loader.ts` | `model_s` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `bits` | `packages/renderer-three/src/gl-model-loader.ts` | `bits` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `c` | `packages/renderer-three/src/gl-model-loader.ts` | `c` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `corner` | `packages/renderer-three/src/gl-model-loader.ts` | `corner` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `count` | `packages/renderer-three/src/gl-model-loader.ts` | `count` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `d` | `packages/renderer-three/src/gl-model-loader.ts` | `d` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `i` | `packages/renderer-three/src/gl-model-loader.ts` | `i` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `mod_numknown` | `packages/renderer-three/src/gl-model-loader.ts` | `mod_numknown` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `modfilelen` | `packages/renderer-three/src/gl-model-loader.ts` | `modfilelen` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `next` | `packages/renderer-three/src/gl-model-loader.ts` | `next` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `node` | `packages/renderer-three/src/gl-model-loader.ts` | `node` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `registration_sequence` | `packages/renderer-three/src/gl-model-loader.ts` | `registration_sequence` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `row` | `packages/renderer-three/src/gl-model-loader.ts` | `row` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `ti` | `packages/renderer-three/src/gl-model-loader.ts` | `ti` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `total` | `packages/renderer-three/src/gl-model-loader.ts` | `total` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `v` | `packages/renderer-three/src/gl-model-loader.ts` | `v` | A verifier | wrong-name |  |
-| `Quake-2-master/ref_gl/gl_model.c` | global | `version` | `packages/renderer-three/src/gl-model-loader.ts` | `version` | A verifier | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_PointInLeaf` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_PointInLeaf` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_DecompressVis` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_DecompressVis` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_ClusterPVS` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_ClusterPVS` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_Modellist_f` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_Modellist_f` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_Init` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_Init` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_ForName` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_ForName` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadLighting` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadLighting` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadVisibility` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadVisibility` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadVertexes` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadVertexes` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `RadiusFromBounds` | `packages/renderer-three/src/gl-model-loader.ts` | `RadiusFromBounds` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadSubmodels` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadSubmodels` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadEdges` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadEdges` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadTexinfo` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadTexinfo` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `CalcSurfaceExtents` | `packages/renderer-three/src/gl-model-loader.ts` | `CalcSurfaceExtents` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadFaces` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadFaces` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_SetParent` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_SetParent` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadNodes` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadNodes` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadLeafs` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadLeafs` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadMarksurfaces` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadMarksurfaces` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadSurfedges` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadSurfedges` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadPlanes` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadPlanes` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadBrushModel` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadBrushModel` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadAliasModel` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadAliasModel` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_LoadSpriteModel` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_LoadSpriteModel` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `R_BeginRegistration` | `packages/renderer-three/src/gl-model-loader.ts` | `R_BeginRegistration` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `R_RegisterModel` | `packages/renderer-three/src/gl-model-loader.ts` | `R_RegisterModel` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `R_EndRegistration` | `packages/renderer-three/src/gl-model-loader.ts` | `R_EndRegistration` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_Free` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_Free` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | function | `Mod_FreeAll` | `packages/renderer-three/src/gl-model-loader.ts` | `Mod_FreeAll` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | macro | `MAX_MOD_KNOWN` | `packages/renderer-three/src/gl-model-loader.ts` | `MAX_MOD_KNOWN` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | struct | `model_s` | `packages/renderer-three/src/gl-model.ts` | `model_s` | Non applicable | wrong-name | Ownership header `ref_gl/gl_model.h`; ne pas valider dans la matrice `gl_model.c`. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `loadmodel` | `packages/renderer-three/src/gl-model-loader.ts` | `GlModelRuntime.loadmodel` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `modfilelen` | `packages/renderer-three/src/gl-model-loader.ts` | `GlModelRuntime.modfilelen` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `mod_novis` | `packages/renderer-three/src/gl-model-loader.ts` | `GlModelRuntime.mod_novis` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `mod_known` | `packages/renderer-three/src/gl-model-loader.ts` | `GlModelRuntime.mod_known` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `mod_numknown` | `packages/renderer-three/src/gl-model-loader.ts` | `GlModelRuntime.mod_numknown` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `mod_inline` | `packages/renderer-three/src/gl-model-loader.ts` | `GlModelRuntime.mod_inline` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `registration_sequence` | `packages/renderer-three/src/gl-model-loader.ts` | `GlModelRuntime.registration_sequence` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `mod_base` | `packages/renderer-three/src/gl-model-loader.ts` | `modBase` | Valide | wrong-name |  |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `bits` | `packages/renderer-three/src/gl-model-loader.ts` | `bits` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `c` | `packages/renderer-three/src/gl-model-loader.ts` | `c` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `corner` | `packages/renderer-three/src/gl-model-loader.ts` | `corner` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `count` | `packages/renderer-three/src/gl-model-loader.ts` | `count` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `d` | `packages/renderer-three/src/gl-model-loader.ts` | `d` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `i` | `packages/renderer-three/src/gl-model-loader.ts` | `i` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `next` | `packages/renderer-three/src/gl-model-loader.ts` | `next` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `node` | `packages/renderer-three/src/gl-model-loader.ts` | `node` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `row` | `packages/renderer-three/src/gl-model-loader.ts` | `row` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `ti` | `packages/renderer-three/src/gl-model-loader.ts` | `ti` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `total` | `packages/renderer-three/src/gl-model-loader.ts` | `total` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `v` | `packages/renderer-three/src/gl-model-loader.ts` | `v` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |
+| `Quake-2-master/ref_gl/gl_model.c` | global | `version` | `packages/renderer-three/src/gl-model-loader.ts` | `version` | Non applicable | wrong-name | Variable locale C generee comme globale par erreur. |

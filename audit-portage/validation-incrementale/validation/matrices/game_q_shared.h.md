@@ -304,40 +304,40 @@
 | `Quake-2-master/game/q_shared.h` | macro | `RF_SHELL_DOUBLE` | `packages/qcommon/src/q_shared.ts` | `RF_SHELL_DOUBLE` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `RF_SHELL_HALF_DAM` | `packages/qcommon/src/q_shared.ts` | `RF_SHELL_HALF_DAM` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `RF_USE_DISGUISE` | `packages/qcommon/src/q_shared.ts` | `RF_USE_DISGUISE` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `RDF_UNDERWATER` | `packages/qcommon/src/q_shared.ts` | `RDF_UNDERWATER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `RDF_NOWORLDMODEL` | `packages/qcommon/src/q_shared.ts` | `RDF_NOWORLDMODEL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `RDF_IRGOGGLES` | `packages/qcommon/src/q_shared.ts` | `RDF_IRGOGGLES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `RDF_UVGOGGLES` | `packages/qcommon/src/q_shared.ts` | `RDF_UVGOGGLES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_BLASTER` | `packages/qcommon/src/q_shared.ts` | `MZ_BLASTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_MACHINEGUN` | `packages/qcommon/src/q_shared.ts` | `MZ_MACHINEGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_SHOTGUN` | `packages/qcommon/src/q_shared.ts` | `MZ_SHOTGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_CHAINGUN1` | `packages/qcommon/src/q_shared.ts` | `MZ_CHAINGUN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_CHAINGUN2` | `packages/qcommon/src/q_shared.ts` | `MZ_CHAINGUN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_CHAINGUN3` | `packages/qcommon/src/q_shared.ts` | `MZ_CHAINGUN3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_RAILGUN` | `packages/qcommon/src/q_shared.ts` | `MZ_RAILGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_ROCKET` | `packages/qcommon/src/q_shared.ts` | `MZ_ROCKET` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_GRENADE` | `packages/qcommon/src/q_shared.ts` | `MZ_GRENADE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_LOGIN` | `packages/qcommon/src/q_shared.ts` | `MZ_LOGIN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_LOGOUT` | `packages/qcommon/src/q_shared.ts` | `MZ_LOGOUT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_RESPAWN` | `packages/qcommon/src/q_shared.ts` | `MZ_RESPAWN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_BFG` | `packages/qcommon/src/q_shared.ts` | `MZ_BFG` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_SSHOTGUN` | `packages/qcommon/src/q_shared.ts` | `MZ_SSHOTGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_HYPERBLASTER` | `packages/qcommon/src/q_shared.ts` | `MZ_HYPERBLASTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_ITEMRESPAWN` | `packages/qcommon/src/q_shared.ts` | `MZ_ITEMRESPAWN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_IONRIPPER` | `packages/qcommon/src/q_shared.ts` | `MZ_IONRIPPER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_BLUEHYPERBLASTER` | `packages/qcommon/src/q_shared.ts` | `MZ_BLUEHYPERBLASTER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_PHALANX` | `packages/qcommon/src/q_shared.ts` | `MZ_PHALANX` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_SILENCED` | `packages/qcommon/src/q_shared.ts` | `MZ_SILENCED` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_ETF_RIFLE` | `packages/qcommon/src/q_shared.ts` | `MZ_ETF_RIFLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_UNUSED` | `packages/qcommon/src/q_shared.ts` | `MZ_UNUSED` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_SHOTGUN2` | `packages/qcommon/src/q_shared.ts` | `MZ_SHOTGUN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_HEATBEAM` | `packages/qcommon/src/q_shared.ts` | `MZ_HEATBEAM` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_BLASTER2` | `packages/qcommon/src/q_shared.ts` | `MZ_BLASTER2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_TRACKER` | `packages/qcommon/src/q_shared.ts` | `MZ_TRACKER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE1` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE2` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE4` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE8` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE8` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `RDF_UNDERWATER` | `packages/qcommon/src/q_shared.ts` | `RDF_UNDERWATER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `RDF_NOWORLDMODEL` | `packages/qcommon/src/q_shared.ts` | `RDF_NOWORLDMODEL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `RDF_IRGOGGLES` | `packages/qcommon/src/q_shared.ts` | `RDF_IRGOGGLES` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `RDF_UVGOGGLES` | `packages/qcommon/src/q_shared.ts` | `RDF_UVGOGGLES` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_BLASTER` | `packages/qcommon/src/q_shared.ts` | `MZ_BLASTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_MACHINEGUN` | `packages/qcommon/src/q_shared.ts` | `MZ_MACHINEGUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_SHOTGUN` | `packages/qcommon/src/q_shared.ts` | `MZ_SHOTGUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_CHAINGUN1` | `packages/qcommon/src/q_shared.ts` | `MZ_CHAINGUN1` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_CHAINGUN2` | `packages/qcommon/src/q_shared.ts` | `MZ_CHAINGUN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_CHAINGUN3` | `packages/qcommon/src/q_shared.ts` | `MZ_CHAINGUN3` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_RAILGUN` | `packages/qcommon/src/q_shared.ts` | `MZ_RAILGUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_ROCKET` | `packages/qcommon/src/q_shared.ts` | `MZ_ROCKET` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_GRENADE` | `packages/qcommon/src/q_shared.ts` | `MZ_GRENADE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_LOGIN` | `packages/qcommon/src/q_shared.ts` | `MZ_LOGIN` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_LOGOUT` | `packages/qcommon/src/q_shared.ts` | `MZ_LOGOUT` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_RESPAWN` | `packages/qcommon/src/q_shared.ts` | `MZ_RESPAWN` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_BFG` | `packages/qcommon/src/q_shared.ts` | `MZ_BFG` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_SSHOTGUN` | `packages/qcommon/src/q_shared.ts` | `MZ_SSHOTGUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_HYPERBLASTER` | `packages/qcommon/src/q_shared.ts` | `MZ_HYPERBLASTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_ITEMRESPAWN` | `packages/qcommon/src/q_shared.ts` | `MZ_ITEMRESPAWN` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_IONRIPPER` | `packages/qcommon/src/q_shared.ts` | `MZ_IONRIPPER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_BLUEHYPERBLASTER` | `packages/qcommon/src/q_shared.ts` | `MZ_BLUEHYPERBLASTER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_PHALANX` | `packages/qcommon/src/q_shared.ts` | `MZ_PHALANX` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_SILENCED` | `packages/qcommon/src/q_shared.ts` | `MZ_SILENCED` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_ETF_RIFLE` | `packages/qcommon/src/q_shared.ts` | `MZ_ETF_RIFLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_UNUSED` | `packages/qcommon/src/q_shared.ts` | `MZ_UNUSED` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_SHOTGUN2` | `packages/qcommon/src/q_shared.ts` | `MZ_SHOTGUN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_HEATBEAM` | `packages/qcommon/src/q_shared.ts` | `MZ_HEATBEAM` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_BLASTER2` | `packages/qcommon/src/q_shared.ts` | `MZ_BLASTER2` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_TRACKER` | `packages/qcommon/src/q_shared.ts` | `MZ_TRACKER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE1` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE1` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE2` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE2` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE4` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE4` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE8` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE8` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_BLASTER_1` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_BLASTER_2` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_BLASTER_3` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
