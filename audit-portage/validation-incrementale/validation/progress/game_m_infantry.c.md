@@ -2,8 +2,8 @@
 
 ## Etat courant
 
-- Statut: En cours
-- Dernier lot valide: sons globaux et bloc initial `stand` / `fidget` / `walk` / `run`
+- Statut: Termine
+- Dernier lot valide: fermeture du fichier `m_infantry.c`: pain, aim table, machinegun, sight, death/dead, duck/dodge, attaques melee/machinegun et spawn.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/game_m_infantry.c.md`
 - TS proprietaire: `packages/game/src/m_infantry.ts`
 
@@ -34,8 +34,44 @@ Checklist appliquee:
 
 Tous passent pendant cette session.
 
+## Lot valide pendant cette session de reprise
+
+Entites validees:
+
+- Pain: `infantry_frames_pain1`, `infantry_move_pain1`, `infantry_frames_pain2`, `infantry_move_pain2`, `infantry_pain`
+- Machinegun: `aimangles`, `InfantryMachineGun`
+- Sight/death: `infantry_sight`, `infantry_dead`, `infantry_frames_death1`, `infantry_move_death1`, `infantry_frames_death2`, `infantry_move_death2`, `infantry_frames_death3`, `infantry_move_death3`, `infantry_die`
+- Duck/dodge: `infantry_duck_down`, `infantry_duck_hold`, `infantry_duck_up`, `infantry_frames_duck`, `infantry_move_duck`, `infantry_dodge`
+- Attack: `infantry_cock_gun`, `infantry_fire`, `infantry_frames_attack1`, `infantry_move_attack1`, `infantry_swing`, `infantry_smack`, `infantry_frames_attack2`, `infantry_move_attack2`, `infantry_attack`
+- Spawn: `SP_monster_infantry`
+- Lignes declaratives associees: `infantry_frames_pain1`, `infantry_frames_pain2`, `infantry_frames_death1`, `infantry_frames_death2`, `infantry_frames_death3`, `infantry_frames_duck`, `infantry_frames_attack1`, `infantry_frames_attack2`
+
+Entrees non applicables:
+
+- Prototype C initial `InfantryMachineGun`, valide sur la ligne de definition.
+- Variables locales generees comme globals: `n` dans `InfantryMachineGun`, `infantry_die`, `infantry_cock_gun`, et `flash_number` dans `InfantryMachineGun`; comportement valide avec les fonctions proprietaires.
+
+Checklist appliquee:
+
+- Ownership confirme dans `packages/game/src/m_infantry.ts`; aucun doublon proprietaire concurrent trouve hors export normal du module.
+- Comparaison C vs TS effectuee sur les tables `mframe_t`, les `mmove_t`, les distances, callbacks, bornes de frames, sons, random macro/integer rand, machinegun/muzzleflash, pain, duck, death/gibs, melee et spawn.
+- Commentaires d'en-tete verifies et completes pour `infantry_sight`, `infantry_dead`, `infantry_die`, `infantry_duck_down`, `infantry_duck_hold`, `infantry_duck_up`, `infantry_cock_gun`, `infantry_fire`, `infantry_swing`, `infantry_smack`, `infantry_attack` et `SP_monster_infantry`.
+- Runtime verifie via `SP_monster_infantry`, `ED_CallSpawn`, `walkmonster_start`, `G_RunFrame`, `M_MoveFrame`, callbacks `monsterinfo`, `monster_fire_bullet`, sons, gibs et save registry.
+- `apps/web` verifie: pas de logique infantry parallele; le flux navigateur consomme les sorties runtime/client porte, sons, muzzleflash et refresh frames.
+- `packages/renderer-three` verifie: les sorties visibles attendues sont modele infantry, frames, oldframe/modelindex, muzzleflash/dlights/particules et gibs; consommation indirecte via snapshots/client refresh/Three, pas de branchement direct gameplay attendu.
+
+## Tests lances pendant cette session de reprise
+
+- `npm run verify:m-infantry`
+- `npm run verify:m-infantry:header`
+- `npm run verify:m-infantry:source-parity`
+- `npm run verify:full-game:render-source`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Tous passent pendant cette session.
+
 ## Decisions et points de reprise
 
-- Les lignes `n` de la matrice semblent etre des variables locales detectees comme globals; ne pas les valider sans verifier et probablement les retirer ou les marquer non applicables avec justification lors du lot concerne.
-- `InfantryMachineGun` apparait deux fois dans la matrice; garder ce doublon pour le lot attaque/machinegun ou corriger la matrice apres verification.
-- Prochain lot recommande: `infantry_frames_pain1`, `infantry_move_pain1`, `infantry_frames_pain2`, `infantry_move_pain2`, `infantry_pain`, puis verifier si `aimangles` et `InfantryMachineGun` peuvent etre traites dans le meme lot suivant ou doivent rester separes.
+- `m_infantry.c` est clos dans cette matrice: 79 `Valide`, 5 `Non applicable`, aucun `A verifier`.
+- Prochain lot recommande: reprendre `m_infantry.h` dans une session separee.

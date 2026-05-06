@@ -1813,7 +1813,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: ownership corrige vers `packages/game/src/g_monster.ts`, noms cibles renseignes, lignes marquees `Non applicable` comme declarations non proprietaires.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-monster` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Prochain lot recommande: continuer les declarations non proprietaires immediatement apres, bloc `g_misc.c` de `ThrowHead` a `ClockExplosion`, puis reprendre les prochains macros/globals proprietaires qui suivent.
+- 2026-05-06: lot tres elargi des declarations non proprietaires de `ThrowHead` a `GetChaseTarget`, soit 62 prototypes header continus.
+- Verdict: `Non applicable` pour les 62 declarations dans la matrice `g_local.h`: ce sont des prototypes de `g_local.h`, mais les fonctions sont proprietaires de leurs fichiers C de definition et les portages TS ont ete verifies dans les modules proprietaires.
+- Source H/C comparee:
+  - `g_local.h` declare les blocs `g_misc.c`, `g_ai.c`, `g_weapon.c`, `g_ptrail.c`, `g_client.c`, `g_svcmds.c`, `p_view.c`, `p_hud.c`, `p_weapon.c`, `m_move.c`, `g_phys.c`, `g_save.c` et `g_chase.c`.
+  - Les definitions reelles ont ete retrouvees dans `g_misc.c`, `g_ai.c`, `g_weapon.c`, `p_trail.c`, `p_client.c`, `g_svcmds.c`, `p_view.c`, `p_hud.c`, `g_cmds.c`, `p_weapon.c`, `m_move.c`, `g_phys.c` et `g_chase.c`. `ThrowDebris` est declare sous le commentaire header `g_weapon.c`, mais sa definition reelle est dans `g_misc.c`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_misc.ts`: `ThrowHead`, `ThrowGib`, `BecomeExplosion1`, `ThrowDebris`.
+  - `packages/game/src/p_client.ts`: `ThrowClientHead`, `respawn`, `PutClientInServer`, `InitClientPersistant`, `InitClientResp`, `InitBodyQue`, `ClientBeginServerFrame`, `player_pain`, `player_die`, `SaveClientData`, `FetchClientEntData`.
+  - `packages/game/src/g_ai.ts`, `g_weapon.ts`, `p_trail.ts`, `g_svcmds.ts`, `p_view.ts`, `p_hud.ts`, `g_cmds.ts`, `p_weapon.ts`, `m_move.ts`, `g_phys.ts`, `g_chase.ts`: fonctions portees avec commentaires d'en-tete `Original name`/`Source` verifies par recherche et tests proprietaires.
+- Runtime: aucun branchement runtime n'est attendu depuis `g_local.h` lui-meme au-dela des declarations. Les fonctions proprietaires sont atteignables via `GetGameApi`, `SpawnEntities`, `G_RunFrame`, `G_RunEntity`, callbacks monstres/joueurs/items, commandes client/serveur, armes, HUD, intermission, physique, save/load et chase cam.
+- apps/web: integration attendue indirectement via host full-game/local, commandes, snapshots, HUD/layout, sons, temp entities, projectiles, items, gibs/debris et camera; aucune logique parallele web ne remplace ces prototypes header.
+- renderer-three: sorties visibles attendues produites par les fonctions proprietaires (modeles, frames, gibs/debris, projectiles, temp entities/explosions, beams/dlights selon armes, camera/intermission et scene) consommees via snapshots/client/refresh/Three; aucune consommation directe des prototypes `g_local.h` attendue.
+- Commentaires/documentation: commentaires d'en-tete des fonctions TS proprietaires verifies. Les declarations header C ne portent pas de commentaires de fonction et ne sont pas le point d'ownership.
+- Corrections appliquees:
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: ownership et noms cibles renseignes pour les 62 prototypes, lignes marquees `Non applicable`.
+  - `scripts/verify/quake2-g-misc.ts`: attentes `ThrowClientHead` alignees sur le helper existant `velocityForDamageExpected` pour respecter la quantification C 15 bits de `random()`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-misc` OK; `npm run verify:g-ai` OK; `npm run verify:g-weapon` OK; `npm run verify:p-trail` OK; `npm run verify:p-client` OK; `npm run verify:p-hud` OK; `npm run verify:p-view` OK; `npm run verify:g-svcmds` OK; `npm run verify:g-cmds` OK; `npm run verify:p-weapon` OK; `npm run verify:m-move` OK; `npm run verify:g-phys` OK; `npm run verify:g-save` OK; `npm run verify:g-chase` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: reprendre les prochains macros proprietaires `ANIM_BASIC` a `ANIM_REVERSE`, puis le debut de `client_persistant_t` (`userinfo` a `inventory`) si le lot reste coherent.
 
 ## Blocages
 

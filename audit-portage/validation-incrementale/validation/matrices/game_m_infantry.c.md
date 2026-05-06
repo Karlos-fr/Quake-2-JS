@@ -10,7 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_infantry.c` | function | `InfantryMachineGun` | `packages/game/src/m_infantry.ts` | `InfantryMachineGun` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `InfantryMachineGun` | `packages/game/src/m_infantry.ts` | `InfantryMachineGun` | Non applicable | A redecouper | Prototype C; definition validee sur la ligne dediee. |
 | `Quake-2-master/game/m_infantry.c` | global | `sound_pain1` | `packages/game/src/m_infantry.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | global | `sound_pain2` | `packages/game/src/m_infantry.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | global | `sound_die1` | `packages/game/src/m_infantry.ts` | `SOUND_DIE1` | Valide | A redecouper |  |
@@ -38,59 +38,59 @@
 | `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_run` | `packages/game/src/m_infantry.ts` | `infantry_frames_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | global | `infantry_move_run` | `packages/game/src/m_infantry.ts` | `infantry_move_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | function | `infantry_run` | `packages/game/src/m_infantry.ts` | `infantry_run` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_pain1` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_pain1` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_pain1` | `packages/game/src/m_infantry.ts` | `infantry_move_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_pain2` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_pain2` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_pain2` | `packages/game/src/m_infantry.ts` | `infantry_move_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_pain` | `packages/game/src/m_infantry.ts` | `infantry_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `n` | `packages/game/src/m_infantry.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `aimangles` | `packages/game/src/m_infantry.ts` | `aimangles` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `InfantryMachineGun` | `packages/game/src/m_infantry.ts` | `InfantryMachineGun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `flash_number` | `packages/game/src/m_infantry.ts` | `flash_number` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_sight` | `packages/game/src/m_infantry.ts` | `infantry_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_dead` | `packages/game/src/m_infantry.ts` | `infantry_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_death1` | `packages/game/src/m_infantry.ts` | `infantry_frames_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_death1` | `packages/game/src/m_infantry.ts` | `infantry_frames_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_death1` | `packages/game/src/m_infantry.ts` | `infantry_move_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_death2` | `packages/game/src/m_infantry.ts` | `infantry_frames_death2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_death2` | `packages/game/src/m_infantry.ts` | `infantry_frames_death2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_death2` | `packages/game/src/m_infantry.ts` | `infantry_move_death2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_death3` | `packages/game/src/m_infantry.ts` | `infantry_frames_death3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_death3` | `packages/game/src/m_infantry.ts` | `infantry_frames_death3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_death3` | `packages/game/src/m_infantry.ts` | `infantry_move_death3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_die` | `packages/game/src/m_infantry.ts` | `infantry_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `n` | `packages/game/src/m_infantry.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_duck_down` | `packages/game/src/m_infantry.ts` | `infantry_duck_down` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_duck_hold` | `packages/game/src/m_infantry.ts` | `infantry_duck_hold` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_duck_up` | `packages/game/src/m_infantry.ts` | `infantry_duck_up` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_duck` | `packages/game/src/m_infantry.ts` | `infantry_frames_duck` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_duck` | `packages/game/src/m_infantry.ts` | `infantry_frames_duck` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_duck` | `packages/game/src/m_infantry.ts` | `infantry_move_duck` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_dodge` | `packages/game/src/m_infantry.ts` | `infantry_dodge` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_cock_gun` | `packages/game/src/m_infantry.ts` | `infantry_cock_gun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `n` | `packages/game/src/m_infantry.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_fire` | `packages/game/src/m_infantry.ts` | `infantry_fire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_attack1` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_attack1` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_attack1` | `packages/game/src/m_infantry.ts` | `infantry_move_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_swing` | `packages/game/src/m_infantry.ts` | `infantry_swing` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_smack` | `packages/game/src/m_infantry.ts` | `infantry_smack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_attack2` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_attack2` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_attack2` | `packages/game/src/m_infantry.ts` | `infantry_move_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `infantry_attack` | `packages/game/src/m_infantry.ts` | `infantry_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.c` | function | `SP_monster_infantry` | `packages/game/src/m_infantry.ts` | `SP_monster_infantry` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_pain1` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_pain1` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_pain1` | `packages/game/src/m_infantry.ts` | `infantry_move_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_pain2` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_pain2` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_pain2` | `packages/game/src/m_infantry.ts` | `infantry_move_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_pain` | `packages/game/src/m_infantry.ts` | `infantry_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `n` | `packages/game/src/m_infantry.ts` | `n` | Non applicable | A redecouper | Local variable inside `InfantryMachineGun`; behavior validated with function. |
+| `Quake-2-master/game/m_infantry.c` | table | `aimangles` | `packages/game/src/m_infantry.ts` | `aimangles` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `InfantryMachineGun` | `packages/game/src/m_infantry.ts` | `InfantryMachineGun` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `flash_number` | `packages/game/src/m_infantry.ts` | `flash_number` | Non applicable | A redecouper | Local variable inside `InfantryMachineGun`; behavior validated with function. |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_sight` | `packages/game/src/m_infantry.ts` | `infantry_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_dead` | `packages/game/src/m_infantry.ts` | `infantry_dead` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_death1` | `packages/game/src/m_infantry.ts` | `infantry_frames_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_death1` | `packages/game/src/m_infantry.ts` | `infantry_frames_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_death1` | `packages/game/src/m_infantry.ts` | `infantry_move_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_death2` | `packages/game/src/m_infantry.ts` | `infantry_frames_death2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_death2` | `packages/game/src/m_infantry.ts` | `infantry_frames_death2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_death2` | `packages/game/src/m_infantry.ts` | `infantry_move_death2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_death3` | `packages/game/src/m_infantry.ts` | `infantry_frames_death3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_death3` | `packages/game/src/m_infantry.ts` | `infantry_frames_death3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_death3` | `packages/game/src/m_infantry.ts` | `infantry_move_death3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_die` | `packages/game/src/m_infantry.ts` | `infantry_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `n` | `packages/game/src/m_infantry.ts` | `n` | Non applicable | A redecouper | Local variables inside `infantry_die`; behavior validated with function. |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_duck_down` | `packages/game/src/m_infantry.ts` | `infantry_duck_down` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_duck_hold` | `packages/game/src/m_infantry.ts` | `infantry_duck_hold` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_duck_up` | `packages/game/src/m_infantry.ts` | `infantry_duck_up` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_duck` | `packages/game/src/m_infantry.ts` | `infantry_frames_duck` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_duck` | `packages/game/src/m_infantry.ts` | `infantry_frames_duck` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_duck` | `packages/game/src/m_infantry.ts` | `infantry_move_duck` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_dodge` | `packages/game/src/m_infantry.ts` | `infantry_dodge` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_cock_gun` | `packages/game/src/m_infantry.ts` | `infantry_cock_gun` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `n` | `packages/game/src/m_infantry.ts` | `n` | Non applicable | A redecouper | Local variable inside `infantry_cock_gun`; behavior validated with function. |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_fire` | `packages/game/src/m_infantry.ts` | `infantry_fire` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_attack1` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_attack1` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_attack1` | `packages/game/src/m_infantry.ts` | `infantry_move_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_swing` | `packages/game/src/m_infantry.ts` | `infantry_swing` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_smack` | `packages/game/src/m_infantry.ts` | `infantry_smack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_frames_attack2` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | table | `infantry_frames_attack2` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | global | `infantry_move_attack2` | `packages/game/src/m_infantry.ts` | `infantry_move_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `infantry_attack` | `packages/game/src/m_infantry.ts` | `infantry_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.c` | function | `SP_monster_infantry` | `packages/game/src/m_infantry.ts` | `SP_monster_infantry` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_stand` | `packages/game/src/m_infantry.ts` | `infantry_frames_stand` | Valide | matched |  |
 | `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_fidget` | `packages/game/src/m_infantry.ts` | `infantry_frames_fidget` | Valide | matched |  |
 | `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_walk` | `packages/game/src/m_infantry.ts` | `infantry_frames_walk` | Valide | matched |  |
 | `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_run` | `packages/game/src/m_infantry.ts` | `infantry_frames_run` | Valide | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_pain1` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain1` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_pain2` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain2` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_death1` | `packages/game/src/m_infantry.ts` | `infantry_frames_death1` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_death2` | `packages/game/src/m_infantry.ts` | `infantry_frames_death2` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_death3` | `packages/game/src/m_infantry.ts` | `infantry_frames_death3` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_duck` | `packages/game/src/m_infantry.ts` | `infantry_frames_duck` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_attack1` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack1` | A verifier | matched |  |
-| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_attack2` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack2` | A verifier | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_pain1` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain1` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_pain2` | `packages/game/src/m_infantry.ts` | `infantry_frames_pain2` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_death1` | `packages/game/src/m_infantry.ts` | `infantry_frames_death1` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_death2` | `packages/game/src/m_infantry.ts` | `infantry_frames_death2` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_death3` | `packages/game/src/m_infantry.ts` | `infantry_frames_death3` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_duck` | `packages/game/src/m_infantry.ts` | `infantry_frames_duck` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_attack1` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack1` | Valide | matched |  |
+| `Quake-2-master/game/m_infantry.c` | declarative:monster-tables | `infantry_frames_attack2` | `packages/game/src/m_infantry.ts` | `infantry_frames_attack2` | Valide | matched |  |

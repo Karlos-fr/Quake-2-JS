@@ -56,48 +56,48 @@
 | `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee15` | `packages/game/src/m_gladiator.ts` | `FRAME_melee15` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee16` | `packages/game/src/m_gladiator.ts` | `FRAME_melee16` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_melee17` | `packages/game/src/m_gladiator.ts` | `FRAME_melee17` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack1` | `packages/game/src/m_gladiator.ts` | `FRAME_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack2` | `packages/game/src/m_gladiator.ts` | `FRAME_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack3` | `packages/game/src/m_gladiator.ts` | `FRAME_attack3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack4` | `packages/game/src/m_gladiator.ts` | `FRAME_attack4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack5` | `packages/game/src/m_gladiator.ts` | `FRAME_attack5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack6` | `packages/game/src/m_gladiator.ts` | `FRAME_attack6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack7` | `packages/game/src/m_gladiator.ts` | `FRAME_attack7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack8` | `packages/game/src/m_gladiator.ts` | `FRAME_attack8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack9` | `packages/game/src/m_gladiator.ts` | `FRAME_attack9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain1` | `packages/game/src/m_gladiator.ts` | `FRAME_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain2` | `packages/game/src/m_gladiator.ts` | `FRAME_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain3` | `packages/game/src/m_gladiator.ts` | `FRAME_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain4` | `packages/game/src/m_gladiator.ts` | `FRAME_pain4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain5` | `packages/game/src/m_gladiator.ts` | `FRAME_pain5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain6` | `packages/game/src/m_gladiator.ts` | `FRAME_pain6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death1` | `packages/game/src/m_gladiator.ts` | `FRAME_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death2` | `packages/game/src/m_gladiator.ts` | `FRAME_death2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death3` | `packages/game/src/m_gladiator.ts` | `FRAME_death3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death4` | `packages/game/src/m_gladiator.ts` | `FRAME_death4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death5` | `packages/game/src/m_gladiator.ts` | `FRAME_death5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death6` | `packages/game/src/m_gladiator.ts` | `FRAME_death6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death7` | `packages/game/src/m_gladiator.ts` | `FRAME_death7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death8` | `packages/game/src/m_gladiator.ts` | `FRAME_death8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death9` | `packages/game/src/m_gladiator.ts` | `FRAME_death9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death10` | `packages/game/src/m_gladiator.ts` | `FRAME_death10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death11` | `packages/game/src/m_gladiator.ts` | `FRAME_death11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death12` | `packages/game/src/m_gladiator.ts` | `FRAME_death12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death13` | `packages/game/src/m_gladiator.ts` | `FRAME_death13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death14` | `packages/game/src/m_gladiator.ts` | `FRAME_death14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death15` | `packages/game/src/m_gladiator.ts` | `FRAME_death15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death16` | `packages/game/src/m_gladiator.ts` | `FRAME_death16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death17` | `packages/game/src/m_gladiator.ts` | `FRAME_death17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death18` | `packages/game/src/m_gladiator.ts` | `FRAME_death18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death19` | `packages/game/src/m_gladiator.ts` | `FRAME_death19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death20` | `packages/game/src/m_gladiator.ts` | `FRAME_death20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death21` | `packages/game/src/m_gladiator.ts` | `FRAME_death21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death22` | `packages/game/src/m_gladiator.ts` | `FRAME_death22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup1` | `packages/game/src/m_gladiator.ts` | `FRAME_painup1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup2` | `packages/game/src/m_gladiator.ts` | `FRAME_painup2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup3` | `packages/game/src/m_gladiator.ts` | `FRAME_painup3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup4` | `packages/game/src/m_gladiator.ts` | `FRAME_painup4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup5` | `packages/game/src/m_gladiator.ts` | `FRAME_painup5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup6` | `packages/game/src/m_gladiator.ts` | `FRAME_painup6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup7` | `packages/game/src/m_gladiator.ts` | `FRAME_painup7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.h` | macro | `MODEL_SCALE` | `packages/game/src/m_gladiator.ts` | `MODEL_SCALE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack1` | `packages/game/src/m_gladiator.ts` | `FRAME_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack2` | `packages/game/src/m_gladiator.ts` | `FRAME_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack3` | `packages/game/src/m_gladiator.ts` | `FRAME_attack3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack4` | `packages/game/src/m_gladiator.ts` | `FRAME_attack4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack5` | `packages/game/src/m_gladiator.ts` | `FRAME_attack5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack6` | `packages/game/src/m_gladiator.ts` | `FRAME_attack6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack7` | `packages/game/src/m_gladiator.ts` | `FRAME_attack7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack8` | `packages/game/src/m_gladiator.ts` | `FRAME_attack8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_attack9` | `packages/game/src/m_gladiator.ts` | `FRAME_attack9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain1` | `packages/game/src/m_gladiator.ts` | `FRAME_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain2` | `packages/game/src/m_gladiator.ts` | `FRAME_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain3` | `packages/game/src/m_gladiator.ts` | `FRAME_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain4` | `packages/game/src/m_gladiator.ts` | `FRAME_pain4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain5` | `packages/game/src/m_gladiator.ts` | `FRAME_pain5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_pain6` | `packages/game/src/m_gladiator.ts` | `FRAME_pain6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death1` | `packages/game/src/m_gladiator.ts` | `FRAME_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death2` | `packages/game/src/m_gladiator.ts` | `FRAME_death2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death3` | `packages/game/src/m_gladiator.ts` | `FRAME_death3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death4` | `packages/game/src/m_gladiator.ts` | `FRAME_death4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death5` | `packages/game/src/m_gladiator.ts` | `FRAME_death5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death6` | `packages/game/src/m_gladiator.ts` | `FRAME_death6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death7` | `packages/game/src/m_gladiator.ts` | `FRAME_death7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death8` | `packages/game/src/m_gladiator.ts` | `FRAME_death8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death9` | `packages/game/src/m_gladiator.ts` | `FRAME_death9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death10` | `packages/game/src/m_gladiator.ts` | `FRAME_death10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death11` | `packages/game/src/m_gladiator.ts` | `FRAME_death11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death12` | `packages/game/src/m_gladiator.ts` | `FRAME_death12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death13` | `packages/game/src/m_gladiator.ts` | `FRAME_death13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death14` | `packages/game/src/m_gladiator.ts` | `FRAME_death14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death15` | `packages/game/src/m_gladiator.ts` | `FRAME_death15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death16` | `packages/game/src/m_gladiator.ts` | `FRAME_death16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death17` | `packages/game/src/m_gladiator.ts` | `FRAME_death17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death18` | `packages/game/src/m_gladiator.ts` | `FRAME_death18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death19` | `packages/game/src/m_gladiator.ts` | `FRAME_death19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death20` | `packages/game/src/m_gladiator.ts` | `FRAME_death20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death21` | `packages/game/src/m_gladiator.ts` | `FRAME_death21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_death22` | `packages/game/src/m_gladiator.ts` | `FRAME_death22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup1` | `packages/game/src/m_gladiator.ts` | `FRAME_painup1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup2` | `packages/game/src/m_gladiator.ts` | `FRAME_painup2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup3` | `packages/game/src/m_gladiator.ts` | `FRAME_painup3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup4` | `packages/game/src/m_gladiator.ts` | `FRAME_painup4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup5` | `packages/game/src/m_gladiator.ts` | `FRAME_painup5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup6` | `packages/game/src/m_gladiator.ts` | `FRAME_painup6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `FRAME_painup7` | `packages/game/src/m_gladiator.ts` | `FRAME_painup7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.h` | macro | `MODEL_SCALE` | `packages/game/src/m_gladiator.ts` | `MODEL_SCALE` | Valide | A redecouper |  |

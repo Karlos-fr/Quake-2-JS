@@ -9,35 +9,42 @@
  * - packages/game/src/m_flyer.ts
  */
 
-import {
-  ACTION_attack1,
-  ACTION_walk,
-  FRAME_attak101,
-  FRAME_pain304,
-  FRAME_stand45,
-  FRAME_start01,
-  MODEL_SCALE
-} from "../../packages/game/src/m_flyer.js";
+import { strict as assert } from "node:assert";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import * as flyer from "../../packages/game/src/m_flyer.js";
+
+const HEADER_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../Quake-2-master/game/m_flyer.h"
+);
 
 /**
  * Category: New
- * Purpose: Fail fast when a declarative frame or action constant differs from the original header values.
+ * Purpose: Fail fast when any declarative frame or action constant differs from the original header values.
  *
  * Constraints:
- * - Keep the checks sparse but representative across the generated table.
+ * - Parse the generated header directly so new checks stay tied to the source.
  */
-function assertEqual<T>(label: string, actual: T, expected: T): void {
-  if (actual !== expected) {
-    throw new Error(`${label}: expected ${expected}, got ${actual}`);
+function parseHeaderMacros(): Map<string, number> {
+  const source = readFileSync(HEADER_PATH, "utf8");
+  const macros = new Map<string, number>();
+
+  for (const match of source.matchAll(/^#define\s+(\w+)\s+([0-9.]+)$/gm)) {
+    macros.set(match[1], Number(match[2]));
   }
+
+  return macros;
 }
 
-assertEqual("ACTION_attack1", ACTION_attack1, 1);
-assertEqual("ACTION_walk", ACTION_walk, 4);
-assertEqual("FRAME_start01", FRAME_start01, 0);
-assertEqual("FRAME_attak101", FRAME_attak101, 58);
-assertEqual("FRAME_stand45", FRAME_stand45, 57);
-assertEqual("FRAME_pain304", FRAME_pain304, 150);
-assertEqual("MODEL_SCALE", MODEL_SCALE, 1.0);
+const headerMacros = parseHeaderMacros();
+assert.equal(headerMacros.size, 157, "m_flyer.h macro count");
+
+for (const [name, expected] of headerMacros) {
+  const actual = (flyer as Record<string, unknown>)[name];
+  assert.equal(actual, expected, name);
+}
 
 console.log("quake2-m-flyer-header: ok");

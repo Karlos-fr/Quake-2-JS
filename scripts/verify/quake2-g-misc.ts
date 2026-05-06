@@ -2283,7 +2283,12 @@ function verifyThrowClientHeadConvertsPlayerOrBodyToClientGib(): void {
     assert.equal(player.s.sound, 0, "ThrowClientHead must clear looping sound");
     assert.equal((player.flags & FL_NO_KNOCKBACK) !== 0, true, "ThrowClientHead must set FL_NO_KNOCKBACK");
     assert.equal(player.movetype, MOVETYPE_BOUNCE, "ThrowClientHead must use MOVETYPE_BOUNCE");
-    assert.deepEqual(player.velocity, [61, -58, 303], "ThrowClientHead must add VelocityForDamage to current velocity");
+    const playerVd = velocityForDamageExpected(100, [0.75, 0.25, 0.5]);
+    assert.deepEqual(player.velocity, [
+      1 + playerVd[0],
+      2 + playerVd[1],
+      3 + playerVd[2]
+    ], "ThrowClientHead must add VelocityForDamage to current velocity");
     assert.equal(player.client!.anim_priority, ANIM_DEATH, "ThrowClientHead must force client death animation priority");
     assert.equal(player.client!.anim_end, 0, "ThrowClientHead must end the client animation at frame 0");
   });
@@ -2299,7 +2304,8 @@ function verifyThrowClientHeadConvertsPlayerOrBodyToClientGib(): void {
 
     assert.equal(body.model, "models/objects/gibs/skull/tris.md2", "ThrowClientHead even rand must choose skull");
     assert.equal(body.s.skinnum, 0, "ThrowClientHead skull must clear skin");
-    assert.deepEqual(body.velocity, [0, 0, 140], "ThrowClientHead low damage must use the 0.7 velocity scale");
+    const bodyVd = velocityForDamageExpected(40, [0.5, 0.5, 0]);
+    assert.deepEqual(body.velocity, bodyVd, "ThrowClientHead low damage must use the 0.7 velocity scale");
     assert.equal(body.think, undefined, "ThrowClientHead queued bodies must clear think");
     assert.equal(body.nextthink, 0, "ThrowClientHead queued bodies must clear nextthink");
   });

@@ -26,82 +26,82 @@
 | `Quake-2-master/game/m_hover.c` | function | `hover_reattack` | `packages/game/src/m_hover.ts` | `hover_reattack` | Non applicable | A redecouper | Prototype C; definition a valider sur la ligne dediee. |
 | `Quake-2-master/game/m_hover.c` | function | `hover_fire_blaster` | `packages/game/src/m_hover.ts` | `hover_fire_blaster` | Non applicable | A redecouper | Prototype C; definition a valider sur la ligne dediee. |
 | `Quake-2-master/game/m_hover.c` | function | `hover_die` | `packages/game/src/m_hover.ts` | `hover_die` | Non applicable | A redecouper | Prototype C; definition a valider sur la ligne dediee. |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_stand` | `packages/game/src/m_hover.ts` | `hover_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_stand` | `packages/game/src/m_hover.ts` | `hover_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_stand` | `packages/game/src/m_hover.ts` | `hover_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_stop1` | `packages/game/src/m_hover.ts` | `hover_frames_stop1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_stop1` | `packages/game/src/m_hover.ts` | `hover_frames_stop1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_stop1` | `packages/game/src/m_hover.ts` | `hover_move_stop1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_stop2` | `packages/game/src/m_hover.ts` | `hover_frames_stop2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_stop2` | `packages/game/src/m_hover.ts` | `hover_frames_stop2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_stop2` | `packages/game/src/m_hover.ts` | `hover_move_stop2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_takeoff` | `packages/game/src/m_hover.ts` | `hover_frames_takeoff` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_takeoff` | `packages/game/src/m_hover.ts` | `hover_frames_takeoff` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_takeoff` | `packages/game/src/m_hover.ts` | `hover_move_takeoff` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_pain3` | `packages/game/src/m_hover.ts` | `hover_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_pain3` | `packages/game/src/m_hover.ts` | `hover_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_pain3` | `packages/game/src/m_hover.ts` | `hover_move_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_pain2` | `packages/game/src/m_hover.ts` | `hover_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_pain2` | `packages/game/src/m_hover.ts` | `hover_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_pain2` | `packages/game/src/m_hover.ts` | `hover_move_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_pain1` | `packages/game/src/m_hover.ts` | `hover_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_pain1` | `packages/game/src/m_hover.ts` | `hover_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_pain1` | `packages/game/src/m_hover.ts` | `hover_move_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_land` | `packages/game/src/m_hover.ts` | `hover_frames_land` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_land` | `packages/game/src/m_hover.ts` | `hover_frames_land` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_land` | `packages/game/src/m_hover.ts` | `hover_move_land` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_forward` | `packages/game/src/m_hover.ts` | `hover_frames_forward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_forward` | `packages/game/src/m_hover.ts` | `hover_frames_forward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_forward` | `packages/game/src/m_hover.ts` | `hover_move_forward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_walk` | `packages/game/src/m_hover.ts` | `hover_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_walk` | `packages/game/src/m_hover.ts` | `hover_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_walk` | `packages/game/src/m_hover.ts` | `hover_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_run` | `packages/game/src/m_hover.ts` | `hover_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_run` | `packages/game/src/m_hover.ts` | `hover_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_run` | `packages/game/src/m_hover.ts` | `hover_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_death1` | `packages/game/src/m_hover.ts` | `hover_frames_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_death1` | `packages/game/src/m_hover.ts` | `hover_frames_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_death1` | `packages/game/src/m_hover.ts` | `hover_move_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_backward` | `packages/game/src/m_hover.ts` | `hover_frames_backward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_backward` | `packages/game/src/m_hover.ts` | `hover_frames_backward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_backward` | `packages/game/src/m_hover.ts` | `hover_move_backward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_start_attack` | `packages/game/src/m_hover.ts` | `hover_frames_start_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_start_attack` | `packages/game/src/m_hover.ts` | `hover_frames_start_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_start_attack` | `packages/game/src/m_hover.ts` | `hover_move_start_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_attack1` | `packages/game/src/m_hover.ts` | `hover_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_attack1` | `packages/game/src/m_hover.ts` | `hover_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_attack1` | `packages/game/src/m_hover.ts` | `hover_move_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_frames_end_attack` | `packages/game/src/m_hover.ts` | `hover_frames_end_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | table | `hover_frames_end_attack` | `packages/game/src/m_hover.ts` | `hover_frames_end_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `hover_move_end_attack` | `packages/game/src/m_hover.ts` | `hover_move_end_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_reattack` | `packages/game/src/m_hover.ts` | `hover_reattack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_fire_blaster` | `packages/game/src/m_hover.ts` | `hover_fire_blaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `effect` | `packages/game/src/m_hover.ts` | `effect` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `effect` | `packages/game/src/m_hover.ts` | `effect` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_stand` | `packages/game/src/m_hover.ts` | `hover_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_stand` | `packages/game/src/m_hover.ts` | `hover_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_stand` | `packages/game/src/m_hover.ts` | `hover_move_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_stop1` | `packages/game/src/m_hover.ts` | `hover_frames_stop1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_stop1` | `packages/game/src/m_hover.ts` | `hover_frames_stop1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_stop1` | `packages/game/src/m_hover.ts` | `hover_move_stop1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_stop2` | `packages/game/src/m_hover.ts` | `hover_frames_stop2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_stop2` | `packages/game/src/m_hover.ts` | `hover_frames_stop2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_stop2` | `packages/game/src/m_hover.ts` | `hover_move_stop2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_takeoff` | `packages/game/src/m_hover.ts` | `hover_frames_takeoff` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_takeoff` | `packages/game/src/m_hover.ts` | `hover_frames_takeoff` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_takeoff` | `packages/game/src/m_hover.ts` | `hover_move_takeoff` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_pain3` | `packages/game/src/m_hover.ts` | `hover_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_pain3` | `packages/game/src/m_hover.ts` | `hover_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_pain3` | `packages/game/src/m_hover.ts` | `hover_move_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_pain2` | `packages/game/src/m_hover.ts` | `hover_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_pain2` | `packages/game/src/m_hover.ts` | `hover_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_pain2` | `packages/game/src/m_hover.ts` | `hover_move_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_pain1` | `packages/game/src/m_hover.ts` | `hover_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_pain1` | `packages/game/src/m_hover.ts` | `hover_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_pain1` | `packages/game/src/m_hover.ts` | `hover_move_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_land` | `packages/game/src/m_hover.ts` | `hover_frames_land` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_land` | `packages/game/src/m_hover.ts` | `hover_frames_land` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_land` | `packages/game/src/m_hover.ts` | `hover_move_land` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_forward` | `packages/game/src/m_hover.ts` | `hover_frames_forward` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_forward` | `packages/game/src/m_hover.ts` | `hover_frames_forward` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_forward` | `packages/game/src/m_hover.ts` | `hover_move_forward` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_walk` | `packages/game/src/m_hover.ts` | `hover_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_walk` | `packages/game/src/m_hover.ts` | `hover_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_walk` | `packages/game/src/m_hover.ts` | `hover_move_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_run` | `packages/game/src/m_hover.ts` | `hover_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_run` | `packages/game/src/m_hover.ts` | `hover_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_run` | `packages/game/src/m_hover.ts` | `hover_move_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_death1` | `packages/game/src/m_hover.ts` | `hover_frames_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_death1` | `packages/game/src/m_hover.ts` | `hover_frames_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_death1` | `packages/game/src/m_hover.ts` | `hover_move_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_backward` | `packages/game/src/m_hover.ts` | `hover_frames_backward` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_backward` | `packages/game/src/m_hover.ts` | `hover_frames_backward` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_backward` | `packages/game/src/m_hover.ts` | `hover_move_backward` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_start_attack` | `packages/game/src/m_hover.ts` | `hover_frames_start_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_start_attack` | `packages/game/src/m_hover.ts` | `hover_frames_start_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_start_attack` | `packages/game/src/m_hover.ts` | `hover_move_start_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_attack1` | `packages/game/src/m_hover.ts` | `hover_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_attack1` | `packages/game/src/m_hover.ts` | `hover_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_attack1` | `packages/game/src/m_hover.ts` | `hover_move_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_frames_end_attack` | `packages/game/src/m_hover.ts` | `hover_frames_end_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | table | `hover_frames_end_attack` | `packages/game/src/m_hover.ts` | `hover_frames_end_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `hover_move_end_attack` | `packages/game/src/m_hover.ts` | `hover_move_end_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_reattack` | `packages/game/src/m_hover.ts` | `hover_reattack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_fire_blaster` | `packages/game/src/m_hover.ts` | `hover_fire_blaster` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `effect` | `packages/game/src/m_hover.ts` | `effect` | Non applicable | A redecouper | Local variable inside `hover_fire_blaster`; behavior validated with function. |
+| `Quake-2-master/game/m_hover.c` | global | `effect` | `packages/game/src/m_hover.ts` | `effect` | Non applicable | A redecouper | Local variable inside `hover_fire_blaster`; behavior validated with function. |
 | `Quake-2-master/game/m_hover.c` | function | `hover_stand` | `packages/game/src/m_hover.ts` | `hover_stand` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | function | `hover_run` | `packages/game/src/m_hover.ts` | `hover_run` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_walk` | `packages/game/src/m_hover.ts` | `hover_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_start_attack` | `packages/game/src/m_hover.ts` | `hover_start_attack` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_walk` | `packages/game/src/m_hover.ts` | `hover_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_start_attack` | `packages/game/src/m_hover.ts` | `hover_start_attack` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | function | `hover_attack` | `packages/game/src/m_hover.ts` | `hover_attack` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_pain` | `packages/game/src/m_hover.ts` | `hover_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_deadthink` | `packages/game/src/m_hover.ts` | `hover_deadthink` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_pain` | `packages/game/src/m_hover.ts` | `hover_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_deadthink` | `packages/game/src/m_hover.ts` | `hover_deadthink` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_hover.c` | function | `hover_dead` | `packages/game/src/m_hover.ts` | `hover_dead` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `hover_die` | `packages/game/src/m_hover.ts` | `hover_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | global | `n` | `packages/game/src/m_hover.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | function | `SP_monster_hover` | `packages/game/src/m_hover.ts` | `SP_monster_hover` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_stand` | `packages/game/src/m_hover.ts` | `hover_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_stop1` | `packages/game/src/m_hover.ts` | `hover_frames_stop1` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_stop2` | `packages/game/src/m_hover.ts` | `hover_frames_stop2` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_takeoff` | `packages/game/src/m_hover.ts` | `hover_frames_takeoff` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_pain3` | `packages/game/src/m_hover.ts` | `hover_frames_pain3` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_pain2` | `packages/game/src/m_hover.ts` | `hover_frames_pain2` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_pain1` | `packages/game/src/m_hover.ts` | `hover_frames_pain1` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_land` | `packages/game/src/m_hover.ts` | `hover_frames_land` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_forward` | `packages/game/src/m_hover.ts` | `hover_frames_forward` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_walk` | `packages/game/src/m_hover.ts` | `hover_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_run` | `packages/game/src/m_hover.ts` | `hover_frames_run` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_death1` | `packages/game/src/m_hover.ts` | `hover_frames_death1` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_backward` | `packages/game/src/m_hover.ts` | `hover_frames_backward` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_start_attack` | `packages/game/src/m_hover.ts` | `hover_frames_start_attack` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_attack1` | `packages/game/src/m_hover.ts` | `hover_frames_attack1` | A verifier | matched |  |
-| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_end_attack` | `packages/game/src/m_hover.ts` | `hover_frames_end_attack` | A verifier | matched |  |
+| `Quake-2-master/game/m_hover.c` | function | `hover_die` | `packages/game/src/m_hover.ts` | `hover_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | global | `n` | `packages/game/src/m_hover.ts` | `n` | Non applicable | A redecouper | Local loop counter inside `hover_die`; behavior validated with function. |
+| `Quake-2-master/game/m_hover.c` | function | `SP_monster_hover` | `packages/game/src/m_hover.ts` | `SP_monster_hover` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_stand` | `packages/game/src/m_hover.ts` | `hover_frames_stand` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_stop1` | `packages/game/src/m_hover.ts` | `hover_frames_stop1` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_stop2` | `packages/game/src/m_hover.ts` | `hover_frames_stop2` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_takeoff` | `packages/game/src/m_hover.ts` | `hover_frames_takeoff` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_pain3` | `packages/game/src/m_hover.ts` | `hover_frames_pain3` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_pain2` | `packages/game/src/m_hover.ts` | `hover_frames_pain2` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_pain1` | `packages/game/src/m_hover.ts` | `hover_frames_pain1` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_land` | `packages/game/src/m_hover.ts` | `hover_frames_land` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_forward` | `packages/game/src/m_hover.ts` | `hover_frames_forward` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_walk` | `packages/game/src/m_hover.ts` | `hover_frames_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_run` | `packages/game/src/m_hover.ts` | `hover_frames_run` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_death1` | `packages/game/src/m_hover.ts` | `hover_frames_death1` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_backward` | `packages/game/src/m_hover.ts` | `hover_frames_backward` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_start_attack` | `packages/game/src/m_hover.ts` | `hover_frames_start_attack` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_attack1` | `packages/game/src/m_hover.ts` | `hover_frames_attack1` | Valide | matched |  |
+| `Quake-2-master/game/m_hover.c` | declarative:monster-tables | `hover_frames_end_attack` | `packages/game/src/m_hover.ts` | `hover_frames_end_attack` | Valide | matched |  |

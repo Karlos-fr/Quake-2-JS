@@ -399,68 +399,68 @@
 | `Quake-2-master/game/g_local.h` | function | `M_CheckAttack` | `packages/game/src/g_monster.ts` | `M_CheckAttack` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
 | `Quake-2-master/game/g_local.h` | function | `M_FlyCheck` | `packages/game/src/g_monster.ts` | `M_FlyCheck` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
 | `Quake-2-master/game/g_local.h` | function | `M_CheckGround` | `packages/game/src/g_monster.ts` | `M_CheckGround` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_monster.c.md`. |
-| `Quake-2-master/game/g_local.h` | function | `ThrowHead` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ThrowClientHead` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ThrowGib` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `BecomeExplosion1` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `AI_SetSightClient` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ai_stand` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ai_move` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ai_walk` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ai_turn` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ai_run` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ai_charge` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `range` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `FoundTarget` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `infront` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `visible` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `FacingIdeal` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ThrowDebris` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `fire_hit` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `fire_bullet` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `fire_shotgun` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `fire_blaster` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `fire_grenade` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `fire_grenade2` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `fire_rocket` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `fire_rail` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `fire_bfg` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_Init` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_Add` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_New` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_PickFirst` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_PickNext` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_LastSpot` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `respawn` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `BeginIntermission` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PutClientInServer` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `InitClientPersistant` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `InitClientResp` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `InitBodyQue` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ClientBeginServerFrame` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `player_pain` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `player_die` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ServerCommand` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `SV_FilterPacket` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ClientEndServerFrame` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `MoveClientToIntermission` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_SetStats` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_SetSpectatorStats` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_CheckChaseStats` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ValidateSelectedItem` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `DeathmatchScoreboardMessage` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PlayerNoise` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `M_CheckBottom` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `M_walkmove` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `M_MoveToGoal` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `M_ChangeYaw` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_RunEntity` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `SaveClientData` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `FetchClientEntData` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `UpdateChaseCam` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ChaseNext` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ChasePrev` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `GetChaseTarget` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | function | `ThrowHead` | `packages/game/src/g_misc.ts` | `ThrowHead` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_misc.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ThrowClientHead` | `packages/game/src/p_client.ts` | `ThrowClientHead` | Non applicable | A redecouper | Declaration header; port deplace avec le flux joueur/body queue et valide dans `game_g_misc.c.md`/`game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ThrowGib` | `packages/game/src/g_misc.ts` | `ThrowGib` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_misc.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `BecomeExplosion1` | `packages/game/src/g_misc.ts` | `BecomeExplosion1` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_misc.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `AI_SetSightClient` | `packages/game/src/g_ai.ts` | `AI_SetSightClient` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ai_stand` | `packages/game/src/g_ai.ts` | `ai_stand` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ai_move` | `packages/game/src/g_ai.ts` | `ai_move` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ai_walk` | `packages/game/src/g_ai.ts` | `ai_walk` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ai_turn` | `packages/game/src/g_ai.ts` | `ai_turn` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ai_run` | `packages/game/src/g_ai.ts` | `ai_run` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ai_charge` | `packages/game/src/g_ai.ts` | `ai_charge` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `range` | `packages/game/src/g_ai.ts` | `range` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `FoundTarget` | `packages/game/src/g_ai.ts` | `FoundTarget` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `infront` | `packages/game/src/g_ai.ts` | `infront` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `visible` | `packages/game/src/g_ai.ts` | `visible` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `FacingIdeal` | `packages/game/src/g_ai.ts` | `FacingIdeal` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_ai.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ThrowDebris` | `packages/game/src/g_misc.ts` | `ThrowDebris` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_misc.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `fire_hit` | `packages/game/src/g_weapon.ts` | `fire_hit` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `fire_bullet` | `packages/game/src/g_weapon.ts` | `fire_bullet` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `fire_shotgun` | `packages/game/src/g_weapon.ts` | `fire_shotgun` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `fire_blaster` | `packages/game/src/g_weapon.ts` | `fire_blaster` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `fire_grenade` | `packages/game/src/g_weapon.ts` | `fire_grenade` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `fire_grenade2` | `packages/game/src/g_weapon.ts` | `fire_grenade2` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `fire_rocket` | `packages/game/src/g_weapon.ts` | `fire_rocket` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `fire_rail` | `packages/game/src/g_weapon.ts` | `fire_rail` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `fire_bfg` | `packages/game/src/g_weapon.ts` | `fire_bfg` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_Init` | `packages/game/src/p_trail.ts` | `PlayerTrail_Init` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_trail.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_Add` | `packages/game/src/p_trail.ts` | `PlayerTrail_Add` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_trail.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_New` | `packages/game/src/p_trail.ts` | `PlayerTrail_New` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_trail.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_PickFirst` | `packages/game/src/p_trail.ts` | `PlayerTrail_PickFirst` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_trail.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_PickNext` | `packages/game/src/p_trail.ts` | `PlayerTrail_PickNext` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_trail.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PlayerTrail_LastSpot` | `packages/game/src/p_trail.ts` | `PlayerTrail_LastSpot` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_trail.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `respawn` | `packages/game/src/p_client.ts` | `respawn` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `BeginIntermission` | `packages/game/src/p_hud.ts` | `BeginIntermission` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_hud.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PutClientInServer` | `packages/game/src/p_client.ts` | `PutClientInServer` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `InitClientPersistant` | `packages/game/src/p_client.ts` | `InitClientPersistant` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `InitClientResp` | `packages/game/src/p_client.ts` | `InitClientResp` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `InitBodyQue` | `packages/game/src/p_client.ts` | `InitBodyQue` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ClientBeginServerFrame` | `packages/game/src/p_client.ts` | `ClientBeginServerFrame` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `player_pain` | `packages/game/src/p_client.ts` | `player_pain` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `player_die` | `packages/game/src/p_client.ts` | `player_die` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ServerCommand` | `packages/game/src/g_svcmds.ts` | `ServerCommand` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_svcmds.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `SV_FilterPacket` | `packages/game/src/g_svcmds.ts` | `SV_FilterPacket` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_svcmds.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ClientEndServerFrame` | `packages/game/src/p_view.ts` | `ClientEndServerFrame` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_view.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `MoveClientToIntermission` | `packages/game/src/p_hud.ts` | `MoveClientToIntermission` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_hud.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_SetStats` | `packages/game/src/p_hud.ts` | `G_SetStats` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_hud.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_SetSpectatorStats` | `packages/game/src/p_hud.ts` | `G_SetSpectatorStats` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_hud.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_CheckChaseStats` | `packages/game/src/p_hud.ts` | `G_CheckChaseStats` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_hud.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ValidateSelectedItem` | `packages/game/src/g_cmds.ts` | `ValidateSelectedItem` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_cmds.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `DeathmatchScoreboardMessage` | `packages/game/src/p_hud.ts` | `DeathmatchScoreboardMessage` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_hud.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PlayerNoise` | `packages/game/src/p_weapon.ts` | `PlayerNoise` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `M_CheckBottom` | `packages/game/src/m_move.ts` | `M_CheckBottom` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_m_move.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `M_walkmove` | `packages/game/src/m_move.ts` | `M_walkmove` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_m_move.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `M_MoveToGoal` | `packages/game/src/m_move.ts` | `M_MoveToGoal` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_m_move.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `M_ChangeYaw` | `packages/game/src/m_move.ts` | `M_ChangeYaw` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_m_move.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_RunEntity` | `packages/game/src/g_phys.ts` | `G_RunEntity` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_phys.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `SaveClientData` | `packages/game/src/p_client.ts` | `SaveClientData` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `FetchClientEntData` | `packages/game/src/p_client.ts` | `FetchClientEntData` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_p_client.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `UpdateChaseCam` | `packages/game/src/g_chase.ts` | `UpdateChaseCam` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_chase.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ChaseNext` | `packages/game/src/g_chase.ts` | `ChaseNext` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_chase.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ChasePrev` | `packages/game/src/g_chase.ts` | `ChasePrev` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_chase.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `GetChaseTarget` | `packages/game/src/g_chase.ts` | `GetChaseTarget` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_chase.c.md`. |
 | `Quake-2-master/game/g_local.h` | macro | `ANIM_BASIC` | `packages/game/src/runtime.ts` | `ANIM_BASIC` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `ANIM_WAVE` | `packages/game/src/runtime.ts` | `ANIM_WAVE` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | macro | `ANIM_JUMP` | `packages/game/src/runtime.ts` | `ANIM_JUMP` | A verifier | A redecouper |  |

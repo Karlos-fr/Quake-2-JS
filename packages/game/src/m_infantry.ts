@@ -496,10 +496,25 @@ export function InfantryMachineGun(self: GameEntity, runtime: GameRuntime): void
   );
 }
 
+/**
+ * Original name: infantry_sight
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Emits the infantry sight sound on the body channel.
+ */
 export function infantry_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, soundOptions(CHAN_BODY));
 }
 
+/**
+ * Original name: infantry_dead
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Shrinks the corpse bbox, switches to toss movement, marks the corpse as dead monster and relinks it.
+ * Porting notes: Keeps the fly check used by the original death cleanup.
+ */
 export function infantry_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -16, -16, -24);
   setVec3(self.maxs, 16, 16, -8);
@@ -555,6 +570,8 @@ export const infantry_move_death3: GameMonsterMove = {
  * Source: game/m_infantry.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Handles gib death, regular death animation selection, dead flags, damage state and death sounds.
+ * Porting notes: Uses `randomInt(3)` for the original `rand() % 3` branch.
  */
 export function infantry_die(
   self: GameEntity,
@@ -596,6 +613,13 @@ export function infantry_die(
   }
 }
 
+/**
+ * Original name: infantry_duck_down
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Enters duck state, lowers bbox, enables aimed damage and sets the pause window.
+ */
 export function infantry_duck_down(self: GameEntity, runtime: GameRuntime): void {
   if ((self.monsterinfo.aiflags & AI_DUCKED) !== 0) {
     return;
@@ -607,6 +631,13 @@ export function infantry_duck_down(self: GameEntity, runtime: GameRuntime): void
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: infantry_duck_hold
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Holds or releases the duck frame depending on `monsterinfo.pausetime`.
+ */
 export function infantry_duck_hold(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.time >= self.monsterinfo.pausetime) {
     self.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
@@ -615,6 +646,13 @@ export function infantry_duck_hold(self: GameEntity, runtime: GameRuntime): void
   }
 }
 
+/**
+ * Original name: infantry_duck_up
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Leaves duck state, restores bbox height and returns damage handling to aimed damage.
+ */
 export function infantry_duck_up(self: GameEntity, runtime: GameRuntime): void {
   self.monsterinfo.aiflags &= ~AI_DUCKED;
   self.maxs[2] += 32;
@@ -657,12 +695,27 @@ export function infantry_dodge(self: GameEntity, attacker: GameEntity | null, _e
   self.monsterinfo.currentmove = infantry_move_duck;
 }
 
+/**
+ * Original name: infantry_cock_gun
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Close
+ * Behavior: Plays the weapon cock sound and chooses the machinegun hold duration.
+ * Porting notes: Uses `randomInt(16)` for the original `rand() & 15`.
+ */
 export function infantry_cock_gun(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_weapon_cock, SOUND_WEAPON_COCK, soundOptions(CHAN_WEAPON));
   const n = randomInt(16) + 10;
   self.monsterinfo.pausetime = runtime.time + n * FRAMETIME;
 }
 
+/**
+ * Original name: infantry_fire
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Fires the machinegun and holds or releases the attack frame based on the pause window.
+ */
 export function infantry_fire(self: GameEntity, runtime: GameRuntime): void {
   InfantryMachineGun(self, runtime);
 
@@ -688,10 +741,25 @@ export const infantry_move_attack1: GameMonsterMove = {
   endfunc: infantry_run
 };
 
+/**
+ * Original name: infantry_swing
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Emits the melee swing sound on the weapon channel.
+ */
 export function infantry_swing(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_punch_swing, SOUND_PUNCH_SWING, soundOptions(CHAN_WEAPON));
 }
 
+/**
+ * Original name: infantry_smack
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Close
+ * Behavior: Performs the melee hit trace and emits the hit sound only on contact.
+ * Porting notes: Uses `randomInt(5)` for the original `rand() % 5` damage spread.
+ */
 export function infantry_smack(self: GameEntity, runtime: GameRuntime): void {
   const aim: vec3_t = [MELEE_DISTANCE, 0, 0];
   if (fire_hit(self, aim, 5 + randomInt(5), 50, runtime)) {
@@ -714,6 +782,13 @@ export const infantry_move_attack2: GameMonsterMove = {
   endfunc: infantry_run
 };
 
+/**
+ * Original name: infantry_attack
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Selects melee attack in melee range, otherwise selects the machinegun attack.
+ */
 export function infantry_attack(self: GameEntity): void {
   if (self.enemy && range(self, self.enemy) === RANGE_MELEE) {
     self.monsterinfo.currentmove = infantry_move_attack2;
@@ -727,6 +802,8 @@ export function infantry_attack(self: GameEntity): void {
  * Source: game/m_infantry.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Precaches infantry assets, initializes monster callbacks/state and starts the walking monster runtime.
+ * Porting notes: Deathmatch removal and model/sound registration mirror the original spawn routine.
  */
 export function SP_monster_infantry(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
