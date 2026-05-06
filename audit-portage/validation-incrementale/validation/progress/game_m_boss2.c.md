@@ -157,6 +157,24 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout du commentaire d'en-tete de `boss2_pain`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour les tables/moves pain, le save registry, la skin, `pain_debounce_time`, le retour sans effet pendant debounce, les trois seuils de sons et le comportement nightmare conserve.
 
+- Lot traite: bloc machinegun restant `boss2_firebullet_right`, `boss2_firebullet_left` et `Boss2MachineGun`, avec le helper local TS `fireBoss2Machinegun`.
+- Verdict: Valide.
+- Comparaison C/TS: `boss2_firebullet_right` et `boss2_firebullet_left` conservent `AngleVectors`, `G_ProjectSource` avec les offsets `MZ2_BOSS2_MACHINEGUN_R1` / `MZ2_BOSS2_MACHINEGUN_L1`, la visee predictive `VectorMA(enemy->s.origin, -0.2, enemy->velocity)`, l'ajout `viewheight`, la normalisation et `monster_fire_bullet(self, start, forward, 6, 4, DEFAULT_BULLET_HSPREAD, DEFAULT_BULLET_VSPREAD, flash)`. `Boss2MachineGun` conserve le chemin C compile: appel gauche puis droit; le bloc C commente et inactif reste non implemente.
+- Commentaires d'en-tete: commentaires de fonction ajoutes pour `boss2_firebullet_right`, `boss2_firebullet_left` et `Boss2MachineGun` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement. Le helper local `fireBoss2Machinegun` est documente comme `Category: Adapter`.
+- Runtime: integre. Les tirs sont atteignables depuis `SP_monster_boss2` -> `monsterinfo.attack = boss2_attack`, puis `boss2_move_attack_pre_mg` / `boss2_move_attack_mg` consommes par `M_MoveFrame` depuis `monster_think` / `G_RunFrame`. `monster_fire_bullet` delegue a `fire_bullet` pour le trace/damage/impacts et emet les `monsterMuzzleFlashEvents`; le harness verifie les offsets gauche/droite, la direction issue de `VectorMA`, les degats runtime, l'ordre des muzzleflashes et le callback MG via `M_MoveFrame`.
+- apps/web: integre. `apps/web` ne remplace pas la logique boss2; il consomme le host full-game/local, les snapshots et les muzzleflash/sound events produits par le runtime porte.
+- renderer-three: integre. Le lot produit des sorties visibles attendues: frames d'attaque du modele boss2 et muzzleflash machinegun. Les frames passent par snapshots/refresh entities; les muzzleflash monster sont consommes par le flux client/refresh puis renderer-three.
+- Tests lances:
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run verify:full-game:audio-routing`
+  - `npm run typecheck`
+- Corrections appliquees: ajout des commentaires d'en-tete des trois fonctions machinegun; documentation du helper local; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour les offsets L1/R1, la visee `VectorMA`, les parametres bullet, les degats runtime, les muzzleflashes et l'ordre gauche/droite.
+
 ## Prochain lot recommande
 
-- Valider le bloc machinegun restant `boss2_firebullet_right`, `boss2_firebullet_left` et `Boss2MachineGun`, avec visee `VectorMA`, offsets gauche/droite, degats/spread, muzzleflash, sons/impacts runtime et consommation web/renderer.
+- Valider le bloc decision d'attaque `Boss2_CheckAttack` avec les locaux generes `chance`, `tr`, `enemy_infront`, `enemy_range` et `enemy_yaw`: ligne de vue trace, cooldown `attack_finished`, `range`, `infront`, yaw ideal, probabilites par portee, et branchement runtime `monsterinfo.checkattack`.

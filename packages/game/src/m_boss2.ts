@@ -311,14 +311,44 @@ export function Boss2Rocket(self: GameEntity, runtime: GameRuntime): void {
   fireBoss2Rocket(self, MZ2_BOSS2_ROCKET_4, forward, right, runtime);
 }
 
+/**
+ * Original name: boss2_firebullet_right
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fires one right-side boss2 machinegun bullet using the original R1 muzzle offset.
+ */
 export function boss2_firebullet_right(self: GameEntity, runtime: GameRuntime): void {
   fireBoss2Machinegun(self, MZ2_BOSS2_MACHINEGUN_R1, runtime);
 }
 
+/**
+ * Original name: boss2_firebullet_left
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Fires one left-side boss2 machinegun bullet using the original L1 muzzle offset.
+ */
 export function boss2_firebullet_left(self: GameEntity, runtime: GameRuntime): void {
   fireBoss2Machinegun(self, MZ2_BOSS2_MACHINEGUN_L1, runtime);
 }
 
+/**
+ * Original name: Boss2MachineGun
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the compiled C path: fire the left machinegun bullet, then the right one.
+ *
+ * Porting notes:
+ * - The inactive commented-out single-flash C block is intentionally not implemented.
+ */
 export function Boss2MachineGun(self: GameEntity, runtime: GameRuntime): void {
   boss2_firebullet_left(self, runtime);
   boss2_firebullet_right(self, runtime);
@@ -790,6 +820,13 @@ function fireBoss2Rocket(
   monster_fire_rocket(self, start, dir, 50, 500, flashNumber, runtime);
 }
 
+/**
+ * Category: Adapter
+ * Purpose: Share the duplicated boss2 left/right machinegun C blocks without changing their muzzle ids or shot parameters.
+ *
+ * Constraints:
+ * - Must keep the original `VectorMA(enemy->s.origin, -0.2, enemy->velocity)` lead and 6/4 bullet damage/kick.
+ */
 function fireBoss2Machinegun(self: GameEntity, flashNumber: number, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;

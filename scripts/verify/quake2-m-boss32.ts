@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { ATTN_NONE, ATTN_NORM, CHAN_AUTO, CHAN_BODY, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
   AS_MISSILE,
@@ -49,6 +49,10 @@ import {
   SP_monster_makron,
   FRAME_attak405,
   FRAME_death295,
+  FRAME_stand201,
+  FRAME_stand260,
+  FRAME_walk204,
+  FRAME_walk213,
   makronBFG,
   makron_brainsplorch,
   makron_dead,
@@ -79,8 +83,9 @@ main();
 
 function main(): void {
   verifySpawnRegistersAssetsAndStartsWalking();
-  verifySpawnRegistryCallsMonsterMakron();
+  verifySpawnRegistryExcludesStandaloneMakron();
   verifySaveRegistryRestoresCallbacksAndMoves();
+  verifyStandRunTablesAndCallbacks();
   verifyStateTransitions();
   verifySoundCallbacks();
   verifyPainBranchesPreserveSourceDanglingElse();
@@ -136,14 +141,14 @@ function verifySpawnRegistersAssetsAndStartsWalking(): void {
   assert.equal(makron.nextthink, runtime.time + FRAMETIME);
 }
 
-function verifySpawnRegistryCallsMonsterMakron(): void {
+function verifySpawnRegistryExcludesStandaloneMakron(): void {
   const runtime = createHarnessRuntime();
   const makron = createMakron(runtime, 2);
 
   ED_CallSpawn(makron, runtime);
 
-  assert.equal(makron.health, 3000);
-  assert.equal(makron.monsterinfo.currentmove, makron_move_sight);
+  assert.equal(makron.health, 0);
+  assert.equal(makron.monsterinfo.currentmove, null);
 }
 
 function verifySaveRegistryRestoresCallbacksAndMoves(): void {
@@ -162,6 +167,27 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("makron_move_attack3"), makron_move_attack3);
   assert.equal(findGameSaveMove("makron_move_attack4"), makron_move_attack4);
   assert.equal(findGameSaveMove("makron_move_attack5"), makron_move_attack5);
+}
+
+function verifyStandRunTablesAndCallbacks(): void {
+  assert.equal(makron_move_stand.firstframe, FRAME_stand201);
+  assert.equal(makron_move_stand.lastframe, FRAME_stand260);
+  assert.equal(makron_move_stand.frame.length, 60);
+  assert.equal(makron_move_stand.endfunc, undefined);
+  assert.deepEqual(makron_move_stand.frame.map((frame) => frame.aifunc?.name), new Array<string>(60).fill("ai_stand"));
+  assert.deepEqual(makron_move_stand.frame.map((frame) => frame.dist), new Array<number>(60).fill(0));
+  assert.ok(makron_move_stand.frame.every((frame) => frame.thinkfunc === undefined));
+
+  assert.equal(makron_move_run.firstframe, FRAME_walk204);
+  assert.equal(makron_move_run.lastframe, FRAME_walk213);
+  assert.equal(makron_move_run.frame.length, 10);
+  assert.equal(makron_move_run.endfunc, undefined);
+  assert.deepEqual(makron_move_run.frame.map((frame) => frame.aifunc?.name), new Array<string>(10).fill("ai_run"));
+  assert.deepEqual(makron_move_run.frame.map((frame) => frame.dist), [3, 12, 8, 8, 8, 6, 12, 9, 6, 12]);
+  assert.deepEqual(
+    makron_move_run.frame.map((frame) => frame.thinkfunc?.name),
+    ["makron_step_left", undefined, undefined, undefined, "makron_step_right", undefined, undefined, undefined, undefined, undefined]
+  );
 }
 
 function verifyStateTransitions(): void {
@@ -195,9 +221,9 @@ function verifySoundCallbacks(): void {
   SP_monster_makron(makron, runtime);
 
   makron_step_left(makron, runtime);
-  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/step1.wav");
+  assertSound(drainGameSoundEvents(runtime).at(-1), "makron/step1.wav", CHAN_BODY, ATTN_NORM);
   makron_step_right(makron, runtime);
-  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/step2.wav");
+  assertSound(drainGameSoundEvents(runtime).at(-1), "makron/step2.wav", CHAN_BODY, ATTN_NORM);
   makron_popup(makron, runtime);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/popup.wav");
   makron_brainsplorch(makron, runtime);
@@ -208,11 +234,11 @@ function verifySoundCallbacks(): void {
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/bhit.wav");
 
   withMathRandom([0.2], () => makron_taunt(makron, runtime));
-  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/voice4.wav");
+  assertSound(drainGameSoundEvents(runtime).at(-1), "makron/voice4.wav", CHAN_AUTO, ATTN_NONE);
   withMathRandom([0.5], () => makron_taunt(makron, runtime));
-  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/voice3.wav");
+  assertSound(drainGameSoundEvents(runtime).at(-1), "makron/voice3.wav", CHAN_AUTO, ATTN_NONE);
   withMathRandom([0.9], () => makron_taunt(makron, runtime));
-  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/voice.wav");
+  assertSound(drainGameSoundEvents(runtime).at(-1), "makron/voice.wav", CHAN_AUTO, ATTN_NONE);
 }
 
 function verifyPainBranchesPreserveSourceDanglingElse(): void {
@@ -431,6 +457,19 @@ function makeTrace(entity: GameEntity | null, endpos: vec3_t | null = null): tra
     contents: 0,
     ent: entity
   };
+}
+
+function assertSound(
+  event: ReturnType<typeof drainGameSoundEvents>[number] | undefined,
+  soundPath: string,
+  channel: number,
+  attenuation: number
+): void {
+  assert.equal(event?.soundPath, soundPath);
+  assert.equal(event?.channel, channel);
+  assert.equal(event?.volume, 1);
+  assert.equal(event?.attenuation, attenuation);
+  assert.equal(event?.timeofs, 0);
 }
 
 function withMathRandom(values: number[], callback: () => void): void {

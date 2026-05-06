@@ -15,6 +15,8 @@ import { EF_ROCKET, temp_event_t, type trace_t, type vec3_t } from "../../packag
 import {
   AI_STAND_GROUND,
   AS_MISSILE,
+  DEFAULT_BULLET_HSPREAD,
+  DEFAULT_BULLET_VSPREAD,
   DEAD_DEAD,
   FL_IMMUNE_LASER,
   FRAMETIME,
@@ -31,6 +33,7 @@ import {
   drainGameSoundEvents,
   drainGameTempEntityEvents,
   drainMonsterMuzzleFlashEvents,
+  monster_flash_offset,
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
@@ -64,6 +67,8 @@ import {
   boss2_attack,
   boss2_dead,
   boss2_die,
+  boss2_firebullet_left,
+  boss2_firebullet_right,
   boss2_frames_death,
   boss2_frames_attack_rocket,
   boss2_frames_attack_mg,
@@ -455,6 +460,9 @@ function verifyWeaponCallbacks(): void {
   boss.s.angles = [0, 0, 0];
   boss.angles = [...boss.s.angles];
 
+  verifyBoss2SingleMachinegunShot(boss2_firebullet_left, MZ2_BOSS2_MACHINEGUN_L1);
+  verifyBoss2SingleMachinegunShot(boss2_firebullet_right, MZ2_BOSS2_MACHINEGUN_R1);
+
   Boss2MachineGun(boss, runtime);
   assert.deepEqual(drainMonsterMuzzleFlashEvents(runtime).map((event) => event.flashNumber), [
     MZ2_BOSS2_MACHINEGUN_L1,
@@ -487,6 +495,56 @@ function verifyWeaponCallbacks(): void {
   boss.s.frame = FRAME_attack10 - 1;
   M_MoveFrame(boss, runtime);
   assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(0)?.flashNumber, MZ2_BOSS2_MACHINEGUN_L1);
+}
+
+function verifyBoss2SingleMachinegunShot(
+  fire: (self: GameEntity, runtime: GameRuntime) => void,
+  flashNumber: number
+): void {
+  const runtime = createHarnessRuntime();
+  const boss = createBoss2(runtime, 70 + flashNumber);
+  const enemy = createEnemy(runtime, 170 + flashNumber, [256, 32, 24]);
+  const muzzle = monster_flash_offset[flashNumber];
+  const expectedStart: vec3_t = [muzzle[0], -muzzle[1], muzzle[2]];
+  enemy.velocity = [20, -10, 5];
+  const expectedTarget: vec3_t = [
+    enemy.s.origin[0] - 0.2 * enemy.velocity[0],
+    enemy.s.origin[1] - 0.2 * enemy.velocity[1],
+    enemy.s.origin[2] - 0.2 * enemy.velocity[2] + enemy.viewheight
+  ];
+  const expectedAim = normalizeTestVec3(subtractTestVec3(expectedTarget, expectedStart));
+  const shotTraces: Array<{ start: vec3_t; end: vec3_t }> = [];
+
+  SP_monster_boss2(boss, runtime);
+  boss.enemy = enemy;
+  boss.s.origin = [0, 0, 0];
+  boss.origin = [...boss.s.origin];
+  boss.s.angles = [0, 0, 0];
+  boss.angles = [...boss.s.angles];
+
+  runtime.collision!.trace = (start, _mins, _maxs, end) => {
+    if (vec3AlmostEqual(start, boss.s.origin) && vec3AlmostEqual(end, expectedStart)) {
+      return makeTrace(null, end);
+    }
+
+    shotTraces.push({ start: [...start], end: [...end] });
+    return makeTrace(enemy, enemy.s.origin);
+  };
+
+  withMathRandom([0.5, 0.5], () => fire(boss, runtime));
+
+  const muzzleEvent = drainMonsterMuzzleFlashEvents(runtime).at(-1);
+  assert.equal(muzzleEvent?.flashNumber, flashNumber);
+  assert.deepEqual(muzzleEvent?.origin, expectedStart);
+  assert.equal(enemy.health, 94);
+
+  assert.equal(shotTraces.length, 1);
+  assert.deepEqual(shotTraces[0]!.start, expectedStart);
+  const actualAim = normalizeTestVec3(subtractTestVec3(shotTraces[0]!.end, shotTraces[0]!.start));
+  assertVec3AlmostEqual(actualAim, expectedAim, `machinegun aim ${flashNumber}`);
+
+  assert.equal(DEFAULT_BULLET_HSPREAD, 300);
+  assert.equal(DEFAULT_BULLET_VSPREAD, 500);
 }
 
 function verifyCheckAttack(): void {
@@ -613,6 +671,25 @@ function makeTrace(entity: GameEntity | null, endpos: vec3_t | null = null): tra
 
 function vectorLength(value: vec3_t): number {
   return Math.hypot(value[0], value[1], value[2]);
+}
+
+function subtractTestVec3(a: vec3_t, b: vec3_t): vec3_t {
+  return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+}
+
+function normalizeTestVec3(value: vec3_t): vec3_t {
+  const length = vectorLength(value);
+  return length === 0 ? [0, 0, 0] : [value[0] / length, value[1] / length, value[2] / length];
+}
+
+function vec3AlmostEqual(a: vec3_t, b: vec3_t, epsilon = 0.000001): boolean {
+  return Math.abs(a[0] - b[0]) <= epsilon
+    && Math.abs(a[1] - b[1]) <= epsilon
+    && Math.abs(a[2] - b[2]) <= epsilon;
+}
+
+function assertVec3AlmostEqual(actual: vec3_t, expected: vec3_t, message: string): void {
+  assert.ok(vec3AlmostEqual(actual, expected, 0.00001), `${message}: expected ${expected.join(",")}, got ${actual.join(",")}`);
 }
 
 function withMathRandom(values: number[], callback: () => void): void {

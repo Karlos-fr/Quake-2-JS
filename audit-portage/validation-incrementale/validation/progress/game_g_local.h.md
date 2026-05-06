@@ -1583,7 +1583,26 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-chick` OK; `npm run verify:m-chick:header` OK; `npm run verify:m-chick:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_infantry.ts` ou `m_hover.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts`, `p_hud.ts`, `m_gunner.ts` et `m_chick.ts` ont montre les usages entiers hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/m_hover.ts` pour `hover_search`, `hover_reattack`, `hover_pain` et `hover_die`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `m_hover.ts` est harmonise pour tous les usages macro C `random()` actifs, aucun consommateur `crandom()` n'existe dans `m_hover.c`/`m_hover.ts`, mais d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_hover.c` consomme `random()` dans `hover_search` (`< 0.5`), `hover_reattack` (`<= 0.6`), `hover_pain` (`< 0.5`) et `hover_die` (`< 0.5`); aucun appel `crandom()` dans ce fichier.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_hover.ts`: les quatre fonctions consomment maintenant le helper proprietaire `random`; les commentaires d'en-tete documentent le branchement.
+- Runtime: integration attendue et branchee via `SP_monster_hover`, `g_spawn.ts`, callbacks `search`/`pain`/`die` et tables d'attaque, `monster_think`/`M_MoveFrame`, `G_RunEntity` et `G_RunFrame`; les tirages affectent sons search/death/pain, reattaque blaster, frames pain/attack/death, muzzle flashes, projectiles et scene.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres, muzzle flashes, projectiles et ordre de rendu; aucune logique parallele web `m_hover`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages `m_hover.ts` affectent sorties visibles/audibles via modele hover, frames pain/attack/death, bolts blaster, muzzle flashes et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaires d'en-tete de `hover_search`, `hover_reattack`, `hover_pain` et `hover_die` mis a jour avec note de portage vers `g_local.random`.
+- Corrections appliquees:
+  - `packages/game/src/m_hover.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C `random()`, notes de portage ajoutees.
+  - `scripts/verify/quake2-m-hover.ts`: preuves deterministes ajoutees pour les seuils C-style 15 bits dans `hover_search`, `hover_reattack`, `hover_pain` et `hover_die`.
+  - `scripts/verify/quake2-m-hover-source-parity.ts`: preuve source/TS des consommateurs macro `random()` et interdiction locale de `Math.random()` pour ce fichier.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-hover` OK; `npm run verify:m-hover:header` OK; `npm run verify:m-hover:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_infantry.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts`, `p_hud.ts`, `m_gunner.ts`, `m_chick.ts` et `m_hover.ts` ont montre les usages entiers ou absences de `crandom` pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

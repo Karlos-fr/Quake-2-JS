@@ -25,7 +25,8 @@ import {
   MOVETYPE_STEP,
   MOVETYPE_TOSS,
   SOLID_BBOX,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, visible } from "./g_ai.js";
 import { flymonster_start, monster_fire_blaster } from "./g_monster.js";
@@ -298,9 +299,12 @@ export function hover_sight(self: GameEntity, _other: GameEntity | null, runtime
  *
  * Behavior:
  * - Randomly plays one of the two hover search sounds.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` to preserve the source macro's 15-bit bucket behavior.
  */
 export function hover_search(self: GameEntity, runtime: GameRuntime): void {
-  const soundIndex = Math.random() < 0.5 ? sound_search1 : sound_search2;
+  const soundIndex = random() < 0.5 ? sound_search1 : sound_search2;
   const soundPath = soundIndex === sound_search1 ? SOUND_SEARCH1 : SOUND_SEARCH2;
   emitRegisteredGameSound(runtime, self, soundIndex, soundPath, {
     channel: CHAN_VOICE,
@@ -457,9 +461,12 @@ export const hover_move_end_attack: GameMonsterMove = {
  *
  * Behavior:
  * - Continues the blaster attack while the enemy is alive, visible and the random reattack check succeeds.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` to preserve the source macro's 15-bit bucket behavior.
  */
 export function hover_reattack(self: GameEntity, runtime: GameRuntime): void {
-  if (self.enemy && self.enemy.health > 0 && visible(self, self.enemy, runtime) && Math.random() <= 0.6) {
+  if (self.enemy && self.enemy.health > 0 && visible(self, self.enemy, runtime) && random() <= 0.6) {
     self.monsterinfo.currentmove = hover_move_attack1;
     return;
   }
@@ -567,6 +574,9 @@ export function hover_attack(self: GameEntity): void {
  *
  * Behavior:
  * - Applies damaged skin, pain debounce, nightmare suppression and damage-sized pain move selection.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` to preserve the source macro's 15-bit bucket behavior.
  */
 export function hover_pain(
   self: GameEntity,
@@ -590,7 +600,7 @@ export function hover_pain(
   }
 
   if (damage <= 25) {
-    if (Math.random() < 0.5) {
+    if (random() < 0.5) {
       emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, {
         channel: CHAN_VOICE,
         volume: 1,
@@ -662,6 +672,9 @@ export function hover_dead(self: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Handles gib death, ordinary randomized death sound and death animation selection.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` to preserve the source macro's 15-bit bucket behavior.
  */
 export function hover_die(
   self: GameEntity,
@@ -687,7 +700,7 @@ export function hover_die(
     return;
   }
 
-  const soundIndex = Math.random() < 0.5 ? sound_death1 : sound_death2;
+  const soundIndex = random() < 0.5 ? sound_death1 : sound_death2;
   const soundPath = soundIndex === sound_death1 ? SOUND_DEATH1 : SOUND_DEATH2;
   emitRegisteredGameSound(runtime, self, soundIndex, soundPath, {
     channel: CHAN_VOICE,

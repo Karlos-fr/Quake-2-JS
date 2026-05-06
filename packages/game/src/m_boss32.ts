@@ -49,7 +49,8 @@ import {
   SOLID_BBOX,
   SOLID_NOT,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range } from "./g_ai.js";
 import { monster_fire_bfg, monster_fire_blaster, monster_fire_railgun, walkmonster_start } from "./g_monster.js";
@@ -599,8 +600,20 @@ let sound_taunt2 = 0;
 let sound_taunt3 = 0;
 let sound_hit = 0;
 
+/**
+ * Original name: makron_taunt
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Plays one of the three Makron taunt sounds from the same source thresholds.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the original `random()` macro.
+ */
 export function makron_taunt(self: GameEntity, runtime: GameRuntime): void {
-  const r = Math.random();
+  const r = random();
 
   if (r <= 0.3) {
     emitRegisteredGameSound(runtime, self, sound_taunt1, SOUND_TAUNT1, soundOptions(CHAN_AUTO, ATTN_NONE));
@@ -619,6 +632,15 @@ export const makron_move_stand: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: makron_stand
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to the Makron stand move.
+ */
 export function makron_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = makron_move_stand;
 }
@@ -643,10 +665,28 @@ export function makron_popup(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_popup, SOUND_POPUP, soundOptions(CHAN_BODY, ATTN_NONE));
 }
 
+/**
+ * Original name: makron_step_left
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the left-foot step sound on the body channel.
+ */
 export function makron_step_left(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_step_left, SOUND_STEP_LEFT, soundOptions(CHAN_BODY, ATTN_NORM));
 }
 
+/**
+ * Original name: makron_step_right
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the right-foot step sound on the body channel.
+ */
 export function makron_step_right(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_step_right, SOUND_STEP_RIGHT, soundOptions(CHAN_BODY, ATTN_NORM));
 }
@@ -675,6 +715,15 @@ export function makron_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = makron_move_walk;
 }
 
+/**
+ * Original name: makron_run
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Uses the stand move while holding ground; otherwise switches to the run move.
+ */
 export function makron_run(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     self.monsterinfo.currentmove = makron_move_stand;
@@ -1041,6 +1090,15 @@ export function Makron_CheckAttack(self: GameEntity, runtime: GameRuntime): bool
   return false;
 }
 
+/**
+ * Original name: MakronPrecache
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the Makron sound handles and rider model in source order.
+ */
 export function MakronPrecache(runtime: GameRuntime): void {
   sound_pain4 = registerGameSound(runtime, SOUND_PAIN4);
   sound_pain5 = registerGameSound(runtime, SOUND_PAIN5);

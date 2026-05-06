@@ -26,15 +26,21 @@ const SOURCE_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../Quake-2-master/game/m_hover.c"
 );
+const TS_SOURCE_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../packages/game/src/m_hover.ts"
+);
 
 const source = readFileSync(SOURCE_PATH, "utf8");
 const sourceWithoutComments = stripComments(source);
+const tsSource = readFileSync(TS_SOURCE_PATH, "utf8");
 
 main();
 
 function main(): void {
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifySourceRandomMacroConsumers();
 
   console.log("quake2-m-hover-source-parity: ok");
 }
@@ -75,6 +81,23 @@ function verifySourcePrecacheAssets(): void {
 
   assert.deepEqual(runtime.assets.soundPaths, sourceSounds, "SP_monster_hover sound precache order");
   assert.equal(runtime.assets.modelPaths[entity.s.modelindex - 1], sourceModel, "SP_monster_hover model precache");
+}
+
+function verifySourceRandomMacroConsumers(): void {
+  const randomConsumers = [
+    ["hover_search", /random\s*\(\s*\)\s*<\s*0\.5/, /random\s*\(\s*\)\s*<\s*0\.5/],
+    ["hover_reattack", /random\s*\(\s*\)\s*<=\s*0\.6/, /random\s*\(\s*\)\s*<=\s*0\.6/],
+    ["hover_pain", /random\s*\(\s*\)\s*<\s*0\.5/, /random\s*\(\s*\)\s*<\s*0\.5/],
+    ["hover_die", /random\s*\(\s*\)\s*<\s*0\.5/, /random\s*\(\s*\)\s*<\s*0\.5/]
+  ] as const;
+
+  assert.match(tsSource, /import\s*\{[\s\S]*\brandom\b[\s\S]*\}\s*from\s+"\.\/g_local\.js"/, "m_hover.ts should import g_local.random");
+  assert.doesNotMatch(stripComments(tsSource), /Math\.random\s*\(/, "m_hover.ts macro random consumers should not call Math.random directly");
+
+  for (const [functionName, sourcePattern, tsPattern] of randomConsumers) {
+    assert.match(getFunctionBlock(functionName), sourcePattern, `${functionName}: source should consume random macro`);
+    assert.match(getTsFunctionBlock(functionName), tsPattern, `${functionName}: TS should consume g_local.random helper`);
+  }
 }
 
 interface SourceFrame {
@@ -131,11 +154,24 @@ function parseMoves(cSource: string): Map<string, SourceMove> {
 }
 
 function getFunctionBlock(functionName: string): string {
-  const start = source.indexOf(`void ${functionName}`);
-  assert.notEqual(start, -1, `${functionName} should exist in source`);
+  let searchFrom = 0;
+  let start = -1;
+  let bodyStart = -1;
 
-  const bodyStart = source.indexOf("{", start);
-  assert.notEqual(bodyStart, -1, `${functionName} should have a body`);
+  while (true) {
+    start = source.indexOf(`void ${functionName}`, searchFrom);
+    assert.notEqual(start, -1, `${functionName} should exist in source`);
+
+    const semicolon = source.indexOf(";", start);
+    bodyStart = source.indexOf("{", start);
+    assert.notEqual(bodyStart, -1, `${functionName} should have a body`);
+
+    if (semicolon === -1 || bodyStart < semicolon) {
+      break;
+    }
+
+    searchFrom = semicolon + 1;
+  }
 
   let depth = 0;
   for (let i = bodyStart; i < source.length; i += 1) {
@@ -151,6 +187,29 @@ function getFunctionBlock(functionName: string): string {
   }
 
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const start = tsSource.indexOf(`function ${functionName}`);
+  assert.notEqual(start, -1, `${functionName} should exist in TS source`);
+
+  const bodyStart = tsSource.indexOf("{", start);
+  assert.notEqual(bodyStart, -1, `${functionName} should have a TS body`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < tsSource.length; i += 1) {
+    const char = tsSource[i];
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsSource.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} TS body was not closed`);
 }
 
 function getFrameConstant(name: string): number {

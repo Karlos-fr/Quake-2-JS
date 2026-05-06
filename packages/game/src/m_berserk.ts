@@ -599,6 +599,9 @@ export const berserk_move_pain2: GameMonsterMove = {
  *
  * Behavior:
  * - Applies damaged skin, pain debounce, nightmare suppression and damage/random pain move selection.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` to preserve the C macro's 15-bit quantization.
  */
 export function berserk_pain(
   self: GameEntity,
@@ -627,7 +630,7 @@ export function berserk_pain(
     return;
   }
 
-  if (damage < 20 || Math.random() < 0.5) {
+  if (damage < 20 || random() < 0.5) {
     self.monsterinfo.currentmove = berserk_move_pain1;
   } else {
     self.monsterinfo.currentmove = berserk_move_pain2;

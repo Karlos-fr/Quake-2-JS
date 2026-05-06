@@ -41,6 +41,8 @@ import {
   MZ2_JORG_MACHINEGUN_L1,
   MZ2_JORG_MACHINEGUN_R1,
   SP_monster_jorg,
+  jorg_frames_run,
+  jorg_frames_stand,
   jorgBFG,
   jorg_attack,
   jorg_death_hit,
@@ -74,6 +76,7 @@ function main(): void {
   verifySpawnRegistersAssetsAndStartsWalking();
   verifySpawnRegistryCallsMonsterJorg();
   verifySaveRegistryRestoresCallbacksAndMoves();
+  verifyStandAndRunTables();
   verifyStateTransitions();
   verifySoundsAndPainBranches();
   verifyWeaponCallbacks();
@@ -145,8 +148,39 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveFunction("jorg_die"), jorg_die);
   assert.equal(findGameSaveFunction("jorgBFG"), jorgBFG);
   assert.equal(findGameSaveMove("jorg_move_stand"), jorg_move_stand);
+  assert.equal(findGameSaveMove("jorg_move_run"), jorg_move_run);
   assert.equal(findGameSaveMove("jorg_move_attack2"), jorg_move_attack2);
   assert.equal(findGameSaveMove("jorg_move_death"), jorg_move_death);
+}
+
+function verifyStandAndRunTables(): void {
+  assert.equal(jorg_frames_stand.length, 51);
+  assert.equal(jorg_move_stand.firstframe, 112);
+  assert.equal(jorg_move_stand.lastframe, 162);
+  assert.equal(jorg_move_stand.frame, jorg_frames_stand);
+  assert.equal(jorg_move_stand.endfunc, undefined);
+  assert.equal(jorg_frames_stand[0].aifunc?.name, "ai_stand");
+  assert.equal(jorg_frames_stand[0].dist, 0);
+  assert.equal(jorg_frames_stand[0].thinkfunc, jorg_idle);
+  assert.equal(jorg_frames_stand[33].dist, 19);
+  assert.equal(jorg_frames_stand[34].dist, 11);
+  assert.equal(jorg_frames_stand[34].thinkfunc, jorg_step_left);
+  assert.equal(jorg_frames_stand[38].dist, 9);
+  assert.equal(jorg_frames_stand[38].thinkfunc, jorg_step_right);
+  assert.equal(jorg_frames_stand[47].dist, -17);
+  assert.equal(jorg_frames_stand[47].thinkfunc, jorg_step_left);
+  assert.equal(jorg_frames_stand[50].dist, -14);
+  assert.equal(jorg_frames_stand[50].thinkfunc, jorg_step_right);
+
+  assert.equal(jorg_frames_run.length, 14);
+  assert.equal(jorg_move_run.firstframe, 168);
+  assert.equal(jorg_move_run.lastframe, 181);
+  assert.equal(jorg_move_run.frame, jorg_frames_run);
+  assert.equal(jorg_move_run.endfunc, undefined);
+  assert.deepEqual(jorg_frames_run.map((frame) => frame.dist), [17, 0, 0, 0, 12, 8, 10, 33, 0, 0, 0, 9, 9, 9]);
+  assert.equal(jorg_frames_run[0].aifunc?.name, "ai_run");
+  assert.equal(jorg_frames_run[0].thinkfunc, jorg_step_left);
+  assert.equal(jorg_frames_run[7].thinkfunc, jorg_step_right);
 }
 
 function verifyStateTransitions(): void {

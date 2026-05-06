@@ -369,6 +369,15 @@ export const jorg_move_stand: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: jorg_stand
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches Jorg back to the 51-frame stand move.
+ */
 export function jorg_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = jorg_move_stand;
 }
@@ -413,6 +422,15 @@ export function jorg_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = jorg_move_walk;
 }
 
+/**
+ * Original name: jorg_run
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Uses the stand move while `AI_STAND_GROUND` is set; otherwise uses the run move.
+ */
 export function jorg_run(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     self.monsterinfo.currentmove = jorg_move_stand;

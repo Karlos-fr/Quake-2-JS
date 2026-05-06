@@ -351,6 +351,8 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("berserk_move_attack_spike"), berserk_move_attack_spike);
   assert.equal(findGameSaveMove("berserk_move_attack_club"), berserk_move_attack_club);
   assert.equal(findGameSaveMove("berserk_move_attack_strike"), berserk_move_attack_strike);
+  assert.equal(findGameSaveMove("berserk_move_pain1"), berserk_move_pain1);
+  assert.equal(findGameSaveMove("berserk_move_pain2"), berserk_move_pain2);
   assert.equal(findGameSaveMove("berserk_move_death1"), berserk_move_death1);
 }
 
@@ -698,20 +700,51 @@ function verifyPainBranches(): void {
   const runtime = createHarnessRuntime();
   const berserk = createBerserk(runtime, 6);
   SP_monster_berserk(berserk, runtime);
+  berserk.think!(berserk, runtime);
+
+  assert.equal(berserk.pain, berserk_pain);
+  assert.equal(berserk_move_pain1.endfunc, berserk_run);
+  assert.equal(berserk_move_pain2.endfunc, berserk_run);
+
   berserk.max_health = 240;
   berserk.health = 100;
 
   berserk_pain(berserk, null, 0, 10, runtime);
   assert.equal(berserk.s.skinnum, 1);
+  assert.equal(berserk.pain_debounce_time, 3);
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_pain1);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "berserk/berpain2.wav");
+
+  berserk.monsterinfo.currentmove = berserk_move_run1;
+  berserk_pain(berserk, null, 0, 30, runtime);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1, "pain debounce should return before sound or animation");
+  assert.equal(drainGameSoundEvents(runtime).length, 0, "pain debounce should not emit another pain sound");
 
   runtime.time = 4;
   withMathRandom([0.75], () => berserk_pain(berserk, null, 0, 30, runtime));
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_pain2);
+  assert.equal(berserk.pain_debounce_time, 7);
+
+  berserk.s.frame = FRAME_painb1 - 1;
+  M_MoveFrame(berserk, runtime);
+  assert.equal(berserk.s.frame, FRAME_painb1, "pain2 should produce visible pain frames through M_MoveFrame");
+
+  berserk.monsterinfo.aiflags &= ~AI_STAND_GROUND;
+  berserk_move_pain2.endfunc!(berserk, runtime);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1, "pain2 endfunc should return through berserk_run");
+
+  runtime.skill = 2;
+  runtime.time = 8;
+  berserk.monsterinfo.currentmove = berserk_move_run1;
+  withMathRandom([0.49999], () => berserk_pain(berserk, null, 0, 30, runtime));
+  assert.equal(
+    berserk.monsterinfo.currentmove,
+    berserk_move_pain1,
+    "berserk_pain should use the C 15-bit random() threshold, not raw Math.random()"
+  );
 
   runtime.skill = 3;
-  runtime.time = 8;
+  runtime.time = 12;
   berserk.monsterinfo.currentmove = berserk_move_stand;
   berserk_pain(berserk, null, 0, 30, runtime);
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand, "nightmare pain should not start a pain animation");

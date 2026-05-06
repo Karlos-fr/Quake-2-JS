@@ -241,6 +241,14 @@ function verifyStateTransitions(): void {
 
   withMathRandom([0.5], () => hover_reattack(hover, runtime));
   assert.equal(hover.monsterinfo.currentmove, hover_move_attack1);
+  withMathRandom([0.6001], () => hover_reattack(hover, runtime));
+  assert.equal(hover.monsterinfo.currentmove, hover_move_end_attack);
+  withMathRandom([0.6], () => hover_reattack(hover, runtime));
+  assert.equal(
+    hover.monsterinfo.currentmove,
+    hover_move_attack1,
+    "hover_reattack should use g_local.random's 15-bit bucket at the 0.6 threshold"
+  );
   enemy.health = 0;
   hover_reattack(hover, runtime);
   assert.equal(hover.monsterinfo.currentmove, hover_move_end_attack);
@@ -259,6 +267,13 @@ function verifySightSearchSounds(): void {
 
   withMathRandom([0.75], () => hover_search(hover, runtime));
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "hover/hovsrch2.wav");
+
+  withMathRandom([0.5], () => hover_search(hover, runtime));
+  assert.equal(
+    drainGameSoundEvents(runtime).at(-1)?.soundPath,
+    "hover/hovsrch2.wav",
+    "hover_search should use g_local.random's 15-bit bucket at the 0.5 threshold"
+  );
 }
 
 function verifyBlasterAttack(): void {
@@ -311,6 +326,14 @@ function verifyPainBranches(): void {
   assert.equal(hover.monsterinfo.currentmove, hover_move_pain2);
 
   runtime.time = 8;
+  withMathRandom([0.5], () => hover_pain(hover, null, 0, 20, runtime));
+  assert.equal(
+    hover.monsterinfo.currentmove,
+    hover_move_pain2,
+    "hover_pain should use g_local.random's 15-bit bucket at the 0.5 threshold"
+  );
+
+  runtime.time = 12;
   hover_pain(hover, null, 0, 30, runtime);
   assert.equal(hover.monsterinfo.currentmove, hover_move_pain1);
 }
@@ -324,6 +347,16 @@ function verifyDeathBranches(): void {
   assert.equal(hover.deadflag, DEAD_DEAD);
   assert.equal(hover.takedamage, damage_t.DAMAGE_YES);
   assert.equal(hover.monsterinfo.currentmove, hover_move_death1);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "hover/hovdeth1.wav");
+
+  const otherHover = createHover(runtime, 14);
+  SP_monster_hover(otherHover, runtime);
+  withMathRandom([0.5], () => hover_die(otherHover, null, null, 10, runtime));
+  assert.equal(
+    drainGameSoundEvents(runtime).at(-1)?.soundPath,
+    "hover/hovdeth2.wav",
+    "hover_die should use g_local.random's 15-bit bucket at the 0.5 threshold"
+  );
 
   const gibHover = createHover(runtime, 8);
   SP_monster_hover(gibHover, runtime);

@@ -216,6 +216,27 @@
 - Corrections appliquees:
   - `scripts/verify/quake2-m-berserk.ts`: ajout de preuves ciblees pour le move strike, son swing, le hook vide du FIXME impact sound, les distances finales, le retour `berserk_run` et l'enregistrement de sauvegarde.
 
+## Session 2026-05-06 - bloc douleur
+
+- Lot traite: `berserk_frames_pain1` global/table/declarative, `berserk_move_pain1`, `berserk_frames_pain2` global/table/declarative, `berserk_move_pain2` et `berserk_pain`.
+- Verdict: Valide.
+- Comparaison C/TS: `berserk_frames_pain1` conserve 4 frames `ai_move` distance 0 sans callback; `berserk_move_pain1` conserve `FRAME_painc1`..`FRAME_painc4` et `endfunc = berserk_run`. `berserk_frames_pain2` conserve 20 frames `ai_move` distance 0 sans callback; `berserk_move_pain2` conserve `FRAME_painb1`..`FRAME_painb20` et `endfunc = berserk_run`. `berserk_pain` conserve le skin `s.skinnum = 1` sous demi-vie, le debounce `runtime.time + 3`, le son pain `CHAN_VOICE`/`ATTN_NORM`, le skip nightmare, la selection pain1 si `damage < 20` ou `random() < 0.5`, sinon pain2.
+- Commentaires d'en-tete: commentaire TS de `berserk_pain` verifie et mis a jour pour documenter l'usage de `g_local.random()`; tables/global declaratifs sans commentaire de fonction requis.
+- Runtime: integre. `SP_monster_berserk` assigne `self.pain = berserk_pain`; le test prouve le callback, les deux moves pain, le debounce sans son ni animation, le skip nightmare, l'enregistrement save des moves, des frames visibles via `M_MoveFrame`, et le retour `endfunc = berserk_run`.
+- apps/web: integre. Le navigateur declenche ce flux via le serveur local porte (`SV_Frame`/`G_RunFrame`) et consomme les snapshots/runtime et les `soundEvents`; aucune logique parallele berserk constatee.
+- renderer-three: integre. Le lot produit des sorties visibles `s.skinnum` et frames MD2 pain (`s.frame`) pour le modele berserk; les snapshots client conservent `frame/oldframe/backlerp` et `skinnum`, consommes par le flux Three renderer. Pas de particule, beam, dlight, temp entity, areabits, camera ou scene additionnelle attendue.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `packages/game/src/m_berserk.ts`: `berserk_pain` utilise `g_local.random()` au lieu de `Math.random()` direct, et son commentaire documente cette fidelite au macro C.
+  - `scripts/verify/quake2-m-berserk.ts`: ajout de preuves ciblees pour pain1/pain2, `pain_debounce_time`, absence d'effet pendant debounce, seuil C 15-bit, nightmare-skip, frames visibles, `endfunc = berserk_run` et save registry des moves pain.
+
 ## Prochain lot recommande
 
-- Valider le bloc douleur `berserk_frames_pain1`, `berserk_move_pain1`, `berserk_frames_pain2`, `berserk_move_pain2` et `berserk_pain`, avec son pain, skin, `pain_debounce_time`, nightmare-skip, selection par degats/random et retour `berserk_run`.
+- Valider le bloc mort `berserk_dead`, `berserk_frames_death1`, `berserk_move_death1`, `berserk_frames_death2`, `berserk_move_death2` et `berserk_die`, avec gibbing, son death, bbox corpse, `MOVETYPE_TOSS`, `SVF_DEADMONSTER`, selection par degats et retour runtime/web/renderer.
