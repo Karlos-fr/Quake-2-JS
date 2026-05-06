@@ -32,6 +32,7 @@ import {
   Cvar_List_f,
   Cvar_Serverinfo,
   Cvar_Set,
+  Cvar_Set_f,
   Cvar_SetServerState,
   Cvar_SetValue,
   Cvar_Userinfo,
@@ -189,9 +190,22 @@ Cmd_TokenizeString(cmd, "rate 32000", true);
 const mutate = Cvar_Command(cvar, cmd);
 assert.deepEqual(mutate, { handled: true }, "Cvar_Command set mismatch");
 assert.equal(Cvar_VariableString(cvar, "rate"), "32000", "Cvar_Command should update value");
+assert.equal(cvar.userinfo_modified, true, "Cvar_Command should use Cvar_Set for mutations");
 
 Cmd_TokenizeString(cmd, "missing", true);
 assert.deepEqual(Cvar_Command(cvar, cmd), { handled: false }, "Cvar_Command fallback mismatch");
+
+Cmd_TokenizeString(cmd, "set", true);
+assert.equal(Cvar_Set_f(cvar, cmd), "usage: set <variable> <value> [u / s]", "Cvar_Set_f usage mismatch");
+
+Cmd_TokenizeString(cmd, "set team red x", true);
+assert.equal(Cvar_Set_f(cvar, cmd), "flags can only be 'u' or 's'", "Cvar_Set_f invalid flag mismatch");
+assert.equal(Cvar_FindVar(cvar, "team"), null, "invalid Cvar_Set_f flag should not create the cvar");
+
+Cmd_TokenizeString(cmd, "set team red s", true);
+assert.equal(Cvar_Set_f(cvar, cmd), undefined, "Cvar_Set_f serverinfo branch should not return output");
+assert.equal(Cvar_VariableString(cvar, "team"), "red", "Cvar_Set_f serverinfo branch should create the cvar");
+assert.equal((Cvar_FindVar(cvar, "team")?.flags ?? 0) & CVAR_SERVERINFO, CVAR_SERVERINFO, "Cvar_Set_f serverinfo flag mismatch");
 
 const list = Cvar_List_f(cvar);
 assert.equal(list[list.length - 1], `${list.length - 1} cvars`, "cvar list footer mismatch");
@@ -201,6 +215,19 @@ assert.ok(Cvar_FindVar(cvar, "rate"), "FindVar should locate existing cvar");
 Cvar_Init(cvar, cmd);
 Cmd_ExecuteString(cmd, "set hand 1 u");
 assert.equal(Cvar_VariableString(cvar, "hand"), "1", "set command should create userinfo cvar");
+Cmd_ExecuteString(cmd, "set hand 2 z");
+assert.equal(printed.at(-1), "flags can only be 'u' or 's'", "set command invalid flag should print through Cvar_Init");
+cmd.hooks.executeUnknownCommand = () => {
+  const result = Cvar_Command(cvar, cmd);
+  if (result.output !== undefined) {
+    printed.push(result.output);
+  }
+  return result.handled;
+};
+Cmd_ExecuteString(cmd, "rate");
+assert.equal(printed.at(-1), "\"rate\" is \"32000\"", "unknown command fallback should inspect cvars");
+Cmd_ExecuteString(cmd, "rate 33000");
+assert.equal(Cvar_VariableString(cvar, "rate"), "33000", "unknown command fallback should mutate cvars");
 Cmd_ExecuteString(cmd, "cvarlist");
 assert.equal(printed.some((line) => line.includes('hand "1"')), true, "cvarlist command should print cvars");
 

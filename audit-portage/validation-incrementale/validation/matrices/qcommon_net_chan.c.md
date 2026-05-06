@@ -24,12 +24,12 @@
 | `Quake-2-master/qcommon/net_chan.c` | global | `argptr` | `packages/qcommon/src/net_chan.ts` |  | Non applicable | A redecouper | Variable locale va_list de `Netchan_OutOfBandPrint`, pas une entite proprietaire a valider separement. |
 | `Quake-2-master/qcommon/net_chan.c` | global | `string` | `packages/qcommon/src/net_chan.ts` |  | Non applicable | A redecouper | Tampon statique local de `Netchan_OutOfBandPrint`; remplace par encodage local sans etat persistant. |
 | `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Setup` | `packages/qcommon/src/net_chan.ts` | `Netchan_Setup` | Partiel | A redecouper | Initialisation canal testee via `verify:net-chan`; doublon complet non proprietaire reste dans `packages/qcommon/src/qcommon.ts`. |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_CanReliable` | `packages/qcommon/src/net_chan.ts` | `Netchan_CanReliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_NeedReliable` | `packages/qcommon/src/net_chan.ts` | `Netchan_NeedReliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send_reliable` | `packages/qcommon/src/net_chan.ts` | `send_reliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Transmit` | `packages/qcommon/src/net_chan.ts` | `Netchan_Transmit` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send` | `packages/qcommon/src/net_chan.ts` | `send` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send_buf` | `packages/qcommon/src/net_chan.ts` | `send_buf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/net_chan.c` | global | `send_reliable` | `packages/qcommon/src/net_chan.ts` | `send_reliable` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_CanReliable` | `packages/qcommon/src/net_chan.ts` | `Netchan_CanReliable` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_NeedReliable` | `packages/qcommon/src/net_chan.ts` | `Netchan_NeedReliable` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send_reliable` | `packages/qcommon/src/net_chan.ts` | `send_reliable` | Non applicable | A redecouper | Variable locale de `Netchan_NeedReliable`, pas une entite proprietaire a valider separement. |
+| `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Transmit` | `packages/qcommon/src/net_chan.ts` | `Netchan_Transmit` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send` | `packages/qcommon/src/net_chan.ts` | `send` | Non applicable | A redecouper | Variable locale de `Netchan_Transmit`, pas une entite proprietaire a valider separement. |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send_buf` | `packages/qcommon/src/net_chan.ts` | `send_buf` | Non applicable | A redecouper | Variable locale de `Netchan_Transmit`, pas une entite proprietaire a valider separement. |
+| `Quake-2-master/qcommon/net_chan.c` | global | `send_reliable` | `packages/qcommon/src/net_chan.ts` | `send_reliable` | Non applicable | A redecouper | Variable locale de `Netchan_Transmit`, pas une entite proprietaire a valider separement. |
 | `Quake-2-master/qcommon/net_chan.c` | function | `Netchan_Process` | `packages/qcommon/src/net_chan.ts` | `Netchan_Process` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/net_chan.c` | global | `qport` | `packages/qcommon/src/net_chan.ts` |  | A verifier | A redecouper |  |

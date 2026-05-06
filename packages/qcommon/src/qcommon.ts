@@ -20,7 +20,7 @@ import type { byte, qboolean } from "./q_shared.js";
 import type { cvar_t } from "./cvar.js";
 import type { sizebuf_t } from "../../memory/src/index.js";
 import { createSizeBuffer, SZ_Clear, SZ_Init, SZ_Write } from "../../memory/src/index.js";
-import { MSG_BeginReading, MSG_ReadLong, MSG_ReadShort, MSG_WriteLong, MSG_WriteShort } from "./messages.js";
+import { MSG_BeginReading, MSG_ReadLong, MSG_ReadShort, MSG_WriteLong } from "./messages.js";
 export { Com_BlockChecksum } from "./md4.js";
 
 /**
@@ -828,44 +828,7 @@ export function Netchan_Setup(
   chan.message.allowoverflow = true;
 }
 
-/**
- * Original name: Netchan_CanReliable
- * Source: qcommon/qcommon.h / qcommon/net_chan.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Returns true when the previous reliable payload has been acknowledged.
- */
-export function Netchan_CanReliable(chan: netchan_t): qboolean {
-  return chan.reliable_length === 0;
-}
-
-/**
- * Original name: Netchan_NeedReliable
- * Source: qcommon/qcommon.h / qcommon/net_chan.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Returns true when a reliable payload should be sent or retransmitted.
- */
-export function Netchan_NeedReliable(chan: netchan_t): qboolean {
-  let send_reliable = false;
-
-  if (
-    chan.incoming_acknowledged > chan.last_reliable_sequence &&
-    chan.incoming_reliable_acknowledged !== chan.reliable_sequence
-  ) {
-    send_reliable = true;
-  }
-
-  if (chan.reliable_length === 0 && chan.message.cursize !== 0) {
-    send_reliable = true;
-  }
-
-  return send_reliable;
-}
+export { Netchan_CanReliable, Netchan_NeedReliable } from "./net_chan.js";
 
 /**
  * Original name: Netchan_OutOfBand
@@ -913,64 +876,7 @@ export function Netchan_OutOfBandPrint(
   Netchan_OutOfBand(runtime, net_socket, adr, encoded.length, encoded);
 }
 
-/**
- * Original name: Netchan_Transmit
- * Source: qcommon/qcommon.h / qcommon/net_chan.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Sends one packet while handling reliable sequencing and retransmission state.
- */
-export function Netchan_Transmit(
-  runtime: QcommonNetRuntime,
-  chan: netchan_t,
-  length: number,
-  data: Uint8Array
-): void {
-  if (chan.message.overflowed) {
-    chan.fatal_error = true;
-    runtime.hooks.onPrintf?.(`${NET_AdrToString(chan.remote_address)}:Outgoing message overflow\n`);
-    return;
-  }
-
-  const send_reliable = Netchan_NeedReliable(chan);
-
-  if (chan.reliable_length === 0 && chan.message.cursize !== 0) {
-    chan.reliable_buf.set(chan.message_buf.subarray(0, chan.message.cursize), 0);
-    chan.reliable_length = chan.message.cursize;
-    chan.message.cursize = 0;
-    chan.reliable_sequence ^= 1;
-  }
-
-  const send_buf = new Uint8Array(MAX_MSGLEN);
-  const send = createSizeBuffer(send_buf);
-  const w1 = (chan.outgoing_sequence & ~(1 << 31)) | (Number(send_reliable) << 31);
-  const w2 = (chan.incoming_sequence & ~(1 << 31)) | (chan.incoming_reliable_sequence << 31);
-
-  chan.outgoing_sequence += 1;
-  chan.last_sent = runtime.hooks.now?.() ?? Date.now();
-
-  MSG_WriteLong(send, w1);
-  MSG_WriteLong(send, w2);
-
-  if (chan.sock === netsrc_t.NS_CLIENT) {
-    MSG_WriteShort(send, runtime.qport);
-  }
-
-  if (send_reliable) {
-    SZ_Write(send, chan.reliable_buf.subarray(0, chan.reliable_length));
-    chan.last_reliable_sequence = chan.outgoing_sequence;
-  }
-
-  if (send.maxsize - send.cursize >= length) {
-    SZ_Write(send, data.subarray(0, length));
-  } else {
-    runtime.hooks.onPrintf?.("Netchan_Transmit: dumped unreliable\n");
-  }
-
-  NET_SendPacket(runtime, chan.sock, send.cursize, send.data, chan.remote_address);
-}
+export { Netchan_Transmit } from "./net_chan.js";
 
 /**
  * Original name: Netchan_Process

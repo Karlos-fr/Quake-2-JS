@@ -148,16 +148,11 @@ export function createVirtualFilesystem(initialGameDir = "baseq2"): VirtualFiles
 }
 
 /**
- * Original name: FS_AddGameDirectory
- * Source: qcommon/files.c
- * Category: Ported
- * Fidelity level: Close
+ * Category: Adapter
+ * Purpose: Mount loose in-memory files without automatically mounting embedded PAK archives.
  *
- * Behavior:
- * - Adds one directory search path at the head of the filesystem and updates `fs_gamedir`.
- *
- * Porting notes:
- * - Uses in-memory mounted directory contents instead of scanning the host filesystem.
+ * Constraints:
+ * - Keeps manual mount order available for browser/bootstrap tests that provide PAKs separately.
  */
 export function mountDirectory(
   filesystem: VirtualFilesystem,
@@ -173,6 +168,40 @@ export function mountDirectory(
   filesystem.fs_gamedir = directory.path;
   filesystem.searchPaths.unshift(search);
   return directory;
+}
+
+/**
+ * Original name: FS_AddGameDirectory
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Sets `fs_gamedir`, adds a directory search path, then loads `pak0.pak` through `pak9.pak`.
+ *
+ * Porting notes:
+ * - Scans the provided in-memory directory contents instead of the host filesystem.
+ * - Preserves the original search order: later PAK search paths are inserted ahead of the directory.
+ */
+export function FS_AddGameDirectory(
+  filesystem: VirtualFilesystem,
+  path: string,
+  files?: MountedDirectoryInput
+): { directory: MountedDirectory; packs: MountedPak[] } {
+  const directory = mountDirectory(filesystem, path, files);
+  const mountedPaks: MountedPak[] = [];
+
+  for (let i = 0; i < 10; i += 1) {
+    const pakfile = `pak${i}.pak`;
+    const file = directory.files.get(pakfile);
+    if (!file) {
+      continue;
+    }
+
+    mountedPaks.push(FS_LoadPackFile(filesystem, file.bytes, `${directory.path}/${pakfile}`));
+  }
+
+  return { directory, packs: mountedPaks };
 }
 
 /**

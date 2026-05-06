@@ -16,10 +16,9 @@ import { parsePcx, type PcxImage } from "../../../packages/formats/src/index.js"
 import { Scene } from "three";
 import {
   createVirtualFilesystem,
+  FS_AddGameDirectory,
   FS_Gamedir,
   FS_SetGamedir,
-  mountDirectory,
-  mountPak,
   readMountedFile,
   type VirtualFilesystem
 } from "../../../packages/filesystem/src/index.js";
@@ -474,8 +473,8 @@ async function createMountedFilesystem(): Promise<VirtualFilesystem> {
   }
 
   const filesystem = createVirtualFilesystem();
-  mountPak(filesystem, pakBytes, "pak0.pak");
-  mountDirectory(filesystem, "baseq2", looseVideos);
+  looseVideos.set("pak0.pak", pakBytes);
+  FS_AddGameDirectory(filesystem, "baseq2", looseVideos);
   return filesystem;
 }
 

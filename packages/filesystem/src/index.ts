@@ -13,6 +13,7 @@ export {
   Developer_searchpath,
   createVirtualFilesystem,
   FS_Dir_f,
+  FS_AddGameDirectory,
   FS_ExecAutoexec,
   FS_FreeFile,
   FS_Gamedir,

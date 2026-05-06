@@ -64,14 +64,14 @@
 | `Quake-2-master/qcommon/files.c` | global | `packhandle` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local C `FILE *`; browser VFS parses in-memory bytes. |
 | `Quake-2-master/qcommon/files.c` | global | `info` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local C directory buffer; represented by `parsePak` entry parsing. |
 | `Quake-2-master/qcommon/files.c` | global | `checksum` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local `NO_ADDONS` checksum guard remains outside the normal source path. |
-| `Quake-2-master/qcommon/files.c` | function | `FS_AddGameDirectory` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `i` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `pak` | `packages/filesystem/src/files.ts` | `pak` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `pakfile` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_Gamedir` | `packages/filesystem/src/files.ts` | `FS_Gamedir` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | function | `FS_ExecAutoexec` | `packages/filesystem/src/files.ts` | `FS_ExecAutoexec` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `dir` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/files.c` | global | `name` | `packages/formats/src/pak.ts` | `name` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/files.c` | function | `FS_AddGameDirectory` | `packages/filesystem/src/files.ts` | `FS_AddGameDirectory` | Valide | A redecouper | Port officiel ajoute; `verify:files` couvre ordre `pak1`/`pak0`/repertoire. |
+| `Quake-2-master/qcommon/files.c` | global | `i` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local de boucle de `FS_AddGameDirectory`; pas d'entite TS proprietaire. |
+| `Quake-2-master/qcommon/files.c` | global | `pak` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local de `FS_AddGameDirectory`; represente par le tableau retourne `packs`. |
+| `Quake-2-master/qcommon/files.c` | global | `pakfile` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local de nom de fichier PAK; TS utilise une constante de boucle. |
+| `Quake-2-master/qcommon/files.c` | function | `FS_Gamedir` | `packages/filesystem/src/files.ts` | `FS_Gamedir` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/files.c` | function | `FS_ExecAutoexec` | `packages/filesystem/src/files.ts` | `FS_ExecAutoexec` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/files.c` | global | `dir` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local de `FS_ExecAutoexec`; TS resout via le gamedir VFS courant. |
+| `Quake-2-master/qcommon/files.c` | global | `name` | `packages/formats/src/pak.ts` | `name` | Non applicable | A redecouper | Local de chemin `autoexec.cfg`; ne pas confondre avec `PakEntry.name`. |
 | `Quake-2-master/qcommon/files.c` | function | `FS_SetGamedir` | `packages/filesystem/src/files.ts` | `FS_SetGamedir` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | function | `FS_Link_f` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `s` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |

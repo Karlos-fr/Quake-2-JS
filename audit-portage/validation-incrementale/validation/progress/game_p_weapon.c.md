@@ -76,6 +76,17 @@
 - Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `Machinegun_Fire` direct, projection, direction, bit silencieux, degats/kick base et quad, ammo infini, no-ammo, reset, tables `pause_frames`/`fire_frames` et frames non-fire.
 - Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
 
+## Session 2026-05-06 - bloc chaingun
+
+- Lot traite: `Chaingun_Fire`, variables locales `i`/`shots`/`start`/`offset`/`damage`/`kick` et doublons generes, `Weapon_Chaingun`, tables locales `pause_frames` et `fire_frames`.
+- Comparaison C/TS: degats solo/deathmatch `8`/`6`, kick `2`, quad damage/kick, son windup frame `5`, relache frame `14` vers `32`, boucle frame `21` vers `15` avec attaque+ammo, wind-down frame `22`, sons `chngnu1a`/`chngnl1a`/`chngnd1a`, animations debout/accroupi, choix `shots` `1`/`2`/`3`, clamp ammo, branche no-ammo `CHAN_VOICE` et `NoAmmoWeaponChange`, recul aleatoire, projection `[0, 7 + crandom()*4, crandom()*4 + viewheight - 8]`, `fire_bullet` avec spreads par defaut et `MOD_CHAINGUN`, muzzleflash `MZ_CHAINGUN1/2/3 | is_silenced`, `PlayerNoise`, consommation ammo/`DF_INFINITE_AMMO`, et `Weapon_Generic(ent, 4, 31, 61, 64, {38, 43, 51, 61, 0}, {5..21, 0}, Chaingun_Fire)` compares contre le C.
+- Commentaires d'en-tete: `Chaingun_Fire` et `Weapon_Chaingun` verifies avec `Original name`, `Source: game/p_weapon.c`, `Category: Ported`, niveau de fidelite et comportement.
+- Runtime: integre via `g_items` (`weapon_chaingun` -> `Weapon_Chaingun`), `Think_Weapon`, `ClientThink`/`ClientBeginServerFrame`, `G_RunFrame`, `local-game-bootstrap` et hook `fire_bullet`.
+- apps/web: le navigateur declenche le tir via les flux serveur/local/full-game et consomme le runtime porte; le binding arme `Chaingun: "4"` est un adapter d'input, pas une logique parallele de tir.
+- renderer-three: sorties visibles attendues = view/world model `v_chain`/`g_chain`, muzzleflash/dlights `MZ_CHAINGUN1/2/3`, sons chaingun, impacts `TE_GUNSHOT`, particules/dlights client et frames joueur; elles sont consommees par snapshots, `local-gameplay-sync`, `cl_fx`, refresh entity/dlights et renderer-three.
+- Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `Chaingun_Fire` direct, projection, bruit joueur silencieux/non silencieux, sons windup/wind-down/loop, `MZ_CHAINGUN1/2/3`, degats/kick solo/deathmatch/quad, clamp ammo, ammo infini, no-ammo, boucle frame `21`, relache frame `14`, tables `pause_frames`/`fire_frames` et frames non-fire.
+- Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
+
 ## Prochain lot recommande
 
-Valider le bloc chaingun: `Chaingun_Fire`, variables locales `i`/`shots`/`start`/`offset`/`damage`/`kick` et doublons generes, puis `Weapon_Chaingun` avec `pause_frames` et `fire_frames`.
+Valider le bloc shotgun: `weapon_shotgun_fire`, variables locales `start`/`offset`/`damage`/`kick`, puis `Weapon_Shotgun` avec `pause_frames` et `fire_frames`.

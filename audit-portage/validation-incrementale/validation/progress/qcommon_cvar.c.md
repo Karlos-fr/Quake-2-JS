@@ -2,6 +2,10 @@
 
 ## Dernier lot valide
 
+- Lot du 2026-05-06: `Cvar_GetLatchedVars`, `Cvar_Command`, `Cvar_Set_f`.
+- Faux positifs locaux/appels internes traites: `var` de `Cvar_GetLatchedVars`, `v` de `Cvar_Command`, `c`/`flags` de `Cvar_Set_f`, appel interne `Cvar_Set` deja proprietaire ailleurs dans la matrice.
+- Corrections: aucune correction du port TS proprietaire requise; renforcement de `scripts/verify/quake2-cvar.ts` pour couvrir les branches console du lot.
+- Preuves ajoutees: application des latched vars, hooks `game`/autoexec, inspection et mutation par `Cvar_Command`, fallback `Cmd_ExecuteString`, usage/flag invalide de `Cvar_Set_f`, branches `u`/`s`, et sortie `set` via `Cvar_Init`.
 - Lot du 2026-05-06: `Cvar_Set2`, `Cvar_ForceSet`, `Cvar_Set`, `Cvar_FullSet`, `Cvar_SetValue`.
 - Faux positifs locaux/appels internes traites: `var` de `Cvar_Set2`, `var` de `Cvar_FullSet`, `val` de `Cvar_SetValue`, appels internes `Cvar_Get` et `Cvar_Set2` deja proprietaires ailleurs dans la matrice.
 - Corrections: `Cvar_Set2` emet maintenant les diagnostics `invalid info cvar value\n`, `%s is write protected.\n` et `%s will be changed for next game.\n` via `onPrint`; `Cvar_SetValue` formate les flottants comme le `%f` C a six decimales; les adapters ref web dans `apps/web/src/full-game.ts` et `apps/web/src/main.ts` appellent maintenant `Cvar_Set`/`Cvar_SetValue` portees au lieu de modifier les `cvar_t` directement.
@@ -25,6 +29,10 @@
 - `Cvar_Set2`/wrappers: comportement runtime integre via `createQcommonRuntime`, `Cvar_Init`, `Cmd_ExecuteString`, client/server/menu, game API et commandes serveur; les wrappers `Cvar_Set`/`Cvar_ForceSet`/`Cvar_SetValue` sont aussi utilises par client, serveur et menus.
 - `apps/web`: integre via `full-game.ts`, `main.ts`, `full-game-command-bridge.ts`, `local-client-controller.ts` et les flux full-game; les adapters ref web ne contournent plus la logique portee pour `Cvar_Set`/`Cvar_SetValue`.
 - `renderer-three`: consommation attendue via `ri.Cvar_Get`, `ri.Cvar_Set` et `ri.Cvar_SetValue` pour les cvars de rendu (`gl_*`, `vid_*`, `scr_drawall`, etc.); le lot ne produit pas directement de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene, mais il fournit les valeurs et mutations runtime lues par le renderer.
+- `Cvar_GetLatchedVars`: runtime integre via `SV_InitGame`; le changement `game` appelle les hooks TS qui remplacent `FS_SetGamedir`/`FS_ExecAutoexec`.
+- `Cvar_Command`/`Cvar_Set_f`: runtime integre via `Cmd_ExecuteString`, le fallback cvar de `createQcommonRuntime`, et `Cvar_Init` qui enregistre `set`.
+- `apps/web`: integre via les consoles full-game et config web; `full-game.ts` relie `onGameDirChange` a `FS_SetGamedir` puis `exec config.cfg`, et `onExecAutoexec` a `exec autoexec.cfg`.
+- `renderer-three`: aucune sortie visible directe nouvelle; impact indirect attendu par mutation des cvars de rendu (`r_*`, `gl_*`, `vid_*`, `hand`, etc.) consommees par les adapters renderer/ref. Pas de manque renderer observe pour ce lot.
 
 ## Tests de reference
 
@@ -36,8 +44,8 @@
 
 ## Prochain lot recommande
 
-- `Cvar_GetLatchedVars` avec local `var`, puis `Cvar_Command` avec local `v` si le lot reste coherent.
-- Verifier explicitement application des latched vars, `game`/gamedir, `userinfo_modified`, inspection/mutation par commande, runtime via `Cmd_ExecuteString`, `apps/web` via console full-game et renderer-three comme consommateur indirect des cvars.
+- `Cvar_WriteVariables` avec locaux `var`/`buffer`, puis `Cvar_List_f` avec locaux `var`/`i` si le lot reste coherent.
+- Verifier explicitement serialization archive/config, sortie console `cvarlist`, runtime via `writeconfig`/config web si applicable, et renderer-three comme consommateur indirect des cvars de rendu.
 
 ## Blocages
 

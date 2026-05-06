@@ -15,6 +15,7 @@ import {
   PMF_DUCKED,
   PMF_JUMP_HELD,
   PMF_ON_GROUND,
+  STEPSIZE,
   PM_CatagorizePosition,
   PM_AirMove,
   PM_CheckJump,
@@ -28,6 +29,7 @@ import {
   PM_WaterMove,
   PITCH,
   Pmove,
+  createPmlState,
   createPmoveContext,
   pmtype_t,
   type cplane_t,
@@ -50,6 +52,7 @@ main();
  * Purpose: Run focused `pmove` assertions around timer drop and spectator snap behavior.
  */
 function main(): void {
+  verifyPmoveFileScopeStateOwnershipAndDefaults();
   verifyTeleportTimerDecrements();
   verifyExpiredWaterjumpTimerClearsFlags();
   verifySnapFallbackUsesPackedPreviousOrigin();
@@ -71,6 +74,58 @@ function main(): void {
   verifyFrictionAppliesGroundDeceleration();
   verifyDeadMoveAppliesExtraGroundFriction();
   console.log("Verification pmove: OK");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert that the initial `pmove.c` constants, `pml_t` locals and movement tunables keep C defaults.
+ */
+function verifyPmoveFileScopeStateOwnershipAndDefaults(): void {
+  assertEqual(STEPSIZE, 18, "STEPSIZE constant mismatch");
+
+  const pml = createPmlState();
+  assertVector(pml.origin, [0, 0, 0], "pml.origin default");
+  assertVector(pml.velocity, [0, 0, 0], "pml.velocity default");
+  assertVector(pml.forward, [0, 0, 0], "pml.forward default");
+  assertVector(pml.right, [0, 0, 0], "pml.right default");
+  assertVector(pml.up, [0, 0, 0], "pml.up default");
+  assertEqual(pml.frametime, 0, "pml.frametime default");
+  if (pml.groundsurface !== null) {
+    throw new Error("pml.groundsurface default: attendu null");
+  }
+  assertVector(pml.groundplane.normal, [0, 0, 0], "pml.groundplane.normal default");
+  assertEqual(pml.groundcontents, 0, "pml.groundcontents default");
+  assertVector(pml.previous_origin, [0, 0, 0], "pml.previous_origin default");
+  assertBoolean(pml.ladder, false, "pml.ladder default");
+
+  const pm = createBasePmove();
+  pm.s.origin = [8, -16, 24];
+  pm.s.velocity = [80, -40, 16];
+  const context = createPmoveContext(pm);
+  if (context.pm !== pm) {
+    throw new Error("context owns the current pmove_t pointer equivalent: attendu meme reference");
+  }
+  assertEqual(context.pm_stopspeed, 100, "pm_stopspeed default");
+  assertEqual(context.pm_maxspeed, 300, "pm_maxspeed default");
+  assertEqual(context.pm_duckspeed, 100, "pm_duckspeed default");
+  assertEqual(context.pm_accelerate, 10, "pm_accelerate default");
+  assertEqual(context.pm_airaccelerate, 0, "pm_airaccelerate default");
+  assertEqual(context.pm_wateraccelerate, 10, "pm_wateraccelerate default");
+  assertEqual(context.pm_friction, 6, "pm_friction default");
+  assertEqual(context.pm_waterfriction, 1, "pm_waterfriction default");
+  assertEqual(context.pm_waterspeed, 400, "pm_waterspeed default");
+
+  PM_InitLocalState(context, 0.05);
+  assertVector(context.pml.origin, [1, -2, 3], "PM_InitLocalState origin scale");
+  assertVector(context.pml.velocity, [10, -5, 2], "PM_InitLocalState velocity scale");
+  assertVector(context.pml.previous_origin, [8, -16, 24], "PM_InitLocalState previous_origin packed copy");
+  assertEqual(context.pml.frametime, 0.05, "PM_InitLocalState frametime");
+
+  context.pml.ladder = true;
+  context.pml.groundcontents = CONTENTS_SOLID;
+  Pmove(context, { allowSnapPosition: false });
+  assertBoolean(context.pml.ladder, false, "Pmove zeroes pml.ladder before each run");
+  assertEqual(context.pml.groundcontents, 0, "Pmove zeroes pml.groundcontents before each run");
 }
 
 /**
@@ -775,6 +830,18 @@ function assertEqual(actual: number, expected: number, label: string): void {
 function assertBoolean(actual: boolean, expected: boolean, label: string): void {
   if (actual !== expected) {
     throw new Error(`${label}: attendu ${expected}, obtenu ${actual}`);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Assert one vec3 equality in the harness output.
+ */
+function assertVector(actual: vec3_t, expected: vec3_t, label: string): void {
+  for (let index = 0; index < 3; index += 1) {
+    if (actual[index] !== expected[index]) {
+      throw new Error(`${label}[${index}]: attendu ${expected[index]}, obtenu ${actual[index]}`);
+    }
   }
 }
 

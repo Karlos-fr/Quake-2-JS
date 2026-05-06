@@ -68,11 +68,16 @@ export const MIN_STEP_NORMAL = 0.7;
 export const MAX_CLIP_PLANES = 5;
 
 /**
- * Category: New
- * Purpose: Hold the mutable locals that `pmove.c` stores in the original `pml_t` file-scope struct.
+ * Original name: pml_t
+ * Source: qcommon/pmove.c
+ * Category: Ported
+ * Fidelity level: Strict
  *
- * Constraints:
- * - Must preserve the original mix of float local state and packed-origin fallback data across one pmove execution.
+ * Behavior:
+ * - Holds the mutable locals that `pmove.c` stores in the original `pml_t` file-scope struct.
+ *
+ * Porting notes:
+ * - Preserves the original mix of float local state and packed-origin fallback data across one pmove execution.
  */
 export interface pml_t {
   origin: vec3_t;
@@ -89,6 +94,8 @@ export interface pml_t {
 }
 
 /**
+ * Original name: N/A
+ * Source: N/A (TypeScript ownership wrapper for qcommon/pmove.c file-scope globals)
  * Category: New
  * Purpose: Gather the original file-scope pmove globals and tunables into an explicit runtime object.
  *

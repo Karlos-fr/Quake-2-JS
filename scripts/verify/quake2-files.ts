@@ -14,6 +14,7 @@ import { strict as assert } from "node:assert";
 
 import {
   Developer_searchpath,
+  FS_AddGameDirectory,
   FS_Dir_f,
   FS_ExecAutoexec,
   FS_FreeFile,
@@ -21,7 +22,6 @@ import {
   FS_Link,
   FS_ListFiles,
   FS_LoadFile,
-  FS_LoadPackFile,
   FS_NextPath,
   FS_Path_f,
   FS_Read,
@@ -35,20 +35,27 @@ import {
 } from "../../packages/filesystem/src/index.js";
 
 const filesystem = createVirtualFilesystem();
-
-mountDirectory(filesystem, "baseq2", {
-  "maps/base1.bsp": encodeAscii("base-map"),
-  "configs/default.cfg": encodeAscii("seta skill 1"),
-  "autoexec.cfg": encodeAscii("echo base"),
-  "pics/colormap.pcx": encodeAscii("pcx")
-});
-markBaseSearchPaths(filesystem);
-
-const pakBytes = createPakBytes([
+const basePakBytes = createPakBytes([
+  { name: "maps/base1.bsp", bytes: encodeAscii("base-pak-map") },
   { name: "maps/pakmap.bsp", bytes: encodeAscii("pak-map") },
   { name: "textures/wall.wal", bytes: encodeAscii("wal") }
 ]);
-FS_LoadPackFile(filesystem, pakBytes, "baseq2/pak0.pak");
+const basePak1Bytes = createPakBytes([
+  { name: "maps/base1.bsp", bytes: encodeAscii("base-pak1-map") }
+]);
+
+const addedBase = FS_AddGameDirectory(filesystem, "baseq2", {
+  "maps/base1.bsp": encodeAscii("base-map"),
+  "configs/default.cfg": encodeAscii("seta skill 1"),
+  "autoexec.cfg": encodeAscii("echo base"),
+  "pics/colormap.pcx": encodeAscii("pcx"),
+  "pak0.pak": basePakBytes,
+  "pak1.pak": basePak1Bytes
+});
+assert.equal(addedBase.packs.length, 2, "FS_AddGameDirectory should load numbered pak files");
+assert.equal(FS_Gamedir(filesystem), "baseq2", "FS_AddGameDirectory gamedir mismatch");
+assert.equal(decodeAscii(FS_LoadFile(filesystem, "maps/base1.bsp") ?? new Uint8Array()), "base-pak1-map", "FS_AddGameDirectory higher pak should override lower pak and loose file");
+markBaseSearchPaths(filesystem);
 
 mountDirectory(filesystem, "rogue", {
   "maps/base1.bsp": encodeAscii("rogue-override"),
@@ -106,7 +113,8 @@ const pathLines = FS_Path_f(filesystem);
 assert.equal(pathLines.includes("Current search path:"), true, "FS_Path_f header mismatch");
 assert.equal(pathLines.includes("----------"), true, "FS_Path_f base separator mismatch");
 assert.equal(pathLines.includes("rogue"), true, "FS_Path_f rogue directory mismatch");
-assert.equal(pathLines.includes("baseq2/pak0.pak (2 files)"), true, "FS_Path_f pak listing mismatch");
+assert.equal(pathLines.includes("baseq2/pak1.pak (1 files)"), true, "FS_Path_f pak1 listing mismatch");
+assert.equal(pathLines.includes("baseq2/pak0.pak (3 files)"), true, "FS_Path_f pak listing mismatch");
 assert.equal(pathLines.includes("alias : baseq2/configs"), true, "FS_Path_f link listing mismatch");
 
 assert.equal(FS_NextPath(filesystem, null), "rogue", "FS_NextPath first path mismatch");

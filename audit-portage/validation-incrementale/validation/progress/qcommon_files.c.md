@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/qcommon/files.c
 
 - Statut: En cours
-- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`, puis `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile` et `FS_LoadPackFile`.
-- Prochain lot recommande: `FS_AddGameDirectory` avec ses locaux `i`, `pak`, `pakfile`, puis `FS_Gamedir` et `FS_ExecAutoexec` si le lot reste coherent.
+- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`, puis `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile`, `FS_LoadPackFile`, `FS_AddGameDirectory`, `FS_Gamedir` et `FS_ExecAutoexec`.
+- Prochain lot recommande: `FS_SetGamedir` et ses effets de bord (`fs_basedir`, `fs_cddir`, `fs_gamedirvar` si le lot reste coherent), puis `FS_Link_f` dans une session separee.
 - Tests de reference:
   - `npm run verify:files`
   - `npm run verify:web-config-gamedir`
@@ -19,6 +19,16 @@
   - `apps/web/src/full-game.ts` utilise maintenant `readMountedFile(...) !== undefined` pour le test d'existence, afin de ne pas considerer un miss VFS comme present.
   - `apps/web/src/full-game-server-host.ts` propage maintenant `fromPak` depuis `MountedVirtualFile.pak` au lieu de forcer tous les downloads en provenance de PAK.
   - `FS_LoadFile` retourne maintenant un nouveau buffer comme le `Z_Malloc` original, et `FS_Read`/`MAX_READ` ont ete ajoutes pour couvrir la copie par blocs.
+- Lot du 2026-05-06 - `FS_AddGameDirectory`:
+  - `FS_AddGameDirectory` ajoute comme port officiel dans `packages/filesystem/src/files.ts`; `mountDirectory` est desormais documente comme adapter de montage loose manuel.
+  - Comparaison C vs TS: `fs_gamedir` mis a jour, repertoire ajoute en tete, puis `pak0.pak` a `pak9.pak` scannes depuis le contenu in-memory et inseres en tete via `FS_LoadPackFile`; ordre source prouve par `pak1 > pak0 > repertoire`.
+  - Locaux `i`, `pak`, `pakfile`, `dir`, `name` marques `Non applicable`: ils sont des variables locales C sans entite TS proprietaire; `pak` est represente par le tableau retourne `packs`.
+  - `FS_Gamedir` valide: lecture stricte de `filesystem.fs_gamedir`, utilisee par serveur/client/web/config/save/renderer host.
+  - `FS_ExecAutoexec` valide: retourne la disponibilite de `autoexec.cfg`; l'injection `Cbuf_AddText("exec autoexec.cfg")` reste branchee dans les hooks cvar et le bootstrap full-game.
+  - Runtime: le flux est atteint par `createMountedFilesystem`, `readMountedFile`, `FS_LoadFile`, les hooks `game`/autoexec et les adapters serveur/client.
+  - `apps/web`: `full-game.ts` utilise maintenant `FS_AddGameDirectory` pour monter `baseq2` avec `pak0.pak` et les loose videos, au lieu d'inverser l'ordre avec deux primitives.
+  - `renderer-three`: integration indirecte attendue et verifiee via `readMountedFile` pour BSP, modeles, images, palettes, sky, beams/particules et scene; aucune sortie visible directe nouvelle.
+  - Tests lances: `npm run verify:files`, `npm run verify:web-config-gamedir`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run golden:pak0`, `npm run typecheck`.
 - Lot du 2026-05-06:
   - `CDAudio_Stop` retire de la matrice `qcommon/files.c`: declaration externe appelee par `FS_Read`, port proprietaire dans `client/cdaudio.*`.
   - `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile` et `FS_LoadPackFile` compares C vs TS, ownership et doublons verifies.

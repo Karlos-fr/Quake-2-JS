@@ -13,6 +13,7 @@ import {
   ChangeWeapon,
   Blaster_Fire,
   CENTER_HANDED,
+  Chaingun_Fire,
   DEFAULT_BULLET_HSPREAD,
   DEFAULT_BULLET_VSPREAD,
   Drop_Weapon,
@@ -56,7 +57,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, DF_WEAPONS_STAY, EF_BLASTER, EF_HYPERBLASTER, MZ_BFG, MZ_BLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET, MZ_SILENCED, PMF_DUCKED } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, CS_SOUNDS, DF_INFINITE_AMMO, DF_WEAPONS_STAY, EF_BLASTER, EF_HYPERBLASTER, MZ_BFG, MZ_BLASTER, MZ_CHAINGUN1, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET, MZ_SILENCED, PMF_DUCKED } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -408,9 +409,12 @@ function verifyChaingunFireParity(): void {
   const player = createPlayer(runtime);
   const chaingun = requireItem("Chaingun");
   const bullets = requireItem("Bullets");
-  const shots: Array<{ damage: number; kick: number; hspread: number; vspread: number; mod: number }> = [];
+  const shots: Array<{ start: readonly number[]; aimdir: readonly number[]; damage: number; kick: number; hspread: number; vspread: number; mod: number }> = [];
   const flashes: number[] = [];
+  const sounds: Array<{ soundPath: string; channel: number }> = [];
 
+  player.s.origin = [100, 200, 300];
+  player.origin = [100, 200, 300];
   player.s.modelindex = 255;
   player.client!.pers.weapon = chaingun;
   player.client!.ammo_index = bullets.index;
@@ -418,13 +422,15 @@ function verifyChaingunFireParity(): void {
   player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
   player.client!.ps.gunframe = 9;
   player.client!.buttons = BUTTON_ATTACK;
+  player.client!.v_angle = [0, 0, 0];
   player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.silencer_shots = 1;
   player.client!.pers.inventory[bullets.index] = 5;
 
   withMathRandom(Array(10).fill(0.5), () => {
     Weapon_Chaingun(player, runtime, {
-      fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
-        shots.push({ damage, kick, hspread, vspread, mod });
+      fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
       },
       emitPlayerMuzzleFlash: (_ent, weapon) => {
         flashes.push(weapon);
@@ -438,23 +444,30 @@ function verifyChaingunFireParity(): void {
   assertNumber(shots[0].hspread, DEFAULT_BULLET_HSPREAD, "Chaingun horizontal spread should match C");
   assertNumber(shots[0].vspread, DEFAULT_BULLET_VSPREAD, "Chaingun vertical spread should match C");
   assertNumber(shots[0].mod, MOD_CHAINGUN, "Chaingun means-of-death should match C");
-  assertNumber(flashes[0], MZ_CHAINGUN2, "Chaingun should emit MZ_CHAINGUN2 for two shots");
+  assertVec3Close(shots[0].start, [100, 193, 314], "Chaingun first bullet start should match C randomized offset", 1e-3);
+  assertVec3Close(shots[0].aimdir, [1, 0, 0], "Chaingun aimdir should come from v_angle", 1e-5);
+  assertNumber(flashes[0], MZ_CHAINGUN2 | MZ_SILENCED, "Chaingun should emit MZ_CHAINGUN2 plus silenced bit for two shots");
   assertNumber(player.client!.ps.gunframe, 10, "Chaingun firing should advance gunframe 9 to 10");
   assertNumber(player.client!.pers.inventory[bullets.index], 3, "Chaingun should consume two bullets");
   assertNumber(player.client!.kick_origin[0], cCrandom(0.5) * 0.35, "Chaingun kick origin should use g_local.crandom");
   assertNumber(player.client!.kick_angles[0], cCrandom(0.5) * 0.7, "Chaingun kick angle should use g_local.crandom");
+  assertNumber(player.s.frame, playerFrames.FRAME_attack1, "Chaingun standing animation frame should match C parity expression");
+  assertNumber(player.client!.anim_end, playerFrames.FRAME_attack8, "Chaingun standing animation end should match C");
+  assertNumber(player.client!.silencer_shots, 0, "Chaingun PlayerNoise should consume one silencer shot");
+  assertString(runtime.configstrings.get(CS_SOUNDS + player.client!.weapon_sound) ?? "", "weapons/chngnl1a.wav", "Chaingun active fire should set looping chain sound");
 
   runtime.deathmatch = true;
   player.client!.quad_framenum = 0;
   player.client!.ps.gunframe = 20;
+  player.client!.silencer_shots = 0;
   player.client!.pers.inventory[bullets.index] = 5;
   shots.length = 0;
   flashes.length = 0;
 
   withMathRandom(Array(12).fill(0.5), () => {
     Weapon_Chaingun(player, runtime, {
-      fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
-        shots.push({ damage, kick, hspread, vspread, mod });
+      fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
       },
       emitPlayerMuzzleFlash: (_ent, weapon) => {
         flashes.push(weapon);
@@ -474,8 +487,8 @@ function verifyChaingunFireParity(): void {
   flashes.length = 0;
 
   Weapon_Chaingun(player, runtime, {
-    fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
-      shots.push({ damage, kick, hspread, vspread, mod });
+    fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
     },
     emitPlayerMuzzleFlash: (_ent, weapon) => {
       flashes.push(weapon);
@@ -486,6 +499,133 @@ function verifyChaingunFireParity(): void {
   assertNumber(player.client!.weapon_sound, 0, "Chaingun wind-down branch should clear looping weapon sound");
   assertNumber(shots.length, 0, "Chaingun wind-down branch should not fire bullets");
   assertNumber(flashes.length, 0, "Chaingun wind-down branch should not emit a muzzleflash");
+
+  player.client!.ps.gunframe = 21;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.pers.inventory[bullets.index] = 2;
+  shots.length = 0;
+  flashes.length = 0;
+
+  withMathRandom(Array(10).fill(0.5), () => {
+    Chaingun_Fire(player, runtime, {
+      fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
+      },
+      emitPlayerMuzzleFlash: (_ent, weapon) => {
+        flashes.push(weapon);
+      }
+    });
+  });
+
+  assertNumber(player.client!.ps.gunframe, 15, "Chaingun_Fire should loop frame 21 back to 15 while attack and ammo remain");
+  assertNumber(shots.length, 2, "Chaingun_Fire should clamp shot count to available ammo");
+  assertNumber(flashes[0], MZ_CHAINGUN2, "Chaingun_Fire should emit MZ_CHAINGUN2 when ammo clamps full spin to two shots");
+  assertNumber(player.client!.pers.inventory[bullets.index], 0, "Chaingun_Fire should consume the clamped shot count");
+
+  runtime.deathmatch = false;
+  runtime.dmflags |= DF_INFINITE_AMMO;
+  player.client!.ps.gunframe = 5;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.quad_framenum = 0;
+  player.client!.pers.inventory[bullets.index] = 1;
+  shots.length = 0;
+  flashes.length = 0;
+  sounds.length = 0;
+
+  withMathRandom(Array(8).fill(0.5), () => {
+    Chaingun_Fire(player, runtime, {
+      fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
+      },
+      emitPlayerMuzzleFlash: (_ent, weapon) => {
+        flashes.push(weapon);
+      },
+      playWeaponSound: (_ent, soundPath, channel) => {
+        sounds.push({ soundPath, channel });
+      }
+    });
+  });
+
+  assertString(sounds[0]?.soundPath ?? "", "weapons/chngnu1a.wav", "Chaingun frame 5 should play the original windup sound");
+  assertNumber(sounds[0]?.channel ?? -1, CHAN_AUTO, "Chaingun windup sound should use CHAN_AUTO");
+  assertNumber(shots.length, 1, "Chaingun frame 5 should fire one bullet");
+  assertNumber(shots[0].damage, 8, "Chaingun_Fire direct solo damage should match C");
+  assertNumber(shots[0].kick, 2, "Chaingun_Fire direct solo kick should match C");
+  assertNumber(flashes[0], MZ_CHAINGUN1, "Chaingun one-shot frame should emit MZ_CHAINGUN1");
+  assertVec3Close(player.mynoise!.s.origin, [100, 193, 314], "Chaingun unsilenced PlayerNoise should use the last bullet start", 1e-3);
+  assertNumber(player.client!.pers.inventory[bullets.index], 1, "DF_INFINITE_AMMO should prevent chaingun bullet consumption");
+
+  runtime.dmflags = 0;
+  player.client!.ps.gunframe = 21;
+  player.client!.buttons = 0;
+  player.client!.pers.inventory[bullets.index] = 1;
+  shots.length = 0;
+  sounds.length = 0;
+
+  Chaingun_Fire(player, runtime, {
+    fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
+    },
+    playWeaponSound: (_ent, soundPath, channel) => {
+      sounds.push({ soundPath, channel });
+    }
+  });
+
+  assertNumber(player.client!.ps.gunframe, 22, "Chaingun release at frame 21 should advance to wind-down frame 22");
+  assertNumber(player.client!.weapon_sound, 0, "Chaingun wind-down frame 22 should clear the looping sound");
+  assertString(sounds[0]?.soundPath ?? "", "weapons/chngnd1a.wav", "Chaingun frame 22 should play the original wind-down sound");
+  assertNumber(sounds[0]?.channel ?? -1, CHAN_AUTO, "Chaingun wind-down sound should use CHAN_AUTO");
+  assertNumber(shots.length, 1, "Chaingun frame 22 branch should still fire the final clamped shot");
+
+  player.client!.pers.inventory[bullets.index] = 0;
+  player.client!.ps.gunframe = 10;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.newweapon = null;
+  player.client!.pers.inventory[bullets.index] = 0;
+  player.client!.pers.inventory[requireItem("Shells").index] = 10;
+  shots.length = 0;
+  sounds.length = 0;
+
+  Chaingun_Fire(player, runtime, {
+    fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
+    },
+    playWeaponSound: (_ent, soundPath, channel) => {
+      sounds.push({ soundPath, channel });
+    }
+  });
+
+  assertString(sounds[0]?.soundPath ?? "", "weapons/noammo.wav", "Chaingun no-ammo path should play the original sound");
+  assertNumber(sounds[0]?.channel ?? -1, CHAN_VOICE, "Chaingun no-ammo path should use CHAN_VOICE");
+  assertString(player.client!.newweapon?.pickupName ?? "", "Shotgun", "Chaingun no-ammo should select the next available weapon");
+  assertNumber(shots.length, 0, "Chaingun no-ammo branch should not fire bullets");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.ps.gunframe = 38;
+  player.client!.buttons = 0;
+  player.client!.latched_buttons = 0;
+  player.client!.newweapon = null;
+  shots.length = 0;
+  withMathRandom([0.1], () => {
+    Weapon_Chaingun(player, runtime, {
+      fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
+      }
+    });
+  });
+  assertNumber(player.client!.ps.gunframe, 38, "Weapon_Chaingun pause_frames should include frame 38");
+  assertNumber(shots.length, 0, "Weapon_Chaingun pause frame should not fire while idling");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 22;
+  shots.length = 0;
+  Weapon_Chaingun(player, runtime, {
+    fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
+    }
+  });
+  assertNumber(shots.length, 0, "Weapon_Chaingun fire_frames should stop at frame 21");
+  assertNumber(player.client!.ps.gunframe, 23, "Weapon_Chaingun non-fire frame should advance without firing");
 }
 
 function verifyRocketLauncherFireParity(): void {

@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: bloc collision/surfaces `CONTENTS_SOLID` a `CONTENTS_LADDER`, puis `SURF_LIGHT` a `SURF_NODRAW`.
+- Entites validees: `CONTENTS_SOLID`, `CONTENTS_WINDOW`, `CONTENTS_AUX`, `CONTENTS_LAVA`, `CONTENTS_SLIME`, `CONTENTS_WATER`, `CONTENTS_MIST`, `LAST_VISIBLE_CONTENTS`, `CONTENTS_AREAPORTAL`, `CONTENTS_PLAYERCLIP`, `CONTENTS_MONSTERCLIP`, `CONTENTS_CURRENT_0`, `CONTENTS_CURRENT_90`, `CONTENTS_CURRENT_180`, `CONTENTS_CURRENT_270`, `CONTENTS_CURRENT_UP`, `CONTENTS_CURRENT_DOWN`, `CONTENTS_ORIGIN`, `CONTENTS_MONSTER`, `CONTENTS_DEADMONSTER`, `CONTENTS_DETAIL`, `CONTENTS_TRANSLUCENT`, `CONTENTS_LADDER`, `SURF_LIGHT`, `SURF_SLICK`, `SURF_SKY`, `SURF_WARP`, `SURF_TRANS33`, `SURF_TRANS66`, `SURF_FLOWING`, `SURF_NODRAW`.
+- Ownership: constantes proprietaires dans `packages/qcommon/src/q_shared.ts`; doublon numerique justifie dans `packages/formats/src/qfiles.ts` parce que `qcommon/qfiles.h` redeclare les memes flags pour le parsing BSP/renderer.
+- Preuves: comparaison numerique C/H vs TS et coherence `qfiles.ts` ajoutees dans `scripts/verify/quake2-q-shared-header.ts`; tests collision, PMove, qfiles et renderer lances pendant la session.
+- Commentaires d'en-tete: non applicable, lot compose de macros/constantes sans fonction portee.
 - 2026-05-06: `CVAR`, `CVAR_ARCHIVE`, `CVAR_USERINFO`, `CVAR_SERVERINFO`, `CVAR_NOSET`, `CVAR_LATCH` et `cvar_s`, sans modifier `packages/qcommon/src/cvar.ts` parce que `qcommon/cvar.c` est traite en parallele.
 - Entites validees: `CVAR_ARCHIVE`, `CVAR_USERINFO`, `CVAR_SERVERINFO`, `CVAR_NOSET`, `CVAR_LATCH`, `cvar_s`.
 - Entite non applicable: `CVAR`, garde de declaration C sans symbole runtime TS separe.
@@ -32,6 +37,7 @@
 
 ## Corrections
 
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `CONTENTS_*` de `CONTENTS_SOLID` a `CONTENTS_LADDER`, `SURF_*` de `SURF_LIGHT` a `SURF_NODRAW`, `LAST_VISIBLE_CONTENTS`, et la coherence avec le doublon `packages/formats/src/qfiles.ts`.
 - `Com_Printf` dans `packages/qcommon/src/common.ts` est maintenant documente comme port de `qcommon/common.c` declare par `game/q_shared.h`, accepte les arguments variadiques via `va`, conserve le chemin redirect et delegue l'affichage normal au sink host.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `Com_Printf` sink/format et redirection/flush.
 - `Sys_Error` dans `packages/qcommon/src/system.ts` accepte maintenant les arguments variadiques `%s`, `%d`, `%i` et `%f` avant de deleguer au hook fatal, comme les implementations C passent par `vsprintf`.
@@ -47,6 +53,14 @@
 
 ## Tests de reference
 
+- `npm run verify:q-shared:header` OK pour `CONTENTS_*`/`SURF_*`.
+- `npm run verify:qfiles` OK.
+- `npm run verify:pmove` OK.
+- `npx tsx ./scripts/verify/quake2-cmodel.ts` OK.
+- `npx tsx ./scripts/verify/quake2-collision-phase1.ts` OK.
+- `npm run verify:gl-rsurf` OK.
+- `npm run verify:full-game:three-renderer` OK.
+- `npm run typecheck` OK.
 - `npm run verify:q-shared:header` OK pour `CVAR_*`.
 - `npm run verify:cvar` OK pour le runtime `cvar_t`.
 - `npm run verify:full-game:server-host` OK pour l'integration web/server-host.
@@ -74,6 +88,10 @@
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `CONTENTS_*`/`SURF_*` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par l'entrypoint qcommon; le doublon `formats/qfiles.ts` reste aligne pour les donnees BSP chargees par collision et rendu.
+- Runtime: integre dans les traces collision (`CM_*`, `SV_Trace`, `gi.trace`), PMove (`CONTENTS_CURRENT_*`, `CONTENTS_LADDER`, `SURF_SLICK`), gameplay armes/eau/lave/slime et chargement BSP.
+- `apps/web`: integration attendue et presente via les flux full-game/server-host/local-client qui consomment collision, PMove, assets BSP et surfaces sans logique parallele masquante.
+- `renderer-three`: integration attendue et presente pour contenus solides/leafs, surfaces sky/warp/translucides/flowing et lightmaps via `packages/formats`, `gl-model-loader`, `gl_rsurf`, `gl_light`, `gl_warp` et `gl-world-scene-adapter`; aucune sortie visible manquante detectee pour ce lot.
 - Le bloc `CVAR_*`/`cvar_s` est expose par `packages/qcommon/src/index.ts` et consomme par le runtime qcommon, game, client, server, `apps/web` et `renderer-three`.
 - Runtime: integre via `createCvarRuntime`, `Cvar_Init`, `Cvar_Command`, `Cvar_Get`, `Cvar_Set*`, `Cvar_Variable*` et les adapters `gi.cvar`/`refimport_t.Cvar_Get`; les flags controlent archive, userinfo, serverinfo, protection et latch comme dans le C.
 - `apps/web`: integration attendue et presente dans les flux full-game/server-host/local-client/config, qui creent et lisent les cvars par le runtime porte sans logique parallele masquante.
@@ -105,4 +123,4 @@
 
 ## Prochain lot recommande
 
-- Reprendre les lignes generees des champs de `cvar_s` (`name`, `string`, `latched_string`, `flags`, `modified`, `value`) ou les marquer comme champs couverts par `cvar_t`, puis enchainer sur le bloc `CONTENTS_*` si le coordinateur prefere avancer dans `q_shared.ts`.
+- Traiter le bloc `MASK_*` (`MASK_ALL` a `MASK_CURRENT`) maintenant que `CONTENTS_*` est valide; laisser les champs generes de `cvar_s` a l'agent `qcommon/cvar.c` ou a une session dediee sans modifier `cvar.ts`.

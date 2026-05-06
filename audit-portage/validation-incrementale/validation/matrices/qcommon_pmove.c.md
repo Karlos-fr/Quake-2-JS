@@ -10,25 +10,25 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/pmove.c` | macro | `STEPSIZE` | `packages/qcommon/src/pmove.ts` | `STEPSIZE` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | struct | `pml_t` | `packages/qcommon/src/pmove.ts` | `pml_t` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `origin` | `packages/qcommon/src/pmove.ts` | `origin` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `velocity` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `frametime` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `groundcontents` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `previous_origin` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `ladder` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pml` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm_stopspeed` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm_maxspeed` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm_duckspeed` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm_accelerate` | `packages/qcommon/src/pmove.ts` | `PM_Accelerate` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm_airaccelerate` | `packages/qcommon/src/pmove.ts` | `PM_AirAccelerate` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm_wateraccelerate` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm_friction` | `packages/qcommon/src/pmove.ts` | `PM_Friction` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm_waterfriction` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `pm_waterspeed` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | macro | `STEPSIZE` | `packages/qcommon/src/pmove.ts` | `STEPSIZE` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | struct | `pml_t` | `packages/qcommon/src/pmove.ts` | `pml_t` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `origin` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pml.origin` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `velocity` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pml.velocity` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `frametime` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pml.frametime` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `groundcontents` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pml.groundcontents` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `previous_origin` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pml.previous_origin` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `ladder` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pml.ladder` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pml` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pml` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm_stopspeed` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_stopspeed` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm_maxspeed` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_maxspeed` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm_duckspeed` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_duckspeed` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm_accelerate` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_accelerate` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm_airaccelerate` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_airaccelerate` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm_wateraccelerate` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_wateraccelerate` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm_friction` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_friction` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm_waterfriction` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_waterfriction` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `pm_waterspeed` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_waterspeed` | Valide | Partiel |  |
 | `Quake-2-master/qcommon/pmove.c` | macro | `STOP_EPSILON` | `packages/qcommon/src/pmove.ts` | `STOP_EPSILON` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_ClipVelocity` | `packages/qcommon/src/pmove.ts` | `PM_ClipVelocity` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `backoff` | `packages/qcommon/src/pmove.ts` | `backoff` | A verifier | A tester |  |
