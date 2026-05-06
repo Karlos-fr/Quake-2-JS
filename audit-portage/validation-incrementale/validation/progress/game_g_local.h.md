@@ -1737,7 +1737,26 @@
 - Preuves rattachees: `npm run verify:m-boss32`, `npm run verify:m-boss32:source-parity`, `npm run verify:m-boss32:header`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
 - Runtime/apps-web/renderer-three: le dernier consommateur ferme est branche via `MakronToss -> MakronSpawn -> SP_monster_makron`, `monsterinfo.checkattack`, `G_RunFrame` et les snapshots/refresh. Les sorties visibles attendues (modele Makron, frames, projectiles/temp entities et scene) restent consommees par le flux client/renderer generique; aucun appel direct renderer au helper RNG n'est attendu.
 
-- Continuer avec le prochain lot de `g_local.h` hors RNG, en reprenant les globals suivants de la matrice (`maxentities`, `deathmatch`, `coop`, `dmflags`, `skill`) seulement si le coordinateur veut poursuivre ce fichier.
+- 2026-05-06: gros lot hors RNG des globals cvars `g_local.h`: `maxentities`, `deathmatch`, `coop`, `dmflags`, `skill`, puis voisins coherents `fraglimit`, `timelimit`, `password`, `spectator_password`, `g_select_empty`, `dedicated`, `filterban`, `sv_gravity`, `sv_maxvelocity`.
+- Verdict: `Valide` pour les 14 globals du lot.
+- Source H/C comparee:
+  - `g_local.h` declare les `extern cvar_t *` du lot.
+  - `g_save.c::InitGame` definit les cvars avec les defaults/flags originaux: `maxentities=1024/CVAR_LATCH`, `deathmatch=0/CVAR_LATCH`, `coop=0/CVAR_LATCH`, `dmflags=0/CVAR_SERVERINFO`, `skill=1/CVAR_LATCH`, `fraglimit=0/CVAR_SERVERINFO`, `timelimit=0/CVAR_SERVERINFO`, `password="" /CVAR_USERINFO`, `spectator_password="" /CVAR_USERINFO`, `g_select_empty=0/CVAR_ARCHIVE`, `dedicated=0/CVAR_NOSET`, `filterban=1/0`, `sv_gravity=800/0`, `sv_maxvelocity=2000/0`.
+  - `g_main.c::CheckDMRules`, `G_RunFrame`, `ExitLevel` et les autres fichiers game consomment ces handles via les flux deathmatch/coop/skill, limites, connexion, filtres, selection d'arme et physique serveur.
+- Cibles TS verifiees:
+  - `packages/game/src/g_main.ts`: `GameMainCvars`, `InitGame`, `applyMainCvarsToRuntime`, `CheckDMRules`, gates `ClientConnect`.
+  - `packages/game/src/g_spawn.ts`: `SpawnEntities` resynchronise les cvars de gameplay, force `skill` au niveau floore 0..3 et publie la statusbar selon `deathmatch`; `worldspawn.gravity` relaye `sv_gravity`.
+  - `packages/game/src/runtime.ts`: miroirs runtime `maxentities`, `deathmatch`, `coop`, `dmflags`, `skill`, `g_select_empty`, `gravity`, `maxvelocity`.
+- Runtime: integration attendue et branchee via `GetGameApi.Init -> InitGame`, `GetGameApi.SpawnEntities -> SpawnEntities`, `G_RunFrame -> CheckDMRules`, `ClientConnect`, `ServerCommand/SV_FilterPacket`, selection arme, spawns, items, AI/monstres, p_client/p_hud/p_weapon/g_phys. `maxentities` borne les edicts via `G_Spawn`; `fraglimit`/`timelimit` declenchent `EndDMLevel`; `password`/`spectator_password`/`filterban` bloquent les connexions; `sv_gravity`/`sv_maxvelocity` alimentent la physique runtime.
+- apps/web: integration attendue via full-game/local host et command bridge. `apps/web` cree/force les cvars de lancement (`deathmatch`, `coop`, `skill`) puis laisse le runtime porte consommer les cvars; aucune logique parallele web ne remplace les regles, connexions, spawns, HUD ou physique de ce lot. `verify:full-game:server-host`, `verify:web-render-order` et `verify:local-gameplay-sync` OK.
+- renderer-three: aucune consommation directe des cvar handles attendue. Les sorties visibles produites en aval sont selection de statusbar/HUD, spawns de joueurs/items/monstres, camera/intermission, entites, modeles, frames, projectiles/temp entities et scene; elles passent par snapshots/client/refresh et sont consommees par Three. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: `GameMainCvars`, `InitGame`, `SpawnEntities`, `CheckDMRules`, `ClientConnect` et les adapters runtime consultes ont des commentaires d'en-tete conformes ou adapteurs `Category: New` explicites; pas de fonction portee nouvelle ajoutee.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-main.ts`: assertions ciblees ajoutees pour prouver le miroir runtime de `deathmatch`, `coop`, `dmflags`, `skill`, `maxentities`, `g_select_empty`, `sv_gravity`, `sv_maxvelocity`, avec isolation des cvars de savegame.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: les 14 lignes du lot passent a `Valide`, et leur cible proprietaire est corrigee vers `packages/game/src/g_main.ts` / `GameMainCvars.*`.
+- Tests: `npm run verify:g-main` OK; `npm run verify:g-spawn` OK; `npm run verify:g-local:header` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: continuer les globals cvars voisins `sv_rollspeed`, `sv_rollangle`, puis les cvars vue/arme `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`; inclure `sv_cheats`, `maxclients`, `maxspectators`, `flood_msgs`, `flood_persecond`, `flood_waitdelay`, `sv_maplist` seulement si le lot reste coherent.
 
 ## Blocages
 

@@ -196,15 +196,27 @@ assert.equal(cvars.get("bob_roll")?.flags, 0, "bob_roll flags mismatch");
 assert.equal(api.edicts[0]?.classname, "worldspawn", "g_edicts export must expose the runtime edict array");
 
 const cvarMirrorContext = createGameMainContext(imports);
+cvars.set("deathmatch", createCvar("deathmatch", "1", CVAR_LATCH));
+cvars.set("coop", createCvar("coop", "1", CVAR_LATCH));
+cvars.set("dmflags", createCvar("dmflags", String(DF_SAME_LEVEL), CVAR_SERVERINFO));
+cvars.set("skill", createCvar("skill", "3", CVAR_LATCH));
+cvars.set("maxclients", createCvar("maxclients", "3", CVAR_SERVERINFO | CVAR_LATCH));
+cvars.set("maxentities", createCvar("maxentities", "12", CVAR_LATCH));
 cvars.set("g_select_empty", createCvar("g_select_empty", "1", CVAR_ARCHIVE));
 cvars.set("sv_gravity", createCvar("sv_gravity", "600"));
+cvars.set("sv_maxvelocity", createCvar("sv_maxvelocity", "1500"));
 InitGame(cvarMirrorContext);
+assert.equal(cvarMirrorContext.runtime.deathmatch, true, "InitGame must mirror deathmatch to the gameplay runtime");
+assert.equal(cvarMirrorContext.runtime.coop, true, "InitGame must mirror coop to the gameplay runtime");
+assert.equal(cvarMirrorContext.runtime.dmflags, DF_SAME_LEVEL, "InitGame must mirror dmflags to the gameplay runtime");
+assert.equal(cvarMirrorContext.runtime.skill, 3, "InitGame must mirror skill to the gameplay runtime");
 assert.equal(cvarMirrorContext.runtime.g_select_empty, true, "InitGame must mirror g_select_empty to the gameplay runtime");
 assert.equal(cvarMirrorContext.runtime.gravity, 600, "InitGame must mirror sv_gravity to the gameplay runtime");
-assert.equal(cvarMirrorContext.runtime.maxclients, 4, "InitGame must mirror maxclients to runtime");
-assert.equal(cvarMirrorContext.game.maxclients, 4, "InitGame must mirror maxclients to game_locals_t");
-assert.equal(cvarMirrorContext.runtime.maxentities, 1024, "InitGame must mirror maxentities to runtime");
-assert.equal(cvarMirrorContext.game.maxentities, 1024, "InitGame must mirror maxentities to game_locals_t");
+assert.equal(cvarMirrorContext.runtime.maxvelocity, 1500, "InitGame must mirror sv_maxvelocity to the gameplay runtime");
+assert.equal(cvarMirrorContext.runtime.maxclients, 3, "InitGame must mirror maxclients to runtime");
+assert.equal(cvarMirrorContext.game.maxclients, 3, "InitGame must mirror maxclients to game_locals_t");
+assert.equal(cvarMirrorContext.runtime.maxentities, 12, "InitGame must mirror maxentities to runtime");
+assert.equal(cvarMirrorContext.game.maxentities, 12, "InitGame must mirror maxentities to game_locals_t");
 
 const entityString = `
 {
@@ -282,6 +294,8 @@ const saveWriteApi = GetGameApi(imports, {
     }
   }
 });
+cvars.set("maxclients", createCvar("maxclients", "4", CVAR_SERVERINFO | CVAR_LATCH));
+cvars.set("maxentities", createCvar("maxentities", "1024", CVAR_LATCH));
 saveWriteApi.Init();
 saveWriteRuntime.serverflags = 5;
 saveWriteRuntime.entities[1]!.inuse = true;

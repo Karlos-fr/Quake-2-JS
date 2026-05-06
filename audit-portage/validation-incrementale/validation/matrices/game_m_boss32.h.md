@@ -10,37 +10,37 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak101` | `packages/game/src/m_boss32.ts` | `FRAME_attak101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak102` | `packages/game/src/m_boss32.ts` | `FRAME_attak102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak103` | `packages/game/src/m_boss32.ts` | `FRAME_attak103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak104` | `packages/game/src/m_boss32.ts` | `FRAME_attak104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak105` | `packages/game/src/m_boss32.ts` | `FRAME_attak105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak106` | `packages/game/src/m_boss32.ts` | `FRAME_attak106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak107` | `packages/game/src/m_boss32.ts` | `FRAME_attak107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak108` | `packages/game/src/m_boss32.ts` | `FRAME_attak108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak109` | `packages/game/src/m_boss32.ts` | `FRAME_attak109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak110` | `packages/game/src/m_boss32.ts` | `FRAME_attak110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak111` | `packages/game/src/m_boss32.ts` | `FRAME_attak111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak112` | `packages/game/src/m_boss32.ts` | `FRAME_attak112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak113` | `packages/game/src/m_boss32.ts` | `FRAME_attak113` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak114` | `packages/game/src/m_boss32.ts` | `FRAME_attak114` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak115` | `packages/game/src/m_boss32.ts` | `FRAME_attak115` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak116` | `packages/game/src/m_boss32.ts` | `FRAME_attak116` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak117` | `packages/game/src/m_boss32.ts` | `FRAME_attak117` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak118` | `packages/game/src/m_boss32.ts` | `FRAME_attak118` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak201` | `packages/game/src/m_boss32.ts` | `FRAME_attak201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak202` | `packages/game/src/m_boss32.ts` | `FRAME_attak202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak203` | `packages/game/src/m_boss32.ts` | `FRAME_attak203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak204` | `packages/game/src/m_boss32.ts` | `FRAME_attak204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak205` | `packages/game/src/m_boss32.ts` | `FRAME_attak205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak206` | `packages/game/src/m_boss32.ts` | `FRAME_attak206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak207` | `packages/game/src/m_boss32.ts` | `FRAME_attak207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak208` | `packages/game/src/m_boss32.ts` | `FRAME_attak208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak209` | `packages/game/src/m_boss32.ts` | `FRAME_attak209` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak210` | `packages/game/src/m_boss32.ts` | `FRAME_attak210` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak211` | `packages/game/src/m_boss32.ts` | `FRAME_attak211` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak212` | `packages/game/src/m_boss32.ts` | `FRAME_attak212` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak213` | `packages/game/src/m_boss32.ts` | `FRAME_attak213` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak101` | `packages/game/src/m_boss32.ts` | `FRAME_attak101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak102` | `packages/game/src/m_boss32.ts` | `FRAME_attak102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak103` | `packages/game/src/m_boss32.ts` | `FRAME_attak103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak104` | `packages/game/src/m_boss32.ts` | `FRAME_attak104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak105` | `packages/game/src/m_boss32.ts` | `FRAME_attak105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak106` | `packages/game/src/m_boss32.ts` | `FRAME_attak106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak107` | `packages/game/src/m_boss32.ts` | `FRAME_attak107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak108` | `packages/game/src/m_boss32.ts` | `FRAME_attak108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak109` | `packages/game/src/m_boss32.ts` | `FRAME_attak109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak110` | `packages/game/src/m_boss32.ts` | `FRAME_attak110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak111` | `packages/game/src/m_boss32.ts` | `FRAME_attak111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak112` | `packages/game/src/m_boss32.ts` | `FRAME_attak112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak113` | `packages/game/src/m_boss32.ts` | `FRAME_attak113` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak114` | `packages/game/src/m_boss32.ts` | `FRAME_attak114` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak115` | `packages/game/src/m_boss32.ts` | `FRAME_attak115` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak116` | `packages/game/src/m_boss32.ts` | `FRAME_attak116` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak117` | `packages/game/src/m_boss32.ts` | `FRAME_attak117` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak118` | `packages/game/src/m_boss32.ts` | `FRAME_attak118` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak201` | `packages/game/src/m_boss32.ts` | `FRAME_attak201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak202` | `packages/game/src/m_boss32.ts` | `FRAME_attak202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak203` | `packages/game/src/m_boss32.ts` | `FRAME_attak203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak204` | `packages/game/src/m_boss32.ts` | `FRAME_attak204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak205` | `packages/game/src/m_boss32.ts` | `FRAME_attak205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak206` | `packages/game/src/m_boss32.ts` | `FRAME_attak206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak207` | `packages/game/src/m_boss32.ts` | `FRAME_attak207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak208` | `packages/game/src/m_boss32.ts` | `FRAME_attak208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak209` | `packages/game/src/m_boss32.ts` | `FRAME_attak209` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak210` | `packages/game/src/m_boss32.ts` | `FRAME_attak210` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak211` | `packages/game/src/m_boss32.ts` | `FRAME_attak211` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak212` | `packages/game/src/m_boss32.ts` | `FRAME_attak212` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.h` | macro | `FRAME_attak213` | `packages/game/src/m_boss32.ts` | `FRAME_attak213` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.h` | macro | `FRAME_death01` | `packages/game/src/m_boss32.ts` | `FRAME_death01` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.h` | macro | `FRAME_death02` | `packages/game/src/m_boss32.ts` | `FRAME_death02` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.h` | macro | `FRAME_death03` | `packages/game/src/m_boss32.ts` | `FRAME_death03` | A verifier | A redecouper |  |

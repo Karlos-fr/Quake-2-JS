@@ -10,36 +10,36 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_flipper.c` | global | `sound_chomp` | `packages/game/src/m_flipper.ts` | `SOUND_CHOMP` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `sound_attack` | `packages/game/src/m_flipper.ts` | `SOUND_ATTACK` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `sound_pain1` | `packages/game/src/m_flipper.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `sound_pain2` | `packages/game/src/m_flipper.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `sound_death` | `packages/game/src/m_flipper.ts` | `SOUND_DEATH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `sound_idle` | `packages/game/src/m_flipper.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `sound_search` | `packages/game/src/m_flipper.ts` | `SOUND_SEARCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `sound_sight` | `packages/game/src/m_flipper.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_stand` | `packages/game/src/m_flipper.ts` | `flipper_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_stand` | `packages/game/src/m_flipper.ts` | `flipper_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_stand` | `packages/game/src/m_flipper.ts` | `flipper_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_stand` | `packages/game/src/m_flipper.ts` | `flipper_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_stand` | `packages/game/src/m_flipper.ts` | `flipper_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | macro | `FLIPPER_RUN_SPEED` | `packages/game/src/m_flipper.ts` | `FLIPPER_RUN_SPEED` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_run_loop` | `packages/game/src/m_flipper.ts` | `flipper_move_run_loop` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_run_loop` | `packages/game/src/m_flipper.ts` | `flipper_run_loop` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_run_start` | `packages/game/src/m_flipper.ts` | `flipper_frames_run_start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_run_start` | `packages/game/src/m_flipper.ts` | `flipper_frames_run_start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_run_start` | `packages/game/src/m_flipper.ts` | `flipper_move_run_start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_run` | `packages/game/src/m_flipper.ts` | `flipper_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_walk` | `packages/game/src/m_flipper.ts` | `flipper_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_walk` | `packages/game/src/m_flipper.ts` | `flipper_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_walk` | `packages/game/src/m_flipper.ts` | `flipper_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_walk` | `packages/game/src/m_flipper.ts` | `flipper_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_start_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_start_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_start_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_start_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_start_run` | `packages/game/src/m_flipper.ts` | `flipper_move_start_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_start_run` | `packages/game/src/m_flipper.ts` | `flipper_start_run` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `sound_chomp` | `packages/game/src/m_flipper.ts` | `SOUND_CHOMP` | Valide | A redecouper | Preuves session: source C/TS comparee; `verify:m-flipper`, `verify:m-flipper:header`, `verify:m-flipper:source-parity`, `verify:full-game:render-source`, `verify:full-game:server-snapshots`, `verify:full-game:three-renderer`, `verify:full-game:audio-routing`. |
+| `Quake-2-master/game/m_flipper.c` | global | `sound_attack` | `packages/game/src/m_flipper.ts` | `SOUND_ATTACK` | Valide | A redecouper | Precache source conserve; son non emis par ce fichier C, variable TS volontairement retenue via `void sound_attack`. |
+| `Quake-2-master/game/m_flipper.c` | global | `sound_pain1` | `packages/game/src/m_flipper.ts` | `SOUND_PAIN1` | Valide | A redecouper | Preuves session: source-parity verifie l'ordre de precache et le harness gameplay verifie l'emission pain. |
+| `Quake-2-master/game/m_flipper.c` | global | `sound_pain2` | `packages/game/src/m_flipper.ts` | `SOUND_PAIN2` | Valide | A redecouper | Preuves session: source-parity verifie l'ordre de precache et le harness gameplay verifie l'emission pain. |
+| `Quake-2-master/game/m_flipper.c` | global | `sound_death` | `packages/game/src/m_flipper.ts` | `SOUND_DEATH` | Valide | A redecouper | Preuves session: source-parity verifie l'ordre de precache et le harness gameplay verifie la branche death. |
+| `Quake-2-master/game/m_flipper.c` | global | `sound_idle` | `packages/game/src/m_flipper.ts` | `SOUND_IDLE` | Valide | A redecouper | Precache source conserve; son non emis par ce fichier C, variable TS volontairement retenue via `void sound_idle`. |
+| `Quake-2-master/game/m_flipper.c` | global | `sound_search` | `packages/game/src/m_flipper.ts` | `SOUND_SEARCH` | Valide | A redecouper | Precache source conserve; son non emis par ce fichier C, variable TS volontairement retenue via `void sound_search`. |
+| `Quake-2-master/game/m_flipper.c` | global | `sound_sight` | `packages/game/src/m_flipper.ts` | `SOUND_SIGHT` | Valide | A redecouper | Preuves session: source-parity verifie l'ordre de precache et le harness gameplay verifie l'emission sight. |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_stand` | `packages/game/src/m_flipper.ts` | `flipper_stand` | Valide | A redecouper | Entree prototype/body dupliquee par la matrice; fonction proprietaire unique verifiee. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_stand` | `packages/game/src/m_flipper.ts` | `flipper_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_stand` | `packages/game/src/m_flipper.ts` | `flipper_frames_stand` | Valide | A redecouper | Table C/TS: 1 frame `ai_stand`, dist 0, aucun callback. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_stand` | `packages/game/src/m_flipper.ts` | `flipper_move_stand` | Valide | A redecouper | Move C/TS: `FRAME_flphor01` -> `FRAME_flphor01`, endfunc absent. |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_stand` | `packages/game/src/m_flipper.ts` | `flipper_stand` | Valide | A redecouper | Entree prototype/body dupliquee par la matrice; commentaire d'en-tete TS verifie. |
+| `Quake-2-master/game/m_flipper.c` | macro | `FLIPPER_RUN_SPEED` | `packages/game/src/m_flipper.ts` | `FLIPPER_RUN_SPEED` | Valide | A redecouper | Valeur C/TS 24 verifiee par source-parity via les distances de `flipper_frames_run`. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_run` | Valide | A redecouper | Table C/TS: 24 frames `ai_run`, dist 24, aucun callback. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_run_loop` | `packages/game/src/m_flipper.ts` | `flipper_move_run_loop` | Valide | A redecouper | Move C/TS: `FRAME_flpver06` -> `FRAME_flpver29`, endfunc absent. |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_run_loop` | `packages/game/src/m_flipper.ts` | `flipper_run_loop` | Valide | A redecouper | Commentaire d'en-tete TS verifie; branchement via `flipper_move_run_start.endfunc` et `M_MoveFrame` verifie. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_run_start` | `packages/game/src/m_flipper.ts` | `flipper_frames_run_start` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_run_start` | `packages/game/src/m_flipper.ts` | `flipper_frames_run_start` | Valide | A redecouper | Table C/TS: 6 frames `ai_run`, dist 8, aucun callback. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_run_start` | `packages/game/src/m_flipper.ts` | `flipper_move_run_start` | Valide | A redecouper | Move C/TS: `FRAME_flpver01` -> `FRAME_flpver06`, endfunc `flipper_run_loop`. |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_run` | `packages/game/src/m_flipper.ts` | `flipper_run` | Valide | A redecouper | Commentaire d'en-tete TS verifie; transition currentmove verifiee. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_walk` | `packages/game/src/m_flipper.ts` | `flipper_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_walk` | `packages/game/src/m_flipper.ts` | `flipper_frames_walk` | Valide | A redecouper | Table C/TS: 24 frames `ai_walk`, dist 4, aucun callback. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_walk` | `packages/game/src/m_flipper.ts` | `flipper_move_walk` | Valide | A redecouper | Move C/TS: `FRAME_flphor01` -> `FRAME_flphor24`, endfunc absent. |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_walk` | `packages/game/src/m_flipper.ts` | `flipper_walk` | Valide | A redecouper | Commentaire d'en-tete TS verifie; spawn callback `monsterinfo.walk` et transition currentmove verifies. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_start_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_start_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_start_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_start_run` | Valide | A redecouper | Table C/TS: 5 frames `ai_run`, dist 8, callback `flipper_run` index 4. |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_start_run` | `packages/game/src/m_flipper.ts` | `flipper_move_start_run` | Valide | A redecouper | Move C/TS: `FRAME_flphor01` -> `FRAME_flphor05`, endfunc absent. |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_start_run` | `packages/game/src/m_flipper.ts` | `flipper_start_run` | Valide | A redecouper | Commentaire d'en-tete TS verifie; spawn callback `monsterinfo.run` et save registry verifies. |
 | `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_pain2` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_pain2` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_flipper.c` | global | `flipper_move_pain2` | `packages/game/src/m_flipper.ts` | `flipper_move_pain2` | A verifier | A redecouper |  |
@@ -62,11 +62,11 @@
 | `Quake-2-master/game/m_flipper.c` | function | `flipper_die` | `packages/game/src/m_flipper.ts` | `flipper_die` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_flipper.c` | global | `n` | `packages/game/src/m_flipper.ts` | `n` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_flipper.c` | function | `SP_monster_flipper` | `packages/game/src/m_flipper.ts` | `SP_monster_flipper` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_stand` | `packages/game/src/m_flipper.ts` | `flipper_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_run` | A verifier | matched |  |
-| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_run_start` | `packages/game/src/m_flipper.ts` | `flipper_frames_run_start` | A verifier | matched |  |
-| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_walk` | `packages/game/src/m_flipper.ts` | `flipper_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_start_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_start_run` | A verifier | matched |  |
+| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_stand` | `packages/game/src/m_flipper.ts` | `flipper_frames_stand` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
+| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_run` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
+| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_run_start` | `packages/game/src/m_flipper.ts` | `flipper_frames_run_start` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
+| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_walk` | `packages/game/src/m_flipper.ts` | `flipper_frames_walk` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
+| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_start_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_start_run` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
 | `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_pain2` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain2` | A verifier | matched |  |
 | `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_pain1` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain1` | A verifier | matched |  |
 | `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_attack` | `packages/game/src/m_flipper.ts` | `flipper_frames_attack` | A verifier | matched |  |
