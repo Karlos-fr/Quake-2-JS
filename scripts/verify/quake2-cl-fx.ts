@@ -25,6 +25,7 @@ import {
   CL_ExplosionParticles,
   CL_ExecutePacketEntityEffects,
   CL_FlagTrail,
+  CL_IonripperTrail,
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
   MakeNormalVectors,
@@ -48,6 +49,7 @@ import {
   EF_GIB,
   EF_GREENGIB,
   EF_GRENADE,
+  EF_IONRIPPER,
   EF_ROCKET,
   EF_TELEPORTER,
   EF_FLAG1,
@@ -92,6 +94,7 @@ function main(): void {
   verifyDiminishingTrailRuntimeParticles();
   verifyRocketTrailRuntimeParticles();
   verifyRailTrailRuntimeParticles();
+  verifyIonripperTrailRuntimeParticles();
   verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
@@ -1097,6 +1100,67 @@ function verifyRailTrailRuntimeParticles(): void {
   assert.ok(effects.some((effect) => effect.kind === "rail-core-trail"), "TE_RAILTRAIL should expose rail core metadata");
   assert.ok(effects.some((effect) => effect.kind === "rail-spark-trail"), "TE_RAILTRAIL should expose rail spark metadata");
   assert.ok(effects.some((effect) => effect.sound?.name === "weapons/railgf1a.wav"), "TE_RAILTRAIL should preserve railgun sound metadata");
+}
+
+function verifyIonripperTrailRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 10420;
+  const start: vec3_t = [0, 0, 0];
+  const end: vec3_t = [12, 0, 0];
+
+  withMockRandom(0, () => {
+    CL_IonripperTrail(runtime, start, end);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_IonripperTrail should emit one particle every 5 units while len remains positive");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_IonripperTrail particle time mismatch");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_IonripperTrail acceleration mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 0.5 && almostEqual(particle.alphavel, -1.0 / 0.3)), "CL_IonripperTrail alpha decay mismatch");
+  assert.ok(particles.every((particle) => particle.color === 0xe4), "CL_IonripperTrail color base mismatch");
+
+  const emittedX = particles.map((particle) => particle.org[0]).sort((left, right) => left - right);
+  assert.deepEqual(emittedX, [0, 5, 10], "CL_IonripperTrail should advance move by vec * 5");
+  const velocitiesX = particles.map((particle) => particle.vel[0]).sort((left, right) => left - right);
+  assert.deepEqual(velocitiesX, [-10, -10, 10], "CL_IonripperTrail should alternate left velocity starting at -10");
+  assert.ok(particles.every((particle) => particle.vel[1] === 0 && particle.vel[2] === 0), "CL_IonripperTrail lateral velocity mismatch");
+
+  const metadata = CL_IonripperTrail(start, end);
+  assert.equal(metadata[0]?.kind, "ionripper-trail", "CL_IonripperTrail metadata kind mismatch");
+  assert.equal(metadata[0]?.color, 0xe4, "CL_IonripperTrail metadata color mismatch");
+  assert.equal(metadata[0]?.spacing, 5, "CL_IonripperTrail metadata spacing mismatch");
+  assert.deepEqual(metadata[0]?.position, start, "CL_IonripperTrail metadata start mismatch");
+  assert.deepEqual(metadata[0]?.position2, end, "CL_IonripperTrail metadata end mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 3, "CL_IonripperTrail particles should reach the refresh particle list");
+
+  const runtimeBranch = createRuntime();
+  runtimeBranch.cl.time = 10440;
+  withMockRandom(0, () => {
+    CL_ExecutePacketEntityEffects(runtimeBranch, [{
+      number: 12,
+      origin: end,
+      effects: EF_IONRIPPER,
+      modelindex: 1,
+      viewerEntity: false
+    }]);
+  });
+  assert.equal(collectActiveParticles(runtimeBranch).length, 3, "EF_IONRIPPER should dispatch to CL_IonripperTrail");
+
+  const refreshRuntime = createRuntime();
+  refreshRuntime.cl.frame.num_entities = 1;
+  refreshRuntime.cl.frame.parse_entities = 0;
+  refreshRuntime.cl_parse_entities[0].number = 12;
+  refreshRuntime.cl_parse_entities[0].effects = EF_IONRIPPER;
+  refreshRuntime.cl_parse_entities[0].origin = [...end] as vec3_t;
+  refreshRuntime.cl_entities[12].current.number = 12;
+  refreshRuntime.cl_entities[12].current.origin = [...end] as vec3_t;
+  withMockRandom(0, () => {
+    const frame = CL_BuildRefreshFrame(refreshRuntime, { viewerEntity: 0 });
+    assert.equal(frame.particles.length, 3, "EF_IONRIPPER particles should reach ClientRefreshFrame.particles");
+    assert.ok(frame.lights.some((light) => light.kind === "ionripper" && light.intensity === 100), "EF_IONRIPPER should expose the original dlight to refresh");
+  });
 }
 
 function verifyMakeNormalVectors(): void {

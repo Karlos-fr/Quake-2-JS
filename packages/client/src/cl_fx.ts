@@ -71,6 +71,7 @@ import {
   EF_FLAG2,
   EF_GRENADE,
   EF_HYPERBLASTER,
+  EF_IONRIPPER,
   EF_PLASMA,
   EF_TELEPORTER,
   EF_TRACKER,
@@ -1365,6 +1366,8 @@ export function CL_ExecutePacketEntityEffects(
       CL_DiminishingTrail(runtime, centity.lerp_origin, entity.origin, centity, effects);
     } else if ((effects & EF_GREENGIB) !== 0) {
       CL_DiminishingTrail(runtime, centity.lerp_origin, entity.origin, centity, effects);
+    } else if ((effects & EF_IONRIPPER) !== 0) {
+      CL_IonripperTrail(runtime, centity.lerp_origin, entity.origin);
     } else if ((effects & EF_FLIES) !== 0) {
       CL_FlyEffectRuntime(runtime, centity, entity.origin);
     } else if ((effects & EF_PLASMA) !== 0 && (effects & EF_ANIM_ALLFAST) !== 0) {
@@ -1956,10 +1959,20 @@ export function CL_RailTrail(
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits the alternating ion ripper trail metadata.
+ * - Emits the alternating ion ripper trail particles or metadata.
  */
-export function CL_IonripperTrail(start: vec3_t, end: vec3_t): ClientActionEffect[] {
-  return [createTrailEffect("ionripper-trail", start, end, 0xe4, 5)];
+export function CL_IonripperTrail(start: vec3_t, end: vec3_t): ClientActionEffect[];
+export function CL_IonripperTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;
+export function CL_IonripperTrail(
+  runtimeOrStart: ClientRuntime | vec3_t,
+  startOrEnd: vec3_t,
+  maybeEnd?: vec3_t
+): ClientActionEffect[] | void {
+  if (Array.isArray(runtimeOrStart)) {
+    return [createTrailEffect("ionripper-trail", runtimeOrStart, startOrEnd, 0xe4, 5)];
+  }
+
+  spawnIonripperTrailParticles(runtimeOrStart, startOrEnd, maybeEnd as vec3_t);
 }
 
 /**
@@ -2852,6 +2865,40 @@ function spawnRailTrailParticles(runtime: ClientRuntime, start: vec3_t, end: vec
       particle.vel[component] = crand() * 3;
       sparkMove[component] += sparkStep[component];
     }
+  }
+}
+
+function spawnIonripperTrailParticles(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void {
+  const move = [...start] as vec3_t;
+  const vec = subtractVec3(end, start);
+  let len = normalizeVectorCopy(vec);
+  const dec = 5;
+  let left = 0;
+
+  vec[0] *= dec;
+  vec[1] *= dec;
+  vec[2] *= dec;
+
+  while (len > 0) {
+    len -= dec;
+
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.accel = [0, 0, 0];
+    particle.time = runtime.cl.time;
+    particle.alpha = 0.5;
+    particle.alphavel = -1.0 / (0.3 + Math.random() * 0.2);
+    particle.color = 0xe4 + (Math.floor(Math.random() * 0x7fffffff) & 3);
+    particle.org = [...move] as vec3_t;
+    particle.vel = left ? [10, 0, 0] : [-10, 0, 0];
+    left = left ? 0 : 1;
+
+    move[0] += vec[0];
+    move[1] += vec[1];
+    move[2] += vec[2];
   }
 }
 

@@ -30,7 +30,7 @@ import {
   vectoangles,
   vtos
 } from "../../packages/game/src/g_utils.js";
-import { G_TouchTriggers } from "../../packages/game/src/touch.js";
+import { G_TouchSolids, G_TouchTriggers } from "../../packages/game/src/touch.js";
 import {
   SVF_MONSTER,
   Think_Delay,
@@ -478,6 +478,35 @@ deadMonster.svflags |= SVF_MONSTER;
 deadMonster.health = 0;
 G_TouchTriggers(deadMonsterRuntime, deadMonster);
 assert.equal(deadMonsterTouches.length, 0, "G_TouchTriggers must ignore dead monsters");
+
+const touchSolidsRuntime = createGameRuntimeFromBspEntities([]);
+const touchSolidsCalls: string[] = [];
+spawnTouchActor(touchSolidsRuntime, "solid_a", [0, 0, 0]);
+const solidRemovedBeforeTouch = spawnTouchActor(touchSolidsRuntime, "solid_removed_before_touch", [0, 0, 0]);
+spawnTouchActor(touchSolidsRuntime, "solid_b", [0, 0, 0]);
+const solidTrigger = spawnTouchTrigger(touchSolidsRuntime, "solid_trigger", [0, 0, 0], []);
+solidTrigger.touch = (self, other) => {
+  touchSolidsCalls.push(`${self.classname}:${other.classname}`);
+  solidRemovedBeforeTouch.inuse = false;
+};
+G_TouchSolids(touchSolidsRuntime, solidTrigger);
+assert.deepEqual(
+  touchSolidsCalls,
+  ["solid_a:solid_trigger", "solid_b:solid_trigger"],
+  "G_TouchSolids must use the C argument order and skip solids removed before their turn"
+);
+
+const touchSolidsBreakRuntime = createGameRuntimeFromBspEntities([]);
+const breakCalls: string[] = [];
+spawnTouchActor(touchSolidsBreakRuntime, "break_solid_a", [0, 0, 0]);
+spawnTouchActor(touchSolidsBreakRuntime, "break_solid_b", [0, 0, 0]);
+const breakTrigger = spawnTouchTrigger(touchSolidsBreakRuntime, "break_trigger", [0, 0, 0], []);
+breakTrigger.touch = (self, other) => {
+  breakCalls.push(`${self.classname}:${other.classname}`);
+  other.inuse = false;
+};
+G_TouchSolids(touchSolidsBreakRuntime, breakTrigger);
+assert.deepEqual(breakCalls, ["break_solid_a:break_trigger"], "G_TouchSolids must stop when the trigger is removed");
 
 const blocker = createRuntimeEntity({}, 21);
 blocker.solid = 1;

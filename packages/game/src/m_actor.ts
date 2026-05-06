@@ -561,7 +561,7 @@ export const actor_names = [
   "Bitterman"
 ] as const;
 
-const messages = [
+export const messages = [
   "Watch it",
   "#$@*&",
   "Idiot",

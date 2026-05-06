@@ -71,7 +71,7 @@ export function G_TouchTriggers(runtime: GameRuntime, actor: GameEntity): void {
  */
 export function G_TouchSolids(runtime: GameRuntime, trigger: GameEntity): void {
   const triggerBounds = getActorBounds(trigger);
-  if (!triggerBounds || !trigger.touch) {
+  if (!triggerBounds) {
     return;
   }
 
@@ -81,7 +81,14 @@ export function G_TouchSolids(runtime: GameRuntime, trigger: GameEntity): void {
       continue;
     }
 
-    trigger.touch(trigger, entity, runtime);
+    const touchCallback = trigger.touch;
+    if (touchCallback) {
+      touchCallback(entity, trigger, runtime);
+    }
+
+    if (!trigger.inuse) {
+      break;
+    }
   }
 }
 

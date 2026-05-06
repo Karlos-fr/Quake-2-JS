@@ -34,7 +34,8 @@ import {
   RANGE_MID,
   RANGE_NEAR,
   SOLID_BBOX,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range, visible } from "./g_ai.js";
 import { monster_fire_bfg, monster_fire_bullet, walkmonster_start } from "./g_monster.js";
@@ -279,8 +280,17 @@ let sound_step_left = 0;
 let sound_step_right = 0;
 let sound_death_hit = 0;
 
+/**
+ * Original name: jorg_search
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Selects one of Jorg's three search sounds using the `random()` thresholds from the original.
+ */
 export function jorg_search(self: GameEntity, runtime: GameRuntime): void {
-  const r = Math.random();
+  const r = random();
 
   if (r <= 0.3) {
     emitRegisteredGameSound(runtime, self, sound_search1, SOUND_SEARCH1, soundOptions(CHAN_VOICE));
@@ -453,9 +463,18 @@ export const jorg_move_end_attack1: GameMonsterMove = {
   endfunc: jorg_run
 };
 
+/**
+ * Original name: jorg_reattack1
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Continues the machinegun loop while the enemy is visible and the C `random() < 0.9` check passes.
+ */
 export function jorg_reattack1(self: GameEntity, runtime: GameRuntime): void {
   if (self.enemy && visible(self, self.enemy, runtime)) {
-    if (Math.random() < 0.9) {
+    if (random() < 0.9) {
       self.monsterinfo.currentmove = jorg_move_attack1;
     } else {
       self.s.sound = 0;
@@ -471,6 +490,15 @@ export function jorg_attack1(self: GameEntity): void {
   self.monsterinfo.currentmove = jorg_move_attack1;
 }
 
+/**
+ * Original name: jorg_pain
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies Jorg pain debounce, skin change and random pain suppression/animation choices.
+ */
 export function jorg_pain(
   self: GameEntity,
   _other: GameEntity | null,
@@ -488,19 +516,19 @@ export function jorg_pain(
     return;
   }
 
-  if (damage <= 40 && Math.random() <= 0.6) {
+  if (damage <= 40 && random() <= 0.6) {
     return;
   }
 
-  if (self.s.frame >= FRAME_attak101 && self.s.frame <= FRAME_attak108 && Math.random() <= 0.005) {
+  if (self.s.frame >= FRAME_attak101 && self.s.frame <= FRAME_attak108 && random() <= 0.005) {
     return;
   }
 
-  if (self.s.frame >= FRAME_attak109 && self.s.frame <= FRAME_attak114 && Math.random() <= 0.00005) {
+  if (self.s.frame >= FRAME_attak109 && self.s.frame <= FRAME_attak114 && random() <= 0.00005) {
     return;
   }
 
-  if (self.s.frame >= FRAME_attak201 && self.s.frame <= FRAME_attak208 && Math.random() <= 0.005) {
+  if (self.s.frame >= FRAME_attak201 && self.s.frame <= FRAME_attak208 && random() <= 0.005) {
     return;
   }
 
@@ -516,7 +544,7 @@ export function jorg_pain(
   } else if (damage <= 100) {
     emitRegisteredGameSound(runtime, self, sound_pain2, SOUND_PAIN2, soundOptions(CHAN_VOICE));
     self.monsterinfo.currentmove = jorg_move_pain2;
-  } else if (Math.random() <= 0.3) {
+  } else if (random() <= 0.3) {
     emitRegisteredGameSound(runtime, self, sound_pain3, SOUND_PAIN3, soundOptions(CHAN_VOICE));
     self.monsterinfo.currentmove = jorg_move_pain3;
   }
@@ -554,12 +582,21 @@ export function jorgMachineGun(self: GameEntity, runtime: GameRuntime): void {
   jorg_firebullet(self, runtime);
 }
 
+/**
+ * Original name: jorg_attack
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Chooses between Jorg's machinegun and BFG attack moves using the original `random() <= 0.75` split.
+ */
 export function jorg_attack(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
   }
 
-  if (Math.random() <= 0.75) {
+  if (random() <= 0.75) {
     emitRegisteredGameSound(runtime, self, sound_attack1, SOUND_ATTACK1, soundOptions(CHAN_VOICE));
     self.s.sound = registerGameSound(runtime, SOUND_W_LOOP);
     self.monsterinfo.currentmove = jorg_move_start_attack1;
@@ -588,6 +625,15 @@ export function jorg_die(
   self.monsterinfo.currentmove = jorg_move_death;
 }
 
+/**
+ * Original name: Jorg_CheckAttack
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Checks line of sight/range, then uses the C `random()` missile and flying strafe decisions.
+ */
 export function Jorg_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
   if (!self.enemy) {
     return false;
@@ -639,14 +685,14 @@ export function Jorg_CheckAttack(self: GameEntity, runtime: GameRuntime): boolea
     return false;
   }
 
-  if (Math.random() < chance) {
+  if (random() < chance) {
     self.monsterinfo.attack_state = AS_MISSILE;
-    self.monsterinfo.attack_finished = runtime.time + 2 * Math.random();
+    self.monsterinfo.attack_finished = runtime.time + 2 * random();
     return true;
   }
 
   if ((self.flags & FL_FLY) !== 0) {
-    self.monsterinfo.attack_state = Math.random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
+    self.monsterinfo.attack_state = random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
   }
 
   return false;

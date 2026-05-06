@@ -46,6 +46,11 @@ assert.deepEqual(
   ["Hellrot", "Tokay", "Killme", "Disruptor", "Adrianator", "Rambear", "Titus", "Bitterman"],
   "actor_names matches m_actor.c"
 );
+assert.deepEqual(
+  [...actorFrames.messages],
+  ["Watch it", "#$@*&", "Idiot", "Check your targets"],
+  "messages matches m_actor.c"
+);
 
 assert.equal(actorFrames.actor_frames_stand.length, 40, "actor_frames_stand has 40 C frames");
 for (const [index, frame] of actorFrames.actor_frames_stand.entries()) {
@@ -208,6 +213,27 @@ actor.enemy = player;
 actorFrames.actor_run(actor, runtime);
 assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_run, "actor_run selects run move outside debounce and stand-ground");
 actor.enemy = null;
+
+try {
+  Math.random = (() => {
+    const values = [0.2, 0.25, 0.65];
+    return () => values.shift() ?? 0;
+  })();
+  runtime.time = actor.pain_debounce_time + 0.1;
+  actor.pain_debounce_time = runtime.time - 1;
+  actor.health = actor.max_health;
+  actorFrames.actor_pain(actor, player, 0, 1, runtime);
+  const painPrints = drainGameCprintfEvents(runtime);
+  assert.equal(painPrints.length, 1, "actor_pain player taunt emits one cprintf");
+  assert.equal(painPrints[0].entityIndex, player.index, "actor_pain message targets attacker client");
+  assert.equal(
+    painPrints[0].message,
+    `${actorFrames.actor_names[actor.index % actorFrames.MAX_ACTOR_NAMES]}: #$@*&!\n`,
+    "actor_pain message uses the C messages table"
+  );
+} finally {
+  Math.random = originalRandom;
+}
 
 actor.use?.(actor, player, player, runtime);
 assert.equal(actor.movetarget, path, "actor_use picks target_actor");

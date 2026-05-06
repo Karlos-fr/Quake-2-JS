@@ -263,7 +263,7 @@ function verifyCheckAttack(): void {
     assert.equal(Jorg_CheckAttack(jorg, runtime), true);
   });
   assert.equal(jorg.monsterinfo.attack_state, AS_MISSILE);
-  assert.equal(jorg.monsterinfo.attack_finished, 0.5);
+  assert.equal(jorg.monsterinfo.attack_finished, 2 * quakeRandomFromMath(0.25));
   assert.equal(jorg.ideal_yaw, 0);
 
   runtime.time = 1;
@@ -377,4 +377,8 @@ function withMathRandom(values: number[], callback: () => void): void {
   } finally {
     Math.random = originalRandom;
   }
+}
+
+function quakeRandomFromMath(value: number): number {
+  return Math.floor(value * 0x8000) / 0x7fff;
 }
