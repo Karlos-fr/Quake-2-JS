@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { ATTN_NORM, CHAN_WEAPON, type cvar_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { ATTN_NORM, CHAN_VOICE, CHAN_WEAPON, type cvar_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
   AI_COMBAT_POINT,
@@ -129,8 +129,16 @@ function verifySpawnRegistersAssetsAndStartsWalking(): void {
   assert.equal(berserk.health, 240);
   assert.equal(berserk.gib_health, -60);
   assert.equal(berserk.mass, 250);
+  assert.equal(berserk.pain, berserk_pain);
+  assert.equal(berserk.die, berserk_die);
+  assert.equal(berserk.monsterinfo.stand, berserk_stand);
   assert.equal(berserk.monsterinfo.walk, berserk_walk);
   assert.equal(berserk.monsterinfo.run, berserk_run);
+  assert.equal(berserk.monsterinfo.dodge, undefined);
+  assert.equal(berserk.monsterinfo.attack, undefined);
+  assert.equal(berserk.monsterinfo.melee, berserk_melee);
+  assert.equal(berserk.monsterinfo.sight, berserk_sight);
+  assert.equal(berserk.monsterinfo.search, berserk_search);
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand);
   assert.equal(berserk.monsterinfo.scale, 1);
   assert.equal(runtime.assets.modelPaths[berserk.s.modelindex - 1], "models/monsters/berserk/tris.md2");
@@ -142,6 +150,7 @@ function verifySpawnRegistersAssetsAndStartsWalking(): void {
     "berserk/bersrch1.wav",
     "berserk/sight.wav"
   ]);
+  assert.ok(berserk.linkcount > 0, "SP_monster_berserk should link the spawned bbox before walkmonster_start");
   assert.ok(berserk.think, "walkmonster_start should arm delayed startup think");
 }
 
@@ -168,7 +177,12 @@ function verifySpawnRegistryCallsMonsterBerserk(): void {
   ED_CallSpawn(berserk, runtime);
 
   assert.equal(berserk.health, 240);
+  assert.equal(runtime.assets.modelPaths[berserk.s.modelindex - 1], "models/monsters/berserk/tris.md2");
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand);
+  assert.equal(berserk.monsterinfo.melee, berserk_melee);
+  assert.equal(berserk.monsterinfo.sight, berserk_sight);
+  assert.equal(berserk.monsterinfo.search, berserk_search);
+  assert.ok(berserk.think, "g_spawn monster_berserk should route to walkmonster_start");
 }
 
 function verifyMoveTablesMatchSourceFrames(): void {
@@ -354,6 +368,7 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("berserk_move_pain1"), berserk_move_pain1);
   assert.equal(findGameSaveMove("berserk_move_pain2"), berserk_move_pain2);
   assert.equal(findGameSaveMove("berserk_move_death1"), berserk_move_death1);
+  assert.equal(findGameSaveMove("berserk_move_death2"), berserk_move_death2);
 }
 
 function verifySaveRestoreAfterStartup(): void {
@@ -752,30 +767,73 @@ function verifyPainBranches(): void {
 
 function verifyDeathBranches(): void {
   const runtime = createHarnessRuntime();
+  const context = createGameMainContext(createGameImports(), { runtime });
   const berserk = createBerserk(runtime, 7);
   SP_monster_berserk(berserk, runtime);
+  berserk.think!(berserk, runtime);
 
   berserk_die(berserk, null, null, 60, runtime);
+  const deathSound = drainGameSoundEvents(runtime).at(-1);
   assert.equal(berserk.deadflag, DEAD_DEAD);
   assert.equal(berserk.takedamage, damage_t.DAMAGE_YES);
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_death1);
+  assert.equal(deathSound?.soundPath, "berserk/berdeth2.wav");
+  assert.equal(deathSound?.channel, CHAN_VOICE);
+  assert.equal(deathSound?.attenuation, ATTN_NORM);
+  assert.equal(deathSound?.volume, 1);
+  assert.equal(deathSound?.timeofs, 0);
+
+  berserk_die(berserk, null, null, 60, runtime);
+  assert.equal(drainGameSoundEvents(runtime).length, 0, "already-dead berserk_die should return before another death sound");
+
+  const death1LinkcountBeforeEndfunc = berserk.linkcount;
+  berserk.s.frame = FRAME_death13;
+  G_RunFrame(context);
+  assert.equal(berserk.s.frame, FRAME_death13, "death1 endfunc should leave the corpse on the last visible death frame");
+  assert.deepEqual(berserk.mins, [-16, -16, -24]);
+  assert.deepEqual(berserk.maxs, [16, 16, -8]);
+  assert.equal(berserk.movetype, MOVETYPE_TOSS);
+  assert.equal(berserk.svflags & SVF_DEADMONSTER, SVF_DEADMONSTER);
+  assert.equal(berserk.nextthink, 0, "berserk_dead should stop corpse thinking after the death1 end frame");
+  assert.equal(berserk.linkcount, death1LinkcountBeforeEndfunc + 1, "berserk_dead should relink the death1 corpse");
 
   const lightDamageBerserk = createBerserk(runtime, 8);
   SP_monster_berserk(lightDamageBerserk, runtime);
+  lightDamageBerserk.think!(lightDamageBerserk, runtime);
   berserk_die(lightDamageBerserk, null, null, 20, runtime);
   assert.equal(lightDamageBerserk.monsterinfo.currentmove, berserk_move_death2);
 
-  berserk_dead(lightDamageBerserk, runtime);
+  const death2LinkcountBeforeEndfunc = lightDamageBerserk.linkcount;
+  lightDamageBerserk.s.frame = FRAME_deathc8;
+  G_RunFrame(context);
+  assert.equal(lightDamageBerserk.s.frame, FRAME_deathc8, "death2 endfunc should leave the corpse on the last visible death frame");
   assert.deepEqual(lightDamageBerserk.mins, [-16, -16, -24]);
   assert.deepEqual(lightDamageBerserk.maxs, [16, 16, -8]);
   assert.equal(lightDamageBerserk.movetype, MOVETYPE_TOSS);
   assert.equal(lightDamageBerserk.svflags & SVF_DEADMONSTER, SVF_DEADMONSTER);
+  assert.equal(lightDamageBerserk.nextthink, 0, "berserk_dead should stop corpse thinking after the death2 end frame");
+  assert.equal(lightDamageBerserk.linkcount, death2LinkcountBeforeEndfunc + 1, "berserk_dead should relink the death2 corpse");
+
+  const directDeadBerserk = createBerserk(runtime, 27);
+  SP_monster_berserk(directDeadBerserk, runtime);
+  const directDeadLinkcountBefore = directDeadBerserk.linkcount;
+  berserk_dead(directDeadBerserk, runtime);
+  assert.deepEqual(directDeadBerserk.mins, [-16, -16, -24]);
+  assert.deepEqual(directDeadBerserk.maxs, [16, 16, -8]);
+  assert.equal(directDeadBerserk.movetype, MOVETYPE_TOSS);
+  assert.equal(directDeadBerserk.svflags & SVF_DEADMONSTER, SVF_DEADMONSTER);
+  assert.equal(directDeadBerserk.nextthink, 0);
+  assert.equal(directDeadBerserk.linkcount, directDeadLinkcountBefore + 1, "direct berserk_dead should link the corpse bbox");
 
   const gibBerserk = createBerserk(runtime, 9);
   SP_monster_berserk(gibBerserk, runtime);
   gibBerserk.health = -60;
   berserk_die(gibBerserk, null, null, 25, runtime);
+  const gibEvents = drainGameSoundEvents(runtime);
+  const gibSound = gibEvents.at(-1);
   assert.equal(gibBerserk.deadflag, DEAD_DEAD);
+  assert.equal(gibEvents.length, 1, "gib death should emit the original universal death sound once");
+  assert.equal(gibSound?.soundPath, "misc/udeath.wav");
   assert.equal(runtime.entities.filter((entity) => entity.model === "models/objects/gibs/bone/tris.md2").length, 2);
   assert.equal(runtime.entities.filter((entity) => entity.model === "models/objects/gibs/sm_meat/tris.md2").length, 4);
   assert.equal(runtime.entities.filter((entity) => entity.model === "models/objects/gibs/head2/tris.md2").length, 1);
@@ -789,6 +847,8 @@ function verifyDeathmatchSpawnFreesEntity(): void {
   SP_monster_berserk(berserk, runtime);
 
   assert.equal(berserk.inuse, false);
+  assert.equal(runtime.assets.modelPaths.length, 0, "deathmatch spawn should return before model precache");
+  assert.equal(runtime.assets.soundPaths.length, 0, "deathmatch spawn should return before sound precache");
 }
 
 function createHarnessRuntime(): GameRuntime {

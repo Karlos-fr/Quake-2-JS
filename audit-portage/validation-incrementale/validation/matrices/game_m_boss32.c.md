@@ -40,26 +40,26 @@
 | `Quake-2-master/game/m_boss32.c` | global | `makron_frames_run` | `packages/game/src/m_boss32.ts` | `makron_frames_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | table | `makron_frames_run` | `packages/game/src/m_boss32.ts` | `makron_frames_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | global | `makron_move_run` | `packages/game/src/m_boss32.ts` | `makron_move_run` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_hit` | `packages/game/src/m_boss32.ts` | `makron_hit` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_popup` | `packages/game/src/m_boss32.ts` | `makron_popup` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_hit` | `packages/game/src/m_boss32.ts` | `makron_hit` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_popup` | `packages/game/src/m_boss32.ts` | `makron_popup` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `makron_step_left` | `packages/game/src/m_boss32.ts` | `makron_step_left` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `makron_step_right` | `packages/game/src/m_boss32.ts` | `makron_step_right` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_brainsplorch` | `packages/game/src/m_boss32.ts` | `makron_brainsplorch` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_prerailgun` | `packages/game/src/m_boss32.ts` | `makron_prerailgun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `makron_frames_walk` | `packages/game/src/m_boss32.ts` | `makron_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | table | `makron_frames_walk` | `packages/game/src/m_boss32.ts` | `makron_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `makron_move_walk` | `packages/game/src/m_boss32.ts` | `makron_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_walk` | `packages/game/src/m_boss32.ts` | `makron_walk` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_brainsplorch` | `packages/game/src/m_boss32.ts` | `makron_brainsplorch` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_prerailgun` | `packages/game/src/m_boss32.ts` | `makron_prerailgun` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | global | `makron_frames_walk` | `packages/game/src/m_boss32.ts` | `makron_frames_walk` | Valide | A redecouper | C quirk preserved: `makron_move_walk` uses `makron_frames_run`. |
+| `Quake-2-master/game/m_boss32.c` | table | `makron_frames_walk` | `packages/game/src/m_boss32.ts` | `makron_frames_walk` | Valide | A redecouper | C quirk preserved: `makron_move_walk` uses `makron_frames_run`. |
+| `Quake-2-master/game/m_boss32.c` | global | `makron_move_walk` | `packages/game/src/m_boss32.ts` | `makron_move_walk` | Valide | A redecouper | C quirk preserved: move points to `makron_frames_run`. |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_walk` | `packages/game/src/m_boss32.ts` | `makron_walk` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `makron_run` | `packages/game/src/m_boss32.ts` | `makron_run` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `makron_frames_pain6` | `packages/game/src/m_boss32.ts` | `makron_frames_pain6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | table | `makron_frames_pain6` | `packages/game/src/m_boss32.ts` | `makron_frames_pain6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `makron_move_pain6` | `packages/game/src/m_boss32.ts` | `makron_move_pain6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `makron_frames_pain5` | `packages/game/src/m_boss32.ts` | `makron_frames_pain5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | table | `makron_frames_pain5` | `packages/game/src/m_boss32.ts` | `makron_frames_pain5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `makron_move_pain5` | `packages/game/src/m_boss32.ts` | `makron_move_pain5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `makron_frames_pain4` | `packages/game/src/m_boss32.ts` | `makron_frames_pain4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | table | `makron_frames_pain4` | `packages/game/src/m_boss32.ts` | `makron_frames_pain4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | global | `makron_move_pain4` | `packages/game/src/m_boss32.ts` | `makron_move_pain4` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | global | `makron_frames_pain6` | `packages/game/src/m_boss32.ts` | `makron_frames_pain6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | table | `makron_frames_pain6` | `packages/game/src/m_boss32.ts` | `makron_frames_pain6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | global | `makron_move_pain6` | `packages/game/src/m_boss32.ts` | `makron_move_pain6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | global | `makron_frames_pain5` | `packages/game/src/m_boss32.ts` | `makron_frames_pain5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | table | `makron_frames_pain5` | `packages/game/src/m_boss32.ts` | `makron_frames_pain5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | global | `makron_move_pain5` | `packages/game/src/m_boss32.ts` | `makron_move_pain5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | global | `makron_frames_pain4` | `packages/game/src/m_boss32.ts` | `makron_frames_pain4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | table | `makron_frames_pain4` | `packages/game/src/m_boss32.ts` | `makron_frames_pain4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | global | `makron_move_pain4` | `packages/game/src/m_boss32.ts` | `makron_move_pain4` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | global | `makron_frames_death2` | `packages/game/src/m_boss32.ts` | `makron_frames_death2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | table | `makron_frames_death2` | `packages/game/src/m_boss32.ts` | `makron_frames_death2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | global | `makron_move_death2` | `packages/game/src/m_boss32.ts` | `makron_move_death2` | A verifier | A redecouper |  |
@@ -84,7 +84,7 @@
 | `Quake-2-master/game/m_boss32.c` | function | `MakronHyperblaster` | `packages/game/src/m_boss32.ts` | `MakronHyperblaster` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | global | `flash_number` | `packages/game/src/m_boss32.ts` | `flash_number` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | global | `dir` | `packages/game/src/m_boss32.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss32.c` | function | `makron_pain` | `packages/game/src/m_boss32.ts` | `makron_pain` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss32.c` | function | `makron_pain` | `packages/game/src/m_boss32.ts` | `makron_pain` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `makron_sight` | `packages/game/src/m_boss32.ts` | `makron_sight` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | function | `makron_attack` | `packages/game/src/m_boss32.ts` | `makron_attack` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | global | `range` | `packages/game/src/m_boss32.ts` |  | A verifier | A redecouper |  |
@@ -110,10 +110,10 @@
 | `Quake-2-master/game/m_boss32.c` | global | `ent` | `packages/game/src/m_boss32.ts` | `ent` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_stand` | `packages/game/src/m_boss32.ts` | `makron_frames_stand` | Valide | matched |  |
 | `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_run` | `packages/game/src/m_boss32.ts` | `makron_frames_run` | Valide | matched |  |
-| `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_walk` | `packages/game/src/m_boss32.ts` | `makron_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_pain6` | `packages/game/src/m_boss32.ts` | `makron_frames_pain6` | A verifier | matched |  |
-| `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_pain5` | `packages/game/src/m_boss32.ts` | `makron_frames_pain5` | A verifier | matched |  |
-| `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_pain4` | `packages/game/src/m_boss32.ts` | `makron_frames_pain4` | A verifier | matched |  |
+| `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_walk` | `packages/game/src/m_boss32.ts` | `makron_frames_walk` | Valide | matched | C quirk preserved: `makron_move_walk` uses `makron_frames_run`. |
+| `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_pain6` | `packages/game/src/m_boss32.ts` | `makron_frames_pain6` | Valide | matched |  |
+| `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_pain5` | `packages/game/src/m_boss32.ts` | `makron_frames_pain5` | Valide | matched |  |
+| `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_pain4` | `packages/game/src/m_boss32.ts` | `makron_frames_pain4` | Valide | matched |  |
 | `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_death2` | `packages/game/src/m_boss32.ts` | `makron_frames_death2` | A verifier | matched |  |
 | `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_death3` | `packages/game/src/m_boss32.ts` | `makron_frames_death3` | A verifier | matched |  |
 | `Quake-2-master/game/m_boss32.c` | declarative:monster-tables | `makron_frames_sight` | `packages/game/src/m_boss32.ts` | `makron_frames_sight` | A verifier | matched |  |

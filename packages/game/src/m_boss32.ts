@@ -657,10 +657,28 @@ export const makron_move_run: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: makron_hit
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the Makron death impact sound on the automatic channel.
+ */
 export function makron_hit(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_hit, SOUND_HIT, soundOptions(CHAN_AUTO, ATTN_NONE));
 }
 
+/**
+ * Original name: makron_popup
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the Makron popup body sound.
+ */
 export function makron_popup(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_popup, SOUND_POPUP, soundOptions(CHAN_BODY, ATTN_NONE));
 }
@@ -691,10 +709,28 @@ export function makron_step_right(self: GameEntity, runtime: GameRuntime): void 
   emitRegisteredGameSound(runtime, self, sound_step_right, SOUND_STEP_RIGHT, soundOptions(CHAN_BODY, ATTN_NORM));
 }
 
+/**
+ * Original name: makron_brainsplorch
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the Makron brain splorch voice sound.
+ */
 export function makron_brainsplorch(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_brainsplorch, SOUND_BRAINSPLORCH, soundOptions(CHAN_VOICE, ATTN_NORM));
 }
 
+/**
+ * Original name: makron_prerailgun
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the railgun wind-up sound on the weapon channel.
+ */
 export function makron_prerailgun(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_prerailgun, SOUND_PRERAILGUN, soundOptions(CHAN_WEAPON, ATTN_NORM));
 }
@@ -711,6 +747,19 @@ export const makron_move_walk: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: makron_walk
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to the Makron walk move.
+ *
+ * Porting notes:
+ * - Preserves the original C quirk: `makron_move_walk` points at `makron_frames_run`,
+ *   while `makron_frames_walk` remains declared but unused by that move.
+ */
 export function makron_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = makron_move_walk;
 }
@@ -894,6 +943,20 @@ export function MakronHyperblaster(self: GameEntity, runtime: GameRuntime): void
   monster_fire_blaster(self, start, AngleVectors(dir).forward, 15, 1000, MZ2_MAKRON_BLASTER_1, EF_BLASTER, runtime);
 }
 
+/**
+ * Original name: makron_pain
+ * Source: Quake-2-master/game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies the damaged skin below half health, debounces pain, skips pain animations on nightmare,
+ *   and selects the C pain4/pain5/pain6 moves and sounds from damage thresholds.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the original `random()` macro.
+ * - Preserves the source dangling-else behavior in the pain6 chance block.
+ */
 export function makron_pain(
   self: GameEntity,
   _other: GameEntity | null,
@@ -909,7 +972,7 @@ export function makron_pain(
     return;
   }
 
-  if (damage <= 25 && Math.random() < 0.2) {
+  if (damage <= 25 && random() < 0.2) {
     return;
   }
 
@@ -925,10 +988,10 @@ export function makron_pain(
     emitRegisteredGameSound(runtime, self, sound_pain5, SOUND_PAIN5, soundOptions(CHAN_VOICE, ATTN_NONE));
     self.monsterinfo.currentmove = makron_move_pain5;
   } else {
-    if (damage <= 150 && Math.random() <= 0.45) {
+    if (damage <= 150 && random() <= 0.45) {
       emitRegisteredGameSound(runtime, self, sound_pain6, SOUND_PAIN6, soundOptions(CHAN_VOICE, ATTN_NONE));
       self.monsterinfo.currentmove = makron_move_pain6;
-    } else if (damage <= 150 && Math.random() <= 0.35) {
+    } else if (damage <= 150 && random() <= 0.35) {
       emitRegisteredGameSound(runtime, self, sound_pain6, SOUND_PAIN6, soundOptions(CHAN_VOICE, ATTN_NONE));
       self.monsterinfo.currentmove = makron_move_pain6;
     }

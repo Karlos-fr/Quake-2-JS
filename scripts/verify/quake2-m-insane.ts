@@ -10,6 +10,9 @@
  */
 
 import { strict as assert } from "node:assert";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   AI_GOOD_GUY,
@@ -73,6 +76,17 @@ import {
 } from "../../packages/game/src/m_insane.js";
 import type { GameMonsterFrame, GameMonsterMove } from "../../packages/game/src/runtime.js";
 
+const SOURCE_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../Quake-2-master/game/m_insane.c"
+);
+const TS_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../packages/game/src/m_insane.ts"
+);
+const source = readFileSync(SOURCE_PATH, "utf8");
+const tsSource = readFileSync(TS_PATH, "utf8");
+
 main();
 
 function main(): void {
@@ -80,6 +94,7 @@ function main(): void {
   verifyCrucifiedSpawnStartsFlyingAndStandingGround();
   verifyMoveTablesMatchSourceFrames();
   verifyStateTransitionBranches();
+  verifyRandomMacroConsumersUseGLocalRandom();
   verifyPainAndDeathStateSelection();
   verifyDeathmatchSpawnFreesEntity();
 
@@ -204,17 +219,17 @@ function verifyStateTransitionBranches(): void {
 
   withMathRandom([0.79], () => insane_cross(insane));
   assert.equal(insane.monsterinfo.currentmove, insane_move_cross);
-  withMathRandom([0.8], () => insane_cross(insane));
+  withMathRandom([0.81], () => insane_cross(insane));
   assert.equal(insane.monsterinfo.currentmove, insane_move_struggle_cross);
 
   insane.spawnflags = 0;
-  withMathRandom([0.5], () => insane_walk(insane));
+  withMathRandom([0.49], () => insane_walk(insane));
   assert.equal(insane.monsterinfo.currentmove, insane_move_walk_normal);
-  withMathRandom([0.500001], () => insane_walk(insane));
+  withMathRandom([0.51], () => insane_walk(insane));
   assert.equal(insane.monsterinfo.currentmove, insane_move_walk_insane);
-  withMathRandom([0.5], () => insane_run(insane));
+  withMathRandom([0.49], () => insane_run(insane));
   assert.equal(insane.monsterinfo.currentmove, insane_move_run_normal);
-  withMathRandom([0.500001], () => insane_run(insane));
+  withMathRandom([0.51], () => insane_run(insane));
   assert.equal(insane.monsterinfo.currentmove, insane_move_run_insane);
 
   insane.spawnflags = 32;
@@ -225,7 +240,7 @@ function verifyStateTransitionBranches(): void {
   insane.spawnflags = 0;
   withMathRandom([0.29, 0.49], () => insane_checkdown(insane));
   assert.equal(insane.monsterinfo.currentmove, insane_move_uptodown);
-  withMathRandom([0.29, 0.5], () => insane_checkdown(insane));
+  withMathRandom([0.29, 0.51], () => insane_checkdown(insane));
   assert.equal(insane.monsterinfo.currentmove, insane_move_jumpdown);
 
   insane.spawnflags = 4 | 16;
@@ -242,6 +257,28 @@ function verifyStateTransitionBranches(): void {
   assert.equal(insane.monsterinfo.currentmove, insane_move_down);
 
   void runtime;
+}
+
+function verifyRandomMacroConsumersUseGLocalRandom(): void {
+  const macroConsumers = [
+    "insane_cross",
+    "insane_walk",
+    "insane_run",
+    "insane_checkdown",
+    "insane_checkup",
+    "insane_stand"
+  ];
+
+  for (const functionName of macroConsumers) {
+    assert.match(getSourceFunctionBlock(functionName), /\brandom\s*\(/, `${functionName}: C should use random()`);
+    const tsBlock = getTsFunctionBlock(functionName);
+    assert.match(tsBlock, /\brandom\s*\(/, `${functionName}: TS should use g_local.random()`);
+    assert.doesNotMatch(tsBlock, /Math\.random\s*\(/, `${functionName}: TS should not use Math.random() for C random()`);
+  }
+
+  assert.match(getSourceFunctionBlock("insane_pain"), /\brand\s*\(\)\s*&\s*1/, "insane_pain should use rand()&1");
+  assert.match(getTsFunctionBlock("insane_pain"), /randomInt\s*\(\s*2\s*\)\s*&\s*1/, "insane_pain should keep integer RNG helper");
+  assert.doesNotMatch(source, /\bcrandom\s*\(/, "m_insane.c should not consume crandom()");
 }
 
 function verifyPainAndDeathStateSelection(): void {
@@ -359,4 +396,40 @@ function withMathRandom(values: number[], callback: () => void): void {
   } finally {
     Math.random = originalRandom;
   }
+}
+
+function getSourceFunctionBlock(functionName: string): string {
+  return getFunctionBlock(source, new RegExp(`\\b(?:void|qboolean)\\s+${functionName}\\s*\\(`), functionName);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  return getFunctionBlock(tsSource, new RegExp(`\\bexport\\s+function\\s+${functionName}\\s*\\(`), functionName);
+}
+
+function getFunctionBlock(text: string, startPattern: RegExp, functionName: string): string {
+  const matches = Array.from(text.matchAll(new RegExp(startPattern.source, "g")));
+  const startMatch = matches.find((match) => {
+    const bodyStartCandidate = text.indexOf("{", match.index);
+    const declarationEnd = text.indexOf(";", match.index);
+    return bodyStartCandidate !== -1 && (declarationEnd === -1 || bodyStartCandidate < declarationEnd);
+  });
+  assert.ok(startMatch, `${functionName} should exist`);
+
+  const bodyStart = text.indexOf("{", startMatch.index);
+  assert.notEqual(bodyStart, -1, `${functionName} should have a body`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < text.length; i += 1) {
+    const char = text[i];
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return text.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} body was not closed`);
 }

@@ -126,173 +126,173 @@
 | `Quake-2-master/game/m_actor.h` | macro | `FRAME_runs10` | `packages/game/src/m_actor.ts` | `FRAME_runs10` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_actor.h` | macro | `FRAME_runs11` | `packages/game/src/m_actor.ts` | `FRAME_runs11` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_actor.h` | macro | `FRAME_runs12` | `packages/game/src/m_actor.ts` | `FRAME_runs12` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute01` | `packages/game/src/m_actor.ts` | `FRAME_salute01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute02` | `packages/game/src/m_actor.ts` | `FRAME_salute02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute03` | `packages/game/src/m_actor.ts` | `FRAME_salute03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute04` | `packages/game/src/m_actor.ts` | `FRAME_salute04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute05` | `packages/game/src/m_actor.ts` | `FRAME_salute05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute06` | `packages/game/src/m_actor.ts` | `FRAME_salute06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute07` | `packages/game/src/m_actor.ts` | `FRAME_salute07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute08` | `packages/game/src/m_actor.ts` | `FRAME_salute08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute09` | `packages/game/src/m_actor.ts` | `FRAME_salute09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute10` | `packages/game/src/m_actor.ts` | `FRAME_salute10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute11` | `packages/game/src/m_actor.ts` | `FRAME_salute11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute12` | `packages/game/src/m_actor.ts` | `FRAME_salute12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand101` | `packages/game/src/m_actor.ts` | `FRAME_stand101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand102` | `packages/game/src/m_actor.ts` | `FRAME_stand102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand103` | `packages/game/src/m_actor.ts` | `FRAME_stand103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand104` | `packages/game/src/m_actor.ts` | `FRAME_stand104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand105` | `packages/game/src/m_actor.ts` | `FRAME_stand105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand106` | `packages/game/src/m_actor.ts` | `FRAME_stand106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand107` | `packages/game/src/m_actor.ts` | `FRAME_stand107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand108` | `packages/game/src/m_actor.ts` | `FRAME_stand108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand109` | `packages/game/src/m_actor.ts` | `FRAME_stand109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand110` | `packages/game/src/m_actor.ts` | `FRAME_stand110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand111` | `packages/game/src/m_actor.ts` | `FRAME_stand111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand112` | `packages/game/src/m_actor.ts` | `FRAME_stand112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand113` | `packages/game/src/m_actor.ts` | `FRAME_stand113` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand114` | `packages/game/src/m_actor.ts` | `FRAME_stand114` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand115` | `packages/game/src/m_actor.ts` | `FRAME_stand115` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand116` | `packages/game/src/m_actor.ts` | `FRAME_stand116` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand117` | `packages/game/src/m_actor.ts` | `FRAME_stand117` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand118` | `packages/game/src/m_actor.ts` | `FRAME_stand118` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand119` | `packages/game/src/m_actor.ts` | `FRAME_stand119` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand120` | `packages/game/src/m_actor.ts` | `FRAME_stand120` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand121` | `packages/game/src/m_actor.ts` | `FRAME_stand121` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand122` | `packages/game/src/m_actor.ts` | `FRAME_stand122` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand123` | `packages/game/src/m_actor.ts` | `FRAME_stand123` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand124` | `packages/game/src/m_actor.ts` | `FRAME_stand124` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand125` | `packages/game/src/m_actor.ts` | `FRAME_stand125` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand126` | `packages/game/src/m_actor.ts` | `FRAME_stand126` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand127` | `packages/game/src/m_actor.ts` | `FRAME_stand127` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand128` | `packages/game/src/m_actor.ts` | `FRAME_stand128` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand129` | `packages/game/src/m_actor.ts` | `FRAME_stand129` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand130` | `packages/game/src/m_actor.ts` | `FRAME_stand130` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand131` | `packages/game/src/m_actor.ts` | `FRAME_stand131` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand132` | `packages/game/src/m_actor.ts` | `FRAME_stand132` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand133` | `packages/game/src/m_actor.ts` | `FRAME_stand133` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand134` | `packages/game/src/m_actor.ts` | `FRAME_stand134` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand135` | `packages/game/src/m_actor.ts` | `FRAME_stand135` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand136` | `packages/game/src/m_actor.ts` | `FRAME_stand136` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand137` | `packages/game/src/m_actor.ts` | `FRAME_stand137` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand138` | `packages/game/src/m_actor.ts` | `FRAME_stand138` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand139` | `packages/game/src/m_actor.ts` | `FRAME_stand139` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand140` | `packages/game/src/m_actor.ts` | `FRAME_stand140` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand201` | `packages/game/src/m_actor.ts` | `FRAME_stand201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand202` | `packages/game/src/m_actor.ts` | `FRAME_stand202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand203` | `packages/game/src/m_actor.ts` | `FRAME_stand203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand204` | `packages/game/src/m_actor.ts` | `FRAME_stand204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand205` | `packages/game/src/m_actor.ts` | `FRAME_stand205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand206` | `packages/game/src/m_actor.ts` | `FRAME_stand206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand207` | `packages/game/src/m_actor.ts` | `FRAME_stand207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand208` | `packages/game/src/m_actor.ts` | `FRAME_stand208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand209` | `packages/game/src/m_actor.ts` | `FRAME_stand209` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand210` | `packages/game/src/m_actor.ts` | `FRAME_stand210` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand211` | `packages/game/src/m_actor.ts` | `FRAME_stand211` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand212` | `packages/game/src/m_actor.ts` | `FRAME_stand212` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand213` | `packages/game/src/m_actor.ts` | `FRAME_stand213` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand214` | `packages/game/src/m_actor.ts` | `FRAME_stand214` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand215` | `packages/game/src/m_actor.ts` | `FRAME_stand215` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand216` | `packages/game/src/m_actor.ts` | `FRAME_stand216` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand217` | `packages/game/src/m_actor.ts` | `FRAME_stand217` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand218` | `packages/game/src/m_actor.ts` | `FRAME_stand218` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand219` | `packages/game/src/m_actor.ts` | `FRAME_stand219` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand220` | `packages/game/src/m_actor.ts` | `FRAME_stand220` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand221` | `packages/game/src/m_actor.ts` | `FRAME_stand221` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand222` | `packages/game/src/m_actor.ts` | `FRAME_stand222` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand223` | `packages/game/src/m_actor.ts` | `FRAME_stand223` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim01` | `packages/game/src/m_actor.ts` | `FRAME_swim01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim02` | `packages/game/src/m_actor.ts` | `FRAME_swim02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim03` | `packages/game/src/m_actor.ts` | `FRAME_swim03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim04` | `packages/game/src/m_actor.ts` | `FRAME_swim04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim05` | `packages/game/src/m_actor.ts` | `FRAME_swim05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim06` | `packages/game/src/m_actor.ts` | `FRAME_swim06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim07` | `packages/game/src/m_actor.ts` | `FRAME_swim07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim08` | `packages/game/src/m_actor.ts` | `FRAME_swim08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim09` | `packages/game/src/m_actor.ts` | `FRAME_swim09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim10` | `packages/game/src/m_actor.ts` | `FRAME_swim10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim11` | `packages/game/src/m_actor.ts` | `FRAME_swim11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim12` | `packages/game/src/m_actor.ts` | `FRAME_swim12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk01` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk02` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk03` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk04` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk05` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk06` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan01` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan02` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan03` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan04` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan05` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std01` | `packages/game/src/m_actor.ts` | `FRAME_sw_std01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std02` | `packages/game/src/m_actor.ts` | `FRAME_sw_std02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std03` | `packages/game/src/m_actor.ts` | `FRAME_sw_std03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std04` | `packages/game/src/m_actor.ts` | `FRAME_sw_std04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std05` | `packages/game/src/m_actor.ts` | `FRAME_sw_std05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std06` | `packages/game/src/m_actor.ts` | `FRAME_sw_std06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std07` | `packages/game/src/m_actor.ts` | `FRAME_sw_std07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std08` | `packages/game/src/m_actor.ts` | `FRAME_sw_std08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std09` | `packages/game/src/m_actor.ts` | `FRAME_sw_std09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std10` | `packages/game/src/m_actor.ts` | `FRAME_sw_std10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std11` | `packages/game/src/m_actor.ts` | `FRAME_sw_std11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std12` | `packages/game/src/m_actor.ts` | `FRAME_sw_std12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std13` | `packages/game/src/m_actor.ts` | `FRAME_sw_std13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std14` | `packages/game/src/m_actor.ts` | `FRAME_sw_std14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std15` | `packages/game/src/m_actor.ts` | `FRAME_sw_std15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std16` | `packages/game/src/m_actor.ts` | `FRAME_sw_std16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std17` | `packages/game/src/m_actor.ts` | `FRAME_sw_std17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std18` | `packages/game/src/m_actor.ts` | `FRAME_sw_std18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std19` | `packages/game/src/m_actor.ts` | `FRAME_sw_std19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std20` | `packages/game/src/m_actor.ts` | `FRAME_sw_std20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt01` | `packages/game/src/m_actor.ts` | `FRAME_taunt01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt02` | `packages/game/src/m_actor.ts` | `FRAME_taunt02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt03` | `packages/game/src/m_actor.ts` | `FRAME_taunt03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt04` | `packages/game/src/m_actor.ts` | `FRAME_taunt04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt05` | `packages/game/src/m_actor.ts` | `FRAME_taunt05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt06` | `packages/game/src/m_actor.ts` | `FRAME_taunt06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt07` | `packages/game/src/m_actor.ts` | `FRAME_taunt07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt08` | `packages/game/src/m_actor.ts` | `FRAME_taunt08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt09` | `packages/game/src/m_actor.ts` | `FRAME_taunt09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt10` | `packages/game/src/m_actor.ts` | `FRAME_taunt10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt11` | `packages/game/src/m_actor.ts` | `FRAME_taunt11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt12` | `packages/game/src/m_actor.ts` | `FRAME_taunt12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt13` | `packages/game/src/m_actor.ts` | `FRAME_taunt13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt14` | `packages/game/src/m_actor.ts` | `FRAME_taunt14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt15` | `packages/game/src/m_actor.ts` | `FRAME_taunt15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt16` | `packages/game/src/m_actor.ts` | `FRAME_taunt16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt17` | `packages/game/src/m_actor.ts` | `FRAME_taunt17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk01` | `packages/game/src/m_actor.ts` | `FRAME_walk01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk02` | `packages/game/src/m_actor.ts` | `FRAME_walk02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk03` | `packages/game/src/m_actor.ts` | `FRAME_walk03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk04` | `packages/game/src/m_actor.ts` | `FRAME_walk04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk05` | `packages/game/src/m_actor.ts` | `FRAME_walk05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk06` | `packages/game/src/m_actor.ts` | `FRAME_walk06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk07` | `packages/game/src/m_actor.ts` | `FRAME_walk07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk08` | `packages/game/src/m_actor.ts` | `FRAME_walk08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk09` | `packages/game/src/m_actor.ts` | `FRAME_walk09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk10` | `packages/game/src/m_actor.ts` | `FRAME_walk10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk11` | `packages/game/src/m_actor.ts` | `FRAME_walk11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave01` | `packages/game/src/m_actor.ts` | `FRAME_wave01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave02` | `packages/game/src/m_actor.ts` | `FRAME_wave02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave03` | `packages/game/src/m_actor.ts` | `FRAME_wave03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave04` | `packages/game/src/m_actor.ts` | `FRAME_wave04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave05` | `packages/game/src/m_actor.ts` | `FRAME_wave05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave06` | `packages/game/src/m_actor.ts` | `FRAME_wave06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave07` | `packages/game/src/m_actor.ts` | `FRAME_wave07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave08` | `packages/game/src/m_actor.ts` | `FRAME_wave08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave09` | `packages/game/src/m_actor.ts` | `FRAME_wave09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave10` | `packages/game/src/m_actor.ts` | `FRAME_wave10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave11` | `packages/game/src/m_actor.ts` | `FRAME_wave11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave12` | `packages/game/src/m_actor.ts` | `FRAME_wave12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave13` | `packages/game/src/m_actor.ts` | `FRAME_wave13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave14` | `packages/game/src/m_actor.ts` | `FRAME_wave14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave15` | `packages/game/src/m_actor.ts` | `FRAME_wave15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave16` | `packages/game/src/m_actor.ts` | `FRAME_wave16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave17` | `packages/game/src/m_actor.ts` | `FRAME_wave17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave18` | `packages/game/src/m_actor.ts` | `FRAME_wave18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave19` | `packages/game/src/m_actor.ts` | `FRAME_wave19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave20` | `packages/game/src/m_actor.ts` | `FRAME_wave20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave21` | `packages/game/src/m_actor.ts` | `FRAME_wave21` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute01` | `packages/game/src/m_actor.ts` | `FRAME_salute01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute02` | `packages/game/src/m_actor.ts` | `FRAME_salute02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute03` | `packages/game/src/m_actor.ts` | `FRAME_salute03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute04` | `packages/game/src/m_actor.ts` | `FRAME_salute04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute05` | `packages/game/src/m_actor.ts` | `FRAME_salute05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute06` | `packages/game/src/m_actor.ts` | `FRAME_salute06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute07` | `packages/game/src/m_actor.ts` | `FRAME_salute07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute08` | `packages/game/src/m_actor.ts` | `FRAME_salute08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute09` | `packages/game/src/m_actor.ts` | `FRAME_salute09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute10` | `packages/game/src/m_actor.ts` | `FRAME_salute10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute11` | `packages/game/src/m_actor.ts` | `FRAME_salute11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_salute12` | `packages/game/src/m_actor.ts` | `FRAME_salute12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand101` | `packages/game/src/m_actor.ts` | `FRAME_stand101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand102` | `packages/game/src/m_actor.ts` | `FRAME_stand102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand103` | `packages/game/src/m_actor.ts` | `FRAME_stand103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand104` | `packages/game/src/m_actor.ts` | `FRAME_stand104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand105` | `packages/game/src/m_actor.ts` | `FRAME_stand105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand106` | `packages/game/src/m_actor.ts` | `FRAME_stand106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand107` | `packages/game/src/m_actor.ts` | `FRAME_stand107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand108` | `packages/game/src/m_actor.ts` | `FRAME_stand108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand109` | `packages/game/src/m_actor.ts` | `FRAME_stand109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand110` | `packages/game/src/m_actor.ts` | `FRAME_stand110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand111` | `packages/game/src/m_actor.ts` | `FRAME_stand111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand112` | `packages/game/src/m_actor.ts` | `FRAME_stand112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand113` | `packages/game/src/m_actor.ts` | `FRAME_stand113` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand114` | `packages/game/src/m_actor.ts` | `FRAME_stand114` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand115` | `packages/game/src/m_actor.ts` | `FRAME_stand115` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand116` | `packages/game/src/m_actor.ts` | `FRAME_stand116` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand117` | `packages/game/src/m_actor.ts` | `FRAME_stand117` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand118` | `packages/game/src/m_actor.ts` | `FRAME_stand118` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand119` | `packages/game/src/m_actor.ts` | `FRAME_stand119` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand120` | `packages/game/src/m_actor.ts` | `FRAME_stand120` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand121` | `packages/game/src/m_actor.ts` | `FRAME_stand121` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand122` | `packages/game/src/m_actor.ts` | `FRAME_stand122` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand123` | `packages/game/src/m_actor.ts` | `FRAME_stand123` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand124` | `packages/game/src/m_actor.ts` | `FRAME_stand124` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand125` | `packages/game/src/m_actor.ts` | `FRAME_stand125` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand126` | `packages/game/src/m_actor.ts` | `FRAME_stand126` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand127` | `packages/game/src/m_actor.ts` | `FRAME_stand127` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand128` | `packages/game/src/m_actor.ts` | `FRAME_stand128` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand129` | `packages/game/src/m_actor.ts` | `FRAME_stand129` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand130` | `packages/game/src/m_actor.ts` | `FRAME_stand130` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand131` | `packages/game/src/m_actor.ts` | `FRAME_stand131` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand132` | `packages/game/src/m_actor.ts` | `FRAME_stand132` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand133` | `packages/game/src/m_actor.ts` | `FRAME_stand133` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand134` | `packages/game/src/m_actor.ts` | `FRAME_stand134` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand135` | `packages/game/src/m_actor.ts` | `FRAME_stand135` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand136` | `packages/game/src/m_actor.ts` | `FRAME_stand136` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand137` | `packages/game/src/m_actor.ts` | `FRAME_stand137` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand138` | `packages/game/src/m_actor.ts` | `FRAME_stand138` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand139` | `packages/game/src/m_actor.ts` | `FRAME_stand139` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand140` | `packages/game/src/m_actor.ts` | `FRAME_stand140` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand201` | `packages/game/src/m_actor.ts` | `FRAME_stand201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand202` | `packages/game/src/m_actor.ts` | `FRAME_stand202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand203` | `packages/game/src/m_actor.ts` | `FRAME_stand203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand204` | `packages/game/src/m_actor.ts` | `FRAME_stand204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand205` | `packages/game/src/m_actor.ts` | `FRAME_stand205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand206` | `packages/game/src/m_actor.ts` | `FRAME_stand206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand207` | `packages/game/src/m_actor.ts` | `FRAME_stand207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand208` | `packages/game/src/m_actor.ts` | `FRAME_stand208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand209` | `packages/game/src/m_actor.ts` | `FRAME_stand209` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand210` | `packages/game/src/m_actor.ts` | `FRAME_stand210` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand211` | `packages/game/src/m_actor.ts` | `FRAME_stand211` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand212` | `packages/game/src/m_actor.ts` | `FRAME_stand212` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand213` | `packages/game/src/m_actor.ts` | `FRAME_stand213` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand214` | `packages/game/src/m_actor.ts` | `FRAME_stand214` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand215` | `packages/game/src/m_actor.ts` | `FRAME_stand215` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand216` | `packages/game/src/m_actor.ts` | `FRAME_stand216` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand217` | `packages/game/src/m_actor.ts` | `FRAME_stand217` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand218` | `packages/game/src/m_actor.ts` | `FRAME_stand218` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand219` | `packages/game/src/m_actor.ts` | `FRAME_stand219` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand220` | `packages/game/src/m_actor.ts` | `FRAME_stand220` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand221` | `packages/game/src/m_actor.ts` | `FRAME_stand221` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand222` | `packages/game/src/m_actor.ts` | `FRAME_stand222` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_stand223` | `packages/game/src/m_actor.ts` | `FRAME_stand223` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim01` | `packages/game/src/m_actor.ts` | `FRAME_swim01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim02` | `packages/game/src/m_actor.ts` | `FRAME_swim02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim03` | `packages/game/src/m_actor.ts` | `FRAME_swim03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim04` | `packages/game/src/m_actor.ts` | `FRAME_swim04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim05` | `packages/game/src/m_actor.ts` | `FRAME_swim05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim06` | `packages/game/src/m_actor.ts` | `FRAME_swim06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim07` | `packages/game/src/m_actor.ts` | `FRAME_swim07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim08` | `packages/game/src/m_actor.ts` | `FRAME_swim08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim09` | `packages/game/src/m_actor.ts` | `FRAME_swim09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim10` | `packages/game/src/m_actor.ts` | `FRAME_swim10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim11` | `packages/game/src/m_actor.ts` | `FRAME_swim11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_swim12` | `packages/game/src/m_actor.ts` | `FRAME_swim12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk01` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk02` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk03` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk04` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk05` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_atk06` | `packages/game/src/m_actor.ts` | `FRAME_sw_atk06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan01` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan02` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan03` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan04` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_pan05` | `packages/game/src/m_actor.ts` | `FRAME_sw_pan05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std01` | `packages/game/src/m_actor.ts` | `FRAME_sw_std01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std02` | `packages/game/src/m_actor.ts` | `FRAME_sw_std02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std03` | `packages/game/src/m_actor.ts` | `FRAME_sw_std03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std04` | `packages/game/src/m_actor.ts` | `FRAME_sw_std04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std05` | `packages/game/src/m_actor.ts` | `FRAME_sw_std05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std06` | `packages/game/src/m_actor.ts` | `FRAME_sw_std06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std07` | `packages/game/src/m_actor.ts` | `FRAME_sw_std07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std08` | `packages/game/src/m_actor.ts` | `FRAME_sw_std08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std09` | `packages/game/src/m_actor.ts` | `FRAME_sw_std09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std10` | `packages/game/src/m_actor.ts` | `FRAME_sw_std10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std11` | `packages/game/src/m_actor.ts` | `FRAME_sw_std11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std12` | `packages/game/src/m_actor.ts` | `FRAME_sw_std12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std13` | `packages/game/src/m_actor.ts` | `FRAME_sw_std13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std14` | `packages/game/src/m_actor.ts` | `FRAME_sw_std14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std15` | `packages/game/src/m_actor.ts` | `FRAME_sw_std15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std16` | `packages/game/src/m_actor.ts` | `FRAME_sw_std16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std17` | `packages/game/src/m_actor.ts` | `FRAME_sw_std17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std18` | `packages/game/src/m_actor.ts` | `FRAME_sw_std18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std19` | `packages/game/src/m_actor.ts` | `FRAME_sw_std19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_sw_std20` | `packages/game/src/m_actor.ts` | `FRAME_sw_std20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt01` | `packages/game/src/m_actor.ts` | `FRAME_taunt01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt02` | `packages/game/src/m_actor.ts` | `FRAME_taunt02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt03` | `packages/game/src/m_actor.ts` | `FRAME_taunt03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt04` | `packages/game/src/m_actor.ts` | `FRAME_taunt04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt05` | `packages/game/src/m_actor.ts` | `FRAME_taunt05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt06` | `packages/game/src/m_actor.ts` | `FRAME_taunt06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt07` | `packages/game/src/m_actor.ts` | `FRAME_taunt07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt08` | `packages/game/src/m_actor.ts` | `FRAME_taunt08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt09` | `packages/game/src/m_actor.ts` | `FRAME_taunt09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt10` | `packages/game/src/m_actor.ts` | `FRAME_taunt10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt11` | `packages/game/src/m_actor.ts` | `FRAME_taunt11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt12` | `packages/game/src/m_actor.ts` | `FRAME_taunt12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt13` | `packages/game/src/m_actor.ts` | `FRAME_taunt13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt14` | `packages/game/src/m_actor.ts` | `FRAME_taunt14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt15` | `packages/game/src/m_actor.ts` | `FRAME_taunt15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt16` | `packages/game/src/m_actor.ts` | `FRAME_taunt16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_taunt17` | `packages/game/src/m_actor.ts` | `FRAME_taunt17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk01` | `packages/game/src/m_actor.ts` | `FRAME_walk01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk02` | `packages/game/src/m_actor.ts` | `FRAME_walk02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk03` | `packages/game/src/m_actor.ts` | `FRAME_walk03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk04` | `packages/game/src/m_actor.ts` | `FRAME_walk04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk05` | `packages/game/src/m_actor.ts` | `FRAME_walk05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk06` | `packages/game/src/m_actor.ts` | `FRAME_walk06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk07` | `packages/game/src/m_actor.ts` | `FRAME_walk07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk08` | `packages/game/src/m_actor.ts` | `FRAME_walk08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk09` | `packages/game/src/m_actor.ts` | `FRAME_walk09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk10` | `packages/game/src/m_actor.ts` | `FRAME_walk10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_walk11` | `packages/game/src/m_actor.ts` | `FRAME_walk11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave01` | `packages/game/src/m_actor.ts` | `FRAME_wave01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave02` | `packages/game/src/m_actor.ts` | `FRAME_wave02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave03` | `packages/game/src/m_actor.ts` | `FRAME_wave03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave04` | `packages/game/src/m_actor.ts` | `FRAME_wave04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave05` | `packages/game/src/m_actor.ts` | `FRAME_wave05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave06` | `packages/game/src/m_actor.ts` | `FRAME_wave06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave07` | `packages/game/src/m_actor.ts` | `FRAME_wave07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave08` | `packages/game/src/m_actor.ts` | `FRAME_wave08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave09` | `packages/game/src/m_actor.ts` | `FRAME_wave09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave10` | `packages/game/src/m_actor.ts` | `FRAME_wave10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave11` | `packages/game/src/m_actor.ts` | `FRAME_wave11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave12` | `packages/game/src/m_actor.ts` | `FRAME_wave12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave13` | `packages/game/src/m_actor.ts` | `FRAME_wave13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave14` | `packages/game/src/m_actor.ts` | `FRAME_wave14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave15` | `packages/game/src/m_actor.ts` | `FRAME_wave15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave16` | `packages/game/src/m_actor.ts` | `FRAME_wave16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave17` | `packages/game/src/m_actor.ts` | `FRAME_wave17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave18` | `packages/game/src/m_actor.ts` | `FRAME_wave18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave19` | `packages/game/src/m_actor.ts` | `FRAME_wave19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave20` | `packages/game/src/m_actor.ts` | `FRAME_wave20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.h` | macro | `FRAME_wave21` | `packages/game/src/m_actor.ts` | `FRAME_wave21` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_actor.h` | macro | `FRAME_bl_atk01` | `packages/game/src/m_actor.ts` | `FRAME_bl_atk01` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.h` | macro | `FRAME_bl_atk02` | `packages/game/src/m_actor.ts` | `FRAME_bl_atk02` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.h` | macro | `FRAME_bl_atk03` | `packages/game/src/m_actor.ts` | `FRAME_bl_atk03` | A verifier | A redecouper |  |

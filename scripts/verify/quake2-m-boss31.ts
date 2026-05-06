@@ -41,8 +41,14 @@ import {
   MZ2_JORG_MACHINEGUN_L1,
   MZ2_JORG_MACHINEGUN_R1,
   SP_monster_jorg,
+  jorg_frames_pain1,
+  jorg_frames_pain2,
+  jorg_frames_pain3,
   jorg_frames_run,
   jorg_frames_stand,
+  jorg_frames_end_walk,
+  jorg_frames_start_walk,
+  jorg_frames_walk,
   jorgBFG,
   jorg_attack,
   jorg_death_hit,
@@ -53,12 +59,14 @@ import {
   jorg_move_attack2,
   jorg_move_death,
   jorg_move_end_attack1,
+  jorg_move_end_walk,
   jorg_move_pain1,
   jorg_move_pain2,
   jorg_move_pain3,
   jorg_move_run,
   jorg_move_stand,
   jorg_move_start_attack1,
+  jorg_move_start_walk,
   jorg_move_walk,
   jorg_pain,
   jorg_reattack1,
@@ -77,6 +85,8 @@ function main(): void {
   verifySpawnRegistryCallsMonsterJorg();
   verifySaveRegistryRestoresCallbacksAndMoves();
   verifyStandAndRunTables();
+  verifyWalkTables();
+  verifyPainTables();
   verifyStateTransitions();
   verifySoundsAndPainBranches();
   verifyWeaponCallbacks();
@@ -149,6 +159,12 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveFunction("jorgBFG"), jorgBFG);
   assert.equal(findGameSaveMove("jorg_move_stand"), jorg_move_stand);
   assert.equal(findGameSaveMove("jorg_move_run"), jorg_move_run);
+  assert.equal(findGameSaveMove("jorg_move_start_walk"), jorg_move_start_walk);
+  assert.equal(findGameSaveMove("jorg_move_walk"), jorg_move_walk);
+  assert.equal(findGameSaveMove("jorg_move_end_walk"), jorg_move_end_walk);
+  assert.equal(findGameSaveMove("jorg_move_pain1"), jorg_move_pain1);
+  assert.equal(findGameSaveMove("jorg_move_pain2"), jorg_move_pain2);
+  assert.equal(findGameSaveMove("jorg_move_pain3"), jorg_move_pain3);
   assert.equal(findGameSaveMove("jorg_move_attack2"), jorg_move_attack2);
   assert.equal(findGameSaveMove("jorg_move_death"), jorg_move_death);
 }
@@ -181,6 +197,70 @@ function verifyStandAndRunTables(): void {
   assert.equal(jorg_frames_run[0].aifunc?.name, "ai_run");
   assert.equal(jorg_frames_run[0].thinkfunc, jorg_step_left);
   assert.equal(jorg_frames_run[7].thinkfunc, jorg_step_right);
+}
+
+function verifyWalkTables(): void {
+  assert.equal(jorg_frames_start_walk.length, 5);
+  assert.equal(jorg_move_start_walk.firstframe, 163);
+  assert.equal(jorg_move_start_walk.lastframe, 167);
+  assert.equal(jorg_move_start_walk.frame, jorg_frames_start_walk);
+  assert.equal(jorg_move_start_walk.endfunc, undefined);
+  assert.deepEqual(jorg_frames_start_walk.map((frame) => frame.dist), [5, 6, 7, 9, 15]);
+  assert.ok(jorg_frames_start_walk.every((frame) => frame.aifunc?.name === "ai_walk"));
+  assert.ok(jorg_frames_start_walk.every((frame) => frame.thinkfunc === undefined));
+
+  assert.equal(jorg_frames_walk.length, 14);
+  assert.equal(jorg_move_walk.firstframe, 168);
+  assert.equal(jorg_move_walk.lastframe, 181);
+  assert.equal(jorg_move_walk.frame, jorg_frames_walk);
+  assert.equal(jorg_move_walk.endfunc, undefined);
+  assert.deepEqual(jorg_frames_walk.map((frame) => frame.dist), [17, 0, 0, 0, 12, 8, 10, 33, 0, 0, 0, 9, 9, 9]);
+  assert.ok(jorg_frames_walk.every((frame) => frame.aifunc?.name === "ai_walk"));
+  assert.ok(jorg_frames_walk.every((frame) => frame.thinkfunc === undefined));
+
+  assert.equal(jorg_frames_end_walk.length, 6);
+  assert.equal(jorg_move_end_walk.firstframe, 182);
+  assert.equal(jorg_move_end_walk.lastframe, 187);
+  assert.equal(jorg_move_end_walk.frame, jorg_frames_end_walk);
+  assert.equal(jorg_move_end_walk.endfunc, undefined);
+  assert.deepEqual(jorg_frames_end_walk.map((frame) => frame.dist), [11, 0, 0, 0, 8, -8]);
+  assert.ok(jorg_frames_end_walk.every((frame) => frame.aifunc?.name === "ai_walk"));
+  assert.ok(jorg_frames_end_walk.every((frame) => frame.thinkfunc === undefined));
+}
+
+function verifyPainTables(): void {
+  assert.equal(jorg_frames_pain3.length, 25);
+  assert.equal(jorg_move_pain3.firstframe, 87);
+  assert.equal(jorg_move_pain3.lastframe, 111);
+  assert.equal(jorg_move_pain3.frame, jorg_frames_pain3);
+  assert.equal(jorg_move_pain3.endfunc, jorg_run);
+  assert.deepEqual(
+    jorg_frames_pain3.map((frame) => frame.dist),
+    [-28, -6, -3, -9, 0, 0, 0, 0, -7, 1, -11, -4, 0, 0, 10, 11, 0, 10, 3, 10, 7, 17, 0, 0, 0]
+  );
+  assert.ok(jorg_frames_pain3.every((frame) => frame.aifunc?.name === "ai_move"));
+  assert.equal(jorg_frames_pain3[2].thinkfunc, jorg_step_left);
+  assert.equal(jorg_frames_pain3[4].thinkfunc, jorg_step_right);
+  assert.equal(jorg_frames_pain3[20].thinkfunc, jorg_step_left);
+  assert.equal(jorg_frames_pain3[24].thinkfunc, jorg_step_right);
+
+  assert.equal(jorg_frames_pain2.length, 3);
+  assert.equal(jorg_move_pain2.firstframe, 84);
+  assert.equal(jorg_move_pain2.lastframe, 86);
+  assert.equal(jorg_move_pain2.frame, jorg_frames_pain2);
+  assert.equal(jorg_move_pain2.endfunc, jorg_run);
+  assert.ok(jorg_frames_pain2.every((frame) => frame.aifunc?.name === "ai_move"));
+  assert.ok(jorg_frames_pain2.every((frame) => frame.dist === 0));
+  assert.ok(jorg_frames_pain2.every((frame) => frame.thinkfunc === undefined));
+
+  assert.equal(jorg_frames_pain1.length, 3);
+  assert.equal(jorg_move_pain1.firstframe, 81);
+  assert.equal(jorg_move_pain1.lastframe, 83);
+  assert.equal(jorg_move_pain1.frame, jorg_frames_pain1);
+  assert.equal(jorg_move_pain1.endfunc, jorg_run);
+  assert.ok(jorg_frames_pain1.every((frame) => frame.aifunc?.name === "ai_move"));
+  assert.ok(jorg_frames_pain1.every((frame) => frame.dist === 0));
+  assert.ok(jorg_frames_pain1.every((frame) => frame.thinkfunc === undefined));
 }
 
 function verifyStateTransitions(): void {

@@ -3,9 +3,41 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: declarations forward initiales, globals sonores, `makron_taunt`, `makron_frames_stand`, `makron_move_stand`, `makron_stand`, `makron_frames_run`, `makron_move_run`, `makron_run`, `makron_step_left`, `makron_step_right`, `MakronPrecache`, declarations declaratives stand/run.
-- Verdict du dernier lot: Valide pour les entites comportementales; Non applicable pour les declarations forward et le local `r`.
+- Dernier lot traite: blocs douleur `makron_frames_pain6`, `makron_move_pain6`, `makron_frames_pain5`, `makron_move_pain5`, `makron_frames_pain4`, `makron_move_pain4`, plus `makron_pain`.
+- Verdict du dernier lot: Valide pour les tables/moves de douleur et `makron_pain`.
 - Fichier TS proprietaire: `packages/game/src/m_boss32.ts`
+
+## Session 2026-05-06 - lot pain
+
+Lot 3x traite:
+
+- `makron_frames_pain6`, `makron_move_pain6`.
+- `makron_frames_pain5`, `makron_move_pain5`.
+- `makron_frames_pain4`, `makron_move_pain4`.
+- Lignes declaratives `makron_frames_pain6`, `makron_frames_pain5`, `makron_frames_pain4`.
+- `makron_pain`.
+
+Corrections:
+
+- `m_boss32.ts`: `makron_pain` utilise maintenant `g_local.random()` pour les appels C `random()`.
+- `m_boss32.ts`: ajout du commentaire d'en-tete de portage pour `makron_pain`, incluant le dangling-else source conserve.
+- `quake2-m-boss32.ts`: preuves ciblees ajoutees pour les tables/moves pain4/pain5/pain6, callbacks pain6, endfunc `makron_run`, et registre save des moves pain.
+
+Tests lances:
+
+- `npm run verify:m-boss32`
+- `npm run verify:m-boss32:source-parity`
+- `npm run verify:m-boss32:header`
+- `npm run verify:full-game:audio-routing`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Integration:
+
+- Runtime: valide. `SP_monster_makron` branche `self.pain = makron_pain`; les moves pain sont selectionnes par `makron_pain` puis avances par `M_MoveFrame`, avec retour `makron_run`.
+- apps/web: valide. Les sons de douleur transitent par les `soundEvents` runtime consommes par le flux audio full-game; aucune logique web parallele Makron detectee.
+- renderer-three: valide. Les sorties visibles attendues sont les frames de modele Makron et les changements de skin, consommes par le chemin generique snapshots/refresh/renderer-three via `modelindex`, `frame`, `oldframe`, `backlerp` et `skinnum`.
 
 ## Session 2026-05-06
 
@@ -44,16 +76,46 @@ Integration:
 
 ## Prochain lot recommande
 
-Continuer avec le bloc marche et callbacks sonores proches:
+Continuer avec les blocs mort/sight:
+
+- `makron_frames_death2`, `makron_move_death2`.
+- `makron_frames_death3`, `makron_move_death3`.
+- `makron_frames_sight`, `makron_move_sight`, puis `makron_sight` si coherent.
+
+## Session 2026-05-06 - lot callbacks/walk
+
+Lot 3x traite:
 
 - `makron_hit`, `makron_popup`, `makron_brainsplorch`, `makron_prerailgun`.
 - `makron_frames_walk`, `makron_move_walk`, `makron_walk`.
-- Verifier explicitement l'ecart source existant: `makron_move_walk` pointe vers `makron_frames_run` dans le C et le TS conserve ce comportement.
+- Ligne declarative `makron_frames_walk`.
+
+Corrections:
+
+- `m_boss32.ts`: ajout de commentaires d'en-tete pour `makron_hit`, `makron_popup`, `makron_brainsplorch`, `makron_prerailgun`, `makron_walk`.
+- `quake2-m-boss32.ts`: preuves renforcees pour les canaux/attenuations exacts des callbacks sonores, pour `makron_frames_walk`, pour `makron_move_walk`, et pour son enregistrement save.
+
+Tests lances:
+
+- `npm run verify:m-boss32`
+- `npm run verify:m-boss32:source-parity`
+- `npm run verify:m-boss32:header`
+- `npm run verify:full-game:audio-routing`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Integration:
+
+- Runtime: valide. Les callbacks sont atteignables via `monsterinfo.currentmove` et `M_MoveFrame`: `makron_popup` depuis pain6, `makron_hit`/`makron_brainsplorch` depuis death2, `makron_prerailgun` depuis attack5; `makron_walk` est branche sur `monsterinfo.walk` par `SP_monster_makron`.
+- apps/web: valide. Les sons transitent par les `soundEvents` runtime et le flush game/import, puis par le flux audio full-game; aucune logique web parallele ne remplace ces callbacks.
+- renderer-three: valide. Le bloc walk produit des frames de modele Makron consommees par le chemin generique entites MD2 (`modelindex`, `frame`, `oldframe`, `backlerp`). Les callbacks sonores ne produisent pas de sortie renderer directe.
+- Decision conservee: le C declare `makron_frames_walk` en `ai_walk`, mais `makron_move_walk` reference `makron_frames_run`; le TS et les tests conservent explicitement ce comportement.
 
 ## Mise a jour recommandee pour AVANCEMENT_GLOBAL.md
 
 - `Quake-2-master/game/m_boss32.c`: passer a `En cours`.
 - Progress: `progress/game_m_boss32.c.md`.
-- Validees: 28.
+- Validees: 50.
 - Non applicables: 8.
-- Prochain lot: `makron_hit`/`makron_popup`/`makron_brainsplorch`/`makron_prerailgun`, puis bloc walk.
+- Prochain lot: `makron_frames_death2`, `makron_move_death2`, `makron_frames_death3`, `makron_move_death3`, `makron_frames_sight`, `makron_move_sight`, puis `makron_sight` si coherent.

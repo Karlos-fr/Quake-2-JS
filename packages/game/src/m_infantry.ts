@@ -32,7 +32,8 @@ import {
   RANGE_MELEE,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range } from "./g_ai.js";
 import { M_FlyCheck, monster_fire_bullet, walkmonster_start } from "./g_monster.js";
@@ -615,8 +616,17 @@ export const infantry_move_duck: GameMonsterMove = {
   endfunc: infantry_run
 };
 
+/**
+ * Original name: infantry_dodge
+ * Source: game/m_infantry.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Uses `g_local.random` for the original `random()` macro branch.
+ */
 export function infantry_dodge(self: GameEntity, attacker: GameEntity | null, _eta: number): void {
-  if (Math.random() > 0.25) {
+  if (random() > 0.25) {
     return;
   }
 

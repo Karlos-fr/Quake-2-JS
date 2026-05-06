@@ -13,6 +13,7 @@ import {
   FRAME_attak101,
   FRAME_death50,
   FRAME_pain101,
+  FRAME_pain325,
   FRAME_stand01,
   FRAME_walk25,
   MODEL_SCALE
@@ -34,6 +35,7 @@ function assertEqual<T>(label: string, actual: T, expected: T): void {
 assertEqual("FRAME_attak101", FRAME_attak101, 0);
 assertEqual("FRAME_death50", FRAME_death50, 80);
 assertEqual("FRAME_pain101", FRAME_pain101, 81);
+assertEqual("FRAME_pain325", FRAME_pain325, 111);
 assertEqual("FRAME_stand01", FRAME_stand01, 112);
 assertEqual("FRAME_walk25", FRAME_walk25, 187);
 assertEqual("MODEL_SCALE", MODEL_SCALE, 1.0);

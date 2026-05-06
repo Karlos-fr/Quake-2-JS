@@ -418,6 +418,15 @@ export const jorg_move_end_walk: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: jorg_walk
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches Jorg to the looping walk move.
+ */
 export function jorg_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = jorg_move_walk;
 }
@@ -553,6 +562,9 @@ export function jorg_attack1(self: GameEntity): void {
  *
  * Behavior:
  * - Applies Jorg pain debounce, skin change and random pain suppression/animation choices.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the original C `random()` macro checks.
  */
 export function jorg_pain(
   self: GameEntity,

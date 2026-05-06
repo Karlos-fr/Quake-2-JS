@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { ATTN_NONE, ATTN_NORM, CHAN_AUTO, CHAN_BODY, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { ATTN_NONE, ATTN_NORM, CHAN_AUTO, CHAN_BODY, CHAN_VOICE, CHAN_WEAPON, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
   AS_MISSILE,
@@ -49,6 +49,12 @@ import {
   SP_monster_makron,
   FRAME_attak405,
   FRAME_death295,
+  FRAME_pain401,
+  FRAME_pain404,
+  FRAME_pain501,
+  FRAME_pain504,
+  FRAME_pain601,
+  FRAME_pain627,
   FRAME_stand201,
   FRAME_stand260,
   FRAME_walk204,
@@ -57,6 +63,10 @@ import {
   makron_brainsplorch,
   makron_dead,
   makron_attack,
+  makron_frames_pain4,
+  makron_frames_pain5,
+  makron_frames_pain6,
+  makron_frames_walk,
   makron_die,
   makron_hit,
   makron_move_attack3,
@@ -68,6 +78,7 @@ import {
   makron_move_run,
   makron_move_sight,
   makron_move_stand,
+  makron_move_walk,
   makron_pain,
   makron_popup,
   makron_prerailgun,
@@ -86,6 +97,7 @@ function main(): void {
   verifySpawnRegistryExcludesStandaloneMakron();
   verifySaveRegistryRestoresCallbacksAndMoves();
   verifyStandRunTablesAndCallbacks();
+  verifyPainTablesAndMoves();
   verifyStateTransitions();
   verifySoundCallbacks();
   verifyPainBranchesPreserveSourceDanglingElse();
@@ -164,6 +176,10 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("makron_move_stand"), makron_move_stand);
   assert.equal(findGameSaveMove("makron_move_sight"), makron_move_sight);
   assert.equal(findGameSaveMove("makron_move_run"), makron_move_run);
+  assert.equal(findGameSaveMove("makron_move_walk"), makron_move_walk);
+  assert.equal(findGameSaveMove("makron_move_pain4"), makron_move_pain4);
+  assert.equal(findGameSaveMove("makron_move_pain5"), makron_move_pain5);
+  assert.equal(findGameSaveMove("makron_move_pain6"), makron_move_pain6);
   assert.equal(findGameSaveMove("makron_move_attack3"), makron_move_attack3);
   assert.equal(findGameSaveMove("makron_move_attack4"), makron_move_attack4);
   assert.equal(findGameSaveMove("makron_move_attack5"), makron_move_attack5);
@@ -188,6 +204,54 @@ function verifyStandRunTablesAndCallbacks(): void {
     makron_move_run.frame.map((frame) => frame.thinkfunc?.name),
     ["makron_step_left", undefined, undefined, undefined, "makron_step_right", undefined, undefined, undefined, undefined, undefined]
   );
+
+  assert.equal(makron_frames_walk.length, 10);
+  assert.deepEqual(makron_frames_walk.map((frame) => frame.aifunc?.name), new Array<string>(10).fill("ai_walk"));
+  assert.deepEqual(makron_frames_walk.map((frame) => frame.dist), [3, 12, 8, 8, 8, 6, 12, 9, 6, 12]);
+  assert.deepEqual(
+    makron_frames_walk.map((frame) => frame.thinkfunc?.name),
+    ["makron_step_left", undefined, undefined, undefined, "makron_step_right", undefined, undefined, undefined, undefined, undefined]
+  );
+  assert.equal(makron_move_walk.firstframe, FRAME_walk204);
+  assert.equal(makron_move_walk.lastframe, FRAME_walk213);
+  assert.equal(makron_move_walk.frame, makron_move_run.frame, "source m_boss32.c points makron_move_walk at makron_frames_run");
+  assert.equal(makron_move_walk.endfunc, undefined);
+}
+
+function verifyPainTablesAndMoves(): void {
+  assert.equal(makron_move_pain6.firstframe, FRAME_pain601);
+  assert.equal(makron_move_pain6.lastframe, FRAME_pain627);
+  assert.equal(makron_move_pain6.frame, makron_frames_pain6);
+  assert.equal(makron_move_pain6.endfunc, makron_run);
+  assert.equal(makron_frames_pain6.length, 27);
+  assert.deepEqual(makron_frames_pain6.map((frame) => frame.aifunc?.name), new Array<string>(27).fill("ai_move"));
+  assert.deepEqual(makron_frames_pain6.map((frame) => frame.dist), new Array<number>(27).fill(0));
+  assert.deepEqual(
+    makron_frames_pain6.map((frame) => frame.thinkfunc?.name),
+    [
+      undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined,
+      undefined, undefined, undefined, undefined, undefined, undefined, "makron_popup", undefined, undefined,
+      undefined, undefined, undefined, undefined, undefined, "makron_taunt", undefined, undefined, undefined
+    ]
+  );
+
+  assert.equal(makron_move_pain5.firstframe, FRAME_pain501);
+  assert.equal(makron_move_pain5.lastframe, FRAME_pain504);
+  assert.equal(makron_move_pain5.frame, makron_frames_pain5);
+  assert.equal(makron_move_pain5.endfunc, makron_run);
+  assert.equal(makron_frames_pain5.length, 4);
+  assert.deepEqual(makron_frames_pain5.map((frame) => frame.aifunc?.name), new Array<string>(4).fill("ai_move"));
+  assert.deepEqual(makron_frames_pain5.map((frame) => frame.dist), new Array<number>(4).fill(0));
+  assert.ok(makron_frames_pain5.every((frame) => frame.thinkfunc === undefined));
+
+  assert.equal(makron_move_pain4.firstframe, FRAME_pain401);
+  assert.equal(makron_move_pain4.lastframe, FRAME_pain404);
+  assert.equal(makron_move_pain4.frame, makron_frames_pain4);
+  assert.equal(makron_move_pain4.endfunc, makron_run);
+  assert.equal(makron_frames_pain4.length, 4);
+  assert.deepEqual(makron_frames_pain4.map((frame) => frame.aifunc?.name), new Array<string>(4).fill("ai_move"));
+  assert.deepEqual(makron_frames_pain4.map((frame) => frame.dist), new Array<number>(4).fill(0));
+  assert.ok(makron_frames_pain4.every((frame) => frame.thinkfunc === undefined));
 }
 
 function verifyStateTransitions(): void {
@@ -225,13 +289,13 @@ function verifySoundCallbacks(): void {
   makron_step_right(makron, runtime);
   assertSound(drainGameSoundEvents(runtime).at(-1), "makron/step2.wav", CHAN_BODY, ATTN_NORM);
   makron_popup(makron, runtime);
-  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/popup.wav");
+  assertSound(drainGameSoundEvents(runtime).at(-1), "makron/popup.wav", CHAN_BODY, ATTN_NONE);
   makron_brainsplorch(makron, runtime);
-  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/brain1.wav");
+  assertSound(drainGameSoundEvents(runtime).at(-1), "makron/brain1.wav", CHAN_VOICE, ATTN_NORM);
   makron_prerailgun(makron, runtime);
-  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/rail_up.wav");
+  assertSound(drainGameSoundEvents(runtime).at(-1), "makron/rail_up.wav", CHAN_WEAPON, ATTN_NORM);
   makron_hit(makron, runtime);
-  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "makron/bhit.wav");
+  assertSound(drainGameSoundEvents(runtime).at(-1), "makron/bhit.wav", CHAN_AUTO, ATTN_NONE);
 
   withMathRandom([0.2], () => makron_taunt(makron, runtime));
   assertSound(drainGameSoundEvents(runtime).at(-1), "makron/voice4.wav", CHAN_AUTO, ATTN_NONE);

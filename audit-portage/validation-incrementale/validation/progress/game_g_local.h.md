@@ -1602,7 +1602,48 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-hover` OK; `npm run verify:m-hover:header` OK; `npm run verify:m-hover:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_infantry.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts`, `p_hud.ts`, `m_gunner.ts`, `m_chick.ts` et `m_hover.ts` ont montre les usages entiers ou absences de `crandom` pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/m_infantry.ts` pour `infantry_dodge`; verification immediate des consommateurs entiers `infantry_pain`, `infantry_die`, `infantry_cock_gun` et `infantry_smack`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `m_infantry.ts` est harmonise pour l'unique usage macro C `random()` actif, aucun consommateur `crandom()` n'existe dans `m_infantry.c`/`m_infantry.ts`, mais d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_infantry.c` consomme `random()` dans `infantry_dodge` (`> 0.25`); `infantry_pain` (`rand() % 2`), `infantry_die` (`rand() % 3`), `infantry_cock_gun` (`rand() & 15`) et `infantry_smack` (`rand() % 5`) restent hors macros flottantes.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_infantry.ts`: `infantry_dodge` consomme maintenant le helper proprietaire `random`; `randomInt` reste limite aux ports entiers `rand() % n` / `rand() & 15`.
+- Runtime: integration attendue et branchee via `SP_monster_infantry`, `g_spawn.ts`, callback `dodge`, `T_Damage`/AI, `monster_think`/`M_MoveFrame`, `G_RunEntity` et `G_RunFrame`; le tirage affecte duck/dodge, cible ennemie, frames visibles et bbox/takedamage pendant l'esquive.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres et ordre de rendu; aucune logique parallele web `m_infantry`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Le tirage `m_infantry.ts` affecte sorties visibles/audibles via modele infantry, frames duck/dodge, bbox/etat d'entite, sons et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaire d'en-tete ajoute pour `infantry_dodge` avec note de portage vers `g_local.random`; consommateurs entiers verifies comme hors macros.
+- Corrections appliquees:
+  - `packages/game/src/m_infantry.ts`: import de `random` depuis `g_local.ts`, remplacement de l'usage direct `Math.random()` correspondant au macro C `random()`, commentaire d'en-tete ajoute.
+  - `scripts/verify/quake2-m-infantry.ts`: preuves deterministes ajustees pour le seuil C-style 15 bits dans `infantry_dodge`.
+  - `scripts/verify/quake2-m-infantry-source-parity.ts`: preuve source/TS du consommateur macro `random()` et verification des consommateurs entiers hors macro.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-infantry` OK; `npm run verify:m-infantry:header` OK; `npm run verify:m-infantry:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- 2026-05-06: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/m_insane.ts` et `packages/game/src/m_mutant.ts`.
+- Verdict: `Partiel` maintenu pour les 2 macros: les consommateurs `m_insane.ts` et `m_mutant.ts` sont harmonises pour tous les usages macro C `random()` actifs; aucun consommateur `crandom()` n'existe dans `m_insane.c`/`m_mutant.c`, mais d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_insane.c` consomme `random()` dans `insane_cross`, `insane_walk`, `insane_run`, `insane_checkdown`, `insane_checkup` et `insane_stand`; `insane_pain`, `insane_die` et `SP_misc_insane` utilisent `rand()` entier, hors macros flottantes.
+  - `m_mutant.c` consomme `random()` dans `mutant_idle_loop`, `mutant_check_refire`, `mutant_jump_touch`, `mutant_check_jump`, `mutant_pain` et `mutant_die`; `mutant_hit_left`/`mutant_hit_right` utilisent `rand() % 5`, hors macros flottantes.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_insane.ts`: les six fonctions consomment maintenant le helper proprietaire `random`; le helper local `randomInt` reste limite aux ports entiers.
+  - `packages/game/src/m_mutant.ts`: les six fonctions consomment maintenant le helper proprietaire `random`; `mutant_jump_touch` conserve la troncature de l'assignation C en `int damage`; `randomInt` reste limite aux ports `rand() % 5`.
+- Runtime: integration attendue et branchee via `SP_misc_insane`/`SP_monster_mutant`, `g_spawn.ts`, callbacks monsterinfo, `monster_think`/`M_MoveFrame`, `T_Damage`, `G_RunEntity` et `G_RunFrame`; les tirages affectent animations/frames visibles, sons, douleur, attaque saut/melee, death moves, bbox/corpse et scene.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres, attaques et ordre de rendu; aucune logique parallele web `m_insane`/`m_mutant`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages affectent sorties visibles/audibles via modeles insane/mutant, frames, skins, sons, attaque saut, gibs/corpses et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaires d'en-tete `m_insane` mis a jour avec notes `g_local.random`; commentaires d'en-tete ajoutes pour les fonctions `m_mutant` touchees.
+- Corrections appliquees:
+  - `packages/game/src/m_insane.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C `random()`, notes de portage ajoutees.
+  - `packages/game/src/m_mutant.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C `random()`, conservation de la troncature C dans `mutant_jump_touch`, commentaires d'en-tete ajoutes.
+  - `scripts/verify/quake2-m-insane.ts`: preuves source/TS des consommateurs macro `random()` et interdiction locale de `Math.random()` pour ces fonctions; seuils de test ajustes a la quantification 15 bits.
+  - `scripts/verify/quake2-m-mutant-source-parity.ts`: preuve source/TS des consommateurs macro `random()`, verification des usages entiers `rand() % 5` hors macro et absence locale de `crandom`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-insane` OK; `npm run verify:m-insane:header` OK; `npm run verify:m-mutant` OK; `npm run verify:m-mutant:header` OK; `npm run verify:m-mutant:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, de preference `m_soldier.ts`, puis `m_tank.ts`/`m_supertank.ts` ou reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts`, `p_hud.ts`, `m_gunner.ts`, `m_chick.ts`, `m_hover.ts`, `m_infantry.ts`, `m_insane.ts` et `m_mutant.ts` ont montre les usages entiers ou absences de `crandom` pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

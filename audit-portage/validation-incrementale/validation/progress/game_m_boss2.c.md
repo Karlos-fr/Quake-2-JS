@@ -104,6 +104,10 @@
   - `npm run verify:web-render-order`
   - `npm run verify:full-game:three-renderer`
   - `npm run typecheck`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
 - Corrections appliquees: ajout des commentaires d'en-tete de `boss2_dead` et `boss2_die`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour la table/move de mort, le relink de corpse, `BossExplode` et l'endfunc `boss2_dead` via `M_MoveFrame`.
 
 - Lot traite: bloc attaque machinegun `boss2_attack`, local `range`, `boss2_attack_mg`, `boss2_reattack_mg`, `boss2_frames_attack_pre_mg`, `boss2_move_attack_pre_mg`, `boss2_frames_attack_mg`, `boss2_move_attack_mg`, `boss2_frames_attack_post_mg` et `boss2_move_attack_post_mg`.
@@ -175,6 +179,36 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout des commentaires d'en-tete des trois fonctions machinegun; documentation du helper local; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour les offsets L1/R1, la visee `VectorMA`, les parametres bullet, les degats runtime, les muzzleflashes et l'ordre gauche/droite.
 
+- Lot traite: bloc decision d'attaque `Boss2_CheckAttack` avec les temporaires/branches associes `chance`, `tr`, `enemy_infront`, `enemy_range` et `enemy_yaw`.
+- Verdict: Valide pour `Boss2_CheckAttack`, `chance`, `tr`, `enemy_range` et `enemy_yaw`; `enemy_infront` est `Non applicable` comme entite autonome car le C l'assigne mais ne le lit pas dans la fonction compilee.
+- Comparaison C/TS: `Boss2_CheckAttack` conserve le trace yeux boss/enemy avec masque `CONTENTS_SOLID|CONTENTS_MONSTER|CONTENTS_SLIME|CONTENTS_LAVA`, le rejet quand `tr.ent != enemy`, le calcul `range`, le `vectoyaw` applique a `self.ideal_yaw`, la branche melee vers `AS_MELEE` ou `AS_MISSILE`, le rejet sans callback attack, le cooldown `attack_finished`, le rejet `RANGE_FAR`, les chances boss2 `0.4` stand-ground et `0.8` near/mid, le `attack_finished = level.time + 2*random()` et le fallback volant `AS_SLIDING` / `AS_STRAIGHT`. Correction appliquee: les appels de hasard de cette fonction utilisent maintenant `g_local.random()` au lieu de `Math.random()` direct pour conserver la quantification du macro C.
+- Commentaires d'en-tete: commentaire de fonction ajoute pour `Boss2_CheckAttack` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement, usage de `g_local.random()` et justification de l'omission du local C inutilise `enemy_infront`.
+- Runtime: integre. `SP_monster_boss2` assigne `self.monsterinfo.checkattack = Boss2_CheckAttack`; `ai_checkattack` appelle ce callback depuis les flux `ai_stand` / `ai_run`, eux-memes atteignables par `G_RunFrame` / `monster_think` / `M_MoveFrame`. Le harness verifie l'affectation au spawn, le save registry, les traces, les branches de decision et les transitions d'attack state.
+- apps/web: integre. `apps/web` ne remplace pas ce flux; le host full-game/local appelle le runtime porte et consomme ensuite les snapshots, sons et muzzleflash/temp events produits par les attaques declenchees apres `AS_MISSILE`.
+- renderer-three: integre. `Boss2_CheckAttack` ne dessine rien directement, mais decide l'entree dans les attaques boss2 visibles: frames d'attaque du modele, muzzleflash machinegun, projectiles rocket `EF_ROCKET`, dlights/trails et temp entities selon le move choisi. Ces sorties sont produites par le runtime et consommees par le flux client/refresh puis `renderer-three`.
+- Tests lances:
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees: ajout de l'import `random` et remplacement des trois appels `Math.random()` dans `Boss2_CheckAttack`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour le branchement `checkattack`, le registry save, le trace, les seuils, les branches melee/far/cooldown/no-attack et le fallback `FL_FLY`.
+
+- Lot traite: `SP_monster_boss2` complet, puis tables/moves declaratifs restants `boss2_frames_fidget`, `boss2_move_fidget`, `boss2_frames_walk`, `boss2_move_walk`, `boss2_frames_run`, `boss2_move_run` et lignes `declarative:monster-tables` associees.
+- Verdict: Valide.
+- Comparaison C/TS: `SP_monster_boss2` conserve le free deathmatch, le precache des cinq sons pain/death/search, le son moteur `s.sound`, le modele `models/monsters/boss2/tris.md2`, `MOVETYPE_STEP`, `SOLID_BBOX`, bbox `[-56,-56,0]` / `[56,56,80]`, `health = 2000`, `gib_health = -200`, `mass = 1000`, `FL_IMMUNE_LASER`, les callbacks `pain`, `die`, `stand`, `walk`, `run`, `attack`, `search`, `checkattack`, le `linkentity`, `currentmove = boss2_move_stand`, `scale = MODEL_SCALE` et `flymonster_start`. Les slots TS `dodge`, `melee` et `sight` restent explicitement vides, ce qui correspond a l'absence d'affectation source. Les tables fidget/walk/run correspondent au C: fidget 30 frames `ai_stand` dist 0 de `FRAME_stand1` a `FRAME_stand30`; walk 20 frames `ai_walk` dist 8 de `FRAME_walk1` a `FRAME_walk20`; run 20 frames `ai_run` dist 8 sur la meme plage walk. `boss2_move_fidget` est conserve comme donnee source mais n'est reference par aucun callback compile dans `m_boss2.c`.
+- Commentaires d'en-tete: le commentaire de `SP_monster_boss2` existe et couvre `Original name`, `Source`, `Category: Ported`, niveau de fidelite et comportement. Les tables/moves declaratifs ne demandent pas de commentaire de fonction.
+- Runtime: integre. `g_spawn.ts` branche `monster_boss2` vers `SP_monster_boss2`; `ED_CallSpawn` et le harness verifient le spawn. `flymonster_start` arme ensuite le flux `monster_start_go` / `monster_think`, atteignable depuis `G_RunFrame`, et `M_MoveFrame` consomme les moves stand/walk/run via les callbacks. `boss2_move_fidget` est source-compatible mais non attendu runtime car la source C ne l'affecte jamais.
+- apps/web: integre. `apps/web` ne remplace pas la logique boss2; le host full-game/local consomme les assets, sons et snapshots issus du runtime porte.
+- renderer-three: integre. Le lot produit des sorties visibles attendues: modele MD2 boss2, `s.frame`/`oldframe`/`backlerp` par snapshots et son moteur cote entite. `packages/renderer-three` consomme les modeles/frames/skins via `refresh-entity-sync` et `md2-mesh-builder`; aucune logique renderer specifique boss2 n'est requise.
+- Tests lances:
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2:header`
+- Corrections appliquees: ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour les callbacks de spawn complets, le save registry de `boss2_move_fidget` et `boss2_move_run`, et les tables/moves fidget/walk/run.
+
 ## Prochain lot recommande
 
-- Valider le bloc decision d'attaque `Boss2_CheckAttack` avec les locaux generes `chance`, `tr`, `enemy_infront`, `enemy_range` et `enemy_yaw`: ligne de vue trace, cooldown `attack_finished`, `range`, `infront`, yaw ideal, probabilites par portee, et branchement runtime `monsterinfo.checkattack`.
+- Aucun lot restant dans `game_m_boss2.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.

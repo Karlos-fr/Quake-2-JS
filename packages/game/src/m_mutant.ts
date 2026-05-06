@@ -30,7 +30,8 @@ import {
   RANGE_MELEE,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range } from "./g_ai.js";
 import { T_Damage } from "./g_combat.js";
@@ -266,8 +267,20 @@ export function mutant_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = mutant_move_stand;
 }
 
+/**
+ * Original name: mutant_idle_loop
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Repeats the scratch idle loop with the original probability split.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
+ */
 export function mutant_idle_loop(self: GameEntity): void {
-  if (Math.random() < 0.75) {
+  if (random() < 0.75) {
     self.monsterinfo.nextframe = FRAME_stand155;
   }
 }
@@ -351,12 +364,24 @@ export function mutant_hit_right(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: mutant_check_refire
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Repeats melee attacks while valid, always in melee range and probabilistically on nightmare skill.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
+ */
 export function mutant_check_refire(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy || !self.enemy.inuse || self.enemy.health <= 0) {
     return;
   }
 
-  if ((runtime.skill === 3 && Math.random() < 0.5) || range(self, self.enemy) === RANGE_MELEE) {
+  if ((runtime.skill === 3 && random() < 0.5) || range(self, self.enemy) === RANGE_MELEE) {
     self.monsterinfo.nextframe = FRAME_attack09;
   }
 }
@@ -377,6 +402,18 @@ export function mutant_melee(self: GameEntity): void {
   self.monsterinfo.currentmove = mutant_move_attack;
 }
 
+/**
+ * Original name: mutant_jump_touch
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies the mutant jump impact damage and clears the touch callback once the landing branch completes.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()` in the jump damage expression.
+ */
 export function mutant_jump_touch(self: GameEntity, other: GameEntity, runtime: GameRuntime): void {
   if (self.health <= 0) {
     self.touch = undefined;
@@ -386,7 +423,7 @@ export function mutant_jump_touch(self: GameEntity, other: GameEntity, runtime: 
   if (other.takedamage !== 0 && vec3Length(self.velocity) > 400) {
     const normal = normalizeVec3(self.velocity);
     const point = addVec3(self.s.origin, scaleVec3(normal, self.maxs[0]));
-    const damage = 40 + Math.trunc(10 * Math.random());
+    const damage = Math.trunc(40 + 10 * random());
     T_Damage(other, self, self, self.velocity, point, normal, damage, damage, 0, MOD_UNKNOWN, runtime);
   }
 
@@ -448,6 +485,18 @@ export function mutant_check_melee(self: GameEntity): boolean {
   return !!self.enemy && range(self, self.enemy) === RANGE_MELEE;
 }
 
+/**
+ * Original name: mutant_check_jump
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Checks vertical overlap, distance and the original random rejection chance for jump attacks.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
+ */
 export function mutant_check_jump(self: GameEntity): boolean {
   if (!self.enemy) {
     return false;
@@ -471,7 +520,7 @@ export function mutant_check_jump(self: GameEntity): boolean {
   if (distance < 100) {
     return false;
   }
-  if (distance > 100 && Math.random() < 0.9) {
+  if (distance > 100 && random() < 0.9) {
     return false;
   }
 
@@ -520,6 +569,18 @@ export const mutant_move_pain3: GameMonsterMove = {
   endfunc: mutant_run
 };
 
+/**
+ * Original name: mutant_pain
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies pain skin/debounce, emits the original pain sound branch and chooses one of three pain moves.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
+ */
 export function mutant_pain(
   self: GameEntity,
   _other: GameEntity | null,
@@ -541,7 +602,7 @@ export function mutant_pain(
     return;
   }
 
-  const r = Math.random();
+  const r = random();
   if (r < 0.33) {
     emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, soundOptions(CHAN_VOICE));
     self.monsterinfo.currentmove = mutant_move_pain1;
@@ -579,6 +640,18 @@ export const mutant_move_death2: GameMonsterMove = {
   endfunc: mutant_dead
 };
 
+/**
+ * Original name: mutant_die
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Handles gib death or selects one of the two corpse animation moves.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()` in the non-gib death branch.
+ */
 export function mutant_die(
   self: GameEntity,
   _inflictor: GameEntity | null,
@@ -607,7 +680,7 @@ export function mutant_die(
   self.deadflag = DEAD_DEAD;
   self.takedamage = damage_t.DAMAGE_YES;
   self.s.skinnum = 1;
-  self.monsterinfo.currentmove = Math.random() < 0.5 ? mutant_move_death1 : mutant_move_death2;
+  self.monsterinfo.currentmove = random() < 0.5 ? mutant_move_death1 : mutant_move_death2;
 }
 
 export function SP_monster_mutant(self: GameEntity, runtime: GameRuntime): void {

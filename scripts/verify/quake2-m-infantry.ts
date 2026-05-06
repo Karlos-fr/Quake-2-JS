@@ -311,9 +311,9 @@ function verifyDuckAndDodgeBranches(): void {
   assert.equal(infantry.maxs[2], 32);
   assert.equal(infantry.takedamage, damage_t.DAMAGE_AIM);
 
-  withMathRandom([0.5], () => infantry_dodge(infantry, attacker, 0));
+  withMathRandom([8192 / 0x8000], () => infantry_dodge(infantry, attacker, 0));
   assert.notEqual(infantry.monsterinfo.currentmove, infantry_move_duck);
-  withMathRandom([0.1], () => infantry_dodge(infantry, attacker, 0));
+  withMathRandom([8191 / 0x8000], () => infantry_dodge(infantry, attacker, 0));
   assert.equal(infantry.enemy, attacker);
   assert.equal(infantry.monsterinfo.currentmove, infantry_move_duck);
 }

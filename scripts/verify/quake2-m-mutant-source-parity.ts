@@ -26,8 +26,13 @@ const SOURCE_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../Quake-2-master/game/m_mutant.c"
 );
+const TS_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../packages/game/src/m_mutant.ts"
+);
 
 const source = readFileSync(SOURCE_PATH, "utf8");
+const tsSource = readFileSync(TS_PATH, "utf8");
 const sourceWithoutComments = stripComments(source);
 
 main();
@@ -36,6 +41,7 @@ function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifyRandomMacroConsumersUseGLocalRandom();
 
   console.log("quake2-m-mutant-source-parity: ok");
 }
@@ -88,6 +94,30 @@ function verifySourcePrecacheAssets(): void {
 
   assert.deepEqual(runtime.assets.soundPaths, sourceSounds, "SP_monster_mutant sound precache order");
   assert.equal(runtime.assets.modelPaths[entity.s.modelindex - 1], sourceModel, "SP_monster_mutant model precache");
+}
+
+function verifyRandomMacroConsumersUseGLocalRandom(): void {
+  const macroConsumers = [
+    "mutant_idle_loop",
+    "mutant_check_refire",
+    "mutant_jump_touch",
+    "mutant_check_jump",
+    "mutant_pain",
+    "mutant_die"
+  ];
+
+  for (const functionName of macroConsumers) {
+    assert.match(getFunctionBlock(functionName), /\brandom\s*\(/, `${functionName}: C should use random()`);
+    const tsBlock = getTsFunctionBlock(functionName);
+    assert.match(tsBlock, /\brandom\s*\(/, `${functionName}: TS should use g_local.random()`);
+    assert.doesNotMatch(tsBlock, /Math\.random\s*\(/, `${functionName}: TS should not use Math.random() for C random()`);
+  }
+
+  assert.match(getFunctionBlock("mutant_hit_left"), /\brand\s*\(\)\s*%\s*5/, "mutant_hit_left should use rand()%5");
+  assert.match(getFunctionBlock("mutant_hit_right"), /\brand\s*\(\)\s*%\s*5/, "mutant_hit_right should use rand()%5");
+  assert.match(getTsFunctionBlock("mutant_hit_left"), /randomInt\s*\(\s*5\s*\)/, "mutant_hit_left should keep integer RNG helper");
+  assert.match(getTsFunctionBlock("mutant_hit_right"), /randomInt\s*\(\s*5\s*\)/, "mutant_hit_right should keep integer RNG helper");
+  assert.doesNotMatch(sourceWithoutComments, /\bcrandom\s*\(/, "m_mutant.c should not consume crandom()");
 }
 
 interface SourceFrame {
@@ -144,10 +174,10 @@ function parseMoves(cSource: string): Map<string, SourceMove> {
 }
 
 function getFunctionBlock(functionName: string): string {
-  const start = source.indexOf(`void ${functionName}`);
-  assert.notEqual(start, -1, `${functionName} should exist in source`);
+  const startMatch = new RegExp(`\\b(?:void|qboolean)\\s+${functionName}\\s*\\(`).exec(source);
+  assert.ok(startMatch, `${functionName} should exist in source`);
 
-  const bodyStart = source.indexOf("{", start);
+  const bodyStart = source.indexOf("{", startMatch.index);
   assert.notEqual(bodyStart, -1, `${functionName} should have a body`);
 
   let depth = 0;
@@ -164,6 +194,29 @@ function getFunctionBlock(functionName: string): string {
   }
 
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const startMatch = new RegExp(`\\bexport\\s+function\\s+${functionName}\\s*\\(`).exec(tsSource);
+  assert.ok(startMatch, `${functionName} should exist in TypeScript`);
+
+  const bodyStart = tsSource.indexOf("{", startMatch.index);
+  assert.notEqual(bodyStart, -1, `${functionName} should have a body`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < tsSource.length; i += 1) {
+    const char = tsSource[i];
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsSource.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} TypeScript body was not closed`);
 }
 
 function getFrameConstant(name: string): number {

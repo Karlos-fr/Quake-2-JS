@@ -26,9 +26,14 @@ const SOURCE_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../Quake-2-master/game/m_infantry.c"
 );
+const TS_SOURCE_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../packages/game/src/m_infantry.ts"
+);
 
 const source = readFileSync(SOURCE_PATH, "utf8");
 const sourceWithoutComments = stripComments(source);
+const tsSource = readFileSync(TS_SOURCE_PATH, "utf8");
 
 main();
 
@@ -36,6 +41,7 @@ function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifySourceRandomMacroConsumers();
 
   console.log("quake2-m-infantry-source-parity: ok");
 }
@@ -88,6 +94,31 @@ function verifySourcePrecacheAssets(): void {
 
   assert.deepEqual(runtime.assets.soundPaths, sourceSounds, "SP_monster_infantry sound precache order");
   assert.equal(runtime.assets.modelPaths[entity.s.modelindex - 1], sourceModel, "SP_monster_infantry model precache");
+}
+
+function verifySourceRandomMacroConsumers(): void {
+  const randomConsumers = [
+    ["infantry_dodge", /random\s*\(\s*\)\s*>\s*0\.25/, /random\s*\(\s*\)\s*>\s*0\.25/]
+  ] as const;
+  const integerRandomConsumers = [
+    ["infantry_pain", /rand\s*\(\s*\)\s*%\s*2/, /randomInt\s*\(\s*2\s*\)/],
+    ["infantry_die", /rand\s*\(\s*\)\s*%\s*3/, /randomInt\s*\(\s*3\s*\)/],
+    ["infantry_cock_gun", /rand\s*\(\s*\)\s*&\s*15/, /randomInt\s*\(\s*16\s*\)/],
+    ["infantry_smack", /rand\s*\(\s*\)\s*%\s*5/, /randomInt\s*\(\s*5\s*\)/]
+  ] as const;
+
+  assert.match(tsSource, /import\s*\{[\s\S]*\brandom\b[\s\S]*\}\s*from\s+"\.\/g_local\.js"/, "m_infantry.ts should import g_local.random");
+
+  for (const [functionName, sourcePattern, tsPattern] of randomConsumers) {
+    assert.match(getFunctionBlock(functionName), sourcePattern, `${functionName}: source should consume random macro`);
+    assert.match(getTsFunctionBlock(functionName), tsPattern, `${functionName}: TS should consume g_local.random helper`);
+    assert.doesNotMatch(getTsFunctionBlock(functionName), /Math\.random\s*\(/, `${functionName}: TS should not call Math.random directly`);
+  }
+
+  for (const [functionName, sourcePattern, tsPattern] of integerRandomConsumers) {
+    assert.match(getFunctionBlock(functionName), sourcePattern, `${functionName}: source should consume C integer rand form`);
+    assert.match(getTsFunctionBlock(functionName), tsPattern, `${functionName}: TS should keep integer rand form on randomInt`);
+  }
 }
 
 interface SourceFrame {
@@ -164,6 +195,29 @@ function getFunctionBlock(functionName: string): string {
   }
 
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const start = tsSource.search(new RegExp(`(?:export\\s+)?function\\s+${functionName}\\s*\\(`));
+  assert.notEqual(start, -1, `${functionName} should exist in TS source`);
+
+  const bodyStart = tsSource.indexOf("{", start);
+  assert.notEqual(bodyStart, -1, `${functionName} TS body should exist`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < tsSource.length; i += 1) {
+    const char = tsSource[i];
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsSource.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} TS body was not closed`);
 }
 
 function getFrameConstant(name: string): number {

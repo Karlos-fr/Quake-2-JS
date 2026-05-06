@@ -27,7 +27,8 @@ import {
   MOVETYPE_TOSS,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_move, ai_stand, ai_walk } from "./g_ai.js";
 import { ThrowGib, ThrowHead } from "./g_misc.js";
@@ -623,9 +624,12 @@ export const insane_move_struggle_cross: GameMonsterMove = {
  *
  * Behavior:
  * - Alternates crucified idle loops with the original probability split.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
  */
 export function insane_cross(self: GameEntity): void {
-  self.monsterinfo.currentmove = Math.random() < 0.8 ? insane_move_cross : insane_move_struggle_cross;
+  self.monsterinfo.currentmove = random() < 0.8 ? insane_move_cross : insane_move_struggle_cross;
 }
 
 /**
@@ -636,6 +640,9 @@ export function insane_cross(self: GameEntity): void {
  *
  * Behavior:
  * - Picks the walking/crawling animation state according to spawn flags.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
  */
 export function insane_walk(self: GameEntity): void {
   if ((self.spawnflags & 16) !== 0 && self.s.frame === FRAME_cr_pain10) {
@@ -645,7 +652,7 @@ export function insane_walk(self: GameEntity): void {
 
   if ((self.spawnflags & 4) !== 0) {
     self.monsterinfo.currentmove = insane_move_crawl;
-  } else if (Math.random() <= 0.5) {
+  } else if (random() <= 0.5) {
     self.monsterinfo.currentmove = insane_move_walk_normal;
   } else {
     self.monsterinfo.currentmove = insane_move_walk_insane;
@@ -660,6 +667,9 @@ export function insane_walk(self: GameEntity): void {
  *
  * Behavior:
  * - Picks the running/crawling animation state according to spawn flags.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
  */
 export function insane_run(self: GameEntity): void {
   if ((self.spawnflags & 16) !== 0 && self.s.frame === FRAME_cr_pain10) {
@@ -669,7 +679,7 @@ export function insane_run(self: GameEntity): void {
 
   if ((self.spawnflags & 4) !== 0) {
     self.monsterinfo.currentmove = insane_move_runcrawl;
-  } else if (Math.random() <= 0.5) {
+  } else if (random() <= 0.5) {
     self.monsterinfo.currentmove = insane_move_run_normal;
   } else {
     self.monsterinfo.currentmove = insane_move_run_insane;
@@ -749,13 +759,16 @@ export function insane_onground(self: GameEntity): void {
  *
  * Behavior:
  * - Randomly moves a standing insane monster down unless it must always stand.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
  */
 export function insane_checkdown(self: GameEntity): void {
   if ((self.spawnflags & 32) !== 0) {
     return;
   }
-  if (Math.random() < 0.3) {
-    self.monsterinfo.currentmove = Math.random() < 0.5 ? insane_move_uptodown : insane_move_jumpdown;
+  if (random() < 0.3) {
+    self.monsterinfo.currentmove = random() < 0.5 ? insane_move_uptodown : insane_move_jumpdown;
   }
 }
 
@@ -767,12 +780,15 @@ export function insane_checkdown(self: GameEntity): void {
  *
  * Behavior:
  * - Randomly rises from the down/crawling idle loop unless held down by spawn flags.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
  */
 export function insane_checkup(self: GameEntity): void {
   if ((self.spawnflags & 4) !== 0 && (self.spawnflags & 16) !== 0) {
     return;
   }
-  if (Math.random() < 0.5) {
+  if (random() < 0.5) {
     self.monsterinfo.currentmove = insane_move_downtoup;
   }
 }
@@ -785,6 +801,9 @@ export function insane_checkup(self: GameEntity): void {
  *
  * Behavior:
  * - Chooses the next standing, crucified, or forced crawling state.
+ *
+ * Porting notes:
+ * - Uses `g_local.random()` for the C macro `random()`.
  */
 export function insane_stand(self: GameEntity): void {
   if ((self.spawnflags & 8) !== 0) {
@@ -792,7 +811,7 @@ export function insane_stand(self: GameEntity): void {
     self.monsterinfo.aiflags |= AI_STAND_GROUND;
   } else if ((self.spawnflags & 4) !== 0 && (self.spawnflags & 16) !== 0) {
     self.monsterinfo.currentmove = insane_move_down;
-  } else if (Math.random() < 0.5) {
+  } else if (random() < 0.5) {
     self.monsterinfo.currentmove = insane_move_stand_normal;
   } else {
     self.monsterinfo.currentmove = insane_move_stand_insane;

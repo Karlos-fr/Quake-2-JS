@@ -41,7 +41,8 @@ import {
   RANGE_NEAR,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, infront, range } from "./g_ai.js";
 import { flymonster_start, monster_fire_bullet, monster_fire_rocket } from "./g_monster.js";
@@ -643,6 +644,21 @@ export function boss2_die(
   self.monsterinfo.currentmove = boss2_move_death;
 }
 
+/**
+ * Original name: Boss2_CheckAttack
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Checks the clear shot trace, updates ideal yaw, then selects melee or missile attack state using the
+ *   boss2-specific 0.8 near/mid missile chance and flying slide fallback.
+ *
+ * Porting notes:
+ * - Uses the shared `g_local.random()` helper for the original C `random()` macro.
+ * - The C local `enemy_infront` is assigned but not consumed by the compiled function; the port preserves
+ *   the resulting behavior without keeping an unused local.
+ */
 export function Boss2_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
   if (!self.enemy) {
     return false;
@@ -697,14 +713,14 @@ export function Boss2_CheckAttack(self: GameEntity, runtime: GameRuntime): boole
     return false;
   }
 
-  if (Math.random() < chance) {
+  if (random() < chance) {
     self.monsterinfo.attack_state = AS_MISSILE;
-    self.monsterinfo.attack_finished = runtime.time + 2 * Math.random();
+    self.monsterinfo.attack_finished = runtime.time + 2 * random();
     return true;
   }
 
   if ((self.flags & FL_FLY) !== 0) {
-    self.monsterinfo.attack_state = Math.random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
+    self.monsterinfo.attack_state = random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
   }
 
   return false;

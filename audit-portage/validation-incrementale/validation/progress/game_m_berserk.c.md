@@ -237,6 +237,46 @@
   - `packages/game/src/m_berserk.ts`: `berserk_pain` utilise `g_local.random()` au lieu de `Math.random()` direct, et son commentaire documente cette fidelite au macro C.
   - `scripts/verify/quake2-m-berserk.ts`: ajout de preuves ciblees pour pain1/pain2, `pain_debounce_time`, absence d'effet pendant debounce, seuil C 15-bit, nightmare-skip, frames visibles, `endfunc = berserk_run` et save registry des moves pain.
 
+## Session 2026-05-06 - bloc mort
+
+- Lot traite: `berserk_dead`, `berserk_frames_death1` global/table/declarative, `berserk_move_death1`, `berserk_frames_death2` global/table/declarative, `berserk_move_death2`, `berserk_die`, et le compteur local C `n` strictement associe aux boucles gib.
+- Verdict: Valide pour le bloc mort; `n` marque `Non applicable` car c'est un compteur local de `berserk_die`, non une entite proprietaire autonome.
+- Comparaison C/TS: `berserk_dead` conserve la bbox corpse `mins = [-16,-16,-24]`, `maxs = [16,16,-8]`, `MOVETYPE_TOSS`, `SVF_DEADMONSTER`, `nextthink = 0` et le relink. `death1` conserve 13 frames `ai_move` dist 0, `FRAME_death1`..`FRAME_death13`, `endfunc = berserk_dead`; `death2` conserve 8 frames `ai_move` dist 0, `FRAME_deathc1`..`FRAME_deathc8`, `endfunc = berserk_dead`. `berserk_die` conserve le gib si `health <= gib_health`, son `misc/udeath.wav`, 2 os, 4 small meat, 1 head, `DEAD_DEAD`, la garde deja-mort, le son `sound_die`, `takedamage = DAMAGE_YES`, et la selection `damage >= 50` vers death1 sinon death2.
+- Commentaires d'en-tete: commentaires TS de `berserk_dead` et `berserk_die` verifies avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement; tables/global declaratifs sans commentaire de fonction requis.
+- Runtime: integre. `SP_monster_berserk` assigne `self.die = berserk_die`; le test prouve l'appel direct et le flux `G_RunFrame`/`monster_think` jusqu'aux `endfunc` death1/death2, le relink corpse, la save registry des deux moves et les sons/gibs runtime.
+- apps/web: integre. Le navigateur declenche ce flux via le runtime porte (`SV_Frame`/`G_RunFrame`) et consomme les snapshots/runtime et les `soundEvents`; aucune logique parallele berserk constatee. Les sons death/gib restent dans `runtime.soundEvents`, exposes au web par `drainLocalGameplaySounds`.
+- renderer-three: integre. Le lot produit des frames MD2 visibles (`s.frame`) pour le modele berserk et des entites gib/head visibles; les snapshots client conservent `frame/oldframe/backlerp`, `modelindex` et `skinnum`, consommes par `packages/renderer-three` via `refresh-entity-sync` / `applyMd2AliasFrameLerp`. Pas de particule, beam, dlight, temp entity, areabits, camera ou scene additionnelle attendue pour ces fonctions.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `scripts/verify/quake2-m-berserk.ts`: ajout de preuves ciblees pour les sons death/gib, la garde deja-mort, les fins death1/death2 via `G_RunFrame`, le relink corpse, `nextthink = 0`, la save registry death2 et les boucles gib.
+
+## Session 2026-05-06 - spawn complet `SP_monster_berserk`
+
+- Lot traite: `SP_monster_berserk` complet avec deathmatch early-free, precache sons/modele, bbox spawn, champs physiques, callbacks monster, `currentmove`, `MODEL_SCALE`, link, `walkmonster_start`, branchement `g_spawn`, save/runtime/web/renderer.
+- Verdict: Valide. Le fichier `m_berserk.c` est clos: toutes les lignes de la matrice sont `Valide` ou `Non applicable` avec justification.
+- Comparaison C/TS: le TS conserve le retour deathmatch via `G_FreeEdict`, l'ordre des six `gi.soundindex`, le modele `models/monsters/berserk/tris.md2`, `mins [-16,-16,-24]`, `maxs [16,16,32]`, `MOVETYPE_STEP`, `SOLID_BBOX`, `health 240`, `gib_health -60`, `mass 250`, `pain`, `die`, callbacks `stand/walk/run/melee/sight/search`, `dodge/attack = NULL` portes en `undefined`, `currentmove = berserk_move_stand`, `scale = MODEL_SCALE`, link entity puis `walkmonster_start`.
+- Commentaires d'en-tete: commentaire TS de `SP_monster_berserk` verifie avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement.
+- Runtime: integre. `g_spawn.ts` route `monster_berserk` vers `SP_monster_berserk`; `ED_CallSpawn` prouve le branchement. `walkmonster_start` arme le startup think puis `monster_think`; `G_RunFrame` consomme ensuite les moves/callbacks deja valides. Save integre via `findGameSaveFunction("SP_monster_berserk")` et restauration des callbacks/moves dans `WriteLevel`/`ReadLevel`.
+- apps/web: integre. Le web declenche le flux via les sessions full-game/local host et consomme les sorties runtime: assets precaches, snapshots/refresh entities et `soundEvents`; aucune logique parallele `monster_berserk` detectee.
+- renderer-three: integre. Le spawn produit un modele alias MD2 et des frames visibles via `s.modelindex`/`s.frame`/`oldframe`/`backlerp`; `packages/renderer-three` les consomme par `refresh-entity-sync` et `applyMd2AliasFrameLerp`. Pas de particules, beams, dlights, temp entities, areabits, camera ou scene supplementaire attendus pour le spawn lui-meme.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `scripts/verify/quake2-m-berserk.ts`: assertions renforcees pour les callbacks complets, `dodge/attack` nuls, link spawn, branchement `ED_CallSpawn`, deathmatch sans precache, et sorties spawn visibles.
+
 ## Prochain lot recommande
 
-- Valider le bloc mort `berserk_dead`, `berserk_frames_death1`, `berserk_move_death1`, `berserk_frames_death2`, `berserk_move_death2` et `berserk_die`, avec gibbing, son death, bbox corpse, `MOVETYPE_TOSS`, `SVF_DEADMONSTER`, selection par degats et retour runtime/web/renderer.
+- Aucun pour `m_berserk.c`: matrice terminee.
