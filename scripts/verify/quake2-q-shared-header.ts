@@ -46,6 +46,33 @@ import {
   vec3_origin
 } from "../../packages/math/src/q_shared.js";
 import { monster_flash_offset } from "../../packages/game/src/m_flash.js";
+import {
+  MZ2_TANK_BLASTER_1,
+  MZ2_TANK_BLASTER_2,
+  MZ2_TANK_BLASTER_3,
+  MZ2_TANK_MACHINEGUN_1,
+  MZ2_TANK_MACHINEGUN_2,
+  MZ2_TANK_MACHINEGUN_3,
+  MZ2_TANK_MACHINEGUN_4,
+  MZ2_TANK_MACHINEGUN_5,
+  MZ2_TANK_MACHINEGUN_6,
+  MZ2_TANK_MACHINEGUN_7,
+  MZ2_TANK_MACHINEGUN_8,
+  MZ2_TANK_MACHINEGUN_9,
+  MZ2_TANK_MACHINEGUN_10,
+  MZ2_TANK_MACHINEGUN_11,
+  MZ2_TANK_MACHINEGUN_12,
+  MZ2_TANK_MACHINEGUN_13,
+  MZ2_TANK_MACHINEGUN_14,
+  MZ2_TANK_MACHINEGUN_15,
+  MZ2_TANK_MACHINEGUN_16,
+  MZ2_TANK_MACHINEGUN_17,
+  MZ2_TANK_MACHINEGUN_18,
+  MZ2_TANK_MACHINEGUN_19,
+  MZ2_TANK_ROCKET_1,
+  MZ2_TANK_ROCKET_2,
+  MZ2_TANK_ROCKET_3
+} from "../../packages/game/src/m_tank.js";
 import * as FormatQfiles from "../../packages/formats/src/qfiles.js";
 import {
   BigFloat,
@@ -578,6 +605,36 @@ assert.equal(SHORT2ANGLE(shortAngle), 180, "SHORT2ANGLE mismatch");
 
 assert.deepEqual(vec3_origin, [0, 0, 0], "vec3_origin mismatch");
 assert.ok(monster_flash_offset.length > 200, "monster_flash_offset table must preserve MZ2 coverage");
+assert.deepEqual([
+  MZ2_TANK_BLASTER_1,
+  MZ2_TANK_BLASTER_2,
+  MZ2_TANK_BLASTER_3,
+  MZ2_TANK_MACHINEGUN_1,
+  MZ2_TANK_MACHINEGUN_2,
+  MZ2_TANK_MACHINEGUN_3,
+  MZ2_TANK_MACHINEGUN_4,
+  MZ2_TANK_MACHINEGUN_5,
+  MZ2_TANK_MACHINEGUN_6,
+  MZ2_TANK_MACHINEGUN_7,
+  MZ2_TANK_MACHINEGUN_8,
+  MZ2_TANK_MACHINEGUN_9,
+  MZ2_TANK_MACHINEGUN_10,
+  MZ2_TANK_MACHINEGUN_11,
+  MZ2_TANK_MACHINEGUN_12,
+  MZ2_TANK_MACHINEGUN_13,
+  MZ2_TANK_MACHINEGUN_14,
+  MZ2_TANK_MACHINEGUN_15,
+  MZ2_TANK_MACHINEGUN_16,
+  MZ2_TANK_MACHINEGUN_17,
+  MZ2_TANK_MACHINEGUN_18,
+  MZ2_TANK_MACHINEGUN_19,
+  MZ2_TANK_ROCKET_1,
+  MZ2_TANK_ROCKET_2,
+  MZ2_TANK_ROCKET_3
+], Array.from({ length: 25 }, (_, index) => index + 1), "MZ2_TANK_* q_shared.h numeric range mismatch");
+assert.deepEqual(monster_flash_offset[MZ2_TANK_BLASTER_1], [20.7, -18.5, 28.7], "MZ2_TANK_BLASTER_1 offset mismatch");
+assert.deepEqual(monster_flash_offset[MZ2_TANK_MACHINEGUN_19], [21.6, -7.0, 26.4], "MZ2_TANK_MACHINEGUN_19 offset mismatch");
+assert.deepEqual(monster_flash_offset[MZ2_TANK_ROCKET_3], [8.3, 17.8, 49.5], "MZ2_TANK_ROCKET_3 offset mismatch");
 assert.equal(COM_SkipPath("textures/e1u1/wall.wal"), "wall.wal", "COM_SkipPath mismatch");
 assert.equal(COM_StripExtension("maps/base1.bsp"), "maps/base1", "COM_StripExtension mismatch");
 assert.equal(COM_FileExtension("maps/base1.bsp"), "bsp", "COM_FileExtension mismatch");

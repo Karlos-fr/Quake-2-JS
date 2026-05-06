@@ -10,34 +10,34 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `BoundPoly` | `packages/renderer-three/src/gl_warp.ts` | `BoundPoly` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `ClipSkyPolygon` | `packages/renderer-three/src/gl_warp.ts` | `ClipSkyPolygon` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `DrawSkyPolygon` | `packages/renderer-three/src/gl_warp.ts` | `DrawSkyPolygon` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `EmitWaterPolys` | `packages/renderer-three/src/gl_warp.ts` | `EmitWaterPolys` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `GL_SubdivideSurface` | `packages/renderer-three/src/gl_warp.ts` | `GL_SubdivideSurface` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `MakeSkyVec` | `packages/renderer-three/src/gl_warp.ts` | `MakeSkyVec` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `R_AddSkySurface` | `packages/renderer-three/src/gl_warp.ts` | `R_AddSkySurface` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `R_ClearSkyBox` | `packages/renderer-three/src/gl_warp.ts` | `R_ClearSkyBox` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `R_DrawSkyBox` | `packages/renderer-three/src/gl_warp.ts` | `R_DrawSkyBox` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `R_SetSky` | `packages/renderer-three/src/gl_warp.ts` | `R_SetSky` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | function | `SubdividePolygon` | `packages/renderer-three/src/gl_warp.ts` | `SubdividePolygon` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | macro | `MAX_CLIP_VERTS` | `packages/renderer-three/src/gl_warp.ts` | `MAX_CLIP_VERTS` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | macro | `ON_EPSILON` | `packages/renderer-three/src/gl_warp.ts` | `ON_EPSILON` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | macro | `SUBDIVIDE_SIZE` | `packages/renderer-three/src/gl_warp.ts` | `SUBDIVIDE_SIZE` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | macro | `TURBSCALE` | `packages/renderer-three/src/gl_warp.ts` | `TURBSCALE` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `axis` | `packages/renderer-three/src/gl_warp.ts` | `axis` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `c_sky` | `packages/renderer-three/src/gl_warp.ts` | `c_sky` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `dv` | `packages/renderer-three/src/gl_warp.ts` | `dv` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `frac` | `packages/renderer-three/src/gl_warp.ts` | `frac` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `i` | `packages/renderer-three/src/gl_warp.ts` | `i` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `lindex` | `packages/renderer-three/src/gl_warp.ts` | `lindex` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `m` | `packages/renderer-three/src/gl_warp.ts` | `m` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `numverts` | `packages/renderer-three/src/gl_warp.ts` | `numverts` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `rdt` | `packages/renderer-three/src/gl_warp.ts` | `rdt` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `s` | `packages/renderer-three/src/gl_warp.ts` | `s` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `scroll` | `packages/renderer-three/src/gl_warp.ts` | `scroll` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `skyaxis` | `packages/renderer-three/src/gl_warp.ts` | `skyaxis` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `skyrotate` | `packages/renderer-three/src/gl_warp.ts` | `skyrotate` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `t` | `packages/renderer-three/src/gl_warp.ts` | `t` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `total` | `packages/renderer-three/src/gl_warp.ts` | `total` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_warp.c` | global | `vec` | `packages/renderer-three/src/gl_warp.ts` | `vec` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `BoundPoly` | `packages/renderer-three/src/gl_warp.ts` | `BoundPoly` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `ClipSkyPolygon` | `packages/renderer-three/src/gl_warp.ts` | `ClipSkyPolygon` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `DrawSkyPolygon` | `packages/renderer-three/src/gl_warp.ts` | `DrawSkyPolygon` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `EmitWaterPolys` | `packages/renderer-three/src/gl_warp.ts` | `EmitWaterPolys` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `GL_SubdivideSurface` | `packages/renderer-three/src/gl_warp.ts` | `GL_SubdivideSurface` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `MakeSkyVec` | `packages/renderer-three/src/gl_warp.ts` | `MakeSkyVec` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `R_AddSkySurface` | `packages/renderer-three/src/gl_warp.ts` | `R_AddSkySurface` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `R_ClearSkyBox` | `packages/renderer-three/src/gl_warp.ts` | `R_ClearSkyBox` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `R_DrawSkyBox` | `packages/renderer-three/src/gl_warp.ts` | `R_DrawSkyBox` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `R_SetSky` | `packages/renderer-three/src/gl_warp.ts` | `R_SetSky` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | function | `SubdividePolygon` | `packages/renderer-three/src/gl_warp.ts` | `SubdividePolygon` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | macro | `MAX_CLIP_VERTS` | `packages/renderer-three/src/gl_warp.ts` | `MAX_CLIP_VERTS` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | macro | `ON_EPSILON` | `packages/renderer-three/src/gl_warp.ts` | `ON_EPSILON` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | macro | `SUBDIVIDE_SIZE` | `packages/renderer-three/src/gl_warp.ts` | `SUBDIVIDE_SIZE` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | macro | `TURBSCALE` | `packages/renderer-three/src/gl_warp.ts` | `TURBSCALE` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `axis` | `packages/renderer-three/src/gl_warp.ts` | `axis` | Non applicable | split-undocumented | Faux positif: variable locale de `DrawSkyPolygon`/parametre de `MakeSkyVec`, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `c_sky` | `packages/renderer-three/src/gl_warp.ts` | `c_sky` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `dv` | `packages/renderer-three/src/gl_warp.ts` | `dv` | Non applicable | split-undocumented | Faux positif: variable locale de `DrawSkyPolygon`, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `frac` | `packages/renderer-three/src/gl_warp.ts` | `frac` | Non applicable | split-undocumented | Faux positif: variable locale de `SubdividePolygon`, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `i` | `packages/renderer-three/src/gl_warp.ts` | `i` | Non applicable | split-undocumented | Faux positif: variable locale, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `lindex` | `packages/renderer-three/src/gl_warp.ts` | `lindex` | Non applicable | split-undocumented | Faux positif: variable locale de `GL_SubdivideSurface`, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `m` | `packages/renderer-three/src/gl_warp.ts` | `m` | Non applicable | split-undocumented | Faux positif: variable locale de `SubdividePolygon`, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `numverts` | `packages/renderer-three/src/gl_warp.ts` | `numverts` | Non applicable | split-undocumented | Faux positif: variable locale/parametre, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `rdt` | `packages/renderer-three/src/gl_warp.ts` | `rdt` | Non applicable | split-undocumented | Faux positif: variable locale de `EmitWaterPolys`, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `s` | `packages/renderer-three/src/gl_warp.ts` | `s` | Non applicable | split-undocumented | Faux positif: variable locale/parametre, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `scroll` | `packages/renderer-three/src/gl_warp.ts` | `scroll` | Non applicable | split-undocumented | Faux positif: variable locale de `EmitWaterPolys`, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `skyaxis` | `packages/renderer-three/src/gl_warp.ts` | `skyaxis` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `skyrotate` | `packages/renderer-three/src/gl_warp.ts` | `skyrotate` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `t` | `packages/renderer-three/src/gl_warp.ts` | `t` | Non applicable | split-undocumented | Faux positif: variable locale/parametre, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `total` | `packages/renderer-three/src/gl_warp.ts` | `total` | Non applicable | split-undocumented | Faux positif: variable locale de `SubdividePolygon`, pas un global proprietaire. |
+| `Quake-2-master/ref_gl/gl_warp.c` | global | `vec` | `packages/renderer-three/src/gl_warp.ts` | `vec` | Non applicable | split-undocumented | Faux positif: variable locale de `GL_SubdivideSurface`, pas un global proprietaire. |

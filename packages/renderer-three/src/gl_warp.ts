@@ -201,6 +201,15 @@ export function setWarpHooks(runtime: GlWarpRuntime, hooks: GlWarpRuntime["hooks
   runtime.hooks = hooks;
 }
 
+/**
+ * Original name: BoundPoly
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Computes axis-aligned bounds for one flat or vector polygon vertex list.
+ */
 export function BoundPoly(numverts: number, verts: readonly number[] | readonly vec3_t[], mins: vec3_t, maxs: vec3_t): void {
   mins[0] = mins[1] = mins[2] = 9999;
   maxs[0] = maxs[1] = maxs[2] = -9999;
@@ -240,6 +249,18 @@ export function BoundPoly(numverts: number, verts: readonly number[] | readonly 
   }
 }
 
+/**
+ * Original name: SubdividePolygon
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Recursively splits warp polygons along 64-unit axial boundaries, then inserts the center and closing vertices.
+ *
+ * Porting notes:
+ * - Allocates `glpoly_t` objects on the JS heap and returns the created chain entries for tests/adapters.
+ */
 export function SubdividePolygon(runtime: GlWarpRuntime, numverts: number, verts: readonly vec3_t[]): glpoly_t[] {
   if (numverts > 60) {
     failSysError(runtime, ERR_DROP, `numverts = ${numverts}`);
@@ -333,6 +354,15 @@ export function SubdividePolygon(runtime: GlWarpRuntime, numverts: number, verts
   return [poly];
 }
 
+/**
+ * Original name: GL_SubdivideSurface
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Rebuilds one BSP surface polygon from surfedges and subdivides it for turbulent or sky rendering.
+ */
 export function GL_SubdivideSurface(runtime: GlWarpRuntime, fa: msurface_t): glpoly_t[] {
   const model = runtime.loadmodel;
   if (!model) {
@@ -359,6 +389,18 @@ export function GL_SubdivideSurface(runtime: GlWarpRuntime, fa: msurface_t): glp
   return SubdividePolygon(runtime, verts.length, verts);
 }
 
+/**
+ * Original name: EmitWaterPolys
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Applies the original turbulence sine lookup and flowing scroll to each fragmented water polygon.
+ *
+ * Porting notes:
+ * - Returns geometry/UV payloads for Three.js instead of issuing immediate-mode GL calls.
+ */
 export function EmitWaterPolys(runtime: GlWarpRuntime, fa: msurface_t): GlWarpWaterPoly[] {
   const out: GlWarpWaterPoly[] = [];
   const rdt = runtime.r_newrefdef_time;
@@ -388,6 +430,15 @@ export function EmitWaterPolys(runtime: GlWarpRuntime, fa: msurface_t): GlWarpWa
   return out;
 }
 
+/**
+ * Original name: DrawSkyPolygon
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Chooses the dominant skybox face for one clipped polygon and expands that face's texture bounds.
+ */
 export function DrawSkyPolygon(runtime: GlWarpRuntime, nump: number, vecs: readonly vec3_t[]): number {
   runtime.c_sky += 1;
   const v: vec3_t = [0, 0, 0];
@@ -438,6 +489,15 @@ export function DrawSkyPolygon(runtime: GlWarpRuntime, nump: number, vecs: reado
   return axis;
 }
 
+/**
+ * Original name: ClipSkyPolygon
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Clips one sky polygon through the six original sky planes before accumulating skybox bounds.
+ */
 export function ClipSkyPolygon(runtime: GlWarpRuntime, nump: number, vecs: readonly vec3_t[], stage: number): void {
   if (nump > MAX_CLIP_VERTS - 2) {
     failSysError(runtime, ERR_DROP, "ClipSkyPolygon: MAX_CLIP_VERTS");
@@ -509,6 +569,15 @@ export function ClipSkyPolygon(runtime: GlWarpRuntime, nump: number, vecs: reado
   ClipSkyPolygon(runtime, newv[1].length, newv[1], stage + 1);
 }
 
+/**
+ * Original name: R_AddSkySurface
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts visible sky surface vertices into view-relative vectors and feeds the sky clipping pipeline.
+ */
 export function R_AddSkySurface(runtime: GlWarpRuntime, fa: msurface_t): void {
   for (let poly = fa.polys; poly; poly = poly.next) {
     const verts = poly.verts.slice(0, poly.numverts).map((vertex) => ([
@@ -520,6 +589,15 @@ export function R_AddSkySurface(runtime: GlWarpRuntime, fa: msurface_t): void {
   }
 }
 
+/**
+ * Original name: R_ClearSkyBox
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Resets all six skybox face bounds to the original sentinel values.
+ */
 export function R_ClearSkyBox(runtime: GlWarpRuntime): void {
   for (let index = 0; index < 6; index += 1) {
     runtime.skymins[0][index] = 9999;
@@ -529,6 +607,15 @@ export function R_ClearSkyBox(runtime: GlWarpRuntime): void {
   }
 }
 
+/**
+ * Original name: MakeSkyVec
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts one skybox `s/t/axis` tuple into the original 2300-unit position and clamped UV.
+ */
 export function MakeSkyVec(runtime: GlWarpRuntime, s: number, t: number, axis: number): {
   position: vec3_t;
   uv: [number, number];
@@ -561,6 +648,18 @@ export function MakeSkyVec(runtime: GlWarpRuntime, s: number, t: number, axis: n
   };
 }
 
+/**
+ * Original name: R_DrawSkyBox
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits visible skybox face payloads using original bounds, rotating-sky full-face behavior and face order.
+ *
+ * Porting notes:
+ * - Returns face payloads for the Three.js sky adapter instead of binding textures and drawing quads directly.
+ */
 export function R_DrawSkyBox(runtime: GlWarpRuntime): GlWarpSkyFace[] {
   const faces: GlWarpSkyFace[] = [];
 
@@ -606,6 +705,15 @@ export function R_DrawSkyBox(runtime: GlWarpRuntime): GlWarpSkyFace[] {
   return faces;
 }
 
+/**
+ * Original name: R_SetSky
+ * Source: ref_gl/gl_warp.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores the active sky name, rotation and axis, resolves six face images, and sets sky UV clamp bounds.
+ */
 export function R_SetSky(runtime: GlWarpRuntime, name: string, rotate: number, axis: vec3_t): void {
   runtime.skyname = name.slice(0, MAX_QPATH - 1);
   runtime.skyrotate = rotate;
@@ -624,6 +732,9 @@ export function R_SetSky(runtime: GlWarpRuntime, name: string, rotate: number, a
 
     if (reduceMemory && runtime.gl_picmip) {
       runtime.gl_picmip.value -= 1;
+    }
+
+    if (reduceMemory) {
       runtime.sky_min = 1.0 / 256;
       runtime.sky_max = 255.0 / 256;
     } else {

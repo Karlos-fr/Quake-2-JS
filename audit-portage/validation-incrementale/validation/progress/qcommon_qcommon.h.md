@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: bloc lecture simple `MSG_ReadChar` a `MSG_ReadData`, incluant `MSG_ReadDeltaUsercmd` et `MSG_ReadDir`.
+- Dernier lot valide: bloc endian et arguments communs `bigendien`, `BigShort`, `LittleShort`, `BigLong`, `LittleLong`, `BigFloat`, `LittleFloat`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_CheckParm`, `COM_AddParm`, `COM_InitArgv`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc endian et arguments communs dans `packages/qcommon/src/common.ts`: `bigendien`, `BigShort`, `LittleShort`, `BigLong`, `LittleLong`, `BigFloat`, `LittleFloat`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_CheckParm`, `COM_AddParm`, `COM_InitArgv`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations argv `Quake-2-master/qcommon/common.c`, implementations endian `Quake-2-master/game/q_shared.c` reutilisees par `qcommon/common.c` via `Swap_Init`.
+- Cible comparee: `packages/qcommon/src/common.ts`, export public `packages/qcommon/src/index.ts`, harnais `scripts/verify/quake2-qcommon-header.ts`.
+- Decision: portage valide apres correction de l'ownership de `bigendien` vers `common.ts`. Les fonctions endian conservent les noms originaux et le comportement de dispatch selon endianess hote; `Swap_Init()` renvoie le meme etat `bigendien`. Les fonctions argv conservent l'etat explicite `com_argc`/`com_argv`, la recherche a partir de argv[1], les fallbacks chaine vide, les no-op hors bornes, la limite `MAX_NUM_ARGVS` et le nettoyage des args vides ou trop longs; les erreurs fatales C sont des exceptions JS documentees en fidelity `Close`.
+- Runtime: attendu et verifie. Les endian helpers sont utilises par les chemins de chargement/lecture binaire qcommon et renderer via helpers little-endian equivalents; les argv communs sont atteignables par le flux commandes `Cbuf_AddEarlyCommands`/`Cbuf_AddLateCommands` depuis le bootstrap full-game.
+- apps/web: attendu pour les arguments de lancement/commandes full-game; verifie via host server web, sans logique parallele remplacant `common.ts`.
+- renderer-three: aucune consommation directe attendue pour argv; consommation visible indirecte attendue pour endian/little-endian lors du chargement des modeles, frames, images, areabits et scene BSP/alias. Le renderer utilise les helpers binaires little-endian de `packages/memory`; le flux three-renderer a ete verifie et ne masque pas un manque de ces entites `common.ts`.
+- Commentaires: en-tetes de `COM_InitArgv`, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_AddParm`, `COM_CheckParm`, `BigShort`, `LittleShort`, `BigLong`, `LittleLong`, `BigFloat`, `LittleFloat`, `Swap_Init` verifies; en-tete `bigendien` ajoute.
+- Tests ajoutes: assertions ciblees dans `scripts/verify/quake2-qcommon-header.ts` pour `bigendien`/`Swap_Init`, conversions endian short/long/float, `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_CheckParm`, `COM_AddParm`, sanitisation `COM_InitArgv` et limites `MAX_NUM_ARGVS`.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:cmd`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: bloc lecture simple dans `packages/qcommon/src/messages.ts`: `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, `MSG_ReadString`, `MSG_ReadStringLine`, `MSG_ReadCoord`, `MSG_ReadPos`, `MSG_ReadAngle`, `MSG_ReadAngle16`, `MSG_ReadDeltaUsercmd`, `MSG_ReadDir`, `MSG_ReadData`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementations `Quake-2-master/qcommon/common.c`.
@@ -72,7 +85,7 @@
 
 ## Prochain lot recommande
 
-- Bloc endian et arguments communs: `bigendien`, `BigShort`, `LittleShort`, `BigLong`, `LittleLong`, `BigFloat`, `LittleFloat`, puis `COM_Argc`, `COM_Argv`, `COM_ClearArgv`, `COM_CheckParm`, `COM_AddParm`, `COM_InitArgv` si le lot reste coherent.
+- `COM_Init`, puis `CopyString`, `Info_Print` et le bloc CRC header `CRC_Init`, `CRC_ProcessByte`, `CRC_Value`, `CRC_Block` si le lot reste coherent.
 
 ## Blocages
 

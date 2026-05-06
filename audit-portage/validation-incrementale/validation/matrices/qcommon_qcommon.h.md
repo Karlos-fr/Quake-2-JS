@@ -65,20 +65,20 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_ReadDeltaUsercmd` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadDir` | `packages/qcommon/src/messages.ts` | `MSG_ReadDir` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadData` | `packages/qcommon/src/messages.ts` | `MSG_ReadData` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `bigendien` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `BigShort` | `packages/qcommon/src/common.ts` | `BigShort` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `LittleShort` | `packages/qcommon/src/common.ts` | `LittleShort` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `BigLong` | `packages/qcommon/src/common.ts` | `BigLong` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `LittleLong` | `packages/qcommon/src/common.ts` | `LittleLong` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `BigFloat` | `packages/qcommon/src/common.ts` | `BigFloat` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `LittleFloat` | `packages/qcommon/src/common.ts` | `LittleFloat` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `COM_Argc` | `packages/qcommon/src/common.ts` | `COM_Argc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `COM_Argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `COM_ClearArgv` | `packages/qcommon/src/common.ts` | `COM_ClearArgv` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `COM_CheckParm` | `packages/qcommon/src/common.ts` | `COM_CheckParm` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `COM_AddParm` | `packages/qcommon/src/common.ts` | `COM_AddParm` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `bigendien` | `packages/qcommon/src/common.ts` | `bigendien` | Valide | A redecouper | Correction: export `bigendien` ajoute dans `common.ts`. |
+| `Quake-2-master/qcommon/qcommon.h` | function | `BigShort` | `packages/qcommon/src/common.ts` | `BigShort` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `LittleShort` | `packages/qcommon/src/common.ts` | `LittleShort` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `BigLong` | `packages/qcommon/src/common.ts` | `BigLong` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `LittleLong` | `packages/qcommon/src/common.ts` | `LittleLong` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `BigFloat` | `packages/qcommon/src/common.ts` | `BigFloat` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `LittleFloat` | `packages/qcommon/src/common.ts` | `LittleFloat` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `COM_Argc` | `packages/qcommon/src/common.ts` | `COM_Argc` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `COM_Argv` | `packages/qcommon/src/common.ts` | `COM_Argv` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `COM_ClearArgv` | `packages/qcommon/src/common.ts` | `COM_ClearArgv` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `COM_CheckParm` | `packages/qcommon/src/common.ts` | `COM_CheckParm` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `COM_AddParm` | `packages/qcommon/src/common.ts` | `COM_AddParm` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `COM_Init` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `COM_InitArgv` | `packages/qcommon/src/common.ts` | `COM_InitArgv` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `COM_InitArgv` | `packages/qcommon/src/common.ts` | `COM_InitArgv` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `CopyString` | `packages/qcommon/src/qcommon.ts` | `CopyString` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Info_Print` | `packages/qcommon/src/common.ts` | `Info_Print` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `CRC_Init` | `packages/qcommon/src/qcommon.ts` | `CRC_Init` | A verifier | A redecouper |  |

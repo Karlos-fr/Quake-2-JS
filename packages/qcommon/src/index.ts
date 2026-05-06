@@ -288,6 +288,7 @@ export {
   BigFloat,
   BigLong,
   BigShort,
+  bigendien,
   Com_BeginRedirect,
   Com_EndRedirect,
   Com_Printf,

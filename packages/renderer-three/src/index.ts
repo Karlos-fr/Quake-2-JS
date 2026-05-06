@@ -320,6 +320,7 @@ export {
   BLOCK_WIDTH,
   DYNAMIC_LIGHT_HEIGHT,
   DYNAMIC_LIGHT_WIDTH,
+  GL_LIGHTMAP_FORMAT,
   GL_BeginBuildingLightmaps,
   GL_BuildPolygonFromSurface,
   GL_CreateSurfaceLightmap,

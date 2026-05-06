@@ -23,7 +23,23 @@ import {
   SZ_Print,
   SZ_Write
 } from "../../packages/memory/src/index.js";
-import { COM_Argv, COM_InitArgv, createCommonRuntime } from "../../packages/qcommon/src/common.js";
+import {
+  BigFloat,
+  BigLong,
+  BigShort,
+  COM_AddParm,
+  COM_Argc,
+  COM_Argv,
+  COM_CheckParm,
+  COM_ClearArgv,
+  COM_InitArgv,
+  LittleFloat,
+  LittleLong,
+  LittleShort,
+  Swap_Init,
+  bigendien,
+  createCommonRuntime
+} from "../../packages/qcommon/src/common.js";
 import {
   Cbuf_AddEarlyCommands,
   Cbuf_AddLateCommands,
@@ -186,7 +202,7 @@ import {
   clc_ops_e,
   svc_ops_e
 } from "../../packages/qcommon/src/protocol.js";
-import { MAX_EDICTS, createEntityState, type usercmd_t } from "../../packages/qcommon/src/q_shared.js";
+import { MAX_EDICTS, MAX_TOKEN_CHARS, createEntityState, type usercmd_t } from "../../packages/qcommon/src/q_shared.js";
 
 assert.equal(VERSION, 3.19, "VERSION mismatch");
 assert.equal(PORT_MASTER, 27900, "PORT_MASTER mismatch");
@@ -214,6 +230,22 @@ assert.equal(CM_SIDE, 1 << 4, "CM_SIDE mismatch");
 assert.equal(CM_UP, 1 << 5, "CM_UP mismatch");
 assert.equal(CM_BUTTONS, 1 << 6, "CM_BUTTONS mismatch");
 assert.equal(CM_IMPULSE, 1 << 7, "CM_IMPULSE mismatch");
+assert.equal(Swap_Init().bigendien, bigendien, "bigendien/Swap_Init mismatch");
+if (bigendien) {
+  assert.equal(BigShort(0x1234), 0x1234, "BigShort big-endian mismatch");
+  assert.equal(LittleShort(0x1234), 0x3412, "LittleShort big-endian mismatch");
+  assert.equal(BigLong(0x12345678), 0x12345678, "BigLong big-endian mismatch");
+  assert.equal(LittleLong(0x12345678), 0x78563412, "LittleLong big-endian mismatch");
+  assert.equal(BigFloat(Math.fround(1.25)), Math.fround(1.25), "BigFloat big-endian mismatch");
+  assert.equal(LittleFloat(LittleFloat(Math.fround(1.25))), Math.fround(1.25), "LittleFloat big-endian roundtrip mismatch");
+} else {
+  assert.equal(BigShort(0x1234), 0x3412, "BigShort little-endian mismatch");
+  assert.equal(LittleShort(0x1234), 0x1234, "LittleShort little-endian mismatch");
+  assert.equal(BigLong(0x12345678), 0x78563412, "BigLong little-endian mismatch");
+  assert.equal(LittleLong(0x12345678), 0x12345678, "LittleLong little-endian mismatch");
+  assert.equal(BigFloat(BigFloat(Math.fround(1.25))), Math.fround(1.25), "BigFloat little-endian roundtrip mismatch");
+  assert.equal(LittleFloat(Math.fround(1.25)), Math.fround(1.25), "LittleFloat little-endian mismatch");
+}
 assert.equal(U_ORIGIN1, 1 << 0, "U_ORIGIN1 mismatch");
 assert.equal(U_ORIGIN2, 1 << 1, "U_ORIGIN2 mismatch");
 assert.equal(U_ANGLE2, 1 << 2, "U_ANGLE2 mismatch");
@@ -864,6 +896,35 @@ assert.equal(clc_ops_e.clc_stringcmd, 4, "clc_ops_e mismatch");
 
 const common = createCommonRuntime();
 COM_InitArgv(common, ["quake2", "+set", "game", "xatrix", "+map", "base1", "+exec", "autoexec.cfg"]);
+assert.equal(COM_Argc(common), 8, "COM_Argc mismatch");
+assert.equal(COM_Argv(common, 0), "quake2", "COM_Argv argv0 mismatch");
+assert.equal(COM_Argv(common, -1), "", "COM_Argv negative fallback mismatch");
+assert.equal(COM_Argv(common, 8), "", "COM_Argv overflow fallback mismatch");
+assert.equal(COM_CheckParm(common, "+map"), 4, "COM_CheckParm found mismatch");
+assert.equal(COM_CheckParm(common, "-missing"), 0, "COM_CheckParm missing mismatch");
+COM_ClearArgv(common, -1);
+assert.equal(COM_Argv(common, 0), "quake2", "COM_ClearArgv invalid index mismatch");
+
+const sanitizedCommon = createCommonRuntime();
+COM_InitArgv(sanitizedCommon, ["quake2", "", "x".repeat(MAX_TOKEN_CHARS)]);
+assert.equal(COM_Argv(sanitizedCommon, 1), "", "COM_InitArgv empty string mismatch");
+assert.equal(COM_Argv(sanitizedCommon, 2), "", "COM_InitArgv MAX_TOKEN_CHARS sanitization mismatch");
+
+const addParmCommon = createCommonRuntime();
+COM_InitArgv(addParmCommon, ["quake2"]);
+COM_AddParm(addParmCommon, "+connect");
+assert.equal(COM_Argc(addParmCommon), 2, "COM_AddParm argc mismatch");
+assert.equal(COM_Argv(addParmCommon, 1), "+connect", "COM_AddParm argv mismatch");
+
+const fullArgvCommon = createCommonRuntime();
+COM_InitArgv(fullArgvCommon, Array.from({ length: 50 }, (_, index) => String(index)));
+assert.throws(() => COM_AddParm(fullArgvCommon, "overflow"), /COM_AddParm: MAX_NUM_ARGVS/, "COM_AddParm overflow mismatch");
+assert.throws(
+  () => COM_InitArgv(createCommonRuntime(), Array.from({ length: 51 }, (_, index) => String(index))),
+  /argc > MAX_NUM_ARGVS/,
+  "COM_InitArgv overflow mismatch"
+);
+
 const earlyRuntime = createCommandRuntime();
 Cbuf_AddEarlyCommands(earlyRuntime, common, false);
 assert.equal(

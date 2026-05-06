@@ -56,6 +56,7 @@ export const LIGHTMAP_BYTES = 4;
 export const BLOCK_WIDTH = 128;
 export const BLOCK_HEIGHT = 128;
 export const MAX_LIGHTMAPS = 128;
+export const GL_LIGHTMAP_FORMAT = "GL_RGBA";
 const GL_LIGHTMAP_FORMAT_SOLID = 1;
 const GL_LIGHTMAP_FORMAT_ALPHA = 2;
 const GL_LIGHTMAP_FORMAT_INTENSITY8 = 3;

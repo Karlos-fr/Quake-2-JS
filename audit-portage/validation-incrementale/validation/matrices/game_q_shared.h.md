@@ -338,31 +338,31 @@
 | `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE2` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE2` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE4` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE4` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ_NUKE8` | `packages/qcommon/src/q_shared.ts` | `MZ_NUKE8` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_BLASTER_1` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_BLASTER_2` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_BLASTER_3` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_1` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_2` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_3` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_4` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_5` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_6` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_7` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_8` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_9` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_10` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_11` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_12` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_13` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_14` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_15` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_16` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_17` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_18` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_19` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_ROCKET_1` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_ROCKET_2` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_ROCKET_3` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_BLASTER_1` | `packages/game/src/m_tank.ts` | `MZ2_TANK_BLASTER_1` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_BLASTER_2` | `packages/game/src/m_tank.ts` | `MZ2_TANK_BLASTER_2` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_BLASTER_3` | `packages/game/src/m_tank.ts` | `MZ2_TANK_BLASTER_3` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_1` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_1` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_2` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_2` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_3` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_3` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_4` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_4` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_5` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_5` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_6` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_6` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_7` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_7` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_8` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_8` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_9` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_9` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_10` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_10` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_11` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_11` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_12` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_12` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_13` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_13` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_14` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_14` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_15` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_15` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_16` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_16` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_17` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_17` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_18` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_18` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_MACHINEGUN_19` | `packages/game/src/m_tank.ts` | `MZ2_TANK_MACHINEGUN_19` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_ROCKET_1` | `packages/game/src/m_tank.ts` | `MZ2_TANK_ROCKET_1` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_ROCKET_2` | `packages/game/src/m_tank.ts` | `MZ2_TANK_ROCKET_2` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
+| `Quake-2-master/game/q_shared.h` | macro | `MZ2_TANK_ROCKET_3` | `packages/game/src/m_tank.ts` | `MZ2_TANK_ROCKET_3` | Valide | A redecouper | Ownership local tank conserve; valeur/offset et flux `svc_muzzleflash2` verifies. |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ2_INFANTRY_MACHINEGUN_1` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ2_INFANTRY_MACHINEGUN_2` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ2_INFANTRY_MACHINEGUN_3` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |

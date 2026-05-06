@@ -16,14 +16,14 @@
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `DrawGLWaterPoly` | `packages/renderer-three/src/gl_rsurf.ts` | `DrawGLWaterPoly` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `DrawGLWaterPolyLightmap` | `packages/renderer-three/src/gl_rsurf.ts` | `DrawGLWaterPolyLightmap` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `DrawTextureChains` | `packages/renderer-three/src/gl_rsurf.ts` | `DrawTextureChains` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `GL_BeginBuildingLightmaps` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_BeginBuildingLightmaps` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `GL_BuildPolygonFromSurface` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_BuildPolygonFromSurface` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `GL_CreateSurfaceLightmap` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_CreateSurfaceLightmap` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `GL_EndBuildingLightmaps` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_EndBuildingLightmaps` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `GL_BeginBuildingLightmaps` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_BeginBuildingLightmaps` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `GL_BuildPolygonFromSurface` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_BuildPolygonFromSurface` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `GL_CreateSurfaceLightmap` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_CreateSurfaceLightmap` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `GL_EndBuildingLightmaps` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_EndBuildingLightmaps` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `GL_RenderLightmappedPoly` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_RenderLightmappedPoly` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `LM_AllocBlock` | `packages/renderer-three/src/gl_rsurf.ts` | `LM_AllocBlock` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `LM_InitBlock` | `packages/renderer-three/src/gl_rsurf.ts` | `LM_InitBlock` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `LM_UploadBlock` | `packages/renderer-three/src/gl_rsurf.ts` | `LM_UploadBlock` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `LM_AllocBlock` | `packages/renderer-three/src/gl_rsurf.ts` | `LM_AllocBlock` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `LM_InitBlock` | `packages/renderer-three/src/gl_rsurf.ts` | `LM_InitBlock` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `LM_UploadBlock` | `packages/renderer-three/src/gl_rsurf.ts` | `LM_UploadBlock` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_BlendLightmaps` | `packages/renderer-three/src/gl_rsurf.ts` | `R_BlendLightmaps` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawAlphaSurfaces` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawAlphaSurfaces` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawBrushModel` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawBrushModel` | A verifier | split-undocumented |  |
@@ -33,27 +33,27 @@
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_MarkLeaves` | `packages/renderer-three/src/gl_rsurf.ts` | `R_MarkLeaves` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_RecursiveWorldNode` | `packages/renderer-three/src/gl_rsurf.ts` | `R_RecursiveWorldNode` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_RenderBrushPoly` | `packages/renderer-three/src/gl_rsurf.ts` | `R_RenderBrushPoly` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `BLOCK_HEIGHT` | `packages/renderer-three/src/gl_rsurf.ts` | `BLOCK_HEIGHT` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `BLOCK_WIDTH` | `packages/renderer-three/src/gl_rsurf.ts` | `BLOCK_WIDTH` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `DYNAMIC_LIGHT_HEIGHT` | `packages/renderer-three/src/gl_rsurf.ts` | `DYNAMIC_LIGHT_HEIGHT` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `DYNAMIC_LIGHT_WIDTH` | `packages/renderer-three/src/gl_rsurf.ts` | `DYNAMIC_LIGHT_WIDTH` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `GL_LIGHTMAP_FORMAT` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_LIGHTMAP_FORMAT` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `LIGHTMAP_BYTES` | `packages/renderer-three/src/gl_rsurf.ts` | `LIGHTMAP_BYTES` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `MAX_LIGHTMAPS` | `packages/renderer-three/src/gl_rsurf.ts` | `MAX_LIGHTMAPS` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | typedef | `internal_format` | `packages/renderer-three/src/gl_rsurf.ts` | `internal_format` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `BLOCK_HEIGHT` | `packages/renderer-three/src/gl_rsurf.ts` | `BLOCK_HEIGHT` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `BLOCK_WIDTH` | `packages/renderer-three/src/gl_rsurf.ts` | `BLOCK_WIDTH` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `DYNAMIC_LIGHT_HEIGHT` | `packages/renderer-three/src/gl_rsurf.ts` | `DYNAMIC_LIGHT_HEIGHT` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `DYNAMIC_LIGHT_WIDTH` | `packages/renderer-three/src/gl_rsurf.ts` | `DYNAMIC_LIGHT_WIDTH` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `GL_LIGHTMAP_FORMAT` | `packages/renderer-three/src/gl_rsurf.ts` | `GL_LIGHTMAP_FORMAT` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `LIGHTMAP_BYTES` | `packages/renderer-three/src/gl_rsurf.ts` | `LIGHTMAP_BYTES` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `MAX_LIGHTMAPS` | `packages/renderer-three/src/gl_rsurf.ts` | `MAX_LIGHTMAPS` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | typedef | `internal_format` | `packages/renderer-three/src/gl_rsurf.ts` | `internal_format` | Non applicable | split-undocumented | Faux positif generateur: champ de `gllightmapstate_t`, pas typedef proprietaire; champ valide via `gl_lms.internal_format`. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `c` | `packages/renderer-three/src/gl_rsurf.ts` | `c` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `c_visible_lightmaps` | `packages/renderer-three/src/gl_rsurf.ts` | `c_visible_lightmaps` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `c_visible_textures` | `packages/renderer-three/src/gl_rsurf.ts` | `c_visible_textures` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `cluster` | `packages/renderer-three/src/gl_rsurf.ts` | `cluster` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `current_lightmap_texture` | `packages/renderer-three/src/gl_rsurf.ts` | `current_lightmap_texture` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `current_lightmap_texture` | `packages/renderer-three/src/gl_rsurf.ts` | `current_lightmap_texture` | Valide | split-undocumented | Champ conserve dans `runtime.gl_lms.current_lightmap_texture`. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `dot` | `packages/renderer-three/src/gl_rsurf.ts` | `dot` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `dynamic` | `packages/renderer-three/src/gl_rsurf.ts` | `dynamic` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `ent` | `packages/renderer-three/src/gl_rsurf.ts` | `ent` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `gl_lms` | `packages/renderer-three/src/gl_rsurf.ts` | `gl_lms` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `gl_lms` | `packages/renderer-three/src/gl_rsurf.ts` | `gl_lms` | Valide | split-undocumented | Global C remplace par `runtime.gl_lms`. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `height` | `packages/renderer-three/src/gl_rsurf.ts` | `height` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `i` | `packages/renderer-three/src/gl_rsurf.ts` | `i` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `intens` | `packages/renderer-three/src/gl_rsurf.ts` | `intens` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `internal_format` | `packages/renderer-three/src/gl_rsurf.ts` | `internal_format` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `internal_format` | `packages/renderer-three/src/gl_rsurf.ts` | `internal_format` | Valide | split-undocumented | Champ conserve dans `runtime.gl_lms.internal_format`. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `is_dynamic` | `packages/renderer-three/src/gl_rsurf.ts` | `is_dynamic` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `j` | `packages/renderer-three/src/gl_rsurf.ts` | `j` | A verifier | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `lmtex` | `packages/renderer-three/src/gl_rsurf.ts` | `lmtex` | A verifier | split-undocumented |  |

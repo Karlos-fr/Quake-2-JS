@@ -15,6 +15,7 @@ import { strict as assert } from "node:assert";
 import {
   GL_BuildPolygonFromSurface,
   GL_CreateSurfaceLightmap,
+  GL_LIGHTMAP_FORMAT,
   GL_RenderLightmappedPoly,
   LM_AllocBlock,
   LM_InitBlock,
@@ -45,6 +46,8 @@ const hookLog = {
   renderBrushPolyCalls: 0
 };
 const cvarRuntime = createCvarRuntime();
+
+assert.equal(GL_LIGHTMAP_FORMAT, "GL_RGBA", "GL_LIGHTMAP_FORMAT macro parity mismatch");
 
 const runtime = createGlRsurfRuntime({
   setCacheState: () => {

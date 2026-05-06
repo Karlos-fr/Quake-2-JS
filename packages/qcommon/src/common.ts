@@ -25,6 +25,20 @@ import {
 const MAX_NUM_ARGVS = 50;
 
 /**
+ * Original name: bigendien
+ * Source: game/q_shared.c, declared by qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores whether the current host byte order is big-endian.
+ *
+ * Porting notes:
+ * - JavaScript does not need mutable endian dispatch pointers, so this is a detected constant.
+ */
+export const bigendien = !isLittleEndianHost();
+
+/**
  * Category: New
  * Purpose: Store the common runtime state gradually ported from `common.c`.
  *
@@ -730,7 +744,7 @@ export function FloatNoSwap(value: number): number {
  */
 export function Swap_Init(): { bigendien: boolean } {
   return {
-    bigendien: !isLittleEndianHost()
+    bigendien
   };
 }
 
