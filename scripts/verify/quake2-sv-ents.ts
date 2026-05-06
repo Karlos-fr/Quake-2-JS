@@ -29,6 +29,7 @@ import {
 import {
   MAX_MSGLEN,
   MSG_WriteByte,
+  PS_WEAPONINDEX,
   createCollisionWorld,
   createEntityState,
   svc_ops_e
@@ -115,19 +116,46 @@ function main(): void {
   const frame = client.frames[sv.framenum & 15]!;
   assert.equal(frame.senttime, svs.realtime, "SV_BuildClientFrame should store realtime senttime");
   assert.ok(frame.num_entities >= 1, "SV_BuildClientFrame should collect at least the player entity");
+  assert.equal(frame.first_entity, 0, "SV_BuildClientFrame should start at the client entity ring cursor");
+  assert.equal(svs.next_client_entities, frame.num_entities, "SV_BuildClientFrame should advance the client entity ring");
+  assert.equal(frame.ps.pmove.origin[2], player.client.ps.pmove.origin[2], "SV_BuildClientFrame should copy playerstate");
+  assert.ok(frame.areabytes > 0, "SV_BuildClientFrame should write area visibility bytes");
+  assert.equal(svs.client_entities[frame.first_entity]!.number, 1, "SV_BuildClientFrame should copy the player entity state");
 
   const msg = createSizeBuffer(MAX_MSGLEN);
   ents.SV_WriteFrameToClient(client, msg);
   assert.ok(msg.cursize > 0, "SV_WriteFrameToClient should write bytes");
   assert.equal(msg.data[0], svc_ops_e.svc_frame, "SV_WriteFrameToClient should start with svc_frame");
+  assert.equal(readInt32LE(msg.data, 1), sv.framenum, "SV_WriteFrameToClient should write the current server frame");
+  assert.equal(readInt32LE(msg.data, 5), -1, "SV_WriteFrameToClient should send a full frame without a valid lastframe");
+  assert.equal(msg.data[10], frame.areabytes, "SV_WriteFrameToClient should write areabytes before area bits");
+  const playerInfoOffset = 11 + frame.areabytes;
+  assert.equal(msg.data[playerInfoOffset], svc_ops_e.svc_playerinfo, "SV_WriteFrameToClient should write playerinfo after area bits");
+  const pflags = readUInt16LE(msg.data, playerInfoOffset + 1);
+  assert.ok((pflags & PS_WEAPONINDEX) !== 0, "SV_WritePlayerstateToClient should always include weapon index");
+  assert.ok(
+    msg.data.subarray(playerInfoOffset).includes(svc_ops_e.svc_packetentities),
+    "SV_EmitPacketEntities should append a packetentities block"
+  );
+  assert.equal(client.surpressCount, 0, "SV_WriteFrameToClient should clear surpressCount");
 
   svs.demofile = {};
   MSG_WriteByte(svs.demo_multicast, 123);
   ents.SV_RecordDemoMessage();
   assert.equal(demoWrites.length, 1, "SV_RecordDemoMessage should emit one binary payload");
   assert.equal(svs.demo_multicast.cursize, 0, "SV_RecordDemoMessage should clear demo multicast buffer");
+  assert.equal(readInt32LE(demoWrites[0]!, 0), demoWrites[0]!.length - 4, "SV_RecordDemoMessage should prefix payload length");
+  assert.equal(demoWrites[0]![4], svc_ops_e.svc_frame, "SV_RecordDemoMessage should write a frame command");
 
   console.log("quake2-sv-ents: ok");
+}
+
+function readInt32LE(data: Uint8Array, offset: number): number {
+  return new DataView(data.buffer, data.byteOffset + offset, 4).getInt32(0, true);
+}
+
+function readUInt16LE(data: Uint8Array, offset: number): number {
+  return new DataView(data.buffer, data.byteOffset + offset, 2).getUint16(0, true);
 }
 
 function createGameExports(edicts: ReturnType<typeof createRuntimeEntity>[]): game_export_t {

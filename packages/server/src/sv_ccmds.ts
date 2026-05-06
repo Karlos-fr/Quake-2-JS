@@ -191,7 +191,19 @@ export function createServerConsoleProcedures(context: ServerConsoleContext): Se
     }
   }
 
-  function copyBinaryFile(src: string, dst: string): void {
+  /**
+   * Original name: CopyFile
+   * Source: server/sv_ccmds.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Copies one savegame/server-demo support file when the source exists.
+   *
+   * Porting notes:
+   * - Uses explicit binary I/O callbacks instead of direct `FILE *` handles.
+   */
+  function CopyFile(src: string, dst: string): void {
     const bytes = context.readBinaryFile?.(src) ?? null;
     if (!bytes) {
       return;
@@ -313,6 +325,18 @@ export function createServerConsoleProcedures(context: ServerConsoleContext): Se
     context.onPrintf?.(`${name} is not ported yet in sv_ccmds.ts\n`);
   }
 
+  /**
+   * Original name: SV_WipeSavegame
+   * Source: server/sv_ccmds.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Deletes the fixed savegame files and per-level `.sav`/`.sv2` files for one save slot.
+   *
+   * Porting notes:
+   * - Directory scanning/removal is delegated to callbacks so browser and test hosts can provide storage.
+   */
   function SV_WipeSavegame(savename: string): void {
     if (context.SV_WipeSavegame) {
       context.SV_WipeSavegame(savename);
@@ -330,6 +354,18 @@ export function createServerConsoleProcedures(context: ServerConsoleContext): Se
     }
   }
 
+  /**
+   * Original name: SV_CopySaveGame
+   * Source: server/sv_ccmds.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Replaces the destination save slot and copies server/game plus per-map save files.
+   *
+   * Porting notes:
+   * - Preserves the original `.sav` to `.sv2` paired-copy behavior through callback-backed paths.
+   */
   function SV_CopySaveGame(src: string, dst: string): void {
     if (context.SV_CopySaveGame) {
       context.SV_CopySaveGame(src, dst);
@@ -338,20 +374,32 @@ export function createServerConsoleProcedures(context: ServerConsoleContext): Se
 
     SV_WipeSavegame(dst);
 
-    copyBinaryFile(buildSavePath(src, "server.ssv"), buildSavePath(dst, "server.ssv"));
-    copyBinaryFile(buildSavePath(src, "game.ssv"), buildSavePath(dst, "game.ssv"));
+    CopyFile(buildSavePath(src, "server.ssv"), buildSavePath(dst, "server.ssv"));
+    CopyFile(buildSavePath(src, "game.ssv"), buildSavePath(dst, "game.ssv"));
 
     for (const found of context.listFiles?.(buildSavePath(src, "*.sav")) ?? []) {
       const file = basename(found);
-      copyBinaryFile(found, buildSavePath(dst, file));
+      CopyFile(found, buildSavePath(dst, file));
 
       if (file.toLowerCase().endsWith(".sav")) {
         const sv2 = `${file.slice(0, -4)}.sv2`;
-        copyBinaryFile(buildSavePath(src, sv2), buildSavePath(dst, sv2));
+        CopyFile(buildSavePath(src, sv2), buildSavePath(dst, sv2));
       }
     }
   }
 
+  /**
+   * Original name: SV_WriteLevelFile
+   * Source: server/sv_ccmds.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Archives configstrings, portal state and game level state for the current map.
+   *
+   * Porting notes:
+   * - Serializes fixed-size configstring blocks explicitly and delegates game save I/O to `ge`.
+   */
   function SV_WriteLevelFile(): void {
     if (context.SV_WriteLevelFile) {
       context.SV_WriteLevelFile();
@@ -375,6 +423,18 @@ export function createServerConsoleProcedures(context: ServerConsoleContext): Se
     context.ge?.WriteLevel(buildSavePath("current", `${context.sv.name}.sav`));
   }
 
+  /**
+   * Original name: SV_WriteServerFile
+   * Source: server/sv_ccmds.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Writes the save comment, map command and latched cvars before delegating game state save.
+   *
+   * Porting notes:
+   * - Uses callback-backed binary output and JavaScript time formatting for the human-readable comment.
+   */
   function SV_WriteServerFile(autosave: boolean): void {
     if (context.SV_WriteServerFile) {
       context.SV_WriteServerFile(autosave);
@@ -423,6 +483,15 @@ export function createServerConsoleProcedures(context: ServerConsoleContext): Se
     context.ge?.WriteGame(buildSavePath("current", "game.ssv"), autosave);
   }
 
+  /**
+   * Original name: SV_ReadServerFile
+   * Source: server/sv_ccmds.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Restores the saved map command and latched cvars, starts a fresh game, then reads game state.
+   */
   function SV_ReadServerFile(): void {
     if (context.SV_ReadServerFile) {
       context.SV_ReadServerFile();
@@ -916,7 +985,7 @@ export function createServerConsoleProcedures(context: ServerConsoleContext): Se
    * Fidelity level: Close
    *
    * Behavior:
-   * - Placeholder for savegame level-state restore.
+   * - Restores configstrings, portal state and game level state for the current map.
    */
   function SV_ReadLevelFile(): void {
     if (context.SV_ReadLevelFile) {

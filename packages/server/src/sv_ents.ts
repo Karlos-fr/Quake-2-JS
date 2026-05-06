@@ -419,6 +419,18 @@ export function createServerEntityProcedures(context: ServerEntityContext): Serv
     SV_EmitPacketEntities(oldframe, frame, msg);
   }
 
+  /**
+   * Original name: SV_RecordDemoMessage
+   * Source: server/sv_ents.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Saves a non-delta entity frame and accumulated demo multicast bytes.
+   *
+   * Porting notes:
+   * - Binary file output is routed through `writeDemoMessage` so browser and test hosts can supply storage.
+   */
   function SV_RecordDemoMessage(): void {
     if (!context.svs.demofile) {
       return;
@@ -619,6 +631,18 @@ function getMaxclientsValue(maxclients: cvar_t | null): number {
   return Math.trunc(maxclients.value);
 }
 
+/**
+ * Original name: SV_FatPVS
+ * Source: server/sv_ents.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Builds the expanded PVS bitvector around the client view origin for snapshot visibility.
+ *
+ * Porting notes:
+ * - The original file-static collision calls are provided by the explicit server entity context.
+ */
 function SV_FatPVS(context: ServerEntityContext, org: vec3_t): void {
   const leafs: number[] = [];
   const mins: vec3_t = [org[0] - 8, org[1] - 8, org[2] - 8];

@@ -26,12 +26,12 @@
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `LM_UploadBlock` | `packages/renderer-three/src/gl_rsurf.ts` | `LM_UploadBlock` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_BlendLightmaps` | `packages/renderer-three/src/gl_rsurf.ts` | `R_BlendLightmaps` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawAlphaSurfaces` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawAlphaSurfaces` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawBrushModel` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawBrushModel` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawInlineBModel` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawInlineBModel` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawBrushModel` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawBrushModel` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawInlineBModel` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawInlineBModel` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawTriangleOutlines` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawTriangleOutlines` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawWorld` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawWorld` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_MarkLeaves` | `packages/renderer-three/src/gl_rsurf.ts` | `R_MarkLeaves` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_RecursiveWorldNode` | `packages/renderer-three/src/gl_rsurf.ts` | `R_RecursiveWorldNode` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_DrawWorld` | `packages/renderer-three/src/gl_rsurf.ts` | `R_DrawWorld` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_MarkLeaves` | `packages/renderer-three/src/gl_rsurf.ts` | `R_MarkLeaves` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_RecursiveWorldNode` | `packages/renderer-three/src/gl_rsurf.ts` | `R_RecursiveWorldNode` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | function | `R_RenderBrushPoly` | `packages/renderer-three/src/gl_rsurf.ts` | `R_RenderBrushPoly` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `BLOCK_HEIGHT` | `packages/renderer-three/src/gl_rsurf.ts` | `BLOCK_HEIGHT` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `BLOCK_WIDTH` | `packages/renderer-three/src/gl_rsurf.ts` | `BLOCK_WIDTH` | Valide | split-undocumented |  |
@@ -41,16 +41,16 @@
 | `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `LIGHTMAP_BYTES` | `packages/renderer-three/src/gl_rsurf.ts` | `LIGHTMAP_BYTES` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | macro | `MAX_LIGHTMAPS` | `packages/renderer-three/src/gl_rsurf.ts` | `MAX_LIGHTMAPS` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | typedef | `internal_format` | `packages/renderer-three/src/gl_rsurf.ts` | `internal_format` | Non applicable | split-undocumented | Faux positif generateur: champ de `gllightmapstate_t`, pas typedef proprietaire; champ valide via `gl_lms.internal_format`. |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `c` | `packages/renderer-three/src/gl_rsurf.ts` | `c` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `c` | `packages/renderer-three/src/gl_rsurf.ts` | `c` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `R_TextureAnimation`/`R_RecursiveWorldNode`, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `c_visible_lightmaps` | `packages/renderer-three/src/gl_rsurf.ts` | `c_visible_lightmaps` | Valide | split-undocumented |  |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `c_visible_textures` | `packages/renderer-three/src/gl_rsurf.ts` | `c_visible_textures` | Valide | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `cluster` | `packages/renderer-three/src/gl_rsurf.ts` | `cluster` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `cluster` | `packages/renderer-three/src/gl_rsurf.ts` | `cluster` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `R_MarkLeaves`, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `current_lightmap_texture` | `packages/renderer-three/src/gl_rsurf.ts` | `current_lightmap_texture` | Valide | split-undocumented | Champ conserve dans `runtime.gl_lms.current_lightmap_texture`. |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `dot` | `packages/renderer-three/src/gl_rsurf.ts` | `dot` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `dot` | `packages/renderer-three/src/gl_rsurf.ts` | `dot` | Non applicable | split-undocumented | Faux positif generateur: variable locale de culling/plan BSP, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `dynamic` | `packages/renderer-three/src/gl_rsurf.ts` | `dynamic` | Non applicable | split-undocumented | Faux positif generateur: etiquette/parametre local, pas global proprietaire. |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `ent` | `packages/renderer-three/src/gl_rsurf.ts` | `ent` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `ent` | `packages/renderer-three/src/gl_rsurf.ts` | `ent` | Non applicable | split-undocumented | Faux positif generateur: entity locale de `R_DrawWorld`, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `gl_lms` | `packages/renderer-three/src/gl_rsurf.ts` | `gl_lms` | Valide | split-undocumented | Global C remplace par `runtime.gl_lms`. |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `height` | `packages/renderer-three/src/gl_rsurf.ts` | `height` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `height` | `packages/renderer-three/src/gl_rsurf.ts` | `height` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `LM_UploadBlock`, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `i` | `packages/renderer-three/src/gl_rsurf.ts` | `i` | Non applicable | split-undocumented | Faux positif generateur: variable locale de boucle, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `intens` | `packages/renderer-three/src/gl_rsurf.ts` | `intens` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `R_DrawAlphaSurfaces`, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `internal_format` | `packages/renderer-three/src/gl_rsurf.ts` | `internal_format` | Valide | split-undocumented | Champ conserve dans `runtime.gl_lms.internal_format`. |
@@ -59,10 +59,10 @@
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `lmtex` | `packages/renderer-three/src/gl_rsurf.ts` | `lmtex` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `GL_RenderLightmappedPoly`, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `map` | `packages/renderer-three/src/gl_rsurf.ts` | `map` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `GL_RenderLightmappedPoly`, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `maps` | `packages/renderer-three/src/gl_rsurf.ts` | `maps` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `R_RenderBrushPoly`, pas global proprietaire. |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `modelorg` | `packages/renderer-three/src/gl_rsurf.ts` | `modelorg` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `rotated` | `packages/renderer-three/src/gl_rsurf.ts` | `rotated` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `modelorg` | `packages/renderer-three/src/gl_rsurf.ts` | `modelorg` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `rotated` | `packages/renderer-three/src/gl_rsurf.ts` | `rotated` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `R_DrawBrushModel`, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `scroll` | `packages/renderer-three/src/gl_rsurf.ts` | `scroll` | Non applicable | split-undocumented | Faux positif generateur: variable locale calculee dans les fonctions flowing, pas global proprietaire. |
 | `Quake-2-master/ref_gl/gl_rsurf.c` | global | `temp` | `packages/renderer-three/src/gl_rsurf.ts` | `temp` | Non applicable | split-undocumented | Faux positif generateur: tampon/vec3 local, pas global proprietaire. |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `texture` | `packages/renderer-three/src/gl_rsurf.ts` | `texture` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `total` | `packages/renderer-three/src/gl_rsurf.ts` | `total` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `vertpage` | `packages/renderer-three/src/gl_rsurf.ts` | `vertpage` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `texture` | `packages/renderer-three/src/gl_rsurf.ts` | `texture` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `LM_UploadBlock`, pas global proprietaire. |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `total` | `packages/renderer-three/src/gl_rsurf.ts` | `total` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `GL_BuildPolygonFromSurface`, pas global proprietaire. |
+| `Quake-2-master/ref_gl/gl_rsurf.c` | global | `vertpage` | `packages/renderer-three/src/gl_rsurf.ts` | `vertpage` | Non applicable | split-undocumented | Faux positif generateur: variable locale de `GL_BuildPolygonFromSurface`, pas global proprietaire. |

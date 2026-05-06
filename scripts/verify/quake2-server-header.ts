@@ -17,6 +17,7 @@ import type { game_export_t } from "../../packages/game/src/index.js";
 import {
   client_state_t,
   computeServerClientEntityCapacity,
+  createChallenge,
   createClientFrame,
   createServerClient,
   createServerHeaderState,
@@ -81,13 +82,67 @@ assert.equal(frame.first_entity, 0, "createClientFrame first_entity default mism
 assert.equal(frame.senttime, 0, "createClientFrame senttime default mismatch");
 
 const client = createServerClient();
+assert.equal(client.state, client_state_t.cs_free, "createServerClient state default mismatch");
+assert.equal(client.userinfo, "", "createServerClient userinfo default mismatch");
+assert.equal(client.lastframe, 0, "createServerClient lastframe default mismatch");
+assert.deepEqual(
+  client.lastcmd,
+  {
+    msec: 0,
+    buttons: 0,
+    angles: [0, 0, 0],
+    forwardmove: 0,
+    sidemove: 0,
+    upmove: 0,
+    impulse: 0,
+    lightlevel: 0
+  },
+  "createServerClient lastcmd default mismatch"
+);
+assert.equal(client.commandMsec, 0, "createServerClient commandMsec default mismatch");
 assert.equal(client.frame_latency.length, LATENCY_COUNTS, "createServerClient frame latency length mismatch");
+assert.equal(client.frame_latency.every((value) => value === 0), true, "createServerClient frame latency default mismatch");
+assert.equal(client.ping, 0, "createServerClient ping default mismatch");
 assert.equal(client.message_size.length, RATE_MESSAGES, "createServerClient message size length mismatch");
+assert.equal(client.message_size.every((value) => value === 0), true, "createServerClient message size default mismatch");
+assert.equal(client.rate, 0, "createServerClient rate default mismatch");
+assert.equal(client.surpressCount, 0, "createServerClient surpressCount default mismatch");
+assert.equal(client.edict, null, "createServerClient edict default mismatch");
+assert.equal(client.name, "", "createServerClient name default mismatch");
+assert.equal(client.messagelevel, 0, "createServerClient messagelevel default mismatch");
 assert.equal(client.frames.length, 16, "createServerClient frame history length mismatch");
+assert.notEqual(client.frames[0], client.frames[1], "createServerClient frames should be independent states");
+assert.equal(client.datagram.allowoverflow, true, "createServerClient datagram overflow flag mismatch");
+assert.equal(client.datagram.maxsize, 1400, "createServerClient datagram maxsize mismatch");
 assert.equal(client.datagram_buf.length, 1400, "createServerClient datagram buffer mismatch");
+assert.equal(client.download, null, "createServerClient download default mismatch");
+assert.equal(client.downloadsize, 0, "createServerClient downloadsize default mismatch");
+assert.equal(client.downloadcount, 0, "createServerClient downloadcount default mismatch");
+assert.equal(client.lastmessage, 0, "createServerClient lastmessage default mismatch");
+assert.equal(client.lastconnect, 0, "createServerClient lastconnect default mismatch");
+assert.equal(client.challenge, 0, "createServerClient challenge default mismatch");
+assert.equal(client.netchan.message.allowoverflow, false, "createServerClient netchan pre-setup overflow flag mismatch");
+
+const challenge = createChallenge();
+assert.equal(challenge.challenge, 0, "createChallenge challenge default mismatch");
+assert.equal(challenge.time, 0, "createChallenge time default mismatch");
+assert.equal(challenge.adr.ip.length, 4, "createChallenge netadr ip length mismatch");
 
 const svs = createServerStatic();
+assert.equal(svs.initialized, false, "createServerStatic initialized default mismatch");
+assert.equal(svs.realtime, 0, "createServerStatic realtime default mismatch");
+assert.equal(svs.mapcmd, "", "createServerStatic mapcmd default mismatch");
+assert.equal(svs.spawncount, 0, "createServerStatic spawncount default mismatch");
+assert.equal(svs.clients.length, 0, "createServerStatic clients default mismatch");
+assert.equal(svs.num_client_entities, 0, "createServerStatic num_client_entities default mismatch");
+assert.equal(svs.next_client_entities, 0, "createServerStatic next_client_entities default mismatch");
+assert.equal(svs.client_entities.length, 0, "createServerStatic client_entities default mismatch");
+assert.equal(svs.last_heartbeat, 0, "createServerStatic last_heartbeat default mismatch");
 assert.equal(svs.challenges.length, MAX_CHALLENGES, "createServerStatic challenge table length mismatch");
+assert.notEqual(svs.challenges[0], svs.challenges[1], "createServerStatic challenges should be independent states");
+assert.equal(svs.demofile, null, "createServerStatic demofile default mismatch");
+assert.equal(svs.demo_multicast.allowoverflow, true, "createServerStatic demo multicast overflow flag mismatch");
+assert.equal(svs.demo_multicast.maxsize, 1400, "createServerStatic demo multicast maxsize mismatch");
 assert.equal(svs.demo_multicast_buf.length, 1400, "createServerStatic demo multicast buffer mismatch");
 assert.equal(computeServerClientEntityCapacity(4), 4096, "computeServerClientEntityCapacity mismatch");
 

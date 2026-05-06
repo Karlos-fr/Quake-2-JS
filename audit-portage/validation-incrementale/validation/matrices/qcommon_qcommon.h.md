@@ -150,29 +150,29 @@
 | `Quake-2-master/qcommon/qcommon.h` | macro | `U_SKIN16` | `packages/qcommon/src/protocol.ts` | `U_SKIN16` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `U_SOUND` | `packages/qcommon/src/protocol.ts` | `U_SOUND` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `U_SOLID` | `packages/qcommon/src/protocol.ts` | `U_SOLID` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_NOW` | `packages/qcommon/src/cmd.ts` | `EXEC_NOW` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_INSERT` | `packages/qcommon/src/cmd.ts` | `EXEC_INSERT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_APPEND` | `packages/qcommon/src/cmd.ts` | `EXEC_APPEND` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_Init` | `packages/qcommon/src/cmd.ts` | `Cbuf_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_AddText` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddText` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_InsertText` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertText` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_ExecuteText` | `packages/qcommon/src/cmd.ts` | `Cbuf_ExecuteText` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_AddEarlyCommands` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddEarlyCommands` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_AddLateCommands` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddLateCommands` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_Execute` | `packages/qcommon/src/cmd.ts` | `Cbuf_Execute` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_CopyToDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_CopyToDefer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_InsertFromDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertFromDefer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Init` | `packages/qcommon/src/cmd.ts` | `Cmd_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_AddCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_AddCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_RemoveCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_RemoveCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Exists` | `packages/qcommon/src/cmd.ts` | `Cmd_Exists` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_CompleteCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_CompleteCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Argc` | `packages/qcommon/src/cmd.ts` | `Cmd_Argc` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Argv` | `packages/qcommon/src/cmd.ts` | `Cmd_Argv` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Args` | `packages/qcommon/src/cmd.ts` | `Cmd_Args` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_TokenizeString` | `packages/qcommon/src/cmd.ts` | `Cmd_TokenizeString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_ExecuteString` | `packages/qcommon/src/cmd.ts` | `Cmd_ExecuteString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_ForwardToServer` | `packages/qcommon/src/cmd.ts` | `Cmd_ForwardToServer` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_NOW` | `packages/qcommon/src/cmd.ts` | `EXEC_NOW` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_INSERT` | `packages/qcommon/src/cmd.ts` | `EXEC_INSERT` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_APPEND` | `packages/qcommon/src/cmd.ts` | `EXEC_APPEND` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_Init` | `packages/qcommon/src/cmd.ts` | `Cbuf_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_AddText` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddText` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_InsertText` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertText` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_ExecuteText` | `packages/qcommon/src/cmd.ts` | `Cbuf_ExecuteText` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_AddEarlyCommands` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddEarlyCommands` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_AddLateCommands` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddLateCommands` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_Execute` | `packages/qcommon/src/cmd.ts` | `Cbuf_Execute` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_CopyToDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_CopyToDefer` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cbuf_InsertFromDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertFromDefer` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Init` | `packages/qcommon/src/cmd.ts` | `Cmd_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_AddCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_AddCommand` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_RemoveCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_RemoveCommand` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Exists` | `packages/qcommon/src/cmd.ts` | `Cmd_Exists` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_CompleteCommand` | `packages/qcommon/src/cmd.ts` | `Cmd_CompleteCommand` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Argc` | `packages/qcommon/src/cmd.ts` | `Cmd_Argc` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Argv` | `packages/qcommon/src/cmd.ts` | `Cmd_Argv` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_Args` | `packages/qcommon/src/cmd.ts` | `Cmd_Args` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_TokenizeString` | `packages/qcommon/src/cmd.ts` | `Cmd_TokenizeString` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_ExecuteString` | `packages/qcommon/src/cmd.ts` | `Cmd_ExecuteString` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Cmd_ForwardToServer` | `packages/qcommon/src/cmd.ts` | `Cmd_ForwardToServer` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | global | `cvar_vars` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Get` | `packages/qcommon/src/cvar.ts` | `Cvar_Get` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Set` | `packages/qcommon/src/cvar.ts` | `Cvar_Set` | A verifier | A redecouper |  |
@@ -277,9 +277,9 @@
 | `Quake-2-master/qcommon/qcommon.h` | macro | `ERR_FATAL` | `packages/qcommon/src/qcommon.ts` | `ERR_FATAL` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `ERR_DROP` | `packages/qcommon/src/qcommon.ts` | `ERR_DROP` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `ERR_QUIT` | `packages/qcommon/src/qcommon.ts` | `ERR_QUIT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_NOW` | `packages/qcommon/src/cmd.ts` | `EXEC_NOW` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_INSERT` | `packages/qcommon/src/cmd.ts` | `EXEC_INSERT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_APPEND` | `packages/qcommon/src/cmd.ts` | `EXEC_APPEND` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_NOW` | `packages/qcommon/src/cmd.ts` | `EXEC_NOW` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_INSERT` | `packages/qcommon/src/cmd.ts` | `EXEC_INSERT` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `EXEC_APPEND` | `packages/qcommon/src/cmd.ts` | `EXEC_APPEND` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `PRINT_ALL` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `PRINT_DEVELOPER` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Com_BeginRedirect` | `packages/qcommon/src/common.ts` | `Com_BeginRedirect` | A verifier | A redecouper |  |

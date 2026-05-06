@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: bloc utilitaires/protocole `COM_Init` (non applicable), `CopyString`, `Info_Print`, `CRC_Init`, `CRC_ProcessByte`, `CRC_Value`, `CRC_Block`, `PROTOCOL_VERSION`, `PORT_MASTER`, `PORT_CLIENT`, `PORT_SERVER`, `UPDATE_BACKUP`, `UPDATE_MASK`, `svc_ops_e`, `clc_ops_e`, flags `PS_*` et flags/defaults `SND_*`.
+- Dernier lot valide: bloc commandes header dans `packages/qcommon/src/cmd.ts`: `EXEC_NOW`, `EXEC_INSERT`, `EXEC_APPEND` (deux declarations header generees), `Cbuf_Init`, `Cbuf_AddText`, `Cbuf_InsertText`, `Cbuf_ExecuteText`, `Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cbuf_Execute`, `Cbuf_CopyToDefer`, `Cbuf_InsertFromDefer`, `Cmd_Init`, `Cmd_AddCommand`, `Cmd_RemoveCommand`, `Cmd_Exists`, `Cmd_CompleteCommand`, `Cmd_Argc`, `Cmd_Argv`, `Cmd_Args`, `Cmd_TokenizeString`, `Cmd_ExecuteString`, `Cmd_ForwardToServer`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc commandes header dans `packages/qcommon/src/cmd.ts`: `EXEC_NOW`, `EXEC_INSERT`, `EXEC_APPEND` (premier bloc commande et doublon genere plus bas dans le header), `Cbuf_Init`, `Cbuf_AddText`, `Cbuf_InsertText`, `Cbuf_ExecuteText`, `Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cbuf_Execute`, `Cbuf_CopyToDefer`, `Cbuf_InsertFromDefer`, `Cmd_Init`, `Cmd_AddCommand`, `Cmd_RemoveCommand`, `Cmd_Exists`, `Cmd_CompleteCommand`, `Cmd_Argc`, `Cmd_Argv`, `Cmd_Args`, `Cmd_TokenizeString`, `Cmd_ExecuteString`, `Cmd_ForwardToServer`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations `Quake-2-master/qcommon/cmd.c`.
+- Cible comparee: `packages/qcommon/src/cmd.ts`, exports publics `packages/qcommon/src/index.ts`, usages client/server/web, harnais `scripts/verify/quake2-cmd.ts` et `scripts/verify/quake2-qcommon-header.ts`.
+- Decision: portage valide pour 26 entrees de matrice. Les constantes `EXEC_*` conservent les valeurs C 0/1/2. Les fonctions `Cbuf_*` conservent l'initialisation 8192 octets, append/insert, overflow imprime et ignore, execution immediate/insert/append, split quote-aware, pause `wait`, commandes early/late `+set`/`+command`, et defer/restore. Les fonctions `Cmd_*` conservent registry, suppression, completion commandes puis aliases, `argc`/`argv`/`args`, tokenisation avec macro expansion, execution commande/alias/fallback et forwarding serveur. Les etats C file-static sont portes dans `CommandRuntime`; les prints, cvars, chargement de fichiers et forwarding serveur passent par hooks explicites.
+- Runtime: attendu et verifie. Ce bloc est atteignable depuis l'initialisation `Qcommon_Init`/`Cmd_Init`, les commandes console/client, `CL_Frame`, `SV_Frame`, les forwards vers serveur et les scripts/configs via `exec`.
+- apps/web: attendu et verifie. `apps/web` declenche ces flux via le host full-game et les commandes config/gamedir/writeconfig, sans logique parallele remplacant `cmd.ts`.
+- renderer-three: pas de consommation directe attendue pour les primitives de commande elles-memes; elles ne produisent pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene. Elles peuvent declencher indirectement des commandes renderer/client, et le flux full-game three-renderer a ete verifie.
+- Commentaires: en-tetes des fonctions portees du lot verifies dans `packages/qcommon/src/cmd.ts`; commentaires de fichier indiquent les deviations runtime-state/hooks.
+- Tests ajoutes: assertions directes dans `scripts/verify/quake2-qcommon-header.ts` pour `EXEC_*`, `Cbuf_Init`, `Cbuf_AddText`, `Cbuf_InsertText`, `Cbuf_ExecuteText`, `Cbuf_Execute`, `Cbuf_CopyToDefer`, `Cbuf_InsertFromDefer`, `Cmd_Init`, `Cmd_AddCommand`, `Cmd_RemoveCommand`, `Cmd_Exists`, `Cmd_CompleteCommand`, `Cmd_Argc`, `Cmd_Argv`, `Cmd_Args`, `Cmd_ExecuteString`.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:cmd`, `npm run verify:cl-main`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run verify:web-config-storage`, `npm run verify:web-config-gamedir`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: bloc utilitaires/protocole dans `packages/qcommon/src/qcommon.ts`, `packages/qcommon/src/common.ts` et `packages/qcommon/src/protocol.ts`: `COM_Init`, `CopyString`, `Info_Print`, `CRC_Init`, `CRC_ProcessByte`, `CRC_Value`, `CRC_Block`, `PROTOCOL_VERSION`, `PORT_MASTER`, `PORT_CLIENT`, `PORT_SERVER`, `UPDATE_BACKUP`, `UPDATE_MASK`, `svc_ops_e`, `clc_ops_e`, `PS_M_TYPE`, `PS_M_ORIGIN`, `PS_M_VELOCITY`, `PS_M_TIME`, `PS_M_FLAGS`, `PS_M_GRAVITY`, `PS_M_DELTA_ANGLES`, `PS_VIEWOFFSET`, `PS_VIEWANGLES`, `PS_KICKANGLES`, `PS_BLEND`, `PS_FOV`, `PS_WEAPONINDEX`, `PS_WEAPONFRAME`, `PS_RDFLAGS`, `SND_VOLUME`, `SND_ATTENUATION`, `SND_POS`, `SND_ENT`, `SND_OFFSET`, `DEFAULT_SOUND_PACKET_VOLUME`, `DEFAULT_SOUND_PACKET_ATTENUATION`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations `Quake-2-master/qcommon/common.c` pour `CopyString`/`Info_Print`, implementations `Quake-2-master/qcommon/crc.c` et `crc.h` pour CRC, et constantes/enums protocole du header.
@@ -98,7 +111,7 @@
 
 ## Prochain lot recommande
 
-- Bloc commandes header dans `packages/qcommon/src/cmd.ts`: `EXEC_NOW`, `EXEC_INSERT`, `EXEC_APPEND`, puis `Cbuf_Init`, `Cbuf_AddText`, `Cbuf_InsertText`, `Cbuf_ExecuteText`, `Cbuf_AddEarlyCommands`, `Cbuf_AddLateCommands`, `Cbuf_Execute`, `Cbuf_CopyToDefer`, `Cbuf_InsertFromDefer`, et poursuivre vers `Cmd_*` si le lot reste coherent.
+- Bloc cvar header dans `packages/qcommon/src/cvar.ts`: `cvar_vars`, `Cvar_Get`, `Cvar_Set`, `Cvar_ForceSet`, `Cvar_FullSet`, `Cvar_SetValue`, `Cvar_VariableValue`, `Cvar_VariableString`, `Cvar_CompleteVariable`, `Cvar_GetLatchedVars`, `Cvar_Command`, `Cvar_WriteVariables`, `Cvar_Init`, `Cvar_Userinfo`, `Cvar_Serverinfo`.
 
 ## Blocages
 

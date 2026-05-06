@@ -42,11 +42,30 @@ import {
   createCommonRuntime
 } from "../../packages/qcommon/src/common.js";
 import {
+  Cbuf_AddText,
   Cbuf_AddEarlyCommands,
   Cbuf_AddLateCommands,
+  Cbuf_CopyToDefer,
+  Cbuf_Execute,
+  Cbuf_ExecuteText,
+  Cbuf_Init,
+  Cbuf_InsertFromDefer,
+  Cbuf_InsertText,
+  Cmd_AddCommand,
+  Cmd_Argc,
+  Cmd_Args,
+  Cmd_Argv,
+  Cmd_CompleteCommand,
+  Cmd_ExecuteString,
+  Cmd_Exists,
   Cmd_ForwardToServer,
+  Cmd_Init,
+  Cmd_RemoveCommand,
   Cmd_TokenizeString,
-  createCommandRuntime
+  createCommandRuntime,
+  EXEC_APPEND,
+  EXEC_INSERT,
+  EXEC_NOW
 } from "../../packages/qcommon/src/cmd.js";
 import {
   BUILDSTRING,
@@ -1029,5 +1048,55 @@ const forwardRuntime = createCommandRuntime({
 Cmd_TokenizeString(forwardRuntime, "god", true);
 Cmd_ForwardToServer(forwardRuntime);
 assert.equal(forwarded, "god", "Cmd_ForwardToServer mismatch");
+
+assert.equal(EXEC_NOW, 0, "EXEC_NOW mismatch");
+assert.equal(EXEC_INSERT, 1, "EXEC_INSERT mismatch");
+assert.equal(EXEC_APPEND, 2, "EXEC_APPEND mismatch");
+
+const commandProofRuntime = createCommandRuntime();
+const commandProofExecuted: string[] = [];
+Cbuf_Init(commandProofRuntime);
+Cmd_AddCommand(commandProofRuntime, "record", () => {
+  commandProofExecuted.push(Cmd_Args(commandProofRuntime));
+});
+assert.equal(Cmd_Exists(commandProofRuntime, "record"), true, "Cmd_AddCommand/Cmd_Exists mismatch");
+assert.equal(Cmd_CompleteCommand(commandProofRuntime, "rec"), "record", "Cmd_CompleteCommand mismatch");
+Cmd_ExecuteString(commandProofRuntime, "record alpha beta");
+assert.equal(Cmd_Argc(commandProofRuntime), 3, "Cmd_Argc mismatch");
+assert.equal(Cmd_Argv(commandProofRuntime, 1), "alpha", "Cmd_Argv mismatch");
+assert.equal(Cmd_Args(commandProofRuntime), "alpha beta", "Cmd_Args mismatch");
+assert.deepEqual(commandProofExecuted, ["alpha beta"], "Cmd_ExecuteString mismatch");
+Cmd_RemoveCommand(commandProofRuntime, "record");
+assert.equal(Cmd_Exists(commandProofRuntime, "record"), false, "Cmd_RemoveCommand mismatch");
+
+const bufferProofRuntime = createCommandRuntime();
+const bufferProofExecuted: string[] = [];
+Cmd_AddCommand(bufferProofRuntime, "record", () => {
+  bufferProofExecuted.push(Cmd_Argv(bufferProofRuntime, 1));
+});
+Cbuf_AddText(bufferProofRuntime, "record tail\n");
+Cbuf_InsertText(bufferProofRuntime, "record head\n");
+Cbuf_Execute(bufferProofRuntime);
+assert.deepEqual(bufferProofExecuted, ["head", "tail"], "Cbuf_AddText/Cbuf_InsertText/Cbuf_Execute mismatch");
+Cbuf_ExecuteText(bufferProofRuntime, EXEC_NOW, "record now");
+Cbuf_ExecuteText(bufferProofRuntime, EXEC_INSERT, "record inserted\n");
+Cbuf_ExecuteText(bufferProofRuntime, EXEC_APPEND, "record appended\n");
+Cbuf_Execute(bufferProofRuntime);
+assert.deepEqual(
+  bufferProofExecuted.slice(-3),
+  ["now", "inserted", "appended"],
+  "Cbuf_ExecuteText modes mismatch"
+);
+Cbuf_AddText(bufferProofRuntime, "record deferred\n");
+Cbuf_CopyToDefer(bufferProofRuntime);
+assert.equal(bufferProofRuntime.cmd_text.cursize, 0, "Cbuf_CopyToDefer clear mismatch");
+Cbuf_InsertFromDefer(bufferProofRuntime);
+Cbuf_Execute(bufferProofRuntime);
+assert.equal(bufferProofExecuted.at(-1), "deferred", "Cbuf_InsertFromDefer mismatch");
+
+const initProofRuntime = createCommandRuntime();
+Cmd_Init(initProofRuntime);
+assert.equal(Cmd_Exists(initProofRuntime, "exec"), true, "Cmd_Init exec registration mismatch");
+assert.equal(Cmd_Exists(initProofRuntime, "wait"), true, "Cmd_Init wait registration mismatch");
 
 console.log("quake2-qcommon-header: ok");

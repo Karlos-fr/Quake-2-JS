@@ -26,22 +26,44 @@ import {
   LM_InitBlock,
   LM_UploadBlock,
   R_BlendLightmaps,
+  R_DrawBrushModel,
+  R_DrawInlineBModel,
+  R_DrawWorld,
+  R_MarkLeaves,
   R_RenderBrushPoly,
+  R_RecursiveWorldNode,
   R_TextureAnimation,
   createGlRsurfRuntime,
-  setCurrentEntity,
   setCurrentModel,
+  setCurrentEntity,
   setCurrentTime,
   setDynamicLightmapsEnabled,
   setFullbrightEnabled,
   setFrameCount,
   setLightstyles,
   setMultitextureEnabled,
+  setRefdefState,
+  setShowTriangleOutlines,
+  setViewClusters,
+  setViewOrigin,
+  setWorldDrawFlags,
   syncRsurfMultitextureFromRmain,
   setWorldModel
 } from "../../packages/renderer-three/src/index.js";
 import { createCvarRuntime, Cvar_Get } from "../../packages/qcommon/src/cvar.js";
-import { SURF_DRAWSKY, SURF_DRAWTURB, createMEdge, createMSurface, createMTexinfo, createModel } from "../../packages/renderer-three/src/gl-model.js";
+import { RDF_NOWORLDMODEL } from "../../packages/qcommon/src/index.js";
+import { PLANE_X, SURF_SKY, SURF_TRANS33 } from "../../packages/formats/src/index.js";
+import {
+  SURF_DRAWSKY,
+  SURF_DRAWTURB,
+  SURF_PLANEBACK,
+  createMEdge,
+  createMLeaf,
+  createMNode,
+  createMSurface,
+  createMTexinfo,
+  createModel
+} from "../../packages/renderer-three/src/gl-model.js";
 
 const hookLog = {
   setCacheStateCalls: 0,
@@ -54,7 +76,18 @@ const hookLog = {
   renderFlowingPolyCalls: [] as number[],
   renderWaterPolyCalls: 0,
   suspendMultitextureCalls: 0,
-  resumeMultitextureCalls: 0
+  resumeMultitextureCalls: 0,
+  markBrushModelLightsCalls: 0,
+  cullBoxCalls: [] as Array<{ mins: readonly number[]; maxs: readonly number[] }>,
+  addSkySurfaceCalls: 0,
+  clearSkyBoxCalls: 0,
+  drawSkyBoxCalls: 0,
+  renderTriangleOutlineCalls: 0,
+  beginWorldMultitextureCalls: 0,
+  endWorldMultitextureCalls: 0,
+  beginBrushModelDrawCalls: [] as Array<{ rotated: boolean }>,
+  beginBrushModelMultitextureCalls: 0,
+  endBrushModelMultitextureCalls: 0
 };
 const cvarRuntime = createCvarRuntime();
 
@@ -96,6 +129,40 @@ const runtime = createGlRsurfRuntime({
   },
   resumeMultitexture: () => {
     hookLog.resumeMultitextureCalls += 1;
+  },
+  markBrushModelLights: () => {
+    hookLog.markBrushModelLightsCalls += 1;
+  },
+  cullBox: (mins, maxs) => {
+    hookLog.cullBoxCalls.push({ mins: [...mins], maxs: [...maxs] });
+    return false;
+  },
+  addSkySurface: () => {
+    hookLog.addSkySurfaceCalls += 1;
+  },
+  clearSkyBox: () => {
+    hookLog.clearSkyBoxCalls += 1;
+  },
+  drawSkyBox: () => {
+    hookLog.drawSkyBoxCalls += 1;
+  },
+  renderTriangleOutline: () => {
+    hookLog.renderTriangleOutlineCalls += 1;
+  },
+  beginWorldMultitexture: () => {
+    hookLog.beginWorldMultitextureCalls += 1;
+  },
+  endWorldMultitexture: () => {
+    hookLog.endWorldMultitextureCalls += 1;
+  },
+  beginBrushModelDraw: (_entity, _model, rotated) => {
+    hookLog.beginBrushModelDrawCalls.push({ rotated });
+  },
+  beginBrushModelMultitexture: () => {
+    hookLog.beginBrushModelMultitextureCalls += 1;
+  },
+  endBrushModelMultitexture: () => {
+    hookLog.endBrushModelMultitextureCalls += 1;
   }
 });
 
@@ -348,5 +415,159 @@ assert.equal(hookLog.renderWaterPolyCalls, 1, "DrawTextureChains multitexture tu
 assert.equal(hookLog.suspendMultitextureCalls, 1, "DrawTextureChains suspend point mismatch");
 assert.equal(hookLog.resumeMultitextureCalls, 1, "DrawTextureChains resume point mismatch");
 assert.equal((chainImage as { texturechain?: unknown }).texturechain, null, "DrawTextureChains chain clear mismatch");
+
+runtime.gl_lms.lightmap_surfaces.fill(null);
+hookLog.renderBrushPolyCalls = 0;
+hookLog.renderLightmappedPolyChainCalls.length = 0;
+hookLog.markBrushModelLightsCalls = 0;
+const inlineModel = createModel();
+inlineModel.firstmodelsurface = 0;
+inlineModel.nummodelsurfaces = 3;
+const frontSurface = createMSurface();
+frontSurface.texinfo = createMTexinfo();
+frontSurface.texinfo.image = { name: "inline-front", width: 64, height: 64 } as never;
+frontSurface.plane = { normal: [1, 0, 0], dist: 0, type: PLANE_X, signbits: 0, pad: [0, 0] };
+frontSurface.flags = 0;
+frontSurface.extents = [16, 16];
+frontSurface.styles = [255, 255, 255, 255];
+frontSurface.lightmaptexturenum = 8;
+const backSurface = createMSurface();
+backSurface.texinfo = createMTexinfo();
+backSurface.texinfo.image = { name: "inline-back", width: 64, height: 64 } as never;
+backSurface.plane = frontSurface.plane;
+backSurface.flags = SURF_PLANEBACK;
+const alphaInlineSurface = createMSurface();
+alphaInlineSurface.texinfo = createMTexinfo();
+alphaInlineSurface.texinfo.flags = SURF_TRANS33;
+alphaInlineSurface.texinfo.image = { name: "inline-alpha", width: 64, height: 64 } as never;
+alphaInlineSurface.plane = frontSurface.plane;
+inlineModel.surfaces = [frontSurface, backSurface, alphaInlineSurface];
+setCurrentModel(runtime, inlineModel);
+setCurrentEntity(runtime, { frame: 0, flags: 0 });
+runtime.modelorg = [4, 0, 0];
+setMultitextureEnabled(runtime, true);
+R_DrawInlineBModel(runtime);
+assert.equal(hookLog.markBrushModelLightsCalls, 1, "R_DrawInlineBModel dynamic-light marking mismatch");
+assert.equal(hookLog.renderLightmappedPolyChainCalls.length, 1, "R_DrawInlineBModel facing surface route mismatch");
+assert.equal(runtime.r_alpha_surfaces, alphaInlineSurface, "R_DrawInlineBModel alpha chain mismatch");
+
+runtime.r_alpha_surfaces = null;
+hookLog.beginBrushModelDrawCalls.length = 0;
+hookLog.beginBrushModelMultitextureCalls = 0;
+hookLog.endBrushModelMultitextureCalls = 0;
+setCurrentModel(runtime, inlineModel);
+inlineModel.radius = 12;
+inlineModel.mins = [-2, -3, -4];
+inlineModel.maxs = [2, 3, 4];
+setViewOrigin(runtime, [10, 5, 0]);
+R_DrawBrushModel(runtime, { frame: 0, origin: [4, 5, 0], angles: [0, 90, 0], flags: 0 });
+assert.equal(hookLog.beginBrushModelDrawCalls.at(-1)?.rotated, true, "R_DrawBrushModel rotated flag mismatch");
+assert.deepEqual(hookLog.cullBoxCalls.at(-1), { mins: [-8, -7, -12], maxs: [16, 17, 12] }, "R_DrawBrushModel rotated bounds mismatch");
+assert.ok(Math.abs(runtime.modelorg[1] + 6) < 0.00001, "R_DrawBrushModel rotated modelorg mismatch");
+assert.equal(hookLog.beginBrushModelMultitextureCalls, 1, "R_DrawBrushModel multitexture begin mismatch");
+assert.equal(hookLog.endBrushModelMultitextureCalls, 1, "R_DrawBrushModel multitexture end mismatch");
+
+const world = createModel();
+const worldNode = createMNode();
+worldNode.visframe = 1;
+worldNode.minmaxs = [-16, -16, -16, 16, 16, 16];
+worldNode.plane = { normal: [1, 0, 0], dist: 0, type: PLANE_X, signbits: 0, pad: [0, 0] };
+worldNode.firstsurface = 0;
+worldNode.numsurfaces = 3;
+const visibleLeaf = createMLeaf();
+visibleLeaf.parent = worldNode;
+visibleLeaf.visframe = 1;
+visibleLeaf.area = 0;
+const hiddenAreaLeaf = createMLeaf();
+hiddenAreaLeaf.parent = worldNode;
+hiddenAreaLeaf.visframe = 1;
+hiddenAreaLeaf.area = 1;
+worldNode.children = [visibleLeaf, hiddenAreaLeaf];
+const skyWorldSurface = createMSurface();
+skyWorldSurface.visframe = 2;
+skyWorldSurface.flags = 0;
+skyWorldSurface.texinfo = createMTexinfo();
+skyWorldSurface.texinfo.flags = SURF_SKY;
+skyWorldSurface.texinfo.image = { name: "world-sky", width: 64, height: 64 } as never;
+const alphaWorldSurface = createMSurface();
+alphaWorldSurface.visframe = 2;
+alphaWorldSurface.flags = 0;
+alphaWorldSurface.texinfo = createMTexinfo();
+alphaWorldSurface.texinfo.flags = SURF_TRANS33;
+alphaWorldSurface.texinfo.image = { name: "world-alpha", width: 64, height: 64 } as never;
+const textureWorldSurface = createMSurface();
+textureWorldSurface.visframe = 2;
+textureWorldSurface.flags = 0;
+textureWorldSurface.texinfo = createMTexinfo();
+textureWorldSurface.texinfo.image = { name: "world-texture", registration_sequence: 1, texturechain: null, width: 64, height: 64 } as never;
+textureWorldSurface.lightmaptexturenum = 9;
+textureWorldSurface.polys = {
+  next: null,
+  chain: null,
+  numverts: 3,
+  flags: 0,
+  verts: [
+    [0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0]
+  ]
+};
+world.surfaces = [skyWorldSurface, alphaWorldSurface, textureWorldSurface];
+visibleLeaf.firstmarksurface = [skyWorldSurface, alphaWorldSurface, textureWorldSurface];
+visibleLeaf.nummarksurfaces = 3;
+world.nodes = [worldNode];
+world.numnodes = 1;
+world.leafs = [visibleLeaf, hiddenAreaLeaf];
+world.numleafs = 2;
+world.vis = null;
+world.lightdata = new Uint8Array([1]);
+setWorldModel(runtime, world);
+setViewOrigin(runtime, [4, 0, 0]);
+setFrameCount(runtime, 2);
+runtime.r_visframecount = 1;
+setMultitextureEnabled(runtime, false);
+setRefdefState(runtime, new Uint8Array([0b00000001]), 0);
+hookLog.addSkySurfaceCalls = 0;
+runtime.r_alpha_surfaces = null;
+R_RecursiveWorldNode(runtime, worldNode);
+assert.equal(hookLog.addSkySurfaceCalls, 1, "R_RecursiveWorldNode sky surface route mismatch");
+assert.equal(runtime.r_alpha_surfaces, alphaWorldSurface, "R_RecursiveWorldNode alpha surface route mismatch");
+assert.equal((textureWorldSurface.texinfo.image as { texturechain?: unknown }).texturechain, textureWorldSurface, "R_RecursiveWorldNode texture chain route mismatch");
+(textureWorldSurface.texinfo.image as { texturechain?: unknown }).texturechain = null;
+
+hookLog.clearSkyBoxCalls = 0;
+hookLog.drawSkyBoxCalls = 0;
+hookLog.renderTriangleOutlineCalls = 0;
+hookLog.renderBrushPolyCalls = 0;
+setWorldDrawFlags(runtime, { drawworld: true });
+setRefdefState(runtime, null, RDF_NOWORLDMODEL);
+R_DrawWorld(runtime, [textureWorldSurface.texinfo.image as never]);
+assert.equal(hookLog.clearSkyBoxCalls, 0, "R_DrawWorld noworld short-circuit mismatch");
+
+setRefdefState(runtime, null, 0);
+setShowTriangleOutlines(runtime, true);
+R_DrawWorld(runtime, [textureWorldSurface.texinfo.image as never]);
+assert.equal(runtime.currentmodel, world, "R_DrawWorld currentmodel bind mismatch");
+assert.deepEqual(runtime.modelorg, runtime.vieworg, "R_DrawWorld modelorg view copy mismatch");
+assert.equal(runtime.currententity?.frame, Math.trunc(runtime.currentTime * 2), "R_DrawWorld texture-animation frame mismatch");
+assert.equal(hookLog.clearSkyBoxCalls, 1, "R_DrawWorld clear sky mismatch");
+assert.equal(hookLog.drawSkyBoxCalls, 1, "R_DrawWorld draw sky mismatch");
+assert.equal(hookLog.renderTriangleOutlineCalls, 1, "R_DrawWorld triangle outline hook mismatch");
+
+world.vis = { numclusters: 2, bitofs: [[0, 0], [0, 0]], raw: new Uint8Array([0b00000001]) } as never;
+visibleLeaf.cluster = 0;
+hiddenAreaLeaf.cluster = 1;
+worldNode.visframe = 0;
+visibleLeaf.visframe = 0;
+hiddenAreaLeaf.visframe = 0;
+runtime.r_oldviewcluster = -2;
+runtime.r_oldviewcluster2 = -2;
+runtime.r_visframecount = 7;
+setWorldDrawFlags(runtime, { novis: true, lockpvs: false });
+setViewClusters(runtime, 0, 0);
+R_MarkLeaves(runtime);
+assert.equal(worldNode.visframe, 8, "R_MarkLeaves novis node mark mismatch");
+assert.equal(visibleLeaf.visframe, 8, "R_MarkLeaves novis leaf mark mismatch");
+assert.equal(hiddenAreaLeaf.visframe, 8, "R_MarkLeaves novis all-leaf mark mismatch");
 
 console.log("quake2-gl-rsurf: ok");

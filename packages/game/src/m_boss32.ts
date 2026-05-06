@@ -564,6 +564,22 @@ export const MODEL_SCALE = 1.0;
 
 export const MZ2_MAKRON_BFG = 101;
 export const MZ2_MAKRON_BLASTER_1 = 102;
+export const MZ2_MAKRON_BLASTER_2 = 103;
+export const MZ2_MAKRON_BLASTER_3 = 104;
+export const MZ2_MAKRON_BLASTER_4 = 105;
+export const MZ2_MAKRON_BLASTER_5 = 106;
+export const MZ2_MAKRON_BLASTER_6 = 107;
+export const MZ2_MAKRON_BLASTER_7 = 108;
+export const MZ2_MAKRON_BLASTER_8 = 109;
+export const MZ2_MAKRON_BLASTER_9 = 110;
+export const MZ2_MAKRON_BLASTER_10 = 111;
+export const MZ2_MAKRON_BLASTER_11 = 112;
+export const MZ2_MAKRON_BLASTER_12 = 113;
+export const MZ2_MAKRON_BLASTER_13 = 114;
+export const MZ2_MAKRON_BLASTER_14 = 115;
+export const MZ2_MAKRON_BLASTER_15 = 116;
+export const MZ2_MAKRON_BLASTER_16 = 117;
+export const MZ2_MAKRON_BLASTER_17 = 118;
 export const MZ2_MAKRON_RAILGUN_1 = 119;
 
 const MAKRON_ATTACK_TRACE_MASK = CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA;

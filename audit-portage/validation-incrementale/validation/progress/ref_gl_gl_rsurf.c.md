@@ -61,3 +61,32 @@ Decision:
 
 Prochain lot recommande:
 - Bloc brush/world traversal: `R_DrawInlineBModel`, `R_DrawBrushModel`, `R_RecursiveWorldNode`, `R_DrawWorld`, `R_MarkLeaves`, avec les etats `modelorg`, `rotated`, `dot`, `ent`, `cluster`, `c` et verification explicite camera/areabits/scene.
+
+## Session 2026-05-06 - lot brush/world traversal
+
+Lot traite:
+- Fonctions brush/world traversal: `R_DrawInlineBModel`, `R_DrawBrushModel`, `R_RecursiveWorldNode`, `R_DrawWorld`, `R_MarkLeaves`.
+- Etat associe: `modelorg`.
+- Faux positifs locaux restants marques `Non applicable`: `c`, `cluster`, `dot`, `ent`, `height`, `rotated`, `texture`, `total`, `vertpage`.
+
+Preuves obtenues:
+- Source C relue dans `Quake-2-master/ref_gl/gl_rsurf.c`.
+- Cible TS relue dans `packages/renderer-three/src/gl_rsurf.ts`.
+- En-tetes des fonctions portees verifies: `Original name`, `Source`, `Category`, `Fidelity level`, `Behavior` presents.
+- Assertions ajoutees dans `scripts/verify/quake2-gl-rsurf.ts` pour le culling/backface inline, l'appel de marquage dynamic lights, le calcul `modelorg` avec rotation, les bornes de brush model, le routage sky/alpha/texture chain dans `R_RecursiveWorldNode`, les sorties `R_DrawWorld`, le court-circuit `RDF_NOWORLDMODEL` et `R_MarkLeaves`/`novis`.
+- Runtime verifie: le flux normal appelle `R_MarkLeaves`, `R_DrawWorld`, `R_DrawAlphaSurfaces`, et les brush models via `R_DrawBrushModel`.
+- `apps/web` verifie: `full-game-render-loop.ts` appelle `glWorldAdapter.update`; `full-game-render-source.ts` fournit les inline brush model snapshots depuis les packet entities.
+- `packages/renderer-three` verifie: `gl-world-scene-adapter.ts` consomme camera/refdef/areabits, surfaces visibles, sky surfaces, alpha surfaces, lightmaps et inline brush models.
+
+Tests lances:
+- `npm run verify:gl-rsurf` -> OK.
+- `npm run verify:three-world-alpha` -> OK.
+- `npm run verify:full-game:three-renderer` -> OK.
+- `npm run typecheck` -> OK.
+
+Decision:
+- Fichier termine: toutes les lignes de `ref_gl_gl_rsurf.c.md` sont `Valide` ou `Non applicable`.
+- Aucun manque runtime, `apps/web` ou `renderer-three` ouvert pour ce fichier.
+
+Prochain lot recommande:
+- Aucun pour `ref_gl/gl_rsurf.c`; reprendre le prochain fichier prioritaire dans `AVANCEMENT_GLOBAL.md`.

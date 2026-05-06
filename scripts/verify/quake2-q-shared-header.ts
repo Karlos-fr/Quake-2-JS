@@ -74,6 +74,8 @@ import {
   MZ2_TANK_ROCKET_3
 } from "../../packages/game/src/m_tank.js";
 import * as ActorMuzzle from "../../packages/game/src/m_actor.js";
+import * as Boss31Muzzle from "../../packages/game/src/m_boss31.js";
+import * as Boss32Muzzle from "../../packages/game/src/m_boss32.js";
 import * as Boss2Muzzle from "../../packages/game/src/m_boss2.js";
 import * as ChickMuzzle from "../../packages/game/src/m_chick.js";
 import * as FloatMuzzle from "../../packages/game/src/m_float.js";
@@ -741,6 +743,52 @@ assert.deepEqual(monster_flash_offset[GunnerMuzzle.MZ2_GUNNER_GRENADE_4], [4.6 *
 assert.deepEqual(monster_flash_offset[SupertankMuzzle.MZ2_SUPERTANK_ROCKET_3], [16.0, -42.8, 83.3], "MZ2_SUPERTANK_ROCKET_3 offset mismatch");
 assert.deepEqual(monster_flash_offset[Boss2Muzzle.MZ2_BOSS2_ROCKET_4], [22.0, -16.0, 10.0], "MZ2_BOSS2_ROCKET_4 offset mismatch");
 assert.deepEqual(monster_flash_offset[SoldierMuzzle.MZ2_SOLDIER_MACHINEGUN_8], [34.5 * 1.2, 9.6 * 1.2, 6.1 * 1.2], "MZ2_SOLDIER_MACHINEGUN_8 offset mismatch");
+assert.deepEqual([
+  Boss32Muzzle.MZ2_MAKRON_BFG,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_1,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_2,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_3,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_4,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_5,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_6,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_7,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_8,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_9,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_10,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_11,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_12,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_13,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_14,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_15,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_16,
+  Boss32Muzzle.MZ2_MAKRON_BLASTER_17,
+  Boss32Muzzle.MZ2_MAKRON_RAILGUN_1,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_L1,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_L2,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_L3,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_L4,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_L5,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_L6,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_R1,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_R2,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_R3,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_R4,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_R5,
+  Boss31Muzzle.MZ2_JORG_MACHINEGUN_R6,
+  Boss31Muzzle.MZ2_JORG_BFG_1,
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_R1,
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_R2,
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_R3,
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_R4,
+  Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_R5
+], Array.from({ length: 37 }, (_, index) => index + 101), "MZ2_MAKRON/JORG/BOSS2 right q_shared.h range mismatch");
+assert.deepEqual(monster_flash_offset[Boss32Muzzle.MZ2_MAKRON_BFG], [17, -19.5, 62.9], "MZ2_MAKRON_BFG offset mismatch");
+assert.deepEqual(monster_flash_offset[Boss32Muzzle.MZ2_MAKRON_BLASTER_17], [-1.8, -25.5, 59.5], "MZ2_MAKRON_BLASTER_17 offset mismatch");
+assert.deepEqual(monster_flash_offset[Boss32Muzzle.MZ2_MAKRON_RAILGUN_1], [-17.3, 7.8, 72.4], "MZ2_MAKRON_RAILGUN_1 offset mismatch");
+assert.deepEqual(monster_flash_offset[Boss31Muzzle.MZ2_JORG_MACHINEGUN_L6], [78.5, -47.1, 96], "MZ2_JORG_MACHINEGUN_L6 offset mismatch");
+assert.deepEqual(monster_flash_offset[Boss31Muzzle.MZ2_JORG_MACHINEGUN_R6], [78.5, 46.7, 96], "MZ2_JORG_MACHINEGUN_R6 offset mismatch");
+assert.deepEqual(monster_flash_offset[Boss31Muzzle.MZ2_JORG_BFG_1], [6.3, -9, 111.2], "MZ2_JORG_BFG_1 offset mismatch");
+assert.deepEqual(monster_flash_offset[Boss2Muzzle.MZ2_BOSS2_MACHINEGUN_R5], [32, 40, 70], "MZ2_BOSS2_MACHINEGUN_R5 offset mismatch");
 assert.equal(COM_SkipPath("textures/e1u1/wall.wal"), "wall.wal", "COM_SkipPath mismatch");
 assert.equal(COM_StripExtension("maps/base1.bsp"), "maps/base1", "COM_StripExtension mismatch");
 assert.equal(COM_FileExtension("maps/base1.bsp"), "bsp", "COM_FileExtension mismatch");

@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: bloc monster muzzle flash `MZ2_*` de `MZ2_MAKRON_BFG` a `MZ2_BOSS2_MACHINEGUN_R5`, soit la plage numerique complete 101 a 137.
+- Entites validees: `MZ2_MAKRON_BFG`, `MZ2_MAKRON_BLASTER_1` a `MZ2_MAKRON_BLASTER_17`, `MZ2_MAKRON_RAILGUN_1`, `MZ2_JORG_MACHINEGUN_L1` a `MZ2_JORG_MACHINEGUN_L6`, `MZ2_JORG_MACHINEGUN_R1` a `MZ2_JORG_MACHINEGUN_R6`, `MZ2_JORG_BFG_1`, puis `MZ2_BOSS2_MACHINEGUN_R1` a `MZ2_BOSS2_MACHINEGUN_R5`.
+- Ownership: les macros `q_shared.h` sont portees comme constantes locales dans les modules producteurs `packages/game/src/m_boss32.ts`, `m_boss31.ts` et `m_boss2.ts`; `monster_flash_offset` reste proprietaire de `packages/game/src/m_flash.ts`. Les constantes manquantes des sequences Makron/Jorg ont ete ajoutees comme exports nommes sans changer les calculs runtime existants.
+- Preuves: comparaison numerique C/H vs TS et offsets sentinelles ajoutes dans `scripts/verify/quake2-q-shared-header.ts`; production gameplay verifiee par les tests boss dedies; parsing/effets client et consommation renderer verifiees par les tests client/full-game.
+- Commentaires d'en-tete: non applicable pour les constantes; commentaires existants verifies sur les fonctions productrices de tirs Makron/Jorg/Boss2, `monster_flash_offset`, `getMonsterFlashOffset`, `CL_ParseMuzzleFlash2` et les chemins client d'effets.
 - 2026-05-06: bloc monster muzzle flash `MZ2_*` de `MZ2_INFANTRY_MACHINEGUN_1` a `MZ2_SOLDIER_MACHINEGUN_8`, soit la plage numerique complete 26 a 100.
 - Entites validees: `MZ2_INFANTRY_MACHINEGUN_1` a `MZ2_INFANTRY_MACHINEGUN_13`, `MZ2_SOLDIER_BLASTER_1`, `MZ2_SOLDIER_BLASTER_2`, `MZ2_SOLDIER_SHOTGUN_1`, `MZ2_SOLDIER_SHOTGUN_2`, `MZ2_SOLDIER_MACHINEGUN_1`, `MZ2_SOLDIER_MACHINEGUN_2`, `MZ2_GUNNER_MACHINEGUN_1` a `MZ2_GUNNER_MACHINEGUN_8`, `MZ2_GUNNER_GRENADE_1` a `MZ2_GUNNER_GRENADE_4`, `MZ2_CHICK_ROCKET_1`, `MZ2_FLYER_BLASTER_1`, `MZ2_FLYER_BLASTER_2`, `MZ2_MEDIC_BLASTER_1`, `MZ2_GLADIATOR_RAILGUN_1`, `MZ2_HOVER_BLASTER_1`, `MZ2_ACTOR_MACHINEGUN_1`, `MZ2_SUPERTANK_MACHINEGUN_1` a `MZ2_SUPERTANK_MACHINEGUN_6`, `MZ2_SUPERTANK_ROCKET_1` a `MZ2_SUPERTANK_ROCKET_3`, `MZ2_BOSS2_MACHINEGUN_L1` a `MZ2_BOSS2_MACHINEGUN_L5`, `MZ2_BOSS2_ROCKET_1` a `MZ2_BOSS2_ROCKET_4`, `MZ2_FLOAT_BLASTER_1`, puis `MZ2_SOLDIER_BLASTER_3`/`SHOTGUN_3`/`MACHINEGUN_3` a `MZ2_SOLDIER_BLASTER_8`/`SHOTGUN_8`/`MACHINEGUN_8`.
 - Ownership: les macros `q_shared.h` restent portees comme constantes locales dans les modules producteurs `packages/game/src/m_infantry.ts`, `m_soldier.ts`, `m_gunner.ts`, `m_chick.ts`, `m_flyer.ts`, `m_medic.ts`, `m_gladiator.ts`, `m_hover.ts`, `m_actor.ts`, `m_supertank.ts`, `m_boss2.ts` et `m_float.ts`; `monster_flash_offset` reste proprietaire de `packages/game/src/m_flash.ts`.
@@ -82,6 +87,10 @@
 
 ## Corrections
 
+- Ajout des constantes nommees `MZ2_MAKRON_BLASTER_2` a `MZ2_MAKRON_BLASTER_17` dans `packages/game/src/m_boss32.ts`.
+- Ajout des constantes nommees `MZ2_JORG_MACHINEGUN_L2` a `MZ2_JORG_MACHINEGUN_L6` et `MZ2_JORG_MACHINEGUN_R2` a `MZ2_JORG_MACHINEGUN_R6` dans `packages/game/src/m_boss31.ts`.
+- Exports publics completes dans `packages/game/src/index.ts` pour les constantes `MZ2_MAKRON_*` et `MZ2_JORG_*` ajoutees.
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `MZ2_*` de 101 a 137 et pour les offsets sentinelles Makron, Jorg et Boss2 right.
 - Ajout des constantes nommees `MZ2_INFANTRY_MACHINEGUN_3` a `MZ2_INFANTRY_MACHINEGUN_13` dans `packages/game/src/m_infantry.ts`.
 - Export des constantes locales `MZ2_FLYER_BLASTER_1`, `MZ2_FLYER_BLASTER_2`, `MZ2_GLADIATOR_RAILGUN_1`, `MZ2_HOVER_BLASTER_1` et `MZ2_FLOAT_BLASTER_1` depuis leurs modules producteurs.
 - Exports publics completes dans `packages/game/src/index.ts` pour les constantes `MZ2_*` du lot deja exposees par leurs modules producteurs.
@@ -284,7 +293,11 @@
 - Les constantes et types de base sont consommes par les flux runtime client/server/game, `apps/web` et `renderer-three` via `packages/qcommon/src/q_shared.ts` ou l'entrypoint `packages/qcommon/src/index.ts` quand leur domaine l'exige.
 - `id386`, `idaxp` et `NULL` ne demandent pas de port runtime TS: les deux premiers selectionnent du code assembleur C, le dernier est remplace par `null`.
 - Aucune sortie visible renderer-three nouvelle n'est produite par ce lot: pas de modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene a brancher.
+- Le bloc `MZ2_MAKRON_*`/`MZ2_JORG_*`/`MZ2_BOSS2_MACHINEGUN_R*` est expose par les ports producteurs `m_boss32.ts`, `m_boss31.ts` et `m_boss2.ts`, avec offsets partages par `monster_flash_offset`; la matrice pointe donc ces constantes vers les modules gameplay producteurs plutot que vers `packages/qcommon/src/q_shared.ts`.
+- Runtime: integration attendue et presente. Makron, Jorg et Boss2 produisent ces ids via `monster_fire_bfg`, `monster_fire_blaster`, `monster_fire_railgun` ou `monster_fire_bullet`; `G_RunFrame` transporte les evenements `svc_muzzleflash2`, puis le client les parse via `CL_ParseMuzzleFlash2`.
+- `apps/web`: integration attendue et presente via les flux full-game/server-host qui transportent les messages serveur et declenchent le runtime client; aucune logique web parallele masquant ces ids n'a ete detectee.
+- `renderer-three`: sortie visible attendue et presente pour dlights, particules et scene. Les ids reconstruisent l'origine via `monster_flash_offset`, produisent les effets client Makron/Jorg/Boss2, puis les adapters dlights/particules et le render loop Three les consomment; aucun manque ouvert pour ce lot.
 
 ## Prochain lot recommande
 
-- Traiter le bloc adjacent `MZ2_MAKRON_*` a partir de `MZ2_MAKRON_BFG`, puis poursuivre les familles Rogue suivantes si le meme ownership local producteur + `monster_flash_offset` partagee reste confirme.
+- Traiter le bloc adjacent a partir de `MZ2_CARRIER_MACHINEGUN_L1`, en separant clairement les ids seulement consommes cote client/offsets (`MZ2_CARRIER_*`, `MZ2_WIDOW_*`, `MZ2_WIDOW2_*`) des ids dont le producteur gameplay Rogue est absent du port courant; marquer `Partiel` ou `Manquant` si l'integration producteur attendue n'existe pas.
