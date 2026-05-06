@@ -10,39 +10,39 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_pain1` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_pain2` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_pain3` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_idle` | `packages/game/src/m_boss31.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_death` | `packages/game/src/m_boss31.ts` | `SOUND_DEATH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_search1` | `packages/game/src/m_boss31.ts` | `SOUND_SEARCH1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_search2` | `packages/game/src/m_boss31.ts` | `SOUND_SEARCH2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_search3` | `packages/game/src/m_boss31.ts` | `SOUND_SEARCH3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_attack1` | `packages/game/src/m_boss31.ts` | `SOUND_ATTACK1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_attack2` | `packages/game/src/m_boss31.ts` | `SOUND_ATTACK2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_firegun` | `packages/game/src/m_boss31.ts` | `SOUND_FIREGUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_step_left` | `packages/game/src/m_boss31.ts` | `SOUND_STEP_LEFT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_step_right` | `packages/game/src/m_boss31.ts` | `SOUND_STEP_RIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `sound_death_hit` | `packages/game/src/m_boss31.ts` | `SOUND_DEATH_HIT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_search` | `packages/game/src/m_boss31.ts` | `jorg_search` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | global | `r` | `packages/game/src/m_boss31.ts` | `r` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_pain1` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN1` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; chemin `boss3/bs3pain1.wav`. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_pain2` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN2` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; chemin `boss3/bs3pain2.wav`. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_pain3` | `packages/game/src/m_boss31.ts` | `SOUND_PAIN3` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; chemin `boss3/bs3pain3.wav`. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_idle` | `packages/game/src/m_boss31.ts` | `SOUND_IDLE` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission `jorg_idle` couverte. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_death` | `packages/game/src/m_boss31.ts` | `SOUND_DEATH` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission mort couverte. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_search1` | `packages/game/src/m_boss31.ts` | `SOUND_SEARCH1` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; branche `r <= 0.3` couverte. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_search2` | `packages/game/src/m_boss31.ts` | `SOUND_SEARCH2` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; branche `r <= 0.6` couverte. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_search3` | `packages/game/src/m_boss31.ts` | `SOUND_SEARCH3` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; branche finale couverte. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_attack1` | `packages/game/src/m_boss31.ts` | `SOUND_ATTACK1` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission attaque 1 couverte. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_attack2` | `packages/game/src/m_boss31.ts` | `SOUND_ATTACK2` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission attaque 2/BFG couverte. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_firegun` | `packages/game/src/m_boss31.ts` | `SOUND_FIREGUN` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; handle TS conserve dans `packages/game/src/m_boss31.ts`. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_step_left` | `packages/game/src/m_boss31.ts` | `SOUND_STEP_LEFT` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission `jorg_step_left` couverte. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_step_right` | `packages/game/src/m_boss31.ts` | `SOUND_STEP_RIGHT` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission `jorg_step_right` couverte. |
+| `Quake-2-master/game/m_boss31.c` | global | `sound_death_hit` | `packages/game/src/m_boss31.ts` | `SOUND_DEATH_HIT` | Valide | A redecouper | Preuves session: source-parity, spawn/precache, harness m-boss31, full-game/web/three et typecheck; emission `jorg_death_hit` couverte. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_search` | `packages/game/src/m_boss31.ts` | `jorg_search` | Valide | A redecouper | Preuves session: comparaison C/TS, commentaire d'entete verifie, tests m-boss31/source-parity/header/full-game/web/three/typecheck; `SP_monster_jorg` branche `monsterinfo.search`; apps/web consomme les sons runtime; renderer-three non applicable justifie: son sans sortie visible. |
+| `Quake-2-master/game/m_boss31.c` | global | `r` | `packages/game/src/m_boss31.ts` | `r` | Non applicable | A redecouper | Variable locale de `jorg_search`, couverte par la validation de `jorg_search`; pas d'entite TS autonome attendue. |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_dead` | `packages/game/src/m_boss31.ts` | `jorg_dead` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorgBFG` | `packages/game/src/m_boss31.ts` | `jorgBFG` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorgMachineGun` | `packages/game/src/m_boss31.ts` | `jorgMachineGun` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_firebullet` | `packages/game/src/m_boss31.ts` | `jorg_firebullet` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_reattack1` | `packages/game/src/m_boss31.ts` | `jorg_reattack1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_attack1` | `packages/game/src/m_boss31.ts` | `jorg_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_idle` | `packages/game/src/m_boss31.ts` | `jorg_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_step_left` | `packages/game/src/m_boss31.ts` | `jorg_step_left` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_step_right` | `packages/game/src/m_boss31.ts` | `jorg_step_right` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_death_hit` | `packages/game/src/m_boss31.ts` | `jorg_death_hit` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_idle` | `packages/game/src/m_boss31.ts` | `jorg_idle` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_idle` validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_step_left` | `packages/game/src/m_boss31.ts` | `jorg_step_left` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_step_left` validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_step_right` | `packages/game/src/m_boss31.ts` | `jorg_step_right` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_step_right` validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_death_hit` | `packages/game/src/m_boss31.ts` | `jorg_death_hit` | Non applicable | A redecouper | Declaration forward C uniquement; definition `jorg_death_hit` validee sur la ligne fonction plus bas. |
 | `Quake-2-master/game/m_boss31.c` | global | `jorg_frames_stand` | `packages/game/src/m_boss31.ts` | `jorg_frames_stand` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | table | `jorg_frames_stand` | `packages/game/src/m_boss31.ts` | `jorg_frames_stand` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `jorg_move_stand` | `packages/game/src/m_boss31.ts` | `jorg_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_idle` | `packages/game/src/m_boss31.ts` | `jorg_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_death_hit` | `packages/game/src/m_boss31.ts` | `jorg_death_hit` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_step_left` | `packages/game/src/m_boss31.ts` | `jorg_step_left` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss31.c` | function | `jorg_step_right` | `packages/game/src/m_boss31.ts` | `jorg_step_right` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_idle` | `packages/game/src/m_boss31.ts` | `jorg_idle` | Valide | A redecouper | Preuves session: comparaison C/TS, commentaire d'entete ajoute, tests m-boss31/source-parity/header/full-game/web/three/typecheck; emission `CHAN_VOICE`, volume 1, `ATTN_NORM`, `timeofs` 0. apps/web consomme le son; renderer-three non applicable justifie: son sans sortie visible. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_death_hit` | `packages/game/src/m_boss31.ts` | `jorg_death_hit` | Valide | A redecouper | Preuves session: comparaison C/TS, commentaire d'entete ajoute, tests m-boss31/source-parity/header/full-game/web/three/typecheck; emission `CHAN_BODY`, volume 1, `ATTN_NORM`, `timeofs` 0. apps/web consomme le son; renderer-three non applicable justifie: son sans sortie visible. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_step_left` | `packages/game/src/m_boss31.ts` | `jorg_step_left` | Valide | A redecouper | Preuves session: comparaison C/TS, commentaire d'entete ajoute, tests m-boss31/source-parity/header/full-game/web/three/typecheck; emission `CHAN_BODY`, volume 1, `ATTN_NORM`, `timeofs` 0. apps/web consomme le son; renderer-three non applicable justifie: son sans sortie visible. |
+| `Quake-2-master/game/m_boss31.c` | function | `jorg_step_right` | `packages/game/src/m_boss31.ts` | `jorg_step_right` | Valide | A redecouper | Preuves session: comparaison C/TS, commentaire d'entete ajoute, tests m-boss31/source-parity/header/full-game/web/three/typecheck; emission `CHAN_BODY`, volume 1, `ATTN_NORM`, `timeofs` 0. apps/web consomme le son; renderer-three non applicable justifie: son sans sortie visible. |
 | `Quake-2-master/game/m_boss31.c` | function | `jorg_stand` | `packages/game/src/m_boss31.ts` | `jorg_stand` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | global | `jorg_frames_run` | `packages/game/src/m_boss31.ts` | `jorg_frames_run` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss31.c` | table | `jorg_frames_run` | `packages/game/src/m_boss31.ts` | `jorg_frames_run` | A verifier | A redecouper |  |

@@ -81,6 +81,7 @@ import {
   berserk_search,
   berserk_sight,
   berserk_stand,
+  berserk_strike,
   berserk_swing,
   berserk_walk
 } from "../../packages/game/src/m_berserk.js";
@@ -104,6 +105,7 @@ function main(): void {
   verifyMoveFrameCallbacks();
   verifyAttackSpikeRuntimeFlow();
   verifyAttackClubRuntimeFlow();
+  verifyAttackStrikeRuntimeFlow();
   verifyFidgetBranches();
   verifySightSearchSounds();
   verifyAttackCallbacks();
@@ -348,6 +350,7 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("berserk_move_run1"), berserk_move_run1);
   assert.equal(findGameSaveMove("berserk_move_attack_spike"), berserk_move_attack_spike);
   assert.equal(findGameSaveMove("berserk_move_attack_club"), berserk_move_attack_club);
+  assert.equal(findGameSaveMove("berserk_move_attack_strike"), berserk_move_attack_strike);
   assert.equal(findGameSaveMove("berserk_move_death1"), berserk_move_death1);
 }
 
@@ -570,6 +573,49 @@ function verifyAttackClubRuntimeFlow(): void {
   G_RunFrame(context);
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1, "club move endfunc should return through berserk_run");
   assert.equal(berserk.s.frame, FRAME_run1, "club endfunc should feed visible run frames after the attack");
+}
+
+function verifyAttackStrikeRuntimeFlow(): void {
+  const runtime = createHarnessRuntime();
+  const soundCalls: Array<{ entity: GameEntity | null; channel: number; soundIndex: number; volume: number; attenuation: number; timeofs: number }> = [];
+  const context = createGameMainContext(createGameImports([], soundCalls), { runtime });
+  const berserk = createBerserk(runtime, 26);
+
+  SP_monster_berserk(berserk, runtime);
+  berserk.think!(berserk, runtime);
+  berserk.groundentity = runtime.entities[0] ?? null;
+  berserk.monsterinfo.currentmove = berserk_move_attack_strike;
+
+  assert.equal(berserk_move_attack_strike.endfunc, berserk_run);
+  assert.equal(berserk_move_attack_strike.frame[3].thinkfunc, berserk_swing);
+  assert.equal(berserk_move_attack_strike.frame[7].thinkfunc, berserk_strike);
+
+  berserk.s.frame = FRAME_att_c21 + 2;
+  G_RunFrame(context);
+  const swing = soundCalls.at(-1);
+  assert.equal(berserk.s.frame, FRAME_att_c21 + 3, "G_RunFrame should reach the visible strike swing frame");
+  assert.equal(runtime.assets.soundPaths[(swing?.soundIndex ?? 0) - 1], "berserk/attack.wav");
+  assert.equal(swing?.channel, CHAN_WEAPON);
+  assert.equal(swing?.attenuation, ATTN_NORM);
+  assert.equal(swing?.volume, 1);
+  assert.equal(swing?.timeofs, 0);
+
+  berserk.s.frame = FRAME_att_c21 + 6;
+  const soundCountBeforeStrike = soundCalls.length;
+  G_RunFrame(context);
+  assert.equal(berserk.s.frame, FRAME_att_c21 + 7, "G_RunFrame should reach the visible strike impact hook frame");
+  assert.equal(soundCalls.length, soundCountBeforeStrike, "berserk_strike should keep the original empty FIXME impact-sound hook");
+
+  berserk.s.frame = FRAME_att_c21 + 11;
+  G_RunFrame(context);
+  assert.equal(berserk.s.frame, FRAME_att_c21 + 12, "strike move should preserve the first non-zero ai_move frame");
+
+  berserk.monsterinfo.aiflags &= ~AI_STAND_GROUND;
+  berserk.monsterinfo.aiflags |= AI_COMBAT_POINT;
+  berserk.s.frame = FRAME_att_c34;
+  G_RunFrame(context);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1, "strike move endfunc should return through berserk_run");
+  assert.equal(berserk.s.frame, FRAME_run1, "strike endfunc should feed visible run frames after the attack");
 }
 
 function verifySightSearchSounds(): void {

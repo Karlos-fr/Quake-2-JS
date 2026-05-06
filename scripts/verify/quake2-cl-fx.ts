@@ -50,7 +50,9 @@ import {
   CL_TeleporterParticles
 } from "../../packages/client/src/cl_fx.js";
 import {
+  ATTN_IDLE,
   ATTN_NORM,
+  CHAN_BODY,
   CHAN_AUTO,
   CHAN_WEAPON,
   BYTE_DIRS,
@@ -83,7 +85,7 @@ import {
 } from "../../packages/qcommon/src/index.js";
 import { createClientRuntime as createRuntime, type ClientRuntime } from "../../packages/client/src/client.js";
 import { INSTANT_PARTICLE, MAX_DLIGHTS, MAX_PARTICLES } from "../../packages/client/src/client.js";
-import type { ClientEntityEvent } from "../../packages/client/src/cl_ents.js";
+import { CL_BuildFrameEntityEventEffects, type ClientEntityEvent } from "../../packages/client/src/cl_ents.js";
 import { CL_BuildRefreshFrame } from "../../packages/client/src/refresh.js";
 
 main();
@@ -125,6 +127,8 @@ function main(): void {
   verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
+  verifyEntityEventSoundAndParticleMatrix();
+  verifyEntityEventFrameRuntimeBranch();
   verifyTeleporterEntityEventMetadata();
   verifyItemRespawnEntityEventMetadata();
   verifyLightstyleManagement();
@@ -1803,6 +1807,84 @@ function verifyItemRespawnRuntimeParticles(): void {
   assert.equal(renderParticles.length, 64, "CL_ItemRespawnParticles particles should reach the refresh particle list");
 }
 
+function verifyEntityEventSoundAndParticleMatrix(): void {
+  const origin: vec3_t = [21, 34, 55];
+
+  const itemRespawn = CL_BuildEntityEventEffects(createEntityEvent(17, entity_event_t.EV_ITEM_RESPAWN, origin));
+  assert.deepEqual(itemRespawn[0]?.sound, {
+    name: "items/respawn1.wav",
+    channel: CHAN_WEAPON,
+    attenuation: ATTN_IDLE,
+    volume: 1
+  }, "EV_ITEM_RESPAWN sound payload should match CL_EntityEvent");
+  assert.equal(itemRespawn[0]?.entity, 17, "EV_ITEM_RESPAWN sound entity mismatch");
+  assert.equal(itemRespawn[1]?.kind, "item-respawn-particles", "EV_ITEM_RESPAWN should dispatch CL_ItemRespawnParticles");
+
+  const playerTeleport = CL_BuildEntityEventEffects(createEntityEvent(7, entity_event_t.EV_PLAYER_TELEPORT, origin));
+  assert.deepEqual(playerTeleport[0]?.sound, {
+    name: "misc/tele1.wav",
+    channel: CHAN_WEAPON,
+    attenuation: ATTN_IDLE,
+    volume: 1
+  }, "EV_PLAYER_TELEPORT sound payload should match CL_EntityEvent");
+  assert.equal(playerTeleport[1]?.kind, "teleport-particles", "EV_PLAYER_TELEPORT should dispatch CL_TeleportParticles");
+
+  withMockRandom(0, () => {
+    const footsteps = CL_BuildEntityEventEffects(createEntityEvent(3, entity_event_t.EV_FOOTSTEP, origin));
+    assert.deepEqual(footsteps[0]?.sound, {
+      name: "player/step1.wav",
+      channel: CHAN_BODY,
+      attenuation: ATTN_NORM,
+      volume: 1
+    }, "EV_FOOTSTEP should use cl_sfx_footsteps[rand&3] when cl_footsteps is enabled");
+  });
+  assert.equal(
+    CL_BuildEntityEventEffects(createEntityEvent(3, entity_event_t.EV_FOOTSTEP, origin), { clFootsteps: false }).length,
+    0,
+    "EV_FOOTSTEP should be gated by cl_footsteps"
+  );
+
+  const fallCases = [
+    { event: entity_event_t.EV_FALLSHORT, name: "player/land1.wav" },
+    { event: entity_event_t.EV_FALL, name: "*fall2.wav" },
+    { event: entity_event_t.EV_FALLFAR, name: "*fall1.wav" }
+  ];
+  for (const testCase of fallCases) {
+    const effects = CL_BuildEntityEventEffects(createEntityEvent(5, testCase.event, origin));
+    assert.deepEqual(effects[0]?.sound, {
+      name: testCase.name,
+      channel: CHAN_AUTO,
+      attenuation: ATTN_NORM,
+      volume: 1
+    }, `entity fall event ${testCase.event} sound payload should match CL_EntityEvent`);
+    assert.equal(effects[0]?.position?.[0], origin[0], "entity event sounds should preserve origin for web audio");
+  }
+
+  assert.equal(
+    CL_BuildEntityEventEffects(createEntityEvent(6, entity_event_t.EV_OTHER_TELEPORT, origin)).length,
+    0,
+    "EV_OTHER_TELEPORT should keep the C default no-effect behavior in CL_EntityEvent"
+  );
+}
+
+function verifyEntityEventFrameRuntimeBranch(): void {
+  const runtime = createRuntime();
+  runtime.cl.frame.num_entities = 2;
+  runtime.cl.frame.parse_entities = 0;
+  Object.assign(runtime.cl_parse_entities[0], createEntityEvent(7, entity_event_t.EV_FALL, [4, 5, 6]).state);
+  Object.assign(runtime.cl_parse_entities[1], createEntityEvent(9, 0, [11, 22, 33], EF_TELEPORTER).state);
+
+  const effects = CL_BuildFrameEntityEventEffects(runtime, runtime.cl.frame);
+  assert.ok(
+    effects.some((effect) => effect.sound?.name === "*fall2.wav" && effect.entity === 7),
+    "CL_FireEntityEvents should route frame EV_FALL through CL_EntityEvent"
+  );
+  assert.ok(
+    effects.some((effect) => effect.kind === "teleporter-particles" && effect.entity === undefined),
+    "CL_FireEntityEvents should preserve EF_TELEPORTER's event-like particle dispatch"
+  );
+}
+
 function verifyTeleportParticlesEntityEventMetadata(): void {
   const origin: vec3_t = [21, 34, 55];
   const event: ClientEntityEvent = {
@@ -1905,6 +1987,36 @@ function verifyItemRespawnEntityEventMetadata(): void {
   assert.deepEqual(particles.position, origin, "item respawn particles should preserve entity origin");
   assert.equal(particles.count, 64, "item respawn metadata should preserve particle count");
   assert.equal(particles.color, 0xd4, "item respawn metadata should preserve color base");
+}
+
+function createEntityEvent(
+  number: number,
+  event: entity_event_t | 0,
+  origin: vec3_t,
+  effects = 0
+): ClientEntityEvent {
+  return {
+    number,
+    event,
+    effects,
+    state: {
+      number,
+      origin: [...origin],
+      angles: [0, 0, 0],
+      old_origin: [0, 0, 0],
+      modelindex: 1,
+      modelindex2: 0,
+      modelindex3: 0,
+      modelindex4: 0,
+      frame: 0,
+      skinnum: 0,
+      effects,
+      renderfx: 0,
+      solid: 0,
+      sound: 0,
+      event
+    }
+  };
 }
 
 function collectActiveParticles(runtime: ClientRuntime): ClientRuntime["cl"]["particles"] {

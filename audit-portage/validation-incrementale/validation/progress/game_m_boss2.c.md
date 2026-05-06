@@ -140,6 +140,23 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout du commentaire d'en-tete de `Boss2Rocket`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour la table/move rocket, le save registry, l'execution `M_MoveFrame`, les quatre muzzleflashes et les proprietes visibles/runtime des projectiles.
 
+- Lot traite: bloc douleur `boss2_pain`, `boss2_frames_pain_heavy`, `boss2_move_pain_heavy`, `boss2_frames_pain_light` et `boss2_move_pain_light`.
+- Verdict: Valide.
+- Comparaison C/TS: `boss2_frames_pain_heavy` conserve 18 frames `ai_move, 0, NULL`; `boss2_move_pain_heavy` conserve `FRAME_pain2` -> `FRAME_pain19` avec endfunc `boss2_run`. `boss2_frames_pain_light` conserve 4 frames `ai_move, 0, NULL`; `boss2_move_pain_light` conserve `FRAME_pain20` -> `FRAME_pain23` avec endfunc `boss2_run`. `boss2_pain` conserve la bascule `s.skinnum = 1` sous la moitie de `max_health`, le debounce `level.time < pain_debounce_time`, l'affectation `pain_debounce_time = level.time + 3`, les sons sans attenuation `sound_pain3` / `sound_pain1` / `sound_pain2` pour `damage < 10`, `< 30`, `>= 30`, et les moves light/heavy correspondants. La source `m_boss2.c` ne contient pas de skip nightmare dans `boss2_pain`; le port conserve donc ce comportement.
+- Commentaires d'en-tete: commentaire de fonction ajoute pour `boss2_pain` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, comportement et note sur l'absence de skip nightmare dans la source boss2. Les tables/moves declaratifs ne demandent pas de commentaire de fonction.
+- Runtime: integre. `SP_monster_boss2` assigne `self.pain = boss2_pain`; les degats runtime peuvent atteindre ce callback via `T_Damage`. `M_MoveFrame`, appele par `monster_think` depuis `G_RunFrame`, consomme ensuite les moves pain et revient a `boss2_run` par endfunc. Le harness verifie les branches damage, le debounce, la skin, l'absence de skip nightmare, les tables/moves et le save registry des deux moves douleur.
+- apps/web: integre. `apps/web` ne remplace pas la logique boss2; le host full-game/local consomme les sons produits par le runtime et les snapshots qui portent les changements de skin/frame.
+- renderer-three: integre. Le lot produit des sorties visibles attendues: `s.skinnum` endommagee et frames pain du modele boss2. Ces donnees passent par snapshots/refresh entities vers `renderer-three`, qui consomme modeles, frames et skins alias.
+- Tests lances:
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees: ajout du commentaire d'en-tete de `boss2_pain`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour les tables/moves pain, le save registry, la skin, `pain_debounce_time`, le retour sans effet pendant debounce, les trois seuils de sons et le comportement nightmare conserve.
+
 ## Prochain lot recommande
 
-- Valider le bloc douleur restant `boss2_pain`, `boss2_frames_pain_heavy`, `boss2_move_pain_heavy`, `boss2_frames_pain_light`, `boss2_move_pain_light`, avec sons, skin, `pain_debounce_time`, nightmare-skip et retour `boss2_run`.
+- Valider le bloc machinegun restant `boss2_firebullet_right`, `boss2_firebullet_left` et `Boss2MachineGun`, avec visee `VectorMA`, offsets gauche/droite, degats/spread, muzzleflash, sons/impacts runtime et consommation web/renderer.

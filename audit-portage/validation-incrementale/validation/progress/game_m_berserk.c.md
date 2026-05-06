@@ -196,6 +196,26 @@
 - Corrections appliquees:
   - `scripts/verify/quake2-m-berserk.ts`: ajout de preuves ciblees pour le chemin `monsterinfo.melee` -> club -> son/fire_hit -> `berserk_run`, couverture save registry du move club, et stabilisation du retour stand fidget contre le tirage aleatoire.
 
+## Session 2026-05-06 - bloc attaque strike
+
+- Lot traite: `berserk_strike`, `berserk_frames_attack_strike` global/table/declarative et `berserk_move_attack_strike`, avec reutilisation de `berserk_swing` et `endfunc = berserk_run`.
+- Verdict: Valide.
+- Comparaison C/TS: `berserk_strike` conserve le comportement source vide avec le `FIXME play impact sound` documente comme hook volontairement sans emission; la table conserve 14 frames `ai_move`, distances `0` pour les 12 premieres frames puis `9.7` et `13.6`, callbacks aux index 3 (`berserk_swing`) et 7 (`berserk_strike`); `berserk_move_attack_strike` conserve `FRAME_att_c21`..`FRAME_att_c34` et `endfunc = berserk_run`.
+- Commentaires d'en-tete: commentaire TS de `berserk_strike` verifie avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement; table/global declaratifs sans commentaire de fonction requis.
+- Runtime: Valide avec justification. Le C original ne branche pas ce move depuis `berserk_melee` et le TS conserve cette absence de selection gameplay normale; le test prouve toutefois que le move porte est executable/restaurable, declenche `berserk_swing`, appelle le hook vide `berserk_strike`, conserve les frames visibles et revient via `berserk_run`.
+- apps/web: integre pour les sorties produites. Le navigateur declenche le runtime porte (`SV_Frame`/`G_RunFrame`) et consomme les snapshots/runtime et `soundEvents`; aucune logique parallele berserk constatee. Aucune integration web supplementaire n'est attendue tant que le move strike n'est pas selectionne par le gameplay source.
+- renderer-three: integre pour les sorties visibles produites. Le lot produit des frames MD2 visibles (`s.frame`) si le move est courant; les snapshots client conservent `frame/oldframe/backlerp` et `packages/renderer-three` consomme les entites alias via `refresh-entity-sync` / `applyMd2AliasFrameLerp`. Pas de particule, beam, dlight, temp entity, areabits, camera ou scene additionnelle pour le FIXME vide.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `scripts/verify/quake2-m-berserk.ts`: ajout de preuves ciblees pour le move strike, son swing, le hook vide du FIXME impact sound, les distances finales, le retour `berserk_run` et l'enregistrement de sauvegarde.
+
 ## Prochain lot recommande
 
-- Valider le bloc adjacent attaque strike: `berserk_strike`, `berserk_frames_attack_strike` global/table/declarative et `berserk_move_attack_strike`, avec `berserk_swing`, `endfunc = berserk_run`, sorties visibles et justification du FIXME impact sound.
+- Valider le bloc douleur `berserk_frames_pain1`, `berserk_move_pain1`, `berserk_frames_pain2`, `berserk_move_pain2` et `berserk_pain`, avec son pain, skin, `pain_debounce_time`, nightmare-skip, selection par degats/random et retour `berserk_run`.

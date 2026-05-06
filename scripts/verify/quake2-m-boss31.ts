@@ -43,6 +43,7 @@ import {
   SP_monster_jorg,
   jorgBFG,
   jorg_attack,
+  jorg_death_hit,
   jorg_die,
   jorg_firebullet,
   jorg_idle,
@@ -62,6 +63,8 @@ import {
   jorg_run,
   jorg_search,
   jorg_stand,
+  jorg_step_left,
+  jorg_step_right,
   jorg_walk
 } from "../../packages/game/src/m_boss31.js";
 
@@ -188,6 +191,12 @@ function verifySoundsAndPainBranches(): void {
 
   jorg_idle(jorg, runtime);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "boss3/bs3idle1.wav");
+  jorg_step_left(jorg, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "boss3/step1.wav");
+  jorg_step_right(jorg, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "boss3/step2.wav");
+  jorg_death_hit(jorg, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "boss3/d_hit.wav");
 
   withMathRandom([0.2], () => jorg_search(jorg, runtime));
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "boss3/bs3srch1.wav");

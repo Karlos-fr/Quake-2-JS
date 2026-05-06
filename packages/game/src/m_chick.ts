@@ -29,7 +29,8 @@ import {
   RANGE_MELEE,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range, visible } from "./g_ai.js";
 import { monster_fire_rocket, walkmonster_start } from "./g_monster.js";
@@ -384,10 +385,10 @@ let sound_search = 0;
  * - Randomly plays one of the two idle voice sounds on the voice channel with idle attenuation.
  *
  * Porting notes:
- * - Uses the runtime sound adapter while preserving the original random split and sound options.
+ * - Uses the runtime sound adapter while preserving the original `random()` split and sound options.
  */
 export function ChickMoan(self: GameEntity, runtime: GameRuntime): void {
-  if (Math.random() < 0.5) {
+  if (random() < 0.5) {
     emitRegisteredGameSound(runtime, self, sound_idle1, SOUND_IDLE1, soundOptions(CHAN_VOICE, ATTN_IDLE));
   } else {
     emitRegisteredGameSound(runtime, self, sound_idle2, SOUND_IDLE2, soundOptions(CHAN_VOICE, ATTN_IDLE));
@@ -418,12 +419,13 @@ export const chick_move_fidget: GameMonsterMove = {
  *
  * Porting notes:
  * - Preserves the direct currentmove assignment used by the original callback.
+ * - Uses the shared `g_local.random()` helper for the original macro call.
  */
 export function chick_fidget(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     return;
   }
-  if (Math.random() <= 0.3) {
+  if (random() <= 0.3) {
     self.monsterinfo.currentmove = chick_move_fidget;
   }
 }
@@ -558,6 +560,7 @@ export const chick_move_pain3: GameMonsterMove = {
  * Porting notes:
  * - Uses the runtime skill/time and registered game sound bridge in place of `skill->value`,
  *   `level.time`, and `gi.sound`.
+ * - Uses the shared `g_local.random()` helper for the original macro call.
  */
 export function chick_pain(
   self: GameEntity,
@@ -576,7 +579,7 @@ export function chick_pain(
 
   self.pain_debounce_time = runtime.time + 3;
 
-  const r = Math.random();
+  const r = random();
   if (r < 0.33) {
     emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, soundOptions(CHAN_VOICE));
   } else if (r < 0.66) {
@@ -767,9 +770,12 @@ export const chick_move_duck: GameMonsterMove = {
  *
  * Behavior:
  * - Randomly chooses the duck move in response to incoming fire and records the attacker as enemy if needed.
+ *
+ * Porting notes:
+ * - Uses the shared `g_local.random()` helper for the original macro call.
  */
 export function chick_dodge(self: GameEntity, attacker: GameEntity | null, _eta: number): void {
-  if (Math.random() > 0.25) {
+  if (random() > 0.25) {
     return;
   }
 
@@ -903,6 +909,7 @@ export const chick_move_end_attack1: GameMonsterMove = {
  *
  * Porting notes:
  * - Preserve the original branch conditions and 0.6 random threshold.
+ * - Uses the shared `g_local.random()` helper for the original macro call.
  * - The TypeScript port guards nullable enemy references before applying the original enemy checks.
  */
 export function chick_rerocket(self: GameEntity, runtime: GameRuntime): void {
@@ -911,7 +918,7 @@ export function chick_rerocket(self: GameEntity, runtime: GameRuntime): void {
     self.enemy.health > 0 &&
     range(self, self.enemy) > RANGE_MELEE &&
     visible(self, self.enemy, runtime) &&
-    Math.random() <= 0.6
+    random() <= 0.6
   ) {
     self.monsterinfo.currentmove = chick_move_attack1;
     return;
@@ -968,11 +975,12 @@ export const chick_move_end_slash: GameMonsterMove = {
  *
  * Porting notes:
  * - Preserve the original branch conditions and 0.9 random threshold.
+ * - Uses the shared `g_local.random()` helper for the original macro call.
  * - The TypeScript port guards nullable enemy references before applying the original enemy checks.
  */
 export function chick_reslash(self: GameEntity): void {
   if (self.enemy && self.enemy.health > 0 && range(self, self.enemy) === RANGE_MELEE) {
-    if (Math.random() <= 0.9) {
+    if (random() <= 0.9) {
       self.monsterinfo.currentmove = chick_move_slash;
       return;
     }

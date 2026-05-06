@@ -531,6 +531,19 @@ export function boss2_reattack_mg(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: boss2_pain
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches to the damaged skin below half health, debounces pain for three seconds, and selects the
+ *   original light/heavy pain moves and no-attenuation pain sounds by damage threshold.
+ *
+ * Porting notes:
+ * - Unlike most Quake II monster pain callbacks, the original boss2 code has no nightmare-skill animation skip.
+ */
 export function boss2_pain(
   self: GameEntity,
   _other: GameEntity | null,

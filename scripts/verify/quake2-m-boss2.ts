@@ -48,6 +48,10 @@ import {
   FRAME_attack20,
   FRAME_attack40,
   FRAME_death50,
+  FRAME_pain2,
+  FRAME_pain19,
+  FRAME_pain20,
+  FRAME_pain23,
   FRAME_stand30,
   FRAME_stand50,
   MZ2_BOSS2_MACHINEGUN_L1,
@@ -65,6 +69,8 @@ import {
   boss2_frames_attack_mg,
   boss2_frames_attack_post_mg,
   boss2_frames_attack_pre_mg,
+  boss2_frames_pain_heavy,
+  boss2_frames_pain_light,
   boss2_frames_stand,
   boss2_move_attack_post_mg,
   boss2_move_attack_mg,
@@ -94,6 +100,7 @@ function main(): void {
   verifyStandingMoveTable();
   verifyMachinegunAttackMoveTables();
   verifyRocketAttackMoveTable();
+  verifyPainMoveTables();
   verifyDeathMoveTable();
   verifyStateTransitions();
   verifySoundsAndPainBranches();
@@ -172,6 +179,8 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("boss2_move_attack_mg"), boss2_move_attack_mg);
   assert.equal(findGameSaveMove("boss2_move_attack_post_mg"), boss2_move_attack_post_mg);
   assert.equal(findGameSaveMove("boss2_move_attack_rocket"), boss2_move_attack_rocket);
+  assert.equal(findGameSaveMove("boss2_move_pain_heavy"), boss2_move_pain_heavy);
+  assert.equal(findGameSaveMove("boss2_move_pain_light"), boss2_move_pain_light);
   assert.equal(findGameSaveMove("boss2_move_death"), boss2_move_death);
 }
 
@@ -254,6 +263,32 @@ function verifyRocketAttackMoveTable(): void {
       index === 12 ? "Boss2Rocket" : undefined,
       `boss2_frames_attack_rocket[${index}].thinkfunc`
     );
+  }
+}
+
+function verifyPainMoveTables(): void {
+  assert.equal(boss2_frames_pain_heavy.length, 18);
+  assert.equal(boss2_move_pain_heavy.firstframe, FRAME_pain2);
+  assert.equal(boss2_move_pain_heavy.lastframe, FRAME_pain19);
+  assert.equal(boss2_move_pain_heavy.frame, boss2_frames_pain_heavy);
+  assert.equal(boss2_move_pain_heavy.endfunc, boss2_run);
+
+  for (const [index, frame] of boss2_frames_pain_heavy.entries()) {
+    assert.equal(frame.aifunc?.name, "ai_move", `boss2_frames_pain_heavy[${index}].aifunc`);
+    assert.equal(frame.dist, 0, `boss2_frames_pain_heavy[${index}].dist`);
+    assert.equal(frame.thinkfunc, undefined, `boss2_frames_pain_heavy[${index}].thinkfunc`);
+  }
+
+  assert.equal(boss2_frames_pain_light.length, 4);
+  assert.equal(boss2_move_pain_light.firstframe, FRAME_pain20);
+  assert.equal(boss2_move_pain_light.lastframe, FRAME_pain23);
+  assert.equal(boss2_move_pain_light.frame, boss2_frames_pain_light);
+  assert.equal(boss2_move_pain_light.endfunc, boss2_run);
+
+  for (const [index, frame] of boss2_frames_pain_light.entries()) {
+    assert.equal(frame.aifunc?.name, "ai_move", `boss2_frames_pain_light[${index}].aifunc`);
+    assert.equal(frame.dist, 0, `boss2_frames_pain_light[${index}].dist`);
+    assert.equal(frame.thinkfunc, undefined, `boss2_frames_pain_light[${index}].thinkfunc`);
   }
 }
 
@@ -378,14 +413,32 @@ function verifySoundsAndPainBranches(): void {
   boss2_pain(boss, null, 0, 5, runtime);
   assert.equal(boss.s.skinnum, 1);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_pain_light);
+  assert.equal(boss.pain_debounce_time, 3);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "bosshovr/bhvpain3.wav");
+
+  boss.monsterinfo.currentmove = boss2_move_run;
+  boss.s.skinnum = 0;
+  runtime.time = 1;
+  boss2_pain(boss, null, 0, 40, runtime);
+  assert.equal(boss.s.skinnum, 1);
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_run);
+  assert.equal(boss.pain_debounce_time, 3);
+  assert.equal(drainGameSoundEvents(runtime).length, 0);
 
   runtime.time = 4;
   boss2_pain(boss, null, 0, 20, runtime);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_pain_light);
+  assert.equal(boss.pain_debounce_time, 7);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "bosshovr/bhvpain1.wav");
 
   runtime.time = 8;
+  boss2_pain(boss, null, 0, 40, runtime);
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_pain_heavy);
+  assert.equal(boss.pain_debounce_time, 11);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "bosshovr/bhvpain2.wav");
+
+  runtime.time = 12;
+  runtime.skill = 3;
   boss2_pain(boss, null, 0, 40, runtime);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_pain_heavy);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "bosshovr/bhvpain2.wav");

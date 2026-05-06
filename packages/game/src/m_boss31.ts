@@ -278,6 +278,7 @@ let sound_attack1 = 0;
 let sound_attack2 = 0;
 let sound_step_left = 0;
 let sound_step_right = 0;
+let sound_firegun = 0;
 let sound_death_hit = 0;
 
 /**
@@ -301,18 +302,54 @@ export function jorg_search(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: jorg_idle
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits Jorg's idle voice sound using the original channel, volume and attenuation.
+ */
 export function jorg_idle(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_idle, SOUND_IDLE, soundOptions(CHAN_VOICE));
 }
 
+/**
+ * Original name: jorg_death_hit
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits Jorg's body impact sound used during the death sequence.
+ */
 export function jorg_death_hit(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_death_hit, SOUND_DEATH_HIT, soundOptions(CHAN_BODY));
 }
 
+/**
+ * Original name: jorg_step_left
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits Jorg's left step body sound.
+ */
 export function jorg_step_left(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_step_left, SOUND_STEP_LEFT, soundOptions(CHAN_BODY));
 }
 
+/**
+ * Original name: jorg_step_right
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits Jorg's right step body sound.
+ */
 export function jorg_step_right(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_step_right, SOUND_STEP_RIGHT, soundOptions(CHAN_BODY));
 }
@@ -784,7 +821,7 @@ function precacheJorgAssets(runtime: GameRuntime): void {
   sound_idle = registerGameSound(runtime, SOUND_IDLE);
   sound_step_left = registerGameSound(runtime, SOUND_STEP_LEFT);
   sound_step_right = registerGameSound(runtime, SOUND_STEP_RIGHT);
-  registerGameSound(runtime, SOUND_FIREGUN);
+  sound_firegun = registerGameSound(runtime, SOUND_FIREGUN);
   sound_death_hit = registerGameSound(runtime, SOUND_DEATH_HIT);
 }
 
