@@ -48,7 +48,7 @@ function main(): void {
   assertBoolean(playerResult.includes("phase7_player_trigger:phase7_player"), true, "player trigger fires");
   assertBoolean(monsterResult.includes("phase7_monster_trigger:phase7_monster"), true, "monster trigger fires with spawnflag");
   assertBoolean(monsterResult.includes("phase7_player_only_trigger:phase7_monster"), false, "monster does not fire player-only trigger");
-  assertBoolean(enableResult.includes("phase7_enabled_trigger:phase7_occupant"), true, "enabled trigger touches covered solid");
+  assertBoolean(enableResult.includes("phase7_occupant:phase7_enabled_trigger"), true, "enabled trigger touches covered solid using C argument order");
 }
 
 /**
@@ -108,13 +108,16 @@ function verifyMonsterFiltering(): string[] {
 
 /**
  * Category: New
- * Purpose: Verify an enabled trigger immediately touches overlapping solids through `G_TouchSolids`.
+ * Purpose: Verify an enabled trigger enumerates overlapping solids through `G_TouchSolids` using the C argument order.
  */
 function verifyEnabledTriggerTouchesCoveredSolid(): string[] {
   const runtime = createRuntime();
   const touches: string[] = [];
   const trigger = spawnTrigger(runtime, "phase7_enabled_trigger", [0, 0, 0], touches);
   trigger.solid = SOLID_NOT;
+  trigger.touch = (self, other) => {
+    touches.push(`${self.classname}:${other.classname}`);
+  };
   refreshEntitySpatialState(trigger);
   linkGameEntity(runtime, trigger);
 

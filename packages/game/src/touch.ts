@@ -68,6 +68,10 @@ export function G_TouchTriggers(runtime: GameRuntime, actor: GameEntity): void {
  * Constraints:
  * - Must preserve runtime query order.
  * - Must only call the provided trigger's `touch`.
+ *
+ * Porting notes:
+ * - Preserves the original C argument order: `trigger.touch(solid, trigger, ...)`.
+ * - Uses the runtime `BoxEdicts` adapter for `AREA_SOLID` queries.
  */
 export function G_TouchSolids(runtime: GameRuntime, trigger: GameEntity): void {
   const triggerBounds = getActorBounds(trigger);

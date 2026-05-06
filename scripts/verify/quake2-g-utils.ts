@@ -496,6 +496,13 @@ assert.deepEqual(
   "G_TouchSolids must use the C argument order and skip solids removed before their turn"
 );
 
+const touchSolidsNoTouchRuntime = createGameRuntimeFromBspEntities([]);
+spawnTouchActor(touchSolidsNoTouchRuntime, "no_touch_solid", [0, 0, 0]);
+const noTouchSolidTrigger = spawnTouchTrigger(touchSolidsNoTouchRuntime, "no_touch_solid_trigger", [0, 0, 0], []);
+noTouchSolidTrigger.touch = undefined;
+G_TouchSolids(touchSolidsNoTouchRuntime, noTouchSolidTrigger);
+assert.equal(noTouchSolidTrigger.inuse, true, "G_TouchSolids must tolerate triggers without touch callbacks");
+
 const touchSolidsBreakRuntime = createGameRuntimeFromBspEntities([]);
 const breakCalls: string[] = [];
 spawnTouchActor(touchSolidsBreakRuntime, "break_solid_a", [0, 0, 0]);

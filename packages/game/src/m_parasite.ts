@@ -36,6 +36,7 @@ import {
   MOD_UNKNOWN,
   MOVETYPE_STEP,
   MOVETYPE_TOSS,
+  random,
   SOLID_BBOX,
   SVF_DEADMONSTER,
   damage_t
@@ -259,8 +260,17 @@ export function parasite_do_fidget(self: GameEntity): void {
   self.monsterinfo.currentmove = parasite_move_fidget;
 }
 
+/**
+ * Original name: parasite_refidget
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Repeats the fidget loop when the original `random() <= 0.8` macro test passes.
+ */
 export function parasite_refidget(self: GameEntity): void {
-  if (Math.random() <= 0.8) {
+  if (random() <= 0.8) {
     self.monsterinfo.currentmove = parasite_move_fidget;
   } else {
     self.monsterinfo.currentmove = parasite_move_end_fidget;
@@ -367,6 +377,16 @@ export const parasite_move_pain1: GameMonsterMove = {
   endfunc: parasite_start_run
 };
 
+/**
+ * Original name: parasite_pain
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies the skin, debounce and nightmare checks from the C function.
+ * - Chooses pain sound 1 or 2 with the original `random() < 0.5` macro threshold.
+ */
 export function parasite_pain(
   self: GameEntity,
   _other: GameEntity | null,
@@ -388,7 +408,7 @@ export function parasite_pain(
     return;
   }
 
-  if (Math.random() < 0.5) {
+  if (random() < 0.5) {
     emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, { channel: CHAN_VOICE, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
   } else {
     emitRegisteredGameSound(runtime, self, sound_pain2, SOUND_PAIN2, { channel: CHAN_VOICE, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });

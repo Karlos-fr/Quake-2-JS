@@ -1460,7 +1460,24 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-move` OK; `npm run verify:m-brain` OK; `npm run verify:m-brain:header` OK; `npm run verify:m-brain:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une petite famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/m_parasite.ts` pour `parasite_refidget` et `parasite_pain`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `m_parasite.ts` est harmonise pour les usages macro C `random()`, aucun consommateur `crandom()` n'existe dans `m_parasite.c`/`m_parasite.ts`, mais d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_parasite.c` consomme `random()` dans `parasite_refidget` pour le seuil `<= 0.8` et dans `parasite_pain` pour le choix `sound_pain1`/`sound_pain2`; aucun appel `crandom()` dans ce fichier.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_parasite.ts`: `parasite_refidget` et `parasite_pain` consomment maintenant le helper proprietaire `random`; les commentaires d'en-tete des deux fonctions ont ete ajoutes.
+- Runtime: integration attendue et branchee pour ce sous-lot via `SP_monster_parasite`, `g_spawn.ts`, callbacks `pain`, `monster_think`/`M_MoveFrame`, `G_RunEntity` et `G_RunFrame`; les decisions affectent fidget, animation de douleur, sons et frames visibles du parasite.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres et ordre de rendu; aucune logique parallele web `m_parasite`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages `m_parasite.ts` affectent sorties visibles/audibles via modele parasite, frames fidget/pain, skin douleur, sons et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaires d'en-tete ajoutes pour `parasite_refidget` et `parasite_pain`.
+- Corrections appliquees:
+  - `packages/game/src/m_parasite.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C `random()`, commentaires d'en-tete ajoutes.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-parasite` OK; `npm run verify:m-parasite:header` OK; `npm run verify:m-parasite:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une petite famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_medic.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

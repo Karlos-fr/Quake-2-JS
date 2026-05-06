@@ -3,7 +3,7 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `G_TouchTriggers`.
+- Dernier lot traite: `G_TouchSolids`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -77,7 +77,7 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Continuer avec `G_TouchSolids` seul, sans melanger `KillBox` ni les lignes locales restantes.
+- Continuer avec `KillBox` seul, sans melanger les lignes locales restantes.
 
 ## Session - G_FreeEdict
 
@@ -140,6 +140,28 @@ Session `G_FreeEdict`:
 - `packages/renderer-three`: pas de sortie renderer directe propre a `G_TouchTriggers`, mais des sorties visibles peuvent etre produites par les callbacks touches (portes/plats/brush models, changements de solidite, sons, temp entities, particules/dlights selon trigger). Le flux snapshots/refresh frame/adapters Three consomme ces sorties; tests renderer OK.
 
 Session `G_TouchTriggers`:
+
+- `npm run verify:g-utils`
+- `npm run verify:collision:phase7`
+- `npm run typecheck`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+
+## Session - G_TouchSolids
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- Declaration H comparee: `Quake-2-master/game/g_local.h`.
+- TS cible compare: `packages/game/src/touch.ts`.
+- Commentaire d'en-tete mis a jour sur `G_TouchSolids` (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Constraints`, `Porting notes`).
+- Comparaison C/TS `G_TouchSolids`: requete `AREA_SOLID` sur les bounds absolues de l'entite, iteration dans l'ordre retourne par `BoxEdicts`, skip des solides liberes avant leur tour, appel du callback de l'entite avec l'ordre C `solid, trigger`, puis arret si le trigger est libere pendant le callback.
+- Correction appliquee: `packages/game/src/touch.ts` documente l'ordre d'arguments C et l'adapter `BoxEdicts`; `scripts/verify/quake2-g-utils.ts` couvre la branche trigger sans callback; `scripts/verify/quake2-collision-phase7.ts` aligne le scenario `G_TouchSolids` sur l'ordre d'arguments C.
+- Runtime verifie: l'export est present et teste; aucun appel direct C ni TS hors tests n'a ete trouve dans le jeu de base porte. Le commentaire C decrit un helper a appeler apres liaison d'un trigger en gameplay, mais le flux base `trigger_enable` C ne l'appelle pas non plus; pas de branchement runtime ajoute pour eviter d'introduire un comportement absent du source original.
+- `apps/web`: integration directe non applicable justifiee; le web execute les hosts full-game/local et ne doit pas compenser ce helper non appele par une logique parallele. Les flux de touches actifs passent par `G_TouchTriggers`/physique et les snapshots/evenements existants.
+- `packages/renderer-three`: pas de sortie renderer directe propre a `G_TouchSolids`; s'il etait appele par un mod ou un futur flux gameplay, ses effets visibles seraient indirects via callbacks de trigger, changements d'entites/solidite, sons, temp entities ou snapshots deja consommes par le renderer. Aucun branchement renderer dedie attendu pour le jeu de base.
+
+Session `G_TouchSolids`:
 
 - `npm run verify:g-utils`
 - `npm run verify:collision:phase7`

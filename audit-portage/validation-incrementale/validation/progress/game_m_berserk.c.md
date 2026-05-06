@@ -95,6 +95,26 @@
 - Corrections appliquees:
   - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant le flux runtime du move stand fidget et son enregistrement de sauvegarde.
 
+## Session 2026-05-06 - bloc walk declaratif
+
+- Lot traite: `berserk_frames_walk` global/table/declarative et `berserk_move_walk`.
+- Verdict: Valide.
+- Comparaison C/TS: la table walk conserve les 12 entrees C `ai_walk`, distances `9.1, 6.3, 4.9, 6.7, 6.0, 8.2, 7.2, 6.1, 4.9, 4.7, 4.7, 4.8`, sans `thinkfunc`; `berserk_move_walk` conserve `FRAME_walkc1`, `FRAME_walkc11`, la table walk et aucun `endfunc`.
+- Commentaires d'en-tete: lot declaratif/global, pas de commentaire de fonction requis; `berserk_walk` reste reserve au prochain lot.
+- Runtime: integre. Le test ajoute prouve un `currentmove = berserk_move_walk` avance par `G_RunFrame`/`monster_think` dans la plage visible `FRAME_walkc1`..`FRAME_walkc11`, boucle vers `FRAME_walkc1`, et verifie l'enregistrement `findGameSaveMove("berserk_move_walk")`.
+- apps/web: integre. Le flux web utilise le serveur local porte et consomme les snapshots/runtime; aucune logique parallele berserk constatee pour remplacer ces frames walk.
+- renderer-three: integre. Le lot produit des frames MD2 visibles (`s.frame`) pour le modele berserk; les snapshots client conservent `frame/oldframe/backlerp` et `packages/renderer-three` les consomme via `refresh-entity-sync` / `applyMd2AliasFrameLerp`.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant le flux runtime du move walk et son enregistrement de sauvegarde.
+
 ## Prochain lot recommande
 
-- Valider le bloc walk declaratif: `berserk_frames_walk` global/table/declarative et `berserk_move_walk`; garder `berserk_walk` / run pour une session separee si le lot devient trop large.
+- Valider `berserk_walk` seul, avec l'affectation `berserk_move_walk` et le branchement `monsterinfo.walk`; garder run pour une session separee si le lot devient trop large.

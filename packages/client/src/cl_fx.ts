@@ -1960,6 +1960,9 @@ export function CL_RailTrail(
  *
  * Behavior:
  * - Emits the alternating ion ripper trail particles or metadata.
+ *
+ * Porting notes:
+ * - Runtime mode preserves the original `left` alternation and fixed 5-unit step; metadata mode is an adapter for browser effect descriptions.
  */
 export function CL_IonripperTrail(start: vec3_t, end: vec3_t): ClientActionEffect[];
 export function CL_IonripperTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;

@@ -416,6 +416,15 @@ export const boss2_move_death: GameMonsterMove = {
   endfunc: boss2_dead
 };
 
+/**
+ * Original name: boss2_stand
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Restores the boss2 standing move.
+ */
 export function boss2_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = boss2_move_stand;
 }

@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: bloc taunt `actor_frames_taunt`, `actor_move_taunt`
-- Verdict: `Valide` pour les quatre entrees de matrice du lot
+- Dernier lot traite: table globale `messages`
+- Verdict: `Valide` pour la ligne `messages`
 
 ## Checklist appliquee au lot
 
@@ -85,6 +85,16 @@
 - renderer-three: le bloc taunt produit une sortie visible indirecte (`s.modelindex`/`s.frame` de `misc_actor` pendant l'animation); consommation attendue via snapshots client, refresh entities, puis alias MD2 frame dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert dans ce lot.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts`.
 
+## Session 2026-05-06 - table messages
+
+- Identification: `messages` est une table globale proprietaire de `game/m_actor.c`, ciblee dans `packages/game/src/m_actor.ts` sous le meme nom, exportee via `actorFrames`; aucun doublon TS concurrent trouve.
+- Comparaison C vs TS: les quatre chaines C `Watch it`, `#$@*&`, `Idiot`, `Check your targets` correspondent exactement au tableau TS `messages`; l'usage runtime conserve le tirage parmi les trois premiers messages dans `actor_pain`, laissant la quatrieme chaine presente comme dans la table C originale.
+- Commentaires d'en-tete: pas de commentaire de fonction requis pour cette donnee declarative; le commentaire de fichier `m_actor.ts` documente l'ownership du port et le fait que les messages acteur sont queues en evenements runtime `cprintf`.
+- Runtime: branchement attendu et verifie depuis `SP_misc_actor` (`self.pain = actor_pain`), les degats `T_Damage` dans `g_combat.ts`, puis `actor_pain` qui emet `emitGameCprintf`; les evenements sont draines pendant `G_RunFrame` dans `g_main.ts`. Le harness `verify:m-actor` prouve la table et son usage dans le message chat.
+- apps/web: aucune logique parallele attendue dans `apps/web`; le navigateur doit declencher le runtime porte et consommer les sorties host/client. Couvert par `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order`.
+- renderer-three: `messages` produit une sortie texte/chat, pas une sortie visible de scene `renderer-three` (modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene). Les integrations renderer ont quand meme ete recontrolees par `verify:full-game:three-renderer` pour ne pas masquer de regression du flux acteur.
+- Correction: aucune correction de code necessaire.
+
 ## Tests de reference
 
 - `npm run verify:m-actor`
@@ -97,7 +107,7 @@
 
 ## Prochain lot recommande
 
-Valider `messages`, puis `actor_pain` dans un lot separe si cela reste raisonnable; garder les lignes locales `n`/`name` avec le lot `actor_pain` si elles lui sont rattachees.
+Valider `actor_pain` dans un lot separe; garder les lignes locales `n`/`name` avec ce lot si elles lui sont rattachees.
 
 ## Blocages / decisions
 

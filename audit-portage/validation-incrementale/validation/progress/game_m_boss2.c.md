@@ -53,6 +53,25 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout du commentaire d'en-tete de `boss2_run`; ajout d'assertions de branchement `monsterinfo.run` dans `scripts/verify/quake2-m-boss2.ts`.
 
+## Session 2026-05-06
+
+- Lot traite: `boss2_stand` seul, avec l'affectation `boss2_move_stand` et le branchement `monsterinfo.stand`.
+- Verdict: Valide.
+- Comparaison C/TS: `void boss2_stand(edict_t *self)` affecte uniquement `self->monsterinfo.currentmove = &boss2_move_stand`; le port `boss2_stand(self)` affecte uniquement `self.monsterinfo.currentmove = boss2_move_stand`. Les tables `boss2_frames_stand` / `boss2_move_stand` ont seulement ete utilisees comme cible d'affectation et restent recommandees pour un lot declaratif separe.
+- Commentaires d'en-tete: commentaire de fonction ajoute dans `packages/game/src/m_boss2.ts` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement.
+- Runtime: integre. `SP_monster_boss2` assigne `self.monsterinfo.stand = boss2_stand`; le callback est atteignable depuis les flux `ai_stand`, `g_monster` et `g_misc`, eux-memes relies au runtime `G_RunFrame` / `monster_think` / `M_MoveFrame`. Le harness verifie l'affectation au spawn, l'appel direct et l'appel via `monsterinfo.stand`.
+- apps/web: integre. `apps/web` ne remplace pas la logique boss2; le comportement passe par le host full-game/local et les snapshots runtime.
+- renderer-three: integre. `boss2_stand` selectionne un move qui produit des frames visibles `s.frame`; les modeles/frames issus des snapshots client sont consommes par le renderer Three.
+- Tests lances:
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees: ajout du commentaire d'en-tete de `boss2_stand`; ajout d'assertions de branchement `monsterinfo.stand` dans `scripts/verify/quake2-m-boss2.ts`.
+
 ## Prochain lot recommande
 
-- Valider `boss2_stand` seul, avec l'affectation `boss2_move_stand` et le branchement `monsterinfo.stand`; garder les tables `boss2_frames_stand` / `boss2_move_stand` pour un lot declaratif separe si la session doit rester minimale.
+- Valider le bloc declaratif `boss2_frames_stand` / `boss2_move_stand` en lot separe, puis reprendre `boss2_walk` ou `boss2_dead` selon la priorisation du coordinateur.

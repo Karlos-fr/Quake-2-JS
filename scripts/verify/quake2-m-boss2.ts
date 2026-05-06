@@ -101,6 +101,7 @@ function verifySpawnRegistersAssetsAndStartsFlying(): void {
   assert.equal(boss.monsterinfo.scale, 1);
   assert.equal(boss.pain, boss2_pain);
   assert.equal(boss.die, boss2_die);
+  assert.equal(boss.monsterinfo.stand, boss2_stand);
   assert.equal(boss.monsterinfo.search, boss2_search);
   assert.equal(runtime.assets.modelPaths[boss.s.modelindex - 1], "models/monsters/boss2/tris.md2");
   assert.deepEqual(runtime.assets.soundPaths, [
@@ -155,6 +156,8 @@ function verifyStateTransitions(): void {
   assert.equal(boss.monsterinfo.currentmove, boss2_move_stand);
   boss2_walk(boss);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_walk);
+  boss.monsterinfo.stand?.(boss, runtime);
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_stand);
   boss2_run(boss);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_run);
   boss.monsterinfo.aiflags |= AI_STAND_GROUND;

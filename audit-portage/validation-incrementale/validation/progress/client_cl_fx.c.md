@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot traite: `CL_RailTrail` avec les locaux `move`, `vec`, `len`, `j`, `dec`, `i`, `dir` et `clr`; test cible ajoute dans `scripts/verify/quake2-cl-fx.ts`.
-- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; `CL_BlasterTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_QuadTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_FlagTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_DiminishingTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `orgscale` et `velscale`; `MakeNormalVectors` avec le local `d`; `CL_RocketTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_RailTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `i`, `dir` et `clr`; variables locales generees marquees non applicables.
+- Dernier lot traite: `CL_IonripperTrail` avec les locaux `len`, `j`, `dec` et `left`; commentaire d'en-tete TS complete.
+- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; `CL_BlasterTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_QuadTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_FlagTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_DiminishingTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `orgscale` et `velscale`; `MakeNormalVectors` avec le local `d`; `CL_RocketTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_RailTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `i`, `dir` et `clr`; `CL_IonripperTrail` avec locaux `len`, `j`, `dec` et `left`; variables locales generees marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -16,6 +16,11 @@
   - `npm run verify:full-game:three-renderer`
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+  - `npm run verify:cl-fx`
+  - `npm run verify:particle-sync`
+  - `npm run verify:web-render-order`
   - `npm run verify:full-game:three-renderer`
   - `npm run typecheck`
   - `npm run verify:cl-fx`
@@ -92,6 +97,11 @@
   - `CL_RailTrail` est atteignable depuis le runtime client normal via `CL_ParseTEnt` / `CL_ParseServerMessage` pour `TE_RAILTRAIL`, puis `CL_ExecuteTempEntityEffects`.
   - `apps/web` doit consommer ce flux parce qu'il produit des particules visibles et le son `weapons/railgf1a.wav`: `CL_BuildTempEntityEffects` expose les metadata rail core/spark et le flux full-game consomme ensuite `ClientRefreshFrame.particles`, sans logique particule parallele detectee.
   - `renderer-three` doit consommer la sortie visible particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`, couvert par `npm run verify:particle-sync` et `npm run verify:full-game:three-renderer`.
+  - `CL_IonripperTrail` conserve le flux C: copie de `start` dans `move`, vecteur `end - start` normalise puis scale par `dec = 5`, emission tant que `len > 0`, allocation conditionnee par le pool libre, acceleration nulle, `time = cl.time`, alpha `0.5`, `alphavel = -1/(0.3 + frand()*0.2)`, couleur `0xe4 + (rand&3)`, origine exacte `move`, vitesse X alternee `-10` puis `10` via le local `left`, et vitesse Y/Z nulle.
+  - Les temporaires C `len`, `j`, `dec` et `left` sont des artefacts locaux: `len`, `dec` et `left` sont portes dans `spawnIonripperTrailParticles`, et `j` est remplace par la copie vectorielle TS; aucune entite TS publique separee n'est attendue.
+  - `CL_IonripperTrail` est atteignable depuis le runtime client normal via `CL_BuildRefreshFrame` -> `CL_BuildPacketEntitySnapshots` -> `CL_ExecutePacketEntityEffects` pour les entites `EF_IONRIPPER`. Le flux conserve aussi la dlight originale `V_AddLight(ent.origin, 100, 1, 0.5, 0.5)` via `ClientRefreshFrame.lights` kind `ionripper`.
+  - `apps/web` doit consommer ce flux parce qu'il produit des particules visibles et une dlight: les sessions full-game construisent `ClientRefreshFrame` depuis le runtime client, puis `full-game-render-loop.ts` consomme `source.refreshFrame.particles` via `particleSync.apply`; aucune logique ionripper parallele n'a ete detectee.
+  - `renderer-three` doit consommer les sorties visibles de `CL_IonripperTrail`: particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`; preuves `verify:particle-sync` et `verify:full-game:three-renderer`.
   - `CL_RocketTrail` conserve le flux C: appel smoke `CL_DiminishingTrail(start, end, old, EF_ROCKET)`, puis trail fire avec copie de `start` dans `move`, vecteur `end - start` normalise dans `vec`, `dec = 1`, emission tant que `len > 0`, allocation conditionnee par `(rand()&7) == 0`, couleur `0xdc + (rand&3)`, alpha `1.0`, `alphavel = -1/(1+frand()*0.2)`, origine `move + crand()*5`, vitesse `crand()*20` et acceleration Z `-PARTICLE_GRAVITY`.
   - Les temporaires C `move`, `vec`, `len`, `j` et `dec` sont des artefacts locaux: ils sont portes dans `spawnSimpleTrailParticles` (`move`, `vec`, `len`, `spacing: 1`) et l'iteration TS par composant remplace `j`; aucune entite TS publique separee n'est attendue.
   - `CL_RocketTrail` est atteignable depuis le runtime client normal via `CL_BuildRefreshFrame` -> `CL_BuildPacketEntitySnapshots` -> `CL_ExecutePacketEntityEffects` pour les entites `EF_ROCKET`. Le flux conserve aussi la dlight originale `V_AddLight(ent.origin, 200, 1, 1, 0)` via `ClientRefreshFrame.lights` kind `rocket`.
@@ -183,5 +193,5 @@
   - Les effets visibles de `CL_ParseMuzzleFlash2` sont attendus dans le runtime navigateur: dlight, `CL_ParticleEffect` et `CL_SmokeAndFlash` sont appliques par `apps/web/src/full-game.ts`; le flux local `packages/client/src/local-gameplay-sync.ts` applique maintenant aussi `particle-effect` et `smoke-and-flash`.
   - `renderer-three` consomme les dlights via `ClientRefreshFrame.lights` -> `createThreeDlightSync` / `R_RenderDlights` et les particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync`; les sons restent hors renderer.
   - `npm run verify:local-gameplay-sync` n'a pas pu etre utilise comme preuve finale pendant une session precedente: blocage hors lot avant execution du test, `ReferenceError: FRAME_attack1 is not defined` dans `packages/game/src/g_save.ts`.
-- Blocages: aucun blocage restant pour `CL_RailTrail`.
-- Prochain lot recommande: `CL_IonripperTrail` seul, avec ses locaux `len`, `j`, `dec` et `left` si la matrice les rattache au lot; garder `CL_BubbleTrail` et les effets `BEAMLENGTH` pour des sessions separees.
+- Blocages: aucun blocage restant pour `CL_IonripperTrail`.
+- Prochain lot recommande: `CL_BubbleTrail` seul, avec ses locaux rattaches `move`, `vec`, `len`, `dec` et `i`/`j` si la matrice les rattache au lot; garder les effets `BEAMLENGTH` pour une session separee.
