@@ -9,21 +9,14 @@
  * - packages/game/src/m_boss2.ts
  */
 
-import {
-  FRAME_attack1,
-  FRAME_death50,
-  FRAME_pain2,
-  FRAME_stand30,
-  FRAME_walk1,
-  MODEL_SCALE
-} from "../../packages/game/src/m_boss2.js";
+import * as boss2 from "../../packages/game/src/m_boss2.js";
 
 /**
  * Category: New
  * Purpose: Fail fast when a declarative frame constant differs from the original header values.
  *
  * Constraints:
- * - Keep the checks sparse but representative across the generated table.
+ * - Keep broad range checks for validated lots and sparse checks for the remaining table.
  */
 function assertEqual<T>(label: string, actual: T, expected: T): void {
   if (actual !== expected) {
@@ -31,11 +24,20 @@ function assertEqual<T>(label: string, actual: T, expected: T): void {
   }
 }
 
-assertEqual("FRAME_stand30", FRAME_stand30, 0);
-assertEqual("FRAME_walk1", FRAME_walk1, 50);
-assertEqual("FRAME_attack1", FRAME_attack1, 70);
-assertEqual("FRAME_pain2", FRAME_pain2, 110);
-assertEqual("FRAME_death50", FRAME_death50, 180);
-assertEqual("MODEL_SCALE", MODEL_SCALE, 1.0);
+function assertFrameRange(prefix: string, first: number, last: number, expectedStart: number): void {
+  for (let frame = first; frame <= last; frame++) {
+    const name = `FRAME_${prefix}${frame}`;
+    assertEqual(name, boss2[name as keyof typeof boss2], expectedStart + frame - first);
+  }
+}
+
+assertFrameRange("stand", 30, 50, 0);
+assertFrameRange("stand", 1, 29, 21);
+assertFrameRange("walk", 1, 20, 50);
+
+assertEqual("FRAME_attack1", boss2.FRAME_attack1, 70);
+assertEqual("FRAME_pain2", boss2.FRAME_pain2, 110);
+assertEqual("FRAME_death50", boss2.FRAME_death50, 180);
+assertEqual("MODEL_SCALE", boss2.MODEL_SCALE, 1.0);
 
 console.log("quake2-m-boss2-header: ok");

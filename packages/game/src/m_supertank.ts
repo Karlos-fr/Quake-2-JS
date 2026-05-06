@@ -28,7 +28,8 @@ import {
   MOVETYPE_TOSS,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, visible } from "./g_ai.js";
 import { monster_fire_bullet, monster_fire_rocket, walkmonster_start } from "./g_monster.js";
@@ -335,7 +336,7 @@ export function TreadSound(self: GameEntity, runtime: GameRuntime): void {
 }
 
 export function supertank_search(self: GameEntity, runtime: GameRuntime): void {
-  if (Math.random() < 0.5) {
+  if (random() < 0.5) {
     emitRegisteredGameSound(runtime, self, sound_search1, SOUND_SEARCH1, soundOptions(CHAN_VOICE));
   } else {
     emitRegisteredGameSound(runtime, self, sound_search2, SOUND_SEARCH2, soundOptions(CHAN_VOICE));
@@ -515,7 +516,7 @@ export const supertank_move_end_attack1: GameMonsterMove = {
 
 export function supertank_reattack1(self: GameEntity, runtime: GameRuntime): void {
   if (self.enemy && visible(self, self.enemy, runtime)) {
-    if (Math.random() < 0.9) {
+    if (random() < 0.9) {
       self.monsterinfo.currentmove = supertank_move_attack1;
     } else {
       self.monsterinfo.currentmove = supertank_move_end_attack1;
@@ -540,7 +541,7 @@ export function supertank_pain(
     return;
   }
 
-  if (damage <= 25 && Math.random() < 0.2) {
+  if (damage <= 25 && random() < 0.2) {
     return;
   }
 
@@ -626,7 +627,7 @@ export function supertank_attack(self: GameEntity): void {
 
   if (range <= 160) {
     self.monsterinfo.currentmove = supertank_move_attack1;
-  } else if (Math.random() < 0.3) {
+  } else if (random() < 0.3) {
     self.monsterinfo.currentmove = supertank_move_attack1;
   } else {
     self.monsterinfo.currentmove = supertank_move_attack2;

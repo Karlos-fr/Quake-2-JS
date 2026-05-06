@@ -550,6 +550,15 @@ export function jorg_reattack1(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: jorg_attack1
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Enters the looping machinegun attack move after the attack1 startup move.
+ */
 export function jorg_attack1(self: GameEntity): void {
   self.monsterinfo.currentmove = jorg_move_attack1;
 }
@@ -617,6 +626,15 @@ export function jorg_pain(
   }
 }
 
+/**
+ * Original name: jorgBFG
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Fires Jorg's BFG from the original muzzle offset with damage, speed and splash values preserved.
+ */
 export function jorgBFG(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
@@ -673,10 +691,28 @@ export function jorg_attack(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: jorg_dead
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Preserves the original no-op body because the corpse/Makron handoff block is compiled out under `#if 0`.
+ */
 export function jorg_dead(_self: GameEntity): void {
   // Original body is compiled out under `#if 0`; preserve that no-op behavior.
 }
 
+/**
+ * Original name: jorg_die
+ * Source: game/m_boss31.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the death voice sound, clears looping sound/state and enters the 50-frame death move.
+ */
 export function jorg_die(
   self: GameEntity,
   _inflictor: GameEntity | null,

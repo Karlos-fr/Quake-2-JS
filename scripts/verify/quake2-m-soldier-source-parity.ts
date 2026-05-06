@@ -36,6 +36,7 @@ function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifyRandomMacroConsumers();
 
   console.log("quake2-m-soldier-source-parity: ok");
 }
@@ -85,6 +86,43 @@ function verifySourcePrecacheAssets(): void {
   assertSpawnAssets("monster_soldier_light", soldier.SP_monster_soldier_light, lightBlock);
   assertSpawnAssets("monster_soldier", soldier.SP_monster_soldier, soldierBlock);
   assertSpawnAssets("monster_soldier_ss", soldier.SP_monster_soldier_ss, ssBlock);
+}
+
+function verifyRandomMacroConsumers(): void {
+  const sourceRandomConsumers = [
+    "soldier_idle",
+    "soldier_stand",
+    "soldier_walk1_random",
+    "soldier_walk",
+    "soldier_pain",
+    "soldier_attack1_refire1",
+    "soldier_attack1_refire2",
+    "soldier_attack2_refire1",
+    "soldier_attack2_refire2",
+    "soldier_attack",
+    "soldier_sight",
+    "soldier_dodge"
+  ];
+  const sourceCrandomConsumers = ["soldier_fire"];
+
+  for (const functionName of sourceRandomConsumers) {
+    assert.match(getFunctionBlock(functionName), /\brandom\s*\(/, `${functionName} should consume source random()`);
+    const tsFunction = getTsFunctionBlock(functionName);
+    assert.match(tsFunction, /\brandom\s*\(/, `${functionName} should consume g_local.random()`);
+    assert.doesNotMatch(tsFunction, /Math\.random\s*\(/, `${functionName} must not call Math.random() directly`);
+  }
+
+  for (const functionName of sourceCrandomConsumers) {
+    assert.match(getFunctionBlock(functionName), /\bcrandom\s*\(/, `${functionName} should consume source crandom()`);
+    const tsFunction = getTsFunctionBlock(functionName);
+    assert.match(tsFunction, /\bcrandom\s*\(/, `${functionName} should consume g_local.crandom()`);
+    assert.doesNotMatch(tsFunction, /Math\.random\s*\(/, `${functionName} must not call Math.random() directly`);
+  }
+
+  assert.match(getFunctionBlock("soldier_fire"), /rand\s*\(\)\s*%\s*8/, "soldier_fire should keep integer rand() source usage");
+  assert.match(getTsFunctionBlock("soldier_fire"), /randomInt\s*\(\s*8\s*\)/, "soldier_fire should keep integer randomInt for rand()%8");
+  assert.match(getFunctionBlock("soldier_die"), /rand\s*\(\)\s*%\s*5/, "soldier_die should keep integer rand() source usage");
+  assert.match(getTsFunctionBlock("soldier_die"), /randomInt\s*\(\s*5\s*\)/, "soldier_die should keep integer randomInt for rand()%5");
 }
 
 interface SourceFrame {
@@ -141,14 +179,11 @@ function parseMoves(cSource: string): Map<string, SourceMove> {
 }
 
 function getFunctionBlock(functionName: string): string {
-  const declaration = new RegExp(`\\bvoid\\s+${functionName}\\s*\\(`).exec(sourceWithoutComments);
+  const declaration = new RegExp(`\\bvoid\\s+${functionName}\\s*\\([^;]*?\\)\\s*\\{`).exec(sourceWithoutComments);
   if (!declaration) {
     throw new Error(`${functionName} should exist in source`);
   }
-  const start = declaration.index;
-
-  const bodyStart = sourceWithoutComments.indexOf("{", start);
-  assert.notEqual(bodyStart, -1, `${functionName} should have a body`);
+  const bodyStart = sourceWithoutComments.indexOf("{", declaration.index);
 
   let depth = 0;
   for (let i = bodyStart; i < sourceWithoutComments.length; i += 1) {
@@ -164,6 +199,31 @@ function getFunctionBlock(functionName: string): string {
   }
 
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const tsPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../packages/game/src/m_soldier.ts");
+  const tsSource = readFileSync(tsPath, "utf8");
+  const declaration = new RegExp(`\\bexport\\s+function\\s+${functionName}\\s*\\(`).exec(tsSource);
+  assert.ok(declaration, `${functionName} should exist in m_soldier.ts`);
+
+  const bodyStart = tsSource.indexOf("{", declaration.index);
+  assert.notEqual(bodyStart, -1, `${functionName} should have a TS body`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < tsSource.length; i += 1) {
+    const char = tsSource[i];
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsSource.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} TS body was not closed`);
 }
 
 function assertSpawnAssets(

@@ -998,6 +998,18 @@ export function makron_pain(
   }
 }
 
+/**
+ * Original name: makron_sight
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the Makron to its sight/activation move when an enemy is spotted.
+ *
+ * Porting notes:
+ * - The unused C `other` parameter is omitted; the function only mutates `self->monsterinfo.currentmove`.
+ */
 export function makron_sight(self: GameEntity): void {
   self.monsterinfo.currentmove = makron_move_sight;
 }

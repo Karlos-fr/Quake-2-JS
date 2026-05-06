@@ -3,9 +3,40 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: blocs douleur `makron_frames_pain6`, `makron_move_pain6`, `makron_frames_pain5`, `makron_move_pain5`, `makron_frames_pain4`, `makron_move_pain4`, plus `makron_pain`.
-- Verdict du dernier lot: Valide pour les tables/moves de douleur et `makron_pain`.
+- Dernier lot traite: blocs mort/sight `makron_frames_death2`, `makron_move_death2`, `makron_frames_death3`, `makron_move_death3`, `makron_frames_sight`, `makron_move_sight`, plus `makron_sight`.
+- Verdict du dernier lot: Valide pour les tables/moves mort/sight et `makron_sight`.
 - Fichier TS proprietaire: `packages/game/src/m_boss32.ts`
+
+## Session 2026-05-06 - lot death/sight
+
+Lot 3x traite:
+
+- `makron_frames_death2`, `makron_move_death2`.
+- `makron_frames_death3`, `makron_move_death3`.
+- `makron_frames_sight`, `makron_move_sight`.
+- Lignes declaratives `makron_frames_death2`, `makron_frames_death3`, `makron_frames_sight`.
+- `makron_sight`.
+
+Corrections:
+
+- `m_boss32.ts`: ajout du commentaire d'en-tete de portage pour `makron_sight`.
+- `quake2-m-boss32.ts`: preuves ciblees ajoutees pour les tables/moves death2/death3/sight, callbacks death2, transition `makron_sight`, et registre save des moves/fonction.
+
+Tests lances:
+
+- `npm run verify:m-boss32`
+- `npm run verify:m-boss32:source-parity`
+- `npm run verify:m-boss32:header`
+- `npm run verify:full-game:audio-routing`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Integration:
+
+- Runtime: valide. `SP_monster_makron` branche `self->monsterinfo.sight = makron_sight` et demarre aussi sur `makron_move_sight`; `makron_die` branche `makron_move_death2`, dont les callbacks sont avances par `M_MoveFrame` et finissent sur `makron_dead`.
+- apps/web: valide. Les sons death2 transitent par les `soundEvents` runtime consommes par le flux audio full-game; les frames visibles transitent par les snapshots/client refresh.
+- renderer-three: valide. Les sorties visibles attendues sont les frames du modele Makron et le corps/torso associe en runtime; `renderer-three` les consomme par le chemin generique MD2 via `modelindex`, `frame`, `oldframe` et `backlerp`. Aucun adapter Makron specifique n'est requis.
 
 ## Session 2026-05-06 - lot pain
 
@@ -76,11 +107,13 @@ Integration:
 
 ## Prochain lot recommande
 
-Continuer avec les blocs mort/sight:
+Continuer avec le bloc attaque BFG:
 
-- `makron_frames_death2`, `makron_move_death2`.
-- `makron_frames_death3`, `makron_move_death3`.
-- `makron_frames_sight`, `makron_move_sight`, puis `makron_sight` si coherent.
+- `makronBFG`.
+- `makron_frames_attack3`, `makron_move_attack3`.
+- `makron_frames_attack4`, `makron_move_attack4`.
+- `makron_frames_attack5`, `makron_move_attack5`.
+- Inclure les lignes declaratives associees si le lot reste coherent.
 
 ## Session 2026-05-06 - lot callbacks/walk
 
@@ -116,6 +149,6 @@ Integration:
 
 - `Quake-2-master/game/m_boss32.c`: passer a `En cours`.
 - Progress: `progress/game_m_boss32.c.md`.
-- Validees: 50.
+- Validees: 63.
 - Non applicables: 8.
-- Prochain lot: `makron_frames_death2`, `makron_move_death2`, `makron_frames_death3`, `makron_move_death3`, `makron_frames_sight`, `makron_move_sight`, puis `makron_sight` si coherent.
+- Prochain lot: `makronBFG`, `makron_frames_attack3`, `makron_move_attack3`, `makron_frames_attack4`, `makron_move_attack4`, `makron_frames_attack5`, `makron_move_attack5`, avec les lignes declaratives associees si coherent.

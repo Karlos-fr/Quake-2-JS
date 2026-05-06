@@ -2,6 +2,27 @@
 
 ## Session 2026-05-06
 
+- Lot traite: bloc death `jorg_frames_death1` global/table/declarative, `jorg_move_death`, `jorg_dead`, `jorg_die`, plus premier sous-bloc attack suivant `jorg_frames_attack2` global/table/declarative, `jorg_move_attack2`, `jorgBFG`; declarations forward C `jorg_dead` et `jorgBFG` marquees `Non applicable`.
+- Verdict: Valide pour les entites portees du lot; `Non applicable` pour les declarations forward seules.
+- Comparaison C/TS: `jorg_frames_death1` conserve 50 frames `ai_move` a distance 0, callbacks `MakronToss` et `BossExplode` aux indices 48 et 49, et `jorg_move_death` conserve `FRAME_death01..FRAME_death50` avec `endfunc jorg_dead`. `jorg_dead` conserve le comportement no-op car le corps C reel est compile hors build par `#if 0`. `jorg_die` conserve le son death, `DEAD_DEAD`, `DAMAGE_NO`, `s.sound = 0`, `count = 0` et l'entree dans `jorg_move_death`. `jorg_frames_attack2` conserve 13 frames: 7 `ai_charge` puis 6 `ai_move`, distances 0, callback `jorgBFG` a l'indice 6; `jorg_move_attack2` conserve `FRAME_attak201..FRAME_attak213` avec `endfunc jorg_run`. `jorgBFG` conserve le muzzle `MZ2_JORG_BFG_1`, le son attaque 2, le calcul directionnel et les parametres `monster_fire_bfg` `50, 300, 100, 200`.
+- Commentaires d'en-tete: commentaires ajoutes pour `jorg_dead`, `jorg_die`, `jorgBFG` et `jorg_attack1`; tables/moves declaratifs couverts par les noms preserves et les harness source-parity/cible.
+- Runtime: integre. `SP_monster_jorg` assigne `self.die = jorg_die` et `monsterinfo.attack = jorg_attack`; la mort passe par le callback `die`, puis `M_MoveFrame` consomme `jorg_move_death` depuis `G_RunFrame`/`monster_think`; l'attaque BFG est atteignable via `jorg_attack -> jorg_move_attack2 -> jorgBFG`.
+- apps/web: integre. `apps/web` ne remplace pas la logique Jorg; le flux full-game/local host consomme les snapshots, sons runtime, muzzle flashes/temp entities et entites generees par le runtime.
+- renderer-three: integre. Le lot produit des frames visibles de modele Jorg, un handoff Makron et des sorties weapon/temp entity; `packages/renderer-three` consomme les frames via `refresh-entity-sync`/`applyMd2AliasFrameLerp`, tandis que les sorties d'arme/temp entities restent dans les flux runtime/web couverts par les tests full-game/renderer.
+- Tests lances:
+  - `npm run verify:m-boss31`
+  - `npm run verify:m-boss31:source-parity`
+  - `npm run verify:m-boss31:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `packages/game/src/m_boss31.ts`: ajout des commentaires d'en-tete de `jorg_dead`, `jorg_die`, `jorgBFG` et `jorg_attack1`.
+  - `scripts/verify/quake2-m-boss31.ts`: assertions ciblees pour tables/moves death et attack2, callbacks death/attack2, registre save et transition `jorg_attack1`.
+
+## Session 2026-05-06
+
 - Lot traite: bloc pain `jorg_frames_pain3` global/table/declarative, `jorg_move_pain3`, `jorg_frames_pain2` global/table/declarative, `jorg_move_pain2`, `jorg_frames_pain1` global/table/declarative, `jorg_move_pain1`, `jorg_pain`.
 - Verdict: Valide.
 - Comparaison C/TS: `jorg_frames_pain3` conserve 25 frames `ai_move`, distances `[-28,-6,-3,-9,0,0,0,0,-7,1,-11,-4,0,0,10,11,0,10,3,10,7,17,0,0,0]`, callbacks `jorg_step_left` aux indices 2 et 20, `jorg_step_right` aux indices 4 et 24. `jorg_move_pain3` conserve `FRAME_pain301..FRAME_pain325` et `endfunc jorg_run`. `jorg_frames_pain2`/`jorg_frames_pain1` conservent 3 frames `ai_move` a distance 0 sans callback; `jorg_move_pain2` conserve `FRAME_pain201..FRAME_pain203`, `jorg_move_pain1` conserve `FRAME_pain101..FRAME_pain103`, tous deux avec `endfunc jorg_run`. `jorg_pain` conserve skin half-health, `s.sound = 0`, debounce, suppressions aleatoires des petits degats et attaques, skip nightmare, sons pain1/2/3 et choix de move par degats.
@@ -87,4 +108,4 @@
 
 ## Prochain lot recommande
 
-- Valider le bloc death `jorg_frames_death1` global/table/declarative, `jorg_move_death`, `jorg_dead`, puis `jorg_die` si le lot reste coherent.
+- Continuer avec le bloc attack1 `jorg_frames_start_attack1` global/table/declarative, `jorg_move_start_attack1`, `jorg_frames_attack1` global/table/declarative, `jorg_move_attack1`, `jorg_frames_end_attack1` global/table/declarative, `jorg_move_end_attack1`, puis `jorg_reattack1`/`jorg_attack1` si coherent.

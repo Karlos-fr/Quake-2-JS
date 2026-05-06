@@ -35,7 +35,9 @@ import {
   RANGE_MELEE,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  crandom,
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, range } from "./g_ai.js";
 import { monster_fire_blaster, monster_fire_bullet, monster_fire_shotgun, walkmonster_start } from "./g_monster.js";
@@ -599,7 +601,7 @@ const machinegun_flash = [
  * Fidelity level: Close
  */
 export function soldier_idle(self: GameEntity, runtime: GameRuntime): void {
-  if (Math.random() > 0.8) {
+  if (random() > 0.8) {
     emitRegisteredGameSound(runtime, self, sound_idle, SOUND_IDLE, soundOptions(CHAN_VOICE, ATTN_IDLE));
   }
 }
@@ -631,7 +633,7 @@ export const soldier_move_stand3: GameMonsterMove = {
 };
 
 export function soldier_stand(self: GameEntity): void {
-  if (self.monsterinfo.currentmove === soldier_move_stand3 || Math.random() < 0.8) {
+  if (self.monsterinfo.currentmove === soldier_move_stand3 || random() < 0.8) {
     self.monsterinfo.currentmove = soldier_move_stand1;
   } else {
     self.monsterinfo.currentmove = soldier_move_stand3;
@@ -639,7 +641,7 @@ export function soldier_stand(self: GameEntity): void {
 }
 
 export function soldier_walk1_random(self: GameEntity): void {
-  if (Math.random() > 0.1) {
+  if (random() > 0.1) {
     self.monsterinfo.nextframe = FRAME_walk101;
   }
 }
@@ -665,7 +667,7 @@ export const soldier_move_walk2: GameMonsterMove = {
 };
 
 export function soldier_walk(self: GameEntity): void {
-  self.monsterinfo.currentmove = Math.random() < 0.5 ? soldier_move_walk1 : soldier_move_walk2;
+  self.monsterinfo.currentmove = random() < 0.5 ? soldier_move_walk1 : soldier_move_walk2;
 }
 
 const soldier_frames_start_run = makeFrames(ai_run, [7, 5]);
@@ -768,7 +770,7 @@ export function soldier_pain(self: GameEntity, _other: GameEntity | null, _kick:
     return;
   }
 
-  const r = Math.random();
+  const r = random();
   if (r < 0.33) {
     self.monsterinfo.currentmove = soldier_move_pain1;
   } else if (r < 0.66) {
@@ -844,7 +846,7 @@ export function soldier_attack1_refire1(self: GameEntity, runtime: GameRuntime):
   if (self.s.skinnum > 1 || !self.enemy || self.enemy.health <= 0) {
     return;
   }
-  self.monsterinfo.nextframe = ((runtime.skill === 3 && Math.random() < 0.5) || range(self, self.enemy) === RANGE_MELEE)
+  self.monsterinfo.nextframe = ((runtime.skill === 3 && random() < 0.5) || range(self, self.enemy) === RANGE_MELEE)
     ? FRAME_attak102
     : FRAME_attak110;
 }
@@ -853,7 +855,7 @@ export function soldier_attack1_refire2(self: GameEntity, runtime: GameRuntime):
   if (self.s.skinnum < 2 || !self.enemy || self.enemy.health <= 0) {
     return;
   }
-  if ((runtime.skill === 3 && Math.random() < 0.5) || range(self, self.enemy) === RANGE_MELEE) {
+  if ((runtime.skill === 3 && random() < 0.5) || range(self, self.enemy) === RANGE_MELEE) {
     self.monsterinfo.nextframe = FRAME_attak102;
   }
 }
@@ -875,7 +877,7 @@ export function soldier_attack2_refire1(self: GameEntity, runtime: GameRuntime):
   if (self.s.skinnum > 1 || !self.enemy || self.enemy.health <= 0) {
     return;
   }
-  self.monsterinfo.nextframe = ((runtime.skill === 3 && Math.random() < 0.5) || range(self, self.enemy) === RANGE_MELEE)
+  self.monsterinfo.nextframe = ((runtime.skill === 3 && random() < 0.5) || range(self, self.enemy) === RANGE_MELEE)
     ? FRAME_attak204
     : FRAME_attak216;
 }
@@ -884,7 +886,7 @@ export function soldier_attack2_refire2(self: GameEntity, runtime: GameRuntime):
   if (self.s.skinnum < 2 || !self.enemy || self.enemy.health <= 0) {
     return;
   }
-  if ((runtime.skill === 3 && Math.random() < 0.5) || range(self, self.enemy) === RANGE_MELEE) {
+  if ((runtime.skill === 3 && random() < 0.5) || range(self, self.enemy) === RANGE_MELEE) {
     self.monsterinfo.nextframe = FRAME_attak204;
   }
 }
@@ -980,20 +982,20 @@ export const soldier_move_attack6: GameMonsterMove = {
 
 export function soldier_attack(self: GameEntity): void {
   if (self.s.skinnum < 4) {
-    self.monsterinfo.currentmove = Math.random() < 0.5 ? soldier_move_attack1 : soldier_move_attack2;
+    self.monsterinfo.currentmove = random() < 0.5 ? soldier_move_attack1 : soldier_move_attack2;
   } else {
     self.monsterinfo.currentmove = soldier_move_attack4;
   }
 }
 
 export function soldier_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
-  if (Math.random() < 0.5) {
+  if (random() < 0.5) {
     emitRegisteredGameSound(runtime, self, sound_sight1, SOUND_SIGHT1, soundOptions(CHAN_VOICE));
   } else {
     emitRegisteredGameSound(runtime, self, sound_sight2, SOUND_SIGHT2, soundOptions(CHAN_VOICE));
   }
 
-  if (runtime.skill > 0 && self.enemy && range(self, self.enemy) >= RANGE_MID && Math.random() > 0.5) {
+  if (runtime.skill > 0 && self.enemy && range(self, self.enemy) >= RANGE_MID && random() > 0.5) {
     self.monsterinfo.currentmove = soldier_move_attack6;
   }
 }
@@ -1021,7 +1023,7 @@ export const soldier_move_duck: GameMonsterMove = {
 };
 
 export function soldier_dodge(self: GameEntity, attacker: GameEntity | null, eta: number, runtime: GameRuntime): void {
-  if (Math.random() > 0.25) {
+  if (random() > 0.25) {
     return;
   }
   if (!self.enemy) {
@@ -1033,7 +1035,7 @@ export function soldier_dodge(self: GameEntity, attacker: GameEntity | null, eta
   }
 
   self.monsterinfo.pausetime = runtime.time + eta + 0.3;
-  const r = Math.random();
+  const r = random();
   if (runtime.skill === 1) {
     self.monsterinfo.currentmove = r > 0.33 ? soldier_move_duck : soldier_move_attack3;
     return;
@@ -1311,8 +1313,4 @@ function normalizeVec3(vector: vec3_t): vec3_t {
 
 function randomInt(maxExclusive: number): number {
   return Math.trunc(Math.random() * maxExclusive);
-}
-
-function crandom(): number {
-  return 2 * (Math.random() - 0.5);
 }

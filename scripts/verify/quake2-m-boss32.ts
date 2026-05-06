@@ -47,8 +47,13 @@ import {
   MZ2_MAKRON_BLASTER_1,
   MZ2_MAKRON_RAILGUN_1,
   SP_monster_makron,
+  FRAME_active01,
+  FRAME_active13,
   FRAME_attak405,
+  FRAME_death201,
   FRAME_death295,
+  FRAME_death301,
+  FRAME_death320,
   FRAME_pain401,
   FRAME_pain404,
   FRAME_pain501,
@@ -63,15 +68,20 @@ import {
   makron_brainsplorch,
   makron_dead,
   makron_attack,
+  makron_frames_death2,
+  makron_frames_death3,
   makron_frames_pain4,
   makron_frames_pain5,
   makron_frames_pain6,
+  makron_frames_sight,
   makron_frames_walk,
   makron_die,
   makron_hit,
   makron_move_attack3,
   makron_move_attack4,
   makron_move_attack5,
+  makron_move_death2,
+  makron_move_death3,
   makron_move_pain4,
   makron_move_pain5,
   makron_move_pain6,
@@ -83,6 +93,7 @@ import {
   makron_popup,
   makron_prerailgun,
   makron_run,
+  makron_sight,
   makron_stand,
   makron_step_left,
   makron_step_right,
@@ -98,6 +109,7 @@ function main(): void {
   verifySaveRegistryRestoresCallbacksAndMoves();
   verifyStandRunTablesAndCallbacks();
   verifyPainTablesAndMoves();
+  verifyDeathSightTablesAndMoves();
   verifyStateTransitions();
   verifySoundCallbacks();
   verifyPainBranchesPreserveSourceDanglingElse();
@@ -173,10 +185,13 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveFunction("MakronHyperblaster"), MakronHyperblaster);
   assert.equal(findGameSaveFunction("MakronRailgun"), MakronRailgun);
   assert.equal(findGameSaveFunction("MakronSaveloc"), MakronSaveloc);
+  assert.equal(findGameSaveFunction("makron_sight"), makron_sight);
   assert.equal(findGameSaveMove("makron_move_stand"), makron_move_stand);
   assert.equal(findGameSaveMove("makron_move_sight"), makron_move_sight);
   assert.equal(findGameSaveMove("makron_move_run"), makron_move_run);
   assert.equal(findGameSaveMove("makron_move_walk"), makron_move_walk);
+  assert.equal(findGameSaveMove("makron_move_death2"), makron_move_death2);
+  assert.equal(findGameSaveMove("makron_move_death3"), makron_move_death3);
   assert.equal(findGameSaveMove("makron_move_pain4"), makron_move_pain4);
   assert.equal(findGameSaveMove("makron_move_pain5"), makron_move_pain5);
   assert.equal(findGameSaveMove("makron_move_pain6"), makron_move_pain6);
@@ -252,6 +267,64 @@ function verifyPainTablesAndMoves(): void {
   assert.deepEqual(makron_frames_pain4.map((frame) => frame.aifunc?.name), new Array<string>(4).fill("ai_move"));
   assert.deepEqual(makron_frames_pain4.map((frame) => frame.dist), new Array<number>(4).fill(0));
   assert.ok(makron_frames_pain4.every((frame) => frame.thinkfunc === undefined));
+}
+
+function verifyDeathSightTablesAndMoves(): void {
+  assert.equal(makron_move_death2.firstframe, FRAME_death201);
+  assert.equal(makron_move_death2.lastframe, FRAME_death295);
+  assert.equal(makron_move_death2.frame, makron_frames_death2);
+  assert.equal(makron_move_death2.endfunc, makron_dead);
+  assert.equal(makron_frames_death2.length, 95);
+  assert.deepEqual(makron_frames_death2.map((frame) => frame.aifunc?.name), new Array<string>(95).fill("ai_move"));
+  assert.deepEqual(
+    makron_frames_death2.map((frame) => frame.dist),
+    [
+      -15, 3, -12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 12, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      0, 5, 7, 6, 0, 0, -1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6, -4, -6, -4, -4, 0, 0, 0, 0,
+      -2, -5, -3, -8, -3, -7, -4, -4, -6, -7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0,
+      2, 0, 27, 26, 0, 0, 0
+    ]
+  );
+  assert.deepEqual(
+    makron_frames_death2.map((frame) => frame.thinkfunc?.name),
+    indexedNames(95, [
+      [3, "makron_step_left"],
+      [17, "makron_step_right"],
+      [35, "makron_step_left"],
+      [55, "makron_step_right"],
+      [57, "makron_step_left"],
+      [64, "makron_step_right"],
+      [66, "makron_step_left"],
+      [69, "makron_step_right"],
+      [72, "makron_step_left"],
+      [90, "makron_hit"],
+      [92, "makron_brainsplorch"]
+    ])
+  );
+
+  assert.equal(makron_move_death3.firstframe, FRAME_death301);
+  assert.equal(makron_move_death3.lastframe, FRAME_death320);
+  assert.equal(makron_move_death3.frame, makron_frames_death3);
+  assert.equal(makron_move_death3.endfunc, undefined);
+  assert.equal(makron_frames_death3.length, 20);
+  assert.deepEqual(makron_frames_death3.map((frame) => frame.aifunc?.name), new Array<string>(20).fill("ai_move"));
+  assert.deepEqual(makron_frames_death3.map((frame) => frame.dist), new Array<number>(20).fill(0));
+  assert.ok(makron_frames_death3.every((frame) => frame.thinkfunc === undefined));
+
+  assert.equal(makron_move_sight.firstframe, FRAME_active01);
+  assert.equal(makron_move_sight.lastframe, FRAME_active13);
+  assert.equal(makron_move_sight.frame, makron_frames_sight);
+  assert.equal(makron_move_sight.endfunc, makron_run);
+  assert.equal(makron_frames_sight.length, 13);
+  assert.deepEqual(makron_frames_sight.map((frame) => frame.aifunc?.name), new Array<string>(13).fill("ai_move"));
+  assert.deepEqual(makron_frames_sight.map((frame) => frame.dist), new Array<number>(13).fill(0));
+  assert.ok(makron_frames_sight.every((frame) => frame.thinkfunc === undefined));
+
+  const runtime = createHarnessRuntime();
+  const makron = createMakron(runtime, 15);
+  makron.monsterinfo.currentmove = makron_move_stand;
+  makron_sight(makron);
+  assert.equal(makron.monsterinfo.currentmove, makron_move_sight);
 }
 
 function verifyStateTransitions(): void {
@@ -534,6 +607,14 @@ function assertSound(
   assert.equal(event?.volume, 1);
   assert.equal(event?.attenuation, attenuation);
   assert.equal(event?.timeofs, 0);
+}
+
+function indexedNames(count: number, entries: Array<[index: number, name: string]>): Array<string | undefined> {
+  const names = new Array<string | undefined>(count).fill(undefined);
+  for (const [index, name] of entries) {
+    names[index] = name;
+  }
+  return names;
 }
 
 function withMathRandom(values: number[], callback: () => void): void {

@@ -46,11 +46,15 @@ import {
   jorg_frames_pain3,
   jorg_frames_run,
   jorg_frames_stand,
+  jorg_frames_attack2,
+  jorg_frames_death1,
   jorg_frames_end_walk,
   jorg_frames_start_walk,
   jorg_frames_walk,
   jorgBFG,
   jorg_attack,
+  jorg_attack1,
+  jorg_dead,
   jorg_death_hit,
   jorg_die,
   jorg_firebullet,
@@ -87,6 +91,7 @@ function main(): void {
   verifyStandAndRunTables();
   verifyWalkTables();
   verifyPainTables();
+  verifyDeathAndAttack2Tables();
   verifyStateTransitions();
   verifySoundsAndPainBranches();
   verifyWeaponCallbacks();
@@ -155,8 +160,11 @@ function verifySpawnRegistryCallsMonsterJorg(): void {
 function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveFunction("SP_monster_jorg"), SP_monster_jorg);
   assert.equal(findGameSaveFunction("jorg_pain"), jorg_pain);
+  assert.equal(findGameSaveFunction("jorg_dead"), jorg_dead);
   assert.equal(findGameSaveFunction("jorg_die"), jorg_die);
   assert.equal(findGameSaveFunction("jorgBFG"), jorgBFG);
+  assert.equal(findGameSaveFunction("jorg_attack1"), jorg_attack1);
+  assert.equal(findGameSaveFunction("jorg_reattack1"), jorg_reattack1);
   assert.equal(findGameSaveMove("jorg_move_stand"), jorg_move_stand);
   assert.equal(findGameSaveMove("jorg_move_run"), jorg_move_run);
   assert.equal(findGameSaveMove("jorg_move_start_walk"), jorg_move_start_walk);
@@ -166,6 +174,9 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("jorg_move_pain2"), jorg_move_pain2);
   assert.equal(findGameSaveMove("jorg_move_pain3"), jorg_move_pain3);
   assert.equal(findGameSaveMove("jorg_move_attack2"), jorg_move_attack2);
+  assert.equal(findGameSaveMove("jorg_move_start_attack1"), jorg_move_start_attack1);
+  assert.equal(findGameSaveMove("jorg_move_attack1"), jorg_move_attack1);
+  assert.equal(findGameSaveMove("jorg_move_end_attack1"), jorg_move_end_attack1);
   assert.equal(findGameSaveMove("jorg_move_death"), jorg_move_death);
 }
 
@@ -263,6 +274,31 @@ function verifyPainTables(): void {
   assert.ok(jorg_frames_pain1.every((frame) => frame.thinkfunc === undefined));
 }
 
+function verifyDeathAndAttack2Tables(): void {
+  assert.equal(jorg_frames_death1.length, 50);
+  assert.equal(jorg_move_death.firstframe, 31);
+  assert.equal(jorg_move_death.lastframe, 80);
+  assert.equal(jorg_move_death.frame, jorg_frames_death1);
+  assert.equal(jorg_move_death.endfunc, jorg_dead);
+  assert.ok(jorg_frames_death1.every((frame) => frame.aifunc?.name === "ai_move"));
+  assert.ok(jorg_frames_death1.every((frame) => frame.dist === 0));
+  assert.ok(jorg_frames_death1.slice(0, 48).every((frame) => frame.thinkfunc === undefined));
+  assert.equal(jorg_frames_death1[48].thinkfunc?.name, "MakronToss");
+  assert.equal(jorg_frames_death1[49].thinkfunc?.name, "BossExplode");
+
+  assert.equal(jorg_frames_attack2.length, 13);
+  assert.equal(jorg_move_attack2.firstframe, 18);
+  assert.equal(jorg_move_attack2.lastframe, 30);
+  assert.equal(jorg_move_attack2.frame, jorg_frames_attack2);
+  assert.equal(jorg_move_attack2.endfunc, jorg_run);
+  assert.ok(jorg_frames_attack2.slice(0, 7).every((frame) => frame.aifunc?.name === "ai_charge"));
+  assert.ok(jorg_frames_attack2.slice(7).every((frame) => frame.aifunc?.name === "ai_move"));
+  assert.ok(jorg_frames_attack2.every((frame) => frame.dist === 0));
+  assert.ok(jorg_frames_attack2.slice(0, 6).every((frame) => frame.thinkfunc === undefined));
+  assert.equal(jorg_frames_attack2[6].thinkfunc, jorgBFG);
+  assert.ok(jorg_frames_attack2.slice(7).every((frame) => frame.thinkfunc === undefined));
+}
+
 function verifyStateTransitions(): void {
   const runtime = createHarnessRuntime();
   const jorg = createJorg(runtime, 3);
@@ -296,6 +332,8 @@ function verifyStateTransitions(): void {
   withMathRandom([0.95], () => jorg_reattack1(jorg, runtime));
   assert.equal(jorg.monsterinfo.currentmove, jorg_move_end_attack1);
   assert.equal(jorg.s.sound, 0);
+  jorg_attack1(jorg);
+  assert.equal(jorg.monsterinfo.currentmove, jorg_move_attack1);
 }
 
 function verifySoundsAndPainBranches(): void {

@@ -36,6 +36,7 @@ function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifyRandomMacroConsumers();
 
   console.log("quake2-m-supertank-source-parity: ok");
 }
@@ -88,6 +89,26 @@ function verifySourcePrecacheAssets(): void {
 
   assert.deepEqual(runtime.assets.soundPaths, sourceSounds, "SP_monster_supertank sound precache order");
   assert.equal(runtime.assets.modelPaths[entity.s.modelindex - 1], sourceModel, "SP_monster_supertank model precache");
+}
+
+function verifyRandomMacroConsumers(): void {
+  const sourceRandomConsumers = [
+    "supertank_search",
+    "supertank_reattack1",
+    "supertank_pain",
+    "supertank_attack"
+  ];
+
+  for (const functionName of sourceRandomConsumers) {
+    assert.match(getFunctionBlock(functionName, sourceWithoutComments), /\brandom\s*\(/, `${functionName} should consume source random()`);
+    const tsFunction = getTsFunctionBlock(functionName);
+    assert.match(tsFunction, /\brandom\s*\(/, `${functionName} should consume g_local.random()`);
+    assert.doesNotMatch(tsFunction, /Math\.random\s*\(/, `${functionName} must not call Math.random() directly`);
+  }
+
+  assert.match(getFunctionBlock("BossExplode", sourceWithoutComments), /rand\s*\(\)\s*&\s*15/, "BossExplode should keep integer rand() source usage");
+  assert.match(getTsFunctionBlock("BossExplode"), /randomInt\s*\(\s*32768\s*\)\s*&\s*15/, "BossExplode should keep integer randomInt for rand()&15");
+  assert.doesNotMatch(sourceWithoutComments, /\bcrandom\s*\(/, "m_supertank.c should not consume crandom()");
 }
 
 interface SourceFrame {
@@ -144,11 +165,10 @@ function parseMoves(cSource: string): Map<string, SourceMove> {
 }
 
 function getFunctionBlock(functionName: string, cSource: string): string {
-  const start = cSource.indexOf(`void ${functionName}`);
-  assert.notEqual(start, -1, `${functionName} should exist in source`);
+  const declaration = new RegExp(`\\bvoid\\s+${functionName}\\s*\\([^;]*?\\)\\s*\\{`).exec(cSource);
+  assert.ok(declaration, `${functionName} should exist in source`);
 
-  const bodyStart = cSource.indexOf("{", start);
-  assert.notEqual(bodyStart, -1, `${functionName} should have a body`);
+  const bodyStart = cSource.indexOf("{", declaration.index);
 
   let depth = 0;
   for (let i = bodyStart; i < cSource.length; i += 1) {
@@ -164,6 +184,31 @@ function getFunctionBlock(functionName: string, cSource: string): string {
   }
 
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const tsPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../packages/game/src/m_supertank.ts");
+  const tsSource = readFileSync(tsPath, "utf8");
+  const declaration = new RegExp(`\\bexport\\s+function\\s+${functionName}\\s*\\(`).exec(tsSource);
+  assert.ok(declaration, `${functionName} should exist in m_supertank.ts`);
+
+  const bodyStart = tsSource.indexOf("{", declaration.index);
+  assert.notEqual(bodyStart, -1, `${functionName} should have a TS body`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < tsSource.length; i += 1) {
+    const char = tsSource[i];
+    if (char === "{") {
+      depth += 1;
+    } else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsSource.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} TS body was not closed`);
 }
 
 function getFrameConstant(name: string): number {

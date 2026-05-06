@@ -1643,7 +1643,30 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-insane` OK; `npm run verify:m-insane:header` OK; `npm run verify:m-mutant` OK; `npm run verify:m-mutant:header` OK; `npm run verify:m-mutant:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, de preference `m_soldier.ts`, puis `m_tank.ts`/`m_supertank.ts` ou reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts`, `p_hud.ts`, `m_gunner.ts`, `m_chick.ts`, `m_hover.ts`, `m_infantry.ts`, `m_insane.ts` et `m_mutant.ts` ont montre les usages entiers ou absences de `crandom` pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot 3x de reprise `random`/`crandom`, migration `packages/game/src/m_soldier.ts`, `packages/game/src/m_tank.ts` et `packages/game/src/m_supertank.ts`.
+- Verdict: `Partiel` maintenu pour les 2 macros: les trois familles du lot sont harmonisees pour les usages macro C actifs, mais d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_soldier.c` consomme `random()` dans `soldier_idle`, `soldier_stand`, `soldier_walk1_random`, `soldier_walk`, `soldier_pain`, les refire attack1/2, `soldier_attack`, `soldier_sight` et `soldier_dodge`; il consomme `crandom()` dans `soldier_fire`; `soldier_fire` (`rand() % 8`) et `soldier_die` (`rand() % 5`) restent hors macros flottantes.
+  - `m_tank.c` consomme `random()` dans `tank_pain`, `tank_reattack_blaster`, `tank_refire_rocket` et `tank_attack`; aucun appel `crandom()` dans ce fichier.
+  - `m_supertank.c` consomme `random()` dans `supertank_search`, `supertank_reattack1`, `supertank_pain` et `supertank_attack`; `BossExplode` utilise `rand() & 15`, hors macros flottantes; aucun appel `crandom()` actif.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_soldier.ts`: les consommateurs macro flottants utilisent maintenant `random`/`crandom` importes depuis `g_local.ts`; les usages entiers restent sur `randomInt`.
+  - `packages/game/src/m_tank.ts` et `packages/game/src/m_supertank.ts`: les consommateurs macro `random()` utilisent maintenant le helper proprietaire; les usages entiers restent sur `randomInt`.
+- Runtime: integration attendue et branchee via `SP_monster_soldier*`, `SP_monster_tank`, `SP_monster_supertank`, `g_spawn.ts`, callbacks `stand`/`search`/`pain`/`dodge`/`attack`, `monster_think`/`M_MoveFrame`, `G_RunEntity` et `G_RunFrame`; les tirages affectent sons, choix d'animations, refire, dodge, projectiles, muzzle flashes, explosions et frames visibles.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres, projectiles/temp entities et ordre de rendu; aucune logique parallele web `m_soldier`/`m_tank`/`m_supertank`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Les tirages affectent sorties visibles/audibles via modeles soldier/tank/supertank, frames, skins, muzzle flashes, rockets, bullets, temp entities d'explosion, gibs/corpses et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; les headers de modules monstres rattachent chaque fichier a son C/H source; les harness source-parity prouvent les consommateurs macro et les usages entiers hors macro.
+- Corrections appliquees:
+  - `packages/game/src/m_soldier.ts`: import de `random`/`crandom` depuis `g_local.ts`, remplacement des usages directs `Math.random()` et suppression du helper local `crandom`.
+  - `packages/game/src/m_tank.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C.
+  - `packages/game/src/m_supertank.ts`: import de `random` depuis `g_local.ts`, remplacement des usages directs `Math.random()` correspondant au macro C.
+  - `scripts/verify/quake2-m-soldier-source-parity.ts`, `scripts/verify/quake2-m-tank-source-parity.ts`, `scripts/verify/quake2-m-supertank-source-parity.ts`: preuves source/TS des consommateurs macro, interdiction locale de `Math.random()` dans ces fonctions, verification des usages entiers hors macro.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-soldier` OK; `npm run verify:m-soldier:source-parity` OK; `npm run verify:m-soldier:header` OK; `npm run verify:m-tank` OK; `npm run verify:m-tank:source-parity` OK; `npm run verify:m-tank:header` OK; `npm run verify:m-supertank` OK; `npm run verify:m-supertank:source-parity` OK; `npm run verify:m-supertank:header` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, ou reprendre `g_utils.ts` quand il ne sera plus reserve. `m_soldier.ts`, `m_tank.ts`, `m_supertank.ts`, `m_move.ts`, `g_items.ts`, `p_hud.ts`, `m_gunner.ts`, `m_chick.ts`, `m_hover.ts`, `m_infantry.ts`, `m_insane.ts` et `m_mutant.ts` ont montre les usages entiers ou absences de `crandom` pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

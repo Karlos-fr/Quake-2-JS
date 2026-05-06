@@ -28,6 +28,7 @@ function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifyRandomMacroConsumers();
 
   console.log("quake2-m-tank-source-parity: ok");
 }
@@ -76,6 +77,24 @@ function verifySourcePrecacheAssets(): void {
 
   assert.deepEqual(runtime.assets.soundPaths, sourceSounds, "SP_monster_tank sound precache order");
   assert.equal(runtime.assets.modelPaths[entity.s.modelindex - 1], sourceModel, "SP_monster_tank model precache");
+}
+
+function verifyRandomMacroConsumers(): void {
+  const sourceRandomConsumers = [
+    "tank_pain",
+    "tank_reattack_blaster",
+    "tank_refire_rocket",
+    "tank_attack"
+  ];
+
+  for (const functionName of sourceRandomConsumers) {
+    assert.match(getFunctionBlock(functionName, sourceWithoutComments), /\brandom\s*\(/, `${functionName} should consume source random()`);
+    const tsFunction = getTsFunctionBlock(functionName);
+    assert.match(tsFunction, /\brandom\s*\(/, `${functionName} should consume g_local.random()`);
+    assert.doesNotMatch(tsFunction, /Math\.random\s*\(/, `${functionName} must not call Math.random() directly`);
+  }
+
+  assert.doesNotMatch(sourceWithoutComments, /\bcrandom\s*\(/, "m_tank.c should not consume crandom()");
 }
 
 interface SourceFrame {
@@ -130,9 +149,9 @@ function parseMoves(cSource: string): Map<string, SourceMove> {
 }
 
 function getFunctionBlock(functionName: string, cSource: string): string {
-  const start = cSource.indexOf(`void ${functionName}`);
-  assert.notEqual(start, -1, `${functionName} should exist in source`);
-  const bodyStart = cSource.indexOf("{", start);
+  const declaration = new RegExp(`\\bvoid\\s+${functionName}\\s*\\([^;]*?\\)\\s*\\{`).exec(cSource);
+  assert.ok(declaration, `${functionName} should exist in source`);
+  const bodyStart = cSource.indexOf("{", declaration.index);
   let depth = 0;
   for (let i = bodyStart; i < cSource.length; i += 1) {
     if (cSource[i] === "{") {
@@ -145,6 +164,26 @@ function getFunctionBlock(functionName: string, cSource: string): string {
     }
   }
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const tsPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../packages/game/src/m_tank.ts");
+  const tsSource = readFileSync(tsPath, "utf8");
+  const declaration = new RegExp(`\\bexport\\s+function\\s+${functionName}\\s*\\(`).exec(tsSource);
+  assert.ok(declaration, `${functionName} should exist in m_tank.ts`);
+  const bodyStart = tsSource.indexOf("{", declaration.index);
+  let depth = 0;
+  for (let i = bodyStart; i < tsSource.length; i += 1) {
+    if (tsSource[i] === "{") {
+      depth += 1;
+    } else if (tsSource[i] === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsSource.slice(bodyStart, i + 1);
+      }
+    }
+  }
+  throw new Error(`${functionName} TS body was not closed`);
 }
 
 function getExport<T>(name: string): T {

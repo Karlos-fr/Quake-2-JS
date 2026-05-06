@@ -29,7 +29,8 @@ import {
   MOVETYPE_TOSS,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk, visible } from "./g_ai.js";
 import { monster_fire_blaster, monster_fire_bullet, monster_fire_rocket, walkmonster_start } from "./g_monster.js";
@@ -547,7 +548,7 @@ export function tank_pain(
     return;
   }
 
-  if (damage <= 30 && Math.random() > 0.2) {
+  if (damage <= 30 && random() > 0.2) {
     return;
   }
 
@@ -692,7 +693,7 @@ export const tank_move_attack_post_blast: GameMonsterMove = {
 };
 
 export function tank_reattack_blaster(self: GameEntity, runtime: GameRuntime): void {
-  if (runtime.skill >= 2 && self.enemy && visible(self, self.enemy, runtime) && self.enemy.health > 0 && Math.random() <= 0.6) {
+  if (runtime.skill >= 2 && self.enemy && visible(self, self.enemy, runtime) && self.enemy.health > 0 && random() <= 0.6) {
     self.monsterinfo.currentmove = tank_move_reattack_blast;
     return;
   }
@@ -766,7 +767,7 @@ export const tank_move_attack_chain: GameMonsterMove = {
 };
 
 export function tank_refire_rocket(self: GameEntity, runtime: GameRuntime): void {
-  if (runtime.skill >= 2 && self.enemy && self.enemy.health > 0 && visible(self, self.enemy, runtime) && Math.random() <= 0.4) {
+  if (runtime.skill >= 2 && self.enemy && self.enemy.health > 0 && visible(self, self.enemy, runtime) && random() <= 0.4) {
     self.monsterinfo.currentmove = tank_move_attack_fire_rocket;
     return;
   }
@@ -791,7 +792,7 @@ export function tank_attack(self: GameEntity, runtime: GameRuntime): void {
 
   const vec = subtractVec3(self.enemy.s.origin, self.s.origin);
   const range = Math.hypot(vec[0], vec[1], vec[2]);
-  const r = Math.random();
+  const r = random();
 
   if (range <= 125) {
     self.monsterinfo.currentmove = r < 0.4 ? tank_move_attack_chain : tank_move_attack_blast;
