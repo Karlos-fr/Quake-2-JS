@@ -777,6 +777,15 @@ export function mutant_pain(
   }
 }
 
+/**
+ * Original name: mutant_dead
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Shrinks the corpse bounds, switches to toss physics, links the dead monster, and runs fly cleanup.
+ */
 export function mutant_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -16, -16, -24);
   setVec3(self.maxs, 16, 16, -8);
@@ -845,6 +854,18 @@ export function mutant_die(
   self.monsterinfo.currentmove = random() < 0.5 ? mutant_move_death1 : mutant_move_death2;
 }
 
+/**
+ * Original name: SP_monster_mutant
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Precaches mutant assets, initializes monster bounds/stats/callbacks, and starts walkmonster setup.
+ *
+ * Porting notes:
+ * - Uses `runtime.deathmatch` and runtime asset registries in place of C globals and `gi.*` imports.
+ */
 export function SP_monster_mutant(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
     G_FreeEdict(runtime, self);

@@ -135,6 +135,18 @@ function verifySpawnRegistersAssetsAndStartsWalking(): void {
   assert.equal(mutant.gib_health, -120);
   assert.equal(mutant.mass, 300);
   assert.equal(mutant.monsterinfo.currentmove, mutant_move_stand);
+  assert.equal(mutant.pain, mutant_pain);
+  assert.equal(mutant.die, mutant_die);
+  assert.equal(mutant.monsterinfo.stand, mutant_stand);
+  assert.equal(mutant.monsterinfo.walk, mutant_walk);
+  assert.equal(mutant.monsterinfo.run, mutant_run);
+  assert.equal(mutant.monsterinfo.dodge, undefined);
+  assert.equal(mutant.monsterinfo.attack, mutant_jump);
+  assert.equal(mutant.monsterinfo.melee, mutant_melee);
+  assert.equal(mutant.monsterinfo.sight, mutant_sight);
+  assert.equal(mutant.monsterinfo.search, mutant_search);
+  assert.equal(mutant.monsterinfo.idle, mutant_idle);
+  assert.equal(mutant.monsterinfo.checkattack, mutant_checkattack);
   assert.equal(mutant.monsterinfo.scale, 1);
   assert.equal(runtime.assets.modelPaths[mutant.s.modelindex - 1], "models/monsters/mutant/tris.md2");
   assert.deepEqual(runtime.assets.soundPaths, [
@@ -223,6 +235,7 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("mutant_move_pain1"), mutant_move_pain1);
   assert.equal(findGameSaveMove("mutant_move_pain2"), mutant_move_pain2);
   assert.equal(findGameSaveMove("mutant_move_pain3"), mutant_move_pain3);
+  assert.equal(findGameSaveMove("mutant_move_death1"), mutant_move_death1);
   assert.equal(findGameSaveMove("mutant_move_death2"), mutant_move_death2);
 }
 
@@ -415,6 +428,8 @@ function verifyDeathBranches(): void {
   assert.deepEqual(second.maxs, [16, 16, -8]);
   assert.equal(second.movetype, MOVETYPE_TOSS);
   assert.equal(second.svflags & SVF_DEADMONSTER, SVF_DEADMONSTER);
+  assert.equal(mutant_move_death1.endfunc, mutant_dead);
+  assert.equal(mutant_move_death2.endfunc, mutant_dead);
 
   const gibMutant = createMutant(runtime, 15);
   SP_monster_mutant(gibMutant, runtime);

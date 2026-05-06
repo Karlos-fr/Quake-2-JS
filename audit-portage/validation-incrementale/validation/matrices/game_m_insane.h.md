@@ -209,87 +209,87 @@
 | `Quake-2-master/game/m_insane.h` | macro | `FRAME_walk24` | `packages/game/src/m_insane.ts` | `FRAME_walk24` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_insane.h` | macro | `FRAME_walk25` | `packages/game/src/m_insane.ts` | `FRAME_walk25` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_insane.h` | macro | `FRAME_walk26` | `packages/game/src/m_insane.ts` | `FRAME_walk26` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain2` | `packages/game/src/m_insane.ts` | `FRAME_st_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain3` | `packages/game/src/m_insane.ts` | `FRAME_st_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain4` | `packages/game/src/m_insane.ts` | `FRAME_st_pain4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain5` | `packages/game/src/m_insane.ts` | `FRAME_st_pain5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain6` | `packages/game/src/m_insane.ts` | `FRAME_st_pain6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain7` | `packages/game/src/m_insane.ts` | `FRAME_st_pain7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain8` | `packages/game/src/m_insane.ts` | `FRAME_st_pain8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain9` | `packages/game/src/m_insane.ts` | `FRAME_st_pain9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain10` | `packages/game/src/m_insane.ts` | `FRAME_st_pain10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain11` | `packages/game/src/m_insane.ts` | `FRAME_st_pain11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain12` | `packages/game/src/m_insane.ts` | `FRAME_st_pain12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death2` | `packages/game/src/m_insane.ts` | `FRAME_st_death2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death3` | `packages/game/src/m_insane.ts` | `FRAME_st_death3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death4` | `packages/game/src/m_insane.ts` | `FRAME_st_death4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death5` | `packages/game/src/m_insane.ts` | `FRAME_st_death5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death6` | `packages/game/src/m_insane.ts` | `FRAME_st_death6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death7` | `packages/game/src/m_insane.ts` | `FRAME_st_death7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death8` | `packages/game/src/m_insane.ts` | `FRAME_st_death8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death9` | `packages/game/src/m_insane.ts` | `FRAME_st_death9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death10` | `packages/game/src/m_insane.ts` | `FRAME_st_death10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death11` | `packages/game/src/m_insane.ts` | `FRAME_st_death11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death12` | `packages/game/src/m_insane.ts` | `FRAME_st_death12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death13` | `packages/game/src/m_insane.ts` | `FRAME_st_death13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death14` | `packages/game/src/m_insane.ts` | `FRAME_st_death14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death15` | `packages/game/src/m_insane.ts` | `FRAME_st_death15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death16` | `packages/game/src/m_insane.ts` | `FRAME_st_death16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death17` | `packages/game/src/m_insane.ts` | `FRAME_st_death17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death18` | `packages/game/src/m_insane.ts` | `FRAME_st_death18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl1` | `packages/game/src/m_insane.ts` | `FRAME_crawl1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl2` | `packages/game/src/m_insane.ts` | `FRAME_crawl2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl3` | `packages/game/src/m_insane.ts` | `FRAME_crawl3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl4` | `packages/game/src/m_insane.ts` | `FRAME_crawl4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl5` | `packages/game/src/m_insane.ts` | `FRAME_crawl5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl6` | `packages/game/src/m_insane.ts` | `FRAME_crawl6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl7` | `packages/game/src/m_insane.ts` | `FRAME_crawl7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl8` | `packages/game/src/m_insane.ts` | `FRAME_crawl8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl9` | `packages/game/src/m_insane.ts` | `FRAME_crawl9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain2` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain3` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain4` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain5` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain6` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain7` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain8` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain9` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain10` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death10` | `packages/game/src/m_insane.ts` | `FRAME_cr_death10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death11` | `packages/game/src/m_insane.ts` | `FRAME_cr_death11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death12` | `packages/game/src/m_insane.ts` | `FRAME_cr_death12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death13` | `packages/game/src/m_insane.ts` | `FRAME_cr_death13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death14` | `packages/game/src/m_insane.ts` | `FRAME_cr_death14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death15` | `packages/game/src/m_insane.ts` | `FRAME_cr_death15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death16` | `packages/game/src/m_insane.ts` | `FRAME_cr_death16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross1` | `packages/game/src/m_insane.ts` | `FRAME_cross1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross2` | `packages/game/src/m_insane.ts` | `FRAME_cross2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross3` | `packages/game/src/m_insane.ts` | `FRAME_cross3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross4` | `packages/game/src/m_insane.ts` | `FRAME_cross4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross5` | `packages/game/src/m_insane.ts` | `FRAME_cross5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross6` | `packages/game/src/m_insane.ts` | `FRAME_cross6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross7` | `packages/game/src/m_insane.ts` | `FRAME_cross7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross8` | `packages/game/src/m_insane.ts` | `FRAME_cross8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross9` | `packages/game/src/m_insane.ts` | `FRAME_cross9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross10` | `packages/game/src/m_insane.ts` | `FRAME_cross10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross11` | `packages/game/src/m_insane.ts` | `FRAME_cross11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross12` | `packages/game/src/m_insane.ts` | `FRAME_cross12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross13` | `packages/game/src/m_insane.ts` | `FRAME_cross13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross14` | `packages/game/src/m_insane.ts` | `FRAME_cross14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross15` | `packages/game/src/m_insane.ts` | `FRAME_cross15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross16` | `packages/game/src/m_insane.ts` | `FRAME_cross16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross17` | `packages/game/src/m_insane.ts` | `FRAME_cross17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross18` | `packages/game/src/m_insane.ts` | `FRAME_cross18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross19` | `packages/game/src/m_insane.ts` | `FRAME_cross19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross20` | `packages/game/src/m_insane.ts` | `FRAME_cross20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross21` | `packages/game/src/m_insane.ts` | `FRAME_cross21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross22` | `packages/game/src/m_insane.ts` | `FRAME_cross22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross23` | `packages/game/src/m_insane.ts` | `FRAME_cross23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross24` | `packages/game/src/m_insane.ts` | `FRAME_cross24` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross25` | `packages/game/src/m_insane.ts` | `FRAME_cross25` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross26` | `packages/game/src/m_insane.ts` | `FRAME_cross26` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross27` | `packages/game/src/m_insane.ts` | `FRAME_cross27` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross28` | `packages/game/src/m_insane.ts` | `FRAME_cross28` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross29` | `packages/game/src/m_insane.ts` | `FRAME_cross29` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross30` | `packages/game/src/m_insane.ts` | `FRAME_cross30` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain2` | `packages/game/src/m_insane.ts` | `FRAME_st_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain3` | `packages/game/src/m_insane.ts` | `FRAME_st_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain4` | `packages/game/src/m_insane.ts` | `FRAME_st_pain4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain5` | `packages/game/src/m_insane.ts` | `FRAME_st_pain5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain6` | `packages/game/src/m_insane.ts` | `FRAME_st_pain6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain7` | `packages/game/src/m_insane.ts` | `FRAME_st_pain7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain8` | `packages/game/src/m_insane.ts` | `FRAME_st_pain8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain9` | `packages/game/src/m_insane.ts` | `FRAME_st_pain9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain10` | `packages/game/src/m_insane.ts` | `FRAME_st_pain10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain11` | `packages/game/src/m_insane.ts` | `FRAME_st_pain11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_pain12` | `packages/game/src/m_insane.ts` | `FRAME_st_pain12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death2` | `packages/game/src/m_insane.ts` | `FRAME_st_death2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death3` | `packages/game/src/m_insane.ts` | `FRAME_st_death3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death4` | `packages/game/src/m_insane.ts` | `FRAME_st_death4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death5` | `packages/game/src/m_insane.ts` | `FRAME_st_death5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death6` | `packages/game/src/m_insane.ts` | `FRAME_st_death6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death7` | `packages/game/src/m_insane.ts` | `FRAME_st_death7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death8` | `packages/game/src/m_insane.ts` | `FRAME_st_death8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death9` | `packages/game/src/m_insane.ts` | `FRAME_st_death9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death10` | `packages/game/src/m_insane.ts` | `FRAME_st_death10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death11` | `packages/game/src/m_insane.ts` | `FRAME_st_death11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death12` | `packages/game/src/m_insane.ts` | `FRAME_st_death12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death13` | `packages/game/src/m_insane.ts` | `FRAME_st_death13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death14` | `packages/game/src/m_insane.ts` | `FRAME_st_death14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death15` | `packages/game/src/m_insane.ts` | `FRAME_st_death15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death16` | `packages/game/src/m_insane.ts` | `FRAME_st_death16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death17` | `packages/game/src/m_insane.ts` | `FRAME_st_death17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_st_death18` | `packages/game/src/m_insane.ts` | `FRAME_st_death18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl1` | `packages/game/src/m_insane.ts` | `FRAME_crawl1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl2` | `packages/game/src/m_insane.ts` | `FRAME_crawl2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl3` | `packages/game/src/m_insane.ts` | `FRAME_crawl3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl4` | `packages/game/src/m_insane.ts` | `FRAME_crawl4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl5` | `packages/game/src/m_insane.ts` | `FRAME_crawl5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl6` | `packages/game/src/m_insane.ts` | `FRAME_crawl6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl7` | `packages/game/src/m_insane.ts` | `FRAME_crawl7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl8` | `packages/game/src/m_insane.ts` | `FRAME_crawl8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_crawl9` | `packages/game/src/m_insane.ts` | `FRAME_crawl9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain2` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain3` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain4` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain5` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain6` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain7` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain8` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain9` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_pain10` | `packages/game/src/m_insane.ts` | `FRAME_cr_pain10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death10` | `packages/game/src/m_insane.ts` | `FRAME_cr_death10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death11` | `packages/game/src/m_insane.ts` | `FRAME_cr_death11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death12` | `packages/game/src/m_insane.ts` | `FRAME_cr_death12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death13` | `packages/game/src/m_insane.ts` | `FRAME_cr_death13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death14` | `packages/game/src/m_insane.ts` | `FRAME_cr_death14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death15` | `packages/game/src/m_insane.ts` | `FRAME_cr_death15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cr_death16` | `packages/game/src/m_insane.ts` | `FRAME_cr_death16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross1` | `packages/game/src/m_insane.ts` | `FRAME_cross1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross2` | `packages/game/src/m_insane.ts` | `FRAME_cross2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross3` | `packages/game/src/m_insane.ts` | `FRAME_cross3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross4` | `packages/game/src/m_insane.ts` | `FRAME_cross4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross5` | `packages/game/src/m_insane.ts` | `FRAME_cross5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross6` | `packages/game/src/m_insane.ts` | `FRAME_cross6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross7` | `packages/game/src/m_insane.ts` | `FRAME_cross7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross8` | `packages/game/src/m_insane.ts` | `FRAME_cross8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross9` | `packages/game/src/m_insane.ts` | `FRAME_cross9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross10` | `packages/game/src/m_insane.ts` | `FRAME_cross10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross11` | `packages/game/src/m_insane.ts` | `FRAME_cross11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross12` | `packages/game/src/m_insane.ts` | `FRAME_cross12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross13` | `packages/game/src/m_insane.ts` | `FRAME_cross13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross14` | `packages/game/src/m_insane.ts` | `FRAME_cross14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross15` | `packages/game/src/m_insane.ts` | `FRAME_cross15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross16` | `packages/game/src/m_insane.ts` | `FRAME_cross16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross17` | `packages/game/src/m_insane.ts` | `FRAME_cross17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross18` | `packages/game/src/m_insane.ts` | `FRAME_cross18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross19` | `packages/game/src/m_insane.ts` | `FRAME_cross19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross20` | `packages/game/src/m_insane.ts` | `FRAME_cross20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross21` | `packages/game/src/m_insane.ts` | `FRAME_cross21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross22` | `packages/game/src/m_insane.ts` | `FRAME_cross22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross23` | `packages/game/src/m_insane.ts` | `FRAME_cross23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross24` | `packages/game/src/m_insane.ts` | `FRAME_cross24` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross25` | `packages/game/src/m_insane.ts` | `FRAME_cross25` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross26` | `packages/game/src/m_insane.ts` | `FRAME_cross26` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross27` | `packages/game/src/m_insane.ts` | `FRAME_cross27` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross28` | `packages/game/src/m_insane.ts` | `FRAME_cross28` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross29` | `packages/game/src/m_insane.ts` | `FRAME_cross29` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_insane.h` | macro | `FRAME_cross30` | `packages/game/src/m_insane.ts` | `FRAME_cross30` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_insane.h` | macro | `MODEL_SCALE` | `packages/game/src/m_insane.ts` | `MODEL_SCALE` | Valide | A redecouper |  |

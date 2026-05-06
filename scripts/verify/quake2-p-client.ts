@@ -50,7 +50,8 @@ import {
   MOD_TELEFRAG,
   MOD_TRIGGER_HURT,
   MOD_WATER,
-  damage_t
+  damage_t,
+  weaponstate_t
 } from "../../packages/game/src/g_local.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
 import {
@@ -58,6 +59,7 @@ import {
   ClientObituary,
   CopyToBodyQue,
   InitBodyQue,
+  PutClientInServer,
   TossClientWeapon,
   ThrowClientHead,
   player_die
@@ -77,11 +79,33 @@ function main(): void {
   verifyClientConnectRespectsAutosavedPersistentState();
   verifyClientObituaryWeaponMeansOfDeath();
   verifyClientObituaryWorldMeansOfDeath();
+  verifyPutClientInServerClearsWeaponState();
   verifyTossClientWeaponUsesDefaultDropItem();
   verifyPlayerDieUsesDefaultSoundAndGibs();
   verifyThrowClientHeadUsesGLocalRandomHelpers();
 
   console.log("Verification p_client - player lifecycle defaults OK");
+}
+
+function verifyPutClientInServerClearsWeaponState(): void {
+  const runtime = createHarnessRuntime();
+  const player = spawnGameEntity(runtime);
+  const client = attachGameClient(player);
+  client.pers.health = 100;
+  client.pers.spectator = true;
+  client.weaponstate = weaponstate_t.WEAPON_FIRING;
+  client.killer_yaw = 270;
+  client.fall_time = 42;
+
+  PutClientInServer(player, runtime, {
+    SelectSpawnPoint: () => ({ origin: [16, 32, 48], angles: [0, 90, 0] }),
+    KillBox: () => true
+  });
+
+  assert.equal(client.weaponstate, weaponstate_t.WEAPON_READY, "PutClientInServer must memset weaponstate back to WEAPON_READY");
+  assert.equal(client.killer_yaw, 0, "PutClientInServer must clear transient killer_yaw");
+  assert.equal(client.fall_time, 0, "PutClientInServer must clear transient fall_time");
+  assert.equal(client.newweapon, null, "PutClientInServer must clear newweapon for spectator spawn");
 }
 
 function verifyClientObituaryWeaponMeansOfDeath(): void {

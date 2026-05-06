@@ -40,11 +40,19 @@ main();
 
 function main(): void {
   verifySourceFunctionsAreExported();
+  verifyMedicCableOffsets();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
   verifyRandomMacroConsumers();
 
   console.log("quake2-m-medic-source-parity: ok");
+}
+
+function verifyMedicCableOffsets(): void {
+  const sourceOffsets = parseSourceCableOffsets(sourceWithoutComments);
+  const tsOffsets = parseTsCableOffsets(tsSourceWithoutComments);
+
+  assert.deepEqual(tsOffsets, sourceOffsets, "medic_cable_offsets should match source C");
 }
 
 function verifyRandomMacroConsumers(): void {
@@ -161,6 +169,20 @@ function parseMoves(cSource: string): Map<string, SourceMove> {
   return moves;
 }
 
+function parseSourceCableOffsets(cSource: string): number[][] {
+  const match = cSource.match(/static\s+vec3_t\s+medic_cable_offsets\s*\[\]\s*=\s*\{([\s\S]*?)\};/);
+  assert.ok(match, "source medic_cable_offsets should exist");
+
+  return chunkNumbers(parseNumberList(match[1]), 3);
+}
+
+function parseTsCableOffsets(sourceText: string): number[][] {
+  const match = sourceText.match(/const\s+medic_cable_offsets[^=]*=\s*\[([\s\S]*?)\];/);
+  assert.ok(match, "TS medic_cable_offsets should exist");
+
+  return Array.from(match[1].matchAll(/\[([^\]]+)\]/g), (entry) => parseNumberList(entry[1]));
+}
+
 function getFunctionBlock(functionName: string): string {
   const start = source.search(new RegExp(`(?:void|qboolean)\\s+${functionName}\\b|edict_t\\s*\\*\\s*${functionName}\\b`));
   assert.notEqual(start, -1, `${functionName} should exist in source`);
@@ -221,6 +243,19 @@ function parseDistance(token: string): number {
   const value = Number(token);
   assert.ok(Number.isFinite(value), `Unsupported distance token ${token}`);
   return value;
+}
+
+function parseNumberList(value: string): number[] {
+  return Array.from(value.matchAll(/-?\d+(?:\.\d+)?/g), (match) => Number(match[0]));
+}
+
+function chunkNumbers(values: number[], size: number): number[][] {
+  assert.equal(values.length % size, 0, "numeric table should have complete vec3 rows");
+  const result: number[][] = [];
+  for (let index = 0; index < values.length; index += size) {
+    result.push(values.slice(index, index + size));
+  }
+  return result;
 }
 
 function parseSourceFunctionNames(cSource: string): string[] {

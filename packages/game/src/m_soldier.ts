@@ -658,6 +658,14 @@ export function soldier_stand(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: soldier_walk1_random
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Randomly loops the long walk animation back to `FRAME_walk101` using the original 0.1 threshold.
+ * Porting notes: Writes `monsterinfo.nextframe` directly like the C callback.
+ */
 export function soldier_walk1_random(self: GameEntity): void {
   if (random() > 0.1) {
     self.monsterinfo.nextframe = FRAME_walk101;
@@ -684,6 +692,13 @@ export const soldier_move_walk2: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: soldier_walk
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Chooses between the two walk moves using the original 50/50 random branch.
+ */
 export function soldier_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = random() < 0.5 ? soldier_move_walk1 : soldier_move_walk2;
 }
@@ -704,6 +719,13 @@ export const soldier_move_run: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: soldier_run
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Honors `AI_STAND_GROUND`, transitions walk/start-run into the run loop, otherwise starts the run animation.
+ */
 export function soldier_run(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     self.monsterinfo.currentmove = soldier_move_stand1;
@@ -753,6 +775,14 @@ export const soldier_move_pain4: GameMonsterMove = {
   endfunc: soldier_run
 };
 
+/**
+ * Original name: soldier_pain
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Updates damaged skin, debounces pain, selects pain sounds/moves, preserves airborne pain4 and nightmare no-pain animation rules.
+ * Porting notes: Uses runtime time/skill in place of `level.time` and `skill->value`.
+ */
 export function soldier_pain(self: GameEntity, _other: GameEntity | null, _kick: number, _damage: number, runtime: GameRuntime): void {
   if (self.health < self.max_health / 2) {
     self.s.skinnum |= 1;
@@ -798,6 +828,14 @@ export function soldier_pain(self: GameEntity, _other: GameEntity | null, _kick:
   }
 }
 
+/**
+ * Original name: soldier_fire
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Close
+ * Behavior: Selects the weapon muzzle table from skin, projects the source, aims at the enemy with original spread, and fires blaster/shotgun/machinegun variants.
+ * Porting notes: The TS guard for a missing enemy falls back to forward aim to keep runtime robust; normal attack paths provide `self.enemy` like C.
+ */
 export function soldier_fire(self: GameEntity, flash_number: number, runtime: GameRuntime): void {
   let flash_index: number;
   if (self.s.skinnum < 2) {
@@ -853,13 +891,68 @@ export function soldier_fire(self: GameEntity, flash_number: number, runtime: Ga
   }
 }
 
+/**
+ * Original name: soldier_fire1
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Attack1 wrapper that fires muzzle slot 0.
+ */
 export function soldier_fire1(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 0, runtime); }
+
+/**
+ * Original name: soldier_fire2
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Attack2 wrapper that fires muzzle slot 1.
+ */
 export function soldier_fire2(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 1, runtime); }
+
+/**
+ * Original name: soldier_fire4
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Attack4 wrapper that fires muzzle slot 3.
+ */
 export function soldier_fire4(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 3, runtime); }
+
+/**
+ * Original name: soldier_fire8
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Attack6 wrapper that fires muzzle slot 7.
+ */
 export function soldier_fire8(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 7, runtime); }
+
+/**
+ * Original name: soldier_fire6
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Death animation wrapper that fires muzzle slot 5 with forward aim.
+ */
 export function soldier_fire6(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 5, runtime); }
+
+/**
+ * Original name: soldier_fire7
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Death animation wrapper that fires muzzle slot 6 with forward aim.
+ */
 export function soldier_fire7(self: GameEntity, runtime: GameRuntime): void { soldier_fire(self, 6, runtime); }
 
+/**
+ * Original name: soldier_attack1_refire1
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Refires or skips the blaster attack based on skin, enemy health, nightmare random chance, and melee range.
+ * Porting notes: Checks `self.enemy` before dereferencing it; normal C attack flow has an enemy.
+ */
 export function soldier_attack1_refire1(self: GameEntity, runtime: GameRuntime): void {
   if (self.s.skinnum > 1 || !self.enemy || self.enemy.health <= 0) {
     return;
@@ -869,6 +962,13 @@ export function soldier_attack1_refire1(self: GameEntity, runtime: GameRuntime):
     : FRAME_attak110;
 }
 
+/**
+ * Original name: soldier_attack1_refire2
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Shotgun-side attack1 refire gate using the original skin/enemy/skill/range branches.
+ */
 export function soldier_attack1_refire2(self: GameEntity, runtime: GameRuntime): void {
   if (self.s.skinnum < 2 || !self.enemy || self.enemy.health <= 0) {
     return;
@@ -891,6 +991,13 @@ export const soldier_move_attack1: GameMonsterMove = {
   endfunc: soldier_run
 };
 
+/**
+ * Original name: soldier_attack2_refire1
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Refires or skips the second blaster attack using the original frame targets and branch conditions.
+ */
 export function soldier_attack2_refire1(self: GameEntity, runtime: GameRuntime): void {
   if (self.s.skinnum > 1 || !self.enemy || self.enemy.health <= 0) {
     return;
@@ -900,6 +1007,13 @@ export function soldier_attack2_refire1(self: GameEntity, runtime: GameRuntime):
     : FRAME_attak216;
 }
 
+/**
+ * Original name: soldier_attack2_refire2
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Shotgun-side attack2 refire gate using the original skin/enemy/skill/range branches.
+ */
 export function soldier_attack2_refire2(self: GameEntity, runtime: GameRuntime): void {
   if (self.s.skinnum < 2 || !self.enemy || self.enemy.health <= 0) {
     return;
@@ -922,6 +1036,13 @@ export const soldier_move_attack2: GameMonsterMove = {
   endfunc: soldier_run
 };
 
+/**
+ * Original name: soldier_duck_down
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Enters the ducked state, shrinks the bbox, enables damage, sets pause time, and relinks the entity.
+ */
 export function soldier_duck_down(self: GameEntity, runtime: GameRuntime): void {
   if ((self.monsterinfo.aiflags & AI_DUCKED) !== 0) {
     return;
@@ -933,6 +1054,13 @@ export function soldier_duck_down(self: GameEntity, runtime: GameRuntime): void 
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: soldier_duck_up
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Leaves the ducked state, restores bbox/damage mode, and relinks the entity.
+ */
 export function soldier_duck_up(self: GameEntity, runtime: GameRuntime): void {
   self.monsterinfo.aiflags &= ~AI_DUCKED;
   self.maxs[2] += 32;
@@ -940,11 +1068,25 @@ export function soldier_duck_up(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: soldier_fire3
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Ducks first, then fires muzzle slot 2.
+ */
 export function soldier_fire3(self: GameEntity, runtime: GameRuntime): void {
   soldier_duck_down(self, runtime);
   soldier_fire(self, 2, runtime);
 }
 
+/**
+ * Original name: soldier_attack3_refire
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Holds the duck-and-shoot loop while pause time is still more than 0.4 seconds away.
+ */
 export function soldier_attack3_refire(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.time + 0.4 < self.monsterinfo.pausetime) {
     self.monsterinfo.nextframe = FRAME_attak303;
@@ -971,6 +1113,13 @@ export const soldier_move_attack4: GameMonsterMove = {
   endfunc: soldier_run
 };
 
+/**
+ * Original name: soldier_attack6_refire
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: In nightmare skill, loops the run-and-shoot move for live enemies at mid-or-far range.
+ */
 export function soldier_attack6_refire(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy || self.enemy.health <= 0) {
     return;
@@ -998,6 +1147,13 @@ export const soldier_move_attack6: GameMonsterMove = {
   endfunc: soldier_run
 };
 
+/**
+ * Original name: soldier_attack
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Chooses attack1/attack2 for light and shotgun soldiers, and attack4 for machinegun soldiers.
+ */
 export function soldier_attack(self: GameEntity): void {
   if (self.s.skinnum < 4) {
     self.monsterinfo.currentmove = random() < 0.5 ? soldier_move_attack1 : soldier_move_attack2;
@@ -1026,6 +1182,13 @@ export function soldier_sight(self: GameEntity, _other: GameEntity | null, runti
   }
 }
 
+/**
+ * Original name: soldier_duck_hold
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Sets or clears `AI_HOLD_FRAME` according to pause time.
+ */
 export function soldier_duck_hold(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.time >= self.monsterinfo.pausetime) {
     self.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
@@ -1048,6 +1211,13 @@ export const soldier_move_duck: GameMonsterMove = {
   endfunc: soldier_run
 };
 
+/**
+ * Original name: soldier_dodge
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Randomly ducks or switches to duck-and-shoot depending on skill, eta, and the original random thresholds.
+ */
 export function soldier_dodge(self: GameEntity, attacker: GameEntity | null, eta: number, runtime: GameRuntime): void {
   if (random() > 0.25) {
     return;
@@ -1073,6 +1243,13 @@ export function soldier_dodge(self: GameEntity, attacker: GameEntity | null, eta
   self.monsterinfo.currentmove = soldier_move_attack3;
 }
 
+/**
+ * Original name: soldier_dead
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Converts the corpse to toss movement, deadmonster bbox/flags, clears nextthink, and relinks it.
+ */
 export function soldier_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -16, -16, -24);
   setVec3(self.maxs, 16, 16, -8);
@@ -1137,6 +1314,14 @@ export const soldier_move_death6: GameMonsterMove = {
   endfunc: soldier_dead
 };
 
+/**
+ * Original name: soldier_die
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Handles gib death, dead reentry, death skin/sounds, headshot death, and random regular death moves.
+ * Porting notes: Receives the damage point from the TS damage callback adapter so headshot death parity is preserved.
+ */
 export function soldier_die(
   self: GameEntity,
   _inflictor: GameEntity | null,
@@ -1191,6 +1376,13 @@ export function soldier_die(
   }
 }
 
+/**
+ * Original name: SP_monster_soldier_x
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Shared soldier spawn setup for model, bbox, physics, sounds, callbacks, initial stand move, and walkmonster startup.
+ */
 export function SP_monster_soldier_x(self: GameEntity, runtime: GameRuntime): void {
   self.s.modelindex = registerGameModel(runtime, "models/monsters/soldier/tris.md2");
   self.monsterinfo.scale = MODEL_SCALE;
@@ -1220,6 +1412,13 @@ export function SP_monster_soldier_x(self: GameEntity, runtime: GameRuntime): vo
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: SP_monster_soldier_light
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Deathmatch-free spawn wrapper for the blaster soldier variant with light soldier assets, skin, health, and gib health.
+ */
 export function SP_monster_soldier_light(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
     G_FreeEdict(runtime, self);
@@ -1237,6 +1436,13 @@ export function SP_monster_soldier_light(self: GameEntity, runtime: GameRuntime)
   self.gib_health = -30;
 }
 
+/**
+ * Original name: SP_monster_soldier
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Deathmatch-free spawn wrapper for the shotgun soldier variant with variant assets, skin, health, and gib health.
+ */
 export function SP_monster_soldier(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
     G_FreeEdict(runtime, self);
@@ -1252,6 +1458,13 @@ export function SP_monster_soldier(self: GameEntity, runtime: GameRuntime): void
   self.gib_health = -30;
 }
 
+/**
+ * Original name: SP_monster_soldier_ss
+ * Source: game/m_soldier.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Deathmatch-free spawn wrapper for the machinegun soldier variant with variant assets, skin, health, and gib health.
+ */
 export function SP_monster_soldier_ss(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
     G_FreeEdict(runtime, self);

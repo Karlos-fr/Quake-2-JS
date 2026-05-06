@@ -26,8 +26,13 @@ const SOURCE_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../../Quake-2-master/game/m_soldier.c"
 );
+const TS_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../packages/game/src/m_soldier.ts"
+);
 
 const source = readFileSync(SOURCE_PATH, "utf8");
+const tsSource = readFileSync(TS_PATH, "utf8");
 const sourceWithoutComments = stripDisabledBlocks(stripComments(source));
 
 main();
@@ -35,10 +40,21 @@ main();
 function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
+  verifyMuzzleFlashTables();
   verifySourcePrecacheAssets();
   verifyRandomMacroConsumers();
 
   console.log("quake2-m-soldier-source-parity: ok");
+}
+
+function verifyMuzzleFlashTables(): void {
+  for (const tableName of ["blaster_flash", "shotgun_flash", "machinegun_flash"]) {
+    assert.deepEqual(
+      parseSourceNumberTable(tableName, sourceWithoutComments),
+      parseTsNumberTable(tableName, tsSource),
+      `${tableName} should keep source muzzle flash constants`
+    );
+  }
 }
 
 function verifySourceFunctionsAreExported(): void {
@@ -202,8 +218,6 @@ function getFunctionBlock(functionName: string): string {
 }
 
 function getTsFunctionBlock(functionName: string): string {
-  const tsPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../packages/game/src/m_soldier.ts");
-  const tsSource = readFileSync(tsPath, "utf8");
   const declaration = new RegExp(`\\bexport\\s+function\\s+${functionName}\\s*\\(`).exec(tsSource);
   assert.ok(declaration, `${functionName} should exist in m_soldier.ts`);
 
@@ -224,6 +238,18 @@ function getTsFunctionBlock(functionName: string): string {
   }
 
   throw new Error(`${functionName} TS body was not closed`);
+}
+
+function parseSourceNumberTable(tableName: string, cSource: string): string[] {
+  const match = new RegExp(`\\bstatic\\s+int\\s+${tableName}\\s*\\[\\]\\s*=\\s*\\{([^}]+)\\}`).exec(cSource);
+  assert.ok(match, `${tableName} should exist in source`);
+  return match[1].split(",").map((token) => token.trim()).filter(Boolean);
+}
+
+function parseTsNumberTable(tableName: string, sourceText: string): string[] {
+  const match = new RegExp(`\\bconst\\s+${tableName}\\s*=\\s*\\[([^\\]]+)\\]`).exec(sourceText);
+  assert.ok(match, `${tableName} should exist in m_soldier.ts`);
+  return match[1].split(",").map((token) => token.trim()).filter(Boolean);
 }
 
 function assertSpawnAssets(

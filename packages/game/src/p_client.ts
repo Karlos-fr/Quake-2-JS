@@ -108,7 +108,8 @@ import {
   SVF_NOCLIENT,
   damage_t,
   crandom,
-  random
+  random,
+  weaponstate_t
 } from "./g_local.js";
 import {
   FRAME_crdeath1,
@@ -1959,6 +1960,7 @@ function resetClientTransientState(client: GameClient): void {
     latched_buttons: 0,
     weapon_thunk: false,
     newweapon: null,
+    weaponstate: weaponstate_t.WEAPON_READY,
     killer_yaw: 0,
     machinegun_shots: 0,
     fall_time: 0,

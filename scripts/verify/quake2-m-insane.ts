@@ -30,9 +30,16 @@ import {
 } from "../../packages/game/src/index.js";
 import { FL_FLY, FL_NO_KNOCKBACK } from "../../packages/game/src/g_local.js";
 import {
+  FRAME_cr_death10,
+  FRAME_cr_death16,
+  FRAME_cr_pain2,
   FRAME_cr_pain10,
   FRAME_crawl1,
+  FRAME_crawl9,
   FRAME_st_death2,
+  FRAME_st_death18,
+  FRAME_st_pain2,
+  FRAME_st_pain12,
   FRAME_stand100,
   FRAME_stand160,
   FRAME_stand41,
@@ -45,6 +52,10 @@ import {
   FRAME_walk26,
   FRAME_walk27,
   FRAME_walk39,
+  FRAME_cross1,
+  FRAME_cross15,
+  FRAME_cross16,
+  FRAME_cross30,
   SP_misc_insane,
   insane_checkup,
   insane_checkdown,
@@ -203,14 +214,14 @@ function verifyMoveTablesMatchSourceFrames(): void {
     0, 3.4, 3.6, 2.9, 2.2, 2.6, 0, 0.7, 4.8, 5.3, 1.1, 2, 0.5,
     0, 0, 4.9, 6.7, 3.8, 2, 0.2, 0, 3.4, 6.4, 5, 1.8, 0
   ], [[0, "insane_scream"]]);
-  assertMove("stand_pain", insane_move_stand_pain, 199, 209, new Array<number>(11).fill(0));
-  assertMove("stand_death", insane_move_stand_death, 210, 226, new Array<number>(17).fill(0));
-  assertMove("crawl", insane_move_crawl, 227, 235, [0, 1.5, 2.1, 3.6, 2, 0.9, 3, 3.4, 2.4], [[0, "insane_scream"]]);
-  assertMove("runcrawl", insane_move_runcrawl, 227, 235, [0, 1.5, 2.1, 3.6, 2, 0.9, 3, 3.4, 2.4], [[0, "insane_scream"]]);
-  assertMove("crawl_pain", insane_move_crawl_pain, 236, 244, new Array<number>(9).fill(0));
-  assertMove("crawl_death", insane_move_crawl_death, 245, 251, new Array<number>(7).fill(0));
-  assertMove("cross", insane_move_cross, 252, 266, new Array<number>(15).fill(0), [[0, "insane_moan"]]);
-  assertMove("struggle_cross", insane_move_struggle_cross, 267, 281, new Array<number>(15).fill(0), [[0, "insane_scream"]]);
+  assertMove("stand_pain", insane_move_stand_pain, FRAME_st_pain2, FRAME_st_pain12, new Array<number>(11).fill(0));
+  assertMove("stand_death", insane_move_stand_death, FRAME_st_death2, FRAME_st_death18, new Array<number>(17).fill(0));
+  assertMove("crawl", insane_move_crawl, FRAME_crawl1, FRAME_crawl9, [0, 1.5, 2.1, 3.6, 2, 0.9, 3, 3.4, 2.4], [[0, "insane_scream"]]);
+  assertMove("runcrawl", insane_move_runcrawl, FRAME_crawl1, FRAME_crawl9, [0, 1.5, 2.1, 3.6, 2, 0.9, 3, 3.4, 2.4], [[0, "insane_scream"]]);
+  assertMove("crawl_pain", insane_move_crawl_pain, FRAME_cr_pain2, FRAME_cr_pain10, new Array<number>(9).fill(0));
+  assertMove("crawl_death", insane_move_crawl_death, FRAME_cr_death10, FRAME_cr_death16, new Array<number>(7).fill(0));
+  assertMove("cross", insane_move_cross, FRAME_cross1, FRAME_cross15, new Array<number>(15).fill(0), [[0, "insane_moan"]]);
+  assertMove("struggle_cross", insane_move_struggle_cross, FRAME_cross16, FRAME_cross30, new Array<number>(15).fill(0), [[0, "insane_scream"]]);
 }
 
 function verifyStateTransitionBranches(): void {

@@ -80,25 +80,25 @@
 | `Quake-2-master/game/m_mutant.c` | global | `mutant_move_pain3` | `packages/game/src/m_mutant.ts` | `mutant_move_pain3` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_mutant.c` | function | `mutant_pain` | `packages/game/src/m_mutant.ts` | `mutant_pain` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_mutant.c` | global | `r` | `packages/game/src/m_mutant.ts` | `r` | Non applicable | A redecouper | Variable locale de `mutant_pain`, pas une entite proprietaire. |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_dead` | `packages/game/src/m_mutant.ts` | `mutant_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_death1` | `packages/game/src/m_mutant.ts` | `mutant_frames_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_death1` | `packages/game/src/m_mutant.ts` | `mutant_frames_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_death1` | `packages/game/src/m_mutant.ts` | `mutant_move_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_death2` | `packages/game/src/m_mutant.ts` | `mutant_frames_death2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_death2` | `packages/game/src/m_mutant.ts` | `mutant_frames_death2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_death2` | `packages/game/src/m_mutant.ts` | `mutant_move_death2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_die` | `packages/game/src/m_mutant.ts` | `mutant_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `n` | `packages/game/src/m_mutant.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `SP_monster_mutant` | `packages/game/src/m_mutant.ts` | `SP_monster_mutant` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_stand` | `packages/game/src/m_mutant.ts` | `mutant_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_idle` | `packages/game/src/m_mutant.ts` | `mutant_frames_idle` | A verifier | matched |  |
-| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_start_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_start_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_run` | `packages/game/src/m_mutant.ts` | `mutant_frames_run` | A verifier | matched |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_dead` | `packages/game/src/m_mutant.ts` | `mutant_dead` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_death1` | `packages/game/src/m_mutant.ts` | `mutant_frames_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_death1` | `packages/game/src/m_mutant.ts` | `mutant_frames_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_death1` | `packages/game/src/m_mutant.ts` | `mutant_move_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_death2` | `packages/game/src/m_mutant.ts` | `mutant_frames_death2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_death2` | `packages/game/src/m_mutant.ts` | `mutant_frames_death2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_death2` | `packages/game/src/m_mutant.ts` | `mutant_move_death2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_die` | `packages/game/src/m_mutant.ts` | `mutant_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `n` | `packages/game/src/m_mutant.ts` | `n` | Non applicable | A redecouper | Variable locale de `mutant_die`, pas une entite proprietaire. |
+| `Quake-2-master/game/m_mutant.c` | function | `SP_monster_mutant` | `packages/game/src/m_mutant.ts` | `SP_monster_mutant` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_stand` | `packages/game/src/m_mutant.ts` | `mutant_frames_stand` | Valide | matched |  |
+| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_idle` | `packages/game/src/m_mutant.ts` | `mutant_frames_idle` | Valide | matched |  |
+| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_start_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_start_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_run` | `packages/game/src/m_mutant.ts` | `mutant_frames_run` | Valide | matched |  |
 | `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_attack` | `packages/game/src/m_mutant.ts` | `mutant_frames_attack` | Valide | matched |  |
 | `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_jump` | `packages/game/src/m_mutant.ts` | `mutant_frames_jump` | Valide | matched |  |
 | `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_pain1` | `packages/game/src/m_mutant.ts` | `mutant_frames_pain1` | Valide | matched |  |
 | `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_pain2` | `packages/game/src/m_mutant.ts` | `mutant_frames_pain2` | Valide | matched |  |
 | `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_pain3` | `packages/game/src/m_mutant.ts` | `mutant_frames_pain3` | Valide | matched |  |
-| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_death1` | `packages/game/src/m_mutant.ts` | `mutant_frames_death1` | A verifier | matched |  |
-| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_death2` | `packages/game/src/m_mutant.ts` | `mutant_frames_death2` | A verifier | matched |  |
+| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_death1` | `packages/game/src/m_mutant.ts` | `mutant_frames_death1` | Valide | matched |  |
+| `Quake-2-master/game/m_mutant.c` | declarative:monster-tables | `mutant_frames_death2` | `packages/game/src/m_mutant.ts` | `mutant_frames_death2` | Valide | matched |  |

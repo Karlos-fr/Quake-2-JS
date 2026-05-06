@@ -795,6 +795,15 @@ export const medic_move_attackBlaster: GameMonsterMove = {
   endfunc: medic_run
 };
 
+/**
+ * Original name: medic_hook_launch
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the medic cable launch sound on the weapon channel.
+ */
 export function medic_hook_launch(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_hook_launch, SOUND_HOOK_LAUNCH, soundOptions(CHAN_WEAPON));
 }
@@ -812,6 +821,20 @@ const medic_cable_offsets: readonly vec3_t[] = [
   [32.7, -19.7, 10.4]
 ];
 
+/**
+ * Original name: medic_cable_attack
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Maintains the medic resurrection cable, including range/pitch/trace guards, hit/heal sounds,
+ *   respawn of the dead monster, and the visible cable temp entity.
+ *
+ * Porting notes:
+ * - Uses the explicit collision adapter and structured temp-entity queue instead of `gi.trace`
+ *   and direct network writes.
+ */
 export function medic_cable_attack(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy || !self.enemy.inuse) {
     return;
@@ -876,6 +899,15 @@ export function medic_cable_attack(self: GameEntity, runtime: GameRuntime): void
   });
 }
 
+/**
+ * Original name: medic_hook_retract
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the cable retract sound and clears the target's resurrection flag.
+ */
 export function medic_hook_retract(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_hook_retract, SOUND_HOOK_RETRACT, soundOptions(CHAN_WEAPON));
   if (self.enemy) {
@@ -913,6 +945,15 @@ export const medic_move_attackCable: GameMonsterMove = {
   endfunc: medic_run
 };
 
+/**
+ * Original name: medic_attack
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Chooses the resurrection cable move while acting as a medic, otherwise the blaster attack.
+ */
 export function medic_attack(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_MEDIC) !== 0) {
     self.monsterinfo.currentmove = medic_move_attackCable;
@@ -921,6 +962,15 @@ export function medic_attack(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: medic_checkattack
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Forces the cable attack for resurrection targets, otherwise defers to `M_CheckAttack`.
+ */
 export function medic_checkattack(self: GameEntity, runtime: GameRuntime): boolean {
   if ((self.monsterinfo.aiflags & AI_MEDIC) !== 0) {
     medic_attack(self);
@@ -930,6 +980,20 @@ export function medic_checkattack(self: GameEntity, runtime: GameRuntime): boole
   return M_CheckAttack(self, runtime);
 }
 
+/**
+ * Original name: SP_monster_medic
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Precaches medic assets and initializes the monster_medic entity, callbacks, bounds,
+ *   health, model and starting move.
+ *
+ * Porting notes:
+ * - Preserves the deathmatch free path and routes linking/startup through the explicit
+ *   gameplay runtime.
+ */
 export function SP_monster_medic(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {
     G_FreeEdict(runtime, self);

@@ -1910,7 +1910,29 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 19 lignes du lot passees a `Valide`, noms cibles renseignes.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:p-hud` OK; `npm run verify:p-weapon` OK; `npx tsx ./scripts/verify/quake2-g-combat.ts` OK; `npm run verify:p-view` OK; `npm run verify:g-save` OK; `npm run verify:g-cmds` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Prochain lot recommande: continuer `gclient_s` avec le bloc vue/arme directement suivant: `killer_yaw`, `weaponstate`, `kick_angles`, `kick_origin`, `v_dmg_roll`, `v_dmg_pitch`, `v_dmg_time`, `fall_time`, `fall_value`, `damage_alpha`, `bonus_alpha`, `damage_blend`, `v_angle`, `bobtime`, `oldviewangles`, `oldvelocity`.
+- 2026-05-06: lot tres elargi fin de `gclient_s`, de `killer_yaw` a `update_chase`.
+- Verdict: `Valide` pour les 33 lignes de matrice restantes du bloc `gclient_s` apres comparaison H/C vs TS, correction simple du reset runtime et ajout de preuves header. Les champs C voisins `weaponstate`, `v_dmg_roll`, `v_dmg_pitch`, `v_dmg_time`, `fall_time` et `fall_value` ont aussi ete verifies dans le harness, meme si la matrice generee ne porte pas de ligne separee pour eux.
+- Source H/C comparee:
+  - `g_local.h` termine `gclient_s` avec les champs de regard mort (`killer_yaw`), etat d'arme, kick arme/vue, feedback degats, chute, blends, angles, noyade/eau, rafales machinegun, animation joueur, timers powerups, grenade tenue, son arme, pickup, flood chat, respawn et chase cam.
+  - Les consommateurs C principaux sont `p_client.c`, `p_view.c`, `p_weapon.c`, `g_cmds.c`, `g_items.c`, `p_hud.c`, `g_chase.c`, `g_trigger.c` et `g_save.c`.
+- Cibles TS verifiees:
+  - `packages/game/src/runtime.ts`: `GameClient` et `createGameClient` portent tous les champs du lot avec valeurs zero/default equivalentes, tableaux non aliases et pointeurs nullable pour `chase_target`.
+  - `packages/game/src/p_client.ts`: reset transient `gclient_s` et branches death/spectateur/respawn.
+  - `packages/game/src/p_view.ts`: damage feedback, falling/water/world effects, camera/view offset, blend et animation joueur.
+  - `packages/game/src/p_weapon.ts`: `weaponstate`, kicks arme, machinegun/chaingun, BFG, grenade tenue, `weapon_sound`, timers quad/silencer.
+  - `packages/game/src/g_cmds.ts`, `g_items.ts`, `p_hud.ts`, `g_chase.ts`, `g_trigger.ts`, `g_save.ts`: flood chat, pickup messages, powerup timers/HUD, chase target/update, trigger_push oldvelocity et persistance client.
+- Runtime: integre via `PutClientInServer`, `ClientThink`, `ClientBeginServerFrame`, `ClientEndServerFrame`, commandes client, armes, degats, world effects, HUD, save/load, spectateur/chase et triggers. Correction appliquee: `resetClientTransientState` remet maintenant explicitement `weaponstate` a `WEAPON_READY`, equivalent au `memset` C quand aucun `ChangeWeapon` ne le remplace.
+- apps/web: integration attendue indirectement via host full-game/local, usercmds, commandes chat/HUD, snapshots/playerstate, sons et ordre de rendu; aucune logique web parallele ne remplace ces champs runtime.
+- renderer-three: integration indirecte attendue. Ce lot produit des sorties visibles via camera/playerstate (`v_angle`, kick, fall), blends de degats/powerups, frames/animations joueur, gun model/frame, sons arme, chase camera, snapshots et scene; Three les consomme via le flux full-game/client/refresh. Pas de consommation directe du type header attendue.
+- Commentaires/documentation: commentaires de portage `GameClient` et `createGameClient` verifies; commentaires des fonctions consommatrices principales verifies. Pas de nouvelle fonction portee.
+- Corrections appliquees:
+  - `packages/game/src/p_client.ts`: reset explicite `weaponstate_t.WEAPON_READY` dans `resetClientTransientState`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions defaults, mutabilite et non-aliasing pour toute la fin de `gclient_s`.
+  - `scripts/verify/quake2-p-client.ts`: preuve `PutClientInServer`/spectateur que le reset transient efface `weaponstate`, `killer_yaw`, `fall_time` et `newweapon`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 33 lignes de `killer_yaw` a `update_chase` passees a `Valide`, noms cibles renseignes.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:p-view` OK; `npm run verify:p-weapon` OK; `npm run verify:g-chase` OK; `npm run verify:g-cmds` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: commencer `edict_s` dans un lot separe avec `edict_s`, `s`, `inuse`, `linkcount`, `area`, `num_clusters`, `clusternums`, `headnode`, `svflags`, `solid`, `clipmask`, `owner`, `movetype`, `flags`, `model` si le lot reste coherent.
 
 ## Blocages
 

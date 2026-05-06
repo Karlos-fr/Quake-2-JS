@@ -36,6 +36,7 @@ import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import { findGameSaveFunction, findGameSaveMove } from "../../packages/game/src/g_save.js";
 import {
   FRAME_attack9,
+  FRAME_attack42,
   FRAME_attack19,
   FRAME_attack43,
   FRAME_attack44,
@@ -53,6 +54,8 @@ import {
   medic_duck_hold,
   medic_duck_up,
   medic_fire_blaster,
+  medic_hook_launch,
+  medic_hook_retract,
   medic_idle,
   medic_continue,
   medic_move_attackBlaster,
@@ -134,6 +137,10 @@ function verifySpawnRegistryCallsMonsterMedic(): void {
 
 function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveFunction("medic_attack"), medic_attack);
+  assert.equal(findGameSaveFunction("medic_cable_attack"), medic_cable_attack);
+  assert.equal(findGameSaveFunction("medic_checkattack"), medic_checkattack);
+  assert.equal(findGameSaveFunction("medic_hook_launch"), medic_hook_launch);
+  assert.equal(findGameSaveFunction("medic_hook_retract"), medic_hook_retract);
   assert.equal(findGameSaveFunction("medic_run"), medic_run);
   assert.equal(findGameSaveMove("medic_move_attackCable"), medic_move_attackCable);
   assert.equal(findGameSaveMove("medic_move_death"), medic_move_death);
@@ -206,11 +213,18 @@ function verifyCableAttackEventsAndResurrectionFlags(): void {
   const patient = createDeadMonster(runtime, 2, 200);
   medic.enemy = patient;
 
+  medic_hook_launch(medic, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "medic/medatck2.wav");
+
   medic.s.frame = FRAME_attack43;
   medic_cable_attack(medic, runtime);
   assert.equal((patient.monsterinfo.aiflags & AI_RESURRECTING) !== 0, true);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "medic/medatck3.wav");
-  assert.equal(drainGameTempEntityEvents(runtime).at(-1)?.type, temp_event_t.TE_MEDIC_CABLE_ATTACK);
+  const hitEvent = drainGameTempEntityEvents(runtime).at(-1);
+  assert.equal(hitEvent?.type, temp_event_t.TE_MEDIC_CABLE_ATTACK);
+  assert.equal(hitEvent?.payload.entityIndex, medic.index);
+  assert.deepEqual(hitEvent?.payload.start, [56.4, 9.7, 15.2]);
+  assert.deepEqual(hitEvent?.payload.end, [66, 0, 4]);
 
   medic.s.frame = FRAME_attack44;
   medic_cable_attack(medic, runtime);
@@ -218,9 +232,54 @@ function verifyCableAttackEventsAndResurrectionFlags(): void {
 
   medic.s.frame = FRAME_attack50;
   patient.classname = "monster_medic";
+  patient.spawnflags = 7;
+  patient.target = "stale-target";
+  patient.targetname = "stale-targetname";
+  patient.combattarget = "stale-combat";
+  patient.deathtarget = "stale-death";
+  const oldEnemy = createRuntimeEntity(3, {}, runtime);
+  oldEnemy.client = {} as GameEntity["client"];
+  medic.oldenemy = oldEnemy;
   medic_cable_attack(medic, runtime);
   assert.equal(patient.owner, null);
   assert.equal((patient.monsterinfo.aiflags & AI_RESURRECTING) !== 0, true);
+  assert.equal(patient.health, 300);
+  assert.equal(patient.spawnflags, 0);
+  assert.equal(patient.target, undefined);
+  assert.equal(patient.targetname, undefined);
+  assert.equal(patient.combattarget, undefined);
+  assert.equal(patient.deathtarget, undefined);
+  assert.equal(patient.show_hostile, runtime.time + 1);
+
+  medic_hook_retract(medic, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "medic/medatck5.wav");
+  assert.equal((patient.monsterinfo.aiflags & AI_RESURRECTING) === 0, true);
+  drainGameTempEntityEvents(runtime);
+
+  patient.inuse = false;
+  medic.s.frame = FRAME_attack43;
+  medic_cable_attack(medic, runtime);
+  assert.equal(drainGameTempEntityEvents(runtime).length, 0);
+
+  patient.inuse = true;
+  patient.s.origin = [400, 0, 0];
+  medic.s.frame = FRAME_attack42;
+  medic_cable_attack(medic, runtime);
+  assert.equal(drainGameTempEntityEvents(runtime).length, 0);
+
+  patient.s.origin = [64, 0, 0];
+  runtime.collision!.trace = (_start, _mins, _maxs, end, _passent): trace_t => ({
+    allsolid: false,
+    startsolid: false,
+    fraction: 0.5,
+    endpos: [...end],
+    plane: { normal: [0, 0, 0], dist: 0, type: 0, signbits: 0, pad: [0, 0] },
+    surface: null,
+    contents: 0,
+    ent: null
+  });
+  medic_cable_attack(medic, runtime);
+  assert.equal(drainGameTempEntityEvents(runtime).length, 0);
 }
 
 function verifyPainAndDeathBranches(): void {

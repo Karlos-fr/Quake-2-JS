@@ -3,9 +3,50 @@
 - Source: `Quake-2-master/game/m_mutant.c`
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/game_m_mutant.c.md`
 - Cible TS principale: `packages/game/src/m_mutant.ts`
-- Statut: En cours
+- Statut: Termine
 
 ## Dernier lot valide
+
+Lot final death/spawn/declaratif 40x:
+
+- bloc death: `mutant_dead`, `mutant_frames_death1`, `mutant_move_death1`, `mutant_frames_death2`, `mutant_move_death2`, `mutant_die`;
+- spawn final: `SP_monster_mutant`;
+- lignes declaratives restantes: `mutant_frames_stand`, `mutant_frames_idle`, `mutant_frames_walk`, `mutant_frames_start_walk`, `mutant_frames_run`, `mutant_frames_death1`, `mutant_frames_death2`;
+- variable locale `n` de `mutant_die`.
+
+Validation:
+
+- comparaison C vs TS effectuee pour `mutant_dead`: `mins/maxs`, `MOVETYPE_TOSS`, `SVF_DEADMONSTER`, `linkentity`, `M_FlyCheck`;
+- comparaison C vs TS effectuee pour death1/death2: bornes `FRAME_death101..109` et `FRAME_death201..210`, `ai_move`, distances zero, absence de thinkfunc et `endfunc = mutant_dead`;
+- comparaison C vs TS effectuee pour `mutant_die`: branche gib `health <= gib_health`, son `misc/udeath.wav`, deux gibs bone, quatre gibs small meat, head gib, `DEAD_DEAD`, retour si deja mort, son death, `DAMAGE_YES`, skin death et selection `random() < 0.5`;
+- comparaison C vs TS effectuee pour `SP_monster_mutant`: branche deathmatch `G_FreeEdict`, precache sons/modele, `MOVETYPE_STEP`, `SOLID_BBOX`, bounds, health/gib_health/mass, callbacks monsterinfo, `currentmove = mutant_move_stand`, `scale = MODEL_SCALE`, `walkmonster_start`;
+- lignes declaratives restantes revalidees via le harness source-parity: les tables `mframe_t` source sont parsees et comparees aux moves TS, y compris les blocs stand/idle/walk/start_walk/run deja portes et les deux tables death;
+- commentaires d'en-tete ajoutes/verifies pour `mutant_dead` et `SP_monster_mutant`; commentaire existant de `mutant_die` verifie avec `Original name`, `Source`, `Category: Ported`, `Fidelity level`, comportement et note RNG;
+- runtime verifie: `monster_mutant` est branche dans `g_spawn.ts`, `ED_CallSpawn` appelle `SP_monster_mutant`, `SP_monster_mutant` assigne `pain`, `die`, `stand`, `walk`, `run`, `attack`, `melee`, `sight`, `search`, `idle`, `checkattack`; `T_Damage` peut appeler `die`; `M_MoveFrame` consomme les moves death et appelle `mutant_dead`; `g_save.ts` retrouve les fonctions et moves death exportes;
+- `apps/web` verifie via le flux full-game: le navigateur declenche le runtime porte par serveur local/commandes et consomme snapshots/sons sans logique parallele mutant; aucune integration web specifique mutant n'est attendue hors flux runtime;
+- `renderer-three` verifie via le flux full-game/Three: sorties visibles attendues du lot = modele mutant, frames/oldframe des animations, skin death, gibs produits par `ThrowGib`/`ThrowHead`, corpse bounds/scene et sons; elles passent par snapshots/client refresh et adapters generiques Three/ref_gl, sans branche mutant specifique attendue.
+
+Artefacts matrice:
+
+- `n` marque `Non applicable`: variable locale de `mutant_die`, pas une entite proprietaire.
+
+## Tests lances
+
+- `npm run verify:m-mutant`
+- `npm run verify:m-mutant:source-parity`
+- `npm run verify:m-mutant:header`
+- `npm run verify:full-game:render-source`
+- `npm run verify:full-game:three-renderer`
+- `npm run verify:web-render-order`
+- `npm run typecheck`
+
+## Prochain lot recommande
+
+Aucun lot restant dans `game_m_mutant.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.
+
+## Historique
+
+### Lot pain elargi
 
 Lot pain elargi:
 
@@ -25,7 +66,7 @@ Artefacts matrice:
 
 - `r` marque `Non applicable`: variable locale de `mutant_pain`, pas une entite proprietaire.
 
-## Tests lances
+Tests lances:
 
 - `npm run verify:m-mutant`
 - `npm run verify:m-mutant:source-parity`
@@ -34,12 +75,6 @@ Artefacts matrice:
 - `npm run verify:full-game:three-renderer`
 - `npm run verify:web-render-order`
 - `npm run typecheck`
-
-## Prochain lot recommande
-
-Continuer avec le bloc death: `mutant_dead`, `mutant_frames_death1`, `mutant_move_death1`, `mutant_frames_death2`, `mutant_move_death2`, `mutant_die`, puis la variable locale `n` si le lot reste coherent.
-
-## Historique
 
 ### Lot attaque/saut elargi
 
