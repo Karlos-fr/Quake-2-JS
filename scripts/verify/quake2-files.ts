@@ -21,6 +21,7 @@ import {
   FS_ExecAutoexec,
   FS_FreeFile,
   FS_Gamedir,
+  FS_InitFilesystem,
   FS_Link,
   FS_Link_f,
   FS_ListFiles,
@@ -182,6 +183,72 @@ assert.equal(FS_SetGamedir(filesystem, "bad\\path"), false, "FS_SetGamedir backs
 assert.equal(FS_SetGamedir(filesystem, "c:bad"), false, "FS_SetGamedir colon rejection mismatch");
 
 FS_FreeFile(override ?? new Uint8Array());
+
+const initializedFilesystem = createVirtualFilesystem();
+const registeredCommands = new Map<string, () => void>();
+const printed: string[] = [];
+const commandArgs: string[] = [];
+const requestedCvars: Array<{ name: string; value: string; flags: number }> = [];
+const initialCvars = new Map([
+  ["basedir", { string: "." }],
+  ["cddir", { string: "cdrom" }],
+  ["game", { string: "xatrix" }]
+]);
+const directoryContents = new Map<string, Record<string, Uint8Array>>([
+  ["baseq2", {
+    "maps/base1.bsp": encodeAscii("base-mounted")
+  }],
+  ["cdrom/baseq2", {
+    "maps/base1.bsp": encodeAscii("cd-mounted")
+  }],
+  ["xatrix", {
+    "maps/base1.bsp": encodeAscii("xatrix-mounted"),
+    "autoexec.cfg": encodeAscii("exec xatrix")
+  }]
+]);
+
+FS_InitFilesystem(initializedFilesystem, {
+  commands: {
+    addCommand: (name, callback) => {
+      registeredCommands.set(name, callback);
+    },
+    argc: () => commandArgs.length,
+    argv: (index) => commandArgs[index] ?? "",
+    print: (line) => {
+      printed.push(line);
+    }
+  },
+  cvars: {
+    get: (name, value, flags) => {
+      requestedCvars.push({ name, value, flags });
+      return initialCvars.get(name) ?? { string: value };
+    }
+  },
+  resolveDirectoryFiles: (path) => directoryContents.get(path)
+});
+
+assert.deepEqual([...registeredCommands.keys()].sort(), ["dir", "link", "path"], "FS_InitFilesystem command registration mismatch");
+assert.deepEqual(requestedCvars, [
+  { name: "basedir", value: ".", flags: 8 },
+  { name: "cddir", value: "", flags: 8 },
+  { name: "game", value: "", flags: 20 }
+], "FS_InitFilesystem cvar setup mismatch");
+assert.equal(FS_Gamedir(initializedFilesystem), "xatrix", "FS_InitFilesystem should apply game cvar override");
+assert.equal(decodeAscii(FS_LoadFile(initializedFilesystem, "maps/base1.bsp") ?? new Uint8Array()), "xatrix-mounted", "FS_InitFilesystem game override lookup mismatch");
+assert.equal(FS_NextPath(initializedFilesystem, null), "xatrix", "FS_InitFilesystem FS_NextPath game path mismatch");
+assert.equal(FS_NextPath(initializedFilesystem, "xatrix"), "baseq2", "FS_InitFilesystem FS_NextPath base path mismatch");
+assert.equal(FS_NextPath(initializedFilesystem, "baseq2"), "cdrom/baseq2", "FS_InitFilesystem FS_NextPath cddir path mismatch");
+assert.equal(FS_NextPath(initializedFilesystem, "cdrom/baseq2"), null, "FS_InitFilesystem FS_NextPath end mismatch");
+
+registeredCommands.get("path")?.();
+assert.equal(printed.some((line) => line.includes("Current search path:")), true, "FS_InitFilesystem path command output mismatch");
+printed.length = 0;
+commandArgs.splice(0, commandArgs.length, "link", "alias", "xatrix");
+registeredCommands.get("link")?.();
+assert.equal(readMountedTextFile(initializedFilesystem, "alias/autoexec.cfg"), "exec xatrix", "FS_InitFilesystem link command mismatch");
+commandArgs.splice(0, commandArgs.length, "dir", "maps/*.bsp");
+registeredCommands.get("dir")?.();
+assert.equal(printed.some((line) => line.includes("Directory of xatrix/maps/*.bsp")), true, "FS_InitFilesystem dir command output mismatch");
 
 console.log("Verification files: OK");
 

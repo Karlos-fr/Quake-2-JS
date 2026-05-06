@@ -148,3 +148,42 @@ Corrections appliquees:
 
 Prochain lot recommande:
 - `PM_Accelerate` et son local `i`, puis `PM_AirAccelerate` et son local `i` si le lot reste coherent.
+
+## Session 2026-05-06 - Acceleration, currents, water move et air move
+
+Lot traite:
+- `PM_Accelerate` et locaux directs: `i`, `addspeed`, `accelspeed`, `currentspeed`
+- `PM_AirAccelerate` et locaux directs: `i`, `addspeed`, `accelspeed`, `currentspeed`, `wishspd`
+- `PM_AddCurrents` et locaux/parametre directs: `v`, `s`, `wishvel`
+- `PM_WaterMove` et locaux directs: `i`, `wishvel`, `wishdir`, `wishspeed`
+- `PM_AirMove` et locaux directs: `i`, `wishvel`, `fmove`, `smove`, `wishdir`, `wishspeed`, `maxspeed`
+
+Verdict:
+- Lot valide.
+- `PM_Accelerate` conserve le calcul C `currentspeed`, `addspeed`, retour si `addspeed <= 0`, clamp de `accelspeed`, puis ajout axe par axe; le local `i` est renomme `index` en TS.
+- `PM_AirAccelerate` conserve le cap C `wishspd = min(wishspeed, 30)` tout en gardant `wishspeed` dans le calcul de `accelspeed`; le local `i` est renomme `index`.
+- `PM_AddCurrents` conserve les branches ladder, courants d'eau et convoyeurs sol; le local C `s` est renomme `speed`.
+- `PM_WaterMove` conserve la construction du wish velocity avec forward/right complets, le drift `-60` sans intention utilisateur, `PM_AddCurrents`, normalisation, clamp `pm_maxspeed`, demi-vitesse eau, acceleration eau et `PM_StepSlideMove`.
+- `PM_AirMove` conserve la construction XY du wish velocity, l'appel aux courants, le clamp duck/maxspeed, les branches ladder, sol et air libre, y compris damping vertical ladder, gravite positive/negative au sol et choix `PM_AirAccelerate` quand `pm_airaccelerate` est actif.
+- Entetes verifies pour les fonctions portees du lot: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`.
+
+Preuves:
+- Comparaison directe C vs TS sur `Quake-2-master/qcommon/pmove.c` et `packages/qcommon/src/pmove.ts`.
+- Tests cibles ajoutes dans `scripts/verify/quake2-pmove.ts`: acceleration bornee, early return acceleration, air acceleration avec cap 30, branches ladder/eau/convoyeur de `PM_AddCurrents`, drift eau sans input, ladder `PM_AirMove`, et branche airaccelerate active.
+- Runtime: flux attendu oui; le lot est appele depuis `Pmove` via `PM_WaterMove`/`PM_AirMove` et atteint les racines `packages/game/src/p_client.ts`, `packages/server/src/sv_game.ts`, `packages/client/src/view.ts` et `packages/client/src/local-loop.ts`.
+- `apps/web`: flux attendu oui; le navigateur declenche ou consomme ce mouvement via `apps/web/src/local-client-controller.ts`, `apps/web/src/full-game.ts`, `apps/web/src/full-game-render-source.ts` et `apps/web/src/full-game-render-loop.ts`. Pas de logique web parallele masquant ce lot.
+- `renderer-three`: sortie visible indirecte attendue oui, car acceleration/courants/eau/air modifient origine, velocite, vieworg et camera/scene derivee. Consommation verifiee via `ClientRefreshFrame.view.vieworg`, `R_RenderFrame`, `gl-world-scene-adapter`, `gl_rmain`, `gl_rsurf`, `particle-sync`, `three-dlight-sync` et `refresh-entity-sync`. Pas de sortie propre a ce lot pour modeles, frames, images, particules, beams, dlights, temp entities ou areabits hors camera/scene derivee.
+
+Tests lances:
+- `npm run verify:pmove`
+- `npm run verify:client:pmove:viewheight`
+- `npm run verify:pmove:local-bmodel`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Corrections appliquees:
+- `scripts/verify/quake2-pmove.ts`: assertions ciblees ajoutees pour le lot.
+- `audit-portage/validation-incrementale/validation/matrices/qcommon_pmove.c.md`: lot marque `Valide`; lignes ajoutees pour les locaux directs absents de la matrice.
+
+Prochain lot recommande:
+- `PM_CatagorizePosition` et ses locaux directs (`point`, `cont`, `trace`, `sample1`, `sample2`).

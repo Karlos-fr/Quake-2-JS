@@ -25,22 +25,53 @@ const DPACKHEADER_SIZE = 12;
 const DPACKFILENAME_SIZE = 56;
 
 /**
+ * Original name: dpackfile_t
+ * Source: qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Describes one fixed-width directory entry in a Quake II PAK archive.
+ *
+ * Porting notes:
+ * - The C `name[56]` field is exposed as a decoded string.
+ */
+export interface dpackfile_t {
+  name: string;
+  filepos: number;
+  filelen: number;
+}
+
+/**
+ * Original name: dpackheader_t
+ * Source: qcommon/qfiles.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Stores the Quake II PAK magic and directory offset/length.
+ */
+export interface dpackheader_t {
+  ident: number;
+  dirofs: number;
+  dirlen: number;
+}
+
+/**
  * Original name: packfile_t
  * Source: qcommon/files.c
- * Category: Ported
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
  * - Describes a file entry contained in a Quake II PAK archive.
  *
  * Porting notes:
+ * - Extends `dpackfile_t`, the owning qfiles.h directory-entry port.
  * - Adds `normalizedName` to simplify case-insensitive search path behavior.
  */
-export interface PakEntry {
-  name: string;
+export interface PakEntry extends dpackfile_t {
   normalizedName: string;
-  filepos: number;
-  filelen: number;
 }
 
 /**
@@ -51,6 +82,7 @@ export interface PakEntry {
  * - Must keep a direct link to the raw archive bytes for future streaming and slicing.
  */
 export interface PakArchive {
+  header: dpackheader_t;
   entries: PakEntry[];
   bytes: Uint8Array;
   path?: string;
@@ -74,14 +106,17 @@ export function parsePak(bytes: Uint8Array, path?: string): PakArchive {
     throw new Error("parsePak: buffer is too small to contain a PAK header");
   }
 
-  const ident = getLittleLong(bytes, 0);
-  if (ident !== IDPAKHEADER) {
+  const header: dpackheader_t = {
+    ident: getLittleLong(bytes, 0),
+    dirofs: getLittleLong(bytes, 4),
+    dirlen: getLittleLong(bytes, 8)
+  };
+
+  if (header.ident !== IDPAKHEADER) {
     throw new Error(`${path ?? "pak"} is not a packfile`);
   }
 
-  const dirofs = getLittleLong(bytes, 4);
-  const dirlen = getLittleLong(bytes, 8);
-  const numpackfiles = dirlen / DPACKFILE_SIZE;
+  const numpackfiles = header.dirlen / DPACKFILE_SIZE;
 
   if (!Number.isInteger(numpackfiles)) {
     throw new Error(`${path ?? "pak"} has an invalid directory length`);
@@ -91,14 +126,14 @@ export function parsePak(bytes: Uint8Array, path?: string): PakArchive {
     throw new Error(`${path ?? "pak"} has ${numpackfiles} files`);
   }
 
-  if (dirofs < 0 || dirlen < 0 || dirofs + dirlen > bytes.byteLength) {
+  if (header.dirofs < 0 || header.dirlen < 0 || header.dirofs + header.dirlen > bytes.byteLength) {
     throw new Error(`${path ?? "pak"} has a directory outside the file bounds`);
   }
 
   const entries: PakEntry[] = [];
 
   for (let index = 0; index < numpackfiles; index += 1) {
-    const entryOffset = dirofs + index * DPACKFILE_SIZE;
+    const entryOffset = header.dirofs + index * DPACKFILE_SIZE;
     const name = decodePakName(bytes.subarray(entryOffset, entryOffset + DPACKFILENAME_SIZE));
     const filepos = getLittleLong(bytes, entryOffset + DPACKFILENAME_SIZE);
     const filelen = getLittleLong(bytes, entryOffset + DPACKFILENAME_SIZE + 4);
@@ -117,10 +152,12 @@ export function parsePak(bytes: Uint8Array, path?: string): PakArchive {
 
   return path === undefined
     ? {
+        header,
         entries,
         bytes
       }
     : {
+        header,
         entries,
         bytes,
         path

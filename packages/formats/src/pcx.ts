@@ -45,11 +45,13 @@ export interface pcx_t {
   ymax: number;
   hres: number;
   vres: number;
-  palette16: Uint8Array;
+  palette: Uint8Array;
   reserved: number;
   color_planes: number;
   bytes_per_line: number;
   palette_type: number;
+  filler: Uint8Array;
+  data: Uint8Array;
 }
 
 /**
@@ -127,11 +129,13 @@ function readPcxHeader(bytes: Uint8Array): pcx_t {
     ymax: getLittleShort(bytes, 10),
     hres: getLittleShort(bytes, 12),
     vres: getLittleShort(bytes, 14),
-    palette16: bytes.slice(16, 64),
+    palette: bytes.slice(16, 64),
     reserved: getUnsignedByte(bytes, 64),
     color_planes: getUnsignedByte(bytes, 65),
     bytes_per_line: getLittleShort(bytes, 66),
-    palette_type: getLittleShort(bytes, 68)
+    palette_type: getLittleShort(bytes, 68),
+    filler: bytes.slice(70, PCX_HEADER_SIZE),
+    data: bytes.slice(PCX_HEADER_SIZE)
   };
 }
 

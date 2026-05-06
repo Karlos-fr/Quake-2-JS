@@ -14,7 +14,15 @@
 
 import { strict as assert } from "node:assert";
 
-import { createSizeBuffer, SZ_Print } from "../../packages/memory/src/index.js";
+import {
+  createSizeBuffer,
+  MSG_BeginReading,
+  SZ_Clear,
+  SZ_GetSpace,
+  SZ_Init,
+  SZ_Print,
+  SZ_Write
+} from "../../packages/memory/src/index.js";
 import { COM_Argv, COM_InitArgv, createCommonRuntime } from "../../packages/qcommon/src/common.js";
 import {
   Cbuf_AddEarlyCommands,
@@ -107,7 +115,6 @@ import {
   Z_TagMalloc
 } from "../../packages/qcommon/src/qcommon.js";
 import {
-  MSG_BeginReading,
   MSG_ReadByte,
   MSG_ReadDeltaUsercmd,
   MSG_ReadDir,
@@ -183,6 +190,73 @@ assert.equal(CM_BUTTONS, 1 << 6, "CM_BUTTONS mismatch");
 assert.equal(BUILDSTRING, "TypeScript", "BUILDSTRING mismatch");
 assert.equal(CPUSTRING, "portable", "CPUSTRING mismatch");
 assert.equal(BASEDIRNAME, "baseq2", "BASEDIRNAME mismatch");
+
+const initializedStorage = new Uint8Array([1, 2, 3, 4]);
+const initializedBuffer = createSizeBuffer(1, true);
+initializedBuffer.overflowed = true;
+initializedBuffer.cursize = 1;
+initializedBuffer.readcount = 1;
+SZ_Init(initializedBuffer, initializedStorage);
+assert.equal(initializedBuffer.allowoverflow, false, "SZ_Init allowoverflow mismatch");
+assert.equal(initializedBuffer.overflowed, false, "SZ_Init overflowed mismatch");
+assert.equal(initializedBuffer.data, initializedStorage, "SZ_Init data ownership mismatch");
+assert.equal(initializedBuffer.maxsize, 4, "SZ_Init maxsize mismatch");
+assert.equal(initializedBuffer.cursize, 0, "SZ_Init cursize mismatch");
+assert.equal(initializedBuffer.readcount, 0, "SZ_Init readcount mismatch");
+
+SZ_Write(initializedBuffer, new Uint8Array([9, 8]));
+assert.deepEqual(
+  Array.from(initializedBuffer.data.subarray(0, initializedBuffer.cursize)),
+  [9, 8],
+  "SZ_Write payload mismatch"
+);
+const reserved = SZ_GetSpace(initializedBuffer, 2);
+reserved.set([7, 6]);
+assert.equal(initializedBuffer.cursize, 4, "SZ_GetSpace cursize mismatch");
+assert.deepEqual(Array.from(initializedBuffer.data), [9, 8, 7, 6], "SZ_GetSpace returned window mismatch");
+assert.throws(
+  () => SZ_GetSpace(initializedBuffer, 1),
+  /overflow without allowoverflow set/,
+  "SZ_GetSpace fixed buffer overflow mismatch"
+);
+
+initializedBuffer.allowoverflow = true;
+const overflowWindow = SZ_GetSpace(initializedBuffer, 3);
+overflowWindow.set([5, 4, 3]);
+assert.equal(initializedBuffer.overflowed, true, "SZ_GetSpace overflow flag mismatch");
+assert.equal(initializedBuffer.cursize, 3, "SZ_GetSpace overflow cursize mismatch");
+assert.deepEqual(
+  Array.from(initializedBuffer.data.subarray(0, initializedBuffer.cursize)),
+  [5, 4, 3],
+  "SZ_GetSpace overflow clear mismatch"
+);
+assert.throws(
+  () => SZ_GetSpace(initializedBuffer, 5),
+  /is > full buffer size/,
+  "SZ_GetSpace oversized write mismatch"
+);
+
+initializedBuffer.readcount = 2;
+MSG_BeginReading(initializedBuffer);
+assert.equal(initializedBuffer.readcount, 0, "MSG_BeginReading readcount mismatch");
+SZ_Clear(initializedBuffer);
+assert.equal(initializedBuffer.cursize, 0, "SZ_Clear cursize mismatch");
+assert.equal(initializedBuffer.overflowed, false, "SZ_Clear overflowed mismatch");
+
+const printInitial = createSizeBuffer(16);
+SZ_Print(printInitial, "abc");
+assert.deepEqual(
+  Array.from(printInitial.data.subarray(0, printInitial.cursize)),
+  [97, 98, 99, 0],
+  "SZ_Print initial payload mismatch"
+);
+printInitial.data[printInitial.cursize - 1] = 33;
+SZ_Print(printInitial, "d");
+assert.deepEqual(
+  Array.from(printInitial.data.subarray(0, printInitial.cursize)),
+  [97, 98, 99, 33, 100, 0],
+  "SZ_Print append without trailing nul mismatch"
+);
 
 let crc = CRC_Init();
 for (const byte of new Uint8Array([49, 50, 51, 52, 53, 54, 55, 56, 57])) {

@@ -10,26 +10,26 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `IDPAKHEADER` | `packages/formats/src/pak.ts` | `IDPAKHEADER` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dpackfile_t` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `name` | `packages/formats/src/qfiles.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `dpackheader_t` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `ident` | `packages/formats/src/qfiles.ts` | `ident` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `dirofs` | `packages/formats/src/pak.ts` | `dirofs` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `dirlen` | `packages/formats/src/pak.ts` | `dirlen` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_FILES_IN_PACK` | `packages/formats/src/pak.ts` | `MAX_FILES_IN_PACK` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | struct | `pcx_t` | `packages/formats/src/pcx.ts` | `pcx_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `manufacturer` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `version` | `packages/formats/src/sp2.ts` | `version` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `encoding` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `bits_per_pixel` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `palette` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `reserved` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `color_planes` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `bytes_per_line` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `palette_type` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `filler` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qfiles.h` | global | `data` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `IDPAKHEADER` | `packages/formats/src/pak.ts` | `IDPAKHEADER` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dpackfile_t` | `packages/formats/src/pak.ts` | `dpackfile_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `name` | `packages/formats/src/pak.ts` | `name` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `dpackheader_t` | `packages/formats/src/pak.ts` | `dpackheader_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `ident` | `packages/formats/src/pak.ts` | `ident` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `dirofs` | `packages/formats/src/pak.ts` | `dirofs` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `dirlen` | `packages/formats/src/pak.ts` | `dirlen` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_FILES_IN_PACK` | `packages/formats/src/pak.ts` | `MAX_FILES_IN_PACK` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | struct | `pcx_t` | `packages/formats/src/pcx.ts` | `pcx_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `manufacturer` | `packages/formats/src/pcx.ts` | `manufacturer` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `version` | `packages/formats/src/pcx.ts` | `version` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `encoding` | `packages/formats/src/pcx.ts` | `encoding` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `bits_per_pixel` | `packages/formats/src/pcx.ts` | `bits_per_pixel` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `palette` | `packages/formats/src/pcx.ts` | `palette` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `reserved` | `packages/formats/src/pcx.ts` | `reserved` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `color_planes` | `packages/formats/src/pcx.ts` | `color_planes` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `bytes_per_line` | `packages/formats/src/pcx.ts` | `bytes_per_line` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `palette_type` | `packages/formats/src/pcx.ts` | `palette_type` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `filler` | `packages/formats/src/pcx.ts` | `filler` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qfiles.h` | global | `data` | `packages/formats/src/pcx.ts` | `data` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | macro | `IDALIASHEADER` | `packages/formats/src/md2.ts` | `IDALIASHEADER` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | macro | `ALIAS_VERSION` | `packages/formats/src/md2.ts` | `ALIAS_VERSION` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qfiles.h` | macro | `MAX_TRIANGLES` | `packages/formats/src/qfiles.ts` |  | A verifier | A redecouper |  |

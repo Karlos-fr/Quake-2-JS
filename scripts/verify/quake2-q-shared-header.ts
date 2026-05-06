@@ -191,10 +191,26 @@ import {
   VIDREF_OTHER,
   VIDREF_SOFT,
   AngleVectors,
+  BUTTON_ANY,
+  BUTTON_ATTACK,
+  BUTTON_USE,
   type cmodel_t,
   type cplane_t,
   type csurface_t,
   type mapsurface_t,
+  MAXTOUCH,
+  PMF_DUCKED,
+  PMF_JUMP_HELD,
+  PMF_NO_PREDICTION,
+  PMF_ON_GROUND,
+  PMF_TIME_LAND,
+  PMF_TIME_TELEPORT,
+  PMF_TIME_WATERJUMP,
+  pmtype_t,
+  type pmove_state_t,
+  type pmove_t,
+  type trace_t,
+  type usercmd_t,
   createEntityState,
   createPlayerState
 } from "../../packages/qcommon/src/q_shared.js";
@@ -715,6 +731,110 @@ assert.equal(csurfaceShape.value, 7, "csurface_t value field mismatch");
 const mapsurfaceShape: mapsurface_t = { c: csurfaceShape, rname: "e1u1/metal_long_material_name" };
 assert.equal(mapsurfaceShape.c, csurfaceShape, "mapsurface_t c field mismatch");
 assert.equal(mapsurfaceShape.rname, "e1u1/metal_long_material_name", "mapsurface_t rname field mismatch");
+
+const traceEntity = { id: 7 };
+const traceShape: trace_t = {
+  allsolid: false,
+  startsolid: true,
+  fraction: 0.375,
+  endpos: [12, 24, 36],
+  plane: planeShape,
+  surface: csurfaceShape,
+  contents: CONTENTS_SOLID,
+  ent: traceEntity
+};
+assert.equal(traceShape.allsolid, false, "trace_t allsolid field mismatch");
+assert.equal(traceShape.startsolid, true, "trace_t startsolid field mismatch");
+assert.equal(traceShape.fraction, 0.375, "trace_t fraction field mismatch");
+assert.deepEqual(traceShape.endpos, [12, 24, 36], "trace_t endpos field mismatch");
+assert.equal(traceShape.plane, planeShape, "trace_t plane field mismatch");
+assert.equal(traceShape.surface, csurfaceShape, "trace_t surface field mismatch");
+assert.equal(traceShape.contents, CONTENTS_SOLID, "trace_t contents field mismatch");
+assert.equal(traceShape.ent, traceEntity, "trace_t ent field mismatch");
+
+assert.equal(pmtype_t.PM_NORMAL, 0, "PM_NORMAL mismatch");
+assert.equal(pmtype_t.PM_SPECTATOR, 1, "PM_SPECTATOR mismatch");
+assert.equal(pmtype_t.PM_DEAD, 2, "PM_DEAD mismatch");
+assert.equal(pmtype_t.PM_GIB, 3, "PM_GIB mismatch");
+assert.equal(pmtype_t.PM_FREEZE, 4, "PM_FREEZE mismatch");
+assert.equal(PMF_DUCKED, 1, "PMF_DUCKED mismatch");
+assert.equal(PMF_JUMP_HELD, 2, "PMF_JUMP_HELD mismatch");
+assert.equal(PMF_ON_GROUND, 4, "PMF_ON_GROUND mismatch");
+assert.equal(PMF_TIME_WATERJUMP, 8, "PMF_TIME_WATERJUMP mismatch");
+assert.equal(PMF_TIME_LAND, 16, "PMF_TIME_LAND mismatch");
+assert.equal(PMF_TIME_TELEPORT, 32, "PMF_TIME_TELEPORT mismatch");
+assert.equal(PMF_NO_PREDICTION, 64, "PMF_NO_PREDICTION mismatch");
+
+const pmoveStateShape: pmove_state_t = {
+  pm_type: pmtype_t.PM_NORMAL,
+  origin: [1, 2, 3],
+  velocity: [4, 5, 6],
+  pm_flags: PMF_DUCKED | PMF_ON_GROUND,
+  pm_time: 9,
+  gravity: 800,
+  delta_angles: [10, 20, 30]
+};
+assert.equal(pmoveStateShape.pm_type, pmtype_t.PM_NORMAL, "pmove_state_t pm_type field mismatch");
+assert.deepEqual(pmoveStateShape.origin, [1, 2, 3], "pmove_state_t origin field mismatch");
+assert.deepEqual(pmoveStateShape.velocity, [4, 5, 6], "pmove_state_t velocity field mismatch");
+assert.equal(pmoveStateShape.pm_flags, PMF_DUCKED | PMF_ON_GROUND, "pmove_state_t pm_flags field mismatch");
+assert.equal(pmoveStateShape.pm_time, 9, "pmove_state_t pm_time field mismatch");
+assert.equal(pmoveStateShape.gravity, 800, "pmove_state_t gravity field mismatch");
+assert.deepEqual(pmoveStateShape.delta_angles, [10, 20, 30], "pmove_state_t delta_angles field mismatch");
+
+assert.equal(BUTTON_ATTACK, 1, "BUTTON_ATTACK mismatch");
+assert.equal(BUTTON_USE, 2, "BUTTON_USE mismatch");
+assert.equal(BUTTON_ANY, 128, "BUTTON_ANY mismatch");
+const usercmdShape: usercmd_t = {
+  msec: 8,
+  buttons: BUTTON_ATTACK | BUTTON_USE,
+  angles: [100, 200, 300],
+  forwardmove: 400,
+  sidemove: -50,
+  upmove: 25,
+  impulse: 3,
+  lightlevel: 128
+};
+assert.equal(usercmdShape.msec, 8, "usercmd_t msec field mismatch");
+assert.equal(usercmdShape.buttons, BUTTON_ATTACK | BUTTON_USE, "usercmd_t buttons field mismatch");
+assert.deepEqual(usercmdShape.angles, [100, 200, 300], "usercmd_t angles field mismatch");
+assert.equal(usercmdShape.forwardmove, 400, "usercmd_t forwardmove field mismatch");
+assert.equal(usercmdShape.sidemove, -50, "usercmd_t sidemove field mismatch");
+assert.equal(usercmdShape.upmove, 25, "usercmd_t upmove field mismatch");
+assert.equal(usercmdShape.impulse, 3, "usercmd_t impulse field mismatch");
+assert.equal(usercmdShape.lightlevel, 128, "usercmd_t lightlevel field mismatch");
+
+assert.equal(MAXTOUCH, 32, "MAXTOUCH mismatch");
+const pmoveShape: pmove_t = {
+  s: pmoveStateShape,
+  cmd: usercmdShape,
+  snapinitial: true,
+  numtouch: 1,
+  touchents: [traceEntity],
+  viewangles: [90, 0, 0],
+  viewheight: 22,
+  mins: [-16, -16, -24],
+  maxs: [16, 16, 32],
+  groundentity: traceEntity,
+  watertype: CONTENTS_WATER,
+  waterlevel: 2,
+  trace: (_start, _mins, _maxs, end) => ({ ...traceShape, endpos: [...end] }),
+  pointcontents: () => CONTENTS_WATER
+};
+assert.equal(pmoveShape.s, pmoveStateShape, "pmove_t s field mismatch");
+assert.equal(pmoveShape.cmd, usercmdShape, "pmove_t cmd field mismatch");
+assert.equal(pmoveShape.snapinitial, true, "pmove_t snapinitial field mismatch");
+assert.equal(pmoveShape.numtouch, 1, "pmove_t numtouch field mismatch");
+assert.deepEqual(pmoveShape.touchents, [traceEntity], "pmove_t touchents field mismatch");
+assert.deepEqual(pmoveShape.viewangles, [90, 0, 0], "pmove_t viewangles field mismatch");
+assert.equal(pmoveShape.viewheight, 22, "pmove_t viewheight field mismatch");
+assert.deepEqual(pmoveShape.mins, [-16, -16, -24], "pmove_t mins field mismatch");
+assert.deepEqual(pmoveShape.maxs, [16, 16, 32], "pmove_t maxs field mismatch");
+assert.equal(pmoveShape.groundentity, traceEntity, "pmove_t groundentity field mismatch");
+assert.equal(pmoveShape.watertype, CONTENTS_WATER, "pmove_t watertype field mismatch");
+assert.equal(pmoveShape.waterlevel, 2, "pmove_t waterlevel field mismatch");
+assert.deepEqual(pmoveShape.trace?.([0, 0, 0], [0, 0, 0], [0, 0, 0], [7, 8, 9]).endpos, [7, 8, 9], "pmove_t trace callback mismatch");
+assert.equal(pmoveShape.pointcontents?.([0, 0, 0]), CONTENTS_WATER, "pmove_t pointcontents callback mismatch");
 
 const entityState = createEntityState();
 assert.equal(entityState.number, 0, "createEntityState default number mismatch");

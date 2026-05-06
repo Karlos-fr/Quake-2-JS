@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/qcommon/files.c
 
-- Statut: En cours
-- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`, puis `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile`, `FS_LoadPackFile`, `FS_AddGameDirectory`, `FS_Gamedir`, `FS_ExecAutoexec`, `FS_SetGamedir`, `FS_Link_f`, la liste de liens via `FS_Path_f`, `FS_ListFiles` et `FS_Dir_f`.
-- Prochain lot recommande: `FS_NextPath` et son local `prev`, puis commencer `FS_InitFilesystem` seulement dans un lot separe.
+- Statut: Termine
+- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`, puis `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile`, `FS_LoadPackFile`, `FS_AddGameDirectory`, `FS_Gamedir`, `FS_ExecAutoexec`, `FS_SetGamedir`, `FS_Link_f`, la liste de liens via `FS_Path_f`, `FS_ListFiles`, `FS_Dir_f`, `FS_NextPath`, `FS_InitFilesystem` et les reliquats `fs_basedir`/`fs_cddir`/`fs_gamedirvar`.
+- Prochain lot recommande: aucun; toutes les lignes sont `Valide` ou `Non applicable`.
 - Tests de reference:
   - `npm run verify:files`
   - `npm run verify:web-config-gamedir`
@@ -13,8 +13,9 @@
   - Le port proprietaire reel de `qcommon/files.c` vit dans `packages/filesystem/src/files.ts`; `packages/qcommon/src/files.ts` n'existe pas.
   - Les structures C `pack_t`, `filelink_t` et `searchpath_t` sont adaptees en objets explicites `MountedPak`/`PakArchive`, `FileLink` et `SearchPath`.
   - `FS_CreatePath` et `FS_FCloseFile` sont non applicables au VFS navigateur/in-memory: les ecritures passent par les adapters de stockage web et il n'existe pas de `FILE *` a fermer.
-  - `fs_basedir`, `fs_cddir` et `fs_gamedirvar` restent `Partiel` jusqu'a validation du bloc `FS_InitFilesystem` et de la politique de montage/cvar; `FS_SetGamedir` accepte maintenant les contenus in-memory fournis par le caller comme equivalent web du scan `basedir`/`cddir`.
+  - `fs_basedir`, `fs_cddir` et `fs_gamedirvar` sont fermes avec `FS_InitFilesystem`: les cvars conservent les flags originaux et les chemins host/CD sont representes par `resolveDirectoryFiles` dans le VFS in-memory.
 - Corrections:
+  - `FS_InitFilesystem` est ajoute dans `packages/filesystem/src/files.ts` et exporte par `packages/filesystem/src/index.ts`; il utilise des adaptateurs injectes pour enregistrer `path`, `link`, `dir` et creer `basedir`, `cddir`, `game` sans coupler le package filesystem a qcommon.
   - `readMountedFile` preserve maintenant le court-circuit de lien du C: un prefixe `link` qui correspond mais ne resout aucun fichier ne retombe pas sur la recherche normale.
   - `apps/web/src/full-game.ts` utilise maintenant `readMountedFile(...) !== undefined` pour le test d'existence, afin de ne pas considerer un miss VFS comme present.
   - `apps/web/src/full-game-server-host.ts` propage maintenant `fromPak` depuis `MountedVirtualFile.pak` au lieu de forcer tous les downloads en provenance de PAK.
@@ -45,6 +46,14 @@
   - Runtime: `FS_Dir_f` reste une commande console a enregistrer avec `FS_InitFilesystem`; `FS_ListFiles` est disponible pour les adapters client qui doivent lister les modeles/skins sans doublonner le VFS.
   - `apps/web`: aucune logique parallele de `dir`; le web consomme le VFS via `readMountedFile`/`FS_LoadFile`. L'integration liste de fichiers n'a pas de sortie navigateur obligatoire hors commande console/adapters menu.
   - `renderer-three`: aucune sortie visible directe; impact indirect attendu sur ressources visibles (modeles, skins/images, BSP, sky, particules/beams via palettes) par le VFS, verifie par le test renderer.
+  - Tests lances: `npm run verify:files`, `npm run verify:web-config-gamedir`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+- Lot du 2026-05-06 - `FS_NextPath` / `FS_InitFilesystem`:
+  - Comparaison C vs TS: `FS_NextPath` demarre par `fs_gamedir`, saute les PAKs et enumere uniquement les repertoires; le local C `prev` est represente par l'etat local `previous`.
+  - Correction: `FS_InitFilesystem` porte l'enregistrement `path`/`link`/`dir`, les cvars `basedir`/`cddir` en `NOSET`, `game` en `LATCH|SERVERINFO`, le montage CD optionnel, le montage `baseq2`, le snapshot `fs_base_searchpaths` et l'override `game`.
+  - `fs_basedir`/`fs_cddir`/`fs_gamedirvar`: fermes comme cvars injectees; les acces host/CD du C deviennent des contenus in-memory fournis par `resolveDirectoryFiles`, sans masquer l'absence de filesystem hote dans le navigateur.
+  - Runtime: comportement atteignable par les callbacks commandes/cvars injectes; l'integration Qcommon_Init complete reste hors ownership de `qcommon/files.c`, mais les commandes source sont enregistrables et executees par l'adapter teste.
+  - `apps/web`: le flux navigateur continue d'utiliser le VFS porte et les hooks `game`/config; aucune logique parallele de `path`/`link`/`dir` n'est necessaire hors console/adapters.
+  - `renderer-three`: aucune sortie visible directe; impact indirect attendu via le VFS pour BSP, modeles, images, palettes, sky, particules/beams et scene, verifie par le test renderer.
   - Tests lances: `npm run verify:files`, `npm run verify:web-config-gamedir`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
 - Lot du 2026-05-06 - `FS_AddGameDirectory`:
   - `FS_AddGameDirectory` ajoute comme port officiel dans `packages/filesystem/src/files.ts`; `mountDirectory` est desormais documente comme adapter de montage loose manuel.

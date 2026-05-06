@@ -59,23 +59,35 @@
 | `Quake-2-master/qcommon/pmove.c` | global | `vel` | `packages/qcommon/src/pmove.ts` | `vel` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `friction` | `packages/qcommon/src/pmove.ts` | `friction` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `drop` | `packages/qcommon/src/pmove.ts` | `drop` | Valide | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_Accelerate` | `packages/qcommon/src/pmove.ts` | `PM_Accelerate` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_AirAccelerate` | `packages/qcommon/src/pmove.ts` | `PM_AirAccelerate` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_AddCurrents` | `packages/qcommon/src/pmove.ts` | `PM_AddCurrents` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `s` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `wishvel` | `packages/qcommon/src/pmove.ts` | `wishvel` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_WaterMove` | `packages/qcommon/src/pmove.ts` | `PM_WaterMove` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `wishspeed` | `packages/qcommon/src/pmove.ts` | `wishspeed` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_AirMove` | `packages/qcommon/src/pmove.ts` | `PM_AirMove` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `wishvel` | `packages/qcommon/src/pmove.ts` | `wishvel` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `wishdir` | `packages/qcommon/src/pmove.ts` | `wishdir` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `wishspeed` | `packages/qcommon/src/pmove.ts` | `wishspeed` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `maxspeed` | `packages/qcommon/src/pmove.ts` | `maxspeed` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_Accelerate` | `packages/qcommon/src/pmove.ts` | `PM_Accelerate` | A verifier | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_Accelerate` | `packages/qcommon/src/pmove.ts` | `PM_Accelerate` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` | `index` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `addspeed` | `packages/qcommon/src/pmove.ts` | `addspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `accelspeed` | `packages/qcommon/src/pmove.ts` | `accelspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `currentspeed` | `packages/qcommon/src/pmove.ts` | `currentspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_AirAccelerate` | `packages/qcommon/src/pmove.ts` | `PM_AirAccelerate` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` | `index` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `addspeed` | `packages/qcommon/src/pmove.ts` | `addspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `accelspeed` | `packages/qcommon/src/pmove.ts` | `accelspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `currentspeed` | `packages/qcommon/src/pmove.ts` | `currentspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishspd` | `packages/qcommon/src/pmove.ts` | `wishspd` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_AddCurrents` | `packages/qcommon/src/pmove.ts` | `PM_AddCurrents` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `v` | `packages/qcommon/src/pmove.ts` | `v` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `s` | `packages/qcommon/src/pmove.ts` | `speed` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishvel` | `packages/qcommon/src/pmove.ts` | `wishvel` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_WaterMove` | `packages/qcommon/src/pmove.ts` | `PM_WaterMove` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` | `index` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishvel` | `packages/qcommon/src/pmove.ts` | `wishvel` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishdir` | `packages/qcommon/src/pmove.ts` | `wishdir` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishspeed` | `packages/qcommon/src/pmove.ts` | `wishspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_AirMove` | `packages/qcommon/src/pmove.ts` | `PM_AirMove` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` | `index` | Valide | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishvel` | `packages/qcommon/src/pmove.ts` | `wishvel` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `fmove` | `packages/qcommon/src/pmove.ts` | `fmove` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `smove` | `packages/qcommon/src/pmove.ts` | `smove` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishdir` | `packages/qcommon/src/pmove.ts` | `wishdir` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `wishspeed` | `packages/qcommon/src/pmove.ts` | `wishspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `maxspeed` | `packages/qcommon/src/pmove.ts` | `maxspeed` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_Accelerate` | `packages/qcommon/src/pmove.ts` | `PM_Accelerate` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_CatagorizePosition` | `packages/qcommon/src/pmove.ts` | `PM_CatagorizePosition` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `point` | `packages/qcommon/src/pmove.ts` | `point` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `cont` | `packages/qcommon/src/pmove.ts` | `cont` | A verifier | A tester |  |

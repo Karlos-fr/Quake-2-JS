@@ -17,6 +17,7 @@ export {
   FS_ExecAutoexec,
   FS_FreeFile,
   FS_Gamedir,
+  FS_InitFilesystem,
   FS_Link,
   FS_Link_f,
   FS_ListFiles,
@@ -36,6 +37,10 @@ export {
 
 export type {
   FileLink,
+  FilesystemCvar,
+  FSInitCommandAdapter,
+  FSInitCvarAdapter,
+  FSInitFilesystemOptions,
   MountedDirectory,
   MountedDirectoryFile,
   MountedDirectoryInput,

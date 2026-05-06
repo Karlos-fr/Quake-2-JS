@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: `trace_t` et tous ses champs directs, puis bloc PMove partage `pmtype_t`, `PMF_*`, `pmove_state_t`, `BUTTON_*`, `usercmd_s`/`usercmd_t`, `MAXTOUCH` et `pmove_t`.
+- Entites validees: `trace_t`, `allsolid`, `startsolid`, `fraction`, `endpos`, `plane`, `surface`, `contents`, `ent`, `pmtype_t`, `PMF_DUCKED`, `PMF_JUMP_HELD`, `PMF_ON_GROUND`, `PMF_TIME_WATERJUMP`, `PMF_TIME_LAND`, `PMF_TIME_TELEPORT`, `PMF_NO_PREDICTION`, `pmove_state_t`, `origin`, `velocity`, `pm_flags`, `pm_time`, `gravity`, `delta_angles`, `BUTTON_ATTACK`, `BUTTON_USE`, `BUTTON_ANY`, `usercmd_s` porte par `usercmd_t`, `msec`, `buttons`, `angles`, `forwardmove`, `sidemove`, `upmove`, `impulse`, `lightlevel`, `MAXTOUCH`, `pmove_t`, `s`, `cmd`, `snapinitial`, `numtouch`, `touchents`, `viewangles`, `viewheight`, `mins`, `maxs`, `groundentity`, `watertype`, `waterlevel`, `trace`, `pointcontents`.
+- Ownership: types, constantes et champs proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportes par `packages/qcommon/src/index.ts`; le lot inclut `usercmd_t`/`pmove_t` parce que la matrice les place dans `q_shared.ts`, sans modifier `packages/qcommon/src/pmove.ts`.
+- Preuves: comparaison H vs TS ajoutee dans `scripts/verify/quake2-q-shared-header.ts` pour la forme `trace_t`, les valeurs `pmtype_t`, `PMF_*`, `BUTTON_*`, `MAXTOUCH`, la forme `pmove_state_t`, `usercmd_t`, `pmove_t`, et les callbacks `trace`/`pointcontents`.
+- Commentaires d'en-tete: non applicable, lot compose de types/interfaces/champs/macros/enums sans fonction portee.
 - 2026-05-06: `cmodel_s`/`cmodel_t`, champs directs `mins`, `maxs`, `origin`, `headnode`, puis `csurface_s`/`csurface_t`, champs directs `name`, `flags`, `value`, et wrapper adjacent `mapsurface_s`/`mapsurface_t` avec `rname`.
 - Entites validees: `cmodel_s` porte par `cmodel_t`, `mins`, `maxs`, `origin`, `headnode`, `csurface_s` porte par `csurface_t`, `name`, `flags`, `value`, `mapsurface_s` porte par `mapsurface_t`, `rname`.
 - Ownership: types proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportes via `packages/qcommon/src/index.ts`; `cmodel.c` consomme ces types pour `CollisionWorld.map_cmodels`, `CM_LoadMap`, `CM_InlineModel`, traces et surfaces.
@@ -52,6 +57,7 @@
 
 ## Corrections
 
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `trace_t`, `pmtype_t`, `PMF_*`, `pmove_state_t`, `BUTTON_*`, `usercmd_t`, `MAXTOUCH` et `pmove_t`; la matrice a ete completee pour les champs directs absents du decoupage genere (`plane`, `surface`, `ent`, mouvements directionnels, `s`, `touchents`, bbox, `groundentity`, callbacks).
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour la forme `cmodel_t`, `csurface_t` et `mapsurface_t`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `AREA_SOLID`, `AREA_TRIGGERS`, la forme `cplane_t` et les offsets `CPLANE_*`.
 - `packages/game/src/runtime.ts` importe et reexporte maintenant `AREA_SOLID` et `AREA_TRIGGERS` depuis `packages/qcommon/src/index.ts`, supprimant le doublon numerique local.
@@ -72,6 +78,13 @@
 
 ## Tests de reference
 
+- `npm run verify:q-shared:header` OK pour `trace_t`/PMove shared.
+- `npm run verify:pmove` OK.
+- `npm run verify:client:pmove:viewheight` OK.
+- `npm run verify:collision:phase1` OK.
+- `npm run verify:full-game:server-host` OK.
+- `npm run verify:full-game:three-renderer` OK.
+- `npm run typecheck` OK.
 - `npm run verify:q-shared:header` OK pour `cmodel_t`/`csurface_t`/`mapsurface_t`.
 - `npm run verify:collision:phase1` OK.
 - `npx tsx ./scripts/verify/quake2-cmodel.ts` OK.
@@ -129,6 +142,11 @@
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `trace_t` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; ses champs directs reprennent les declarations C, avec `surface` nullable pour le cas C `NULL` et `ent` type en `unknown` parce que `struct edict_s*` appartient aux couches game/server.
+- Runtime: integration attendue et presente. `trace_t` circule dans collision (`CM_BoxTrace`, `CM_TransformedBoxTrace`), server world (`SV_Trace`, `SV_ClipMoveToEntities`), gameplay `gi.trace`, armes/touches et PMove; les champs `allsolid`, `startsolid`, `fraction`, `endpos`, `plane`, `surface`, `contents` et `ent` sont consommes par les chemins normaux.
+- Le bloc PMove partage (`pmtype_t`, `PMF_*`, `pmove_state_t`, `BUTTON_*`, `usercmd_t`, `MAXTOUCH`, `pmove_t`) est integre via `Pmove`, prediction client, `ClientThink`, server usercmd et snapshots player state. Les champs restent bit-accuracy oriented comme le H: nombres entiers TS pour `short`/`byte`, tuples de 3 nombres pour les vecteurs short.
+- `apps/web`: integration attendue et presente via `apps/web/src/local-collision-adapter.ts`, `apps/web/src/local-client-controller.ts`, `apps/web/src/full-game-server-host.ts` et les flux full-game/server-host. Le web transmet les `usercmd_t`, branche `trace`/`pointcontents` sur la collision partagee et ne remplace pas la logique PMove/runtime.
+- `renderer-three`: sortie visible attendue indirecte et presente. `trace_t`/PMove influencent camera/viewheight/viewangles, position de scene et etats player; les surfaces/plans/contents de trace ne produisent pas directement modeles/frames/images/particules/beams/dlights/temp entities/areabits, mais conditionnent la camera et les interactions visibles. `verify:full-game:three-renderer` confirme que le flux renderer consomme ces sorties via le refresh frame sans manque de branchement detecte.
 - Le bloc `cmodel_t`/`csurface_t`/`mapsurface_t` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; les champs directs reprennent les declarations C `vec3_t mins, maxs`, `vec3_t origin`, `int headnode`, `char name[16]`, `int flags`, `int value` et `char rname[32]`, avec les chaines C representees par des `string` TS.
 - Runtime: integration attendue et presente. `createCollisionWorld` construit les `map_cmodels` depuis les submodels BSP avec extension de bbox Quake II, `CM_LoadMap` expose le world model, `CM_InlineModel` expose les submodels, `SV_HullForEntity`/`SV_Trace` et `applyInlineModelBoundsFromCollision` consomment `headnode`, `mins` et `maxs`; `csurface_t` circule dans `trace_t.surface`, PMove, weapons et touch callbacks.
 - `apps/web`: integration attendue via `apps/web/src/full-game.ts`, qui fournit `inlineModel` depuis `CM_InlineModel`, et via les flux server-host/full-game qui declenchent collision, traces et PMove sans logique parallele masquante.
@@ -176,4 +194,4 @@
 
 ## Prochain lot recommande
 
-- Traiter `trace_t` et ses champs directs (`allsolid`, `startsolid`, `fraction`, `endpos`, `plane`, `surface`, `contents`, `ent`), puis `pmtype_t`/`pmove_state_t` si le lot reste coherent.
+- Traiter le prochain bloc visible `entity_state_t->effects`, en commencant par `EF_ROTATE`, `EF_GIB`, `EF_BLASTER`, `EF_ROCKET`, `EF_GRENADE`, `EF_HYPERBLASTER`, `EF_BFG`, `EF_COLOR_SHELL`, `EF_POWERSCREEN` et la suite `EF_*` coherente avec le runtime client/renderer-three.

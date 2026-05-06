@@ -96,8 +96,15 @@ writeAscii(pakBytes, 17, "maps/test.bsp");
 pakBytes.set(createLittleLong(12), 17 + 56);
 pakBytes.set(createLittleLong(5), 17 + 60);
 const pak = parsePak(pakBytes, "test.pak");
+assert.deepEqual(pak.header, {
+  ident: IDPAKHEADER,
+  dirofs: 17,
+  dirlen: 64
+}, "parsePak dpackheader_t mismatch");
 assert.equal(pak.entries.length, 1, "parsePak entry count mismatch");
 assert.equal(pak.entries[0].name, "maps/test.bsp", "parsePak name mismatch");
+assert.equal(pak.entries[0].filepos, 12, "parsePak filepos mismatch");
+assert.equal(pak.entries[0].filelen, 5, "parsePak filelen mismatch");
 assert.equal(pak.entries[0].normalizedName, "maps/test.bsp", "parsePak normalized name mismatch");
 
 const pcxBytes = new Uint8Array(128 + 1 + 769);
@@ -111,12 +118,27 @@ pcxBytes.set(createLittleShort(0), 8);
 pcxBytes.set(createLittleShort(0), 10);
 pcxBytes.set(createLittleShort(1), 12);
 pcxBytes.set(createLittleShort(1), 14);
+pcxBytes[16] = 31;
+pcxBytes[64] = 0;
 pcxBytes[65] = 1;
 pcxBytes.set(createLittleShort(1), 66);
+pcxBytes.set(createLittleShort(1), 68);
+pcxBytes[70] = 222;
 pcxBytes[128] = 7;
 pcxBytes[129] = 0x0c;
 pcxBytes[130 + 22] = 123;
 const pcx = parsePcx(pcxBytes, "test.pcx");
+assert.equal(pcx.header.manufacturer, 0x0a, "pcx_t manufacturer mismatch");
+assert.equal(pcx.header.version, 5, "pcx_t version mismatch");
+assert.equal(pcx.header.encoding, 1, "pcx_t encoding mismatch");
+assert.equal(pcx.header.bits_per_pixel, 8, "pcx_t bits_per_pixel mismatch");
+assert.equal(pcx.header.palette[0], 31, "pcx_t palette mismatch");
+assert.equal(pcx.header.reserved, 0, "pcx_t reserved mismatch");
+assert.equal(pcx.header.color_planes, 1, "pcx_t color_planes mismatch");
+assert.equal(pcx.header.bytes_per_line, 1, "pcx_t bytes_per_line mismatch");
+assert.equal(pcx.header.palette_type, 1, "pcx_t palette_type mismatch");
+assert.equal(pcx.header.filler[0], 222, "pcx_t filler mismatch");
+assert.equal(pcx.header.data[0], 7, "pcx_t data mismatch");
 assert.equal(pcx.width, 1, "parsePcx width mismatch");
 assert.equal(pcx.height, 1, "parsePcx height mismatch");
 assert.equal(pcx.indices[0], 7, "parsePcx pixel index mismatch");

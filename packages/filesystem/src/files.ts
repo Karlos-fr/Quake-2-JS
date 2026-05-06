@@ -20,6 +20,10 @@ import { findPakEntry, parsePak, readPakEntryData } from "../../formats/src/pak.
 import type { PakArchive, PakEntry } from "../../formats/src/pak.js";
 
 const FS_SFF_SUBDIR = 0x08;
+const FS_CVAR_SERVERINFO = 4;
+const FS_CVAR_NOSET = 8;
+const FS_CVAR_LATCH = 16;
+const FS_BASEDIRNAME = "baseq2";
 
 /**
  * Original name: MAX_READ
@@ -132,6 +136,27 @@ export interface VirtualFilesystem {
  */
 export type MountedDirectoryInput = Record<string, Uint8Array> | Iterable<[string, Uint8Array]>;
 
+export interface FilesystemCvar {
+  string: string;
+}
+
+export interface FSInitCommandAdapter {
+  addCommand: (name: string, callback: () => void) => void;
+  argc?: () => number;
+  argv?: (index: number) => string;
+  print?: (line: string) => void;
+}
+
+export interface FSInitCvarAdapter {
+  get: (name: string, value: string, flags: number) => FilesystemCvar | null;
+}
+
+export interface FSInitFilesystemOptions {
+  commands?: FSInitCommandAdapter;
+  cvars?: FSInitCvarAdapter;
+  resolveDirectoryFiles?: (path: string) => MountedDirectoryInput | undefined;
+}
+
 /**
  * Category: New
  * Purpose: Create an empty virtual filesystem.
@@ -147,6 +172,43 @@ export function createVirtualFilesystem(initialGameDir = "baseq2"): VirtualFiles
     fs_gamedir: normalizeDirectoryPath(initialGameDir),
     fs_base_searchpaths: []
   };
+}
+
+/**
+ * Original name: FS_InitFilesystem
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Registers the `path`, `link` and `dir` filesystem commands.
+ * - Creates `basedir`, `cddir` and `game` cvars with the original flags.
+ * - Mounts optional CD content, mounts `baseq2`, marks base search paths, then applies a latched game override.
+ *
+ * Porting notes:
+ * - Uses injected command and cvar adapters to avoid coupling this filesystem package to qcommon runtimes.
+ * - Host directory probing is represented by `resolveDirectoryFiles`, which supplies mounted in-memory contents.
+ */
+export function FS_InitFilesystem(filesystem: VirtualFilesystem, options: FSInitFilesystemOptions = {}): void {
+  registerFilesystemCommands(filesystem, options.commands);
+
+  const fs_basedir = getFilesystemCvar(options.cvars, "basedir", ".", FS_CVAR_NOSET);
+  const fs_cddir = getFilesystemCvar(options.cvars, "cddir", "", FS_CVAR_NOSET);
+
+  if (fs_cddir.string.length > 0) {
+    const cddirPath = joinGameDirectory(fs_cddir.string, FS_BASEDIRNAME);
+    FS_AddGameDirectory(filesystem, cddirPath, options.resolveDirectoryFiles?.(cddirPath));
+  }
+
+  const basedirPath = joinGameDirectory(fs_basedir.string, FS_BASEDIRNAME);
+  FS_AddGameDirectory(filesystem, basedirPath, options.resolveDirectoryFiles?.(basedirPath));
+  markBaseSearchPaths(filesystem);
+
+  const fs_gamedirvar = getFilesystemCvar(options.cvars, "game", "", FS_CVAR_LATCH | FS_CVAR_SERVERINFO);
+  if (fs_gamedirvar.string.length > 0) {
+    const gamePath = normalizeDirectoryPath(fs_gamedirvar.string);
+    FS_SetGamedir(filesystem, fs_gamedirvar.string, options.resolveDirectoryFiles?.(gamePath));
+  }
 }
 
 /**
@@ -719,6 +781,42 @@ function decodeTextBytes(bytes: Uint8Array): string {
   }
 
   return result;
+}
+
+function registerFilesystemCommands(filesystem: VirtualFilesystem, commands: FSInitCommandAdapter | undefined): void {
+  if (!commands) {
+    return;
+  }
+
+  commands.addCommand("path", () => {
+    for (const line of FS_Path_f(filesystem)) {
+      commands.print?.(`${line}\n`);
+    }
+  });
+
+  commands.addCommand("link", () => {
+    const from = commands.argv?.(1);
+    const to = commands.argv?.(2);
+    const output = commands.argc?.() === 3 ? FS_Link_f(filesystem, from, to) : FS_Link_f(filesystem);
+    if (output !== undefined) {
+      commands.print?.(`${output}\n`);
+    }
+  });
+
+  commands.addCommand("dir", () => {
+    const wildcard = commands.argc?.() === 2 ? commands.argv?.(1) : undefined;
+    for (const line of FS_Dir_f(filesystem, wildcard)) {
+      commands.print?.(`${line}\n`);
+    }
+  });
+}
+
+function getFilesystemCvar(cvars: FSInitCvarAdapter | undefined, name: string, value: string, flags: number): FilesystemCvar {
+  return cvars?.get(name, value, flags) ?? { string: value };
+}
+
+function joinGameDirectory(root: string, gameDirectory: string): string {
+  return normalizeDirectoryPath(`${root}/${gameDirectory}`);
 }
 
 /**

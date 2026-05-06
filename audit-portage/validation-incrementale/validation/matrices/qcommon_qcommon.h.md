@@ -25,18 +25,18 @@
 | `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `BUILDSTRING` | `packages/qcommon/src/qcommon.ts` | `BUILDSTRING` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `CPUSTRING` | `packages/qcommon/src/qcommon.ts` | `CPUSTRING` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | struct | `sizebuf_s` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `allowoverflow` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `overflowed` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `data` | `packages/qcommon/src/qcommon.ts` | `data` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `maxsize` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `cursize` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `readcount` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Init` | `packages/memory/src/sizebuf.ts` | `SZ_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Clear` | `packages/memory/src/sizebuf.ts` | `SZ_Clear` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_GetSpace` | `packages/memory/src/sizebuf.ts` | `SZ_GetSpace` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Write` | `packages/memory/src/sizebuf.ts` | `SZ_Write` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Print` | `packages/memory/src/sizebuf.ts` | `SZ_Print` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | struct | `sizebuf_s` | `packages/memory/src/sizebuf.ts` | `sizebuf_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `allowoverflow` | `packages/memory/src/sizebuf.ts` | `allowoverflow` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `overflowed` | `packages/memory/src/sizebuf.ts` | `overflowed` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `data` | `packages/memory/src/sizebuf.ts` | `data` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `maxsize` | `packages/memory/src/sizebuf.ts` | `maxsize` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `cursize` | `packages/memory/src/sizebuf.ts` | `cursize` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `readcount` | `packages/memory/src/sizebuf.ts` | `readcount` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Init` | `packages/memory/src/sizebuf.ts` | `SZ_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Clear` | `packages/memory/src/sizebuf.ts` | `SZ_Clear` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_GetSpace` | `packages/memory/src/sizebuf.ts` | `SZ_GetSpace` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Write` | `packages/memory/src/sizebuf.ts` | `SZ_Write` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `SZ_Print` | `packages/memory/src/sizebuf.ts` | `SZ_Print` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteChar` | `packages/qcommon/src/messages.ts` | `MSG_WriteChar` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteByte` | `packages/qcommon/src/messages.ts` | `MSG_WriteByte` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteShort` | `packages/qcommon/src/messages.ts` | `MSG_WriteShort` | A verifier | A redecouper |  |
@@ -50,7 +50,7 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaUsercmd` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDeltaEntity` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaEntity` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_WriteDir` | `packages/qcommon/src/messages.ts` | `MSG_WriteDir` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_BeginReading` | `packages/memory/src/sizebuf.ts` | `MSG_BeginReading` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `MSG_BeginReading` | `packages/memory/src/sizebuf.ts` | `MSG_BeginReading` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadChar` | `packages/qcommon/src/messages.ts` | `MSG_ReadChar` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadByte` | `packages/qcommon/src/messages.ts` | `MSG_ReadByte` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `MSG_ReadShort` | `packages/qcommon/src/messages.ts` | `MSG_ReadShort` | A verifier | A redecouper |  |

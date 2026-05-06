@@ -10,18 +10,18 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_Char` | `packages/renderer-three/src/gl_draw.ts` | `Draw_Char` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_FadeScreen` | `packages/renderer-three/src/gl_draw.ts` | `Draw_FadeScreen` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_Fill` | `packages/renderer-three/src/gl_draw.ts` | `Draw_Fill` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_GetPicSize` | `packages/renderer-three/src/gl_draw.ts` | `Draw_GetPicSize` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_InitLocal` | `packages/renderer-three/src/gl_draw.ts` | `Draw_InitLocal` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_Pic` | `packages/renderer-three/src/gl_draw.ts` | `Draw_Pic` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_StretchPic` | `packages/renderer-three/src/gl_draw.ts` | `Draw_StretchPic` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_StretchRaw` | `packages/renderer-three/src/gl_draw.ts` | `Draw_StretchRaw` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_TileClear` | `packages/renderer-three/src/gl_draw.ts` | `Draw_TileClear` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | global | `c` | `packages/renderer-three/src/gl_draw.ts` | `c` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | global | `gl` | `packages/renderer-three/src/gl_draw.ts` | `gl` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | global | `hscale` | `packages/renderer-three/src/gl_draw.ts` | `hscale` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | global | `row` | `packages/renderer-three/src/gl_draw.ts` | `row` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | global | `scrap_dirty` | `packages/renderer-three/src/gl_draw.ts` | `scrap_dirty` | A verifier | split-undocumented |  |
-| `Quake-2-master/ref_gl/gl_draw.c` | global | `t` | `packages/renderer-three/src/gl_draw.ts` | `t` | A verifier | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_Char` | `packages/renderer-three/src/gl_draw.ts` | `Draw_Char` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_FadeScreen` | `packages/renderer-three/src/gl_draw.ts` | `Draw_FadeScreen` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_Fill` | `packages/renderer-three/src/gl_draw.ts` | `Draw_Fill` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_GetPicSize` | `packages/renderer-three/src/gl_draw.ts` | `Draw_GetPicSize` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_InitLocal` | `packages/renderer-three/src/gl_draw.ts` | `Draw_InitLocal` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_Pic` | `packages/renderer-three/src/gl_draw.ts` | `Draw_Pic` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_StretchPic` | `packages/renderer-three/src/gl_draw.ts` | `Draw_StretchPic` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_StretchRaw` | `packages/renderer-three/src/gl_draw.ts` | `Draw_StretchRaw` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | function | `Draw_TileClear` | `packages/renderer-three/src/gl_draw.ts` | `Draw_TileClear` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | global | `c` | `packages/renderer-three/src/gl_draw.ts` | `c` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | global | `gl` | `packages/renderer-three/src/gl_draw.ts` | `gl` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | global | `hscale` | `packages/renderer-three/src/gl_draw.ts` | `hscale` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | global | `row` | `packages/renderer-three/src/gl_draw.ts` | `row` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | global | `scrap_dirty` | `packages/renderer-three/src/gl_draw.ts` | `scrap_dirty` | Valide | split-undocumented |  |
+| `Quake-2-master/ref_gl/gl_draw.c` | global | `t` | `packages/renderer-three/src/gl_draw.ts` | `t` | Valide | split-undocumented |  |

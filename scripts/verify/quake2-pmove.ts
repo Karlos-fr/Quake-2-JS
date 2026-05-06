@@ -18,6 +18,9 @@ import {
   STEPSIZE,
   MIN_STEP_NORMAL,
   MAX_CLIP_PLANES,
+  PM_Accelerate,
+  PM_AddCurrents,
+  PM_AirAccelerate,
   PM_CatagorizePosition,
   PM_AirMove,
   PM_CheckJump,
@@ -48,6 +51,10 @@ import {
   CONTENTS_SLIME,
   CONTENTS_SOLID,
   CONTENTS_WATER,
+  CONTENTS_CURRENT_0,
+  CONTENTS_CURRENT_90,
+  CONTENTS_CURRENT_DOWN,
+  CONTENTS_CURRENT_UP,
   SURF_SLICK
 } from "../../packages/qcommon/src/q_shared.js";
 
@@ -77,10 +84,16 @@ function main(): void {
   verifyStepSlideMoveStopsWhenStepUpIsSolid();
   verifyStepSlideMovePrefersStepUpWhenFlatMoveIsBlocked();
   verifyStepSlideMoveKeepsDownMoveWhenStepIsSteepOrShorter();
+  verifyAccelerateAddsBoundedWishVelocity();
+  verifyAirAccelerateCapsWishspeedButUsesOriginalAccelerationScale();
+  verifyAddCurrentsAppliesLadderWaterAndGroundConveyors();
   verifyWaterMoveAcceleratesAndAdvancesWithNoCollision();
+  verifyWaterMoveDriftsDownWithoutUserIntent();
   verifyPmoveKeepsFullPitchVectorsForWaterMove();
   verifyAirMoveAcceleratesAndAppliesGravityOffGround();
   verifyAirMoveAcceleratesAndPreservesZeroVerticalSpeedOnGround();
+  verifyAirMoveLadderDampsVerticalVelocity();
+  verifyAirMoveUsesAirAccelerateWhenEnabled();
   verifyFlyMoveIntegratesFreelyWithoutClip();
   verifyFlyMoveUsesTraceEndposWhenClipIsEnabled();
   verifyFrictionStopsTinyHorizontalVelocityOnly();
@@ -564,6 +577,84 @@ function verifyStepSlideMoveKeepsDownMoveWhenStepIsSteepOrShorter(): void {
 
 /**
  * Category: New
+ * Purpose: Assert that `PM_Accelerate` uses the original current-speed/add-speed clamp before updating each axis.
+ */
+function verifyAccelerateAddsBoundedWishVelocity(): void {
+  const context = createPmoveContext(createBasePmove());
+  PM_InitLocalState(context, 0.1);
+  context.pml.velocity = [20, 5, 0];
+
+  PM_Accelerate(context, [1, 0, 0], 100, 10);
+
+  assertApprox(context.pml.velocity[0], 100, 0.0001, "accelerate clamps accelspeed to addspeed");
+  assertApprox(context.pml.velocity[1], 5, 0.0001, "accelerate preserves orthogonal Y velocity");
+  assertApprox(context.pml.velocity[2], 0, 0.0001, "accelerate preserves orthogonal Z velocity");
+
+  PM_Accelerate(context, [1, 0, 0], 50, 10);
+
+  assertApprox(context.pml.velocity[0], 100, 0.0001, "accelerate returns when current speed already exceeds wishspeed");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert that `PM_AirAccelerate` caps `wishspd` at 30 while keeping the original `wishspeed` in acceleration math.
+ */
+function verifyAirAccelerateCapsWishspeedButUsesOriginalAccelerationScale(): void {
+  const context = createPmoveContext(createBasePmove());
+  PM_InitLocalState(context, 0.1);
+
+  PM_AirAccelerate(context, [1, 0, 0], 100, 10);
+
+  assertApprox(context.pml.velocity[0], 30, 0.0001, "air accelerate caps added speed at 30 ups");
+  assertApprox(context.pml.velocity[1], 0, 0.0001, "air accelerate preserves orthogonal Y");
+  assertApprox(context.pml.velocity[2], 0, 0.0001, "air accelerate preserves orthogonal Z");
+
+  PM_AirAccelerate(context, [1, 0, 0], 100, 10);
+
+  assertApprox(context.pml.velocity[0], 30, 0.0001, "air accelerate returns once capped wishspd is reached");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert that `PM_AddCurrents` applies ladder clamping, water-current speed and conveyor velocity exactly like the C flow.
+ */
+function verifyAddCurrentsAppliesLadderWaterAndGroundConveyors(): void {
+  const ladder = createPmoveContext(createBasePmove());
+  PM_InitLocalState(ladder, 0.1);
+  ladder.pml.ladder = true;
+  ladder.pml.velocity[2] = 150;
+  ladder.pm.viewangles[PITCH] = -20;
+  ladder.pm.cmd.forwardmove = 100;
+  const ladderWish: vec3_t = [80, -80, 0];
+
+  PM_AddCurrents(ladder, ladderWish);
+
+  assertVector(ladderWish, [25, -25, 200], "ladder current clamps horizontal wish velocity and climbs when looking up");
+
+  const water = createPmoveContext(createBasePmove());
+  water.pm.watertype = CONTENTS_CURRENT_0 | CONTENTS_CURRENT_UP;
+  water.pm.waterlevel = 1;
+  water.pm.groundentity = { kind: "ground" };
+  PM_InitLocalState(water, 0.1);
+  const waterWish: vec3_t = [0, 0, 0];
+
+  PM_AddCurrents(water, waterWish);
+
+  assertVector(waterWish, [200, 0, 200], "water current halves pm_waterspeed when shallow and grounded");
+
+  const conveyor = createPmoveContext(createBasePmove());
+  conveyor.pm.groundentity = { kind: "conveyor" };
+  PM_InitLocalState(conveyor, 0.1);
+  conveyor.pml.groundcontents = CONTENTS_CURRENT_90 | CONTENTS_CURRENT_DOWN;
+  const conveyorWish: vec3_t = [0, 0, 0];
+
+  PM_AddCurrents(conveyor, conveyorWish);
+
+  assertVector(conveyorWish, [0, 100, -100], "ground conveyor applies fixed 100 ups current");
+}
+
+/**
+ * Category: New
  * Purpose: Assert that `PM_WaterMove` accelerates underwater intent and advances origin through the shared slide move path.
  */
 function verifyWaterMoveAcceleratesAndAdvancesWithNoCollision(): void {
@@ -583,6 +674,25 @@ function verifyWaterMoveAcceleratesAndAdvancesWithNoCollision(): void {
   assertApprox(context.pml.velocity[0], 100, 0.0001, "water move accelerates along forward wishdir");
   assertApprox(context.pml.origin[0], 10, 0.0001, "water move advances origin through step-slide move");
   assertApprox(context.pml.velocity[2], 0, 0.0001, "water move keeps neutral vertical speed when no upmove is requested");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert that idle `PM_WaterMove` keeps the original downward drift toward the bottom.
+ */
+function verifyWaterMoveDriftsDownWithoutUserIntent(): void {
+  const pm = createBasePmove();
+  pm.waterlevel = 3;
+  pm.trace = createPassThroughTrace;
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.1);
+
+  PM_WaterMove(context);
+
+  assertApprox(context.pml.velocity[0], 0, 0.0001, "idle water move keeps zero X speed");
+  assertApprox(context.pml.velocity[1], 0, 0.0001, "idle water move keeps zero Y speed");
+  assertApprox(context.pml.velocity[2], -30, 0.0001, "idle water move accelerates downward at half wishspeed");
 }
 
 /**
@@ -654,6 +764,51 @@ function verifyAirMoveAcceleratesAndPreservesZeroVerticalSpeedOnGround(): void {
   assertApprox(context.pml.velocity[2], 0, 0.0001, "grounded air move keeps vertical speed at zero with positive gravity");
   assertApprox(context.pml.origin[0], 20, 0.0001, "grounded air move advances origin horizontally");
   assertApprox(context.pml.origin[2], 0, 0.0001, "grounded air move does not move vertically");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert the ladder branch in `PM_AirMove` accelerates and damps vertical velocity toward zero when no climb input remains.
+ */
+function verifyAirMoveLadderDampsVerticalVelocity(): void {
+  const pm = createBasePmove();
+  pm.cmd.forwardmove = 200;
+  pm.s.gravity = 800;
+  pm.trace = createPassThroughTrace;
+
+  const context = createPmoveContext(pm);
+  PM_InitLocalState(context, 0.1);
+  context.pml.forward = [1, 0, 0];
+  context.pml.right = [0, 1, 0];
+  context.pml.ladder = true;
+  context.pml.velocity[2] = 40;
+
+  PM_AirMove(context);
+
+  assertApprox(context.pml.velocity[0], 25, 0.0001, "ladder air move accelerates with horizontal wish velocity clamped");
+  assertApprox(context.pml.velocity[2], 0, 0.0001, "ladder air move damps positive vertical velocity to zero");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert that free-air `PM_AirMove` selects `PM_AirAccelerate` when `pm_airaccelerate` is enabled.
+ */
+function verifyAirMoveUsesAirAccelerateWhenEnabled(): void {
+  const pm = createBasePmove();
+  pm.cmd.forwardmove = 200;
+  pm.s.gravity = 800;
+  pm.trace = createPassThroughTrace;
+
+  const context = createPmoveContext(pm);
+  context.pm_airaccelerate = 1;
+  PM_InitLocalState(context, 0.1);
+  context.pml.forward = [1, 0, 0];
+  context.pml.right = [0, 1, 0];
+
+  PM_AirMove(context);
+
+  assertApprox(context.pml.velocity[0], 30, 0.0001, "air move enabled airaccelerate caps horizontal acceleration at 30");
+  assertApprox(context.pml.velocity[2], -80, 0.0001, "air move enabled airaccelerate still applies gravity");
 }
 
 /**

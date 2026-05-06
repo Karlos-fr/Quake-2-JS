@@ -137,7 +137,7 @@ export type {
   lump_t,
   texinfo_t
 } from "./qfiles.js";
-export type { PakArchive, PakEntry } from "./pak.js";
+export type { PakArchive, PakEntry, dpackfile_t, dpackheader_t } from "./pak.js";
 export type { daliasframe_t, dmdl_t, dstvert_t, dtriangle_t, dtrivertx_t, Md2Model } from "./md2.js";
 export type { PcxImage, pcx_t } from "./pcx.js";
 export type { dsprframe_t, dsprite_t } from "./sp2.js";
