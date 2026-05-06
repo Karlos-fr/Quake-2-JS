@@ -9,26 +9,16 @@
  * - packages/game/src/m_player.ts
  */
 
-import {
-  FRAME_attack1,
-  FRAME_crattak9,
-  FRAME_crdeath5,
-  FRAME_death308,
-  FRAME_flip12,
-  FRAME_jump1,
-  FRAME_point12,
-  FRAME_run1,
-  FRAME_stand01,
-  FRAME_wave11,
-  MODEL_SCALE
-} from "../../packages/game/src/m_player.js";
+import { readFileSync } from "node:fs";
+
+import * as playerHeader from "../../packages/game/src/m_player.js";
 
 /**
  * Category: New
  * Purpose: Fail fast when one declarative frame constant differs from the original header values.
  *
  * Constraints:
- * - Keep the checks sparse but representative across the generated table.
+ * - Parse the generated C header so every exported frame constant stays tied to source data.
  */
 function assertEqual<T>(label: string, actual: T, expected: T): void {
   if (actual !== expected) {
@@ -36,16 +26,14 @@ function assertEqual<T>(label: string, actual: T, expected: T): void {
   }
 }
 
-assertEqual("FRAME_stand01", FRAME_stand01, 0);
-assertEqual("FRAME_run1", FRAME_run1, 40);
-assertEqual("FRAME_attack1", FRAME_attack1, 46);
-assertEqual("FRAME_jump1", FRAME_jump1, 66);
-assertEqual("FRAME_flip12", FRAME_flip12, 83);
-assertEqual("FRAME_wave11", FRAME_wave11, 122);
-assertEqual("FRAME_point12", FRAME_point12, 134);
-assertEqual("FRAME_crattak9", FRAME_crattak9, 168);
-assertEqual("FRAME_crdeath5", FRAME_crdeath5, 177);
-assertEqual("FRAME_death308", FRAME_death308, 197);
-assertEqual("MODEL_SCALE", MODEL_SCALE, 1.0);
+const source = readFileSync(new URL("../../Quake-2-master/game/m_player.h", import.meta.url), "utf8");
+const defines = [...source.matchAll(/^#define\s+([A-Z0-9_a-z]+)\s+([0-9.]+)/gm)]
+  .map((match) => [match[1], Number(match[2])] as const);
+
+assertEqual("define count", defines.length, 199);
+
+for (const [name, expected] of defines) {
+  assertEqual(name, playerHeader[name as keyof typeof playerHeader], expected);
+}
 
 console.log("quake2-m-player-header: ok");

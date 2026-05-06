@@ -1831,7 +1831,47 @@
   - `scripts/verify/quake2-g-misc.ts`: attentes `ThrowClientHead` alignees sur le helper existant `velocityForDamageExpected` pour respecter la quantification C 15 bits de `random()`.
 - Tests: `npm run verify:g-local:header` OK; `npm run verify:g-misc` OK; `npm run verify:g-ai` OK; `npm run verify:g-weapon` OK; `npm run verify:p-trail` OK; `npm run verify:p-client` OK; `npm run verify:p-hud` OK; `npm run verify:p-view` OK; `npm run verify:g-svcmds` OK; `npm run verify:g-cmds` OK; `npm run verify:p-weapon` OK; `npm run verify:m-move` OK; `npm run verify:g-phys` OK; `npm run verify:g-save` OK; `npm run verify:g-chase` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:web-render-order` OK; `npm run verify:local-gameplay-sync` OK; `npm run verify:full-game:server-host` OK; `npm run typecheck` OK.
 
-- Prochain lot recommande: reprendre les prochains macros proprietaires `ANIM_BASIC` a `ANIM_REVERSE`, puis le debut de `client_persistant_t` (`userinfo` a `inventory`) si le lot reste coherent.
+- 2026-05-06: lot macros animation joueur et debut de `client_persistant_t`: `ANIM_BASIC` a `ANIM_REVERSE`, structure `client_persistant_t`, puis champs `userinfo`, `netname`, `hand`, `connected`, `health`, `max_health`, `savedFlags`, `selected_item`, `inventory`.
+- Verdict: `Valide` pour les 17 entites du lot.
+- Source H/C comparee:
+  - `g_local.h` definit les priorites `ANIM_*` de `0` a `6` pour `client_t->anim_priority`.
+  - `client_persistant_t` conserve l'etat persistant multi-niveaux; le lot couvre les buffers userinfo/netname, la main, l'etat connected, la sante sauvegardee, les flags sauvegardes, la selection d'item et l'inventaire `MAX_ITEMS`.
+  - Les consommateurs C principaux sont `p_client.c` (`ClientUserinfoChanged`, `ClientConnect`, `InitClientPersistant`, `SaveClientData`, `FetchClientEntData`, mort joueur), `g_cmds.c` (gestes/inventaire), `p_weapon.c` (animations attaque/reverse et inventaire), `p_hud.c` (HUD/inventaire/intermission) et `p_view.c` (animation/playerstate).
+- Cibles TS verifiees:
+  - `packages/game/src/runtime.ts`: constantes `ANIM_*`, interface `GameClientPersistant`, `createGameClientPersistant`, `cloneGameClientPersistant`.
+  - `packages/game/src/g_local.ts`: reexport des constantes et alias `client_persistant_t`.
+  - `packages/game/src/index.ts`: exports publics des `ANIM_*`.
+  - `packages/game/src/p_client.ts`, `g_cmds.ts`, `p_weapon.ts`, `p_hud.ts`, `p_view.ts`, `g_items.ts`, `g_save.ts`: usages runtime du lot verifies.
+- Runtime: integre via `GetGameApi.ClientConnect`/`ClientUserinfoChanged`, `ClientBeginServerFrame`, `ClientEndServerFrame`, commandes client, pickup/drop/use items, armes, save/load, death/respawn et animations joueur. Les `ANIM_*` pilotent `anim_priority`, `anim_end` et `entity_state.frame`; `client_persistant_t` alimente inventaire, userinfo, sante et persistance.
+- apps/web: integration attendue via full-game/local host, userinfo initial, commandes/inventaire et layouts HUD; aucune logique parallele web ne remplace le runtime porte. Le helper standalone `local-game-bootstrap` ne fait que precharger une session demo en passant par l'inventaire runtime.
+- renderer-three: integration attendue indirecte. Les `ANIM_*` produisent des frames joueur visibles et `client_persistant_t.inventory` produit HUD/layouts et effets d'items/armes; Three consomme les sorties via snapshots/playerstate/refresh entities. Pas de consommation directe du type header attendue.
+- Commentaires/documentation: commentaires de portage de `GameClientPersistant`, `createGameClientPersistant` et `cloneGameClientPersistant` corriges/verifies avec `Original name`, `Source`, `Category: Ported`, fidelity et notes. Commentaires des fonctions consommatrices principales verifies.
+- Corrections appliquees:
+  - `packages/game/src/runtime.ts`: commentaires de portage du bloc persistant mis a jour.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ajoutees pour valeurs/export public `ANIM_*` et defaults/mutabilite des champs `client_persistant_t` jusqu'a `inventory`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 17 lignes du lot passees a `Valide`, noms cibles des champs renseignes.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:p-view` OK; `npm run verify:p-weapon` OK; `npm run verify:g-cmds` OK; `npm run verify:g-items` OK; `npm run verify:p-hud` OK; `npm run verify:g-save` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- 2026-05-06: lot elargi `client_persistant_t` de `max_bullets` a `spectator`: `max_bullets`, `max_shells`, `max_rockets`, `max_grenades`, `max_cells`, `max_slugs`, `weapon`, `lastweapon`, `power_cubes`, `score`, `game_helpchanged`, `helpchanged`, `spectator`.
+- Verdict: `Valide` pour les 13 champs du lot apres comparaison H/C vs TS, ajout de preuves header et verification des consommateurs runtime.
+- Source H/C comparee:
+  - `g_local.h` porte les capacites ammo persistantes, les pointeurs `gitem_t *weapon`/`lastweapon`, le bitmask `power_cubes`, le score coop total, les compteurs help/F1 et l'etat spectateur dans `client_persistant_t`.
+  - `p_client.c` initialise les max ammo a `200/100/50/50/200/50`, sauvegarde/restaure score/health/flags, preserve `pers.spectator` via userinfo et `spectator_respawn`, et copie help counters dans la branche coop.
+  - `g_items.c` augmente/clamp les capacites via Bandolier/Pack/Add_Ammo, marque les power cubes coop, `p_weapon.c` met a jour `lastweapon`, `g_cmds.c` consomme `lastweapon`, `p_view.c`/`p_hud.c` consomment les compteurs help, et `g_save.c` encode/restaure les pointeurs item.
+- Cibles TS verifiees:
+  - `packages/game/src/runtime.ts`: `GameClientPersistant`, `createGameClientPersistant` et `cloneGameClientPersistant` portent/copient tous les champs du lot avec commentaires d'en-tete conformes.
+  - `packages/game/src/g_local.ts`: alias `client_persistant_t` vers le type runtime et reexports du bloc client.
+  - `packages/game/src/p_client.ts`, `g_items.ts`, `p_weapon.ts`, `g_cmds.ts`, `p_view.ts`, `p_hud.ts`, `g_save.ts`, `g_main.ts`: usages runtime du lot verifies.
+- Runtime: branche via `ClientConnect`/`ClientUserinfoChanged`, `InitClientPersistant`, `PutClientInServer`, `spectator_respawn`, `SaveClientData`/`FetchClientEntData`, pickups ammo/items, changement d'arme, commandes `weapprev`/`weaplast`, help HUD/F1, coop power cubes et save/load. Les champs ne sont pas seulement declaratifs: ils pilotent inventaire, armes, HUD, spectateurs, score coop et persistance.
+- apps/web: integration attendue indirectement via host full-game/local, userinfo initiale, commandes armes/inventaire/spectateur, HUD/layouts et save/load; aucune logique parallele web ne remplace ces champs runtime. `verify:web-render-order`, `verify:local-gameplay-sync` et `verify:full-game:server-host` OK.
+- renderer-three: integration indirecte attendue. `weapon`/`lastweapon` et les capacites ammo influencent arme active, gun model/frame, pickups et HUD; `spectator` influence camera/chase/visibilite; `power_cubes` influence items/clefs coop; les sorties visibles passent par snapshots/playerstate/refresh entities et sont consommees par Three. Pas de consommation directe du type header attendue. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaires de `GameClientPersistant`, `createGameClientPersistant`, `cloneGameClientPersistant`, `InitClientPersistant`, `ClientUserinfoChanged`, `spectator_respawn`, `Pickup_Bandolier`, `Pickup_Pack`, `ChangeWeapon`, `Cmd_WeapLast_f`, `G_SetClientSound`, `HelpComputer` et save client verifies; pas de fonction portee nouvelle ajoutee.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-local-header.ts`: assertions ajoutees pour defaults et mutabilite de tous les champs `client_persistant_t` du lot, y compris pointeurs item `weapon`/`lastweapon`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 13 lignes du lot passees a `Valide`, noms cibles renseignes et ownership `weapon` corrige vers `GameClientPersistant.weapon`.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:p-client` OK; `npm run verify:g-items` OK; `npm run verify:g-save` OK; `npm run verify:p-view` OK; `npm run verify:p-hud` OK; `npm run verify:p-weapon` OK; `npm run verify:g-cmds` OK; `npm run verify:g-main` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: continuer avec `client_respawn_t`, puis champs `enterframe`, `score`, `cmd_angles`, `spectator`, en gardant `gclient_s` pour une session separee si le lot devient trop large.
 
 ## Blocages
 

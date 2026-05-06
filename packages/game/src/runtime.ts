@@ -146,11 +146,17 @@ export const DEAD_DEAD = 2;
 export const DEAD_RESPAWNABLE = 3;
 
 /**
- * Category: New
- * Purpose: Preserve the minimal persistent client state required by the first `p_weapon.c` port.
+ * Original name: client_persistant_t
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must keep original field names so the weapon code can stay close to the C source.
+ * Behavior:
+ * - Preserves the player state that survives level changes, including userinfo, health, inventory,
+ *   weapon pointers, help counters and spectator status.
+ *
+ * Porting notes:
+ * - Fixed C buffers are represented as strings, and `gitem_t *` fields reference item definitions.
  */
 export interface GameClientPersistant {
   userinfo: string;
@@ -907,8 +913,16 @@ export const DOOR_Y_AXIS = 128;
 export const PLAT_LOW_TRIGGER = 1;
 
 /**
- * Category: New
- * Purpose: Create the minimal persistent client state required by the first weapon-system port.
+ * Original name: client_persistant_t zero/default initialization
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Creates the persistent client block with Quake-style field names and a zeroed MAX_ITEMS inventory.
+ *
+ * Porting notes:
+ * - Uses `RIGHT_HANDED` as the startup default before `ClientUserinfoChanged` applies userinfo.
  */
 export function createGameClientPersistant(): GameClientPersistant {
   return {
@@ -952,8 +966,13 @@ export function createGameClientRespawn(): GameClientRespawn {
 }
 
 /**
- * Category: New
- * Purpose: Clone one persistent client state block while preserving Quake-style field names and inventory layout.
+ * Original name: client_persistant_t copy
+ * Source: game/g_local.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Clones the persistent client block and copies inventory by value for coop respawn/save transitions.
  */
 export function cloneGameClientPersistant(source: GameClientPersistant): GameClientPersistant {
   return {

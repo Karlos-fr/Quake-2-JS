@@ -461,36 +461,36 @@
 | `Quake-2-master/game/g_local.h` | function | `ChaseNext` | `packages/game/src/g_chase.ts` | `ChaseNext` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_chase.c.md`. |
 | `Quake-2-master/game/g_local.h` | function | `ChasePrev` | `packages/game/src/g_chase.ts` | `ChasePrev` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_chase.c.md`. |
 | `Quake-2-master/game/g_local.h` | function | `GetChaseTarget` | `packages/game/src/g_chase.ts` | `GetChaseTarget` | Non applicable | A redecouper | Declaration header; fonction proprietaire validee dans `game_g_chase.c.md`. |
-| `Quake-2-master/game/g_local.h` | macro | `ANIM_BASIC` | `packages/game/src/runtime.ts` | `ANIM_BASIC` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ANIM_WAVE` | `packages/game/src/runtime.ts` | `ANIM_WAVE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ANIM_JUMP` | `packages/game/src/runtime.ts` | `ANIM_JUMP` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ANIM_PAIN` | `packages/game/src/runtime.ts` | `ANIM_PAIN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ANIM_ATTACK` | `packages/game/src/runtime.ts` | `ANIM_ATTACK` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ANIM_DEATH` | `packages/game/src/runtime.ts` | `ANIM_DEATH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ANIM_REVERSE` | `packages/game/src/runtime.ts` | `ANIM_REVERSE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | struct | `client_persistant_t` | `packages/game/src/g_local.ts` | `client_persistant_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `userinfo` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `netname` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `hand` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `connected` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `health` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `max_health` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `savedFlags` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `selected_item` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `inventory` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `max_bullets` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `max_shells` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `max_rockets` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `max_grenades` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `max_cells` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `max_slugs` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `weapon` | `packages/game/src/g_items.ts` | `weapon` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `lastweapon` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `power_cubes` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `score` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `game_helpchanged` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `helpchanged` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `spectator` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ANIM_BASIC` | `packages/game/src/runtime.ts` | `ANIM_BASIC` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ANIM_WAVE` | `packages/game/src/runtime.ts` | `ANIM_WAVE` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ANIM_JUMP` | `packages/game/src/runtime.ts` | `ANIM_JUMP` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ANIM_PAIN` | `packages/game/src/runtime.ts` | `ANIM_PAIN` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ANIM_ATTACK` | `packages/game/src/runtime.ts` | `ANIM_ATTACK` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ANIM_DEATH` | `packages/game/src/runtime.ts` | `ANIM_DEATH` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ANIM_REVERSE` | `packages/game/src/runtime.ts` | `ANIM_REVERSE` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | struct | `client_persistant_t` | `packages/game/src/g_local.ts` | `client_persistant_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `userinfo` | `packages/game/src/g_local.ts` | `GameClientPersistant.userinfo` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `netname` | `packages/game/src/g_local.ts` | `GameClientPersistant.netname` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `hand` | `packages/game/src/g_local.ts` | `GameClientPersistant.hand` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `connected` | `packages/game/src/g_local.ts` | `GameClientPersistant.connected` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `health` | `packages/game/src/g_local.ts` | `GameClientPersistant.health` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `max_health` | `packages/game/src/g_local.ts` | `GameClientPersistant.max_health` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `savedFlags` | `packages/game/src/g_local.ts` | `GameClientPersistant.savedFlags` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `selected_item` | `packages/game/src/g_local.ts` | `GameClientPersistant.selected_item` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `inventory` | `packages/game/src/g_local.ts` | `GameClientPersistant.inventory` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `max_bullets` | `packages/game/src/g_local.ts` | `GameClientPersistant.max_bullets` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `max_shells` | `packages/game/src/g_local.ts` | `GameClientPersistant.max_shells` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `max_rockets` | `packages/game/src/g_local.ts` | `GameClientPersistant.max_rockets` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `max_grenades` | `packages/game/src/g_local.ts` | `GameClientPersistant.max_grenades` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `max_cells` | `packages/game/src/g_local.ts` | `GameClientPersistant.max_cells` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `max_slugs` | `packages/game/src/g_local.ts` | `GameClientPersistant.max_slugs` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `weapon` | `packages/game/src/g_local.ts` | `GameClientPersistant.weapon` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `lastweapon` | `packages/game/src/g_local.ts` | `GameClientPersistant.lastweapon` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `power_cubes` | `packages/game/src/g_local.ts` | `GameClientPersistant.power_cubes` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `score` | `packages/game/src/g_local.ts` | `GameClientPersistant.score` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `game_helpchanged` | `packages/game/src/g_local.ts` | `GameClientPersistant.game_helpchanged` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `helpchanged` | `packages/game/src/g_local.ts` | `GameClientPersistant.helpchanged` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `spectator` | `packages/game/src/g_local.ts` | `GameClientPersistant.spectator` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | struct | `client_respawn_t` | `packages/game/src/g_local.ts` | `client_respawn_t` | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `enterframe` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | global | `score` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

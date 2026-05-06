@@ -10,211 +10,211 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_gun02` | `packages/game/src/m_infantry.ts` | `FRAME_gun02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand01` | `packages/game/src/m_infantry.ts` | `FRAME_stand01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand02` | `packages/game/src/m_infantry.ts` | `FRAME_stand02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand03` | `packages/game/src/m_infantry.ts` | `FRAME_stand03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand04` | `packages/game/src/m_infantry.ts` | `FRAME_stand04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand05` | `packages/game/src/m_infantry.ts` | `FRAME_stand05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand06` | `packages/game/src/m_infantry.ts` | `FRAME_stand06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand07` | `packages/game/src/m_infantry.ts` | `FRAME_stand07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand08` | `packages/game/src/m_infantry.ts` | `FRAME_stand08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand09` | `packages/game/src/m_infantry.ts` | `FRAME_stand09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand10` | `packages/game/src/m_infantry.ts` | `FRAME_stand10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand11` | `packages/game/src/m_infantry.ts` | `FRAME_stand11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand12` | `packages/game/src/m_infantry.ts` | `FRAME_stand12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand13` | `packages/game/src/m_infantry.ts` | `FRAME_stand13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand14` | `packages/game/src/m_infantry.ts` | `FRAME_stand14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand15` | `packages/game/src/m_infantry.ts` | `FRAME_stand15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand16` | `packages/game/src/m_infantry.ts` | `FRAME_stand16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand17` | `packages/game/src/m_infantry.ts` | `FRAME_stand17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand18` | `packages/game/src/m_infantry.ts` | `FRAME_stand18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand19` | `packages/game/src/m_infantry.ts` | `FRAME_stand19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand20` | `packages/game/src/m_infantry.ts` | `FRAME_stand20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand21` | `packages/game/src/m_infantry.ts` | `FRAME_stand21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand22` | `packages/game/src/m_infantry.ts` | `FRAME_stand22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand23` | `packages/game/src/m_infantry.ts` | `FRAME_stand23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand24` | `packages/game/src/m_infantry.ts` | `FRAME_stand24` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand25` | `packages/game/src/m_infantry.ts` | `FRAME_stand25` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand26` | `packages/game/src/m_infantry.ts` | `FRAME_stand26` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand27` | `packages/game/src/m_infantry.ts` | `FRAME_stand27` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand28` | `packages/game/src/m_infantry.ts` | `FRAME_stand28` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand29` | `packages/game/src/m_infantry.ts` | `FRAME_stand29` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand30` | `packages/game/src/m_infantry.ts` | `FRAME_stand30` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand31` | `packages/game/src/m_infantry.ts` | `FRAME_stand31` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand32` | `packages/game/src/m_infantry.ts` | `FRAME_stand32` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand33` | `packages/game/src/m_infantry.ts` | `FRAME_stand33` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand34` | `packages/game/src/m_infantry.ts` | `FRAME_stand34` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand35` | `packages/game/src/m_infantry.ts` | `FRAME_stand35` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand36` | `packages/game/src/m_infantry.ts` | `FRAME_stand36` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand37` | `packages/game/src/m_infantry.ts` | `FRAME_stand37` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand38` | `packages/game/src/m_infantry.ts` | `FRAME_stand38` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand39` | `packages/game/src/m_infantry.ts` | `FRAME_stand39` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand40` | `packages/game/src/m_infantry.ts` | `FRAME_stand40` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand41` | `packages/game/src/m_infantry.ts` | `FRAME_stand41` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand42` | `packages/game/src/m_infantry.ts` | `FRAME_stand42` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand43` | `packages/game/src/m_infantry.ts` | `FRAME_stand43` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand44` | `packages/game/src/m_infantry.ts` | `FRAME_stand44` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand45` | `packages/game/src/m_infantry.ts` | `FRAME_stand45` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand46` | `packages/game/src/m_infantry.ts` | `FRAME_stand46` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand47` | `packages/game/src/m_infantry.ts` | `FRAME_stand47` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand48` | `packages/game/src/m_infantry.ts` | `FRAME_stand48` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand49` | `packages/game/src/m_infantry.ts` | `FRAME_stand49` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand50` | `packages/game/src/m_infantry.ts` | `FRAME_stand50` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand51` | `packages/game/src/m_infantry.ts` | `FRAME_stand51` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand52` | `packages/game/src/m_infantry.ts` | `FRAME_stand52` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand53` | `packages/game/src/m_infantry.ts` | `FRAME_stand53` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand54` | `packages/game/src/m_infantry.ts` | `FRAME_stand54` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand55` | `packages/game/src/m_infantry.ts` | `FRAME_stand55` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand56` | `packages/game/src/m_infantry.ts` | `FRAME_stand56` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand57` | `packages/game/src/m_infantry.ts` | `FRAME_stand57` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand58` | `packages/game/src/m_infantry.ts` | `FRAME_stand58` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand59` | `packages/game/src/m_infantry.ts` | `FRAME_stand59` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand60` | `packages/game/src/m_infantry.ts` | `FRAME_stand60` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand61` | `packages/game/src/m_infantry.ts` | `FRAME_stand61` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand62` | `packages/game/src/m_infantry.ts` | `FRAME_stand62` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand63` | `packages/game/src/m_infantry.ts` | `FRAME_stand63` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand64` | `packages/game/src/m_infantry.ts` | `FRAME_stand64` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand65` | `packages/game/src/m_infantry.ts` | `FRAME_stand65` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand66` | `packages/game/src/m_infantry.ts` | `FRAME_stand66` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand67` | `packages/game/src/m_infantry.ts` | `FRAME_stand67` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand68` | `packages/game/src/m_infantry.ts` | `FRAME_stand68` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand69` | `packages/game/src/m_infantry.ts` | `FRAME_stand69` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand70` | `packages/game/src/m_infantry.ts` | `FRAME_stand70` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand71` | `packages/game/src/m_infantry.ts` | `FRAME_stand71` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk01` | `packages/game/src/m_infantry.ts` | `FRAME_walk01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk02` | `packages/game/src/m_infantry.ts` | `FRAME_walk02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk03` | `packages/game/src/m_infantry.ts` | `FRAME_walk03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk04` | `packages/game/src/m_infantry.ts` | `FRAME_walk04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk05` | `packages/game/src/m_infantry.ts` | `FRAME_walk05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk06` | `packages/game/src/m_infantry.ts` | `FRAME_walk06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk07` | `packages/game/src/m_infantry.ts` | `FRAME_walk07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk08` | `packages/game/src/m_infantry.ts` | `FRAME_walk08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk09` | `packages/game/src/m_infantry.ts` | `FRAME_walk09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk10` | `packages/game/src/m_infantry.ts` | `FRAME_walk10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk11` | `packages/game/src/m_infantry.ts` | `FRAME_walk11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk12` | `packages/game/src/m_infantry.ts` | `FRAME_walk12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk13` | `packages/game/src/m_infantry.ts` | `FRAME_walk13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk14` | `packages/game/src/m_infantry.ts` | `FRAME_walk14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk15` | `packages/game/src/m_infantry.ts` | `FRAME_walk15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk16` | `packages/game/src/m_infantry.ts` | `FRAME_walk16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk17` | `packages/game/src/m_infantry.ts` | `FRAME_walk17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk18` | `packages/game/src/m_infantry.ts` | `FRAME_walk18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk19` | `packages/game/src/m_infantry.ts` | `FRAME_walk19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk20` | `packages/game/src/m_infantry.ts` | `FRAME_walk20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run01` | `packages/game/src/m_infantry.ts` | `FRAME_run01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run02` | `packages/game/src/m_infantry.ts` | `FRAME_run02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run03` | `packages/game/src/m_infantry.ts` | `FRAME_run03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run04` | `packages/game/src/m_infantry.ts` | `FRAME_run04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run05` | `packages/game/src/m_infantry.ts` | `FRAME_run05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run06` | `packages/game/src/m_infantry.ts` | `FRAME_run06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run07` | `packages/game/src/m_infantry.ts` | `FRAME_run07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run08` | `packages/game/src/m_infantry.ts` | `FRAME_run08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain101` | `packages/game/src/m_infantry.ts` | `FRAME_pain101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain102` | `packages/game/src/m_infantry.ts` | `FRAME_pain102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain103` | `packages/game/src/m_infantry.ts` | `FRAME_pain103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain104` | `packages/game/src/m_infantry.ts` | `FRAME_pain104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain105` | `packages/game/src/m_infantry.ts` | `FRAME_pain105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain106` | `packages/game/src/m_infantry.ts` | `FRAME_pain106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain107` | `packages/game/src/m_infantry.ts` | `FRAME_pain107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain108` | `packages/game/src/m_infantry.ts` | `FRAME_pain108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain109` | `packages/game/src/m_infantry.ts` | `FRAME_pain109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain110` | `packages/game/src/m_infantry.ts` | `FRAME_pain110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain201` | `packages/game/src/m_infantry.ts` | `FRAME_pain201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain202` | `packages/game/src/m_infantry.ts` | `FRAME_pain202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain203` | `packages/game/src/m_infantry.ts` | `FRAME_pain203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain204` | `packages/game/src/m_infantry.ts` | `FRAME_pain204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain205` | `packages/game/src/m_infantry.ts` | `FRAME_pain205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain206` | `packages/game/src/m_infantry.ts` | `FRAME_pain206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain207` | `packages/game/src/m_infantry.ts` | `FRAME_pain207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain208` | `packages/game/src/m_infantry.ts` | `FRAME_pain208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain209` | `packages/game/src/m_infantry.ts` | `FRAME_pain209` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain210` | `packages/game/src/m_infantry.ts` | `FRAME_pain210` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck01` | `packages/game/src/m_infantry.ts` | `FRAME_duck01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck02` | `packages/game/src/m_infantry.ts` | `FRAME_duck02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck03` | `packages/game/src/m_infantry.ts` | `FRAME_duck03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck04` | `packages/game/src/m_infantry.ts` | `FRAME_duck04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck05` | `packages/game/src/m_infantry.ts` | `FRAME_duck05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death101` | `packages/game/src/m_infantry.ts` | `FRAME_death101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death102` | `packages/game/src/m_infantry.ts` | `FRAME_death102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death103` | `packages/game/src/m_infantry.ts` | `FRAME_death103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death104` | `packages/game/src/m_infantry.ts` | `FRAME_death104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death105` | `packages/game/src/m_infantry.ts` | `FRAME_death105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death106` | `packages/game/src/m_infantry.ts` | `FRAME_death106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death107` | `packages/game/src/m_infantry.ts` | `FRAME_death107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death108` | `packages/game/src/m_infantry.ts` | `FRAME_death108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death109` | `packages/game/src/m_infantry.ts` | `FRAME_death109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death110` | `packages/game/src/m_infantry.ts` | `FRAME_death110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death111` | `packages/game/src/m_infantry.ts` | `FRAME_death111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death112` | `packages/game/src/m_infantry.ts` | `FRAME_death112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death113` | `packages/game/src/m_infantry.ts` | `FRAME_death113` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death114` | `packages/game/src/m_infantry.ts` | `FRAME_death114` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death115` | `packages/game/src/m_infantry.ts` | `FRAME_death115` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death116` | `packages/game/src/m_infantry.ts` | `FRAME_death116` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death117` | `packages/game/src/m_infantry.ts` | `FRAME_death117` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death118` | `packages/game/src/m_infantry.ts` | `FRAME_death118` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death119` | `packages/game/src/m_infantry.ts` | `FRAME_death119` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death120` | `packages/game/src/m_infantry.ts` | `FRAME_death120` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death201` | `packages/game/src/m_infantry.ts` | `FRAME_death201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death202` | `packages/game/src/m_infantry.ts` | `FRAME_death202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death203` | `packages/game/src/m_infantry.ts` | `FRAME_death203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death204` | `packages/game/src/m_infantry.ts` | `FRAME_death204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death205` | `packages/game/src/m_infantry.ts` | `FRAME_death205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death206` | `packages/game/src/m_infantry.ts` | `FRAME_death206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death207` | `packages/game/src/m_infantry.ts` | `FRAME_death207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death208` | `packages/game/src/m_infantry.ts` | `FRAME_death208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death209` | `packages/game/src/m_infantry.ts` | `FRAME_death209` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death210` | `packages/game/src/m_infantry.ts` | `FRAME_death210` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death211` | `packages/game/src/m_infantry.ts` | `FRAME_death211` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death212` | `packages/game/src/m_infantry.ts` | `FRAME_death212` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death213` | `packages/game/src/m_infantry.ts` | `FRAME_death213` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death214` | `packages/game/src/m_infantry.ts` | `FRAME_death214` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death215` | `packages/game/src/m_infantry.ts` | `FRAME_death215` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death216` | `packages/game/src/m_infantry.ts` | `FRAME_death216` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death217` | `packages/game/src/m_infantry.ts` | `FRAME_death217` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death218` | `packages/game/src/m_infantry.ts` | `FRAME_death218` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death219` | `packages/game/src/m_infantry.ts` | `FRAME_death219` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death220` | `packages/game/src/m_infantry.ts` | `FRAME_death220` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death221` | `packages/game/src/m_infantry.ts` | `FRAME_death221` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death222` | `packages/game/src/m_infantry.ts` | `FRAME_death222` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death223` | `packages/game/src/m_infantry.ts` | `FRAME_death223` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death224` | `packages/game/src/m_infantry.ts` | `FRAME_death224` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death225` | `packages/game/src/m_infantry.ts` | `FRAME_death225` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death301` | `packages/game/src/m_infantry.ts` | `FRAME_death301` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death302` | `packages/game/src/m_infantry.ts` | `FRAME_death302` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death303` | `packages/game/src/m_infantry.ts` | `FRAME_death303` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death304` | `packages/game/src/m_infantry.ts` | `FRAME_death304` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death305` | `packages/game/src/m_infantry.ts` | `FRAME_death305` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death306` | `packages/game/src/m_infantry.ts` | `FRAME_death306` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death307` | `packages/game/src/m_infantry.ts` | `FRAME_death307` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death308` | `packages/game/src/m_infantry.ts` | `FRAME_death308` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death309` | `packages/game/src/m_infantry.ts` | `FRAME_death309` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block01` | `packages/game/src/m_infantry.ts` | `FRAME_block01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block02` | `packages/game/src/m_infantry.ts` | `FRAME_block02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block03` | `packages/game/src/m_infantry.ts` | `FRAME_block03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block04` | `packages/game/src/m_infantry.ts` | `FRAME_block04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block05` | `packages/game/src/m_infantry.ts` | `FRAME_block05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak101` | `packages/game/src/m_infantry.ts` | `FRAME_attak101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak102` | `packages/game/src/m_infantry.ts` | `FRAME_attak102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak103` | `packages/game/src/m_infantry.ts` | `FRAME_attak103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak104` | `packages/game/src/m_infantry.ts` | `FRAME_attak104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak105` | `packages/game/src/m_infantry.ts` | `FRAME_attak105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak106` | `packages/game/src/m_infantry.ts` | `FRAME_attak106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak107` | `packages/game/src/m_infantry.ts` | `FRAME_attak107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak108` | `packages/game/src/m_infantry.ts` | `FRAME_attak108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak109` | `packages/game/src/m_infantry.ts` | `FRAME_attak109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak110` | `packages/game/src/m_infantry.ts` | `FRAME_attak110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak111` | `packages/game/src/m_infantry.ts` | `FRAME_attak111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak112` | `packages/game/src/m_infantry.ts` | `FRAME_attak112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak113` | `packages/game/src/m_infantry.ts` | `FRAME_attak113` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak114` | `packages/game/src/m_infantry.ts` | `FRAME_attak114` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak115` | `packages/game/src/m_infantry.ts` | `FRAME_attak115` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak201` | `packages/game/src/m_infantry.ts` | `FRAME_attak201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak202` | `packages/game/src/m_infantry.ts` | `FRAME_attak202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak203` | `packages/game/src/m_infantry.ts` | `FRAME_attak203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak204` | `packages/game/src/m_infantry.ts` | `FRAME_attak204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak205` | `packages/game/src/m_infantry.ts` | `FRAME_attak205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak206` | `packages/game/src/m_infantry.ts` | `FRAME_attak206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak207` | `packages/game/src/m_infantry.ts` | `FRAME_attak207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak208` | `packages/game/src/m_infantry.ts` | `FRAME_attak208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_infantry.h` | macro | `MODEL_SCALE` | `packages/game/src/m_infantry.ts` | `MODEL_SCALE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_gun02` | `packages/game/src/m_infantry.ts` | `FRAME_gun02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand01` | `packages/game/src/m_infantry.ts` | `FRAME_stand01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand02` | `packages/game/src/m_infantry.ts` | `FRAME_stand02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand03` | `packages/game/src/m_infantry.ts` | `FRAME_stand03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand04` | `packages/game/src/m_infantry.ts` | `FRAME_stand04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand05` | `packages/game/src/m_infantry.ts` | `FRAME_stand05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand06` | `packages/game/src/m_infantry.ts` | `FRAME_stand06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand07` | `packages/game/src/m_infantry.ts` | `FRAME_stand07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand08` | `packages/game/src/m_infantry.ts` | `FRAME_stand08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand09` | `packages/game/src/m_infantry.ts` | `FRAME_stand09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand10` | `packages/game/src/m_infantry.ts` | `FRAME_stand10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand11` | `packages/game/src/m_infantry.ts` | `FRAME_stand11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand12` | `packages/game/src/m_infantry.ts` | `FRAME_stand12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand13` | `packages/game/src/m_infantry.ts` | `FRAME_stand13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand14` | `packages/game/src/m_infantry.ts` | `FRAME_stand14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand15` | `packages/game/src/m_infantry.ts` | `FRAME_stand15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand16` | `packages/game/src/m_infantry.ts` | `FRAME_stand16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand17` | `packages/game/src/m_infantry.ts` | `FRAME_stand17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand18` | `packages/game/src/m_infantry.ts` | `FRAME_stand18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand19` | `packages/game/src/m_infantry.ts` | `FRAME_stand19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand20` | `packages/game/src/m_infantry.ts` | `FRAME_stand20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand21` | `packages/game/src/m_infantry.ts` | `FRAME_stand21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand22` | `packages/game/src/m_infantry.ts` | `FRAME_stand22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand23` | `packages/game/src/m_infantry.ts` | `FRAME_stand23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand24` | `packages/game/src/m_infantry.ts` | `FRAME_stand24` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand25` | `packages/game/src/m_infantry.ts` | `FRAME_stand25` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand26` | `packages/game/src/m_infantry.ts` | `FRAME_stand26` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand27` | `packages/game/src/m_infantry.ts` | `FRAME_stand27` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand28` | `packages/game/src/m_infantry.ts` | `FRAME_stand28` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand29` | `packages/game/src/m_infantry.ts` | `FRAME_stand29` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand30` | `packages/game/src/m_infantry.ts` | `FRAME_stand30` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand31` | `packages/game/src/m_infantry.ts` | `FRAME_stand31` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand32` | `packages/game/src/m_infantry.ts` | `FRAME_stand32` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand33` | `packages/game/src/m_infantry.ts` | `FRAME_stand33` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand34` | `packages/game/src/m_infantry.ts` | `FRAME_stand34` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand35` | `packages/game/src/m_infantry.ts` | `FRAME_stand35` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand36` | `packages/game/src/m_infantry.ts` | `FRAME_stand36` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand37` | `packages/game/src/m_infantry.ts` | `FRAME_stand37` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand38` | `packages/game/src/m_infantry.ts` | `FRAME_stand38` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand39` | `packages/game/src/m_infantry.ts` | `FRAME_stand39` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand40` | `packages/game/src/m_infantry.ts` | `FRAME_stand40` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand41` | `packages/game/src/m_infantry.ts` | `FRAME_stand41` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand42` | `packages/game/src/m_infantry.ts` | `FRAME_stand42` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand43` | `packages/game/src/m_infantry.ts` | `FRAME_stand43` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand44` | `packages/game/src/m_infantry.ts` | `FRAME_stand44` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand45` | `packages/game/src/m_infantry.ts` | `FRAME_stand45` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand46` | `packages/game/src/m_infantry.ts` | `FRAME_stand46` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand47` | `packages/game/src/m_infantry.ts` | `FRAME_stand47` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand48` | `packages/game/src/m_infantry.ts` | `FRAME_stand48` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand49` | `packages/game/src/m_infantry.ts` | `FRAME_stand49` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand50` | `packages/game/src/m_infantry.ts` | `FRAME_stand50` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand51` | `packages/game/src/m_infantry.ts` | `FRAME_stand51` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand52` | `packages/game/src/m_infantry.ts` | `FRAME_stand52` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand53` | `packages/game/src/m_infantry.ts` | `FRAME_stand53` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand54` | `packages/game/src/m_infantry.ts` | `FRAME_stand54` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand55` | `packages/game/src/m_infantry.ts` | `FRAME_stand55` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand56` | `packages/game/src/m_infantry.ts` | `FRAME_stand56` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand57` | `packages/game/src/m_infantry.ts` | `FRAME_stand57` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand58` | `packages/game/src/m_infantry.ts` | `FRAME_stand58` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand59` | `packages/game/src/m_infantry.ts` | `FRAME_stand59` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand60` | `packages/game/src/m_infantry.ts` | `FRAME_stand60` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand61` | `packages/game/src/m_infantry.ts` | `FRAME_stand61` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand62` | `packages/game/src/m_infantry.ts` | `FRAME_stand62` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand63` | `packages/game/src/m_infantry.ts` | `FRAME_stand63` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand64` | `packages/game/src/m_infantry.ts` | `FRAME_stand64` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand65` | `packages/game/src/m_infantry.ts` | `FRAME_stand65` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand66` | `packages/game/src/m_infantry.ts` | `FRAME_stand66` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand67` | `packages/game/src/m_infantry.ts` | `FRAME_stand67` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand68` | `packages/game/src/m_infantry.ts` | `FRAME_stand68` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand69` | `packages/game/src/m_infantry.ts` | `FRAME_stand69` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand70` | `packages/game/src/m_infantry.ts` | `FRAME_stand70` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_stand71` | `packages/game/src/m_infantry.ts` | `FRAME_stand71` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk01` | `packages/game/src/m_infantry.ts` | `FRAME_walk01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk02` | `packages/game/src/m_infantry.ts` | `FRAME_walk02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk03` | `packages/game/src/m_infantry.ts` | `FRAME_walk03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk04` | `packages/game/src/m_infantry.ts` | `FRAME_walk04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk05` | `packages/game/src/m_infantry.ts` | `FRAME_walk05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk06` | `packages/game/src/m_infantry.ts` | `FRAME_walk06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk07` | `packages/game/src/m_infantry.ts` | `FRAME_walk07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk08` | `packages/game/src/m_infantry.ts` | `FRAME_walk08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk09` | `packages/game/src/m_infantry.ts` | `FRAME_walk09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk10` | `packages/game/src/m_infantry.ts` | `FRAME_walk10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk11` | `packages/game/src/m_infantry.ts` | `FRAME_walk11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk12` | `packages/game/src/m_infantry.ts` | `FRAME_walk12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk13` | `packages/game/src/m_infantry.ts` | `FRAME_walk13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk14` | `packages/game/src/m_infantry.ts` | `FRAME_walk14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk15` | `packages/game/src/m_infantry.ts` | `FRAME_walk15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk16` | `packages/game/src/m_infantry.ts` | `FRAME_walk16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk17` | `packages/game/src/m_infantry.ts` | `FRAME_walk17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk18` | `packages/game/src/m_infantry.ts` | `FRAME_walk18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk19` | `packages/game/src/m_infantry.ts` | `FRAME_walk19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_walk20` | `packages/game/src/m_infantry.ts` | `FRAME_walk20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run01` | `packages/game/src/m_infantry.ts` | `FRAME_run01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run02` | `packages/game/src/m_infantry.ts` | `FRAME_run02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run03` | `packages/game/src/m_infantry.ts` | `FRAME_run03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run04` | `packages/game/src/m_infantry.ts` | `FRAME_run04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run05` | `packages/game/src/m_infantry.ts` | `FRAME_run05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run06` | `packages/game/src/m_infantry.ts` | `FRAME_run06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run07` | `packages/game/src/m_infantry.ts` | `FRAME_run07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_run08` | `packages/game/src/m_infantry.ts` | `FRAME_run08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain101` | `packages/game/src/m_infantry.ts` | `FRAME_pain101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain102` | `packages/game/src/m_infantry.ts` | `FRAME_pain102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain103` | `packages/game/src/m_infantry.ts` | `FRAME_pain103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain104` | `packages/game/src/m_infantry.ts` | `FRAME_pain104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain105` | `packages/game/src/m_infantry.ts` | `FRAME_pain105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain106` | `packages/game/src/m_infantry.ts` | `FRAME_pain106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain107` | `packages/game/src/m_infantry.ts` | `FRAME_pain107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain108` | `packages/game/src/m_infantry.ts` | `FRAME_pain108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain109` | `packages/game/src/m_infantry.ts` | `FRAME_pain109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain110` | `packages/game/src/m_infantry.ts` | `FRAME_pain110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain201` | `packages/game/src/m_infantry.ts` | `FRAME_pain201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain202` | `packages/game/src/m_infantry.ts` | `FRAME_pain202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain203` | `packages/game/src/m_infantry.ts` | `FRAME_pain203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain204` | `packages/game/src/m_infantry.ts` | `FRAME_pain204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain205` | `packages/game/src/m_infantry.ts` | `FRAME_pain205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain206` | `packages/game/src/m_infantry.ts` | `FRAME_pain206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain207` | `packages/game/src/m_infantry.ts` | `FRAME_pain207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain208` | `packages/game/src/m_infantry.ts` | `FRAME_pain208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain209` | `packages/game/src/m_infantry.ts` | `FRAME_pain209` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_pain210` | `packages/game/src/m_infantry.ts` | `FRAME_pain210` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck01` | `packages/game/src/m_infantry.ts` | `FRAME_duck01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck02` | `packages/game/src/m_infantry.ts` | `FRAME_duck02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck03` | `packages/game/src/m_infantry.ts` | `FRAME_duck03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck04` | `packages/game/src/m_infantry.ts` | `FRAME_duck04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_duck05` | `packages/game/src/m_infantry.ts` | `FRAME_duck05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death101` | `packages/game/src/m_infantry.ts` | `FRAME_death101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death102` | `packages/game/src/m_infantry.ts` | `FRAME_death102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death103` | `packages/game/src/m_infantry.ts` | `FRAME_death103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death104` | `packages/game/src/m_infantry.ts` | `FRAME_death104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death105` | `packages/game/src/m_infantry.ts` | `FRAME_death105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death106` | `packages/game/src/m_infantry.ts` | `FRAME_death106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death107` | `packages/game/src/m_infantry.ts` | `FRAME_death107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death108` | `packages/game/src/m_infantry.ts` | `FRAME_death108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death109` | `packages/game/src/m_infantry.ts` | `FRAME_death109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death110` | `packages/game/src/m_infantry.ts` | `FRAME_death110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death111` | `packages/game/src/m_infantry.ts` | `FRAME_death111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death112` | `packages/game/src/m_infantry.ts` | `FRAME_death112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death113` | `packages/game/src/m_infantry.ts` | `FRAME_death113` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death114` | `packages/game/src/m_infantry.ts` | `FRAME_death114` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death115` | `packages/game/src/m_infantry.ts` | `FRAME_death115` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death116` | `packages/game/src/m_infantry.ts` | `FRAME_death116` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death117` | `packages/game/src/m_infantry.ts` | `FRAME_death117` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death118` | `packages/game/src/m_infantry.ts` | `FRAME_death118` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death119` | `packages/game/src/m_infantry.ts` | `FRAME_death119` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death120` | `packages/game/src/m_infantry.ts` | `FRAME_death120` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death201` | `packages/game/src/m_infantry.ts` | `FRAME_death201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death202` | `packages/game/src/m_infantry.ts` | `FRAME_death202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death203` | `packages/game/src/m_infantry.ts` | `FRAME_death203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death204` | `packages/game/src/m_infantry.ts` | `FRAME_death204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death205` | `packages/game/src/m_infantry.ts` | `FRAME_death205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death206` | `packages/game/src/m_infantry.ts` | `FRAME_death206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death207` | `packages/game/src/m_infantry.ts` | `FRAME_death207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death208` | `packages/game/src/m_infantry.ts` | `FRAME_death208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death209` | `packages/game/src/m_infantry.ts` | `FRAME_death209` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death210` | `packages/game/src/m_infantry.ts` | `FRAME_death210` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death211` | `packages/game/src/m_infantry.ts` | `FRAME_death211` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death212` | `packages/game/src/m_infantry.ts` | `FRAME_death212` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death213` | `packages/game/src/m_infantry.ts` | `FRAME_death213` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death214` | `packages/game/src/m_infantry.ts` | `FRAME_death214` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death215` | `packages/game/src/m_infantry.ts` | `FRAME_death215` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death216` | `packages/game/src/m_infantry.ts` | `FRAME_death216` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death217` | `packages/game/src/m_infantry.ts` | `FRAME_death217` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death218` | `packages/game/src/m_infantry.ts` | `FRAME_death218` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death219` | `packages/game/src/m_infantry.ts` | `FRAME_death219` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death220` | `packages/game/src/m_infantry.ts` | `FRAME_death220` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death221` | `packages/game/src/m_infantry.ts` | `FRAME_death221` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death222` | `packages/game/src/m_infantry.ts` | `FRAME_death222` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death223` | `packages/game/src/m_infantry.ts` | `FRAME_death223` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death224` | `packages/game/src/m_infantry.ts` | `FRAME_death224` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death225` | `packages/game/src/m_infantry.ts` | `FRAME_death225` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death301` | `packages/game/src/m_infantry.ts` | `FRAME_death301` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death302` | `packages/game/src/m_infantry.ts` | `FRAME_death302` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death303` | `packages/game/src/m_infantry.ts` | `FRAME_death303` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death304` | `packages/game/src/m_infantry.ts` | `FRAME_death304` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death305` | `packages/game/src/m_infantry.ts` | `FRAME_death305` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death306` | `packages/game/src/m_infantry.ts` | `FRAME_death306` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death307` | `packages/game/src/m_infantry.ts` | `FRAME_death307` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death308` | `packages/game/src/m_infantry.ts` | `FRAME_death308` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_death309` | `packages/game/src/m_infantry.ts` | `FRAME_death309` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block01` | `packages/game/src/m_infantry.ts` | `FRAME_block01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block02` | `packages/game/src/m_infantry.ts` | `FRAME_block02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block03` | `packages/game/src/m_infantry.ts` | `FRAME_block03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block04` | `packages/game/src/m_infantry.ts` | `FRAME_block04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_block05` | `packages/game/src/m_infantry.ts` | `FRAME_block05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak101` | `packages/game/src/m_infantry.ts` | `FRAME_attak101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak102` | `packages/game/src/m_infantry.ts` | `FRAME_attak102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak103` | `packages/game/src/m_infantry.ts` | `FRAME_attak103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak104` | `packages/game/src/m_infantry.ts` | `FRAME_attak104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak105` | `packages/game/src/m_infantry.ts` | `FRAME_attak105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak106` | `packages/game/src/m_infantry.ts` | `FRAME_attak106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak107` | `packages/game/src/m_infantry.ts` | `FRAME_attak107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak108` | `packages/game/src/m_infantry.ts` | `FRAME_attak108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak109` | `packages/game/src/m_infantry.ts` | `FRAME_attak109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak110` | `packages/game/src/m_infantry.ts` | `FRAME_attak110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak111` | `packages/game/src/m_infantry.ts` | `FRAME_attak111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak112` | `packages/game/src/m_infantry.ts` | `FRAME_attak112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak113` | `packages/game/src/m_infantry.ts` | `FRAME_attak113` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak114` | `packages/game/src/m_infantry.ts` | `FRAME_attak114` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak115` | `packages/game/src/m_infantry.ts` | `FRAME_attak115` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak201` | `packages/game/src/m_infantry.ts` | `FRAME_attak201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak202` | `packages/game/src/m_infantry.ts` | `FRAME_attak202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak203` | `packages/game/src/m_infantry.ts` | `FRAME_attak203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak204` | `packages/game/src/m_infantry.ts` | `FRAME_attak204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak205` | `packages/game/src/m_infantry.ts` | `FRAME_attak205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak206` | `packages/game/src/m_infantry.ts` | `FRAME_attak206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak207` | `packages/game/src/m_infantry.ts` | `FRAME_attak207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `FRAME_attak208` | `packages/game/src/m_infantry.ts` | `FRAME_attak208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_infantry.h` | macro | `MODEL_SCALE` | `packages/game/src/m_infantry.ts` | `MODEL_SCALE` | Valide | A redecouper |  |

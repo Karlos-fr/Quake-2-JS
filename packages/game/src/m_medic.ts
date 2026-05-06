@@ -331,6 +331,14 @@ let sound_hook_hit = 0;
 let sound_hook_heal = 0;
 let sound_hook_retract = 0;
 
+/**
+ * Original name: medic_FindDeadMonster
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Finds the best visible dead monster within medic revive range.
+ * Porting notes: Uses runtime entity iteration plus the ported visibility helper instead of `findradius`.
+ */
 export function medic_FindDeadMonster(self: GameEntity, runtime: GameRuntime): GameEntity | null {
   let best: GameEntity | null = null;
 
@@ -370,6 +378,13 @@ export function medic_FindDeadMonster(self: GameEntity, runtime: GameRuntime): G
   return best;
 }
 
+/**
+ * Original name: medic_idle
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Plays the idle sound and opportunistically targets a dead monster for revival.
+ */
 export function medic_idle(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_idle1, SOUND_IDLE1, soundOptions(CHAN_VOICE, ATTN_IDLE));
 
@@ -382,6 +397,13 @@ export function medic_idle(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: medic_search
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Plays the search sound and, when not already tracking an old enemy, acquires a revive target.
+ */
 export function medic_search(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_search, SOUND_SEARCH, soundOptions(CHAN_VOICE, ATTN_IDLE));
 
@@ -397,6 +419,13 @@ export function medic_search(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: medic_sight
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Plays the sight sound when the medic sees an enemy.
+ */
 export function medic_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, soundOptions(CHAN_VOICE));
 }
@@ -409,6 +438,13 @@ export const medic_move_stand: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: medic_stand
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Selects the medic standing move.
+ */
 export function medic_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = medic_move_stand;
 }
@@ -421,6 +457,13 @@ export const medic_move_walk: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: medic_walk
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Selects the medic walking move.
+ */
 export function medic_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = medic_move_walk;
 }
@@ -433,6 +476,13 @@ export const medic_move_run: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: medic_run
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Searches for revive targets unless already in medic mode, then selects stand or run movement.
+ */
 export function medic_run(self: GameEntity, runtime: GameRuntime): void {
   if ((self.monsterinfo.aiflags & AI_MEDIC) === 0) {
     const ent = medic_FindDeadMonster(self, runtime);
@@ -507,6 +557,14 @@ export function medic_pain(
   }
 }
 
+/**
+ * Original name: medic_fire_blaster
+ * Source: Quake-2-master/game/m_medic.c
+ * Category: Ported
+ * Fidelity level: Close
+ * Behavior: Projects the medic muzzle flash from `MZ2_MEDIC_BLASTER_1`, aims at the enemy viewheight, and selects the C blaster/hyperblaster effect by attack frame.
+ * Porting notes: The source assumes `self->enemy` is valid when attack frames call this function; the TS port returns early if an invalid runtime callback reaches it without an enemy.
+ */
 export function medic_fire_blaster(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;

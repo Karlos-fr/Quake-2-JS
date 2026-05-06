@@ -25,6 +25,13 @@ import {
   AI_SOUND_TARGET,
   AI_STAND_GROUND,
   AI_TEMP_STAND_GROUND,
+  ANIM_ATTACK,
+  ANIM_BASIC,
+  ANIM_DEATH,
+  ANIM_JUMP,
+  ANIM_PAIN,
+  ANIM_REVERSE,
+  ANIM_WAVE,
   ARMOR_BODY,
   ARMOR_COMBAT,
   ARMOR_JACKET,
@@ -153,6 +160,7 @@ import {
   WEAP_SHOTGUN,
   WEAP_SUPERSHOTGUN,
   createGameClient,
+  createGameClientPersistant,
   createGameLocals,
   createLevelLocals,
   createMonsterInfo,
@@ -166,8 +174,15 @@ import {
   weaponstate_t,
   world
 } from "../../packages/game/src/g_local.js";
-import type { game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, mmove_t, monsterinfo_t, moveinfo_t } from "../../packages/game/src/g_local.js";
+import type { client_persistant_t, game_locals_t, gitem_armor_t, gitem_t, level_locals_t, mframe_t, mmove_t, monsterinfo_t, moveinfo_t } from "../../packages/game/src/g_local.js";
 import {
+  ANIM_ATTACK as INDEX_ANIM_ATTACK,
+  ANIM_BASIC as INDEX_ANIM_BASIC,
+  ANIM_DEATH as INDEX_ANIM_DEATH,
+  ANIM_JUMP as INDEX_ANIM_JUMP,
+  ANIM_PAIN as INDEX_ANIM_PAIN,
+  ANIM_REVERSE as INDEX_ANIM_REVERSE,
+  ANIM_WAVE as INDEX_ANIM_WAVE,
   ARMOR_BODY as INDEX_ARMOR_BODY,
   ARMOR_COMBAT as INDEX_ARMOR_COMBAT,
   ARMOR_JACKET as INDEX_ARMOR_JACKET,
@@ -227,6 +242,20 @@ assert.equal(TAG_GAME, 765, "TAG_GAME mismatch");
 assert.equal(TAG_LEVEL, 766, "TAG_LEVEL mismatch");
 assert.equal(MELEE_DISTANCE, 80, "MELEE_DISTANCE mismatch");
 assert.equal(BODY_QUEUE_SIZE, 8, "BODY_QUEUE_SIZE mismatch");
+assert.equal(ANIM_BASIC, 0, "ANIM_BASIC mismatch");
+assert.equal(ANIM_WAVE, 1, "ANIM_WAVE mismatch");
+assert.equal(ANIM_JUMP, 2, "ANIM_JUMP mismatch");
+assert.equal(ANIM_PAIN, 3, "ANIM_PAIN mismatch");
+assert.equal(ANIM_ATTACK, 4, "ANIM_ATTACK mismatch");
+assert.equal(ANIM_DEATH, 5, "ANIM_DEATH mismatch");
+assert.equal(ANIM_REVERSE, 6, "ANIM_REVERSE mismatch");
+assert.equal(INDEX_ANIM_BASIC, ANIM_BASIC, "public ANIM_BASIC export mismatch");
+assert.equal(INDEX_ANIM_WAVE, ANIM_WAVE, "public ANIM_WAVE export mismatch");
+assert.equal(INDEX_ANIM_JUMP, ANIM_JUMP, "public ANIM_JUMP export mismatch");
+assert.equal(INDEX_ANIM_PAIN, ANIM_PAIN, "public ANIM_PAIN export mismatch");
+assert.equal(INDEX_ANIM_ATTACK, ANIM_ATTACK, "public ANIM_ATTACK export mismatch");
+assert.equal(INDEX_ANIM_DEATH, ANIM_DEATH, "public ANIM_DEATH export mismatch");
+assert.equal(INDEX_ANIM_REVERSE, ANIM_REVERSE, "public ANIM_REVERSE export mismatch");
 assert.equal(INDEX_random, random, "public random export mismatch");
 assert.equal(INDEX_crandom, crandom, "public crandom export mismatch");
 const originalMathRandomForHeaderMacros = Math.random;
@@ -446,7 +475,94 @@ assert.equal(INDEX_MOVETYPE_FLY, MOVETYPE_FLY, "public MOVETYPE_FLY export misma
 assert.equal(INDEX_MOVETYPE_TOSS, MOVETYPE_TOSS, "public MOVETYPE_TOSS export mismatch");
 assert.equal(INDEX_MOVETYPE_FLYMISSILE, MOVETYPE_FLYMISSILE, "public MOVETYPE_FLYMISSILE export mismatch");
 assert.equal(INDEX_MOVETYPE_BOUNCE, MOVETYPE_BOUNCE, "public MOVETYPE_BOUNCE export mismatch");
-assert.equal(client.pers.netname, "", "client pers netname must exist");
+const pers = client.pers satisfies client_persistant_t;
+assert.equal(pers.userinfo, "", "client_persistant_t userinfo default mismatch");
+assert.equal(pers.netname, "", "client_persistant_t netname default mismatch");
+assert.equal(pers.hand, RIGHT_HANDED, "client_persistant_t hand default mismatch");
+assert.equal(pers.connected, false, "client_persistant_t connected default mismatch");
+assert.equal(pers.health, 0, "client_persistant_t health default mismatch");
+assert.equal(pers.max_health, 0, "client_persistant_t max_health default mismatch");
+assert.equal(pers.savedFlags, 0, "client_persistant_t savedFlags default mismatch");
+assert.equal(pers.selected_item, -1, "client_persistant_t selected_item default mismatch");
+assert.equal(pers.inventory.length, 256, "client_persistant_t inventory size mismatch");
+assert.deepEqual(pers.inventory, new Array<number>(256).fill(0), "client_persistant_t inventory default mismatch");
+assert.equal(pers.max_bullets, 0, "client_persistant_t max_bullets default mismatch");
+assert.equal(pers.max_shells, 0, "client_persistant_t max_shells default mismatch");
+assert.equal(pers.max_rockets, 0, "client_persistant_t max_rockets default mismatch");
+assert.equal(pers.max_grenades, 0, "client_persistant_t max_grenades default mismatch");
+assert.equal(pers.max_cells, 0, "client_persistant_t max_cells default mismatch");
+assert.equal(pers.max_slugs, 0, "client_persistant_t max_slugs default mismatch");
+assert.equal(pers.weapon, null, "client_persistant_t weapon default mismatch");
+assert.equal(pers.lastweapon, null, "client_persistant_t lastweapon default mismatch");
+assert.equal(pers.power_cubes, 0, "client_persistant_t power_cubes default mismatch");
+assert.equal(pers.score, 0, "client_persistant_t score default mismatch");
+assert.equal(pers.game_helpchanged, 0, "client_persistant_t game_helpchanged default mismatch");
+assert.equal(pers.helpchanged, 0, "client_persistant_t helpchanged default mismatch");
+assert.equal(pers.spectator, false, "client_persistant_t spectator default mismatch");
+const persBlaster = FindItem("Blaster");
+const persShotgun = FindItem("Shotgun");
+assert.ok(persBlaster, "client_persistant_t weapon test requires Blaster item");
+assert.ok(persShotgun, "client_persistant_t lastweapon test requires Shotgun item");
+pers.userinfo = "\\name\\unit\\skin\\female/athena";
+pers.netname = "unit";
+pers.hand = LEFT_HANDED;
+pers.connected = true;
+pers.health = 91;
+pers.max_health = 125;
+pers.savedFlags = 0x24;
+pers.selected_item = 7;
+pers.inventory[7] = 3;
+pers.weapon = persBlaster;
+pers.lastweapon = persShotgun;
+pers.max_bullets = 200;
+pers.max_shells = 100;
+pers.max_rockets = 50;
+pers.max_grenades = 50;
+pers.max_cells = 200;
+pers.max_slugs = 50;
+pers.power_cubes = 0x12;
+pers.score = 4;
+pers.game_helpchanged = 5;
+pers.helpchanged = 2;
+pers.spectator = true;
+const secondPers = createGameClientPersistant();
+secondPers.userinfo = pers.userinfo;
+secondPers.netname = pers.netname;
+secondPers.hand = pers.hand;
+secondPers.connected = pers.connected;
+secondPers.health = pers.health;
+secondPers.max_health = pers.max_health;
+secondPers.savedFlags = pers.savedFlags;
+secondPers.selected_item = pers.selected_item;
+secondPers.inventory[7] = pers.inventory[7];
+secondPers.weapon = pers.weapon;
+secondPers.lastweapon = pers.lastweapon;
+secondPers.max_bullets = pers.max_bullets;
+secondPers.max_shells = pers.max_shells;
+secondPers.max_rockets = pers.max_rockets;
+secondPers.max_grenades = pers.max_grenades;
+secondPers.max_cells = pers.max_cells;
+secondPers.max_slugs = pers.max_slugs;
+secondPers.power_cubes = pers.power_cubes;
+secondPers.score = pers.score;
+secondPers.game_helpchanged = pers.game_helpchanged;
+secondPers.helpchanged = pers.helpchanged;
+secondPers.spectator = pers.spectator;
+assert.equal(secondPers.inventory[7], 3, "client_persistant_t inventory mutable slot mismatch");
+assert.equal(secondPers.weapon, persBlaster, "client_persistant_t weapon pointer field mismatch");
+assert.equal(secondPers.lastweapon, persShotgun, "client_persistant_t lastweapon pointer field mismatch");
+assert.equal(secondPers.max_bullets, 200, "client_persistant_t max_bullets mutable field mismatch");
+assert.equal(secondPers.max_shells, 100, "client_persistant_t max_shells mutable field mismatch");
+assert.equal(secondPers.max_rockets, 50, "client_persistant_t max_rockets mutable field mismatch");
+assert.equal(secondPers.max_grenades, 50, "client_persistant_t max_grenades mutable field mismatch");
+assert.equal(secondPers.max_cells, 200, "client_persistant_t max_cells mutable field mismatch");
+assert.equal(secondPers.max_slugs, 50, "client_persistant_t max_slugs mutable field mismatch");
+assert.equal(secondPers.power_cubes, 0x12, "client_persistant_t power_cubes mutable field mismatch");
+assert.equal(secondPers.score, 4, "client_persistant_t score mutable field mismatch");
+assert.equal(secondPers.game_helpchanged, 5, "client_persistant_t game_helpchanged mutable field mismatch");
+assert.equal(secondPers.helpchanged, 2, "client_persistant_t helpchanged mutable field mismatch");
+assert.equal(secondPers.spectator, true, "client_persistant_t spectator mutable field mismatch");
+assert.equal(client.resp.coop_respawn.inventory[7], 0, "client_persistant_t inventory instances must not alias");
 assert.equal(client.flood_when.length, 10, "client flood_when inline array mismatch");
 assert.equal(entity.monsterinfo.aiflags, 0, "entity monsterinfo must exist");
 assert.equal(entity.gravity, 1, "entity gravity default mismatch");

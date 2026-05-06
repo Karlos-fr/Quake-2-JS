@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { EF_BLASTER, temp_event_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { EF_BLASTER, EF_HYPERBLASTER, temp_event_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_MEDIC,
   AI_RESURRECTING,
@@ -34,6 +34,7 @@ import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import { findGameSaveFunction, findGameSaveMove } from "../../packages/game/src/g_save.js";
 import {
   FRAME_attack9,
+  FRAME_attack19,
   FRAME_attack43,
   FRAME_attack44,
   FRAME_attack50,
@@ -183,6 +184,14 @@ function verifyBlasterAttack(): void {
   const flash = drainMonsterMuzzleFlashEvents(runtime).at(-1);
   assert.equal(flash?.flashNumber, MZ2_MEDIC_BLASTER_1);
   assert.equal(runtime.entities.at(-1)?.s.effects, EF_BLASTER);
+
+  medic.s.frame = FRAME_attack19;
+  medic_fire_blaster(medic, runtime);
+  assert.equal(runtime.entities.at(-1)?.s.effects, EF_HYPERBLASTER);
+
+  medic.s.frame = FRAME_attack43;
+  medic_fire_blaster(medic, runtime);
+  assert.equal(runtime.entities.at(-1)?.s.effects, 0);
 }
 
 function verifyCableAttackEventsAndResurrectionFlags(): void {

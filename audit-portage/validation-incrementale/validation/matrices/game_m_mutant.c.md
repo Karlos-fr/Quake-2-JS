@@ -10,46 +10,46 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_swing` | `packages/game/src/m_mutant.ts` | `SOUND_SWING` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_hit` | `packages/game/src/m_mutant.ts` | `SOUND_HIT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_hit2` | `packages/game/src/m_mutant.ts` | `SOUND_HIT2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_death` | `packages/game/src/m_mutant.ts` | `SOUND_DEATH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_idle` | `packages/game/src/m_mutant.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_pain1` | `packages/game/src/m_mutant.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_pain2` | `packages/game/src/m_mutant.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_sight` | `packages/game/src/m_mutant.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_search` | `packages/game/src/m_mutant.ts` | `SOUND_SEARCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_step1` | `packages/game/src/m_mutant.ts` | `SOUND_STEP1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_step2` | `packages/game/src/m_mutant.ts` | `SOUND_STEP2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_step3` | `packages/game/src/m_mutant.ts` | `SOUND_STEP3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `sound_thud` | `packages/game/src/m_mutant.ts` | `SOUND_THUD` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_step` | `packages/game/src/m_mutant.ts` | `mutant_step` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `n` | `packages/game/src/m_mutant.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_sight` | `packages/game/src/m_mutant.ts` | `mutant_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_search` | `packages/game/src/m_mutant.ts` | `mutant_search` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_swing` | `packages/game/src/m_mutant.ts` | `mutant_swing` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_stand` | `packages/game/src/m_mutant.ts` | `mutant_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_stand` | `packages/game/src/m_mutant.ts` | `mutant_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_stand` | `packages/game/src/m_mutant.ts` | `mutant_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_stand` | `packages/game/src/m_mutant.ts` | `mutant_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_idle_loop` | `packages/game/src/m_mutant.ts` | `mutant_idle_loop` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_idle` | `packages/game/src/m_mutant.ts` | `mutant_frames_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_idle` | `packages/game/src/m_mutant.ts` | `mutant_frames_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_idle` | `packages/game/src/m_mutant.ts` | `mutant_move_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_idle` | `packages/game/src/m_mutant.ts` | `mutant_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_walk` | `packages/game/src/m_mutant.ts` | `mutant_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_walk` | `packages/game/src/m_mutant.ts` | `mutant_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_walk_loop` | `packages/game/src/m_mutant.ts` | `mutant_walk_loop` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_start_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_start_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_start_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_start_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_start_walk` | `packages/game/src/m_mutant.ts` | `mutant_move_start_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_walk` | `packages/game/src/m_mutant.ts` | `mutant_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_run` | `packages/game/src/m_mutant.ts` | `mutant_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_run` | `packages/game/src/m_mutant.ts` | `mutant_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_run` | `packages/game/src/m_mutant.ts` | `mutant_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_mutant.c` | function | `mutant_run` | `packages/game/src/m_mutant.ts` | `mutant_run` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_swing` | `packages/game/src/m_mutant.ts` | `SOUND_SWING` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_hit` | `packages/game/src/m_mutant.ts` | `SOUND_HIT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_hit2` | `packages/game/src/m_mutant.ts` | `SOUND_HIT2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_death` | `packages/game/src/m_mutant.ts` | `SOUND_DEATH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_idle` | `packages/game/src/m_mutant.ts` | `SOUND_IDLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_pain1` | `packages/game/src/m_mutant.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_pain2` | `packages/game/src/m_mutant.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_sight` | `packages/game/src/m_mutant.ts` | `SOUND_SIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_search` | `packages/game/src/m_mutant.ts` | `SOUND_SEARCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_step1` | `packages/game/src/m_mutant.ts` | `SOUND_STEP1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_step2` | `packages/game/src/m_mutant.ts` | `SOUND_STEP2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_step3` | `packages/game/src/m_mutant.ts` | `SOUND_STEP3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `sound_thud` | `packages/game/src/m_mutant.ts` | `SOUND_THUD` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_step` | `packages/game/src/m_mutant.ts` | `mutant_step` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `n` | `packages/game/src/m_mutant.ts` | `n` | Non applicable | A redecouper | Variable locale de `mutant_step`, pas une entite proprietaire. |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_sight` | `packages/game/src/m_mutant.ts` | `mutant_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_search` | `packages/game/src/m_mutant.ts` | `mutant_search` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_swing` | `packages/game/src/m_mutant.ts` | `mutant_swing` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_stand` | `packages/game/src/m_mutant.ts` | `mutant_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_stand` | `packages/game/src/m_mutant.ts` | `mutant_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_stand` | `packages/game/src/m_mutant.ts` | `mutant_move_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_stand` | `packages/game/src/m_mutant.ts` | `mutant_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_idle_loop` | `packages/game/src/m_mutant.ts` | `mutant_idle_loop` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_idle` | `packages/game/src/m_mutant.ts` | `mutant_frames_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_idle` | `packages/game/src/m_mutant.ts` | `mutant_frames_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_idle` | `packages/game/src/m_mutant.ts` | `mutant_move_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_idle` | `packages/game/src/m_mutant.ts` | `mutant_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_walk` | `packages/game/src/m_mutant.ts` | `mutant_walk` | Non applicable | A redecouper | Declaration anticipee C; la definition `mutant_walk` est validee sur sa ligne dediee. |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_walk` | `packages/game/src/m_mutant.ts` | `mutant_move_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_walk_loop` | `packages/game/src/m_mutant.ts` | `mutant_walk_loop` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_start_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_start_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_start_walk` | `packages/game/src/m_mutant.ts` | `mutant_frames_start_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_start_walk` | `packages/game/src/m_mutant.ts` | `mutant_move_start_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_walk` | `packages/game/src/m_mutant.ts` | `mutant_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_frames_run` | `packages/game/src/m_mutant.ts` | `mutant_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | table | `mutant_frames_run` | `packages/game/src/m_mutant.ts` | `mutant_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | global | `mutant_move_run` | `packages/game/src/m_mutant.ts` | `mutant_move_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_mutant.c` | function | `mutant_run` | `packages/game/src/m_mutant.ts` | `mutant_run` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_mutant.c` | function | `mutant_hit_left` | `packages/game/src/m_mutant.ts` | `mutant_hit_left` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_mutant.c` | function | `mutant_hit_right` | `packages/game/src/m_mutant.ts` | `mutant_hit_right` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_mutant.c` | function | `mutant_check_refire` | `packages/game/src/m_mutant.ts` | `mutant_check_refire` | A verifier | A redecouper |  |

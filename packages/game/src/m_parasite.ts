@@ -204,26 +204,80 @@ let sound_tap = 0;
 let sound_scratch = 0;
 let sound_search = 0;
 
+/**
+ * Original name: parasite_launch
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the parasite launch sound on `CHAN_WEAPON` with normal attenuation.
+ */
 export function parasite_launch(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_launch, SOUND_LAUNCH, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
 }
 
+/**
+ * Original name: parasite_reel_in
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the parasite reel-in sound on `CHAN_WEAPON` with normal attenuation.
+ */
 export function parasite_reel_in(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_reelin, SOUND_REELIN, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
 }
 
+/**
+ * Original name: parasite_sight
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the sight sound when the monster sight callback fires.
+ */
 export function parasite_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_NORM, timeofs: 0 });
 }
 
+/**
+ * Original name: parasite_tap
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the idle tap sound on the weapon channel with idle attenuation.
+ */
 export function parasite_tap(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_tap, SOUND_TAP, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_IDLE, timeofs: 0 });
 }
 
+/**
+ * Original name: parasite_scratch
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the idle scratch sound on the weapon channel with idle attenuation.
+ */
 export function parasite_scratch(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_scratch, SOUND_SCRATCH, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_IDLE, timeofs: 0 });
 }
 
+/**
+ * Original name: parasite_search
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the parasite search sound on the weapon channel with idle attenuation.
+ */
 export function parasite_search(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_search, SOUND_SEARCH, { channel: CHAN_WEAPON, volume: 1, attenuation: ATTN_IDLE, timeofs: 0 });
 }
@@ -252,10 +306,28 @@ export const parasite_move_end_fidget: GameMonsterMove = {
   endfunc: parasite_stand
 };
 
+/**
+ * Original name: parasite_end_fidget
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to the end-fidget move table.
+ */
 export function parasite_end_fidget(self: GameEntity): void {
   self.monsterinfo.currentmove = parasite_move_end_fidget;
 }
 
+/**
+ * Original name: parasite_do_fidget
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to the fidget loop move table.
+ */
 export function parasite_do_fidget(self: GameEntity): void {
   self.monsterinfo.currentmove = parasite_move_fidget;
 }
@@ -277,6 +349,15 @@ export function parasite_refidget(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: parasite_idle
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the parasite fidget sequence from the idle callback.
+ */
 export function parasite_idle(self: GameEntity): void {
   self.monsterinfo.currentmove = parasite_move_start_fidget;
 }
@@ -293,6 +374,15 @@ export const parasite_move_stand: GameMonsterMove = {
   endfunc: parasite_stand
 };
 
+/**
+ * Original name: parasite_stand
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to its looping stand move.
+ */
 export function parasite_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = parasite_move_stand;
 }
@@ -321,6 +411,15 @@ export const parasite_move_stop_run: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: parasite_start_run
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the run transition unless `AI_STAND_GROUND` forces the stand move.
+ */
 export function parasite_start_run(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     self.monsterinfo.currentmove = parasite_move_stand;
@@ -329,6 +428,15 @@ export function parasite_start_run(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: parasite_run
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches to the looping run move unless `AI_STAND_GROUND` forces standing.
+ */
 export function parasite_run(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     self.monsterinfo.currentmove = parasite_move_stand;
@@ -361,10 +469,28 @@ export const parasite_move_stop_walk: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: parasite_start_walk
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the walk transition move.
+ */
 export function parasite_start_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = parasite_move_start_walk;
 }
 
+/**
+ * Original name: parasite_walk
+ * Source: game/m_parasite.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to its looping walk move.
+ */
 export function parasite_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = parasite_move_walk;
 }

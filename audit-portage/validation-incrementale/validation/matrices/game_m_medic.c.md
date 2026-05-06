@@ -10,47 +10,47 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_medic.c` | global | `sound_idle1` | `packages/game/src/m_medic.ts` | `SOUND_IDLE1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `sound_pain1` | `packages/game/src/m_medic.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `sound_pain2` | `packages/game/src/m_medic.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `sound_die` | `packages/game/src/m_medic.ts` | `SOUND_DIE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `sound_sight` | `packages/game/src/m_medic.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `sound_search` | `packages/game/src/m_medic.ts` | `SOUND_SEARCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `sound_hook_launch` | `packages/game/src/m_medic.ts` | `SOUND_HOOK_LAUNCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `sound_hook_hit` | `packages/game/src/m_medic.ts` | `SOUND_HOOK_HIT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `sound_hook_heal` | `packages/game/src/m_medic.ts` | `SOUND_HOOK_HEAL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `sound_hook_retract` | `packages/game/src/m_medic.ts` | `SOUND_HOOK_RETRACT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_FindDeadMonster` | `packages/game/src/m_medic.ts` | `medic_FindDeadMonster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `ent` | `packages/game/src/m_medic.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `best` | `packages/game/src/m_medic.ts` | `best` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_idle` | `packages/game/src/m_medic.ts` | `medic_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `ent` | `packages/game/src/m_medic.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_search` | `packages/game/src/m_medic.ts` | `medic_search` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `ent` | `packages/game/src/m_medic.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_sight` | `packages/game/src/m_medic.ts` | `medic_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_frames_stand` | `packages/game/src/m_medic.ts` | `medic_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | table | `medic_frames_stand` | `packages/game/src/m_medic.ts` | `medic_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_move_stand` | `packages/game/src/m_medic.ts` | `medic_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_stand` | `packages/game/src/m_medic.ts` | `medic_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_frames_walk` | `packages/game/src/m_medic.ts` | `medic_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | table | `medic_frames_walk` | `packages/game/src/m_medic.ts` | `medic_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_move_walk` | `packages/game/src/m_medic.ts` | `medic_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_walk` | `packages/game/src/m_medic.ts` | `medic_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_frames_run` | `packages/game/src/m_medic.ts` | `medic_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | table | `medic_frames_run` | `packages/game/src/m_medic.ts` | `medic_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_move_run` | `packages/game/src/m_medic.ts` | `medic_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_run` | `packages/game/src/m_medic.ts` | `medic_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `ent` | `packages/game/src/m_medic.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_frames_pain1` | `packages/game/src/m_medic.ts` | `medic_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | table | `medic_frames_pain1` | `packages/game/src/m_medic.ts` | `medic_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_move_pain1` | `packages/game/src/m_medic.ts` | `medic_move_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_frames_pain2` | `packages/game/src/m_medic.ts` | `medic_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | table | `medic_frames_pain2` | `packages/game/src/m_medic.ts` | `medic_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `medic_move_pain2` | `packages/game/src/m_medic.ts` | `medic_move_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_pain` | `packages/game/src/m_medic.ts` | `medic_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | function | `medic_fire_blaster` | `packages/game/src/m_medic.ts` | `medic_fire_blaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `effect` | `packages/game/src/m_medic.ts` | `effect` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | global | `effect` | `packages/game/src/m_medic.ts` | `effect` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_idle1` | `packages/game/src/m_medic.ts` | `SOUND_IDLE1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_pain1` | `packages/game/src/m_medic.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_pain2` | `packages/game/src/m_medic.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_die` | `packages/game/src/m_medic.ts` | `SOUND_DIE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_sight` | `packages/game/src/m_medic.ts` | `SOUND_SIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_search` | `packages/game/src/m_medic.ts` | `SOUND_SEARCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_hook_launch` | `packages/game/src/m_medic.ts` | `SOUND_HOOK_LAUNCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_hook_hit` | `packages/game/src/m_medic.ts` | `SOUND_HOOK_HIT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_hook_heal` | `packages/game/src/m_medic.ts` | `SOUND_HOOK_HEAL` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `sound_hook_retract` | `packages/game/src/m_medic.ts` | `SOUND_HOOK_RETRACT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | function | `medic_FindDeadMonster` | `packages/game/src/m_medic.ts` | `medic_FindDeadMonster` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `ent` | `packages/game/src/m_medic.ts` | `ent` | Non applicable | A redecouper | Local variable inside `medic_FindDeadMonster`; behavior validated with function. |
+| `Quake-2-master/game/m_medic.c` | global | `best` | `packages/game/src/m_medic.ts` | `best` | Non applicable | A redecouper | Local variable inside `medic_FindDeadMonster`; behavior validated with function. |
+| `Quake-2-master/game/m_medic.c` | function | `medic_idle` | `packages/game/src/m_medic.ts` | `medic_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `ent` | `packages/game/src/m_medic.ts` | `ent` | Non applicable | A redecouper | Local variable inside `medic_idle`; behavior validated with function. |
+| `Quake-2-master/game/m_medic.c` | function | `medic_search` | `packages/game/src/m_medic.ts` | `medic_search` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `ent` | `packages/game/src/m_medic.ts` | `ent` | Non applicable | A redecouper | Local variable inside `medic_search`; behavior validated with function. |
+| `Quake-2-master/game/m_medic.c` | function | `medic_sight` | `packages/game/src/m_medic.ts` | `medic_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_frames_stand` | `packages/game/src/m_medic.ts` | `medic_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | table | `medic_frames_stand` | `packages/game/src/m_medic.ts` | `medic_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_move_stand` | `packages/game/src/m_medic.ts` | `medic_move_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | function | `medic_stand` | `packages/game/src/m_medic.ts` | `medic_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_frames_walk` | `packages/game/src/m_medic.ts` | `medic_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | table | `medic_frames_walk` | `packages/game/src/m_medic.ts` | `medic_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_move_walk` | `packages/game/src/m_medic.ts` | `medic_move_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | function | `medic_walk` | `packages/game/src/m_medic.ts` | `medic_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_frames_run` | `packages/game/src/m_medic.ts` | `medic_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | table | `medic_frames_run` | `packages/game/src/m_medic.ts` | `medic_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_move_run` | `packages/game/src/m_medic.ts` | `medic_move_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | function | `medic_run` | `packages/game/src/m_medic.ts` | `medic_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `ent` | `packages/game/src/m_medic.ts` | `ent` | Non applicable | A redecouper | Local variable inside `medic_run`; behavior validated with function. |
+| `Quake-2-master/game/m_medic.c` | global | `medic_frames_pain1` | `packages/game/src/m_medic.ts` | `medic_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | table | `medic_frames_pain1` | `packages/game/src/m_medic.ts` | `medic_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_move_pain1` | `packages/game/src/m_medic.ts` | `medic_move_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_frames_pain2` | `packages/game/src/m_medic.ts` | `medic_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | table | `medic_frames_pain2` | `packages/game/src/m_medic.ts` | `medic_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `medic_move_pain2` | `packages/game/src/m_medic.ts` | `medic_move_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | function | `medic_pain` | `packages/game/src/m_medic.ts` | `medic_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | function | `medic_fire_blaster` | `packages/game/src/m_medic.ts` | `medic_fire_blaster` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_medic.c` | global | `effect` | `packages/game/src/m_medic.ts` | `effect` | Non applicable | A redecouper | Local variable inside `medic_fire_blaster`; behavior validated with function. |
+| `Quake-2-master/game/m_medic.c` | global | `effect` | `packages/game/src/m_medic.ts` | `effect` | Non applicable | A redecouper | Local variable inside `medic_fire_blaster`; behavior validated with function. |
 | `Quake-2-master/game/m_medic.c` | function | `medic_dead` | `packages/game/src/m_medic.ts` | `medic_dead` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_medic.c` | global | `medic_frames_death` | `packages/game/src/m_medic.ts` | `medic_frames_death` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_medic.c` | table | `medic_frames_death` | `packages/game/src/m_medic.ts` | `medic_frames_death` | A verifier | A redecouper |  |
@@ -83,11 +83,11 @@
 | `Quake-2-master/game/m_medic.c` | function | `medic_attack` | `packages/game/src/m_medic.ts` | `medic_attack` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_medic.c` | function | `medic_checkattack` | `packages/game/src/m_medic.ts` | `medic_checkattack` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_medic.c` | function | `SP_monster_medic` | `packages/game/src/m_medic.ts` | `SP_monster_medic` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_stand` | `packages/game/src/m_medic.ts` | `medic_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_walk` | `packages/game/src/m_medic.ts` | `medic_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_run` | `packages/game/src/m_medic.ts` | `medic_frames_run` | A verifier | matched |  |
-| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_pain1` | `packages/game/src/m_medic.ts` | `medic_frames_pain1` | A verifier | matched |  |
-| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_pain2` | `packages/game/src/m_medic.ts` | `medic_frames_pain2` | A verifier | matched |  |
+| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_stand` | `packages/game/src/m_medic.ts` | `medic_frames_stand` | Valide | matched |  |
+| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_walk` | `packages/game/src/m_medic.ts` | `medic_frames_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_run` | `packages/game/src/m_medic.ts` | `medic_frames_run` | Valide | matched |  |
+| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_pain1` | `packages/game/src/m_medic.ts` | `medic_frames_pain1` | Valide | matched |  |
+| `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_pain2` | `packages/game/src/m_medic.ts` | `medic_frames_pain2` | Valide | matched |  |
 | `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_death` | `packages/game/src/m_medic.ts` | `medic_frames_death` | A verifier | matched |  |
 | `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_duck` | `packages/game/src/m_medic.ts` | `medic_frames_duck` | A verifier | matched |  |
 | `Quake-2-master/game/m_medic.c` | declarative:monster-tables | `medic_frames_attackHyperBlaster` | `packages/game/src/m_medic.ts` | `medic_frames_attackHyperBlaster` | A verifier | matched |  |

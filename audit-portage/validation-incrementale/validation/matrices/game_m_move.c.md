@@ -10,34 +10,36 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_move.c` | macro | `STEPSIZE` | `packages/game/src/m_move.ts` | `STEPSIZE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `M_CheckBottom` | `packages/game/src/m_move.ts` | `M_CheckBottom` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `trace` | `packages/game/src/m_move.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `SV_movestep` | `packages/game/src/m_move.ts` | `SV_movestep` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `dz` | `packages/game/src/m_move.ts` | `dz` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `trace` | `packages/game/src/m_move.ts` | `trace` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `i` | `packages/game/src/m_move.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `stepsize` | `packages/game/src/m_move.ts` | `STEPSIZE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `test` | `packages/game/src/m_move.ts` | `test` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `contents` | `packages/game/src/m_move.ts` | `contents` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `stepsize` | `packages/game/src/m_move.ts` | `STEPSIZE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `M_ChangeYaw` | `packages/game/src/m_move.ts` | `M_ChangeYaw` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `ideal` | `packages/game/src/m_move.ts` | `ideal` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `current` | `packages/game/src/m_move.ts` | `current` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `move` | `packages/game/src/m_move.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `speed` | `packages/game/src/m_move.ts` | `speed` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `SV_StepDirection` | `packages/game/src/m_move.ts` | `SV_StepDirection` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `delta` | `packages/game/src/m_move.ts` | `delta` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `SV_FixCheckBottom` | `packages/game/src/m_move.ts` | `SV_FixCheckBottom` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | macro | `DI_NODIR` | `packages/game/src/m_move.ts` | `DI_NODIR` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `SV_NewChaseDir` | `packages/game/src/m_move.ts` | `SV_NewChaseDir` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `d` | `packages/game/src/m_move.ts` | `d` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `d` | `packages/game/src/m_move.ts` | `d` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `d` | `packages/game/src/m_move.ts` | `d` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `tdir` | `packages/game/src/m_move.ts` | `tdir` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `SV_CloseEnough` | `packages/game/src/m_move.ts` | `SV_CloseEnough` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `i` | `packages/game/src/m_move.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `M_MoveToGoal` | `packages/game/src/m_move.ts` | `M_MoveToGoal` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | global | `goal` | `packages/game/src/m_move.ts` | `goal` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `M_walkmove` | `packages/game/src/m_move.ts` | `M_walkmove` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_move.c` | function | `SV_movestep` | `packages/game/src/m_move.ts` | `SV_movestep` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | macro | `STEPSIZE` | `packages/game/src/m_move.ts` | `STEPSIZE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | global | `c_yes` | `packages/game/src/m_move.ts` | `c_yes` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | global | `c_no` | `packages/game/src/m_move.ts` | `c_no` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | function | `M_CheckBottom` | `packages/game/src/m_move.ts` | `M_CheckBottom` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | global | `trace` | `packages/game/src/m_move.ts` | `trace` | Non applicable | A redecouper | Variable locale de `M_CheckBottom`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | function | `SV_movestep` | `packages/game/src/m_move.ts` | `SV_movestep` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | global | `dz` | `packages/game/src/m_move.ts` | `dz` | Non applicable | A redecouper | Variable locale de `SV_movestep`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `trace` | `packages/game/src/m_move.ts` | `trace` | Non applicable | A redecouper | Variable locale de `SV_movestep`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `i` | `packages/game/src/m_move.ts` | `i` | Non applicable | A redecouper | Variable locale de `SV_movestep`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `stepsize` | `packages/game/src/m_move.ts` | `STEPSIZE` | Non applicable | A redecouper | Variable locale de `SV_movestep`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `test` | `packages/game/src/m_move.ts` | `test` | Non applicable | A redecouper | Variable locale de `SV_movestep`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `contents` | `packages/game/src/m_move.ts` | `contents` | Non applicable | A redecouper | Variable locale de `SV_movestep`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `stepsize` | `packages/game/src/m_move.ts` | `STEPSIZE` | Non applicable | A redecouper | Variable locale de `SV_movestep`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | function | `M_ChangeYaw` | `packages/game/src/m_move.ts` | `M_ChangeYaw` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | global | `ideal` | `packages/game/src/m_move.ts` | `ideal` | Non applicable | A redecouper | Variable locale de `M_ChangeYaw`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `current` | `packages/game/src/m_move.ts` | `current` | Non applicable | A redecouper | Variable locale de `M_ChangeYaw`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `move` | `packages/game/src/m_move.ts` | `move` | Non applicable | A redecouper | Variable locale de `M_ChangeYaw`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `speed` | `packages/game/src/m_move.ts` | `speed` | Non applicable | A redecouper | Variable locale de `M_ChangeYaw`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | function | `SV_StepDirection` | `packages/game/src/m_move.ts` | `SV_StepDirection` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | global | `delta` | `packages/game/src/m_move.ts` | `delta` | Non applicable | A redecouper | Variable locale de `SV_StepDirection`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | function | `SV_FixCheckBottom` | `packages/game/src/m_move.ts` | `SV_FixCheckBottom` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | macro | `DI_NODIR` | `packages/game/src/m_move.ts` | `DI_NODIR` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | function | `SV_NewChaseDir` | `packages/game/src/m_move.ts` | `SV_NewChaseDir` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | global | `d` | `packages/game/src/m_move.ts` | `d` | Non applicable | A redecouper | Variable locale de `SV_NewChaseDir`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `d` | `packages/game/src/m_move.ts` | `d` | Non applicable | A redecouper | Variable locale de `SV_NewChaseDir`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `d` | `packages/game/src/m_move.ts` | `d` | Non applicable | A redecouper | Variable locale de `SV_NewChaseDir`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | global | `tdir` | `packages/game/src/m_move.ts` | `tdir` | Non applicable | A redecouper | Variable locale de `SV_NewChaseDir`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | function | `SV_CloseEnough` | `packages/game/src/m_move.ts` | `SV_CloseEnough` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | global | `i` | `packages/game/src/m_move.ts` | `i` | Non applicable | A redecouper | Variable locale de `SV_CloseEnough`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | function | `M_MoveToGoal` | `packages/game/src/m_move.ts` | `M_MoveToGoal` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | global | `goal` | `packages/game/src/m_move.ts` | `goal` | Non applicable | A redecouper | Variable locale de `M_MoveToGoal`; comportement valide avec la fonction. |
+| `Quake-2-master/game/m_move.c` | function | `M_walkmove` | `packages/game/src/m_move.ts` | `M_walkmove` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_move.c` | function | `SV_movestep` | `packages/game/src/m_move.ts` | `SV_movestep` | Non applicable | A redecouper | Doublon de matrice; la fonction proprietaire est validee plus haut. |

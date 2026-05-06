@@ -232,6 +232,18 @@ let sound_step2 = 0;
 let sound_step3 = 0;
 let sound_thud = 0;
 
+/**
+ * Original name: mutant_step
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits one of the three original mutant footstep sounds on the voice channel.
+ *
+ * Porting notes:
+ * - Uses `randomInt(3)` for the C `(rand() + 1) % 3` integer branch; the sound set and channel are preserved.
+ */
 export function mutant_step(self: GameEntity, runtime: GameRuntime): void {
   const n = randomInt(3);
   if (n === 0) {
@@ -243,14 +255,41 @@ export function mutant_step(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: mutant_sight
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the mutant sight sound on the voice channel.
+ */
 export function mutant_sight(self: GameEntity, _other: GameEntity | null, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_sight, SOUND_SIGHT, soundOptions(CHAN_VOICE));
 }
 
+/**
+ * Original name: mutant_search
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the mutant search sound on the voice channel.
+ */
 export function mutant_search(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_search, SOUND_SEARCH, soundOptions(CHAN_VOICE));
 }
 
+/**
+ * Original name: mutant_swing
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Emits the mutant melee swing sound on the voice channel.
+ */
 export function mutant_swing(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_swing, SOUND_SWING, soundOptions(CHAN_VOICE));
 }
@@ -263,6 +302,15 @@ export const mutant_move_stand: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: mutant_stand
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to the original stand move.
+ */
 export function mutant_stand(self: GameEntity): void {
   self.monsterinfo.currentmove = mutant_move_stand;
 }
@@ -293,6 +341,15 @@ export const mutant_move_idle: GameMonsterMove = {
   endfunc: mutant_stand
 };
 
+/**
+ * Original name: mutant_idle
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches the monster to the scratch idle move and emits the original idle sound with idle attenuation.
+ */
 export function mutant_idle(self: GameEntity, runtime: GameRuntime): void {
   self.monsterinfo.currentmove = mutant_move_idle;
   emitRegisteredGameSound(runtime, self, sound_idle, SOUND_IDLE, {
@@ -311,6 +368,15 @@ export const mutant_move_walk: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: mutant_walk_loop
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Switches from the walk startup move to the repeating walk move.
+ */
 export function mutant_walk_loop(self: GameEntity): void {
   self.monsterinfo.currentmove = mutant_move_walk;
 }
@@ -323,6 +389,15 @@ export const mutant_move_start_walk: GameMonsterMove = {
   endfunc: mutant_walk_loop
 };
 
+/**
+ * Original name: mutant_walk
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Starts the original four-frame walk startup move.
+ */
 export function mutant_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = mutant_move_start_walk;
 }
@@ -338,6 +413,15 @@ export const mutant_move_run: GameMonsterMove = {
   endfunc: undefined
 };
 
+/**
+ * Original name: mutant_run
+ * Source: game/m_mutant.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Uses stand-ground AI to stay on the stand move, otherwise switches to the original run move.
+ */
 export function mutant_run(self: GameEntity): void {
   if ((self.monsterinfo.aiflags & AI_STAND_GROUND) !== 0) {
     self.monsterinfo.currentmove = mutant_move_stand;
