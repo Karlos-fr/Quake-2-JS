@@ -32,7 +32,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { EF_BLASTER, EF_FLIES, MAX_EDICTS, MZ_BLASTER, PMF_DUCKED, temp_event_t } from "../../packages/qcommon/src/index.js";
+import { EF_BLASTER, EF_FLIES, MAX_EDICTS, MZ_BLASTER, PMF_DUCKED, RDF_UNDERWATER, STAT_FLASHES, temp_event_t } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -45,6 +45,7 @@ function main(): void {
   verifyLocalCorpseFliesReachRefreshParticlesAndLoopSound();
   verifyOutOfProtocolEntityNumbersAreSkipped();
   verifyLocalCrouchViewheightIsSmoothed();
+  verifyLocalPViewPlayerStateReachesClientFrame();
   verifyRepeatedLocalSyncDoesNotResetBlasterTrailOrigin();
   console.log("quake2-local-gameplay-sync: ok");
 }
@@ -218,6 +219,26 @@ function verifyLocalCrouchViewheightIsSmoothed(): void {
   }
 
   assertNumber(client.cl.frame.playerstate.viewoffset[2], -2, "local rendered crouch viewheight must eventually reach target");
+}
+
+function verifyLocalPViewPlayerStateReachesClientFrame(): void {
+  const client = createClientRuntime();
+  const gameplay = createHarnessRuntime();
+  const player = createVisiblePlayer(gameplay);
+  const viewMotion = createLocalViewMotionState(90);
+
+  player.client!.ps.blend = [1, 0.25, 0, 0.5];
+  player.client!.ps.rdflags = RDF_UNDERWATER;
+  player.client!.ps.stats[STAT_FLASHES] = 3;
+  client.cl.predicted_origin = [32, 64, 16];
+  client.cl.predicted_angles = [0, 90, 0];
+
+  updateLocalGameplayPlayer(gameplay, player, client, viewMotion);
+
+  assertNumber(client.cl.frame.playerstate.blend[0], 1, "local sync must copy p_view blend red");
+  assertNumber(client.cl.frame.playerstate.blend[3], 0.5, "local sync must copy p_view blend alpha");
+  assertNumber(client.cl.frame.playerstate.rdflags, RDF_UNDERWATER, "local sync must copy p_view rdflags");
+  assertNumber(client.cl.frame.playerstate.stats[STAT_FLASHES] ?? 0, 3, "local sync must copy p_view damage flash stats");
 }
 
 function verifyRepeatedLocalSyncDoesNotResetBlasterTrailOrigin(): void {

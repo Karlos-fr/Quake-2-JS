@@ -18,6 +18,7 @@ import {
   EF_QUAD,
   PMF_DUCKED,
   RDF_UNDERWATER,
+  STAT_FLASHES,
   RF_SHELL_BLUE,
   RF_SHELL_GREEN,
   RF_SHELL_RED,
@@ -160,6 +161,17 @@ assert.equal(ent.s.frame, FRAME_jump1, "G_SetClientFrame jump mismatch");
 ent.groundentity = ent;
 ent.flags &= ~FL_GODMODE;
 ent.client!.invincible_framenum = 0;
+ent.client!.damage_blood = 0;
+ent.client!.damage_armor = 0;
+ent.client!.damage_parmor = 4;
+ent.client!.damage_knockback = 0;
+ent.client!.damage_alpha = 0;
+runtime.time = 1;
+runtime.framenum = 10;
+P_DamageFeedback(ent, runtime, frame);
+assert.equal(ent.client!.ps.stats[STAT_FLASHES], 0, "P_DamageFeedback power armor alone must not set the armor flash");
+
+runtime.soundEvents.length = 0;
 ent.client!.damage_blood = 5;
 ent.client!.damage_armor = 5;
 ent.client!.damage_parmor = 10;
@@ -167,12 +179,12 @@ ent.client!.damage_knockback = 20;
 ent.client!.damage_from = [0, 10, 0];
 ent.client!.damage_alpha = 0;
 ent.client!.anim_priority = ANIM_BASIC;
-runtime.time = 1;
-runtime.framenum = 10;
-P_DamageFeedback(ent, runtime, frame);
-assert.equal(ent.client!.ps.stats[15], 3, "P_DamageFeedback flash flags mismatch");
+ent.pain_debounce_time = 0;
+withMathRandom([0.75], () => P_DamageFeedback(ent, runtime, frame));
+assert.equal(ent.client!.ps.stats[STAT_FLASHES], 3, "P_DamageFeedback flash flags mismatch");
 assert.ok(ent.client!.damage_alpha >= 0.2, "P_DamageFeedback alpha mismatch");
 assert.deepEqual(ent.client!.damage_blend, [0.5, 0.75, 0.25], "P_DamageFeedback blend mismatch");
+assert.ok(runtime.soundEvents.some((event) => event.soundPath === "*pain100_2.wav"), "P_DamageFeedback pain sound variant mismatch");
 assert.equal(ent.client!.damage_blood, 0, "P_DamageFeedback blood reset mismatch");
 assert.equal(ent.client!.damage_armor, 0, "P_DamageFeedback armor reset mismatch");
 assert.equal(ent.client!.damage_parmor, 0, "P_DamageFeedback parmor reset mismatch");
@@ -289,3 +301,14 @@ assert.ok(ent.client!.ps.viewoffset[2] !== 0, "ClientEndServerFrame viewoffset m
 assert.ok(ent.client!.ps.gunangles[0] !== 0, "ClientEndServerFrame gunangles mismatch");
 
 console.log("quake2-p-view: ok");
+
+function withMathRandom(values: number[], callback: () => void): void {
+  const original = Math.random;
+  let index = 0;
+  Math.random = () => values[Math.min(index++, values.length - 1)] ?? 0;
+  try {
+    callback();
+  } finally {
+    Math.random = original;
+  }
+}

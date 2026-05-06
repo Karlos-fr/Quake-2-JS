@@ -11,11 +11,14 @@
 
 import { strict as assert } from "node:assert";
 
-import { DF_QUAD_DROP } from "../../packages/qcommon/src/index.js";
+import { DF_QUAD_DROP, DF_SPAWN_FARTHEST, entity_event_t, PMF_TIME_TELEPORT } from "../../packages/qcommon/src/index.js";
 import {
   BODY_QUEUE_SIZE,
   DEAD_DEAD,
   DROPPED_PLAYER_ITEM,
+  FL_GODMODE,
+  FL_NOTARGET,
+  FL_POWER_ARMOR,
   MOD_BFG_BLAST,
   MOD_BFG_EFFECT,
   MOD_BFG_LASER,
@@ -56,13 +59,35 @@ import {
 import { FindItem } from "../../packages/game/src/g_items.js";
 import {
   ClientConnect,
+  ClientBegin,
+  ClientDisconnect,
   ClientObituary,
   CopyToBodyQue,
+  FetchClientEntData,
   InitBodyQue,
+  InitClientPersistant,
+  InitClientResp,
+  IsFemale,
+  IsNeutral,
+  PlayersRangeFromSpot,
   PutClientInServer,
+  SaveClientData,
+  SelectCoopSpawnPoint,
+  SelectDeathmatchSpawnPoint,
+  SelectFarthestDeathmatchSpawnPoint,
+  SelectRandomDeathmatchSpawnPoint,
+  SelectSpawnPoint,
+  SP_CreateCoopSpots,
+  SP_FixCoopSpots,
+  SP_info_player_coop,
+  SP_info_player_deathmatch,
+  SP_info_player_intermission,
+  SP_info_player_start,
   TossClientWeapon,
   ThrowClientHead,
-  player_die
+  player_pain,
+  player_die,
+  respawn
 } from "../../packages/game/src/p_client.js";
 import {
   attachGameClient,
@@ -75,6 +100,10 @@ import {
 main();
 
 function main(): void {
+  verifyInitialClientStateHelpers();
+  verifyPlayerStartSpawnFunctions();
+  verifySpawnPointSelectionMatchesOriginalEdges();
+  verifyClientUserinfoChangedConnectAndBegin();
   verifyBodyQueueUsesOriginalSizeAndWraps();
   verifyClientConnectRespectsAutosavedPersistentState();
   verifyClientObituaryWeaponMeansOfDeath();
@@ -85,6 +114,268 @@ function main(): void {
   verifyThrowClientHeadUsesGLocalRandomHelpers();
 
   console.log("Verification p_client - player lifecycle defaults OK");
+}
+
+function verifyInitialClientStateHelpers(): void {
+  const runtime = createHarnessRuntime();
+  runtime.coop = true;
+  runtime.framenum = 123;
+  const player = spawnGameEntity(runtime);
+  const client = attachGameClient(player);
+
+  InitClientPersistant(client);
+  const blaster = requireItem("Blaster");
+  assert.equal(client.pers.selected_item, blaster.index, "InitClientPersistant should select the Blaster");
+  assert.equal(client.pers.inventory[blaster.index], 1, "InitClientPersistant should grant one Blaster");
+  assert.equal(client.pers.weapon, blaster, "InitClientPersistant should equip the Blaster");
+  assert.equal(client.pers.health, 100, "InitClientPersistant health mismatch");
+  assert.equal(client.pers.max_bullets, 200, "InitClientPersistant bullet max mismatch");
+  assert.equal(client.pers.max_shells, 100, "InitClientPersistant shell max mismatch");
+  assert.equal(client.pers.max_rockets, 50, "InitClientPersistant rocket max mismatch");
+  assert.equal(client.pers.max_grenades, 50, "InitClientPersistant grenade max mismatch");
+  assert.equal(client.pers.max_cells, 200, "InitClientPersistant cell max mismatch");
+  assert.equal(client.pers.max_slugs, 50, "InitClientPersistant slug max mismatch");
+  assert.equal(client.pers.connected, true, "InitClientPersistant should mark the client connected");
+
+  client.pers.score = 7;
+  InitClientResp(client, runtime);
+  assert.equal(client.resp.enterframe, 123, "InitClientResp should copy the level framenum");
+  assert.equal(client.resp.coop_respawn.score, 7, "InitClientResp should snapshot pers into coop_respawn");
+
+  player.inuse = true;
+  player.health = 42;
+  player.max_health = 88;
+  player.flags = FL_GODMODE | FL_NOTARGET | FL_POWER_ARMOR;
+  client.resp.score = 11;
+  SaveClientData(runtime);
+  assert.equal(client.pers.health, 42, "SaveClientData should mirror entity health");
+  assert.equal(client.pers.max_health, 88, "SaveClientData should mirror entity max_health");
+  assert.equal(client.pers.score, 11, "SaveClientData should mirror coop score");
+
+  player.health = 1;
+  player.max_health = 2;
+  client.resp.score = 0;
+  FetchClientEntData(player, runtime);
+  assert.equal(player.health, 42, "FetchClientEntData should restore pers health");
+  assert.equal(player.max_health, 88, "FetchClientEntData should restore pers max_health");
+  assert.equal(client.resp.score, 11, "FetchClientEntData should restore coop score");
+
+  client.pers.userinfo = "\\gender\\female";
+  assert.equal(IsFemale(player), true, "IsFemale should read female userinfo");
+  assert.equal(IsNeutral(player), false, "IsNeutral should reject female userinfo");
+  client.pers.userinfo = "\\gender\\cyborg";
+  assert.equal(IsNeutral(player), true, "IsNeutral should accept non male/female userinfo");
+  player_pain(player, null, 12, 34, runtime);
+}
+
+function verifyPlayerStartSpawnFunctions(): void {
+  const runtime = createHarnessRuntime();
+  runtime.coop = true;
+  runtime.mapname = "security";
+  runtime.time = 10;
+  const start = spawnGameEntity(runtime);
+  start.classname = "info_player_start";
+  SP_info_player_start(start, runtime);
+  assert.ok(start.think, "SP_info_player_start should schedule the security coop spot workaround");
+
+  SP_CreateCoopSpots(start, runtime);
+  const coopSpots = runtime.entities.filter((entity) => entity.classname === "info_player_coop");
+  assert.equal(coopSpots.length, 3, "SP_CreateCoopSpots should create the three original security coop spots");
+  assert.deepEqual(coopSpots.map((spot) => spot.s.origin), [[124, -164, 80], [252, -164, 80], [316, -164, 80]]);
+  assert.ok(coopSpots.every((spot) => spot.targetname === "jail3" && spot.s.angles[1] === 90), "security coop spots should preserve target/yaw");
+
+  const coop = spawnGameEntity(runtime);
+  coop.classname = "info_player_coop";
+  runtime.mapname = "jail2";
+  SP_info_player_coop(coop, runtime);
+  assert.ok(coop.think, "SP_info_player_coop should schedule targetname fixups for original hack maps");
+
+  const namedStart = spawnGameEntity(runtime);
+  namedStart.classname = "info_player_start";
+  namedStart.targetname = "named";
+  namedStart.s.origin = [128, 0, 0];
+  coop.s.origin = [256, 0, 0];
+  SP_FixCoopSpots(coop, runtime);
+  assert.equal(coop.targetname, "named", "SP_FixCoopSpots should copy the nearest named start target");
+
+  const deathmatchRuntime = createHarnessRuntime();
+  deathmatchRuntime.deathmatch = false;
+  while (deathmatchRuntime.entities.length <= deathmatchRuntime.maxclients + BODY_QUEUE_SIZE) {
+    spawnGameEntity(deathmatchRuntime);
+  }
+  const deathmatchSpot = spawnGameEntity(deathmatchRuntime);
+  deathmatchSpot.classname = "info_player_deathmatch";
+  deathmatchSpot.inuse = true;
+  SP_info_player_deathmatch(deathmatchSpot, deathmatchRuntime);
+  assert.equal(deathmatchSpot.inuse, false, "SP_info_player_deathmatch should free spots outside deathmatch");
+
+  const intermission = spawnGameEntity(runtime);
+  SP_info_player_intermission(intermission, runtime);
+}
+
+function verifySpawnPointSelectionMatchesOriginalEdges(): void {
+  const runtime = createHarnessRuntime();
+  runtime.deathmatch = true;
+  const player = spawnGameEntity(runtime);
+  attachGameClient(player);
+  player.inuse = true;
+  player.health = 100;
+  player.s.origin = [0, 0, 0];
+
+  const first = spawnDeathmatchSpot(runtime, [100, 0, 0]);
+  const closest = spawnDeathmatchSpot(runtime, [50, 0, 0]);
+  const secondClosest = spawnDeathmatchSpot(runtime, [75, 0, 0]);
+
+  assert.equal(PlayersRangeFromSpot(first, runtime), 100, "PlayersRangeFromSpot distance mismatch");
+  assert.equal(SelectFarthestDeathmatchSpawnPoint(runtime), first, "SelectFarthestDeathmatchSpawnPoint should choose farthest spot");
+  runtime.dmflags = DF_SPAWN_FARTHEST;
+  assert.equal(SelectDeathmatchSpawnPoint(runtime), first, "SelectDeathmatchSpawnPoint should honor DF_SPAWN_FARTHEST");
+
+  runtime.dmflags = 0;
+  withMockedMathRandom([0], () => {
+    assert.equal(
+      SelectRandomDeathmatchSpawnPoint(runtime),
+      first,
+      "SelectRandomDeathmatchSpawnPoint should preserve the original non-shifting closest-two algorithm"
+    );
+  });
+  assert.ok(closest && secondClosest, "deathmatch spot setup should keep closest candidates live");
+
+  const coopRuntime = createHarnessRuntime();
+  coopRuntime.coop = true;
+  coopRuntime.spawnpoint = "target";
+  const firstPlayer = spawnGameEntity(coopRuntime);
+  attachGameClient(firstPlayer);
+  assert.equal(SelectCoopSpawnPoint(firstPlayer, coopRuntime), null, "first coop player should use the normal start");
+  const secondPlayer = spawnGameEntity(coopRuntime);
+  attachGameClient(secondPlayer);
+  spawnCoopSelectionSpot(coopRuntime, "other");
+  const expected = spawnCoopSelectionSpot(coopRuntime, "target");
+  assert.equal(SelectCoopSpawnPoint(secondPlayer, coopRuntime), expected, "SelectCoopSpawnPoint should match spawnpoint target by client slot");
+
+  const normalRuntime = createHarnessRuntime();
+  normalRuntime.spawnpoint = "";
+  const start = spawnGameEntity(normalRuntime);
+  start.classname = "info_player_start";
+  start.s.origin = [8, 16, 24];
+  start.s.angles = [0, 90, 0];
+  const selected = SelectSpawnPoint(spawnGameEntity(normalRuntime), normalRuntime);
+  assert.deepEqual(selected.origin, [8, 16, 33], "SelectSpawnPoint should add the original 9 unit spawn lift");
+  assert.deepEqual(selected.angles, [0, 90, 0], "SelectSpawnPoint should copy spawn angles");
+}
+
+function verifyClientUserinfoChangedConnectAndBegin(): void {
+  const runtime = createHarnessRuntime();
+  runtime.maxclients = 1;
+  runtime.deathmatch = true;
+  const player = spawnGameEntity(runtime);
+  const client = attachGameClient(player);
+  const configstrings: string[] = [];
+  const prints: string[] = [];
+
+  assert.equal(
+    ClientConnect(player, "\\name\\Ranger\\skin\\female/athena\\spectator\\1\\fov\\175\\hand\\2", runtime, {
+      onConfigstringPlayer: (playernum, value) => {
+        configstrings[playernum] = value;
+      },
+      onPrint: (_level, message) => {
+        prints.push(message);
+      }
+    }),
+    true,
+    "ClientConnect should accept a normal userinfo payload"
+  );
+  assert.equal(client.pers.netname, "Ranger", "ClientConnect should apply netname through ClientUserinfoChanged");
+  assert.equal(client.pers.spectator, true, "ClientUserinfoChanged should enable spectators only in deathmatch");
+  assert.equal(client.ps.fov, 160, "ClientUserinfoChanged should clamp fov to 160");
+  assert.equal(client.pers.hand, 2, "ClientUserinfoChanged should apply handedness");
+  assert.equal(configstrings[0], "Ranger\\female/athena", "ClientUserinfoChanged should publish player skin configstring");
+  assert.deepEqual(prints, [], "single-client ClientConnect should not print a connection broadcast");
+
+  runtime.deathmatch = false;
+  ClientConnect(player, "\\name\\Bad\\skin\\male/grunt\\spectator\\1", runtime);
+  assert.equal(client.pers.spectator, false, "ClientUserinfoChanged should ignore spectator outside deathmatch");
+
+  runtime.deathmatch = true;
+  runtime.maxclients = 2;
+  const begun = spawnGameEntity(runtime);
+  begun.client = client;
+  begun.inuse = false;
+  const loginEffects: number[] = [];
+  ClientBegin(begun, runtime, {
+    SelectSpawnPoint: () => ({ origin: [10, 20, 30], angles: [0, 45, 0] }),
+    KillBox: () => true,
+    onLoginEffect: (ent) => {
+      loginEffects.push(ent.index);
+    }
+  });
+  assert.equal(begun.inuse, true, "ClientBegin deathmatch should put the client in server");
+  assert.deepEqual(begun.s.origin, [10, 20, 31], "ClientBegin should use PutClientInServer spawn placement");
+  assert.deepEqual(loginEffects, [begun.index], "ClientBegin deathmatch should emit the login effect");
+
+  const respawnRuntime = createHarnessRuntime();
+  respawnRuntime.deathmatch = true;
+  InitBodyQue(respawnRuntime);
+  const respawning = spawnGameEntity(respawnRuntime);
+  attachGameClient(respawning);
+  respawning.movetype = 0;
+  respawnRuntime.time = 4;
+  PutClientInServer(respawning, respawnRuntime, {
+    SelectSpawnPoint: () => ({ origin: [1, 2, 3], angles: [0, 0, 0] }),
+    KillBox: () => true
+  });
+  respawning.health = 0;
+  respawning.deadflag = DEAD_DEAD;
+  respawning.client!.respawn_time = 3;
+  respawning.client!.latched_buttons = 1;
+  respawning.client!.buttons = 1;
+  respawning.client!.oldbuttons = 0;
+  respawning.client!.pers.spectator = false;
+  respawning.client!.resp.spectator = true;
+  respawning.client!.pers.userinfo = "\\spectator\\0\\password\\";
+  respawning.client!.pers.netname = "Player";
+  respawning.client!.pers.score = 9;
+  respawning.client!.resp.score = 9;
+  const messages: string[] = [];
+  respawnRuntime.time = 9;
+  respawn(respawning, respawnRuntime, {
+    SelectSpawnPoint: () => ({ origin: [5, 6, 7], angles: [0, 0, 0] }),
+    KillBox: () => true,
+    onBodyQueueCopy: () => undefined
+  });
+  assert.equal(respawning.s.event, entity_event_t.EV_PLAYER_TELEPORT, "respawn path should emit EV_PLAYER_TELEPORT");
+  assert.equal((respawning.client!.ps.pmove.pm_flags & PMF_TIME_TELEPORT) !== 0, true, "respawn path should apply teleport hold");
+  assert.deepEqual(messages, [], "respawn should not broadcast spectator join/leave messages");
+
+  const disconnectMessages: string[] = [];
+  const disconnected = spawnGameEntity(runtime);
+  attachGameClient(disconnected).pers.netname = "Leaver";
+  disconnected.inuse = true;
+  disconnected.solid = 1;
+  let logoutEffect = 0;
+  let unlinked = 0;
+  let clearedSkin = "";
+  ClientDisconnect(disconnected, runtime, {
+    onPrint: (_level, message) => {
+      disconnectMessages.push(message);
+    },
+    onDisconnectEffect: () => {
+      logoutEffect += 1;
+    },
+    onUnlinkEntity: () => {
+      unlinked += 1;
+    },
+    onConfigstringPlayer: (_playernum, value) => {
+      clearedSkin = value;
+    }
+  });
+  assert.deepEqual(disconnectMessages, ["Leaver disconnected\n"], "ClientDisconnect should broadcast the original message");
+  assert.equal(logoutEffect, 1, "ClientDisconnect should emit logout effect through the hook");
+  assert.equal(unlinked, 1, "ClientDisconnect should unlink through the hook");
+  assert.equal(disconnected.inuse, false, "ClientDisconnect should mark the entity unused");
+  assert.equal(disconnected.classname, "disconnected", "ClientDisconnect classname mismatch");
+  assert.equal(disconnected.client!.pers.connected, false, "ClientDisconnect should clear pers.connected");
+  assert.equal(clearedSkin, "", "ClientDisconnect should clear the player skin configstring");
 }
 
 function verifyPutClientInServerClearsWeaponState(): void {
@@ -393,6 +684,22 @@ function createHarnessRuntime(): GameRuntime {
   const runtime = createGameRuntimeFromBspEntities([{ properties: { classname: "worldspawn" } }]);
   runtime.maxclients = 1;
   return runtime;
+}
+
+function spawnDeathmatchSpot(runtime: GameRuntime, origin: [number, number, number]) {
+  const spot = spawnGameEntity(runtime);
+  spot.classname = "info_player_deathmatch";
+  spot.inuse = true;
+  spot.s.origin = [...origin];
+  return spot;
+}
+
+function spawnCoopSelectionSpot(runtime: GameRuntime, targetname: string) {
+  const spot = spawnGameEntity(runtime);
+  spot.classname = "info_player_coop";
+  spot.inuse = true;
+  spot.targetname = targetname;
+  return spot;
 }
 
 function requireItem(pickupName: string) {

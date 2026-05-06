@@ -9,22 +9,18 @@
  * - packages/game/src/m_supertank.ts
  */
 
-import {
-  FRAME_attak1_1,
-  FRAME_backwd_18,
-  FRAME_death_47,
-  FRAME_pain3_12,
-  FRAME_right_18,
-  FRAME_stand_60,
-  MODEL_SCALE
-} from "../../packages/game/src/m_supertank.js";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import * as supertank from "../../packages/game/src/m_supertank.js";
 
 /**
  * Category: New
  * Purpose: Fail fast when a declarative frame constant differs from the original header values.
  *
  * Constraints:
- * - Keep the checks sparse but representative across the generated table.
+ * - Parse the generated header directly so every frame macro and `MODEL_SCALE` remains covered.
  */
 function assertEqual<T>(label: string, actual: T, expected: T): void {
   if (actual !== expected) {
@@ -32,12 +28,25 @@ function assertEqual<T>(label: string, actual: T, expected: T): void {
   }
 }
 
-assertEqual("FRAME_attak1_1", FRAME_attak1_1, 0);
-assertEqual("FRAME_backwd_18", FRAME_backwd_18, 97);
-assertEqual("FRAME_death_47", FRAME_death_47, 127);
-assertEqual("FRAME_pain3_12", FRAME_pain3_12, 175);
-assertEqual("FRAME_right_18", FRAME_right_18, 193);
-assertEqual("FRAME_stand_60", FRAME_stand_60, 253);
-assertEqual("MODEL_SCALE", MODEL_SCALE, 1.0);
+const SOURCE_PATH = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../Quake-2-master/game/m_supertank.h"
+);
+
+const header = readFileSync(SOURCE_PATH, "utf8");
+const frameMacros = Array.from(
+  header.matchAll(/^#define\s+(FRAME_\w+)\s+([0-9]+)$/gm),
+  (match) => [match[1], Number(match[2])] as const
+);
+
+assertEqual("FRAME_* count", frameMacros.length, 254);
+
+for (const [name, expected] of frameMacros) {
+  assertEqual(name, (supertank as Record<string, unknown>)[name], expected);
+}
+
+const modelScaleMatch = header.match(/^#define\s+MODEL_SCALE\s+([0-9.]+)$/m);
+assertEqual("MODEL_SCALE source present", Boolean(modelScaleMatch), true);
+assertEqual("MODEL_SCALE", supertank.MODEL_SCALE, Number(modelScaleMatch?.[1]));
 
 console.log("quake2-m-supertank-header: ok");

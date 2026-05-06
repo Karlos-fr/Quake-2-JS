@@ -10,258 +10,258 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_1` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_2` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_3` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_4` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_5` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_6` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_7` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_8` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_9` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_10` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_11` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_12` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_13` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_14` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_15` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_16` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_17` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_18` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_19` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_20` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_1` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_2` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_3` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_4` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_5` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_6` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_7` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_8` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_9` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_10` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_11` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_12` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_13` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_14` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_15` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_16` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_17` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_18` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_19` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_20` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_21` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_22` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_23` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_24` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_24` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_25` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_25` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_26` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_26` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_27` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_27` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_1` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_2` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_3` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_4` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_5` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_6` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_7` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_8` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_9` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_10` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_11` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_12` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_13` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_14` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_15` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_16` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_17` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_18` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_19` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_20` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_21` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_22` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_23` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_24` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_24` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_25` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_25` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_26` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_26` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_27` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_27` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_1` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_2` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_3` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_4` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_5` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_6` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_1` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_2` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_3` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_4` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_5` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_6` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_7` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_8` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_9` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_10` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_11` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_12` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_13` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_14` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_15` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_16` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_17` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_18` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_1` | `packages/game/src/m_supertank.ts` | `FRAME_death_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_2` | `packages/game/src/m_supertank.ts` | `FRAME_death_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_3` | `packages/game/src/m_supertank.ts` | `FRAME_death_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_4` | `packages/game/src/m_supertank.ts` | `FRAME_death_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_5` | `packages/game/src/m_supertank.ts` | `FRAME_death_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_6` | `packages/game/src/m_supertank.ts` | `FRAME_death_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_7` | `packages/game/src/m_supertank.ts` | `FRAME_death_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_8` | `packages/game/src/m_supertank.ts` | `FRAME_death_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_9` | `packages/game/src/m_supertank.ts` | `FRAME_death_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_10` | `packages/game/src/m_supertank.ts` | `FRAME_death_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_11` | `packages/game/src/m_supertank.ts` | `FRAME_death_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_12` | `packages/game/src/m_supertank.ts` | `FRAME_death_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_13` | `packages/game/src/m_supertank.ts` | `FRAME_death_13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_14` | `packages/game/src/m_supertank.ts` | `FRAME_death_14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_15` | `packages/game/src/m_supertank.ts` | `FRAME_death_15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_16` | `packages/game/src/m_supertank.ts` | `FRAME_death_16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_17` | `packages/game/src/m_supertank.ts` | `FRAME_death_17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_18` | `packages/game/src/m_supertank.ts` | `FRAME_death_18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_19` | `packages/game/src/m_supertank.ts` | `FRAME_death_19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_20` | `packages/game/src/m_supertank.ts` | `FRAME_death_20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_21` | `packages/game/src/m_supertank.ts` | `FRAME_death_21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_22` | `packages/game/src/m_supertank.ts` | `FRAME_death_22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_23` | `packages/game/src/m_supertank.ts` | `FRAME_death_23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_24` | `packages/game/src/m_supertank.ts` | `FRAME_death_24` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_31` | `packages/game/src/m_supertank.ts` | `FRAME_death_31` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_32` | `packages/game/src/m_supertank.ts` | `FRAME_death_32` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_33` | `packages/game/src/m_supertank.ts` | `FRAME_death_33` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_45` | `packages/game/src/m_supertank.ts` | `FRAME_death_45` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_46` | `packages/game/src/m_supertank.ts` | `FRAME_death_46` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_47` | `packages/game/src/m_supertank.ts` | `FRAME_death_47` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_1` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_2` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_3` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_4` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_5` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_6` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_7` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_8` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_9` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_10` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_11` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_12` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_13` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_14` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_15` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_16` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_17` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_18` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_1` | `packages/game/src/m_supertank.ts` | `FRAME_left_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_2` | `packages/game/src/m_supertank.ts` | `FRAME_left_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_3` | `packages/game/src/m_supertank.ts` | `FRAME_left_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_4` | `packages/game/src/m_supertank.ts` | `FRAME_left_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_5` | `packages/game/src/m_supertank.ts` | `FRAME_left_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_6` | `packages/game/src/m_supertank.ts` | `FRAME_left_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_7` | `packages/game/src/m_supertank.ts` | `FRAME_left_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_8` | `packages/game/src/m_supertank.ts` | `FRAME_left_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_9` | `packages/game/src/m_supertank.ts` | `FRAME_left_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_10` | `packages/game/src/m_supertank.ts` | `FRAME_left_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_11` | `packages/game/src/m_supertank.ts` | `FRAME_left_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_12` | `packages/game/src/m_supertank.ts` | `FRAME_left_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_13` | `packages/game/src/m_supertank.ts` | `FRAME_left_13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_14` | `packages/game/src/m_supertank.ts` | `FRAME_left_14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_15` | `packages/game/src/m_supertank.ts` | `FRAME_left_15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_16` | `packages/game/src/m_supertank.ts` | `FRAME_left_16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_17` | `packages/game/src/m_supertank.ts` | `FRAME_left_17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_18` | `packages/game/src/m_supertank.ts` | `FRAME_left_18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain1_1` | `packages/game/src/m_supertank.ts` | `FRAME_pain1_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain1_2` | `packages/game/src/m_supertank.ts` | `FRAME_pain1_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain1_3` | `packages/game/src/m_supertank.ts` | `FRAME_pain1_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain1_4` | `packages/game/src/m_supertank.ts` | `FRAME_pain1_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain2_5` | `packages/game/src/m_supertank.ts` | `FRAME_pain2_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain2_6` | `packages/game/src/m_supertank.ts` | `FRAME_pain2_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain2_7` | `packages/game/src/m_supertank.ts` | `FRAME_pain2_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain2_8` | `packages/game/src/m_supertank.ts` | `FRAME_pain2_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain3_9` | `packages/game/src/m_supertank.ts` | `FRAME_pain3_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain3_10` | `packages/game/src/m_supertank.ts` | `FRAME_pain3_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain3_11` | `packages/game/src/m_supertank.ts` | `FRAME_pain3_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain3_12` | `packages/game/src/m_supertank.ts` | `FRAME_pain3_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_1` | `packages/game/src/m_supertank.ts` | `FRAME_right_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_2` | `packages/game/src/m_supertank.ts` | `FRAME_right_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_3` | `packages/game/src/m_supertank.ts` | `FRAME_right_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_4` | `packages/game/src/m_supertank.ts` | `FRAME_right_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_5` | `packages/game/src/m_supertank.ts` | `FRAME_right_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_6` | `packages/game/src/m_supertank.ts` | `FRAME_right_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_7` | `packages/game/src/m_supertank.ts` | `FRAME_right_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_8` | `packages/game/src/m_supertank.ts` | `FRAME_right_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_9` | `packages/game/src/m_supertank.ts` | `FRAME_right_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_10` | `packages/game/src/m_supertank.ts` | `FRAME_right_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_11` | `packages/game/src/m_supertank.ts` | `FRAME_right_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_12` | `packages/game/src/m_supertank.ts` | `FRAME_right_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_13` | `packages/game/src/m_supertank.ts` | `FRAME_right_13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_14` | `packages/game/src/m_supertank.ts` | `FRAME_right_14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_15` | `packages/game/src/m_supertank.ts` | `FRAME_right_15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_16` | `packages/game/src/m_supertank.ts` | `FRAME_right_16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_17` | `packages/game/src/m_supertank.ts` | `FRAME_right_17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_18` | `packages/game/src/m_supertank.ts` | `FRAME_right_18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_1` | `packages/game/src/m_supertank.ts` | `FRAME_stand_1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_2` | `packages/game/src/m_supertank.ts` | `FRAME_stand_2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_3` | `packages/game/src/m_supertank.ts` | `FRAME_stand_3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_4` | `packages/game/src/m_supertank.ts` | `FRAME_stand_4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_5` | `packages/game/src/m_supertank.ts` | `FRAME_stand_5` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_6` | `packages/game/src/m_supertank.ts` | `FRAME_stand_6` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_7` | `packages/game/src/m_supertank.ts` | `FRAME_stand_7` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_8` | `packages/game/src/m_supertank.ts` | `FRAME_stand_8` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_9` | `packages/game/src/m_supertank.ts` | `FRAME_stand_9` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_10` | `packages/game/src/m_supertank.ts` | `FRAME_stand_10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_11` | `packages/game/src/m_supertank.ts` | `FRAME_stand_11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_12` | `packages/game/src/m_supertank.ts` | `FRAME_stand_12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_13` | `packages/game/src/m_supertank.ts` | `FRAME_stand_13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_14` | `packages/game/src/m_supertank.ts` | `FRAME_stand_14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_15` | `packages/game/src/m_supertank.ts` | `FRAME_stand_15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_16` | `packages/game/src/m_supertank.ts` | `FRAME_stand_16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_17` | `packages/game/src/m_supertank.ts` | `FRAME_stand_17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_18` | `packages/game/src/m_supertank.ts` | `FRAME_stand_18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_19` | `packages/game/src/m_supertank.ts` | `FRAME_stand_19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_20` | `packages/game/src/m_supertank.ts` | `FRAME_stand_20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_21` | `packages/game/src/m_supertank.ts` | `FRAME_stand_21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_22` | `packages/game/src/m_supertank.ts` | `FRAME_stand_22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_23` | `packages/game/src/m_supertank.ts` | `FRAME_stand_23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_24` | `packages/game/src/m_supertank.ts` | `FRAME_stand_24` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_25` | `packages/game/src/m_supertank.ts` | `FRAME_stand_25` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_26` | `packages/game/src/m_supertank.ts` | `FRAME_stand_26` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_27` | `packages/game/src/m_supertank.ts` | `FRAME_stand_27` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_28` | `packages/game/src/m_supertank.ts` | `FRAME_stand_28` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_29` | `packages/game/src/m_supertank.ts` | `FRAME_stand_29` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_30` | `packages/game/src/m_supertank.ts` | `FRAME_stand_30` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_31` | `packages/game/src/m_supertank.ts` | `FRAME_stand_31` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_32` | `packages/game/src/m_supertank.ts` | `FRAME_stand_32` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_33` | `packages/game/src/m_supertank.ts` | `FRAME_stand_33` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_34` | `packages/game/src/m_supertank.ts` | `FRAME_stand_34` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_35` | `packages/game/src/m_supertank.ts` | `FRAME_stand_35` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_36` | `packages/game/src/m_supertank.ts` | `FRAME_stand_36` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_37` | `packages/game/src/m_supertank.ts` | `FRAME_stand_37` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_38` | `packages/game/src/m_supertank.ts` | `FRAME_stand_38` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_39` | `packages/game/src/m_supertank.ts` | `FRAME_stand_39` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_40` | `packages/game/src/m_supertank.ts` | `FRAME_stand_40` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_41` | `packages/game/src/m_supertank.ts` | `FRAME_stand_41` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_42` | `packages/game/src/m_supertank.ts` | `FRAME_stand_42` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_43` | `packages/game/src/m_supertank.ts` | `FRAME_stand_43` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_44` | `packages/game/src/m_supertank.ts` | `FRAME_stand_44` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_45` | `packages/game/src/m_supertank.ts` | `FRAME_stand_45` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_46` | `packages/game/src/m_supertank.ts` | `FRAME_stand_46` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_47` | `packages/game/src/m_supertank.ts` | `FRAME_stand_47` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_48` | `packages/game/src/m_supertank.ts` | `FRAME_stand_48` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_49` | `packages/game/src/m_supertank.ts` | `FRAME_stand_49` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_50` | `packages/game/src/m_supertank.ts` | `FRAME_stand_50` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_51` | `packages/game/src/m_supertank.ts` | `FRAME_stand_51` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_52` | `packages/game/src/m_supertank.ts` | `FRAME_stand_52` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_53` | `packages/game/src/m_supertank.ts` | `FRAME_stand_53` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_54` | `packages/game/src/m_supertank.ts` | `FRAME_stand_54` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_55` | `packages/game/src/m_supertank.ts` | `FRAME_stand_55` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_56` | `packages/game/src/m_supertank.ts` | `FRAME_stand_56` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_57` | `packages/game/src/m_supertank.ts` | `FRAME_stand_57` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_58` | `packages/game/src/m_supertank.ts` | `FRAME_stand_58` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_59` | `packages/game/src/m_supertank.ts` | `FRAME_stand_59` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_60` | `packages/game/src/m_supertank.ts` | `FRAME_stand_60` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.h` | macro | `MODEL_SCALE` | `packages/game/src/m_supertank.ts` | `MODEL_SCALE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_1` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_2` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_3` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_4` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_5` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_6` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_7` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_8` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_9` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_10` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_11` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_12` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_13` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_14` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_15` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_16` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_17` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_18` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_19` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak1_20` | `packages/game/src/m_supertank.ts` | `FRAME_attak1_20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_1` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_2` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_3` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_4` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_5` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_6` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_7` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_8` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_9` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_10` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_11` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_12` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_13` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_14` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_15` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_16` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_17` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_18` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_19` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_20` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_21` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_22` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_23` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_24` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_24` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_25` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_25` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_26` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_26` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak2_27` | `packages/game/src/m_supertank.ts` | `FRAME_attak2_27` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_1` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_2` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_3` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_4` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_5` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_6` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_7` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_8` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_9` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_10` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_11` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_12` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_13` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_14` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_15` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_16` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_17` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_18` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_19` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_20` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_21` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_22` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_23` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_24` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_24` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_25` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_25` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_26` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_26` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak3_27` | `packages/game/src/m_supertank.ts` | `FRAME_attak3_27` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_1` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_2` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_3` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_4` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_5` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_attak4_6` | `packages/game/src/m_supertank.ts` | `FRAME_attak4_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_1` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_2` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_3` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_4` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_5` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_6` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_7` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_8` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_9` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_10` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_11` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_12` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_13` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_14` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_15` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_16` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_17` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_backwd_18` | `packages/game/src/m_supertank.ts` | `FRAME_backwd_18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_1` | `packages/game/src/m_supertank.ts` | `FRAME_death_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_2` | `packages/game/src/m_supertank.ts` | `FRAME_death_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_3` | `packages/game/src/m_supertank.ts` | `FRAME_death_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_4` | `packages/game/src/m_supertank.ts` | `FRAME_death_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_5` | `packages/game/src/m_supertank.ts` | `FRAME_death_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_6` | `packages/game/src/m_supertank.ts` | `FRAME_death_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_7` | `packages/game/src/m_supertank.ts` | `FRAME_death_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_8` | `packages/game/src/m_supertank.ts` | `FRAME_death_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_9` | `packages/game/src/m_supertank.ts` | `FRAME_death_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_10` | `packages/game/src/m_supertank.ts` | `FRAME_death_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_11` | `packages/game/src/m_supertank.ts` | `FRAME_death_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_12` | `packages/game/src/m_supertank.ts` | `FRAME_death_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_13` | `packages/game/src/m_supertank.ts` | `FRAME_death_13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_14` | `packages/game/src/m_supertank.ts` | `FRAME_death_14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_15` | `packages/game/src/m_supertank.ts` | `FRAME_death_15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_16` | `packages/game/src/m_supertank.ts` | `FRAME_death_16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_17` | `packages/game/src/m_supertank.ts` | `FRAME_death_17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_18` | `packages/game/src/m_supertank.ts` | `FRAME_death_18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_19` | `packages/game/src/m_supertank.ts` | `FRAME_death_19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_20` | `packages/game/src/m_supertank.ts` | `FRAME_death_20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_21` | `packages/game/src/m_supertank.ts` | `FRAME_death_21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_22` | `packages/game/src/m_supertank.ts` | `FRAME_death_22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_23` | `packages/game/src/m_supertank.ts` | `FRAME_death_23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_24` | `packages/game/src/m_supertank.ts` | `FRAME_death_24` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_31` | `packages/game/src/m_supertank.ts` | `FRAME_death_31` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_32` | `packages/game/src/m_supertank.ts` | `FRAME_death_32` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_33` | `packages/game/src/m_supertank.ts` | `FRAME_death_33` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_45` | `packages/game/src/m_supertank.ts` | `FRAME_death_45` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_46` | `packages/game/src/m_supertank.ts` | `FRAME_death_46` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_death_47` | `packages/game/src/m_supertank.ts` | `FRAME_death_47` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_1` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_2` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_3` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_4` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_5` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_6` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_7` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_8` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_9` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_10` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_11` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_12` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_13` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_14` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_15` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_16` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_17` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_forwrd_18` | `packages/game/src/m_supertank.ts` | `FRAME_forwrd_18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_1` | `packages/game/src/m_supertank.ts` | `FRAME_left_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_2` | `packages/game/src/m_supertank.ts` | `FRAME_left_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_3` | `packages/game/src/m_supertank.ts` | `FRAME_left_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_4` | `packages/game/src/m_supertank.ts` | `FRAME_left_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_5` | `packages/game/src/m_supertank.ts` | `FRAME_left_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_6` | `packages/game/src/m_supertank.ts` | `FRAME_left_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_7` | `packages/game/src/m_supertank.ts` | `FRAME_left_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_8` | `packages/game/src/m_supertank.ts` | `FRAME_left_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_9` | `packages/game/src/m_supertank.ts` | `FRAME_left_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_10` | `packages/game/src/m_supertank.ts` | `FRAME_left_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_11` | `packages/game/src/m_supertank.ts` | `FRAME_left_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_12` | `packages/game/src/m_supertank.ts` | `FRAME_left_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_13` | `packages/game/src/m_supertank.ts` | `FRAME_left_13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_14` | `packages/game/src/m_supertank.ts` | `FRAME_left_14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_15` | `packages/game/src/m_supertank.ts` | `FRAME_left_15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_16` | `packages/game/src/m_supertank.ts` | `FRAME_left_16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_17` | `packages/game/src/m_supertank.ts` | `FRAME_left_17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_left_18` | `packages/game/src/m_supertank.ts` | `FRAME_left_18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain1_1` | `packages/game/src/m_supertank.ts` | `FRAME_pain1_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain1_2` | `packages/game/src/m_supertank.ts` | `FRAME_pain1_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain1_3` | `packages/game/src/m_supertank.ts` | `FRAME_pain1_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain1_4` | `packages/game/src/m_supertank.ts` | `FRAME_pain1_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain2_5` | `packages/game/src/m_supertank.ts` | `FRAME_pain2_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain2_6` | `packages/game/src/m_supertank.ts` | `FRAME_pain2_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain2_7` | `packages/game/src/m_supertank.ts` | `FRAME_pain2_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain2_8` | `packages/game/src/m_supertank.ts` | `FRAME_pain2_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain3_9` | `packages/game/src/m_supertank.ts` | `FRAME_pain3_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain3_10` | `packages/game/src/m_supertank.ts` | `FRAME_pain3_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain3_11` | `packages/game/src/m_supertank.ts` | `FRAME_pain3_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_pain3_12` | `packages/game/src/m_supertank.ts` | `FRAME_pain3_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_1` | `packages/game/src/m_supertank.ts` | `FRAME_right_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_2` | `packages/game/src/m_supertank.ts` | `FRAME_right_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_3` | `packages/game/src/m_supertank.ts` | `FRAME_right_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_4` | `packages/game/src/m_supertank.ts` | `FRAME_right_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_5` | `packages/game/src/m_supertank.ts` | `FRAME_right_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_6` | `packages/game/src/m_supertank.ts` | `FRAME_right_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_7` | `packages/game/src/m_supertank.ts` | `FRAME_right_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_8` | `packages/game/src/m_supertank.ts` | `FRAME_right_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_9` | `packages/game/src/m_supertank.ts` | `FRAME_right_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_10` | `packages/game/src/m_supertank.ts` | `FRAME_right_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_11` | `packages/game/src/m_supertank.ts` | `FRAME_right_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_12` | `packages/game/src/m_supertank.ts` | `FRAME_right_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_13` | `packages/game/src/m_supertank.ts` | `FRAME_right_13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_14` | `packages/game/src/m_supertank.ts` | `FRAME_right_14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_15` | `packages/game/src/m_supertank.ts` | `FRAME_right_15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_16` | `packages/game/src/m_supertank.ts` | `FRAME_right_16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_17` | `packages/game/src/m_supertank.ts` | `FRAME_right_17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_right_18` | `packages/game/src/m_supertank.ts` | `FRAME_right_18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_1` | `packages/game/src/m_supertank.ts` | `FRAME_stand_1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_2` | `packages/game/src/m_supertank.ts` | `FRAME_stand_2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_3` | `packages/game/src/m_supertank.ts` | `FRAME_stand_3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_4` | `packages/game/src/m_supertank.ts` | `FRAME_stand_4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_5` | `packages/game/src/m_supertank.ts` | `FRAME_stand_5` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_6` | `packages/game/src/m_supertank.ts` | `FRAME_stand_6` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_7` | `packages/game/src/m_supertank.ts` | `FRAME_stand_7` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_8` | `packages/game/src/m_supertank.ts` | `FRAME_stand_8` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_9` | `packages/game/src/m_supertank.ts` | `FRAME_stand_9` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_10` | `packages/game/src/m_supertank.ts` | `FRAME_stand_10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_11` | `packages/game/src/m_supertank.ts` | `FRAME_stand_11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_12` | `packages/game/src/m_supertank.ts` | `FRAME_stand_12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_13` | `packages/game/src/m_supertank.ts` | `FRAME_stand_13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_14` | `packages/game/src/m_supertank.ts` | `FRAME_stand_14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_15` | `packages/game/src/m_supertank.ts` | `FRAME_stand_15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_16` | `packages/game/src/m_supertank.ts` | `FRAME_stand_16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_17` | `packages/game/src/m_supertank.ts` | `FRAME_stand_17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_18` | `packages/game/src/m_supertank.ts` | `FRAME_stand_18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_19` | `packages/game/src/m_supertank.ts` | `FRAME_stand_19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_20` | `packages/game/src/m_supertank.ts` | `FRAME_stand_20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_21` | `packages/game/src/m_supertank.ts` | `FRAME_stand_21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_22` | `packages/game/src/m_supertank.ts` | `FRAME_stand_22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_23` | `packages/game/src/m_supertank.ts` | `FRAME_stand_23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_24` | `packages/game/src/m_supertank.ts` | `FRAME_stand_24` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_25` | `packages/game/src/m_supertank.ts` | `FRAME_stand_25` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_26` | `packages/game/src/m_supertank.ts` | `FRAME_stand_26` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_27` | `packages/game/src/m_supertank.ts` | `FRAME_stand_27` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_28` | `packages/game/src/m_supertank.ts` | `FRAME_stand_28` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_29` | `packages/game/src/m_supertank.ts` | `FRAME_stand_29` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_30` | `packages/game/src/m_supertank.ts` | `FRAME_stand_30` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_31` | `packages/game/src/m_supertank.ts` | `FRAME_stand_31` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_32` | `packages/game/src/m_supertank.ts` | `FRAME_stand_32` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_33` | `packages/game/src/m_supertank.ts` | `FRAME_stand_33` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_34` | `packages/game/src/m_supertank.ts` | `FRAME_stand_34` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_35` | `packages/game/src/m_supertank.ts` | `FRAME_stand_35` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_36` | `packages/game/src/m_supertank.ts` | `FRAME_stand_36` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_37` | `packages/game/src/m_supertank.ts` | `FRAME_stand_37` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_38` | `packages/game/src/m_supertank.ts` | `FRAME_stand_38` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_39` | `packages/game/src/m_supertank.ts` | `FRAME_stand_39` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_40` | `packages/game/src/m_supertank.ts` | `FRAME_stand_40` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_41` | `packages/game/src/m_supertank.ts` | `FRAME_stand_41` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_42` | `packages/game/src/m_supertank.ts` | `FRAME_stand_42` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_43` | `packages/game/src/m_supertank.ts` | `FRAME_stand_43` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_44` | `packages/game/src/m_supertank.ts` | `FRAME_stand_44` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_45` | `packages/game/src/m_supertank.ts` | `FRAME_stand_45` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_46` | `packages/game/src/m_supertank.ts` | `FRAME_stand_46` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_47` | `packages/game/src/m_supertank.ts` | `FRAME_stand_47` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_48` | `packages/game/src/m_supertank.ts` | `FRAME_stand_48` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_49` | `packages/game/src/m_supertank.ts` | `FRAME_stand_49` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_50` | `packages/game/src/m_supertank.ts` | `FRAME_stand_50` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_51` | `packages/game/src/m_supertank.ts` | `FRAME_stand_51` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_52` | `packages/game/src/m_supertank.ts` | `FRAME_stand_52` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_53` | `packages/game/src/m_supertank.ts` | `FRAME_stand_53` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_54` | `packages/game/src/m_supertank.ts` | `FRAME_stand_54` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_55` | `packages/game/src/m_supertank.ts` | `FRAME_stand_55` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_56` | `packages/game/src/m_supertank.ts` | `FRAME_stand_56` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_57` | `packages/game/src/m_supertank.ts` | `FRAME_stand_57` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_58` | `packages/game/src/m_supertank.ts` | `FRAME_stand_58` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_59` | `packages/game/src/m_supertank.ts` | `FRAME_stand_59` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `FRAME_stand_60` | `packages/game/src/m_supertank.ts` | `FRAME_stand_60` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.h` | macro | `MODEL_SCALE` | `packages/game/src/m_supertank.ts` | `MODEL_SCALE` | Valide | A redecouper |  |

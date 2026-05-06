@@ -10,50 +10,21 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/p_view.c` | global | `current_player` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `xyspeed` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `bobmove` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `bobcycle` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `bobfracsin` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `SV_CalcRoll` | `packages/game/src/p_view.ts` | `SV_CalcRoll` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `sign` | `packages/game/src/p_view.ts` | `sign` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `side` | `packages/game/src/p_view.ts` | `side` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `value` | `packages/game/src/g_main.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `side` | `packages/game/src/p_view.ts` | `side` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `P_DamageFeedback` | `packages/game/src/p_view.ts` | `P_DamageFeedback` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `side` | `packages/game/src/p_view.ts` | `side` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `i` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `l` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `SV_CalcViewOffset` | `packages/game/src/p_view.ts` | `SV_CalcViewOffset` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `angles` | `packages/game/src/p_view.ts` | `angles` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `bob` | `packages/game/src/p_view.ts` | `bob` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `ratio` | `packages/game/src/p_view.ts` | `ratio` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `delta` | `packages/game/src/p_view.ts` | `delta` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `v` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `SV_CalcGunOffset` | `packages/game/src/p_view.ts` | `SV_CalcGunOffset` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `i` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `delta` | `packages/game/src/p_view.ts` | `delta` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `SV_AddBlend` | `packages/game/src/p_view.ts` | `SV_AddBlend` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `SV_CalcBlend` | `packages/game/src/p_view.ts` | `SV_CalcBlend` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `contents` | `packages/game/src/p_view.ts` | `contents` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `remaining` | `packages/game/src/p_view.ts` | `remaining` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `P_FallingDamage` | `packages/game/src/p_view.ts` | `P_FallingDamage` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `delta` | `packages/game/src/p_view.ts` | `delta` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `damage` | `packages/game/src/p_view.ts` | `damage` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `P_WorldEffects` | `packages/game/src/p_view.ts` | `P_WorldEffects` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `breather` | `packages/game/src/p_view.ts` | `breather` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `envirosuit` | `packages/game/src/p_view.ts` | `envirosuit` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `G_SetClientEffects` | `packages/game/src/p_view.ts` | `G_SetClientEffects` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `pa_type` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `remaining` | `packages/game/src/p_view.ts` | `remaining` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `G_SetClientEvent` | `packages/game/src/p_view.ts` | `G_SetClientEvent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `G_SetClientSound` | `packages/game/src/p_view.ts` | `G_SetClientSound` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `weap` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `weap` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `G_SetClientFrame` | `packages/game/src/p_view.ts` | `G_SetClientFrame` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `duck` | `packages/game/src/p_view.ts` | `duck` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `run` | `packages/game/src/p_view.ts` | `run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | function | `ClientEndServerFrame` | `packages/game/src/p_view.ts` | `ClientEndServerFrame` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `bobtime` | `packages/game/src/p_view.ts` | `bobtime` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `i` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_view.c` | global | `bobmove` | `packages/game/src/p_view.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | global | `current_player` | `packages/game/src/p_view.ts` | parameter `ent` / `player` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | global | `xyspeed` | `packages/game/src/p_view.ts` | `PlayerViewFrameState.xyspeed` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | global | `bobmove` | `packages/game/src/p_view.ts` | `PlayerViewFrameState.bobmove` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | global | `bobcycle` | `packages/game/src/p_view.ts` | `PlayerViewFrameState.bobcycle` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | global | `bobfracsin` | `packages/game/src/p_view.ts` | `PlayerViewFrameState.bobfracsin` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `SV_CalcRoll` | `packages/game/src/p_view.ts` | `SV_CalcRoll` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `P_DamageFeedback` | `packages/game/src/p_view.ts` | `P_DamageFeedback` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `SV_CalcViewOffset` | `packages/game/src/p_view.ts` | `SV_CalcViewOffset` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `SV_CalcGunOffset` | `packages/game/src/p_view.ts` | `SV_CalcGunOffset` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `SV_AddBlend` | `packages/game/src/p_view.ts` | `SV_AddBlend` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `SV_CalcBlend` | `packages/game/src/p_view.ts` | `SV_CalcBlend` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `P_FallingDamage` | `packages/game/src/p_view.ts` | `P_FallingDamage` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `P_WorldEffects` | `packages/game/src/p_view.ts` | `P_WorldEffects` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `G_SetClientEffects` | `packages/game/src/p_view.ts` | `G_SetClientEffects` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `G_SetClientEvent` | `packages/game/src/p_view.ts` | `G_SetClientEvent` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `G_SetClientSound` | `packages/game/src/p_view.ts` | `G_SetClientSound` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `G_SetClientFrame` | `packages/game/src/p_view.ts` | `G_SetClientFrame` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_view.c` | function | `ClientEndServerFrame` | `packages/game/src/p_view.ts` | `ClientEndServerFrame` | Valide | A redecouper |  |

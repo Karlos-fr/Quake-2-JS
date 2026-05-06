@@ -816,8 +816,6 @@ export function SelectRandomDeathmatchSpawnPoint(runtime: GameRuntime): GameEnti
     count += 1;
     const range = PlayersRangeFromSpot(spot, runtime);
     if (range < range1) {
-      range2 = range1;
-      spot2 = spot1;
       range1 = range;
       spot1 = spot;
     } else if (range < range2) {

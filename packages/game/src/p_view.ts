@@ -322,7 +322,7 @@ export function P_DamageFeedback(
     client.ps.stats[STAT_FLASHES] |= 1;
   }
   if (
-    (client.damage_armor !== 0 || client.damage_parmor !== 0) &&
+    client.damage_armor !== 0 &&
     (player.flags & FL_GODMODE) === 0 &&
     client.invincible_framenum <= runtime.framenum
   ) {
@@ -366,7 +366,7 @@ export function P_DamageFeedback(
   if (runtime.time > player.pain_debounce_time && (player.flags & FL_GODMODE) === 0 && client.invincible_framenum <= runtime.framenum) {
     player.pain_debounce_time = runtime.time + 0.7;
     const healthBucket = player.health < 25 ? 25 : player.health < 50 ? 50 : player.health < 75 ? 75 : 100;
-    const variant = 1 + (painAnimationCycle & 1);
+    const variant = 1 + randomInt(2);
     emitGameSound(runtime, player, `*pain${healthBucket}_${variant}.wav`);
   }
 
@@ -572,7 +572,7 @@ export function P_WorldEffects(ent: GameEntity, runtime: GameRuntime): void {
 
         if (ent.health <= ent.dmg) {
           emitGameSound(runtime, ent, "player/drown1.wav");
-        } else if ((runtime.framenum & 1) !== 0) {
+        } else if ((randomInt(2) & 1) !== 0) {
           emitGameSound(runtime, ent, "*gurp1.wav");
         } else {
           emitGameSound(runtime, ent, "*gurp2.wav");
@@ -590,7 +590,7 @@ export function P_WorldEffects(ent: GameEntity, runtime: GameRuntime): void {
   if (waterlevel !== 0 && (ent.watertype & (CONTENTS_LAVA | CONTENTS_SLIME)) !== 0) {
     if ((ent.watertype & CONTENTS_LAVA) !== 0) {
       if (ent.health > 0 && ent.pain_debounce_time <= runtime.time && client.invincible_framenum < runtime.framenum) {
-        emitGameSound(runtime, ent, (runtime.framenum & 1) !== 0 ? "player/burn1.wav" : "player/burn2.wav");
+        emitGameSound(runtime, ent, (randomInt(2) & 1) !== 0 ? "player/burn1.wav" : "player/burn2.wav");
         ent.pain_debounce_time = runtime.time + 1;
       }
 
@@ -1113,4 +1113,8 @@ function clamp(value: number, min: number, max: number): number {
     return max;
   }
   return value;
+}
+
+function randomInt(maxExclusive: number): number {
+  return Math.trunc(Math.random() * maxExclusive);
 }

@@ -24,7 +24,9 @@ import {
   STAT_SPECTATOR
 } from "../../packages/qcommon/src/index.js";
 import { FindItem } from "../../packages/game/src/g_items.js";
-import { FL_POWER_ARMOR, ITEM_INDEX } from "../../packages/game/src/g_local.js";
+import { type game_import_t } from "../../packages/game/src/game.js";
+import { ClientCommand, createGameMainContext } from "../../packages/game/src/g_main.js";
+import { FL_POWER_ARMOR, ITEM_INDEX, svc_layout } from "../../packages/game/src/g_local.js";
 import {
   BeginIntermission,
   Cmd_Help_f,
@@ -204,6 +206,26 @@ assert.deepEqual(runtime.entities[1]!.client!.ps.pmove.origin, [2048, 1024, 512]
 assert.deepEqual(runtime.entities[1]!.client!.ps.viewangles, [15, 180, 5], "BeginIntermission must move clients to intermission angles");
 if (keyItem) {
   assert.equal(runtime.entities[1]!.client!.pers.inventory[keyItem.index], 0, "BeginIntermission coop key strip mismatch");
+}
+
+{
+  const emitted: Array<{ kind: "byte"; value: number } | { kind: "string"; value: string } | { kind: "unicast"; ent: number; reliable: boolean }> = [];
+  const imports = {
+    argv: () => "score",
+    argc: () => 1,
+    args: () => "",
+    WriteByte: (value: number) => emitted.push({ kind: "byte", value }),
+    WriteString: (value: string) => emitted.push({ kind: "string", value }),
+    unicast: (ent, reliable) => emitted.push({ kind: "unicast", ent: ent.index, reliable }),
+    cprintf: () => undefined
+  } as Partial<game_import_t> as game_import_t;
+  const commandContext = createGameMainContext(imports, { runtime });
+  runtime.deathmatch = true;
+  runtime.entities[1]!.client!.showscores = false;
+  ClientCommand(commandContext, runtime.entities[1]!);
+  assert.deepEqual(emitted[0], { kind: "byte", value: svc_layout }, "ClientCommand score must emit svc_layout through the default HUD hook");
+  assert.ok(emitted.some((event) => event.kind === "string" && event.value.includes("client")), "ClientCommand score must write the scoreboard layout string");
+  assert.deepEqual(emitted.at(-1), { kind: "unicast", ent: 1, reliable: true }, "ClientCommand score must unicast the HUD layout reliably");
 }
 
 console.log("quake2-p-hud: ok");

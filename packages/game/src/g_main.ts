@@ -42,6 +42,7 @@ import {
   FRAMETIME,
   GAMEVERSION,
   SVF_MONSTER,
+  svc_layout,
   svc_muzzleflash,
   svc_muzzleflash2,
   svc_temp_entity,
@@ -664,7 +665,14 @@ export function createGameMainContext(imports: game_import_t, options: GameMainC
     level: createLevelLocals(),
     serverCommands: createGameServerCommandState(),
     cvars: createGameMainCvars(),
-    hooks: options.hooks ?? {}
+    hooks: {
+      emitLayout: (ent, layout) => {
+        imports.WriteByte(svc_layout);
+        imports.WriteString(layout);
+        imports.unicast(ent, true);
+      },
+      ...options.hooks
+    }
   };
 }
 

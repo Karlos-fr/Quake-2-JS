@@ -38,6 +38,7 @@ import {
   STAT_PICKUP_STRING,
   STAT_SELECTED_ICON,
   STAT_SELECTED_ITEM,
+  STAT_FLASHES,
   YAW,
   createEntityState,
   pmtype_t,
@@ -350,6 +351,8 @@ function syncLocalWeaponPlayerState(runtime: ClientRuntime, gameplayPlayer: Game
   runtime.cl.frame.playerstate.gunangles = [...gameplayClient.ps.gunangles];
   runtime.cl.frame.playerstate.kick_angles = [...gameplayClient.ps.kick_angles];
   runtime.cl.frame.playerstate.viewoffset = [...gameplayClient.ps.viewoffset];
+  runtime.cl.frame.playerstate.blend = [...gameplayClient.ps.blend];
+  runtime.cl.frame.playerstate.rdflags = gameplayClient.ps.rdflags;
 
   const selectedWeapon = gameplayClient.pers.weapon;
   const selectedAmmo = GetAmmoItemForWeapon(selectedWeapon);
@@ -360,6 +363,7 @@ function syncLocalWeaponPlayerState(runtime: ClientRuntime, gameplayPlayer: Game
   runtime.cl.frame.playerstate.stats[STAT_SELECTED_ICON] = selectedWeapon?.icon ? findClientImageIndex(runtime, selectedWeapon.icon) : 0;
   runtime.cl.frame.playerstate.stats[STAT_AMMO] = selectedAmmo ? gameplayClient.pers.inventory[selectedAmmo.index] ?? 0 : 0;
   runtime.cl.frame.playerstate.stats[STAT_AMMO_ICON] = selectedAmmo?.icon ? findClientImageIndex(runtime, selectedAmmo.icon) : 0;
+  runtime.cl.frame.playerstate.stats[STAT_FLASHES] = gameplayClient.ps.stats[STAT_FLASHES] ?? 0;
   runtime.cl.frame.playerstate.stats[STAT_PICKUP_ICON] = gameplayClient.ps.stats[STAT_PICKUP_ICON] ?? 0;
   runtime.cl.frame.playerstate.stats[STAT_PICKUP_STRING] = gameplayClient.ps.stats[STAT_PICKUP_STRING] ?? 0;
 }
