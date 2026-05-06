@@ -89,6 +89,23 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout du commentaire d'en-tete de `boss2_walk`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour `boss2_frames_stand`, `boss2_move_stand`, `monsterinfo.walk`, `boss2_move_walk` et le wrap de frame stand par `M_MoveFrame`.
 
+- Lot traite: `boss2_frames_death`, `boss2_move_death`, `boss2_dead` et `boss2_die`.
+- Verdict: Valide.
+- Comparaison C/TS: `boss2_frames_death` contient 49 frames `ai_move, 0`, avec `BossExplode` uniquement sur la derniere frame; `boss2_move_death` conserve `FRAME_death2` -> `FRAME_death50`, la table de mort et l'endfunc `boss2_dead`. `boss2_dead` conserve la bbox finale `[-56,-56,0]` / `[56,56,80]`, `MOVETYPE_TOSS`, `SVF_DEADMONSTER`, `nextthink = 0` et le relink. `boss2_die` emet `sound_death`, pose `DEAD_DEAD`, `DAMAGE_NO`, `count = 0` et selectionne `boss2_move_death`; le bloc C `#if 0` reste inactif comme dans la source compilee.
+- Commentaires d'en-tete: commentaires de fonction ajoutes pour `boss2_dead` et `boss2_die` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement. Les tables/moves declaratifs ne demandent pas de commentaire de fonction.
+- Runtime: integre. `SP_monster_boss2` assigne `self.die = boss2_die`; les degats runtime peuvent atteindre `self.die` via `T_Damage`. `M_MoveFrame`, appele par `monster_think` depuis `G_RunFrame`, consomme `boss2_move_death`, execute `BossExplode` sur `FRAME_death50`, puis appelle `boss2_dead` comme endfunc au passage sur la frame finale.
+- apps/web: integre. `apps/web` ne remplace pas ce flux: le host full-game/local consomme les snapshots et sons produits par le runtime porte.
+- renderer-three: integre. Le lot produit des sorties visibles: modele boss2, frames de mort `s.frame`, et temp entities d'explosion via `BossExplode`; les frames passent par snapshots/refresh entities vers `renderer-three`, et les temp entities sont consommees par le flux client/renderer deja verifie.
+- Tests lances:
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees: ajout des commentaires d'en-tete de `boss2_dead` et `boss2_die`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour la table/move de mort, le relink de corpse, `BossExplode` et l'endfunc `boss2_dead` via `M_MoveFrame`.
+
 ## Prochain lot recommande
 
-- Valider `boss2_dead` seul, avec bounding box finale, `MOVETYPE_TOSS`, `SVF_DEADMONSTER`, `nextthink = 0`, branchement endfunc de `boss2_move_death`, et sortie visible renderer associee aux frames de mort.
+- Valider le bloc attaque machinegun: `boss2_attack`, local `range`, `boss2_attack_mg`, `boss2_reattack_mg`, puis les tables/moves `boss2_frames_attack_pre_mg`, `boss2_move_attack_pre_mg`, `boss2_frames_attack_mg`, `boss2_move_attack_mg`, `boss2_frames_attack_post_mg`, `boss2_move_attack_post_mg` si le lot reste raisonnable.

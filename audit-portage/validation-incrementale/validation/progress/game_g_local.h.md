@@ -1513,7 +1513,24 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-float` OK; `npm run verify:m-float:header` OK; `npm run verify:m-float:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une petite famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_flyer.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/m_flyer.ts` pour `flyer_check_melee`; verification des usages immediats `flyer_pain`/`randomInt`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `m_flyer.ts` est harmonise pour l'usage macro C `random()`, aucun consommateur `crandom()` n'existe dans `m_flyer.c`/`m_flyer.ts`, mais d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_flyer.c` consomme `random()` dans `flyer_check_melee` (`<= 0.8`); les appels `random()` commentes de `flyer_loop_melee`/`flyer_attack` ne sont pas actifs, et `flyer_pain` utilise `rand() % 3`, hors macro.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_flyer.ts`: `flyer_check_melee` consomme maintenant le helper proprietaire `random`; le helper local `randomInt` reste limite a `flyer_pain` pour porter `rand() % 3`.
+- Runtime: integration attendue et branchee via `SP_monster_flyer`, `g_spawn.ts`, callbacks `melee`/`flyer_check_melee`, `monster_think`/`M_MoveFrame`, `G_RunEntity` et `G_RunFrame`; le tirage affecte les frames melee visibles et la poursuite/fin de boucle.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres, attaques et ordre de rendu; aucune logique parallele web `m_flyer`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Le tirage `m_flyer.ts` affecte sorties visibles/audibles via modele flyer, frames melee, sons slash/blades, attaque et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaire d'en-tete de `flyer_check_melee` mis a jour avec note de portage vers `g_local.random`; `flyer_pain` verifie comme usage `rand() % 3` hors macro.
+- Corrections appliquees:
+  - `packages/game/src/m_flyer.ts`: import de `random` depuis `g_local.ts`, remplacement de l'usage direct `Math.random()` correspondant au macro C `random()`, note de portage ajoutee.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-flyer` OK; `npm run verify:m-flyer:header` OK; `npm run verify:m-flyer:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une petite famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_chick.ts` ou `m_gladiator.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

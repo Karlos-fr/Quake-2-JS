@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: fonction `actor_pain` et temporaires locaux rattaches `n`/`name`
-- Verdict: `Valide` pour les lignes `actor_pain`, `n` et `name`
+- Dernier lot traite: bloc attaque `actorMachineGun`, `actor_fire`, `actor_frames_attack`, `actor_move_attack`, `actor_attack` et temporaire local `n`
+- Verdict: `Valide` pour les lignes du bloc attaque
 
 ## Checklist appliquee au lot
 
@@ -105,6 +105,16 @@
 - renderer-three: `actor_pain` produit une sortie visible indirecte via `s.skinnum`, `ideal_yaw` et `monsterinfo.currentmove` qui affecte les frames/modeles d'un `misc_actor`; le flux attendu est snapshots client, refresh entities, puis consommation MD2 frame/skin par `renderer-three`. Couvert par `verify:full-game:three-renderer`; aucun manque renderer ouvert.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts` pour skin, debounce, les trois branches `n`, flipoff, taunt, yaw et chat `name`.
 
+## Session 2026-05-06 - bloc attaque actorMachineGun
+
+- Identification: `actorMachineGun`, `actor_fire`, `actor_frames_attack` global/table/declarative, `actor_move_attack`, `actor_attack` et le local `n` de `actor_attack` sont proprietaires de `game/m_actor.c`, cibles dans `packages/game/src/m_actor.ts`. Aucun doublon TS concurrent trouve; `MZ2_ACTOR_MACHINEGUN_1` reste une constante rattachee au meme fichier TS.
+- Comparaison C vs TS: `actorMachineGun` conserve `AngleVectors`, `G_ProjectSource` avec `monster_flash_offset[MZ2_ACTOR_MACHINEGUN_1]`, les branches ennemi vivant (`origin - 0.2 * velocity + viewheight`), ennemi mort (`absmin + size[2]/2`) et sans ennemi, puis `monster_fire_bullet` avec `damage=3`, `kick=4`, spreads par defaut et flash `63`. `actor_fire` conserve le tir et la bascule `AI_HOLD_FRAME` selon `level.time/runtime.time >= pausetime`. Les 4 frames d'attaque conservent `ai_charge`, distances `[-2, -2, 3, 2]`, `actor_fire` uniquement sur la premiere frame, `FRAME_attak01` a `FRAME_attak04`, et `actor_run` en endfunc. `actor_attack` conserve `currentmove = actor_move_attack` et la duree `(rand() & 15) + 10` frames via helper RNG local.
+- Commentaires d'en-tete: commentaires de `actorMachineGun`, `actor_fire` et `actor_attack` verifies; `actor_attack` a ete corrige de `Fidelity level: Strict` vers `Close` avec note de portage sur l'adaptation RNG. Pas de commentaire de fonction requis pour la table declarative, le commentaire de fichier documente l'ownership.
+- Runtime: branchement attendu et verifie depuis `SP_misc_actor` (`monsterinfo.attack = actor_attack`) puis `M_MoveFrame` sur `actor_move_attack`, qui appelle `actor_fire` et `actorMachineGun`; `monster_fire_bullet` emet le muzzleflash runtime `MZ2_ACTOR_MACHINEGUN_1` drenable par `G_RunFrame`/client bridges.
+- apps/web: pas de logique gameplay parallele attendue; le navigateur doit consommer les sorties host/local issues du runtime. Le flux local-gameplay-sync consomme `monsterMuzzleFlashEvents`, les transforme en dlight/particules et en son `infantry/infatck1.wav`; couvert par `verify:local-gameplay-sync`, `verify:web-render-order` et `verify:full-game:server-host`.
+- renderer-three: le bloc produit des frames modele visibles (`FRAME_attak01` a `FRAME_attak04`) et une sortie muzzleflash visible/audible (dlight, particules, smoke/flash, son client). Consommation attendue via snapshots/refresh entities et `ClientRefreshFrame` vers `renderer-three`; couverte par `verify:full-game:three-renderer` et le test local-gameplay-sync. Aucun manque renderer ouvert.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts` pour la table d'attaque, les branches de `actorMachineGun`, `actor_fire`, les bornes de `actor_attack`, et le chemin `M_MoveFrame -> actor_fire -> muzzleflash`; correction du commentaire `actor_attack` dans `packages/game/src/m_actor.ts`.
+
 ## Tests de reference
 
 - `npm run verify:m-actor`
@@ -117,7 +127,7 @@
 
 ## Prochain lot recommande
 
-Valider `actorMachineGun` dans un lot separe; garder les sorties muzzleflash/son et le branchement renderer local-gameplay-sync dans le perimetre du lot.
+Valider le bloc mort `actor_dead`, `actor_frames_death1`/`actor_move_death1`, `actor_frames_death2`/`actor_move_death2`, `actor_die` et le local `n`, avec bbox finale, gib/death branches, frames visibles et sortie renderer.
 
 ## Blocages / decisions
 

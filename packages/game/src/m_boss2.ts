@@ -512,6 +512,15 @@ export function boss2_pain(
   }
 }
 
+/**
+ * Original name: boss2_dead
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Finalizes the boss2 corpse bounds, toss movement, dead-monster flag and relink state.
+ */
 export function boss2_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -56, -56, 0);
   setVec3(self.maxs, 56, 56, 80);
@@ -521,6 +530,15 @@ export function boss2_dead(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: boss2_die
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the death sound, locks the boss2 into dead/no-damage state and starts the death move.
+ */
 export function boss2_die(
   self: GameEntity,
   _inflictor: GameEntity | null,

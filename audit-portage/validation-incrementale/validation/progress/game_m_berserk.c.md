@@ -135,6 +135,26 @@
 - Corrections appliquees:
   - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant le branchement `monsterinfo.walk` et son atteignabilite depuis `G_RunFrame` via `ai_stand`.
 
+## Session 2026-05-06 - bloc run1 declaratif et `berserk_run`
+
+- Lot traite: `berserk_frames_run1` global/table/declarative, `berserk_move_run1` et `berserk_run`.
+- Verdict: Valide.
+- Comparaison C/TS: la table run1 conserve les 6 entrees `ai_run` et distances `21, 11, 21, 25, 18, 19`; `berserk_move_run1` conserve `FRAME_run1`, `FRAME_run6`, la table run1 et aucun `endfunc`; `berserk_run` conserve la branche `AI_STAND_GROUND` vers `berserk_move_stand` et la branche normale vers `berserk_move_run1`.
+- Commentaires d'en-tete: commentaire TS de `berserk_run` verifie avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement; table/global declaratifs sans commentaire de fonction requis.
+- Runtime: integre. `SP_monster_berserk` assigne `monsterinfo.run = berserk_run`; le test ajoute prouve le callback `monsterinfo.run`, les deux branches `AI_STAND_GROUND`/run, l'enregistrement `findGameSaveMove("berserk_move_run1")`, et la boucle visible `FRAME_run6` -> `FRAME_run1` via `G_RunFrame`/`monster_think`.
+- apps/web: integre. Le navigateur declenche ce flux via le serveur local porte (`SV_Frame`/`G_RunFrame`) et consomme les snapshots/runtime; aucune logique parallele berserk constatee.
+- renderer-three: integre. Le lot produit des frames MD2 visibles (`s.frame`) pour le modele berserk; les snapshots client conservent `frame/oldframe/backlerp` et `packages/renderer-three` les consomme via `refresh-entity-sync` / `applyMd2AliasFrameLerp`.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant le flux runtime du move run1, le branchement `monsterinfo.run`, la branche `AI_STAND_GROUND` et l'enregistrement de sauvegarde.
+
 ## Prochain lot recommande
 
-- Valider `berserk_frames_run1` global/table/declarative et `berserk_move_run1`; garder `berserk_run` pour une session separee si le lot devient trop large.
+- Valider le bloc `berserk_attack_spike` / `berserk_swing` / `berserk_frames_attack_spike` / `berserk_move_attack_spike`, en couvrant le son, `fire_hit`, l'endfunc `berserk_run`, les callbacks de frames et les sorties visibles/audibles runtime.

@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/client/cl_fx.c
 
 - Statut: En cours
-- Dernier lot traite: `BEAMLENGTH` et `CL_FlyParticles` avec les locaux `i`, `angle`, `forward`, `dist` et `ltime`; commentaire du helper runtime TS corrige en `Category: Adapter`.
-- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; `CL_BlasterTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_QuadTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_FlagTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_DiminishingTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `orgscale` et `velscale`; `MakeNormalVectors` avec le local `d`; `CL_RocketTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_RailTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `i`, `dir` et `clr`; `CL_IonripperTrail` avec locaux `len`, `j`, `dec` et `left`; `CL_BubbleTrail` avec locaux `move`, `vec`, `len` et `dec`; `CL_FlyParticles` avec locaux `i`, `angle`, `forward`, `dist` et `ltime`; variables locales generees marquees non applicables.
+- Dernier lot traite: `CL_FlyEffect` avec les locaux `n`, `count` et `starttime`, puis `CL_BfgParticles` avec le second `BEAMLENGTH` et les locaux immediats `i`, `angle`, `forward`, `dist`, `v` et `ltime`; branchement runtime BFG corrige pour `EF_BFG | EF_ANIM_ALLFAST`.
+- Dernier lot valide: `CL_ParseMuzzleFlash2` avec `ent`, `origin`, `flash_number` et `soundname`; `CL_ParseMuzzleFlash` avec temporaires `silenced`, `volume`, `soundname`; `cl_dlights`, `CL_ClearDlights`, `CL_AllocDlight`, `CL_NewDlight`, `CL_RunDLights`, `CL_AddDLights`; `cl_numparticles`, `CL_ClearParticles`; `CL_ParticleEffect` avec le temporaire local `d`; `CL_ParticleEffect2` avec le temporaire local `d`; `CL_ParticleEffect3` avec le temporaire local `d`; `CL_TeleporterParticles`; `CL_ExplosionParticles`; `CL_BigTeleportParticles` avec locaux `i` et `colortable`; `CL_BlasterParticles` avec locaux `d` et `count`; `CL_BlasterTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_QuadTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_FlagTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_DiminishingTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `orgscale` et `velscale`; `MakeNormalVectors` avec le local `d`; `CL_RocketTrail` avec locaux `move`, `vec`, `len`, `j` et `dec`; `CL_RailTrail` avec locaux `move`, `vec`, `len`, `j`, `dec`, `i`, `dir` et `clr`; `CL_IonripperTrail` avec locaux `len`, `j`, `dec` et `left`; `CL_BubbleTrail` avec locaux `move`, `vec`, `len` et `dec`; `CL_FlyParticles` avec locaux `i`, `angle`, `forward`, `dist` et `ltime`; `CL_FlyEffect` avec locaux `n`, `count`, `starttime`; `CL_BfgParticles` avec le second `BEAMLENGTH` et locaux `i`, `angle`, `forward`, `dist`, `v`, `ltime`; variables locales generees marquees non applicables.
 - Tests de reference lances:
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
@@ -16,6 +16,11 @@
   - `npm run verify:full-game:three-renderer`
   - `npm run verify:cl-fx`
   - `npm run verify:particle-sync`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+  - `npm run verify:cl-fx`
+  - `npm run verify:particle-sync`
+  - `npm run verify:web-render-order`
   - `npm run verify:full-game:three-renderer`
   - `npm run typecheck`
   - `npm run verify:cl-fx`
@@ -98,6 +103,13 @@
   - `CL_FlyParticles` est atteignable depuis le runtime client normal via `CL_BuildRefreshFrame` -> `CL_BuildPacketEntitySnapshots` -> `CL_ExecutePacketEntityEffects` pour les entites `EF_FLIES`, avec `CL_FlyEffectRuntime` qui applique le ramp-up/ramp-down puis appelle `CL_FlyParticles`.
   - `apps/web` doit consommer ce flux parce qu'il produit des particules visibles autour des entites mortes/organics: les sessions full-game construisent `ClientRefreshFrame` depuis le runtime client, puis la boucle web consomme `source.refreshFrame.particles`; aucune logique fly parallele n'a ete detectee dans `apps/web`.
   - `renderer-three` doit consommer la sortie visible particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`, couvert par `npm run verify:particle-sync` et `npm run verify:full-game:three-renderer`.
+  - `CL_FlyEffect` conserve le flux C de ramp-up/ramp-down: initialise `fly_stoptime = cl.time + 60000` quand expire, calcule `starttime`, tronque le `count` via `Math.floor`, conserve le plateau `162`, puis delegue a `CL_FlyParticles`.
+  - Les temporaires C `n`, `count` et `starttime` sont des artefacts locaux portes dans le corps TS; aucune entite TS publique separee n'est attendue.
+  - `CL_BfgParticles` conserve le flux C: reutilisation de la table partagee `avelocities`, boucle sur `NUMVERTEXNORMALS`, `ltime = cl.time / 1000.0`, `BEAMLENGTH = 16`, origine `ent.origin + bytedirs[i] * sin(ltime+i)*64 + forward*16`, vitesse/acceleration nulles, couleur `floor(0xd0 + VectorLength(v)/90*7)`, alpha `1.0 - VectorLength(v)/90` et `alphavel = -100`.
+  - Les temporaires C `i`, `angle`, `forward`, `dist`, `v` et `ltime` de `CL_BfgParticles` sont portes dans `spawnBfgParticles`; le second `BEAMLENGTH` est porte par `FLY_BEAM_LENGTH`.
+  - `CL_BfgParticles` est maintenant atteignable depuis le runtime client normal via `CL_BuildRefreshFrame` -> `CL_BuildPacketEntitySnapshots` -> `CL_ExecutePacketEntityEffects` pour `EF_BFG | EF_ANIM_ALLFAST`; la dlight BFG associee conserve le rayon C `200` dans ce cas.
+  - `apps/web` doit consommer ce flux parce qu'il produit des particules BFG et une dlight visibles: le navigateur consomme `ClientRefreshFrame.particles`/`lights` issus du runtime client, sans logique BFG parallele detectee dans `apps/web`.
+  - `renderer-three` doit consommer les sorties visibles de `CL_BfgParticles`: particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync` / `R_DrawParticles`, dlight via `ClientRefreshFrame.lights` -> `createThreeDlightSync`, et entite translucide EF_BFG via snapshots refresh.
   - `CL_RailTrail` conserve le flux C en deux passes: spirale core avec `MakeNormalVectors`, `clr = 0x74`, couleur `clr + (rand&7)`, alpha `1.0`, `alphavel = -1/(1+frand()*0.2)`, origine `move + dir*3`, vitesse `dir*6`, puis spark trail avec `dec = 0.75`, couleur `rand&15`, origine `move + crand()*3`, vitesse `crand()*3` et acceleration nulle.
   - Les temporaires C `move`, `vec`, `len`, `j`, `dec`, `i`, `dir` et `clr` sont des artefacts locaux: ils sont portes dans `spawnRailTrailParticles` et l'iteration TS; aucune entite TS publique separee n'est attendue.
   - `CL_RailTrail` est atteignable depuis le runtime client normal via `CL_ParseTEnt` / `CL_ParseServerMessage` pour `TE_RAILTRAIL`, puis `CL_ExecuteTempEntityEffects`.
@@ -204,5 +216,5 @@
   - Les effets visibles de `CL_ParseMuzzleFlash2` sont attendus dans le runtime navigateur: dlight, `CL_ParticleEffect` et `CL_SmokeAndFlash` sont appliques par `apps/web/src/full-game.ts`; le flux local `packages/client/src/local-gameplay-sync.ts` applique maintenant aussi `particle-effect` et `smoke-and-flash`.
   - `renderer-three` consomme les dlights via `ClientRefreshFrame.lights` -> `createThreeDlightSync` / `R_RenderDlights` et les particules via `ClientRefreshFrame.particles` -> `createThreeParticleSync`; les sons restent hors renderer.
   - `npm run verify:local-gameplay-sync` n'a pas pu etre utilise comme preuve finale pendant une session precedente: blocage hors lot avant execution du test, `ReferenceError: FRAME_attack1 is not defined` dans `packages/game/src/g_save.ts`.
-- Blocages: aucun blocage restant pour `CL_FlyParticles`.
-- Prochain lot recommande: `CL_FlyEffect` avec les locaux `n`, `count` et `starttime`; garder `CL_BfgParticles` et le second `BEAMLENGTH` pour une session separee.
+- Blocages: aucun blocage restant pour `CL_FlyEffect` / `CL_BfgParticles`.
+- Prochain lot recommande: `CL_TrapParticles` avec les locaux `move`, `vec`, `len`, `j`, `dec`, `vel`, `dir` et `org`; garder `CL_BFGExplosionParticles` et `CL_TeleportParticles` pour des sessions separees si le lot devient trop large.

@@ -12,10 +12,12 @@
 
 import { strict as assert } from "node:assert";
 import {
+  AI_HOLD_FRAME,
   AI_GOOD_GUY,
   AI_BRUTAL,
   AI_STAND_GROUND,
   ED_CallSpawn,
+  M_MoveFrame,
   MOVETYPE_STEP,
   SOLID_BBOX,
   SOLID_TRIGGER,
@@ -30,6 +32,7 @@ import {
   createGameRuntimeFromBspEntities,
   drainGameCprintfEvents,
   drainMonsterMuzzleFlashEvents,
+  ai_charge,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
 
@@ -144,6 +147,18 @@ assert.equal(actorFrames.actor_move_taunt.firstframe, actorFrames.FRAME_taunt01,
 assert.equal(actorFrames.actor_move_taunt.lastframe, actorFrames.FRAME_taunt17, "actor_move_taunt lastframe");
 assert.equal(actorFrames.actor_move_taunt.frame, actorFrames.actor_frames_taunt, "actor_move_taunt frame table");
 assert.equal(actorFrames.actor_move_taunt.endfunc, actorFrames.actor_run, "actor_move_taunt endfunc");
+
+const expectedAttackDistances = [-2, -2, 3, 2];
+assert.equal(actorFrames.actor_frames_attack.length, expectedAttackDistances.length, "actor_frames_attack has 4 C frames");
+for (const [index, frame] of actorFrames.actor_frames_attack.entries()) {
+  assert.equal(frame.aifunc, ai_charge, `actor_frames_attack[${index}] uses ai_charge`);
+  assert.equal(frame.dist, expectedAttackDistances[index], `actor_frames_attack[${index}] distance`);
+  assert.equal(frame.thinkfunc, index === 0 ? actorFrames.actor_fire : undefined, `actor_frames_attack[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_attack.firstframe, actorFrames.FRAME_attak01, "actor_move_attack firstframe");
+assert.equal(actorFrames.actor_move_attack.lastframe, actorFrames.FRAME_attak04, "actor_move_attack lastframe");
+assert.equal(actorFrames.actor_move_attack.frame, actorFrames.actor_frames_attack, "actor_move_attack frame table");
+assert.equal(actorFrames.actor_move_attack.endfunc, actorFrames.actor_run, "actor_move_attack endfunc");
 
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";
@@ -311,6 +326,72 @@ assert.equal(flashes.length, 1, "actor machinegun queues one monster muzzleflash
 assert.equal(flashes[0].entityIndex, actor.index, "actor muzzleflash source entity");
 assert.equal(flashes[0].flashNumber, actorFrames.MZ2_ACTOR_MACHINEGUN_1, "actor muzzleflash id");
 
+actor.enemy = player;
+actor.s.angles = [0, 90, 0];
+actor.s.origin = [48, 64, 24];
+player.health = 100;
+player.s.origin = [128, 64, 32];
+player.velocity = [10, 0, 0];
+player.viewheight = 22;
+actorFrames.actorMachineGun(actor, runtime);
+const aimedFlash = drainMonsterMuzzleFlashEvents(runtime);
+assert.equal(aimedFlash.length, 1, "actorMachineGun live enemy branch emits one muzzleflash");
+assert.equal(aimedFlash[0].flashNumber, actorFrames.MZ2_ACTOR_MACHINEGUN_1, "actorMachineGun live enemy flash id");
+
+player.health = 0;
+player.absmin = [120, 56, 16];
+player.size = [16, 16, 48];
+actorFrames.actorMachineGun(actor, runtime);
+const deadEnemyFlash = drainMonsterMuzzleFlashEvents(runtime);
+assert.equal(deadEnemyFlash.length, 1, "actorMachineGun dead enemy branch emits one muzzleflash");
+
+actor.enemy = null;
+runtime.time = 12;
+actor.monsterinfo.pausetime = runtime.time + 0.2;
+actor.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
+actorFrames.actor_fire(actor, runtime);
+assert.equal((actor.monsterinfo.aiflags & AI_HOLD_FRAME) !== 0, true, "actor_fire holds frame before pausetime");
+assert.equal(drainMonsterMuzzleFlashEvents(runtime).length, 1, "actor_fire emits machinegun muzzleflash");
+
+actor.monsterinfo.pausetime = runtime.time;
+actorFrames.actor_fire(actor, runtime);
+assert.equal((actor.monsterinfo.aiflags & AI_HOLD_FRAME) === 0, true, "actor_fire clears hold frame at pausetime");
+assert.equal(drainMonsterMuzzleFlashEvents(runtime).length, 1, "actor_fire clear branch still fires");
+
+try {
+  Math.random = () => 0;
+  runtime.time = 20;
+  actorFrames.actor_attack(actor, runtime);
+  assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_attack, "actor_attack selects attack move");
+  assert.equal(actor.monsterinfo.pausetime, runtime.time + 10 * 0.1, "actor_attack lower random bound matches (rand&15)+10 frames");
+} finally {
+  Math.random = originalRandom;
+}
+
+try {
+  Math.random = () => 0.999999;
+  actorFrames.actor_attack(actor, runtime);
+  assert.equal(actor.monsterinfo.pausetime >= runtime.time + 10 * 0.1, true, "actor_attack pausetime keeps C lower bound");
+  assert.equal(actor.monsterinfo.pausetime <= runtime.time + 25 * 0.1, true, "actor_attack pausetime keeps C upper bound");
+} finally {
+  Math.random = originalRandom;
+}
+
+actor.enemy = player;
+player.health = 100;
+runtime.time = 30;
+actor.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
+actor.monsterinfo.pausetime = runtime.time + 0.5;
+actor.monsterinfo.currentmove = actorFrames.actor_move_attack;
+actor.s.frame = 999;
+M_MoveFrame(actor, runtime);
+const moveFrameFlash = drainMonsterMuzzleFlashEvents(runtime);
+assert.equal(actor.s.frame, actorFrames.FRAME_attak01, "M_MoveFrame enters actor attack first frame");
+assert.equal(moveFrameFlash.length, 1, "M_MoveFrame reaches actor_fire and queues muzzleflash");
+assert.equal((actor.monsterinfo.aiflags & AI_HOLD_FRAME) !== 0, true, "actor_fire hold flag affects M_MoveFrame attack loop");
+
+actor.enemy = null;
+actor.movetarget = path;
 path.message = "move out";
 path.touch?.(path, actor, runtime);
 const prints = drainGameCprintfEvents(runtime);

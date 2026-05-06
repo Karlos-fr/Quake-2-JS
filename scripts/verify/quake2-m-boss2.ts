@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import { type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import { temp_event_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
   AS_MISSILE,
@@ -28,6 +28,7 @@ import {
   createRuntimeEntity,
   damage_t,
   drainGameSoundEvents,
+  drainGameTempEntityEvents,
   drainMonsterMuzzleFlashEvents,
   type GameEntity,
   type GameRuntime
@@ -52,6 +53,7 @@ import {
   boss2_attack,
   boss2_dead,
   boss2_die,
+  boss2_frames_death,
   boss2_frames_stand,
   boss2_move_attack_mg,
   boss2_move_attack_pre_mg,
@@ -77,6 +79,7 @@ function main(): void {
   verifySpawnRegistryCallsMonsterBoss2();
   verifySaveRegistryRestoresCallbacksAndMoves();
   verifyStandingMoveTable();
+  verifyDeathMoveTable();
   verifyStateTransitions();
   verifySoundsAndPainBranches();
   verifyWeaponCallbacks();
@@ -161,6 +164,24 @@ function verifyStandingMoveTable(): void {
     assert.equal(frame.aifunc?.name, "ai_stand", `boss2_frames_stand[${index}].aifunc`);
     assert.equal(frame.dist, 0, `boss2_frames_stand[${index}].dist`);
     assert.equal(frame.thinkfunc, undefined, `boss2_frames_stand[${index}].thinkfunc`);
+  }
+}
+
+function verifyDeathMoveTable(): void {
+  assert.equal(boss2_frames_death.length, 49);
+  assert.equal(boss2_move_death.firstframe, FRAME_death50 - 48);
+  assert.equal(boss2_move_death.lastframe, FRAME_death50);
+  assert.equal(boss2_move_death.frame, boss2_frames_death);
+  assert.equal(boss2_move_death.endfunc, boss2_dead);
+
+  for (const [index, frame] of boss2_frames_death.entries()) {
+    assert.equal(frame.aifunc?.name, "ai_move", `boss2_frames_death[${index}].aifunc`);
+    assert.equal(frame.dist, 0, `boss2_frames_death[${index}].dist`);
+    assert.equal(
+      frame.thinkfunc?.name,
+      index === boss2_frames_death.length - 1 ? "BossExplode" : undefined,
+      `boss2_frames_death[${index}].thinkfunc`
+    );
   }
 }
 
@@ -313,12 +334,27 @@ function verifyDeathBranches(): void {
   assert.equal(boss.movetype, MOVETYPE_TOSS);
   assert.equal(boss.svflags & SVF_DEADMONSTER, SVF_DEADMONSTER);
   assert.equal(boss.nextthink, 0);
+  assert.equal(boss.linked, true);
+  assert.deepEqual(boss.absmin, [-56, -56, 0]);
+  assert.deepEqual(boss.absmax, [56, 56, 80]);
+  assert.equal(runtime.linkedDynamicBoxEntities.includes(boss), true);
 
   boss.monsterinfo.currentmove = boss2_move_death;
   boss.s.frame = FRAME_death50 - 1;
   boss.count = 0;
   M_MoveFrame(boss, runtime);
   assert.equal(boss.think?.name, "BossExplode");
+  const explosion = drainGameTempEntityEvents(runtime).at(-1);
+  assert.equal(explosion?.type, temp_event_t.TE_EXPLOSION1);
+  assert.equal(explosion?.payload.source, "BossExplode");
+
+  boss.think = undefined;
+  boss.nextthink = runtime.time + FRAMETIME;
+  boss.svflags &= ~SVF_DEADMONSTER;
+  boss.s.frame = FRAME_death50;
+  M_MoveFrame(boss, runtime);
+  assert.equal(boss.svflags & SVF_DEADMONSTER, SVF_DEADMONSTER);
+  assert.equal(boss.nextthink, 0);
 }
 
 function verifyDeathmatchSpawnFreesEntity(): void {

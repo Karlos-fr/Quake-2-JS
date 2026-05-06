@@ -27,6 +27,7 @@ import {
 } from "./cl_fx.js";
 import {
   AngleVectors,
+  EF_ANIM_ALLFAST,
   EF_BFG,
   EF_BLASTER,
   EF_BLUEHYPERBLASTER,
@@ -442,7 +443,9 @@ function appendEntityLights(snapshot: ClientInterpolatedEntity, lights: ClientDy
 
   if ((snapshot.effects & EF_BFG) !== 0) {
     const ramp = [300, 400, 600, 300, 150, 75];
-    const intensity = snapshot.frame >= 0 && snapshot.frame < ramp.length ? ramp[snapshot.frame] : 200;
+    const intensity = (snapshot.effects & EF_ANIM_ALLFAST) !== 0
+      ? 200
+      : snapshot.frame >= 0 && snapshot.frame < ramp.length ? ramp[snapshot.frame] : 200;
     lights.push(createLight(snapshot.origin, intensity, [0, 1, 0], snapshot.number, "bfg"));
   }
 

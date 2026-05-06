@@ -876,10 +876,13 @@ export function actor_fire(self: GameEntity, runtime: GameRuntime): void {
  * Original name: actor_attack
  * Source: game/m_actor.c
  * Category: Ported
- * Fidelity level: Strict
+ * Fidelity level: Close
  *
  * Behavior:
  * - Enters the machinegun attack loop and randomizes its duration.
+ *
+ * Porting notes:
+ * - Preserves the original `(rand() & 15) + 10` frame range through the local `Math.random`-backed RNG helper.
  */
 export function actor_attack(self: GameEntity, runtime: GameRuntime): void {
   self.monsterinfo.currentmove = actor_move_attack;

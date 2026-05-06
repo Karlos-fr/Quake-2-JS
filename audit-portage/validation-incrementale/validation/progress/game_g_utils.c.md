@@ -411,3 +411,31 @@ Session `KillBox` / `tr`:
 - Dernier lot traite: ligne locale `v` de `tv`.
 - Verdict du lot: non applicable comme entite autonome.
 - Prochain lot recommande: clarifier les lignes locales restantes `i` et `e` dans la matrice sans traiter les blocages `vectoyaw`/`vectoangles` au-dela du rappel.
+
+## Session - locaux `i` et `e` de `G_Spawn`
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Collision verifiee: la ligne matrice `i` pointait vers `packages/game/src/g_weapon.ts`, mais aucun ownership de `game/g_utils.c` n'y est attendu; `i` est le compteur local de `G_Spawn`.
+- Comparaison C/TS: le C declare `int i` et `edict_t *e`, initialise `e = &g_edicts[maxclients + 1]`, scanne `i=maxclients+1` jusqu'a `globals.num_edicts` en avancant `e`, reutilise un edict libre eligible via `G_InitEdict(e)`, sinon verifie `game.maxentities`, incremente `globals.num_edicts`, initialise et retourne le nouvel `e`. Le port TS utilise `startIndex`, `index` et `entity = runtime.entities[index]`, conserve les skips `!entity`/`inuse`/delai `freetime`, appelle `G_InitEdict(entity)`, verifie `runtime.entities.length >= runtime.maxentities`, puis alloue via `spawnGameEntity(runtime)`.
+- Locaux C `i` et `e`: non applicables comme entites autonomes; ils correspondent a `index` et `entity` dans le scope TS de `G_Spawn`, couverts par les preuves deja presentes sur `G_Spawn`.
+- Commentaire d'en-tete verifie sur `G_Spawn`: `Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`; les notes documentent deja le mapping `globals.num_edicts` -> `runtime.entities.length` et l'append via `spawnGameEntity`.
+- Runtime verifie: `G_Spawn` reste atteint depuis les flux normaux portes (`G_UseTargets` delayed, `ED_ParseEdict`/`ED_CallSpawn`, AI combat points, `TossClientWeapon`, gibs/debris, `target_spawner`, boss projectiles temporaires et `SelectSpawnPoint`) appeles par spawns, uses, thinks, tirs, morts et frames gameplay.
+- `apps/web`: integration attendue indirecte via le host full-game/local qui execute le runtime serveur porte; aucune logique web parallele ne remplace l'allocation d'edicts ni ces locaux.
+- `packages/renderer-three`: pas de sortie renderer directe propre aux locaux `i`/`e`; les entites allouees par `G_Spawn` peuvent produire modeles, frames, projectiles, gibs, sons, temp entities, particules, dlights ou scene via snapshots/refresh frame, consommes par les adapters renderer existants.
+- Blocages rappeles hors lot: `vectoyaw` reste partiel tant que `p_trail.ts` garde son doublon prive; `vectoangles` reste partiel tant que `g_weapon.ts` garde son helper local. Ces fichiers n'ont pas ete modifies.
+
+Session locaux `i` et `e` de `G_Spawn`:
+
+- `npm run verify:g-utils`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+## Etat apres session locaux `i` et `e` de `G_Spawn`
+
+- Dernier lot traite: lignes locales `i` et `e` de `G_Spawn`.
+- Verdict du lot: non applicable comme entites autonomes.
+- Prochain lot recommande: reprendre les blocages separes `vectoyaw` -> `p_trail.ts` ou `vectoangles` -> `g_weapon.ts`, un fichier cible par session.

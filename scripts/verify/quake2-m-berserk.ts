@@ -14,6 +14,7 @@ import { strict as assert } from "node:assert";
 import type { cvar_t, trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
+  AI_COMBAT_POINT,
   DEAD_DEAD,
   FRAMETIME,
   M_MoveFrame,
@@ -92,6 +93,8 @@ function main(): void {
   verifyStandFidgetRuntimeFlow();
   verifyWalkMoveRuntimeFlow();
   verifyWalkCallbackRuntimeFlow();
+  verifyRunMoveRuntimeFlow();
+  verifyRunCallbackRuntimeFlow();
   verifySaveRegistryRestoresCallbacksAndMoves();
   verifySaveRestoreAfterStartup();
   verifyStateTransitions();
@@ -120,6 +123,7 @@ function verifySpawnRegistersAssetsAndStartsWalking(): void {
   assert.equal(berserk.gib_health, -60);
   assert.equal(berserk.mass, 250);
   assert.equal(berserk.monsterinfo.walk, berserk_walk);
+  assert.equal(berserk.monsterinfo.run, berserk_run);
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand);
   assert.equal(berserk.monsterinfo.scale, 1);
   assert.equal(runtime.assets.modelPaths[berserk.s.modelindex - 1], "models/monsters/berserk/tris.md2");
@@ -275,6 +279,59 @@ function verifyWalkCallbackRuntimeFlow(): void {
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_walk, "ai_stand should reach berserk_walk through monsterinfo.walk");
 }
 
+function verifyRunMoveRuntimeFlow(): void {
+  const runtime = createHarnessRuntime();
+  const context = createGameMainContext(createGameImports(), { runtime });
+  const berserk = createBerserk(runtime, 20);
+
+  SP_monster_berserk(berserk, runtime);
+  berserk.think!(berserk, runtime);
+  berserk.groundentity = runtime.entities[0] ?? null;
+  berserk.monsterinfo.aiflags |= AI_COMBAT_POINT;
+  berserk.monsterinfo.currentmove = berserk_move_run1;
+  berserk.s.frame = FRAME_run1 - 1;
+
+  G_RunFrame(context);
+
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1);
+  assert.equal(berserk.s.frame, FRAME_run1, "G_RunFrame should enter the visible run frame range");
+  assert.equal(berserk.nextthink, runtime.time + FRAMETIME, "run move should schedule the next monster tick");
+
+  berserk.s.frame = FRAME_run6;
+  G_RunFrame(context);
+
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1);
+  assert.equal(berserk.s.frame, FRAME_run1, "run move should loop from FRAME_run6 to FRAME_run1");
+}
+
+function verifyRunCallbackRuntimeFlow(): void {
+  const runtime = createHarnessRuntime();
+  const context = createGameMainContext(createGameImports(), { runtime });
+  const berserk = createBerserk(runtime, 21);
+
+  SP_monster_berserk(berserk, runtime);
+  berserk.think!(berserk, runtime);
+
+  assert.equal(berserk.monsterinfo.run, berserk_run);
+  berserk.monsterinfo.currentmove = berserk_move_stand;
+  berserk.monsterinfo.run!(berserk, runtime);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1, "monsterinfo.run should enter the source run1 move");
+
+  berserk.monsterinfo.currentmove = berserk_move_run1;
+  berserk.monsterinfo.aiflags |= AI_STAND_GROUND;
+  berserk.monsterinfo.run!(berserk, runtime);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand, "AI_STAND_GROUND should make berserk_run choose stand");
+
+  berserk.monsterinfo.aiflags &= ~AI_STAND_GROUND;
+  berserk.monsterinfo.aiflags |= AI_COMBAT_POINT;
+  berserk.monsterinfo.run!(berserk, runtime);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1, "clearing AI_STAND_GROUND should restore the run move");
+  berserk.groundentity = runtime.entities[0] ?? null;
+  berserk.s.frame = FRAME_run1 - 1;
+  G_RunFrame(context);
+  assert.equal(berserk.s.frame, FRAME_run1, "run callback selection should feed visible run frames through G_RunFrame");
+}
+
 function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveFunction("SP_monster_berserk"), SP_monster_berserk);
   assert.equal(findGameSaveFunction("berserk_pain"), berserk_pain);
@@ -283,6 +340,7 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveMove("berserk_move_stand"), berserk_move_stand);
   assert.equal(findGameSaveMove("berserk_move_stand_fidget"), berserk_move_stand_fidget);
   assert.equal(findGameSaveMove("berserk_move_walk"), berserk_move_walk);
+  assert.equal(findGameSaveMove("berserk_move_run1"), berserk_move_run1);
   assert.equal(findGameSaveMove("berserk_move_attack_spike"), berserk_move_attack_spike);
   assert.equal(findGameSaveMove("berserk_move_death1"), berserk_move_death1);
 }

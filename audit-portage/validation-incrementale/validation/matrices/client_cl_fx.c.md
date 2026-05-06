@@ -123,19 +123,19 @@
 | `Quake-2-master/client/cl_fx.c` | global | `forward` | `packages/client/src/cl_fx.ts` | `forward` | Non applicable | A redecouper | Local de `CL_FlyParticles`, porte par le vecteur `forward` TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `dist` | `packages/client/src/cl_fx.ts` | `dist` | Non applicable | A redecouper | Local de `CL_FlyParticles`, porte par `Math.sin(ltime + index) * 64`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `ltime` | `packages/client/src/cl_fx.ts` | `ltime` | Non applicable | A redecouper | Local de `CL_FlyParticles`, porte par `runtime.cl.time / 1000.0`; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_FlyEffect` | `packages/client/src/cl_fx.ts` | `CL_FlyEffect` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `n` | `packages/client/src/cl_fx.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `count` | `packages/client/src/cl_fx.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `starttime` | `packages/client/src/cl_fx.ts` | `starttime` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `count` | `packages/client/src/cl_fx.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | macro | `BEAMLENGTH` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_BfgParticles` | `packages/client/src/cl_fx.ts` | `CL_BfgParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `angle` | `packages/client/src/cl_fx.ts` | `angle` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `forward` | `packages/client/src/cl_newfx.ts` | `forward` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `dist` | `packages/client/src/cl_fx.ts` | `dist` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `v` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `ltime` | `packages/client/src/cl_newfx.ts` | `ltime` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_FlyEffect` | `packages/client/src/cl_fx.ts` | `CL_FlyEffect` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; en-tetes verifies/corriges. |
+| `Quake-2-master/client/cl_fx.c` | global | `n` | `packages/client/src/cl_fx.ts` | `n` | Non applicable | A redecouper | Local de `CL_FlyEffect`, porte par `let n`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `count` | `packages/client/src/cl_fx.ts` | `count` | Non applicable | A redecouper | Local de `CL_FlyEffect`, porte par `count` metadata/runtime; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `starttime` | `packages/client/src/cl_fx.ts` | `starttime` | Non applicable | A redecouper | Local de `CL_FlyEffect`, porte par `let starttime`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `count` | `packages/client/src/cl_fx.ts` | `count` | Non applicable | A redecouper | Doublon de matrice pour le local `count` de `CL_FlyEffect`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | macro | `BEAMLENGTH` | `packages/client/src/cl_fx.ts` | `FLY_BEAM_LENGTH` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; constante 16 verifiee dans `CL_BfgParticles`. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_BfgParticles` | `packages/client/src/cl_fx.ts` | `CL_BfgParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; branchement `EF_BFG | EF_ANIM_ALLFAST` corrige. |
+| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `index` | Non applicable | A redecouper | Local de `CL_BfgParticles`, remplace par iteration TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `angle` | `packages/client/src/cl_fx.ts` | `angle` | Non applicable | A redecouper | Local de `CL_BfgParticles`, porte par `let angle`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `forward` | `packages/client/src/cl_fx.ts` | `forward` | Non applicable | A redecouper | Local de `CL_BfgParticles`, porte par le vecteur `forward` TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `dist` | `packages/client/src/cl_fx.ts` | `orbitDist` / `colorDist` | Non applicable | A redecouper | Local de `CL_BfgParticles`, porte par les distances orbit/color TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `v` | `packages/client/src/cl_fx.ts` | `fromOrigin` | Non applicable | A redecouper | Local de `CL_BfgParticles`, porte par le vecteur `fromOrigin`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `ltime` | `packages/client/src/cl_fx.ts` | `ltime` | Non applicable | A redecouper | Local de `CL_BfgParticles`, porte par `runtime.cl.time / 1000.0`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_TrapParticles` | `packages/client/src/cl_fx.ts` | `CL_TrapParticles` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | A verifier | A redecouper |  |

@@ -26,6 +26,8 @@ import {
   CL_ExplosionParticles,
   CL_ExecutePacketEntityEffects,
   CL_FlagTrail,
+  CL_BfgParticles,
+  CL_FlyEffect,
   CL_FlyParticles,
   CL_IonripperTrail,
   CL_ItemRespawnParticles,
@@ -49,6 +51,8 @@ import {
   CHAN_WEAPON,
   BYTE_DIRS,
   CS_LIGHTS,
+  EF_ANIM_ALLFAST,
+  EF_BFG,
   EF_FLIES,
   EF_GIB,
   EF_GREENGIB,
@@ -100,8 +104,11 @@ function main(): void {
   verifyRailTrailRuntimeParticles();
   verifyIonripperTrailRuntimeParticles();
   verifyBubbleTrailRuntimeParticles();
+  verifyFlyEffectMetadataRamp();
   verifyFlyParticlesRuntimeParticles();
   verifyFlyParticlesPacketEntityRuntimeBranch();
+  verifyBfgParticlesRuntimeParticles();
+  verifyBfgParticlesPacketEntityRuntimeBranch();
   verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
@@ -1288,6 +1295,23 @@ function verifyFlyParticlesRuntimeParticles(): void {
   assert.equal(renderParticles.length, 3, "CL_FlyParticles particles should reach the refresh particle list");
 }
 
+function verifyFlyEffectMetadataRamp(): void {
+  const ent = createRuntime().cl_entities[4];
+  const origin: vec3_t = [5, 6, 7];
+
+  const warmupEffects = CL_FlyEffect(ent, origin, 1000);
+  assert.equal(ent.fly_stoptime, 61000, "CL_FlyEffect should initialize fly_stoptime to cl.time + 60000");
+  assert.equal(warmupEffects[0]?.kind, "fly-particles", "CL_FlyEffect should emit fly particle metadata");
+  assert.equal(warmupEffects[0]?.count, 0, "CL_FlyEffect first frame should start at zero particles");
+
+  const fullEffects = CL_FlyEffect(ent, origin, 31000);
+  assert.equal(fullEffects[0]?.count, 162, "CL_FlyEffect should hold the full 162-count plateau");
+
+  const rampDownEffects = CL_FlyEffect(ent, origin, 56000);
+  assert.equal(rampDownEffects[0]?.count, 40, "CL_FlyEffect should truncate ramp-down count like C int assignment");
+  assert.deepEqual(rampDownEffects[0]?.position, origin, "CL_FlyEffect should preserve the entity origin");
+}
+
 function verifyFlyParticlesPacketEntityRuntimeBranch(): void {
   const runtime = createRuntime();
   runtime.cl.time = 11000;
@@ -1321,6 +1345,82 @@ function verifyFlyParticlesPacketEntityRuntimeBranch(): void {
   withMockRandom(0, () => {
     const frame = CL_BuildRefreshFrame(refreshRuntime, { viewerEntity: 0 });
     assert.equal(frame.particles.length, 41, "EF_FLIES particles should reach ClientRefreshFrame.particles");
+  });
+}
+
+function verifyBfgParticlesRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 0;
+  const origin: vec3_t = [10, 20, 30];
+
+  withMockRandom(0, () => {
+    CL_BfgParticles(runtime, origin);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 162, "CL_BfgParticles should emit NUMVERTEXNORMALS particles");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_BfgParticles particle time mismatch");
+  assert.ok(particles.every((particle) => particle.vel[0] === 0 && particle.vel[1] === 0 && particle.vel[2] === 0), "CL_BfgParticles velocity should be cleared");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_BfgParticles acceleration should be cleared");
+  assert.ok(particles.every((particle) => particle.colorvel === 0 && particle.alphavel === -100), "CL_BfgParticles color/alpha velocity mismatch");
+
+  const firstAllocated = particles.at(-1);
+  assert.ok(firstAllocated, "CL_BfgParticles should allocate index 0 first");
+  assert.deepEqual(
+    firstAllocated.org.map((component) => Number(component.toFixed(12))),
+    [26, 20, 30],
+    "CL_BfgParticles should preserve bytedirs and BEAMLENGTH offset for the first particle"
+  );
+  assert.equal(firstAllocated.color, 209, "CL_BfgParticles should derive color from VectorLength(org-origin) / 90");
+  assert.ok(almostEqual(firstAllocated.alpha, 1 - (16 / 90)), "CL_BfgParticles alpha should be 1.0 - distance");
+
+  const metadata = CL_BfgParticles(origin);
+  assert.equal(metadata[0]?.kind, "bfg-particles", "CL_BfgParticles metadata kind mismatch");
+  assert.equal(metadata[0]?.category, "particle", "CL_BfgParticles metadata category mismatch");
+  assert.deepEqual(metadata[0]?.position, origin, "CL_BfgParticles metadata origin mismatch");
+  assert.equal(metadata[0]?.count, 162, "CL_BfgParticles metadata count mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 162, "CL_BfgParticles particles should reach the refresh particle list");
+}
+
+function verifyBfgParticlesPacketEntityRuntimeBranch(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 0;
+  const origin: vec3_t = [64, 32, 16];
+
+  withMockRandom(0, () => {
+    CL_ExecutePacketEntityEffects(runtime, [{
+      number: 9,
+      origin,
+      effects: EF_BFG | EF_ANIM_ALLFAST,
+      modelindex: 1,
+      viewerEntity: false
+    }]);
+  });
+
+  assert.equal(collectActiveParticles(runtime).length, 162, "EF_BFG | EF_ANIM_ALLFAST should dispatch to CL_BfgParticles");
+
+  const refreshRuntime = createRuntime();
+  refreshRuntime.cl.time = 0;
+  refreshRuntime.cl.frame.num_entities = 1;
+  refreshRuntime.cl.frame.parse_entities = 0;
+  refreshRuntime.cl_parse_entities[0].number = 9;
+  refreshRuntime.cl_parse_entities[0].effects = EF_BFG | EF_ANIM_ALLFAST;
+  refreshRuntime.cl_parse_entities[0].origin = [...origin] as vec3_t;
+  refreshRuntime.cl_parse_entities[0].modelindex = 1;
+  refreshRuntime.cl_entities[9].current.number = 9;
+  refreshRuntime.cl_entities[9].current.origin = [...origin] as vec3_t;
+  refreshRuntime.cl_entities[9].current.effects = EF_BFG | EF_ANIM_ALLFAST;
+  refreshRuntime.cl_entities[9].current.modelindex = 1;
+  refreshRuntime.cl_entities[9].current.frame = 0;
+
+  withMockRandom(0, () => {
+    const frame = CL_BuildRefreshFrame(refreshRuntime, { viewerEntity: 0 });
+    assert.equal(frame.particles.length, 162, "BFG particles should reach ClientRefreshFrame.particles");
+    assert.ok(frame.lights.some((light) => light.kind === "bfg" && light.intensity === 200), "EF_BFG | EF_ANIM_ALLFAST dynamic light should use the C 200 radius");
+    const snapshot = frame.entities.find((entity) => entity.entityNumber === 9);
+    assert.equal(snapshot?.alpha, 0.3, "EF_BFG entity should remain translucent in refresh snapshots");
   });
 }
 

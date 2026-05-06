@@ -20,6 +20,7 @@ import {
   AI_STAND_GROUND,
   MELEE_DISTANCE,
   MOVETYPE_STEP,
+  random,
   RANGE_MELEE,
   SOLID_BBOX
 } from "./g_local.js";
@@ -680,10 +681,13 @@ export function flyer_melee(self: GameEntity): void {
  *
  * Behavior:
  * - Repeats melee 80 percent of the time while the enemy remains in melee range.
+ *
+ * Porting notes:
+ * - Uses the shared `g_local.random()` helper for the original macro threshold.
  */
 export function flyer_check_melee(self: GameEntity): void {
   if (self.enemy && range(self, self.enemy) === RANGE_MELEE) {
-    if (Math.random() <= 0.8) {
+    if (random() <= 0.8) {
       self.monsterinfo.currentmove = flyer_move_loop_melee;
     } else {
       self.monsterinfo.currentmove = flyer_move_end_melee;

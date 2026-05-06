@@ -22,6 +22,7 @@ import {
   BYTE_DIRS,
   CS_LIGHTS,
   DirFromByte,
+  EF_BFG,
   EF_FLIES,
   EF_GIB,
   EF_GREENGIB,
@@ -1370,6 +1371,8 @@ export function CL_ExecutePacketEntityEffects(
       CL_IonripperTrail(runtime, centity.lerp_origin, entity.origin);
     } else if ((effects & EF_FLIES) !== 0) {
       CL_FlyEffectRuntime(runtime, centity, entity.origin);
+    } else if ((effects & EF_BFG) !== 0 && (effects & EF_ANIM_ALLFAST) !== 0) {
+      CL_BfgParticles(runtime, entity.origin);
     } else if ((effects & EF_PLASMA) !== 0 && (effects & EF_ANIM_ALLFAST) !== 0) {
       CL_BlasterTrail(runtime, centity.lerp_origin, entity.origin);
     } else if (!entity.viewerEntity && (entity.modelindex ?? 0) !== 0 && (effects & EF_FLAG1) !== 0) {
@@ -2098,7 +2101,7 @@ export function CL_FlyEffect(ent: centity_t, origin: vec3_t, time: number): Clie
 /**
  * Original name: CL_FlyEffect
  * Source: client/cl_fx.c
- * Category: Ported integration
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -2116,9 +2119,21 @@ function CL_FlyEffectRuntime(runtime: ClientRuntime, ent: centity_t, origin: vec
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits the orbiting BFG particle cloud metadata.
+ * - Emits the orbiting BFG particle cloud metadata or spawns the runtime particle cloud.
+ *
+ * Porting notes:
+ * - Runtime mode preserves the shared `avelocities`, `bytedirs`, `BEAMLENGTH`, distance-derived
+ *   color/alpha and `alphavel = -100` behavior from the original `entity_t *ent` path.
  */
-export function CL_BfgParticles(origin: vec3_t): ClientActionEffect[] {
+export function CL_BfgParticles(origin: vec3_t): ClientActionEffect[];
+export function CL_BfgParticles(runtime: ClientRuntime, origin: vec3_t): void;
+export function CL_BfgParticles(runtimeOrOrigin: ClientRuntime | vec3_t, maybeOrigin?: vec3_t): ClientActionEffect[] | void {
+  if (isClientRuntime(runtimeOrOrigin)) {
+    spawnBfgParticles(runtimeOrOrigin, maybeOrigin ?? [0, 0, 0]);
+    return;
+  }
+
+  const origin = runtimeOrOrigin;
   return [{
     category: "particle",
     kind: "bfg-particles",
@@ -3444,15 +3459,7 @@ function isClientRuntime(value: ClientRuntime | vec3_t): value is ClientRuntime 
 function spawnFlyParticles(runtime: ClientRuntime, origin: vec3_t, count: number): void {
   const cappedCount = Math.min(count, NUMVERTEXNORMALS);
 
-  if (!flyAvelocities[0]) {
-    for (let index = 0; index < NUMVERTEXNORMALS; index += 1) {
-      flyAvelocities[index] = [
-        (Math.floor(Math.random() * 0x7fffffff) & 255) * 0.01,
-        (Math.floor(Math.random() * 0x7fffffff) & 255) * 0.01,
-        (Math.floor(Math.random() * 0x7fffffff) & 255) * 0.01
-      ];
-    }
-  }
+  ensureFlyAvelocities();
 
   const ltime = runtime.cl.time / 1000.0;
   for (let index = 0; index < cappedCount; index += 2) {
@@ -3482,6 +3489,80 @@ function spawnFlyParticles(runtime: ClientRuntime, origin: vec3_t, count: number
     particle.accel = [0, 0, 0];
     particle.color = 0;
     particle.alpha = 1;
+    particle.alphavel = -100;
+  }
+}
+
+/**
+ * Category: Adapter
+ * Purpose: Lazily initialize the shared `avelocities[NUMVERTEXNORMALS]` table used by fly/BFG particles.
+ */
+function ensureFlyAvelocities(): void {
+  if (flyAvelocities[0]) {
+    return;
+  }
+
+  for (let index = 0; index < NUMVERTEXNORMALS; index += 1) {
+    flyAvelocities[index] = [
+      (Math.floor(Math.random() * 0x7fffffff) & 255) * 0.01,
+      (Math.floor(Math.random() * 0x7fffffff) & 255) * 0.01,
+      (Math.floor(Math.random() * 0x7fffffff) & 255) * 0.01
+    ];
+  }
+}
+
+/**
+ * Original name: CL_BfgParticles
+ * Source: client/cl_fx.c
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns the original orbiting BFG particles around one entity origin.
+ */
+function spawnBfgParticles(runtime: ClientRuntime, origin: vec3_t): void {
+  ensureFlyAvelocities();
+
+  const ltime = runtime.cl.time / 1000.0;
+  for (let index = 0; index < NUMVERTEXNORMALS; index += 1) {
+    const avelocity = flyAvelocities[index] ?? [0, 0, 0];
+    let angle = ltime * avelocity[0];
+    const sy = Math.sin(angle);
+    const cy = Math.cos(angle);
+    angle = ltime * avelocity[1];
+    const sp = Math.sin(angle);
+    const cp = Math.cos(angle);
+
+    const forward: vec3_t = [cp * cy, cp * sy, -sp];
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.time = runtime.cl.time;
+    const orbitDist = Math.sin(ltime + index) * 64;
+    const bytedir = BYTE_DIRS[index] ?? [0, 0, 0];
+    particle.org = [
+      origin[0] + bytedir[0] * orbitDist + forward[0] * FLY_BEAM_LENGTH,
+      origin[1] + bytedir[1] * orbitDist + forward[1] * FLY_BEAM_LENGTH,
+      origin[2] + bytedir[2] * orbitDist + forward[2] * FLY_BEAM_LENGTH
+    ];
+    particle.vel = [0, 0, 0];
+    particle.accel = [0, 0, 0];
+
+    const fromOrigin: vec3_t = [
+      particle.org[0] - origin[0],
+      particle.org[1] - origin[1],
+      particle.org[2] - origin[2]
+    ];
+    const colorDist = Math.sqrt(
+      (fromOrigin[0] * fromOrigin[0]) +
+      (fromOrigin[1] * fromOrigin[1]) +
+      (fromOrigin[2] * fromOrigin[2])
+    ) / 90.0;
+    particle.color = Math.floor(0xd0 + colorDist * 7);
+    particle.colorvel = 0;
+    particle.alpha = 1.0 - colorDist;
     particle.alphavel = -100;
   }
 }

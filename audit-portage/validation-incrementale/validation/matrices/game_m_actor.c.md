@@ -44,7 +44,7 @@
 | `Quake-2-master/game/m_actor.c` | function | `actor_pain` | `packages/game/src/m_actor.ts` | `actor_pain` | Valide | A redecouper | Preuves: commentaire d'en-tete verifie, comparaison C/TS et assertions branches pain/debounce/taunt/chat ajoutees dans `scripts/verify/quake2-m-actor.ts`; `npm run verify:m-actor`, `npm run verify:m-actor:header`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`. |
 | `Quake-2-master/game/m_actor.c` | global | `n` | `packages/game/src/m_actor.ts` | `n` | Valide | A redecouper | Preuves: local C `int n` de `actor_pain` couvert par les assertions `rand()%3`/`randomInt(3)` dans `npm run verify:m-actor`; `npm run typecheck`. |
 | `Quake-2-master/game/m_actor.c` | global | `name` | `packages/game/src/m_actor.ts` |  | Valide | A redecouper | Preuves: local C `char *name` de `actor_pain` represente par `actorNameForEntity(self)`; message chat et index `actor_names[self.index % MAX_ACTOR_NAMES]` verifies par `npm run verify:m-actor`; `npm run typecheck`. |
-| `Quake-2-master/game/m_actor.c` | function | `actorMachineGun` | `packages/game/src/m_actor.ts` | `actorMachineGun` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_actor.c` | function | `actorMachineGun` | `packages/game/src/m_actor.ts` | `actorMachineGun` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | function | `actor_dead` | `packages/game/src/m_actor.ts` | `actor_dead` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | global | `actor_frames_death1` | `packages/game/src/m_actor.ts` | `actor_frames_death1` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | table | `actor_frames_death1` | `packages/game/src/m_actor.ts` | `actor_frames_death1` | A verifier | A redecouper |  |
@@ -54,12 +54,12 @@
 | `Quake-2-master/game/m_actor.c` | global | `actor_move_death2` | `packages/game/src/m_actor.ts` | `actor_move_death2` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | function | `actor_die` | `packages/game/src/m_actor.ts` | `actor_die` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | global | `n` | `packages/game/src/m_actor.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.c` | function | `actor_fire` | `packages/game/src/m_actor.ts` | `actor_fire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.c` | global | `actor_frames_attack` | `packages/game/src/m_actor.ts` | `actor_frames_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.c` | table | `actor_frames_attack` | `packages/game/src/m_actor.ts` | `actor_frames_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.c` | global | `actor_move_attack` | `packages/game/src/m_actor.ts` | `actor_move_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.c` | function | `actor_attack` | `packages/game/src/m_actor.ts` | `actor_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_actor.c` | global | `n` | `packages/game/src/m_actor.ts` | `n` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_actor.c` | function | `actor_fire` | `packages/game/src/m_actor.ts` | `actor_fire` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.c` | global | `actor_frames_attack` | `packages/game/src/m_actor.ts` | `actor_frames_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.c` | table | `actor_frames_attack` | `packages/game/src/m_actor.ts` | `actor_frames_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.c` | global | `actor_move_attack` | `packages/game/src/m_actor.ts` | `actor_move_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.c` | function | `actor_attack` | `packages/game/src/m_actor.ts` | `actor_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_actor.c` | global | `n` | `packages/game/src/m_actor.ts` | `n` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | function | `actor_use` | `packages/game/src/m_actor.ts` | `actor_use` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | global | `v` | `packages/game/src/m_actor.ts` | `v` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_actor.c` | function | `SP_misc_actor` | `packages/game/src/m_actor.ts` | `SP_misc_actor` | A verifier | A redecouper |  |
@@ -78,4 +78,4 @@
 | `Quake-2-master/game/m_actor.c` | declarative:monster-tables | `actor_frames_taunt` | `packages/game/src/m_actor.ts` | `actor_frames_taunt` | Valide | matched | Preuves: comparaison C/TS et assertions ajoutees dans `scripts/verify/quake2-m-actor.ts`; `npm run verify:m-actor`, `npm run verify:m-actor:header`, `npm run verify:local-gameplay-sync`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`. |
 | `Quake-2-master/game/m_actor.c` | declarative:monster-tables | `actor_frames_death1` | `packages/game/src/m_actor.ts` | `actor_frames_death1` | A verifier | matched |  |
 | `Quake-2-master/game/m_actor.c` | declarative:monster-tables | `actor_frames_death2` | `packages/game/src/m_actor.ts` | `actor_frames_death2` | A verifier | matched |  |
-| `Quake-2-master/game/m_actor.c` | declarative:monster-tables | `actor_frames_attack` | `packages/game/src/m_actor.ts` | `actor_frames_attack` | A verifier | matched |  |
+| `Quake-2-master/game/m_actor.c` | declarative:monster-tables | `actor_frames_attack` | `packages/game/src/m_actor.ts` | `actor_frames_attack` | Valide | matched |  |
