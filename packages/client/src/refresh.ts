@@ -456,7 +456,7 @@ function appendEntityLights(snapshot: ClientInterpolatedEntity, lights: ClientDy
   if ((snapshot.effects & EF_TRAP) !== 0) {
     lights.push(createLight(
       [snapshot.origin[0], snapshot.origin[1], snapshot.origin[2] + 32],
-      150,
+      (Math.floor(Math.random() * 100) + 100),
       [1, 0.8, 0.1],
       snapshot.number,
       "trap"

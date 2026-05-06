@@ -371,7 +371,7 @@ function verifyPainBranches(): void {
   gladiator.max_health = 400;
   gladiator.health = 150;
 
-  withMathRandom([0.25], () => gladiator_pain(gladiator, null, 0, 20, runtime));
+  withMathRandom([0.499], () => gladiator_pain(gladiator, null, 0, 20, runtime));
   assert.equal(gladiator.s.skinnum, 1);
   assert.equal(gladiator.monsterinfo.currentmove, gladiator_move_pain);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "gladiator/pain.wav");
@@ -382,7 +382,7 @@ function verifyPainBranches(): void {
   assert.equal(gladiator.monsterinfo.currentmove, gladiator_move_pain_air);
 
   runtime.time = 4;
-  withMathRandom([0.75], () => gladiator_pain(gladiator, null, 0, 20, runtime));
+  withMathRandom([0.5], () => gladiator_pain(gladiator, null, 0, 20, runtime));
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "gladiator/gldpain2.wav");
   assert.equal(gladiator.monsterinfo.currentmove, gladiator_move_pain_air);
 

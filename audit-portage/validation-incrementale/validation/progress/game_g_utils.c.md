@@ -2,9 +2,9 @@
 
 ## Etat courant
 
-- Statut: En cours
-- Dernier lot traite: ligne locale `v` de `tv`.
-- Verdict du lot: non applicable comme entite autonome.
+- Statut: Partiel
+- Dernier lot traite: blocage `vectoyaw` -> consommateur `p_trail.ts`.
+- Verdict du lot: valide.
 
 ## Preuves session
 
@@ -439,3 +439,36 @@ Session locaux `i` et `e` de `G_Spawn`:
 - Dernier lot traite: lignes locales `i` et `e` de `G_Spawn`.
 - Verdict du lot: non applicable comme entites autonomes.
 - Prochain lot recommande: reprendre les blocages separes `vectoyaw` -> `p_trail.ts` ou `vectoangles` -> `g_weapon.ts`, un fichier cible par session.
+
+## Session - blocage `vectoyaw` -> `p_trail.ts`
+
+- C source compare: `Quake-2-master/game/g_utils.c` pour `vectoyaw`, declaration `game/g_local.h`, et consommateur C `Quake-2-master/game/p_trail.c` (`PlayerTrail_Add`).
+- TS cible compare: `packages/game/src/g_utils.ts` pour l'export officiel `vectoyaw` et `packages/game/src/p_trail.ts` pour le consommateur player trail.
+- Ownership/doublon verifie: `vectoyaw` appartient a `game/g_utils.c` / `packages/game/src/g_utils.ts`; le helper prive homonyme de `p_trail.ts` etait un doublon de portage non justifie et a ete supprime.
+- Comparaison C/TS `vectoyaw`: l'export officiel conserve les branches axe horizontal nul, Y positif, Y negatif, `atan2(Y, X)`, troncature du cast C puis wrap positif. L'ancien helper prive `p_trail.ts` ne tronquait pas et pouvait produire un yaw fractionnel different.
+- Comparaison consommateur `PlayerTrail_Add`: le C calcule `temp = spot - trail[PREV(trail_head)]->s.origin` puis affecte `trail[trail_head]->s.angles[1] = vectoyaw(temp)`; le TS calcule le meme `temp` et consomme maintenant l'export officiel `g_utils.vectoyaw`.
+- Commentaire d'en-tete verifie: `g_utils.vectoyaw` contient `Original name`, `Source: game/g_utils.c`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes de portage. Le faux en-tete ported du helper prive dans `p_trail.ts` a disparu avec le doublon.
+- Runtime verifie: `vectoyaw` est atteint directement par les flux gameplay deja portes et aussi par `PlayerTrail_Add`, appele depuis `p_client.ts` pendant les frames joueur; le trail est consomme par `g_ai.ts` via `PlayerTrail_PickFirst` / `PlayerTrail_PickNext` pour orienter les monstres en poursuite.
+- `apps/web`: integration attendue indirecte via les hosts full-game/local qui executent le runtime serveur porte. Aucune logique parallele web ne remplace le calcul yaw ou le player trail; les effets passent par snapshots, etats monstres/joueur et synchronisation locale.
+- `packages/renderer-three`: pas de sortie renderer directe propre a `vectoyaw`, mais la sortie runtime attendue est visible indirectement: orientations de markers/monstres, poursuite AI, entites/camera/scene via snapshots client et `refresh-entity-sync`. Aucun adapter renderer dedie n'est requis, et les tests renderer passent.
+- Corrections appliquees: `packages/game/src/p_trail.ts` importe `vectoyaw` depuis `./g_utils.js` et supprime le helper prive; `scripts/verify/quake2-p-trail.ts` ajoute une preuve exacte de troncature/wrap C (`[2, -1, 0]` -> `334`) qui aurait echoue avec l'ancien helper fractionnel.
+- Matrice mise a jour: la ligne `vectoyaw` passe de `Partiel` a `Valide`; le blocage `p_trail.ts` est ferme.
+- Avancement global mis a jour: `g_utils.c` passe a 18 validees, 1 partielle, prochain lot `vectoangles` -> `g_weapon.ts`.
+- Blocage restant hors lot: `vectoangles` reste partiel tant que `packages/game/src/g_weapon.ts` garde son helper local.
+
+Session `vectoyaw` -> `p_trail.ts`:
+
+- `npm run verify:p-trail`
+- `npm run verify:g-utils`
+- `npm run verify:g-ai`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck` (echec hors lot: `packages/client/src/cl_fx.ts:2165`, symbole `spawnTrapParticles` introuvable)
+
+## Etat apres session `vectoyaw` -> `p_trail.ts`
+
+- Dernier lot traite: blocage `vectoyaw` -> consommateur `p_trail.ts`.
+- Verdict du lot: valide.
+- Prochain lot recommande: reprendre le blocage separe `vectoangles` -> `packages/game/src/g_weapon.ts`; garder ce lot dans une session separee.

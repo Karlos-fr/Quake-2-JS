@@ -136,16 +136,16 @@
 | `Quake-2-master/client/cl_fx.c` | global | `dist` | `packages/client/src/cl_fx.ts` | `orbitDist` / `colorDist` | Non applicable | A redecouper | Local de `CL_BfgParticles`, porte par les distances orbit/color TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `v` | `packages/client/src/cl_fx.ts` | `fromOrigin` | Non applicable | A redecouper | Local de `CL_BfgParticles`, porte par le vecteur `fromOrigin`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `ltime` | `packages/client/src/cl_fx.ts` | `ltime` | Non applicable | A redecouper | Local de `CL_BfgParticles`, porte par `runtime.cl.time / 1000.0`; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_TrapParticles` | `packages/client/src/cl_fx.ts` | `CL_TrapParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `len` | `packages/client/src/cl_fx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `dec` | `packages/client/src/cl_fx.ts` | `dec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `vel` | `packages/client/src/cl_fx.ts` | `vel` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `dir` | `packages/client/src/cl_fx.ts` | `dir` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `org` | `packages/client/src/cl_fx.ts` | `org` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_BFGExplosionParticles` | `packages/client/src/cl_fx.ts` | `CL_BFGExplosionParticles` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_TrapParticles` | `packages/client/src/cl_fx.ts` | `CL_TrapParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; branchement `EF_TRAP` corrige et en-tete complete. |
+| `Quake-2-master/client/cl_fx.c` | global | `move` | `packages/client/src/cl_fx.ts` | `move` | Non applicable | A redecouper | Local de `CL_TrapParticles`, porte par `spawnTrapParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | Non applicable | A redecouper | Local de `CL_TrapParticles`, porte par `spawnTrapParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `len` | `packages/client/src/cl_fx.ts` | `len` | Non applicable | A redecouper | Local de `CL_TrapParticles`, porte par la boucle TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | Non applicable | A redecouper | Index local de `CL_TrapParticles`, remplace par iterations TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `dec` | `packages/client/src/cl_fx.ts` | `dec` | Non applicable | A redecouper | Constante locale `dec = 5`, portee par `spawnTrapParticles` et la metadata `spacing`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `vel` | `packages/client/src/cl_fx.ts` | `vel` | Non applicable | A redecouper | Local de burst `CL_TrapParticles`, porte par `spawnTrapParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `dir` | `packages/client/src/cl_fx.ts` | `dir` | Non applicable | A redecouper | Local de burst `CL_TrapParticles`, porte par `spawnTrapParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `org` | `packages/client/src/cl_fx.ts` | `org` | Non applicable | A redecouper | Local de burst `CL_TrapParticles`, porte par `spawnTrapParticles`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_BFGExplosionParticles` | `packages/client/src/cl_fx.ts` | `CL_BFGExplosionParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; en-tete verifie. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_TeleportParticles` | `packages/client/src/cl_fx.ts` | `CL_TeleportParticles` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `vel` | `packages/client/src/cl_fx.ts` | `vel` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `dir` | `packages/client/src/cl_fx.ts` | `dir` | A verifier | A redecouper |  |

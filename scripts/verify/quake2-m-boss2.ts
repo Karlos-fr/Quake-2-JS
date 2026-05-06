@@ -39,7 +39,11 @@ import {
   Boss2MachineGun,
   Boss2Rocket,
   Boss2_CheckAttack,
+  FRAME_attack1,
   FRAME_attack10,
+  FRAME_attack15,
+  FRAME_attack16,
+  FRAME_attack19,
   FRAME_death50,
   FRAME_stand30,
   FRAME_stand50,
@@ -54,7 +58,11 @@ import {
   boss2_dead,
   boss2_die,
   boss2_frames_death,
+  boss2_frames_attack_mg,
+  boss2_frames_attack_post_mg,
+  boss2_frames_attack_pre_mg,
   boss2_frames_stand,
+  boss2_move_attack_post_mg,
   boss2_move_attack_mg,
   boss2_move_attack_pre_mg,
   boss2_move_attack_rocket,
@@ -65,6 +73,7 @@ import {
   boss2_move_stand,
   boss2_move_walk,
   boss2_pain,
+  boss2_attack_mg,
   boss2_reattack_mg,
   boss2_run,
   boss2_search,
@@ -79,6 +88,7 @@ function main(): void {
   verifySpawnRegistryCallsMonsterBoss2();
   verifySaveRegistryRestoresCallbacksAndMoves();
   verifyStandingMoveTable();
+  verifyMachinegunAttackMoveTables();
   verifyDeathMoveTable();
   verifyStateTransitions();
   verifySoundsAndPainBranches();
@@ -146,10 +156,16 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveFunction("SP_monster_boss2"), SP_monster_boss2);
   assert.equal(findGameSaveFunction("boss2_pain"), boss2_pain);
   assert.equal(findGameSaveFunction("boss2_die"), boss2_die);
+  assert.equal(findGameSaveFunction("boss2_attack"), boss2_attack);
+  assert.equal(findGameSaveFunction("boss2_attack_mg"), boss2_attack_mg);
+  assert.equal(findGameSaveFunction("boss2_reattack_mg"), boss2_reattack_mg);
+  assert.equal(findGameSaveFunction("Boss2MachineGun"), Boss2MachineGun);
   assert.equal(findGameSaveFunction("Boss2Rocket"), Boss2Rocket);
   assert.equal(findGameSaveMove("boss2_move_stand"), boss2_move_stand);
   assert.equal(findGameSaveMove("boss2_move_walk"), boss2_move_walk);
+  assert.equal(findGameSaveMove("boss2_move_attack_pre_mg"), boss2_move_attack_pre_mg);
   assert.equal(findGameSaveMove("boss2_move_attack_mg"), boss2_move_attack_mg);
+  assert.equal(findGameSaveMove("boss2_move_attack_post_mg"), boss2_move_attack_post_mg);
   assert.equal(findGameSaveMove("boss2_move_death"), boss2_move_death);
 }
 
@@ -164,6 +180,52 @@ function verifyStandingMoveTable(): void {
     assert.equal(frame.aifunc?.name, "ai_stand", `boss2_frames_stand[${index}].aifunc`);
     assert.equal(frame.dist, 0, `boss2_frames_stand[${index}].dist`);
     assert.equal(frame.thinkfunc, undefined, `boss2_frames_stand[${index}].thinkfunc`);
+  }
+}
+
+function verifyMachinegunAttackMoveTables(): void {
+  assert.equal(boss2_frames_attack_pre_mg.length, 9);
+  assert.equal(boss2_move_attack_pre_mg.firstframe, FRAME_attack1);
+  assert.equal(boss2_move_attack_pre_mg.lastframe, FRAME_attack1 + 8);
+  assert.equal(boss2_move_attack_pre_mg.frame, boss2_frames_attack_pre_mg);
+  assert.equal(boss2_move_attack_pre_mg.endfunc, undefined);
+
+  for (const [index, frame] of boss2_frames_attack_pre_mg.entries()) {
+    assert.equal(frame.aifunc?.name, "ai_charge", `boss2_frames_attack_pre_mg[${index}].aifunc`);
+    assert.equal(frame.dist, 1, `boss2_frames_attack_pre_mg[${index}].dist`);
+    assert.equal(
+      frame.thinkfunc?.name,
+      index === boss2_frames_attack_pre_mg.length - 1 ? "boss2_attack_mg" : undefined,
+      `boss2_frames_attack_pre_mg[${index}].thinkfunc`
+    );
+  }
+
+  assert.equal(boss2_frames_attack_mg.length, 6);
+  assert.equal(boss2_move_attack_mg.firstframe, FRAME_attack10);
+  assert.equal(boss2_move_attack_mg.lastframe, FRAME_attack15);
+  assert.equal(boss2_move_attack_mg.frame, boss2_frames_attack_mg);
+  assert.equal(boss2_move_attack_mg.endfunc, undefined);
+
+  for (const [index, frame] of boss2_frames_attack_mg.entries()) {
+    assert.equal(frame.aifunc?.name, "ai_charge", `boss2_frames_attack_mg[${index}].aifunc`);
+    assert.equal(frame.dist, 1, `boss2_frames_attack_mg[${index}].dist`);
+    assert.equal(
+      frame.thinkfunc?.name,
+      index === boss2_frames_attack_mg.length - 1 ? "boss2_reattack_mg" : "Boss2MachineGun",
+      `boss2_frames_attack_mg[${index}].thinkfunc`
+    );
+  }
+
+  assert.equal(boss2_frames_attack_post_mg.length, 4);
+  assert.equal(boss2_move_attack_post_mg.firstframe, FRAME_attack16);
+  assert.equal(boss2_move_attack_post_mg.lastframe, FRAME_attack19);
+  assert.equal(boss2_move_attack_post_mg.frame, boss2_frames_attack_post_mg);
+  assert.equal(boss2_move_attack_post_mg.endfunc, boss2_run);
+
+  for (const [index, frame] of boss2_frames_attack_post_mg.entries()) {
+    assert.equal(frame.aifunc?.name, "ai_charge", `boss2_frames_attack_post_mg[${index}].aifunc`);
+    assert.equal(frame.dist, 1, `boss2_frames_attack_post_mg[${index}].dist`);
+    assert.equal(frame.thinkfunc, undefined, `boss2_frames_attack_post_mg[${index}].thinkfunc`);
   }
 }
 
@@ -198,6 +260,7 @@ function verifyStateTransitions(): void {
   boss2_walk(boss);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_walk);
   assert.equal(boss.monsterinfo.walk, boss2_walk);
+  assert.equal(boss.monsterinfo.attack, boss2_attack);
   boss.monsterinfo.walk?.(boss, runtime);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_walk);
   boss.monsterinfo.stand?.(boss, runtime);
@@ -227,13 +290,34 @@ function verifyStateTransitions(): void {
   boss.enemy = farEnemy;
   withMathRandom([0.5], () => boss2_attack(boss));
   assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_pre_mg);
+  withMathRandom([0.6], () => boss.monsterinfo.attack?.(boss, runtime));
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_pre_mg);
   withMathRandom([0.9], () => boss2_attack(boss));
   assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_rocket);
+
+  boss.monsterinfo.currentmove = boss2_move_attack_pre_mg;
+  boss.s.frame = FRAME_attack1 + 7;
+  M_MoveFrame(boss, runtime);
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_mg);
 
   boss.enemy = farEnemy;
   boss.s.angles = [0, 0, 0];
   withMathRandom([0.5], () => boss2_reattack_mg(boss));
   assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_mg);
+  withMathRandom([0.7], () => boss2_reattack_mg(boss));
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_mg);
+  withMathRandom([0.71], () => boss2_reattack_mg(boss));
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_post_mg);
+
+  boss.enemy = createEnemy(runtime, 13, [-512, 0, 24]);
+  withMathRandom([0.1], () => boss2_reattack_mg(boss));
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_post_mg);
+
+  boss.monsterinfo.currentmove = boss2_move_attack_post_mg;
+  boss.s.frame = FRAME_attack19;
+  boss.monsterinfo.aiflags = 0;
+  M_MoveFrame(boss, runtime);
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_run);
 }
 
 function verifySoundsAndPainBranches(): void {

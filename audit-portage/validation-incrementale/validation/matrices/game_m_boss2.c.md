@@ -19,9 +19,9 @@
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_run` | `packages/game/src/m_boss2.ts` | `boss2_run` | Valide | A redecouper | Preuves session: `npm run verify:m-boss2:source-parity`, `npm run verify:m-boss2`, `npm run verify:m-boss2:header`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; branche `AI_STAND_GROUND`, affectations `boss2_move_stand` / `boss2_move_run` et branchement `monsterinfo.run` verifies. Commentaire d'en-tete ajoute dans `packages/game/src/m_boss2.ts`; assertions ajoutees dans `scripts/verify/quake2-m-boss2.ts`. apps/web integre via host full-game/local et snapshots; renderer-three consomme les modeles/frames issus des snapshots. |
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_stand` | `packages/game/src/m_boss2.ts` | `boss2_stand` | Valide | A redecouper | Preuves session: `npm run verify:m-boss2:source-parity`, `npm run verify:m-boss2`, `npm run verify:m-boss2:header`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; affectation `boss2_move_stand` et branchement `monsterinfo.stand` verifies. Commentaire d'en-tete ajoute dans `packages/game/src/m_boss2.ts`; assertions ajoutees dans `scripts/verify/quake2-m-boss2.ts`. apps/web integre via host full-game/local et snapshots; renderer-three consomme les modeles/frames issus des snapshots. |
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_dead` | `packages/game/src/m_boss2.ts` | `boss2_dead` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | function | `boss2_attack` | `packages/game/src/m_boss2.ts` | `boss2_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | function | `boss2_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_attack_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | function | `boss2_reattack_mg` | `packages/game/src/m_boss2.ts` | `boss2_reattack_mg` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | function | `boss2_attack` | `packages/game/src/m_boss2.ts` | `boss2_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | function | `boss2_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_attack_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | function | `boss2_reattack_mg` | `packages/game/src/m_boss2.ts` | `boss2_reattack_mg` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_die` | `packages/game/src/m_boss2.ts` | `boss2_die` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | function | `Boss2Rocket` | `packages/game/src/m_boss2.ts` | `Boss2Rocket` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_firebullet_right` | `packages/game/src/m_boss2.ts` | `boss2_firebullet_right` | A verifier | A redecouper |  |
@@ -39,15 +39,15 @@
 | `Quake-2-master/game/m_boss2.c` | global | `boss2_frames_run` | `packages/game/src/m_boss2.ts` | `boss2_frames_run` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | table | `boss2_frames_run` | `packages/game/src/m_boss2.ts` | `boss2_frames_run` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | global | `boss2_move_run` | `packages/game/src/m_boss2.ts` | `boss2_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | global | `boss2_frames_attack_pre_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_pre_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | table | `boss2_frames_attack_pre_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_pre_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | global | `boss2_move_attack_pre_mg` | `packages/game/src/m_boss2.ts` | `boss2_move_attack_pre_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | global | `boss2_frames_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | table | `boss2_frames_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | global | `boss2_move_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_move_attack_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | global | `boss2_frames_attack_post_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_post_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | table | `boss2_frames_attack_post_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_post_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | global | `boss2_move_attack_post_mg` | `packages/game/src/m_boss2.ts` | `boss2_move_attack_post_mg` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | global | `boss2_frames_attack_pre_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_pre_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | table | `boss2_frames_attack_pre_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_pre_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | global | `boss2_move_attack_pre_mg` | `packages/game/src/m_boss2.ts` | `boss2_move_attack_pre_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | global | `boss2_frames_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | table | `boss2_frames_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | global | `boss2_move_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_move_attack_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | global | `boss2_frames_attack_post_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_post_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | table | `boss2_frames_attack_post_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_post_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | global | `boss2_move_attack_post_mg` | `packages/game/src/m_boss2.ts` | `boss2_move_attack_post_mg` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | global | `boss2_frames_attack_rocket` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_rocket` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | table | `boss2_frames_attack_rocket` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_rocket` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | global | `boss2_move_attack_rocket` | `packages/game/src/m_boss2.ts` | `boss2_move_attack_rocket` | A verifier | A redecouper |  |
@@ -63,10 +63,10 @@
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_stand` | `packages/game/src/m_boss2.ts` | `boss2_stand` | Valide | A redecouper | Preuves session: `npm run verify:m-boss2:source-parity`, `npm run verify:m-boss2`, `npm run verify:m-boss2:header`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; affectation `boss2_move_stand` et branchement `monsterinfo.stand` verifies. Commentaire d'en-tete ajoute dans `packages/game/src/m_boss2.ts`; assertions ajoutees dans `scripts/verify/quake2-m-boss2.ts`. apps/web integre via host full-game/local et snapshots; renderer-three consomme les modeles/frames issus des snapshots. |
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_run` | `packages/game/src/m_boss2.ts` | `boss2_run` | Valide | A redecouper | Preuves session: `npm run verify:m-boss2:source-parity`, `npm run verify:m-boss2`, `npm run verify:m-boss2:header`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; branche `AI_STAND_GROUND`, affectations `boss2_move_stand` / `boss2_move_run` et branchement `monsterinfo.run` verifies. Commentaire d'en-tete ajoute dans `packages/game/src/m_boss2.ts`; assertions ajoutees dans `scripts/verify/quake2-m-boss2.ts`. apps/web integre via host full-game/local et snapshots; renderer-three consomme les modeles/frames issus des snapshots. |
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_walk` | `packages/game/src/m_boss2.ts` | `boss2_walk` | Valide | A redecouper | Preuves session: `npm run verify:m-boss2:source-parity`, `npm run verify:m-boss2`, `npm run verify:m-boss2:header`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; affectation `boss2_move_walk`, branchement `monsterinfo.walk` et save registry verifies. Commentaire d'en-tete ajoute dans `packages/game/src/m_boss2.ts`; assertions ajoutees dans `scripts/verify/quake2-m-boss2.ts`. apps/web integre via snapshots; renderer-three consomme les frames visibles. |
-| `Quake-2-master/game/m_boss2.c` | function | `boss2_attack` | `packages/game/src/m_boss2.ts` | `boss2_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | global | `range` | `packages/game/src/m_boss2.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | function | `boss2_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_attack_mg` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_boss2.c` | function | `boss2_reattack_mg` | `packages/game/src/m_boss2.ts` | `boss2_reattack_mg` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | function | `boss2_attack` | `packages/game/src/m_boss2.ts` | `boss2_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | global | `range` | `packages/game/src/m_boss2.ts` | `distance` | Non applicable | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | function | `boss2_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_attack_mg` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_boss2.c` | function | `boss2_reattack_mg` | `packages/game/src/m_boss2.ts` | `boss2_reattack_mg` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_pain` | `packages/game/src/m_boss2.ts` | `boss2_pain` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_dead` | `packages/game/src/m_boss2.ts` | `boss2_dead` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_boss2.c` | function | `boss2_die` | `packages/game/src/m_boss2.ts` | `boss2_die` | Valide | A redecouper |  |
@@ -81,9 +81,9 @@
 | `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_fidget` | `packages/game/src/m_boss2.ts` | `boss2_frames_fidget` | A verifier | matched |  |
 | `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_walk` | `packages/game/src/m_boss2.ts` | `boss2_frames_walk` | A verifier | matched |  |
 | `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_run` | `packages/game/src/m_boss2.ts` | `boss2_frames_run` | A verifier | matched |  |
-| `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_attack_pre_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_pre_mg` | A verifier | matched |  |
-| `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_mg` | A verifier | matched |  |
-| `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_attack_post_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_post_mg` | A verifier | matched |  |
+| `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_attack_pre_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_pre_mg` | Valide | matched |  |
+| `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_attack_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_mg` | Valide | matched |  |
+| `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_attack_post_mg` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_post_mg` | Valide | matched |  |
 | `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_attack_rocket` | `packages/game/src/m_boss2.ts` | `boss2_frames_attack_rocket` | A verifier | matched |  |
 | `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_pain_heavy` | `packages/game/src/m_boss2.ts` | `boss2_frames_pain_heavy` | A verifier | matched |  |
 | `Quake-2-master/game/m_boss2.c` | declarative:monster-tables | `boss2_frames_pain_light` | `packages/game/src/m_boss2.ts` | `boss2_frames_pain_light` | A verifier | matched |  |

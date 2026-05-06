@@ -16,11 +16,16 @@ import {
   AI_GOOD_GUY,
   AI_BRUTAL,
   AI_STAND_GROUND,
+  DEAD_DEAD,
   ED_CallSpawn,
   M_MoveFrame,
   MOVETYPE_STEP,
+  MOVETYPE_TOSS,
+  MOD_HIT,
   SOLID_BBOX,
+  SOLID_NOT,
   SOLID_TRIGGER,
+  SVF_DEADMONSTER,
   SVF_NOCLIENT,
   ai_move,
   ai_run,
@@ -31,8 +36,11 @@ import {
   attachGameClient,
   createGameRuntimeFromBspEntities,
   drainGameCprintfEvents,
+  drainGameSoundEvents,
   drainMonsterMuzzleFlashEvents,
   ai_charge,
+  damage_t,
+  T_Damage,
   spawnGameEntity
 } from "../../packages/game/src/index.js";
 
@@ -159,6 +167,30 @@ assert.equal(actorFrames.actor_move_attack.firstframe, actorFrames.FRAME_attak01
 assert.equal(actorFrames.actor_move_attack.lastframe, actorFrames.FRAME_attak04, "actor_move_attack lastframe");
 assert.equal(actorFrames.actor_move_attack.frame, actorFrames.actor_frames_attack, "actor_move_attack frame table");
 assert.equal(actorFrames.actor_move_attack.endfunc, actorFrames.actor_run, "actor_move_attack endfunc");
+
+const expectedDeath1Distances = [0, 0, -13, 14, 3, -2, 1];
+assert.equal(actorFrames.actor_frames_death1.length, expectedDeath1Distances.length, "actor_frames_death1 has 7 C frames");
+for (const [index, frame] of actorFrames.actor_frames_death1.entries()) {
+  assert.equal(frame.aifunc, ai_move, `actor_frames_death1[${index}] uses ai_move`);
+  assert.equal(frame.dist, expectedDeath1Distances[index], `actor_frames_death1[${index}] distance`);
+  assert.equal(frame.thinkfunc, undefined, `actor_frames_death1[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_death1.firstframe, actorFrames.FRAME_death101, "actor_move_death1 firstframe");
+assert.equal(actorFrames.actor_move_death1.lastframe, actorFrames.FRAME_death107, "actor_move_death1 lastframe");
+assert.equal(actorFrames.actor_move_death1.frame, actorFrames.actor_frames_death1, "actor_move_death1 frame table");
+assert.equal(actorFrames.actor_move_death1.endfunc, actorFrames.actor_dead, "actor_move_death1 endfunc");
+
+const expectedDeath2Distances = [0, 7, -6, -5, 1, 0, -1, -2, -1, -9, -13, -13, 0];
+assert.equal(actorFrames.actor_frames_death2.length, expectedDeath2Distances.length, "actor_frames_death2 has 13 C frames");
+for (const [index, frame] of actorFrames.actor_frames_death2.entries()) {
+  assert.equal(frame.aifunc, ai_move, `actor_frames_death2[${index}] uses ai_move`);
+  assert.equal(frame.dist, expectedDeath2Distances[index], `actor_frames_death2[${index}] distance`);
+  assert.equal(frame.thinkfunc, undefined, `actor_frames_death2[${index}] thinkfunc`);
+}
+assert.equal(actorFrames.actor_move_death2.firstframe, actorFrames.FRAME_death201, "actor_move_death2 firstframe");
+assert.equal(actorFrames.actor_move_death2.lastframe, actorFrames.FRAME_death213, "actor_move_death2 lastframe");
+assert.equal(actorFrames.actor_move_death2.frame, actorFrames.actor_frames_death2, "actor_move_death2 frame table");
+assert.equal(actorFrames.actor_move_death2.endfunc, actorFrames.actor_dead, "actor_move_death2 endfunc");
 
 const path = spawnGameEntity(runtime);
 path.classname = "target_actor";
@@ -389,6 +421,86 @@ const moveFrameFlash = drainMonsterMuzzleFlashEvents(runtime);
 assert.equal(actor.s.frame, actorFrames.FRAME_attak01, "M_MoveFrame enters actor attack first frame");
 assert.equal(moveFrameFlash.length, 1, "M_MoveFrame reaches actor_fire and queues muzzleflash");
 assert.equal((actor.monsterinfo.aiflags & AI_HOLD_FRAME) !== 0, true, "actor_fire hold flag affects M_MoveFrame attack loop");
+
+const deathActor = spawnGameEntity(runtime);
+deathActor.classname = "misc_actor";
+deathActor.targetname = "death_actor";
+deathActor.target = "actor_path";
+ED_CallSpawn(deathActor, runtime);
+deathActor.takedamage = damage_t.DAMAGE_YES;
+
+try {
+  Math.random = () => 0;
+  deathActor.health = 10;
+  deathActor.deadflag = 0;
+  T_Damage(deathActor, player, player, [1, 0, 0], deathActor.s.origin, [0, 0, 1], 15, 0, 0, MOD_HIT, runtime);
+  assert.equal(deathActor.deadflag, DEAD_DEAD, "actor_die marks ordinary death as DEAD_DEAD via T_Damage");
+  assert.equal(deathActor.takedamage, damage_t.DAMAGE_YES, "actor_die keeps corpse damage enabled like DAMAGE_YES");
+  assert.equal(deathActor.monsterinfo.currentmove, actorFrames.actor_move_death1, "actor_die rand()%2 lower branch selects death1");
+  assert.equal(drainGameSoundEvents(runtime).length, 0, "actor_die ordinary death emits no sound because C sound call is commented");
+} finally {
+  Math.random = originalRandom;
+}
+
+const deadMoveBefore = deathActor.monsterinfo.currentmove;
+deathActor.s.frame = actorFrames.actor_move_death1.lastframe;
+const linkcountBeforeDead = deathActor.linkcount;
+M_MoveFrame(deathActor, runtime);
+assert.equal(deathActor.monsterinfo.currentmove, deadMoveBefore, "actor_dead leaves death move in place");
+assert.deepEqual(deathActor.mins, [-16, -16, -24], "actor_dead final mins");
+assert.deepEqual(deathActor.maxs, [16, 16, -8], "actor_dead final maxs");
+assert.equal(deathActor.movetype, MOVETYPE_TOSS, "actor_dead switches to MOVETYPE_TOSS");
+assert.equal((deathActor.svflags & SVF_DEADMONSTER) !== 0, true, "actor_dead sets SVF_DEADMONSTER");
+assert.equal(deathActor.nextthink, 0, "actor_dead clears nextthink");
+assert.equal(deathActor.linked, true, "actor_dead relinks corpse");
+assert.equal(deathActor.linkcount, linkcountBeforeDead + 1, "actor_dead relink increments linkcount");
+assert.deepEqual(deathActor.absmin, deathActor.s.origin.map((value, index) => value + deathActor.mins[index]), "actor_dead refreshes absmin for corpse bbox");
+
+try {
+  Math.random = () => 0.75;
+  deathActor.health = 10;
+  deathActor.deadflag = 0;
+  actorFrames.actor_die(deathActor, player, player, 15, runtime);
+  assert.equal(deathActor.monsterinfo.currentmove, actorFrames.actor_move_death2, "actor_die rand()%2 upper branch selects death2");
+} finally {
+  Math.random = originalRandom;
+}
+
+const unchangedMove = deathActor.monsterinfo.currentmove;
+actorFrames.actor_die(deathActor, player, player, 15, runtime);
+assert.equal(deathActor.monsterinfo.currentmove, unchangedMove, "actor_die returns when already DEAD_DEAD");
+
+const gibActor = spawnGameEntity(runtime);
+gibActor.classname = "misc_actor";
+gibActor.targetname = "gib_actor";
+gibActor.target = "actor_path";
+ED_CallSpawn(gibActor, runtime);
+gibActor.takedamage = damage_t.DAMAGE_YES;
+gibActor.health = -90;
+const gibEntityCountBefore = runtime.entities.length;
+try {
+  Math.random = () => 0;
+  actorFrames.actor_die(gibActor, player, player, 120, runtime);
+} finally {
+  Math.random = originalRandom;
+}
+const spawnedGibs = runtime.entities.slice(gibEntityCountBefore);
+const spawnedGibModels = spawnedGibs.map((entity) => runtime.assets.modelPaths[entity.s.modelindex - 1]);
+assert.equal(gibActor.deadflag, DEAD_DEAD, "actor_die gib branch marks DEAD_DEAD");
+assert.equal(spawnedGibs.length, 6, "actor_die gib branch spawns two bone and four meat gibs");
+assert.equal(
+  spawnedGibModels.filter((model) => model === "models/objects/gibs/bone/tris.md2").length,
+  2,
+  "actor_die local n loop spawns two bone gibs"
+);
+assert.equal(
+  spawnedGibModels.filter((model) => model === "models/objects/gibs/sm_meat/tris.md2").length,
+  4,
+  "actor_die local n loop spawns four meat gibs"
+);
+assert.equal(runtime.assets.modelPaths[gibActor.s.modelindex - 1], "models/objects/gibs/head2/tris.md2", "actor_die throws head model");
+assert.equal(gibActor.solid, SOLID_NOT, "actor_die head gib becomes nonsolid");
+assert.equal(drainGameSoundEvents(runtime).length, 0, "actor_die gib death emits no sound because C sound call is commented");
 
 actor.enemy = null;
 actor.movetarget = path;

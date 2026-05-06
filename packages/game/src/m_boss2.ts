@@ -459,6 +459,19 @@ export function boss2_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = boss2_move_walk;
 }
 
+/**
+ * Original name: boss2_attack
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Chooses the machinegun windup at close range or on the original 60 percent random branch.
+ * - Chooses the rocket attack only for farther targets when the random branch misses.
+ *
+ * Porting notes:
+ * - Keeps a defensive missing-enemy guard; normal runtime reaches this through monster AI with an enemy.
+ */
 export function boss2_attack(self: GameEntity): void {
   if (!self.enemy) {
     return;
@@ -472,10 +485,32 @@ export function boss2_attack(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: boss2_attack_mg
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Enters the looping boss2 machinegun move.
+ */
 export function boss2_attack_mg(self: GameEntity): void {
   self.monsterinfo.currentmove = boss2_move_attack_mg;
 }
 
+/**
+ * Original name: boss2_reattack_mg
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Continues the machinegun loop only when the enemy remains in front and the original 70 percent random branch succeeds.
+ * - Otherwise exits through the post-machinegun move.
+ *
+ * Porting notes:
+ * - Keeps a defensive missing-enemy guard; normal runtime reaches this through monster AI with an enemy.
+ */
 export function boss2_reattack_mg(self: GameEntity): void {
   if (self.enemy && infront(self, self.enemy) && Math.random() <= 0.7) {
     self.monsterinfo.currentmove = boss2_move_attack_mg;

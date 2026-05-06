@@ -1530,7 +1530,25 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:m-flyer` OK; `npm run verify:m-flyer:header` OK; `npm run verify:m-flyer:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Continuer avec une petite famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_chick.ts` ou `m_gladiator.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot de reprise `random`/`crandom`, migration `packages/game/src/m_gladiator.ts` pour `gladiator_pain`; verification immediate de `GaldiatorMelee`/`randomInt`.
+- Verdict: `Partiel` maintenu pour les 2 macros: le consommateur `m_gladiator.ts` est harmonise pour l'unique usage macro C `random()`, aucun consommateur `crandom()` n'existe dans `m_gladiator.c`/`m_gladiator.ts`, mais d'autres familles `m_*` et `g_utils.ts` restent ouvertes.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_gladiator.c` consomme `random()` dans `gladiator_pain` (`< 0.5`); `GaldiatorMelee` utilise `rand() % 5`, hors macro flottante, et reste porte par le helper entier local.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes; `random` porte la formule 15 bits et `crandom` depend de `random`.
+  - `packages/game/src/m_gladiator.ts`: `gladiator_pain` consomme maintenant le helper proprietaire `random`; le commentaire d'en-tete de `gladiator_pain` documente ce branchement; `randomInt` reste limite a `GaldiatorMelee` pour porter `rand() % 5`.
+- Runtime: integration attendue et branchee via `SP_monster_gladiator`, `g_spawn.ts`, callback `pain`, `T_Damage`, `monster_think`/`M_MoveFrame`, `G_RunEntity` et `G_RunFrame`; le tirage affecte le son de douleur et les frames/skin de douleur visibles.
+- apps/web: integration attendue indirectement via host full-game/local, snapshots, sons, entites monstres et ordre de rendu; aucune logique parallele web `m_gladiator`/`random` detectee dans ce sous-lot.
+- renderer-three: integration indirecte attendue. Le tirage `m_gladiator.ts` affecte sorties visibles/audibles via modele gladiator, skin de douleur, frames pain/pain_air, sons et scene; ces sorties passent par snapshots/client/refresh/Three, sans consommation directe du helper par `renderer-three`.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaire d'en-tete de `gladiator_pain` mis a jour avec note de portage vers `g_local.random`; `GaldiatorMelee` verifie comme usage `rand() % 5` hors macro.
+- Corrections appliquees:
+  - `packages/game/src/m_gladiator.ts`: import de `random` depuis `g_local.ts`, remplacement de l'usage direct `Math.random()` correspondant au macro C `random()`, note de portage ajoutee.
+  - `scripts/verify/quake2-m-gladiator.ts`: preuves deterministes ajustees pour le seuil C-style 15 bits dans `gladiator_pain`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
+- Tests: `npm run verify:m-gladiator` OK; `npm run verify:m-gladiator:header` OK; `npm run verify:m-gladiator:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Continuer avec une famille `m_*` non reservee de consommateurs runtime de `random`/`crandom`, par exemple `m_chick.ts` ou `m_gunner.ts`, puis reprendre `g_utils.ts` quand il ne sera plus reserve. `m_move.ts`, `g_items.ts` et `p_hud.ts` ont montre seulement des usages `rand()` hors macros pendant les verifications recentes. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
 
 ## Blocages
 

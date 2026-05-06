@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: bloc attaque `actorMachineGun`, `actor_fire`, `actor_frames_attack`, `actor_move_attack`, `actor_attack` et temporaire local `n`
-- Verdict: `Valide` pour les lignes du bloc attaque
+- Dernier lot traite: bloc mort `actor_dead`, `actor_frames_death1`/`actor_move_death1`, `actor_frames_death2`/`actor_move_death2`, `actor_die` et temporaire local `n`
+- Verdict: `Valide` pour les lignes du bloc mort
 
 ## Checklist appliquee au lot
 
@@ -115,6 +115,16 @@
 - renderer-three: le bloc produit des frames modele visibles (`FRAME_attak01` a `FRAME_attak04`) et une sortie muzzleflash visible/audible (dlight, particules, smoke/flash, son client). Consommation attendue via snapshots/refresh entities et `ClientRefreshFrame` vers `renderer-three`; couverte par `verify:full-game:three-renderer` et le test local-gameplay-sync. Aucun manque renderer ouvert.
 - Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts` pour la table d'attaque, les branches de `actorMachineGun`, `actor_fire`, les bornes de `actor_attack`, et le chemin `M_MoveFrame -> actor_fire -> muzzleflash`; correction du commentaire `actor_attack` dans `packages/game/src/m_actor.ts`.
 
+## Session 2026-05-06 - bloc mort actor_die
+
+- Identification: `actor_dead`, `actor_frames_death1` global/table/declarative, `actor_move_death1`, `actor_frames_death2` global/table/declarative, `actor_move_death2`, `actor_die` et le local `n` de `actor_die` sont proprietaires de `game/m_actor.c`, cibles dans `packages/game/src/m_actor.ts`. Aucun doublon TS concurrent trouve; les deux lignes declaratives des tables death ont ete traitees avec leurs lignes global/table.
+- Comparaison C vs TS: `actor_frames_death1` conserve les 7 frames `ai_move` et distances `[0, 0, -13, 14, 3, -2, 1]`; `actor_move_death1` conserve `FRAME_death101` a `FRAME_death107` et `actor_dead` en endfunc. `actor_frames_death2` conserve les 13 frames `ai_move` et distances `[0, 7, -6, -5, 1, 0, -1, -2, -1, -9, -13, -13, 0]`; `actor_move_death2` conserve `FRAME_death201` a `FRAME_death213` et `actor_dead` en endfunc. `actor_dead` conserve bbox `[-16,-16,-24]` / `[16,16,-8]`, `MOVETYPE_TOSS`, `SVF_DEADMONSTER`, `nextthink = 0` et relink. `actor_die` conserve le seuil gib `health <= -80`, les boucles locales `n` de 2 bone gibs et 4 meat gibs, `ThrowHead`, `DEAD_DEAD`, le retour si deja mort, `DAMAGE_YES`, et le choix `rand()%2` entre les deux mouvements de mort. Les appels son C sont commentes et le TS n'emet pas de son dans ces branches.
+- Commentaires d'en-tete: commentaires de `actor_dead` et `actor_die` verifies (`Original name`, `Source`, `Category: Ported`, fidelite et comportement). Pas de commentaire de fonction requis pour les tables declaratives, le commentaire de fichier documente l'ownership.
+- Runtime: branchement attendu et verifie depuis `SP_misc_actor` (`self.die = actor_die`), degats `T_Damage`, `Killed`, puis `actor_die`; la progression par `M_MoveFrame` atteint `actor_dead` depuis `actor_move_death1` et relink le corpse. Les gibs utilisent `ThrowGib`/`ThrowHead` et sont lies au runtime.
+- apps/web: pas de logique gameplay parallele attendue; le navigateur doit declencher le flux via le host full-game/local et consommer les snapshots/refresh issus du runtime. Couvert par `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order`.
+- renderer-three: le bloc produit des frames de mort visibles, une bbox/etat corpse, et en gib death des modeles gib/head visibles (`models/objects/gibs/...`) exposes par snapshots/refresh entities; consommation attendue via refresh entities puis alias MD2 dans `renderer-three`, couverte par `verify:full-game:three-renderer`. Aucun manque renderer ouvert.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts` pour les tables death, `actor_die` via `T_Damage`, les branches RNG death1/death2, le retour deja mort, la branche gib et ses boucles locales `n`, l'absence de son attendu, et le chemin `M_MoveFrame -> actor_dead` avec relink/bbox/flags.
+
 ## Tests de reference
 
 - `npm run verify:m-actor`
@@ -127,7 +137,7 @@
 
 ## Prochain lot recommande
 
-Valider le bloc mort `actor_dead`, `actor_frames_death1`/`actor_move_death1`, `actor_frames_death2`/`actor_move_death2`, `actor_die` et le local `n`, avec bbox finale, gib/death branches, frames visibles et sortie renderer.
+Valider le bloc scripted actor restant `actor_use` avec le local `v`, puis `target_actor_touch` avec les locaux `n`, `ent`, `savetarget`, et `SP_target_actor`; inclure `SP_misc_actor` si le lot reste coherent avec le spawn/ownership restant.
 
 ## Blocages / decisions
 

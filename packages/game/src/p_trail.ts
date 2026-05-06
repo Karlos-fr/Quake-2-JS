@@ -17,6 +17,7 @@
 
 import type { vec3_t } from "../../qcommon/src/index.js";
 import { visible } from "./g_ai.js";
+import { vectoyaw } from "./g_utils.js";
 import { spawnGameEntity } from "./runtime.js";
 import type { GameEntity, GameRuntime } from "./runtime.js";
 
@@ -194,26 +195,4 @@ export function PlayerTrail_PickNext(self: GameEntity, runtime: GameRuntime): Ga
  */
 export function PlayerTrail_LastSpot(runtime: GameRuntime): GameEntity | null {
   return runtime.playerTrail.trail[PREV(runtime.playerTrail.trail_head)] ?? null;
-}
-
-/**
- * Original name: vectoyaw
- * Source: game/g_utils.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Converts one direction vector into the Quake II yaw angle used by trail markers.
- */
-function vectoyaw(vector: vec3_t): number {
-  if (vector[1] === 0 && vector[0] === 0) {
-    return 0;
-  }
-
-  let yaw = Math.atan2(vector[1], vector[0]) * 180 / Math.PI;
-  if (yaw < 0) {
-    yaw += 360;
-  }
-
-  return yaw;
 }

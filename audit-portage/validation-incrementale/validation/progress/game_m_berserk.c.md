@@ -155,6 +155,27 @@
 - Corrections appliquees:
   - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant le flux runtime du move run1, le branchement `monsterinfo.run`, la branche `AI_STAND_GROUND` et l'enregistrement de sauvegarde.
 
+## Session 2026-05-06 - bloc attaque spike
+
+- Lot traite: `berserk_attack_spike`, `berserk_swing`, `berserk_frames_attack_spike` global/table/declarative et `berserk_move_attack_spike`.
+- Verdict: Valide.
+- Comparaison C/TS: `berserk_attack_spike` conserve l'aim statique `[MELEE_DISTANCE, 0, -24]`, l'appel `fire_hit`, les degats `15 + rand() % 6` portes en `15 + randomInt(6)`, et le kick `400`; `berserk_swing` conserve le son `sound_punch` sur `CHAN_WEAPON`, volume `1`, `ATTN_NORM`, `timeofs` 0; la table conserve 8 frames `ai_charge`, distances 0, callbacks aux index 2 (`berserk_swing`) et 3 (`berserk_attack_spike`); `berserk_move_attack_spike` conserve `FRAME_att_c1`..`FRAME_att_c8` et `endfunc = berserk_run`.
+- Commentaires d'en-tete: commentaires TS de `berserk_attack_spike` et `berserk_swing` verifies et precises; table/global declaratifs sans commentaire de fonction requis.
+- Runtime: integre. `SP_monster_berserk` assigne `monsterinfo.melee = berserk_melee`; le test ajoute prouve la selection spike depuis `monsterinfo.melee`, le passage `G_RunFrame`/`monster_think` par les frames visibles, l'emission sonore drainee via `gi.sound`, le callback `fire_hit` et le retour `endfunc` vers `berserk_run`/`berserk_move_run1`.
+- apps/web: integre. Le navigateur declenche ce flux via le serveur local porte (`SV_Frame`/`G_RunFrame`) et consomme les snapshots/runtime et les sons; aucune logique parallele berserk constatee.
+- renderer-three: integre. Le lot produit des frames MD2 visibles (`s.frame`) pour le modele berserk et un son audible; les snapshots client conservent `frame/oldframe/backlerp` et `packages/renderer-three` consomme les entites alias via `refresh-entity-sync` / `applyMd2AliasFrameLerp`.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `packages/game/src/m_berserk.ts`: notes de portage precisees pour `berserk_attack_spike` et `berserk_swing`.
+  - `scripts/verify/quake2-m-berserk.ts`: ajout de preuves ciblees pour le chemin `monsterinfo.melee` -> spike -> son/fire_hit -> `berserk_run`, et stabilisation du test walk contre le fidget aleatoire.
+
 ## Prochain lot recommande
 
-- Valider le bloc `berserk_attack_spike` / `berserk_swing` / `berserk_frames_attack_spike` / `berserk_move_attack_spike`, en couvrant le son, `fire_hit`, l'endfunc `berserk_run`, les callbacks de frames et les sorties visibles/audibles runtime.
+- Valider le bloc adjacent `berserk_attack_club`, `berserk_frames_attack_club` global/table/declarative et `berserk_move_attack_club`, avec le `aim[1] = self->mins[0]`, `fire_hit`, `berserk_swing`, `endfunc = berserk_run`, selection depuis `berserk_melee` et sorties visibles/audibles.

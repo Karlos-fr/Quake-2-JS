@@ -460,6 +460,9 @@ export function berserk_run(self: GameEntity): void {
  *
  * Behavior:
  * - Performs the fast upward melee hit with original damage range and kick.
+ *
+ * Porting notes:
+ * - `rand() % 6` is represented by `randomInt(6)` while preserving the source damage range.
  */
 export function berserk_attack_spike(self: GameEntity, runtime: GameRuntime): void {
   const aim: vec3_t = [MELEE_DISTANCE, 0, -24];
@@ -473,7 +476,7 @@ export function berserk_attack_spike(self: GameEntity, runtime: GameRuntime): vo
  * Fidelity level: Close
  *
  * Behavior:
- * - Plays the berserk punch swing sound.
+ * - Queues the berserk punch swing sound with the original channel and attenuation.
  */
 export function berserk_swing(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_punch, SOUND_PUNCH, {

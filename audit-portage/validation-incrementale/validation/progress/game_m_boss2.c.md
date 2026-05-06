@@ -106,6 +106,23 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout des commentaires d'en-tete de `boss2_dead` et `boss2_die`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour la table/move de mort, le relink de corpse, `BossExplode` et l'endfunc `boss2_dead` via `M_MoveFrame`.
 
+- Lot traite: bloc attaque machinegun `boss2_attack`, local `range`, `boss2_attack_mg`, `boss2_reattack_mg`, `boss2_frames_attack_pre_mg`, `boss2_move_attack_pre_mg`, `boss2_frames_attack_mg`, `boss2_move_attack_mg`, `boss2_frames_attack_post_mg` et `boss2_move_attack_post_mg`.
+- Verdict: Valide pour les fonctions/tables/moves; `range` est `Non applicable` comme entite autonome, portee par le local TS `distance` dans `boss2_attack`.
+- Comparaison C/TS: `boss2_attack` conserve le calcul de distance ennemi-boss, le seuil `range <= 125`, la branche `random() <= 0.6` vers `boss2_move_attack_pre_mg` et la sortie rocket sinon, sans valider le flux rocket au-dela de l'affectation de move. `boss2_attack_mg` conserve l'affectation unique vers `boss2_move_attack_mg`. `boss2_reattack_mg` conserve le test `infront(self, self->enemy)`, la branche `random() <= 0.7` vers la boucle MG et la sortie post-MG sinon. Les trois tables MG conservent les longueurs, `ai_charge`, distances `1`, callbacks `boss2_attack_mg`, cinq tirs `Boss2MachineGun`, `boss2_reattack_mg`, et l'endfunc `boss2_run` du post-MG.
+- Commentaires d'en-tete: commentaires de fonction ajoutes pour `boss2_attack`, `boss2_attack_mg` et `boss2_reattack_mg` avec `Original name`, `Source`, `Category: Ported`, niveau de fidelite et notes sur les gardes defensifs d'ennemi.
+- Runtime: integre. `SP_monster_boss2` assigne `monsterinfo.attack = boss2_attack`; le callback est atteignable par l'AI monstre depuis `G_RunFrame` / `monster_think`. `M_MoveFrame` consomme ensuite `boss2_move_attack_pre_mg`, appelle `boss2_attack_mg`, boucle `boss2_move_attack_mg`, appelle `Boss2MachineGun` et `boss2_reattack_mg`, puis sort par `boss2_move_attack_post_mg` vers `boss2_run`. Le harness couvre aussi le save registry des callbacks et moves MG.
+- apps/web: integre. `apps/web` ne remplace pas la logique boss2; le flux host full-game/local consomme les snapshots, sons et muzzleflash events issus du runtime porte.
+- renderer-three: integre. Le lot produit des frames visibles du modele boss2 et des muzzleflash machinegun visibles/audibles; les frames passent par snapshots/refresh entities vers `renderer-three`, et les muzzleflash events sont consommes par le flux client/renderer deja verifie.
+- Tests lances:
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees: ajout des commentaires d'en-tete des trois fonctions MG; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour les tables/moves MG, `monsterinfo.attack`, les seuils `0.6`/`0.7`, le callback de windup via `M_MoveFrame`, la sortie post-MG vers `boss2_run`, les muzzleflash et le save registry.
+
 ## Prochain lot recommande
 
-- Valider le bloc attaque machinegun: `boss2_attack`, local `range`, `boss2_attack_mg`, `boss2_reattack_mg`, puis les tables/moves `boss2_frames_attack_pre_mg`, `boss2_move_attack_pre_mg`, `boss2_frames_attack_mg`, `boss2_move_attack_mg`, `boss2_frames_attack_post_mg`, `boss2_move_attack_post_mg` si le lot reste raisonnable.
+- Valider le bloc roquettes separe: `Boss2Rocket`, `boss2_frames_attack_rocket`, `boss2_move_attack_rocket`, et seulement ensuite les helpers de tir rocket si le lot reste borne.

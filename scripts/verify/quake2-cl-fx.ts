@@ -10,6 +10,7 @@ import {
   CL_AddLightStyles,
   CL_AddParticles,
   CL_AllocDlight,
+  CL_BFGExplosionParticles,
   CL_BigTeleportParticles,
   CL_BlasterParticles,
   CL_BlasterTrail,
@@ -43,6 +44,7 @@ import {
   CL_RunDLights,
   CL_RunLightStyles,
   CL_SetLightstyle,
+  CL_TrapParticles,
   CL_TeleporterParticles
 } from "../../packages/client/src/cl_fx.js";
 import {
@@ -60,6 +62,7 @@ import {
   EF_IONRIPPER,
   EF_ROCKET,
   EF_TELEPORTER,
+  EF_TRAP,
   EF_FLAG1,
   EF_FLAG2,
   entity_event_t,
@@ -109,6 +112,10 @@ function main(): void {
   verifyFlyParticlesPacketEntityRuntimeBranch();
   verifyBfgParticlesRuntimeParticles();
   verifyBfgParticlesPacketEntityRuntimeBranch();
+  verifyTrapParticlesRuntimeParticles();
+  verifyTrapParticlesPacketEntityRuntimeBranch();
+  verifyBfgExplosionParticlesRuntimeParticles();
+  verifyBfgExplosionTempEntityRuntimeBranch();
   verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
@@ -1422,6 +1429,136 @@ function verifyBfgParticlesPacketEntityRuntimeBranch(): void {
     const snapshot = frame.entities.find((entity) => entity.entityNumber === 9);
     assert.equal(snapshot?.alpha, 0.3, "EF_BFG entity should remain translucent in refresh snapshots");
   });
+}
+
+function verifyTrapParticlesRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 1200;
+  const adjustedOrigin: vec3_t = [10, 20, 62];
+
+  withMockRandom(0, () => {
+    CL_TrapParticles(runtime, adjustedOrigin);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 21, "CL_TrapParticles should emit 13 column particles and 8 burst particles");
+  assert.equal(runtime.cl.free_particles, 21, "CL_TrapParticles free list should advance by every allocated particle");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_TrapParticles particle time mismatch");
+
+  const firstColumn = particles.at(-1);
+  assert.ok(firstColumn, "CL_TrapParticles should allocate the column first");
+  assert.deepEqual(firstColumn.org, [9, 19, 47], "CL_TrapParticles column origin should apply -14 Z and crand jitter");
+  assert.deepEqual(firstColumn.vel, [-15, -15, -15], "CL_TrapParticles column velocity should use crand() * 15");
+  assert.deepEqual(firstColumn.accel, [0, 0, 40], "CL_TrapParticles column acceleration should rise with PARTICLE_GRAVITY");
+  assert.equal(firstColumn.color, 0xe0, "CL_TrapParticles column color mismatch");
+  assert.equal(firstColumn.alpha, 1.0, "CL_TrapParticles column alpha mismatch");
+  assert.ok(almostEqual(firstColumn.alphavel, -1 / 0.3), "CL_TrapParticles column alpha decay mismatch");
+
+  const firstBurst = particles[0];
+  assert.ok(firstBurst, "CL_TrapParticles should append the burst lattice");
+  assert.equal(firstBurst.color, 0xe0, "CL_TrapParticles burst palette base mismatch");
+  assert.deepEqual(firstBurst.accel, [0, 0, -40], "CL_TrapParticles burst acceleration should use falling gravity");
+  assert.ok(almostEqual(vectorLength(firstBurst.vel), 50), "CL_TrapParticles burst velocity should scale the normalized dir by vel");
+
+  const metadata = CL_TrapParticles(adjustedOrigin);
+  assert.equal(metadata[0]?.kind, "trap-column-trail", "CL_TrapParticles column metadata kind mismatch");
+  assert.deepEqual(metadata[0]?.position, [10, 20, 48], "CL_TrapParticles column metadata start mismatch");
+  assert.deepEqual(metadata[0]?.position2, [10, 20, 112], "CL_TrapParticles column metadata end mismatch");
+  assert.equal(metadata[0]?.spacing, 5, "CL_TrapParticles column metadata spacing mismatch");
+  assert.equal(metadata[1]?.kind, "trap-burst-particles", "CL_TrapParticles burst metadata kind mismatch");
+  assert.equal(metadata[1]?.count, 8, "CL_TrapParticles burst metadata should preserve the 2x2x2 lattice count");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 21, "CL_TrapParticles particles should reach the refresh particle list");
+}
+
+function verifyTrapParticlesPacketEntityRuntimeBranch(): void {
+  const runtime = createRuntime();
+  const origin: vec3_t = [10, 20, 30];
+
+  withMockRandom(0, () => {
+    CL_ExecutePacketEntityEffects(runtime, [{
+      number: 11,
+      origin,
+      effects: EF_TRAP,
+      modelindex: 1,
+      viewerEntity: false
+    }]);
+  });
+
+  assert.equal(collectActiveParticles(runtime).length, 21, "EF_TRAP should dispatch to CL_TrapParticles");
+
+  const refreshRuntime = createRuntime();
+  refreshRuntime.cl.time = 0;
+  refreshRuntime.cl.frame.num_entities = 1;
+  refreshRuntime.cl.frame.parse_entities = 0;
+  refreshRuntime.cl_parse_entities[0].number = 11;
+  refreshRuntime.cl_parse_entities[0].effects = EF_TRAP;
+  refreshRuntime.cl_parse_entities[0].origin = [...origin] as vec3_t;
+  refreshRuntime.cl_parse_entities[0].modelindex = 1;
+  refreshRuntime.cl_entities[11].current.number = 11;
+  refreshRuntime.cl_entities[11].current.origin = [...origin] as vec3_t;
+  refreshRuntime.cl_entities[11].current.effects = EF_TRAP;
+  refreshRuntime.cl_entities[11].current.modelindex = 1;
+
+  withMockRandom(0, () => {
+    const frame = CL_BuildRefreshFrame(refreshRuntime, { viewerEntity: 0 });
+    assert.equal(frame.particles.length, 21, "EF_TRAP particles should reach ClientRefreshFrame.particles");
+    const trapLight = frame.lights.find((light) => light.kind === "trap");
+    assert.ok(trapLight, "EF_TRAP should expose the original trap dlight");
+    assert.equal(trapLight.intensity, 100, "EF_TRAP dlight should preserve rand%100 + 100 lower bound");
+    assert.deepEqual(trapLight.origin, [10, 20, 62], "EF_TRAP dlight origin should use the C +32 Z adjustment");
+  });
+}
+
+function verifyBfgExplosionParticlesRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 900;
+  const origin: vec3_t = [32, 64, 96];
+
+  withMockRandom(0, () => {
+    CL_BFGExplosionParticles(runtime, origin);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 256, "CL_BFGExplosionParticles should emit the original 256 particles");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "BFG explosion particle time mismatch");
+  assert.ok(particles.every((particle) => particle.color === 0xd0), "BFG explosion color base mismatch under deterministic rand");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === -40), "BFG explosion acceleration mismatch");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && almostEqual(particle.alphavel, -1.6)), "BFG explosion alpha decay mismatch");
+
+  const firstAllocated = particles.at(-1);
+  assert.ok(firstAllocated, "CL_BFGExplosionParticles should allocate index 0 first");
+  assert.deepEqual(firstAllocated.org, [16, 48, 80], "BFG explosion origin jitter should preserve rand%32 - 16");
+  assert.deepEqual(firstAllocated.vel, [-192, -192, -192], "BFG explosion velocity should preserve rand%384 - 192");
+
+  const metadata = CL_BFGExplosionParticles(origin);
+  assert.equal(metadata[0]?.kind, "bfg-explosion-particles", "BFG explosion metadata kind mismatch");
+  assert.equal(metadata[0]?.count, 256, "BFG explosion metadata count mismatch");
+  assert.equal(metadata[0]?.color, 0xd0, "BFG explosion metadata color mismatch");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 256, "BFG explosion particles should reach the refresh particle list");
+}
+
+function verifyBfgExplosionTempEntityRuntimeBranch(): void {
+  const runtime = createRuntime();
+  const origin: vec3_t = [8, 16, 24];
+
+  withMockRandom(0, () => {
+    CL_ExecuteTempEntityEffects(runtime, {
+      type: temp_event_t.TE_BFG_BIGEXPLOSION,
+      position: origin
+    });
+  });
+
+  assert.equal(collectActiveParticles(runtime).length, 256, "TE_BFG_BIGEXPLOSION should dispatch to CL_BFGExplosionParticles");
+
+  const effects = CL_BuildTempEntityEffects({
+    type: temp_event_t.TE_BFG_BIGEXPLOSION,
+    position: origin
+  });
+  assert.ok(effects.some((effect) => effect.kind === "bfg-explosion-particles"), "TE_BFG_BIGEXPLOSION should expose BFG explosion particle metadata to apps/web");
 }
 
 function verifyMakeNormalVectors(): void {

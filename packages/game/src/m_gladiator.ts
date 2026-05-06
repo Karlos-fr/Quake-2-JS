@@ -26,7 +26,8 @@ import {
   MOVETYPE_TOSS,
   SOLID_BBOX,
   SVF_DEADMONSTER,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_walk } from "./g_ai.js";
 import { monster_fire_railgun, walkmonster_start } from "./g_monster.js";
@@ -435,6 +436,9 @@ export const gladiator_move_pain_air: GameMonsterMove = {
  *
  * Behavior:
  * - Applies damaged skin, pain debounce, air-pain transition and nightmare suppression.
+ *
+ * Porting notes:
+ * - The source `random() < 0.5` sound branch uses `g_local.random`, not raw `Math.random`.
  */
 export function gladiator_pain(
   self: GameEntity,
@@ -456,7 +460,7 @@ export function gladiator_pain(
 
   self.pain_debounce_time = runtime.time + 3;
 
-  if (Math.random() < 0.5) {
+  if (random() < 0.5) {
     emitRegisteredGameSound(runtime, self, sound_pain1, SOUND_PAIN1, {
       channel: CHAN_VOICE,
       volume: 1,

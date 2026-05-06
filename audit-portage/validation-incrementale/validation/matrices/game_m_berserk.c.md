@@ -35,11 +35,11 @@
 | `Quake-2-master/game/m_berserk.c` | table | `berserk_frames_run1` | `packages/game/src/m_berserk.ts` | `berserk_frames_run1` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_berserk.c` | global | `berserk_move_run1` | `packages/game/src/m_berserk.ts` | `berserk_move_run1` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_berserk.c` | function | `berserk_run` | `packages/game/src/m_berserk.ts` | `berserk_run` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_berserk.c` | function | `berserk_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_attack_spike` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.c` | function | `berserk_swing` | `packages/game/src/m_berserk.ts` | `berserk_swing` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.c` | global | `berserk_frames_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_spike` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.c` | table | `berserk_frames_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_spike` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_berserk.c` | global | `berserk_move_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_move_attack_spike` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_berserk.c` | function | `berserk_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_attack_spike` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.c` | function | `berserk_swing` | `packages/game/src/m_berserk.ts` | `berserk_swing` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.c` | global | `berserk_frames_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_spike` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.c` | table | `berserk_frames_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_spike` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_berserk.c` | global | `berserk_move_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_move_attack_spike` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_berserk.c` | function | `berserk_attack_club` | `packages/game/src/m_berserk.ts` | `berserk_attack_club` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_berserk.c` | global | `berserk_frames_attack_club` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_club` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_berserk.c` | table | `berserk_frames_attack_club` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_club` | A verifier | A redecouper |  |
@@ -70,7 +70,7 @@
 | `Quake-2-master/game/m_berserk.c` | declarative:monster-tables | `berserk_frames_stand_fidget` | `packages/game/src/m_berserk.ts` | `berserk_frames_stand_fidget` | Valide | matched | Preuves session: comparaison C/TS et tests m-berserk/source-parity/header/full-game/web/three/typecheck; declaratif coherent avec la table source. |
 | `Quake-2-master/game/m_berserk.c` | declarative:monster-tables | `berserk_frames_walk` | `packages/game/src/m_berserk.ts` | `berserk_frames_walk` | Valide | matched | Preuves session: comparaison C/TS et tests m-berserk/source-parity/header/full-game/web/three/typecheck; declaratif coherent avec la table source. |
 | `Quake-2-master/game/m_berserk.c` | declarative:monster-tables | `berserk_frames_run1` | `packages/game/src/m_berserk.ts` | `berserk_frames_run1` | Valide | matched |  |
-| `Quake-2-master/game/m_berserk.c` | declarative:monster-tables | `berserk_frames_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_spike` | A verifier | matched |  |
+| `Quake-2-master/game/m_berserk.c` | declarative:monster-tables | `berserk_frames_attack_spike` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_spike` | Valide | matched |  |
 | `Quake-2-master/game/m_berserk.c` | declarative:monster-tables | `berserk_frames_attack_club` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_club` | A verifier | matched |  |
 | `Quake-2-master/game/m_berserk.c` | declarative:monster-tables | `berserk_frames_attack_strike` | `packages/game/src/m_berserk.ts` | `berserk_frames_attack_strike` | A verifier | matched |  |
 | `Quake-2-master/game/m_berserk.c` | declarative:monster-tables | `berserk_frames_pain1` | `packages/game/src/m_berserk.ts` | `berserk_frames_pain1` | A verifier | matched |  |

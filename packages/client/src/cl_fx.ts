@@ -75,6 +75,7 @@ import {
   EF_IONRIPPER,
   EF_PLASMA,
   EF_TELEPORTER,
+  EF_TRAP,
   EF_TRACKER,
   type entity_state_t,
   entity_event_t,
@@ -1373,6 +1374,8 @@ export function CL_ExecutePacketEntityEffects(
       CL_FlyEffectRuntime(runtime, centity, entity.origin);
     } else if ((effects & EF_BFG) !== 0 && (effects & EF_ANIM_ALLFAST) !== 0) {
       CL_BfgParticles(runtime, entity.origin);
+    } else if ((effects & EF_TRAP) !== 0) {
+      CL_TrapParticles(runtime, [entity.origin[0], entity.origin[1], entity.origin[2] + 32]);
     } else if ((effects & EF_PLASMA) !== 0 && (effects & EF_ANIM_ALLFAST) !== 0) {
       CL_BlasterTrail(runtime, centity.lerp_origin, entity.origin);
     } else if (!entity.viewerEntity && (entity.modelindex ?? 0) !== 0 && (effects & EF_FLAG1) !== 0) {
@@ -2149,9 +2152,21 @@ export function CL_BfgParticles(runtimeOrOrigin: ClientRuntime | vec3_t, maybeOr
  * Fidelity level: Close
  *
  * Behavior:
- * - Emits the original trap beam and burst particle metadata.
+ * - Emits the original trap beam and burst particle metadata, or spawns the runtime particles.
+ *
+ * Porting notes:
+ * - Runtime callers pass the `entity_t.origin` after the `CL_AddPacketEntities` `+32` Z adjustment,
+ *   matching the C call site before `CL_TrapParticles` applies its internal `-14`/`+14` offsets.
  */
-export function CL_TrapParticles(origin: vec3_t): ClientActionEffect[] {
+export function CL_TrapParticles(origin: vec3_t): ClientActionEffect[];
+export function CL_TrapParticles(runtime: ClientRuntime, origin: vec3_t): void;
+export function CL_TrapParticles(runtimeOrOrigin: ClientRuntime | vec3_t, maybeOrigin?: vec3_t): ClientActionEffect[] | void {
+  if (isClientRuntime(runtimeOrOrigin)) {
+    spawnTrapParticles(runtimeOrOrigin, maybeOrigin ?? [0, 0, 0]);
+    return;
+  }
+
+  const origin = runtimeOrOrigin;
   return [
     createTrailEffect("trap-column-trail", [origin[0], origin[1], origin[2] - 14], [origin[0], origin[1], origin[2] + 50], 0xe0, 5),
     {
@@ -2159,7 +2174,7 @@ export function CL_TrapParticles(origin: vec3_t): ClientActionEffect[] {
       kind: "trap-burst-particles",
       position: [...origin],
       color: 0xe0,
-      count: 18
+      count: 8
     }
   ];
 }
@@ -3564,6 +3579,92 @@ function spawnBfgParticles(runtime: ClientRuntime, origin: vec3_t): void {
     particle.colorvel = 0;
     particle.alpha = 1.0 - colorDist;
     particle.alphavel = -100;
+  }
+}
+
+/**
+ * Original name: CL_TrapParticles
+ * Source: client/cl_fx.c
+ * Category: Adapter
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Spawns the original trap column particles followed by the small trap burst lattice.
+ *
+ * Porting notes:
+ * - Private runtime helper for the public `CL_TrapParticles` overload; preserves the local
+ *   `move`, `vec`, `len`, `j`, `dec`, `vel`, `dir` and `org` calculations from the C body.
+ */
+function spawnTrapParticles(runtime: ClientRuntime, adjustedOrigin: vec3_t): void {
+  const entityOrigin: vec3_t = [...adjustedOrigin];
+  entityOrigin[2] -= 14;
+
+  const start: vec3_t = [...entityOrigin];
+  const end: vec3_t = [entityOrigin[0], entityOrigin[1], entityOrigin[2] + 64];
+  const move: vec3_t = [...start];
+  const vec: vec3_t = [
+    end[0] - start[0],
+    end[1] - start[1],
+    end[2] - start[2]
+  ];
+  let len = normalizeVectorCopy(vec);
+  const dec = 5;
+  vec[0] *= dec;
+  vec[1] *= dec;
+  vec[2] *= dec;
+
+  while (len > 0) {
+    len -= dec;
+
+    const particle = allocParticle(runtime);
+    if (!particle) {
+      return;
+    }
+
+    particle.accel = [0, 0, 0];
+    particle.time = runtime.cl.time;
+    particle.alpha = 1.0;
+    particle.alphavel = -1.0 / (0.3 + Math.random() * 0.2);
+    particle.color = 0xe0;
+    for (let component = 0; component < 3; component += 1) {
+      particle.org[component] = move[component] + crand();
+      particle.vel[component] = crand() * 15;
+      particle.accel[component] = 0;
+    }
+    particle.accel[2] = PARTICLE_GRAVITY;
+
+    move[0] += vec[0];
+    move[1] += vec[1];
+    move[2] += vec[2];
+  }
+
+  entityOrigin[2] += 14;
+  const org: vec3_t = [...entityOrigin];
+  for (let i = -2; i <= 2; i += 4) {
+    for (let j = -2; j <= 2; j += 4) {
+      for (let k = -2; k <= 4; k += 4) {
+        const particle = allocParticle(runtime);
+        if (!particle) {
+          return;
+        }
+
+        particle.time = runtime.cl.time;
+        particle.color = 0xe0 + (Math.floor(Math.random() * 0x7fffffff) & 3);
+        particle.alpha = 1.0;
+        particle.alphavel = -1.0 / (0.3 + (Math.floor(Math.random() * 0x7fffffff) & 7) * 0.02);
+        particle.org[0] = org[0] + i + ((Math.floor(Math.random() * 0x7fffffff) & 23) * crand());
+        particle.org[1] = org[1] + j + ((Math.floor(Math.random() * 0x7fffffff) & 23) * crand());
+        particle.org[2] = org[2] + k + ((Math.floor(Math.random() * 0x7fffffff) & 23) * crand());
+
+        const dir: vec3_t = [j * 8, i * 8, k * 8];
+        normalizeVector(dir);
+        const vel = 50 + (Math.floor(Math.random() * 0x7fffffff) & 63);
+        particle.vel = [dir[0] * vel, dir[1] * vel, dir[2] * vel];
+        particle.accel[0] = 0;
+        particle.accel[1] = 0;
+        particle.accel[2] = -PARTICLE_GRAVITY;
+      }
+    }
   }
 }
 

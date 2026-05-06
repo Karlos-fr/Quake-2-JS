@@ -58,7 +58,17 @@ PlayerTrail_Add(runtime, [20, 10, 0]);
 const lastSpot = PlayerTrail_LastSpot(runtime);
 assert.ok(lastSpot, "last spot must exist");
 assert.deepEqual(lastSpot!.s.origin, [20, 10, 0], "last spot origin mismatch");
-assert.equal(Math.round(lastSpot!.s.angles[1]), 45, "last spot yaw mismatch");
+assert.equal(lastSpot!.s.angles[1], 45, "last spot yaw mismatch");
+
+runtime.time = 3;
+PlayerTrail_Add(runtime, [22, 9, 0]);
+const truncatedSpot = PlayerTrail_LastSpot(runtime);
+assert.ok(truncatedSpot, "truncated spot must exist");
+assert.equal(
+  truncatedSpot!.s.angles[1],
+  334,
+  "PlayerTrail_Add must use the official g_utils.vectoyaw C truncation and negative wrap"
+);
 
 const monster = createRuntimeEntity({}, 99);
 monster.monsterinfo.trail_time = 0;

@@ -11,7 +11,7 @@
 
 import { strict as assert } from "node:assert";
 
-import type { cvar_t, trace_t, vec3_t } from "../../packages/qcommon/src/index.js";
+import { ATTN_NORM, CHAN_WEAPON, type cvar_t, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
 import {
   AI_STAND_GROUND,
   AI_COMBAT_POINT,
@@ -59,6 +59,7 @@ import {
   FRAME_walkc1,
   FRAME_walkc11,
   SP_monster_berserk,
+  berserk_attack_spike,
   berserk_dead,
   berserk_die,
   berserk_fidget,
@@ -79,6 +80,7 @@ import {
   berserk_search,
   berserk_sight,
   berserk_stand,
+  berserk_swing,
   berserk_walk
 } from "../../packages/game/src/m_berserk.js";
 
@@ -99,6 +101,7 @@ function main(): void {
   verifySaveRestoreAfterStartup();
   verifyStateTransitions();
   verifyMoveFrameCallbacks();
+  verifyAttackSpikeRuntimeFlow();
   verifyFidgetBranches();
   verifySightSearchSounds();
   verifyAttackCallbacks();
@@ -273,7 +276,7 @@ function verifyWalkCallbackRuntimeFlow(): void {
   berserk.s.frame = FRAME_stand1 - 1;
 
   assert.equal(berserk.monsterinfo.walk, berserk_walk);
-  G_RunFrame(context);
+  withMathRandom([0.99], () => G_RunFrame(context));
 
   assert.equal(berserk.monsterinfo.walk, berserk_walk, "SP_monster_berserk should keep monsterinfo.walk bound to berserk_walk");
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_walk, "ai_stand should reach berserk_walk through monsterinfo.walk");
@@ -454,6 +457,61 @@ function verifyMoveFrameCallbacks(): void {
   berserk.s.frame = FRAME_att_c20;
   M_MoveFrame(berserk, runtime);
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1);
+}
+
+function verifyAttackSpikeRuntimeFlow(): void {
+  const runtime = createHarnessRuntime();
+  const soundCalls: Array<{ entity: GameEntity | null; channel: number; soundIndex: number; volume: number; attenuation: number; timeofs: number }> = [];
+  const context = createGameMainContext(createGameImports([], soundCalls), { runtime });
+  const berserk = createBerserk(runtime, 22);
+  const enemy = createRuntimeEntity({ classname: "target_dummy" }, 23);
+  enemy.inuse = true;
+  enemy.health = 100;
+  enemy.takedamage = 1;
+  enemy.s.origin = [40, 0, 0];
+  enemy.origin = [40, 0, 0];
+  enemy.mins = [-16, -16, -24];
+  enemy.maxs = [16, 16, 32];
+  enemy.size = [32, 32, 56];
+  runtime.entities[23] = enemy;
+
+  SP_monster_berserk(berserk, runtime);
+  berserk.think!(berserk, runtime);
+  berserk.enemy = enemy;
+  berserk.groundentity = runtime.entities[0] ?? null;
+  runtime.collision = {
+    world: {} as never,
+    trace: () => makeTrace(enemy),
+    pointcontents: () => 0
+  };
+
+  assert.equal(berserk.monsterinfo.melee, berserk_melee);
+  withMathRandom([0], () => berserk.monsterinfo.melee!(berserk, runtime));
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_attack_spike, "monsterinfo.melee should select spike on rand % 2 == 0");
+
+  assert.equal(berserk_move_attack_spike.endfunc, berserk_run);
+  assert.equal(berserk_move_attack_spike.frame[2].thinkfunc, berserk_swing);
+  assert.equal(berserk_move_attack_spike.frame[3].thinkfunc, berserk_attack_spike);
+
+  berserk.s.frame = FRAME_att_c1 + 1;
+  G_RunFrame(context);
+  const swing = soundCalls.at(-1);
+  assert.equal(berserk.s.frame, FRAME_att_c1 + 2, "G_RunFrame should reach the visible spike swing frame");
+  assert.equal(runtime.assets.soundPaths[(swing?.soundIndex ?? 0) - 1], "berserk/attack.wav");
+  assert.equal(swing?.channel, CHAN_WEAPON);
+  assert.equal(swing?.attenuation, ATTN_NORM);
+  assert.equal(swing?.volume, 1);
+  assert.equal(swing?.timeofs, 0);
+
+  berserk.s.frame = FRAME_att_c1 + 2;
+  withMathRandom([0], () => G_RunFrame(context));
+  assert.equal(berserk.s.frame, FRAME_att_c1 + 3, "G_RunFrame should reach the visible spike hit frame");
+  assert.equal(enemy.health, 85, "berserk_attack_spike should call fire_hit with 15 + rand % 6 damage");
+
+  berserk.s.frame = FRAME_att_c8;
+  G_RunFrame(context);
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_run1, "spike move endfunc should return through berserk_run");
+  assert.equal(berserk.s.frame, FRAME_run1, "spike endfunc should feed visible run frames after the attack");
 }
 
 function verifySightSearchSounds(): void {
@@ -648,14 +706,19 @@ function makeTrace(entity: GameEntity | null): trace_t {
   };
 }
 
-function createGameImports(linked: number[] = []) {
+function createGameImports(
+  linked: number[] = [],
+  soundCalls: Array<{ entity: GameEntity | null; channel: number; soundIndex: number; volume: number; attenuation: number; timeofs: number }> = []
+) {
   const cvars = new Map<string, cvar_t>();
   return {
     bprintf: () => {},
     dprintf: () => {},
     cprintf: () => {},
     centerprintf: () => {},
-    sound: () => {},
+    sound: (entity: GameEntity | null, channel: number, soundIndex: number, volume: number, attenuation: number, timeofs: number) => {
+      soundCalls.push({ entity, channel, soundIndex, volume, attenuation, timeofs });
+    },
     positioned_sound: () => {},
     configstring: () => {},
     error: (fmt: string, ...args: unknown[]) => {
