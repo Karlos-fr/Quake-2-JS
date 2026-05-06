@@ -116,13 +116,13 @@
 | `Quake-2-master/client/cl_fx.c` | global | `vec` | `packages/client/src/cl_fx.ts` | `vec` | Non applicable | A redecouper | Local de `CL_BubbleTrail` porte par le vecteur normalise TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `len` | `packages/client/src/cl_fx.ts` | `len` | Non applicable | A redecouper | Local de `CL_BubbleTrail` porte par la longueur de boucle TS; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | global | `dec` | `packages/client/src/cl_fx.ts` | `dec` | Non applicable | A redecouper | Constante locale `dec = 32`, portee par `spacing: 32`; preuves: `npm run verify:cl-fx`. |
-| `Quake-2-master/client/cl_fx.c` | macro | `BEAMLENGTH` | `packages/client/src/cl_fx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | function | `CL_FlyParticles` | `packages/client/src/cl_fx.ts` | `CL_FlyParticles` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `angle` | `packages/client/src/cl_fx.ts` | `angle` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `forward` | `packages/client/src/cl_newfx.ts` | `forward` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `dist` | `packages/client/src/cl_fx.ts` | `dist` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_fx.c` | global | `ltime` | `packages/client/src/cl_newfx.ts` | `ltime` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_fx.c` | macro | `BEAMLENGTH` | `packages/client/src/cl_fx.ts` | `FLY_BEAM_LENGTH` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; constante 16 verifiee dans `CL_FlyParticles`. |
+| `Quake-2-master/client/cl_fx.c` | function | `CL_FlyParticles` | `packages/client/src/cl_fx.ts` | `CL_FlyParticles` | Valide | A redecouper | Preuves: `npm run verify:cl-fx`, `npm run verify:particle-sync`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`; en-tete helper runtime corrige en Adapter. |
+| `Quake-2-master/client/cl_fx.c` | global | `i` | `packages/client/src/cl_fx.ts` | `i` | Non applicable | A redecouper | Local de `CL_FlyParticles`, remplace par l'iteration TS `index += 2`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `angle` | `packages/client/src/cl_fx.ts` | `angle` | Non applicable | A redecouper | Local de `CL_FlyParticles`, porte par `let angle`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `forward` | `packages/client/src/cl_fx.ts` | `forward` | Non applicable | A redecouper | Local de `CL_FlyParticles`, porte par le vecteur `forward` TS; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `dist` | `packages/client/src/cl_fx.ts` | `dist` | Non applicable | A redecouper | Local de `CL_FlyParticles`, porte par `Math.sin(ltime + index) * 64`; preuves: `npm run verify:cl-fx`. |
+| `Quake-2-master/client/cl_fx.c` | global | `ltime` | `packages/client/src/cl_fx.ts` | `ltime` | Non applicable | A redecouper | Local de `CL_FlyParticles`, porte par `runtime.cl.time / 1000.0`; preuves: `npm run verify:cl-fx`. |
 | `Quake-2-master/client/cl_fx.c` | function | `CL_FlyEffect` | `packages/client/src/cl_fx.ts` | `CL_FlyEffect` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `n` | `packages/client/src/cl_fx.ts` | `n` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_fx.c` | global | `count` | `packages/client/src/cl_fx.ts` | `count` | A verifier | A redecouper |  |

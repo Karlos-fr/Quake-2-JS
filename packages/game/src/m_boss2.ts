@@ -446,6 +446,15 @@ export function boss2_run(self: GameEntity): void {
   }
 }
 
+/**
+ * Original name: boss2_walk
+ * Source: game/m_boss2.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Selects the boss2 walking move.
+ */
 export function boss2_walk(self: GameEntity): void {
   self.monsterinfo.currentmove = boss2_move_walk;
 }

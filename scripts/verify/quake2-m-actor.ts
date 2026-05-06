@@ -214,6 +214,49 @@ actorFrames.actor_run(actor, runtime);
 assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_run, "actor_run selects run move outside debounce and stand-ground");
 actor.enemy = null;
 
+for (const [randomValue, expectedMove] of [
+  [0, actorFrames.actor_move_pain1],
+  [0.4, actorFrames.actor_move_pain2],
+  [0.9, actorFrames.actor_move_pain3]
+] as const) {
+  try {
+    Math.random = () => randomValue;
+    runtime.time = actor.pain_debounce_time + 0.1;
+    actor.pain_debounce_time = runtime.time - 1;
+    actor.health = actor.max_health;
+    actor.s.skinnum = 0;
+    actorFrames.actor_pain(actor, null, 0, 1, runtime);
+    assert.equal(actor.pain_debounce_time, runtime.time + 3, "actor_pain sets 3 second debounce");
+    assert.equal(actor.s.skinnum, 0, "actor_pain preserves skin above half health");
+    assert.equal(actor.monsterinfo.currentmove, expectedMove, "actor_pain selects the C pain move for rand()%3");
+  } finally {
+    Math.random = originalRandom;
+  }
+}
+
+try {
+  Math.random = () => 0;
+  runtime.time = actor.pain_debounce_time + 0.1;
+  actor.pain_debounce_time = runtime.time - 1;
+  actor.health = Math.trunc(actor.max_health / 2) - 1;
+  actor.s.skinnum = 0;
+  actorFrames.actor_pain(actor, null, 0, 1, runtime);
+  assert.equal(actor.s.skinnum, 1, "actor_pain switches skin below half health");
+
+  const moveBeforeDebounce = actor.monsterinfo.currentmove;
+  const debounceBeforeReturn = actor.pain_debounce_time;
+  actor.health = actor.max_health;
+  actor.s.skinnum = 0;
+  runtime.time = debounceBeforeReturn - 0.1;
+  actorFrames.actor_pain(actor, null, 0, 1, runtime);
+  assert.equal(actor.s.skinnum, 0, "actor_pain checks skin before debounce return");
+  assert.equal(actor.pain_debounce_time, debounceBeforeReturn, "actor_pain debounce return preserves debounce time");
+  assert.equal(actor.monsterinfo.currentmove, moveBeforeDebounce, "actor_pain debounce return preserves current move");
+  assert.equal(drainGameCprintfEvents(runtime).length, 0, "actor_pain debounce return emits no chat");
+} finally {
+  Math.random = originalRandom;
+}
+
 try {
   Math.random = (() => {
     const values = [0.2, 0.25, 0.65];
@@ -222,14 +265,37 @@ try {
   runtime.time = actor.pain_debounce_time + 0.1;
   actor.pain_debounce_time = runtime.time - 1;
   actor.health = actor.max_health;
+  actor.s.origin = [0, 0, 0];
+  player.s.origin = [0, 64, 0];
   actorFrames.actor_pain(actor, player, 0, 1, runtime);
   const painPrints = drainGameCprintfEvents(runtime);
+  assert.equal(actor.ideal_yaw, 90, "actor_pain faces the attacking client");
+  assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_flipoff, "actor_pain client branch can select flipoff");
   assert.equal(painPrints.length, 1, "actor_pain player taunt emits one cprintf");
   assert.equal(painPrints[0].entityIndex, player.index, "actor_pain message targets attacker client");
   assert.equal(
     painPrints[0].message,
     `${actorFrames.actor_names[actor.index % actorFrames.MAX_ACTOR_NAMES]}: #$@*&!\n`,
     "actor_pain message uses the C messages table"
+  );
+} finally {
+  Math.random = originalRandom;
+}
+
+try {
+  Math.random = (() => {
+    const values = [0.2, 0.75, 0.1];
+    return () => values.shift() ?? 0;
+  })();
+  runtime.time = actor.pain_debounce_time + 0.1;
+  actor.pain_debounce_time = runtime.time - 1;
+  actorFrames.actor_pain(actor, player, 0, 1, runtime);
+  const painPrints = drainGameCprintfEvents(runtime);
+  assert.equal(actor.monsterinfo.currentmove, actorFrames.actor_move_taunt, "actor_pain client branch can select taunt");
+  assert.equal(
+    painPrints[0]?.message,
+    `${actorFrames.actor_names[actor.index % actorFrames.MAX_ACTOR_NAMES]}: Watch it!\n`,
+    "actor_pain chat uses rand()%3 and excludes the fourth C table string"
   );
 } finally {
   Math.random = originalRandom;

@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: table globale `messages`
-- Verdict: `Valide` pour la ligne `messages`
+- Dernier lot traite: fonction `actor_pain` et temporaires locaux rattaches `n`/`name`
+- Verdict: `Valide` pour les lignes `actor_pain`, `n` et `name`
 
 ## Checklist appliquee au lot
 
@@ -95,6 +95,16 @@
 - renderer-three: `messages` produit une sortie texte/chat, pas une sortie visible de scene `renderer-three` (modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene). Les integrations renderer ont quand meme ete recontrolees par `verify:full-game:three-renderer` pour ne pas masquer de regression du flux acteur.
 - Correction: aucune correction de code necessaire.
 
+## Session 2026-05-06 - fonction actor_pain
+
+- Identification: `actor_pain` est proprietaire de `game/m_actor.c`, ciblee dans `packages/game/src/m_actor.ts` sous le meme nom; les lignes locales `n` et `name` sont rattachees a cette fonction. Aucun doublon TS concurrent trouve; le local C `name` est represente par le helper interne `actorNameForEntity(self)` pour conserver l'indexation `actor_names[(self - g_edicts)%MAX_ACTOR_NAMES]`.
+- Comparaison C vs TS: la condition `health < max_health / 2` met `s.skinnum = 1`; le retour debounce conserve les effets precedents si `runtime.time < pain_debounce_time`; le debounce est avance a `time + 3`; la branche `other->client && random() < 0.4` calcule le vecteur attaquant-acteur, applique `vectoyaw`, choisit flipoff ou taunt, emet le chat vers l'attaquant et retourne; sinon `rand()%3` choisit `actor_move_pain1`, `actor_move_pain2` ou `actor_move_pain3`. Le quatrieme message reste dans la table mais le tirage chat utilise les trois premiers, comme le C.
+- Commentaires d'en-tete: commentaire de `actor_pain` verifie (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Close`, comportement); le niveau `Close` est coherent avec l'adaptation des sorties `gi.cprintf` en evenements runtime.
+- Runtime: branchement attendu et verifie depuis `SP_misc_actor` (`self.pain = actor_pain`), `T_Damage`/`g_combat.ts`, puis drainage des `cprintf` dans `G_RunFrame`/`g_main.ts`; les mouvements choisis progressent ensuite par `M_MoveFrame`.
+- apps/web: pas de logique parallele attendue; le navigateur doit declencher le flux via le host full-game/local et consommer les sorties client/refresh/runtime. Couvert par `verify:local-gameplay-sync`, `verify:full-game:server-host` et `verify:web-render-order`.
+- renderer-three: `actor_pain` produit une sortie visible indirecte via `s.skinnum`, `ideal_yaw` et `monsterinfo.currentmove` qui affecte les frames/modeles d'un `misc_actor`; le flux attendu est snapshots client, refresh entities, puis consommation MD2 frame/skin par `renderer-three`. Couvert par `verify:full-game:three-renderer`; aucun manque renderer ouvert.
+- Correction: ajout d'assertions ciblees dans `scripts/verify/quake2-m-actor.ts` pour skin, debounce, les trois branches `n`, flipoff, taunt, yaw et chat `name`.
+
 ## Tests de reference
 
 - `npm run verify:m-actor`
@@ -107,7 +117,7 @@
 
 ## Prochain lot recommande
 
-Valider `actor_pain` dans un lot separe; garder les lignes locales `n`/`name` avec ce lot si elles lui sont rattachees.
+Valider `actorMachineGun` dans un lot separe; garder les sorties muzzleflash/son et le branchement renderer local-gameplay-sync dans le perimetre du lot.
 
 ## Blocages / decisions
 

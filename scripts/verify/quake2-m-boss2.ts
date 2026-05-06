@@ -40,6 +40,8 @@ import {
   Boss2_CheckAttack,
   FRAME_attack10,
   FRAME_death50,
+  FRAME_stand30,
+  FRAME_stand50,
   MZ2_BOSS2_MACHINEGUN_L1,
   MZ2_BOSS2_MACHINEGUN_R1,
   MZ2_BOSS2_ROCKET_1,
@@ -50,6 +52,7 @@ import {
   boss2_attack,
   boss2_dead,
   boss2_die,
+  boss2_frames_stand,
   boss2_move_attack_mg,
   boss2_move_attack_pre_mg,
   boss2_move_attack_rocket,
@@ -73,6 +76,7 @@ function main(): void {
   verifySpawnRegistersAssetsAndStartsFlying();
   verifySpawnRegistryCallsMonsterBoss2();
   verifySaveRegistryRestoresCallbacksAndMoves();
+  verifyStandingMoveTable();
   verifyStateTransitions();
   verifySoundsAndPainBranches();
   verifyWeaponCallbacks();
@@ -102,6 +106,7 @@ function verifySpawnRegistersAssetsAndStartsFlying(): void {
   assert.equal(boss.pain, boss2_pain);
   assert.equal(boss.die, boss2_die);
   assert.equal(boss.monsterinfo.stand, boss2_stand);
+  assert.equal(boss.monsterinfo.walk, boss2_walk);
   assert.equal(boss.monsterinfo.search, boss2_search);
   assert.equal(runtime.assets.modelPaths[boss.s.modelindex - 1], "models/monsters/boss2/tris.md2");
   assert.deepEqual(runtime.assets.soundPaths, [
@@ -140,8 +145,23 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveFunction("boss2_die"), boss2_die);
   assert.equal(findGameSaveFunction("Boss2Rocket"), Boss2Rocket);
   assert.equal(findGameSaveMove("boss2_move_stand"), boss2_move_stand);
+  assert.equal(findGameSaveMove("boss2_move_walk"), boss2_move_walk);
   assert.equal(findGameSaveMove("boss2_move_attack_mg"), boss2_move_attack_mg);
   assert.equal(findGameSaveMove("boss2_move_death"), boss2_move_death);
+}
+
+function verifyStandingMoveTable(): void {
+  assert.equal(boss2_frames_stand.length, 21);
+  assert.equal(boss2_move_stand.firstframe, FRAME_stand30);
+  assert.equal(boss2_move_stand.lastframe, FRAME_stand50);
+  assert.equal(boss2_move_stand.frame, boss2_frames_stand);
+  assert.equal(boss2_move_stand.endfunc, undefined);
+
+  for (const [index, frame] of boss2_frames_stand.entries()) {
+    assert.equal(frame.aifunc?.name, "ai_stand", `boss2_frames_stand[${index}].aifunc`);
+    assert.equal(frame.dist, 0, `boss2_frames_stand[${index}].dist`);
+    assert.equal(frame.thinkfunc, undefined, `boss2_frames_stand[${index}].thinkfunc`);
+  }
 }
 
 function verifyStateTransitions(): void {
@@ -156,8 +176,16 @@ function verifyStateTransitions(): void {
   assert.equal(boss.monsterinfo.currentmove, boss2_move_stand);
   boss2_walk(boss);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_walk);
+  assert.equal(boss.monsterinfo.walk, boss2_walk);
+  boss.monsterinfo.walk?.(boss, runtime);
+  assert.equal(boss.monsterinfo.currentmove, boss2_move_walk);
   boss.monsterinfo.stand?.(boss, runtime);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_stand);
+
+  boss.s.frame = FRAME_stand50;
+  M_MoveFrame(boss, runtime);
+  assert.equal(boss.s.frame, FRAME_stand30);
+
   boss2_run(boss);
   assert.equal(boss.monsterinfo.currentmove, boss2_move_run);
   boss.monsterinfo.aiflags |= AI_STAND_GROUND;

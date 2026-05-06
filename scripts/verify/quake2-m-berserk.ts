@@ -91,6 +91,7 @@ function main(): void {
   verifyStandRuntimeFlow();
   verifyStandFidgetRuntimeFlow();
   verifyWalkMoveRuntimeFlow();
+  verifyWalkCallbackRuntimeFlow();
   verifySaveRegistryRestoresCallbacksAndMoves();
   verifySaveRestoreAfterStartup();
   verifyStateTransitions();
@@ -118,6 +119,7 @@ function verifySpawnRegistersAssetsAndStartsWalking(): void {
   assert.equal(berserk.health, 240);
   assert.equal(berserk.gib_health, -60);
   assert.equal(berserk.mass, 250);
+  assert.equal(berserk.monsterinfo.walk, berserk_walk);
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_stand);
   assert.equal(berserk.monsterinfo.scale, 1);
   assert.equal(runtime.assets.modelPaths[berserk.s.modelindex - 1], "models/monsters/berserk/tris.md2");
@@ -252,6 +254,25 @@ function verifyWalkMoveRuntimeFlow(): void {
 
   assert.equal(berserk.monsterinfo.currentmove, berserk_move_walk);
   assert.equal(berserk.s.frame, FRAME_walkc1, "walk move should loop from FRAME_walkc11 to FRAME_walkc1");
+}
+
+function verifyWalkCallbackRuntimeFlow(): void {
+  const runtime = createHarnessRuntime();
+  const context = createGameMainContext(createGameImports(), { runtime });
+  const berserk = createBerserk(runtime, 19);
+
+  SP_monster_berserk(berserk, runtime);
+  berserk.think!(berserk, runtime);
+  berserk.groundentity = runtime.entities[0] ?? null;
+  berserk.monsterinfo.currentmove = berserk_move_stand;
+  berserk.monsterinfo.pausetime = runtime.time - FRAMETIME;
+  berserk.s.frame = FRAME_stand1 - 1;
+
+  assert.equal(berserk.monsterinfo.walk, berserk_walk);
+  G_RunFrame(context);
+
+  assert.equal(berserk.monsterinfo.walk, berserk_walk, "SP_monster_berserk should keep monsterinfo.walk bound to berserk_walk");
+  assert.equal(berserk.monsterinfo.currentmove, berserk_move_walk, "ai_stand should reach berserk_walk through monsterinfo.walk");
 }
 
 function verifySaveRegistryRestoresCallbacksAndMoves(): void {

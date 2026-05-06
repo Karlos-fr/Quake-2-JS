@@ -3,8 +3,8 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot traite: `KillBox` / `tr`.
-- Verdict du lot: valide.
+- Dernier lot traite: ligne locale `v` de `tv`.
+- Verdict du lot: non applicable comme entite autonome.
 
 ## Preuves session
 
@@ -77,7 +77,24 @@ Session `MAXCHOICES` / `G_PickTarget` / `ent` / `num_choices` / `choice`:
 
 ## Prochain lot recommande
 
-- Clarifier les lignes locales restantes `v`, `i` et `e` dans la matrice sans traiter les blocages `vectoyaw`/`vectoangles` au-dela du rappel; commencer par la ligne globale `v` pointee vers `g_weapon.ts` si aucun agent ne reserve `g_weapon.ts`.
+- Clarifier les lignes locales restantes `i` et `e` dans la matrice sans traiter les blocages `vectoyaw`/`vectoangles` au-dela du rappel.
+
+## Session - local `v` de `tv`
+
+- C source compare: `Quake-2-master/game/g_utils.c`.
+- TS cible compare: `packages/game/src/g_utils.ts`.
+- Collision verifiee: la ligne matrice pointait vers `packages/game/src/g_weapon.ts`, mais le `v` de `g_weapon.ts` est un local de `check_dodge` issu de `game/g_weapon.c`, sans ownership sur `game/g_utils.c`.
+- Comparaison C/TS: dans `tv`, le C declare `float *v`, affecte `v = vecs[index]`, avance l'index circulaire, ecrit `x/y/z` dans `v[0..2]` puis retourne `v`; le port TS utilise le local `value = tvPool[tvIndex]`, avance `tvIndex`, ecrit les trois composantes et retourne `value`.
+- Commentaire d'en-tete verifie sur `tv`: `Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`; il documente deja `tvIndex`, et le local `v` est une implementation interne couverte par le comportement teste du pool.
+- Runtime verifie: `tv` n'est pas requis comme branchement runtime direct pour le jeu porte courant; les anciens usages C connus comme `droptofloor` sont portes par vecteurs litteraux equivalents, et `tv` reste exporte/teste comme helper de compatibilite.
+- `apps/web`: non applicable justifie en direct; le navigateur execute les flux gameplay portes via les hosts full-game/local et ne doit pas declencher ce local de helper.
+- `packages/renderer-three`: non applicable justifie; le local `v` de `tv` ne produit ni modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ni scene. Les effets visibles des consommateurs runtime passent par snapshots/adapters existants.
+- Correction appliquee: `audit-portage/validation-incrementale/validation/matrices/game_g_utils.c.md` corrige la cible proprietaire vers `packages/game/src/g_utils.ts` / `value` et marque la ligne `Non applicable`.
+
+Session local `v` de `tv`:
+
+- `npm run verify:g-utils`
+- `npm run typecheck`
 
 ## Session - G_FreeEdict
 
@@ -389,8 +406,8 @@ Session `KillBox` / `tr`:
 - `npm run verify:web-render-order`
 - `npm run verify:full-game:three-renderer`
 
-## Etat apres session KillBox
+## Etat apres session local `v` de `tv`
 
-- Dernier lot traite: `KillBox` / `tr`.
-- Verdict du lot: valide.
-- Prochain lot recommande: clarifier les lignes locales restantes `v`, `i` et `e` dans la matrice sans traiter les blocages `vectoyaw`/`vectoangles` au-dela du rappel; commencer par la ligne globale `v` pointee vers `g_weapon.ts` si aucun agent ne reserve `g_weapon.ts`.
+- Dernier lot traite: ligne locale `v` de `tv`.
+- Verdict du lot: non applicable comme entite autonome.
+- Prochain lot recommande: clarifier les lignes locales restantes `i` et `e` dans la matrice sans traiter les blocages `vectoyaw`/`vectoangles` au-dela du rappel.

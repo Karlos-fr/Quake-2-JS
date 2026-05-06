@@ -25,7 +25,7 @@
 | `Quake-2-master/game/g_utils.c` | global | `t` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `G_UseTargets`, porte par `delayed`/`target` locaux TS et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | function | `tv` | `packages/game/src/g_utils.ts` | `tv` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | Non applicable | A redecouper | Local statique C de `tv`, porte comme `tvIndex` TS et couvert par `npm run verify:g-utils`. |
-| `Quake-2-master/game/g_utils.c` | global | `v` | `packages/game/src/g_weapon.ts` | `v` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_utils.c` | global | `v` | `packages/game/src/g_utils.ts` | `value` | Non applicable | A redecouper | Local C de `tv`, porte comme local TS `value`; ancienne cible generee `g_weapon.ts` ecartee comme collision de nom locale sans ownership. |
 | `Quake-2-master/game/g_utils.c` | function | `vtos` | `packages/game/src/g_utils.ts` | `vtos` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_utils.c` | global | `index` | `packages/game/src/g_utils.ts` | `index` | Non applicable | A redecouper | Local statique C de `vtos`, porte comme `vtosIndex` TS et couvert par `npm run verify:g-utils`. |
 | `Quake-2-master/game/g_utils.c` | global | `s` | `packages/game/src/g_utils.ts` |  | Non applicable | A redecouper | Local temporaire C de `vtos`, porte comme `value` local TS et couvert par `npm run verify:g-utils`. |

@@ -3431,11 +3431,15 @@ function isClientRuntime(value: ClientRuntime | vec3_t): value is ClientRuntime 
 /**
  * Original name: CL_FlyParticles
  * Source: client/cl_fx.c
- * Category: Ported integration
- * Fidelity level: Close
+ * Category: Adapter
+ * Fidelity level: Strict
  *
  * Behavior:
  * - Spawns the original black orbiting fly particles around one entity origin.
+ *
+ * Porting notes:
+ * - Private runtime helper for the public `CL_FlyParticles` overload; preserves the C `BEAMLENGTH`,
+ *   `avelocities`, `bytedirs`, `i += 2`, zero velocity/acceleration and `alphavel = -100` behavior.
  */
 function spawnFlyParticles(runtime: ClientRuntime, origin: vec3_t, count: number): void {
   const cappedCount = Math.min(count, NUMVERTEXNORMALS);

@@ -133,6 +133,15 @@ function verifySpawnRegistersAssetsAndStartsFlying(): void {
   ]);
   assert.equal(runtime.assets.soundPaths[floater.s.sound - 1], "floater/fltsrch1.wav");
   assert.ok(floater.think, "flymonster_start should arm delayed startup think");
+
+  const boundaryRuntime = createHarnessRuntime();
+  const boundaryFloater = createFloater(boundaryRuntime, 14);
+  withMathRandom([0.5], () => SP_monster_floater(boundaryFloater, boundaryRuntime));
+  assert.equal(
+    boundaryFloater.monsterinfo.currentmove,
+    floater_move_stand2,
+    "SP_monster_floater should use g_local.random's 15-bit bucket at the 0.5 threshold"
+  );
 }
 
 function verifyStartupThinkCompletesFlyingMonsterSetup(): void {
@@ -206,6 +215,12 @@ function verifyStateTransitions(): void {
 
   withMathRandom([0.25], () => floater_stand(floater));
   assert.equal(floater.monsterinfo.currentmove, floater_move_stand1);
+  withMathRandom([0.5], () => floater_stand(floater));
+  assert.equal(
+    floater.monsterinfo.currentmove,
+    floater_move_stand2,
+    "floater_stand should use g_local.random's 15-bit bucket at the 0.5 threshold"
+  );
   withMathRandom([0.75], () => floater_stand(floater));
   assert.equal(floater.monsterinfo.currentmove, floater_move_stand2);
   floater_walk(floater);
@@ -219,6 +234,8 @@ function verifyStateTransitions(): void {
   assert.equal(floater.monsterinfo.currentmove, floater_move_attack1);
   withMathRandom([0.25], () => floater_melee(floater));
   assert.equal(floater.monsterinfo.currentmove, floater_move_attack3);
+  withMathRandom([0.5], () => floater_melee(floater));
+  assert.equal(floater.monsterinfo.currentmove, floater_move_attack2);
   withMathRandom([0.75], () => floater_melee(floater));
   assert.equal(floater.monsterinfo.currentmove, floater_move_attack2);
 }

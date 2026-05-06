@@ -26,6 +26,7 @@ import {
   CL_ExplosionParticles,
   CL_ExecutePacketEntityEffects,
   CL_FlagTrail,
+  CL_FlyParticles,
   CL_IonripperTrail,
   CL_ItemRespawnParticles,
   CL_LogoutEffect,
@@ -46,7 +47,9 @@ import {
   ATTN_NORM,
   CHAN_AUTO,
   CHAN_WEAPON,
+  BYTE_DIRS,
   CS_LIGHTS,
+  EF_FLIES,
   EF_GIB,
   EF_GREENGIB,
   EF_GRENADE,
@@ -97,6 +100,8 @@ function main(): void {
   verifyRailTrailRuntimeParticles();
   verifyIonripperTrailRuntimeParticles();
   verifyBubbleTrailRuntimeParticles();
+  verifyFlyParticlesRuntimeParticles();
+  verifyFlyParticlesPacketEntityRuntimeBranch();
   verifyMakeNormalVectors();
   verifyLogoutEffectRuntimeParticles();
   verifyItemRespawnRuntimeParticles();
@@ -1229,6 +1234,94 @@ function verifyBubbleTrailRuntimeParticles(): void {
   assert.deepEqual(trail.position2, end, "bubble trail metadata should preserve end");
   assert.equal(trail.color, 4, "bubble trail metadata should preserve color base");
   assert.equal(trail.spacing, 32, "bubble trail metadata should preserve spacing");
+}
+
+function verifyFlyParticlesRuntimeParticles(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 0;
+  const origin: vec3_t = [10, 20, 30];
+
+  withMockRandom(0, () => {
+    CL_FlyParticles(runtime, origin, 5);
+  });
+
+  const particles = collectActiveParticles(runtime);
+  assert.equal(particles.length, 3, "CL_FlyParticles should emit every other bytedir index while i < count");
+  assert.equal(runtime.cl.free_particles, 3, "CL_FlyParticles free list should advance by emitted particle count");
+  assert.ok(particles.every((particle) => particle.time === runtime.cl.time), "CL_FlyParticles particle time mismatch");
+  assert.ok(particles.every((particle) => particle.color === 0), "CL_FlyParticles should keep black particle color");
+  assert.ok(particles.every((particle) => particle.alpha === 1.0 && particle.alphavel === -100), "CL_FlyParticles alpha decay mismatch");
+  assert.ok(particles.every((particle) => particle.vel[0] === 0 && particle.vel[1] === 0 && particle.vel[2] === 0), "CL_FlyParticles velocity should be cleared");
+  assert.ok(particles.every((particle) => particle.accel[0] === 0 && particle.accel[1] === 0 && particle.accel[2] === 0), "CL_FlyParticles acceleration should be cleared");
+
+  const expectedOrigins = [0, 2, 4]
+    .map((index) => {
+      const dist = Math.sin(index) * 64;
+      const bytedir = BYTE_DIRS[index];
+      return [
+        origin[0] + (bytedir[0] * dist) + 16,
+        origin[1] + (bytedir[1] * dist),
+        origin[2] + (bytedir[2] * dist)
+      ].map((component) => Number(component.toFixed(12)));
+    })
+    .reverse();
+  assert.deepEqual(
+    particles.map((particle) => particle.org.map((component) => Number(component.toFixed(12)))),
+    expectedOrigins,
+    "CL_FlyParticles should preserve bytedirs, sin(ltime+i) distance and BEAMLENGTH offset"
+  );
+
+  const metadata = CL_FlyParticles(origin, 5);
+  assert.equal(metadata[0]?.kind, "fly-particles", "CL_FlyParticles metadata kind mismatch");
+  assert.equal(metadata[0]?.category, "particle", "CL_FlyParticles metadata category mismatch");
+  assert.deepEqual(metadata[0]?.position, origin, "CL_FlyParticles metadata origin mismatch");
+  assert.equal(metadata[0]?.count, 5, "CL_FlyParticles metadata count mismatch");
+
+  const cappedRuntime = createRuntime();
+  cappedRuntime.cl.time = 0;
+  withMockRandom(0, () => {
+    CL_FlyParticles(cappedRuntime, origin, 999);
+  });
+  assert.equal(collectActiveParticles(cappedRuntime).length, 81, "CL_FlyParticles should cap count at NUMVERTEXNORMALS");
+
+  const renderParticles = CL_AddParticles(runtime);
+  assert.equal(renderParticles.length, 3, "CL_FlyParticles particles should reach the refresh particle list");
+}
+
+function verifyFlyParticlesPacketEntityRuntimeBranch(): void {
+  const runtime = createRuntime();
+  runtime.cl.time = 11000;
+  const origin: vec3_t = [32, 48, 64];
+  runtime.cl_entities[7].fly_stoptime = 61000;
+
+  withMockRandom(0, () => {
+    CL_ExecutePacketEntityEffects(runtime, [{
+      number: 7,
+      origin,
+      effects: EF_FLIES,
+      modelindex: 1,
+      viewerEntity: false
+    }]);
+  });
+
+  assert.equal(collectActiveParticles(runtime).length, 41, "EF_FLIES should dispatch to CL_FlyEffectRuntime and CL_FlyParticles");
+
+  const refreshRuntime = createRuntime();
+  refreshRuntime.cl.time = 11000;
+  refreshRuntime.cl.frame.num_entities = 1;
+  refreshRuntime.cl.frame.parse_entities = 0;
+  refreshRuntime.cl_parse_entities[0].number = 7;
+  refreshRuntime.cl_parse_entities[0].effects = EF_FLIES;
+  refreshRuntime.cl_parse_entities[0].origin = [...origin] as vec3_t;
+  refreshRuntime.cl_parse_entities[0].modelindex = 1;
+  refreshRuntime.cl_entities[7].current.number = 7;
+  refreshRuntime.cl_entities[7].current.origin = [...origin] as vec3_t;
+  refreshRuntime.cl_entities[7].fly_stoptime = 61000;
+
+  withMockRandom(0, () => {
+    const frame = CL_BuildRefreshFrame(refreshRuntime, { viewerEntity: 0 });
+    assert.equal(frame.particles.length, 41, "EF_FLIES particles should reach ClientRefreshFrame.particles");
+  });
 }
 
 function verifyMakeNormalVectors(): void {

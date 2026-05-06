@@ -72,6 +72,23 @@
   - `npm run typecheck`
 - Corrections appliquees: ajout du commentaire d'en-tete de `boss2_stand`; ajout d'assertions de branchement `monsterinfo.stand` dans `scripts/verify/quake2-m-boss2.ts`.
 
+- Lot traite: bloc declaratif `boss2_frames_stand` / `boss2_move_stand`, puis `boss2_walk`.
+- Verdict: Valide.
+- Comparaison C/TS: `mframe_t boss2_frames_stand[]` contient 21 entrees `ai_stand, 0, NULL`; le port `boss2_frames_stand` contient 21 frames avec `ai_stand`, distance 0 et aucun `thinkfunc`. `mmove_t boss2_move_stand = {FRAME_stand30, FRAME_stand50, boss2_frames_stand, NULL}` correspond au port `boss2_move_stand` avec `firstframe`, `lastframe`, table et `endfunc` absent. `void boss2_walk(edict_t *self)` affecte uniquement `&boss2_move_walk`; le port `boss2_walk(self)` affecte uniquement `boss2_move_walk`.
+- Commentaires d'en-tete: les entites declaratives global/table ne demandent pas de commentaire de fonction; le commentaire de fonction `boss2_walk` a ete ajoute dans `packages/game/src/m_boss2.ts` avec `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict` et comportement.
+- Runtime: integre. `SP_monster_boss2` initialise `currentmove = boss2_move_stand` et assigne `monsterinfo.walk = boss2_walk`; `M_MoveFrame` consomme `boss2_move_stand` depuis `monster_think`, atteignable par `G_RunFrame`. Le harness verifie la table stand, le wrap `FRAME_stand50` vers `FRAME_stand30`, le callback `monsterinfo.walk` et le save registry.
+- apps/web: integre. `apps/web` ne remplace pas la logique boss2; le comportement passe par le host full-game/local, les snapshots client et le render loop web.
+- renderer-three: integre. Le lot produit des frames visibles `s.frame` pour le modele boss2; elles sont propagees par snapshots client et consommees par `renderer-three` via les entites alias/modeles/frames.
+- Tests lances:
+  - `npm run verify:m-boss2:source-parity`
+  - `npm run verify:m-boss2`
+  - `npm run verify:m-boss2:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees: ajout du commentaire d'en-tete de `boss2_walk`; ajout d'assertions ciblees dans `scripts/verify/quake2-m-boss2.ts` pour `boss2_frames_stand`, `boss2_move_stand`, `monsterinfo.walk`, `boss2_move_walk` et le wrap de frame stand par `M_MoveFrame`.
+
 ## Prochain lot recommande
 
-- Valider le bloc declaratif `boss2_frames_stand` / `boss2_move_stand` en lot separe, puis reprendre `boss2_walk` ou `boss2_dead` selon la priorisation du coordinateur.
+- Valider `boss2_dead` seul, avec bounding box finale, `MOVETYPE_TOSS`, `SVF_DEADMONSTER`, `nextthink = 0`, branchement endfunc de `boss2_move_death`, et sortie visible renderer associee aux frames de mort.

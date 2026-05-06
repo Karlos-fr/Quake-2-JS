@@ -115,6 +115,26 @@
 - Corrections appliquees:
   - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant le flux runtime du move walk et son enregistrement de sauvegarde.
 
+## Session 2026-05-06 - `berserk_walk`
+
+- Lot traite: fonction `berserk_walk` seule, avec affectation `berserk_move_walk` et branchement `monsterinfo.walk`.
+- Verdict: Valide.
+- Comparaison C/TS: la fonction C assigne seulement `self->monsterinfo.currentmove = &berserk_move_walk`; la fonction TS conserve le meme effet avec `self.monsterinfo.currentmove = berserk_move_walk`, sans entree supplementaire, retour, branche, son, flag ou effet de bord additionnel.
+- Commentaires d'en-tete: commentaire TS de `berserk_walk` verifie avec `Original name`, `Source`, `Category: Ported`, `Fidelity level` et comportement.
+- Runtime: integre. `SP_monster_berserk` assigne `monsterinfo.walk = berserk_walk`; le test ajoute prouve que `G_RunFrame` atteint ce callback via `ai_stand` quand `pausetime` expire et bascule `currentmove` vers `berserk_move_walk`.
+- apps/web: integre. Le navigateur declenche ce flux via le serveur local porte (`SV_Frame`/`G_RunFrame`) et consomme les snapshots/runtime; aucune logique parallele berserk constatee.
+- renderer-three: integre. La fonction selectionne un move qui produit des frames MD2 visibles (`s.frame`) pour le modele berserk; les snapshots client conservent `frame/oldframe/backlerp` et `packages/renderer-three` les consomme via `refresh-entity-sync` / `applyMd2AliasFrameLerp`.
+- Tests lances:
+  - `npm run verify:m-berserk`
+  - `npm run verify:m-berserk:source-parity`
+  - `npm run verify:m-berserk:header`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run typecheck`
+- Corrections appliquees:
+  - `scripts/verify/quake2-m-berserk.ts`: ajout d'assertions ciblant le branchement `monsterinfo.walk` et son atteignabilite depuis `G_RunFrame` via `ai_stand`.
+
 ## Prochain lot recommande
 
-- Valider `berserk_walk` seul, avec l'affectation `berserk_move_walk` et le branchement `monsterinfo.walk`; garder run pour une session separee si le lot devient trop large.
+- Valider `berserk_frames_run1` global/table/declarative et `berserk_move_run1`; garder `berserk_run` pour une session separee si le lot devient trop large.

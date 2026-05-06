@@ -34,6 +34,7 @@ import {
   MOD_UNKNOWN,
   MOVETYPE_STEP,
   MOVETYPE_TOSS,
+  random,
   SOLID_BBOX,
   SVF_DEADMONSTER
 } from "./g_local.js";
@@ -414,7 +415,7 @@ export const floater_move_stand2: GameMonsterMove = {
  * - Randomly selects one of the two floater standing loops.
  */
 export function floater_stand(self: GameEntity): void {
-  if (Math.random() <= 0.5) {
+  if (random() <= 0.5) {
     self.monsterinfo.currentmove = floater_move_stand1;
   } else {
     self.monsterinfo.currentmove = floater_move_stand2;
@@ -640,7 +641,7 @@ export function floater_attack(self: GameEntity): void {
  * - Randomly chooses the zap or claw melee attack.
  */
 export function floater_melee(self: GameEntity): void {
-  if (Math.random() < 0.5) {
+  if (random() < 0.5) {
     self.monsterinfo.currentmove = floater_move_attack3;
   } else {
     self.monsterinfo.currentmove = floater_move_attack2;
@@ -780,7 +781,7 @@ export function SP_monster_floater(self: GameEntity, runtime: GameRuntime): void
 
   linkGameEntity(runtime, self);
 
-  if (Math.random() <= 0.5) {
+  if (random() <= 0.5) {
     self.monsterinfo.currentmove = floater_move_stand1;
   } else {
     self.monsterinfo.currentmove = floater_move_stand2;
