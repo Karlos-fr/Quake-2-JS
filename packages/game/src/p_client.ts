@@ -1658,10 +1658,10 @@ export function ClientBegin(
  * Fidelity level: Close
  *
  * Behavior:
- * - Processes the post-move per-command player logic for chase mode, weapon firing and follower updates.
+ * - Processes the per-command player move, chase mode, weapon firing and follower updates.
  *
  * Porting notes:
- * - Assumes movement and collision resolution already happened before this helper is called.
+ * - Runs the authoritative `Pmove` path when `runtime.collision` is available; local prediction callers may pre-sync movement before the post-move logic.
  */
 export function ClientThink(
   ent: GameEntity,
@@ -2123,7 +2123,7 @@ export function PrintPmove(pm: pmove_t): string {
   const cmdBytes = encodePackedUsercmd(pm.cmd);
   const c1 = CheckBlock(stateBytes);
   const c2 = CheckBlock(cmdBytes);
-  return `sv ${pm.cmd.impulse.toString().padStart(3, " ")}:${c1} ${c2}`;
+  return `sv ${pm.cmd.impulse.toString().padStart(3, " ")}:${c1} ${c2}\n`;
 }
 
 function touchPmoveEntities(pm: pmove_t, ent: GameEntity, runtime: GameRuntime): void {

@@ -24,6 +24,7 @@ import {
   BoxOnPlaneSide,
   BoxOnPlaneSide2,
   ClearBounds,
+  CrossProduct,
   PerpendicularVector,
   ProjectPointOnPlane,
   Q_fabs,
@@ -33,9 +34,13 @@ import {
   RotatePointAroundVector,
   VectorCompare,
   VectorInverse,
+  VectorLength,
+  VectorMA,
+  VectorNormalize,
   VectorNormalize2,
+  VectorScale,
   vec3_origin
-} from "../../packages/math/src/index.js";
+} from "../../packages/math/src/q_shared.js";
 import { monster_flash_offset } from "../../packages/game/src/m_flash.js";
 import {
   BigFloat,
@@ -93,11 +98,15 @@ import {
   CS_MODELS,
   CS_PLAYERSKINS,
   CS_SOUNDS,
+  ERR_DISCONNECT,
+  ERR_DROP,
+  ERR_FATAL,
   DF_FIXED_FOV,
   DF_NO_HEALTH,
   DF_QUADFIRE_DROP,
   EF_DOUBLE,
   EF_TRAP,
+  IS_NAN,
   LAST_VISIBLE_CONTENTS,
   MAX_CLIENTS,
   MAX_GENERAL,
@@ -107,6 +116,8 @@ import {
   MAX_MODELS,
   MAX_SOUNDS,
   MZ_SILENCED,
+  nanmask,
+  Q_ftol,
   ROGUE_VERSION_ID,
   ROGUE_VERSION_STRING,
   SHORT2ANGLE,
@@ -128,6 +139,14 @@ assert.equal(EF_TRAP, 0x02000000, "EF_TRAP mismatch");
 assert.equal(EF_DOUBLE, 0x08000000, "EF_DOUBLE mismatch");
 assert.equal(SPLASH_BLOOD, 6, "SPLASH_BLOOD mismatch");
 assert.equal(MZ_SILENCED, 128, "MZ_SILENCED mismatch");
+assert.equal(ERR_FATAL, 0, "ERR_FATAL mismatch");
+assert.equal(ERR_DROP, 1, "ERR_DROP mismatch");
+assert.equal(ERR_DISCONNECT, 2, "ERR_DISCONNECT mismatch");
+assert.equal(nanmask, 255 << 23, "nanmask mismatch");
+assert.equal(IS_NAN(Number.NaN), true, "IS_NAN true mismatch");
+assert.equal(IS_NAN(1), false, "IS_NAN false mismatch");
+assert.equal(Q_ftol(3.9), 3, "Q_ftol positive mismatch");
+assert.equal(Q_ftol(-3.9), -3, "Q_ftol negative mismatch");
 
 assert.equal(CVAR_ARCHIVE, 1, "CVAR_ARCHIVE mismatch");
 assert.equal(CVAR_USERINFO, 2, "CVAR_USERINFO mismatch");
@@ -239,6 +258,15 @@ assert.equal(VectorCompare([1, 2, 3], [1, 2, 4]), 0, "VectorCompare mismatch");
 assert.equal(Q_fabs(-3.5), 3.5, "Q_fabs negative mismatch");
 assert.equal(Q_fabs(3.5), 3.5, "Q_fabs positive mismatch");
 
+const normalizedInPlace: [number, number, number] = [0, 3, 4];
+assert.equal(VectorNormalize(normalizedInPlace), 5, "VectorNormalize length mismatch");
+assert.ok(
+  Math.abs(normalizedInPlace[0]) < 1e-12 &&
+  Math.abs(normalizedInPlace[1] - 0.6) < 1e-12 &&
+  Math.abs(normalizedInPlace[2] - 0.8) < 1e-12,
+  "VectorNormalize in-place vector mismatch"
+);
+
 const normalizedOut: [number, number, number] = [0, 0, 0];
 assert.equal(VectorNormalize2([0, 3, 4], normalizedOut), 5, "VectorNormalize2 length mismatch");
 assert.ok(
@@ -250,6 +278,16 @@ assert.ok(
 const inverse: [number, number, number] = [1, -2, 3];
 VectorInverse(inverse);
 assert.deepEqual(inverse, [-1, 2, -3], "VectorInverse mismatch");
+assert.equal(VectorLength([2, 3, 6]), 7, "VectorLength mismatch");
+const scaled: [number, number, number] = [0, 0, 0];
+VectorScale([2, -3, 4], 2.5, scaled);
+assert.deepEqual(scaled, [5, -7.5, 10], "VectorScale mismatch");
+const ma: [number, number, number] = [0, 0, 0];
+VectorMA([1, 2, 3], 4, [5, 6, 7], ma);
+assert.deepEqual(ma, [21, 26, 31], "VectorMA mismatch");
+const cross: [number, number, number] = [0, 0, 0];
+CrossProduct([1, 0, 0], [0, 1, 0], cross);
+assert.deepEqual(cross, [0, 0, 1], "CrossProduct mismatch");
 assert.equal(Q_log2(8), 3, "Q_log2 mismatch");
 assert.equal(_DotProduct([1, 2, 3], [4, 5, 6]), 32, "_DotProduct mismatch");
 

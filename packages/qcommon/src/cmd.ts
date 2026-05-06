@@ -24,6 +24,7 @@ export const EXEC_NOW = 0;
 export const EXEC_INSERT = 1;
 export const EXEC_APPEND = 2;
 export const ALIAS_LOOP_COUNT = 16;
+export const MAX_ALIAS_NAME = 32;
 const COMMAND_BUFFER_SIZE = 8192;
 
 export type xcommand_t = () => void;
@@ -108,12 +109,13 @@ export function Cbuf_Init(runtime: CommandRuntime): void {
  * - Appends raw command text to the end of the command buffer.
  *
  * Porting notes:
- * - Throws on overflow instead of printing and returning.
+ * - Emits through the runtime print hook instead of Com_Printf.
  */
 export function Cbuf_AddText(runtime: CommandRuntime, text: string): void {
   const encoded = encodeAscii(text);
   if (runtime.cmd_text.cursize + encoded.length >= runtime.cmd_text.maxsize) {
-    throw new Error("Cbuf_AddText: overflow");
+    runtime.hooks.onPrint?.("Cbuf_AddText: overflow\n");
+    return;
   }
 
   SZ_Write(runtime.cmd_text, encoded);
@@ -599,12 +601,16 @@ export function Cmd_ForwardToServer(runtime: CommandRuntime): void {
  * Porting notes:
  * - Returns a list of aliases when called without arguments instead of printing directly.
  */
-export function Cmd_Alias_f(runtime: CommandRuntime): string[] | void {
+export function Cmd_Alias_f(runtime: CommandRuntime): string | string[] | void {
   if (Cmd_Argc(runtime) === 1) {
     return runtime.cmd_aliases.map((alias) => `${alias.name} : ${alias.value}`);
   }
 
   const name = Cmd_Argv(runtime, 1);
+  if (name.length >= MAX_ALIAS_NAME) {
+    return "Alias name is too long";
+  }
+
   const existing = runtime.cmd_aliases.find((alias) => alias.name === name);
   const value = buildAliasValue(runtime);
 

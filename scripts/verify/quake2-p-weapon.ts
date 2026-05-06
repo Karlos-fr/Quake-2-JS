@@ -11,17 +11,23 @@
 
 import {
   ChangeWeapon,
+  CENTER_HANDED,
   DEFAULT_BULLET_HSPREAD,
   DEFAULT_BULLET_VSPREAD,
+  Drop_Weapon,
   FindItem,
+  LEFT_HANDED,
   MOD_CHAINGUN,
   MOD_MACHINEGUN,
   ANIM_REVERSE,
+  P_ProjectSource,
   PNOISE_IMPACT,
   PNOISE_SELF,
   PNOISE_WEAPON,
+  Pickup_Weapon,
   PlayerNoise,
   Think_Weapon,
+  Use_Weapon,
   Weapon_Chaingun,
   Weapon_Grenade,
   Weapon_GrenadeLauncher,
@@ -39,14 +45,17 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, EF_HYPERBLASTER, MZ_BFG, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, DF_WEAPONS_STAY, EF_HYPERBLASTER, MZ_BFG, MZ_BLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET, MZ_SILENCED } from "../../packages/qcommon/src/index.js";
 
 main();
 
 function main(): void {
+  verifyProjectSourceHandedness();
+  verifyPickupUseDropAndChangeWeapon();
   verifyThinkWeaponDispatchesWithoutOverrideHooks();
   verifyNoAmmoQueuesOneShotSound();
   verifyPlayerNoiseTypes();
+  verifySilencedMuzzleFlashBit();
   verifyMachinegunFireParity();
   verifyMachinegunNoAmmoUsesVoiceChannel();
   verifyChaingunFireParity();
@@ -58,6 +67,95 @@ function main(): void {
   verifyHandGrenadeParity();
 
   console.log("Verification p_weapon - player weapon gameplay OK");
+}
+
+function verifyProjectSourceHandedness(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const client = player.client!;
+  const point: [number, number, number] = [10, 20, 30];
+  const distance: [number, number, number] = [4, 6, 8];
+  const forward: [number, number, number] = [1, 0, 0];
+  const right: [number, number, number] = [0, 1, 0];
+
+  client.pers.hand = 0;
+  assertVec3(P_ProjectSource(client, point, distance, forward, right), [14, 26, 38], "right-handed P_ProjectSource");
+
+  client.pers.hand = LEFT_HANDED;
+  assertVec3(P_ProjectSource(client, point, distance, forward, right), [14, 14, 38], "left-handed P_ProjectSource");
+
+  client.pers.hand = CENTER_HANDED;
+  assertVec3(P_ProjectSource(client, point, distance, forward, right), [14, 20, 38], "center-handed P_ProjectSource");
+}
+
+function verifyPickupUseDropAndChangeWeapon(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const droppedEntity = spawnGameEntity(runtime);
+  const shotgun = requireItem("Shotgun");
+  const machinegun = requireItem("Machinegun");
+  const shells = requireItem("Shells");
+  const bullets = requireItem("Bullets");
+  const client = player.client!;
+  const dropped: GameEntity[] = [];
+
+  droppedEntity.item = shotgun;
+  client.pers.inventory[shotgun.index] = 0;
+  client.pers.inventory[shells.index] = 0;
+  client.pers.max_shells = 100;
+  client.pers.weapon = requireItem("Blaster");
+
+  assertBoolean(Pickup_Weapon(droppedEntity, player, shotgun, runtime), true, "Pickup_Weapon should accept a new shotgun");
+  assertNumber(client.pers.inventory[shotgun.index], 1, "Pickup_Weapon should increment weapon inventory");
+  assertNumber(client.pers.inventory[shells.index], shells.quantity, "Pickup_Weapon should grant default ammo");
+  assertString(client.newweapon?.pickupName ?? "", "Shotgun", "Pickup_Weapon should auto-select first non-blaster weapon");
+
+  client.pers.weapon = shotgun;
+  client.pers.inventory[machinegun.index] = 1;
+  client.pers.inventory[bullets.index] = 0;
+  Use_Weapon(player, machinegun, runtime);
+  assertString(client.newweapon?.pickupName ?? "", "Shotgun", "Use_Weapon should reject weapon without ammo");
+
+  client.pers.inventory[bullets.index] = machinegun.quantity;
+  Use_Weapon(player, machinegun, runtime);
+  assertString(client.newweapon?.pickupName ?? "", "Machinegun", "Use_Weapon should accept weapon with ammo");
+
+  ChangeWeapon(player, runtime);
+  assertString(client.pers.weapon?.pickupName ?? "", "Machinegun", "ChangeWeapon should promote newweapon to current weapon");
+  assertNumber(client.ammo_index, bullets.index, "ChangeWeapon should update ammo_index");
+  assertBoolean(client.ps.gunindex > 0, true, "ChangeWeapon should register the view model");
+
+  client.pers.inventory[machinegun.index] = 1;
+  Drop_Weapon(player, machinegun, runtime, {
+    Drop_Item: (_ent, item) => {
+      const droppedItem = spawnGameEntity(runtime);
+      droppedItem.item = item;
+      dropped.push(droppedItem);
+      return droppedItem;
+    }
+  });
+  assertNumber(dropped.length, 0, "Drop_Weapon should reject dropping the only current weapon");
+
+  client.pers.inventory[machinegun.index] = 2;
+  Drop_Weapon(player, machinegun, runtime, {
+    Drop_Item: (_ent, item) => {
+      const droppedItem = spawnGameEntity(runtime);
+      droppedItem.item = item;
+      dropped.push(droppedItem);
+      return droppedItem;
+    }
+  });
+  assertNumber(dropped.length, 1, "Drop_Weapon should call Drop_Item when allowed");
+  assertNumber(client.pers.inventory[machinegun.index], 1, "Drop_Weapon should decrement inventory after dropping");
+
+  runtime.dmflags |= DF_WEAPONS_STAY;
+  client.pers.inventory[machinegun.index] = 2;
+  Drop_Weapon(player, machinegun, runtime, {
+    Drop_Item: () => {
+      throw new Error("Drop_Weapon must not drop when DF_WEAPONS_STAY is set");
+    }
+  });
+  assertNumber(client.pers.inventory[machinegun.index], 2, "Drop_Weapon should leave inventory untouched with DF_WEAPONS_STAY");
 }
 
 function verifyThinkWeaponDispatchesWithoutOverrideHooks(): void {
@@ -133,6 +231,23 @@ function verifyPlayerNoiseTypes(): void {
   runtime.deathmatch = true;
   PlayerNoise(player, [10, 11, 12], PNOISE_SELF, runtime);
   assertNumber(player.mynoise!.s.origin[0], 1, "Deathmatch PlayerNoise should return without updating noise");
+}
+
+function verifySilencedMuzzleFlashBit(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const blaster = requireItem("Blaster");
+
+  player.s.modelindex = 255;
+  player.client!.pers.weapon = blaster;
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.silencer_shots = 2;
+
+  Think_Weapon(player, runtime);
+
+  const flashes = drainPlayerMuzzleFlashEvents(runtime);
+  assertNumber(flashes[0]?.weapon ?? 0, MZ_BLASTER | MZ_SILENCED, "silenced blaster should preserve MZ_SILENCED bit");
 }
 
 function verifyMachinegunFireParity(): void {
@@ -893,5 +1008,11 @@ function assertString(actual: string, expected: string, label: string): void {
 function assertNumber(actual: number, expected: number, label: string): void {
   if (actual !== expected) {
     throw new Error(`${label}: attendu ${expected}, recu ${actual}`);
+  }
+}
+
+function assertVec3(actual: readonly number[], expected: readonly number[], label: string): void {
+  for (let index = 0; index < 3; index += 1) {
+    assertNumber(actual[index] ?? NaN, expected[index] ?? NaN, `${label}[${index}]`);
   }
 }

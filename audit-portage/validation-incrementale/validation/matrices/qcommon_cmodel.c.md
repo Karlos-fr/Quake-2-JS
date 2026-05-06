@@ -10,106 +10,106 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/cmodel.c` | struct | `cnode_t` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `children` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | struct | `cbrushside_t` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | struct | `cleaf_t` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `contents` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `cluster` | `packages/qcommon/src/cmodel.ts` | `cluster` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `area` | `packages/qcommon/src/cmodel.ts` | `area` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `firstleafbrush` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numleafbrushes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | struct | `cbrush_t` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `contents` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numsides` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `firstbrushside` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `checkcount` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | struct | `carea_t` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numareaportals` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `firstareaportal` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `floodnum` | `packages/qcommon/src/cmodel.ts` | `floodnum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `floodvalid` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `checkcount` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `map_name` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numbrushsides` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numtexinfo` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numplanes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numnodes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `map_nodes` | `packages/qcommon/src/cmodel.ts` | `map_nodes` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numleafs` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `map_leafs` | `packages/qcommon/src/cmodel.ts` | `map_leafs` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numleafbrushes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `map_leafbrushes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numcmodels` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numbrushes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numvisibility` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `map_visibility` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `map_vis` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numentitychars` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `map_entitystring` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numareas` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `map_areas` | `packages/qcommon/src/cmodel.ts` | `map_areas` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numareaportals` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `numclusters` | `packages/qcommon/src/cmodel.ts` | `numclusters` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `floodvalid` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `portalopen` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `map_noareas` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_InitBoxHull` | `packages/qcommon/src/cmodel.ts` | `CM_InitBoxHull` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `FloodAreaConnections` | `packages/qcommon/src/cmodel.ts` | `FloodAreaConnections` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `c_pointcontents` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `cmod_base` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadSubmodels` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadSurfaces` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadNodes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `child` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadBrushes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadLeafs` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadPlanes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `bits` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadLeafBrushes` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadBrushSides` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `num` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadAreas` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadAreaPortals` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadVisibility` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadEntityString` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_LoadMap` | `packages/qcommon/src/cmodel.ts` | `CM_LoadMap` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `buf` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `header` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `length` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `last_checksum` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_InlineModel` | `packages/qcommon/src/cmodel.ts` | `CM_InlineModel` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `num` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_NumClusters` | `packages/qcommon/src/cmodel.ts` | `CM_NumClusters` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_NumInlineModels` | `packages/qcommon/src/cmodel.ts` | `CM_NumInlineModels` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_EntityString` | `packages/qcommon/src/cmodel.ts` | `CM_EntityString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_LeafContents` | `packages/qcommon/src/cmodel.ts` | `CM_LeafContents` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_LeafCluster` | `packages/qcommon/src/cmodel.ts` | `CM_LeafCluster` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_LeafArea` | `packages/qcommon/src/cmodel.ts` | `CM_LeafArea` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmodel.c` | struct | `cnode_t` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `children` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | struct | `cbrushside_t` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | struct | `cleaf_t` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `contents` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `cluster` | `packages/qcommon/src/cmodel.ts` | `cluster` | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `area` | `packages/qcommon/src/cmodel.ts` | `area` | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `firstleafbrush` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numleafbrushes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | struct | `cbrush_t` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `contents` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numsides` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `firstbrushside` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `checkcount` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Detail C sans sortie runtime attendue ou remplace par etat TS explicite. |
+| `Quake-2-master/qcommon/cmodel.c` | struct | `carea_t` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numareaportals` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `firstareaportal` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `floodnum` | `packages/qcommon/src/cmodel.ts` | `floodnum` | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `floodvalid` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Struct/fields compares C vs TS; commentaire Original name ajoute/verifie; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `checkcount` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Detail C sans sortie runtime attendue ou remplace par etat TS explicite. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `map_name` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numbrushsides` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numtexinfo` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numplanes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numnodes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `map_nodes` | `packages/qcommon/src/cmodel.ts` | `map_nodes` | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numleafs` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `map_leafs` | `packages/qcommon/src/cmodel.ts` | `map_leafs` | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numleafbrushes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `map_leafbrushes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numcmodels` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numbrushes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numvisibility` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `map_visibility` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `map_vis` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numentitychars` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `map_entitystring` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numareas` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `map_areas` | `packages/qcommon/src/cmodel.ts` | `map_areas` | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numareaportals` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `numclusters` | `packages/qcommon/src/cmodel.ts` | `numclusters` | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `floodvalid` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `portalopen` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `map_noareas` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_InitBoxHull` | `packages/qcommon/src/cmodel.ts` | `CM_InitBoxHull` | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `FloodAreaConnections` | `packages/qcommon/src/cmodel.ts` | `FloodAreaConnections` | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `c_pointcontents` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Detail C sans sortie runtime attendue ou remplace par etat TS explicite. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `cmod_base` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Detail C sans sortie runtime attendue ou remplace par etat TS explicite. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadSubmodels` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadSurfaces` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadNodes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `child` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadBrushes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadLeafs` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadPlanes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `bits` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadLeafBrushes` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadBrushSides` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `num` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadAreas` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadAreaPortals` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `out` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `in` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `count` | `packages/qcommon/src/cmodel.ts` | `count` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadVisibility` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CMod_LoadEntityString` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_LoadMap` | `packages/qcommon/src/cmodel.ts` | `CM_LoadMap` | Valide | A redecouper | Comportement couvert par parseBsp/createCollisionWorld/CM_LoadMap; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `buf` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `header` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `length` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `last_checksum` | `packages/qcommon/src/cmodel.ts` |  | Valide | A redecouper | Etat global C remplace par CollisionWorld/CollisionModelRuntime; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_InlineModel` | `packages/qcommon/src/cmodel.ts` | `CM_InlineModel` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `num` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Detail C sans sortie runtime attendue ou remplace par etat TS explicite. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_NumClusters` | `packages/qcommon/src/cmodel.ts` | `CM_NumClusters` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_NumInlineModels` | `packages/qcommon/src/cmodel.ts` | `CM_NumInlineModels` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_EntityString` | `packages/qcommon/src/cmodel.ts` | `CM_EntityString` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_LeafContents` | `packages/qcommon/src/cmodel.ts` | `CM_LeafContents` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_LeafCluster` | `packages/qcommon/src/cmodel.ts` | `CM_LeafCluster` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_LeafArea` | `packages/qcommon/src/cmodel.ts` | `CM_LeafArea` | Valide | A redecouper | Accessors compares C vs TS; test npx tsx ./scripts/verify/quake2-cmodel.ts. |
 | `Quake-2-master/qcommon/cmodel.c` | global | `box_headnode` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | global | `box_leaf` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_InitBoxHull` | `packages/qcommon/src/cmodel.ts` | `CM_InitBoxHull` | A verifier | A redecouper |  |

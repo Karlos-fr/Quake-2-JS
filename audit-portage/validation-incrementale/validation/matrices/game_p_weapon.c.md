@@ -10,31 +10,31 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/p_weapon.c` | global | `is_quad` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `is_silenced` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `weapon_grenade_fire` | `packages/game/src/p_weapon.ts` | `weapon_grenade_fire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `P_ProjectSource` | `packages/game/src/p_weapon.ts` | `P_ProjectSource` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `PlayerNoise` | `packages/game/src/p_weapon.ts` | `PlayerNoise` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `noise` | `packages/game/src/p_weapon.ts` | `noise` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Pickup_Weapon` | `packages/game/src/p_weapon.ts` | `Pickup_Weapon` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `index` | `packages/game/src/p_weapon.ts` | `index` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `ammo` | `packages/game/src/p_weapon.ts` | `ammo` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `ChangeWeapon` | `packages/game/src/p_weapon.ts` | `ChangeWeapon` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `i` | `packages/game/src/p_weapon.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `i` | `packages/game/src/p_weapon.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `NoAmmoWeaponChange` | `packages/game/src/p_weapon.ts` | `NoAmmoWeaponChange` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Think_Weapon` | `packages/game/src/p_weapon.ts` | `Think_Weapon` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `is_silenced` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Use_Weapon` | `packages/game/src/p_weapon.ts` | `Use_Weapon` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `ammo_index` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `ammo_item` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Drop_Weapon` | `packages/game/src/p_weapon.ts` | `Drop_Weapon` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `index` | `packages/game/src/p_weapon.ts` | `index` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | macro | `FRAME_FIRE_FIRST` | `packages/game/src/p_weapon.ts` | `FRAME_FIRE_FIRST` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | macro | `FRAME_IDLE_FIRST` | `packages/game/src/p_weapon.ts` | `FRAME_IDLE_FIRST` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | macro | `FRAME_DEACTIVATE_FIRST` | `packages/game/src/p_weapon.ts` | `FRAME_DEACTIVATE_FIRST` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Weapon_Generic` | `packages/game/src/p_weapon.ts` | `Weapon_Generic` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `n` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `is_quad` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Comportement inline via `client.quad_framenum`; preuve `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `is_silenced` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Comportement inline via `getSilencedMuzzleBits`; preuve `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | function | `weapon_grenade_fire` | `packages/game/src/p_weapon.ts` | `weapon_grenade_fire` | Non applicable | A redecouper | Prototype C; implementation a valider sur la ligne `weapon_grenade_fire` du lot grenade. |
+| `Quake-2-master/game/p_weapon.c` | function | `P_ProjectSource` | `packages/game/src/p_weapon.ts` | `P_ProjectSource` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | function | `PlayerNoise` | `packages/game/src/p_weapon.ts` | `PlayerNoise` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `noise` | `packages/game/src/p_weapon.ts` | `noise` | Non applicable | A redecouper | Variable locale de `PlayerNoise`; couverte par `PlayerNoise`. |
+| `Quake-2-master/game/p_weapon.c` | function | `Pickup_Weapon` | `packages/game/src/p_weapon.ts` | `Pickup_Weapon` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `index` | `packages/game/src/p_weapon.ts` | `index` | Non applicable | A redecouper | Variable locale de `Pickup_Weapon`; couverte par `Pickup_Weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `ammo` | `packages/game/src/p_weapon.ts` | `ammo` | Non applicable | A redecouper | Variable locale de `Pickup_Weapon`; couverte par `Pickup_Weapon`. |
+| `Quake-2-master/game/p_weapon.c` | function | `ChangeWeapon` | `packages/game/src/p_weapon.ts` | `ChangeWeapon` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `i` | `packages/game/src/p_weapon.ts` | `i` | Non applicable | A redecouper | Variable locale de `ChangeWeapon`; couverte par `ChangeWeapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `i` | `packages/game/src/p_weapon.ts` | `i` | Non applicable | A redecouper | Variable locale generee en doublon; couverte par `ChangeWeapon`. |
+| `Quake-2-master/game/p_weapon.c` | function | `NoAmmoWeaponChange` | `packages/game/src/p_weapon.ts` | `NoAmmoWeaponChange` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | function | `Think_Weapon` | `packages/game/src/p_weapon.ts` | `Think_Weapon` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `is_silenced` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Comportement inline via `getSilencedMuzzleBits`; preuve `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | function | `Use_Weapon` | `packages/game/src/p_weapon.ts` | `Use_Weapon` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `ammo_index` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Variable locale de `Use_Weapon`; couverte par `Use_Weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `ammo_item` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Variable locale de `Use_Weapon`; couverte par `Use_Weapon`. |
+| `Quake-2-master/game/p_weapon.c` | function | `Drop_Weapon` | `packages/game/src/p_weapon.ts` | `Drop_Weapon` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `index` | `packages/game/src/p_weapon.ts` | `index` | Non applicable | A redecouper | Variable locale de `Drop_Weapon`; couverte par `Drop_Weapon`. |
+| `Quake-2-master/game/p_weapon.c` | macro | `FRAME_FIRE_FIRST` | `packages/game/src/p_weapon.ts` | `FRAME_FIRE_FIRST` | Valide | A redecouper | Macro portee comme constante locale dans `Weapon_Generic`. |
+| `Quake-2-master/game/p_weapon.c` | macro | `FRAME_IDLE_FIRST` | `packages/game/src/p_weapon.ts` | `FRAME_IDLE_FIRST` | Valide | A redecouper | Macro portee comme constante locale dans `Weapon_Generic`. |
+| `Quake-2-master/game/p_weapon.c` | macro | `FRAME_DEACTIVATE_FIRST` | `packages/game/src/p_weapon.ts` | `FRAME_DEACTIVATE_FIRST` | Valide | A redecouper | Macro portee comme constante locale dans `Weapon_Generic`. |
+| `Quake-2-master/game/p_weapon.c` | function | `Weapon_Generic` | `packages/game/src/p_weapon.ts` | `Weapon_Generic` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | global | `n` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Variable locale de `Weapon_Generic`; couverte par `Weapon_Generic`. |
 | `Quake-2-master/game/p_weapon.c` | macro | `GRENADE_TIMER` | `packages/game/src/p_weapon.ts` | `GRENADE_TIMER` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | macro | `GRENADE_MINSPEED` | `packages/game/src/p_weapon.ts` | `GRENADE_MINSPEED` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | macro | `GRENADE_MAXSPEED` | `packages/game/src/p_weapon.ts` | `GRENADE_MAXSPEED` | A verifier | A redecouper |  |

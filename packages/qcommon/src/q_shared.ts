@@ -26,6 +26,36 @@ export type fixed8_t = number;
 export type fixed16_t = number;
 
 export const M_PI = 3.14159265358979323846;
+export const nanmask = 255 << 23;
+
+/**
+ * Original name: IS_NAN
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Tests whether a numeric value is a NaN value.
+ *
+ * Porting notes:
+ * - JavaScript does not expose the original C float aliasing macro, so this uses the native NaN check.
+ */
+export function IS_NAN(value: number): boolean {
+  return Number.isNaN(value);
+}
+
+/**
+ * Original name: Q_ftol
+ * Source: game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts a floating-point value to a C `long` by truncating toward zero.
+ */
+export function Q_ftol(value: number): number {
+  return Math.trunc(value);
+}
 
 export const PITCH = 0;
 export const YAW = 1;
@@ -50,6 +80,9 @@ export const PRINT_LOW = 0;
 export const PRINT_MEDIUM = 1;
 export const PRINT_HIGH = 2;
 export const PRINT_CHAT = 3;
+export const ERR_FATAL = 0;
+export const ERR_DROP = 1;
+export const ERR_DISCONNECT = 2;
 export const PRINT_ALL = 0;
 export const PRINT_DEVELOPER = 1;
 export const PRINT_ALERT = 2;

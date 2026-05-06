@@ -39,17 +39,44 @@ import {
 const DIST_EPSILON = 0.03125;
 const PORTAL_STATE_BYTES = MAX_MAP_AREAPORTALS * 4;
 
+/**
+ * Original name: cbrushside_t
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Renamed to describe the TypeScript collision-world ownership; fields preserve the original plane/surface references.
+ */
 interface CollisionBrushSide {
   plane: cplane_t;
   surface: csurface_t;
 }
 
+/**
+ * Original name: cbrush_t
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Renamed to describe the TypeScript collision-world ownership; `checkcount` is replaced by per-trace `checkedBrushes`.
+ */
 interface CollisionBrush {
   contents: number;
   numsides: number;
   firstbrushside: number;
 }
 
+/**
+ * Original name: cleaf_t
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Porting notes:
+ * - Renamed to describe the TypeScript collision-world ownership; BSP leaf indexing and brush references are preserved.
+ */
 interface CollisionLeaf {
   contents: number;
   cluster: number;
@@ -58,11 +85,29 @@ interface CollisionLeaf {
   numleafbrushes: number;
 }
 
+/**
+ * Original name: cnode_t
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Porting notes:
+ * - Renamed to describe the TypeScript collision-world ownership; negative child ids still reference leafs.
+ */
 interface CollisionNode {
   plane: cplane_t;
   children: [number, number];
 }
 
+/**
+ * Original name: carea_t
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Porting notes:
+ * - Renamed to describe the TypeScript collision-world ownership; flood fields remain mutable runtime state.
+ */
 interface CollisionArea {
   numareaportals: number;
   firstareaportal: number;
@@ -177,6 +222,10 @@ export function createCollisionModelRuntime(map_noareas = false): CollisionModel
  *
  * Constraints:
  * - Must preserve model headnodes so world model `0` and submodels can be traced later.
+ *
+ * Porting notes:
+ * - This adapter replaces the original static `CMod_Load*` lump loaders after `parseBsp` has performed the raw little-endian lump reads.
+ * - It preserves the original collision structure ownership in `CollisionWorld` instead of mutating file-static arrays.
  */
 export function createCollisionWorld(map: BspMap): CollisionWorld {
   const map_planes = map.planes.map((plane) => createPlane(plane));
@@ -543,11 +592,19 @@ export function createCollisionPointContents(world: CollisionWorld, headnode = 0
 }
 
 /**
- * Category: New
- * Purpose: Expose one BSP submodel in `cmodel_t` shape for later entity collision usage.
+ * Original name: CM_InlineModel
+ * Source: qcommon/cmodel.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Exposes one BSP submodel in `cmodel_t` shape for later entity collision usage.
  *
  * Constraints:
  * - Must return null for out-of-range model indexes.
+ *
+ * Porting notes:
+ * - Accepts a numeric index for local adapters in addition to the original `"*n"` name form.
  */
 export function CM_InlineModel(world: CollisionWorld, nameOrIndex: number | string): cmodel_t | null {
   if (typeof nameOrIndex === "number") {

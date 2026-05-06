@@ -35,6 +35,7 @@ import {
   EXEC_APPEND,
   EXEC_INSERT,
   EXEC_NOW,
+  MAX_ALIAS_NAME,
   createCommandRuntime
 } from "../../packages/qcommon/src/cmd.js";
 import { COM_Argv, COM_InitArgv, createCommonRuntime } from "../../packages/qcommon/src/common.js";
@@ -77,6 +78,20 @@ function verifyCommandBufferExecution(): void {
   Cbuf_ExecuteText(runtime, EXEC_APPEND, "appended\n");
   Cbuf_Execute(runtime);
   assert.equal(executed.at(-1), "appended", "EXEC_APPEND mismatch");
+
+  const printed: string[] = [];
+  const overflowRuntime = createCommandRuntime({
+    onPrint: (line) => printed.push(line),
+    executeUnknownCommand: (name) => {
+      executed.push(name);
+      return true;
+    }
+  });
+  Cbuf_AddText(overflowRuntime, "x".repeat(8191));
+  Cbuf_AddText(overflowRuntime, "overflow\n");
+  assert.equal(printed[0], "Cbuf_AddText: overflow\n", "Cbuf_AddText overflow print mismatch");
+  Cbuf_Execute(overflowRuntime);
+  assert.equal(executed.includes("overflow"), false, "Cbuf_AddText overflow should not append text");
 }
 
 function verifyWaitAndDefer(): void {
@@ -187,6 +202,11 @@ function verifyAliasExecution(): void {
   Cmd_ExecuteString(runtime, "hi");
   Cbuf_Execute(runtime);
   assert.deepEqual(printed, ["hello world"], "Cmd_Alias_f execution mismatch");
+
+  printed.length = 0;
+  Cmd_ExecuteString(runtime, `alias ${"a".repeat(MAX_ALIAS_NAME)} echo no`);
+  assert.equal(printed[0], "Alias name is too long", "Cmd_Alias_f MAX_ALIAS_NAME guard mismatch");
+  assert.equal(runtime.cmd_aliases.some((alias) => alias.name.length >= MAX_ALIAS_NAME), false, "oversized alias should not register");
 
   printed.length = 0;
   Cmd_ExecuteString(runtime, "alias");

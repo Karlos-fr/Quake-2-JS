@@ -104,7 +104,7 @@ export function VectorSubtract(
 
 /**
  * Original name: VectorScale
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -143,7 +143,7 @@ export function Q_fabs(value: number): number {
 
 /**
  * Original name: VectorMA
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -176,7 +176,7 @@ export function DotProduct(left: [number, number, number], right: [number, numbe
 
 /**
  * Original name: CrossProduct
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -195,7 +195,7 @@ export function CrossProduct(
 
 /**
  * Original name: VectorLength
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -208,7 +208,7 @@ export function VectorLength(vector: [number, number, number]): number {
 
 /**
  * Original name: VectorNormalize
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -233,7 +233,7 @@ export function VectorNormalize(vector: [number, number, number]): number {
 
 /**
  * Original name: _DotProduct
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -246,7 +246,7 @@ export function _DotProduct(left: [number, number, number], right: [number, numb
 
 /**
  * Original name: _VectorSubtract
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -263,7 +263,7 @@ export function _VectorSubtract(
 
 /**
  * Original name: _VectorAdd
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -280,7 +280,7 @@ export function _VectorAdd(
 
 /**
  * Original name: _VectorCopy
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -293,7 +293,7 @@ export function _VectorCopy(input: [number, number, number], output: [number, nu
 
 /**
  * Original name: ClearBounds
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -307,7 +307,7 @@ export function ClearBounds(mins: [number, number, number], maxs: [number, numbe
 
 /**
  * Original name: AddPointToBounds
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -332,7 +332,7 @@ export function AddPointToBounds(
 
 /**
  * Original name: VectorCompare
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -345,7 +345,7 @@ export function VectorCompare(left: [number, number, number], right: [number, nu
 
 /**
  * Original name: VectorNormalize2
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -370,7 +370,7 @@ export function VectorNormalize2(
 
 /**
  * Original name: VectorInverse
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -385,7 +385,7 @@ export function VectorInverse(vector: [number, number, number]): void {
 
 /**
  * Original name: Q_log2
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -417,7 +417,7 @@ export interface PlaneLike {
 
 /**
  * Original name: R_ConcatRotations
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -441,7 +441,7 @@ export function R_ConcatRotations(
 
 /**
  * Original name: R_ConcatTransforms
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -476,7 +476,7 @@ export function R_ConcatTransforms(
 
 /**
  * Original name: anglemod
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -489,7 +489,7 @@ export function anglemod(value: number): number {
 
 /**
  * Original name: ProjectPointOnPlane
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -510,7 +510,7 @@ export function ProjectPointOnPlane(
 
 /**
  * Original name: PerpendicularVector
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Strict
  *
@@ -540,7 +540,7 @@ export function PerpendicularVector(
 
 /**
  * Original name: RotatePointAroundVector
- * Source: game/q_shared.h
+ * Source: game/q_shared.c
  * Category: Ported
  * Fidelity level: Close
  *

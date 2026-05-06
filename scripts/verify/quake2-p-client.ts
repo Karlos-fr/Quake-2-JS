@@ -11,7 +11,17 @@
 
 import { strict as assert } from "node:assert";
 
-import { DF_QUAD_DROP, DF_SPAWN_FARTHEST, entity_event_t, PMF_TIME_TELEPORT } from "../../packages/qcommon/src/index.js";
+import {
+  DF_QUAD_DROP,
+  DF_SPAWN_FARTHEST,
+  MASK_DEADSOLID,
+  MASK_PLAYERSOLID,
+  entity_event_t,
+  pmtype_t,
+  PMF_NO_PREDICTION,
+  PMF_TIME_TELEPORT,
+  type trace_t
+} from "../../packages/qcommon/src/index.js";
 import {
   BODY_QUEUE_SIZE,
   DEAD_DEAD,
@@ -61,6 +71,7 @@ import {
   ClientConnect,
   ClientBegin,
   ClientDisconnect,
+  ClientThink,
   ClientObituary,
   CopyToBodyQue,
   FetchClientEntData,
@@ -70,7 +81,9 @@ import {
   IsFemale,
   IsNeutral,
   PlayersRangeFromSpot,
+  PM_trace,
   PutClientInServer,
+  PrintPmove,
   SaveClientData,
   SelectCoopSpawnPoint,
   SelectDeathmatchSpawnPoint,
@@ -85,6 +98,7 @@ import {
   SP_info_player_start,
   TossClientWeapon,
   ThrowClientHead,
+  CheckBlock,
   player_pain,
   player_die,
   respawn
@@ -112,6 +126,8 @@ function main(): void {
   verifyTossClientWeaponUsesDefaultDropItem();
   verifyPlayerDieUsesDefaultSoundAndGibs();
   verifyThrowClientHeadUsesGLocalRandomHelpers();
+  verifyPmoveTraceAndDebugHelpers();
+  verifyClientThinkIntermissionChaseAndButtons();
 
   console.log("Verification p_client - player lifecycle defaults OK");
 }
@@ -663,6 +679,127 @@ function verifyThrowClientHeadUsesGLocalRandomHelpers(): void {
   assertAlmostEqual(player.velocity[0], -120, "ThrowClientHead x velocity uses g_local.crandom");
   assertAlmostEqual(player.velocity[1], 120, "ThrowClientHead y velocity uses g_local.crandom");
   assertAlmostEqual(player.velocity[2], 240, "ThrowClientHead z velocity uses g_local.random");
+}
+
+function verifyPmoveTraceAndDebugHelpers(): void {
+  assert.equal(CheckBlock(new Uint8Array([1, 2, 255, 0]), 4), 258, "CheckBlock should sum source bytes through the requested count");
+  assert.equal(CheckBlock([7, 8, 9], 2), 15, "CheckBlock should stop at the explicit count");
+
+  const runtime = createHarnessRuntime();
+  const player = spawnGameEntity(runtime);
+  attachGameClient(player);
+  player.health = 100;
+  const masks: number[] = [];
+  runtime.collision = {
+    world: null as never,
+    trace: (_start, _mins, _maxs, end, passent, contentmask) => {
+      masks.push(contentmask);
+      assert.equal(passent, player, "PM_trace should pass through the player as passent");
+      return createTrace(end);
+    },
+    pointcontents: () => 0
+  };
+
+  assert.equal(PM_trace([0, 0, 0], [-16, -16, -24], [16, 16, 32], [8, 0, 0], player, runtime).fraction, 1);
+  player.health = 0;
+  PM_trace([0, 0, 0], [-16, -16, -24], [16, 16, 32], [16, 0, 0], player, runtime);
+  assert.deepEqual(masks, [MASK_PLAYERSOLID, MASK_DEADSOLID], "PM_trace should choose the original health-dependent masks");
+
+  const pmoveLine = PrintPmove({
+    s: {
+      pm_type: pmtype_t.PM_NORMAL,
+      origin: [1, 2, 3],
+      velocity: [4, 5, 6],
+      pm_flags: 7,
+      pm_time: 8,
+      gravity: 800,
+      delta_angles: [9, 10, 11]
+    },
+    cmd: {
+      msec: 12,
+      buttons: 1,
+      angles: [13, 14, 15],
+      forwardmove: 16,
+      sidemove: 17,
+      upmove: 18,
+      impulse: 9,
+      lightlevel: 20
+    },
+    snapinitial: false,
+    numtouch: 0,
+    touchents: [],
+    viewangles: [0, 0, 0],
+    viewheight: 0,
+    mins: [0, 0, 0],
+    maxs: [0, 0, 0],
+    groundentity: null,
+    watertype: 0,
+    waterlevel: 0,
+    trace: null,
+    pointcontents: null
+  });
+  assert.equal(pmoveLine, "sv   9:101 135\n", "PrintPmove should preserve the original checksum line format");
+}
+
+function verifyClientThinkIntermissionChaseAndButtons(): void {
+  const runtime = createHarnessRuntime();
+  const player = spawnGameEntity(runtime);
+  const client = attachGameClient(player);
+  runtime.intermissiontime = 1;
+  runtime.time = 7;
+  ClientThink(player, createUsercmd({ buttons: 128 }), runtime);
+  assert.equal(client.ps.pmove.pm_type, pmtype_t.PM_FREEZE, "ClientThink intermission should freeze pmove");
+  assert.equal(runtime.exitintermission, 1, "ClientThink should allow intermission exit after five seconds and any button");
+
+  runtime.intermissiontime = 0;
+  runtime.exitintermission = 0;
+  const chaseTarget = spawnGameEntity(runtime);
+  client.chase_target = chaseTarget;
+  client.resp.spectator = true;
+  client.ps.pmove.pm_flags = PMF_NO_PREDICTION;
+  ClientThink(player, createUsercmd({ buttons: 1, angles: [0, 16384, 0], lightlevel: 47 }), runtime);
+  assert.deepEqual(client.resp.cmd_angles, [0, 90, 0], "ClientThink chase mode should convert command angles");
+  assert.equal(client.buttons & 1, 1, "ClientThink should copy the latest command buttons");
+  assert.equal(entLightLevel(player), 47, "ClientThink should copy the command light level");
+  assert.equal(client.chase_target, null, "spectator attack should leave chase target");
+  assert.equal((client.ps.pmove.pm_flags & PMF_NO_PREDICTION) === 0, true, "leaving chase should clear PMF_NO_PREDICTION");
+}
+
+function createTrace(endpos: [number, number, number]): trace_t {
+  return {
+    allsolid: false,
+    startsolid: false,
+    fraction: 1,
+    endpos: [...endpos],
+    plane: {
+      normal: [0, 0, 0],
+      dist: 0,
+      type: 0,
+      signbits: 0,
+      pad: [0, 0]
+    },
+    surface: null,
+    contents: 0,
+    ent: null
+  };
+}
+
+function createUsercmd(overrides: Partial<Parameters<typeof ClientThink>[1]> = {}): Parameters<typeof ClientThink>[1] {
+  return {
+    msec: 16,
+    buttons: 0,
+    angles: [0, 0, 0],
+    forwardmove: 0,
+    sidemove: 0,
+    upmove: 0,
+    impulse: 0,
+    lightlevel: 0,
+    ...overrides
+  };
+}
+
+function entLightLevel(player: ReturnType<typeof spawnGameEntity>): number {
+  return player.light_level;
 }
 
 function withMockedMathRandom(values: number[], callback: () => void): void {

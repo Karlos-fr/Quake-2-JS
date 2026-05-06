@@ -1,13 +1,21 @@
 # Progress - Quake-2-master/game/p_client.c
 
 - Statut: En cours
-- Dernier lot valide: gros lot initial `SP_FixCoopSpots` / spawn points / client persistent state / body queue / respawn / `PutClientInServer` / connect-begin-disconnect, jusqu'a `ClientDisconnect`.
-- Entites validees: 34 / 40
+- Dernier lot valide: `pm_passent`, `PM_trace`, `CheckBlock`, `PrintPmove`, `ClientThink`.
+- Entites validees: 39 / 40
 - Tests de reference:
   - `npm run verify:p-client`
+  - `npm run typecheck`
+  - `npm run verify:local-gameplay-sync`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:full-game:three-renderer`
 - Decisions:
   - Les lignes de variables locales generees comme `global` ont ete retirees de la matrice; `pm_passent` reste la seule globale proprietaire a valider avec `PM_trace`.
   - Les doublons de declaration/appel de fonctions ont ete dedupliques dans la matrice.
   - `SelectRandomDeathmatchSpawnPoint` a ete corrige pour conserver l'algorithme C original de selection des deux points les plus proches, sans decalage de l'ancien `spot1`.
-- Prochain lot recommande: `pm_passent`, `PM_trace`, `CheckBlock`, `PrintPmove`, puis `ClientThink` si le lot reste coherent; garder `ClientBeginServerFrame` pour la fin ou un lot separe.
+  - `pm_passent` est porte comme parametre explicite `passent` de `PM_trace` et fermeture creee par `buildClientPmove`, afin de conserver le comportement sans globale mutable.
+  - `ClientThink` est atteint par `SV_ClientThink`/`game_export.ClientThink` cote serveur, et par `local-gameplay-sync` cote client local; `apps/web` branche la collision via `createServerBackedGameRuntime`.
+  - `renderer-three` n'a pas de consommation directe attendue pour ce lot: pas de modeles, frames, images, particules, beams, dlights, temp entities ni areabits produits directement; les sorties joueur/camera passent par le pipeline snapshot/client existant.
+  - Correction appliquee: `PrintPmove` conserve maintenant le `\n` final du `Com_Printf` original.
+- Prochain lot recommande: `ClientBeginServerFrame`.
 - Blocages: aucun.

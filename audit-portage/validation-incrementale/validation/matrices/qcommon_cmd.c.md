@@ -10,32 +10,32 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/cmd.c` | macro | `MAX_ALIAS_NAME` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | struct | `cmdalias_s` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `name` | `packages/qcommon/src/cmd.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `value` | `packages/qcommon/src/cmd.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_wait` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | macro | `ALIAS_LOOP_COUNT` | `packages/qcommon/src/cmd.ts` | `ALIAS_LOOP_COUNT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `alias_count` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Wait_f` | `packages/qcommon/src/cmd.ts` | `Cmd_Wait_f` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_text` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `cmd_text_buf` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `defer_text_buf` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_Init` | `packages/qcommon/src/cmd.ts` | `Cbuf_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_AddText` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddText` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `l` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_InsertText` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertText` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `temp` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `templen` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `temp` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_CopyToDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_CopyToDefer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_InsertFromDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertFromDefer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_ExecuteText` | `packages/qcommon/src/cmd.ts` | `Cbuf_ExecuteText` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_Execute` | `packages/qcommon/src/cmd.ts` | `Cbuf_Execute` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `text` | `packages/qcommon/src/cmd.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `line` | `packages/qcommon/src/cmd.ts` | `line` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmd.c` | global | `quotes` | `packages/qcommon/src/cmd.ts` | `quotes` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmd.c` | macro | `MAX_ALIAS_NAME` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Porte comme `MAX_ALIAS_NAME`; alias trop long teste. |
+| `Quake-2-master/qcommon/cmd.c` | struct | `cmdalias_s` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Porte par `CommandAlias` et `cmd_aliases`; liste chainee remplacee par tableau runtime. |
+| `Quake-2-master/qcommon/cmd.c` | global | `name` | `packages/qcommon/src/cmd.ts` | `name` | Valide | A redecouper | Champ `CommandAlias.name`. |
+| `Quake-2-master/qcommon/cmd.c` | global | `value` | `packages/qcommon/src/cmd.ts` | `value` | Valide | A redecouper | Champ `CommandAlias.value`. |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_wait` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Etat `CommandRuntime.cmd_wait`; `wait` teste. |
+| `Quake-2-master/qcommon/cmd.c` | macro | `ALIAS_LOOP_COUNT` | `packages/qcommon/src/cmd.ts` | `ALIAS_LOOP_COUNT` | Valide | A redecouper | Garde anti-boucle alias teste. |
+| `Quake-2-master/qcommon/cmd.c` | global | `alias_count` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Etat `CommandRuntime.alias_count`; garde anti-boucle alias teste. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cmd_Wait_f` | `packages/qcommon/src/cmd.ts` | `Cmd_Wait_f` | Valide | A redecouper | Commentaire d'en-tete verifie; `wait` teste. |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_text` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Etat `CommandRuntime.cmd_text`; execution buffer testee. |
+| `Quake-2-master/qcommon/cmd.c` | global | `cmd_text_buf` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Backing store remplace par `createSizeBuffer(8192)`. |
+| `Quake-2-master/qcommon/cmd.c` | global | `defer_text_buf` | `packages/qcommon/src/cmd.ts` |  | Valide | A redecouper | Buffer defer remplace par `CommandRuntime.defer_text`; defer teste. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_Init` | `packages/qcommon/src/cmd.ts` | `Cbuf_Init` | Valide | A redecouper | Commentaire d'en-tete verifie. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_AddText` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddText` | Valide | A redecouper | Corrige: overflow imprime puis retourne; commentaire et test ajoutes. |
+| `Quake-2-master/qcommon/cmd.c` | global | `l` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cbuf_AddText`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_InsertText` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertText` | Valide | A redecouper | Commentaire d'en-tete verifie; insertion en tete testee. |
+| `Quake-2-master/qcommon/cmd.c` | global | `temp` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cbuf_InsertText`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `templen` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cbuf_InsertText`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `temp` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cbuf_InsertText`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_CopyToDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_CopyToDefer` | Valide | A redecouper | Commentaire d'en-tete verifie; defer teste. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_InsertFromDefer` | `packages/qcommon/src/cmd.ts` | `Cbuf_InsertFromDefer` | Valide | A redecouper | Commentaire d'en-tete verifie; defer teste. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_ExecuteText` | `packages/qcommon/src/cmd.ts` | `Cbuf_ExecuteText` | Valide | A redecouper | Commentaire d'en-tete verifie; modes EXEC_NOW/INSERT/APPEND testes. |
+| `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_Execute` | `packages/qcommon/src/cmd.ts` | `Cbuf_Execute` | Valide | A redecouper | Commentaire d'en-tete verifie; splitting quote-aware et `wait` testes. |
+| `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | Non applicable | A redecouper | Variable locale de `Cbuf_Execute`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `text` | `packages/qcommon/src/cmd.ts` | `text` | Non applicable | A redecouper | Variable locale de `Cbuf_Execute`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `line` | `packages/qcommon/src/cmd.ts` | `line` | Non applicable | A redecouper | Variable locale de `Cbuf_Execute`, pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmd.c` | global | `quotes` | `packages/qcommon/src/cmd.ts` | `quotes` | Non applicable | A redecouper | Variable locale de `Cbuf_Execute`, pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmd.c` | function | `Cbuf_AddEarlyCommands` | `packages/qcommon/src/cmd.ts` | `Cbuf_AddEarlyCommands` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | global | `i` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmd.c` | global | `s` | `packages/qcommon/src/cmd.ts` |  | A verifier | A redecouper |  |

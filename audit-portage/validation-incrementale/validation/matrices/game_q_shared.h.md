@@ -10,46 +10,46 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/q_shared.h` | macro | `id386` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `idaxp` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `byte` | `packages/qcommon/src/q_shared.ts` | `byte` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | enum | `qboolean` | `packages/qcommon/src/q_shared.ts` | `qboolean` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `NULL` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `PITCH` | `packages/qcommon/src/q_shared.ts` | `PITCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `YAW` | `packages/qcommon/src/q_shared.ts` | `YAW` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ROLL` | `packages/qcommon/src/q_shared.ts` | `ROLL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_STRING_CHARS` | `packages/qcommon/src/q_shared.ts` | `MAX_STRING_CHARS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_STRING_TOKENS` | `packages/qcommon/src/q_shared.ts` | `MAX_STRING_TOKENS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_TOKEN_CHARS` | `packages/qcommon/src/q_shared.ts` | `MAX_TOKEN_CHARS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_QPATH` | `packages/qcommon/src/q_shared.ts` | `MAX_QPATH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_OSPATH` | `packages/qcommon/src/q_shared.ts` | `MAX_OSPATH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_CLIENTS` | `packages/qcommon/src/q_shared.ts` | `MAX_CLIENTS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_EDICTS` | `packages/qcommon/src/q_shared.ts` | `MAX_EDICTS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_LIGHTSTYLES` | `packages/qcommon/src/q_shared.ts` | `MAX_LIGHTSTYLES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_MODELS` | `packages/qcommon/src/q_shared.ts` | `MAX_MODELS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_SOUNDS` | `packages/qcommon/src/q_shared.ts` | `MAX_SOUNDS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_IMAGES` | `packages/qcommon/src/q_shared.ts` | `MAX_IMAGES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_ITEMS` | `packages/qcommon/src/q_shared.ts` | `MAX_ITEMS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_GENERAL` | `packages/qcommon/src/q_shared.ts` | `MAX_GENERAL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `PRINT_LOW` | `packages/qcommon/src/q_shared.ts` | `PRINT_LOW` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `PRINT_MEDIUM` | `packages/qcommon/src/q_shared.ts` | `PRINT_MEDIUM` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `PRINT_HIGH` | `packages/qcommon/src/q_shared.ts` | `PRINT_HIGH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `PRINT_CHAT` | `packages/qcommon/src/q_shared.ts` | `PRINT_CHAT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ERR_FATAL` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ERR_DROP` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ERR_DISCONNECT` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `PRINT_ALL` | `packages/qcommon/src/q_shared.ts` | `PRINT_ALL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `PRINT_DEVELOPER` | `packages/qcommon/src/q_shared.ts` | `PRINT_DEVELOPER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `PRINT_ALERT` | `packages/qcommon/src/q_shared.ts` | `PRINT_ALERT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | enum | `multicast_t` | `packages/qcommon/src/q_shared.ts` | `multicast_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `vec_t` | `packages/qcommon/src/q_shared.ts` | `vec_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `fixed4_t` | `packages/qcommon/src/q_shared.ts` | `fixed4_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `fixed8_t` | `packages/qcommon/src/q_shared.ts` | `fixed8_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `fixed16_t` | `packages/qcommon/src/q_shared.ts` | `fixed16_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `M_PI` | `packages/qcommon/src/q_shared.ts` | `M_PI` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `nanmask` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `IS_NAN` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | function | `Q_ftol` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `id386` | `packages/qcommon/src/q_shared.ts` |  | Non applicable | A redecouper | Macro de selection assembleur C; le port TS n'a pas de chemin assembleur/runtime a brancher. |
+| `Quake-2-master/game/q_shared.h` | macro | `idaxp` | `packages/qcommon/src/q_shared.ts` |  | Non applicable | A redecouper | Macro de selection assembleur Alpha C; le port TS n'a pas de chemin assembleur/runtime a brancher. |
+| `Quake-2-master/game/q_shared.h` | global | `byte` | `packages/qcommon/src/q_shared.ts` | `byte` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | enum | `qboolean` | `packages/qcommon/src/q_shared.ts` | `qboolean` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `NULL` | `packages/qcommon/src/q_shared.ts` |  | Non applicable | A redecouper | C null pointer macro represente par `null` dans les ports TS; pas de symbole runtime proprietaire attendu. |
+| `Quake-2-master/game/q_shared.h` | macro | `PITCH` | `packages/qcommon/src/q_shared.ts` | `PITCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `YAW` | `packages/qcommon/src/q_shared.ts` | `YAW` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `ROLL` | `packages/qcommon/src/q_shared.ts` | `ROLL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_STRING_CHARS` | `packages/qcommon/src/q_shared.ts` | `MAX_STRING_CHARS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_STRING_TOKENS` | `packages/qcommon/src/q_shared.ts` | `MAX_STRING_TOKENS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_TOKEN_CHARS` | `packages/qcommon/src/q_shared.ts` | `MAX_TOKEN_CHARS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_QPATH` | `packages/qcommon/src/q_shared.ts` | `MAX_QPATH` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_OSPATH` | `packages/qcommon/src/q_shared.ts` | `MAX_OSPATH` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_CLIENTS` | `packages/qcommon/src/q_shared.ts` | `MAX_CLIENTS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_EDICTS` | `packages/qcommon/src/q_shared.ts` | `MAX_EDICTS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_LIGHTSTYLES` | `packages/qcommon/src/q_shared.ts` | `MAX_LIGHTSTYLES` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_MODELS` | `packages/qcommon/src/q_shared.ts` | `MAX_MODELS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_SOUNDS` | `packages/qcommon/src/q_shared.ts` | `MAX_SOUNDS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_IMAGES` | `packages/qcommon/src/q_shared.ts` | `MAX_IMAGES` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_ITEMS` | `packages/qcommon/src/q_shared.ts` | `MAX_ITEMS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_GENERAL` | `packages/qcommon/src/q_shared.ts` | `MAX_GENERAL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `PRINT_LOW` | `packages/qcommon/src/q_shared.ts` | `PRINT_LOW` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `PRINT_MEDIUM` | `packages/qcommon/src/q_shared.ts` | `PRINT_MEDIUM` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `PRINT_HIGH` | `packages/qcommon/src/q_shared.ts` | `PRINT_HIGH` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `PRINT_CHAT` | `packages/qcommon/src/q_shared.ts` | `PRINT_CHAT` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `ERR_FATAL` | `packages/qcommon/src/q_shared.ts` | `ERR_FATAL` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `ERR_DROP` | `packages/qcommon/src/q_shared.ts` | `ERR_DROP` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `ERR_DISCONNECT` | `packages/qcommon/src/q_shared.ts` | `ERR_DISCONNECT` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `PRINT_ALL` | `packages/qcommon/src/q_shared.ts` | `PRINT_ALL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `PRINT_DEVELOPER` | `packages/qcommon/src/q_shared.ts` | `PRINT_DEVELOPER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `PRINT_ALERT` | `packages/qcommon/src/q_shared.ts` | `PRINT_ALERT` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | enum | `multicast_t` | `packages/qcommon/src/q_shared.ts` | `multicast_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `vec_t` | `packages/qcommon/src/q_shared.ts` | `vec_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `fixed4_t` | `packages/qcommon/src/q_shared.ts` | `fixed4_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `fixed8_t` | `packages/qcommon/src/q_shared.ts` | `fixed8_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `fixed16_t` | `packages/qcommon/src/q_shared.ts` | `fixed16_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `M_PI` | `packages/qcommon/src/q_shared.ts` | `M_PI` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `nanmask` | `packages/qcommon/src/q_shared.ts` | `nanmask` | Valide | A redecouper | Ajout dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `IS_NAN` | `packages/qcommon/src/q_shared.ts` | `IS_NAN` | Valide | A redecouper | Ajout avec commentaire d'en-tete dans `packages/qcommon/src/q_shared.ts`. |
+| `Quake-2-master/game/q_shared.h` | function | `Q_ftol` | `packages/qcommon/src/q_shared.ts` | `Q_ftol` | Valide | A redecouper | Ajout avec commentaire d'en-tete dans `packages/qcommon/src/q_shared.ts`. |
 | `Quake-2-master/game/q_shared.h` | macro | `DotProduct` | `packages/math/src/q_shared.ts` | `DotProduct` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `VectorSubtract` | `packages/math/src/q_shared.ts` | `VectorSubtract` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `VectorAdd` | `packages/math/src/q_shared.ts` | `VectorAdd` | A verifier | A redecouper |  |

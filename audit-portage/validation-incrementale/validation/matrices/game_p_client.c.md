@@ -44,9 +44,9 @@
 | `Quake-2-master/game/p_client.c` | function | `ClientBegin` | `packages/game/src/p_client.ts` | `ClientBegin` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `ClientConnect` | `packages/game/src/p_client.ts` | `ClientConnect` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `ClientDisconnect` | `packages/game/src/p_client.ts` | `ClientDisconnect` | Valide | A redecouper |  |
-| `Quake-2-master/game/p_client.c` | global | `pm_passent` | `packages/game/src/p_client.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_client.c` | function | `PM_trace` | `packages/game/src/p_client.ts` | `PM_trace` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_client.c` | function | `CheckBlock` | `packages/game/src/p_client.ts` | `CheckBlock` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_client.c` | function | `PrintPmove` | `packages/game/src/p_client.ts` | `PrintPmove` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_client.c` | function | `ClientThink` | `packages/game/src/p_client.ts` | `ClientThink` | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | global | `pm_passent` | `packages/game/src/p_client.ts` |  | Valide | A redecouper | Remplace par le parametre explicite `passent` de `PM_trace` et la fermeture `buildClientPmove`; evite la globale mutable C. |
+| `Quake-2-master/game/p_client.c` | function | `PM_trace` | `packages/game/src/p_client.ts` | `PM_trace` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | function | `CheckBlock` | `packages/game/src/p_client.ts` | `CheckBlock` | Valide | A redecouper |  |
+| `Quake-2-master/game/p_client.c` | function | `PrintPmove` | `packages/game/src/p_client.ts` | `PrintPmove` | Valide | A redecouper | `packages/game/src/p_client.ts` corrige pour conserver le `\n` final du `Com_Printf` C. |
+| `Quake-2-master/game/p_client.c` | function | `ClientThink` | `packages/game/src/p_client.ts` | `ClientThink` | Valide | A redecouper |  |
 | `Quake-2-master/game/p_client.c` | function | `ClientBeginServerFrame` | `packages/game/src/p_client.ts` | `ClientBeginServerFrame` | A verifier | A redecouper |  |
