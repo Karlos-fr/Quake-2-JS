@@ -116,6 +116,7 @@ function main(): void {
   const noVisNegativeCluster = CM_ClusterPVS(noVisWorld, -1);
   const areaBits = new Uint8Array((world.numareas + 7) >> 3);
   const areaBytes = CM_WriteAreaBits(world, areaBits, worldArea);
+  verifyAreaPortalFlooding(map);
   const headnodeVisible = worldModel ? CM_HeadnodeVisible(world, worldModel.headnode, pvs) : false;
   const savedPortalState = CM_WritePortalState(world);
 
@@ -207,6 +208,52 @@ function findAreaReferencingPortal(areas: darea_t[], portalIndex: number): numbe
   }
 
   return -1;
+}
+
+function verifyAreaPortalFlooding(map: BspMap): void {
+  const world = createCollisionWorld({
+    ...map,
+    areas: [
+      { numareaportals: 0, firstareaportal: 0 },
+      { numareaportals: 1, firstareaportal: 0 },
+      { numareaportals: 1, firstareaportal: 1 },
+      { numareaportals: 0, firstareaportal: 2 }
+    ],
+    areaportals: [
+      { portalnum: 1, otherarea: 2 },
+      { portalnum: 1, otherarea: 1 }
+    ]
+  });
+  const bits = new Uint8Array((world.numareas + 7) >> 3);
+
+  assert(!CM_AreasConnected(world, 1, 2), "closed areaportal should split area floods");
+  assert(!CM_AreasConnected(world, 1, 3), "unlinked areas should remain disconnected");
+  assert(CM_WriteAreaBits(world, bits, 1) === 1, "synthetic area bytes mismatch");
+  assert(bits[0] === 0b00000010, "closed area bits should include only the source flood");
+
+  bits.fill(0);
+  CM_WriteAreaBits(world, bits, 0);
+  assert(bits[0] === 0b00001111, "area zero should force all loaded areas visible");
+
+  CM_SetAreaPortalState(world, 1, true);
+  assert(CM_AreasConnected(world, 1, 2), "open areaportal should merge connected floods");
+  assert(!CM_AreasConnected(world, 1, 3), "open unrelated portal should not merge all areas");
+  bits.fill(0);
+  CM_WriteAreaBits(world, bits, 1);
+  assert(bits[0] === 0b00000110, "open area bits should include both connected areas");
+
+  const openState = CM_WritePortalState(world);
+  assert(openState[4] === 1, "portal state should store qboolean little-endian values");
+  CM_SetAreaPortalState(world, 1, false);
+  assert(!CM_AreasConnected(world, 1, 2), "closing areaportal should split floods again");
+  CM_ReadPortalState(world, openState);
+  assert(CM_AreasConnected(world, 1, 2), "read portal state should reflood restored connections");
+
+  world.map_noareas = true;
+  assert(CM_AreasConnected(world, 1, 3), "map_noareas should force areas connected");
+  bits.fill(0);
+  CM_WriteAreaBits(world, bits, 1);
+  assert(bits[0] === 0xff, "map_noareas should force all area bits visible");
 }
 
 function assert(condition: boolean, message: string): void {

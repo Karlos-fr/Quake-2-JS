@@ -296,6 +296,16 @@ function verifyAliasExecution(): void {
   Cmd_ExecuteString(loopRuntime, "loop");
   Cbuf_Execute(loopRuntime);
   assert.equal(loopRuntime.alias_count, ALIAS_LOOP_COUNT, "alias loop guard mismatch");
+
+  const loopPrinted: string[] = [];
+  const loopPrintRuntime = createCommandRuntime({
+    onPrint: (line) => loopPrinted.push(line)
+  });
+  Cmd_Init(loopPrintRuntime);
+  Cmd_ExecuteString(loopPrintRuntime, "alias loop loop");
+  Cmd_ExecuteString(loopPrintRuntime, "loop");
+  Cbuf_Execute(loopPrintRuntime);
+  assert.equal(loopPrinted.at(-1), "ALIAS_LOOP_COUNT\n", "alias loop print mismatch");
 }
 
 function verifyBuiltinCommandsAndForwarding(): void {
@@ -317,7 +327,7 @@ function verifyBuiltinCommandsAndForwarding(): void {
   Cmd_Init(runtime);
 
   Cmd_ExecuteString(runtime, "cmdlist");
-  assert.equal(printed.includes("cmdlist"), true, "cmdlist contents mismatch");
+  assert.deepEqual(printed, ["wait", "alias", "echo", "exec", "cmdlist", "5 commands"], "cmdlist contents mismatch");
   assert.equal(printed.at(-1), "5 commands", "cmdlist count mismatch");
 
   printed.length = 0;
@@ -344,8 +354,30 @@ function verifyBuiltinCommandsAndForwarding(): void {
   assert.equal(printed[0], "alpha beta", "Cmd_Echo_f mismatch");
 
   printed.length = 0;
+  Cmd_ExecuteString(runtime, "ECHO upper");
+  assert.equal(printed[0], "upper", "Cmd_ExecuteString command lookup should be case-insensitive");
+
+  printed.length = 0;
   Cmd_ExecuteString(runtime, "echo");
   assert.equal(printed[0], "", "Cmd_Echo_f empty output mismatch");
+
+  const cvarHandledRuntime = createCommandRuntime({
+    executeUnknownCommand: (name, text) => {
+      if (name === "skill" && text === "skill 2") {
+        printed.push("cvar:skill");
+        return true;
+      }
+      return false;
+    },
+    forwardToServer: (text) => {
+      forwarded = text;
+    }
+  });
+  forwarded = "";
+  printed.length = 0;
+  Cmd_ExecuteString(cvarHandledRuntime, "skill 2");
+  assert.equal(printed[0], "cvar:skill", "Cmd_ExecuteString cvar hook mismatch");
+  assert.equal(forwarded, "", "Cmd_ExecuteString should not forward handled cvar commands");
 
   Cmd_TokenizeString(runtime, "god", true);
   forwarded = "";

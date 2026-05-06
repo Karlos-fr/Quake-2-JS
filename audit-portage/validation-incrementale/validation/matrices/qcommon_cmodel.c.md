@@ -188,17 +188,17 @@
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_DecompressVis` | `packages/qcommon/src/cmodel.ts` | `CM_DecompressVis` | Valide | A redecouper | Doublon de detection couvert avec le port `CM_DecompressVis`; preuves `quake2-cmodel.ts`, serveur, web, renderer, typecheck. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_ClusterPHS` | `packages/qcommon/src/cmodel.ts` | `CM_ClusterPHS` | Valide | A redecouper | PHS cluster/-1/no-vis compare C vs TS; commentaire complete; correction `getClusterVis`; preuves serveur, web, renderer, typecheck. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_DecompressVis` | `packages/qcommon/src/cmodel.ts` | `CM_DecompressVis` | Valide | A redecouper | Doublon de detection couvert avec le port `CM_DecompressVis`; preuves `quake2-cmodel.ts`, serveur, web, renderer, typecheck. |
-| `Quake-2-master/qcommon/cmodel.c` | function | `FloodArea_r` | `packages/qcommon/src/cmodel.ts` | `FloodArea_r` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `FloodAreaConnections` | `packages/qcommon/src/cmodel.ts` | `FloodAreaConnections` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `floodnum` | `packages/qcommon/src/cmodel.ts` | `floodnum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_SetAreaPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_SetAreaPortalState` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_AreasConnected` | `packages/qcommon/src/cmodel.ts` | `CM_AreasConnected` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | function | `CM_WriteAreaBits` | `packages/qcommon/src/cmodel.ts` | `CM_WriteAreaBits` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `floodnum` | `packages/qcommon/src/cmodel.ts` | `floodnum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/cmodel.c` | global | `bytes` | `packages/qcommon/src/cmodel.ts` | `bytes` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/cmodel.c` | function | `FloodArea_r` | `packages/qcommon/src/cmodel.ts` | `FloodArea_r` | Valide | A redecouper | Flood recursion/reflood/open portal behavior compares C vs TS; commentaires verifies; preuves `quake2-cmodel.ts`, serveur, web, renderer, typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `FloodAreaConnections` | `packages/qcommon/src/cmodel.ts` | `FloodAreaConnections` | Valide | A redecouper | Reflood global, area 0 ignoree et floodnums compares C vs TS; commentaires verifies; preuves `quake2-cmodel.ts`, serveur, web, renderer, typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `floodnum` | `packages/qcommon/src/cmodel.ts` | `floodnum` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_SetAreaPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_SetAreaPortalState` | Valide | A redecouper | Portal open/close et reflood compares C vs TS; commentaire verifie; preuves runtime via doors/game imports et tests serveur/web/renderer. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_AreasConnected` | `packages/qcommon/src/cmodel.ts` | `CM_AreasConnected` | Valide | A redecouper | Connexion par floodnum et `map_noareas` compares C vs TS; commentaire verifie; preuves serveur, web, renderer, typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | function | `CM_WriteAreaBits` | `packages/qcommon/src/cmodel.ts` | `CM_WriteAreaBits` | Valide | A redecouper | Areabits par flood, area 0 et `map_noareas` compares C vs TS; commentaire verifie; preuves `sv_ents`, client frame, renderer areabits, typecheck. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `i` | `packages/qcommon/src/cmodel.ts` |  | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `floodnum` | `packages/qcommon/src/cmodel.ts` | `floodnum` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
+| `Quake-2-master/qcommon/cmodel.c` | global | `bytes` | `packages/qcommon/src/cmodel.ts` | `bytes` | Non applicable | A redecouper | Variable locale C generee comme pseudo-entite; pas une entite proprietaire. |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_WritePortalState` | `packages/qcommon/src/cmodel.ts` | `CM_WritePortalState` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_ReadPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_ReadPortalState` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/cmodel.c` | function | `CM_HeadnodeVisible` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeVisible` | A verifier | A redecouper |  |

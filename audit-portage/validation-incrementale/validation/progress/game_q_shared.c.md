@@ -49,6 +49,19 @@
 - Tests lances: `npm run verify:q-shared:header` OK; `npm run verify:cmd` OK; `npm run verify:g-cmds` OK; `npm run verify:g-items` OK; `npm run verify:g-svcmds` OK; `npm run verify:g-main` OK; `npm run verify:g-spawn` OK; `npm run verify:g-target` OK; `npm run verify:g-utils` OK; `npm run verify:p-client` OK; `npm run verify:m-flyer` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:gameplay` OK; `npm run typecheck` OK.
 - Decision matrice: 4 entrees `Valide`, 4 entrees `Non applicable`, et 1 ligne externe `_stricmp` retiree de la matrice du fichier courant.
 
+## Session 2026-05-06 - info strings
+
+- Lot traite: `Info_ValueForKey`, `Info_RemoveKey`, `Info_Validate`, `Info_SetValueForKey`, et les temporaires/faux positifs `pkey`, `valueindex`, `o`, `start`, `value`, `c`, `maxsize`.
+- Comparaison C/H vs TS: bloc compare dans `Quake-2-master/game/q_shared.c`, declarations dans `Quake-2-master/game/q_shared.h`, cible `packages/qcommon/src/common.ts`; les noms C sont conserves, avec adaptation TS par retour string pour les fonctions C qui mutent un buffer.
+- Commentaires d'en-tete: commentaires verifies pour `Info_ValueForKey`, `Info_Validate` et `Info_SetValueForKey`; commentaire `Info_RemoveKey` mis a jour pour documenter le retour string et le niveau `Close`.
+- Ownership et doublons: ownership conserve dans `packages/qcommon/src/common.ts`; aucun doublon proprietaire trouve pour les quatre fonctions; les lignes `pkey`, `valueindex`, `o`, `start`, `value`, `c`, `maxsize` sont des variables locales/statics C ou constantes locales, pas des entites portees.
+- Runtime: fonctions atteintes par `Cvar_Userinfo`, `SV_UserinfoChanged`, `SVC_DirectConnect`, `ClientUserinfoChanged`, `CL_SendCmd`/`clc_userinfo`, et les lectures userinfo game (`g_main`, `g_cmds`, `g_combat`, `p_client`).
+- apps/web: integration attendue via les flux full-game/local runtime; `apps/web/src/full-game-server-host.ts` injecte un userinfo initial et ne remplace pas la logique principale de parsing/mutation.
+- renderer-three: aucune integration directe attendue; ce lot manipule des info strings user/client/server et ne produit pas de sortie visible de type modele, frame, image, particule, beam, dlight, temp entity, areabits, camera ou scene. Les effets visibles player skin/name passent par `ClientUserinfoChanged` et configstrings avant d'arriver au pipeline client/renderer.
+- Corrections appliquees: `Info_ValueForKey` et `Info_RemoveKey` utilisent maintenant un scanner sequentiel plus proche du C; `Info_RemoveKey` retire seulement la premiere occurrence et preserve les queues malformees non correspondantes; tests ajoutes pour doublons, gardes `\\`/`"` et filtrage ASCII de `Info_SetValueForKey`.
+- Tests lances: `npm run verify:q-shared:header` OK; `npm run verify:p-client` OK; `npm run verify:g-main` OK; `npx tsx ./scripts/verify/quake2-sv-main.ts` OK; `npx tsx ./scripts/verify/quake2-sv-user.ts` OK; `npm run verify:cl-input` OK; `npm run verify:cvar` OK; `npm run verify:full-game:server-host` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK. Les alias npm `verify:sv-main` et `verify:sv-user` n'existent pas; les scripts ont ete lances directement.
+- Decision matrice: 4 entrees `Valide`; 9 entrees generees `Non applicable`.
+
 ## Prochain lot recommande
 
-Traiter `Info_ValueForKey`, `Info_RemoveKey`, `Info_Validate`, `Info_SetValueForKey` et leurs temporaires/faux positifs (`pkey`, `valueindex`, `o`, `start`, `value`, `c`, `maxsize`) en gardant `Info_Print` pour une session separee si le lot devient trop large.
+Traiter `Info_Print` dans une session separee, avec ses temporaires et les flux console/server commands qui consomment le formatage lisible des info strings.

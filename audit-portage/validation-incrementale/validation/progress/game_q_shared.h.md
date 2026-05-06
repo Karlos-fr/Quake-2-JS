@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: `Sys_Error` uniquement, en evitant `common.ts` et `cvar.ts` possedes par d'autres agents.
+- Entite validee: `Sys_Error`.
+- Ownership: declaration dans `game/q_shared.h`, port runtime proprietaire dans `packages/qcommon/src/system.ts`; les implementations C formatent `char *error, ...` par `vsprintf` avant erreur fatale.
+- Commentaire d'en-tete de `Sys_Error` mis a jour pour documenter le formatage variadique et le hook fatal TS.
+- `Com_Printf`/`CVAR*`/`cvar_s` restent le prochain lot parce que `packages/qcommon/src/common.ts` et `packages/qcommon/src/cvar.ts` sont traites en parallele.
 - 2026-05-06: glue systeme declaree par `q_shared.h` de `curtime` a `Sys_FindClose`.
 - Entites validees: `curtime` via l'accesseur runtime `get_curtime`, `Sys_Milliseconds`, `Sys_Mkdir`, `Hunk_Begin`, `Hunk_Alloc`, `Hunk_Free`, `Hunk_End`, `SFF_ARCH`, `SFF_HIDDEN`, `SFF_RDONLY`, `SFF_SUBDIR`, `SFF_SYSTEM`, `Sys_FindFirst`, `Sys_FindNext`, `Sys_FindClose`.
 - Ownership: `curtime` et les fonctions `Sys_*`/`Hunk_*` sont portees dans `packages/qcommon/src/system.ts` avec runtime explicite; les flags `SFF_*` appartiennent a `packages/qcommon/src/q_shared.ts`.
@@ -17,6 +22,7 @@
 
 ## Corrections
 
+- `Sys_Error` dans `packages/qcommon/src/system.ts` accepte maintenant les arguments variadiques `%s`, `%d`, `%i` et `%f` avant de deleguer au hook fatal, comme les implementations C passent par `vsprintf`.
 - `Hunk_Alloc` dans `packages/qcommon/src/system.ts` consomme maintenant une taille alignee sur 32 octets comme les ports C `q_shwin.c`/`q_shlinux.c`, tout en retournant une vue de la taille demandee.
 - Ajout de `SFF_ARCH`, `SFF_HIDDEN`, `SFF_RDONLY`, `SFF_SUBDIR` et `SFF_SYSTEM` dans `packages/qcommon/src/q_shared.ts`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour les `SFF_*`, l'alignement hunk, les erreurs pre-begin/overflow et l'accesseur `curtime`.
@@ -31,6 +37,11 @@
 
 - `npm run verify:q-shared:header` OK.
 - `npm run typecheck` OK.
+- `npm run verify:full-game:server-host` OK.
+- `npm run verify:full-game:three-renderer` OK.
+- `npm run verify:ref-gl-host` OK.
+- `npm run verify:q-shared:header` OK.
+- `npm run typecheck` OK.
 - `npm run verify:files` OK.
 - `npm run verify:full-game:three-renderer` OK.
 - `npm run verify:q-shared:header` OK.
@@ -42,6 +53,10 @@
 
 ## Decisions runtime/web/renderer-three
 
+- `Sys_Error` est un point de delegation fatal declare par `q_shared.h` pour permettre aux helpers partages et systeme de lier; le port TS l'expose via `packages/qcommon/src/index.ts` et un `SystemRuntime` explicite.
+- Runtime: integre comme hook fatal injectable; le message variadique est maintenant formate avant delegation, et le fallback lance une exception JS.
+- `apps/web`: pas de branchement direct supplementaire attendu pour `packages/qcommon/src/system.ts`; les flux web/full-game deleguent deja les erreurs fatales host/ref via exceptions et ne masquent pas un manque de gameplay ou de rendu.
+- `renderer-three`: `Sys_Error` ne produit pas de sortie visible (modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene). Les erreurs renderer passent par le `refimport_t.Sys_Error` adapte dans `ref-gl-host`, verifie par `verify:ref-gl-host` et `verify:full-game:three-renderer`.
 - Le bloc `curtime`/`Sys_Milliseconds` est expose via `packages/qcommon/src/index.ts`; le port TS remplace le global C par `SystemRuntime.curtime` et `get_curtime`, ce qui rend l'etat atteignable par les runtimes qui injectent les hooks systeme.
 - `Sys_Mkdir` et `Sys_Find*` sont des points de delegation host: le runtime attendu est un hook injectable, et `verify:files` confirme le flux fichier sans logique parallele `apps/web` masquante.
 - Les `SFF_*` sont des flags d'attributs de recherche de fichiers, maintenant exportes depuis `q_shared.ts`; ils ne produisent pas de sortie visible directe.
@@ -61,4 +76,4 @@
 
 ## Prochain lot recommande
 
-- Reprendre `Sys_Error`, `Com_Printf`, puis `CVAR`/`CVAR_*` et `cvar_s` si le lot reste coherent.
+- Reprendre `Com_Printf` quand `packages/qcommon/src/common.ts` est disponible, puis `CVAR`/`CVAR_*` et `cvar_s` quand `packages/qcommon/src/cvar.ts` est disponible.

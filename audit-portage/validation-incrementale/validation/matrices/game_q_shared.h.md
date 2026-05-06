@@ -123,7 +123,7 @@
 | `Quake-2-master/game/q_shared.h` | function | `Sys_FindFirst` | `packages/qcommon/src/system.ts` | `Sys_FindFirst` | Valide | A redecouper | Commentaire d'en-tete verifie. |
 | `Quake-2-master/game/q_shared.h` | function | `Sys_FindNext` | `packages/qcommon/src/system.ts` | `Sys_FindNext` | Valide | A redecouper | Commentaire d'en-tete verifie. |
 | `Quake-2-master/game/q_shared.h` | function | `Sys_FindClose` | `packages/qcommon/src/system.ts` | `Sys_FindClose` | Valide | A redecouper | Commentaire d'en-tete verifie. |
-| `Quake-2-master/game/q_shared.h` | function | `Sys_Error` | `packages/qcommon/src/system.ts` | `Sys_Error` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | function | `Sys_Error` | `packages/qcommon/src/system.ts` | `Sys_Error` | Valide | A redecouper | Correction varargs dans `packages/qcommon/src/system.ts`; commentaire d'en-tete mis a jour. Tests: `verify:q-shared:header`, `typecheck`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:ref-gl-host`. |
 | `Quake-2-master/game/q_shared.h` | function | `Com_Printf` | `packages/qcommon/src/common.ts` | `Com_Printf` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CVAR` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CVAR_ARCHIVE` | `packages/qcommon/src/cvar.ts` | `CVAR_ARCHIVE` | A verifier | A redecouper |  |

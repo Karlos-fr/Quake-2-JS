@@ -44,6 +44,36 @@ export interface SystemHooks {
 }
 
 /**
+ * Original name: N/A
+ * Source declared: N/A (local TypeScript formatting helper)
+ * Category: New
+ *
+ * Purpose:
+ * - Format the subset of C printf placeholders used by the `Sys_Error` port before delegating to the host hook.
+ */
+function formatSystemError(format: string, args: unknown[]): string {
+  if (args.length === 0) {
+    return format;
+  }
+
+  let argIndex = 0;
+  return format.replace(/%([sdif])/g, (match, specifier) => {
+    if (argIndex >= args.length) {
+      return match;
+    }
+
+    const value = args[argIndex++];
+    if (specifier === "d" || specifier === "i") {
+      return String(Math.trunc(Number(value)));
+    }
+    if (specifier === "f") {
+      return String(Number(value));
+    }
+    return String(value);
+  });
+}
+
+/**
  * Category: New
  * Purpose: Hold the mutable host-facing runtime state for the `q_shared.h` system helpers.
  *
@@ -252,14 +282,18 @@ export function Sys_FindClose(runtime: SystemRuntime): void {
  * Fidelity level: Close
  *
  * Behavior:
- * - Raises a fatal host error with the provided message.
+ * - Formats the variadic message and raises a fatal host error.
+ *
+ * Porting notes:
+ * - The C implementations format `char *error, ...` through `vsprintf`; the host hook still receives a single fatal message.
  */
-export function Sys_Error(runtime: SystemRuntime, message: string): never {
+export function Sys_Error(runtime: SystemRuntime, message: string, ...args: unknown[]): never {
+  const formatted = formatSystemError(message, args);
   if (runtime.hooks.error) {
-    return runtime.hooks.error(message);
+    return runtime.hooks.error(formatted);
   }
 
-  throw new Error(message);
+  throw new Error(formatted);
 }
 
 /**

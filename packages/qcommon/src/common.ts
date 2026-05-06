@@ -791,31 +791,83 @@ export function Q_stricmp(left: string, right: string): number {
  * - Returns the current value stored under one Quake info-string key.
  */
 export function Info_ValueForKey(info: string, key: string): string {
-  for (const entry of parseInfoString(info)) {
-    if (entry.key === key) {
-      return entry.value;
-    }
-  }
+  let index = info.startsWith("\\") ? 1 : 0;
 
-  return "";
+  while (true) {
+    const keyEnd = info.indexOf("\\", index);
+    if (keyEnd === -1) {
+      return "";
+    }
+
+    const parsedKey = info.slice(index, keyEnd);
+    index = keyEnd + 1;
+
+    let valueEnd = info.indexOf("\\", index);
+    if (valueEnd === -1) {
+      valueEnd = info.length;
+    }
+
+    const parsedValue = info.slice(index, valueEnd);
+    if (parsedKey === key) {
+      return parsedValue;
+    }
+
+    if (valueEnd >= info.length) {
+      return "";
+    }
+
+    index = valueEnd + 1;
+  }
 }
 
 /**
  * Original name: Info_RemoveKey
  * Source: game/q_shared.c
  * Category: Ported
- * Fidelity level: Strict
+ * Fidelity level: Close
  *
  * Behavior:
- * - Removes one key from a Quake-style info string while preserving the order of the remaining pairs.
+ * - Removes the first matching key from a Quake-style info string while preserving the remaining bytes.
+ *
+ * Porting notes:
+ * - Returns the updated string instead of mutating a caller-owned char buffer.
  */
 export function Info_RemoveKey(info: string, key: string): string {
   if (key.includes("\\")) {
     return info;
   }
 
-  const parsed = parseInfoString(info).filter((entry) => entry.key !== key);
-  return parsed.map((entry) => `\\${entry.key}\\${entry.value}`).join("");
+  let index = 0;
+
+  while (true) {
+    const start = index;
+    if (info[index] === "\\") {
+      index += 1;
+    }
+
+    const keyEnd = info.indexOf("\\", index);
+    if (keyEnd === -1) {
+      return info;
+    }
+
+    const parsedKey = info.slice(index, keyEnd);
+    index = keyEnd + 1;
+
+    let valueEnd = info.indexOf("\\", index);
+    if (valueEnd === -1) {
+      valueEnd = info.length;
+    }
+
+    if (parsedKey === key) {
+      return info.slice(0, start) + info.slice(valueEnd);
+    }
+
+    if (valueEnd >= info.length) {
+      return info;
+    }
+
+    index = valueEnd;
+  }
 }
 
 /**

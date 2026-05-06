@@ -564,6 +564,7 @@ export function Cmd_ExecuteString(runtime: CommandRuntime, text: string): void {
     if (equalsIgnoreCase(commandName, alias.name)) {
       runtime.alias_count += 1;
       if (runtime.alias_count === ALIAS_LOOP_COUNT) {
+        runtime.hooks.onPrint?.("ALIAS_LOOP_COUNT\n");
         return;
       }
 
@@ -642,11 +643,16 @@ export function Cmd_Wait_f(runtime: CommandRuntime): void {
 }
 
 /**
- * Category: New
- * Purpose: Register the built-in command primitives currently ported in this module.
+ * Original name: Cmd_Init
+ * Source: qcommon/cmd.c
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
- * - Must preserve the original command names.
+ * Behavior:
+ * - Registers the built-in command primitives from qcommon/cmd.c.
+ *
+ * Porting notes:
+ * - Captures the runtime object in closures instead of relying on C file-static globals.
  */
 export function Cmd_Init(runtime: CommandRuntime): void {
   Cmd_AddCommand(runtime, "cmdlist", () => {

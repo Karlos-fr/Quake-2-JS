@@ -67,10 +67,15 @@ assert.equal(Cvar_InfoValidate("name"), true, "plain cvar name should be valid")
 assert.equal(Cvar_InfoValidate("bad\\name"), false, "backslash should invalidate info strings");
 assert.equal(Cvar_InfoValidate("bad\"name"), false, "quote should invalidate info strings");
 assert.equal(Cvar_InfoValidate("bad;name"), false, "semicolon should invalidate info strings");
+assert.equal(Cvar_InfoValidate("name=value"), true, "equals should not invalidate cvar info strings");
 
 assert.equal(Cvar_Get(cvar, "name\\bad", "1", CVAR_USERINFO), null, "invalid info cvar name should be rejected");
 assert.equal(Cvar_Get(cvar, "good", "1;2", CVAR_USERINFO), null, "invalid info cvar value should be rejected");
 assert.deepEqual(validationErrors, ["name", "value"], "info validation hooks mismatch");
+
+assert.equal(Cvar_FindVar(cvar, "missing"), null, "FindVar should return null before creation");
+assert.equal(Cvar_VariableString(cvar, "missing"), "", "VariableString should return empty string for missing cvars");
+assert.equal(Cvar_VariableValue(cvar, "missing"), 0, "VariableValue should return zero for missing cvars");
 
 const skill = Cvar_Get(cvar, "skill", "1", CVAR_ARCHIVE);
 assert.ok(skill, "skill cvar should be created");
@@ -79,6 +84,17 @@ assert.equal(Cvar_VariableValue(cvar, "skill"), 1, "VariableValue mismatch");
 assert.equal(Cvar_CompleteVariable(cvar, "ski"), "skill", "CompleteVariable prefix mismatch");
 assert.equal(Cvar_CompleteVariable(cvar, "skill"), "skill", "CompleteVariable exact mismatch");
 assert.equal(Cvar_CompleteVariable(cvar, ""), null, "empty completion should fail");
+assert.equal(Cvar_FindVar(cvar, "Skill"), null, "FindVar should be case-sensitive like strcmp");
+
+const skillPrefix = Cvar_Get(cvar, "skill_speed", "7", 0);
+assert.ok(skillPrefix, "second skill-prefixed cvar should be created");
+assert.equal(cvar.cvar_vars[0], skillPrefix, "new cvars should be linked at the head of cvar_vars");
+assert.equal(Cvar_CompleteVariable(cvar, "skill"), "skill", "exact completion should beat earlier partial matches");
+assert.equal(Cvar_CompleteVariable(cvar, "skill_"), "skill_speed", "partial completion should preserve cvar_vars order");
+
+const textual = Cvar_Get(cvar, "skill_label", "hard", 0);
+assert.ok(textual, "textual cvar should be created");
+assert.equal(Cvar_VariableValue(cvar, "skill_label"), 0, "non-numeric cvar value should parse like atof fallback");
 
 const skillAgain = Cvar_Get(cvar, "skill", "2", CVAR_SERVERINFO);
 assert.equal(skillAgain, skill, "existing cvar lookup should return same object");

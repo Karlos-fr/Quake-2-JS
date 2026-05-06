@@ -102,16 +102,16 @@
 | `Quake-2-master/game/q_shared.c` | global | `len` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C de `Com_sprintf`, pas une entite portee. |
 | `Quake-2-master/game/q_shared.c` | global | `argptr` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C varargs de `Com_sprintf`, pas une entite portee. |
 | `Quake-2-master/game/q_shared.c` | global | `bigbuffer` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Buffer local C remplace par une chaine retournee et bornee en TS. |
-| `Quake-2-master/game/q_shared.c` | function | `Info_ValueForKey` | `packages/qcommon/src/common.ts` | `Info_ValueForKey` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `pkey` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `valueindex` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `o` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `Info_RemoveKey` | `packages/qcommon/src/common.ts` | `Info_RemoveKey` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `start` | `packages/qcommon/src/common.ts` | `start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `pkey` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `value` | `packages/math/src/q_shared.ts` | `value` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `o` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `Info_Validate` | `packages/qcommon/src/common.ts` | `Info_Validate` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | function | `Info_SetValueForKey` | `packages/qcommon/src/common.ts` | `Info_SetValueForKey` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `c` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.c` | global | `maxsize` | `packages/math/src/q_shared.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.c` | function | `Info_ValueForKey` | `packages/qcommon/src/common.ts` | `Info_ValueForKey` | Valide | A redecouper | Test `npm run verify:q-shared:header`; commentaire verifie; correction scanner TS pour conserver l'ordre C et retourner la premiere cle. |
+| `Quake-2-master/game/q_shared.c` | global | `pkey` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C de `Info_ValueForKey`, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | global | `valueindex` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Static local C de double buffer remplace par retours string TS immuables. |
+| `Quake-2-master/game/q_shared.c` | global | `o` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Pointeur local C de parsing, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | function | `Info_RemoveKey` | `packages/qcommon/src/common.ts` | `Info_RemoveKey` | Valide | A redecouper | Test `npm run verify:q-shared:header`; commentaire mis a jour; correction pour retirer seulement la premiere occurrence comme le C. |
+| `Quake-2-master/game/q_shared.c` | global | `start` | `packages/qcommon/src/common.ts` | `start` | Non applicable | A redecouper | Pointeur local C materialise par indices/slices TS, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | global | `pkey` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C de `Info_RemoveKey`, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | global | `value` | `packages/math/src/q_shared.ts` | `value` | Non applicable | A redecouper | Buffer local C de `Info_RemoveKey`, remplace par indices/slices TS. |
+| `Quake-2-master/game/q_shared.c` | global | `o` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Pointeur local C de parsing, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | function | `Info_Validate` | `packages/qcommon/src/common.ts` | `Info_Validate` | Valide | A redecouper | Test `npm run verify:q-shared:header`; commentaire verifie; rejets `\"` et `;` conformes. |
+| `Quake-2-master/game/q_shared.c` | function | `Info_SetValueForKey` | `packages/qcommon/src/common.ts` | `Info_SetValueForKey` | Valide | A redecouper | Tests `npm run verify:q-shared:header`, `npm run verify:cvar`, full-game; commentaire verifie; mutation C adaptee en retour string TS. |
+| `Quake-2-master/game/q_shared.c` | global | `c` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Variable locale C de filtrage ASCII dans `Info_SetValueForKey`, pas une entite portee. |
+| `Quake-2-master/game/q_shared.c` | global | `maxsize` | `packages/math/src/q_shared.ts` |  | Non applicable | A redecouper | Constante locale C materialisee par `MAX_INFO_STRING`, pas une entite portee. |

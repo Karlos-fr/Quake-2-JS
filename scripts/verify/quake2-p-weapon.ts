@@ -11,6 +11,7 @@
 
 import {
   ChangeWeapon,
+  Blaster_Fire,
   CENTER_HANDED,
   DEFAULT_BULLET_HSPREAD,
   DEFAULT_BULLET_VSPREAD,
@@ -34,6 +35,8 @@ import {
   Weapon_Grenade,
   Weapon_GrenadeLauncher,
   Weapon_BFG,
+  Weapon_Blaster,
+  Weapon_Blaster_Fire,
   Weapon_HyperBlaster,
   Weapon_Machinegun,
   Weapon_Railgun,
@@ -51,7 +54,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
-import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, DF_WEAPONS_STAY, EF_HYPERBLASTER, MZ_BFG, MZ_BLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET, MZ_SILENCED, PMF_DUCKED } from "../../packages/qcommon/src/index.js";
+import { BUTTON_ATTACK, CHAN_AUTO, CHAN_VOICE, CHAN_WEAPON, DF_INFINITE_AMMO, DF_WEAPONS_STAY, EF_BLASTER, EF_HYPERBLASTER, MZ_BFG, MZ_BLASTER, MZ_CHAINGUN2, MZ_CHAINGUN3, MZ_GRENADE, MZ_HYPERBLASTER, MZ_MACHINEGUN, MZ_RAILGUN, MZ_ROCKET, MZ_SILENCED, PMF_DUCKED } from "../../packages/qcommon/src/index.js";
 
 main();
 
@@ -67,6 +70,7 @@ function main(): void {
   verifyChaingunFireParity();
   verifyGrenadeLauncherFireParity();
   verifyRocketLauncherFireParity();
+  verifyBlasterFireParity();
   verifyHyperBlasterFireParity();
   verifyRailgunFireParity();
   verifyBfgFireParity();
@@ -530,6 +534,117 @@ function verifyRocketLauncherFireParity(): void {
   });
   assertNumber(shots.length, 0, "Rocket launcher fire_frames should only include frame 5");
   assertNumber(player.client!.ps.gunframe, 7, "Rocket launcher non-fire frame should advance without firing");
+}
+
+function verifyBlasterFireParity(): void {
+  const runtime = createHarnessRuntime();
+  const player = createPlayer(runtime);
+  const blaster = requireItem("Blaster");
+  const shots: Array<{ start: [number, number, number]; dir: [number, number, number]; damage: number; speed: number; effect: number; hyper: boolean }> = [];
+  const flashes: number[] = [];
+
+  player.s.modelindex = 255;
+  player.s.origin = [100, 200, 300];
+  player.client!.v_angle = [0, 0, 0];
+  player.client!.pers.weapon = blaster;
+  player.client!.ammo_index = 0;
+  player.client!.pers.inventory[blaster.index] = 1;
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 5;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.silencer_shots = 1;
+
+  Blaster_Fire(player, [2, -3, 4], 10, true, EF_HYPERBLASTER, runtime, {
+    fire_blaster: (_ent, start, dir, damage, speed, effect, hyper) => {
+      shots.push({ start, dir, damage, speed, effect, hyper });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots.length, 1, "Blaster_Fire should spawn one bolt");
+  assertVec3(shots[0].start, [126, 195, 318], "Blaster_Fire should add g_offset to the original muzzle offset");
+  assertVec3(shots[0].dir, [1, 0, 0], "Blaster_Fire should fire along AngleVectors forward");
+  assertNumber(shots[0].damage, 40, "Blaster_Fire should apply quad damage before spawning the bolt");
+  assertNumber(shots[0].speed, 1000, "Blaster_Fire projectile speed should match C");
+  assertNumber(shots[0].effect, EF_HYPERBLASTER, "Blaster_Fire should pass through the effect parameter");
+  assertBoolean(shots[0].hyper, true, "Blaster_Fire should pass through the hyper flag");
+  assertNumber(flashes[0], MZ_HYPERBLASTER | MZ_SILENCED, "Blaster_Fire should emit hyperblaster muzzleflash plus silenced bit");
+  assertNumber(player.client!.silencer_shots, 0, "Blaster_Fire PlayerNoise should consume one silencer shot");
+  assertBoolean(player.mynoise === null, true, "Blaster_Fire silenced PlayerNoise should not create a noise entity");
+  assertNumber(player.client!.kick_origin[0], -2, "Blaster_Fire should apply original kick origin");
+  assertNumber(player.client!.kick_angles[0], -1, "Blaster_Fire should apply original kick angle");
+
+  player.client!.quad_framenum = 0;
+  player.client!.silencer_shots = 0;
+  player.client!.ps.gunframe = 5;
+  shots.length = 0;
+  flashes.length = 0;
+
+  Weapon_Blaster_Fire(player, runtime, {
+    fire_blaster: (_ent, start, dir, damage, speed, effect, hyper) => {
+      shots.push({ start, dir, damage, speed, effect, hyper });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots[0].damage, 10, "Weapon_Blaster_Fire solo damage should match C");
+  assertNumber(shots[0].effect, EF_BLASTER, "Weapon_Blaster_Fire should pass EF_BLASTER");
+  assertBoolean(shots[0].hyper, false, "Weapon_Blaster_Fire should fire a non-hyper bolt");
+  assertNumber(flashes[0], MZ_BLASTER, "Weapon_Blaster_Fire should emit MZ_BLASTER");
+  assertNumber(player.client!.ps.gunframe, 6, "Weapon_Blaster_Fire should advance gunframe");
+  assertBoolean(runtime.sound_entity === player.mynoise, true, "Weapon_Blaster_Fire should emit weapon noise when not silenced");
+  assertVec3(player.mynoise!.s.origin, [124, 192, 314], "Weapon_Blaster_Fire should place weapon noise at the muzzle");
+
+  runtime.deathmatch = true;
+  player.client!.ps.gunframe = 5;
+  shots.length = 0;
+  flashes.length = 0;
+
+  Weapon_Blaster(player, runtime, {
+    fire_blaster: (_ent, start, dir, damage, speed, effect, hyper) => {
+      shots.push({ start, dir, damage, speed, effect, hyper });
+    },
+    emitPlayerMuzzleFlash: (_ent, weapon) => {
+      flashes.push(weapon);
+    }
+  });
+
+  assertNumber(shots[0].damage, 15, "Weapon_Blaster deathmatch damage should match C");
+  assertVec3(shots[0].start, [124, 192, 314], "Weapon_Blaster projectile start should use the original offset");
+  assertNumber(flashes[0], MZ_BLASTER, "Weapon_Blaster should emit MZ_BLASTER");
+  assertNumber(player.client!.ps.gunframe, 6, "Weapon_Blaster fire_frames should include frame 5");
+
+  runtime.deathmatch = false;
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.ps.gunframe = 19;
+  player.client!.buttons = 0;
+  player.client!.latched_buttons = 0;
+  shots.length = 0;
+  withMathRandom([0.1], () => {
+    Weapon_Blaster(player, runtime, {
+      fire_blaster: (_ent, start, dir, damage, speed, effect, hyper) => {
+        shots.push({ start, dir, damage, speed, effect, hyper });
+      }
+    });
+  });
+  assertNumber(player.client!.ps.gunframe, 19, "Weapon_Blaster pause_frames should include frame 19");
+  assertNumber(shots.length, 0, "Weapon_Blaster pause frame should not fire while idling");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 6;
+  shots.length = 0;
+  Weapon_Blaster(player, runtime, {
+    fire_blaster: (_ent, start, dir, damage, speed, effect, hyper) => {
+      shots.push({ start, dir, damage, speed, effect, hyper });
+    }
+  });
+  assertNumber(shots.length, 0, "Weapon_Blaster fire_frames should only include frame 5");
+  assertNumber(player.client!.ps.gunframe, 7, "Weapon_Blaster non-fire frame should advance without firing");
 }
 
 function verifyGrenadeLauncherFireParity(): void {

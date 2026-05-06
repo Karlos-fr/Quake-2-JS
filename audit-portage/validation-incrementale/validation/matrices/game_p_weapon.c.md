@@ -61,15 +61,15 @@
 | `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{25, 33, 42, 50, 0}` verifiees via `verify:p-weapon`. |
 | `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Table statique locale de `Weapon_RocketLauncher`; couverte par l'entree table `fire_frames`. |
 | `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{5, 0}` verifiees via `verify:p-weapon`. |
-| `Quake-2-master/game/p_weapon.c` | function | `Blaster_Fire` | `packages/game/src/p_weapon.ts` | `Blaster_Fire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Weapon_Blaster_Fire` | `packages/game/src/p_weapon.ts` | `Weapon_Blaster_Fire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Weapon_Blaster` | `packages/game/src/p_weapon.ts` | `Weapon_Blaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | function | `Blaster_Fire` | `packages/game/src/p_weapon.ts` | `Blaster_Fire` | Valide | A redecouper | Commentaire d'en-tete verifie; assertions ajoutees dans `scripts/verify/quake2-p-weapon.ts`; preuves `verify:p-weapon`, `typecheck`, `verify:local-gameplay-sync`, `verify:cl-fx`, `verify:full-game:three-renderer`, `verify:refresh-entity:weapon`. |
+| `Quake-2-master/game/p_weapon.c` | function | `Weapon_Blaster_Fire` | `packages/game/src/p_weapon.ts` | `Weapon_Blaster_Fire` | Valide | A redecouper | Commentaire d'en-tete verifie; degats solo/deathmatch, `EF_BLASTER`, `MZ_BLASTER`, frame et bruit joueur verifies via `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | Non applicable | A redecouper | Parametre/local rattache au bloc blaster; couvert par `Blaster_Fire` et `Weapon_Blaster_Fire`. |
+| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | Non applicable | A redecouper | Variable locale de `Weapon_Blaster_Fire`; couverte par `Weapon_Blaster_Fire`. |
+| `Quake-2-master/game/p_weapon.c` | function | `Weapon_Blaster` | `packages/game/src/p_weapon.ts` | `Weapon_Blaster` | Valide | A redecouper | Commentaire d'en-tete verifie; tables `pause_frames`/`fire_frames` testees via `verify:p-weapon`; runtime/web/renderer verifies. |
+| `Quake-2-master/game/p_weapon.c` | global | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Table statique locale de `Weapon_Blaster`; couverte par l'entree table `pause_frames`. |
+| `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{19, 32, 0}` verifiees via `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Table statique locale de `Weapon_Blaster`; couverte par l'entree table `fire_frames`. |
+| `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{5, 0}` verifiees via `verify:p-weapon`. |
 | `Quake-2-master/game/p_weapon.c` | function | `Weapon_HyperBlaster_Fire` | `packages/game/src/p_weapon.ts` | `Weapon_HyperBlaster_Fire` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `rotation` | `packages/game/src/p_weapon.ts` | `rotation` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `effect` | `packages/game/src/p_weapon.ts` | `effect` | A verifier | A redecouper |  |

@@ -227,9 +227,15 @@ info = Info_SetValueForKey(info, "name", "player");
 info = Info_SetValueForKey(info, "skin", "male/grunt");
 assert.equal(Info_ValueForKey(info, "name"), "player", "Info_ValueForKey mismatch");
 assert.equal(Info_RemoveKey(info, "name"), "\\skin\\male/grunt", "Info_RemoveKey mismatch");
+assert.equal(Info_ValueForKey("\\name\\first\\name\\second", "name"), "first", "Info_ValueForKey should return the first matching key");
+assert.equal(Info_RemoveKey("\\name\\first\\name\\second", "name"), "\\name\\second", "Info_RemoveKey should remove only the first matching key");
+assert.equal(Info_RemoveKey("\\name\\player\\dangling", "skin"), "\\name\\player\\dangling", "Info_RemoveKey should preserve malformed nonmatching tails");
 assert.equal(Info_SetValueForKey("", "motd", "hello;world"), "\\motd\\hello;world", "Info_SetValueForKey value semicolon mismatch");
 assert.equal(Info_SetValueForKey("\\name\\player", "name", ""), "", "Info_SetValueForKey empty value removal mismatch");
 assert.equal(Info_SetValueForKey("\\name\\player", "bad;key", "value"), "\\name\\player", "Info_SetValueForKey key semicolon guard mismatch");
+assert.equal(Info_SetValueForKey("\\name\\player", "skin", "bad\\value"), "\\name\\player", "Info_SetValueForKey value backslash guard mismatch");
+assert.equal(Info_SetValueForKey("\\name\\player", "skin", "\"bad\""), "\\name\\player", "Info_SetValueForKey value quote guard mismatch");
+assert.equal(Info_SetValueForKey("", "hi", "A\u00e9B"), "\\hi\\AiB", "Info_SetValueForKey should strip high bits and keep printable ASCII");
 assert.equal(Info_Validate("\\name\\ok"), true, "Info_Validate valid mismatch");
 assert.equal(Info_Validate("\\name\\bad;value"), false, "Info_Validate invalid mismatch");
 
@@ -303,6 +309,7 @@ Com_PageInMemory(systemRuntime, pagedBuffer, pagedBuffer.length);
 assert.equal(systemRuntime.paged_total, 16, "Com_PageInMemory page stride mismatch");
 
 assert.throws(() => Sys_Error(systemRuntime, "boom"), /fatal:boom/, "Sys_Error mismatch");
+assert.throws(() => Sys_Error(systemRuntime, "fatal %s %d", "map", 7), /fatal:fatal map 7/, "Sys_Error varargs mismatch");
 
 const mins: [number, number, number] = [0, 0, 0];
 const maxs: [number, number, number] = [0, 0, 0];

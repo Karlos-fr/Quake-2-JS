@@ -10,18 +10,18 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/qcommon/cvar.c` | global | `cvar_vars` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_InfoValidate` | `packages/qcommon/src/cvar.ts` | `Cvar_InfoValidate` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_FindVar` | `packages/qcommon/src/cvar.ts` | `Cvar_FindVar` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_VariableValue` | `packages/qcommon/src/cvar.ts` | `Cvar_VariableValue` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `atof` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_VariableString` | `packages/qcommon/src/cvar.ts` | `Cvar_VariableString` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_CompleteVariable` | `packages/qcommon/src/cvar.ts` | `Cvar_CompleteVariable` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `cvar` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `len` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
+| `Quake-2-master/qcommon/cvar.c` | global | `cvar_vars` | `packages/qcommon/src/cvar.ts` | `CvarRuntime.cvar_vars` | Valide | Partiel | TS ownership adapte le global C en etat runtime explicite; ordre tete de liste prouve par `npm run verify:cvar`. |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_InfoValidate` | `packages/qcommon/src/cvar.ts` | `Cvar_InfoValidate` | Valide | A tester | Commentaire d'en-tete verifie; caracteres interdits et cas autorise couverts par `npm run verify:cvar`. |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_FindVar` | `packages/qcommon/src/cvar.ts` | `Cvar_FindVar` | Valide | A tester | Commentaire d'en-tete verifie; lookup exact case-sensitive, absent et existant couverts par `npm run verify:cvar`. |
+| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_FindVar`, non entite proprietaire; comportement couvert avec `Cvar_FindVar`. |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_VariableValue` | `packages/qcommon/src/cvar.ts` | `Cvar_VariableValue` | Valide | A tester | Commentaire d'en-tete verifie; valeur absente, numerique et non numerique couverte par `npm run verify:cvar`. |
+| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_VariableValue`, non entite proprietaire; comportement couvert avec `Cvar_VariableValue`. |
+| `Quake-2-master/qcommon/cvar.c` | function | `atof` | `packages/qcommon/src/cvar.ts` | `parseCvarFloat` | Non applicable | Partiel | Fonction libc externe appelee par `cvar.c`, non entite proprietaire; adaptation TS interne couverte par `npm run verify:cvar`. |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_VariableString` | `packages/qcommon/src/cvar.ts` | `Cvar_VariableString` | Valide | A tester | Commentaire d'en-tete verifie; valeur absente et existante couvertes par `npm run verify:cvar`. |
+| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_VariableString`, non entite proprietaire; comportement couvert avec `Cvar_VariableString`. |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_CompleteVariable` | `packages/qcommon/src/cvar.ts` | `Cvar_CompleteVariable` | Valide | A tester | Commentaire d'en-tete verifie; vide, exact avant partial et ordre de completion couverts par `npm run verify:cvar`. |
+| `Quake-2-master/qcommon/cvar.c` | global | `cvar` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_CompleteVariable`, non entite proprietaire; comportement couvert avec `Cvar_CompleteVariable`. |
+| `Quake-2-master/qcommon/cvar.c` | global | `len` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_CompleteVariable`, non entite proprietaire; comportement couvert avec `Cvar_CompleteVariable`. |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Get` | `packages/qcommon/src/cvar.ts` | `Cvar_Get` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Set2` | `packages/qcommon/src/cvar.ts` | `Cvar_Set2` | A verifier | A tester |  |

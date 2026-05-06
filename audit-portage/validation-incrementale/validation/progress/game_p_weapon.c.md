@@ -43,6 +43,17 @@
 - Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `Weapon_RocketLauncher_Fire` direct, projection, bit silencieux, parametres projectile, ammo infini et tables `pause_frames`/`fire_frames`.
 - Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
 
+## Session 2026-05-06 - bloc blaster
+
+- Lot traite: `Blaster_Fire`, `Weapon_Blaster_Fire`, variables locales/parametres `damage`, `Weapon_Blaster`, tables locales `pause_frames` et `fire_frames`.
+- Comparaison C/TS: quad damage, choix solo/deathmatch `10`/`15`, projection `[24, 8, viewheight - 8] + g_offset`, kick origin/angle, `fire_blaster` vitesse `1000`, passage `effect`/`hyper`, muzzleflash `MZ_BLASTER` ou `MZ_HYPERBLASTER` avec bit silencieux, `PlayerNoise`, avance gunframe et `Weapon_Generic(ent, 4, 8, 52, 55, {19, 32, 0}, {5, 0}, Weapon_Blaster_Fire)` compares contre le C.
+- Commentaires d'en-tete: `Blaster_Fire`, `Weapon_Blaster_Fire` et `Weapon_Blaster` verifies avec `Original name`, `Source: game/p_weapon.c`, `Category: Ported`, niveau de fidelite et comportement.
+- Runtime: integre via `g_items` (`weapon_blaster` -> `Weapon_Blaster`), `Think_Weapon`, `ClientThink`/`ClientBeginServerFrame`, `local-game-bootstrap` et hooks `fire_blaster`.
+- apps/web: le navigateur declenche le tir via les flux serveur/local/full-game et consomme le runtime porte; aucune logique web parallele ne remplace ce bloc.
+- renderer-three: sorties visibles attendues = bolt blaster/hyperblaster, `EF_BLASTER`/`EF_HYPERBLASTER`, muzzleflash/dlight `MZ_BLASTER`/`MZ_HYPERBLASTER`, bruit, trail blaster et impact `TE_BLASTER`; elles sont consommees par snapshots, `cl_fx`, refresh entity/particles/dlights et renderer-three.
+- Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `Blaster_Fire` direct, projection avec `g_offset`, damage quad, bit silencieux, `Weapon_Blaster_Fire`, degats deathmatch, bruit joueur et tables `pause_frames`/`fire_frames`.
+- Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
+
 ## Prochain lot recommande
 
-Valider le bloc blaster: `Blaster_Fire`, `Weapon_Blaster_Fire`, variables locales `damage`, puis `Weapon_Blaster` avec `pause_frames` et `fire_frames`.
+Valider le bloc hyperblaster: `Weapon_HyperBlaster_Fire`, variables locales `rotation`/`effect`/`damage`, puis `Weapon_HyperBlaster` avec `pause_frames` et `fire_frames`.

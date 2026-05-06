@@ -70,6 +70,24 @@
   - `npx tsx ./scripts/verify/quake2-sv-send.ts` passe.
 - Matrice: 91 `Valide`, 87 `Non applicable`, 17 `A verifier`.
 
+## Session 2026-05-06 - bloc areaportals/areabits
+
+- Lot traite: `FloodArea_r`, second `FloodAreaConnections`, `CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, et faux positifs locaux associes (`i`, `floodnum`, `bytes`).
+- Corrections: aucune correction de `packages/qcommon/src/cmodel.ts` necessaire. Harness `quake2-cmodel.ts` renforce avec un monde synthetique a 4 areas et 1 portail logique pour prouver portail ferme/ouvert, reflood, area 0, `map_noareas`, et restauration `portalopen`.
+- Validation C vs TS: `FloodArea_r` conserve la detection reflood, les `floodnum`/`floodvalid` mutables et la recursion via `portalopen[portalnum]`; `FloodAreaConnections` invalide les floods puis saute area 0; `CM_SetAreaPortalState` met a jour le portail et reflood; `CM_AreasConnected` respecte `map_noareas`; `CM_WriteAreaBits` ecrit les bits par flood, force tout visible pour area 0 et pour `map_noareas`.
+- Runtime: branche via `SV_BuildClientFrame`/`SV_WriteFrameToClient`, filtres `SV_AreasConnected`, `SV_Multicast`/`SV_StartSound`, game imports `SetAreaPortalState`/`AreasConnected`, portes et triggers areaportal (`door_use_areaportals`, `func_areaportal`).
+- apps/web: le host full-game web consomme le runtime serveur/client porte; les `areabits` passent par snapshots et parsing client, sans logique web parallele masquant le runtime.
+- renderer-three: sortie visible attendue bien consommee: `CM_WriteAreaBits` alimente `frame.areabits`, le client la copie dans `refdef.areabits`, puis `renderer-three` filtre les surfaces par `leaf.area` dans `gl_rsurf`.
+- Tests lances:
+  - `npx tsx ./scripts/verify/quake2-cmodel.ts` passe avec preuves synthetiques areaportals/areabits.
+  - `npm run typecheck` passe.
+  - `npm run verify:server:ents` passe.
+  - `npm run verify:server:world` passe.
+  - `npm run verify:full-game:server-host` passe.
+  - `npm run verify:full-game:three-renderer` passe.
+  - `npx tsx ./scripts/verify/quake2-sv-send.ts` passe.
+- Matrice: 96 `Valide`, 93 `Non applicable`, 6 `A verifier`.
+
 ## Prochain lot recommande
 
-Reprendre a `FloodArea_r`, second `FloodAreaConnections`, `CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, et faux positifs locaux associes si le lot reste coherent.
+Reprendre a `CM_WritePortalState`, `CM_ReadPortalState`, `CM_HeadnodeVisible` et faux positifs locaux associes (`leafnum`, `cluster`), en revalidant les commentaires et le branchement sauvegarde/runtime/renderer si applicable.
