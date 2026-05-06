@@ -19,8 +19,8 @@
 import type { byte, qboolean } from "./q_shared.js";
 import type { cvar_t } from "./cvar.js";
 import type { sizebuf_t } from "../../memory/src/index.js";
-import { createSizeBuffer, SZ_Clear, SZ_Init, SZ_Write } from "../../memory/src/index.js";
-import { MSG_BeginReading, MSG_ReadLong, MSG_ReadShort, MSG_WriteLong } from "./messages.js";
+import { createSizeBuffer, SZ_Clear, SZ_Write } from "../../memory/src/index.js";
+import { MSG_BeginReading } from "./messages.js";
 export { Com_BlockChecksum } from "./md4.js";
 
 /**
@@ -787,151 +787,16 @@ export function NET_Sleep(runtime: QcommonNetRuntime, msec: number): void {
   runtime.hooks.sleep?.(msec);
 }
 
-/**
- * Original name: Netchan_Init
- * Source: qcommon/qcommon.h / qcommon/net_chan.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Initializes qcommon netchan globals including a randomized qport.
- */
-export function Netchan_Init(runtime: QcommonNetRuntime): void {
-  runtime.qport = (runtime.hooks.now?.() ?? Date.now()) & 0xffff;
-}
-
-/**
- * Original name: Netchan_Setup
- * Source: qcommon/qcommon.h / qcommon/net_chan.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Opens one channel to the specified remote endpoint.
- */
-export function Netchan_Setup(
-  runtime: QcommonNetRuntime,
-  sock: netsrc_t,
-  chan: netchan_t,
-  adr: netadr_t,
-  qport: number
-): void {
-  const reset = createNetchan(sock);
-  Object.assign(chan, reset);
-  chan.sock = sock;
-  chan.remote_address = cloneNetAdr(adr);
-  chan.qport = qport;
-  chan.last_received = runtime.hooks.now?.() ?? Date.now();
-  chan.incoming_sequence = 0;
-  chan.outgoing_sequence = 1;
-  SZ_Init(chan.message, chan.message_buf);
-  chan.message.allowoverflow = true;
-}
-
-export { Netchan_CanReliable, Netchan_NeedReliable } from "./net_chan.js";
-
-/**
- * Original name: Netchan_OutOfBand
- * Source: qcommon/qcommon.h / qcommon/net_chan.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Sends one out-of-band datagram prefixed with sequence `-1`.
- */
-export function Netchan_OutOfBand(
-  runtime: QcommonNetRuntime,
-  net_socket: netsrc_t,
-  adr: netadr_t,
-  length: number,
-  data: Uint8Array
-): void {
-  const send_buf = new Uint8Array(MAX_MSGLEN);
-  const send = createSizeBuffer(send_buf);
-  MSG_WriteLong(send, -1);
-  SZ_Write(send, data.subarray(0, length));
-  NET_SendPacket(runtime, net_socket, send.cursize, send.data, adr);
-}
-
-/**
- * Original name: Netchan_OutOfBandPrint
- * Source: qcommon/qcommon.h / qcommon/net_chan.c
- * Category: Ported
- * Fidelity level: Close
- *
- * Behavior:
- * - Sends one text out-of-band datagram.
- */
-export function Netchan_OutOfBandPrint(
-  runtime: QcommonNetRuntime,
-  net_socket: netsrc_t,
-  adr: netadr_t,
-  message: string
-): void {
-  const encoded = new Uint8Array(message.length);
-  for (let index = 0; index < message.length; index += 1) {
-    encoded[index] = message.charCodeAt(index) & 0xff;
-  }
-
-  Netchan_OutOfBand(runtime, net_socket, adr, encoded.length, encoded);
-}
-
-export { Netchan_Transmit } from "./net_chan.js";
-
-/**
- * Original name: Netchan_Process
- * Source: qcommon/qcommon.h / qcommon/net_chan.c
- * Category: Ported
- * Fidelity level: Strict
- *
- * Behavior:
- * - Processes one received packet header and updates reliable sequencing state.
- */
-export function Netchan_Process(runtime: QcommonNetRuntime, chan: netchan_t, msg: sizebuf_t): qboolean {
-  MSG_BeginReading(msg);
-  let sequence = MSG_ReadLong(msg) >>> 0;
-  let sequence_ack = MSG_ReadLong(msg) >>> 0;
-
-  if (chan.sock === netsrc_t.NS_SERVER) {
-    MSG_ReadShort(msg);
-  }
-
-  const reliable_message = sequence >>> 31;
-  const reliable_ack = sequence_ack >>> 31;
-
-  sequence &= ~(1 << 31);
-  sequence_ack &= ~(1 << 31);
-
-  if (sequence <= chan.incoming_sequence) {
-    if (runtime.showdrop) {
-      runtime.hooks.onPrintf?.(
-        `${NET_AdrToString(chan.remote_address)}:Out of order packet ${sequence} at ${chan.incoming_sequence}\n`
-      );
-    }
-    return false;
-  }
-
-  chan.dropped = sequence - (chan.incoming_sequence + 1);
-  if (chan.dropped > 0 && runtime.showdrop) {
-    runtime.hooks.onPrintf?.(
-      `${NET_AdrToString(chan.remote_address)}:Dropped ${chan.dropped} packets at ${sequence}\n`
-    );
-  }
-
-  if (reliable_ack === chan.reliable_sequence) {
-    chan.reliable_length = 0;
-  }
-
-  chan.incoming_sequence = sequence;
-  chan.incoming_acknowledged = sequence_ack;
-  chan.incoming_reliable_acknowledged = reliable_ack;
-  if (reliable_message) {
-    chan.incoming_reliable_sequence ^= 1;
-  }
-
-  chan.last_received = runtime.hooks.now?.() ?? Date.now();
-  return true;
-}
+export {
+  Netchan_CanReliable,
+  Netchan_Init,
+  Netchan_NeedReliable,
+  Netchan_OutOfBand,
+  Netchan_OutOfBandPrint,
+  Netchan_Process,
+  Netchan_Setup,
+  Netchan_Transmit
+} from "./net_chan.js";
 
 /**
  * Original name: CopyString

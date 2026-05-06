@@ -2,6 +2,10 @@
 
 ## Dernier lot valide
 
+- Lot du 2026-05-06: `Cvar_WriteVariables`, `Cvar_List_f`.
+- Faux positifs locaux traites: `var`/`buffer` de `Cvar_WriteVariables`, `var`/`i` de `Cvar_List_f`.
+- Corrections: aucune correction du port TS proprietaire requise; renforcement de `scripts/verify/quake2-cvar.ts` pour couvrir ordre exact `cvar_vars`, exclusion des cvars non archivees, format `set name "value"`, marqueurs `cvarlist` (`*`, `U`, `S`, `-`, `L`) et compteur total.
+- Preuves ajoutees: serialization archive-only via `Cvar_WriteVariables`, format et comptage `Cvar_List_f`, commande `cvarlist` via `Cvar_Init`, delegation `CL_WriteConfiguration`/`writeconfig`, et consommation indirecte des cvars de rendu archivees.
 - Lot du 2026-05-06: `Cvar_GetLatchedVars`, `Cvar_Command`, `Cvar_Set_f`.
 - Faux positifs locaux/appels internes traites: `var` de `Cvar_GetLatchedVars`, `v` de `Cvar_Command`, `c`/`flags` de `Cvar_Set_f`, appel interne `Cvar_Set` deja proprietaire ailleurs dans la matrice.
 - Corrections: aucune correction du port TS proprietaire requise; renforcement de `scripts/verify/quake2-cvar.ts` pour couvrir les branches console du lot.
@@ -33,6 +37,10 @@
 - `Cvar_Command`/`Cvar_Set_f`: runtime integre via `Cmd_ExecuteString`, le fallback cvar de `createQcommonRuntime`, et `Cvar_Init` qui enregistre `set`.
 - `apps/web`: integre via les consoles full-game et config web; `full-game.ts` relie `onGameDirChange` a `FS_SetGamedir` puis `exec config.cfg`, et `onExecAutoexec` a `exec autoexec.cfg`.
 - `renderer-three`: aucune sortie visible directe nouvelle; impact indirect attendu par mutation des cvars de rendu (`r_*`, `gl_*`, `vid_*`, `hand`, etc.) consommees par les adapters renderer/ref. Pas de manque renderer observe pour ce lot.
+- `Cvar_WriteVariables`: runtime integre via `CL_WriteConfiguration`, appele au shutdown client et par la commande web `writeconfig`; l'adaptation TS retourne le texte a ecrire au lieu d'ouvrir le fichier en append, ce qui est l'ownership attendu cote client/web.
+- `Cvar_List_f`: runtime integre via `Cvar_Init` qui enregistre `cvarlist`; la sortie passe par le hook `onPrint` de `emitCvarOutput`.
+- `apps/web`: `writeconfig` delegue a `CL_WriteConfiguration`, donc consomme le port `Cvar_WriteVariables`; la console full-game expose `cvarlist` via `Cvar_Init`. Pas de logique parallele observee pour ce lot.
+- `renderer-three`: pas de sortie visible directe (modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene); impact indirect attendu et verifie sur les cvars de rendu archivees (`gl_*`, `vid_*`, `hand`) creees par `ri.Cvar_Get` puis serialisables par `Cvar_WriteVariables`.
 
 ## Tests de reference
 
@@ -44,8 +52,8 @@
 
 ## Prochain lot recommande
 
-- `Cvar_WriteVariables` avec locaux `var`/`buffer`, puis `Cvar_List_f` avec locaux `var`/`i` si le lot reste coherent.
-- Verifier explicitement serialization archive/config, sortie console `cvarlist`, runtime via `writeconfig`/config web si applicable, et renderer-three comme consommateur indirect des cvars de rendu.
+- `userinfo_modified`, puis `Cvar_BitInfo` avec locaux `info`/`var`; si coherent, inclure `Cvar_Userinfo` et `Cvar_Serverinfo` avec leurs appels internes a `Cvar_BitInfo`.
+- Verifier explicitement l'info-string user/server, `userinfo_modified` cote client/server, propagation runtime vers les snapshots/handshake si applicable, et confirmer l'absence de sortie renderer directe.
 
 ## Blocages
 

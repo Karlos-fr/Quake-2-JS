@@ -76,3 +76,41 @@ Decisions / blocages:
 
 Prochain lot recommande:
 - `Netchan_Process` avec son local `qport`, puis traiter les doublons restants de `qcommon.ts` ou les transformer en facades vers `net_chan.ts` avant de fermer les lignes encore `Partiel`.
+
+## Session 2026-05-06 - lot process / facades qcommon
+
+Lot traite:
+- `Netchan_Process` et son local C `qport`.
+- Doublons restants directement rattaches dans `packages/qcommon/src/qcommon.ts`: `Netchan_Init`, `Netchan_Setup`, `Netchan_OutOfBand`, `Netchan_OutOfBandPrint`, `Netchan_Process`.
+
+Comparaison C/TS:
+- `Netchan_Process` dans `packages/qcommon/src/net_chan.ts` reproduit la lecture C du header: `MSG_BeginReading`, sequence, ack, lecture du `qport` seulement cote `NS_SERVER`, extraction des bits fiable, nettoyage du bit haut, traces `showpackets`, rejet des paquets stale/dupliques, calcul `dropped`, clear de `reliable_length` sur ack fiable, mise a jour des sequences/acks fiables, toggle `incoming_reliable_sequence`, puis timestamp `last_received`.
+- Le local `qport` de `Netchan_Process` n'est pas une entite proprietaire: le C le lit seulement pour consommer les deux octets serveur, sans comparaison dans cette fonction; le filtrage par qport est fait en amont dans `SV_ReadPackets`.
+- Les copies `Netchan_*` restantes de `qcommon.ts` ont ete remplacees par des facades/reexports vers `net_chan.ts`, qui est le fichier proprietaire de `qcommon/net_chan.c`.
+
+Commentaires d'en-tete:
+- Verifies pour `Netchan_Process` dans `packages/qcommon/src/net_chan.ts`: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior` presents.
+- Les commentaires de portage concurrents dans `qcommon.ts` ont ete supprimes avec les doublons; le port officiel reste documente dans `net_chan.ts`.
+
+Runtime / apps-web / renderer-three:
+- Runtime: `Netchan_Process` est atteint depuis `CL_ReadPackets` cote client et `SV_ReadPackets` cote serveur, eux-memes appeles par les flux `CL_Frame` / `SV_Frame`; le qport serveur est filtre avant appel dans `SV_ReadPackets`, puis relu ici pour conserver le curseur payload comme en C.
+- `apps/web`: integre via `full-game-local-transport.ts` et `full-game-server-host.ts`, qui fournissent les runtimes reseau client/serveur; aucune logique web parallele ne remplace le traitement netchan.
+- `packages/renderer-three`: non applicable justifie; le lot produit seulement etat de canal et curseur de message reseau. Il ne produit pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene; les sorties visibles sont consommees plus tard apres parsing client.
+
+Tests lances:
+- `npm run verify:net-chan` (OK).
+- `npm run verify:qcommon:header` (OK).
+- `npm run typecheck` (OK).
+- `npm run verify:full-game:local-transport` (OK).
+- `npm run verify:full-game:server-host` (OK).
+- `npm run verify:full-game:three-renderer` (OK).
+
+Corrections appliquees:
+- `packages/qcommon/src/qcommon.ts`: remplacement des portages locaux `Netchan_Init`, `Netchan_Setup`, `Netchan_OutOfBand`, `Netchan_OutOfBandPrint` et `Netchan_Process` par des reexports depuis `packages/qcommon/src/net_chan.ts`.
+- `audit-portage/validation-incrementale/validation/matrices/qcommon_net_chan.c.md`: `Netchan_Process` valide, local `qport` non applicable, lignes `Netchan_OutOfBand`, `Netchan_OutOfBandPrint` et `Netchan_Setup` fermees apres suppression des doublons.
+
+Decisions / blocages:
+- `showpackets`, `showdrop` et `Netchan_Init` restent `Partiel`: les flags existent dans le runtime et les traces sont testees, mais le port ne cree pas encore les cvars originales via `Cvar_Get`.
+
+Prochain lot recommande:
+- Fermer le reliquat cvar du fichier: brancher/documenter `showpackets`, `showdrop` et `qport` dans le runtime cvar autour de `Netchan_Init`, puis revalider les trois lignes `Partiel`.

@@ -29,11 +29,11 @@
 | `Quake-2-master/qcommon/pmove.c` | global | `pm_friction` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_friction` | Valide | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `pm_waterfriction` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_waterfriction` | Valide | Partiel |  |
 | `Quake-2-master/qcommon/pmove.c` | global | `pm_waterspeed` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_waterspeed` | Valide | Partiel |  |
-| `Quake-2-master/qcommon/pmove.c` | macro | `STOP_EPSILON` | `packages/qcommon/src/pmove.ts` | `STOP_EPSILON` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | function | `PM_ClipVelocity` | `packages/qcommon/src/pmove.ts` | `PM_ClipVelocity` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `backoff` | `packages/qcommon/src/pmove.ts` | `backoff` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `change` | `packages/qcommon/src/pmove.ts` | `change` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` |  | A verifier | Partiel |  |
+| `Quake-2-master/qcommon/pmove.c` | macro | `STOP_EPSILON` | `packages/qcommon/src/pmove.ts` | `STOP_EPSILON` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | function | `PM_ClipVelocity` | `packages/qcommon/src/pmove.ts` | `PM_ClipVelocity` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `backoff` | `packages/qcommon/src/pmove.ts` | `backoff` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `change` | `packages/qcommon/src/pmove.ts` | `change` | Valide | A tester |  |
+| `Quake-2-master/qcommon/pmove.c` | global | `i` | `packages/qcommon/src/pmove.ts` | `index` | Valide | Partiel | Renommage local de `i` en `index` dans `PM_ClipVelocity`. |
 | `Quake-2-master/qcommon/pmove.c` | macro | `MIN_STEP_NORMAL` | `packages/qcommon/src/pmove.ts` | `MIN_STEP_NORMAL` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | macro | `MAX_CLIP_PLANES` | `packages/qcommon/src/pmove.ts` | `MAX_CLIP_PLANES` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/pmove.c` | function | `PM_StepSlideMove_` | `packages/qcommon/src/pmove.ts` | `PM_StepSlideMove_` | A verifier | A tester |  |

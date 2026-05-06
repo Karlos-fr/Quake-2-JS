@@ -87,6 +87,17 @@
 - Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `Chaingun_Fire` direct, projection, bruit joueur silencieux/non silencieux, sons windup/wind-down/loop, `MZ_CHAINGUN1/2/3`, degats/kick solo/deathmatch/quad, clamp ammo, ammo infini, no-ammo, boucle frame `21`, relache frame `14`, tables `pause_frames`/`fire_frames` et frames non-fire.
 - Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
 
+## Session 2026-05-06 - bloc shotgun
+
+- Lot traite: `weapon_shotgun_fire`, variables locales `start`/`offset`/`damage`/`kick`, `Weapon_Shotgun`, tables locales `pause_frames` et `fire_frames`.
+- Comparaison C/TS: quirk frame `9` qui avance sans tirer, `AngleVectors`, kick origin `forward * -2`, kick angle `-2`, projection `[0, 8, viewheight - 8]`, degats/kick `4`/`8` et quad `16`/`32`, `fire_shotgun` avec spreads `500`/`500`, counts solo/deathmatch, `MOD_SHOTGUN`, muzzleflash `MZ_SHOTGUN | is_silenced`, `PlayerNoise`, consommation ammo et `DF_INFINITE_AMMO` compares contre le C. `Weapon_Shotgun` appelle `Weapon_Generic(ent, 7, 18, 36, 39, {22, 28, 34, 0}, {8, 9, 0}, weapon_shotgun_fire)`.
+- Commentaires d'en-tete: `weapon_shotgun_fire` et `Weapon_Shotgun` verifies avec `Original name`, `Source: game/p_weapon.c`, `Category: Ported`, niveau de fidelite et comportement.
+- Runtime: integre via `g_items` (`weapon_shotgun` -> `Weapon_Shotgun`), `Think_Weapon`, `ClientThink`/`ClientBeginServerFrame`, `G_RunFrame`, `local-game-bootstrap` et hook `fire_shotgun`.
+- apps/web: le navigateur declenche le tir via les flux serveur/local/full-game et consomme le runtime porte; le binding arme `Shotgun: "1"` est un adapter d'input, pas une logique parallele de tir.
+- renderer-three: sorties visibles attendues = view/world model `v_shotg`/`g_shotg`, muzzleflash/dlight `MZ_SHOTGUN`, sons shotgun, impacts `TE_SHOTGUN`, particules/dlights client et frames joueur; elles sont consommees par snapshots, `local-gameplay-sync`, `cl_fx`, refresh entity/dlights et renderer-three.
+- Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `weapon_shotgun_fire` direct, projection, bruit joueur silencieux/non silencieux, frame `9`, degats/kick base et quad, count solo/deathmatch, ammo infini, tables `pause_frames`/`fire_frames` et frames non-fire.
+- Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
+
 ## Prochain lot recommande
 
-Valider le bloc shotgun: `weapon_shotgun_fire`, variables locales `start`/`offset`/`damage`/`kick`, puis `Weapon_Shotgun` avec `pause_frames` et `fire_frames`.
+Valider le bloc super shotgun: `weapon_supershotgun_fire`, variables locales `start`/`offset`/`v`/`damage`/`kick`, puis `Weapon_SuperShotgun` avec `pause_frames` et `fire_frames`.

@@ -43,6 +43,9 @@ const basePakBytes = createPakBytes([
 const basePak1Bytes = createPakBytes([
   { name: "maps/base1.bsp", bytes: encodeAscii("base-pak1-map") }
 ]);
+const xatrixPakBytes = createPakBytes([
+  { name: "maps/base1.bsp", bytes: encodeAscii("xatrix-pak-map") }
+]);
 
 const addedBase = FS_AddGameDirectory(filesystem, "baseq2", {
   "maps/base1.bsp": encodeAscii("base-map"),
@@ -134,6 +137,19 @@ assert.equal(FS_SetGamedir(filesystem, "xatrix"), true, "FS_SetGamedir valid mis
 assert.equal(FS_Gamedir(filesystem), "xatrix", "FS_SetGamedir gamedir mismatch");
 assert.equal(FS_Path_f(filesystem).includes("rogue"), false, "FS_SetGamedir should trim to base search paths");
 assert.equal(FS_SetGamedir(filesystem, "../bad"), false, "FS_SetGamedir invalid mismatch");
+assert.equal(FS_SetGamedir(filesystem, "xatrix", {
+  "maps/base1.bsp": encodeAscii("xatrix-loose-map"),
+  "pak0.pak": xatrixPakBytes
+}), true, "FS_SetGamedir should mount provided mod directory");
+assert.equal(FS_Path_f(filesystem).includes("xatrix/pak0.pak (1 files)"), true, "FS_SetGamedir should add mod pak search path");
+assert.equal(FS_Path_f(filesystem).includes("xatrix"), true, "FS_SetGamedir should add mod directory search path");
+assert.equal(decodeAscii(FS_LoadFile(filesystem, "maps/base1.bsp") ?? new Uint8Array()), "xatrix-pak-map", "FS_SetGamedir mod pak should override base files");
+assert.equal(FS_SetGamedir(filesystem, ""), true, "FS_SetGamedir empty base reset mismatch");
+assert.equal(FS_Gamedir(filesystem), "baseq2", "FS_SetGamedir empty should reset logical gamedir");
+assert.equal(FS_Path_f(filesystem).includes("xatrix"), false, "FS_SetGamedir empty should trim mod search paths");
+assert.equal(FS_SetGamedir(filesystem, "bad/path"), false, "FS_SetGamedir slash rejection mismatch");
+assert.equal(FS_SetGamedir(filesystem, "bad\\path"), false, "FS_SetGamedir backslash rejection mismatch");
+assert.equal(FS_SetGamedir(filesystem, "c:bad"), false, "FS_SetGamedir colon rejection mismatch");
 
 FS_FreeFile(override ?? new Uint8Array());
 

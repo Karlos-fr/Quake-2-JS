@@ -231,4 +231,32 @@ assert.equal(Cvar_VariableString(cvar, "rate"), "33000", "unknown command fallba
 Cmd_ExecuteString(cmd, "cvarlist");
 assert.equal(printed.some((line) => line.includes('hand "1"')), true, "cvarlist command should print cvars");
 
+const archiveListCvar = createCvarRuntime();
+const archivedFirst = Cvar_Get(archiveListCvar, "archived_first", "one", CVAR_ARCHIVE);
+const transient = Cvar_Get(archiveListCvar, "transient", "skip", 0);
+const userArchived = Cvar_Get(archiveListCvar, "user_archived", "two", CVAR_USERINFO | CVAR_ARCHIVE);
+const protectedVar = Cvar_Get(archiveListCvar, "protected_var", "lock", CVAR_NOSET);
+const latchedVar = Cvar_Get(archiveListCvar, "latched_var", "later", CVAR_LATCH);
+assert.ok(archivedFirst && transient && userArchived && protectedVar && latchedVar, "isolated list cvars should be created");
+assert.deepEqual(
+  Cvar_WriteVariables(archiveListCvar).split("\n").filter(Boolean),
+  [
+    'set user_archived "two"',
+    'set archived_first "one"'
+  ],
+  "WriteVariables should append archive cvars only in cvar_vars traversal order"
+);
+assert.deepEqual(
+  Cvar_List_f(archiveListCvar),
+  [
+    "   L latched_var \"later\"",
+    "   - protected_var \"lock\"",
+    "*U   user_archived \"two\"",
+    "     transient \"skip\"",
+    "*    archived_first \"one\"",
+    "5 cvars"
+  ],
+  "Cvar_List_f should match archive/user/server/protection flag formatting and count every cvar"
+);
+
 console.log("quake2-cvar: ok");

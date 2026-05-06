@@ -169,15 +169,15 @@
 | `Quake-2-master/game/q_shared.h` | macro | `SURF_TRANS66` | `packages/qcommon/src/q_shared.ts` | `SURF_TRANS66` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `SURF_FLOWING` | `packages/qcommon/src/q_shared.ts` | `SURF_FLOWING` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `SURF_NODRAW` | `packages/qcommon/src/q_shared.ts` | `SURF_NODRAW` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MASK_ALL` | `packages/qcommon/src/q_shared.ts` | `MASK_ALL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MASK_SOLID` | `packages/qcommon/src/q_shared.ts` | `MASK_SOLID` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MASK_PLAYERSOLID` | `packages/qcommon/src/q_shared.ts` | `MASK_PLAYERSOLID` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MASK_DEADSOLID` | `packages/qcommon/src/q_shared.ts` | `MASK_DEADSOLID` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MASK_MONSTERSOLID` | `packages/qcommon/src/q_shared.ts` | `MASK_MONSTERSOLID` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MASK_WATER` | `packages/qcommon/src/q_shared.ts` | `MASK_WATER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MASK_OPAQUE` | `packages/qcommon/src/q_shared.ts` | `MASK_OPAQUE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MASK_SHOT` | `packages/qcommon/src/q_shared.ts` | `MASK_SHOT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MASK_CURRENT` | `packages/qcommon/src/q_shared.ts` | `MASK_CURRENT` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MASK_ALL` | `packages/qcommon/src/q_shared.ts` | `MASK_ALL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MASK_SOLID` | `packages/qcommon/src/q_shared.ts` | `MASK_SOLID` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MASK_PLAYERSOLID` | `packages/qcommon/src/q_shared.ts` | `MASK_PLAYERSOLID` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MASK_DEADSOLID` | `packages/qcommon/src/q_shared.ts` | `MASK_DEADSOLID` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MASK_MONSTERSOLID` | `packages/qcommon/src/q_shared.ts` | `MASK_MONSTERSOLID` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MASK_WATER` | `packages/qcommon/src/q_shared.ts` | `MASK_WATER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MASK_OPAQUE` | `packages/qcommon/src/q_shared.ts` | `MASK_OPAQUE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MASK_SHOT` | `packages/qcommon/src/q_shared.ts` | `MASK_SHOT` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MASK_CURRENT` | `packages/qcommon/src/q_shared.ts` | `MASK_CURRENT` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `AREA_SOLID` | `packages/qcommon/src/q_shared.ts` | `AREA_SOLID` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `AREA_TRIGGERS` | `packages/qcommon/src/q_shared.ts` | `AREA_TRIGGERS` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | struct | `cplane_s` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |

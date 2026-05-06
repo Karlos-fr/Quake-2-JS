@@ -17,9 +17,9 @@
 | `Quake-2-master/qcommon/files.c` | global | `filename` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `pack_s`/`searchpath_s` field; covered by `SearchPath.filename` and `PakArchive.path`. |
 | `Quake-2-master/qcommon/files.c` | global | `numfiles` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `pack_s` field; covered by `PakArchive.entries.length`. |
 | `Quake-2-master/qcommon/files.c` | global | `fs_gamedir` | `packages/filesystem/src/files.ts` | `FS_Gamedir` | Valide | A redecouper | `verify:files` and `verify:web-config-gamedir` cover create/mount/set/gamedir reads. |
-| `Quake-2-master/qcommon/files.c` | global | `fs_basedir` | `packages/filesystem/src/files.ts` |  | Partiel | A redecouper | Host basedir cvar is replaced by explicit web/in-memory mounts; validate `FS_InitFilesystem` policy before closing. |
-| `Quake-2-master/qcommon/files.c` | global | `fs_cddir` | `packages/filesystem/src/files.ts` |  | Partiel | A redecouper | CD directory probing is intentionally absent in browser mounts; validate with `FS_InitFilesystem` policy before closing. |
-| `Quake-2-master/qcommon/files.c` | global | `fs_gamedirvar` | `packages/filesystem/src/files.ts` |  | Partiel | A redecouper | `apps/web` bridges game cvar to `FS_SetGamedir`; full cvar ownership should be closed with `FS_InitFilesystem`. |
+| `Quake-2-master/qcommon/files.c` | global | `fs_basedir` | `packages/filesystem/src/files.ts` |  | Partiel | A redecouper | Host basedir cvar is represented by caller-supplied mounted contents in `FS_SetGamedir`; close with `FS_InitFilesystem` policy. |
+| `Quake-2-master/qcommon/files.c` | global | `fs_cddir` | `packages/filesystem/src/files.ts` |  | Partiel | A redecouper | CD directory probing is intentionally absent in browser mounts; close with `FS_InitFilesystem` policy. |
+| `Quake-2-master/qcommon/files.c` | global | `fs_gamedirvar` | `packages/filesystem/src/files.ts` |  | Partiel | A redecouper | `apps/web` bridges game cvar to `FS_SetGamedir`; cvar reset ownership remains tied to `FS_InitFilesystem`/qcommon cvar flow. |
 | `Quake-2-master/qcommon/files.c` | struct | `filelink_s` | `packages/filesystem/src/files.ts` | `FileLink` | Valide | A redecouper | Header comment verified; link add/replace/delete and lookup covered by `verify:files`. |
 | `Quake-2-master/qcommon/files.c` | global | `from` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `filelink_s` field; covered by `FileLink.from`. |
 | `Quake-2-master/qcommon/files.c` | global | `fromlength` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Auto-detected `filelink_s` field; covered by `FileLink.fromlength`. |
@@ -72,7 +72,7 @@
 | `Quake-2-master/qcommon/files.c` | function | `FS_ExecAutoexec` | `packages/filesystem/src/files.ts` | `FS_ExecAutoexec` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `dir` | `packages/filesystem/src/files.ts` |  | Non applicable | A redecouper | Local de `FS_ExecAutoexec`; TS resout via le gamedir VFS courant. |
 | `Quake-2-master/qcommon/files.c` | global | `name` | `packages/formats/src/pak.ts` | `name` | Non applicable | A redecouper | Local de chemin `autoexec.cfg`; ne pas confondre avec `PakEntry.name`. |
-| `Quake-2-master/qcommon/files.c` | function | `FS_SetGamedir` | `packages/filesystem/src/files.ts` | `FS_SetGamedir` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/files.c` | function | `FS_SetGamedir` | `packages/filesystem/src/files.ts` | `FS_SetGamedir` | Valide | A redecouper | Header comment updated; `verify:files`, `verify:web-config-gamedir`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`. |
 | `Quake-2-master/qcommon/files.c` | function | `FS_Link_f` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `s` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/files.c` | global | `nfiles` | `packages/filesystem/src/files.ts` |  | A verifier | A redecouper |  |

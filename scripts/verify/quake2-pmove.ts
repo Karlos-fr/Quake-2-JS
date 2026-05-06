@@ -23,6 +23,7 @@ import {
   PM_DeadMove,
   PM_Friction,
   PM_FlyMove,
+  PM_ClipVelocity,
   PM_InitLocalState,
   PM_SnapPosition,
   PM_StepSlideMove,
@@ -36,7 +37,8 @@ import {
   type csurface_t,
   type pmove_t,
   type trace_t,
-  type vec3_t
+  type vec3_t,
+  STOP_EPSILON
 } from "../../packages/qcommon/src/index.js";
 import {
   CONTENTS_LADDER,
@@ -53,6 +55,7 @@ main();
  */
 function main(): void {
   verifyPmoveFileScopeStateOwnershipAndDefaults();
+  verifyClipVelocityStopEpsilonAndInPlaceOutput();
   verifyTeleportTimerDecrements();
   verifyExpiredWaterjumpTimerClearsFlags();
   verifySnapFallbackUsesPackedPreviousOrigin();
@@ -126,6 +129,28 @@ function verifyPmoveFileScopeStateOwnershipAndDefaults(): void {
   Pmove(context, { allowSnapPosition: false });
   assertBoolean(context.pml.ladder, false, "Pmove zeroes pml.ladder before each run");
   assertEqual(context.pml.groundcontents, 0, "Pmove zeroes pml.groundcontents before each run");
+}
+
+/**
+ * Category: New
+ * Purpose: Assert the original `PM_ClipVelocity` backoff/change math and strict `STOP_EPSILON` zeroing.
+ */
+function verifyClipVelocityStopEpsilonAndInPlaceOutput(): void {
+  assertEqual(STOP_EPSILON, 0.1, "STOP_EPSILON constant mismatch");
+
+  const clipped: vec3_t = [0, 0, 0];
+  PM_ClipVelocity([10, 3, -4], [0, 1, 0], clipped, 1.5);
+  assertEqual(clipped[0], 10, "PM_ClipVelocity preserves orthogonal X");
+  assertApprox(clipped[1], -1.5, 0.0000001, "PM_ClipVelocity applies backoff/change math");
+  assertEqual(clipped[2], -4, "PM_ClipVelocity preserves orthogonal Z");
+
+  const stopEpsilonOut: vec3_t = [0, 0, 0];
+  PM_ClipVelocity([0.099, -0.1, 0.1], [0, 0, 1], stopEpsilonOut, 0);
+  assertVector(stopEpsilonOut, [0, -0.1, 0.1], "PM_ClipVelocity strict STOP_EPSILON zeroing");
+
+  const aliasVector: vec3_t = [2, 4, -5];
+  PM_ClipVelocity(aliasVector, [0, 0, 1], aliasVector, 1);
+  assertVector(aliasVector, [2, 4, 0], "PM_ClipVelocity supports in/out aliasing used by slide move");
 }
 
 /**

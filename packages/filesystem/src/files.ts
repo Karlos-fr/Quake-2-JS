@@ -287,13 +287,18 @@ export function FS_Link(filesystem: VirtualFilesystem, from: string, to: string)
  * Fidelity level: Close
  *
  * Behavior:
- * - Switches the logical game directory used by future writes and directory enumeration.
+ * - Switches the logical game directory used by future writes, directory enumeration and lookup.
  *
  * Porting notes:
- * - Updates only the in-memory logical state for now.
+ * - Resets mounted mod search paths to the marked base set, then mounts the requested in-memory mod directory.
+ * - Host `basedir`/`cddir` probing is intentionally supplied by the caller as optional mounted contents.
  * - Rejects path-like values using the same safety checks as the original code.
  */
-export function FS_SetGamedir(filesystem: VirtualFilesystem, dir: string): boolean {
+export function FS_SetGamedir(
+  filesystem: VirtualFilesystem,
+  dir: string,
+  files?: MountedDirectoryInput
+): boolean {
   if (dir.includes("..") || dir.includes("/") || dir.includes("\\") || dir.includes(":")) {
     return false;
   }
@@ -305,7 +310,12 @@ export function FS_SetGamedir(filesystem: VirtualFilesystem, dir: string): boole
       .map((search) => search.pack);
   }
 
-  filesystem.fs_gamedir = normalizeDirectoryPath(dir.length === 0 ? "baseq2" : dir);
+  if (dir.length === 0 || dir === "baseq2") {
+    filesystem.fs_gamedir = "baseq2";
+    return true;
+  }
+
+  FS_AddGameDirectory(filesystem, dir, files);
   return true;
 }
 

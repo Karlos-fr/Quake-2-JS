@@ -40,3 +40,38 @@ Corrections appliquees:
 
 Prochain lot recommande:
 - `STOP_EPSILON`, `PM_ClipVelocity`, et locaux `backoff`, `change`, `i`, puis stopper avant `PM_StepSlideMove_` si le lot devient trop large.
+
+## Session 2026-05-06 - PM_ClipVelocity
+
+Lot traite:
+- `STOP_EPSILON`
+- `PM_ClipVelocity`
+- locaux de `PM_ClipVelocity`: `backoff`, `change`, `i`
+
+Verdict:
+- Lot valide.
+- `STOP_EPSILON` conserve la valeur C `0.1`.
+- `PM_ClipVelocity` conserve la signature comportementale C: calcule `backoff = DotProduct(in, normal) * overbounce`, applique `change = normal[i] * backoff`, ecrit `out[i] = in[i] - change`, puis zero les composantes strictement entre `-STOP_EPSILON` et `STOP_EPSILON`.
+- Le cas in-place C `PM_ClipVelocity(pml.velocity, plane, pml.velocity, 1.01)` est preserve en TS par calcul prealable de `backoff` puis ecriture axe par axe.
+- Le local C `i` est renomme en `index` en TS pour idiome local; pas de doublon d'ownership.
+- Entete de `PM_ClipVelocity` verifie: `Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`.
+
+Preuves:
+- Comparaison directe C vs TS sur `qcommon/pmove.c` et `packages/qcommon/src/pmove.ts`.
+- Runtime: `PM_ClipVelocity` est appele depuis `PM_StepSlideMove_`, lui-meme appele par `PM_StepSlideMove`, `PM_WaterMove`, `PM_AirMove` et `Pmove`; `Pmove` est appele depuis `packages/game/src/p_client.ts`, `packages/server/src/sv_game.ts`, `packages/client/src/view.ts` et `packages/client/src/local-loop.ts`.
+- `apps/web`: flux attendu oui via prediction/jeu local; verifie par `apps/web/src/local-client-controller.ts`, `apps/web/src/full-game.ts` et le test renderer full-game. Pas de logique web parallele masquant ce lot.
+- `renderer-three`: sortie visible indirecte attendue oui, car le clipping de mouvement influence origine/view/camera; la consommation reste via `ClientRefreshFrame.view.vieworg` et les adapters Three (`gl-world-scene-adapter`, `gl_rmain`, sync refresh). Pas de sortie modele/frame/image/particule/beam/dlight/temp entity/areabits propre a `PM_ClipVelocity`.
+
+Tests lances:
+- `npm run verify:pmove`
+- `npm run verify:client:pmove:viewheight`
+- `npm run verify:pmove:local-bmodel`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Corrections appliquees:
+- `scripts/verify/quake2-pmove.ts`: ajout d'assertions ciblees pour `STOP_EPSILON`, le calcul `backoff`/`change`, le seuil strict et l'aliasing in/out de `PM_ClipVelocity`.
+- `audit-portage/validation-incrementale/validation/matrices/qcommon_pmove.c.md`: lot marque `Valide`, cible locale `i` renseignee comme `index`.
+
+Prochain lot recommande:
+- `MIN_STEP_NORMAL`, `MAX_CLIP_PLANES`, `PM_StepSlideMove_`, et locaux directs `dir`, `d`, `numplanes`, `planes`, `primal_velocity`, `trace`, `end`, `time_left`.

@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: bloc `MASK_*` de `MASK_ALL` a `MASK_CURRENT`.
+- Entites validees: `MASK_ALL`, `MASK_SOLID`, `MASK_PLAYERSOLID`, `MASK_DEADSOLID`, `MASK_MONSTERSOLID`, `MASK_WATER`, `MASK_OPAQUE`, `MASK_SHOT`, `MASK_CURRENT`.
+- Ownership: constantes proprietaires dans `packages/qcommon/src/q_shared.ts`, reexportees par `packages/qcommon/src/index.ts`; aucun renommage ni doublon proprietaire detecte.
+- Preuves: comparaison C/H vs TS des compositions `CONTENTS_*` et valeurs effectives ajoutee dans `scripts/verify/quake2-q-shared-header.ts`; tests collision, PMove, full-game web/server-host, renderer-three et typecheck lances pendant la session.
+- Commentaires d'en-tete: non applicable, lot compose de macros/constantes sans fonction portee.
 - 2026-05-06: bloc collision/surfaces `CONTENTS_SOLID` a `CONTENTS_LADDER`, puis `SURF_LIGHT` a `SURF_NODRAW`.
 - Entites validees: `CONTENTS_SOLID`, `CONTENTS_WINDOW`, `CONTENTS_AUX`, `CONTENTS_LAVA`, `CONTENTS_SLIME`, `CONTENTS_WATER`, `CONTENTS_MIST`, `LAST_VISIBLE_CONTENTS`, `CONTENTS_AREAPORTAL`, `CONTENTS_PLAYERCLIP`, `CONTENTS_MONSTERCLIP`, `CONTENTS_CURRENT_0`, `CONTENTS_CURRENT_90`, `CONTENTS_CURRENT_180`, `CONTENTS_CURRENT_270`, `CONTENTS_CURRENT_UP`, `CONTENTS_CURRENT_DOWN`, `CONTENTS_ORIGIN`, `CONTENTS_MONSTER`, `CONTENTS_DEADMONSTER`, `CONTENTS_DETAIL`, `CONTENTS_TRANSLUCENT`, `CONTENTS_LADDER`, `SURF_LIGHT`, `SURF_SLICK`, `SURF_SKY`, `SURF_WARP`, `SURF_TRANS33`, `SURF_TRANS66`, `SURF_FLOWING`, `SURF_NODRAW`.
 - Ownership: constantes proprietaires dans `packages/qcommon/src/q_shared.ts`; doublon numerique justifie dans `packages/formats/src/qfiles.ts` parce que `qcommon/qfiles.h` redeclare les memes flags pour le parsing BSP/renderer.
@@ -37,6 +42,7 @@
 
 ## Corrections
 
+- Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `MASK_ALL`, `MASK_SOLID`, `MASK_PLAYERSOLID`, `MASK_DEADSOLID`, `MASK_MONSTERSOLID`, `MASK_WATER`, `MASK_OPAQUE`, `MASK_SHOT` et `MASK_CURRENT`.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour toutes les valeurs `CONTENTS_*` de `CONTENTS_SOLID` a `CONTENTS_LADDER`, `SURF_*` de `SURF_LIGHT` a `SURF_NODRAW`, `LAST_VISIBLE_CONTENTS`, et la coherence avec le doublon `packages/formats/src/qfiles.ts`.
 - `Com_Printf` dans `packages/qcommon/src/common.ts` est maintenant documente comme port de `qcommon/common.c` declare par `game/q_shared.h`, accepte les arguments variadiques via `va`, conserve le chemin redirect et delegue l'affichage normal au sink host.
 - Couvertures ajoutees dans `scripts/verify/quake2-q-shared-header.ts` pour `Com_Printf` sink/format et redirection/flush.
@@ -53,6 +59,12 @@
 
 ## Tests de reference
 
+- `npm run verify:q-shared:header` OK pour `MASK_*`.
+- `npm run verify:pmove` OK.
+- `npm run verify:collision:phase1` OK.
+- `npm run verify:full-game:server-host` OK.
+- `npm run verify:full-game:three-renderer` OK.
+- `npm run typecheck` OK.
 - `npm run verify:q-shared:header` OK pour `CONTENTS_*`/`SURF_*`.
 - `npm run verify:qfiles` OK.
 - `npm run verify:pmove` OK.
@@ -88,6 +100,10 @@
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `MASK_*` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par `packages/qcommon/src/index.ts`; il compose exclusivement des `CONTENTS_*` deja valides.
+- Runtime: integration attendue et presente dans les traces collision (`CM_BoxTrace`, ponts `runtime.collision.trace`, `SV_Trace`/`gi.trace`), PMove (`MASK_CURRENT`, `MASK_WATER`), gameplay solidite/mouvements (`MASK_SOLID`, `MASK_PLAYERSOLID`, `MASK_DEADSOLID`, `MASK_MONSTERSOLID`) et armes/visibilite (`MASK_SHOT`, `MASK_OPAQUE`).
+- `apps/web`: integration attendue et presente via `apps/web/src/local-collision-adapter.ts` et les flux full-game/server-host qui declenchent les traces runtime; aucune logique parallele masquant les masques de collision n'a ete detectee.
+- `renderer-three`: aucune sortie visible directe n'est produite par ces macros; leur effet visible attendu passe par les resultats runtime de collision/PMove et par les donnees BSP deja consommees. Pas de branchement renderer direct requis pour modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene dans ce lot.
 - Le bloc `CONTENTS_*`/`SURF_*` est expose par `packages/qcommon/src/q_shared.ts` et reexporte par l'entrypoint qcommon; le doublon `formats/qfiles.ts` reste aligne pour les donnees BSP chargees par collision et rendu.
 - Runtime: integre dans les traces collision (`CM_*`, `SV_Trace`, `gi.trace`), PMove (`CONTENTS_CURRENT_*`, `CONTENTS_LADDER`, `SURF_SLICK`), gameplay armes/eau/lave/slime et chargement BSP.
 - `apps/web`: integration attendue et presente via les flux full-game/server-host/local-client qui consomment collision, PMove, assets BSP et surfaces sans logique parallele masquante.
@@ -123,4 +139,4 @@
 
 ## Prochain lot recommande
 
-- Traiter le bloc `MASK_*` (`MASK_ALL` a `MASK_CURRENT`) maintenant que `CONTENTS_*` est valide; laisser les champs generes de `cvar_s` a l'agent `qcommon/cvar.c` ou a une session dediee sans modifier `cvar.ts`.
+- Traiter `AREA_SOLID` et `AREA_TRIGGERS`, puis `cplane_s`/`cplane_t` et ses constantes d'offset si le lot reste coherent; laisser les champs generes de `cvar_s` a l'agent `qcommon/cvar.c` ou a une session dediee sans modifier `cvar.ts`.

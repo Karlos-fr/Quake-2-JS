@@ -44,12 +44,12 @@
 | `Quake-2-master/qcommon/cvar.c` | global | `c` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_Set_f`, non entite proprietaire; comportement couvert avec `Cvar_Set_f`. |
 | `Quake-2-master/qcommon/cvar.c` | global | `flags` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_Set_f`, non entite proprietaire; comportement couvert avec `Cvar_Set_f`. |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_Set` | `packages/qcommon/src/cvar.ts` | `Cvar_Set` | Non applicable | A tester | Appel interne depuis `Cvar_Command`/`Cvar_Set_f`; entite proprietaire deja validee sur sa ligne principale. |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_WriteVariables` | `packages/qcommon/src/cvar.ts` | `Cvar_WriteVariables` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `buffer` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_List_f` | `packages/qcommon/src/cvar.ts` | `Cvar_List_f` | A verifier | A tester |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
-| `Quake-2-master/qcommon/cvar.c` | global | `i` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_WriteVariables` | `packages/qcommon/src/cvar.ts` | `Cvar_WriteVariables` | Valide | A tester | Commentaire d'en-tete verifie; serialization archive-only, ordre `cvar_vars`, integration `CL_WriteConfiguration`/`writeconfig` et cvars renderer archivees couverts par `npm run verify:cvar`, `npm run verify:web-config-writeconfig`, `npm run verify:full-game:commands`, `npm run verify:gl-rmain`, `npm run typecheck`; `scripts/verify/quake2-cvar.ts` renforce les attentes exactes. |
+| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_WriteVariables`, non entite proprietaire; comportement couvert avec `Cvar_WriteVariables`. |
+| `Quake-2-master/qcommon/cvar.c` | global | `buffer` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Buffer local C de `Cvar_WriteVariables`, non entite proprietaire; comportement couvert avec `Cvar_WriteVariables`. |
+| `Quake-2-master/qcommon/cvar.c` | function | `Cvar_List_f` | `packages/qcommon/src/cvar.ts` | `Cvar_List_f` | Valide | A tester | Commentaire d'en-tete verifie; format `*US-/L`, ordre `cvar_vars`, comptage total, commande `cvarlist` via `Cvar_Init` et flux full-game couverts par `npm run verify:cvar`, `npm run verify:full-game:commands`, `npm run typecheck`; `scripts/verify/quake2-cvar.ts` renforce les attentes exactes. |
+| `Quake-2-master/qcommon/cvar.c` | global | `var` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Variable locale C de `Cvar_List_f`, non entite proprietaire; comportement couvert avec `Cvar_List_f`. |
+| `Quake-2-master/qcommon/cvar.c` | global | `i` | `packages/qcommon/src/cvar.ts` |  | Non applicable | Partiel | Compteur local C de `Cvar_List_f`, non entite proprietaire; comportement couvert avec `Cvar_List_f`. |
 | `Quake-2-master/qcommon/cvar.c` | global | `userinfo_modified` | `packages/qcommon/src/cvar.ts` |  | A verifier | Partiel |  |
 | `Quake-2-master/qcommon/cvar.c` | function | `Cvar_BitInfo` | `packages/qcommon/src/cvar.ts` | `Cvar_BitInfo` | A verifier | A tester |  |
 | `Quake-2-master/qcommon/cvar.c` | global | `info` | `packages/qcommon/src/cvar.ts` | `info` | A verifier | A tester |  |
