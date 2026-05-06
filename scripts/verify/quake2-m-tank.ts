@@ -35,33 +35,47 @@ import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import { findGameSaveFunction, findGameSaveMove } from "../../packages/game/src/g_save.js";
 import {
   FRAME_attak110,
+  FRAME_attak113,
+  FRAME_attak116,
   FRAME_attak324,
+  FRAME_attak327,
+  FRAME_attak330,
   MZ2_TANK_BLASTER_1,
+  MZ2_TANK_BLASTER_2,
+  MZ2_TANK_BLASTER_3,
   MZ2_TANK_MACHINEGUN_1,
   MZ2_TANK_ROCKET_1,
+  MZ2_TANK_ROCKET_2,
+  MZ2_TANK_ROCKET_3,
   SP_monster_tank,
   TankBlaster,
   TankMachineGun,
   TankRocket,
+  TankStrike,
   tank_attack,
   tank_dead,
   tank_die,
+  tank_doattack_rocket,
   tank_footstep,
   tank_idle,
   tank_move_attack_blast,
   tank_move_attack_chain,
   tank_move_attack_fire_rocket,
+  tank_move_attack_post_blast,
+  tank_move_attack_post_rocket,
   tank_move_attack_pre_rocket,
   tank_move_attack_strike,
   tank_move_death,
   tank_move_pain1,
   tank_move_pain2,
   tank_move_pain3,
+  tank_move_reattack_blast,
   tank_move_run,
   tank_move_stand,
   tank_move_start_run,
   tank_move_walk,
   tank_pain,
+  tank_poststrike,
   tank_reattack_blaster,
   tank_refire_rocket,
   tank_run,
@@ -194,21 +208,44 @@ function verifyAttackBranches(): void {
   withMathRandom([0.9], () => tank_attack(tank, runtime));
   assert.equal(tank.monsterinfo.currentmove, tank_move_attack_blast);
 
+  enemy.s.origin = [200, 0, 24];
+  withMathRandom([0.4], () => tank_attack(tank, runtime));
+  assert.equal(tank.monsterinfo.currentmove, tank_move_attack_chain);
+  withMathRandom([0.6], () => tank_attack(tank, runtime));
+  assert.equal(tank.monsterinfo.currentmove, tank_move_attack_blast);
+
   enemy.s.origin = [512, 0, 24];
+  withMathRandom([0.2], () => tank_attack(tank, runtime));
+  assert.equal(tank.monsterinfo.currentmove, tank_move_attack_chain);
   withMathRandom([0.5], () => tank_attack(tank, runtime));
   assert.equal(tank.monsterinfo.currentmove, tank_move_attack_pre_rocket);
   assert.equal(tank.pain_debounce_time, runtime.time + 5);
+  withMathRandom([0.8], () => tank_attack(tank, runtime));
+  assert.equal(tank.monsterinfo.currentmove, tank_move_attack_blast);
 
   enemy.health = -1;
+  tank.monsterinfo.aiflags |= AI_BRUTAL;
   tank_attack(tank, runtime);
   assert.equal(tank.monsterinfo.currentmove, tank_move_attack_strike);
+  assert.equal(tank.monsterinfo.aiflags & AI_BRUTAL, 0);
 
   enemy.health = 100;
   runtime.skill = 2;
   withMathRandom([0.2], () => tank_reattack_blaster(tank, runtime));
-  assert.equal(tank.monsterinfo.currentmove?.firstframe, 65);
+  assert.equal(tank.monsterinfo.currentmove, tank_move_reattack_blast);
+  withMathRandom([0.9], () => tank_reattack_blaster(tank, runtime));
+  assert.equal(tank.monsterinfo.currentmove, tank_move_attack_post_blast);
+  tank_doattack_rocket(tank);
+  assert.equal(tank.monsterinfo.currentmove, tank_move_attack_fire_rocket);
   withMathRandom([0.2], () => tank_refire_rocket(tank, runtime));
   assert.equal(tank.monsterinfo.currentmove, tank_move_attack_fire_rocket);
+  withMathRandom([0.9], () => tank_refire_rocket(tank, runtime));
+  assert.equal(tank.monsterinfo.currentmove, tank_move_attack_post_rocket);
+
+  tank.enemy = enemy;
+  tank_poststrike(tank);
+  assert.equal(tank.enemy, null);
+  assert.equal(tank.monsterinfo.currentmove, tank_move_start_run);
 }
 
 function verifyWeaponCallbacks(): void {
@@ -224,14 +261,29 @@ function verifyWeaponCallbacks(): void {
   tank.s.frame = FRAME_attak110;
   TankBlaster(tank, runtime);
   assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_TANK_BLASTER_1);
+  tank.s.frame = FRAME_attak113;
+  TankBlaster(tank, runtime);
+  assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_TANK_BLASTER_2);
+  tank.s.frame = FRAME_attak116;
+  TankBlaster(tank, runtime);
+  assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_TANK_BLASTER_3);
 
   tank.s.frame = FRAME_attak324;
   TankRocket(tank, runtime);
   assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_TANK_ROCKET_1);
+  tank.s.frame = FRAME_attak327;
+  TankRocket(tank, runtime);
+  assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_TANK_ROCKET_2);
+  tank.s.frame = FRAME_attak330;
+  TankRocket(tank, runtime);
+  assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_TANK_ROCKET_3);
 
   tank.s.frame = 173;
   TankMachineGun(tank, runtime);
   assert.equal(drainMonsterMuzzleFlashEvents(runtime).at(-1)?.flashNumber, MZ2_TANK_MACHINEGUN_1);
+
+  TankStrike(tank, runtime);
+  assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "tank/tnkatck5.wav");
 
   tank.monsterinfo.currentmove = tank_move_attack_blast;
   tank.s.frame = FRAME_attak110 - 1;
@@ -271,6 +323,11 @@ function verifyPainBranches(): void {
   assert.equal(tank.monsterinfo.currentmove, tank_move_pain1);
   assert.equal(drainGameSoundEvents(runtime).at(-1)?.soundPath, "tank/tnkpain2.wav");
 
+  runtime.time = 1;
+  tank.monsterinfo.currentmove = tank_move_stand;
+  tank_pain(tank, null, 0, 80, runtime);
+  assert.equal(tank.monsterinfo.currentmove, tank_move_stand);
+
   runtime.time = 4;
   tank_pain(tank, null, 0, 60, runtime);
   assert.equal(tank.monsterinfo.currentmove, tank_move_pain2);
@@ -279,8 +336,23 @@ function verifyPainBranches(): void {
   tank_pain(tank, null, 0, 80, runtime);
   assert.equal(tank.monsterinfo.currentmove, tank_move_pain3);
 
-  runtime.skill = 3;
   runtime.time = 12;
+  tank.monsterinfo.currentmove = tank_move_stand;
+  withMathRandom([0.9], () => tank_pain(tank, null, 0, 30, runtime));
+  assert.equal(tank.monsterinfo.currentmove, tank_move_stand);
+
+  runtime.skill = 2;
+  runtime.time = 16;
+  tank.s.frame = FRAME_attak324;
+  tank_pain(tank, null, 0, 80, runtime);
+  assert.equal(tank.monsterinfo.currentmove, tank_move_stand);
+  tank.s.frame = FRAME_attak110;
+  tank_pain(tank, null, 0, 80, runtime);
+  assert.equal(tank.monsterinfo.currentmove, tank_move_stand);
+  tank.s.frame = 0;
+
+  runtime.skill = 3;
+  runtime.time = 20;
   tank.monsterinfo.currentmove = tank_move_stand;
   tank_pain(tank, null, 0, 80, runtime);
   assert.equal(tank.monsterinfo.currentmove, tank_move_stand);
@@ -295,6 +367,9 @@ function verifyDeathBranches(): void {
   assert.equal(tank.deadflag, DEAD_DEAD);
   assert.equal(tank.takedamage, damage_t.DAMAGE_YES);
   assert.equal(tank.monsterinfo.currentmove, tank_move_death);
+  tank.monsterinfo.currentmove = tank_move_stand;
+  tank_die(tank, null, null, 60, runtime);
+  assert.equal(tank.monsterinfo.currentmove, tank_move_stand);
 
   tank_dead(tank, runtime);
   assert.deepEqual(tank.mins, [-16, -16, -16]);

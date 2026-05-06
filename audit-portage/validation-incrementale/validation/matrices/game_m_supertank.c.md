@@ -37,68 +37,63 @@
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_forward` | `packages/game/src/m_supertank.ts` | `supertank_forward` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_walk` | `packages/game/src/m_supertank.ts` | `supertank_walk` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_run` | `packages/game/src/m_supertank.ts` | `supertank_run` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_turn_right` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_right` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_turn_right` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_right` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_turn_right` | `packages/game/src/m_supertank.ts` | `supertank_move_turn_right` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_turn_left` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_left` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_turn_left` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_left` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_turn_left` | `packages/game/src/m_supertank.ts` | `supertank_move_turn_left` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_pain3` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_pain3` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_pain3` | `packages/game/src/m_supertank.ts` | `supertank_move_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_pain2` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_pain2` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_pain2` | `packages/game/src/m_supertank.ts` | `supertank_move_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_pain1` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_pain1` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_pain1` | `packages/game/src/m_supertank.ts` | `supertank_move_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_death1` | `packages/game/src/m_supertank.ts` | `supertank_frames_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_death1` | `packages/game/src/m_supertank.ts` | `supertank_frames_death1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_death` | `packages/game/src/m_supertank.ts` | `supertank_move_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_backward` | `packages/game/src/m_supertank.ts` | `supertank_frames_backward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_backward` | `packages/game/src/m_supertank.ts` | `supertank_frames_backward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_backward` | `packages/game/src/m_supertank.ts` | `supertank_move_backward` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_attack4` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_attack4` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_attack4` | `packages/game/src/m_supertank.ts` | `supertank_move_attack4` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_attack3` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_attack3` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_attack3` | `packages/game/src/m_supertank.ts` | `supertank_move_attack3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_attack2` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_attack2` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_attack2` | `packages/game/src/m_supertank.ts` | `supertank_move_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_attack1` | `packages/game/src/m_supertank.ts` | `supertank_move_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_end_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_end_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_end_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_end_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_end_attack1` | `packages/game/src/m_supertank.ts` | `supertank_move_end_attack1` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_turn_right` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_right` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_turn_right` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_right` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_turn_right` | `packages/game/src/m_supertank.ts` | `supertank_move_turn_right` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_turn_left` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_left` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_turn_left` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_left` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_turn_left` | `packages/game/src/m_supertank.ts` | `supertank_move_turn_left` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_pain3` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_pain3` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_pain3` | `packages/game/src/m_supertank.ts` | `supertank_move_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_pain2` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_pain2` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_pain2` | `packages/game/src/m_supertank.ts` | `supertank_move_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_pain1` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_pain1` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_pain1` | `packages/game/src/m_supertank.ts` | `supertank_move_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_death1` | `packages/game/src/m_supertank.ts` | `supertank_frames_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_death1` | `packages/game/src/m_supertank.ts` | `supertank_frames_death1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_death` | `packages/game/src/m_supertank.ts` | `supertank_move_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_backward` | `packages/game/src/m_supertank.ts` | `supertank_frames_backward` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_backward` | `packages/game/src/m_supertank.ts` | `supertank_frames_backward` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_backward` | `packages/game/src/m_supertank.ts` | `supertank_move_backward` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_attack4` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_attack4` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_attack4` | `packages/game/src/m_supertank.ts` | `supertank_move_attack4` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_attack3` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_attack3` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_attack3` | `packages/game/src/m_supertank.ts` | `supertank_move_attack3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_attack2` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_attack2` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_attack2` | `packages/game/src/m_supertank.ts` | `supertank_move_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_attack1` | `packages/game/src/m_supertank.ts` | `supertank_move_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_frames_end_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_end_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | table | `supertank_frames_end_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_end_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | global | `supertank_move_end_attack1` | `packages/game/src/m_supertank.ts` | `supertank_move_end_attack1` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_reattack1` | `packages/game/src/m_supertank.ts` | `supertank_reattack1` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | function | `supertank_pain` | `packages/game/src/m_supertank.ts` | `supertank_pain` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | function | `supertank_pain` | `packages/game/src/m_supertank.ts` | `supertank_pain` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertankRocket` | `packages/game/src/m_supertank.ts` | `supertankRocket` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `flash_number` | `packages/game/src/m_supertank.ts` | `flash_number` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `flash_number` | `packages/game/src/m_supertank.ts` | `flash_number` | A verifier | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertankMachineGun` | `packages/game/src/m_supertank.ts` | `supertankMachineGun` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `flash_number` | `packages/game/src/m_supertank.ts` | `flash_number` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | function | `supertank_attack` | `packages/game/src/m_supertank.ts` | `supertank_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `range` | `packages/game/src/m_supertank.ts` | `range` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | function | `supertank_attack` | `packages/game/src/m_supertank.ts` | `supertank_attack` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `supertank_dead` | `packages/game/src/m_supertank.ts` | `supertank_dead` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | function | `BossExplode` | `packages/game/src/m_supertank.ts` | `BossExplode` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | global | `n` | `packages/game/src/m_supertank.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | function | `supertank_die` | `packages/game/src/m_supertank.ts` | `supertank_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_supertank.c` | function | `SP_monster_supertank` | `packages/game/src/m_supertank.ts` | `SP_monster_supertank` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | function | `supertank_die` | `packages/game/src/m_supertank.ts` | `supertank_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_supertank.c` | function | `SP_monster_supertank` | `packages/game/src/m_supertank.ts` | `SP_monster_supertank` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_stand` | `packages/game/src/m_supertank.ts` | `supertank_frames_stand` | Valide | matched |  |
 | `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_run` | `packages/game/src/m_supertank.ts` | `supertank_frames_run` | Valide | matched |  |
 | `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_forward` | `packages/game/src/m_supertank.ts` | `supertank_frames_forward` | Valide | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_turn_right` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_right` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_turn_left` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_left` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_pain3` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain3` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_pain2` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain2` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_pain1` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain1` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_death1` | `packages/game/src/m_supertank.ts` | `supertank_frames_death1` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_backward` | `packages/game/src/m_supertank.ts` | `supertank_frames_backward` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_attack4` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack4` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_attack3` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack3` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_attack2` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack2` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack1` | A verifier | matched |  |
-| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_end_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_end_attack1` | A verifier | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_turn_right` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_right` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_turn_left` | `packages/game/src/m_supertank.ts` | `supertank_frames_turn_left` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_pain3` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain3` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_pain2` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain2` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_pain1` | `packages/game/src/m_supertank.ts` | `supertank_frames_pain1` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_death1` | `packages/game/src/m_supertank.ts` | `supertank_frames_death1` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_backward` | `packages/game/src/m_supertank.ts` | `supertank_frames_backward` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_attack4` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack4` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_attack3` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack3` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_attack2` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack2` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_attack1` | Valide | matched |  |
+| `Quake-2-master/game/m_supertank.c` | declarative:monster-tables | `supertank_frames_end_attack1` | `packages/game/src/m_supertank.ts` | `supertank_frames_end_attack1` | Valide | matched |  |

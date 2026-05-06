@@ -54,6 +54,9 @@ import {
   supertank_forward,
   supertank_move_attack1,
   supertank_move_attack2,
+  supertank_move_attack3,
+  supertank_move_attack4,
+  supertank_move_backward,
   supertank_move_death,
   supertank_move_end_attack1,
   supertank_move_forward,
@@ -62,6 +65,8 @@ import {
   supertank_move_pain3,
   supertank_move_run,
   supertank_move_stand,
+  supertank_move_turn_left,
+  supertank_move_turn_right,
   supertank_pain,
   supertank_reattack1,
   supertank_run,
@@ -148,7 +153,19 @@ function verifySaveRegistryRestoresCallbacksAndMoves(): void {
   assert.equal(findGameSaveFunction("supertank_die"), supertank_die);
   assert.equal(findGameSaveFunction("BossExplode"), BossExplode);
   assert.equal(findGameSaveMove("supertank_move_stand"), supertank_move_stand);
+  assert.equal(findGameSaveMove("supertank_move_forward"), supertank_move_forward);
+  assert.equal(findGameSaveMove("supertank_move_run"), supertank_move_run);
+  assert.equal(findGameSaveMove("supertank_move_turn_right"), supertank_move_turn_right);
+  assert.equal(findGameSaveMove("supertank_move_turn_left"), supertank_move_turn_left);
+  assert.equal(findGameSaveMove("supertank_move_pain1"), supertank_move_pain1);
+  assert.equal(findGameSaveMove("supertank_move_pain2"), supertank_move_pain2);
+  assert.equal(findGameSaveMove("supertank_move_pain3"), supertank_move_pain3);
+  assert.equal(findGameSaveMove("supertank_move_backward"), supertank_move_backward);
+  assert.equal(findGameSaveMove("supertank_move_attack1"), supertank_move_attack1);
   assert.equal(findGameSaveMove("supertank_move_attack2"), supertank_move_attack2);
+  assert.equal(findGameSaveMove("supertank_move_attack3"), supertank_move_attack3);
+  assert.equal(findGameSaveMove("supertank_move_attack4"), supertank_move_attack4);
+  assert.equal(findGameSaveMove("supertank_move_end_attack1"), supertank_move_end_attack1);
   assert.equal(findGameSaveMove("supertank_move_death"), supertank_move_death);
 }
 

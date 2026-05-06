@@ -601,6 +601,15 @@ export const tank_move_pain3: GameMonsterMove = {
   endfunc: tank_run
 };
 
+/**
+ * Original name: tank_pain
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Applies the damaged skin, honors pain debounce and skill gates, plays the pain sound, and selects the matching pain move.
+ */
 export function tank_pain(
   self: GameEntity,
   _other: GameEntity | null,
@@ -649,6 +658,17 @@ export function tank_pain(
   }
 }
 
+/**
+ * Original name: TankBlaster
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Chooses the blaster muzzle from the current animation frame and fires at the enemy viewheight.
+ * Porting notes:
+ * - Returns early when no enemy is attached so partial harness entities cannot throw.
+ */
 export function TankBlaster(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
@@ -672,10 +692,30 @@ export function TankBlaster(self: GameEntity, runtime: GameRuntime): void {
   monster_fire_blaster(self, start, dir, 30, 800, flash_number, EF_BLASTER, runtime);
 }
 
+/**
+ * Original name: TankStrike
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the melee strike sound on the weapon channel.
+ */
 export function TankStrike(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_strike, SOUND_STRIKE, soundOptions(CHAN_WEAPON));
 }
 
+/**
+ * Original name: TankRocket
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Chooses the rocket muzzle from the current animation frame and fires a normalized rocket direction at the enemy viewheight.
+ * Porting notes:
+ * - Returns early when no enemy is attached so partial harness entities cannot throw.
+ */
 export function TankRocket(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
@@ -699,6 +739,15 @@ export function TankRocket(self: GameEntity, runtime: GameRuntime): void {
   monster_fire_rocket(self, start, dir, 50, 550, flash_number, runtime);
 }
 
+/**
+ * Original name: TankMachineGun
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Sweeps tank machinegun muzzle flashes across attack frames and fires bullets with the original damage/spread.
+ */
 export function TankMachineGun(self: GameEntity, runtime: GameRuntime): void {
   const flash_number = MZ2_TANK_MACHINEGUN_1 + (self.s.frame - FRAME_attak406);
   const { forward, right } = AngleVectors(self.s.angles);
@@ -764,6 +813,17 @@ export const tank_move_attack_post_blast: GameMonsterMove = {
   endfunc: tank_run
 };
 
+/**
+ * Original name: tank_reattack_blaster
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - On hard/nightmare, may loop the blaster attack while the enemy is visible and alive; otherwise exits to post-blast frames.
+ * Porting notes:
+ * - Adds an enemy null guard for runtime robustness; the normal monster attack path provides one.
+ */
 export function tank_reattack_blaster(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.skill >= 2 && self.enemy && visible(self, self.enemy, runtime) && self.enemy.health > 0 && random() <= 0.6) {
     self.monsterinfo.currentmove = tank_move_reattack_blast;
@@ -773,6 +833,15 @@ export function tank_reattack_blaster(self: GameEntity, runtime: GameRuntime): v
   self.monsterinfo.currentmove = tank_move_attack_post_blast;
 }
 
+/**
+ * Original name: tank_poststrike
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Clears the brutal strike enemy and resumes the normal run selection.
+ */
 export function tank_poststrike(self: GameEntity): void {
   self.enemy = null;
   tank_run(self);
@@ -838,6 +907,17 @@ export const tank_move_attack_chain: GameMonsterMove = {
   endfunc: tank_run
 };
 
+/**
+ * Original name: tank_refire_rocket
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - On hard/nightmare, may loop the rocket fire move while the enemy is visible and alive; otherwise exits to post-rocket frames.
+ * Porting notes:
+ * - Adds an enemy null guard for runtime robustness; the normal monster attack path provides one.
+ */
 export function tank_refire_rocket(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.skill >= 2 && self.enemy && self.enemy.health > 0 && visible(self, self.enemy, runtime) && random() <= 0.4) {
     self.monsterinfo.currentmove = tank_move_attack_fire_rocket;
@@ -847,10 +927,30 @@ export function tank_refire_rocket(self: GameEntity, runtime: GameRuntime): void
   self.monsterinfo.currentmove = tank_move_attack_post_rocket;
 }
 
+/**
+ * Original name: tank_doattack_rocket
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Transitions from rocket windup to the rocket fire loop.
+ */
 export function tank_doattack_rocket(self: GameEntity): void {
   self.monsterinfo.currentmove = tank_move_attack_fire_rocket;
 }
 
+/**
+ * Original name: tank_attack
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Chooses chain gun, blaster, rocket windup, or brutal strike according to enemy health, range and random thresholds.
+ * Porting notes:
+ * - Returns early when no enemy is attached so partial harness entities cannot throw.
+ */
 export function tank_attack(self: GameEntity, runtime: GameRuntime): void {
   if (!self.enemy) {
     return;
@@ -880,6 +980,15 @@ export function tank_attack(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: tank_dead
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts the corpse to a toss dead monster bbox and relinks it.
+ */
 export function tank_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -16, -16, -16);
   setVec3(self.maxs, 16, 16, 0);
@@ -901,6 +1010,15 @@ export const tank_move_death: GameMonsterMove = {
   endfunc: tank_dead
 };
 
+/**
+ * Original name: tank_die
+ * Source: game/m_tank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Handles gib death, ignores duplicate deaths, otherwise plays the death sound and starts the tank death move.
+ */
 export function tank_die(
   self: GameEntity,
   _inflictor: GameEntity | null,

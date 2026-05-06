@@ -2,9 +2,9 @@
 
 ## Etat courant
 
-- Statut: En cours
-- Dernier lot valide: `FRAME_attak101`..`FRAME_attak112`, `FRAME_attak201`..`FRAME_attak218`, `FRAME_attak301`..`FRAME_attak309`, `FRAME_attak401`..`FRAME_attak406`, `FRAME_duck01`..`FRAME_duck05`
-- Entites validees dans la matrice: 50 / 476
+- Statut: Termine
+- Dernier lot valide: `FRAME_pain101`..`FRAME_death610` et `MODEL_SCALE`, en complement du lot deja valide `FRAME_attak101`..`FRAME_duck05`
+- Entites validees dans la matrice: 476 / 476
 - Blocages: aucun
 
 ## Preuves de session
@@ -15,6 +15,7 @@
 - Runtime: frames utilisees par les moves soldier, atteignables via spawn `monster_soldier*`, `G_RunFrame` -> `monster_think` -> `M_MoveFrame`
 - apps/web: le flux full-game declenche le runtime porte et expose les snapshots client via `full-game-render-source`
 - renderer-three: les frames/modeles/skinnum visibles sont consommes via `ClientRefreshFrame` et `refresh-entity-sync` pour les MD2
+- Session finale: comparaison exhaustive des 475 macros `FRAME_*` et de `MODEL_SCALE` entre `Quake-2-master/game/m_soldier.h` et `packages/game/src/m_soldier.ts`; les plages restantes sont declaratives et les frames animees attendues sont branchees via `soldier_move_pain*`, `soldier_move_run`, `soldier_move_attack6`, `soldier_move_stand*`, `soldier_move_walk*`, `soldier_move_death*`, puis `M_MoveFrame`. Les macros generees non referencees par `m_soldier.c` restent exportees avec les valeurs originales, sans integration runtime attendue par le C.
 
 ## Tests de reference
 
@@ -27,4 +28,4 @@
 
 ## Prochain lot recommande
 
-Continuer avec `FRAME_pain101`..`FRAME_pain105`, `FRAME_pain201`..`FRAME_pain207`, `FRAME_pain301`..`FRAME_pain318`, puis `FRAME_pain401`..`FRAME_pain417` si le lot reste coherent, en couvrant les moves de douleur et leurs branches runtime.
+Aucun lot restant dans `m_soldier.h`: toutes les constantes de frame et `MODEL_SCALE` sont validees.

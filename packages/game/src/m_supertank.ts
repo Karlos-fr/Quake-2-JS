@@ -599,6 +599,19 @@ export function supertank_reattack1(self: GameEntity, runtime: GameRuntime): voi
   }
 }
 
+/**
+ * Original name: supertank_pain
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Updates the damaged skin, applies debounce and random pain suppression,
+ *   skips rocket-firing pain on hard skills, and selects the original pain move by damage.
+ *
+ * Porting notes:
+ * - Reads `level.time` and `skill->value` from the explicit `GameRuntime`.
+ */
 export function supertank_pain(
   self: GameEntity,
   _other: GameEntity | null,
@@ -716,6 +729,18 @@ export function supertankMachineGun(self: GameEntity, runtime: GameRuntime): voi
   );
 }
 
+/**
+ * Original name: supertank_attack
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Chooses chaingun at close range and randomly prefers rockets at distance.
+ *
+ * Porting notes:
+ * - Guards the nullable TS `enemy` reference before matching the original range logic.
+ */
 export function supertank_attack(self: GameEntity): void {
   if (!self.enemy) {
     return;
@@ -826,6 +851,15 @@ export function BossExplode(self: GameEntity, runtime: GameRuntime): void {
   self.nextthink = runtime.time + 0.1;
 }
 
+/**
+ * Original name: supertank_die
+ * Source: game/m_supertank.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Plays the death sound, marks the boss dead and starts the death animation move.
+ */
 export function supertank_die(
   self: GameEntity,
   _inflictor: GameEntity | null,
