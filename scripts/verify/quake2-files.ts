@@ -24,7 +24,9 @@ import {
   FS_LoadPackFile,
   FS_NextPath,
   FS_Path_f,
+  FS_Read,
   FS_SetGamedir,
+  MAX_READ,
   createVirtualFilesystem,
   markBaseSearchPaths,
   mountDirectory,
@@ -58,6 +60,27 @@ assert.equal(Developer_searchpath(filesystem), 2, "Developer_searchpath rogue mi
 
 const override = FS_LoadFile(filesystem, "maps/base1.bsp");
 assert.equal(decodeAscii(override ?? new Uint8Array()), "rogue-override", "directory override mismatch");
+assert.equal(MAX_READ, 0x10000, "MAX_READ value mismatch");
+
+const largeSource = new Uint8Array(MAX_READ + 7);
+for (let index = 0; index < largeSource.byteLength; index += 1) {
+  largeSource[index] = index & 0xff;
+}
+const largeCopy = new Uint8Array(largeSource.byteLength);
+FS_Read(largeCopy, largeCopy.byteLength, largeSource);
+assert.deepEqual([...largeCopy], [...largeSource], "FS_Read chunk copy mismatch");
+assert.throws(() => FS_Read(new Uint8Array(3), 3, new Uint8Array(2)), /FS_Read: 0 bytes read/, "FS_Read short read mismatch");
+
+const overrideCopy = override;
+assert.notEqual(overrideCopy, readMountedFile(filesystem, "maps/base1.bsp")?.bytes, "FS_LoadFile must allocate a distinct buffer");
+if (overrideCopy) {
+  overrideCopy[0] = "R".charCodeAt(0);
+}
+assert.equal(
+  decodeAscii(readMountedFile(filesystem, "maps/base1.bsp")?.bytes ?? new Uint8Array()),
+  "rogue-override",
+  "FS_LoadFile copy must not mutate mounted bytes"
+);
 
 const pakFile = FS_LoadFile(filesystem, "maps/pakmap.bsp");
 assert.equal(decodeAscii(pakFile ?? new Uint8Array()), "pak-map", "FS_LoadPackFile pak lookup mismatch");

@@ -38,7 +38,15 @@ import {
 } from "../../../packages/client/src/index.js";
 import type { refimport_t } from "../../../packages/client/src/index.js";
 import { createQuakeWebAudioAdapter, createWebCDAudioAdapter } from "../../../packages/platform/src/index.js";
-import { CS_CDTRACK, PRINT_ALL, createCvarRuntime, Cvar_Get, type cvar_t } from "../../../packages/qcommon/src/index.js";
+import {
+  CS_CDTRACK,
+  PRINT_ALL,
+  createCvarRuntime,
+  Cvar_Get,
+  Cvar_Set as QcommonCvar_Set,
+  Cvar_SetValue as QcommonCvar_SetValue,
+  type cvar_t
+} from "../../../packages/qcommon/src/index.js";
 import { createLocalClientController } from "./local-client-controller.js";
 import { startWebDemoLoop } from "./web-demo-loop.js";
 import { createRefreshDebugLayer } from "./refresh-debug-layer.js";
@@ -330,19 +338,12 @@ function createWebRefImports(onStatus: (message: string) => void): Partial<refim
       return created;
     },
     Cvar_Set: (name: string, value: string) => {
-      const target = cvars.get(name) ?? requireCvar(Cvar_Get(cvarRuntime, name, value, 0), name);
-      target.string = value;
-      const numeric = Number(value);
-      if (!Number.isNaN(numeric)) {
-        target.value = numeric;
-      }
+      const target = requireCvar(QcommonCvar_Set(cvarRuntime, name, value), name);
       cvars.set(name, target);
       return target;
     },
     Cvar_SetValue: (name: string, value: number) => {
-      const target = cvars.get(name) ?? requireCvar(Cvar_Get(cvarRuntime, name, String(value), 0), name);
-      target.value = value;
-      target.string = String(value);
+      const target = requireCvar(QcommonCvar_SetValue(cvarRuntime, name, value), name);
       cvars.set(name, target);
     },
     Cmd_AddCommand: () => {},

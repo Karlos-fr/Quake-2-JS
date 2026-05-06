@@ -18,7 +18,7 @@
 | `Quake-2-master/qcommon/md4.c` | global | `buffer` | `packages/qcommon/src/md4.ts` |  | Non applicable | A redecouper | Struct field misdetected as global; represented by `MD4_CTX.buffer`. |
 | `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts` | `MD4Init` | Valide | A redecouper | Seed/count/buffer initialization verified by `npm run verify:md4`; header comment checked. |
 | `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts` | `MD4Update` | Valide | A redecouper | Count update, exact 64-byte block, partial buffering and split updates verified by `npm run verify:md4`; header comment checked. |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts` | `MD4Final` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts` | `MD4Final` | Valide | A redecouper | Final padding, digest encoding and context zeroization verified by `npm run verify:md4`; header comment checked. |
 | `Quake-2-master/qcommon/md4.c` | macro | `S11` | `packages/qcommon/src/md4.ts` | `S11` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
 | `Quake-2-master/qcommon/md4.c` | macro | `S12` | `packages/qcommon/src/md4.ts` | `S12` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
 | `Quake-2-master/qcommon/md4.c` | macro | `S13` | `packages/qcommon/src/md4.ts` | `S13` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
@@ -32,8 +32,8 @@
 | `Quake-2-master/qcommon/md4.c` | macro | `S33` | `packages/qcommon/src/md4.ts` | `S33` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
 | `Quake-2-master/qcommon/md4.c` | macro | `S34` | `packages/qcommon/src/md4.ts` | `S34` | Valide | A redecouper | Rotation constant included in MD4 vector coverage via `npm run verify:md4`. |
 | `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts` | `MD4Transform` | Valide | A redecouper | Private transform and all three rounds verified through MD4 vectors/full-block tests in `npm run verify:md4`; helper comments added for round macros. |
-| `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts` | `Encode` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts` | `Decode` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts` | `Encode` | Valide | A redecouper | Little-endian word/byte encoding verified through MD4 vectors and `Com_BlockChecksum` in `npm run verify:md4`; header comment added. |
+| `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts` | `Decode` | Valide | A redecouper | Little-endian byte/word decoding verified through transform-backed MD4 vectors in `npm run verify:md4`; header comment added. |
 | `Quake-2-master/qcommon/md4.c` | global | `PADDING` | `packages/qcommon/src/md4.ts` | `PADDING` | Valide | A redecouper | Padding behavior verified by finalization vectors and exact-block test in `npm run verify:md4`. |
 | `Quake-2-master/qcommon/md4.c` | macro | `F` | `packages/qcommon/src/md4.ts` | `F` | Valide | A redecouper | Private helper compared to C macro; comment added; covered by `npm run verify:md4`. |
 | `Quake-2-master/qcommon/md4.c` | macro | `G` | `packages/qcommon/src/md4.ts` | `G` | Valide | A redecouper | Private helper compared to C macro; comment added; covered by `npm run verify:md4`. |
@@ -45,12 +45,12 @@
 | `Quake-2-master/qcommon/md4.c` | function | `MD4Init` | `packages/qcommon/src/md4.ts` | `MD4Init` | Non applicable | A redecouper | Duplicate generated function row; covered by the first `MD4Init` row. |
 | `Quake-2-master/qcommon/md4.c` | function | `MD4Update` | `packages/qcommon/src/md4.ts` | `MD4Update` | Non applicable | A redecouper | Duplicate generated function row; covered by the first `MD4Update` row. |
 | `Quake-2-master/qcommon/md4.c` | global | `i` | `packages/qcommon/src/md4.ts` | `i` | Non applicable | A redecouper | Local loop variable from `MD4Update`, not a source-owned global entity. |
-| `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts` | `MD4Final` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `bits` | `packages/qcommon/src/md4.ts` | `bits` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `MD4Final` | `packages/qcommon/src/md4.ts` | `MD4Final` | Non applicable | A redecouper | Duplicate generated function row; covered by the first `MD4Final` row. |
+| `Quake-2-master/qcommon/md4.c` | global | `bits` | `packages/qcommon/src/md4.ts` | `bits` | Non applicable | A redecouper | Local finalization buffer from `MD4Final`, not a source-owned global entity. |
 | `Quake-2-master/qcommon/md4.c` | function | `MD4Transform` | `packages/qcommon/src/md4.ts` | `MD4Transform` | Non applicable | A redecouper | Duplicate generated function row; covered by the first `MD4Transform` row. |
-| `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts` | `Encode` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts` | `Decode` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | function | `Com_BlockChecksum` | `packages/qcommon/src/md4.ts` | `Com_BlockChecksum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `digest` | `packages/qcommon/src/md4.ts` | `digest` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `val` | `packages/qcommon/src/md4.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/md4.c` | global | `ctx` | `packages/qcommon/src/md4.ts` | `ctx` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/md4.c` | function | `Encode` | `packages/qcommon/src/md4.ts` | `Encode` | Non applicable | A redecouper | Duplicate generated static function row; covered by the first `Encode` row. |
+| `Quake-2-master/qcommon/md4.c` | function | `Decode` | `packages/qcommon/src/md4.ts` | `Decode` | Non applicable | A redecouper | Duplicate generated static function row; covered by the first `Decode` row. |
+| `Quake-2-master/qcommon/md4.c` | function | `Com_BlockChecksum` | `packages/qcommon/src/md4.ts` | `Com_BlockChecksum` | Valide | A redecouper | MD4 digest XOR checksum and explicit length handling verified by `npm run verify:md4`; runtime/web/renderer indirect paths verified by `verify:files`, `verify:full-game:render-source`, `verify:gl-rmain`; header comment checked. |
+| `Quake-2-master/qcommon/md4.c` | global | `digest` | `packages/qcommon/src/md4.ts` | `digest` | Non applicable | A redecouper | Local checksum buffer from `Com_BlockChecksum`, not a source-owned global entity. |
+| `Quake-2-master/qcommon/md4.c` | global | `val` | `packages/qcommon/src/md4.ts` |  | Non applicable | A redecouper | Local checksum return accumulator from `Com_BlockChecksum`, represented by the TS return expression. |
+| `Quake-2-master/qcommon/md4.c` | global | `ctx` | `packages/qcommon/src/md4.ts` | `ctx` | Non applicable | A redecouper | Local MD4 context from `Com_BlockChecksum`, not a source-owned global entity. |

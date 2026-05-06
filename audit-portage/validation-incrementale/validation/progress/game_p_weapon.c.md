@@ -65,6 +65,17 @@
 - Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour appel direct `Weapon_HyperBlaster_Fire`, offset circulaire, bit silencieux, animations debout/accroupi, ammo infini et tables `pause_frames`/`fire_frames`.
 - Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
 
+## Session 2026-05-06 - bloc machinegun
+
+- Lot traite: `Machinegun_Fire`, variables locales `i`/`start`/`angles`/`damage`/`kick`/`offset`, `Weapon_Machinegun`, tables locales `pause_frames` et `fire_frames`.
+- Comparaison C/TS: relache attaque et reset `machinegun_shots`, alternance gunframe `4`/`5`, chemin no-ammo `CHAN_VOICE` et `NoAmmoWeaponChange`, degats/kick `8`/`2` et quad `32`/`8`, recul aleatoire, plafonnement solo a `9`, absence d'accumulation deathmatch, projection `[0, 8, viewheight - 8]`, `fire_bullet` avec spreads par defaut et `MOD_MACHINEGUN`, muzzleflash `MZ_MACHINEGUN | is_silenced`, `PlayerNoise`, consommation ammo/`DF_INFINITE_AMMO`, animations debout/accroupi, et `Weapon_Generic(ent, 3, 5, 45, 49, {23, 45, 0}, {4, 5, 0}, Machinegun_Fire)` compares contre le C.
+- Commentaires d'en-tete: `Machinegun_Fire` et `Weapon_Machinegun` verifies avec `Original name`, `Source: game/p_weapon.c`, `Category: Ported`, niveau de fidelite et comportement.
+- Runtime: integre via `g_items` (`weapon_machinegun` -> `Weapon_Machinegun`), `Think_Weapon`, `ClientThink`/`ClientBeginServerFrame`, `G_RunFrame`, `local-game-bootstrap` et hook `fire_bullet`.
+- apps/web: le navigateur declenche le tir via les flux serveur/local/full-game et consomme le runtime porte; aucune logique web parallele ne remplace ce bloc.
+- renderer-three: sorties visibles attendues = muzzleflash/dlight `MZ_MACHINEGUN`, sons de tir machinegun, impacts `TE_GUNSHOT`, particules/dlights client et view weapon `models/weapons/v_machn/tris.md2`; elles sont consommees par snapshots, `local-gameplay-sync`, `cl_fx`, refresh entity/dlights et renderer-three.
+- Corrections: ajout d'assertions ciblees dans `scripts/verify/quake2-p-weapon.ts` pour `Machinegun_Fire` direct, projection, direction, bit silencieux, degats/kick base et quad, ammo infini, no-ammo, reset, tables `pause_frames`/`fire_frames` et frames non-fire.
+- Tests lances: `npm run verify:p-weapon`, `npm run typecheck`, `npm run verify:local-gameplay-sync`, `npm run verify:cl-fx`, `npm run verify:full-game:three-renderer`, `npm run verify:refresh-entity:weapon`.
+
 ## Prochain lot recommande
 
-Valider le bloc machinegun: `Machinegun_Fire`, variables locales `i`/`start`/`angles`/`damage`/`kick`/`offset`, puis `Weapon_Machinegun` avec `pause_frames` et `fire_frames`.
+Valider le bloc chaingun: `Chaingun_Fire`, variables locales `i`/`shots`/`start`/`offset`/`damage`/`kick` et doublons generes, puis `Weapon_Chaingun` avec `pause_frames` et `fire_frames`.

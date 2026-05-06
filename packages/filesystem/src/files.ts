@@ -20,6 +20,17 @@ import { findPakEntry, parsePak, readPakEntryData } from "../../formats/src/pak.
 import type { PakArchive, PakEntry } from "../../formats/src/pak.js";
 
 /**
+ * Original name: MAX_READ
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Caps `FS_Read` chunks to 64 KiB, matching the original progress-read loop.
+ */
+export const MAX_READ = 0x10000;
+
+/**
  * Category: New
  * Purpose: Represent one mounted in-memory directory searched by the virtual filesystem.
  *
@@ -363,10 +374,53 @@ export function readMountedFile(filesystem: VirtualFilesystem, filename: string)
  * - Loads one file fully into memory from the current search paths.
  *
  * Porting notes:
- * - Reuses the already in-memory mounted file payload.
+ * - Copies from the mounted payload into a fresh buffer, matching the original `Z_Malloc` ownership boundary.
  */
 export function FS_LoadFile(filesystem: VirtualFilesystem, path: string): Uint8Array | undefined {
-  return readMountedFile(filesystem, path)?.bytes;
+  const mounted = readMountedFile(filesystem, path);
+  if (!mounted) {
+    return undefined;
+  }
+
+  const buffer = new Uint8Array(mounted.bytes.byteLength);
+  FS_Read(buffer, mounted.bytes.byteLength, mounted.bytes);
+  return buffer;
+}
+
+/**
+ * Original name: FS_Read
+ * Source: qcommon/files.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Reads exactly `len` bytes into `buffer` in `MAX_READ` chunks.
+ *
+ * Porting notes:
+ * - Uses a source byte array instead of a `FILE *`; short reads are fatal because browser VFS data is already resident.
+ * - CD retry/audio-stop handling is not applicable to the in-memory VFS path.
+ */
+export function FS_Read(buffer: Uint8Array, len: number, file: Uint8Array, offset = 0): void {
+  let remaining = len;
+  let inputOffset = offset;
+  let outputOffset = 0;
+
+  while (remaining > 0) {
+    let block = remaining;
+    if (block > MAX_READ) {
+      block = MAX_READ;
+    }
+
+    const available = Math.max(0, Math.min(block, file.byteLength - inputOffset));
+    if (available === 0) {
+      throw new Error("FS_Read: 0 bytes read");
+    }
+
+    buffer.set(file.subarray(inputOffset, inputOffset + available), outputOffset);
+    remaining -= available;
+    inputOffset += available;
+    outputOffset += available;
+  }
 }
 
 /**

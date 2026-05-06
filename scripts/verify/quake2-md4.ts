@@ -60,6 +60,11 @@ MD4Final(splitDigest, splitContext);
 assert.equal(toHex(splitDigest), "a448017aaf21d8525fc10ae87aa6729d", "MD4 incremental update mismatch");
 assert.deepEqual(Array.from(splitContext.state), [0, 0, 0, 0], "MD4Final must clear state");
 assert.deepEqual(Array.from(splitContext.count), [0, 0], "MD4Final must clear count");
+assert.deepEqual(
+  Array.from(splitContext.buffer),
+  Array.from(new Uint8Array(64)),
+  "MD4Final must clear the buffered block bytes"
+);
 
 const exactBlock = Uint8Array.from({ length: 64 }, (_, index) => index);
 const exactContext = createMD4Context();
@@ -90,6 +95,11 @@ assert.deepEqual(
 assert.deepEqual(Array.from(partialContext.count), [136, 0], "MD4Update partial length count mismatch");
 
 assert.equal(Com_BlockChecksum(encodeAscii("abc")), 1570836014, "Com_BlockChecksum abc mismatch");
+assert.equal(
+  Com_BlockChecksum(encodeAscii("abcXYZ"), 3),
+  1570836014,
+  "Com_BlockChecksum must honor the explicit length argument"
+);
 assert.equal(Com_BlockChecksum(exactBlock), 71981645, "Com_BlockChecksum exact-block byte pattern mismatch");
 
 console.log("quake2-md4: ok");

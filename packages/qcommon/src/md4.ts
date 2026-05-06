@@ -323,6 +323,15 @@ function MD4Transform(state: Uint32Array, block: Uint8Array): void {
   state[3] = (state[3] + d) >>> 0;
 }
 
+/**
+ * Original name: Encode
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Encodes little-endian 32-bit MD4 words into bytes, assuming `len` is a multiple of 4.
+ */
 function Encode(output: Uint8Array, input: Uint32Array, len: number): void {
   for (let i = 0, j = 0; j < len; i += 1, j += 4) {
     output[j] = input[i] & 0xff;
@@ -332,6 +341,15 @@ function Encode(output: Uint8Array, input: Uint32Array, len: number): void {
   }
 }
 
+/**
+ * Original name: Decode
+ * Source: qcommon/md4.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Decodes little-endian byte groups into unsigned 32-bit MD4 words, assuming `len` is a multiple of 4.
+ */
 function Decode(output: Uint32Array, input: Uint8Array, len: number): void {
   for (let i = 0, j = 0; j < len; i += 1, j += 4) {
     output[i] = (

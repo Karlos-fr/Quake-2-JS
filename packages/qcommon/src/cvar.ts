@@ -258,7 +258,7 @@ export function Cvar_FullSet(runtime: CvarRuntime, var_name: string, value: stri
  * - Preserves the original integer formatting shortcut.
  */
 export function Cvar_SetValue(runtime: CvarRuntime, var_name: string, value: number): cvar_t | null {
-  const serialized = Number.isInteger(value) ? `${value}` : `${value}`;
+  const serialized = Number.isInteger(value) ? `${value}` : value.toFixed(6);
   return Cvar_Set(runtime, var_name, serialized);
 }
 
@@ -541,12 +541,14 @@ export function Cvar_Set2(runtime: CvarRuntime, var_name: string, value: string,
   }
 
   if ((variable.flags & (CVAR_USERINFO | CVAR_SERVERINFO)) !== 0 && !Cvar_InfoValidate(value)) {
+    runtime.hooks.onPrint?.("invalid info cvar value\n");
     runtime.hooks.onInfoValidationError?.("value");
     return variable;
   }
 
   if (!force) {
     if ((variable.flags & CVAR_NOSET) !== 0) {
+      runtime.hooks.onPrint?.(`${var_name} is write protected.\n`);
       runtime.hooks.onWriteProtected?.(var_name);
       return variable;
     }
@@ -561,6 +563,7 @@ export function Cvar_Set2(runtime: CvarRuntime, var_name: string, value: string,
       }
 
       if (runtime.server_state !== 0) {
+        runtime.hooks.onPrint?.(`${var_name} will be changed for next game.\n`);
         variable.latched_string = value;
         runtime.hooks.onLatchedChange?.(var_name);
       } else {

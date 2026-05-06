@@ -122,18 +122,25 @@ Cvar_Set(cvar, "rate", "30000");
 assert.equal(Cvar_VariableString(cvar, "rate"), "30000", "Cvar_Set mismatch");
 assert.equal(cvar.userinfo_modified, true, "userinfo modification flag mismatch");
 
+const beforeInvalidSetPrints = printed.length;
+Cvar_Set(cvar, "rate", "30;000");
+assert.equal(Cvar_VariableString(cvar, "rate"), "30000", "invalid userinfo Cvar_Set should preserve old value");
+assert.equal(validationErrors.at(-1), "value", "Cvar_Set invalid info hook mismatch");
+assert.equal(printed[beforeInvalidSetPrints], "invalid info cvar value\n", "Cvar_Set invalid info diagnostic mismatch");
+
 const fraglimit = Cvar_Get(cvar, "fraglimit", "10", 0);
 assert.ok(fraglimit, "fraglimit cvar should be created");
 Cvar_SetValue(cvar, "fraglimit", 20);
 assert.equal(Cvar_VariableString(cvar, "fraglimit"), "20", "integer SetValue formatting mismatch");
 Cvar_SetValue(cvar, "fraglimit", 2.5);
-assert.equal(Cvar_VariableString(cvar, "fraglimit"), "2.5", "float SetValue formatting mismatch");
+assert.equal(Cvar_VariableString(cvar, "fraglimit"), "2.500000", "float SetValue formatting mismatch");
 
 const cheat = Cvar_Get(cvar, "cheats", "0", CVAR_NOSET);
 assert.ok(cheat, "write-protected cvar should be created");
 Cvar_Set(cvar, "cheats", "1");
 assert.equal(Cvar_VariableString(cvar, "cheats"), "0", "NOSET cvar should not change");
 assert.deepEqual(writeProtected, ["cheats"], "write-protected hook mismatch");
+assert.equal(printed.at(-1), "cheats is write protected.\n", "NOSET diagnostic mismatch");
 
 const game = Cvar_Get(cvar, "game", "baseq2", CVAR_LATCH);
 assert.ok(game, "latched game cvar should be created");
@@ -142,6 +149,7 @@ Cvar_Set(cvar, "game", "rogue");
 assert.equal(game?.string, "baseq2", "latched cvar should not change immediately while server is running");
 assert.equal(game?.latched_string, "rogue", "latched cvar should keep pending value");
 assert.deepEqual(latchedChanges, ["game"], "latched change hook mismatch");
+assert.equal(printed.at(-1), "game will be changed for next game.\n", "latched diagnostic mismatch");
 
 Cvar_GetLatchedVars(cvar);
 assert.equal(game?.string, "rogue", "GetLatchedVars should apply latched value");

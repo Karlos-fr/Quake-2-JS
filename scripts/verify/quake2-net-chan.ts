@@ -6,7 +6,7 @@
  * It is a targeted verification harness for the network-channel sequencing and reliability path.
  *
  * Dependencies:
- * - packages/qcommon/src/net-chan.ts
+ * - packages/qcommon/src/net_chan.ts
  * - packages/qcommon/src/qcommon.ts
  * - packages/qcommon/src/messages.ts
  * - packages/memory/src/sizebuf.ts
@@ -25,7 +25,7 @@ import {
   Netchan_Process,
   Netchan_Setup,
   Netchan_Transmit
-} from "../../packages/qcommon/src/net-chan.js";
+} from "../../packages/qcommon/src/net_chan.js";
 import {
   MAX_MSGLEN,
   NET_AdrToString,

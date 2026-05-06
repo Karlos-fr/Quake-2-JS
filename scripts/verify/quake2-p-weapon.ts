@@ -20,6 +20,7 @@ import {
   LEFT_HANDED,
   MOD_CHAINGUN,
   MOD_MACHINEGUN,
+  Machinegun_Fire,
   ANIM_ATTACK,
   ANIM_REVERSE,
   DEAD_DYING,
@@ -267,9 +268,11 @@ function verifyMachinegunFireParity(): void {
   const player = createPlayer(runtime);
   const machinegun = requireItem("Machinegun");
   const bullets = requireItem("Bullets");
-  const shots: Array<{ damage: number; kick: number; hspread: number; vspread: number; mod: number }> = [];
+  const shots: Array<{ start: readonly number[]; aimdir: readonly number[]; damage: number; kick: number; hspread: number; vspread: number; mod: number }> = [];
   const flashes: number[] = [];
 
+  player.s.origin = [100, 200, 300];
+  player.origin = [100, 200, 300];
   player.s.modelindex = 255;
   player.client!.pers.weapon = machinegun;
   player.client!.ammo_index = bullets.index;
@@ -277,13 +280,15 @@ function verifyMachinegunFireParity(): void {
   player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
   player.client!.ps.gunframe = 4;
   player.client!.buttons = BUTTON_ATTACK;
+  player.client!.v_angle = [0, 0, 0];
   player.client!.quad_framenum = runtime.framenum + 1;
+  player.client!.silencer_shots = 1;
   player.client!.pers.inventory[bullets.index] = 3;
 
   withMathRandom([0.5, 0.5, 0.5, 0.5, 0.5, 0.5], () => {
     Weapon_Machinegun(player, runtime, {
-      fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
-        shots.push({ damage, kick, hspread, vspread, mod });
+      fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
       },
       emitPlayerMuzzleFlash: (_ent, weapon) => {
         flashes.push(weapon);
@@ -297,7 +302,9 @@ function verifyMachinegunFireParity(): void {
   assertNumber(shots[0].hspread, DEFAULT_BULLET_HSPREAD, "Machinegun horizontal spread should match C");
   assertNumber(shots[0].vspread, DEFAULT_BULLET_VSPREAD, "Machinegun vertical spread should match C");
   assertNumber(shots[0].mod, MOD_MACHINEGUN, "Machinegun means-of-death should match C");
-  assertNumber(flashes[0], MZ_MACHINEGUN, "Machinegun should emit MZ_MACHINEGUN");
+  assertVec3Close(shots[0].start, [100, 192, 314], "Machinegun offset/start should match C P_ProjectSource", 1e-5);
+  assertVec3Close(shots[0].aimdir, [1, 0, 0], "Machinegun aimdir should come from v_angle plus kick_angles", 1e-5);
+  assertNumber(flashes[0], MZ_MACHINEGUN | MZ_SILENCED, "Machinegun should emit MZ_MACHINEGUN plus silenced bit");
   assertNumber(player.client!.ps.gunframe, 5, "Machinegun firing should toggle gunframe 4 to 5");
   assertNumber(player.client!.machinegun_shots, 1, "Machinegun should accumulate recoil shots outside deathmatch");
   assertNumber(player.client!.pers.inventory[bullets.index], 2, "Machinegun should consume one bullet");
@@ -307,10 +314,11 @@ function verifyMachinegunFireParity(): void {
   assertNumber(player.s.frame, 46, "Machinegun attack frame should use g_local.random for original frame expression");
 
   runtime.dmflags |= DF_INFINITE_AMMO;
+  player.client!.silencer_shots = 0;
   withMathRandom([0.5, 0.5, 0.5, 0.5, 0.5, 0.5], () => {
     Weapon_Machinegun(player, runtime, {
-      fire_bullet: (_ent, _start, _aimdir, damage, kick, hspread, vspread, mod) => {
-        shots.push({ damage, kick, hspread, vspread, mod });
+      fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
       },
       emitPlayerMuzzleFlash: (_ent, weapon) => {
         flashes.push(weapon);
@@ -326,6 +334,47 @@ function verifyMachinegunFireParity(): void {
   Weapon_Machinegun(player, runtime);
   assertNumber(player.client!.machinegun_shots, 0, "Releasing attack should reset machinegun_shots");
   assertNumber(player.client!.ps.gunframe, 5, "Releasing attack should advance gunframe");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_READY;
+  player.client!.ps.gunframe = 23;
+  player.client!.buttons = 0;
+  player.client!.latched_buttons = 0;
+  shots.length = 0;
+  withMathRandom([0.1], () => {
+    Weapon_Machinegun(player, runtime, {
+      fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+        shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
+      }
+    });
+  });
+  assertNumber(player.client!.ps.gunframe, 23, "Weapon_Machinegun pause_frames should include frame 23");
+  assertNumber(shots.length, 0, "Weapon_Machinegun pause frame should not fire while idling");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 6;
+  shots.length = 0;
+  Weapon_Machinegun(player, runtime, {
+    fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
+    }
+  });
+  assertNumber(shots.length, 0, "Weapon_Machinegun fire_frames should only include frames 4 and 5");
+  assertNumber(player.client!.ps.gunframe, 7, "Weapon_Machinegun non-fire frame should advance without firing");
+
+  player.client!.weaponstate = weaponstate_t.WEAPON_FIRING;
+  player.client!.ps.gunframe = 4;
+  player.client!.buttons = BUTTON_ATTACK;
+  player.client!.quad_framenum = 0;
+  player.client!.pers.inventory[bullets.index] = 2;
+  runtime.dmflags = 0;
+  shots.length = 0;
+  Machinegun_Fire(player, runtime, {
+    fire_bullet: (_ent, start, aimdir, damage, kick, hspread, vspread, mod) => {
+      shots.push({ start, aimdir, damage, kick, hspread, vspread, mod });
+    }
+  });
+  assertNumber(shots[0].damage, 8, "Machinegun_Fire direct base damage should match C");
+  assertNumber(shots[0].kick, 2, "Machinegun_Fire direct base kick should match C");
 }
 
 function verifyMachinegunNoAmmoUsesVoiceChannel(): void {
@@ -1371,8 +1420,8 @@ function assertNumberClose(actual: number, expected: number, label: string, epsi
   }
 }
 
-function assertVec3Close(actual: readonly number[], expected: readonly number[], label: string): void {
+function assertVec3Close(actual: readonly number[], expected: readonly number[], label: string, epsilon = 1e-9): void {
   for (let index = 0; index < 3; index += 1) {
-    assertNumberClose(actual[index] ?? NaN, expected[index] ?? NaN, `${label}[${index}]`);
+    assertNumberClose(actual[index] ?? NaN, expected[index] ?? NaN, `${label}[${index}]`, epsilon);
   }
 }

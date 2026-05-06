@@ -1,8 +1,8 @@
 # Progress - Quake-2-master/qcommon/files.c
 
 - Statut: En cours
-- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`.
-- Prochain lot recommande: `CDAudio_Stop`, `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile`, puis `FS_LoadPackFile` si le lot reste coherent.
+- Dernier lot valide: declarations initiales, structures de recherche, `FS_filelength`, `FS_CreatePath`, `FS_FCloseFile`, `Developer_searchpath`, `file_from_pak`, `FS_FOpenFile` normal et faux positifs locaux/branches `NO_ADDONS`, puis `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile` et `FS_LoadPackFile`.
+- Prochain lot recommande: `FS_AddGameDirectory` avec ses locaux `i`, `pak`, `pakfile`, puis `FS_Gamedir` et `FS_ExecAutoexec` si le lot reste coherent.
 - Tests de reference:
   - `npm run verify:files`
   - `npm run verify:web-config-gamedir`
@@ -18,5 +18,13 @@
   - `readMountedFile` preserve maintenant le court-circuit de lien du C: un prefixe `link` qui correspond mais ne resout aucun fichier ne retombe pas sur la recherche normale.
   - `apps/web/src/full-game.ts` utilise maintenant `readMountedFile(...) !== undefined` pour le test d'existence, afin de ne pas considerer un miss VFS comme present.
   - `apps/web/src/full-game-server-host.ts` propage maintenant `fromPak` depuis `MountedVirtualFile.pak` au lieu de forcer tous les downloads en provenance de PAK.
+  - `FS_LoadFile` retourne maintenant un nouveau buffer comme le `Z_Malloc` original, et `FS_Read`/`MAX_READ` ont ete ajoutes pour couvrir la copie par blocs.
+- Lot du 2026-05-06:
+  - `CDAudio_Stop` retire de la matrice `qcommon/files.c`: declaration externe appelee par `FS_Read`, port proprietaire dans `client/cdaudio.*`.
+  - `MAX_READ`, `FS_Read`, `FS_LoadFile`, `FS_FreeFile` et `FS_LoadPackFile` compares C vs TS, ownership et doublons verifies.
+  - Runtime: flux atteint par `readMountedFile`/`FS_LoadFile`, les hooks client audio et les adapters de chargement d'assets.
+  - `apps/web`: integrations `onFS_LoadFile`/`onFS_FreeFile`, loaders binaires et serveur local verifies.
+  - `renderer-three`: consommation indirecte attendue via `readMountedFile` pour BSP/modeles/images/palettes; pas de manque ouvert.
+  - Tests lances: `npm run verify:files`, `npm run typecheck`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run golden:pak0`.
 - Blocages:
   - Aucun blocage de test connu apres ce lot.

@@ -39,6 +39,8 @@ import {
   Cvar_Command,
   Cvar_Init,
   Cvar_Get,
+  Cvar_Set as QcommonCvar_Set,
+  Cvar_SetValue as QcommonCvar_SetValue,
   Cvar_VariableValue,
   PRINT_ALL,
   AngleVectors,
@@ -2640,19 +2642,12 @@ function createFullGameRefImports(onPrint: (message: string) => void): Partial<r
       return created;
     },
     Cvar_Set: (name, value) => {
-      const target = cvars.get(name) ?? requireFullGameRefCvar(Cvar_Get(cvarRuntime, name, value, 0), name);
-      target.string = value;
-      const numeric = Number(value);
-      if (!Number.isNaN(numeric)) {
-        target.value = numeric;
-      }
+      const target = requireFullGameRefCvar(QcommonCvar_Set(cvarRuntime, name, value), name);
       cvars.set(name, target);
       return target;
     },
     Cvar_SetValue: (name, value) => {
-      const target = cvars.get(name) ?? requireFullGameRefCvar(Cvar_Get(cvarRuntime, name, String(value), 0), name);
-      target.value = value;
-      target.string = String(value);
+      const target = requireFullGameRefCvar(QcommonCvar_SetValue(cvarRuntime, name, value), name);
       cvars.set(name, target);
     },
     Cmd_AddCommand: () => undefined,

@@ -2,6 +2,11 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: `CVAR`, `CVAR_ARCHIVE`, `CVAR_USERINFO`, `CVAR_SERVERINFO`, `CVAR_NOSET`, `CVAR_LATCH` et `cvar_s`, sans modifier `packages/qcommon/src/cvar.ts` parce que `qcommon/cvar.c` est traite en parallele.
+- Entites validees: `CVAR_ARCHIVE`, `CVAR_USERINFO`, `CVAR_SERVERINFO`, `CVAR_NOSET`, `CVAR_LATCH`, `cvar_s`.
+- Entite non applicable: `CVAR`, garde de declaration C sans symbole runtime TS separe.
+- Ownership: les flags et le type `cvar_t` sont centralises dans `packages/qcommon/src/cvar.ts`, puis reexportes depuis `packages/qcommon/src/index.ts`; la matrice a ete corrigee pour pointer `cvar_s` vers `cvar.ts`/`cvar_t`.
+- Preuves: valeurs numeriques verifiees dans `scripts/verify/quake2-q-shared-header.ts`, comportement et forme runtime de `cvar_t` verifies via `scripts/verify/quake2-cvar.ts`; `cvar_vars` remplace le chainage `next` C.
 - 2026-05-06: `Com_Printf` uniquement, en evitant `cvar.ts` possede par un autre agent.
 - Entite validee: `Com_Printf`.
 - Ownership: declaration dans `game/q_shared.h` pour liaison des helpers partages/systeme; corps proprietaire dans `qcommon/common.c`, port runtime dans `packages/qcommon/src/common.ts`.
@@ -42,6 +47,10 @@
 
 ## Tests de reference
 
+- `npm run verify:q-shared:header` OK pour `CVAR_*`.
+- `npm run verify:cvar` OK pour le runtime `cvar_t`.
+- `npm run verify:full-game:server-host` OK pour l'integration web/server-host.
+- `npm run verify:full-game:three-renderer` OK pour l'integration renderer-three via `refimport_t.Cvar_Get`.
 - `npm run verify:q-shared:header` OK.
 - `npm run typecheck` OK.
 - `npm run verify:full-game:server-host` OK.
@@ -65,6 +74,10 @@
 
 ## Decisions runtime/web/renderer-three
 
+- Le bloc `CVAR_*`/`cvar_s` est expose par `packages/qcommon/src/index.ts` et consomme par le runtime qcommon, game, client, server, `apps/web` et `renderer-three`.
+- Runtime: integre via `createCvarRuntime`, `Cvar_Init`, `Cvar_Command`, `Cvar_Get`, `Cvar_Set*`, `Cvar_Variable*` et les adapters `gi.cvar`/`refimport_t.Cvar_Get`; les flags controlent archive, userinfo, serverinfo, protection et latch comme dans le C.
+- `apps/web`: integration attendue et presente dans les flux full-game/server-host/local-client/config, qui creent et lisent les cvars par le runtime porte sans logique parallele masquante.
+- `renderer-three`: integration attendue et presente pour les cvars visibles de rendu (`r_*`, `gl_*`, `vid_*`, `hand`) via `refimport_t.Cvar_Get` et `cvar_t`; ces cvars influencent scene/camera/particules/lumiere/config, mais le lot ne produit pas lui-meme de donnees visibles nouvelles.
 - `Com_Printf` est un point de sortie console commun declare par `q_shared.h` et implemente dans `qcommon/common.c`; le port TS l'expose via `packages/qcommon/src/index.ts` et conserve le redirect buffer dans `CommonRuntime`.
 - Runtime: integre pour les flux qui utilisent le runtime common ou ses adapters; le chemin normal delegue a un sink host parce que `Con_Print`, `Sys_ConsoleOutput` et le logfile C sont des effets host/UI distincts dans le port TS.
 - `apps/web`: integration attendue via les sinks `onPrint` des flux full-game/server-host/local-transport; `verify:full-game:server-host` confirme que le flux web-host ne masque pas ce lot.
@@ -92,4 +105,4 @@
 
 ## Prochain lot recommande
 
-- Reprendre `CVAR`/`CVAR_*` et `cvar_s` quand `packages/qcommon/src/cvar.ts` est disponible.
+- Reprendre les lignes generees des champs de `cvar_s` (`name`, `string`, `latched_string`, `flags`, `modified`, `value`) ou les marquer comme champs couverts par `cvar_t`, puis enchainer sur le bloc `CONTENTS_*` si le coordinateur prefere avancer dans `q_shared.ts`.

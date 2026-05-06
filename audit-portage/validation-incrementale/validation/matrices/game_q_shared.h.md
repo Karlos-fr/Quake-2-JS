@@ -125,13 +125,13 @@
 | `Quake-2-master/game/q_shared.h` | function | `Sys_FindClose` | `packages/qcommon/src/system.ts` | `Sys_FindClose` | Valide | A redecouper | Commentaire d'en-tete verifie. |
 | `Quake-2-master/game/q_shared.h` | function | `Sys_Error` | `packages/qcommon/src/system.ts` | `Sys_Error` | Valide | A redecouper | Correction varargs dans `packages/qcommon/src/system.ts`; commentaire d'en-tete mis a jour. Tests: `verify:q-shared:header`, `typecheck`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:ref-gl-host`. |
 | `Quake-2-master/game/q_shared.h` | function | `Com_Printf` | `packages/qcommon/src/common.ts` | `Com_Printf` | Valide | A redecouper | Declaration `q_shared.h`, corps `qcommon/common.c`; commentaire d'en-tete corrige, varargs/redirect testes. Tests: `verify:q-shared:header`, `typecheck`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `verify:ref-gl-host`. |
-| `Quake-2-master/game/q_shared.h` | macro | `CVAR` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CVAR_ARCHIVE` | `packages/qcommon/src/cvar.ts` | `CVAR_ARCHIVE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CVAR_USERINFO` | `packages/qcommon/src/cvar.ts` | `CVAR_USERINFO` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CVAR_SERVERINFO` | `packages/qcommon/src/cvar.ts` | `CVAR_SERVERINFO` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CVAR_NOSET` | `packages/qcommon/src/cvar.ts` | `CVAR_NOSET` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CVAR_LATCH` | `packages/qcommon/src/cvar.ts` | `CVAR_LATCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | struct | `cvar_s` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CVAR` | `packages/qcommon/src/q_shared.ts` |  | Non applicable | A redecouper | Garde de declaration C pour la section cvar; aucun symbole runtime TS separe attendu. |
+| `Quake-2-master/game/q_shared.h` | macro | `CVAR_ARCHIVE` | `packages/qcommon/src/cvar.ts` | `CVAR_ARCHIVE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CVAR_USERINFO` | `packages/qcommon/src/cvar.ts` | `CVAR_USERINFO` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CVAR_SERVERINFO` | `packages/qcommon/src/cvar.ts` | `CVAR_SERVERINFO` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CVAR_NOSET` | `packages/qcommon/src/cvar.ts` | `CVAR_NOSET` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CVAR_LATCH` | `packages/qcommon/src/cvar.ts` | `CVAR_LATCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | struct | `cvar_s` | `packages/qcommon/src/cvar.ts` | `cvar_t` | Valide | A redecouper | Ownership cvar centralise dans `cvar.ts`; `cvar_vars` remplace le chainage `next` C. |
 | `Quake-2-master/game/q_shared.h` | global | `name` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | global | `string` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | global | `latched_string` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |

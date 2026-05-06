@@ -81,18 +81,18 @@
 | `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{0}` verifiees via `verify:p-weapon`. |
 | `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Table statique locale de `Weapon_HyperBlaster`; couverte par l'entree table `fire_frames`. |
 | `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{6, 7, 8, 9, 10, 11, 0}` verifiees via `verify:p-weapon`. |
-| `Quake-2-master/game/p_weapon.c` | function | `Machinegun_Fire` | `packages/game/src/p_weapon.ts` | `Machinegun_Fire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `i` | `packages/game/src/p_weapon.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `start` | `packages/game/src/p_weapon.ts` | `start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `angles` | `packages/game/src/p_weapon.ts` | `angles` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `kick` | `packages/game/src/p_weapon.ts` | `kick` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `offset` | `packages/game/src/p_weapon.ts` | `offset` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | function | `Weapon_Machinegun` | `packages/game/src/p_weapon.ts` | `Weapon_Machinegun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/p_weapon.c` | function | `Machinegun_Fire` | `packages/game/src/p_weapon.ts` | `Machinegun_Fire` | Valide | A redecouper | Commentaire d'en-tete verifie; assertions ajoutees dans `scripts/verify/quake2-p-weapon.ts`; preuves `verify:p-weapon`, `typecheck`, `verify:local-gameplay-sync`, `verify:cl-fx`, `verify:full-game:three-renderer`, `verify:refresh-entity:weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `i` | `packages/game/src/p_weapon.ts` | `i` | Non applicable | A redecouper | Variable locale de `Machinegun_Fire`; couverte par `Machinegun_Fire`. |
+| `Quake-2-master/game/p_weapon.c` | global | `start` | `packages/game/src/p_weapon.ts` | `start` | Non applicable | A redecouper | Variable locale de `Machinegun_Fire`; projection testee via `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `angles` | `packages/game/src/p_weapon.ts` | `angles` | Non applicable | A redecouper | Variable locale de `Machinegun_Fire`; direction testee via `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `damage` | `packages/game/src/p_weapon.ts` | `damage` | Non applicable | A redecouper | Variable locale de `Machinegun_Fire`; degats base/quad testes via `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `kick` | `packages/game/src/p_weapon.ts` | `kick` | Non applicable | A redecouper | Variable locale de `Machinegun_Fire`; kick base/quad teste via `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `offset` | `packages/game/src/p_weapon.ts` | `offset` | Non applicable | A redecouper | Variable locale de `Machinegun_Fire`; offset `[0, 8, viewheight - 8]` teste via `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | function | `Weapon_Machinegun` | `packages/game/src/p_weapon.ts` | `Weapon_Machinegun` | Valide | A redecouper | Commentaire d'en-tete verifie; tables `pause_frames`/`fire_frames` testees via `verify:p-weapon`; runtime/web/renderer verifies. |
+| `Quake-2-master/game/p_weapon.c` | global | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Table statique locale de `Weapon_Machinegun`; couverte par l'entree table `pause_frames`. |
+| `Quake-2-master/game/p_weapon.c` | table | `pause_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{23, 45, 0}` verifiees via `verify:p-weapon`. |
+| `Quake-2-master/game/p_weapon.c` | global | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Non applicable | A redecouper | Table statique locale de `Weapon_Machinegun`; couverte par l'entree table `fire_frames`. |
+| `Quake-2-master/game/p_weapon.c` | table | `fire_frames` | `packages/game/src/p_weapon.ts` |  | Valide | A redecouper | Valeurs `{4, 5, 0}` verifiees via `verify:p-weapon`. |
 | `Quake-2-master/game/p_weapon.c` | function | `Chaingun_Fire` | `packages/game/src/p_weapon.ts` | `Chaingun_Fire` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `i` | `packages/game/src/p_weapon.ts` | `i` | A verifier | A redecouper |  |
 | `Quake-2-master/game/p_weapon.c` | global | `shots` | `packages/game/src/p_weapon.ts` | `shots` | A verifier | A redecouper |  |
