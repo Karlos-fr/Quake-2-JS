@@ -10,97 +10,97 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_gunner.c` | global | `sound_pain` | `packages/game/src/m_gunner.ts` | `SOUND_PAIN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `sound_pain2` | `packages/game/src/m_gunner.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `sound_death` | `packages/game/src/m_gunner.ts` | `SOUND_DEATH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `sound_idle` | `packages/game/src/m_gunner.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `sound_open` | `packages/game/src/m_gunner.ts` | `SOUND_OPEN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `sound_search` | `packages/game/src/m_gunner.ts` | `SOUND_SEARCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `sound_sight` | `packages/game/src/m_gunner.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_idlesound` | `packages/game/src/m_gunner.ts` | `gunner_idlesound` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_sight` | `packages/game/src/m_gunner.ts` | `gunner_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_search` | `packages/game/src/m_gunner.ts` | `gunner_search` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `GunnerGrenade` | `packages/game/src/m_gunner.ts` | `GunnerGrenade` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `GunnerFire` | `packages/game/src/m_gunner.ts` | `GunnerFire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_fire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_refire_chain` | `packages/game/src/m_gunner.ts` | `gunner_refire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_stand` | `packages/game/src/m_gunner.ts` | `gunner_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_fidget` | `packages/game/src/m_gunner.ts` | `gunner_frames_fidget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_fidget` | `packages/game/src/m_gunner.ts` | `gunner_frames_fidget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_fidget` | `packages/game/src/m_gunner.ts` | `gunner_move_fidget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_fidget` | `packages/game/src/m_gunner.ts` | `gunner_fidget` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_stand` | `packages/game/src/m_gunner.ts` | `gunner_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_stand` | `packages/game/src/m_gunner.ts` | `gunner_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_stand` | `packages/game/src/m_gunner.ts` | `gunner_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_stand` | `packages/game/src/m_gunner.ts` | `gunner_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_walk` | `packages/game/src/m_gunner.ts` | `gunner_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_walk` | `packages/game/src/m_gunner.ts` | `gunner_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_walk` | `packages/game/src/m_gunner.ts` | `gunner_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_walk` | `packages/game/src/m_gunner.ts` | `gunner_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_run` | `packages/game/src/m_gunner.ts` | `gunner_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_run` | `packages/game/src/m_gunner.ts` | `gunner_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_run` | `packages/game/src/m_gunner.ts` | `gunner_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_run` | `packages/game/src/m_gunner.ts` | `gunner_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_frames_runandshoot` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_frames_runandshoot` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_move_runandshoot` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_runandshoot` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_pain3` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_pain3` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_pain3` | `packages/game/src/m_gunner.ts` | `gunner_move_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_pain2` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_pain2` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_pain2` | `packages/game/src/m_gunner.ts` | `gunner_move_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_pain1` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_pain1` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_pain1` | `packages/game/src/m_gunner.ts` | `gunner_move_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_pain` | `packages/game/src/m_gunner.ts` | `gunner_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_dead` | `packages/game/src/m_gunner.ts` | `gunner_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_death` | `packages/game/src/m_gunner.ts` | `gunner_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_death` | `packages/game/src/m_gunner.ts` | `gunner_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_death` | `packages/game/src/m_gunner.ts` | `gunner_move_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_die` | `packages/game/src/m_gunner.ts` | `gunner_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `n` | `packages/game/src/m_gunner.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_duck_down` | `packages/game/src/m_gunner.ts` | `gunner_duck_down` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_duck_hold` | `packages/game/src/m_gunner.ts` | `gunner_duck_hold` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_duck_up` | `packages/game/src/m_gunner.ts` | `gunner_duck_up` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_duck` | `packages/game/src/m_gunner.ts` | `gunner_frames_duck` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_duck` | `packages/game/src/m_gunner.ts` | `gunner_frames_duck` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_duck` | `packages/game/src/m_gunner.ts` | `gunner_move_duck` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_dodge` | `packages/game/src/m_gunner.ts` | `gunner_dodge` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_opengun` | `packages/game/src/m_gunner.ts` | `gunner_opengun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `GunnerFire` | `packages/game/src/m_gunner.ts` | `GunnerFire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `flash_number` | `packages/game/src/m_gunner.ts` | `flash_number` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `GunnerGrenade` | `packages/game/src/m_gunner.ts` | `GunnerGrenade` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `flash_number` | `packages/game/src/m_gunner.ts` | `flash_number` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `flash_number` | `packages/game/src/m_gunner.ts` | `flash_number` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_attack_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_attack_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_attack_chain` | `packages/game/src/m_gunner.ts` | `gunner_move_attack_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_fire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_fire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_move_fire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_endfire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_endfire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_endfire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_endfire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_endfire_chain` | `packages/game/src/m_gunner.ts` | `gunner_move_endfire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_attack_grenade` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_grenade` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_attack_grenade` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_grenade` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_attack_grenade` | `packages/game/src/m_gunner.ts` | `gunner_move_attack_grenade` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_attack` | `packages/game/src/m_gunner.ts` | `gunner_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_fire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `gunner_refire_chain` | `packages/game/src/m_gunner.ts` | `gunner_refire_chain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | function | `SP_monster_gunner` | `packages/game/src/m_gunner.ts` | `SP_monster_gunner` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_fidget` | `packages/game/src/m_gunner.ts` | `gunner_frames_fidget` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_stand` | `packages/game/src/m_gunner.ts` | `gunner_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_walk` | `packages/game/src/m_gunner.ts` | `gunner_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_run` | `packages/game/src/m_gunner.ts` | `gunner_frames_run` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_frames_runandshoot` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_pain3` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain3` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_pain2` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain2` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_pain1` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain1` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_death` | `packages/game/src/m_gunner.ts` | `gunner_frames_death` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_duck` | `packages/game/src/m_gunner.ts` | `gunner_frames_duck` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_attack_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_chain` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_fire_chain` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_endfire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_endfire_chain` | A verifier | matched |  |
-| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_attack_grenade` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_grenade` | A verifier | matched |  |
+| `Quake-2-master/game/m_gunner.c` | global | `sound_pain` | `packages/game/src/m_gunner.ts` | `SOUND_PAIN` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `sound_pain2` | `packages/game/src/m_gunner.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `sound_death` | `packages/game/src/m_gunner.ts` | `SOUND_DEATH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `sound_idle` | `packages/game/src/m_gunner.ts` | `SOUND_IDLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `sound_open` | `packages/game/src/m_gunner.ts` | `SOUND_OPEN` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `sound_search` | `packages/game/src/m_gunner.ts` | `SOUND_SEARCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `sound_sight` | `packages/game/src/m_gunner.ts` | `SOUND_SIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_idlesound` | `packages/game/src/m_gunner.ts` | `gunner_idlesound` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_sight` | `packages/game/src/m_gunner.ts` | `gunner_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_search` | `packages/game/src/m_gunner.ts` | `gunner_search` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `GunnerGrenade` | `packages/game/src/m_gunner.ts` | `GunnerGrenade` | Non applicable | A redecouper | Declaration forward C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_gunner.c` | function | `GunnerFire` | `packages/game/src/m_gunner.ts` | `GunnerFire` | Non applicable | A redecouper | Declaration forward C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_fire_chain` | Non applicable | A redecouper | Declaration forward C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_refire_chain` | `packages/game/src/m_gunner.ts` | `gunner_refire_chain` | Non applicable | A redecouper | Declaration forward C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_stand` | `packages/game/src/m_gunner.ts` | `gunner_stand` | Non applicable | A redecouper | Declaration forward C; definition validee sur la ligne dediee. |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_fidget` | `packages/game/src/m_gunner.ts` | `gunner_frames_fidget` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_fidget` | `packages/game/src/m_gunner.ts` | `gunner_frames_fidget` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_fidget` | `packages/game/src/m_gunner.ts` | `gunner_move_fidget` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_fidget` | `packages/game/src/m_gunner.ts` | `gunner_fidget` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_stand` | `packages/game/src/m_gunner.ts` | `gunner_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_stand` | `packages/game/src/m_gunner.ts` | `gunner_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_stand` | `packages/game/src/m_gunner.ts` | `gunner_move_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_stand` | `packages/game/src/m_gunner.ts` | `gunner_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_walk` | `packages/game/src/m_gunner.ts` | `gunner_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_walk` | `packages/game/src/m_gunner.ts` | `gunner_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_walk` | `packages/game/src/m_gunner.ts` | `gunner_move_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_walk` | `packages/game/src/m_gunner.ts` | `gunner_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_run` | `packages/game/src/m_gunner.ts` | `gunner_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_run` | `packages/game/src/m_gunner.ts` | `gunner_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_run` | `packages/game/src/m_gunner.ts` | `gunner_move_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_run` | `packages/game/src/m_gunner.ts` | `gunner_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_frames_runandshoot` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_frames_runandshoot` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_move_runandshoot` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_runandshoot` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_pain3` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_pain3` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_pain3` | `packages/game/src/m_gunner.ts` | `gunner_move_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_pain2` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_pain2` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_pain2` | `packages/game/src/m_gunner.ts` | `gunner_move_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_pain1` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_pain1` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_pain1` | `packages/game/src/m_gunner.ts` | `gunner_move_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_pain` | `packages/game/src/m_gunner.ts` | `gunner_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_dead` | `packages/game/src/m_gunner.ts` | `gunner_dead` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_death` | `packages/game/src/m_gunner.ts` | `gunner_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_death` | `packages/game/src/m_gunner.ts` | `gunner_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_death` | `packages/game/src/m_gunner.ts` | `gunner_move_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_die` | `packages/game/src/m_gunner.ts` | `gunner_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `n` | `packages/game/src/m_gunner.ts` | `n` | Non applicable | A redecouper | Variable locale C de gunner_die; validee via la fonction proprietaire. |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_duck_down` | `packages/game/src/m_gunner.ts` | `gunner_duck_down` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_duck_hold` | `packages/game/src/m_gunner.ts` | `gunner_duck_hold` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_duck_up` | `packages/game/src/m_gunner.ts` | `gunner_duck_up` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_duck` | `packages/game/src/m_gunner.ts` | `gunner_frames_duck` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_duck` | `packages/game/src/m_gunner.ts` | `gunner_frames_duck` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_duck` | `packages/game/src/m_gunner.ts` | `gunner_move_duck` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_dodge` | `packages/game/src/m_gunner.ts` | `gunner_dodge` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_opengun` | `packages/game/src/m_gunner.ts` | `gunner_opengun` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `GunnerFire` | `packages/game/src/m_gunner.ts` | `GunnerFire` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `flash_number` | `packages/game/src/m_gunner.ts` | `flash_number` | Non applicable | A redecouper | Variable locale C de GunnerFire/GunnerGrenade; validee via les fonctions proprietaires. |
+| `Quake-2-master/game/m_gunner.c` | function | `GunnerGrenade` | `packages/game/src/m_gunner.ts` | `GunnerGrenade` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `flash_number` | `packages/game/src/m_gunner.ts` | `flash_number` | Non applicable | A redecouper | Variable locale C de GunnerFire/GunnerGrenade; validee via les fonctions proprietaires. |
+| `Quake-2-master/game/m_gunner.c` | global | `flash_number` | `packages/game/src/m_gunner.ts` | `flash_number` | Non applicable | A redecouper | Variable locale C de GunnerFire/GunnerGrenade; validee via les fonctions proprietaires. |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_attack_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_attack_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_attack_chain` | `packages/game/src/m_gunner.ts` | `gunner_move_attack_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_fire_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_fire_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_move_fire_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_endfire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_endfire_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_endfire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_endfire_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_endfire_chain` | `packages/game/src/m_gunner.ts` | `gunner_move_endfire_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_frames_attack_grenade` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_grenade` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | table | `gunner_frames_attack_grenade` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_grenade` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | global | `gunner_move_attack_grenade` | `packages/game/src/m_gunner.ts` | `gunner_move_attack_grenade` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_attack` | `packages/game/src/m_gunner.ts` | `gunner_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_fire_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `gunner_refire_chain` | `packages/game/src/m_gunner.ts` | `gunner_refire_chain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | function | `SP_monster_gunner` | `packages/game/src/m_gunner.ts` | `SP_monster_gunner` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_fidget` | `packages/game/src/m_gunner.ts` | `gunner_frames_fidget` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_stand` | `packages/game/src/m_gunner.ts` | `gunner_frames_stand` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_walk` | `packages/game/src/m_gunner.ts` | `gunner_frames_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_run` | `packages/game/src/m_gunner.ts` | `gunner_frames_run` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_runandshoot` | `packages/game/src/m_gunner.ts` | `gunner_frames_runandshoot` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_pain3` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain3` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_pain2` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain2` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_pain1` | `packages/game/src/m_gunner.ts` | `gunner_frames_pain1` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_death` | `packages/game/src/m_gunner.ts` | `gunner_frames_death` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_duck` | `packages/game/src/m_gunner.ts` | `gunner_frames_duck` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_attack_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_chain` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_fire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_fire_chain` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_endfire_chain` | `packages/game/src/m_gunner.ts` | `gunner_frames_endfire_chain` | Valide | matched |  |
+| `Quake-2-master/game/m_gunner.c` | declarative:monster-tables | `gunner_frames_attack_grenade` | `packages/game/src/m_gunner.ts` | `gunner_frames_attack_grenade` | Valide | matched |  |

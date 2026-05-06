@@ -1776,7 +1776,27 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 17 lignes du lot passees a `Valide`, ownership corrige vers `packages/game/src/g_main.ts` / `GameMainCvars.*`, et lignes `gun_x`, `gun_y`, `gun_z` ajoutees pour l'`extern` groupe.
 - Tests: `npm run verify:g-main` OK; `npm run verify:p-view` OK; `npm run verify:g-cmds` OK; `npm run verify:g-spawn` OK; `npm run verify:g-local:header` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Prochain lot recommande: continuer avec `world`, puis le bloc items/flags immediat `ITEM_TRIGGER_SPAWN`, `ITEM_NO_TOUCH`, `DROPPED_ITEM`, `DROPPED_PLAYER_ITEM`, `ITEM_TARGETS_USED`, `FFL_SPAWNTEMP`, `FFL_NOSPAWN`; inclure les structures/fields voisins seulement si le coordinateur veut un autre gros lot continu.
+- 2026-05-06: lot 40x depuis `world` jusqu'aux constantes degats/spreads: `world`, `ITEM_TRIGGER_SPAWN`, `ITEM_NO_TOUCH`, `DROPPED_ITEM`, `DROPPED_PLAYER_ITEM`, `ITEM_TARGETS_USED`, `FFL_SPAWNTEMP`, `FFL_NOSPAWN`, `fieldtype_t`, `field_t` et champs `name`/`ofs`/`flags`, `itemlist`, `ITEM_INDEX`, declarations prototypes `Cmd_Help_f` a `T_RadiusDamage`, puis `DAMAGE_RADIUS` a `DEFAULT_SSHOTGUN_COUNT`.
+- Verdict: `Valide` pour les 28 entites portees du lot; `Non applicable` pour les 39 prototypes declares dans `g_local.h` mais proprietaires de leurs fichiers C de definition.
+- Source H/C comparee:
+  - `g_local.h` definit `world` comme `&g_edicts[0]`, les flags items `0x00000001` a `0x00040000`, les flags `field_t` `1`/`2`, l'enum `fieldtype_t` de `F_INT` a `F_IGNORE`, la structure `field_t`, `extern gitem_t itemlist[]`, le macro `ITEM_INDEX`, les prototypes cross-fichiers, et les constantes degats/spreads.
+  - `g_items.c` consomme les flags item dans `SpawnItem`, `Pickup_Powerup`, `Touch_Item` et `Drop_Item`; `g_spawn.c`/`g_save.c` consomment `field_t`, `fieldtype_t`, `FFL_SPAWNTEMP` et `FFL_NOSPAWN`; `g_combat.c`/`g_weapon.c`/monstres consomment les flags degats et spreads.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: `world`, `ITEM_TRIGGER_SPAWN`, `ITEM_NO_TOUCH`, `ITEM_TARGETS_USED`, `FFL_SPAWNTEMP`, `FFL_NOSPAWN`, `fieldtype_t`, `field_t`, `ITEM_INDEX`, reexports runtime et commentaires d'en-tete.
+  - `packages/game/src/runtime.ts`: `DROPPED_ITEM`, `DROPPED_PLAYER_ITEM`, flags degats et spreads.
+  - `packages/game/src/index.ts`: export public ajoute pour `DROPPED_ITEM` et `DROPPED_PLAYER_ITEM`, voisins des autres flags publics.
+  - `packages/game/src/g_items.ts`, `g_spawn.ts`, `g_save.ts`: consommation runtime des flags et tables verifiee.
+- Runtime: integre via `SpawnEntities`/`ED_ParseField`, spawn items, `G_RunFrame`, pickup/drop/respawn, save/load, `T_Damage`/weapons/monsters. Les prototypes header seuls ne sont pas proprietaires de `g_local.h` et restent rattaches aux matrices des fichiers de definition.
+- apps/web: integre indirectement par full-game/local host, entity parsing, items visibles, pickup/drop, save/load, damage/weapons et snapshots; aucune logique parallele web ne remplace ces flux.
+- renderer-three: sorties visibles attendues branchees via snapshots/refresh: items/modeles/frames/effects, projectiles/temp entities, sons et scene; le renderer ne consomme pas directement les flags ou `field_t`, mais consomme leurs effets runtime.
+- Commentaires/documentation: commentaires de `fieldtype_t`, `field_t`, `ITEM_INDEX`, `world`, `SpawnItem`, `Touch_Item`, `Drop_Item`, `ED_ParseField`, save field tables et fonctions damage/weapon proprietaires verifies quand applicables; pas de port fonctionnel nouveau ajoute.
+- Corrections appliquees:
+  - `packages/game/src/index.ts`: export public de `DROPPED_ITEM` et `DROPPED_PLAYER_ITEM`.
+  - `scripts/verify/quake2-g-local-header.ts`: assertions de parite ajoutees pour flags items, exports publics, flags degats/spreads et `fieldtype_t`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: lignes du lot mises a jour; prototypes marques `Non applicable` avec ownership du fichier de definition.
+- Tests: `npm run verify:g-local:header` OK; `npm run verify:g-spawn` OK; `npm run verify:g-save` OK; `npm run verify:g-items` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: reprendre au bloc declarations `g_monster.c` de `monster_fire_bullet` a `M_CheckGround` comme prototypes non proprietaires si le coordinateur veut nettoyer les declarations header, puis valider les prochains macros/globals proprietaires apres ce bloc.
 
 ## Blocages
 

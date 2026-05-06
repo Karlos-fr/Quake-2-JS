@@ -315,72 +315,72 @@
 | `Quake-2-master/game/g_local.h` | global | `flood_persecond` | `packages/game/src/g_main.ts` | `GameMainCvars.flood_persecond` | Valide | A redecouper | Cvar `4`/flags `0` comparee; fenetre flood chat `Cmd_Say_f` verifiee. Tests: `verify:g-main`, `verify:g-cmds`, full-game web/three, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | global | `flood_waitdelay` | `packages/game/src/g_main.ts` | `GameMainCvars.flood_waitdelay` | Valide | A redecouper | Cvar `10`/flags `0` comparee; verrou flood chat `Cmd_Say_f` verifie. Tests: `verify:g-main`, `verify:g-cmds`, full-game web/three, `typecheck`. |
 | `Quake-2-master/game/g_local.h` | global | `sv_maplist` | `packages/game/src/g_main.ts` | `GameMainCvars.sv_maplist` | Valide | A redecouper | Cvar vide/flags `0` comparee; rotation `EndDMLevel` par maplist verifiee. Tests: `verify:g-main`, full-game web/three, `typecheck`. |
-| `Quake-2-master/game/g_local.h` | macro | `world` | `packages/game/src/g_local.ts` | `world` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ITEM_TRIGGER_SPAWN` | `packages/game/src/g_local.ts` | `ITEM_TRIGGER_SPAWN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ITEM_NO_TOUCH` | `packages/game/src/g_local.ts` | `ITEM_NO_TOUCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DROPPED_ITEM` | `packages/game/src/runtime.ts` | `DROPPED_ITEM` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DROPPED_PLAYER_ITEM` | `packages/game/src/runtime.ts` | `DROPPED_PLAYER_ITEM` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ITEM_TARGETS_USED` | `packages/game/src/g_local.ts` | `ITEM_TARGETS_USED` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `FFL_SPAWNTEMP` | `packages/game/src/g_local.ts` | `FFL_SPAWNTEMP` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `FFL_NOSPAWN` | `packages/game/src/g_local.ts` | `FFL_NOSPAWN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | enum | `fieldtype_t` | `packages/game/src/g_local.ts` | `fieldtype_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | struct | `field_t` | `packages/game/src/g_local.ts` | `field_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `name` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `ofs` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `flags` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | global | `itemlist` | `packages/game/src/g_items.ts` | `itemlist` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `Cmd_Help_f` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `Cmd_Score_f` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PrecacheItem` | `packages/game/src/g_items.ts` | `PrecacheItem` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `InitItems` | `packages/game/src/g_items.ts` | `InitItems` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `SetItemNames` | `packages/game/src/g_items.ts` | `SetItemNames` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `FindItem` | `packages/game/src/g_items.ts` | `FindItem` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `FindItemByClassname` | `packages/game/src/g_items.ts` | `FindItemByClassname` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `ITEM_INDEX` | `packages/game/src/g_local.ts` | `ITEM_INDEX` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `Drop_Item` | `packages/game/src/g_items.ts` | `Drop_Item` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `SetRespawn` | `packages/game/src/g_items.ts` | `SetRespawn` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ChangeWeapon` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `SpawnItem` | `packages/game/src/g_items.ts` | `SpawnItem` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `Think_Weapon` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `ArmorIndex` | `packages/game/src/g_items.ts` | `ArmorIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `PowerArmorType` | `packages/game/src/g_items.ts` | `PowerArmorType` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `GetItemByIndex` | `packages/game/src/g_items.ts` | `GetItemByIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `Add_Ammo` | `packages/game/src/g_items.ts` | `Add_Ammo` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `Touch_Item` | `packages/game/src/g_items.ts` | `Touch_Item` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `KillBox` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_ProjectSource` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_Find` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `findradius` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_PickTarget` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_UseTargets` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_SetMovedir` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_InitEdict` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_Spawn` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_FreeEdict` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_TouchTriggers` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_TouchSolids` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `G_CopyString` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `tv` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `vtos` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `vectoyaw` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `vectoangles` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `OnSameTeam` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `CanDamage` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `T_Damage` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | function | `T_RadiusDamage` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_RADIUS` | `packages/game/src/runtime.ts` | `DAMAGE_RADIUS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_NO_ARMOR` | `packages/game/src/runtime.ts` | `DAMAGE_NO_ARMOR` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_ENERGY` | `packages/game/src/runtime.ts` | `DAMAGE_ENERGY` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_NO_KNOCKBACK` | `packages/game/src/runtime.ts` | `DAMAGE_NO_KNOCKBACK` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_BULLET` | `packages/game/src/runtime.ts` | `DAMAGE_BULLET` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_NO_PROTECTION` | `packages/game/src/runtime.ts` | `DAMAGE_NO_PROTECTION` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_BULLET_HSPREAD` | `packages/game/src/runtime.ts` | `DEFAULT_BULLET_HSPREAD` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_BULLET_VSPREAD` | `packages/game/src/runtime.ts` | `DEFAULT_BULLET_VSPREAD` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SHOTGUN_HSPREAD` | `packages/game/src/runtime.ts` | `DEFAULT_SHOTGUN_HSPREAD` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SHOTGUN_VSPREAD` | `packages/game/src/runtime.ts` | `DEFAULT_SHOTGUN_VSPREAD` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_DEATHMATCH_SHOTGUN_COUNT` | `packages/game/src/runtime.ts` | `DEFAULT_DEATHMATCH_SHOTGUN_COUNT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SHOTGUN_COUNT` | `packages/game/src/runtime.ts` | `DEFAULT_SHOTGUN_COUNT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SSHOTGUN_COUNT` | `packages/game/src/runtime.ts` | `DEFAULT_SSHOTGUN_COUNT` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `world` | `packages/game/src/g_local.ts` | `world` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ITEM_TRIGGER_SPAWN` | `packages/game/src/g_local.ts` | `ITEM_TRIGGER_SPAWN` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ITEM_NO_TOUCH` | `packages/game/src/g_local.ts` | `ITEM_NO_TOUCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DROPPED_ITEM` | `packages/game/src/runtime.ts` | `DROPPED_ITEM` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DROPPED_PLAYER_ITEM` | `packages/game/src/runtime.ts` | `DROPPED_PLAYER_ITEM` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `ITEM_TARGETS_USED` | `packages/game/src/g_local.ts` | `ITEM_TARGETS_USED` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `FFL_SPAWNTEMP` | `packages/game/src/g_local.ts` | `FFL_SPAWNTEMP` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `FFL_NOSPAWN` | `packages/game/src/g_local.ts` | `FFL_NOSPAWN` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | enum | `fieldtype_t` | `packages/game/src/g_local.ts` | `fieldtype_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | struct | `field_t` | `packages/game/src/g_local.ts` | `field_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `name` | `packages/game/src/g_local.ts` | `field_t.name` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `ofs` | `packages/game/src/g_local.ts` | `field_t.ofs` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `flags` | `packages/game/src/g_local.ts` | `field_t.flags` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | global | `itemlist` | `packages/game/src/g_items.ts` | `itemlist` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | function | `Cmd_Help_f` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_cmds.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `Cmd_Score_f` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_cmds.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PrecacheItem` | `packages/game/src/g_items.ts` | `PrecacheItem` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `InitItems` | `packages/game/src/g_items.ts` | `InitItems` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `SetItemNames` | `packages/game/src/g_items.ts` | `SetItemNames` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `FindItem` | `packages/game/src/g_items.ts` | `FindItem` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `FindItemByClassname` | `packages/game/src/g_items.ts` | `FindItemByClassname` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | macro | `ITEM_INDEX` | `packages/game/src/g_local.ts` | `ITEM_INDEX` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | function | `Drop_Item` | `packages/game/src/g_items.ts` | `Drop_Item` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `SetRespawn` | `packages/game/src/g_items.ts` | `SetRespawn` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ChangeWeapon` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_p_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `SpawnItem` | `packages/game/src/g_items.ts` | `SpawnItem` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `Think_Weapon` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_p_weapon.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `ArmorIndex` | `packages/game/src/g_items.ts` | `ArmorIndex` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `PowerArmorType` | `packages/game/src/g_items.ts` | `PowerArmorType` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `GetItemByIndex` | `packages/game/src/g_items.ts` | `GetItemByIndex` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `Add_Ammo` | `packages/game/src/g_items.ts` | `Add_Ammo` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `Touch_Item` | `packages/game/src/g_items.ts` | `Touch_Item` | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_items.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `KillBox` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_ProjectSource` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_Find` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `findradius` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_PickTarget` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_UseTargets` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_SetMovedir` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_InitEdict` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_Spawn` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_FreeEdict` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_TouchTriggers` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_TouchSolids` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `G_CopyString` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_utils.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `tv` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_q_shared.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `vtos` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_q_shared.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `vectoyaw` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_q_shared.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `vectoangles` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_q_shared.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `OnSameTeam` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_combat.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `CanDamage` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_combat.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `T_Damage` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_combat.c.md`. |
+| `Quake-2-master/game/g_local.h` | function | `T_RadiusDamage` | `packages/game/src/g_local.ts` |  | Non applicable | A redecouper | Declaration header seule; port proprietaire dans `game_g_combat.c.md`. |
+| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_RADIUS` | `packages/game/src/runtime.ts` | `DAMAGE_RADIUS` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_NO_ARMOR` | `packages/game/src/runtime.ts` | `DAMAGE_NO_ARMOR` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_ENERGY` | `packages/game/src/runtime.ts` | `DAMAGE_ENERGY` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_NO_KNOCKBACK` | `packages/game/src/runtime.ts` | `DAMAGE_NO_KNOCKBACK` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_BULLET` | `packages/game/src/runtime.ts` | `DAMAGE_BULLET` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DAMAGE_NO_PROTECTION` | `packages/game/src/runtime.ts` | `DAMAGE_NO_PROTECTION` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_BULLET_HSPREAD` | `packages/game/src/runtime.ts` | `DEFAULT_BULLET_HSPREAD` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_BULLET_VSPREAD` | `packages/game/src/runtime.ts` | `DEFAULT_BULLET_VSPREAD` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SHOTGUN_HSPREAD` | `packages/game/src/runtime.ts` | `DEFAULT_SHOTGUN_HSPREAD` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SHOTGUN_VSPREAD` | `packages/game/src/runtime.ts` | `DEFAULT_SHOTGUN_VSPREAD` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_DEATHMATCH_SHOTGUN_COUNT` | `packages/game/src/runtime.ts` | `DEFAULT_DEATHMATCH_SHOTGUN_COUNT` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SHOTGUN_COUNT` | `packages/game/src/runtime.ts` | `DEFAULT_SHOTGUN_COUNT` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_local.h` | macro | `DEFAULT_SSHOTGUN_COUNT` | `packages/game/src/runtime.ts` | `DEFAULT_SSHOTGUN_COUNT` | Valide | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | function | `monster_fire_bullet` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | function | `monster_fire_shotgun` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/game/g_local.h` | function | `monster_fire_blaster` | `packages/game/src/g_local.ts` |  | A verifier | A redecouper |  |

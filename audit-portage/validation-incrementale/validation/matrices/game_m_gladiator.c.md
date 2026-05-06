@@ -10,62 +10,62 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_pain1` | `packages/game/src/m_gladiator.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_pain2` | `packages/game/src/m_gladiator.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_die` | `packages/game/src/m_gladiator.ts` | `SOUND_DIE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_gun` | `packages/game/src/m_gladiator.ts` | `SOUND_GUN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_cleaver_swing` | `packages/game/src/m_gladiator.ts` | `SOUND_CLEAVER_SWING` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_cleaver_hit` | `packages/game/src/m_gladiator.ts` | `SOUND_CLEAVER_HIT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_cleaver_miss` | `packages/game/src/m_gladiator.ts` | `SOUND_CLEAVER_MISS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_idle` | `packages/game/src/m_gladiator.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_search` | `packages/game/src/m_gladiator.ts` | `SOUND_SEARCH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `sound_sight` | `packages/game/src/m_gladiator.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_idle` | `packages/game/src/m_gladiator.ts` | `gladiator_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_sight` | `packages/game/src/m_gladiator.ts` | `gladiator_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_search` | `packages/game/src/m_gladiator.ts` | `gladiator_search` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_cleaver_swing` | `packages/game/src/m_gladiator.ts` | `gladiator_cleaver_swing` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_run` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_run` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_run` | `packages/game/src/m_gladiator.ts` | `gladiator_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_run` | `packages/game/src/m_gladiator.ts` | `gladiator_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `GaldiatorMelee` | `packages/game/src/m_gladiator.ts` | `GaldiatorMelee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_attack_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_attack_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_attack_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_move_attack_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `GladiatorGun` | `packages/game/src/m_gladiator.ts` | `GladiatorGun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_attack_gun` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_gun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_attack_gun` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_gun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_attack_gun` | `packages/game/src/m_gladiator.ts` | `gladiator_move_attack_gun` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_attack` | `packages/game/src/m_gladiator.ts` | `gladiator_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `range` | `packages/game/src/m_gladiator.ts` | `range` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_move_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_pain_air` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain_air` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_pain_air` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain_air` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_pain_air` | `packages/game/src/m_gladiator.ts` | `gladiator_move_pain_air` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_dead` | `packages/game/src/m_gladiator.ts` | `gladiator_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_death` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_death` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_death` | `packages/game/src/m_gladiator.ts` | `gladiator_move_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_die` | `packages/game/src/m_gladiator.ts` | `gladiator_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | global | `n` | `packages/game/src/m_gladiator.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | function | `SP_monster_gladiator` | `packages/game/src/m_gladiator.ts` | `SP_monster_gladiator` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_run` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_run` | A verifier | matched |  |
-| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_attack_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_melee` | A verifier | matched |  |
-| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_attack_gun` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_gun` | A verifier | matched |  |
-| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain` | A verifier | matched |  |
-| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_pain_air` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain_air` | A verifier | matched |  |
-| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_death` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_death` | A verifier | matched |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_pain1` | `packages/game/src/m_gladiator.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_pain2` | `packages/game/src/m_gladiator.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_die` | `packages/game/src/m_gladiator.ts` | `SOUND_DIE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_gun` | `packages/game/src/m_gladiator.ts` | `SOUND_GUN` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_cleaver_swing` | `packages/game/src/m_gladiator.ts` | `SOUND_CLEAVER_SWING` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_cleaver_hit` | `packages/game/src/m_gladiator.ts` | `SOUND_CLEAVER_HIT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_cleaver_miss` | `packages/game/src/m_gladiator.ts` | `SOUND_CLEAVER_MISS` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_idle` | `packages/game/src/m_gladiator.ts` | `SOUND_IDLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_search` | `packages/game/src/m_gladiator.ts` | `SOUND_SEARCH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `sound_sight` | `packages/game/src/m_gladiator.ts` | `SOUND_SIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_idle` | `packages/game/src/m_gladiator.ts` | `gladiator_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_sight` | `packages/game/src/m_gladiator.ts` | `gladiator_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_search` | `packages/game/src/m_gladiator.ts` | `gladiator_search` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_cleaver_swing` | `packages/game/src/m_gladiator.ts` | `gladiator_cleaver_swing` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_move_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_move_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_run` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_run` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_run` | `packages/game/src/m_gladiator.ts` | `gladiator_move_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_run` | `packages/game/src/m_gladiator.ts` | `gladiator_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `GaldiatorMelee` | `packages/game/src/m_gladiator.ts` | `GaldiatorMelee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_attack_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_attack_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_attack_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_move_attack_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `GladiatorGun` | `packages/game/src/m_gladiator.ts` | `GladiatorGun` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_attack_gun` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_gun` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_attack_gun` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_gun` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_attack_gun` | `packages/game/src/m_gladiator.ts` | `gladiator_move_attack_gun` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_attack` | `packages/game/src/m_gladiator.ts` | `gladiator_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `range` | `packages/game/src/m_gladiator.ts` | `range` | Non applicable | A redecouper | Variable locale C de `gladiator_attack`, validee via la fonction proprietaire. |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_move_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_pain_air` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain_air` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_pain_air` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain_air` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_pain_air` | `packages/game/src/m_gladiator.ts` | `gladiator_move_pain_air` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_dead` | `packages/game/src/m_gladiator.ts` | `gladiator_dead` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_frames_death` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | table | `gladiator_frames_death` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `gladiator_move_death` | `packages/game/src/m_gladiator.ts` | `gladiator_move_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | function | `gladiator_die` | `packages/game/src/m_gladiator.ts` | `gladiator_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | global | `n` | `packages/game/src/m_gladiator.ts` | `n` | Non applicable | A redecouper | Variable locale C de `gladiator_die`, validee via la fonction proprietaire. |
+| `Quake-2-master/game/m_gladiator.c` | function | `SP_monster_gladiator` | `packages/game/src/m_gladiator.ts` | `SP_monster_gladiator` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_stand` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_stand` | Valide | matched |  |
+| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_walk` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_run` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_run` | Valide | matched |  |
+| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_attack_melee` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_melee` | Valide | matched |  |
+| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_attack_gun` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_attack_gun` | Valide | matched |  |
+| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_pain` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain` | Valide | matched |  |
+| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_pain_air` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_pain_air` | Valide | matched |  |
+| `Quake-2-master/game/m_gladiator.c` | declarative:monster-tables | `gladiator_frames_death` | `packages/game/src/m_gladiator.ts` | `gladiator_frames_death` | Valide | matched |  |

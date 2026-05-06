@@ -10,110 +10,110 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/game/m_flyer.c` | global | `nextmove` | `packages/game/src/m_flyer.ts` | `nextmove` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `sound_sight` | `packages/game/src/m_flyer.ts` | `SOUND_SIGHT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `sound_idle` | `packages/game/src/m_flyer.ts` | `SOUND_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `sound_pain1` | `packages/game/src/m_flyer.ts` | `SOUND_PAIN1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `sound_pain2` | `packages/game/src/m_flyer.ts` | `SOUND_PAIN2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `sound_slash` | `packages/game/src/m_flyer.ts` | `SOUND_SLASH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `sound_sproing` | `packages/game/src/m_flyer.ts` | `SOUND_SPROING` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `sound_die` | `packages/game/src/m_flyer.ts` | `SOUND_DIE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_check_melee` | `packages/game/src/m_flyer.ts` | `flyer_check_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_loop_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_melee` | `packages/game/src/m_flyer.ts` | `flyer_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_setstart` | `packages/game/src/m_flyer.ts` | `flyer_setstart` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_stand` | `packages/game/src/m_flyer.ts` | `flyer_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_nextmove` | `packages/game/src/m_flyer.ts` | `flyer_nextmove` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_sight` | `packages/game/src/m_flyer.ts` | `flyer_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_idle` | `packages/game/src/m_flyer.ts` | `flyer_idle` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_pop_blades` | `packages/game/src/m_flyer.ts` | `flyer_pop_blades` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_stand` | `packages/game/src/m_flyer.ts` | `flyer_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_stand` | `packages/game/src/m_flyer.ts` | `flyer_frames_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_stand` | `packages/game/src/m_flyer.ts` | `flyer_move_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_walk` | `packages/game/src/m_flyer.ts` | `flyer_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_walk` | `packages/game/src/m_flyer.ts` | `flyer_frames_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_walk` | `packages/game/src/m_flyer.ts` | `flyer_move_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_run` | `packages/game/src/m_flyer.ts` | `flyer_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_run` | `packages/game/src/m_flyer.ts` | `flyer_frames_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_run` | `packages/game/src/m_flyer.ts` | `flyer_move_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_run` | `packages/game/src/m_flyer.ts` | `flyer_run` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_walk` | `packages/game/src/m_flyer.ts` | `flyer_walk` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_stand` | `packages/game/src/m_flyer.ts` | `flyer_stand` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_start` | `packages/game/src/m_flyer.ts` | `flyer_frames_start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_start` | `packages/game/src/m_flyer.ts` | `flyer_frames_start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_start` | `packages/game/src/m_flyer.ts` | `flyer_move_start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_stop` | `packages/game/src/m_flyer.ts` | `flyer_frames_stop` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_stop` | `packages/game/src/m_flyer.ts` | `flyer_frames_stop` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_stop` | `packages/game/src/m_flyer.ts` | `flyer_move_stop` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_stop` | `packages/game/src/m_flyer.ts` | `flyer_stop` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_start` | `packages/game/src/m_flyer.ts` | `flyer_start` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_rollright` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollright` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_rollright` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollright` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_rollright` | `packages/game/src/m_flyer.ts` | `flyer_move_rollright` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_rollleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollleft` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_rollleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollleft` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_rollleft` | `packages/game/src/m_flyer.ts` | `flyer_move_rollleft` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_pain3` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_pain3` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_pain3` | `packages/game/src/m_flyer.ts` | `flyer_move_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_pain2` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_pain2` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_pain2` | `packages/game/src/m_flyer.ts` | `flyer_move_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_pain1` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_pain1` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_pain1` | `packages/game/src/m_flyer.ts` | `flyer_move_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_defense` | `packages/game/src/m_flyer.ts` | `flyer_frames_defense` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_defense` | `packages/game/src/m_flyer.ts` | `flyer_frames_defense` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_defense` | `packages/game/src/m_flyer.ts` | `flyer_move_defense` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_bankright` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankright` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_bankright` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankright` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_bankright` | `packages/game/src/m_flyer.ts` | `flyer_move_bankright` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_bankleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankleft` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_bankleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankleft` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_bankleft` | `packages/game/src/m_flyer.ts` | `flyer_move_bankleft` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_fire` | `packages/game/src/m_flyer.ts` | `flyer_fire` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `effect` | `packages/game/src/m_flyer.ts` | `effect` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `effect` | `packages/game/src/m_flyer.ts` | `effect` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_fireleft` | `packages/game/src/m_flyer.ts` | `flyer_fireleft` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_fireright` | `packages/game/src/m_flyer.ts` | `flyer_fireright` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_attack2` | `packages/game/src/m_flyer.ts` | `flyer_frames_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_attack2` | `packages/game/src/m_flyer.ts` | `flyer_frames_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_attack2` | `packages/game/src/m_flyer.ts` | `flyer_move_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_slash_left` | `packages/game/src/m_flyer.ts` | `flyer_slash_left` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_slash_right` | `packages/game/src/m_flyer.ts` | `flyer_slash_right` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_start_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_start_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_start_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_start_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_start_melee` | `packages/game/src/m_flyer.ts` | `flyer_move_start_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_end_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_end_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_end_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_end_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_end_melee` | `packages/game/src/m_flyer.ts` | `flyer_move_end_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_loop_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_loop_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_move_loop_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_loop_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_attack` | `packages/game/src/m_flyer.ts` | `flyer_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_setstart` | `packages/game/src/m_flyer.ts` | `flyer_setstart` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_nextmove` | `packages/game/src/m_flyer.ts` | `flyer_nextmove` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_melee` | `packages/game/src/m_flyer.ts` | `flyer_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_check_melee` | `packages/game/src/m_flyer.ts` | `flyer_check_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_pain` | `packages/game/src/m_flyer.ts` | `flyer_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | global | `n` | `packages/game/src/m_flyer.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `flyer_die` | `packages/game/src/m_flyer.ts` | `flyer_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | function | `SP_monster_flyer` | `packages/game/src/m_flyer.ts` | `SP_monster_flyer` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_stand` | `packages/game/src/m_flyer.ts` | `flyer_frames_stand` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_walk` | `packages/game/src/m_flyer.ts` | `flyer_frames_walk` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_run` | `packages/game/src/m_flyer.ts` | `flyer_frames_run` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_start` | `packages/game/src/m_flyer.ts` | `flyer_frames_start` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_stop` | `packages/game/src/m_flyer.ts` | `flyer_frames_stop` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_rollright` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollright` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_rollleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollleft` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_pain3` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain3` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_pain2` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain2` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_pain1` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain1` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_defense` | `packages/game/src/m_flyer.ts` | `flyer_frames_defense` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_bankright` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankright` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_bankleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankleft` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_attack2` | `packages/game/src/m_flyer.ts` | `flyer_frames_attack2` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_start_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_start_melee` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_end_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_end_melee` | A verifier | matched |  |
-| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_loop_melee` | A verifier | matched |  |
+| `Quake-2-master/game/m_flyer.c` | global | `nextmove` | `packages/game/src/m_flyer.ts` | `nextmove` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `sound_sight` | `packages/game/src/m_flyer.ts` | `SOUND_SIGHT` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `sound_idle` | `packages/game/src/m_flyer.ts` | `SOUND_IDLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `sound_pain1` | `packages/game/src/m_flyer.ts` | `SOUND_PAIN1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `sound_pain2` | `packages/game/src/m_flyer.ts` | `SOUND_PAIN2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `sound_slash` | `packages/game/src/m_flyer.ts` | `SOUND_SLASH` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `sound_sproing` | `packages/game/src/m_flyer.ts` | `SOUND_SPROING` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `sound_die` | `packages/game/src/m_flyer.ts` | `SOUND_DIE` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_check_melee` | `packages/game/src/m_flyer.ts` | `flyer_check_melee` | Non applicable | A redecouper | Declaration forward C uniquement; definition validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_loop_melee` | Non applicable | A redecouper | Declaration forward C uniquement; definition validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_melee` | `packages/game/src/m_flyer.ts` | `flyer_melee` | Non applicable | A redecouper | Declaration forward C uniquement; definition validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_setstart` | `packages/game/src/m_flyer.ts` | `flyer_setstart` | Non applicable | A redecouper | Declaration forward C uniquement; definition validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_stand` | `packages/game/src/m_flyer.ts` | `flyer_stand` | Non applicable | A redecouper | Declaration forward C uniquement; definition validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_nextmove` | `packages/game/src/m_flyer.ts` | `flyer_nextmove` | Non applicable | A redecouper | Declaration forward C uniquement; definition validee sur la ligne fonction plus bas. |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_sight` | `packages/game/src/m_flyer.ts` | `flyer_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_idle` | `packages/game/src/m_flyer.ts` | `flyer_idle` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_pop_blades` | `packages/game/src/m_flyer.ts` | `flyer_pop_blades` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_stand` | `packages/game/src/m_flyer.ts` | `flyer_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_stand` | `packages/game/src/m_flyer.ts` | `flyer_frames_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_stand` | `packages/game/src/m_flyer.ts` | `flyer_move_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_walk` | `packages/game/src/m_flyer.ts` | `flyer_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_walk` | `packages/game/src/m_flyer.ts` | `flyer_frames_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_walk` | `packages/game/src/m_flyer.ts` | `flyer_move_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_run` | `packages/game/src/m_flyer.ts` | `flyer_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_run` | `packages/game/src/m_flyer.ts` | `flyer_frames_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_run` | `packages/game/src/m_flyer.ts` | `flyer_move_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_run` | `packages/game/src/m_flyer.ts` | `flyer_run` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_walk` | `packages/game/src/m_flyer.ts` | `flyer_walk` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_stand` | `packages/game/src/m_flyer.ts` | `flyer_stand` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_start` | `packages/game/src/m_flyer.ts` | `flyer_frames_start` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_start` | `packages/game/src/m_flyer.ts` | `flyer_frames_start` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_start` | `packages/game/src/m_flyer.ts` | `flyer_move_start` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_stop` | `packages/game/src/m_flyer.ts` | `flyer_frames_stop` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_stop` | `packages/game/src/m_flyer.ts` | `flyer_frames_stop` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_stop` | `packages/game/src/m_flyer.ts` | `flyer_move_stop` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_stop` | `packages/game/src/m_flyer.ts` | `flyer_stop` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_start` | `packages/game/src/m_flyer.ts` | `flyer_start` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_rollright` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollright` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_rollright` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollright` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_rollright` | `packages/game/src/m_flyer.ts` | `flyer_move_rollright` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_rollleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollleft` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_rollleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollleft` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_rollleft` | `packages/game/src/m_flyer.ts` | `flyer_move_rollleft` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_pain3` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_pain3` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_pain3` | `packages/game/src/m_flyer.ts` | `flyer_move_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_pain2` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_pain2` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_pain2` | `packages/game/src/m_flyer.ts` | `flyer_move_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_pain1` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_pain1` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_pain1` | `packages/game/src/m_flyer.ts` | `flyer_move_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_defense` | `packages/game/src/m_flyer.ts` | `flyer_frames_defense` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_defense` | `packages/game/src/m_flyer.ts` | `flyer_frames_defense` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_defense` | `packages/game/src/m_flyer.ts` | `flyer_move_defense` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_bankright` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankright` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_bankright` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankright` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_bankright` | `packages/game/src/m_flyer.ts` | `flyer_move_bankright` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_bankleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankleft` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_bankleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankleft` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_bankleft` | `packages/game/src/m_flyer.ts` | `flyer_move_bankleft` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_fire` | `packages/game/src/m_flyer.ts` | `flyer_fire` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `effect` | `packages/game/src/m_flyer.ts` | `effect` | Non applicable | A redecouper | Variable locale C de `flyer_fire`; comportement valide avec la fonction proprietaire. |
+| `Quake-2-master/game/m_flyer.c` | global | `effect` | `packages/game/src/m_flyer.ts` | `effect` | Non applicable | A redecouper | Variable locale C de `flyer_fire`; comportement valide avec la fonction proprietaire. |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_fireleft` | `packages/game/src/m_flyer.ts` | `flyer_fireleft` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_fireright` | `packages/game/src/m_flyer.ts` | `flyer_fireright` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_attack2` | `packages/game/src/m_flyer.ts` | `flyer_frames_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_attack2` | `packages/game/src/m_flyer.ts` | `flyer_frames_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_attack2` | `packages/game/src/m_flyer.ts` | `flyer_move_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_slash_left` | `packages/game/src/m_flyer.ts` | `flyer_slash_left` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_slash_right` | `packages/game/src/m_flyer.ts` | `flyer_slash_right` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_start_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_start_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_start_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_start_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_start_melee` | `packages/game/src/m_flyer.ts` | `flyer_move_start_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_end_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_end_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_end_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_end_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_end_melee` | `packages/game/src/m_flyer.ts` | `flyer_move_end_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_frames_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_loop_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | table | `flyer_frames_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_loop_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `flyer_move_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_move_loop_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_loop_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_attack` | `packages/game/src/m_flyer.ts` | `flyer_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_setstart` | `packages/game/src/m_flyer.ts` | `flyer_setstart` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_nextmove` | `packages/game/src/m_flyer.ts` | `flyer_nextmove` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_melee` | `packages/game/src/m_flyer.ts` | `flyer_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_check_melee` | `packages/game/src/m_flyer.ts` | `flyer_check_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_pain` | `packages/game/src/m_flyer.ts` | `flyer_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | global | `n` | `packages/game/src/m_flyer.ts` | `n` | Non applicable | A redecouper | Variable locale C de `flyer_pain`; comportement valide avec la fonction proprietaire. |
+| `Quake-2-master/game/m_flyer.c` | function | `flyer_die` | `packages/game/src/m_flyer.ts` | `flyer_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | function | `SP_monster_flyer` | `packages/game/src/m_flyer.ts` | `SP_monster_flyer` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_stand` | `packages/game/src/m_flyer.ts` | `flyer_frames_stand` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_walk` | `packages/game/src/m_flyer.ts` | `flyer_frames_walk` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_run` | `packages/game/src/m_flyer.ts` | `flyer_frames_run` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_start` | `packages/game/src/m_flyer.ts` | `flyer_frames_start` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_stop` | `packages/game/src/m_flyer.ts` | `flyer_frames_stop` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_rollright` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollright` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_rollleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_rollleft` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_pain3` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain3` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_pain2` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain2` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_pain1` | `packages/game/src/m_flyer.ts` | `flyer_frames_pain1` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_defense` | `packages/game/src/m_flyer.ts` | `flyer_frames_defense` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_bankright` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankright` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_bankleft` | `packages/game/src/m_flyer.ts` | `flyer_frames_bankleft` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_attack2` | `packages/game/src/m_flyer.ts` | `flyer_frames_attack2` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_start_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_start_melee` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_end_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_end_melee` | Valide | matched |  |
+| `Quake-2-master/game/m_flyer.c` | declarative:monster-tables | `flyer_frames_loop_melee` | `packages/game/src/m_flyer.ts` | `flyer_frames_loop_melee` | Valide | matched |  |

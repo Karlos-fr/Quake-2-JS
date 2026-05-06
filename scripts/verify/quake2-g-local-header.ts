@@ -36,16 +36,34 @@ import {
   AS_STRAIGHT,
   BODY_QUEUE_SIZE,
   CENTER_HANDED,
+  DAMAGE_BULLET,
+  DAMAGE_ENERGY,
+  DAMAGE_NO_ARMOR,
+  DAMAGE_NO_KNOCKBACK,
+  DAMAGE_NO_PROTECTION,
+  DAMAGE_RADIUS,
   DEAD_DEAD,
   DEAD_DYING,
   DEAD_NO,
   DEAD_RESPAWNABLE,
+  DEFAULT_BULLET_HSPREAD,
+  DEFAULT_BULLET_VSPREAD,
+  DEFAULT_DEATHMATCH_SHOTGUN_COUNT,
+  DEFAULT_SHOTGUN_COUNT,
+  DEFAULT_SHOTGUN_HSPREAD,
+  DEFAULT_SHOTGUN_VSPREAD,
+  DEFAULT_SSHOTGUN_COUNT,
+  DROPPED_ITEM,
+  DROPPED_PLAYER_ITEM,
   FALL_TIME,
   FOFS,
   GAMEVERSION,
   GIB_METALLIC,
   GIB_ORGANIC,
   ITEM_INDEX,
+  ITEM_NO_TOUCH,
+  ITEM_TARGETS_USED,
+  ITEM_TRIGGER_SPAWN,
   IT_AMMO,
   IT_ARMOR,
   IT_KEY,
@@ -142,6 +160,7 @@ import {
   crandom,
   ammo_t,
   damage_t,
+  fieldtype_t,
   movetype_t,
   random,
   weaponstate_t,
@@ -154,12 +173,17 @@ import {
   ARMOR_JACKET as INDEX_ARMOR_JACKET,
   ARMOR_NONE as INDEX_ARMOR_NONE,
   ARMOR_SHARD as INDEX_ARMOR_SHARD,
+  DROPPED_ITEM as INDEX_DROPPED_ITEM,
+  DROPPED_PLAYER_ITEM as INDEX_DROPPED_PLAYER_ITEM,
   IT_AMMO as INDEX_IT_AMMO,
   IT_ARMOR as INDEX_IT_ARMOR,
   IT_KEY as INDEX_IT_KEY,
   IT_POWERUP as INDEX_IT_POWERUP,
   IT_STAY_COOP as INDEX_IT_STAY_COOP,
   IT_WEAPON as INDEX_IT_WEAPON,
+  ITEM_NO_TOUCH as INDEX_ITEM_NO_TOUCH,
+  ITEM_TARGETS_USED as INDEX_ITEM_TARGETS_USED,
+  ITEM_TRIGGER_SPAWN as INDEX_ITEM_TRIGGER_SPAWN,
   MOVETYPE_BOUNCE as INDEX_MOVETYPE_BOUNCE,
   MOVETYPE_FLY as INDEX_MOVETYPE_FLY,
   MOVETYPE_FLYMISSILE as INDEX_MOVETYPE_FLYMISSILE,
@@ -255,12 +279,22 @@ assert.equal(IT_ARMOR, 4, "IT_ARMOR mismatch");
 assert.equal(IT_STAY_COOP, 8, "IT_STAY_COOP mismatch");
 assert.equal(IT_KEY, 16, "IT_KEY mismatch");
 assert.equal(IT_POWERUP, 32, "IT_POWERUP mismatch");
+assert.equal(ITEM_TRIGGER_SPAWN, 0x00000001, "ITEM_TRIGGER_SPAWN mismatch");
+assert.equal(ITEM_NO_TOUCH, 0x00000002, "ITEM_NO_TOUCH mismatch");
+assert.equal(DROPPED_ITEM, 0x00010000, "DROPPED_ITEM mismatch");
+assert.equal(DROPPED_PLAYER_ITEM, 0x00020000, "DROPPED_PLAYER_ITEM mismatch");
+assert.equal(ITEM_TARGETS_USED, 0x00040000, "ITEM_TARGETS_USED mismatch");
 assert.equal(INDEX_IT_WEAPON, IT_WEAPON, "public IT_WEAPON export mismatch");
 assert.equal(INDEX_IT_AMMO, IT_AMMO, "public IT_AMMO export mismatch");
 assert.equal(INDEX_IT_ARMOR, IT_ARMOR, "public IT_ARMOR export mismatch");
 assert.equal(INDEX_IT_STAY_COOP, IT_STAY_COOP, "public IT_STAY_COOP export mismatch");
 assert.equal(INDEX_IT_KEY, IT_KEY, "public IT_KEY export mismatch");
 assert.equal(INDEX_IT_POWERUP, IT_POWERUP, "public IT_POWERUP export mismatch");
+assert.equal(INDEX_ITEM_TRIGGER_SPAWN, ITEM_TRIGGER_SPAWN, "public ITEM_TRIGGER_SPAWN export mismatch");
+assert.equal(INDEX_ITEM_NO_TOUCH, ITEM_NO_TOUCH, "public ITEM_NO_TOUCH export mismatch");
+assert.equal(INDEX_DROPPED_ITEM, DROPPED_ITEM, "public DROPPED_ITEM export mismatch");
+assert.equal(INDEX_DROPPED_PLAYER_ITEM, DROPPED_PLAYER_ITEM, "public DROPPED_PLAYER_ITEM export mismatch");
+assert.equal(INDEX_ITEM_TARGETS_USED, ITEM_TARGETS_USED, "public ITEM_TARGETS_USED export mismatch");
 assert.equal(WEAP_BLASTER, 1, "WEAP_BLASTER mismatch");
 assert.equal(WEAP_SHOTGUN, 2, "WEAP_SHOTGUN mismatch");
 assert.equal(WEAP_SUPERSHOTGUN, 3, "WEAP_SUPERSHOTGUN mismatch");
@@ -340,6 +374,19 @@ assert.equal(MOD_TRIGGER_HURT, 31, "MOD_TRIGGER_HURT mismatch");
 assert.equal(MOD_HIT, 32, "MOD_HIT mismatch");
 assert.equal(MOD_TARGET_BLASTER, 33, "MOD_TARGET_BLASTER mismatch");
 assert.equal(MOD_FRIENDLY_FIRE, 0x8000000, "MOD_FRIENDLY_FIRE mismatch");
+assert.equal(DAMAGE_RADIUS, 0x00000001, "DAMAGE_RADIUS mismatch");
+assert.equal(DAMAGE_NO_ARMOR, 0x00000002, "DAMAGE_NO_ARMOR mismatch");
+assert.equal(DAMAGE_ENERGY, 0x00000004, "DAMAGE_ENERGY mismatch");
+assert.equal(DAMAGE_NO_KNOCKBACK, 0x00000008, "DAMAGE_NO_KNOCKBACK mismatch");
+assert.equal(DAMAGE_BULLET, 0x00000010, "DAMAGE_BULLET mismatch");
+assert.equal(DAMAGE_NO_PROTECTION, 0x00000020, "DAMAGE_NO_PROTECTION mismatch");
+assert.equal(DEFAULT_BULLET_HSPREAD, 300, "DEFAULT_BULLET_HSPREAD mismatch");
+assert.equal(DEFAULT_BULLET_VSPREAD, 500, "DEFAULT_BULLET_VSPREAD mismatch");
+assert.equal(DEFAULT_SHOTGUN_HSPREAD, 1000, "DEFAULT_SHOTGUN_HSPREAD mismatch");
+assert.equal(DEFAULT_SHOTGUN_VSPREAD, 500, "DEFAULT_SHOTGUN_VSPREAD mismatch");
+assert.equal(DEFAULT_DEATHMATCH_SHOTGUN_COUNT, 12, "DEFAULT_DEATHMATCH_SHOTGUN_COUNT mismatch");
+assert.equal(DEFAULT_SHOTGUN_COUNT, 12, "DEFAULT_SHOTGUN_COUNT mismatch");
+assert.equal(DEFAULT_SSHOTGUN_COUNT, 20, "DEFAULT_SSHOTGUN_COUNT mismatch");
 const meansOfDeathRuntime = createGameRuntimeFromBspEntities([]);
 assert.equal(meansOfDeathRuntime.meansOfDeath, 0, "meansOfDeath runtime global should start with C static zero initialization");
 meansOfDeathRuntime.meansOfDeath = MOD_ROCKET | MOD_FRIENDLY_FIRE;
@@ -357,6 +404,18 @@ assert.equal(ammo_t.AMMO_ROCKETS, 2, "ammo_t AMMO_ROCKETS mismatch");
 assert.equal(ammo_t.AMMO_GRENADES, 3, "ammo_t AMMO_GRENADES mismatch");
 assert.equal(ammo_t.AMMO_CELLS, 4, "ammo_t AMMO_CELLS mismatch");
 assert.equal(ammo_t.AMMO_SLUGS, 5, "ammo_t AMMO_SLUGS mismatch");
+assert.equal(fieldtype_t.F_INT, 0, "fieldtype_t F_INT mismatch");
+assert.equal(fieldtype_t.F_FLOAT, 1, "fieldtype_t F_FLOAT mismatch");
+assert.equal(fieldtype_t.F_LSTRING, 2, "fieldtype_t F_LSTRING mismatch");
+assert.equal(fieldtype_t.F_GSTRING, 3, "fieldtype_t F_GSTRING mismatch");
+assert.equal(fieldtype_t.F_VECTOR, 4, "fieldtype_t F_VECTOR mismatch");
+assert.equal(fieldtype_t.F_ANGLEHACK, 5, "fieldtype_t F_ANGLEHACK mismatch");
+assert.equal(fieldtype_t.F_EDICT, 6, "fieldtype_t F_EDICT mismatch");
+assert.equal(fieldtype_t.F_ITEM, 7, "fieldtype_t F_ITEM mismatch");
+assert.equal(fieldtype_t.F_CLIENT, 8, "fieldtype_t F_CLIENT mismatch");
+assert.equal(fieldtype_t.F_FUNCTION, 9, "fieldtype_t F_FUNCTION mismatch");
+assert.equal(fieldtype_t.F_MMOVE, 10, "fieldtype_t F_MMOVE mismatch");
+assert.equal(fieldtype_t.F_IGNORE, 11, "fieldtype_t F_IGNORE mismatch");
 assert.equal(movetype_t.MOVETYPE_NONE, 0, "movetype_t MOVETYPE_NONE mismatch");
 assert.equal(movetype_t.MOVETYPE_NOCLIP, 1, "movetype_t MOVETYPE_NOCLIP mismatch");
 assert.equal(movetype_t.MOVETYPE_PUSH, 2, "movetype_t MOVETYPE_PUSH mismatch");
