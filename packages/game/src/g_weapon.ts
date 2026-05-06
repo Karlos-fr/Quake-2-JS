@@ -88,7 +88,7 @@ import {
 } from "./runtime.js";
 import { infront } from "./g_ai.js";
 import { CanDamage, T_Damage, T_RadiusDamage } from "./g_combat.js";
-import { findradius } from "./g_utils.js";
+import { findradius, vectoangles } from "./g_utils.js";
 import { ThrowDebris } from "./g_misc.js";
 import { PNOISE_IMPACT, crandom, random } from "./g_local.js";
 import { PlayerNoise } from "./p_weapon.js";
@@ -1245,18 +1245,6 @@ function fire_lead(
     const mid = scaleVec3(addVec3(waterStart, bubbleEnd), 0.5);
     hooks.emitTempEntity?.(temp_event_t.TE_BUBBLETRAIL, { start: waterStart, end: bubbleEnd, origin: mid }, runtime);
   }
-}
-
-/**
- * Category: New
- * Purpose: Convert one direction vector into Quake-style Euler angles for projectile state setup.
- */
-function vectoangles(direction: vec3_t): vec3_t {
-  const normalized = normalizeVec3(direction);
-  const yaw = Math.atan2(normalized[1], normalized[0]) * 180 / Math.PI;
-  const forward = Math.hypot(normalized[0], normalized[1]);
-  const pitch = Math.atan2(normalized[2], forward) * 180 / Math.PI;
-  return [-pitch, yaw, 0];
 }
 
 /**

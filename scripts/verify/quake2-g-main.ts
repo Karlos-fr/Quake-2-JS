@@ -124,6 +124,9 @@ imports.bprintf = (printLevel, fmt, ...args) => {
 const api = GetGameApi(imports);
 
 assert.equal(api.apiversion, GAME_API_VERSION, "GetGameApi apiversion mismatch");
+assert.equal(typeof api.RunFrame, "function", "GetGameApi must expose G_RunFrame through RunFrame");
+assert.equal(typeof api.Shutdown, "function", "GetGameApi must expose ShutdownGame through Shutdown");
+assert.equal(typeof api.ServerCommand, "function", "GetGameApi must expose ServerCommand");
 
 api.Init();
 assert.ok(dprints.includes("==== InitGame ====\n"), "InitGame banner mismatch");
@@ -748,6 +751,22 @@ runEntityContext.runtime.entities[2].think = () => {
 };
 G_RunFrame(runEntityContext);
 assert.equal(runEntityThinkCount, 1, "G_RunFrame must dispatch non-client entities through G_RunEntity/SV_RunThink");
+
+const exitFrameContext = createGameMainContext(imports);
+exitFrameContext.runtime.maxclients = 1;
+exitFrameContext.runtime.entities = [{ ...api.edicts[0]! }, { ...api.edicts[1]! }];
+exitFrameContext.runtime.entities[1].client = exitFrameContext.runtime.entities[1].client ?? attachGameClient(exitFrameContext.runtime.entities[1]);
+exitFrameContext.runtime.entities[1].inuse = true;
+exitFrameContext.runtime.entities[1].health = 130;
+exitFrameContext.runtime.entities[1].client!.pers.max_health = 90;
+exitFrameContext.level.changemap = "boss1";
+exitFrameContext.runtime.changemap = "boss1";
+exitFrameContext.level.exitintermission = 1;
+exitFrameContext.runtime.exitintermission = 1;
+G_RunFrame(exitFrameContext);
+assert.equal(addedCommands.pop(), "gamemap \"boss1\"\n", "G_RunFrame must dispatch ExitLevel during intermission exit");
+assert.equal(exitFrameContext.runtime.intermissiontime, 0, "G_RunFrame intermission exit must clear runtime intermissiontime");
+assert.equal(exitFrameContext.runtime.entities[1].health, 90, "G_RunFrame intermission exit must clamp client health through ExitLevel");
 
 freeTags.length = 0;
 api.Shutdown();

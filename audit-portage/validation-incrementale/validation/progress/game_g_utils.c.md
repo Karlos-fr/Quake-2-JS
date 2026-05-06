@@ -2,8 +2,8 @@
 
 ## Etat courant
 
-- Statut: Partiel
-- Dernier lot traite: blocage `vectoyaw` -> consommateur `p_trail.ts`.
+- Statut: Termine
+- Dernier lot traite: blocage `vectoangles` -> consommateur `g_weapon.ts`.
 - Verdict du lot: valide.
 
 ## Preuves session
@@ -472,3 +472,34 @@ Session `vectoyaw` -> `p_trail.ts`:
 - Dernier lot traite: blocage `vectoyaw` -> consommateur `p_trail.ts`.
 - Verdict du lot: valide.
 - Prochain lot recommande: reprendre le blocage separe `vectoangles` -> `packages/game/src/g_weapon.ts`; garder ce lot dans une session separee.
+
+## Session - blocage `vectoangles` -> `g_weapon.ts`
+
+- C source compare: `Quake-2-master/game/g_utils.c` pour `vectoangles`, declaration `game/g_local.h`, et consommateur C `Quake-2-master/game/g_weapon.c` (`fire_blaster`, `fire_rocket`, `fire_bfg`, `fire_lead`).
+- TS cible compare: `packages/game/src/g_utils.ts` pour l'export officiel `vectoangles` et `packages/game/src/g_weapon.ts` pour le consommateur world weapon.
+- Ownership/doublon verifie: `vectoangles` appartient a `game/g_utils.c` / `packages/game/src/g_utils.ts`; le helper prive homonyme de `g_weapon.ts` etait un doublon de portage non justifie et a ete supprime.
+- Comparaison C/TS `vectoangles`: l'export officiel conserve les branches verticales, yaw axe Y positif/negatif, wrap positif, calcul `forward`, pitch, troncature du cast C et sortie `[-pitch, yaw, 0]`.
+- Comparaison consommateur `g_weapon`: les appels TS de `fire_blaster`, `fire_rocket`, `fire_bfg`, `fire_lead` et `angleVectorsFromDir` consomment maintenant l'export officiel au lieu d'un helper local normalisant/fractionnel. Le cas `fire_rocket([2, -1, 1])` prouve la sortie C `[-24, 334, 0]`.
+- Commentaire d'en-tete verifie: `g_utils.vectoangles` contient `Original name`, `Source: game/g_utils.c`, `Category: Ported`, `Fidelity level: Strict`, comportement et notes de portage. Le helper prive `g_weapon.ts` n'existe plus.
+- Runtime verifie: `vectoangles` est atteint directement par les flux gameplay portes et par les armes monde (`fire_blaster`, `fire_rocket`, `fire_bfg`, `fire_lead`), appelees depuis tirs joueurs/monstres, projectiles, impacts, thinks et frames serveur.
+- `apps/web`: integration attendue indirecte via les hosts full-game/local qui executent le runtime serveur porte. Aucune logique parallele web ne remplace le calcul d'angles des armes; les sorties passent par entites serveur, sons/temp entities et snapshots.
+- `packages/renderer-three`: pas de branchement renderer dedie attendu pour le helper, mais les sorties visibles qu'il oriente sont bien des projectiles/modeles/frames, temp entities, particules, dlights, beams et scene consommes par le flux refresh/Three. Les tests renderer passent.
+- Corrections appliquees: `packages/game/src/g_weapon.ts` importe `vectoangles` depuis `./g_utils.js` et supprime le helper prive; `scripts/verify/quake2-g-weapon.ts` ajoute une preuve de troncature/wrap C sur les angles de rocket.
+- Matrice mise a jour: la ligne `vectoangles` passe de `Partiel` a `Valide`; le blocage `g_weapon.ts` est ferme.
+- Avancement global mis a jour: `g_utils.c` passe a `Termine`, 19 validees, 0 partielle, 18 non applicables.
+
+Session `vectoangles` -> `g_weapon.ts`:
+
+- `npm run verify:g-utils`
+- `npm run verify:g-weapon`
+- `npm run verify:full-game:server-host`
+- `npm run verify:local-gameplay-sync`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+## Etat apres session `vectoangles` -> `g_weapon.ts`
+
+- Dernier lot traite: blocage `vectoangles` -> consommateur `g_weapon.ts`.
+- Verdict du lot: valide.
+- Prochain lot recommande: aucun pour `g_utils.c`; toutes les lignes sont `Valide` ou `Non applicable`.

@@ -11,11 +11,29 @@
 
 import { strict as assert } from "node:assert";
 
-import { AngleVectors, ATTN_NONE, ATTN_NORM, CHAN_AUTO, CHAN_BODY, CHAN_VOICE, CHAN_WEAPON, type trace_t, type vec3_t } from "../../packages/qcommon/src/index.js";
+import {
+  AngleVectors,
+  ATTN_NONE,
+  ATTN_NORM,
+  CHAN_AUTO,
+  CHAN_BODY,
+  CHAN_VOICE,
+  CHAN_WEAPON,
+  type trace_t,
+  type vec3_t
+} from "../../packages/qcommon/src/index.js";
+import {
+  CONTENTS_LAVA,
+  CONTENTS_MONSTER,
+  CONTENTS_SLIME,
+  CONTENTS_SOLID
+} from "../../packages/qcommon/src/q_shared.js";
 import {
   AI_STAND_GROUND,
+  AS_MELEE,
   AS_MISSILE,
   AS_SLIDING,
+  AS_STRAIGHT,
   DEAD_DEAD,
   FRAMETIME,
   G_ProjectSource,
@@ -534,18 +552,47 @@ function verifyCheckAttack(): void {
   const makron = createMakron(runtime, 8);
   const enemy = createEnemy(runtime, 9, [128, 0, 24]);
   SP_monster_makron(makron, runtime);
+  makron.viewheight = 25;
   makron.enemy = enemy;
-  runtime.collision!.trace = (_start, _mins, _maxs, end) => makeTrace(enemy, end);
+  let observedTraceMask = 0;
+  let shouldAssertInitialTrace = true;
+  runtime.collision!.trace = (start, mins, maxs, end, passed, mask) => {
+    if (shouldAssertInitialTrace) {
+      assert.deepEqual(start, [0, 0, 25]);
+      assert.deepEqual(mins, [0, 0, 0]);
+      assert.deepEqual(maxs, [0, 0, 0]);
+      assert.deepEqual(end, [128, 0, 48]);
+      assert.equal(passed, makron);
+      shouldAssertInitialTrace = false;
+    }
+    observedTraceMask = mask;
+    return makeTrace(enemy, end);
+  };
 
   withMathRandom([0.1, 0.25], () => {
     assert.equal(Makron_CheckAttack(makron, runtime), true);
   });
   assert.equal(makron.monsterinfo.attack_state, AS_MISSILE);
-  assert.equal(makron.monsterinfo.attack_finished, 0.5);
+  assert.equal(makron.monsterinfo.attack_finished, 2 * quake2RandomFromMath(0.25));
   assert.equal(makron.ideal_yaw, 0);
+  assert.equal(observedTraceMask, CONTENTS_SOLID | CONTENTS_MONSTER | CONTENTS_SLIME | CONTENTS_LAVA);
+
+  runtime.time = 0;
+  makron.monsterinfo.attack_finished = 0;
+  enemy.s.origin = [16, 0, 24];
+  enemy.origin = [...enemy.s.origin];
+  assert.equal(Makron_CheckAttack(makron, runtime), true);
+  assert.equal(makron.monsterinfo.attack_state, AS_MISSILE, "source selects missile when melee callback is null");
+
+  makron.monsterinfo.melee = () => undefined;
+  assert.equal(Makron_CheckAttack(makron, runtime), true);
+  assert.equal(makron.monsterinfo.attack_state, AS_MELEE);
+  makron.monsterinfo.melee = undefined;
 
   runtime.time = 1;
   makron.monsterinfo.attack_finished = 4;
+  enemy.s.origin = [128, 0, 24];
+  enemy.origin = [...enemy.s.origin];
   assert.equal(Makron_CheckAttack(makron, runtime), false);
 
   runtime.time = 5;
@@ -554,11 +601,38 @@ function verifyCheckAttack(): void {
   assert.equal(Makron_CheckAttack(makron, runtime), false);
 
   runtime.collision!.trace = (_start, _mins, _maxs, end) => makeTrace(enemy, end);
+  enemy.s.origin = [1024, 0, 24];
+  enemy.origin = [...enemy.s.origin];
+  assert.equal(Makron_CheckAttack(makron, runtime), false, "far enemies should not trigger missile attacks");
+
+  enemy.s.origin = [128, 0, 24];
+  enemy.origin = [...enemy.s.origin];
   makron.flags |= FL_FLY;
   withMathRandom([0.95, 0.2], () => {
     assert.equal(Makron_CheckAttack(makron, runtime), false);
   });
   assert.equal(makron.monsterinfo.attack_state, AS_SLIDING);
+
+  withMathRandom([0.95, 0.8], () => {
+    assert.equal(Makron_CheckAttack(makron, runtime), false);
+  });
+  assert.equal(makron.monsterinfo.attack_state, AS_STRAIGHT);
+
+  makron.flags &= ~FL_FLY;
+  makron.monsterinfo.attack_state = AS_MISSILE;
+  makron.monsterinfo.aiflags |= AI_STAND_GROUND;
+  withMathRandom([0.3, 0.125], () => {
+    assert.equal(Makron_CheckAttack(makron, runtime), true);
+  });
+  assert.equal(makron.monsterinfo.attack_finished, runtime.time + 2 * quake2RandomFromMath(0.125));
+
+  makron.monsterinfo.attack = undefined;
+  makron.monsterinfo.attack_finished = 0;
+  makron.monsterinfo.aiflags &= ~AI_STAND_GROUND;
+  assert.equal(Makron_CheckAttack(makron, runtime), false);
+
+  makron.enemy = null;
+  assert.equal(Makron_CheckAttack(makron, runtime), false);
 }
 
 function verifyDeathBranchesAndTorso(): void {
@@ -644,15 +718,25 @@ function verifyMakronTossAndSpawnJump(): void {
   MakronToss(jorg, runtime);
   const makron = runtime.entities.find((entity) => entity?.think === MakronSpawn);
   assert.ok(makron, "MakronToss should schedule MakronSpawn");
+  assert.equal(makron.nextthink, runtime.time + 0.8);
   assert.equal(makron.target, "after_jorg");
   assert.deepEqual(makron.s.origin, [64, 32, 12]);
+  assert.deepEqual(makron.origin, [64, 32, 12]);
 
   MakronSpawn(makron, runtime);
   assert.equal(makron.health, 3000);
+  assert.equal(makron.monsterinfo.checkattack, Makron_CheckAttack);
+  assert.equal(makron.monsterinfo.currentmove?.firstframe, FRAME_active01);
   assert.equal(makron.s.angles[1], 0);
   assert.equal(makron.angles[1], 0);
   assert.deepEqual(makron.velocity, [400, 0, 200]);
   assert.equal(makron.groundentity, null);
+
+  const noPlayerRuntime = createHarnessRuntime();
+  const noPlayerMakron = createMakron(noPlayerRuntime, 14);
+  MakronSpawn(noPlayerMakron, noPlayerRuntime);
+  assert.equal(noPlayerMakron.health, 3000);
+  assert.deepEqual(noPlayerMakron.velocity, [0, 0, 0]);
 }
 
 function verifyDeathmatchSpawnFreesEntity(): void {
@@ -743,6 +827,10 @@ function countRuntimeModels(runtime: GameRuntime, modelPath: string): number {
     }
     return runtime.assets.modelPaths[entity.s.modelindex - 1] === modelPath;
   }).length;
+}
+
+function quake2RandomFromMath(value: number): number {
+  return Math.floor(value * 0x8000) / 0x7fff;
 }
 
 function withMathRandom(values: number[], callback: () => void): void {

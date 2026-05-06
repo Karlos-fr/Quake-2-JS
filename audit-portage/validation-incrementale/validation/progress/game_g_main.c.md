@@ -2,6 +2,7 @@
 
 ## Dernier lot traite
 
+- 2026-05-06: gros lot frame/export/intermission `G_RunFrame`, `ShutdownGame`, `GetGameAPI`, `ClientEndServerFrames`, `CreateTargetChangeLevel`, `EndDMLevel`, `CheckDMRules`, `ExitLevel`, plus temporaires locaux associes.
 - 2026-05-03: entree `ReadLevel`.
 - 2026-05-01: entree `WriteLevel`.
 - 2026-05-01: entree `ReadGame`.
@@ -23,6 +24,9 @@
 
 ## Verdict du lot
 
+- Gros lot frame/export/intermission: valide pour les fonctions proprietaires `G_RunFrame`, `ShutdownGame`, `GetGameAPI`, `ClientEndServerFrames`, `CreateTargetChangeLevel`, `EndDMLevel`, `CheckDMRules` et `ExitLevel`. La comparaison C/TS couvre l'incrementation frame/time, `AI_SetSightClient`, la sortie d'intermission via `ExitLevel`, la boucle edicts avec `old_origin`, groundentity, clients par `ClientBeginServerFrame`, non-clients par `G_RunEntity`, regles deathmatch, construction playerstate et flush des effets moteur. `GetGameAPI` expose bien `RunFrame`, `Shutdown`, `ServerCommand`, edicts/num/max edicts; `ShutdownGame` libere `TAG_LEVEL` puis `TAG_GAME`.
+- Entrees locales `argptr`, `text`, `i`, `ent`, `command`: non applicables, ce sont des variables locales C generees comme pseudo-globals par la matrice; aucune entite runtime autonome n'est attendue. `Sys_Error` et `Com_Printf` sont non applicables dans `g_main.ts`: helpers de linkage `#ifndef GAME_HARD_LINKED`, remplaces dans le port modulaire par les hooks moteur/renderer (`gi.error`, `gi.dprintf`, imports ref).
+- Runtime: integre. Le chemin serveur appelle `SV_RunGameFrame -> ge.RunFrame -> G_RunFrame`; `SV_SpawnServer` lance aussi des frames de bootstrap. `apps/web`: integre via `full-game-server-host.ts`, qui enveloppe seulement la collision manquante pendant bootstrap et ne remplace pas la logique frame/intermission. `renderer-three`: pas de port direct attendu; les sorties visibles de `G_RunFrame` (modeles/frames via snapshots, playerstate/camera, sons, muzzleflash, temp entities, particules/dlights aval) passent par serveur/client puis les adapters renderer.
 - `ReadLevel`: valide. Dans `g_main.c`, `ReadLevel` est declare puis branche dans `GetGameAPI` comme slot `globals.ReadLevel`; l'implementation originale est dans `g_save.c`. Le port TS conserve cette separation: `GetGameApi().ReadLevel` appelle le wrapper `g_main.ts` `ReadLevel`, qui delegue a `g_save.ts` `ReadLevel`. La comparaison avec le C couvre le role attendu du slot `g_main.c`, la liberation `FreeTags(TAG_LEVEL)`, la remise a zero/reconstruction des edicts, la validation des marqueurs de compatibilite, la restauration des `level_locals_t`, le relink des entites `inuse`, le rattachement des slots clients et le `target_crosslevel_target` retarde. Le format TS reste volontairement JSON via hook `readFile` au lieu du bloc binaire C. Commentaire d'en-tete verifie sur le wrapper `g_main.ts` et l'implementation `g_save.ts`.
 - `WriteLevel`: valide. Dans `g_main.c`, `WriteLevel` est declare puis branche dans `GetGameAPI` comme slot `globals.WriteLevel`; l'implementation originale est dans `g_save.c`. Le port TS conserve cette separation: `GetGameApi().WriteLevel` appelle le wrapper `g_main.ts` `WriteLevel`, qui delegue a `g_save.ts` `WriteLevel`. La comparaison avec le C couvre l'ouverture/ecriture par hook host, le marqueur de taille d'edict remplace par `edict_size`, le marqueur de base fonction `InitGame`, la sauvegarde des `level_locals_t` et l'ecriture des edicts `inuse` avec leurs entnums. Le format TS reste volontairement JSON via hook `writeFile` au lieu du bloc binaire C. Commentaire d'en-tete verifie sur le wrapper `g_main.ts` et l'implementation `g_save.ts`.
 - `ReadGame`: valide. Dans `g_main.c`, `ReadGame` est declare puis branche dans `GetGameAPI` comme slot `globals.ReadGame`; l'implementation originale est dans `g_save.c`. Le port TS conserve cette separation: `GetGameApi().ReadGame` appelle le wrapper `g_main.ts` `ReadGame`, qui delegue a `g_save.ts` `ReadGame`. La comparaison avec le C couvre `FreeTags(TAG_GAME)`, ouverture/lecture par hook host, validation version/format, restauration des donnees cross-level `game`, clients, `maxclients`, `maxentities` et `serverflags`; le format TS reste volontairement JSON via hook `readFile` au lieu du bloc binaire C. Commentaire d'en-tete verifie sur le wrapper `g_main.ts` et l'implementation `g_save.ts`.
@@ -73,6 +77,7 @@
 
 ## Tests de reference
 
+- `npm run verify:g-main`: ok le 2026-05-06, couverture renforcee pour `GetGameApi().RunFrame`/`Shutdown`/`ServerCommand` et pour la branche `G_RunFrame -> ExitLevel`.
 - `npm run verify:g-main`: ok le 2026-05-03, couverture ajoutee pour `GetGameApi().ReadLevel`: delegation au port `g_save.ts`, liberation `TAG_LEVEL`, restauration de `level.time`, d'un edict `inuse` et de ses champs.
 - `npm run verify:g-save`: ok le 2026-05-03, confirme `ReadLevel` sur donnees level/edict, references, callbacks, relink, slots clients et erreurs de marqueurs.
 - `npx tsx ./scripts/verify/quake2-sv-ccmds.ts`: ok le 2026-05-03, confirme le branchement serveur `SV_ReadLevelFile -> ge.ReadLevel("current/<map>.sav")`.
@@ -258,4 +263,4 @@
 
 ## Prochain lot recommande
 
-- Continuer avec `G_RunFrame` si le coordinateur veut suivre la prochaine ligne `A verifier` de la matrice.
+- Aucune ligne `A verifier` restante dans `game_g_main.c.md`. Prochain lot recommande: traiter les reliquats `Partiel` historiques (`sm_meat_index`, `snd_fry`, politiques `password`/`spectator_password`/`maxspectators`, `sv_maxvelocity`, reliquat `sv_gravity`) si le coordinateur veut fermer le statut global `Partiel`.

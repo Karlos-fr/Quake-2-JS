@@ -2,10 +2,41 @@
 
 ## Etat courant
 
-- Statut: En cours
-- Dernier lot traite: bloc torso/death `makron_torso_think`, `makron_torso`, `makron_dead`, `makron_die`, avec temporaires locaux `tempent` et `n`.
-- Verdict du dernier lot: Valide pour le torso detache, la mort reguliere, la mort gib, les callbacks de fin de death move et les temporaires locaux justifies.
+- Statut: Termine
+- Dernier lot traite: bloc decision/spawn `Makron_CheckAttack`, `SP_monster_makron`, `MakronSpawn`, `MakronToss`, avec temporaires locaux associes.
+- Verdict du dernier lot: Valide pour les fonctions; `chance`, `tr`, `enemy_infront`, `enemy_range`, `enemy_yaw`, `vec`, `player` et `ent` sont `Non applicable` comme locaux couverts par leurs fonctions.
 - Fichier TS proprietaire: `packages/game/src/m_boss32.ts`
+
+## Session 2026-05-06 - lot decision/spawn final
+
+Lot 10x traite:
+
+- `Makron_CheckAttack` avec les temporaires `chance`, `tr`, `enemy_infront`, `enemy_range`, `enemy_yaw`.
+- `SP_monster_makron`.
+- `MakronSpawn` avec les temporaires `vec`, `player`.
+- `MakronToss` avec le temporaire `ent`.
+
+Corrections:
+
+- `m_boss32.ts`: `Makron_CheckAttack` utilise maintenant le helper porte `random()` pour les trois appels source C `random()`.
+- `m_boss32.ts`: commentaires d'en-tete ajoutes pour `Makron_CheckAttack`, `MakronSpawn` et `MakronToss`.
+- `quake2-m-boss32.ts`: preuves ciblees renforcees pour le masque et les points de trace, les branches melee/missile/far/flying, le cooldown, le RNG Quake II quantifie, l'enregistrement `checkattack`, et le handoff visible `MakronToss -> MakronSpawn`.
+
+Tests lances:
+
+- `npm run verify:m-boss32`
+- `npm run verify:m-boss32:source-parity`
+- `npm run verify:m-boss32:header`
+- `npm run verify:full-game:server-host`
+- `npm run verify:web-render-order`
+- `npm run verify:full-game:three-renderer`
+- `npm run typecheck`
+
+Integration:
+
+- Runtime: valide. `SP_monster_makron` initialise `monsterinfo.checkattack = Makron_CheckAttack`; le flux normal passe par `MakronToss` depuis la mort de Jorg, planifie `MakronSpawn`, puis `walkmonster_start`/`monster_think` et les decisions `ai_run`/`checkattack`.
+- apps/web: valide. Le navigateur consomme le runtime porte via le host full-game; aucune logique Makron parallele ne remplace le spawn, les decisions d'attaque, les sons ou les snapshots.
+- renderer-three: valide. Les sorties visibles attendues sont le modele rider, les frames d'apparition/course/attaque, le saut du Makron sorti de Jorg, puis projectiles/temp entities des attaques; elles transitent par les snapshots, entites refresh et temp entities generiques consommes par `renderer-three`.
 
 ## Session 2026-05-06 - lot torso/death
 
@@ -171,11 +202,7 @@ Integration:
 
 ## Prochain lot recommande
 
-Continuer avec le bloc attaque decisionnelle:
-
-- `Makron_CheckAttack`.
-- Temporaires associes `chance`, `tr`, `enemy_infront`, `enemy_range`, `enemy_yaw`.
-- Garder spawn/MakronToss pour une session separee sauf correction mineure indispensable.
+Aucun pour `m_boss32.c`: toutes les lignes de la matrice sont `Valide` ou `Non applicable`.
 
 ## Session 2026-05-06 - lot callbacks/walk
 

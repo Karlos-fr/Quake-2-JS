@@ -28,6 +28,7 @@ function main(): void {
   verifySourceFunctionsAreExported();
   verifySourceMoveTables();
   verifySourcePrecacheAssets();
+  verifyRandomMacroConsumers();
 
   console.log("quake2-m-boss2-source-parity: ok");
 }
@@ -76,6 +77,26 @@ function verifySourcePrecacheAssets(): void {
 
   assert.deepEqual(runtime.assets.soundPaths, sourceSounds, "SP_monster_boss2 sound precache order");
   assert.equal(runtime.assets.modelPaths[entity.s.modelindex - 1], sourceModel, "SP_monster_boss2 model precache");
+}
+
+function verifyRandomMacroConsumers(): void {
+  for (const [functionName, sourcePattern, tsPattern] of [
+    ["boss2_search", /\brandom\s*\(\s*\)\s*<\s*0\.5/, /\brandom\s*\(\s*\)\s*<\s*0\.5/],
+    ["boss2_attack", /\brandom\s*\(\s*\)\s*<=\s*0\.6/, /\brandom\s*\(\s*\)\s*<=\s*0\.6/],
+    ["boss2_reattack_mg", /\brandom\s*\(\s*\)\s*<=\s*0\.7/, /\brandom\s*\(\s*\)\s*<=\s*0\.7/],
+    ["Boss2_CheckAttack", /\brandom\s*\(\s*\)\s*<\s*chance/, /\brandom\s*\(\s*\)\s*<\s*chance/]
+  ] as const) {
+    const sourceFunction = getFunctionBlock(functionName, sourceWithoutComments);
+    const tsFunction = getTsFunctionBlock(functionName);
+    assert.match(sourceFunction, sourcePattern, `${functionName} source should consume random() macro`);
+    assert.match(tsFunction, tsPattern, `${functionName} TS should consume g_local.random()`);
+    assert.doesNotMatch(tsFunction, /Math\.random\s*\(/, `${functionName} TS should not call Math.random() directly`);
+  }
+
+  const checkAttackTs = getTsFunctionBlock("Boss2_CheckAttack");
+  assert.match(checkAttackTs, /2\s*\*\s*random\s*\(\s*\)/, "Boss2_CheckAttack TS should use g_local.random() for attack_finished");
+  assert.match(checkAttackTs, /random\s*\(\s*\)\s*<\s*0\.3/, "Boss2_CheckAttack TS should use g_local.random() for fly slide choice");
+  assert.doesNotMatch(sourceWithoutComments, /\bcrandom\s*\(/, "m_boss2.c should not consume crandom()");
 }
 
 interface SourceFrame {
@@ -130,7 +151,7 @@ function parseMoves(cSource: string): Map<string, SourceMove> {
 }
 
 function getFunctionBlock(functionName: string, cSource: string): string {
-  const start = cSource.search(new RegExp(`\\b(?:void|qboolean)\\s+${functionName}\\s*\\(`));
+  const start = cSource.search(new RegExp(`\\b(?:void|qboolean)\\s+${functionName}\\s*\\([^;{]*\\)\\s*\\{`));
   assert.notEqual(start, -1, `${functionName} should exist in source`);
   const bodyStart = cSource.indexOf("{", start);
   assert.notEqual(bodyStart, -1, `${functionName} should have a body`);
@@ -148,6 +169,29 @@ function getFunctionBlock(functionName: string, cSource: string): string {
   }
 
   throw new Error(`${functionName} body was not closed`);
+}
+
+function getTsFunctionBlock(functionName: string): string {
+  const tsSource = readFileSync(path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../packages/game/src/m_boss2.ts"), "utf8");
+  const tsWithoutComments = stripComments(tsSource);
+  const start = tsWithoutComments.search(new RegExp(`\\b(?:export\\s+)?function\\s+${functionName}\\s*\\(`));
+  assert.notEqual(start, -1, `${functionName} should exist in m_boss2.ts`);
+  const bodyStart = tsWithoutComments.indexOf("{", start);
+  assert.notEqual(bodyStart, -1, `${functionName} should have a TS body`);
+
+  let depth = 0;
+  for (let i = bodyStart; i < tsWithoutComments.length; i += 1) {
+    if (tsWithoutComments[i] === "{") {
+      depth += 1;
+    } else if (tsWithoutComments[i] === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        return tsWithoutComments.slice(bodyStart, i + 1);
+      }
+    }
+  }
+
+  throw new Error(`${functionName} TS body was not closed`);
 }
 
 function getExport<T>(name: string): T {

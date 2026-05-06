@@ -70,6 +70,7 @@ function main(): void {
   verifyRocketTouchDamageSplashAndVisibleExplosion();
   verifyRocketTouchSkyAndDebrisBranches();
   verifyFireRocketSpawnStateAndDodgeOrder();
+  verifyFireRocketUsesSharedVectoanglesPort();
   verifyFireRocketRuntimeTouchForwardsCollisionContext();
   verifyFireRailDamageModAndVisibleTrail();
   verifyBfgDamageModsAndVisibleEffects();
@@ -993,6 +994,20 @@ function verifyFireRocketRuntimeTouchForwardsCollisionContext(): void {
   rocket.touch?.(rocket, wall, runtime, plane, surface);
   assert.equal(forwardedPlane, plane, "fire_rocket runtime touch callback must forward collision plane to rocket_touch");
   assert.equal(forwardedSurface, surface, "fire_rocket runtime touch callback must forward collision surface to rocket_touch");
+}
+
+function verifyFireRocketUsesSharedVectoanglesPort(): void {
+  const runtime = createHarnessRuntime();
+  const owner = createRuntimeEntity({ classname: "monster_soldier" }, 1);
+  runtime.entities[1] = owner;
+
+  const rocket = fire_rocket(owner, [0, 0, 0], [2, -1, 1], 90, 500, 140, 80, runtime);
+
+  assert.deepEqual(
+    rocket.s.angles,
+    [-24, 334, 0],
+    "fire_rocket must consume g_utils.vectoangles with C truncation and yaw wrapping"
+  );
 }
 
 function verifyFireRocketSpawnStateAndDodgeOrder(): void {

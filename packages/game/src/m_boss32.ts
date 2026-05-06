@@ -1212,6 +1212,19 @@ export function makron_die(
   self.monsterinfo.currentmove = makron_move_death2;
 }
 
+/**
+ * Original name: Makron_CheckAttack
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Checks shot clearance, range and attack cooldown before selecting Makron's missile/melee state.
+ *
+ * Porting notes:
+ * - The C local `enemy_infront` is computed but never used; this port preserves the effective behavior.
+ * - Uses the ported C `random()` helper for missile chance and flying strafe decisions.
+ */
 export function Makron_CheckAttack(self: GameEntity, runtime: GameRuntime): boolean {
   if (!self.enemy) {
     return false;
@@ -1263,14 +1276,14 @@ export function Makron_CheckAttack(self: GameEntity, runtime: GameRuntime): bool
     return false;
   }
 
-  if (Math.random() < chance) {
+  if (random() < chance) {
     self.monsterinfo.attack_state = AS_MISSILE;
-    self.monsterinfo.attack_finished = runtime.time + 2 * Math.random();
+    self.monsterinfo.attack_finished = runtime.time + 2 * random();
     return true;
   }
 
   if ((self.flags & FL_FLY) !== 0) {
-    self.monsterinfo.attack_state = Math.random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
+    self.monsterinfo.attack_state = random() < 0.3 ? AS_SLIDING : AS_STRAIGHT;
   }
 
   return false;
@@ -1350,6 +1363,15 @@ export function SP_monster_makron(self: GameEntity, runtime: GameRuntime): void 
   walkmonster_start(self, runtime);
 }
 
+/**
+ * Original name: MakronSpawn
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Converts the tossed placeholder into monster_makron, then jumps toward `level.sight_client`.
+ */
 export function MakronSpawn(self: GameEntity, runtime: GameRuntime): void {
   SP_monster_makron(self, runtime);
 
@@ -1367,6 +1389,15 @@ export function MakronSpawn(self: GameEntity, runtime: GameRuntime): void {
   self.groundentity = null;
 }
 
+/**
+ * Original name: MakronToss
+ * Source: game/m_boss32.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns a delayed Makron placeholder at Jorg's origin and schedules `MakronSpawn`.
+ */
 export function MakronToss(self: GameEntity, runtime: GameRuntime): void {
   const ent = G_Spawn(runtime);
   ent.nextthink = runtime.time + 0.8;

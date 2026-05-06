@@ -93,209 +93,209 @@
 | `Quake-2-master/game/m_chick.h` | macro | `FRAME_death221` | `packages/game/src/m_chick.ts` | `FRAME_death221` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_chick.h` | macro | `FRAME_death222` | `packages/game/src/m_chick.ts` | `FRAME_death222` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_chick.h` | macro | `FRAME_death223` | `packages/game/src/m_chick.ts` | `FRAME_death223` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck01` | `packages/game/src/m_chick.ts` | `FRAME_duck01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck02` | `packages/game/src/m_chick.ts` | `FRAME_duck02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck03` | `packages/game/src/m_chick.ts` | `FRAME_duck03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck04` | `packages/game/src/m_chick.ts` | `FRAME_duck04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck05` | `packages/game/src/m_chick.ts` | `FRAME_duck05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck06` | `packages/game/src/m_chick.ts` | `FRAME_duck06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck07` | `packages/game/src/m_chick.ts` | `FRAME_duck07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain101` | `packages/game/src/m_chick.ts` | `FRAME_pain101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain102` | `packages/game/src/m_chick.ts` | `FRAME_pain102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain103` | `packages/game/src/m_chick.ts` | `FRAME_pain103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain104` | `packages/game/src/m_chick.ts` | `FRAME_pain104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain105` | `packages/game/src/m_chick.ts` | `FRAME_pain105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain201` | `packages/game/src/m_chick.ts` | `FRAME_pain201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain202` | `packages/game/src/m_chick.ts` | `FRAME_pain202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain203` | `packages/game/src/m_chick.ts` | `FRAME_pain203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain204` | `packages/game/src/m_chick.ts` | `FRAME_pain204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain205` | `packages/game/src/m_chick.ts` | `FRAME_pain205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain301` | `packages/game/src/m_chick.ts` | `FRAME_pain301` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain302` | `packages/game/src/m_chick.ts` | `FRAME_pain302` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain303` | `packages/game/src/m_chick.ts` | `FRAME_pain303` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain304` | `packages/game/src/m_chick.ts` | `FRAME_pain304` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain305` | `packages/game/src/m_chick.ts` | `FRAME_pain305` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain306` | `packages/game/src/m_chick.ts` | `FRAME_pain306` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain307` | `packages/game/src/m_chick.ts` | `FRAME_pain307` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain308` | `packages/game/src/m_chick.ts` | `FRAME_pain308` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain309` | `packages/game/src/m_chick.ts` | `FRAME_pain309` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain310` | `packages/game/src/m_chick.ts` | `FRAME_pain310` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain311` | `packages/game/src/m_chick.ts` | `FRAME_pain311` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain312` | `packages/game/src/m_chick.ts` | `FRAME_pain312` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain313` | `packages/game/src/m_chick.ts` | `FRAME_pain313` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain314` | `packages/game/src/m_chick.ts` | `FRAME_pain314` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain315` | `packages/game/src/m_chick.ts` | `FRAME_pain315` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain316` | `packages/game/src/m_chick.ts` | `FRAME_pain316` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain317` | `packages/game/src/m_chick.ts` | `FRAME_pain317` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain318` | `packages/game/src/m_chick.ts` | `FRAME_pain318` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain319` | `packages/game/src/m_chick.ts` | `FRAME_pain319` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain320` | `packages/game/src/m_chick.ts` | `FRAME_pain320` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain321` | `packages/game/src/m_chick.ts` | `FRAME_pain321` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand101` | `packages/game/src/m_chick.ts` | `FRAME_stand101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand102` | `packages/game/src/m_chick.ts` | `FRAME_stand102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand103` | `packages/game/src/m_chick.ts` | `FRAME_stand103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand104` | `packages/game/src/m_chick.ts` | `FRAME_stand104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand105` | `packages/game/src/m_chick.ts` | `FRAME_stand105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand106` | `packages/game/src/m_chick.ts` | `FRAME_stand106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand107` | `packages/game/src/m_chick.ts` | `FRAME_stand107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand108` | `packages/game/src/m_chick.ts` | `FRAME_stand108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand109` | `packages/game/src/m_chick.ts` | `FRAME_stand109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand110` | `packages/game/src/m_chick.ts` | `FRAME_stand110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand111` | `packages/game/src/m_chick.ts` | `FRAME_stand111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand112` | `packages/game/src/m_chick.ts` | `FRAME_stand112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand113` | `packages/game/src/m_chick.ts` | `FRAME_stand113` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand114` | `packages/game/src/m_chick.ts` | `FRAME_stand114` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand115` | `packages/game/src/m_chick.ts` | `FRAME_stand115` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand116` | `packages/game/src/m_chick.ts` | `FRAME_stand116` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand117` | `packages/game/src/m_chick.ts` | `FRAME_stand117` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand118` | `packages/game/src/m_chick.ts` | `FRAME_stand118` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand119` | `packages/game/src/m_chick.ts` | `FRAME_stand119` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand120` | `packages/game/src/m_chick.ts` | `FRAME_stand120` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand121` | `packages/game/src/m_chick.ts` | `FRAME_stand121` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand122` | `packages/game/src/m_chick.ts` | `FRAME_stand122` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand123` | `packages/game/src/m_chick.ts` | `FRAME_stand123` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand124` | `packages/game/src/m_chick.ts` | `FRAME_stand124` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand125` | `packages/game/src/m_chick.ts` | `FRAME_stand125` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand126` | `packages/game/src/m_chick.ts` | `FRAME_stand126` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand127` | `packages/game/src/m_chick.ts` | `FRAME_stand127` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand128` | `packages/game/src/m_chick.ts` | `FRAME_stand128` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand129` | `packages/game/src/m_chick.ts` | `FRAME_stand129` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand130` | `packages/game/src/m_chick.ts` | `FRAME_stand130` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand201` | `packages/game/src/m_chick.ts` | `FRAME_stand201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand202` | `packages/game/src/m_chick.ts` | `FRAME_stand202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand203` | `packages/game/src/m_chick.ts` | `FRAME_stand203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand204` | `packages/game/src/m_chick.ts` | `FRAME_stand204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand205` | `packages/game/src/m_chick.ts` | `FRAME_stand205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand206` | `packages/game/src/m_chick.ts` | `FRAME_stand206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand207` | `packages/game/src/m_chick.ts` | `FRAME_stand207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand208` | `packages/game/src/m_chick.ts` | `FRAME_stand208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand209` | `packages/game/src/m_chick.ts` | `FRAME_stand209` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand210` | `packages/game/src/m_chick.ts` | `FRAME_stand210` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand211` | `packages/game/src/m_chick.ts` | `FRAME_stand211` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand212` | `packages/game/src/m_chick.ts` | `FRAME_stand212` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand213` | `packages/game/src/m_chick.ts` | `FRAME_stand213` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand214` | `packages/game/src/m_chick.ts` | `FRAME_stand214` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand215` | `packages/game/src/m_chick.ts` | `FRAME_stand215` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand216` | `packages/game/src/m_chick.ts` | `FRAME_stand216` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand217` | `packages/game/src/m_chick.ts` | `FRAME_stand217` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand218` | `packages/game/src/m_chick.ts` | `FRAME_stand218` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand219` | `packages/game/src/m_chick.ts` | `FRAME_stand219` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand220` | `packages/game/src/m_chick.ts` | `FRAME_stand220` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand221` | `packages/game/src/m_chick.ts` | `FRAME_stand221` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand222` | `packages/game/src/m_chick.ts` | `FRAME_stand222` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand223` | `packages/game/src/m_chick.ts` | `FRAME_stand223` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand224` | `packages/game/src/m_chick.ts` | `FRAME_stand224` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand225` | `packages/game/src/m_chick.ts` | `FRAME_stand225` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand226` | `packages/game/src/m_chick.ts` | `FRAME_stand226` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand227` | `packages/game/src/m_chick.ts` | `FRAME_stand227` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand228` | `packages/game/src/m_chick.ts` | `FRAME_stand228` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand229` | `packages/game/src/m_chick.ts` | `FRAME_stand229` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand230` | `packages/game/src/m_chick.ts` | `FRAME_stand230` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk01` | `packages/game/src/m_chick.ts` | `FRAME_walk01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk02` | `packages/game/src/m_chick.ts` | `FRAME_walk02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk03` | `packages/game/src/m_chick.ts` | `FRAME_walk03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk04` | `packages/game/src/m_chick.ts` | `FRAME_walk04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk05` | `packages/game/src/m_chick.ts` | `FRAME_walk05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk06` | `packages/game/src/m_chick.ts` | `FRAME_walk06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk07` | `packages/game/src/m_chick.ts` | `FRAME_walk07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk08` | `packages/game/src/m_chick.ts` | `FRAME_walk08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk09` | `packages/game/src/m_chick.ts` | `FRAME_walk09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk10` | `packages/game/src/m_chick.ts` | `FRAME_walk10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk11` | `packages/game/src/m_chick.ts` | `FRAME_walk11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk12` | `packages/game/src/m_chick.ts` | `FRAME_walk12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk13` | `packages/game/src/m_chick.ts` | `FRAME_walk13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk14` | `packages/game/src/m_chick.ts` | `FRAME_walk14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk15` | `packages/game/src/m_chick.ts` | `FRAME_walk15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk16` | `packages/game/src/m_chick.ts` | `FRAME_walk16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk17` | `packages/game/src/m_chick.ts` | `FRAME_walk17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk18` | `packages/game/src/m_chick.ts` | `FRAME_walk18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk19` | `packages/game/src/m_chick.ts` | `FRAME_walk19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk20` | `packages/game/src/m_chick.ts` | `FRAME_walk20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk21` | `packages/game/src/m_chick.ts` | `FRAME_walk21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk22` | `packages/game/src/m_chick.ts` | `FRAME_walk22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk23` | `packages/game/src/m_chick.ts` | `FRAME_walk23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk24` | `packages/game/src/m_chick.ts` | `FRAME_walk24` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk25` | `packages/game/src/m_chick.ts` | `FRAME_walk25` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk26` | `packages/game/src/m_chick.ts` | `FRAME_walk26` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk27` | `packages/game/src/m_chick.ts` | `FRAME_walk27` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln201` | `packages/game/src/m_chick.ts` | `FRAME_recln201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln202` | `packages/game/src/m_chick.ts` | `FRAME_recln202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln203` | `packages/game/src/m_chick.ts` | `FRAME_recln203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln204` | `packages/game/src/m_chick.ts` | `FRAME_recln204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln205` | `packages/game/src/m_chick.ts` | `FRAME_recln205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln206` | `packages/game/src/m_chick.ts` | `FRAME_recln206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln207` | `packages/game/src/m_chick.ts` | `FRAME_recln207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln208` | `packages/game/src/m_chick.ts` | `FRAME_recln208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln209` | `packages/game/src/m_chick.ts` | `FRAME_recln209` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln210` | `packages/game/src/m_chick.ts` | `FRAME_recln210` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln211` | `packages/game/src/m_chick.ts` | `FRAME_recln211` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln212` | `packages/game/src/m_chick.ts` | `FRAME_recln212` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln213` | `packages/game/src/m_chick.ts` | `FRAME_recln213` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln214` | `packages/game/src/m_chick.ts` | `FRAME_recln214` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln215` | `packages/game/src/m_chick.ts` | `FRAME_recln215` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln216` | `packages/game/src/m_chick.ts` | `FRAME_recln216` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln217` | `packages/game/src/m_chick.ts` | `FRAME_recln217` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln218` | `packages/game/src/m_chick.ts` | `FRAME_recln218` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln219` | `packages/game/src/m_chick.ts` | `FRAME_recln219` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln220` | `packages/game/src/m_chick.ts` | `FRAME_recln220` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln221` | `packages/game/src/m_chick.ts` | `FRAME_recln221` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln222` | `packages/game/src/m_chick.ts` | `FRAME_recln222` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln223` | `packages/game/src/m_chick.ts` | `FRAME_recln223` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln224` | `packages/game/src/m_chick.ts` | `FRAME_recln224` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln225` | `packages/game/src/m_chick.ts` | `FRAME_recln225` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln226` | `packages/game/src/m_chick.ts` | `FRAME_recln226` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln227` | `packages/game/src/m_chick.ts` | `FRAME_recln227` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln228` | `packages/game/src/m_chick.ts` | `FRAME_recln228` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln229` | `packages/game/src/m_chick.ts` | `FRAME_recln229` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln230` | `packages/game/src/m_chick.ts` | `FRAME_recln230` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln231` | `packages/game/src/m_chick.ts` | `FRAME_recln231` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln232` | `packages/game/src/m_chick.ts` | `FRAME_recln232` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln233` | `packages/game/src/m_chick.ts` | `FRAME_recln233` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln234` | `packages/game/src/m_chick.ts` | `FRAME_recln234` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln235` | `packages/game/src/m_chick.ts` | `FRAME_recln235` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln236` | `packages/game/src/m_chick.ts` | `FRAME_recln236` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln237` | `packages/game/src/m_chick.ts` | `FRAME_recln237` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln238` | `packages/game/src/m_chick.ts` | `FRAME_recln238` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln239` | `packages/game/src/m_chick.ts` | `FRAME_recln239` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln240` | `packages/game/src/m_chick.ts` | `FRAME_recln240` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln101` | `packages/game/src/m_chick.ts` | `FRAME_recln101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln102` | `packages/game/src/m_chick.ts` | `FRAME_recln102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln103` | `packages/game/src/m_chick.ts` | `FRAME_recln103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln104` | `packages/game/src/m_chick.ts` | `FRAME_recln104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln105` | `packages/game/src/m_chick.ts` | `FRAME_recln105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln106` | `packages/game/src/m_chick.ts` | `FRAME_recln106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln107` | `packages/game/src/m_chick.ts` | `FRAME_recln107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln108` | `packages/game/src/m_chick.ts` | `FRAME_recln108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln109` | `packages/game/src/m_chick.ts` | `FRAME_recln109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln110` | `packages/game/src/m_chick.ts` | `FRAME_recln110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln111` | `packages/game/src/m_chick.ts` | `FRAME_recln111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln112` | `packages/game/src/m_chick.ts` | `FRAME_recln112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln113` | `packages/game/src/m_chick.ts` | `FRAME_recln113` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln114` | `packages/game/src/m_chick.ts` | `FRAME_recln114` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln115` | `packages/game/src/m_chick.ts` | `FRAME_recln115` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln116` | `packages/game/src/m_chick.ts` | `FRAME_recln116` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln117` | `packages/game/src/m_chick.ts` | `FRAME_recln117` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln118` | `packages/game/src/m_chick.ts` | `FRAME_recln118` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln119` | `packages/game/src/m_chick.ts` | `FRAME_recln119` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln120` | `packages/game/src/m_chick.ts` | `FRAME_recln120` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln121` | `packages/game/src/m_chick.ts` | `FRAME_recln121` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln122` | `packages/game/src/m_chick.ts` | `FRAME_recln122` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln123` | `packages/game/src/m_chick.ts` | `FRAME_recln123` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln124` | `packages/game/src/m_chick.ts` | `FRAME_recln124` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln125` | `packages/game/src/m_chick.ts` | `FRAME_recln125` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln126` | `packages/game/src/m_chick.ts` | `FRAME_recln126` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln127` | `packages/game/src/m_chick.ts` | `FRAME_recln127` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln128` | `packages/game/src/m_chick.ts` | `FRAME_recln128` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln129` | `packages/game/src/m_chick.ts` | `FRAME_recln129` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln130` | `packages/game/src/m_chick.ts` | `FRAME_recln130` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln131` | `packages/game/src/m_chick.ts` | `FRAME_recln131` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln132` | `packages/game/src/m_chick.ts` | `FRAME_recln132` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln133` | `packages/game/src/m_chick.ts` | `FRAME_recln133` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln134` | `packages/game/src/m_chick.ts` | `FRAME_recln134` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln135` | `packages/game/src/m_chick.ts` | `FRAME_recln135` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln136` | `packages/game/src/m_chick.ts` | `FRAME_recln136` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln137` | `packages/game/src/m_chick.ts` | `FRAME_recln137` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln138` | `packages/game/src/m_chick.ts` | `FRAME_recln138` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln139` | `packages/game/src/m_chick.ts` | `FRAME_recln139` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln140` | `packages/game/src/m_chick.ts` | `FRAME_recln140` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_chick.h` | macro | `MODEL_SCALE` | `packages/game/src/m_chick.ts` | `MODEL_SCALE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck01` | `packages/game/src/m_chick.ts` | `FRAME_duck01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck02` | `packages/game/src/m_chick.ts` | `FRAME_duck02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck03` | `packages/game/src/m_chick.ts` | `FRAME_duck03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck04` | `packages/game/src/m_chick.ts` | `FRAME_duck04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck05` | `packages/game/src/m_chick.ts` | `FRAME_duck05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck06` | `packages/game/src/m_chick.ts` | `FRAME_duck06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_duck07` | `packages/game/src/m_chick.ts` | `FRAME_duck07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain101` | `packages/game/src/m_chick.ts` | `FRAME_pain101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain102` | `packages/game/src/m_chick.ts` | `FRAME_pain102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain103` | `packages/game/src/m_chick.ts` | `FRAME_pain103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain104` | `packages/game/src/m_chick.ts` | `FRAME_pain104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain105` | `packages/game/src/m_chick.ts` | `FRAME_pain105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain201` | `packages/game/src/m_chick.ts` | `FRAME_pain201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain202` | `packages/game/src/m_chick.ts` | `FRAME_pain202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain203` | `packages/game/src/m_chick.ts` | `FRAME_pain203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain204` | `packages/game/src/m_chick.ts` | `FRAME_pain204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain205` | `packages/game/src/m_chick.ts` | `FRAME_pain205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain301` | `packages/game/src/m_chick.ts` | `FRAME_pain301` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain302` | `packages/game/src/m_chick.ts` | `FRAME_pain302` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain303` | `packages/game/src/m_chick.ts` | `FRAME_pain303` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain304` | `packages/game/src/m_chick.ts` | `FRAME_pain304` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain305` | `packages/game/src/m_chick.ts` | `FRAME_pain305` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain306` | `packages/game/src/m_chick.ts` | `FRAME_pain306` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain307` | `packages/game/src/m_chick.ts` | `FRAME_pain307` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain308` | `packages/game/src/m_chick.ts` | `FRAME_pain308` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain309` | `packages/game/src/m_chick.ts` | `FRAME_pain309` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain310` | `packages/game/src/m_chick.ts` | `FRAME_pain310` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain311` | `packages/game/src/m_chick.ts` | `FRAME_pain311` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain312` | `packages/game/src/m_chick.ts` | `FRAME_pain312` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain313` | `packages/game/src/m_chick.ts` | `FRAME_pain313` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain314` | `packages/game/src/m_chick.ts` | `FRAME_pain314` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain315` | `packages/game/src/m_chick.ts` | `FRAME_pain315` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain316` | `packages/game/src/m_chick.ts` | `FRAME_pain316` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain317` | `packages/game/src/m_chick.ts` | `FRAME_pain317` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain318` | `packages/game/src/m_chick.ts` | `FRAME_pain318` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain319` | `packages/game/src/m_chick.ts` | `FRAME_pain319` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain320` | `packages/game/src/m_chick.ts` | `FRAME_pain320` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_pain321` | `packages/game/src/m_chick.ts` | `FRAME_pain321` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand101` | `packages/game/src/m_chick.ts` | `FRAME_stand101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand102` | `packages/game/src/m_chick.ts` | `FRAME_stand102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand103` | `packages/game/src/m_chick.ts` | `FRAME_stand103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand104` | `packages/game/src/m_chick.ts` | `FRAME_stand104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand105` | `packages/game/src/m_chick.ts` | `FRAME_stand105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand106` | `packages/game/src/m_chick.ts` | `FRAME_stand106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand107` | `packages/game/src/m_chick.ts` | `FRAME_stand107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand108` | `packages/game/src/m_chick.ts` | `FRAME_stand108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand109` | `packages/game/src/m_chick.ts` | `FRAME_stand109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand110` | `packages/game/src/m_chick.ts` | `FRAME_stand110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand111` | `packages/game/src/m_chick.ts` | `FRAME_stand111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand112` | `packages/game/src/m_chick.ts` | `FRAME_stand112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand113` | `packages/game/src/m_chick.ts` | `FRAME_stand113` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand114` | `packages/game/src/m_chick.ts` | `FRAME_stand114` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand115` | `packages/game/src/m_chick.ts` | `FRAME_stand115` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand116` | `packages/game/src/m_chick.ts` | `FRAME_stand116` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand117` | `packages/game/src/m_chick.ts` | `FRAME_stand117` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand118` | `packages/game/src/m_chick.ts` | `FRAME_stand118` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand119` | `packages/game/src/m_chick.ts` | `FRAME_stand119` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand120` | `packages/game/src/m_chick.ts` | `FRAME_stand120` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand121` | `packages/game/src/m_chick.ts` | `FRAME_stand121` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand122` | `packages/game/src/m_chick.ts` | `FRAME_stand122` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand123` | `packages/game/src/m_chick.ts` | `FRAME_stand123` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand124` | `packages/game/src/m_chick.ts` | `FRAME_stand124` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand125` | `packages/game/src/m_chick.ts` | `FRAME_stand125` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand126` | `packages/game/src/m_chick.ts` | `FRAME_stand126` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand127` | `packages/game/src/m_chick.ts` | `FRAME_stand127` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand128` | `packages/game/src/m_chick.ts` | `FRAME_stand128` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand129` | `packages/game/src/m_chick.ts` | `FRAME_stand129` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand130` | `packages/game/src/m_chick.ts` | `FRAME_stand130` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand201` | `packages/game/src/m_chick.ts` | `FRAME_stand201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand202` | `packages/game/src/m_chick.ts` | `FRAME_stand202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand203` | `packages/game/src/m_chick.ts` | `FRAME_stand203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand204` | `packages/game/src/m_chick.ts` | `FRAME_stand204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand205` | `packages/game/src/m_chick.ts` | `FRAME_stand205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand206` | `packages/game/src/m_chick.ts` | `FRAME_stand206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand207` | `packages/game/src/m_chick.ts` | `FRAME_stand207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand208` | `packages/game/src/m_chick.ts` | `FRAME_stand208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand209` | `packages/game/src/m_chick.ts` | `FRAME_stand209` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand210` | `packages/game/src/m_chick.ts` | `FRAME_stand210` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand211` | `packages/game/src/m_chick.ts` | `FRAME_stand211` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand212` | `packages/game/src/m_chick.ts` | `FRAME_stand212` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand213` | `packages/game/src/m_chick.ts` | `FRAME_stand213` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand214` | `packages/game/src/m_chick.ts` | `FRAME_stand214` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand215` | `packages/game/src/m_chick.ts` | `FRAME_stand215` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand216` | `packages/game/src/m_chick.ts` | `FRAME_stand216` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand217` | `packages/game/src/m_chick.ts` | `FRAME_stand217` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand218` | `packages/game/src/m_chick.ts` | `FRAME_stand218` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand219` | `packages/game/src/m_chick.ts` | `FRAME_stand219` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand220` | `packages/game/src/m_chick.ts` | `FRAME_stand220` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand221` | `packages/game/src/m_chick.ts` | `FRAME_stand221` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand222` | `packages/game/src/m_chick.ts` | `FRAME_stand222` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand223` | `packages/game/src/m_chick.ts` | `FRAME_stand223` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand224` | `packages/game/src/m_chick.ts` | `FRAME_stand224` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand225` | `packages/game/src/m_chick.ts` | `FRAME_stand225` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand226` | `packages/game/src/m_chick.ts` | `FRAME_stand226` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand227` | `packages/game/src/m_chick.ts` | `FRAME_stand227` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand228` | `packages/game/src/m_chick.ts` | `FRAME_stand228` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand229` | `packages/game/src/m_chick.ts` | `FRAME_stand229` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_stand230` | `packages/game/src/m_chick.ts` | `FRAME_stand230` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk01` | `packages/game/src/m_chick.ts` | `FRAME_walk01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk02` | `packages/game/src/m_chick.ts` | `FRAME_walk02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk03` | `packages/game/src/m_chick.ts` | `FRAME_walk03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk04` | `packages/game/src/m_chick.ts` | `FRAME_walk04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk05` | `packages/game/src/m_chick.ts` | `FRAME_walk05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk06` | `packages/game/src/m_chick.ts` | `FRAME_walk06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk07` | `packages/game/src/m_chick.ts` | `FRAME_walk07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk08` | `packages/game/src/m_chick.ts` | `FRAME_walk08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk09` | `packages/game/src/m_chick.ts` | `FRAME_walk09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk10` | `packages/game/src/m_chick.ts` | `FRAME_walk10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk11` | `packages/game/src/m_chick.ts` | `FRAME_walk11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk12` | `packages/game/src/m_chick.ts` | `FRAME_walk12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk13` | `packages/game/src/m_chick.ts` | `FRAME_walk13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk14` | `packages/game/src/m_chick.ts` | `FRAME_walk14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk15` | `packages/game/src/m_chick.ts` | `FRAME_walk15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk16` | `packages/game/src/m_chick.ts` | `FRAME_walk16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk17` | `packages/game/src/m_chick.ts` | `FRAME_walk17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk18` | `packages/game/src/m_chick.ts` | `FRAME_walk18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk19` | `packages/game/src/m_chick.ts` | `FRAME_walk19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk20` | `packages/game/src/m_chick.ts` | `FRAME_walk20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk21` | `packages/game/src/m_chick.ts` | `FRAME_walk21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk22` | `packages/game/src/m_chick.ts` | `FRAME_walk22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk23` | `packages/game/src/m_chick.ts` | `FRAME_walk23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk24` | `packages/game/src/m_chick.ts` | `FRAME_walk24` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk25` | `packages/game/src/m_chick.ts` | `FRAME_walk25` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk26` | `packages/game/src/m_chick.ts` | `FRAME_walk26` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_walk27` | `packages/game/src/m_chick.ts` | `FRAME_walk27` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln201` | `packages/game/src/m_chick.ts` | `FRAME_recln201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln202` | `packages/game/src/m_chick.ts` | `FRAME_recln202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln203` | `packages/game/src/m_chick.ts` | `FRAME_recln203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln204` | `packages/game/src/m_chick.ts` | `FRAME_recln204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln205` | `packages/game/src/m_chick.ts` | `FRAME_recln205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln206` | `packages/game/src/m_chick.ts` | `FRAME_recln206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln207` | `packages/game/src/m_chick.ts` | `FRAME_recln207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln208` | `packages/game/src/m_chick.ts` | `FRAME_recln208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln209` | `packages/game/src/m_chick.ts` | `FRAME_recln209` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln210` | `packages/game/src/m_chick.ts` | `FRAME_recln210` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln211` | `packages/game/src/m_chick.ts` | `FRAME_recln211` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln212` | `packages/game/src/m_chick.ts` | `FRAME_recln212` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln213` | `packages/game/src/m_chick.ts` | `FRAME_recln213` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln214` | `packages/game/src/m_chick.ts` | `FRAME_recln214` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln215` | `packages/game/src/m_chick.ts` | `FRAME_recln215` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln216` | `packages/game/src/m_chick.ts` | `FRAME_recln216` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln217` | `packages/game/src/m_chick.ts` | `FRAME_recln217` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln218` | `packages/game/src/m_chick.ts` | `FRAME_recln218` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln219` | `packages/game/src/m_chick.ts` | `FRAME_recln219` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln220` | `packages/game/src/m_chick.ts` | `FRAME_recln220` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln221` | `packages/game/src/m_chick.ts` | `FRAME_recln221` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln222` | `packages/game/src/m_chick.ts` | `FRAME_recln222` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln223` | `packages/game/src/m_chick.ts` | `FRAME_recln223` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln224` | `packages/game/src/m_chick.ts` | `FRAME_recln224` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln225` | `packages/game/src/m_chick.ts` | `FRAME_recln225` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln226` | `packages/game/src/m_chick.ts` | `FRAME_recln226` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln227` | `packages/game/src/m_chick.ts` | `FRAME_recln227` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln228` | `packages/game/src/m_chick.ts` | `FRAME_recln228` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln229` | `packages/game/src/m_chick.ts` | `FRAME_recln229` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln230` | `packages/game/src/m_chick.ts` | `FRAME_recln230` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln231` | `packages/game/src/m_chick.ts` | `FRAME_recln231` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln232` | `packages/game/src/m_chick.ts` | `FRAME_recln232` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln233` | `packages/game/src/m_chick.ts` | `FRAME_recln233` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln234` | `packages/game/src/m_chick.ts` | `FRAME_recln234` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln235` | `packages/game/src/m_chick.ts` | `FRAME_recln235` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln236` | `packages/game/src/m_chick.ts` | `FRAME_recln236` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln237` | `packages/game/src/m_chick.ts` | `FRAME_recln237` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln238` | `packages/game/src/m_chick.ts` | `FRAME_recln238` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln239` | `packages/game/src/m_chick.ts` | `FRAME_recln239` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln240` | `packages/game/src/m_chick.ts` | `FRAME_recln240` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln101` | `packages/game/src/m_chick.ts` | `FRAME_recln101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln102` | `packages/game/src/m_chick.ts` | `FRAME_recln102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln103` | `packages/game/src/m_chick.ts` | `FRAME_recln103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln104` | `packages/game/src/m_chick.ts` | `FRAME_recln104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln105` | `packages/game/src/m_chick.ts` | `FRAME_recln105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln106` | `packages/game/src/m_chick.ts` | `FRAME_recln106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln107` | `packages/game/src/m_chick.ts` | `FRAME_recln107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln108` | `packages/game/src/m_chick.ts` | `FRAME_recln108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln109` | `packages/game/src/m_chick.ts` | `FRAME_recln109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln110` | `packages/game/src/m_chick.ts` | `FRAME_recln110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln111` | `packages/game/src/m_chick.ts` | `FRAME_recln111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln112` | `packages/game/src/m_chick.ts` | `FRAME_recln112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln113` | `packages/game/src/m_chick.ts` | `FRAME_recln113` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln114` | `packages/game/src/m_chick.ts` | `FRAME_recln114` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln115` | `packages/game/src/m_chick.ts` | `FRAME_recln115` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln116` | `packages/game/src/m_chick.ts` | `FRAME_recln116` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln117` | `packages/game/src/m_chick.ts` | `FRAME_recln117` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln118` | `packages/game/src/m_chick.ts` | `FRAME_recln118` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln119` | `packages/game/src/m_chick.ts` | `FRAME_recln119` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln120` | `packages/game/src/m_chick.ts` | `FRAME_recln120` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln121` | `packages/game/src/m_chick.ts` | `FRAME_recln121` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln122` | `packages/game/src/m_chick.ts` | `FRAME_recln122` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln123` | `packages/game/src/m_chick.ts` | `FRAME_recln123` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln124` | `packages/game/src/m_chick.ts` | `FRAME_recln124` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln125` | `packages/game/src/m_chick.ts` | `FRAME_recln125` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln126` | `packages/game/src/m_chick.ts` | `FRAME_recln126` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln127` | `packages/game/src/m_chick.ts` | `FRAME_recln127` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln128` | `packages/game/src/m_chick.ts` | `FRAME_recln128` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln129` | `packages/game/src/m_chick.ts` | `FRAME_recln129` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln130` | `packages/game/src/m_chick.ts` | `FRAME_recln130` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln131` | `packages/game/src/m_chick.ts` | `FRAME_recln131` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln132` | `packages/game/src/m_chick.ts` | `FRAME_recln132` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln133` | `packages/game/src/m_chick.ts` | `FRAME_recln133` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln134` | `packages/game/src/m_chick.ts` | `FRAME_recln134` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln135` | `packages/game/src/m_chick.ts` | `FRAME_recln135` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln136` | `packages/game/src/m_chick.ts` | `FRAME_recln136` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln137` | `packages/game/src/m_chick.ts` | `FRAME_recln137` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln138` | `packages/game/src/m_chick.ts` | `FRAME_recln138` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln139` | `packages/game/src/m_chick.ts` | `FRAME_recln139` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `FRAME_recln140` | `packages/game/src/m_chick.ts` | `FRAME_recln140` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_chick.h` | macro | `MODEL_SCALE` | `packages/game/src/m_chick.ts` | `MODEL_SCALE` | Valide | A redecouper |  |

@@ -47,29 +47,29 @@
 | `Quake-2-master/game/g_main.c` | global | `sv_maplist` | `packages/game/src/g_main.ts` |  | Valide | A redecouper | Init default/flags match C (`""`, `0`); `EndDMLevel` tokenizes the cvar with the C separators, picks next listed map or wraps to first, then starts intermission. Comments checked on `InitGame`/`EndDMLevel`. `apps/web` reaches map changes through server-backed runtime and `gamemap`; no renderer-three output expected beyond later normal map load. `npm run verify:g-main`, inline cvar/default maplist check, `npm run verify:full-game:rules-transitions`, `npm run typecheck` OK. |
 | `Quake-2-master/game/g_main.c` | function | `RunEntity` | `packages/game/src/g_main.ts` |  | Non applicable | A redecouper | `RunEntity` est seulement une declaration prototype dans `g_main.c`, sans implementation ni export dans `game_export_t`; le flux attendu est l'appel `G_RunFrame` -> `G_RunEntity` importe de `g_phys.ts`. Commentaires d'en-tete verifies sur `G_RunFrame`/`G_RunEntity`; test cible ajoute dans `scripts/verify/quake2-g-main.ts`. Runtime integre via `SV_Frame`/`ge.RunFrame`; apps/web via full-game server-backed; renderer-three consomme les entites visibles en aval par snapshots/client refresh. Tests: `verify:g-main`, `verify:g-phys`, `typecheck` OK. |
 | `Quake-2-master/game/g_main.c` | function | `ReadLevel` | `packages/game/src/g_main.ts` | `ReadLevel` | Valide | A redecouper | Slot export `GetGameApi().ReadLevel` verifie: delegation vers `g_save.ts`, `TAG_LEVEL` libere, level time et edict in-use restaures; commentaires d'en-tete verifies dans `g_main.ts` et `g_save.ts`; test ajoute dans `scripts/verify/quake2-g-main.ts`. Tests OK: `verify:g-main`, `verify:g-save`, `quake2-sv-ccmds.ts`, `verify:web-save-storage`, `verify:full-game:save-slots`, `verify:full-game:three-renderer`, `typecheck`. |
-| `Quake-2-master/game/g_main.c` | function | `G_RunFrame` | `packages/game/src/g_main.ts` | `G_RunFrame` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `ShutdownGame` | `packages/game/src/g_main.ts` | `ShutdownGame` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `GetGameAPI` | `packages/game/src/g_main.ts` | `GetGameApi` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `Sys_Error` | `packages/game/src/g_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `argptr` | `packages/game/src/g_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `text` | `packages/game/src/g_save.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `Com_Printf` | `packages/game/src/g_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `argptr` | `packages/game/src/g_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `text` | `packages/game/src/g_save.ts` | `text` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `ClientEndServerFrames` | `packages/game/src/g_main.ts` | `ClientEndServerFrames` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `i` | `packages/game/src/g_save.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `CreateTargetChangeLevel` | `packages/game/src/g_main.ts` | `CreateTargetChangeLevel` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `EndDMLevel` | `packages/game/src/g_main.ts` | `EndDMLevel` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `seps` | `packages/game/src/g_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `CheckDMRules` | `packages/game/src/g_main.ts` | `CheckDMRules` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `i` | `packages/game/src/g_save.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `ExitLevel` | `packages/game/src/g_main.ts` | `ExitLevel` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `i` | `packages/game/src/g_save.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `command` | `packages/game/src/g_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | function | `G_RunFrame` | `packages/game/src/g_main.ts` | `G_RunFrame` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `i` | `packages/game/src/g_save.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | A verifier | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | function | `G_RunFrame` | `packages/game/src/g_main.ts` | `G_RunFrame` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | function | `ShutdownGame` | `packages/game/src/g_main.ts` | `ShutdownGame` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | function | `GetGameAPI` | `packages/game/src/g_main.ts` | `GetGameApi` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | function | `Sys_Error` | `packages/game/src/g_main.ts` |  | Non applicable | A redecouper | Helper de linkage `#ifndef GAME_HARD_LINKED`; le port modulaire TS utilise les hooks `error` des imports moteur/renderer, pas un symbole game exporte. |
+| `Quake-2-master/game/g_main.c` | global | `argptr` | `packages/game/src/g_main.ts` |  | Non applicable | A redecouper | Variable locale `va_list` de `Sys_Error`, non entite proprietaire runtime. |
+| `Quake-2-master/game/g_main.c` | global | `text` | `packages/game/src/g_save.ts` | `text` | Non applicable | A redecouper | Buffer local de helper `Sys_Error`, non global porte; aucune ownership `g_save.ts` attendue. |
+| `Quake-2-master/game/g_main.c` | function | `Com_Printf` | `packages/game/src/g_main.ts` |  | Non applicable | A redecouper | Helper de linkage `#ifndef GAME_HARD_LINKED`; les impressions passent par `gi.dprintf`/hooks, pas un export gameplay. |
+| `Quake-2-master/game/g_main.c` | global | `argptr` | `packages/game/src/g_main.ts` |  | Non applicable | A redecouper | Variable locale `va_list` de `Com_Printf`, non entite proprietaire runtime. |
+| `Quake-2-master/game/g_main.c` | global | `text` | `packages/game/src/g_save.ts` | `text` | Non applicable | A redecouper | Buffer local de helper `Com_Printf`, non global porte; aucune ownership `g_save.ts` attendue. |
+| `Quake-2-master/game/g_main.c` | function | `ClientEndServerFrames` | `packages/game/src/g_main.ts` | `ClientEndServerFrames` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | global | `i` | `packages/game/src/g_save.ts` | `i` | Non applicable | A redecouper | Variable locale de boucle dans `ClientEndServerFrames`, non global porte; cible auto `g_save.ts` incorrecte. |
+| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | Non applicable | A redecouper | Variable locale pointeur dans `ClientEndServerFrames`, materialisee par `const ent` TS. |
+| `Quake-2-master/game/g_main.c` | function | `CreateTargetChangeLevel` | `packages/game/src/g_main.ts` | `CreateTargetChangeLevel` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | Non applicable | A redecouper | Variable locale pointeur dans `CreateTargetChangeLevel`, non entite runtime autonome. |
+| `Quake-2-master/game/g_main.c` | function | `EndDMLevel` | `packages/game/src/g_main.ts` | `EndDMLevel` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | Non applicable | A redecouper | Variable locale pointeur dans `EndDMLevel`, non entite runtime autonome. |
+| `Quake-2-master/game/g_main.c` | global | `seps` | `packages/game/src/g_main.ts` |  | Valide | A redecouper | Separateurs C `space/comma/newline/cr` portes par `tokenizeMapList`; preuve maplist dans `verify:g-main`. |
+| `Quake-2-master/game/g_main.c` | function | `CheckDMRules` | `packages/game/src/g_main.ts` | `CheckDMRules` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | global | `i` | `packages/game/src/g_save.ts` | `i` | Non applicable | A redecouper | Variable locale de boucle dans `CheckDMRules`, non global porte; cible auto `g_save.ts` incorrecte. |
+| `Quake-2-master/game/g_main.c` | function | `ExitLevel` | `packages/game/src/g_main.ts` | `ExitLevel` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | global | `i` | `packages/game/src/g_save.ts` | `i` | Non applicable | A redecouper | Variable locale de boucle dans `ExitLevel`, non global porte; cible auto `g_save.ts` incorrecte. |
+| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | Non applicable | A redecouper | Variable locale pointeur dans `ExitLevel`, non entite runtime autonome. |
+| `Quake-2-master/game/g_main.c` | global | `command` | `packages/game/src/g_main.ts` |  | Non applicable | A redecouper | Buffer local `command[256]` remplace par construction de string dans `ExitLevel`; preuve `gamemap` dans `verify:g-main`. |
+| `Quake-2-master/game/g_main.c` | function | `G_RunFrame` | `packages/game/src/g_main.ts` | `G_RunFrame` | Valide | A redecouper |  |
+| `Quake-2-master/game/g_main.c` | global | `i` | `packages/game/src/g_save.ts` | `i` | Non applicable | A redecouper | Variable locale de boucle dans `G_RunFrame`, non global porte; cible auto `g_save.ts` incorrecte. |
+| `Quake-2-master/game/g_main.c` | global | `ent` | `packages/game/src/g_main.ts` | `ent` | Non applicable | A redecouper | Variable locale pointeur dans `G_RunFrame`, materialisee par `const ent` TS. |

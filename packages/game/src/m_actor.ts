@@ -43,7 +43,8 @@ import {
   SOLID_TRIGGER,
   SVF_DEADMONSTER,
   SVF_NOCLIENT,
-  damage_t
+  damage_t,
+  random
 } from "./g_local.js";
 import { ai_charge, ai_move, ai_run, ai_stand, ai_turn, ai_walk } from "./g_ai.js";
 import { ThrowGib, ThrowHead } from "./g_misc.js";
@@ -722,6 +723,10 @@ export function actor_run(self: GameEntity, runtime: GameRuntime): void {
  *
  * Behavior:
  * - Applies skin changes, pain debounce, player-directed taunts and pain animations.
+ *
+ * Porting notes:
+ * - Uses the shared `g_local.random()` helper for the two original C `random()` macro branches.
+ * - Keeps the local integer RNG helper for `rand() % 3` pain/chat selection.
  */
 export function actor_pain(
   self: GameEntity,
@@ -740,10 +745,10 @@ export function actor_pain(
 
   self.pain_debounce_time = runtime.time + 3;
 
-  if (other?.client && Math.random() < 0.4) {
+  if (other?.client && random() < 0.4) {
     const v = subtractVec3(other.s.origin, self.s.origin);
     self.ideal_yaw = vectoyaw(v);
-    self.monsterinfo.currentmove = Math.random() < 0.5 ? actor_move_flipoff : actor_move_taunt;
+    self.monsterinfo.currentmove = random() < 0.5 ? actor_move_flipoff : actor_move_taunt;
     emitGameCprintf(runtime, other, PRINT_CHAT, `${actorNameForEntity(self)}: ${messages[randomInt(3)]}!\n`);
     return;
   }

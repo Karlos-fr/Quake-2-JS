@@ -428,6 +428,13 @@ export const brain_move_pain1: GameMonsterMove = {
   endfunc: brain_run
 };
 
+/**
+ * Original name: brain_duck_down
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Enters the ducked state, lowers the collision max Z, enables damage and relinks the entity.
+ */
 export function brain_duck_down(self: GameEntity, runtime: GameRuntime): void {
   if ((self.monsterinfo.aiflags & AI_DUCKED) !== 0) {
     return;
@@ -438,6 +445,13 @@ export function brain_duck_down(self: GameEntity, runtime: GameRuntime): void {
   linkGameEntity(runtime, self);
 }
 
+/**
+ * Original name: brain_duck_hold
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Holds or releases the current duck frame based on `monsterinfo.pausetime`.
+ */
 export function brain_duck_hold(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.time >= self.monsterinfo.pausetime) {
     self.monsterinfo.aiflags &= ~AI_HOLD_FRAME;
@@ -446,6 +460,13 @@ export function brain_duck_hold(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: brain_duck_up
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Leaves the ducked state, restores the collision max Z, restores aim damage and relinks the entity.
+ */
 export function brain_duck_up(self: GameEntity, runtime: GameRuntime): void {
   self.monsterinfo.aiflags &= ~AI_DUCKED;
   self.maxs[2] += 32;
@@ -475,6 +496,8 @@ export const brain_move_duck: GameMonsterMove = {
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Uses the C random macro bucket, adopts the attacker if needed and starts the duck move.
+ * Porting notes: `runtime.time` replaces `level.time`; `random()` is the game macro wrapper, not `Math.random` directly.
  */
 export function brain_dodge(self: GameEntity, attacker: GameEntity | null, eta: number, runtime: GameRuntime): void {
   if (random() > 0.25) {
@@ -505,10 +528,25 @@ export const brain_move_death1: GameMonsterMove = {
   endfunc: brain_dead
 };
 
+/**
+ * Original name: brain_swing_right
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Emits the right swing body sound.
+ */
 export function brain_swing_right(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_melee1, SOUND_MELEE1, soundOptions(CHAN_BODY));
 }
 
+/**
+ * Original name: brain_hit_right
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Close
+ * Behavior: Fires the right melee hit trace using `self.maxs[0]` and emits the hit sound on success.
+ * Porting notes: Preserves the C `rand() % 5` integer damage bucket through `randomInt(5)`.
+ */
 export function brain_hit_right(self: GameEntity, runtime: GameRuntime): void {
   const aim: vec3_t = [MELEE_DISTANCE, self.maxs[0], 8];
   if (fire_hit(self, aim, 15 + randomInt(5), 40, runtime)) {
@@ -516,10 +554,25 @@ export function brain_hit_right(self: GameEntity, runtime: GameRuntime): void {
   }
 }
 
+/**
+ * Original name: brain_swing_left
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Emits the left swing body sound.
+ */
 export function brain_swing_left(self: GameEntity, runtime: GameRuntime): void {
   emitRegisteredGameSound(runtime, self, sound_melee2, SOUND_MELEE2, soundOptions(CHAN_BODY));
 }
 
+/**
+ * Original name: brain_hit_left
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Close
+ * Behavior: Fires the left melee hit trace using `self.mins[0]` and emits the hit sound on success.
+ * Porting notes: Preserves the C `rand() % 5` integer damage bucket through `randomInt(5)`.
+ */
 export function brain_hit_left(self: GameEntity, runtime: GameRuntime): void {
   const aim: vec3_t = [MELEE_DISTANCE, self.mins[0], 8];
   if (fire_hit(self, aim, 15 + randomInt(5), 40, runtime)) {
@@ -544,12 +597,28 @@ export const brain_move_attack1: GameMonsterMove = {
   endfunc: brain_run
 };
 
+/**
+ * Original name: brain_chest_open
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Clears the reattack flag, drops power armor and emits the chest-open attack sound.
+ * Porting notes: The C magic spawnflag `65536` is named `BRAIN_TENTACLE_REATTACK`.
+ */
 export function brain_chest_open(self: GameEntity, runtime: GameRuntime): void {
   self.spawnflags &= ~BRAIN_TENTACLE_REATTACK;
   self.monsterinfo.power_armor_type = POWER_ARMOR_NONE;
   emitRegisteredGameSound(runtime, self, sound_chest_open, SOUND_CHEST_OPEN, soundOptions(CHAN_BODY));
 }
 
+/**
+ * Original name: brain_tentacle_attack
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Close
+ * Behavior: Performs the tentacle melee hit, optionally arms a reattack on skill > 0, then emits retract sound.
+ * Porting notes: Preserves the C `rand() % 5` integer damage bucket through `randomInt(5)`.
+ */
 export function brain_tentacle_attack(self: GameEntity, runtime: GameRuntime): void {
   const aim: vec3_t = [MELEE_DISTANCE, 0, 8];
   if (fire_hit(self, aim, 10 + randomInt(5), -600, runtime) && runtime.skill > 0) {
@@ -558,6 +627,14 @@ export function brain_tentacle_attack(self: GameEntity, runtime: GameRuntime): v
   emitRegisteredGameSound(runtime, self, sound_tentacles_retract, SOUND_TENTACLES_RETRACT, soundOptions(CHAN_WEAPON));
 }
 
+/**
+ * Original name: brain_chest_closed
+ * Source: game/m_brain.c
+ * Category: Ported
+ * Fidelity level: Strict
+ * Behavior: Restores screen armor and loops into attack1 when the tentacle reattack flag is set.
+ * Porting notes: The C magic spawnflag `65536` is named `BRAIN_TENTACLE_REATTACK`.
+ */
 export function brain_chest_closed(self: GameEntity): void {
   self.monsterinfo.power_armor_type = POWER_ARMOR_SCREEN;
   if ((self.spawnflags & BRAIN_TENTACLE_REATTACK) !== 0) {
@@ -587,6 +664,8 @@ export const brain_move_attack2: GameMonsterMove = {
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Randomly selects the claw combo or tentacle attack move.
+ * Porting notes: Uses the game `random()` macro wrapper to preserve the C threshold behavior.
  */
 export function brain_melee(self: GameEntity): void {
   if (random() <= 0.5) {
@@ -626,6 +705,8 @@ export function brain_run(self: GameEntity): void {
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Updates damaged skin, debounces pain, suppresses nightmare animations and selects a pain move.
+ * Porting notes: `runtime.time` and `runtime.skill` replace `level.time` and `skill->value`.
  */
 export function brain_pain(
   self: GameEntity,
@@ -665,6 +746,7 @@ export function brain_pain(
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Strict
+ * Behavior: Shrinks the dead bounding box, switches to toss movement, marks deadmonster and relinks.
  */
 export function brain_dead(self: GameEntity, runtime: GameRuntime): void {
   setVec3(self.mins, -16, -16, -24);
@@ -680,6 +762,8 @@ export function brain_dead(self: GameEntity, runtime: GameRuntime): void {
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Clears armor/effects, handles gib death, otherwise plays death sound and selects a death move.
+ * Porting notes: Gib spawning uses the shared TS `ThrowGib`/`ThrowHead` helpers and preserves counts/models.
  */
 export function brain_die(
   self: GameEntity,
@@ -723,6 +807,8 @@ export function brain_die(
  * Source: game/m_brain.c
  * Category: Ported
  * Fidelity level: Close
+ * Behavior: Precaches assets, initializes monster_brain stats/callbacks/model and starts walkmonster setup.
+ * Porting notes: Uses runtime registration/link helpers in place of `gi.soundindex`, `gi.modelindex` and `gi.linkentity`.
  */
 export function SP_monster_brain(self: GameEntity, runtime: GameRuntime): void {
   if (runtime.deathmatch) {

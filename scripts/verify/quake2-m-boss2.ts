@@ -12,6 +12,7 @@
 import { strict as assert } from "node:assert";
 
 import {
+  AngleVectors,
   EF_ROCKET,
   temp_event_t,
   type trace_t,
@@ -52,6 +53,7 @@ import {
   type GameEntity,
   type GameRuntime
 } from "../../packages/game/src/index.js";
+import { vectoangles } from "../../packages/game/src/g_utils.js";
 import { ED_CallSpawn } from "../../packages/game/src/g_spawn.js";
 import { findGameSaveFunction, findGameSaveMove } from "../../packages/game/src/g_save.js";
 import {
@@ -428,7 +430,7 @@ function verifyStateTransitions(): void {
   boss.enemy = farEnemy;
   withMathRandom([0.5], () => boss2_attack(boss));
   assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_pre_mg);
-  withMathRandom([0.6], () => boss.monsterinfo.attack?.(boss, runtime));
+  withMathRandom([0.599], () => boss.monsterinfo.attack?.(boss, runtime));
   assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_pre_mg);
   withMathRandom([0.9], () => boss2_attack(boss));
   assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_rocket);
@@ -442,7 +444,7 @@ function verifyStateTransitions(): void {
   boss.s.angles = [0, 0, 0];
   withMathRandom([0.5], () => boss2_reattack_mg(boss));
   assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_mg);
-  withMathRandom([0.7], () => boss2_reattack_mg(boss));
+  withMathRandom([0.699], () => boss2_reattack_mg(boss));
   assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_mg);
   withMathRandom([0.71], () => boss2_reattack_mg(boss));
   assert.equal(boss.monsterinfo.currentmove, boss2_move_attack_post_mg);
@@ -583,6 +585,14 @@ function verifyBoss2SingleMachinegunShot(
     enemy.s.origin[2] - 0.2 * enemy.velocity[2] + enemy.viewheight
   ];
   const expectedAim = normalizeTestVec3(subtractTestVec3(expectedTarget, expectedStart));
+  const expectedVectors = AngleVectors(vectoangles(expectedAim));
+  const expectedShotEnd = addTestVec3(
+    addTestVec3(
+      addTestVec3(expectedStart, scaleTestVec3(expectedVectors.forward, 8192)),
+      scaleTestVec3(expectedVectors.right, quakeCrandomFromMath(0.5) * DEFAULT_BULLET_HSPREAD)
+    ),
+    scaleTestVec3(expectedVectors.up, quakeCrandomFromMath(0.5) * DEFAULT_BULLET_VSPREAD)
+  );
   const shotTraces: Array<{ start: vec3_t; end: vec3_t }> = [];
 
   SP_monster_boss2(boss, runtime);
@@ -610,8 +620,7 @@ function verifyBoss2SingleMachinegunShot(
 
   assert.equal(shotTraces.length, 1);
   assert.deepEqual(shotTraces[0]!.start, expectedStart);
-  const actualAim = normalizeTestVec3(subtractTestVec3(shotTraces[0]!.end, shotTraces[0]!.start));
-  assertVec3AlmostEqual(actualAim, expectedAim, `machinegun aim ${flashNumber}`);
+  assertVec3AlmostEqual(shotTraces[0]!.end, expectedShotEnd, `machinegun end ${flashNumber}`);
 
   assert.equal(DEFAULT_BULLET_HSPREAD, 300);
   assert.equal(DEFAULT_BULLET_VSPREAD, 500);
@@ -832,6 +841,14 @@ function subtractTestVec3(a: vec3_t, b: vec3_t): vec3_t {
   return [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
 }
 
+function addTestVec3(a: vec3_t, b: vec3_t): vec3_t {
+  return [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+}
+
+function scaleTestVec3(value: vec3_t, scale: number): vec3_t {
+  return [value[0] * scale, value[1] * scale, value[2] * scale];
+}
+
 function normalizeTestVec3(value: vec3_t): vec3_t {
   const length = vectorLength(value);
   return length === 0 ? [0, 0, 0] : [value[0] / length, value[1] / length, value[2] / length];
@@ -865,4 +882,8 @@ function withMathRandom(values: number[], callback: () => void): void {
 
 function quakeRandomFromMath(value: number): number {
   return Math.floor(value * 0x8000) / 0x7fff;
+}
+
+function quakeCrandomFromMath(value: number): number {
+  return (2 * quakeRandomFromMath(value)) - 1;
 }

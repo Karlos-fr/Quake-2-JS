@@ -283,7 +283,7 @@ let sound_search1 = 0;
  * - Randomly plays the boss2 search voice on the same 50 percent branch as the original.
  */
 export function boss2_search(self: GameEntity, runtime: GameRuntime): void {
-  if (Math.random() < 0.5) {
+  if (random() < 0.5) {
     emitRegisteredGameSound(runtime, self, sound_search1, SOUND_SEARCH1, soundOptions(CHAN_VOICE, ATTN_NONE));
   }
 }
@@ -521,7 +521,7 @@ export function boss2_attack(self: GameEntity): void {
   }
 
   const distance = lengthVec3(subtractVec3(self.enemy.s.origin, self.s.origin));
-  if (distance <= 125 || Math.random() <= 0.6) {
+  if (distance <= 125 || random() <= 0.6) {
     self.monsterinfo.currentmove = boss2_move_attack_pre_mg;
   } else {
     self.monsterinfo.currentmove = boss2_move_attack_rocket;
@@ -555,7 +555,7 @@ export function boss2_attack_mg(self: GameEntity): void {
  * - Keeps a defensive missing-enemy guard; normal runtime reaches this through monster AI with an enemy.
  */
 export function boss2_reattack_mg(self: GameEntity): void {
-  if (self.enemy && infront(self, self.enemy) && Math.random() <= 0.7) {
+  if (self.enemy && infront(self, self.enemy) && random() <= 0.7) {
     self.monsterinfo.currentmove = boss2_move_attack_mg;
   } else {
     self.monsterinfo.currentmove = boss2_move_attack_post_mg;

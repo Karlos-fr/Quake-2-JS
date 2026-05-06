@@ -165,6 +165,7 @@
     "verify:p-weapon": "npx tsx ./scripts/verify/quake2-p-weapon.ts",
     "verify:m-actor:header": "npx tsx ./scripts/verify/quake2-m-actor-header.ts",
     "verify:m-actor": "npx tsx ./scripts/verify/quake2-m-actor.ts",
+    "verify:m-actor:source-parity": "npx tsx ./scripts/verify/quake2-m-actor-source-parity.ts",
     "verify:m-berserk:header": "npx tsx ./scripts/verify/quake2-m-berserk-header.ts",
     "verify:m-berserk": "npx tsx ./scripts/verify/quake2-m-berserk.ts",
     "verify:m-berserk:source-parity": "npx tsx ./scripts/verify/quake2-m-berserk-source-parity.ts",

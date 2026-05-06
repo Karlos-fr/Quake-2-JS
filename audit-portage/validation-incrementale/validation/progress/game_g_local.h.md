@@ -1709,7 +1709,35 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: notes `random` et `crandom` mises a jour; verdicts maintenus `Partiel`.
 - Tests: `npm run verify:g-utils:source-parity` OK; `npm run verify:g-utils` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run typecheck` OK.
 
-- Continuer avec un lot non reserve des consommateurs restants de `random`/`crandom`, en priorisant les lignes `Math.random()` encore visibles dans `m_actor.ts`, `m_boss2.ts` ou `m_boss32.ts` seulement quand ces fichiers ne sont pas reserves par leurs agents proprietaires. Passer a `teleport_time` seulement si le coordinateur veut separer cette migration globale.
+- 2026-05-06: sous-lot 10x de reprise `random`/`crandom`, migration/verification de `packages/game/src/m_actor.ts` et `packages/game/src/m_boss2.ts`.
+- Verdict: `Partiel` maintenu pour les 2 macros: les consommateurs non reserves du lot sont harmonises vers `g_local.random()` quand le C utilise la macro flottante; aucun consommateur `crandom()` actif dans ces deux familles. Le reliquat concret reste `m_boss32.ts`, reserve par un autre agent pendant cette session.
+- Source H/C comparee:
+  - `g_local.h` definit `random()` comme `((rand () & 0x7fff) / ((float)0x7fff))` et `crandom()` comme `2.0 * (random() - 0.5)`.
+  - `m_actor.c` consomme `random()` dans les deux branches de `actor_pain` (`< 0.4`, puis `< 0.5`); `actor_stand`, `actor_pain`, `actor_die` et `actor_attack` utilisent `rand()` entier, hors macros flottantes.
+  - `m_boss2.c` consomme `random()` dans `boss2_search`, `boss2_attack`, `boss2_reattack_mg` et `Boss2_CheckAttack`; aucun appel actif a `crandom()`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_local.ts`: helpers `random` et `crandom` presents avec commentaires d'en-tete conformes.
+  - `packages/game/src/m_actor.ts`: `actor_pain` consomme maintenant le helper proprietaire `random`; les tirages `rand() %`/`rand() &` restent sur `randomInt`.
+  - `packages/game/src/m_boss2.ts`: `boss2_search`, `boss2_attack`, `boss2_reattack_mg` et `Boss2_CheckAttack` consomment le helper proprietaire `random`.
+- Runtime: integration attendue et branchee via `SP_misc_actor`/`SP_monster_boss2`, `g_spawn.ts`, callbacks `pain`/`search`/`attack`/`checkattack`, `monster_think`/`M_MoveFrame`, `G_RunEntity` et `G_RunFrame`; les tirages affectent taunts/chat, sons, choix machinegun/rocket, reattaque, attack state, frames visibles, muzzle flashes et projectiles.
+- apps/web: integration attendue indirectement via host full-game/local, commandes/snapshots, sons, chat/cprintf, entites monstres, projectiles/temp entities et ordre de rendu; aucune logique parallele web detectee pour `m_actor`/`m_boss2`/`random`.
+- renderer-three: integration indirecte attendue. Les tirages affectent sorties visibles/audibles: modeles actor/boss2, frames, sons, muzzle flashes, balles/rockets, temp entities et scene; le renderer consomme ces sorties via snapshots/client/refresh/Three, sans appel direct attendu vers les helpers RNG.
+- Commentaires/documentation: commentaires d'en-tete de `random` et `crandom` verifies; commentaire de `actor_pain` renforce pour documenter `g_local.random`; commentaires `m_boss2` existants verifies et source-parity renforce.
+- Corrections appliquees:
+  - `packages/game/src/m_actor.ts`: import de `random`, remplacement des deux `Math.random()` correspondant a la macro C `random()` dans `actor_pain`.
+  - `packages/game/src/m_boss2.ts`: remplacement des trois `Math.random()` restants correspondant a la macro C `random()`; `Boss2_CheckAttack` etait deja branche.
+  - `scripts/verify/quake2-m-actor-source-parity.ts`: nouveau harness source/TS pour consommateurs `random()` actifs et usages entiers hors macro.
+  - `scripts/verify/quake2-m-boss2-source-parity.ts`: assertions explicites sur consommateurs macro `random()` actifs et absence de `crandom()`.
+  - `scripts/verify/quake2-m-boss2.ts`: attentes de seuil/spread ajustees a la quantification C 15 bits.
+  - `package.json`: script `verify:m-actor:source-parity`.
+- Tests: `npm run verify:m-actor:header` OK; `npm run verify:m-actor` OK; `npm run verify:m-actor:source-parity` OK; `npm run verify:m-boss2:header` OK; `npm run verify:m-boss2` OK; `npm run verify:m-boss2:source-parity` OK; `npm run verify:g-local:header` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- 2026-05-06: consolidation coordinateur apres retour de l'agent `m_boss32.c`.
+- Verdict: `Valide` pour les macros `random` et `crandom`. Le reliquat `m_boss32.ts` est ferme par la session proprietaire `m_boss32.c`: `Makron_CheckAttack` utilise maintenant `g_local.random()` pour les decisions missile/strafe C, et aucun consommateur `crandom()` actif n'a ete trouve dans `m_boss32.c`.
+- Preuves rattachees: `npm run verify:m-boss32`, `npm run verify:m-boss32:source-parity`, `npm run verify:m-boss32:header`, `npm run verify:full-game:server-host`, `npm run verify:web-render-order`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+- Runtime/apps-web/renderer-three: le dernier consommateur ferme est branche via `MakronToss -> MakronSpawn -> SP_monster_makron`, `monsterinfo.checkattack`, `G_RunFrame` et les snapshots/refresh. Les sorties visibles attendues (modele Makron, frames, projectiles/temp entities et scene) restent consommees par le flux client/renderer generique; aucun appel direct renderer au helper RNG n'est attendu.
+
+- Continuer avec le prochain lot de `g_local.h` hors RNG, en reprenant les globals suivants de la matrice (`maxentities`, `deathmatch`, `coop`, `dmflags`, `skill`) seulement si le coordinateur veut poursuivre ce fichier.
 
 ## Blocages
 
