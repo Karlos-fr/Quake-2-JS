@@ -40,34 +40,34 @@
 | `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_start_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_start_run` | Valide | A redecouper | Table C/TS: 5 frames `ai_run`, dist 8, callback `flipper_run` index 4. |
 | `Quake-2-master/game/m_flipper.c` | global | `flipper_move_start_run` | `packages/game/src/m_flipper.ts` | `flipper_move_start_run` | Valide | A redecouper | Move C/TS: `FRAME_flphor01` -> `FRAME_flphor05`, endfunc absent. |
 | `Quake-2-master/game/m_flipper.c` | function | `flipper_start_run` | `packages/game/src/m_flipper.ts` | `flipper_start_run` | Valide | A redecouper | Commentaire d'en-tete TS verifie; spawn callback `monsterinfo.run` et save registry verifies. |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_pain2` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_pain2` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_pain2` | `packages/game/src/m_flipper.ts` | `flipper_move_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_pain1` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_pain1` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_pain1` | `packages/game/src/m_flipper.ts` | `flipper_move_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_bite` | `packages/game/src/m_flipper.ts` | `flipper_bite` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_preattack` | `packages/game/src/m_flipper.ts` | `flipper_preattack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_attack` | `packages/game/src/m_flipper.ts` | `flipper_frames_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_attack` | `packages/game/src/m_flipper.ts` | `flipper_frames_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_attack` | `packages/game/src/m_flipper.ts` | `flipper_move_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_melee` | `packages/game/src/m_flipper.ts` | `flipper_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_pain` | `packages/game/src/m_flipper.ts` | `flipper_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `n` | `packages/game/src/m_flipper.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_dead` | `packages/game/src/m_flipper.ts` | `flipper_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_death` | `packages/game/src/m_flipper.ts` | `flipper_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_death` | `packages/game/src/m_flipper.ts` | `flipper_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_death` | `packages/game/src/m_flipper.ts` | `flipper_move_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_sight` | `packages/game/src/m_flipper.ts` | `flipper_sight` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `flipper_die` | `packages/game/src/m_flipper.ts` | `flipper_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | global | `n` | `packages/game/src/m_flipper.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_flipper.c` | function | `SP_monster_flipper` | `packages/game/src/m_flipper.ts` | `SP_monster_flipper` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_pain2` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_pain2` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_pain2` | `packages/game/src/m_flipper.ts` | `flipper_move_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_pain1` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_pain1` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_pain1` | `packages/game/src/m_flipper.ts` | `flipper_move_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_bite` | `packages/game/src/m_flipper.ts` | `flipper_bite` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_preattack` | `packages/game/src/m_flipper.ts` | `flipper_preattack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_attack` | `packages/game/src/m_flipper.ts` | `flipper_frames_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_attack` | `packages/game/src/m_flipper.ts` | `flipper_frames_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_attack` | `packages/game/src/m_flipper.ts` | `flipper_move_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_melee` | `packages/game/src/m_flipper.ts` | `flipper_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_pain` | `packages/game/src/m_flipper.ts` | `flipper_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `n` | `packages/game/src/m_flipper.ts` | `n` | Non applicable | A redecouper | Variable locale C de `flipper_pain`, pas une entite proprietaire autonome. |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_dead` | `packages/game/src/m_flipper.ts` | `flipper_dead` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_frames_death` | `packages/game/src/m_flipper.ts` | `flipper_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | table | `flipper_frames_death` | `packages/game/src/m_flipper.ts` | `flipper_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `flipper_move_death` | `packages/game/src/m_flipper.ts` | `flipper_move_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_sight` | `packages/game/src/m_flipper.ts` | `flipper_sight` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | function | `flipper_die` | `packages/game/src/m_flipper.ts` | `flipper_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_flipper.c` | global | `n` | `packages/game/src/m_flipper.ts` | `n` | Non applicable | A redecouper | Variable locale C de `flipper_die`, pas une entite proprietaire autonome. |
+| `Quake-2-master/game/m_flipper.c` | function | `SP_monster_flipper` | `packages/game/src/m_flipper.ts` | `SP_monster_flipper` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_stand` | `packages/game/src/m_flipper.ts` | `flipper_frames_stand` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
 | `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_run` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
 | `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_run_start` | `packages/game/src/m_flipper.ts` | `flipper_frames_run_start` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
 | `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_walk` | `packages/game/src/m_flipper.ts` | `flipper_frames_walk` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
 | `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_start_run` | `packages/game/src/m_flipper.ts` | `flipper_frames_start_run` | Valide | matched | Declaratif coherent avec la table source; doublon attendu global/table/declarative verifie. |
-| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_pain2` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain2` | A verifier | matched |  |
-| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_pain1` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain1` | A verifier | matched |  |
-| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_attack` | `packages/game/src/m_flipper.ts` | `flipper_frames_attack` | A verifier | matched |  |
-| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_death` | `packages/game/src/m_flipper.ts` | `flipper_frames_death` | A verifier | matched |  |
+| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_pain2` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain2` | Valide | matched |  |
+| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_pain1` | `packages/game/src/m_flipper.ts` | `flipper_frames_pain1` | Valide | matched |  |
+| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_attack` | `packages/game/src/m_flipper.ts` | `flipper_frames_attack` | Valide | matched |  |
+| `Quake-2-master/game/m_flipper.c` | declarative:monster-tables | `flipper_frames_death` | `packages/game/src/m_flipper.ts` | `flipper_frames_death` | Valide | matched |  |

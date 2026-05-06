@@ -19,6 +19,28 @@
   - `npm run typecheck`
 - Corrections appliquees: aucune correction TS necessaire.
 
+## Session 2026-05-06 - fermeture attaques, pain, death, spawn
+
+- Lot traite: `floater_fire_blaster`; variables locales `effect`; `floater_frames_activate` / `floater_move_activate`; attaques `floater_frames_attack1/2/3`, `floater_move_attack1/2/3`, callbacks `floater_wham`, `floater_zap`, `floater_attack`, `floater_melee`; pain `floater_frames_pain1/2/3`, `floater_move_pain1/2/3`, `floater_pain` et local `n`; death `floater_frames_death`, `floater_move_death`, `floater_dead`, `floater_die`; spawn `SP_monster_floater`; entrees declaratives correspondantes.
+- Verdict: Valide pour toutes les entites portees du lot. `effect` et `n` sont marques `Non applicable` car ce sont des variables locales C auditees via leurs fonctions proprietaires.
+- Checklist appliquee: ownership confirme sur `packages/game/src/m_float.ts`; pas de doublon proprietaire detecte; noms TS d'origine conserves pour fonctions/moves/tables; comparaison C/TS faite pour sons, frames, callbacks, effets blaster/zap, degats, `monsterinfo.currentmove`, bbox, flags, spawn et precache; commentaires d'en-tete verifies pour toutes les fonctions portees du lot; `g_spawn.ts`, `g_save.ts` et `index.ts` verifies comme branchements/adapters export/save pertinents.
+- Comparaison C/TS: `floater_fire_blaster` conserve le choix `EF_HYPERBLASTER` sur `FRAME_attak104` et `FRAME_attak107`, le flash `MZ2_FLOAT_BLASTER_1`, la visee vers `enemy->viewheight`, degat 1 et vitesse 1000. Les tables activate/attack/pain/death conservent les plages de frames, distances 0, callbacks de frame et endfuncs source. `floater_wham` conserve son `CHAN_WEAPON`, son `fire_hit`, `5 + rand() % 6` et kick -50. `floater_zap` conserve l'offset manuel `[18.5, -0.9, 10]`, `TE_SPLASH`, count 32, color 1, multicast PVS, degat energie `5 + rand() % 6` et knockback -10. `floater_attack`, `floater_melee`, `floater_pain`, `floater_dead`, `floater_die` et `SP_monster_floater` conservent les branches source attendues; `floater_move_activate` et `floater_move_death` sont portes comme declaratif source meme si le flux C normal ne les branche pas activement.
+- Runtime: integre. `ED_CallSpawn` atteint `SP_monster_floater`; `flymonster_start` arme le demarrage; `G_RunFrame` / `monster_think` / `M_MoveFrame` consomment les moves et callbacks attaque/pain/melee via `monsterinfo`. Les blasters passent par `monster_fire_blaster`, muzzleflash runtime et entite bolt; le zap passe par temp entity `TE_SPLASH` puis `T_Damage`; `BecomeExplosion1` ferme la mort comme le C.
+- apps/web: integre. Le flux web/local host consomme le runtime porte, les sons precaches/draines, les snapshots et les temp entities issues du gameplay. Aucune logique parallele `monster_floater` dans `apps/web` ne masque un manque runtime.
+- renderer-three: integre pour les sorties visibles attendues. Frames/modeles passent par snapshots/refresh entities et interpolation MD2; blaster/muzzleflash, `TE_SPLASH`, sons et explosion transitent par les flux client/local gameplay consommes en aval. Pas de branchement renderer direct supplementaire attendu dans `m_float.ts`.
+- Tests lances:
+  - `npm run verify:m-float`
+  - `npm run verify:m-float:header`
+  - `npm run verify:m-float:source-parity`
+  - `npm run verify:full-game:server-host`
+  - `npm run verify:web-render-order`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run verify:full-game:render-source`
+  - `npm run verify:full-game:server-snapshots`
+  - `npm run verify:full-game:audio-routing`
+  - `npm run verify:local-gameplay-sync`
+- Corrections appliquees: aucune correction TS necessaire; mise a jour de la matrice et de ce progress file uniquement.
+
 ## Prochain lot recommande
 
-- Continuer avec `floater_fire_blaster`, `effect` local associe, puis bloc attaque coherent `floater_frames_attack1` / `floater_move_attack1` si le lot reste raisonnable.
+- Aucun lot restant dans `game_m_float.c.md`: toutes les lignes sont `Valide` ou `Non applicable`.

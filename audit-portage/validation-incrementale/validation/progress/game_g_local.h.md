@@ -1756,7 +1756,27 @@
   - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: les 14 lignes du lot passent a `Valide`, et leur cible proprietaire est corrigee vers `packages/game/src/g_main.ts` / `GameMainCvars.*`.
 - Tests: `npm run verify:g-main` OK; `npm run verify:g-spawn` OK; `npm run verify:g-local:header` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
 
-- Prochain lot recommande: continuer les globals cvars voisins `sv_rollspeed`, `sv_rollangle`, puis les cvars vue/arme `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`; inclure `sv_cheats`, `maxclients`, `maxspectators`, `flood_msgs`, `flood_persecond`, `flood_waitdelay`, `sv_maplist` seulement si le lot reste coherent.
+- 2026-05-06: lot ENCORE 20x PLUS GROS des globals cvars voisins `g_local.h`: `sv_rollspeed`, `sv_rollangle`, `gun_x`, `gun_y`, `gun_z`, `run_pitch`, `run_roll`, `bob_up`, `bob_pitch`, `bob_roll`, puis `sv_cheats`, `maxclients`, `maxspectators`, `flood_msgs`, `flood_persecond`, `flood_waitdelay`, `sv_maplist`.
+- Verdict: `Valide` pour les 17 globals du lot.
+- Source H/C comparee:
+  - `g_local.h` declare les `extern cvar_t *` du lot; `gun_x`, `gun_y` et `gun_z` sont declares sur une meme ligne et etaient absents de la matrice generee, donc ajoutes explicitement.
+  - `g_save.c::InitGame` definit les cvars avec les defaults/flags originaux: `gun_x=0`, `gun_y=0`, `gun_z=0`, `sv_rollspeed=200`, `sv_rollangle=2`, `run_pitch=0.002`, `run_roll=0.005`, `bob_up=0.005`, `bob_pitch=0.002`, `bob_roll=0.002`, `cheats=0/CVAR_SERVERINFO|CVAR_LATCH`, `maxclients=4/CVAR_SERVERINFO|CVAR_LATCH`, `maxspectators=4/CVAR_SERVERINFO`, `flood_msgs=4`, `flood_persecond=4`, `flood_waitdelay=10`, `sv_maplist=""`.
+  - `p_view.c` consomme les cvars roll/vue/arme dans `SV_CalcRoll`, `SV_CalcViewOffset`, `SV_CalcGunOffset`; `g_cmds.c` consomme `sv_cheats` et les cvars flood; `g_main.c`/`p_client.c` consomment `maxclients`, `maxspectators` et `sv_maplist`.
+- Cibles TS verifiees:
+  - `packages/game/src/g_main.ts`: `GameMainCvars`, `InitGame`, `ClientEndServerFrames`, `ClientConnect`, `EndDMLevel`, `applyMainCvarsToRuntime`.
+  - `packages/game/src/p_view.ts`: `SV_CalcRoll`, `SV_CalcViewOffset`, `SV_CalcGunOffset`, `ClientEndServerFrame`.
+  - `packages/game/src/g_cmds.ts`: gates cheats et flood-protection.
+  - `packages/game/src/g_spawn.ts`: resynchronisation `maxclients`/`maxentities` et slots edicts joueurs.
+- Runtime: integration attendue et branchee via `GetGameApi.Init -> InitGame`, `G_RunFrame -> ClientEndServerFrames`, `ClientEndServerFrame`, commandes client, `ClientConnect`, `EndDMLevel`, spawns et scans clients. Les cvars vue/arme modifient `player_state_t` (`angles`, `kick_angles`, `viewoffset`, `gunoffset`), `sv_cheats` bloque les commandes de triche en deathmatch, les cvars flood verrouillent le chat, `maxclients`/`maxspectators` bornent joueurs/spectateurs, et `sv_maplist` pilote la rotation deathmatch.
+- apps/web: integration attendue via le host full-game/local et les commandes client; aucune logique parallele web ne remplace les cvars du lot. Les sorties visibles ou HUD/camera passent par snapshots/playerstate/configstrings et restent couvertes par `verify:full-game:server-host`, `verify:web-render-order` et `verify:local-gameplay-sync`.
+- renderer-three: integration indirecte attendue pour les cvars vue/arme car elles produisent camera/playerstate, angles et weapon offset; le renderer consomme ces sorties via le flux client/refresh/Three. Les autres cvars ne produisent pas directement modeles, frames, particules, beams, dlights, temp entities ou areabits. `verify:full-game:three-renderer` OK.
+- Commentaires/documentation: commentaires d'en-tete de `GameMainCvars`, `InitGame`, `ClientEndServerFrames`, `SV_CalcRoll`, `SV_CalcViewOffset`, `SV_CalcGunOffset`, `ClientEndServerFrame`, `Cmd_Give_f`/commandes et `Cmd_Say_f` verifies; pas de fonction portee nouvelle ajoutee.
+- Corrections appliquees:
+  - `scripts/verify/quake2-g-main.ts`: assertions de defaults/flags ajoutees pour `cheats`, `flood_msgs`, `flood_persecond`, `flood_waitdelay` et `sv_maplist`.
+  - `audit-portage/validation-incrementale/validation/matrices/game_g_local.h.md`: 17 lignes du lot passees a `Valide`, ownership corrige vers `packages/game/src/g_main.ts` / `GameMainCvars.*`, et lignes `gun_x`, `gun_y`, `gun_z` ajoutees pour l'`extern` groupe.
+- Tests: `npm run verify:g-main` OK; `npm run verify:p-view` OK; `npm run verify:g-cmds` OK; `npm run verify:g-spawn` OK; `npm run verify:g-local:header` OK; `npm run verify:full-game:server-host` OK; `npm run verify:web-render-order` OK; `npm run verify:full-game:three-renderer` OK; `npm run verify:local-gameplay-sync` OK; `npm run typecheck` OK.
+
+- Prochain lot recommande: continuer avec `world`, puis le bloc items/flags immediat `ITEM_TRIGGER_SPAWN`, `ITEM_NO_TOUCH`, `DROPPED_ITEM`, `DROPPED_PLAYER_ITEM`, `ITEM_TARGETS_USED`, `FFL_SPAWNTEMP`, `FFL_NOSPAWN`; inclure les structures/fields voisins seulement si le coordinateur veut un autre gros lot continu.
 
 ## Blocages
 

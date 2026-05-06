@@ -24,9 +24,9 @@
 | `Quake-2-master/game/m_float.c` | function | `floater_run` | `packages/game/src/m_float.ts` | `floater_run` | Non applicable | A redecouper | Declaration forward C uniquement; definition `floater_run` validee sur la ligne fonction plus bas. |
 | `Quake-2-master/game/m_float.c` | function | `floater_wham` | `packages/game/src/m_float.ts` | `floater_wham` | Non applicable | A redecouper | Declaration forward C uniquement; definition `floater_wham` a valider sur la ligne fonction plus bas. |
 | `Quake-2-master/game/m_float.c` | function | `floater_zap` | `packages/game/src/m_float.ts` | `floater_zap` | Non applicable | A redecouper | Declaration forward C uniquement; definition `floater_zap` a valider sur la ligne fonction plus bas. |
-| `Quake-2-master/game/m_float.c` | function | `floater_fire_blaster` | `packages/game/src/m_float.ts` | `floater_fire_blaster` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `effect` | `packages/game/src/m_float.ts` | `effect` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `effect` | `packages/game/src/m_float.ts` | `effect` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | function | `floater_fire_blaster` | `packages/game/src/m_float.ts` | `floater_fire_blaster` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `effect` | `packages/game/src/m_float.ts` | `effect` | Non applicable | A redecouper | Variable locale C de `floater_fire_blaster`; comportement valide avec la fonction proprietaire. |
+| `Quake-2-master/game/m_float.c` | global | `effect` | `packages/game/src/m_float.ts` | `effect` | Non applicable | A redecouper | Variable locale C de `floater_fire_blaster`; comportement valide avec la fonction proprietaire. |
 | `Quake-2-master/game/m_float.c` | global | `floater_frames_stand1` | `packages/game/src/m_float.ts` | `floater_frames_stand1` | Valide | A redecouper | Preuves session: table 52 frames `ai_stand`, distances 0, aucun callback; tests m-float/source-parity/header/full-game/web/three/typecheck. |
 | `Quake-2-master/game/m_float.c` | table | `floater_frames_stand1` | `packages/game/src/m_float.ts` | `floater_frames_stand1` | Valide | A redecouper | Preuves session: table 52 frames `ai_stand`, distances 0, aucun callback; tests m-float/source-parity/header/full-game/web/three/typecheck. |
 | `Quake-2-master/game/m_float.c` | global | `floater_move_stand1` | `packages/game/src/m_float.ts` | `floater_move_stand1` | Valide | A redecouper | Preuves session: `FRAME_stand101`..`FRAME_stand152`, endfunc absent, move exporte et save registry verifie. |
@@ -34,30 +34,30 @@
 | `Quake-2-master/game/m_float.c` | table | `floater_frames_stand2` | `packages/game/src/m_float.ts` | `floater_frames_stand2` | Valide | A redecouper | Preuves session: table 52 frames `ai_stand`, distances 0, aucun callback; tests m-float/source-parity/header/full-game/web/three/typecheck. |
 | `Quake-2-master/game/m_float.c` | global | `floater_move_stand2` | `packages/game/src/m_float.ts` | `floater_move_stand2` | Valide | A redecouper | Preuves session: `FRAME_stand201`..`FRAME_stand252`, endfunc absent, move exporte et spawn randomise verifie. |
 | `Quake-2-master/game/m_float.c` | function | `floater_stand` | `packages/game/src/m_float.ts` | `floater_stand` | Valide | A redecouper | Preuves session: commentaire d'entete verifie; selection random `<= 0.5` vers stand1 sinon stand2 conservee. |
-| `Quake-2-master/game/m_float.c` | global | `floater_frames_activate` | `packages/game/src/m_float.ts` | `floater_frames_activate` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | table | `floater_frames_activate` | `packages/game/src/m_float.ts` | `floater_frames_activate` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_move_activate` | `packages/game/src/m_float.ts` | `floater_move_activate` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_frames_attack1` | `packages/game/src/m_float.ts` | `floater_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | table | `floater_frames_attack1` | `packages/game/src/m_float.ts` | `floater_frames_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_move_attack1` | `packages/game/src/m_float.ts` | `floater_move_attack1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_frames_attack2` | `packages/game/src/m_float.ts` | `floater_frames_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | table | `floater_frames_attack2` | `packages/game/src/m_float.ts` | `floater_frames_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_move_attack2` | `packages/game/src/m_float.ts` | `floater_move_attack2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_frames_attack3` | `packages/game/src/m_float.ts` | `floater_frames_attack3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | table | `floater_frames_attack3` | `packages/game/src/m_float.ts` | `floater_frames_attack3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_move_attack3` | `packages/game/src/m_float.ts` | `floater_move_attack3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_frames_death` | `packages/game/src/m_float.ts` | `floater_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | table | `floater_frames_death` | `packages/game/src/m_float.ts` | `floater_frames_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_move_death` | `packages/game/src/m_float.ts` | `floater_move_death` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_frames_pain1` | `packages/game/src/m_float.ts` | `floater_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | table | `floater_frames_pain1` | `packages/game/src/m_float.ts` | `floater_frames_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_move_pain1` | `packages/game/src/m_float.ts` | `floater_move_pain1` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_frames_pain2` | `packages/game/src/m_float.ts` | `floater_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | table | `floater_frames_pain2` | `packages/game/src/m_float.ts` | `floater_frames_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_move_pain2` | `packages/game/src/m_float.ts` | `floater_move_pain2` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_frames_pain3` | `packages/game/src/m_float.ts` | `floater_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | table | `floater_frames_pain3` | `packages/game/src/m_float.ts` | `floater_frames_pain3` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `floater_move_pain3` | `packages/game/src/m_float.ts` | `floater_move_pain3` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_frames_activate` | `packages/game/src/m_float.ts` | `floater_frames_activate` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | table | `floater_frames_activate` | `packages/game/src/m_float.ts` | `floater_frames_activate` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_move_activate` | `packages/game/src/m_float.ts` | `floater_move_activate` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_frames_attack1` | `packages/game/src/m_float.ts` | `floater_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | table | `floater_frames_attack1` | `packages/game/src/m_float.ts` | `floater_frames_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_move_attack1` | `packages/game/src/m_float.ts` | `floater_move_attack1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_frames_attack2` | `packages/game/src/m_float.ts` | `floater_frames_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | table | `floater_frames_attack2` | `packages/game/src/m_float.ts` | `floater_frames_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_move_attack2` | `packages/game/src/m_float.ts` | `floater_move_attack2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_frames_attack3` | `packages/game/src/m_float.ts` | `floater_frames_attack3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | table | `floater_frames_attack3` | `packages/game/src/m_float.ts` | `floater_frames_attack3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_move_attack3` | `packages/game/src/m_float.ts` | `floater_move_attack3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_frames_death` | `packages/game/src/m_float.ts` | `floater_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | table | `floater_frames_death` | `packages/game/src/m_float.ts` | `floater_frames_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_move_death` | `packages/game/src/m_float.ts` | `floater_move_death` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_frames_pain1` | `packages/game/src/m_float.ts` | `floater_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | table | `floater_frames_pain1` | `packages/game/src/m_float.ts` | `floater_frames_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_move_pain1` | `packages/game/src/m_float.ts` | `floater_move_pain1` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_frames_pain2` | `packages/game/src/m_float.ts` | `floater_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | table | `floater_frames_pain2` | `packages/game/src/m_float.ts` | `floater_frames_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_move_pain2` | `packages/game/src/m_float.ts` | `floater_move_pain2` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_frames_pain3` | `packages/game/src/m_float.ts` | `floater_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | table | `floater_frames_pain3` | `packages/game/src/m_float.ts` | `floater_frames_pain3` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `floater_move_pain3` | `packages/game/src/m_float.ts` | `floater_move_pain3` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_float.c` | global | `floater_frames_walk` | `packages/game/src/m_float.ts` | `floater_frames_walk` | Valide | A redecouper | Preuves session: table 52 frames `ai_walk`, distance 5, aucun callback; frames visibles consommees via snapshots/Three. |
 | `Quake-2-master/game/m_float.c` | table | `floater_frames_walk` | `packages/game/src/m_float.ts` | `floater_frames_walk` | Valide | A redecouper | Preuves session: table 52 frames `ai_walk`, distance 5, aucun callback; frames visibles consommees via snapshots/Three. |
 | `Quake-2-master/game/m_float.c` | global | `floater_move_walk` | `packages/game/src/m_float.ts` | `floater_move_walk` | Valide | A redecouper | Preuves session: `FRAME_stand101`..`FRAME_stand152`, table walk, endfunc absent, save registry verifie. |
@@ -66,24 +66,24 @@
 | `Quake-2-master/game/m_float.c` | global | `floater_move_run` | `packages/game/src/m_float.ts` | `floater_move_run` | Valide | A redecouper | Preuves session: `FRAME_stand101`..`FRAME_stand152`, table run, endfunc absent, save registry verifie. |
 | `Quake-2-master/game/m_float.c` | function | `floater_run` | `packages/game/src/m_float.ts` | `floater_run` | Valide | A redecouper | Preuves session: commentaire d'entete verifie; branche `AI_STAND_GROUND` vers stand1 sinon run conservee et branchee via `monsterinfo.run`. |
 | `Quake-2-master/game/m_float.c` | function | `floater_walk` | `packages/game/src/m_float.ts` | `floater_walk` | Valide | A redecouper | Preuves session: commentaire d'entete verifie; affecte `floater_move_walk` et branche via `monsterinfo.walk`. |
-| `Quake-2-master/game/m_float.c` | function | `floater_wham` | `packages/game/src/m_float.ts` | `floater_wham` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | function | `floater_zap` | `packages/game/src/m_float.ts` | `floater_zap` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | function | `floater_attack` | `packages/game/src/m_float.ts` | `floater_attack` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | function | `floater_melee` | `packages/game/src/m_float.ts` | `floater_melee` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | function | `floater_pain` | `packages/game/src/m_float.ts` | `floater_pain` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | global | `n` | `packages/game/src/m_float.ts` | `n` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | function | `floater_dead` | `packages/game/src/m_float.ts` | `floater_dead` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | function | `floater_die` | `packages/game/src/m_float.ts` | `floater_die` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_float.c` | function | `SP_monster_floater` | `packages/game/src/m_float.ts` | `SP_monster_floater` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | function | `floater_wham` | `packages/game/src/m_float.ts` | `floater_wham` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | function | `floater_zap` | `packages/game/src/m_float.ts` | `floater_zap` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | function | `floater_attack` | `packages/game/src/m_float.ts` | `floater_attack` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | function | `floater_melee` | `packages/game/src/m_float.ts` | `floater_melee` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | function | `floater_pain` | `packages/game/src/m_float.ts` | `floater_pain` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | global | `n` | `packages/game/src/m_float.ts` | `n` | Non applicable | A redecouper | Variable locale C de `floater_pain`; comportement valide avec la fonction proprietaire. |
+| `Quake-2-master/game/m_float.c` | function | `floater_dead` | `packages/game/src/m_float.ts` | `floater_dead` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | function | `floater_die` | `packages/game/src/m_float.ts` | `floater_die` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_float.c` | function | `SP_monster_floater` | `packages/game/src/m_float.ts` | `SP_monster_floater` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_stand1` | `packages/game/src/m_float.ts` | `floater_frames_stand1` | Valide | matched | Preuves session: declaratif coherent avec la table source stand1; tests m-float/source-parity/header/full-game/web/three/typecheck. |
 | `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_stand2` | `packages/game/src/m_float.ts` | `floater_frames_stand2` | Valide | matched | Preuves session: declaratif coherent avec la table source stand2; tests m-float/source-parity/header/full-game/web/three/typecheck. |
-| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_activate` | `packages/game/src/m_float.ts` | `floater_frames_activate` | A verifier | matched |  |
-| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_attack1` | `packages/game/src/m_float.ts` | `floater_frames_attack1` | A verifier | matched |  |
-| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_attack2` | `packages/game/src/m_float.ts` | `floater_frames_attack2` | A verifier | matched |  |
-| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_attack3` | `packages/game/src/m_float.ts` | `floater_frames_attack3` | A verifier | matched |  |
-| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_death` | `packages/game/src/m_float.ts` | `floater_frames_death` | A verifier | matched |  |
-| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_pain1` | `packages/game/src/m_float.ts` | `floater_frames_pain1` | A verifier | matched |  |
-| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_pain2` | `packages/game/src/m_float.ts` | `floater_frames_pain2` | A verifier | matched |  |
-| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_pain3` | `packages/game/src/m_float.ts` | `floater_frames_pain3` | A verifier | matched |  |
+| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_activate` | `packages/game/src/m_float.ts` | `floater_frames_activate` | Valide | matched |  |
+| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_attack1` | `packages/game/src/m_float.ts` | `floater_frames_attack1` | Valide | matched |  |
+| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_attack2` | `packages/game/src/m_float.ts` | `floater_frames_attack2` | Valide | matched |  |
+| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_attack3` | `packages/game/src/m_float.ts` | `floater_frames_attack3` | Valide | matched |  |
+| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_death` | `packages/game/src/m_float.ts` | `floater_frames_death` | Valide | matched |  |
+| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_pain1` | `packages/game/src/m_float.ts` | `floater_frames_pain1` | Valide | matched |  |
+| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_pain2` | `packages/game/src/m_float.ts` | `floater_frames_pain2` | Valide | matched |  |
+| `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_pain3` | `packages/game/src/m_float.ts` | `floater_frames_pain3` | Valide | matched |  |
 | `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_walk` | `packages/game/src/m_float.ts` | `floater_frames_walk` | Valide | matched | Preuves session: declaratif coherent avec la table source walk; tests m-float/source-parity/header/full-game/web/three/typecheck. |
 | `Quake-2-master/game/m_float.c` | declarative:monster-tables | `floater_frames_run` | `packages/game/src/m_float.ts` | `floater_frames_run` | Valide | matched | Preuves session: declaratif coherent avec la table source run; tests m-float/source-parity/header/full-game/web/three/typecheck. |

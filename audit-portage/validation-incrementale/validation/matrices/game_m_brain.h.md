@@ -48,188 +48,188 @@
 | `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk223` | `packages/game/src/m_brain.ts` | `FRAME_walk223` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk224` | `packages/game/src/m_brain.ts` | `FRAME_walk224` | Valide | A redecouper |  |
 | `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk225` | `packages/game/src/m_brain.ts` | `FRAME_walk225` | Valide | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk226` | `packages/game/src/m_brain.ts` | `FRAME_walk226` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk227` | `packages/game/src/m_brain.ts` | `FRAME_walk227` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk228` | `packages/game/src/m_brain.ts` | `FRAME_walk228` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk229` | `packages/game/src/m_brain.ts` | `FRAME_walk229` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk230` | `packages/game/src/m_brain.ts` | `FRAME_walk230` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk231` | `packages/game/src/m_brain.ts` | `FRAME_walk231` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk232` | `packages/game/src/m_brain.ts` | `FRAME_walk232` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk233` | `packages/game/src/m_brain.ts` | `FRAME_walk233` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk234` | `packages/game/src/m_brain.ts` | `FRAME_walk234` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk235` | `packages/game/src/m_brain.ts` | `FRAME_walk235` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk236` | `packages/game/src/m_brain.ts` | `FRAME_walk236` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk237` | `packages/game/src/m_brain.ts` | `FRAME_walk237` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk238` | `packages/game/src/m_brain.ts` | `FRAME_walk238` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk239` | `packages/game/src/m_brain.ts` | `FRAME_walk239` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk240` | `packages/game/src/m_brain.ts` | `FRAME_walk240` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak101` | `packages/game/src/m_brain.ts` | `FRAME_attak101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak102` | `packages/game/src/m_brain.ts` | `FRAME_attak102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak103` | `packages/game/src/m_brain.ts` | `FRAME_attak103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak104` | `packages/game/src/m_brain.ts` | `FRAME_attak104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak105` | `packages/game/src/m_brain.ts` | `FRAME_attak105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak106` | `packages/game/src/m_brain.ts` | `FRAME_attak106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak107` | `packages/game/src/m_brain.ts` | `FRAME_attak107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak108` | `packages/game/src/m_brain.ts` | `FRAME_attak108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak109` | `packages/game/src/m_brain.ts` | `FRAME_attak109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak110` | `packages/game/src/m_brain.ts` | `FRAME_attak110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak111` | `packages/game/src/m_brain.ts` | `FRAME_attak111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak112` | `packages/game/src/m_brain.ts` | `FRAME_attak112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak113` | `packages/game/src/m_brain.ts` | `FRAME_attak113` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak114` | `packages/game/src/m_brain.ts` | `FRAME_attak114` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak115` | `packages/game/src/m_brain.ts` | `FRAME_attak115` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak116` | `packages/game/src/m_brain.ts` | `FRAME_attak116` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak117` | `packages/game/src/m_brain.ts` | `FRAME_attak117` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak118` | `packages/game/src/m_brain.ts` | `FRAME_attak118` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak201` | `packages/game/src/m_brain.ts` | `FRAME_attak201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak202` | `packages/game/src/m_brain.ts` | `FRAME_attak202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak203` | `packages/game/src/m_brain.ts` | `FRAME_attak203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak204` | `packages/game/src/m_brain.ts` | `FRAME_attak204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak205` | `packages/game/src/m_brain.ts` | `FRAME_attak205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak206` | `packages/game/src/m_brain.ts` | `FRAME_attak206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak207` | `packages/game/src/m_brain.ts` | `FRAME_attak207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak208` | `packages/game/src/m_brain.ts` | `FRAME_attak208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak209` | `packages/game/src/m_brain.ts` | `FRAME_attak209` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak210` | `packages/game/src/m_brain.ts` | `FRAME_attak210` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak211` | `packages/game/src/m_brain.ts` | `FRAME_attak211` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak212` | `packages/game/src/m_brain.ts` | `FRAME_attak212` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak213` | `packages/game/src/m_brain.ts` | `FRAME_attak213` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak214` | `packages/game/src/m_brain.ts` | `FRAME_attak214` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak215` | `packages/game/src/m_brain.ts` | `FRAME_attak215` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak216` | `packages/game/src/m_brain.ts` | `FRAME_attak216` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak217` | `packages/game/src/m_brain.ts` | `FRAME_attak217` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain101` | `packages/game/src/m_brain.ts` | `FRAME_pain101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain102` | `packages/game/src/m_brain.ts` | `FRAME_pain102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain103` | `packages/game/src/m_brain.ts` | `FRAME_pain103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain104` | `packages/game/src/m_brain.ts` | `FRAME_pain104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain105` | `packages/game/src/m_brain.ts` | `FRAME_pain105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain106` | `packages/game/src/m_brain.ts` | `FRAME_pain106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain107` | `packages/game/src/m_brain.ts` | `FRAME_pain107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain108` | `packages/game/src/m_brain.ts` | `FRAME_pain108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain109` | `packages/game/src/m_brain.ts` | `FRAME_pain109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain110` | `packages/game/src/m_brain.ts` | `FRAME_pain110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain111` | `packages/game/src/m_brain.ts` | `FRAME_pain111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain112` | `packages/game/src/m_brain.ts` | `FRAME_pain112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain113` | `packages/game/src/m_brain.ts` | `FRAME_pain113` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain114` | `packages/game/src/m_brain.ts` | `FRAME_pain114` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain115` | `packages/game/src/m_brain.ts` | `FRAME_pain115` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain116` | `packages/game/src/m_brain.ts` | `FRAME_pain116` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain117` | `packages/game/src/m_brain.ts` | `FRAME_pain117` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain118` | `packages/game/src/m_brain.ts` | `FRAME_pain118` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain119` | `packages/game/src/m_brain.ts` | `FRAME_pain119` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain120` | `packages/game/src/m_brain.ts` | `FRAME_pain120` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain121` | `packages/game/src/m_brain.ts` | `FRAME_pain121` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain201` | `packages/game/src/m_brain.ts` | `FRAME_pain201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain202` | `packages/game/src/m_brain.ts` | `FRAME_pain202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain203` | `packages/game/src/m_brain.ts` | `FRAME_pain203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain204` | `packages/game/src/m_brain.ts` | `FRAME_pain204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain205` | `packages/game/src/m_brain.ts` | `FRAME_pain205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain206` | `packages/game/src/m_brain.ts` | `FRAME_pain206` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain207` | `packages/game/src/m_brain.ts` | `FRAME_pain207` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain208` | `packages/game/src/m_brain.ts` | `FRAME_pain208` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain301` | `packages/game/src/m_brain.ts` | `FRAME_pain301` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain302` | `packages/game/src/m_brain.ts` | `FRAME_pain302` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain303` | `packages/game/src/m_brain.ts` | `FRAME_pain303` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain304` | `packages/game/src/m_brain.ts` | `FRAME_pain304` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain305` | `packages/game/src/m_brain.ts` | `FRAME_pain305` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain306` | `packages/game/src/m_brain.ts` | `FRAME_pain306` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death101` | `packages/game/src/m_brain.ts` | `FRAME_death101` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death102` | `packages/game/src/m_brain.ts` | `FRAME_death102` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death103` | `packages/game/src/m_brain.ts` | `FRAME_death103` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death104` | `packages/game/src/m_brain.ts` | `FRAME_death104` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death105` | `packages/game/src/m_brain.ts` | `FRAME_death105` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death106` | `packages/game/src/m_brain.ts` | `FRAME_death106` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death107` | `packages/game/src/m_brain.ts` | `FRAME_death107` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death108` | `packages/game/src/m_brain.ts` | `FRAME_death108` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death109` | `packages/game/src/m_brain.ts` | `FRAME_death109` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death110` | `packages/game/src/m_brain.ts` | `FRAME_death110` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death111` | `packages/game/src/m_brain.ts` | `FRAME_death111` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death112` | `packages/game/src/m_brain.ts` | `FRAME_death112` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death113` | `packages/game/src/m_brain.ts` | `FRAME_death113` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death114` | `packages/game/src/m_brain.ts` | `FRAME_death114` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death115` | `packages/game/src/m_brain.ts` | `FRAME_death115` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death116` | `packages/game/src/m_brain.ts` | `FRAME_death116` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death117` | `packages/game/src/m_brain.ts` | `FRAME_death117` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death118` | `packages/game/src/m_brain.ts` | `FRAME_death118` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death201` | `packages/game/src/m_brain.ts` | `FRAME_death201` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death202` | `packages/game/src/m_brain.ts` | `FRAME_death202` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death203` | `packages/game/src/m_brain.ts` | `FRAME_death203` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death204` | `packages/game/src/m_brain.ts` | `FRAME_death204` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death205` | `packages/game/src/m_brain.ts` | `FRAME_death205` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck01` | `packages/game/src/m_brain.ts` | `FRAME_duck01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck02` | `packages/game/src/m_brain.ts` | `FRAME_duck02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck03` | `packages/game/src/m_brain.ts` | `FRAME_duck03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck04` | `packages/game/src/m_brain.ts` | `FRAME_duck04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck05` | `packages/game/src/m_brain.ts` | `FRAME_duck05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck06` | `packages/game/src/m_brain.ts` | `FRAME_duck06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck07` | `packages/game/src/m_brain.ts` | `FRAME_duck07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck08` | `packages/game/src/m_brain.ts` | `FRAME_duck08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens01` | `packages/game/src/m_brain.ts` | `FRAME_defens01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens02` | `packages/game/src/m_brain.ts` | `FRAME_defens02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens03` | `packages/game/src/m_brain.ts` | `FRAME_defens03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens04` | `packages/game/src/m_brain.ts` | `FRAME_defens04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens05` | `packages/game/src/m_brain.ts` | `FRAME_defens05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens06` | `packages/game/src/m_brain.ts` | `FRAME_defens06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens07` | `packages/game/src/m_brain.ts` | `FRAME_defens07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens08` | `packages/game/src/m_brain.ts` | `FRAME_defens08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand01` | `packages/game/src/m_brain.ts` | `FRAME_stand01` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand02` | `packages/game/src/m_brain.ts` | `FRAME_stand02` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand03` | `packages/game/src/m_brain.ts` | `FRAME_stand03` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand04` | `packages/game/src/m_brain.ts` | `FRAME_stand04` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand05` | `packages/game/src/m_brain.ts` | `FRAME_stand05` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand06` | `packages/game/src/m_brain.ts` | `FRAME_stand06` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand07` | `packages/game/src/m_brain.ts` | `FRAME_stand07` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand08` | `packages/game/src/m_brain.ts` | `FRAME_stand08` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand09` | `packages/game/src/m_brain.ts` | `FRAME_stand09` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand10` | `packages/game/src/m_brain.ts` | `FRAME_stand10` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand11` | `packages/game/src/m_brain.ts` | `FRAME_stand11` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand12` | `packages/game/src/m_brain.ts` | `FRAME_stand12` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand13` | `packages/game/src/m_brain.ts` | `FRAME_stand13` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand14` | `packages/game/src/m_brain.ts` | `FRAME_stand14` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand15` | `packages/game/src/m_brain.ts` | `FRAME_stand15` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand16` | `packages/game/src/m_brain.ts` | `FRAME_stand16` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand17` | `packages/game/src/m_brain.ts` | `FRAME_stand17` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand18` | `packages/game/src/m_brain.ts` | `FRAME_stand18` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand19` | `packages/game/src/m_brain.ts` | `FRAME_stand19` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand20` | `packages/game/src/m_brain.ts` | `FRAME_stand20` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand21` | `packages/game/src/m_brain.ts` | `FRAME_stand21` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand22` | `packages/game/src/m_brain.ts` | `FRAME_stand22` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand23` | `packages/game/src/m_brain.ts` | `FRAME_stand23` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand24` | `packages/game/src/m_brain.ts` | `FRAME_stand24` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand25` | `packages/game/src/m_brain.ts` | `FRAME_stand25` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand26` | `packages/game/src/m_brain.ts` | `FRAME_stand26` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand27` | `packages/game/src/m_brain.ts` | `FRAME_stand27` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand28` | `packages/game/src/m_brain.ts` | `FRAME_stand28` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand29` | `packages/game/src/m_brain.ts` | `FRAME_stand29` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand30` | `packages/game/src/m_brain.ts` | `FRAME_stand30` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand31` | `packages/game/src/m_brain.ts` | `FRAME_stand31` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand32` | `packages/game/src/m_brain.ts` | `FRAME_stand32` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand33` | `packages/game/src/m_brain.ts` | `FRAME_stand33` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand34` | `packages/game/src/m_brain.ts` | `FRAME_stand34` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand35` | `packages/game/src/m_brain.ts` | `FRAME_stand35` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand36` | `packages/game/src/m_brain.ts` | `FRAME_stand36` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand37` | `packages/game/src/m_brain.ts` | `FRAME_stand37` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand38` | `packages/game/src/m_brain.ts` | `FRAME_stand38` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand39` | `packages/game/src/m_brain.ts` | `FRAME_stand39` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand40` | `packages/game/src/m_brain.ts` | `FRAME_stand40` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand41` | `packages/game/src/m_brain.ts` | `FRAME_stand41` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand42` | `packages/game/src/m_brain.ts` | `FRAME_stand42` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand43` | `packages/game/src/m_brain.ts` | `FRAME_stand43` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand44` | `packages/game/src/m_brain.ts` | `FRAME_stand44` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand45` | `packages/game/src/m_brain.ts` | `FRAME_stand45` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand46` | `packages/game/src/m_brain.ts` | `FRAME_stand46` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand47` | `packages/game/src/m_brain.ts` | `FRAME_stand47` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand48` | `packages/game/src/m_brain.ts` | `FRAME_stand48` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand49` | `packages/game/src/m_brain.ts` | `FRAME_stand49` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand50` | `packages/game/src/m_brain.ts` | `FRAME_stand50` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand51` | `packages/game/src/m_brain.ts` | `FRAME_stand51` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand52` | `packages/game/src/m_brain.ts` | `FRAME_stand52` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand53` | `packages/game/src/m_brain.ts` | `FRAME_stand53` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand54` | `packages/game/src/m_brain.ts` | `FRAME_stand54` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand55` | `packages/game/src/m_brain.ts` | `FRAME_stand55` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand56` | `packages/game/src/m_brain.ts` | `FRAME_stand56` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand57` | `packages/game/src/m_brain.ts` | `FRAME_stand57` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand58` | `packages/game/src/m_brain.ts` | `FRAME_stand58` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand59` | `packages/game/src/m_brain.ts` | `FRAME_stand59` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand60` | `packages/game/src/m_brain.ts` | `FRAME_stand60` | A verifier | A redecouper |  |
-| `Quake-2-master/game/m_brain.h` | macro | `MODEL_SCALE` | `packages/game/src/m_brain.ts` | `MODEL_SCALE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk226` | `packages/game/src/m_brain.ts` | `FRAME_walk226` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk227` | `packages/game/src/m_brain.ts` | `FRAME_walk227` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk228` | `packages/game/src/m_brain.ts` | `FRAME_walk228` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk229` | `packages/game/src/m_brain.ts` | `FRAME_walk229` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk230` | `packages/game/src/m_brain.ts` | `FRAME_walk230` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk231` | `packages/game/src/m_brain.ts` | `FRAME_walk231` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk232` | `packages/game/src/m_brain.ts` | `FRAME_walk232` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk233` | `packages/game/src/m_brain.ts` | `FRAME_walk233` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk234` | `packages/game/src/m_brain.ts` | `FRAME_walk234` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk235` | `packages/game/src/m_brain.ts` | `FRAME_walk235` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk236` | `packages/game/src/m_brain.ts` | `FRAME_walk236` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk237` | `packages/game/src/m_brain.ts` | `FRAME_walk237` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk238` | `packages/game/src/m_brain.ts` | `FRAME_walk238` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk239` | `packages/game/src/m_brain.ts` | `FRAME_walk239` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_walk240` | `packages/game/src/m_brain.ts` | `FRAME_walk240` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak101` | `packages/game/src/m_brain.ts` | `FRAME_attak101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak102` | `packages/game/src/m_brain.ts` | `FRAME_attak102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak103` | `packages/game/src/m_brain.ts` | `FRAME_attak103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak104` | `packages/game/src/m_brain.ts` | `FRAME_attak104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak105` | `packages/game/src/m_brain.ts` | `FRAME_attak105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak106` | `packages/game/src/m_brain.ts` | `FRAME_attak106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak107` | `packages/game/src/m_brain.ts` | `FRAME_attak107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak108` | `packages/game/src/m_brain.ts` | `FRAME_attak108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak109` | `packages/game/src/m_brain.ts` | `FRAME_attak109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak110` | `packages/game/src/m_brain.ts` | `FRAME_attak110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak111` | `packages/game/src/m_brain.ts` | `FRAME_attak111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak112` | `packages/game/src/m_brain.ts` | `FRAME_attak112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak113` | `packages/game/src/m_brain.ts` | `FRAME_attak113` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak114` | `packages/game/src/m_brain.ts` | `FRAME_attak114` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak115` | `packages/game/src/m_brain.ts` | `FRAME_attak115` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak116` | `packages/game/src/m_brain.ts` | `FRAME_attak116` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak117` | `packages/game/src/m_brain.ts` | `FRAME_attak117` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak118` | `packages/game/src/m_brain.ts` | `FRAME_attak118` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak201` | `packages/game/src/m_brain.ts` | `FRAME_attak201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak202` | `packages/game/src/m_brain.ts` | `FRAME_attak202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak203` | `packages/game/src/m_brain.ts` | `FRAME_attak203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak204` | `packages/game/src/m_brain.ts` | `FRAME_attak204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak205` | `packages/game/src/m_brain.ts` | `FRAME_attak205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak206` | `packages/game/src/m_brain.ts` | `FRAME_attak206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak207` | `packages/game/src/m_brain.ts` | `FRAME_attak207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak208` | `packages/game/src/m_brain.ts` | `FRAME_attak208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak209` | `packages/game/src/m_brain.ts` | `FRAME_attak209` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak210` | `packages/game/src/m_brain.ts` | `FRAME_attak210` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak211` | `packages/game/src/m_brain.ts` | `FRAME_attak211` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak212` | `packages/game/src/m_brain.ts` | `FRAME_attak212` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak213` | `packages/game/src/m_brain.ts` | `FRAME_attak213` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak214` | `packages/game/src/m_brain.ts` | `FRAME_attak214` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak215` | `packages/game/src/m_brain.ts` | `FRAME_attak215` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak216` | `packages/game/src/m_brain.ts` | `FRAME_attak216` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_attak217` | `packages/game/src/m_brain.ts` | `FRAME_attak217` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain101` | `packages/game/src/m_brain.ts` | `FRAME_pain101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain102` | `packages/game/src/m_brain.ts` | `FRAME_pain102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain103` | `packages/game/src/m_brain.ts` | `FRAME_pain103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain104` | `packages/game/src/m_brain.ts` | `FRAME_pain104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain105` | `packages/game/src/m_brain.ts` | `FRAME_pain105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain106` | `packages/game/src/m_brain.ts` | `FRAME_pain106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain107` | `packages/game/src/m_brain.ts` | `FRAME_pain107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain108` | `packages/game/src/m_brain.ts` | `FRAME_pain108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain109` | `packages/game/src/m_brain.ts` | `FRAME_pain109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain110` | `packages/game/src/m_brain.ts` | `FRAME_pain110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain111` | `packages/game/src/m_brain.ts` | `FRAME_pain111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain112` | `packages/game/src/m_brain.ts` | `FRAME_pain112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain113` | `packages/game/src/m_brain.ts` | `FRAME_pain113` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain114` | `packages/game/src/m_brain.ts` | `FRAME_pain114` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain115` | `packages/game/src/m_brain.ts` | `FRAME_pain115` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain116` | `packages/game/src/m_brain.ts` | `FRAME_pain116` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain117` | `packages/game/src/m_brain.ts` | `FRAME_pain117` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain118` | `packages/game/src/m_brain.ts` | `FRAME_pain118` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain119` | `packages/game/src/m_brain.ts` | `FRAME_pain119` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain120` | `packages/game/src/m_brain.ts` | `FRAME_pain120` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain121` | `packages/game/src/m_brain.ts` | `FRAME_pain121` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain201` | `packages/game/src/m_brain.ts` | `FRAME_pain201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain202` | `packages/game/src/m_brain.ts` | `FRAME_pain202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain203` | `packages/game/src/m_brain.ts` | `FRAME_pain203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain204` | `packages/game/src/m_brain.ts` | `FRAME_pain204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain205` | `packages/game/src/m_brain.ts` | `FRAME_pain205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain206` | `packages/game/src/m_brain.ts` | `FRAME_pain206` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain207` | `packages/game/src/m_brain.ts` | `FRAME_pain207` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain208` | `packages/game/src/m_brain.ts` | `FRAME_pain208` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain301` | `packages/game/src/m_brain.ts` | `FRAME_pain301` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain302` | `packages/game/src/m_brain.ts` | `FRAME_pain302` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain303` | `packages/game/src/m_brain.ts` | `FRAME_pain303` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain304` | `packages/game/src/m_brain.ts` | `FRAME_pain304` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain305` | `packages/game/src/m_brain.ts` | `FRAME_pain305` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_pain306` | `packages/game/src/m_brain.ts` | `FRAME_pain306` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death101` | `packages/game/src/m_brain.ts` | `FRAME_death101` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death102` | `packages/game/src/m_brain.ts` | `FRAME_death102` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death103` | `packages/game/src/m_brain.ts` | `FRAME_death103` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death104` | `packages/game/src/m_brain.ts` | `FRAME_death104` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death105` | `packages/game/src/m_brain.ts` | `FRAME_death105` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death106` | `packages/game/src/m_brain.ts` | `FRAME_death106` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death107` | `packages/game/src/m_brain.ts` | `FRAME_death107` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death108` | `packages/game/src/m_brain.ts` | `FRAME_death108` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death109` | `packages/game/src/m_brain.ts` | `FRAME_death109` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death110` | `packages/game/src/m_brain.ts` | `FRAME_death110` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death111` | `packages/game/src/m_brain.ts` | `FRAME_death111` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death112` | `packages/game/src/m_brain.ts` | `FRAME_death112` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death113` | `packages/game/src/m_brain.ts` | `FRAME_death113` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death114` | `packages/game/src/m_brain.ts` | `FRAME_death114` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death115` | `packages/game/src/m_brain.ts` | `FRAME_death115` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death116` | `packages/game/src/m_brain.ts` | `FRAME_death116` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death117` | `packages/game/src/m_brain.ts` | `FRAME_death117` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death118` | `packages/game/src/m_brain.ts` | `FRAME_death118` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death201` | `packages/game/src/m_brain.ts` | `FRAME_death201` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death202` | `packages/game/src/m_brain.ts` | `FRAME_death202` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death203` | `packages/game/src/m_brain.ts` | `FRAME_death203` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death204` | `packages/game/src/m_brain.ts` | `FRAME_death204` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_death205` | `packages/game/src/m_brain.ts` | `FRAME_death205` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck01` | `packages/game/src/m_brain.ts` | `FRAME_duck01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck02` | `packages/game/src/m_brain.ts` | `FRAME_duck02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck03` | `packages/game/src/m_brain.ts` | `FRAME_duck03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck04` | `packages/game/src/m_brain.ts` | `FRAME_duck04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck05` | `packages/game/src/m_brain.ts` | `FRAME_duck05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck06` | `packages/game/src/m_brain.ts` | `FRAME_duck06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck07` | `packages/game/src/m_brain.ts` | `FRAME_duck07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_duck08` | `packages/game/src/m_brain.ts` | `FRAME_duck08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens01` | `packages/game/src/m_brain.ts` | `FRAME_defens01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens02` | `packages/game/src/m_brain.ts` | `FRAME_defens02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens03` | `packages/game/src/m_brain.ts` | `FRAME_defens03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens04` | `packages/game/src/m_brain.ts` | `FRAME_defens04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens05` | `packages/game/src/m_brain.ts` | `FRAME_defens05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens06` | `packages/game/src/m_brain.ts` | `FRAME_defens06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens07` | `packages/game/src/m_brain.ts` | `FRAME_defens07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_defens08` | `packages/game/src/m_brain.ts` | `FRAME_defens08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand01` | `packages/game/src/m_brain.ts` | `FRAME_stand01` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand02` | `packages/game/src/m_brain.ts` | `FRAME_stand02` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand03` | `packages/game/src/m_brain.ts` | `FRAME_stand03` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand04` | `packages/game/src/m_brain.ts` | `FRAME_stand04` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand05` | `packages/game/src/m_brain.ts` | `FRAME_stand05` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand06` | `packages/game/src/m_brain.ts` | `FRAME_stand06` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand07` | `packages/game/src/m_brain.ts` | `FRAME_stand07` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand08` | `packages/game/src/m_brain.ts` | `FRAME_stand08` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand09` | `packages/game/src/m_brain.ts` | `FRAME_stand09` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand10` | `packages/game/src/m_brain.ts` | `FRAME_stand10` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand11` | `packages/game/src/m_brain.ts` | `FRAME_stand11` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand12` | `packages/game/src/m_brain.ts` | `FRAME_stand12` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand13` | `packages/game/src/m_brain.ts` | `FRAME_stand13` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand14` | `packages/game/src/m_brain.ts` | `FRAME_stand14` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand15` | `packages/game/src/m_brain.ts` | `FRAME_stand15` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand16` | `packages/game/src/m_brain.ts` | `FRAME_stand16` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand17` | `packages/game/src/m_brain.ts` | `FRAME_stand17` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand18` | `packages/game/src/m_brain.ts` | `FRAME_stand18` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand19` | `packages/game/src/m_brain.ts` | `FRAME_stand19` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand20` | `packages/game/src/m_brain.ts` | `FRAME_stand20` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand21` | `packages/game/src/m_brain.ts` | `FRAME_stand21` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand22` | `packages/game/src/m_brain.ts` | `FRAME_stand22` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand23` | `packages/game/src/m_brain.ts` | `FRAME_stand23` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand24` | `packages/game/src/m_brain.ts` | `FRAME_stand24` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand25` | `packages/game/src/m_brain.ts` | `FRAME_stand25` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand26` | `packages/game/src/m_brain.ts` | `FRAME_stand26` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand27` | `packages/game/src/m_brain.ts` | `FRAME_stand27` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand28` | `packages/game/src/m_brain.ts` | `FRAME_stand28` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand29` | `packages/game/src/m_brain.ts` | `FRAME_stand29` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand30` | `packages/game/src/m_brain.ts` | `FRAME_stand30` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand31` | `packages/game/src/m_brain.ts` | `FRAME_stand31` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand32` | `packages/game/src/m_brain.ts` | `FRAME_stand32` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand33` | `packages/game/src/m_brain.ts` | `FRAME_stand33` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand34` | `packages/game/src/m_brain.ts` | `FRAME_stand34` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand35` | `packages/game/src/m_brain.ts` | `FRAME_stand35` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand36` | `packages/game/src/m_brain.ts` | `FRAME_stand36` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand37` | `packages/game/src/m_brain.ts` | `FRAME_stand37` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand38` | `packages/game/src/m_brain.ts` | `FRAME_stand38` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand39` | `packages/game/src/m_brain.ts` | `FRAME_stand39` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand40` | `packages/game/src/m_brain.ts` | `FRAME_stand40` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand41` | `packages/game/src/m_brain.ts` | `FRAME_stand41` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand42` | `packages/game/src/m_brain.ts` | `FRAME_stand42` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand43` | `packages/game/src/m_brain.ts` | `FRAME_stand43` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand44` | `packages/game/src/m_brain.ts` | `FRAME_stand44` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand45` | `packages/game/src/m_brain.ts` | `FRAME_stand45` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand46` | `packages/game/src/m_brain.ts` | `FRAME_stand46` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand47` | `packages/game/src/m_brain.ts` | `FRAME_stand47` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand48` | `packages/game/src/m_brain.ts` | `FRAME_stand48` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand49` | `packages/game/src/m_brain.ts` | `FRAME_stand49` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand50` | `packages/game/src/m_brain.ts` | `FRAME_stand50` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand51` | `packages/game/src/m_brain.ts` | `FRAME_stand51` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand52` | `packages/game/src/m_brain.ts` | `FRAME_stand52` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand53` | `packages/game/src/m_brain.ts` | `FRAME_stand53` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand54` | `packages/game/src/m_brain.ts` | `FRAME_stand54` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand55` | `packages/game/src/m_brain.ts` | `FRAME_stand55` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand56` | `packages/game/src/m_brain.ts` | `FRAME_stand56` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand57` | `packages/game/src/m_brain.ts` | `FRAME_stand57` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand58` | `packages/game/src/m_brain.ts` | `FRAME_stand58` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand59` | `packages/game/src/m_brain.ts` | `FRAME_stand59` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `FRAME_stand60` | `packages/game/src/m_brain.ts` | `FRAME_stand60` | Valide | A redecouper |  |
+| `Quake-2-master/game/m_brain.h` | macro | `MODEL_SCALE` | `packages/game/src/m_brain.ts` | `MODEL_SCALE` | Valide | A redecouper |  |
