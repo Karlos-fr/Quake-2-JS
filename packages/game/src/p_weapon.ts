@@ -732,7 +732,7 @@ export function Blaster_Fire(
   client.kick_origin = [vectors.forward[0] * -2, vectors.forward[1] * -2, vectors.forward[2] * -2];
   client.kick_angles[0] = -1;
 
-  (hooks.fire_blaster ?? fire_blaster)(ent, start, vectors.forward, damage, 1000, effect, hyper, runtime);
+  resolveFireBlaster(hooks)(ent, start, vectors.forward, damage, 1000, effect, hyper, runtime);
   queuePlayerMuzzleFlash(ent, (hyper ? MZ_HYPERBLASTER : MZ_BLASTER) | getSilencedMuzzleBits(client), runtime, hooks);
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
 }
@@ -799,7 +799,7 @@ export function weapon_shotgun_fire(ent: GameEntity, runtime: GameRuntime, hooks
     kick *= 4;
   }
 
-  (hooks.fire_shotgun ?? fire_shotgun)(
+  resolveFireShotgun(hooks)(
     ent,
     start,
     vectors.forward,
@@ -864,7 +864,7 @@ export function weapon_supershotgun_fire(ent: GameEntity, runtime: GameRuntime, 
 
   const v: vec3_t = [client.v_angle[PITCH], client.v_angle[YAW] - 5, client.v_angle[ROLL]];
   let forward = AngleVectors(v).forward;
-  (hooks.fire_shotgun ?? fire_shotgun)(
+  resolveFireShotgun(hooks)(
     ent,
     start,
     forward,
@@ -879,7 +879,7 @@ export function weapon_supershotgun_fire(ent: GameEntity, runtime: GameRuntime, 
 
   v[YAW] = client.v_angle[YAW] + 5;
   forward = AngleVectors(v).forward;
-  (hooks.fire_shotgun ?? fire_shotgun)(
+  resolveFireShotgun(hooks)(
     ent,
     start,
     forward,
@@ -1051,7 +1051,7 @@ export function Machinegun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Ga
   const vectors = AngleVectors(angles);
   const start = P_ProjectSource(client, ent.s.origin, [0, 8, ent.viewheight - 8], vectors.forward, vectors.right);
 
-  (hooks.fire_bullet ?? fire_bullet)(
+  resolveFireBullet(hooks)(
     ent,
     start,
     vectors.forward,
@@ -1178,7 +1178,7 @@ export function Chaingun_Fire(ent: GameEntity, runtime: GameRuntime, hooks: Game
     const r = 7 + crandom() * 4;
     const u = crandom() * 4;
     lastStart = P_ProjectSource(client, ent.s.origin, [0, r, u + ent.viewheight - 8], vectors.forward, vectors.right);
-    (hooks.fire_bullet ?? fire_bullet)(
+    resolveFireBullet(hooks)(
       ent,
       lastStart,
       vectors.forward,
@@ -1250,7 +1250,7 @@ export function weapon_grenade_fire(ent: GameEntity, held: boolean, runtime: Gam
   const timer = client.grenade_time - runtime.time;
   const speed = GRENADE_MINSPEED + (GRENADE_TIMER - timer) * ((GRENADE_MAXSPEED - GRENADE_MINSPEED) / GRENADE_TIMER);
 
-  (hooks.fire_grenade2 ?? fire_grenade2)(ent, start, vectors.forward, damage, speed, timer, radius, held, runtime);
+  resolveFireGrenade2(hooks)(ent, start, vectors.forward, damage, speed, timer, radius, held, runtime);
 
   if ((runtime.dmflags & DF_INFINITE_AMMO) === 0) {
     client.pers.inventory[client.ammo_index]--;
@@ -1398,7 +1398,7 @@ export function weapon_grenadelauncher_fire(ent: GameEntity, runtime: GameRuntim
   client.kick_origin = [vectors.forward[0] * -2, vectors.forward[1] * -2, vectors.forward[2] * -2];
   client.kick_angles[0] = -1;
 
-  (hooks.fire_grenade ?? fire_grenade)(ent, start, vectors.forward, damage, 600, 2.5, radius, runtime);
+  resolveFireGrenade(hooks)(ent, start, vectors.forward, damage, 600, 2.5, radius, runtime);
   queuePlayerMuzzleFlash(ent, MZ_GRENADE | getSilencedMuzzleBits(client), runtime, hooks);
 
   client.ps.gunframe++;
@@ -1447,7 +1447,7 @@ export function Weapon_RocketLauncher_Fire(ent: GameEntity, runtime: GameRuntime
   client.kick_angles[0] = -1;
 
   const start = P_ProjectSource(client, ent.s.origin, [8, 8, ent.viewheight - 8], vectors.forward, vectors.right);
-  (hooks.fire_rocket ?? fire_rocket)(ent, start, vectors.forward, damage, 650, damageRadius, radiusDamage, runtime);
+  resolveFireRocket(hooks)(ent, start, vectors.forward, damage, 650, damageRadius, radiusDamage, runtime);
   queuePlayerMuzzleFlash(ent, MZ_ROCKET | getSilencedMuzzleBits(client), runtime, hooks);
 
   client.ps.gunframe++;
@@ -1503,7 +1503,7 @@ export function weapon_railgun_fire(ent: GameEntity, runtime: GameRuntime, hooks
   client.kick_angles[0] = -3;
 
   const start = P_ProjectSource(client, ent.s.origin, [0, 7, ent.viewheight - 8], vectors.forward, vectors.right);
-  (hooks.fire_rail ?? fire_rail)(ent, start, vectors.forward, damage, kick, runtime);
+  resolveFireRail(hooks)(ent, start, vectors.forward, damage, kick, runtime);
   queuePlayerMuzzleFlash(ent, MZ_RAILGUN | getSilencedMuzzleBits(client), runtime, hooks);
 
   client.ps.gunframe++;
@@ -1564,7 +1564,7 @@ export function weapon_bfg_fire(ent: GameEntity, runtime: GameRuntime, hooks: Ga
   client.v_dmg_time = runtime.time + DAMAGE_TIME;
 
   const start = P_ProjectSource(client, ent.s.origin, [8, 8, ent.viewheight - 8], vectors.forward, vectors.right);
-  (hooks.fire_bfg ?? fire_bfg)(ent, start, vectors.forward, damage, 400, damageRadius, runtime);
+  resolveFireBfg(hooks)(ent, start, vectors.forward, damage, 400, damageRadius, runtime);
 
   client.ps.gunframe++;
   PlayerNoise(ent, start, PNOISE_WEAPON, runtime);
@@ -1596,6 +1596,110 @@ function requireClient(ent: GameEntity, caller: string): GameClient {
     throw new Error(`${caller}: entity #${ent.index} has no client`);
   }
   return ent.client;
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the BFG fire callback while preserving default `g_weapon.ts` temp-entity and impact hooks.
+ *
+ * Constraints:
+ * - Must keep override hooks authoritative when tests or adapters provide one.
+ * - Must pass the full player weapon hook table into the default world-weapon implementation.
+ */
+function resolveFireBfg(hooks: GameWeaponHooks): NonNullable<GameWeaponHooks["fire_bfg"]> {
+  return hooks.fire_bfg ?? ((ent, start, dir, damage, speed, damageRadius, runtime) =>
+    fire_bfg(ent, start, dir, damage, speed, damageRadius, runtime, hooks));
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the blaster fire callback while preserving default projectile touch and temp-entity hooks.
+ *
+ * Constraints:
+ * - Must keep override hooks authoritative when tests or adapters provide one.
+ * - Must pass the full player weapon hook table into the default world-weapon implementation.
+ */
+function resolveFireBlaster(hooks: GameWeaponHooks): NonNullable<GameWeaponHooks["fire_blaster"]> {
+  return hooks.fire_blaster ?? ((ent, start, dir, damage, speed, effect, hyper, runtime) =>
+    fire_blaster(ent, start, dir, damage, speed, effect, hyper, runtime, hooks));
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the bullet fire callback while preserving default impact temp-entity hooks.
+ *
+ * Constraints:
+ * - Must keep override hooks authoritative when tests or adapters provide one.
+ * - Must pass the full player weapon hook table into the default world-weapon implementation.
+ */
+function resolveFireBullet(hooks: GameWeaponHooks): NonNullable<GameWeaponHooks["fire_bullet"]> {
+  return hooks.fire_bullet ?? ((ent, start, aimdir, damage, kick, hspread, vspread, mod, runtime) =>
+    fire_bullet(ent, start, aimdir, damage, kick, hspread, vspread, mod, runtime, hooks));
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the grenade-launcher fire callback while preserving default projectile hooks.
+ *
+ * Constraints:
+ * - Must keep override hooks authoritative when tests or adapters provide one.
+ * - Must pass the full player weapon hook table into the default world-weapon implementation.
+ */
+function resolveFireGrenade(hooks: GameWeaponHooks): NonNullable<GameWeaponHooks["fire_grenade"]> {
+  return hooks.fire_grenade ?? ((ent, start, dir, damage, speed, timer, damageRadius, runtime) =>
+    fire_grenade(ent, start, dir, damage, speed, timer, damageRadius, runtime, hooks));
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the hand-grenade fire callback while preserving default projectile hooks.
+ *
+ * Constraints:
+ * - Must keep override hooks authoritative when tests or adapters provide one.
+ * - Must pass the full player weapon hook table into the default world-weapon implementation.
+ */
+function resolveFireGrenade2(hooks: GameWeaponHooks): NonNullable<GameWeaponHooks["fire_grenade2"]> {
+  return hooks.fire_grenade2 ?? ((ent, start, dir, damage, speed, timer, damageRadius, held, runtime) =>
+    fire_grenade2(ent, start, dir, damage, speed, timer, damageRadius, held, runtime, hooks));
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the railgun fire callback while preserving default trail temp-entity hooks.
+ *
+ * Constraints:
+ * - Must keep override hooks authoritative when tests or adapters provide one.
+ * - Must pass the full player weapon hook table into the default world-weapon implementation.
+ */
+function resolveFireRail(hooks: GameWeaponHooks): NonNullable<GameWeaponHooks["fire_rail"]> {
+  return hooks.fire_rail ?? ((ent, start, dir, damage, kick, runtime) =>
+    fire_rail(ent, start, dir, damage, kick, runtime, hooks));
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the rocket fire callback while preserving default projectile touch and explosion hooks.
+ *
+ * Constraints:
+ * - Must keep override hooks authoritative when tests or adapters provide one.
+ * - Must pass the full player weapon hook table into the default world-weapon implementation.
+ */
+function resolveFireRocket(hooks: GameWeaponHooks): NonNullable<GameWeaponHooks["fire_rocket"]> {
+  return hooks.fire_rocket ?? ((ent, start, dir, damage, speed, damageRadius, radiusDamage, runtime) =>
+    fire_rocket(ent, start, dir, damage, speed, damageRadius, radiusDamage, runtime, hooks));
+}
+
+/**
+ * Category: New
+ * Purpose: Resolve the shotgun fire callback while preserving default pellet impact temp-entity hooks.
+ *
+ * Constraints:
+ * - Must keep override hooks authoritative when tests or adapters provide one.
+ * - Must pass the full player weapon hook table into the default world-weapon implementation.
+ */
+function resolveFireShotgun(hooks: GameWeaponHooks): NonNullable<GameWeaponHooks["fire_shotgun"]> {
+  return hooks.fire_shotgun ?? ((ent, start, aimdir, damage, kick, hspread, vspread, count, mod, runtime) =>
+    fire_shotgun(ent, start, aimdir, damage, kick, hspread, vspread, count, mod, runtime, hooks));
 }
 
 /**

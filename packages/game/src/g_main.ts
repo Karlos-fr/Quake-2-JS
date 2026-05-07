@@ -33,7 +33,8 @@ import {
   temp_event_t,
   type cvar_t,
   type qboolean,
-  type usercmd_t
+  type usercmd_t,
+  type vec3_t
 } from "../../qcommon/src/index.js";
 import { Info_ValueForKey } from "../../qcommon/src/common.js";
 import { GAME_API_VERSION, type edict_t, type game_export_t, type game_import_t } from "./game.js";
@@ -81,6 +82,7 @@ import {
   drainPlayerMuzzleFlashEvents,
   drainGameSoundEvents,
   drainGameTempEntityEvents,
+  emitGameTempEntity,
   type GameEntity,
   type GameRuntime
 } from "./runtime.js";
@@ -672,6 +674,10 @@ export function createGameMainContext(imports: game_import_t, options: GameMainC
         imports.WriteString(layout);
         imports.unicast(ent, true);
       },
+      emitTempEntity: (event, payload, runtime) => {
+        const origin = readTempEntityOrigin(payload) ?? [0, 0, 0];
+        emitGameTempEntity(runtime, event, origin, multicast_t.MULTICAST_PVS, payload);
+      },
       ...options.hooks
     }
   };
@@ -960,6 +966,21 @@ function vectorPayload(payload: Record<string, unknown>, key: string): [number, 
   }
 
   return [0, 0, 0];
+}
+
+function readTempEntityOrigin(payload: Record<string, unknown>): vec3_t | null {
+  return vectorPayloadOrNull(payload, "origin")
+    ?? vectorPayloadOrNull(payload, "end")
+    ?? vectorPayloadOrNull(payload, "start");
+}
+
+function vectorPayloadOrNull(payload: Record<string, unknown>, key: string): vec3_t | null {
+  const value = payload[key];
+  if (Array.isArray(value) && value.length === 3 && value.every((component) => typeof component === "number" && Number.isFinite(component))) {
+    return [value[0], value[1], value[2]];
+  }
+
+  return null;
 }
 
 const GAME_BUILD_DATE = "TypeScript port";
