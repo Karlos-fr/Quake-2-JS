@@ -1,0 +1,23 @@
+# Progress - client/cl_input.c
+
+- Statut: En cours
+- Dernier lot valide: commandes d'entree et construction de base jusqu'a `CL_BaseMove`: globals `cl_nodelta`, temps d'entree, `in_impulse`, `KeyDown`, `KeyUp`, callbacks `IN_*`, `CL_KeyState`, cvars de vitesse/angles, `CL_AdjustAngles`, `CL_BaseMove`, et locaux C associes.
+- Preuves de session:
+  - Comparaison C/TS de `Quake-2-master/client/cl_input.c` avec `packages/client/src/cl_input.ts`, `packages/client/src/client.ts`, `packages/client/src/input.ts`.
+  - Runtime verifie depuis `CL_Frame` / `createClientSendCmdBridge` / `CL_SendCmd` et depuis les commandes `Cmd_AddCommand`.
+  - `apps/web` verifie via `Key_Event`, bindings clavier/souris, authoritative input et legacy local-session.
+  - `renderer-three` verifie indirectement via camera/viewangles dans les refresh frames consommees par le render loop Three/ref_gl.
+- Tests de reference OK:
+  - `npm run verify:cl-input`
+  - `npm run verify:full-game:input-bindings`
+  - `npm run verify:cl-main`
+  - `npm run verify:full-game:authoritative-input`
+  - `npm run verify:full-game:three-renderer`
+  - `npm run verify:client:header`
+  - `npm run verify:input:header`
+- Decisions:
+  - Les callbacks C `IN_*` sont des fonctions TS explicites dans `cl_input.ts` et sont enregistres par `CL_InitInput`.
+  - Les variables locales generees (`k`, `c`, `uptime`, `val`, `msec`, `speed`, `return`) sont marquees `Non applicable` quand elles sont couvertes par la fonction proprietaire.
+  - `kbutton_t` reste proprietaire de `client/client.h`; il a ete relu comme support du lot, sans modifier la matrice `client_client.h.md`.
+- Blocages: aucun.
+- Prochain lot recommande: `CL_ClampPitch`, `CL_FinishMove`, `CL_CreateCmd`, `IN_CenterView`, `CL_InitInput` et locaux associes (`pitch`, `ms`, `i`, `cmd`), puis `CL_SendCmd` dans un lot separe si le coordinateur veut garder le paquet reseau isole.

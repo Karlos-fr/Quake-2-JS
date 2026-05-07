@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: constantes `U_*` relues pour l'impact `MSG_WriteDeltaEntity()`, `MSG_WriteDeltaEntity()` et son local `bits`
-- Prochain lot recommande: primitives de lecture message `MSG_BeginReading`, `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, puis locaux associes si le lot reste coherent.
+- Dernier lot valide: primitives de lecture message `MSG_BeginReading`, `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, `MSG_ReadString`, `MSG_ReadStringLine`, `MSG_ReadCoord`, `MSG_ReadPos`, `MSG_ReadAngle`, `MSG_ReadAngle16` et locaux associes
+- Prochain lot recommande: `MSG_ReadDeltaUsercmd`, son local `bits`, puis `MSG_ReadData` et son local `i` si le lot reste coherent.
 
 ## Preuves session
 
@@ -29,6 +29,18 @@
 
 - Correction appliquee: ajout du rejet TypeScript pour `to.number >= MAX_EDICTS`, equivalent au `Com_Error(ERR_FATAL, "Entity number >= MAX_EDICTS")` original.
 - Tests renforces: encodage complet des champs entity delta, skip sans `force`, ecriture forcee et garde-fou `MAX_EDICTS`.
+
+## Session - 2026-05-07 - Primitives MSG_Read*
+
+- Lot traite: `MSG_BeginReading`, `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, `MSG_ReadString`, `MSG_ReadStringLine`, `MSG_ReadCoord`, `MSG_ReadPos`, `MSG_ReadAngle`, `MSG_ReadAngle16`; locaux generes `c`, union `b`/`f`/`l`, buffers statiques `string`, et appel externe `SHORT2ANGLE`.
+- Source C relue: `MSG_BeginReading` remet `readcount` a zero; les lectures scalaires retournent `-1` en depassement tout en incrementant `readcount`; les shorts/longs/floats sont little-endian; `MSG_ReadString` et `MSG_ReadStringLine` bornent a 2047 caracteres et s'arretent sur EOF/null, plus newline pour `StringLine`; coord/pos/angle appliquent les facteurs C.
+- Cible TS relue: `packages/memory/src/sizebuf.ts` porte `MSG_BeginReading`; `packages/qcommon/src/messages.ts` porte les primitives de lecture avec commentaires d'en-tete complets (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`). Les deviations TS sont justifiees: `MSG_ReadPos` retourne un tuple au lieu d'un out pointer, `MSG_ReadString*` retournent une string JS, `MSG_ReadFloat` utilise `DataView`.
+- Ownership/doublons: aucune fonction proprietaire du lot n'est dupliquee ailleurs; `SHORT2ANGLE` est un helper externe de `q_shared.h` et n'a pas ete traite comme entite proprietaire de `common.c`.
+- Runtime verifie: primitives atteignables depuis `Netchan_Process`, `CL_ParseServerMessage`, `SV_ReadPackets`/`SV_ConnectionlessPacket`, `SV_ExecuteClientMessage`, parsing client des frames/playerstate/packetentities/temp entities/layout/configstrings, et `Qcommon_Frame` via les flux client/serveur.
+- apps/web verifie: `apps/web/src/full-game-server-host.ts` appelle le runtime porte, copie le message serveur vers `client.net_message`, lance `MSG_BeginReading` puis `CL_ParseServerMessage`; aucune logique web parallele ne remplace les lectures message.
+- renderer-three verifie: les primitives ne parlent pas directement au renderer, mais alimentent les sorties visibles attendues via parsing client: entites, modeles, frames, beams, dlights, particules/temp entities, `areabits`, playerstate/camera et scene, consommes par `ClientRefreshFrame` et les adapters `renderer-three`.
+- Tests renforces: ajout d'une assertion explicite `MSG_BeginReading` dans `scripts/verify/quake2-qcommon-header.ts`.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cl-parse`, `npm run verify:server:runtime`, `npm run verify:full-game:server-host`, `npm run verify:full-game:render-source`, `npm run verify:full-game:three-renderer`, `npm run verify:web-render-order`, `npm run typecheck`.
 
 ## Complement session - 2026-05-02
 

@@ -205,6 +205,7 @@ export function KeyDown(context: ClientInputContext, button: kbutton_t): void {
   } else if (button.down[1] === 0) {
     button.down[1] = key;
   } else {
+    context.cmd.hooks.onPrint?.("Three keys down for a button!\n");
     return;
   }
 
@@ -302,6 +303,112 @@ export function CL_KeyState(context: ClientInputContext, key: kbutton_t): number
   }
 
   return value;
+}
+
+/** Original name: IN_KLookDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_KLookDown(context: ClientInputContext): void { KeyDown(context, context.in_klook); }
+
+/** Original name: IN_KLookUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_KLookUp(context: ClientInputContext): void { KeyUp(context, context.in_klook); }
+
+/** Original name: IN_UpDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_UpDown(context: ClientInputContext): void { KeyDown(context, context.in_up); }
+
+/** Original name: IN_UpUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_UpUp(context: ClientInputContext): void { KeyUp(context, context.in_up); }
+
+/** Original name: IN_DownDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_DownDown(context: ClientInputContext): void { KeyDown(context, context.in_down); }
+
+/** Original name: IN_DownUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_DownUp(context: ClientInputContext): void { KeyUp(context, context.in_down); }
+
+/** Original name: IN_LeftDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_LeftDown(context: ClientInputContext): void { KeyDown(context, context.in_left); }
+
+/** Original name: IN_LeftUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_LeftUp(context: ClientInputContext): void { KeyUp(context, context.in_left); }
+
+/** Original name: IN_RightDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_RightDown(context: ClientInputContext): void { KeyDown(context, context.in_right); }
+
+/** Original name: IN_RightUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_RightUp(context: ClientInputContext): void { KeyUp(context, context.in_right); }
+
+/** Original name: IN_ForwardDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_ForwardDown(context: ClientInputContext): void { KeyDown(context, context.in_forward); }
+
+/** Original name: IN_ForwardUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_ForwardUp(context: ClientInputContext): void { KeyUp(context, context.in_forward); }
+
+/** Original name: IN_BackDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_BackDown(context: ClientInputContext): void { KeyDown(context, context.in_back); }
+
+/** Original name: IN_BackUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_BackUp(context: ClientInputContext): void { KeyUp(context, context.in_back); }
+
+/** Original name: IN_LookupDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_LookupDown(context: ClientInputContext): void { KeyDown(context, context.in_lookup); }
+
+/** Original name: IN_LookupUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_LookupUp(context: ClientInputContext): void { KeyUp(context, context.in_lookup); }
+
+/** Original name: IN_LookdownDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_LookdownDown(context: ClientInputContext): void { KeyDown(context, context.in_lookdown); }
+
+/** Original name: IN_LookdownUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_LookdownUp(context: ClientInputContext): void { KeyUp(context, context.in_lookdown); }
+
+/** Original name: IN_MoveleftDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_MoveleftDown(context: ClientInputContext): void { KeyDown(context, context.in_moveleft); }
+
+/** Original name: IN_MoveleftUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_MoveleftUp(context: ClientInputContext): void { KeyUp(context, context.in_moveleft); }
+
+/** Original name: IN_MoverightDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_MoverightDown(context: ClientInputContext): void { KeyDown(context, context.in_moveright); }
+
+/** Original name: IN_MoverightUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_MoverightUp(context: ClientInputContext): void { KeyUp(context, context.in_moveright); }
+
+/** Original name: IN_SpeedDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_SpeedDown(context: ClientInputContext): void { KeyDown(context, context.in_speed); }
+
+/** Original name: IN_SpeedUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_SpeedUp(context: ClientInputContext): void { KeyUp(context, context.in_speed); }
+
+/** Original name: IN_StrafeDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_StrafeDown(context: ClientInputContext): void { KeyDown(context, context.in_strafe); }
+
+/** Original name: IN_StrafeUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_StrafeUp(context: ClientInputContext): void { KeyUp(context, context.in_strafe); }
+
+/** Original name: IN_AttackDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_AttackDown(context: ClientInputContext): void { KeyDown(context, context.in_attack); }
+
+/** Original name: IN_AttackUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_AttackUp(context: ClientInputContext): void { KeyUp(context, context.in_attack); }
+
+/** Original name: IN_UseDown; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_UseDown(context: ClientInputContext): void { KeyDown(context, context.in_use); }
+
+/** Original name: IN_UseUp; Source: client/cl_input.c; Category: Ported; Fidelity level: Strict. */
+export function IN_UseUp(context: ClientInputContext): void { KeyUp(context, context.in_use); }
+
+/**
+ * Original name: IN_Impulse
+ * Source: client/cl_input.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Captures the next impulse number for `CL_FinishMove`.
+ *
+ * Porting notes:
+ * - Reads command arguments from the explicit command runtime.
+ */
+export function IN_Impulse(context: ClientInputContext): void {
+  context.in_impulse = Number.parseInt(Cmd_Argv(context.cmd, 1), 10) || 0;
 }
 
 /**
@@ -653,25 +760,37 @@ export function CL_InitInput(context: ClientInputContext): void {
     IN_CenterView(context);
   });
 
-  bindButtonCommands(context, "+moveup", "-moveup", context.in_up);
-  bindButtonCommands(context, "+movedown", "-movedown", context.in_down);
-  bindButtonCommands(context, "+left", "-left", context.in_left);
-  bindButtonCommands(context, "+right", "-right", context.in_right);
-  bindButtonCommands(context, "+forward", "-forward", context.in_forward);
-  bindButtonCommands(context, "+back", "-back", context.in_back);
-  bindButtonCommands(context, "+lookup", "-lookup", context.in_lookup);
-  bindButtonCommands(context, "+lookdown", "-lookdown", context.in_lookdown);
-  bindButtonCommands(context, "+strafe", "-strafe", context.in_strafe);
-  bindButtonCommands(context, "+moveleft", "-moveleft", context.in_moveleft);
-  bindButtonCommands(context, "+moveright", "-moveright", context.in_moveright);
-  bindButtonCommands(context, "+speed", "-speed", context.in_speed);
-  bindButtonCommands(context, "+attack", "-attack", context.in_attack);
-  bindButtonCommands(context, "+use", "-use", context.in_use);
-  bindButtonCommands(context, "+klook", "-klook", context.in_klook);
-
-  Cmd_AddCommand(context.cmd, "impulse", () => {
-    context.in_impulse = Number.parseInt(Cmd_Argv(context.cmd, 1), 10) || 0;
-  });
+  Cmd_AddCommand(context.cmd, "+moveup", () => { IN_UpDown(context); });
+  Cmd_AddCommand(context.cmd, "-moveup", () => { IN_UpUp(context); });
+  Cmd_AddCommand(context.cmd, "+movedown", () => { IN_DownDown(context); });
+  Cmd_AddCommand(context.cmd, "-movedown", () => { IN_DownUp(context); });
+  Cmd_AddCommand(context.cmd, "+left", () => { IN_LeftDown(context); });
+  Cmd_AddCommand(context.cmd, "-left", () => { IN_LeftUp(context); });
+  Cmd_AddCommand(context.cmd, "+right", () => { IN_RightDown(context); });
+  Cmd_AddCommand(context.cmd, "-right", () => { IN_RightUp(context); });
+  Cmd_AddCommand(context.cmd, "+forward", () => { IN_ForwardDown(context); });
+  Cmd_AddCommand(context.cmd, "-forward", () => { IN_ForwardUp(context); });
+  Cmd_AddCommand(context.cmd, "+back", () => { IN_BackDown(context); });
+  Cmd_AddCommand(context.cmd, "-back", () => { IN_BackUp(context); });
+  Cmd_AddCommand(context.cmd, "+lookup", () => { IN_LookupDown(context); });
+  Cmd_AddCommand(context.cmd, "-lookup", () => { IN_LookupUp(context); });
+  Cmd_AddCommand(context.cmd, "+lookdown", () => { IN_LookdownDown(context); });
+  Cmd_AddCommand(context.cmd, "-lookdown", () => { IN_LookdownUp(context); });
+  Cmd_AddCommand(context.cmd, "+strafe", () => { IN_StrafeDown(context); });
+  Cmd_AddCommand(context.cmd, "-strafe", () => { IN_StrafeUp(context); });
+  Cmd_AddCommand(context.cmd, "+moveleft", () => { IN_MoveleftDown(context); });
+  Cmd_AddCommand(context.cmd, "-moveleft", () => { IN_MoveleftUp(context); });
+  Cmd_AddCommand(context.cmd, "+moveright", () => { IN_MoverightDown(context); });
+  Cmd_AddCommand(context.cmd, "-moveright", () => { IN_MoverightUp(context); });
+  Cmd_AddCommand(context.cmd, "+speed", () => { IN_SpeedDown(context); });
+  Cmd_AddCommand(context.cmd, "-speed", () => { IN_SpeedUp(context); });
+  Cmd_AddCommand(context.cmd, "+attack", () => { IN_AttackDown(context); });
+  Cmd_AddCommand(context.cmd, "-attack", () => { IN_AttackUp(context); });
+  Cmd_AddCommand(context.cmd, "+use", () => { IN_UseDown(context); });
+  Cmd_AddCommand(context.cmd, "-use", () => { IN_UseUp(context); });
+  Cmd_AddCommand(context.cmd, "impulse", () => { IN_Impulse(context); });
+  Cmd_AddCommand(context.cmd, "+klook", () => { IN_KLookDown(context); });
+  Cmd_AddCommand(context.cmd, "-klook", () => { IN_KLookUp(context); });
 
   context.cl_nodelta = Cvar_Get(context.cvar, "cl_nodelta", "0", 0);
   context.cl_upspeed = Cvar_Get(context.cvar, "cl_upspeed", "200", 0);
@@ -712,19 +831,4 @@ export function createClientSendCmdBridge(
   };
 }
 
-/**
- * Category: New
- * Purpose: Register paired `+command` / `-command` handlers for one tracked key button.
- *
- * Constraints:
- * - Must preserve direct forwarding to the shared `KeyDown` / `KeyUp` ports.
- */
-function bindButtonCommands(context: ClientInputContext, downName: string, upName: string, button: kbutton_t): void {
-  Cmd_AddCommand(context.cmd, downName, () => {
-    KeyDown(context, button);
-  });
-  Cmd_AddCommand(context.cmd, upName, () => {
-    KeyUp(context, button);
-  });
-}
 

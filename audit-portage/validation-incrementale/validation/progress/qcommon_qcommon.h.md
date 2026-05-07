@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: bloc filesystem header `FS_InitFilesystem`, `FS_SetGamedir`, `FS_Gamedir`, `FS_NextPath`, `FS_ExecAutoexec`, `FS_FOpenFile`, `FS_FCloseFile`, `FS_LoadFile`, `FS_Read`, `FS_FreeFile`, `FS_CreatePath`.
+- Dernier lot valide: bloc misc/erreurs `ERR_FATAL`, `ERR_DROP`, `ERR_QUIT`, `PRINT_ALL`, `PRINT_DEVELOPER`, `Com_BeginRedirect`, `Com_EndRedirect`, `Com_Printf`, `Com_DPrintf`, `Com_Error`, `Com_Quit`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc misc/erreurs et print depuis `qcommon/qcommon.h`: `ERR_FATAL`, `ERR_DROP`, `ERR_QUIT`, `PRINT_ALL`, `PRINT_DEVELOPER`, `Com_BeginRedirect`, `Com_EndRedirect`, `Com_Printf`, `Com_DPrintf`, `Com_Error`, `Com_Quit`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementation proprietaire `Quake-2-master/qcommon/common.c`, et duplication historique `game/q_shared.h` pour les niveaux `PRINT_*`.
+- Cible comparee: `packages/qcommon/src/qcommon.ts`, `packages/qcommon/src/common.ts`, `packages/qcommon/src/q_shared.ts`, exports publics `packages/qcommon/src/index.ts`, usages `apps/web`, `packages/server`, `packages/client`, `packages/renderer-three`, et harnais `scripts/verify/quake2-qcommon-header.ts`.
+- Decision: portage valide pour 11 entrees. Les codes `ERR_FATAL=0`, `ERR_DROP=1`, `ERR_QUIT=2` sont strictement alignes dans `qcommon.ts`; `PRINT_ALL=0` et `PRINT_DEVELOPER=1` sont portes dans `q_shared.ts` car le C duplique ces macros entre `qcommon/qcommon.h` et `game/q_shared.h`, puis reexportes par l'index qcommon. `Com_BeginRedirect`, `Com_EndRedirect` et `Com_Printf` conservent le buffer redirect, le flush sur depassement et l'emission sink host. `Com_DPrintf` conserve le garde `developer`; `Com_Error` et `Com_Quit` portent les sorties de controle C via signaux structures `QcommonSignal` et hooks host.
+- Runtime: attendu et verifie. Les primitives sont atteignables par les chemins qcommon init/frame/error/print, les commandes console, les chemins serveur/client et les adapters host qui routent les prints et signaux d'erreur.
+- apps/web: attendu et verifie. `apps/web` consomme les niveaux `PRINT_ALL` dans les overlays/logs full-game et recoit les prints via les hooks de host; pas de logique web parallele masquant le port qcommon.
+- renderer-three: attendu pour les niveaux de print et erreurs renderer/ref_gl, mais pas comme sortie visible gameplay. `renderer-three` consomme `PRINT_ALL`/`PRINT_DEVELOPER` et `ERR_DROP`/`ERR_FATAL` pour logs, erreurs de chargement images/modeles, init ref_gl et screenshots; le flux three-renderer a ete verifie. Aucune sortie directe modeles, frames, particules, beams, dlights, temp entities, areabits, camera ou scene n'est produite par ces helpers eux-memes.
+- Commentaires: en-tetes `Com_BeginRedirect`, `Com_EndRedirect`, `Com_Printf`, `Com_DPrintf`, `Com_Error`, `Com_Quit` verifies; commentaires de groupe ajoutes pour `ERR_*` et `PRINT_*`.
+- Corrections: ajout de commentaires de groupe dans `packages/qcommon/src/qcommon.ts` et `packages/qcommon/src/q_shared.ts`; ajout de preuves ciblees dans `scripts/verify/quake2-qcommon-header.ts`.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:cmd`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: bloc filesystem header dans `packages/filesystem/src/files.ts`: `FS_InitFilesystem`, `FS_SetGamedir`, `FS_Gamedir`, `FS_NextPath`, `FS_ExecAutoexec`, `FS_FOpenFile` via `readMountedFile`, `FS_FCloseFile`, `FS_LoadFile`, `FS_Read`, `FS_FreeFile`, `FS_CreatePath`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` et implementation proprietaire `Quake-2-master/qcommon/files.c`.
@@ -176,7 +189,7 @@
 
 ## Prochain lot recommande
 
-- Bloc misc/erreurs: `ERR_FATAL`, `ERR_DROP`, `ERR_QUIT`, `PRINT_ALL`, `PRINT_DEVELOPER`, puis `Com_BeginRedirect`, `Com_EndRedirect`, `Com_Printf`, `Com_DPrintf`, `Com_Error`, `Com_Quit` si le lot reste coherent.
+- Bloc etat serveur/checksum/random: `Com_ServerState`, `Com_SetServerState`, `Com_BlockChecksum`, `COM_BlockSequenceCRCByte`, `frand`, `crand`, puis globals `developer`, `dedicated`, `host_speeds`, `log_stats` si le lot reste coherent.
 
 ## Blocages
 

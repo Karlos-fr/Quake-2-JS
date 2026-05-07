@@ -90,6 +90,7 @@
     "verify:input:header": "npx tsx ./scripts/verify/quake2-input-header.ts",
     "verify:keys": "npx tsx ./scripts/verify/quake2-keys.ts",
     "verify:keys:header": "npx tsx ./scripts/verify/quake2-keys-header.ts",
+    "verify:cl-inv": "npx tsx ./scripts/verify/quake2-cl-inv.ts",
     "verify:cl-input": "npx tsx ./scripts/verify/quake2-cl-input.ts",
     "verify:cl-main": "npx tsx ./scripts/verify/quake2-cl-main.ts",
     "verify:cl-parse": "npx tsx ./scripts/verify/quake2-cl-parse.ts",

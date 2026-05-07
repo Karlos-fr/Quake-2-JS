@@ -83,6 +83,19 @@ export const PRINT_CHAT = 3;
 export const ERR_FATAL = 0;
 export const ERR_DROP = 1;
 export const ERR_DISCONNECT = 2;
+
+/**
+ * Original names: PRINT_ALL, PRINT_DEVELOPER
+ * Source: qcommon/qcommon.h and game/q_shared.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the common print routing levels used by qcommon, ref_gl and renderer adapters.
+ *
+ * Porting notes:
+ * - Kept with the shared print constants because the C headers duplicate these values.
+ */
 export const PRINT_ALL = 0;
 export const PRINT_DEVELOPER = 1;
 export const PRINT_ALERT = 2;

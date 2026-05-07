@@ -82,10 +82,10 @@
 | `Quake-2-master/server/sv_main.c` | global | `i` | `packages/server/src/sv_main.ts` | `i` | Non applicable | A redecouper | Local C generated; covered by `Master_Heartbeat`. |
 | `Quake-2-master/server/sv_main.c` | function | `Master_Shutdown` | `packages/server/src/sv_main.ts` | `Master_Shutdown` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_main.c` | global | `i` | `packages/server/src/sv_main.ts` | `i` | Non applicable | A redecouper | Local C generated; covered by `Master_Shutdown`. |
-| `Quake-2-master/server/sv_main.c` | function | `SV_UserinfoChanged` | `packages/server/src/sv_main.ts` | `SV_UserinfoChanged` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | global | `val` | `packages/server/src/sv_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | global | `i` | `packages/server/src/sv_main.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | function | `SV_Init` | `packages/server/src/sv_main.ts` | `SV_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | function | `SV_FinalMessage` | `packages/server/src/sv_main.ts` | `SV_FinalMessage` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | global | `i` | `packages/server/src/sv_main.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_main.c` | function | `SV_Shutdown` | `packages/server/src/sv_main.ts` | `SV_Shutdown` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_main.c` | function | `SV_UserinfoChanged` | `packages/server/src/sv_main.ts` | `SV_UserinfoChanged` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_main.c` | global | `val` | `packages/server/src/sv_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `SV_UserinfoChanged`. |
+| `Quake-2-master/server/sv_main.c` | global | `i` | `packages/server/src/sv_main.ts` | `i` | Non applicable | A redecouper | Local C generated; covered by `SV_UserinfoChanged`. |
+| `Quake-2-master/server/sv_main.c` | function | `SV_Init` | `packages/server/src/sv_main.ts` | `SV_Init` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_main.c` | function | `SV_FinalMessage` | `packages/server/src/sv_main.ts` | `SV_FinalMessage` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_main.c` | global | `i` | `packages/server/src/sv_main.ts` | `i` | Non applicable | A redecouper | Local C generated; covered by `SV_FinalMessage`. |
+| `Quake-2-master/server/sv_main.c` | function | `SV_Shutdown` | `packages/server/src/sv_main.ts` | `SV_Shutdown` | Valide | A redecouper |  |

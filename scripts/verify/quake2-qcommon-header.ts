@@ -33,6 +33,9 @@ import {
   COM_CheckParm,
   COM_ClearArgv,
   COM_InitArgv,
+  Com_BeginRedirect,
+  Com_EndRedirect,
+  Com_Printf,
   Info_Print,
   LittleFloat,
   LittleLong,
@@ -286,6 +289,8 @@ import {
   MAX_EDICTS,
   MAX_TOKEN_CHARS,
   PMF_ON_GROUND,
+  PRINT_ALL,
+  PRINT_DEVELOPER,
   createEntityState,
   pmtype_t,
   type pmove_t,
@@ -313,6 +318,8 @@ assert.equal(MAX_LATENT, 32, "MAX_LATENT mismatch");
 assert.equal(ERR_FATAL, 0, "ERR_FATAL mismatch");
 assert.equal(ERR_DROP, 1, "ERR_DROP mismatch");
 assert.equal(ERR_QUIT, 2, "ERR_QUIT mismatch");
+assert.equal(PRINT_ALL, 0, "PRINT_ALL mismatch");
+assert.equal(PRINT_DEVELOPER, 1, "PRINT_DEVELOPER mismatch");
 assert.equal(NUMVERTEXNORMALS, 162, "NUMVERTEXNORMALS mismatch");
 assert.equal(PROTOCOL_VERSION, 34, "PROTOCOL_VERSION mismatch");
 assert.equal(UPDATE_BACKUP, 16, "UPDATE_BACKUP mismatch");
@@ -726,6 +733,35 @@ const printed: string[] = [];
 const misc = createQcommonMiscRuntime({
   onPrintf: (message) => printed.push(message)
 });
+
+const redirected = createCommonRuntime();
+const redirectFlushes: Array<{ target: number; buffer: string }> = [];
+Com_BeginRedirect(redirected, 4, 12, (target, buffer) => redirectFlushes.push({ target, buffer }));
+Com_Printf(redirected, "%s", "alphabet");
+Com_Printf(redirected, "%s", "beta");
+assert.deepEqual(redirectFlushes, [{ target: 4, buffer: "alphabet" }], "Com_Printf redirect overflow flush mismatch");
+Com_EndRedirect(redirected);
+assert.deepEqual(
+  redirectFlushes,
+  [
+    { target: 4, buffer: "alphabet" },
+    { target: 4, buffer: "beta" }
+  ],
+  "Com_EndRedirect flush mismatch"
+);
+assert.equal(redirected.rd_target, 0, "Com_EndRedirect target reset mismatch");
+
+const printfSink: string[] = [];
+Com_Printf(createCommonRuntime(), "value %i %s", (line) => printfSink.push(line), 7, "ok");
+assert.deepEqual(printfSink, ["value 7 ok"], "Com_Printf sink/format mismatch");
+
+const disabledRedirect = createCommonRuntime();
+Com_BeginRedirect(disabledRedirect, 0, 16, () => {
+  throw new Error("disabled redirect should not flush");
+});
+Com_EndRedirect(disabledRedirect);
+assert.equal(disabledRedirect.rd_target, 0, "Com_BeginRedirect disabled target mismatch");
+
 Com_DPrintf(globals, misc, "hidden");
 assert.deepEqual(printed, [], "Com_DPrintf should respect developer");
 globals.developer = {
@@ -1050,6 +1086,9 @@ assert.deepEqual(
   "MSG primitive write byte layout mismatch"
 );
 primitiveBuffer.readcount = 0;
+primitiveBuffer.readcount = 99;
+MSG_BeginReading(primitiveBuffer);
+assert.equal(primitiveBuffer.readcount, 0, "MSG_BeginReading should reset primitive read cursor");
 assert.equal(MSG_ReadChar(primitiveBuffer), -1, "MSG_WriteChar roundtrip mismatch");
 assert.equal(MSG_ReadByte(primitiveBuffer), 255, "MSG_WriteByte roundtrip mismatch");
 assert.equal(MSG_ReadShort(primitiveBuffer), -12345, "MSG_WriteShort roundtrip mismatch");

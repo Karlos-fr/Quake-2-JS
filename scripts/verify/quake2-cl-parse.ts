@@ -37,15 +37,33 @@ import {
   CS_PLAYERSKINS,
   CS_SOUNDS,
   MSG_WriteByte,
+  MSG_WriteChar,
   MSG_WriteCoord,
   MSG_WriteLong,
   MSG_WritePos,
   MSG_WriteShort,
   MSG_WriteString,
   MSG_WriteAngle,
+  MSG_WriteAngle16,
   MZ_BLASTER,
   MZ_SILENCED,
   MAX_EDICTS,
+  PMF_TIME_TELEPORT,
+  PS_BLEND,
+  PS_FOV,
+  PS_KICKANGLES,
+  PS_M_DELTA_ANGLES,
+  PS_M_FLAGS,
+  PS_M_GRAVITY,
+  PS_M_ORIGIN,
+  PS_M_TIME,
+  PS_M_TYPE,
+  PS_M_VELOCITY,
+  PS_RDFLAGS,
+  PS_VIEWANGLES,
+  PS_VIEWOFFSET,
+  PS_WEAPONFRAME,
+  PS_WEAPONINDEX,
   PRINT_CHAT,
   SND_ATTENUATION,
   SND_ENT,
@@ -74,7 +92,8 @@ import {
   U_SKIN8,
   U_SOLID,
   createEntityState,
-  entity_event_t
+  entity_event_t,
+  pmtype_t
 } from "../../packages/qcommon/src/index.js";
 
 function resetIncoming(runtime: ReturnType<typeof createClientRuntime>): void {
@@ -466,6 +485,16 @@ oldFrame.valid = true;
 oldFrame.serverframe = 4;
 oldFrame.parse_entities = 0;
 oldFrame.num_entities = 2;
+oldFrame.playerstate.pmove.pm_type = pmtype_t.PM_NORMAL;
+oldFrame.playerstate.pmove.velocity = [1, 2, 3];
+oldFrame.playerstate.pmove.pm_flags = 0;
+oldFrame.playerstate.pmove.gravity = 600;
+oldFrame.playerstate.viewoffset = [1, 2, 3];
+oldFrame.playerstate.viewangles = [10, 20, 30];
+oldFrame.playerstate.fov = 80;
+oldFrame.playerstate.rdflags = 0;
+oldFrame.playerstate.stats[3] = 33;
+oldFrame.playerstate.stats[5] = 55;
 
 MSG_WriteLong(frameRuntime.net_message, 5);
 MSG_WriteLong(frameRuntime.net_message, 4);
@@ -474,8 +503,58 @@ MSG_WriteByte(frameRuntime.net_message, 2);
 MSG_WriteByte(frameRuntime.net_message, 0xaa);
 MSG_WriteByte(frameRuntime.net_message, 0x55);
 MSG_WriteByte(frameRuntime.net_message, svc_ops_e.svc_playerinfo);
-MSG_WriteShort(frameRuntime.net_message, 0);
-MSG_WriteLong(frameRuntime.net_message, 0);
+MSG_WriteShort(
+  frameRuntime.net_message,
+  PS_M_TYPE |
+    PS_M_ORIGIN |
+    PS_M_TIME |
+    PS_M_FLAGS |
+    PS_M_GRAVITY |
+    PS_M_DELTA_ANGLES |
+    PS_VIEWOFFSET |
+    PS_VIEWANGLES |
+    PS_KICKANGLES |
+    PS_WEAPONINDEX |
+    PS_WEAPONFRAME |
+    PS_BLEND |
+    PS_FOV |
+    PS_RDFLAGS
+);
+MSG_WriteByte(frameRuntime.net_message, pmtype_t.PM_DEAD);
+MSG_WriteShort(frameRuntime.net_message, 80);
+MSG_WriteShort(frameRuntime.net_message, 160);
+MSG_WriteShort(frameRuntime.net_message, 240);
+MSG_WriteByte(frameRuntime.net_message, 7);
+MSG_WriteByte(frameRuntime.net_message, PMF_TIME_TELEPORT);
+MSG_WriteShort(frameRuntime.net_message, 800);
+MSG_WriteShort(frameRuntime.net_message, 1000);
+MSG_WriteShort(frameRuntime.net_message, 2000);
+MSG_WriteShort(frameRuntime.net_message, 3000);
+MSG_WriteChar(frameRuntime.net_message, 4);
+MSG_WriteChar(frameRuntime.net_message, -8);
+MSG_WriteChar(frameRuntime.net_message, 88);
+MSG_WriteAngle16(frameRuntime.net_message, 45);
+MSG_WriteAngle16(frameRuntime.net_message, 90);
+MSG_WriteAngle16(frameRuntime.net_message, 180);
+MSG_WriteChar(frameRuntime.net_message, 2);
+MSG_WriteChar(frameRuntime.net_message, 4);
+MSG_WriteChar(frameRuntime.net_message, 6);
+MSG_WriteByte(frameRuntime.net_message, 12);
+MSG_WriteByte(frameRuntime.net_message, 9);
+MSG_WriteChar(frameRuntime.net_message, 1);
+MSG_WriteChar(frameRuntime.net_message, 2);
+MSG_WriteChar(frameRuntime.net_message, 3);
+MSG_WriteChar(frameRuntime.net_message, 4);
+MSG_WriteChar(frameRuntime.net_message, 5);
+MSG_WriteChar(frameRuntime.net_message, 6);
+MSG_WriteByte(frameRuntime.net_message, 64);
+MSG_WriteByte(frameRuntime.net_message, 128);
+MSG_WriteByte(frameRuntime.net_message, 192);
+MSG_WriteByte(frameRuntime.net_message, 255);
+MSG_WriteByte(frameRuntime.net_message, 100);
+MSG_WriteByte(frameRuntime.net_message, 4);
+MSG_WriteLong(frameRuntime.net_message, 1 << 3);
+MSG_WriteShort(frameRuntime.net_message, 444);
 MSG_WriteByte(frameRuntime.net_message, svc_ops_e.svc_packetentities);
 MSG_WriteByte(frameRuntime.net_message, U_MOREBITS1);
 MSG_WriteByte(frameRuntime.net_message, (U_MODEL >> 8) & 0xff);
@@ -483,18 +562,46 @@ MSG_WriteByte(frameRuntime.net_message, 5);
 MSG_WriteByte(frameRuntime.net_message, 11);
 MSG_WriteByte(frameRuntime.net_message, U_REMOVE);
 MSG_WriteByte(frameRuntime.net_message, 7);
+MSG_WriteByte(frameRuntime.net_message, U_EVENT);
+MSG_WriteByte(frameRuntime.net_message, 9);
+MSG_WriteByte(frameRuntime.net_message, entity_event_t.EV_FOOTSTEP);
 MSG_WriteByte(frameRuntime.net_message, 0);
 MSG_WriteByte(frameRuntime.net_message, 0);
 frameRuntime.net_message.readcount = 0;
-CL_ParseFrame(frameRuntime);
+const frameEntityEvents: unknown[] = [];
+CL_ParseFrame(frameRuntime, { onEntityEvent: (event) => frameEntityEvents.push(event) });
 assert.equal(frameRuntime.cl.frame.valid, true, "CL_ParseFrame should accept a valid delta frame");
 assert.equal(frameRuntime.cl.frame.parse_entities, 2, "CL_ParsePacketEntities should append after the previous parse ring");
-assert.equal(frameRuntime.cl.frame.num_entities, 2, "CL_ParsePacketEntities should include unchanged and baseline entities but not removed ones");
+assert.equal(frameRuntime.cl.frame.num_entities, 3, "CL_ParsePacketEntities should include unchanged, baseline and event entities but not removed ones");
 assert.equal(frameRuntime.cl_parse_entities[2].number, 3, "CL_ParsePacketEntities should carry unchanged old entities before new baselines");
 assert.equal(frameRuntime.cl_parse_entities[3].number, 5, "CL_ParsePacketEntities should parse new baseline entities");
 assert.equal(frameRuntime.cl_parse_entities[3].modelindex, 11, "CL_DeltaEntity should apply packet bits over the baseline");
 assert.equal(frameRuntime.cl_entities[5].serverframe, 5, "CL_DeltaEntity should update centity serverframe");
 assert.equal(frameRuntime.cl_entities[5].trailcount, 1024, "CL_DeltaEntity should reset trailcount for newly linked entities");
 assert.deepEqual(frameRuntime.cl.frame.areabits.subarray(0, 2), new Uint8Array([0xaa, 0x55]), "CL_ParseFrame should preserve areabits for renderer visibility");
+assert.equal(frameRuntime.cl.frame.playerstate.pmove.pm_type, pmtype_t.PM_DEAD, "CL_ParsePlayerstate should parse pm_type");
+assert.deepEqual(frameRuntime.cl.frame.playerstate.pmove.origin, [80, 160, 240], "CL_ParsePlayerstate should parse pmove origin shorts");
+assert.deepEqual(frameRuntime.cl.frame.playerstate.pmove.velocity, [1, 2, 3], "CL_ParsePlayerstate should inherit omitted pmove velocity from the delta frame");
+assert.equal(frameRuntime.cl.frame.playerstate.pmove.pm_time, 7, "CL_ParsePlayerstate should parse pm_time");
+assert.equal(frameRuntime.cl.frame.playerstate.pmove.pm_flags, PMF_TIME_TELEPORT, "CL_ParsePlayerstate should parse pm_flags");
+assert.equal(frameRuntime.cl.frame.playerstate.pmove.gravity, 800, "CL_ParsePlayerstate should parse gravity");
+assert.deepEqual(frameRuntime.cl.frame.playerstate.pmove.delta_angles, [1000, 2000, 3000], "CL_ParsePlayerstate should parse delta angles");
+assert.deepEqual(frameRuntime.cl.frame.playerstate.viewoffset, [1, -2, 22], "CL_ParsePlayerstate should scale view offsets by 0.25");
+assert.deepEqual(frameRuntime.cl.frame.playerstate.viewangles, [45, 90, -180], "CL_ParsePlayerstate should parse 16-bit view angles for camera state");
+assert.deepEqual(frameRuntime.cl.frame.playerstate.kick_angles, [0.5, 1, 1.5], "CL_ParsePlayerstate should scale kick angles by 0.25");
+assert.equal(frameRuntime.cl.frame.playerstate.gunindex, 12, "CL_ParsePlayerstate should parse gun index");
+assert.equal(frameRuntime.cl.frame.playerstate.gunframe, 9, "CL_ParsePlayerstate should parse gun frame");
+assert.deepEqual(frameRuntime.cl.frame.playerstate.gunoffset, [0.25, 0.5, 0.75], "CL_ParsePlayerstate should scale gun offsets by 0.25");
+assert.deepEqual(frameRuntime.cl.frame.playerstate.gunangles, [1, 1.25, 1.5], "CL_ParsePlayerstate should scale gun angles by 0.25");
+assert.deepEqual(frameRuntime.cl.frame.playerstate.blend, [64 / 255, 128 / 255, 192 / 255, 1], "CL_ParsePlayerstate should normalize blend bytes");
+assert.equal(frameRuntime.cl.frame.playerstate.fov, 100, "CL_ParsePlayerstate should parse fov");
+assert.equal(frameRuntime.cl.frame.playerstate.rdflags, 4, "CL_ParsePlayerstate should parse rdflags consumed by renderer adapters");
+assert.equal(frameRuntime.cl.frame.playerstate.stats[3], 444, "CL_ParsePlayerstate should parse statbits-selected stats");
+assert.equal(frameRuntime.cl.frame.playerstate.stats[5], 55, "CL_ParsePlayerstate should inherit omitted stats from the delta frame");
+assert.equal(frameRuntime.cl.predicted_origin[0], 10, "CL_ParseFrame should seed predicted origin X from parsed playerstate");
+assert.equal(frameRuntime.cl.predicted_origin[1], 20, "CL_ParseFrame should seed predicted origin Y from parsed playerstate");
+assert.equal(frameRuntime.cl.predicted_origin[2], 30, "CL_ParseFrame should seed predicted origin Z from parsed playerstate");
+assert.deepEqual(frameRuntime.cl.predicted_angles, [45, 90, -180], "CL_ParseFrame should seed predicted angles from parsed playerstate");
+assert.equal(frameEntityEvents.length, 1, "CL_ParseFrame should fire parsed entity events through the runtime hook");
 
 console.log("quake2-cl-parse: ok");

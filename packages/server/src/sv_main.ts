@@ -74,6 +74,7 @@ const SV_FINAL_MESSAGE_BUFFER = 1400;
 const SV_STATUS_BUFFER_MAX = MAX_MSGLEN - 16;
 const HEARTBEAT_SECONDS = 300;
 const HEARTBEAT_MSEC = HEARTBEAT_SECONDS * 1000;
+const CLIENT_NAME_LENGTH = 32;
 
 /**
  * Category: New
@@ -180,6 +181,9 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
    *
    * Behavior:
    * - Pulls `name`, `rate` and `msg` from one userinfo string into server-friendly client fields.
+   *
+   * Porting notes:
+   * - Mirrors C `strncpy(cl->name, ..., sizeof(cl->name)-1)` and `atoi` fallback behavior.
    */
   function SV_UserinfoChanged(cl: client_t): void {
     if (cl.edict) {
@@ -191,10 +195,7 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
 
     const rateValue = Info_ValueForKey(cl.userinfo, "rate");
     if (rateValue.length > 0) {
-      const parsedRate = Number.parseInt(rateValue, 10);
-      if (Number.isFinite(parsedRate)) {
-        cl.rate = parsedRate;
-      }
+      cl.rate = cAtoi(rateValue);
       if (cl.rate < 100) {
         cl.rate = 100;
       }
@@ -207,10 +208,7 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
 
     const messageValue = Info_ValueForKey(cl.userinfo, "msg");
     if (messageValue.length > 0) {
-      const parsedMessage = Number.parseInt(messageValue, 10);
-      if (Number.isFinite(parsedMessage)) {
-        cl.messagelevel = parsedMessage;
-      }
+      cl.messagelevel = cAtoi(messageValue);
     }
   }
 
@@ -1179,9 +1177,14 @@ function formatPrintf(fmt: string, args: unknown[]): string {
 
 function stripHighBits(text: string): string {
   let out = "";
-  const limit = Math.min(text.length, MAX_INFO_STRING);
+  const limit = Math.min(text.length, CLIENT_NAME_LENGTH - 1);
   for (let i = 0; i < limit; i += 1) {
     out += String.fromCharCode(text.charCodeAt(i) & 127);
   }
   return out;
+}
+
+function cAtoi(text: string): number {
+  const match = text.match(/^\s*([+-]?\d+)/);
+  return match ? Math.trunc(Number.parseInt(match[1]!, 10)) : 0;
 }

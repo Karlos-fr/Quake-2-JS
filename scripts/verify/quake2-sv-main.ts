@@ -48,6 +48,7 @@ let timeAfterGame = -1;
 let randomFrameCalls = 0;
 const HEARTBEAT_BASE_TIME = 500_000;
 let shutdownGameProgsCalls = 0;
+let userinfoChangedCalls = 0;
 const closedDemoHandles: unknown[] = [];
 const serverStates: number[] = [];
 
@@ -196,10 +197,7 @@ const mainWithUser = createServerMainProcedures({
 });
 
 verifyServerInit();
-main.SV_UserinfoChanged(client);
-assert.equal(client.name, "PlC$yer", "SV_UserinfoChanged should strip high bits in name");
-assert.equal(client.rate, 100, "SV_UserinfoChanged should clamp rate minimum to 100");
-assert.equal(client.messagelevel, 2, "SV_UserinfoChanged should parse msg level");
+verifyUserinfoChanged();
 
 main.SV_DropClient(client);
 assert.equal(disconnectCalls, 1, "SV_DropClient should call game ClientDisconnect for spawned clients");
@@ -235,9 +233,43 @@ function verifyServerInit(): void {
   assert.ok(cvarRuntime.cvar_vars.some((entry) => entry.name === "protocol"), "SV_Init should register protocol cvar");
   assert.ok(cvarRuntime.cvar_vars.some((entry) => entry.name === "maxclients"), "SV_Init should register maxclients cvar");
   assert.ok(cvarRuntime.cvar_vars.some((entry) => entry.name === "allow_download"), "SV_Init should register download policy cvars");
+  assert.equal(cvarRuntime.cvar_vars.find((entry) => entry.name === "dmflags")?.string, "16", "SV_Init should use DF_INSTANT_ITEMS as the dmflags default");
+  assert.equal(cvarRuntime.cvar_vars.find((entry) => entry.name === "protocol")?.string, "34", "SV_Init should register the Quake II protocol version");
+  assert.equal(cvarRuntime.cvar_vars.find((entry) => entry.name === "allow_download_models")?.string, "1", "SV_Init should default model downloads on like the C source");
+  assert.equal(cvarRuntime.cvar_vars.find((entry) => entry.name === "allow_download")?.string, "0", "SV_Init should default general downloads off like the C source");
   assert.equal(qnet.net_message.cursize, 0, "SV_Init should clear the shared net_message write cursor");
   assert.equal(qnet.net_message.readcount, 0, "SV_Init should reset the shared net_message read cursor");
   assert.equal(qnet.net_message.overflowed, false, "SV_Init should clear net_message overflow state");
+}
+
+function verifyUserinfoChanged(): void {
+  userinfoChangedCalls = 0;
+  client.userinfo = `\\name\\Pl${String.fromCharCode(0xc3)}${String.fromCharCode(0xa4)}yer\\rate\\50\\msg\\2`;
+  main.SV_UserinfoChanged(client);
+  assert.equal(userinfoChangedCalls, 1, "SV_UserinfoChanged should call game ClientUserinfoChanged before local copies");
+  assert.equal(client.name, "PlC$yer", "SV_UserinfoChanged should strip high bits in name");
+  assert.equal(client.rate, 100, "SV_UserinfoChanged should clamp rate minimum to 100");
+  assert.equal(client.messagelevel, 2, "SV_UserinfoChanged should parse msg level");
+
+  client.rate = 777;
+  client.messagelevel = 9;
+  client.userinfo = `\\name\\${"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"}\\rate\\abc\\msg\\nope`;
+  main.SV_UserinfoChanged(client);
+  assert.equal(client.name, "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234", "SV_UserinfoChanged should truncate cl.name to sizeof(name)-1");
+  assert.equal(client.rate, 100, "SV_UserinfoChanged should treat invalid rate like atoi(...)=0 then clamp");
+  assert.equal(client.messagelevel, 0, "SV_UserinfoChanged should treat invalid msg like atoi(...)=0");
+
+  client.rate = 777;
+  client.messagelevel = 3;
+  client.userinfo = "\\name\\DefaultRate";
+  main.SV_UserinfoChanged(client);
+  assert.equal(client.rate, 5000, "SV_UserinfoChanged should default missing rate to 5000");
+  assert.equal(client.messagelevel, 3, "SV_UserinfoChanged should leave messagelevel unchanged when msg is absent");
+
+  client.userinfo = "\\name\\HighRate\\rate\\99999\\msg\\-1";
+  main.SV_UserinfoChanged(client);
+  assert.equal(client.rate, 15000, "SV_UserinfoChanged should clamp rate maximum to 15000");
+  assert.equal(client.messagelevel, -1, "SV_UserinfoChanged should preserve atoi signed parsing for msg");
 }
 
 function verifyMasterHeartbeat(): void {
@@ -621,7 +653,9 @@ function createGameExports(): game_export_t {
     ReadLevel: () => {},
     ClientConnect: () => true,
     ClientBegin: () => {},
-    ClientUserinfoChanged: () => {},
+    ClientUserinfoChanged: () => {
+      userinfoChangedCalls += 1;
+    },
     ClientDisconnect: () => {
       disconnectCalls += 1;
     },

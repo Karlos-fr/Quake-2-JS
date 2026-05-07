@@ -10,15 +10,15 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_inv.c` | function | `CL_ParseInventory` | `packages/client/src/cl_parse.ts` | `CL_ParseInventory` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `i` | `packages/client/src/cl_inv.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | function | `Inv_DrawString` | `packages/client/src/cl_inv.ts` | `Inv_DrawString` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | function | `SetStringHighBit` | `packages/client/src/cl_inv.ts` | `SetStringHighBit` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | macro | `DISPLAY_ITEMS` | `packages/client/src/cl_inv.ts` | `DISPLAY_ITEMS` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | function | `CL_DrawInventory` | `packages/client/src/cl_inv.ts` | `CL_DrawInventory` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `index` | `packages/client/src/cl_inv.ts` | `index` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `string` | `packages/client/src/cl_inv.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `binding` | `packages/client/src/cl_inv.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `bind` | `packages/client/src/cl_inv.ts` | `bind` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `selected` | `packages/client/src/cl_inv.ts` | `selected` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_inv.c` | global | `top` | `packages/client/src/cl_inv.ts` | `top` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | function | `CL_ParseInventory` | `packages/client/src/cl_parse.ts` | `CL_ParseInventory` | Valide | A redecouper | Deplace dans `cl_parse.ts` pour le branchement proprietaire `svc_inventory`. |
+| `Quake-2-master/client/cl_inv.c` | global | `i` | `packages/client/src/cl_inv.ts` | `i` | Non applicable | A redecouper | Variable locale C couverte avec `CL_ParseInventory`/`CL_DrawInventory`. |
+| `Quake-2-master/client/cl_inv.c` | function | `Inv_DrawString` | `packages/client/src/cl_inv.ts` | `Inv_DrawString` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | function | `SetStringHighBit` | `packages/client/src/cl_inv.ts` | `SetStringHighBit` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | macro | `DISPLAY_ITEMS` | `packages/client/src/cl_inv.ts` | `DISPLAY_ITEMS` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | function | `CL_DrawInventory` | `packages/client/src/cl_inv.ts` | `CL_DrawInventory` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_inv.c` | global | `index` | `packages/client/src/cl_inv.ts` | `index` | Non applicable | A redecouper | Tableau local C porte comme variable locale de `CL_DrawInventory`. |
+| `Quake-2-master/client/cl_inv.c` | global | `string` | `packages/client/src/cl_inv.ts` |  | Non applicable | A redecouper | Buffer local C remplace par chaine locale immuable dans `CL_DrawInventory`. |
+| `Quake-2-master/client/cl_inv.c` | global | `binding` | `packages/client/src/cl_inv.ts` |  | Non applicable | A redecouper | Buffer local C remplace par map de bindings resolus et branchement web. |
+| `Quake-2-master/client/cl_inv.c` | global | `bind` | `packages/client/src/cl_inv.ts` | `bind` | Non applicable | A redecouper | Variable locale C portee comme constante locale de `CL_DrawInventory`. |
+| `Quake-2-master/client/cl_inv.c` | global | `selected` | `packages/client/src/cl_inv.ts` | `selected` | Non applicable | A redecouper | Variable locale C portee comme constante locale de `CL_DrawInventory`. |
+| `Quake-2-master/client/cl_inv.c` | global | `top` | `packages/client/src/cl_inv.ts` | `top` | Non applicable | A redecouper | Variable locale C portee comme variable locale de scroll dans `CL_DrawInventory`. |

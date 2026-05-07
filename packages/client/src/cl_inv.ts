@@ -29,7 +29,7 @@ import type {
 import type { refexport_t } from "./ref.js";
 import type { ClientRuntime } from "./client.js";
 
-const DISPLAY_ITEMS = 17;
+export const DISPLAY_ITEMS = 17;
 
 /**
  * Category: New
@@ -56,9 +56,9 @@ export interface ClientInventoryContext {
 }
 
 /**
- * Original name: Inv_DrawString
- * Source: client/cl_inv.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (refexport_t adapter for client/cl_inv.c Inv_DrawString)
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:
@@ -115,9 +115,9 @@ export function SetStringHighBit(text: string): string {
 }
 
 /**
- * Original name: CL_DrawInventory
- * Source: client/cl_inv.c
- * Category: Ported
+ * Original name: N/A
+ * Source: N/A (refexport_t adapter for client/cl_inv.c CL_DrawInventory)
+ * Category: Adapter
  * Fidelity level: Close
  *
  * Behavior:

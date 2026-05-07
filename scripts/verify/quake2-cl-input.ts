@@ -34,6 +34,7 @@ import {
 import {
   CL_CreateCmd,
   CL_InitInput,
+  CL_KeyState,
   CL_SendCmd,
   CL_SetInputFrameTime,
   createClientInputContext,
@@ -73,7 +74,12 @@ let movedByDevice = false;
 let fixedGender = false;
 
 const client = createClientRuntime();
-const cmd = createCommandRuntime();
+const commandPrints: string[] = [];
+const cmd = createCommandRuntime({
+  onPrint: (line) => {
+    commandPrints.push(line);
+  }
+});
 const cvar = createCvarRuntime();
 const qnet = createQcommonNetRuntime({
   now: () => client.cls.realtime,
@@ -98,8 +104,59 @@ const input = createClientInputContext(client, cmd, cvar, {
 });
 
 CL_InitInput(input);
+const expectedInputCommands = [
+  "centerview",
+  "+moveup", "-moveup",
+  "+movedown", "-movedown",
+  "+left", "-left",
+  "+right", "-right",
+  "+forward", "-forward",
+  "+back", "-back",
+  "+lookup", "-lookup",
+  "+lookdown", "-lookdown",
+  "+strafe", "-strafe",
+  "+moveleft", "-moveleft",
+  "+moveright", "-moveright",
+  "+speed", "-speed",
+  "+attack", "-attack",
+  "+use", "-use",
+  "impulse",
+  "+klook", "-klook"
+];
+assert.deepEqual(
+  cmd.cmd_functions.slice(0, expectedInputCommands.length).map((entry) => entry.name),
+  [...expectedInputCommands].reverse(),
+  "CL_InitInput should register cl_input.c command callbacks through Cmd_AddCommand's head insertion order"
+);
 client.cls.frametime = 0.05;
 CL_SetInputFrameTime(input, 100);
+Cmd_ExecuteString(cmd, "+forward 11 0");
+assert.deepEqual(input.in_forward.down, [11, 0], "KeyDown should remember the first physical key");
+assert.equal(input.in_forward.state, 3, "KeyDown should set down and impulse-down bits");
+assert.equal(input.in_forward.downtime, 0, "KeyDown zero timestamp should fall back to sys_frame_time - 100");
+Cmd_ExecuteString(cmd, "+forward 11 0");
+assert.deepEqual(input.in_forward.down, [11, 0], "KeyDown should ignore repeated key presses");
+Cmd_ExecuteString(cmd, "+forward 12 50");
+assert.deepEqual(input.in_forward.down, [11, 12], "KeyDown should track a second physical key");
+Cmd_ExecuteString(cmd, "+forward 13 60");
+assert.equal(commandPrints.includes("Three keys down for a button!\n"), true, "KeyDown should report a third physical key");
+Cmd_ExecuteString(cmd, "-forward 11 70");
+assert.deepEqual(input.in_forward.down, [0, 12], "KeyUp should keep the button held while another key is down");
+Cmd_ExecuteString(cmd, "-forward 12 90");
+assert.equal(input.in_forward.state, 6, "KeyUp should clear down and set impulse-up while preserving impulse-down until CL_KeyState");
+assert.equal(input.in_forward.msec, 90, "KeyUp should accumulate held milliseconds from timestamps");
+input.frame_msec = 100;
+assert.equal(CL_KeyState(input, input.in_forward), 0.9, "CL_KeyState should return the held fraction for a released key");
+assert.equal(input.in_forward.state, 0, "CL_KeyState should clear impulse bits");
+assert.equal(input.in_forward.msec, 0, "CL_KeyState should clear accumulated msec");
+
+Cmd_ExecuteString(cmd, "+back 21 100");
+Cmd_ExecuteString(cmd, "-back");
+assert.deepEqual(input.in_back.down, [0, 0], "manual KeyUp should clear both key slots");
+assert.equal(input.in_back.state, 4, "manual KeyUp should set impulse-up for unsticking");
+
+Cmd_ExecuteString(cmd, "impulse 7");
+assert.equal(input.in_impulse, 7, "IN_Impulse should store the next impulse number");
 Cmd_ExecuteString(cmd, "+forward 11 0");
 
 const created = CL_CreateCmd(input);
@@ -107,6 +164,31 @@ assert.equal(movedByDevice, true, "CL_CreateCmd should call IN_Move");
 assert.equal(created.forwardmove, 200, "CL_CreateCmd forward movement mismatch");
 assert.equal(created.sidemove, 25, "CL_CreateCmd should preserve external IN_Move mutation");
 assert.equal(created.msec, 50, "CL_CreateCmd msec mismatch");
+assert.equal(created.impulse, 7, "CL_CreateCmd should include the pending impulse");
+assert.equal(input.in_impulse, 0, "CL_CreateCmd should clear the pending impulse");
+
+const angleClient = createClientRuntime();
+const angleCmd = createCommandRuntime();
+const angleCvar = createCvarRuntime();
+const angleInput = createClientInputContext(angleClient, angleCmd, angleCvar);
+CL_InitInput(angleInput);
+angleClient.cls.frametime = 0.1;
+CL_SetInputFrameTime(angleInput, 100);
+Cmd_ExecuteString(angleCmd, "+klook 1 0");
+Cmd_ExecuteString(angleCmd, "+forward 2 0");
+const klookCmd = CL_CreateCmd(angleInput);
+assert.equal(klookCmd.forwardmove, 0, "+klook should convert +forward into pitch adjustment instead of forwardmove");
+assert.equal(angleClient.cl.viewangles[0] < 0, true, "+klook +forward should pitch up like CL_AdjustAngles");
+Cmd_ExecuteString(angleCmd, "-forward 2 100");
+Cmd_ExecuteString(angleCmd, "-klook 1 100");
+
+const yawBeforeStrafe = angleClient.cl.viewangles[1];
+CL_SetInputFrameTime(angleInput, 200);
+Cmd_ExecuteString(angleCmd, "+strafe 3 100");
+Cmd_ExecuteString(angleCmd, "+right 4 100");
+const strafeCmd = CL_CreateCmd(angleInput);
+assert.equal(angleClient.cl.viewangles[1], yawBeforeStrafe, "+strafe should prevent +right from changing yaw");
+assert.equal(strafeCmd.sidemove > 0, true, "+strafe +right should produce positive sidemove");
 
 client.cls.state = connstate_t.ca_active;
 client.cls.realtime = 2000;

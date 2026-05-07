@@ -109,6 +109,16 @@ export const PACKET_HEADER = 10;
  */
 export const OLD_AVG = 0.99;
 export const MAX_LATENT = 32;
+
+/**
+ * Original names: ERR_FATAL, ERR_DROP, ERR_QUIT
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the common error-control codes used by `Com_Error` and `Com_Quit`.
+ */
 export const ERR_FATAL = 0;
 export const ERR_DROP = 1;
 export const ERR_QUIT = 2;

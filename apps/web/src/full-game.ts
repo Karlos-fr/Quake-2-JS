@@ -41,6 +41,8 @@ import {
   Cvar_Set as QcommonCvar_Set,
   Cvar_SetValue as QcommonCvar_SetValue,
   Cvar_VariableValue,
+  CS_ITEMS,
+  MAX_ITEMS,
   PRINT_ALL,
   AngleVectors,
   CM_InlineModel,
@@ -91,6 +93,7 @@ import {
   K_UPARROW,
   Key_Init,
   Key_Event,
+  Key_KeynumToString,
   createClientKeyContext,
   keydest_t
 } from "../../../packages/client/src/keys.js";
@@ -1738,6 +1741,7 @@ async function createFullGameThreeRenderer(
     refreshDebug,
     filesystem: runtime.filesystem,
     audio: runtime.audio,
+    hudBindings: buildFullGameHudBindings(runtime.client, runtime.menu.keys.state.keybindings),
     enableRenderSourceAudio: false
   });
 
@@ -1748,6 +1752,38 @@ async function createFullGameThreeRenderer(
     camera,
     consoleCanvas: document.createElement("canvas")
   };
+}
+
+/**
+ * Original name: N/A
+ * Source: N/A (web adapter for client/cl_inv.c binding lookup)
+ * Category: Adapter
+ * Purpose: Resolve Quake II `use <item>` key bindings for the inventory HUD.
+ *
+ * Constraints:
+ * - Must preserve the original case-insensitive scan of the first 256 key bindings.
+ * - Must not replace the client inventory renderer; it only supplies the C hotkey column input.
+ */
+function buildFullGameHudBindings(client: ClientRuntime, keybindings: Array<string | null>): Record<string, string> {
+  const bindings: Record<string, string> = {};
+
+  for (let item = 0; item < MAX_ITEMS; item += 1) {
+    const itemName = client.cl.configstrings[CS_ITEMS + item] ?? "";
+    if (itemName.length === 0) {
+      continue;
+    }
+
+    const target = `use ${itemName}`.toLowerCase();
+    for (let key = 0; key < 256 && key < keybindings.length; key += 1) {
+      const binding = keybindings[key];
+      if (binding && binding.toLowerCase() === target) {
+        bindings[itemName] = Key_KeynumToString(key);
+        break;
+      }
+    }
+  }
+
+  return bindings;
 }
 
 function syncThreeCameraToRefresh(camera: ReturnType<typeof createCamera>, refreshFrame: ClientRefreshFrame | null): void {
