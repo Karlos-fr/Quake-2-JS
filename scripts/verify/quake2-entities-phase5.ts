@@ -197,7 +197,7 @@ function verifyPacketEntityLights(): void {
     origin: [1, 2, 3]
   });
   const trapLight = CL_BuildRefreshFrame(trapRuntime, { predictMovement: false }).lights.find((light) => light.kind === "trap");
-  assertNumber(trapLight?.intensity ?? -1, 150, "EF_TRAP light intensity");
+  assertRange(trapLight?.intensity ?? -1, 100, 199, "EF_TRAP light intensity");
   assertNumber(trapLight?.origin[2] ?? -1, 35, "EF_TRAP light z offset");
   assertClose(trapLight?.color[1] ?? -1, 0.8, 0.0001, "EF_TRAP light green");
 
@@ -340,5 +340,15 @@ function assertBoolean(actual: boolean, expected: boolean, label: string): void 
 function assertClose(actual: number, expected: number, tolerance: number, label: string): void {
   if (Math.abs(actual - expected) > tolerance) {
     throw new Error(`${label}: ${actual} != ${expected} (tol ${tolerance})`);
+  }
+}
+
+/**
+ * Category: New
+ * Purpose: Assert one numeric value stays inside the original C random branch range.
+ */
+function assertRange(actual: number, minimum: number, maximum: number, label: string): void {
+  if (actual < minimum || actual > maximum) {
+    throw new Error(`${label}: ${actual} not in [${minimum}, ${maximum}]`);
   }
 }

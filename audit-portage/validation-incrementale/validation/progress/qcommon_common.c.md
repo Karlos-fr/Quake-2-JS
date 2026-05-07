@@ -3,8 +3,8 @@
 ## Statut
 
 - Statut: En cours
-- Dernier lot valide: primitives de lecture message `MSG_BeginReading`, `MSG_ReadChar`, `MSG_ReadByte`, `MSG_ReadShort`, `MSG_ReadLong`, `MSG_ReadFloat`, `MSG_ReadString`, `MSG_ReadStringLine`, `MSG_ReadCoord`, `MSG_ReadPos`, `MSG_ReadAngle`, `MSG_ReadAngle16` et locaux associes
-- Prochain lot recommande: `MSG_ReadDeltaUsercmd`, son local `bits`, puis `MSG_ReadData` et son local `i` si le lot reste coherent.
+- Dernier lot valide: usercmd/data message `MSG_WriteDeltaUsercmd`, `MSG_ReadDeltaUsercmd`, `MSG_ReadData` et locaux associes
+- Prochain lot recommande: bloc `SZ_*` (`SZ_Init`, `SZ_Clear`, `SZ_GetSpace`, `SZ_Write`, `SZ_Print`) et faux positifs locaux associes si le lot reste coherent.
 
 ## Preuves session
 
@@ -24,6 +24,17 @@
 - `npm run verify:full-game:three-renderer`: OK
 - `npm run typecheck`: OK
 - `npm run verify:server:ents`: bloque avant execution sur import manquant `packages/formats/src/bsp.js`.
+
+## Session - 2026-05-07 - Delta usercmd et MSG_ReadData
+
+- Lot traite: `MSG_ReadDeltaUsercmd`, son local `bits`, `MSG_ReadData`, son local `i`, puis extension coherente a `MSG_WriteDeltaUsercmd` et son local `bits`.
+- Source C relue: `MSG_WriteDeltaUsercmd` calcule les bits `CM_*`, ecrit les champs modifies dans l'ordre C puis ecrit toujours `msec` et `lightlevel`; `MSG_ReadDeltaUsercmd` copie `from` vers `move`, lit les memes bits/champs puis lit toujours `msec` et `lightlevel`; `MSG_ReadData` boucle sur `len` appels a `MSG_ReadByte`.
+- Cible TS relue: `packages/qcommon/src/messages.ts` porte les trois fonctions avec en-tetes complets (`Original name`, `Source`, `Category`, `Fidelity level`, `Behavior`, `Porting notes`). Les deviations TS sont documentees: `MSG_ReadDeltaUsercmd` retourne une copie au lieu de muter un out pointer; `MSG_ReadData` retourne un `Uint8Array`.
+- Ownership/doublons: ownership confirme dans `packages/qcommon/src/messages.ts`; aucun doublon proprietaire trouve. Les constantes `CM_*` viennent du header/protocol partage et sont deja verifiees par valeurs C dans `verify:qcommon:header`.
+- Runtime verifie: ecriture atteignable depuis `CL_SendCmd` dans `packages/client/src/cl_input.ts`; lecture atteignable depuis `SV_ExecuteClientMessage` dans `packages/server/src/sv_user.ts`, replay des trois commandes `clc_move`, checksum, `ClientThink` et prediction/commandes client.
+- apps/web verifie: le flux authoritative input passe par `apps/web/src/full-game-server-host.ts` et les tests full-game, sans logique web parallele qui remplace l'encodage/decodage usercmd porte.
+- renderer-three verifie: pas d'appel direct attendu; les usercmds modifient camera/playerstate/deplacement entites via serveur/client, puis les sorties visibles sont consommees par le renderer via render-source/Three.
+- Tests session OK: `npm run verify:qcommon:header`, `npm run verify:cl-input`, `npm run verify:server:user`, `npm run verify:full-game:authoritative-input`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run verify:cl-parse`.
 
 ## Decisions
 

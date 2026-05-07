@@ -10,97 +10,97 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_main.c` | global | `freelook` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adr0` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adr1` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adr2` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adr3` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adr4` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adr5` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adr6` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adr7` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `adr8` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_stereo_separation` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_stereo` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `rcon_client_password` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `rcon_address` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_noskins` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_autoskins` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_footsteps` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_timeout` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_predict` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_maxfps` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_gun` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_add_particles` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_add_lights` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_add_entities` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_add_blend` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_shownet` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_showmiss` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_showclamp` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_paused` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_timedemo` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `lookspring` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `lookstrafe` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `sensitivity` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `m_pitch` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `m_yaw` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `m_forward` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `m_side` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_lightlevel` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `info_password` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `info_spectator` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `name` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `skin` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `rate` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `fov` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `msg` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `hand` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `gender` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `gender_auto` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_vwep` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_entities` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cl_parse_entities` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `allow_download` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `allow_download_players` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `allow_download_models` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `allow_download_sounds` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `allow_download_maps` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_WriteDemoMessage` | `packages/client/src/cl_main.ts` | `CL_WriteDemoMessage` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Stop_f` | `packages/client/src/cl_main.ts` | `CL_Stop_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `len` | `packages/client/src/cl_main.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Record_f` | `packages/client/src/cl_main.ts` | `CL_Record_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `name` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `buf_data` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `buf` | `packages/client/src/cl_main.ts` | `buf` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `len` | `packages/client/src/cl_main.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `ent` | `packages/client/src/cl_parse.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `nullstate` | `packages/client/src/cl_main.ts` | `nullstate` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `Cmd_ForwardToServer` | `packages/client/src/cl_main.ts` | `Cmd_ForwardToServer` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `cmd` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Setenv_f` | `packages/client/src/cl_main.ts` | `CL_Setenv_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `argc` | `packages/client/src/cl_main.ts` | `argc` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `buffer` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `env` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_ForwardToServer_f` | `packages/client/src/cl_main.ts` | `CL_ForwardToServer_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Pause_f` | `packages/client/src/cl_main.ts` | `CL_Pause_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Quit_f` | `packages/client/src/cl_main.ts` | `CL_Quit_f` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Drop` | `packages/client/src/cl_main.ts` | `CL_Drop` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_SendConnectPacket` | `packages/client/src/cl_main.ts` | `CL_SendConnectPacket` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `port` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_CheckForResend` | `packages/client/src/cl_main.ts` | `CL_CheckForResend` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `freelook` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `adr0` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `adr1` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `adr2` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `adr3` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `adr4` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `adr5` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `adr6` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `adr7` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `adr8` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_stereo_separation` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_stereo` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `rcon_client_password` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `rcon_address` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_noskins` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_autoskins` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_footsteps` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_timeout` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_predict` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_maxfps` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_gun` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_add_particles` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_add_lights` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_add_entities` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_add_blend` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_shownet` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_showmiss` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_showclamp` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_paused` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_timedemo` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `lookspring` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `lookstrafe` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `sensitivity` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `m_pitch` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `m_yaw` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `m_forward` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `m_side` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_lightlevel` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `info_password` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `info_spectator` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `name` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `skin` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `rate` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `fov` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `msg` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `hand` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `gender` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `gender_auto` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_vwep` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_entities` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cl_parse_entities` | `packages/client/src/cl_main.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `allow_download` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Extern C owner `server/sv_main.c`; client precache uses hook booleans. |
+| `Quake-2-master/client/cl_main.c` | global | `allow_download_players` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Extern C owner `server/sv_main.c`; client precache uses hook booleans. |
+| `Quake-2-master/client/cl_main.c` | global | `allow_download_models` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Extern C owner `server/sv_main.c`; client precache uses hook booleans. |
+| `Quake-2-master/client/cl_main.c` | global | `allow_download_sounds` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Extern C owner `server/sv_main.c`; client precache uses hook booleans. |
+| `Quake-2-master/client/cl_main.c` | global | `allow_download_maps` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Extern C owner `server/sv_main.c`; client precache uses hook booleans. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_WriteDemoMessage` | `packages/client/src/cl_main.ts` | `CL_WriteDemoMessage` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Stop_f` | `packages/client/src/cl_main.ts` | `CL_Stop_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `len` | `packages/client/src/cl_main.ts` | `len` | Non applicable | A redecouper | Local C generated; covered by `CL_Stop_f`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Record_f` | `packages/client/src/cl_main.ts` | `CL_Record_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `name` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Record_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `buf_data` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Record_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `buf` | `packages/client/src/cl_main.ts` | `buf` | Non applicable | A redecouper | Local C generated; covered by `CL_Record_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Record_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `len` | `packages/client/src/cl_main.ts` | `len` | Non applicable | A redecouper | Local C generated; covered by `CL_Record_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `ent` | `packages/client/src/cl_parse.ts` | `ent` | Non applicable | A redecouper | Local C generated; covered by `CL_Record_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `nullstate` | `packages/client/src/cl_main.ts` | `nullstate` | Non applicable | A redecouper | Local C generated; covered by `CL_Record_f`. |
+| `Quake-2-master/client/cl_main.c` | function | `Cmd_ForwardToServer` | `packages/client/src/cl_main.ts` | `Cmd_ForwardToServer` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `cmd` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `Cmd_ForwardToServer`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Setenv_f` | `packages/client/src/cl_main.ts` | `CL_Setenv_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `argc` | `packages/client/src/cl_main.ts` | `argc` | Non applicable | A redecouper | Local C generated; covered by `CL_Setenv_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `buffer` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Setenv_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Setenv_f`. |
+| `Quake-2-master/client/cl_main.c` | global | `env` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Setenv_f`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_ForwardToServer_f` | `packages/client/src/cl_main.ts` | `CL_ForwardToServer_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Pause_f` | `packages/client/src/cl_main.ts` | `CL_Pause_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Quit_f` | `packages/client/src/cl_main.ts` | `CL_Quit_f` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Drop` | `packages/client/src/cl_main.ts` | `CL_Drop` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_SendConnectPacket` | `packages/client/src/cl_main.ts` | `CL_SendConnectPacket` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `port` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_SendConnectPacket`. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_CheckForResend` | `packages/client/src/cl_main.ts` | `CL_CheckForResend` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Connect_f` | `packages/client/src/cl_main.ts` | `CL_Connect_f` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `server` | `packages/client/src/cl_main.ts` | `server` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Rcon_f` | `packages/client/src/cl_main.ts` | `CL_Rcon_f` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `message` | `packages/client/src/cl_main.ts` | `message` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `i` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_ClearState` | `packages/client/src/cl_parse.ts` | `CL_ClearState` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Disconnect` | `packages/client/src/cl_main.ts` | `CL_Disconnect` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `final` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | global | `time` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_main.c` | function | `CL_Disconnect_f` | `packages/client/src/cl_main.ts` | `CL_Disconnect_f` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_ClearState` | `packages/client/src/cl_parse.ts` | `CL_ClearState` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Disconnect` | `packages/client/src/cl_main.ts` | `CL_Disconnect` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_main.c` | global | `final` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Disconnect`. |
+| `Quake-2-master/client/cl_main.c` | global | `time` | `packages/client/src/cl_main.ts` |  | Non applicable | A redecouper | Local C generated; covered by `CL_Disconnect` timedemo branch. |
+| `Quake-2-master/client/cl_main.c` | function | `CL_Disconnect_f` | `packages/client/src/cl_main.ts` | `CL_Disconnect_f` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Packet_f` | `packages/client/src/cl_main.ts` | `CL_Packet_f` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | global | `send` | `packages/client/src/cl_main.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_main.c` | function | `CL_Changing_f` | `packages/client/src/cl_main.ts` | `CL_Changing_f` | A verifier | A redecouper |  |

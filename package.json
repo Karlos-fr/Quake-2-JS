@@ -93,6 +93,7 @@
     "verify:cl-inv": "npx tsx ./scripts/verify/quake2-cl-inv.ts",
     "verify:cl-input": "npx tsx ./scripts/verify/quake2-cl-input.ts",
     "verify:cl-main": "npx tsx ./scripts/verify/quake2-cl-main.ts",
+    "verify:cl-newfx": "npx tsx ./scripts/verify/quake2-cl-newfx.ts",
     "verify:cl-parse": "npx tsx ./scripts/verify/quake2-cl-parse.ts",
     "verify:cl-scrn": "npx tsx ./scripts/verify/quake2-cl-scrn.ts",
     "verify:menu": "npx tsx ./scripts/verify/quake2-menu.ts",

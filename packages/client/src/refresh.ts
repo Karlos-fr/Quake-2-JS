@@ -31,6 +31,7 @@ import {
   EF_BFG,
   EF_BLASTER,
   EF_BLUEHYPERBLASTER,
+  EF_COLOR_SHELL,
   EF_FLAG1,
   EF_FLAG2,
   EF_HYPERBLASTER,
@@ -80,7 +81,7 @@ export interface ClientRenderEntity {
   effects: number;
   customPlayerSkin: boolean;
   customWeaponModel: boolean;
-  linkedModelSlot: 0 | 2 | 3 | 4 | 5;
+  linkedModelSlot: 0 | 1 | 2 | 3 | 4 | 5;
 }
 
 /**
@@ -174,11 +175,19 @@ export function CL_BuildRefreshFrame(
     if (snapshot.modelindex !== 0) {
       entities.push(createRenderEntity(snapshot, snapshot.modelindex, 0));
 
+      if ((snapshot.effects & EF_COLOR_SHELL) !== 0) {
+        entities.push({
+          ...createRenderEntity(snapshot, snapshot.modelindex, 1),
+          alpha: 0.3,
+          flags: snapshot.renderfx | RF_TRANSLUCENT
+        });
+      }
+
       if ((snapshot.effects & EF_POWERSCREEN) !== 0) {
         entities.push({
           ...createRenderEntity(snapshot, 0, 5),
           alpha: 0.3,
-          flags: snapshot.flags | RF_TRANSLUCENT | RF_SHELL_GREEN
+          flags: RF_TRANSLUCENT | RF_SHELL_GREEN
         });
       }
 
@@ -343,7 +352,7 @@ function appendViewWeapon(
 function createRenderEntity(
   snapshot: ClientInterpolatedEntity,
   modelindex: number,
-  linkedModelSlot: 0 | 2 | 3 | 4 | 5
+  linkedModelSlot: ClientRenderEntity["linkedModelSlot"]
 ): ClientRenderEntity {
   return {
     entityNumber: snapshot.number,
@@ -370,21 +379,43 @@ function createRenderEntity(
  */
 function appendLinkedModels(snapshot: ClientInterpolatedEntity, entities: ClientRenderEntity[]): void {
   if (snapshot.modelindex2 !== 0) {
-    const isTranslucentLinkedModel = (snapshot.modelindex2 & 0x80) !== 0;
-    entities.push({
-      ...createRenderEntity(snapshot, isTranslucentLinkedModel ? snapshot.modelindex2 & 0x7f : snapshot.modelindex2, 2),
-      alpha: isTranslucentLinkedModel ? 0.32 : 1,
-      flags: isTranslucentLinkedModel ? RF_TRANSLUCENT : 0
-    });
+    if (snapshot.modelindex2 === 255) {
+      entities.push(createLinkedRenderEntity(snapshot, snapshot.modelindex2, 2));
+    } else {
+      const isTranslucentLinkedModel = (snapshot.modelindex2 & 0x80) !== 0;
+      entities.push({
+        ...createLinkedRenderEntity(snapshot, isTranslucentLinkedModel ? snapshot.modelindex2 & 0x7f : snapshot.modelindex2, 2),
+        alpha: isTranslucentLinkedModel ? 0.32 : 1,
+        flags: isTranslucentLinkedModel ? RF_TRANSLUCENT : 0
+      });
+    }
   }
 
   if (snapshot.modelindex3 !== 0) {
-    entities.push(createRenderEntity(snapshot, snapshot.modelindex3, 3));
+    entities.push(createLinkedRenderEntity(snapshot, snapshot.modelindex3, 3));
   }
 
   if (snapshot.modelindex4 !== 0) {
-    entities.push(createRenderEntity(snapshot, snapshot.modelindex4, 4));
+    entities.push(createLinkedRenderEntity(snapshot, snapshot.modelindex4, 4));
   }
+}
+
+/**
+ * Category: New
+ * Purpose: Emit linked models after the C `ent.skin`/`skinnum`/`flags`/`alpha` reset in `CL_AddPacketEntities`.
+ */
+function createLinkedRenderEntity(
+  snapshot: ClientInterpolatedEntity,
+  modelindex: number,
+  linkedModelSlot: 2 | 3 | 4
+): ClientRenderEntity {
+  return {
+    ...createRenderEntity(snapshot, modelindex, linkedModelSlot),
+    skinnum: 0,
+    alpha: 1,
+    flags: 0,
+    customPlayerSkin: false
+  };
 }
 
 /**

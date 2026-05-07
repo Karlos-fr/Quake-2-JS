@@ -324,6 +324,10 @@ export interface netchan_t {
  *
  * Constraints:
  * - Must keep names close to the original globals while remaining explicit.
+ *
+ * Porting notes:
+ * - Represents the C globals `developer`, `dedicated`, `host_speeds`, `log_stats`, `log_stats_file`,
+ *   the host-speed timers and `server_state` as explicit host-owned state.
  */
 export interface QcommonGlobals {
   developer: cvar_t | null;
@@ -889,10 +893,10 @@ export function Com_SetServerState(globals: QcommonGlobals, state: number): void
  * Fidelity level: Close
  *
  * Behavior:
- * - Returns one random float in the `[0, 1)` range.
+ * - Returns one random float in the `[0, 1]` range using the original 15-bit `rand()` quantization.
  */
 export function frand(): number {
-  return Math.random();
+  return (Math.floor(Math.random() * 0x8000) & 32767) * (1.0 / 32767);
 }
 
 /**
@@ -902,10 +906,10 @@ export function frand(): number {
  * Fidelity level: Close
  *
  * Behavior:
- * - Returns one random float in the `[-1, 1)` range.
+ * - Returns one random float in the `[-1, 1]` range using the original 15-bit `rand()` quantization.
  */
 export function crand(): number {
-  return 2 * (frand() - 0.5);
+  return (Math.floor(Math.random() * 0x8000) & 32767) * (2.0 / 32767) - 1;
 }
 
 /**

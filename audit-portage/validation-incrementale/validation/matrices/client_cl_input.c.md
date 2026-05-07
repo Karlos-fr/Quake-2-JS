@@ -69,18 +69,18 @@
 | `Quake-2-master/client/cl_input.c` | global | `speed` | `packages/client/src/cl_input.ts` | `speed` | Non applicable | A redecouper | Variable locale C de `CL_AdjustAngles`, couverte avec la fonction. |
 | `Quake-2-master/client/cl_input.c` | global | `speed` | `packages/client/src/cl_input.ts` | `speed` | Non applicable | A redecouper | Variable locale C de `CL_BaseMove`, couverte avec la fonction. |
 | `Quake-2-master/client/cl_input.c` | function | `CL_BaseMove` | `packages/client/src/cl_input.ts` | `CL_BaseMove` | Valide | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `CL_ClampPitch` | `packages/client/src/cl_input.ts` | `CL_ClampPitch` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `pitch` | `packages/client/src/cl_input.ts` | `pitch` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `CL_FinishMove` | `packages/client/src/cl_input.ts` | `CL_FinishMove` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `ms` | `packages/client/src/cl_input.ts` | `ms` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `i` | `packages/client/src/cl_input.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `CL_CreateCmd` | `packages/client/src/cl_input.ts` | `CL_CreateCmd` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `cmd` | `packages/client/src/cl_input.ts` | `cmd` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `IN_CenterView` | `packages/client/src/cl_input.ts` | `IN_CenterView` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `CL_InitInput` | `packages/client/src/cl_input.ts` | `CL_InitInput` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | function | `CL_SendCmd` | `packages/client/src/cl_input.ts` | `CL_SendCmd` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `buf` | `packages/client/src/cl_input.ts` | `buf` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `data` | `packages/client/src/cl_input.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `i` | `packages/client/src/cl_input.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `nullcmd` | `packages/client/src/cl_input.ts` | `nullcmd` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_input.c` | global | `checksumIndex` | `packages/client/src/cl_input.ts` | `checksumIndex` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `CL_ClampPitch` | `packages/client/src/cl_input.ts` | `CL_ClampPitch` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `pitch` | `packages/client/src/cl_input.ts` | `pitch` | Non applicable | A redecouper | Variable locale C de `CL_ClampPitch`, couverte avec la fonction. |
+| `Quake-2-master/client/cl_input.c` | function | `CL_FinishMove` | `packages/client/src/cl_input.ts` | `CL_FinishMove` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `ms` | `packages/client/src/cl_input.ts` | `ms` | Non applicable | A redecouper | Variable locale C de `CL_FinishMove`, couverte avec la fonction. |
+| `Quake-2-master/client/cl_input.c` | global | `i` | `packages/client/src/cl_input.ts` |  | Non applicable | A redecouper | Variable locale C de `CL_FinishMove`, couverte avec la fonction. |
+| `Quake-2-master/client/cl_input.c` | function | `CL_CreateCmd` | `packages/client/src/cl_input.ts` | `CL_CreateCmd` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `cmd` | `packages/client/src/cl_input.ts` | `cmd` | Non applicable | A redecouper | Variable locale C de `CL_CreateCmd`, couverte avec la fonction. |
+| `Quake-2-master/client/cl_input.c` | function | `IN_CenterView` | `packages/client/src/cl_input.ts` | `IN_CenterView` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `CL_InitInput` | `packages/client/src/cl_input.ts` | `CL_InitInput` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | function | `CL_SendCmd` | `packages/client/src/cl_input.ts` | `CL_SendCmd` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_input.c` | global | `buf` | `packages/client/src/cl_input.ts` | `buf` | Non applicable | A redecouper | Variable locale C de `CL_SendCmd`, couverte avec la fonction. |
+| `Quake-2-master/client/cl_input.c` | global | `data` | `packages/client/src/cl_input.ts` |  | Non applicable | A redecouper | Variable locale C de `CL_SendCmd`, couverte avec la fonction. |
+| `Quake-2-master/client/cl_input.c` | global | `i` | `packages/client/src/cl_input.ts` |  | Non applicable | A redecouper | Variable locale C de `CL_SendCmd`, couverte avec la fonction. |
+| `Quake-2-master/client/cl_input.c` | global | `nullcmd` | `packages/client/src/cl_input.ts` | `nullcmd` | Non applicable | A redecouper | Variable locale C de `CL_SendCmd`, couverte avec la fonction. |
+| `Quake-2-master/client/cl_input.c` | global | `checksumIndex` | `packages/client/src/cl_input.ts` | `checksumIndex` | Non applicable | A redecouper | Variable locale C de `CL_SendCmd`, couverte avec la fonction. |

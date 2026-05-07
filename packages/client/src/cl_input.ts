@@ -552,7 +552,7 @@ export function CL_FinishMove(context: ClientInputContext, cmd: usercmd_t, optio
     cmd.buttons |= BUTTON_ANY;
   }
 
-  let ms = context.client.cls.frametime * 1000;
+  let ms = Math.trunc(context.client.cls.frametime * 1000);
   if (ms > 250) {
     ms = 100;
   }

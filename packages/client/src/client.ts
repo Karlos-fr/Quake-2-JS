@@ -33,6 +33,7 @@ import {
   MAX_QPATH,
   MAX_SOUNDS,
   netsrc_t,
+  VIDREF_GL,
   type entity_state_t,
   type netchan_t,
   type player_state_t,
@@ -494,6 +495,7 @@ export interface client_state_t {
   active_particles: number;
   free_particles: number;
   cl_numparticles: number;
+  vidref_val: number;
   cl_weaponmodels: string[];
   num_cl_weaponmodels: number;
   clientinfo: clientinfo_t[];
@@ -1019,6 +1021,7 @@ export function createClientState(): client_state_t {
     active_particles: -1,
     free_particles: 0,
     cl_numparticles: MAX_PARTICLES,
+    vidref_val: VIDREF_GL,
     cl_weaponmodels: ["weapon.md2"],
     num_cl_weaponmodels: 1,
     clientinfo: Array.from({ length: MAX_CLIENTS }, () => createClientinfo()),

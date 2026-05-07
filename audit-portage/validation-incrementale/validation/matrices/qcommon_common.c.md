@@ -66,8 +66,8 @@
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WritePos` | `packages/qcommon/src/messages.ts` | `MSG_WritePos` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteAngle` | `packages/qcommon/src/messages.ts` | `MSG_WriteAngle` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteAngle16` | `packages/qcommon/src/messages.ts` | `MSG_WriteAngle16` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaUsercmd` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `bits` | `packages/qcommon/src/messages.ts` | `bits` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_WriteDeltaUsercmd` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `bits` | `packages/qcommon/src/messages.ts` | `bits` | Non applicable | A redecouper | Variable locale de `MSG_WriteDeltaUsercmd`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_WriteDir` | `packages/qcommon/src/messages.ts` | `MSG_WriteDir` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_ReadDir` | `packages/qcommon/src/messages.ts` | `MSG_ReadDir` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | global | `b` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
@@ -100,10 +100,10 @@
 | `Quake-2-master/qcommon/common.c` | function | `MSG_ReadAngle` | `packages/qcommon/src/messages.ts` | `MSG_ReadAngle` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `MSG_ReadAngle16` | `packages/qcommon/src/messages.ts` | `MSG_ReadAngle16` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `SHORT2ANGLE` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Macro externe de `q_shared.h`, non proprietaire de `common.c`; usage couvert par `MSG_ReadAngle16`. |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_ReadDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_ReadDeltaUsercmd` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `bits` | `packages/qcommon/src/messages.ts` | `bits` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | function | `MSG_ReadData` | `packages/qcommon/src/messages.ts` | `MSG_ReadData` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_ReadDeltaUsercmd` | `packages/qcommon/src/messages.ts` | `MSG_ReadDeltaUsercmd` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `bits` | `packages/qcommon/src/messages.ts` | `bits` | Non applicable | A redecouper | Variable locale de `MSG_ReadDeltaUsercmd`; couverte avec la fonction. |
+| `Quake-2-master/qcommon/common.c` | function | `MSG_ReadData` | `packages/qcommon/src/messages.ts` | `MSG_ReadData` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/common.c` | global | `i` | `packages/qcommon/src/common.ts` |  | Non applicable | A redecouper | Variable locale de boucle de `MSG_ReadData`; couverte avec la fonction. |
 | `Quake-2-master/qcommon/common.c` | function | `SZ_Init` | `packages/memory/src/sizebuf.ts` | `SZ_Init` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `SZ_Clear` | `packages/memory/src/sizebuf.ts` | `SZ_Clear` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/common.c` | function | `SZ_GetSpace` | `packages/memory/src/sizebuf.ts` | `SZ_GetSpace` | A verifier | A redecouper |  |

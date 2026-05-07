@@ -194,10 +194,15 @@ export function CL_GetFrameEntityStates(runtime: ClientRuntime, frame: frame_t =
 }
 
 /**
- * Category: New
- * Purpose: Build the first renderer-facing packet entity snapshots from the current client frame.
+ * Original name: CL_AddPacketEntities
+ * Source: client/cl_ents.c
+ * Category: Ported
+ * Fidelity level: Close
  *
- * Constraints:
+ * Behavior:
+ * - Builds the first renderer-facing packet entity snapshots from the current client frame.
+ *
+ * Porting notes:
  * - Must preserve Quake II interpolation and effect-derived animation rules.
  * - Leaves linked lights, particle trails and refresh registration to later phases.
  */

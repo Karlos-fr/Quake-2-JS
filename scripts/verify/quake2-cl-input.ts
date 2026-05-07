@@ -17,15 +17,21 @@ import { strict as assert } from "node:assert";
 import { createSizeBuffer } from "../../packages/memory/src/index.js";
 import {
   Cmd_ExecuteString,
+  ANGLE2SHORT,
+  BUTTON_ANY,
   BUTTON_ATTACK,
+  BUTTON_USE,
   Cvar_Get,
   Cvar_Set,
+  CVAR_ARCHIVE,
   CVAR_USERINFO,
   MSG_BeginReading,
   MSG_ReadByte,
   MSG_ReadDeltaUsercmd,
   MSG_ReadLong,
   MSG_ReadShort,
+  PITCH,
+  SHORT2ANGLE,
   createCommandRuntime,
   createCvarRuntime,
   createQcommonNetRuntime,
@@ -33,10 +39,12 @@ import {
 } from "../../packages/qcommon/src/index.js";
 import {
   CL_CreateCmd,
+  CL_FinishMove,
   CL_InitInput,
   CL_KeyState,
   CL_SendCmd,
   CL_SetInputFrameTime,
+  IN_CenterView,
   createClientInputContext,
   createClientInputDeviceContext,
   createClientRuntime,
@@ -128,6 +136,15 @@ assert.deepEqual(
   [...expectedInputCommands].reverse(),
   "CL_InitInput should register cl_input.c command callbacks through Cmd_AddCommand's head insertion order"
 );
+assert.equal(input.cl_nodelta?.string, "0", "CL_InitInput should create cl_nodelta like the C cvar registration");
+assert.equal(input.cl_upspeed?.value, 200, "CL_InitInput should register cl_upspeed default");
+assert.equal(input.cl_forwardspeed?.value, 200, "CL_InitInput should register cl_forwardspeed default");
+assert.equal(input.cl_sidespeed?.value, 350, "CL_InitInput should register cl_sidespeed default");
+assert.equal(input.cl_yawspeed?.value, 140, "CL_InitInput should register cl_yawspeed default");
+assert.equal(input.cl_pitchspeed?.value, 150, "CL_InitInput should register cl_pitchspeed default");
+assert.equal(input.cl_run?.flags, CVAR_ARCHIVE, "CL_InitInput should archive cl_run like the C code");
+assert.equal(input.cl_anglespeedkey?.string, "1.5", "CL_InitInput should register cl_anglespeedkey default");
+assert.equal(input.cl_lightlevel?.value, 0, "CL_InitInput should register cl_lightlevel default");
 client.cls.frametime = 0.05;
 CL_SetInputFrameTime(input, 100);
 Cmd_ExecuteString(cmd, "+forward 11 0");
@@ -166,6 +183,69 @@ assert.equal(created.sidemove, 25, "CL_CreateCmd should preserve external IN_Mov
 assert.equal(created.msec, 50, "CL_CreateCmd msec mismatch");
 assert.equal(created.impulse, 7, "CL_CreateCmd should include the pending impulse");
 assert.equal(input.in_impulse, 0, "CL_CreateCmd should clear the pending impulse");
+
+const finishClient = createClientRuntime();
+const finishInput = createClientInputContext(finishClient, createCommandRuntime(), createCvarRuntime());
+CL_InitInput(finishInput);
+finishClient.cls.frametime = 0.1239;
+finishClient.cl.viewangles = [100, 12.75, -3.5];
+finishClient.cl.frame.playerstate.pmove.delta_angles[PITCH] = ANGLE2SHORT(10);
+finishInput.in_attack.state = 3;
+finishInput.in_use.state = 3;
+finishInput.in_impulse = 42;
+finishInput.cl_lightlevel!.value = 300;
+const finishCmd: usercmd_t = {
+  msec: 0,
+  buttons: 0,
+  angles: [0, 0, 0],
+  forwardmove: 0,
+  sidemove: 0,
+  upmove: 0,
+  impulse: 0,
+  lightlevel: 0
+};
+CL_FinishMove(finishInput, finishCmd, { anykeydown: true, key_game_active: true });
+assert.equal(finishClient.cl.viewangles[PITCH] + SHORT2ANGLE(finishClient.cl.frame.playerstate.pmove.delta_angles[PITCH]) <= 89, true, "CL_ClampPitch should cap high pitch against delta angles");
+assert.equal(finishCmd.msec, 123, "CL_FinishMove should truncate frametime milliseconds like the C int local");
+assert.equal(finishCmd.buttons & BUTTON_ATTACK, BUTTON_ATTACK, "CL_FinishMove should set BUTTON_ATTACK from impulse bits");
+assert.equal(finishCmd.buttons & BUTTON_USE, BUTTON_USE, "CL_FinishMove should set BUTTON_USE from impulse bits");
+assert.equal(finishCmd.buttons & BUTTON_ANY, BUTTON_ANY, "CL_FinishMove should set BUTTON_ANY only for active game key state");
+assert.equal(finishInput.in_attack.state & 2, 0, "CL_FinishMove should clear the attack impulse-down bit");
+assert.equal(finishInput.in_use.state & 2, 0, "CL_FinishMove should clear the use impulse-down bit");
+assert.deepEqual(finishCmd.angles, finishClient.cl.viewangles.map((angle) => ANGLE2SHORT(angle)), "CL_FinishMove should pack all three viewangles");
+assert.equal(finishCmd.impulse, 42, "CL_FinishMove should copy pending impulse");
+assert.equal(finishInput.in_impulse, 0, "CL_FinishMove should clear pending impulse");
+assert.equal(finishCmd.lightlevel, 44, "CL_FinishMove should store cl_lightlevel as an unsigned byte");
+
+finishClient.cls.frametime = 0.3;
+const longFrameCmd: usercmd_t = {
+  msec: 0,
+  buttons: 0,
+  angles: [0, 0, 0],
+  forwardmove: 0,
+  sidemove: 0,
+  upmove: 0,
+  impulse: 0,
+  lightlevel: 0
+};
+CL_FinishMove(finishInput, longFrameCmd);
+assert.equal(longFrameCmd.msec, 100, "CL_FinishMove should clamp unreasonable frame time to 100ms");
+
+finishClient.cl.frame.playerstate.pmove.delta_angles[PITCH] = ANGLE2SHORT(15);
+IN_CenterView(finishInput);
+assert.equal(finishClient.cl.viewangles[PITCH], -SHORT2ANGLE(finishClient.cl.frame.playerstate.pmove.delta_angles[PITCH]), "IN_CenterView should negate the current pitch delta");
+
+const timingClient = createClientRuntime();
+const timingInput = createClientInputContext(timingClient, createCommandRuntime(), createCvarRuntime());
+CL_InitInput(timingInput);
+timingClient.cls.frametime = 0.01;
+CL_SetInputFrameTime(timingInput, 100);
+timingInput.old_sys_frame_time = 100;
+assert.equal(CL_CreateCmd(timingInput).msec, 10, "CL_CreateCmd should still finish moves when frame_msec is clamped up");
+assert.equal(timingInput.frame_msec, 1, "CL_CreateCmd should clamp frame_msec to at least 1");
+CL_SetInputFrameTime(timingInput, 500);
+assert.equal(CL_CreateCmd(timingInput).msec, 10, "CL_CreateCmd should preserve cls.frametime-driven command msec");
+assert.equal(timingInput.frame_msec, 200, "CL_CreateCmd should clamp frame_msec to at most 200");
 
 const angleClient = createClientRuntime();
 const angleCmd = createCommandRuntime();

@@ -30,6 +30,7 @@ import {
   Netchan_OutOfBandPrint,
   Netchan_Process,
   Netchan_Setup,
+  Netchan_Transmit,
   PORT_SERVER,
   Cmd_AddCommand,
   Cmd_Argc,
@@ -50,6 +51,7 @@ import {
   Info_Print,
   LittleLong,
   PROTOCOL_VERSION,
+  clc_ops_e,
   MSG_BeginReading,
   MSG_ReadLong,
   MSG_ReadString,
@@ -109,6 +111,7 @@ export interface ClientMainContext {
   cl_timeout: cvar_t | null;
   cl_predict: cvar_t | null;
   cl_maxfps: cvar_t | null;
+  cl_gun: cvar_t | null;
   cl_shownet: cvar_t | null;
   cl_showmiss: cvar_t | null;
   cl_showclamp: cvar_t | null;
@@ -268,6 +271,7 @@ export function createClientMainContext(client: ClientRuntime, cmd: CommandRunti
     cl_timeout: null,
     cl_predict: null,
     cl_maxfps: null,
+    cl_gun: null,
     cl_shownet: null,
     cl_showmiss: null,
     cl_showclamp: null,
@@ -336,9 +340,31 @@ export function CL_Skins_f(context: ClientMainContext, hooks: ClientMainHooks = 
  * - Drops the current client connection state and clears level-scoped client data.
  *
  * Porting notes:
- * - Leaves demo/netchan shutdown and cinematic teardown to future hooks.
+ * - Writes the stock triple `disconnect` packet when a qnet runtime is supplied.
+ * - Keeps cinematic/menu/palette teardown behind host hooks until those adapters are fully owned here.
  */
 export function CL_Disconnect(context: ClientMainContext, hooks: ClientMainHooks = {}): void {
+  if (context.client.cls.state === connstate_t.ca_disconnected) {
+    return;
+  }
+
+  if (context.client.cls.demorecording && context.demo_file) {
+    CL_Stop_f(context, hooks);
+  }
+
+  if (hooks.qnet) {
+    const text = "disconnect";
+    const final = new Uint8Array(1 + text.length);
+    final[0] = clc_ops_e.clc_stringcmd;
+    for (let index = 0; index < text.length; index += 1) {
+      final[index + 1] = text.charCodeAt(index) & 0xff;
+    }
+
+    Netchan_Transmit(hooks.qnet, context.client.cls.netchan, final.length, final);
+    Netchan_Transmit(hooks.qnet, context.client.cls.netchan, final.length, final);
+    Netchan_Transmit(hooks.qnet, context.client.cls.netchan, final.length, final);
+  }
+
   context.client.cls.state = connstate_t.ca_disconnected;
   context.client.cls.connect_time = 0;
   context.client.cls.downloadname = "";
@@ -1499,6 +1525,7 @@ export function CL_InitLocal(context: ClientMainContext, hooks: ClientMainHooks 
   context.cl_autoskins = Cvar_Get(context.cvar, "cl_autoskins", "0", 0);
   context.cl_predict = Cvar_Get(context.cvar, "cl_predict", "1", 0);
   context.cl_maxfps = Cvar_Get(context.cvar, "cl_maxfps", "90", 0);
+  context.cl_gun = Cvar_Get(context.cvar, "cl_gun", "1", 0);
   context.cl_shownet = Cvar_Get(context.cvar, "cl_shownet", "0", 0);
   context.cl_showmiss = Cvar_Get(context.cvar, "cl_showmiss", "0", 0);
   context.cl_showclamp = Cvar_Get(context.cvar, "showclamp", "0", 0);

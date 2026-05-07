@@ -15,7 +15,7 @@
  * - This file is the principal port target for `client/cl_newfx.c`.
  */
 
-import { AngleVectors, type vec3_t } from "../../qcommon/src/index.js";
+import { AngleVectors, VIDREF_SOFT, type vec3_t } from "../../qcommon/src/index.js";
 import { INSTANT_PARTICLE, type ClientRuntime, type centity_t, type cparticle_t, type client_sustain_t } from "./client.js";
 import { MakeNormalVectors, type ClientActionEffect } from "./cl_fx.js";
 
@@ -265,6 +265,18 @@ export function CL_BlasterParticles2(
   }
 }
 
+/**
+ * Original name: CL_DebugTrail
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the debug trail particles along a segment with the original 3-unit spacing.
+ *
+ * Porting notes:
+ * - Supports a metadata form for transitional temp-entity adapters and a runtime form that mutates the particle pool.
+ */
 export function CL_DebugTrail(start: vec3_t, end: vec3_t): ClientActionEffect[];
 export function CL_DebugTrail(runtime: ClientRuntime, start: vec3_t, end: vec3_t): void;
 export function CL_DebugTrail(
@@ -310,6 +322,18 @@ export function CL_DebugTrail(
   }
 }
 
+/**
+ * Original name: CL_BubbleTrail2
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns distance-controlled bubble particles between two temp-entity endpoints.
+ *
+ * Porting notes:
+ * - The runtime overload preserves the active/free particle list side effects.
+ */
 export function CL_BubbleTrail2(start: vec3_t, end: vec3_t, dist: number): ClientActionEffect[];
 export function CL_BubbleTrail2(runtime: ClientRuntime, start: vec3_t, end: vec3_t, dist: number): void;
 export function CL_BubbleTrail2(
@@ -360,6 +384,18 @@ export function CL_BubbleTrail2(
   }
 }
 
+/**
+ * Original name: CL_ColorFlash
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Allocates one keyed dynamic light at the supplied position, including the software-renderer negative-color inversion.
+ *
+ * Porting notes:
+ * - Uses `runtime.cl.vidref_val` for the original global `vidref_val`; browser full-game defaults to the GL path.
+ */
 export function CL_ColorFlash(
   pos: vec3_t,
   ent: number,
@@ -404,10 +440,16 @@ export function CL_ColorFlash(
   const runtime = runtimeOrPos;
   const pos = posOrEnt as vec3_t;
   const ent = entOrIntensity;
-  const intensity = intensityOrR;
-  const r = rOrG;
-  const g = gOrB;
-  const b = maybeB as number;
+  let intensity = intensityOrR;
+  let r = rOrG;
+  let g = gOrB;
+  let b = maybeB as number;
+  if (runtime.cl.vidref_val === VIDREF_SOFT && (r < 0 || g < 0 || b < 0)) {
+    intensity = -intensity;
+    r = -r;
+    g = -g;
+    b = -b;
+  }
   const dlight = allocDlight(runtime, ent);
   dlight.origin = [...pos];
   dlight.radius = intensity;
@@ -416,6 +458,18 @@ export function CL_ColorFlash(
   dlight.color = [r, g, b];
 }
 
+/**
+ * Original name: CL_Flashlight
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Emits the original short-lived white flashlight dynamic light for one entity key.
+ *
+ * Porting notes:
+ * - Keeps the TypeScript overload order `(pos, ent)` for metadata callers; runtime call sites use explicit `runtime, pos, ent`.
+ */
 export function CL_Flashlight(pos: vec3_t, ent: number): ClientActionEffect[];
 export function CL_Flashlight(runtime: ClientRuntime, pos: vec3_t, ent: number): void;
 export function CL_Flashlight(
@@ -441,6 +495,18 @@ export function CL_Flashlight(
   CL_ColorFlash(runtimeOrPos, posOrEnt as vec3_t, maybeEnt as number, 400, 1, 1, 1);
 }
 
+/**
+ * Original name: CL_SmokeTrail
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns smoky trail particles with caller-controlled palette range and spacing.
+ *
+ * Porting notes:
+ * - Runtime form preserves particle allocation, alpha decay and upward velocity.
+ */
 export function CL_SmokeTrail(
   start: vec3_t,
   end: vec3_t,
@@ -510,6 +576,18 @@ export function CL_SmokeTrail(
   }
 }
 
+/**
+ * Original name: CL_ForceWall
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns force-wall particles along a segment with the original random skip and downward velocity.
+ *
+ * Porting notes:
+ * - Metadata output is consumed by temp-entity/web adapters; runtime output feeds the particle pool.
+ */
 export function CL_ForceWall(start: vec3_t, end: vec3_t, color: number): ClientActionEffect[];
 export function CL_ForceWall(runtime: ClientRuntime, start: vec3_t, end: vec3_t, color: number): void;
 export function CL_ForceWall(
@@ -566,6 +644,18 @@ export function CL_ForceWall(
   }
 }
 
+/**
+ * Original name: CL_FlameEffects
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns the original two random flame/smoke particle groups around an entity origin.
+ *
+ * Porting notes:
+ * - The unused C `centity_t *ent` remains accepted in the runtime overload for signature ownership.
+ */
 export function CL_FlameEffects(origin: vec3_t): ClientActionEffect[];
 export function CL_FlameEffects(runtime: ClientRuntime, ent: centity_t | null, origin: vec3_t): void;
 export function CL_FlameEffects(
@@ -625,6 +715,18 @@ export function CL_FlameEffects(
   }
 }
 
+/**
+ * Original name: CL_GenericParticleEffect
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Spawns a caller-sized burst with palette variation, directional spread, gravity and alpha decay.
+ *
+ * Porting notes:
+ * - Metadata output preserves the effect payload for adapters that do not mutate particles immediately.
+ */
 export function CL_GenericParticleEffect(
   org: vec3_t,
   dir: vec3_t,
@@ -1113,6 +1215,15 @@ function dotProduct(a: vec3_t, b: vec3_t): number {
   return (a[0] * b[0]) + (a[1] * b[1]) + (a[2] * b[2]);
 }
 
+/**
+ * Original name: vectoangles2
+ * Source: client/cl_newfx.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Converts a direction vector into Quake pitch/yaw/roll angles, preserving the PMM pitch fix.
+ */
 function vectoangles2(value1: vec3_t): vec3_t {
   let yaw: number;
   let pitch: number;

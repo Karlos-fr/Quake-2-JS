@@ -10,38 +10,38 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_newfx.c` | global | `cl_numparticles` | `packages/client/src/cl_newfx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `vid_ref` | `packages/client/src/cl_newfx.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `vectoangles2` | `packages/client/src/cl_newfx.ts` | `vectoangles2` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `forward` | `packages/client/src/cl_newfx.ts` | `forward` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `pitch` | `packages/client/src/cl_newfx.ts` | `pitch` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `yaw` | `packages/client/src/cl_newfx.ts` | `yaw` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_Flashlight` | `packages/client/src/cl_newfx.ts` | `CL_Flashlight` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_ColorFlash` | `packages/client/src/cl_newfx.ts` | `CL_ColorFlash` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_DebugTrail` | `packages/client/src/cl_newfx.ts` | `CL_DebugTrail` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `dec` | `packages/client/src/cl_newfx.ts` | `dec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_SmokeTrail` | `packages/client/src/cl_newfx.ts` | `CL_SmokeTrail` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_ForceWall` | `packages/client/src/cl_newfx.ts` | `CL_ForceWall` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_FlameEffects` | `packages/client/src/cl_newfx.ts` | `CL_FlameEffects` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_GenericParticleEffect` | `packages/client/src/cl_newfx.ts` | `CL_GenericParticleEffect` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `d` | `packages/client/src/cl_newfx.ts` | `d` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | function | `CL_BubbleTrail2` | `packages/client/src/cl_newfx.ts` | `CL_BubbleTrail2` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_newfx.c` | global | `dec` | `packages/client/src/cl_newfx.ts` | `dec` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | global | `cl_numparticles` | `packages/client/src/cl_newfx.ts` |  | Non applicable | A redecouper | Declaration externe; owner effectif `client_state_t.cl_numparticles` / `CL_ClearParticles`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `vid_ref` | `packages/client/src/cl_newfx.ts` |  | Non applicable | A redecouper | Declaration externe non utilisee par ce fichier; `vidref_val` est porte dans l'etat client pour `CL_ColorFlash`. |
+| `Quake-2-master/client/cl_newfx.c` | function | `vectoangles2` | `packages/client/src/cl_newfx.ts` | `vectoangles2` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | global | `forward` | `packages/client/src/cl_newfx.ts` | `forward` | Non applicable | A redecouper | Local C de `vectoangles2`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `pitch` | `packages/client/src/cl_newfx.ts` | `pitch` | Non applicable | A redecouper | Local C de `vectoangles2`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `yaw` | `packages/client/src/cl_newfx.ts` | `yaw` | Non applicable | A redecouper | Local C de `vectoangles2`. |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_Flashlight` | `packages/client/src/cl_newfx.ts` | `CL_Flashlight` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_ColorFlash` | `packages/client/src/cl_newfx.ts` | `CL_ColorFlash` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_DebugTrail` | `packages/client/src/cl_newfx.ts` | `CL_DebugTrail` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | Non applicable | A redecouper | Local C de `CL_DebugTrail`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | Non applicable | A redecouper | Local C de `CL_DebugTrail`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | Non applicable | A redecouper | Local C de `CL_DebugTrail`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `dec` | `packages/client/src/cl_newfx.ts` | `dec` | Non applicable | A redecouper | Local C de `CL_DebugTrail`. |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_SmokeTrail` | `packages/client/src/cl_newfx.ts` | `CL_SmokeTrail` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | Non applicable | A redecouper | Local C de `CL_SmokeTrail`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | Non applicable | A redecouper | Local C de `CL_SmokeTrail`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | Non applicable | A redecouper | Local C de `CL_SmokeTrail`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | Non applicable | A redecouper | Local C de `CL_SmokeTrail`; cible automatique incorrecte. |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_ForceWall` | `packages/client/src/cl_newfx.ts` | `CL_ForceWall` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | Non applicable | A redecouper | Local C de `CL_ForceWall`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | Non applicable | A redecouper | Local C de `CL_ForceWall`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | Non applicable | A redecouper | Local C de `CL_ForceWall`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | Non applicable | A redecouper | Local C de `CL_ForceWall`; cible automatique incorrecte. |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_FlameEffects` | `packages/client/src/cl_newfx.ts` | `CL_FlameEffects` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | global | `j` | `packages/client/src/cl_fx.ts` | `j` | Non applicable | A redecouper | Local C de `CL_FlameEffects`; cible automatique incorrecte. |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_GenericParticleEffect` | `packages/client/src/cl_newfx.ts` | `CL_GenericParticleEffect` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | global | `d` | `packages/client/src/cl_newfx.ts` | `d` | Non applicable | A redecouper | Local C de `CL_GenericParticleEffect`. |
+| `Quake-2-master/client/cl_newfx.c` | function | `CL_BubbleTrail2` | `packages/client/src/cl_newfx.ts` | `CL_BubbleTrail2` | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | Non applicable | A redecouper | Local C de `CL_BubbleTrail2`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `vec` | `packages/client/src/cl_newfx.ts` | `vec` | Non applicable | A redecouper | Local C de `CL_BubbleTrail2`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `len` | `packages/client/src/cl_newfx.ts` | `len` | Non applicable | A redecouper | Local C de `CL_BubbleTrail2`. |
+| `Quake-2-master/client/cl_newfx.c` | global | `dec` | `packages/client/src/cl_newfx.ts` | `dec` | Non applicable | A redecouper | Local C de `CL_BubbleTrail2`. |
 | `Quake-2-master/client/cl_newfx.c` | macro | `RINGS` | `packages/client/src/cl_newfx.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | function | `CL_Heatbeam` | `packages/client/src/cl_newfx.ts` | `CL_Heatbeam` | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_newfx.c` | global | `move` | `packages/client/src/cl_newfx.ts` | `move` | A verifier | A redecouper |  |

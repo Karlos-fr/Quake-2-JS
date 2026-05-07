@@ -10,7 +10,7 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cl_ents.c` | global | `vidref_val` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | global | `vidref_val` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Legacy software-renderer branch collapsed to the GL-style tracker light path used by the web/renderer-three runtime. |
 | `Quake-2-master/client/cl_ents.c` | global | `bitcounts` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Compteur C de profiling protocole uniquement, sans sortie runtime/web/renderer attendue. |
 | `Quake-2-master/client/cl_ents.c` | function | `CL_ParseEntityBits` | `packages/client/src/cl_parse.ts` | `CL_ParseEntityBits` | Valide | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C generee par la matrice. |
@@ -35,22 +35,22 @@
 | `Quake-2-master/client/cl_ents.c` | global | `cmd` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C des commandes playerinfo/packetentities, couverte avec `CL_ParseFrame`. |
 | `Quake-2-master/client/cl_ents.c` | global | `len` | `packages/client/src/cl_ents.ts` | `len` | Non applicable | A redecouper | Variable locale C de longueur areabits, couverte avec `CL_ParseFrame`. |
 | `Quake-2-master/client/cl_ents.c` | global | `old` | `packages/client/src/cl_parse.ts` | `old` | Non applicable | A redecouper | Variable locale C du frame delta precedent, couverte avec `CL_ParseFrame`. |
-| `Quake-2-master/client/cl_ents.c` | function | `S_RegisterSexedModel` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `n` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `p` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `model` | `packages/client/src/view.ts` | `model` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `buffer` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | function | `CL_AddPacketEntities` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `ent` | `packages/client/src/cl_ents.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `s1` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `autorotate` | `packages/client/src/cl_ents.ts` | `autorotate` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `pnum` | `packages/client/src/cl_ents.ts` | `pnum` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `cent` | `packages/client/src/cl_ents.ts` | `cent` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `autoanim` | `packages/client/src/cl_ents.ts` | `autoanim` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `ci` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `bfg_lightramp` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/client/cl_ents.c` | global | `intensity` | `packages/client/src/cl_ents.ts` | `intensity` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | function | `S_RegisterSexedModel` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Dead C helper: no call site in original source; active custom weapon path is loaded through `CL_LoadClientinfo`/`clientinfo.weaponmodel` and consumed by `CL_AddPacketEntities`. |
+| `Quake-2-master/client/cl_ents.c` | global | `n` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C de `S_RegisterSexedModel`. |
+| `Quake-2-master/client/cl_ents.c` | global | `p` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C de `S_RegisterSexedModel`. |
+| `Quake-2-master/client/cl_ents.c` | global | `model` | `packages/client/src/view.ts` | `model` | Non applicable | A redecouper | Buffer local C de `S_RegisterSexedModel`; le model courant est derive depuis `clientinfo.model_name`. |
+| `Quake-2-master/client/cl_ents.c` | global | `buffer` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Buffer local C de `S_RegisterSexedModel`. |
+| `Quake-2-master/client/cl_ents.c` | function | `CL_AddPacketEntities` | `packages/client/src/cl_ents.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/client/cl_ents.c` | global | `ent` | `packages/client/src/cl_ents.ts` | `ent` | Non applicable | A redecouper | Structure locale C emise sous forme de `ClientRenderEntity` dans le pont TS. |
+| `Quake-2-master/client/cl_ents.c` | global | `s1` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C couverte avec `CL_AddPacketEntities`. |
+| `Quake-2-master/client/cl_ents.c` | global | `autorotate` | `packages/client/src/cl_ents.ts` | `autorotate` | Non applicable | A redecouper | Variable locale C couverte avec `CL_AddPacketEntities`. |
+| `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C couverte avec `CL_AddPacketEntities`. |
+| `Quake-2-master/client/cl_ents.c` | global | `pnum` | `packages/client/src/cl_ents.ts` | `pnum` | Non applicable | A redecouper | Variable locale C couverte avec `CL_AddPacketEntities`. |
+| `Quake-2-master/client/cl_ents.c` | global | `cent` | `packages/client/src/cl_ents.ts` | `cent` | Non applicable | A redecouper | Variable locale C couverte avec `CL_AddPacketEntities`. |
+| `Quake-2-master/client/cl_ents.c` | global | `autoanim` | `packages/client/src/cl_ents.ts` | `autoanim` | Non applicable | A redecouper | Variable locale C couverte avec `CL_AddPacketEntities`. |
+| `Quake-2-master/client/cl_ents.c` | global | `ci` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Variable locale C couverte avec le chemin custom player/custom weapon de `CL_AddPacketEntities`. |
+| `Quake-2-master/client/cl_ents.c` | global | `bfg_lightramp` | `packages/client/src/cl_ents.ts` |  | Non applicable | A redecouper | Table locale C couverte avec les lumieres BFG de `CL_AddPacketEntities`. |
+| `Quake-2-master/client/cl_ents.c` | global | `intensity` | `packages/client/src/cl_ents.ts` | `intensity` | Non applicable | A redecouper | Variable locale C couverte avec la branche tracker de `CL_AddPacketEntities`. |
 | `Quake-2-master/client/cl_ents.c` | function | `CL_AddViewWeapon` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | global | `i` | `packages/client/src/cl_ents.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/client/cl_ents.c` | function | `CL_CalcViewValues` | `packages/client/src/view.ts` | `CL_CalcViewValues` | A verifier | A redecouper |  |

@@ -73,6 +73,7 @@ import {
 import {
   CVAR_ARCHIVE,
   CVAR_LATCH,
+  CVAR_NOSET,
   CVAR_SERVERINFO,
   CVAR_USERINFO,
   Cvar_Command,
@@ -716,12 +717,41 @@ assert.equal(CRC_ProcessByte(0xffff, 49), 0xc782, "CRC_ProcessByte first-step mi
 assert.equal(CRC_Block(new Uint8Array([1, 2, 3, 4, 5]), 3), 0xadad, "CRC_Block partial-count mismatch");
 assert.equal(CRC_Block(new Uint8Array()), 0xffff, "CRC_Block empty mismatch");
 assert.equal(COM_BlockSequenceCRCByte(new Uint8Array([1, 2, 3, 4, 5]), 5, 7), 201, "COM_BlockSequenceCRCByte mismatch");
+assert.equal(
+  COM_BlockSequenceCRCByte(new Uint8Array(Array.from({ length: 80 }, (_, index) => index)), 80, 1234),
+  80,
+  "COM_BlockSequenceCRCByte length clamp mismatch"
+);
+assert.throws(
+  () => COM_BlockSequenceCRCByte(new Uint8Array([1]), 1, -1),
+  /sequence < 0/,
+  "COM_BlockSequenceCRCByte negative sequence mismatch"
+);
 assert.equal(Com_BlockChecksum(new Uint8Array([97, 98, 99])), 1570836014, "Com_BlockChecksum mismatch");
+assert.equal(Com_BlockChecksum(new Uint8Array([97, 98, 99, 100]), 3), 1570836014, "Com_BlockChecksum length mismatch");
 
 const globals = createQcommonGlobals();
 assert.equal(Com_ServerState(globals), 0, "Com_ServerState default mismatch");
 Com_SetServerState(globals, 2);
 assert.equal(Com_ServerState(globals), 2, "Com_SetServerState mismatch");
+const globalsCvars = createCvarRuntime();
+globals.developer = Cvar_Get(globalsCvars, "developer", "0", 0);
+globals.dedicated = Cvar_Get(globalsCvars, "dedicated", "1", CVAR_NOSET);
+globals.host_speeds = Cvar_Get(globalsCvars, "host_speeds", "0", 0);
+globals.log_stats = Cvar_Get(globalsCvars, "log_stats", "0", 0);
+assert.equal(globals.developer?.value, 0, "developer cvar default mismatch");
+assert.equal(globals.dedicated?.flags, CVAR_NOSET, "dedicated cvar flags mismatch");
+assert.equal(globals.host_speeds?.string, "0", "host_speeds cvar default mismatch");
+assert.equal(globals.log_stats?.string, "0", "log_stats cvar default mismatch");
+globals.time_before_game = 11;
+globals.time_after_game = 17;
+globals.time_before_ref = 19;
+globals.time_after_ref = 23;
+assert.deepEqual(
+  [globals.time_before_game, globals.time_after_game, globals.time_before_ref, globals.time_after_ref],
+  [11, 17, 19, 23],
+  "host_speeds timer globals mismatch"
+);
 assert.equal(CopyString("baseq2"), "baseq2", "CopyString mismatch");
 assert.equal(CopyString(""), "", "CopyString empty mismatch");
 assert.equal(CopyString("line\nbreak"), "line\nbreak", "CopyString content preservation mismatch");
@@ -877,10 +907,22 @@ assert.deepEqual(hostEvents, [
   "scrDebugGraph:1.5:7"
 ], "host tail mismatch");
 
-const random = frand();
-assert.ok(random >= 0 && random < 1, "frand range mismatch");
-const centered = crand();
-assert.ok(centered >= -1 && centered < 1, "crand range mismatch");
+const originalRandom = Math.random;
+try {
+  Math.random = () => 0;
+  assert.equal(frand(), 0, "frand low endpoint mismatch");
+  assert.equal(crand(), -1, "crand low endpoint mismatch");
+  Math.random = () => 0.9999999999999999;
+  assert.equal(frand(), 1, "frand high endpoint mismatch");
+  assert.equal(crand(), 1, "crand high endpoint mismatch");
+  Math.random = originalRandom;
+  const random = frand();
+  assert.ok(random >= 0 && random <= 1, "frand range mismatch");
+  const centered = crand();
+  assert.ok(centered >= -1 && centered <= 1, "crand range mismatch");
+} finally {
+  Math.random = originalRandom;
+}
 
 const netchan = createNetchan(netsrc_t.NS_SERVER);
 assert.equal(netchan.sock, netsrc_t.NS_SERVER, "createNetchan sock mismatch");

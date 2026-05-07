@@ -15,24 +15,31 @@
 import { strict as assert } from "node:assert";
 
 import {
+  Cmd_ForwardToServer,
   CL_InitInput,
   CL_CheckForResend,
   CL_ConnectionlessPacket,
+  CL_Disconnect,
+  CL_Disconnect_f,
   CL_DumpPackets,
   CL_Drop,
   CL_Frame,
+  CL_ForwardToServer_f,
   CL_FixCvarCheats,
   CL_FixUpGender,
   CL_Init,
   CL_InitLocal,
   CL_Packet_f,
   CL_ParseStatusMessage,
+  CL_Pause_f,
   CL_ReadPackets,
   CL_Record_f,
   CL_SendConnectPacket,
   CL_SendCommand,
+  CL_Setenv_f,
   CL_Shutdown,
   CL_Stop_f,
+  CL_Quit_f,
   createClientInputContext,
   CL_WriteDemoMessage,
   CL_WriteConfiguration,
@@ -49,6 +56,8 @@ import {
   Cmd_ExecuteString,
   Cmd_TokenizeString,
   CS_MAXCLIENTS,
+  CVAR_ARCHIVE,
+  CVAR_USERINFO,
   Cvar_FindVar,
   Cvar_Set,
   Cvar_VariableString,
@@ -116,6 +125,44 @@ assert.equal(Cvar_FindVar(cvar, "adr8")?.string, "", "CL_InitLocal should regist
 assert.equal(Cvar_FindVar(cvar, "cl_stereo")?.string, "0", "CL_InitLocal should register stereo cvars from cl_main");
 assert.equal(Cvar_FindVar(cvar, "cl_blend")?.string, "1", "CL_InitLocal should register render toggle cvars from cl_main");
 assert.equal(Cvar_FindVar(cvar, "r_lightlevel")?.string, "0", "CL_InitLocal should register cl_main-owned lightlevel cvar");
+assert.equal(context.adr.length, 9, "CL_InitLocal should preserve the cl_main.c adr0..adr8 startup globals");
+assert.equal(context.cl_stereo_separation?.string, "0.4", "CL_InitLocal should expose cl_stereo_separation");
+assert.equal(context.cl_add_particles?.string, "1", "CL_InitLocal should expose cl_particles");
+assert.equal(context.cl_add_lights?.string, "1", "CL_InitLocal should expose cl_lights");
+assert.equal(context.cl_add_entities?.string, "1", "CL_InitLocal should expose cl_entities cvar");
+assert.equal(context.cl_add_blend?.string, "1", "CL_InitLocal should expose cl_blend cvar");
+assert.equal(context.cl_gun?.string, "1", "CL_InitLocal should expose cl_gun like client/cl_main.c");
+assert.equal(context.cl_noskins?.string, "0", "CL_InitLocal should expose cl_noskins");
+assert.equal(context.cl_autoskins?.string, "0", "CL_InitLocal should expose cl_autoskins");
+assert.equal(context.cl_footsteps?.string, "1", "CL_InitLocal should expose cl_footsteps");
+assert.equal(context.cl_timeout?.string, "120", "CL_InitLocal should expose cl_timeout");
+assert.equal(context.cl_predict?.string, "1", "CL_InitLocal should expose cl_predict");
+assert.equal(context.cl_maxfps?.string, "90", "CL_InitLocal should expose cl_maxfps");
+assert.equal(context.cl_shownet?.string, "0", "CL_InitLocal should expose cl_shownet");
+assert.equal(context.cl_showmiss?.string, "0", "CL_InitLocal should expose cl_showmiss");
+assert.equal(context.cl_showclamp?.name, "showclamp", "CL_InitLocal should keep the original showclamp cvar name");
+assert.equal(context.freelook?.flags, CVAR_ARCHIVE, "CL_InitLocal should archive freelook");
+assert.equal(context.lookspring?.flags, CVAR_ARCHIVE, "CL_InitLocal should archive lookspring");
+assert.equal(context.lookstrafe?.flags, CVAR_ARCHIVE, "CL_InitLocal should archive lookstrafe");
+assert.equal(context.sensitivity?.string, "3", "CL_InitLocal should expose sensitivity");
+assert.equal(context.m_pitch?.flags, CVAR_ARCHIVE, "CL_InitLocal should archive m_pitch");
+assert.equal(context.m_yaw?.string, "0.022", "CL_InitLocal should expose m_yaw");
+assert.equal(context.m_forward?.string, "1", "CL_InitLocal should expose m_forward");
+assert.equal(context.m_side?.string, "1", "CL_InitLocal should expose m_side");
+assert.equal(context.info_password?.flags, CVAR_USERINFO, "CL_InitLocal should keep password as userinfo only");
+assert.equal(context.info_spectator?.string, "0", "CL_InitLocal should expose spectator userinfo");
+assert.equal(context.name?.flags, CVAR_USERINFO | CVAR_ARCHIVE, "CL_InitLocal should archive name userinfo");
+assert.equal(context.rate?.string, "25000", "CL_InitLocal should expose rate");
+assert.equal(context.fov?.string, "90", "CL_InitLocal should expose fov");
+assert.equal(context.msg?.string, "1", "CL_InitLocal should expose msg");
+assert.equal(context.hand?.flags, CVAR_USERINFO | CVAR_ARCHIVE, "CL_InitLocal should archive hand userinfo");
+assert.equal(context.gender_auto?.string, "1", "CL_InitLocal should expose gender_auto");
+assert.equal(context.cl_paused?.string, "0", "CL_InitLocal should expose paused");
+assert.equal(context.cl_timedemo?.string, "0", "CL_InitLocal should expose timedemo");
+assert.equal(context.cl_vwep?.flags, CVAR_ARCHIVE, "CL_InitLocal should archive cl_vwep");
+assert.equal(context.rcon_client_password?.name, "rcon_password", "CL_InitLocal should expose rcon_password");
+assert.equal(context.rcon_address?.name, "rcon_address", "CL_InitLocal should expose rcon_address");
+assert.equal(client.cl_entities.length > 0 && client.cl_parse_entities.length > 0, true, "Client runtime should own cl_entities and cl_parse_entities arrays");
 
 for (const command of [
   "cmd",
@@ -216,6 +263,68 @@ assert.equal(context.client.cls.connect_time, 7000, "CL_CheckForResend should ad
 assert.equal(recursiveMessage, "Connecting to 192.168.0.5...", "CL_CheckForResend should print the stock reconnect line");
 assert.equal(sentPackets[0]?.text, "getchallenge\n", "CL_CheckForResend should request a server challenge");
 assert.equal(sentPackets[0]?.port, 27910, "CL_CheckForResend should default the challenge request port");
+
+context.client.cls.state = 4;
+context.client.cls.netchan.message.cursize = 0;
+context.client.cls.netchan.message.readcount = 0;
+Cmd_TokenizeString(cmd, "god yes", false);
+Cmd_ForwardToServer(context);
+MSG_BeginReading(context.client.cls.netchan.message);
+assert.equal(MSG_ReadByte(context.client.cls.netchan.message), clc_ops_e.clc_stringcmd, "Cmd_ForwardToServer should write a string command opcode");
+assert.equal(MSG_ReadString(context.client.cls.netchan.message), "god yes", "Cmd_ForwardToServer should include command and args");
+
+recursiveMessage = "";
+context.client.cls.state = 3;
+Cmd_TokenizeString(cmd, "+attack", false);
+Cmd_ForwardToServer(context, { onPrint: (line) => { recursiveMessage = line; } });
+assert.equal(recursiveMessage, "Unknown command \"+attack\"", "Cmd_ForwardToServer should reject local +/- commands");
+
+context.client.cls.state = 3;
+context.client.cls.netchan.message.cursize = 0;
+context.client.cls.netchan.message.readcount = 0;
+Cmd_TokenizeString(cmd, "cmd say hello", false);
+CL_ForwardToServer_f(context);
+MSG_BeginReading(context.client.cls.netchan.message);
+assert.equal(MSG_ReadByte(context.client.cls.netchan.message), clc_ops_e.clc_stringcmd, "CL_ForwardToServer_f should write a string command opcode");
+assert.equal(MSG_ReadString(context.client.cls.netchan.message), "say hello", "CL_ForwardToServer_f should drop the first cmd argument");
+
+const env: Record<string, string> = {};
+Cmd_TokenizeString(cmd, "setenv QUAKE_TEST one two", false);
+CL_Setenv_f(context, { environment: env });
+assert.equal(env.QUAKE_TEST, "one two ", "CL_Setenv_f should preserve the C trailing space in putenv values");
+recursiveMessage = "";
+Cmd_TokenizeString(cmd, "setenv QUAKE_TEST", false);
+CL_Setenv_f(context, { environment: env, onPrint: (line) => { recursiveMessage = line; } });
+assert.equal(recursiveMessage, "QUAKE_TEST=one two ", "CL_Setenv_f should print existing environment values");
+
+Cvar_Set(cvar, "maxclients", "1");
+Cvar_Set(cvar, "paused", "0");
+CL_Pause_f(context, { serverRunning: () => true });
+assert.equal(Cvar_VariableString(cvar, "paused"), "1", "CL_Pause_f should toggle pause for a local single-player server");
+Cvar_Set(cvar, "maxclients", "2");
+CL_Pause_f(context, { serverRunning: () => true });
+assert.equal(Cvar_VariableString(cvar, "paused"), "0", "CL_Pause_f should clear pause in multiplayer");
+
+let quitCalled = false;
+context.client.cls.state = 4;
+CL_Quit_f(context, { onQuit: () => { quitCalled = true; } });
+assert.equal(quitCalled, true, "CL_Quit_f should request host quit after disconnecting");
+assert.equal(context.client.cls.state, 1, "CL_Quit_f should disconnect before quitting");
+
+context.client.cls.state = 4;
+CL_Disconnect_f(context);
+assert.equal(context.client.cls.state, 1, "CL_Disconnect_f should route through CL_Disconnect");
+
+sentPackets.length = 0;
+const disconnectAdr = qnetAddressFactory();
+NET_StringToAdr("10.2.3.4:27910", disconnectAdr);
+context.client.cls.state = 4;
+context.client.cls.netchan.remote_address = disconnectAdr;
+context.client.cls.netchan.sock = 0;
+context.client.cls.netchan.message.cursize = 5;
+CL_Disconnect(context, { qnet });
+assert.equal(sentPackets.length, 3, "CL_Disconnect should transmit the stock triple disconnect packet");
+assert.equal(context.client.cls.netchan.message.cursize, 0, "CL_Disconnect should clear the netchan message through CL_ClearState");
 
 qnet.net_message.cursize = 0;
 qnet.net_message.readcount = 0;

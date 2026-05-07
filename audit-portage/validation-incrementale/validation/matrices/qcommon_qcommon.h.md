@@ -288,20 +288,20 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `Com_DPrintf` | `packages/qcommon/src/qcommon.ts` | `Com_DPrintf` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Com_Error` | `packages/qcommon/src/qcommon.ts` | `Com_Error` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Com_Quit` | `packages/qcommon/src/qcommon.ts` | `Com_Quit` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Com_ServerState` | `packages/qcommon/src/qcommon.ts` | `Com_ServerState` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Com_SetServerState` | `packages/qcommon/src/qcommon.ts` | `Com_SetServerState` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Com_BlockChecksum` | `packages/qcommon/src/md4.ts` | `Com_BlockChecksum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `COM_BlockSequenceCRCByte` | `packages/qcommon/src/qcommon.ts` | `COM_BlockSequenceCRCByte` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `frand` | `packages/qcommon/src/qcommon.ts` | `frand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `crand` | `packages/qcommon/src/qcommon.ts` | `crand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `developer` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `dedicated` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `host_speeds` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `log_stats` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `time_before_game` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `time_after_game` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `time_before_ref` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `time_after_ref` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Com_ServerState` | `packages/qcommon/src/qcommon.ts` | `Com_ServerState` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Com_SetServerState` | `packages/qcommon/src/qcommon.ts` | `Com_SetServerState` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Com_BlockChecksum` | `packages/qcommon/src/md4.ts` | `Com_BlockChecksum` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `COM_BlockSequenceCRCByte` | `packages/qcommon/src/qcommon.ts` | `COM_BlockSequenceCRCByte` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `frand` | `packages/qcommon/src/qcommon.ts` | `frand` | Valide | A redecouper | Correction: quantification C 15 bits et borne haute incluse restaurees. |
+| `Quake-2-master/qcommon/qcommon.h` | function | `crand` | `packages/qcommon/src/qcommon.ts` | `crand` | Valide | A redecouper | Correction: quantification C 15 bits et borne haute incluse restaurees. |
+| `Quake-2-master/qcommon/qcommon.h` | global | `developer` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `dedicated` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `host_speeds` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `log_stats` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `time_before_game` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `time_after_game` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `time_before_ref` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `time_after_ref` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Z_Free` | `packages/qcommon/src/qcommon.ts` | `Z_Free` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Z_Malloc` | `packages/qcommon/src/qcommon.ts` | `Z_Malloc` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Z_TagMalloc` | `packages/qcommon/src/qcommon.ts` | `Z_TagMalloc` | A verifier | A redecouper |  |

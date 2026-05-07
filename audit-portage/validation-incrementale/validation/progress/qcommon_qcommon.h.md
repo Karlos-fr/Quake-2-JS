@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: bloc misc/erreurs `ERR_FATAL`, `ERR_DROP`, `ERR_QUIT`, `PRINT_ALL`, `PRINT_DEVELOPER`, `Com_BeginRedirect`, `Com_EndRedirect`, `Com_Printf`, `Com_DPrintf`, `Com_Error`, `Com_Quit`.
+- Dernier lot valide: bloc etat serveur/checksum/random/globals `Com_ServerState`, `Com_SetServerState`, `Com_BlockChecksum`, `COM_BlockSequenceCRCByte`, `frand`, `crand`, `developer`, `dedicated`, `host_speeds`, `log_stats`, `time_before_game`, `time_after_game`, `time_before_ref`, `time_after_ref`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc etat serveur/checksum/random/globals depuis `qcommon/qcommon.h`: `Com_ServerState`, `Com_SetServerState`, `Com_BlockChecksum`, `COM_BlockSequenceCRCByte`, `frand`, `crand`, `developer`, `dedicated`, `host_speeds`, `log_stats`, et timers host-speed `time_before_game`, `time_after_game`, `time_before_ref`, `time_after_ref`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementation proprietaire `Quake-2-master/qcommon/common.c` pour server state, sequence CRC et random, implementation `Quake-2-master/qcommon/md4.c` pour `Com_BlockChecksum`, et initialisation/usages C des cvars globals dans `Qcommon_Init`/`Qcommon_Frame`.
+- Cible comparee: `packages/qcommon/src/qcommon.ts`, `packages/qcommon/src/md4.ts`, exports publics `packages/qcommon/src/index.ts`, usages `packages/client`, `packages/server`, `apps/web`, `packages/renderer-three`, et harnais `scripts/verify/quake2-qcommon-header.ts`.
+- Decision: portage valide pour 14 entrees. `Com_ServerState`/`Com_SetServerState` conservent le `server_state` qcommon via `QcommonGlobals.server_state`. `Com_BlockChecksum` conserve le MD4 puis XOR des quatre mots digest. `COM_BlockSequenceCRCByte` conserve la table de protection, le clamp a 60 octets, l'ajout de quatre octets de sequence et le XOR CRC/somme. `frand` et `crand` ont ete corriges pour reproduire la quantification C 15 bits et les bornes hautes incluses. Les globals cvar et timers sont portes comme champs explicites de `QcommonGlobals`; `developer` est consomme par `Com_DPrintf`, `dedicated`/`host_speeds` sont propages dans les contextes serveur, `log_stats` reste represente comme cvar global et le flux stats host-file n'est pas branche a une sortie visible web/renderer dans le port courant.
+- Runtime: attendu et verifie. `Com_ServerState` est atteint par console/menu client; `Com_SetServerState` est branche depuis les transitions serveur `sv_init`/`sv_main` via le callback `setServerState`; `COM_BlockSequenceCRCByte` est atteint par `CL_SendCmd` et `SV_ExecuteClientMessage`; `Com_BlockChecksum` est atteint par chargement BSP/cmodel; `frand`/`crand` alimentent les effets client qui produisent particules/dlights/temp entities.
+- apps/web: attendu et verifie. Le host full-game/server-host declenche les flux client/serveur portes, fournit les cvars `dedicated` et le callback `setServerState`, puis consomme les sorties network/render sans logique parallele masquant qcommon.
+- renderer-three: attendu indirectement. `COM_BlockSequenceCRCByte` et `Com_BlockChecksum` protegent/valident les donnees qui alimentent commandes, BSP et snapshots; `frand`/`crand` peuvent modifier particules, dlights et temp entities visibles cote client. Le renderer consomme ces sorties via le flux full-game three-renderer; aucun appel direct renderer n'est attendu pour les fonctions qcommon elles-memes.
+- Commentaires: en-tetes `Com_ServerState`, `Com_SetServerState`, `Com_BlockChecksum`, `COM_BlockSequenceCRCByte`, `frand`, `crand` verifies; commentaire de `QcommonGlobals` complete pour expliciter l'ownership des globals C.
+- Corrections: `packages/qcommon/src/qcommon.ts` corrige `frand`/`crand` pour la quantification C 15 bits; `scripts/verify/quake2-qcommon-header.ts` ajoute les preuves checksum, random et globals.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:client:header`, `npm run verify:cl-input`, `npm run verify:server:user`, `npm run verify:server:runtime`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`; `npm run typecheck` lance mais echoue hors lot sur `packages/client/src/cl_parse.ts` (`vidref_val` manquant).
+
+## Session precedente
 
 - Lot traite: bloc misc/erreurs et print depuis `qcommon/qcommon.h`: `ERR_FATAL`, `ERR_DROP`, `ERR_QUIT`, `PRINT_ALL`, `PRINT_DEVELOPER`, `Com_BeginRedirect`, `Com_EndRedirect`, `Com_Printf`, `Com_DPrintf`, `Com_Error`, `Com_Quit`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementation proprietaire `Quake-2-master/qcommon/common.c`, et duplication historique `game/q_shared.h` pour les niveaux `PRINT_*`.
@@ -189,8 +202,8 @@
 
 ## Prochain lot recommande
 
-- Bloc etat serveur/checksum/random: `Com_ServerState`, `Com_SetServerState`, `Com_BlockChecksum`, `COM_BlockSequenceCRCByte`, `frand`, `crand`, puis globals `developer`, `dedicated`, `host_speeds`, `log_stats` si le lot reste coherent.
+- Bloc zone/lifecycle qcommon: `Z_Free`, `Z_Malloc`, `Z_TagMalloc`, `Z_FreeTags`, puis `Qcommon_Init`, `Qcommon_Frame`, `Qcommon_Shutdown` si le lot reste coherent.
 
 ## Blocages
 
-- Aucun.
+- `npm run typecheck` echoue hors lot sur `packages/client/src/cl_parse.ts`: `vidref_val` manquant dans un objet `client_state_t`.

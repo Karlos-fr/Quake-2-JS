@@ -299,6 +299,10 @@ export function CL_ClearState(runtime: ClientRuntime): void {
     runtime.cl_parse_entities[index] = createEntityState();
   }
 
+  runtime.cls.netchan.message.cursize = 0;
+  runtime.cls.netchan.message.readcount = 0;
+  runtime.cls.netchan.message.overflowed = false;
+
   CL_ClearTEnts(runtime);
   CL_ClearEffects(runtime);
 }
@@ -1806,6 +1810,7 @@ function createFrameClearedClientState(runtime: ClientRuntime): Omit<ClientRunti
     active_particles: -1,
     free_particles: runtime.cl.cl_numparticles > 0 ? 0 : -1,
     cl_numparticles: runtime.cl.cl_numparticles,
+    vidref_val: runtime.cl.vidref_val,
     cl_weaponmodels: [...runtime.cl.cl_weaponmodels],
     num_cl_weaponmodels: runtime.cl.num_cl_weaponmodels,
     clientinfo: runtime.cl.clientinfo,
