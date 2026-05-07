@@ -190,6 +190,44 @@ function main(): void {
   assert.ok(qnetPackets.length >= 1, "SV_SendClientMessages should transmit demo payload");
   assert.equal(nextserverCalls, 0, "SV_DemoCompleted should not run when demo payload exists");
 
+  sv.state = server_state_t.ss_demo;
+  sv.demofile = {};
+  qnetPackets.length = 0;
+  send.SV_SendClientMessages();
+  assert.equal(readDemoCalls, 2, "SV_SendClientMessages should read another demo payload when unpaused");
+
+  const previousDemoReads = readDemoCalls;
+  sv.state = server_state_t.ss_demo;
+  sv.demofile = {};
+  qnetPackets.length = 0;
+  const pausedSend = createServerSendProcedures({
+    sv,
+    svs,
+    ge,
+    collisionWorld,
+    qnet,
+    maxclients: cvar("maxclients", 1),
+    dedicated: cvar("dedicated", 0),
+    sv_paused: cvar("sv_paused", 1),
+    sv_client: client,
+    net_from: client.netchan.remote_address,
+    SV_BuildClientFrame: () => {},
+    SV_WriteFrameToClient: (_c, msg) => {
+      MSG_WriteByte(msg, svc_ops_e.svc_nop);
+    },
+    SV_DropClient: () => {},
+    SV_Nextserver: () => {
+      nextserverCalls += 1;
+    },
+    readDemoMessage: () => {
+      readDemoCalls += 1;
+      return new Uint8Array([svc_ops_e.svc_nop]);
+    }
+  });
+  pausedSend.SV_SendClientMessages();
+  assert.equal(readDemoCalls, previousDemoReads, "SV_SendClientMessages should not read demo payloads while paused");
+  assert.ok(qnetPackets.length >= 1, "SV_SendClientMessages should still transmit an empty paused-demo packet");
+
   const eofSend = createServerSendProcedures({
     sv,
     svs,
@@ -216,6 +254,38 @@ function main(): void {
   eofSend.SV_SendClientMessages();
   assert.equal(nextserverCalls, 1, "SV_SendClientMessages should complete demo on EOF");
   assert.equal(sv.demofile, null, "SV_DemoCompleted should clear sv.demofile");
+
+  sv.state = server_state_t.ss_game;
+  client.state = client_state_t.cs_connected;
+  SZ_Clear(client.netchan.message);
+  client.netchan.last_sent = 500;
+  qnetPackets.length = 0;
+  const pulseSend = createServerSendProcedures({
+    sv,
+    svs,
+    ge,
+    collisionWorld,
+    qnet,
+    maxclients: cvar("maxclients", 1),
+    dedicated: cvar("dedicated", 0),
+    sv_paused: cvar("sv_paused", 0),
+    sv_client: client,
+    net_from: client.netchan.remote_address,
+    SV_BuildClientFrame: () => {},
+    SV_WriteFrameToClient: (_c, msg) => {
+      MSG_WriteByte(msg, svc_ops_e.svc_nop);
+    },
+    SV_DropClient: () => {},
+    SV_Nextserver: () => {},
+    nowMs: () => 1000
+  });
+  pulseSend.SV_SendClientMessages();
+  assert.equal(qnetPackets.length, 0, "SV_SendClientMessages should not pulse connected clients before timeout without reliable bytes");
+
+  client.netchan.last_sent = -1;
+  qnetPackets.length = 0;
+  pulseSend.SV_SendClientMessages();
+  assert.ok(qnetPackets.length >= 1, "SV_SendClientMessages should send a reliable-only pulse after one second");
 
   sv.state = server_state_t.ss_game;
   const localMulticast = createServerSendProcedures({

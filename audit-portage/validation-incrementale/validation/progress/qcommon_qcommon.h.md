@@ -8,6 +8,19 @@
 
 ## Derniere session
 
+- Lot traite: bloc pmove header dans `packages/qcommon/src/pmove.ts`: `pm_airaccelerate` / `PmoveContext.pm_airaccelerate`, `PM_AirAccelerate` et `Pmove`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h` (`extern float pm_airaccelerate`, prototype `Pmove`) et implementation proprietaire `Quake-2-master/qcommon/pmove.c`.
+- Cible comparee: `packages/qcommon/src/pmove.ts`, export public `packages/qcommon/src/index.ts`, usages `packages/client/src/view.ts`, `packages/client/src/local-loop.ts`, `packages/server/src/sv_game.ts`, branchement `CS_AIRACCEL` dans `packages/server/src/sv_init.ts`, `apps/web/src/full-game.ts`, `apps/web/src/local-client-controller.ts`, et consommation renderer-three de `refdef`/camera.
+- Decision: portage valide pour 2 entrees de matrice. Le global C `pm_airaccelerate = 0` est porte comme champ explicite `PmoveContext.pm_airaccelerate` avec default 0; `SV_SpawnServer` publie `CS_AIRACCEL` et le client prediction le recupere avant `Pmove`. `PM_AirAccelerate` conserve le cap C `wishspd <= 30` tout en gardant `wishspeed` dans `accelspeed`. `Pmove` conserve l'orchestration C: reset resultats, reset `pml`, conversion packed `0.125`, clamp angles, branches spectator/dead/freeze, duck, initial snap, categorisation, dead move, special movement, timers, teleport/waterjump, jump/friction, water/air move, recategorisation et snap final.
+- Runtime: attendu et verifie. `Pmove` est atteint depuis la prediction client (`CL_PredictMovement`), le loop local et l'import serveur/game (`SV_InitGameProgs` -> `Pmove(createPmoveContext(...))`); `pm_airaccelerate` est branche via `SV_SpawnServer`/`CS_AIRACCEL` et lu par la prediction client.
+- apps/web: attendu et verifie. `apps/web/src/full-game.ts` declenche `CL_PredictMovement` dans le hook `onPredictMovement`, utilise la collision serveur locale, puis synchronise la camera/render source; `local-client-controller` consomme la vue issue du runtime sans logique parallele remplacant `Pmove`.
+- renderer-three: attendu et verifie. `Pmove` produit origine, angles et viewheight de prediction qui alimentent `refreshFrame.view`/`refdef` puis la camera visible; `renderer-three` consomme `refdef.vieworg`, `refdef.viewangles`, areabits, entites, particules et dlights via les adapters Three/ref_gl.
+- Commentaires: en-tetes `PM_AirAccelerate` et `Pmove` verifies (`Original name`, `Source`, `Category: Ported`, `Fidelity level: Strict`, `Behavior`, notes de portage); `PmoveContext` conserve `Category: New` pour le wrapper des globals file-scope.
+- Corrections: ajout de preuves ciblees dans `scripts/verify/quake2-qcommon-header.ts` pour `pm_airaccelerate`, `PM_AirAccelerate` et `Pmove`; aucune correction comportementale TS necessaire.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:pmove`, `npm run verify:cl-pred`, `npm run verify:client:pmove:viewheight`, `npm run verify:server:init`, `npm run verify:server:user`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+
+## Session precedente
+
 - Lot traite: gros lot netchan header dans `packages/qcommon/src/qcommon.ts` / `packages/qcommon/src/net_chan.ts` puis bloc cmodel header dans `packages/qcommon/src/cmodel.ts`: `OLD_AVG`, `MAX_LATENT`, `netchan_t`, champs generes `fatal_error`, `dropped`, `last_received`, `last_sent`, `qport`, sequences fiables/entrantes/sortantes, `message`, `message_buf`, `reliable_length`, `reliable_buf`, globals `net_message`/`net_message_buffer`, fonctions `Netchan_Init`, `Netchan_Setup`, `Netchan_NeedReliable`, `Netchan_Transmit`, `Netchan_OutOfBand`, `Netchan_OutOfBandPrint`, `Netchan_Process`, `Netchan_CanReliable`, puis `CM_LoadMap`, `CM_InlineModel`, `CM_NumClusters`, `CM_NumInlineModels`, `CM_EntityString`, `CM_HeadnodeForBox`, `CM_PointContents`, `CM_TransformedPointContents`, `CM_BoxTrace`, `CM_TransformedBoxTrace`, `CM_ClusterPVS`, `CM_ClusterPHS`, `CM_PointLeafnum`, `CM_BoxLeafnums`, `CM_LeafContents`, `CM_LeafCluster`, `CM_LeafArea`, `CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, `CM_HeadnodeVisible`, `CM_WritePortalState`, `CM_ReadPortalState`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementation `Quake-2-master/qcommon/net_chan.c`, implementation proprietaire `Quake-2-master/qcommon/cmodel.c`, usages client/server qcommon, `apps/web/src/full-game-server-host.ts` et flux renderer full-game.
 - Cible comparee: `packages/qcommon/src/qcommon.ts`, `packages/qcommon/src/net_chan.ts`, `packages/qcommon/src/cmodel.ts`, exports publics `packages/qcommon/src/index.ts`, usages `packages/client/src/cl_main.ts`, `packages/client/src/cl_input.ts`, `packages/server/src/sv_init.ts`, `packages/server/src/sv_ccmds.ts`, `apps/web/src/full-game-local-transport.ts`, `apps/web/src/full-game-server-host.ts`, et `packages/renderer-three`.
@@ -150,7 +163,7 @@
 
 ## Prochain lot recommande
 
-- Bloc `pmove` header dans `packages/qcommon/src/pmove.ts`: `pm_airaccelerate` / `PM_AirAccelerate` puis `Pmove`, avec verification runtime client prediction, server/usercmd, `apps/web` full-game et renderer-three pour camera/refdef visible. Continuer ensuite sur le bloc filesystem `FS_*`.
+- Bloc filesystem `FS_*`: commencer par `FS_InitFilesystem`, `FS_SetGamedir`, `FS_Gamedir`, `FS_NextPath`, `FS_ExecAutoexec`, puis elargir a `FS_FOpenFile`/`FS_FCloseFile`/`FS_LoadFile` si le lot reste coherent.
 
 ## Blocages
 

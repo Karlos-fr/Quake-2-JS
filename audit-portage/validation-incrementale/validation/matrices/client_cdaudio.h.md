@@ -10,9 +10,9 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Init` | `packages/client/src/cdaudio.ts` | `CDAudio_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Shutdown` | `packages/client/src/cdaudio.ts` | `CDAudio_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Play` | `packages/client/src/cdaudio.ts` | `CDAudio_Play` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Stop` | `packages/client/src/cdaudio.ts` | `CDAudio_Stop` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Update` | `packages/client/src/cdaudio.ts` | `CDAudio_Update` | A verifier | A redecouper |  |
-| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Activate` | `packages/client/src/cdaudio.ts` | `CDAudio_Activate` | A verifier | A redecouper |  |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Init` | `packages/client/src/cdaudio.ts` | `CDAudio_Init` | Valide | A redecouper | Preuves: `npx tsx ./scripts/verify/quake2-cdaudio.ts`, `npm run verify:cl-main`, `npm run verify:full-game:audio-routing`, `npm run typecheck`; en-tete complete. |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Shutdown` | `packages/client/src/cdaudio.ts` | `CDAudio_Shutdown` | Valide | A redecouper | Preuves: `npx tsx ./scripts/verify/quake2-cdaudio.ts`, `npm run verify:cl-main`, `npm run typecheck`; en-tete complete. |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Play` | `packages/client/src/cdaudio.ts` | `CDAudio_Play` | Valide | A redecouper | Preuves: `npx tsx ./scripts/verify/quake2-cdaudio.ts`, `npm run verify:cl-parse`, `npm run verify:full-game:audio-routing`, `npm run typecheck`; en-tete complete. |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Stop` | `packages/client/src/cdaudio.ts` | `CDAudio_Stop` | Valide | A redecouper | Preuves: `npx tsx ./scripts/verify/quake2-cdaudio.ts`, `npm run verify:cinematic:audio-sync`, `npm run typecheck`; en-tete complete. |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Update` | `packages/client/src/cdaudio.ts` | `CDAudio_Update` | Valide | A redecouper | Preuves: `npx tsx ./scripts/verify/quake2-cdaudio.ts`, `npm run verify:cl-main`, `npm run typecheck`; en-tete complete. |
+| `Quake-2-master/client/cdaudio.h` | function | `CDAudio_Activate` | `packages/client/src/cdaudio.ts` | `CDAudio_Activate` | Valide | A redecouper | Preuves: `npx tsx ./scripts/verify/quake2-cdaudio.ts`, `npm run verify:full-game:audio-routing`, `npm run typecheck`; en-tete complete. |

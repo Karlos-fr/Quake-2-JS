@@ -148,6 +148,7 @@ verifyDemoServerBootstrap();
 verifyDownloadFlow();
 verifyDownloadRefusals();
 verifyExecuteClientMessageMoveAndUserinfo();
+verifyClientMessageMoveReplayAndGuards();
 verifyNextserverAndServerinfo();
 
 console.log("quake2-sv-user: ok");
@@ -259,6 +260,60 @@ function verifyExecuteClientMessageMoveAndUserinfo(): void {
   assert.equal(thought.length, 1, "SV_ExecuteClientMessage should think once when no drops occurred");
 }
 
+function verifyClientMessageMoveReplayAndGuards(): void {
+  sv.state = server_state_t.ss_game;
+  client.state = client_state_t.cs_spawned;
+  client.edict = player;
+  client.netchan.incoming_sequence = 2;
+  client.netchan.dropped = 3;
+  client.commandMsec = 1800;
+  svs.realtime = 6000;
+  client.frames[4].senttime = 5900;
+  client.lastcmd = { ...zeroCmd(), angles: [0, 0, 0], forwardmove: 1 };
+  thought.length = 0;
+
+  writeMovePacket({
+    lastframe: 4,
+    oldest: { ...zeroCmd(), angles: [0, 0, 0], forwardmove: 2 },
+    oldcmd: { ...zeroCmd(), angles: [0, 0, 0], forwardmove: 3 },
+    newcmd: { ...zeroCmd(), angles: [0, 0, 0], forwardmove: 4 }
+  });
+  user.SV_ExecuteClientMessage(client);
+
+  assert.deepEqual(
+    thought.map((cmd) => cmd.forwardmove),
+    [1, 2, 3, 4],
+    "SV_ExecuteClientMessage should replay dropped last/old movement commands before the newest command"
+  );
+  assert.equal(client.lastcmd.forwardmove, 4, "clc_move replay should still persist the newest usercmd");
+
+  thought.length = 0;
+  client.netchan.dropped = 0;
+  client.commandMsec = 1800;
+  client.lastcmd = zeroCmd();
+  writeMovePacket({
+    lastframe: 5,
+    oldest: { ...zeroCmd(), angles: [0, 0, 0], msec: 1 },
+    oldcmd: { ...zeroCmd(), angles: [0, 0, 0], msec: 2 },
+    newcmd: { ...zeroCmd(), angles: [0, 0, 0], msec: 3, forwardmove: 321 },
+    badChecksum: true
+  });
+  user.SV_ExecuteClientMessage(client);
+  assert.equal(thought.length, 0, "bad clc_move checksum should ignore movement without ClientThink");
+  assert.equal(client.lastcmd.forwardmove, 0, "bad clc_move checksum should not persist the newest usercmd");
+
+  forwardedCommands.length = 0;
+  client.state = client_state_t.cs_spawned;
+  resetNetMessage();
+  for (let i = 0; i < 10; i += 1) {
+    MSG_WriteByte(qnet.net_message, clc_ops_e.clc_stringcmd);
+    MSG_WriteString(qnet.net_message, `say limited-${i}`);
+  }
+  qnet.net_message.readcount = 0;
+  user.SV_ExecuteClientMessage(client);
+  assert.equal(forwardedCommands.length, 7, "MAX_STRINGCMDS should allow exactly seven string commands per client message");
+}
+
 function verifyNextserverAndServerinfo(): void {
   sv.state = server_state_t.ss_cinematic;
   executeStringCmd("nextserver 7");
@@ -271,6 +326,7 @@ function verifyNextserverAndServerinfo(): void {
   assert.ok(printed.some((line) => line.includes("hostname")), "SV_ShowServerinfo_f should print serverinfo lines");
 
   sv.state = server_state_t.ss_game;
+  forwardedCommands.length = 0;
   executeStringCmd("say hello");
   assert.deepEqual(forwardedCommands, [1], "unknown stringcmds should forward to game ClientCommand in ss_game");
 }
@@ -317,6 +373,32 @@ function zeroCmd(): usercmd_t {
     impulse: 0,
     lightlevel: 0
   };
+}
+
+function writeMovePacket(options: {
+  lastframe: number;
+  oldest: usercmd_t;
+  oldcmd: usercmd_t;
+  newcmd: usercmd_t;
+  badChecksum?: boolean;
+}): void {
+  resetNetMessage();
+  MSG_WriteByte(qnet.net_message, clc_ops_e.clc_move);
+  const checksumIndex = qnet.net_message.cursize;
+  MSG_WriteByte(qnet.net_message, 0);
+  MSG_WriteLong(qnet.net_message, options.lastframe);
+  MSG_WriteDeltaUsercmd(qnet.net_message, zeroCmd(), options.oldest);
+  MSG_WriteDeltaUsercmd(qnet.net_message, options.oldest, options.oldcmd);
+  MSG_WriteDeltaUsercmd(qnet.net_message, options.oldcmd, options.newcmd);
+
+  qnet.net_message.data[checksumIndex] = options.badChecksum
+    ? 0xff
+    : COM_BlockSequenceCRCByte(
+        qnet.net_message.data.subarray(checksumIndex + 1, qnet.net_message.cursize),
+        qnet.net_message.cursize - checksumIndex - 1,
+        client.netchan.incoming_sequence
+      );
+  qnet.net_message.readcount = 0;
 }
 
 function cvarValue(value: number) {

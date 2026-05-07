@@ -211,6 +211,7 @@ import {
   MSG_WriteShort,
   MSG_WriteString
 } from "../../packages/qcommon/src/messages.js";
+import { PM_AirAccelerate, Pmove, createPmoveContext } from "../../packages/qcommon/src/pmove.js";
 import {
   BASEDIRNAME,
   DEFAULT_SOUND_PACKET_ATTENUATION,
@@ -268,7 +269,17 @@ import {
   clc_ops_e,
   svc_ops_e
 } from "../../packages/qcommon/src/protocol.js";
-import { MAX_EDICTS, MAX_TOKEN_CHARS, createEntityState, type usercmd_t } from "../../packages/qcommon/src/q_shared.js";
+import {
+  MAX_EDICTS,
+  MAX_TOKEN_CHARS,
+  PMF_ON_GROUND,
+  createEntityState,
+  pmtype_t,
+  type pmove_t,
+  type trace_t,
+  type usercmd_t,
+  type vec3_t
+} from "../../packages/qcommon/src/q_shared.js";
 
 assert.equal(VERSION, 3.19, "VERSION mismatch");
 assert.equal(PORT_MASTER, 27900, "PORT_MASTER mismatch");
@@ -395,6 +406,70 @@ assert.equal(U_SOLID, 1 << 27, "U_SOLID mismatch");
 assert.equal(BUILDSTRING, "TypeScript", "BUILDSTRING mismatch");
 assert.equal(CPUSTRING, "portable", "CPUSTRING mismatch");
 assert.equal(BASEDIRNAME, "baseq2", "BASEDIRNAME mismatch");
+
+const headerPmoveTrace = (start: vec3_t, _mins: vec3_t, _maxs: vec3_t, end: vec3_t): trace_t => ({
+  allsolid: false,
+  startsolid: false,
+  fraction: 1,
+  endpos: [...end],
+  plane: {
+    normal: [0, 0, 1],
+    dist: 0,
+    type: 0,
+    signbits: 0,
+    pad: [0, 0]
+  },
+  surface: {
+    name: "",
+    flags: 0,
+    value: 0
+  },
+  contents: 0,
+  ent: end[2] < start[2] ? { kind: "ground" } : null
+});
+
+const headerPmove: pmove_t = {
+  s: {
+    pm_type: pmtype_t.PM_NORMAL,
+    origin: [0, 0, 0],
+    velocity: [0, 0, 0],
+    pm_flags: PMF_ON_GROUND,
+    pm_time: 0,
+    gravity: 800,
+    delta_angles: [0, 0, 0]
+  },
+  cmd: {
+    msec: 50,
+    buttons: 0,
+    angles: [0, 0, 0],
+    forwardmove: 100,
+    sidemove: 0,
+    upmove: -1,
+    impulse: 0,
+    lightlevel: 0
+  },
+  snapinitial: false,
+  numtouch: 0,
+  touchents: [],
+  viewangles: [0, 0, 0],
+  viewheight: 0,
+  mins: [0, 0, 0],
+  maxs: [0, 0, 0],
+  groundentity: null,
+  watertype: 0,
+  waterlevel: 0,
+  trace: headerPmoveTrace,
+  pointcontents: () => 0
+};
+const headerPmoveContext = createPmoveContext(headerPmove);
+assert.equal(headerPmoveContext.pm_airaccelerate, 0, "pm_airaccelerate default mismatch");
+headerPmoveContext.pml.frametime = 0.1;
+PM_AirAccelerate(headerPmoveContext, [1, 0, 0], 100, 10);
+assert.equal(headerPmoveContext.pml.velocity[0], 30, "PM_AirAccelerate capped wishspd mismatch");
+assert.equal(headerPmoveContext.pml.velocity[1], 0, "PM_AirAccelerate lateral velocity mismatch");
+Pmove(headerPmoveContext, { allowSnapPosition: false });
+assert.equal(headerPmove.viewheight, -2, "Pmove ducked viewheight mismatch");
+assert.equal(headerPmove.s.pm_flags & PMF_ON_GROUND, PMF_ON_GROUND, "Pmove ground flag mismatch");
 
 const initializedStorage = new Uint8Array([1, 2, 3, 4]);
 const initializedBuffer = createSizeBuffer(1, true);

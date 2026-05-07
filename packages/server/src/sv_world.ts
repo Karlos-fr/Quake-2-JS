@@ -50,10 +50,35 @@ import {
 import type { ServerWorldProcedures, server_t } from "./server.js";
 import { server_state_t } from "./server.js";
 
+/**
+ * Original name: AREA_DEPTH / AREA_NODES
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the fixed depth and node budget for the uniformly subdivided server area tree.
+ */
 const AREA_DEPTH = 4;
 const AREA_NODES = 32;
+
+/**
+ * Original name: MAX_TOTAL_ENT_LEAFS
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Strict
+ */
 const MAX_TOTAL_ENT_LEAFS = 128;
 
+/**
+ * Original name: areanode_t
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Porting notes:
+ * - Keeps the original axis/dist/children/link-head layout with TypeScript references.
+ */
 interface areanode_t {
   axis: number;
   dist: number;
@@ -485,11 +510,32 @@ function getServerModel(sv: server_t, modelIndex: number): cmodel_t | null {
   return model;
 }
 
+/**
+ * Original name: ClearLink
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Initializes a link as a self-referential list head.
+ */
 function ClearLink(link: link_t): void {
   link.prev = link;
   link.next = link;
 }
 
+/**
+ * Original name: RemoveLink
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Splices a linked node out of its doubly linked list.
+ *
+ * Porting notes:
+ * - Guards against null links because TypeScript edicts can start detached instead of containing stale pointers.
+ */
 function RemoveLink(link: link_t): void {
   if (!link.prev || !link.next) {
     return;
@@ -499,6 +545,18 @@ function RemoveLink(link: link_t): void {
   link.prev.next = link.next;
 }
 
+/**
+ * Original name: InsertLinkBefore
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Inserts a link immediately before the supplied list head/node.
+ *
+ * Porting notes:
+ * - Reinitializes a detached `before` head so browser-created entities can be linked safely.
+ */
 function InsertLinkBefore(link: link_t, before: link_t): void {
   if (!before.prev || !before.next) {
     ClearLink(before);
@@ -512,6 +570,15 @@ function InsertLinkBefore(link: link_t, before: link_t): void {
   before.prev = link;
 }
 
+/**
+ * Original name: SV_CreateAreaNode
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Recursively builds the fixed-depth area tree and initializes trigger/solid list heads.
+ */
 function SV_CreateAreaNode(depth: number, mins: vec3_t, maxs: vec3_t, state: ServerWorldState): areanode_t {
   const node: areanode_t = {
     axis: -1,
@@ -550,6 +617,18 @@ function SV_CreateAreaNode(depth: number, mins: vec3_t, maxs: vec3_t, state: Ser
   return node;
 }
 
+/**
+ * Original name: SV_AreaEdicts_r
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Recurses area nodes and appends linked edicts whose absolute boxes intersect the query.
+ *
+ * Porting notes:
+ * - Uses the `STRUCT_FROM_LINK` replacement owner table to recover the edict from `edict.area`.
+ */
 function SV_AreaEdicts_r(node: areanode_t, state: ServerWorldState, context: ServerWorldContext): void {
   const start = state.area_type === AREA_SOLID ? node.solid_edicts : node.trigger_edicts;
   let link = start.next;
@@ -597,6 +676,15 @@ function SV_AreaEdicts_r(node: areanode_t, state: ServerWorldState, context: Ser
   }
 }
 
+/**
+ * Original name: SV_HullForEntity
+ * Source: server/sv_world.c
+ * Category: Ported
+ * Fidelity level: Close
+ *
+ * Behavior:
+ * - Returns an inline BSP headnode for brush models, or a temporary bbox hull for other solids.
+ */
 function SV_HullForEntity(ent: edict_t, context: ServerWorldContext): number {
   if (ent.solid === SOLID_BSP) {
     const model = getServerModel(context.sv, ent.s.modelindex);

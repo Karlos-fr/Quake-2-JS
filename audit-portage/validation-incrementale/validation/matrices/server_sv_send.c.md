@@ -45,8 +45,8 @@
 | `Quake-2-master/server/sv_send.c` | function | `SV_RateDrop` | `packages/server/src/sv_send.ts` | `SV_RateDrop` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | global | `total` | `packages/server/src/sv_send.ts` | `total` | Non applicable | A redecouper |  |
 | `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts` | `i` | Non applicable | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | function | `SV_SendClientMessages` | `packages/server/src/sv_send.ts` | `SV_SendClientMessages` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts` | `i` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `msglen` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `msgbuf` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_send.c` | global | `r` | `packages/server/src/sv_send.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | function | `SV_SendClientMessages` | `packages/server/src/sv_send.ts` | `SV_SendClientMessages` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `i` | `packages/server/src/sv_send.ts` | `i` | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `msglen` | `packages/server/src/sv_send.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `msgbuf` | `packages/server/src/sv_send.ts` |  | Non applicable | A redecouper |  |
+| `Quake-2-master/server/sv_send.c` | global | `r` | `packages/server/src/sv_send.ts` |  | Non applicable | A redecouper |  |

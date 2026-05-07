@@ -68,6 +68,11 @@ import {
 const DOWNLOAD_CHUNK_SIZE = 1024;
 const MAX_STRINGCMDS = 8;
 
+type ucmd_t = {
+  name: string | null;
+  func: (() => void) | null;
+};
+
 /**
  * Category: New
  * Purpose: Hold the explicit runtime dependencies required by the `sv_user.c` port.
@@ -468,45 +473,34 @@ export function createServerUserProcedures(context: ServerUserContext): ServerUs
    * Source: server/sv_user.c
    * Category: Ported
    * Fidelity level: Close
+   *
+   * Behavior:
+   * - Tokenizes one client string command, dispatches known `ucmds` entries and forwards unknown game commands in ss_game.
    */
   function SV_ExecuteUserCommand(s: string): void {
     Cmd_TokenizeString(context.cmd, s, true);
     sv_player = currentClient().edict;
 
     const name = Cmd_Argv(context.cmd, 0);
-    switch (name) {
-      case "new":
-        SV_New_f();
+    let command: ucmd_t | null = null;
+
+    for (const u of ucmds) {
+      if (!u.name) {
         break;
-      case "configstrings":
-        SV_Configstrings_f();
+      }
+      if (name === u.name) {
+        command = u;
         break;
-      case "baselines":
-        SV_Baselines_f();
-        break;
-      case "begin":
-        SV_Begin_f();
-        break;
-      case "nextserver":
-        SV_Nextserver_f();
-        break;
-      case "disconnect":
-        SV_Disconnect_f();
-        break;
-      case "info":
-        SV_ShowServerinfo_f();
-        break;
-      case "download":
-        SV_BeginDownload_f();
-        break;
-      case "nextdl":
-        SV_NextDownload_f();
-        break;
-      default:
-        if (context.sv.state === server_state_t.ss_game && sv_player) {
-          context.ge.ClientCommand(sv_player);
-        }
-        break;
+      }
+    }
+
+    if (command?.func) {
+      command.func();
+      return;
+    }
+
+    if (context.sv.state === server_state_t.ss_game && sv_player) {
+      context.ge.ClientCommand(sv_player);
     }
   }
 
@@ -531,11 +525,28 @@ export function createServerUserProcedures(context: ServerUserContext): ServerUs
     context.ge.ClientThink(cl.edict, cmd);
   }
 
+  const ucmds: ucmd_t[] = [
+    { name: "new", func: SV_New_f },
+    { name: "configstrings", func: SV_Configstrings_f },
+    { name: "baselines", func: SV_Baselines_f },
+    { name: "begin", func: SV_Begin_f },
+    { name: "nextserver", func: SV_Nextserver_f },
+    { name: "disconnect", func: SV_Disconnect_f },
+    { name: "info", func: SV_ShowServerinfo_f },
+    { name: "download", func: SV_BeginDownload_f },
+    { name: "nextdl", func: SV_NextDownload_f },
+    { name: null, func: null }
+  ];
+
   /**
    * Original name: SV_ExecuteClientMessage
    * Source: server/sv_user.c
    * Category: Ported
    * Fidelity level: Close
+   *
+   * Behavior:
+   * - Parses the current client packet, accepts userinfo, one movement command and at most seven string commands.
+   * - Replays dropped movement commands through `SV_ClientThink`, verifies checksums and stores `lastcmd`.
    *
    * Porting notes:
    * - Reads from `context.qnet.net_message`'s current read position left by `Netchan_Process`.

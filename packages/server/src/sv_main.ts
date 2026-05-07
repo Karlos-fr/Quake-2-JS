@@ -958,13 +958,15 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
    * - Advances one full server frame: timeouts, packets, world frame, client sends and heartbeats.
    */
   function SV_Frame(msec: number): void {
+    context.setTimeBeforeGame?.(0);
+    context.setTimeAfterGame?.(0);
+
     if (!context.svs.initialized) {
       return;
     }
 
-    context.setTimeBeforeGame?.(0);
-    context.setTimeAfterGame?.(0);
     context.svs.realtime += msec;
+    context.randomInt?.();
 
     SV_CheckTimeouts();
     SV_ReadPackets();

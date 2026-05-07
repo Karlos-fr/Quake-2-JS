@@ -261,8 +261,8 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `CM_HeadnodeVisible` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeVisible` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `CM_WritePortalState` | `packages/qcommon/src/cmodel.ts` | `CM_WritePortalState` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `CM_ReadPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_ReadPortalState` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `pm_airaccelerate` | `packages/qcommon/src/pmove.ts` | `PM_AirAccelerate` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Pmove` | `packages/qcommon/src/pmove.ts` | `Pmove` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `pm_airaccelerate` | `packages/qcommon/src/pmove.ts` | `PmoveContext.pm_airaccelerate` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:pmove`, `verify:cl-pred`, `verify:server:init`, `verify:full-game:three-renderer`, `typecheck`; global C porte via contexte explicite. |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Pmove` | `packages/qcommon/src/pmove.ts` | `Pmove` | Valide | A redecouper | Tests: `verify:qcommon:header`, `verify:pmove`, `verify:client:pmove:viewheight`, `verify:full-game:server-host`, `verify:full-game:three-renderer`, `typecheck`. |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_InitFilesystem` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_SetGamedir` | `packages/filesystem/src/files.ts` | `FS_SetGamedir` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_Gamedir` | `packages/filesystem/src/files.ts` | `FS_Gamedir` | A verifier | A redecouper |  |

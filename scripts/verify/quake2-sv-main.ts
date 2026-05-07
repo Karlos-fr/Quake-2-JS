@@ -45,6 +45,7 @@ const frameEvents: string[] = [];
 const sleepCalls: number[] = [];
 let timeBeforeGame = -1;
 let timeAfterGame = -1;
+let randomFrameCalls = 0;
 const HEARTBEAT_BASE_TIME = 500_000;
 let shutdownGameProgsCalls = 0;
 const closedDemoHandles: unknown[] = [];
@@ -129,6 +130,10 @@ const main = createServerMainProcedures({
   },
   setTimeAfterGame: (milliseconds) => {
     timeAfterGame = milliseconds;
+  },
+  randomInt: () => {
+    randomFrameCalls += 1;
+    return 4;
   }
 });
 
@@ -412,6 +417,7 @@ function verifyTimeoutsPingsMsecPrepAndFrame(): void {
   frameEvents.length = 0;
   timeBeforeGame = -1;
   timeAfterGame = -1;
+  randomFrameCalls = 0;
   sv.framenum = 0;
   sv.time = 0;
   svs.realtime = 0;
@@ -426,6 +432,7 @@ function verifyTimeoutsPingsMsecPrepAndFrame(): void {
   assert.ok(frameEvents.includes("record"), "SV_Frame should record demo multicast data");
   assert.notEqual(timeBeforeGame, -1, "SV_RunGameFrame should capture host_speeds pre-game timing");
   assert.notEqual(timeAfterGame, -1, "SV_RunGameFrame should capture host_speeds post-game timing");
+  assert.equal(randomFrameCalls, 1, "SV_Frame should keep the random stream time-dependent like rand() in C");
 
   frameEvents.length = 0;
   sleepCalls.length = 0;

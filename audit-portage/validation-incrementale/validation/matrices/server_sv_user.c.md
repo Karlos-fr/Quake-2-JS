@@ -43,19 +43,19 @@
 | `Quake-2-master/server/sv_user.c` | function | `SV_Nextserver` | `packages/server/src/sv_user.ts` | `SV_Nextserver` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_user.c` | global | `v` | `packages/server/src/sv_user.ts` | `v` | Non applicable | A redecouper | Variable locale de `SV_Nextserver`. |
 | `Quake-2-master/server/sv_user.c` | function | `SV_Nextserver_f` | `packages/server/src/sv_user.ts` | `SV_Nextserver_f` | Valide | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | struct | `ucmd_t` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `name` | `packages/server/src/sv_user.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | table | `ucmds` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_ExecuteUserCommand` | `packages/server/src/sv_user.ts` | `SV_ExecuteUserCommand` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_ClientThink` | `packages/server/src/sv_user.ts` | `SV_ClientThink` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | macro | `MAX_STRINGCMDS` | `packages/server/src/sv_user.ts` | `MAX_STRINGCMDS` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_ExecuteClientMessage` | `packages/server/src/sv_user.ts` | `SV_ExecuteClientMessage` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `c` | `packages/server/src/sv_user.ts` | `c` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `s` | `packages/server/src/sv_user.ts` | `s` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `nullcmd` | `packages/server/src/sv_user.ts` | `nullcmd` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `net_drop` | `packages/server/src/sv_user.ts` | `net_drop` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `stringCmdCount` | `packages/server/src/sv_user.ts` | `stringCmdCount` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `checksumIndex` | `packages/server/src/sv_user.ts` | `checksumIndex` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `move_issued` | `packages/server/src/sv_user.ts` | `move_issued` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `lastframe` | `packages/server/src/sv_user.ts` | `lastframe` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | declarative:commands | `ucmds` | `packages/server/src/sv_user.ts` | `ucmds` | A verifier | matched |  |
+| `Quake-2-master/server/sv_user.c` | struct | `ucmd_t` | `packages/server/src/sv_user.ts` | `ucmd_t` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `name` | `packages/server/src/sv_user.ts` | `name` | Non applicable | A redecouper | Champ de `ucmd_t`, pas une entite globale proprietaire. |
+| `Quake-2-master/server/sv_user.c` | table | `ucmds` | `packages/server/src/sv_user.ts` | `ucmds` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | function | `SV_ExecuteUserCommand` | `packages/server/src/sv_user.ts` | `SV_ExecuteUserCommand` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | function | `SV_ClientThink` | `packages/server/src/sv_user.ts` | `SV_ClientThink` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | macro | `MAX_STRINGCMDS` | `packages/server/src/sv_user.ts` | `MAX_STRINGCMDS` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | function | `SV_ExecuteClientMessage` | `packages/server/src/sv_user.ts` | `SV_ExecuteClientMessage` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `c` | `packages/server/src/sv_user.ts` | `c` | Non applicable | A redecouper | Variable locale de `SV_ExecuteClientMessage`. |
+| `Quake-2-master/server/sv_user.c` | global | `s` | `packages/server/src/sv_user.ts` | `s` | Non applicable | A redecouper | Variable locale de `SV_ExecuteClientMessage`. |
+| `Quake-2-master/server/sv_user.c` | global | `nullcmd` | `packages/server/src/sv_user.ts` | `nullcmd` | Non applicable | A redecouper | Variable locale de `SV_ExecuteClientMessage`. |
+| `Quake-2-master/server/sv_user.c` | global | `net_drop` | `packages/server/src/sv_user.ts` | `net_drop` | Non applicable | A redecouper | Variable locale de `SV_ExecuteClientMessage`. |
+| `Quake-2-master/server/sv_user.c` | global | `stringCmdCount` | `packages/server/src/sv_user.ts` | `stringCmdCount` | Non applicable | A redecouper | Variable locale de `SV_ExecuteClientMessage`. |
+| `Quake-2-master/server/sv_user.c` | global | `checksumIndex` | `packages/server/src/sv_user.ts` | `checksumIndex` | Non applicable | A redecouper | Variable locale de `SV_ExecuteClientMessage`. |
+| `Quake-2-master/server/sv_user.c` | global | `move_issued` | `packages/server/src/sv_user.ts` | `move_issued` | Non applicable | A redecouper | Variable locale de `SV_ExecuteClientMessage`. |
+| `Quake-2-master/server/sv_user.c` | global | `lastframe` | `packages/server/src/sv_user.ts` | `lastframe` | Non applicable | A redecouper | Variable locale de `SV_ExecuteClientMessage`. |
+| `Quake-2-master/server/sv_user.c` | declarative:commands | `ucmds` | `packages/server/src/sv_user.ts` | `ucmds` | Non applicable | matched | Doublon genere de la table `ucmds` deja validee. |
