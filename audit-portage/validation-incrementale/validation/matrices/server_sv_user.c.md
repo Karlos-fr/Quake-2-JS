@@ -10,39 +10,39 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_user.c` | global | `sv_player` | `packages/server/src/sv_user.ts` | `sv_player` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_BeginDemoserver` | `packages/server/src/sv_user.ts` | `SV_BeginDemoserver` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `name` | `packages/server/src/sv_user.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_New_f` | `packages/server/src/sv_user.ts` | `SV_New_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `gamedir` | `packages/server/src/sv_user.ts` | `gamedir` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `playernum` | `packages/server/src/sv_user.ts` | `playernum` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `ent` | `packages/server/src/sv_user.ts` | `ent` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `playernum` | `packages/server/src/sv_user.ts` | `playernum` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_Configstrings_f` | `packages/server/src/sv_user.ts` | `SV_Configstrings_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `start` | `packages/server/src/sv_user.ts` | `start` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_Baselines_f` | `packages/server/src/sv_user.ts` | `SV_Baselines_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `start` | `packages/server/src/sv_user.ts` | `start` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `nullstate` | `packages/server/src/sv_user.ts` | `nullstate` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `base` | `packages/server/src/sv_user.ts` | `base` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_Begin_f` | `packages/server/src/sv_user.ts` | `SV_Begin_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_NextDownload_f` | `packages/server/src/sv_user.ts` | `SV_NextDownload_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `r` | `packages/server/src/sv_user.ts` | `r` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `percent` | `packages/server/src/sv_user.ts` | `percent` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `size` | `packages/server/src/sv_user.ts` | `size` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_BeginDownload_f` | `packages/server/src/sv_user.ts` | `SV_BeginDownload_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `name` | `packages/server/src/sv_user.ts` | `name` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `allow_download` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `allow_download_players` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `allow_download_models` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `allow_download_sounds` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `allow_download_maps` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `file_from_pak` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `offset` | `packages/server/src/sv_user.ts` | `offset` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_Disconnect_f` | `packages/server/src/sv_user.ts` | `SV_Disconnect_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_ShowServerinfo_f` | `packages/server/src/sv_user.ts` | `SV_ShowServerinfo_f` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_Nextserver` | `packages/server/src/sv_user.ts` | `SV_Nextserver` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | global | `v` | `packages/server/src/sv_user.ts` | `v` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_user.c` | function | `SV_Nextserver_f` | `packages/server/src/sv_user.ts` | `SV_Nextserver_f` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `sv_player` | `packages/server/src/sv_user.ts` | `sv_player` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | function | `SV_BeginDemoserver` | `packages/server/src/sv_user.ts` | `SV_BeginDemoserver` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `name` | `packages/server/src/sv_user.ts` | `name` | Non applicable | A redecouper | Variable locale de `SV_BeginDemoserver`. |
+| `Quake-2-master/server/sv_user.c` | function | `SV_New_f` | `packages/server/src/sv_user.ts` | `SV_New_f` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `gamedir` | `packages/server/src/sv_user.ts` | `gamedir` | Non applicable | A redecouper | Variable locale de `SV_New_f`. |
+| `Quake-2-master/server/sv_user.c` | global | `playernum` | `packages/server/src/sv_user.ts` | `playernum` | Non applicable | A redecouper | Variable locale de `SV_New_f`. |
+| `Quake-2-master/server/sv_user.c` | global | `ent` | `packages/server/src/sv_user.ts` | `ent` | Non applicable | A redecouper | Variable locale de `SV_New_f`. |
+| `Quake-2-master/server/sv_user.c` | global | `playernum` | `packages/server/src/sv_user.ts` | `playernum` | Non applicable | A redecouper | Variable locale de `SV_New_f`. |
+| `Quake-2-master/server/sv_user.c` | function | `SV_Configstrings_f` | `packages/server/src/sv_user.ts` | `SV_Configstrings_f` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `start` | `packages/server/src/sv_user.ts` | `start` | Non applicable | A redecouper | Variable locale de `SV_Configstrings_f`. |
+| `Quake-2-master/server/sv_user.c` | function | `SV_Baselines_f` | `packages/server/src/sv_user.ts` | `SV_Baselines_f` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `start` | `packages/server/src/sv_user.ts` | `start` | Non applicable | A redecouper | Variable locale de `SV_Baselines_f`. |
+| `Quake-2-master/server/sv_user.c` | global | `nullstate` | `packages/server/src/sv_user.ts` | `nullstate` | Non applicable | A redecouper | Variable locale de `SV_Baselines_f`. |
+| `Quake-2-master/server/sv_user.c` | global | `base` | `packages/server/src/sv_user.ts` | `base` | Non applicable | A redecouper | Variable locale de `SV_Baselines_f`. |
+| `Quake-2-master/server/sv_user.c` | function | `SV_Begin_f` | `packages/server/src/sv_user.ts` | `SV_Begin_f` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | function | `SV_NextDownload_f` | `packages/server/src/sv_user.ts` | `SV_NextDownload_f` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `r` | `packages/server/src/sv_user.ts` | `r` | Non applicable | A redecouper | Variable locale de `SV_NextDownload_f`. |
+| `Quake-2-master/server/sv_user.c` | global | `percent` | `packages/server/src/sv_user.ts` | `percent` | Non applicable | A redecouper | Variable locale de `SV_NextDownload_f`. |
+| `Quake-2-master/server/sv_user.c` | global | `size` | `packages/server/src/sv_user.ts` | `size` | Non applicable | A redecouper | Variable locale de `SV_NextDownload_f`. |
+| `Quake-2-master/server/sv_user.c` | function | `SV_BeginDownload_f` | `packages/server/src/sv_user.ts` | `SV_BeginDownload_f` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `name` | `packages/server/src/sv_user.ts` | `name` | Non applicable | A redecouper | Variable locale de `SV_BeginDownload_f`. |
+| `Quake-2-master/server/sv_user.c` | global | `allow_download` | `packages/server/src/sv_user.ts` |  | Non applicable | A redecouper | Extern C injecte via `ServerUserContext`, pas proprietaire de `sv_user.c`. |
+| `Quake-2-master/server/sv_user.c` | global | `allow_download_players` | `packages/server/src/sv_user.ts` |  | Non applicable | A redecouper | Extern C injecte via `ServerUserContext`, pas proprietaire de `sv_user.c`. |
+| `Quake-2-master/server/sv_user.c` | global | `allow_download_models` | `packages/server/src/sv_user.ts` |  | Non applicable | A redecouper | Extern C injecte via `ServerUserContext`, pas proprietaire de `sv_user.c`. |
+| `Quake-2-master/server/sv_user.c` | global | `allow_download_sounds` | `packages/server/src/sv_user.ts` |  | Non applicable | A redecouper | Extern C injecte via `ServerUserContext`, pas proprietaire de `sv_user.c`. |
+| `Quake-2-master/server/sv_user.c` | global | `allow_download_maps` | `packages/server/src/sv_user.ts` |  | Non applicable | A redecouper | Extern C injecte via `ServerUserContext`, pas proprietaire de `sv_user.c`. |
+| `Quake-2-master/server/sv_user.c` | global | `file_from_pak` | `packages/server/src/sv_user.ts` |  | Non applicable | A redecouper | Extern C injecte via `ServerUserContext`, pas proprietaire de `sv_user.c`. |
+| `Quake-2-master/server/sv_user.c` | global | `offset` | `packages/server/src/sv_user.ts` | `offset` | Non applicable | A redecouper | Variable locale de `SV_BeginDownload_f`. |
+| `Quake-2-master/server/sv_user.c` | function | `SV_Disconnect_f` | `packages/server/src/sv_user.ts` | `SV_Disconnect_f` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | function | `SV_ShowServerinfo_f` | `packages/server/src/sv_user.ts` | `SV_ShowServerinfo_f` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | function | `SV_Nextserver` | `packages/server/src/sv_user.ts` | `SV_Nextserver` | Valide | A redecouper |  |
+| `Quake-2-master/server/sv_user.c` | global | `v` | `packages/server/src/sv_user.ts` | `v` | Non applicable | A redecouper | Variable locale de `SV_Nextserver`. |
+| `Quake-2-master/server/sv_user.c` | function | `SV_Nextserver_f` | `packages/server/src/sv_user.ts` | `SV_Nextserver_f` | Valide | A redecouper |  |
 | `Quake-2-master/server/sv_user.c` | struct | `ucmd_t` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_user.c` | global | `name` | `packages/server/src/sv_user.ts` | `name` | A verifier | A redecouper |  |
 | `Quake-2-master/server/sv_user.c` | table | `ucmds` | `packages/server/src/sv_user.ts` |  | A verifier | A redecouper |  |

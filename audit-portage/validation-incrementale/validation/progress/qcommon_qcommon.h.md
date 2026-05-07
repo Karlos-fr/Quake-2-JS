@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: bloc net/qcommon header dans `packages/qcommon/src/qcommon.ts`: `PORT_ANY`, `MAX_MSGLEN`, `PACKET_HEADER`, `netadrtype_t`, `netsrc_t`, `netadr_t` avec ses champs `ip`/`ipx`/`port`, et `NET_Init`, `NET_Shutdown`, `NET_Config`, `NET_GetPacket`, `NET_SendPacket`, `NET_CompareAdr`, `NET_CompareBaseAdr`, `NET_IsLocalAddress`, `NET_AdrToString`, `NET_StringToAdr`, `NET_Sleep`.
+- Dernier lot valide: gros lot netchan + cmodel header: `OLD_AVG`, `MAX_LATENT`, `netchan_t` et champs generes, `net_message`/`net_message_buffer`, `Netchan_*`, puis les prototypes `CM_*` de `CM_LoadMap` a `CM_ReadPortalState`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: gros lot netchan header dans `packages/qcommon/src/qcommon.ts` / `packages/qcommon/src/net_chan.ts` puis bloc cmodel header dans `packages/qcommon/src/cmodel.ts`: `OLD_AVG`, `MAX_LATENT`, `netchan_t`, champs generes `fatal_error`, `dropped`, `last_received`, `last_sent`, `qport`, sequences fiables/entrantes/sortantes, `message`, `message_buf`, `reliable_length`, `reliable_buf`, globals `net_message`/`net_message_buffer`, fonctions `Netchan_Init`, `Netchan_Setup`, `Netchan_NeedReliable`, `Netchan_Transmit`, `Netchan_OutOfBand`, `Netchan_OutOfBandPrint`, `Netchan_Process`, `Netchan_CanReliable`, puis `CM_LoadMap`, `CM_InlineModel`, `CM_NumClusters`, `CM_NumInlineModels`, `CM_EntityString`, `CM_HeadnodeForBox`, `CM_PointContents`, `CM_TransformedPointContents`, `CM_BoxTrace`, `CM_TransformedBoxTrace`, `CM_ClusterPVS`, `CM_ClusterPHS`, `CM_PointLeafnum`, `CM_BoxLeafnums`, `CM_LeafContents`, `CM_LeafCluster`, `CM_LeafArea`, `CM_SetAreaPortalState`, `CM_AreasConnected`, `CM_WriteAreaBits`, `CM_HeadnodeVisible`, `CM_WritePortalState`, `CM_ReadPortalState`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementation `Quake-2-master/qcommon/net_chan.c`, implementation proprietaire `Quake-2-master/qcommon/cmodel.c`, usages client/server qcommon, `apps/web/src/full-game-server-host.ts` et flux renderer full-game.
+- Cible comparee: `packages/qcommon/src/qcommon.ts`, `packages/qcommon/src/net_chan.ts`, `packages/qcommon/src/cmodel.ts`, exports publics `packages/qcommon/src/index.ts`, usages `packages/client/src/cl_main.ts`, `packages/client/src/cl_input.ts`, `packages/server/src/sv_init.ts`, `packages/server/src/sv_ccmds.ts`, `apps/web/src/full-game-local-transport.ts`, `apps/web/src/full-game-server-host.ts`, et `packages/renderer-three`.
+- Decision: portage valide pour 52 entrees de matrice. `OLD_AVG=0.99` et `MAX_LATENT=32` sont stricts. `netchan_t` conserve l'etat C sous forme explicite avec buffers `MAX_MSGLEN - 16`; les champs generes sont rattaches a l'interface et `createNetchan`. Les `Netchan_*` conservent init qport/cvars, setup/reset, staging fiable, retransmission, qport client, paquets out-of-band, filtrage stale/drop, ack reliable et offsets payload. Les prototypes `CM_*` de `qcommon.h` sont valides comme declarations header vers le port proprietaire `cmodel.ts`, deja compare au C pour chargement BSP, traces, PVS/PHS, areabits, areaportals, save/read portal state et headnode visibility.
+- Runtime: attendu et verifie. Netchan est atteint depuis `Qcommon_Init`/`Netchan_Init`, `CL_Frame`/`CL_ReadPackets`, `CL_SendCmd`, `SV_Frame`/`SV_ReadPackets`, commandes out-of-band et server host. Cmodel est atteint depuis `SV_SpawnServer`/`CM_LoadMap`, `SV_BuildClientFrame`, `SV_FatPVS`, `SV_Trace`, `SV_PointContents`, prediction client et sauvegarde/restauration des portails.
+- apps/web: attendu et verifie. Le web fournit les hooks transport via `createFullGameLocalTransport`, initialise `Netchan_Init` dans `full-game-server-host`, sauvegarde/restaure `CM_ReadPortalState`, et declenche les flux server/client portes sans logique parallele masquant qcommon.
+- renderer-three: attendu indirectement. Netchan transporte les paquets qui alimentent snapshots et messages visibles. Cmodel produit/filtre des sorties visibles via inline models, traces/prediction camera, PVS/PHS, areabits et snapshots; `renderer-three` consomme les sorties runtime, notamment `refdef.areabits`/scene BSP et entites visibles, verifie par le test full-game three-renderer.
+- Commentaires: en-tetes `netchan_t`, `Netchan_*`, `CM_*` verifies; commentaire de groupe ajoute pour `OLD_AVG`/`MAX_LATENT` dans `packages/qcommon/src/qcommon.ts`.
+- Corrections: ajout du commentaire de groupe `OLD_AVG`/`MAX_LATENT`; aucune correction comportementale TS necessaire.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:net-chan`, `npx tsx ./scripts/verify/quake2-cmodel.ts`, `npm run verify:cl-pred`, `npm run verify:server:world`, `npm run verify:server:ents`, `npm run verify:full-game:server-host`, `npm run verify:full-game:three-renderer`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: bloc net/qcommon header dans `packages/qcommon/src/qcommon.ts`: `PORT_ANY`, `MAX_MSGLEN`, `PACKET_HEADER`, `netadrtype_t`, `netsrc_t`, `netadr_t` avec ses champs `ip`/`ipx`/`port`, puis `NET_Init`, `NET_Shutdown`, `NET_Config`, `NET_GetPacket`, `NET_SendPacket`, `NET_CompareAdr`, `NET_CompareBaseAdr`, `NET_IsLocalAddress`, `NET_AdrToString`, `NET_StringToAdr`, `NET_Sleep`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations reseau de reference `Quake-2-master/linux/net_udp.c` et verification croisee `Quake-2-master/win32/net_wins.c`, plus usages `client/cl_main.c`, `server/sv_main.c`, `server/sv_init.c`, `server/sv_ccmds.c`.
@@ -137,7 +150,7 @@
 
 ## Prochain lot recommande
 
-- Bloc netchan header dans `packages/qcommon/src/qcommon.ts` / `packages/qcommon/src/net_chan.ts`: `OLD_AVG`, `MAX_LATENT`, `netchan_t` et ses champs generes, puis `Netchan_Init`, `Netchan_Setup`, `Netchan_NeedReliable`, `Netchan_Transmit`, `Netchan_OutOfBand`, `Netchan_OutOfBandPrint`, `Netchan_Process`, `Netchan_CanReliable` si le lot reste coherent.
+- Bloc `pmove` header dans `packages/qcommon/src/pmove.ts`: `pm_airaccelerate` / `PM_AirAccelerate` puis `Pmove`, avec verification runtime client prediction, server/usercmd, `apps/web` full-game et renderer-three pour camera/refdef visible. Continuer ensuite sur le bloc filesystem `FS_*`.
 
 ## Blocages
 

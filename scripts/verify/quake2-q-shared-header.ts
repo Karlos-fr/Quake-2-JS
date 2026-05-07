@@ -203,9 +203,27 @@ import {
   ERR_DISCONNECT,
   ERR_DROP,
   ERR_FATAL,
+  DF_ALLOW_EXIT,
   DF_FIXED_FOV,
+  DF_FORCE_RESPAWN,
+  DF_INFINITE_AMMO,
+  DF_INSTANT_ITEMS,
+  DF_MODELTEAMS,
+  DF_NO_ARMOR,
+  DF_NO_FALLING,
+  DF_NO_FRIENDLY_FIRE,
   DF_NO_HEALTH,
+  DF_NO_ITEMS,
+  DF_NO_MINES,
+  DF_NO_NUKES,
+  DF_NO_SPHERES,
+  DF_NO_STACK_DOUBLE,
+  DF_QUAD_DROP,
   DF_QUADFIRE_DROP,
+  DF_SAME_LEVEL,
+  DF_SKINTEAMS,
+  DF_SPAWN_FARTHEST,
+  DF_WEAPONS_STAY,
   EF_ANIM01,
   EF_ANIM23,
   EF_ANIM_ALL,
@@ -259,6 +277,7 @@ import {
   MAX_LIGHTSTYLES,
   MAX_MODELS,
   MAX_SOUNDS,
+  MAX_STATS,
   MZ_BFG,
   MZ_BLASTER,
   MZ_BLASTER2,
@@ -335,6 +354,24 @@ import {
   SURF_TRANS33,
   SURF_TRANS66,
   SURF_WARP,
+  STAT_AMMO,
+  STAT_AMMO_ICON,
+  STAT_ARMOR,
+  STAT_ARMOR_ICON,
+  STAT_CHASE,
+  STAT_FLASHES,
+  STAT_FRAGS,
+  STAT_HEALTH,
+  STAT_HEALTH_ICON,
+  STAT_HELPICON,
+  STAT_LAYOUTS,
+  STAT_PICKUP_ICON,
+  STAT_PICKUP_STRING,
+  STAT_SELECTED_ICON,
+  STAT_SELECTED_ITEM,
+  STAT_SPECTATOR,
+  STAT_TIMER,
+  STAT_TIMER_ICON,
   VIDREF_GL,
   VIDREF_OTHER,
   VIDREF_SOFT,
@@ -345,6 +382,7 @@ import {
   type cmodel_t,
   type cplane_t,
   type csurface_t,
+  entity_event_t,
   type mapsurface_t,
   MAXTOUCH,
   PMF_DUCKED,
@@ -363,12 +401,73 @@ import {
   createEntityState,
   createPlayerState
 } from "../../packages/qcommon/src/q_shared.js";
-import { CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO } from "../../packages/qcommon/src/cvar.js";
+import { CVAR_ARCHIVE, CVAR_LATCH, CVAR_NOSET, CVAR_SERVERINFO, CVAR_USERINFO, type cvar_t } from "../../packages/qcommon/src/cvar.js";
 
 assert.equal(LAST_VISIBLE_CONTENTS, 64, "LAST_VISIBLE_CONTENTS mismatch");
+
+assert.deepEqual([
+  STAT_HEALTH_ICON,
+  STAT_HEALTH,
+  STAT_AMMO_ICON,
+  STAT_AMMO,
+  STAT_ARMOR_ICON,
+  STAT_ARMOR,
+  STAT_SELECTED_ICON,
+  STAT_PICKUP_ICON,
+  STAT_PICKUP_STRING,
+  STAT_TIMER_ICON,
+  STAT_TIMER,
+  STAT_HELPICON,
+  STAT_SELECTED_ITEM,
+  STAT_LAYOUTS,
+  STAT_FRAGS,
+  STAT_FLASHES,
+  STAT_CHASE,
+  STAT_SPECTATOR,
+  MAX_STATS
+], [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  32
+], "STAT_* / MAX_STATS numeric block mismatch");
+
 assert.equal(DF_NO_HEALTH, 0x00000001, "DF_NO_HEALTH mismatch");
+assert.equal(DF_NO_ITEMS, 0x00000002, "DF_NO_ITEMS mismatch");
+assert.equal(DF_WEAPONS_STAY, 0x00000004, "DF_WEAPONS_STAY mismatch");
+assert.equal(DF_NO_FALLING, 0x00000008, "DF_NO_FALLING mismatch");
+assert.equal(DF_INSTANT_ITEMS, 0x00000010, "DF_INSTANT_ITEMS mismatch");
+assert.equal(DF_SAME_LEVEL, 0x00000020, "DF_SAME_LEVEL mismatch");
+assert.equal(DF_SKINTEAMS, 0x00000040, "DF_SKINTEAMS mismatch");
+assert.equal(DF_MODELTEAMS, 0x00000080, "DF_MODELTEAMS mismatch");
+assert.equal(DF_NO_FRIENDLY_FIRE, 0x00000100, "DF_NO_FRIENDLY_FIRE mismatch");
+assert.equal(DF_SPAWN_FARTHEST, 0x00000200, "DF_SPAWN_FARTHEST mismatch");
+assert.equal(DF_FORCE_RESPAWN, 0x00000400, "DF_FORCE_RESPAWN mismatch");
+assert.equal(DF_NO_ARMOR, 0x00000800, "DF_NO_ARMOR mismatch");
+assert.equal(DF_ALLOW_EXIT, 0x00001000, "DF_ALLOW_EXIT mismatch");
+assert.equal(DF_INFINITE_AMMO, 0x00002000, "DF_INFINITE_AMMO mismatch");
+assert.equal(DF_QUAD_DROP, 0x00004000, "DF_QUAD_DROP mismatch");
 assert.equal(DF_FIXED_FOV, 0x00008000, "DF_FIXED_FOV mismatch");
 assert.equal(DF_QUADFIRE_DROP, 0x00010000, "DF_QUADFIRE_DROP mismatch");
+assert.equal(DF_NO_MINES, 0x00020000, "DF_NO_MINES mismatch");
+assert.equal(DF_NO_STACK_DOUBLE, 0x00040000, "DF_NO_STACK_DOUBLE mismatch");
+assert.equal(DF_NO_NUKES, 0x00080000, "DF_NO_NUKES mismatch");
+assert.equal(DF_NO_SPHERES, 0x00100000, "DF_NO_SPHERES mismatch");
 assert.equal(EF_ROTATE, 0x00000001, "EF_ROTATE mismatch");
 assert.equal(EF_GIB, 0x00000002, "EF_GIB mismatch");
 assert.equal(EF_BLASTER, 0x00000008, "EF_BLASTER mismatch");
@@ -548,6 +647,29 @@ assert.equal(CVAR_SERVERINFO, 4, "CVAR_SERVERINFO mismatch");
 assert.equal(CVAR_NOSET, 8, "CVAR_NOSET mismatch");
 assert.equal(CVAR_LATCH, 16, "CVAR_LATCH mismatch");
 
+const cvarShape: cvar_t = {
+  name: "dmflags",
+  string: "16",
+  latched_string: null,
+  flags: CVAR_SERVERINFO,
+  modified: true,
+  value: 16
+};
+assert.deepEqual(Object.keys(cvarShape), [
+  "name",
+  "string",
+  "latched_string",
+  "flags",
+  "modified",
+  "value"
+], "cvar_t q_shared.h field order mismatch");
+assert.equal(cvarShape.name, "dmflags", "cvar_t name field mismatch");
+assert.equal(cvarShape.string, "16", "cvar_t string field mismatch");
+assert.equal(cvarShape.latched_string, null, "cvar_t latched_string field mismatch");
+assert.equal(cvarShape.flags, CVAR_SERVERINFO, "cvar_t flags field mismatch");
+assert.equal(cvarShape.modified, true, "cvar_t modified field mismatch");
+assert.equal(cvarShape.value, 16, "cvar_t value field mismatch");
+
 assert.equal(CS_NAME, 0, "CS_NAME mismatch");
 assert.equal(CS_CDTRACK, 1, "CS_CDTRACK mismatch");
 assert.equal(CS_SKY, 2, "CS_SKY mismatch");
@@ -712,6 +834,26 @@ assert.equal(VIDREF_SOFT, 2, "VIDREF_SOFT mismatch");
 assert.equal(VIDREF_OTHER, 3, "VIDREF_OTHER mismatch");
 assert.equal(ROGUE_VERSION_ID, 1278, "ROGUE_VERSION_ID mismatch");
 assert.equal(ROGUE_VERSION_STRING, "08/21/1998 Beta 2 for Ensemble", "ROGUE_VERSION_STRING mismatch");
+
+assert.deepEqual([
+  entity_event_t.EV_NONE,
+  entity_event_t.EV_ITEM_RESPAWN,
+  entity_event_t.EV_FOOTSTEP,
+  entity_event_t.EV_FALLSHORT,
+  entity_event_t.EV_FALL,
+  entity_event_t.EV_FALLFAR,
+  entity_event_t.EV_PLAYER_TELEPORT,
+  entity_event_t.EV_OTHER_TELEPORT
+], [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7
+], "entity_event_t numeric block mismatch");
 
 const shortAngle = ANGLE2SHORT(180);
 assert.equal(shortAngle, 32768, "ANGLE2SHORT 180 mismatch");
@@ -1411,11 +1553,67 @@ assert.deepEqual(pmoveShape.trace?.([0, 0, 0], [0, 0, 0], [0, 0, 0], [7, 8, 9]).
 assert.equal(pmoveShape.pointcontents?.([0, 0, 0]), CONTENTS_WATER, "pmove_t pointcontents callback mismatch");
 
 const entityState = createEntityState();
-assert.equal(entityState.number, 0, "createEntityState default number mismatch");
-assert.equal(entityState.event, 0, "createEntityState default event mismatch");
+assert.deepEqual(Object.keys(entityState), [
+  "number",
+  "origin",
+  "angles",
+  "old_origin",
+  "modelindex",
+  "modelindex2",
+  "modelindex3",
+  "modelindex4",
+  "frame",
+  "skinnum",
+  "effects",
+  "renderfx",
+  "solid",
+  "sound",
+  "event"
+], "entity_state_t field order mismatch");
+assert.deepEqual(entityState, {
+  number: 0,
+  origin: [0, 0, 0],
+  angles: [0, 0, 0],
+  old_origin: [0, 0, 0],
+  modelindex: 0,
+  modelindex2: 0,
+  modelindex3: 0,
+  modelindex4: 0,
+  frame: 0,
+  skinnum: 0,
+  effects: 0,
+  renderfx: 0,
+  solid: 0,
+  sound: 0,
+  event: 0
+}, "createEntityState default shape mismatch");
 
 const playerState = createPlayerState();
-assert.equal(playerState.stats.length, 32, "createPlayerState stats width mismatch");
+assert.deepEqual(Object.keys(playerState), [
+  "pmove",
+  "viewangles",
+  "viewoffset",
+  "kick_angles",
+  "gunangles",
+  "gunoffset",
+  "gunindex",
+  "gunframe",
+  "blend",
+  "fov",
+  "rdflags",
+  "stats"
+], "player_state_t field order mismatch");
 assert.deepEqual(playerState.viewangles, [0, 0, 0], "createPlayerState default viewangles mismatch");
+assert.deepEqual(playerState.viewoffset, [0, 0, 0], "createPlayerState default viewoffset mismatch");
+assert.deepEqual(playerState.kick_angles, [0, 0, 0], "createPlayerState default kick_angles mismatch");
+assert.deepEqual(playerState.gunangles, [0, 0, 0], "createPlayerState default gunangles mismatch");
+assert.deepEqual(playerState.gunoffset, [0, 0, 0], "createPlayerState default gunoffset mismatch");
+assert.equal(playerState.gunindex, 0, "createPlayerState default gunindex mismatch");
+assert.equal(playerState.gunframe, 0, "createPlayerState default gunframe mismatch");
+assert.deepEqual(playerState.blend, [0, 0, 0, 0], "createPlayerState default blend mismatch");
+assert.equal(playerState.fov, 0, "createPlayerState default fov mismatch");
+assert.equal(playerState.rdflags, 0, "createPlayerState default rdflags mismatch");
+assert.equal(playerState.stats.length, MAX_STATS, "createPlayerState stats width mismatch");
+assert.ok(playerState.stats.every((value) => value === 0), "createPlayerState stats zero-fill mismatch");
 
 console.log("quake2-q-shared-header: ok");

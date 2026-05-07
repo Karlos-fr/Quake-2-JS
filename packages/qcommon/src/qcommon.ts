@@ -97,6 +97,16 @@ export const CM_IMPULSE = 1 << 7;
 export const PORT_ANY = -1;
 export const MAX_MSGLEN = 1400;
 export const PACKET_HEADER = 10;
+
+/**
+ * Original names: OLD_AVG, MAX_LATENT
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the legacy latency smoothing and latency-sample window constants for netchan state.
+ */
 export const OLD_AVG = 0.99;
 export const MAX_LATENT = 32;
 export const ERR_FATAL = 0;

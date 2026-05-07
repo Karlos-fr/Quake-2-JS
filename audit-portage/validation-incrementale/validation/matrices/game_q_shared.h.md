@@ -132,12 +132,12 @@
 | `Quake-2-master/game/q_shared.h` | macro | `CVAR_NOSET` | `packages/qcommon/src/cvar.ts` | `CVAR_NOSET` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CVAR_LATCH` | `packages/qcommon/src/cvar.ts` | `CVAR_LATCH` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | struct | `cvar_s` | `packages/qcommon/src/cvar.ts` | `cvar_t` | Valide | A redecouper | Ownership cvar centralise dans `cvar.ts`; `cvar_vars` remplace le chainage `next` C. |
-| `Quake-2-master/game/q_shared.h` | global | `name` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `string` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `latched_string` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `flags` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `modified` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `value` | `packages/qcommon/src/q_shared.ts` | `value` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `name` | `packages/qcommon/src/cvar.ts` | `name` | Valide | A redecouper | Ownership corrige vers `cvar_t` dans `packages/qcommon/src/cvar.ts`. |
+| `Quake-2-master/game/q_shared.h` | global | `string` | `packages/qcommon/src/cvar.ts` | `string` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `latched_string` | `packages/qcommon/src/cvar.ts` | `latched_string` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `flags` | `packages/qcommon/src/cvar.ts` | `flags` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `modified` | `packages/qcommon/src/cvar.ts` | `modified` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `value` | `packages/qcommon/src/cvar.ts` | `value` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CONTENTS_SOLID` | `packages/qcommon/src/q_shared.ts` | `CONTENTS_SOLID` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CONTENTS_WINDOW` | `packages/qcommon/src/q_shared.ts` | `CONTENTS_WINDOW` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CONTENTS_AUX` | `packages/qcommon/src/q_shared.ts` | `CONTENTS_AUX` | Valide | A redecouper |  |
@@ -567,50 +567,50 @@
 | `Quake-2-master/game/q_shared.h` | macro | `ATTN_NORM` | `packages/qcommon/src/q_shared.ts` | `ATTN_NORM` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `ATTN_IDLE` | `packages/qcommon/src/q_shared.ts` | `ATTN_IDLE` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `ATTN_STATIC` | `packages/qcommon/src/q_shared.ts` | `ATTN_STATIC` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_HEALTH_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_HEALTH_ICON` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_HEALTH` | `packages/qcommon/src/q_shared.ts` | `STAT_HEALTH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_AMMO_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_AMMO_ICON` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_AMMO` | `packages/qcommon/src/q_shared.ts` | `STAT_AMMO` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_ARMOR_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_ARMOR_ICON` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_ARMOR` | `packages/qcommon/src/q_shared.ts` | `STAT_ARMOR` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_SELECTED_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_SELECTED_ICON` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_PICKUP_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_PICKUP_ICON` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_PICKUP_STRING` | `packages/qcommon/src/q_shared.ts` | `STAT_PICKUP_STRING` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_TIMER_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_TIMER_ICON` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_TIMER` | `packages/qcommon/src/q_shared.ts` | `STAT_TIMER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_HELPICON` | `packages/qcommon/src/q_shared.ts` | `STAT_HELPICON` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_SELECTED_ITEM` | `packages/qcommon/src/q_shared.ts` | `STAT_SELECTED_ITEM` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_LAYOUTS` | `packages/qcommon/src/q_shared.ts` | `STAT_LAYOUTS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_FRAGS` | `packages/qcommon/src/q_shared.ts` | `STAT_FRAGS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_FLASHES` | `packages/qcommon/src/q_shared.ts` | `STAT_FLASHES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_CHASE` | `packages/qcommon/src/q_shared.ts` | `STAT_CHASE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `STAT_SPECTATOR` | `packages/qcommon/src/q_shared.ts` | `STAT_SPECTATOR` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `MAX_STATS` | `packages/qcommon/src/q_shared.ts` | `MAX_STATS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_HEALTH` | `packages/qcommon/src/q_shared.ts` | `DF_NO_HEALTH` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_ITEMS` | `packages/qcommon/src/q_shared.ts` | `DF_NO_ITEMS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_WEAPONS_STAY` | `packages/qcommon/src/q_shared.ts` | `DF_WEAPONS_STAY` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_FALLING` | `packages/qcommon/src/q_shared.ts` | `DF_NO_FALLING` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_INSTANT_ITEMS` | `packages/qcommon/src/q_shared.ts` | `DF_INSTANT_ITEMS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_SAME_LEVEL` | `packages/qcommon/src/q_shared.ts` | `DF_SAME_LEVEL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_SKINTEAMS` | `packages/qcommon/src/q_shared.ts` | `DF_SKINTEAMS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_MODELTEAMS` | `packages/qcommon/src/q_shared.ts` | `DF_MODELTEAMS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_FRIENDLY_FIRE` | `packages/qcommon/src/q_shared.ts` | `DF_NO_FRIENDLY_FIRE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_SPAWN_FARTHEST` | `packages/qcommon/src/q_shared.ts` | `DF_SPAWN_FARTHEST` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_FORCE_RESPAWN` | `packages/qcommon/src/q_shared.ts` | `DF_FORCE_RESPAWN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_ARMOR` | `packages/qcommon/src/q_shared.ts` | `DF_NO_ARMOR` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_ALLOW_EXIT` | `packages/qcommon/src/q_shared.ts` | `DF_ALLOW_EXIT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_INFINITE_AMMO` | `packages/qcommon/src/q_shared.ts` | `DF_INFINITE_AMMO` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_QUAD_DROP` | `packages/qcommon/src/q_shared.ts` | `DF_QUAD_DROP` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_FIXED_FOV` | `packages/qcommon/src/q_shared.ts` | `DF_FIXED_FOV` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_QUADFIRE_DROP` | `packages/qcommon/src/q_shared.ts` | `DF_QUADFIRE_DROP` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_MINES` | `packages/qcommon/src/q_shared.ts` | `DF_NO_MINES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_STACK_DOUBLE` | `packages/qcommon/src/q_shared.ts` | `DF_NO_STACK_DOUBLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_NUKES` | `packages/qcommon/src/q_shared.ts` | `DF_NO_NUKES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_SPHERES` | `packages/qcommon/src/q_shared.ts` | `DF_NO_SPHERES` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ROGUE_VERSION_ID` | `packages/qcommon/src/q_shared.ts` | `ROGUE_VERSION_ID` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ROGUE_VERSION_STRING` | `packages/qcommon/src/q_shared.ts` | `ROGUE_VERSION_STRING` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ANGLE2SHORT` | `packages/qcommon/src/q_shared.ts` | `ANGLE2SHORT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SHORT2ANGLE` | `packages/qcommon/src/q_shared.ts` | `SHORT2ANGLE` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_HEALTH_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_HEALTH_ICON` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_HEALTH` | `packages/qcommon/src/q_shared.ts` | `STAT_HEALTH` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_AMMO_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_AMMO_ICON` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_AMMO` | `packages/qcommon/src/q_shared.ts` | `STAT_AMMO` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_ARMOR_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_ARMOR_ICON` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_ARMOR` | `packages/qcommon/src/q_shared.ts` | `STAT_ARMOR` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_SELECTED_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_SELECTED_ICON` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_PICKUP_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_PICKUP_ICON` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_PICKUP_STRING` | `packages/qcommon/src/q_shared.ts` | `STAT_PICKUP_STRING` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_TIMER_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_TIMER_ICON` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_TIMER` | `packages/qcommon/src/q_shared.ts` | `STAT_TIMER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_HELPICON` | `packages/qcommon/src/q_shared.ts` | `STAT_HELPICON` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_SELECTED_ITEM` | `packages/qcommon/src/q_shared.ts` | `STAT_SELECTED_ITEM` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_LAYOUTS` | `packages/qcommon/src/q_shared.ts` | `STAT_LAYOUTS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_FRAGS` | `packages/qcommon/src/q_shared.ts` | `STAT_FRAGS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_FLASHES` | `packages/qcommon/src/q_shared.ts` | `STAT_FLASHES` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_CHASE` | `packages/qcommon/src/q_shared.ts` | `STAT_CHASE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `STAT_SPECTATOR` | `packages/qcommon/src/q_shared.ts` | `STAT_SPECTATOR` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `MAX_STATS` | `packages/qcommon/src/q_shared.ts` | `MAX_STATS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_HEALTH` | `packages/qcommon/src/q_shared.ts` | `DF_NO_HEALTH` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_ITEMS` | `packages/qcommon/src/q_shared.ts` | `DF_NO_ITEMS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_WEAPONS_STAY` | `packages/qcommon/src/q_shared.ts` | `DF_WEAPONS_STAY` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_FALLING` | `packages/qcommon/src/q_shared.ts` | `DF_NO_FALLING` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_INSTANT_ITEMS` | `packages/qcommon/src/q_shared.ts` | `DF_INSTANT_ITEMS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_SAME_LEVEL` | `packages/qcommon/src/q_shared.ts` | `DF_SAME_LEVEL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_SKINTEAMS` | `packages/qcommon/src/q_shared.ts` | `DF_SKINTEAMS` | Valide | A redecouper | Doublons locaux remplaces par reexports qcommon dans `packages/game/src/runtime.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_MODELTEAMS` | `packages/qcommon/src/q_shared.ts` | `DF_MODELTEAMS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_FRIENDLY_FIRE` | `packages/qcommon/src/q_shared.ts` | `DF_NO_FRIENDLY_FIRE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_SPAWN_FARTHEST` | `packages/qcommon/src/q_shared.ts` | `DF_SPAWN_FARTHEST` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_FORCE_RESPAWN` | `packages/qcommon/src/q_shared.ts` | `DF_FORCE_RESPAWN` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_ARMOR` | `packages/qcommon/src/q_shared.ts` | `DF_NO_ARMOR` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_ALLOW_EXIT` | `packages/qcommon/src/q_shared.ts` | `DF_ALLOW_EXIT` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_INFINITE_AMMO` | `packages/qcommon/src/q_shared.ts` | `DF_INFINITE_AMMO` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_QUAD_DROP` | `packages/qcommon/src/q_shared.ts` | `DF_QUAD_DROP` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_FIXED_FOV` | `packages/qcommon/src/q_shared.ts` | `DF_FIXED_FOV` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_QUADFIRE_DROP` | `packages/qcommon/src/q_shared.ts` | `DF_QUADFIRE_DROP` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_MINES` | `packages/qcommon/src/q_shared.ts` | `DF_NO_MINES` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_STACK_DOUBLE` | `packages/qcommon/src/q_shared.ts` | `DF_NO_STACK_DOUBLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_NUKES` | `packages/qcommon/src/q_shared.ts` | `DF_NO_NUKES` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `DF_NO_SPHERES` | `packages/qcommon/src/q_shared.ts` | `DF_NO_SPHERES` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `ROGUE_VERSION_ID` | `packages/qcommon/src/q_shared.ts` | `ROGUE_VERSION_ID` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `ROGUE_VERSION_STRING` | `packages/qcommon/src/q_shared.ts` | `ROGUE_VERSION_STRING` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `ANGLE2SHORT` | `packages/qcommon/src/q_shared.ts` | `ANGLE2SHORT` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `SHORT2ANGLE` | `packages/qcommon/src/q_shared.ts` | `SHORT2ANGLE` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CS_NAME` | `packages/qcommon/src/q_shared.ts` | `CS_NAME` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CS_CDTRACK` | `packages/qcommon/src/q_shared.ts` | `CS_CDTRACK` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CS_SKY` | `packages/qcommon/src/q_shared.ts` | `CS_SKY` | Valide | A redecouper |  |
@@ -628,30 +628,30 @@
 | `Quake-2-master/game/q_shared.h` | macro | `CS_PLAYERSKINS` | `packages/qcommon/src/q_shared.ts` | `CS_PLAYERSKINS` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `CS_GENERAL` | `packages/qcommon/src/q_shared.ts` | `CS_GENERAL` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `MAX_CONFIGSTRINGS` | `packages/qcommon/src/q_shared.ts` | `MAX_CONFIGSTRINGS` | Valide | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | enum | `entity_event_t` | `packages/qcommon/src/q_shared.ts` | `entity_event_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | struct | `entity_state_s` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `number` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `modelindex` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `frame` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `skinnum` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `effects` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `renderfx` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `solid` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `sound` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `event` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | struct | `player_state_t` | `packages/qcommon/src/q_shared.ts` | `player_state_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `viewangles` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `viewoffset` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `kick_angles` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `gunangles` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `gunoffset` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `gunindex` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `gunframe` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `blend` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `fov` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `rdflags` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `stats` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `VIDREF_GL` | `packages/qcommon/src/q_shared.ts` | `VIDREF_GL` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `VIDREF_SOFT` | `packages/qcommon/src/q_shared.ts` | `VIDREF_SOFT` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `VIDREF_OTHER` | `packages/qcommon/src/q_shared.ts` | `VIDREF_OTHER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | global | `vidref_val` | `packages/qcommon/src/q_shared.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | enum | `entity_event_t` | `packages/qcommon/src/q_shared.ts` | `entity_event_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | struct | `entity_state_s` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `number` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `modelindex` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `frame` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `skinnum` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `effects` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `renderfx` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `solid` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `sound` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `event` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | struct | `player_state_t` | `packages/qcommon/src/q_shared.ts` | `player_state_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `viewangles` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `viewoffset` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `kick_angles` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `gunangles` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `gunoffset` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `gunindex` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `gunframe` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `blend` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `fov` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `rdflags` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `stats` | `packages/qcommon/src/q_shared.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `VIDREF_GL` | `packages/qcommon/src/q_shared.ts` | `VIDREF_GL` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `VIDREF_SOFT` | `packages/qcommon/src/q_shared.ts` | `VIDREF_SOFT` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `VIDREF_OTHER` | `packages/qcommon/src/q_shared.ts` | `VIDREF_OTHER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | global | `vidref_val` | `packages/qcommon/src/q_shared.ts` |  | Non applicable | A redecouper | Declaration `extern` dont la definition C appartient au client/vid layer; le port TS expose les constantes `VIDREF_*` et renderer-three n'attend pas de global q_shared mutable. |

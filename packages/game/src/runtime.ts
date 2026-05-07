@@ -22,6 +22,9 @@ import {
   CS_SOUNDS,
   AREA_SOLID,
   AREA_TRIGGERS,
+  DF_MODELTEAMS,
+  DF_NO_FRIENDLY_FIRE,
+  DF_SKINTEAMS,
   MASK_SOLID,
   MAX_ITEMS,
   SPLASH_BLUE_WATER,
@@ -49,6 +52,9 @@ import type { GameItemDefinition } from "./g_items.js";
 export {
   AREA_SOLID,
   AREA_TRIGGERS,
+  DF_MODELTEAMS,
+  DF_NO_FRIENDLY_FIRE,
+  DF_SKINTEAMS,
   SPLASH_BLUE_WATER,
   SPLASH_BROWN_WATER,
   SPLASH_BLOOD,
@@ -920,9 +926,6 @@ export const FL_NO_KNOCKBACK = 0x00000800;
 export const FL_POWER_ARMOR = 0x00001000;
 export const FL_RESPAWN = 0x80000000;
 export const FL_TEAMSLAVE = 0x00000400;
-export const DF_SKINTEAMS = 0x00000040;
-export const DF_MODELTEAMS = 0x00000080;
-export const DF_NO_FRIENDLY_FIRE = 0x00000100;
 export const POWER_ARMOR_NONE = 0;
 export const POWER_ARMOR_SCREEN = 1;
 export const POWER_ARMOR_SHIELD = 2;

@@ -693,7 +693,7 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
    *
    * Porting notes:
    * - Preserves the original dispatch order.
-   * - Unported branches delegate through optional context callbacks.
+   * - Uses the explicit command and qcommon network runtimes instead of file-static globals.
    */
   function SV_ConnectionlessPacket(): string {
     MSG_BeginReading(context.qnet.net_message);
@@ -703,7 +703,7 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
     Cmd_TokenizeString(context.cmd, s, false);
 
     const c = Cmd_Argv(context.cmd, 0);
-    context.onPrintf?.(`Packet ${NET_AdrToString(context.qnet.net_from)} : ${c}\n`);
+    context.onDPrintf?.(`Packet ${NET_AdrToString(context.qnet.net_from)} : ${c}\n`);
 
     if (c === "ping") {
       SVC_Ping();
@@ -1103,6 +1103,15 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
     return status;
   }
 
+  /**
+   * Original name: Rcon_Validate
+   * Source: server/sv_main.c
+   * Category: Ported
+   * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Accepts rcon only when a password is configured and the first rcon argument matches it.
+   */
   function Rcon_Validate(): boolean {
     const password = context.rcon_password?.string ?? "";
     if (!password.length) {

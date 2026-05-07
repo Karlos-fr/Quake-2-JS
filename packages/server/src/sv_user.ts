@@ -446,6 +446,12 @@ export function createServerUserProcedures(context: ServerUserContext): ServerUs
     Cvar_Set(context.cvar, "nextserver", "");
   }
 
+  /**
+   * Original name: SV_Nextserver_f
+   * Source: server/sv_user.c
+   * Category: Ported
+   * Fidelity level: Close
+   */
   function SV_Nextserver_f(): void {
     const client = currentClient();
     if ((Number.parseInt(Cmd_Argv(context.cmd, 1), 10) || 0) !== context.svs.spawncount) {

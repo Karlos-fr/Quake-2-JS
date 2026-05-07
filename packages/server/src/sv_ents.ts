@@ -476,6 +476,15 @@ export function createServerEntityProcedures(context: ServerEntityContext): Serv
     context.writeDemoMessage(context.svs.demofile, payload);
   }
 
+  /**
+   * Original name: SV_BuildClientFrame
+   * Source: server/sv_ents.c
+   * Category: Ported
+   * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Selects visible entities for one client frame and copies playerstate plus areabits.
+   */
   function SV_BuildClientFrame(client: client_t): void {
     const clent = client.edict;
     if (!clent?.client) {

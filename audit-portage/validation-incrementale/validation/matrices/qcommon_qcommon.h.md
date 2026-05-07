@@ -209,58 +209,58 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `NET_AdrToString` | `packages/qcommon/src/qcommon.ts` | `NET_AdrToString` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `NET_StringToAdr` | `packages/qcommon/src/qcommon.ts` | `NET_StringToAdr` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `NET_Sleep` | `packages/qcommon/src/qcommon.ts` | `NET_Sleep` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `OLD_AVG` | `packages/qcommon/src/qcommon.ts` | `OLD_AVG` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `MAX_LATENT` | `packages/qcommon/src/qcommon.ts` | `MAX_LATENT` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | struct | `netchan_t` | `packages/qcommon/src/qcommon.ts` | `netchan_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `fatal_error` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `dropped` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `last_received` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `last_sent` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `qport` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `incoming_sequence` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `incoming_acknowledged` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `incoming_reliable_acknowledged` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `incoming_reliable_sequence` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `outgoing_sequence` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `reliable_sequence` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `last_reliable_sequence` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `message` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `message_buf` | `packages/qcommon/src/qcommon.ts` | `message_buf` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `reliable_length` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `reliable_buf` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `net_message` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `net_message_buffer` | `packages/qcommon/src/qcommon.ts` | `net_message_buffer` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_Init` | `packages/qcommon/src/qcommon.ts` | `Netchan_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_Setup` | `packages/qcommon/src/qcommon.ts` | `Netchan_Setup` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_NeedReliable` | `packages/qcommon/src/qcommon.ts` | `Netchan_NeedReliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_Transmit` | `packages/qcommon/src/qcommon.ts` | `Netchan_Transmit` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_OutOfBand` | `packages/qcommon/src/qcommon.ts` | `Netchan_OutOfBand` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_OutOfBandPrint` | `packages/qcommon/src/qcommon.ts` | `Netchan_OutOfBandPrint` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_Process` | `packages/qcommon/src/qcommon.ts` | `Netchan_Process` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_CanReliable` | `packages/qcommon/src/qcommon.ts` | `Netchan_CanReliable` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_LoadMap` | `packages/qcommon/src/cmodel.ts` | `CM_LoadMap` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_InlineModel` | `packages/qcommon/src/cmodel.ts` | `CM_InlineModel` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_NumClusters` | `packages/qcommon/src/cmodel.ts` | `CM_NumClusters` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_NumInlineModels` | `packages/qcommon/src/cmodel.ts` | `CM_NumInlineModels` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_EntityString` | `packages/qcommon/src/cmodel.ts` | `CM_EntityString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_HeadnodeForBox` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeForBox` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_PointContents` | `packages/qcommon/src/cmodel.ts` | `CM_PointContents` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_TransformedPointContents` | `packages/qcommon/src/cmodel.ts` | `CM_TransformedPointContents` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_BoxTrace` | `packages/qcommon/src/cmodel.ts` | `CM_BoxTrace` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_TransformedBoxTrace` | `packages/qcommon/src/cmodel.ts` | `CM_TransformedBoxTrace` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_ClusterPVS` | `packages/qcommon/src/cmodel.ts` | `CM_ClusterPVS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_ClusterPHS` | `packages/qcommon/src/cmodel.ts` | `CM_ClusterPHS` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_PointLeafnum` | `packages/qcommon/src/cmodel.ts` | `CM_PointLeafnum` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_BoxLeafnums` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_LeafContents` | `packages/qcommon/src/cmodel.ts` | `CM_LeafContents` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_LeafCluster` | `packages/qcommon/src/cmodel.ts` | `CM_LeafCluster` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_LeafArea` | `packages/qcommon/src/cmodel.ts` | `CM_LeafArea` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_SetAreaPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_SetAreaPortalState` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_AreasConnected` | `packages/qcommon/src/cmodel.ts` | `CM_AreasConnected` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_WriteAreaBits` | `packages/qcommon/src/cmodel.ts` | `CM_WriteAreaBits` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_HeadnodeVisible` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeVisible` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_WritePortalState` | `packages/qcommon/src/cmodel.ts` | `CM_WritePortalState` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `CM_ReadPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_ReadPortalState` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `OLD_AVG` | `packages/qcommon/src/qcommon.ts` | `OLD_AVG` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `MAX_LATENT` | `packages/qcommon/src/qcommon.ts` | `MAX_LATENT` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | struct | `netchan_t` | `packages/qcommon/src/qcommon.ts` | `netchan_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `fatal_error` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `dropped` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `last_received` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `last_sent` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `qport` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `incoming_sequence` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `incoming_acknowledged` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `incoming_reliable_acknowledged` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `incoming_reliable_sequence` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `outgoing_sequence` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `reliable_sequence` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `last_reliable_sequence` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `message` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `message_buf` | `packages/qcommon/src/qcommon.ts` | `message_buf` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `reliable_length` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `reliable_buf` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `net_message` | `packages/qcommon/src/qcommon.ts` |  | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `net_message_buffer` | `packages/qcommon/src/qcommon.ts` | `net_message_buffer` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_Init` | `packages/qcommon/src/qcommon.ts` | `Netchan_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_Setup` | `packages/qcommon/src/qcommon.ts` | `Netchan_Setup` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_NeedReliable` | `packages/qcommon/src/qcommon.ts` | `Netchan_NeedReliable` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_Transmit` | `packages/qcommon/src/qcommon.ts` | `Netchan_Transmit` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_OutOfBand` | `packages/qcommon/src/qcommon.ts` | `Netchan_OutOfBand` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_OutOfBandPrint` | `packages/qcommon/src/qcommon.ts` | `Netchan_OutOfBandPrint` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_Process` | `packages/qcommon/src/qcommon.ts` | `Netchan_Process` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `Netchan_CanReliable` | `packages/qcommon/src/qcommon.ts` | `Netchan_CanReliable` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_LoadMap` | `packages/qcommon/src/cmodel.ts` | `CM_LoadMap` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_InlineModel` | `packages/qcommon/src/cmodel.ts` | `CM_InlineModel` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_NumClusters` | `packages/qcommon/src/cmodel.ts` | `CM_NumClusters` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_NumInlineModels` | `packages/qcommon/src/cmodel.ts` | `CM_NumInlineModels` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_EntityString` | `packages/qcommon/src/cmodel.ts` | `CM_EntityString` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_HeadnodeForBox` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeForBox` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_PointContents` | `packages/qcommon/src/cmodel.ts` | `CM_PointContents` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_TransformedPointContents` | `packages/qcommon/src/cmodel.ts` | `CM_TransformedPointContents` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_BoxTrace` | `packages/qcommon/src/cmodel.ts` | `CM_BoxTrace` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_TransformedBoxTrace` | `packages/qcommon/src/cmodel.ts` | `CM_TransformedBoxTrace` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_ClusterPVS` | `packages/qcommon/src/cmodel.ts` | `CM_ClusterPVS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_ClusterPHS` | `packages/qcommon/src/cmodel.ts` | `CM_ClusterPHS` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_PointLeafnum` | `packages/qcommon/src/cmodel.ts` | `CM_PointLeafnum` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_BoxLeafnums` | `packages/qcommon/src/cmodel.ts` | `CM_BoxLeafnums` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_LeafContents` | `packages/qcommon/src/cmodel.ts` | `CM_LeafContents` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_LeafCluster` | `packages/qcommon/src/cmodel.ts` | `CM_LeafCluster` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_LeafArea` | `packages/qcommon/src/cmodel.ts` | `CM_LeafArea` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_SetAreaPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_SetAreaPortalState` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_AreasConnected` | `packages/qcommon/src/cmodel.ts` | `CM_AreasConnected` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_WriteAreaBits` | `packages/qcommon/src/cmodel.ts` | `CM_WriteAreaBits` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_HeadnodeVisible` | `packages/qcommon/src/cmodel.ts` | `CM_HeadnodeVisible` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_WritePortalState` | `packages/qcommon/src/cmodel.ts` | `CM_WritePortalState` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `CM_ReadPortalState` | `packages/qcommon/src/cmodel.ts` | `CM_ReadPortalState` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | global | `pm_airaccelerate` | `packages/qcommon/src/pmove.ts` | `PM_AirAccelerate` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Pmove` | `packages/qcommon/src/pmove.ts` | `Pmove` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `FS_InitFilesystem` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |

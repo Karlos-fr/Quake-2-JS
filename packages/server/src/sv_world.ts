@@ -113,6 +113,15 @@ export interface ServerWorldContext {
 export function createServerWorldProcedures(context: ServerWorldContext): ServerWorldProcedures {
   const state = createServerWorldState();
 
+  /**
+   * Original name: SV_ClearWorld
+   * Source: server/sv_world.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Rebuilds the server-side area node tree from the loaded world model bounds.
+   */
   function SV_ClearWorld(): void {
     state.sv_areanodes.length = 0;
     state.sv_numareanodes = 0;
@@ -125,6 +134,15 @@ export function createServerWorldProcedures(context: ServerWorldContext): Server
     SV_CreateAreaNode(0, worldModel.mins, worldModel.maxs, state);
   }
 
+  /**
+   * Original name: SV_UnlinkEdict
+   * Source: server/sv_world.c
+   * Category: Ported
+   * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Removes one edict from the area linked lists if it is currently linked.
+   */
   function SV_UnlinkEdict(ent: edict_t): void {
     if (!ent.area.prev) {
       return;
@@ -135,6 +153,15 @@ export function createServerWorldProcedures(context: ServerWorldContext): Server
     ent.area.next = null;
   }
 
+  /**
+   * Original name: SV_LinkEdict
+   * Source: server/sv_world.c
+   * Category: Ported
+   * Fidelity level: Close
+   *
+   * Behavior:
+   * - Encodes solid state, updates abs bounds/PVS metadata and links one edict into area lists.
+   */
   function SV_LinkEdict(ent: edict_t): void {
     const leafs: number[] = [];
     const clusters = new Int32Array(MAX_TOTAL_ENT_LEAFS);
@@ -310,6 +337,15 @@ export function createServerWorldProcedures(context: ServerWorldContext): Server
     }
   }
 
+  /**
+   * Original name: SV_AreaEdicts
+   * Source: server/sv_world.c
+   * Category: Ported
+   * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Fills a caller-provided list with linked edicts intersecting the query bounds.
+   */
   function SV_AreaEdicts(
     mins: vec3_t,
     maxs: vec3_t,
@@ -332,6 +368,15 @@ export function createServerWorldProcedures(context: ServerWorldContext): Server
     return state.area_count;
   }
 
+  /**
+   * Original name: SV_PointContents
+   * Source: server/sv_world.c
+   * Category: Ported
+   * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Returns world contents OR-ed with contents from linked solid entities at the point.
+   */
   function SV_PointContents(point: vec3_t): number {
     const worldModel = getServerModel(context.sv, 1);
     if (!worldModel) {
@@ -362,6 +407,15 @@ export function createServerWorldProcedures(context: ServerWorldContext): Server
     return contents;
   }
 
+  /**
+   * Original name: SV_Trace
+   * Source: server/sv_world.c
+   * Category: Ported
+   * Fidelity level: Strict
+   *
+   * Behavior:
+   * - Traces one swept bbox through world and linked entities while excluding the passedict pair.
+   */
   function SV_Trace(
     start: vec3_t,
     mins: vec3_t,
