@@ -74,6 +74,7 @@ import {
 
 const MD2_MODEL_EXTENSION = ".md2";
 const SPRITE_MODEL_EXTENSION = ".sp2";
+const DEPTHHACK_RENDER_ORDER = 10;
 type AliasLightSampler = (origin: readonly [number, number, number]) => [number, number, number];
 /**
  * Category: New
@@ -230,9 +231,9 @@ export function createThreeRefreshEntitySync(filesystem: VirtualFilesystem): Thr
       instance.root.position.set(0, 0, 0);
       instance.root.rotation.set(0, 0, 0);
       instance.root.visible = true;
-      instance.mesh.material.depthTest = (queued.userData.source.flags & RF_DEPTHHACK) === 0;
-      instance.mesh.material.depthWrite = (queued.userData.source.flags & RF_DEPTHHACK) === 0;
-      instance.mesh.renderOrder = (queued.userData.source.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
+      instance.mesh.material.depthTest = true;
+      instance.mesh.material.depthWrite = true;
+      instance.mesh.renderOrder = (queued.userData.source.flags & RF_DEPTHHACK) !== 0 ? DEPTHHACK_RENDER_ORDER : 0;
     },
     onDepthMaskChange: (enabled) => {
       root.userData.refGl = {
@@ -729,9 +730,9 @@ function updateRefreshEntityInstance(
     instance.md2.mesh.material.needsUpdate = true;
   }
   instance.md2.mesh.material.opacity = entity.alpha;
-  instance.md2.mesh.material.depthTest = (entity.flags & RF_DEPTHHACK) === 0;
-  instance.md2.mesh.material.depthWrite = (entity.flags & RF_DEPTHHACK) === 0;
-  instance.md2.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
+  instance.md2.mesh.material.depthTest = true;
+  instance.md2.mesh.material.depthWrite = true;
+  instance.md2.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? DEPTHHACK_RENDER_ORDER : 0;
   updateRefreshAliasShadow(instance, entity, aliasShadowsEnabled, shadowReceiverRoot, shadowRaycaster);
 }
 
@@ -987,9 +988,9 @@ function updateRefreshSpriteInstance(
   instance.root.position.set(0, 0, 0);
   instance.root.rotation.set(0, 0, 0);
   instance.root.visible = true;
-  instance.mesh.material.depthTest = (entity.flags & RF_DEPTHHACK) === 0;
-  instance.mesh.material.depthWrite = (entity.flags & RF_DEPTHHACK) === 0;
-  instance.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? 1000 : 0;
+  instance.mesh.material.depthTest = true;
+  instance.mesh.material.depthWrite = true;
+  instance.mesh.renderOrder = (entity.flags & RF_DEPTHHACK) !== 0 ? DEPTHHACK_RENDER_ORDER : 0;
 }
 
 function applySpriteQuad(

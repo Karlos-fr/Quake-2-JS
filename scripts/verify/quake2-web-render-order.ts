@@ -88,6 +88,13 @@ function main(): void {
     "shared render loop should route refresh beams through the ref_gl beam adapter"
   );
   assert.equal(
+    renderSource.includes("refreshEntitySync.apply(source.runtime, source.refreshFrame)") &&
+      renderSource.indexOf("refreshEntitySync.apply(source.runtime, source.refreshFrame)") <
+        renderSource.indexOf("particleSync.apply(source.refreshFrame)"),
+    true,
+    "shared render loop should keep refresh entities before particles like R_RenderView"
+  );
+  assert.equal(
     renderSource.includes("dlightSync.apply(source.refreshFrame)"),
     true,
     "shared render loop should route refresh dynamic lights through the ref_gl dlight adapter"

@@ -82,9 +82,9 @@ function main(): void {
   assert.equal(firstTextureData[1], 64, "weapon skin intensity green mismatch");
   assert.equal(firstTextureData[2], 32, "weapon skin intensity blue mismatch");
   assert.deepEqual(sampledOrigin, [11, 22, 35], "weapon alias light sampler origin mismatch");
-  assert.equal((firstMesh.material as { depthTest?: boolean }).depthTest, false, "weapon depthhack depthTest mismatch");
-  assert.equal((firstMesh.material as { depthWrite?: boolean }).depthWrite, false, "weapon depthhack depthWrite mismatch");
-  assert.equal(firstMesh.renderOrder, 1000, "weapon depthhack renderOrder mismatch");
+  assert.equal((firstMesh.material as { depthTest?: boolean }).depthTest, true, "weapon depthhack should preserve ref_gl depth testing");
+  assert.equal((firstMesh.material as { depthWrite?: boolean }).depthWrite, true, "weapon depthhack should preserve ref_gl depth writes");
+  assert.equal(firstMesh.renderOrder > 0 && firstMesh.renderOrder < 20, true, "weapon depthhack should render after world entities but before particles");
   const firstPositions = readPositions(firstMesh);
   assert.deepEqual(firstPositions, [0, 0, 0, 8, 0, 0, 0, 8, 0], "weapon frame-0 geometry mismatch");
   const firstColors = readColors(firstMesh);
