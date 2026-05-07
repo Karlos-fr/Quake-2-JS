@@ -131,9 +131,13 @@ import {
   NET_AdrToString,
   NET_CompareAdr,
   NET_CompareBaseAdr,
+  NET_Config,
   NET_GetPacket,
   NET_Init,
   NET_IsLocalAddress,
+  NET_SendPacket,
+  NET_Shutdown,
+  NET_Sleep,
   NET_StringToAdr,
   Netchan_CanReliable,
   Netchan_Init,
@@ -273,6 +277,13 @@ assert.equal(PORT_SERVER, 27910, "PORT_SERVER mismatch");
 assert.equal(PORT_ANY, -1, "PORT_ANY mismatch");
 assert.equal(MAX_MSGLEN, 1400, "MAX_MSGLEN mismatch");
 assert.equal(PACKET_HEADER, 10, "PACKET_HEADER mismatch");
+assert.equal(netadrtype_t.NA_LOOPBACK, 0, "netadrtype_t.NA_LOOPBACK mismatch");
+assert.equal(netadrtype_t.NA_BROADCAST, 1, "netadrtype_t.NA_BROADCAST mismatch");
+assert.equal(netadrtype_t.NA_IP, 2, "netadrtype_t.NA_IP mismatch");
+assert.equal(netadrtype_t.NA_IPX, 3, "netadrtype_t.NA_IPX mismatch");
+assert.equal(netadrtype_t.NA_BROADCAST_IPX, 4, "netadrtype_t.NA_BROADCAST_IPX mismatch");
+assert.equal(netsrc_t.NS_CLIENT, 0, "netsrc_t.NS_CLIENT mismatch");
+assert.equal(netsrc_t.NS_SERVER, 1, "netsrc_t.NS_SERVER mismatch");
 assert.equal(OLD_AVG, 0.99, "OLD_AVG mismatch");
 assert.equal(MAX_LATENT, 32, "MAX_LATENT mismatch");
 assert.equal(ERR_FATAL, 0, "ERR_FATAL mismatch");
@@ -610,15 +621,42 @@ assert.equal(netchan.reliable_buf.length, MAX_MSGLEN - 16, "createNetchan reliab
 const parsedAdr = createNetAdr();
 assert.equal(NET_StringToAdr("127.0.0.1:27910", parsedAdr), true, "NET_StringToAdr parse mismatch");
 assert.equal(parsedAdr.type, netadrtype_t.NA_IP, "NET_StringToAdr type mismatch");
+assert.deepEqual(Array.from(parsedAdr.ip), [127, 0, 0, 1], "NET_StringToAdr ip bytes mismatch");
+assert.deepEqual(Array.from(parsedAdr.ipx), Array(10).fill(0), "NET_StringToAdr ipx clear mismatch");
 assert.equal(parsedAdr.port, 27910, "NET_StringToAdr port mismatch");
 assert.equal(NET_AdrToString(parsedAdr), "127.0.0.1:27910", "NET_AdrToString mismatch");
+const loopbackAdr = createNetAdr(netadrtype_t.NA_IP);
+loopbackAdr.ip.fill(255);
+loopbackAdr.ipx.fill(255);
+loopbackAdr.port = 1234;
+assert.equal(NET_StringToAdr("localhost", loopbackAdr), true, "NET_StringToAdr localhost mismatch");
+assert.equal(loopbackAdr.type, netadrtype_t.NA_LOOPBACK, "NET_StringToAdr localhost type mismatch");
+assert.equal(loopbackAdr.port, 0, "NET_StringToAdr localhost port clear mismatch");
+assert.deepEqual(Array.from(loopbackAdr.ip), [0, 0, 0, 0], "NET_StringToAdr localhost ip clear mismatch");
+assert.equal(NET_StringToAdr("bad host", createNetAdr()), false, "NET_StringToAdr invalid mismatch");
+assert.equal(NET_StringToAdr("127.0.0.256", createNetAdr()), false, "NET_StringToAdr octet range mismatch");
+assert.equal(NET_AdrToString(loopbackAdr), "loopback", "NET_AdrToString loopback mismatch");
 assert.equal(NET_IsLocalAddress(createNetAdr(netadrtype_t.NA_LOOPBACK)), true, "NET_IsLocalAddress mismatch");
+assert.equal(NET_IsLocalAddress(parsedAdr), false, "NET_IsLocalAddress remote mismatch");
 const parsedAdrCopy = createNetAdr();
 NET_StringToAdr("127.0.0.1:27910", parsedAdrCopy);
 assert.equal(NET_CompareAdr(parsedAdr, parsedAdrCopy), true, "NET_CompareAdr mismatch");
 parsedAdrCopy.port = 27901;
 assert.equal(NET_CompareAdr(parsedAdr, parsedAdrCopy), false, "NET_CompareAdr port mismatch");
 assert.equal(NET_CompareBaseAdr(parsedAdr, parsedAdrCopy), true, "NET_CompareBaseAdr mismatch");
+parsedAdrCopy.ip[3] = 2;
+assert.equal(NET_CompareBaseAdr(parsedAdr, parsedAdrCopy), false, "NET_CompareBaseAdr ip mismatch");
+const ipxAdr = createNetAdr(netadrtype_t.NA_IPX);
+ipxAdr.ipx.set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+ipxAdr.port = 3000;
+const ipxAdrCopy = createNetAdr(netadrtype_t.NA_IPX);
+ipxAdrCopy.ipx.set(ipxAdr.ipx);
+ipxAdrCopy.port = 3000;
+assert.equal(NET_CompareAdr(ipxAdr, ipxAdrCopy), true, "NET_CompareAdr ipx mismatch");
+ipxAdrCopy.port = 3001;
+assert.equal(NET_CompareAdr(ipxAdr, ipxAdrCopy), false, "NET_CompareAdr ipx port mismatch");
+assert.equal(NET_CompareBaseAdr(ipxAdr, ipxAdrCopy), true, "NET_CompareBaseAdr ipx mismatch");
+assert.equal(NET_AdrToString(ipxAdr), "00010203040506070809:3000", "NET_AdrToString ipx mismatch");
 
 const sentPackets: Array<{ sock: netsrc_t; data: Uint8Array; to: string }> = [];
 const incomingPackets = [
@@ -628,19 +666,45 @@ const incomingPackets = [
   }
 ];
 let fakeNow = 1234;
+let configValue: boolean | null = null;
+const sleeps: number[] = [];
 const net = createQcommonNetRuntime({
   now: () => fakeNow,
+  config: (multiplayer) => {
+    configValue = multiplayer;
+  },
   sendPacket: (sock, data, to) => {
     sentPackets.push({ sock, data: new Uint8Array(data), to: NET_AdrToString(to) });
   },
-  getPacket: () => incomingPackets.shift() ?? null
+  getPacket: () => incomingPackets.shift() ?? null,
+  sleep: (msec) => sleeps.push(msec)
 });
 NET_Init(net);
 assert.equal(net.qport, 1234 & 0xffff, "NET_Init qport mismatch");
+assert.equal(net.net_message.maxsize, MAX_MSGLEN, "NET_Init net_message maxsize mismatch");
+NET_Config(net, true);
+assert.equal(net.multiplayer, true, "NET_Config multiplayer mismatch");
+assert.equal(configValue, true, "NET_Config hook mismatch");
 assert.equal(NET_GetPacket(net, netsrc_t.NS_CLIENT), true, "NET_GetPacket mismatch");
 assert.equal(NET_AdrToString(net.net_from), "127.0.0.1:27910", "NET_GetPacket source mismatch");
 assert.deepEqual(Array.from(net.net_message.data.subarray(0, net.net_message.cursize)), [9, 8, 7], "NET_GetPacket payload mismatch");
 assert.equal(NET_GetPacket(net, netsrc_t.NS_CLIENT), false, "NET_GetPacket empty mismatch");
+const sendTarget = createNetAdr(netadrtype_t.NA_IP);
+sendTarget.ip.set([10, 20, 30, 40]);
+sendTarget.port = 27910;
+const sendData = new Uint8Array([1, 2, 3, 4, 5]);
+NET_SendPacket(net, netsrc_t.NS_SERVER, 3, sendData, sendTarget);
+sendTarget.ip[0] = 99;
+assert.deepEqual(sentPackets.at(-1), {
+  sock: netsrc_t.NS_SERVER,
+  data: new Uint8Array([1, 2, 3]),
+  to: "10.20.30.40:27910"
+}, "NET_SendPacket payload/address mismatch");
+NET_Sleep(net, 17);
+assert.deepEqual(sleeps, [17], "NET_Sleep hook mismatch");
+NET_Shutdown(net);
+assert.equal(net.multiplayer, false, "NET_Shutdown multiplayer mismatch");
+assert.equal(net.net_from.type, netadrtype_t.NA_LOOPBACK, "NET_Shutdown net_from mismatch");
 
 Netchan_Init(net);
 assert.equal(net.qport, 1234 & 0xffff, "Netchan_Init qport mismatch");

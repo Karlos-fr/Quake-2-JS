@@ -3,10 +3,23 @@
 ## Etat courant
 
 - Statut: En cours
-- Dernier lot valide: bloc cvar header dans `packages/qcommon/src/cvar.ts`: `cvar_vars`, `Cvar_Get`, `Cvar_Set`, `Cvar_ForceSet`, `Cvar_FullSet`, `Cvar_SetValue`, `Cvar_VariableValue`, `Cvar_VariableString`, `Cvar_CompleteVariable`, `Cvar_GetLatchedVars`, `Cvar_Command`, `Cvar_WriteVariables`, `Cvar_Init`, `Cvar_Userinfo`, `Cvar_Serverinfo`, plus le global adjacent `userinfo_modified`.
+- Dernier lot valide: bloc net/qcommon header dans `packages/qcommon/src/qcommon.ts`: `PORT_ANY`, `MAX_MSGLEN`, `PACKET_HEADER`, `netadrtype_t`, `netsrc_t`, `netadr_t` avec ses champs `ip`/`ipx`/`port`, et `NET_Init`, `NET_Shutdown`, `NET_Config`, `NET_GetPacket`, `NET_SendPacket`, `NET_CompareAdr`, `NET_CompareBaseAdr`, `NET_IsLocalAddress`, `NET_AdrToString`, `NET_StringToAdr`, `NET_Sleep`.
 - Matrice: `audit-portage/validation-incrementale/validation/matrices/qcommon_qcommon.h.md`
 
 ## Derniere session
+
+- Lot traite: bloc net/qcommon header dans `packages/qcommon/src/qcommon.ts`: `PORT_ANY`, `MAX_MSGLEN`, `PACKET_HEADER`, `netadrtype_t`, `netsrc_t`, `netadr_t` avec ses champs `ip`/`ipx`/`port`, puis `NET_Init`, `NET_Shutdown`, `NET_Config`, `NET_GetPacket`, `NET_SendPacket`, `NET_CompareAdr`, `NET_CompareBaseAdr`, `NET_IsLocalAddress`, `NET_AdrToString`, `NET_StringToAdr`, `NET_Sleep`.
+- Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations reseau de reference `Quake-2-master/linux/net_udp.c` et verification croisee `Quake-2-master/win32/net_wins.c`, plus usages `client/cl_main.c`, `server/sv_main.c`, `server/sv_init.c`, `server/sv_ccmds.c`.
+- Cible comparee: `packages/qcommon/src/qcommon.ts`, exports publics `packages/qcommon/src/index.ts`, usages `packages/client/src/cl_main.ts`, `packages/server/src/sv_main.ts`, `packages/server/src/sv_init.ts`, `packages/server/src/sv_ccmds.ts`, `apps/web/src/full-game-local-transport.ts`, `apps/web/src/full-game-server-host.ts`, et le flux renderer full-game.
+- Decision: portage valide pour 20 entrees de matrice. Les constantes conservent les valeurs C `PORT_ANY=-1`, `MAX_MSGLEN=1400`, `PACKET_HEADER=10`. Les enums conservent l'ordre C. `netadr_t` conserve `type`, `ip[4]`, `ipx[10]` et `port` via `Uint8Array`/number; les lignes generees `ip`, `ipx`, `port` ont ete rattachees aux champs `netadr_t.*`. Les `NET_*` preservent le contrat qcommon via un runtime explicite et des hooks host: init/reset de `net_from`/`net_message`, config multiplayer, reception avec copie adresse/payload et reset readcount, emission limitee a `length` avec copie defensive de l'adresse, comparaisons IP/IPX/base, local loopback, formatage et parsing loopback/IP, et sleep host.
+- Runtime: attendu et verifie. Le bloc est atteignable depuis `Qcommon_Init`/`NET_Init`/`Netchan_Init`, `CL_Frame`/`CL_ReadPackets`, `SV_Frame`/`SV_ReadPackets`, `SV_SpawnServer`/`NET_Config`, commandes serveur/master et netchan send/process.
+- apps/web: attendu et verifie. `apps/web` branche ce bloc via `createFullGameLocalTransport`, `createQcommonNetRuntime`, `full-game-server-host` et les hosts full-game; aucune logique web parallele ne remplace le port qcommon, le web fournit seulement les hooks transport.
+- renderer-three: pas de consommation directe attendue pour les primitives `NET_*` elles-memes; elles ne produisent pas directement modeles, frames, images, particules, beams, dlights, temp entities, areabits, camera ou scene. Elles transportent toutefois les paquets client/server qui alimentent ensuite les snapshots et sorties visibles; le flux full-game three-renderer a ete verifie.
+- Commentaires: en-tetes de `netadrtype_t`, `netsrc_t`, `netadr_t` et `NET_*` verifies; commentaire de groupe ajoute pour `PORT_ANY`, `MAX_MSGLEN`, `PACKET_HEADER` dans `packages/qcommon/src/qcommon.ts`.
+- Tests ajoutes: assertions ciblees dans `scripts/verify/quake2-qcommon-header.ts` pour enums `netadrtype_t`/`netsrc_t`, champs `netadr_t`, parsing/formatage loopback/IP/IPX, comparaisons, config, init/shutdown, get/send packet, copie defensive et sleep.
+- Tests lances: `npm run verify:qcommon:header`, `npm run verify:net-chan`, `npm run verify:cl-main`, `npm run verify:server:main`, `npm run verify:full-game:local-transport`, `npm run verify:full-game:three-renderer`, `npm run verify:full-game:server-host`, `npm run typecheck`.
+
+## Session precedente
 
 - Lot traite: bloc cvar header dans `packages/qcommon/src/cvar.ts`: `cvar_vars`, `Cvar_Get`, `Cvar_Set`, `Cvar_ForceSet`, `Cvar_FullSet`, `Cvar_SetValue`, `Cvar_VariableValue`, `Cvar_VariableString`, `Cvar_CompleteVariable`, `Cvar_GetLatchedVars`, `Cvar_Command`, `Cvar_WriteVariables`, `Cvar_Init`, `Cvar_Userinfo`, `Cvar_Serverinfo`, et `userinfo_modified`.
 - Source comparee: declarations `Quake-2-master/qcommon/qcommon.h`, implementations `Quake-2-master/qcommon/cvar.c`.
@@ -124,7 +137,7 @@
 
 ## Prochain lot recommande
 
-- Bloc net/qcommon header dans `packages/qcommon/src/qcommon.ts`: `PORT_ANY`, `MAX_MSGLEN`, `PACKET_HEADER`, `netadrtype_t`, `netsrc_t`, `netadr_t`, puis `NET_*` si le lot reste coherent.
+- Bloc netchan header dans `packages/qcommon/src/qcommon.ts` / `packages/qcommon/src/net_chan.ts`: `OLD_AVG`, `MAX_LATENT`, `netchan_t` et ses champs generes, puis `Netchan_Init`, `Netchan_Setup`, `Netchan_NeedReliable`, `Netchan_Transmit`, `Netchan_OutOfBand`, `Netchan_OutOfBandPrint`, `Netchan_Process`, `Netchan_CanReliable` si le lot reste coherent.
 
 ## Blocages
 

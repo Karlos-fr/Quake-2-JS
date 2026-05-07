@@ -143,6 +143,17 @@ import {
   ANGLE2SHORT,
   AREA_SOLID,
   AREA_TRIGGERS,
+  ATTN_IDLE,
+  ATTN_NONE,
+  ATTN_NORM,
+  ATTN_STATIC,
+  CHAN_AUTO,
+  CHAN_BODY,
+  CHAN_ITEM,
+  CHAN_NO_PHS_ADD,
+  CHAN_RELIABLE,
+  CHAN_VOICE,
+  CHAN_WEAPON,
   CPLANE_DIST,
   CPLANE_NORMAL_X,
   CPLANE_NORMAL_Y,
@@ -310,6 +321,12 @@ import {
   SFF_SYSTEM,
   SHORT2ANGLE,
   SPLASH_BLOOD,
+  SPLASH_BLUE_WATER,
+  SPLASH_BROWN_WATER,
+  SPLASH_LAVA,
+  SPLASH_SLIME,
+  SPLASH_SPARKS,
+  SPLASH_UNKNOWN,
   SURF_FLOWING,
   SURF_LIGHT,
   SURF_NODRAW,
@@ -341,6 +358,7 @@ import {
   type pmove_state_t,
   type pmove_t,
   type trace_t,
+  temp_event_t,
   type usercmd_t,
   createEntityState,
   createPlayerState
@@ -403,7 +421,88 @@ assert.equal(RDF_UNDERWATER, 1, "RDF_UNDERWATER mismatch");
 assert.equal(RDF_NOWORLDMODEL, 2, "RDF_NOWORLDMODEL mismatch");
 assert.equal(RDF_IRGOGGLES, 4, "RDF_IRGOGGLES mismatch");
 assert.equal(RDF_UVGOGGLES, 8, "RDF_UVGOGGLES mismatch");
+assert.deepEqual(
+  Object.entries(temp_event_t)
+    .filter(([_name, value]) => typeof value === "number")
+    .map(([name, value]) => [name, value]),
+  [
+    ["TE_GUNSHOT", 0],
+    ["TE_BLOOD", 1],
+    ["TE_BLASTER", 2],
+    ["TE_RAILTRAIL", 3],
+    ["TE_SHOTGUN", 4],
+    ["TE_EXPLOSION1", 5],
+    ["TE_EXPLOSION2", 6],
+    ["TE_ROCKET_EXPLOSION", 7],
+    ["TE_GRENADE_EXPLOSION", 8],
+    ["TE_SPARKS", 9],
+    ["TE_SPLASH", 10],
+    ["TE_BUBBLETRAIL", 11],
+    ["TE_SCREEN_SPARKS", 12],
+    ["TE_SHIELD_SPARKS", 13],
+    ["TE_BULLET_SPARKS", 14],
+    ["TE_LASER_SPARKS", 15],
+    ["TE_PARASITE_ATTACK", 16],
+    ["TE_ROCKET_EXPLOSION_WATER", 17],
+    ["TE_GRENADE_EXPLOSION_WATER", 18],
+    ["TE_MEDIC_CABLE_ATTACK", 19],
+    ["TE_BFG_EXPLOSION", 20],
+    ["TE_BFG_BIGEXPLOSION", 21],
+    ["TE_BOSSTPORT", 22],
+    ["TE_BFG_LASER", 23],
+    ["TE_GRAPPLE_CABLE", 24],
+    ["TE_WELDING_SPARKS", 25],
+    ["TE_GREENBLOOD", 26],
+    ["TE_BLUEHYPERBLASTER", 27],
+    ["TE_PLASMA_EXPLOSION", 28],
+    ["TE_TUNNEL_SPARKS", 29],
+    ["TE_BLASTER2", 30],
+    ["TE_RAILTRAIL2", 31],
+    ["TE_FLAME", 32],
+    ["TE_LIGHTNING", 33],
+    ["TE_DEBUGTRAIL", 34],
+    ["TE_PLAIN_EXPLOSION", 35],
+    ["TE_FLASHLIGHT", 36],
+    ["TE_FORCEWALL", 37],
+    ["TE_HEATBEAM", 38],
+    ["TE_MONSTER_HEATBEAM", 39],
+    ["TE_STEAM", 40],
+    ["TE_BUBBLETRAIL2", 41],
+    ["TE_MOREBLOOD", 42],
+    ["TE_HEATBEAM_SPARKS", 43],
+    ["TE_HEATBEAM_STEAM", 44],
+    ["TE_CHAINFIST_SMOKE", 45],
+    ["TE_ELECTRIC_SPARKS", 46],
+    ["TE_TRACKER_EXPLOSION", 47],
+    ["TE_TELEPORT_EFFECT", 48],
+    ["TE_DBALL_GOAL", 49],
+    ["TE_WIDOWBEAMOUT", 50],
+    ["TE_NUKEBLAST", 51],
+    ["TE_WIDOWSPLASH", 52],
+    ["TE_EXPLOSION1_BIG", 53],
+    ["TE_EXPLOSION1_NP", 54],
+    ["TE_FLECHETTE", 55]
+  ],
+  "temp_event_t numeric sequence mismatch"
+);
+assert.equal(SPLASH_UNKNOWN, 0, "SPLASH_UNKNOWN mismatch");
+assert.equal(SPLASH_SPARKS, 1, "SPLASH_SPARKS mismatch");
+assert.equal(SPLASH_BLUE_WATER, 2, "SPLASH_BLUE_WATER mismatch");
+assert.equal(SPLASH_BROWN_WATER, 3, "SPLASH_BROWN_WATER mismatch");
+assert.equal(SPLASH_SLIME, 4, "SPLASH_SLIME mismatch");
+assert.equal(SPLASH_LAVA, 5, "SPLASH_LAVA mismatch");
 assert.equal(SPLASH_BLOOD, 6, "SPLASH_BLOOD mismatch");
+assert.equal(CHAN_AUTO, 0, "CHAN_AUTO mismatch");
+assert.equal(CHAN_WEAPON, 1, "CHAN_WEAPON mismatch");
+assert.equal(CHAN_VOICE, 2, "CHAN_VOICE mismatch");
+assert.equal(CHAN_ITEM, 3, "CHAN_ITEM mismatch");
+assert.equal(CHAN_BODY, 4, "CHAN_BODY mismatch");
+assert.equal(CHAN_NO_PHS_ADD, 8, "CHAN_NO_PHS_ADD mismatch");
+assert.equal(CHAN_RELIABLE, 16, "CHAN_RELIABLE mismatch");
+assert.equal(ATTN_NONE, 0, "ATTN_NONE mismatch");
+assert.equal(ATTN_NORM, 1, "ATTN_NORM mismatch");
+assert.equal(ATTN_IDLE, 2, "ATTN_IDLE mismatch");
+assert.equal(ATTN_STATIC, 3, "ATTN_STATIC mismatch");
 assert.equal(MZ_BLASTER, 0, "MZ_BLASTER mismatch");
 assert.equal(MZ_MACHINEGUN, 1, "MZ_MACHINEGUN mismatch");
 assert.equal(MZ_SHOTGUN, 2, "MZ_SHOTGUN mismatch");

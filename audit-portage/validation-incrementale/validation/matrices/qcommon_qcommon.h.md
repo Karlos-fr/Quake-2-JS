@@ -189,26 +189,26 @@
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Userinfo` | `packages/qcommon/src/cvar.ts` | `Cvar_Userinfo` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | function | `Cvar_Serverinfo` | `packages/qcommon/src/cvar.ts` | `Cvar_Serverinfo` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | global | `userinfo_modified` | `packages/qcommon/src/cvar.ts` | `userinfo_modified` | Valide | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `PORT_ANY` | `packages/qcommon/src/qcommon.ts` | `PORT_ANY` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `MAX_MSGLEN` | `packages/qcommon/src/qcommon.ts` | `MAX_MSGLEN` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | macro | `PACKET_HEADER` | `packages/qcommon/src/qcommon.ts` | `PACKET_HEADER` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | enum | `netadrtype_t` | `packages/qcommon/src/qcommon.ts` | `netadrtype_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | enum | `netsrc_t` | `packages/qcommon/src/qcommon.ts` | `netsrc_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | struct | `netadr_t` | `packages/qcommon/src/qcommon.ts` | `netadr_t` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `ip` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `ipx` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | global | `port` | `packages/qcommon/src/qcommon.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_Init` | `packages/qcommon/src/qcommon.ts` | `NET_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_Shutdown` | `packages/qcommon/src/qcommon.ts` | `NET_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_Config` | `packages/qcommon/src/qcommon.ts` | `NET_Config` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_GetPacket` | `packages/qcommon/src/qcommon.ts` | `NET_GetPacket` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_SendPacket` | `packages/qcommon/src/qcommon.ts` | `NET_SendPacket` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_CompareAdr` | `packages/qcommon/src/qcommon.ts` | `NET_CompareAdr` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_CompareBaseAdr` | `packages/qcommon/src/qcommon.ts` | `NET_CompareBaseAdr` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_IsLocalAddress` | `packages/qcommon/src/qcommon.ts` | `NET_IsLocalAddress` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_AdrToString` | `packages/qcommon/src/qcommon.ts` | `NET_AdrToString` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_StringToAdr` | `packages/qcommon/src/qcommon.ts` | `NET_StringToAdr` | A verifier | A redecouper |  |
-| `Quake-2-master/qcommon/qcommon.h` | function | `NET_Sleep` | `packages/qcommon/src/qcommon.ts` | `NET_Sleep` | A verifier | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `PORT_ANY` | `packages/qcommon/src/qcommon.ts` | `PORT_ANY` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `MAX_MSGLEN` | `packages/qcommon/src/qcommon.ts` | `MAX_MSGLEN` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | macro | `PACKET_HEADER` | `packages/qcommon/src/qcommon.ts` | `PACKET_HEADER` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | enum | `netadrtype_t` | `packages/qcommon/src/qcommon.ts` | `netadrtype_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | enum | `netsrc_t` | `packages/qcommon/src/qcommon.ts` | `netsrc_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | struct | `netadr_t` | `packages/qcommon/src/qcommon.ts` | `netadr_t` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `ip` | `packages/qcommon/src/qcommon.ts` | `netadr_t.ip` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `ipx` | `packages/qcommon/src/qcommon.ts` | `netadr_t.ipx` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | global | `port` | `packages/qcommon/src/qcommon.ts` | `netadr_t.port` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_Init` | `packages/qcommon/src/qcommon.ts` | `NET_Init` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_Shutdown` | `packages/qcommon/src/qcommon.ts` | `NET_Shutdown` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_Config` | `packages/qcommon/src/qcommon.ts` | `NET_Config` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_GetPacket` | `packages/qcommon/src/qcommon.ts` | `NET_GetPacket` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_SendPacket` | `packages/qcommon/src/qcommon.ts` | `NET_SendPacket` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_CompareAdr` | `packages/qcommon/src/qcommon.ts` | `NET_CompareAdr` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_CompareBaseAdr` | `packages/qcommon/src/qcommon.ts` | `NET_CompareBaseAdr` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_IsLocalAddress` | `packages/qcommon/src/qcommon.ts` | `NET_IsLocalAddress` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_AdrToString` | `packages/qcommon/src/qcommon.ts` | `NET_AdrToString` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_StringToAdr` | `packages/qcommon/src/qcommon.ts` | `NET_StringToAdr` | Valide | A redecouper |  |
+| `Quake-2-master/qcommon/qcommon.h` | function | `NET_Sleep` | `packages/qcommon/src/qcommon.ts` | `NET_Sleep` | Valide | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `OLD_AVG` | `packages/qcommon/src/qcommon.ts` | `OLD_AVG` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | macro | `MAX_LATENT` | `packages/qcommon/src/qcommon.ts` | `MAX_LATENT` | A verifier | A redecouper |  |
 | `Quake-2-master/qcommon/qcommon.h` | struct | `netchan_t` | `packages/qcommon/src/qcommon.ts` | `netchan_t` | A verifier | A redecouper |  |

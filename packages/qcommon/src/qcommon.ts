@@ -84,6 +84,16 @@ export const CM_UP = 1 << 5;
 export const CM_BUTTONS = 1 << 6;
 export const CM_IMPULSE = 1 << 7;
 
+/**
+ * Original names: PORT_ANY, MAX_MSGLEN, PACKET_HEADER
+ * Source: qcommon/qcommon.h
+ * Category: Ported
+ * Fidelity level: Strict
+ *
+ * Behavior:
+ * - Defines the portable network bind sentinel, maximum Quake II packet payload
+ *   size and sequenced-packet header reservation.
+ */
 export const PORT_ANY = -1;
 export const MAX_MSGLEN = 1400;
 export const PACKET_HEADER = 10;

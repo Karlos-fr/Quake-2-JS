@@ -88,20 +88,20 @@
 | `Quake-2-master/server/server.h` | function | `SV_ModelIndex` | `packages/server/src/server.ts` | `ServerInitProcedures.SV_ModelIndex` | Valide | A redecouper |  |
 | `Quake-2-master/server/server.h` | function | `SV_SoundIndex` | `packages/server/src/server.ts` | `ServerInitProcedures.SV_SoundIndex` | Valide | A redecouper |  |
 | `Quake-2-master/server/server.h` | function | `SV_ImageIndex` | `packages/server/src/server.ts` | `ServerInitProcedures.SV_ImageIndex` | Valide | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `SV_WriteClientdataToMessage` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `SV_ExecuteUserCommand` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `SV_InitOperatorCommands` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `SV_SendServerinfo` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `SV_UserinfoChanged` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `Master_Heartbeat` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `Master_Packet` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `SV_InitGame` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `SV_Map` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `SV_PrepWorldFrame` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | enum | `redirect_t` | `packages/server/src/server.ts` | `redirect_t` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | macro | `SV_OUTPUTBUF_LENGTH` | `packages/server/src/server.ts` | `SV_OUTPUTBUF_LENGTH` | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | global | `sv_outputbuf` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
-| `Quake-2-master/server/server.h` | function | `SV_FlushRedirect` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
+| `Quake-2-master/server/server.h` | function | `SV_WriteClientdataToMessage` | `packages/server/src/server.ts` | `ServerMainProcedures.SV_WriteClientdataToMessage` | Non applicable | A redecouper | Declaration header orpheline: aucune definition ni usage C trouves dans `Quake-2-master/server`; signature TS optionnelle conservee. |
+| `Quake-2-master/server/server.h` | function | `SV_ExecuteUserCommand` | `packages/server/src/server.ts` | `ServerUserProcedures.SV_ExecuteUserCommand` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | function | `SV_InitOperatorCommands` | `packages/server/src/server.ts` | `ServerConsoleProcedures.SV_InitOperatorCommands` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | function | `SV_SendServerinfo` | `packages/server/src/server.ts` | `ServerMainProcedures.SV_SendServerinfo` | Non applicable | A redecouper | Declaration header orpheline: aucune definition ni usage C trouves dans `Quake-2-master/server`; signature TS optionnelle conservee. |
+| `Quake-2-master/server/server.h` | function | `SV_UserinfoChanged` | `packages/server/src/server.ts` | `ServerMainProcedures.SV_UserinfoChanged` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | function | `Master_Heartbeat` | `packages/server/src/server.ts` | `ServerMainProcedures.Master_Heartbeat` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | function | `Master_Packet` | `packages/server/src/server.ts` | `ServerMainProcedures.Master_Packet` | Non applicable | A redecouper | Declaration header orpheline: aucune definition ni usage C trouves dans `Quake-2-master/server`; signature TS optionnelle conservee. |
+| `Quake-2-master/server/server.h` | function | `SV_InitGame` | `packages/server/src/server.ts` | `ServerInitProcedures.SV_InitGame` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | function | `SV_Map` | `packages/server/src/server.ts` | `ServerInitProcedures.SV_Map` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | function | `SV_PrepWorldFrame` | `packages/server/src/server.ts` | `ServerMainProcedures.SV_PrepWorldFrame` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | enum | `redirect_t` | `packages/server/src/server.ts` | `redirect_t` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | macro | `SV_OUTPUTBUF_LENGTH` | `packages/server/src/server.ts` | `SV_OUTPUTBUF_LENGTH` | Valide | A redecouper |  |
+| `Quake-2-master/server/server.h` | global | `sv_outputbuf` | `packages/server/src/server.ts` | `ServerHeaderState.sv_outputbuf` | Valide | A redecouper | Rcon redirection runtime est adaptee via callback `executeRconCommand`, pas via un buffer global partage. |
+| `Quake-2-master/server/server.h` | function | `SV_FlushRedirect` | `packages/server/src/server.ts` | `ServerSendProcedures.SV_FlushRedirect` | Valide | A redecouper |  |
 | `Quake-2-master/server/server.h` | function | `SV_DemoCompleted` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/server.h` | function | `SV_SendClientMessages` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |
 | `Quake-2-master/server/server.h` | function | `SV_Multicast` | `packages/server/src/server.ts` |  | A verifier | A redecouper |  |

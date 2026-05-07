@@ -10,6 +10,6 @@
 
 | Fichier source | Type entite source | Nom entite source | Fichier cible proprietaire | Nom entite cible | Valide | Statut auto | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `Quake-2-master/server/sv_null.c` | function | `SV_Init` | `packages/server/src/sv_null.ts` | `SV_Init` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_null.c` | function | `SV_Shutdown` | `packages/server/src/sv_null.ts` | `SV_Shutdown` | A verifier | A redecouper |  |
-| `Quake-2-master/server/sv_null.c` | function | `SV_Frame` | `packages/server/src/sv_null.ts` | `SV_Frame` | A verifier | A redecouper |  |
+| `Quake-2-master/server/sv_null.c` | function | `SV_Init` | `packages/server/src/sv_null.ts` | `SV_Init` | Valide | A redecouper | Port no-op strict et entete verifies; branchement public via `host.ts`/`index.ts`; tests `verify:server:null`, `verify:server:runtime`, `verify:full-game:server-host`, `typecheck`. |
+| `Quake-2-master/server/sv_null.c` | function | `SV_Shutdown` | `packages/server/src/sv_null.ts` | `SV_Shutdown` | Valide | A redecouper | Port no-op strict et entete verifies; branchement public via `host.ts`/`index.ts`; tests `verify:server:null`, `verify:server:runtime`, `verify:full-game:server-host`, `typecheck`. |
+| `Quake-2-master/server/sv_null.c` | function | `SV_Frame` | `packages/server/src/sv_null.ts` | `SV_Frame` | Valide | A redecouper | Port no-op strict et entete verifies; branchement public via `host.ts`/`index.ts`; tests `verify:server:null`, `verify:server:runtime`, `verify:full-game:server-host`, `typecheck`. |

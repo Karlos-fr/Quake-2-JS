@@ -95,7 +95,15 @@ export interface ServerMainContext {
   zombietime: cvar_t | null;
   sv_paused: cvar_t | null;
   sv_timedemo: cvar_t | null;
+  sv_enforcetime?: cvar_t | null;
   sv_showclamp: cvar_t | null;
+  sv_noreload?: cvar_t | null;
+  sv_airaccelerate?: cvar_t | null;
+  allow_download?: cvar_t | null;
+  allow_download_players?: cvar_t | null;
+  allow_download_models?: cvar_t | null;
+  allow_download_sounds?: cvar_t | null;
+  allow_download_maps?: cvar_t | null;
   host_speeds?: cvar_t | null;
   sv_reconnect_limit: cvar_t | null;
   dedicated: cvar_t | null;
@@ -323,7 +331,7 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
     context.SV_InitOperatorCommands?.();
 
     if (context.cvar) {
-      Cvar_Get(context.cvar, "rcon_password", "", 0);
+      context.rcon_password = bindCvar(context.rcon_password, "rcon_password", "", 0);
       Cvar_Get(context.cvar, "skill", "1", 0);
       Cvar_Get(context.cvar, "deathmatch", "0", CVAR_LATCH);
       Cvar_Get(context.cvar, "coop", "0", CVAR_LATCH);
@@ -332,29 +340,49 @@ export function createServerMainProcedures(context: ServerMainContext): ServerMa
       Cvar_Get(context.cvar, "timelimit", "0", CVAR_SERVERINFO);
       Cvar_Get(context.cvar, "cheats", "0", CVAR_SERVERINFO | CVAR_LATCH);
       Cvar_Get(context.cvar, "protocol", `${PROTOCOL_VERSION}`, CVAR_SERVERINFO | CVAR_NOSET);
-      Cvar_Get(context.cvar, "maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
-      Cvar_Get(context.cvar, "hostname", "noname", CVAR_SERVERINFO | CVAR_ARCHIVE);
-      Cvar_Get(context.cvar, "timeout", "125", 0);
-      Cvar_Get(context.cvar, "zombietime", "2", 0);
-      Cvar_Get(context.cvar, "showclamp", "0", 0);
-      Cvar_Get(context.cvar, "paused", "0", 0);
-      Cvar_Get(context.cvar, "timedemo", "0", 0);
-      Cvar_Get(context.cvar, "sv_enforcetime", "0", 0);
-      Cvar_Get(context.cvar, "allow_download", "0", CVAR_ARCHIVE);
-      Cvar_Get(context.cvar, "allow_download_players", "0", CVAR_ARCHIVE);
-      Cvar_Get(context.cvar, "allow_download_models", "1", CVAR_ARCHIVE);
-      Cvar_Get(context.cvar, "allow_download_sounds", "1", CVAR_ARCHIVE);
-      Cvar_Get(context.cvar, "allow_download_maps", "1", CVAR_ARCHIVE);
-      Cvar_Get(context.cvar, "sv_noreload", "0", 0);
-      Cvar_Get(context.cvar, "sv_airaccelerate", "0", CVAR_LATCH);
-      Cvar_Get(context.cvar, "public", "0", 0);
-      Cvar_Get(context.cvar, "sv_reconnect_limit", "3", CVAR_ARCHIVE);
+      context.maxclients = bindCvar(context.maxclients, "maxclients", "1", CVAR_SERVERINFO | CVAR_LATCH);
+      context.hostname = bindCvar(context.hostname, "hostname", "noname", CVAR_SERVERINFO | CVAR_ARCHIVE);
+      context.timeout = bindCvar(context.timeout, "timeout", "125", 0);
+      context.zombietime = bindCvar(context.zombietime, "zombietime", "2", 0);
+      context.sv_showclamp = bindCvar(context.sv_showclamp, "showclamp", "0", 0);
+      context.sv_paused = bindCvar(context.sv_paused, "paused", "0", 0);
+      context.sv_timedemo = bindCvar(context.sv_timedemo, "timedemo", "0", 0);
+      context.sv_enforcetime = bindCvar(context.sv_enforcetime ?? null, "sv_enforcetime", "0", 0);
+      context.allow_download = bindCvar(context.allow_download ?? null, "allow_download", "0", CVAR_ARCHIVE);
+      context.allow_download_players = bindCvar(
+        context.allow_download_players ?? null,
+        "allow_download_players",
+        "0",
+        CVAR_ARCHIVE
+      );
+      context.allow_download_models = bindCvar(
+        context.allow_download_models ?? null,
+        "allow_download_models",
+        "1",
+        CVAR_ARCHIVE
+      );
+      context.allow_download_sounds = bindCvar(
+        context.allow_download_sounds ?? null,
+        "allow_download_sounds",
+        "1",
+        CVAR_ARCHIVE
+      );
+      context.allow_download_maps = bindCvar(context.allow_download_maps ?? null, "allow_download_maps", "1", CVAR_ARCHIVE);
+      context.sv_noreload = bindCvar(context.sv_noreload ?? null, "sv_noreload", "0", 0);
+      context.sv_airaccelerate = bindCvar(context.sv_airaccelerate ?? null, "sv_airaccelerate", "0", CVAR_LATCH);
+      context.public_server = bindCvar(context.public_server, "public", "0", 0);
+      context.sv_reconnect_limit = bindCvar(context.sv_reconnect_limit, "sv_reconnect_limit", "3", CVAR_ARCHIVE);
     }
 
     context.qnet.net_message.allowoverflow = false;
     context.qnet.net_message.overflowed = false;
     context.qnet.net_message.cursize = 0;
     context.qnet.net_message.readcount = 0;
+  }
+
+  function bindCvar(current: cvar_t | null, name: string, value: string, flags: number): cvar_t | null {
+    const registered = context.cvar ? Cvar_Get(context.cvar, name, value, flags) : null;
+    return current ?? registered;
   }
 
   /**

@@ -548,25 +548,25 @@
 | `Quake-2-master/game/q_shared.h` | macro | `MZ2_WIDOW2_BEAM_SWEEP_9` | `packages/game/src/m_flash.ts` | `MZ2_WIDOW2_BEAM_SWEEP_9` | Partiel | A redecouper | Offsets et consommation client/renderer verifies; producteurs gameplay Rogue carrier/widow/stalker/daedalus absents du port courant, action suivante: porter les producteurs ou confirmer exclusion Rogue. |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ2_WIDOW2_BEAM_SWEEP_10` | `packages/game/src/m_flash.ts` | `MZ2_WIDOW2_BEAM_SWEEP_10` | Partiel | A redecouper | Offsets et consommation client/renderer verifies; producteurs gameplay Rogue carrier/widow/stalker/daedalus absents du port courant, action suivante: porter les producteurs ou confirmer exclusion Rogue. |
 | `Quake-2-master/game/q_shared.h` | macro | `MZ2_WIDOW2_BEAM_SWEEP_11` | `packages/game/src/m_flash.ts` | `MZ2_WIDOW2_BEAM_SWEEP_11` | Partiel | A redecouper | Offsets et consommation client/renderer verifies; producteurs gameplay Rogue carrier/widow/stalker/daedalus absents du port courant, action suivante: porter les producteurs ou confirmer exclusion Rogue. |
-| `Quake-2-master/game/q_shared.h` | enum | `temp_event_t` | `packages/qcommon/src/q_shared.ts` | `temp_event_t` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_UNKNOWN` | `packages/qcommon/src/q_shared.ts` | `SPLASH_UNKNOWN` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_SPARKS` | `packages/qcommon/src/q_shared.ts` | `SPLASH_SPARKS` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_BLUE_WATER` | `packages/qcommon/src/q_shared.ts` | `SPLASH_BLUE_WATER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_BROWN_WATER` | `packages/qcommon/src/q_shared.ts` | `SPLASH_BROWN_WATER` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_SLIME` | `packages/qcommon/src/q_shared.ts` | `SPLASH_SLIME` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_LAVA` | `packages/qcommon/src/q_shared.ts` | `SPLASH_LAVA` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_BLOOD` | `packages/qcommon/src/q_shared.ts` | `SPLASH_BLOOD` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CHAN_AUTO` | `packages/qcommon/src/q_shared.ts` | `CHAN_AUTO` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CHAN_WEAPON` | `packages/qcommon/src/q_shared.ts` | `CHAN_WEAPON` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CHAN_VOICE` | `packages/qcommon/src/q_shared.ts` | `CHAN_VOICE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CHAN_ITEM` | `packages/qcommon/src/q_shared.ts` | `CHAN_ITEM` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CHAN_BODY` | `packages/qcommon/src/q_shared.ts` | `CHAN_BODY` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CHAN_NO_PHS_ADD` | `packages/qcommon/src/q_shared.ts` | `CHAN_NO_PHS_ADD` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `CHAN_RELIABLE` | `packages/qcommon/src/q_shared.ts` | `CHAN_RELIABLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ATTN_NONE` | `packages/qcommon/src/q_shared.ts` | `ATTN_NONE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ATTN_NORM` | `packages/qcommon/src/q_shared.ts` | `ATTN_NORM` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ATTN_IDLE` | `packages/qcommon/src/q_shared.ts` | `ATTN_IDLE` | A verifier | A redecouper |  |
-| `Quake-2-master/game/q_shared.h` | macro | `ATTN_STATIC` | `packages/qcommon/src/q_shared.ts` | `ATTN_STATIC` | A verifier | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | enum | `temp_event_t` | `packages/qcommon/src/q_shared.ts` | `temp_event_t` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_UNKNOWN` | `packages/qcommon/src/q_shared.ts` | `SPLASH_UNKNOWN` | Valide | A redecouper | Doublon local remplace par reexport qcommon dans `packages/game/src/runtime.ts`. |
+| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_SPARKS` | `packages/qcommon/src/q_shared.ts` | `SPLASH_SPARKS` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_BLUE_WATER` | `packages/qcommon/src/q_shared.ts` | `SPLASH_BLUE_WATER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_BROWN_WATER` | `packages/qcommon/src/q_shared.ts` | `SPLASH_BROWN_WATER` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_SLIME` | `packages/qcommon/src/q_shared.ts` | `SPLASH_SLIME` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_LAVA` | `packages/qcommon/src/q_shared.ts` | `SPLASH_LAVA` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `SPLASH_BLOOD` | `packages/qcommon/src/q_shared.ts` | `SPLASH_BLOOD` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CHAN_AUTO` | `packages/qcommon/src/q_shared.ts` | `CHAN_AUTO` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CHAN_WEAPON` | `packages/qcommon/src/q_shared.ts` | `CHAN_WEAPON` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CHAN_VOICE` | `packages/qcommon/src/q_shared.ts` | `CHAN_VOICE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CHAN_ITEM` | `packages/qcommon/src/q_shared.ts` | `CHAN_ITEM` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CHAN_BODY` | `packages/qcommon/src/q_shared.ts` | `CHAN_BODY` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CHAN_NO_PHS_ADD` | `packages/qcommon/src/q_shared.ts` | `CHAN_NO_PHS_ADD` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `CHAN_RELIABLE` | `packages/qcommon/src/q_shared.ts` | `CHAN_RELIABLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `ATTN_NONE` | `packages/qcommon/src/q_shared.ts` | `ATTN_NONE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `ATTN_NORM` | `packages/qcommon/src/q_shared.ts` | `ATTN_NORM` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `ATTN_IDLE` | `packages/qcommon/src/q_shared.ts` | `ATTN_IDLE` | Valide | A redecouper |  |
+| `Quake-2-master/game/q_shared.h` | macro | `ATTN_STATIC` | `packages/qcommon/src/q_shared.ts` | `ATTN_STATIC` | Valide | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `STAT_HEALTH_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_HEALTH_ICON` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `STAT_HEALTH` | `packages/qcommon/src/q_shared.ts` | `STAT_HEALTH` | A verifier | A redecouper |  |
 | `Quake-2-master/game/q_shared.h` | macro | `STAT_AMMO_ICON` | `packages/qcommon/src/q_shared.ts` | `STAT_AMMO_ICON` | A verifier | A redecouper |  |

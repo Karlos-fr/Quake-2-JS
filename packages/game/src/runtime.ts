@@ -24,6 +24,13 @@ import {
   AREA_TRIGGERS,
   MASK_SOLID,
   MAX_ITEMS,
+  SPLASH_BLUE_WATER,
+  SPLASH_BROWN_WATER,
+  SPLASH_BLOOD,
+  SPLASH_LAVA,
+  SPLASH_SLIME,
+  SPLASH_SPARKS,
+  SPLASH_UNKNOWN,
   createEntityState,
   createPlayerState,
   createCollisionWorld,
@@ -39,7 +46,17 @@ import {
 import { G_UseTargets } from "./g_utils.js";
 import type { GameItemDefinition } from "./g_items.js";
 
-export { AREA_SOLID, AREA_TRIGGERS };
+export {
+  AREA_SOLID,
+  AREA_TRIGGERS,
+  SPLASH_BLUE_WATER,
+  SPLASH_BROWN_WATER,
+  SPLASH_BLOOD,
+  SPLASH_LAVA,
+  SPLASH_SLIME,
+  SPLASH_SPARKS,
+  SPLASH_UNKNOWN
+};
 
 /**
  * Original name: weaponstate_t
@@ -131,12 +148,6 @@ export const DEFAULT_DEATHMATCH_SHOTGUN_COUNT = 12;
 export const DEFAULT_SHOTGUN_COUNT = 12;
 export const DEFAULT_SSHOTGUN_COUNT = 20;
 export const DAMAGE_TIME = 0.5;
-export const SPLASH_UNKNOWN = 0;
-export const SPLASH_SPARKS = 1;
-export const SPLASH_BLUE_WATER = 2;
-export const SPLASH_BROWN_WATER = 3;
-export const SPLASH_SLIME = 4;
-export const SPLASH_LAVA = 5;
 export const ANIM_BASIC = 0;
 export const ANIM_WAVE = 1;
 export const ANIM_JUMP = 2;
